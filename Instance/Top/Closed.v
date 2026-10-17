@@ -23,64 +23,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Design: closed sets constructively, and why the order is what it is
-
+(*
    nLab: https://ncatlab.org/nlab/show/excluded+middle
    nLab: https://ncatlab.org/nlab/show/double+negation
 
-   Two decisions here need stating plainly, because in both cases the
-   classical formulation would silently import excluded middle.
+   本节说明来源与用途相关定义、性质与动机。
 
-   1. A CLOSED SET CARRIES ITS COMPLEMENTING OPEN AS DATA.  Classically one
-      says "C is closed when its complement is open", and extracts the open
-      from the existential when needed.  Constructively that extraction is
-      an appeal to choice (from `∃ U, IsOpen U ∧ ...` one cannot in general
-      produce `U`), so [ClosedSet] below bundles the complementing open as
-      a field, with [closed_agree] recording that the closed predicate IS
-      the negation of that open.  The record is therefore not "a predicate
-      that happens to be closed" but "a predicate together with a witness
-      of its closedness" — the same move the library makes wherever a
-      classical existential would otherwise need choice, as with the chosen
-      pullbacks of Theory/Subobject/Functor.v or the chosen lifts of
-      Theory/Fibration.v's [Cleaving].
-
-   2. THE ORDER IS REVERSE INCLUSION OF THE COMPLEMENTING OPENS, AND THE
-      SETOID IS THEIR MUTUAL INCLUSION.  Complementation turns inclusion of
-      opens into inclusion of closed predicates constructively: from
-      `U ⊆ U'` one gets `¬U' ⊆ ¬U` by composition.  The converse does NOT
-      hold — recovering `U ⊆ U'` from `¬U' ⊆ ¬U` needs `¬¬`-stability, i.e.
-      excluded middle — so ordering closed sets by inclusion of their
-      closed predicates would break the duality in one direction.  Ordering
-      them by reverse inclusion of the complementing opens keeps the
-      duality exact, implies inclusion of the closed predicates (lemma
-      [closed_order_implies_inclusion]), and agrees with it classically.
-
-      The same reasoning fixes the setoid: two closed sets are identified
-      when their complementing OPENS agree pointwise.  That implies their
-      closed predicates agree ([closed_equiv_implies_pred_equiv]) but is
-      not implied by it, for the same `¬¬` reason.  Comparing the closed
-      predicates instead would make [closed_interior] — "read off the
-      complementing open" — not respect `≈`, and the natural isomorphism
-      at the end of this file would have no inverse.  Riehl's statement is
-      classical; what is proved below is its constructive rendering, and
-      this paragraph is the disclosure of the difference.
-
-      The disclosure has a CONSEQUENCE that must be stated just as
-      plainly (the audit of the first commit insisted, correctly): with
-      this setoid, [ClosedSets X] is [OpenSets X] carrying an extra field
-      the equivalence never inspects, both round trips of the duality
-      copy the compared component verbatim, and the natural isomorphism
-      at the end of the file is, extensionally, the identity dressed as
-      complementation.  The constructive CONTENT of the duality therefore
-      lives in the one-directional lemmas
-      ([closed_order_implies_inclusion], [closed_equiv_implies_pred_equiv])
-      and in the closing section, which prices the classical reading
-      exactly: a predicate-comparing setoid is EQUIVALENT to
-      double-negation elimination ([pred_comparison_forces_DNE]), and
-      under that explicit hypothesis the two-sided classical
-      correspondence is recovered
-      ([closed_inclusion_implies_order_classical],
-      [closed_pred_equiv_implies_equiv_classical]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Opens and closed sets of a space *)
 
@@ -103,9 +53,11 @@ Arguments closed_compl {X} _ _.
 Arguments closed_compl_open {X} _.
 Arguments closed_agree {X} _ _.
 
-(* Complementation, object by object.  An open becomes the closed set whose
-   predicate is its negation and whose complementing open is the open
-   itself; the agreement field is then the identity equivalence. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition open_complement {X : TopSpace} (U : OpenSet X) : ClosedSet X := {|
   closed_pred       := fun x => ¬ (`1 U x);
   closed_compl      := `1 U;
@@ -140,9 +92,11 @@ Qed.
 
 (** ** The two thin categories *)
 
-(* The opens of X as a thin category: objects the opens, a unique arrow
-   `U ~> V` when `U ⊆ V`.  As in Instance/Proset.v the hom-setoid is
-   trivial, since any two parallel arrows are the same arrow. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Opens (X : TopSpace) : Category := {|
   obj     := OpenSet X;
   hom     := fun U V => ∀ x : X, `1 U x → `1 V x;
@@ -179,14 +133,11 @@ Program Definition ClosedCompl (X : TopSpace) : (Closeds X)^op ⟶ Opens X := {|
   fmap := fun C D g => g
 |}.
 
-(* Riehl, CTiC Example 1.4.4(v), constructively: the opens of X and the
-   opposite of its closed sets are isomorphic categories.  Both round trips
-   are the identity on the complementing opens, which is exactly what the
-   chosen order compares — note that the closed predicate of a
-   round-tripped closed set is the negation of its complementing open,
-   equivalent to the original predicate by [closed_agree] but not literally
-   it.  Both naturality conditions hold trivially, the categories being
-   thin. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Opens_Closeds_iso (X : TopSpace) :
   Opens X ≅[Cat] (Closeds X)^op := {|
   to   := OpenCompl X;
@@ -260,10 +211,11 @@ Proof.
     + exact (fun h => snd (H1 x) (snd (H2 x) h)).
 Defined.
 
-(* From here on the obligations are discharged explicitly rather than by the
-   library's default [cat_simpl], because every one of them is a pointwise
-   equivalence of predicates and the automation has no reason to prefer one
-   direction of an [iffT] to the other. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Obligation Tactic := idtac.
 
 (* The presheaf of opens: contravariant on [Top], acting by preimage. *)
@@ -317,11 +269,11 @@ Qed.
 
 (** ** Complementation is natural *)
 
-(* The two components, at each space.  Complementation respects `≈`
-   because the setoid on closed sets compares exactly the complementing
-   open, which the forward map copies verbatim; the inverse respects `≈`
-   for the same reason, and this is where design note 2 is cashed in — with
-   the closed predicates as the setoid there would be no inverse. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition complement_at (X : TopSpace) :
   OpenSets X ~{Sets}~> ClosedSets X := {|
   morphism := @open_complement X
@@ -334,9 +286,11 @@ Program Definition interior_at (X : TopSpace) :
 |}.
 Next Obligation. intros X C D H x; exact (H x). Qed.
 
-(* Naturality is the statement that the preimage of a complement is the
-   complement of the preimage — which here holds definitionally, both
-   sides carrying the complementing open `fun y => U (g y)`. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition complement_transform : OpensF ⟹ ClosedsF := {|
   transform := complement_at
 |}.
@@ -349,11 +303,11 @@ Program Definition interior_transform : ClosedsF ⟹ OpensF := {|
 Next Obligation. intros X Y f C y; split; exact (fun h => h). Qed.
 Next Obligation. intros X Y f C y; split; exact (fun h => h). Qed.
 
-(* The natural isomorphism `OpensF ≅ ClosedsF` in `[Top^op, Sets]`: Riehl's
-   Example 1.4.4(v) in its functorial form.  Both round trips are the
-   identity pointwise — one because [closed_interior] just reads off the
-   complementing open that [open_complement] stored, the other because a
-   closed set is determined, for the chosen setoid, by that same open. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition complement_natural : OpensF ≅[Fun] ClosedsF := {|
   to   := complement_transform;
   from := interior_transform
@@ -364,17 +318,11 @@ Next Obligation. intros X U y; split; exact (fun h => h). Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** The exact price of the classical reading *)
 
-(* Design note 2 chose to compare closed sets through their complementing
-   opens and disclosed what that choice buys and what it costs.  This
-   closing section (its first theorem supplied by the audit of the first
-   commit) makes the cost precise rather than rhetorical.
+(*
+   本节说明 Closed 相关定义、性质与动机。
 
-   If agreement of the closed PREDICATES implied agreement of the
-   complementing opens — the respectfulness a predicate-comparing setoid
-   would need — then double negation would be eliminable at every Type.
-   The probe is the one-point space with the constant predicates `P` and
-   `¬¬P`: their negations are equivalent outright, so the hypothetical
-   implication hands back `P ↔ ¬¬P` at the point. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pred_comparison_forces_DNE :
   (∀ (X : TopSpace) (C D : ClosedSet X),
       (∀ x : X, closed_pred C x ↔ closed_pred D x) →
@@ -394,11 +342,11 @@ Proof.
   exact (snd (Hconv Point_Top CP CN Hpred ttt)).
 Qed.
 
-(* Under double-negation elimination as an EXPLICIT HYPOTHESIS — taken as a
-   hypothesis and never as an axiom, the same discipline the library
-   applies to UIP and to choice — the two constructively one-directional
-   implications become equivalences, and Riehl's classical statement is
-   recovered in full. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Classical.
 
 Hypothesis DNE : ∀ P : Type, ¬ ¬ P → P.

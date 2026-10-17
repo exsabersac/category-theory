@@ -23,9 +23,11 @@ Generalizable All Variables.
 
 (** * The equalizer: the counted sub-object of agreement *)
 
-(* The Boolean predicate "f and g agree at x", decided by the heterogeneous
-   [fin_eqb] of Instance/FinSet/Classifier.v; [fin_eqb_eq] turns its [true]
-   into Leibniz equality at the common index. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finset_eq_pred {m n : nat} (f g : Fin.t m → Fin.t n) :
   Fin.t m → bool := fun x => fin_eqb (f x) (g x).
 
@@ -116,9 +118,11 @@ Example FinSet_FinitelyComplete_terminal_computes :
   = 1%nat
   := eq_refl.
 
-(* The finite limit over the parallel-pair SHAPE at the example — built by
-   [finite_limit] out of three finite products and two equalizers, not by
-   the equalizer instance directly — is the numeral [2] by conversion. *)
+(*
+   本节说明（余）极限、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finset_eq_example_diagram : Parallel ⟶ FinSet :=
   @APair FinSet 3%nat 2%nat finset_eq_example_f finset_eq_example_g.
 

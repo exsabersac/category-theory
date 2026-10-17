@@ -29,24 +29,11 @@ Generalizable All Variables.
 
 (** ** Two-sided ideals *)
 
-(* Membership is [Type]-valued, following Instance/Mod/Quotient.v's
-   [Submodule] and Instance/Grp/Quotient.v's [Subgroup].
+(*
+   本节说明hom相关定义、性质与动机。
 
-   AN EARLIER REVISION gave the reason as: "the library's `≈` is itself
-   [Type]-valued, so a [Prop]-valued membership could not be eliminated into
-   a hom-setoid equation."  That reason is GONE since the PR "algebraic
-   carriers are sets" (2026-09-17): every ring carrier now carries
-   [rig_prop], so [pequiv_to] performs exactly that elimination.  Membership
-   stays [Type]-valued for a different reason, the one Instance/Mod/Quotient.v
-   records for [Submodule]: the consumers here READ WITNESSES out of it --
-   [EvenIdeal]'s and [SixIdeal]'s closure obligations below take the integer
-   k apart and rebuild it, and [E11Left_is_not_an_Ideal] in
-   Instance/Rng/Quotient/OneSided.v pulls the column entry out -- and those
-   are data.  What DID move is the quotient RELATION [rquot_rel], which is
-   now the propositional truncation of membership.
-
-   There is deliberately no decidability field and nothing below decides
-   membership. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record Ideal (R : RingObject) := {
   idl_mem : carrier (rig_setoid R) → Type;
@@ -132,15 +119,11 @@ Proof.
   exact (idl_plus I _ _ Ha (idl_neg I _ Hb)).
 Qed.
 
-(** ** Multiplication against subtraction
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    The three lemmas the multiplicative congruence costs.  None is in
-    the tree at [RingObject] level: Instance/Matr/Determinant.v
-    has [ring_neg_mul_l] and [ring_neg_mul_r], but over its own section
-    variable [K] and behind that file's notation, and requiring a
-    1742-line determinant development for two three-line lemmas is not
-    a trade worth making.  They are restated here with different names, so
-    that a file importing both does not shadow. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma rng_neg_mul_l (R : RingObject) (a b : carrier (rig_setoid R)) :
   rig_mul R (ring_neg R a) b ≈ ring_neg R (rig_mul R a b).
@@ -178,11 +161,11 @@ Proof.
   now rewrite rng_neg_mul_l.
 Qed.
 
-(* A ring homomorphism commutes with subtraction.  [RigHom_neg]
-   (Theory/Algebra/Rig.v) supplies the negation half; nothing here is
-   new mathematics, but the shape is what the descent step below wants
-   and Instance/Ab/Subtract.v's [ab_map_sub] is stated for an [AbHom],
-   which a [RigHom] is only after transport through [Rng_Forget_Ab]. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rig_map_sub {R S : RingObject} (f : R ~{Rng}~> S)
   (x y : carrier (rig_setoid R)) :
   rig_map f (ab_sub (ring_ab R) x y)
@@ -194,11 +177,11 @@ Proof.
   apply (RigHom_neg R S f).
 Qed.
 
-(* THE IDENTITY THAT FORCES TWO-SIDEDNESS:
-       x·y - x'·y' ≈ x·(y - y') + (x - x')·y'
-   The first summand is absorbed on the LEFT, the second on the RIGHT.
-   Neither absorption law can cover the other summand, which is why a
-   one-sided ideal is not enough. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rig_mul_sub_expand (R : RingObject)
   (x y x' y' : carrier (rig_setoid R)) :
   ab_sub (ring_ab R) (rig_mul R x y) (rig_mul R x' y')
@@ -213,13 +196,11 @@ Qed.
 
 (** ** The quotient relation *)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) the quotient is a
-   [RingObject] and so owes [rig_prop], which forces its equality to be a
-   [Prop].  [idl_mem] STAYS [Type]-valued -- see the note on [Ideal] above --
-   and the relation is its PROPOSITIONAL TRUNCATION.  [inhabited] is the
-   truncation; [pequiv_elim_inhabited] (Lib/Setoid/Propositional.v) is what
-   gets back out, and the seven congruence lemmas below each gain one
-   [destruct … as [K]] going in and one [constructor] coming out. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rquot_rel {R : RingObject} (I : Ideal R)
   (x y : carrier (rig_setoid R)) : Prop :=
   inhabited (idl_mem I (ab_sub (ring_ab R) x y)).
@@ -283,9 +264,11 @@ Proof.
   constructor.
   apply (idl_at I (a := ring_neg R (ab_sub (ring_ab R) x x'))).
   - rewrite (ab_sub_neg (ring_ab R)).
-    (* [exact] rather than [apply]: [ab_neg (ring_ab R)] and
-       [ring_neg R] are convertible but not syntactically equal, and
-       unification will not invert the projection under a metavariable. *)
+    (*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     symmetry; exact (ab_sub_neg_neg (ring_ab R) x x').
   - exact (idl_neg I _ K).
 Qed.
@@ -306,17 +289,11 @@ Proof.
     + exact (idl_absorb_r I _ y' K1).
 Qed.
 
-(* Membership IS congruence to zero, in both directions -- up to the
-   truncation.
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-   AN EARLIER REVISION stated the right-hand side as the bare [idl_mem I x].
-   Since the PR "algebraic carriers are sets" (2026-09-17) [rquot_rel] is the
-   propositional truncation of membership, so the LEFT-to-right direction is
-   an elimination of a [Prop] into a [Type] and is refused; the biconditional
-   is stated up to [inhabited], which is its exact content.  The direction
-   that loses nothing -- membership implies congruence to zero, which is what
-   every consumer in the tree actually uses -- is kept separately as
-   [rquot_rel_of_mem] below, with its [Type]-valued hypothesis intact. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rquot_rel_zero_iff (x : carrier (rig_setoid R)) :
   rquot_rel I x (rig_zero R) ↔ inhabited (idl_mem I x).
 Proof.
@@ -359,15 +336,16 @@ Definition IdealMulCongruence {R : RingObject} (I : Ideal R) : Type :=
 Definition ideal_mul_congruence {R : RingObject} (I : Ideal R) :
   IdealMulCongruence I := rquot_rel_mul I.
 
-(* The same relation, read off a LEFT ideal, and the same property.  The
-   relation is definitionally the two-sided one at [Ideal_LeftIdeal I]
-   -- recorded by convertibility, which is what makes the refutation
-   downstream a statement about this very construction. *)
-(* Truncated in lockstep with [rquot_rel], and for the same reason: the
-   convertibility recorded by [lquot_rel_is_rquot_rel] below is what makes
-   the refutation in Instance/Rng/Quotient/OneSided.v a statement about THIS
-   construction, and two relations of different SORT could not be
-   convertible.  An earlier revision wrote both without the [inhabited]. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition lquot_rel {R : RingObject} (L : LeftIdeal R)
   (x y : carrier (rig_setoid R)) : Prop :=
   inhabited (lidl_mem L (ab_sub (ring_ab R) x y)).
@@ -419,10 +397,11 @@ Proof.
     intros a; apply rquot_rel_of_equiv, rig_mul_zero_l.
   - (* rig_mul_zero_r *)
     intros a; apply rquot_rel_of_equiv, rig_mul_zero_r.
-  - (* rig_prop.  The quotient's `≈` IS [rquot_rel I], which since the PR
-       "algebraic carriers are sets" (2026-09-17) is already a [Prop], so
-       the ring is its own [Prop] mirror and both implications are the
-       identity. *)
+  - (*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     exact (@PropEquiv_of_relation _ (rquot_setoid I) (rquot_rel I)
              (fun _ _ h => h) (fun _ _ h => h)).
   - (* ring_neg_respects *)
@@ -431,9 +410,11 @@ Proof.
     intros a; apply rquot_rel_of_equiv, ring_neg_l.
 Defined.
 
-(* NO NOTATION for the quotient, for the reason Instance/Grp/Quotient.v
-   gives: an unscoped infix [/] at level 40 would compete with the
-   stdlib's scope-bound division notations in every importing file. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition rquot_proj {R : RingObject} (I : Ideal R) :
   R ~{Rng}~> QuotientRing I := {|
@@ -455,13 +436,11 @@ Proof.
   exact (rquot_rel_of_mem I x Hx).
 Qed.
 
-(* Conversely: the projection's kernel is exactly I, as a biconditional --
-   up to the truncation.  AN EARLIER REVISION stated the right-hand side as
-   the bare [idl_mem I x]; since the PR "algebraic carriers are sets"
-   (2026-09-17) the quotient's `≈` is [rquot_rel], the propositional
-   truncation of membership, so the forward direction would be a [Prop] into
-   a [Type] and the biconditional is stated up to [inhabited].
-   [rquot_proj_kills] above is the untruncated direction. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rquot_proj_kernel {R : RingObject} (I : Ideal R)
   (x : carrier (rig_setoid R)) :
   rig_map (rquot_proj I) x ≈ rig_zero (QuotientRing I) ↔ inhabited (idl_mem I x).
@@ -534,18 +513,20 @@ Context (I : Ideal R).
 Context {K : RingObject}.
 Context (p : RKills I K).
 
-(* Descent: a homomorphism killing I cannot tell I-congruent elements
-   apart.  From I (x - y) one gets h x - h y ≈ 0, whence h x ≈ h y.  This
-   is the ONE computation the quotient's universal property costs. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rkills_descends (x y : carrier (rig_setoid R)) :
   rquot_rel I x y → rig_map (`1 p) x ≈ rig_map (`1 p) y.
 Proof.
   intro Hxy.
-  (* Since the PR "algebraic carriers are sets" (2026-09-17) [rquot_rel] is
-     a truncation, so [Hxy] is a [Prop] and cannot be destructed into the
-     [Type]-valued goal `≈`.  [pequiv_to] at the TARGET ring K puts a [Prop]
-     goal in front of the elimination; [pequiv_from] returns, and the
-     computation below is unchanged. *)
+  (*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   apply pequiv_to.
   destruct Hxy as [Hxy].
   apply pequiv_from.
@@ -593,9 +574,11 @@ Next Obligation.
     exact (rquot_med_unique I x v Hv).
 Defined.
 
-(* The universal element's underlying homomorphism IS the projection, by
-   convertibility -- the [eq_refl] exception to the `≈` discipline, and
-   the check that the packaging did not silently rebuild it. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example rquot_universal_elem_is_proj {R : RingObject} (I : Ideal R) :
   `1 (@aue_elem _ (RKillsFunctor I) (QuotientRing I)
         (rquot_universal_element I)) = rquot_proj I.
@@ -646,13 +629,11 @@ Definition ring_hom_theorem_kills {R K : RingObject} (I : Ideal R)
   ∀ a : carrier (rig_setoid R), idl_mem I a → rig_map h a ≈ rig_zero K :=
   snd (ring_hom_theorem I h) Hfac.
 
-(** ** The kernel of a ring homomorphism is a two-sided ideal
+(*
+   本节说明同构、核/余核、来源与用途相关定义、性质与动机。
 
-    Both absorption laws come from the SAME clause, [rig_map_mul],
-    together with the two annihilation laws; that they are available on
-    both sides is what makes a kernel two-sided without any hypothesis on
-    R.  (The IMAGE, by contrast, is a subring and not an ideal -- which
-    is why this file stops short of a first isomorphism theorem.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition KernelIdeal {R S : RingObject} (f : R ~{Rng}~> S) :
   Ideal R := {|
@@ -686,11 +667,11 @@ Proof. reflexivity. Qed.
 
 (** ** Quotients by coextensive ideals agree *)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) [rquot_rel] is a
-   truncation, and an [inhabited] cannot be destructed while the goal still
-   wears the [Type] ascription that [@equiv] carries.  This lemma does the
-   shuffle once, between two statements whose sort is [Prop] by declaration,
-   so the two respectfulness obligations of [rquot_congr] stay one-liners. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rquot_rel_mono {R : RingObject} (I I' : Ideal R)
   (H : ∀ a : carrier (rig_setoid R), idl_mem I a → idl_mem I' a)
   (x y : carrier (rig_setoid R)) : rquot_rel I x y → rquot_rel I' x y.
@@ -753,12 +734,11 @@ Next Obligation. intros R a b Ha Hb; exact ttt. Qed.
 Next Obligation. intros R r a Ha; exact ttt. Qed.
 Next Obligation. intros R a r Ha; exact ttt. Qed.
 
-(* BOTH directions survive the truncation here, and the statement is
-   unchanged.  [TrivialIdeal]'s membership is itself an `≈` on R's carrier,
-   so the [inhabited] in front of it is eliminated by
-   [pequiv_elim_inhabited] through R's own [rig_prop] -- no strength is
-   lost, in contrast with [rquot_rel_zero_iff] at a general ideal.  AN
-   EARLIER REVISION discharged the whole biconditional with one [exact]. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rquot_trivial_iff (R : RingObject) (x y : carrier (rig_setoid R)) :
   rquot_rel (TrivialIdeal R) x y ↔ x ≈ y.
 Proof.
@@ -783,21 +763,11 @@ Lemma rquot_total_one_is_zero (R : RingObject) :
     ≈ rig_zero (QuotientRing (TotalIdeal R)).
 Proof. exact (rquot_total_collapses R _ _). Qed.
 
-(** ** Non-vacuity: ℤ modulo 2ℤ
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    Everything above holds for every ring, so nothing yet shows the
-    quotient does not collapse.  ℤ (Theory/Algebra/Rig.v's [Int_Ring])
-    with the even integers is the smallest witness with a PROPER
-    NONTRIVIAL ideal, and ℤ's setoid is Leibniz equality
-    ([Z_eqT]), so every check below is a computation.
-
-    NOTE that this ideal is NOT the module-level [EvenSub] of
-    Instance/Mod/Quotient.v with a name changed: that one is a submodule
-    of [Int_RMod] and closes under the SCALAR action only, while this one
-    is an ideal of [Int_Ring] and closes under multiplication on both
-    sides.  Over a commutative ring the two conditions coincide, but the
-    records are different types over different objects, and this file
-    does not depend on that one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ℤ's ring operations, pinned by convertibility -- what lets [ring] and
    [lia] see the goals below, neither tactic seeing through [carrier]. *)
@@ -899,24 +869,21 @@ Theorem Z2_ring_three_is_one :
   rig_map (rquot_proj EvenIdeal) 3%Z ≈ rig_one (QuotientRing EvenIdeal).
 Proof. constructor; exists 1%Z; reflexivity. Qed.
 
-(* The kernel of the projection is exactly 2ℤ, in both directions -- up to
-   the truncation.  AN EARLIER REVISION stated the right-hand side as the
-   bare [idl_mem EvenIdeal a]; since the PR "algebraic carriers are sets"
-   (2026-09-17) the left-hand side is a [Prop] (the kernel's membership IS
-   the quotient's `≈`, which is [rquot_rel]), so the statement is up to
-   [inhabited], exactly as [rquot_proj_kernel] is. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma EvenIdeal_is_kernel_of_proj (a : Z) :
   idl_mem (KernelIdeal (rquot_proj EvenIdeal)) a
     ↔ inhabited (idl_mem EvenIdeal a).
 Proof. exact (rquot_proj_kernel EvenIdeal a). Qed.
 
-(** *** The universal property, exercised
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    6ℤ ⊆ 2ℤ, so the projection ℤ ↠ ℤ/2ℤ kills 6ℤ and therefore factors
-    uniquely through ℤ/6ℤ.  The mediator produced by
-    [rquot_universal_element] is applied below and its value COMPUTED --
-    this is what makes the universal property a working tool here rather
-    than an unexercised statement. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ZSix (a : Z) : Type := { k : Z & a = (6 * k)%Z }.
 

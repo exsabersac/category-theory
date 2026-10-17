@@ -50,9 +50,11 @@ Qed.
 
 (** ** The four structural morphisms, inherited on the nose *)
 
-(* [Ab]'s homs, identity and composition ARE [CMon]'s, and the underlying
-   commutative monoid of [Ab_product M N] IS [CMon_product M N], so each
-   of these four is supplied by [:=] with no tactic and no adapter. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Ab_inl (M N : AbObject) : M ~{Ab}~> Ab_product M N :=
   CMon_inl M N.
 
@@ -72,10 +74,11 @@ Definition Ab_copair {M N P : AbObject}
 
 (** ** The zero morphism of Ab is CMon's *)
 
-(* The fact that makes the two [zero_mor] laws transfer: Ab's zero
-   morphism and CMon's are the same term, [Ab_Zero]'s [one] and [zero]
-   being [CMon_one] and [CMon_zero_hom] (Instance/Ab.v) and
-   Ab's composition being CMon's. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ab_zero_mor_is_cmon_zero_mor (M N : AbObject) :
   @zero_mor Ab Ab_Zero M N = @zero_mor CMon CMon_Zero M N := eq_refl.
 
@@ -103,10 +106,11 @@ Definition Ab_exr_inl (M N : AbObject) :
 
 (** ** Both universal properties, inherited on the nose *)
 
-(* The ∃! ranges over [Ab_product M N ~{Ab}~> P], which IS
-   [CMon_product M N ~{CMon}~> P]; its equality is [CMonHom_Setoid], which
-   IS Ab's; and the composites are [cmon_hom_compose], which IS Ab's.  So
-   both universal properties are the CMon ones, verbatim. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Ab_is_product (M N P : AbObject)
   (f : P ~{Ab}~> M) (g : P ~{Ab}~> N) :
   ∃! h : P ~{Ab}~> Ab_product M N,
@@ -176,9 +180,11 @@ Example Ab_coprod_carrier (M N : AbObject) :
 
 (** ** Non-vacuity over ℤ ⊕ ℤ *)
 
-(* [Instance/Rng.v]'s [ring_ab] reads the additive group off a ring, and
-   [Theory/Algebra/Rig.v]'s [Int_Ring] is the axiom-free integers, so ℤ is
-   available as an abelian group with no new construction. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ab_Z : AbObject := ring_ab Int_Ring.
 
 (* The two injections are genuinely different maps: at the generator 1

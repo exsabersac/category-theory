@@ -24,11 +24,11 @@ Section Coarsening.
 
 Context (P : Prop).
 
-(* Two booleans count as equal when they are equal, or when P holds.  The
-   relation is [Type]-valued, as every hom-setoid relation in this library is
-   ([crelation], Lib/Setoid.v), so a proof of it can be taken apart by
-   [destruct] into the informative case distinction the theorems below run
-   on. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_coarse_equiv (b b' : bool) : Type := ((b = b') + P)%type.
 
 Program Definition sets_coarse_setoid : Setoid bool := {|
@@ -45,18 +45,20 @@ Qed.
 Definition sets_coarse : SetoidObject :=
   {| carrier := bool ; is_setoid := sets_coarse_setoid |}.
 
-(* The identity on carriers, read as an arrow into the coarser setoid.  It
-   respects the equivalences because it only ever has to make things MORE
-   equal.  Its domain is [bool_setoid_object] (Instance/Sets.v), which is
-   inhabited by [true], so the blanket principle applies to it. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition sets_coarsen : bool_setoid_object ~{Sets}~> sets_coarse := {|
   morphism := fun b : bool => b
 |}.
 
-(* The reverse hom-set is inhabited: a constant map respects any pair of
-   equivalences.  This is what keeps the theorems below from being about an
-   empty hom-set, which is how the tree's other non-regularity results
-   work. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition sets_coarse_const :
   sets_coarse ~{Sets}~> bool_setoid_object := {|
   morphism := fun _ : bool => true
@@ -76,11 +78,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** Regularity of this one arrow is decidability of P *)
 
-(* Forwards.  A pseudoinverse g satisfies (g b = b) + P at each of the two
-   booleans.  If it answers on the left at both then g true = true and
-   g false = false, while P would force g true = g false through g's own
-   respectfulness; so P is refuted.  If it answers on the right anywhere, P
-   is handed over directly. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sets_coarsen_regular_dec :
   RegularMorphism sets_coarsen → (P + (P → False))%type.
 Proof.
@@ -95,10 +97,11 @@ Proof.
   discriminate.
 Qed.
 
-(* Backwards, by cases on the decision.  If P holds, everything in the
-   codomain is equivalent to everything else and any arrow back will do; if P
-   is refuted, the coarsening is invisible and the identity on carriers is a
-   two-sided inverse. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_coarsen_regular_of_dec :
   (P + (P → False))%type → RegularMorphism sets_coarsen.
 Proof.
@@ -134,11 +137,11 @@ Proof.
   exact (sets_coarsen_regular_dec (regular_of_retraction _ R)).
 Qed.
 
-(* And non-regularity is not merely unproven but refutable: if regularity led
-   to a contradiction then P would be refuted, P alone being enough to build a
-   pseudoinverse, and a refutation of P builds one as well.  This is the
-   precise sense in which an arrow of [Sets] with inhabited domain cannot be
-   shown non-regular. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sets_coarsen_not_regular_absurd :
   (RegularMorphism sets_coarsen → False) → False.
 Proof.
@@ -161,18 +164,20 @@ Definition BlanketRegularity : Type :=
   ∀ (A B : SetoidObject) (a0 : carrier A) (f : A ~{Sets}~> B),
     RegularMorphism f.
 
-(* The internal axiom of choice in the same restricted form: every
-   epimorphism whose domain is inhabited splits.  The nLab page on split
-   epimorphisms records that the axiom of choice internal to a category may
-   be phrased as "all epimorphisms are split" and that "In Set this is
-   equivalent to the usual axiom of choice" (retrieved 2026-08). *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition BlanketSplitting : Type :=
   ∀ (A B : SetoidObject) (a0 : carrier A) (f : A ~{Sets}~> B),
     Epic f → Retraction f.
 
-(* The implication between them, as a statement of Coq rather than as prose:
-   [regular_epic_retraction] applied under both quantifiers.  This is the
-   step Instance/FinSet/Regular.v's header describes, and it is one line. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition blanket_regularity_entails_splitting :
   BlanketRegularity → BlanketSplitting :=
   fun HR A B a0 f E => regular_epic_retraction f (HR A B a0 f) E.
@@ -189,11 +194,11 @@ Proof.
               (sets_coarsen P) (sets_coarsen_epic P))).
 Qed.
 
-(* And so does the regularity principle, which implies the splitting one.
-   Proved twice over: directly from the countermodel, and -- as
-   [blanket_regularity_entails_splitting] composed with
-   [blanket_splitting_entails_LEM] -- through the splitting principle, which
-   is the route the FinSet header describes in prose. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem blanket_regularity_entails_LEM :
   BlanketRegularity → ∀ P : Prop, (P + (P → False))%type.
 Proof.

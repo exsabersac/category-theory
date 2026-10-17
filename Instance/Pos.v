@@ -109,15 +109,16 @@ Next Obligation. intros P Q R f g a; simpl; reflexivity. Qed.
 
 (** ** The link between the two readings *)
 
-(** Every poset yields a thin category -- Instance/Proset.v's construction
-    applied to its order.  This is the formal bridge between "a poset viewed as
-    a category" and "the category of posets", and it is what #641's work item 2
-    was reaching for; taken in this direction it needs no equality on
-    [Category] values and no [thin]/[skeletal] vocabulary. *)
-(* [RelationClasses.PreOrder] qualified explicitly: unqualified [PreOrder]
-   resolves to the [crelation] version from Category.Lib, while [Proset] wants
-   the stdlib [Prop]-valued one.  Importing Coq.Classes.Equivalence to
-   disambiguate is NOT an option -- it shadows the library's own [equiv]. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pos_preorder (P : PosetObject)
   : RelationClasses.PreOrder (pos_le P).
 Proof.

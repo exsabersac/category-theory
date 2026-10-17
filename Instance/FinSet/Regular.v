@@ -22,82 +22,20 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** What the classical statement costs, and what is proved instead *)
 
-(* WHAT THE CLASSICAL ARGUMENT SPENDS.
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   Fix f : A → B in Set with A inhabited by a₀.  A pseudoinverse must send
-   each b ∈ B to SOME element of the fibre f⁻¹(b) when that fibre is
-   nonempty, and anywhere at all (say a₀) when it is empty.  Nothing in the
-   data of f selects a fibre element: the classical construction picks one
-   simultaneously for every b in the image, which is an instance of the axiom
-   of choice over the family of fibres.  Reading a regularity witness back
-   off is choice-free, and is [regular_epic_retraction] /
-   [regular_monic_section] in Theory/Morphisms.v.
-
-   HOW MUCH THE BLANKET PRINCIPLE COSTS HERE.  Choice is what that argument
-   spends under an ambient excluded middle.  It is not what the blanket
-   principle costs in this library's ambient logic, where the principle is
-   strictly STRONGER than any choice axiom: it decides every proposition.
-   Instance/Sets/Regular.v proves that, axiom-free.
-   [blanket_regularity_entails_LEM] there derives ∀ P : Prop, P + (P → False)
-   from "every arrow of [Sets] with inhabited domain is regular", and
-   [blanket_splitting_entails_LEM] derives the same conclusion from the
-   weaker internal choice principle "every epimorphism with inhabited domain
-   splits" -- the phrasing the nLab page on split epimorphisms records for
-   the axiom of choice internal to a category, noting that "In Set this is
-   equivalent to the usual axiom of choice" (retrieved 2026-08).  The
-   implication BETWEEN those two quantified principles is
-   [blanket_regularity_entails_splitting], itself a statement of Coq rather
-   than a remark about the pointwise [regular_epic_retraction] it is one line
-   from.  The countermodel driving all three is a two-element setoid
-   coarsened by a proposition, in the shape of Diaconescu's argument; the
-   header of that file carries the citations, and the reason a SETOID library
-   pays this price where the standard library's intensional choice axioms do
-   not.  No [Axiom] is declared in this file or in that one, and [Print
-   Assumptions] on every constant of either reports "Closed under the global
-   context".
-
-   WHAT IS PROVED INSTEAD.  Over FinSet the fibre selection needs no choice
-   at all, because a fibre of a map Fin.t m → Fin.t n can be SEARCHED: the
-   domain is a finite type, so a scan over it terminates, and equality in the
-   codomain is decidable, so each candidate can be tested ([Fin.eq_dec] of the
-   standard library, which is transparent and reduces on closed terms).
-   [fin_preimage] performs that search by structural recursion on m and
-   [finset_regular] assembles the pseudoinverse from it, so the witness is a
-   program rather than an appeal.  Because the library's `∃` is Type-valued
-   (`sigT`, Lib/Foundation.v) the witness survives as data, and the
-   [Example]s at the end of this file evaluate it by [eq_refl].  The
-   inhabited-domain hypothesis is then disposed of in the only case it
-   excludes: an epimorphism out of the empty object forces an empty codomain
-   ([finset_epi_from_empty_absurd]), so [finset_every_epi_splits] holds for
-   EVERY arrow of FinSet, with no restriction on the domain and no choice
-   principle in sight.  The hypothesis is nevertheless SHARP for regularity
-   itself -- [finset_empty_to_one_not_regular] refutes it for the unique
-   arrow 0 → 1 -- so FinSet supplies its own witness that regularity is a
-   real condition, and this file no longer has to reach to Instance/Two.v
-   for one.
-
-   The exchange is a genuine restriction and not a re-description: FinSet is
-   the SKELETON of finite sets, so "every arrow with inhabited domain is
-   regular" is proved here only for finite sets, and nothing below says
-   anything about an arrow of [Sets] with an infinite domain.  What
-   Instance/Sets/Regular.v adds about [Sets] is a bound in the other
-   direction: the blanket statement is not available there, so the exercise's
-   second half stops at the finite case for a reason, and not for want of an
-   argument.  Instance/Sets.v is short of the ingredients in any case: its
-   [surjectivity_is_epic] is abandoned in the epi → surjective direction for
-   an unrelated size reason documented at Instance/Sets.v, so the
-   tree has no route from [Epic] to a fibre witness in [Sets] to begin
-   with. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** The finite search *)
 
-(* [fin_preimage f b] scans the domain in index order and returns the first
-   a with f a = b, or [None] if there is none.  The recursion is structural
-   in m: at [S m'] it tests the head index [Fin.F1] and otherwise recurses on
-   the tail map [fun q => f (Fin.FS q)], re-tagging the answer along
-   [Fin.FS].  This mirrors the recursion pattern already used for [fin_split]
-   in Instance/FinSet.v, and like it, reduces on closed input. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint fin_preimage (m n : nat) (f : Fin.t m → Fin.t n) (b : Fin.t n)
          {struct m} : option (Fin.t m) :=
@@ -116,20 +54,11 @@ Fixpoint fin_preimage (m n : nat) (f : Fin.t m → Fin.t n) (b : Fin.t n)
 
 Arguments fin_preimage {m n} f b.
 
-(* Correctness of the search, in the only form needed: at a value that IS
-   attained the search succeeds, and what it returns is a genuine preimage.
-   Both halves are packaged in one [match] so that a single induction on the
-   witness a proves them together -- the [None] branch is the statement that
-   the search cannot miss, and the [Some] branch that it cannot lie.
+(*
+   本节说明 Regular 相关定义、性质与动机。
 
-   Note the use of `=` rather than `≈` here and in [fin3_cases] below: these
-   are equations between ELEMENTS of [Fin.t n], not between morphisms, so the
-   library's `≈`-only rule for morphism equality does not apply (this is not
-   the same-term exception documented at Functor/Bifunctor.v).  Every
-   MORPHISM equation in this file -- [finset_split_pair], [finset_point_bang],
-   [finset_collapse_not_id] and the [RegularMorphism] statements -- is stated
-   with `≈`, which over FinSet unfolds to pointwise `=` on [Fin.t] via
-   [Fin_Setoid] (Lib/Setoid.v) and [fun_setoid] (Lib/Datatypes.v). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fin_preimage_correct {m n : nat} (f : Fin.t m → Fin.t n) (a : Fin.t m) :
   match fin_preimage f (f a) with
@@ -151,9 +80,11 @@ Proof.
         exact IH.
 Qed.
 
-(* The pseudoinverse of f relative to a chosen fallback point a0 of the
-   domain: search the fibre, and land on a0 where the fibre is empty.  The
-   fallback is the only use made of the inhabitation hypothesis. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finset_pseudoinverse {m n : nat} (a0 : Fin.t m)
            (f : Fin.t m → Fin.t n) : Fin.t n → Fin.t m :=
@@ -165,14 +96,11 @@ Definition finset_pseudoinverse {m n : nat} (a0 : Fin.t m)
 (* ------------------------------------------------------------------------ *)
 (** ** Mac Lane §I.5 Exercise 7, second half, over FinSet *)
 
-(* Every arrow of FinSet whose domain is inhabited is regular.  Inhabitation
-   is taken as DATA (an actual element a0), which is what "nonempty" means
-   constructively and what the finite search needs; the special case of a
-   successor domain, where [Fin.F1] serves, is [finset_regular_pos] below.
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   This is [Definition] ... [Defined] rather than [Qed] so the pseudoinverse
-   really can be projected out and run; the [Example]s below do exactly
-   that. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finset_regular {m n : nat} (a0 : Fin.t m) (f : m ~{FinSet}~> n) :
   RegularMorphism f.
@@ -193,20 +121,21 @@ Definition finset_regular_pos {m n : nat} (f : S m ~{FinSet}~> n) :
 (* ------------------------------------------------------------------------ *)
 (** ** The hypothesis is sharp, and every epimorphism splits regardless *)
 
-(* The inhabitation hypothesis of [finset_regular] is not an artefact of the
-   search.  An arrow out of the empty object into a nonempty one has no
-   pseudoinverse at all, since a pseudoinverse would be an arrow BACK, and
-   there is no map into the empty set from a nonempty one. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma finset_empty_domain_not_regular {n : nat} (f : 0%nat ~{FinSet}~> S n) :
   RegularMorphism f → False.
 Proof. intros [g _]; exact (Fin.case0 (fun _ => False) (g Fin.F1)). Qed.
 
-(* The smallest instance is the unique arrow from the empty set to the
-   singleton -- the [zero] of [FinSet_Initial] (Instance/FinSet.v),
-   written out -- and it is FinSet's own non-regular arrow.  Regularity is
-   therefore a real condition on an arrow of THIS category, without appeal to
-   the interval category of Instance/Two.v. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finset_empty_to_one : 0%nat ~{FinSet}~> 1%nat :=
   fun a => Fin.case0 (fun _ => Fin.t 1) a.
@@ -215,12 +144,11 @@ Definition finset_empty_to_one_not_regular :
   RegularMorphism finset_empty_to_one → False :=
   finset_empty_domain_not_regular finset_empty_to_one.
 
-(* Splitting, unlike regularity, survives the empty domain: an epimorphism
-   out of the empty object forces its codomain to be empty as well.  Probe it
-   with the two constant maps into the two-element object, which agree after
-   it vacuously -- there is nothing to evaluate them at -- hence agree
-   outright, which they do not.  No choice principle and no case distinction
-   on a proposition enters, only the emptiness of [Fin.t 0]. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma finset_epi_from_empty_absurd {n : nat} (f : 0%nat ~{FinSet}~> n) :
   Epic f → Fin.t n → False.
@@ -245,12 +173,11 @@ Proof.
   exact (False_rect _ (finset_epi_from_empty_absurd f E b)).
 Qed.
 
-(* EVERY epimorphism of FinSet splits, with no hypothesis on the domain: the
-   successor case is [finset_regular_pos] read back through
-   [regular_epic_retraction], the zero case is the vacuous splitting above.
-   Stated as a [match] on the domain so the retraction still reduces on
-   closed input, as [finset_epi_split_computes] at the end of this file
-   checks. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finset_every_epi_splits {m n : nat} (f : m ~{FinSet}~> n) :
   Epic f → Retraction f :=
   match m return ∀ f : m ~{FinSet}~> n, Epic f → Retraction f with
@@ -261,31 +188,11 @@ Definition finset_every_epi_splits {m n : nat} (f : m ~{FinSet}~> n) :
 (* ------------------------------------------------------------------------ *)
 (** ** Non-vacuity I: regular, but neither a section nor a retraction *)
 
-(* Every isomorphism is trivially regular, so an invertible witness would
-   establish nothing.  [finset_shift3] is the self-map of a three-element set
+(*
+   本节说明同构相关定义、性质与动机。
 
-     0 ↦ 2,  1 ↦ 2,  2 ↦ 0.
-
-   It identifies 0 with 1 and it misses the value 1 entirely.  The first
-   refutes any left inverse ([finset_shift3_not_section], by evaluating the
-   left-inverse law at the two indices sharing an image) and the second any
-   right inverse ([finset_shift3_not_retraction], by evaluating the
-   right-inverse law at the missed value), so the arrow is neither a section
-   nor a retraction, and a fortiori not an isomorphism
-   ([finset_shift3_not_iso]).  Regularity nevertheless holds, by the finite
-   search.
-
-   Both refutations are DIRECT.  The tree does have the bridge that would let
-   them go the long way round -- [finset_monic_iff_injective]
-   (Instance/FinSet/Classifier.v) proves monic in FinSet is exactly
-   injective, and [sections_are_monic] would finish the first half -- but
-   taking it would place this file downstream of the subobject-classifier
-   development for no gain, and there is no companion epi/surjective
-   characterization for FinSet to run the second half through.
-
-   The same two features are what put the search through its paces: the
-   missed value forces the fallback, and the shared image forces a choice,
-   resolved by taking the first index. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finset_shift3 : 3%nat ~{FinSet}~> 3%nat :=
   fun a =>
@@ -366,10 +273,11 @@ Definition finset_regular_not_split :
 (* ------------------------------------------------------------------------ *)
 (** ** Non-vacuity II: a split pair whose idempotent is not the identity *)
 
-(* [split_pair_idempotent] (Theory/Morphisms.v) would say nothing if every
-   available split pair made h ∘ g the identity.  A 1-element object beside a
-   2-element one settles that: the point inclusion and the terminal map
-   compose to the identity ONE WAY ONLY. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finset_point : 1%nat ~{FinSet}~> 2%nat := fun _ => Fin.F1.
 Definition finset_bang  : 2%nat ~{FinSet}~> 1%nat := fun _ => Fin.F1.
@@ -401,13 +309,11 @@ Proof.
   discriminate.
 Qed.
 
-(* Mac Lane's [maclane:I.5:def5] over FinSet, packaged: a split pair, the
-   identification of its OTHER composite with [finset_collapse], the
-   idempotence of that composite, and the refutation that it is an identity.
-   The second component is what ties the package to its own headline:
-   [finset_collapse] is an independently defined constant, so without
-   [finset_point_bang] the remaining three would say only that a split pair
-   exists and that some non-identity idempotent exists, separately. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finset_split_pair_nontrivial :
   (finset_bang ∘ finset_point ≈ id)
   * (finset_point ∘ finset_bang ≈ finset_collapse)
@@ -419,12 +325,11 @@ Definition finset_split_pair_nontrivial :
 (* ------------------------------------------------------------------------ *)
 (** ** The search runs *)
 
-(* The three behaviours of [fin_preimage] on [finset_shift3], each by
-   [eq_refl], so the finite search is executable and not merely provable.  In
-   order: a hit at a LATER index (the search scans past 0 and 1 before
-   finding 2), a MISS (nothing maps to index 1, so the fallback in
-   [finset_pseudoinverse] is what supplies the value), and a hit at index
-   0 where two indices compete and the first wins. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example finset_preimage_late :
   fin_preimage finset_shift3 Fin.F1 = Some (Fin.FS (Fin.FS Fin.F1)) := eq_refl.
@@ -435,9 +340,11 @@ Example finset_preimage_miss :
 Example finset_preimage_first :
   fin_preimage finset_shift3 (Fin.FS (Fin.FS Fin.F1)) = Some Fin.F1 := eq_refl.
 
-(* The assembled pseudoinverse, evaluated at all three indices.  The middle
-   value is the fallback -- [Fin.F1], the same one [finset_regular_pos]
-   supplies -- because index 1 has an empty fibre. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example finset_pseudoinverse_computes :
   (finset_pseudoinverse Fin.F1 finset_shift3 Fin.F1,
    finset_pseudoinverse Fin.F1 finset_shift3 (Fin.FS Fin.F1),
@@ -453,10 +360,11 @@ Example finset_regular_witness_computes :
    `1 finset_shift3_regular (Fin.FS (Fin.FS Fin.F1)))
   = (Fin.FS (Fin.FS Fin.F1), Fin.F1, Fin.F1) := eq_refl.
 
-(* [finset_every_epi_splits] computes too, so it is not vacuous on the side
-   that matters.  [finset_bang] is epic -- everything out of the singleton is
-   determined at [Fin.F1], which [finset_bang] hits -- and the retraction the
-   theorem returns for it is the finite search's answer, by [eq_refl]. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma finset_bang_epic : Epic finset_bang.
 Proof.

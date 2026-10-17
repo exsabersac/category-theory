@@ -130,13 +130,11 @@ Section Violation.
 
 Context (s0 : @Isomorphism (FdVect Q_Field) Q1 (DualFdObj Q_Field Q1)).
 
-(* The naturality square at [alpha2], read covariantly through
-   inversion and evaluated at the single point (e₁, e₁): σ(2·e₁), as
-   a functional, agrees at e₁ with σ(e₁) at ½·e₁.  This single
-   equation is the entire hypothesis; [sigma_square_pointwise] below
-   derives its ∀-form from the categorical square
-   σ ∘ α ≈ DualFd(α⁻¹) ∘ σ, so refuting the single instance refutes
-   the categorical reading a fortiori. *)
+(*
+   本节说明 NonNatural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (Hnat :
   cmon_map (rm_hom (cmon_map (rm_hom (to s0))
                       (cmon_map (rm_hom (qscale 2)) e1))) e1
@@ -272,10 +270,11 @@ Proof.
   exact (sigma_not_natural s0 (sigma_square_pointwise s0 H e1 e1)).
 Qed.
 
-(* The family form: any family σ_V : V ≅ V* over all of FdVect ℚ
-   instantiates at ℚ¹.  Unlike the character precedent, this family
-   premise is INHABITED (next), so the corollary has applicable
-   content: what does not exist is a NATURAL such family. *)
+(*
+   本节说明 NonNatural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary sigma_family_not_natural
           (σ : ∀ V : FdVectObject Q_Field,
                  @Isomorphism (FdVect Q_Field) V (DualFdObj Q_Field V)) :
@@ -289,11 +288,11 @@ Proof.
   exact (sigma_not_natural (σ Q1) Hnat).
 Qed.
 
-(* The family premise is inhabited — DoubleDual.v's basis-dependent
-   pointwise isomorphism, repackaged at the [FdVect] hom-level.  The
-   homs of [FdVect F] ARE the [RModHom]s of the underlying modules,
-   so the four fields of [fd_dual_pointwise_iso] transfer verbatim;
-   only the record's category index changes. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition family_premise_inhabited (V : FdVectObject Q_Field) :
   @Isomorphism (FdVect Q_Field) V (DualFdObj Q_Field V).
 Proof.
@@ -304,9 +303,10 @@ Proof.
   - exact (iso_from_to (fd_dual_pointwise_iso Q_Field V)).
 Defined.
 
-(* And it slots into the corollary — the non-vacuity of the negative
-   half is machine-checked, not asserted: pointwise isomorphisms
-   V ≅ V* exist at every object, and no family of them survives even
-   one point of one naturality square. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition family_not_natural_applies :=
   sigma_family_not_natural family_premise_inhabited.

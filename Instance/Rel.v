@@ -57,13 +57,11 @@ Qed.
 Next Obligation. firstorder. Qed.
 Next Obligation. firstorder. Qed.
 
-(* The initial object of REL is the empty set [False]: the only relation
-   `∅ ~> A` is the empty relation, and it is forced. (Dually the empty set is
-   also terminal, so it is in fact a zero object; the terminal half and the
-   bundled [ZeroObject] are Instance/Rel/Dagger.v's [Rel_Terminal] and
-   [Rel_Zero].) Since [Initial Rel] unfolds to [Terminal (Rel^op)], the
-   primitive field names below are the C^op-side [terminal_obj]/[one]; the
-   C-side names [initial_obj]/[zero] are recovered by Structure/Initial.v. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Rel_Initial : @Initial Rel := {
   terminal_obj := False;

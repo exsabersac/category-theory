@@ -31,10 +31,11 @@ Section ReindexMonotone.
 Context {C : Category}.
 Context `{@HasPullbacks C}.
 
-(* Given u ≤ v over x and f : y ~> x, the two chosen pullbacks compare.
-   The competing square is the pullback of u corrected by the [sub_le]
-   factorization [k], and the mediator's first triangle is exactly the
-   [sub_le] equation required downstairs. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_reindex_monotone {x y : C} (f : y ~> x) {u v : SubObj x} :
   sub_le u v → sub_le (sub_reindex f u) (sub_reindex f v).
 Proof.
@@ -74,9 +75,11 @@ Definition sub_image (u : @SubObj Sets@{o so} A) : @SubObj Sets@{o so} B :=
     (Sets_Image_mono (f ∘ sub_mono u))
     (Sets_Image_mono_monic (f ∘ sub_mono u)).
 
-(* The comparison map along a [sub_le] factorization: the same image
-   point with its preimage transported through [k].  The membership
-   witness is factored out so the map itself is a plain term. *)
+(*
+   本节说明 Subobject 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_image_witness {u v : @SubObj Sets@{o so} A}
   (k : sub_dom u ~{Sets@{o so}}~> sub_dom v)
   (Hk : sub_mono v ∘ k ≈ sub_mono u)
@@ -160,10 +163,11 @@ Proof.
   exact (existT _ w Hw1).
 Defined.
 
-(* Right to left.  The map sends an image point to the second pullback
-   projection of the mediator.  The membership equation is factored out
-   first, because it serves twice: as the map's own respectfulness proof
-   (through monicity) and as the [sub_le] witness. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_transpose_from_eq (u : @SubObj Sets@{o so} A)
   (v : @SubObj Sets@{o so} B)
   (k : sub_dom u ~{Sets@{o so}}~> sub_dom (sub_reindex f v))

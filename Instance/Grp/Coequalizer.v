@@ -125,11 +125,11 @@ Defined.
 
 End Semidirect.
 
-(* U corestricted to the propositional setoids: every group carries
-   [grp_prop], so [Grp_Forget] factors through Instance/Sets/Propositional/
-   Full.v's [PropSets] by its [PropSets_lift], a factorization that file
-   lists as not built.  The binder keeps the object levels of [Grp] and of
-   [PropSets] apart, as [Grp_Forget] keeps those of [Grp] and [Sets]. *)
+(*
+   本节说明 Coequalizer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grp_ForgetP@{u p so | p < so +} : Grp@{u p} ⟶ PropSets@{p so} :=
   PropSets_lift Grp_Forget (fun G => grp_prop G).
 
@@ -266,10 +266,11 @@ Defined.
 
 (** ** Transversals, and the splitting after the forgetful functor *)
 
-(* A transversal of N: a map choosing in each coset a representative,
-   read as a map of setoids out of U(G/N) (so constant on cosets, up to
-   G's `≈`), together with an UNTRUNCATED witness that the representative
-   lies in the coset it represents. *)
+(*
+   本节说明 Coequalizer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Transversal := {
   transversal_map :
     fobj[Grp_Forget] (QuotientGrp N) ~{Sets}~> fobj[Grp_Forget] G;
@@ -427,9 +428,11 @@ Lemma quot_rel_proj_cofork :
     ≈ quot_rel_proj ∘ fmap[Grp_Forget] semidirect_d1.
 Proof. intros [x [n Hn]]; exact (semidirect_quot_rel x n Hn). Qed.
 
-(* With no hypothesis, the coequalizer in Sets of the U-image pair is the
-   UNTRUNCATED quotient: the descent is Instance/Sets/Quotient.v's mediator
-   [sets_quot_med] at the map's [U_cofork_descends]. *)
+(*
+   本节说明 Coequalizer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_rel_IsCoequalizer :
   IsCoequalizer (fmap[Grp_Forget] semidirect_d0)
     (fmap[Grp_Forget] semidirect_d1) quot_rel_object quot_rel_proj.
@@ -507,12 +510,11 @@ Definition choice_untruncates
 
 (** ** Unconditionally: U into the propositional setoids preserves p *)
 
-(* In [PropSets] every test object's `≈` is propositional, so the
-   truncated coset witness eliminates into it ([pequiv_elim_inhabited]):
-   U corestricted to [PropSets] carries p to a coequalizer, with no
-   hypothesis.  It is not a split one: the splitting is the taboo below.
-   The binder names the object levels of [Grp] and [PropSets], which
-   minimization had identified. *)
+(*
+   本节说明 Coequalizer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PropSets_quot_IsCoequalizer@{go so +} :
   IsCoequalizer (fmap[Grp_ForgetP@{go p so}] semidirect_d0)
     (fmap[Grp_ForgetP@{go p so}] semidirect_d1)
@@ -559,9 +561,11 @@ Example SemidirectGrp_setoid {G : GrpObject} (N : NormalSubgroup G) :
   grp_setoid (SemidirectGrp N) = grp_setoid (Grp_product G (SubgroupGrp N))
   := eq_refl.
 
-(* The readbacks of the pair bind N's membership level u apart from the
-   carrier level p, with the pair's own bound, as the section constants
-   do; left to minimization, the bare binders identified the two. *)
+(*
+   本节说明 Coequalizer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example semidirect_d0_fun@{p u + | u <= p +} {G : GrpObject@{p p p}}
   (N : NormalSubgroup@{u p p p} G) (x : carrier (SemidirectGrp N)) :
@@ -838,10 +842,11 @@ Example S3_A3_Grp_split_s (a : carrier S3) :
 
 (** ** Constructive taboos: the splitting, and untruncation for every N *)
 
-(* N_P ◁ Z/2, over Instance/Grp.v's [Z2]: all of Z/2 when P holds and
-   trivial when it does not, with the Prop-valued membership P or a = 0.
-   It is written [or], not [∨], which Lib/Foundation.v makes the type
-   [sum]: with it the untruncation at N_P would not hold outright. *)
+(*
+   本节说明 Coequalizer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition NP (P : Prop) : NormalSubgroup Z2.
 Proof.
   unshelve refine

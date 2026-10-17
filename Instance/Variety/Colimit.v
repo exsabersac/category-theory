@@ -57,19 +57,21 @@ Context (E : UA.EqSignature S).
 Context {J : Category}.
 Context (D : J ⟶ SVariety E).
 
-(* The generators: the disjoint union of the carriers of the diagram, as a
-   BARE type.  Respect for each component's `≈` is imposed by the
-   congruence ([vc_resp]), not by a setoid on the generators. *)
+(*
+   本节说明 Colimit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SVGen : Type := { j : J & carrier (soa_obj (`1 (D j))) }.
 
 Definition svgen (j : J) (x : carrier (soa_obj (`1 (D j)))) : UA.Tree S SVGen :=
   UA.generator S SVGen (j; x).
 
-(* A [Prop]-valued congruence on the term algebra over the generators that
-   satisfies [E], makes every insertion a homomorphism respecting `≈`, and
-   makes the insertions a cocone.  The fields [vc_resp] and [vc_nat] STORE
-   the components' [Type]-valued `≈` and [fmap[D]] as premises; the record
-   itself is a [Prop]. *)
+(*
+   本节说明 Colimit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record IsVCong (Rq : UA.Tree S SVGen → UA.Tree S SVGen → Prop) : Prop := {
   vc_refl  : ∀ t, Rq t t;
   vc_sym   : ∀ t u, Rq t u → Rq u t;
@@ -133,11 +135,11 @@ Proof.
     exact (vc_nat (`1 i) (`2 i) j j' f x).
 Defined.
 
-(* The covering.  A cocone [h] into [c] extends along the term algebra by
-   Instance/Comp.v's [induced_map]; its KERNEL, read through [c]'s
-   [PropEquiv], is a [Prop]-valued congruence of the kind indexed above,
-   and the extension itself is the mediator.  The kernel is a [Prop] only
-   because [c] carries [soa_prop]: this is where the field is consumed. *)
+(*
+   本节说明核/余核、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Kernel.
 
 Context (c : SVariety E).

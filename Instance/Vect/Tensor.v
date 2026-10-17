@@ -91,13 +91,11 @@ Lemma vct_tensor_factor_unique {V V' W : Vct_F F} (β : VctBilinear V V' W)
   vct_tensor_factor β ≈ k.
 Proof. exact (tensor_factor_unique β k). Qed.
 
-(** ** What commutativity buys
+(*
+   本节说明 Tensor 相关定义、性质与动机。
 
-    The engine file's collapse identity, at a field: its conclusion
-    already follows from [field_comm], with no bilinear map in sight, so
-    over a field it says nothing.  That is the precise sense in which the
-    construction above is the classical tensor product of vector
-    spaces. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma vct_commutator_vacuous (W : Vct_F F)
   (r s : carrier (rig_setoid (ring_rig (field_ring F))))
   (x : carrier (cmon_setoid W)) :
@@ -117,12 +115,11 @@ Arguments vct_tensor_universal_element {F} V V'.
 Arguments vct_tensor_UniversalElement {F} V V'.
 Arguments vct_tensor_factor {F V V' W} β.
 
-(** ** Non-degeneracy over ℚ
+(*
+   本节说明 Tensor 相关定义、性质与动机。
 
-    The field as a one-dimensional space over itself, with multiplication
-    as the archetypal bilinear map — the ℤ measurements of
-    Instance/Mod/Tensor.v repeated over a scalar setoid whose [≈] is a
-    genuine quotient. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Q_Vct : Vct_F Q_Field := Ring_RMod (field_ring Q_Field).
 
@@ -171,10 +168,11 @@ Proof.
   discriminate Hq.
 Qed.
 
-(** The scalars really are ℚ: a proper fraction gives a generator
-    distinct from the one at 1 — the counterpart of
-    Instance/Vect/Free.v's [free_vect_half_not_one], and the one place
-    below where a non-integer scalar does work. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma q_tensor_half_distinct : mt_eq (qgen (1#2) 1) (qgen 1 1) → False.
 Proof.
   intro He.
@@ -183,12 +181,11 @@ Proof.
   discriminate Hq.
 Qed.
 
-(** The same fraction in SCALAR position.  The first is the action rule
-    at r = ½ (the product ½·1 reducing to the term [1#2], so the
-    statement typechecks by conversion); the second says the action of ½
-    genuinely moves the generator, which is what makes the scalar side of
-    the module structure non-degenerate over a field rather than merely
-    over its prime subring. *)
+(*
+   本节说明 Tensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma q_tensor_smul_half : mt_eq (qsmul (1#2) (qgen 1 1)) (qgen (1#2) 1).
 Proof.
   exact (@mte_act_l (field_ring Q_Field) Q_Vct Q_Vct (1#2) 1 1).

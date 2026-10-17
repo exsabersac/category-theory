@@ -56,10 +56,11 @@ Definition AbGrp_Full@{u p +} :
 
 (** ** Descent into an abelian group *)
 
-(* Abelianize.v's [abel_kills] with the target a commutative GROUP rather
-   than an [AbObject]: the same argument, the commutativity now a
-   hypothesis.  The truncation [abel_eq] is opened under [pequiv_to] of
-   the target's own [grp_prop]. *)
+(*
+   本节说明 Reflective 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma abel_kills_grp@{u p +} {G H : GrpObject@{p p p}} (HH : IsAbelian H)
   (f : G ~{Grp@{u p}}~> H) (a b : carrier G) :
   abel_eq G a b → grp_map f a ≈ grp_map f b.
@@ -158,9 +159,11 @@ Definition abgrp_reflect_iso@{u p +} (G : Sub Grp@{u p} AbGrp_Sub) :
 
 (** ** The adjunction of Abelianize.v, factored through the subcategory *)
 
-(* An abelian group in [Grp]'s sense, read back as an [AbObject].  The
-   setoid, unit, operation, inverse and [PropEquiv] field are the group's
-   own; the law fields are the group's laws plus the hypothesis. *)
+(*
+   本节说明 Reflective 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Grp_to_AbOb@{a c p +} (G : GrpObject@{a c p})
   (HG : IsAbelian G) : AbObject@{a c p} := {|
   ab_cmon := {| cmon_setoid := grp_setoid G

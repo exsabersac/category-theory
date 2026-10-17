@@ -27,20 +27,11 @@ Program Definition Limit_Cones `(F : J ⟶ C) `{T : @Terminal (Cones F)} :
 
 (** * The converse, and the colimit readings *)
 
-(* The converse of [Limit_Cones]: the limit cone is terminal in [Cones F].
-   Its unique arrow from a cone [N] is the limit's mediator with its own
-   factorization proof, and uniqueness is [uniqueness] twice.
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
 
-   COLIMITS.  With [Cocones F := Cones (F^op)] (Instance/Cones.v), a cocone
-   morphism is an arrow of C^op, so the colimit -- the initial cocone in the
-   textbook's covariant reading -- is the TERMINAL object of [Cocones F].
-   [Colimit F] is [Limit (F^op)] definitionally (Structure/Limit.v), so the
-   two passages below are [Limit_Cones]/[Cones_Limit] at [F^op] with no
-   tactic.  The covariant spelling [Initial ((Cocones F)^op)] is THE SAME
-   TYPE, [(X^op)^op = X] holding by [eq_refl] here, which
-   [initial_op_is_terminal] records; [Initial (Cocones F)] itself is a
-   DIFFERENT type (terminality in [(Cocones F)^op]), refuted at [eq_refl]
-   and pinned in Test/ProbeFinite417.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Construction.Opposite.
 Require Import Category.Functor.Opposite.

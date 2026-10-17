@@ -20,10 +20,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Keep obligation handling explicit and predictable: the file builds functor
-   and F-algebra-hom records whose remaining fields are commuting squares, and
-   we want every one surfaced as its own obligation rather than silently
-   discharged. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (* The list endofunctor [ListF A X = option (A * X) = 1 + A × X]. *)
@@ -70,10 +71,11 @@ Fixpoint fold {A Y : Type} (beta : option (A * Y)%type -> Y)
   | cons a l' => beta (Some (a, fold beta l'))
   end.
 
-(* Any [ListF A]-algebra map [h : (list A, alg A) ~> (Y, β)] coincides with the
-   fold determined by [β].  This is the uniqueness half of initiality, proven by
-   induction on the list using the commuting-square hypothesis [Hh] at the two
-   relevant argument shapes. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hom_is_fold {A Y : Type} (beta : option (A * Y)%type -> Y)
       (h : list A -> Y)
       (Hh : forall o, h (alg A o) = beta (fmap[ListF A] h o))

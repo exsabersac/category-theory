@@ -85,9 +85,11 @@ Proof. reflexivity. Qed.
 
 (** ** What the apex is, by conversion *)
 
-(* The quotient leaves the carrier alone, so the colimit carrier IS the
-   coproduct carrier -- the [eq_refl] exception to the `≈` discipline that
-   Instance/Sets/Quotient.v's [sets_quot_carrier] records generically. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Sets_colim_carrier_is_coproduct :
   carrier Sets_colim_obj = Sets_icoprod_carrier (fun d : D => F d).
 Proof. reflexivity. Qed.
@@ -141,18 +143,21 @@ Next Obligation.
   intros N p q Hpq; exact (Sets_colim_med_respects N p q Hpq).
 Qed.
 
-(* The factorization triangle holds at LEIBNIZ equality, one grade above the
-   `≈` the universal property asks for: the mediator's value on the [d]th
-   injection IS the competing cocone's leg at [d], by conversion. *)
+(*
+   本节说明 Cocomplete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Sets_colim_triangle (N : Cocone F) (d : D) (x : F d) :
   Sets_colim_med N (Sets_colim_inj d x)
     = @vertex_map _ _ _ _ (@coneFrom _ _ _ N) d x.
 Proof. reflexivity. Qed.
 
-(* Mapping OUT is how the quotient is shown not to collapse: no induction on
-   [colim_rel] can yield a negative, but a cocone that separates two points
-   proves they are unrelated.  It is spent at the end of this file, on
-   [two_fibres_not_collapsed]. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma colim_rel_separates (N : Cocone F) (p q : carrier Sets_colim_sum) :
   (Sets_colim_med_fun N p ≈ Sets_colim_med_fun N q -> False) ->
   colim_rel p q -> False.
@@ -169,19 +174,22 @@ Next Obligation.
   intros N v Hv p; destruct p as [d x]; symmetry; exact (Hv d x).
 Qed.
 
-(* The chosen cocone of the produced colimit is the one built above, by
-   conversion.  (Its apex is then [Sets_colim_obj] by the same conversion;
-   that reading is stated separately, in Instance/Sets/Chain.v, as
-   [Sets_omega_apex].) *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Sets_Colimit_cocone :
   @limit_cone _ _ _ Sets_Colimit = Sets_colim_cocone.
 Proof. reflexivity. Qed.
 
 End SetsColimit.
 
-(* [Sets] is cocomplete: every diagram of every shape has a colimit.  The
-   universe binders are written out rather than left to minimization; see the
-   header for what that buys and what it does not. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_Cocomplete@{uc ud uo uso} :
   @Cocomplete@{uc ud uo uso} Sets@{uo uso} := fun D F => Sets_Colimit F.
 
@@ -206,9 +214,11 @@ Proof. reflexivity. Qed.
 Lemma two_disc_objects_distinct : (true : TwoDisc) = (false : TwoDisc) -> False.
 Proof. discriminate. Qed.
 
-(* The diagram: a singleton setoid over each of the two objects.  Both
-   fibres are INHABITED, by [ttt], so the separation proved below is a
-   statement about actual elements and not vacuously true. *)
+(*
+   本节说明 Cocomplete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition TwoPoints : TwoDisc ⟶ Sets := {|
   fobj := fun _ => unit_setoid_object;
   fmap := fun _ _ _ => id
@@ -219,10 +229,11 @@ Program Definition TwoPoints : TwoDisc ⟶ Sets := {|
 Next Obligation. intros x; reflexivity. Qed.
 Next Obligation. intros x y z f g; symmetry; apply id_left. Qed.
 
-(* The separating cocone: the leg at [b] is constant at [b] in the
-   discrete setoid on [bool].  Respectfulness is free (the map ignores its
-   argument) and the cocone coherence is available because a morphism of
-   [TwoDisc] IS an equality of its two indices. *)
+(*
+   本节说明 Cocomplete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition two_sep_leg (b : bool) :
   TwoPoints b ~{Sets}~> bool_setoid_object := {|
   morphism := fun _ => b
@@ -236,19 +247,19 @@ Program Definition TwoSep : Cocone TwoPoints := {|
 |}.
 Next Obligation. intros b b' e x; exact (eq_sym e). Qed.
 
-(* The two fibres are INHABITED, and these are the points the separation
-   below is stated at -- so the theorem is about actual elements, not
-   vacuously true.  Naming them makes that machine-checked rather than a
-   remark: each definition typechecks only because the fibre it names has
-   an element. *)
+(*
+   本节说明 Cocomplete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition two_fibre_point_true : carrier (TwoPoints true) := ttt.
 Definition two_fibre_point_false : carrier (TwoPoints false) := ttt.
 
-(* THE WITNESS.  The point of the fibre over [true] and the point of the
-   fibre over [false] are NOT identified by the generated relation, so
-   [colim_rel] does not collapse this colimit.  Proved by mapping OUT
-   through [colim_rel_separates] -- no induction on [colim_rel] could
-   yield a negative -- and landing on [discriminate]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem two_fibres_not_collapsed :
   colim_rel TwoPoints
     (existT _ true two_fibre_point_true)
@@ -266,9 +277,11 @@ Corollary two_fibres_not_equal_in_colimit :
     (existT _ false two_fibre_point_false) -> False.
 Proof. exact two_fibres_not_collapsed. Qed.
 
-(* DEGENERATE CONTROL, and labelled as one: over the EMPTY shape the apex
-   has no elements at all, so it separates for a reason that has nothing
-   to do with the glue.  This is why it does not stand alone. *)
+(*
+   本节说明 Cocomplete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma empty_shape_colim_empty (F : DiscreteCat False ⟶ Sets)
   (p : carrier (Sets_colim_obj F)) : False.
 Proof. destruct p as [d x]; destruct d. Qed.

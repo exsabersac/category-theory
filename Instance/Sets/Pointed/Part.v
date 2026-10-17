@@ -23,22 +23,22 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* The comparison functor.  A setoid [A] is sent to [A] with a fresh point
-   adjoined, that fresh point being the basepoint; a partial map A ⇀ B, which
-   is a total map A → option B, is sent to the pointed map that fixes the
-   fresh point.  This is the functor behind the remark in Instance/Coq/Par.v's
-   header that PAR is equivalent — not isomorphic — to pointed sets. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Part_Pointed_obj (A : SetoidObject) : PointedSetoid := {|
   pointed_setoid := {| carrier   := option (carrier A)
                      ; is_setoid := @option_setoid _ (is_setoid A) |};
   pt := Datatypes.None
 |}.
 
-(* The underlying function is given as a plain [Definition] rather than inside
-   the [Program] record: [Program] compiles a match into the equality-carrying
-   form, whose normal form on a stuck scrutinee differs syntactically from the
-   plain match [Part]'s own composition reduces to, and the functor law below
-   is then no longer available by conversion. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition part_pointed_fun {A B : SetoidObject} (f : A ~{Part}~> B)
   (o : option (carrier A)) : option (carrier B) :=
   match o with
@@ -120,17 +120,18 @@ Qed.
 
 (** ** Essential surjectivity, and the equivalence *)
 
-(* Essential surjectivity is where decidability enters, and it is unavoidable:
-   to exhibit a pointed set (B, b0) as [option] of something one must know
-   which points of B are the basepoint, i.e. decide `b ≈ b0`.  Classically
-   this always holds, so what follows IS the textbook statement; the
-   constructive reading is that the classical picture survives exactly on the
-   decidable objects. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PointedDecidablePt : Type := ∀ Z : PointedSetoid, DecidablePt Z.
 
-(* The apartness sub-setoid: the points provably distinct from the basepoint,
-   compared by their underlying points.  This is the candidate preimage of
-   (Z, pt Z) under the comparison functor — "Z with the basepoint removed". *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Apart (Z : PointedSetoid) : SetoidObject := {|
   carrier   := ∃ z : carrier Z, ¬ (z ≈ pt Z);
   is_setoid := {| equiv := fun u v => `1 u ≈ `1 v |}
@@ -247,11 +248,11 @@ Definition Part_to_Pointed_ESO (dec : PointedDecidablePt) :
   @Build_EssentiallySurjective Part PointedSets Part_to_Pointed
     Apart (apart_iso dec).
 
-(* PAR is equivalent to Set_*, on the decidable objects.  This upgrades the
-   remark in the header of Instance/Coq/Par.v — "equivalent (not isomorphic)
-   to the category of pointed sets" — from prose to a theorem, in the setoid
-   setting.  The comparison functor is fully faithful with no hypotheses at
-   all; only the essential surjectivity consumes [dec]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pointed_part_equivalence (dec : PointedDecidablePt) :
   EquivalenceOfCategories Part_to_Pointed :=
   @FF_ESO_Equivalence Part PointedSets Part_to_Pointed

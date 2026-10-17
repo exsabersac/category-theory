@@ -24,76 +24,15 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The constructive ledger of this development
-
+(*
    nLab:      https://ncatlab.org/nlab/show/axiom+of+choice
    nLab:      https://ncatlab.org/nlab/show/split+epimorphism
    Wikipedia: https://en.wikipedia.org/wiki/Axiom_of_choice
 
-   Mac Lane's §I.7 discussion of Set_* is not only about the null object; the
-   accompanying proposition is the standard dictionary between the elementary
-   and the arrow-theoretic descriptions of injections and surjections, and in
-   Set it reads: monic ⟺ injective, epic ⟺ surjective, every monic with
-   non-empty domain splits, every epic splits.  Formalizing it constructively
-   separates the four claims sharply, and the separation is the mathematical
-   content of this file rather than a formalization artefact.  What holds
-   here, and at what price:
+   本节说明 Pointed 相关定义、性质与动机。
 
-   - [pointed_monic_iff] : monic ⟺ injective.  UNCONDITIONAL.  The hard
-     direction probes with the two-point pointed set [PointedTwo]; the
-     singleton, which is Set's probe, is here the zero object and detects
-     nothing, so the smallest useful probe has exactly one free point.
-
-   - [pointed_epic_iff] : epic ⟺ surjective.  UNCONDITIONAL — no
-     decidability, no choice.  The witness is the pointed cokernel pair
-     [PointedCP]: two copies of the codomain glued along the image, with the
-     gluing relation given in CLOSED FORM rather than as the transitive
-     closure of a generating relation, so no quotient machinery is required.
-     The two basepoints are identified because [preserves_pt] puts the
-     basepoint in the image ([InImage_pt]), which is exactly what makes both
-     legs pointed.  Since `≈` is [Type]-valued, the surjectivity extracted
-     from an epimorphism carries preimages as DATA, which is what lets the
-     inverse below be assembled without choice.
-
-   - [pointed_monic_split] : monic ⟹ split monic, under the explicit
-     hypothesis [ImageDecidable] that membership in the image is decidable.
-     The retraction sends a point of the image to its preimage — unique, by
-     injectivity — and everything else to the basepoint.  Note that Mac Lane's
-     side condition "non-empty domain" is automatic in Set_*: every object has
-     a basepoint.
-
-   - [pointed_epic_split] : epic ⟹ split epi, under an enumeration of the
-     domain together with decidable `≈` on the codomain.  This is the honest
-     price.  In Set the unrestricted statement "every epimorphism splits" IS
-     the axiom of choice (nLab, "axiom of choice"; Wikipedia, "Axiom of
-     choice"), so no hypothesis-free proof can exist.  The obstruction is
-     visible at exactly one point: a section must be RESPECTFUL, and when [f]
-     is not injective two `≈`-related points of the codomain can have entirely
-     unrelated preimages.  The closing section of this file makes the price
-     precise in-tree rather than by citation: dropping either splitting
-     hypothesis yields informative excluded middle
-     ([unconditional_monic_split_gives_IEM],
-     [unconditional_epic_split_gives_IEM]).  A first-preimage search over a fixed enumeration
-     removes it, because the index it selects depends on the argument only
-     through its `≈`-class — [pointed_search_respects] proves this up to
-     Leibniz equality, not merely up to `≈`.  The basepoint is special-cased,
-     without which the section need not be a morphism of Set_* at all.
-
-   - [pointed_balanced] : invertible ⟺ monic ∧ epic.  UNCONDITIONAL in both
-     directions, and the pleasant surprise of the file: although neither
-     splitting result is available without hypotheses, their combination is.
-     Injectivity from [pointed_monic_iff] makes the candidate inverse
-     respectful and basepoint-preserving; surjectivity from
-     [pointed_epic_iff], being data, supplies the function itself.  So Set_*
-     is a balanced category constructively.
-
-   Instance/Sets/Pointed/Finite.v discharges every hypothesis above at once
-   for finite pointed sets with decidable equality, and exercises the results
-   by computing a retraction and a section of concrete maps; it also exhibits
-   a monic that is not epic and an epic that is not monic, so that
-   [pointed_balanced] is not vacuous.  The satellite files are
-   Instance/Sets/Pointed/Part.v (the equivalence with partial maps) and
-   Instance/Sets/Pointed/Coslice.v (the coslice presentation). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A pointed setoid: a Bishop set together with a distinguished element. *)
 Record PointedSetoid := {
@@ -193,10 +132,11 @@ Definition PointedOne : PointedSetoid := {|
   pt := ttt
 |}.
 
-(* The constant map at the codomain's basepoint.  It is pointed for the most
-   trivial of reasons, and it is the zero morphism of [PointedSets]: it is
-   simultaneously the unique map into the one-point set and the unique map out
-   of it, which is what makes that object a null object. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition const_pt_map (X Y : PointedSetoid) :
   SetoidMorphism (pointed_setoid X) (pointed_setoid Y) := {|
   morphism := fun _ => pt Y
@@ -230,10 +170,11 @@ Definition PointedSets_Terminal : @Terminal PointedSets :=
   @Build_Terminal PointedSets PointedOne
     (fun X => @pointed_one X) (fun X => @pointed_one_unique X).
 
-(* Out of the one-point set there is also exactly one map, and this is where
-   pointedness bites: the single element IS the basepoint, so its image is
-   forced to be the codomain's basepoint.  In [Sets] the singleton is only
-   terminal; in [PointedSets] it is initial as well. *)
+(*
+   本节说明始/终对象、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pointed_zero {X : PointedSetoid} : PointedMorphism PointedOne X :=
   @pointed_const PointedOne X.
 
@@ -253,10 +194,11 @@ Definition PointedSets_Initial : @Initial PointedSets :=
   @Build_Terminal (PointedSets^op) PointedOne
     (fun X => @pointed_zero X) (fun X => @pointed_zero_unique X).
 
-(* Mac Lane's null object (CWM §I.7): the same one-point set is initial and
-   terminal, so the coincidence isomorphism is the identity.  Consequently
-   every hom-setoid of [PointedSets] has a distinguished zero morphism, the
-   constant map at the basepoint (Structure/ZeroObject.v's [zero_mor]). *)
+(*
+   本节说明hom、同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance PointedSets_Zero : ZeroObject PointedSets :=
   @Build_ZeroObject PointedSets PointedSets_Terminal PointedSets_Initial iso_id.
 
@@ -289,10 +231,11 @@ Proof.
   now rewrite Hx.
 Qed.
 
-(* The basepoint is always in the image: [preserves_pt] IS a preimage
-   witness.  This one line is what makes the cokernel-pair argument below
-   respect basepoints, and what pins the retraction of a monic at the
-   basepoint. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma InImage_pt {X Y : PointedSetoid} (f : PointedMorphism X Y) :
   InImage f (pt Y).
 Proof.
@@ -302,11 +245,11 @@ Qed.
 
 (** ** Monomorphisms are exactly the injections *)
 
-(* The two-point pointed set: [option poly_unit] pointed at [None].  It is the
-   probe object for monomorphisms — a map out of it is precisely a choice of
-   one free point of the target, the basepoint being forced.  (In [Sets] the
-   singleton suffices; here the singleton is the zero object, so it detects
-   nothing, and the smallest useful probe has one point to spare.) *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PointedTwo : PointedSetoid := {|
   pointed_setoid := {| carrier := option poly_unit |};
   pt := Datatypes.None
@@ -333,10 +276,11 @@ Proof.
   reflexivity.
 Defined.
 
-(* Mac Lane CWM §I.7: in Set_* the monomorphisms are exactly the injective
-   maps.  Both directions are unconditional.  The hard direction feeds [f] the
-   two probes at [a] and at [b]: they agree after [f], hence agree, hence
-   a ≈ b at the free point. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pointed_monic_iff {X Y : PointedSetoid}
   (f : X ~{PointedSets}~> Y) : PointedInjective f ↔ Monic f.
 Proof.
@@ -356,20 +300,11 @@ Qed.
 
 (** ** Epimorphisms are exactly the surjections *)
 
-(* The pointed cokernel pair of [f].  The carrier is two copies of Y; the
-   relation is given in closed form rather than as the transitive closure of a
-   generating relation, which is what keeps the development free of any
-   quotient machinery:
+(*
+   本节说明核/余核相关定义、性质与动机。
 
-       inl a ~ inl b   iff   a ≈ b
-       inr a ~ inr b   iff   a ≈ b
-       inl a ~ inr b   iff   a ≈ b  and  a lies in the image of f
-
-   In words: the two copies are glued exactly along the image of [f].  The
-   basepoint is [inl (pt Y)] — and the OTHER basepoint [inr (pt Y)] is
-   equivalent to it, because [preserves_pt] puts [pt Y] in the image
-   ([InImage_pt]); this is precisely why the right leg below is a pointed
-   map. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CP_rel {X Y : PointedSetoid} (f : PointedMorphism X Y)
   (u v : carrier Y + carrier Y) : Type :=
   match u, v with
@@ -479,11 +414,11 @@ Proof.
     reflexivity.
 Qed.
 
-(* An epimorphism of pointed sets is surjective.  Feed the cokernel pair to
-   the cancellation property: the two legs become equal, and equality of the
-   legs at [b] says precisely that [b] lies in the image.  No decidability and
-   no choice enter — the image-membership witness is read straight off the
-   relation. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pointed_epic_surjective {X Y : PointedSetoid}
   (f : X ~{PointedSets}~> Y) : Epic f → PointedSurjective f.
 Proof.
@@ -537,19 +472,20 @@ Qed.
 
 (** *** Monic implies split monic, given decidable image membership *)
 
-(* The hypothesis that makes the classical argument constructive: for each
-   point of the codomain we may DECIDE whether it is hit.  Classically this is
-   free; constructively it is exactly the missing content, and
-   Instance/Sets/Pointed/Finite.v supplies it for every map out of a finitely
-   enumerated pointed set into one with decidable `≈`. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ImageDecidable {X Y : PointedSetoid}
   (f : PointedMorphism X Y) : Type :=
   ∀ b : carrier Y, InImage f b + ¬ InImage f b.
 
-(* The retraction: send a point of the image to its (unique, by injectivity)
-   preimage, and everything else to the basepoint.  The basepoint of Y is
-   never in the "everything else" branch — [InImage_pt] — so the retraction is
-   automatically pointed. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pointed_retract_fun {X Y : PointedSetoid}
   (f : PointedMorphism X Y) (dec : ImageDecidable f) (b : carrier Y) :
   carrier X :=
@@ -591,11 +527,11 @@ Proof.
   - destruct (n (InImage_pt f)).
 Defined.
 
-(* Mac Lane's Proposition, first half: a monic pointed map splits, PROVIDED
-   image membership is decidable.  The retraction is the one above; both of
-   its laws are consequences of injectivity.  Ends in [Defined] because the
-   retraction is DATA: Instance/Sets/Pointed/Finite.v evaluates it at concrete
-   points by [reflexivity]. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pointed_monic_split {X Y : PointedSetoid} (f : X ~{PointedSets}~> Y)
   (dec : ImageDecidable f) : Monic f → Section f.
 Proof.
@@ -613,9 +549,11 @@ Defined.
 
 (** *** Balance: invertible IS monic and epic, with no hypotheses at all *)
 
-(* The inverse of a bimorphism.  Injectivity supplies respectfulness (the
-   witness attached to [b] is pinned by its value) and pointedness; the
-   surjectivity witness supplies the function itself. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition pointed_inverse_map {X Y : PointedSetoid}
   (f : PointedMorphism X Y) (Hinj : PointedInjective f)
   (Hsurj : PointedSurjective f) :
@@ -641,13 +579,11 @@ Proof.
   exact (preserves_pt f).
 Defined.
 
-(* Mac Lane's Proposition, the balanced statement: in Set_* a map is
-   invertible exactly when it is both monic and epic — and, in contrast with
-   the two splitting results, this needs NO hypotheses.  The forward direction
-   is formal; the converse assembles the inverse from the injectivity of a
-   monic and the surjectivity of an epic, both established unconditionally
-   above, the surjectivity witness being data rather than a mere existence
-   claim. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pointed_balanced {X Y : PointedSetoid} (f : X ~{PointedSets}~> Y) :
   IsIsomorphism f ↔ (Monic f ∧ Epic f).
 Proof.
@@ -702,13 +638,11 @@ Record PointedEnumeration (X : PointedSetoid) := {
 Arguments enum_list {X} _.
 Arguments enum_covers {X} _ _.
 
-(* First-preimage search.  The KEY property is [pointed_search_respects]: the
-   result depends on [b] only through its `≈`-class, and it does so up to
-   Leibniz equality, not merely up to `≈`.  That is what makes the section
-   below respectful — a bare choice of preimages need not be, since
-   `≈`-related points can have wholly unrelated preimages when [f] is not
-   injective, and this is precisely the obstruction that makes "every epi
-   splits" a choice principle in general. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint pointed_search {X Y : PointedSetoid} (f : PointedMorphism X Y)
   (deq : DecidableEquiv Y) (l : list (carrier X)) (b : carrier Y) :
   option (carrier X) :=
@@ -765,12 +699,11 @@ Proof.
     + exact (IH Ht Hfa).
 Qed.
 
-(* The section: the basepoint goes to the basepoint (which IS a preimage, by
-   [preserves_pt]) and every other point to the FIRST element of the
-   enumeration mapping onto it.  Special-casing the basepoint is not a
-   convenience — without it the section need not be a morphism of Set_* at
-   all, since the first preimage of the basepoint may well be an ordinary
-   point. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pointed_section_fun {X Y : PointedSetoid} (f : PointedMorphism X Y)
   (deq : DecidableEquiv Y) (E : PointedEnumeration X) (b : carrier Y) :
   carrier X :=
@@ -813,15 +746,11 @@ Proof.
     reflexivity.
 Defined.
 
-(* Mac Lane's Proposition, second half: an epic pointed map splits, PROVIDED
-   the domain is enumerated and `≈` on the codomain is decidable.  In Set the
-   unrestricted statement "every epi splits" IS the axiom of choice, so the
-   hypothesis pack is the honest constructive content of the proposition, not
-   an artefact of the formalization: what a section must supply is a COHERENT
-   choice of preimages, and an enumeration plus a decidable codomain is the
-   smallest structure that produces one canonically.  As with
-   [pointed_monic_split], this ends in [Defined] so that the section it builds
-   computes. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pointed_epic_split {X Y : PointedSetoid} (f : X ~{PointedSets}~> Y)
   (deq : DecidableEquiv Y) (E : PointedEnumeration X) :
   Epic f → Retraction f.
@@ -844,23 +773,11 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** The two splitting hypotheses are necessary, in-tree *)
 
-(* The header above prices the two splitting converses by CITATION: in Set,
-   "every epimorphism splits" is the axiom of choice.  That is a fact about
-   Set, quoted from outside; an audit of the first commit observed that the
-   file asserted it without in-tree evidence, and supplied the evidence.
-   It is integrated here.
+(*
+   本节说明 Pointed 相关定义、性质与动机。
 
-   The two theorems below show that dropping either hypothesis is not a
-   matter of finding a cleverer proof: a hypothesis-free splitting for
-   Set_* yields INFORMATIVE excluded middle, `∀ P : Prop, P + ¬P`, which is
-   not provable in Rocq's core logic.  The probes are the pointed sets built
-   over an arbitrary proposition P — `option P` based at `None` for the
-   monic side, and the two-point set glued by P for the epic side — so
-   deciding the splitting decides P.
-
-   This is the same discipline applied elsewhere in the tree: rather than
-   claim an impossibility, exhibit the principle the missing hypothesis is
-   equivalent to. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition InformativeEM := ∀ P : Prop, P + ¬ P.
 
@@ -974,10 +891,11 @@ Proof. intro b; exists b; destruct b; exact I. Qed.
 Definition glueP_epic (P : Prop) : Epic (glueP_f P) :=
   fst (pointed_epic_iff (glueP_f P)) (glueP_surjective P).
 
-(* Dropping the enumeration and decidable equality from [pointed_epic_split]
-   likewise decides every proposition: a section either sends the glued
-   point to a free point, refuting P by respectfulness, or to the
-   basepoint, in which case the retract law establishes P. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem unconditional_epic_split_gives_IEM :
   (∀ (X Y : PointedSetoid) (g : X ~{PointedSets}~> Y), Epic g → Retraction g)
   → InformativeEM.

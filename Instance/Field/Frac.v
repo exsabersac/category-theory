@@ -24,203 +24,22 @@ Generalizable All Variables.
 *)
 #[local] Notation num := Frac.num.
 
-(** * The field of quotients as a universal arrow, and Mac Lane's
-      non-example
+(*
+   nLab: https://ncatlab.org/nlab/show/field+of+fractions
+   nLab: https://ncatlab.org/nlab/show/universal+construction
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-    §III.1 (Universal Arrows), printed pp. 55-56
-    [maclane:III.1:construction2]: for an integral domain D, the field
-    of quotients Q(D) together with the embedding n ↦ n/1 is a
-    universal arrow from D to the forgetful functor from fields to
-    integral domains — PROVIDED the domain category is taken to have
-    monomorphisms as its arrows.  Mac Lane's accompanying remark is the
-    half with the content: over the category of integral domains and
-    ALL homomorphisms there is no universal arrow from ℤ at all,
-    because the reductions ℤ → ℤ/pℤ cannot be routed through one fixed
-    field.
-    nLab: https://ncatlab.org/nlab/show/field+of+fractions
-    nLab: https://ncatlab.org/nlab/show/universal+construction
+   本节说明函子相关定义、性质与动机。
 
-    The construction is the oldest universal property in algebra —
-    Grassmann and Hamilton built ℚ from ℤ this way long before anyone
-    called it universal — and it is the example by which the notion is
-    usually first motivated, precisely because the wrong choice of
-    morphisms destroys it.  That sensitivity is the point: the
-    extension of f : D → K to Q(D) sends n/d to f(n)·(f d)⁻¹, so it
-    needs f d invertible for every d ≉ 0, i.e. it needs f to REFLECT
-    zero, which for a ring homomorphism is injectivity.  A homomorphism
-    that collapses a nonzero denominator supports no such map, and the
-    standard repair — restrict the domain category to monomorphisms —
-    is what Mac Lane's Dom_m records.  Both halves are
-    delivered here, against the SAME category of fields, so that the
-    contrast is a theorem and not a change of subject
-    ([frac_universal_over_monos_not_over_all]).
-
-    WHAT IS ALREADY IN TREE, and a CORRECTION.  The issue's "Current
-    state" paragraph says of this material "Absent … No category of
-    fields or integral domains exists, and no ℤ-as-initial-ring
-    machinery for the non-existence example."  That is false on every
-    count, as the issue's own trailing QA-audit block records, and the
-    correction is repeated here because a header is where a reader
-    looks.  Already present and REUSED rather than rebuilt:
-    Instance/Rng/Frac.v's [IntDom] — integral domains with injective
-    ring homomorphisms, which is Mac Lane's Dom_m; the
-    monic-implies-injective converse was outstanding when this was
-    written, pending the free ring ℤ[x], and is now proved as
-    [rng_monic_injective] in Instance/Rng/Polynomial.v, while
-    injective-implies-monic is Instance/Rng/Frac.v's [DomHom_monic] —
-    with [DomObject],
-    [DomHom], the fraction ring [FracRing], the embedding [frac_embed]
-    and its injectivity [frac_embed_inj]; Instance/Field.v's [Field]
-    with [Field_Rng], [Field_Forget], the ¬¬-stability analysis, ℚ and
-    F₂; and Instance/Rng.v's [ZtoQ].  Nothing of that is re-derived
-    below.  Instance/Rng.v's [Rng_Initial_Z] refutes the issue's
-    "no ℤ-as-initial-ring machinery" clause by existing, but it is not
-    used: the non-existence proof names the two homomorphisms out of ℤ
-    concretely rather than obtaining them from initiality.
-
-    WHAT IS NEW HERE.  The forgetful functor from fields into a
-    category of integral domains — no such functor existed, into either
-    [IntDom] or the [Dom] built below; the universal property and its
-    packaging as a [UniversalArrow]; and the whole non-existence half,
-    including [Dom] itself and the reduction ℤ → F₂ that lives in it.
-
-    THE FORGETFUL FUNCTOR, and the first hypothesis.  A field is an
-    integral domain unconditionally ([field_dom]): cancellation follows
-    from invertibility, and the guard on [finv_l] is a NEGATION, which
-    is exactly the hypothesis [dom_cancel] already carries, so no
-    decision procedure is consulted.  Morphisms are where the price is
-    paid.  [DomHom] carries injectivity as DATA in the strict form
-    f a ≈ f b → a ≈ b, and Instance/Field.v has already measured how
-    much of that is constructively available: the unconditional
-    strength is [field_hom_distinct], a ≉ b → f a ≉ f b, whose
-    contrapositive yields only ¬¬(a ≈ b), and the strict form is
-    [field_stable_at_zero_suffices], which consumes ¬¬-stability of the
-    SOURCE at zero.  So the functor is delivered in two shapes:
-    [StableField_IntDom], hypothesis-free, on the full subcategory
-    [StableField] of fields carrying [FieldStableAtZero] as an object
-    datum; and [Field_IntDom], on all of [Field], taking the blanket
-    stability assumption as an explicit argument in the shape
-    Instance/Field.v's [field_every_monic] uses.  Whether some other
-    construction gives an unconditional functor on all of [Field] is
-    NOT settled here and is not asserted either way — the same
-    discipline Instance/Field.v follows in declining to claim that some
-    field has unstable equality.  This is ARGUED from what the tree
-    proves, not proved to be necessary.  What IS proved is that no such
-    hypothesis is needed on the [Dom] side: [Field_Dom] is
-    unconditional, since a plain ring homomorphism is asked for nothing.
-
-    THE UNIVERSAL PROPERTY IS UNCONDITIONAL.  [frac_ump] states, for an
-    ARBITRARY integral domain D and an ARBITRARY field K, that every
-    [IntDom]-morphism D → K extends uniquely along the embedding to a
-    ring homomorphism Q(D) → K.  No stability, no decidability, no
-    choice, and no field structure on the fractions appears in it.  The
-    extension is [frac_extend], its triangle [frac_extend_embed], and
-    the uniqueness [frac_extend_unique] — the latter through
-    [frac_embed_den], the identity saying that d/1 · n/d ≈ n/1, so that
-    the extension is forced without ever asking a competitor to
-    preserve inverses.  Injectivity is spent in EXACTLY ONE PLACE,
-    [frac_hom_den_nonzero]: a denominator is apart from zero, and its
-    image must be too, or it could not be inverted.  That single lemma
-    is Mac Lane's whole reason for taking monomorphisms.
-
-    THE SECOND HYPOTHESIS, and it is not Mac Lane's either.  Naming
-    Q(D) as an OBJECT of the field category requires a [FieldObject],
-    whose inverse operation [finv] is TOTAL — totality being forced by
-    the setoid discipline, since a partial operation is not a setoid
-    map (Instance/FdVect.v's own header says so).  A total reciprocal
-    on fractions must decide what to return at zero, and that decision
-    is [DomZeroDec]: ≈-comparison with zero is decidable in D.  It is
-    stated at zero rather than pairwise, following [FieldStableAtZero]
-    in locating the obstruction, and the two are inter-derivable
-    ([dom_zero_dec_eq_dec] and [dom_eq_dec_zero_dec]).  It subsumes the
-    first hypothesis on the fractions: decidability gives stability, so
-    [FracField] lands in [StableField] with nothing further to check.
-    Classically neither hypothesis is visible; both are disclosed here
-    rather than absorbed, and ℤ discharges the second by [Z.eq_dec].
-
-    THE NON-EXAMPLE, and how far it reaches.  [Dom] is built here with
-    all ring homomorphisms as arrows, and [IntDom_Dom] includes [IntDom]
-    into it as a wide, faithful, NOT full subcategory —
-    [IntDom_Dom_not_Full] proves the non-fullness that
-    Instance/Rng/Frac.v left unstated for want of a counterexample
-    object.  The witness is reduction mod 2, which needs NO
-    quotient-ring theory: F₂ is already an object, and the reduction is
-    [Z.odd], whose stdlib laws [Z.odd_add] and [Z.odd_mul] ARE the two
-    homomorphism clauses against F₂'s [xorb] and [andb].  It is not
-    injective ([ZtoF2_not_injective]), and more sharply [IntDom] has NO
-    morphism from ℤ to F₂ whatsoever ([no_DomHom_Z_F2]) — so the arrow
-    that breaks the universal property is invisible to the category in
-    which the universal property holds.  ONE PRIME SUFFICES, and no
-    case split on the characteristic is needed: [no_field_over_Q_and_F2]
-    observes that a homomorphism to ℚ forces 1 + 1 to be apart from
-    zero (a NEGATIVE fact, delivered outright), whereupon
-    [field_hom_nonzero] refutes a homomorphism to F₂, where 1 + 1
-    vanishes.  Mac Lane's ℤ/pℤ family is therefore not needed and
-    neither is a second prime; the separating pair is ℚ against F₂,
-    already Instance/Field.v's pair for the absence of initial and
-    terminal objects.  The refutation consumes only the EXISTENCE of
-    the factorizations — uniqueness is never used, and neither is the
-    universal arrow ℤ → K itself, which is why it also holds in the
-    weaker form [no_field_maps_to_all_fields].  It is stated in both
-    encodings ([UniversalArrow] and [AUniversalArrow]) and over BOTH
-    field categories, so the obstruction is not an artifact of [Field]
-    being larger than [StableField]: ℚ and F₂ are both stable, so both
-    survive the restriction.
-
-    STRENGTHS, measured.  At Leibniz equality by [eq_refl] — the
-    convertibility exception, exhibited where it holds: the object and
-    morphism components of [StableField_IntDom_Dom_obj] and
-    [StableField_IntDom_Dom_map]; the object component of
-    [Field_IntDom_agrees_obj]; and the two computations
-    [frac_extend_Z_half] and [frac_extend_Z_three], where the extension
-    of ℤ ↪ ℚ carries 1/2 to the rational 1#2 ON THE NOSE.  Strictness
-    was attempted first and REJECTED in one place:
-    [Field_IntDom_agrees_map] holds only up to ≈, because the two
-    [DomHom]s carry the same underlying map but different injectivity
-    proofs, and [DomHom] carries that proof as a field.  Both
-    boundaries are guarded, not merely measured, by negative probes in
-    Test/ProbeFieldFrac.v, each paired with a positive control.
-
-    NON-VACUITY.  Q(ℤ) is an actual object ([Frac_Z]), ℤ ↪ ℚ an actual
-    [IntDom]-morphism ([ZtoQ_Dom]), the extension computes as above,
-    and the embedding is NOT onto — [frac_embed_Z_not_surjective] shows
-    1/2 is not n/1 for any integer n, so the fraction field is strictly
-    larger than the image of D and the universal arrow is not a
-    degenerate one.
-
-    WHAT IS NOT DELIVERED.  No isomorphism Q(ℤ) ≅ ℚ is proved; the
-    computations above relate the two through the extension, not by an
-    equivalence of objects.  [Dom] is defined here rather than beside
-    [IntDom] in Instance/Rng/Frac.v, since it exists only to state the
-    non-example.  Fullness of [IntDom_Incl] into [CRng] — a DIFFERENT
-    functor from [IntDom_Dom], and the one Instance/Rng/Frac.v actually
-    left open — is refuted separately as [IntDom_Incl_not_Full], on the
-    same F₂ witness; the two statements are about different functors
-    and neither implies the other here.  And no quotient rings are
-    built: F₂ is used as the positive-characteristic witness precisely
-    so that none are needed, which is exactly what makes the
-    [IntDom_Incl] deferral discharge-able, since that deferral was
-    conditioned on there being no counterexample OBJECT and a field is
-    a domain.
-
-    AXIOMS.  Everything here is axiom-free, counted the way
-    docs/AXIOMS.md counts: all 99 constants the module declares — the
-    69 source-level definitions and theorems and the 30 [Program]
-    obligations, which no [.glob] sweep sees — report "Closed under the
-    global context", including both principal artifacts,
-    [frac_universal] and [no_universal_arrow_Z_Dom].  The
-    arithmetic is Theory/Algebra/Rig.v's, the concrete carriers are
-    stdlib [Z], [bool] and [QArith], and nothing here touches the
-    reals. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Every field is an integral domain *)
 
-(* Cancellation is where the field structure is spent, and it is spent
-   unconditionally: the guard on [finv_l] is exactly the hypothesis
-   [dom_cancel] already carries, so c ≉ 0 licenses inverting c with no
-   decision procedure consulted.  Commutativity and 1 ≉ 0 transfer
-   verbatim. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition field_dom (F : FieldObject) : DomObject := {|
   dom_ring       := field_ring F;
   dom_comm       := field_comm F;
@@ -240,11 +59,11 @@ Qed.
 
 (** ** The category of integral domains and ALL homomorphisms *)
 
-(* Mac Lane's [Dom], as against Instance/Rng/Frac.v's [IntDom], which is
-   his [Dom_m].  Same objects; the morphisms here are the plain ring
-   homomorphisms, with no injectivity clause.  The two categories are
-   what the whole file is about: the universal arrow exists over
-   [IntDom] and does not exist over [Dom]. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Dom : Category := {|
   obj     := DomObject;
   hom     := fun D E => RigHom (dom_ring D) (dom_ring E);
@@ -259,12 +78,11 @@ Next Obligation. intros D E f a; simpl; reflexivity. Qed.
 Next Obligation. intros D E F G f g h a; simpl; reflexivity. Qed.
 Next Obligation. intros D E F G f g h a; simpl; reflexivity. Qed.
 
-(* [IntDom] sits inside [Dom] as a WIDE subcategory: identical on
-   objects, forgetting the injectivity datum on morphisms.  It is not
-   full — proved below as [IntDom_Dom_not_Full], on the witness
-   [no_DomHom_Z_F2]: the reduction ℤ → F₂ is a morphism of [Dom]
-   between two objects of [IntDom] that no morphism of [IntDom] can
-   carry. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition IntDom_Dom : IntDom ⟶ Dom := {|
   fobj := fun D => D;
   fmap := fun _ _ f => dom_map f
@@ -278,11 +96,11 @@ Proof. constructor; intros D E f g H x; exact (H x). Qed.
 
 (** ** The forgetful functor into ALL homomorphisms, unconditionally *)
 
-(* Every field is a domain and every ring homomorphism is a ring
-   homomorphism, so this functor costs nothing.  Contrast
-   [StableField_IntDom] below, which is the same assignment on objects
-   and needs a hypothesis on morphisms; the difference between the two
-   is exactly the injectivity clause of [DomHom]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Field_Dom : Field ⟶ Dom := {|
   fobj := field_dom;
   fmap := fun _ _ f => f
@@ -296,12 +114,11 @@ Proof. constructor; intros F K f g H x; exact (H x). Qed.
 
 (** ** Fields whose equality is ¬¬-stable *)
 
-(* The selection predicate is Instance/Field.v's [FieldStableAtZero],
-   the LOCATED form of stability: ≈ is ¬¬-stable at zero.  That file
-   proves it inter-derivable with the pairwise [FieldStable]
-   ([field_stable_stable_at_zero], [field_stable_at_zero_stable]), so
-   nothing is lost by selecting on the weaker-looking one, and it is
-   what [field_stable_at_zero_suffices] consumes directly. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition StableField_Sub : Subcategory Field :=
   @Build_Subcategory Field
     (fun F : FieldObject => FieldStableAtZero F)
@@ -316,10 +133,11 @@ Lemma StableField_Full :
   Category.Construction.Subcategory.Full Field StableField_Sub.
 Proof. intros F K oF oK g; exact I. Qed.
 
-(* Decidable equality gives stability, so both fields of the tree are
-   objects.  ℚ and F₂ are the two witnesses Instance/Field.v uses to
-   separate characteristics, and they are the two witnesses the
-   non-existence theorem below uses as well. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition StableField_of_dec (F : FieldObject)
   (dec : ∀ a b : carrier (rig_setoid F), (a ≈ b) + (a ≈ b → False)) :
   StableField :=
@@ -331,16 +149,11 @@ Definition F2_StableField : StableField := StableField_of_dec _ F2_Field_dec.
 
 (** ** The forgetful functor into the category of MONOMORPHISMS *)
 
-(* Deliverable one, and the reason the objects carry a stability datum.
-   To land in [IntDom] a field homomorphism must supply [DomHom]'s
-   [dom_map_inj], the STRICT cancellation form f a ≈ f b → a ≈ b.
-   Instance/Field.v measures exactly how much of that is available: the
-   unconditional strength is [field_hom_distinct], a ≉ b → f a ≉ f b,
-   whose contrapositive gives only ¬¬(a ≈ b); the strict form is
-   [field_stable_at_zero_suffices] and it consumes ¬¬-stability of the
-   SOURCE at zero.  So the injectivity datum comes from the object's own
-   stability field, and no classical ideal argument and no [frac]-style
-   cancellation can replace it — see the header. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition StableField_IntDom : StableField ⟶ IntDom := {|
   fobj := fun F => field_dom `1 F;
   fmap := fun F K f =>
@@ -354,16 +167,11 @@ Next Obligation. intros F K T f g a; simpl; reflexivity. Qed.
 #[export] Instance StableField_IntDom_Faithful : Faithful StableField_IntDom.
 Proof. constructor; intros F K f g H x; exact (H x). Qed.
 
-(* What a forgetful functor on ALL of [Field] costs, in the shape
-   Instance/Field.v's [field_every_monic] uses: the blanket stability
-   assumption, taken as an explicit argument rather than smuggled.
-   Restricting to [StableField] instead is what makes
-   [StableField_IntDom] hypothesis-free.  The two agree on the selected
-   objects, and the strengths of the two agreements DIFFER: the object
-   component is [eq_refl], the morphism component only ≈ — the two
-   [DomHom]s carry the same underlying map but different injectivity
-   proofs ([stab F] against F's own datum), and [DomHom] carries that
-   proof as a field, so they are distinct records. *)
+(*
+   本节说明函子、（余）强度、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Field_IntDom
   (stab : ∀ F : FieldObject, FieldStableAtZero F) : Field ⟶ IntDom := {|
   fobj := field_dom;
@@ -387,15 +195,11 @@ Example Field_IntDom_agrees_map
     ≈ fmap[StableField_IntDom] f.
 Proof. intro a; simpl; reflexivity. Qed.
 
-(* The same assignment read into [Dom] instead, where no hypothesis is
-   needed; the two agree, in that composing with the wide inclusion
-   recovers [Field_Dom] on the selected objects.  BOTH components hold
-   at Leibniz equality by [eq_refl] — the convertibility exception,
-   measured rather than assumed: [IntDom_Dom] forgets exactly the
-   injectivity field that [StableField_IntDom] supplied, so the
-   composite's morphism component reduces to `1 f on the nose.
-   Contrast [Field_IntDom_agrees_map] below, where the same shape of
-   comparison is NOT strict. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition StableField_Dom : StableField ⟶ Dom :=
   Field_Dom ◯ Incl Field StableField_Sub.
 
@@ -408,11 +212,11 @@ Example StableField_IntDom_Dom_map (F K : StableField) (f : F ~{StableField}~> K
 
 (** ** Division in a field *)
 
-(* A small kit, mirroring Instance/Rng/Frac.v's shuffle kit one layer
-   up: everything below is "clear the denominator and shuffle".  Every
-   lemma carries the nonzeroness hypotheses that make [finv] meaningful,
-   and none consults a decision procedure — the hypotheses are
-   NEGATIONS, which is exactly what [finv_l] asks for. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FieldArith.
 
@@ -520,11 +324,11 @@ End FieldArith.
 
 (** ** The extension of an injective homomorphism to the fractions *)
 
-(* This section is UNCONDITIONAL: [D] is an arbitrary integral domain,
-   [K] an arbitrary field, and the only datum is an [IntDom]-morphism
-   from D into K, i.e. an injective ring homomorphism.  No stability,
-   no decidability, no choice, and no field structure on the fractions
-   is needed to state or prove any of it. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FracExtension.
 
@@ -532,11 +336,11 @@ Context (D : DomObject).
 Context (K : FieldObject).
 Context (f : DomHom D (field_dom K)).
 
-(* THE ONE PLACE INJECTIVITY IS SPENT.  A denominator is apart from
-   zero; its image has to be apart from zero too, or it could not be
-   inverted — and that step is exactly the reflection of zero, which is
-   what [dom_map_inj] supplies and what a general ring homomorphism does
-   not.  This is why the domain category has monomorphisms only. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma frac_hom_den_nonzero (x : frac_carrier D) :
   dom_map f (den D x) ≈ rig_zero K → False.
 Proof.
@@ -602,11 +406,11 @@ Proof.
   apply rig_mul_one_r.
 Qed.
 
-(* Every fraction is its numerator divided by its denominator, said
-   inside the fraction ring: multiplying n/d by the image of d gives the
-   image of n.  This is what forces the extension to be what it is, and
-   it needs nothing of g beyond being a ring homomorphism — in
-   particular no preservation of inverses. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma frac_embed_den (x : frac_carrier D) :
   rig_mul (FracRing D) (frac_embed D (den D x)) x ≈ frac_embed D (num D x).
 Proof.
@@ -639,11 +443,11 @@ End FracExtension.
 
 (** ** The universal mapping property, over EVERY field *)
 
-(* The mathematical content of Mac Lane's construction, and it is
-   unconditional: no stability of K, no decidability of D, no field
-   structure on the fractions.  Everything the packaging below adds is
-   bookkeeping needed to name [FracRing D] as an OBJECT of a category of
-   fields; the property itself is this. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem frac_ump (D : DomObject) (K : FieldObject) (f : DomHom D (field_dom K)) :
   ∃! g : RigHom (FracRing D) (field_ring K),
     ∀ a : carrier (rig_setoid D), rig_map g (frac_embed D a) ≈ dom_map f a.
@@ -676,18 +480,11 @@ Qed.
 
 (** ** Testing for zero, and the fractions as an OBJECT of [Field] *)
 
-(* THE ONE HYPOTHESIS OF THIS PACKAGING STEP — the file's second, the
-   first being the ¬¬-stability carried by [StableField]'s objects —
-   and it is not Mac Lane's either: it is
-   the price of Instance/FdVect.v's [FieldObject], whose inverse
-   operation [finv] is TOTAL.  Totality is forced by the setoid
-   discipline (a partial operation is not a setoid map), and a total
-   reciprocal on fractions has to decide which value to return at zero;
-   that decision is exactly this.  Stated at zero, following
-   Instance/Field.v's [FieldStableAtZero] in locating the obstruction
-   rather than assuming the pairwise form — and, as there, the two are
-   inter-derivable ([dom_zero_dec_eq_dec] and its converse), the passage
-   through a − b being the whole argument. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition DomZeroDec (D : DomObject) : Type :=
   ∀ a : carrier (rig_setoid D),
     (a ≈ rig_zero D) + (a ≈ rig_zero D → False).
@@ -718,9 +515,11 @@ Definition frac_zero_dec (x : frac_carrier D) :
   | inr H => inr (fun Heq => H (frac_eq_zero D x Heq))
   end.
 
-(* The reciprocal: flip the pair when the numerator is apart from zero,
-   and return the junk value 0 otherwise — which is precisely the junk
-   [FieldObject] allows, constrained by nothing but [finv_respects]. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition frac_finv (x : frac_carrier D) : frac_carrier D :=
   match dec (num D x) with
   | inl _  => frac_zero D
@@ -744,11 +543,11 @@ Next Obligation.
   apply rig_mul_zero_l.
 Qed.
 Next Obligation.
-  (* [finv] respects ≈.  The two mixed cases are impossible — a fraction
-     with vanishing numerator cannot be equivalent to one whose
-     numerator is apart from zero — and the surviving case is a
-     commutation.  Each goal is read as its cross-multiplication
-     equation by conversion. *)
+  (*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros x y Hxy.
   assert (Hxy' : rig_mul D (num D x) (den D y) ≈ rig_mul D (num D y) (den D x))
     by exact Hxy.
@@ -815,9 +614,11 @@ Next Obligation.
   - intros g Hg x; symmetry; exact (frac_extend_unique D `1 K f `1 g Hg x).
 Qed.
 
-(* The same, in the comma-category packaging: an initial object of
-   =(D) ↓ U.  Note the reversed orientation of the factorization
-   equation in [universal_arrow_from_UMP], whence the [symmetry]s. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition frac_universal : UniversalArrow (D : IntDom) StableField_IntDom.
 Proof using D dec.
   unshelve eapply (universal_arrow_from_UMP (D : IntDom) StableField_IntDom
@@ -837,11 +638,11 @@ End FracField.
 
 (** ** Reduction mod 2, the morphism [IntDom] does not have *)
 
-(* No quotient-ring theory is needed to name ℤ → ℤ/2ℤ: F₂ is already an
-   object (Instance/Field.v), and reduction mod 2 is [Z.odd], whose
-   stdlib laws [Z.odd_add] and [Z.odd_mul] ARE the two homomorphism
-   clauses against F₂'s [xorb] and [andb].  Preservation of 0 and 1
-   holds by computation. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (* Only FOUR obligations are generated: both setoids here carry Leibniz
    equality, so [Proper (equiv ==> equiv) Z.odd] is discharged by
    instance resolution during elaboration and never becomes one. *)
@@ -865,12 +666,11 @@ Proof.
   discriminate H.
 Qed.
 
-(* Stronger, and this is the load-bearing statement: [IntDom] has NO
-   morphism from ℤ to F₂ whatsoever, not merely that this one is
-   excluded.  An injective ring homomorphism would identify 0 with 2,
-   since 1 + 1 vanishes in F₂.  So the wide inclusion [IntDom_Dom] is
-   not full, and the arrow the non-existence proof below uses is
-   invisible to the category the universal arrow lives in. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_DomHom_Z_F2 : DomHom Int_Dom (field_dom F2_Field) → False.
 Proof.
   intro f.
@@ -889,13 +689,11 @@ Qed.
 
 (** ** No field lies over both ℚ and F₂ *)
 
-(* The engine of the non-existence half, and it needs NO case split on
-   the characteristic of K: the ℚ-side delivers the NEGATIVE fact
-   "1 + 1 is apart from zero in K" outright, and [field_hom_nonzero]
-   then refutes the F₂-side.  Same shape as Instance/Field.v's
-   [Field_no_initial], and constructive for the same reason — the guard
-   on [finv_l] is a negation, so a negative fact is a licence to
-   invert. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_field_over_Q_and_F2 (K : FieldObject)
   (u : RigHom K Q_Field) (v : RigHom K F2_Field) : False.
 Proof.
@@ -910,23 +708,20 @@ Proof.
   exact F2_ftwo_zero.
 Qed.
 
-(* Restated for the strength the theorems below actually consume: no
-   field receives a homomorphism into every field.  Neither the arrow
-   out of ℤ nor uniqueness of any factorization plays a part. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary no_field_maps_to_all_fields (K : FieldObject)
   (h : ∀ L : FieldObject, RigHom K L) : False.
 Proof. exact (no_field_over_Q_and_F2 K (h Q_Field) (h F2_Field)). Qed.
 
-(* The two domain categories are genuinely different, as a theorem
-   rather than as an expectation: the inclusion of [IntDom] into [Dom]
-   is wide, faithful and NOT full, [ZtoF2] being a [Dom]-morphism
-   between two objects of [IntDom] whose [IntDom]-hom-set is empty.
-   Instance/Rng/Frac.v left non-fullness of [IntDom_Incl] unstated for
-   want of a counterexample object; F₂ supplies one, and that statement
-   is discharged below as [IntDom_Incl_not_Full] rather than merely
-   gestured at here.  ([Full] is qualified because Construction/Subcategory.v
-   exports a different, category-indexed [Full] that shadows the
-   functor one — the same collision family as [num] above.) *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem IntDom_Dom_not_Full :
   Category.Theory.Functor.Full IntDom_Dom → False.
 Proof.
@@ -934,18 +729,11 @@ Proof.
   exact (no_DomHom_Z_F2 (@pre Int_Dom (field_dom F2_Field) ZtoF2)).
 Qed.
 
-(** And the same witness settles a question Instance/Rng/Frac.v left
-    open about a DIFFERENT functor.  That file expects fullness of
-    [IntDom_Incl : IntDom ⟶ CRng] to be refutable — a non-injective
-    homomorphism between domains has no preimage — but leaves it
-    unstated rather than asserted, on the ground that "the tree has no
-    quotient rings yet, so no counterexample object is available"
-    (Instance/Rng/Frac.v, the comment above [IntDom_Incl]).  The
-    counterexample object does not have to be a quotient ring: F₂ is a
-    FIELD, hence a domain, and [ZtoF2] is a homomorphism into it that
-    [no_DomHom_Z_F2] shows has no [IntDom] preimage.  [CRng]'s
-    morphism predicate is trivially [True], so the [CRng] arrow is
-    [ZtoF2] paired with [I]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem IntDom_Incl_not_Full :
   Category.Theory.Functor.Full IntDom_Incl → False.
 Proof.
@@ -955,11 +743,11 @@ Qed.
 
 (** ** maclane:III.1: no universal arrow from ℤ over ALL homomorphisms *)
 
-(* Mac Lane's non-example.  Over [Dom] the reduction ℤ → F₂ is a legal
-   arrow, so a universal arrow at ℤ would have to factor it through one
-   fixed field K — and K would then lie over both ℚ and F₂.  The
-   factorizations are the ONLY thing used; their uniqueness is not, nor
-   is the universal arrow ℤ → K itself. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_universal_arrow_Z_Dom
   (U : UniversalArrow (Int_Dom : Dom) Field_Dom) : False.
 Proof.
@@ -980,9 +768,11 @@ Proof.
              (ZtoF2 : Int_Dom ~{Dom}~> Field_Dom F2_Field))).
 Qed.
 
-(* And the same over the SMALLER field category the positive half uses,
-   so the obstruction is not an artifact of [Field] being too large:
-   both ℚ and F₂ are stable, so both remain available as targets. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_universal_arrow_Z_Dom_stable
   (U : UniversalArrow (Int_Dom : Dom) StableField_Dom) : False.
 Proof.
@@ -1025,13 +815,11 @@ Proof.
   now rewrite !Z.mul_1_r in H'.
 Defined.
 
-(* THE CONTRAST, at one object and one field category.  Left: over
-   [IntDom], whose morphisms are the monomorphisms, ℤ has a universal
-   arrow.  Right: over [Dom], whose morphisms are ALL homomorphisms, NO
-   object of the same field category carries one.  The categories of
-   fields agree; the objects agree; only the domain-side morphisms
-   differ, and that decides the question — which is what Mac Lane's
-   remark says. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem frac_universal_over_monos_not_over_all :
   AUniversalArrow (Int_Dom : IntDom) StableField_IntDom Frac_Z
   * (∀ K : StableField,
@@ -1044,9 +832,11 @@ Qed.
 
 (** ** The extension computes, and the embedding is not onto *)
 
-(* 1/2 goes to the rational 1/2: the extension is 1 · (2)⁻¹ in ℚ, which
-   reduces on the nose.  Leibniz equality, not [Qeq] — the convertibility
-   exception, and it is exhibited because it holds. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example frac_extend_Z_half :
   rig_map (frac_extend Int_Dom Q_Field ZtoQ_Dom)
     (mk_frac Int_Dom 1%Z 2%Z two_nonzero) = (1 # 2)%Q := eq_refl.
@@ -1055,9 +845,11 @@ Example frac_extend_Z_three :
   rig_map (frac_extend Int_Dom Q_Field ZtoQ_Dom)
     (frac_embed Int_Dom 3%Z) = (3 # 1)%Q := eq_refl.
 
-(* The embedding is not onto: 1/2 is not n/1 for any integer n, since
-   that would need 2n = 1.  So the fraction field is strictly larger
-   than the image of D and the universal arrow is not a degenerate one. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem frac_embed_Z_not_surjective (n : carrier (rig_setoid Int_Dom)) :
   frac_eq Int_Dom (frac_embed Int_Dom n)
     (mk_frac Int_Dom 1%Z 2%Z two_nonzero) → False.

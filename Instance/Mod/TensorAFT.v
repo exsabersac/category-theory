@@ -168,10 +168,11 @@ Context (HN : IsLimitCone N).
 Definition bilin_sets_limit : IsLimitCone (FCone (RMod_Forget R) N) :=
   RMod_Forget_creates_continuous R J K N HN.
 
-(* Joint monicity of the legs on ELEMENTS, in the spelling the module laws
-   below present their goals in.  [slim_ext] states the same thing with
-   [cone_leg (FCone (RMod_Forget R) N) x]; the two are convertible, and
-   only this spelling is rewritable against [cmon_map_plus]. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma bilin_lim_ext (u v : carrier (cmon_setoid vertex_obj[N]))
   (H : ∀ x : J, cmon_map (rm_hom (cone_leg N x)) u
                   ≈ cmon_map (rm_hom (cone_leg N x)) v) : u ≈ v.
@@ -288,56 +289,22 @@ End BilinContinuity.
 (** ** 3A. [Prop] congruences on the term module: a solution set AT the
        carrier universe *)
 
-(* THE REPAIR OF THE WALL OF SECTION 2 OF THE HEADER, AND WHY IT WORKS.
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   Mac Lane's index is a sigma over the OBJECTS of [RMod R], which sit
-   strictly above its carriers; the theorem wants the index AT the carrier
-   universe (Structure/Complete.v's SIZE NOTE, item 2(b), is the authority
-   and is not restated).  What is built here is a DIFFERENT index for the
-   same job: the [Prop]-valued congruences on the term module [MTerm V V'].
-
-   Every field of [IsCongruence] is a [Prop], so the record is a [Prop] and
-   the sigma over it lands at the carrier universe -- item 1 of the SIZE
-   NOTE, read forwards rather than as an obstruction.  Measured, [About]
-   under [Set Printing Universes]:
-
-     CongIdx@{u u0 u1 u2 u3 u4} :
-       ∀ {R : RingObject@{u u0 u1}},
-       obj[RMod@{u2 u3 u u1 u0} R] → obj[RMod@{u2 u3 u u1 u0} R] → Type@{u4}
-     (* … Set < u2 / Set < u4 / u0 < u2 / u0 < u3 / u <= u2 / u0 <= u4 /
-          u1 <= u *)
-
-   [u0] is the ring's carrier universe and [RMod]'s hom universe; the ONLY
-   bound on the index [u4] is [u0 <= u4], so [u4 := u0] is expressible and
-   the theorem accepts the family.  Contrast [tensor_esols_direct], measured
-   in the same run: its index gives [ElementSolutionSet@{u12 u0 u16 u12}]
-   with [u0 < u12] -- strictly above.  That single inequality is the whole
-   wall and the whole repair.  The wall is not LIFTED; it is ROUTED AROUND.
-
-   THE ONE NEW SIDE CONDITION, stated here and not smoothed over:
-   [Set < carrier].  [Set+1] is the sort of [Prop], and identifying the
-   index universe with the ring's carrier universe therefore forces the
-   carrier strictly above [Set].  The conditional [tensor_via_AFT_of_esols]
-   below carries [Set < u0] and [Set < u11]; it does NOT carry [Set < u2],
-   the ring's carrier slot, and the unconditional form does.  In practice
-   it costs nothing -- Lib.v's [Unset Universe Minimization ToSet] keeps
-   carrier universes off [Set] -- but it is a real side condition, and it is
-   pinned as a probe in Test/ProbeModTensorAFT449.v beside the positive
-   control of its [Section SetPin].
-
-   [obj[RMod R]], NOT [RModObject R], in the section context: the quotient
-   must land at the SAME [RMod] universe instance as the ambient modules or
-   the two elaborations of [QMod] in [esol_obj] and [esol_elem] disagree. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CongruenceIndex.
 
 Context {R : RingObject}.
 Context (V V' : obj[RMod R]).
 
-(* A [Prop]-valued congruence on the term module.  [cg_gen] says the
-   congruence contains the term model's own relation, so a quotient by it
-   is a quotient OF the term model; the remaining four clauses say the
-   module operations descend. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record IsCongruence (Rq : MTerm V V' → MTerm V V' → Prop) : Prop := {
   cg_refl  : ∀ s, Rq s s;
   cg_sym   : ∀ s t, Rq s t → Rq t s;
@@ -373,12 +340,11 @@ Proof.
   - exact (cg_gen _ _ Rq HRq _ _ (mte_smul Hr (mt_refl s'))).
 Qed.
 
-(* THE QUOTIENT SETOID IS NAMED, and that is load-bearing.  Written inline,
-   [PropEquiv_of_relation]'s setoid argument is found by resolution, which
-   picks the AMBIENT [mt_Setoid] rather than the quotient's, and both
-   implications are then refused ("The term "h" has type "Rq f f0" while it
-   is expected to have type "f ≈ f0"").  Instance/Mod/Tensor.v gives
-   [mt_Setoid] by name for the same reason. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QMod_Setoid (Rq : MTerm V V' → MTerm V V' → Prop)
   (HRq : IsCongruence V V' Rq) : Setoid (MTerm V V') :=
   {| equiv := Rq
@@ -387,10 +353,11 @@ Definition QMod_Setoid (Rq : MTerm V V' → MTerm V V' → Prop)
         ; Equivalence_Symmetric  := cg_sym   _ _ Rq HRq
         ; Equivalence_Transitive := cg_trans _ _ Rq HRq |} |}.
 
-(* The quotient module: the term module's carrier and operations with the
-   congruence as its `≈`.  Every law is the term model's own law passed
-   through [cg_gen], and [cmon_prop] is the congruence being its own [Prop]
-   mirror -- the quotient's `≈` IS a [Prop] relation by construction. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QMod (Rq : MTerm V V' → MTerm V V' → Prop)
   (HRq : IsCongruence V V' Rq) : obj[RMod R] :=
   {| rm_ab := {|
@@ -429,11 +396,11 @@ Definition QMod_gen (Rq : MTerm V V' → MTerm V V' → Prop)
     (fun r v w => cg_gen _ _ Rq HRq _ _ (mte_sym (mte_act_l r v w)))
     (fun r v w => cg_gen _ _ Rq HRq _ _ (mte_sym (mte_act_r r v w))).
 
-(* THE ELEMENTARY TENSORS SPAN EVERY QUOTIENT.  This is Instance/Mod/
-   Spanning.v's [tensor_gen_spanning] verbatim, five cases with
-   [mt_neg] discharged by [smod_neg]: the carrier is the same [MTerm] and
-   [rbl_map (QMod_gen …)] is [mt_gen], so nothing about the congruence
-   enters the induction.  Section 10 consumes it. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem QMod_gen_spanning (Rq : MTerm V V' → MTerm V V' → Prop)
   (HRq : IsCongruence V V' Rq) : RBilinearSpanning (QMod_gen Rq HRq).
 Proof.
@@ -452,13 +419,11 @@ Arguments QMod {R V V'} Rq HRq.
 Arguments QMod_gen {R V V'} Rq HRq.
 Arguments QMod_gen_spanning {R V V'} Rq HRq.
 
-(* THE KERNEL CONGRUENCE OF A BILINEAR MAP, AND THE COVERING.
+(*
+   本节说明核/余核、来源与用途相关定义、性质与动机。
 
-   There is NO [PropEquiv] hypothesis anywhere below, and that single fact
-   is what turns the conditional of section 4 into a theorem: since the PR
-   "algebraic carriers are sets" (2026-09-17) [cmon_prop] is a FIELD of
-   [CMonObject] with [#[export] Existing Instance], so every [RModObject]
-   carries the [Prop] mirror of its own `≈`. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section KernelCongruence.
 
@@ -543,10 +508,11 @@ Proof.
   intro b; exact (mgen_preimage b (Hsp b)).
 Defined.
 
-(* ...and therefore an ISOMORPHISM of [RMod R], through
-   Instance/Mod/Spanning.v's [rmod_split].  This is the content of Mac
-   Lane's Lemma 2 at [RMod R]: every spanning codomain is (isomorphic to) a
-   quotient of ONE fixed object, the term module. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ker_iso (Hsp : RBilinearSpanning beta) :
   QMod ker_cong ker_cong_is_cong ≅ W.
 Proof.
@@ -568,19 +534,22 @@ Arguments ker_idx {R V V' W} beta.
 Arguments ker_med {R V V' W} beta.
 Arguments ker_iso {R V V' W} beta Hsp.
 
-(* THE OBJECT AND ELEMENT PARTS ARE NAMED, and that too is load-bearing.
-   Written inline, [esol_obj] and [esol_elem] each mint their OWN universe
-   instance of [QMod] and the record is refused, "RBilinear … (QMod@{a…} …)"
-   against "carrier (fobj[?K] (QMod@{b…} …))".  Naming them forces one. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QModOf {R : RingObject} {V V' : obj[RMod R]}
   (i : CongIdx V V') : obj[RMod R] := QMod (`1 i) (`2 i).
 
 Definition QModGenOf {R : RingObject} {V V' : obj[RMod R]}
   (i : CongIdx V V') : RBilinear V V' (QModOf i) := QMod_gen (`1 i) (`2 i).
 
-(* THE SOLUTION SET, AT THE CARRIER UNIVERSE.  The [{| … |}] form leaves the
-   functor [?K] open and is refused even with the two parts named; the
-   explicit [@Build_ElementSolutionSet (RMod R) (Bilin V V')] is required. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition tensor_esols_prop {R : RingObject} (V V' : obj[RMod R]) :
   ElementSolutionSet (Bilin V V').
 Proof.
@@ -593,28 +562,11 @@ Defined.
 
 (** ** 4. Mac Lane's Construction 1: the tensor product from the AFT *)
 
-(* Stated at TOP LEVEL, outside any [Section], for the reason
-   Adjunction/Representability/Sets.v gives: the comma-initial step
-   pins the hom AND proof universes of both categories to [Set], and inside
-   a section that has already elaborated a category with those levels apart
-   the ascription is refused.  The pin is measured in the header.
+(*
+   本节说明伴随、hom、始/终对象相关定义、性质与动机。
 
-   ALL THREE of Mac Lane's premises are now discharged here outright --
-   [RMod_Complete] ("K-Mod is small-complete"), [Bilin_PreservesImageLimit]
-   ("Bilin(A,B;-) is continuous") and [tensor_esols_prop] of section 3A (the
-   solution set).  CORRECTION, PR "algebraic carriers are sets"
-   (2026-09-17): until this commit the third stayed a hypothesis and this
-   comment said so.  [tensor_esols_direct] -- Mac Lane's OWN family, indexed
-   by a sigma over the objects of [RMod R] -- is still refused by the
-   theorem, and that refusal is NEGATIVE 1 of the probe and is unchanged;
-   what changed is that a DIFFERENT solution set for the same functor, at
-   the carrier universe, is now in tree.  Section 10 closes the circle by
-   proving Mac Lane's own family small up to isomorphism and feeding the
-   resizing.
-
-   THE CONDITIONAL IS NOT LOST.  [tensor_via_AFT_of_esols] is the old
-   [tensor_via_AFT], statement for statement; the unconditional
-   [tensor_via_AFT] is that constant at [tensor_esols_prop]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition tensor_via_AFT_of_esols {R : RingObject} (V V' : RModObject R)
   (E : ElementSolutionSet (Bilin V V')) : Representable (Bilin V V') :=
@@ -626,21 +578,11 @@ Definition tensor_via_AFT {R : RingObject} (V V' : obj[RMod R]) :
   Representable (Bilin V V') :=
   tensor_via_AFT_of_esols V V' (tensor_esols_prop V V').
 
-(* THE CIRCULAR DISCHARGE, KEPT FOR COMPARISON; A REMOVAL CANDIDATE FOR
-   JOHN.  A solution set at the universe the theorem demands, obtained from
-   the tensor product the theorem is meant to construct.  CIRCULAR, and
-   named so that the circularity is visible at every use site -- exactly
-   Instance/Grp/FreeAFT.v's [Grp_Forget_solution_set_from_adjunction], which
-   existed for the same reason and is disclosed the same way.
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
 
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17): its stated
-   role was "to show the conditional above is not vacuous", and that role is
-   GONE -- [tensor_esols_prop] discharges the hypothesis non-circularly.  It
-   is kept, not deleted, because NEGATIVE 6 of
-   Test/ProbeModTensorAFT449.v and [tensor_via_AFT_from_tensor] are
-   statements ABOUT it, and because removing working code is John's call and
-   not this commit's.  What it now is, is the comparison: the two solution
-   sets are different terms for the same functor, and the probe pins that. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition tensor_esols_from_tensor {R : RingObject} (V V' : RModObject R) :
   ElementSolutionSet (Bilin V V').
 Proof.
@@ -667,11 +609,11 @@ Example tensor_repr_of_UE_obj {R : RingObject} (V V' : RModObject R) :
   @repr_obj (RMod R) (Bilin V V') (tensor_repr_of_UE V V') = TensorMod V V'
   := eq_refl.
 
-(* The object comparison is `≅`, NOT [eq_refl]: the AFT builds its object
-   as a limit inside the comma category, [TensorMod] is a quotient of
-   formal terms.  The statement holds for EVERY solution set, so nothing
-   here depends on which one is supplied -- which is why the conditional
-   form is kept beside the unconditional one rather than replaced by it. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition tensor_AFT_iso_of_esols {R : RingObject} (V V' : RModObject R)
   (E : ElementSolutionSet (Bilin V V')) :
   @repr_obj (RMod R) (Bilin V V') (tensor_via_AFT_of_esols V V' E)
@@ -700,19 +642,11 @@ Definition tensor_AFT_ue {R : RingObject} (V V' : obj[RMod R]) :
   UniversalElement (Bilin V V') :=
   tensor_AFT_ue_of_esols V V' (tensor_esols_prop V V').
 
-(* The issue's verification name.  [module_tensor_universal V V'] is the
-   universal element the adjoint functor theorem produces -- an alias of
-   [tensor_AFT_ue], so that the name the issue asks to audit resolves to
-   the delivered constant.
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17): this comment
-   read "it inherits the conditional shape and the [Set] pin of
-   [tensor_via_AFT]".  Both clauses are now false of the name as it stands.
-   The conditional shape is [module_tensor_universal_of_esols], which is the
-   old constant statement for statement; the [Set] pin went with the
-   annotation of [DiscreteCat_Functor] in the same PR.  What the
-   unconditional form DOES carry is the new [Set < carrier] side condition
-   of section 3A. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition module_tensor_universal_of_esols {R : RingObject}
   (V V' : RModObject R) (E : ElementSolutionSet (Bilin V V')) :
   UniversalElement (Bilin V V') :=
@@ -746,11 +680,11 @@ Definition tensor_AFT_elem_unique {R : RingObject} (V V' : RModObject R)
     (AUniversalElement_of_UniversalElement (tensor_AFT_ue_of_esols V V' E))
     (tensor_universal_element V V').
 
-(* The two comparisons agree, and the AFT's universal bilinear map carried
-   along the REPRESENTATION-level isomorphism is [tensor_gen] itself.  The
-   argument is naturality of the representation followed by
-   [repr_induced_compatible] at the identity; nothing about the solution set
-   enters. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem tensor_AFT_iso_carries_elem {R : RingObject} (V V' : RModObject R)
   (E : ElementSolutionSet (Bilin V V')) :
   fmap[Bilin V V'] (to (tensor_AFT_iso_of_esols V V' E))
@@ -779,16 +713,11 @@ Proof.
       exact (@fmap_id _ _ (Bilin V V') (TensorMod V V') (@tensor_gen R V V')).
 Qed.
 
-(* STATEMENT CHANGE, recorded (the PR "algebraic carriers are sets",
-   2026-09-17).  The right-hand side of this equation read
-   [tensor_AFT_iso V V' E] before that PR.  It is the ONE forced rename:
-   [tensor_AFT_iso] no longer takes a solution set, and the [E]-taking
-   isomorphism is [tensor_AFT_iso_of_esols], which is the old
-   [tensor_AFT_iso] verbatim.  Nothing else about the theorem moved -- same
-   name, same binders, same proof -- and the same note applies to
-   [bal_AFT_isos_agree].  An earlier report said the nine
-   [E]-taking constants kept "their exact statements"; these two did not,
-   and the correction is recorded here rather than in that report. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem tensor_AFT_isos_agree {R : RingObject} (V V' : RModObject R)
   (E : ElementSolutionSet (Bilin V V')) :
   tensor_AFT_elem_iso V V' E ≈ tensor_AFT_iso_of_esols V V' E.
@@ -1021,21 +950,11 @@ End BalContinuity.
 
 (** ** 7A. Exercise 3's congruence index: [Prop] congruences on [bsum] *)
 
-(* Section 3A over [Ab], one clause shorter: the balanced tensor is an
-   abelian group, not a module, so there is no scalar congruence clause.
-   Everything else transposes: the term type is Instance/Mod/Bimodule.v's
-   [bsum] (whose relation [bs_eq] is already a [Prop] inductive), the
-   quotient is an [AbObject] with the congruence as its `≈` and its own
-   [Prop] mirror as [cmon_prop], and the covering is the kernel congruence
-   of [bal_med_fun].
+(*
+   本节说明核/余核相关定义、性质与动机。
 
-   WHAT DOES NOT TRANSPOSE, and is stated here rather than discovered
-   later: section 10's Lemma-2 theorem is about [RMod R] only.  The [Ab]
-   spanning vocabulary of section 9 ([ABGenSub], [AbImageSub], [ab_split],
-   [abg_subobj]) has no counterpart of [mgen_preimage], so nothing below
-   claims [bal_esols_direct] is small up to isomorphism.  Exercise 3 gets
-   the unconditional representation and NOT the book-faithful second
-   route. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BalCongruenceIndex.
 
@@ -1192,13 +1111,11 @@ Defined.
 
 (** ** 8. Exercise 3: the balanced tensor from the AFT, and the comparison *)
 
-(* Top level again, for the same [Set] pin.
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
 
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17): the
-   conditional is now named [bal_tensor_via_AFT_of_esols] and
-   [bal_tensor_via_AFT] is unconditional, at [bal_esols_prop] of section
-   7A.  No statement was weakened: the conditional is the old constant
-   statement for statement. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition bal_tensor_via_AFT_of_esols {X : RingObject}
   (N : RModObject (Ring_op X)) (M : RModObject X)
@@ -1211,13 +1128,11 @@ Definition bal_tensor_via_AFT {X : RingObject} (N : RModObject (Ring_op X))
   (M : RModObject X) : Representable (BalBiadd N M) :=
   bal_tensor_via_AFT_of_esols N M (bal_esols_prop N M).
 
-(* THE CIRCULAR DISCHARGE, KEPT FOR COMPARISON; A REMOVAL CANDIDATE FOR
-   JOHN.  Circular as at [RMod R]: a solution set at the universe the
-   theorem demands, read off the balanced tensor the theorem is meant to
-   build.  CORRECTION, PR "algebraic carriers are sets" (2026-09-17): its
-   stated role, "to show the conditional above is not vacuous", is gone --
-   [bal_esols_prop] discharges the hypothesis non-circularly.  Kept, not
-   deleted, on the same footing as [tensor_esols_from_tensor]. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition bal_esols_from_tensor {X : RingObject}
   (N : RModObject (Ring_op X)) (M : RModObject X) :
   ElementSolutionSet (BalBiadd N M).
@@ -1319,9 +1234,11 @@ Proof.
       exact (@fmap_id _ _ (BalBiadd N M) (BalTensor N M) (@bal_gen X N M)).
 Qed.
 
-(* STATEMENT CHANGE, recorded: the right-hand side read [bal_AFT_iso N M E]
-   before the PR "algebraic carriers are sets" (2026-09-17).  The note at
-   [tensor_AFT_isos_agree] above gives the reason; this is its twin. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem bal_AFT_isos_agree {X : RingObject} (N : RModObject (Ring_op X))
   (M : RModObject X) (E : ElementSolutionSet (BalBiadd N M)) :
   bal_AFT_elem_iso N M E ≈ bal_AFT_iso_of_esols N M E.
@@ -1380,9 +1297,11 @@ Next Obligation.
   rewrite (ab_map_neg f); now rewrite Hx.
 Qed.
 
-(* A bijective homomorphism of abelian groups splits.  The section is not
-   canonical -- it picks the preimage the surjectivity datum carries -- and
-   each law is injectivity applied to the witness equation. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ab_split {A B : AbObject} (f : A ~{Ab}~> B)
   (Hi : AbInjective f) (Hs : AbSurjective f) : B ~{Ab}~> A := {|
   cmon_map := {| morphism := fun b => `1 (Hs b) |}
@@ -1434,10 +1353,11 @@ Proof using All.
   rewrite (Hβ n mm); exact Hnm.
 Defined.
 
-(* Elementwise spanning implies Mac Lane's categorical form, over [Ab].
-   Same argument as Instance/Mod/Spanning.v's
-   [rbilinear_spanning_to_spanning], with [ABGen] for [MGen] and
-   [AbImageSub] for [ImageSubmod]. *)
+(*
+   本节说明 TensorAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem bal_spanning_to_spanning (H : BalSpanning N M β) :
   Spanning (BalBiadd N M) (global_element (X := BalBiadd N M A) β).
 Proof using All.
@@ -1532,46 +1452,11 @@ Example bal_esols_direct_elem {X : RingObject} (N : RModObject (Ring_op X))
 
 (** ** 10. MAC LANE §V.7 LEMMA 2 AS A THEOREM AT [RMod R] *)
 
-(* WHAT THIS SECTION DISCHARGES, AND WHAT IT DOES NOT.
+(*
+   本节说明同构相关定义、性质与动机。
 
-   Mac Lane's Lemma 2 (book p. 128, catalog id `maclane:V.7:lem2`) is the
-   step that turns his covering family into a SET: the spanning codomains
-   are quotients of one fixed object, so a small family of representatives
-   UP TO ISOMORPHISM suffices.  Section 2's [tensor_esols_direct] is the
-   covering family and section 3A gives the fixed object -- the term module
-   -- together with the quotients.  Putting the two together proves the
-   lemma at [RMod R], as [SmallUpToIso] of Adjunction/GAFT/Resize.v, and
-   feeding the resizing to [representability_theorem] gives a SECOND,
-   book-faithful route to the same representation.
-
-   SCOPE, because "Lemma 2 is discharged" is easy to over-read.  What is
-   discharged is the SMALLNESS premise.  It is NOT
-   [GAFT_from_spanning]'s hypotheses, which are [HasWidePullbacks A] and
-   [PreservesWidePullbacks G]; the first is still universe-refused at
-   [RMod R] (Instance/Mod/Spanning.v), and the widening of
-   Adjunction/SpanningArrow.v's [Section GAFTFromSpanning] in this same PR
-   does not reach it either (that file's header measures the surviving
-   refusal).  [GAFT_from_spanning] is not reachable at [RMod R] by this
-   work, and NOT DELIVERED (2) of the header stands.
-
-   THE THREE PIECES.
-
-   (1) [si_to] is [cong_spanning_arrow]: every congruence quotient, with
-   its canonical bilinear map, IS a spanning arrow.  The spanning proof is
-   [QMod_gen_spanning] of section 3A.
-
-   (2) [si_rep] is the interesting half.  At a spanning arrow [(W; (g; sp))]
-   with [β := g ttt], the representative is [ker_idx β], and [ker_med β] is
-   an ISOMORPHISM -- injective because the congruence IS the kernel pair,
-   surjective because [β] spans.
-
-   (3) The arrow clause is [reflexivity] after destructing the singleton.
-
-   ONE TRAP, worth the line.  [sp : Spanning (Bilin V V') g] is NOT
-   [Spanning (Bilin V V') (global_element (g ttt))]: eta on the singleton
-   is not definitional.  The transport is Adjunction/SpanningArrow.v's
-   [spanning_respects], with [g ≈ global_element (g ttt)] proved by
-   destructing the singleton. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cong_spanning_arrow {R : RingObject} {V V' : obj[RMod R]}
   (i : CongIdx V V') : SpanningArrowsOutOf (Bilin V V') SetsOne :=

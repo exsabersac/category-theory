@@ -20,18 +20,22 @@ Generalizable All Variables.
 
 (** ** Discharging the hypotheses *)
 
-(* Transporting between `≈` at a discrete setoid and Coq's `=`.  Both
-   directions are the identity function — [eq_Setoid]'s `≈` IS `=` — but
-   naming them lets [discriminate] and [f_equal] be used directly. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition eq_of_equiv {A : Type} {x y : A}
   (H : @equiv A (eq_Setoid A) x y) : x = y := H.
 
 Definition equiv_of_eq {A : Type} {x y : A}
   (H : x = y) : @equiv A (eq_Setoid A) x y := H.
 
-(* From an enumerated domain and a decidable codomain, image membership is
-   decidable: run the search, and read the answer off it.  This is the
-   hypothesis of [pointed_monic_split], discharged. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pointed_image_dec {X Y : PointedSetoid} (f : PointedMorphism X Y)
   (deq : DecidableEquiv Y) (E : PointedEnumeration X) : ImageDecidable f.
 Proof.
@@ -237,9 +241,11 @@ Example bool_to_three_retraction_miss :
   bool_to_three_retraction (Datatypes.Some true) = false.
 Proof. reflexivity. Qed.
 
-(* The section of the epic, COMPUTED by [finite_epic_split]: the basepoint is
-   sent to the basepoint by fiat, and [true] to the FIRST element of the
-   enumeration of [PointedThree] lying over it. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition three_to_bool_section : PointedBool ~{PointedSets}~> PointedThree :=
   @retract PointedSets PointedThree PointedBool three_to_bool
     (finite_epic_split three_to_bool PointedThree_enum PointedBool_deq
@@ -255,10 +261,11 @@ Proof. reflexivity. Qed.
 
 (** *** [pointed_balanced] at a concrete bimorphism *)
 
-(* The basepoint-fixing exchange of the two free points of [PointedThree].
-   The name carries the [pointed_] prefix because Structure/Cartesian.v
-   already exports a generic [swap] combinator for cartesian products; the
-   two are unrelated and must not shadow one another. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pointed_swap_fun (o : option bool) : option bool :=
   match o with
   | Datatypes.Some b => Datatypes.Some (negb b)

@@ -31,12 +31,11 @@ Generalizable All Variables.
 
 (** ** Joint monicity of a family of product projections *)
 
-(* Two morphisms into an indexed product that agree after every projection
-   are equal.  This is the only place [HasIndexedProducts D] is spent below:
-   every functor law and every naturality square of the pointwise product is
-   "compose with the projections and compute" through it.  It is stated for
-   the elementary [IsIndexedProduct] record, so it applies equally to a
-   product harvested from the class. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma iprod_jointly_monic {C : Category} {A : Type} (f : A → C)
   (p : C) (proj : ∀ a : A, p ~> f a)
   (HP : IsIndexedProduct f p proj)
@@ -55,10 +54,11 @@ Qed.
 
 (** ** The constant functor, and the terminal functor *)
 
-(* The constant functor at [d]: every object goes to [d], every morphism to
-   [id].  Written as an explicit record literal, rather than as a [Program
-   Definition] in a [Section], so that its universe binders can be spelled
-   out and C's hom and proof universes stay apart; see the header. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Constant_Functor@{co ch cp dro dh dp}
   {C : Category@{co ch cp}} {D : Category@{dro dh dp}} (d : D) : C ⟶ D :=
   {| fobj          := fun _ => d
@@ -74,9 +74,11 @@ Definition Constant_Terminal_Functor@{co ch cp dro dh}
   (T : @Terminal D) : C ⟶ D :=
   Constant_Functor@{co ch cp dro dh dh} (@terminal_obj D T).
 
-(* Mac Lane §III.5 Ex 5, nullary case.  The unique arrow [F ⟹ 1] has the
-   unique arrow of D at every component; all three obligations -- the two
-   naturality orientations and uniqueness -- are [one_unique]. *)
+(*
+   本节说明 Terminal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Functor_Category_Terminal {C D : Category}
   (T : @Terminal D) : @Terminal ([C, D]) := {|
@@ -233,9 +235,11 @@ Qed.
 
 End FunIndexedProducts.
 
-(* Mac Lane §III.5 Ex 5, the substantial case, packaged with the class's own
-   constructor from exactly the elementary datum above.  Deliberately a plain
-   [Definition] rather than an [Instance]; see the header. *)
+(*
+   本节说明 Terminal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Fun_HasIndexedProducts {C D : Category}
   (HP : @HasIndexedProducts D) : @HasIndexedProducts ([C, D]) :=
   @Build_HasIndexedProducts ([C, D])
@@ -351,10 +355,11 @@ Example ctl_bool_iprod_obj :
     = indexed_product (fun b : bool => fobj[@bool_fam ([C, D]) F G b] c)
   := eq_refl.
 
-(* NEGATIVE (conversion): it is NOT the pointwise binary product.  The two
-   are related by [Fun_bool_iprod_iso] and by nothing stronger, because
-   [HasIndexedProducts D] and [Cartesian D] choose their objects
-   independently. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example bool_iprod_is_binary_product :
   fobj[Fun_iprod HP (@bool_fam ([C, D]) F G)] c
     = fobj[@product_obj ([C, D]) (Functor_Category_Cartesian C D CD) F G] c
@@ -384,10 +389,11 @@ Example constant_functor_diagonal_obj :
 Example constant_functor_diagonal_fmap (f : c ~> c) :
   fmap[@Constant_Functor C D d] f = fmap[fobj[@Diagonal D C] d] f := eq_refl.
 
-(* NEGATIVE (conversion): the two functor RECORDS are not the same term.
-   [Diagonal] is a [Program Instance], so its three law fields are opaque
-   obligation constants, while [Constant_Functor] supplies them as explicit
-   terms. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example constant_functor_is_diagonal :
   @Constant_Functor C D d = fobj[@Diagonal D C] d := eq_refl.
 
@@ -414,10 +420,11 @@ Program Definition two_pick (b : bool) :
   transform := fun _ => {| morphism := fun _ => b |}
 |}.
 
-(* Non-degeneracy of the terminal object: arrows OUT of the terminal functor
-   are unique, arrows INTO a functor are not.  So [_2, Sets] is not
-   collapsed, and terminality is a real constraint rather than a
-   consequence of every hom-setoid being a singleton. *)
+(*
+   本节说明函子、hom、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem two_pick_distinct : two_pick true ≈ two_pick false → False.
 Proof.
   intros Heq.
@@ -459,10 +466,11 @@ Example two_bool_proj_computes (b : bool) :
     (@indexed_product_proj ([_2, Sets]) Two_Sets_HasIndexedProducts
        bool two_bool_fam b) TwoX two_all_true = true := eq_refl.
 
-(* The universal property is exercised, and its mediator COMPUTES.  The
-   competing family is [two_pick], whose component at [b] picks [b]; the
-   induced map into the product therefore sends [ttt] to the identity
-   function on [bool]. *)
+(*
+   本节说明 Terminal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition two_pick_family (b : bool) :
   @terminal_obj ([_2, Sets]) Two_Sets_Terminal ⟹ two_bool_fam b :=
   two_pick b.
@@ -503,10 +511,11 @@ Program Definition terminal_empty_IsIndexedProduct {C : Category}
 Next Obligation. destruct (Hempty a). Qed.
 Next Obligation. apply one_unique. Qed.
 
-(* Over an empty index the pointwise indexed product IS the terminal functor,
-   canonically.  This is an isomorphism and nothing stronger: the empty
-   [indexed_product] of [D] is whatever [HasIndexedProducts D] chose, and
-   nothing forces that choice to be [terminal_obj]. *)
+(*
+   本节说明函子、同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Fun_empty_iprod_terminal {C D : Category}
   (HP : @HasIndexedProducts D) (T : @Terminal D)
   {A : Type} (Hempty : A → False) (F : A → (C ⟶ D)) :

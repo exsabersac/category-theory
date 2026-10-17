@@ -67,10 +67,11 @@ Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 
 (* The one-element ring: every operation returns the point.  In a ring
    with 0 ≈ 1 every element is 0, and this is it. *)
-(* The carrier setoid is NAMED rather than written inline inside [Zero_Rig]:
-   [rig_prop] below has to mention the setoid it is a [PropEquiv] of, and
-   inside a [Program] record literal that setoid is still an evar when the
-   field is elaborated, so the two implications cannot be checked. *)
+(*
+   本节说明 Rng 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition zero_rig_setoid : SetoidObject := {|
   carrier := poly_unit
   ; is_setoid := {| Setoid.equiv := fun _ _ => True
@@ -213,11 +214,11 @@ Proof.
   now rewrite rig_add_zero_l.
 Qed.
 
-(* A Type-valued Peano recursor for ℤ, assembled from the positive one:
-   the stdlib's [Z.peano_ind] eliminates only into [Prop], and the goals
-   below are ≈-valued (Type).  The successor/predecessor conversions are
-   definitional: [Z.succ (Zpos q)] computes to [Zpos (q + 1)] and
-   [Pos.add q 1] to [Pos.succ q], dually on the negatives. *)
+(*
+   本节说明 Rng 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Z_peano_rect (P : Z → Type)
   (H0 : P 0%Z)
   (HS : ∀ z, P z → P (Z.succ z))
@@ -523,11 +524,11 @@ Proof.
   - exact Hinv.
 Qed.
 
-(* ...and it is not surjective: 1/2 has no preimage, since inject_Z z
-   ≈ 1/2 would force 2·z = 1 in ℤ.  Stated with the PROPOSITIONAL
-   existential — the strongest form: refuting mere existence also
-   refutes the library's data-valued ∃ (the corollary below), which is
-   the exact negation of [rng_surjective_epic]'s hypothesis shape. *)
+(*
+   本节说明 Rng 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ZtoQ_not_surjective :
   (∀ q : Q, exists z : Z, inject_Z z == q)%Q → False.
 Proof.

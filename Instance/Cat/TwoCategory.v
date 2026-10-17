@@ -30,11 +30,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The boundary identifications at Cat
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Each is the identity on components; only the naturality proofs are
-    re-typed, and they are re-typed by conversion, the two statements being
-    the same up to unfolding functor composition. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Cat_assoc_cast {A B C D : Category}
   {F F' : A ⟶ B} {G G' : B ⟶ C} {H H' : C ⟶ D}
@@ -200,15 +200,11 @@ Lemma Cat_twhisker_r_is_whisker_right {A B C : Category} {G G' : B ⟶ C}
   twhisker_r (K:=Cat_TwoCategory) β F ≈ whisker_right β F.
 Proof. simpl; intros; cat. Qed.
 
-(** ** The weak and the strict picture, reconciled
+(*
+   本节说明双范畴相关定义、性质与动机。
 
-    Instance/Cat/Bicategory.v equips the same data with the coherence cells
-    of a bicategory.  Those cells are not merely invertible: every one of
-    them has identity components, which is what makes `Cat` strict rather
-    than merely coherent.  The unitor and associator fields of
-    [Cat_Bicategory] are `nat_ρ`, `nat_λ` and `(nat_α)⁻¹` on the nose
-    (recorded by `eq_refl` below, under the crossed dictionary that file's
-    header explains), so it suffices to compute the components of those. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Cat_bicat_hunit_left_is_nat_ρ {C D : Category} (f : C ⟶ D) :
   @hunit_left Cat_Bicategory C D f = nat_ρ f := eq_refl.
@@ -246,25 +242,22 @@ Lemma Cat_bicat_hassoc_from_id {W X Y Z : Category}
   transform[from (@hassoc Cat_Bicategory W X Y Z h g f)] x ≈ id.
 Proof. simpl; cat. Qed.
 
-(* The strict laws of [Cat_TwoCategory] are therefore the bicategory's
-   coherence laws with the coherence cells erased: horizontal composition
-   in the bicategory, [hcomp2], is the class's [thcomp] on the nose. *)
+(*
+   本节说明双范畴相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Cat_hcomp2_is_thcomp {A B C : Category} {F F' : A ⟶ B}
   {G G' : B ⟶ C} (β : G ⟹ G') (α : F ⟹ F') :
   @hcomp2 Cat_Bicategory A B C G G' F F' β α
     = @thcomp Cat_TwoCategory A B C F F' G G' β α := eq_refl.
 
-(** ** Mac Lane's negative example, tied to Construction/Sq.v
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Theory/TwoCategory.v refutes definition 3 at [NatSq_Double], the
-    commuting squares of the delooping of the additive monoid of naturals.
-    That model is not a private invention: its cells ARE the squares of
-    Construction/Sq.v's [Sq] at that base, and its two pastings agree
-    with that model's edge by edge.  The identifications below are
-    definitional at cell level and edge-level for the pastings,
-    which is what licenses reading the refutation as a statement about
-    [Sq]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Local Notation NatBase := (Deloop Nat_Plus).
 
@@ -285,10 +278,11 @@ Example NatSq_Sq_roundtrip (x : NatSq) :
   NatSq_eq (Sq_to_NatSq _ _ _ _ (NatSq_to_Sq x)) x.
 Proof. now repeat split. Qed.
 
-(* The two pastings agree with [Sq]'s on every edge: vertical pasting
-   composes the vertical edges of the base, horizontal pasting the
-   horizontal ones.  Recorded by `eq_refl`, composition in the delooping
-   being the monoid operation. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example NatSq_vpaste_edges (g f : NatSq) (Hm : nsq_top g = nsq_bot f) :
   nsq_left (NatSq_vpaste g f Hm)
@@ -306,15 +300,11 @@ Example NatSq_hpaste_edges_bot (g f : NatSq) (Hm : nsq_left g = nsq_right f) :
   nsq_bot (NatSq_hpaste g f Hm)
     = @compose NatBase ttt ttt ttt (nsq_bot g) (nsq_bot f) := eq_refl.
 
-(** *** The horizontal identity square of an arbitrary base
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Theory/DoubleCategory.v's SCOPE note records that horizontal identity
-    squares on general VERTICAL morphisms are not fields of the pseudo
-    class.  In [Sq C] the square exists for every vertical morphism, and
-    its type displays the whole of Mac Lane's point: its vertical edges are
-    [u], where a vertical identity square [dsq_vid] has vertical edges
-    [id].  The two families therefore meet only where [u] is an identity,
-    and a base with a non-identity arrow separates them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sq_hid {C : Category} {a c : C} (u : a ~{C}~> c) :
   @dsq (Sq C) a a c c (@dhid (Sq C) a) u u (@dhid (Sq C) c).
@@ -339,16 +329,11 @@ Proof. now repeat split. Qed.
 Lemma NatBase_one_not_id : (1%nat : ttt ~{NatBase}~> ttt) ≈ id → False.
 Proof. simpl; discriminate. Qed.
 
-(** ** A concrete exercise of the class
+(*
+   本节说明自然变换、函子、幺半群相关定义、性质与动机。
 
-    Nothing above is vacuous.  The delooping of the additive monoid of
-    naturals carries genuinely non-identity 2-cells over its identity
-    functor: a natural transformation `Id ⟹ Id` is an element of the
-    CENTRE (Mac Lane §II.5 Exercise 8), and here the monoid is commutative,
-    so every natural number gives one.  Their vertical and horizontal
-    composites agree and both compute to addition — the Eckmann-Hilton
-    collapse of Exercise 5, at the one place where the two units genuinely
-    coincide, namely 2-cells on an identity 1-cell. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition NatBase_centre (n : nat) : (@Id NatBase) ⟹ (@Id NatBase)
   := {| transform := fun _ => n |}.

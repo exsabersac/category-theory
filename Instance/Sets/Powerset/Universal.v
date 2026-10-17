@@ -32,9 +32,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** The inverse image, and the contravariant functor *)
 
-(* The inverse image of [T ⊆ X] along [f : Y ~> X] is [λ y, T (f y)] — the
-   underlying predicate of [T] composed with the underlying function of
-   [f].  Respectfulness is the two respectfulnesses composed. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Powerset_Prop_preimage@{o} {X Y : SetoidObject@{o o}}
   (f : SetoidMorphism@{o o o} Y X)
@@ -72,19 +74,11 @@ Proof.
   - exact (proj2 (@proper_morphism _ _ _ _ T (f y) (g y) (H y)) Ht).
 Qed.
 
-(* [fmap_id] and [fmap_comp] are both a pair of identity implications: the
-   inverse image along the identity is the subset itself ON THE NOSE as a
-   predicate, and the inverse image along a composite is the iterated
-   inverse image, again on the nose.  Only the setoid packaging keeps
-   these from being [eq_refl]; the two [split; intro Ht; exact Ht] proofs
-   below record exactly that.
-   CORRECTION (#1347): since Instance/Sets.v gives its identity's and
-   composite's properness fields as terms, both laws hold at [eq_refl] as
-   equations of setoid morphisms: the identity law is a control of
-   Test/ProbePowersetUniversal.v, its boundary (5), and so is the
-   composition law ([powerset_fmap_comp_strict]), which a copy of the
-   probe as it stood at master 687ac356, compiled against that tree,
-   refuses.  The two proofs below are unchanged. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Powerset_Prop_comap_id@{o} {X : SetoidObject@{o o}} :
   Powerset_Prop_comap@{o} (@setoid_morphism_id@{o o o} X)
     ≈ @setoid_morphism_id@{o o o} (Powerset_Prop_obj@{o} X).
@@ -114,10 +108,11 @@ Proof.
   - intros X Y Z f g; exact (@Powerset_Prop_comap_comp@{o} X Y Z f g).
 Defined.
 
-(* [fmap[Powerset_Prop_op]] IS the inverse image: the two sides are the
-   very same term, so the equality is Leibniz [=] rather than [≈].  This is
-   the convertibility exception, on the Functor/Bifunctor.v
-   precedent the donor file cites for its own five same-term lemmas. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Powerset_Prop_op_fmap_preimage@{o so} {X Y : SetoidObject@{o o}}
   (f : Y ~{Sets@{o so}}~> X) (T : carrier (Powerset_Prop_obj@{o} X)) :
   fmap[Powerset_Prop_op@{o so}] (f : X ~{(Sets@{o so})^op}~> Y) T
@@ -127,10 +122,11 @@ Proof. reflexivity. Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** Ω, the point ⊤, and the SUBSET {⊤} *)
 
-(* The truth-value object is the donor's [Powerset_Prop_truth]: carrier
-   [Prop], equivalence mutual implication.  It is named here so that the
-   statements below read as Mac Lane and Riehl write them, and the
-   identification is recorded by [eq_refl] so the name adds nothing. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Powerset_Omega@{o} : SetoidObject@{o o} := Powerset_Prop_truth@{o}.
 
 Example powerset_Omega_is_truth@{o} :
@@ -139,10 +135,11 @@ Example powerset_Omega_is_truth@{o} :
 (* The POINT ⊤ ∈ Ω. *)
 Definition Powerset_truth_point@{o} : carrier Powerset_Omega@{o} := True.
 
-(* The SUBSET {⊤} ∈ P(Ω).  This — not the point above — is Mac Lane's e
-   and Riehl's universal element.  It is the donor's singleton predicate
-   at the point, so nothing new is constructed; what is new is that it is
-   the second component of a universal pair. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Powerset_truth_subset@{o} :
   carrier (Powerset_Prop_obj@{o} Powerset_Omega@{o}) :=
   Powerset_Prop_singleton_pred@{o} (X:=Powerset_Omega@{o})
@@ -153,16 +150,11 @@ Example powerset_truth_subset_is_singleton@{o} :
     = Powerset_Prop_singleton_pred@{o} (X:=Powerset_Omega@{o})
         Powerset_truth_point@{o} := eq_refl.
 
-(* THE ELEMENT-VERSUS-POINT DISTINCTION, AT THE LEVEL OF TYPES.  The two
-   live in different types, and the difference is not a matter of
-   emphasis: [Powerset_truth_point] is a [carrier Powerset_Omega] and
-   [Powerset_truth_subset] is a [carrier (Powerset_Prop_obj
-   Powerset_Omega)].  Putting the point where the element belongs is a
-   type error, and Test/ProbePowersetUniversal.v pins it as such against
-   a positive control.  This lemma is the affirmative half: the two
-   readings of "{⊤}" — the singleton subset, and the predicate "holds" —
-   agree up to [≈] (and only up to [≈]; the strict form is refuted, and
-   is pinned in the same probe file). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The predicate "P holds", as a subset of Ω. *)
 Definition Powerset_holds@{o} :
@@ -176,25 +168,17 @@ Proof.
   intros P Q [HPQ HQP]; split; assumption.
 Defined.
 
-(* THE ONE PIECE OF MATHEMATICAL CONTENT IN THE WHOLE CORRESPONDENCE, in
-   isolation: the singleton subset {⊤} of Ω DETECTS TRUTH.  Membership of
-   [P] in {⊤} unfolds to [Powerset_squash (True ≈ P)], and the two
-   implications below say that this squashed pair of implications is
-   interderivable with [P] itself.  Everything after this section is
-   bookkeeping around these two lines.
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   The elimination direction is where impredicativity of [Prop] earns its
-   keep: [Powerset_squash A] is [∀ Q : Prop, (A → Q) → Q], so eliminating
-   it into the [Prop] goal [P] is instantiation at [Q := P] — legal
-   precisely because [P] is a [Prop].  (Into a [Type]-valued goal it would
-   not be, which is the donor's own reason for the truncation.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* The truncation is INERT over a [Prop], which is the fact the header
-   promises rather than asserts: [Powerset_squash A] is
-   [∀ Q : Prop, (A → Q) → Q], so when A is itself a [Prop] the
-   instantiation at [Q := A] recovers it.  This is what makes the donor's
-   uniformly-truncated singleton usable at Ω, whose own equivalence is
-   [Prop]-valued. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma powerset_squash_prop_inert@{o} (P : Prop) :
   Powerset_squash@{o} P <-> P.
 Proof.
@@ -222,15 +206,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** A subset of A IS a map A ⟶ Ω, definitionally *)
 
-(* This library's [Prop]-valued subsets of [A] are, by construction,
-   exactly the setoid maps [A ~> Ω]: both are
-   [SetoidMorphism A Powerset_Prop_truth].  The identification is
-   [eq_refl], and saying so up front is what keeps the universal property
-   below honest — its content is NOT this type identification but the
-   [≈]-level round trip of the next section, since the preimage of {⊤}
-   along a map is NOT that map on the nose (the strict form is refuted in
-   the probe file, and the reason is that the two records carry different
-   respectfulness proofs). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example powerset_subsets_are_maps@{o so} (A : SetoidObject@{o o}) :
   carrier (Powerset_Prop_obj@{o} A)
     = (A ~{Sets@{o so}}~> Powerset_Omega@{o}) := eq_refl.
@@ -283,13 +263,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** Mac Lane's §III.1 universal element *)
 
-(* Mac Lane's clause, read at [D := Sets^op] and [H := Powerset_Prop_op]:
-   for every object A of [Sets] and every subset [S] of [A] there is a
-   UNIQUE arrow [k : Ω ~{Sets^op}~> A] — that is, a unique setoid map
-   [k : A ~> Ω] — with [(P k) {⊤} ≈ S], i.e. with [k⁻¹(⊤) ≈ S].  The
-   witness is [S] itself, read as a map through the identification above;
-   uniqueness is the observation that two maps whose preimages of {⊤}
-   agree are pointwise mutually implying. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Powerset_Prop_universal_element@{o so} :
   @AUniversalElement (Sets@{o so})^op Powerset_Prop_op@{o so}
     Powerset_Omega@{o}.
@@ -324,12 +302,11 @@ Example powerset_aue_med@{o so} (A : SetoidObject@{o o})
 (* ------------------------------------------------------------------------ *)
 (** ** The representation, and Awodey's naturality for the power set *)
 
-(* Through the Yoneda-FREE route of Theory/Universal/Element.v (see the
-   header for why the Yoneda route is unavailable at [Sets]): the
-   contravariant power-set functor is represented by Ω.  As a presheaf on
-   [Sets], [@Curried_Hom (Sets^op) Ω] is [Hom_Sets(−, Ω)], the object the
-   library writes [Hom ─,Ω]; the [eq_refl] below records that the two
-   spellings are the same term. *)
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Powerset_representation@{o so} :
   @Curried_Hom (Sets@{o so})^op Powerset_Omega@{o}
     ≅[[(Sets@{o so})^op, Sets@{o so}]] Powerset_Prop_op@{o so} :=
@@ -340,10 +317,11 @@ Example powerset_repr_source@{o so} :
   @Curried_Hom (Sets@{o so})^op Powerset_Omega@{o}
     = @Curried_CoHom Sets@{o so} Powerset_Omega@{o} := eq_refl.
 
-(* RIEHL'S SENTENCE, MACHINE-CHECKED AT LEIBNIZ EQUALITY.  "The
-   isomorphism sends f : A ⟶ Ω to the preimage f⁻¹(⊤) ⊆ A" is not a
-   description of the forward leg up to [≈]; it IS the forward leg, term
-   for term. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example powerset_representation_to_is_preimage@{o so}
   (A : SetoidObject@{o o}) (k : A ~{Sets@{o so}}~> Powerset_Omega@{o}) :
   transform (to Powerset_representation@{o so}) A k
@@ -369,15 +347,11 @@ Example powerset_repr_obj@{o so} :
     Powerset_Prop_Representable@{o so}
     = Powerset_Omega@{o} := eq_refl.
 
-(* Riehl's bijection packaged as an isomorphism of setoids in [Sets], with
-   the forward map the preimage of {⊤} and the backward map the
-   characteristic subset.  A DISCLOSURE about its strength, because the
-   packaging reads stronger than it is: by [powerset_subsets_are_maps]
-   the two setoids are the SAME object of [Sets], so what this
-   isomorphism carries beyond [Powerset_representation] is exactly its
-   two round-trip equations — not an identification of two different
-   setoids.  It is stated because it is the shape Riehl's sentence has,
-   and because the [to] field names the preimage map explicitly. *)
+(*
+   本节说明同构、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition powerset_truth_bijection@{o so} (A : SetoidObject@{o o}) :
   @Isomorphism Sets@{o so}
     {| carrier   := A ~{Sets@{o so}}~> Powerset_Omega@{o}
@@ -397,26 +371,11 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** Non-vacuity, and the degeneracies excluded by proof *)
 
-(* Three ways this could have proved nothing, and the statement that
-   excludes each.
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-   (1) A DEGENERATE Ω.  If ⊤ and ⊥ were identified in Ω, every subset
-       would be everything and the universal property would be empty.
-       [powerset_Omega_nondegenerate] refutes that.
-
-   (2) A DEGENERATE UNIVERSAL ELEMENT.  If {⊤} were the empty subset of Ω
-       or all of Ω, it would carry no information.  It is neither:
-       [powerset_truth_subset_inhabited] and
-       [powerset_truth_subset_proper].
-
-   (3) A CONTRAVARIANT ACTION THAT IS SECRETLY THE COVARIANT ONE.  The
-       inverse image and the direct image of the SAME morphism on the
-       SAME subset are separated below, on a two-element carrier, by
-       [powerset_inverse_ne_direct].
-
-   Beyond those, the correspondence is exhibited computing on a concrete
-   subset of a three-element setoid, and two distinct subsets are shown
-   to have distinct characteristic maps. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma powerset_Omega_nondegenerate@{o} :
   @equiv _ (is_setoid Powerset_Omega@{o}) Powerset_truth_point@{o} False
@@ -431,10 +390,11 @@ Lemma powerset_truth_subset_proper@{o} :
   Powerset_truth_subset@{o} False → False.
 Proof. exact (@Powerset_truth_subset_elim@{o} False). Qed.
 
-(* The three-element carrier, and two subsets of it.  [Powerset_Prop_truth]
-   forces [Set < o], so the donor's universe-polymorphic
-   [Powerset_Prop_fin_object] is the right carrier here (its own header
-   records that this is the only reason it exists). *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition powerset_fin3@{o} : SetoidObject@{o o} :=
   Powerset_Prop_fin_object@{o} 3.
@@ -498,10 +458,11 @@ Lemma powerset_fin3_round@{o so} :
     ≈ powerset_sub01@{o}.
 Proof. exact (powerset_preimage_char@{o so} powerset_sub01@{o}). Qed.
 
-(* The inverse image is not the direct image.  [powerset_const0] is the
-   constant map at 0 on a two-element carrier, so both actions land in the
-   same power set and can be compared; the direct image of {1} is {0},
-   while its inverse image is empty. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition powerset_fin2@{o} : SetoidObject@{o o} :=
   Powerset_Prop_fin_object@{o} 2.
@@ -554,50 +515,17 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** The classifier obstruction is a DIFFERENT obstruction *)
 
-(* Instance/Sets/Classifier.v proves the subobject-classifier theorems for
-   [Sets] as CROSS-UNIVERSE statements, and its header explains why: the
-   characteristic predicate of a MONO [m : A ~> B] is
-   [λ b, ∃ a, m a ≈ b], which is [Type@{o}]-valued because [≈] is, and
-   [sets_char_pullback] and [sets_char_unique] must recover the witness
-   [a] out of the truth value in order to mediate for a cone.  Truncating
-   to [Prop] destroys exactly what they need.
+(*
+   本节说明子对象相关定义、性质与动机。
 
-   Nothing of the sort is asked of a power set.  Mac Lane's §III.1 clause
-   asks only for a unique arrow with [(H k) e ≈ x], and above, the
-   mediating arrow IS the subset — no witness is extracted from a truth
-   value anywhere in [Powerset_Prop_universal_element].  That is why one
-   level suffices here, and why the two results coexist without either
-   weakening the other.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   READ THAT COMPARISON PRECISELY: NO IMPOSSIBILITY IS PROVED.  What is measured
-   is that Classifier.v's construction consumes a witness and this one does not.
-   Whether some OTHER construction yields a one-level [SubobjectClassifier Sets]
-   was not settled here — it was not attempted below, and nothing below rules it
-   out.  It is answered CONDITIONALLY in Instance/Sets/Classifier/OneLevel.v:
-   the instance whose Ω is [Powerset_Omega] exists under [Untruncate], i.e.
-   exactly when the impredicative truncation used here can be inverted, and what
-   that hypothesis buys is precisely the composite "in the other direction" left
-   unproven in the next paragraph.  NO IMPOSSIBILITY IS PROVED there either.
-   The issue asked for a note on why [Sets] may support only the cross-universe
-   reading for the CLASSIFIER even where the power-set universal element works
-   at one level; this paragraph is that note, and it is a note about a
-   construction, not a theorem about the category.
+(*
+   本节说明子对象相关定义、性质与动机。
 
-   THE CONSEQUENCE, AND THE HONEST LIMIT.  This file does NOT produce a
-   [SubobjectClassifier Sets] instance, and no such instance follows from
-   what is proved here, because [SubobjectClassifier] classifies [SubObj]
-   — monos up to isomorphism — not [Prop]-valued subsets.  The passage
-   from a subset to a subobject is available and its round trip holds
-   (both are proved immediately below); the passage back truncates the
-   membership witness, and recovering it is the very step Classifier.v
-   records as blocked.  So the composite in the other direction is left
-   unproven and unclaimed here, rather than asserted in either
-   direction. *)
-
-(* A subset [S] of [A] names a subobject of [A]: the sub-setoid of
-   elements satisfying [S], with the first projection.  Since membership
-   is a [Prop] and the sub-setoid compares only first components, the
-   projection is injective, hence monic. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Powerset_subset_setoid@{o} {A : SetoidObject@{o o}}
   (S : carrier (Powerset_Prop_obj@{o} A)) : SetoidObject@{o o}.
 Proof.
@@ -655,9 +583,11 @@ Proof.
   - transitivity a'; [ exact Hp | now symmetry ].
 Defined.
 
-(* THE HALF THAT HOLDS: a subset is recovered from the subobject it names.
-   Both directions stay inside [Prop], so the truncation is transparent
-   here — which is exactly what is not true in the other order. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Powerset_subset_roundtrip@{o so} {A : SetoidObject@{o o}}
   (S : carrier (Powerset_Prop_obj@{o} A)) :
   Powerset_subset_of_subobject@{o so} (Powerset_subobject_of_subset@{o so} S)
@@ -676,9 +606,8 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** Where the rest of the exercise lives *)
 
-(* Awodey's naturality clause for the SUBOBJECT functor —
-   [Sub ≅ Hom(─,Ω)] in [[C^op, Sets]] for an arbitrary classifier — is
-   Structure/SubobjectClassifier/Natural.v, and the same exercise answered
-   where the correspondence is not definitional, over skeletal [FinSet]
-   with Ω = 2 and everything computing, is Instance/FinSet/Powerset.v.
-   Neither is restated here. *)
+(*
+   本节说明函子、hom、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

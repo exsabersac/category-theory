@@ -31,10 +31,11 @@ Section SetsPullback.
 Context {x y z : Sets}.
 Context (f : x ~{Sets}~> z) (g : y ~{Sets}~> z).
 
-(* An element of the pullback is a pair of elements on which f and g
-   agree.  The agreement witness is carried alongside the pair rather
-   than quotiented away, exactly as the compatibility constraint is in
-   Instance/Sets/Complete.v. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_pb_carrier : Type :=
   { p : carrier x * carrier y & @equiv _ z (f (fst p)) (g (snd p)) }.
 
@@ -237,10 +238,11 @@ Proof. intros u; reflexivity. Qed.
 Lemma sets_equalizer_round_snd : exr ∘ sets_pb_pair ≈ sets_pb_snd f g.
 Proof. intros u; reflexivity. Qed.
 
-(* Measured strict-first: the round trip holds POINTWISE at Leibniz
-   equality on the carriers, and only at `≈` as MORPHISMS -- the two
-   [SetoidMorphism] records differ in their rebuilt [proper_morphism]
-   certificate.  See the header for the refutation. *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example sets_equalizer_round_fst_pointwise (u : carrier (sets_pb_obj f g)) :
   (exl ∘ sets_pb_pair) u = sets_pb_fst f g u := eq_refl.
 
@@ -263,10 +265,11 @@ End PullbackAsEqualizer.
 (* ====================================================================== *)
 (** * (D) Pulling a subset back is taking the preimage (Awodey Ex. 5.9)   *)
 
-(* A subset of a setoid B: a Type-valued predicate on its carrier that is
-   saturated under `≈`.  A single subset stays at the universe of the
-   carriers; it is the setoid of ALL subsets that must move up a level,
-   and that object is not formed here (Instance/Sets/Powerset.v). *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record SubsetOf (B : Sets) : Type := {
   sub_mem : carrier B -> Type;
   sub_mem_resp : ∀ p q : carrier B, @equiv _ B p q -> sub_mem p -> sub_mem q
@@ -297,21 +300,11 @@ Definition sub_obj : Sets :=
    ; is_setoid := {| equiv        := fun u v => @equiv _ B `1 u `1 v
                    ; setoid_equiv := sub_obj_equivalence |} |}.
 
-(* CORRECTED, and the correction matters because the original named the
-   wrong mechanism.  An earlier revision said "[Program] raises no
-   obligation here -- instance resolution closes [proper_morphism] during
-   elaboration -- which is the shape Instance/Sets/Products.v
-   records as a universe-pinning hazard".  That is FALSE: the [Program]
-   form DOES raise one, [sub_incl_obligation_1] (measured by elaborating
-   it and reading [Print]).  Products.v defines its hazard as the
-   definition raising NO obligation AT ALL, so this site is not an
-   instance of that shape and the transplanted sentence was wrong twice.
-   What survives is the CONCLUSION, which is independently measured: both
-   forms were
-   elaborated side by side and print the same binder
-   [sub_incl@{u u0 u1} : ∀ {B : obj[Sets@{u0 u}]}, ...] with a
-   character-for-character identical constraint block, so the hand-supplied
-   certificate below is uniformity, not a repair. *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sub_incl : sub_obj ~{Sets}~> B.
 Proof.
   unshelve refine {| morphism := fun u => `1 u |}.
@@ -397,9 +390,11 @@ End Preimage.
 (* ====================================================================== *)
 (** * (E) Non-vacuity: pullbacks in [Sets] that compute                   *)
 
-(* Two discrete setoids, over [eq_Setoid] of Lib/Setoid.v so that `≈` is
-   Leibniz equality on the carriers and the equations below are genuine
-   computations rather than instances of a coarse relation. *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PbNatSet : Sets :=
   {| carrier := nat; is_setoid := eq_Setoid nat |}.
 

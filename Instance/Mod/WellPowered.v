@@ -186,9 +186,11 @@ Definition RMod_WellPowered_untruncate@{a c p o x +|
 
 (** ** 4. Co-well-powered at the pin, under [Untruncate] *)
 
-(* The kernel of a homomorphism as a [Prop] submodule: membership is the
-   target's [Prop] mirror of "e x ≈ 0" ([cmon_prop], a field of every
-   module since the PR "algebraic carriers are sets", 2026-09-17). *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pker@{a c p o x +}
   {R : RingObject@{a c p}} {W Q : obj[RMod@{o x a p c} R]}
   (e : W ~{RMod@{o x a p c} R}~> Q) : PSubmodule W.
@@ -339,13 +341,11 @@ Definition RModop_Cogenerator@{c o x +| Set < o, c < o, c < x +}
 
 (** ** 6. Co-well-powered one universe up, unconditionally *)
 
-(* A quotient object indexed by ITSELF, read at the carrier level: its
-   codomain module, the map into it, and that map's [Prop]-level
-   surjectivity.  [Epic] quantifies over every object of [RMod R], which is
-   why [QuotObj] sits at the object universe; [RModPropSurjective]
-   quantifies over the carrier only.  Nothing is rebuilt from a kernel, so
-   no preimage is needed as data and [Untruncate] is not spent; the
-   round trip is the identity isomorphism of the codomain. *)
+(*
+   本节说明同构、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RMod_CoWellPoweredAt_up@{a c p o x w +| c < w, a <= w +}
   {R : RingObject@{a c p}} (W : obj[RMod@{o x a p c} R]) :
   @WellPoweredAt@{w o o c x} ((RMod@{o x a p c} R)^op) W.

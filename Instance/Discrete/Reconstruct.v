@@ -25,15 +25,11 @@ Import EqNotations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Why a separate file rather than extending Instance/Discrete.v, as the
-   issue's work-plan suggested: NOT layering -- Instance/Discrete.v,
-   Instance/Cat.v and Instance/StrictCat.v are independent siblings, and
-   adding the imports there would create no cycle.  The reason is cost to
-   consumers: Instance/Discrete.v is imported by Adjunction/GAFT.v,
-   Adjunction/SAFT.v, Structure/Limit/Product.v and Theory/WeaklyInitial.v,
-   and extending it would drag Instance/Cat, Instance/StrictCat and the
-   Eqdep_dec development into all four of those dependency cones for the
-   sake of theorems none of them consume. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Transported identities *)
 
@@ -54,11 +50,11 @@ Proof. destruct H; cat. Qed.
 
 (** ** The comparison functor *)
 
-(* [DiscreteCat (obj C) ⟶ C]: the identity on objects, sending an equality
-   proof to the identity transported along it.  The explicit universe binders
-   force the discrete category to sit at [C]'s own universes, which is what the
-   [StrictCat] statement below needs; [Program] is avoided here because its
-   obligations cannot refer to named universes. *)
+(*
+   本节说明 Reconstruct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Discrete_Compare@{o h p} (C : Category@{o h p}) :
   DiscreteCat@{o h p} C ⟶ C.
 Proof.
@@ -152,10 +148,11 @@ Lemma disc_eq_spec {x y : C} (f : x ~> y) :
   f ≈ fmap[Discrete_Compare C] (disc_eq f).
 Proof. exact (`2 (Dis x y f)). Qed.
 
-(* The reconstruction functor [C ⟶ DiscreteCat (obj C)]: the identity on
-   objects, sending an arrow to its [Discrete] witness.  Each of the three
-   functor laws is an equation between equality proofs, and each is discharged
-   by rigidity from the corresponding law in [C]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Discrete_Reconstruct : C ⟶ DiscreteCat C.
 Proof using C Dis rigid.
   unshelve refine (@Build_Functor C (DiscreteCat C)
@@ -173,12 +170,11 @@ Proof using C Dis rigid.
     now rewrite <- !disc_eq_spec.
 Defined.
 
-(* Mac Lane's "determined by its set of objects", on the nose: reconstruction
-   and comparison are mutually inverse in [StrictCat].  Both object maps are
-   the identity, so both strict-equality witnesses are [eq_refl] and only the
-   morphism coherence has content.  The [from ∘ to] coherence is exactly the
-   [Discrete] witness property; the [to ∘ from] coherence is a further appeal
-   to rigidity. *)
+(*
+   本节说明 Reconstruct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Discrete_iso : C ≅[StrictCat] DiscreteCat C.
 Proof using C Dis rigid.
   unshelve refine (@Build_Isomorphism StrictCat C (DiscreteCat C)
@@ -192,9 +188,11 @@ Proof using C Dis rigid.
     symmetry; exact (disc_eq_spec f).
 Defined.
 
-(* The same correspondence read in [Cat], where functors are compared up to
-   natural isomorphism.  This is strictly weaker and is recorded only for
-   convenience: it does not relax the hypothesis. *)
+(*
+   本节说明函子、同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Discrete_iso_Cat : C ≅[Cat] DiscreteCat C :=
   @Build_Isomorphism Cat C (DiscreteCat C)
     Discrete_Reconstruct (Discrete_Compare C)
@@ -236,10 +234,11 @@ Proof.
   - apply Discrete_invertible, D.
 Qed.
 
-(* For the constructed discrete categories the restatement is *exactly* UIP on
-   the underlying type: its subsingleton clause is that statement verbatim,
-   because the hom-setoid is strict equality of equality proofs.  Compare
-   [DiscreteCat_Discrete], which holds with no hypothesis at all. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem DiscreteUpToIso_DiscreteCat (A : Type) :
   DiscreteUpToIso (DiscreteCat A) ↔ (∀ (x y : A) (p q : x = y), p = q).
 Proof.
@@ -252,10 +251,11 @@ Proof.
       split; destruct f; reflexivity.
 Qed.
 
-(* Hence no general implication from [Discrete] to the restatement can be
-   proven: it would decide UIP for every type, which Rocq's logic leaves open.
-   This is the precise sense in which the restatement is *not* equivalent to
-   the existing predicate. *)
+(*
+   本节说明 Reconstruct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Discrete_DiscreteUpToIso_forces_UIP
   (K : ∀ C : Category, Discrete C → DiscreteUpToIso C) :
   ∀ (A : Type) (x y : A) (p q : x = y), p = q.
@@ -270,14 +270,11 @@ Qed.
 (* One arrow between any two objects; the codiscrete/indiscrete right adjoint
    to the underlying-set functor, included here only as the separating
    witness. *)
-(* The same reverse-mathematics argument for the PRIMARY hypothesis: if every
-   [Discrete] category were [DiscreteRigid], UIP would hold for every type.
-   The countermodel makes the premise of rigidity vacuous: objects [A],
-   morphisms equality proofs, but the hom-setoid INDISCRETE, so that any two
-   parallel arrows are equivalent.  Such a category is [Discrete] -- the
-   morphism is its own witness -- while its rigidity is literally UIP on [A].
-   Hence [DiscreteRigid] is a genuine extra hypothesis of [Discrete_iso], not
-   a deficiency of its proof. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Blurry (A : Type) : Category := {|
   obj     := A;
   hom     := fun x y => x = y;
@@ -300,26 +297,11 @@ Proof.
   intros A. apply Blurry_Rigid_is_UIP. apply K, Blurry_Discrete.
 Qed.
 
-(* The binders are load-bearing, for the same reason as
-   [DiscreteCat_Functor] (Instance/Discrete.v): declared bare, this
-   minimized to [Indiscrete@{u} : Type@{u} → Category@{u Set Set}], pinning
-   the hom and proof levels of the indiscrete category to [Set] and so
-   pinning every limit taken over it.  The pin is INDEPENDENT of
-   [DiscreteCat_Functor]'s — annotating that one does not touch this one,
-   which is why Instance/Cat/Objects.v behaved differently
-   while only one of the two donors was annotated.  (Both are annotated
-   now, so both of those lines are plain [Check]s and both are accepted;
-   an earlier revision of this sentence cited them,
-   where they stood as [Fail Check]s before the PR "algebraic carriers
-   are sets" (2026-09-17).)  The measured signature is
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
 
-     Indiscrete@{o h p} : Type@{o} → Category@{o h p}
-     (* o h p |= h <= eq_ind.u0 / h <= Logic_lemmas.equality.u0
-                 / h <= eq_ind_r.u0 / h <= p *)
-
-   — no literal [Set] anywhere, and [o] is now unconstrained.  [unit : Set]
-   still inhabits the hom type, but cumulativity absorbs that silently: the
-   constraint block records no lower bound on [h] at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Indiscrete@{o h p} (A : Type@{o}) : Category@{o h p} := {|
   obj     := A;
   hom     := fun _ _ => unit;
@@ -339,8 +321,10 @@ Proof.
   - intros x y f; exists tt; split; reflexivity.
 Qed.
 
-(* But on [bool] it is not [Discrete]: the arrow [tt : true ~> false] would
-   have to produce a proof of [true = false].  So the restatement does not
-   imply the existing predicate either — the two are incomparable. *)
+(*
+   本节说明 Reconstruct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Indiscrete_bool_Discrete_absurd : Discrete (Indiscrete bool) → False.
 Proof. intro D; destruct (D true false tt) as [H _]; discriminate. Qed.

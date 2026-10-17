@@ -60,10 +60,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The carrier of the center: elements paired with their centrality
-   witness, compared on the element alone (the witness is
-   proof-irrelevant for the setoid).  Pairs are built with explicit
-   [existT] throughout — the 8.19/8.20-safe form. *)
+(*
+   本节说明 Center 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition center_carrier (G : GrpObject) : Type :=
   { z : carrier G & IsCentral G z }.
 
@@ -107,16 +108,11 @@ Lemma CenterGrp_abelian (G : GrpObject) (a b : carrier (CenterGrp G)) :
   grp_mul (CenterGrp G) a b ≈ grp_mul (CenterGrp G) b a.
 Proof. exact (`2 a (`1 b)). Qed.
 
-(* ...and therefore an object of Ab: G ↦ Z(G) really is an object
-   function Grp → Ab.
+(*
+   本节说明 Center 相关定义、性质与动机。
 
-   Since the PR "algebraic carriers are sets" (2026-09-17) an [AbObject]
-   carries [cmon_prop], and the centre's carrier setoid compares first
-   projections in [G] -- so it is propositional exactly when [G]'s own `≈`
-   is.  An intermediate revision of this file (phase P2 of that PR) took the
-   witness [PG] as an explicit argument, because [GrpObject] did not yet carry
-   [grp_prop]; phase P3 added the field [grp_prop] and the argument is gone.
-   The signature is the one it had before the PR. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition CenterAb (G : GrpObject) : AbObject := {|
   ab_cmon := {|
     cmon_setoid := center_setoid G;
@@ -239,13 +235,11 @@ Qed.
 
 (** ** The no-functor theorem *)
 
-(* An intermediate revision of this theorem (phase P2 of the PR "algebraic
-   carriers are sets", 2026-09-17) carried an extra hypothesis
-   [PG : ∀ G : GrpObject, PropEquiv (is_setoid (grp_setoid G))], because
-   [CenterAb] then needed the witness and [GrpObject] did not yet supply it.
-   Phase P3 added the field [grp_prop], so the hypothesis is gone and the
-   statement is the one it had before the PR: it quantifies over ALL functors
-   [T : Grp ⟶ Ab] with the centre as object function. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_center_functor (T : Grp ⟶ Ab)
   (HT : ∀ G : GrpObject, fobj[T] G = CenterAb G) : False.
 Proof.

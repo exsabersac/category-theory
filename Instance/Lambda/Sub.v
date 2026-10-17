@@ -24,10 +24,11 @@ Import ListNotations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* A substitution σ : Γ ⇒ Γ' (read as [Sub Γ' Γ], target then source) is a
-   snoc-list giving, for each variable of the source context, an expression in
-   the target context Γ'.  [NoSub] handles the empty source; [Push] adds the
-   image of the most-recently-bound source variable. *)
+(*
+   本节说明 Sub 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Sub (Γ : Env) : Env → Set :=
   | NoSub : Sub []
   | Push {Γ' τ} : Exp Γ τ → Sub Γ' → Sub (τ :: Γ').
@@ -37,9 +38,11 @@ Arguments Push {Γ Γ' τ} _ _.
 
 Derive Signature NoConfusion EqDec for Sub.
 
-(* Look up the image of a variable under a substitution.  This is definitionally
-   the same operation as [SubVar] below (which is the one used by [SubExp]); it
-   is retained here as the elementary lookup form. *)
+(*
+   本节说明 Sub 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Equations get `(s : Sub Γ' Γ) `(v : Var Γ τ) : Exp Γ' τ :=
   get (Push x _)   ZV    := x;
   get (Push _ xs) (SV v) := get xs v.
@@ -79,9 +82,11 @@ Equations RcS {Γ Γ' Γ''} (r : Ren Γ' Γ'') (s : Sub Γ Γ') : Sub Γ Γ'' :=
 Definition Dropₛ {Γ Γ' τ} (s : Sub Γ Γ') : Sub (τ :: Γ) Γ' :=
   ScR s skip1.
 
-(* Lift a substitution under a binder: the new variable maps to itself and the
-   rest is weakened.  This is the action of substitution on the morphism that
-   extends a context, and is what [SubExp] applies when descending into [LAM]. *)
+(*
+   本节说明 Sub 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Keepₛ {Γ Γ' τ} (s : Sub Γ Γ') : Sub (τ :: Γ) (τ :: Γ') :=
   Push (VAR ZV) (Dropₛ s).
 
@@ -373,14 +378,18 @@ Proof.
   now rewrite RcS_skip1.
 Qed.
 
-(* A literal substitution {|| e ; .. ; f ||} pushes the given expressions onto
-   idSub; in particular {|| x ||} is the single substitution that instantiates
-   the most-recently-bound variable with x. *)
+(*
+   本节说明 Sub 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Notation "{|| e ; .. ; f ||}" := (Push e .. (Push f idSub) ..).
 
-(* A general push factors as a single (instantiation) substitution after a
-   lifted one: substituting [Push x s] is the same as lifting s under the binder
-   and then instantiating the new variable with x. *)
+(*
+   本节说明 Sub 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma SubExp_Push {Γ Γ' τ ty} (x : Exp Γ' ty) (s : Sub Γ' Γ) (e : Exp (ty :: Γ) τ) :
   SubExp (Push x s) e = SubExp {|| x ||} (SubExp (Keepₛ s) e).
 Proof.

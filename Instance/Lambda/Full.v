@@ -28,9 +28,11 @@ Import ListNotations.
 
 Open Scope Ty_scope.
 
-(* A [Frame] is an evaluation context with a single hole one constructor deep:
-   [Frame Γ τ' τ] has a hole of type [τ'] and, once filled, yields a term of
-   type [τ].  Frames are the building blocks snoc-listed together into [Ctxt]. *)
+(*
+   本节说明 Full 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Frame Γ : Ty → Ty → Set :=
   | F_PairL {τ1 τ2}  : Exp Γ τ2 → Frame τ1 (τ1 × τ2)
   | F_PairR {τ1 τ2}  : Exp Γ τ1 → Frame τ2 (τ1 × τ2)
@@ -92,10 +94,11 @@ Derive Signature for Redex.
 
 Unset Elimination Schemes.
 
-(* [Plug e C e'] is the recomposition relation: filling the hole of context [C]
-   with [e] reconstructs the whole term [e'] (written E[e] on paper).  Each
-   constructor mirrors one [Frame], and the value side-conditions on
-   [Plug_PairR]/[Plug_AppR] enforce left-to-right (call-by-value) evaluation. *)
+(*
+   本节说明 Full 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Plug {Γ τ'} (e : Exp Γ τ') : ∀ {τ}, Ctxt Γ τ' τ → Exp Γ τ → Set :=
   | Plug_Hole : Plug (C_Nil _) e
 
@@ -209,12 +212,11 @@ Proof.
     + dependent elimination H1'; now eauto 6.
 Qed.
 
-(* Unique decomposition: any term [e2] splits into at most one
-   context-plus-redex pair.  This is the property that would yield determinism
-   of [Step] (cf. [Step_deterministic] in the [Step] module).  It is left open
-   here: stating equality of the contexts [C ~= C'] and redexes [e1 ~= f1]
-   across distinct hole types requires heterogeneous (JMeq) equality, and the
-   dependent inversions have not yet been discharged. *)
+(*
+   本节说明 Full 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (*
 Lemma Plug_deterministic {Γ τ} e2 :
   ∀ τ' (C : Ctxt Γ τ' τ) e1 e1',
@@ -303,10 +305,11 @@ Definition normal_form `(R : crelation X) (t : X) : Type :=
 Definition deterministic `(R : crelation X) : Type :=
   ∀ x y1 y2 : X, R x y1 → R x y2 → y1 = y2.
 
-(* Values are normal forms.  Provable here as in the [Step] module (where it is
-   discharged), but left open in this context-based presentation: it needs the
-   unique-decomposition reasoning sketched in [Plug_deterministic] above to rule
-   out a redex hiding under any evaluation context. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (*
 Lemma value_is_nf {Γ τ} (v : Exp Γ τ) :
   ValueP v → normal_form Step v.

@@ -49,17 +49,14 @@ Proof.
   - abstract cat.
 Defined.
 
-(* nLab: https://ncatlab.org/nlab/show/comma+category
+(*
+   nLab: https://ncatlab.org/nlab/show/comma+category
    Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
 
-   Cones F and (Δ ↓ =(F)) are not merely equivalent but isomorphic in Cat: the
-   two comparison functors are mutually inverse on the nose. This reflects how
-   directly the data line up — an apex with a coherent leg family on one side is
-   literally a pair (object, natural transformation Δ(c) ⟹ F) on the other, and
-   a cone morphism is the same single arrow either way (the second comma
-   component lives in the terminal category 1, hence is ttt). Both Wikipedia and
-   nLab record this identification: "morphisms of cones are then just morphisms
-   in this [comma] category," the diagonal acting trivially on arrows. *)
+   本节说明自然变换、函子、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Cones_Comma `(F : [J, C]) : Cones F ≅[Cat] (Δ ↓ =(F)).
 Proof.

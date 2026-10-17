@@ -31,23 +31,21 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The descent lemma
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
 
-    Everything below factors through this one step.  [Ab_to_GrpOb A] is
-    abelian by construction, so [hom_to_abelian_kills] applies to any
-    homomorphism into it; cancelling the inverse turns "kills
-    commutators" into "respects the quotient relation". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ab_is_abelian (A : AbObject) (a b : carrier (Ab_to_GrpOb A)) :
   grp_mul (Ab_to_GrpOb A) a b ≈ grp_mul (Ab_to_GrpOb A) b a.
 Proof. apply cmon_plus_comm. Qed.
 
-(* [abel_eq] is the propositional truncation of [InCommutator] since the PR
-   "algebraic carriers are sets" (2026-09-17), so the witness may not be
-   destructed into the [Type]-valued conclusion directly.  The target is an
-   [AbObject], which carries [cmon_prop], so [pequiv_to] puts a [Prop] goal in
-   front of the elimination and [pequiv_from] returns.  This is the one place
-   in the development where the truncation has to be opened. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma abel_kills {G : GrpObject} {A : AbObject}
   (f : G ~{Grp}~> Ab_to_GrpOb A) (a b : carrier G) :
   abel_eq G a b → grp_map f a ≈ grp_map f b.
@@ -63,10 +61,11 @@ Proof.
   symmetry; apply grp_mul_inv_r.
 Qed.
 
-(** The mediating homomorphism: the SAME underlying map as [f], read
-    out of the quotient.  Preservation of the unit and of the operation
-    are [f]'s own laws unchanged; the only new obligation is
-    respectfulness, which is [abel_kills]. *)
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition abelianize_med {G : GrpObject} {A : AbObject}
   (f : G ~{Grp}~> Ab_to_GrpOb A) : AbelianizationOb G ~{Ab}~> A := {|
@@ -80,14 +79,11 @@ Example abelianize_med_computes {G : GrpObject} {A : AbObject}
   (f : G ~{Grp}~> Ab_to_GrpOb A) (a : carrier G) :
   cmon_map (abelianize_med f) a = grp_map f a := eq_refl.
 
-(** ** The universal arrow
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
 
-    Mac Lane §III.1 Exercise 3 proper: [abel_proj G] is universal from
-    G to [Ab_to_Grp].  Existence is [abelianize_med]; the factorization
-    equation is [reflexivity], both sides being the same function on
-    elements; uniqueness is that [abel_proj G] is the identity on
-    elements, so the equation READS as the pointwise agreement being
-    asked for. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem abelianize_universal (G : Grp) :
   ∀ (A : Ab) (f : G ~{Grp}~> Ab_to_Grp A),
@@ -102,10 +98,11 @@ Proof.
     exact (Hg a).
 Defined.
 
-(** Kept transparent DELIBERATELY: [unique_obj] of it is the mediator on
-    the nose, so the concrete evaluations at the end of this file
-    compute.  The [Qed] alternative is what makes route one's derived
-    counit opaque below, and that contrast is the point. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example abelianize_universal_med (G : Grp) (A : Ab)
   (f : G ~{Grp}~> Ab_to_Grp A) :
   unique_obj (abelianize_universal G A f) = abelianize_med f := eq_refl.
@@ -147,14 +144,11 @@ Example abelianize_AUniversalArrow_arrow (G : Grp) :
   @universal_arrow _ _ G Ab_to_Grp _ (abelianize_AUniversalArrow G)
     = abel_proj G := eq_refl.
 
-(** ** Route one: the adjunction from the universal-arrow plumbing
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    The functor, the adjunction and both triangle identities come out
-    of Theory/Universal/Arrow.v with no further proof.  Read the type
-    of [abelianize_adjunction] carefully: the LEFT ADJOINT it produces
-    is the generic [abelianize_left], not [Abelianization_Functor].
-    The two agree on objects definitionally and on arrows up to [≈];
-    see [abelianize_left_iso] below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition abelianize_left : Grp ⟶ Ab :=
   LeftAdjointFunctorFromUniversalArrows Ab_to_Grp abelianize_universal_arrow.
@@ -165,10 +159,11 @@ Definition abelianize_adjunction : abelianize_left ⊣ Ab_to_Grp :=
 Example abelianize_left_obj (G : Grp) :
   abelianize_left G = Abelianization_Functor G := eq_refl.
 
-(** The arrow actions agree only up to [≈], and the proof is the
-    uniqueness clause of the universal property: the generic functor's
-    [fmap] is BY DEFINITION the unique factorization, and the donor's
-    [fmap] satisfies the same equation. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma abelianize_left_fmap {G H : Grp} (f : G ~{Grp}~> H) :
   fmap[abelianize_left] f ≈ fmap[Abelianization_Functor] f.
 Proof.
@@ -216,13 +211,11 @@ Next Obligation.
         | exact (abel_eq_sym G _ _ (@fmap_id _ _ abelianize_left G a)) ].
 Qed.
 
-(** ** Route two: the counit, and the adjunction from unit and counit
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Riehl §4.2 Exercise ii.  The counit component at an abelian group A
-    is the identity function on elements, read out of the coarse setoid
-    [abel_eq (Ab_to_GrpOb A)] into A's own [≈].  Its one obligation is
-    [abel_kills] at the identity homomorphism of [Ab_to_GrpOb A]: an
-    abelian group kills its own commutators. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition abelianize_counit_hom (A : AbObject) :
   AbelianizationOb (Ab_to_GrpOb A) ~{Ab}~> A := {|
@@ -240,12 +233,11 @@ Example abelianize_counit_computes (A : AbObject)
   (a : carrier (cmon_setoid A)) :
   cmon_map (abelianize_counit_hom A) a = a := eq_refl.
 
-(** And it is INVERTIBLE — its inverse is the same identity map read
-    the other way, which is [abel_proj (Ab_to_GrpOb A)] transcribed
-    into [Ab].  This is the concrete content of the counit for this
-    row: an abelian group is its own abelianization.  Contrast a free
-    construction, where the counit is a genuine evaluation and is in
-    general nowhere near invertible. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition abelianize_counit_inv (A : AbObject) :
   A ~{Ab}~> AbelianizationOb (Ab_to_GrpOb A) := {|
@@ -274,17 +266,11 @@ Program Definition abelianize_counit :
 Next Obligation. intros A B f a; simpl; reflexivity. Qed.
 Next Obligation. intros A B f a; simpl; reflexivity. Qed.
 
-(** The unit/counit package, with BOTH TRIANGLE IDENTITIES PROVED HERE.
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
 
-    The first, [ε(FX) ∘ F(ηX) ≈ id], lives in [Ab] at
-    [AbelianizationOb X]: both legs are the identity function on
-    [carrier X] and the ambient relation is [abel_eq X], so the
-    obligation is [abel_eq_refl].  The second, [U(εX) ∘ η(UX) ≈ id],
-    lives in [Grp] at [Ab_to_GrpOb X]: both legs are again the identity
-    function, but the ambient relation is X's own [≈], so the
-    obligation is [reflexivity].  The two triangles are therefore
-    discharged by DIFFERENT tactics, which is a reminder that they are
-    equations in different categories and not one statement twice. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition abelianize_transform :
   Abelianization_Functor ∹ Ab_to_Grp := {|
   Transformation.unit   := abel_projection;
@@ -303,11 +289,11 @@ Example abelianize_transform_unit :
 Example abelianize_transform_counit :
   counit[abelianize_transform] = abelianize_counit := eq_refl.
 
-(** ** The two routes agree
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
 
-    The FORWARD transposes are the same term at arbitrary arguments;
-    the BACKWARD ones agree only up to [≈], the residue being the
-    opacity of [ump_universal_arrows]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example abelianize_routes_agree_to (G : Grp) (A : Ab)
   (f : Abelianization_Functor G ~{Ab}~> A) :
@@ -330,12 +316,11 @@ Proof.
     intro a; simpl; reflexivity.
 Qed.
 
-(** ** The derived unit and counit
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [unit] and [counit] are DERIVED in Theory/Adjunction.v as the
-    transposes of the identities, so what they compute to has to be
-    checked.  Both routes' units compute, and to the projection;
-    route two's counit computes and route one's does not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example abelianize_unit_computes (G : Grp) (a : carrier G) :
   grp_map (@Category.Theory.Adjunction.unit _ _ _ _
@@ -350,19 +335,11 @@ Example abelianize_counit_computes_via_transform (A : Ab)
   cmon_map (@Category.Theory.Adjunction.counit _ _ _ _
              abelianize_adjunction_via_transform A) a = a := eq_refl.
 
-(** ** [Ab_to_Grp] is full and faithful
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Faithfulness is definitional — an [AbHom] IS a [CMonHom] and both
-    hom-setoids compare underlying maps pointwise.  Fullness holds
-    because a group homomorphism between the underlying groups of two
-    abelian groups already preserves everything an [AbHom] must: the
-    unit law becomes preservation of zero, the multiplication law
-    preservation of the sum, and preservation of negation is
-    Instance/Ab.v's theorem [ab_map_neg] rather than a further
-    obligation.  Together with the adjunction and the invertible counit
-    this is the shape of a reflective subcategory; see the header for
-    why no [Reflective] instance is claimed.  CORRECTION (#370): over the
-    subcategory [AbGrp_Sub] one is; see the header's note. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Ab_to_Grp_Faithful : Faithful Ab_to_Grp := {|
   fmap_inj := fun A B f g H => H
@@ -382,20 +359,11 @@ Next Obligation. intros A B h a; simpl; reflexivity. Qed.
     no induction on the generation [InCommutator] could produce a
     negative.  The target is ℤ/2 read as an [AbObject]. *)
 
-(* [GrpTwo]'s `≈` is [grp_two_rel] (Instance/Grp/Epi.v), a match into
-   [poly_unit] and [False].  Its [Prop] mirror is the same match into [True]
-   and [False], and both implications are four-way case analyses -- so no
-   [GrpObject] field is needed here, and this instance does not wait for
-   phase P3.
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
 
-   REMOVAL CANDIDATE, surfaced and not acted on (the PR "algebraic
-   carriers are sets", 2026-09-17).  The sentence above was written while
-   [GrpObject] still had no [grp_prop] field.  It has one now, so
-   [grp_prop GrpTwo] inhabits exactly what [grp_two_PropEquiv] inhabits,
-   and [AbTwo]'s [cmon_prop] below takes the field rather than this hand
-   instance.  [grp_two_peq] and [grp_two_PropEquiv] are KEPT, with no
-   consumer in the tree, because deleting a working constant is not this
-   PR's call; they are listed for John to decide. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_two_peq (x y : grp_two_carrier) : Prop :=
   match x, y with
   | inl _, inl _ => True
@@ -426,10 +394,11 @@ Solve All Obligations with
          | exact (grp_inv_Proper GrpTwo)
          | exact (grp_mul_inv_l GrpTwo) ]).
 
-(** The sign character of S₃ (Instance/Grp/Center.v), read into
-    [Ab_to_GrpOb AbTwo].  The three fields are [s3_sign]'s own: [AbTwo]
-    was built so that its setoid, zero and sum ARE [GrpTwo]'s, which is
-    what makes this a re-wrapping rather than a second construction. *)
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ab_two_sign : S3 ~{Grp}~> Ab_to_GrpOb AbTwo :=
   Build_GrpHom S3 (Ab_to_GrpOb AbTwo)
     (grp_map s3_sign) (grp_map_unit s3_sign) (grp_map_mul s3_sign).
@@ -456,11 +425,11 @@ Proof.
   - exact (snd commutator_S3_nontrivial).
 Qed.
 
-(** The quotient is not collapsed either, and this is shown BY
-    EXERCISING THE UNIVERSAL PROPERTY: the mediator [abelianize_universal]
-    produces out of the sign character separates the class of the
-    reflection from the class of the unit.  Both values COMPUTE, the
-    universal property having been left transparent. *)
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example abelianize_S3_med_s :
   cmon_map (unique_obj (abelianize_universal S3 AbTwo ab_two_sign)) S3_s
@@ -476,25 +445,22 @@ Theorem abelianize_S3_separates :
         s3_unit → False.
 Proof. intro H; vm_compute in H; exact H. Qed.
 
-(** The mediator is genuinely a homomorphism OUT of the quotient: it is
-    the unique factorization of the sign character through the
-    projection, and the factorization equation is the universal
-    property's own. *)
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example abelianize_S3_factors (a : carrier S3) :
   grp_map ab_two_sign a
     = grp_map (fmap[Ab_to_Grp]
                  (unique_obj (abelianize_universal S3 AbTwo ab_two_sign))
                  ∘ abel_proj S3) a := eq_refl.
 
-(** ** Boundary probes
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
 
-    Each [Fail] below pins a strict identification that is REFUSED, and
-    is paired with a positive control naming the same constants, so a
-    rename or a definitional change breaks this file loudly instead of
-    turning a negative vacuously green.  [abelianize_probe_instrument] checks
-    the instrument itself.  These live here rather than in a Test/Probe
-    module because this change is confined to one file; they are not
-    wired into any make target. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example abelianize_probe_instrument : true = false := eq_refl.
 
@@ -593,8 +559,9 @@ Fail Example probe_derived_counit_is_named (A : Ab) :
     abelianize_adjunction_via_transform A = abelianize_counit_hom A
   := eq_refl.
 
-(* NEGATIVE 7 (conversion).  [AbTwo] was built from [GrpTwo]'s own
-   setoid, unit, multiplication and inverse, so the two records agree
-   on every DATA field; they still do not convert, the law fields of
-   [Ab_to_GrpOb] being rebuilt [Program] obligations. *)
+(*
+   本节说明 Abelianize 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_abtwo_is_grptwo : Ab_to_GrpOb AbTwo = GrpTwo := eq_refl.

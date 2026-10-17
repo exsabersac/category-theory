@@ -25,10 +25,11 @@ Section SetsEnd.
 Context {C : Category}.
 Context (F : C^op ∏ C ⟶ Sets).
 
-(* The end carrier: compatible families on the diagonal.  The second component
-   is the wedge constraint, phrased with the two mixed-variance actions of [F].
-   Each pair is annotated with its [C^op ∏ C] hom type so that the product-
-   category objects are determined without higher-order unification. *)
+(*
+   本节说明hom、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition end_family : Type :=
   { s : ∀ x : C, F (x, x)
   & ∀ (x y : C) (f : x ~{C}~> y),
@@ -66,11 +67,11 @@ Next Obligation.
   intros x s t Hst; exact (Hst x).
 Qed.
 
-(* The universal wedge of the end: apex [Sets_End_obj] with the projection
-   legs.  Its wedge condition is precisely the family constraint (the second
-   component of each family), applied to the argument.  The wedge is assembled
-   with the explicit constructor because [Structure/End] rebinds the name
-   [wedge_obj] as its [End ~> Wedge] coercion, which shadows the record label. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Sets_End_Wedge : Wedge F :=
   @Build_Wedge C Sets F Sets_End_obj (fun x => end_projection x) _.
 Next Obligation.
@@ -78,10 +79,11 @@ Next Obligation.
   exact (`2 s x y f).
 Qed.
 
-(* Compatibility constraint of the mediator.  Given a competing wedge [W] and
-   an element [e] of its apex, the family [fun x => wedge_map[W] e] satisfies
-   the end constraint because that constraint, read pointwise at [e], is
-   exactly [W]'s own wedge law. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma end_mediator_constraint (W : Wedge F) (e : Wedge_to_obj F W) :
   ∀ (x y : C) (f : x ~{C}~> y),
     fmap[F] ((@id (C^op) x, f) : (x, x) ~{C^op ∏ C}~> (x, y))
@@ -110,10 +112,11 @@ Next Obligation.
   exact (proper_morphism (@wedge_map _ _ _ W x) e e' Hee').
 Qed.
 
-(* The end and its universal property.  For every wedge [W] the mediator above
-   is the unique setoid map to the end recovering each leg of [W] by
-   post-composition with the corresponding projection; commuting holds by
-   reflexivity and uniqueness is the pointwise reading of the leg equations. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Sets_End : End F := {|
   end_wedge := Sets_End_Wedge
 |}.

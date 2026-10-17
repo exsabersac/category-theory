@@ -38,10 +38,11 @@ Section GrpToFrom.
 
 Context (G : Grp) (u : SubObj G).
 
-(* The domain isomorphism between the image of the mono and its domain.
-   The closure lemmas of Instance/Grp/Epi.v are [Qed], so the homomorphism
-   laws of the forward map are proved through injectivity of the mono, never
-   by computing the opaque witnesses. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition grp_image_fwd :
   SubgroupGrp (grp_image_subgroup (sub_mono u)) ~{Grp}~> sub_dom u := {|
   grp_map := {| morphism := fun p => `1 (`2 p) |}

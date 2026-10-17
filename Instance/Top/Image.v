@@ -43,10 +43,11 @@ Definition nat_inf_carrier@{o | Set < o +} : SetoidObject@{o o} :=
   {| carrier   := option nat
    ; is_setoid := eq_Setoid@{o} (option nat) |}.
 
-(* A predicate is open when, if it holds at infinity, it holds on a tail.
-   Predicates missing infinity are unconstrained -- so the topology is
-   finer than the cofinite one and every subset of the naturals proper is
-   open. *)
+(*
+   本节说明 Image 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition nat_inf_open@{o} (U : nat_inf_carrier@{o} → Type@{o}) : Type@{o} :=
   U None → { N : nat & ∀ n : nat, (N <= n)%nat → U (Some n) }.
 
@@ -108,13 +109,11 @@ Definition nat_inf_point : Point_Top ~{Top}~> NatInf_Top := {|
 Definition point_whole : OpenSet Point_Top :=
   (fun _ => poly_unit; open_whole Point_Top).
 
-(* Everything except [Some N].  Written as ONE Prop-valued predicate
-   rather than a two-branch match: a match with [poly_unit] at infinity
-   and a negated equation at the naturals mixes [Type] with [Prop] and is
-   rejected, whereas [∀ n, x = Some n → n = N → False] holds vacuously at
-   infinity and is a [Prop] uniformly (Instance/Top/Kolmogorov.v's
-   [tri_point_open] is the precedent for a Prop-valued open).  It is open
-   because it contains the tail from N+1. *)
+(*
+   本节说明 Image 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma nat_inf_punctured_open@{o +} (N : nat) :
   IsOpen NatInf_Top@{o}
     (fun x : NatInf_Top@{o} => ∀ n : nat, x = Some n → n = N → False).

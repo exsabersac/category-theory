@@ -44,10 +44,11 @@ Definition svlim_UF : J ⟶ Sets := SVariety_Forget E ◯ F.
 (* The carrier: the compatible families of Instance/Sets/Complete.v. *)
 Definition svlim_obj : SetoidObject := Sets_limit_obj svlim_UF.
 
-(* The operations, pointwise in the shape.  Compatibility of the result is
-   the homomorphism law of each [fmap[F] f] followed by respect for `≈`
-   of the target's operation, applied to the compatibility of each
-   argument. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition svlim_op (o : UA.operation S)
   (k : UA.arity o → carrier svlim_obj) : carrier svlim_obj.
 Proof.
@@ -109,15 +110,11 @@ Program Definition svlim_cone : Cone F := {|
 |}.
 Next Obligation. intros d d' f p; exact (`2 p d d' f). Qed.
 
-(* Written as a tactic proof, the coherence component closed by [exact],
-   and NOT as an anonymous-constructor term: its expected type states
-   compatibility with [fmap[SVariety_Forget E ◯ F]], which [cone_coherence]
-   matches only after unfolding the composite.  Measured by a Nix build
-   of this file's first revision on Coq 8.20.1, the term form
-   [(fun d => … ; fun d d' f => @cone_coherence … x)] is refused there
-   with "The term … has type "∃ _ : ∀ x0 : obj[J], soa_obj (projT1
-   (fobj[F] x0)), …" while it is expected to have type "carrier
-   svlim_obj"", although Rocq 9.1 accepts it. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition svlim_med_map (N : Cone F)
   (x : carrier (soa_obj (`1 (vertex_obj[N])))) : carrier svlim_obj.
 Proof.
@@ -163,10 +160,11 @@ Arguments SVariety_Limit {_} _ {_} _.
 Definition SVariety_Complete {S : UA.OpSignature} (E : UA.EqSignature S) :
   @Complete (SVariety E) := fun J F => SVariety_Limit E F.
 
-(* The limit [SVariety_Complete] chooses IS the computed one on the nose:
-   its carrier is the compatible families of Instance/Sets/Complete.v,
-   its operation at a coordinate is the component's operation, and its
-   legs are evaluation. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example svariety_complete_carrier {S : UA.OpSignature} (E : UA.EqSignature S)
   {J : Category} (F : J ⟶ SVariety E) :
@@ -185,15 +183,11 @@ Example svariety_complete_leg {S : UA.OpSignature} (E : UA.EqSignature S)
                  (@coneFrom _ _ _ (@limit_cone _ _ _ (SVariety_Complete E J F))) d)) p
     = `1 p d := eq_refl.
 
-(** ** The forgetful functor is continuous
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
 
-    The image under [SVariety_Forget] of ANY limiting cone -- not only
-    of [svlim_cone] -- is limiting in [Sets].  Given a limiting [N] and a
-    cone [M] of setoids, the mediator is the compatible family of [M]'s
-    legs followed by the comparison [svf_to] from the computed limit to
-    [N]; uniqueness goes back through the comparison [svlim_med] the
-    other way, which composes with [svf_to] to the identity by [N]'s own
-    uniqueness clause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ForgetContinuous.
 

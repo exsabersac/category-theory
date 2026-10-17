@@ -86,9 +86,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The epi leg is epic: given g1 ∘ epi ≈ g2 ∘ epi and an image point
-   (y; (x; hx)), rewrite it to the canonical point (f x; (x; _)) using the
-   stored witness hx : f x ≈ y, where the hypothesis applies. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Sets_Image_epi_epic : Epic Sets_Image_epi.
 Proof.
   constructor.

@@ -37,10 +37,11 @@ Definition Sets_limit_compatible (x : Sets_iprod_obj (fun d : D => F d)) :
   Type :=
   ∀ (d d' : D) (f : d ~{D}~> d'), fmap[F] f (x d) ≈ x d'.
 
-(* The limit carrier: the compatible families, a sub-setoid of the carrier of
-   [indexed_product (fun d => F d)] as constructed in Instance/Sets/Products.v.
-   The constraint is carried alongside the family rather than quotiented away,
-   so no quotient type and no [funext] is involved. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_limit_carrier : Type :=
   { x : Sets_iprod_obj (fun d : D => F d) & Sets_limit_compatible x }.
 
@@ -105,181 +106,11 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
 
 (** * Mac Lane's cone-set construction *)
 
-(* Mac Lane, _Categories for the Working Mathematician_, 2nd ed. (GTM 5),
-   SV.1 Theorem 1 and the remark following it, printed p. 110 (PDF p. 119);
-   item ids [maclane:V.1:thm1], [maclane:V.1:remark1].  Riehl, _Category
-   Theory in Context_, 2nd ed., SS3.2 Definition 3.2.3 and Theorem 3.2.4,
-   printed pp. 93-94.  Quoted from the rendered page, not from the OCR
-   layer, which renders the cone letter nu as "Ii".  ONE DEPARTURE FROM THE
-   PAGE, forced by the lexer and disclosed rather than silent: the book
-   writes the one point set as [*], so its "Cone" of that argument is
-   spelled with an open paren immediately followed by a star -- which is
-   exactly Coq's nested-comment opener.  Every quotation below therefore
-   reads [Cone ( *, F)], with a space the book does not have.  Nothing else
-   is altered.
+(*
+   本节说明 Complete 相关定义、性质与动机。
 
-     "Theorem 1 (Completeness of Set).  If the category J is small, any
-      functor F : J-->Set has a limit which is the set Cone ( *, F) of all
-      cones sigma : *-->F from the one point set * to F, while the limiting
-      cone v, with
-
-          v_j : Cone ( *, F) --> F_j,     sigma |--> sigma_j,          (2)
-
-      is for each j that function sending each cone sigma to the element
-      sigma_j in F_j."
-
-   and, on the same page, the sentence this file's discrete section
-   discharges:
-
-     "For example, if J is discrete, the set Cone( *, F) of J-cones is just
-      the cartesian product Pi_j F_j."
-
-   WHAT IS DELIVERED HERE, AND WHY IT SITS BESIDE THE EXISTING PROOF
-
-   The construction above this comment builds the limit as the setoid of
-   COMPATIBLE FAMILIES.  Mac Lane builds it as the SET OF CONES from the one
-   point set.  Both are limits of the same diagram, so they are canonically
-   isomorphic, and neither is a re-derivation of the other: they are
-   different objects.  This section adds Mac Lane's, and does not replace
-   [Sets_Limit] or [Sets_Complete].  Three reasons, each measured.  First,
-   [Sets_Complete] has code consumers (Adjunction/GAFT/Sets.v,
-   Adjunction/Diagonal/Limit.v, Test/ProbeCocomplete329.v).  Second,
-   Instance/Sets/Pullback.v's header asserts that the derived pullback apex
-   "IS, on the nose, the setoid of COMPATIBLE FAMILIES" and quotes an
-   accepted [eq_refl] fragment about it; redefining [Sets_Limit] would make
-   that prose false without breaking any build.  Third, the two apexes are
-   NOT convertible -- one is a sigma of a dependent function with a
-   compatibility witness, the other an [ACone] record -- so there is
-   something to compare, and the comparison is the deliverable.  It is
-   [cone_apex_iso] in the sibling Instance/Sets/Cone.v, which also carries
-   the remark's natural bijection; see that file's header for why the
-   comparison could not live here (it costs one module of closure, and this
-   file's is held fixed).
-
-   THE APEX IS THE CONE PRESHEAF AT THE TERMINAL SETOID
-
-   [cone_apex F] is [fobj[ConePresheaf F] 1] -- Structure/Cone.v's
-   presheaf, applied at [Sets]' terminal object -- and not a re-derived
-   copy.  Both of its fields are pinned by [eq_refl] below: its carrier is
-   [ACone 1 F] and its setoid is [AConeEquiv 1 F].  Since [AConeEquiv]
-   compares two cones by their legs and ignores the coherence proof, the
-   apex is the set of Mac Lane's [sigma] with his own identification.
-
-   THE LEGS ARE EVALUATION, AND THE PROOF SPENDS THE SINGLETON EXACTLY ONCE
-
-   [cone_leg_at d] is display (2): it sends a cone [p] to the element
-   [vertex_map p d ttt].  Its ONE obligation, and the one [cone_set_acone]
-   beside it raises, are read off the argument:
-   respectfulness is [AConeEquiv]'s own hypothesis at [d] and [ttt], and the
-   cone coherence of [cone_set_acone] is the argument cone's own coherence
-   read at [ttt].  Neither is [reflexivity]; the coherence in particular is
-   not definitional.
-
-   The mediator [cone_set_med N] is Mac Lane's [h]: it sends [e] to the cone
-   [tau e].  Commuting is [reflexivity] -- the leg of [cone_set_med N e] at
-   [d] evaluated at the point IS [vertex_map N d e].  UNIQUENESS is the one
-   place the singleton's unique-inhabitant property is spent, in a single
-   [destruct u]: [poly_unit] (Lib/Setoid.v) is an inductive with no eta,
-   so a variable [u : poly_unit] is not definitionally [ttt].  That
-   [destruct] IS Riehl's "restricting along each element regarded as a map
-   out of the singleton".  It is essential and not cosmetic: without it the
-   goal is not closed by [symmetry; exact (Hv d e)].
-
-   No choice principle and no extensionality: the cone type carries its
-   coherence as data, as the compatible-family type above carries its
-   compatibility.
-
-   SMALLNESS, AND THE UNIVERSE COMPARISON
-
-   [About] prints, for the two completeness witnesses side by side,
-
-     ConeSet_Complete@{u u0} : Complete@{u u u u0}     (* u < u0 *)
-     Sets_Complete@{u u0}    : Complete@{u u u u0}     (* u < u0 *)
-
-   -- the same number of universes, the same binder, the same instance, and
-   the same smallness side condition the header above records for
-   [Sets_Complete].  Neither is more general than the other.  The blocks
-   differ only in WHICH stdlib constants they cite: this one goes through
-   [Sets_Terminal] and cites [eq_ind] and friends, the existing one goes
-   through [sigT] and cites [Projections].
-
-   THE DISCRETE SPECIAL CASE
-
-   Mac Lane's own sentence, quoted above.  It is delivered against the
-   compatible-family apex, whose relation to the indexed product of
-   Instance/Sets/Products.v is the direct one: the three [eq_refl] Examples
-   record that the limit apex IS [Sets_limit_obj] of the discrete diagram,
-   that the product setoid it is cut out of IS literally [Sets_iprod_obj f],
-   and that the limit legs ARE the indexed-product projections.
-
-   THE STRENGTH IS AN ISOMORPHISM AND NOT AN EQUALITY, and the reason is not
-   universes.  [Sets_limit_compatible] at a discrete shape unfolds to
-   [∀ d d' (e : d = d'), fmap[F] e (x d) ≈ x d'], which is a genuine
-   Pi-type, not [unit]: it is INHABITED for every family
-   ([discrete_compatible], by [destruct e]) but it is not vacuous AS A TYPE.
-   So the limit carrier is a sigma and the product carrier is the bare
-   family, and they are different types.  The [eq_refl] form of the leg
-   equation is refused at CONVERSION and is pinned in
-   Test/ProbeConeSets407.v.
-
-   [Structure/Limit/Product/Finite.v]'s [iprod_unique_iso] would give
-   the same isomorphism in one term, since both sides are indexed products.
-   It is deliberately NOT used: requiring that module costs this file
-   twenty-one further modules of closure for twelve lines, against
-   thirty-one hand-built at zero.  It is cited here rather than consumed.
-
-   A UNIVERSE PIN, DISCLOSED -- AND IT REACHES FOUR OF THE TEN CONSTANTS,
-   NOT THE SECTION.  The discrete section is written with [{A : Set}], and
-   an earlier revision of this paragraph said the whole section forced it.
-   Measured, by restating the section at [{A : Type}] and compiling: SIX
-   constants are ACCEPTED there, the headline [discrete_iprod_iso] among
-   them, along with [discrete_limit], [discrete_inner_is_iprod],
-   [discrete_compatible], [discrete_forget] and [discrete_pair].  Exactly
-   FOUR are refused -- [discrete_apex_is_limit_obj],
-   [discrete_leg_is_proj], [discrete_iprod_iso_leg] and
-   [discrete_iprod_iso_leg_inv] -- and they are exactly the four whose
-   statements name Structure/Limit/Product.v's [iprod] or [iprod_proj],
-   THREE of them rejected with "cannot ensure that Type is a subtype of
-   Set"; the fourth, [discrete_iprod_iso_leg_inv], instead gives a plain
-   unification MISMATCH ("expected to have type ?y ~{?Category}~> ?z")
-   carrying NO word-bounded [Set] at all -- a different KIND of refusal
-   under this development's own taxonomy, measured by restating the six
-   accepted constants at [Type] and adding each refused one alone.  An
-   earlier revision of this sentence said all four were alike.
-
-   THE MECHANISM, AND A RECORDED CORRECTION: IT IS GONE.  An earlier
-   revision explained the four refusals like this: "[iprod@{u u0 u1}] is
-   declared over [C : Category@{u1 Set Set}], pinning the ambient hom and
-   proof universes to the literal [Set], and at [C := Sets@{o so} :
-   Category@{so o o}] that collapses [Sets]' CARRIER universe [o] to
-   [Set], after which [Sets_iprod_obj]'s [u <= u0] bound carries the index
-   down too.  [iprod]'s own pin is visible in its printed type
-   ([Limit@{u u Set u1} (DiscreteCat_Functor@{u u1 u0 Set} f)]) and takes
-   BOTH donors -- [Cone] alone is accepted at levels declared apart, so it
-   is the discriminating control -- with both pinned in the probe."  The
-   attribution was right and the donor has been repaired:
-   [DiscreteCat_Functor] was annotated in place at Instance/Discrete.v
-   in the PR "algebraic carriers are sets" (2026-09-17).  Measured after
-   it, [iprod] is declared over [C : Category@{u1 u2 u2}] with no literal
-   [Set], and applying it AT [Sets@{o so}] TO A [Type@{o}]-INDEXED FAMILY
-   is ACCEPTED, reading
-   [Limit@{o o o so} (DiscreteCat_Functor@{o o o so o o so} f) →
-   obj[Sets@{o so}]] with [o < so].
-
-   The section below is nevertheless still written uniformly at [{A : Set}],
-   so that the four readbacks apply to the same [f] as the isomorphism they
-   read back.  That binder is now a CHOICE, not a pin: whether the four
-   [iprod]-naming constants can be restated at [{A : Type}] has NOT been
-   re-measured, because the PR that removed the pin changed prose only.
-   The core section above carries no [Set] at all, then or now.
-
-   These definitions are stated at top level rather than in a [Section]
-   because a section [Context] fixes its universes once, before the pin can
-   propagate, and the discrete diagram is then refused inside it.
-
-   STATUS: axiom-free.  [Print Assumptions] reports "Closed under the global
-   context" for every constant below; the Makefile's [print-assumptions]
-   target audits them by fully qualified name. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ConeSet.
 
@@ -386,15 +217,11 @@ Definition ConeSet_Complete : @Complete Sets := fun D F => cone_set_Limit F.
 
 (** ** Mac Lane's discrete example *)
 
-(* "if J is discrete, the set Cone( *, F) of J-cones is just the cartesian
-   product Pi_j F_j".  What is proved HERE is that sentence about the
-   COMPATIBLE-FAMILY apex, whose relation to the indexed product is direct.
-   The object Mac Lane's sentence actually names is the cone set, and
-   Instance/Sets/Cone.v's [cone_apex_discrete_iprod_iso] carries this
-   across to it by one [iso_compose] with [cone_apex_iso]; that file is
-   where the quoted sentence becomes a theorem about its own subject.  See
-   the header for the [Set] pin four of these carry -- the isomorphism
-   below is not among them -- and for why they are not in a [Section]. *)
+(*
+   本节说明笛卡尔、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition discrete_limit {A : Set} (f : A → obj[Sets]) :
   Limit (DiscreteCat_Functor f) := Sets_Limit (DiscreteCat_Functor f).
@@ -415,9 +242,11 @@ Example discrete_leg_is_proj {A : Set} (f : A → obj[Sets]) (a : A) :
   iprod_proj f (discrete_limit f) a
   = Sets_limit_leg (DiscreteCat_Functor f) a := eq_refl.
 
-(* The compatibility constraint is inhabited for every family at a discrete
-   shape -- vacuously satisfied, but not vacuous as a type, which is why
-   the agreement below is an isomorphism and not an equality. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma discrete_compatible {A : Set} (f : A → obj[Sets])
   (x : Sets_iprod_obj (fun d : DiscreteCat A => (DiscreteCat_Functor f) d)) :
   Sets_limit_compatible (DiscreteCat_Functor f) x.

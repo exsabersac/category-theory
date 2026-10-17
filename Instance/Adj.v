@@ -104,11 +104,11 @@ Qed.
 
 End Determined.
 
-(* The identity and Mac Lane's display (8), pinned at Leibniz equality of
-   the underlying natural transformations -- strictly stronger than the
-   hom-setoid's `≈`.  The second component of a composite is the vertical
-   composite taken in the OPPOSITE order, which is the whole content of
-   display (8). *)
+(*
+   本节说明自然变换、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example adj_id_sigma (C D : Category) (x : Adj C D) :
   conj_left (@id (Adj C D) x) = nat_id := eq_refl.

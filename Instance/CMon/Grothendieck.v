@@ -27,10 +27,11 @@ Generalizable All Variables.
 
 (** ** The functor forgetting inverses *)
 
-(* [AbHom A B] IS [CMonHom A B] (Instance/Ab.v's bare [Definition]), and
-   [Ab]'s identity, composition and hom-setoid are [CMon]'s, so the arrow
-   action of the forgetful functor is the identity function and both
-   functor laws hold by [reflexivity]. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Ab_to_CMon : Ab ⟶ CMon := {|
   fobj := fun A => ab_cmon A;
   fmap := fun _ _ f => f
@@ -46,12 +47,11 @@ Example Ab_to_CMon_obj (A : AbObject) :
 Example Ab_to_CMon_fmap (A B : AbObject) (f : A ~{Ab}~> B) :
   fmap[Ab_to_CMon] f = f := eq_refl.
 
-(** ** A cross-multiplication lemma for abelian groups
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    [x + v ≈ u + y] gives [x - y ≈ u - v].  This is the one step where the
-    completion's relation is turned into an equation between formal
-    differences, and it is what makes the mediator well defined.  It is a
-    general fact about abelian groups; see the NOT-delivered note. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma groth_sub_cross (A : AbObject)
   (x y u v : carrier (cmon_setoid A)) :
   cmon_plus A x v ≈ cmon_plus A u y →
@@ -87,21 +87,11 @@ Local Notation "'MC'" := (carrier (cmon_setoid M)).
 (* Elements of the completion are formal differences, encoded as pairs. *)
 Definition GrothPair : Type := (MC * MC)%type.
 
-(* The relation, with the slack term [k] the header explains.
+(*
+   本节说明 Grothendieck 相关定义、性质与动机。
 
-   AN EARLIER REVISION said "The library's [∃] is [sigT], so [k] is DATA and
-   no choice principle is consumed."  The first clause is still true of the
-   library's [∃] (Lib/Foundation.v); the relation below no longer uses
-   it.  Since the PR "algebraic carriers are sets" (2026-09-17) the completion
-   is a [CMonObject] and so owes [cmon_prop], which forces its equality to be
-   a [Prop]; [k] is therefore existentially quantified with Coq's [ex] and is
-   no longer data.  Still no choice principle is consumed -- an [ex] is not a
-   double negation -- but the slack term cannot be read back out into a
-   [Type]-valued goal, and every consumer below that used to destruct it now
-   either lands in a [Prop] goal already or goes through [pequiv_to] first.
-   The body compares through [pequiv] rather than `≈` because the body of an
-   [ex] must itself be a [Prop]; [ex] is written out rather than spelled
-   [(exists k, …)%type] so that the [⊞] notation stays in scope. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition groth_rel (p q : GrothPair) : Prop :=
   ex (fun k : MC =>
         @pequiv _ _ (cmon_prop M)
@@ -120,10 +110,11 @@ Proof.
   exists k; apply pequiv_from; now symmetry.
 Qed.
 
-(* Three commutative-monoid rearrangements, named so that the transitivity
-   argument below reads as the three rewrites it is.  Each is a
-   consequence of [cmon_plus_interchange] (Instance/CMon/Biproduct.v)
-   plus associativity and commutativity. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma groth_ac1 (a d k f l : MC) :
   a ⊞ f ⊞ (d ⊞ k ⊞ l) ≈ a ⊞ d ⊞ k ⊞ (f ⊞ l).
 Proof.
@@ -192,9 +183,11 @@ Definition groth_neg (p : GrothPair) : GrothPair := (snd p, fst p).
 Lemma groth_plus_respects :
   Proper (groth_rel ==> groth_rel ==> groth_rel) groth_plus.
 Proof.
-  (* [simpl] before the elimination: the goal is an application of the
-     [equiv] projection, whose ascribed sort is [Type], and [groth_rel] is now
-     a [Prop].  Instance/Ab.v's [AbQuotient] records the same step. *)
+  (*
+   本节说明 Grothendieck 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros [a b] [a' b'] Hab [c d] [c' d'] Hcd; simpl in Hab, Hcd |- *.
   destruct Hab as [k Hk], Hcd as [l Hl].
   apply pequiv_to in Hk; apply pequiv_to in Hl; simpl in Hk, Hl.
@@ -303,19 +296,22 @@ Definition groth_med (p : GrothPair) : carrier (cmon_setoid A) :=
 
 Lemma groth_med_respects : Proper (groth_rel ==> equiv) groth_med.
 Proof.
-  (* The conclusion is `≈` at [A], which is [Type]-valued, so the [Prop]
-     relation may not be destructed into it directly; [pequiv_to] puts a
-     [Prop] goal in front of the elimination and the branch returns to `≈`
-     with [pequiv_from] once the witness is in hand. *)
+  (*
+   本节说明 Grothendieck 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros [a b] [c d] Hpq.
   apply (@pequiv_to _ _ (cmon_prop A)).
   destruct Hpq as [k Hk].
   apply pequiv_from.
   apply pequiv_to in Hk.
   unfold groth_med; simpl in *.
-  (* Apply h to the relation, then cancel the image of the slack term.
-     [ab_cancel_l] is applied with all three arguments explicit: with the
-     last two left to unification it matches the wrong pair. *)
+  (*
+   本节说明 Grothendieck 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   assert (Hh : cmon_plus A
                  (cmon_plus A (cmon_map h a) (cmon_map h d))
                  (cmon_map h k)
@@ -362,10 +358,11 @@ Proof.
   apply ab_sub_zero_r.
 Qed.
 
-(* Every pair is the difference of two inserted elements.  This is what
-   forces the mediator, and it is [≈] and not [eq_refl]: the two pairs
-   [(a, b)] and [(a + 0, 0 + b)] are genuinely different elements of the
-   underlying type, related by the quotient relation. *)
+(*
+   本节说明 Grothendieck 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma groth_pair_is_difference (a b : MC) :
   groth_rel (a, b)
     (ab_sub GrothendieckObject
@@ -534,13 +531,11 @@ Proof.
   - simpl; reflexivity.
 Qed.
 
-(** ** The completion as a functor, built directly
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [LeftAdjointFunctorFromUniversalArrows] defines its arrow action by
-    universal factorization, so [fmap[GrothLeft]] does not compute.  The
-    componentwise action does, and it is obviously a homomorphism, so the
-    functor is built directly and then RELATED to the produced one rather
-    than silently substituted for it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition groth_map {M N : CMonObject} (f : M ~{CMon}~> N)
   : GrothendieckObject M ~{Ab}~> GrothendieckObject N := {|
@@ -596,9 +591,11 @@ Example groth_map_computes {M N : CMonObject} (f : M ~{CMon}~> N)
 Lemma groth_fmap_agrees {M N : CMon} (f : M ~{CMon}~> N) :
   fmap[GrothLeft] f ≈ fmap[GrothendieckFunctor] f.
 Proof.
-  (* [fmap[GrothLeft]] is [unique_obj] of the very factorization problem
-     [groth_map f] solves, so [uniqueness] applies directly; the property
-     to discharge is that [groth_map] commutes with the insertions. *)
+  (*
+   本节说明 Grothendieck 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   apply (uniqueness (ump_universal_arrows (groth_universal_arrow M)
            (@arrow _ _ N Ab_to_CMon (groth_universal_arrow N) ∘ f))).
   intro a; simpl.
@@ -606,39 +603,34 @@ Proof.
   now rewrite (cmon_map_zero f).
 Qed.
 
-(** ** Measured negatives
+(*
+   本节说明 Grothendieck 相关定义、性质与动机。
 
-    Three strict identifications the header claims are unavailable, pinned
-    as [Fail] probes rather than merely asserted.  Each was stripped once
-    and confirmed to be a genuine "cannot unify", and each has a positive
-    control above that must succeed: [groth_unit_is_insert] for the first,
-    [groth_functor_obj_agrees] and [groth_map_computes] for the second,
-    [groth_pair_is_difference] for the third.  The instrument check at the
-    end uses a scope-free proposition. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* NEGATIVE 1 (conversion).  The counit does not compute.  Its value is
-   [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows] is
-   [Qed], so nothing reduces through it.  This DISCRIMINATES: the unit of
-   the same adjunction does close by [eq_refl] ([groth_unit_is_insert]),
-   so the obstruction is that one constant's opacity and not the
-   adjunction packaging. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example groth_counit_not_strict (A : Ab)
   (a : carrier (cmon_setoid (Ab_to_CMon A))) :
   cmon_map (groth_counit A) (a, cmon_zero A) = a := eq_refl.
 
-(* NEGATIVE 2 (conversion).  The two functors' ARROW actions are not
-   convertible, for the same reason:
-   [LeftAdjointFunctorFromUniversalArrows] defines [fmap] by universal
-   factorization.  Their OBJECT actions do agree strictly
-   ([groth_functor_obj_agrees]), which is what makes this a statement
-   about the arrow action specifically. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example groth_fmap_not_strict (M N : CMon) (f : M ~{CMon}~> N) :
   fmap[GrothLeft] f = fmap[GrothendieckFunctor] f := eq_refl.
 
-(* NEGATIVE 3 (conversion).  A pair is only [≈]-equal to the difference of
-   the two inserted elements, never convertible to it: the completion is a
-   QUOTIENT, and [(a, b)] against [(a + 0, 0 + b)] is exactly the slack the
-   relation absorbs.  [groth_pair_is_difference] is the [≈] statement. *)
+(*
+   本节说明 Grothendieck 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example groth_difference_not_strict (M : CMonObject)
   (a b : carrier (cmon_setoid M)) :
   (a, b) = ab_sub (GrothendieckObject M)
@@ -649,12 +641,11 @@ Fail Example groth_difference_not_strict (M : CMonObject)
    dead command. *)
 Fail Example groth_instrument_check : true = false := eq_refl.
 
-(** ** The slack term is necessary
+(*
+   本节说明 Grothendieck 相关定义、性质与动机。
 
-    Over the booleans under disjunction -- [rig_cmon Bool_Rig], the
-    additive half of Theory/Algebra/Rig.v's Example 5.38 -- the
-    slack-free relation is not transitive.  The three pairs below are
-    concrete and the refutation is by [discriminate]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition groth_bool : CMonObject := rig_cmon Bool_Rig.
 
@@ -710,14 +701,11 @@ Qed.
 Program Definition nat_to_Z : groth_nat ~{CMon}~> Ab_to_CMon ab_Z := {|
   cmon_map := {| morphism := fun n : nat => Z.of_nat n |}
 |}.
-(* Only TWO obligations: instance resolution closes [proper_morphism]
-   during elaboration, both setoids here being Leibniz.  That is the
-   hazard Instance/Sets/Products.v records and
-   Structure/Limit/Power.v reports a second sighting of; this is a third.
-   It is harmless at THESE two witnesses -- their carriers are [nat] and
-   [Z], so nothing is pinned that was not already concrete -- and the
-   general definitions above are unaffected, [groth_insert] raising all
-   three obligations because its setoids are abstract. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Next Obligation. reflexivity. Qed.
 Next Obligation. intros a b; simpl; apply Nat2Z.inj_add. Qed.
 

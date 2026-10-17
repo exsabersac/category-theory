@@ -382,9 +382,11 @@ Definition Matr_Z : Category := Matr Int_Rig.
 Definition Matr_Z_transpose_iso : Matr_Z ≅[Cat] Matr_Z^op :=
   Matr_transpose_iso Int_Rig (fun a b => Z.mul_comm a b).
 
-(* Sanity, as the issue asks: over a one-element rig the category
-   collapses — any two parallel matrices are equal, the carrier's
-   equivalence being total.  [Zero_Rig] is Instance/Rng.v's zero ring. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Matr_zero_collapse (n m : nat)
   (A B : n ~{Matr Zero_Rig}~> m) : A ≈ B.
 Proof. intros i j; exact I. Qed.

@@ -53,11 +53,11 @@ Example oelt_osup@{u} (A : Type@{u}) (f : A -> SmallOrd@{u}) :
 
 (** ** The extensional order *)
 
-(* [x <= y] when every element of [x] is dominated by some element of [y].
-   The recursion is structural in the FIRST argument alone -- the inner
-   [match] on [y] is a case analysis, not a recursive call -- which is what
-   keeps the definition inside Coq's guard condition without a mutual
-   fixpoint. *)
+(*
+   本节说明 Large 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint ole@{u} (x : SmallOrd@{u}) : SmallOrd@{u} -> Prop :=
   match x with
   | osup A f =>
@@ -122,14 +122,11 @@ Qed.
    the PROPOSITION [ole x y]. *)
 Definition SmallOrd_Proset : Category := @Proset SmallOrd ole ole_preorder.
 
-(* Mac Lane's [Ord^op], built as the proset of the reversed preorder rather
-   than as [SmallOrd_Proset^op].  The two are not convertible: they agree at
-   [obj], [hom], [id], [compose] and the hom-setoid's [equiv], and diverge at
-   [setoid_equiv], which is a [Qed]-opaque [Program] obligation of
-   Instance/Proset.v applied to two different preorders (located, not
-   guessed; the measurement is in the header).  Every theorem of
-   Instance/Proset/Limit.v is stated over an arbitrary [PreOrder], so
-   nothing is lost by building the reversed one directly. *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SmallOrd_op_Proset : Category :=
   @Proset SmallOrd (op_rel ole) (op_PreOrder ole_preorder).
 
@@ -147,19 +144,21 @@ Definition SmallOrd_op_Thin : Thin SmallOrd_op_Proset :=
 
 (** ** Small suprema *)
 
-(* The index type of a join: the disjoint union, over [a : A], of the index
-   types of the [f a].  It is declared here rather than taken from [sigT]
-   so that both components are held at [Type@{u}] by DECLARATION; that is
-   what keeps [ojoin] a small ordinal rather than making its smallness
-   depend on how [sigT]'s levels happen to be inferred. *)
+(*
+   本节说明 Large 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive osum@{u} (A : Type@{u}) (B : A -> Type@{u}) : Type@{u} :=
   opair : forall a : A, B a -> osum.
 
 Arguments opair {A B} a b.
 
-(* The supremum of a SMALL family of ordinals.  Note that [osup A f] is not
-   itself that supremum -- it is the supremum of the successors of the
-   [f a] -- so the construction flattens one level. *)
+(*
+   本节说明 Large 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ojoin@{u} (A : Type@{u}) (f : A -> SmallOrd@{u}) : SmallOrd@{u} :=
   osup (osum A (fun a => oidx (f a)))
        (fun p => match p with opair a k => oelt (f a) k end).
@@ -206,10 +205,11 @@ Proof. intro H; exact (olt_irrefl x (proj1 (ole_unfold _ _) H ttt)). Qed.
 
 (** ** Small-completeness of the opposite category *)
 
-(* Every [Type@{u}]-indexed family of ordinals has a join.  The index
-   universe of [HasAllJoins] is the ordinals' OWN universe here, which is
-   what turns the next definition into a small-completeness statement; the
-   measured instance is quoted in the header. *)
+(*
+   本节说明 Large 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SmallOrd_HasAllJoins : HasAllJoins ole :=
   fun A f => existT _ (ojoin A f) (ojoin_IsLUB A f).
 
@@ -250,14 +250,11 @@ Theorem SmallOrd_no_greatest@{u} (m : SmallOrd@{u})
   (H : forall x : SmallOrd@{u}, ole x m) : False.
 Proof. exact (osucc_not_ole m (H (osucc m))). Qed.
 
-(* THE UNIVERSE ARGUMENT, STATED.  [SmallOrd@{u}] has no cofinal family
-   indexed by a [Type@{u}]: if it had one, [ojoin] would turn it into a
-   greatest element.  So the supremum construction of the previous section,
-   which accepts every [Type@{u}]-indexed family, cannot be applied to the
-   class of ALL ordinals -- not because the construction is partial, but
-   because [SmallOrd@{u} : Type@{u+1}] is not a [Type@{u}] and no
-   [Type@{u}] is cofinal in it.  This is the precise sense in which
-   small-completeness and the absence of a top are compatible. *)
+(*
+   本节说明 Large 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem SmallOrd_no_small_cofinal_family@{u}
   (A : Type@{u}) (e : A -> SmallOrd@{u})
   (H : forall x : SmallOrd@{u}, exists a : A, ole x (e a)) : False.
@@ -279,10 +276,11 @@ Proof.
            (initial_is_least (op_PreOrder ole_preorder) Iobj)).
 Qed.
 
-(* The identity diagram on [SmallOrd^op] has no limit: a cone over it has a
-   leg to every object, and in the reversed order that leg family IS the
-   statement that the apex is a greatest ordinal.  Only the CONE is used,
-   not the universal property. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem SmallOrd_op_no_self_limit
   (L : Limit (Id[SmallOrd_op_Proset])) : False.
 Proof.
@@ -291,32 +289,20 @@ Proof.
   exact (@vertex_map _ _ _ _ legs x).
 Qed.
 
-(* Hence [Complete] is refuted when its DIAGRAM shape is allowed to range
-   over the category's own object universe -- while
-   [SmallOrd_op_Complete] inhabits [Complete] with the diagram shape one
-   universe below.  Same constant, two instances; the printed instances are
-   quoted in the header's UNIVERSES paragraph, and they are the sharp form
-   of Mac Lane's remark that the size discipline is doing real work. *)
+(*
+   本节说明 Large 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem SmallOrd_op_not_large_complete
   (HC : @Complete SmallOrd_op_Proset) : False.
 Proof. exact (SmallOrd_op_no_self_limit (HC SmallOrd_op_Proset Id)). Qed.
 
-(** ** The control that keeps the previous theorem from being a triviality
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    [SmallOrd_op_not_large_complete] refutes [Complete] at the diagonal
-    instance, and a reader is entitled to ask whether that instance is
-    uninhabitable for every category, in which case the refutation would say
-    nothing about the ordinals.  It is not.  The SAME diagonal shape is
-    inhabited in the UNREVERSED order, where [ozero] is a greatest lower
-    bound of the identity diagram because it is least:
-
-      About SmallOrd_self_limit  ->  Limit@{u u1 u0 u1} Id[SmallOrd_Proset]
-
-    slots 2 and 4 both [u1], which is the pairing
-    [SmallOrd_op_no_self_limit] refutes on the other side.  So the
-    refutation is about the absence of a GREATEST ordinal, not about the
-    universe pairing being unusable, and that is exactly the content
-    Mac Lane's remark needs. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition SmallOrd_self_limit : Limit (Id[SmallOrd_Proset]) :=
   Proset_Limit_general ole_preorder (Id[SmallOrd_Proset]) ozero

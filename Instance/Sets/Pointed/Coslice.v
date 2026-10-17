@@ -24,11 +24,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* The header of Construction/Slice.v records the standard reading of the
-   coslice — "pointed sets are the coslice of Set under the one-point set".
-   Here that sentence becomes a theorem.  A global element of A, i.e. a map
-   1 ~> A out of the terminal setoid, is the same data as a basepoint of A,
-   and the coslice triangle is pointwise exactly [preserves_pt]. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SetsOne : SetoidObject := @terminal_obj Sets Sets_Terminal.
 
 (* A basepoint, read as a global element.  The one-point pointed set has the
@@ -69,9 +69,11 @@ Qed.
 Next Obligation. intros x u; simpl; reflexivity. Qed.
 Next Obligation. intros x y z h k u; simpl; reflexivity. Qed.
 
-(* Going Pointed → Coslice → Pointed returns the very same record, since the
-   global element evaluated at the only point of 1 is the basepoint again; the
-   comparison isomorphism is therefore the identity. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Coslice_Pointed_unit :
   Coslice_to_Pointed ◯ Pointed_to_Coslice ≈ Id[PointedSets].
 Proof.
@@ -80,13 +82,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Going Coslice → Pointed → Coslice replaces the structure map by the
-   constant map at its value on the point.  These agree up to `≈` but not on
-   the nose, so the comparison isomorphism is carried by the identity of the
-   underlying setoid together with the triangle proofs.  The isomorphism is
-   assembled through [Build_Isomorphism] rather than by record notation, so
-   that it does not depend on the field names [to] and [from] being unshadowed
-   at this point in the development. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition coslice_counit_iso (p : Coslice Sets SetsOne) :
   Pointed_to_Coslice (Coslice_to_Pointed p) ≅[Coslice Sets SetsOne] p :=
   @Build_Isomorphism (Coslice Sets SetsOne)

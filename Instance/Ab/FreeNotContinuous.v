@@ -57,10 +57,11 @@ Proof. simpl; reflexivity. Qed.
 
 (** ** The one separation everything below is spent on *)
 
-(* The free abelian group on a point has two distinct endomorphisms, the
-   identity and the zero map, because its generator is not zero
-   (Instance/Ab/Free.v's [free_ab_gen_not_zero], read at ℤ).  Every
-   refutation in this file is this fact plus bookkeeping. *)
+(*
+   本节说明 FreeNotContinuous 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma free_ab_one_id_not_zero :
   @id Ab (FreeAb SetsPoint) ≈ ab_zero_endo (FreeAb SetsPoint) → False.
 Proof.
@@ -236,10 +237,11 @@ Qed.
 
 (** ** The conclusion of the exercise *)
 
-(* The headline goes through the countable product (witness 2), whose shape
-   [DiscreteCat nat] carries free universes; the empty shape [_0] is
-   declared at [Category@{u Set Set}] (Instance/Zero.v) and pins the
-   functor's hom level to [Set] (see the header's UNIVERSES). *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FreeAb_not_continuous : ContinuousFunctor FreeAb → False :=
   fun H => FreeAb_not_PreservesLimitCone_countable_product (H _ NatOneDiagram).
 

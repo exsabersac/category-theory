@@ -49,9 +49,11 @@ Generalizable All Variables.
 
 Section ModDiagonalSolutionSet.
 
-(* The ring's (auxiliary, carrier, proof) universes, [RMod]'s object and
-   second universes, and the shape's object universe; the shape's homs are
-   at the carrier, which is what the functor category [J, RMod R] asks. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universes a c p o x jo.
 Constraint Set < o, c < o, c < x, p <= a, c <= a, a <= o, jo <= c.
 

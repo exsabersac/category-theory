@@ -23,12 +23,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Deliberately a plain Definition, NOT an Existing Instance: the five
-   topos_* projections are Existing Instances, and the component
-   structures (FinSet_Terminal, FinSet_Cartesian, ...) are already
-   registered directly, so registering the bundle too would give
-   typeclass search two convergent resolution paths for each component.
-   Consumers pass FinSet_Topos explicitly, as the Examples below do. *)
+(*
+   本节说明topos相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FinSet_Topos : ElementaryTopos FinSet := {|
   topos_terminal   := FinSet_Terminal;
   topos_cartesian  := FinSet_Cartesian;
@@ -37,11 +36,11 @@ Definition FinSet_Topos : ElementaryTopos FinSet := {|
   topos_classifier := FinSet_Classifier
 |}.
 
-(** ** Sanity checks: the topos data COMPUTES
+(*
+   本节说明topos相关定义、性质与动机。
 
-    The power object of the 2-element set is Ω ^ 2 = 2 ^ 2 = the
-    4-element set, by [eq_refl] — the exponential codec of
-    [Instance/FinSet/Closed.v] is a closed nat power. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example FinSet_Pow_two : @Pow FinSet FinSet_Topos 2%nat = 4%nat := eq_refl.
 
@@ -53,12 +52,11 @@ Example FinSet_truth_computes :
   @truth FinSet FinSet_Terminal FinSet_Classifier Fin.F1 = fin_true
   := eq_refl.
 
-(** The characteristic morphism of the point [truth : 1 ~> 2] itself:
-    it classifies the subobject {true} ⊆ Ω, so it is the identity
-    predicate on truth values — [fin_true ↦ fin_true],
-    [fin_false ↦ fin_false] — and both cases reduce by [eq_refl],
-    because [char] of [Instance/FinSet/Classifier.v] is a boolean
-    search over the (here one-element) domain. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition point_true : 1%nat ~{FinSet}~> 2%nat := fun _ => fin_true.
 
@@ -74,11 +72,11 @@ Example FinSet_char_at_true :
 Example FinSet_char_at_false :
   char point_true point_true_monic fin_false = fin_false := eq_refl.
 
-(** Membership at the power object: [eval : Pow 2 × 2 ~> Ω] applied to
-    the code 2 of the "negation" subset-of-truth-values (the digit
-    string [fin_false, fin_true]) at the element [fin_true] yields
-    [fin_false], by [eq_refl] — the computability claim is real all the
-    way through the derived combinators. *)
+(*
+   本节说明 Topos 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example FinSet_Pow_membership :
   @eval FinSet FinSet_Cartesian FinSet_Closed 2%nat

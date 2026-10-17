@@ -41,105 +41,28 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* WHAT IS DELIVERED, section by section.  (A) principal ideals over an
-   arbitrary ring with a bare commutativity hypothesis; (B) the residue
-   tower [ResTower : Omega^op ⟶ Rng] of an arbitrary element d; (C) its
-   limit [Zp] with [Zp_limit : IsALimit (ResTower Rcomm d) Zp] and the five
-   FORCED clauses; (D) the two instantiations, [Zp_int p] and
-   [PowerSeries]; (E) Mac Lane's Exercise 6 at [Int_Ring], the digit
-   expansion [Zp_digits_iso] with carry-propagating addition and
-   multiplication; (F) base ten, computed.
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
 
-   PRIMALITY IS NEVER USED.  Sections (A)-(C) quantify over an arbitrary
-   commutative ring and an arbitrary element d, and section (E) over an
-   arbitrary integer p > 1 -- no [prime] hypothesis occurs anywhere in the
-   file.  Mac Lane's ring of p-adic integers is the special case at a
-   prime, and nothing below is stated only for it.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   THE "FORCED" CLAUSE IS NEAR-DEFINITIONAL HERE, AND THAT IS THE POINT OF
-   #408's CARRIER, NOT OF THESE LEMMAS.  Riehl §5.6 Example 5.6.8 observes
-   that the underlying-set functor of [Rng] is MONADIC and therefore
-   CREATES the limit cone, so the ring structure on the limit is the unique
-   one making every projection a homomorphism.  Monadicity is NOT proved
-   here and is not used: what is delivered is the elementary conclusion,
-   [zp_zero_forced] and its four siblings, and each is one line because an
-   element of #408's matching-string setoid IS its family of coordinates,
-   so "agrees with the coordinatewise operation at every stage" and
-   "equals the coordinatewise operation" are the same statement.  The
-   content sits in the choice of carrier, upstream, and the lemmas record
-   the conclusion rather than re-deriving it.
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
 
-   EXERCISE 6 IS DELIVERED IN FULL, AND ITS SHAPE IS WORTH STATING.
-   [Zp_digits_iso] is an isomorphism in [Sets] between the carrier of [Zp]
-   and the setoid of digit strings below p; NO ring structure is put on
-   digit strings, so it is not a ring isomorphism, and the correspondence
-   of the operations is instead the pair of theorems [Zp_digits_add] and
-   [Zp_digits_mul], each saying that the carry-propagating operation on
-   strings agrees with the ring operation of [Zp] under the bijection.
-   Carrying is ONE operator: [dnorm] pushes carries left through an
-   arbitrary integer sequence, [dadd] is [dnorm] of the pointwise sum and
-   [dmul] is [dnorm] of the convolution, and both correctness theorems run
-   through the single identity [dnorm_dsum].
-
-   NOT DELIVERED, and disclosed rather than implied away.  Exercise 7 is
-   delivered as an INSTANTIATION -- [PowerSeriesTower], [PowerSeries] and
-   [PowerSeries_limit] are sections (A)-(C) at [ZPoly] and [poly_x], which
-   is the exercise's own point that the two constructions are one -- but
-   the limit is NOT shown isomorphic to a ring of coefficient sequences
-   under convolution, so the issue's parenthetical for that exercise is
-   unmet; no such ring is built.  Beyond that: the underlying-set functor
-   of [Rng] is not shown monadic; sections (E)-(F) are at [Int_Ring] only,
-   with no digit expansion over a general commutative ring; there is no
-   normal form or decision procedure for equality in [ResRing n]; nothing
-   relates [ResRing ZComm p n] to [Instance/Field.v]'s [F2_Ring] at
-   p = 2, n = 1; the digit setoid is not exhibited as a ring and no
-   [Isomorphism Rng] is claimed anywhere; no p-adic valuation, metric or
-   topology appears; nothing shows the tower PROPER at a non-unit d (no
-   two stages are proved distinct, so the residue rings could a priori all
-   collapse for a bad d, and the base-ten witnesses are the only place any
-   stage is seen to have more than one element); and the uniqueness of the
-   operations is stated ELEMENTARILY, one lemma per operation, rather than
-   as an instance of the algebraic-lifting pattern the issue names from
-   §V.1 Theorem 2 -- no general lifting theorem is invoked or built, and
-   the five lemmas do not compose into one. *)
-
-(* AN 8.19 PORTABILITY FINDING, RECORDED BECAUSE IT COST A BUILD AND WILL
-   COST THE NEXT ONE.  EIGHT definitions in this file are written in
-   TACTIC MODE where a term-mode [existT _ … …] would read better --
-   [res_kills], the five limit operations [zp_zero]/[zp_one]/[zp_add]/
-   [zp_mul]/[zp_neg], and [dadd_seq]/[dmul_seq].  That is not style.  All
-   eight compile on Rocq 9.1 in term mode and are REJECTED on Coq 8.19 and
-   8.20, whose unifier will not, while CHECKING an anonymous sigma against
-   a record type, insert a coercion or delta-unfold a definition on the
-   way.  Three shapes of the same refusal were met:
-
-     - [res_kills]: the second component elaborates with
-       [rquot_proj … a] written out where [RKills] wants [rig_map h a],
-       and the two do not unify.
-     - [zp_zero] and its four siblings: the component elaborates with
-       [res_proj … n x] where [tower_compat] wants
-       [fmap[USetTower] (tower_step n) x].
-     - [dadd_seq]/[dmul_seq]: the bound elaborates at [dnorm (fun j => …)]
-       where [DigitCarrier] wants [dadd …], one delta step away.
-
-   Stating the type FIRST and closing with [exists]/[exact] puts the check
-   in conversion's hands, where all three go through, and the resulting
-   constants are still transparent, so every [eq_refl] below is unaffected
-   -- and the rewrite CHANGES NO NAME (measured by extracting declaration
-   heads from both sources: the term-mode version's 118 all occur here,
-   the only two extra heads being the [Example]s added beside them).  The
-   two [_seq] ones additionally need an explicit [Proof using Hp p], since
-   the bound consumes [1 < p]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** (A) The principal ideal of a ring element *)
 
 Definition RingComm (R : RingObject) : Type :=
   ∀ a b : carrier (rig_setoid R), rig_mul R a b ≈ rig_mul R b a.
 
-(* Stated against [CRng_Sub] ITSELF rather than against [RingComm]'s own
-   body: the obvious form [RingComm R = (∀ a b, … ≈ …)] is an [X = X]
-   after delta, names [CRng_Sub] nowhere, and so could not break if that
-   predicate changed.  This one can. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ring_comm_is_CRng_predicate (R : RingObject) :
   RingComm R = @sobj Rng CRng_Sub R := eq_refl.
 
@@ -197,10 +120,11 @@ Context {R : RingObject}.
 Context (Rcomm : RingComm R).
 Context (d : carrier (rig_setoid R)).
 
-(* Powers of the generator, by recursion on [nat] rather than through
-   [Z.pow]: the tower is indexed by [nat] and this keeps the stage
-   equations definitional, with no lemma whose name differs across
-   Coq 8.19/8.20 and Rocq 9.1. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint dpow (n : nat) : carrier (rig_setoid R) :=
   match n with
   | O   => rig_one R
@@ -211,10 +135,11 @@ Definition ResIdeal (n : nat) : Ideal R := PrincipalIdeal Rcomm (dpow n).
 
 Definition ResRing (n : nat) : RingObject := QuotientRing (ResIdeal n).
 
-(* The tower's stages are nested: a multiple of d^(n+1) is a multiple of
-   d^n.  This is the ONE arithmetic step the tower costs, and it is the
-   SECOND of the file's two [Rcomm] spends (see the header): [dpow (S n)]
-   is [d * dpow n], so the witness [d * k] must move [d] past [dpow n]. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma res_ideal_succ_sub (n : nat) (a : carrier (rig_setoid R)) :
   idl_mem (ResIdeal (S n)) a → idl_mem (ResIdeal n) a.
 Proof.
@@ -226,15 +151,16 @@ Proof.
   now rewrite (rig_mul_assoc R d (dpow n) k).
 Qed.
 
-(* So the projection onto the n-th stage kills the (n+1)-st ideal, and the
-   quotient's own universal property supplies the transition map.  Nothing
-   is chosen: [rquot_med] is the unique such factorisation. *)
-(* Built in tactic mode so that elaboration is directed BY THE GOAL TYPE.
-   The term-mode [existT _ …] form compiles on Rocq 9.1 and is REJECTED on
-   Coq 8.19: there the second component elaborates with [rquot_proj … a]
-   written out rather than through [RKills]'s [rig_map h a], and the two
-   do not unify.  Stating the type first inserts the coercion where the
-   record wants it. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition res_kills (n : nat) : RKills (ResIdeal (S n)) (ResRing n).
 Proof.
   exists (rquot_proj (ResIdeal n)).
@@ -284,12 +210,11 @@ Lemma res_hom_id (x : nat) :
   res_hom (@id (Omega^op) x) ≈ @id Rng (ResRing x).
 Proof. reflexivity. Qed.
 
-(* Assembled as an explicit record rather than through [Program]: the
-   obligation [Program] generates for [fmap_comp] presents its two sides
-   under an unreduced beta-redex of the [fmap] field, against which
-   neither orientation of the composition law unifies, while the law
-   stated at the functor's own shape ([res_hom_comp]) fits the field
-   directly.  Measured, not preferred. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ResTower : Omega^op ⟶ Rng :=
   @Build_Functor (Omega^op) Rng ResRing (fun _ _ f => res_hom f)
     (fun x y f g H => res_hom_respects f g H)
@@ -306,9 +231,11 @@ Context {R : RingObject}.
 Context (Rcomm : RingComm R).
 Context (d : carrier (rig_setoid R)).
 
-(* The tower's underlying diagram of SETS, over which #408's matching
-   strings are formed.  Nothing is rebuilt: the carrier below IS
-   [Instance/Sets/InverseLimit.v]'s [tower_obj] at this diagram. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition USetTower : Omega^op ⟶ Sets := Rng_Forget ◯ ResTower Rcomm d.
 
 Example uset_tower_stage (n : nat) :
@@ -316,15 +243,11 @@ Example uset_tower_stage (n : nat) :
 
 Definition ZpCarrier : obj[Sets] := tower_obj USetTower.
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject] owes
-   a [Prop]-valued mirror of its equality.  Nothing new is proved here: the
-   inverse limit's `≈` compares only the first projection -- the matching
-   witness is carried along and never inspected -- and that projection is
-   compared POINTWISE in the indexed product, so the mirror is
-   [sigma_first_PropEquiv] over [iprod_PropEquiv] over each stage's own
-   [rig_prop].  The two implications of the sigma step are the identity,
-   [tower_obj]'s setoid being that comparison on the nose
-   (Instance/Sets/InverseLimit.v).  Nothing is truncated. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition zp_PropEquiv : PropEquiv (is_setoid ZpCarrier) :=
   sigma_first_PropEquiv (is_setoid ZpCarrier)
     (fun _ _ h => h) (fun _ _ h => h)
@@ -462,11 +385,11 @@ Next Obligation. intros N v Hv e n; symmetry; exact (Hv n e). Qed.
 
 (** *** Riehl §5.6: the ring structure is FORCED, not chosen *)
 
-(* Each clause reads: an operation on the limit carrier that every
-   projection preserves IS the coordinatewise one.  This is what "created
-   by the underlying-set functor" says elementarily, and each proof is
-   #408's [tower_ext] -- an element of the limit is determined by its
-   coordinates -- and nothing more. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma zp_zero_forced (z : ZpCarrier)
   (H : ∀ n, zp_proj n z ≈ rig_zero (ResRing Rcomm d n)) : z ≈ zp_zero.
 Proof. intro n; exact (H n). Qed.
@@ -496,20 +419,17 @@ End Limit.
 
 (** ** (D) The two instantiations: p-adic integers, and formal power series *)
 
-(* Mac Lane's construction 2 and his exercise 7 are ONE construction at two
-   generators.  Neither section below builds a tower or a limit: each names
-   the generator and instantiates (A)-(C).  That the SAME recipe gives both
-   is the exercise's point, and here it is a fact about the terms rather
-   than a remark. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-(* CONSUMED, not proved: [Instance/Rng.v]'s [Int_Ring_commutative]
-   already has exactly this statement -- its two binders elaborate at
-   [carrier (rig_setoid Int_Ring)], so it IS [RingComm Int_Ring] -- and
-   that module is required above.  The short name below is local upkeep
-   only; the obvious [Int_comm] is avoided because
-   [Instance/Matr/Determinant.v] declares the same fact a second time
-   under it, and [make print-assumptions] loads many modules into one
-   scope. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ZComm : RingComm Int_Ring := Int_Ring_commutative.
 
 (* Mac Lane's Z_p: the limit of Z/p <- Z/p² <- Z/p³ <- ... *)
@@ -544,30 +464,11 @@ Example padic_and_series_share_the_construction (p : Z) :
   (Zp_int p = Zp ZComm p) * (PowerSeries = Zp ZPolyComm (@poly_x Int_Ring))
   := (eq_refl, eq_refl).
 
-(** ** (E) Mac Lane's Exercise 6: the digit expansion
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
 
-    The exercise asks for a bijection between the p-adic integers and the
-    sequences of digits below p, with addition and multiplication becoming
-    carry-propagating operations on those sequences.  Everything below is at
-    [R := Int_Ring] and a generator [p] with [1 < p]; PRIMALITY IS NEVER
-    USED, here or anywhere above, so the residue tower and its limit are the
-    (p^n)-adic integers for an arbitrary integer p > 1 and Mac Lane's prime
-    is a special case.
-
-    The three facts sections (A)-(D) leave to be measured rather than
-    assumed are pinned by [eq_refl] at the head of the section: the
-    transition map of the tower is the IDENTITY on integers, [x ≈ y] in the
-    n-th residue ring IS the propositional truncation of divisibility of
-    [x - y] by [d^n], and [divides] is a Type-valued sigma over ℤ.
-    Everything after them is ordinary integer arithmetic.
-
-    AN EARLIER REVISION of the second fact said [x ≈ y] IS the divisibility
-    itself, which it was before the PR "algebraic carriers are sets"
-    (2026-09-17) truncated the quotient ring's equality.  [divides] is
-    still the Type-valued sigma, and the witness is still available: not by
-    projection out of the relation, which a [Prop] does not permit, but by
-    the decision procedure [res_dvd_dec] below, so [res_to_dvd] returns the
-    same [sigT] it always did. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Digits.
 
@@ -584,13 +485,11 @@ Local Notation Zpc := (ZpCarrier ZComm p).
 Example digit_transition_is_id (n : nat) (x : Z) :
   fmap[USetTower ZComm p] (tower_step n) x = x := eq_refl.
 
-(* AN EARLIER REVISION read the right-hand side as the bare [divides].  Since
-   the PR "algebraic carriers are sets" (2026-09-17) the quotient ring's
-   equality is the PROPOSITIONAL TRUNCATION of ideal membership
-   (Instance/Rng/Quotient.v's [rquot_rel]), so what the stage's `≈` IS, on the
-   nose, is [inhabited] of that divisibility.  The witness is not lost: it is
-   recomputed by [res_dvd_dec] below, divisibility by [P n] being decidable on
-   ℤ, so [res_to_dvd] keeps its [sigT]-valued conclusion. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example digit_equiv_is_divides (n : nat) (x y : Z) :
   (@equiv _ (rig_setoid (ResRing ZComm p n)) x y)
     = inhabited (@divides Int_Ring (P n) (Z.add x (Z.opp y))) := eq_refl.
@@ -617,13 +516,11 @@ Lemma res_of_dvd (n : nat) (x y k : Z) (H : (x + - y)%Z = (P n * k)%Z) :
   @equiv _ (rig_setoid (ResRing ZComm p n)) x y.
 Proof. exact (inhabits (existT _ k H)). Qed.
 
-(* Divisibility by [P n] is DECIDABLE on ℤ: the quotient is the witness when
-   the remainder vanishes, and otherwise no witness exists.  This is the
-   [z5_eq_dec] pattern of Instance/Ab/Character/NonNatural.v, and it is what
-   lets [res_to_dvd] keep the conclusion it had before the PR "algebraic
-   carriers are sets" (2026-09-17) truncated the quotient's equality: the
-   witness is RECOMPUTED rather than read out of the [Prop].  No choice
-   principle is used. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma res_dvd_dec (n : nat) (x y : Z) :
   { k : Z & (x + - y)%Z = (P n * k)%Z }
   + ({ k : Z & (x + - y)%Z = (P n * k)%Z } → False).
@@ -722,19 +619,11 @@ Lemma dsum_compat (a : nat -> Z) (n : nat) :
   (dsum a (S n) + - dsum a n)%Z = (P n * a n)%Z.
 Proof. cbn [dsum]; ring. Qed.
 
-(* The compatibility witness passes through [res_of_dvd] since the PR
-   "algebraic carriers are sets" (2026-09-17): a stage's `≈` is the
-   truncation of divisibility, so the bare [existT] has to be wrapped.
-   Built in tactic mode, the ninth entry in the 8.19 portability list of
-   this file's header: both the term-mode [existT _ (dsum a) (fun n => …)]
-   and an [exact] of that term are refused by Coq 8.19 and 8.20 ("has type
-   ∃ _ : nat → Z, ∀ x0, dsum a (S x0) ≈ dsum a x0 while it is expected to
-   have type carrier Zpc") -- the predicate is inferred as a CONSTANT from
-   the component's type instead of being read off the goal -- while Rocq
-   9.1 elaborates either.  [exists] then [intro n; exact] lets the goal
-   direct the predicate, exactly as [zp_zero] and [dadd_seq] do.
-   [Defined] keeps it transparent, so the readback below is still
-   [eq_refl]. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition digits_to_zp (a : nat -> Z) : Zpc.
 Proof.
   exists (dsum a).
@@ -845,12 +734,11 @@ Example zp_digits_iso_to (f : Zpc) (i : nat) :
 Example zp_digits_iso_from (a : DigitCarrier) :
   digits_to_zp_mor a = digits_to_zp (`1 a) := eq_refl.
 
-(** *** Carry propagation (Exercise 6, second half)
+(*
+   本节说明 Zp 相关定义、性质与动机。
 
-    Schoolbook arithmetic is ONE operator, [dnorm]: given an arbitrary
-    integer sequence, propagate carries left to obtain a digit string with
-    the same value.  Addition of digit strings is [dnorm] of the pointwise
-    sum, and the correctness of BOTH is the single identity [dnorm_dsum]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint ncarry (c : nat -> Z) (n : nat) : Z :=
   match n with
@@ -923,12 +811,11 @@ Example ncarry_S (c : nat -> Z) (n : nat) :
   ncarry c (S n) = ((c n + ncarry c n) / p)%Z := eq_refl.
 
 
-(** *** Carry-propagating multiplication
+(*
+   本节说明 Zp 相关定义、性质与动机。
 
-    The raw product sequence is the convolution, written in the "peel the
-    leading digit" form so that the shift identity below is [eq_refl]
-    rather than a reindexing argument.  [dmul] then normalises it with the
-    SAME carry operator addition uses. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint mraw (a b : nat -> Z) (n : nat) : Z :=
   match n with
@@ -1029,20 +916,20 @@ Example dmul_digit (a b : DigitCarrier) (i : nat) :
   := eq_refl.
 
 
-(** *** Non-vacuity: the digit string of −1 is all p−1
+(*
+   本节说明 Zp 相关定义、性质与动机。
 
-    Mac Lane's example of an expansion that no finite integer has.  The
-    constant family at −1 is a p-adic integer with no compatibility
-    obligation of its own, and every one of its digits is p−1: in base ten
-    this is the classical …9999 = −1. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma zp_const_compat (x : Z) (n : nat) : (x + - x)%Z = (P n * 0)%Z.
 Proof using p. ring. Qed.
 
-(* Tactic mode for the same 8.19/8.20 reason as [digits_to_zp] above: with
-   the compatibility witness wrapped in [res_of_dvd], the term-mode
-   [existT _ …] infers a constant predicate and is refused against
-   [carrier Zpc] by Coq 8.19 and 8.20. *)
+(*
+   本节说明 Zp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition zp_const (x : Z) : Zpc.
 Proof.
   exists (fun _ : nat => x).

@@ -31,10 +31,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Instance/Mod.v's convention: the obligations below are
-   introduced by hand, so that the record binders [M] and [N] arrive with
-   their own names rather than whatever the global obligation tactic has
-   already put in scope. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** ** The direct sum as an object of R-Mod *)
@@ -139,10 +140,11 @@ Qed.
 
 (** ** The zero morphism of R-Mod is CMon's *)
 
-(* What makes the two [zero_mor] laws transfer: [RMod_Zero]'s [one] and
-   [zero] wrap [Ab_one] and [Ab_zero_hom] (Instance/Mod.v),
-   which are [CMon_one] and [CMon_zero_hom], and the hom-setoid compares
-   underlying maps. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example rmod_zero_mor_is_cmon_zero_mor {R : RingObject}
   (M N : RModObject R) :
   rm_hom (@zero_mor (RMod R) (RMod_Zero R) M N)
@@ -175,11 +177,11 @@ Definition RMod_exr_inl {R : RingObject} (M N : RModObject R) :
 
 (** ** Both universal properties *)
 
-(* The ∃!-package must be rebuilt — it quantifies over [RModHom], not over
-   [CMonHom] — but every equation inside it is, after unfolding
-   [RModHom_Setoid] and [rmod_hom_compose], the CMon equation about the
-   same underlying maps.  So each proof cites the CMon original and adds
-   nothing. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RMod_is_product {R : RingObject} (M N P : RModObject R)
   (f : P ~{RMod R}~> M) (g : P ~{RMod R}~> N) :
   ∃! h : P ~{RMod R}~> RMod_product M N,

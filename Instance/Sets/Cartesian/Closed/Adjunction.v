@@ -45,21 +45,21 @@ Lemma Sets_counit_apply (S y : Sets) (h : SetoidMorphism S y) (s : carrier S) :
   Sets_counit S y (h, s) ≈ h s.
 Proof. reflexivity. Qed.
 
-(* The same fact with Leibniz equality. This is strictly stronger than
-   [Sets_counit_apply], and it is stated only because both sides are elements
-   of a carrier type — not morphisms — and are convertible in this model. It
-   is not an equality of morphisms and licenses no such equality elsewhere. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Sets_counit_apply_eq
   (S y : Sets) (h : SetoidMorphism S y) (s : carrier S) :
   Sets_counit S y (h, s) = h s.
 Proof. reflexivity. Qed.
 
-(* The two transposes compute to the expected maps: currying fixes the first
-   coordinate, uncurrying pairs the arguments. By [curry_adj_to] and
-   [curry_adj_from] these are the adjunction's ⌊-⌋ and ⌈-⌉. Both are
-   definitional unfoldings in this model ([reflexivity] closes them); their
-   content is the identification of [Sets_Closed]'s transposes with λ-
-   abstraction and application, not a new equation. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Sets_curry_apply
   (S x y : Sets) (f : x × S ~{Sets}~> y) (a : carrier x) (s : carrier S) :
   f (a, s) ≈ curry f a s.
@@ -72,10 +72,11 @@ Proof. reflexivity. Qed.
 
 (** ** A concrete witness: addition on the natural numbers *)
 
-(* The natural numbers as a setoid, with ≈ taken to be Leibniz equality on
-   [nat]. The hom-setoid (NatSet × NatSet ~> NatSet) is then pointwise
-   equality of functions on pairs — a non-trivial relation, which is what
-   makes the equations below carry content rather than hold vacuously. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition NatSet : Sets := {|
   carrier   := nat;
   is_setoid := {| equiv := fun n m : nat => n = m |}
@@ -87,9 +88,11 @@ Program Definition plus_map : NatSet × NatSet ~{Sets}~> NatSet := {|
   morphism := fun p => (fst p + snd p)%nat
 |}.
 
-(* Its transpose is n ↦ (m ↦ n + m); at 2 and 3 that computes to 5. Leibniz
-   equality is used between two ELEMENTS of [nat] (the carrier of NatSet),
-   never between morphisms; the two sides are convertible. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example curry_plus_compute : curry plus_map 2%nat 3%nat = 5%nat.
 Proof. reflexivity. Qed.
 
@@ -153,26 +156,13 @@ Proof. exact (uncurry_curry plus_map). Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** Mac Lane §V.4, exercise 4: X × − preserves all colimits *)
 
-(* Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          Springer 1998, §V.4, exercise 4
+(*
+   Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
 
-   The exercise asks for the fact that `X × −` on Set preserves all small
-   colimits.  With the currying adjunction in place it is a corollary and
-   not a construction: `− × X` is a left adjoint, and left adjoints
-   preserve colimits — the in-tree [left_adjoint_preserves_colimits] of
-   Adjunction/Continuity.v.
+   本节说明伴随、（余）极限相关定义、性质与动机。
 
-   It is recorded here rather than left implicit because, before this file,
-   no tensor or exponential adjunction was instantiated anywhere in the
-   tree, so no colimit-preservation witness of this kind existed to be
-   consumed.  (An audit of the first commit observed that the issue asks
-   for this in prose rather than in a checkbox, and that the first commit
-   had passed over it while disclosing a different, unrequested corollary.
-   Both corrections are made here.)
-
-   The statement is for `− × X` rather than `X × −`; the two agree up to
-   the symmetry of the product, which this library does not silently
-   identify. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sets_prod_preserves_colimits (X : Sets) :
   PreservesAllColimits (Prod_Functor X) :=

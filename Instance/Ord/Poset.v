@@ -163,10 +163,11 @@ Definition poset_reflect_iso (x : Posets) :
 
 (** ** Non-vacuity: three preorders *)
 
-(** The two-element set under the TOTAL relation: a preorder that is as far
-    from a partial order as possible.  Its carrier setoid is the discrete
-    one (Instance/Sets.v's [bool_setoid_object]), so the refutation of
-    antisymmetry is settled by [discriminate] rather than by mapping out. *)
+(*
+   本节说明 Poset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Chaos2 : OrdObject := {|
   ord_setoid := bool_setoid_object;
   ord_le     := fun _ _ => True

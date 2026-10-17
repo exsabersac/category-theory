@@ -57,10 +57,11 @@ Example ExtBase_smul (r : carrier (rig_setoid (ring_rig R)))
   (x : carrier (rig_setoid (ring_rig S))) :
   rm_smul ExtBase r x = rig_mul (ring_rig S) (rig_map phi r) x := eq_refl.
 
-(** S as an (S, R)-bimodule along phi: left multiplication for S, right
-    multiplication through phi for R.  NO hypothesis is needed for this;
-    every clause is a rig law with [rig_map_add], [rig_map_mul] or
-    [rig_map_one] spliced in. *)
+(*
+   本节说明 Extension 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ExtBimodule : Bimodule S R := {|
   bm_left  := Ring_RMod S;
   bm_rsmul := fun s r => rig_mul (ring_rig S) s (rig_map phi r)
@@ -87,10 +88,11 @@ Next Obligation.
 Qed.
 Next Obligation. intros r s t; simpl; apply (rig_mul_assoc (ring_rig S)). Qed.
 
-(** Where the restriction lives, stated as an equivalence rather than
-    asserted: the bimodule's RIGHT R-action and the LEFT R-action that
-    the tensor product of Instance/Mod/Tensor.v balances against are the
-    same map exactly when the image of phi is central. *)
+(*
+   本节说明等价、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ext_actions_agree_iff :
   (∀ (r : carrier (rig_setoid (ring_rig R)))
      (s : carrier (rig_setoid (ring_rig S))),
@@ -218,14 +220,11 @@ Next Obligation.
   apply (rig_mul_one_l (ring_rig S)).
 Qed.
 
-(** ** The R-action underlying the S-action
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Restricting [ExtendObj] back along phi returns the R-module structure
-    the tensor product already carries.  The proof is one induction over
-    the term, with the scalar generalized; the last case is the only one
-    with content, and it is where centrality is spent for the second
-    time — through phi (r r') ≈ phi (r' r), which centrality supplies and
-    which is FALSE for a general phi. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma extend_restrict_action (r : carrier (rig_setoid (ring_rig R)))
   (t : carrier (cmon_setoid (TensorMod ExtBase M))) :
   rm_smul (TensorMod ExtBase M) r t ≈ ext_smul (rig_map phi r) t.
@@ -548,13 +547,11 @@ Proof.
   symmetry; apply ext_gen_scale.
 Qed.
 
-(** ** The extension of the rank-one free module
+(*
+   本节说明 Extension 相关定义、性质与动机。
 
-    S (x)_R R is S again — the cheapest non-degenerate computation, and
-    the one that pins the object rather than merely exhibiting elements
-    of it.  Both legs are built here; the round trip on the tensor is
-    [tensor_hom_ext] plus the balanced law, and centrality is spent once
-    more, in exactly the step that moves phi r past x. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition ext_ring_hom
   : Ring_RMod R ~{RMod R}~> RestrictObj phi (Ring_RMod S) := {|
@@ -675,10 +672,11 @@ End ExtensionOfScalars.
    passes for the wrong reason would show up here first. *)
 Fail Definition ext_probe_instrument : true = false := eq_refl.
 
-(* The R-action the tensor product carries and the R-action obtained by
-   restricting the S-action along phi agree only up to [≈]
-   ([extend_restrict_action]); the first is [mt_smul r], the second is
-   the fold [tensor_med_fun (ext_scale (phi r))]. *)
+(*
+   本节说明 Extension 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example ext_probe_action_strict {R S : RingObject}
   (phi : R ~{Rng}~> S) (Hc : CentralImage phi) (M : RMod R)
   (r : carrier (rig_setoid (ring_rig R)))
@@ -695,13 +693,11 @@ Fail Example ext_probe_counit_strict {R S : RingObject}
   cmon_map (rm_hom (extend_adj_counit phi Hc N))
     (ext_gen phi (Restrict phi N) (rig_one (ring_rig S)) m) = m := eq_refl.
 
-(** ** A witness: extension of scalars along the inclusion of Z into Q
+(*
+   本节说明 Extension 相关定义、性质与动机。
 
-    [Coq.QArith.QArith] is required HERE rather than at the head of the
-    file: importing it shadows [Setoid]'s [equiv], which every [Proper]
-    statement above mentions by name.  Instance/Rng.v takes the same
-    precaution, writing [Setoid.equiv] in the one record it builds after
-    the import. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.QArith.QArith.
 

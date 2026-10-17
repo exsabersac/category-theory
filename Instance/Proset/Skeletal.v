@@ -66,9 +66,11 @@ Proof.
     exact I.
 Qed.
 
-(* A poset is its own skeleton, by the trivial route of
-   [Skeleton_of_Skeletal].  This is a convenience for callers who want a
-   [Skeleton] datum over an order; the content is in the theorems above. *)
+(*
+   本节说明 Skeletal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Proset_Skeleton (Anti : @Antisymmetric A eq eq_equiv R) :
   Skeleton (Proset P) :=

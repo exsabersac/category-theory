@@ -652,11 +652,11 @@ Lemma jmap_mem_IdY (S : @Sieve (_2^op) TwoX) :
   sieve_mem (jmap S) TwoIdY <-> sieve_mem S TwoXY.
 Proof. unfold jmap; simpl; split; intro H; exact H. Qed.
 
-(* Mac Lane's j AS AN OBJECT of [_2, FinSet]: the three-element object
-   {0,1,2} at TwoX, the two-element object {0,2} at TwoY, and [macj]
-   between them.  [Instance/FinSet] costs this file ZERO extra modules
-   (measured), so the explicit construction lives here beside the sieve
-   one it is being identified with. *)
+(*
+   本节说明层/筛相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition macO (o : TwoObj) : nat := match o with TwoX => 3 | TwoY => 2 end.
 
@@ -698,13 +698,11 @@ Example macOmega_X : fobj[MacOmega] TwoX = 3%nat := eq_refl.
 Example macOmega_Y : fobj[MacOmega] TwoY = 2%nat := eq_refl.
 Example macOmega_fmap : fmap[MacOmega] TwoXY = macj := eq_refl.
 
-(* THE IDENTIFICATION.  Under informative excluded middle the sieves on
-   TwoX are coded by [Fin.t 3] and those on TwoY by [Fin.t 2], and the
-   sieve presheaf's action along the one non-identity arrow IS Mac
-   Lane's j — that is, [MacOmega]'s own arrow action, by the [eq_refl]
-   above.  So his explicit three-element construction is the general
-   sieve answer read through the dictionary, proved rather than
-   asserted. *)
+(*
+   本节说明层/筛相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem mac_dictionary (Em : IEM) (S : @Sieve (_2^op) TwoX) :
   twoY_code Em (jmap S) = macj (twoX_code Em S).
 Proof.
@@ -877,12 +875,11 @@ Example fun_classifier_small_truth :
   @truth PShSmall PShSmall_Terminal Fun_Classifier_small = sieve_truth Cs
   := eq_refl.
 
-(* WORK ITEM 2, in the form the issue calls "the content of the
-   classification": the subobjects of a presheaf x correspond to the
-   maps x ⟹ Ω, as an isomorphism of setoids in [Sets].  This is
-   Structure/SubobjectClassifier.v's own theorem applied, over
-   Instance/Fun/Pullback.v's [Fun_HasPullbacks Sets_HasPullbacks], which
-   is a plain [Definition] and so is named here rather than resolved. *)
+(*
+   本节说明拉回/推出、同构、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fun_classifier_classifies (x : obj[PShSmall]) :
   @Isomorphism Sets
     {| carrier := @SubObj PShSmall x |}
@@ -891,12 +888,11 @@ Definition fun_classifier_classifies (x : obj[PShSmall]) :
   @classifier_classifies PShSmall PShSmall_Terminal
     (Fun_HasPullbacks Sets_HasPullbacks) Fun_Classifier_small x.
 
-(* Awodey's naturality clause, which is strictly stronger than the
-   object-wise bijection: the subobject presheaf of the presheaf category
-   IS the presheaf represented by Ω.  Structure/SubobjectClassifier/
-   Natural.v's theorem applied; it too carries the [u <= u0] bound, so it
-   is available here and refused at [Fun_Classifier], the same pair as
-   [classifier_classifies]. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fun_sub_classifier_natural :
   @Isomorphism ([(PShSmall^op), Sets])
     (@Sub PShSmall (Fun_HasPullbacks Sets_HasPullbacks))

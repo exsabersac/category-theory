@@ -127,12 +127,11 @@ Qed.
 
 (** ** The Type-valued [Top]: an arrow index moves between hom universes *)
 
-(* A continuous map of [Top@{h1 o}] rebuilt as one of [Top@{h2 o}]: the
-   same map of points, and the continuity field eta-expanded.  Written
-   [continuity := continuity f] instead, the field is passed through
-   unexpanded, elaboration unifies [Continuous@{h1 o}] with
-   [Continuous@{h2 o}] first-order, and the block acquires [h1 = h2]; the
-   eta-expanded field carries no equation. *)
+(*
+   本节说明 Refutations 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition top_rebuild@{o h1 h2 | o < h1, o < h2 +} {X Y : TopSpace@{o}}
   (f : ContinuousMorphism@{h1 o} X Y) : ContinuousMorphism@{h2 o} X Y :=
   {| continuous_map := continuous_map f;

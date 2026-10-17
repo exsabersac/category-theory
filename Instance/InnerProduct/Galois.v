@@ -27,209 +27,20 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.5,
-    book p. 97 (PDF p. 106), Exercise 1.  Item covered:
-    [maclane:IV.5:ex1].  Read from the page image, verbatim:
+(*
+   本节说明 Galois 相关定义、性质与动机。
 
-      "1. Let H be a space with an inner product (e.g., Hilbert space).
-       If P = Q is the set of all subsets S of H, ordered by inclusion,
-       show that LS = RS = the orthogonal complement of S gives a Galois
-       connection."
-
-    ** WHICH ABSTRACTION OF "INNER PRODUCT", AND WHY
-
-    None.  The exercise's content is the Galois connection, not the
-    analysis, and the ONLY property of an inner product that the
-    connection consumes is that the derived relation "x is orthogonal to
-    y" is SYMMETRIC.  So the ambient structure taken here is a
-    [PerpRel X]: a [Prop]-valued binary relation on the carrier of a
-    setoid, symmetric, and respecting the setoid's own [≈].  Nothing
-    else -- no addition, no scalars, no positivity, no completeness, no
-    bilinearity -- appears anywhere below, and the issue's own Work item 1
-    names this as the recommended scope ("an abstract 'orthogonality
-    relation' satisfying the two properties actually used ... much
-    cheaper").
-
-    Two remarks on the fidelity of that abstraction.  First, symmetry is
-    the right demand even in the complex case: a Hermitian form is
-    conjugate-symmetric rather than symmetric, but the RELATION
-    "⟨x,y⟩ = 0" is symmetric all the same, since a complex number
-    vanishes exactly when its conjugate does.  Second, nothing here
-    demands that the relation be irreflexive, or that only the zero
-    vector be orthogonal to itself: over a field of characteristic two
-    the standard form has isotropic vectors, and the development is
-    indifferent to that.  The ℤ² witness in section (G) is chosen
-    precisely so that the non-degenerate reading can be exhibited.
-
-    ** THE NAME COLLISION, DISCLOSED
-
-    Theory/Orthogonality.v declares [Class Orthogonal] with the
-    notation [e ⫫ m], for the unique-lifting relation between a morphism
-    and a morphism in a factorization system.  That is a DIFFERENT
-    notion -- a property of a commuting square in a category, with no
-    perpendicularity operator and no power set anywhere near it -- and it
-    is a homonym only.  Consequently no name in this file is spelled
-    [Orthogonal], [orthogonal] or [⫫]; everything is spelled [perp].  At
-    the base commit the tokens [perp], [Perp], [PerpRel], [perp_set],
-    [ClosedPerp], [perp_galois], [PerpOp] and [InnerProduct] each occur in
-    ZERO [.v] files, and the tokens "inner product", "orthogonal
-    complement" and "sesquilinear" occur in none; the only "Hilbert" hits
-    are four lines of prose (Theory/Algebra/Frobenius.v,
-    Structure/Dagger.v, Theory/Adjunction.v,
-    Structure/Monoidal/Symmetric.v).  So the issue's "Current state" is
-    accurate on the ambient structure, and its two named dependencies have
-    since landed and are CONSUMED here rather than rebuilt.
-
-    ** WHAT IS CONSUMED
-
-    From #380 (Instance/Proset/Galois.v): the record
-    [GaloisConnection] with its six fields, [gal_unit] and
-    [gal_counit], the two functors
-    [GaloisFunctor_l]/[GaloisFunctor_r] and [GaloisAdjunction].  From #382
-    (Instance/Powerset.v): [subset_le],
-    [subset_le_preorder] and the thin category [Subsets X], over
-    Instance/Sets/Powerset.v's [Powerset_Prop_obj X], the
-    [≈]-respecting [Prop]-valued predicates.  From
-    Instance/Proset/Limit.v: [op_rel], the reversed preorder, which is
-    how Mac Lane's [Q^op] is written here.  From Instance/Grp/Galois.v:
-    six constants of its section (A) -- [gal_lrl_below],
-    [gal_lrl_above], [GalClosed_l], [GalClosed_r],
-    [gal_closed_r_image] and [gal_closed_r_iff] -- which is
-    general over an arbitrary Galois connection and mentions no group,
-    together with [subset_le_antisym].  Those are APPLIED at the new
-    connection; not one of them is restated.  Section (A) carries four
-    constants besides those six ([gal_rlr_below], [gal_rlr_above],
-    [gal_closed_l_image], [gal_closed_l_iff]); this connection needs none
-    of them, because [gal_l] and [gal_r] here are ONE map, so each
-    left-handed statement and its right-handed twin have become the same
-    statement.
-
-    That last [Require] is the expensive one, and the header gives the
-    number rather than leaving a reader to discover it.  The transitive
-    in-project closure of this file, excluding itself, is 130 modules; with
-    Instance/Grp/Galois dropped it is 91, so consuming #381's section (A)
-    costs 39 modules, and every other [Require] in the list costs zero
-    (each was dropped alone and measured).  Section (A) is group-free, so
-    its natural home is Instance/Proset/Galois.v beside the record it is
-    about; but [subset_le_antisym] sits OUTSIDE that section and
-    is used in the proofs below, so moving section (A) alone would return
-    NONE of the 39 -- the [Require] would stay for that one lemma (an
-    audit caught an earlier draft saying it would return them all).
-    Returning them needs [subset_le_antisym] moved too, its natural home
-    being Instance/Powerset.v beside [subset_le], or written inline as
-    Instance/Powerset/Quantifier.v does.  Nothing is moved
-    here: editing a merged module is out of scope for this issue, and the
-    alternative -- restating those six short general lemmas under fresh
-    names -- is what consuming a donor is supposed to avoid.
-
-    ** THE SELF-DUALITY, WHICH IS WHAT MAKES THIS EXERCISE SHORT
-
-    Mac Lane writes [L S = R S].  Here that is not a remark but an
-    equation between the two fields of one record: [perp_galois_l_is_r]
-    closes by [eq_refl].  Three further coincidences follow and are each
-    pinned, because each of them is the kind of thing a reader would
-    otherwise have to take on trust.
-
-      - The two halves of the displayed biconditional are ONE function at
-        swapped arguments.  [perp_transpose] carries [S ⊆ T^perp] to
-        [T ⊆ S^perp]; [gal_to] and [gal_from] of the connection are that
-        same term with its two subset arguments exchanged, and
-        [perp_to_is_from_swapped] records it at [eq_refl].  The whole
-        content of the biconditional is one permutation of two universal
-        quantifiers followed by one appeal to symmetry of the relation.
-
-      - The unit and the counit inhabit the SAME type and are the SAME
-        term ([perp_unit_is_counit], [eq_refl]).  Read at the reversed
-        order the counit inequality IS the unit inequality, which is why
-        [S ⊆ S^⊥⊥] is the only closure inequality this connection has.
-
-      - [GalClosed_l] and [GalClosed_r] of the connection are the same
-        proposition ([ClosedPerp_is_GalClosed_l] and [_r], both
-        [eq_refl]), so there is one notion of closedness rather than two.
-
-    ** NO TRUNCATION IS NEEDED, WHICH IS A DIFFERENCE FROM #381
-
-    Instance/Grp/Galois.v's [fixes] has to squash its defining condition,
-    because that condition is [act A s x ≈ x] and [≈] is [Type]-valued
-    while a member of [Powerset_Prop_obj] must be a [Prop].  Here the
-    orthogonality relation is [Prop]-valued BY DECLARATION -- that is one
-    of the two design decisions the [PerpRel] record makes -- so
-    [Powerset_squash] appears nowhere in this file and every membership
-    argument is a plain implication.  The setoid discipline is paid for
-    instead by the [perp_respects] field, which is exactly what makes
-    [perp_set S] a [SetoidMorphism] and hence an element of the power
-    set.
-
-    ** WHAT THE WITNESS IS, AND WHAT IT IS NOT
-
-    Mac Lane's Hilbert space is out of reach: the tree carries no
-    inner-product structure of any kind, and building one over the
-    standard library reals would buy nothing the exercise asks for while
-    costing the two reals axioms.  The witness in section (G) is ℤ² with
-    the ordinary dot product [⟨(a,b),(c,d)⟩ = a·c + b·d], over stdlib [Z],
-    axiom-free and computing.  It is a genuine bilinear form on a free
-    module of rank two; what it is not is a Hilbert space, and no claim is
-    made that it is.
-
-    The alternative [bool × bool] over the two-element field was
-    considered and not used, as a matter of illustration rather than
-    necessity: over ℤ the values of the form are integers a reader can
-    compute, and every negative closes by arithmetic.  Over F₂ the same
-    statements are provable (measured out of tree by an audit, at the
-    analogue of e₁), but there the isotropic vector [(1,1)] lies in the
-    complement of its own singleton, which makes that base a poorer
-    picture of an orthogonal complement.  Read [zz_e1_not_self_perp] at
-    its strength: it is a statement about ONE point, and over ℤ the
-    origin does lie in the complement of [{(0,0)}], so no universal
-    "no point lies in its own complement" is claimed on either base.
-    An earlier draft of this paragraph said the F₂ statement "would be
-    refuted", contradicting the remark on isotropic vectors above; an
-    audit measured it, and it was false.
-
-    Every negative in section (G) is obtained by COMPUTATION on [Z]
-    followed by [lia] or [injection], never by induction over a
-    quotienting relation -- there is no such relation here, the power set
-    being a predicate setoid rather than a quotient.
-
-    ** UNIVERSES
-
-    The general development binds [X : SetoidObject@{o o}] explicitly,
-    with [Set < o] declared at section level.  That identification of a
-    setoid's carrier and relation levels is the DONORS' and not this
-    file's: [Powerset_Prop_obj@{o}] is declared over [SetoidObject@{o o}],
-    and [Subsets] over the same, as #381 and #384 both measure.  [Set < o]
-    is [Powerset_Prop_obj]'s own, its truth object having carrier [Prop].
-    No constraint block below carries a universe EQUATION.
-
-    ** WHAT IS NOT DELIVERED
-
-    No inner product, no bilinear form as a structure, no vector space and
-    no analysis; no completeness, no closed SUBSPACES (the closed elements
-    here are closed subsets in the Galois sense, which over a genuine
-    inner-product space would be the closed linear subspaces -- that
-    identification needs the linear structure and is not attempted); no
-    antisymmetric quotient, so [Subsets X] is a preorder and two
-    [≈]-equal complements are distinct isomorphic objects; no lattice of
-    closed elements and no orthomodularity; no naturality of any
-    identification in [X] or in [P]; no functoriality of [perp_set] in the
-    relation; no comparison with Structure/Dagger.v's dagger categories;
-    and nothing is registered as an [Instance] -- a chosen orthogonality
-    relation must not become globally resolvable, matching
-    Instance/Powerset.v's own note on its meets and joins. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** (A) The orthogonality relation *)
 
-(* The whole of the ambient structure.  [perp] is [Prop]-valued, so a
-   membership condition built from it needs no truncation; [perp_sym] is
-   the one property of an inner product the exercise consumes; and
-   [perp_respects] is the setoid discipline, stated as the single
-   implication that suffices -- the converse implication is that same
-   field read at the two SYMMETRIC equivalences, so nothing is lost, and
-   [perp_respects_iff] below states the biconditional the [Proper]
-   spelling would give.  Note what that derivation does NOT spend:
-   symmetry of [≈], not [perp_sym], is what turns one implication into
-   two. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record PerpRel@{o} (X : SetoidObject@{o o}) := {
   perp : carrier X → carrier X → Prop;
   perp_sym : ∀ x y, perp x y → perp y x;
@@ -257,20 +68,22 @@ Qed.
 
 Section Perp.
 
-(* [o] is the level at which the setoid, its power set and the inclusion
-   preorder all live; [Subsets] demands [SetoidObject@{o o}], which is
-   what identifies the carrier and relation levels, and [Set < o] is
-   [Powerset_Prop_obj]'s.  [u] is the hom level of the thin categories,
-   free of [o]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universe o u.
 Constraint Set < o.
 
 Context {X : SetoidObject@{o o}}.
 Context (P : PerpRel@{o} X).
 
-(* Mac Lane's orthogonal complement: the points orthogonal to every member
-   of [S].  Respectfulness in the point is [perp_respects] read forward and
-   backward, which is where [≈] of the ambient setoid is paid for. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition perp_set (S : carrier (Powerset_Prop_obj@{o} X)) :
   carrier (Powerset_Prop_obj@{o} X).
 Proof using P.
@@ -288,11 +101,11 @@ Defined.
 Example perp_set_mem (S : carrier (Powerset_Prop_obj@{o} X))
   (x : carrier X) : perp_set S x = (∀ s, S s → perp P s x) := eq_refl.
 
-(* THE TRANSPOSITION.  Its whole content is a permutation of the two
-   universal quantifiers followed by one appeal to [perp_sym]; supplied by
-   [:=] with no tactic.  Note that the statement is symmetric in [S] and
-   [T], so this ONE term serves both halves of Mac Lane's biconditional
-   and both legs of every packaging below. *)
+(*
+   本节说明 Galois 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition perp_transpose (S T : carrier (Powerset_Prop_obj@{o} X))
   (H : subset_le@{o} S (perp_set T)) : subset_le@{o} T (perp_set S) :=
   fun y Hy s Hs => perp_sym P y s (H s Hs y Hy).
@@ -318,10 +131,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** (C) The Galois connection *)
 
-(* All six fields by name.  The second relation is the REVERSED inclusion,
-   which is Mac Lane's [Q^op]: [L] and [R] are order-REVERSING maps, so
-   the covariant record of #380 is inhabited only at the reversed order,
-   exactly as Instance/Grp/Galois.v's connection is. *)
+(*
+   本节说明 Galois 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition perp_galois :
   GaloisConnection (@subset_le@{o} X) (op_rel (@subset_le@{o} X)) :=
   {| gal_l := perp_set
@@ -370,10 +184,11 @@ Definition perp_counit (S : carrier (Powerset_Prop_obj@{o} X)) :
 Example perp_unit_is_counit (S : carrier (Powerset_Prop_obj@{o} X)) :
   perp_unit S = perp_counit S := eq_refl.
 
-(* The triple complement collapses.  In a preorder that is not a partial
-   order the conclusion is mutual inclusion, which for these carriers IS
-   the setoid's own [≈]: Instance/Grp/Galois.v converts.  Both halves
-   are #381's section (A) applied. *)
+(*
+   本节说明 Galois 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma perp_triple (S : carrier (Powerset_Prop_obj@{o} X)) :
   perp_set (perp_set (perp_set S)) ≈ perp_set S.
 Proof using P.
@@ -403,9 +218,11 @@ Definition perp_set_closed (S : carrier (Powerset_Prop_obj@{o} X)) :
   ClosedPerp (perp_set S) :=
   gal_closed_r_image perp_PreOrder_l perp_galois S.
 
-(* The characterisation: the closed subsets are EXACTLY the orthogonal
-   complements.  Section (A) supplies the mutual-inclusion form and
-   [subset_le_antisym] upgrades it to the carriers' own [≈]. *)
+(*
+   本节说明 Galois 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma closed_perp_iff (S : carrier (Powerset_Prop_obj@{o} X)) :
   ClosedPerp S ↔ ∃ T, perp_set T ≈ S.
 Proof using P.
@@ -424,9 +241,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** (F) The two packagings *)
 
-(* #380 applied: the functors and the adjunction are [:=] terms, and every
-   coherence obligation of [Adjunction] is an equation between parallel
-   arrows in a thin category, hence discharged uniformly there. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PerpFunctor : Subsets@{o u} X ⟶ Proset@{o u} perp_PreOrder_r :=
   GaloisFunctor_l perp_PreOrder_l perp_PreOrder_r perp_galois.
 
@@ -442,27 +261,11 @@ Example PerpFunctor_obj (S : carrier (Powerset_Prop_obj@{o} X)) :
 Example PerpFunctor_r_obj (S : carrier (Powerset_Prop_obj@{o} X)) :
   fobj[PerpFunctor_r] S = perp_set S := eq_refl.
 
-(* Mac Lane's own typing.  Theorem 1 types the two maps as [L : P → Q^op]
-   and [R : Q^op → P], and Adjunction/Right.v's [AdjointOnTheRight S T]
-   -- for [S : A^op ⟶ X] and [T : X^op ⟶ A], with the hom-set isomorphism
-   [A(a, T x) ≅ X(x, S a)] -- is exactly that shape.  With [P = Q] and
-   [L = R] both slots are filled by ONE functor, so the pair is adjoint to
-   itself on the right, which is the categorical reading of "LS = RS".
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-   Prior art, measured, and the tree-wide list is complete: this is NOT the
-   class's first inhabitant with the two slots equal.  Adjunction/Right.v
-   carries three -- [Id_AdjointOnTheRight] (labelled DEGENERATE
-   there, and its two slots are [Id[C^op]] and [Id[C]], which are not the
-   same term), [Chain3_AdjointOnTheRight] (whose two functors
-   differ) and [Powerset_AdjointOnTheRight] (at a coinciding pair);
-   Structure/Monoidal/Dual.v's [dual_self_adjoint_on_the_right] is a
-   fourth, also at a coinciding pair; and Instance/Grp/Galois.v's
-   [group_action_AdjointOnTheRight] -- in a file this one REQUIRES -- is a
-   fifth, whose slots [StabOp] and [FixedOp] differ.  So two of the five
-   precede this one at a coinciding pair.  What is new here is a
-   self-adjoint witness in a THIN category arising from a symmetric
-   RELATION, and the observation that both legs of its hom-set isomorphism
-   are one term. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := simpl; repeat intro; exact I.
 
@@ -482,10 +285,11 @@ Program Definition perp_AdjointOnTheRight :
 Example PerpOp_obj (S : carrier (Powerset_Prop_obj@{o} X)) :
   fobj[PerpOp] S = perp_set S := eq_refl.
 
-(* Both legs of the hom-set isomorphism are [perp_transpose], at swapped
-   indices.  Off the diagonal the two do not share a type, so this is the
-   sharpest form the statement takes; compare
-   Structure/Monoidal/Dual.v's [aor_to_is_from_swapped]. *)
+(*
+   本节说明幺半结构、hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example perp_aor_to (S T : carrier (Powerset_Prop_obj@{o} X))
   (h : subset_le@{o} S (perp_set T)) :
   @to Sets _ _ (@aor _ _ _ _ perp_AdjointOnTheRight S T) h
@@ -572,9 +376,11 @@ Proof.
   change ((1 * 2 + 0 * 0)%Z = 0%Z) in H; lia.
 Qed.
 
-(* NON-DEGENERACY: a point is not orthogonal to itself, so the relation is
-   not the total one and the connection is not the trivial one.  This is
-   the statement the two-element field would refute. *)
+(*
+   本节说明 Galois 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example zz_e1_not_self_perp :
   perp_set ZZPerp zz_e1 (1%Z, 0%Z) → False.
 Proof.

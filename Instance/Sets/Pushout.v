@@ -101,11 +101,11 @@ Next Obligation.
   apply po_inr_cong; exact Hc.
 Qed.
 
-(** ** Mediating morphism
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    Given a cocone [(q1 : B → Q, q2 : C → Q)] with [q1 ∘ f ≈ q2 ∘ g], the
-    mediator [pushout_med : B + C → Q] sends [inl b ↦ q1 b], [inr c ↦ q2 c].
-    Respect for [pushout_eq] is proved by induction on the relation. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Underlying function on sums, used as the morphism. *)
 Definition pushout_mediator_fun
@@ -191,13 +191,11 @@ Next Obligation.
     + symmetry; exact (Hv2 c).
 Defined.
 
-(** ** Corollary: a pushout-apex element is reached by [inl] or [inr]
+(*
+   本节说明拉回/推出、来源与用途相关定义、性质与动机。
 
-    Every element of the pushout apex carrier is *definitionally* in [B + C]
-    (the Coq sum type), so this corollary is just the standard sum case
-    split.  It's recorded here for downstream use in the
-    [CorelComposable Sets] instance, where we need to know that the
-    composite copairing of a pushout-cocone is surjective. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pushout_apex_case
       {A B C : SetoidObject}

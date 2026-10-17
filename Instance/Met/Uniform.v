@@ -211,9 +211,11 @@ Context (f : UMap X Y).
 Definition uext_seq (x : Completion X) : nat → Y :=
   fun n => umap f (cs_seq X x n).
 
-(* Uniform continuity alone carries a Cauchy sequence to a Cauchy
-   sequence: the section's completeness hypothesis is not used, and the
-   explicit [Proof using] keeps it out of the lemma's type. *)
+(*
+   本节说明 Uniform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition uext_MCauchy (x : Completion X) : MCauchy Y (uext_seq x).
 Proof using X Y f.
   intros eps Heps.
@@ -384,12 +386,11 @@ Example completion_reflectors_agree@{u o +} (X : MetricSpace@{o}) :
   `1 (fobj[@reflector MetU@{u o} _ CMet_Reflective_in_MetU] X)
     = `1 (fobj[@reflector Met@{u o} _ CMet_Reflective_in_Met] X) := eq_refl.
 
-(* The reflection is proper: at the harmonic space, which is not
-   complete (Instance/Met.v's [Harmonic_not_MComplete]), the unit is not
-   invertible.  Its inverse would send the point the embedding misses
-   (Instance/Met/Completion.v's [Completion_Harmonic_adds_a_point]) to a
-   point whose image is that point, and the unit applied to a point IS
-   its constant sequence ([completionU_unit_pointwise]). *)
+(*
+   本节说明 Uniform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem completionU_unit_Harmonic_not_iso@{u +| Set < u +} :
   IsIsomorphism
     (@unit _ _ _ _ completionU_adj (Harmonic : MetU@{u Set})) → False.

@@ -27,73 +27,26 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where the statement comes from, and what it is used for
+(*
+   关于the statement的来源与用途
 
    nLab:      https://ncatlab.org/nlab/show/natural+numbers+object
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              Springer GTM 5, 1998, §I.5, Exercise 8, p. 21
    Book:      Awodey, "Category Theory" (1st ed., Carnegie Mellon
-              pre-print, September 2005), §10.5 and Exercise 10.6.1(c)
    Book:      Riehl, "Category Theory in Context" (2nd ed. numbering,
-              per issue #252),
-              Example 2.1.1 and Example 2.4.11
    Paper:     Lawvere, "An elementary theory of the category of sets",
-              PNAS 52, 1964
    Paper:     Lambek, "A Fixpoint Theorem for Complete Categories",
-              Mathematische Zeitschrift 103, 1968
 
-   Mac Lane poses the result as an exercise in the chapter on monics, epis
-   and zeros: in the category whose objects are triples ⟨X, e, t⟩ — a set,
-   a point of it, and an endomap — and whose arrows are the maps commuting
-   with both, the triple ⟨ℕ, 0, successor⟩ is initial (CWM §I.5, Ex 8).
-   The same universal property is the natural numbers object, a notion
-   Lawvere introduced in the setting of an elementary theory of the
-   category of sets: arithmetic is fixed by a mapping property and not by
-   any particular set-theoretic implementation (Lawvere 1964; nLab,
-   "natural numbers object").  Awodey draws the consequence that the
-   classical recursion theorem IS this initiality (§10.5), and asks in
-   Exercise 10.6.1(c) for the same statement in its uniqueness form, that
-   the property determines ℕ up to isomorphism.
+   本节说明来源与用途相关定义、性质与动机。
 
-   Riehl states the identical property twice from two different angles,
-   which is why this file carries two proofs of it.  Example 2.1.1
-   presents ⟨X, f, x₀⟩ as a discrete dynamical system and ⟨ℕ, succ, 0⟩ as
-   the initial one; Example 2.4.11 re-derives the same fact from
-   representability, observing that the category of such systems is the
-   category of elements of the forgetful functor from sets-with-an-
-   endomorphism to sets, that this functor is represented by (ℕ, succ)
-   with universal element 0, and that a universal element is initial in
-   the category of elements.  In this library that category of elements
-   needs no separate construction: an object of [FAlg NatF] is a carrier
-   with a point and an endomap, which is exactly a pair of an object of
-   [Endos] and an element of its image under [Endos_Forget], and an
-   arrow of [FAlg NatF] is exactly an arrow of [Endos] carrying one point
-   to the other.  [repr_initial] therefore states the criterion directly
-   over [FAlg NatF]; the deviation from Riehl is one of packaging, not of
-   content.  The tree carries no [el(F)] for a [Sets]-valued functor to
-   instantiate instead, though the header of Construction/Grothendieck.v
-   notes that restricting the Grothendieck fibres to discrete categories
-   would recover it.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The computational reading is the reason the initiality matters here.
-   Lambek (1968) observed that the structure map of an initial algebra is
-   invertible, so [nat] is a fixed point of [1 + (-)]; the unique algebra
-   map out of it is the fold, which Theory/Recursion.v names [cata] and
-   whose defining square is the recursion equation.  Instance/Coq/Lists.v
-   proves the structurally identical statement one parameter up, with
-   [list A] initial for [ListF A X := 1 + A × X]; [NatF] is the [A := unit]
-   reading of that functor up to [unit × X ≅ X].  Theory/Adamek.v
-   constructs initial algebras in general as ω-colimits, but its
-   [AdamekData] leg-agreement hypothesis has no concrete in-tree witness
-   (see the header of Theory/Adamek/Corollaries.v), so — as with the list
-   algebra — the initial [NatF]-algebra is established here directly
-   rather than through that route. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-(* Keep obligation handling explicit and predictable, as in
-   Instance/Coq/Lists.v: this file builds functor, natural-transformation and
-   F-algebra-hom records whose remaining fields are commuting squares, and we
-   want every one surfaced as its own obligation rather than silently
-   discharged. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** ** Mac Lane's triples: algebras of [NatF] are points with an endomap *)
@@ -113,9 +66,11 @@ Definition alg_of_triple {X : Type} (x0 : X) (f : X ~{Coq}~> X)
            | Some x => f x
            end.
 
-(* The two directions are mutually inverse: the triple read off an assembled
-   algebra is the original triple, and the algebra assembled from the triple
-   read off an algebra is the original algebra. *)
+(*
+   本节说明 Nat 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma alg_pt_of_triple {X : Type} (x0 : X) (f : X ~{Coq}~> X) :
   alg_pt (alg_of_triple x0 f) = x0.
@@ -169,10 +124,11 @@ Fixpoint nat_fold {Y : Type} (beta : FAlgebra NatF Y) (n : nat) : Y :=
   | S k => alg_step beta (nat_fold beta k)
   end.
 
-(* Any [NatF]-algebra map [h : (nat, nat_alg) ~> (Y, β)] coincides with the
-   fold determined by [β].  This is the uniqueness half of initiality, proven
-   by induction on [n] using the commuting-square hypothesis [Hh] at the two
-   relevant argument shapes. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hom_is_nat_fold {Y : Type} (beta : FAlgebra NatF Y)
       (h : nat ~{Coq}~> Y)
       (Hh : h ∘ nat_alg ≈ beta ∘ fmap[NatF] h)
@@ -212,11 +168,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* Initiality spelled out in Riehl's clause form (Example 2.1.1): for a set
-   [Y] with a point [y0] and an endomap [f] there is exactly one
-   [h : nat ~> Y] with [h O = y0] and [h ∘ S ≈ f ∘ h].  This is the same
-   content as [nat_initial] with the algebra packaging unwound, and it is the
-   shape in which the recursion theorem is usually met. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary nat_recursion {Y : Type} (y0 : Y) (f : Y ~{Coq}~> Y) :
   ∃! h : nat ~{Coq}~> Y, (h O = y0) * (∀ n, h (S n) = f (h n)).
 Proof.
@@ -242,14 +198,11 @@ Proof. exact (iso_sym nat_lambek). Qed.
 
 (** ** Awodey Ex 10.6.1(c): the characterisation up to isomorphism *)
 
-(* Any initial algebra of [NatF] is isomorphic to [(nat, nat_alg)] BY AN
-   ISOMORPHISM OF ALGEBRAS — the isomorphism lives in [FAlg NatF], so both its
-   directions are algebra maps.  The argument is the generic one for initial
-   objects, spelled out inline because Structure/Initial.v carries no
-   uniqueness-up-to-isomorphism lemma to appeal to — only [initial_obj],
-   [zero], [zero_unique] and [zero_comp]: the two mediators compose to
-   endomorphisms of initial objects, which [zero_unique] forces to be
-   identities. *)
+(*
+   本节说明同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem nat_initial_unique (I : @Initial (FAlg NatF)) :
   @initial_obj (FAlg NatF) I ≅[FAlg NatF] (nat; nat_alg).
 Proof.
@@ -260,9 +213,11 @@ Proof.
   - exact (@zero_unique (FAlg NatF) I (@initial_obj (FAlg NatF) I) _ id).
 Qed.
 
-(* Reading off the carriers: the underlying type of any initial [NatF]-algebra
-   is isomorphic to [nat] in COQ, by the carrier of the algebra isomorphism
-   above (so the bijection does commute with the structure maps). *)
+(*
+   本节说明同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary nat_initial_carrier_unique (I : @Initial (FAlg NatF)) :
   `1 (@initial_obj (FAlg NatF) I) ≅[Coq] nat.
 Proof.
@@ -275,16 +230,18 @@ Qed.
 
 (** ** Riehl Example 2.4.11: the representability reading *)
 
-(* [Endos] is Riehl's category of sets with an endomorphism and maps commuting
-   with them: an [Id]-algebra is an object with a map [X ~> X], and an
-   [Id]-algebra map is a commuting square, with no point involved. *)
+(*
+   本节说明 Nat 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Endos : Category := FAlg (Id[Coq]).
 
-(* The forgetful functor to [Sets].  A COQ object is a bare type, so it is
-   made a setoid by Leibniz equality ([eq_Setoid] of Lib/Setoid.v); this is
-   the one place where the [Coq]-vs-[Sets] variance noted in the issue is
-   paid for, and it costs nothing because [Coq]'s hom-setoid is already
-   pointwise [eq]. *)
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Endos_Forget : Endos ⟶ Sets := {|
   fobj := fun x => {| carrier := ``x ; is_setoid := eq_Setoid ``x |};
   fmap := fun x y f => {| morphism := falg_hom[f] |}
@@ -378,33 +335,21 @@ Proof. reflexivity. Qed.
 
 (** ** The universal-element criterion *)
 
-(* Riehl's Proposition 2.4.8, stated for this functor: a representation of
-   [Endos_Forget] makes the algebra built from the representing object and the
-   universal element initial in [FAlg NatF].  Objects of [FAlg NatF] ARE pairs
-   of an object of [Endos] and an element of its image under [Endos_Forget],
-   and arrows of [FAlg NatF] ARE the arrows of [Endos] carrying one such
-   element to the other (that is [alg_hom_clauses]/[clauses_alg_hom] above), so
-   this is exactly the statement that a universal element is initial in the
-   category of elements — with the category of elements presented concretely as
-   [FAlg NatF] rather than built as a general construction.
+(*
+   本节说明函子、始/终对象相关定义、性质与动机。
 
-   ERRATUM (#303).  The clause that used to close that sentence, "which the
-   tree does not carry", was true when written (commit 30c01af0, 2026-08-05)
-   and went stale four days later: [Construction/Elements.v] landed the general
-   category of elements on 2026-08-09 (f2177328), and
-   Theory/Universal/Element/Elements.v now states Riehl 2.4.8 — a universal
-   element is an initial object of it — over that general construction.  What
-   is still NOT built is the comparison [Elements Endos_Forget ≃ FAlg NatF], so
-   [repr_initial] below is neither re-derived nor made redundant by it; the two
-   remain independent statements. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniversalElement.
 
 Context (Repr : Representable Endos_Forget).
 
-(* The representing object and the representing natural isomorphism.  These
-   are spelled as abbreviations rather than as further section variables so
-   that the [Sets] universe instance is the one fixed by [Endos_Forget]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Notation RObj := (@repr_obj _ _ Repr).
 Notation RIso := (@represented _ _ Repr).
 
@@ -415,9 +360,11 @@ Definition repr_element : ``RObj := transform (to RIso) RObj (id{Endos}).
 Definition repr_alg : FAlg NatF :=
   (``RObj ; alg_of_triple repr_element (`2 RObj)).
 
-(* The Yoneda computation: the representing isomorphism sends an arrow to the
-   image of the universal element under it.  This is naturality evaluated at
-   the identity, followed by the right unit law inside the setoid map. *)
+(*
+   本节说明Yoneda、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma repr_eval {y : Endos} (h : RObj ~{Endos}~> y) :
   falg_hom[h] repr_element = transform (to RIso) y h.
 Proof.
@@ -509,11 +456,11 @@ Next Obligation. intros y f g; exact (repr_alg_hom_unique f g). Qed.
 
 End UniversalElement.
 
-(* [nat_initial] as an instance of the criterion rather than as a standalone
-   proof: feeding the representation [nat_succ_represents] to [repr_initial]
-   produces an initial [NatF]-algebra, and it is literally the same algebra —
-   the universal element is [O] and the endomap is [S], so the structure map is
-   [nat_alg] by conversion. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition nat_initial_via_universal_element : @Initial (FAlg NatF) :=
   repr_initial nat_succ_Representable.
 

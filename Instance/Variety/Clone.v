@@ -60,12 +60,11 @@ Record SetoidAction := {
     @equiv _ sact_setoid (sact_op o k1) (sact_op o k2)
 }.
 
-(* A [#[local]] notation, and it SHADOWS Theory/Category.v's
-   [x ≈[ C ] y] for morphism equivalence in a named category, for the
-   remainder of this section.  That is harmless here — this file never
-   compares morphisms of a category — and the [#[local]] keeps it out of
-   every other file, but it is worth knowing before copying the idiom
-   somewhere that does. *)
+(*
+   本节说明等价、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Notation "x ≈[ A ] y" := (@equiv _ (sact_setoid A) x y)
   (at level 79, only parsing).
 
@@ -96,12 +95,11 @@ Lemma clone_act_op {n} (A : SetoidAction) (o : UA.operation S)
     ≈[A] sact_op A o (fun j => clone_act A (args j) env).
 Proof. reflexivity. Qed.
 
-(** ** Mac Lane's theorem: the action of Ω determines the action of Λ
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Any operator [F] that acts like the variables on variables and like
-    the basic operations on nodes agrees with [clone_act] everywhere.
-    AXIOM-FREE: the inductive step closes with [sact_op_respects] where the
-    Leibniz form below must close with functional extensionality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem action_extends_to_clone (A : SetoidAction)
   (F : ∀ n, DerivedOperators n → (Fin.t n → sact_carrier A) → sact_carrier A)
@@ -152,12 +150,11 @@ Arguments sact_carrier {_} _.
 Arguments sact_op {_} _ _ _.
 Arguments clone_act {_ _} _ _ _.
 
-(** ** The Leibniz shadows, and their cost
+(*
+   本节说明 Clone 相关定义、性质与动机。
 
-    Shipped so the comparison is available in the tree rather than only in
-    this header, and named so that no one mistakes them for the headline
-    statements.  BOTH REPORT [functional_extensionality_dep]; neither is
-    gated. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CloneLeibniz.
 

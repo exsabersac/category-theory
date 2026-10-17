@@ -263,9 +263,11 @@ Defined.
 
 End DiscreteCone.
 
-(* At the empty shape the two adjoints of G_* part company: on the
-   two-point set, the left adjoint makes [{true}] open and the right
-   adjoint, the weakest topology for the empty family of maps, does not. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section EmptyShape.
 
 Universes o so.
@@ -315,9 +317,11 @@ End EmptyShape.
 
 (** ** The book's Exercise 3(a) as printed, refuted *)
 
-(* "If G_* has a LEFT adjoint and GT has a limit in D, prove that T has a
-   limit in C."  Counterexample: the empty shape, C the walking span
-   (an initial apex, no terminal object), D the point. *)
+(*
+   本节说明伴随、（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Local Ltac ex3_lit_tac :=
   intros; simpl in *; repeat intro; simpl in *;

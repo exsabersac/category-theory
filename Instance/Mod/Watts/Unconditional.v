@@ -48,13 +48,11 @@ Require Import Category.Functor.Representable.Additive.
 
 Generalizable All Variables.
 
-(** ** 1. The multi-span shape
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Objects: one node [ms_mod], one node [ms_free], and one node [ms_gen m]
-    for every [m : X]; besides the identities, exactly one arrow from each
-    [ms_gen m] to each of the other two nodes.  Every hom-set has at most
-    one element up to the identification of equality proofs, so the
-    hom-setoids are the total relation and every category law is [I]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive MSObj@{u} (X : Type@{u}) : Type@{u} :=
   | ms_mod
@@ -136,11 +134,11 @@ Qed.
 
 End MSDiagram.
 
-(** ** 2. A point of a limit of setoids
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    A compatible family of elements over a limiting cone in [Sets] is the
-    image of one element of the apex: the mediator out of the singleton
-    cone, evaluated at its point. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sets_limit_point@{j c s +}
   {J : Category@{j c c}} {F : J ⟶ Sets@{c s}} (N : Cone F) (HN : IsLimitCone N)
@@ -193,12 +191,11 @@ Example ew_ev_g0@{a c p o x +|
 
 Section Covering.
 
-(* The ring (a c p), [RMod] (o x), the target of [K] (s), and three
-   auxiliary universes pinned by name (w for [DiscreteCat_Functor] and
-   [ms_diagram], w0 w1 for [RMod_Cocomplete_via_GAFT]): left free, they
-   gave [ew_P] universes of its own, instantiated differently inside
-   [ew_e] and inside [ew_k], and [ew_eQ] identified the two (see the
-   header, UNIVERSES). *)
+(*
+   本节说明 Unconditional 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universes a c p o x s w w0 w1.
 Constraint Set < c, c < o, c < x, p <= a, c <= a, a <= o, c < s, c < w,
   o <= w1, x <= w1.

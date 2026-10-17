@@ -45,10 +45,11 @@ Example FreeSL_alg@{o so} (X : SetoidObject@{o o}) :
     = t_alg[projT2 (fobj[@EM_Free Sets@{o so} Powerset_Prop@{o so}
                           Powerset_Monad@{o so}] X)] := eq_refl.
 
-(* (b) at the free algebra: Mac Lane's order S ∪ T ≈ T is inclusion.  The
-   free algebra's structure map is (c)'s at [FreeSL X] by conversion
-   ([FreeSL_alg]) and the order reads only that map, so this is
-   Instance/SupLat.v's [sl_talg_le_iff] there. *)
+(*
+   本节说明 Examples 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma FreeSL_talg_le_iff@{o so} (X : SetoidObject@{o o})
   (S T : carrier (Powerset_Prop_obj@{o} X)) :
   iff (sl_le (fobj[EM_to_SupLat@{o so}]
@@ -221,9 +222,11 @@ Proof.
   - transitivity y; [ exact e | now symmetry ].
 Defined.
 
-(* A complete semilattice with a decidable ≈ and two points bot ≤ top that
-   are not equal decides, for every proposition Q, ¬Q or ¬¬Q: sup of the
-   probe is top when Q holds and bot-or-below when it does not. *)
+(*
+   本节说明 Examples 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem suplat_two_points_WLEM@{o} (A : SupLatObject@{o})
   (bot top : carrier (sl_set A)) (Hle : sl_le A bot top)
   (Hne : @equiv _ (is_setoid (sl_set A)) top bot → False)

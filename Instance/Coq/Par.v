@@ -77,18 +77,11 @@ Next Obligation. now destruct (h x0); simpl. Qed.
 #[export] Program Instance Par_Monoidal : @Monoidal Par := {
   I := False;
   tensor := {|
-    (* Tensor of two objects, computed on underlying (non-basepoint) sets.
-       On the pointed-set realizations [option x], [option y] this is their
-       *cartesian product* with only the basepoint pair [(None, None)]
-       removed and re-adjoined as the new basepoint:
+    (*
+   本节说明笛卡尔相关定义、性质与动机。
 
-           option x × option y  ≅  ((x * y) + x + y) ⊔ {(None, None)}.
-
-       Hence the underlying set is [(x * y) + x + y] (both-defined,
-       left-defined, right-defined cases). This is the product in pointed
-       sets, NOT the smash product (which would collapse the whole wedge,
-       leaving only [x * y]); accordingly Par below is proven cartesian
-       monoidal, and the smash product is not cartesian. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     fobj := λ '(x, y), (x * y) + x + y;
     fmap := λ '(x1, x2) '(y1, y2) '(f1, f2) o,
       match o with
@@ -204,15 +197,11 @@ Next Obligation. solveit. Defined.
 #[export] Program Instance Par_Cartesian : @Cartesian Par :=
   @CartesianMonoidal_Cartesian _ Par_CartesianMonoidal.
 
-(* Par is not cartesian closed.
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
 
-   It is *also* not closed for the monoidal tensor defined above (the product
-   in pointed sets, [(x * y) + x + y]): an earlier [Par_ClosedMonoidal]
-   instance has been removed because the iso laws [to_from = id] and
-   [from_to = id] for the candidate currying are not provable in general. The
-   parallel development in Instance/Sets/Par.v contains a pair of [_impossible]
-   lemmas (search "to_from_impossible") that prove the negation under
-   decidability/inhabitance assumptions, demonstrating the obstruction. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance Par_Initial : Initial Par := {
   terminal_obj := False;

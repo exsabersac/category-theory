@@ -41,12 +41,11 @@ Generalizable All Variables.
 
 (** ** Bounds over a preorder *)
 
-(* [R] is kept explicit in the bound predicates: it does not occur in the
-   types of [d] or [m], so an implicit binder would be unresolvable at
-   the use sites. Families are indexed by an arbitrary [Type]; the
-   library carries no subset machinery, so "every subset has an
-   infimum" is modelled throughout as "every [Type]-indexed family has
-   a greatest lower bound". *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* [m] is a lower bound of the family [d]. *)
 Definition IsLowerBound {A : Type} (R : relation A) {Ix : Type}
@@ -59,10 +58,11 @@ Definition IsGLB {A : Type} (R : relation A) {Ix : Type}
   (d : Ix → A) (m : A) : Type :=
   IsLowerBound R d m * (∀ n : A, IsLowerBound R d n → R n m).
 
-(* The reversed preorder. Upper bounds and least upper bounds are the
-   lower bounds and greatest lower bounds of it — definitionally, so
-   that every dual statement below is the original one read at
-   [op_rel R] and no dual proof is written twice. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition op_rel {A : Type} (R : relation A) : relation A :=
   fun x y => R y x.
 
@@ -78,18 +78,11 @@ Definition IsUpperBound {A : Type} (R : relation A) {Ix : Type}
 Definition IsLUB {A : Type} (R : relation A) {Ix : Type}
   (d : Ix → A) (m : A) : Type := IsGLB (op_rel R) d m.
 
-(* Uniqueness of an infimum, and of a supremum. Without antisymmetry the
-   sharpest available conclusion is mutual precedence, which is exactly
-   isomorphism of the two apexes in [Proset P]; over a poset
-   (Instance/Poset.v, where [Poset P] is [Proset P] with an
-   antisymmetry constraint) it upgrades to equality by antisymmetry.
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
 
-   The supremum statement is obtained by reading the infimum statement
-   at the reversed preorder, since [IsLUB R] is by definition
-   [IsGLB (op_rel R)]: [lub_unique] below is literally [glb_unique]
-   applied to [op_rel R], with no second argument. That is the
-   duality-respecting formulation, in which the dual proof establishes
-   the dual result rather than a fresh proof being written. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition glb_unique {A : Type} (R : relation A) {Ix : Type}
   (d : Ix → A) (m m' : A) (G : IsGLB R d m) (G' : IsGLB R d m') :
   R m m' * R m' m :=
@@ -104,11 +97,11 @@ Definition lub_unique {A : Type} (R : relation A) {Ix : Type}
 Definition pair_family {A : Type} (x y : A) : bool → A :=
   fun b => if b then x else y.
 
-(* The empty family, used to read a greatest element as the nullary
-   meet. A greatest element is exactly a greatest lower bound of it,
-   matching the fact that the terminal object is the limit of the empty
-   diagram; the least/supremum form is the same statement at the
-   reversed preorder, with no second proof. *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition empty_family {A : Type} : False → A := fun e => match e with end.
 
 Lemma greatest_iff_empty_glb {A : Type} (R : relation A) (top : A) :
@@ -137,22 +130,22 @@ Context {A : Type} {R : relation A} (P : PreOrder R).
 
 (** ** Thinness, stated concretely *)
 
-(* Every equivalence of parallel morphisms in [Proset P] is the
-   proposition [True], by construction of the hom-setoid in
-   Instance/Proset.v. This is the one fact about thinness this file
-   uses, and it holds by [eq_refl]. No [Thin] predicate is introduced;
-   see the coordination note in the header. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma proset_equiv_is_True (x y : A) (f g : x ~{Proset P}~> y) :
   (f ≈ g) = True.
 Proof. reflexivity. Qed.
 
 (** ** Binary products are meets *)
 
-(* Structure ⇒ order: the chosen product object of a cartesian structure
-   on [Proset P] is a greatest lower bound of its two factors. The two
-   projections ARE the lower-bound clause and [fork] IS the greatest
-   clause; each bullet below is a projection of the class, not a
-   proof step. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cartesian_product_IsGLB (CP : @Cartesian (Proset P)) (x y : A) :
   IsGLB R (pair_family x y) (@product_obj (Proset P) CP x y).
 Proof.
@@ -164,11 +157,11 @@ Proof.
     exact (@fork (Proset P) CP n x y (Hn true) (Hn false)).
 Qed.
 
-(* Order ⇒ structure: a choice of binary meets equips [Proset P] with a
-   cartesian structure. Both law fields are equations between parallel
-   morphisms of a thin category, so the global obligation tactic
-   discharges them and the whole mathematical content is the data
-   supplied here. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Proset_Cartesian
   (glb : A → A → A)
   (glb_l : ∀ x y, R (glb x y) x)
@@ -181,11 +174,11 @@ Program Definition Proset_Cartesian
   exr := fun x y => glb_r x y
 |}.
 
-(* Dually, a choice of binary joins equips [Proset P] with a cocartesian
-   structure. Recall from Structure/Cocartesian.v that [Cocartesian C]
-   is notation for [@Cartesian (C^op)] — there is no separate class — so
-   the fields below are read in the opposite category and the
-   "projections" run [x ~> lub x y]. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Proset_Cocartesian
   (lub : A → A → A)
   (lub_l : ∀ x y, R x (lub x y))
@@ -233,12 +226,11 @@ Definition initial_is_least (Iobj : @Initial (Proset P)) :
 
 (** ** Cones over a thin category *)
 
-(* A cone over ANY diagram valued in [Proset P] is nothing but a lower
-   bound of the diagram's objects: the leg family is the lower-bound
-   clause, and the coherence condition [fmap[F] f ∘ ψ x ≈ ψ y] is an
-   equation in a thin category, hence [Logic.I]. This is the single
-   observation that makes the identification below independent of the
-   shape [J]. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition proset_cone {J : Category} (F : J ⟶ Proset P) (n : A)
   (Hn : IsLowerBound R (fobj[F]) n) : Cone F.
 Proof.
@@ -249,14 +241,11 @@ Proof.
     + intros x y f; exact Logic.I.       (* coherence: degenerate, thin *)
 Defined.
 
-(* The same statement in the opposite category, used for the colimit
-   half. Note that [(Proset P)^op] is NOT [Proset (op_PreOrder P)] by
-   definitional unfolding — the two categories have distinct
-   Program-generated law fields — so the dual construction is carried
-   out directly rather than by re-instantiating [Proset] at the
-   reversed relation. Its hom-setoid is nonetheless the same
-   constant-[True] setoid, so the coherence condition degenerates in
-   exactly the same way. *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition proset_op_cone {J : Category} (G : J ⟶ (Proset P)^op) (n : A)
   (Hn : ∀ j : J, R (G j) n) : Cone G.
 Proof.
@@ -269,10 +258,11 @@ Defined.
 
 (** ** The identification, at an arbitrary diagram shape *)
 
-(* An object is a limit of [F] exactly when it is a greatest lower bound
-   of the family of objects of [F]. Both directions are the data
-   transposition described in the header: legs against lower-bound
-   clause, mediating arrow against greatest clause. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Proset_IsALimit {J : Category} (F : J ⟶ Proset P) (m : A)
   (H : IsGLB R (fobj[F]) m) : IsALimit F m.
@@ -359,12 +349,11 @@ Defined.
 
 (** ** The discrete case: indexed products are indexed meets *)
 
-(* A family [d : Ix → A] is a functor out of the discrete category on
-   [Ix] via [DiscreteCat_Functor], and Structure/Limit/Product.v reads a
-   limit of that diagram as an indexed product. This is the special case
-   [J := DiscreteCat Ix] of the theorems above, kept as a separate
-   interface because that is the form indexed consumers want; nothing
-   new is proved. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Proset_Limit {Ix : Type} (d : Ix → A) (m : A)
   (H : IsGLB R d m) :
@@ -397,22 +386,11 @@ Defined.
 
 (** ** Bicompleteness *)
 
-(* The complete-lattice form of the identification: the thin category of
-   a preorder is complete exactly when the preorder has all
-   [Type]-indexed infima. [Complete] here is the library's own
-   unrestricted predicate (Structure/Complete.v), quantifying over every
-   diagram category with no smallness side condition, so this is
-   completeness at the library's universe discipline rather than
-   small-completeness.
+(*
+   本节说明 Limit 相关定义、性质与动机。
 
-   Both halves are stated: [proset_Complete_iff_all_meets] for infima and
-   [proset_Cocomplete_iff_all_joins] for suprema, the latter over
-   [Cocomplete (Proset P)] itself rather than [Complete] at the reversed
-   preorder (the two readings are not definitionally equal).  That the two
-   HYPOTHESES are not independent — all infima already yield all suprema, a
-   supremum being the infimum of the family of upper bounds — is the
-   standard complete-lattice redundancy; it is treated separately (issue
-   #684) and is not re-proved here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem proset_Complete_iff_all_meets :
   @Complete (Proset P) ↔ HasAllMeets R.
 Proof.
@@ -431,11 +409,11 @@ Defined.
 
 (** ** Pushouts from joins *)
 
-(* Since a colimit of any diagram is the join of its objects, pushouts
-   exist in [Proset P] as soon as binary joins do: the apex of the
-   pushout of a span is the join of its two feet, and the span itself
-   contributes nothing, its commutation condition being an equation in a
-   thin category. *)
+(*
+   本节说明（余）极限、拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Proset_HasPushouts
   (lub : A → A → A)
   (lub_l : ∀ x y, R x (lub x y))
@@ -470,13 +448,11 @@ Proof.
     exact (unique_obj (pushout_ump Q n (Hn true) (Hn false) Logic.I)).
 Qed.
 
-(* The join half, PROVED rather than left to duality-by-remark: an earlier
-   revision stated only the meet side under a "bicompleteness" heading; the
-   verifier of that revision assembled this biconditional from the file's
-   own pieces, and it is landed here so the heading is earned.  Note the
-   conclusion is [Cocomplete (Proset P)] itself, not
-   [Complete (Proset (op_PreOrder P))] -- the two are NOT definitionally
-   equal (checked by a rejected [eq_refl] probe). *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem proset_Cocomplete_iff_all_joins : @Cocomplete (Proset P) ↔ HasAllJoins R.
 Proof.
   split.
@@ -499,10 +475,11 @@ Proof.
       * intros v Hv; exact Logic.I.
 Defined.
 
-(* Hence the pushout of any span coincides with the coproduct of its two
-   feet: both are joins of the same pair, and two joins of one family
-   precede each other. In [Proset P] mutual precedence is exactly
-   isomorphism of the two objects. *)
+(*
+   本节说明拉回/推出、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pushout_is_coproduct_of_feet (CP : @Cocartesian (Proset P))
   {x y z : A} (f : x ~{Proset P}~> y) (g : x ~{Proset P}~> z)
   (Q : IsPushout (C:=Proset P) f g) :
@@ -515,10 +492,11 @@ Definition pushout_is_coproduct_of_feet (CP : @Cocartesian (Proset P))
 
 End Proset_Limits.
 
-(* The dual indexed statement is this development applied to the
-   reversed preorder: [IsLUB R d m] is by definition [IsGLB (op_rel R)
-   d m], so a least upper bound of the original preorder is a limiting
-   cone in [Proset (op_PreOrder P)]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Proset_LUB_Limit {A : Type} {R : relation A} (P : PreOrder R)
   {Ix : Type} (d : Ix → A) (m : A) (H : IsLUB R d m) :
   Limit (DiscreteCat_Functor (C:=Proset (op_PreOrder P)) d) :=
@@ -538,26 +516,11 @@ Definition Proset_Cocomplete_of_all_joins {A : Type} {R : relation A}
 
 (** ** Equivalence-invariance of completeness *)
 
-(* Theory/Equivalence/Limit.v transports an individual limit along an
-   equivalence ([equivalence_creates_limits]) but does not record that
-   the completeness PREDICATE is invariant. The two lemmas below supply
-   that, by running the transport at the quasi-inverse, which is itself
-   an equivalence (Theory/Equivalence.v, [EquivalenceOfCategories_sym]).
+(*
+   本节说明（余）极限、等价相关定义、性质与动机。
 
-   PLACEMENT.  These are general statements about categories, not about
-   prosets, and Theory/Equivalence/Limit.v would be their natural home;
-   they are kept here because that file does not currently depend on
-   Structure/Complete.v and adding the dependency to a shared Theory/
-   module is a change with a wider blast radius than this issue needs.
-   Moving them later is a pure relocation.
-
-   The intended order-theoretic corollary — a preorder is bicomplete
-   exactly when its skeletal poset is — is NOT stated, because the
-   library has no skeleton construction for a preorder (the quotient by
-   mutual precedence, together with the equivalence between a preorder
-   and that quotient). Once such a construction exists the corollary is
-   an immediate instance of the two lemmas below; until then it is
-   deliberately left unclaimed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Complete_Invariance.
 
@@ -582,45 +545,17 @@ End Complete_Invariance.
 
 (** ** The two existing thin witnesses, read through the identification *)
 
-(* [Instance/Props.v]'s [Props] and [Instance/Two.v]'s [_2] are thin, but
-   neither is [Proset P] for any [P]: each is its own [Program
-   Definition], and [_2] carries the strict-equality hom-setoid
-   [Morphism_equality] rather than the constant-[True] one. The general
-   theorems above therefore do not apply to them directly.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   CORRECTION (#463): for [Props] the reason is narrower than "its own
-   [Program Definition]" suggests. At Instance/Props/Modal.v's
-   [impl_PreOrder] (the relation [Basics.impl] as a stdlib [PreOrder])
-   the [obj], [hom], [id] and [compose] fields of [Props] and
-   [Proset impl_PreOrder] agree by [eq_refl] and [homset] does not; the
-   equation of the two records is refused by conversion, and that
-   refusal is the opacity of the two [Program Definition]s' obligations:
-   with both restated verbatim under [Set Transparent Obligations] the
-   whole records are equal by [eq_refl]. Test/ProbeClosure463.v pins
-   this as its refusal N25 with the control [P463Flip.p463_props_T]. For
-   a variable [P : PreOrder Basics.impl] the refusal is structural,
-   already at [id], and it stays with the obligations transparent (N26
-   and N27 there, the objects and homs agreeing by the control
-   [P463Flip.p463_props_var_T]). So [Props] is not [Proset P] for any
-   [P] as the tree stands, which is all the paragraph above needs.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   What does apply, to EVERY category, is the identification read at the
-   hom-inhabitation preorder [hom_le]: the chosen product of a cartesian
-   structure is a greatest lower bound of its factors for the relation
-   "there exists a morphism". Recording the two existing binary
-   witnesses through that bridge is the honest sense in which they are
-   instances of the general statement rather than freestanding facts —
-   instances of the CHARACTERIZATION, not of the [Proset]
-   construction. *)
+(*
+   本节说明hom相关定义、性质与动机。
 
-(* Theory/Category.v already records that a category has an underlying
-   preorder of objects, as the exported instance [hom_preorder :
-   PreOrder (@hom C)]. That one cannot be reused here: [IsGLB] is stated
-   over a [relation], which is [Prop]-valued, whereas [@hom C] is
-   [Type]-valued. [hom_le] is therefore its propositional truncation,
-   and [hom_le_preorder] below is the corresponding [PreOrder] — named
-   apart from [hom_preorder] deliberately, so that this file shadows no
-   existing instance. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hom_le (C : Category) (x y : C) : Prop := inhabited (x ~{C}~> y).
 
 Program Definition hom_le_preorder (C : Category) : PreOrder (hom_le C) :=
@@ -644,10 +579,11 @@ Definition cocartesian_is_lub (C : Category) (CP : @Cocartesian C) (x y : C) :
   IsLUB (hom_le C) (pair_family x y) (@product_obj (C^op) CP x y) :=
   cartesian_is_glb (C^op) CP x y.
 
-(* The two existing binary witnesses, recorded through that bridge:
-   conjunction is the meet of two propositions, disjunction their join,
-   and [Instance/Two/Monoidal.v]'s [two_meet] is the meet of the
-   two-element order. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition props_product_is_glb (p q : Prop) :=
   cartesian_is_glb Props Props_Cartesian p q.
 
@@ -676,19 +612,22 @@ Definition Nat_Cartesian : @Cartesian Nat_Proset :=
 Definition nat_meet (x y : nat) : nat :=
   @product_obj Nat_Proset Nat_Cartesian x y.
 
-(* The identification computes: the categorical product of 3 and 5 in
-   this thin category is the number 3, by reduction alone. (Object
-   positions parse in [object_scope], where a bare numeral has no
-   interpretation, hence the [%nat] annotation.) *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example nat_product_3_5 : nat_meet 3 5 = 3%nat := eq_refl.
 
 Definition nat_product_IsGLB (x y : nat) :
   IsGLB le (pair_family x y) (@product_obj Nat_Proset Nat_Cartesian x y) :=
   cartesian_product_IsGLB Nat.le_preorder Nat_Cartesian x y.
 
-(* Non-vacuity, in the sense described in the header: [IsGLB] is a
-   refutable predicate, so the theorems above are not statements about a
-   uniformly inhabited type. 4 is not a lower bound of {3, 5}. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma nat_glb_not_4 : IsGLB le (pair_family 3%nat 5%nat) 4%nat → False.
 Proof.
   intros [Hlb _].
@@ -697,11 +636,11 @@ Proof.
   exact H4.
 Qed.
 
-(* Zero is least, hence initial. The natural numbers have no greatest
-   element, so this thin category has an initial object but no terminal
-   one — a reminder that the identification transports the ORDER facts,
-   it does not manufacture them.  The negative half is PROVED below
-   ([Nat_no_Terminal]), not asserted. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Nat_Initial : @Initial Nat_Proset :=
   Proset_Initial Nat.le_preorder 0%nat Nat.le_0_l.
 
@@ -726,19 +665,11 @@ Definition nat_indexed_limit (x y : nat) :
 
 (** ** A preorder with no least element, and no binary meets *)
 
-(* The two-element discrete order: [bool] under equality. It is a
-   preorder, so the constructions above apply to it, and it has neither
-   a bottom nor binary meets. Both facts are stated in the refutation
-   form, which is what makes the corresponding positive statements
-   informative.
+(*
+   本节说明 Limit 相关定义、性质与动机。
 
-   Two other in-tree candidates were available and are deliberately not
-   used: Instance/Two/Discrete.v's [Two_Discrete] is a hand-built
-   category rather than a [Proset], so it would not witness a statement
-   about preorders without a bridge; and packaging
-   Construction/Enriched/Two.v's [two_bot] as an initial object of [_2]
-   belongs to a separate effort on joins in the two-element order
-   (issue #756), which owns those names. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition bool_eq_preorder : PreOrder (@eq bool) :=
   Build_PreOrder (@eq bool) (@eq_Reflexive bool) (@eq_Transitive bool).
 

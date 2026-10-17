@@ -50,10 +50,11 @@ Open Scope category_scope.
 
 (** ** The endomorphism ring of an abelian group *)
 
-(* [EndRig] (Theory/Algebra/Rig.v) at the object [A] of [Ab], with
-   [ab_hom_neg] (Structure/AbCategory.v) as its negation.  The instance
-   of [LocallyPropositional] is passed by name: the record literal is
-   elaborated before instance resolution would see it. *)
+(*
+   本节说明 RingEpi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AbEndRing@{u p +} (A : obj[Ab@{u p}]) : obj[Rng@{u p}].
 Proof.
   refine {| ring_rig :=
@@ -684,9 +685,11 @@ Definition ZtoQ_epic_of_localization@{+} : Epic ZtoQ :=
 
 Require Import Coq.micromega.Lia.
 
-(* ℤ itself is not in the subcategory: were the unit η at ℤ invertible,
-   its inverse g would be ℤ-linear, and η 1 = 1 ⊗ 1 is twice the element
-   (1/2)·(1 ⊗ 1) of the ℚ-module, so 1 = g (η 1) would be even. *)
+(*
+   本节说明 RingEpi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ZMod_not_UnitFixed@{+} :
   sobj (RMod Int_Ring) (UnitFixed (extend_restrict_adjunction ZtoQ Q_central))
     (Ring_RMod Int_Ring) → False.

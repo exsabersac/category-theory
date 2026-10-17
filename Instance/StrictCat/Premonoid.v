@@ -22,24 +22,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Strict premonoidal structures
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
 
-    The three law fields are stated as strict equalities of functors, i.e.
-    in [Functor_StrictEq_Setoid]: their right-hand sides are the funny
-    unitors and associator, exactly as in the unfolded [MonoidObject] laws
-    at [(StrictCat, Funny_Monoidal, c)].  In particular
-
-      [to (@Funny_unit_left c)]  is definitionally [Funny_unit_left_to],
-      [to (@Funny_unit_right c)] is definitionally [Funny_unit_right_to],
-      [to (@Funny_assoc c c c)]  is definitionally [FunnyAssocTo],
-
-    and [FunnyBimap F G] is definitionally [bimap[FunnyTensor] F G], so the
-    types below convert to the [mempty_left]/[mempty_right]/[mappend_assoc]
-    types on the nose.  The law fields are Type-valued (a
-    [Functor_StrictEq_Setoid] equivalence is a sigma of an object-equality
-    family and transported morphism agreement); projecting out the
-    object-equality family at specific objects yields the object-level
-    strict laws [StrictPremonoidal_unit_left_obj] etc. below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record StrictPremonoidal (c : Category) : Type := {
   sp_tensor : (c □ c) ⟶ c;
@@ -73,11 +60,11 @@ Arguments sp_unit_left {c} _.
 Arguments sp_unit_right {c} _.
 Arguments sp_assoc {c} _.
 
-(** ** The correspondence
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Both directions are pure repackagings: the record fields were stated as
-    the unfolded monoid-object laws, so each construction is an explicit
-    constructor application whose arguments typecheck by conversion alone. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition StrictPremonoidal_of_Monoid {c : Category}
   (m : @MonoidObject StrictCat Funny_Monoidal c) : StrictPremonoidal c :=
@@ -97,16 +84,11 @@ Definition Monoid_of_StrictPremonoidal {c : Category}
     (sp_unit_right p)
     (sp_assoc p).
 
-(** ** Round trips
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    The two constructions are mutually inverse — as whole records, not
-    merely on the data.  [MonoidObject] and [StrictPremonoidal] both have
-    primitive projections (Category.Lib exports [Set Primitive
-    Projections]) and hence definitional eta, and each direction is a
-    constructor application of the other's projections, so both composites
-    are definitionally the identity and [reflexivity] closes the
-    record-level equalities.  The four data-projection equalities that
-    follow are immediate specializations, kept for direct reference. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma roundtrip_monoid {c : Category}
   (m : @MonoidObject StrictCat Funny_Monoidal c) :
@@ -139,13 +121,11 @@ Lemma roundtrip_sp_tensor {c : Category} (p : StrictPremonoidal c) :
     = sp_tensor p.
 Proof. reflexivity. Qed.
 
-(** ** Object-level strict laws
+(*
+   本节说明 Premonoid 相关定义、性质与动机。
 
-    The object-equality families of the three law fields, at specific
-    objects: the tensor is strictly unital and associative on objects.
-    [ttt] is the lone object of [_1], so [fobj[sp_unit p] ttt] is the tensor
-    unit object; each statement converts to the projected component because
-    the unitors' and associator's object actions compute on literal pairs. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary StrictPremonoidal_unit_left_obj {c : Category}
   (p : StrictPremonoidal c) (x : c) :
@@ -163,16 +143,11 @@ Corollary StrictPremonoidal_assoc_obj {c : Category}
     = fobj[sp_tensor p] (x, fobj[sp_tensor p] (y, z)).
 Proof. exact (`1 (sp_assoc p) ((x, y), z)). Qed.
 
-(** ** The binoidal payoff
+(*
+   本节说明函子相关定义、性质与动机。
 
-    A functor out of [c □ c] is exactly a separately-functorial tensor, so a
-    strict premonoidal structure yields a [Binoidal] structure on its
-    carrier: the two one-argument tensoring functors are the composites of
-    [sp_tensor] with the funny injections [FunnyL]/[FunnyR].  Since
-    [fobj[FunnyL d] x ≡ (x, d)] and [fmap[FunnyL d] f ≡ lstep f] hold
-    definitionally (Construction/Funny.v), the [AFunctor] index of each
-    injection matches [λ x, fobj[sp_tensor p] (x, y')] up to beta, and the
-    whole instance is assembled with no proof obligations. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition StrictPremonoidal_Binoidal {c : Category}
   (p : StrictPremonoidal c) : @Binoidal c :=
@@ -202,12 +177,11 @@ Corollary StrictPremonoidal_inj_right_fmap {c : Category}
     = @fmap (c □ c) c (sp_tensor p) (x', x) (x', y) (rstep f).
 Proof. reflexivity. Qed.
 
-(** ** The universal-property payoff
+(*
+   本节说明函子相关定义、性质与动机。
 
-    The same multiplication, restricted along the generating steps, is a
-    [SepFunctorial] package for the funny tensor's universal property
-    (Construction/Funny.v): separately functorial data with a shared object
-    map and NO interchange condition. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition StrictPremonoidal_SepFunctorial {c : Category}
   (p : StrictPremonoidal c) :

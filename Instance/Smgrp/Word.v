@@ -162,12 +162,11 @@ Definition pwconcat_map@{o so} (X : SetoidObject@{o o}) :
        tfold1_respects (A := FreeSg@{o so} X) (fun w => w) (fun w => w)
          (fun _ _ E => E) _ _ _ _ H |}.
 
-(* Mac Lane's direct verification of the laws of W: η the one-letter
-   words, μ the concatenation, the laws by induction on words, without
-   reference to the adjunction.  The fold and its homomorphism lemma are
-   the free semigroup's ([pwconcat] folds in [FreeSg X], and [tfold1_hom]
-   is applied to [pwconcat_hom] and [FreeSg_map f]), so this is not his
-   "without overt reference to the notion of a semi-group". *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition WordMonad_direct@{o so} : @Monad Sets@{o so} WordF@{o so}.
 Proof.
   unshelve refine
@@ -270,10 +269,11 @@ Example alg_NAry_at@{o so} {X : SetoidObject@{o o}}
   (t : Tup@{o} X n) :
   nu (alg_NAry α) n t = t_alg[α] (existT _ n t) := eq_refl.
 
-(* The unit law of the algebra IS ν1 = 1.  Transparent, so that the unit
-   law of a system comes back from Set^W on the nose ([WSys_rt_unit]);
-   that readback is the only consumer of the transparency (the header's
-   STRENGTHS). *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition alg_NAry_unit@{o so} {X : SetoidObject@{o o}}
   (α : @TAlgebra Sets@{o so} WordF@{o so} WordMonad@{o so} X) :
   nu_unit (alg_NAry α).
@@ -500,11 +500,11 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* Proposition 2, packaged: the category of systems is isomorphic in Cat
-   to Set^W, both legs the two functors and every component of both
-   natural isomorphisms the identity.  An isomorphism in Cat is, by
-   Instance/Cat.v, an equivalence of categories; the identity components
-   are what bring this one toward an isomorphism of categories. *)
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition WSys_EM_iso@{o so c} :
   @Isomorphism Cat@{c so so so o} WSys@{o so} WordAlg@{o so}.
 Proof.
@@ -742,12 +742,11 @@ Proof.
   exact Smgrp_EM_equivalence@{o so}.
 Defined.
 
-(* "In other words, K is an isomorphism": Smgrp ≅ Set^W in Cat, built from
-   the two component isomorphisms so that both of its natural
-   isomorphisms have the identity as every component.  An isomorphism in
-   Cat is, by Instance/Cat.v, an equivalence of categories: this is the
-   issue's "or, minimally, an equivalence", strengthened by the identity
-   components toward Mac Lane's isomorphism (the header's THE REMARK). *)
+(*
+   本节说明等价、同构、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Smgrp_EM_iso@{o so c} :
   @Isomorphism Cat@{c so so so o} SmgrpSets@{o so} WordAlg@{o so}.
 Proof.

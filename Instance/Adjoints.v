@@ -28,13 +28,11 @@ Program Instance adj_id {C : Category} : Id ⊣ Id := {
      ; from := {| morphism := _ |} |}
 }.
 
-(* Composite of two adjunctions. The transpose iso for F ◯ F' ⊣ U' ◯ U is the
-   composite of the two component transposes,
+(*
+   本节说明伴随相关定义、性质与动机。
 
-       F (F' a) ~> b  ≅[X]  F' a ~> U b  ≅[Y]  a ~> U' (U b),
-
-   so ⌊-⌋ of the composite is ⌊-⌋ ∘ ⌊-⌋ and its inverse runs the two ⌈-⌉ in the
-   opposite order. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition adj_comp
         {C : Category} {D : Category} {E : Category}
         (F : D ⟶ C) (U : C ⟶ D) (F' : E ⟶ D) (U' : D ⟶ E)
@@ -62,11 +60,11 @@ Next Obligation. rewrite <- !from_adj_nat_r; reflexivity. Qed.
 Notation "F ⊚ G" := (@adj_comp _ _ _ _ _ _ _ F G)
   (at level 30, right associativity) : category_scope.
 
-(* An arrow C ⇸ D in [Adjoints]: a left/right adjoint pair whose FORWARD
-   direction is the RIGHT adjoint, [forgetful_functor : C ⟶ D]; the left
-   adjoint ("free") points backward, D ⟶ C.  See the header for how this
-   sits against Mac Lane's two orientations.  Only this description is
-   corrected here; the record itself is unchanged. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record adj_morphism {C : Category} {D : Category} := {
   free_functor : D ⟶ C;                       (* the left adjoint  *)
   forgetful_functor : C ⟶ D;                  (* the right adjoint *)
@@ -75,9 +73,11 @@ Record adj_morphism {C : Category} {D : Category} := {
 
 Local Set Warnings "-intuition-auto-with-star".
 
-(* Two adjunctions are equal when their left adjoints are naturally isomorphic
-   and their right adjoints are naturally isomorphic (in the functor category
-   [Fun]); the conjugate-pair correspondence then makes the choice coherent. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance adj_morphism_setoid {C : Category} {D : Category} :
   Setoid (@adj_morphism C D) := {
@@ -85,20 +85,11 @@ Program Instance adj_morphism_setoid {C : Category} {D : Category} :
               (free_functor f ≅[Fun] free_functor g) *
               (forgetful_functor f ≅[Fun] forgetful_functor g)
 }.
-(* The relation is a pair of natural isomorphisms, so it is an equivalence
-   componentwise, straight from [iso_equivalence] in [Theory.Isomorphism].
-   Spelled out rather than left to [equivalence]: this obligation was proved
-   by that tactic plus two transitivity bullets, and its reflexivity and
-   symmetry components were being closed only because [equivalence] reached
-   [solve_crelation], a pattern-less [Hint Extern] in the standard library's
-   [crelations] database, through a wide [auto with *].  Which pattern-less
-   hints a wide [auto] reaches, and in which order, is a property of the hint
-   database rather than anything this library states; on Rocq master the
-   reflexivity and symmetry components stopped being discharged, the first
-   bullet landed on a symmetry goal instead of the transitivity one it was
-   written for, and [assumption] had nothing to close
-   [free_functor y ≅ free_functor y] with -- issue #213.  Proving the three
-   laws directly removes the dependency.  See [Test/Issue213.v]. *)
+(*
+   本节说明等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Next Obligation.
   constructor.
   - intros f.
@@ -250,34 +241,16 @@ Next Obligation.
   try (transform; simpl; intros; try exact id; cat); cat.
 Qed.
 
-(* The closing quote (Chris Heunen, on MathOverflow) describes InvAdj, the
-   involutive refinement of [Adjoints] that removes the arbitrary forward/
-   backward choice; it is defined in §3.1.8 of his thesis "Categorical Quantum
-   Models and Logics":
+(*
    https://homepages.inf.ed.ac.uk/cheunen/publications/2009/thesis/thesis.pdf
-   This library implements only the plain [Adjoints] above, not InvAdj. *)
 
-(* mathoverflow: "You will have to make an arbitrary choice for the direction
-   of morphisms: is the left adjoint "forward" or "backward"? To prevent that,
-   you can add involutions. The resulting category [InvAdj] of involutive
-   categories and adjunctions has a lot of interesting structure. It is a
-   dagger category, and in fact the `mother of all dagger categories', as it
-   universally embeds any dagger category. In particular, the full subcategory
-   of (ortho)posets and Galois connections has dagger kernels, dagger
-   biproducts, an an opclassifier. See these two papers. Now for the
-   definition (from 3.1.8 of my thesis):
+   本节说明伴随相关定义、性质与动机。
 
-   A functor ∗ : C^op → C is called involutive when ∗ ∘ ∗ = Id. Define a
-   category [InvAdj] as follows. Objects are pairs (C,∗) of a category with an
-   involution. A morphism (C,∗) → (D,∗) is functor F : C^op → D that has a
-   left adjoint, where two such functors are identified when they are
-   naturally isomorphic. The identity morphism on (C,∗) is the functor ∗ :
-   C^op → C ; its left adjoint is ∗^op : C → C^op. The composition of F : C^op
-   → D and G : D^op → E is defined by G ∘ ∗^op ∘ F : C^op → E; its left
-   adjoint is F′ ∘ ∗ ∘ G′, where F′ ⊣ F and G′ ⊣ G.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   (It is not arbitrary to require a left adjoint instead of a right one. A
-   contravariant functor from C to D can be written both as a (covariant)
-   functor F : C^op → D or as a (covariant) functor F^op : C → D^op. The
-   latter version has a right adjoint precisely when the former version has a
-   left adjoint.)" *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

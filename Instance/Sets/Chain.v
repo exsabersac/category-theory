@@ -81,23 +81,19 @@ Proof. reflexivity. Qed.
 
 (** * Non-vacuity: the quotient merges something the coproduct keeps apart *)
 
-(* Instance/Sets/Cocomplete.v's [two_fibres_not_collapsed] shows the
-   generated relation does not collapse everything, at a DISCRETE shape,
-   where by construction it can merge nothing.  This is the other half, at
-   a shape that HAS a connecting map: two summands at DIFFERENT indices,
-   kept apart by the coproduct's own `≈`, are identified in the colimit.
-   Together the two witnesses show that NEITHER endpoint describes
-   [colim_rel] uniformly across shapes.  Neither is a general theorem
-   about all shapes, and neither places the relation strictly inside that
-   interval at its own shape -- see the header for the measurement. *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section OmegaMergeWitness.
 
-(* A constant ω-diagram: the same singleton at every stage, every
-   connecting map the identity.  This file leaves the ambient obligation
-   tactic in place (unlike Instance/Sets/Cocomplete.v, which sets it to
-   [idtac]), and all three functor laws are constant identities, so no
-   obligation survives to be discharged by hand. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition OmegaPoints : Omega ⟶ Sets := {|
   fobj := fun _ => unit_setoid_object;
   fmap := fun _ _ _ => id
@@ -112,9 +108,11 @@ Theorem omega_stages_merged :
     (existT _ 0%nat (omega_point 0)) (existT _ 1%nat (omega_point 1)).
 Proof. exact (omega_colim_step OmegaPoints 0%nat (omega_point 0)). Qed.
 
-(* ... and KEPT APART by the coproduct, whose `≈` at distinct indices
-   demands an equality of those indices.  So the merge above is genuinely
-   the quotient's doing and not already present downstairs. *)
+(*
+   本节说明 Chain 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem omega_stages_apart_in_coproduct :
   @equiv _ (Sets_colim_sum OmegaPoints)
     (existT _ 0%nat (omega_point 0)) (existT _ 1%nat (omega_point 1)) -> False.

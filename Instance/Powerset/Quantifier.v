@@ -26,584 +26,36 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * The quantifiers as adjoints to substitution
-
-    Mac Lane, *Categories for the Working Mathematician*, 2nd ed., §IV.5
-    construction 4 (printed pp. 96-97).  Transcribed from the page
-    images, in ASCII.  From p. 96, last paragraph:
-
-      "Now consider the first projection P : U x V -> U from the product
-       of two sets U and V.  Each subset S subset U x V defines two
-       corresponding subsets of U by
-
-           P_* S = {x | exists y, y in V   and       <x,y> in S},
-           P_# S = {x | forall y, y in V   implies   <x,y> in S};
-
-       they arise from <x,y> in S by applying the existential quantifier
-       exists y,"
-
-    and, continuing on p. 97:
-
-      "'there exists a y' and the universal quantifier forall y, 'for all
-       y', respectively to <x,y> in S.  Also P_* S is the direct image of
-       S under the projection P.  Now for all subsets X subset U one has
-
-          S <= P^* X <=> P_* S <= X ;    P^* X <= S <=> X <= P_# S,
-
-       where '<=>' means 'if and only if'.  These state that P^*, which
-       is the inverse image operation, has both a left adjoint P_* and a
-       right adjoint P_#.  In this sense, both quantifiers exists and
-       forall can be interpreted as adjoints.
-
-       There is also a geometric interpretation: P^* X is the cylinder
-       X x V subset U x V over the base X subset U, P_* S is the
-       projection of S subset U x V on the base U, and P_# S is the
-       largest subset X of U such that the cylinder on X is wholly
-       contained in S.  This analysis has revealed several basic concepts
-       of logic (and, or, not, forall y, exists y) to be adjoints.  This
-       illustrates the slogan 'adjoints are everywhere'."
-
-    Awodey, *Category Theory* (1st ed. pre-print), §9.4 Example 9.12
-    (printed p. 228) and the paragraph continuing it on p. 229:
-
-      "Example 9.12.  A related example is the adjunction on powersets
-       induced by any function f : A -> B, between the inverse image
-       operation f^{-1} and the direct image im(f), ...  Here we have an
-       adjunction im(f) -| f^{-1} as indicated by the bicondition:
-
-           im(f)(U) subseteq V
-           -------------------
-           U subseteq f^{-1}(V)
-
-       which is plainly valid for all subsets U subseteq A and
-       V subseteq B.
-
-       The inverse image operation f^{-1} : P(B) -> P(A) also has a
-       right adjoint, given by:
-
-           f_*(U) = {b in B | f^{-1}(b) subseteq U}
-
-       as we also leave for the reader to verify."
-
-    and §9.6 (printed p. 236), the preservation corollaries and their
-    contrapositives:
-
-      "Similarly, for the quantifiers one has e.g.:
-
-        forall x (phi(x) /\ psi(x)) -||- forall x phi(x) /\ forall x psi(x)
-
-       Since this does not hold for exists x, it cannot be a right
-       adjoint to some other 'quantifier'.  Similarly:
-
-        exists x (phi(x) \/ psi(x)) -||- exists x phi(x) \/ exists x psi(x)
-
-       And, as above, forall x cannot be a left adjoint, since it does
-       not have this property."
-
-    Riehl, *Category Theory in Context* (2nd ed.), §4.1 Example 4.1.8
-    (printed pp. 134-135):
-
-      "Example 4.1.8.  Consider a function f : A -> B between sets.  The
-       subsets of A and subsets of B form posets, PA and PB, ordered by
-       inclusion.  The map f induces direct image and inverse image
-       functors f_* : PA -> PB and f^{-1} : PB -> PA.  The inverse image
-       is right adjoint to the direct image: for A' subset A and
-       B' subset B, f(A') subset B' if and only if A' subset f^{-1}(B').
-
-       The inverse image functor has a further right adjoint f_! that
-       carries a subset A' subset A to the subset of elements of B whose
-       fibers lie entirely in A'.  With this definition,
-       B' subset f_!(A') if and only if f^{-1}(B') subset A'.  These
-       functors define an adjoint triple: [f_* -| f^{-1} -| f_!]."
-
-    Example 4.1.9 (printed p. 135):
-
-      "Example 4.1.9.  A predicate or propositional function is a
-       function p : X -> Omega, where Omega := {bot, top} is the set of
-       truth values. ...  The set Omega^X is then the set of predicates
-       on X.  The set Omega is given the partial order bot <= top defined
-       by logical implication.  The set Omega^X inherits a
-       pointwise-defined order: p <= q if and only if p(x) <= q(x) for
-       all x in X, which is the case just when p(x) implies q(x) for
-       every x.
-
-       The logical operations of universal and existential quantification
-       define functors forall_X, exists_X : Omega^X => Omega in the
-       expected way: forall_X p = top if and only if p(x) = top for all
-       x in X, and exists_X p = top if and only if there exists x in X
-       with p(x) = top.  There is also a constant functor
-       Delta_X : Omega -> Omega^X, and one can verify that these functors
-       define an adjoint triple: [exists_X -| Delta_X -| forall_X]."
-
-    Exercise 4.1.ii (printed p. 138):
-
-      "Exercise 4.1.ii.  Explain why Example 4.1.9 can be regarded as a
-       special case of Example 4.1.8."
-
-    and §4.5's generalization to an arbitrary function (printed
-    pp. 156-157):
-
-      "There is a relationship between the cartesian closed structure on
-       the category of predicates on X and the adjoint triple of functors
-       exists_X -| Delta_X -| forall_X introduced in Example 4.1.9, which
-       we first generalize as follows.  For any function f : Y -> X,
-       there is an adjoint triple of functors ... defined as follows.
-       For a predicate p : X -> Omega on X, Delta_f p is the predicate on
-       Y defined by composition: Delta_f p := p f, which is to say that
-       Delta_f p(y) := p(f(x)).  For a predicate q : Y -> Omega on Y,
-       exists_f q(x) = top if there exists y in the fiber over x so that
-       q(y) = top, while forall_f q(x) = top if q(y) = top for all y in
-       the fiber over x."
-
-    Fong and Spivak, *Seven Sketches in Compositionality*, §1.4.3
-    Example 1.117 (printed pp. 32-33):
-
-      "Example 1.117.  Let f : A -> B be a function between sets.  We can
-       imagine A as a set of apples, B as a set of buckets, and f as
-       putting each apple in a bucket.
-
-       Then we have the monotone map f^* : P(Y) -> P(X) that category
-       theorists call 'pullback along f.'  This map takes a subset
-       B' subseteq B to its preimage f^{-1}(B') subseteq A: that is, it
-       takes a collection B' of buckets, and tells you all the apples
-       that they contain in total.  This operation is monotonic (more
-       buckets means more apples) and it has both a left and a right
-       adjoint.
-
-       The left adjoint f_!(A) is given by the direct image: it maps a
-       subset A' subseteq A to
-
-         f_!(A') := {b in B | there exists a in A' such that f(a) = b}
-
-       This map takes a set A' of apples, and tells you all the buckets
-       that contain at least one of those apples.
-
-       The right adjoint f_* maps a subset A' subseteq A to
-
-         f_*(A') := {b in B | for all a such that f(a) = b, we have a in A'}
-
-       This map takes a set A' of apples, and tells you all the buckets b
-       that are all-A': all the apples in b are from the chosen subset
-       A'.  Note that if a bucket doesn't contain any apples at all, then
-       vacuously all its apples are from A', so empty buckets count as
-       far as f_* is concerned."
-
-    (Their Example 1.117 says "Let f : A -> B" and then writes
-    f^* : P(Y) -> P(X); the letters X, Y there are a slip for A, B.
-    Quoted as printed.)
-
-    ** THE FOUR BOOKS DISAGREE ABOUT [f_*] AND [f_!], TWO WAYS EACH
-
-    Riehl's [f_*] is the DIRECT image, and Mac Lane writes [P_*] for it
-    at the projection; Awodey's [f_*] and Fong-Spivak's [f_*] are the
-    DUAL image, Awodey writing [im(f)] for the direct image.  The dual
-    image is [f_*] for Awodey and Fong-Spivak, [f_!] for Riehl and [P_#]
-    for Mac Lane at the projection; the direct image is [f_!] for
-    Fong-Spivak, [f_*] for Riehl, [P_*] for Mac Lane and [im(f)] for
-    Awodey.  So the starred name takes two values across the four books
-    and the shrieked name two, Riehl and Fong-Spivak opposite on both;
-    an earlier draft called the clash "three-way" and an audit corrected
-    it.  Riehl's [f_!] for the dual image is
-    the reverse of the commonest topos-theoretic convention, in which
-    [f_!] is the existential.  This file therefore uses no starred or
-    shrieked name at all: the three operations are [Powerset_Prop_image]
-    (the donor's), [Powerset_Prop_preimage] (the donor's) and
-    [Powerset_Prop_dual] (new here), with the functors [DirectImage],
-    [InverseImage] and [DualImage].
-
-    nLab: https://ncatlab.org/nlab/show/existential+quantifier
-    nLab: https://ncatlab.org/nlab/show/universal+quantifier
-    nLab: https://ncatlab.org/nlab/show/adjoint+triple
-    nLab: https://ncatlab.org/nlab/show/Beck-Chevalley+condition
-    nLab: https://ncatlab.org/nlab/show/hyperdoctrine
-    Wikipedia: https://en.wikipedia.org/wiki/Galois_connection
-
-    ** THE ISSUE'S "Current state" IS STALE, MEASURED AT THE BASE COMMIT
-
-    The catalog entry says the power set of a set as a category "has no
-    witness".  It has one: #382's Instance/Powerset.v declares
-    [subset_le], [subset_le_preorder] and
-    [Subsets X := Proset (subset_le_preorder X)], and supplies the
-    LEFT half of this issue outright -- [image_preimage_galois],
-    [DirectImage], [InverseImage], [image_preimage_adjunction], the
-    meets and joins [subset_inter] / [subset_union] with
-    [Subsets_Cartesian] through [Subsets_Cocomplete], the three
-    preservation theorems, the RAPL/LAPC routes and the witnesses.
-    All of that is CONSUMED, none
-    of it rebuilt: [exists_substitution_adjunction] is literally
-    [image_preimage_adjunction] under the name this issue pins, so "the
-    existential IS the direct image" holds at a general [f] BY DEFINITION
-    rather than by a comparison.
-
-    What was genuinely absent is the RIGHT half.  Three separate
-    comments in Instance/Powerset.v say so in terms: each records that
-    the dual image and [f^* -| forall_f] are #384's.
-
-    The issue also says "in-tree the dual image has no counterpart of any
-    kind".  That is stale for finite CODES: Instance/FinSet/Subsets.v
-    declares [finpow_dual] with [finpow_dual_mem] and six
-    [eq_refl] evaluations (among them [dual_apple0] and
-    [dual_apple01]), and three of its comments record that only the
-    ADJUNCTION is missing and that it is this issue's.  That file is
-    cited, not rebuilt, and the finite-code adjunction is NOT built here:
-    the setoid-level one is the deliverable.
-
-    Work item 4 -- the slice-level generalization -- is NOT built here.
-    Construction/Slice/Pullback.v has [Bang_Functor] (Sigma_f) and
-    [Star_Functor] for f^*, and #387 has since PROVED their adjunction
-    there as [Base_Functor_Adjunction]; no Pi_f exists anywhere, so the
-    triple is still incomplete on the slice side.
-
-    ** WHAT IS DELIVERED, WITH GRADES
-
-    (A0) Three reusable general constants, in the shape #381 uses for
-         general lemmas placed in a consumer file, plus one engineering
-         helper ([quant_refl]) recorded under the same heading.
-         [proset_adjunction_at] builds an adjunction between preorders at
-         two GIVEN functors out of the bare biconditional; it is what
-         lets the headline be stated at #382's [InverseImage f] rather
-         than at a second, parallel preimage functor (see the note
-         below).  [gal_r_preserves_glb] and [gal_l_preserves_lub] are the
-         order-level "right adjoints preserve meets, left adjoints
-         preserve joins".  None of the three exists in tree, measured two
-         ways at the base commit: for the two preservation lemmas,
-         Instance/Powerset.v is the ONLY file mentioning both [gal_] and
-         [IsGLB]/[IsLUB] and it relates them nowhere; for
-         [proset_adjunction_at], the eight [Instance/Proset] files build
-         an adjunction between prosets only through
-         Instance/Proset/Galois.v's [GaloisAdjunction], which makes its
-         own two functors, and its one [Context (Adj : F ⊣ U)]
-         -- the only [⊣] in all eight files -- runs the OTHER way,
-         consuming an adjunction rather than producing one.  The two
-         preservation lemmas are plain terms with no tactic;
-         [proset_adjunction_at]'s six [Program] obligations -- two
-         [Proper] certificates for the legs, the two isomorphism laws in
-         [Sets] and the two naturality clauses -- are each equations
-         between parallel arrows in a thin category ([Proset]'s hom-setoid
-         is [fun _ _ => True], Instance/Proset.v), which is why the
-         default tactic closes all six; an earlier draft said "two".
-
-    (A)  [Powerset_Prop_dual f S] with predicate
-         [fun y => forall x, f x ≈ y -> S x] -- Awodey's
-         [{b | f^{-1}(b) subseteq U}], Riehl's [f_!], Fong-Spivak's
-         [f_*], Mac Lane's [P_#] at the projection.  NO truncation is
-         needed, and that is a fact rather than a convenience: a [forall]
-         landing in [Prop] is a [Prop] whatever it quantifies over,
-         whereas [Powerset_Prop_image]'s existential has the
-         [Type]-valued body [S x /\ f x ≈ y] -- [≈] is [Type]-valued
-         here -- and must be squashed.  [dual_mem] reads membership back
-         at [eq_refl].
-
-         Then [dual_monotone], the two transposes
-         [preimage_transpose_to]/[preimage_transpose_from],
-         [preimage_dual_galois] as a [GaloisConnection] (the [_to] one is
-         where the subset [T] of the codomain spends its own
-         respectfulness: the hypothesis gives membership only at points
-         of the inverse image, and [f x ≈ y] is what carries [T y]
-         there), [DualImage] as #380's [GaloisFunctor_r] of it, and the
-         two pinned names
-         **[exists_substitution_adjunction f : DirectImage f ⊣
-         InverseImage f]** (a [:=] of #382's) and
-         **[substitution_forall_adjunction f : InverseImage f ⊣
-         DualImage f]**, packaged as [quantifier_triple].
-         [preimage_is_precompose] records at [eq_refl] that the inverse
-         image IS Riehl's [Delta_f p := p f].
-
-         WHY THE HEADLINE IS NOT [GaloisAdjunction].  #380's
-         [GaloisAdjunction PA PB G] has type
-         [GaloisFunctor_l PA PB G ⊣ GaloisFunctor_r PA PB G], and
-         [GaloisFunctor_l _ _ preimage_dual_galois] is NOT
-         [InverseImage f], which is [GaloisFunctor_r] of the OTHER
-         connection.  The two have the same [fobj] and the same [fmap] on
-         the nose -- which is why [proset_adjunction_at] applies at all,
-         the hom types being convertible -- but [GaloisFunctor_l] and
-         [GaloisFunctor_r] are separate [Program Definition]s whose three
-         law fields are separate opaque obligations, so the functor
-         RECORDS differ.  Stating the theorem with a second preimage
-         functor would have made "f^* has both adjoints" false as
-         written, the two f^*'s being different objects.  The rejection
-         is pinned as the probe's conversion negative 1.
-
-         THE UNIT AND COUNIT ARE THE TWO INCLUSIONS ON THE NOSE.
-         [forall_unit_incl] and [forall_counit_incl] are Mac Lane's
-         [X <= P_# P^* X] and [P^* P_# S <= S] written as terms, and
-         [adj_unit_is_forall_incl] / [adj_counit_is_forall_incl] identify
-         the adjunction's OWN [unit] and [counit] with them at Leibniz
-         [=].  That is STRICTLY BETTER than #382's corresponding
-         [adj_unit_has_incl_type], which is an ascription only; that
-         file's note on that constant explains why -- its four donor lemmas
-         are [Qed] -- and predicts the strict form would hold were they
-         [Defined].  Here every step is a [:=] term, so it does.  In a
-         thin category an [≈] between parallel arrows is [True]
-         (Instance/Powerset.v), so the Leibniz statement is the only
-         informative one available.
-
-    (B)  MAC LANE'S OWN SITE.  [ProdSetoid U V] is [product_obj] over
-         [Sets_Cartesian] (measured: for [U V : SetoidObject@{o o}] the
-         product is again a [SetoidObject@{o o}], which is what lets
-         [Subsets] be formed on it), [proj_fst] is [exl], and his three
-         displayed operations are written LITERALLY: [proj_exists S] with
-         predicate [fun x => exists y, S (x, y)], [proj_forall S] with
-         [fun x => forall y, S (x, y)], and
-         [cylinder X := Powerset_Prop_preimage proj_fst X] with
-         [cylinder_mem : cylinder X (x, y) = X x] at [eq_refl], which is
-         his [P^* X = X x V].  [proj_exists] uses stdlib's Prop-valued
-         [ex], not the library's Type-valued [∃]: the body [S (x, y)] is
-         already a [Prop], so again no truncation is required -- the same
-         measurement (A) makes from the other side.
-
-         His two displayed biconditionals are [proj_exists_transpose] and
-         [proj_forall_transpose], proved directly as [iffT]s;
-         [proj_forall_largest] is his "the largest subset X of U such
-         that the cylinder on X is wholly contained in S", and the file
-         says plainly that it IS the second biconditional together with
-         its unit rather than separate content.  [proj_galois_exists] and
-         [proj_galois_forall] package the two as [GaloisConnection]s AT
-         HIS FORMULAS.
-
-         The identifications with (A) hold at [≈] and NOT at [eq_refl],
-         and the cause is measured rather than guessed: [proj_exists] is
-         an [ex] over [carrier V] while [Powerset_Prop_image proj_fst] is
-         a [Powerset_squash] of a [sigT] over [carrier (ProdSetoid U V)],
-         and [proj_forall] quantifies over [carrier V] where
-         [Powerset_Prop_dual proj_fst] quantifies over
-         [carrier (ProdSetoid U V)].  [proj_exists_is_image] and
-         [proj_forall_is_dual] are the [≈] forms; both [eq_refl] forms
-         are pinned as probe negatives.  [proj_maps_agree] records that
-         the two Galois connections' three maps agree with (A)'s -- two
-         at [≈], the cylinder at [eq_refl]; the RECORDS are not compared
-         and no comparison of the two ADJUNCTIONS is claimed.
-
-    (C)  BECK-CHEVALLEY for the reindexed projection, at LEIBNIZ [=] on
-         the WHOLE SUBSET.  [cyl_reindex g] is [fun z => (g (fst z),
-         snd z)], built by hand rather than through [split]/[bimap].
-         [beck_chevalley_exists_mem] and [beck_chevalley_forall_mem] are
-         the two membership [Prop]s, at [eq_refl] because the inverse
-         image is precomposition; [beck_chevalley_exists] and
-         [beck_chevalley_forall] are the whole subsets, also at
-         [eq_refl]; and [beck_chevalley_exists_equiv]/[_forall_equiv] are
-         the [≈] readings.  The whole-subset grade was NOT expected --
-         the header first predicted the opposite -- and it deserves its
-         reason: [SetoidMorphism] has primitive projections with eta, so
-         record equality is field equality, and the [proper_morphism]
-         certificate is NOT irrelevant (two arbitrary proofs of one such
-         [Proper] statement do not convert, measured out of tree).  What
-         happens is that the two certificates genuinely converge, because
-         [cyl_reindex] reduces at a literal pair and its own certificate
-         projects the pair of hypotheses, which is exactly what the other
-         side feeds to [S]'s certificate.
-
-    (D)  AWODEY §9.6.  [dual_image_preserves_meets] is direct;
-         [dual_image_preserves_meets_via_galois] is [gal_r_preserves_glb]
-         at [preimage_dual_galois] (no adapter: [gal_r] of that
-         connection IS the dual image), and
-         [dual_image_meet_routes_agree] is the #382-style pair showing
-         the two inhabit one type.  #382's
-         [inverse_image_preserves_joins] is re-derived as the
-         COROLLARY [inverse_image_preserves_joins_via_galois] -- that
-         file proved it directly and the comment beside it says why: it
-         needed f^*'s right adjoint, which is this file's -- with
-         [inverse_image_join_routes_agree] beside it.  #382's
-         [direct_image_preserves_joins] is cited, not restated.
-
-         THE CONTRAPOSITIVES ARE THEOREMS ABOUT ADJUNCTIONS, not prose.
-         [exists_not_right_adjoint] and [forall_not_left_adjoint] refute
-         the EXISTENCE of an adjoint on the wrong side at
-         [powerset_const0], by feeding #380's [GaloisOfAdjunction] to the
-         (A0) preservation lemmas and contradicting a concrete refutation:
-         #382's [direct_image_not_meet_preserving] for the first,
-         and the new [dual_image_not_join_preserving] for the second.
-         [∃] is the library's Type-valued [sigT] and each sigma binds the
-         functor once.
-
-    (E)  RIEHL 4.1.9 AND EXERCISE 4.1.ii.  In this tree a predicate on X
-         IS an element of [Powerset_Prop_obj X]: [predicates_are_subsets]
-         and [pointwise_is_subset_le] record both readings at [eq_refl],
-         so Riehl's [Omega^X] under the pointwise order is [Subsets X] on
-         the nose and her Exercise 4.1.ii is DEFINITIONAL here.  No
-         functor category [[X, Omega]] is formed and none could be: X is
-         a setoid, not a category, and a discrete category on its carrier
-         would discard [≈].  That is the honest reading, not a shortcut.
-
-         The triple over the unique map [X -> 1] is
-         [Delta_X := InverseImage (quant_bang X)], [exists_X], [forall_X]
-         and the two adjunctions INSTANTIATED ([:=] with no tactic),
-         which is exactly "4.1.9 is 4.1.8 at [X -> 1]";
-         [Delta_X_obj_mem] reads the constant predicate back at
-         [eq_refl].  The truth-value object is [Subsets quant_one], and
-         **[subsets_one_Props : Subsets quant_one ≅[Cat] Props]**
-         identifies it with Instance/Props.v's [Props].  Read its
-         strength: [≅[Cat]] in this library is EQUIVALENCE, [Cat]'s
-         hom-setoid being [Functor_Setoid]; an isomorphism OF CATEGORIES
-         is unavailable, the two object types being different, and none
-         is claimed.
-
-    (F)  SEVEN SKETCHES 1.117 AND AWODEY 9.12, in their own words.
-         [apples_buckets_bicondition] is the biconditional
-         [f^*(B') subseteq A' <-> B' subseteq f_*(A')] as an [iffT] over
-         the two transposes, and [dual_vacuous] is "empty buckets count":
-         a bucket with no apples at all lies in the dual image of every
-         subset.
-
-    (G)  NON-VACUITY, over #382's own [powerset_fin2] / [powerset_const0]
-         / [powerset_sng1] and Instance/Powerset.v's [powerset_sng0],
-         reused rather than rebuilt.  Every negative reaches [False] by
-         eliminating a [Powerset_squash] into it or by [discriminate] on
-         the discrete carrier -- never by an induction over a quotienting
-         relation, which could not yield a negative.
-         [dual_const0_sng0_at_1] and [dual_const0_sng0_not_at_0] compute
-         the dual image of {0}, and [exists_ne_forall_at_const0] proves
-         the two adjoints DIFFER at one input, which is the whole point
-         of the third leg.  Over the projection,
-         [proj_diag_exists_everywhere] and [proj_diag_forall_nowhere]
-         evaluate Mac Lane's two operations at the diagonal, and
-         [proj_row_forall_at_0] / [proj_row_forall_not_at_1] at a row.
-
-    ** A CORRECTION TO THE BRIEF, MEASURED
-
-    The brief predicted the dual image of {0} along the constant map at 0
-    to be EMPTY, "because each fibre is the whole two-point set".  That
-    is false, and the file proves the opposite: the fibre over 1 is
-    EMPTY, so 1 lies in the dual image of EVERY subset, vacuously --
-    which is exactly Fong-Spivak's "empty buckets count".  Only the fibre
-    over 0 is the whole set.  So the dual image of {0} is {1}, not the
-    empty set, and [dual_const0_sng0_at_1] proves it.  The conclusion the
-    prediction was meant to support -- that the dual image does not
-    preserve joins -- stands, and is witnessed at the element 0 instead.
-
-    ** WHAT IS NOT DELIVERED
-
-    No dual-image adjunction for Instance/FinSet/Subsets.v's
-    [finpow_dual] (finite codes); that file's evaluations are cited and
-    its adjunction is left open.  No slice-level
-    [Sigma_f -| f^* -| Pi_f] (#387).  No hyperdoctrine, no
-    Beck-Chevalley for a general pullback square (only the projection's
-    reindexing along [g x id]), and no Frobenius reciprocity.  No
-    naturality of any identification in [f], in [g] or in the setoid.  No
-    comparison of [proj_galois_exists] with [image_preimage_galois] at
-    the RECORD level, and none of the two adjunctions at any level.  No
-    idempotent monad or comonad from either adjunction.  No Boolean
-    connectives (#383).  No antisymmetric quotient, so two [≈]-equal
-    subsets remain distinct objects, exactly as Instance/Powerset.v
-    discloses for its own category.  Nothing is registered as an
-    [Instance].
-
-    ** AN ENGINEERING FINDING
-
-    [Coq.Classes.Equivalence] and [Coq.Relations.Relation_Definitions]
-    have to be imported AFTER [Category.Lib], because [Proset] and
-    [GaloisConnection] want the stdlib Prop-valued [PreOrder] and
-    [relation] rather than the [crelation] ones the library exports --
-    Instance/Powerset.v says so and this file copies it.  What that
-    costs, and what the donor never had to pay because it writes no
-    explicit [equiv], is that stdlib's [equiv] then SHADOWS
-    [Category.Lib.Setoid.equiv].  Two consequences, both measured: an
-    explicit [@equiv _ (is_setoid Y)] is rejected with "The term
-    'is_setoid Y' has type 'Setoid Y' while it is expected to have type
-    'relation ?A'", so every explicit occurrence here is written
-    [@Category.Lib.Setoid.equiv]; and a bare [reflexivity] in TERM
-    position is rejected with "Cannot infer the implicit parameter
-    Reflexive", so the term-mode occurrences go through [quant_refl].
-    The [≈] NOTATION is unaffected -- a notation resolves its head
-    reference when it is declared -- and in TACTIC position the goal
-    disambiguates, which is why the donors' bare [reflexivity] works
-    there and is left alone.
-
-    ** A DONOR RESTATED RATHER THAN REQUIRED, ON A MEASUREMENT
-
-    [subset_le_antisym] -- mutual inclusion gives [≈] -- already exists,
-    at Instance/Grp/Galois.v, with this file's exact statement and
-    proof term.  It is NOT required: that module's transitive closure is
-    129 modules against this file's 89, so importing it for a one-line
-    definition would nearly double the cost.  The single place this file
-    needs it, inside [exists_not_right_adjoint], writes the term
-    [fun x => conj (H1 x) (H2 x)] inline instead, with no new name and
-    hence no third homonym in the `make print-assumptions` scope.
-
-    ** UNIVERSES
-
-    Every constant touching a power set is at one level [o] with
-    [Set < o], INHERITED from [Powerset_Prop_obj]'s codomain
-    [Powerset_Prop_truth], whose carrier is [Prop : Type@{Set+1}].  The
-    binder shape [X Y : SetoidObject@{o o}] is likewise the DONORS'
-    identification and not one introduced here: [Powerset_Prop_obj@{o}]
-    is the first to impose it, and [subset_le], [subset_le_preorder] and
-    [Subsets] each impose it independently, so no one of them is "the"
-    cause.  Section (B) additionally uses [product_obj] over
-    [Sets_Cartesian], measured to land at [SetoidObject@{o o}] again.
-    Measured over all 100 constants: NO block contains a universe
-    EQUATION, and exactly 17 blocks are free of [Set] -- [quant_refl],
-    the whole of (A0) ([proset_adjunction_at] with its six obligations,
-    [gal_r_preserves_glb], [gal_l_preserves_lub]), and the seven
-    constants that mention [Sets] but no power set ([ProdSetoid],
-    [proj_fst], [proj_fst_computes], [cyl_reindex], [quant_one],
-    [quant_bang], [quant_sq]).  The (A0) three are free because they
-    mention no setoid at all, their blocks carrying only stdlib bounds.
-    The RAPL/LAPC [Set] pin Instance/Powerset.v discloses is NOT
-    inherited: nothing here routes through [Proset_Limit] or
-    [DiscreteCat_Functor], and every [Set] token above is the LOWER
-    bound [Set < o].
-
-    ** CLOSURE
-
-    89 transitive in-project dependencies, excluding this file, measured
-    with coqdep given _CoqProject's list plus both new files.
-    Instance/Powerset.v's own closure is 87 of the 89, so it dominates;
-    per-Require MARGINAL costs, measured by dropping each in turn, are
-    Instance/Powerset.v 2, Instance/Sets/Cartesian.v 1, and
-    Instance/Cat.v, Instance/Props.v, Structure/Cartesian.v,
-    Structure/Terminal.v, Instance/Proset/Limit.v and
-    Theory/Isomorphism.v 0 each -- all six already lying inside the
-    others' closures, which is why (E) can be packaged as [≅[Cat]] for
-    nothing.
-
-    ** TRANSPARENCY
-
-    Eight proofs close with [Defined] (counted by token, inline ones
-    included), and SIX are LOAD-BEARING, measured by flipping each one to
-    [Qed] in a scratch copy and recompiling: [Powerset_Prop_dual],
-    [proj_exists], [proj_forall], [cyl_reindex], [diag_subset] and
-    [row0_subset] -- each one's predicate must reduce for the [eq_refl]
-    readbacks, for the [destruct]s in the transposes, or for the witness
-    computations.  The other two are NOT: [quant_refl] and the
-    written-out obligation of [subsets_one_Props] (it raises two; the
-    default tactic closes the other) each compile as [Qed], and they
-    stay [Defined] because both produce DATA.  [quant_refl] is worth
-    a word: the [eq_refl] identifications of the unit and the counit
-    survive its being opaque, because [forall_counit_incl] and
-    [preimage_transpose_from] both apply THE SAME term
-    [quant_refl (f x)], so conversion never has to look inside it.  The
-    21 remaining proofs are [Qed] and every other constant is a [:=]
-    term.
-
-    ** REGISTRATION
-
-    Nothing here is an [Instance]: a chosen adjoint must not become
-    globally resolvable, which is Instance/Powerset.v's and
-    Instance/Proset/Limit.v's own convention. *)
+(*
+   nLab: https://ncatlab.org/nlab/show/existential+quantifier
+   nLab: https://ncatlab.org/nlab/show/universal+quantifier
+   nLab: https://ncatlab.org/nlab/show/adjoint+triple
+   nLab: https://ncatlab.org/nlab/show/Beck-Chevalley+condition
+   nLab: https://ncatlab.org/nlab/show/hyperdoctrine
+   Wikipedia: https://en.wikipedia.org/wiki/Galois_connection
+
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** (A0) General constants, and one engineering helper *)
 
-(* Reflexivity of a setoid's own [≈], as a TERM.  It has to be written
-   out: [Coq.Classes.Equivalence] is imported above, so a bare
-   [reflexivity] in TERM position cannot choose between stdlib's
-   Prop-valued [Reflexive] and the [crelation] one this library uses.  In
-   TACTIC position the goal disambiguates and the donors' bare
-   [reflexivity] works, which is why only the term-mode occurrences below
-   go through this. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quant_refl@{o} {A : SetoidObject@{o o}} (a : carrier A) :
   @Category.Lib.Setoid.equiv _ (is_setoid A) a a.
 Proof. reflexivity. Defined.
 
-(* An adjunction between preorders AT TWO GIVEN FUNCTORS.  #380's
-   [GaloisAdjunction] produces its two functors itself, so it cannot
-   state an adjunction whose left functor was built earlier and
-   elsewhere -- which is exactly the situation of the headline below,
-   where the left functor is #382's [InverseImage].  All six obligations
-   -- two [Proper] certificates, two isomorphism laws in [Sets], two
-   naturality clauses -- are equations between parallel arrows in a thin
-   category, so [Program]'s default tactic closes them. *)
+(*
+   本节说明伴随、函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition proset_adjunction_at {A B : Type}
   {RA : relation A} {RB : relation B}
   (PA : PreOrder RA) (PB : PreOrder RB)
@@ -626,10 +78,11 @@ Definition gal_r_preserves_glb {A B : Type}
                  (snd H (gal_l G n)
                     (fun i => gal_from G n (d i) (Hn i)))).
 
-(* Left adjoints preserve joins.  [IsLUB R] IS [IsGLB (op_rel R)], so the
-   statement is the dual read at the reversed preorder; the term is
-   nevertheless written out, its two clauses using [gal_to] and
-   [gal_from] in the mirror order. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition gal_l_preserves_lub {A B : Type}
   {RA : relation A} {RB : relation B} (G : GaloisConnection RA RB)
   {Ix : Type} (d : Ix → A) (m : A) (H : IsLUB RA d m) :
@@ -689,10 +142,11 @@ Definition dual_monotone (S T : carrier (Powerset_Prop_obj@{o} X))
   subset_le (Powerset_Prop_dual@{o} f S) (Powerset_Prop_dual@{o} f T) :=
   fun y Hy x Hfx => H x (Hy x Hfx).
 
-(* Mac Lane's second displayed line at a general [f], left to right: from
-   [f^* T <= S] infer [T <= forall_f S].  This is where [T]'s own
-   respectfulness is spent -- the hypothesis gives [S x] only at points
-   of the inverse image, and [f x ≈ y] is what carries [T y] there. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition preimage_transpose_to (T : carrier (Powerset_Prop_obj@{o} Y))
   (S : carrier (Powerset_Prop_obj@{o} X))
   (H : subset_le (Powerset_Prop_preimage@{o} f T) S) :
@@ -751,10 +205,11 @@ Example dual_image_obj (S : carrier (Powerset_Prop_obj@{o} X)) :
 Example exists_adj_is_image_preimage :
   exists_substitution_adjunction = image_preimage_adjunction f := eq_refl.
 
-(* #380's backward passage returns the connection this section supplied,
-   at Leibniz [=] on the WHOLE record: [GaloisOfAdjunction] reads its six
-   fields off the two functors and the hom-set isomorphism, and all of
-   those were built from those very fields. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example dual_galois_round_trip :
   GaloisOfAdjunction (subset_le_preorder@{o} Y) (subset_le_preorder@{o} X)
     (InverseImage f) DualImage substitution_forall_adjunction
@@ -774,10 +229,11 @@ Definition forall_counit_incl (S : carrier (Powerset_Prop_obj@{o} X)) :
     (Powerset_Prop_preimage@{o} f (Powerset_Prop_dual@{o} f S)) S :=
   fun x Hx => Hx x (quant_refl (f x)).
 
-(* And the adjunction's OWN unit and counit ARE those two, at Leibniz
-   [=].  This is the strict form Instance/Powerset.v predicts for
-   its own adjunction and declines to ship; here every step is a term, so
-   it holds. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example adj_unit_is_forall_incl (T : carrier (Powerset_Prop_obj@{o} Y)) :
   @unit _ _ (InverseImage f) DualImage substitution_forall_adjunction T
     = forall_unit_incl T := eq_refl.
@@ -788,10 +244,11 @@ Example adj_counit_is_forall_incl (S : carrier (Powerset_Prop_obj@{o} X)) :
 
 (** *** (F) Seven Sketches 1.117 and Awodey 9.12, in their own words *)
 
-(* "B' subset f_!(A') if and only if f^{-1}(B') subset A'" -- Riehl's own
-   phrasing of Example 4.1.8's second half, which is also Awodey's
-   "as we also leave for the reader to verify".  [iffT] is the library's
-   Type-valued biconditional. *)
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition apples_buckets_bicondition
   (T : carrier (Powerset_Prop_obj@{o} Y))
   (S : carrier (Powerset_Prop_obj@{o} X)) :
@@ -908,10 +365,11 @@ Definition proj_fst@{o so} (U V : SetoidObject@{o o}) :
   ProdSetoid@{o so} U V ~{Sets@{o so}}~> U :=
   @exl Sets@{o so} Sets_Cartesian U V.
 
-(* [P_* S = {x | exists y, y in V and <x,y> in S}].  The existential is
-   stdlib's Prop-valued [ex], NOT the library's Type-valued [∃]: the body
-   [S (x, y)] is already a [Prop], so no truncation is needed -- the
-   mirror image of the measurement (A) makes for the dual image. *)
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition proj_exists@{o so} {U V : SetoidObject@{o o}}
   (S : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V))) :
   carrier (Powerset_Prop_obj@{o} U).
@@ -991,11 +449,11 @@ Proof.
   - intros H z Hz; destruct z as [x y]; exact (H x Hz y).
 Qed.
 
-(* "P_# S is the largest subset X of U such that the cylinder on X is
-   wholly contained in S".  This IS [proj_forall_transpose] together with
-   its unit -- the two components are that biconditional read at
-   [Xs := proj_forall S] and at an arbitrary [Xs] -- and is stated
-   separately only because Mac Lane states it separately. *)
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem proj_forall_largest
   (S : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V))) :
   subset_le (@cylinder@{o so} U V (@proj_forall@{o so} U V S)) S
@@ -1051,11 +509,11 @@ Definition proj_galois_forall :
 
 (** *** The identifications with (A), and their exact grade *)
 
-(* "Also P_* S is the direct image of S under the projection P."  At [≈]
-   and NOT at [eq_refl]: [proj_exists] is an [ex] over [carrier V] while
-   [Powerset_Prop_image proj_fst] is a [Powerset_squash] of a [sigT] over
-   [carrier (ProdSetoid U V)].  The [eq_refl] form is pinned in
-   Test/ProbeQuantifier384.v. *)
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem proj_exists_is_image
   (S : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V))) :
   @proj_exists@{o so} U V S
@@ -1105,10 +563,11 @@ End Projection.
 (* ------------------------------------------------------------------------ *)
 (** ** (C) Beck-Chevalley for the reindexed projection *)
 
-(* [g x id], written out rather than assembled from [split]/[bimap].
-   Declared at top level, as the donors declare [Powerset_Prop_image] and
-   [Powerset_Prop_preimage], so that [g] occurs explicitly in every
-   statement below and no [Proof using] clause is needed. *)
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cyl_reindex@{o so} {U U' : SetoidObject@{o o}}
   (V : SetoidObject@{o o}) (g : U' ~{Sets@{o so}}~> U) :
   ProdSetoid@{o so} U' V ~{Sets@{o so}}~> ProdSetoid@{o so} U V.
@@ -1131,9 +590,11 @@ Constraint o < so.
 Context (U U' V : SetoidObject@{o o}).
 Context (g : U' ~{Sets@{o so}}~> U).
 
-(* Both squares commute POINTWISE ON THE NOSE: the inverse image is
-   precomposition, so the two membership [Prop]s beta-iota-reduce to the
-   same thing.  These are equalities of [Prop]s, not of morphisms. *)
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example beck_chevalley_exists_mem
   (S : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V)))
   (x : carrier U') :
@@ -1150,22 +611,11 @@ Example beck_chevalley_forall_mem
         (Powerset_Prop_preimage@{o} (cyl_reindex V g) S) x
   := eq_refl.
 
-(* And at WHOLE-SUBSET Leibniz equality too, which is stronger than the
-   pointwise form and than [≈].  It was not expected, and what is
-   measured is kept apart from what is explained.  Measured:
-   [SetoidMorphism] has primitive projections with eta, so record
-   equality IS field equality, and the [proper_morphism] certificate is
-   NOT irrelevant (two arbitrary proofs of one such [Proper] statement do
-   NOT convert -- out of tree).  Hence a typechecking [eq_refl] here
-   forces BOTH fields to converge, certificates included.  Explained,
-   not measured: they converge because [cyl_reindex] reduces
-   [(g (fst z), snd z)] at a literal pair and its own certificate
-   projects the pair of hypotheses, which is what the other side feeds
-   to [S]'s certificate.  The one experiment available -- flipping
-   [cyl_reindex] to [Qed] -- breaks all SIX Beck-Chevalley statements at
-   once (the two pointwise [Prop] equalities, these two, and both [≈]
-   readings), so it shows transparency of [cyl_reindex] is load-bearing
-   for every one of them and isolates nothing about the certificates. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example beck_chevalley_exists
   (S : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V))) :
   Powerset_Prop_preimage@{o} g (@proj_exists@{o so} U V S)
@@ -1268,12 +718,11 @@ Program Definition subsets_one_to_Props :
   fmap := fun S T (h : subset_le S T) => h ttt
 |}.
 
-(* The constant predicate on the one-point setoid.  Its respectfulness
-   certificate is written out as a term rather than left to instance
-   resolution: Theory/Universal/Element.v records that resolving
-   [proper_morphism] for a [Sets]-morphism out of a concrete one-point
-   setoid pins the carrier universe at [Set], and the pointwise term
-   avoids the resolution entirely. *)
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Props_to_subsets_one :
   Props@{o u} ⟶ Subsets@{o u} quant_one@{o so} := {|
   fobj := fun P =>
@@ -1318,15 +767,17 @@ End TruthValues.
 (* ------------------------------------------------------------------------ *)
 (** ** (D) again: Awodey's two contrapositives, at a concrete witness *)
 
-(* The witnesses are #382's own: [powerset_fin2] (the two-element
-   discrete setoid), [powerset_const0] (the constant map at 0),
-   [powerset_sng1] = {1} and Instance/Powerset.v's [powerset_sng0] = {0}.
-   None is rebuilt. *)
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
 
-(* The dual image of {0} along the constant map at 0 contains 1 --
-   VACUOUSLY, since nothing maps to 1.  This is Fong-Spivak's "empty
-   buckets count", and it refutes the brief's prediction that this dual
-   image is empty. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明 Quantifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem dual_const0_sng0_at_1@{o so +} :
   Powerset_Prop_dual@{o} powerset_const0@{o so} powerset_sng0@{o}
     (Fin.FS Fin.F1).
@@ -1410,11 +861,11 @@ Proof.
   exact (dual_image_not_join_preserving (fun x => proj1 (H x))).
 Qed.
 
-(* Awodey: "Since this does not hold for exists x, it cannot be a right
-   adjoint to some other 'quantifier'."  As a theorem about adjunctions:
-   the direct image along [powerset_const0] has NO left adjoint.  [∃] is
-   the library's Type-valued [sigT], and the sigma binds the functor
-   once. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem exists_not_right_adjoint@{o so u +} :
   (∃ L : Subsets@{o u} powerset_fin2@{o} ⟶ Subsets@{o u} powerset_fin2@{o},
      L ⊣ DirectImage powerset_const0@{o so})

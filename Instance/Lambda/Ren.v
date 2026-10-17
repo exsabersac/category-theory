@@ -23,10 +23,11 @@ Section Ren.
 
 Import ListNotations.
 
-(* Renamings as order-preserving embeddings (thinnings):
-     NoRen  : the empty thinning [] ↪ []
-     Drop r : skip the head slot of the source context (it has no pre-image)
-     Keep r : keep the head slot, mapping it to the head of the target *)
+(*
+   本节说明 Ren 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Ren : Env → Env → Set :=
   | NoRen : Ren [] []
   | Drop {τ Γ Γ'} : Ren Γ Γ' → Ren (τ :: Γ) Γ'

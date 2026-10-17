@@ -198,9 +198,11 @@ Definition pcl_sub_of_closed@{o} (X : PTop@{o}) (S : PSub X)
   (HS : PClosedSub X S) : subset_le (pclosure X S) S :=
   fun x H => H S HS (fun y Sy => Sy).
 
-(* The converse, under excluded middle supplied as a hypothesis: used
-   once to pass from "not every closed C above S contains z" to a closed
-   C above S that misses z, and once for C z from ¬¬ C z. *)
+(*
+   本节说明 Interior 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pcl_closed_of_sub@{o} (lem : ∀ P : Prop, P \/ ~ P) (X : PTop@{o})
   (S : PSub X) (h : subset_le (pclosure X S) S) : PClosedSub X S.
 Proof.

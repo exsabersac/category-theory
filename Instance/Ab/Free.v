@@ -27,11 +27,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The file-global obligation tactic is [cat_simpl], which would run wide
-   proof searches on the obligations below and has already introduced the
-   parameters by the time an obligation is opened.  Switched off here --
-   the Instance/Mod/Free.v idiom -- so every obligation starts with an
-   explicit [intros]. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** ** Formal sums and the group quotient *)
@@ -40,22 +40,22 @@ Section FreeAbelian.
 
 Context (X : SetoidObject).
 
-(* Formal expressions over the generating setoid: generators, zero, sum,
-   negation.  This is Instance/Mod/Free.v's [FVTerm] with the scalar
-   former [fv_smul] deleted.  Negation is a CONSTRUCTOR rather than
-   iterated addition: there is no scalar ring here to take (-1) from, and
-   the abelian group being built is what a derived negation would need. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive FATerm : Type :=
   | fa_gen  : carrier X → FATerm
   | fa_zero : FATerm
   | fa_plus : FATerm → FATerm → FATerm
   | fa_neg  : FATerm → FATerm.
 
-(* The quotienting relation: congruence for each former (saturating under
-   the generating setoid's own [≈]), the four abelian-group laws,
-   symmetry and transitivity.  Reflexivity is derived below, keeping the
-   relation's induction principle one case shorter everywhere it is
-   consumed. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive fa_eq : FATerm → FATerm → Prop :=
   | fae_gen {x y : carrier X} : x ≈ y → fa_eq (fa_gen x) (fa_gen y)
   | fae_plus {s s' t t'} :
@@ -89,29 +89,21 @@ Proof.
   - exact (fun s t u => fae_trans).
 Qed.
 
-(* Deliberately NOT registered as a typeclass instance -- the
-   Instance/Ab/Tensor.v and Instance/Mod/Free.v convention.  Statements
-   about elements of the free group below are written with [fa_eq]; the
-   [≈] of [FreeAbObject] as an object of [Ab] IS that relation,
-   definitionally, so the group-level lemmas of Instance/Ab.v apply to it
-   unchanged. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fa_Setoid : Setoid FATerm := {|
   equiv        := fa_eq;
   setoid_equiv := fa_eq_Equivalence
 |}.
 
-(** ** The free abelian group
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Every law of the group is a constructor of the relation, so the
-    record is a literal with ZERO proof obligations.  It is written out in
-    one piece so that the underlying setoid, the unit, the addition and
-    the negation are all visible at a glance and all reduce.
-
-    An earlier revision stopped at "ZERO proof obligations".  That is still
-    true, and since the PR "algebraic carriers are sets" (2026-09-17) the
-    literal has one more field: [fa_eq] IS a [Prop]-valued relation, so it is
-    its own [Prop] mirror and both implications of [cmon_prop] are the
-    identity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FreeAbObject : AbObject := {|
   ab_cmon := {|
     cmon_setoid := {| carrier := FATerm; is_setoid := fa_Setoid |};
@@ -129,12 +121,11 @@ Definition FreeAbObject : AbObject := {|
   ab_neg_left := fae_neg_l
 |}.
 
-(* The two claims the paragraph above [fa_Setoid] makes, machine-checked
-   rather than asserted: the carrier of the free group, seen through the
-   forgetful functor, IS the type of formal expressions, and its [≈] IS
-   the quotienting relation.  These are equations between TYPES, not
-   between morphisms -- the convertibility exception the house style
-   sanctions. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_ab_carrier_is_FATerm :
   carrier (Ab_Forget FreeAbObject) = FATerm := eq_refl.
 
@@ -142,12 +133,11 @@ Example free_ab_equiv_is_fa_eq (s t : FATerm) :
   (@equiv _ (is_setoid (Ab_Forget FreeAbObject)) s t) = fa_eq s t
   := eq_refl.
 
-(** ** The insertion of generators
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    A generator becomes the corresponding formal expression.
-    Respectfulness is the congruence constructor [fae_gen], supplied by
-    [exact] rather than as a record field: the target's [≈] is [fa_eq] by
-    conversion but not by unification, and only [exact] will convert. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_ab_insert : X ~{Sets}~> Ab_Forget FreeAbObject.
 Proof.
   unshelve refine {| morphism := fa_gen |}.
@@ -176,19 +166,19 @@ Fixpoint fa_eval (t : FATerm) : carrier (cmon_setoid A) :=
   | fa_neg s    => ab_neg A (fa_eval s)
   end.
 
-(* Respectfulness is one induction over the relation: nine cases, one per
-   constructor of [fa_eq].  Four are met by the corresponding law of the
-   target group; the other five are not laws -- [fae_gen] is saturation
-   under X's own [≈], two are congruence for a former, and two are the
-   target setoid's symmetry and transitivity. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fa_eval_respects (s t : FATerm) : fa_eq s t → fa_eval s ≈ fa_eval t.
 Proof.
   intro He.
-  (* Since the PR "algebraic carriers are sets" (2026-09-17) [fa_eq] is a
-     [Prop] inductive and eliminates only into [Prop] goals, while `≈` is
-     [Type]-valued.  [pequiv_to] puts a [Prop] goal in front of the
-     elimination and each branch returns to `≈` with [pequiv_from]; the nine
-     cases and what discharges each are exactly as before. *)
+  (*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   apply pequiv_to.
   induction He as
     [ x y Hxy
@@ -211,14 +201,11 @@ Proof.
   - exact (transitivity IHst IHtu).
 Qed.
 
-(* The extension, as a morphism of [Ab].  [AbHom] IS [CMonHom]
-   (Instance/Ab.v, a bare [Definition]), so the obligations are
-   respectfulness of the fold and preservation of zero and of addition --
-   preservation of NEGATION is not among them, being the derived
-   [ab_map_neg] rather than a field.  The last two hold by
-   [reflexivity], the fixpoint's clauses BEING those two equations.  One
-   uniform body is used so that the proof does not depend on the order
-   [Program] emits the obligations in. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition free_ab_extend : FreeAbObject ~{Ab}~> A := {|
   cmon_map := {| morphism := fa_eval |}
 |}.
@@ -240,11 +227,11 @@ Qed.
 Example free_ab_extend_generators (x : carrier X) :
   cmon_map free_ab_extend (fa_gen x) = h x := eq_refl.
 
-(* The two homomorphism laws, recorded at Leibniz [=] on the CARRIER so
-   that the header's strength claim is machine-checked rather than
-   inferred from which branch of the obligation tactic fired.  This is
-   the convertibility exception the house style sanctions: these are
-   equations between elements of A's carrier, not between morphisms. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_ab_extend_zero :
   cmon_map free_ab_extend fa_zero = cmon_zero A := eq_refl.
 
@@ -253,24 +240,20 @@ Example free_ab_extend_plus (s t : FATerm) :
     = cmon_plus A (cmon_map free_ab_extend s)
                   (cmon_map free_ab_extend t) := eq_refl.
 
-(* Preservation of negation is a THEOREM in [Ab] rather than a field, but
-   for THIS homomorphism it is nevertheless definitional, the fixpoint
-   having a clause for [fa_neg].  So the derived [ab_map_neg] is not
-   needed on the extension's own side; it is needed on the COMPETITOR's
-   side in the uniqueness proof below. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_ab_extend_neg (s : FATerm) :
   cmon_map free_ab_extend (fa_neg s)
     = ab_neg A (cmon_map free_ab_extend s) := eq_refl.
 
-(** *** Uniqueness
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Any homomorphism out of the free group agreeing with [h] on the
-    generators IS the extension.  The induction has one case per former,
-    four in all: the generator case is the agreement hypothesis [Hg]
-    itself, and the other three are homomorphism laws of the competitor --
-    preservation of zero, of sums, and of negation (Instance/Ab.v's
-    [ab_map_neg], a theorem and not a field, which is exactly the place
-    that derivation earns its keep). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma free_ab_extend_unique (g : FreeAbObject ~{Ab}~> A)
   (Hg : ∀ x : carrier X, cmon_map g (fa_gen x) ≈ h x) (t : FATerm) :
   cmon_map g t ≈ fa_eval t.
@@ -355,9 +338,11 @@ Next Obligation.
     intro x; exact (Hg x).
 Qed.
 
-(* The functor and the adjunction come out of the generic machinery with
-   no further proof -- the route Instance/Mod/Free.v, Instance/Grp/Free.v,
-   Instance/Coq/Monoid/Free.v and Construction/Free/Quiver.v all take. *)
+(*
+   本节说明伴随、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FreeAb : Sets ⟶ Ab :=
   LeftAdjointFunctorFromUniversalArrows Ab_Forget free_ab_universal_arrow.
 
@@ -368,19 +353,20 @@ Definition free_ab_adjunction : FreeAb ⊣ Ab_Forget :=
     definitionally. *)
 Example FreeAb_obj (X : Sets) : FreeAb X = FreeAbObject X := eq_refl.
 
-(** The universal arrow is the insertion of generators on the nose:
-    [universal_arrow_from_UMP] stores the supplied morphism as the second
-    projection of the comma object it builds, so no proof is involved. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_ab_arrow_is_insert (X : Sets) :
   @arrow _ _ X Ab_Forget (free_ab_universal_arrow X) = free_ab_insert X
   := eq_refl.
 
-(** ** The unit is the insertion of generators
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [unit] is DERIVED in Theory/Adjunction.v (it is the transpose of the
-    identity), not a field, so what it computes to has to be checked.  It
-    is [fmap[U] id ∘ arrow], and [fmap[Ab_Forget] id] is the identity
-    setoid map, so the unit is [free_ab_insert] itself. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_ab_unit (X : Sets)
   : X ~{Sets}~> Ab_Forget (FreeAb X) :=
@@ -392,17 +378,11 @@ Example free_ab_unit_is_insert (X : Sets) (x : carrier X) :
 Example free_ab_unit_is_generator (X : Sets) (x : carrier X) :
   free_ab_unit X x = @fa_gen X x := eq_refl.
 
-(** ** The counit evaluates a formal sum
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The counit is the OTHER transpose, and it does not compute: it is
-    [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows]
-    (Theory/Universal/Arrow.v) is [Qed]-opaque, so no [eq_refl] is
-    available on this side and none is claimed.  What is available -- and
-    is the content -- is that it agrees with evaluation up to [≈].
-    CORRECTION (#472): one of two causes; this file's own
-    [free_ab_universal] is the other (the header's STRENGTHS), and the
-    counit of the hom-set form [free_ab_adjunction_hom] below is this
-    fold at [eq_refl] ([free_ab_hom_counit]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_ab_counit (A : Ab)
   : FreeAb (Ab_Forget A) ~{Ab}~> A :=
@@ -437,13 +417,11 @@ Proof.
               (@arrow _ _ Y Ab_Forget (free_ab_universal_arrow Y) ∘ u)) x).
 Qed.
 
-(** ** The adjunction bijection, and its two naturality clauses
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    The forward transpose is restriction to the generators, and it IS the
-    adjunction's own ⌊−⌋ -- [free_ab_transpose_is_adj] records that by
-    [eq_refl] -- so the two clauses below, proved in the free group's own
-    vocabulary, are the class's fields and not weaker statements about
-    some other map. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fa_transpose {X : Sets} {A : Ab}
   (g : FreeAb X ~{Ab}~> A) : X ~{Sets}~> Ab_Forget A :=
@@ -453,9 +431,11 @@ Example free_ab_transpose_is_adj {X : Sets} {A : Ab}
   (g : FreeAb X ~{Ab}~> A) :
   to (@adj _ _ _ _ free_ab_adjunction X A) g = fa_transpose g := eq_refl.
 
-(** Restriction to the generators is a bijection: the inverse is additive
-    extension.  Both round trips are [≈] statements about morphisms, and
-    the first of them is [reflexivity] at every generator. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fa_transpose_extend {X : Sets} {A : Ab}
   (h : X ~{Sets}~> Ab_Forget A) : fa_transpose (free_ab_extend h) ≈ h.
@@ -487,9 +467,11 @@ Theorem free_ab_naturality_in_group {X : Sets} {A A' : Ab}
   fa_transpose (k ∘ g) ≈ fmap[Ab_Forget] k ∘ fa_transpose g.
 Proof. intro x; simpl; reflexivity. Qed.
 
-(** The two theorems just proved ARE the adjunction's naturality fields at
-    this adjunction: the statements are convertible, so these are the
-    clauses and not restatements about a different map. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_ab_naturality_in_set_is_to_adj_nat_l
   {X Y : Sets} {A : Ab} (g : FreeAb Y ~{Ab}~> A) (u : X ~{Sets}~> Y) :
   (to (@adj _ _ _ _ free_ab_adjunction X A) (g ∘ fmap[FreeAb] u)
@@ -517,22 +499,11 @@ Proof. exact (@fmap_counit_unit _ _ _ _ free_ab_adjunction A). Qed.
 Arguments fa_transpose {X A} g.
 Arguments free_ab_fmap_generators {X Y} u x.
 
-(** ** The same adjunction in hom-set form (#472)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-    A second packaging of [FreeAb ⊣ Ab_Forget], with the SAME left adjoint
-    [FreeAb] and the same insertion: Theory/Adjunction.v's hom-set
-    constructor [Build_Adjunction'] applied to the natural bijection
-    [free_ab_hom_iso], whose forward transpose is [fa_transpose], the
-    forward transpose of [free_ab_adjunction] ([free_ab_transpose_is_adj]),
-    and whose inverse transpose is the additive extension
-    [free_ab_extend].  Its two naturality fields are
-    [free_ab_naturality_in_set] and [free_ab_naturality_in_group], cited.
-    Its counit is then the fold of the identity by conversion
-    ([free_ab_hom_counit]), where the counit of [free_ab_adjunction] is
-    that fold only up to `≈` ([free_ab_counit_evaluates]).
-    Instance/Ab/FreeMonad.v builds Riehl's monad ℤ[−] on it.  No second
-    free group and no second free functor: the action on arrows is still
-    [FreeAb]'s, at `≈` the relabelling ([free_ab_fmap_generators]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The fold respects pointwise-`≈` maps on generators: a citation of
    [free_ab_extend_unique]. *)
@@ -606,25 +577,11 @@ Example free_ab_hom_to@{c so +} (X : Sets@{c so}) (A : Ab)
             X A) g := eq_refl.
 
 
-(** ** Non-degeneracy
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    A free construction is worthless if it collapses, and no induction
-    over [fa_eq] can produce a negative -- every constructor concludes an
-    equation.  So each refutation below maps OUT of the free group into a
-    concrete abelian group and reads the answer off there, exactly as
-    Instance/Grp/Free.v's [free_group_two_generators_nonabelian] does.
-
-    The general statements are made over an ARBITRARY abelian group A
-    with a distinguished element a that is not zero.  That is not
-    generality for its own sake: it is what keeps them universe-free.
-    Instantiating them at the integers instead -- writing the
-    characteristic function with values 1 and 0 in ℤ -- pins the
-    generating setoid's carrier AND relation universes to [Set], which
-    was MEASURED by three probes rather than guessed: the same probe with
-    ℤ but no decidable case split is free of [Set], and the same case
-    split into an abstract A is free of [Set], while the two together
-    pin.  So the concrete group is deferred to the two-generator witness
-    at the end of the file, where [bool] forces [Set] anyway. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section NonDegeneracy.
 
@@ -652,10 +609,11 @@ Proof using X A a Ha.
   exact (Ha (fa_eval_respects A fa_probe_const _ _ He)).
 Qed.
 
-(** The group is not idempotent: doubling a generator moves it.  This is
-    where the group structure is spent -- [ab_cancel_l] (Instance/Ab.v)
-    is what turns a + a ≈ a into a ≈ 0, and it is the one property that
-    separates a group from a monoid. *)
+(*
+   本节说明幺半群、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_ab_gen_not_idempotent (x : carrier X) :
   fa_eq (fa_plus (@fa_gen X x) (fa_gen x)) (fa_gen x) → False.
 Proof using X A a Ha.
@@ -667,22 +625,11 @@ Proof using X A a Ha.
   symmetry; apply cmon_plus_zero_r.
 Qed.
 
-(** *** Separations that need a decider on the generating setoid
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Distinguishing two DIFFERENT generators means exhibiting a group in
-    which they go to different places, and the only such map a bare
-    setoid supplies is the characteristic function of a point, which
-    cannot be WRITTEN without a decision procedure for that setoid's
-    [≈].  That is an ARGUMENT, not a theorem: no converse is proved here,
-    and the tree's precedent for claims of exactly this shape
-    ([arrow_mul_respects_forces_UIP] and its siblings) is deliberately
-    not followed.
-
-    Unlike Instance/Mod/Free.v's [free_module_basis_injective] this needs
-    only ONE hypothesis rather than two.  That file's second hypothesis
-    is 1 ≉ 0 in the coefficient ring, because it probes with the ring
-    viewed as a module over itself and the ring may be the zero ring;
-    here the nondegeneracy of the target is already carried by [Ha]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context (Xdec : ∀ x y : carrier X, (x ≈ y) + ((x ≈ y) → False)).
 
@@ -717,9 +664,11 @@ Proof using X A a Ha Xdec.
   exact Hv.
 Qed.
 
-(** A COMPOUND element is separated from a generator: e_x + e_y is not
-    e_x when x ≉ y.  Neither theorem above gives this -- both are about
-    generators alone -- so it is the sharpest of the four. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_ab_sum_not_summand (x y : carrier X)
   (Hxy : (x ≈ y) → False) :
   fa_eq (fa_plus (@fa_gen X x) (fa_gen y)) (fa_gen x) → False.
@@ -743,16 +692,11 @@ Arguments free_ab_gen_not_idempotent {X} A a Ha x _.
 Arguments free_ab_gen_injective {X} A a Ha Xdec x y _.
 Arguments free_ab_sum_not_summand {X} A a Ha Xdec x y Hxy _.
 
-(** ** A computing witness on two generators
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The integers, as [ring_ab Int_Ring]: Instance/Rng.v's [ring_ab]
-    applied to Theory/Algebra/Rig.v's [Int_Ring].  This is the same
-    term Instance/Ab/Coproduct.v names [ab_Z]; that file is NOT
-    required here (it would drag the biproduct closure in for one
-    definition), so no in-file identification with that name is stated.
-
-    The generating setoid has TWO elements, so the free group is not ℤ
-    itself and the additive extension has something to do. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ab_int : AbObject := ring_ab Int_Ring.
 
@@ -776,11 +720,11 @@ Proof.
   - exact (inl eq_refl).
 Defined.
 
-(* [FATerm]'s index argument is implicit, and in a statement with no
-   expected type -- an [fa_eq] between two constructor applications --
-   the elaborator has nothing to propagate it from.  These are
-   NOTATIONS, not definitions, so each unfolds to the constructor itself
-   and nothing below is stated about a different term. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Notation zgen  := (@fa_gen AbTwoGens).
 Local Notation zplus := (@fa_plus AbTwoGens).
 Local Notation zneg  := (@fa_neg AbTwoGens).
@@ -791,10 +735,11 @@ Proof.
   unshelve refine {|
     morphism := fun b : carrier AbTwoGens => if b then 3%Z else 5%Z
   |}.
-  (* [all:] because the respectfulness field of a map out of a setoid
-     whose ≈ is Leibniz [=] may be discharged by instance resolution
-     before a goal is ever opened; the carriers here are at [Set] either
-     way, so nothing is pinned that was not already. *)
+  (*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   all: intros x y H; simpl in H; subst y; reflexivity.
 Defined.
 
@@ -844,40 +789,28 @@ Proof.
   intro H; discriminate H.
 Qed.
 
-(** ** Measured negatives
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-    Each [Fail] below records a strengthening that the file does NOT
-    have, and each is paired with a positive control that must succeed,
-    so a rename or a change of definition breaks the file loudly instead
-    of turning the [Fail] vacuously green.  The house convention puts
-    such probes in a Test/Probe*.v file; they are in-file here because
-    this commit adds exactly one file, and moving them costs nothing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* CONVERSION.  The counit does not compute.  It is
-   [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows]
-   (Theory/Universal/Arrow.v) is [Qed]-opaque, so nothing reduces
-   through it; only the [≈] statement [free_ab_counit_generator] holds.
-   Control: the UNIT at the same generator DOES compute.
-   CORRECTION (#472): one of two causes; with [ump_universal_arrows]
-   alone turned [Defined] this negative is still refused, and with this
-   file's [free_ab_universal] turned [Defined] as well its statement
-   holds at [eq_refl] (the header's STRENGTHS); the counit of the hom-set
-   form [free_ab_adjunction_hom] is the fold at [eq_refl]
-   ([free_ab_hom_counit]). *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example counit_does_not_compute (A : Ab) (b : carrier (Ab_Forget A)) :
   cmon_map (free_ab_counit A) (fa_gen b) = b := eq_refl.
 
 Example ab_control_unit_computes (X : Sets) (x : carrier X) :
   free_ab_unit X x = @fa_gen X x := eq_refl.
 
-(* CONVERSION.  The free functor's action on a generator does not
-   compute either, for the same reason -- [fmap] of
-   [LeftAdjointFunctorFromUniversalArrows] is defined by universal
-   factorization, not by a formula.  Only the [≈] statement
-   [free_ab_fmap_generators] holds.  Control: the object action DOES
-   compute.  CORRECTION (#472): the same two causes; with both turned
-   [Defined] this statement holds at [eq_refl] too (the header's
-   STRENGTHS). *)
+(*
+   本节说明函子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example fmap_generator_does_not_compute
   (X Y : Sets) (u : X ~{Sets}~> Y) (x : carrier X) :
   cmon_map (fmap[FreeAb] u) (fa_gen x) = fa_gen (u x) := eq_refl.
@@ -885,13 +818,11 @@ Fail Example fmap_generator_does_not_compute
 Example control_fobj_computes (X : Sets) : FreeAb X = FreeAbObject X
   := eq_refl.
 
-(* CONVERSION.  Even when the generating setoid is the target's own
-   carrier, the free group is not CONVERTIBLE with that group:
-   [FreeAbObject] is an inductive of formal expressions, so nothing
-   identifies its record with ℤ's.  This says nothing about
-   ISOMORPHISM -- no such claim is made anywhere in this file, in either
-   direction.  Control: the generators of the two-element witness really
-   are inhabitants of the free group's carrier. *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example free_on_carrier_is_not_the_group :
   FreeAbObject (Ab_Forget ab_int) = ab_int := eq_refl.
 

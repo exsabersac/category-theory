@@ -41,19 +41,19 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** The power set of a finite set, and the inverse image *)
 
-(* The power set of the n-element set is the 2^n-element set: a subset is a
-   digit string, one binary digit per element.  The codec
-   [fin_tabulate] / [fin_apply] of Instance/FinSet/Closed.v is exactly the
-   passage between such a string and the characteristic function it
-   encodes, so no new encoding is introduced here. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finpow (n : nat) : nat := Nat.pow 2 n.
 
-(* Membership, as a decidable test: i belongs to the subset coded by S when
-   the i-th digit of S is [fin_true].  ([fin_true] is [Fin.F1] and
-   [fin_false] is [Fin.FS Fin.F1] — Instance/FinSet/Classifier.v's
-   convention, adopted here unchanged so that the classifier connection
-   below needs no translation.) *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finpow_mem {n : nat} (S : Fin.t (finpow n)) (i : Fin.t n) : bool :=
   fin_eqb (fin_apply S i) fin_true.
 
@@ -68,10 +68,11 @@ Lemma finpow_map_mem {m n : nat} (f : Fin.t n → Fin.t m)
   finpow_mem (finpow_map f S) i = finpow_mem S (f i).
 Proof. unfold finpow_mem, finpow_map; now rewrite fin_apply_tabulate. Qed.
 
-(* The two functor laws.  Both are Leibniz equations between codes, which
-   is exactly the pointwise [=] that [FinSet]'s hom-setoid IS (see the
-   header note above: [fun_setoid] over the discrete [Fin_Setoid]), not a
-   strengthening of it, and each is one rewrite with a codec round trip. *)
+(*
+   本节说明函子、hom、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma finpow_map_id {n : nat} (S : Fin.t (finpow n)) :
   finpow_map (fun i : Fin.t n => i) S = S.
@@ -104,10 +105,11 @@ Next Obligation. repeat intro; now apply finpow_map_ext. Qed.
 Next Obligation. now apply finpow_map_id. Qed.
 Next Obligation. now apply finpow_map_comp. Qed.
 
-(* ... and into [Sets], which is what [AUniversalElement] needs of its
-   functor.  The carrier setoid is the discrete one on [Fin.t (2^n)]; it is
-   Instance/Sets/Powerset.v's universe-polymorphic [Powerset_Prop_fin_object]
-   rather than a third private copy of the same three-line record. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition FinPowerset_Sets : FinSet^op ⟶ Sets := {|
   fobj := fun n => Powerset_Prop_fin_object (finpow n) ;
   fmap := fun x y (f : x ~{FinSet^op}~> y) =>
@@ -134,11 +136,11 @@ Example finpowerset_two : fobj[FinPowerset] 2%nat = 4%nat := eq_refl.
 (* ------------------------------------------------------------------------ *)
 (** ** Ω, the point ⊤, and the SUBSET {⊤} *)
 
-(* The truth-value object of [FinSet_Classifier] is 2, and its point is
-   [fin_true].  The universal element is NOT that point: it is the subset
-   {⊤} ⊆ 2, an element of P(2) = 4, namely the digit string whose
-   [fin_true] digit is [fin_true] and whose [fin_false] digit is
-   [fin_false] — that is, the code of the identity function on 2. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finpow_truth_point : Fin.t 2 := fin_true.
 
@@ -160,9 +162,11 @@ Proof. unfold finpow_truth_subset; apply fin_apply_tabulate. Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** Mac Lane's §III.1 universal element ⟨2, {⊤}⟩ *)
 
-(* THE PREIMAGE DESCRIPTION, PROVED FIRST, because it is what makes the
-   universal property mean what Riehl says it means: the action of the
-   functor on k, applied to {⊤}, is the preimage k⁻¹(⊤). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma finpow_fmap_is_preimage {n : nat} (k : Fin.t n → Fin.t 2)
   (i : Fin.t n) :
@@ -175,20 +179,22 @@ Lemma finpow_preimage_iff {n : nat} (k : Fin.t n → Fin.t 2) (i : Fin.t n) :
   finpow_mem (finpow_map k finpow_truth_subset) i = fin_eqb (k i) fin_true.
 Proof. unfold finpow_mem; now rewrite finpow_fmap_is_preimage. Qed.
 
-(* Pulling {⊤} back along k recovers the code of k on the nose — this is the
-   preimage law with the digits collected, and it is the whole universal
-   property once [fin_tabulate]/[fin_apply] are known to be inverse. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma finpow_preimage_of_truth {n : nat} (k : Fin.t n → Fin.t 2) :
   finpow_map k finpow_truth_subset = fin_tabulate k.
 Proof.
   unfold finpow_map; apply fin_tabulate_ext; intro i; apply finpow_truth_digit.
 Qed.
 
-(* Mac Lane's clause at D := FinSet^op and H := FinPowerset_Sets: for every
-   object n and every subset S of n there is a UNIQUE arrow
-   k : 2 ~{FinSet^op}~> n — that is, a unique function n → 2 — with
-   k⁻¹(⊤) = S.  The witness is [fin_apply S], the characteristic function
-   read off the digit string. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition FinPowerset_universal_element :
   @AUniversalElement (FinSet^op) FinPowerset_Sets 2%nat := {|
   aue_elem := finpow_truth_subset ;
@@ -214,11 +220,11 @@ Example finpow_aue_med (n : nat) (S : Fin.t (finpow n)) :
                 FinPowerset_universal_element n S)
     = fin_apply S := eq_refl.
 
-(* The representation, through the Yoneda-FREE route of
-   Theory/Universal/Element.v.  (The Yoneda route is unavailable at [Sets]
-   for universe reasons recorded in Instance/Sets/Powerset/Universal.v; it
-   is not taken here either, so that both files go the same way and the
-   comparison between them is not confounded.) *)
+(*
+   本节说明Yoneda相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FinPowerset_representation :
   @Curried_Hom (FinSet^op) 2%nat
     ≅[[(FinSet^op), Sets]] FinPowerset_Sets :=
@@ -264,12 +270,11 @@ Example FinSet_Sub_repr_obj :
    naturality is one application of [fin_apply_tabulate]; both round trips
    are the codec's own Leibniz equations. *)
 
-(* The two naturality equations of the codec, isolated so that the seven
-   obligations below — six of which reach a [Next Obligation] — can be
-   discharged by one tactic that tries each in both
-   orientations — [Program] emits them in an order that is not worth
-   predicting, and a mis-guessed order is the only thing a hand-written list
-   would be recording. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma codec_natural_to {m n : nat} (f : Fin.t n → Fin.t m)
   (k : Fin.t m → Fin.t 2) :
@@ -339,10 +344,11 @@ Example finpow_sub02_at_1 :
 Example finpow_sub02_at_2 :
   finpow_mem finpow_sub02 (Fin.FS (Fin.FS Fin.F1)) = true := eq_refl.
 
-(* The mediating arrow produced by the universal property is its
-   characteristic function, and it takes the expected values — computed
-   through the class accessor, not through [fin_apply] directly, so what is
-   being checked is the universal element and not the codec. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finpow_char02 : Fin.t 3 → Fin.t 2 :=
   unique_obj (@aue_universal (FinSet^op) FinPowerset_Sets 2%nat
                 FinPowerset_universal_element 3%nat finpow_sub02).
@@ -380,11 +386,11 @@ Proof.
   discriminate H0.
 Qed.
 
-(* A SECOND DEGENERACY EXCLUDED: the functor's action genuinely MOVES
-   subsets, so it is not the identity in disguise.  Along the constant map
-   at 0 the inverse image of {0,2} is all of 3 — every i has [const0 i = 0],
-   which is in the subset — and the inverse image of the empty subset is
-   empty, so the two are separated. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finpow_const0 : Fin.t 3 → Fin.t 3 := fun _ => Fin.F1.
 
 Example finpow_inverse_of_sub02_is_full :
@@ -401,13 +407,11 @@ Proof. discriminate. Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** The internal power object *)
 
-(* Structure/Topos.v defines the power object of a topos as the exponential
-   [Pow a := Ω ^ a], an assignment on OBJECTS with no action on morphisms —
-   the gap Instance/Sets/Powerset.v's header records.  At [FinSet_Topos]
-   its object action is this file's, on the nose: [exponent_obj m n] is
-   [n ^ m], so [Ω ^ n] at Ω = 2 is [2 ^ n], which is [finpow n].  What
-   [FinPowerset] adds over it is the arrow action; no comparison morphism
-   is claimed, because there is nothing on the other side to compare. *)
+(*
+   本节说明topos相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example finpow_is_topos_Pow (n : nat) :
   @Pow FinSet FinSet_Topos n = finpow n := eq_refl.

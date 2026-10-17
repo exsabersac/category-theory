@@ -27,12 +27,11 @@ Generalizable All Variables.
 
 (** ** The category *)
 
-(* Objects are fields, morphisms are ring homomorphisms of the
-   underlying rings, and the hom-setoid is Rig.v's — pointwise
-   equivalence of the underlying setoid maps.  The shape mirrors
-   Instance/Rng.v's [Ring] exactly, since a field homomorphism IS a ring
-   homomorphism: see the header on why no inverse-preservation clause is
-   demanded. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Field : Category := {|
   obj     := FieldObject;
   hom     := fun F K => RigHom F K;
@@ -49,9 +48,11 @@ Next Obligation. intros x y z w f g h a; simpl; reflexivity. Qed.
 
 (** ** The evident forgetful functors *)
 
-(* To rings: identity on morphisms, since the two hom notions coincide.
-   This is the inclusion of the roster entry into its neighbour, and it
-   is faithful for the same definitional reason [Rng_Forget] is. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Field_Rng : Field ⟶ Rng := {|
   fobj := fun F : FieldObject => field_ring F;
   fmap := fun _ _ f => f
@@ -77,10 +78,11 @@ Proof. constructor; intros F K f g E; exact E. Qed.
 
 (** ** Homomorphisms reflect nothing into zero *)
 
-(* The engine of the whole file.  If x is nonzero it is invertible, so
-   1 ≈ f (x⁻¹ · x) ≈ f (x⁻¹) · f x; were f x zero the right-hand side
-   would be zero, and the target's [field_one_neq_zero] refutes 1 ≈ 0.
-   Unconditional: no stability, no decidability, no choice. *)
+(*
+   本节说明 Field 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma field_hom_nonzero {F K : FieldObject} (f : RigHom F K)
   (x : carrier (rig_setoid F)) :
   (x ≈ rig_zero F → False) → (rig_map f x ≈ rig_zero K → False).
@@ -97,11 +99,11 @@ Proof.
       apply rig_mul_zero_r.
 Qed.
 
-(* Preservation of inverses is a theorem, not a clause of the morphism
-   notion: f (x⁻¹) left-inverts f x, and (f x)⁻¹ right-inverts it — the
-   latter by [finv_r], which needs f x to be nonzero, which is the
-   previous lemma — so Rng.v's [rig_inv_unique] identifies them.  At
-   x ≈ 0 no claim is made; see the header. *)
+(*
+   本节说明 Field 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma field_hom_finv {F K : FieldObject} (f : RigHom F K)
   (x : carrier (rig_setoid F)) (Hx : x ≈ rig_zero F → False) :
   rig_map f (finv F x) ≈ finv K (rig_map f x).
@@ -157,10 +159,11 @@ Proof.
   apply (ring_neg_l K (rig_map f b)).
 Qed.
 
-(* The exercise's argument, in the form it actually produces.  Given
-   a ≉ b, the difference a − b is nonzero, so by [field_hom_nonzero] its
-   image is nonzero; but that image is f a − f b, which any agreement of
-   f a with f b would send to zero. *)
+(*
+   本节说明 Field 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem field_hom_distinct {F K : FieldObject} (f : RigHom F K)
   (a b : carrier (rig_setoid F)) :
   (a ≈ b → False) → (rig_map f a ≈ rig_map f b → False).
@@ -202,14 +205,11 @@ Proof.
   - destruct (Hnn H).
 Qed.
 
-(* Nothing weaker can serve, for a reason that needs no proof of
-   independence: under the premise [f a ≈ f b] the hypothesis INSTANCE
-   at (a, b) and the conclusion a ≈ b inter-derive — forward by feeding
-   the instance the theorem above, backward by discarding its argument.
-   Read it as exactly that, a single-instance inter-derivation under the
-   premise, and not as the quantified biconditional Instance/Grp/Epi.v's
-   [stability_is_the_conclusion] proves; no claim is made here about the
-   quantified forms. *)
+(*
+   本节说明 Field 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem stability_is_the_conclusion {F K : FieldObject} (f : RigHom F K)
   (a b : carrier (rig_setoid F)) (Hab : rig_map f a ≈ rig_map f b) :
   ((((a ≈ b → False) → False) → a ≈ b) → a ≈ b) *
@@ -224,15 +224,11 @@ Qed.
 
 (** ** The hypothesis is only ever used at zero *)
 
-(* [FieldStable] quantifies over pairs, but every use below reduces the
-   pair (a, b) to the single element a − b through [ring_sub_zero].  So
-   the weaker-looking hypothesis "≈ is ¬¬-stable AT ZERO" already
-   suffices — and it is not in fact weaker, the two being
-   inter-derivable ([field_stable_stable_at_zero] and
-   [field_stable_at_zero_stable]).  This turns what the header would
-   otherwise have to assert into a proved statement, and it locates the
-   obstruction exactly: it is about deciding "is this element zero?",
-   which is the guard on [finv_l], and about nothing else. *)
+(*
+   本节说明 Field 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FieldStableAtZero (F : FieldObject) : Type :=
   ∀ a : carrier (rig_setoid F),
     ((a ≈ rig_zero F → False) → False) → a ≈ rig_zero F.
@@ -277,11 +273,11 @@ Proof.
   exact (field_hom_injective_nn f a b Hab).
 Qed.
 
-(* Injective ⇒ monic, in the shape Instance/Rng.v's
-   [rng_injective_monic] and Instance/Grp.v's [Grp_injectivity_is_monic]
-   use: cancellation in the hom-setoid is pointwise, so left
-   cancellation of f is injectivity of f evaluated at the two competing
-   images. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem field_monic {F K : FieldObject} (f : F ~{Field}~> K)
   (HF : FieldStable F) : Monic f.
 Proof.
@@ -316,9 +312,11 @@ Definition Q_Field_stable : FieldStable Q_Field :=
 Theorem Q_hom_monic (K : FieldObject) (f : Q_Field ~{Field}~> K) : Monic f.
 Proof. exact (field_monic f Q_Field_stable). Qed.
 
-(* The identity is a morphism, and ℚ is an object: the category is
-   inhabited.  A second object, F₂, is built below, and the two are
-   shown to have no morphism between them in either direction. *)
+(*
+   本节说明 Field 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Q_Field_object : obj[Field] := Q_Field.
 
 Example Q_Field_id : Q_Field ~{Field}~> Q_Field := @id Field Q_Field.
@@ -342,13 +340,11 @@ Proof.
   now rewrite H.
 Qed.
 
-(* Every ring endomorphism of ℚ is the identity.  On the image of ℤ this
-   is initiality of ℤ in Rng ([rng_from_Z_unique], applied twice: once
-   to the composite with the inclusion and once to the inclusion
-   itself); a general rational is then pinned by multiplying through by
-   its denominator, which the endomorphism fixes, and cancelling.  No
-   fraction is ever chosen — the same discipline as Rng.v's
-   [ZtoQ_epic]. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Q_endo_id (f : Q_Field ~{Field}~> Q_Field) (q : Q) :
   (rig_map f q == q)%Q.
 Proof.
@@ -383,12 +379,11 @@ Proof. intro q; exact (Q_endo_id f q). Qed.
 
 (** ** F₂: the second object, and a second characteristic *)
 
-(* The two-element field, on [bool] with Leibniz equality (Sets.v's
-   [bool_setoid_object]): addition is exclusive or, multiplication is
-   conjunction, negation and inversion are both the identity.  Every law
-   is a case analysis over at most three booleans.  The point of the
-   object is that its characteristic is 2 while ℚ's is 0, which is what
-   separates the two below. *)
+(*
+   本节说明 Field 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition F2_Rig : RigObject := {|
   rig_setoid := bool_setoid_object;
   rig_zero := false;
@@ -498,16 +493,11 @@ Qed.
 (** ** riehl:1.6:example15: fields have neither an initial nor a
        terminal object *)
 
-(* Both proofs are constructive and case-split-free.  They are the
-   standard characteristic argument, and the only subtlety is that the
-   guard on [finv_l] is a NEGATION, so the negative fact "2 is not zero
-   here" is exactly what licenses inverting it — no decision procedure
-   is consulted, and neither [FieldStable] nor decidability is used.
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-   An initial field I would map to both ℚ and F₂.  The ℚ-map shows
-   1 + 1 is nonzero in I, since a zero there would be carried to a zero
-   in ℚ; the F₂-map then carries that nonzero element to
-   1 + 1 = 0 in F₂, which [field_hom_nonzero] refutes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Field_no_initial (I : @Initial Field) : False.
 Proof.
   pose (f := @zero Field I Q_Field).

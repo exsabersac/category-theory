@@ -50,18 +50,11 @@ Qed.
 
 (** ** Self-duality: Rel ≅ Rel^op in Cat (Awodey 1.9.2(a)) *)
 
-(* The dagger, as an identity-on-objects functor.  [fmap] must be
-   [Proper] and functorial with the OPPOSITE composition order — which
-   is exactly [dagger_compose].
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
 
-   HOW STRONG THE SELF-DUALITY IS.  [Cat]'s hom-setoid makes ≅[Cat]
-   an EQUIVALENCE of categories (Instance/Cat.v's header); Awodey's
-   exercise asks about an isomorphism of categories.  Both are
-   delivered below, the two-tier presentation of
-   Structure/Groupoid/Inversion.v: [Rel_self_dual_strict] in
-   StrictCat — free, both composites being identity-on-objects and
-   the round trips holding by strict functor equality — and the
-   ≅[Cat] reading [Rel_self_dual]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Rel_Converse : Rel ⟶ Rel^op := {|
   fobj := fun x => x;
   fmap := fun x y (R : x ~{Rel}~> y) => @dagger Rel Rel_Dagger x y R
@@ -158,10 +151,11 @@ Section Powerset.
 
 Context (X : Type).
 
-(* Decidable subsets of X, ordered by pointwise containment.  The
-   bool-valued reading is the constructive transposition of Awodey's
-   P(X) (see the header): complementation is then a genuine involution,
-   the round trips closing by case analysis on the membership bit. *)
+(*
+   本节说明 Dagger 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition psub (A B : X → bool) : Prop :=
   ∀ x : X, A x = true → B x = true.
 
@@ -242,12 +236,11 @@ Definition SBool  : Sets := {| carrier := bool;  is_setoid := eq_Setoid bool  |}
 Program Definition kbool (b : bool) : SUnit ~{Sets}~> SBool :=
   {| morphism := fun _ => b |}.
 
-(* Any Cat-isomorphism repackages as an equivalence, hence a full and
-   faithful F : Sets ⟶ Sets^op.  Fullness reads a would-be element of
-   Sets(F ∅, F 1) back through the EMPTY hom-setoid Sets(1, ∅), so
-   carrier (F 1) is empty; then the two constant maps 1 ⇉ 2 have
-   vacuously equivalent images — every parallel pair into an
-   empty-carrier setoid agrees — and faithfulness forces true = false. *)
+(*
+   本节说明hom、等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Sets_not_self_dual : Sets ≅[Cat] Sets^op → False.
 Proof.
   intro iso.

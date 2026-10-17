@@ -29,15 +29,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** (B) The image predicate, and subobjects of the terminal setoid *)
 
-   (* [sets_in_image m b] is Mac Lane's "b ∈ S" and Seven Sketches' "m(x) = y
-   for some x": the [Type@{o}]-valued sigma that Instance/Sets/Classifier.v's
-   [char_setoid] also computes.  [SubOne P] is the subobject of the terminal
-   setoid cut by a proposition P, with [subone_incl] its inclusion; the
-   inclusion is monic for EVERY P, because its DOMAIN [SubOne P] is subterminal
-   — its setoid is [triv_rel], so any two morphisms into it already agree, which
-   is what left-cancellation asks (terminality of the CODOMAIN would not do it:
-   the unique map [BoolSetoid ~> 1] is not monic).  Together they let a truth
-   value be probed by a subobject of 1, which is how section (D) runs. *)
+   (*
+   本节说明子对象、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sets_in_image@{o} {u x : SetoidObject@{o o}}
   (m : SetoidMorphism@{o o o} u x) (b : carrier x) : Type@{o} :=
@@ -73,14 +69,11 @@ Proof. constructor; intros z g1 g2 _ ?; exact ttt. Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** (C) The three hypotheses, and the passages between them *)
 
-(* [DecImage] is the issue's "decidability discipline": every mono's
-   image membership is decidable.  [Untruncate] inverts the
-   impredicative truncation of Instance/Sets/Powerset.v at level o.
-   [IEM] is informative excluded middle at level o.  IEM gives both, and
-   [DecImage] gives IEM back — the terminal setoid's point is in the
-   image of [subone_incl P] exactly when P — so [DecImage] and [IEM] are
-   EQUIVALENT.  Whether [Untruncate] implies [IEM] is not settled here
-   and no passage in that direction is built. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive poly_bool@{u} : Type@{u} := ptrue | pfalse.
 
@@ -146,14 +139,11 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** (D) The resizing characterisation *)
 
-(* A one-level classifier for [Sets] is exactly the record below: an
-   object Ω at level o, a point t, an assignment w of a truth value to
-   every [Type@{o}], introduction and elimination identifying [w P ≈ t]
-   with P, and extensionality of Ω at t.  The two passages are
-   [classifier_of_small] and [small_of_classifier], packaged as
-   [classifier_iff_small].  [sce_ext] on the forward side spends
-   [char_unique] twice (through [subone_pt_classifies]) and
-   [char_respects] once (through [subone_respects]). *)
+(*
+   本节说明 OneLevel 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ---- the converse: a small classifier gives a SubobjectClassifier ---- *)
 
@@ -468,12 +458,11 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** (F) The per-mono characteristic map, and the [DecImage] instance *)
 
-(* [char_of_dec] is Seven Sketches' ⌜m⌝ built from the decidability of
-   ONE mono's image — no global hypothesis appears in its type — with
-   the classifying square [char_of_dec_pullback] and the uniqueness
-   clause [char_of_dec_unique] proved for it directly.  The global
-   instance [Sets_Classifier_dec] is that data taken at every mono, so
-   its [char] IS [char_of_dec] by [eq_refl]. *)
+(*
+   本节说明 OneLevel 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition SetsDec@{o so} {u x : SetoidObject@{o o}}
   (m : u ~{Sets@{o so}}~> x) : Type@{o} :=
@@ -638,11 +627,11 @@ Definition Sets_Classifier_IEM@{o so} (E : IEM@{o}) :
 (* ------------------------------------------------------------------------ *)
 (** ** (G) The bridge to the cross-universe characteristic map *)
 
-(* Instance/Sets/Classifier.v's [char_setoid] and this file's [char]
-   are one map at two levels, joined by [Powerset_squash].  The value
-   identification is [eq_refl]; the identification as [SetoidMorphism]
-   records holds only at ≈, and its strict form is pinned in
-   Test/ProbeClassifier402.v as a CONVERSION refusal. *)
+(*
+   本节说明 OneLevel 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* the value grade, pointwise on the carrier of Omega, at eq_refl *)
 Example bridge_pointwise@{o so} (U : Untruncate@{o})
@@ -728,13 +717,11 @@ Definition sets_classifier_dec_char_iff@{o so} (D : DecImage@{o so})
 (* ------------------------------------------------------------------------ *)
 (** ** (I) The two round trips, against [Sets_HasPullbacks] *)
 
-(* [classifier_classifies] is not statable at [Sets] (its object
-   universe is bounded by its hom universe); what survives are its two
-   round trips, which build no object of [Sets] with carrier [SubObj x]
-   (their ≈ is still the [SubObj_Setoid] instance).  Both are
-   supplied by [:=] with no tactic, over Instance/Sets/Pullback.v's
-   [Sets_HasPullbacks], which is named in both statements.  No second
-   pullback structure is constructed anywhere in this file. *)
+(*
+   本节说明拉回/推出、hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sets_truth_subobject@{o so} (U : Untruncate@{o}) :
   @SubObj Sets@{o so}
@@ -772,12 +759,11 @@ Definition sets_pullback_roundtrip@{o so} (U : Untruncate@{o})
 (* ------------------------------------------------------------------------ *)
 (** ** (J) A concrete decidable mono, with no global hypothesis *)
 
-(* The point [pfalse] of the two-element setoid, included from the
-   terminal setoid.  Its image membership is decidable outright, so
-   [char_of_dec] applies with no hypothesis at all, and the resulting
-   characteristic map is negation — it MOVES both points, so the witness
-   is not the generic subobject in disguise.  The mono is proved not
-   invertible. *)
+(*
+   本节说明子对象、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition dec_false@{o so} :
   (@terminal_obj Sets@{o so} Sets_Terminal@{so o})
@@ -835,16 +821,11 @@ Example char_of_dec_from_DecImage@{o so} (D : DecImage@{o so}) :
 (* ------------------------------------------------------------------------ *)
 (** ** (K) [FinSet]: display (7.15) where Ω really is the two-element set *)
 
-(* Unconditional, and pure instantiation: [classifier_classifies] IS
-   statable at [FinSet], whose objects are naturals.  [FinSet]'s
-   characteristic map reduces on a closed injection, so Seven Sketches'
-   ⌜m⌝ computes.  The [eq_refl] for Ω = 2 is stated a third time here
-   (Instance/FinSet/Subsets.v has [FinSet_Omega_is_two] and
-   Test/ProbePowersetUniversal.v an [Example] [finset_omega_is_two] with
-   the same statement, which is why the name below carries a prefix);
-   Instance/FinSet/Subsets.v is NOT required, its closure being 99
-   modules against this file's 70.  Nothing transports between [FinSet]
-   and [Sets]: no functor between them exists in this tree. *)
+(*
+   本节说明 OneLevel 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finset_classifier_classifies (n : obj[FinSet]) :
   @Isomorphism Sets
@@ -872,11 +853,11 @@ Example finset_char_at_FS :
   @char FinSet FinSet_Terminal FinSet_Classifier 1%nat 2%nat
     fin_incl_1_2 fin_incl_1_2_monic (Fin.FS Fin.F1) = fin_false := eq_refl.
 
-(* The two routes from [IEM] to a classifier, [classifier_of_small] of
-   [small_of_IEM] and [Sets_Classifier_dec] of [DecImage_of_IEM], agree
-   on all three DATA fields at [eq_refl] — Ω, [char], and the [truth]
-   MORPHISM — while the whole records do not (pinned in the probe): what
-   differs is exactly the two law fields. *)
+(*
+   本节说明 OneLevel 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example iem_routes_omega@{o so} (E : IEM@{o}) :
   @Ω Sets@{o so} Sets_Terminal@{so o}
      (classifier_of_small@{o so} (small_of_IEM@{o} E))

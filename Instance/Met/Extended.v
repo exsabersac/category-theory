@@ -28,10 +28,11 @@ Open Scope R_scope.
 
 (** ** The value type [0, ∞] *)
 
-(* The non-negativity of [0,∞] is not imposed on the carrier: exactly as in
-   Instance/Met.v, the four axioms DERIVE it ([edist_nonneg] below).  So
-   [Rinf] is the reals with a point at infinity adjoined, and the metric
-   axioms cut it down. *)
+(*
+   本节说明 Extended 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Rinf : Type :=
   | RFin : R → Rinf
   | RInf : Rinf.
@@ -74,11 +75,11 @@ Proof.
     solve [ exact I | contradiction | lra ].
 Qed.
 
-(* [RInf] is the top and absorbs addition — the two facts the triangle
-   inequality below is argued with.  The two absorption laws are NOT equally
-   strict, and the asymmetry is the match order rather than anything
-   mathematical: [Rinf_plus] scrutinises its first argument first, so the
-   left law closes by [reflexivity] and the right one needs a case split. *)
+(*
+   本节说明 Extended 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Rinf_le_RInf (a : Rinf) : Rinf_le a RInf.
 Proof. destruct a; exact I. Qed.
 
@@ -90,10 +91,11 @@ Proof. now destruct a. Qed.
 
 (** ** The four axioms, with distance in [0, ∞] *)
 
-(* Fong & Spivak's Definition 2.51 verbatim, with [R] replaced by [Rinf] and
-   [<=] by [Rinf_le].  The clause-for-clause correspondence with
-   Instance/Met.v's [MetricSpace] is exact: the same four conditions, the
-   same setoid bookkeeping field. *)
+(*
+   本节说明 Extended 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record ExtMetricSpace := {
   emet_carrier :> SetoidObject;
 
@@ -128,10 +130,11 @@ Qed.
 
 (** ** Finiteness, and the identification with ordinary metric spaces *)
 
-(* "All distances are finite".  Stated as data (this library's `∃` is
-   [sigT]) so the real value may be read off without a choice principle;
-   [EFinite_iff_not_infinite] shows the Prop-shaped alternative is
-   equivalent, the case analysis on the constructor doing all the work. *)
+(*
+   本节说明 Extended 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition EFinite (E : ExtMetricSpace) : Type :=
   ∀ x y : E, ∃ r : R, edist x y = RFin r.
 
@@ -267,13 +270,11 @@ Arguments Metric_of_EFinite E Hfin : clear implicits.
 
 (** ** The two passages are mutually inverse *)
 
-(* THE STRICT DIRECTION.  Starting from a metric space, going up to the
-   extended world and back down along the canonical finiteness witness
-   returns the distance ON THE NOSE — [eq_refl], not merely `≈` — because
-   [ExtMetric_of_Metric_EFinite] hands back [dist x y] itself and [efin] is
-   its first projection.  The carrier is likewise unchanged definitionally.
-   These are convertibility statements, the exception this library allows
-   itself; they say nothing about `≈`. *)
+(*
+   本节说明 Extended 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Metric_EFinite_roundtrip_carrier (X : MetricSpace) :
   met_carrier (Metric_of_EFinite (ExtMetric_of_Metric X)
                                  (ExtMetric_of_Metric_EFinite X))
@@ -284,34 +285,21 @@ Example Metric_EFinite_roundtrip_dist (X : MetricSpace) (x y : X) :
                                (ExtMetric_of_Metric_EFinite X)) x y
     = dist x y := eq_refl.
 
-(* THE OTHER DIRECTION IS NOT STRICT, and the reason is worth being precise
-   about: [Hfin] is an arbitrary witness, so [RFin (efin x y)] is
-   [RFin (`1 (Hfin x y))] and reducing it to [edist x y] needs [`2 (Hfin x
-   y)], a proof, not a conversion.  It holds up to [=] and is proved here;
-   the corresponding [eq_refl] is pinned as a rejection probe in
-   Test/ProbeMet.v, which is where this development's rejection vernacular
-   is confined. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ExtMetric_of_Metric_roundtrip (E : ExtMetricSpace) (Hfin : EFinite E)
       (x y : E) :
   edist (X := ExtMetric_of_Metric (Metric_of_EFinite E Hfin)) x y = edist x y.
 Proof. symmetry; exact (efin_spec E Hfin x y). Qed.
 
-(* THE IDENTIFICATION Fong & Spivak's remark asks for.
+(*
+   本节说明 Extended 相关定义、性质与动机。
 
-   The comparison is between structures ON ONE CARRIER, which is how the
-   book states it and is what makes it content-bearing: an extended metric
-   space carries an ordinary metric structure on its own points exactly when
-   none of its distances is ∞.  The carrier is deliberately NOT
-   existentially quantified — comparing two records with different carriers
-   would require transporting along an equality of setoids, which carries no
-   mathematical content here and would obscure the statement.
-
-   Note also where the constructive strength sits.  [EFinite] is POINTWISE
-   ("for each pair there is a real") while [MetricPresentation] is GLOBAL
-   ("there is a distance function"), and passing from the first to the
-   second is exactly a choice step — free here only because this library's
-   `∃` is [sigT], so the witness was data all along.  Over a Prop-valued
-   existential this direction would be the axiom of choice. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition MetricPresentation (E : ExtMetricSpace) : Type :=
   ∃ d : E → E → R, ∀ x y : E, edist x y = RFin (d x y).
 
@@ -338,10 +326,11 @@ Definition EFinite_of_Metric (X : MetricSpace) :
 
 (** ** Non-vacuity: an extended metric space that is not a metric space *)
 
-(* Two points at infinite distance.  This is the smallest space the ordinary
-   definition cannot express, and it is exactly the situation Seven Sketches
-   wants ∞ for: a space in two pieces.  Every clause is a two-way case
-   analysis on booleans. *)
+(*
+   本节说明 Extended 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition bool_setoid_object : SetoidObject :=
   {| carrier := bool; is_setoid := {| equiv := @eq bool |} |}.

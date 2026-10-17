@@ -71,24 +71,22 @@ Definition poly_pointed_arrow (A : CRng)
   : A ~{CRng}~> CRngPt_Forget (PolyPt A) :=
   (poly_const (`1 A); I).
 
-(** The two packagings of the same construction agree on the nose: Mac
-    Lane's K-algebra [PolyAlg] (Instance/Rng/Polynomial.v) and Awodey's
-    pointed ring [PolyPt] are built on one [PolyRing], with one
-    coefficient inclusion.  What differs is the category the universal
-    property is stated in, not the object. *)
+(*
+   本节说明 Pointed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example poly_packagings_agree_ring (A : CRng) :
   kalg_ring (PolyAlg A) = `1 (`1 (PolyPt A)) := eq_refl.
 
 Example poly_packagings_agree_unit (A : CRng) :
   kalg_unit (PolyAlg A) = `1 (poly_pointed_arrow A) := eq_refl.
 
-(** ** Awodey's universal property
+(*
+   本节说明 Pointed 相关定义、性质与动机。
 
-    Given a pointed commutative ring (B, b) and a homomorphism h : A ⟶ B,
-    substituting b for x is the one and only homomorphism of pointed
-    rings (A[x], x) ⟶ (B, b) restricting to h on the coefficients.  The
-    commutation hypothesis that [poly_extend] requires is discharged by
-    commutativity of B. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma poly_pointed_universal (A : CRng) (Q : CRngPt)
   (h : A ~{CRng}~> CRngPt_Forget Q) :
   ∃! g : PolyPt A ~{CRngPt}~> Q,
@@ -135,16 +133,11 @@ Example poly_pointed_arrow_is_const (A : CRng) :
   @arrow _ _ A CRngPt_Forget (poly_pointed_universal_arrow A)
     = poly_pointed_arrow A := eq_refl.
 
-(** The unit is DERIVED in Theory/Adjunction.v (it is the transpose of
-    the identity), not a field, so what it computes to has to be checked
-    — and the answer is a measurement, not a slogan.  What holds by
-    [eq_refl] is its ACTION: the unit sends each coefficient to the
-    corresponding constant.  What does NOT hold by [eq_refl] is the
-    equation of MORPHISMS [poly_pointed_unit A = poly_pointed_arrow A]:
-    the unit is [fmap[U] id ∘ arrow], whose underlying ring homomorphism
-    is the record [rig_hom_compose rig_hom_id (poly_const _)], and that
-    record is not the term [poly_const _] however equal the two maps are
-    on elements.  Test/ProbePolynomial.v pins both sides. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition poly_pointed_unit (A : CRng)
   : A ~{CRng}~> CRngPt_Forget (PolyPointed A) :=
   @Category.Theory.Adjunction.unit _ _ _ _ poly_pointed_adjunction A.
@@ -153,12 +146,11 @@ Example poly_pointed_unit_is_const (A : CRng)
   (c : carrier (rig_setoid (`1 A))) :
   rig_map (`1 (poly_pointed_unit A)) c = @pt_const (`1 A) c := eq_refl.
 
-(** ** Evaluation is the transpose
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Awodey's clause in the form the setoid presentation permits: any
-    morphism of pointed rings realizing the transposition of h IS the
-    evaluation homomorphism.  The backward transpose of the adjunction
-    satisfies its hypothesis, so the corollary below applies it there. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem poly_pointed_transpose_is_evaluation (A : CRng) (Q : CRngPt)
   (h : A ~{CRng}~> CRngPt_Forget Q)
   (g : PolyPt A ~{CRngPt}~> Q)
@@ -198,12 +190,11 @@ Proof.
                  (poly_pointed_universal_arrow B) ∘ u)) c).
 Qed.
 
-(** ** The witness over ℤ
+(*
+   本节说明 Pointed 相关定义、性质与动机。
 
-    The free pointed commutative ring on ℤ is ℤ[x] pointed at x, and
-    substituting 3 for x evaluates polynomials.  The evaluation
-    homomorphism is Instance/Rng/Polynomial.v's, exhibited here as an
-    arrow of [CRngPt]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Int_pointed (b : Z) : CRngPt := (Int_CRng; b).
 

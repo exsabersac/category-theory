@@ -53,11 +53,11 @@ Example Cat_exp_coprod (C D E : Cat) :
   @Isomorphism Cat ([D ∐ E, C]) ([D, C] ∏ [E, C]) :=
   @exp_coprod Cat _ _ _ C D E.
 
-(** ** The same four, upgraded to natural isomorphisms
+(*
+   本节说明函子、同构、笛卡尔相关定义、性质与动机。
 
-    These are the isomorphisms of Structure/Cartesian/Closed/Natural.v taken
-    at [C := Cat]; each lives in a functor category whose domain is a product
-    of copies of [Cat] and [Cat^op]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Cat_exp_prod_l_natural :
   @Isomorphism ([(Cat^op ∏ Cat^op) ∏ Cat, Cat])

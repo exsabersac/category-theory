@@ -18,55 +18,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* WHAT IS DELIVERED
+(*
+   本节说明 Interconnect 相关定义、性质与动机。
 
-   * The circuit: [ic_port] (six), [ic_wire] (three), [ic_terminal] (three), each
-     as a discrete setoid, with [ic_wire_src] and [ic_wire_dst] the two ends.
-
-   * [Interconnect], the coequalizer of that pair, taken from
-     [Sets_HasCoequalizers] rather than rebuilt
-     ([interconnect_is_chosen], by [eq_refl]).
-
-   * The three groups, each proved to be a group
-     ([port_P0_P1_merged], [port_P0_P2_merged], [port_P4_P5_merged]) and
-     proved to be separate from the others ([port_P0_P3_apart],
-     [port_P0_P4_apart], [port_P3_P4_apart]).
-
-   * [interconnect_iso], the coequalizer identified with the
-     three-element terminal setoid, with [ic_terminal_distinct] and
-     [ic_terminal_cases] pinning that set at exactly three elements.
-
-   * Evaluated readings throughout, all [eq_refl] -- including the
-     defining triangle [interconnect_triangle], which holds pointwise by
-     [reflexivity] because the coequalizing map is the identity
-     function.
-
-   WHAT IS NOT DELIVERED
-
-   * NO [HasCoequalizers FinSet], and no claim about FinSet at all.
-
-   * NO GENERAL CIRCUIT VOCABULARY.  There is no type of circuits, no
-     composition of interconnections, and no connection to
-     Construction/Cospan/ or to the hypergraph-category development,
-     which is where Seven Sketches takes the example next.
-
-   * NO DECISION PROCEDURE for connectedness of the generated relation.
-     Each negative below is a separate mapping-out argument; nothing
-     produces them uniformly.
-
-   A NOTE ON NAMES.  The circuit vocabulary carries an [Ic]/[ic_] prefix
-   ([ic_port], [IcP0], [ic_wire], [IcW0], [ic_terminal], [IcT0], [ic_label],
-   [ic_rep]) because the Makefile's [print-assumptions] target requires
-   every audited module into ONE scope, where the later [Require] wins a
-   duplicated short name and the audit then silently reports on the wrong
-   constant.  Unprefixed, [wire] would have collided with
-   Construction/ColouredPROP.v and Construction/PROP/Term.v, and
-   [P1] with Structure/Monoidal/Drinfeld.v.
-
-   STATUS: axiom-free.  61 named constants (the three inductives and
-   their twelve constructors included), no [Program] obligations, all reporting
-   "Closed under the global context"; the Makefile's
-   [print-assumptions] target audits eight of them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The circuit *)
 
@@ -81,9 +37,11 @@ Definition IcWireSet : SetoidObject :=
 Definition IcTerminalSet : SetoidObject :=
   {| carrier := ic_terminal ; is_setoid := eq_Setoid ic_terminal |}.
 
-(* Three wires: IcP0-IcP1, IcP1-IcP2, IcP4-IcP5.  IcP3 is left unconnected, which is
-   what makes the third terminal a singleton and keeps the example from
-   degenerating into "everything is joined". *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ic_wire_src_fun (w : ic_wire) : ic_port :=
   match w with IcW0 => IcP0 | IcW1 => IcP1 | IcW2 => IcP4 end.
 
@@ -158,10 +116,11 @@ Proof. repeat split; intro E; discriminate E. Qed.
 
 (** ** The universal property, run *)
 
-(* The mediator [coeq_desc] produces out of the DELIVERED
-   [IsCoequalizer], evaluated at closed ports.  This is the point of the
-   file: the arrow whose existence the universal property asserts is a
-   function that computes. *)
+(*
+   本节说明 Interconnect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition interconnect_med : Interconnect ~{Sets}~> IcTerminalSet :=
   unique_obj
     (coeq_desc (sets_coeq_IsCoequalizer ic_wire_src ic_wire_dst) ic_label ic_label_coforks).
@@ -175,9 +134,11 @@ Proof. reflexivity. Qed.
 Example interconnect_med_at_P5 : interconnect_med IcP5 = IcT2.
 Proof. reflexivity. Qed.
 
-(* ... and it IS the labelling, by conversion -- the universal property
-   rebuilt nothing.  The defining triangle then holds pointwise by
-   [reflexivity], the coequalizing map being the identity function. *)
+(*
+   本节说明 Interconnect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example interconnect_med_is_label (p : ic_port) : interconnect_med p = ic_label p.
 Proof. reflexivity. Qed.
 
@@ -204,9 +165,11 @@ Qed.
 
 (** ** What it does not join *)
 
-(* Every negative goes out through [interconnect_med]: from a supposed
-   identification in the coequalizer, respectfulness of the mediator
-   gives an equation of terminals, and terminals are constructors. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma interconnect_apart (p q : ic_port) (H : ic_label_fun p = ic_label_fun q → False) :
   @equiv _ Interconnect p q → False.
 Proof.
@@ -229,10 +192,11 @@ Proof. apply interconnect_apart; intro E; discriminate E. Qed.
 Definition ic_rep_fun (t : ic_terminal) : ic_port :=
   match t with IcT0 => IcP0 | IcT1 => IcP3 | IcT2 => IcP4 end.
 
-(* The source is discrete, so respectfulness is [Proper (eq ==> _)] and
-   instance resolution discharges it against reflexivity of the
-   coequalizer's relation; both carriers are concrete, so nothing
-   polymorphic is at stake in leaving it to resolution. *)
+(*
+   本节说明 Interconnect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ic_rep : IcTerminalSet ~{Sets}~> Interconnect.
 Proof.
   unshelve refine
@@ -258,9 +222,11 @@ Proof.
   - exact port_P4_P5_merged.
 Qed.
 
-(* Seven Sketches' conclusion, at this circuit: the coequalizer IS the
-   set of terminals.  With [ic_terminal_cases] and [ic_terminal_distinct] this
-   says the interconnection has exactly three terminals. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition interconnect_iso : @Isomorphism Sets Interconnect IcTerminalSet.
 Proof.
   unshelve refine {| to := interconnect_med ; from := ic_rep |}.

@@ -24,10 +24,11 @@ Generalizable All Variables.
 
 (** ** Thinness, and the vacuity it induces *)
 
-(** A category is THIN when any two parallel morphisms agree.  Before this file
-    thinness was available only as the trivial hom-setoid buried inside
-    [Proset] and an ad-hoc [two_thin] for the walking arrow, so it could not be
-    used as a hypothesis. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Thin (C : Category) : Type :=
   ∀ (x y : C) (f g : x ~> y), f ≈ g.
 
@@ -36,11 +37,11 @@ Lemma proset_thin {A : Type} {R : relation A} (P : PreOrder R)
   : Thin (Proset P).
 Proof. intros x y f g; exact I. Qed.
 
-(** THE VACUITY LEMMA the issue's hidden checkboxes ask for, stated once so
-    that no consumer has to inline [exact I].  In a thin category ANY equation
-    between parallel morphisms holds -- which covers, uniformly, all four
-    naturality fields of [Adjunction] and both triangle identities of
-    [Adjunction_Transform]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma thin_side_condition {C : Category} (H : Thin C) {x y : C} (f g : x ~> y) :
   f ≈ g.
 Proof. apply H. Qed.
@@ -49,22 +50,19 @@ Corollary proset_side_conditions_vacuous {A : Type} {R : relation A}
   (P : PreOrder R) {x y : Proset P} (f g : x ~{Proset P}~> y) : f ≈ g.
 Proof. exact I. Qed.
 
-(** What does NOT collapse: the hom-setoid isomorphism still carries the two
-    maps and the biconditional between them, so adjointness remains a real
-    constraint even though every coherence field is free.  That is proved, not
-    asserted, by [succ_not_self_adjoint] at the end of this file. *)
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Galois connections *)
 
-(** Mac Lane's definition.  [gal_mono_l]/[gal_mono_r] are monotonicity of the
-    two maps; [gal_to]/[gal_from] are the two halves of the displayed
-    biconditional.
+(*
+   本节说明 Galois 相关定义、性质与动机。
 
-    Declared OUTSIDE the section below on purpose: none of its fields mentions
-    the [PreOrder] witnesses, only the relations, so a section would not
-    generalize over them and [GaloisConnection PA PB] would not typecheck.  A
-    Galois connection is data about the ORDERS; reflexivity and transitivity are
-    needed only to build the categories. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record GaloisConnection {A B : Type} (RA : relation A) (RB : relation B) := {
   gal_l : A → B;
   gal_r : B → A;
@@ -102,12 +100,11 @@ Program Definition GaloisFunctor_r : Proset PB ⟶ Proset PA := {|
   fmap := fun b b' h => gal_mono_r G h
 |}.
 
-(** The hom-set isomorphism IS the biconditional.  Its two round-trip
-    obligations are equations between parallel morphisms in a thin category,
-    hence vacuous; [Program]'s default obligation tactic closes them with [I]
-    directly.  [proset_side_conditions_vacuous] states that fact reusably --
-    it is consumed by [galois_of_unit_counit] below, which is where the
-    vacuity does load-bearing work. *)
+(*
+   本节说明hom、同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition galois_adj_iso (a : Proset PA) (b : Proset PB) :
   @Isomorphism Sets
     {| carrier := @hom (Proset PB) (gal_l G a) b
@@ -159,10 +156,11 @@ Lemma poset_is_proset {A : Type} {R : relation A}
   @Poset A R P AS = @Proset A R P.
 Proof. reflexivity. Qed.
 
-(** Consequently a "mutually related implies equal" corollary CANNOT be read
-    off the category: antisymmetry has to be supplied separately.  With it, an
-    isomorphism in the order category is exactly mutual comparability, and
-    antisymmetry converts that to equality. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mutual_le_to_eq {A : Type} {R : relation A} (P : PreOrder R)
   (AS : @Antisymmetric A eq eq_equiv R) {x y : Proset P}
   (i : x ≅[Proset P] y) : x = y.
@@ -170,32 +168,22 @@ Proof. exact (AS x y (to i) (from i)). Qed.
 
 (** ** Round trip, and a witness that the notion is not empty *)
 
-(** Going to an adjunction and back recovers the two maps.  Be honest about
-    what this is: a DEFINITIONAL sanity check, proved by [eq_refl] on both
-    components, because [GaloisAdjunction]'s type already names the functors
-    and [GaloisOfAdjunction] merely projects [fobj] back out.  There is nothing
-    it could refute, and the whole RECORD round-trips by [eq_refl] just as
-    cheaply.  It is worth
-    stating so the reader can see the maps are not silently replaced, but it is
-    not evidence that the bridge is faithful -- for that see
-    [succ_not_self_adjoint] below, which shows adjointness is a real
-    constraint. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma galois_round_trip {A B : Type} {RA : relation A} {RB : relation B}
   (PA : PreOrder RA) (PB : PreOrder RB) (G : GaloisConnection RA RB) :
   gal_l (GaloisOfAdjunction PA PB _ _ (GaloisAdjunction PA PB G)) = gal_l G
   ∧ gal_r (GaloisOfAdjunction PA PB _ _ (GaloisAdjunction PA PB G)) = gal_r G.
 Proof. split; reflexivity. Qed.
 
-(** A CONCRETE Galois connection, so that nothing above is vacuously about an
-    empty notion: on the naturals, truncated SUBTRACTION of [k] is left adjoint
-    to ADDITION of [k], via [n - k ≤ m  ↔  n ≤ m + k].  Both halves need real
-    arithmetic; neither is a coherence triviality.
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
 
-    The orientation matters and is easy to get backwards.  Adding [k] on the
-    left does NOT work: [gal_from] would read [a ≤ b - k → a + k ≤ b], refuted
-    by [k = 5], [b = 0], [a = 0], where truncation makes the hypothesis hold
-    while the conclusion does not.  [lia] rejected that version, which is how
-    the error was caught. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition nat_shift_galois (k : nat)
   : GaloisConnection Nat.le Nat.le := {|
   gal_l := fun n => Nat.sub n k;
@@ -221,9 +209,11 @@ Example nat_shift_differ_r :
 
 (** ** The unit/counit reading, and the bare-implication form *)
 
-(** Awodey §9.4's order reading: the unit says [a] is below the composite at
-    [a], the counit that the composite at [b] is below [b].  In an order these
-    are the two familiar closure inequalities. *)
+(*
+   本节说明 Galois 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UnitCounit.
 
@@ -239,12 +229,11 @@ Definition gal_counit (PA : PreOrder RA) (b : B) : RB (gal_l G (gal_r G b)) b :=
 
 End UnitCounit.
 
-(** Conversely -- Seven Sketches Proposition 1.107 / display 1.108, and Riehl
-    §4.2's "bare pair suffices".  Given only monotone maps and the two closure
-    inequalities, the full biconditional follows, hence a full adjunction: no
-    naturality and no triangle identity has to be supplied, because in a thin
-    target they are equations between parallel morphisms.  THIS is the lemma
-    the vacuity result exists to support. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition galois_of_unit_counit {A B : Type}
   {RA : relation A} {RB : relation B}
   (PA : PreOrder RA) (PB : PreOrder RB)
@@ -287,11 +276,11 @@ Qed.
 
 (** ** What does NOT collapse: adjointness is a real constraint *)
 
-(** The thesis of this file is that the coherence is vacuous but the
-    biconditional is not.  Asserting that in prose would be worth little, so
-    here it is as a theorem: the successor map is not left adjoint to itself,
-    even though both are monotone and every coherence condition would be free.
-    So [GaloisAdjunction] is not inhabited for an arbitrary monotone pair. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition NatSucc : Proset Nat.le_preorder ⟶ Proset Nat.le_preorder := {|
   fobj := S;
   fmap := fun x y (h : Nat.le x y) => _

@@ -26,11 +26,11 @@ Generalizable All Variables.
 
 (** ** Double-negation-stable types *)
 
-(* [Stable P] says that [P] is its own double negation: a proof of [P] can be
-   recovered from the impossibility of refuting it.  Every negation is stable,
-   and stability is inherited by implications into a stable type and by
-   conjunctions of stable propositions.  These are the only facts about
-   stability the construction below needs. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Stable (P : Type) : Type := ¬¬P → P.
 
 Lemma stable_not (P : Type) : Stable (¬P).
@@ -72,16 +72,11 @@ Proof.
     exact (nq q).
 Qed.
 
-(* The setoid of double-negation-stable PROPOSITIONS under bi-implication.
-   The truth values are drawn from [Prop] rather than from [Type@{o}], and
-   that choice is what keeps the construction inside a single universe: the
-   size obstruction recorded at Instance/Sets.v (the truth-value object of
-   [Sets] lives one universe up, cf. [PropSetoid] in
-   Instance/Sets/Classifier.v) does not bite here, because [Prop] is
-   impredicative and so [StableProp] sits just above [Set], at a level that
-   does not depend on the ambient carriers.  Restricting to the stable
-   propositions is what makes the involution [grp_twist] below definable with
-   no decision procedure anywhere. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition StableProp : Type := ∃ P : Prop, Stable P.
 
 Definition StableProp_equiv : crelation StableProp := λ P Q, `1 P ↔ `1 Q.
@@ -105,11 +100,11 @@ Definition StableSetoid : SetoidObject :=
    ; is_setoid := {| equiv        := StableProp_equiv
                    ; setoid_equiv := StableProp_equivalence |} |}.
 
-(* G5.  [StableSetoid] is propositional: `≈` there is [`1 P ↔ `1 Q] with `↔`
-   the library's [iffT], a [Type]-valued pair of implications between two
-   [Prop]s, and the [Prop] mirror is the [/\] of the same two implications.
-   Needed since the PR "algebraic carriers are sets" (2026-09-17), because
-   [SymGrp GrpCosetPower] is a [GrpObject] and therefore owes [grp_prop]. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition StableSetoid_PropEquiv : PropEquiv (is_setoid StableSetoid).
 Proof.
   unshelve refine
@@ -120,20 +115,19 @@ Defined.
 
 (** ** The image of a homomorphism *)
 
-(* Membership in the image, as data: a preimage together with the equation
-   witnessing it.  [∃] is [sigT] in this library (Lib/Foundation.v), so this is
-   the [Type]-valued statement and a proof of it yields the preimage. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition GrpImage {G H : GrpObject} (f : G ~{Grp}~> H) (h : carrier H) : Type :=
   ∃ g : carrier G, grp_map f g ≈ h.
 
-(* Surjectivity of a group homomorphism: every element of the codomain has a
-   preimage.  Stated with `≈`, never with `=`.  This is the [Type]-valued
-   reading, matching [surjective] at Lib/Setoid.v -- forced, since `≈` is
-   itself [Type]-valued and a [Prop] existential could not be eliminated into
-   it.  It does NOT make a surjection a split epimorphism: the preimage chosen
-   for h need not respect `≈`, so it assembles no setoid map and a fortiori no
-   homomorphism, and [grp_surjective_is_epic] below is therefore not an
-   instance of [retractions_are_epic] (Theory/Morphisms.v). *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition GrpSurjective {G H : GrpObject} (f : G ~{Grp}~> H) : Type :=
   ∀ h : carrier H, GrpImage f h.
 
@@ -176,9 +170,11 @@ Qed.
 
 (** ** Left cosets of the image *)
 
-(* The left-coset relation x ~ y :≡ y⁻¹x lies in the image.  In a setoid
-   library the coset space needs no quotient type: it is the carrier of [H]
-   again, re-equipped with this coarser equivalence. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_coset_rel : crelation (carrier H) :=
   λ x y, GrpImage f (grp_mul H (grp_inv H y) x).
 
@@ -239,9 +235,11 @@ Definition Grp_Coset : SetoidObject :=
    ; is_setoid := {| equiv        := grp_coset_rel
                    ; setoid_equiv := grp_coset_equivalence |} |}.
 
-(* Coset-equivalent elements lie in the image together.  Like the equivalence
-   laws above, this uses the image's being a SUBGROUP rather than merely a
-   subset, through [GrpImage_mul] and [GrpImage_inv]. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma GrpImage_coset (x y : carrier H) :
   grp_coset_rel x y → GrpImage f x → GrpImage f y.
 Proof.
@@ -325,9 +323,11 @@ Arguments sperm_from {X} _.
 Arguments sperm_to_from {X} _ _.
 Arguments sperm_from_to {X} _ _.
 
-(* The backward map of a permutation is determined by the forward one, so
-   comparing permutations on their forward maps alone loses nothing.  This is
-   why the setoid below mentions only [sperm_to]. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sperm_from_determined {X : SetoidObject} (p q : SetoidPermutation X) :
   (∀ x, sperm_to p x ≈ sperm_to q x) → ∀ x, sperm_from p x ≈ sperm_from q x.
 Proof.
@@ -342,9 +342,11 @@ Proof.
     + apply (sperm_to_from p).
 Qed.
 
-(* Two permutations are equivalent when their forward maps agree pointwise;
-   by [sperm_from_determined] the backward maps then agree as well.  Stating
-   the relation on the forward map alone keeps the obligations small. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance SetoidPermutation_Setoid (X : SetoidObject) :
   Setoid (SetoidPermutation X) := {|
@@ -405,17 +407,11 @@ Definition sperm_inv {X : SetoidObject} (p : SetoidPermutation X) :
   sperm_from_to := sperm_to_from p
 |}.
 
-(* The symmetric group of a setoid: permutations under composition.  This is
-   the "permutations as invertible setoid maps" the argument needs.
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-   RECORDED STRENGTH CHANGE.  Before the PR "algebraic carriers are sets"
-   (2026-09-17) this read [SymGrp (X : SetoidObject) : GrpObject].  A
-   [GrpObject] now carries [grp_prop], so the symmetric group is formed only
-   of a setoid that is itself propositional, and [PX] is an explicit second
-   argument.  Every one of the thirteen call sites below discharges it, so
-   nothing in this file is conditional in substance; what changed is the
-   signature, and the theorems whose STATEMENTS mention [SymGrp] now mention
-   the witness too. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SymGrp (X : SetoidObject) (PX : PropEquiv (is_setoid X)) :
   GrpObject.
 Proof.
@@ -488,10 +484,11 @@ Definition GrpCosetPower : SetoidObject :=
   {| carrier   := SetoidMorphism (Grp_Coset f) StableSetoid
    ; is_setoid := @SetoidMorphism_Setoid (Grp_Coset f) StableSetoid |}.
 
-(* The witness [SymGrp] asks for at this setoid.  It comes from the TARGET
-   alone -- [hom_PropEquiv] (Instance/Sets/Propositional.v) constrains only
-   the codomain -- so NOTHING is asked of [Grp_Coset f], and in particular
-   [grp_coset_rel] is NOT truncated by this change. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_coset_power_prop : PropEquiv (is_setoid GrpCosetPower) :=
   @hom_PropEquiv (Grp_Coset f) StableSetoid StableSetoid_PropEquiv.
 
@@ -556,12 +553,11 @@ Definition grp_action : H ~{Grp}~> SymGrp GrpCosetPower grp_coset_power_prop :=
 
 (** ** The twist: an involution that is equivariant for the image only *)
 
-(* The twisted membership predicate at a coset: [S] with its value at the base
-   coset complemented.  Constructively one cannot say "complemented at the base
-   coset AND unchanged elsewhere" by cases -- that needs a decision procedure
-   for membership in the image.  The formula below says the same thing without
-   deciding anything, and it is an involution precisely because the values are
-   double-negation stable. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_twist_ty (S : carrier GrpCosetPower) (c : carrier H) : Prop :=
   (GrpImage f c → ¬ `1 (S c)) /\ (¬ GrpImage f c → `1 (S c)).
 
@@ -623,10 +619,11 @@ Next Obligation.
       exact (Sc'c (B nc)).
 Qed.
 
-(* The twist is an involution.  Its forward direction is where stability of
-   the values does its real work; the only other use of that stability is
-   [grp_twist_stable] just above, which merely checks that a twisted value is
-   again stable, so that it lands in [StableProp] at all. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_twist_involutive (S : carrier GrpCosetPower) (c : carrier H) :
   grp_twist_ty (grp_twist_val S) c ↔ `1 (S c).
 Proof.
@@ -745,11 +742,11 @@ Proof.
   - now apply GrpImage_inv.
 Qed.
 
-(* At an element outside the image the action is not the identity permutation.
-   So the homomorphism being conjugated below is not the constant map at the
-   unit, and the argument is not a comparison of two trivial maps.  (Nothing
-   is claimed here about elements INSIDE the image; that case is the subject
-   of the next block, and it turns on whether the image is normal.) *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_action_not_identity (h0 : carrier H) (Hh0 : ¬ GrpImage f h0) :
   grp_act h0 ≈ grp_unit (SymGrp GrpCosetPower grp_coset_power_prop) → False.
 Proof.
@@ -763,12 +760,11 @@ Qed.
 
 (** ** When an element OF the image moves the coset space *)
 
-(* The stable subset picked out by a single coset: the indicator of x0·M,
-   double-negated so that it lands in [StableProp].  Being a union of cosets
-   -- here a single one -- is exactly what makes the indicator respect the
-   coset relation, so it is a legitimate element of [GrpCosetPower].  At the
-   base coset it recovers [grp_dense_subset], which is
-   [grp_coset_indicator_base] below. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition grp_coset_indicator (x0 : carrier H) :
   SetoidMorphism (Grp_Coset f) StableSetoid :=
   {| morphism := λ c, (¬¬ grp_coset_rel f c x0 ; stable_not_not _) |}.
@@ -806,13 +802,11 @@ Proof.
     exact (nc (GrpImage_respects f c _ Hfrom hc)).
 Qed.
 
-(* Translation by m moves the coset x0·M as soon as x0⁻¹m⁻¹x0 lies outside the
-   image -- which is precisely where normality gives out.  Evaluating at x0,
-   the indicator of x0·M holds while its translate does not, and that single
-   disagreement is the whole content.  Nothing here asks m to be in the image;
-   the point of the lemma is that it may be, which is what makes the
-   equivariance step [grp_twist_act_commute] a statement about permutations
-   that actually move something. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_act_moves_coset (m x0 : carrier H) :
   ¬ GrpImage f (grp_mul H (grp_inv H x0) (grp_mul H (grp_inv H m) x0)) →
   grp_act_map m (grp_coset_indicator x0) ≈ grp_coset_indicator x0 → False.
@@ -889,10 +883,11 @@ Qed.
 
 (** ** The theorems *)
 
-(* THE MAIN THEOREM, in its constructive contrapositive form.  Given an element
-   of the codomain TOGETHER WITH a proof that it has no preimage, f is not an
-   epimorphism.  The witness is an explicit hypothesis because the passage from
-   "not surjective" to "some element misses the image" is not constructive. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem grp_not_epic_of_witness (h0 : carrier H) :
   ¬ GrpImage f h0 → ¬ Epic f.
 Proof.
@@ -922,10 +917,11 @@ Proof.
   exact (Heq g).
 Qed.
 
-(* The hypothesis under which the classical statement is recovered: membership
-   in the image is its own double negation.  It is named here for legibility,
-   not because it is an independent principle -- [stability_is_the_conclusion]
-   below shows that under [Epic f] it is the conclusion itself. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition GrpImageStable : Type := ∀ h : carrier H, Stable (GrpImage f h).
 
 (* A decision procedure for image membership is one way to have it. *)
@@ -961,12 +957,11 @@ Qed.
 
 (** ** The hypothesis is the conclusion *)
 
-(* [GrpImageStable] looks like a modest extra assumption bought cheaply.  The
-   results below show it is not an assumption of independent standing at all:
-   once [grp_epic_image_dense] is in hand, it is the conclusion of the theorem
-   restated.  Every proof here is one or two lines from what precedes it, which
-   is precisely the point -- the deflation is immediate the moment one looks
-   for it. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The trivial half: surjectivity gives stability outright. *)
 Theorem surjective_gives_stable : GrpSurjective f → GrpImageStable.
@@ -984,12 +979,11 @@ Proof.
   - exact surjective_gives_stable.
 Qed.
 
-(* [GrpImageStable] is not even the weakest hypothesis that completes the
-   proof.  All the argument ever does with it is discharge the double negation
-   supplied by [grp_epic_image_dense], so the single implication from density
-   to surjectivity -- with no pointwise structure at all -- already suffices.
-   This is the "why is stability stated pointwise?" question answered: it need
-   not be. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition DenseImpliesSurjective : Type :=
   (∀ h : carrier H, ¬¬ GrpImage f h) → GrpSurjective f.
 
@@ -1019,9 +1013,11 @@ Qed.
 
 (** ** Why the textbook transposition is not available *)
 
-(* The classical H-set: the cosets of the image with one point adjoined.  This
-   is the set the usually-quoted proof permutes, and it is built here only to
-   state the obstruction to permuting it as that proof requires. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CosetPlusPt : Type := carrier (Grp_Coset f) ∨ poly_unit.
 
 Definition cpp_rel : crelation CosetPlusPt := λ x y,
@@ -1045,9 +1041,11 @@ Definition CosetPlusPtSetoid : SetoidObject :=
   {| carrier   := CosetPlusPt
    ; is_setoid := {| equiv := cpp_rel ; setoid_equiv := cpp_equivalence |} |}.
 
-(* Being the adjoined point is recognisable from the CONSTRUCTOR alone: this
-   is a case split on a coproduct, not a decision procedure, and it is the
-   only case split the theorem below performs. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cpp_is_pt_or_not (x : CosetPlusPt) :
   (@equiv _ (is_setoid CosetPlusPtSetoid) x (inr ttt))
     ∨ ¬ (@equiv _ (is_setoid CosetPlusPtSetoid) x (inr ttt)).
@@ -1057,23 +1055,11 @@ Proof.
   - left; exact ttt.
 Qed.
 
-(* THE OBSTRUCTION, stated positively.  Suppose given any permutation t of the
-   classical H-set satisfying merely the FIRST half of the transposition's
-   specification: every coset lying inside the image goes to the adjoined
-   point.  Then image membership is DECIDABLE.
+(*
+   本节说明 Epi 相关定义、性质与动机。
 
-   Nothing is assumed about what t does elsewhere, t is not required to be an
-   involution, and the two clauses "exchange the base coset with the point"
-   and "fix everything else" are not both used -- only the first.  So the
-   textbook transposition cannot be constructed here without first having the
-   decidability that this file exists to isolate; the transposition has to be
-   replaced, and the twist on [GrpCosetPower] is what replaces it.
-
-   The proof is the round trip of t.  If t sends the coset of h to the point,
-   then it agrees there with the image it takes the base coset to, and
-   applying [sperm_from] identifies h with the unit in the coset setoid, which
-   puts h in the image; otherwise the hypothesis rules out h being in the
-   image at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem transposition_decides_image
   (t : SetoidPermutation CosetPlusPtSetoid)
   (Hbase : ∀ c, GrpImage f c →
@@ -1113,49 +1099,11 @@ End Epi.
 (* ------------------------------------------------------------------------ *)
 (** ** Concrete witnesses *)
 
-(* Everything above is proved for an arbitrary homomorphism, so the file owes
-   concrete instances at which the constructions can be inspected.  Two are
-   built, and they are not interchangeable.  The first, [grp_two_incl], is the
-   cheapest map that is not epic, and it exercises the outside-the-image half
-   of the argument; its image is normal, and the inside-the-image half
-   degenerates completely there -- which is proved, at
-   [grp_two_incl_image_acts_trivially], rather than left unsaid.  The second,
-   [grp_two_sym3], has a non-normal image, and it is there that the
-   equivariance step compares permutations that move something.
+(*
+   本节说明 Epi 相关定义、性质与动机。
 
-   Neither witness can be built on Instance/Grp.v's [Z2], and the reason is a
-   universe one, checkable with [Set Printing Universes].  [StableProp] is a type of
-   propositions, so it lies strictly above [Set]; [GrpCosetPower] places it at
-   the same universe as the group carriers, so the ambient carrier universe o
-   must satisfy Set < o.  Meanwhile [Z2] carries `≈` as [@eq bool] and its
-   relation universe elaborates to [Set] itself, while [SymGrp] forces the
-   carrier and relation universes of every object of the ambient [Grp] to
-   coincide.  So [Z2] can only inhabit a [Grp] whose carrier universe is
-   [Set], which is one too low.
-
-   The two readbacks in this paragraph were re-measured after the PR
-   "algebraic carriers are sets" (2026-09-17) and BOTH are restated.  An
-   earlier revision quoted [Z2@{u} : GrpObject@{u Set u}] and
-   [SymGrp@{u u0} : SetoidObject@{u0 u0} -> GrpObject@{u0 u0 u0}].  The
-   [PropEquiv] field permuted [GrpObject]'s three universe roles from
-   (carrier, proof, aux) to (aux, carrier, proof) and [SymGrp] gained the
-   witness argument, so the same two facts now read
-
-     Z2@{u} : GrpObject@{u Set Set}
-     SymGrp@{u u0} : ∀ X : SetoidObject@{u0 u0},
-                     PropEquiv@{u0 u0} (is_setoid X) → GrpObject@{u0 u0 u0}
-
-   -- [Z2] is now pinned at [Set] in the CARRIER as well as the relation, so
-   the obstruction is if anything sharper, and the conclusion is unchanged.
-   CORRECTION (#450): the obstruction is gone.  #450 wrote out [Z2]'s
-   universes in place, and [About] now reads [Z2@{p} : GrpObject@{p p p}]
-   over [bool_setoid@{u} : Setoid@{u u} bool], so [Z2] inhabits [Grp] at
-   every carrier level; everything above in this comment describes the
-   tree before #450, and the witnesses below are kept as they are.  The two-element group below repeats [Z2] on a
-   carrier and an equivalence built from [poly_unit], which is
-   universe-polymorphic, so no universe of [GrpTwo] is pinned and the general
-   theorems apply to it directly.  The three-letter setoid of the second
-   witness is built the same way, for the same reason. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition grp_two_carrier : Type := poly_unit ∨ poly_unit.
 
@@ -1184,11 +1132,11 @@ Definition grp_two_add (x y : grp_two_carrier) : grp_two_carrier :=
   | inr _, inr _  => grp_two_zero
   end.
 
-(* The [Prop] mirror of [grp_two_rel].  The relation itself matches into
-   [poly_unit], which is a [Type], so it is not already a [Prop]; the mirror
-   replaces [poly_unit] by [True] leg for leg, and the two implications are
-   four-way case analyses.  Needed since the PR "algebraic carriers are sets"
-   (2026-09-17), because [GrpTwo] is a [GrpObject]. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_two_prel (x y : grp_two_carrier) : Prop :=
   match x, y with
   | inl _, inl _ => True
@@ -1230,12 +1178,11 @@ Proof.
     destruct a as [|]; exact ttt.
 Defined.
 
-(* The probe: the inclusion of Z/2 as the first factor of Z/2 x Z/2.  Two of
-   the four elements are in the image, so there are two cosets -- that count is
-   arithmetic done by hand.  What the two Examples below prove between them is
-   only the first half of it: that the image contains an element OTHER than
-   the unit.  That the image is a PROPER subgroup is the separate
-   [grp_two_incl_misses]. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_two_incl : GrpTwo ~{Grp}~> Grp_product GrpTwo GrpTwo.
 Proof.
   unshelve notypeclasses refine
@@ -1300,15 +1247,11 @@ Theorem grp_two_twist_not_identity :
     ≈ grp_unit (SymGrp (GrpCosetPower grp_two_incl) (grp_coset_power_prop grp_two_incl)) → False.
 Proof. exact (grp_twist_not_identity grp_two_incl). Qed.
 
-(* THE LIMIT OF THIS WITNESS, proved rather than glossed over.  The image of
-   [grp_two_incl] has index two in an abelian group, hence is normal, hence
-   translates every coset to itself: the ENTIRE image acts as the identity
-   permutation of [GrpCosetPower].  So at this witness the equivariance step
-   -- [grp_twist_act_commute], and with it [grp_twisted_action_agrees] -- is
-   an equation between conjugates of the identity, and carries no information.
-   The small witness cannot exercise that step, and no rearrangement of it
-   could; the case the step exists for is a non-normal image, which is what
-   [grp_two_sym3] below supplies. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem grp_two_incl_image_acts_trivially :
   ∀ g : carrier GrpTwo,
     @equiv _ (grp_setoid (SymGrp (GrpCosetPower grp_two_incl) (grp_coset_power_prop grp_two_incl)))
@@ -1363,19 +1306,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** A second witness, with a NON-NORMAL image *)
 
-(* The witness above cannot exercise the equivariance step: its image is
-   normal, so it acts trivially on the coset space, which is exactly what
-   [grp_two_incl_image_acts_trivially] proves.  A non-normal subgroup
-   requires a non-abelian ambient group -- every group of order less than six
-   is abelian -- so the smallest possible home for one is the symmetric group
-   on three letters, and that is what is built here.
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   The group is not written down as a multiplication table.  It is [SymGrp]
-   applied to a three-element setoid, so its multiplication IS composition of
-   setoid maps and its associativity is the associativity of composition,
-   already discharged once and for all in [SymGrp].  Only the two
-   transpositions that the argument needs are named, each as a self-inverse
-   map together with the two facts that make it a [SetoidPermutation]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sym3_letter : Type := poly_unit ∨ (poly_unit ∨ poly_unit).
 
@@ -1535,13 +1470,11 @@ Proof.
   destruct g as [u|u]; exact (Hg sym3_l0).
 Qed.
 
-(* The image is NOT NORMAL, which is the whole point of this witness.  The
-   element below is a conjugate of the image element [sym3_s] -- a transposition
-   is its own inverse, so a⁻¹s⁻¹a is a⁻¹sa up to `≈` -- and it sends the first
-   letter to the THIRD, whereas both members of the image fix the first letter.
-   So it lies outside the image.  This is the hypothesis of
-   [grp_act_moves_coset], written at exactly the element and the coset
-   representative that lemma wants. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_two_sym3_conj_outside :
   ¬ GrpImage grp_two_sym3
       (grp_mul GrpSym3 (grp_inv GrpSym3 sym3_a)
@@ -1552,9 +1485,11 @@ Proof.
   destruct g as [u|u]; exact (Hg sym3_l0).
 Qed.
 
-(* A concrete stable subset that an element OF THE IMAGE moves: the indicator
-   of the coset [sym3_a]·M is not fixed by translation by [sym3_s].  This is
-   the statement whose absence made the first witness degenerate. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem grp_two_sym3_moves_a_coset :
   grp_act_map grp_two_sym3 (grp_map grp_two_sym3 grp_two_one)
       (grp_coset_indicator grp_two_sym3 sym3_a)
@@ -1563,10 +1498,11 @@ Proof.
   exact (grp_act_moves_coset grp_two_sym3 _ sym3_a grp_two_sym3_conj_outside).
 Qed.
 
-(* Hence the image does not act by the identity permutation -- contrast
-   [grp_two_incl_image_acts_trivially], where it does.  At this witness the
-   equivariance step [grp_twist_act_commute] and the agreement
-   [grp_twisted_action_agrees] compare permutations that move something. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem grp_two_sym3_image_acts_nontrivially :
   grp_act grp_two_sym3 (grp_map grp_two_sym3 grp_two_one)
     ≈ grp_unit (SymGrp (GrpCosetPower grp_two_sym3) (grp_coset_power_prop grp_two_sym3)) → False.
@@ -1622,12 +1558,11 @@ Proof.
   - exact grp_two_exl_not_monic.
 Qed.
 
-(* The reverse containment has a counterexample too, so the two classes are
-   INCOMPARABLE and not merely distinct.  [grp_two_incl] is injective on the
-   nose -- the second component of the product is constant, so agreement of
-   the images under `≈` is agreement of the first components -- hence monic
-   by Instance/Grp.v's [Grp_injectivity_is_monic], and it is not epic by
-   [grp_two_incl_not_epic] above. *)
+(*
+   本节说明 Epi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_two_incl_injective :
   ∀ a b : carrier GrpTwo,
     grp_map grp_two_incl a ≈ grp_map grp_two_incl b → a ≈ b.

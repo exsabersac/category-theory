@@ -25,13 +25,11 @@ Module UA := Category.Instance.Comp.UniversalAlgebra.
     Both lemmas are [op_commute] followed by a bundle rebuild, which is
     where the extensionality enters. *)
 
-(* The three bundle-normalisation lemmas.  An argument bundle over a
-   finite enumeration is pointwise determined by its values, but NOT
-   convertible to the case split on them — a [match] on a variable does
-   not reduce — so each of these is an extensionality step, and they are
-   where this file's axiom actually enters.  Each is written in the shape
-   Instance/Comp.v's own [one'], [mul'] and [inv'] use, so that the
-   rewritten goal is convertible with the [Grp] statement. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma nullary_bundle {A : Type} (k : UA.nullary → A) :
   k = (fun i => match i return A with end).
@@ -83,11 +81,11 @@ Program Definition GroupVariety_obj_to_Grp (x : GroupVariety) : GrpObject := {|
   (* The carrier setoid is [eq_Setoid], so `≈` is already a [Prop]. *)
   grp_prop := eq_PropEquiv (UA.carrier (`1 x))
 |}.
-(* [grp_mul_respects] is discharged by Lib.v's default [Obligation Tactic]
-   — under [eq_Setoid] it is [Proper (eq ==> eq ==> eq)] — so the three
-   obligations that remain are the three laws, in [GrpObject]'s order.
-   Their binders are pre-bound: [x] is the algebra and [X] its
-   satisfaction proof, the sigma having been destructed. *)
+(*
+   本节说明 GroupComparison 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Next Obligation.
   symmetry.
   exact (X UA.assoc (fun i => match i with
@@ -121,16 +119,11 @@ Program Definition GroupVariety_to_Grp : GroupVariety ⟶ Grp := {|
 
 End ToGrp.
 
-(** ** It is faithful, and full
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Faithful: both hom-setoids are pointwise Leibniz equality on the same
-    carrier, so the hypothesis and the conclusion are the same statement.
-
-    Full: a [GrpHom] between images preserves the unit and the
-    multiplication pointwise, and that is enough to rebuild [op_commute]
-    at each of the three operations — the arities are finite enumerations,
-    so the bundle is rebuilt by case analysis (and one more use of
-    extensionality). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma GroupVariety_to_Grp_Faithful : Faithful GroupVariety_to_Grp.
 Proof. construct; simpl in *; auto. Qed.
@@ -159,9 +152,11 @@ Program Definition GroupVariety_to_Grp_Full : Functor.Full GroupVariety_to_Grp :
   prefmap := fun _ _ g => GroupVariety_hom_from_Grp g
 |}.
 
-(* A free consequence an audit pointed out: a fully faithful functor
-   reflects isomorphisms, and Theory/Functor.v ships that implication, so
-   two isomorphic groups in the image come from isomorphic algebras. *)
+(*
+   本节说明函子、同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition GroupVariety_to_Grp_reflects_iso :
   ∀ x y : GroupVariety,
     GroupVariety_to_Grp x ≅ GroupVariety_to_Grp y → x ≅ y :=

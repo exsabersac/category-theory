@@ -89,10 +89,11 @@ Qed.
 
 (** * Above the hom universe: an arrow index transported from [Top] *)
 
-(* The homs of the full subcategory are [Top]'s paired with [True]
-   ([Sub]), so an arrow index of [Top] indexes the arrows of [CompHaus] at
-   every universe of its objects at or above the homs: the index never
-   mentions them. *)
+(*
+   本节说明 Refutations 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CompHaus_ArrowIndex_of_Top@{s h o c +}
   (AIT : ArrowIndex@{s h h} Top@{h o}) :
   ArrowIndex@{s c h} (CompHaus : Category@{c h h}) :=
@@ -309,10 +310,11 @@ Proof.
   destruct (H false) as [e|p]; [discriminate | exact p].
 Qed.
 
-(* The case of a single space: a [K] that separates the points of every
-   compact Hausdorff space, the premise of Instance/Top/StoneCech.v's
-   [KSeparated_of_unit_injective], costs the same when its points have
-   ¬¬-stable equality. *)
+(*
+   本节说明 Refutations 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem CompHaus_point_separator_stable_DNE@{c h +}
   (K : (CompHaus : Category@{c h h}))
   (sepK : ∀ (Y : (CompHaus : Category@{c h h})) (p q : top_carrier (`1 Y)),

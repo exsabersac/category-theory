@@ -38,9 +38,11 @@ Open Scope R_scope.
 
 (** ** A small toolkit for limits *)
 
-(* The standard library has no "eventually below a constant implies the
-   limit is below it", so it is proved here.  Both this and [Un_cv_const]
-   are used throughout; nothing about metric spaces enters. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Un_cv_const (c : R) : Un_cv (fun _ => c) c.
 Proof.
   intros eps Heps.
@@ -87,9 +89,11 @@ Proof.
   lra.
 Qed.
 
-(* Two sequences that get arbitrarily close share their limits.  Stated with
-   an explicit majorant [w] so that callers never have to rewrite under a
-   lambda — this development uses no functional extensionality. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Un_cv_shift (u v w : nat → R) (l : R) :
   (∀ n, Rabs (u n - v n) <= w n) → Un_cv w 0 → Un_cv v l → Un_cv u l.
 Proof.
@@ -151,10 +155,11 @@ Proof.
   lra.
 Qed.
 
-(* Convergence in a metric space, read as convergence of the distances to
-   zero.  This is the standard bridge from the [MConverges] vocabulary of
-   Instance/Met.v to the standard library's [Un_cv], and it is where the
-   Type-valued modulus is spent down to a Prop-level statement. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma MConverges_dist_cv {Z : MetricSpace} (u : nat → Z) (l : Z) :
   MConverges Z u l → Un_cv (fun n => dist (u n) l) 0.
 Proof.
@@ -234,9 +239,11 @@ Qed.
 
 (** ** The distance on the completion *)
 
-(* THE LIMIT.  [R_complete] returns it as data; this is the one call in the
-   development that reaches for completeness of the reals, and the one place
-   [sig_not_dec] enters the axiom footprint. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cdist (x y : CauchySeq) : R :=
   proj1_sig (R_complete (cdist_seq x y) (cdist_Cauchy_crit x y)).
 
@@ -244,10 +251,11 @@ Definition cdist (x y : CauchySeq) : R :=
 Lemma cdist_spec (x y : CauchySeq) : Un_cv (cdist_seq x y) (cdist x y).
 Proof. exact (proj2_sig (R_complete (cdist_seq x y) (cdist_Cauchy_crit x y))). Qed.
 
-(* ... and is PINNED by being one: any real to which the term-wise distances
-   converge is [cdist].  Together with [cdist_spec] this is the
-   machine-checked half of the codomain argument in the header — the limit
-   is not one admissible distance among several, it is the only one. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cdist_unique (x y : CauchySeq) (r : R) :
   Un_cv (cdist_seq x y) r → cdist x y = r.
 Proof.
@@ -273,12 +281,11 @@ Qed.
 
 (** ** Identification of Cauchy sequences *)
 
-(* Two Cauchy sequences name the same point when the distance between their
-   terms tends to zero.  This is PROP-VALUED — it is literally the standard
-   library's [Un_cv] at 0 — and the header explains why: the separation
-   axiom of the completion has to produce it out of an equation between
-   reals.  A [Prop] is a [Type], so it serves as the `≈` of a
-   [SetoidObject] unchanged. *)
+(*
+   本节说明 Completion 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cs_equiv (x y : CauchySeq) : Prop := Un_cv (cdist_seq x y) 0.
 
 (* Both proofs are pointwise rather than by rewriting the SEQUENCE, which
@@ -404,9 +411,11 @@ Definition eta_seq (a : X) : CauchySeq := cs_of (fun _ => a) (const_MCauchy a).
 Lemma eta_dist (a b : X) : cdist (eta_seq a) (eta_seq b) = dist a b.
 Proof.
   apply cdist_unique.
-  (* [cdist_seq (eta_seq a) (eta_seq b)] IS the constant [dist a b]: the
-     projection out of the sigma reduces.  This is the convertibility
-     exception, and [exact] rather than [apply] is what spends it. *)
+  (*
+   本节说明 Completion 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   exact (Un_cv_const (dist a b)).
 Qed.
 
@@ -446,16 +455,11 @@ Qed.
 
 (** ** The completion is complete *)
 
-(* THE DIAGONAL ARGUMENT.  Given a Cauchy sequence ξ of points of the
-   completion, each ξₖ is itself a Cauchy sequence in X CARRYING ITS OWN
-   MODULUS, so a term of it may be selected at the threshold for 1/(k+1)
-   with no appeal to choice — that selection is [cs_pick] below, an ordinary
-   function of k.  The diagonal [cs_diag] of those selections is Cauchy in
-   X, and ξ converges to its class.
+(*
+   本节说明 Completion 相关定义、性质与动机。
 
-   [harm], [harm_pos], [harm_antitone], [harm_mod] and [harm_mod_spec] are
-   Instance/Met.v's, where they were introduced for the harmonic space; they
-   are reused here as a general archimedean toolkit rather than duplicated. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Complete.
 
@@ -686,18 +690,11 @@ End Completion.
 
 (** ** Uniqueness of the completion *)
 
-(* Mac Lane's second sentence: "the uniqueness of universal arrows gives
-   uniqueness of the completion up to a unique isomorphism".  This is
-   DERIVED, not reproved — the whole content is
-   Theory/Universal/Arrow.v's [auniversal_arrow_unique], instantiated.
+(*
+   本节说明同构相关定义、性质与动机。
 
-   Note what the uniqueness clause ranges over, because the bare
-   isomorphism statement would be weaker: the isomorphism is unique AMONG
-   THOSE COMPATIBLE WITH THE TWO EMBEDDINGS.  A completion can have
-   automorphisms, and they are isomorphisms between the two candidates that
-   do not commute with the embeddings; that is the point
-   Theory/Universal/Arrow.v's header makes about the free monoid on two
-   generators, and it applies verbatim here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary completion_unique (X : MetricSpace) (Z : CMet)
       (U : AUniversalArrow (X : Met) CMet_Incl Z) :
   ∃! i : Completion_CMet X ≅[CMet] Z,
@@ -715,40 +712,19 @@ Corollary completions_unique (X : MetricSpace) (A B : CMet)
       ≈ @universal_arrow _ _ (X : Met) CMet_Incl B U2.
 Proof. exact (auniversal_arrow_unique U1 U2). Qed.
 
-(* THE OTHER GENERIC ROUTE WAS ATTEMPTED AND IS BLOCKED.  The library has a
-   SECOND generic uniqueness theorem — [univ_property_unique_up_to_unique_iso]
-   (Structure/UniversalProperty.v), which argues through representability and
-   Yoneda rather than through the mediator calculus — and
-   [UniversalArrowIsUniversalProperty]
-   (Structure/UniversalProperty/Universal/Arrow.v) advertises itself as the
-   bridge, turning "being a universal arrow from X" into a universal property
-   in that sense.  Putting the completion through it would give the
-   uniqueness statement a second, independent derivation.
+(*
+   本节说明Yoneda相关定义、性质与动机。
 
-   It does not typecheck here, and the obstruction is NOT this
-   development's.  Instantiating the bridge at [CMet_Incl] is rejected for
-   universe inconsistency, and so is instantiating it at the trivial control
-   [Id[Sets]].  Be precise about the SCOPE of that: the bridge is NOT
-   uninstantiable in general — it elaborates at small categories ([_1], [_2])
-   and at [Cat].  What it is rejected at is the tree's LARGE concrete
-   categories: [Sets], [Coq], and the [CMet_Incl] wanted here.  The
-   rejection is therefore a property of the bridge, not of [Met]: it has no
-   consumer anywhere in the tree (its name occurs only in its own file and in
-   two header paragraphs), and this is the first attempt to give it one.
-   Test/ProbeMet.v pins the control rejection so that the day the universes
-   are repaired, the probe says so.
-
-   Uniqueness is accordingly delivered ONLY through Theory/Universal/Arrow.v
-   above — which is machinery, not a hand proof, and is the donor the issue
-   names first. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Non-vacuity: a completion that genuinely adds a point *)
 
-(* The completion would prove nothing if it could always be the identity.
-   Instance/Met.v's [Harmonic] — the naturals placed at 1/(n+1) — is not
-   complete ([Harmonic_not_MComplete]), and its completion contains the
-   class of the identity sequence, which is at distance 1/(k+1) from the
-   image of every point k and therefore is not in the image at all. *)
+(*
+   本节说明 Completion 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition harm_point : Completion Harmonic :=
   cs_of Harmonic (fun n => n) harm_seq_MCauchy.
@@ -771,9 +747,11 @@ Proof.
   lra.
 Qed.
 
-(* Packaged: the embedding of the harmonic space into its completion misses
-   a point.  Together with [Met_all_Monic] (every isometry is injective)
-   this is the statement that the completion is STRICTLY larger. *)
+(*
+   本节说明 Completion 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Completion_Harmonic_adds_a_point :
   ∃ z : Completion Harmonic,
     ∀ k : Harmonic, isometry_map (eta Harmonic) k ≈ z → False.

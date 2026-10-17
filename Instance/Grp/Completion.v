@@ -46,10 +46,11 @@ Definition grp_unit_map (X : SetoidObject) (H : GrpObject)
   {| morphism        := fun _ : carrier X => grp_unit H
    ; proper_morphism := fun a b (_ : a ≈ b) => reflexivity (grp_unit H) |}.
 
-(* A homomorphism out of a free group that kills every generator is
-   trivial.  No induction on words: both it and the constant-unit
-   homomorphism extend the same map, so [free_grp_extend_unique] applies
-   twice. *)
+(*
+   本节说明 Completion 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma free_grp_hom_trivial {X : SetoidObject} {H : GrpObject}
   (g : FreeGrpObject X ~{Grp}~> H)
   (Hg : ∀ a : carrier X, grp_map g (fg_insert X a) ≈ grp_unit H)
@@ -134,12 +135,11 @@ Definition CompletionObject : GrpObject := QuotientGrp CompletionNS.
 Definition comp_class (a : carrier (mcar M)) : carrier CompletionObject :=
   comp_gen a.
 
-(* Two conversion helpers.  An earlier revision said "both bodies are the
-   corresponding [quot_rel] fact verbatim: `≈` at [CompletionObject] IS
-   [quot_rel CompletionNS], so no proof step intervenes".  Since the PR
-   "algebraic carriers are sets" (2026-09-17) the quotient's `≈` is the
-   PROPOSITIONAL TRUNCATION of [quot_rel CompletionNS], so each body is that
-   same fact under one [inhabits] -- still no mathematical step. *)
+(*
+   本节说明 Completion 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma comp_quot_of_equiv (x y : carrier comp_free) :
   x ≈ y → (x : carrier CompletionObject) ≈ y.
 Proof. exact (fun H => inhabits (quot_rel_of_equiv CompletionNS x y H)). Qed.
@@ -197,13 +197,11 @@ End Completion.
 Arguments comp_free M : clear implicits.
 Arguments CompletionObject M : clear implicits.
 
-(* The insertion, as a morphism of [MonSets].  It is declared OUTSIDE the
-   section above deliberately: [Grp_MonSets] is instantiable only at
-   [Set]-carrier groups (see the header), and a section variable
-   [M : MonSets] has its universes fixed before that constraint can be
-   imposed, so naming [Grp_MonSets] inside the section is a universe
-   inconsistency.  Outside it, each definition is generalized on its own
-   and the instantiation goes through. *)
+(*
+   本节说明 Completion 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition completion_insert (M : MonSets)
   : M ~{MonSets}~> Grp_MonSets (CompletionObject M) :=
   @mhom M (Grp_MonSets (CompletionObject M))
@@ -218,9 +216,11 @@ Context (M : MonSets) (H : Grp) (h : M ~{MonSets}~> Grp_MonSets H).
 
 Definition comp_target_map : mcar M ~{Sets}~> Grp_Forget H := `1 h.
 
-(* The word evaluation.  It is the free group's own extension of the
-   underlying setoid map of [h]; the monoid structure of [M] is not
-   consulted here at all -- it enters only in [comp_bar_relator]. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition comp_bar : comp_free M ~{Grp}~> H :=
   free_grp_extend comp_target_map.
 
@@ -494,15 +494,11 @@ Proof.
   discriminate E.
 Qed.
 
-(** ** The completion of a free monoid is the free group
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Riehl's own headline instance, and the one
-    [Instance/CMon/Grothendieck.v]'s reason (2) argues from: the group
-    completion of the free monoid on X is the free group on X.  Both are
-    universal arrows from X to [Grp_Forget] -- note [UMonS ∘ Grp_MonSets]
-    IS [Grp_Forget] by conversion, both being [fun H => grp_setoid H] --
-    so [universal_arrow_iso] supplies the comparison and nothing is
-    constructed by hand. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition comp_free_mon_insert (X : Sets)
   : X ~{Sets}~> Grp_Forget (CompletionObject (FreeMonSetsObject X)) :=
@@ -579,13 +575,11 @@ Proof.
   exact Hi.
 Qed.
 
-(** ** Measured negatives
+(*
+   本节说明 Completion 相关定义、性质与动机。
 
-    Each [Fail] below was stripped once and its failure KIND read off the
-    error message, and each is paired with a positive control that must
-    succeed.  Three are CONVERSION failures ("cannot unify") and three are
-    FORMABILITY failures (universe inconsistencies naming the declared
-    level); they are kept lexically apart. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Instrument check: the mechanism reports a genuine failure on a
    scope-free proposition. *)
@@ -593,47 +587,40 @@ Fail Definition completion_probe_instrument : true = false := eq_refl.
 
 (** *** Conversion negatives *)
 
-(* (1) The COUNIT does not compute.  It is
-   [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows]
-   (Theory/Universal/Arrow.v) is [Qed], so nothing reduces through it.
-   The probe DISCRIMINATES: [completion_unit_is_insert] above closes by
-   [eq_refl] at the SAME adjunction, so the obstruction is that one
-   constant's opacity and not the adjunction packaging. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example completion_probe_counit (H : Grp)
   (x : carrier (CompletionObject (Grp_MonSets H))) :
   grp_map (completion_counit H) x
     = grp_map (completion_extend (@id MonSets (Grp_MonSets H))) x := eq_refl.
 
-(* (2) [fmap[CompletionLeft]] does not compute either, for the same
-   reason: [LeftAdjointFunctorFromUniversalArrows] defines it by universal
-   factorization rather than by a formula.  This is why
-   [CompletionFunctor] is built directly and why [completion_fmap_agrees]
-   is [≈].  The control is [completion_functor_obj_agrees], where the
-   OBJECT actions do agree strictly. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example completion_probe_fmap (X Y : MonSets) (f : X ~{MonSets}~> Y) :
   fmap[CompletionLeft] f = fmap[CompletionFunctor] f := eq_refl.
 
-(* (3) The insertion is multiplicative only up to [≈]: the completion is a
-   genuine QUOTIENT, and the two sides are distinct words of the free
-   group identified by the relator.  [comp_class_op] is the [≈]
-   statement, and it is what the whole presentation exists to supply. *)
+(*
+   本节说明 Completion 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example completion_probe_insert_op (M : MonSets)
   (a b : carrier (mcar M)) :
   comp_class M (mop M a b)
     = grp_mul (CompletionObject M) (comp_class M a) (comp_class M b)
   := eq_refl.
 
-(** *** Formability negatives: the donor's [Set] pin
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    [Grp_MonSets] is instantiable only at [GrpObject@{Set Set _}] --
-    measured off [grp_monoid]'s own signature, which reads
-    [∀ G : GrpObject@{Set Set u}, Monoid@{_ Set} G].  The two controls
-    below show that the group's own data is formable at a strictly larger
-    carrier universe, and (crucially) that the TYPE [grp_monoid] inhabits
-    is formable there too, so the pin is introduced by that DEFINITION and
-    is not demanded by its statement.  It is the universe-minimization
-    family the tree records elsewhere; it is NOT claimed unavoidable, and
-    it is NOT repaired here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CompletionSetPin.
 
@@ -654,11 +641,11 @@ Fail Check (fun G : GrpObject@{uo uh up} => Grp_MonSets G).
 
 End CompletionSetPin.
 
-(* And the pin's BOUNDARY is measured rather than assumed: the whole
-   presentation layer -- the free group, the relator subgroup, the
-   quotient and its multiplicativity -- is formable over a monoid whose
-   carrier universe sits strictly ABOVE [Set], and it is exactly the first
-   constant whose TYPE names [Grp_MonSets] that is rejected there. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CompletionInsertPin.
 

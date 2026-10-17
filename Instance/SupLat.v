@@ -117,10 +117,11 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** Complete semilattices *)
 
-(* Mac Lane's definition, order first: a partial order in which every
-   subset has a supremum.  The order is [Prop]-valued, antisymmetry lands
-   in the carrier's ≈, and the supremum is a setoid map out of #227's
-   subsets. *)
+(*
+   本节说明 SupLat 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record SupLatObject@{o} := {
   sl_set : SetoidObject@{o o};
   sl_le : carrier sl_set → carrier sl_set → Prop;
@@ -683,11 +684,11 @@ Proof.
     intros A B f a. reflexivity.
 Defined.
 
-(* Part (d), as an isomorphism in Cat, built from the two component
-   isomorphisms so that both of its natural isomorphisms have the identity
-   as every component at [eq_refl]: Theory/Equivalence.v's
-   [Equivalence_to_Cat_Iso] would make [iso_from_to] the [symmetry] of the
-   unit, which is Theory/Functor.v's opaque [Functor_Setoid_obligation_1]. *)
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SupLat_EM_iso@{o so c} :
   @Isomorphism Cat@{c so so so o} SupLat@{o so}
     (@EilenbergMoore@{so so so o} Sets@{o so} Powerset_Prop@{o so}

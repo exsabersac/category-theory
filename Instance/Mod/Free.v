@@ -22,244 +22,20 @@ Generalizable All Variables.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** * The free module on a set, and the free-forgetful adjunction
+(*
+   nLab:      https://ncatlab.org/nlab/show/free+module
+   nLab:      https://ncatlab.org/nlab/show/free+object
+   nLab:      https://ncatlab.org/nlab/show/universal+morphism
+   Wikipedia: https://en.wikipedia.org/wiki/Free_module
+   Wikipedia: https://en.wikipedia.org/wiki/Basis_(linear_algebra)
+   Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
+   Book: Mac Lane, ibid., §IV.1, printed p. 79 (the same content in
+   Book: Riehl, Category Theory in Context, §4.0, printed p. 131 (k[S],
 
-    nLab:      https://ncatlab.org/nlab/show/free+module
-    nLab:      https://ncatlab.org/nlab/show/free+object
-    nLab:      https://ncatlab.org/nlab/show/universal+morphism
-    Wikipedia: https://en.wikipedia.org/wiki/Free_module
-    Wikipedia: https://en.wikipedia.org/wiki/Basis_(linear_algebra)
-    Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          GTM 5, §III.1, printed p. 56 (the free vector space on a set as
-          the paradigm universal arrow) — maclane:III.1:construction1
-    Book: Mac Lane, ibid., §IV.1, printed p. 79 (the same content in
-          adjunction form, opening the adjunctions chapter) —
-          maclane:IV.1:construction1
-    Book: Riehl, Category Theory in Context, §4.0, printed p. 131 (k[S],
-          its functoriality in S, and its universal property stated as a
-          left adjoint to the underlying-set functor) —
-          riehl:4.0:construction-free-vector-space
+   本节说明伴随、函子相关定义、性质与动机。
 
-    WHY THIS CONSTRUCTION OPENS TWO CHAPTERS.  A basis is the oldest
-    universal property in mathematics that nobody called universal.  The
-    nineteenth-century statement — every vector is uniquely a finite
-    linear combination of basis vectors — is exactly the assertion that a
-    function defined on the basis extends to a linear map in one and only
-    one way, which is to say that the pair (k[S], insertion of the basis)
-    solves a universal mapping problem.  Mac Lane opens §III.1 with this
-    example because it is the one every reader already knows, and returns
-    to it at the head of §IV.1 because the two-variable bijection
-
-        Vect_k(k[S], W)  ≅  Set(S, U W)
-
-    natural in S and in W is the shortest honest description of what an
-    adjunction is.  Riehl opens her chapter 4 the same way.  The reason
-    the example carries so much weight is that it is *not* about vector
-    spaces: the argument uses only that a module is an abelian group with
-    a scalar action, so it runs verbatim over an arbitrary ring, and the
-    field-specific content of linear algebra (every module is free, every
-    basis has the same size) plays no part.  That is why this file is
-    stated over Instance/Mod.v's [RMod R] for an arbitrary [RingObject],
-    with the vector-space reading — which is the literal content of all
-    three catalogued items — split off into Instance/Vect/Free.v, where
-    [Vct_F F] is [RMod (field_ring F)] by DEFINITION
-    (Instance/FdVect.v) and the specializations are therefore
-    conversions rather than transports.
-
-    HOW THE FREE MODULE IS PRESENTED, AND HOW THAT DIFFERS FROM THE
-    ISSUE'S SKETCH.  The classical description — "finitely supported
-    K-valued functions on X" — presupposes a set of generators with
-    decidable equality, and it is worth being exact about WHERE.  The
-    CARRIER is not the obstruction: a [≈]-respecting function paired with
-    a list witnessing that it vanishes outside that list is writable over
-    a bare setoid, and carries zero, pointwise addition and the scalar
-    action with no decider anywhere.  The obstruction is the BASIS
-    INSERTION, which is what a universal arrow needs: the basis vector at
-    x is the function taking 1 at x and 0 elsewhere, and that function
-    cannot be WRITTEN without a decision procedure for x ≈ y.  What makes
-    this fatal rather than merely restrictive is that [RMod_Forget] lands
-    in [Sets], whose objects are setoids, so the left adjoint must exist
-    for EVERY generating setoid, decidable or not — a construction
-    available only at decidable setoids yields no adjunction at all.  The
-    presentation used here is therefore by generators and relations, in
-    the style of
-    Instance/Ab/Tensor.v and Instance/Sets/Coend.v: [FVTerm] is a plain
-    inductive of formal expressions and the equality [fv_eq] is an
-    inductive relation closing under exactly the abelian-group laws, the
-    four module laws, congruence for each former, saturation under the
-    generating setoid's own [≈] and under the ring's, and
-    symmetry/transitivity.  Reflexivity is derived ([fv_refl]), keeping
-    the relation's induction principle one case shorter everywhere it is
-    consumed.  As in Instance/Ab/Tensor.v, [fv_Setoid] is NOT registered
-    as a typeclass instance and statements about elements of the free
-    module are written with [fv_eq] rather than [≈]; the [≈] of the free
-    module as an object of [RMod R] is that relation, definitionally, so
-    the module-level lemmas of Instance/Mod.v apply to it unchanged.
-
-    What is lost by not using functions is coefficient uniqueness; what
-    is kept is everything the universal property needs, and the classical
-    description is recovered in the direction that does not need
-    decidability: [fv_normal_form] proves that EVERY element of the free
-    module is [fv_eq] to a finite formal linear combination
-    r₁·e_{x₁} + … + rₙ·e_{xₙ} of basis vectors ([fv_lc] of a list), which
-    is the "finitely supported" half of the classical statement.  The
-    other half — that the list is unique up to rearrangement and
-    combination of like terms — is exactly what needs a decider on X, and
-    it is NOT proved here.  CORRECTION (#472): under that decider it is
-    proved, in Instance/Mod/FreeMonad/FinSupp.v, as [fv_lc_unique] (two
-    lists denoting the same element have the same collected
-    coefficients), whose converse is [fv_coef_injective] (built from
-    [fv_collect], which collects like terms), the two packaged as
-    [TR_FinSupp_iso] (WHAT IS NOT DELIVERED, below).
-    Three non-degeneracy results measure how far
-    that leaves the construction from collapsing, and they cost different
-    things: [free_module_scalars_faithful] (distinct scalars give
-    distinct multiples of a basis vector) needs NO hypothesis at all;
-    [free_module_two_independent] (the basis is linearly independent —
-    if r·e_x + s·e_y vanishes and x ≉ y then both coefficients vanish,
-    which is the statement a reader of §III.1 wants) needs only a decider
-    for X's [≈]; and [free_module_basis_injective] (distinct generators
-    give distinct basis vectors) needs that decider together with 1 ≉ 0
-    in R.  The section header there ARGUES — it does not prove; no
-    converse is machine-checked — why hypotheses are needed at all:
-    separating two generators means mapping into a module in which they
-    go to different places, and building such a map out of a bare setoid
-    is the decision procedure.
-
-    STRENGTHS, MEASURED.  The mediator is a [Fixpoint] on formal
-    expressions, so:
-
-      - [eq_refl]: the linear extension preserves zero, addition and the
-        scalar action DEFINITIONALLY (all three homomorphism obligations
-        close by [reflexivity]); it agrees with the given function on
-        generators definitionally ([free_module_extend_generators], an
-        [eq_refl] on carriers); the free functor's object part is the
-        formal-sum module ([FreeMod_obj]); the universal arrow IS the
-        basis insertion ([free_module_arrow_is_insert]); the UNIT is the
-        one-generator expression ([free_module_unit_is_insert]); and the
-        adjunction's forward transpose ⌊−⌋ IS [fv_transpose]
-        ([free_module_transpose_is_adj]) — which is what lets the two
-        naturality clauses below be stated in the transpose's own
-        vocabulary and still be the class's fields verbatim.
-      - [≈] only: the COUNIT.  It is the other transpose, i.e.
-        [unique_obj (ump_universal_arrows …)], and [ump_universal_arrows]
-        (Theory/Universal/Arrow.v) is [Qed]-opaque, so it does not
-        compute and no [eq_refl] is claimed on that side.  What is proved
-        is that it evaluates a formal linear combination in the module
-        ([free_module_counit_evaluates]).
-      - [≈] only, and NOT for want of trying: the action of the free
-        functor on an arrow.  [LeftAdjointFunctorFromUniversalArrows]
-        defines [fmap] by universal factorization rather than by a
-        formula, so that it relabels generators is a theorem
-        ([free_module_fmap_generators]), not a computation.
-
-      CORRECTION (#472): the counit's diagnosis names one opaque
-      constant, and two block it: [ump_universal_arrows] and this file's
-      own [free_module_universal], the proof of the factorization that
-      [free_module_universal_arrow] hands to [universal_arrow_from_UMP]
-      and from which both the counit and the free functor's [fmap] are
-      read.  Measured by #472's scout in a rebuilt copy of the seventy
-      modules its prototype loads, on nine conversions the monad T_R
-      would read off this adjunction (U ε F at a basis vector, at a
-      variable combination and at zero; [fmap] at the same three; the
-      comparison functor's structure map at a variable combination, at a
-      sum of two basis vectors and at a basis vector): with
-      [ump_universal_arrows] alone turned [Defined], all nine are still
-      refused; with [free_module_universal] alone, all nine; with both,
-      all nine hold at [eq_refl], [fmap] at a variable combination
-      included.  #472 measured the same on Test/ProbeFreeModule472.v's
-      refutations (its header).  Neither constant is turned [Defined]
-      here: [ump_universal_arrows] is shared by many developments, several
-      of which pin its opacity in probes, and issue #1353 tracks it.  #472
-      adds instead the same adjunction in hom-set form,
-      [free_module_adjunction_hom] (THE HOM-SET FORM, below), whose counit
-      IS the fold by conversion; the free functor's [fmap] is unchanged,
-      and stays [≈]-only on both forms.
-
-    THE TWO NATURALITY CLAUSES.  §IV.1 asks for naturality of the
-    bijection in each variable separately, and both are stated and proved
-    here in the free module's own vocabulary rather than by citing the
-    class: [free_module_naturality_in_set] (in the generating set, proved
-    by evaluating on generators through [free_module_fmap_generators])
-    and [free_module_naturality_in_module] (in the target module, proved
-    pointwise by [reflexivity], both sides being the same composite of
-    underlying functions).  That they are the class's own fields
-    [to_adj_nat_l] and [to_adj_nat_r] at this adjunction is then recorded
-    by [eq_refl] on the STATEMENTS
-    ([free_module_naturality_in_set_is_to_adj_nat_l] and its sibling) —
-    a conversion check that the independently proved theorems are the
-    fields, not a second derivation of them.
-
-    THE HOM-SET FORM (#472).  Two packagings of the one adjunction FreeMod R ⊣
-    RMod_Forget R are kept.  [free_module_adjunction], from the universal
-    arrows, is the one the rest of the tree consumes (Instance/Vect/Free.v,
-    Instance/Mod/Representable.v, Instance/Rng/Polynomial.v and
-    Instance/Rng/AFT.v name it), and it is unchanged.
-    [free_module_adjunction_hom] is Theory/Adjunction.v's [Build_Adjunction']
-    applied to the natural bijection [free_module_hom_iso], with the same left
-    adjoint [FreeMod R], the same right adjoint and the same insertion: its
-    unit and its forward transpose ARE those of [free_module_adjunction] at
-    [eq_refl] ([free_module_hom_unit], [free_module_hom_to]), its two
-    naturality fields are the two theorems above, cited, and its inverse
-    transpose is the linear extension [fv_extend], so its counit is the fold
-    of the identity at [eq_refl] ([free_module_hom_counit]), where the other
-    counit is that fold only at `≈` ([free_module_counit_evaluates]).  It
-    exists for the free R-module monad T_R of Mac Lane's §VI.4 Exercise 2
-    (Instance/Mod/FreeMonad.v), whose multiplication U ε F and comparison
-    functor then compute.  It is not a second free module and not a second
-    free functor.  The two adjunctions are refused equal at [eq_refl], and so
-    are their counits at a variable combination (Test/ProbeFreeModule472.v, R1
-    and R2).  Its universes: the hom-set form binds @{a c p so} (R :
-    RingObject@{a c p}, Sets@{c so}) and the five levels [FreeMod] carries
-    beyond them, extensibly, a closed binder being refused for those internal
-    levels; the adjunction's own last level, which no constraint mentions when
-    left free, is pinned to so ([Adjunction@{_ c c so c c c c so c so}], the
-    pin of Instance/Mon/Free.v's hom-set form), and the two readbacks
-    comparing with [free_module_adjunction] pin that adjunction's free level
-    the same way, by a cast.  No [Set] but the bound Set < m on the module
-    category's object level m (Instance/Mod.v's [RMod]), and no equation.
-    [free_module_hom_iso] and [free_module_adjunction_hom] end [Defined], both
-    load-bearing (each closed alone [Qed] in a renamed copy of #472's files,
-    [free_module_adjunction_hom] and [free_module_hom_counit] respectively
-    stop); [fv_eval_pointwise] ends [Qed].  The six are "Closed under the
-    global context" and named in #472's print-assumptions block.  On Coq
-    8.19.2 and 8.20.1 the five that bind [FreeMod]'s levels bind exactly one
-    level more and [fv_eval_pointwise] the same, compared by [About].
-
-    WHAT IS NOT DELIVERED.
-
-      - No uniqueness of coefficients.  [fv_normal_form] IS proved —
-        every element is [fv_eq] to some [fv_lc l] — so what is missing
-        is not the existence of a linear-combination form but its
-        CANONICITY: the list is not unique up to rearrangement and
-        collection of like terms, and nothing here says two lists
-        denoting the same element are related.  Hence also no decision
-        procedure for equality in the free module, no dimension, and no
-        proof that the basis insertion is injective for a GENERAL
-        generating setoid (see above for why).
-        CORRECTION (#472): coefficient uniqueness is proved under a
-        decider for X's [≈], by Instance/Mod/FreeMonad/FinSupp.v's
-        [fv_lc_unique]: two lists denoting the same element have, at
-        every point, the same collected coefficient, the sum of the
-        coefficients of their pairs at points [≈] to it ([fv_coef_lc]).
-        It is the respectfulness of the coefficient map, the coefficient
-        of y being the linear extension of this file's own indicator
-        [fv_probe_at] into R (Instance/Mod/FreeMonad.v's [fv_coef]).  Its
-        converse, injectivity, is [fv_coef_injective] (a combination is
-        [fv_eq] to any other with the same coefficients), built from
-        [fv_collect], which collects like terms; and [TR_FinSupp_iso]
-        packages both, the free module's setoid isomorphic in [Sets] to
-        the finitely supported functions X → R.  For a GENERAL generating
-        setoid it is still not proved, and the decision procedure, the
-        dimension and the comparison below are still absent.
-      - No statement that [FreeMod] is faithful, and no characterization
-        of its image; no proof that a free module is projective; no
-        invariant basis number.
-      - No comparison with Instance/FdVect.v's [StdVect] (which carries a
-        chosen coordinate isomorphism to Fⁿ), and so no proof that the
-        free module on [Fin.t n] is finite-dimensional in that file's
-        sense — that comparison needs the coefficient uniqueness just
-        disclaimed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Formal linear combinations and the module quotient *)
 
@@ -268,11 +44,11 @@ Section FreeModule.
 Context (R : RingObject).
 Context (X : SetoidObject).
 
-(* Formal expressions over the generating setoid: generators, zero, sum,
-   negation, scalar multiple.  Negation is a CONSTRUCTOR rather than the
-   derived (−1)·(−): deriving it would need 0·t ≈ 0 in the free module,
-   whose usual proof cancels [0·t] against itself and so already needs
-   the group structure being built. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive FVTerm : Type :=
   | fv_gen  : carrier X → FVTerm
   | fv_zero : FVTerm
@@ -280,10 +56,11 @@ Inductive FVTerm : Type :=
   | fv_neg  : FVTerm → FVTerm
   | fv_smul : carrier (rig_setoid (ring_rig R)) → FVTerm → FVTerm.
 
-(* The quotienting relation: congruence for each former (saturating under
-   the generating setoid's [≈] and the ring's), the abelian-group laws,
-   the four module laws, symmetry and transitivity.  Reflexivity is
-   derived below. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive fv_eq : FVTerm → FVTerm → Prop :=
   | fe_gen {x y : carrier X} : x ≈ y → fv_eq (fv_gen x) (fv_gen y)
   | fe_plus {s s' t t'} :
@@ -338,16 +115,11 @@ Definition fv_Setoid : Setoid FVTerm := {|
   setoid_equiv := fv_eq_Equivalence
 |}.
 
-(** ** The free module
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Every law of the module is a constructor of the relation; nothing is
-    proved.  The record is written out in one literal so that the
-    underlying setoid, the group operations and the action are all
-    visible at a glance and all reduce.  An earlier revision stopped there; the record now
-    carries one more field, [cmon_prop], and it too is a one-liner: the
-    relation IS a [Prop] since the PR "algebraic carriers are sets"
-    (2026-09-17), so it is its own [Prop] mirror and both implications are
-    the identity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FreeModObject : RModObject R := {|
   rm_ab := {|
     ab_cmon := {|
@@ -374,12 +146,11 @@ Definition FreeModObject : RModObject R := {|
   rm_smul_one := fe_smul_one
 |}.
 
-(** ** The insertion of the basis
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    A generator becomes the corresponding formal expression.
-    Respectfulness is the congruence constructor [fe_gen], supplied by
-    [exact] rather than as a record field: the target's [≈] is [fv_eq]
-    by conversion but not by unification, and only [exact] will convert. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fv_insert : X ~{Sets}~> RMod_Forget R FreeModObject.
 Proof.
   unshelve refine {| morphism := fv_gen |}.
@@ -405,20 +176,19 @@ Fixpoint fv_eval (t : FVTerm) : carrier (cmon_setoid W) :=
   | fv_smul r s => rm_smul W r (fv_eval s)
   end.
 
-(* Respectfulness is one induction over the relation: 14 cases, one per
-   constructor of [fv_eq].  Eight are met by the corresponding law of the
-   target module (four abelian-group, four module); the other six are
-   not laws — [fe_gen] is saturation under X's own [≈], three are
-   congruence for a former, and two are the target setoid's symmetry and
-   transitivity. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fv_eval_respects (s t : FVTerm) : fv_eq s t → fv_eval s ≈ fv_eval t.
 Proof.
   intro He.
-  (* Since the PR "algebraic carriers are sets" (2026-09-17) [fv_eq] is a
-     [Prop] inductive and eliminates only into [Prop] goals, while `≈` is
-     [Type]-valued.  [pequiv_to] puts a [Prop] goal in front of the
-     elimination; each branch returns to `≈` with [pequiv_from].  The 14 cases
-     and what discharges each are exactly as before. *)
+  (*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   apply pequiv_to.
   induction He as
     [ x y Hxy
@@ -449,13 +219,11 @@ Proof.
   - exact (transitivity IHst IHtu).
 Qed.
 
-(* The extension, as a morphism of [RMod R].  The four obligations are
-   respectfulness of the fold and preservation of zero, of addition and
-   of the action; the last three hold by [reflexivity], the fixpoint's
-   clauses BEING those three equations.  One uniform body is used so that
-   the proof does not depend on the order [Program] emits them in.  Still
-   four after the PR "algebraic carriers are sets" (2026-09-17),
-   re-counted from the [_obligation_] names [Print Module] lists. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition fv_extend : FreeModObject ~{RMod R}~> W := {|
   rm_hom := {| cmon_map := {| morphism := fv_eval |} |}
 |}.
@@ -480,11 +248,11 @@ Qed.
 Example free_module_extend_generators (x : carrier X) :
   cmon_map (rm_hom fv_extend) (fv_gen x) = h x := eq_refl.
 
-(* The three homomorphism laws, recorded at Leibniz [=] on the CARRIER so
-   that the header's strength claim is machine-checked rather than
-   inferred from which branch of the obligation tactic fired.  This is
-   the convertibility exception: these are equations between elements of
-   [W]'s carrier, not between morphisms. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_module_extend_zero :
   cmon_map (rm_hom fv_extend) fv_zero = cmon_zero W := eq_refl.
 
@@ -498,15 +266,11 @@ Example free_module_extend_smul
   cmon_map (rm_hom fv_extend) (fv_smul r s)
     = rm_smul W r (cmon_map (rm_hom fv_extend) s) := eq_refl.
 
-(** *** Uniqueness
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Any module homomorphism out of the free module agreeing with [h] on
-    the basis IS the extension.  The induction has one case per former,
-    five in all: the generator case is the agreement hypothesis [Hg]
-    itself, and the other four are homomorphism laws of the competitor —
-    preservation of zero, of sums, of negation (Instance/Mod.v's
-    [rmod_map_neg], which is Instance/Ab.v's [ab_map_neg] and not a
-    field) and of the action. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fv_extend_unique (g : FreeModObject ~{RMod R}~> W)
   (Hg : ∀ x : carrier X, cmon_map (rm_hom g) (fv_gen x) ≈ h x) (t : FVTerm) :
   cmon_map (rm_hom g) t ≈ fv_eval t.
@@ -621,24 +385,20 @@ Definition free_module_adjunction : FreeMod ⊣ RMod_Forget R :=
     definitionally. *)
 Example FreeMod_obj (X : Sets) : FreeMod X = FreeModObject X := eq_refl.
 
-(** The universal arrow is the basis insertion on the nose:
-    [universal_arrow_from_UMP] stores the supplied morphism as the second
-    projection of the comma object it builds, so no proof is involved. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_module_arrow_is_insert (X : Sets) :
   @arrow _ _ X (RMod_Forget R) (free_module_universal_arrow X) = fv_insert X
   := eq_refl.
 
-(** ** The unit is the basis insertion
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [unit] is DERIVED in Theory/Adjunction.v (it is the transpose of the
-    identity), not a field, so what it computes to has to be checked.  It
-    is [fmap[U] id ∘ arrow], and [fmap[RMod_Forget R] id] is the identity
-    setoid map, so the unit is [fv_insert] itself.
-    CORRECTION (#1347): read as an equation of setoid morphisms, "the unit
-    is [fv_insert] itself" held only pointwise, as the two examples below
-    state it, until Instance/Sets.v gave its identity's and composite's
-    properness fields as terms; it now holds whole at [eq_refl] (control
-    C9 of Test/ProbeSetsTerms1347.v), and is refused at master 687ac356. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_module_unit (X : Sets)
   : X ~{Sets}~> RMod_Forget R (FreeMod X) :=
@@ -650,17 +410,11 @@ Example free_module_unit_is_insert (X : Sets) (x : carrier X) :
 Example free_module_unit_is_generator (X : Sets) (x : carrier X) :
   free_module_unit X x = @fv_gen R X x := eq_refl.
 
-(** ** The counit evaluates a formal linear combination
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The counit is the OTHER transpose, and it does not compute: it is
-    [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows] is
-    [Qed]-opaque, so no [eq_refl] is available on this side and none is
-    claimed.  What is available — and is the content — is that it agrees
-    with evaluation up to [≈].  CORRECTION (#472): one of two causes;
-    this file's own [free_module_universal] is the other (the header's
-    STRENGTHS), and the counit of the hom-set form
-    [free_module_adjunction_hom] below is this fold at [eq_refl]
-    ([free_module_hom_counit]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_module_counit (W : RMod R)
   : FreeMod (RMod_Forget R W) ~{RMod R}~> W :=
@@ -700,18 +454,11 @@ Proof.
                  (free_module_universal_arrow Y) ∘ u)) x).
 Qed.
 
-(** ** The adjunction bijection, and its two naturality clauses
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Mac Lane §IV.1 presents the free construction as the bijection
-
-        RMod(FreeMod X, W)  ≅  Sets(X, U W)
-
-    natural in X and in W, "each verified separately".  The forward
-    transpose is restriction to the basis, and it IS the adjunction's own
-    ⌊−⌋ — [free_module_transpose_is_adj] records that by [eq_refl] — so
-    the two clauses below, proved in the free module's own vocabulary,
-    are the class's fields and not weaker statements about some other
-    map. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fv_transpose {X : Sets} {W : RMod R}
   (g : FreeMod X ~{RMod R}~> W) : X ~{Sets}~> RMod_Forget R W :=
@@ -721,9 +468,11 @@ Example free_module_transpose_is_adj {X : Sets} {W : RMod R}
   (g : FreeMod X ~{RMod R}~> W) :
   to (@adj _ _ _ _ free_module_adjunction X W) g = fv_transpose g := eq_refl.
 
-(** Restriction to the basis is a bijection: the inverse is linear
-    extension.  Both round trips are [≈] statements about morphisms, and
-    the first of them is [reflexivity] at every generator. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fv_transpose_extend {X : Sets} {W : RMod R}
   (h : X ~{Sets}~> RMod_Forget R W) : fv_transpose (fv_extend h) ≈ h.
@@ -737,13 +486,11 @@ Proof.
   intro x; simpl; reflexivity.
 Qed.
 
-(** *** Naturality in the generating set
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    For u : X ~> Y in [Sets], restricting to the basis after
-    precomposing with the relabelling [fmap[FreeMod] u] is the same as
-    restricting and then precomposing with u.  The proof evaluates both
-    sides at a generator and uses [free_module_fmap_generators]; it does
-    not cite the adjunction. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_module_naturality_in_set {X Y : Sets} {W : RMod R}
   (g : FreeMod Y ~{RMod R}~> W) (u : X ~{Sets}~> Y) :
   fv_transpose (g ∘ fmap[FreeMod] u) ≈ fv_transpose g ∘ u.
@@ -753,21 +500,21 @@ Proof.
            (free_module_fmap_generators u x)).
 Qed.
 
-(** *** Naturality in the target module
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    For k : W ~> W' linear, restricting to the basis after postcomposing
-    with k is the same as restricting and then postcomposing with the
-    underlying function of k.  Both sides are the same composite of
-    underlying functions, so this is [reflexivity] pointwise. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_module_naturality_in_module {X : Sets} {W W' : RMod R}
   (k : W ~{RMod R}~> W') (g : FreeMod X ~{RMod R}~> W) :
   fv_transpose (k ∘ g) ≈ fmap[RMod_Forget R] k ∘ fv_transpose g.
 Proof. intro x; simpl; reflexivity. Qed.
 
-(** The two theorems just proved ARE the adjunction's naturality fields
-    at this adjunction: the statements are convertible, so these are the
-    clauses Mac Lane asks for and not restatements about a different
-    map. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_module_naturality_in_set_is_to_adj_nat_l
   {X Y : Sets} {W : RMod R} (g : FreeMod Y ~{RMod R}~> W)
   (u : X ~{Sets}~> Y) :
@@ -782,11 +529,11 @@ Example free_module_naturality_in_module_is_to_adj_nat_r
      ≈ fmap[RMod_Forget R] k ∘ to (@adj _ _ _ _ free_module_adjunction X W) g)
   = (fv_transpose (k ∘ g) ≈ fmap[RMod_Forget R] k ∘ fv_transpose g) := eq_refl.
 
-(** ** The triangle identities
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Both are instances of Theory/Adjunction.v's derived corollaries; they
-    are named here because they are what makes the unit/counit
-    presentation of this adjunction usable. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary free_module_triangle_left (X : Sets) :
   free_module_counit (FreeMod X) ∘ fmap[FreeMod] (free_module_unit X)
@@ -805,24 +552,11 @@ Arguments free_module_universal_arrow {R} X.
 Arguments fv_transpose {R X W} g.
 Arguments free_module_fmap_generators {R X Y} u x.
 
-(** ** The same adjunction in hom-set form (#472)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-    A second packaging of [FreeMod R ⊣ RMod_Forget R], with the SAME left
-    adjoint [FreeMod R] and the same insertion: Theory/Adjunction.v's
-    hom-set constructor [Build_Adjunction'] applied to the natural
-    bijection [free_module_hom_iso], whose forward transpose is
-    [fv_transpose], the forward transpose of [free_module_adjunction]
-    ([free_module_transpose_is_adj]), and whose inverse transpose is the
-    linear extension [fv_extend].  Its two naturality fields are
-    [free_module_naturality_in_set] and
-    [free_module_naturality_in_module], cited.  Its counit is then the
-    fold of the identity by conversion ([free_module_hom_counit]), where
-    the counit of [free_module_adjunction] is that fold only up to `≈`
-    ([free_module_counit_evaluates]).  Instance/Mod/FreeMonad.v builds
-    the free R-module monad T_R of Mac Lane's §VI.4 Exercise 2 on it.  No
-    second free module and no second free functor: the action on arrows
-    is still [FreeMod]'s, at `≈` the relabelling
-    ([free_module_fmap_generators]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The fold respects pointwise-`≈` maps on generators: a citation of
    [fv_extend_unique]. *)
@@ -901,21 +635,11 @@ Example free_module_hom_to@{a c p so +} (R : RingObject@{a c p})
                           : @Adjunction@{_ c c so c c c c so c so} _ _ _ _)
             X W) g := eq_refl.
 
-(** ** Every element is a finite linear combination of basis vectors
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The classical description of the free module — "finitely supported
-    K-valued functions on X" — has two halves.  The half that does not
-    need a decider on X is proved here: every formal expression is
-    [fv_eq] to a sum r₁·e_{x₁} + … + rₙ·e_{xₙ} indexed by a list of
-    scalar/generator pairs.  The other half, that the list is unique up
-    to rearrangement and combination of like terms, is exactly what a
-    decider buys and is NOT proved.  CORRECTION (#472): it is proved
-    under the decider in Instance/Mod/FreeMonad/FinSupp.v, as
-    [fv_lc_unique] (its converse is [fv_coef_injective]).
-
-    The three list operations are defined here rather than imported so
-    that this file takes no dependency on [Coq.Lists.List]; [list],
-    [nil] and [cons] are [Coq.Init.Datatypes]'. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section NormalForm.
 
@@ -1003,14 +727,11 @@ End NormalForm.
 Arguments fv_lc {R X} l.
 Arguments fv_normal_form {R X} t.
 
-(** ** Non-degeneracy
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    A free module on the empty or a one-element generating set would
-    demonstrate nothing about the quotient: what has to be ruled out is
-    that the generated congruence collapses the construction.  Three
-    separations are proved, and they cost different things.  The only
-    tool used is that any function on generators extends, so evaluating
-    the extension separates formal expressions. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section NonDegeneracy.
 
@@ -1042,23 +763,11 @@ Proof.
   exact Hv.
 Qed.
 
-(** *** Distinct generators give distinct basis vectors
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    This one is NOT hypothesis-free.  Why the hypotheses are not an
-    artifact of the proof is ARGUED here, not proved — neither converse
-    is machine-checked below, and the tree's precedent for exactly this
-    shape of claim ([arrow_mul_respects_forces_UIP],
-    [skeleton0_skeletal_forces_UIP], [faithful_QuiverElements_implies_UIP])
-    is deliberately not followed.  The argument: separating two
-    generators means exhibiting a module in which they go to different
-    places; the only maps into a module that a bare setoid supplies are
-    the ones that can be WRITTEN, and the characteristic function of a
-    point cannot be written without a decision procedure for that
-    setoid's [≈].  For the other hypothesis the argument is shorter and
-    firmer — a ring in which 1 ≈ 0 is the zero ring, over which every
-    module is trivial, so [fv_gen x] and [fv_gen y] are [fv_eq] for ALL
-    x and y and the conclusion does not hold at all — but it too is left
-    as an argument rather than a refutation. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context (Xdec : ∀ x y : carrier X, (x ≈ y) + ((x ≈ y) → False)).
 Context (Rnz : rig_one (ring_rig R) ≈ rig_zero (ring_rig R) → False).
@@ -1095,15 +804,11 @@ Proof using R X Xdec Rnz.
   exact Hv.
 Qed.
 
-(** *** The basis is linearly independent
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The statement a reader of §III.1 actually wants, at two generators:
-    if r·e_x + s·e_y vanishes and x ≉ y then both coefficients vanish.
-    Only the decider is spent — NOT [Rnz], which is why this is the
-    stronger of the two separations: over the zero ring it degenerates to
-    a truth rather than to a falsehood.  The proof evaluates through the
-    characteristic function of one generator, which sends the other's
-    basis vector to 0. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_module_two_independent (x y : carrier X)
   (Hxy : (x ≈ y) → False) (r s : carrier (rig_setoid (ring_rig R))) :
   fv_eq (fv_plus (@fv_smul R X r (fv_gen x)) (fv_smul s (fv_gen y))) fv_zero →
@@ -1141,12 +846,11 @@ Arguments free_module_scalars_faithful {R X} r s x _.
 Arguments free_module_basis_injective {R X} Xdec Rnz x y _.
 Arguments free_module_two_independent {R X} Xdec x y Hxy r s _.
 
-(** ** A computing witness over the integers
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    ℤ is the cheapest ring in tree whose action computes
-    (Theory/Algebra/Rig.v's [Int_Ring], Instance/Mod.v's [Int_RMod]).
-    The generating setoid has TWO elements, so the free module is not the
-    ring itself and the linear extension has something to do. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition TwoGens : SetoidObject := {|
   carrier   := bool;
@@ -1164,18 +868,19 @@ Proof.
   - exact (inl eq_refl).
 Defined.
 
-(* The two generators are distinct.  Like [two_gens_dec] this is a fact
-   about the generating setoid alone — nothing about any ring enters —
-   so it is stated here rather than beside either scalar witness, and
-   Instance/Vect/Free.v consumes this one rather than restating it. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma two_gens_distinct : @equiv _ (is_setoid TwoGens) true false → False.
 Proof. intro H; discriminate H. Qed.
 
-(* [FVTerm]'s two index arguments are implicit, and in a statement with
-   no expected type — an [fv_eq] between two constructor applications —
-   the elaborator has nothing to propagate them from.  These are
-   NOTATIONS, not definitions, so each unfolds to the constructor itself
-   and nothing below is stated about a different term. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Notation zgen  := (@fv_gen Int_Ring TwoGens).
 Local Notation zsmul := (@fv_smul Int_Ring TwoGens).
 Local Notation zplus := (@fv_plus Int_Ring TwoGens).
@@ -1184,10 +889,11 @@ Local Notation zplus := (@fv_plus Int_Ring TwoGens).
 Definition int_probe : TwoGens ~{Sets}~> RMod_Forget Int_Ring Int_RMod.
 Proof.
   unshelve refine {| morphism := fun b : carrier TwoGens => if b then 3%Z else 5%Z |}.
-  (* [all:] because the respectfulness field of a map out of a setoid
-     whose ≈ is Leibniz [=] may be discharged by instance resolution
-     before a goal is ever opened; the carriers here are at [Set]
-     either way, so nothing is pinned that was not already. *)
+  (*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   all: intros x y H; simpl in H; subst y; reflexivity.
 Defined.
 

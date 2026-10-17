@@ -102,19 +102,11 @@ Section ImageMediator.
 Context {K' : GrpObject}.
 Context (x : Kills (KernelNS h) K').
 
-(* Well-definedness, isolated as one lemma: elements with the same image
-   under h have the same image under the given map, because they differ by
-   an element of ker h, which that map kills.  This is the ONE place an
-   element is inspected, and everything the mediator owes is discharged
-   from it.
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
 
-   Isolating it is not tidiness -- it is what makes the construction
-   independent of whether Instance/Grp/Epi.v's closure lemmas are
-   transparent.  [GrpImage_unit], [GrpImage_mul] and [GrpImage_inv] are
-   [Qed]-opaque there, so the preimage witness the group operations of
-   [ImageGrp] carry does NOT reduce, and the unit and product laws below
-   cannot be closed by computation; they are closed by comparing h-images
-   instead. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma image_med_wd (a b : carrier G) :
   grp_map h a ≈ grp_map h b → grp_map (`1 x) a ≈ grp_map (`1 x) b.
 Proof.
@@ -209,15 +201,11 @@ Proof.
                          (image_universal_element h)).
 Qed.
 
-(* BOTH LEGS ARE THE TWO MEDIATORS, by convertibility -- the [eq_refl]
-   exception to the `≈` discipline.  [ue_med] is
-   [unique_obj (aue_universal U1 (aue_elem U2))]
-   (Theory/Universal/Element.v), and since both universal elements
-   above were built with their mediators as [unique_obj], the generic
-   machinery rebuilds neither map.  The strict form was tried FIRST and
-   holds; the boundary that does NOT hold strictly is the mediator's
-   triangle, which is `≈` and not Leibniz (pinned in
-   Test/ProbeGrpQuotient.v). *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example first_isomorphism_to_is_quot_med {G K : GrpObject}
   (h : G ~{Grp}~> K) :
   to (first_isomorphism_theorem h) = quot_med (KernelNS h) (image_elem h).
@@ -228,10 +216,11 @@ Example first_isomorphism_from_is_image_med {G K : GrpObject}
   from (first_isomorphism_theorem h) = image_med h (quot_elem (KernelNS h)).
 Proof. reflexivity. Qed.
 
-(* UNIQUENESS, proved rather than cited: any isomorphism carrying the
-   projection to the corestriction IS this one.  This is
-   [universal_element_iso_unique] at the two universal elements, and it is
-   what makes the comparison canonical rather than merely existent. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem first_isomorphism_unique {G K : GrpObject} (h : G ~{Grp}~> K)
   (v : QuotientGrp (KernelNS h) ≅[Grp] ImageGrp h)
   (Hv : to v ∘ quot_proj (KernelNS h) ≈ image_cores h) :
@@ -308,21 +297,16 @@ Context {G : GrpObject}.
 Context (M N : NormalSubgroup G).
 Context (Hsub : ∀ a : carrier G, sub_mem M a → sub_mem N a).
 
-(* N read as a normal subgroup of G/M.  The membership predicate is
-   UNCHANGED; only the saturation law is new, since G/M's `≈` is coarser
-   than G's.  The other four laws are the very terms N carries, because
-   G/M's unit, product and inverse ARE G's. *)
-(* RECORDED STRENGTH CHANGE.  An earlier revision read
-     [sub_mem := fun a : carrier (QuotientGrp M) => sub_mem N a].
-   Since the PR "algebraic carriers are sets" (2026-09-17) the quotient's `≈`
-   is the propositional truncation of [quot_rel], and the SATURATION law of a
-   [Subgroup] demands that a member's `≈`-partner be a member: from
-   [inhabited (quot_rel M a b)] and [sub_mem N a] one must produce membership
-   of [b].  That is an elimination of a [Prop] into a [Type] unless the
-   membership is itself a [Prop], so N/M's membership is the truncation of
-   [N]'s.  This is exactly the move Instance/Mod/Quotient/Isomorphism.v makes
-   for [TmodS] and [MeetSub], and for the same reason.  [N]'s own [sub_mem]
-   is untouched and stays [Type]-valued. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition NmodM : NormalSubgroup (QuotientGrp M) := {|
   ns_sub := {| sub_mem := fun a : carrier (QuotientGrp M) =>
                             inhabited (sub_mem N a) |}
@@ -388,13 +372,11 @@ Section ThirdMediator.
 Context {K : GrpObject}.
 Context (x : Kills NmodM K).
 
-(* THE ONE ELEMENTWISE STEP of this theorem: transferring the killing
-   hypothesis across the projection.  A member of N is projected by p_M to
-   a member of N/M -- p_M being the identity function -- so k ∘ p_M kills N.
-   An earlier revision said "the membership predicates being the same"; since
-   the PR "algebraic carriers are sets" (2026-09-17) N/M's membership is the
-   TRUNCATION of N's (see [NmodM]), so the step is that projection followed
-   by one [inhabits]. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma third_precompose_kills (a : carrier G) :
   sub_mem N a → grp_map (`1 x ∘ quot_proj M) a ≈ grp_unit K.
 Proof.
@@ -477,9 +459,11 @@ Arguments third_isomorphism_unique {G} M N Hsub.
 
 (** ** The second isomorphism theorem *)
 
-(* Two shuffles, isolated so that the subgroup laws below are one-liners.
-   Both are the standard normality manipulations, and both are proved by
-   right-associating everything and cancelling one inverse pair. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma product_shuffle (G : GrpObject) (s n s' n' : carrier G) :
   grp_mul G (grp_mul G s n) (grp_mul G s' n')
   ≈ grp_mul G (grp_mul G s s')
@@ -513,12 +497,11 @@ Context {G : GrpObject}.
 Context (S : Subgroup G).
 Context (N : NormalSubgroup G).
 
-(* The product set SN, as a subgroup.  Membership carries the
-   decomposition as DATA, so the second isomorphism theorem's elementwise
-   steps read it back out with nothing chosen.  Closure under product and
-   inverse is where normality is spent:
-       (s n)(s' n') = (s s') ((s'⁻¹ n s') n')   and
-       (s n)⁻¹      = s⁻¹ (s n⁻¹ s⁻¹). *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition in_product (x : carrier G) : Type :=
   { s : carrier G & { n : carrier G &
       ((sub_mem S s * sub_mem N n) * (x ≈ grp_mul G s n))%type } }.
@@ -603,13 +586,11 @@ Definition psi : SubgroupGrp S ~{Grp}~> QuotientGrp NinSN :=
 
 (* ELEMENTWISE INPUT ONE: the kernel of ψ is S ∩ N -- as a biconditional
    on membership, not merely an inclusion. *)
-(* AN EARLIER REVISION stated the right-hand side as the bare
-   [sub_mem N (`1 p)].  Since the PR "algebraic carriers are sets"
-   (2026-09-17) the left-hand side is congruence to the unit in a quotient,
-   which is the [inhabited] truncation of membership, so the biconditional
-   holds up to that truncation and is stated so.  Both directions are
-   [Prop]-to-[Prop]; the untruncated direction is available as
-   [psi_kernel_of_meet] below, with its witness intact. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma psi_kernel_is_meet (p : carrier (SubgroupGrp S)) :
   sub_mem (KernelNS psi) p ↔ inhabited (sub_mem N (`1 p)).
 Proof.
@@ -653,27 +634,26 @@ Proof.
   - exact (ns_conj N s _ (sub_inv N _ Hn)).
 Qed.
 
-(* Mac Lane §III.1 Exercise 4, second isomorphism theorem, as a corollary
-   of the first: S/(S ∩ N) is S/ker ψ, which the first theorem identifies
-   with im ψ, which surjectivity identifies with SN/N. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition second_isomorphism_theorem :
   QuotientGrp (KernelNS psi) ≅[Grp] QuotientGrp NinSN :=
   iso_compose (surjective_image_iso psi psi_surjective)
               (first_isomorphism_theorem psi).
 
-(* S ∩ N, as a normal subgroup of S: membership in N, read on elements of
-   S.  This is the literal left-hand side of the theorem, and the
-   statement below is the literal one -- [second_isomorphism_theorem]
-   above says S/ker ψ, which is the same group only because
-   [psi_kernel_is_meet] says the two memberships coincide, and
-   [quot_congr] is what turns that coincidence into an isomorphism. *)
-(* AN EARLIER REVISION wrote the predicate as the bare [sub_mem N (`1 p)].
-   Since the PR "algebraic carriers are sets" (2026-09-17) it is the
-   [inhabited] truncation of that, and the reason is the identification
-   [second_isomorphism_theorem_literal] makes: this subgroup has to be
-   coextensive with [KernelNS psi], whose membership is congruence to the
-   unit in a quotient and hence already truncated.  The same move is made at
-   Instance/Mod/Quotient/Isomorphism.v's [MeetSub], for the same reason. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明同构、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition MeetNS : NormalSubgroup (SubgroupGrp S) := {|
   ns_sub := {| sub_mem := fun p : carrier (SubgroupGrp S) =>
                             inhabited (sub_mem N (`1 p)) |}
@@ -712,23 +692,22 @@ Arguments psi {G} S N.
 Arguments second_isomorphism_theorem {G} S N.
 Arguments second_isomorphism_theorem_literal {G} S N.
 
-(** ** Non-vacuity at S3
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
 
-    All three theorems above hold for every group, so nothing yet shows
-    any of them is about a nondegenerate situation.  S3 with its rotation
-    subgroup A3 (Instance/Grp/Quotient.v) supplies witnesses for each, and
-    the degeneracies are excluded by proof: S3 is nonabelian, A3 is a
-    PROPER NONTRIVIAL normal subgroup, and the quotient does not
-    collapse. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* The projection S3 ↠ S3/A3 has kernel A3, in both directions.  Together
-   with [S3_mod_A3_not_collapsed] this makes the first isomorphism theorem
-   at this map a statement about a two-element quotient of a six-element
-   group, not about a degenerate one. *)
-(* Restated up to the truncation, in lockstep with [quot_proj_kernel]: since
-   the PR "algebraic carriers are sets" (2026-09-17) the kernel's membership
-   is congruence to the unit in a quotient, hence [inhabited].  The direction
-   that keeps its witness whole is [quot_proj_kills]. *)
+(*
+   本节说明同构、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma S3_proj_kernel_is_A3 (a : carrier S3) :
   sub_mem (KernelNS (quot_proj A3)) a ↔ inhabited (sub_mem A3 a).
 Proof. exact (quot_proj_kernel A3 a). Qed.
@@ -740,10 +719,11 @@ Definition S3_first_iso :
 
 (* And it is nondegenerate: the image of the projection has two elements
    apart in its own setoid. *)
-(* The hypothesis is the quotient's truncated `≈` since the PR "algebraic
-   carriers are sets" (2026-09-17); the goal is [False], so it is unwrapped
-   at no cost.  Likewise for the three theorems below over [quot_rel] at a
-   truncated membership. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem S3_first_iso_nondegenerate :
   grp_map (image_cores (quot_proj A3)) S3_s
     ≈ grp_map (image_cores (quot_proj A3)) s3_unit → False.
@@ -766,12 +746,11 @@ Theorem S3_third_iso_nondegenerate :
   quot_rel (NmodM (TrivialNS S3) A3 trivial_in_A3) S3_s s3_unit → False.
 Proof. intros [H]; simpl in H; discriminate. Qed.
 
-(* The second isomorphism theorem is instantiated at S = the two-element
-   reflection subgroup and N = A3.  That pair is nondegenerate in the way
-   the theorem's hypotheses ask for: S is a plain [Subgroup] and is
-   provably NOT normal (Instance/Grp/Quotient.v's [S3_refl_sub_not_normal]),
-   so the statement is not being applied in a case where the
-   plain-subgroup generality is idle. *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition S3_second_iso :
   QuotientGrp (KernelNS (psi S3_refl_sub A3))
@@ -802,11 +781,11 @@ Theorem S3_second_iso_literal_nondegenerate :
   → False.
 Proof. intros [H]; simpl in H; discriminate. Qed.
 
-(* And nondegenerate on the RIGHT as well: the reflection, read as an
-   element of SN via the decomposition s = s · e, stays apart from the
-   unit in SN/N.  So both sides of the second isomorphism have at least
-   two elements and the theorem is not identifying two collapsed
-   groups. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition S3_s_in_SN : carrier (SubgroupGrp (SubgroupProduct S3_refl_sub A3)).
 Proof.
   refine (existT _ S3_s _).

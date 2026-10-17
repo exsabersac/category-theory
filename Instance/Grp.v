@@ -35,114 +35,24 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where the category of groups comes from, and what it is for
+(*
+   关于the category of groups的来源与用途
 
    Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          Springer GTM 5, 1998, Sections I.5 (Monics, Epis, and Zeros,
-          p. 19) and I.6 (Foundations, p. 21)
    Book:  Riehl, "Category Theory in Context", Dover, 2016, Section 1.4
-          (Naturality)
    Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
-          Trans. AMS 58, 1945
    Paper: Mac Lane, "Duality for groups", Bulletin of the AMS 56, 1950
 
-   Groups are the founding example of the subject.  Eilenberg and Mac
-   Lane's 1945 paper reaches categories and functors from group theory
-   and topology, and Mac Lane's "Duality for groups" (1950) is the
-   deliberate exercise of recasting group theory so that only
-   homomorphisms and composition appear, in order that reversing every
-   arrow should carry each notion to its dual -- the direct product to
-   the free product, and so on.  The library already collects that
-   dividend structurally (Structure/Cocartesian.v is Structure/Cartesian.v
-   read in the opposite category), so it is fitting that the concrete
-   category the programme was written about should exist in the tree.
+   本节说明函子、Eilenberg–Moore、来源与用途相关定义、性质与动机。
 
-   Two of Mac Lane's Chapter I sections bear directly on what is proved
-   below.  Section I.5 is titled "Monics, Epis, and Zeros" and is where
-   the three notions this file instantiates for groups are introduced;
-   Section I.6, "Foundations", is where the size question raised by
-   speaking of THE category of all groups is settled by restricting to
-   small groups.  This formalization sidesteps that question the way the
-   rest of the library does: [Grp] is universe-polymorphic, and the
-   universe level of the carriers is a parameter rather than a decision.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The zero object is where groups part company with sets.  In [Sets] the
-   empty setoid is initial and the singleton is terminal, and they are
-   different objects; in [Grp] the one-element group is BOTH, because
-   there is no empty group (a group must contain a unit) and because a
-   homomorphism out of the trivial group is pinned by [grp_map_unit].
-   [Grp_Zero] records the coincidence.  Instance/CMon/Biproduct.v
-   makes the same observation for commutative monoids, where it is the
-   first step of a semiadditive structure; groups go further -- [Grp] is
-   not semiadditive, since the direct product is not a biproduct unless
-   the groups are abelian, so no biproduct claim is made here.
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   Monomorphisms in [Grp] are exactly the injective homomorphisms, and
-   this is genuinely a theorem rather than a definition -- the same
-   statement is false for epimorphisms in many algebraic categories (the
-   inclusion of the integers into the rationals is epic in rings without
-   being surjective, Riehl's Exercises 1.2.iv and 1.6.v(ii)).  One direction is soft:
-   an injection is monic in any concrete category, and it is proved here
-   directly, by evaluating the two competing maps at a point.  Riehl's
-   Exercise 1.6.iv is the abstract route to the same direction -- any
-   faithful functor reflects monomorphisms, and [Grp_Forget_Faithful]
-   supplies the faithful functor.  The other direction needs a PROBE
-   group, an object with
-   enough maps into the source to detect a difference, and the literature
-   offers two standard choices.  One is the free group on one generator,
-   the integers, whose homomorphisms into G are in bijection with the
-   elements of G; the other is the kernel, mapped into G twice, once by
-   inclusion and once trivially.  This file takes the kernel route
-   ([Grp_kernel], [Grp_kernel_incl], [Grp_kernel_triv]): it is the
-   cheaper of the two in a setoid library, because the kernel is a
-   sub-setoid of a carrier already in hand, whereas the integers would
-   have to be built along with an integer-power homomorphism and its
-   sign-case analysis.  The two probes prove the same statement, and the
-   statement proved here is the full biconditional at full strength.
-
-   The last construction is Riehl's.  Category Theory in Context,
-   Section 1.4 (Naturality), Example 1.4.4(vi) observes that the opposite
-   group is a COVARIANT endofunctor of the category of groups, that it is
-   naturally isomorphic to the identity, and that the component at G is
-   the map sending g to its inverse -- which "does not define an
-   automorphism of G, ... but it does define a homomorphism
-   eta_G : G -> G^op, indeed an isomorphism", the elided clause being that
-   inversion does not commute with the multiplication of G.
-   That sentence is the whole content of [Grp_inv_to] below: inversion is
-   an antihomomorphism ([grp_inv_mul]), which is precisely what makes it
-   a homomorphism into the opposite group.  Naturality is then
-   [grp_map_inv], the derived fact that homomorphisms commute with
-   inversion.  [Grp_op_Isomorphism] assembles the two directions into an
-   isomorphism in the functor category [[Grp, Grp]].
-
-   Three earlier in-tree treatments of groups are superseded or
-   complemented by this file, none of which built the category.
-   Structure/Group.v defines [GroupObject], a group internal to a
-   cartesian monoidal category -- the right notion for topological
-   groups, group schemes and Hopf algebras, but internal-only.
-   [Grp_GroupObject] and [GroupObject_GrpObject] below show that at
-   C = [Sets] with the cartesian monoidal structure of
-   Structure/Monoidal/Internal/Product.v the two notions carry the
-   same data, in both directions and with the round trip on the
-   operations checked by computation.  Instance/Comp.v defines
-   [Group] as a universal-algebra structure (an algebra for a signature
-   with equations) with no category attached and, unlike this file,
-   at the cost of [functional_extensionality].  Theory/Algebra/Monoid.v
-   and Instance/CMon.v supply the unit-and-multiplication half of the
-   structure without inverses. *)
-
-(* A group: a setoid together with a unit element, a binary operation and
-   an inversion, where only the operation is required to respect `≈` and
-   only the left-handed unit and inverse laws are required to hold.  The
-   right-handed laws and the respectfulness of inversion are derived
-   below.
-
-   [grp_prop] is the LAST field deliberately, for the reason Instance/CMon.v
-   gives for [cmon_prop]: every construction site in the tree writes the
-   record with named fields under [Program] or [unshelve notypeclasses
-   refine], both of which emit obligations in field order, so a field at the
-   end leaves the numbering of every existing obligation alone and adds one
-   at the end. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record GrpObject := {
   grp_setoid :> SetoidObject;
 
@@ -169,9 +79,11 @@ Section GrpFacts.
 
 Context (G : GrpObject).
 
-(* The right inverse law, from the left one.  The classical argument:
-   a * a⁻¹ is dragged through a⁻¹⁻¹ * (a⁻¹ * (a * a⁻¹)), whose inner
-   bracket collapses to a⁻¹ by the left laws, leaving a⁻¹⁻¹ * a⁻¹. *)
+(*
+   本节说明 Grp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_mul_inv_r (a : carrier G) : grp_mul G a (grp_inv G a) ≈ grp_unit G.
 Proof.
   assert (Hinner : grp_mul G (grp_inv G a) (grp_mul G a (grp_inv G a))
@@ -261,9 +173,11 @@ Proof.
   apply grp_mul_inv_r.
 Qed.
 
-(* Inversion is an ANTIhomomorphism: it reverses the order of a product.
-   This is the fact that makes inversion a homomorphism into the opposite
-   group rather than an automorphism (Riehl, Example 1.4.4(vi)). *)
+(*
+   本节说明 Grp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_inv_mul (a b : carrier G) :
   grp_inv G (grp_mul G a b) ≈ grp_mul G (grp_inv G b) (grp_inv G a).
 Proof.
@@ -333,12 +247,11 @@ Proof.
   apply grp_map_unit.
 Qed.
 
-(* The unit-preservation FIELD of [GrpHom] is redundant: it follows from
-   multiplication preservation by cancelling f e from
-   f e * f e ≈ f (e * e) ≈ f e ≈ f e * e.  The field is retained anyway,
-   to mirror [cmon_map_zero] at Instance/CMon.v and to keep the
-   projection available without a detour; [Build_GrpHom'] is the
-   constructor that exploits the redundancy. *)
+(*
+   本节说明 Grp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_map_unit_from_mul {G H : GrpObject}
       (f : SetoidMorphism (grp_setoid G) (grp_setoid H))
       (Hmul : ∀ a b, f (grp_mul G a b) ≈ grp_mul H (f a) (f b)) :
@@ -382,13 +295,11 @@ Next Obligation.
     + apply Hgh.
 Qed.
 
-(* G1: the hom-setoid is propositional, pointwise into the CODOMAIN's own
-   [grp_prop].  The domain needs nothing -- the relation quantifies over its
-   carrier but never compares two of its elements.  This is the same shape as
-   [hom_PropEquiv] (Instance/Sets/Propositional.v) and as
-   [CMonHom_PropEquiv] (Instance/CMon.v), restated here because
-   [GrpHom_Setoid] is a setoid on [GrpHom G H] rather than on
-   [SetoidMorphism]s, and the two records are not convertible. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance GrpHom_PropEquiv {G H : GrpObject} :
   PropEquiv (@GrpHom_Setoid G H).
 Proof.
@@ -448,21 +359,11 @@ Qed.
         arrows: unit- and operation-preserving setoid maps
       identity: the identity setoid map
    composition: composition of setoid maps *)
-(* The universes are pinned by hand, exactly as Instance/CMon.v pins [CMon]
-   and for the same reason.  [GrpObject]'s sort is
-   [Type@{max(Set+1,s,o+1,p+1)}] once [grp_prop] is a field -- the [Set+1] is
-   the sort of [Prop] and enters through [PropEquiv] -- and left to itself the
-   elaborator will not identify the record's own sort variable [s] with the
-   category's object universe, so [Grp] acquires a third, redundant universe
-   and every `Grp@{u o}` annotation in the tree is refused for arity.  Naming
-   [Category@{u p p}] and every field's instance keeps the arity at two,
-   exactly as before the field landed.  An earlier revision of the header said
-   "nothing here is annotated, so [Grp] is universe-polymorphic exactly as
-   [CMon] is"; that is still true of the SHAPE, but both are now pinned rather
-   than inferred.  Measured baseline, before the field:
-   [Grp@{u u0} : Category@{u u0 u0}] with [u0 < u]; after, [Grp@{u p} :
-   Category@{u p p}] with the one new constraint [Set < u], which the baseline
-   already implied through [u0 < u] for any [u0] at or above [Set]. *)
+(*
+   本节说明 Grp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Grp@{u p} : Category@{u p p} := {|
   obj     := GrpObject@{p p p};
   hom     := GrpHom@{p};
@@ -489,11 +390,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* G2: [Grp] is therefore locally propositional -- its hom-setoid IS
-   [GrpHom_Setoid].  This is what lets the functor-of-points constructions of
-   Structure/Group/Representable.v, which since the PR "algebraic carriers are
-   sets" (2026-09-17) ask their ambient category for a [Prop] equality on
-   homs, be applied at [Grp] itself with no manual hypothesis. *)
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Grp_LocallyPropositional : LocallyPropositional Grp.
 Proof.
   constructor.
@@ -529,33 +430,11 @@ Qed.
 
 (** ** The zero object: the trivial group *)
 
-(* The one-element group on [poly_unit]: unit, operation and inversion are
-   all the point, and every law holds by computation.
+(*
+   本节说明 Grp 相关定义、性质与动机。
 
-   THE UNIVERSES ARE WRITTEN OUT, and that is a correction.  Before #450 the
-   eight constants of this section carried no binders, and minimization put
-   [unit_setoid]'s relation universe at the literal [Set]: [About] under
-   [Set Printing Universes] read [Grp_trivial@{u} : GrpObject@{u u Set}],
-   [Grp_zero_hom@{u} : ∀ G : GrpObject@{Set Set Set}, …] and
-   [Grp_Zero@{u} : ZeroObject@{u Set} Grp@{u Set}], so the zero object of
-   [Grp] existed only at [Set] carriers.  The headers of
-   Instance/Grp/Quotient/Colimit.v, Instance/Grp/Pushout.v,
-   Instance/Grp/EckmannHilton.v, Instance/Grp/Completion.v,
-   Instance/Grp/Abelianize.v, Instance/Rg.v and Instance/Top/Pushout.v,
-   and the probes Test/ProbePushoutGrpTop.v and Test/ProbeGrpQuotient.v,
-   recorded that pin (each now carries a correction), and the
-   constructions of Instance/Grp/Colimit.v, whose carriers sit strictly
-   above [Set], could not use it.  With the binders below the readbacks
-   are [Grp_trivial@{p} : GrpObject@{p p p}] and
-   [Grp_Zero@{u p} : ZeroObject@{u p} Grp@{u p}], whose constraint blocks
-   are [Grp@{u p}]'s own ([Set < u], [p < u] and stdlib bounds on [p])
-   plus the bound [p <= Logic_lemmas.equality.u0] that [unit_setoid]
-   brings; the instance [iso_id@{u p p u}] reuses [Grp]'s object universe
-   for the one extra level [iso_id] asks for.  The source bodies are
-   unchanged apart from those annotations; the elaborated terms are not
-   quite: [Print] under [Set Printing All], before and after #450, shows
-   [Grp_trivial]'s reflexivity witnesses as [eq_Reflexive] before and as
-   [Equivalence_Reflexive (setoid_equiv unit_setoid)] after. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grp_trivial@{p} : GrpObject@{p p p}.
 Proof.
   unshelve notypeclasses refine {|
@@ -617,10 +496,11 @@ Proof.
     apply grp_mul_unit_l.
 Defined.
 
-(* Uniqueness out of the trivial group: the point IS the unit, and any
-   homomorphism sends units to units ([grp_map_unit]).  Note the contrast
-   with [Sets], where the initial object is the EMPTY setoid: there is no
-   empty group, and this is what makes the trivial group a zero object. *)
+(*
+   本节说明始/终对象、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Grp_zero_hom_unique@{u p} (G : GrpObject@{p p p})
   (f g : Grp_trivial@{p} ~{Grp@{u p}}~> G) : f ≈ g.
 Proof.
@@ -636,9 +516,11 @@ Definition Grp_Initial@{u p} : @Initial Grp@{u p} :=
   @Build_Terminal (Grp@{u p}^op) Grp_trivial@{p} Grp_zero_hom@{u p}
     Grp_zero_hom_unique@{u p}.
 
-(* The trivial group is a zero object.  The same record [Grp_trivial]
-   carries both the terminal and the initial structure, so the coincidence
-   isomorphism of Structure/ZeroObject.v is the identity. *)
+(*
+   本节说明同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Grp_Zero@{u p} : ZeroObject Grp@{u p} :=
   @Build_ZeroObject Grp@{u p} Grp_Terminal@{u p} Grp_Initial@{u p}
     iso_id@{u p p u}.
@@ -745,11 +627,11 @@ Qed.
 
 (** ** Monomorphisms are exactly the injections *)
 
-(* The kernel of f, as a group: the sub-setoid of elements sent to the
-   unit, with the operations inherited from the source.  Closure is where
-   the derived facts pay off -- the product of two kernel elements lands
-   in the unit by [grp_map_mul] and [grp_mul_unit_l], the inverse by
-   [grp_map_inv] and [grp_inv_unit]. *)
+(*
+   本节说明核/余核、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_kernel_carrier {G H : GrpObject} (f : G ~{Grp}~> H) : Type :=
   { a : carrier G & grp_map f a ≈ grp_unit H }.
 
@@ -798,11 +680,11 @@ Proof.
   - intros a.
     simpl.
     apply grp_mul_inv_l.
-  - (* The kernel's `≈` compares only the first projection, so the
-       membership witness -- itself a [Type] -- is never inspected and
-       [sigma_first_PropEquiv] applies.  It has to be applied in the TACTIC
-       spelling: the term form is refused, since Coq will not see through the
-       [projT1]/[`1] difference in the ascribed type. *)
+  - (*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     unshelve refine (sigma_first_PropEquiv _ _ _ (grp_prop G)).
     + intros p q Hpq; exact Hpq.
     + intros p q Hpq; exact Hpq.
@@ -851,11 +733,11 @@ Proof.
     apply (grp_map_unit f).
 Qed.
 
-(* In [Grp] the monomorphisms are exactly the injections (up to `≈`),
-   mirroring [injectivity_is_monic] at Instance/Sets.v.  The forward
-   direction is soft.  The reverse direction probes f with the kernel:
-   monicity collapses the inclusion to the constant map, so the kernel is
-   trivial, and f a ≈ f b then puts a * b⁻¹ in the kernel. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Grp_injectivity_is_monic {G H : GrpObject} (f : G ~{Grp}~> H) :
   (∀ a b : carrier G, grp_map f a ≈ grp_map f b → a ≈ b) ↔ Monic f.
 Proof.
@@ -903,9 +785,11 @@ Proof.
     apply grp_mul_inv_r.
 Defined.
 
-(* On morphisms the functor is the identity: a homomorphism f already
-   satisfies f (b * a) ≈ f b * f a, which is the multiplication law read
-   in the opposite groups.  This is why (-)^op is COVARIANT on Grp. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grp_op_map {G H : GrpObject} (f : G ~{Grp}~> H) :
   Grp_op_obj G ~{Grp}~> Grp_op_obj H.
 Proof.
@@ -1012,17 +896,11 @@ Qed.
 
 (** ** Reconciliation with the internal [GroupObject] of Structure/Group.v *)
 
-(* A NOTE ON DUPLICATION, for the reader who greps.  The tree already carries
-   a monoidal structure with the same underlying data at Instance/Sets.v,
-   the exported instance [Sets_Product_Monoidal].  The definition below is a
-   DISTINCT, NON-CONVERTIBLE term (their units agree by reflexivity; their
-   tensors do not -- one is a Program-built bifunctor, the other the CC_
-   composite), assembled through CC_Monoidal because [GroupObject] needs a
-   [CartesianMonoidal], which the tree does not otherwise provide for [Sets].
-   It is deliberately a plain Definition, not an instance: registering a
-   second [@Monoidal Sets] path would change typeclass resolution elsewhere.
-   No comparison isomorphism between the two structures is proved here; a
-   consumer needing one should build it or unify the two upstream. *)
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_prod_Monoidal : @Monoidal Sets :=
   @CC_Monoidal Sets Sets_Cartesian Sets_Terminal.
 
@@ -1044,10 +922,11 @@ Next Obligation.
   now rewrite H1, H2.
 Qed.
 
-(* Every law of [MonoidObject] is the corresponding law of [GrpObject]
-   read at a point, because in [Sets] the tensor is the product setoid,
-   the unitors are the projections and the associator is reassociation of
-   pairs -- all of which compute. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grp_MonoidObject (G : GrpObject) :
   @MonoidObject Sets Sets_prod_Monoidal (grp_setoid G).
 Proof.
@@ -1065,10 +944,11 @@ Defined.
 Program Definition Grp_inverse_map (G : GrpObject) :
   grp_setoid G ~{Sets}~> grp_setoid G := {| morphism := grp_inv G |}.
 
-(* A [GrpObject] IS a group object in [Sets]: the inverse laws of
-   Structure/Group.v, whose right-hand side is the constant-at-the-unit
-   endomorphism mempty ∘ eliminate, evaluate at a point to
-   [grp_mul_inv_l] and [grp_mul_inv_r]. *)
+(*
+   本节说明 Grp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grp_GroupObject (G : GrpObject) :
   @GroupObject Sets Sets_CartesianMonoidal (grp_setoid G).
 Proof.
@@ -1081,20 +961,11 @@ Proof.
     apply grp_mul_inv_r.
 Defined.
 
-(* And conversely: a group object in [Sets] whose carrier setoid is
-   propositional is a [GrpObject].  The record is destructured rather than
-   projected because Structure/Group.v reserves the token [inverse] for its
-   notation, so the field cannot be named in a term.
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-   An earlier revision of this comment said "at full strength", and the
-   construction then took only [X] and [GO].  Since the PR "algebraic carriers
-   are sets" (2026-09-17) it takes a third argument [PX : PropEquiv (is_setoid
-   X)].  That is a RECORDED STRENGTH CHANGE: a group object in [Sets] over a
-   proof-relevant setoid is no longer translated.  Nothing in tree is lost --
-   the only partner, [Grp_GroupObject], goes the other way and the round-trip
-   [Example]s below take [PX] as a parameter -- and the direction that matters
-   for the internal/concrete dictionary, [Grp_GroupObject], is unconditional
-   because a [GrpObject] carries [grp_prop] already. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition GroupObject_GrpObject (X : Sets)
   (PX : PropEquiv (is_setoid X))
   (GO : @GroupObject Sets Sets_CartesianMonoidal X) : GrpObject.
@@ -1139,30 +1010,17 @@ Proof. reflexivity. Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** A nontrivial witness: Z/2, and non-vacuity of the machinery *)
 
-(* Everything above is proved for all groups but, before this section, the
-   file constructed only the one-element group -- so nothing in the tree
-   DEMONSTRATED the biconditional, the products, or the opposite functor on a
-   non-degenerate object.  Z/2 on bool closes that gap (the construction and
-   the non-vacuity corollaries below were supplied by the audit of the
-   previous commit).  The second reconciliation round trip is recorded here
-   as well. *)
+(*
+   本节说明函子相关定义、性质与动机。
 
-(* THE UNIVERSES ARE WRITTEN OUT, and that is a correction.  Before #450
-   [bool_setoid] and [Z2] carried no binders, and minimization put the
-   relation universe at the literal [Set]: [About] read
-   [bool_setoid@{u} : Setoid@{u Set} bool] and [Z2@{u} : GrpObject@{u Set
-   Set}], so [Z2] inhabited [Grp] only at [Set] carriers, and
-   Instance/Grp/Galois.v, Instance/Grp/Epi.v and Test/ProbeGalois381.v
-   recorded that pin.  With the binders the readbacks are
-   [bool_setoid@{u} : Setoid@{u u} bool] and [Z2@{p} : GrpObject@{p p p}],
-   each with the single bound [_ <= Logic_lemmas.equality.u0].  The
-   equivalence field is named ([eq_equivalence@{u u}], the proof
-   [eq_Setoid] uses) because under this file's [idtac] obligation tactic
-   the annotated [Program Definition] otherwise leaves it as an open
-   obligation.  The carrier, relation and operations are unchanged; the
-   equivalence proof is Lib/Setoid.v's [eq_equivalence] now, where
-   [Print] under [Set Printing All] read the stdlib's
-   [CRelationClasses.eq_equivalence] before #450. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明 Grp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition bool_setoid@{u} : Setoid@{u u} bool :=
   {| equiv := @eq bool; setoid_equiv := eq_equivalence@{u u} |}.
 

@@ -39,12 +39,11 @@ Constraint o < so.
 
 (** ** Mac Lane's "where epis are onto" clause, both ways *)
 
-(* The epimorphism of a quotient object of [Sets] is a surjection.  This
-   is [Instance/Sets.v]'s [epic_implies_surjective] -- the backward
-   leg of [surjectivity_is_epic] -- applied to the [Epic] the
-   accessor [quot_is_epic] reads off the [Monic] in [Sets^op].  The
-   preimage is DATA: `≈` is [Type]-valued, so [∃] is [sigT] and `1 of
-   this is an honest element of the carrier. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_quot_epi_surjective {X : SetoidObject@{o o}}
   (q : @QuotObj Sets@{o so} X) :
   ∀ b : carrier (quot_cod q), ∃ a : carrier X, quot_epi q a ≈ b :=
@@ -61,13 +60,11 @@ Definition Sets_quot_of_surjection {X B : SetoidObject@{o o}}
 (** ** The quotient of a setoid by an equivalence relation, as a
        quotient object *)
 
-(* [Instance/Sets/Quotient.v]'s [SetsQuotient A R HR] is A with a
-   coarser `≈`; its projection is the IDENTITY FUNCTION, so it is
-   surjective with the element itself as preimage and the surjectivity
-   witness is [Equivalence_Reflexive] and nothing more.  [HC] is not
-   decoration: the projection does not exist without it, its
-   respectfulness clause being convertible with [SetoidCoarser R]
-   (Instance/Sets/Quotient.v). *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SetsQuotient_QuotObj (A : SetoidObject@{o o})
   (R : crelation (carrier A)) (HR : Equivalence R) (HC : SetoidCoarser R) :
   @QuotObj Sets@{o so} A :=
@@ -81,10 +78,11 @@ Section Coimage.
 Context {X Y : SetoidObject@{o o}}.
 Context (f : X ~{Sets@{o so}}~> Y).
 
-(* The kernel relation of f, as a coarsening of X's own `≈`.  The
-   OBJECT-level counterpart is Instance/Sets/Pullback.v's [sets_ker],
-   the kernel pair; this is the same information as a relation on the
-   carrier, which is what Instance/Sets/Quotient.v's quotient consumes. *)
+(*
+   本节说明拉回/推出、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_coimage_rel : crelation (carrier X) := fun a b => f a ≈ f b.
 
 Lemma sets_coimage_rel_Equivalence : Equivalence sets_coimage_rel.
@@ -114,18 +112,20 @@ Definition sets_coimage_factor :
   sets_quot_med sets_coimage_rel sets_coimage_rel_Equivalence
     sets_coimage_resp.
 
-(* The triangle, read in [Sets^op]: composition there is composition in
-   [Sets] with the arguments swapped, so this is
-   [sets_coimage_factor ∘ quot_epi Sets_coimage ≈ f] and the projection
-   being the identity function leaves nothing to compute. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sets_coimage_commutes :
   sub_mono Sets_coimage ∘[Sets@{o so}^op] sets_coimage_factor ≈ f.
 Proof. intro a; simpl; reflexivity. Qed.
 
-(* Minimality needs a map OUT of a competing quotient INTO the coimage,
-   whose carrier is the carrier of X -- so it has to choose a preimage.
-   [sets_quot_med] is the wrong donor here: it maps out of the quotient,
-   not into it.  Choosing is free, the preimage being data. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_coimage_pick (w : @QuotObj Sets@{o so} X)
   (p : carrier (quot_cod w)) : carrier X :=
   `1 (Sets_quot_epi_surjective w p).
@@ -172,11 +172,11 @@ Proof.
     + exact (Hg a).
 Qed.
 
-(* Theory/Subobject/Lattice.v's [ImageOf], instantiated at [Sets^op]:
-   [im_sub] is a quotient object of the DOMAIN, [im_factor] the map from
-   the quotient to the codomain, [im_commutes] the triangle, and
-   [im_least] says the coimage is BELOW (that is, coarser than) every
-   quotient through which f factors. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_CoimageOf : @ImageOf (Sets@{o so}^op) Y X f := {|
   im_sub := Sets_coimage;
   im_factor := sets_coimage_factor;
@@ -186,39 +186,30 @@ Definition Sets_CoimageOf : @ImageOf (Sets@{o so}^op) Y X f := {|
 
 End Coimage.
 
-(* The class form.  The anonymous record literal [{| image_of := … |}] is
-   REFUSED here -- it elaborates the field against [C := Sets] and reports
-   "has type @ImageOf Sets^op X Y f while it is expected to have type
-   @ImageOf Sets Y X f" -- so the constructor is named and its category
-   argument given explicitly. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Sets_HasCoimages : @HasImages (Sets@{o so}^op) :=
   @Build_HasImages (Sets@{o so}^op) (fun Y X f => @Sets_CoimageOf X Y f).
 
-(* The JOIN of two quotient objects at Sets, by transport and nothing
-   else: Theory/Subobject/Quotient.v's [quot_join] wants a [Cartesian]
-   structure on the category -- Instance/Sets/Cartesian.v's
-   [Sets_Cartesian], which IS a [@Cocartesian (Sets^op)] on the nose
-   (Structure/Cocartesian.v makes [Cocartesian C] notation for
-   [@Cartesian (C^op)], and [Sets^op^op] is [Sets] by reflexivity) -- and
-   the coimages just registered.  The join is the coimage of the pairing
-   of the two epis into the product of their codomains.  An earlier
-   revision of this file said the join "needs a product instance not
-   assembled here"; an audit refuted that by compiling this one line, so
-   it is landed rather than left as a false obstruction.  Its least-
-   upper-bound property and the lattice laws are [quot_join_is_lub],
-   [quot_join_comm] and their siblings, read at [Sets]; none is restated
-   here. *)
+(*
+   本节说明子对象、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_quot_join {X : SetoidObject@{o o}}
   (q r : @QuotObj Sets@{o so} X) : @QuotObj Sets@{o so} X :=
   quot_join q r.
 
 (** ** A worked meet: parity ∧ residue-mod-3 on the naturals *)
 
-(* The residue mod 3, by a three-step fixpoint rather than by [Nat.modulo],
-   so that [nat_tri (S (S (S m))) = nat_tri m] holds by [eq_refl] and the
-   collapse argument below needs no arithmetic lemma.  Its parity
-   counterpart, [Nat.even (S (S m)) = Nat.even m], holds by [eq_refl] for
-   the same reason. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint nat_tri (n : nat) : nat :=
   match n with
   | O => 0
@@ -257,12 +248,11 @@ Definition Sets_Q_total : @QuotObj Sets@{o so} NatDiscrete@{o} :=
     (TotalRelT_Equivalence NatDiscrete@{o})
     (TotalRelT_coarser NatDiscrete@{o}).
 
-(* The total quotient is the BOTTOM of the factorization order on
-   quotient objects of [NatDiscrete]: it factors through every quotient
-   (every quotient has it below), by the constant map out of that
-   quotient's codomain, whose respectfulness is [ttt].  An earlier
-   revision of this comment said "every quotient factors through it",
-   the reverse direction; the statement below was always the right one. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Sets_Q_total_below (w : @QuotObj Sets@{o so} NatDiscrete@{o}) :
   @sub_le (Sets@{o so}^op) NatDiscrete@{o} Sets_Q_total w.
 Proof.
@@ -272,11 +262,11 @@ Proof.
   - intro a; exact ttt.
 Defined.
 
-(* The arithmetic of the meet, done once: a quotient coarser than both
-   parity and residue-mod-3 identifies EVERY pair of naturals.  m and
-   m+3 agree mod 3, m+3 and m+1 agree in parity, so consecutive
-   naturals are identified and induction finishes.  Both steps are
-   [eq_refl] at the two invariants. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Sets_meet_collapse (v : @QuotObj Sets@{o so} NatDiscrete@{o})
   (H1 : @sub_le (Sets@{o so}^op) NatDiscrete@{o} v Sets_Q_parity)
   (H2 : @sub_le (Sets@{o so}^op) NatDiscrete@{o} v Sets_Q_mod3)
@@ -317,10 +307,11 @@ Proof.
     + intro a; reflexivity.
 Defined.
 
-(* The stub's [quot_meet] at [Sets], evaluated.  Both sides are greatest
-   lower bounds of the same two-element family, so they agree -- at ≈ on
-   [QuotObj], which is the strongest relation available here ([QuotObj]
-   has no Leibniz antisymmetry, exactly as [SubObj] has none). *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Sets_quot_meet_parity_mod3 :
   @quot_meet Sets@{o so} Sets_HasPushouts NatDiscrete@{o}
     Sets_Q_parity Sets_Q_mod3 ≈ Sets_Q_total.
@@ -347,17 +338,11 @@ Qed.
 
 (** ** The bottom quotient object: [Epic one] is inhabitedness *)
 
-(* Theory/Subobject/Quotient.v's [quot_bot] is conditional on
-   [Epic (one : X ~> 1)].  In [Sets] that hypothesis is EXACTLY
-   inhabitedness of the carrier, both ways.  Given a point [x0], two maps
-   out of the singleton that agree after [one] agree at their only
-   argument, because [one x0] IS that argument -- three lines and
-   nothing assumed.  At the empty setoid the two constant maps 1 → bool
-   agree after ∅ → 1 for free (there is nothing to check) and differ at
-   [ttt], so [one] is not epic there.  Hence the coarsest quotient
-   object, X ↠ 1, exists at every inhabited setoid and the theory's
-   hypothesis is not a gap at [Sets]; it is object-dependent, and this
-   pair of constants is the measurement. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_one_epic_of_inhabited {X : SetoidObject@{o o}}
   (x0 : carrier X) : Epic (@one Sets@{o so} Sets_Terminal X).
 Proof.

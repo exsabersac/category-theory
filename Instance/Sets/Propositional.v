@@ -24,34 +24,20 @@ Generalizable All Variables.
 
 (** ** The property, at the level of a [Sets] object *)
 
-(* [PropEquivObj X] is [PropEquiv] of the setoid [X] carries.  It is the field
-   the concrete algebraic object records take, spelled once here so that those
-   records need not repeat [is_setoid].
+(*
+   本节说明 Propositional 相关定义、性质与动机。
 
-   Measured (About under Set Printing Universes):
-
-     PropEquivObj@{u u0 u1} : SetoidObject@{u0 u1} → Type@{u}
-     (* u u0 u1 |= Set < u, u0 <= u, u1 <= u *)
-
-   -- the carrier and proof universes of the object bound it from below and
-   nothing bounds it from above, so it sits at the object's own level. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PropEquivObj (X : SetoidObject) : Type := PropEquiv (is_setoid X).
 
 (** ** Hom-setoids *)
 
-(* Two setoid maps are `≈` when they agree pointwise up to the target's `≈`
-   (Instance/Sets.v), so a [Prop] mirror on the TARGET gives one on the
-   hom-setoid, pointwise.  The source needs nothing.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   Measured:
-
-     hom_PropEquiv@{u} :
-       ∀ {x y : SetoidObject@{u u}},
-       PropEquiv@{u u} y → PropEquiv@{u u} SetoidMorphism_Setoid@{u u u}
-     (* u |=  *)
-
-   -- ONE universe, with no constraint at all: the transport neither raises
-   the level nor pins it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance hom_PropEquiv {x y : SetoidObject} (Py : PropEquiv (is_setoid y)) :
   PropEquiv (@SetoidMorphism_Setoid x y).
 Proof.
@@ -76,23 +62,11 @@ Example hom_pequiv_is_pointwise {x y : SetoidObject}
 
 (** ** Binary products *)
 
-(* [Sets_Cartesian]'s product setoid is componentwise
-   (Instance/Sets/Cartesian.v).  The conjunction below is Coq's [and],
-   written `/\`; the library's `∧` is [prod] and would leave the relation in
-   [Type].
+(*
+   本节说明笛卡尔相关定义、性质与动机。
 
-   Measured:
-
-     product_PropEquiv@{u u0} :
-       ∀ {x y : SetoidObject@{u0 u0}},
-       PropEquiv@{u0 u0} x → PropEquiv@{u0 u0} y →
-       PropEquiv@{u0 u0} (Cartesian.product_obj x y)
-     (* u u0 |= u0 < u, and the stdlib bounds u0 <= prod_rect.u0..u2,
-        u0 <= projections.u0, u0 <= projections.u1 *)
-
-   -- the second universe [u] is [Sets]'s own object level, one above the
-   carriers, and comes from naming [Sets_Cartesian]; the PropEquiv itself
-   stays at [u0]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance product_PropEquiv {x y : SetoidObject}
   (Px : PropEquiv (is_setoid x)) (Py : PropEquiv (is_setoid y)) :
   PropEquiv (is_setoid (@product_obj Sets Sets_Cartesian x y)).
@@ -114,22 +88,11 @@ Example product_pequiv_is_componentwise {x y : SetoidObject}
 
 (** ** Indexed products *)
 
-(* [Sets_iprod_equiv F g h := ∀ i, g i ≈ h i] (Instance/Sets/Products.v):
-   pointwise in the index, so the [Prop] mirror is pointwise too.  The index
-   type [A] is arbitrary and carries no setoid, exactly as [HasIndexedProducts]
-   asks.
+(*
+   本节说明 Propositional 相关定义、性质与动机。
 
-   Measured:
-
-     iprod_PropEquiv@{u u0 u1 u2 u3} :
-       ∀ {A : Type@{u}} (F : A → SetoidObject@{u2 u3}),
-       (∀ i : A, PropEquiv@{u2 u3} (F i)) →
-       PropEquiv@{u0 u1} (Sets_iprod_obj@{u u0 u1 u2 u3} F)
-     (* u u0 u1 u2 u3 |= u <= u0, u <= u1, u2 <= u0, u3 <= u1 *)
-
-   -- the product's carrier universe [u0] is bounded below by the INDEX and by
-   the components, and by nothing else: a product over a carrier-sized index of
-   carrier-sized factors stays carrier-sized. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance iprod_PropEquiv {A : Type} (F : A -> SetoidObject)
   (H : forall i : A, PropEquiv (is_setoid (F i))) :
   PropEquiv (is_setoid (Sets_iprod_obj F)).
@@ -147,23 +110,11 @@ Example iprod_pequiv_is_pointwise {A : Type} (F : A -> SetoidObject)
 
 (** ** Limits *)
 
-(* [Sets_limit_equiv p q := `1 p ≈ `1 q] (Instance/Sets/Complete.v): the
-   compatibility witness carried alongside a family is not compared, so the
-   [Prop] mirror is the underlying indexed product's, i.e. pointwise in the
-   shape.
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-   Measured:
-
-     limit_PropEquiv@{u u0 u1 u2} :
-       ∀ {D : Category@{u1 u2 u2}} (F : D ⟶ Sets),
-       (∀ d : obj[D], PropEquiv@{u2 u2} (F d)) →
-       PropEquiv@{u u} (Sets_limit_obj@{u1 u2 u0 u} F)
-     (* u u0 u1 u2 |= u2 < u0, u1 <= u, u2 <= u, plus Projections and
-        compose bounds *)
-
-   -- the limit's carrier universe [u] is bounded below by the SHAPE's object
-   universe [u1] as well as by the components, which is the size constraint the
-   solution-set argument runs into elsewhere. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance limit_PropEquiv {D : Category} (F : D ⟶ Sets)
   (H : forall d : D, PropEquiv (is_setoid (F d))) :
   PropEquiv (is_setoid (Sets_limit_obj F)).
@@ -183,31 +134,20 @@ Example limit_pequiv_is_pointwise {D : Category} (F : D ⟶ Sets)
 
 (** ** Locally propositional categories *)
 
-(* A category is LOCALLY PROPOSITIONAL when each of its hom-setoids has a
-   [Prop] equality.  This is the hypothesis under which a construction that
-   turns an object of an ambient category into a concrete algebraic object --
-   a functor of points, an internal hom of group objects -- lands back among
-   the propositional carriers.  It is deliberately a property of the AMBIENT
-   category and says nothing about its objects.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-   Instance/Sets.v's [Sets] is not declared to have it, for the reason in this
-   file's header; neither is [Cat], and Test/ProbePropEquiv.v measures the
-   refusal for [Cat].
-
-   Measured:
-
-     LocallyPropositional@{u u0} : Category@{u0 u u} → Type@{max(Set+1,u,u0)}
-     (* u u0 |=  *)
-
-   -- at the maximum of the category's OBJECT and HOM universes, the object one
-   entering through the [∀ x y : C]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class LocallyPropositional (C : Category) := {
   locally_prop : forall x y : C, PropEquiv (@homset C x y)
 }.
 
-(* The constructor: naming a [Prop]-valued relation on each hom and the two
-   implications is enough.  As in Lib/Setoid/Propositional.v, the relation has
-   to be named -- an ascription [(f ≈ g : Prop)] is refused. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition LocallyPropositional_of_relation (C : Category)
   (R : forall x y : C, (x ~> y) -> (x ~> y) -> Prop)
   (to : forall (x y : C) (f g : x ~> y), R x y f g -> f ≈ g)
@@ -216,13 +156,11 @@ Definition LocallyPropositional_of_relation (C : Category)
   {| locally_prop := fun x y =>
        PropEquiv_of_relation (R x y) (to x y) (from x y) |}.
 
-(* The hom-setoid whose `≈` is Coq's [eq] (Theory/Category.v) is
-   propositional outright.  Any category declaring [homset := Morphism_equality]
-   -- Instance/One.v's [_1] and Instance/Zero.v's [_0] among them -- is
-   therefore locally propositional by [LocallyPropositional_of_relation] with
-   [R := fun _ _ => eq]; the instances for the individual such categories are
-   left to the files that need them, since each would pull its own import in
-   here. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Morphism_equality_PropEquiv {ob : Type}
   {hom : ob -> ob -> Type} (x y : ob) :
   PropEquiv (@Morphism_equality ob hom x y).

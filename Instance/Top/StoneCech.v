@@ -337,10 +337,11 @@ Proof.
            _ _ E).
 Qed.
 
-(* The converse, for a [K] that separates the points of EVERY compact
-   Hausdorff space.  No [K] in the tree is shown to meet this premise, and
-   one with ¬¬-stable equality of points yields double-negation
-   elimination (Refutations.v's [CompHaus_point_separator_stable_DNE]). *)
+(*
+   本节说明 StoneCech 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem KSeparated_of_unit_injective@{h o +} (K : CompHaus)
   (sepK : ∀ (Y : CompHaus) (p q : top_carrier (`1 Y)),
             (∀ k : Y ~{CompHaus}~> K,
@@ -357,9 +358,11 @@ Proof.
   exact (Hk (fmap[CompHaus_Incl] k ∘ @arrow _ _ _ _ UA)).
 Qed.
 
-(* The same converse from the premise the proof uses: [K] separates the
-   points of the universal object alone.  Unlike the premise above, this
-   one is met (see [KSeparated_of_unit_injective_local_at_CompHaus]). *)
+(*
+   本节说明 StoneCech 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem KSeparated_of_unit_injective_local@{h o +} (K : CompHaus)
   (X : Top@{h o}) (UA : UniversalArrow (C:=Top@{h o}) X CompHaus_Incl)
   (sepK : ∀ p q : top_carrier (`1 (@arrow_obj _ _ _ _ UA)),

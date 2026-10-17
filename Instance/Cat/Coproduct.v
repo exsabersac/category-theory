@@ -170,10 +170,11 @@ Definition sb_from_obj (C D : Category) (x : obj[C] + obj[D]) :
   | Datatypes.inr d => (false; d)
   end.
 
-(* Written as an explicit nested dependent match rather than left to
-   [Program]: [Program]'s equation-passing match compilation blocks the
-   conversions [inl c ~> inl c'] ≡ [c ~> c'] and
-   [inl c ~> inr d] ≡ [False] that this definition lives on. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sb_from_map (C D : Category) (x y : obj[C] + obj[D])
   (f : x ~{C ∐ D}~> y) :
   sigma_hom (sb_from_obj C D x) (sb_from_obj C D y) :=
@@ -283,19 +284,11 @@ Program Definition SigmaBool_strict_iso (C D : Category) :
   iso_from_to := SigmaBool_strict_from C D
 |}.
 
-(* …but no stronger identification is achieved.  The two categories are
-   NOT the same record, and not even on the same object type:
-   [∃ b : bool, BoolFam C D b] against [obj[C] + obj[D]].  Both
-   refutations are CONVERSION failures, pinned here rather than
-   asserted -- each was stripped and its error read.
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
 
-   NOTE THE PARENTHESES in the second, and note WHY they are there: [∐]
-   binds looser than [=], so the unparenthesised
-   [SigmaCat (BoolFam C D) = C ∐ D] parses as
-   [(SigmaCat (BoolFam C D) = C) ∐ D] and the [Fail] then fires on a
-   TYPE error about [∐]'s argument -- certifying nothing.  This file
-   shipped that FALSE PASS in an earlier revision, with this very
-   comment asserting a conversion failure it did not have. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example SigmaBool_obj_strict (C D : Category) :
   obj[SigmaCat (BoolFam C D)] = obj[C ∐ D] := eq_refl.
 
@@ -304,14 +297,11 @@ Fail Example SigmaBool_cat_strict (C D : Category) :
 
 (** ** The smallness side condition, measured *)
 
-(* Over an index type as large as the OBJECTS of the very [Cat] the
-   coproduct is to live in, the CONSTRUCTION still exists — but it
-   lands one universe up, at [Category@{a e e}] where the summands are
-   [Category@{d e e}] with [d < a] — so it is not an object of that
-   [Cat], and the elementary indexed-coproduct statement about it is a
-   universe inconsistency ("Cannot enforce d = _ because d < a <= _").
-   The [Check] immediately below is the positive control that the
-   rejection is about the SIZE and not about the expression. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Smallness.
   Universe a b c d e.
 

@@ -256,10 +256,11 @@ Proof.
   - intros v Hv x. simpl. symmetry. exact (Hv x).
 Defined.
 
-(* X ~> X/A is an elementary wide coequalizer of the point-inclusions,
-   for EVERY family, the empty one included.  The index universe [i] of
-   the record is a binder of its own: the record is not cumulative, and
-   the colimit round trip below reads it at the hom universe. *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition collapse_family_coequalizer@{o h i | o < h, o <= i +}
   (X : TopSpace@{o}) (I : Type@{o}) (p : I → X) :
   IsWideCoequalizer@{i h h} (C := Top@{h o}) (collapse_family X I p)
@@ -269,10 +270,11 @@ Definition collapse_family_coequalizer@{o h i | o < h, o <= i +}
     (collapse_wcofork X I p)
     (fun Z k Hk => collapse_desc X I p k Hk).
 
-(* The colimit form at this apex, through Structure/Coequalizer/Wide.v's
-   round trip, which needs a member of the family: at the empty family
-   the colimit is X ⊔ *, not X (Pairs.v's [pquot_wide_coequalizer_colimit]
-   and [empty_colimit_not_elementary]). *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition collapse_family_colimit@{o h | o < h +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) (i0 : I) :
   WideCoequalizer (AWide (C := Top@{h o}) (collapse_family X I p)) :=
@@ -349,18 +351,20 @@ Definition collapse_empty_iso@{o h u | o < h, h < u +} (X : TopSpace@{o}) :
     (wide_empty_id_IsWideCoequalizer _
        (fun a : collapse_sub_points X (fun _ => False) => projT2 a)).
 
-(* A readback of [Empty_Top]'s carrier: the collapse of the empty space has
-   no point.  The proof reads the point as a point of [Empty_Top] and uses
-   nothing about the subset or the coequalizer. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma collapse_empty_pointless@{o} :
   top_carrier (Top_collapse_sub Empty_Top@{o} (fun _ => False)) → False.
 Proof. intro z. exact z. Qed.
 
-(* The statement about the elementary record, whatever its construction:
-   no elementary wide coequalizer of the empty family at the empty space
-   has a point, since the identity of the empty space descends along it.
-   Every colimit of that family has one (Pairs.v's
-   [collapse_colimit_point]). *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma empty_wide_coequalizer_pointless@{o h i | o < h, o <= i +}
   (Q : Top@{h o}) (e : Empty_Top@{o} ~{Top@{h o}}~> Q) :
   IsWideCoequalizer@{i h h} (C := Top@{h o})

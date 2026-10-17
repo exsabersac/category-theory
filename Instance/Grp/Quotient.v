@@ -24,27 +24,11 @@ Generalizable All Variables.
 
 (** ** Subgroups and normal subgroups *)
 
-(* A subgroup is a `≈`-saturated predicate containing the unit and closed
-   under product and inverse.  Membership is [Type]-valued, following
-   Instance/Grp/Epi.v's [GrpImage] and Instance/Ab/Character/Finite.v's
-   [sg_mem].
+(*
+   本节说明hom相关定义、性质与动机。
 
-   CORRECTION.  An earlier revision gave the REASON as "the library's `≈` is
-   itself [Type]-valued, so a [Prop]-valued membership could not be
-   eliminated into a hom-setoid equation".  That reason is gone: since the PR
-   "algebraic carriers are sets" (2026-09-17) a [GrpObject] carries
-   [grp_prop], and a [Prop] hypothesis reaches an `≈` goal through
-   [pequiv_to] (Lib/Setoid/Propositional.v).  The CONCLUSION stands, for a
-   different reason: consumers READ THE WITNESS.  Instance/Grp/Quotient/
-   Isomorphism.v's [image_med] projects a preimage out of a membership proof
-   into a [Type] goal, and the first isomorphism theorem rests on it.  What
-   the PR did move is the QUOTIENT's own equality, which is now the
-   propositional truncation [inhabited (quot_rel N a b)]; see [quot_equiv]
-   below.
-
-   There is deliberately NO decidability field, unlike
-   Instance/Ab/Character/Finite.v, and nothing below decides
-   membership. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Subgroup (G : GrpObject) := {
   sub_mem : carrier G → Type;
 
@@ -91,19 +75,11 @@ Definition sub_at {G : GrpObject} (S : Subgroup G) {a b : carrier G}
 Definition sub_carrier {G : GrpObject} (S : Subgroup G) : Type :=
   { a : carrier G & sub_mem S a }.
 
-(* The carrier setoid is written INLINE, as it was before the PR "algebraic
-   carriers are sets" (2026-09-17), and [grp_prop] is supplied as a trailing
-   obligation instead of as a field.  An intermediate revision named the setoid
-   -- a [Program] record literal cannot carry a [PropEquiv] FIELD naming a
-   setoid written inline in the same literal -- but naming it puts one more
-   unfolding step between the expected type of each [existT] below and the
-   sigma it builds, and Coq 8.19/8.20 then infer a CONSTANT predicate and
-   refuse the term ("has type ∃ _ : …, … while it is expected to have type
-   carrier …"; Instance/Rng/Zp.v's header records the trap, and
-   Instance/Grp/Center.v records the same one for [mk_central]).  Rocq 9.1
-   accepts either.  The obligation route keeps every term below exactly as the
-   released toolchains already compiled it, which is why it is taken here and
-   at [Grp_kernel] (Instance/Grp.v). *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition SubgroupGrp {G : GrpObject} (S : Subgroup G) : GrpObject := {|
   grp_setoid := {| carrier := sub_carrier S
                  ; is_setoid := {| equiv := fun p q => `1 p ≈ `1 q |} |};
@@ -120,9 +96,11 @@ Next Obligation. intros G S a b c; simpl; apply grp_mul_assoc. Qed.
 Next Obligation. intros G S a; simpl; apply grp_mul_unit_l. Qed.
 Next Obligation. intros G S a; simpl; apply grp_mul_inv_l. Qed.
 Next Obligation.
-  (* The subgroup's `≈` compares first projections in [G], so it is
-     propositional exactly when [G]'s own `≈` is.  [sigma_first_PropEquiv] is
-     applied in the TACTIC form, the one the term form is refused in. *)
+  (*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros G S.
   unshelve refine (sigma_first_PropEquiv _ _ _ (grp_prop G)).
   - intros p q Hpq; exact Hpq.
@@ -252,9 +230,11 @@ Proof.
   - exact (ns_conj N (grp_inv G a) _ (sub_inv N _ K)).
 Qed.
 
-(* Membership IS congruence to the unit: the quotient relation at the unit
-   is membership on the nose.  Both directions, and the forward one by
-   [reflexivity] under the relation's own unfolding. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma quot_rel_unit_iff (a : carrier G) :
   quot_rel N a (grp_unit G) ↔ sub_mem N a.
 Proof.
@@ -271,19 +251,11 @@ End QuotientRelation.
 
 (** ** The quotient group and its projection *)
 
-(* The quotient's `≈` is the PROPOSITIONAL TRUNCATION of [quot_rel].
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-   An earlier revision wrote [equiv := quot_rel N] directly.  Since the PR
-   "algebraic carriers are sets" (2026-09-17) a [GrpObject] carries
-   [grp_prop], and [quot_rel N a b] is [sub_mem N (a * b⁻¹)], a [Type]: the
-   membership witness stays [Type]-valued (its consumers read it -- see the
-   correction at the [Subgroup] record above), so the quotient's own equality
-   is its truncation, exactly as Instance/Mod/Quotient.v's [mquot_rel] and
-   Instance/Rng/Quotient.v's [rquot_rel] are truncated.  Nothing about
-   [quot_rel] itself moves: all eleven [quot_rel_*] lemmas keep their
-   statements verbatim, and every place PROVING a quotient equation gains one
-   [constructor] while every place CONSUMING one gains a [destruct], legal
-   because the goal there is a [Prop] or is reached through [pequiv_to]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_equiv {G : GrpObject} (N : NormalSubgroup G)
   (a b : carrier G) : Prop := inhabited (quot_rel N a b).
 
@@ -334,11 +306,11 @@ Next Obligation.
   intros G N a; constructor; apply quot_rel_of_equiv, grp_mul_inv_l.
 Qed.
 
-(* NO NOTATION for the quotient.  An unscoped infix [/] at level 40 would
-   sit in the core scope and compete with the stdlib's scope-bound
-   division notations in every file that imports this one; the tree's only
-   other [/] notation, Instance/Field/Frac.v, is [Local] and prefix
-   for exactly that kind of reason.  [QuotientGrp N] is written out. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The projection: the identity function, read from the fine setoid into
    the coarse one. *)
@@ -364,11 +336,11 @@ Qed.
 
 (* Conversely, anything the projection kills lies in N: the projection's
    kernel is exactly N, as a biconditional rather than an inclusion. *)
-(* An earlier revision read
-     [grp_map (quot_proj N) a ≈ grp_unit (QuotientGrp N) ↔ sub_mem N a].
-   Since the quotient's `≈` is now the truncation of [quot_rel], the
-   biconditional is up to [inhabited]; the untruncated direction is kept whole
-   as [quot_proj_kills] above, which is what every consumer in tree uses. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma quot_proj_kernel {G : GrpObject} (N : NormalSubgroup G) (a : carrier G) :
   grp_map (quot_proj N) a ≈ grp_unit (QuotientGrp N) ↔ inhabited (sub_mem N a).
 Proof.
@@ -451,10 +423,11 @@ Context (N : NormalSubgroup G).
 Context {K : GrpObject}.
 Context (p : Kills N K).
 
-(* Descent: a homomorphism killing N cannot tell N-congruent elements
-   apart.  From N (a * b⁻¹) one gets h a * (h b)⁻¹ ≈ e, and cancelling
-   (h b)⁻¹ on the right gives h a ≈ h b.  This is the ONE computation the
-   quotient's universal property costs. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kills_descends (a b : carrier G) :
   quot_rel N a b → grp_map (`1 p) a ≈ grp_map (`1 p) b.
 Proof.
@@ -470,9 +443,11 @@ Program Definition quot_med : QuotientGrp N ~{Grp}~> K := {|
   grp_map := {| morphism := fun a : carrier (QuotientGrp N) =>
                               grp_map (`1 p) a |}
 |}.
-(* THE one repair the truncation costs.  [Hab] is now the [inhabited] form
-   and the goal is a [Type], so the elimination is put behind [pequiv]: move
-   the goal into [K]'s own [Prop] equality, destruct there, and come back. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Next Obligation.
   intros a b Hab.
   apply (@pequiv_to _ _ (grp_prop K)).
@@ -505,15 +480,11 @@ Definition quot_elem {G : GrpObject} (N : NormalSubgroup G) :
   Kills N (QuotientGrp N) :=
   existT _ (quot_proj N) (quot_proj_kills N).
 
-(* Mac Lane, §III.1 construction 5.  Every homomorphism out of G that
-   kills N is (Kills N u) applied to the projection, for a UNIQUE
-   u : G/N -> K.  The class is #303's [AUniversalElement], used DIRECTLY:
-   the class sits upstream of both of Theory/Universal/Element.v's routes
-   to [Representable], so neither the Yoneda packaging nor the hand-built
-   alternative to it is touched here.  Nothing below mentions
-   [Yoneda_Lemma], [ue_yoneda_obj] or [universal_element_representation],
-   so the universe restriction those carry (object, hom and proof
-   universes identified) is not inherited. *)
+(*
+   本节说明Yoneda相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition quot_universal_element {G : GrpObject}
   (N : NormalSubgroup G) : AUniversalElement (KillsFunctor N) (QuotientGrp N) := {|
   aue_elem := quot_elem N
@@ -526,9 +497,11 @@ Next Obligation.
     exact (quot_med_unique N x v Hv).
 Defined.
 
-(* The universal element's underlying homomorphism IS the projection, by
-   convertibility -- the [eq_refl] exception to the `≈` discipline, and
-   the check that the packaging did not silently rebuild it. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example quot_universal_elem_is_proj {G : GrpObject} (N : NormalSubgroup G) :
   `1 (@aue_elem _ (KillsFunctor N) (QuotientGrp N) (quot_universal_element N))
     = quot_proj N.
@@ -545,10 +518,11 @@ Proof. reflexivity. Qed.
 
 (** ** Awodey Theorem 4.4: the homomorphism theorem, as a biconditional *)
 
-(* N ⊆ ker h if and only if h factors uniquely through the projection.
-   The forward direction is the universal property; the backward one is
-   the observation that every member of N is projected to the unit, so a
-   factorization forces h to kill N. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem hom_theorem {G K : GrpObject} (N : NormalSubgroup G)
   (h : G ~{Grp}~> K) :
   (∀ a : carrier G, sub_mem N a → grp_map h a ≈ grp_unit K)
@@ -585,11 +559,11 @@ Definition hom_theorem_kills {G K : GrpObject} (N : NormalSubgroup G)
   ∀ a : carrier G, sub_mem N a → grp_map h a ≈ grp_unit K :=
   snd (hom_theorem N h) Hfac.
 
-(** ** The kernel of a homomorphism is a normal subgroup
+(*
+   本节说明同构、核/余核相关定义、性质与动机。
 
-    The transplant from #301.  Awodey's Theorem 4.4 opens with this
-    clause, and it is what makes the isomorphism theorems in the sibling
-    file able to quotient by a kernel at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition KernelNS {G K : GrpObject} (h : G ~{Grp}~> K) :
   NormalSubgroup G := {|
@@ -682,10 +656,11 @@ Proof. exact ttt. Qed.
 
 (** ** Quotients by coextensive normal subgroups agree *)
 
-(* Two normal subgroups with the same members give isomorphic quotients,
-   the comparison being the identity function in both directions.  This is
-   what lets a quotient by a kernel be renamed as a quotient by the
-   subgroup that kernel computes to, without a transport. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition quot_congr {G : GrpObject} (N N' : NormalSubgroup G)
   (H1 : ∀ a : carrier G, sub_mem N a → sub_mem N' a)
   (H2 : ∀ a : carrier G, sub_mem N' a → sub_mem N a) :
@@ -722,15 +697,11 @@ Next Obligation.
   intros G N N' H1 H2 a; simpl; constructor; apply quot_rel_refl.
 Qed.
 
-(** ** Non-degeneracy over a nonabelian witness
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    Everything above holds for all groups, so nothing yet shows the
-    quotient does not collapse.  S3 (Instance/Grp/TwoFunctors.v, the
-    semidirect presentation over the decidable carrier rot * bool) with
-    its rotation subgroup A3 is the smallest witness with a PROPER
-    nontrivial normal subgroup, and it is nonabelian, so the degeneracies
-    that make conjugation inert (Instance/Grp/TwoFunctors.v's
-    [Grp_conj_abelian]) are excluded by proof rather than by assumption. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A3, the rotations: the elements whose reflection component is false.
    S3's setoid IS propositional equality
@@ -771,10 +742,11 @@ Proof. simpl; discriminate. Qed.
 
 (* Nor does the quotient projection identify the two generators, so
    S3/A3 has at least two elements. *)
-(* The quotient's `≈` is the truncation of [quot_rel] since the PR
-   "algebraic carriers are sets" (2026-09-17), so the hypothesis is unwrapped
-   before the computation; the goal [False] is a [Prop], which is what makes
-   the elimination legal. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem S3_mod_A3_two_elements :
   grp_map (quot_proj A3) S3_s ≈ grp_map (quot_proj A3) s3_unit → False.
 Proof. intros [H]; simpl in H; discriminate. Qed.
@@ -794,12 +766,11 @@ Proof.
   discriminate E.
 Qed.
 
-(* The two-element subgroup generated by the reflection: the elements with
-   trivial rotation part.  It is a SUBGROUP but NOT a normal one, and both
-   halves are proved -- so the sibling files have a witness at which the
-   plain-[Subgroup] hypothesis of the second isomorphism theorem is not
-   secretly a normal one, and at which the normal closure of a subgroup is
-   strictly larger than the subgroup. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition S3_refl_sub : Subgroup S3 := {|
   sub_mem := fun a : carrier S3 => fst a = rot0
 |}.

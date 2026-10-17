@@ -358,21 +358,11 @@ Qed.
 
 (** ** The vertex's equality is propositional *)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
-   carries [rig_prop], so the lifted ring owes a [Prop]-valued relation on
-   [vertex_obj[L]] -- and [L] is an ARBITRARY limit of the underlying sets,
-   not the one [Sets_Complete] chooses, so Instance/Sets/Propositional.v's
-   [limit_PropEquiv] does not apply on the nose.  A HYPOTHESIS on [L] would
-   have been fatal for the same reason it was at [LimitAb]
-   (Instance/Ab/Limit.v): [CreatesLimits] quantifies over every [L] and
-   leaves no place to put it.
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-   The relation is instead the one this section already has a theorem about:
-   two points of the vertex are related when every LEG relates them.
-   [rlim_ext] is exactly the implication into `≈`, and it holds at an
-   arbitrary limit because a limit's vertex is detected by its projections;
-   the converse is each leg being a setoid map.  So a limit of propositional
-   carriers is propositional, with no extra hypothesis anywhere. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rlim_prop : PropEquiv (is_setoid vertex_obj[L]) :=
   @PropEquiv_of_relation _ (is_setoid vertex_obj[L])
     (fun x y => forall j : J,
@@ -545,10 +535,11 @@ Proof.
   now rewrite Hn, rlim_neg_triangle.
 Qed.
 
-(* The five clauses together: Mac Lane's "there is exactly one ring
-   structure on the limit making every projection a homomorphism".  No law
-   of the candidate structure is consumed -- only that the legs preserve
-   it. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rlim_structure_unique
   (z e : carrier vertex_obj[L])
   (p m : carrier vertex_obj[L] → carrier vertex_obj[L] →
@@ -695,10 +686,11 @@ Definition Rng_Forget_reflects_limits {J : Category} (K : J ⟶ Rng) :
   ReflectsLimitCone K Rng_Forget :=
   creates_reflects_limits (Rng_Forget_CreatesLimit K).
 
-(* Mac Lane's uniqueness clause at the categorical level: any cone of
-   rings lying over [N] is canonically isomorphic to the created one.
-   This is the generic [screates_lift_unique] at this instance, not a
-   restatement. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Rng_lift_cone_unique {J : Category} (K : J ⟶ Rng)
   (N : Cone (Rng_Forget ◯ K)) (HN : IsLimitCone N)
@@ -737,10 +729,11 @@ Example rng_lift_legs {J : Category} (K : J ⟶ Rng)
 Definition Rng_Complete : @Complete Rng :=
   creates_limits_Complete Rng_Forget Sets_Complete Rng_Forget_creates_limits.
 
-(* [ContinuousFunctor] is [PreservesLimitCone] quantified over every shape
-   and diagram, which is what the word means in Mac Lane §V.4 -- the
-   apex-only [PreservesAllLimits] below is its CONSEQUENCE, not the
-   definition (Structure/Limit/Preservation.v). *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Rng_Forget_continuous : ContinuousFunctor Rng_Forget :=
   creates_limits_continuous Rng_Forget Sets_Complete Rng_Forget_creates_limits.

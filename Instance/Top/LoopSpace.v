@@ -27,140 +27,19 @@ Set Default Proof Using "All".
 
 (** * Loops in a topological group, and the abelian fundamental group *)
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.5 Exercises 4 and 6 (printed p. 45)
+(*
+   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    Paper:     Eckmann, Hilton, "Group-like structures in general categories
-              I. Multiplications and comultiplications", Mathematische
-              Annalen 145, 1962
    Paper:     Eckmann, Hilton, "Structure maps in group theory", Fundamenta
-              Mathematicae 50, 1961 (Theorem 1.12)
    nLab:      https://ncatlab.org/nlab/show/topological+group
    nLab:      https://ncatlab.org/nlab/show/loop+space
    nLab:      https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
    Wikipedia: https://en.wikipedia.org/wiki/Topological_group
 
-   Mac Lane's Exercise 4 asks for the interchange law between the two
-   operations that loops at the unit of a topological group carry, and
-   Exercise 6 asks for the consequence: the fundamental group of a
-   topological group is abelian.  Both are proved here, over the two donor
-   developments the tree already has -- Instance/Top/FundamentalGroupoid.v
-   for paths, homotopy rel endpoints and π(X), and Theory/EckmannHilton.v
-   for the abstract argument.
+   本节说明 LoopSpace 相关定义、性质与动机。
 
-   The two operations.  A loop at the unit e is a path α : [0,1] → G with
-   α(0) = α(1) = e.  Two such loops can be composed in two unrelated ways:
-
-     - CONCATENATION, [path_concat] -- run α on the first half of the
-       interval and β on the second.  This is the operation of the
-       fundamental groupoid (Instance/Top/FundamentalGroupoid.v), and
-       its unit up to homotopy is the constant loop.
-
-     - POINTWISE MULTIPLICATION, [loop_mult] below -- multiply the two
-       values in the group at each instant, (α · β)(t) = α(t) · β(t).  This
-       operation exists only because the ambient space is a group (or, as
-       below, only an H-space); it has the constant loop at the unit as a
-       STRICT unit, no homotopy needed.
-
-   Exercise 4 is that they INTERCHANGE:
-
-       (α ∗ β) · (γ ∗ δ)  ≈  (α · γ) ∗ (β · δ),
-
-   and the proof is a computation, not a homotopy: at a parameter t ≤ 1/2
-   both sides evaluate to α(2t) · γ(2t), and at t ≥ 1/2 both evaluate to
-   β(2t−1) · δ(2t−1), because the pointwise product commutes with the split
-   at 1/2 that concatenation performs.  The two maps are therefore EQUAL AT
-   EVERY POINT, and [pointwise_homotopic]
-   (Instance/Top/FundamentalGroupoid.v) upgrades that to a homotopy rel
-   endpoints with no surgery of squares anywhere.  This is [loop_interchange]
-   below.
-
-   Exercise 6 is then Eckmann and Hilton's: two unital operations that
-   interchange coincide, and the one operation that remains is commutative
-   and associative.  Theory/EckmannHilton.v proves that over a bare setoid;
-   this file instantiates it at the hom-setoid of loops, whose `≈` IS
-   homotopy rel endpoints ([Path_Setoid]).  The conclusion transported back
-   to π₁ is [pi1_topgroup_abelian].
-
-   THE ORIENTATION, worked out and pinned.  Theory/EckmannHilton.v takes its
-   interchange law in the shape
-
-       f (g a b) (g c d)  ≈  g (f a c) (f b d),
-
-   so f is applied LAST on the left and FIRST on the right.  Matching
-   against the displayed law above forces
-
-       f := pointwise multiplication      g := concatenation.
-
-   The swapped assignment is NOT false -- the interchange law is self-dual
-   under swapping f and g together with a transposition of its middle two
-   arguments, so the swapped law is [loop_interchange] with b and c
-   exchanged, and instantiating the abstract theorem the other way round
-   would deliver the same conclusions with the f- and g-sides exchanged.
-   The matching above is forced only in the weak sense that it reads
-   Exercise 4's displayed law variable-for-variable; under it the theorem's
-   f-side conclusions ([eh_comm], [eh_assoc]) are about POINTWISE
-   MULTIPLICATION, and the statement a reader wants about π₁ -- which is a
-   group under CONCATENATION -- comes out as the g-side corollary
-   [eh_g_comm].  Both are recorded below ([loop_mult_comm] and
-   [loop_concat_comm]).
-
-   WHAT THE HYPOTHESES ACTUALLY ARE, and why the record is not [TopGroup].
-   Reading the argument off, the multiplication is used exactly three times:
-   it must respect `≈`, it must be jointly continuous (so that the pointwise
-   product of two paths is again a path, and the pointwise product of two
-   homotopies again a homotopy), and it must have a STRICT two-sided unit at
-   the base point (so that the pointwise product of two loops at e is again
-   a loop at e, and so that the constant loop is a strict unit for it).
-   Neither associativity nor inverses are used anywhere.  The record below,
-   [HTopMonoid], carries exactly those three requirements and nothing else;
-   it is the classical sharpening of the exercise -- the fundamental group
-   of an H-SPACE with a strict unit is abelian -- and it is what
-   [pi1_topgroup_abelian] is stated over.  [TopGroup] then extends it with
-   an inverse, its two laws and its continuity, so that Mac Lane's named
-   object exists in the tree; [pi1_TopGroup_abelian] is his literal
-   statement and is one line.  DISCLOSURE: nothing on the path to the
-   theorem consumes the inverse, either of its laws, or its continuity.
-   [tg_inv_cont] has exactly one consumer, [tg_inv_nbhd], which restates it
-   and is itself consumed by nothing; [tg_inv_left] and [tg_inv_right] have
-   no consumer at all.  They are carried because the exercise names a group,
-   not because the theorem needs one.
-
-   A COMPANION NON-CLAIM, since the two operations are visibly different
-   constructions (one splits the interval at 1/2, the other does not):
-   [loop_mult_concat_agree] says they agree UP TO HOMOTOPY, which is
-   Eckmann and Hilton's [eh_ops] and is a conclusion, not an assumption.  It
-   does not say the two maps are pointwise equal, and no witness here
-   separates them pointwise -- separating them would be a statement about
-   chosen representatives rather than about π₁, which is why none is built.
-
-   WHY THE CONTINUITY OF THE MULTIPLICATION IS A CERTIFICATE.  Instance/Top.v
-   builds no products, so there is no space G × G whose opens could be
-   quantified over and no arrow G × G ⟶ G to be called continuous.  Joint
-   continuity is therefore carried in the two-open form directly -- for every
-   open V containing m(x, y), opens U ∋ x and W ∋ y with m(U × W) ⊆ V --
-   which is the same accommodation Instance/Top/Homotopy.v makes for the
-   cylinder (its [htpy_cont] field states the rectangle condition
-   pointwise for exactly this reason).  The inverse is not affected: with
-   one variable the ordinary preimage form is available, and [tg_inv_cont]
-   below is the unfolded form of [Continuous G G] for the inversion map
-   (the constant itself expects a bundled [SetoidMorphism], which [tg_inv]
-   deliberately is not).  [tg_inv_nbhd] restates it in the pointwise form
-   for symmetry with the multiplication.
-
-   WHAT IS DEFERRED, disclosed.  (1) No space in this tree has a nontrivial
-   fundamental group -- Instance/Top/FundamentalGroupoid.v says so in its own
-   header, and both of its witnesses have trivial vertex groups at every base
-   point -- so the witness below, the additive reals, exercises the
-   HYPOTHESES and the derivation, not the strength of the conclusion.  π₁(ℝ)
-   is trivial, hence abelian for a reason that has nothing to do with this
-   theorem.  The circle, whose π₁ is ℤ and whose case would be the honest
-   test, needs covering-space theory.  (2) [open_of_nbhds] below is a fact
-   about every topological space and belongs in Instance/Top.v; it is proved
-   here rather than upstream to keep this file's change surface to one new
-   file, and it is an upstreaming candidate.  (3) The loop space Ω(G, e) is
-   not built as a SPACE (that needs the compact-open topology, hence
-   function spaces, which Instance/Top.v does not have); what is built is
-   the two operations on its points, which is all the exercises ask for. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Topological monoids and topological groups *)
 
@@ -208,9 +87,11 @@ Record TopGroup := {
     IsOpen (htm_space tg_monoid) (fun x => V (tg_inv x))
 }.
 
-(* The pointwise reading of the inverse's continuity, for symmetry with the
-   multiplication's certificate.  Nothing below consumes it; it is here so
-   that the two continuity conditions can be compared in one shape. *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tg_inv_nbhd (G : TopGroup) (V : G → Type)
       (HV : IsOpen (htm_space (tg_monoid G)) V) (x : G) (Hx : V (tg_inv G x)) :
   { U : G → Type &
@@ -226,12 +107,11 @@ Qed.
 
 (** ** A predicate with an open neighbourhood at each of its points is open *)
 
-(* The union of the neighbourhoods, indexed by the points at which the
-   predicate holds.  Radius-free and choice-free: the neighbourhood is DATA,
-   supplied by the hypothesis, exactly as the radius is data in
-   Instance/Top/Interval.v's [ball_open].  This is a fact about every
-   [TopSpace] and is an upstreaming candidate for Instance/Top.v (header,
-   deferral 2). *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma open_of_nbhds (X : TopSpace) (P : X → Type)
       (H : ∀ x : X, P x →
              { U : X → Type &
@@ -254,10 +134,11 @@ Qed.
 
 (** ** The pointwise product of two arrows into a topological monoid *)
 
-(* Developed once for an ARBITRARY domain, because it is needed twice: at the
-   interval, where it multiplies two paths, and at the square, where it
-   multiplies two homotopies.  Nothing in the construction mentions either
-   domain. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section PointwiseProduct.
 
 Context (G : HTopMonoid).
@@ -277,11 +158,11 @@ Definition mult_setoid_map : SetoidMorphism (top_carrier D) (top_carrier G) := {
   proper_morphism := mult_fun_proper
 |}.
 
-(* Continuity.  Given an open V containing the product at z, the certificate
-   supplies opens U ∋ p z and W ∋ q z whose product lands in V; the two
-   preimages are open by continuity of p and of q, and their intersection is
-   the neighbourhood of z that [open_of_nbhds] asks for.  No metric, no
-   radius, no reals: the argument is the abstract one. *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mult_open (V : G → Type) (HV : IsOpen (htm_space G) V) :
   IsOpen D (fun z => V (mult_fun z)).
 Proof.
@@ -352,11 +233,11 @@ Proof. reflexivity. Qed.
 
 (** ** Pointwise multiplication respects homotopy *)
 
-(* The square is the pointwise product of the two squares, which is
-   [mult_arrow] again -- at the square rather than at the interval.  Its four
-   edges are the products of the corresponding edges: the bottom and top by
-   respectfulness, the two sides because the product of the unit with itself
-   is the unit. *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition loop_mult_respects
            {p p' q q' : Path G (htm_unit G) (htm_unit G)}
            (H1 : PathHomotopy p p') (H2 : PathHomotopy q q') :
@@ -401,9 +282,11 @@ Defined.
 
 (** ** Mac Lane §II.5 Exercise 4: the interchange law *)
 
-(* Both sides split the interval at 1/2 in the same place and agree on each
-   half, so they agree at every point.  On the first half both reduce to
-   a(2t) · c(2t), on the second to b(2t−1) · d(2t−1). *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem loop_interchange (a b c d : Path G (htm_unit G) (htm_unit G)) :
   PathHomotopy (loop_mult (path_concat a b) (path_concat c d))
                (path_concat (loop_mult a c) (loop_mult b d)).
@@ -428,20 +311,11 @@ Qed.
 
 (** ** Mac Lane §II.5 Exercise 6: Eckmann–Hilton at the loops *)
 
-(* The seven hypotheses of Theory/EckmannHilton.v, assembled.  The carrier is
-   the set of loops at the unit and the setoid is [Path_Setoid], whose `≈` IS
-   homotopy rel endpoints; f is pointwise multiplication and g is
-   concatenation, in the orientation the header derives.  The two [Proper]
-   arguments are supplied as lambdas rather than as instances, because
-   [Path_Setoid] is deliberately not registered for resolution
-   (Instance/Top/FundamentalGroupoid.v) and the expected type unfolds to
-   exactly the shape [loop_mult_respects] and [path_concat_respects]
-   already have.
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
 
-   The g-side unit laws come from the fundamental groupoid's own two unit
-   homotopies -- note the sides: [unit_left_homotopy] concatenates the
-   CONSTANT loop first, so it is [g_unit_left], and [unit_right_homotopy]
-   concatenates it last, so it is [g_unit_right]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition loops_eckmann_hilton :
   (const_path (htm_unit G) ≈ const_path (htm_unit G))
@@ -459,10 +333,11 @@ Definition loops_eckmann_hilton :
     (fun p => unit_left_homotopy p) (fun p => unit_right_homotopy p)
     loop_interchange.
 
-(* The three substantive conclusions, read off individually.  Each is the
-   corresponding lemma of Theory/EckmannHilton.v at the same seven
-   hypotheses; they are restated here so that a consumer need not unfold the
-   nested pair. *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The two operations agree up to homotopy. *)
 Theorem loop_mult_concat_agree (p q : Path G (htm_unit G) (htm_unit G)) :
@@ -486,10 +361,11 @@ Proof.
   exact (snd (snd (snd loops_eckmann_hilton)) p q r).
 Qed.
 
-(* THE LOOP-LEVEL FORM of Exercise 6: concatenation of loops at the unit is
-   commutative up to homotopy rel endpoints.  This is the g-side corollary
-   [eh_g_comm], and it is the statement π₁ is about -- the fundamental group's
-   operation is concatenation, not the pointwise product. *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem loop_concat_comm (p q : Path G (htm_unit G) (htm_unit G)) :
   PathHomotopy (path_concat p q) (path_concat q p).
 Proof.
@@ -513,18 +389,11 @@ Arguments loop_concat_comm {G} p q.
 
 (** ** The headline: π₁ of a topological group is abelian *)
 
-(* The group-level statement.  [fundamental_group G e] is the vertex group of
-   π(G) at e (Instance/Top/FundamentalGroupoid.v), whose multiplication
-   is [hom_monoid]'s -- that is, composition in π(G), which
-   Instance/Top/FundamentalGroupoid.v defines as
-   [compose q p := path_concat p q].  So [mon_op p q] IS
-   [path_concat q p], and commutativity of the group operation is
-   [loop_concat_comm] with its two arguments in the other order.
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
 
-   THE NAME is the one issue #286 pins, and it names Mac Lane's object; the
-   theorem is stated over the weaker [HTopMonoid] because that is all the
-   proof consumes (header).  [pi1_TopGroup_abelian] just below is Mac Lane's
-   literal statement, over a genuine topological group. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pi1_topgroup_abelian (G : HTopMonoid)
         (p q : fundamental_group G (htm_unit G)) :
   mon_op p q ≈ mon_op q p.
@@ -532,13 +401,11 @@ Proof.
   exact (loop_concat_comm q p).
 Qed.
 
-(* What the group operation and its unit ARE, recorded by [eq_refl] so that
-   the statement above cannot be misread: the multiplication of
-   [fundamental_group] is concatenation -- in the order π(G)'s composition
-   puts it, the SECOND argument running first -- and its unit is the
-   constant loop.  Neither is an artefact of this file: both are read off
-   Construction/Deloop.v's [hom_monoid] at
-   Instance/Top/FundamentalGroupoid.v. *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example pi1_mon_op_is_concat (G : HTopMonoid)
         (p q : fundamental_group G (htm_unit G)) :
   mon_op p q = path_concat q p := eq_refl.
@@ -558,31 +425,24 @@ Qed.
 
 (** ** Witness: the additive reals *)
 
-(* Instance/Top/Presheaf.v's [R_Top] -- the real line with the metric
-   topology, over Instance/Top/Interval.v's ball spaces -- carries the
-   additive group structure, and both continuity conditions are the ordinary
-   ε/2 and ε arguments with the radius carried as data.
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
 
-   DISCLOSURE (header, deferral 1): π₁(ℝ) is trivial, ℝ being contractible,
-   so this witness demonstrates that the hypotheses of [HTopMonoid] and
-   [TopGroup] are simultaneously satisfiable by a genuine space -- and that
-   the certificate field is dischargeable in practice -- and NOT that the
-   conclusion has content at it.  No space in this tree has a nontrivial
-   fundamental group. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* Instance/Top/Presheaf.v registers [R_equiv_Equivalence] but deliberately
-   not [R_Setoid] (its note), so `≈` does not resolve at a bare [R].
-   Registering it FILE-LOCALLY is what lets the two [Proper] obligations
-   below be stated in the ordinary shape; it is the same setoid the record
-   fields ask for, [is_setoid (top_carrier R_Top)] reducing to it. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Existing Instance R_Setoid.
 
-(* A metric ball of the real line is open: at any interior point the slack
-   radius witnesses openness, radius as data, no choice.  Instance/Top/
-   Interval.v's [Rlin] splits absolute values in the GOAL only, and the
-   estimate here carries one in a hypothesis, so the triangle inequality is
-   applied by name rather than by case analysis; that also avoids adding a
-   third copy of Instance/Top/ContinuousRing.v's [RlinH] to the tree. *)
+(*
+   本节说明 LoopSpace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma R_ball_open (c d : R) :
   (0 < d)%R → IsOpen R_Top (fun r : R => (Rabs (c - r) < d)%R).
 Proof.

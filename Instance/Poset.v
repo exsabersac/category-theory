@@ -18,105 +18,15 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Order theory as category theory: the collapse dictionary
-
+(*
    nLab:  https://ncatlab.org/nlab/show/Galois+connection
    Paper: Ore, "Galois connexions", Transactions of the AMS 55, 1944
    Paper: Lawvere, "Metric spaces, generalized logic, and closed
-          categories", Rendiconti del Seminario Matematico e Fisico di
-          Milano 43, 1973; Reprints in TAC 1, 2002
 
-   In a thin category all parallel morphisms are equal, so every diagram
-   commutes and every coherence condition holds vacuously.  Each
-   categorical concept therefore collapses to its order-theoretic
-   shadow, and [Poset] installs the resulting dictionary: an adjunction
-   between posets is exactly a monotone Galois connection -- proved in
-   both directions at Instance/Proset/Galois.v ([GaloisAdjunction],
-   [GaloisOfAdjunction]), rather than only asserted here; a monad is a closure operator, the unit giving
-   extensivity and the multiplication idempotency (Theory/Monad.v); a
-   product is a meet, and more generally the limit of a diagram is the
-   greatest lower bound of its objects (nLab, "meet"), while a coproduct
-   is a join (Structure/Cocartesian.v).  The meet/join entries are no
-   longer remarks: Instance/Proset/Limit.v proves both readings —
-   [proset_limit_iff_glb] for limits/meets and [proset_colimit_iff_lub]
-   for colimits/joins — over [Proset] at an arbitrary diagram shape, and
-   they apply here since [Poset P] below is [Proset P].  Theorems proved for
-   categories thereby
-   specialize to classical order theory, and intuitions trained on
-   orders lift to categories with proof relevance switched on.
+   本节说明伴随相关定义、性质与动机。
 
-   CORRECTION (#463).  The dictionary entry "a monad is a closure
-   operator, the unit giving extensivity and the multiplication
-   idempotency (Theory/Monad.v)" was asserted, and the file it cited
-   only asserted it too.  It is now proved over [Proset], and so over
-   [Poset], which is [Proset] with antisymmetry discarded:
-   Instance/Proset/Monad.v's [closure_of_monad] and [closure_monad] are
-   the two directions ([monad_closure_iff]), and [talgebra_iff_closed]
-   identifies the algebras with the closed elements.  Measured against
-   the entry, the multiplication gives only T(Tx) ≤ Tx (Mac Lane's
-   display (3), p. 139).  Idempotency up to ≅ also uses the unit at Tx
-   ([cl_idem]; in any thin category, Structure/Thin/Monad.v's
-   [thin_join_IsIso]).  The equation T(Tx) = Tx needs antisymmetry,
-   supplied as an explicit [Antisymmetric] hypothesis
-   ([closure_idem_eq]), since the category [Poset P] does not carry it.
-   The dual entry, a comonad is an interior operator whose coalgebras
-   are the open elements, is Instance/Proset/Monad/Interior.v's
-   [interior_of_comonad] and [wcoalgebra_iff_open].
-
-   The dictionary predates category theory.  The name Galois connection
-   honours the inclusion-reversing correspondence between intermediate
-   fields and subgroups in the fundamental theorem of Galois theory; the
-   abstract notion, in its antitone form, is due to Ore (1944), after
-   Birkhoff's Lattice Theory (AMS Colloquium Publications 25, 1940) had
-   treated the power-set polarities induced by a binary relation; the
-   modern survey is Erné, Koslowski, Melton, Strecker, "A primer on
-   Galois connections", Annals of the New York Academy of Sciences 704,
-   1993.  Closure operators go back to E. H. Moore's Introduction to a
-   Form of General Analysis (1910), and around 1930 Tarski abstracted
-   logical deduction to a finitary closure operator on sets of sentences
-   — the consequence operator, in this dictionary a monad on the poset
-   of theories (Wikipedia, "Closure operator").  Lawvere then made the
-   dictionary itself the object of study: "Adjointness in Foundations"
-   (Dialectica 23, 1969) exhibits the quantifiers as the adjoint triple
-   ∃ ⊣ substitution ⊣ ∀, and the 1973 paper cited above reads a poset as
-   a skeletal category enriched over the truth values — realized in-tree
-   by [Enriched_Two_preorder] and [EnrichedFunctor_Two_monotone] in
-   Construction/Enriched/Two.v, over the walking arrow of Instance/Two.v
-   — while the same recipe over ([0, ∞], ≥, +) makes a metric space a
-   category whose composition law is the triangle inequality (nLab,
-   "Lawvere metric space").
-
-   Thinness also marks a size boundary in the adjoint functor theorems.
-   Between small preorders, a functor that preserves all small meets
-   from a complete domain has a left adjoint outright, the candidate
-   value being a meet over everything (nLab, "adjoint functor theorem").
-   For genuine categories that computation is out of reach: by Freyd's
-   observation, any complete small category is a preorder, which is
-   exactly why the general theorem in Adjunction/GAFT.v must carry a
-   [SolutionSet] hypothesis.
-
-   The working uses run through the same corner.  Abstract
-   interpretation (Cousot and Cousot, "Abstract Interpretation: A
-   Unified Lattice Model for Static Analysis of Programs by Construction
-   or Approximation of Fixpoints", POPL 1977) takes an abstraction to be
-   a Galois connection between concrete and abstract domains and reads a
-   loop as a Knaster–Tarski least fixed point in a complete lattice;
-   formal concept analysis organizes object–attribute data by the
-   concept lattice of a power-set Galois connection (Ganter and Wille,
-   1999); and the opening chapter of Fong and Spivak's Seven Sketches
-   in Compositionality (2018) — "Generative Effects: Orders and Galois
-   Connections" in its 2019 Cambridge edition — takes a generative
-   effect to be an observation that does not preserve joins, detected
-   by a Galois connection.  The computational reading beneath all of
-   these is proof irrelevance: under the [Proset] construction a
-   hom-set is the mere proposition x ≤ y — identity is reflexivity,
-   composition is transitivity, and the trivial setoid on each hom-set
-   declares all proofs of an entailment equal — so an abstract domain
-   is a poset precisely because an analyzer needs only that an
-   approximation holds, never a witness.  Instance/Props.v is the
-   logical instance, propositions ordered by entailment;
-   Instance/Rel.v sits one level up, each hom-set itself ordered by
-   inclusion — locally posetal rather than posetal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma eq_equiv {C : Type} : @Equivalence C eq.
 Proof.

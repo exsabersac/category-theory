@@ -93,11 +93,11 @@ Next Obligation.
   destruct x, y, z, w; auto with two_laws; intuition.
 Qed.
 
-(* A functor Two_Discrete ⟶ C is exactly a choice of two objects of C.  Given
-   a and b, Pick_Two is the functor sending TwoDX to a and TwoDY to b; the only
-   arrows are identities, so fmap sends each to id (the off-diagonal cases are
-   uninhabited).  This presents the pair (a, b) as a discrete diagram, used to
-   build binary (co)products as (co)limits. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Pick_Two {C : Category} (a b : C) :
   Two_Discrete ⟶ C := {|

@@ -40,11 +40,11 @@ Context (R : RingObject).
 
 (** ** The module map determined by an element *)
 
-(** For m in a module W, the map r ↦ r·m.  Each of the four obligations
-    is a module law of W: respectfulness is [rm_smul_respects],
-    preservation of zero is [rm_smul_zero_l], of sums
-    [rm_smul_distr_r], and of the action [rm_smul_assoc] — the action of
-    [Ring_RMod R] on itself BEING the multiplication of R. *)
+(*
+   本节说明 Representable 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition rmod_by_element (W : RModObject R)
   (m : carrier (cmon_setoid W)) : Ring_RMod R ~{RMod R}~> W := {|
   rm_hom := {| cmon_map := {| morphism := fun r => rm_smul W r m |} |}
@@ -125,13 +125,11 @@ Proof.
                            ring_auniversal_arrow W f) v (symmetry Hv)).
 Defined.
 
-(** ** The free module on one generator IS R
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Instance/Mod/Free.v's universal arrow at the singleton setoid is a
-    universal element of the same functor, so the two representing
-    objects are canonically isomorphic.  Nothing is computed: this is
-    [universal_element_iso], and the uniqueness clause below is
-    [universal_element_unique]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_one_universal_element
   : AUniversalElement (RMod_Forget R) (@FreeModObject R SetsOne) :=

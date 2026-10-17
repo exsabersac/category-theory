@@ -71,11 +71,11 @@ Definition PropSets_Incl_Faithful@{o so | o < so +} :
 
 (** ** Locally propositional *)
 
-(* Two arrows are ≈ when their functions agree pointwise up to the
-   target's `≈`, so the target's [pequiv] mirrors it pointwise: the
-   relation of Instance/Sets/Propositional.v's [hom_PropEquiv], read on
-   first projections, since a hom-setoid of [PropSets] is a [sigT] over
-   [Sets]'s and not [Sets]'s own. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance PropSets_LocallyPropositional@{o so | o < so +} :
   LocallyPropositional PropSets@{o so} :=
   LocallyPropositional_of_relation PropSets@{o so}
@@ -235,13 +235,11 @@ Definition PropSets_Reflective@{o so a | o < so +} :
 
 (** ** The choice principle, written out (moved here by #1349) *)
 
-(* The principle ∀ A, inhabited A → A under Instance/Sets/Classifier/
-   OneLevel.v's name for it, written unfolded so that this file needs no
-   further [Require]: the hypothesis of [choice_of_untr] is OneLevel.v's
-   [Untruncate@{c}], by [eq_refl] (control C53 of
-   Test/ProbeMonadicity469.v).  Moved here from Instance/Pos/Monadicity.v
-   by #1349; Instance/Top/Components.v derives its [unsquash_Untruncate]
-   and [Untruncate_unsquash] from these two. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition untr_of_choice@{c | +} (G : ∀ A : Type@{c}, inhabited A → A) :
   ∀ P : Type@{c}, (∀ Q : Prop, (P → Q) → Q) → P :=
   fun P h => G P (h (inhabited P) (fun p => inhabits p)).

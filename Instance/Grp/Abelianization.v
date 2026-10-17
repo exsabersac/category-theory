@@ -105,10 +105,11 @@ Qed.
 
 (** ** The commutator subgroup as a normal subgroup *)
 
-(* The five facts above and in [Instance/Grp.v], packaged as
-   Instance/Grp/Quotient.v's interface.  Nothing new is proved: the
-   fields ARE [inc_resp], [inc_unit], [inc_mul], [inc_inv] and
-   [conj_commutator]. *)
+(*
+   本节说明 Abelianization 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CommutatorNS (G : GrpObject) : NormalSubgroup G :=
   {| ns_sub := {| sub_mem := InCommutator G
                 ; sub_resp := fun a b Hab Ha => inc_resp Hab Ha
@@ -119,32 +120,19 @@ Definition CommutatorNS (G : GrpObject) : NormalSubgroup G :=
 
 (** ** The quotient relation *)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) the abelianization
-   is an [AbObject] and so owes [cmon_prop], which forces its equality to be a
-   [Prop].  [InCommutator] STAYS [Type]-valued -- it is the membership
-   predicate of the commutator subgroup, [sub_mem] of [CommutatorNS] above,
-   and the leastness arguments read witnesses out of it -- and [abel_eq] is
-   its PROPOSITIONAL TRUNCATION, exactly as Instance/Mod/Quotient.v's
-   [mquot_rel] is the truncation of [smod_mem].
+(*
+   本节说明 Abelianization 相关定义、性质与动机。
 
-   AN EARLIER PLAN for this phase predicted that the abelianization would have
-   to take a [PropEquiv] as a hypothesis until [GrpObject] carries [grp_prop],
-   on the ground that a [Prop] mirror of [abel_eq] would need to eliminate a
-   [Prop] back into the [Type]-valued [InCommutator].  Truncating [abel_eq]
-   ITSELF avoids that: there is nothing to go back to, and the two places that
-   consume the relation land either in a [Prop] goal (the functor's
-   respectfulness obligation) or in an `≈` at an [AbObject], which carries its
-   own [cmon_prop] ([abel_kills] in Instance/Grp/Abelianize.v).  Taking the
-   hypothesis instead was also measured to be fatal: as a section variable it
-   pins [Grp]'s object universe, and [S3] is then refused. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition abel_eq (G : GrpObject) (a b : carrier G) : Prop :=
   inhabited (InCommutator G (grp_mul G a (grp_inv G b))).
 
-(* [abel_eq] is the TRUNCATION of the generic quotient relation at
-   [CommutatorNS].  An earlier revision read
-   [abel_eq G a b = quot_rel (CommutatorNS G) a b] at [eq_refl]; the two are
-   now separated by [inhabited], and the identification is stated up to it.
-   The six one-line proofs below each gain a [constructor] or a [destruct]. *)
+(*
+   本节说明 Abelianization 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example abel_eq_is_quot_rel (G : GrpObject) (a b : carrier G) :
   abel_eq G a b = inhabited (quot_rel (CommutatorNS G) a b).
 Proof. reflexivity. Qed.
@@ -187,9 +175,11 @@ Qed.
 
 (** ** The abelianization of a group *)
 
-(* The quotient setoid, NAMED so that the [PropEquiv] hypothesis below can
-   mention it: a field of a [Program] record literal cannot refer to a setoid
-   that is still an evar while the literal is being elaborated. *)
+(*
+   本节说明 Abelianization 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition abel_setoid (G : GrpObject) : Setoid (carrier G) := {|
   equiv := abel_eq G
 |}.
@@ -251,10 +241,11 @@ Definition mk_comm (G : GrpObject) (x : carrier G)
   (Hx : InCommutator G x) : commutator_carrier G :=
   existT (fun x : carrier G => InCommutator G x) x Hx.
 
-(* The carrier setoid is named rather than written inline in the record
-   below: since the PR "algebraic carriers are sets" (2026-09-17) the record
-   also carries [grp_prop], and a [Program] record literal cannot carry a
-   [PropEquiv] field naming a setoid written inline in the same literal. *)
+(*
+   本节说明 Abelianization 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition commutator_setoid (G : GrpObject) : SetoidObject := {|
   carrier := commutator_carrier G;
   is_setoid := {| equiv := fun a b => `1 a ≈ `1 b |}

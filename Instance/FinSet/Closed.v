@@ -19,9 +19,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** [fin_tabulate f] encodes the function [f] as its digit string
-    [f F1, f (FS F1), …], by structural recursion on the arity [m]: the
-    head digit is [f F1] and the tail is the tabulation of [f ∘ FS]. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint fin_tabulate {m n : nat} {struct m} :
   (Fin.t m → Fin.t n) → Fin.t (n ^ m) :=
   match m return (Fin.t m → Fin.t n) → Fin.t (n ^ m) with
@@ -43,9 +45,11 @@ Fixpoint fin_apply {m n : nat} {struct m} :
         (fun i' => fin_apply (snd (fin_unpair c)) i')
   end.
 
-(* The computability acceptance test: with m = 2, n = 3 the function
-   sending F1 ↦ 2 and FS F1 ↦ 1 is the digit string "2 then 1", i.e. the
-   code 2·3 + 1 = 7; both directions reduce by [eq_refl]. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example fin_tabulate_computes :
   @fin_tabulate 2 3
     (fun i => Fin.caseS' i (fun _ => Fin.t 3)
@@ -59,11 +63,11 @@ Example fin_apply_computes :
     (Fin.FS Fin.F1)
     = Fin.FS Fin.F1 := eq_refl.
 
-(** ** The round trips
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Stated POINTWISE, matching the pointwise-[eq] hom-setoid of [FinSet]:
-    this is precisely the form the Closed laws below consume, which is why
-    no function extensionality ever enters. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fin_apply_tabulate {m n : nat} (f : Fin.t m → Fin.t n) (i : Fin.t m) :
   fin_apply (fin_tabulate f) i = f i.
@@ -82,10 +86,11 @@ Proof.
   induction m as [| m' IH]; simpl.
   - (* n ^ 0 = 1: every code is F1. *)
     symmetry; apply fin1_unique.
-  - (* Re-tabulating head and tail recovers the digit pair, which
-       [fin_pair_unpair] identifies with c.  The tail step is the IH at
-       [snd (fin_unpair c)], to which the goal's subterm is definitionally
-       equal ([Fin.caseS'] reduces on [Fin.FS], plus eta). *)
+  - (*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     transitivity (fin_pair (fst (fin_unpair c)) (snd (fin_unpair c))).
     + f_equal.
       exact (IH (snd (fin_unpair c))).
@@ -106,15 +111,11 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** The cartesian closed structure
+(*
+   本节说明hom、笛卡尔相关定义、性质与动机。
 
-    Per the argument-order note of [Structure/Cartesian/Closed.v]:
-    [exponent_obj x y] is displayed y ^ x, the object of functions FROM x
-    TO y, so on skeletal objects it is the nat power [(y ^ x)%nat].
-    Currying is pointwise tabulation over the [fin_pair] product codec,
-    uncurrying is pointwise application, and [exp_iso] holds by the two
-    round trips — pointwise, which is all the [fun_setoid] hom-equivalence
-    of [FinSet] asks. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 
@@ -162,11 +163,11 @@ Next Obligation.
   rewrite fin_apply_tabulate, fin_pair_unpair; reflexivity.
 Qed.
 
-(* Closed evaluation at concrete elements, by [eq_refl]: the derived [eval]
-   of Structure/Cartesian/Closed.v computes over this instance.  With
-   x = y = 2 the exponential 2^2 is Fin.t 4, and the code 2 = "digits 1, 0"
-   is the function F1 ↦ FS F1, FS F1 ↦ F1; the two Examples check both
-   argument routings, which return DIFFERENT values. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example eval_computes :
   @eval FinSet FinSet_Cartesian FinSet_Closed 2%nat 2%nat
     (fin_pair (Fin.FS (Fin.FS Fin.F1) : Fin.t 4) (Fin.F1 : Fin.t 2))

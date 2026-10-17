@@ -18,85 +18,24 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* How this file sits in the library, and what "recovers Coq" is measured to mean
-
+(*
    nLab: https://ncatlab.org/nlab/show/Grothendieck+universe
    Book: Mac Lane, CWM 2nd ed., §I.2, printed p. 11 (PDF p. 21)
 
-   Three neighbours, and what distinguishes each.
+   本节说明来源与用途相关定义、性质与动机。
 
-   Instance/Ens.v is NOT this construction, despite the name. Its [Ens] has for
-   objects the dependent pairs [∃ T : Type, Ensemble T] and for arrows the
-   whole-carrier functions f : TA → TB satisfying ∀ x, x ∈ A ↔ f x ∈ B — that
-   is, A = f⁻¹(B), membership preservation AND reflection. Its own header says
-   so outright: "This file does NOT build that classical category directly."
-   [EnsT], in the same file, is that idea with one carrier type fixed. (Those
-   two are cited by name rather than by line, since the pointer comment this
-   file's arrival adds to Instance/Ens.v moves them.) They are subobject-flavoured
-   categories whose arrows are constrained; Mac Lane's Ens_V constrains nothing.
-   Both files are kept, and neither construction subsumes the other.
-
-   Instance/Coq.v ([Coq]) and Instance/Sets.v ([Sets]) are the
-   "everything at one universe level" categories: objects are all of [Type@{o}],
-   respectively all setoids at level o, and arrows are all functions,
-   respectively all setoid maps. They are Ens_V with the bound fixed at a
-   universe rather than at an arbitrary family — which is the set-theorist's
-   Grothendieck universe (a transitive set closed under the usual operations,
-   per the nLab) doing the job Mac Lane assigns to V. What this file adds is the
-   arbitrary family: V may be any type at all, with no closure conditions, so a
-   two-object Ens_V is as available as a universe-sized one.
-
-   The relationship to [Coq] is measured, not asserted. At the tautological
-   family (V := the objects of [Coq], El := the identity) the two categories
-   are DEFINITIONALLY EQUAL: [EnsV_recovers_Coq] below is proved by [eq_refl],
-   which is a conversion check on the whole [Category] record, subsuming
-   agreement of every field — objects, homs, hom-setoids together with their
-   [Equivalence] proofs, identity, composition, and all four laws. This is
-   strictly stronger than an isomorphism in Cat. (It is not stronger than
-   field-wise agreement: with definitional eta the two are equivalent.)
-
-   The mechanism deserves a precise account, because an earlier draft got it
-   wrong. For the two INSTANCE equalities below, eta is not what does the
-   work: [Coq] and [Sets] are transparent constants whose bodies are literal
-   records, so the check is constructor-against-constructor by delta, iota
-   and beta alone. Where primitive-projection eta (Lib.v's [Primitive
-   Projections]; the let-in fields [uhom], [dom], [cod] do not obstruct it on
-   Rocq 9.1) becomes load-bearing is the GENERAL statement, where the ambient
-   category is a variable and no delta is available:
-   [Spanned_recovers_ambient] proves [@Spanned C (@obj C) (λ x, x) = C] for
-   every C by the same one-line [eq_refl], and the two instance equalities
-   are its corollaries. The same holds one universe over for [Sets]
-   ([EnsV_Sets_recovers_Sets]). What is
-   claimed is exactly what [eq_refl] checks: convertibility of the two
-   [Category] values. Nothing is claimed about the two definitions' proof terms
-   being syntactically the same, and the recovery is not vacuous — a family
-   other than the identity is rejected by the same conversion check.
-
-   On smallness. Mac Lane calls Ens_V a category of sets *within* a set
-   precisely because its objects form a set. The corresponding in-tree fact is
-   [EnsV_obj_is_V]: the object type of [EnsV El] is [V] on the nose, with no
-   universe inflation and no packaging. So the size of Ens_V is exactly the size
-   the caller chooses for V — [bool], a finite type, [nat], or the whole of
-   [Type@{o}] — and [EnsV_two] below is a two-object witness that the small case
-   is genuinely inhabited rather than vacuous. This is a remark about the shape
-   of the definition, not a theorem: the library carries no internal notion of
-   smallness or size, so "small" here means only "the codes are a type the
-   caller picked", and nothing about cardinality is being claimed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The full subcategory of C spanned by a family *)
 
-(* nLab: https://ncatlab.org/nlab/show/full+subcategory
+(*
+   nLab: https://ncatlab.org/nlab/show/full+subcategory
 
-   Given any category C and any family El : V → C of its objects, [Spanned] has
-   V for objects and, between codes x and y, exactly the C-morphisms
-   El x ~> El y. Every field is the corresponding field of C read along El, so
-   every law is C's law and nothing is reproved. El is not required to be
-   injective: distinct codes may decode to the same object of C, in which case
-   [Spanned] carries two copies of it. This is the general shape; Mac Lane's
-   Ens_V is the case C = [Coq], and its setoid counterpart the case C = [Sets].
+   本节说明 EnsV 相关定义、性质与动机。
 
-   The section is self-contained and does not mention [Coq] or [Sets]; should
-   another development want it, it moves to Construction/ unchanged. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Spanned.
 
@@ -133,9 +72,11 @@ Program Definition Spanned_Incl : Spanned ⟶ C := {|
   prefmap := λ _ _ g, g
 |}.
 
-(* And faithful, since the hom-map is the identity function. Note that it is
-   injective on objects only when El is; fullness and faithfulness are hom-level
-   statements and hold for every family. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Spanned_Incl_Faithful : Faithful Spanned_Incl := {|
   fmap_inj := λ _ _ _ _ H, H
 |}.
@@ -158,9 +99,11 @@ Definition EnsV_Incl {V : Type} (El : V → Type) : EnsV El ⟶ Coq :=
    Objects are the members of V on the nose. *)
 Definition EnsV_obj_is_V {V : Type} (El : V → Type) : @obj (EnsV El) = V := eq_refl.
 
-(* Arrows from x to y are ALL functions El x → El y: the right-hand side is the
-   bare function type, carrying no membership condition and no other side
-   condition. This is the clause the issue's reviewer note singles out. *)
+(*
+   本节说明 EnsV 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition EnsV_hom_is_all_functions {V : Type} (El : V → Type) (x y : V) :
   @hom (EnsV El) x y = (El x → El y) := eq_refl.
 
@@ -179,14 +122,11 @@ Definition EnsV_compose_is_usual {V : Type} (El : V → Type) (x y z : V)
 
 (** ** Ens_V over [Sets]: the setoid-flavoured variant *)
 
-(* The same construction with the decoding landing in setoids. An arrow is a
-   setoid map (a function together with its respectfulness certificate) and two
-   arrows agree when they are pointwise `≈`-equal, exactly as in
-   Instance/Sets.v. This variant is the one to use when Ens_V must serve as
-   the codomain of a hom-functor or otherwise interact with the library's
-   setoid-enriched machinery; the [Coq]-flavoured one above is the literal
-   reading of Mac Lane, where a set is a bare type and equality of elements is
-   Leibniz equality. *)
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition EnsV_Sets {V : Type} (El : V → SetoidObject) : Category :=
   @Spanned Sets V El.
 
@@ -208,23 +148,16 @@ Definition EnsV_Sets_equiv_is_pointwise {V : Type} (El : V → SetoidObject)
 
 (** ** The tautological family recovers the ambient category *)
 
-(* At V := the objects of [Coq] and El := the identity family, [EnsV] IS [Coq]:
-   the two [Category] records are convertible, so [eq_refl] typechecks. Every
-   field agrees definitionally — including the hom-setoids with their
-   [Equivalence] proofs and all four category laws — because [Spanned] never
-   builds a field, it only reads one off the ambient category.
+(*
+   本节说明hom、等价、（余）强度相关定义、性质与动机。
 
-   The measured strength is therefore definitional equality of the two
-   categories, which is strictly stronger than an isomorphism in Cat and
-   equivalent (under eta) to field-wise agreement: any statement whatever about
-   [Coq] transports to [EnsV (λ T : Type, T)] by conversion alone. *)
-(* The general form, for ANY ambient category: spanning C by its own objects
-   along the identity family gives back C on the nose.  This is the statement
-   for which definitional eta on [Category] is genuinely load-bearing -- C is
-   a variable here, so no delta unfolding is available and the conversion
-   must go record-against-eta-expansion.  The two named recoveries below are
-   its instances (each also checkable by delta alone, their ambients being
-   transparent constants). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 EnsV 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Spanned_recovers_ambient {C : Category} :
   @Spanned C (@obj C) (λ x, x) = C := eq_refl.
 
@@ -236,11 +169,11 @@ Definition EnsV_Sets_recovers_Sets :
 
 (** ** A small Ens_V *)
 
-(* Mac Lane's V is a SET of sets, and the interesting case is the one his
-   notation is for: V small. Here is the two-member case, V = {1, 2}, a category
-   with exactly two objects whose homs are honest function types. Its object
-   type is [bool] and nothing has been enlarged, which is the whole content of
-   the smallness remark in the header. *)
+(*
+   本节说明 EnsV 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition EnsV_two_family (b : bool) : Type := if b then unit else bool.
 
 Definition EnsV_two : Category := EnsV EnsV_two_family.

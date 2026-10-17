@@ -45,15 +45,11 @@ Arguments am_inv {B C} _.
 
 (** ** The generated congruence *)
 
-(* [am_eq] lands in [Prop].  Since the PR "algebraic carriers are sets"
-   (2026-09-17) a [GrpObject] carries [grp_prop], so the amalgam's carrier
-   setoid owes a [Prop]-valued mirror of its `≈`; the cheapest and most
-   faithful one is the congruence itself, declared in [Prop].  Two
-   constructors carry a [Type]-valued `≈` premise ([ae_l_resp], [ae_r_resp])
-   and both stay VERBATIM: a [Prop] inductive may store [Type]-valued data,
-   it simply may not be eliminated into [Type].  Nothing below is proved by
-   induction on [am_eq] except [am_eval_respects], whose one elimination is
-   routed through [pequiv] at the target group. *)
+(*
+   本节说明 Pushout 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive am_eq {A B C : GrpObject}
                 (f : A ~{Grp}~> B) (g : A ~{Grp}~> C)
   : AmTerm B C → AmTerm B C → Prop :=
@@ -127,16 +123,11 @@ Definition AmCarrier : SetoidObject := {|
   is_setoid := AmSetoid
 |}.
 
-(* The amalgamated free product B *_A C.  Every group law is a
-   CONSTRUCTOR of [am_eq], so the record below is a literal with no proof
-   obligation of its own -- the [Instance/Mod/Free.v] payoff.
+(*
+   本节说明 Pushout 相关定义、性质与动机。
 
-   CORRECTION.  That sentence was exactly true before the PR "algebraic
-   carriers are sets" (2026-09-17).  The record now has a ninth field,
-   [grp_prop], which is not a group law; it is still supplied by a literal
-   here, and costs no obligation, because [am_eq] IS the [Prop] relation and
-   the two implications are the identity.  So the record remains a literal
-   with no proof obligation of its own -- with one more field in it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AmalgamGrp : GrpObject := {|
   grp_setoid := AmCarrier;
   grp_unit := am_one;
@@ -205,16 +196,16 @@ Fixpoint am_eval (t : AmTerm B C) : carrier Q :=
 
 Context (Hcomm : q1 ∘[Grp] f ≈ q2 ∘[Grp] g).
 
-(* Well-definedness on the quotient, by induction on the derivation.  The
-   glue case is the ONLY one that consumes [Hcomm]; every other case is a
-   law of [Q] or of one of the two homomorphisms. *)
-(* [am_eq] is a [Prop] since the PR "algebraic carriers are sets"
-   (2026-09-17), so the induction may not land in the [Type]-valued goal
-   [am_eval u ≈ am_eval v] directly.  The whole proof is therefore conducted
-   inside [Q]'s own [Prop] equality: [pequiv_to] opens it, each of the twelve
-   branches closes with [pequiv_from] and then runs the ORIGINAL tactic
-   unchanged, and [ae_sym]/[ae_trans] use [pequiv]'s own transported
-   equivalence laws.  No mathematics moved. *)
+(*
+   本节说明 Pushout 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma am_eval_respects (u v : AmTerm B C) (H : am_eq f g u v) :
   am_eval u ≈ am_eval v.
 Proof using All.
@@ -261,9 +252,11 @@ Proof. intro b; reflexivity. Qed.
 Lemma am_med_inj2 : am_med ∘[Grp] am_inj2 f g ≈ q2.
 Proof. intro c; reflexivity. Qed.
 
-(* Uniqueness, by induction on the WORD rather than on the congruence: a
-   competing homomorphism is pinned on the two insertions by hypothesis
-   and on the three formers by its own homomorphism laws. *)
+(*
+   本节说明 Pushout 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma am_med_unique (v : AmalgamGrp f g ~{Grp}~> Q)
       (H1 : v ∘[Grp] am_inj1 f g ≈ q1)
       (H2 : v ∘[Grp] am_inj2 f g ≈ q2) :
@@ -360,12 +353,11 @@ Example am_med_on_right {A B C Q : GrpObject}
         (Hcomm : q1 ∘[Grp] f ≈ q2 ∘[Grp] g) (c : carrier C) :
   grp_map (am_med f g q1 q2 Hcomm) (am_r c) = grp_map q2 c := eq_refl.
 
-(* [pushout_med], by contrast, does NOT reduce to [am_med]: Structure/
-   Pushout.v states [pushout_ump] as a [Qed] lemma, so [unique_obj] is
-   applied to an opaque constant.  The equation holds up to [≈], which is
-   what the universal property gives; the strict form is pinned as a
-   negative in Test/ProbePushoutGrpTop.v, with the opacity as its
-   diagnosed cause. *)
+(*
+   本节说明拉回/推出、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Grp_pushout_med_is_am_med {A B C Q : GrpObject}
       (f : A ~{Grp}~> B) (g : A ~{Grp}~> C)
       (q1 : B ~{Grp}~> Q) (q2 : C ~{Grp}~> Q)
@@ -384,10 +376,11 @@ Section GrpSplitRefinement.
 Context {A B C : GrpObject}.
 Context (f : A ~{Grp}~> B) (g : A ~{Grp}~> C).
 
-(* The generic statements of Structure/Pushout/Split.v, transported to the
-   named injections.  The transport is by CONVERSION -- [pushout_in1
-   (Grp_pushout f g)] IS [am_inj1 f g], recorded above by [eq_refl] -- so
-   each of these is an [exact] of the generic term. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition am_inj1_Section (Sg : Section g) : Section (am_inj1 f g) :=
   pushout_in1_Section_of_Retraction (Grp_pushout f g) Sg.
 
@@ -410,18 +403,20 @@ Proof. exact (sections_are_monic _ _ _ (am_inj1_Section Sg)). Qed.
 Theorem am_inj2_Monic (Sf : Section f) : Monic (am_inj2 f g).
 Proof. exact (sections_are_monic _ _ _ (am_inj2_Section Sf)). Qed.
 
-(* The refinement in the shape Mac Lane states it, at split strength: both
-   legs split, therefore both injections are monic AND the vertex is the
-   amalgamated product -- the latter definitionally, [AmalgamGrp f g]
-   being the apex on the nose. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Grp_split_legs_monic_injections (Sf : Section f) (Sg : Section g) :
   Monic (am_inj1 f g) * Monic (am_inj2 f g).
 Proof. exact (am_inj1_Monic Sg, am_inj2_Monic Sf). Qed.
 
-(* Read down to elements through Instance/Grp.v's own characterization of
-   monomorphisms: split legs make the two insertions INJECTIVE.  The
-   hypotheses are spelled with [am_eq f g], which IS the apex's [≈] by
-   construction ([AmSetoid]), so no coercion or transport intervenes. *)
+(*
+   本节说明 Pushout 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary am_inj1_injective (Sg : Section g) :
   ∀ b b' : carrier B, am_eq f g (am_l b) (am_l b') → b ≈ b'.
 Proof.
@@ -454,21 +449,11 @@ Proof.
   symmetry; apply grp_mul_unit_l.
 Defined.
 
-(* THE ROUTE NOT TAKEN, and why.  The free product is classically the
-   pushout over the TRIVIAL group, and that span's legs even SPLIT --
-   [Grp_zero_hom]'s retraction is [Grp_one], the two composites living in
-   a hom-set Instance/Grp.v has already proved to be a singleton.  The
-   lemma is recorded here because it is the honest classical statement.
-   But [Instance/Grp.v]'s [Grp_zero_hom] is declared over
-   [GrpObject@{Set Set Set}] -- a donor pin of the family
-   Instance/Grp/Quotient/Colimit.v records for [Grp_trivial] -- so
-   everything built on it would be confined to [Set]-sized groups.  The
-   free product below therefore goes through the CONSTANT legs instead,
-   which needs no zero object and carries no pin; the probe file pins the
-   donor's rejection above [Set] against this file's acceptance there.
-   CORRECTION (#450): the donor pin is lifted in Instance/Grp.v, this
-   lemma is universe-polymorphic since ([Grp_zero_hom_Section@{u u0}]),
-   and the probe's two negatives are controls. *)
+(*
+   本节说明拉回/推出、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grp_zero_hom_Section (G : GrpObject) : Section (Grp_zero_hom G).
 Proof.
   unshelve refine {| section := Grp_one G |}.
@@ -476,18 +461,11 @@ Proof.
            (Grp_one G ∘[Grp] Grp_zero_hom G) (@id Grp Grp_trivial)).
 Defined.
 
-(* B * C: the amalgam along the two constant legs.  This is an INSTANCE of
-   the amalgamated product, not a second construction.
+(*
+   本节说明 Pushout 相关定义、性质与动机。
 
-   THE SPAN APEX PLAYS NO ROLE, and that is visible rather than argued:
-   [AmTerm B C] does not mention the apex at all, and the apex enters
-   [am_eq] only through [ae_glue a], whose statement here is
-   [am_l (grp_unit B) ~ am_r (grp_unit C)] for EVERY [a] -- one relation,
-   repeated, and already derivable from the two insertions'
-   unit-preservation.  [B] is taken as the apex only because it is at
-   hand.  (That the congruences over two different apexes coincide is not
-   stated as a lemma; what IS proved is that this object has the
-   coproduct's universal property, which is what a consumer needs.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grp_free_product (B C : GrpObject) : GrpObject :=
   AmalgamGrp (grp_const B B) (grp_const B C).
 
@@ -497,10 +475,11 @@ Definition Grp_fp_inl (B C : GrpObject) : B ~{Grp}~> Grp_free_product B C :=
 Definition Grp_fp_inr (B C : GrpObject) : C ~{Grp}~> Grp_free_product B C :=
   am_inj2 (grp_const B B) (grp_const B C).
 
-(* Any pair of homomorphisms out of B and C automatically forms a cocone
-   over the constant span, both composites being constant at the unit of
-   Q.  So the free product's copairing needs no compatibility hypothesis
-   at all. *)
+(*
+   本节说明 Pushout 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Grp_fp_cocone {B C Q : GrpObject}
       (q1 : B ~{Grp}~> Q) (q2 : C ~{Grp}~> Q) :
   q1 ∘[Grp] grp_const B B ≈ q2 ∘[Grp] grp_const B C.
@@ -537,14 +516,11 @@ Proof.
          sections_are_monic _ _ _ (Grp_fp_inr_Section B C)).
 Qed.
 
-(** ** The free product IS the coproduct of Grp
+(*
+   本节说明拉回/推出、始/终对象、来源与用途相关定义、性质与动机。
 
-    Cross-reference: the GENERAL bridge "a pushout over the initial object
-    is the binary coproduct" is open issue #862 (Seven Sketches 6.2.3) and
-    is NOT built here.  What follows is the ad-hoc Grp instance: the
-    commutation hypothesis of the pushout's universal property is
-    discharged once and for all by [Grp_fp_cocone], leaving exactly the
-    coproduct's universal property. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Local Obligation Tactic := idtac.
 

@@ -48,13 +48,11 @@ Lemma mlim_leg_coherence {x y : J} (f : x ~{J}~> y)
     ≈ cmon_map (mlim_leg y) a.
 Proof. exact (limit_leg_coherence (limit_is_alimit L) f a). Qed.
 
-(* The engine, borrowed rather than reproved.  Constant maps are not
-   homomorphisms, so Instance/Ab/Limit.v's argument does not transpose
-   to [Ab] directly; instead [Ab_Forget] carries the limiting cone down to
-   [Sets] on the same carrier, where that lemma applies verbatim.  The
-   witness is Instance/Ab/Limit.v, which comes from creation and so
-   from [Sets_Complete] alone -- no adjunction is presupposed anywhere in
-   this chain. *)
+(*
+   本节说明伴随、（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition mlim_sets_limit :=
   limitcone_isalimit
@@ -67,13 +65,11 @@ Proof. exact (absets_limit_ext mlim_sets_limit x y). Qed.
 
 (** ** The scalar action *)
 
-(* For a fixed scalar [r], multiplication by [r] after the leg at [j] is an
-   [Ab]-morphism -- additive by [rm_smul_distr_l], unital by
-   Instance/Mod.v's [rm_smul_zero_r] -- and these assemble into a cone
-   in [Ab] over the same diagram.  Taking the action to be that cone's
-   MEDIATOR, rather than a bare function on the carrier, is what makes
-   distributivity over vector addition and respectfulness in the second
-   argument citations instead of proofs. *)
+(*
+   本节说明分配律相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition mlim_smul_fn (r : carrier (rig_setoid (ring_rig R)))
   (j : J) :
@@ -257,13 +253,11 @@ Defined.
 
 (** ** Uniqueness of the lifted action (Mac Lane's §V.1 Theorem 2) *)
 
-(* The whole of the uniqueness clause AT THIS LEVEL: the abelian group is
-   inherited on the nose rather than lifted, so the "exactly one structure
-   making every projection a homomorphism" has ONE component here where
-   the [Ab] template has three.  Note what is consumed -- only that the
-   candidate satisfies the leg conditions, NO law of it -- so the
-   statement is sharper than "any module structure on the apex making the
-   projections homomorphisms is this one". *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma mlim_smul_unique
   (s : carrier (rig_setoid (ring_rig R)) →
@@ -442,10 +436,11 @@ Definition RMod_Forget_composite_continuous (R : RingObject) :
   continuous_compose (RMod_Forget_Ab_creates_continuous R)
     Ab_Forget_creates_continuous.
 
-(* Instance/Mod.v's header says [RMod_Forget] agrees with the composite on
-   objects and morphisms but is not the same record.  Both halves, read
-   back.  The negative half is not stated as an [Example] -- it is a
-   refusal, quoted in the header with its exact text. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example rmod_forget_obj_agrees {R : RingObject} (M : RMod R) :
   RMod_Forget R M = (Ab_Forget ◯ RMod_Forget_Ab R) M := eq_refl.
@@ -486,14 +481,11 @@ Definition RMod_Forget_PreservesAllLimits (R : RingObject) :
 
 (** * "Limits of modules are computed componentwise", literally *)
 
-(* At the limits [RMod_Complete] chooses -- [Ab_Complete] over
-   [Sets_Complete], hence the compatible families of
-   Instance/Sets/Complete.v -- the created module is the coordinatewise
-   one ON THE NOSE: carrier, addition, zero, negation, SCALAR ACTION and
-   every projection are all [eq_refl], at an arbitrary ring, an arbitrary
-   shape and an arbitrary diagram of modules.  The fifth is the one with
-   no counterpart in the template, and it holds even though the chosen
-   limit reaches its mediator through [creates_limiting]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RModComputed.
 

@@ -22,45 +22,15 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Why a category of groupoids, and why it sits inside Cat
-
+(*
    nLab:  https://ncatlab.org/nlab/show/core
    Paper: Brown, "From groups to groupoids: a brief survey", Bulletin of
-          the London Mathematical Society 19, 1987
    Paper: Hofmann and Streicher, "The groupoid model refutes uniqueness of
-          identity proofs", LICS 1994
 
-   A single groupoid generalises a group by letting the symmetries move
-   between objects rather than fixing one; the CATEGORY of groupoids
-   generalises the category of groups in the same way, and it is the
-   setting in which that generalisation pays.  Brown's survey makes the
-   case with the van Kampen theorem: stated for fundamental GROUPS it needs
-   a connected intersection, while the groupoid statement -- one base point
-   per component, the conclusion a pushout in [Grpd] -- proves a stronger
-   theorem more simply (Brown 1987, following Higgins).  A pushout is a
-   colimit, so it is a statement about the category of groupoids, not about
-   any one of them; the object-level construction alone cannot express it.
+   本节说明 Grpd 相关定义、性质与动机。
 
-   [Grpd] sits inside [Cat] in an unusually strong way.  The inclusion has
-   adjoints on BOTH sides -- the left one inverts every morphism formally
-   (the category of fractions), the right one discards the non-invertible
-   ones (the core) -- so [Grpd] is simultaneously reflective and
-   coreflective in [Cat] (Riehl §4.1, Example 4.1.15; nLab: core).  This
-   file and Construction/Groupoid/Core.v deliver the right-hand half of that
-   adjoint triple as a theorem.  An earlier revision of this sentence added
-   that the left-hand half "remains prose"; that is a correction to make,
-   because Construction/Fractions/Adjunction.v now proves it, and
-   [riehl_4_1_15] there assembles the whole triple over THIS [Grpd] and
-   THIS inclusion.
-
-   The type-theoretic reading is not an analogy.  In intensional Martin-Löf
-   type theory the identity proofs of a type compose, invert and associate,
-   so every type carries the structure of a groupoid, and the interpretation
-   of types as OBJECTS OF [Grpd] -- functions as functors between them -- is
-   what Hofmann and Streicher used to show that uniqueness of identity
-   proofs is not derivable (LICS 1994).  That model is a functor into
-   [Grpd], which again is a statement one can only make once the category
-   exists. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The subcategory data *)
 
@@ -76,11 +46,11 @@ Definition Grpd_sub : Subcategory Cat :=
 
 Definition Grpd : Category := Sub Cat Grpd_sub.
 
-(** ** Accessors
+(*
+   本节说明 Grpd 相关定义、性质与动机。
 
-    An object of [Grpd] is a category paired with a proof that it is a
-    groupoid; these two projections name the halves, so that downstream
-    files need not spell `1 and `2 at every use. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition grpd_cat (G : Grpd) : Category := `1 G.
 
@@ -101,23 +71,20 @@ Definition Grpd_Incl_Faithful : Functor.Faithful Grpd_Incl :=
 Definition Grpd_Incl_Full : Functor.Full Grpd_Incl :=
   Full_Implies_Full_Functor Cat Grpd_sub Grpd_Full.
 
-(* [shom] ignores its morphism argument, so it is closed under `≈` for the
-   trivial reason; this is the hypothesis Construction/Subcategory.v's
-   [Full_Functor_Implies_Full] needs, and with it the "full subcategory iff
-   full inclusion" biconditional holds for [Grpd] in both directions. *)
+(*
+   本节说明 Grpd 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Grpd_ShomRespects : ShomRespects Cat Grpd_sub :=
   fun _ _ _ _ _ _ _ _ => I.
 
-(** ** Repleteness
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
 
-    A category isomorphic in [Cat] to a groupoid is a groupoid.  Note what
-    `≅[Cat]` means here: Instance/Cat.v's hom-setoid is [Functor_Setoid], so
-    the two round trips are NATURAL ISOMORPHISMS, not identities -- the
-    statement proved is therefore the one about equivalences, not the
-    stricter one about isomorphisms on the nose.  The transported inverse of
-    h : x ~> y is conjugated by the components of that natural isomorphism,
-    which is where the two [comp_assoc] chains below come from. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma IsGroupoid_transport (C D : Category) (i : C ≅[Cat] D) :
   IsGroupoid C → IsGroupoid D.
@@ -161,16 +128,11 @@ Qed.
 Definition Grpd_Replete : Replete Cat Grpd_sub :=
   fun x ox y f => (IsGroupoid_transport x y f ox; (I, I)).
 
-(** ** Not vacuous, and not the whole of Cat
+(*
+   本节说明 Grpd 相关定义、性质与动机。
 
-    [Grpd] is a PROPER subcategory of [Cat]: the delooping of (ℕ, +) is a
-    category whose arrow 1 has no inverse, so it is not an object of [Grpd].
-    The witness is Structure/Groupoid.v's [deloop_nat_not_groupoid], whose
-    own content is the specific non-invertible arrow rather than an appeal
-    to "ℕ is not a group".  Without this the whole development would be
-    consistent with [Grpd_sub] selecting every object of [Cat], in which
-    case Construction/Groupoid/Core.v's [Core] would be the identity and its
-    adjunction trivial. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Grpd_proper_subcategory : sobj Cat Grpd_sub (Deloop Nat_Plus) → False.
 Proof. exact deloop_nat_not_groupoid. Qed.

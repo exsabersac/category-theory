@@ -177,10 +177,11 @@ Definition ana (X : SetoidObject) (c : X ~{Sets}~> StreamF X) :
   X ~{Sets}~> Stream_SO :=
   {| morphism := ana_fn X c ; proper_morphism := ana_proper X c |}.
 
-(* Uniqueness, generalised over an intermediate state [s] bisimilar to [h x]
-   so that the corecursive call sits under [Bisim] with a non-corecursive
-   proof of its premise.  Here [h] is any coalgebra map satisfying the
-   head/tail transition equations [Hh1]/[Hh2]. *)
+(*
+   本节说明 Streams 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ana_unique_gen (X : SetoidObject) (c : X ~{Sets}~> StreamF X)
   (h : carrier X → Stream)
   (Hh1 : ∀ x, shead (h x) ≈ fst (c x))

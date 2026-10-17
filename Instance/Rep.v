@@ -46,13 +46,11 @@ Open Scope category_scope.
 
 (** ** From a group object to a monoid object *)
 
-(* Instance/Grp.v's [GrpObject] read as a [MonObject], so that it can be
-   delooped.  Carrier, unit and multiplication are the originals; only
-   two law fields need any work, and neither is a proof:
-   [mon_op_assoc] is stated in the mirrored orientation (Deloop.v
-   matches [comp_assoc], Instance/Grp.v matches the usual left-to-right
-   reading), and [mon_op_unit_r] is Instance/Grp.v's derived
-   [grp_mul_unit_r] rather than a field. *)
+(*
+   本节说明 Rep 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition grp_mon (G : GrpObject) : MonObject := {|
   mon_setoid := grp_setoid G;
   mon_unit   := grp_unit G;
@@ -80,34 +78,37 @@ Example grp_mon_unit (G : GrpObject) :
 Example grp_mon_op (G : GrpObject) :
   @mon_op (grp_mon G) = grp_mul G := eq_refl.
 
-(* [UnitsOf]'s hom-setoid compares unit data by the underlying element
-   alone, so an equation between units is an equation between the
-   elements they are built on — the invertibility witnesses are free to
-   differ.  Stating that once, as a conversion, keeps every obligation
-   below at the level of morphisms of [RMod K]; without it a bare
-   [reflexivity] would try to unify the witnesses too. *)
-(* Since the PR "algebraic carriers are sets" (2026-09-17) [UnitsOf] also
-   takes the monoid carrier's [PropEquiv]; the statement is otherwise
-   unchanged, and every use below supplies [rmod_hom_monoid_prop]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma units_equiv {M : MonObject}
   {PM : PropEquiv (is_setoid (mon_setoid M))}
   (x y : carrier (grp_setoid (UnitsOf M PM))) : `1 x ≈ `1 y → x ≈ y.
 Proof. intro H; exact H. Qed.
 
-(* The witness [UnitsOf] asks for at an endomorphism monoid of [RMod K]:
-   [RMod K] is locally propositional (Instance/Mod.v), so the hom-setoid
-   carries the [PropEquiv] with nothing further to prove. *)
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rmod_hom_monoid_prop (K : RingObject) (V : RModObject K) :
   PropEquiv (is_setoid (mon_setoid (hom_monoid (RMod K) V))) :=
   @locally_prop (RMod K) (RMod_LocallyPropositional K) V V.
 
 (** ** Representations *)
 
-(* A K-linear representation of G: a K-module together with a
-   homomorphism from G into the group of automorphisms of that module.
-   The automorphism group is Instance/Matr/GL.v's [UnitsOf] taken at
-   Construction/Deloop.v's endomorphism monoid [hom_monoid (RMod K) V]
-   — the same composite that reads GL_n off the matrix monoid there. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record RepObject (K : RingObject) (G : GrpObject) := {
   rep_mod :> RModObject K;
 
@@ -117,10 +118,11 @@ Record RepObject (K : RingObject) (G : GrpObject) := {
 Arguments rep_mod {K G} _.
 Arguments rep_hom {K G} _.
 
-(* The action of a group element, as an endomorphism of the module: the
-   underlying element of the unit datum.  Every law below is the
-   corresponding homomorphism law read through this projection, which is
-   why each of them holds by [exact] with no rewriting. *)
+(*
+   本节说明 Rep 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rep_act {K : RingObject} {G : GrpObject} (V : RepObject K G)
   (g : carrier G) : rep_mod V ~{RMod K}~> rep_mod V :=
   `1 (grp_map (rep_hom V) g).
@@ -141,11 +143,11 @@ Lemma rep_act_mul {K : RingObject} {G : GrpObject} (V : RepObject K G)
   rep_act V (grp_mul G g h) ≈ rep_act V g ∘ rep_act V h.
 Proof. exact (grp_map_mul (rep_hom V) g h). Qed.
 
-(* Each element acts invertibly, the inverse being the action of the
-   inverse element.  This is a consequence of the two laws above, not a
-   reading of the unit datum's own witness: the witness stored in
-   [rep_hom] is some two-sided inverse, and what is proved here is that
-   [rep_act V (grp_inv G g)] is one. *)
+(*
+   本节说明 Rep 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition rep_act_iso {K : RingObject} {G : GrpObject}
   (V : RepObject K G) (g : carrier G) :
   rep_mod V ≅[RMod K] rep_mod V := {|
@@ -182,10 +184,11 @@ Next Obligation. intros K G V; exact (rep_act_respects V). Qed.
 Next Obligation. intros K G V; exact (rep_act_unit V). Qed.
 Next Obligation. intros K G V a b; exact (rep_act_mul V a b). Qed.
 
-(* Supplying it back: over a GROUP the invertibility is automatic, the
-   inverse of the action of g being the action of g⁻¹.  The two
-   obligations are the group's own inverse laws pushed through the
-   homomorphism. *)
+(*
+   本节说明 Rep 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition rep_of_monhom {K : RingObject} {G : GrpObject}
   (V : RModObject K) (h : MonHom (grp_mon G) (hom_monoid (RMod K) V)) :
   GrpHom G (UnitsOf (hom_monoid (RMod K) V) (rmod_hom_monoid_prop K V)) := {|
@@ -225,10 +228,11 @@ Definition RepOfMonHom {K : RingObject} {G : GrpObject}
   RepObject K G :=
   {| rep_mod := V; rep_hom := rep_of_monhom V h |}.
 
-(* Both round trips are DEFINITIONAL.  Going out and back through the
-   invertibility witness recovers the same map because [UnitsOf]'s
-   hom-setoid compares unit data by the underlying element, which is
-   precisely what [rep_act] projects. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma monhom_rep_round {K : RingObject} {G : GrpObject}
   (V : RModObject K) (h : MonHom (grp_mon G) (hom_monoid (RMod K) V))
   (g : carrier G) :
@@ -240,11 +244,11 @@ Lemma rep_monhom_round {K : RingObject} {G : GrpObject}
   rep_act (RepOfMonHom (rep_mod V) (monhom_of_rep V)) g ≈ rep_act V g.
 Proof. reflexivity. Qed.
 
-(* Stated on the unit datum itself, which is the same equation: the
-   round trip is written through [rep_act] because [UnitsOf]'s
-   hom-setoid equivalence is that projection, and a bare [reflexivity]
-   at the sigma type would have to unify the invertibility witnesses,
-   which the two forms are under no obligation to share. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rep_monhom_round_elt {K : RingObject} {G : GrpObject}
   (V : RepObject K G) (g : carrier G) :
   `1 (grp_map (rep_of_monhom (rep_mod V) (monhom_of_rep V)) g)
@@ -407,10 +411,11 @@ Qed.
 Next Obligation. intros K G V; exact (id_left (@id (RMod K) _)). Qed.
 Next Obligation. intros K G V; exact (id_left (@id (RMod K) _)). Qed.
 
-(* The functor-side round trip, with a transparent component family: the
-   equivalence below has to compute with the components, so the
-   in-tree opaque [functor_round] cannot serve (Instance/Fun/Action.v's
-   [MSet_round_iso] makes the same move). *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Rep_round_iso {K : RingObject} {G : GrpObject}
   (F : Deloop (grp_mon G) ⟶ RMod K) :
   @Isomorphism ([Deloop (grp_mon G), RMod K])
@@ -462,12 +467,11 @@ Next Obligation.
     exact (@fmap_id _ _ (functor_of_rep (rep_of_functor F)) ttt).
 Qed.
 
-(* Mac Lane's construction 3 at category strength: the category of
-   K-linear representations of G IS the functor category out of the
-   delooping of G, an isomorphism in Cat and hence — Cat's hom-setoid
-   being natural isomorphism (Instance/Cat.v) — an EQUIVALENCE of
-   categories.  The orientation is Instance/Fun/Action.v's, with the
-   functor category on the left. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Rep_Fun_equiv (K : RingObject) (G : GrpObject) :
   [Deloop (grp_mon G), RMod K] ≅[Cat] Rep K G := {|
   to   := Rep_to K G;
@@ -595,10 +599,11 @@ Proof.
   - exact (id_left (@id (RMod K) V)).
 Qed.
 
-(* The sign representation.  Instance/Grp.v's [Z2] is (bool, xor,
-   false), so [grp_mul Z2] is [xorb] and [grp_unit Z2] is [false]; the
-   multiplication law is the four-case check that xor of the signs is
-   the composite of the two actions. *)
+(*
+   本节说明 Rep 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sign_unit {K : RingObject} (V : RModObject K)
   (b : carrier Z2) :
   carrier (grp_setoid (UnitsOf (hom_monoid (RMod K) V) (rmod_hom_monoid_prop K V))) :=
@@ -640,11 +645,11 @@ Definition sign_rep {K : RingObject} (V : RModObject K) :
         ; grp_map_unit := sign_unit_is_unit V
         ; grp_map_mul := sign_unit_mul V |} |}.
 
-(* Non-vacuity, over the integers as a module over themselves: the
-   non-unit element of Z/2 acts by an endomorphism that genuinely moves
-   a point, so the sign representation is not the trivial one.  (The
-   [≈] of [Int_Ring]'s carrier is Leibniz equality on Z, whence
-   [discriminate].) *)
+(*
+   本节说明 Rep 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sign_rep_moves_one :
   cmon_map (rm_hom (rep_act (sign_rep Int_RMod) true)) 1%Z ≈ (-1)%Z.
 Proof. reflexivity. Qed.
@@ -672,13 +677,11 @@ Proof.
   discriminate H1.
 Qed.
 
-(* And the two really are DIFFERENT REPRESENTATIONS in the sense a
-   category theorist reads: not merely unequal, but non-isomorphic
-   objects of [Rep Int_Ring Z2].  Any intertwiner from the sign
-   representation to the trivial one is forced to vanish (equivariance
-   at [true] says f(−n) ≈ f(n), additivity says f(−n) ≈ −f(n), so
-   2·f(n) = 0 over ℤ), and a vanishing map cannot be half of an
-   isomorphism — its round trip at 1 would read 0 = 1. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sign_not_iso_trivial :
   @Isomorphism (Rep Int_Ring Z2) (sign_rep Int_RMod) (trivial_rep Int_RMod)
     → False.

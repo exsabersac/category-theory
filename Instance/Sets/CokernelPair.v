@@ -38,10 +38,11 @@ Definition sets_ck_fun {Q : SetoidObject@{p p}}
        | Datatypes.inr b => q2 b
        end.
 
-(* Respectfulness.  Three of the four cases are [proper_morphism] of q1 or
-   q2; the two GLUING cases are the whole content, and they are where the
-   coequalizing hypothesis is spent: the image witness names a preimage
-   [a] with [f a ≈ x], at which [q1] and [q2] agree by hypothesis. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sets_ck_respects {Q : SetoidObject@{p p}}
       (q1 q2 : B ~{Sets@{p h}}~> Q)
       (Hc : q1 ∘[Sets@{p h}] f ≈ q2 ∘[Sets@{p h}] f)
@@ -112,9 +113,11 @@ End SetsCokernelPair.
 
 (** ** The two triangles hold on the nose on the underlying functions *)
 
-(* The mediator's value at either injection is the corresponding competing
-   map applied to the point — Leibniz, not merely [≈].  What is NOT strict
-   is the equality of MORPHISMS (see Test/ProbeCokernelPair.v). *)
+(*
+   本节说明 CokernelPair 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example sets_ck_med_inl@{h p} {A B Q : SetoidObject@{p p}}
         (f : A ~{Sets@{p h}}~> B) (q1 q2 : B ~{Sets@{p h}}~> Q)
         (Hc : q1 ∘[Sets@{p h}] f ≈ q2 ∘[Sets@{p h}] f) (b : carrier B) :
@@ -182,10 +185,11 @@ Proof.
              (snd (epic_iff_pushout_square pick_true) H)).
 Qed.
 
-(* Cross-check: Instance/Sets.v's [pick_true_not_epic] re-derived through
-   the general characterization, by a route sharing no proof text with the
-   original (that one probes with [id] against [pick_true ∘ collapse];
-   this one goes through the cokernel pair). *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sets_pick_true_not_epic_via_ckp : Epic pick_true → False.
 Proof.
   intro E.

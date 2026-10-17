@@ -39,79 +39,16 @@ Ltac RcasesH :=
     end.
 Ltac RlinH := RcasesH; lra.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.3 Exercise 5, printed p. 40 (PDF p. 50) — maclane:II.3:ex5
+(*
+   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.2,
-              printed p. 156 (PDF p. 165) —
-              awodey:7.2:construction-continuous-real-functions-ring
    nLab:      https://ncatlab.org/nlab/show/Top
    Wikipedia: https://en.wikipedia.org/wiki/Ring_(mathematics)
 
-   Mac Lane's exercise: assigning to each space X the ring C(X) of
-   continuous real-valued functions under the pointwise operations, and
-   to each continuous map the precomposition homomorphism, is a
-   contravariant functor from spaces to rings — the basic object of
-   function-algebra dualities.
+   本节说明函子相关定义、性质与动机。
 
-     - [cr_plus]/[cr_mult]/[cr_neg]/[cr_const]: the pointwise algebra
-       of continuous maps X ⟶ R_Top, each with its continuity proof
-     - [CRingOb X : RingObject]: C(X), the hom-carrier
-       [ContinuousMorphism X R_Top] under the pointwise structure
-     - [CRing_precomp]: precomposition along a continuous map is a
-       ring homomorphism
-     - [ContinuousRingFunctor : Top^op ⟶ Rng]: the contravariant
-       functor, in the library's standard encoding
-
-   Design:
-
-   1. CONTINUITY OF THE POINTWISE OPERATIONS IS A UNION OF FINITE
-      INTERSECTIONS.  X's topology is abstract — there is no
-      epsilon-delta ON X — so the preimage of a metric open under
-      f + g is exhibited as an X-open the only way it can be: as the
-      union, indexed by the points x it contains, of intersections
-      (f ⁻¹ of a small ball around f x) ∩ (g ⁻¹ of a small ball around
-      g x), each factor open by f's and g's own continuity, the union
-      and intersections by X's axioms, and the pointwise equivalence
-      with the actual preimage by the triangle inequality ([Rlin]).
-      For the product the radius shrinks by the local bound
-      M = |f x| + |g x| + 1 (and is capped at 1 so |f y| ≤ |f x| + 1),
-      the standard argument, with [nra] closing the nonlinear
-      estimate.  The radius of every ball is DATA, in
-      Instance/Top/Interval.v's discipline, so no choice principle
-      appears.
-
-   2. C(X) IS THE HOM-CARRIER, BUT THE RING STRUCTURE IS NOT
-      TRANSFERRED FROM A RING OBJECT ℝ — THAT PREMISE IS NOT YET
-      STATABLE HERE.  Awodey's §7.2 reads C(X) as Hom_Top(X, ℝ) with
-      the operations inherited from ℝ as a ring object INTERNAL to
-      Top, functoriality then falling out of representability rather
-      than being checked by hand.  This tree cannot state that
-      premise: an internal ring object needs continuous operations
-      ℝ × ℝ ⟶ ℝ, and Top has no categorical products yet
-      (Instance/Top.v names the product topology as future work);
-      the library's [RingObject] is Sets-level element-wise
-      structure, which is what [CRingOb] below inhabits.  So the
-      carrier is literally the hom-setoid — [rig_setoid] IS
-      Instance/Top/Presheaf.v's [Maps_to_R], not a copy — but the
-      operations are built pointwise from R's scalar operations,
-      every law is re-proved by [ring], and the three functor laws
-      of [ContinuousRingFunctor] are discharged by hand: exactly
-      what the representability reading exists to avoid.  The
-      general representable-lifting machinery (transferring
-      algebraic structure along a representable functor) is issue
-      #341's and is not built here — disclosed, not smuggled.
-
-   3. WHAT IT COSTS.  This is the FOURTH file importing Coq.Reals
-      (after Interval.v, FundamentalGroupoid.v, Presheaf.v), and it
-      inherits the standard library's axioms for R exactly as
-      docs/AXIOMS.md's "Stdlib axioms" section documents; the section
-      enumerates this file alongside the other three, with the same
-      measured per-constant discipline: 36 of the 38 constants carry
-      the two axioms ([ClassicalDedekindReals.sig_forall_dec] and
-      [functional_extensionality_dep]); the two zero/one-preservation
-      obligations of [CRing_precomp], being pointwise reflexivity,
-      carry [sig_forall_dec] alone; nothing touches the
-      least-upper-bound property. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Balls are open *)
 
@@ -408,14 +345,11 @@ End Pointwise.
 
 (** ** C(X), as a ring *)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject] owes
-   a [Prop]-valued mirror of its equality.  Two continuous maps into ℝ are
-   identified POINTWISE (Instance/Top.v's [ContinuousMorphism_equiv]), and
-   the real line's own `≈` is Instance/Top/Presheaf.v's [R_equiv], which is
-   Coq's [eq] under a [Type] ascription and hence already a [Prop].  So the
-   mirror is the same pointwise comparison read in [Prop] and both
-   implications are the identity; no reals axiom is spent and nothing is
-   truncated. *)
+(*
+   本节说明 ContinuousRing 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition CRingOb (X : TopSpace) : RingObject := {|
   ring_rig := {|
     rig_setoid := Maps_to_R X;

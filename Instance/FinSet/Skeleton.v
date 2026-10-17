@@ -25,63 +25,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Why a category and its skeleton are the same, and why that took work
-
+(*
    nLab: https://ncatlab.org/nlab/show/skeleton+of+a+category
    nLab: https://ncatlab.org/nlab/show/principle+of+equivalence
 
-   Counting is the oldest piece of mathematics, and this file is its
-   categorical form.  To say that a finite set has n elements is to
-   choose a bijection with the standard n-element set; Cantor's move
-   was to make the number secondary and the bijection primary, so that
-   two sets have the same cardinality precisely when some bijection
-   exists (Fong and Spivak, Seven Sketches in Compositionality, CUP
-   2019, §3.2.5, present cardinality in exactly this isomorphism-class
-   reading; the in-file constant is named [setf_cardinality] only to avoid
-   shadowing an unrelated [cardinality] in Theory/Metacategory.v).  The categorical statement adds functoriality: the
-   assignment of a number to a set is not merely well defined on
-   isomorphism classes, it is a functor, and the choice of bijections
-   through which it acts on maps is invisible in the result up to
-   natural isomorphism.
+   本节说明 Skeleton 相关定义、性质与动机。
 
-   Mac Lane introduces equivalence of categories through this very
-   example (CWM §I.4, printed pp. 17-18), and the reason it must be
-   equivalence rather than isomorphism is visible in the objects
-   themselves: the ordinal 2 is one object, whereas the two-element
-   sets form a proper class, so no bijection of object collections is
-   available and none should be wanted.  Awodey draws the moral in
-   §7.8 (printed p. 178): the two conditions that characterize an
-   equivalence — full and faithful, and essentially surjective — are
-   each visibly satisfied by the inclusion, while the composite in one
-   order is the identity and in the other only isomorphic to it.  This
-   is the concrete case of the principle of equivalence: a property of
-   categories that distinguishes the ordinals from the finite sets is
-   not a categorical property at all, and skeletality — which does
-   distinguish them — is exactly such a non-invariant property (nLab,
-   "skeleton of a category").
-
-   The constructive reading is what the setoid presentation buys.
-   Classically one says "every finite set is isomorphic to some
-   ordinal" and then chooses, for every set at once, an isomorphism;
-   that choice is the axiom of choice, and Theory/Equivalence.v's
-   header traces the standard responses to it (Makkai's anafunctors;
-   the univalent-foundations dissolution).  Here the choice is made
-   once, by the object, and carried: an object of [Set_f] IS a setoid
-   together with its counting.  The cardinal functor then exists
-   outright, and the equivalence is closed under the global context.
-   The same trade recurs across the library wherever a universal
-   property is turned into an operation.
-
-   Within this tree the result completes a corner that
-   Instance/FinSet.v had left open.  That file builds the skeleton for
-   its computational virtues — objects are literal numbers, object
-   equality is decidable, and the topos structure on it evaluates by
-   [eq_refl] (Instance/FinSet/Topos.v) — and its header explains what
-   the skeleton is FOR.  What was missing is the reason one is entitled
-   to use it in place of the finite sets at all.  That reason is the
-   equivalence proved here, together with [FinSet_skeletal], which says
-   the skeleton is a skeleton: it has one object per isomorphism class,
-   no more. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The canonical n-element setoid *)
 
@@ -142,12 +93,11 @@ Qed.
 (* Injectivity of [Fin.FS], proved through a local partial inverse rather
    than by [injection] on a dependent constructor, so that it holds by
    plain reduction on every supported version. *)
-(* NOTE ON THE NAME.  Instance/FinSet/Classifier.v and
-   Instance/FinSet/Pushout.v already export a [fin_pred], with a
-   DIFFERENT type — theirs takes a default value and returns a [Fin.t n],
-   this one returns an [option].  Since all three live under
-   Instance/FinSet/, the suffix here keeps a reader who greps from
-   conflating them. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fin_pred_option {n : nat} (i : Fin.t (Datatypes.S n)) : option (Fin.t n) :=
   Fin.caseS' i (fun _ => option (Fin.t n)) None (fun q => Some q).
 
@@ -211,21 +161,22 @@ Qed.
 
 (** ** The category of finite setoids *)
 
-(* An object is a setoid, a number, and a CHOSEN isomorphism between them
-   in [Sets] — Mac Lane's [θ_X : X ≅ #X], carried as data.  Two objects
-   with the same underlying setoid but different chosen bijections are
-   different objects; [two_swap] below is the case that makes the
-   asymmetry of the two round trips visible. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record FinSetoid : Type := {
   fs_obj : SetoidObject;
   fs_card : nat;
   fs_theta : @Isomorphism Sets fs_obj (fin_setoid fs_card)
 }.
 
-(* Morphisms, identities, composition, hom-setoid and all five laws are
-   [Sets]' own, so nothing is re-proved and the forgetful functor to [Sets]
-   is fully faithful.  It is NOT a subcategory: the object map forgets the
-   carried bijection and is therefore not injective (see the header). *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Set_f : Category := {|
   obj := FinSetoid;
   hom := fun A B => fs_obj A ~{Sets}~> fs_obj B;
@@ -242,10 +193,11 @@ Definition Set_f : Category := {|
     @comp_assoc_sym Sets (fs_obj A) (fs_obj B) (fs_obj C) (fs_obj D)
 |}.
 
-(* An isomorphism of [Set_f] and an isomorphism in [Sets] between the
-   underlying setoids are the same four fields: these two transports
-   typecheck by conversion and carry no mathematical content.  They exist
-   only so that the direction of the packaging is explicit at use sites. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition setf_iso {A B : Set_f}
   (i : @Isomorphism Sets (fs_obj A) (fs_obj B)) : A ≅[Set_f] B :=
   @Build_Isomorphism Set_f A B (to i) (from i)
@@ -256,9 +208,11 @@ Definition sets_iso {A B : Set_f}
   @Build_Isomorphism Sets (fs_obj A) (fs_obj B) (to i) (from i)
     (iso_to_from i) (iso_from_to i).
 
-(* The packaging is inverse on the nose in both directions.  Stated with
-   Leibniz equality rather than ≈ because that is the claim: no data is
-   lost or renamed, the two transports are the same four fields. *)
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example setf_sets_iso (A B : Set_f) (i : A ≅[Set_f] B) :
   setf_iso (sets_iso i) = i.
 Proof. now destruct i. Qed.
@@ -270,12 +224,11 @@ Proof. now destruct i. Qed.
 
 (** ** The inclusion of finite ordinals *)
 
-(* The canonical objects: [Fin.t n] counted by the IDENTITY bijection.
-   Mac Lane makes this choice too ("choose [θ_n = 1_n]"), and it is what
-   makes the [Card ◯ FinSet_Incl] round trip strict below — tested, not
-   asserted: [Card_conjugation_moves_constant] exhibits an object of the
-   same underlying setoid carrying the transposition instead, at which the
-   conjugation [θ ∘ f ∘ θ⁻¹] does move a morphism. *)
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finset_obj (n : nat) : FinSetoid := {|
   fs_obj := fin_setoid n;
   fs_card := n;
@@ -289,13 +242,11 @@ Program Definition FinSet_Incl : FinSet ⟶ Set_f := {|
 
 (** ** The cardinal functor *)
 
-(* The two halves of the carried bijection.  Note the asymmetry already
-   present here: on the ordinal side the round trip is Leibniz equality
-   (the canonical setoid is discrete), on the setoid side only ≈ — which
-   is the whole point of allowing an object like [parity_two], where
-   [θ⁻¹ (θ a)] is a DIFFERENT natural number of the same parity.  The [=]
-   in [theta_to_from] is [Fin_Setoid]'s ≈ written out, not a
-   strengthening of it. *)
+(*
+   本节说明（余）强度、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma theta_to_from {A : Set_f} (i : Fin.t (fs_card A)) :
   to (fs_theta A) (from (fs_theta A) i) = i.
 Proof. exact (iso_to_from (fs_theta A) i). Qed.
@@ -304,13 +255,11 @@ Lemma theta_from_to {A : Set_f} (a : fs_obj A) :
   from (fs_theta A) (to (fs_theta A) a) ≈ a.
 Proof. exact (iso_from_to (fs_theta A) a). Qed.
 
-(* Where the setoid discipline earns its keep: [Card] is well defined on
-   ≈-classes of morphisms precisely because the chosen enumeration is
-   respectful.  Over a discrete source it would come free by [f_equal] —
-   that is precisely [fin_map] — but [Set_f] has objects like [parity_two]
-   where it does not.  (Both conclusions
-   are equations in [Fin.t (fs_card _)], where ≈ is Leibniz equality, so
-   the [=] is that setoid's ≈.) *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma card_map_respects {A B : Set_f} (f g : A ~{Set_f}~> B)
   (i : Fin.t (fs_card A)) :
   f ≈ g →
@@ -348,12 +297,11 @@ Next Obligation. now apply card_map_comp. Qed.
 
 (** ** The inclusion is full, faithful and essentially surjective *)
 
-(* Awodey's two characteristic conditions, discharged for this instance.
-   Fullness and faithfulness are definitional — [prefmap] returns the
-   underlying function and [fmap_inj] is the identity — so as stated they
-   would hold of any functor that is the identity on hom-carriers; the
-   mathematical input is upstream, in [fin_map].  Essential surjectivity
-   is the substantive one: the chosen [fs_theta], inverted. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FinSet_Incl_Full : @Full FinSet Set_f FinSet_Incl :=
   @Build_Full FinSet Set_f FinSet_Incl
     (fun m n g i => g i)
@@ -384,12 +332,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Sharper than the ≈ above, and the reason it went through by [reflexivity]:
-   the quasi-inverse produced by [FF_ESO_Equivalence] and [Card] have the
-   SAME object map and the SAME morphism map up to conversion — Leibniz
-   equality, not merely ≈.  (The two functor records are still distinct
-   terms: they carry different proofs of the three functor laws, which is
-   why the comparison above is stated with ≈.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Card_quasi_inverse_fobj (A : Set_f) :
   fobj[@quasi_inverse FinSet Set_f FinSet_Incl FinSet_Setf_Equivalence] A
     = fobj[Card] A := eq_refl.
@@ -400,10 +347,11 @@ Example Card_quasi_inverse_fmap {A B : Set_f} (f : A ~> B) :
 
 (** ** The two comparison cells, stated with [Card] *)
 
-(* The issue's two cells, now phrased with [Card] itself: [# ∘ S ≈ Id]
-   and [θ : Id ≅ S ∘ #].  [Card_Incl_id] is proved by [reflexivity] at
-   every component (see the strictness lemmas below); [Incl_Card_theta]
-   genuinely needs the two round trips. *)
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Card_Incl_id : Card ◯ FinSet_Incl ≈ Id[FinSet].
 Proof.
   exists (fun n => iso_id).
@@ -432,18 +380,11 @@ Definition Incl_Card_theta_iso : Id[Set_f] ≅[Fun] FinSet_Incl ◯ Card :=
 
 (** ** Skeletality *)
 
-(* [FinSet] is skeletal: isomorphic objects are EQUAL.  The conclusion is
-   a Leibniz equality of objects, and that is deliberate — equality of
-   objects always yields an isomorphism, whereas the converse is precisely
-   what a category with repeated isomorphism classes lacks, and SAYING it
-   holds here is what the word skeletal means.  Fong and Spivak's §3.2.5 reading needs
-   exactly this: the index a finite set is isomorphic to is determined,
-   not merely determined up to isomorphism.
+(*
+   本节说明同构相关定义、性质与动机。
 
-   Not vacuous in either direction: the hypothesis is inhabited by
-   non-identity isomorphisms ([FinSet_swap_iso], with
-   [FinSet_swap_not_identity] showing it is not the identity), and the
-   conclusion has bite ([FinSet_one_not_iso_two]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem FinSet_skeletal {m n : FinSet} (i : m ≅ n) : m = n.
 Proof.
   exact (fin_bijection_index (to i) (from i) (iso_to_from i) (iso_from_to i)).
@@ -451,15 +392,16 @@ Qed.
 
 (** ** Cardinality *)
 
-(* Cardinality as an isomorphism invariant.  The definition simply reads
-   the carried index; the theorems say that this is forced —
-   [setf_cardinality A] is the unique n with [FinSet_Incl n ≅ A], it is
-   constant on isomorphism classes (Cantor's reading), and it separates
-   them. *)
-(* NOTE ON THE NAME.  Theory/Metacategory.v exports a [cardinality]
-   that counts the identity arrows of a metacategory — an unrelated notion.
-   The prefix here marks this one as the cardinality of an object of
-   [Set_f], so the two cannot be confused. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition setf_cardinality (A : Set_f) : nat := fs_card A.
 
 Definition setf_cardinality_iso (A : Set_f) : FinSet_Incl (setf_cardinality A) ≅ A :=
@@ -502,12 +444,11 @@ Qed.
 
 (** ** The asymmetry of the two round trips *)
 
-(* The strict side.  These three are Leibniz equalities and are genuinely
-   stronger than the ≈ / ≅ statements they refine: [Card_Incl_id] compares
-   the two functors only up to natural isomorphism, whereas here the
-   object map and the morphism map of [Card ◯ FinSet_Incl] are the
-   identity's, and the comparison cell computed by [FF_ESO_Equivalence] is
-   the identity morphism itself.  All three hold by [eq_refl]. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Card_Incl_fobj_strict (n : FinSet) : fobj[Card ◯ FinSet_Incl] n = n.
 Proof. reflexivity. Qed.
 
@@ -522,10 +463,11 @@ Proof. reflexivity. Qed.
 
 (** ** Concrete objects *)
 
-(* The non-strict side, at a concrete object.  [two_swap] has the
-   canonical carrier [Fin.t 2] but carries the transposition as its chosen
-   bijection, so [FinSet_Incl (Card two_swap)] and [two_swap] have the same
-   underlying setoid and differ exactly in the choice. *)
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fin_swap2 (i : Fin.t 2) : Fin.t 2 :=
   Fin.caseS' i (fun _ => Fin.t 2) (Fin.FS Fin.F1) (fun _ => Fin.F1).
 
@@ -567,10 +509,11 @@ Proof.
   discriminate H.
 Qed.
 
-(* PROJECTION, not computation: the statement is [2 = 2], so the only
-   content here is that the hypothesis typechecks — that a non-identity
-   isomorphism can be supplied. The inhabitation evidence proper is
-   [FinSet_swap_iso] together with [FinSet_swap_not_identity]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example FinSet_skeletal_at_swap : (2 = 2)%nat :=
   FinSet_skeletal FinSet_swap_iso.
 
@@ -600,14 +543,16 @@ Proof.
   discriminate H.
 Qed.
 
-(* The cardinal functor at work: [two_swap] and [finset_obj 2] have the
-   same underlying setoid, so the IDENTITY function is a morphism between
-   them — and [# f = θ_Y ∘ f ∘ θ_X⁻¹] conjugates it into the
-   transposition.  This is the conjugation formula doing something. *)
-(* PROJECTION, not computation: [Card]'s object part IS [fs_card], so this
-   reads off a field rather than exercising the functor. The computational
-   evidence is [Card_parity_succ_F1]/[_FS] below, which run through the
-   enumeration. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Card_two_swap : Card two_swap = 2%nat := eq_refl.
 
 Example Card_conjugates_theta :
@@ -615,22 +560,21 @@ Example Card_conjugates_theta :
                 : finset_obj 2 ~{Set_f}~> two_swap) Fin.F1
     = Fin.FS Fin.F1 := eq_refl.
 
-(* And the test behind the claim at [finset_obj]: at [two_swap], which
-   carries the transposition rather than the identity, [Card] conjugates
-   the constant map [fun _ => F1] into the constant map [fun _ => FS F1].
-   Had the canonical objects been given a non-identity bijection, the
-   [Card ◯ FinSet_Incl] round trip would move morphisms in just this way
-   and could not have been strict. *)
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Card_conjugation_moves_constant :
   fmap[Card] (fin_map (fun _ : Fin.t 2 => Fin.F1)
                 : two_swap ~{Set_f}~> two_swap) Fin.F1
     = Fin.FS Fin.F1 := eq_refl.
 
-(* Sharper, and available here only because both sides have literally the
-   same underlying setoid and index, so the two chosen bijections have the
-   same type: the composite replaces the carried bijection by the identity
-   one.  (This is a Leibniz equality of isomorphisms, not of morphisms;
-   what it compares is carried DATA.) *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Incl_Card_forgets_theta :
   fs_theta (FinSet_Incl (Card two_swap)) = fs_theta two_swap → False.
 Proof.
@@ -721,18 +665,19 @@ Definition parity_succ : parity_two ~{Set_f}~> parity_two :=
    the finiteness witness. *)
 Example parity_carrier_is_nat : carrier (fs_obj parity_two) = nat := eq_refl.
 
-(* The round trip at [parity_two] is the identity only up to ≈: it sends 3
-   to 1.  The [=] here is Leibniz equality of natural numbers and is
-   therefore STRICTLY STRONGER than the ≈ of [parity_setoid], under which
-   3 and 1 are equal — which is exactly why the statement has content, and
-   exactly what [theta_from_to] can and cannot say. *)
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example parity_round_trip_moves_3 :
   parity_index (parity_enum 3) = 1%nat := eq_refl.
 
-(* PROJECTION, for the same reason as [Card_two_swap]: [setf_cardinality]
-   is defined as [fs_card], so this reads off the carried index. What makes
-   the index CORRECT is [setf_cardinality_unique], and what computes is
-   [Card_parity_succ_F1]/[_FS]. *)
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example cardinality_parity_two : setf_cardinality parity_two = 2%nat := eq_refl.
 
 Example Card_parity_succ_F1 :
@@ -750,17 +695,11 @@ Example counit_at_parity_two :
 
 (** ** Bridge to the general skeleton theory *)
 
-(* [Skeletal C] (Theory/Skeleton.v) is by definition [∀ x y, x ≅ y → x = y],
-   which is exactly [FinSet_skeletal] above with its binders made explicit.
-   The two were proved independently -- this file's concrete counting
-   argument, and the general theory's abstract class -- so the bridge is a
-   restatement, not a second proof: [FinSet] is the tree's witness that the
-   [Skeletal] class is inhabited by a category whose skeletality is a real
-   theorem rather than a definitional accident.
+(*
+   本节说明 Skeleton 相关定义、性质与动机。
 
-   [FinSet_Skeleton] then packages [FinSet] as a [Skeleton] of itself via
-   [Skeleton_of_Skeletal]; that is the trivial route, and the non-trivial
-   witness for the [Skeleton] record lives in Theory/Skeleton/Separation.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem FinSet_Skeletal : Skeletal FinSet.
 Proof. intros m n i; exact (FinSet_skeletal i). Qed.

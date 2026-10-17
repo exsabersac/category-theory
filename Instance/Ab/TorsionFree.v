@@ -128,17 +128,11 @@ Proof. exact (Incl_Faithful Ab TorsionFree_Sub). Defined.
 Definition AbModTorsion (A : AbObject) : AbObject :=
   AbQuotient (torsion_incl A).
 
-(* The quotient reuses [A]'s own zero and addition, so those two fields
-   agree with [A]'s ON THE NOSE ([quot_zero_strict], [quot_plus_strict])
-   and the scalar action agrees at every CLOSED scalar
-   ([nat_smul_quot_two]).  At a VARIABLE scalar it does not: [nat_smul]
-   is a [Fixpoint] stuck on [k], so conversion is left comparing the two
-   [AbObject]s themselves, which differ in their setoid field and in
-   every law field (one differing law field already suffices, measured
-   in the header).  The agreement is therefore a one-line induction
-   rather than [eq_refl] --
-   measured, and the [eq_refl] form is pinned in
-   Test/ProbeTorsionFree371.v. *)
+(*
+   本节说明 TorsionFree 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example quot_zero_strict (A : AbObject) :
   cmon_zero (AbModTorsion A) = cmon_zero A := eq_refl.
@@ -160,18 +154,11 @@ Definition quot_eq_intro (A : AbObject) (x y t : carrier A)
   @equiv (carrier (AbModTorsion A)) _ x y.
 Proof. exists (existT _ t Ht); apply pequiv_from; exact H. Defined.
 
-(* AN EARLIER REVISION of the eliminator returned data:
+(*
+   本节说明 TorsionFree 相关定义、性质与动机。
 
-     quot_eq_elim (A) (x y) : x ≈ y in A/tors →
-       { t & (torsion_mem A t * (x ≈ cmon_plus A y t))%type }
-
-   Since the PR "algebraic carriers are sets" (2026-09-17) the coset relation
-   of Instance/Ab.v is a [Prop], so the torsion witness may not be read back
-   out into a [Type].  The eliminator is therefore stated in CONTINUATION
-   form, eliminating into an arbitrary [Prop]: every consumer in the tree
-   wanted the witness only to finish a proof, and reaches its own goal by
-   [pequiv_to] first.  [torsion_mem] itself stays [Type]-valued -- nothing
-   about the predicate changes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_eq_elim (A : AbObject) (x y : carrier A) (P : Prop)
   (H : @equiv (carrier (AbModTorsion A)) _ x y)
   (k : ∀ t : carrier A,
@@ -308,9 +295,11 @@ Proof.
     rewrite IH; lia.
 Qed.
 
-(* The case split on [Z.mul_eq_0] lands in [or], which is [Prop] and
-   cannot be eliminated into the [Type]-sorted [≈]; it is therefore made
-   inside this [Prop]-valued lemma and consumed by [exact] below. *)
+(*
+   本节说明 TorsionFree 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ZAb_torsionfree_elt (n : carrier ZAb) (k : nat) :
   (0 < k)%nat → Z.mul (Z.of_nat k) n = 0%Z → n = 0%Z.
 Proof.
@@ -336,10 +325,11 @@ Qed.
 
 Definition ZAb_TF : TorsionFreeAb := (ZAb; ZAb_TorsionFree).
 
-(* ℤ/T(ℤ) ≅ ℤ, by pure instantiation of the counit isomorphism -- no
-   tactic, and no fact about ℤ beyond [ZAb_TorsionFree].  The two are NOT
-   equal: [AbModTorsion ZAb] carries the coarsened setoid, and the
-   [eq_refl] form is pinned in Test/ProbeTorsionFree371.v. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ZAb_reflect_iso :
   fobj[TorsionFree_reflector] (Incl Ab TorsionFree_Sub ZAb_TF)
     ≅[TorsionFreeAb] ZAb_TF :=

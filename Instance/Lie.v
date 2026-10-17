@@ -29,14 +29,11 @@ Generalizable All Variables.
 
 (** * The category of Lie algebras *)
 
-(** ** Objects
+(*
+   本节说明 Lie 相关定义、性质与动机。
 
-    A K-module together with a bracket.  Six laws, and the record is
-    deliberately not minimal in one direction and deliberately minimal
-    in another: additivity is carried in BOTH slots because the
-    derivation of antisymmetry consumes both, while K-homogeneity is
-    carried in the FIRST slot only, the second being the theorem
-    [lie_br_smul_r] below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record LieObject (K : CRng) := {
   lie_mod : RModObject (`1 K);
 
@@ -76,14 +73,11 @@ Arguments lie_jacobi {K} _ _ _ _.
 
 #[export] Existing Instance lie_br_respects.
 
-(** ** Alternating versus antisymmetric
+(*
+   本节说明 Lie 相关定义、性质与动机。
 
-    Stated for a BARE bracket on a module rather than for a
-    [LieObject], so that the two candidate axioms are compared on equal
-    terms and each passage shows in its own type exactly what it costs.
-    [lie_alt_of_antisym] comes first precisely so that the additivity
-    hypotheses are not yet in scope when it is proved: its statement is
-    the evidence that it consumes none. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition TwoRegular {R : RingObject} (M : RModObject R) : Type :=
   ∀ m, cmon_plus M m m ≈ cmon_zero M → m ≈ cmon_zero M.
@@ -199,12 +193,11 @@ Qed.
 
 End LieDerived.
 
-(** ** Morphisms
+(*
+   本节说明hom相关定义、性质与动机。
 
-    A module homomorphism preserving the bracket.  The hom-setoid is
-    [RMod R]'s on the underlying module homomorphism, so the
-    bracket-preservation proof is irrelevant, exactly as [AAlgHom]'s
-    triangle proof is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record LieHom {K : CRng} (L M : LieObject K) := {
   lie_hom : RModHom (lie_mod L) (lie_mod M);
 
@@ -288,11 +281,11 @@ Next Obligation. intros K L M f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros K L a; simpl; reflexivity. Qed.
 Next Obligation. intros K L M N f g a; simpl; reflexivity. Qed.
 
-(** ** The abelian Lie algebra on a module
+(*
+   本节说明 Lie 相关定义、性质与动机。
 
-    Every module carries the zero bracket, so [Lie K] is inhabited for
-    every K with no witness-hunting.  This is the DEGENERATE case, and
-    it is labelled as such: the non-degenerate witness is [Lie_UT2]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition lie_abelian {K : CRng} (M : RModObject (`1 K))
   : LieObject K := {|
   lie_mod := M;
@@ -318,16 +311,17 @@ Qed.
 Example lie_abelian_mod {K : CRng} (M : RModObject (`1 K)) :
   lie_mod (lie_abelian M) = M := eq_refl.
 
-(** * Ring-level lemmas the commutator needs
+(*
+   本节说明 Lie 相关定义、性质与动机。
 
-    Four facts that mention no Lie algebra.  They are upstreaming
-    candidates for Theory/Algebra/Rig.v and Instance/Rng.v; see the
-    header for why they are declared here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* Ab/Subtract.v's shuffle, restated in ring vocabulary so that setoid
-   rewriting -- which is keyed on the head symbol -- can use it beside
-   [rig_distr_l] and [rig_distr_r].  The proof is a bare [exact]: the two
-   statements are convertible, and nothing is reproved. *)
+(*
+   本节说明 Lie 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma lie_sub_plus (R : RingObject) (a b c d : carrier (rig_setoid R)) :
   rig_add R (rig_add R a (ring_neg R b)) (rig_add R c (ring_neg R d))
     ≈ rig_add R (rig_add R a c) (ring_neg R (rig_add R b d)).
@@ -381,9 +375,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The whole Jacobi cancellation, with the six triple products replaced
-   by bare variables.  It is APPLIED, never rewritten with, so no
-   rewrite in [lie_comm_jacobi] has to traverse a concrete product. *)
+(*
+   本节说明 Lie 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma lie_jacobi_shape (R : RingObject)
   (a b c d e f : carrier (rig_setoid R)) :
   rig_add R
@@ -516,13 +512,11 @@ End Commutator.
 
 Arguments lie_comm_br {K} _ _ _.
 
-(** ** The commutator Lie algebra
+(*
+   本节说明 Lie 相关定义、性质与动机。
 
-    A record literal rather than a [Program Definition]: every field is
-    discharged by the matching lemma above, up to conversion between
-    [rig_add]/[ring_neg] of the ring and [cmon_plus]/[ab_neg] of the
-    module [AAlg_RMod] reads off it.  Writing it this way makes the
-    field-to-lemma correspondence visible and raises no obligations. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition lie_of_aalg {K : CRng} (A : AAlgObject K) : LieObject K := {|
   lie_mod         := AAlg_RMod A;
   lie_br          := lie_comm_br A;
@@ -619,16 +613,11 @@ Next Obligation.
   intros K L M x y; simpl; symmetry; apply (lie_br_zero_l M).
 Qed.
 
-(** * A Lie algebra with a provably nonzero bracket
+(*
+   本节说明hom相关定义、性质与动机。
 
-    [UT2] (Associative.v) is the ring of upper-triangular 2x2 integer
-    matrices, carried as Z-triples with LEIBNIZ equality for its
-    hom-setoid, so every bracket below COMPUTES and the negatives are
-    settled by [discriminate].  By [lie_comm_of_commutative] a
-    commutative ring could not have served; [UT2] is NOT the only
-    non-commutative one in the tree, and the header says which others
-    there are and why the computing hom-setoid is what selects this
-    one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Lie_UT2 : LieObject Int_CRng := lie_of_aalg UT2_AAlg.
 
@@ -700,59 +689,11 @@ Example lie_base_int_bracket (a b : carrier (rig_setoid Int_Ring)) :
     ≈ cmon_zero (lie_mod (lie_of_aalg (Base_AAlg Int_CRng))).
 Proof. apply lie_comm_of_commutative; intros p q; apply Z.mul_comm. Qed.
 
-(** * Probes
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Each negative is stated beside an APPLIED positive control, and each
-    was stripped ONE AT A TIME and compiled alone so that its failure is
-    read off its own command rather than inherited from an earlier one.
-    Kinds are kept lexically apart and are classified from the WHOLE
-    error message.
-
-    Negative 1 (CONVERSION).  The two forgetful composites are not the
-    same functor record, although both data fields agree by [eq_refl]
-    ([lie_forget_compose_obj], [lie_forget_compose_map], restated as the
-    controls).  [Compose] rebuilds [fmap_respects], [fmap_id] and
-    [fmap_comp] as its own opaque obligations, so the difference is
-    confined to those three law fields.
-
-    Negative 2 (CONVERSION).  The bracket of a commutative algebra is
-    [≈] zero and not [=] zero, even over ℤ where the multiplication
-    computes: [a*b + -(b*a)] is stuck at variable a and b.  The control
-    is the [≈] statement at the same arguments.
-
-    Negative 3 (TYPING).  A bare module homomorphism is not a [LieHom]:
-    the bracket clause is genuine data, not a property recoverable from
-    the module map.  The control builds the same [LieHom] with the
-    clause supplied.
-
-    Negative 4 (TYPING).  The carrier of a module does not determine the
-    Lie structure on it, so the [LieObject] argument of [lie_br] cannot
-    be recovered from its two element arguments.  READ THE MESSAGE
-    RATHER THAN THE INTENT: this is NOT the "Cannot infer this
-    placeholder" report one might expect, and it was classified
-    RESOLUTION in a first draft on that expectation.  Elaboration fails
-    at the ELEMENT argument, reporting
-
-      The term "ut2_e11" has type "ut2" while it is expected to have
-      type "carrier (lie_mod ?l)"
-
-    -- a plain mismatch with the hole still visible in the expected
-    type, and with no "cannot unify" clause -- so the hole is never
-    reached as a placeholder to be solved.  That is also the content:
-    [ut2] carries no trace of the bracket, and the control succeeds only
-    because supplying [Lie_UT2] lets [carrier (lie_mod Lie_UT2)] reduce
-    to [ut2].
-
-    NO FORMABILITY (universe) AND NO RESOLUTION NEGATIVE IS DELIVERED,
-    and neither absence is an oversight: this file declares no universe
-    binder and inspects no constraint block, and every elaboration below
-    that could fail does so on a type mismatch before any instance or
-    placeholder is left outstanding.  Two of the four negatives are
-    CONVERSION and two are TYPING.
-
-    Instrument check: a name that exists nowhere, so the [Fail]
-    mechanism itself is exercised without reference to any constant
-    declared here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Negative 1 -- CONVERSION. *)
 Fail Example lie_probe_forget_strict (K : CRng) :

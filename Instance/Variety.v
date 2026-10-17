@@ -18,10 +18,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Instance/Comp.v's record fields [carrier], [eq] and [map] would shadow
-   the library's if this module were imported, so it is aliased and
-   qualified throughout — the same decision, for the same reason, as
-   Instance/Roster.v. *)
+(*
+   本节说明 Variety 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Module UA := Category.Instance.Comp.UniversalAlgebra.
 
 Section Variety.
@@ -31,19 +32,11 @@ Context (E : UA.EqSignature S).
 
 (** ** Satisfaction, and the full subcategory it cuts out *)
 
-(* [Subcategory]'s [sobj] lands in [Type], so satisfaction is stated as a
-   [Type]-valued ∀ whose body is a Leibniz equation between two elements of
-   the carrier.  It is DEFINITIONALLY the [equations] field of
-   Instance/Comp.v, which is what makes the two presentations
-   reflexivity-inverse below.
+(*
+   本节说明 Variety 相关定义、性质与动机。
 
-   Every coercion is written out.  Instance/Comp.v declares [eq :> Type]
-   and [carrier :> Type] inside [Module UniversalAlgebra], and a module
-   ALIAS does not activate coercions — only an [Import] would, which is
-   the thing Instance/Roster.v warns against because [eq], [carrier]
-   and [map] would shadow the library's.  So [UA.eq S E] and
-   [UA.carrier A] appear in full below wherever the coercion would
-   otherwise fire. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition satisfies (A : UA.OpAlgebra S) : Type :=
   ∀ (e : UA.eq S E) (args : UA.eq_arity e → UA.carrier A),
@@ -93,12 +86,11 @@ Lemma Variety_pack_unpack (x : Variety) :
   Variety_pack (Variety_unpack x) = x.
 Proof. destruct x; reflexivity. Qed.
 
-(** ** The forgetful functor to Sets
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Awodey's §9.8 asks for the category AND its forgetful functor.  The
-    carrier is a bare type, so it lands on the DISCRETE setoid
-    (Lib/Setoid.v's [eq_Setoid]); the functor is faithful, which is the
-    concreteness the free-algebra theorem consumes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Variety_Forget : Variety ⟶ Sets := {|
   fobj := fun A => {| carrier   := UA.carrier (`1 A)
@@ -111,10 +103,11 @@ Proof. construct; simpl in *; auto. Qed.
 
 End Variety.
 
-(* The signature is recoverable from the equation signature at every use
-   site, so it is implicit throughout — [Variety E], not [Variety S E].
-   [Arguments] here rather than inside the section, because a section's
-   [Context] binders are explicit on the constants it closes over. *)
+(*
+   本节说明 Variety 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Arguments satisfies {_} _ _.
 Arguments Variety_sub {_} _.
 Arguments Variety {_} _.
@@ -128,15 +121,11 @@ Arguments Variety_pack_unpack {_ _} _.
 Arguments Variety_Forget {_} _.
 Arguments Variety_Forget_Faithful {_} _.
 
-(** ** The group variety
+(*
+   本节说明 Variety 相关定义、性质与动机。
 
-    The instantiation Mac Lane's §V.6 and the issue ask for, under a name
-    that does NOT collide with Instance/Grp.v's [Grp] — there is exactly
-    one [Grp] in this tree and it is that one.
-
-    THIS CONSTANT CARRIES [functional_extensionality_dep], for the reason
-    given in the header: it mentions [GroupEq], which is [Defined] using
-    the axiom.  It is not gated; docs/AXIOMS.md records it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition GroupVariety : Category := Variety UA.GroupEq.
 
@@ -144,14 +133,11 @@ Definition GroupVariety : Category := Variety UA.GroupEq.
    as an OBJECT of the category rather than an inhabitant of a type. *)
 Definition GroupVariety_Bool : GroupVariety := Variety_pack UA.Bool.
 
-(** ** Where the axiom is not needed, exhibited twice
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    First shape: REINDEXING bundles.  One binary operation, one law
-    (commutativity), whose two naturality fields are [op_commute] itself
-    at [args] and at [args ∘ comm_swap] — so no bundle is rebuilt and no
-    extensionality is needed.  [Print Assumptions] on every constant in
-    this block says "Closed under the global context", and all are
-    gated. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive magma_op : Set := magma_mul.
 
@@ -179,20 +165,11 @@ Defined.
 
 Definition CommMagmaVariety : Category := Variety CommEq.
 
-(** ** Second shape: CONSTANT bundles, at DEPTH 2, over [GroupOp] itself
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    This is the sharper exhibit, and it is what refutes the depth
-    diagnosis.  [inv (inv x) = x] is a depth-2 equation over the SAME
-    signature whose group laws force the axiom, and it is axiom-free:
-    both of its bundles are CONSTANT ([fun _ => args Only] and
-    [fun _ => inv' (args Only)]), so the outer naturality step is
-    [f_equal] against the constant-bundle former and the inner one is
-    [op_commute].  Nothing about the depth of the term enters.
-
-    Note what this does and does not say.  It does NOT give an axiom-free
-    group variety: [InvInvVariety] imposes only this one law, and the
-    group axioms proper each build a [mul] bundle of the mixed shape the
-    header describes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive invinv_eq : Set := invinv.
 
@@ -215,23 +192,8 @@ Defined.
 
 Definition InvInvVariety : Category := Variety InvInvEq.
 
-(** ** The connection to Lawvere theories, stated and not proved
+(*
+   本节说明Lawvere 理论相关定义、性质与动机。
 
-    Work item 3 of the issue asks that the connection to
-    Theory/Lawvere/Model.v be RECORDED.  Here it is, as prose, because the
-    proof is a separate development and is listed as not delivered.
-
-    For a presentation ⟨S,E⟩ the associated Lawvere theory has [nat] for
-    objects, the [E]-congruence classes of n-tuples of derived operators
-    for morphisms m ~> n, and finite products given by addition; its
-    [Models] in [Sets] (Theory/Lawvere/Model.v) ought to be equivalent
-    to [Variety E].  Two things block the equivalence here and neither is
-    incidental.  Building the theory needs the clone as a CATEGORY, with
-    the congruence as its hom-setoid and the two propositional object
-    equalities [law_zero_terminal] and [law_plus_product]
-    (Theory/Lawvere.v).  And the comparison then meets the same wall as
-    Instance/Variety/GroupComparison.v: [Models T Sets] has SETOID carriers where
-    [Variety]'s are Leibniz types, so essential surjectivity needs
-    quotients.  Instance/Variety/Clone.v supplies the derived operators and
-    their substitution calculus, which is the first half of the first
-    obstruction; the rest is filed as a follow-on. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

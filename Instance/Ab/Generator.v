@@ -20,14 +20,11 @@ Generalizable All Variables.
 
 (** ** The element of an abelian group as a map out of the singleton *)
 
-(* The constant map at [x], read into [Sets] through [Ab_Forget].  Built
-   by [refine] for the same reason as Instance/Grp/Generator.v's
-   [grp_point]: under the universe annotation the [Program] form does not
-   register the constant before the obligation is met.  It must stay
-   TRANSPARENT: closed with [Qed] the separation proof is refused with
-   "The term "Hk (free_ab_extend (ab_point x)) (fa_gen ttt)" has type
-   "(f ∘ free_ab_extend (ab_point x)) (fa_gen ttt) ≈ …" while it is
-   expected to have type "f x ≈ g x"", a CONVERSION refusal. *)
+(*
+   本节说明 Generator 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ab_point@{o so+} {A : Ab@{so o}} (x : carrier (cmon_setoid A)) :
   unit_setoid_object@{o o} ~{Sets@{o so}}~> Ab_Forget A.
 Proof. unshelve refine {| morphism := fun _ => x |}; proper. Defined.

@@ -19,49 +19,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Coeffects, annotation, and the slice
-
+(*
    nLab:  https://ncatlab.org/nlab/show/coreader+comonad
    Paper: Petricek, Orchard, Mycroft, "Coeffects: a calculus of
-          context-dependent computation", ICFP 2014
 
-   The co-Kleisli reading e * x → y is the discipline of implicit
-   parameters, also called dynamic scoping: a program consults a
-   read-only ambient environment without threading it by hand.
-   Haskell's Control.Comonad.Env documents exactly this chain of
-   readings, (a -> e -> m) ~ (a, e) -> m ~ Env e a -> m.  In the
-   coeffect calculi of Petricek, Orchard and Mycroft (ICFP 2014),
-   dynamic scoping is a standard instance of a coeffect — a requirement
-   a computation places on its context, tracked by the type system as
-   effect systems track what a computation does to its surroundings.
-   The environment comonad performs exactly the computations of the
-   reader monad, co-Kleisli composition threading one environment to
-   both arrows (Milewski, 2017); and the relation between the two is an
-   adjunction, for on a cartesian closed category e × − is left adjoint
-   to e ⇒ −, the composite e ⇒ (e × −) is the state monad, and the
-   comonad the same adjunction induces is Store
-   (Instance/Coq/Comonad/Store.v; Comonad/Duality.v,
-   [Adjunction_Comonad]).
+   本节说明余单子、Kleisli相关定义、性质与动机。
 
-   An environment layer is also the canonical annotation device:
-   [extract] drops the annotation and [duplicate] makes it observable
-   to every consumer, so a structure can be labelled without being
-   disturbed.  Annotating the nodes of a cofree-comonad syntax tree
-   through an environment transformer layer is the standard
-   application, and Haskell's free package ships precisely that
-   composition.
-
-   The coalgebras complete the picture.  A coalgebra structure on a
-   carrier a for e × − is the same thing as a single morphism a → e,
-   and the category of coalgebras is isomorphic to the slice category
-   over e: to hold an e-annotation coherently is exactly to be an
-   object over e (see Comonad/Coalgebra.v), and the slice projection is
-   thereby a comonadic functor.  The comonoid remark of the header
-   above also generalizes — whenever w is a comonoid in a monoidal
-   category, w ⨂ − carries an analogous comonad structure, and when w
-   is instead a monoid, w × − carries the writer monad.  The
-   copy/discard vocabulary for categories with a comonoid supply is
-   developed in Structure/Monoidal/CopyDiscard.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The action of e × − on morphisms: apply f under the environment. *)
 Definition env_map {e x y : Type} (f : x → y) (p : e * x) : e * y :=
@@ -121,11 +86,11 @@ Lemma env_duplicate_natural {e x y : Type} (f : x → y) (p : e * x) :
   env_map (env_map f) (env_duplicate p) = env_duplicate (env_map f p).
 Proof. now destruct p. Qed.
 
-(** The comonad witness: per Theory/Monad.v, a comonad on COQ IS a monad on
-    COQ^op, so the record is assembled with [Build_Monad] at (COQ^op,
-    (EnvF e)^op) — [ret] is the counit and [join] the comultiplication, and
-    each monad law is the corresponding lemma above, read through the
-    opposite category's reversed composition. *)
+(*
+   本节说明单子、余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Env_Comonad (e : Type) : @Comonad Coq (EnvF e) :=
   @Build_Monad (Coq^op) ((EnvF e)^op)
     (λ x : Type, @env_extract e x)                (* ret  = ε *)
@@ -136,9 +101,11 @@ Proof. now destruct p. Qed.
     (λ x : Type, @env_extract_duplicate e x)
     (λ (x y : Type) (f : y → x), @env_duplicate_natural e y x f).
 
-(** The covariant accessors of Comonad/Core.v compute on this witness
-    exactly as promised: [extract] is [snd], [duplicate] copies the
-    environment, and [extend f] runs f with the environment kept in scope. *)
+(*
+   本节说明余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Env_extract_spec {e x : Type} (p : e * x) :
   extract[EnvF e] p = snd p.

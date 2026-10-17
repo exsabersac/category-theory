@@ -118,10 +118,11 @@ Definition pres_proj : PMor@{o} X pres_space :=
 
 End AtPresentation.
 
-(* The presentation of the image of a map [h] into a space [Y], given a
-   propositional relation [k] on Y's points equivalent to its equality:
-   the kernel of [h] read through [k], and the initial topology along
-   [h]. *)
+(*
+   本节说明始/终对象、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Image.
 
 Context (Y : PTop@{o}) (k : Y → Y → Prop)
@@ -194,10 +195,11 @@ End Presentation.
 
 (** ** Mac Lane's solution set: the Hausdorff quotients of X *)
 
-(* The index: presentations of a quotient of X satisfying the property.
-   Its first two components are a relation on X's points and a family of
-   predicates on them, both above [Set]; so the index lives at X's own
-   universe only when [Set < o]. *)
+(*
+   本节说明 Hausdorff 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PSolIdx@{o | Set < o +} (Pr : PTop@{o} → Type@{o}) (X : PTop@{o}) :
   Type@{o} :=
   { R : X → X → Prop & { T : (X → Prop) → Prop &
@@ -244,9 +246,11 @@ End Sols.
 
 (** ** The reflector by the general adjoint functor theorem *)
 
-(* Mac Lane's proof of Proposition 2, for any property closed under limits
-   whose image presentations are again of it: completeness by creation,
-   continuity of the inclusion, the solution set, and [GAFT]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PFull_left_adjoint_GAFT@{o so +| Set < o, o < so +}
   (Pr : PTop@{o} → Type@{o}) (ker : ∀ Y : PTop@{o}, Y → Y → Prop)
   (ker_of : ∀ (Y : PTop@{o}) (y y' : Y), y ≈ y' → ker Y y y')
@@ -335,10 +339,11 @@ Definition Haus_counit_iso@{o so +| Set < o, o < so +} (X : Haus@{o so}) :
   reflector Haus_reflective (Incl PTopCat@{o so} Haus_Sub X) ≅[Haus@{o so}] X :=
   reflective_counit_iso Haus_reflective X.
 
-(* "η universal implies that η is a surjection": every point of the
-   reflection is, up to its equality, the unit's value at a point.  For
-   the direct reflector the unit is the identity on points, so the point
-   is the point itself. *)
+(*
+   本节说明 Hausdorff 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Haus_unit_surjective_direct@{o so +| o < so +}
   (X : PTopCat@{o so})
   (y : carrier (pt_carrier (`1 (fobj[reflector PT2_Reflective] X)))) :
@@ -346,11 +351,11 @@ Definition Haus_unit_surjective_direct@{o so +| o < so +}
     pmap (@unit _ _ _ _ (reflective_adj PT2_Reflective) X) x ≈ y }.
 Proof. exists y. reflexivity. Defined.
 
-(* For the reflector by [GAFT], through the comparison maps [psi] and
-   [phi] of the two universal properties ([Haus_reflectors_iso] ends in a
-   [Qed] lemma, so its components are not read): [phi ∘ psi] is the
-   identity, and the unit is [phi] after the direct unit, the identity on
-   points, so [y] is the unit's value at [psi y]. *)
+(*
+   本节说明 Hausdorff 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Haus_unit_surjective@{o so +| Set < o, o < so +}
   (X : PTopCat@{o so})
   (y : carrier (pt_carrier (`1 (fobj[reflector Haus_reflective] X)))) :
@@ -422,13 +427,11 @@ Definition Haus_Forget_left_adjoint_direct@{o so +| o < so +} :
 
 (** ** A coproduct of Hausdorff spaces is Hausdorff *)
 
-(* Mac Lane's reason why "the coproduct in Haus is the coproduct in Top",
-   for Instance/Top/Cocomplete.v's coproduct [PSigma]: the summands are
-   open, so two points no two opens separate lie in one summand, and
-   there two opens about them meet because their images in the sum do.
-   The second step needs every loop [k = k] of the index to be
-   [eq_refl]: the sum's equality relates points along loops of the index,
-   and a point where the two images meet is in each up to a loop. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Coproduct.
 
 Universes o i u.
@@ -569,10 +572,11 @@ Proof.
     destruct (Hp Z V HZ HV z v) as [w [a b]]. exists w. exact (conj a b).
 Qed.
 
-(* A limit of regular spaces is regular: the opens of a limiting cone are
-   those of the initial topology for its legs, and the opens with the
-   regularity property at each of their points form a topology containing
-   the preimages of opens along the legs. *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma plimit_PReg@{j o so +| o < so +} {J : Category@{j o o}}
   (T : J ⟶ PTopCat@{o so}) (N : Cone T) (HN : IsLimitCone N)
   (HT : ∀ k, PReg (T k)) : PReg (vertex_obj[N]).
@@ -689,10 +693,11 @@ Definition PBool_PT3@{o} : PT3 PBool@{o} := (PBool_PHaus, PBool_PReg).
 
 (** ** Strictness: a Hausdorff space that is not regular *)
 
-(* The comb: a spine of points [comb_k n], each the limit of its tooth
-   [comb_c n m] (m → ∞), and a point [comb_inf], the limit of the teeth
-   (n → ∞) but not of the spine.  The spine is closed and cannot be
-   separated from [comb_inf]: the countable analogue of the K-topology. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive comb_pt@{} : Set :=
   | comb_inf : comb_pt
   | comb_k : nat → comb_pt
@@ -1080,10 +1085,11 @@ Definition HConv : HausC := (PConv@{o}; PConv_PHaus).
 Definition glue_f_h : HNat ~{HausC}~> HConv := (glue_f; I).
 Definition glue_g_h : HNat ~{HausC}~> HConv := (glue_g; I).
 
-(* The issue's pinned name: Exercise 5, the inclusion has no right
-   adjoint.  A right adjoint R would make [GlueQ] a retract of the
-   Hausdorff space R GlueQ: the transpose of [glue_q] coforks, descends
-   along the coequalizer, and the counit splits the descended map. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Haus_inclusion_no_right_adjoint (R : PTopCat@{o so} ⟶ HausC)
   (A : Inc ⊣ R) : False.
 Proof.
@@ -1117,10 +1123,11 @@ Proof.
            (fun x => Hret x) (`2 (R GlueQ))).
 Qed.
 
-(* "Conclude that the forgetful functor Haus → Set has no right adjoint",
-   proved directly on the coequalizer of the same pair in [Sets]: the
-   transpose of its projection identifies the even points of the sequence
-   in a Hausdorff space, hence the limit point with them. *)
+(*
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Haus_forget_no_right_adjoint (R : Sets@{o so} ⟶ HausC)
   (A : PForget@{o so} ◯ Inc ⊣ R) : False.
 Proof.

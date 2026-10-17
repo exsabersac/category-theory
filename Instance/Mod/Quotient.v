@@ -28,13 +28,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Subtraction, and the scalar action against it
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    The [ab_sub] calculus is Instance/Ab/Subtract.v -- stated over
-    [AbObject], because none of it is about the scalar action, and shared
-    with Instance/Rng/Quotient.v so that neither file restates it and no
-    ring file depends on a module file to get it.  What is new here is
-    the one lemma that IS about the action. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The scalar action distributes over subtraction. *)
 Lemma rm_smul_sub {R : RingObject} (M : RModObject R)
@@ -47,28 +45,11 @@ Proof.
   now rewrite rm_smul_neg_r.
 Qed.
 
-(** ** Submodules
+(*
+   本节说明hom相关定义、性质与动机。
 
-    A submodule is a `≈`-saturated predicate containing zero and closed
-    under addition and the scalar action.  Membership is [Type]-valued,
-    following Instance/Grp/Quotient.v's [Subgroup] and
-    Instance/Grp/Epi.v's [GrpImage].
-
-    AN EARLIER REVISION gave the reason as: "the library's `≈` is itself
-    [Type]-valued, so a [Prop]-valued membership could not be eliminated into
-    a hom-setoid equation."  That reason is GONE since the PR "algebraic
-    carriers are sets" (2026-09-17): every carrier now carries [cmon_prop],
-    so [pequiv_to] does exactly that elimination
-    (Lib/Setoid/Propositional.v).  Membership stays [Type]-valued anyway,
-    and for a different reason: the leastness theorems below and in
-    Instance/Mod/Quotient/Isomorphism.v READ WITNESSES out of it -- the
-    preimage in [ImageSubmod], the exponent in a torsion argument -- and
-    those are data.  What DID move is the quotient RELATION [mquot_rel],
-    which is now the propositional truncation of membership.
-
-    There is deliberately NO decidability field and nothing below decides
-    membership; and, as the header records, NO closure-under-negation
-    field, that being [smod_neg] below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record Submodule {R : RingObject} (M : RModObject R) := {
   smod_mem : carrier (cmon_setoid M) → Type;
@@ -120,14 +101,11 @@ Proof.
   exact (smod_plus S _ _ Ha (smod_neg S _ Hb)).
 Qed.
 
-(** *** Every submodule is normal, as a theorem
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    Instance/Grp/Quotient.v's [NormalSubgroup] adds the field
-    [ns_conj : ∀ t a, sub_mem a → sub_mem (t * a * t⁻¹)].  Transcribed
-    additively that field reads [∀ t a, mem a → mem ((t + a) - t)], and
-    here it is a LEMMA of an arbitrary [Submodule] -- indeed of nothing
-    at all, since the conjugate is `≈`-equal to a.  This is the precise
-    sense in which the normality layer has no module-level counterpart. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma smod_conjugate_inert {R : RingObject} {M : RModObject R}
   (t a : carrier (cmon_setoid M)) :
@@ -168,9 +146,11 @@ Proof.
             ; cmon_plus := fun p q =>
                 existT _ (cmon_plus M (`1 p) (`1 q))
                   (smod_plus S _ _ (`2 p) (`2 q))
-            (* Only the first projection is compared, so the submodule's
-               [Type]-valued membership is carried along and never inspected;
-               [sigma_first_PropEquiv] is exactly that observation. *)
+            (*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
             ; cmon_prop :=
                 sigma_first_PropEquiv (smod_setoid S)
                   (fun _ _ h => h) (fun _ _ h => h) (cmon_prop M) |}
@@ -223,14 +203,11 @@ Proof. apply rmod_injective_monic, smod_incl_injective. Qed.
 
 (** ** The quotient relation *)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) the quotient is an
-   [RModObject] and so owes [cmon_prop], which forces its equality to be a
-   [Prop].  [smod_mem] STAYS [Type]-valued -- the leastness theorems below read
-   witnesses out of it -- and the relation is its PROPOSITIONAL TRUNCATION.
-   [inhabited] is the truncation; [pequiv_elim_inhabited]
-   (Lib/Setoid/Propositional.v) is what gets back out, and the six
-   congruence lemmas below each gain one [destruct … as [K]] going in and one
-   [constructor] coming out. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition mquot_rel {R : RingObject} {M : RModObject R} (S : Submodule M)
   (x y : carrier (cmon_setoid M)) : Prop :=
   inhabited (smod_mem S (ab_sub M x y)).
@@ -314,17 +291,11 @@ Proof.
   - exact (smod_smul S _ _ K).
 Qed.
 
-(* Membership IS congruence to zero, in both directions -- up to the
-   truncation.
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-   AN EARLIER REVISION stated the right-hand side as the bare [smod_mem S x].
-   Since the PR "algebraic carriers are sets" (2026-09-17) [mquot_rel] is the
-   propositional truncation of membership, so the LEFT-to-right direction is
-   an elimination of a [Prop] into a [Type] and is refused; the biconditional
-   is stated up to [inhabited], which is the exact content.  The direction
-   that loses nothing -- membership implies congruence to zero, which is what
-   every consumer in the tree actually uses -- is kept separately as
-   [mquot_rel_of_mem] below, with its [Type]-valued hypothesis intact. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mquot_rel_zero_iff (x : carrier (cmon_setoid M)) :
   mquot_rel S x (cmon_zero M) ↔ inhabited (smod_mem S x).
 Proof.
@@ -402,10 +373,11 @@ Proof.
     intros x; apply mquot_rel_of_equiv, rm_smul_one.
 Defined.
 
-(* NO NOTATION for the quotient, for the reason Instance/Grp/Quotient.v
-   gives: an unscoped infix [/] at level 40 would compete with the
-   stdlib's scope-bound division notations in every importing file.
-   [QuotientMod S] is written out. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The projection: the identity function, read from the fine setoid into
    the coarse one. *)
@@ -509,9 +481,11 @@ Context (S : Submodule M).
 Context {K : RModObject R}.
 Context (p : MKills S K).
 
-(* Descent: a homomorphism killing S cannot tell S-congruent elements
-   apart.  From S (x - y) one gets h x - h y ≈ 0, whence h x ≈ h y.  This
-   is the ONE computation the quotient's universal property costs. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mkills_descends (x y : carrier (cmon_setoid M)) :
   mquot_rel S x y →
   cmon_map (rm_hom (`1 p)) x ≈ cmon_map (rm_hom (`1 p)) y.
@@ -519,11 +493,11 @@ Proof.
   intro Hxy.
   apply (fst (ab_sub_eq_zero_iff K _ _)).
   rewrite <- (ab_map_sub (rm_hom (`1 p)) x y).
-  (* [Hxy] is the TRUNCATED membership since the PR "algebraic carriers are
-     sets" (2026-09-17), so it may not be destructed into this [Type]-valued
-     `≈` goal directly; [pequiv_to] puts a [Prop] goal in front of the
-     elimination and [pequiv_from] returns.  This is
-     [pequiv_elim_inhabited] spelled out. *)
+  (*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   apply (@pequiv_to _ _ (cmon_prop K)).
   destruct Hxy as [Hxy].
   apply pequiv_from.
@@ -572,9 +546,11 @@ Next Obligation.
     exact (mquot_med_unique S x v Hv).
 Defined.
 
-(* The universal element's underlying homomorphism IS the projection, by
-   convertibility -- the [eq_refl] exception to the `≈` discipline, and
-   the check that the packaging did not silently rebuild it. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example mquot_universal_elem_is_proj {R : RingObject} {M : RModObject R}
   (S : Submodule M) :
   `1 (@aue_elem _ (MKillsFunctor S) (QuotientMod S)
@@ -629,11 +605,11 @@ Definition mod_hom_theorem_kills {R : RingObject} {M K : RModObject R}
     cmon_map (rm_hom h) a ≈ cmon_zero K :=
   snd (mod_hom_theorem S h) Hfac.
 
-(** ** The kernel and the image of a homomorphism, as submodules
+(*
+   本节说明核/余核相关定义、性质与动机。
 
-    Instance/Mod.v already builds the kernel and the image-quotient as
-    OBJECTS ([RModKernel], [RModQuotient]); neither is packaged as a
-    submodule there, and neither carries a universal property. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition KernelSub {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Submodule M := {|
@@ -700,15 +676,11 @@ Next Obligation.
   now rewrite Ha.
 Qed.
 
-(** ** Reconciliation with Instance/Mod.v's [RModQuotient]
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    [RModQuotient f] is N modulo the image of f, with the relation
-    [ab_coset_eq (rm_hom f) x y := { a & x ≈ y + f a }] inherited from
-    Instance/Ab.v.  [QuotientMod (ImageSubmod f)] is N modulo the same
-    submodule, with the relation [{ a & x - y ≈ f a }].  The two are
-    logically equivalent at every pair and the shuffle between them is
-    the whole content of the identification; they are NOT convertible
-    (pinned as a rejection probe in Test/ProbeModQuotient.v). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Reconcile.
 
@@ -716,11 +688,11 @@ Context {R : RingObject}.
 Context {M N : RModObject R}.
 Context (f : M ~{RMod R}~> N).
 
-(* Both quotients have the identity function for their comparison legs,
-   so every remaining obligation is reflexivity of one relation or the
-   other.  The submodule argument is supplied explicitly because the
-   goals arrive with [smod_mem (ImageSubmod f)] already delta-expanded to
-   its sigma, which leaves nothing for unification to read it off. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Ltac recon_refl :=
   intros; simpl;
   first [ apply (mquot_rel_refl (ImageSubmod f)) | apply ab_coset_refl ].
@@ -728,12 +700,11 @@ Context (f : M ~{RMod R}~> N).
 Theorem rmod_quotient_relations_agree (x y : carrier (cmon_setoid N)) :
   ab_coset_eq (rm_hom f) x y ↔ mquot_rel (ImageSubmod f) x y.
 Proof.
-  (* Both relations are [Prop]s since the PR "algebraic carriers are sets"
-     (2026-09-17) -- the left one an [ex], the right one the [inhabited]
-     truncation of the [Type]-valued membership -- so each direction is a
-     [Prop]-to-[Prop] elimination and the shuffle is unchanged.  What is new
-     is one [constructor] going into the truncation and one [pequiv_from]
-     going into the left relation's [pequiv] body. *)
+  (*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   split.
   - intros [a Ha]; apply pequiv_to in Ha.
     unfold mquot_rel; simpl.
@@ -796,10 +767,11 @@ Program Definition mquot_congr {R : RingObject} {M : RModObject R}
   from := {| rm_hom := {| cmon_map :=
     {| morphism := fun x : carrier (cmon_setoid (QuotientMod S')) => x |} |} |}
 |}.
-(* [simpl] before the elimination: the goal is an application of the [equiv]
-   projection, whose ascribed sort is [Type], and [mquot_rel] is the
-   [inhabited] truncation of membership since the PR "algebraic carriers are
-   sets" (2026-09-17). *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Next Obligation.
   intros R M S S' H1 H2 x y Hxy; simpl in Hxy |- *.
   destruct Hxy as [Hxy]; constructor; exact (H1 _ Hxy).
@@ -845,12 +817,11 @@ Next Obligation. intros R M; exact ttt. Qed.
 Next Obligation. intros R M a b Ha Hb; exact ttt. Qed.
 Next Obligation. intros R M r a Ha; exact ttt. Qed.
 
-(* Both directions survive the truncation.  The forward one is the place
-   [pequiv_elim_inhabited] earns its keep: the conclusion `≈` is
-   [Type]-valued, so [pequiv_to] puts a [Prop] goal in front of the
-   elimination and [pequiv_from] returns.  An earlier revision was
-   [exact (ab_sub_eq_zero_iff M x y)], the two relations then being the same
-   [Type]. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mquot_trivial_iff {R : RingObject} (M : RModObject R)
   (x y : carrier (cmon_setoid M)) :
   mquot_rel (TrivialSub M) x y ↔ x ≈ y.
@@ -869,21 +840,17 @@ Lemma mquot_total_collapses {R : RingObject} (M : RModObject R)
   (x y : carrier (cmon_setoid M)) : mquot_rel (TotalSub M) x y.
 Proof. exact (inhabits ttt). Qed.
 
-(** ** Non-vacuity: ℤ modulo 2ℤ
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    Everything above holds for every module, so nothing yet shows the
-    quotient does not collapse.  Instance/Mod.v's [Int_RMod] (ℤ as a
-    module over itself) with the even integers is the smallest witness
-    with a PROPER NONTRIVIAL submodule, and ℤ's setoid is Leibniz
-    equality (Theory/Algebra/Rig.v's [Z_eqT]), so every check below is a
-    computation. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* ℤ's module operations, pinned by convertibility -- the [eq_refl]
-   exception to the `≈` discipline.  These are what let [ring] and [lia]
-   see the goals below: both tactics read the ring structure off the
-   SYNTACTIC type of the equation and neither sees through [carrier]
-   (the finding Instance/Rng/Algebras/Associative.v records for the same
-   reason). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example int_zero_is_0 : cmon_zero Int_RMod = 0%Z := eq_refl.
 Example int_plus_is_add (a b : Z) : cmon_plus Int_RMod a b = (a + b)%Z :=
   eq_refl.

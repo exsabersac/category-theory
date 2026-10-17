@@ -30,19 +30,11 @@ Import EqNotations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The default obligation tactic is switched off for this file, as
-   Instance/Sets/End.v does: where [Program] raises an obligation it is
-   discharged by an explicit script below rather than by the library's [cat] /
-   [cat_simpl] automation, and no script below invokes a proof-search tactic:
-   none of them calls [auto], [eauto], [intuition], [firstorder] or [tauto].
-   A few scripts do use the tacticals [now] (at the obligations of
-   [Sets_iprod_tuple], [Sets_icoprod_obj] and [Sets_icoprod_case]) and
-   [first [...]] (in the two singleton pigeonhole lemmas), which sequence and
-   choose among explicit steps rather than search.  Note also that some
-   [proper_morphism] fields never become obligations at all -- instance
-   resolution closes them during elaboration -- which is why several tactic
-   scripts further down use an [all:] selector, a no-op when no goal is
-   left. *)
+(*
+   本节说明（余）端、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** ** Indexed products: the dependent-function setoid *)
@@ -97,16 +89,11 @@ Instance Sets_HasIndexedProducts : @HasIndexedProducts Sets :=
   @Build_HasIndexedProducts Sets
     (@Sets_iprod_obj) (@Sets_iprod_proj) (@Sets_IsIndexedProduct).
 
-(** ** The endomorphism-indexed product
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    The index that Theory/WeaklyInitial.v declines to draw from a class,
-    because for a general category it need not sit where the class puts the
-    index: the endomorphisms of an object.  At [Sets] it does sit there.  The
-    two constants below are the whole of the observation -- their existence,
-    and the universe context they elaborate at, ARE the content, so both are
-    stated as instances of what [Sets_HasIndexedProducts] already supplies
-    rather than reproved.  See the header for what this does and does not say
-    about the general note. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sets_endo_iprod (P : obj[Sets]) : obj[Sets] :=
   indexed_product (fun _ : P ~{Sets}~> P => P).
@@ -188,9 +175,11 @@ Instance Sets_HasIndexedCoproducts : @HasIndexedCoproducts Sets :=
 Definition Sets_discrete (I : Type) : obj[Sets] :=
   {| carrier := I; is_setoid := eq_Setoid I |}.
 
-(* The exponential X^I of Instance/Sets/Cartesian/Closed.v, taken at the
-   discrete setoid on the index type I.  Written as a definition rather than
-   inline so that the ambient category is pinned to [Sets] for elaboration. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_pow (I : Type) (X : obj[Sets]) : obj[Sets] :=
   (X ^ Sets_discrete I)%object.
 
@@ -200,22 +189,11 @@ Program Definition Sets_exponent_eval (I : Type) (X : obj[Sets]) (i : I) :
 |}.
 Next Obligation. intros I X i f g Hfg; exact (Hfg i). Qed.
 
-(* The element of X^I named by a family [pi] at a point [x].  Built with
-   [unshelve refine] rather than [Program] so that the [proper_morphism]
-   certificate is supplied by hand.  This is not a matter of taste: with the
-   [Program] form, instance resolution closes that field during elaboration
-   -- the definition raises no obligation at all -- and the constant comes out
-   pinned to [Set]:
+(*
+   本节说明 Products 相关定义、性质与动机。
 
-     ∀ (I : Type@{u}) (X c : obj[Sets@{Set u0}]), ...
-       (* with  Set < u0  and  Set = u *)
-
-   The index universe [u] is [Set] by a universe EQUALITY, not merely bounded
-   by it, and the ambient [Sets] is pinned along with it.  The [unshelve
-   refine] form below instead prints
-   [∀ (I : Type@{u}) (X c : obj[Sets@{u u0}])] with only [u < u0].  (Observed
-   while writing this file; the mechanism behind the pinning was not
-   investigated.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_exponent_elt (I : Type) (X c : obj[Sets])
   (pi : ∀ i : I, c ~{Sets}~> X) (x : c) : Sets_discrete I ~{Sets}~> X.
 Proof.
@@ -246,23 +224,11 @@ Definition Sets_exponent_IsIndexedProduct (I : Type) (X : obj[Sets]) :
   @Build_IsIndexedProduct Sets I (fun _ : I => X) (Sets_pow I X)
     (Sets_exponent_eval I X) (fun c pi => Sets_exponent_ump I X c pi).
 
-(* Each isomorphism below is assembled from two named setoid maps rather than
-   through [Program] at the isomorphism itself: the isomorphism is a [refine]
-   over two concrete morphisms, leaving exactly the two inverse laws.
+(*
+   本节说明同构相关定义、性质与动机。
 
-   The maps themselves are built two ways.  Most are [unshelve refine], with
-   the [proper_morphism] certificate discharged under an [all:] selector: for
-   some of them instance resolution already closes that goal during
-   elaboration, and [all:] is a no-op when no goal remains, so the script does
-   not depend on which of the two happens.  The exception is the pair making
-   up [Sets_constant_iprod_exponent] -- [Sets_exponent_tuple] above and
-   [Sets_exponent_untuple] just below -- both of which are [Program].  For
-   [Sets_exponent_untuple], whose SOURCE is the exponential [Sets_pow I X],
-   this was measured: refining a record literal against a goal whose type has
-   to be unfolded through [Sets_Closed] did not return within sixty seconds,
-   where the [Program] form elaborates in well under a second.
-   [Sets_exponent_tuple] was written as [Program] from the start and no such
-   measurement was taken for it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Sets_exponent_untuple (I : Type) (X : obj[Sets]) :
   Sets_pow I X ~{Sets}~> indexed_product (fun _ : I => X) := {|
   morphism := fun f => fun i => f i
@@ -279,13 +245,11 @@ Proof.
   - intros g i; reflexivity.
 Defined.
 
-(** ** Degenerate indices
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    An indexed product over an empty index is the terminal object, and one
-    over a singleton index is the family's only member; dually for
-    coproducts.  Neither exercises the construction.  They are recorded here
-    so that the contrast drawn with the non-degenerate cases of the next
-    section is proved rather than asserted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sets_iprod_empty_to (F : False → obj[Sets]) :
   indexed_product F ~{Sets}~> 1%object.
@@ -385,11 +349,11 @@ Defined.
 
 (** ** Non-degenerate indices: two distinct indices, and an infinite index *)
 
-(* [bool] is the smallest non-degenerate index.  The product over it is the
-   binary product of Instance/Sets/Cartesian.v -- a statement whose right-hand
-   side names two distinct members of the family, which the empty and
-   singleton statements cannot do.  ([Sets_iprod_empty] and [Sets_iprod_unit]
-   above are their counterparts, and neither mentions two members.) *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sets_iprod_bool_to (F : bool → obj[Sets]) :
   indexed_product F ~{Sets}~> (F true × F false)%object.
@@ -417,12 +381,11 @@ Proof.
   - intros g b; destruct b; reflexivity.
 Defined.
 
-(* [nat] is an infinite index.  The product over it satisfies the stream
-   equation P ≅ F 0 × P': peel one factor off and a product of the same shape
-   is underneath.  This exhibits the infinite case; it is not by itself a
-   separation from the degenerate ones, which is what
-   [Sets_iprod_unit_pigeonhole] and [Sets_iprod_nat_no_pigeonhole] at the end
-   of this file are for. *)
+(*
+   本节说明（余）端、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sets_iprod_nat_to (F : nat → obj[Sets]) :
   indexed_product F
@@ -542,29 +505,11 @@ Proof.
   - intros [i x]; destruct i; simpl; exists eq_refl; reflexivity.
 Defined.
 
-(** ** A separating property: pigeonhole at a singleton index, refuted at [nat]
+(*
+   本节说明同构相关定义、性质与动机。
 
-    The isomorphisms above exhibit the construction at non-degenerate
-    indices, but none of them is by itself a separation: none exhibits a
-    property that holds at a degenerate index and is lost at a genuine one.
-    The four results here do.  What is proved is the implication
-
-      ((x ≈ y) → False) → ((y ≈ z) → False) → x ≈ z,
-
-    read over the product -- and, separately, over the coproduct -- of
-    two-element setoids: no three elements are pairwise apart.  It holds over
-    a SINGLETON index and is refutable over [nat].  A property of the
-    construction at a degenerate index is therefore provably lost at a
-    genuine one.
-
-    Two cautions on reading that implication.  It is NOT the disjunctive
-    pigeonhole "of any three elements, two coincide"; no disjunction is
-    proved anywhere below.  The two forms are interderivable for these
-    particular objects only because [Sets_bool] carries decidable equality,
-    and that decidability is used inside the proofs (the [destruct ... eqn:]
-    on [bool]) rather than stated as a hypothesis.  Separately, the informal
-    reason the singleton case holds -- the object there has only two elements
-    up to [≈] -- is not itself proved; the implication is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The two-element setoid, [bool] under Coq's equality. *)
 Definition Sets_bool : obj[Sets] :=

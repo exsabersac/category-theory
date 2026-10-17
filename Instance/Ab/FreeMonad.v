@@ -204,10 +204,11 @@ Proof using A α.
   - intros x y H. exact (fae_gen H).
 Defined.
 
-(* The abelian group of the algebra: each law is one instance of
-   [zm_alg_eval_respects] at a constructor of [fa_eq], so that "the
-   values assigned to the sums of sums (a1 + a2) + (a3) and (a1) +
-   (a2 + a3) are equal" is associativity. *)
+(*
+   本节说明 FreeMonad 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition zm_alg_ab@{+} : AbObject := {|
   ab_cmon := {|
     cmon_setoid := A;

@@ -104,18 +104,11 @@ Section ImageMediator.
 Context {K : RModObject R}.
 Context (x : MKills (KernelSub f) K).
 
-(* Well-definedness, isolated as one lemma: elements with the same image
-   under f have the same image under the given map, because they differ
-   by an element of ker f, which that map kills.  This is the ONE place
-   an element is inspected, and everything the mediator owes is
-   discharged from it.
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
 
-   Isolating it is not tidiness -- it is what makes the construction
-   independent of whether [ImageSubmod]'s closure obligations are
-   transparent.  They are [Program] obligations and hence [Qed]-opaque,
-   so the preimage witness that [ImageMod]'s operations carry does NOT
-   reduce, and the zero, addition and scalar laws below cannot be closed
-   by computation; they are closed by comparing f-images instead. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mod_image_med_wd (a b : carrier (cmon_setoid M)) :
   cmon_map (rm_hom f) a ≈ cmon_map (rm_hom f) b →
   cmon_map (rm_hom (`1 x)) a ≈ cmon_map (rm_hom (`1 x)) b.
@@ -221,15 +214,11 @@ Proof.
                          (mod_image_universal_element f)).
 Qed.
 
-(* BOTH LEGS ARE THE TWO MEDIATORS, by convertibility -- the [eq_refl]
-   exception to the `≈` discipline.  [ue_med] is
-   [unique_obj (aue_universal U1 (aue_elem U2))]
-   (Theory/Universal/Element.v), and since both universal elements
-   above were built with their mediators as [unique_obj], the generic
-   machinery rebuilds neither map.  The strict form was tried FIRST and
-   holds; the boundary that does NOT hold strictly is the mediator's
-   triangle, which is `≈` and not Leibniz (pinned in
-   Test/ProbeModQuotient.v). *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example mod_first_isomorphism_to_is_mquot_med {R : RingObject}
   {M N : RModObject R} (f : M ~{RMod R}~> N) :
   to (mod_first_isomorphism_theorem f)
@@ -319,17 +308,11 @@ Context {M : RModObject R}.
 Context (S T : Submodule M).
 Context (Hsub : ∀ a : carrier (cmon_setoid M), smod_mem S a → smod_mem T a).
 
-(* T read as a submodule of M/S.  AN EARLIER REVISION said "the membership
-   predicate is UNCHANGED; only the saturation law is new, since M/S's `≈` is
-   coarser than M's."  Since the PR "algebraic carriers are sets"
-   (2026-09-17) the membership predicate is the TRUNCATION of T's, and that is
-   forced by the same coarseness: M/S's `≈` is [mquot_rel S], which is itself
-   the truncation of membership in S, so the saturation law asks to move a
-   [Type]-valued membership along a [Prop]-valued congruence and cannot.
-   Truncating this one predicate is exactly enough -- the witness is opened in
-   a [Prop] goal and re-wrapped -- and everything downstream follows with one
-   [constructor] or one [destruct].  The other three laws are still the very
-   terms T carries, because M/S's zero, addition and action ARE M's. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition TmodS : Submodule (QuotientMod S) := {|
   smod_mem := fun a : carrier (cmon_setoid (QuotientMod S)) =>
                 inhabited (smod_mem T a)
@@ -393,11 +376,11 @@ Section ThirdMediator.
 Context {K : RModObject R}.
 Context (x : MKills TmodS K).
 
-(* ONE OF THE TWO ELEMENTWISE STEPS of this theorem, the other being
-   [mquot_step_kills] as the header records: transferring the killing
-   hypothesis across the projection.  A member of T is projected by p_S
-   to a member of T/S -- definitionally, the membership predicates being
-   the same and p_S the identity function -- so k ∘ p_S kills T. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mod_third_precompose_kills (a : carrier (cmon_setoid M)) :
   smod_mem T a →
   cmon_map (rm_hom (`1 x ∘ mquot_proj S)) a ≈ cmon_zero K.
@@ -481,14 +464,11 @@ Context {R : RingObject}.
 Context {M : RModObject R}.
 Context (S T : Submodule M).
 
-(* The sum S + T, as a submodule.  Membership carries the decomposition
-   as DATA, so the elementwise steps below read it back out with nothing
-   chosen.  NOTE what is NOT here: the group case
-   (Instance/Grp/Quotient/Isomorphism.v's [SubgroupProduct]) needs its
-   second argument NORMAL and spends [product_shuffle] and
-   [inverse_shuffle]; here both arguments are arbitrary submodules and
-   closure is [ab_sub_plus]-style commutativity plus the derived
-   [smod_neg]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition in_sum (x : carrier (cmon_setoid M)) : Type :=
   { s : carrier (cmon_setoid M) & { t : carrier (cmon_setoid M) &
       ((smod_mem S s * smod_mem T t) * (x ≈ cmon_plus M s t))%type } }.
@@ -581,13 +561,11 @@ Definition mod_psi : SubmoduleMod S ~{RMod R}~> QuotientMod TinSum :=
 Lemma mod_psi_kernel_is_meet (p : carrier (cmon_setoid (SubmoduleMod S))) :
   smod_mem (KernelSub mod_psi) p ↔ inhabited (smod_mem T (`1 p)).
 Proof.
-(* AN EARLIER REVISION stated the right-hand side as the bare
-   [smod_mem T (`1 p)].  Since the PR "algebraic carriers are sets"
-   (2026-09-17) the left-hand side is congruence to zero in a quotient, which
-   is the [inhabited] truncation of membership, so the biconditional holds up
-   to that truncation and is stated so.  Both directions are [Prop]-to-[Prop]
-   eliminations; [simpl] is what exposes the named relation, whose ascribed
-   sort would otherwise be [Type]. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   split.
   - intro Hp; simpl in Hp.
     destruct Hp as [Hp]; constructor.
@@ -601,10 +579,11 @@ Proof.
     + exact Hp.
 Qed.
 
-(* ELEMENTWISE INPUT TWO: ψ is surjective.  Every member of S + T is
-   s + t for data s ∈ S, t ∈ T, and s + t is congruent to s modulo T
-   because s - (s + t) ≈ -t lies in T.  The group case needs one
-   normality computation here; this needs none. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mod_psi_surjective : RModSurjective mod_psi.
 Proof.
   intro q.
@@ -623,25 +602,21 @@ Proof.
   - exact (smod_neg T _ Ht).
 Qed.
 
-(* Mac Lane §III.1 Exercise 5, second isomorphism theorem, as a corollary
-   of the first: S/(S ∩ T) is S/ker ψ, which the first theorem identifies
-   with im ψ, which surjectivity identifies with (S + T)/T. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition mod_second_isomorphism_theorem :
   QuotientMod (KernelSub mod_psi) ≅[RMod R] QuotientMod TinSum :=
   iso_compose (mod_surjective_image_iso mod_psi mod_psi_surjective)
               (mod_first_isomorphism_theorem mod_psi).
 
-(* S ∩ T, as a submodule of S: membership in T, read on elements of S.
-   This is the literal left-hand side of the theorem.
+(*
+   本节说明核/余核相关定义、性质与动机。
 
-   AN EARLIER REVISION wrote the predicate as the bare [smod_mem T (`1 p)].
-   Since the PR "algebraic carriers are sets" (2026-09-17) it is the
-   [inhabited] truncation of that, and the reason is the identification
-   [mod_second_isomorphism_theorem_literal] makes: this submodule has to be
-   coextensive with [KernelSub mod_psi], whose membership is congruence to
-   zero in a quotient and hence already truncated.  Nothing is lost at the
-   witnesses that matter -- the [Z] readbacks at the end of the file supply
-   and consume the truncation with one [constructor] and one [destruct]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition MeetSub : Submodule (SubmoduleMod S) := {|
   smod_mem := fun p : carrier (cmon_setoid (SubmoduleMod S)) =>
                 inhabited (smod_mem T (`1 p))
@@ -660,13 +635,11 @@ Next Obligation.
   destruct Ha as [Ha]; constructor; exact (smod_smul T _ _ Ha).
 Qed.
 
-(* The two membership transfers go through the truncation now: the kernel's
-   membership is congruence to zero in a quotient, hence [inhabited].  In one
-   direction that means wrapping with [inhabits]; in the other, opening the
-   [inhabited] -- which is legitimate because [mquot_congr]'s own hypotheses
-   land in [Prop]-valued memberships of the two quotients.  Neither direction
-   loses a witness: [MeetSub]'s membership IS [inhabited (smod_mem T (`1 p))]
-   on the nose, so the two transfers are the identity. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition mod_second_isomorphism_theorem_literal :
   QuotientMod MeetSub ≅[RMod R] QuotientMod TinSum :=
   iso_compose mod_second_isomorphism_theorem
@@ -696,17 +669,11 @@ Proof.
   rewrite Hx; apply cmon_plus_comm.
 Qed.
 
-(** ** Non-vacuity at ℤ
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
 
-    All three theorems above hold for every module, so nothing yet shows
-    any of them is about a nondegenerate situation.  Instance/Mod.v's
-    [Int_RMod] with the even integers (Instance/Mod/Quotient.v's
-    [EvenSub]) supplies witnesses for each, and ℤ's setoid is Leibniz
-    equality, so every check is a computation.  The multiples of 4 give
-    the strictly smaller submodule the third theorem needs, and the
-    multiples of 3 give a second submodule whose sum with [EvenSub] is
-    everything -- so the second theorem is instantiated at a pair whose
-    sum is NOT either summand. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FourSub_mem (a : Z) : Type := { k : Z & a = (4 * k)%Z }.
 
@@ -797,16 +764,11 @@ Definition Z_third_iso :
 Theorem Z_third_iso_nondegenerate :
   mquot_rel (TmodS FourSub EvenSub four_in_even) 1%Z 0%Z → False.
 Proof.
-  (* The membership equation is CONVERTIBLE to one about plain ℤ -- the
-     [eq_refl] exception again -- and [exact] is what performs the
-     conversion.  [rewrite] cannot: the subtraction here is taken in
-     [QuotientMod FourSub] rather than in [Int_RMod], and although the
-     two agree on every projection they are not the same term.
+  (*
+   本节说明 Isomorphism 相关定义、性质与动机。
 
-     THREE layers of intro pattern, not one: since the PR "algebraic carriers
-     are sets" (2026-09-17) [mquot_rel] is [inhabited] of a membership, and
-     [TmodS]'s own membership is [inhabited] of [EvenSub]'s, which is itself
-     the sigma [ZEvenMod]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros [[[k Hk]]].
   assert (Hz : (1 = 2 * k)%Z) by exact Hk.
   lia.
@@ -839,10 +801,11 @@ Definition Z_second_iso_literal :
     ≅[RMod Int_Ring] QuotientMod (TinSum EvenSub ThreeSub) :=
   mod_second_isomorphism_theorem_literal EvenSub ThreeSub.
 
-(* The pair is nondegenerate in the way the theorem's hypotheses ask
-   for.  NEITHER submodule contains the other: 2 is even and not a
-   multiple of 3, 3 is a multiple of 3 and not even.  So the sum is
-   strictly larger than both. *)
+(*
+   本节说明 Isomorphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem EvenSub_not_in_ThreeSub : smod_mem ThreeSub 2%Z → False.
 Proof. intros [k Hk]; lia. Qed.
 

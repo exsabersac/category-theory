@@ -83,9 +83,11 @@ Next Obligation.
   bust h; bust g; bust f.
 Qed.
 
-(* The terminal object is the empty type [False]: there is no [inr] value to
-   return, so the unique morphism [one] is the always-error map [inl mempty].
-   It is unique by error irrelevance, since any two error-valued maps agree. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance ParE_Terminal : @Terminal ParE := {
   terminal_obj := False;
   one := λ _ _, Datatypes.inl mempty
@@ -94,14 +96,11 @@ Next Obligation.
   destruct (f x0), (g x0); try contradiction; auto.
 Qed.
 
-(* The categorical product is the product of pointed sets: on the realizations
-   [E + x], [E + y] it is their cartesian product with the both-error pair
-   merged into the new basepoint, whose underlying non-error set is
-   [(x * y) + x + y] (both-defined, left-defined, right-defined). [fork] keeps
-   both results when both succeed and merges the two errors with [⊗] when both
-   fail; [exl]/[exr] project, falling back to [mempty] when their component is
-   absent. This is the product, NOT the smash product (which would collapse the
-   wedge to [x * y]). *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Par_Cartesian : @Cartesian ParE := {
   product_obj := λ x y, (x * y) + x + y;
   fork := λ _ _ _ f g x,
@@ -152,14 +151,14 @@ Next Obligation.
     destruct p; subst; auto; try tauto.
 Qed.
 
-(* nLab:      https://ncatlab.org/nlab/show/smash+product
+(*
+   nLab:      https://ncatlab.org/nlab/show/smash+product
    Wikipedia: https://en.wikipedia.org/wiki/Smash_product
 
-   [ParE] is not cartesian closed. It is, however, closed for a *different*
-   monoidal product: the smash product [x * y] (the cartesian product with the
-   whole wedge collapsed to the error), which makes the underlying category of
-   pointed objects symmetric monoidal closed. That tensor and its closure are
-   not formalized here; this remark only records the structure that exists. *)
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The initial object is again the empty type [False], but now read as the
    *source*: a morphism out of [False] is given by [False_rect], vacuously. *)

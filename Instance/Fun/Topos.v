@@ -73,17 +73,11 @@ Definition Copresheaf_Topos_IEM@{o h so} (C : Category@{o h h})
 
 Section Readback.
 
-(* ANNOTATED DELIBERATELY.  Left bare, this [Context] fixes its own
-   universes at discharge and every readback that USES it acquires the
-   block equation [u0 = u1] -- sixteen of the nineteen below, the three
-   exceptions being the whole-bundle readbacks, which bind their own [C]
-   and [UT] and so never see this [Context] (measured on the bare
-   variant).  The equation is the [Untruncate] universe identified with
-   C's hom universe, which the bundles carry in their BINDER instead.
-   The
-   equation is sound but it would make reading (1) below true only of
-   the four bundles' blocks; annotating moves it back into the binder
-   and makes the file equation-free throughout.  Measured both ways. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universes ro rh rso.
 Context (C : Category@{ro rh rh}) (UT : Untruncate@{rh}).
 
@@ -149,10 +143,11 @@ Example copsh_topos_classifier :
   @topos_classifier _ (Copresheaf_Topos C UT) = Fun_Classifier_cov UT
   := eq_refl.
 
-(* STRONGER THAN THE TWO FIELD READBACKS ABOVE: the covariant reading and
-   the contravariant one are the SAME TERM at opposite categories, as
-   WHOLE bundles and in both directions, and the [IEM] pair with them.
-   [(C^op)^op = C] by conversion is what makes all three [eq_refl]. *)
+(*
+   本节说明 Topos 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example copsh_is_psh_at_op (C : Category) (UT : Untruncate) :
   Copresheaf_Topos C UT = Presheaf_Topos (C^op) UT := eq_refl.
 
@@ -172,10 +167,11 @@ Example psh_truth_is_total_sieve (c : C)
               (@topos_classifier _ (Presheaf_Topos C UT))] c u
   = @total_sieve C c := eq_refl.
 
-(* "u_C(e) = {f : D → C | f*(e) ∈ U(D) ↣ E(D)}", with the membership
-   truncated by [Powerset_squash] -- which is what [Untruncate] inverts.
-   The bound variables must be typed as Instance/Fun/Classifier.v types
-   its own Example, or the [morphism] coercion is left an evar. *)
+(*
+   本节说明 Topos 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example psh_char_is_awodey_sieve (E U : C^op ⟶ Sets) (theta : U ⟹ E)
   (M : @Monic ([C^op, Sets]) U E theta) (c d : C)
   (e : carrier (fobj[E] c)) (f : d ~{C}~> c) :

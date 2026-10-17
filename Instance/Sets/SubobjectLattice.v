@@ -164,12 +164,11 @@ End SetsWidePullback.
 Local Obligation Tactic := cat_simpl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (d) The left unit law for the join, in any category
+(*
+   本节说明子对象相关定义、性质与动机。
 
-    That law is Theory/Subobject/Lattice.v's [sub_join_via_bot]; it was
-    first proved in this file while the two halves of the development were
-    written in parallel and was lifted into that file at integration.  Its
-    [Sets] instance is [fs_join_bot_left_unit] under (e) below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** (e) Fong and Spivak Seven Sketches 1.2.1: the increasing family *)

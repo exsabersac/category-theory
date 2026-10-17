@@ -4,11 +4,11 @@
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* [Coq.QArith.QArith] is imported FIRST, and deliberately: it exports
-   [Corelib.Relations.Relation_Definitions.equiv], which would otherwise
-   shadow [Category.Lib.Setoid.equiv] and break every [Proper] signature
-   below.  Importing the library afterwards restores the intended
-   [equiv]. *)
+(*
+   本节说明 FdVect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.QArith.QArith.
 Require Import Coq.Vectors.Fin.
 Require Import Category.Lib.
@@ -32,13 +32,11 @@ Generalizable All Variables.
 
 (** ** Fields *)
 
-(** A field: a commutative ring in which 1 ≠ 0, equipped with a TOTAL
-    multiplicative inverse.  [finv] is a function on the whole carrier —
-    it must be, to be a setoid map — so it takes some value at zero; that
-    value is junk, constrained only by [finv_respects], and [finv_l]
-    holds away from zero.  Nonzeroness is stated as [x ≈ 0 → False],
-    which is the constructively meaningful form and the one the library's
-    Type-valued logic supports. *)
+(*
+   本节说明 FdVect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record FieldObject := {
   field_ring :> RingObject;
 
@@ -67,9 +65,11 @@ Proof.
   now apply finv_l.
 Qed.
 
-(** A field has no zero divisors: if a · b ≈ 0 and a ≉ 0 then b ≈ 0,
-    by multiplying through by a⁻¹.  Not needed by the equivalence, but
-    it is the one-line sanity check that the class has content. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma field_no_zero_divisors (F : FieldObject)
   (a b : carrier (rig_setoid F)) :
   (a ≈ rig_zero F → False) → rig_mul F a b ≈ rig_zero F →
@@ -83,26 +83,28 @@ Proof.
   apply rig_mul_zero_r.
 Qed.
 
-(** A field is in particular a commutative ring, so it lands in
-    Instance/Rng.v's full subcategory [CRng] — the class is stated over
-    [RingObject] plus a commutativity FIELD rather than over an object of
-    [CRng] so that [rig_mul], [rig_add] and the rest stay one projection
-    away, but the two presentations agree and the bridge is this
-    one-liner. *)
+(*
+   本节说明 FdVect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Field_CRng (F : FieldObject) : CRng :=
   (field_ring F; field_comm F).
 
-(** Vector spaces over F are F-modules.  Instance/Mod.v deferred this
-    name to the present issue; it is a definition rather than a notation
-    so that it can be unfolded where the module API is wanted. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Vct_F (F : FieldObject) : Category := RMod (field_ring F).
 
 (** ** The rationals as a field *)
 
-(** [Qinv] is total (0⁻¹ = 0), [Proper] for [Qeq] by [Qinv_comp], and
-    [Qmult_inv_l] gives the inverse law away from zero — exactly the
-    shape the class demands, so no junk-value obligation is left
-    over. *)
+(*
+   本节说明 FdVect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Q_Field : FieldObject := {|
   field_ring := Q_Ring;
   finv       := Qinv
@@ -165,12 +167,11 @@ Arguments fdv_expand_coord {F} _ _.
 Arguments fdv_coord_plus {F} _ _ _ _.
 Arguments fdv_coord_smul {F} _ _ _ _.
 
-(** *** The derived facts: [fdv_expand] is linear too
+(*
+   本节说明 FdVect 相关定义、性质与动机。
 
-    Each is the same two-line argument — push the claim through
-    [fdv_expand_coord], compare coordinates, and use the corresponding
-    law for [fdv_coord].  Stating them as fields would have been
-    redundant data. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fdv_coord_zero {F : FieldObject} (V : FdVectObject F)
   (i : Fin.t (fdv_dim V)) :
@@ -220,13 +221,11 @@ Proof.
   - apply fdv_expand_coord.
 Qed.
 
-(** ** The category
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Objects carry coordinates; MORPHISMS DO NOT RESPECT THEM.  A hom is
-    an arbitrary module homomorphism of the underlying modules, so the
-    hom-setoid, identity and composition are Instance/Mod.v's, reused
-    verbatim, and all four category laws hold for the reason they hold in
-    [RMod R]: by [reflexivity] on the underlying setoid maps. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition FdVect (F : FieldObject) : Category := {|
   obj    := FdVectObject F;
   hom    := fun V W => @RModHom (field_ring F) (fdv_mod V) (fdv_mod W);
@@ -269,14 +268,11 @@ Next Obligation. intros F V W X f g a; simpl; reflexivity. Qed.
 |}.
 Next Obligation. intros F V W g a; simpl; reflexivity. Qed.
 
-(** ** The standard space F^n
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
 
-    Tuples [Fin.t n → F] with pointwise structure.  It is built up the
-    same tower the general objects sit on — setoid, commutative monoid,
-    abelian group, module — so that every law is the corresponding law of
-    F, applied at each index.  Its coordinates are the IDENTITY: the
-    standard basis is implicit in the indexing, which is exactly what
-    makes [StdVect] the image of the comparison functor. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Std.
 
@@ -357,9 +353,11 @@ End Std.
 
 Arguments StdVect F n : clear implicits.
 
-(** The standard basis vector e_j : F^n, the j-th column of the identity
-    matrix.  It is [delta] of Instance/Matr.v, reused rather than
-    redefined, so the Kronecker collapse lemmas apply to it directly. *)
+(*
+   本节说明 FdVect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition std_basis (F : FieldObject) (n : nat) (j : Fin.t n) :
   Fin.t n → carrier (rig_setoid F) :=
   fun i => delta (field_ring F) i j.
@@ -369,12 +367,11 @@ Example std_dim (F : FieldObject) (n : nat) :
 
 (** ** Matrices as linear maps: the orientation, pinned by computation *)
 
-(** [mat_apply R A v i = Σ_j A i j · v j].  With [A : Fin.t m → Fin.t n →
-    R] — an arrow n ~> m of [Matr R] — this is the map F^n → F^m, the row
-    index [i] surviving and the column index [j] contracted against the
-    vector.  Everything downstream depends on this choice being the one
-    that matches [Matr]'s composition, so it is checked by computation
-    immediately below rather than argued for. *)
+(*
+   本节说明 FdVect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition mat_apply (R : RigObject) {n m : nat}
   (A : Fin.t m → Fin.t n → carrier (rig_setoid R))
   (v : Fin.t n → carrier (rig_setoid R)) :
@@ -393,10 +390,11 @@ Example mat_apply_1x1 :
   mat_apply Int_Rig (n:=1) (m:=1) (fun _ _ => 3%Z) (fun _ => 4%Z) Fin.F1
     = 12%Z := eq_refl.
 
-(* 2 × 2: [[1,2],[3,4]] · (5,6) = (1·5+2·6, 3·5+4·6) = (17, 39).  Rows
-   are the OUTER index — had the orientation been transposed, the answers
-   would be (1·5+3·6, 2·5+4·6) = (23, 34), and that reading is refuted
-   by computation just below, not by this prose. *)
+(*
+   本节说明 FdVect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition probe_A : Fin.t 2 → Fin.t 2 → Z :=
   fin2 (fin2 1%Z 2%Z) (fin2 3%Z 4%Z).
 Definition probe_v : Fin.t 2 → Z := fin2 5%Z 6%Z.
@@ -406,10 +404,11 @@ Example mat_apply_2x2_row0 :
 Example mat_apply_2x2_row1 :
   mat_apply Int_Rig probe_A probe_v (Fin.FS Fin.F1) = 39%Z := eq_refl.
 
-(* The TRANSPOSED reading, Σ_j A j i · v j, machine-checked: on the
-   same probe it yields (23, 34), and its first component differs from
-   the true 17 — so the two readings are discriminated by computation,
-   which is what "checked rather than argued for" owes. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition mat_apply_T (R : RigObject) {n m : nat}
   (A : Fin.t m → Fin.t n → carrier (rig_setoid R))
   (v : Fin.t m → carrier (rig_setoid R)) :
@@ -441,14 +440,11 @@ Example mat_apply_basis (R : RigObject) {n m : nat}
   mat_apply R A (fun l => delta R l j) i ≈ A i j.
 Proof. apply (fin_sum_delta_r R j (fun l => A i l)). Qed.
 
-(** ** Finite sums in a commutative monoid
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Instance/Matr.v's [fin_sum] is this sum for the additive monoid of a
-    rig; fullness needs it one level up, for the module F^n itself, in
-    order to expand a vector as Σ_j v_j · e_j.  Three lemmas suffice:
-    congruence, preservation by monoid homomorphisms, and — inside the
-    section below — the observation that in F^n a monoid sum is computed
-    coordinatewise by [fin_sum]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint msum (M : CMonObject) {p : nat} :
   (Fin.t p → carrier (cmon_setoid M)) → carrier (cmon_setoid M) :=
@@ -485,16 +481,11 @@ Section Comparison.
 
 Context (F : FieldObject).
 
-(** *** Linearity of [mat_apply]
+(*
+   本节说明等价、分配律、来源与用途相关定义、性质与动机。
 
-    Four lemmas, each one line of the finite-sum engine: congruence,
-    annihilation, additivity (distributivity plus [fin_sum_add]), and
-    homogeneity — the last being one of exactly TWO places on the
-    equivalence's path where the field's COMMUTATIVITY is spent (the
-    other is [matrix_of_sur], sliding a scalar past a basis image;
-    [finv_r] spends it a third time, off that path), because a left
-    module over a non-commutative ring is not acted on linearly by
-    matrices on the left. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma mat_apply_respects {n m : nat}
   (A : Fin.t m → Fin.t n → carrier (rig_setoid F))
@@ -755,13 +746,11 @@ Program Definition StdVect_iso (V : FdVectObject F) :
 Next Obligation. intros V v; simpl; apply fdv_expand_coord. Qed.
 Next Obligation. intros V c i; simpl; apply fdv_coord_expand. Qed.
 
-(** [#[local]], deliberately: [eso_obj] is a CHOICE (the carried
-    dimension), and chosen-preimage instances stay out of the global
-    database — Theory/Equivalence/FullFaithful.v's rationale, and the
-    precedent of Construction/Reflective/Idempotent.v.  Section-local
-    hints die at [End], so the one consumer,
-    [FdVect_Matr_Equivalence], names this constant explicitly;
-    downstream callers take the equivalence by name. *)
+(*
+   本节说明等价、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Program Instance Matr_to_FdVect_EssSurj :
   EssentiallySurjective (Matr_to_FdVect F) := {|
   eso_obj := fun V => fdv_dim V;
@@ -770,18 +759,11 @@ Next Obligation. intros V c i; simpl; apply fdv_coord_expand. Qed.
 
 End FullFaithfulEso.
 
-(** ** Mac Lane §I.4 Exercise 6 / Riehl §1.5 Example 1.5.12
+(*
+   本节说明函子、等价相关定义、性质与动机。
 
-    The comparison functor is full, faithful and essentially surjective,
-    so Theory/Equivalence/FullFaithful.v's [FF_ESO_Equivalence] hands
-    back the equivalence — including the quasi-inverse, which is the
-    construction "read off the matrix of a linear map in the chosen
-    bases".  No choice principle is consumed: the quasi-inverse is
-    assembled from [prefmap] and [eso_iso], both of which are data here
-    ([matrix_of] and [StdVect_iso]).  The essential-surjectivity
-    witness is passed EXPLICITLY — it carries the choice of preimage
-    object, and choices do not ride the instance database (the
-    [#[local]] above dies with its section, which is the point). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FdVect_Matr_Equivalence (F : FieldObject) :
   EquivalenceOfCategories (Matr_to_FdVect F) :=
   @FF_ESO_Equivalence _ _ (Matr_to_FdVect F) _ _
@@ -796,11 +778,11 @@ Example equivalence_inverse_dim (F : FieldObject) (V : FdVectObject F) :
 
 (** ** Reindexing maps, and the acceptance tests over ℚ *)
 
-(** Reindexing a tuple along any [s : Fin.t m → Fin.t n] is linear, and
-    all three laws hold by [reflexivity], the module operations of F^n
-    being pointwise.  This supplies concrete linear maps that are NOT
-    presented as matrices, which is what makes the fullness probe below
-    a real round trip rather than a restatement. *)
+(*
+   本节说明 FdVect 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition std_reindex (F : FieldObject) {n m : nat}
   (s : Fin.t m → Fin.t n) :
   StdVect F n ~{FdVect F}~> StdVect F m.

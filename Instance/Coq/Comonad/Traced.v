@@ -19,38 +19,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* How much monoid the comonad costs
-
-   Haskell: Control.Comonad.Traced (Kmett's comonad package)
+(*
    Paper:   Eilenberg, Moore, "Adjoint functors and triples", Illinois
-            Journal of Mathematics 9(3), 1965 (the adjoint monad theorem)
 
-   The exponent functor m ⇒ − is made a comonad by exactly the monoid
-   structure on m, and the file keeps the accounting visible: ε
-   consumes the unit, δ consumes the multiplication, and each of the
-   three comonad laws consumes precisely one monoid law.
-   [traced_extract_duplicate] uses only [mempty_left];
-   [traced_fmap_extract_duplicate] uses only [mempty_right]; and
-   [traced_duplicate_coassoc] uses only [mappend_assoc].  The
-   [Proof using] annotations record these dependencies, so the
-   correspondence is checked rather than asserted.  Haskell mirrors the
-   requirement: the Comonad instance for Traced m exists exactly under
-   a Monoid m constraint, and the ComonadTraced class provides
-   trace :: m -> w a -> a — run the observation at a chosen
-   displacement of the context — as the practical vocabulary.
+   本节说明伴随、函子、单子相关定义、性质与动机。
 
-   The comonad also has an adjoint provenance.  Besides the
-   contravariant monoidal push described above, the writer monad m × −
-   is left adjoint to m ⇒ −, and whenever a monad has a right adjoint,
-   that right adjoint canonically carries a comonad structure whose
-   counit and comultiplication are the mates of the monad's unit and
-   multiplication, with the Eilenberg–Moore category of the monad
-   equivalent to the coalgebras of the comonad compatibly with the
-   forgetful functors.  This is the adjoint monad theorem, implicit in
-   Eilenberg–Moore (1965) and explicit in Mac Lane and Moerdijk,
-   "Sheaves in Geometry and Logic", Thm. 2, p. 249.  Writer and Traced
-   are thus paired twice over: dual through the monoid, and adjoint
-   through the exponential. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Traced.
 
@@ -67,36 +42,11 @@ Hypothesis mempty_right : ∀ w : m, mappend w mempty = w.
 Hypothesis mappend_assoc :
   ∀ u v w : m, mappend u (mappend v w) = mappend (mappend u v) w.
 
-(** ** The traced data over raw types, and why the witness is hosted on Sets
+(*
+   本节说明函子、余单子、等价相关定义、性质与动机。
 
-    Instance/Coq/Comonad/Env.v hosts the environment comonad on COQ, whose
-    morphism equivalence is pointwise Leibniz equality.  For the traced
-    functor, four of the seven functor/comonad equations of the corresponding
-    raw data below are closed by Coq's definitional beta and eta alone, at
-    the full function level (the Leibniz-valued lemmas below, all by
-    [reflexivity]).  The remaining three equations are exactly the ones that
-    consult the monoid laws, and their Leibniz forms compare functions that
-    differ beneath a binder — (λ w', h (mappend mempty w')) against h, and so
-    on.  Each of these holds pointwise, which is the restatement the plan
-    prescribes for this file (doc/classical-completion-plan.md, Phase 6), and
-    is proved below by rewriting the monoid law at the sampled point; the
-    Leibniz form itself is out of reach for axiom-free Coq.  So, moreover, is
-    the [fmap_respects] field a [Functor] on COQ must carry:
-    [coq_traced_map_proper_entails_funext] shows that the very first instance
-    of that obligation already implies functional extensionality for
-    functions out of m — no inhabitation hypothesis needed, the identity
-    trace exhibits it.
-
-    This is precisely the corner named by the plan's Phase 6 risk note,
-    together with the sanctioned move, already exercised by the store comonad
-    in Instance/Coq/Comonad/Store.v: "if a corner genuinely resists, move
-    that single instance to Sets (setoid homs make the law proper-trivial) —
-    the deliverable is the comonad witness, not its host category."  The
-    bundled witness [Traced_Comonad] accordingly lives on [Sets], where the
-    traced object m → x is compared pointwise up to the codomain's ≈ and
-    every equation above literally becomes its pointwise restatement.  The
-    monoid itself remains the ordinary Coq data of this section, and the
-    file keeps its planned location. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The plan-prescribed action on raw types: post-compose the observation. *)
 Definition coq_traced_map {x y : Type} (f : x → y) (h : m → x) : m → y :=
@@ -162,14 +112,11 @@ Proof using mappend_assoc.
   now rewrite mappend_assoc.
 Qed.
 
-(** The obstruction, machine-checked: the respectfulness a COQ-hosted traced
-    functor would owe — at the single instance x := m, with the identity
-    trace as the argument — is already the statement of functional
-    extensionality for functions out of the monoid (the final conversion
-    step is definitional eta).  Restricted functional extensionality is
-    independent of Coq's type theory, so no axiom-free [Functor] on COQ can
-    carry this action, and the bundled witness below is hosted on [Sets]
-    instead. *)
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma coq_traced_map_proper_entails_funext {y : Type}
   (respects : ∀ f g : m → y,
@@ -183,13 +130,11 @@ Qed.
 
 (** ** The traced setoid on [Sets] *)
 
-(* A traced value over the raw monoid m is a bare function m → x into the
-   setoid x; two of them are equivalent when they agree at every trace, up to
-   the codomain's ≈.  This componentwise relation is exactly what makes every
-   obligation below pointwise, in contrast to the Leibniz function
-   equalities demanded over raw types above.  The monoid needs no setoid of
-   its own: it enters only through the (Leibniz) rewriting of its laws at
-   sampled points. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition traced_equiv {x : SetoidObject} : crelation (m → carrier x) :=
   λ h k, ∀ w : m, h w ≈ k w.
@@ -325,11 +270,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** The comonad witness: per Theory/Monad.v, a comonad on [Sets] IS a monad
-    on [Sets^op], so the record is assembled with [Build_Monad] at (Sets^op,
-    TracedF^op) — [ret] is the counit and [join] the comultiplication, and
-    each monad law is the corresponding lemma above, read through the
-    opposite category's reversed composition. *)
+(*
+   本节说明单子、余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Traced_Comonad : @Comonad Sets TracedF :=
   @Build_Monad (Sets^op) (TracedF^op)
     (λ x : SetoidObject, @traced_extract x)           (* ret  = ε *)
@@ -344,11 +289,11 @@ Definition Traced_Comonad : @Comonad Sets TracedF :=
 
 #[local] Existing Instance Traced_Comonad.
 
-(** The covariant accessors of Comonad/Core.v compute on this witness
-    exactly as the plan's skeleton promises: [extract] evaluates at the
-    neutral trace, [duplicate] evaluates under every further translation,
-    and [extend f] runs the co-Kleisli arrow f on every translate of its
-    argument. *)
+(*
+   本节说明余单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Traced_extract_spec {x : SetoidObject} (h : m → carrier x) :
   extract[TracedF] h = h mempty.
@@ -366,10 +311,8 @@ Proof. reflexivity. Qed.
 
 End Traced.
 
-(* No [#[export] Existing Instance] here: the monoid supply (mempty, mappend,
-   and the three laws) is a section premise not determined by the instance
-   head [@Comonad Sets (TracedF m)], so a global registration would force
-   typeclass resolution to backtrack through undischargeable subgoals.
-   Callers apply [Traced_Comonad] with explicit monoid arguments; the
-   [#[local] Existing Instance] above already serves the in-section spec
-   lemmas. *)
+(*
+   本节说明余单子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

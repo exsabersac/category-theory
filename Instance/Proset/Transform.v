@@ -28,53 +28,16 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* What the exercise buys, and where the dual argument stops
-
+(*
    nLab:  https://ncatlab.org/nlab/show/thin+category
    nLab:  https://ncatlab.org/nlab/show/functor+category
    Book:  Fong and Spivak, "Seven Sketches in Compositionality", Cambridge
-          2019, §3.3.4
    Book:  Riehl, "Category Theory in Context", Dover 2016, §1.4
 
-   Existence-and-uniqueness together say that the hom-sets of the functor
-   category [[C, Proset P]] are subsingletons: at most one morphism up to [≈]
-   between any two objects.  That is precisely thinness, so the functor
-   category into a preorder is itself a preorder — the headline of Fong and
-   Spivak's Example 3.57, which the pointwise existence lemma alone does not
-   state.  The order in question is the pointwise one, [S ≤ T] iff [S c ≤ T c]
-   for all [c], and the identification of [[C, Proset P]] with the proset of
-   that order is [Fun_Proset_iso] (in [Cat]) and [Fun_Proset_strict_iso] (in
-   [StrictCat]) below.  Instantiated at the naturals it says that the category
-   of endofunctors of [(ℕ, ≤)] is the preorder of monotone maps
-   [ℕ → ℕ] ordered pointwise — [endo_nat_monotone_iso].
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
 
-   The identification at the naturals has a subtlety the general statement does
-   not.  A functor [Proset P ⟶ Proset Q] *is* a monotone map: its object part
-   is the map, its arrow part is the monotonicity proof, and the functor laws
-   are vacuous in a thin target.  Passing from a monotone map back to a functor
-   nonetheless has to supply arrow data, and the choice is unique only up to
-   [≈] — which is exactly why the round trip is an isomorphism in [Cat] rather
-   than an equality of functors.  Note that [≅[Cat]] in this library already
-   IS equivalence of categories, because [Functor_Setoid] identifies naturally
-   isomorphic functors (Instance/Cat.v); the on-the-nose statements available
-   here are recorded separately as [monotone_of_endo_of_monotone] and
-   [endo_of_monotone_of_endo].
-
-   The dual is false, and Fong and Spivak's Exercise 3.58 asks for the
-   counterexample: transformations *out of* a preorder need not be unique,
-   since nothing about the domain constrains the target's hom-sets.  Below,
-   the domain is the preorder [(ℕ, ≤)] and the target is the walking parallel
-   pair [Parallel] of Instance/Parallel.v, whose two arrows [ParX ~> ParY] are
-   kept apart by a boolean tag in its hom-setoid; the two constant-functor
-   transformations built from them are shown non-equivalent in the
-   transformation setoid ([proset_out_not_unique]), not merely written
-   differently.
-
-   Riehl's Exercise 1.4.iii is the special case in which the domain is also a
-   preorder: a natural transformation between monotone maps of preorders is
-   unique when it exists.  Everything below quantifies over an arbitrary domain
-   category [C], so that case is an instance rather than a separate theorem;
-   [proset_to_proset_transform_iff] records it explicitly. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Mac Lane §I.4, exercise 4: existence and uniqueness *)
 
@@ -85,18 +48,20 @@ Context {A : Type}.
 Context {R : relation A}.
 Context {P : PreOrder R}.
 
-(* The pointwise order on functors into a proset: [S ≤ T] when [S c ≤ T c] for
-   every object [c].  Note that [S c] is the object part of the functor applied
-   to [c] (via the [fobj] coercion), so this is a relation on [C ⟶ Proset P]
-   with values in [Prop], exactly as [R] itself is. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition proset_pointwise (S T : C ⟶ Proset P) : Prop :=
   ∀ c : C, R (S c) (T c).
 
-(* Right to left: a pointwise family of order witnesses IS a transformation.
-   The components are the witnesses themselves, and both naturality fields are
-   proofs of [True] because the hom-setoid of [Proset] identifies all parallel
-   morphisms.  No hypothesis on [S], [T] or [C] is used. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition proset_transform {S T : C ⟶ Proset P}
            (H : proset_pointwise S T) : S ⟹ T :=
@@ -109,35 +74,21 @@ Definition proset_pointwise_of {S T : C ⟶ Proset P}
            (N : S ⟹ T) : proset_pointwise S T :=
   fun c => transform N c.
 
-(* The existence criterion.  [↔] is notation (declared in Lib/Foundation.v)
-   for [iffT] of Coq.Classes.CRelationClasses, the Type-valued
-   biconditional the library uses for statements whose two directions carry
-   computational content — here the two translations just given. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem proset_transform_iff (S T : C ⟶ Proset P) :
   (S ⟹ T) ↔ proset_pointwise S T.
 Proof. exact (@proset_pointwise_of S T, @proset_transform S T). Qed.
 
-(* The two translations are mutually inverse.  One round trip is a propositional
-   equality of order-witness families (it holds by eta), the other an
-   equivalence of transformations; the latter cannot be an equality, since
-   rebuilding a transformation replaces its naturality proofs.
+(*
+   本节说明等价相关定义、性质与动机。
 
-   The [=] in the first is deliberate and is not a lapse from the library's
-   [≈] discipline: it is a round-trip statement about the two translation
-   functions, and its [≈] counterpart would be vacuous here, since [≈] between
-   two families of [Proset] morphisms is the total relation.  Everywhere the
-   comparison of two morphisms is what is at stake — uniqueness, thinness, the
-   isomorphism laws — the statements below use [≈].
-
-   AND THE SECOND ROUND TRIP IS VACUOUS, which the first commit advertised as
-   though it were evidence of invertibility.  It is not: it is
-   [proset_transform_unique] wearing a round-trip costume.  Its proof is
-   [fun _ => I], and the same proof establishes `M ≈ N` for ANY two
-   transformations between the same functors, related to the translations or
-   not.  The informative half of the pair is therefore the [=] statement
-   alone; the [≈] statement is kept because the shape of a round trip is
-   what a reader looks for, but it carries no information beyond thinness. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem proset_pointwise_of_transform {S T : C ⟶ Proset P}
         (H : proset_pointwise S T) :
@@ -148,16 +99,20 @@ Theorem proset_transform_of_pointwise {S T : C ⟶ Proset P} (N : S ⟹ T) :
   proset_transform (proset_pointwise_of N) ≈ N.
 Proof. exact (fun _ => I). Qed.
 
-(* Uniqueness: any two transformations [S ⟹ T] are equal in the hom-setoid.
-   The proof is [fun _ => I]: componentwise the goal is the trivial relation of
-   [Proset]'s hom-setoid.  It is stated all the same, as the exercise does. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem proset_transform_unique {S T : C ⟶ Proset P} (α β : S ⟹ T) : α ≈ β.
 Proof. exact (fun _ => I). Qed.
 
-(* The headline of the exercise, both halves in one statement: the hom-setoid
-   of [[C, Proset P]] between any two objects is inhabited exactly when the
-   pointwise order holds, and has at most one element up to [≈]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem proset_transform_subsingleton (S T : C ⟶ Proset P) :
   ((S ⟹ T) ↔ proset_pointwise S T) ∧ (∀ α β : S ⟹ T, α ≈ β).
@@ -165,10 +120,11 @@ Proof. exact (proset_transform_iff S T, @proset_transform_unique S T). Qed.
 
 (** ** Seven Sketches Example 3.57: the functor category is thin *)
 
-(* Thinness of [[C, Proset P]] is uniqueness restated one level up: any two
-   parallel morphisms of the functor category agree under [≈].  (The library
-   has no [Thin] predicate to instantiate — there is no Structure/Thin.v and no
-   such class anywhere in the tree — so the property is stated directly.) *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Fun_Proset_thin (S T : [C, Proset P])
         (α β : S ~{[C, Proset P]}~> T) : α ≈ β.
@@ -177,10 +133,11 @@ Proof. exact (fun _ => I). Qed.
 (* Hence a preorder.  The pointwise order on functors is reflexive and
    transitive because [R] is, so it presents [[C, Proset P]] as a proset. *)
 
-(* Kept a plain [Definition] rather than an [Instance]: registering a
-   [PreOrder] for an arbitrary pointwise relation as a global typeclass
-   instance would enter resolution for every [PreOrder] goal in the library,
-   and nothing here needs it to be found automatically. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Fun_Proset_PreOrder : PreOrder proset_pointwise.
 Proof.
@@ -193,10 +150,11 @@ Defined.
 
 Definition Fun_Proset : Category := Proset Fun_Proset_PreOrder.
 
-(* The comparison, in both directions.  Each is the identity on objects: the
-   objects of [Fun_Proset] are by construction the functors [C ⟶ Proset P],
-   i.e. the objects of [[C, Proset P]].  Only the morphism parts differ, and
-   they are the two translations of the existence criterion. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Fun_Proset_forward : [C, Proset P] ⟶ Fun_Proset := {|
   fobj := fun S => S;
@@ -208,10 +166,11 @@ Program Definition Fun_Proset_backward : Fun_Proset ⟶ [C, Proset P] := {|
   fmap := fun S T H => proset_transform H
 |}.
 
-(* [[C, Proset P] ≅[Cat] Fun_Proset].  Because both composites are the identity
-   on objects definitionally, the natural isomorphisms witnessing the two
-   round trips have identity components, and their coherence conditions are
-   discharged by thinness of the targets. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Fun_Proset_iso : [C, Proset P] ≅[Cat] Fun_Proset.
 Proof.
@@ -224,28 +183,11 @@ Proof.
     intros; exact (fun _ => I).
 Defined.
 
-(* The same comparison in [StrictCat], where functors are compared by
-   [Functor_StrictEq_Setoid]: propositional equality of object parts together
-   with agreement of the morphism parts in the target hom-setoid.  Here the
-   object parts are equal by [eq_refl] — both composites are literally the
-   identity on objects — and the morphism condition is trivial because both
-   categories are thin.  This is stronger than the [Cat] statement — strict
-   equality of functors implies natural isomorphism (Instance/StrictCat.v's
-   header) and the converse fails (Instance/Cat.v, which is where that
-   failure is actually recorded) — and it is worth having precisely because
-   [≅[Cat]] in this library IS equivalence of categories, never an
-   on-the-nose isomorphism.  It is still *not* the assertion that the two
-   composite functors are equal as records, which would need function
-   extensionality to identify their proof fields.
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
 
-   A reader should also not over-read the strict form HERE.  Because both
-   categories are thin, the arrow-agreement leg of the strict hom-setoid is
-   the trivial relation, so what this theorem asserts beyond the [Cat] form
-   is that the two comparison functors agree with the identity ON OBJECTS,
-   definitionally.  That is a real strengthening and it is why the object leg
-   is [eq_refl], but it is not a bijection of hom-sets — thin categories have
-   nothing to bijate.  The content of the comparison lives in the functors
-   themselves, which carry the criterion. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Fun_Proset_strict_iso : [C, Proset P] ≅[StrictCat] Fun_Proset.
 Proof.
@@ -262,10 +204,11 @@ End ProsetTransform.
 
 (** ** Riehl Exercise 1.4.iii: the preorder-to-preorder case *)
 
-(* The development above quantifies over an arbitrary domain category [C], so
-   the case in which the domain is itself a preorder — Riehl's exercise, and
-   the setting of Seven Sketches' monotone maps — is an instance rather than a
-   separate theorem.  It is recorded here explicitly. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary proset_to_proset_transform_iff
           {B : Type} {Rb : relation B} (Q : PreOrder Rb)
@@ -309,14 +252,11 @@ Defined.
 
 Definition MonotoneProset : Category := Proset monotone_le_PreOrder.
 
-(* An endofunctor of [(ℕ, ≤)] IS a monotone map: its object part is the map and
-   its arrow part is the monotonicity proof.
+(*
+   本节说明 Transform 相关定义、性质与动机。
 
-   Every [Monotone] value in this file is built in tactic mode so that the
-   expected type drives the elaboration of the dependent pair.  Written as a
-   term, Coq 8.19 and 8.20 infer a NON-dependent [sigT] predicate for the pair
-   and then cannot reconcile it with [Monotone], whose predicate genuinely
-   mentions the map; taking the goal as given removes that guess. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition monotone_of_endo (F : Nat_Proset ⟶ Nat_Proset) : Monotone.
 Proof.
@@ -325,9 +265,11 @@ Proof.
   exact (fmap[F] h).
 Defined.
 
-(* Conversely a monotone map determines an endofunctor.  The arrow part has to
-   be supplied — it is the monotonicity proof — and the three functor laws are
-   proofs of [True] in the thin target. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition endo_of_monotone (m : Monotone) : Nat_Proset ⟶ Nat_Proset := {|
   fobj := `1 m;
@@ -341,12 +283,11 @@ Theorem monotone_of_endo_of_monotone (m : Monotone) :
   monotone_of_endo (endo_of_monotone m) = m.
 Proof. destruct m; reflexivity. Qed.
 
-(* The other round trip returns a functor with the same object part and the
-   same arrow part — both hold by [eq_refl], recorded below — but with freshly
-   built proof fields.  Identifying those with the original's would need
-   function extensionality, which this library does not assume; what IS
-   available axiom-free is equivalence in [Functor_StrictEq_Setoid], i.e. equal
-   object parts plus agreeing arrow parts. *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example endo_of_monotone_of_endo_fobj (F : Nat_Proset ⟶ Nat_Proset) :
   fobj[endo_of_monotone (monotone_of_endo F)] = fobj[F] := eq_refl.
@@ -379,21 +320,11 @@ Program Definition Endo_Monotone_backward :
       (fun n => H n) (fun _ _ _ => I) (fun _ _ _ => I)
 |}.
 
-(* The headline of Example 3.57 at the naturals: the category of endofunctors
-   of [(ℕ, ≤)] is the preorder of monotone maps ordered pointwise.
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
 
-   The strength achieved is an isomorphism in [Cat] — which in this library IS
-   equivalence of categories, since [Functor_Setoid] identifies naturally
-   isomorphic functors (Instance/Cat.v).  Unlike [Fun_Proset_strict_iso] there
-   is no [StrictCat] counterpart here: the composite
-   [Endo_Monotone_backward ◯ Endo_Monotone_forward] sends a functor to a
-   functor with the same object and arrow parts but rebuilt proof fields, and
-   the [StrictCat] hom-setoid would require those two *functors* to be
-   propositionally equal as objects of [[Nat_Proset, Nat_Proset]], which is
-   function extensionality applied to their [True]-valued fields.  The
-   on-the-nose content that IS available is isolated in
-   [monotone_of_endo_of_monotone], [endo_of_monotone_of_endo] and the two
-   [eq_refl] examples above. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem endo_nat_monotone_iso :
   [Nat_Proset, Nat_Proset] ≅[Cat] MonotoneProset.
@@ -427,12 +358,11 @@ Defined.
 
 (** ** The criterion has teeth: existence and non-existence *)
 
-(* Neither half of the exercise is vacuous.  The two monotone maps below are
-   comparable in one direction and not the other, and the criterion converts
-   that numeric fact into the existence — respectively the non-existence — of a
-   natural transformation.  In particular [no_transform_id_to_zero] runs the
-   forward direction of [proset_transform_iff] to REFUTE the existence of a
-   transformation, which a vacuously true criterion could not do. *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition monotone_zero : Monotone.
 Proof.
@@ -482,19 +412,11 @@ Qed.
 
 (** ** Seven Sketches Exercise 3.58, clause 2: the dual is refuted *)
 
-(* Transformations *out of* a preorder need not be unique.  The domain is the
-   preorder [(ℕ, ≤)] — a genuine preorder with infinitely many objects and
-   non-identity arrows — and the target is the walking parallel pair
-   [Parallel] of Instance/Parallel.v, whose hom-setoid compares the boolean tag
-   of an arrow and so genuinely tells [ParOne] and [ParTwo] apart.  ([_2] of
-   Instance/Two.v would not serve: it is thin, with [TwoXY] the only arrow
-   [TwoX ~> TwoY] and [Morphism_equality] for its hom-setoid, so no two
-   parallel arrows there are distinguishable.)
+(*
+   本节说明hom相关定义、性质与动机。
 
-   The two functors are the constant functors at [ParX] and [ParY], obtained
-   from the diagonal [Diagonal] of Functor/Diagonal.v; the two transformations
-   are the images under the diagonal of the two parallel arrows, so their
-   naturality is [Diagonal]'s own. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition par_one : ParX ~{Parallel}~> ParY := (true; ParOne).
 Definition par_two : ParX ~{Parallel}~> ParY := (false; ParTwo).
@@ -509,10 +431,11 @@ Definition proset_out_one : ConstParX ⟹ ConstParY :=
 Definition proset_out_two : ConstParX ⟹ ConstParY :=
   fmap[@Diagonal Parallel Nat_Proset] par_two.
 
-(* Distinctness in the transformation setoid, which is what the exercise wants:
-   not that the two are written differently, but that they cannot be identified
-   under [≈].  Testing the components at the object [0] reduces the claim to
-   [true = false]. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem proset_out_not_unique : ¬ (proset_out_one ≈ proset_out_two).
 Proof.
@@ -522,9 +445,11 @@ Proof.
   discriminate.
 Qed.
 
-(* For contrast, in the direction the exercise does hold, any pair of functors
-   out of [Parallel] has at most one transformation between them once the
-   *target* is a preorder — an instance of [proset_transform_unique]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary proset_in_unique {A : Type} {R : relation A} (P : PreOrder R)
           {S T : Parallel ⟶ Proset P} (α β : S ⟹ T) : α ≈ β.

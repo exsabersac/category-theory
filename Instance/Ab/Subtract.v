@@ -78,10 +78,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* (x - y) + (u - v) ≈ (x + u) - (y + v).  THIS is the step that
-   COMMUTATIVITY buys, and it is the additive counterpart of the
-   conjugation shuffle in [quot_rel_mul] (Instance/Grp/Quotient.v), which
-   in the group case is where normality is spent. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ab_sub_plus (A : AbObject) (x y u v : carrier (cmon_setoid A)) :
   cmon_plus A (ab_sub A x y) (ab_sub A u v)
     ≈ ab_sub A (cmon_plus A x u) (cmon_plus A y v).

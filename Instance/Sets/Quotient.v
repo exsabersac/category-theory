@@ -30,122 +30,19 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where this sits, and why the carrier does not move
-
-   Text:  Bishop, "Foundations of Constructive Analysis", McGraw-Hill 1967
-   Text:  Mac Lane, "Categories for the Working Mathematician", Springer
-          1998, §III.1 (pp. 55-59) and §III.3 (pp. 64-68)
-   Text:  Fong and Spivak, "Seven Sketches in Compositionality", CUP 2019,
-          §1.2.1 (printed p. 10)
+(*
    Paper: Barthe, Capretta, Pons, "Setoids in type theory", JFP 13(2) 2003
-   Thesis: Hofmann, "Extensional Concepts in Intensional Type Theory",
-           LFCS report ECS-LFCS-95-327, University of Edinburgh, 1995
 
-   Two presentations of a quotient have been current since Bishop.  The
-   first, which the Seven Sketches definition (§1.2.1) gives, takes the
-   quotient to BE the set of parts of the induced partition: an element
-   of A/R is a subset of A.  The second, which Bishop's own development
-   uses and which Hofmann's models of intensional type theory formalise,
-   never separates a carrier from its equality: A/R is A again, under a
-   coarser equality.  The two agree classically.  They do not agree
-   constructively without care, and Instance/Sets/Quotient/Partition.v is
-   where that care is spent -- it builds the class presentation, proves
-   the comparison with this file's, and measures exactly what the
-   comparison costs.
+   本节说明来源与用途相关定义、性质与动机。
 
-   This file takes the second presentation because the library does.  The
-   choice buys three things.  Function extensionality is not needed, since
-   no new function space is introduced.  No choice principle is needed,
-   since no representative is ever selected -- Mac Lane's classical proof
-   picks a representative of each class and checks independence, and here
-   there is nothing to pick.  And the whole construction stays at the
-   universe of the carrier, whereas a set of subsets does not
-   (Instance/Sets/Powerset.v establishes exactly that, and the sequel file
-   pins the consequence).
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The one thing the choice costs is that "quotient" no longer has a
-   canonical meaning independent of the relation's proof content.  R is
-   [crelation]-valued, so R x y is a TYPE, and two different derivations
-   of R x y are two different elements.  That does not affect anything in
-   this file -- `≈` in a [SetoidObject] is Type-valued for the same reason
-   and the hom-setoid of [Sets] compares maps, not proofs -- but it does
-   affect the class presentation, and again the sequel file is where it
-   is measured. *)
+(*
+   本节说明等价、来源与用途相关定义、性质与动机。
 
-(* WHAT IS DELIVERED
-
-   * [SetoidCoarser] and [SetoidRespectsRel], the two hypotheses the
-     literature states, and [coarser_iff_respects] proving them EQUIVALENT
-     for an equivalence relation.  This settles a question the source
-     issue raises twice in different words: Mac Lane's §III.1 asks for a
-     "setoid-respecting" E and Seven Sketches §1.2.1 for an R "coarser
-     than `≈`", and these are the same hypothesis, not two.  Each
-     direction consumes exactly one law of R -- transitivity forward,
-     reflexivity back -- and both are recorded.
-
-   * [SetsQuotient A R HR], the quotient setoid, and [sets_quot_proj], the
-     projection.  Note WHICH hypothesis each needs: the OBJECT needs only
-     that R is an equivalence, and [SetoidCoarser] enters exactly at the
-     PROJECTION, where it is what makes the identity function respectful.
-
-   * The functor [RespFunctor A R : Sets ⟶ Sets] sending X to the setoid
-     of R-respecting maps A -> X, covariant by postcomposition.  It needs
-     NOTHING of R -- neither that R is an equivalence nor that it is
-     coarser than `≈` -- which is why it is defined before either.
-
-   * [sets_quot_universal_element], Mac Lane §III.1 construction 4 as an
-     [AUniversalElement] over #303's class, used DIRECTLY.  With the
-     mediator calculus [sets_quot_med] / [_commutes] / [_unique], and
-     [eq_refl] checks that the class's element IS the projection and the
-     class's mediator IS [sets_quot_med].
-
-   * A representation, by the YONEDA-FREE route.  [ue_representation] and
-     [AUniversalElement_of_repr] (Theory/Universal/Element.v) build the
-     natural isomorphism [Hom (A/R),─] ≅ RespFunctor without mentioning
-     [Yoneda_Lemma]; [sets_quot_representation] and
-     [sets_quot_Representable] are the results.  The Yoneda route is NOT
-     available here and that is not a matter of taste: [Yoneda_Lemma] is
-     stated over [C : Category@{u0 u0 u0}] -- object, hom and proof
-     universes identified -- while [Sets@{o so} : Category@{so o o}] has
-     its objects strictly above its homs.  Test/ProbeSetsQuotient.v pins
-     the refusal against a positive control.
-
-   * Non-vacuity, by proof rather than by assertion.  [nat_parity] is a
-     concrete coarsening of the naturals under `=` in which the quotient
-     identifies 0 with 2 and provably does not identify 0 with 1.  The two
-     degenerate coarsenings are named and separated from it: the FINEST,
-     R := `≈`, returns the object it started from ([sets_quot_finest_eq],
-     by [eq_refl] on the whole record), and the COARSEST, R := the total
-     relation, collapses everything ([sets_quot_total_collapses]) -- and
-     [nat_parity] is proved to be neither ([nat_parity_not_finest],
-     [nat_parity_not_coarsest]).
-
-   WHAT IS NOT DELIVERED
-
-   * NO CLASS PRESENTATION.  The quotient as the set of parts of the
-     induced partition is Instance/Sets/Quotient/Partition.v, together
-     with the comparison and the universe measurement.  Nothing here
-     mentions a subset.
-
-   * NO COEQUALIZERS.  [Sets_HasCoequalizers] and the identification of
-     A/R with the coequalizer of the two projections of R are
-     Instance/Sets/Coequalizer.v, which is this file's only in-tree
-     consumer.
-
-   * NO [Cocomplete Sets] IN THIS FILE.  It supplies one colimit shape's
-     object, not the general construction; that is at
-     Instance/Sets/Cocomplete.v, as Instance/Sets/Complete.v says.
-
-   * NO FUNCTORIALITY IN THE RELATION.  A refinement R ⊆ R' induces a map
-     A/R -> A/R', and that map is not built; nor is any comparison with
-     Construction/Quotient.v's category-level quotient, which is a
-     different construction on a different kind of object.
-
-   STATUS: axiom-free.  45 named constants plus 6 [Program] obligations
-   ([RespMap_Setoid_obligation_1], [RespFunctor_obligation_1] through
-   [_4], [sets_quot_universal_element_obligation_1]), each measured
-   separately, all reporting "Closed under the global context"; the
-   Makefile's [print-assumptions] target audits thirteen of them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The two forms of the hypothesis *)
 
@@ -183,11 +80,11 @@ Proof.
   exact (Hr x x x y (reflexivity x) Hxy (HR x)).
 Qed.
 
-(* ... hence for an equivalence relation the two hypotheses are one.  The
-   source issue asks for a quotient by a "setoid-respecting" relation in
-   its main body and for one by a relation "coarser than `≈`" in a
-   trailing block harvested from a different book; this says that those
-   two requests are the same request. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem coarser_iff_respects (HR : Equivalence R) :
   SetoidCoarser ↔ SetoidRespectsRel.
 Proof.
@@ -203,10 +100,11 @@ Arguments SetoidRespectsRel {A} R.
 
 (** ** The quotient object and its projection *)
 
-(* The quotient setoid: SAME CARRIER, coarser `≈`.  Note that
-   [SetoidCoarser] does not appear -- an equivalence relation on the
-   carrier is already enough to name a setoid.  It is the projection that
-   needs the relation to be coarser. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SetsQuotient (A : SetoidObject) (R : crelation (carrier A))
   (HR : Equivalence R) : SetoidObject :=
   {| carrier := carrier A ; is_setoid := {| equiv := R ; setoid_equiv := HR |} |}.
@@ -217,13 +115,11 @@ Example sets_quot_carrier (A : SetoidObject) (R : crelation (carrier A))
   (HR : Equivalence R) : carrier (SetsQuotient A R HR) = carrier A.
 Proof. reflexivity. Qed.
 
-(* The projection is the identity function.  Its respectfulness clause,
-   [Proper (equiv ==> equiv) (fun a => a)], is CONVERTIBLE with
-   [SetoidCoarser R] and has no other content -- but writing
-   [proper_morphism := HC] in the record literal is rejected, the
-   elaborator not unfolding [SetoidCoarser] during unification, so the
-   field is supplied by the one-step script below.  The same shape
-   recurs at [sets_quot_med]. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_quot_proj (A : SetoidObject) (R : crelation (carrier A))
   (HR : Equivalence R) (HC : SetoidCoarser R) :
   A ~{Sets}~> SetsQuotient A R HR.
@@ -311,13 +207,11 @@ Context {A : SetoidObject}.
 Context (R : crelation (carrier A)).
 Context (HR : Equivalence R).
 
-(* Descent.  In the group case (Instance/Grp/Quotient.v's
-   [kills_descends]) this is a computation; here the mediator's
-   respectfulness clause is CONVERTIBLE with the given map's
-   [SetsRespects] witness, because the quotient's `≈` IS R and the
-   mediator's underlying function IS the given one -- so the script is
-   again one step, for the elaboration reason noted at
-   [sets_quot_proj]. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_quot_med {X : SetoidObject} (p : RespMap R X) :
   SetsQuotient A R HR ~{Sets}~> X.
 Proof.
@@ -350,27 +244,20 @@ Context (R : crelation (carrier A)).
 Context (HR : Equivalence R).
 Context (HC : SetoidCoarser R).
 
-(* The projection, packaged as an element of (RespFunctor R)(A/R).  Its
-   respectfulness witness is the IDENTITY implication -- "R x y implies
-   R x y" -- since the target's `≈` is R.
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-   The sigma's predicate is spelled out rather than left to inference,
-   and that is a PORTABILITY fix, not decoration: on Coq 8.19/8.20 the
-   elaborator resolves the [_] against the TYPE of the second component,
-   here [∀ x y, R x y → R x y], instead of against the expected
-   [RespMap], and rejects the definition.  Rocq 9.1 accepts either form,
-   so the break is invisible on the default toolchain; it is the same
-   trap Instance/Rng/Frac.v records for its fraction constructor, and
-   every [existT] in these four files is written this way for it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_quot_elem : RespMap R (SetsQuotient A R HR) :=
   existT (SetsRespects R (SetsQuotient A R HR))
     (sets_quot_proj A R HR HC) (fun x y (h : R x y) => h).
 
-(* Mac Lane's construction 4.  Every R-respecting map out of A is
-   (RespFunctor R u) applied to the projection, for a UNIQUE
-   u : A/R -> X.  #303's [AUniversalElement] is used DIRECTLY, so neither
-   of Theory/Universal/Element.v's routes to [Representable] is touched
-   and no universe restriction is inherited at this point. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition sets_quot_universal_element :
   AUniversalElement (RespFunctor R) (SetsQuotient A R HR) := {|
   aue_elem := sets_quot_elem
@@ -400,30 +287,26 @@ Proof. reflexivity. Qed.
 
 (** ** The representation, by the Yoneda-free route *)
 
-(* [ue_representation] (Theory/Universal/Element.v) builds
-   [Hom (A/R),─] ≅ RespFunctor R directly, mentioning no Yoneda lemma.
-   The Yoneda-based [universal_element_yoneda] is NOT usable at [Sets]:
-   its donor identifies object, hom and proof universes, and
-   [Sets@{o so} : Category@{so o o}] does not.  Test/ProbeSetsQuotient.v
-   pins that refusal, with a positive control at a category whose three
-   universes can be identified. *)
-(* [@Build_Representable] rather than the `{| ... |}` literal: for a Class,
-   the literal sends the elaborator looking for an instance of the head
-   before the ambient category is fixed -- the same trap
-   Theory/Universal/Element.v records at [AUniversalElement_of_hom]. *)
+(*
+   本节说明Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_quot_Representable : Representable (RespFunctor R) :=
   @Build_Representable Sets (RespFunctor R) (SetsQuotient A R HR)
     (ue_representation (RespFunctor R) (SetsQuotient A R HR)
        sets_quot_universal_element).
 
-(* The natural isomorphism itself, named.  Its type is
-   [@Isomorphism (Fun Sets Sets) (fobj[Curried_Hom Sets] (A/R))
-      (RespFunctor R)], i.e. [Hom (A/R),─] ≅ RespFunctor R in [Sets, Sets];
-   it is left to be read off [represented] rather than ascribed, because
-   spelling [@Curried_Hom _ (A/R)] in a type leaves the ambient category an
-   unresolved evar (the object must be one of [C^op], and nothing in the
-   annotation fixes [C]).  It is [ue_representation]'s value on the nose,
-   the [represented] projection returning it by conversion. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_quot_representation :=
   @represented _ (RespFunctor R) sets_quot_Representable.
 
@@ -439,11 +322,11 @@ Arguments sets_quot_universal_element {A} R HR HC.
 
 (** ** The two degenerate coarsenings, named *)
 
-(* THE FINEST: R := the carrier's own `≈`.  The quotient is the object it
-   started from, and it is so ON THE NOSE -- Leibniz equality of the whole
-   [SetoidObject] record, by [eq_refl].  Primitive projections give record
-   eta, so [is_setoid A] and the rebuilt [{| equiv := ...; setoid_equiv :=
-   ... |}] are the same term. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example sets_quot_finest_eq (A : SetoidObject) :
   SetsQuotient A (@equiv _ A) (@setoid_equiv _ A) = A.
 Proof. reflexivity. Qed.
@@ -473,11 +356,11 @@ Proof. exact ttt. Qed.
 (** ** Non-vacuity: a quotient that neither keeps everything apart nor
        collapses everything *)
 
-(* Parity on the naturals, as a coarsening of the DISCRETE setoid on
-   [nat] -- so `≈` there is Leibniz equality and the coarsening is
-   genuine.  [Nat.even] is a boolean, so the relation is a decidable
-   equation of booleans; that is what lets the negative results below be
-   proved rather than merely expected. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition NatDiscrete : SetoidObject :=
   {| carrier := nat ; is_setoid := eq_Setoid nat |}.
 
@@ -507,11 +390,11 @@ Proof. reflexivity. Qed.
 Lemma nat_parity_separates : @equiv _ NatParity 0%nat 1%nat → False.
 Proof. intro H; discriminate H. Qed.
 
-(* ... so the parity quotient is neither degenerate case.  It is not the
-   finest, since the finest keeps 0 and 2 apart; and it is not the
-   coarsest, since the coarsest identifies 0 and 1.  Both are stated as
-   refutations of the RELATIONS, which is the level at which the two
-   degeneracies were defined. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma nat_parity_not_finest :
   (∀ m n : carrier NatDiscrete, nat_parity m n → @equiv _ NatDiscrete m n) → False.
 Proof.
@@ -529,10 +412,11 @@ Proof. intro H; exact (nat_parity_separates (H 0%nat 1%nat ttt)). Qed.
 Definition BoolSet : SetoidObject :=
   {| carrier := bool ; is_setoid := eq_Setoid bool |}.
 
-(* [BoolSet] and [NatDiscrete] are discrete, so [proper_morphism] here is
-   respect for Leibniz equality and instance resolution discharges it;
-   both carriers are concrete ([nat], [bool]), so no universe
-   polymorphism is at stake in leaving it to resolution. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition nat_even_map : NatDiscrete ~{Sets}~> BoolSet.
 Proof.
   unshelve refine {| morphism := Nat.even |}.

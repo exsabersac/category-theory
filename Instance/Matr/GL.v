@@ -35,28 +35,11 @@ Definition unit_carrier (M : MonObject) : Type :=
   & { v : carrier M
     & (mon_op u v ≈ mon_unit) * (mon_op v u ≈ mon_unit) } }.
 
-(* RECORDED STRENGTH CHANGE.  Before the PR "algebraic carriers are sets"
-   (2026-09-17) this read [UnitsOf (M : MonObject) : GrpObject].  An
-   [Instance/Grp.v] group now carries [grp_prop] and a [MonObject] does not
-   (internal algebra keeps the ambient category's equality and carries no
-   field, by design), so turning an internal monoid into a concrete group
-   asks for the carrier's [PropEquiv] as a hypothesis.  All three consumer
-   families in tree discharge it: [hom_monoid (RMod K) V] by
-   [RMod_LocallyPropositional], [Ring_mul_mon R] by [rig_prop], and
-   [mat_mon R n] by [Matr_LocallyPropositional] below.  Nothing in tree
-   became conditional in substance.
+(*
+   本节说明幺半群、（余）强度相关定义、性质与动机。
 
-   The carrier setoid stays INLINE and [grp_prop] is supplied as a TRAILING
-   OBLIGATION rather than as a field.  An intermediate revision named the
-   setoid -- a [Program] record literal cannot carry a [PropEquiv] FIELD
-   naming a setoid written inline in the same literal -- but naming it puts
-   one more unfolding step between the expected type of each sigma below and
-   the sigma it builds, and Coq 8.19/8.20 then infer a CONSTANT predicate and
-   refuse the term ("has type ∃ _ : …, … while it is expected to have type
-   carrier …"; Instance/Rng/Zp.v's header records the trap, and
-   Instance/Grp/Center.v records the same one for [mk_central]).  Rocq 9.1
-   accepts either.  The obligation route keeps every term below exactly as the
-   released toolchains already compiled it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition UnitsOf (M : MonObject)
   (PM : PropEquiv (is_setoid (mon_setoid M))) : GrpObject := {|
   grp_setoid :=
@@ -111,11 +94,11 @@ Next Obligation.
   exact pr.
 Qed.
 Next Obligation.
-  (* G6.  The unit group's `≈` compares first projections in [M], so it is
-     propositional exactly when [M]'s carrier `≈` is; the membership data --
-     the inverse and the two equations -- is a [Type] and is never inspected,
-     which is what [sigma_first_PropEquiv] formalises.  Applied in the TACTIC
-     form, the one the term form is refused in. *)
+  (*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros M PM.
   unshelve refine (sigma_first_PropEquiv _ _ _ PM).
   - intros p q Hpq; exact Hpq.
@@ -251,10 +234,11 @@ Proof.
   - apply rig_map_zero.
 Qed.
 
-(* A ring homomorphism acts entrywise on matrices, as a homomorphism
-   of the matrix monoids: preservation of the identity is preservation
-   of delta, and preservation of the product is fin_sum naturality
-   plus preservation of + and ·. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition mat_map_hom {K K' : RingObject}
         (h : RigHom (ring_rig K) (ring_rig K')) (n : nat) :
   MonHom (mat_mon K n) (mat_mon K' n) := {|
@@ -329,10 +313,11 @@ Next Obligation.
   apply (det_compose (`1 K) (`2 K)).
 Qed.
 
-(* Mac Lane's §I.4 flagship: the determinant is a natural
-   transformation det : GL_n ⟹ (−)^*.  Naturality in the ring is the
-   reviewer's square det_{K'} ∘ GL_n f ≈ f^* ∘ det_K — the polynomial
-   formula commutes with every ring homomorphism ([det_map]). *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition det_Transform (n : nat) :
   GL_n n ⟹ Units_Functor := {|
   transform := fun K => det_GrpHom n K

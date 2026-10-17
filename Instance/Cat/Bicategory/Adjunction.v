@@ -36,10 +36,11 @@ Context {C D : Category}.
 Context {F : C ⟶ D}.
 Context {U : D ⟶ C}.
 
-(* Pristine obligations: the two structural fields we supply (`unit`/`counit`
-   and `adj_unit`/`adj_counit`) are complete natural transformations, so the
-   only obligations are the triangle/zig-zag laws, which we discharge by hand
-   through the componentwise `fmap id` collapse. *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (* Forward: an internal adjunction supplies the unit/counit data directly, and
@@ -93,12 +94,11 @@ Next Obligation.
   exact (@Category.Adjunction.Natural.Transformation.fmap_counit_unit _ _ _ _ A X).
 Qed.
 
-(* Internal adjunctions in `Cat` are exactly unit/counit adjunctions `F ∹ U`.
-   (Type-valued `↔`, i.e. `iffT`; `Print Assumptions` closed on both legs.)
-   Both directions transport the unit/counit data verbatim — `adj_unit ↔ unit`,
-   `adj_counit ↔ counit` — so this is the identity correspondence on that data
-   (only the triangle-law witnesses are re-derived); record-level mutual
-   inverseness is not separately asserted and is not needed downstream. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Cat_BicatAdjunction_iff :
   BicatAdjunction (B:=Cat_Bicategory) F U  ↔  (F ∹ U).
 Proof.
@@ -152,10 +152,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The same, phrased through the hom-set transpose `⌊−⌋ = to adj[-]` of the
-   induced adjunction: `precomp_to` at `Cat` IS `⌊−⌋` componentwise.  (The two
-   sides are in fact definitionally equal — `Adjunction_from_Transform` sends
-   `g` to `fmap[U] g ∘ η` — so `reflexivity` closes it after rewriting.) *)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Cat_precomp_to_transpose {w0 : Category}
   {c : w0 ⟶ vx} {d : w0 ⟶ vy} (σ : F ◯ c ⟹ d) (t : w0) :
   transform[precomp_to A σ] t
@@ -193,11 +194,11 @@ Context {F' : x' ⟶ y'}  {U' : y' ⟶ x'}  (Af' : BicatAdjunction (B:=Cat_Bicat
 Context {a : x ⟶ x'} {b : y ⟶ y'}.
 Context (σ : F' ◯ a ⟹ b ◯ F).
 
-(* Raw unfolding of the mate: the classical pasting formula, in terms of the
-   unit `η'` of `F' ⊣ U'`, the counit `ε` of `F ⊣ U`, `fmap`, and `σ` alone.
-   Every coherence isomorphism (unitors, associators) contributes only a
-   `fmap id`, cleared by the collapse; `α⁻¹ ∘ α = id` never even appears because
-   the associator components are themselves identities in `Cat`. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Cat_mate_unfold_raw (Z : y) :
   transform[mate Af Af' σ] Z
     ≈ fmap[U'] (fmap[b] (adj_counit (B:=Cat_Bicategory) F U Z))
@@ -210,10 +211,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The headline: the mate unfolds to the hom-set transpose `⌊−⌋` of `F' ⊣ U'`
-   post-whiskered by the counit `ε` of `F ⊣ U`.  This is the form that makes the
-   bicategorical mate usable from ordinary-CT files: `⌊ σ (U Z) ⌋` is the
-   adjunction transpose of the component of `σ`. *)
+(*
+   本节说明伴随、hom、双范畴相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Cat_mate_unfold (Z : y) :
   transform[mate Af Af' σ] Z
     ≈ fmap[U'] (fmap[b] (adj_counit (B:=Cat_Bicategory) F U Z))

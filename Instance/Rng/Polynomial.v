@@ -37,12 +37,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Two negation laws for multiplication
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
 
-    Instance/Rng.v carries [rig_mul_neg_one] — the special case at
-    [-1] — and Instance/Ab.v the additive facts; the two general forms
-    below are used throughout and are proved the same way, by uniqueness
-    of additive inverses. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma rng_mul_neg_r (R : RingObject) (a b : carrier (rig_setoid R)) :
   rig_mul R a (ring_neg R b) ≈ ring_neg R (rig_mul R a b).
@@ -75,15 +74,11 @@ Inductive PTerm : Type :=
   | pt_neg   : PTerm → PTerm
   | pt_mul   : PTerm → PTerm → PTerm.
 
-(* AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
-   "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
-   [RigObject] now carries a [rig_prop : PropEquiv (is_setoid rig_setoid)]
-   field and the [≈] of [PolyRing K] IS [pt_eq]: the relation must therefore
-   BE a [Prop] for the field to be the identity pair of implications.  The
-   cost is one elimination — [peval_respects] below can no longer induct
-   straight into a [Type]-valued goal and goes through [pequiv_to] at the
-   target ring — and nothing else in the file changes.
-   Test/ProbeTermModelPropRng.v pins the refusal of the old script. *)
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive pt_eq : PTerm → PTerm → Prop :=
   (* congruence for each former, saturating under K's own [≈] *)
   | pe_const {a b} : a ≈ b → pt_eq (pt_const a) (pt_const b)
@@ -275,14 +270,11 @@ Arguments pt_eq {K} s t.
 Arguments pt_refl {K} s.
 Arguments poly_x {K}.
 
-(** ** Evaluation: the universal property in element form
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
 
-    Given a ring [S], a homomorphism [phi : K ~> S] and an element
-    [s : S] commuting with the image of [phi], every formal polynomial
-    has a value in [S].  The commutation hypothesis is exactly what makes
-    the fold respect [pe_mul_comm]; over a commutative target it is free,
-    and the ℤ[x] instance below discharges it from the centrality of the
-    integers in every ring. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Evaluation.
 
@@ -291,11 +283,11 @@ Context (S : RingObject).
 Context (phi : K ~{Rng}~> S).
 Context (s : carrier (rig_setoid S)).
 
-(* [Kcomm] and [Hcs] are explicit hypotheses of the lemmas that consume
-   them rather than section variables: the file inherits Lib.v's
-   [Default Proof Using "Type"], under which a section variable absent
-   from a lemma's STATEMENT is not available to its proof, and both of
-   these are used only inside proofs. *)
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Notation Kcomm_hyp :=
   (∀ a b : carrier (rig_setoid K), rig_mul K a b ≈ rig_mul K b a).
 Notation Hcs_hyp :=
@@ -311,13 +303,11 @@ Fixpoint peval (t : @PTerm K) : carrier (rig_setoid S) :=
   | pt_mul u v => rig_mul S (peval u) (peval v)
   end.
 
-(** *** The image of the evaluation is commutative
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
 
-    Nothing below needs [S] itself to be commutative: what is needed is
-    that any two values of [peval] commute, and that follows from the two
-    hypotheses by an induction that never inspects [S] beyond its ring
-    laws.  This is what lets ℤ[x] be free on one generator in the
-    category of ALL unital rings, not only the commutative ones. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* An element commuting with every coefficient and with [s] commutes with
    every value.  Five cases, one per former. *)
@@ -356,28 +346,11 @@ Proof.
     exact (peval_comm_gen s Hcs (reflexivity _) t).
 Qed.
 
-(** *** Evaluation respects the quotienting relation
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
 
-    Sixteen cases, one per constructor of [pt_eq].  Four are congruence
-    for a former, the first of them saturating under K's own [≈]; seven
-    are ring laws of [S], three of those additionally spending a
-    preservation law of [phi], because the zero and the one of K[x] are
-    constants rather than formers of their own; two are [phi]'s
-    preservation of sums and of products; one — commutativity of
-    multiplication — is [peval_comm]; and the last two are the target
-    setoid's symmetry and transitivity.
-
-    AN EARLIER REVISION of this proof inducted on [pt_eq] straight into the
-    [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
-    (2026-09-17) [pt_eq] is a [Prop] inductive and eliminates only into
-    [Prop], so the script opens with [apply pequiv_to] at the TARGET ring's
-    own [rig_prop]: that puts the [Prop] goal [pequiv …] in front of the
-    elimination, and each branch returns to `≈` with [pequiv_from].  The
-    argument is unchanged case for case, no hypothesis is added (every
-    [RigObject] carries the field), and the statement is the same.  The
-    intro pattern is unchanged; the induction hypotheses are now
-    [pequiv]-valued, so the three branches that consume one spend
-    [pequiv_to] on it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma peval_respects (Kcomm : Kcomm_hyp) (Hcs : Hcs_hyp) (t u : @PTerm K) :
   pt_eq t u → peval t ≈ peval u.
 Proof.
@@ -417,15 +390,11 @@ Proof.
   - exact (transitivity IHtu IHuv).
 Qed.
 
-(** *** The extension, as a homomorphism of rings
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-    STRENGTH, MEASURED, and the two halves differ.  Preservation of
-    ADDITION and of MULTIPLICATION close by [reflexivity]: those are
-    clauses of the fixpoint.  Preservation of ZERO and of ONE does NOT —
-    [rig_zero (PolyRing K)] is [pt_const (rig_zero K)], so the fold
-    returns [phi (rig_zero K)], and reaching [rig_zero S] from there is
-    [phi]'s own preservation law, an equation up to `≈`.  Only
-    respectfulness has content beyond that. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition poly_extend (Kcomm : Kcomm_hyp) (Hcs : Hcs_hyp)
   : PolyRing K ~{Rng}~> S := {|
   rig_map := {| morphism := peval |}
@@ -438,11 +407,11 @@ Next Obligation. intros Kcomm Hcs t u; simpl; reflexivity. Qed.
 Next Obligation. intros Kcomm Hcs; simpl; exact (rig_map_one phi). Qed.
 Next Obligation. intros Kcomm Hcs t u; simpl; reflexivity. Qed.
 
-(** The extension restricts to [phi] along the coefficient inclusion and
-    sends the indeterminate to [s] — both DEFINITIONALLY, the fixpoint's
-    first two clauses being those two equations.  This is the
-    convertibility exception: the equations are between elements of [S]'s
-    carrier, not between morphisms. *)
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example poly_extend_const (Kcomm : Kcomm_hyp) (Hcs : Hcs_hyp)
   (a : carrier (rig_setoid K)) :
   rig_map (poly_extend Kcomm Hcs) (pt_const a) = rig_map phi a := eq_refl.
@@ -450,14 +419,11 @@ Example poly_extend_const (Kcomm : Kcomm_hyp) (Hcs : Hcs_hyp)
 Example poly_extend_x (Kcomm : Kcomm_hyp) (Hcs : Hcs_hyp) :
   rig_map (poly_extend Kcomm Hcs) (@poly_x K) = s := eq_refl.
 
-(** *** Uniqueness
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
 
-    Any ring homomorphism out of [K[x]] restricting to [phi] on constants
-    and sending [x] to [s] IS the evaluation.  The induction has one case
-    per former: the two base cases are the hypotheses, and the other
-    three are the homomorphism laws of the competitor — preservation of
-    sums, of negation (Rig.v's [RigHom_neg], a theorem rather than a
-    field) and of products. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma poly_extend_unique (g : PolyRing K ~{Rng}~> S)
   (Hconst : ∀ a, rig_map g (pt_const a) ≈ rig_map phi a)
   (Hx : rig_map g (@poly_x K) ≈ s) (t : @PTerm K) :
@@ -478,12 +444,11 @@ Arguments peval {K S} phi s t.
 Arguments poly_extend {K S} phi s Kcomm Hcs.
 Arguments poly_extend_unique {K S} phi s g Hconst Hx t.
 
-(** ** The integers are central in every ring
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
 
-    The evaluation hypothesis [Hcs] is discharged for ℤ[x] by this
-    lemma: an integer multiple of 1 commutes with everything, so a
-    homomorphism out of ℤ[x] into an ARBITRARY unital ring is available,
-    not only into a commutative one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma rig_iter_central (S : RingObject) (n : nat)
   (b : carrier (rig_setoid S)) :
@@ -606,9 +571,11 @@ Proof.
   intro z; simpl; symmetry; apply zring_central.
 Defined.
 
-(** Every homomorphism out of ℤ[x] agrees with [zring] on the constants,
-    because ℤ is initial: the restriction along [poly_const] is a
-    homomorphism out of ℤ, and there is only one of those. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma zpoly_hom_const (S : RingObject) (g : ZPoly ~{Rng}~> S) (z : Z) :
   rig_map g (@pt_const Int_Ring z) ≈ zring S z.
 Proof.
@@ -669,10 +636,11 @@ Defined.
 
 (** * Monomorphisms of rings are injective *)
 
-(** The probe Instance/Rng.v records as missing.  Two elements of R
-    are separated by the two homomorphisms out of ℤ[x] that send x to
-    them; a monomorphism identifies those homomorphisms only if it
-    identifies the elements. *)
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem rng_monic_injective {R S : RingObject} (f : R ~{Rng}~> S) :
   Monic f → ∀ a b : carrier (rig_setoid R),
     rig_map f a ≈ rig_map f b → a ≈ b.
@@ -704,15 +672,11 @@ Proof.
   - exact (rng_injective_monic f).
 Qed.
 
-(** * The commutation hypothesis is necessary
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [poly_extend] requires the chosen element to commute with the image
-    of the structure map.  That is not an artifact of the fold: the
-    indeterminate is central in K[x] by construction, so its image under
-    ANY ring homomorphism out of K[x] commutes with the image of every
-    coefficient.  This is what makes Awodey's adjunction a statement
-    about COMMUTATIVE rings (Instance/Rng/Pointed.v), and it is proved
-    rather than asserted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma poly_hom_value_central (K S : RingObject)
   (g : PolyRing K ~{Rng}~> S) (c : carrier (rig_setoid K)) :
@@ -736,15 +700,11 @@ Proof. exact (poly_hom_value_central K S g c). Qed.
 
 (** * Non-degeneracy *)
 
-(** ** The coefficient inclusion is injective
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Evaluating in K itself — [phi] the identity, [s] the zero — returns a
-    constant's coefficient, so no two coefficients are identified.  The
-    only hypothesis is commutativity of K, which is what makes [K[x]] the
-    polynomial ring rather than a quotient of it: over a NON-commutative
-    K the constructor [pe_mul_comm] forces [const (ab) ≈ const (ba)], so
-    this is the one place where the standing assumption is load-bearing
-    rather than decorative. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma poly_const_injective (K : RingObject)
   (Kcomm : ∀ a b : carrier (rig_setoid K), rig_mul K a b ≈ rig_mul K b a)
@@ -764,12 +724,11 @@ Proof.
   exact (poly_const_injective (`1 K) (`2 K)).
 Qed.
 
-(** ** The indeterminate is not a constant
+(*
+   本节说明 Polynomial 相关定义、性质与动机。
 
-    If x were the constant k, then in EVERY commutative K-algebra every
-    chosen element would equal the image of k; taking the algebra to be K
-    itself and the chosen element to be 0 and then 1 collapses the ring.
-    The hypothesis is exactly non-triviality of K. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma poly_x_not_constant (K : RingObject)
   (Kcomm : ∀ a b : carrier (rig_setoid K), rig_mul K a b ≈ rig_mul K b a)

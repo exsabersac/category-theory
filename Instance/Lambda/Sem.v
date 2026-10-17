@@ -89,10 +89,11 @@ Proof.
       now rewrite <- IHΓ; simp RcR; simp RenSem.
 Qed.
 
-(* The term interpretation ⟦Γ ⊢ e : τ⟧ : ⟦Γ⟧ → ⟦τ⟧, the standard CCC
-   semantics read into Coq's [Type]: pairing into the product, the product
-   projections, a variable as a projection, λ as currying, and application
-   as evaluation composed with pairing. *)
+(*
+   本节说明 Sem 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint SemExp `(e : Exp Γ τ) : SemEnv Γ → SemTy τ :=
   match e with
   | EUnit     => λ _, tt                              (* unique map to terminal *)

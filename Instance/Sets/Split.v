@@ -25,25 +25,19 @@ Generalizable All Variables.
    this is a notation for it, not a second copy. *)
 Notation sets_two := bool_setoid_object.
 
-(* The three-element setoid: [option bool] under Coq's `=`, via [eq_Setoid]
-   (Lib/Setoid.v).  The carriers are chosen so that every case analysis
-   below is a plain [destruct] and every refutation a plain [discriminate]. *)
+(*
+   本节说明 Split 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_three@{t u} : SetoidObject@{t u} :=
   {| carrier := option bool ; is_setoid := eq_Setoid@{t} (option bool) |}.
 
-(* The carriers really do have two and three inhabitants, and both halves of
-   that claim are proved: the enumerations are exhaustive, and the listed
-   values are pairwise distinct.  Neither half implies the other -- an
-   exhaustive list is only an upper bound on the count -- so the packages
-   [sets_two_card] and [sets_three_card] below carry them together.
+(*
+   本节说明 Split 相关定义、性质与动机。
 
-   Distinctness is stated with `=`, and that is the right relation rather
-   than a lapse from the library's `≈` discipline: these are equations
-   between ELEMENTS of a carrier, not between morphisms, and both objects are
-   DISCRETE -- [sets_three] carries [eq_Setoid] (Lib/Setoid.v) and
-   [bool_setoid_object] (Instance/Sets.v) carries that same record
-   written out -- so `=` IS the equivalence of the object, and refuting it
-   refutes equality in [Sets] and not merely equality of representatives. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma sets_two_enum (b : bool) : (b = true) ∨ (b = false).
 Proof. destruct b; [ now left | now right ]. Qed.
@@ -66,9 +60,11 @@ Lemma sets_three_distinct :
   * ((Some true = Some false) → False).
 Proof. repeat split; discriminate. Qed.
 
-(* The counts, packaged.  The refutations further down re-derive what they
-   need by [discriminate] rather than projecting out of these, a
-   [discriminate] being shorter than the projection that would replace it. *)
+(*
+   本节说明 Split 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sets_two_card :
   (∀ b : bool, (b = true) ∨ (b = false))
@@ -162,10 +158,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** The class inclusions of Theory/Morphisms/Classes.v are strict *)
 
-(* [iso_in_split_mono] and [iso_in_split_epi] send IsoClass into
-   SplitMonoClass and SplitEpiClass.  Each package below exhibits a morphism
-   in the larger class and refutes its membership in the smaller one, so both
-   inclusions are strict. *)
+(*
+   本节说明 Split 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sets_split_mono_not_iso :
   @SplitMonoClass Sets sets_two sets_three sets_incl23

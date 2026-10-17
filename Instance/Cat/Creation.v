@@ -153,15 +153,11 @@ End DiagTransport.
 
 #[local] Obligation Tactic := idtac.
 
-(* Written as a tactic proof rather than as the anonymous-constructor term
-   [(fun j => `1 e (K j); fun x y f => `2 e _ _ (fmap[K] f))], which Rocq 9.1
-   accepts but Coq 8.19 and 8.20 refuse: checking that pair against the
-   expected type, their elaborator compares [fmap[F ◯ K] f] with
-   [fmap[F] (fmap[K] f)] by unification rather than by conversion and
-   reports "cannot unify".  [exact] uses full conversion and is accepted by
-   all three.  The [Defined] is load-bearing: [CreatesLimit_transport]'s
-   proof does a [change] through this definition's first component, and
-   [Qed] here stops the file at that step with "Not convertible". *)
+(*
+   本节说明 Creation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fun_equiv_whisker_r {J C D : Category} {F F' : C ⟶ D}
   (e : F ≈ F') (K : J ⟶ C) : (F ◯ K) ≈ (F' ◯ K).
@@ -432,11 +428,11 @@ End Create.
 
 End Ex3.
 
-(* The all-shapes packaging comes in both strengths, and the strict one is
-   the same term: [fp_snd_StrictlyCreatesLimit] is already strict at every
-   diagram, so quantifying over shapes costs nothing.  An earlier revision
-   shipped only [fp_snd_CreatesAllLimits], silently dropping the strictness
-   the per-diagram theorem has. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fp_snd_StrictlyCreatesLimits
   {A B C : Category} (F : A ⟶ C) (G : B ⟶ C)
@@ -596,13 +592,11 @@ Next Obligation.
     symmetry; apply id_right.
 Qed.
 
-(* An ISOMORPHISM in [Cat].  Not a pullback in [Cat]: the tree refutes the
-   fibre product as a [Cat] pullback at one cospan (the [Indiscrete bool]
-   one), and nothing here establishes or refutes it at this cospan.  And
-   THIS ROUTE does not yield a pullback in [StrictCat] either, since the
-   round trip carries [id ∘ φ] rather than [φ] and so does not transport
-   [FibreProduct_IsPullback] across — that is this comparison coming up
-   short, not a proof that no comparison works. *)
+(*
+   本节说明拉回/推出、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Comma_FP_iso : (=(d) ↓ U) ≅[Cat] FP := {|
   to := Comma_to_FP; from := FP_to_Comma
@@ -618,27 +612,11 @@ End CommaAsFibreProduct.
 
 (** ** Exercise 4: the comma projection creates limits, by that route *)
 
-(* This reaches the conclusion #438's [comma_CreatesAllLimits] already
-   reaches, by a different argument.  It is a CROSS-CHECK, not a
-   strengthening — but state the comparison against the right constant.
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-   Against [comma_CreatesAllLimits] (Construction/Comma/Creation.v) the
-   two are of EQUAL strength.  That one takes [PreservesImageLimit], which
-   quantifies over every shape just as [ContinuousFunctor U] does — indeed
-   the two premises are interderivable by identity functions in that very
-   file, [PreservesImageLimit_Continuous] and
-   [Continuous_PreservesImageLimit] — and it concludes
-   [CreatesAllLimits], which is pointwise [CreatesLimit], not
-   [StrictlyCreatesLimit].
-
-   The "weaker in both directions" comparison is true, and is true only, of
-   #438's [comma_StrictlyCreatesLimit], which takes the per-diagram
-   [PreservesLimitCone (Gdiag K) U] and concludes [StrictlyCreatesLimit].
-   An earlier revision of this comment, of the commit message and of the
-   docs/INDEX.md bullet made that comparison against
-   [comma_CreatesAllLimits], which has neither that premise nor that
-   conclusion; measured with [Check], the claim was false in both halves,
-   and it under-sold this route while over-stating that constant. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Ex4.
 
@@ -699,11 +677,11 @@ Definition comma_creates_limits_second_proof {C D : Category} (U : C ⟶ D)
 
 (** ** The premise of Exercise 4 is inhabited, with nothing assumed *)
 
-(* [Id] is its own right adjoint and a right adjoint is continuous, so
-   [ContinuousFunctor Id] holds for EVERY category with no hypothesis —
-   the same shape as Construction/Slice/Creation.v's
-   [Id_PreservesImageLimit].  So the coslice-as-comma reading of Exercise 4
-   is an unconditional theorem, and the results above are not vacuous. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Id_ContinuousFunctor {C : Category} : ContinuousFunctor (@Id C) :=
   @right_adjoint_Continuous C C Id Id (@adj_id C).

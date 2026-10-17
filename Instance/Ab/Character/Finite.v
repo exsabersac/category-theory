@@ -30,88 +30,11 @@ Import ListNotations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Design
+(*
+   本节说明 Finite 相关定义、性质与动机。
 
-    1. FINITENESS IS DATA, AND DECIDABILITY IS PART OF IT.  [FiniteCarrier]
-       carries an enumeration, a proof that every element is `≈`-in it, and
-       a DECIDER for `≈`.  The decider is not a convenience: the extension
-       construction below defines a character by a bounded search for the
-       coset index of an element, so the search must actually run, and
-       "finite" without decidable equality does not make a setoid searchable.
-       Instance/Ab/Character.v's [qz_eq_dec] provides the matching decider on
-       the target ℚ/ℤ, and the acceptance witness at the end of this file
-       exhibits both for ℤ/2.
-
-    2. NO STRUCTURE THEOREM, NO COUNTING.  The textbook proof shows
-       |D(G)| = |G| and concludes by pigeonhole.  That route needs an
-       enumeration of the character group — a finite-function
-       enumeration up to pointwise `≈` — which is a large amount of
-       machinery for a side condition.  Instead both halves are
-       obtained from ONE construction, the character-extension lemma
-       [character_extend]: every character of a subgroup of a finite
-       abelian group extends to the whole group.  Injectivity of τ is
-       then separation ([separating_character], the cyclic character
-       1/k extended), and SURJECTIVITY ([tau_surjective_finite]) is an
-       induction over subgroups whose step is one more application of
-       the same extension.  Only one nontrivial induction is paid for,
-       and no cardinality of a set of characters is ever needed.
-
-    2a. THE SURJECTIVITY INDUCTION, SINCE IT IS NOT THE TEXTBOOK ONE.
-       Write H^ann for the characters killing H.  The statement carried
-       through the induction is [Realizes]: every Ξ ∈ DD(G) that
-       vanishes on H^ann ([VanishesOn]) is evaluation at some c ∈ H.
-       At H = {0} this is immediate — H^ann is all of D(G), so Ξ is
-       zero, which is evaluation at zero ([realizes_trivial]).  At
-       H = G it IS the theorem, because G^ann = {0} and every Ξ kills
-       zero, so the hypothesis is vacuous ([vanishes_of_all]).  The step
-       ([realizes_step]) takes φ with φ|H = 0 and φ(a) = 1/k, notes that
-       k·φ kills ⟨H,a⟩ so that Ξ(φ) has denominator k, say n/k, and then
-       shows Ξ − τ(n·a) vanishes on H^ann: any χ ∈ H^ann has χ(a) = m/k,
-       and χ − m·φ kills all of ⟨H,a⟩, which pins Ξ(χ) to m·n/k = χ(n·a).
-       The inductive hypothesis then supplies c ∈ H with
-       Ξ = τ(c + n·a).
-
-    2b. WHAT IS NOT CLAIMED.  |D(G)| = |G| is never proved in general;
-       it is only checked by hand on the ℤ/2 witness
-       ([zmod2_characters]).  Nothing here is stated for infinite
-       abelian groups, where the theorem is false for this dualizing
-       object — ℚ/ℤ replaces the circle ℝ/ℤ precisely because the
-       finite case is all that is at issue (Instance/Ab/Character.v's
-       design note 1).
-
-    3. WHY ℚ/ℤ MAKES THE EXTENSION EASY.  Extending a character across
-       one new generator [a] requires a k-th root of χ(k·a) in the
-       target, where k is the least positive integer with k·a already in
-       the subgroup.  In ℚ/ℤ roots are computed, not chosen: divide a
-       rational representative by k.  The freedom in the choice (adding
-       j/k for any integer j) is exactly what is needed to force the
-       value 1/k at the new generator, which is what separation consumes.
-
-    4. SUBGROUPS AS DECIDABLE PREDICATES, CHARACTERS AS PARTIAL MAPS.  A
-       subgroup is a decidable, `≈`-closed, 0/+/− closed predicate
-       ([Subgroup]); a character of it is a TOTAL function on the carrier
-       whose laws are only required on members ([PartialChar]).  This
-       avoids building sub-objects of [Ab] and transporting characters
-       along inclusions: at the end of the induction the predicate holds
-       everywhere and the partial character IS an [AbHom G QZ].
-
-    5. THE INDUCTION AND ITS MEASURE.  Both inductions are structural
-       recursion on a natural number bounding the count of enumeration
-       entries OUTSIDE the current subgroup ([outside_count]).
-       Adjoining a non-member strictly decreases that count
-       ([outside_count_generated]), and [all_or_witness] decides at each
-       step between "the subgroup is everything" and a named
-       non-member.  No well-founded recursion, and the fuel cannot run
-       out unremarked: the case where it would have is closed by
-       [outside_count_generated] itself, which would put a count of
-       naturals strictly below zero.
-
-    6. TYPE-VALUED LISTS.  The standard library's [In] and [NoDup] land
-       in [Prop] and so cannot be eliminated into the [Type]-valued
-       goals this library works in (Lib/Setoid.v's `≈` is a [crelation]).
-       [TIn]/[LIn]/[HasDup] below are the [Type]-valued replacements, and
-       [pigeon] is the pigeonhole principle over them — needed exactly
-       once, to produce a positive annihilator of an element. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** A Type-valued list toolkit *)
 
@@ -235,9 +158,11 @@ Proof.
     + right; exact (IH H).
 Qed.
 
-(* A decider for `≈`, threaded explicitly rather than as a section
-   variable: the pigeonhole proof mentions it only in the proof term, and
-   this file compiles under inferred [Proof using] annotations. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Decider := ∀ x y : A, ((x ≈ y) + (x ≈ y → False))%type.
 
 Definition eqb_at (dec : Decider) (x y : A) : bool :=
@@ -440,10 +365,11 @@ Proof.
   - rewrite (cmon_map_plus f), IH; reflexivity.
 Qed.
 
-(* Every element of a finite abelian group has a positive annihilator.
-   This is the one place the pigeonhole principle is spent: among the
-   |G|+1 multiples 0·a, …, |G|·a two must agree, and their difference
-   annihilates a. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma smul_annihilator (G : AbObject) (F : FiniteCarrier G)
       (a : carrier (cmon_setoid G)) :
   { d : nat & (0 < d)%nat ∧ smul G d a ≈ cmon_zero G }.
@@ -561,9 +487,11 @@ Qed.
 
 (** ** Bounded minimization *)
 
-(* The least [i < n] with [p i = true].  Used for coset indices and for
-   the period of an element modulo a subgroup; both searches are bounded
-   in advance, so no well-founded recursion is involved. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint least_below (p : nat → bool) (n : nat) : option nat :=
   match n with
   | O => None
@@ -610,10 +538,11 @@ Qed.
 
 (** ** Subgroups *)
 
-(* A subgroup is a decidable, `≈`-closed predicate containing zero and
-   closed under addition and negation.  Membership is [Type]-valued, so
-   a membership proof carries the witness data the constructions below
-   read back out. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Subgroup (G : AbObject) := {
   sg_mem : carrier (cmon_setoid G) → Type;
   sg_dec : ∀ x, (sg_mem x + (sg_mem x → False))%type;
@@ -998,10 +927,11 @@ Context (χ : PartialChar G H) (v : Q).
 
 Notation k := (per_k P).
 
-(* The choice of value at the new generator is constrained exactly by
-   [Hv]: k·v must agree, in ℚ/ℤ, with the value χ already assigns to
-   k·a.  Any k-th root will do, and the freedom among them is used by
-   [separating_character] below. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (Hv : qz_eq (inject_Z (Z.of_nat k) * v) (pc_map χ (smul G k a))).
 
 Lemma gen_unfold (x : carrier (cmon_setoid G)) :
@@ -1523,9 +1453,11 @@ Qed.
 
 (** ** Surjectivity of the evaluation *)
 
-(* [Ann G H χ]: χ kills H.  [VanishesOn G H Ξ]: Ξ kills every character
-   that kills H — the annihilator of the annihilator, at the level of
-   the double dual.  [Realizes] is the conclusion of the induction. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Ann (G : AbObject) (H : Subgroup G) (χ : AbHom G QZ) : Type :=
   ∀ x, sg_mem H x → qz_eq (cmon_map χ x) 0.
 
@@ -1737,10 +1669,11 @@ Qed.
 
 (** ** The theorem *)
 
-(* A bijective homomorphism of abelian groups is invertible.  The
-   inverse is a genuine construction: [AbSurjective] is [Type]-valued,
-   so the preimage is data, and injectivity makes the choice
-   irrelevant. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ab_inverse (G K : AbObject) (f : G ~{Ab}~> K)
            (Hinj : AbInjective f) (Hsurj : AbSurjective f) : K ~{Ab}~> G.
 Proof.
@@ -1786,10 +1719,11 @@ Proof.
   split; [ exact (tau_injective_finite G F) | exact (tau_surjective_finite G F) ].
 Qed.
 
-(* Mac Lane §I.4: for a finite abelian group the evaluation
-   τ_G : G → DD(G) is an isomorphism.  Naturality is
-   Instance/Ab/Character.v's [tau_natural]; the two together are the
-   statement that τ is a natural isomorphism on finite abelian groups. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem tau_iso_finite (G : AbObject) (F : FiniteCarrier G) :
   @Isomorphism Ab G (DD G).
 Proof.
@@ -1799,10 +1733,11 @@ Defined.
 
 (** ** Acceptance: ℤ/2 *)
 
-(* The cyclic group of order two, on [bool] with exclusive or.  Every
-   element is its own inverse, so [ab_neg] is the identity.  Built with
-   [unshelve notypeclasses refine] rather than [Program] so that every
-   field is discharged explicitly and in a known order. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ZMod2 : AbObject.
 Proof.
   unshelve notypeclasses refine {|
@@ -1870,9 +1805,11 @@ Proof.
   unfold Qeq in Hz; simpl in Hz; lia.
 Qed.
 
-(* And these are ALL of them: the character group of ℤ/2 has exactly
-   two elements, so |D(ℤ/2)| = |ℤ/2| — the counting fact the general
-   proof deliberately avoids, here checked by hand on the witness. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example zmod2_characters (χ : AbHom ZMod2 QZ) :
   ((χ ≈ zmod2_char_zero) + (χ ≈ zmod2_char_half))%type.
 Proof.

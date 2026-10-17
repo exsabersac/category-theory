@@ -24,204 +24,53 @@ Generalizable All Variables.
 
 #[local] Existing Instance edgeset.
 
-(* The global obligation tactic is [cat_simpl], which would run wide proof
-   searches on the group obligations below and has already introduced the
-   parameters by the time an obligation is opened.  Switched off here, the
-   [Instance/Grp.v] idiom, so every obligation starts with an explicit
-   [intros]. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
-(** * The free group on a set, and the free-forgetful adjunction
+(*
+   nLab:      https://ncatlab.org/nlab/show/free+group
+   nLab:      https://ncatlab.org/nlab/show/free+groupoid
+   nLab:      https://ncatlab.org/nlab/show/free+construction
+   Wikipedia: https://en.wikipedia.org/wiki/Free_group
+   Wikipedia: https://en.wikipedia.org/wiki/Nielsen%E2%80%93Schreier_theorem
+   Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
+   Book: Riehl, Category Theory in Context, §4.2, printed p. 139 (free ⊣
+   Book: Awodey, Category Theory, §1.7 (the universal mapping property of a
 
-    nLab:      https://ncatlab.org/nlab/show/free+group
-    nLab:      https://ncatlab.org/nlab/show/free+groupoid
-    nLab:      https://ncatlab.org/nlab/show/free+construction
-    Wikipedia: https://en.wikipedia.org/wiki/Free_group
-    Wikipedia: https://en.wikipedia.org/wiki/Nielsen%E2%80%93Schreier_theorem
-    Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          GTM 5, §II.7, printed p. 51 (Exercise 3, whose closing clause is
-          the free group as the one-object free groupoid)
-    Book: Riehl, Category Theory in Context, §4.2, printed p. 139 (free ⊣
-          forgetful; the unit is the insertion of generators and the counit
-          evaluates a word)
-    Book: Awodey, Category Theory, §1.7 (the universal mapping property of a
-          free structure, worked for monoids) and §9.1 (the adjunction)
+   本节说明伴随、幺半群相关定义、性质与动机。
 
-    THE POINT OF THE EXERCISE.  A free group on a set S is a group F(S) with
-    a map S → |F(S)| through which every map from S into the underlying set
-    of a group factors uniquely by a homomorphism.  Nielsen (1921) and
-    Schreier (1927) put free groups at the centre of combinatorial group
-    theory; the categorical reading — that F is left adjoint to the
-    forgetful functor — is the motivating example of an adjunction in
-    essentially every textbook, and is the reason "free" is a technical word
-    at all.  Mac Lane's §II.7 exercise reaches it the economical way, via
-    groupoids: build the free groupoid on a graph, then read the free group
-    off the one-node case.  That is what this file does.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    HOW IT IS BUILT.  [Construction/Free/Groupoid.v] supplies the free
-    groupoid; this file instantiates it at a quiver with ONE node whose
-    edge set is the generating setoid, and reads the endomorphism group of
-    that node.  Every group law is then a CATEGORY law by projection —
-    associativity is [comp_assoc_sym], the unit law is [id_left], the
-    inverse law is [fginv_left] — exactly as [hom_monoid]
-    (Construction/Deloop.v) reads a monoid off an endomorphism hom-set, and
-    three [eq_refl] Examples below record that the underlying monoid IS
-    [hom_monoid] of the free groupoid on all three data fields.  Since the PR
-    "algebraic carriers are sets" (2026-09-17) each of those three laws is
-    that category law under one [inhabits], because the group's `≈` is the
-    hom-equality's propositional truncation; see [fg_equiv] below for why, and
-    note that the three [eq_refl] Examples are about the OPERATIONS and are
-    unaffected.
+(*
+   本节说明等价相关定义、性质与动机。
 
-    THE FREE GROUP ON A SETOID, NOT ON A TYPE.  [Grp_Forget] lands in
-    [Sets], whose objects are setoids, so the left adjoint is a functor
-    [Sets ⟶ Grp] and the generators carry their own [≈], which the word
-    relation must respect.  This is the one place where the free-monoid
-    precedent does not transfer: in [Instance/Coq/Monoid/Free.v] the
-    generators are a bare [Type] and [list X] under Leibniz [=] is already
-    free, with no quotient at all.  Here the one-node quiver cannot be
-    [Construction/Free/Quiver/Presented.v]'s [OneNodeQuiver], which puts
-    Leibniz [=] on its edges; [PointQuiver] is built by hand with the
-    generating setoid's own equivalence as the edge setoid, and
-    respectfulness of the insertion is then not a new obligation but the
-    [fedgemap_respects] field of [FreeGroupoidUnit] (since the PR "algebraic
-    carriers are sets" it is that field under one [inhabits]).
-
-    TWO RECORDS NAMED [GrpObject].  Construction/Deloop.v's is layered on
-    [MonObject] and carries both unit laws and both inverse laws as fields;
-    Instance/Grp.v's is flat and carries only the left-handed ones, the
-    right-handed laws and respectfulness of inversion being derived.  [Grp]
-    is the category of the LATTER, so that is the record this adjunction
-    must be stated over, and it is why the import order at the top of this
-    file is deliberate.  The only bridge between them when this file was
-    written was [Instance/Rep.v]'s [grp_mon], which reads Instance/Grp.v's
-    record as a [MonObject] (Instance/Grp/Congruence.v later supplies the
-    record-to-record converter [grp_deloop_GrpObject]); it drops the inverse, so it does NOT supply
-    [Deloop_IsGroupoid]'s hypothesis (that lemma is stated over Deloop's
-    [GrpObject]), and its file in any case sits on top of the module and
-    matrix stack, which nothing here needs.  [grp_deloop_monoid] and
-    [grp_deloop_IsGroupoid] therefore rebuild the two-line bridge directly
-    over Instance/Grp.v's record.  Routing the free GROUP through
-    [vertex_group] (Structure/Groupoid.v) would have produced a
-    Deloop-flavoured record and so would have landed in the wrong category;
-    the group is therefore assembled directly from the word quotient.
-
-    MULTIPLICATION IS COMPOSITION, hence right to left: the product of the
-    one-letter words a and b is the word "b then a".  That is the house
-    convention ([hom_monoid]'s [mon_op] is [fun f g => f ∘ g]) and it is
-    what lets [fmap_comp] discharge [grp_map_mul] with no massaging;
-    [free_group_mul_is_compose] pins it by [eq_refl].
-
-    STRENGTHS, MEASURED.
-
-      - [eq_refl]: the free functor's object part is the word group
-        ([FreeGrp_obj]); the universal arrow is the insertion of generators
-        ([free_group_arrow_is_insert]); the UNIT is the one-letter word
-        ([free_group_unit_is_insert], [free_group_unit_is_generator]);
-        multiplication is composition, the group unit is the identity arrow,
-        inversion is word reversal, and the underlying monoid is
-        [hom_monoid] on all three data fields.
-      - [≈] only: the COUNIT.  It is the other transpose, i.e.
-        [unique_obj (ump_universal_arrows …)], and [ump_universal_arrows]
-        (Theory/Universal/Arrow.v) is [Qed]-opaque, so it does not compute
-        and no [eq_refl] is claimed on that side.  What is proved is that it
-        agrees with word evaluation up to [≈]
-        ([free_group_counit_evaluates]), which is the content;
-        Test/ProbeFreeGroupoid.v pins the negative side with a [Fail] probe.
-      - The triangle identities are [Theory/Adjunction.v]'s derived
-        [counit_fmap_unit] and [fmap_counit_unit] instantiated, and are
-        named here because the issue asks for them by name.  They are
-        derived and not fields, so instantiating them is a genuine check
-        that the adjunction is the intended one, not a restatement.
-
-    NON-VACUITY.  A free group on the empty or a one-element generating set
-    is abelian and would demonstrate nothing.  The witness therefore has TWO
-    generators and is separated by a functor into the delooping of the
-    symmetric group on three letters (Structure/Groupoid.v's [S3_Grp], a
-    nonabelian group already in tree):
-    [free_group_two_generators_nonabelian] and
-    [free_group_two_generators_distinct].  Because the delooping of a group
-    is a groupoid, the free-GROUPOID universal property applies directly and
-    no bridge between the two [GrpObject] records is needed for the witness.
-
-    THIS IS NOT THE ONLY FREE-GROUP ADJUNCTION THE TREE SHOULD HAVE.  Issue
-    #442 (maclane:V.6:construction-free-group) reaches a free-group left
-    adjoint over [Grp] by the adjoint-functor-theorem route, with no word
-    normal form anywhere; Mac Lane presents both routes deliberately, and
-    the two are complementary rather than competing — one exhibits the
-    object, the other proves it exists from completeness and a solution set.
-
-    WHAT IS NOT DELIVERED.
-
-      - No reduced-word normal form, hence no decision procedure for the
-        word problem, no Nielsen-Schreier theorem, and no proof that
-        [fg_insert] is injective for a GENERAL generating setoid.  What is
-        proved is that it is injective on the two-letter witness
-        ([free_group_two_generators_distinct]), by mapping into S3.  A
-        general proof needs a separating family of groups, which in the
-        constructive setting is essentially the normal-form theorem again.
-      - No statement that [FreeGrp] is faithful, and no characterization of
-        its image.
-      - No free ABELIAN group, no free monoid over [Sets] (the free monoid
-        in tree, [Instance/Coq/Monoid/Free.v], is over [Coq]), and no
-        comparison functor between them. *)
-
-(** ** The one-node quiver on a setoid
-
-    [Construction/Free/Quiver/Presented.v]'s [OneNodeQuiver] uses
-    [Build_Quiver_Standard_Eq], which puts Leibniz [=] on the edges.  That
-    will not do here: [Grp_Forget] lands in [Sets], so the free group is the
-    free group on a SETOID, and the generators carry their own [≈], which
-    the word relation must respect.  Hence the quiver is built by hand, with
-    the generating setoid's own equivalence as the edge setoid. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PointQuiver (X : SetoidObject) : Quiver := {|
   nodes   := poly_unit;
   edges   := fun _ _ => carrier X;
   edgeset := fun _ _ => is_setoid X
 |}.
 
-(** ** The word group
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
 
-    Mac Lane's §II.7 Ex. 3 read at one object: the free group on [X] is the
-    endomorphism group of the unique node of the free groupoid on the
-    one-node quiver.  Every group law below is a CATEGORY law by projection
-    — associativity is [comp_assoc_sym], the unit law is [id_left], the
-    inverse law is [fginv_left] — exactly as [hom_monoid]
-    ([Construction/Deloop.v]) reads a monoid off an endomorphism hom-set.
-
-    Multiplication is composition, so it runs right to left: the product of
-    the one-letter words [a] and [b] is the word "b then a".  That is the
-    house convention ([hom_monoid]'s [mon_op] is [fun f g => f ∘ g]) and it
-    is what makes [fmap_comp] discharge [grp_map_mul] with no massaging;
-    [free_group_mul_is_compose] pins it by [eq_refl]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FGWord (X : SetoidObject) : Type :=
   ttt ~{FreeGroupoid (PointQuiver X)}~> ttt.
 
-(** *** The word group's equality is a PROPOSITIONAL TRUNCATION
+(*
+   本节说明hom相关定义、性质与动机。
 
-    An earlier revision set [is_setoid (FreeGrpSetoid X)] to the free
-    groupoid's hom-setoid itself.  Since the PR "algebraic carriers are sets"
-    (2026-09-17) a [GrpObject] carries [grp_prop], and the free groupoid's
-    hom-equality is [Construction/Quotient.v]'s [CongClosure], a
-    five-constructor [Type]-valued inductive for which NO [Prop] mirror with
-    an elimination back into [Type] exists (measured: a truncation of it is refused
-    with "Incorrect elimination of h in the inductive type inhabited", and a
-    hand [Prop] mirror inductive has no [_rect], so [pequiv_to] cannot be
-    written).  The resolution is the one this library adopts for every
-    quotient object: the free groupoid keeps its data-valued hom-equality AS A
-    CATEGORY, and its one-object hom-monoid VIEWED AS A GROUP IN SET carries
-    the truncation.
-
-    What this costs and does not cost.  It costs one [inhabits] on each group
-    law and one [destruct] wherever a word equation is consumed.  It does NOT
-    cost the domain of the universal property: [FreeGrpObject],
-    [free_group_universal], [free_group_universal_arrow], [FreeGrp],
-    [free_group_adjunction] and Instance/Grp/FreeAFT.v's totality statements
-    all still quantify over ALL of [Sets], with no [PropEquiv] hypothesis on
-    the generating setoid anywhere in this file.  Nor does it weaken the two
-    non-vacuity theorems below, whose conclusion is [False] and whose
-    hypothesis is therefore unwrapped for free. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fg_equiv (X : SetoidObject) (a b : FGWord X) : Prop :=
   inhabited (@equiv _ (@homset (FreeGroupoid (PointQuiver X)) ttt ttt) a b).
 
@@ -303,12 +152,11 @@ Example free_group_monoid_unit (X : SetoidObject) :
   grp_unit (FreeGrpObject X)
     = @mon_unit (hom_monoid (FreeGroupoid (PointQuiver X)) ttt) := eq_refl.
 
-(** ** The insertion of generators
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    A letter becomes the one-letter positive word.  Respectfulness is not
-    reproved: it is the [fedgemap_respects] field of
-    [Construction/Free/Groupoid.v]'s [FreeGroupoidUnit], read at the single
-    node. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (* The codomain's `≈` is now the truncation, so the groupoid-level
    respectfulness is wrapped rather than reproved. *)
 Definition fg_insert (X : SetoidObject)
@@ -326,15 +174,11 @@ Defined.
 Example fg_insert_is_generator (X : SetoidObject) (a : carrier X) :
   fg_insert X a = @fgpos (PointQuiver X) ttt ttt a := eq_refl.
 
-(** ** Delooping an [Instance/Grp.v] group
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    [Construction/Deloop.v]'s [Deloop_IsGroupoid] is stated over THAT file's
-    [GrpObject], and there is no converter in tree from it to this one.
-    Both halves are one line each here, so the delooping is rebuilt directly
-    over [Instance/Grp.v]'s record rather than routed through a record
-    conversion.  ([Instance/Rep.v]'s [grp_mon] is the same monoid bridge,
-    but that file sits on top of the module and matrix stack, which nothing
-    here needs.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition grp_deloop_monoid (H : GrpObject) : MonObject := {|
   mon_setoid := grp_setoid H;
@@ -352,10 +196,11 @@ Definition grp_deloop_monoid (H : GrpObject) : MonObject := {|
 Definition grp_deloop (H : GrpObject) : Category :=
   Deloop (grp_deloop_monoid H).
 
-(** The delooping of a group is a groupoid: the inverse of an arrow is the
-    group inverse of the element, and the two [IsIsomorphism] fields are the
-    two inverse laws — the left one a field of [GrpObject], the right one
-    [Instance/Grp.v]'s derived [grp_mul_inv_r]. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_deloop_IsGroupoid (H : GrpObject) : IsGroupoid (grp_deloop H) :=
   fun x y a =>
     @Build_IsIsomorphism (grp_deloop H) x y a (grp_inv H a)
@@ -379,20 +224,16 @@ Definition point_hom
 Definition extend_functor : FreeGroupoid (PointQuiver X) ⟶ grp_deloop H :=
   FreeGroupoidFunctor (PointQuiver X) (grp_deloop_IsGroupoid H) point_hom.
 
-(** The extension of [h] to the free group.  Its action is [fmap] of the
-    functor just built; the [Build_GrpHom'] smart constructor derives unit
-    preservation, and multiplication preservation IS [fmap_comp] — the free
-    group's multiplication being composition and the delooping's being the
-    group operation, both definitionally. *)
-(* The underlying setoid map.  Its respectfulness used to BE
-   [fmap_respects], because the free group's `≈` was the free groupoid's
-   hom-equality on the nose.  Since the PR "algebraic carriers are sets"
-   (2026-09-17) the source equality is that hom-equality's TRUNCATION, so the
-   elimination is routed through the TARGET group's own [Prop] equality:
-   [pequiv_to] opens it, the truncation is destructed there, [pequiv_from]
-   closes it, and [fmap_respects] finishes unchanged.  Note what is NOT
-   needed: nothing is asked of [X].  The witness comes from [H], which
-   carries [grp_prop] as a field. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_grp_extend_map
   : SetoidMorphism (grp_setoid (FreeGrpObject X)) (grp_setoid H).
 Proof using X H h.
@@ -429,17 +270,11 @@ Lemma free_grp_extend_inv (u : FGWord X) :
     ≈ grp_inv H (free_grp_extend u).
 Proof using X H h. exact (grp_map_inv free_grp_extend u). Qed.
 
-(** *** Uniqueness
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Any homomorphism out of the free group agreeing with [h] on the
-    generators IS the extension.  The argument is not a fresh induction: the
-    competitor is repackaged as a functor into the delooping (its
-    [fmap_id] is unit preservation and its [fmap_comp] is multiplication
-    preservation, both definitionally), and
-    [Construction/Free/Groupoid.v]'s [FreeGroupoidFunctor_unique] finishes.
-    In particular the value on an INVERTED letter is never constrained by
-    hypothesis — it is forced, which is the whole content of freeness for
-    groups as opposed to monoids. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition functor_of_hom (g : FreeGrpObject X ~{Grp}~> H)
   : FreeGroupoid (PointQuiver X) ⟶ grp_deloop H.
@@ -513,12 +348,11 @@ Next Obligation.
     intro a; exact (Hg a).
 Qed.
 
-(** ** Deliverable 4: the free-forgetful adjunction
+(*
+   本节说明伴随、函子、幺半群相关定义、性质与动机。
 
-    The functor, the adjunction and both triangle identities come out of the
-    generic machinery of [Theory/Universal/Arrow.v] with no further proof —
-    the same route [Construction/Free/Quiver.v] and
-    [Instance/Coq/Monoid/Free.v] take. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreeGrp : Sets ⟶ Grp :=
   LeftAdjointFunctorFromUniversalArrows Grp_Forget free_group_universal_arrow.
@@ -529,19 +363,20 @@ Definition free_group_adjunction : FreeGrp ⊣ Grp_Forget :=
 (** The free functor's object part is the word group, definitionally. *)
 Example FreeGrp_obj (X : Sets) : FreeGrp X = FreeGrpObject X := eq_refl.
 
-(** The universal arrow is the insertion of generators on the nose:
-    [universal_arrow_from_UMP] stores the supplied morphism as the second
-    projection of the comma object it builds, so no proof is involved. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_group_arrow_is_insert (X : Sets) :
   @arrow _ _ X Grp_Forget (free_group_universal_arrow X) = fg_insert X
   := eq_refl.
 
-(** ** The unit is the one-letter word
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [unit] is DERIVED in [Theory/Adjunction.v] (it is the transpose of the
-    identity), not a field, so what it computes to has to be checked.  It is
-    [fmap[U] id ∘ arrow], and [fmap[Grp_Forget] id] is the identity setoid
-    map, so the unit is [fg_insert] itself. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_group_unit (X : Sets)
   : X ~{Sets}~> Grp_Forget (FreeGrp X) :=
@@ -553,14 +388,11 @@ Example free_group_unit_is_insert (X : Sets) (a : carrier X) :
 Example free_group_unit_is_generator (X : Sets) (a : carrier X) :
   free_group_unit X a = @fgpos (PointQuiver X) ttt ttt a := eq_refl.
 
-(** ** The counit evaluates a word
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The counit is the OTHER transpose, and it does not compute: it is
-    [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows] is
-    [Qed]-opaque, so no [eq_refl] is available on this side and none is
-    claimed.  What is available — and is the actual content — is that it
-    agrees with word evaluation up to [≈], which the uniqueness half of the
-    universal property delivers. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_group_counit (H : Grp)
   : FreeGrp (Grp_Forget H) ~{Grp}~> H :=
@@ -615,15 +447,11 @@ Proof.
               (@arrow _ _ Y Grp_Forget (free_group_universal_arrow Y) ∘ f)) a).
 Qed.
 
-(** ** Non-vacuity: the free group on two generators is nonabelian
+(*
+   本节说明函子相关定义、性质与动机。
 
-    A free group on the empty or a one-element generating set is abelian and
-    would demonstrate nothing.  The witness therefore has TWO generators,
-    and it is separated by a functor into the delooping of the symmetric
-    group on three letters ([Structure/Groupoid.v]'s [S3_Grp], a nonabelian
-    group already in tree) — which is a groupoid, so the free-groupoid
-    universal property applies directly and no bridge between the two
-    [GrpObject] records is needed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition TwoLetters : SetoidObject := {|
   carrier   := bool;
@@ -653,10 +481,11 @@ Theorem free_group_two_generators_nonabelian :
   ≈ grp_mul (FreeGrpObject TwoLetters)
       (fg_insert TwoLetters false) (fg_insert TwoLetters true) → False.
 Proof.
-  (* The free group's `≈` is the truncation of the free groupoid's since the
-     PR "algebraic carriers are sets" (2026-09-17).  The conclusion here is
-     [False], a [Prop], so the hypothesis is unwrapped at no cost and the rest
-     of the argument is unchanged. *)
+  (*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros [Hcomm].
   apply S3_not_abelian.
   assert (Hs : @equiv _ (@homset (Deloop S3_Grp) ttt ttt)

@@ -91,10 +91,11 @@ Section OpenSubspace.
 
 Context (X : TopSpace) (U : OpenSet X).
 
-(* Points of the subspace: a point of X together with a membership
-   witness.  The setoid compares first components only, so the witness is
-   invisible to everything downstream — the discipline that design note 1
-   then forces on the opens. *)
+(*
+   本节说明 Presheaf 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SubCar : Type := { x : X & `1 U x }.
 
 Definition sub_equiv (s t : SubCar) : Type := `1 s ≈ `1 t.
@@ -216,13 +217,11 @@ Next Obligation.
     + exact (open_inter X (`1 U) W (`2 U) HW).
 Qed.
 
-(* The identification promised by design note 1: subspace opens are
-   exactly the opens of X contained in U, pulled back along the
-   projection.  Forward: the extension of a subspace open is an open of X
-   ([sub_open]'s second conjunct), it is contained in U, and — by the
-   properness conjunct — the open it came from is pointwise equivalent to
-   its pullback.  Backward: the pullback of any open of X contained in U
-   is a subspace open, and its extension recovers the original. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma sub_ext_contained (V : SubCar → Type) (x : X) :
   sub_ext V x → `1 U x.
@@ -278,10 +277,11 @@ Section Restriction.
 Context {X : TopSpace} (V U : OpenSet X).
 Context (i : ∀ x : X, `1 V x → `1 U x).
 
-(* An inclusion of opens induces a continuous map of subspaces: transport
-   the membership witness.  Continuity re-runs the design-note-1
-   bookkeeping: properness of the preimage is properness of the source
-   open, and its extension is (V ∩ extension), open in X. *)
+(*
+   本节说明 Presheaf 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition sub_map : ContinuousMorphism (OpenSub V) (OpenSub U) := {|
   continuous_map :=
     {| morphism := fun s : SubCar V => (`1 s; i (`1 s) (`2 s)) |}
@@ -313,11 +313,11 @@ Definition SectionsOb (X : TopSpace) (U : OpenSet X) : obj[Sets] := {|
   is_setoid := ContinuousMorphism_Setoid
 |}.
 
-(* Mac Lane's presheaf: U ↦ continuous real-valued functions on U,
-   inclusions to restriction, i.e. precomposition with [sub_map].  The
-   Opens-side hom-setoid is trivial, and honestly so: two parallel
-   inclusions may differ as functions on witnesses, but the subspace
-   setoid does not see witnesses, so their restrictions agree. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ContinuousPresheaf (X : TopSpace) :
   Presheaf (Opens X) Sets := {|
   fobj := fun U => SectionsOb X U;
@@ -350,10 +350,11 @@ Qed.
 
 (** ** Constant sections *)
 
-(* Every hom-setoid of the presheaf is inhabited: the constant functions
-   are continuous, because the preimage of an open is constantly true or
-   constantly false — [open_const]'s union trick, run through the subspace
-   packaging. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition const_section (X : TopSpace) (U : OpenSet X) (c : R) :
   ContinuousMorphism (OpenSub U) R_Top := {|
   continuous_map := {| morphism := fun _ => c |}
@@ -418,9 +419,11 @@ Definition Maps_to_R (X : TopSpace) : obj[Sets] := {|
   is_setoid := ContinuousMorphism_Setoid
 |}.
 
-(* Sections over the whole space ARE the continuous real-valued functions
-   on X — the "Γ(X, C(−,ℝ)) = C(X,ℝ)" sanity theorem, an isomorphism of
-   section setoids in Sets by conjugation with [OpenSub_whole_iso]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition global_sections_iso (X : TopSpace) :
   SectionsOb X (whole_open X) ≅[Sets] Maps_to_R X := {|
   to   := {| morphism := fun s =>

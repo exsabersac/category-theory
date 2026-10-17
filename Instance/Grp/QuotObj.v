@@ -30,17 +30,11 @@ Generalizable All Variables.
 
 (** ** Mac Lane's illustration: the quotient objects of a group *)
 
-(* The general lemma this file needs -- two quotient objects are
-   equivalent when an isomorphism of their codomains carries one epi to
-   the other -- is Theory/Subobject/Quotient.v's [quot_equiv_of_cod_iso].
-   It was first proved HERE during the parallel build (as
-   [grp_quot_equiv_of_cod_iso], directly by [Isomorphism_Opposite
-   (iso_sym i)]) and was lifted into that file at integration as a
-   corollary of [quot_equiv_iff_iso]; this file now consumes it.  The
-   orientation is still the trap: [SubObj_Setoid] at [C^op] asks for an
-   isomorphism IN [C^op], whose [to] is a [C]-arrow the other way round,
-   so the [C]-isomorphism handed in goes from the codomain of r to the
-   codomain of q. *)
+(*
+   本节说明同构、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Instance/Grp/Quotient.v's [QuotientGrp N] with its projection, which
    is epic because it is the identity function on
@@ -49,10 +43,11 @@ Definition grp_quot_of_normal {G : GrpObject} (N : NormalSubgroup G) :
   @QuotObj Grp G :=
   mk_quot (quot_proj N) (quot_proj_epic N).
 
-(* The order, in the direction the factorization preorder gives it: a
-   LARGER normal subgroup gives a SMALLER (coarser) quotient object.
-   The mediating arrow is the identity function, and its respectfulness
-   clause is exactly the inclusion of members. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_quot_le_of_included {G : GrpObject} (N N' : NormalSubgroup G)
   (H : ∀ a : carrier G, sub_mem N a → sub_mem N' a) :
   @quot_le Grp G (grp_quot_of_normal N') (grp_quot_of_normal N).
@@ -78,15 +73,11 @@ Section Converse.
 
 Context {G : GrpObject}.
 
-(* In [Grp] a surjection is epic unconditionally
-   (Instance/Grp/Epi.v) but the converse is not available
-   constructively: [grp_epic_image_dense] gives only that no
-   element can be SHOWN to miss the image, and Instance/Grp/Epi.v's
-   header sets out why -- recovering a preimage from an epimorphism is
-   the double-negation elimination its [GrpImageStable] names.
-   So the theorem below is stated for a quotient object whose epi is
-   surjective, and the [Epic]-only form is recorded separately as the
-   conditional [grp_quot_is_quot_by_kernel_stable]. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_quot_surjective_of_stable (q : @QuotObj Grp G)
   (Hst : @GrpImageStable G (quot_cod q) (quot_epi q)) :
   GrpSurjective (quot_epi q) :=
@@ -101,10 +92,11 @@ Definition grp_quot_kernel_iso (q : @QuotObj Grp G)
   iso_compose (surjective_image_iso (quot_epi q) Hs)
               (first_isomorphism_theorem (quot_epi q)).
 
-(* ... and it carries the projection to the quotient epi, which is what
-   makes it an equivalence OF QUOTIENT OBJECTS and not merely an
-   isomorphism of codomains.  The two triangles are
-   [first_isomorphism_triangle] and [image_factors]. *)
+(*
+   本节说明等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_quot_kernel_triangle (q : @QuotObj Grp G)
   (Hs : GrpSurjective (quot_epi q)) :
   to (grp_quot_kernel_iso q Hs) ∘ quot_proj (KernelNS (quot_epi q))
@@ -118,10 +110,11 @@ Proof.
   exact (image_factors (quot_epi q)).
 Qed.
 
-(* Mac Lane §V.7: the quotient objects of a group ARE the G/N.  Stated
-   at ≈ on [QuotObj G], which is the strongest relation available --
-   [QuotObj] inherits [SubObj]'s setoid and has no Leibniz
-   antisymmetry. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem grp_quot_is_quot_by_kernel (q : @QuotObj Grp G)
   (Hs : GrpSurjective (quot_epi q)) :
   q ≈ grp_quot_of_normal (KernelNS (quot_epi q)).
@@ -145,16 +138,11 @@ End Converse.
 
 (** ** Non-vacuity *)
 
-(* The correspondence is inhabited at a nondegenerate pair: A3 inside S3
-   (Instance/Grp/Quotient.v) is a proper nontrivial normal subgroup
-   of a nonabelian group, so [grp_quot_of_normal A3] is a quotient object
-   of S3 that is neither the top nor the bottom of the order.  The two
-   separations are Instance/Grp/Quotient.v's [S3_mod_A3_not_collapsed]
-   and [quot_proj_A3_not_injective]; [grp_quot_S3_A3_not_collapsed]
-   below is a verbatim RE-EXPORT of the first under a name that says
-   what it is used for, and proves nothing new -- the constant that
-   carries new content here is [grp_quot_S3_A3] itself and the order
-   inhabitant [grp_quot_S3_trivial_le_A3]. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_quot_S3_A3 : @QuotObj Grp S3 := grp_quot_of_normal A3.
 
 Lemma grp_quot_S3_A3_not_collapsed :

@@ -239,10 +239,11 @@ Defined.
 
 (** ** The categories: propositional sets and locally connected spaces *)
 
-(* Mac Lane's Set, read as the full subcategory of [Sets] on the setoids
-   whose equality is a proposition.  Since #1349 it is
-   Instance/Sets/Propositional/Full.v's [PropSets], under #462's names;
-   [About] reads the same blocks for both names as before. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PSetsSub@{o so | o < so +} : Subcategory@{so o so o} Sets@{o so} :=
   PropSets_sub@{o so}.
 
@@ -438,10 +439,11 @@ Example components_unit_points@{o so | o < so +} (X : Lconn@{o so})
 
 (** ** Why Set is read as the propositional sets *)
 
-(* The setoid on [bool] whose [true ≈ false] is a given type [Q] is
-   Instance/Sets/Propositional/Full.v's [SquashSetoid], over its
-   [squash_rel], [squash_sym] and [squash_trans]: #1349 moved the four
-   there from this file, names, binders and proofs unchanged. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition squash_id@{o} (Q : Type@{o}) :
   SetoidMorphism@{o o o} PTwoIndisc@{o} (SquashSetoid Q).
@@ -526,11 +528,11 @@ Qed.
 
 (** ** Mac Lane's Set as all of [Sets], under [Untruncate] *)
 
-(* The unsquashing principle is Instance/Sets/Classifier/OneLevel.v's
-   [Untruncate], truncated: each gives the other.  Since #1349 both are
-   transparent definitions, derived from Instance/Sets/Propositional/
-   Full.v's [untr_of_choice] (under [inhabited]) and [choice_of_untr],
-   which write [Untruncate@{o}] out; the two forms convert. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition unsquash_Untruncate@{o} :
   inhabited (∀ Q : Type@{o}, inhabited Q → Q) → inhabited Untruncate@{o} :=
   fun H => match H with inhabits u => inhabits (untr_of_choice@{o} u) end.

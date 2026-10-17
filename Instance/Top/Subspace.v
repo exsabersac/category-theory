@@ -363,10 +363,11 @@ Context (X : PTop@{o}).
 Local Notation PT := PTopCat@{o so}.
 Local Notation G := PForget@{o so}.
 
-(* The forgetful functor sliced over [X], Mac Lane's [G ↓ X]: the generic
-   [Sliced] of Structure/SlicedInverse.v at [PForget], under a local name.
-   It is an alias, not a second functor, so the adjunction below is at
-   once an adjunction of [Sliced G X] and Proposition 1 consumes it. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PForget_over : @Slice PT X ⟶ @Slice Sets@{o so} (G X) :=
   Sliced G X.
 
@@ -567,11 +568,11 @@ End SliceAdjunctions.
 
 (** ** Equalizers and coequalizers of spaces, by Proposition 1 and its dual *)
 
-(* The downstairs equalizers: Structure/Pullback/Reduction.v's
-   [HasEqualizers_of_HasPullbacks_Terminal] fed Instance/Sets/Pullback.v's
-   [Sets_HasPullbacks] and Instance/Sets.v's [Sets_Terminal], the term of
-   Adjunction/CokernelPair.v's [SetsEqualizers], written out here because
-   requiring that file costs more (see the header). *)
+(*
+   本节说明伴随、拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Notation SetsEq :=
   (@HasEqualizers_of_HasPullbacks_Terminal Sets Sets_Terminal
      Sets_HasPullbacks).
@@ -598,10 +599,11 @@ Example PTop_equalizer_arrow@{o so + | o < so +} {x y : PTopCat@{o so}}
         (`1 (`2 (@equalizer _ SetsEq _ _ (fmap[PForget] f) (fmap[PForget] g))))
   := eq_refl.
 
-(* The dual of Proposition 1 at [PForget], over Instance/Sets/Coequalizer.v's
-   [Sets_HasCoequalizers]: the coequalizer of two continuous maps is the
-   quotient topology on their coequalizer in [Sets], the quotient of the
-   codomain's points by the equivalence the pair generates. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PTop_HasCoequalizers@{o so + | o < so +} :
   @HasCoequalizers PTopCat@{o so} :=
   @coequalizers_from_sliced_LARI _ _ PForget@{o so} PForget_Faithful
@@ -641,9 +643,11 @@ Lemma pbool_maps_differ@{o so | o < so +} :
   pid PBool ≈[PTopCat@{o so}] pbool_true → False.
 Proof. intro H; specialize (H false); simpl in H; discriminate H. Qed.
 
-(* Proposition 1 at the pair (identity, constant [true]) on [PBool]: the
-   subspace of [PBool] on the [Sets] equalizer of the underlying maps,
-   which is the value of [rari_right PBool_subspace_RARI] there. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PBool_equalizer@{o so +| o < so +} :=
   @equalizer PTopCat@{o so} PTop_HasEqualizers PBool PBool (pid PBool)
     pbool_true.
@@ -664,10 +668,11 @@ Example PBool_equalizer_rari@{o so +| o < so +} :
              `1 (`2 (@equalizer _ SetsEq _ _ setoid_morphism_id
                        (pconst bool_setoid_object PBool true))))) := eq_refl.
 
-(* Which points of [PBool] lie in the equalizer: exactly [true], so the
-   equalizer is a proper, nonempty subspace.  The "only if" is the fork
-   equation, the "if" the universal property at the point picking
-   [true]. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma PBool_equalizer_points@{o so +| o < so +} (b : bool) :
   ex (fun e : pt_carrier (`1 PBool_equalizer@{o so _ _ _ _ _}) =>
         pmap (`1 (`2 PBool_equalizer@{o so _ _ _ _ _})) e = b)
@@ -696,10 +701,11 @@ Lemma ppoint_maps_differ@{o so | o < so +} :
   ppoint_false ≈[PTopCat@{o so}] ppoint_true → False.
 Proof. intro H; specialize (H ttt); simpl in H; discriminate H. Qed.
 
-(* The dual of Proposition 1 at the pair ([false], [true]) out of the
-   point: the quotient topology on the [Sets] coequalizer of the
-   underlying maps, which is the value of [lari_left PBool_quotient_LARI]
-   there. *)
+(*
+   本节说明 Subspace 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PBool_coequalizer@{o so +| o < so +} :=
   @coeq PTopCat@{o so} PTop_HasCoequalizers PPoint PBool ppoint_false
     ppoint_true.

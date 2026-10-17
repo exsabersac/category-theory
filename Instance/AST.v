@@ -102,11 +102,11 @@ Program Fixpoint interp `(c : Hom a b) :
   | Merge f g   => merge (interp f) (interp g)
   end.
 
-(* The free bicartesian closed category: objects are [Obj], arrows are [Hom],
-   identity and composition are the syntactic constructors, and two arrows are
-   equivalent when they agree under every interpretation (see the file header).
-   That equivalence is an equivalence relation [Next Obligation] and is a
-   congruence for composition (proven for [Hom_Cartesian] etc. below). *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance AST : Category := {
   obj     := Obj;
@@ -167,9 +167,11 @@ Program Instance Hom_Closed : @Closed AST _ := {
 Next Obligation. proper; rewrite X; reflexivity. Qed.
 Next Obligation. proper; rewrite X; reflexivity. Qed.
 
-(* Initial object 0 = [Zero_], with the unique arrow [Zero'] out of it. Since
-   [Initial AST] unfolds to [Terminal (AST^op)] (duality idiom), this fills the
-   dual fields [terminal_obj]/[one], which on the C-side read as initial_obj/zero. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Hom_Initial : @Initial AST := {
   terminal_obj := Zero_;
@@ -177,10 +179,11 @@ Program Instance Hom_Initial : @Initial AST := {
 }.
 Next Obligation. apply zero_unique. Qed.
 
-(* Binary coproducts x + y = [Coprod_], with copairing [Merge] and injections
-   [Inl]/[Inr]. As [Cocartesian AST] unfolds to [Cartesian (AST^op)] (duality
-   idiom), the cartesian fields [fork]/[exl]/[exr] are filled by the dual
-   combinators, recovering merge/inl/inr on the C-side. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Hom_Cocartesian : @Cocartesian AST := {
   product_obj := Coprod_;

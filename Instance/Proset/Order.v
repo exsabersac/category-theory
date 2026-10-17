@@ -37,19 +37,20 @@ Generalizable All Variables.
 
 (** ** Thinness of prosets and posets *)
 
-(* Instance/Proset.v declares the hom-setoid equivalence of a proset to be
-   [True], so thinness holds by the unit constructor.  This is the bridge
-   between Instance/Proset.v's construction and Structure/Thin.v's predicate,
-   in the same relation as Instance/Discrete.v's [DiscreteCat_Discrete] to
-   Structure/Discrete.v. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma proset_thin {A : Type} {R : relation A} (P : PreOrder R) :
   Thin (Proset P).
 Proof. intros x y f g; exact I. Qed.
 
-(* A poset is a proset with antisymmetry imposed, and Instance/Poset.v
-   defines it as literally [Proset P], so the thin category is the same
-   object; antisymmetry constrains the OBJECTS (making the category skeletal,
-   Instance/Poset.v), not the homs. *)
+(*
+   本节说明 Order 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Poset_is_Proset {A : Type} {R : relation A} (P : PreOrder R)
       (H : @Antisymmetric A eq eq_equiv R) :
   @Poset A R P H = Proset P.
@@ -69,10 +70,11 @@ Proof. intro i; exact (H x y (to i) (from i)). Qed.
 
 (** ** Round trip, leg one: the preorder of the thin category of P is P *)
 
-(* Recovery up to pointwise logical equivalence.  Note this is [iffT] (the
-   library rebinds `↔`, Lib/Foundation.v), so the two directions carry
-   computational content: forward eliminates the [inhabited] witness (legal,
-   since the goal [R x y] is itself a Prop), backward is [inhabits]. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem hom_preorder_Proset {A : Type} {R : relation A} (P : PreOrder R)
         (x y : A) :
   thin_preorder (Proset P) x y ↔ R x y.
@@ -82,12 +84,11 @@ Proof.
   - exact (fun r => inhabits r).
 Qed.
 
-(* Measuring the gap.  The recovery above is NOT an equality of relations:
-   [thin_preorder (Proset P)] is the relation [fun x y => inhabited (R x y)],
-   a different term from [R].  Under propositional and functional
-   extensionality it becomes one, and both are taken here as explicit
-   hypotheses of the lemma — nothing is assumed globally, and
-   [Print Assumptions] on this constant stays clean. *)
+(*
+   本节说明 Order 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem hom_preorder_Proset_eq {A : Type} {R : relation A} (P : PreOrder R)
         (prop_ext : ∀ p q : Prop, (p <-> q) → p = q)
         (fun_ext : ∀ f g : A → A → Prop, (∀ x y : A, f x y = g x y) → f = g) :
@@ -101,19 +102,22 @@ Qed.
 
 (** ** Round trip, leg two: the thin category of the hom-preorder *)
 
-(* The comparison functor, defined for an ARBITRARY category: identity on
-   objects, sending an arrow to the fact that it exists.  Every obligation is
-   an equation in the target hom-setoid, which Instance/Proset.v declares
-   to be [True]. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition thin_to_Proset_Functor (C : Category) :
   C ⟶ Proset (thin_PreOrder C) := {|
   fobj := fun x => x;
   fmap := fun x y f => inhabits f
 |}.
 
-(* Thinness is exactly the faithfulness of that comparison.  Forward: the
-   hypothesis of [fmap_inj] is an equation in the trivial setoid, so it is
-   free, and its conclusion is thinness.  Backward: immediate. *)
+(*
+   本节说明 Order 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem hom_Proset_Faithful_iff_Thin (C : Category) :
   Faithful (thin_to_Proset_Functor C) ↔ Thin C.
 Proof.
@@ -132,10 +136,11 @@ Definition proset_HomChoice {A : Type} {R : relation A} (P : PreOrder R) :
   HomChoice (Proset P) :=
   fun x y h => match h return R x y with inhabits r => r end.
 
-(* The backward comparison functor, for a thin C with a choice of arrows.
-   [fmap_respects] holds because any two chosen arrows are parallel, and the
-   two functor laws because their two sides are parallel; all three are
-   [Thin C]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Proset_hom_Functor {C : Category}
         (T : Thin C) (ch : HomChoice C) :
   Proset (thin_PreOrder C) ⟶ C := {|
@@ -143,11 +148,11 @@ Program Definition Proset_hom_Functor {C : Category}
   fmap := fun x y h => ch x y h
 |}.
 
-(* The isomorphism in [Cat].  Both composites are the identity on objects, and
-   every `≈` involved is an equation between parallel arrows of a thin
-   category, so the natural-isomorphism data [Functor_Setoid]
-   (Theory/Functor.v) asks for is discharged by the [cat_simpl] obligation
-   tactic. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition thin_Proset_iso {C : Category}
         (T : Thin C) (ch : HomChoice C) :
   C ≅[Cat] Proset (thin_PreOrder C) := {|
@@ -155,17 +160,11 @@ Program Definition thin_Proset_iso {C : Category}
   from := Proset_hom_Functor T ch
 |}.
 
-(** *** Measuring the strength of that isomorphism
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
 
-    Instance/Cat.v records that `≅[Cat]` means equivalence of
-    categories, because [Functor_Setoid] compares functors up to natural
-    isomorphism.  The first two facts below say more: the comparison is the
-    identity on objects on the nose, and the C-side morphism round trip holds
-    up to `≈` with real content (it is discharged by thinness of C).  The
-    third is recorded for symmetry only and is VACUOUS: the Proset-side
-    hom-setoid is Instance/Proset.v's constantly-[True] relation, so ANY
-    two parallel morphisms there are `≈`, and the lemma would hold with both
-    functors replaced by arbitrary maps. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma thin_Proset_iso_obj {C : Category} (T : Thin C) (ch : HomChoice C)
       (x : C) :
@@ -193,12 +192,11 @@ Definition Proset_roundtrip {A : Type} {R : relation A} (P : PreOrder R) :
 
 (** ** Order reversal: the opposite of a thin category (Riehl §1.2) *)
 
-(* The reversed preorder is stdlib's [Basics.flip] with stdlib's
-   [flip_PreOrder]; both already exist, so nothing is defined here.  The two
-   categories below have convertible objects and convertible homs — the first
-   because Construction/Opposite.v keeps [obj] and the second because it
-   sets hom[C^op] x y := hom[C] y x, which for a proset is [R y x], which is
-   [Basics.flip R x y] by delta. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Proset_op_obj {A : Type} {R : relation A} (P : PreOrder R) :
   obj[(Proset P)^op] = obj[Proset (flip_PreOrder P)].
@@ -221,14 +219,11 @@ Program Definition Proset_op_from {A : Type} {R : relation A}
   fmap := fun x y f => f
 |}.
 
-(* Both round trips on morphisms hold by [eq_refl] — not merely up to `≈`.
-   Together with the identity object maps that makes [Proset_op_iso] below an
-   isomorphism of categories in the textbook sense (a bijection on objects and
-   on each hom), rather than only the equivalence that `≅[Cat]` on its own
-   records (Instance/Cat.v).  What is NOT claimed is equality of the
-   composite functors with [Id]: their [fobj] and [fmap] agree with [Id]'s by
-   [eq_refl], but their law fields are the opaque obligation constants
-   [Program] generated, which are not [eq_refl]-equal to [Id]'s. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Proset_op_roundtrip {A : Type} {R : relation A} (P : PreOrder R)
       (x y : A) (f : x ~{(Proset P)^op}~> y) :
@@ -249,12 +244,11 @@ Program Definition Proset_op_iso {A : Type} {R : relation A}
 
 (** ** Preorders versus equivalence relations (Seven Sketches §1.2.2) *)
 
-(* Dropping symmetry from an equivalence relation leaves a preorder; adding
-   it back to a preorder restores an equivalence relation.  The first
-   direction duplicates stdlib's [Equivalence_PreOrder]; it is restated so
-   that the pair reads as one comparison over a fixed carrier and relation.
-   For the second, [Search Symmetric PreOrder Equivalence] over the modules
-   this file loads returns nothing from stdlib. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Equivalence_is_PreOrder {A : Type} (R : relation A) :
   Equivalence R → PreOrder R.
@@ -275,12 +269,11 @@ Qed.
 
 (** ** The discrete and codiscrete preorders on a carrier (§1.2.2) *)
 
-(* The two extreme preorder structures on an arbitrary [Type]: equality, and
-   the relation that always holds.  [discrete_rel] is the order-theoretic
-   shadow of Instance/Discrete.v's [DiscreteCat] (whose homs are exactly
-   equality proofs); [codiscrete_rel] is the shadow of the codiscrete
-   category, which Structure/Discrete.v's header mentions as the other
-   adjoint. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition discrete_rel (A : Type) : relation A := fun x y => x = y.
 
@@ -296,17 +289,11 @@ Defined.
 Definition codiscrete_PreOrder (A : Type) : PreOrder (codiscrete_rel A).
 Proof. constructor; [ intro x; exact I | intros x y z _ _; exact I ]. Defined.
 
-(* "Terminal", made precise.  Preorder structures on a FIXED carrier are
-   compared by refinement: R refines S when the identity map on the carrier
-   is monotone from R to S, i.e. when every R-instance is an S-instance.
-   [codiscrete_rel] is a top for this comparison, and any other top agrees
-   with it; [discrete_rel] is a bottom among REFLEXIVE relations, and any
-   other such bottom agrees with it.  This is deliberately a statement about
-   preorder structures on ONE fixed carrier.  Whether the codiscrete category
-   is also terminal in [Cat] is a different question and is left open here —
-   Instance/Cat.v's `≅` compares functors up to natural isomorphism, and
-   [codiscrete_all_iso] below shows every pair of objects of the codiscrete
-   category is isomorphic, which makes that question subtler than it looks. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Refines {A : Type} (R S : relation A) : Prop :=
   ∀ x y : A, R x y → S x y.
@@ -355,28 +342,11 @@ Proof. exact (thin_iso (proset_thin (codiscrete_PreOrder A)) I I). Qed.
 
 (** ** Comparability, and how it differs from decidability (§1.2.2) *)
 
-(* Two elements are comparable when the order relates them one way or the
-   other AND the witness records which way: `∨` is Lib/Foundation.v's
-   notation for [sum], so [comparable] is Type-valued and can be matched on
-   to compute.  That is the whole point — [TotalOrder_meet] below builds the
-   binary infimum by dispatching on it.
+(*
+   本节说明 Order 相关定义、性质与动机。
 
-   Comparability is NOT decidability.  Decidability of R at (x, y) settles
-   [R x y] one way or the other; comparability settles which of [R x y] and
-   [R y x] holds but says nothing about the negation of either, and the two
-   are only related through extra data.  Three theorems below measure the
-   distinction instead of describing it: [comparable_of_decidable_total]
-   builds comparability from decidability plus Prop-valued totality (the
-   [\/] can be eliminated because the goal it feeds is itself a Prop);
-   [comparable_total] extracts Prop-valued totality back; and
-   [decidable_of_comparable] exhibits a sufficient route from comparability to
-   decidability, which needs reflexivity, antisymmetry AND a decision
-   procedure for equality on the carrier — strictly more input than
-   comparability alone.  (Those three are shown sufficient, not necessary.)
-   Construction/Enriched/Two.v's [tpre_dec] is the
-   decidability side of the same coin: that file needs to COMPUTE a truth
-   value in the walking arrow for every pair, which comparability alone
-   would not supply. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition comparable {A : Type} (R : relation A) (x y : A) : Type :=
   R x y ∨ R y x.
@@ -429,13 +399,11 @@ Proof. intros ne [e|e]; [ exact (ne e) | exact (ne (eq_sym e)) ]. Qed.
 
 (** ** Total (linear) orders, Mac Lane §I.2 definition 4 *)
 
-(* A total order is a preorder that is antisymmetric and in which every two
-   elements are comparable.  The class is [Type]-valued because
-   [total_comparable] is: a Prop-valued totality would not let the meet below
-   be computed.  Antisymmetry is stated in the elementary form and converted
-   to Instance/Poset.v's [Antisymmetric] shape by [TotalOrder_Antisymmetric],
-   so that the thin category is built by Instance/Poset.v's [Poset]
-   rather than by a fresh construction. *)
+(*
+   本节说明 Order 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class TotalOrder {A : Type} (R : relation A) : Type := {
   total_preorder   : PreOrder R;
@@ -481,10 +449,11 @@ Definition nat_TotalOrder : TotalOrder PeanoNat.Nat.le := {|
     end
 |}.
 
-(* The thin category of (ℕ, ≤).  Instance/Proset.v and Instance/Poset.v
-   both already export a [LessThanEqualTo_Category] for this order (a clash
-   Test/Poset.v documents), so no third name is introduced; this one is
-   built through [TotalOrder_Category] to exercise the class. *)
+(*
+   本节说明 Order 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Nat_TotalOrder_Category : Category :=
   TotalOrder_Category nat_TotalOrder.
 
@@ -520,11 +489,11 @@ Definition nat_ge_TotalOrder : TotalOrder (Basics.flip PeanoNat.Nat.le) :=
 
 (** ** Infima and suprema, and their categorical identification (§1.3.1) *)
 
-(* Order-theoretic names first: m is an infimum (greatest lower bound) of x
-   and y when it is a lower bound and dominates every lower bound.  The
-   connectives are Lib/Foundation.v's, so these are [Type]-valued;
-   nothing is eliminated from Prop into Type, the Prop components are only
-   carried. *)
+(*
+   本节说明 Order 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition IsInfimum {A : Type} (R : relation A) (x y m : A) : Type :=
   (R m x ∧ R m y) ∧ (∀ n : A, R n x → R n y → R n m).
@@ -538,20 +507,20 @@ Lemma supremum_is_flipped_infimum {A : Type} (R : relation A) (x y m : A) :
   IsSupremum R x y m = IsInfimum (Basics.flip R) x y m.
 Proof. reflexivity. Qed.
 
-(* The two-object discrete diagram in the thin category of P, picking out x
-   at [false] and y at [true].  Instance/Discrete.v's [DiscreteCat_Functor]
-   turns any function out of a [Type] into a functor out of the discrete
-   category on it. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PairDiagram {A : Type} {R : relation A} (P : PreOrder R)
            (x y : A) : DiscreteCat bool ⟶ Proset P :=
   DiscreteCat_Functor (C:=Proset P) (fun b : bool => if b then y else x).
 
-(* A lower bound of x and y IS a cone over the pair diagram (Structure/Cone.v
-   declares the legs, and bundles them with an apex), and an upper bound IS a
-   COCONE over it — which Structure/Cone.v defines as a cone over the
-   opposed diagram, exactly the type written below.  These two constructors
-   are separated out so that the mediating arrow supplied by [ump_limit] has
-   an apex Coq can see is [n]. *)
+(*
+   本节说明 Order 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pair_cone {A : Type} {R : relation A} (P : PreOrder R)
            (x y n : A) (lx : R n x) (ly : R n y) : Cone (PairDiagram P x y).
@@ -574,14 +543,11 @@ Proof.
   - intros b b' f; exact I.
 Defined.
 
-(* THE IDENTIFICATION.  Being an infimum of x and y is being a limit of that
-   diagram, with the apex pinned (Structure/Limit.v's [IsALimit]).  Note
-   what each half costs.  Building the limit needs: the two legs (the lower
-   bound), cone coherence (an equation in the trivial hom-setoid, hence
-   free), the mediating arrow (the greatest-lower-bound clause), and its
-   uniqueness (again free, by thinness).  Reading the limit back needs only
-   the legs and the mediator.  Totality is nowhere used — this holds over an
-   arbitrary preorder. *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem infimum_iff_limit {A : Type} {R : relation A} (P : PreOrder R)
         (x y m : A) :
   IsInfimum R x y m ↔ IsALimit (PairDiagram P x y) m.
@@ -608,15 +574,16 @@ Proof.
       exact (unique_obj (@ump_limit _ _ _ _ L (pair_cone P x y n lx ly))).
 Qed.
 
-(* The dual identification.  Structure/Limit.v defines a colimit of F as a
-   limit of F^op, so the apex-pinned colimit of the pair diagram is
-   [IsALimit ((PairDiagram P x y)^op) m]; unfolding, its legs are arrows
-   x ~> m and y ~> m of [Proset P], i.e. upper bounds, and its mediator is
-   the least-upper-bound clause. *)
-(* The apex-pinned colimit notion below is spelled out by hand; the library
-   already names it -- Structure/Limit/Preservation.v's
-   [IsAColimit F c := IsALimit (F^op) c] -- and [supremum_iff_IsAColimit]
-   restates the theorem through that name. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem supremum_iff_colimit {A : Type} {R : relation A} (P : PreOrder R)
         (x y m : A) :
   IsSupremum R x y m ↔ IsALimit ((PairDiagram P x y)^op) m.
@@ -643,11 +610,11 @@ Proof.
       exact (unique_obj (@ump_limit _ _ _ _ L (pair_cocone P x y n ux uy))).
 Qed.
 
-(** *** Existence in a total order
+(*
+   本节说明 Order 相关定义、性质与动机。
 
-    The identification above needs no totality; EXISTENCE does.  In a total
-    order the meet of x and y is whichever of the two is below the other,
-    which is exactly what the Type-valued [comparable] lets us compute. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition tmeet {A : Type} {R : relation A} (T : TotalOrder R) (x y : A) : A :=
   match @total_comparable A R T x y with
@@ -803,11 +770,11 @@ Proof. reflexivity. Qed.
 Example bool_tjoin_true_false : tjoin bool_TotalOrder true false = true.
 Proof. reflexivity. Qed.
 
-(** ** Sanity: what the constructions reduce to
+(*
+   本节说明 Order 相关定义、性质与动机。
 
-    Each of these holds by [eq_refl], so together they pin down that nothing
-    above is stated at one remove from the concrete objects it is about.
-    Numerals carry [%nat] because Lib/Foundation.v closes [nat_scope]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The thin category of a total order has the carrier as its objects and the
    order itself as its homs. *)
@@ -818,10 +785,11 @@ Example nat_order_hom (x y : nat) :
   (x ~{Nat_TotalOrder_Category}~> y) = PeanoNat.Nat.le x y.
 Proof. reflexivity. Qed.
 
-(* Box: the reverse order, concretely.  Reading an arrow of the OPPOSITE thin
-   category as a proposition gives [ge] on the nose — this is
-   [flip_le_is_ge] seen through Construction/Opposite.v's hom reversal,
-   and it is what [Nat_op_iso] packages as an isomorphism of categories. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example nat_op_hom_is_ge (x y : nat) :
   (x ~{((Proset PeanoNat.Nat.le_preorder)^op)%category}~> y) = ge x y.
 Proof. reflexivity. Qed.
@@ -858,10 +826,11 @@ Example Nat_TotalOrder_Category_is_Poset :
   Nat_TotalOrder_Category = Category.Instance.Poset.LessThanEqualTo_Category
   := eq_refl.
 
-(* The discrete preorder really is the order-theoretic shadow of
-   Instance/Discrete.v's DiscreteCat: the squashed ∃-a-morphism preorder of
-   [DiscreteCat A] is exactly [discrete_rel A].  (An arrow of [DiscreteCat A]
-   IS an equality proof, so inhabitation of the hom is equality.) *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma thin_preorder_DiscreteCat {A : Type} (x y : A) :
   thin_preorder (DiscreteCat A) x y ↔ discrete_rel A x y.
 Proof.

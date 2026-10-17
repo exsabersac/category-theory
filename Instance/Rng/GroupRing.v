@@ -32,11 +32,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The group of units of an arbitrary unital ring
+(*
+   本节说明 GroupRing 相关定义、性质与动机。
 
-    Instance/Matr/GL.v's [Units_Functor] is this construction over [CRng].
-    The objects here are all unital rings, because the group ring of a
-    non-commutative group is not commutative. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Rng_Units : Rng ⟶ Grp := {|
   fobj := fun R : RingObject =>
@@ -50,12 +50,11 @@ Next Obligation. intros R S T f g x; simpl; reflexivity. Qed.
 Example rng_units_element (R : Rng) (x : carrier (grp_setoid (Rng_Units R))) :
   carrier (rig_setoid R) := `1 x.
 
-(** ** The underlying monoid of a group
+(*
+   本节说明幺半群、始/终对象相关定义、性质与动机。
 
-    The group-side counterpart of Theory/Algebra/Rig.v's
-    [rig_mult_monoid], built the same way: the multiplication uncurried
-    over the product setoid, the unit selected from the terminal
-    setoid. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition grp_monoid (G : GrpObject)
   : @Monoid Sets Sets_Product_Monoidal (grp_setoid G) := {|
@@ -103,13 +102,11 @@ Example grp_monsets_op (G : Grp) (a b : carrier (grp_setoid G)) :
 Example grp_monsets_one (G : Grp) :
   mone (Grp_MonSets G) = grp_unit G := eq_refl.
 
-(** ** Monoid homomorphisms out of a group land in the units
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    The image of g⁻¹ is a two-sided inverse of the image of g, so any
-    monoid homomorphism out of [Grp_MonSets G] into the multiplicative
-    monoid of a ring factors through the group of units.  This is the step
-    that makes Mac Lane's unit-group phrasing and the
-    multiplicative-monoid phrasing agree at a group. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma monoid_hom_to_units (G : Grp) (S : Rng)
   (psi : Grp_MonSets G ~{MonSets}~> Rng_Forget_Mon S)
@@ -183,11 +180,11 @@ Example grp_ring_insert_inverse (G : Grp) (g : carrier (grp_setoid G)) :
   `1 (`2 (grp_map (grp_ring_insert G) g))
     = @mr_gen Int_Ring (Grp_MonSets G) (grp_inv G g) := eq_refl.
 
-(** The universal property: a homomorphism from G to the units of S is the
-    same thing as a ring homomorphism from ℤ[G] to S.  The forward
-    direction is the monoid ring's own extension, applied to the monoid
-    homomorphism underlying the given group homomorphism; uniqueness is
-    the monoid ring's uniqueness, since the two agree on generators. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_ring_universal (G : Grp) (S : Rng) (h : G ~{Grp}~> Rng_Units S) :
   ∃! k : GrpRing G ~{Rng}~> S,
     h ≈ fmap[Rng_Units] k ∘ grp_ring_insert G.

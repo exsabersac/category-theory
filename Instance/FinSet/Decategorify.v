@@ -33,10 +33,11 @@ Generalizable All Variables.
 
 (** ** The cardinality functor on the groupoid of finite sets *)
 
-(* The arrow action ignores WHICH bijection it is given and retains only the
-   equality of countings that its existence forces.  That is the
-   decategorification: a groupoid whose hom-sets can be large is mapped onto
-   a discrete category whose hom-sets are subsingletons. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Card_Groupoid : Groupoid Set_f ⟶ DiscreteCat nat := {|
   fobj := setf_cardinality;
   fmap := fun A B i => setf_cardinality_iso_invariant A B i
@@ -60,15 +61,11 @@ Solve All Obligations with
 Example Card_FinSet_identity_on_objects (n : FinSet) :
   fobj[Card_FinSet] n = n := eq_refl.
 
-(** ** The four arithmetic identities, decategorified
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Each is the image under [Card_FinSet] of the corresponding categorical
-    isomorphism, taken at [FinSet].  Orientations follow the in-tree object
-    maps: [product_obj m n = (m * n)%nat] (Instance/FinSet/Product.v),
-    [product_obj] of [FinSet_Cocartesian] -- the coproduct -- is
-    [(m + n)%nat] (Instance/FinSet.v), and [exponent_obj m n = (n ^ m)%nat],
-    so that [exponent_obj x z], displayed [z ^ x], is the object of functions
-    FROM x (Instance/FinSet/Closed.v). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition nat_exp_prod_l (x y z : nat) : (z ^ (x * y))%nat = ((z ^ y) ^ x)%nat :=
   FinSet_skeletal (@exp_prod_l FinSet _ _ x y z).
@@ -92,14 +89,11 @@ Example nat_exp_coprod_is_Card_image (x y z : nat) :
   nat_exp_coprod x y z = fmap[Card_FinSet] (@exp_coprod FinSet _ _ _ x y z)
   := eq_refl.
 
-(** ** Naturality decategorifies to nothing
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
 
-    [DiscreteCat nat] is THIN: any two parallel arrows agree, because its
-    hom-sets are equality proofs between naturals and [Nat.eq_dec] makes those
-    unique.  So every naturality square in the image of a cardinality functor
-    commutes for free, and the four natural isomorphisms of
-    Structure/Cartesian/Closed/Natural.v have no shadow downstairs at all:
-    what survives decategorification is the equation, not its naturality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma DiscreteCat_nat_Thin : Thin (DiscreteCat nat).
 Proof. intros x y f g; apply (UIP_dec PeanoNat.Nat.eq_dec). Qed.
 

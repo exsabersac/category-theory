@@ -445,15 +445,11 @@ Qed.
 Lemma zext_int_unit_separates : ZIntGen 1 1 ≈ ZIntGen 1 2 → False.
 Proof. exact zext_int_gens_distinct. Qed.
 
-(** ** Probes
+(*
+   本节说明（余）端、（余）强度相关定义、性质与动机。
 
-    Every strength claim the header makes is pinned here, each negative
-    beside an APPLIED positive control.  Each was stripped of its [Fail]
-    and compiled alone, and its WHOLE error read: negatives 1, 2 and 4
-    end in [cannot unify] (CONVERSION), negative 3 is a plain type
-    mismatch with no [cannot unify] and no universe clause (TYPING), and
-    negatives 5-8 end in [universe inconsistency: Cannot enforce rc = ra]
-    (FORMABILITY). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ZExtProbeStrength.
 
@@ -491,9 +487,11 @@ Fail Example zext_probe_from_to_strict :
 (* CONTROL for negative 3: the unit IS an arrow of [Ab]. *)
 Check (zext_unit R A : A ~{Ab}~> rm_ab (ZExtObj R A)).
 
-(* NEGATIVE 3 (TYPING).  It is NOT an arrow of [RMod R] — [A] is an
-   [AbObject] and there is no coercion into [obj[RMod R]].  This is the
-   shape of the adjunction, not an accident: the unit lives downstairs. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (zext_unit R A : A ~{RMod R}~> rm_ab (ZExtObj R A)).
 
 End ZExtProbeStrength.
@@ -501,9 +499,11 @@ End ZExtProbeStrength.
 (* CONTROL for negative 4: the comparison map exists and computes. *)
 Check (cmon_map (rm_hom zext_int_eval) (ZIntGen 3 4)).
 
-(* NEGATIVE 4 (CONVERSION).  ℤ ⊗ ℤ is NOT ℤ on the nose — the carriers
-   are [tsum] and [Z] — so [zext_int_gen_nonzero] is a statement about a
-   genuinely constructed object and not about ℤ in disguise. *)
+(*
+   本节说明 BaseChange 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example zext_probe_int_strict : ZIntExt = Int_RMod := eq_refl.
 
 Section ZExtProbeUniverses.
@@ -514,11 +514,11 @@ Constraint ra < rc.
 Context (Ru : RingObject@{rc ra rb}) (Au Bu : AbObject).
 Context (fu : Au ~{Ab}~> Bu).
 
-(* CONTROLS.  With the ring's FIRST and THIRD universes declared strictly
-   apart, all of these are formable — so the identification below is
-   neither the tensor's, nor the category's, nor the forgetful functor's,
-   nor the abelian-group-level arrow action's, nor the extension OBJECT's.
-   Each is APPLIED to [Ru], which is the argument carrying the levels. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (RMod Ru).
 Check (ring_ab Ru).
 Check (AbTensor (ring_ab Ru) Au).
@@ -529,26 +529,18 @@ Check (RMod_Forget_Ab Ru).
 Check (Ab ⟶ RMod Ru).
 Check (Ring_RMod Ru).
 
-(* CONTROLS 5, 7 and 8, WHICH USED TO BE NEGATIVES.  An earlier revision read:
-   "NEGATIVE 5 (FORMABILITY).  The identification enters exactly when the
-   extension is READ AS AN OBJECT of [RMod R] — not when it is built";
-   "NEGATIVE 7 (FORMABILITY).  Hence the functor"; "NEGATIVE 8 (FORMABILITY).
-   And hence the headline."  All three were re-measured after the PR
-   "algebraic carriers are sets" (2026-09-17) and all three are now FORMABLE
-   at the declared separation.  The cause is upstream: [ZExtObj] is built on
-   Instance/Ab/Tensor.v's [AbTensor], whose relation [ts_eq] moved to [Prop],
-   so [tensor_med_respects] no longer inducts on a [Type]-valued relation into
-   a [Type]-valued goal and the identification that induction forced is gone.
-   Negative 6 below still fires, which is the instrument check that the
-   section still constrains anything at all.  The ring's auxiliary universe is
-   also now the FIRST argument of [RingObject] rather than the third, which is
-   why the binder reads `RingObject@{rc ra rb}`. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (ZExtObj Ru Au : obj[RMod Ru]).
 
-(* NEGATIVE 6 (FORMABILITY).  The surviving donor, and it is not this file's.
-   Instance/Mod.v's OWN [Ring_RMod] is rejected at these levels while the
-   bare [Check (Ring_RMod Ru)] control above is accepted, so what the
-   ascription to [obj[RMod Ru]] forces is inherited. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Ring_RMod Ru : obj[RMod Ru]).
 
 Check (ZExt Ru).

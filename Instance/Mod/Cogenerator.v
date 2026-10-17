@@ -163,9 +163,11 @@ Definition ML_cogenerates@{o h +} {C : Category@{o h h}} (q : C) : Type :=
   ∀ (x y : C) (f g : x ~> y), (f ≈ g → False) →
     { k : y ~> q & (k ∘ f ≈ k ∘ g → False) }.
 
-(* The ≠ form transfers along an adjunction with a faithful left adjoint:
-   F keeps the pair apart, the given cogenerator separates their images,
-   and transposing keeps them apart.  No decision procedure is used. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition right_adjoint_ML@{co do h +}
   {C : Category@{co h h}} {D : Category@{do h h}} {F : D ⟶ C} {U : C ⟶ D}
   (A : F ⊣ U) (HF : Faithful F) (q : C) (H : ML_cogenerates q) :

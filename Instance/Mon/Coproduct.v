@@ -137,12 +137,11 @@ Inductive FPTerm : Type :=
   | fp_one : FPTerm
   | fp_mul : FPTerm → FPTerm → FPTerm.
 
-(* The generated congruence, in four groups: saturation under the two
-   source setoids plus congruence for the product; symmetry and
-   transitivity (reflexivity is DERIVED, see [fp_refl]); the three
-   monoid laws; and the four clauses that make each injection a
-   homomorphism — adjacent same-side letters multiply, and each
-   summand's unit becomes THE unit. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive fp_eq : FPTerm → FPTerm → Type :=
   | fe_inl {a b} : a ≈ b → fp_eq (fp_inl a) (fp_inl b)
   | fe_inr {a b} : a ≈ b → fp_eq (fp_inr a) (fp_inr b)
@@ -161,9 +160,11 @@ Inductive fp_eq : FPTerm → FPTerm → Type :=
   | fe_lone : fp_eq (fp_inl (mon_one M)) fp_one
   | fe_rone : fp_eq (fp_inr (mon_one N)) fp_one.
 
-(* Reflexivity is derived rather than assumed: the letter cases go to the
-   source setoids, the product case to the induction hypotheses, and the
-   unit case is [fe_one_l] at [fp_one] composed with its own symmetry. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fp_refl (s : FPTerm) : fp_eq s s.
 Proof.
   induction s.
@@ -296,12 +297,11 @@ Example merge_is_fp_merge (A B Q : MonS)
         (f : A ~{MonS}~> Q) (g : B ~{MonS}~> Q) :
   @merge MonS Mon_Sets_Cocartesian Q A B f g = fp_merge A B Q f g := eq_refl.
 
-(** * Non-degeneracy, in general: both injections split
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Each injection has a retraction with NO hypothesis on A or B — the
-    copairing of the identity with the constant map at the unit — hence
-    is monic, hence injective on elements.  So the congruence collapses
-    neither factor, for every pair of monoids. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition mon_const (A B : MonS) : A ~{MonS}~> B :=
   @mk_mon_hom A B (fun _ => mon_one B)
@@ -373,15 +373,11 @@ Proof.
   exact (fp_eval_resp A B B (mon_const A B) (@id MonS B) _ _ H).
 Qed.
 
-(** * A non-degenerate witness: (N,+) * (N,+)
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    The free product of two copies of the free monoid on one generator is
-    the free monoid on two letters, so the probe into (list bool, ++,
-    nil) sending the left generator to [true] and the right to [false]
-    is faithful enough to separate.  Nothing below could be proved by
-    induction on [fp_eq]: a NEGATIVE fact about a generated congruence is
-    reachable only by mapping OUT of the quotient, which is what
-    [fp_eval_resp] does. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition NatObj : SetoidObject :=
   {| carrier := nat; is_setoid := eq_Setoid nat |}.
@@ -396,10 +392,11 @@ Proof.
       [ reflexivity | now rewrite IHa ].
 Defined.
 
-(* Concatenation is spelled out rather than taken from Coq.Lists.List:
-   importing that module would bring [list_scope]'s bracket and [++]
-   notations into a file whose ambient scope is the library's, and the
-   whole of what is needed here is five lines. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint bapp (l m : list bool) : list bool :=
   match l with
   | Datatypes.nil        => m
@@ -550,10 +547,11 @@ Example fp_beta_l_strict (a : carrier (mon_ob A)) :
 Example fp_beta_r_strict (b : carrier (mon_ob B)) :
   mon_fun (fp_merge A B Q f g) (fp_inr A B b) = mon_fun g b := eq_refl.
 
-(* The composite's underlying FUNCTION is [f]'s on the nose (eta for
-   functions); the underlying SetoidMorphism RECORD is not, its
-   [proper_morphism] field being rebuilt by [setoid_morphism_compose] —
-   see the header's list of refuted strict attempts. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example fp_beta_l_fun :
   mon_fun (fp_merge A B Q f g ∘[MonS] fp_injl A B) = mon_fun f := eq_refl.
 

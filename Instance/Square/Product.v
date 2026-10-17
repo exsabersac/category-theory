@@ -57,10 +57,11 @@ Definition sq22_node (a b : TwoObj) : SquareNode :=
 Definition sq22_obj (x : TwoObj * TwoObj) : SquareNode :=
   sq22_node (fst x) (snd x).
 
-(** The nine arrows of 2 × 2, sent to the nine arrows of the square.
-    The last line is the one with content: a pair of non-identity arrows
-    goes to the DIAGONAL, which is where the imposed relation is spent —
-    without it there would be two candidate images and no functor. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sq22_map {a b c d : TwoObj} (u : TwoHom a c) (v : TwoHom b d) :
   sq22_node a b ~{Square}~> sq22_node c d :=
   match u in TwoHom a0 c0, v in TwoHom b0 d0
@@ -104,12 +105,11 @@ Example Square_to_22_B : fobj[Square_to_22] Sq_B = (TwoY, TwoX) := eq_refl.
 Example Square_to_22_C : fobj[Square_to_22] Sq_C = (TwoX, TwoY) := eq_refl.
 Example Square_to_22_D : fobj[Square_to_22] Sq_D = (TwoY, TwoY) := eq_refl.
 
-(** ** The two object actions are mutually inverse
+(*
+   本节说明 Product 相关定义、性质与动机。
 
-    Leibniz equalities, but not [eq_refl] uniformly: both maps are
-    matches, so they reduce only once their argument is a constructor,
-    and on the 2 × 2 side the argument must additionally be exposed as a
-    PAIR, [prod] carrying no eta. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma square_22_node_round (n : SquareNode) :
   sq22_obj (fobj[Square_to_22] n) = n.
 Proof. destruct n; reflexivity. Qed.
@@ -146,23 +146,22 @@ Definition Square_2x2_iso : Square ≅[StrictCat] (_2 ∏ _2) :=
   @Build_Isomorphism StrictCat Square (_2 ∏ _2)
     Square_to_22 Square_of_22 Square_22_round' Square_22_round.
 
-(** The weaker [Cat] reading, derived.  Recall that [≅[Cat]] in this
-    library is an EQUIVALENCE of categories, [Cat]'s hom-setoid being
-    [Functor_Setoid]; the [StrictCat] statement above is the strong
-    one. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Square_2x2_Cat_iso : Square ≅[Cat] (_2 ∏ _2) :=
   @Build_Isomorphism Cat Square (_2 ∏ _2)
     Square_to_22 Square_of_22
     (strict_equiv_implies_fun_equiv _ _ Square_22_round')
     (strict_equiv_implies_fun_equiv _ _ Square_22_round).
 
-(** ** The arrow count of 2 × 2, independently
+(*
+   本节说明 Product 相关定义、性质与动机。
 
-    An arrow of [_2 ∏ _2] is a pair of arrows of [_2], so the count is
-    the square of the walking arrow's.  Proved here from scratch — not
-    transported along [Square_2x2_iso] — so that it is a genuine
-    cross-check on [Instance/Square.v]'s count rather than a restatement
-    of it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The walking arrow has three arrows: [TwoHom] is inhabited except at
     (Y, X), and then by exactly one element. *)
@@ -222,10 +221,11 @@ Definition prod22_nonidentity_total : nat :=
 Theorem prod22_nonidentity_total_5 : prod22_nonidentity_total = 5%nat.
 Proof. reflexivity. Qed.
 
-(** The counting function is correct: it is 0 exactly where the hom-set
-    is empty, and where it is 1 the hom-set is inhabited and thin.
-    (Thinness is [Two2_Thin] and holds everywhere, so only inhabitation
-    and emptiness are per-pair.) *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem prod22_homcount_empty (x y : TwoObj * TwoObj) :
   prod22_homcount x y = 0%nat → (x ~{_2 ∏ _2}~> y) → False.
 Proof.

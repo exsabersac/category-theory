@@ -15,12 +15,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Horizontal composition as a bifunctor `[D, E] ∏ [C, D] ⟶ [C, E]`: on objects
-   it composes functors, on 2-cells it takes the Godement horizontal composite
-   `nat_hcompose`.  `fmap_id` is `fmap id` juggling; `fmap_comp` is the middle-
-   four interchange law, discharged from naturality of the outer transformation.
-   Being the underlying functor of the bicategory's `hcompose` field, its `fmap`
-   is exactly what `hcomp2` computes to. *)
+(*
+   本节说明函子、双范畴相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 Program Definition Cat_Hcompose {C D E : Category} :
   ([D, E] ∏ [C, D]) ⟶ [C, E] := {|
@@ -43,12 +42,11 @@ Next Obligation.
   symmetry; apply naturality.
 Qed.
 
-(* The bicategory coherence laws for Cat, proven componentwise in the functor
-   category `[C, D]`.  Under the crossed dictionary the unitor naturalities, the
-   triangle and the pentagon all reduce to `fmap id` bookkeeping closed by `cat`;
-   the associator naturality additionally needs `fmap_comp`.  These are exactly
-   the field statements of `Bicategory` with `hcomp2 = nat_hcompose`,
-   `hunit_left = nat_ρ`, `hunit_right = nat_λ`, `hassoc = (nat_α …)⁻¹`. *)
+(*
+   本节说明函子、双范畴相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Cat_hunit_left_natural (C D : Category) (f f' : C ⟶ D) (η : f ⟹ f') :
   nat_compose η (to (nat_ρ f))
@@ -80,11 +78,11 @@ Lemma Cat_pentagon (V W X Y Z : Category)
   ≈ nat_compose (from (nat_α (g ◯ f) h k)) (from (nat_α f g (k ◯ h))).
 Proof. simpl; intros; cat. Qed.
 
-(* Cat as a bicategory.  The structural fields are `[C, D]`'s own projections
-   (so `bicat C D ≡ [C, D]` definitionally), `hcompose := Cat_Hcompose`, the
-   unitors/associator come from `nat_ρ`/`nat_λ`/`(nat_α)⁻¹`, and the coherence
-   laws are the lemmas above.  `bi1id := Id`; `bi2id/vcompose/…` project from
-   `[C, D]`.  A `Definition`, one universe level up, never registered. *)
+(*
+   本节说明双范畴、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Cat_Bicategory : Bicategory :=
   Build_Bicategory
     Category

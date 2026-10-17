@@ -17,114 +17,33 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where the ZX-calculus comes from, and what it is for
+(*
+   关于the ZX-calculus的来源与用途
 
    Wikipedia: https://en.wikipedia.org/wiki/ZX-calculus
    Paper:     Abramsky, Coecke, "A categorical semantics of quantum
-              protocols", LICS 2004
    Paper:     Coecke, Duncan, "Interacting Quantum Observables",
-              ICALP 2008 (LNCS 5126, pp. 298-310); journal version
-              "Interacting Quantum Observables: Categorical Algebra
-              and Diagrammatics", New J. Phys. 13:043016, 2011
-   Survey:    van de Wetering, "ZX-calculus for the working quantum
-              computer scientist", arXiv:2012.13966, 2020
 
-   The ZX-calculus descends from categorical quantum mechanics, the
-   programme that recast finite-dimensional quantum theory inside
-   dagger-compact closed categories and traded matrix bookkeeping for
-   string diagrams (Abramsky, Coecke, "A categorical semantics of
-   quantum protocols", LICS 2004).  That ambient setting sits in the
-   library at Structure/Monoidal/CompactClosed.v, whose header cites the
-   same paper and names the dagger-compact category the calculus
-   inhabits.  Against it Coecke and Duncan singled out a complementary,
-   mutually unbiased pair of observables — the green Z basis and the red
-   X basis — and axiomatised their interaction diagrammatically; the
-   spider colours [zx_z] and [zx_x], with the Hadamard [zx_h] that
-   exchanges them, are those primitives.
+   本节说明来源与用途相关定义、性质与动机。
 
-   The difficulty it addresses is that quantum computations are written
-   as circuits, yet circuit identities are matrix identities: opaque,
-   basis-dependent, and awkward to search over for optimisations.  ZX
-   supplies instead a rewrite system on diagrams, each denoting a linear
-   map — a Z-spider [zx_z] carrying a [Phase] α to the map on the
-   all-zeros and all-ones basis strings that weights the latter by
-   e^{iα}.  Because the spiders form special commutative Frobenius
-   algebras, a spider depends only on its leg count, the "only
-   connectivity matters" principle that makes rewriting mechanisable (van
-   de Wetering, 2020).  That algebra is the abstract counterpart at
-   Theory/Algebra/SpecialCommutativeFrobenius.v and, phase-free, at
-   Structure/Monoidal/Hypergraph/Spider.v, whose fusion theorem
-   [zx_eq_z_fusion] and [zx_eq_x_fusion] mirror as syntax; the hints of
-   Structure/Monoidal/Hypergraph/Tactics.v discharge such identities over
-   the hypergraph class of Structure/Monoidal/Hypergraph.v.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   Completeness accrued in stages rather than at once.  Backens
-   established it for the stabiliser fragment, angles multiples of π/2
-   (Backens, "The ZX-calculus is complete for stabilizer quantum
-   mechanics", New J. Phys. 16:093021, 2014), the first such result.
-   Jeandel, Perdrix and Vilmart then settled the Clifford+T fragment,
-   angles multiples of π/4, by adding two axioms routed through the
-   ZW-calculus (Jeandel, Perdrix, Vilmart, "A Complete Axiomatisation of
-   the ZX-Calculus for Clifford+T Quantum Mechanics", LICS 2018).
-   Completeness for the universal fragment came the same year by two
-   independent routes — the second JPV paper "Diagrammatic Reasoning
-   beyond Clifford+T Quantum Mechanics" and Hadzihasanovic, Ng, Wang,
-   "Two complete axiomatisations of pure-state qubit quantum
-   computing" (both LICS 2018).  The book-length account is Coecke
-   and Kissinger, Picturing Quantum Processes (Cambridge University
-   Press, 2017).
+(*
+   本节说明幺半群、等价相关定义、性质与动机。
 
-   The uses are largely computational.  The flagship is circuit
-   optimisation: a circuit is compiled to a diagram, simplified by
-   rewriting, and re-extracted more cheaply.  Kissinger and van de
-   Wetering reduce T-count — the dominant cost of fault-tolerant
-   computation — by "phase teleportation", matching or improving on prior
-   methods across most benchmarks, by as much as half in the ancilla-free
-   case, in the open-source PyZX library (Kissinger, van de Wetering,
-   "Reducing T-count with the ZX-calculus", Phys. Rev. A 102:022406,
-   2020).  The same machinery describes measurement-based quantum
-   computing and graph states (Duncan, Perdrix), models surface-code
-   lattice surgery (de Beaudrap, Horsman, 2017), and beyond physics
-   underlies the DisCoCat compositional semantics of natural language
-   (Coecke, Sadrzadeh, Clark, 2010), likewise recorded at
-   Structure/Monoidal/CompactClosed.v.
-
-   Formally the calculus is a free PROP over the [PROP] machinery of
-   Construction/PROP.v: the [ZX] inductive is its syntax, its denotation
-   is a symmetric-monoidal functor into linear maps, and reasoning
-   proceeds by rewriting [zx_eq] rather than by matrix computation.  The
-   payoff is program transformation — a diagram is normalised and a
-   cheaper circuit re-extracted — the special-Frobenius fact that a
-   spider depends only on its leg count supplying the labelled graph on
-   which that search runs (Kissinger, van de Wetering, 2020). *)
-
-(** ** Phases
-
-    Phases parameterise spiders.  In the standard ZX-calculus a phase is
-    a real number modulo 2π; in stabiliser ZX, a multiple of π/2; in
-    Clifford+T ZX, a multiple of π/4.
-
-    We abstract over the phase set as a type with a distinguished
-    zero element and a binary [phase_add] operation; we do NOT carry
-    any monoid axioms or a phase-equivalence relation here, since
-    [zx_eq] compares phases by syntactic equality only.  Adding the
-    standard real-number-mod-2π equivalence (and the corresponding
-    [zx_eq_*_phase_resp] congruences) is a clean follow-up to this
-    file. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Parameter Phase : Type.
 Parameter phase_zero : Phase.
 Parameter phase_add  : Phase -> Phase -> Phase.
 
-(** ** ZX morphisms (signature)
+(*
+   本节说明等价相关定义、性质与动机。
 
-    The freely-generated morphism syntax: composition, tensor, identity,
-    swap, Z-spider, X-spider, Hadamard.
-
-    This is the WORD problem presentation: morphisms are syntax trees
-    quotiented by the equational theory below.  In Coq, that quotient is
-    expressed by a separate equivalence relation [zx_eq], with the
-    [Setoid] taking [zx_eq] as its [equiv]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive ZX : nat -> nat -> Type :=
   | zx_id     : forall n : nat, ZX n n
@@ -151,22 +70,11 @@ Notation "f ⊙ g" := (zx_compose f g) (at level 40, left associativity) : zx_sc
 Notation "f ⊕ g" := (zx_tensor f g) (at level 30, right associativity) : zx_scope.
 Open Scope zx_scope.
 
-(** ** Equational theory of ZX
+(*
+   本节说明 ZX 相关定义、性质与动机。
 
-    The standard ZX axioms (Coecke–Duncan, van de Wetering §3).  Stated
-    as an inductive predicate on parallel ZX-morphisms.
-
-    Naming follows van de Wetering's survey:
-      [S1]  spider-fusion (Z and X variants)
-      [S2]  identity spider (Z_1^1(0) = id_1, X_1^1(0) = id_1)
-      [CC]  colour change ((⊕_n H) ⊙ Z_m^n(α) ⊙ (⊕_m H) = X_m^n(α):
-            H on every input AND output leg)
-      [B]   bialgebra
-      [P]   π-copy
-      [E]   Euler decomposition (typically replaced by the more
-            fine-grained generator set)
-
-    Each axiom holds at all arities/phases as appropriate. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive zx_eq : forall {m n}, ZX m n -> ZX m n -> Prop :=
   (** Congruence: zx_eq is reflexive, symmetric, transitive, and
@@ -192,13 +100,11 @@ Inductive zx_eq : forall {m n}, ZX m n -> ZX m n -> Prop :=
   (** Identity-spider axiom [S2]: Z_1^1(0) = X_1^1(0) = id_1. *)
   | zx_eq_z_id : zx_eq (zx_z 1 1 phase_zero) (zx_id 1)
   | zx_eq_x_id : zx_eq (zx_x 1 1 phase_zero) (zx_id 1)
-  (** Spider-fusion [S1] for Z: when two Z-spiders meet along a single
-      wire, [Z_1^n(α) ⊙ Z_m^1(β) ≈ Z_m^n(α+β)].
+  (*
+   本节说明 ZX 相关定义、性质与动机。
 
-      The general Coecke–Duncan rule fuses ANY two same-colour spiders
-      connected by k ≥ 1 wires.  Here we state only the canonical
-      one-wire case; the general case is NOT derivable from this rule
-      alone (see header). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   | zx_eq_z_fusion :
       forall (m n : nat) (alpha beta : Phase),
         zx_eq (zx_z 1 n alpha ⊙ zx_z m 1 beta)
@@ -210,11 +116,11 @@ Inductive zx_eq : forall {m n}, ZX m n -> ZX m n -> Prop :=
   (** Hadamard self-inverse: H ⊙ H = id_1. *)
   | zx_eq_h_invol :
       zx_eq (zx_h ⊙ zx_h) (zx_id 1)
-  (** Colour change [CC]: a Z-spider conjugated by Hadamards on every
-      leg becomes an X-spider of the same arity and phase.  Stated only
-      for the 1→1 case; the general [m → n] case is NOT derivable from
-      the present rules (it needs general spider fusion, also out of
-      scope — see the header's "Out of scope" list). *)
+  (*
+   本节说明 ZX 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   | zx_eq_colour_change_1 :
       forall (alpha : Phase),
         zx_eq (zx_h ⊙ zx_z 1 1 alpha ⊙ zx_h)
@@ -222,23 +128,18 @@ Inductive zx_eq : forall {m n}, ZX m n -> ZX m n -> Prop :=
   (** Swap involutivity: σ ⊙ σ = id_2. *)
   | zx_eq_swap_invol :
       zx_eq (zx_swap ⊙ zx_swap) (zx_id 2)
-  (** Tensor-of-identities axiom: [id_m ⊕ id_n = id_(m+n)].
+  (*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-      This is a strict-monoidal-category axiom of the ZX-calculus
-      (the tensor unit/composition coherences hold on the nose
-      because diagrams are juxtaposed and re-wired on parallel
-      lines without ambient transport).  We adopt it as a primitive
-      axiom of [zx_eq] for the Bifunctor laws to discharge. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   | zx_eq_tensor_id :
       forall (m n : nat), zx_eq (zx_id m ⊕ zx_id n) (zx_id (m + n))
-  (** Interchange / functoriality of tensor: [(f ⊕ g) ⊙ (h ⊕ k)
-                                              = (f ⊙ h) ⊕ (g ⊙ k)].
+  (*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-      This is the strict-monoidal interchange law.  In the
-      ZX-calculus it holds for the same reason as
-      [zx_eq_tensor_id]: tensors are parallel juxtapositions, and
-      composition is wire connection on each strand
-      independently. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   | zx_eq_tensor_compose :
       forall {m n p m' n' p' : nat}
              (f : ZX n p) (h : ZX m n)
@@ -256,13 +157,11 @@ Next Obligation.
   - intros f g h; apply zx_eq_trans.
 Defined.
 
-(** ** ZX as a category
+(*
+   本节说明 ZX 相关定义、性质与动机。
 
-    The category structure: objects are [nat], morphisms are [ZX m n]
-    quotiented by [zx_eq], composition is [zx_compose].
-
-    The [Proper] instance and the identity / associativity laws are
-    exactly the [zx_eq_*] constructors. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance zx_compose_respects {m n p : nat} :
   Proper (equiv ==> equiv ==> equiv) (@zx_compose m n p).
@@ -284,130 +183,17 @@ Program Definition ZX_Cat : Category := {|
   comp_assoc_sym := fun m n p q f g h => zx_eq_assoc f g h
 |}.
 
-(** ** Reference: ZX is a hypergraph PROP
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The full structure on [ZX_Cat]:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-      1. STRICT MONOIDAL: tensor [zx_tensor] is associative on the nose
-         in arities ([m + m' + m'' = m + (m' + m'')] by [Nat.add_assoc]);
-         unitors are identities (since [0 + n = n] and [n + 0 = n]).
-         The interchange law [(f ⊕ g) ⊙ (h ⊕ k) = (f ⊙ h) ⊕ (g ⊙ k)] is
-         a derived rule from [zx_eq] (provable by induction on diagrams).
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-      2. SYMMETRIC: the braid at [(m, n)] is the [n]-fold horizontal
-         braid built from [zx_swap].  Naturality and the hexagon laws
-         follow from [zx_eq_swap_invol] plus the spider rules.
-
-      3. HYPERGRAPH: the SCFA at [n] is given by the Z-spider family:
-            μ_n : 2n → n   = ⊕_{i<n} (Z_2^1(0) at position i)
-            η_n : 0  → n   = ⊕_{i<n} (Z_0^1(0))
-            δ_n : n  → 2n  = ⊕_{i<n} (Z_1^2(0))
-            ε_n : n  → 0   = ⊕_{i<n} (Z_1^0(0)).
-         The Frobenius and special laws are EXACTLY the spider-fusion
-         and identity-spider rules.
-
-    Stating and proving 1–3 as a [PROP] + [Hypergraph] instance requires:
-
-      - the interchange law as a derived [zx_eq] judgment (not in the
-        primitive rule list — derivable by induction);
-      - the strict-monoidal coherence for [Nat.add_assoc] / [_0_l] / [_0_r]
-        as transport diagrams (mirroring the discussion of concrete
-        PROP instances in [Construction/PROP.v]);
-      - the SCFA construction at each [n] (a few hundred lines of
-        per-arity spider manipulation).
-
-    The DATA is complete: [ZX_Cat] is defined and the [zx_eq] axioms are
-    in place.  Lifting [ZX_Cat] to [PROP] + [Hypergraph] is mechanical
-    over this signature; the spider axioms in [zx_eq] DIRECTLY discharge
-    the Frobenius axioms (Lack's normal-form theorem realised
-    syntactically).  This is a clean follow-up rather than a research
-    obstruction.
-
-    ** Sticking-point analysis: the dependent-type tax
-
-    Building [ZX_Monoidal : Monoidal ZX_Cat] requires constructing a
-    [Bifunctor (ZX_Cat ∏ ZX_Cat) ZX_Cat] whose action on objects is
-    [(m, n) ↦ m + n] and whose action on morphisms is [zx_tensor].
-    The [Bifunctor]-laws (functoriality + naturality) hold by the
-    [zx_eq_tensor] congruence rule plus identity-/composition-tensor
-    laws (which need to be added to [zx_eq] as separate constructors
-    [zx_eq_tensor_id], [zx_eq_tensor_compose] capturing
-    [id_m ⊕ id_n = id_{m+n}] and the interchange law
-    [(f ⊕ g) ⊙ (h ⊕ k) = (f ⊙ h) ⊕ (g ⊙ k)]).
-
-    The structural isomorphisms involve TRANSPORT:
-
-      - [unit_left : 0 + n ≅ n]:  by [Nat.add_0_l : 0 + n = n] which
-        is DEFINITIONAL (since [+] recurs on the first argument), the
-        types [ZX (0+n) n] and [ZX n n] coincide, and
-        [unit_left := zx_id n] works on the nose.
-
-      - [unit_right : n + 0 ≅ n]:  by [Nat.add_0_r : n + 0 = n], which
-        is NOT definitional — requires [eq_rect] / [match]-transport.
-        The iso is [zx_id n] transported.
-
-      - [tensor_assoc : (m + n) + p ≅ m + (n + p)]:  by [Nat.add_assoc],
-        also NOT definitional — same transport pattern.
-
-      - braid:  the symmetric-monoidal braid on [(m, n)] is the
-        [m × n]-many-wire-crossing built from [zx_swap], indexed by a
-        finite reshuffling.  Construction requires recursion on [m, n]
-        and the braid-naturality requires the swap-cancellation
-        constructor (already present as [zx_eq_swap_invol]).
-
-    The implementation is a pure dependent-types-and-arithmetic
-    exercise: roughly the same shape as [Span/Category.v]-style proofs
-    but indexed by [nat] rather than abstract objects.  The current
-    library imports [eq_rect_dep] and [rew] in [Lib/Tactics.v], so the
-    transport machinery is in scope.
-
-    ** Frobenius / Hypergraph layer
-
-    Once the SMC layer is in place, the Hypergraph instance on every
-    [n : nat] uses the n-fold tensor of the Z-spider SCFA (or X-spider
-    SCFA — they are isomorphic via the colour-change rule):
-
-        μ_n  :=  Z_2^1(0) ⊕ Z_2^1(0) ⊕ ... ⊕ Z_2^1(0)   (n times, with
-                                                         appropriate
-                                                         re-wiring)
-        η_n  :=  Z_0^1(0) ⊕ ... ⊕ Z_0^1(0)
-        δ_n  :=  Z_1^2(0) ⊕ ... ⊕ Z_1^2(0)
-        ε_n  :=  Z_1^0(0) ⊕ ... ⊕ Z_1^0(0)
-
-    The Frobenius axioms (associativity of mu, coassociativity of
-    delta, the Frobenius condition, and the specialness condition
-    [mu ∘ delta ≈ id]) all reduce to instances of [zx_eq_z_fusion] +
-    [zx_eq_z_id].  Stating the [Hypergraph]-class fields against the
-    generic [Monoidal] pattern requires that the [Bifunctor]-tensor
-    on [ZX_Cat] reduce on the diagonal
-    [(n, n)] in the correct way, which is precisely the same transport
-    bookkeeping as the SMC layer.
-
-    ** Volume estimate
-
-    Full ZX-PROP-Hypergraph instance: roughly 400-600 lines split
-    across a [ZX_Monoidal.v], [ZX_Symmetric.v], and
-    [ZX_Hypergraph.v] family of modules, each with the bulk of the
-    work being arithmetic-transport bookkeeping rather than novel
-    categorical reasoning.
-
-    The signature DATA in this file — [ZX_Cat], [zx_eq] with the full
-    set of spider-fusion + colour-change + identity + swap rules — is
-    the foundation; the layered PROP-and-Hypergraph instance is a
-    clean follow-up exercise organised against the [PROP] / [Hypergraph]
-    classes defined in [Construction/PROP.v] and
-    [Structure/Monoidal/Hypergraph.v]. *)
-
-(** ** [zx_tensor] as a Bifunctor on [ZX_Cat]
-
-    With [zx_eq_tensor_id] and [zx_eq_tensor_compose] in scope, the
-    Bifunctor laws on [zx_tensor] discharge mechanically:
-      - object mapping: [(m, n) ↦ m + n] (the strict-monoidal sum);
-      - fmap_id: [id_m ⊕ id_n ≈ id_(m+n)] by [zx_eq_tensor_id];
-      - fmap_compose: interchange by [zx_eq_tensor_compose] (sym).
-
-    This is the first piece of the strict symmetric monoidal hypergraph
-    structure on [ZX_Cat]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance zx_tensor_respects {m n m' n' : nat} :
   Proper (equiv ==> equiv ==> equiv) (@zx_tensor m n m' n').

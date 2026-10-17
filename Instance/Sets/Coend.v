@@ -30,9 +30,11 @@ Context (F : C^op ∏ C ⟶ Sets).
 Inductive coend_sum : Type :=
   | ci : forall x : C, F (x, x) -> coend_sum.
 
-(** The finest congruence identifying the fibre equivalence ([ce_point]) and
-    the coend glue ([ce_glue]); [ce_sym] and [ce_trans] close it into an
-    equivalence, with reflexivity derived below. *)
+(*
+   本节说明等价、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive coend_eq : coend_sum -> coend_sum -> Type :=
   | ce_point : forall (x : C) (a b : F (x, x)),
       a ≈ b -> coend_eq (ci x a) (ci x b)
@@ -86,9 +88,11 @@ Definition coend_med_fun {Q : SetoidObject}
   (i' : forall x : C, SetoidMorphism (F (x, x)) Q) (s : coend_sum) : Q :=
   match s with ci x a => i' x a end.
 
-(** Respectfulness of [coend_med_fun] for [coend_eq], by induction on the
-    equivalence-closure derivation.  The [ce_glue] case is precisely [i']'s own
-    cowedge law [cond'] read at the point [a]. *)
+(*
+   本节说明等价、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coend_med_respects {Q : SetoidObject}
   (i' : forall x : C, SetoidMorphism (F (x, x)) Q)
   (cond' : Cowedge_cond F Q i')
@@ -117,10 +121,11 @@ Next Obligation.
   exact (coend_med_respects i' cond' s t Hst).
 Qed.
 
-(** The coend and its universal property.  For every cowedge [(Q, i')] the
-    mediator above is the unique setoid map out of the coend recovering each
-    leg [i' x]; commuting holds by reflexivity and uniqueness is the pointwise
-    reading of the leg equations. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SetsCoend : Coend F.
 Proof.
   unshelve refine

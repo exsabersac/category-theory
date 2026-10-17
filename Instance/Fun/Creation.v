@@ -38,12 +38,11 @@ Context {P : Category@{jo jh jh}} {X : Category@{co ch ch}}.
 (* |P|: the discrete category on the objects of P. *)
 Definition ObjCat : Category@{jo jh jh} := DiscreteCat@{jo jh jh} (obj[P]).
 
-(* The inclusion |P| ⟶ P, through Structure/Limit/Comparison.v's
-   discrete-diagram functor.  An earlier revision of this comment explained
-   the choice by "Instance/Discrete.v's unannotated one pins the target's hom
-   and proof levels to [Set]"; since the PR "algebraic carriers are sets"
-   (2026-09-17) that donor is annotated and [DiscreteCat_Functor'] is a
-   transparent alias of it, so either name works here. *)
+(*
+   本节说明函子、（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition DiscInc : ObjCat ⟶ P := DiscreteCat_Functor' (fun p : P => p).
 
 (* Restriction along the inclusion: precomposition, Theory/Kan/Extension.v's
@@ -286,12 +285,11 @@ Definition creation_leg (L : ∀ p : P, Limit (Eval p ◯ D)) (j : J) (p : P) :
 
 End ResCreation.
 
-(* The issue's name for the theorem, an alias of [Res_CreatesLimit] with the
-   same hypothesis.  ANNOTATED: written bare over [{J P X : Category}] the
-   alias minimized P's object universe onto its hom universe and J's hom
-   onto it (measured; the header records the block).  One hom level [h]
-   serves J, P and X, which [Res_CreatesLimit]'s four equations identify
-   anyway. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition discrete_inclusion_creates_limits@{io jo co h +}
   {J : Category@{io h h}} {P : Category@{jo h h}} {X : Category@{co h h}}
   (D : J ⟶ [P, X]) (L : ∀ p : P, Limit (Eval p ◯ D)) :
@@ -325,11 +323,11 @@ Section Strictness.
 
 Context {P X : Category}.
 
-(* The object action of the restriction is the identity ([res_obj_at]
-   above). Every cone upstairs strictly lifts its own image (Structure/Limit/
-   Creation.v's [self_lift]); Riehl's "strictly creates" would need every
-   cone DOWNSTAIRS to be such an image on the nose, an [eq] between functor
-   records that does not hold (probe). *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition strict_self {J : Category} (D : J ⟶ [P, X]) (M : Cone D) :
   StrictLift D (@Res P X) (FCone (@Res P X) M) := self_lift M.
 

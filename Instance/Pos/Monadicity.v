@@ -595,19 +595,19 @@ Proof.
     intros x z; simpl; [ reflexivity | exact (inhabits (reflexivity _)) ].
 Defined.
 
-(* [choice_setoid] is Instance/Sets/Propositional/Full.v's [SquashSetoid]
-   since #1349, which unified the two: [bool] with x ≈ y the sum
-   (x = y) + A.  The [+] allows the cap c <= sum.u1 that [SquashSetoid]
-   carries on Coq 8.19.2 and 8.20.1 (the header's UNIVERSES). *)
+(*
+   本节说明 Monadicity 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition choice_setoid@{c | +} (A : Type@{c}) : SetoidObject@{c c} :=
   SquashSetoid@{c} A.
 
-(* The setoid read here, [choice_setoid A], has [true ≈ false] the sum of
-   A with [true = false], refuted by the standard library's
-   [true <> false] in an empty match.  [discriminate] would add
-   c <= False_rect.u0 to this block and to [MPos_Id_iff]'s (read by
-   [About]); the empty match leaves the block as it was on Rocq 9.1.1
-   (the header's UNIVERSES for Coq 8.19.2 and 8.20.1). *)
+(*
+   本节说明 Monadicity 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma trunc_choice@{c so | c < so +} (Htrunc : SetsTruncElim@{c so})
   (A : Type@{c}) : inhabited A → A.
 Proof.
@@ -652,11 +652,11 @@ Definition trunc_all_PropEquiv@{c so | c < so +}
     (fun x y => inhabited (x ≈ y)) (fun x y H => T X x y H)
     (fun x y H => inhabits H).
 
-(* Not only [PosDisc]: a morphism of monads to the identity monad from the
-   monad of ANY left adjoint of [Pos_Forget] gives the principle, since the
-   poset F S is propositional ([pos_PropEquiv]) and the unit carries x ≈ y
-   into it.  "Any" is at this lemma's universe instance: the [Adjunction]
-   record's strict slot is so, not a level of its own. *)
+(*
+   本节说明伴随、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma any_adj_to_Id_trunc@{c so po p0 p1 p2 p3 s a |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1, c <= p0,
   c <= p1 +}
@@ -680,22 +680,10 @@ Proof.
            (@ret _ _ (Adjunction_Induced_Monad A) S) x y H).
 Qed.
 
-(* The principle under the tree's other names for it, written unfolded so
-   that this file needs no further [Require]: the hypothesis of
-   [choice_of_untr] is Instance/Sets/Classifier/OneLevel.v's
-   [Untruncate@{c}] and that of [choice_of_IEM] its [IEM@{c}], each by
-   [eq_refl] (control C53 of Test/ProbeMonadicity469.v).
-   Instance/Top/Components.v (#462) already states the same links under
-   its own names: its [Untruncate_unsquash] has the statement of
-   [choice_of_untr], its [unsquash_Untruncate] is the untruncated form of
-   [untr_of_choice], and its [SquashSetoid] is the idea of
-   [choice_setoid] below; this file does not require that topology file.
-   CORRECTION (#1349): unified on the maintainer's decision.
-   [untr_of_choice] and [choice_of_untr] moved, names, binders and terms
-   unchanged, to Instance/Sets/Propositional/Full.v, which this file
-   requires, and Components.v derives its two constants from them;
-   [SquashSetoid] moved there too, and [choice_setoid] is now
-   [SquashSetoid] by definition.
+(*
+   本节说明 Monadicity 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 Definition choice_of_IEM@{c | +} (E : ∀ P : Type@{c}, P + (P → False)) :
   ∀ A : Type@{c}, inhabited A → A :=

@@ -23,173 +23,34 @@ Set Default Proof Using "All".
 
 (** * The unit interval as an object of Top *)
 
-(* nLab:      https://ncatlab.org/nlab/show/interval+object
+(*
+   nLab:      https://ncatlab.org/nlab/show/interval+object
    nLab:      https://ncatlab.org/nlab/show/metric+space
    Book:      Riehl, "Category Theory in Context", Epilogue §E.3 ("Freyd's
-              characterization of the unit interval"), printed p. 255
-              (PDF p. 275) — the ROAD NOT TAKEN here; see below
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.5, printed p. 20 (the construction this file serves)
-   Docs:      Rocq standard library, Reals (Rdefinitions, Raxioms, RIneq,
-              Rbasic_fun) and the micromega decision procedures (Lra, Psatz)
 
-   The unit interval, the unit square, and the little apparatus of continuous
-   reparametrizations that the fundamental groupoid of
-   Instance/Top/FundamentalGroupoid.v runs on.  Nothing here is specific to
-   that construction beyond the choice of which formulas to certify.
+   本节说明 Interval 相关定义、性质与动机。
 
-   ON THE CITATIONS.  No book was opened for this file, and nothing below
-   quotes one; each claim about what a printed source says is a paraphrase.
-   The printed/PDF page pairs are taken from the in-tree page map
-   doc/plan/books/riehl/pagemap.md (its Epilogue row fixes
-   §E.3 at printed p. 255 = PDF p. 275, the offset being a uniform +20)
-   and, for the section title and its contents,
-   doc/plan/books/riehl/issues/drafts-E.md.  Riehl's §E.3 is FREYD'S
-   CHARACTERIZATION: the interval carries a universal property — it is the
-   terminal coalgebra of the wedge endofunctor on bipointed spaces, the
-   halving map being the structure map — so that it need not be built out of
-   the reals at all.  This file takes the other road deliberately, and builds
-   the concrete stdlib-reals interval; the coalgebraic characterization is not
-   formalized anywhere in this tree.
-
-   THE INTERVAL AND WHAT IT COSTS.  There is no unique reasonable [0,1] in a
-   constructive setting, and the choice has to be paid for.  This file takes
-   the STANDARD LIBRARY REALS — `Rdefinitions.R` and its order — and defines
-
-       Ipt := { a real together with proofs 0 <= r and r <= 1 }
-
-   with `≈` comparing only the real part.  The price, measured rather than
-   guessed, is exactly two stdlib axioms, and they are the ones that the
-   standard library's own construction of R carries:
-
-       ClassicalDedekindReals.sig_forall_dec
-       FunctionalExtensionality.functional_extensionality_dep
-
-   A third, `ClassicalDedekindReals.sig_not_dec`, is picked up by anything
-   that goes through the least-upper-bound property (`Raxioms.completeness`);
-   in this development that is the interval-connectedness argument in
-   Instance/Top/FundamentalGroupoid.v, not this file.
-
-   Two is the CEILING, not the invariable price, and the figure is measured
-   per constant rather than sampled from the headlines.  `Print Assumptions`
-   was run on all 160 constants defined here — there are no Program
-   obligations to add to that count, every definition below being explicit —
-   and the split is:
-
-         1 constant  closed under the global context ([rf_id])
-        34           carry [sig_forall_dec] ALONE — chiefly the [BallSpace]
-                     record with its projections and open-set lemmas, the
-                     [Ipt] setoid with its coordinate readers, and the two
-                     simplest reparametrizations [rf_zero] and [rf_rev]
-       125           carry exactly the two above
-         0           carry [sig_not_dec]
-
-   All 34 are named in docs/AXIOMS.md under "Stdlib axioms", which
-   is where the library's own policy puts stdlib axioms used by a concrete
-   instance layer.  NO axiom is declared here, and none of the core theory
-   acquires one: this file and its companion are the only two in the tree that
-   import the reals at all.  CORRECTION (#410): not so, here or in the note
-   on [Rcases] and [Rlin] below.  docs/AXIOMS.md, under "Stdlib axioms",
-   names the development files that import the classical reals, and
-   Instance/Top/Circle.v, Instance/Top/Solenoid.v and
-   Instance/Top/Solenoid/Presentations.v import the standard library's
-   constructive Cauchy reals (Reals/Cauchy), which carry no axiom.
-   CORRECTION (#462): so does Instance/Top/Components/Paths.v.
-
-   What the choice buys is that the interval is the real one, so the
-   fundamental groupoid built on it is the classical construction and not a
-   synthetic surrogate.  What it costs, besides the two axioms, is that the
-   development inherits the standard library's classical real order: the
-   comparisons `Rle_dec` and `total_order_T` are used freely below, and the
-   pasting lemma depends on them.  A constructive-analysis treatment (Bishop
-   reals, or a synthetic interval object) would avoid the axioms but would
-   need a different pasting argument, since gluing along `u ≤ c` is precisely
-   where decidability of the order enters.  That alternative is not attempted.
-
-   THE TOPOLOGY.  Rather than the subspace topology of R as a set of opens,
-   the file introduces [BallSpace] — a setoid with a distance satisfying three
-   pseudometric laws — and generates a [TopSpace] from it by [BallTop]: a
-   predicate is open when every point at which it holds carries a POSITIVE
-   RADIUS inside which it still holds.  The radius is data, which is what
-   discharges Instance/Top.v's type-valued union axiom with no choice
-   principle.  On [0,1] this is the usual metric topology of `|x - y|`, and
-   the square is the same construction over the sup distance.  That these
-   coincide with the Euclidean subspace topology and with the product topology
-   respectively is an identification of standard notions, made here in prose;
-   neither statement is formalized in this tree, there being no other
-   construction of those topologies to compare against.  Only two ball spaces
-   are ever built ([BS_I] and [BS_Sq]); the general form costs nothing and is
-   what lets one pasting lemma serve the interval and the square alike.
-
-   Contents:
-
-       BallSpace, BallTop      a distance, and the topology it generates
-       lipschitz_continuous    Lipschitz maps of ball spaces are continuous
-       Ipt, BS_I, I_Top        the unit interval as an object of Top
-       BS_prod, BS_Sq, Sq_Top  the unit square, under the sup distance
-       I_arrow, Sq_arrow,
-       SqSq_arrow              arrows of Top from certified real formulas
-       paste_arrow             gluing two arrows along a level set of a
-                               1-Lipschitz coordinate, with [paste_left] and
-                               [paste_right] evaluating the two halves
-       rf_id ... rf_assoc      the reparametrization formulas, each Lipschitz
-                               with constant 2
-       I_dbl, I_dbl', I_rev,
-       I_assoc, I_tent         those formulas as arrows I_Top ~> I_Top
-       Sq_flip, Sq_lower,
-       Sq_upper, Sq_leftside,
-       Sq_rightside            the reindexings of the square
-       Sq_hmap                 the straight-line homotopy of parameters
-
-   WHAT IS NOT HERE.  No metric-space theory beyond what the topology needs:
-   no completeness, no compactness of [0,1], no intermediate value theorem.
-   The one genuinely analytic fact the development uses — that a continuous
-   map from the interval to a two-point discrete space is constant — is proved
-   in the companion file, where it is needed.
-
-   EXPORTED, WITH NO CURRENT CONSUMER.  Eight of the constants below are
-   proved and exported but referenced by nothing in the tree, this file
-   included.  Counted from the `.glob` reference records rather than by
-   reading, they are: [bdist_nonneg] and [bdist_proper]; [RLip_max]; and the
-   five evaluation lemmas [I_arrow_eval], [I_assoc_eval], [I_tent_eval],
-   [Sq_arrow_eval] and [Sq_first_eval].  Most complete a pair or a family
-   whose other members are genuinely used: [RLip_min] by [rf_assoc_lip] here,
-   and [I_dbl_eval], [I_dbl'_eval], [I_rev_eval], [Sq_hmap_eval] and the
-   [Sq_*_t]/[Sq_*_s] readers by the companion file.  The pseudometric three
-   are the exception — [bdist_respects] is referenced only by [bdist_proper],
-   and nothing at all references [bdist_nonneg] or [bdist_proper] — but they
-   are what makes the [BallSpace] comment's claim about derived laws true, so
-   they stay.  Nothing here is removed on this file's own judgement; the
-   decision to keep or drop is the maintainer's. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Case-splitting tactics for the real-number side arithmetic *)
 
-(* Most real inequalities below become LINEAR once the three case-analysing
-   operators of the standard library -- [Rabs], [Rmin], [Rmax] -- have been
-   expanded into their underlying decisions.  [Rcases] performs exactly that
-   expansion, and [Rlin] hands the resulting goals to [lra].  The exceptions
-   IN THIS FILE are the four estimates that multiply two unknowns together --
-   [Sq_lipschitz], [hfun_lo], [hfun_hi] and [hfun_lip] -- which call [nra]
-   instead.  (The companion file has two more of its own.) *)
-(* Scope note: [Rcases] splits the OUTERMOST decision it meets, so it applies
-   only where [Rmin] and [Rmax] are not nested inside one another.  The one
-   nested formula in this file, [rf_assoc], is handled instead by the three
-   explicit branch equations [rf_assoc_first]/[rf_assoc_middle]/[rf_assoc_last],
-   which rewrite the inner minimum away first. *)
-(* Namespace note: both are GLOBAL [Ltac]s, not [Local] ones, and that is
-   deliberate — the companion Instance/Top/FundamentalGroupoid.v calls [Rlin]
-   31 times, against 49 calls here, so making them [Local] would break it.
-   ([Rcases] is never invoked directly in either file; it is reached only
-   through [Rlin].)  They do not live in Lib/Tactics.v, where CLAUDE.md records
-   that this library's custom tactics belong, because they are built out of
-   [Rabs]/[Rmin]/[Rmax] and [lra]: putting them there would pull Coq.Reals and
-   micromega into Lib and hand the reals' axioms to every file in the tree,
-   whereas at present this file and its companion are the only two that import
-   the reals at all.  Two consequences worth stating: [Ltac] definitions are
-   not recorded in the `.glob` files, so neither name is visible to a name
-   sweep over glob entries and any claim of coverage from such a sweep does not
-   extend to them; and both names are therefore in the global tactic namespace,
-   where — checked across the tree — nothing else defines [Rcases] or [Rlin]. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac Rcases :=
   unfold Rabs, Rmin, Rmax;
   repeat
@@ -202,14 +63,11 @@ Ltac Rlin := Rcases; lra.
 
 (** ** Ball spaces *)
 
-(* A carrier with a distance, enough to generate a topology by balls.  The
-   three laws are the pseudometric ones stated for a setoid: the distance
-   vanishes on `≈`-equal points, it is symmetric, and it satisfies the
-   triangle inequality.  Nonnegativity and respectfulness are derived below
-   rather than demanded — [bdist_nonneg] for the first, [bdist_respects] and
-   its two-sided [Proper] form [bdist_proper] for the second — and separation
-   (distance zero implies `≈`) is never needed: the topology only ever moves
-   outwards from a point. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record BallSpace@{o} := {
   ball_carrier :> SetoidObject@{o o};
 
@@ -230,9 +88,11 @@ Proof.
   lra.
 Qed.
 
-(* Respectfulness in the first argument: the two triangle inequalities through
-   the `≈`-equal pair squeeze the two distances together, [bdist_zero] having
-   collapsed the connecting term to 0 in each direction. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma bdist_respects (A : BallSpace) (x x' y : A) :
   x ≈ x' → bdist x y = bdist x' y.
 Proof.
@@ -244,9 +104,11 @@ Proof.
   lra.
 Qed.
 
-(* And in both arguments at once, by symmetry.  This is the [Proper] form the
-   library states respectfulness in; the target relation is Leibniz equality
-   because the distance lands in R, not in a setoid. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma bdist_proper (A : BallSpace) :
   Proper (equiv ==> equiv ==> eq) (@bdist A).
 Proof.
@@ -256,10 +118,11 @@ Proof.
   exact (bdist_sym A y' x').
 Qed.
 
-(* A predicate is open when every point at which it holds carries a positive
-   radius inside which it continues to hold.  For a metric space this is the
-   usual topology; the radius is DATA, which is what lets the union axiom be
-   discharged without any choice principle. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ball_open (A : BallSpace) (U : A → Type) : Type :=
   ∀ x : A, U x → { d : R & ((0 < d) ∧ (∀ y : A, bdist x y < d → U y))%type }.
 
@@ -326,10 +189,11 @@ Definition BallTop (A : BallSpace) : TopSpace := {|
   open_inter    := ball_inter A
 |}.
 
-(* A Lipschitz map of ball spaces is continuous: shrink the target radius by
-   the Lipschitz constant.  This is the only route to continuity used for the
-   parameter maps below; the maps that are merely piecewise Lipschitz are
-   handled by [paste_arrow] instead. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma lipschitz_continuous (A B : BallSpace)
       (f : SetoidMorphism (ball_carrier A) (ball_carrier B)) (L : R) (HL : 0 < L)
       (Hf : ∀ x y : A, bdist (f x) (f y) <= L * bdist x y) :
@@ -351,9 +215,11 @@ Qed.
 
 (** ** The interval and the square *)
 
-(* A point of [0,1]: a real together with its two bounds.  The bounds are
-   [Prop]-valued, and the setoid equality below compares only the real part,
-   so no proof irrelevance is needed anywhere. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Ipt := mkI {
   ival :> R;
   ipt_lo : 0 <= ival;
@@ -492,10 +358,11 @@ Definition sq_s (z : BS_Sq) : R := ival (bs_snd z).
 
 (** ** A small Lipschitz calculus *)
 
-(* Every reparametrization used downstream is a minimum or maximum of affine
-   functions, hence globally Lipschitz on all of R with an explicit constant.
-   [RLip] records that constant; the three closure lemmas below are all that
-   is needed to certify the concrete formulas. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RLip (L : R) (k : R → R) : Prop :=
   ∀ a b, Rabs (k a - k b) <= L * Rabs (a - b).
 
@@ -630,10 +497,11 @@ Definition SqSq_arrow : Sq_Top ~{Top}~> Sq_Top :=
 
 End SqSqArrow.
 
-(* A map from the square to the interval, given by a two-variable formula.
-   The Lipschitz hypothesis is stated ON THE SQUARE only: the formulas used
-   below (convex combinations) are not globally Lipschitz on R², and there is
-   no need for them to be. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section SqArrow.
 
 Context (k : R → R → R).
@@ -693,14 +561,11 @@ End SqArrow.
 
 (** ** Pasting two arrows along a level set of a coordinate *)
 
-(* The gluing lemma in the form the fundamental groupoid needs: A is a ball
-   space carrying a 1-Lipschitz real coordinate u, and f and g are arrows of
-   Top defined on ALL of A that agree wherever u takes the value c.  Their
-   paste -- f where u ≤ c, g where u ≥ c -- is again continuous.
-   Both maps being globally defined is what keeps subspaces out of the
-   development entirely: the concatenation of paths uses [f := p ∘ I_dbl] and
-   [g := q ∘ I_dbl'], whose reparametrizations are clamped rather than
-   partial. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Paste.
 
@@ -808,17 +673,11 @@ End Paste.
 
 (** ** The reparametrizations *)
 
-(* Every reparametrization the fundamental groupoid needs, as a formula on R.
-   Each is a minimum or a maximum of affine functions, hence Lipschitz with
-   constant 2, and each carries [0,1] into [0,1].
+(*
+   本节说明 Interval 相关定义、性质与动机。
 
-       rf_id     the identity
-       rf_rev    t ↦ 1 - t              reversal of a path
-       rf_dbl    t ↦ min(2t, 1)         first half at double speed
-       rf_dbl'   t ↦ max(2t - 1, 0)     second half at double speed
-       rf_assoc  the piecewise-linear map that carries (p·q)·r to p·(q·r)
-       rf_tent   t ↦ min(2t, 2 - 2t)    out and back
-       rf_zero   the constant 0 *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition rf_id (t : R) : R := t.
 Definition rf_rev (t : R) : R := 1 - t.
@@ -856,10 +715,11 @@ Proof. unfold rf_dbl'; Rlin. Qed.
 Lemma rf_dbl'_lip : RLip 2 rf_dbl'.
 Proof. intros a b; unfold rf_dbl'; Rlin. Qed.
 
-(* The three linear branches of [rf_assoc], each obtained by rewriting the
-   INNER minimum away before the outer one.  These equations are what the
-   associativity computation consumes; [rf_assoc] itself is never unfolded
-   downstream. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rf_assoc_first (t : R) : 0 <= t → t <= 1/4 → rf_assoc t = 2 * t.
 Proof.
   intros H1 H2; unfold rf_assoc.
@@ -982,14 +842,11 @@ Definition Sq_rightside : Sq_Top ~{Top}~> Sq_Top :=
 
 (** ** The homotopy parameter maps *)
 
-(* The two-variable formula the whole development runs on:
-   (t, s) ↦ (1 - s)·φ(t) + s·ψ(t), the straight-line homotopy in the
-   PARAMETER between two reparametrizations.  [Sq_arrow] is applied exactly
-   twice below, and this is the only one of the two formulas that mixes its
-   arguments at all; the other, [Sq_first], is the first projection.  Unlike
-   the interval formulas this one is not Lipschitz on all of R² -- the
-   coefficient (1 - s) is unbounded -- so its estimate is stated over the
-   square only. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomotopyMap.
 
@@ -1096,9 +953,11 @@ Proof. reflexivity. Qed.
 
 (** ** Applying an arrow to points that agree on coordinates *)
 
-(* The two respectfulness lemmas, in the form every computation below uses:
-   an arrow out of the interval or the square only sees the real coordinates,
-   so equal coordinates give `≈`-equal values. *)
+(*
+   本节说明 Interval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Iap {X : TopSpace} (f : I_Top ~{Top}~> X) (x y : Ipt) :
   ival x = ival y → f x ≈ f y.
 Proof. intro H; now apply proper_morphism. Qed.

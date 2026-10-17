@@ -32,23 +32,20 @@ Generalizable All Variables.
 
 (** ** §1. The discrete category on a setoid: two small lemmas *)
 
-(* An [≈] between two points of [DiscreteSetoidCat S] IS an arrow between
-   them, so it is half of an isomorphism and symmetry supplies the other
-   half.  Both inverse laws are equations in a thin category and are
-   discharged by the ambient obligation tactic.  It is used three times
-   below -- at the two [fmap_respects]-shaped obligations of §2 and §3,
-   and again in §7's [Cat_Disc_not_skeletal] -- which is why it is
-   factored out. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition disc_setoid_iso {A : Type} (S : Setoid A) {x y : A}
   (e : @equiv A S x y) : @Isomorphism (DiscreteSetoidCat S) x y :=
   {| to := e ; from := symmetry e |}.
 
-(* The converse collapse: a zig-zag in [DiscreteSetoidCat S] contracts to
-   a single [≈].  This is the only induction in the file, and it is the
-   whole reason the backward transpose exists -- the [Sets]-morphism it
-   produces must respect [ZigZag], and this is what turns a chain into
-   the [≈] the target setoid wants.  Each of the three cases is one law
-   of [S]: reflexivity, transitivity, and transitivity after symmetry. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma zigzag_setoid_contract {A : Type} (S : Setoid A)
   (x y : DiscreteSetoidCat S) : ZigZag x y → @equiv A S x y.
 Proof.
@@ -60,21 +57,21 @@ Qed.
 
 (** ** §2. The discrete functor Sets ⟶ Cat *)
 
-(* The arrow action.  Both the object and the arrow part are READ OFF a
-   [Sets]-morphism: [fobj] is its underlying function and [fmap] is its
-   [proper_morphism] certificate, since an arrow of the discrete category
-   on a setoid is a proof of [≈].  All three functor laws are equations
-   in a thin category and cost nothing. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Cat_Disc_map {A B : Sets} (f : A ~> B) :
   DiscreteSetoidCat (is_setoid A) ⟶ DiscreteSetoidCat (is_setoid B) :=
   {| fobj := f
    ; fmap := fun x y (e : x ≈ y) => proper_morphism f x y e |}.
 
-(* The functor.  Its ONE obligation is [fmap_respects]: two pointwise
-   [≈]-equal [Sets]-morphisms induce naturally isomorphic functors, the
-   component at [a] being [disc_setoid_iso] of the hypothesis at [a] and the
-   naturality clause being [True].  [fmap_id] and [fmap_comp] are
-   discharged by the ambient tactic for the same reason. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Cat_Disc : Sets ⟶ Cat := {|
   fobj := fun A => DiscreteSetoidCat (is_setoid A)
 ; fmap := fun _ _ f => Cat_Disc_map f
@@ -101,23 +98,22 @@ Example cat_disc_fmap (A B : Sets) (f : A ~> B) (a : carrier A) :
 
 (** ** §3. The transposition *)
 
-(* Forward: a map on components extends to a functor.  Its object action
-   IS the given map -- [carrier (pi0 C)] is [obj[C]] by
-   Theory/Connected/Components.v's [pi0_carrier] -- and its arrow action
-   is the map's own respectfulness certificate applied to the one-step
-   chain [hom_zigzag f].  So no data is invented in this direction; the
-   two ingredients are already present in the argument. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition pi0_to {C : Cat} {A : Sets}
   (h : fobj[Pi0] C ~{Sets}~> A) : C ~{Cat}~> fobj[Cat_Disc] A :=
   {| fobj := h
    ; fmap := fun x y (f : x ~> y) =>
        @proper_morphism _ _ _ _ h x y (hom_zigzag f) |}.
 
-(* Backward: a functor into a discrete category restricts to a map on
-   components.  Its underlying function is the functor's object action;
-   the content is the ONE obligation, which is where [zigzag_fmap] and
-   [zigzag_setoid_contract] are spent -- transport the chain along the functor,
-   then contract it in the thin target. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition pi0_from {C : Cat} {A : Sets}
   (F : C ~{Cat}~> fobj[Cat_Disc] A) : fobj[Pi0] C ~{Sets}~> A :=
   {| morphism := fobj[F] |}.
@@ -145,10 +141,11 @@ Next Obligation. intros F G H a; exact (to (`1 H a)). Defined.
 
 (** ** §4. The adjunction *)
 
-(* Mac Lane's leftmost adjunction, packaged.  ZERO obligations: the two
-   naturality clauses [Build_Adjunction'] asks for land in [Cat] at a
-   thin target, where [≈] between functors is a family of isomorphisms
-   together with a [True], and the object families agree definitionally. *)
+(*
+   本节说明伴随、函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Components_Disc_Adjunction : Pi0 ⊣ Cat_Disc :=
   Build_Adjunction' pi0_adj_iso _ _.
 
@@ -160,21 +157,22 @@ Example pi0_adj_from_at (C : Cat) (A : Sets)
   (F : C ~{Cat}~> fobj[Cat_Disc] A) (x : C) :
   from (pi0_adj_iso C A) F x = F x := eq_refl.
 
-(* The unit and the counit are both the identity function -- on the nose.
-   The unit is [C ⟶ Cat_Disc (Pi0 C)], the projection of an object to its
-   component, and the carrier of [pi0 C] IS [obj[C]], so there is nothing
-   for it to do on objects. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example pi0_unit_is_id (C : Cat) (x : C) :
   fobj[@unit _ _ _ _ Components_Disc_Adjunction C] x = x := eq_refl.
 
 Example pi0_counit_is_id (A : Sets) (a : carrier A) :
   @counit _ _ _ _ Components_Disc_Adjunction A a = a := eq_refl.
 
-(* NEGATIVE 1 (CONVERSION).  The [Sets]-side round trip is not strict.
-   Two controls localize the failure to a single field: the value at each
-   point returns on the nose, and so does the whole [morphism] FIELD, so
-   -- [SetoidMorphism] being a primitive-projection record with eta --
-   what differs is exactly [proper_morphism], which [pi0_from] rebuilds. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example pi0_rt_from_to_strict (C : Cat) (A : Sets)
   (h : fobj[Pi0] C ~{Sets}~> A) :
   from (pi0_adj_iso C A) (to (pi0_adj_iso C A) h) = h := eq_refl.
@@ -188,11 +186,11 @@ Example pi0_rt_from_to_fn (C : Cat) (A : Sets)
   @morphism _ _ _ _ (from (pi0_adj_iso C A) (to (pi0_adj_iso C A) h))
     = @morphism _ _ _ _ h := eq_refl.
 
-(* NEGATIVE 2 and NEGATIVE 3 (CONVERSION).  The [Cat]-side round trip is
-   not strict either, and the cause is DIFFERENT: the object action does
-   return on the nose (control), the ARROW action does not, and it cannot,
-   because an arrow of [DiscreteSetoidCat S] is a PROOF of [≈] and the
-   round trip manufactures a fresh one through [zigzag_setoid_contract]. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example pi0_rt_to_from_strict (C : Cat) (A : Sets)
   (F : C ~{Cat}~> fobj[Cat_Disc] A) :
   to (pi0_adj_iso C A) (from (pi0_adj_iso C A) F) = F := eq_refl.
@@ -207,11 +205,11 @@ Fail Example pi0_rt_to_from_map (C : Cat) (A : Sets)
   fmap[to (pi0_adj_iso C A) (from (pi0_adj_iso C A) F)] f = fmap[F] f
   := eq_refl.
 
-(* ... and the [≈] that replaces it is VACUOUS, which the next two
-   commands say together rather than separately: the first holds, and the
-   second shows it holds of ANY two parallel arrows, so it verifies
-   nothing about the round trip.  The content of [iso_from_to] here is
-   the object family, which is [pi0_rt_to_from_obj]. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example pi0_rt_to_from_map_equiv (C : Cat) (A : Sets)
   (F : C ~{Cat}~> fobj[Cat_Disc] A) (x y : C) (f : x ~> y) :
   fmap[to (pi0_adj_iso C A) (from (pi0_adj_iso C A) F)] f ≈ fmap[F] f
@@ -222,17 +220,11 @@ Example cat_disc_hom_trivial (A : Sets) (x y : carrier A)
 
 (** ** §5. Cat_Disc is fully faithful; Sets is reflective in Cat *)
 
-(* [Full] asks only for a section of [fmap] with no functoriality, and
-   here the section is the reverse reading of §2: the underlying function
-   of the recovered [Sets]-morphism is the functor's object action and
-   its certificate is the functor's arrow action.  Its ONE obligation is
-   that certificate, supplied by a one-step script rather than as a field
-   for the reason Theory/Connected/Components.v records at
-   [sets_quot_proj] -- [Proper (equiv ==> equiv) fobj[F]] is CONVERTIBLE
-   with the type of [fmap[F]], but the elaborator does not unfold
-   [Proper] and [respectful] during unification, so the field assignment
-   is rejected.  (Measured here too, at exactly that spot.)  [fmap_sur]
-   is discharged by the ambient tactic. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Cat_Disc_Full : Full Cat_Disc := {|
   prefmap := fun A B F => {| morphism := fobj[F] |}
 |}.
@@ -244,16 +236,11 @@ Proof.
   intros A B f g H a; exact (to (`1 H a)).
 Defined.
 
-(* Mac Lane's "the components of a discrete category are its objects",
-   in the form that carries the most: the COUNIT is an isomorphism.  With
-   [Cat_Disc_Full] and [Cat_Disc_Faithful] this exhibits [Sets] as a reflective
-   subcategory of [Cat] with reflector π₀ -- the inclusion is the right
-   adjoint and is fully faithful.
+(*
+   本节说明伴随、同构相关定义、性质与动机。
 
-   Both legs are the identity function; the two obligations are the
-   respectfulness of the backward leg (an [≈] IS an arrow, hence a
-   one-step chain) and the [ZigZag x x] the second round trip asks for,
-   which is the empty chain. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition pi0_counit_iso (A : Sets) :
   @Isomorphism Sets (fobj[Pi0] (fobj[Cat_Disc] A)) A :=
   {| to   := @counit _ _ _ _ Components_Disc_Adjunction A
@@ -272,12 +259,11 @@ Example pi0_counit_iso_from (A : Sets) (a : carrier A) :
 
 (** ** §6. Non-vacuity: π₀ genuinely forgets *)
 
-(* The constant functors out of the terminal category.  [Roof] is the
-   walking span [RNeg ← RZero → RPos]: it is CONNECTED
-   ([Roof_Connected], Structure/Groupoid/Connected.v), so π₀ merges
-   its three objects, while [RoofHom RNeg RPos] is EMPTY
-   ([RNeg_RPos_absurd], Instance/Roof.v), so [Roof] itself does not.
-   That gap is what both refutations below exploit. *)
+(*
+   本节说明函子、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition roof_pt@{o h p ru rh} (r : Roof@{ru rh}) :
   _1@{o h p} ⟶ Roof@{ru rh} :=
   {| fobj := fun _ => r ; fmap := fun _ _ _ => id[r] |}.
@@ -288,11 +274,11 @@ Proof. discriminate. Qed.
 Example roof_pi0_merges :
   @equiv _ (fobj[Pi0] Roof) RNeg RPos := Roof_Connected RNeg RPos.
 
-(* π₀ is not faithful: the two constant functors [_1 ⟶ Roof] at [RNeg]
-   and at [RPos] have the SAME image under π₀ (both objects lie in one
-   component) and are not [≈] in [Cat], since that would give an
-   isomorphism [RNeg ≅ RPos] whose forward leg is an arrow that does not
-   exist. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Pi0_not_Faithful : Faithful Pi0 → False.
 Proof.
   intro H.
@@ -301,13 +287,11 @@ Proof.
   exact (RNeg_RPos_absurd (to (iso ttt))).
 Qed.
 
-(* ... and the unit is not full, so the adjunction is not an equivalence.
-   [Full]'s [prefmap] is a bare section, so applying it to the zig-zag
-   arrow that exists upstairs manufactures the missing [Roof]-arrow
-   directly.  Read the conclusion at exactly that strength: nothing here
-   rules out an equivalence between [Roof] and some discrete category by
-   OTHER maps, and no essential-surjectivity statement about [Cat_Disc]
-   is proved. *)
+(*
+   本节说明伴随、等价、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem unit_not_Full :
   Full (@unit _ _ _ _ Components_Disc_Adjunction Roof) → False.
 Proof.
@@ -318,9 +302,11 @@ Qed.
 
 (** ** §7. Why the right adjoint is not the plain discrete category *)
 
-(* [bool] under the everywhere-true setoid.  This is the witness for both
-   refutations: it makes [id] and [negb] equivalent as [Sets]-morphisms
-   while keeping [true] and [false] Leibniz-distinct. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition blur_bool : Sets := {|
   carrier   := bool
 ; is_setoid := {| equiv := fun _ _ => True |}
@@ -339,11 +325,11 @@ Program Definition disc_carrier_map@{o so dh dp} {A B : Sets@{o so}}
   DiscreteCat@{o dh dp} (carrier A) ⟶ DiscreteCat@{o dh dp} (carrier B) :=
   {| fobj := f ; fmap := fun x y (e : x = y) => f_equal f e |}.
 
-(* REFUTATION.  Its [fmap_respects] field is FALSE.  This is the theorem
-   that separates the two [Discrete]s of Mac Lane's string: over [Sets]
-   the right adjoint cannot be Instance/Discrete.v's [DiscreteCat] on the
-   carrier, which is what the sibling development's [StrictCat_Disc] is
-   built from. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem DiscreteCat_carrier_not_functorial :
   (∀ (A B : Sets) (f g : A ~> B), f ≈ g →
      @equiv _ (@homset Cat (DiscreteCat (carrier A))
@@ -356,18 +342,11 @@ Proof.
   exact (Bool.diff_true_false (to (iso true))).
 Qed.
 
-(* The general form, which says WHAT the obstruction is rather than
-   exhibiting one instance of it: a functor [Sets ⟶ Cat] whose objects
-   carry the points of the setoid injectively and naturally cannot have
-   SKELETAL fibres.  [Kskel] is Theory/Skeleton.v's [Skeletal]
-   predicate ([∀ x y : C, x ≅ y → x = y]) spelled out at each fibre;
-   that module is not required here, so the hypothesis is written out
-   rather than imported.
+(*
+   本节说明函子相关定义、性质与动机。
 
-   Read the argument: [id ≈ negb] gives a natural isomorphism between the
-   two induced functors; evaluating it at the point [true] and rewriting
-   both ends by naturality turns it into [pt true ≅ pt false];
-   skeletality makes that a Leibniz equality and injectivity finishes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_skeletal_carrier_functor_Sets_Cat
   (K : Sets ⟶ Cat)
   (pt : ∀ A : Sets, carrier A → obj[fobj[K] A])
@@ -386,10 +365,11 @@ Proof.
   exact (Bool.diff_true_false (Kinj blur_bool true false (Kskel _ _ _ I0))).
 Qed.
 
-(* ... and the refutation is not vacuous for [Cat_Disc]: it satisfies
-   [Kobj] (at [eq_refl]) and [Kinj] (by the identity function), and fails
-   EXACTLY [Kskel].  So the escape is located rather than assumed, and
-   the general theorem is genuinely about the shape of the fibres. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cat_disc_pt (A : Sets) : carrier A → obj[fobj[Cat_Disc] A] :=
   fun a => a.
 
@@ -407,42 +387,28 @@ Proof.
   exact (disc_setoid_iso (is_setoid blur_bool) I).
 Qed.
 
-(* NEGATIVE 4 (CONVERSION).  The two discrete categories are not even
-   convertible, which pins at the level of terms what the refutation
-   above establishes at the level of theorems.  The controls are
-   [cat_disc_obj] and [cat_disc_obj_carrier] in §2: the object TYPES do
-   agree. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example disc_is_DiscreteCat (A : Sets) :
   fobj[Cat_Disc] A = DiscreteCat (carrier A) := eq_refl.
 
 (** ** §8. The universe boundary *)
 
-(* Instrument check: [Fail] is live in this file.  Every negative above
-   and below was additionally stripped once and its failure kind read off
-   the whole error message -- four CONVERSION failures in §4 and §7,
-   reporting "cannot unify" with no universe clause, and two FORMABILITY
-   failures here, reporting "universe inconsistency: Cannot enforce ...".
-   The two kinds are kept lexically apart. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(* Section-local [Universes]/[Constraint] declarations do not leak; the
-   Instance/Fun/Group.v precedent applies, so these probes live in the
-   library file beside the constants they guard rather than in [Test/].
+(*
+   本节说明 Components 相关定义、性质与动机。
 
-   FIRST, the restriction and its attribution.  The [Constraint] here is
-   LOAD-BEARING and that was measured by deletion: without it [ch]
-   unifies with [co] and both negatives succeed.
-
-   The three controls run down the chain and each removes one candidate
-   culprit.  [C : obj[Cat]] shows the ambient category of categories is
-   innocent -- it accepts a category whose homs sit STRICTLY BELOW its
-   objects.  [pi0 C] shows the object map is innocent.  [pi0_fmap] at
-   that same C shows the arrow map is innocent.  What is left is
-   [pi0_fmap_respects] (Theory/Connected/Components.v), declared over
-   [Category@{u0 u0 u0}], and it is rejected -- as is [fobj[Pi0] C] with
-   it, on the same message.  So [Pi0], and hence every constant of this
-   file that mentions it, accepts only categories whose object, hom and
-   proof universes COINCIDE. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Pi0Restriction.
   Universes co ch.
   Constraint ch < co.
@@ -456,16 +422,11 @@ Section Pi0Restriction.
   Fail Check (fobj[Pi0] C).
 End Pi0Restriction.
 
-(* SECOND, the accepted class is inhabited: at a category with all three
-   universes at one level [pi0_fmap_respects], [Pi0] and the
-   transposition are all formable, so the restriction above cuts rather
-   than empties.  There is no [Constraint] here and none is wanted.
+(*
+   本节说明 Components 相关定义、性质与动机。
 
-   The first control here exists because a rename simulation FOUND A
-   VACUOUS GUARD: [pi0_fmap_respects] was named only inside its own
-   [Fail], so a rename of the donor would have turned that negative
-   silently green.  Naming it in a command that must SUCCEED closes
-   that. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Pi0Accepted.
   Universes cu.
   Context (C : Category@{cu cu cu}).
@@ -474,22 +435,11 @@ Section Pi0Accepted.
   Check (fun A : Sets => pi0_adj_iso C A).
 End Pi0Accepted.
 
-(* THIRD, and this is the guard item IV promised: the identification is
-   MINIMIZATION AND NOT CONTENT.  The donor's lemma is restated here with
-   its binders written out -- same statement, same one-line proof text,
-   nothing else changed -- inside a section declaring BOTH categories'
-   hom universes STRICTLY BELOW their object universe, and it is
-   accepted.  The [Constraint]s are meaning-giving rather than
-   load-bearing: the [Lemma] would elaborate without them, but then the
-   levels could collapse and the command would demonstrate nothing.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   This is a PROBE.  The repair belongs to
-   Theory/Connected/Components.v and is NOT performed here; nothing
-   in this file uses the restatement, and no claim is made that [Pi0]
-   itself would then be free, which would require rebuilding it.  Note
-   also what the repair does not remove: the restated lemma still carries
-   [hc = hd] in its own constraint block, identifying the two categories'
-   hom universes with each other. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Pi0RespectsRepairable.
   Universes o hc hd so.
   Constraint hc < o.

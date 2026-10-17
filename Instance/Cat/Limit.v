@@ -27,9 +27,11 @@ Generalizable All Variables.
 
 (** ** Cat has set-indexed products *)
 
-(* The explicit universe binders are load-bearing: written bare, the two
-   definitions minimize the index universe, the small categories' object
-   universe and their hom universe to ONE level (measured; see the header). *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PiCat_IsIndexedProduct@{i so sh +} {I : Type@{i}}
   (C : I → Category@{so sh sh}) :
   @IsIndexedProduct Cat I C (PiCat C) (PiCat_Proj C) :=
@@ -46,9 +48,11 @@ Instance Cat_HasIndexedProducts@{i so sh +} : @HasIndexedProducts Cat :=
 
 (** ** A small cast kit *)
 
-(* Functors commute with [hom_cast], the endpoints being relabelled by
-   [f_equal] of the object map.  Restated from Instance/Cat/Pullback.v's
-   [fmap_hom_cast] rather than requiring that module. *)
+(*
+   本节说明函子、拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma eq_fmap_hom_cast {X Y : Category} (P : X ⟶ Y) {a b a' b' : X}
       (ea : a = a') (eb : b = b') (f : a ~> b) :
   fmap[P] (hom_cast ea eb f)
@@ -201,10 +205,11 @@ Proof.
   intros x y f; reflexivity.
 Defined.
 
-(* Two objects of the product agreeing at every index are equal -- PROVIDED
-   object families are compared extensionally -- and the equality returns its
-   component projections, so that a cast along it can be rewritten into the
-   component casts, which is where UIP on each component's objects enters. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pi_obj_eq
   (uip : ∀ i : I, ObjUIP (C i))
   (fe : ∀ (f g : ∀ i : I, C i), (∀ i, f i = g i) → f = g)
@@ -225,11 +230,11 @@ Lemma hom_cast_pi_ext {a b a' b' : PiCat C} (ea : a = a') (eb : b = b')
   hom_cast ea eb η i = hom_cast (e1 i) (e2 i) (η i).
 Proof. rewrite hom_cast_pi, H1, H2; reflexivity. Qed.
 
-(* Uniqueness needs two principles a set-theoretic Cat has for free: the
-   object families must be compared extensionally, and the two proofs of each
-   component equation must be identified.  The proof is one [exact]: the cast
-   along the family equality is rewritten into the component casts by
-   [hom_cast_pi_ext] and the component agreement is [HP i]'s. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma PiCat_ump_unique_strict
   (uip : ∀ i : I, ObjUIP (C i))
   (fe : ∀ (f g : ∀ i : I, C i), (∀ i, f i = g i) → f = g)
@@ -283,10 +288,11 @@ Definition StrictCat_Complete
 
 (** ** The two hypotheses are necessary *)
 
-(* The chaotic category on a type: every hom-set is the polymorphic unit.
-   Instance/Discrete/Reconstruct.v's [Indiscrete] pins its homs to the stdlib
-   [unit : Set], which would confine the product half below to [Set]-indexed
-   families; this one is [_1] with an arbitrary object type. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Chaotic@{o h p} (X : Type@{o}) : Category@{o h p}.
 Proof.
   unshelve refine {|
@@ -341,11 +347,11 @@ Proof.
   match goal with |- ?u = ?v => now destruct u, v end.
 Qed.
 
-(* Deriving the uniqueness clause of the strict equalizer UNIFORMLY -- for
-   every parallel pair, with no hypothesis on the target -- entails UIP for
-   every type at the small object universe.  So [ObjUIP D] in
-   [Eq_IsEqualizer] is what the statement costs; this is
-   Instance/Cat/Pullback.v's [FP_uniqueness_forces_UIP] one shape over. *)
+(*
+   本节说明拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Eq_uniqueness_forces_UIP
   (K : ∀ (C D : Category@{o h h}) (F G : C ⟶ D),
          @IsEqualizer StrictCat C D F G (EqCat F G) (EqIncl F G)) :
@@ -398,10 +404,11 @@ Proof.
   match goal with |- ?u = ?v => now destruct u, v end.
 Qed.
 
-(* Deriving the uniqueness clause of the strict indexed product UNIFORMLY
-   entails dependent function extensionality at the index and small object
-   universes: two pointwise-equal families name two mediators for one cone,
-   and uniqueness identifies them. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem PiCat_uniqueness_forces_funext
   (K : ∀ (I : Type@{i}) (C : I → Category@{o h h}),
          @IsIndexedProduct StrictCat I C (PiCat C) (PiCat_Proj C)) :
@@ -444,10 +451,11 @@ Lemma EqCat_ChaoticBool_empty :
   obj[EqCat ChaoticBool_true ChaoticBool_false] → False.
 Proof. intros [o e]; simpl in e; discriminate e. Qed.
 
-(* The strict equalizer of two functors that are equivalent in [Cat] is
-   empty, while the identity of [1] is a competing fork there; so it is not
-   an equalizer in [Cat].  Read narrowly: this refutes THIS apex at THIS pair,
-   and says nothing about whether [Cat] has equalizers. *)
+(*
+   本节说明函子、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem EqCat_not_Cat_equalizer :
   @IsEqualizer Cat _1 ChaoticBool ChaoticBool_true ChaoticBool_false
     (EqCat ChaoticBool_true ChaoticBool_false)

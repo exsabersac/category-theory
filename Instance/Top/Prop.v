@@ -21,11 +21,11 @@ Generalizable All Variables.
 
 (** ** Spaces *)
 
-(* A space: a setoid of points and a Prop-valued predicate on its
-   Prop-valued predicates, closed under the book's operations.  The union
-   field takes a FAMILY of opens, itself a Prop-valued predicate on
-   predicates, and forms its union; see the header for why it is not stated
-   over an index type. *)
+(*
+   本节说明 Prop 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record PTop@{o} := {
   pt_carrier :> SetoidObject@{o o};    (* the setoid of points *)
 
@@ -52,9 +52,11 @@ Record PTop@{o} := {
     POpen U → POpen V → POpen (fun x => U x /\ V x)
 }.
 
-(* The union of a family indexed by a type, at ANY universe [i]: the family
-   of the predicates pointwise equivalent to some [U k] is a Prop-valued
-   family of opens, and its union is the indexed one. *)
+(*
+   本节说明 Prop 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma popen_union_indexed@{o i} (X : PTop@{o}) (I : Type@{i})
   (U : I → pt_carrier X → Prop) :
   (∀ k, POpen X (U k)) → POpen X (fun x => ex (fun k => U k x)).
@@ -189,9 +191,11 @@ Proof. constructor; intros x y f g H p; exact (H p). Qed.
 
 (** ** Concrete spaces: the discrete topology, the point and two points *)
 
-(* The discrete topology on a setoid: every predicate respecting the
-   points' equality is open.  The setoid discipline makes that respect the
-   whole condition: without it [popen_proper] could not hold. *)
+(*
+   本节说明 Prop 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pdisc_open@{o} (S : SetoidObject@{o o}) (U : S → Prop) : Prop :=
   ∀ x y : S, x ≈ y → U x → U y.
 

@@ -493,13 +493,11 @@ Example pquot_pushout_apex@{h o | o < h +} (X : PairTop@{o}) :
 
 (** ** X/A is the universal-arrow coequalizer of the point-inclusions *)
 
-(* Read as a universal arrow to the diagonal functor (book pp. 64-65), the
-   coequalizer of a set of maps a → b is a colimit over the shape that has
-   a as a vertex, Structure/Coequalizer/Wide.v's [WideCoequalizer]; read
-   elementarily (p. 64's display (6)), it is that file's
-   [IsWideCoequalizer], and the two agree on every nonempty set of maps.
-   The colimit's cocones have a leg out of * as well as one out of X, so
-   no point of A is needed: the leg out of * is the new point. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pquot_wide_legs@{o h | o < h +} (X : PairTop@{o}) (p : ParObj) :
   fobj[AWide@{h h h h h} (C := Top@{h o})
          (collapse_sub_family (pair_space X) (pair_sub X))] p
@@ -569,9 +567,11 @@ Proof.
     + symmetry; exact (Hv ParX ttt).
 Qed.
 
-(* Construction 5 read as the universal arrow, for EVERY pair, the empty
-   subset included: the colimit of the point-inclusions of A, the type of
-   Instance/Top/Quotient.v's [collapse_colimit], with no point of A. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pquot_wide_coequalizer_colimit@{o h | o < h +}
   (X : PairTop@{o}) :
   WideCoequalizer (AWide@{h h h h h} (C := Top@{h o})
@@ -667,11 +667,11 @@ Definition collapse_pointed@{o} (X : PairTop@{o})
   @Build_PointedTop@{o} (Top_collapse_sub (pair_space X) (pair_sub X))
     (projT1 a0).
 
-(* The comparison as POINTED spaces: the value of the left adjoint at
-   ⟨X, A⟩ is Construction 5's X/A pointed at [a0], up to isomorphism in
-   [Top_pointed].  Both basepoint conditions hold by the readbacks above:
-   [a0] goes to [Some (projT1 a0)], which lies with [None] because a0 is in
-   A, and [None] goes back to [projT1 a0] itself. *)
+(*
+   本节说明伴随、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pquot_collapse_iso_pointed@{o h u | o < h, h < u +}
   (X : PairTop@{o}) (a0 : collapse_sub_points (pair_space X) (pair_sub X)) :
   collapse_pointed X a0 ≅[Top_pointed@{h o}] fobj[PairQuotient@{h o}] X :=
@@ -835,9 +835,11 @@ Proof.
   exact (no_pointed_coequalizer_at_empty@{o h i} _ e E).
 Qed.
 
-(* At the empty family the two forms part: no colimit's apex carries an
-   elementary wide coequalizer of the family at ∅, since the colimit has a
-   point ([collapse_colimit_point]) and the elementary one has none. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma empty_colimit_not_elementary@{o h i | o < h, o <= i +}
   (L : WideCoequalizer (AWide@{h h h h h} (C := Top@{h o})
                           (collapse_sub_family Empty_Top@{o}

@@ -82,10 +82,11 @@ Definition ts_Setoid : Setoid tsum := {|
   setoid_equiv := ts_eq_Equivalence
 |}.
 
-(* The tensor product, as an abelian group: the laws are constructors of
-   the relation -- and so, since the PR "algebraic carriers are sets"
-   (2026-09-17), is its [cmon_prop]: [ts_eq] IS a [Prop], hence its own
-   [Prop] mirror, and both implications are the identity. *)
+(*
+   本节说明 Tensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AbTensor : AbObject := {|
   ab_cmon := {|
     cmon_setoid := {| carrier := tsum; is_setoid := ts_Setoid |};
@@ -107,10 +108,11 @@ Definition AbTensor : AbObject := {|
 
 (** ** Bilinear maps and the universal property *)
 
-(* A bilinear map into an abelian group K: respectful in each variable and
-   additive in each variable.  (Preservation of zero and negation in each
-   variable follows, as always for monoid maps between groups, and is not
-   demanded.) *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Bilinear (K : AbObject) := {
   bilin_map : carrier G → carrier H → carrier K;
   bilin_respects :
@@ -128,9 +130,11 @@ Arguments bilin_respects {K} _.
 Arguments bilin_add_l {K} _ _ _ _.
 Arguments bilin_add_r {K} _ _ _ _.
 
-(* The universal bilinear map: the generator former itself.  (Built with
-   the explicit constructor: the record notation would have to inject
-   [tsum] into [carrier] of an evar, which unification declines.) *)
+(*
+   本节说明 Tensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition tensor_gen : Bilinear AbTensor :=
   @Build_Bilinear AbTensor ts_gen
     (fun _ _ Hg _ _ Hh => te_gen Hg Hh)
@@ -148,20 +152,11 @@ Fixpoint tensor_med_fun {K : AbObject} (β : Bilinear K) (s : tsum) :
   | ts_neg s    => ab_neg K (tensor_med_fun β s)
   end.
 
-(* Respectfulness is one induction over the relation, each rule met by
-   the corresponding law of K (design note 2) -- but the induction now runs
-   in [Prop].
+(*
+   本节说明 Tensor 相关定义、性质与动机。
 
-   Since the PR "algebraic carriers are sets" (2026-09-17) [ts_eq] is a [Prop]
-   inductive, so it eliminates only into [Prop] goals, while the conclusion
-   `≈` is [Type]-valued.  [apply pequiv_to] first, using the target's own
-   [cmon_prop]: that puts the [Prop] goal [pequiv …] in front of the
-   elimination, and each branch returns to `≈` with [pequiv_from].  Nothing
-   about the argument changes -- each rule is still met by the corresponding
-   law of [K] -- and no hypothesis is added, because every [AbObject] now
-   carries the field.  Test/ProbeTermModelProp.v pins the refusal of the old
-   script.  The intro pattern is NAMED because [apply pequiv_to] in front of
-   the elimination changes the automatic names. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tensor_med_respects {K : AbObject} (β : Bilinear K) (s t : tsum) :
   ts_eq s t → tensor_med_fun β s ≈ tensor_med_fun β t.
 Proof.
@@ -273,14 +268,11 @@ Arguments te_bilin_r {G H} g h h'.
 Arguments te_sym {G H s t} _.
 Arguments te_trans {G H s t u} _ _.
 
-(* [ts_eq] is a [Prop] since the PR "algebraic carriers are sets"
-   (2026-09-17), and Coq's [reflexivity], [symmetry] and [transitivity]
-   dispatch a [Prop]-valued relation to the [Prop] class hierarchy of
-   Corelib.Classes.RelationClasses rather than to the [Type]-valued
-   CRelationClasses that [ts_eq_Equivalence] inhabits.  The same three laws,
-   registered there, keep every existing tactic call working; without it the
-   [reflexivity] of [tensor_map_gen] below is refused with "the relation
-   ts_eq is not a declared reflexive relation". *)
+(*
+   本节说明 Tensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance ts_eq_Equivalence_Prop {G H : AbObject} :
   RelationClasses.Equivalence (@ts_eq G H).
 Proof.

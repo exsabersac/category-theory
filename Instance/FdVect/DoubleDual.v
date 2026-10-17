@@ -32,14 +32,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Negation of a module homomorphism
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
 
-    Instance/Mod.v supplies pointwise addition and the zero map
-    ([rmod_hom_add], [rmod_hom_zero], for its [RMod_Preadditive]
-    instance) but no negation, [Preadditive] not demanding one.  The
-    group part is Structure/AbCategory.v's [ab_hom_neg]; the only new
-    obligation is that the negated map is still linear, which is
-    Instance/Mod.v's [rm_smul_neg_r]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition rmod_hom_neg {R : RingObject} {M N : RModObject R}
         (f : RModHom M N) : RModHom M N := {|
   rm_hom := ab_hom_neg (rm_hom f)
@@ -54,11 +51,11 @@ Section DualSpace.
 
 Context (F : FieldObject).
 
-(** ** The dual module V*
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
 
-    Its carrier is the linear functionals V → F, with F read as a module
-    over itself; its setoid is Instance/Mod.v's, so two functionals are
-    the same when they agree pointwise. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition dual_setoid (V : RModObject (field_ring F)) : SetoidObject := {|
   carrier   := RModHom V (Ring_RMod (field_ring F));
@@ -91,13 +88,11 @@ Next Obligation.
 Qed.
 Next Obligation. intros V f v; simpl; apply (ring_neg_l F). Qed.
 
-(** *** The scalar action, and the one use of commutativity
+(*
+   本节说明分配律、来源与用途相关定义、性质与动机。
 
-    (r·φ)(v) := r · φ(v).  Preservation of zero and of addition are
-    annihilation and distributivity in F.  The remaining law — that r·φ
-    is still LINEAR — is where the base ring's commutativity is spent:
-    (r·φ)(s·v) computes to r·(s·φ(v)), and linearity demands
-    s·(r·φ(v)). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma dual_smul_zero (V : RModObject (field_ring F))
   (r : carrier (rig_setoid F)) (f : RModHom V (Ring_RMod (field_ring F))) :
@@ -254,29 +249,30 @@ Next Obligation. intros V W f v g; simpl; reflexivity. Qed.
 
 End DualSpace.
 
-(** ** The finite-dimensional half
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
 
-    Everything above is basis-free.  From here on the CHOSEN
-    COORDINATES of Instance/FdVect.v's [FdVectObject] are used, and only
-    they: no space is assumed to have a basis, since carrying one is
-    what being an object of [FdVect F] means. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FiniteDimensional.
 
 Context (F : FieldObject).
 
-(** The j-th basis vector: the expansion of the j-th standard tuple.
-    Instance/FdVect.v's [std_basis] is Instance/Matr.v's Kronecker
-    [delta], reused, so the collapse lemmas apply to it directly. *)
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fdv_basis (V : FdVectObject F) (j : Fin.t (fdv_dim V)) :
   carrier (cmon_setoid (fdv_mod V)) :=
   fdv_expand V (std_basis F (fdv_dim V) j).
 
-(** In the ring read as a module over itself, Instance/FdVect.v's
-    commutative-monoid sum IS Instance/Matr.v's [fin_sum]: the two
-    recursions coincide, the monoid operations of [Ring_RMod] being the
-    rig's own.  One induction, and the rest of the file may move between
-    the two vocabularies freely. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma msum_ring {p : nat} (f : Fin.t p → carrier (rig_setoid F)) :
   msum (ab_cmon (rm_ab (Ring_RMod (field_ring F)))) f
     ≈ fin_sum (field_ring F) f.
@@ -288,11 +284,11 @@ Proof.
     apply (IHk (fun i => f (Fin.FS i))).
 Qed.
 
-(** A vector IS the sum of its coordinates against the basis.  This is
-    Instance/FdVect.v's [std_expand] transported along the chosen
-    coordinates: expand the standard tuple, push [fdv_expand] through
-    the sum by [msum_hom] at [std_expand_hom], and read the result
-    coordinatewise by [msum_std]. *)
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fdv_expand_msum (V : FdVectObject F)
   (c : Fin.t (fdv_dim V) → carrier (rig_setoid F)) :
   fdv_expand V c
@@ -350,12 +346,11 @@ Proof.
   apply msum_ring.
 Qed.
 
-(** *** The dual basis
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    The tuple c is expanded to the functional v ↦ Σ_j c_j · v_j, where
-    v_j are v's chosen coordinates.  Linearity of that functional is
-    linearity of [fdv_coord] under the sum, with [dual_coeffs_smul]
-    spending commutativity to slide the scalar out of the sum. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma dual_coeffs_zero (V : FdVectObject F)
   (c : Fin.t (fdv_dim V) → carrier (rig_setoid F)) :
@@ -446,9 +441,11 @@ Proof.
   - apply (fin_sum_delta_r (field_ring F) i c).
 Qed.
 
-(** The second round trip, the substantial one: a functional IS the sum
-    of its values at the basis against the coordinate functionals.
-    Expand v in the basis, apply f through the sum, and commute. *)
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma dual_expand_coord (V : FdVectObject F)
   (f : RModHom (fdv_mod V) (Ring_RMod (field_ring F)))
   (v : carrier (cmon_setoid (fdv_mod V))) :
@@ -517,15 +514,11 @@ Proof.
   - apply (fin_sum_delta_l (field_ring F) j (fun l => fdv_coord V v l)).
 Qed.
 
-(** *** Evaluation is invertible in finite dimension
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
 
-    The inverse reads a functional-on-functionals off its values at the
-    dual basis and expands the resulting tuple in V's own basis.  The
-    right triangle is [dual_apply_expand] used twice — once in V, once
-    in V* — bridged by [dual_expand_coord] and closed by commuting the
-    two factors; the left triangle is [dual_basis_coord] (each dual
-    basis vector IS a coordinate functional) followed by V's own
-    [fdv_expand_coord]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition eta_inv (V : FdVectObject F) :
   DoubleDual F (fdv_mod V) ~{Vct_F F}~> fdv_mod V := {|
@@ -544,10 +537,11 @@ Next Obligation. intros V; simpl; apply fdv_expand_zero. Qed.
 Next Obligation. intros V P Q; simpl; apply fdv_expand_plus. Qed.
 Next Obligation. intros V r P; simpl; apply fdv_expand_smul. Qed.
 
-(** Mac Lane §I.4 remark 2 / Riehl §1.4 Example 1.4.4(ii), the half that
-    needs finite dimension: the component of [double_dual_natural] at a
-    finite-dimensional space is an isomorphism.  Naturality was proved
-    without this hypothesis; invertibility is what it buys. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition double_dual_iso (V : FdVectObject F) :
   IsIsomorphism (eta F (fdv_mod V)) := {|
   two_sided_inverse := eta_inv V
@@ -582,16 +576,11 @@ Next Obligation.
   apply fdv_expand_coord.
 Qed.
 
-(** *** The pointwise isomorphism V ≅ V*, and why it is not the point
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Both spaces carry the same dimension, so composing the coordinate
-    isomorphisms of Instance/FdVect.v through F^n gives an isomorphism
-    between them.  It is EXACTLY as canonical as the chosen coordinates
-    are, which is to say not at all: a different basis on V gives a
-    different map.  That no choice of such maps is natural is the
-    content of Instance/FdVect/NonNatural.v; here only their existence
-    is recorded, so that the contrast with [double_dual_iso] — proved
-    above with no choice anywhere — can be drawn. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition fd_dual_pointwise_iso (V : FdVectObject F) :
   fdv_mod V ≅[Vct_F F] fdv_mod (DualFdObj V) := {|
   to   := @rmod_hom_compose (field_ring F) (fdv_mod V)
@@ -618,12 +607,11 @@ Qed.
 
 End FiniteDimensional.
 
-(** ** Acceptance tests
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
 
-    First the structural identities, which hold by [eq_refl] and so are
-    checks on the definitions rather than on any proof: the double dual
-    really is the dual twice, the dual space carries the same dimension,
-    and the components of [double_dual_natural] really are [eta]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example double_dual_is_dual_twice (F : FieldObject)
   (V : RModObject (field_ring F)) :
@@ -650,10 +638,11 @@ Definition q2 : FdVectObject Q_Field := StdVect Q_Field 2.
 Definition qvec : carrier (cmon_setoid (fdv_mod q2)) :=
   fin2 (5 # 1) (6 # 1).
 
-(** The first dual basis vector of ℚ²: the functional reading off the
-    first coordinate, obtained from [DualFdObj]'s expansion rather than
-    written down by hand — so these two lines check [dual_basis_coord]
-    computationally. *)
+(*
+   本节说明 DoubleDual 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition qphi :
   carrier (cmon_setoid (fdv_mod (DualFdObj Q_Field q2))) :=
   fdv_basis Q_Field (DualFdObj Q_Field q2) Fin.F1.

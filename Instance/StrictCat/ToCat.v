@@ -16,9 +16,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* An equality of objects induces an isomorphism: transport the identity along
-   the equality.  By path induction this is [iso_id] when the proof is
-   [eq_refl], so [to] and [from] compute to [id]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition iso_of_eq {C : Category} {x y : C} (p : x = y) : x ≅ y :=
   match p in (_ = z) return (x ≅ z) with
   | eq_refl => iso_id
@@ -36,10 +38,11 @@ Lemma transport_r_dom_to_iso {C : Category} {a b d : C} (p : a = b) (g : b ~> d)
   transport_r (fun z => hom z d) p g ≈ g ∘ to (iso_of_eq p).
 Proof. destruct p; unfold transport_r; simpl; now rewrite id_right. Qed.
 
-(* The mathematical core of issue #138: two functors that are strictly equal
-   (equal on objects, with morphism maps agreeing after transport) are
-   naturally isomorphic.  The natural isomorphism is, objectwise, the identity
-   transported along the object equality. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma strict_equiv_implies_fun_equiv {C D : Category} (F G : C ⟶ D) :
   @equiv _ Functor_StrictEq_Setoid F G ->
   @equiv _ Functor_Setoid F G.

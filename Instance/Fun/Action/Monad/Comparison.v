@@ -203,10 +203,11 @@ Proof.
   split; [ symmetry; apply lz_swap_swap | reflexivity ].
 Defined.
 
-(* No natural isomorphism K ≅ EM_Comparison: with f its leg at the free
-   LZ-set on 1 and c := f (1, ∗), f (k, ∗) is σ(k) c, f being a map of
-   algebras into the twisted action, and c k, f commuting with the right
-   multiplication by k; LZ has no such c. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma K_not_EMC@{o so} :
   K_swap@{o so} ≈ EM_Comparison (MSet_adj@{o so} LZ@{o}) → False.
 Proof.
@@ -344,10 +345,11 @@ Proof.
   destruct k as [[]|], (fst (f x)) as [[]|]; reflexivity.
 Qed.
 
-(* No natural isomorphism Φ ≅ the comparison functor: at the one-point
-   setoid, with s its leg into Φ, which fixes a and b, and c the first
-   component of its other leg at (1, ∗), σ(k) would be the first
-   component of s (c k, ∗) for every k. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Phi_not_EMC : Phi ≈ EM_Comparison KlAdj → False.
 Proof.
   intros [iso nat].

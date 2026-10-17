@@ -249,10 +249,11 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** (D) The power object at 1 *)
 
-(* The missing member of Instance/FinSet/Topos.v's family: [Pow 0 = 1] and
-   [Pow 2 = 4] are there, [Pow 1 = 2] is here.  The GENERAL statement
-   [finpow_is_topos_Pow] is Instance/FinSet/Powerset.v and is cited,
-   not duplicated. *)
+(*
+   本节说明topos相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example FinSet_Pow_one : @Pow FinSet FinSet_Topos 1%nat = 2%nat := eq_refl.
 
 Example FinSet_Omega_is_two :
@@ -276,12 +277,11 @@ Proof.
     + reflexivity.
 Qed.
 
-(* The underlying function, stated over [finpow] so that the implicit
-   arguments of [fin_unpair] are the codes and not the (convertible, but
-   syntactically distinct) [Pow] applications.  That distinction is not
-   cosmetic: without it, the two occurrences of
-   [finpow_subseteq (fst (fin_unpair p)) (snd (fin_unpair p))] in the
-   theorem below carry different implicits and no rewrite matches. *)
+(*
+   本节说明 Subsets 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finpow_subseteq_fn (n : nat)
   (p : Fin.t (finpow n * finpow n)) : Fin.t 2 :=
   fin_of_bool (finpow_subseteq (fst (fin_unpair p)) (snd (fin_unpair p))).

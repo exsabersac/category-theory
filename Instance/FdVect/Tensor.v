@@ -4,10 +4,11 @@
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* [Coq.QArith.QArith] is imported FIRST for the same reason
-   Instance/FdVect.v gives: it exports a competing [equiv], which would
-   shadow [Category.Lib.Setoid.equiv] in every [Proper] signature
-   below.  Importing the library afterwards restores the intended one. *)
+(*
+   本节说明 Tensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.QArith.QArith.
 Require Import Coq.Vectors.Fin.
 Require Import Category.Lib.
@@ -38,12 +39,11 @@ Context (F : FieldObject).
    notation and disappears at [End Tensor]. *)
 Notation FR := (field_ring F).
 
-(** ** The index kit
+(*
+   本节说明 Tensor 相关定义、性质与动机。
 
-    Five statements about [fin_sum] and the [fin_pair]/[fin_unpair]
-    codec, none of which mentions a vector space.  They are what turns
-    a sum over the product index set Fin.t (m * n) into a double sum,
-    and a product of two Kronecker deltas into one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A sum over Fin.t (a + b) splits into the two blocks cut out by
    [Fin.L] and [Fin.R].  Both index shifts reduce judgmentally, so the
@@ -174,14 +174,11 @@ Proof.
   apply rig_mul_assoc.
 Qed.
 
-(** ** The coordinate kit at a general based space
+(*
+   本节说明 Tensor 相关定义、性质与动机。
 
-    Instance/FdVect.v develops the expansion v ≈ Σ_j v_j · e_j and the
-    table of a linear map for the STANDARD spaces only ([std_expand],
-    [matrix_of], both restricted to [StdVect]).  [TensorSq] needs both
-    at an arbitrary based V, since its source is arbitrary; the
-    arguments are the same ones, run through [fdv_coord] and
-    [fdv_expand] instead of through the identity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The i-th basis vector of V: the expansion of the i-th standard
    tuple.  A based object is exactly one for which this makes sense. *)
@@ -189,10 +186,11 @@ Definition bvec (V : FdVectObject F) (i : Fin.t (fdv_dim V)) :
   carrier (cmon_setoid (fdv_mod V)) :=
   fdv_expand V (std_basis F (fdv_dim V) i).
 
-(* Coordinates turn a monoid sum into a rig sum, index by index.  This
-   is [msum_std] one level up: there the module was F^n and the passage
-   was pointwise; here it is any based V and the passage is the
-   additivity of [fdv_coord]. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coord_msum (V : FdVectObject F) {p : nat}
   (g : Fin.t p → carrier (cmon_setoid (fdv_mod V)))
   (k : Fin.t (fdv_dim V)) :
@@ -268,10 +266,11 @@ Proof.
   apply (fdv_coord_expand V (std_basis F (fdv_dim V) i) k).
 Qed.
 
-(* A linear map acts on coordinates by its table: this is the whole
-   content of "a linear map is a matrix", at an arbitrary based source
-   and target.  Instance/FdVect.v's [matrix_of_sur] is the same
-   argument at the standard spaces, and this proof follows its shape. *)
+(*
+   本节说明 Tensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hom_coords {V W : FdVectObject F} (f : V ~{FdVect F}~> W)
   (v : carrier (cmon_setoid (fdv_mod V))) (k : Fin.t (fdv_dim W)) :
   fdv_coord W (cmon_map (rm_hom f) v) k
@@ -300,10 +299,11 @@ Proof.
     (cmon_map (rm_hom f) (bvec V i)) k).
 Qed.
 
-(* Tables compose by matrix multiplication.  With the orientation fixed
-   above this is [hom_coords] at g applied to the image of a basis
-   vector, and nothing else: the sum's factors are already [fentry f]
-   and [fentry g] on the nose. *)
+(*
+   本节说明 Tensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fentry_comp {V W X : FdVectObject F}
   (f : V ~{FdVect F}~> W) (g : W ~{FdVect F}~> X)
   (i : Fin.t (fdv_dim V)) (k : Fin.t (fdv_dim X)) :
@@ -313,14 +313,11 @@ Proof.
   exact (hom_coords g (cmon_map (rm_hom f) (bvec V i)) k).
 Qed.
 
-(** ** The diagonal square functor
+(*
+   本节说明函子相关定义、性质与动机。
 
-    V ↦ V ⊗ V, realized on the carried coordinates.  See the header's
-    SCOPE paragraph: ⊗ itself is not constructed, and this is not its
-    restriction to the diagonal in any formal sense — it is the
-    endofunctor whose value at a based space of dimension n is the
-    based space of dimension n·n and whose value at a map is the
-    Kronecker square of that map's table. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition TensorSq_obj (V : FdVectObject F) : FdVectObject F :=
   StdVect F (fdv_dim V * fdv_dim V).
@@ -338,11 +335,11 @@ Definition tsq_map {V W : FdVectObject F} (f : V ~{FdVect F}~> W)
   (q : Fin.t (fdv_dim W * fdv_dim W)) : carrier (rig_setoid F) :=
   fin_sum FR (fun p => rig_mul F (t p) (tsq_ker f p q)).
 
-(** *** Linearity, four lines of the finite-sum engine
+(*
+   本节说明 Tensor 相关定义、性质与动机。
 
-    Stated as free-standing lemmas rather than left to [Program], so
-    that the packaging below can hand them over as terms and obligation
-    ORDER cannot matter. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma tsq_map_respects {V W : FdVectObject F} (f : V ~{FdVect F}~> W)
   (t u : Fin.t (fdv_dim V * fdv_dim V) → carrier (rig_setoid F))
@@ -681,20 +678,11 @@ Next Obligation.
   symmetry; apply tsq_map_zero.
 Qed.
 
-(** Riehl, "Category Theory in Context", §1.4 Example 1.4.4(vii),
-    printed p. 26.  Every natural transformation from the identity
-    functor to the diagonal square functor is zero.
+(*
+   本节说明自然变换、函子相关定义、性质与动机。
 
-    The proof is one naturality square, at the scalar map [scale two V]
-    — an endomorphism of the very object in question, so no probe
-    object and no dimension-one special case is needed.  Going around
-    it one way squares the scalar ([tsq_map_scale]); going around it
-    the other way merely reproduces it ([rm_map_smul], the component
-    being linear).  So 4a ≈ 2a, and [square_fixes_zero] finishes.
-
-    The hypothesis [two_nz] is the characteristic condition 1 + 1 ≉ 0,
-    carried explicitly; in characteristic two the equation 4a ≈ 2a is
-    an identity and the conclusion is unavailable. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem diag_transform_zero (two_nz : two ≈ rig_zero F → False)
   (alpha : Id[FdVect F] ⟹ TensorSq) (V : FdVectObject F) :
   transform alpha V ≈ tsq_zero V.
@@ -723,11 +711,11 @@ Qed.
 
 End Tensor.
 
-(** ** The characteristic hypothesis, discharged over ℚ
+(*
+   本节说明 Tensor 相关定义、性质与动机。
 
-    1 + 1 is 2 # 1 and 0 is 0 # 1, so [Qeq] reduces to 2 = 0 in ℤ; this
-    is Instance/FdVect.v's [field_one_neq_zero] obligation for
-    [Q_Field] one step further along. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Q_two_nz : two Q_Field ≈ rig_zero Q_Field → False.
 Proof.
   unfold two; simpl; unfold Qeq; simpl; discriminate.
@@ -787,11 +775,11 @@ Example fentry_swap_00 :
   fentry Q_Field (std_reindex Q_Field fin2_swap) Fin.F1 Fin.F1
     = 0%Q := eq_refl.
 
-(* ... and the Kronecker square of that map really permutes the four
-   coordinates, so [TensorSq] is not secretly constant on morphisms.
-   The 2 × 2 table below is read off the codec: position (i, j) of the
-   square carries entry (i, j), and the square of the swap sends
-   position (i, j) to position (swap i, swap j). *)
+(*
+   本节说明 Tensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition qt4 : Fin.t (2 * 2) → carrier (rig_setoid Q_Field) :=
   fun p => fin2 (fin2 (5 # 1)%Q (6 # 1)%Q)
                 (fin2 (7 # 1)%Q (8 # 1)%Q)

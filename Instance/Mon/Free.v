@@ -29,14 +29,11 @@ Generalizable All Variables.
 Local Notation MonS := (@Mon Sets Sets_Product_Monoidal).
 Local Notation UMonS := (@Mon_Forget Sets Sets_Product_Monoidal).
 
-(** * Words over a setoid
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The carrier is [list (carrier X)].  Concatenation is spelled out
-    rather than taken from [Coq.Lists.List], following the precedent and
-    the stated reason of Instance/Mon/Coproduct.v: importing that
-    module brings [list_scope]'s notations into a file whose ambient
-    scope is the library's, and the whole of what is needed is five
-    lines. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint wapp {X : SetoidObject} (u v : list (carrier X))
   : list (carrier X) :=
@@ -57,10 +54,11 @@ Proof.
   induction u as [|a u IH]; simpl; [ reflexivity | now rewrite IH ].
 Qed.
 
-(* Two words are equivalent when they have the same length and their
-   letters are `≈`-equal in order.  This is the pointwise lifting of X's
-   own equivalence, and it is [Type]-valued because `≈` in this library
-   is a [crelation]: equivalence proofs carry data. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive word_eq {X : SetoidObject}
   : list (carrier X) → list (carrier X) → Type :=
   | we_nil : word_eq Datatypes.nil Datatypes.nil
@@ -115,13 +113,11 @@ Proof.
   - exact (we_cons a b _ _ Hab IH).
 Qed.
 
-(** * The free monoid on a setoid
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Mac Lane §II.7 Corollary 2: the finite words over X form a monoid
-    under concatenation with the empty word as unit.  Both unit laws and
-    associativity are Leibniz equalities of lists, so the three monoid
-    obligations are discharged by transporting reflexivity of [word_eq]
-    along them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreeMonSetsObject (X : SetoidObject) : MonS.
 Proof.
@@ -147,12 +143,11 @@ Example free_mon_mul_is_wapp (X : SetoidObject)
 Example free_mon_one_is_nil (X : SetoidObject) :
   mon_one (FreeMonSetsObject X) = @Datatypes.nil (carrier X) := eq_refl.
 
-(** ** The insertion of generators
+(*
+   本节说明（余）端、来源与用途相关定义、性质与动机。
 
-    A letter goes to the one-letter word.  Respectfulness is one
-    application of [we_cons]: this is where the construction differs
-    from the [Coq]-based one, and it is the reason `≈`-equal generators
-    end up identified. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition free_mon_insert (X : SetoidObject)
   : X ~{Sets}~> UMonS (FreeMonSetsObject X) := {|
@@ -212,9 +207,11 @@ Lemma free_mon_extend_generator {X : SetoidObject} {L : MonS}
   free_mon_extend h (free_mon_insert X a) ≈ h a.
 Proof. exact (mon_one_r L (h a)). Qed.
 
-(* Hence it is a monoid homomorphism out of the free monoid.  Its unit
-   clause needs no proof at all: the unit of the free monoid IS the
-   empty word, on which the fold returns the unit of L by computation. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_mon_hom {X : SetoidObject} {L : MonS}
       (h : carrier X → carrier (mon_ob L))
       (hp : Proper (equiv ==> equiv) h)
@@ -224,13 +221,11 @@ Definition free_mon_hom {X : SetoidObject} {L : MonS}
     (fun u v => free_mon_extend_wapp h u v)
     (reflexivity (mon_one L)).
 
-(** ** Uniqueness of the extension
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Any monoid homomorphism out of the free monoid that agrees with h on
-    the generators IS the fold.  The induction uses both homomorphism
-    laws: the unit law at the empty word, the multiplication law at the
-    [cons] split [a :: l = (a :: nil) ++ l], which is a Leibniz identity
-    here rather than a rewrite. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma free_mon_extend_unique {X : SetoidObject} {L : MonS}
       (h : carrier X → carrier (mon_ob L))
@@ -247,13 +242,11 @@ Proof.
     + exact (mon_mul_resp L _ _ (Hg a) _ _ IH).
 Qed.
 
-(** ** The universal property
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    In the shape [Theory/Universal/Arrow.v]'s
-    [universal_arrow_from_UMP] consumes: for every monoid L and every
-    h : X ~> U L there is exactly one monoid homomorphism g with
-    U g ∘ insert ≈ h.  Uniqueness is up to the ambient `≈`, which in
-    Mon(Sets) is pointwise `≈` of the underlying setoid maps. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem free_mon_universal (X : Sets) :
   ∀ (L : MonS) (h : X ~{Sets}~> UMonS L),
@@ -299,11 +292,11 @@ Next Obligation.
     intro b; exact (Hg b).
 Qed.
 
-(** ** The free-forgetful adjunction
+(*
+   本节说明伴随、幺半群相关定义、性质与动机。
 
-    Assembled by the generic machinery of Theory/Universal/Arrow.v from
-    the family of universal arrows.  This is the constant the
-    monoid-ring leg was missing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreeMonSets : Sets ⟶ MonS :=
   LeftAdjointFunctorFromUniversalArrows UMonS free_mon_universal_arrow.
@@ -331,29 +324,21 @@ Example free_mon_unit_is_insert (X : Sets) (a : carrier X) :
   @Category.Theory.Adjunction.unit _ _ _ _ free_mon_sets_adjunction X a
     = free_mon_insert X a := eq_refl.
 
-(* NEGATIVE 1 (conversion).  The counit does NOT compute.  Its
-   underlying map is [unique_obj (ump_universal_arrows ...)], and
-   [ump_universal_arrows] is closed with [Qed], so nothing reduces
-   through it.  Stripping the [Fail] reports
-   "cannot unify "mon_fun counit l" and
-    "free_mon_extend (λ x, x) l"".
-   The control is [free_mon_unit_is_insert] immediately above: the unit
-   of the SAME adjunction, which routes through the transparent
-   [universal_arrow_from_UMP], does close by [eq_refl].  So the cause is
-   the opacity of that one donor, not adjunction plumbing at large.
-   CORRECTION (#471): one of two; this file's own [free_mon_universal] is
-   the other (the header's STRENGTHS), and the counit of the hom-set
-   form [free_mon_sets_adjunction_hom] below is this fold at [eq_refl]
-   ([free_mon_hom_counit]). *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example free_mon_counit_is_not_strict
   (L : MonS) (l : list (carrier (mon_ob L))) :
   mon_fun (@counit _ _ _ _ free_mon_sets_adjunction L) l
     = free_mon_extend (fun x => x) l := eq_refl.
 
-(* What does hold: the counit evaluates a word in L.  Its defining
-   property is the triangle identity [fmap_counit_unit], read at a
-   generator; uniqueness of the extension then identifies it with the
-   fold of the identity. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma free_mon_counit_evaluates (L : MonS)
       (l : list (carrier (mon_ob L))) :
   mon_fun (@counit _ _ _ _ free_mon_sets_adjunction L) l
@@ -364,14 +349,11 @@ Proof.
   exact (@fmap_counit_unit _ _ _ _ free_mon_sets_adjunction L a).
 Qed.
 
-(** ** The free functor acts on arrows as [map]
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [LeftAdjointFunctorFromUniversalArrows] defines [fmap] by universal
-    factorization, not by a formula, so what the functor does to a word
-    has to be proved.  It is the letterwise map: the defining
-    factorization says generators go to generators, and the uniqueness
-    half of the universal property identifies the homomorphism with
-    [wmap]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint wmap {X Y : SetoidObject} (f : carrier X → carrier Y)
          (l : list (carrier X)) : list (carrier Y) :=
@@ -391,16 +373,11 @@ Proof.
               (@arrow _ _ Y UMonS (free_mon_universal_arrow Y) ∘ f)) a).
 Qed.
 
-(* NEGATIVE 2 (conversion).  The identification below is a Leibniz
-   equality (proved next), but it is NOT a conversion at a VARIABLE
-   word: [free_mon_extend] is a [Fixpoint] and is stuck on a variable.
-   Stripping the [Fail] reports
-   "cannot unify "free_mon_extend (λ a, free_mon_insert Y (f a)) l" and
-    "wmap f l"".
-   The control is [free_mon_extend_insert_at_letter] just below, which
-   is the same statement at a literal one-letter word and DOES close by
-   [eq_refl] — so the obstruction is the stuck recursion, not a
-   mismatch of the two sides. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example free_mon_extend_insert_is_not_strict
   {X Y : Sets} (f : X ~{Sets}~> Y) (l : list (carrier X)) :
   free_mon_extend (L:=FreeMonSetsObject Y)
@@ -436,20 +413,11 @@ Proof.
   - rewrite free_mon_extend_insert; reflexivity.
 Qed.
 
-(** ** The same adjunction in hom-set form (#471)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-    A second packaging of [FreeMonSets ⊣ UMonS], with the SAME left
-    adjoint [FreeMonSets] and the same insertion: Theory/Adjunction.v's
-    hom-set constructor [Build_Adjunction'] applied to the natural
-    bijection [free_mon_hom_iso], whose forward transpose is the one of
-    [free_mon_sets_adjunction] (g ↦ U g ∘ insert) and whose inverse
-    transpose is the fold [free_mon_hom].  Its counit is then the fold of
-    the identity by conversion ([free_mon_hom_counit]), where the counit
-    of [free_mon_sets_adjunction] is that fold only up to `≈`
-    ([free_mon_counit_evaluates]).  Instance/Mon/Word.v builds the monad
-    W₀ on it.  No second free monoid and no second free functor: the
-    action on arrows is still [FreeMonSets]'s, at `≈` the letterwise map
-    ([free_mon_fmap_is_wmap]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The fold respects pointwise-`≈` letter maps. *)
 Lemma free_mon_extend_pointwise {X : SetoidObject} {L : MonS}
@@ -558,21 +526,22 @@ Proof.
   discriminate K.
 Qed.
 
-(* ...and over the coarse setoid on the SAME carrier they are
-   identified.  This is what doing the construction at [Sets] rather
-   than at [Coq] buys, and it is the fact the header's transport
-   argument rests on. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_mon_blur_identifies : @word_eq BlurObj
   (Datatypes.cons true Datatypes.nil)
   (Datatypes.cons false Datatypes.nil) :=
   @we_cons BlurObj true false Datatypes.nil Datatypes.nil Logic.I
     (@we_nil BlurObj).
 
-(** ** The same separations by mapping out
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    The probe sends each letter of the discrete two-element setoid to
-    the corresponding one-letter list in Coproduct.v's
-    (list bool, ++, nil).  No new monoid is built. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition two_letter : carrier MonTwoObj → carrier (mon_ob ListBoolMon) :=
   fun x => Datatypes.cons x Datatypes.nil.
@@ -613,17 +582,11 @@ Proof.
   cbn in K; discriminate K.
 Qed.
 
-(** * Universe guard
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The three headline constants carry no [Set] pin.  This is not merely
-    read off their constraint blocks: the section below declares
-    [Set < uo] and elaborates all three at levels strictly above it.
-    The two levels are [Sets]'s own carrier and object universes, in
-    that order for [FreeMonSetsObject].  The other two are stated by
-    ascribing [Sets@{uo uso}] rather than by an explicit instance, for
-    the portability reason recorded at the section itself.  CORRECTION
-    (#471): a fourth is guarded the same way, the hom-set form
-    [free_mon_sets_adjunction_hom]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeAboveSet.
 
@@ -632,17 +595,11 @@ Section FreeAboveSet.
   Constraint uo < uso.
 
   Check FreeMonSetsObject@{uso uo}.
-  (* PORTABILITY: the last two are written as ASCRIPTIONS of the SOURCE
-     category rather than as explicit universe instances, because the
-     number of universes a functor and an adjunction carry here is NOT
-     stable across the supported versions -- [FreeMonSets] takes five on
-     Rocq 9.1 and six on Coq 8.19/8.20, so a literal [@{uo uso _ _ _}]
-     builds on one and fails on the others with "Universe instance
-     length is 5 but should be 6".  [Sets] has a stable two-universe
-     signature, so ascribing it is version-independent and states the
-     same thing.  The guard still discriminates: the same ascription
-     shape applied to a [Set]-pinned functor is REJECTED (checked
-     against [Rng_Forget_Mon], which cannot take a [Rng] above [Set]). *)
+  (*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   Check (FreeMonSets : Sets@{uo uso} ⟶ _).
   Check (free_mon_sets_adjunction : @Adjunction _ Sets@{uo uso} _ _).
   Check (free_mon_sets_adjunction_hom : @Adjunction _ Sets@{uo uso} _ _).

@@ -44,10 +44,11 @@ Universes u p.
 (* ------------------------------------------------------------------------ *)
 (** ** Systems on an abelian group *)
 
-(* ν on the words over A, respecting each letter and additive in each
-   letter, so that its restriction to the words of length n is a
-   homomorphism νₙ : A^{⊗n} → A ([tsys_nu_hom] below); with ν₁ = 1 and
-   Mac Lane's (2), read on words of words. *)
+(*
+   本节说明 System 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record TSystem@{+} (A : Ab@{u p}) : Type@{p} := {
   tnu : list (carrier (cmon_setoid A)) → carrier (cmon_setoid A);
   tnu_letter : ∀ (u v : list (carrier (cmon_setoid A)))

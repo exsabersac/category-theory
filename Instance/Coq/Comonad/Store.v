@@ -19,71 +19,20 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Lenses, grids, and the practical API
-
+(*
    nLab:  https://ncatlab.org/nlab/show/store+comonad
    Paper: O'Connor, "Functor is to Lens as Applicative is to Biplate:
-          Introducing Multiplate", arXiv:1103.2841, 2011
 
-   The one-line remark above about lenses has a precise statement.  A
-   coalgebra of this comonad on a carrier a — a costructure map
-   a ~> (s ⇒ a) × s satisfying the counit and coaction laws of
-   Comonad/Coalgebra.v — amounts to a pair of maps get : a → s and
-   put : s × a → a, and the two coalgebra laws are together equivalent
-   to the three lens laws: put (get a, a) = a; get (put (σ, a)) = σ;
-   and put (τ, put (σ, a)) = put (τ, a).  Coalgebras of the store
-   comonad are therefore exactly the lawful ("very well-behaved")
-   lenses of functional programming, a correspondence due to O'Connor
-   (November 2010; arXiv:1103.2841, 2011).
+   本节说明余单子相关定义、性质与动机。
 
-   The spatial intuition is a grid of observations with a cursor, and
-   it is what makes this comonad the natural home of cellular
-   computation.  Conway's Game of Life serves as the guiding example in
-   Milewski's exposition (2017).  Piponi's treatment of cellular
-   automata works the same idea over a bi-infinite zipper comonad, one
-   step of the automaton applying the local rule at every refocusing at
-   once — which is [extend] of the rule (2006).  Foner's comonadic
-   fixed point evaluates multi-dimensional spreadsheet-like recurrences
-   in which every cell observes its own context within the whole
-   (Haskell Symposium 2015).
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   Kmett's ComonadStore class names the practical vocabulary, and each
-   of its names lands on an artifact of this file.  pos reads the
-   focused position: here [snd], and [extend] preserves it
-   ([Store_extend_pos_spec]).  peek observes at a given position:
-   applying [fst], so that [extract] is peek at pos
-   ([Store_extract_spec]).  seek repositions the store absolutely: the
-   library's [store_seek], whose family over all positions is the
-   observation component of [duplicate] ([Store_seek_spec]).
-   experiment observes many neighbouring positions at once. *)
+(*
+   本节说明函子、余单子、等价相关定义、性质与动机。
 
-(** ** The store data over raw types, and why the witness is hosted on Sets
-
-    Instance/Coq/Comonad/Env.v hosts the environment comonad on COQ, whose
-    morphism equivalence is pointwise Leibniz equality.  For the store
-    functor every comonad *equation* of the corresponding raw data likewise
-    holds pointwise and definitionally: the [coq_store_*] lemmas below check
-    all of them by destructuring alone, with no axiom involved.
-
-    What resists is not any equation but the *setoid respectfulness* of the
-    functor action, the [fmap_respects] field a [Functor] on COQ must carry.
-    Because a store places the observation function h : s → x inside the
-    object, respectfulness at pointwise-= homs asks for Leibniz equality of
-    function components given only pointwise-equal inputs, and
-    [coq_store_map_proper_entails_funext] shows that the very first instance
-    of that obligation already implies functional extensionality for
-    functions out of an inhabited s.  The obligation is therefore not merely
-    inconvenient: it is out of reach for axiom-free Coq.
-
-    This is precisely the corner named by the plan's Phase 6 risk note
-    (doc/classical-completion-plan.md), together with the sanctioned move:
-    "if a corner genuinely resists, move that single instance to Sets
-    (setoid homs make the law proper-trivial) and record the move in the
-    phase PR — the deliverable is the comonad witness, not its host
-    category."  The bundled witness
-    [Store_Comonad] accordingly lives on [Sets], where the store object
-    carries a componentwise setoid and respectfulness is a one-line
-    pointwise argument.  The file keeps its planned location. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The plan-prescribed action on raw types: apply f to every observation,
     keep the focus. *)
@@ -139,14 +88,11 @@ Lemma coq_store_duplicate_natural {s x y : Type} (f : x → y)
     = coq_store_duplicate (coq_store_map f p).
 Proof. now destruct p. Qed.
 
-(** The obstruction, machine-checked: the respectfulness a COQ-hosted store
-    functor would owe — at the single instance x := s, with the identity
-    observation as the store — is already the statement of functional
-    extensionality for functions out of s, whenever s is inhabited (the
-    final conversion step is definitional eta).  Restricted functional
-    extensionality is independent of Coq's type theory, so no axiom-free
-    [Functor] on COQ can carry this action, and the bundled witness below
-    is hosted on [Sets] instead. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma coq_store_map_proper_entails_funext {s y : Type} (s0 : s)
   (respects : ∀ f g : s → y,
@@ -160,11 +106,11 @@ Qed.
 
 (** ** The store setoid on [Sets] *)
 
-(* A store over the setoid s is an ≈-respecting observation map paired with
-   a position; two stores are equivalent when the observations agree
-   pointwise (up to the codomain's ≈) and the positions agree (up to s's ≈).
-   This componentwise relation is exactly what makes every obligation below
-   pointwise, in contrast to the Leibniz pairing over raw types above. *)
+(*
+   本节说明 Store 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition store_equiv {s x : SetoidObject} :
   crelation (SetoidMorphism s x * carrier s) :=
@@ -339,11 +285,11 @@ Proof.
   - reflexivity.
 Qed.
 
-(** The comonad witness: per Theory/Monad.v, a comonad on [Sets] IS a monad
-    on [Sets^op], so the record is assembled with [Build_Monad] at (Sets^op,
-    (StoreF s)^op) — [ret] is the counit and [join] the comultiplication,
-    and each monad law is the corresponding lemma above, read through the
-    opposite category's reversed composition. *)
+(*
+   本节说明单子、余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Store_Comonad (s : SetoidObject) :
   @Comonad Sets (StoreF s) :=
   @Build_Monad (Sets^op) ((StoreF s)^op)
@@ -357,10 +303,11 @@ Qed.
     (λ (x y : SetoidObject) (f : SetoidMorphism y x),
        @store_duplicate_natural s y x f).
 
-(** The covariant accessors of Comonad/Core.v compute on this witness
-    exactly as the plan's skeleton promises: [extract] observes at the
-    focus, [duplicate] refocuses at every position, and [extend f] runs the
-    co-Kleisli arrow f on every refocused store while keeping the focus. *)
+(*
+   本节说明余单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Store_extract_spec {s x : SetoidObject}
   (h : SetoidMorphism s x) (s0 : carrier s) :

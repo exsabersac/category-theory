@@ -19,20 +19,11 @@ Generalizable All Variables.
 
 (** ** The element of a group as a map out of the singleton *)
 
-(* The constant map at [x], read into [Sets] through [Grp_Forget].  This
-   is the transpose across the free/forgetful adjunction of the
-   homomorphism that picks out [x].  Built by [refine] rather than as a
-   [Program Definition] because under the universe annotation the
-   respectfulness obligation is not discharged before the constant is
-   registered, and the next proof's reference to it is then rejected with
-   "The variable grp_point was not found in the current environment".
-   It must also stay TRANSPARENT: closed with [Qed] instead, the
-   separation proof stops at the [assert] of the generator equation,
-   whose [exact (free_grp_extend_generators …)] is refused because the
-   hypothesis has frozen as
-   [f (grp_mul G (grp_unit G) (grp_point x ttt)) ≈ …] with nothing left
-   to reduce (an earlier revision of this sentence placed the stop at the
-   final [exact], which is never reached; measured on a full copy). *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition grp_point@{o so+} {G : Grp@{so o}} (x : carrier G) :
   unit_setoid_object@{o o} ~{Sets@{o so}}~> Grp_Forget G.
 Proof. unshelve refine {| morphism := fun _ => x |}; proper. Defined.

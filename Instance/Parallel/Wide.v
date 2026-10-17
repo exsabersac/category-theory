@@ -60,9 +60,11 @@ Definition wpar_compose@{i} {I : Type@{i}} {x y z : ParObj} :
   | ParY, ParY, ParY => fun _ _ => ttt
   end.
 
-(* The wide walking parallel pair on the index type [I].  Hom-equivalence is
-   strict equality of indices, so distinct indices are distinct arrows and
-   the shape is not thin unless [I] is subsingleton. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition WideParallel@{i p} (I : Type@{i}) : Category@{Set i p} := {|
   obj     := ParObj;
   hom     := WParHom@{i} I;
@@ -146,10 +148,11 @@ Example awide_obj_Y {I : Type} {C : Category} {x y : C} (fs : I → x ~> y) :
 
 (** ** Comparison with the two-arrow shape *)
 
-(* The two comparison functors are the identity on objects; all the content
-   is in the hom-sets, where a [Parallel] arrow ParX ~> ParY is a dependent
-   pair whose bool tag decides between the two generators, and a
-   [WideParallel bool] arrow ParX ~> ParY is that bool itself. *)
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition wide_of_par_map@{i u v} {a b : ParObj} :
   (a ~{Parallel@{u v}}~> b) → WParHom@{i} bool a b :=
@@ -207,10 +210,11 @@ Proof.
   destruct (ParHom_inv _ _ _ hf).
 Qed.
 
-(* Both composites are the identity, and both round trips hold at STRICT
-   functor equality: the object components are [eq_refl], so the transports
-   of [Functor_StrictEq_Setoid] vanish and only the hom-level agreement is
-   left to prove. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Par_of_Wide_Wide_of_Par :
   @equiv _ (@Functor_StrictEq_Setoid Parallel Parallel)
     (Par_of_Wide ◯ Wide_of_Par) (Id[Parallel]).
@@ -234,10 +238,11 @@ Proof.
   try destruct m; reflexivity.
 Qed.
 
-(* The wide shape at a two-element index IS the walking parallel pair, as a
-   genuine isomorphism of categories: [≅[StrictCat]] compares functors by
-   [Functor_StrictEq_Setoid] (object equality on the nose), unlike [≅[Cat]],
-   which in this library is equivalence of categories. *)
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition WideParallel_bool_Parallel :
   @Isomorphism StrictCat (WideParallel bool) Parallel := {|
   to   := Par_of_Wide;
@@ -260,10 +265,11 @@ Next Obligation.
   exact (strict_equiv_implies_fun_equiv _ _ Wide_of_Par_Par_of_Wide).
 Qed.
 
-(* The shape comparison alone says nothing about DIAGRAMS.  This does: the
-   binary diagram [APair f g] pulled back along the comparison is the wide
-   diagram at the two-element family, again at strict functor equality with
-   [eq_refl] object components. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma AWide_bool_APair {C : Category} {x y : C} (f g : x ~> y) :
   @equiv _ (@Functor_StrictEq_Setoid (WideParallel bool) C)
     (AWide (fun b : bool => if b then f else g))

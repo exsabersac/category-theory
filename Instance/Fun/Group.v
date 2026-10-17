@@ -39,11 +39,11 @@ Generalizable All Variables.
 (* The pointwise datum                                                 *)
 (* ------------------------------------------------------------------ *)
 
-(* Declared at top level with explicit universe binders rather than inside
-   the section below: with an unannotated [Context {B : Category}] the
-   elaborator MINIMIZES, identifying B's hom and proof universes with each
-   other and with [Sets]' carrier universe.  Written out, the records keep
-   all five apart -- see the UNIVERSES paragraph in the header. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record PointwiseMonoid@{bo bh bp o so} {B : Category@{bo bh bp}}
   (T : B ⟶ Sets@{o so}) : Type := {
@@ -126,12 +126,11 @@ Proof.
   apply proper_morphism; split; assumption.
 Qed.
 
-(* The five diagrammatic laws, read off at a point.  Each is the class
-   field applied to an explicit element and is accepted by CONVERSION --
-   no tactic, no transport -- so the elementary statements below are the
-   diagrammatic ones.  The residual [fmap[T] id] is the component of the
-   identity natural transformation of [[B, Sets]], which is [fmap[F] id]
-   and not [id]; it is discharged by [T_fmap_id]. *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fun_unit_l_raw (b : B) (u : carrier (T b)) :
   fun_mul b (fun_unit b) (fmap[T] (id[b]) u) ≈ u :=
@@ -400,10 +399,11 @@ Example roundtrip_obj_mul
 (* The ordinary-group reading: a lift through Grp_Forget               *)
 (* ------------------------------------------------------------------ *)
 
-(* The monoid half of the ordinary reading.  Construction/Deloop.v's
-   [MonObject] is a bare setoid monoid with no category attached, so this
-   is an object-level statement only -- there is no [Mon]-valued functor
-   to mirror [PointwiseGrpFunctor]; see NOT DELIVERED. *)
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition pointwise_MonObject (P : PointwiseMonoid T) (b : B) :
   MonObject := {|
   mon_setoid := T b;
@@ -417,16 +417,11 @@ Next Obligation. now apply pw_unit_r. Qed.
 Example pointwise_MonObject_carrier (P : PointwiseMonoid T) (b : B) :
   mon_setoid (pointwise_MonObject P b) = T b := eq_refl.
 
-(* RECORDED STRENGTH CHANGE.  Since the PR "algebraic carriers are sets"
-   (2026-09-17) an [Instance/Grp.v] group carries [grp_prop], so turning a
-   PRESHEAF of pointwise groups into a functor into [Grp] asks that the
-   presheaf take its values among the propositional setoids.  [PT] is that
-   hypothesis, and it is threaded through [pointwise_GrpHom],
-   [PointwiseGrpFunctor] and the two [_forgets_] Examples below.  The round
-   trip discharges it for free: [grp_functor_PointwiseGroup] starts from a
-   functor into [Grp], whose values carry [grp_prop] as a field, so
-   [PT := fun b => grp_prop (F b)] -- which is the cleanest evidence that
-   this is the right hypothesis and not an artefact. *)
+(*
+   本节说明函子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (PT : forall b : B, PropEquiv (is_setoid (T b))).
 
 Program Definition pointwise_GrpObject (P : PointwiseGroup T) (b : B) :
@@ -474,27 +469,28 @@ Example PointwiseGrpFunctor_forgets_map (P : PointwiseGroup T) {x y : B}
 (* Strict attempts REFUTED, each beside a positive control             *)
 (* ------------------------------------------------------------------ *)
 
-(* (1) The lift is NOT a strict lift: the two functor records are not
-   Leibniz-equal, because [Grp_Forget ◯ PointwiseGrpFunctor P] rebuilds
-   [fmap_respects], [fmap_id] and [fmap_comp] as its own opaque proofs.
-   Both ACTIONS do agree on the nose -- the two Examples just above are
-   the controls -- so what is refuted is record equality and nothing
-   about the actions. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example lift_is_strict (P : PointwiseGroup T) :
   Grp_Forget ◯ PointwiseGrpFunctor P = T := eq_refl.
 
-(* (2) The round trip on the pointwise datum does not close at the whole
-   record either: [pw_mul_respects] is rebuilt.  Controls:
-   [roundtrip_unit], [roundtrip_mul] and [roundtrip_inv] above, which do
-   close on the nose. *)
+(*
+   本节说明 Group 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example roundtrip_whole (P : PointwiseGroup T) :
   monoid_object_pointwise (pointwise_MonoidObject P) = pg_monoid P
     := eq_refl.
 
-(* (3) Nor does the round trip on the object, for the same reason one
-   level up: the naturality fields of the rebuilt transformations are
-   this file's own opaque proofs.  Controls: [roundtrip_obj_unit] and
-   [roundtrip_obj_mul] above, which close on the values. *)
+(*
+   本节说明 Group 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example roundtrip_obj_whole
   (G : @GroupObject ([B, Sets]) CC_CartesianMonoidal T) :
   pointwise_GroupObject (group_object_pointwise G) = G := eq_refl.
@@ -545,12 +541,11 @@ End FromGrp.
 (* Universe boundary, guarded                                          *)
 (* ------------------------------------------------------------------ *)
 
-(* The two records tolerate B's hom universe STRICTLY BELOW both B's
-   proof universe and [Sets]' carrier universe; the functor category does
-   not.  So the identification [bh = bp = o] visible in the BINDER of
-   every headline constant is [Fun]'s doing and not the records'.  The
-   three [Check]s are the positive controls: they must succeed at exactly
-   the levels at which the [Fail] fires. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseBoundary.
 
@@ -566,24 +561,22 @@ Check Bu.
 Check Tu.
 Check (PointwiseGroup Tu).
 
-(* THE DISCRIMINATING CONTROL for the "two independent causes" claim:
-   a functor INTO [Grp] is formable at these separated levels, so the
-   identification carried by [PointwiseGrpFunctor] and its siblings --
-   which mention no functor category -- cannot be [Fun]'s doing.  An
-   earlier revision asserted this control in the header without
-   carrying it. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (Bu ⟶ Grp).
 
 Fail Check ([Bu, Sets@{uo uso}] : Category).
 
 End UniverseBoundary.
 
-(* The two halves of [Fun]'s identification, separated.  Above, the
-   rejection fires already at [ubh < ubp]: [Fun] forces the SOURCE
-   category's hom and proof universes to agree.  Here the source has them
-   equal by construction and only [vbh < vo] is declared, and the functor
-   category is rejected again: [Fun] additionally forces the source's hom
-   universe to be the target's.  So neither half alone accounts for it. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseBoundary2.
 
@@ -604,11 +597,11 @@ End UniverseBoundary2.
 (* Cross-link: Structure/Group/Representable.v's presheaf group        *)
 (* ------------------------------------------------------------------ *)
 
-(* Issue #341's [RepresentablyGroup e] is [@GroupObject ([C^op, Sets])
-   CC_CartesianMonoidal (RepPresheaf e)], i.e. THIS file's headline at
-   [B := C^op] and [T := RepPresheaf e].  Both corollaries are [:=] with
-   no tactic and no transport, which is the precise sense in which the
-   representable case is an instance of the general one. *)
+(*
+   本节说明 Group 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition representably_monoid_iff_pointwise {C : Category} (e : C) :
   RepresentablyMonoid e ↔ PointwiseMonoid (RepPresheaf e) :=
@@ -631,10 +624,11 @@ Program Definition Z2_triv : Z2 ~{Grp}~> Z2 := {|
   grp_map := {| morphism := fun _ => grp_unit Z2 |}
 |}.
 
-(* The witness index category is [Grp] itself and the witness functor is
-   the identity, so the group object below is the underlying-set functor
-   of [Grp] with its evident pointwise structure.  No new functor into
-   [Grp] is built. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Und : Grp ⟶ Sets := Grp_Forget ◯ Id[Grp].
 
 Definition Und_GroupObject :

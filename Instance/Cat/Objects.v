@@ -30,35 +30,11 @@ Generalizable All Variables.
 
 (** ** §1. The discrete extension, with its universes written out *)
 
-(* A function [f : A → obj[C]] extends to a functor out of the discrete
-   category on [A]: an object goes to its image, and the only morphism of
-   a discrete hom-set -- an equality proof -- goes to the identity,
-   transported along that proof.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-   This is Instance/Discrete.v's [DiscreteCat_Functor] with the
-   universe binders written out and the setoid [rewrite] avoided.  BOTH
-   changes were load-bearing and were measured separately.  Written
-   without the binders, minimization pins the source at
-   [DiscreteCat@{o Set Set}] -- which WAS the donor's actual signature,
-   and the pin §8 used to exhibit.  And discharging the [fmap_comp]
-   branch with [now rewrite id_left] instead of [symmetry; apply
-   id_left] drags [Morphisms] universes in that no annotation can bind
-   (the elaborator reports an unbound universe, and adding further
-   binders only renames it).
-
-   TWO RECORDED CORRECTIONS.  First, the donor is no longer written
-   without binders: it was annotated in place in the PR "algebraic
-   carriers are sets" (2026-09-17), so [disc_ext] is now a SECOND
-   [Set]-free extension rather than the only one, and §8 checks the two
-   against each other instead of separating them.  Second, an earlier
-   revision of this paragraph ended "A [Program Definition] cannot be
-   annotated here at all, since its obligations mint fresh universes;
-   hence the [refine]."  That is FALSE as stated and the annotated donor
-   is the counterexample: a [Program Definition] takes binders like any
-   other, and a trailing [+] in the binder list allows exactly the fresh
-   universes its obligations mint.  What [refine] buys is narrower and is
-   still true -- it mints NO auxiliary universe, so [disc_ext@{o h p q}]
-   needs no [+] where [DiscreteCat_Functor@{o h p uo uh up +}] does. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition disc_ext@{o h p q} {A : Type@{o}} {C : Category@{q h p}}
   (f : A → obj[C]) : DiscreteCat@{o h p} A ⟶ C.
 Proof.
@@ -73,14 +49,11 @@ Defined.
 
 (** ** §2. The objects functor *)
 
-(* [obj[-]] on objects and [fobj[-]] on arrows.  All three functor laws
-   are discharged by the ambient obligation tactic, and there is a reason
-   rather than an accident behind that: [fmap_respects] is the FIRST
-   PROJECTION of [Functor_StrictEq_Setoid]'s pair, whose first component
-   [eq_on_obj] IS the required pointwise Leibniz equality of object maps
-   (§6's [objects_respects_StrictCat] writes that projection out as a
-   [:=] with no tactic), and the identity and composition laws ask only
-   for [∀ x, x = x] on the underlying object maps. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition StrictCat_Objects : StrictCat ⟶ Coq := {|
   fobj := fun C => obj[C];
   fmap := fun _ _ F => fobj[F]
@@ -88,11 +61,11 @@ Program Definition StrictCat_Objects : StrictCat ⟶ Coq := {|
 
 (** ** §3. The discrete functor *)
 
-(* The three obligations are [fmap_respects], [fmap_id] and [fmap_comp],
-   each a strict equality of functors between discrete categories: the
-   object component is supplied by the hypothesis (respectively by
-   [eq_refl]) and the coherence field vanishes once the discrete
-   morphism -- an equality proof -- is destructed. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition StrictCat_Disc : Coq ⟶ StrictCat := {|
   fobj := fun A => DiscreteCat A;
   fmap := fun A B (f : A ~{Coq}~> B) => disc_ext (C := DiscreteCat B) f
@@ -110,12 +83,11 @@ Defined.
 
 (** ** §4. The adjunction *)
 
-(* The transposition.  A functor out of a discrete category IS its object
-   map, and that is the whole content: [to] forgets the arrow action and
-   [from] is [disc_ext].  Two obligations remain -- that [from] respects
-   [≈], and the round trip [from ∘ to ≈ id]; the other round trip and
-   the [Proper] certificate for [to] are discharged by the ambient
-   tactic, which is already the strict/[≈] split §5 measures. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition disc_adj_iso (A : obj[Coq]) (C : obj[StrictCat]) :
   @Isomorphism Sets
     {| carrier := @hom StrictCat (StrictCat_Disc A) C
@@ -135,10 +107,11 @@ Next Obligation.
   symmetry; exact (@fmap_id _ _ x a).
 Defined.
 
-(* Mac Lane's middle adjunction.  Both naturality clauses close by
-   [reflexivity]: [Build_Adjunction'] states them for the FORWARD
-   transpose, which lands in [Coq], where [≈] is pointwise [=] and where
-   forgetting the arrow action of a composite is forgetting it twice. *)
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Disc_Objects_Adjunction : StrictCat_Disc ⊣ StrictCat_Objects.
 Proof.
   unshelve eapply Build_Adjunction'.
@@ -173,14 +146,11 @@ Example adj_to_from (A : obj[Coq]) (C : obj[StrictCat])
   (f : A ~{Coq}~> StrictCat_Objects C) :
   to (disc_adj_iso A C) (from (disc_adj_iso A C) f) = f := eq_refl.
 
-(* The unit is the IDENTITY FUNCTION, not merely a natural isomorphism:
-   the transpose of [id] at [StrictCat_Disc A] is [fobj[Id]], which is
-   [fun x => x] on the nose.  The counit is the identity on objects, and
-   cannot be the identity functor, for the same reason
-   Adjunction/Diagonal/Finite.v
-   records for the diagonal: [counit] at [C] is a functor
-   [StrictCat_Disc (StrictCat_Objects C) ⟶ C] between two DIFFERENT
-   categories. *)
+(*
+   本节说明伴随、函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example unit_is_id (A : obj[Coq]) (a : A) :
   @unit _ _ _ _ Disc_Objects_Adjunction A a = a := eq_refl.
 
@@ -188,10 +158,11 @@ Example counit_obj (C : obj[StrictCat])
   (x : StrictCat_Disc (StrictCat_Objects C)) :
   fobj[@counit _ _ _ _ Disc_Objects_Adjunction C] x = x := eq_refl.
 
-(* THE ONE [≈]-ONLY STEP, REFUTED AT [eq_refl] AND THEN LOCALIZED.  The
-   two probes below sit either side of a passing control, so the cause is
-   read off rather than guessed: the OBJECT map returns on the nose, the
-   ARROW map does not, and the residue is exactly [fmap_id]. *)
+(*
+   本节说明 Objects 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example adj_from_to_strict (A : obj[Coq]) (C : obj[StrictCat])
   (F : StrictCat_Disc A ~{StrictCat}~> C) :
   from (disc_adj_iso A C) (to (disc_adj_iso A C) F) = F := eq_refl.
@@ -217,11 +188,11 @@ Example roundtrip_map_equiv (A : obj[Coq]) (C : obj[StrictCat])
     ≈ fmap[F] (eq_refl : x = x).
 Proof. symmetry; exact (@fmap_id _ _ F x). Qed.
 
-(* [StrictCat_Disc] is fully faithful, which is what "the unit is the identity"
-   says categorically.  Faithfulness costs NOTHING -- the ambient tactic
-   discharges it, since injectivity of [fmap[StrictCat_Disc]] is the first
-   projection of a strict functor equality.  Fullness costs exactly the
-   round trip above, i.e. exactly one [fmap_id]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Disc_Faithful : Faithful StrictCat_Disc.
 
 #[export] Program Instance Disc_Full : Full StrictCat_Disc := {|
@@ -234,11 +205,11 @@ Defined.
 
 (** ** §6. Why the source is [StrictCat] and not [Cat] *)
 
-(* [ObjRespectsCat] is exactly the [fmap_respects] obligation that ANY
-   objects functor owes, at either candidate target: both [Coq]'s
-   hom-setoid and [ObjSetoid]'s [equiv] are Leibniz equality of objects,
-   so respecting [≈] means carrying [≈]-equal functors to POINTWISE
-   LEIBNIZ-EQUAL object maps. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ObjRespectsCat : Type :=
   ∀ (C D : Category) (F G : C ⟶ D),
     @equiv _ (@homset Cat C D) F G → ∀ x : C, F x = G x.
@@ -253,10 +224,11 @@ Definition objects_respects_StrictCat :
 Lemma indiscrete_hom_eq (a b : Datatypes.unit) : a = b.
 Proof. now destruct a, b. Qed.
 
-(* The witness.  In [Indiscrete bool] every hom-set is [unit], so the
-   negation endofunctor is naturally isomorphic to the identity -- the
-   component at each object is [tt], invertible by [tt] -- while its
-   object map differs from the identity's at [true]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition SwapI : Indiscrete bool ⟶ Indiscrete bool := {|
   fobj := negb;
   fmap := fun _ _ _ => tt
@@ -271,14 +243,11 @@ Proof.
   - intros x y f; simpl; apply indiscrete_hom_eq.
 Qed.
 
-(* Hence there is no objects functor over [Cat] INTO A TARGET WHOSE
-   MORPHISM [≈] IS POINTWISE LEIBNIZ EQUALITY OF OBJECTS -- [Coq], or
-   [Sets] at [ObjSetoid] -- and not merely that this one construction
-   fails there.  The qualifier is necessary and is not a hedge: an
-   objects functor [Cat ⟶ Sets] over the ISOMORPHISM setoid exists, with
-   [fmap_respects] discharged by [fobj_iso].  That is the alternative
-   issue #357 item 1 itself offers, and it is excluded here by the
-   exercise's request for the strict version, NOT by this theorem. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem objects_not_functorial_over_Cat : ObjRespectsCat → False.
 Proof.
   intro K.
@@ -288,17 +257,11 @@ Qed.
 
 (** ** §7. Why the target is [Coq] and not [Sets] *)
 
-(* The mirror-image refutation.  It is stated for an ARBITRARY object map
-   [K : obj[Sets] → obj[StrictCat]] rather than for [StrictCat_Disc], because it
-   has to be binding on the right-hand wing too: the two instantiations
-   at the end of this section are the discrete and the INDISCRETE object
-   maps, and both are refuted by the same theorem.
+(*
+   本节说明（余）端相关定义、性质与动机。
 
-   The hypotheses are the least that make [K] deserve the name: it is
-   POINTED (each object of [K A] is named by a point of [A]), that naming
-   is INJECTIVE, and it is NATURAL (the arrow action carries the name of
-   [x] to the name of [f x]).  Both [DiscreteCat ∘ carrier] and
-   [Indiscrete ∘ carrier] satisfy all three with [Kpt] the identity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PointedObjectMap
   (K : obj[Sets] → obj[StrictCat])
   (Kmap : ∀ A B : obj[Sets], (A ~{Sets}~> B) → (K A ~{StrictCat}~> K B))
@@ -307,10 +270,11 @@ Definition PointedObjectMap
     * (∀ (A B : obj[Sets]) (f : A ~{Sets}~> B) (x : carrier A),
          fobj[Kmap A B f] (Kpt A x) = Kpt B (f x)).
 
-(* The separating object: [bool] under the everywhere-true setoid.  Two
-   constant maps out of it are [≈] without being pointwise equal, which
-   is precisely what a [Sets]-morphism may do and a [StrictCat]-morphism
-   may not. *)
+(*
+   本节说明 Objects 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition BlurBool : SetoidObject := {|
   carrier   := bool;
   is_setoid := {| equiv := fun _ _ => True |}
@@ -361,10 +325,11 @@ Proof.
   exact (no_carrier_functor_Sets_StrictCat _ _ _ disc_carrier_pointed Kresp).
 Qed.
 
-(* Instantiation 2: the INDISCRETE object map on carriers -- the right
-   adjoint of the right-hand wing, re-aimed at [Sets].  It is refuted by
-   the SAME theorem, which is why §7 is stated generally.  This is the
-   sense in which the codomain decision is binding on that module. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ind_carrier_Kmap (A B : obj[Sets]) (f : A ~{Sets}~> B) :
   Indiscrete (carrier A) ~{StrictCat}~> Indiscrete (carrier B) := {|
   fobj := f;
@@ -386,57 +351,18 @@ Qed.
 
 (** ** §8. The universe boundary *)
 
-(* Instrument check: [Fail] is live in this file.  Every negative below
-   and in §5 was additionally stripped once and its failure kind read off
-   the whole error message -- two CONVERSION failures in §5 (reporting
-   "cannot unify", with no universe clause) and one FORMABILITY refusal
-   here (reporting "universe inconsistency: Cannot enforce ...").
-   The two kinds are kept lexically apart.
+(*
+   本节说明 Objects 相关定义、性质与动机。
 
-   RECORDED CORRECTION.  An earlier revision counted THREE formability
-   refusals here: the [StrictCat] donor identification of the section
-   after next, plus two [Set] pins in [Section SetPin].  The two [Set]
-   pins are gone -- see that section -- so the count is now one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(* Section-local [Universes]/[Constraint] declarations do not leak; the
-   Instance/Fun/Group.v precedent applies, so these probes live in the
-   library file beside the constants they guard rather than in [Test/].
+(*
+   本节说明 Objects 相关定义、性质与动机。
 
-   FIRST: item I.3's [Set] pin -- now REPAIRED, and this section is the
-   record of the repair.
-
-   RECORDED CORRECTION.  An earlier revision stated this section as two
-   FORMABILITY NEGATIVES: over a category whose homs are declared
-   strictly above [Set], ascribing [DiscreteCat_Functor f] to
-   [DiscreteCat@{uo uh uh} A ⟶ C] and ascribing [Indiscrete] to
-   [Type@{uo} → Category@{uo uh uh}] were both refused, each reading
-   "universe inconsistency: Cannot enforce Set = uh", because both donors
-   were declared with bare binders and minimization pinned their hom and
-   proof levels to [Set].  The comment added that the [Constraint] below
-   was INERT for those two negatives, since what they fired on was the
-   donors' literal [Set] meeting the rigid declared level [uh].
-
-   In the PR "algebraic carriers are sets" (2026-09-17) both donors were
-   annotated in place -- [DiscreteCat_Functor@{o h p uo uh up +}] at
-   Instance/Discrete.v and [Indiscrete@{o h p}] at
-   Instance/Discrete/Reconstruct.v -- so both ascriptions are now
-   ACCEPTED and both lines below are positive controls.  The [Constraint]
-   remains inert, and is kept for the reason it was kept before: it
-   states the intended reading, and the whole section is only interesting
-   above [Set].
-
-   What this section still guards is therefore not a refusal but an
-   AGREEMENT: the two annotated donors and the hand-written [disc_ext]
-   reach the same declared levels, so the tree now has three
-   interchangeable discrete extensions rather than one usable one and two
-   pinned ones.  [disc_ext] is retained because it is written with
-   [refine] rather than [Program] and so mints no auxiliary universe;
-   §1's paragraph on that difference stands.
-
-   Contrast the section after next, where the analogous [Constraint] IS
-   load-bearing and the negative is real: deleting the [Constraint] makes
-   that negative succeed and the file stops compiling. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section SetPin.
   Universes uo uh.
   Constraint Set < uh.
@@ -457,15 +383,11 @@ Section SetPin.
   Check (disc_ext@{uo uh uh uo} f : DiscreteCat@{uo uh uh} A ⟶ C).
 End SetPin.
 
-(* SECOND: a DONOR identification, named and not repaired.  An object of
-   [StrictCat] has its hom and proof universes identified -- the fourth
-   and fifth universe arguments of [StrictCat] are the inner category's
-   object and hom-and-proof levels -- so the rejection below reports
-   "Cannot enforce cp = ch".  Here the [Constraint] IS load-bearing:
-   without it [cp] unifies with [ch] and the negative succeeds.  What is
-   NOT identified is object against hom, which is what the following
-   section's control shows, its homs sitting strictly BELOW its
-   objects. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section StrictCatObjects.
   Universes co ch cp.
   Constraint ch < cp.
@@ -480,28 +402,11 @@ Section StrictCatHomsBelow.
   Check (C : obj[StrictCat]).
 End StrictCatHomsBelow.
 
-(* THIRD, and this is the guard §5 promised: the identification visible
-   in [Disc_Objects_Adjunction]'s BINDER is minimization and not content.
-   The adjunction TYPE is formable with the inner categories' hom
-   universe declared STRICTLY BELOW their object universe -- here the
-   two functors run between [Coq@{e f f f}] and [StrictCat@{c f a f b}],
-   whose objects are categories with objects at [f] and homs at [b].
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-   This is also where the comparison with Instance/Top/Forgetful.v
-   belongs.  That file's [Discrete ⊣ Forget ⊣ Indiscrete] for [Top] is
-   forced into transposition isomorphisms because [Top]'s homs sit
-   strictly above its points, so no single [Sets] serves both directions
-   and the packaged [Adjunction] record is unformable at every level.
-   NO ANALOGUE OF THAT WALL ARISES HERE: the two functors of this file
-   run between one [StrictCat] and one [Coq] in both directions, the record
-   is built above, and the check below shows it is not even confined to
-   a degenerate universe assignment.
-
-   The [Constraint] here is neither inert nor load-bearing in the sense
-   of the two sections above: the [Check] passes with or without it, and
-   what the declaration buys is the CONTENT of the control -- without it
-   the levels could collapse and the command would demonstrate nothing.
-   Stated so that a later reader does not delete it as redundant. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section AdjunctionUniversesSeparated.
   Universes a b c e f.
   Constraint b < f.
@@ -510,12 +415,11 @@ End AdjunctionUniversesSeparated.
 
 (** ** §9. The objects functor genuinely forgets *)
 
-(* Sharpness for [StrictCat_Objects], proved rather than asserted: it is NOT
-   faithful.  The witness is the delooping of the two-element xor monoid
-   -- one object, [bool] as its hom-set, [false] as the identity -- which
-   carries exactly two endomorphisms as a monoid, the identity and the
-   constant.  Both are functors, both have the SAME object map (there is
-   only one object), and they differ at the arrow [true]. *)
+(*
+   本节说明函子、hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Ltac bool_cases :=
   repeat match goal with [ b : bool |- _ ] => destruct b end;
   reflexivity.

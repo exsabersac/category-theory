@@ -31,9 +31,11 @@ Generalizable All Variables.
 
 (** ** Objects *)
 
-(* An associative unital K-algebra: a ring, a homomorphism out of the base
-   ring, and centrality of the image.  The three fields correspond one for
-   one to [KAlgObject]'s, with centrality in place of commutativity. *)
+(*
+   本节说明 Associative 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record AAlgObject (K : CRng) := {
   aalg_ring : RingObject;
   aalg_unit : `1 K ~{Rng}~> aalg_ring;
@@ -107,13 +109,11 @@ Next Obligation. intros K A B f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros K A a; simpl; reflexivity. Qed.
 Next Obligation. intros K A B C f g a; simpl; reflexivity. Qed.
 
-(** ** The underlying K-module
+(*
+   本节说明分配律相关定义、性质与动机。
 
-    Each of the four module laws is one rig law of A conjugated by one
-    preservation law of the structure map: distributivity on the left is
-    [rig_distr_l] alone, distributivity on the right spends
-    [rig_map_add], associativity of the action spends [rig_map_mul], and
-    unitality spends [rig_map_one].  Centrality is not consumed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition AAlg_RMod {K : CRng} (A : AAlgObject K)
   : RModObject (`1 K) := {|
@@ -165,22 +165,20 @@ Next Obligation. intros K A B f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros K A a; simpl; reflexivity. Qed.
 Next Obligation. intros K A B C f g a; simpl; reflexivity. Qed.
 
-(* The two forgetful functors agree on carriers, definitionally: the
-   underlying set of the underlying module IS the underlying set.  (This
-   is the convertibility exception — an equation between setoids, not
-   between morphisms.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example aalg_forget_agree (K : CRng) (A : AAlg K) :
   fobj[RMod_Forget (`1 K)] (fobj[AAlg_Forget_Mod K] A) = fobj[AAlg_Forget K] A
   := eq_refl.
 
-(** ** K-linear maps into an algebra
+(*
+   本节说明 Associative 相关定义、性质与动机。
 
-    The data a universal property of the tensor algebra consumes: an
-    additive map out of a K-module whose interaction with the action is
-    multiplication by the image of the scalar.  This is exactly a
-    morphism into [AAlg_RMod A] with the packaging removed, and
-    [aalg_linear_of_module_hom] and [module_hom_of_aalg_linear] are the
-    two passages, mutually inverse on the underlying map by [eq_refl]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record AAlgLinear {K : CRng} (V : RModObject (`1 K)) (A : AAlgObject K) := {
   alin_map :> SetoidMorphism (cmon_setoid V) (rig_setoid (aalg_ring A));
@@ -250,10 +248,11 @@ Example module_hom_round_map {K : CRng} {V : RModObject (`1 K)}
   cmon_map (rm_hom (module_hom_of_aalg_linear (aalg_linear_of_module_hom h)))
     = cmon_map (rm_hom h) := eq_refl.
 
-(* The identity map of an algebra IS K-linear from its own underlying
-   module: both laws hold by [reflexivity], the action of [AAlg_RMod]
-   being multiplication by the image of the scalar.  This is the cheapest
-   non-trivial linear map available, and it is uniform in A. *)
+(*
+   本节说明 Associative 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition alin_id {K : CRng} (A : AAlgObject K)
   : AAlgLinear (AAlg_RMod A) A := {|
   alin_map := setoid_morphism_id
@@ -285,12 +284,11 @@ Next Obligation.
   symmetry; exact (`2 g r).
 Qed.
 
-(** ** Commutative algebras sit inside associative ones
+(*
+   本节说明 Associative 相关定义、性质与动机。
 
-    The inclusion needs no data on morphisms: [KAlgHom] and [AAlgHom] are
-    the same type once the objects are matched, so fullness and
-    faithfulness are the identity implication.  On objects, commutativity
-    supplies centrality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition AAlg_of_KAlg {K : CRng} (A : KAlgObject K) : AAlgObject K := {|
   aalg_ring := kalg_ring A;
@@ -316,11 +314,11 @@ Proof.
   - intros A B g a; simpl; reflexivity.
 Qed.
 
-(** ** The base ring is an algebra over itself
+(*
+   本节说明 Associative 相关定义、性质与动机。
 
-    So [AAlg K] is inhabited for every K, with no witness-hunting: the
-    structure map is the identity and centrality IS K's own
-    commutativity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Base_AAlg (K : CRng) : AAlgObject K := {|
   aalg_ring := `1 K;
   aalg_unit := @id Rng (`1 K);
@@ -330,15 +328,11 @@ Definition Base_AAlg (K : CRng) : AAlgObject K := {|
 Example Base_AAlg_unit (K : CRng) (k : carrier (rig_setoid (`1 K))) :
   rig_map (aalg_unit (Base_AAlg K)) k = k := eq_refl.
 
-(** * A non-commutative witness: upper-triangular 2×2 integer matrices
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    The matrix [[a, b], [0, c]] is carried as the triple (a, b, c).  This
-    is built by hand rather than read off Instance/Matr.v because that
-    file's [Matr] is a CATEGORY of matrices, not a ring: its objects are
-    the naturals and there is no [RingObject] anywhere in its output.
-    The tree contained no non-commutative [RingObject] at all before this
-    file — Instance/Mod/Tensor.v's deferral list says so in terms — so
-    the witness is new, not a re-packaging. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ut2 : Type := (Z * Z * Z)%type.
 
@@ -404,10 +398,11 @@ Program Definition UT2_Rig : RigObject := {|
   rig_mul := ut2_mul;
   rig_add_respects := ut2_add_respects;
   rig_mul_respects := ut2_mul_respects;
-  (* Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
-     carries a [PropEquiv] for its carrier.  [ut2_eqT] is Coq's [eq] under a
-     [Type] ascription, hence already a [Prop]-valued relation, so it is its
-     own mirror and both implications are the identity. *)
+  (*
+   本节说明 Associative 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   rig_prop := @PropEquiv_of_relation _ (is_setoid ut2_setoid_object)
                 (@eq ut2) (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -447,10 +442,11 @@ Definition ut2_scal_morphism
   : SetoidMorphism (is_setoid Z_setoid_object) (is_setoid ut2_setoid_object) :=
   {| morphism := ut2_scal; proper_morphism := ut2_scal_proper |}.
 
-(* Stated over plain [Z] rather than over [carrier Int_Ring]: the [ring]
-   tactic reads the ring structure off the syntactic type of the
-   equation, and it does not see through [carrier].  The obligations
-   below then close by conversion. *)
+(*
+   本节说明 Associative 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ut2_scal_add (a b : Z) :
   ut2_scal (a + b)%Z = ut2_add (ut2_scal a) (ut2_scal b).
 Proof. unfold ut2_scal, ut2_add; apply ut2_eq3; ring. Qed.

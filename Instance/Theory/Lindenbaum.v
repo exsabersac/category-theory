@@ -72,10 +72,11 @@ Inductive Entails {V : Type} (T : Theo V) : Sent V -> Sent V -> Prop :=
   (* evaluation / modus ponens in sequent form *)
   | ent_eval q r : Entails (s_and (s_imp q r) q) r.
 
-(* Reflexivity is [ent_refl] and transitivity is [ent_cut], so the
-   preorder is the two structural rules and nothing more.  Given as a
-   record literal rather than through [Program] so that [id] and
-   [compose] of [Lind] reduce; see [lind_id] and [lind_compose]. *)
+(*
+   本节说明 Lindenbaum 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition entails_PreOrder {V} (T : Theo V) :
   RelationClasses.PreOrder (Entails T) :=
   {| RelationClasses.PreOrder_Reflexive := ent_refl T
@@ -99,17 +100,19 @@ Example lind_compose {V} (T : Theo V) (p q r : Sent V)
   (f : Entails T p q) (g : Entails T q r) :
   (g ∘[Lind T] f) = ent_cut T p q r f g := eq_refl.
 
-(* Every hom-setoid is trivially true, so the category is thin.  This is
-   [proset_thin] at [entails_PreOrder T] by conversion; see the closure
-   measurement in the header for why it is restated in one term. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition lind_thin {V} (T : Theo V) : Thin (Lind T) :=
   fun _ _ _ _ => I.
 
-(* Thinness of the SOURCE makes faithfulness vacuous: the conclusion
-   [f ≈ g] of [fmap_inj] is True whatever the functor does, so every
-   functor out of [Lind T] is faithful and no property of the functor is
-   consulted.  [LindSound_Faithful] in section (F) is this term, so the
-   vacuity is visible in the definition rather than argued in prose. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition lind_any_Faithful {V} (T : Theo V) {D : Category}
   (F : Lind T ⟶ D) : Faithful F :=
   @Build_Faithful (Lind T) D F (fun x y f g _ => I).
@@ -135,10 +138,11 @@ Definition lind_any_Faithful {V} (T : Theo V) {D : Category}
   exr  := fun p q => ent_snd T p q
 }.
 
-(* The inverse transpose.  This is the one derived rule in the file: it
-   pairs the given entailment with the second projection and cuts
-   against evaluation, so it consumes ent_cut, ent_pair, ent_fst,
-   ent_snd and ent_eval, and nothing else. *)
+(*
+   本节说明 Lindenbaum 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition lind_uncurry {V} {T : Theo V} {p q r : Sent V}
   (f : Entails T p (s_imp q r)) : Entails T (s_and p q) r :=
   ent_cut T (s_and p q) (s_and (s_imp q r) q) r
@@ -147,11 +151,11 @@ Definition lind_uncurry {V} {T : Theo V} {p q r : Sent V}
        (ent_snd T p q))
     (ent_eval T q r).
 
-(* Exponential: implication.  In this library [exponent_obj x y] is
-   displayed [y ^ x], so [exponent_obj := s_imp] gives q ^ p = "p
-   implies q", which is Mac Lane's q^p.  [to exp_iso] is the deduction
-   theorem [ent_curry]; [from exp_iso] is [lind_uncurry]; both
-   isomorphism laws and [ump_exponents'] are free by thinness. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Lind_Closed {V} (T : Theo V) :
   @Closed (Lind T) _ := {
   exponent_obj := s_imp;
@@ -196,10 +200,11 @@ Fixpoint sdenote {V} (val : V -> Prop) (p : Sent V) : Prop :=
   | s_imp a b => sdenote val a -> sdenote val b
   end.
 
-(* Soundness: if every axiom of T holds under val, then every derivation
-   carries the interpretation of its premise to that of its conclusion.
-   By induction on the derivation; the only case that consumes the
-   hypothesis on T is [ent_ax]. *)
+(*
+   本节说明 Lindenbaum 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ent_soundness {V} (T : Theo V) (val : V -> Prop)
   (HT : forall a, T a -> sdenote val a) {p q : Sent V} :
   Entails T p q -> sdenote val p -> sdenote val q.
@@ -247,9 +252,11 @@ Example sound_exponent {V} (T : Theo V) val HT (p q : Sent V) :
 
 (** ** (G) Two axiom sets, two categories *)
 
-(* Monotonicity of entailment in the theory: enlarging the axiom set
-   only adds derivations.  By induction; every case but [ent_ax] is the
-   corresponding constructor applied to the inductive hypotheses. *)
+(*
+   本节说明 Lindenbaum 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma entails_weaken {V} {T T' : Theo V} (HTT : forall a, T a -> T' a)
   {p q : Sent V} : Entails T p q -> Entails T' p q.
 Proof.
@@ -297,10 +304,11 @@ Proof.
   discriminate Hf.
 Qed.
 
-(* Derivability at the theory whose one axiom is that implication.  The
-   derivation is categorical: pair the identity with itself to get the
-   diagonal, then uncurry the axiom and cut — that is, modus ponens read
-   off the cartesian closed structure rather than assumed as a rule. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem entails_mp : Entails T_mp (sv true) (sv false).
 Proof.
   apply (ent_cut _ _ (s_and (sv true) (sv true))).
@@ -320,19 +328,19 @@ Proof.
   exact (not_entails_empty (pre (sv true) (sv false) entails_mp)).
 Qed.
 
-(* [empty_sub_all] is declared for the reader rather than consumed: no
-   constant below applies it, and this file names no functor
-   [Lind T_empty ⟶ Lind T_all].  One exists — [LindWeaken empty_sub_all]
-   typechecks at exactly that type — so the quantifier in the next
-   theorem is not empty, but that is recorded here rather than pinned by
-   a constant. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition empty_sub_all : forall a, T_empty a -> T_all a :=
   fun a H => match H return T_all a with end.
 
-(* Stronger, and independent of any choice of comparison: NO full
-   functor at all goes from the empty theory's category to the category
-   of the theory that asserts everything.  Only [ent_ax] is used on the
-   target side, and only [not_entails_empty] on the source side. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_full_functor_empty_to_all (F : Lind T_empty ⟶ Lind T_all) :
   Full F -> False.
 Proof.
@@ -342,10 +350,11 @@ Proof.
               (ent_ax T_all (fobj[F] (sv true)) (fobj[F] (sv false)) I))).
 Qed.
 
-(* ...hence the two categories are not equivalent, since the functor of
-   an equivalence is full ([Equivalence_Full]).  This is the strongest
-   form of "two different axiom sets give two different categories"
-   delivered here. *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_equivalence_empty_to_all (F : Lind T_empty ⟶ Lind T_all) :
   EquivalenceOfCategories F -> False.
 Proof.

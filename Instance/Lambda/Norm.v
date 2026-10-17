@@ -110,10 +110,11 @@ Proof.
       now eapply multi_step; eauto.
 Qed.
 
-(* The reducibility predicate: [halts] lifted type-directed through [ExpP].
-   At arrow and product types this also requires the type-indexed components
-   (applications, projections) to be reducible, the closure that makes the
-   fundamental lemma go through. *)
+(*
+   本节说明 Norm 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SN {Γ τ} : Γ ⊢ τ → Type := ExpP (@halts Γ).
 Arguments SN {Γ τ} _ /.
 
@@ -168,11 +169,11 @@ Proof.
   now eapply step_preserves_SN'; eauto.
 Qed.
 
-(* The fundamental lemma (Software Foundations' msubst_R): under a reducible
-   substitution [env], every expression [e] is reducible.  Proved by induction
-   on [e], using the closure lemmas above for the eliminator cases (Fst/Snd,
-   APP) and [SubExp_Push] to handle the β-redex created by LAM applied to an
-   argument. *)
+(*
+   本节说明 Norm 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma SubExp_SN {Γ Γ'} (env : Sub Γ' Γ) {τ} (e : Exp Γ τ) :
   SN_Sub env →
   SN (SubExp env e).

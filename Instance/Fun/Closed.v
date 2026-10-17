@@ -53,15 +53,11 @@ Context {CC : @Cartesian C}.
 Context {CT : @Terminal C}.
 Context {CL : @Closed C CC}.
 
-(* The transpose of [f o exr : 1 x P ~> Q].  This is the composite
+(*
+   本节说明hom、同构相关定义、性质与动机。
 
-       Hom(P, Q) -> Hom(1 x P, Q) -> Hom(1, Q^P)
-
-   of precomposition with the projection [exr : 1 x P ~> P] and the
-   currying isomorphism.  The second map is invertible; the first is
-   left-cancellable because [exr] is split epi, its section being the
-   pairing of [one] with the identity.  Hence the composite is
-   injective. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ccc_point {P Q : C} (f : P ~> Q) :
   @terminal_obj C CT ~> @exponent_obj C CC CL P Q :=
   @curry C CC CL _ P Q (f ∘ exr).
@@ -104,10 +100,11 @@ Definition fun_const_point {E : J ⟶ A}
   @terminal_obj A AT ~{A}~> E (@initial_obj J JI) :=
   @transform _ _ _ _ a (@initial_obj J JI).
 
-(* The arrow action of the constant functor is the identity, so the
-   naturality square at [zero j : 0 ~> j] reads
-   [fmap[E] (zero j) o a_0 ~ a_j o id], and the component at [j] is
-   forced by the component at [0]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fun_const_point_inj {E : J ⟶ A}
   (a b : @terminal_obj ([J, A]) (Functor_Category_Terminal AT)
            ~{[J, A]}~> E) :
@@ -155,13 +152,11 @@ Qed.
 
 End Engine.
 
-(** ** D: a local pigeonhole principle for [Fin.t]
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Neither statement below exists in the tree; see the header for what
-    was searched and what was reused.  The nearest prior art for
-    [nodup_map_inj] is [map_FS_NoDup] (Instance/Matr/Determinant.v),
-    which is its instance at [h := Fin.FS]; the general statement is
-    absent. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma nodup_map_inj {A B : Type} (h : A -> B) (l : list A) :
   (forall x y, h x = h y -> x = y) ->
@@ -197,38 +192,30 @@ Qed.
 
 (** ** E: Mac Lane §IV.6 Exercise 5 *)
 
-(* The hypothesis of the exercise, consumed by name so that the theorem
-   below is visibly about a cartesian closed TARGET: skeletal [FinSet]
-   is cartesian closed, with n^m the canonical (n^m)-element set. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FinSet_is_cartesian_closed : @Closed FinSet FinSet_Cartesian :=
   FinSet_Closed.
 
-(* An arrow of [Omega] is a derivation of [le_t n m]; it is the identity
-   exactly in the [le_t_n] branch.  [two_map] sends the identity to the
-   identity of the two-element set and every genuine step to the
-   constant map at [Fin.F1].  Both equalities below are in [FinSet]'s
-   hom-setoid [fun_setoid], which is pointwise Leibniz equality of
-   functions [Fin.t 2 -> Fin.t 2], and in [Omega]'s [Morphism_equality],
-   which is Leibniz equality of arrows -- so [fmap_respects] is
-   discharged by substitution. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition two_map@{h} {n m : nat} (f : le_t@{h} n m) : Fin.t 2 -> Fin.t 2 :=
   match f with
   | le_t_n   => fun i => i
   | le_t_S _ => fun _ => Fin.F1
   end.
 
-(* Functoriality.  Composition in [Omega] is [compose f g = le_t_trans g
-   f], and [le_t_trans] recurses on its SECOND argument, so a case split
-   on [f] reduces both sides at once.
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
 
-   THE UNIVERSE BINDERS HERE ARE LOAD-BEARING, and that is measured:
-   written without them the same body minimizes to
-   [Omega@{_ Set Set} ⟶ FinSet@{...}], pinning [Omega]'s hom and proof
-   universes to the literal [Set], and the section below -- where
-   [Omega, FinSet] is elaborated once, for the [Cartesian] parameter --
-   then declines the resulting object.  Spelling the binders out leaves
-   both categories free.  Test/ProbeFunClosed392.v pins the rejection
-   against the annotated form as its control. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition TwoFun@{o h p u u0 u1 u2 +}
   : Omega@{o h p} ⟶ FinSet@{u u0 u1 u2} := {|
   fobj := fun _ => 2%nat;
@@ -327,9 +314,11 @@ Proof.
   exact (fin_no_nat_injection (alpha_index CC CL) (alpha_index_inj CC CL)).
 Qed.
 
-(* The hypothesis of the theorem is not vacuous for want of a cartesian
-   structure: the pointwise one exists.  What is refuted is the
-   existence of a [Closed] structure over it, or over any other. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary fun_pointwise_not_cartesian_closed :
   @Closed ([Omega, FinSet])
     (Functor_Category_Cartesian Omega FinSet FinSet_Cartesian) -> False.
@@ -337,16 +326,18 @@ Proof. exact (fun_not_cartesian_closed _). Qed.
 
 (** ** F: Awodey §8.7 -- the objectwise formula gives the wrong object *)
 
-(* Presheaves on the walking arrow.  [_2^op]'s initial object is [TwoY],
-   which is [Two_Terminal] read in the opposite category: [Initial C] is
-   notation for [@Terminal (C^op)] and [(C^op)^op] is [C], so no
-   transport is needed and the constant below typechecks by conversion. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TwoOpInitial : @Initial (_2^op) := Two_Terminal.
 
-(* [PresheafP] is the representable at [TwoX], built directly.  Its
-   value at [TwoX] is the terminal setoid and at [TwoY] the initial
-   (empty) one, so that the unique arrow [TwoY ~> TwoX] of [_2^op] acts
-   as the empty map. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PObj (x : TwoObj) : Sets :=
   match x with
   | TwoX => @terminal_obj Sets Sets_Terminal
@@ -383,10 +374,11 @@ Definition two_elt : Sets :=
 
 Definition PresheafQ : _2^op ⟶ Sets := Constant_Functor two_elt.
 
-(* A transformation [PresheafP ==> PresheafQ] for each boolean: the
-   component at [TwoX] picks a point of [two_elt], the component at
-   [TwoY] is the unique map out of the empty setoid, and the single
-   naturality square is an equation between maps out of that setoid. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition PQNat (b : bool) : PresheafP ⟹ PresheafQ := {|
   transform := fun x =>
     match x return PObj x ~{Sets}~> two_elt with
@@ -433,10 +425,11 @@ Proof.
            CC CL PresheafP PresheafQ (PQNat true) (PQNat false) H).
 Qed.
 
-(* The objectwise candidate Q(TwoY)^{P(TwoY)}: in [Sets], the
-   exponential of the two-element setoid by the empty one.  Any two of
-   its points are equivalent, because two of its elements are maps out
-   of the empty setoid. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition objectwise_candidate : Sets :=
   @exponent_obj Sets Sets_Cartesian Sets_Closed
     (PresheafP TwoY) (PresheafQ TwoY).
@@ -446,11 +439,11 @@ Lemma objectwise_candidate_subsingleton
   u ≈ v.
 Proof. intros x; simpl; intros []. Qed.
 
-(* Awodey's objectwise formula, refuted at the level of OBJECTS: there
-   is no isomorphism in [Sets] between the true value of the
-   exponential at [TwoY] and the objectwise candidate.  Since the
-   argument uses only that the two objects are isomorphic, no
-   contravariant action on the objectwise family can repair it. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem awodey_pointwise_not_exponential :
   @Isomorphism Sets
     ((@exponent_obj _ CC CL PresheafP PresheafQ) TwoY)
@@ -466,20 +459,11 @@ End AwodeyPointwise.
 
 (** ** G: section F, unconditionally *)
 
-(* Instance/Fun/Exponential.v supplies the hypothesis section F is
-   stated over.  Both constants below are the section's theorems applied
-   to the pointwise cartesian structure and to that file's cartesian
-   closed structure over it; neither re-proves anything, and section F is
-   untouched.
+(*
+   本节说明笛卡尔相关定义、性质与动机。
 
-   THE UNIVERSE PIN IS [_2]'s, NOT INTRODUCED HERE.  The header records
-   that [_2^op, Sets] elaborates only at [Sets@{Set _}], because [_2]'s
-   homs are the literal [Set] and [Fun] identifies source and target hom
-   universes.  Instance/Fun/Exponential.v's instance is polymorphic
-   enough to be instantiated there -- measured: [Psh2_Closed] elaborates
-   at [Closed@{u Set u}] with [Set < u] its only strict constraint -- so
-   the corollary below is about presheaves valued in setoids whose
-   carrier lives in [Set], exactly as section F already was. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Psh2_Cart : @Cartesian ([_2^op, Sets]) :=
   @Functor_Category_Cartesian (_2^op) Sets Sets_Cartesian.
@@ -493,12 +477,11 @@ Definition pq_point_distinct_unconditional :
     ≈ pq_point Psh2_Cart Psh2_Closed false -> False
   := pq_point_distinct Psh2_Cart Psh2_Closed.
 
-(* Awodey's objectwise no-go, with no hypothesis: the value at [TwoY] of
-   the ACTUAL exponential of the presheaf category is not isomorphic to
-   the objectwise candidate Q(TwoY)^{P(TwoY)}.  Note that
-   [objectwise_candidate] takes no argument -- it mentions neither
-   section variable, being built entirely in [Sets] -- so only the left
-   side of the comparison moves when the hypothesis is discharged. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition awodey_pointwise_not_exponential_unconditional :
   @Isomorphism Sets
     ((@exponent_obj _ Psh2_Cart Psh2_Closed PresheafP PresheafQ) TwoY)

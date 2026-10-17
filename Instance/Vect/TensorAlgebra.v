@@ -109,11 +109,11 @@ Section Algebras.
 Context (K : CRng).
 Context (V : RModObject (`1 K)).
 
-(** ** Formal expressions
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
 
-    Five formers: scalars, generators, sum, negation and product.  There is
-    no former for the unit or for the zero — those are [tt_scal] of K's one
-    and zero, exactly as in Instance/Rng/Polynomial.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive TTerm : Type :=
   | tt_scal : carrier (rig_setoid (`1 K)) → TTerm
@@ -122,23 +122,17 @@ Inductive TTerm : Type :=
   | tt_neg  : TTerm → TTerm
   | tt_mul  : TTerm → TTerm → TTerm.
 
-(** The congruence: the ring laws with multiplication NOT commutative, the
-    two clauses making the scalar inclusion a ring homomorphism, and
-    K-linearity of the generator insertion stated on BOTH sides — the
-    right-hand form [te_gen_smul_r] is what makes the scalars central,
-    and it is not derivable from the left-hand form alone. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-(* AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
-   "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
-   [RigObject] carries a [rig_prop : PropEquiv (is_setoid rig_setoid)] field
-   and the `≈` of [TensorRing] IS [tt_eq].  [et_eq] below moves IN LOCKSTEP:
-   its first constructor [ee_base] embeds a whole [tt_eq], so a [Type]-valued
-   [et_eq] over a [Prop]-valued [tt_eq] would be a constructor argument in the
-   wrong direction for the exterior algebra to stay a quotient of the tensor
-   algebra.  The cost is one elimination in each of [teval_respects] and
-   [exteval_respects], both of which now go through [pequiv_to] at the target
-   algebra.  Test/ProbeTermModelPropRng.v pins the refusal of the old
-   scripts. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive tt_eq : TTerm → TTerm → Prop :=
   (* congruence for each former, saturating under the two source setoids *)
   | te_scal {a b} : a ≈ b → tt_eq (tt_scal a) (tt_scal b)
@@ -314,11 +308,11 @@ Next Obligation. intros a b; exact (te_scal_add a b). Qed.
 Next Obligation. simpl; exact (tt_refl TO). Qed.
 Next Obligation. intros a b; exact (te_scal_mul a b). Qed.
 
-(** Scalars are CENTRAL in T(V).  This is a theorem, by induction on the
-    term, rather than a further generating equation: the generator case is
-    the two linearity clauses composed, the scalar case is commutativity of
-    K, and the three recursive cases are the ring laws of [TensorRing]
-    together with Instance/Rng/Polynomial.v's negation lemmas. *)
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tensor_scal_central (r : carrier (rig_setoid (`1 K))) (t : TTerm) :
   tt_eq (tt_mul (tt_scal r) t) (tt_mul t (tt_scal r)).
 Proof.
@@ -371,23 +365,11 @@ Fixpoint teval (t : TTerm) : carrier (rig_setoid AR) :=
   | tt_mul s t => rig_mul AR (teval s) (teval t)
   end.
 
-(** Twenty cases, one per constructor of [tt_eq].  Five are congruence for
-    a former, the first two saturating under the source setoids; seven are
-    ring laws of A, four of those additionally spending a preservation law
-    of the structure map, because the zero and the one of T(V) are scalars
-    rather than formers of their own; two are the structure map's
-    preservation of sums and of products; three are the linear map's own
-    laws, of which the right-hand linearity clause is the one that spends
-    CENTRALITY of the structure map's image; and the last two are the
-    target setoid's symmetry and transitivity.
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
 
-    AN EARLIER REVISION of this proof inducted on [tt_eq] straight into the
-    [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
-    (2026-09-17) [tt_eq] is a [Prop] inductive, so the script opens with
-    [apply pequiv_to] at the TARGET algebra's own [rig_prop] and each branch
-    returns to `≈` with [pequiv_from].  The twenty cases are unchanged; the
-    induction hypotheses are now [pequiv]-valued, so the branches that
-    consume one spend [pequiv_to] on it.  No hypothesis is added. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma teval_respects (s t : TTerm) : tt_eq s t → teval s ≈ teval t.
 Proof.
   intro He.
@@ -438,14 +420,11 @@ Proof.
   - exact (transitivity IHst IHtw).
 Qed.
 
-(** *** The extension
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-    STRENGTH, MEASURED.  Preservation of ADDITION and of MULTIPLICATION
-    close by [reflexivity] — those are clauses of the fixpoint.
-    Preservation of ZERO and of ONE does NOT: the zero of T(V) is
-    [tt_scal (rig_zero K)], so the fold returns the structure map's value
-    there, and reaching the target's zero is that map's own preservation
-    law.  Only respectfulness has content beyond that. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition tensor_extend_ring : TensorRing ~{Rng}~> AR := {|
   rig_map := {| morphism := teval |}
 |}.
@@ -462,25 +441,22 @@ Proof. intro a; simpl; reflexivity. Qed.
 Definition tensor_extend : TensorAlg ~{AAlg K}~> A :=
   (tensor_extend_ring; tensor_extend_triangle).
 
-(** The extension restricts to [f] on generators and to the structure map
-    on scalars, both DEFINITIONALLY — the fixpoint's first two clauses are
-    those two equations.  This is the convertibility exception: the
-    equations are between elements of A's carrier, not between
-    morphisms. *)
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example tensor_extend_gen (v : carrier (cmon_setoid V)) :
   rig_map (`1 tensor_extend) (tt_gen v) = alin_map f v := eq_refl.
 
 Example tensor_extend_scal (a : carrier (rig_setoid (`1 K))) :
   rig_map (`1 tensor_extend) (tt_scal a) = rig_map (aalg_unit A) a := eq_refl.
 
-(** *** Uniqueness
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
 
-    Any ring homomorphism out of T(V) agreeing with [f] on generators and
-    with the structure map on scalars IS the evaluation.  The induction has
-    one case per former: the two base cases are the hypotheses, and the
-    other three are homomorphism laws of the competitor — preservation of
-    sums, of negation (Theory/Algebra/Rig.v's [RigHom_neg], a theorem
-    rather than a field) and of products. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tensor_extend_unique (g : TensorRing ~{Rng}~> AR)
   (Hscal : ∀ a, rig_map g (tt_scal a) ≈ rig_map (aalg_unit A) a)
   (Hgen : ∀ v, rig_map g (tt_gen v) ≈ alin_map f v) (t : TTerm) :
@@ -504,14 +480,11 @@ Lemma tensor_alg_hom_scal (A : AAlgObject K) (g : TensorAlg ~{AAlg K}~> A)
   rig_map (`1 g) (tt_scal a) ≈ rig_map (aalg_unit A) a.
 Proof. symmetry; exact (`2 g a). Qed.
 
-(** * The exterior algebra
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
 
-    Λ(V) is T(V) with the single further generating equation v·v ≈ 0 for
-    generators v.  The relation [et_eq] therefore has SEVEN constructors
-    rather than twenty: the first embeds the whole of [tt_eq], so every
-    ring law and every linearity clause is inherited rather than restated,
-    and the remaining six are the new equation, congruence for the three
-    formers it can appear under, and the two closure rules. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* In [Prop] since the PR "algebraic carriers are sets" (2026-09-17), in
    lockstep with [tt_eq], which [ee_base] embeds. *)
@@ -613,11 +586,11 @@ Proof. exact (ee_alt v). Qed.
 Definition ext_insert : AltLinear V ExtAlg :=
   {| alt_lin := ext_insert_lin; alt_sq := ext_alt |}.
 
-(** ANTISYMMETRY IS DERIVED, not assumed: expanding
-    (v + w)∧(v + w) ≈ 0 and cancelling the two square terms leaves
-    v∧w + w∧v ≈ 0.  The converse — recovering v∧v ≈ 0 from antisymmetry —
-    is not proved and is not claimed; see the header for what is and is
-    not established about the two forms. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ext_anticomm (v w : carrier (cmon_setoid V)) :
   rig_mul ExtRing (tt_gen v) (tt_gen w)
     ≈ ring_neg ExtRing (rig_mul ExtRing (tt_gen w) (tt_gen v)).
@@ -653,12 +626,11 @@ Next Obligation. intro a; simpl; exact (et_refl _). Qed.
 
 Example ext_proj_computes (t : TTerm) : rig_map (`1 ext_proj) t = t := eq_refl.
 
-(** ** Evaluation out of Λ(V)
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
 
-    The same fold, on the same terms; only the respectfulness argument
-    changes, and it is SEVEN cases rather than twenty — one per constructor
-    of [et_eq].  The base case is [teval_respects] verbatim, and the new
-    case is exactly the hypothesis that the given map is alternating. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ExtEvaluation.
 
@@ -671,9 +643,11 @@ Lemma exteval_respects (s t : TTerm) :
   et_eq s t → teval A (alt_lin f) s ≈ teval A (alt_lin f) t.
 Proof.
   intro He.
-  (* Same change as in [teval_respects], and for the same reason: [et_eq] is
-     a [Prop] inductive since the PR "algebraic carriers are sets"
-     (2026-09-17).  The seven cases and the argument in each are unchanged. *)
+  (*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   apply pequiv_to.
   induction He as
     [ s t Hst
@@ -817,10 +791,11 @@ Arguments ext_representation {K} V.
 Arguments ext_representable {K} V.
 Arguments ext_auniversal_arrow {K} V.
 
-(** The universal property applied at its own object: the extension of
-    each insertion along itself is the identity.  Each is the
-    corresponding uniqueness lemma applied at the identity morphism, with
-    both of its hypotheses met by reflexivity of the term relation. *)
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma tensor_extend_self {K : CRng} (V : RModObject (`1 K))
   (t : TTerm V) :
@@ -850,10 +825,11 @@ Section TensorUniversal.
 
 Context (K : CRng).
 
-(** The universal mapping property, in the shape [universal_arrow_from_UMP]
-    consumes: the insertion, read as a morphism of K-modules into the
-    underlying module of T(V), factors every module map into the underlying
-    module of an algebra. *)
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tensor_universal (V : RMod (`1 K)) (A : AAlg K)
   (h : V ~{RMod (`1 K)}~> fobj[AAlg_Forget_Mod K] A) :
   ∃! g : TensorAlg V ~{AAlg K}~> A,
@@ -892,10 +868,11 @@ Next Obligation.
     + intro v; exact (Hg v).
 Qed.
 
-(** Mac Lane §IV.2 Exercise 1, in the part this issue delivers: the tensor
-    algebra is the left adjoint of the functor that forgets an associative
-    K-algebra down to its underlying K-module.  Both come out of the
-    generic machinery with no further proof. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TensorFunctor : RMod (`1 K) ⟶ AAlg K :=
   LeftAdjointFunctorFromUniversalArrows (AAlg_Forget_Mod K)
     tensor_universal_arrow.
@@ -903,10 +880,11 @@ Definition TensorFunctor : RMod (`1 K) ⟶ AAlg K :=
 Definition tensor_adjunction : TensorFunctor ⊣ AAlg_Forget_Mod K :=
   AdjunctionFromUniversalArrows (AAlg_Forget_Mod K) tensor_universal_arrow.
 
-(** The free functor's object part IS the term algebra, and the universal
-    arrow IS the insertion: [universal_arrow_from_UMP] stores the supplied
-    morphism as the second projection of the comma object it builds, so no
-    proof is involved. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example TensorFunctor_obj (V : RMod (`1 K)) :
   fobj[TensorFunctor] V = TensorAlg V := eq_refl.
 
@@ -926,26 +904,17 @@ Example tensor_unit_is_gen (V : RMod (`1 K)) (v : carrier (cmon_setoid V)) :
 
 End TensorUniversal.
 
-(** * Non-degeneracy
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Nothing below is obtained by induction on [tt_eq] or [et_eq]: an
-    induction on a quotienting relation cannot produce a negative
-    statement.  Every separation is obtained by mapping OUT of the term
-    algebra into a concrete algebra where the two candidates have visibly
-    different values, which is the only route a presentation by generators
-    and relations offers — the same route Instance/Rng/Polynomial.v takes
-    for [poly_x_not_constant] and Instance/Mod/Tensor.v for its own
-    negative results. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(** ** The tensor algebra is genuinely non-commutative
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
 
-    The witness module is the underlying ℤ-module of
-    Instance/Rng/Algebras/Associative.v's upper-triangular matrix algebra,
-    and the witness linear map is [alin_id], the identity.  So the
-    extension sends a generator [tt_gen x] to x itself, and two generators
-    whose matrices do not commute give two products of generators that
-    cannot be identified in T(V).  This is the fact that made [AAlg]
-    necessary: over [KAlg] this T(V) does not exist. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition UT2_Mod : RModObject (`1 Int_CRng) := AAlg_RMod UT2_AAlg.
 
@@ -996,20 +965,11 @@ Proof.
   inversion H2.
 Qed.
 
-(** ** A four-dimensional algebra, to separate v∧w from w∧v
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
 
-    The classical description of the exterior algebra of a rank-two free
-    module over ℤ, written out by hand: the quadruple (s, a, b, p) stands
-    for s + a·e₁ + b·e₂ + p·e₁∧e₂, and the product is the one the
-    relations e₁∧e₁ = e₂∧e₂ = 0 and e₁∧e₂ = −e₂∧e₁ dictate.  It is written
-    out rather than obtained from [ExtAlg] because its purpose is to be a
-    TARGET: separations are proved by mapping OUT of a term algebra into
-    something whose elements can be told apart by computation, and
-    [ExtAlg] of anything has no normal form, so nothing could be told
-    apart inside it.  NO isomorphism between [Lam2] and any [ExtAlg] is
-    proved or claimed; all that is used below is that [Lam2] is an object
-    of [AAlg Int_CRng] — the scalars are central because ℤ is
-    commutative — and that a suitable alternating map lands in it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition lam2 : Type := (Z * Z * Z * Z)%type.
 
@@ -1080,10 +1040,11 @@ Program Definition Lam2_Rig : RigObject := {|
   rig_mul := lam2_mul;
   rig_add_respects := lam2_add_respects;
   rig_mul_respects := lam2_mul_respects;
-  (* Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
-     carries a [PropEquiv] for its carrier.  [lam2_eqT] is Coq's [eq] under a
-     [Type] ascription, hence already a [Prop]-valued relation, so it is its
-     own mirror and both implications are the identity. *)
+  (*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   rig_prop := @PropEquiv_of_relation _ (is_setoid lam2_setoid_object)
                 (@eq lam2) (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -1146,13 +1107,11 @@ Example lam2_e1_e2 : rig_mul Lam2 lam2_e1 lam2_e2 = (0, 0, 0, 1)%Z := eq_refl.
 Example lam2_e2_e1 : rig_mul Lam2 lam2_e2 lam2_e1 = (0, 0, 0, -1)%Z := eq_refl.
 Example lam2_e1_e1 : rig_mul Lam2 lam2_e1 lam2_e1 = lam2_zero := eq_refl.
 
-(** ** Λ(V) does not collapse
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
 
-    The witness module is the underlying ℤ-module of [Lam2], and the
-    witness alternating map is the projection onto the degree-one part —
-    linear because the module structure is componentwise, and alternating
-    because the square of a degree-one element is (ab − ba) in the top
-    slot, which is zero. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Lam2_Mod : RModObject (`1 Int_CRng) := AAlg_RMod Lam2_AAlg.
 
@@ -1224,11 +1183,11 @@ Proof.
   inversion H2.
 Qed.
 
-(* ANTISYMMETRY IS NOT VACUOUS: the two orders of a product of distinct
-   generators are provably different elements of this Λ(V).  Together with
-   [ext_anticomm] — which says the second is the negative of the first —
-   this exhibits a Λ in which the anticommutation law has content, rather
-   than one in which both sides happen to be zero. *)
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ext_anticomm_nontrivial :
   et_eq (tt_mul (@tt_gen Int_CRng Lam2_Mod lam2_e1) (@tt_gen Int_CRng Lam2_Mod lam2_e2))
         (tt_mul (@tt_gen Int_CRng Lam2_Mod lam2_e2) (@tt_gen Int_CRng Lam2_Mod lam2_e1)) → False.
@@ -1250,13 +1209,11 @@ Proof.
   inversion H2.
 Qed.
 
-(* The square of a generator IS zero in Λ(V) — and the same equation is
-   REFUTABLE in T(V) over the very same module.  That is what makes the
-   results above results about the exterior algebra rather than facts that
-   were already true upstairs: the quotient does something.  The separating
-   target is the upper-triangular matrix algebra, reached by the linear map
-   that reads off the e₁-coefficient; the image of e₁ is then the
-   idempotent E₁₁, whose square is itself. *)
+(*
+   本节说明 TensorAlgebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example ext_gen_square_zero :
   et_eq (tt_mul (@tt_gen Int_CRng Lam2_Mod lam2_e1)

@@ -29,9 +29,11 @@ Generalizable All Variables.
 
 (** ** Rngs over a setoid carrier *)
 
-(* An abelian group with an associative, doubly distributive
-   multiplication.  No unit, and no annihilation clause: the latter is
-   derivable here, which is exactly the difference from [RigObject]. *)
+(*
+   本节说明分配律相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record RgObject := {
   rg_ab :> AbObject;
 
@@ -56,10 +58,11 @@ Record RgObject := {
 
 (** ** Annihilation, derived *)
 
-(* In an abelian group an element that is its own double is zero.  This
-   is the elementary counterpart of Structure/Ring.v's
-   [ring_cancel_idem], and it is the whole content of the two
-   annihilation laws below. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rg_cancel_idem (A : AbObject) (k : carrier (cmon_setoid A)) :
   cmon_plus A k k ≈ k → k ≈ cmon_zero A.
 Proof.
@@ -72,10 +75,11 @@ Proof.
     apply ab_neg_left.
 Qed.
 
-(* 0·a = (0 + 0)·a = 0·a + 0·a, so 0·a is idempotent, so it is 0.  The
-   corresponding clauses of [RigObject] are FIELDS; here they are
-   theorems, and Structure/Ring.v's [bool_or_not_annihilating] is
-   why a rig cannot do the same. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rg_mul_zero_l (R : RgObject) (a : carrier (cmon_setoid (rg_ab R))) :
   rg_mul R (cmon_zero (rg_ab R)) a ≈ cmon_zero (rg_ab R).
 Proof.
@@ -94,9 +98,11 @@ Qed.
 
 (** ** Homomorphisms *)
 
-(* A rng homomorphism is a homomorphism of the additive abelian groups
-   that also respects multiplication.  There is no unit clause, and that
-   single omission is what separates this category from [Rng]. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record RgHom (R S : RgObject) := {
   rg_hom_ab :> AbHom R S;
 
@@ -161,11 +167,11 @@ Qed.
 
 (** ** The category *)
 
-(* The universes are pinned by hand, for the reason recorded at
-   Instance/CMon.v's [CMon]: with [cmon_prop] a field of the underlying
-   [CMonObject] the record sort carries a [Set+1], and left to itself the
-   elaborator gives [Rg] a third, redundant universe -- refusing the
-   `Rg@{u o}` annotations in this file for arity. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Rg@{u p} : Category@{u p p} := {|
   obj     := RgObject@{p p p};
   hom     := RgHom@{p};
@@ -203,11 +209,11 @@ Next Obligation. intros R S f g Hfg a; exact (Hfg a). Qed.
 
 (** ** The forgetful functor from unital rings *)
 
-(* Pure reuse.  Instance/Rng.v's [ring_ab] already extracts the
-   additive abelian group of a unital ring, and every remaining field is
-   the corresponding [RigObject] field passed through unchanged — the
-   two records' field types are convertible, so not one of the five
-   assignments needs a tactic. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ring_rg (R : RingObject) : RgObject := {|
   rg_ab := ring_ab R;
   rg_mul := rig_mul R;
@@ -234,19 +240,21 @@ Next Obligation. intros R S f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros R a; simpl; reflexivity. Qed.
 Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 
-(* Faithfulness is CHEAP, and it is worth saying why rather than
-   presenting it as work: both hom-setoids compare homomorphisms by
-   their underlying maps pointwise, and the forgetful functor leaves the
-   underlying map alone, so the hypothesis IS the conclusion. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Rng_Forget_Rg_Faithful : Faithful Rng_Forget_Rg.
 Next Obligation. intros R S f g Hfg a; exact (Hfg a). Qed.
 
 (** ** The functor is not full *)
 
-(* The constant-zero map is a rng homomorphism between ANY two rngs: it
-   preserves 0 outright, preserves + because 0 + 0 ≈ 0, and preserves ·
-   by [rg_mul_zero_l].  It is not a unital homomorphism unless the
-   codomain is trivial, and that is the whole obstruction to fullness. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition rg_zero_mor (R S : RgObject) : RgHom R S := {|
   rg_hom_ab := {|
     cmon_map := {| morphism := fun _ => cmon_zero (ab_cmon (rg_ab S)) |}
@@ -328,12 +336,11 @@ Next Obligation.
   now rewrite (Rg_one_unique R f), (Rg_one_unique R g).
 Qed.
 
-(* Initial: the point goes to zero.  This is the SECOND of the two
-   places the derived annihilation law is spent (the first is
-   [rg_zero_mor] above) — the multiplicativity obligation reads
-   [0 ≈ rg_mul R 0 0], which is exactly [rg_mul_zero_l].  On the unital
-   side the corresponding morphism does not exist at all, which is what
-   [Rng_terminal_not_initial] below records. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Rg_zero_hom@{u o} (R : RgObject@{o o o})
   : Rg_trivial@{o} ~{Rg@{u o}}~> R := {|
   rg_hom_ab := {|
@@ -373,14 +380,11 @@ Qed.
 
 (** ** The contrast with the unital category *)
 
-(* On the unital side no morphism runs from the terminal object to the
-   initial one: such a morphism would carry the zero ring's 1 — which is
-   also its 0 — to both 1 and 0 in ℤ.
+(*
+   本节说明始/终对象、核/余核相关定义、性质与动机。
 
-   This is the same fact as Structure/Kernel/Universal/Examples.v's
-   [Rng_no_hom_zero_to_Z], restated here under a fresh name rather than
-   cited, because requiring that module would pull its 23-module closure
-   onto every consumer of [Rg].  No novelty is claimed for it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Rng_terminal_not_initial :
   (Zero_Ring ~{Rng}~> Int_Ring) → False.
 Proof.
@@ -391,13 +395,11 @@ Proof.
   discriminate.
 Qed.
 
-(* The discriminating pair Instance/Roster.v defers.  Dropping
-   unit-preservation from the morphisms changes the answer.  Read the
-   TYPE precisely: the second component is "no unital homomorphism from
-   the zero ring to Z", which is what forces terminal and initial apart
-   in [Rng]; the packaged statement "[Rng] has no zero object" is
-   Structure/Kernel/Universal/Examples.v's [Rng_no_zero_object],
-   proved there and not repackaged here. *)
+(*
+   本节说明始/终对象、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Rng_Rg_zero_object_contrast :
   ZeroObject Rg * ((Zero_Ring ~{Rng}~> Int_Ring) → False) :=
   (Rg_Zero, Rng_terminal_not_initial).
@@ -425,11 +427,11 @@ Example rg_trivial_carrier_strict :
 
 (** ** Two refuted strict attempts, pinned *)
 
-(* The image of the zero ring is a one-element rng, and so is
-   [Rg_trivial], but they are not the same record: Instance/Rng.v
-   gives [Zero_Rig] the always-true setoid while [CMon_trivial] carries
-   Leibniz [eq] on [poly_unit].  The carriers DO agree, which is the
-   control, so the failure is located in the [is_setoid] field. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_zero_ring_is_trivial :
   ring_rg Zero_Ring = Rg_trivial := eq_refl.
 
@@ -437,13 +439,11 @@ Example control_zero_ring_carrier :
   carrier (cmon_setoid (ab_cmon (rg_ab (ring_rg Zero_Ring))))
     = carrier (cmon_setoid (ab_cmon (rg_ab Rg_trivial))) := eq_refl.
 
-(* The forgetful functor does not return the hom RECORD it was given.
-   This negative is of a DIFFERENT KIND from the one above, and the kind
-   was read off the stripped error rather than guessed: this one reports
-   a plain type mismatch with NO [cannot unify] clause, the two records
-   living in different hom-sets, whereas the one above does report
-   [cannot unify] between two terms of a single type.  The control below
-   shows the underlying MAP does survive on the nose. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_forget_hom_record (R S : RingObject)
   (f : R ~{Rng}~> S) : fmap[Rng_Forget_Rg] f = f := eq_refl.
 
@@ -453,13 +453,11 @@ Example control_forget_underlying_map (R S : RingObject)
 
 (** ** Non-vacuity: the even integers *)
 
-(* 2ℤ, presented on the carrier ℤ with the multiplication transported
-   along z ↦ 2z.  [TwoZ_incl] below proves the presentation earns its
-   name.  The three laws are stated first as bare ℤ equations, closed by
-   [ring], and then passed to the record by [exact]: the obligation
-   types are CONVERTIBLE with them, [Z_eqT] being Leibniz equality, so
-   no setoid reasoning is needed and none is done — the same move
-   Theory/Algebra/Rig.v makes for [Int_Rig]. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TwoZ_mul (a b : Z) : Z := 2 * a * b.
 
 Lemma TwoZ_assoc_Z (a b c : Z) :
@@ -474,13 +472,11 @@ Lemma TwoZ_distr_r_Z (a b c : Z) :
   TwoZ_mul (Z.add a b) c = Z.add (TwoZ_mul a c) (TwoZ_mul b c).
 Proof. unfold TwoZ_mul; ring. Qed.
 
-(* Note, and it is the hazard CLAUDE.md records for
-   Instance/Sets/Products.v: this [Program Definition] raises
-   THREE obligations, not four.  The [rg_mul_respects] field is closed
-   by instance resolution during elaboration, because [Z_eqT] is
-   Leibniz equality and every function is [Proper] for it.  The three
-   that remain are [rg_mul_assoc], [rg_distr_l] and [rg_distr_r], in
-   that order. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition TwoZ_Rg : RgObject := {|
   rg_ab  := ring_ab Int_Ring;
   rg_mul := TwoZ_mul
@@ -507,20 +503,21 @@ Theorem TwoZ_nondegenerate :
     ≈ (1%Z : carrier (cmon_setoid (ab_cmon (rg_ab TwoZ_Rg)))) → False.
 Proof. intro H; unfold Z_eqT in H; discriminate. Qed.
 
-(* And its multiplication is not identically zero, which is what
-   separates this witness from the cheap zero-multiplication rng on an
-   arbitrary abelian group: there the multiplicative axioms hold
-   vacuously, here they are exercised. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem TwoZ_mul_nonzero :
   rg_mul TwoZ_Rg 1%Z 1%Z
     ≈ cmon_zero (ab_cmon (rg_ab TwoZ_Rg)) → False.
 Proof. intro H; unfold Z_eqT in H; discriminate. Qed.
 
-(* The name is earned rather than asserted: doubling is an injective rng
-   homomorphism into ℤ whose image is exactly the even integers.
-   Multiplicativity is the one clause with content, and it is why the
-   transported multiplication had to be 2ab —
-   d(a ·₂ b) = 2·(2ab) = 4ab = (2a)(2b) = d a · d b. *)
+(*
+   本节说明 Rg 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TwoZ_double (z : Z) : Z := 2 * z.
 
 Lemma TwoZ_double_add (a b : Z) :

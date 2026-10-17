@@ -256,10 +256,11 @@ Qed.
 
 (** ** The adjoint functor theorem at the Type-valued inclusion *)
 
-(* The two-point discrete space and the point are Hausdorff at every
-   universe of the predicate and of the separating opens, the opens used
-   being propositions.  Instance/Top/StoneCech.v's [Discrete_Hausdorff]
-   separates by the opens [z ≈ x], which sit at the points' universe. *)
+(*
+   本节说明 TypeValued 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tophaus_bool_hausdorff@{t p q o +| p < t, q < t, p <= o, q <= o,
     o <= t +} : IsHausdorff@{t p q o} Bool_Discrete@{o}.
 Proof.
@@ -277,9 +278,11 @@ Lemma tophaus_point_hausdorff@{t p q o +| p < t, q < t, p <= o, q <= o,
     o <= t +} : IsHausdorff@{t p q o} Point_Top@{o}.
 Proof. intros x y nxy. destruct x, y. destruct (nxy (reflexivity _)). Qed.
 
-(* The universes of [HausdorffSpaces]: [c], [hh] its objects and homs; [h]
-   and [o] those of [Top]; [t] the predicate [IsHausdorff]; [p], [q] its
-   separating opens; [s], [a] auxiliaries of the subcategory. *)
+(*
+   本节说明 TypeValued 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TopHaus_Bool@{c hh h t s a o p q +} :
   HausdorffSpaces@{c hh h t s a o p q} :=
   (Bool_Discrete@{o}; tophaus_bool_hausdorff@{t p q o}).

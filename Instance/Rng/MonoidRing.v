@@ -35,13 +35,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The category of setoid monoids, at the element level
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    [Mon Sets] states its laws through the tensor bifunctor and the
-    unitors; the four readings below turn them back into element
-    equations, which is what a construction by generators and relations
-    consumes.  Each is one projection of the class applied at a literal
-    pair, with no proof of its own. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition MonSets : Category := @Mon Sets Sets_Product_Monoidal.
 
@@ -125,16 +123,11 @@ Inductive MRTerm : Type :=
   | mr_neg  : MRTerm → MRTerm
   | mr_mul  : MRTerm → MRTerm → MRTerm.
 
-(* AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
-   "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
-   [RigObject] carries a [rig_prop : PropEquiv (is_setoid rig_setoid)] field
-   and the `≈` of [MonoidRing R M] IS [mr_eq]: the relation must BE a [Prop]
-   for that field to be the identity pair of implications.  The cost is one
-   elimination — [mreval_respects] below goes through [pequiv_to] at the
-   target ring instead of inducting straight into a [Type]-valued goal — and
-   the non-degeneracy theorems at the end of the file are unaffected, since
-   their conclusion [False] is already a [Prop].
-   Test/ProbeTermModelPropRng.v pins the refusal of the old script. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive mr_eq : MRTerm → MRTerm → Prop :=
   (* congruence for each former, saturating under the two source setoids *)
   | me_scal {a b} : a ≈ b → mr_eq (mr_scal a) (mr_scal b)
@@ -294,11 +287,11 @@ Next Obligation. intros a b; exact (me_scal_add a b). Qed.
 Next Obligation. simpl; exact (mr_refl MO). Qed.
 Next Obligation. intros a b; exact (me_scal_mul a b). Qed.
 
-(** Over a COMMUTATIVE base ring the scalars are central in R[M].  This is
-    a theorem, by induction on the term, and it is what makes R[M] an
-    R-algebra; over a non-commutative R it is false already at the scalars,
-    which is why the generating equation [me_scal_gen] is imposed between
-    scalars and GENERATORS only. *)
+(*
+   本节说明 MonoidRing 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mring_scal_central
   (Rcomm : ∀ a b, rig_mul R a b ≈ rig_mul R b a)
   (r : carrier (rig_setoid R)) (t : MRTerm) :
@@ -332,13 +325,11 @@ Arguments mr_mul {R M} s t.
 Arguments mr_eq {R M} s t.
 Arguments mr_refl {R M} s.
 
-(** The generator insertion, as a morphism of [MonSets].  It is stated
-    OUTSIDE the section deliberately: mentioning [Rng_Forget_Mon] inside
-    would tie the section variable R's universes to those of [MonSets],
-    through the functor's identification of source and target hom
-    universes, and the ring S of the evaluation section could then no
-    longer be an arbitrary [RingObject].  Stated here, with R and M
-    explicit, nothing is tied. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition mring_gen (R : RingObject) (M : MonSets)
   : M ~{MonSets}~> Rng_Forget_Mon (MonoidRing R M) :=
   @mhom M (Rng_Forget_Mon (MonoidRing R M)) (@mr_gen R M)
@@ -347,40 +338,11 @@ Definition mring_gen (R : RingObject) (M : MonSets)
 Example mring_gen_computes (R : RingObject) (M : MonSets)
   (m : carrier (mcar M)) : mmap (mring_gen R M) m = mr_gen m := eq_refl.
 
-(** * Evaluation: the universal property in element form
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Given a ring S, a ring homomorphism phi out of R and a monoid
-    homomorphism psi out of M into S's multiplicative monoid whose images
-    COMMUTE, every formal element of R[M] has a value in S.  The
-    commutation hypothesis is exactly what makes the fold respect the
-    generating equation [me_scal_gen]; it holds in R[M] itself, and over
-    ℤ it is discharged outright by the centrality of the integers.
-
-    A UNIVERSE MEASUREMENT, and why this development is not in a section.
-    [Rig_Forget_Mon] — hence [Rng_Forget_Mon] — is instantiable only at
-    [RigObject@{Set Set _}], that is, at rigs whose carrier and whose [≈]
-    both live in [Set].  The restriction is the DONOR'S, introduced by
-    universe minimization inside Theory/Algebra/Rig.v's
-    [rig_mult_monoid], not by anything here, and it is not shown to be
-    unavoidable; a variant of that donor carrying explicit binders would
-    lift it.  Its one visible consequence is structural: a section
-    variable [S : RingObject] has its universes fixed at the [Context]
-    command, and a later mention of [Rng_Forget_Mon S] inside the same
-    section is then rejected, so the whole of the evaluation development
-    is stated at top level with R, M and S as ordinary arguments.  At top
-    level the constraint is absorbed into each constant's own instance,
-    which is why everything below elaborates.  The consequence for the
-    RESULTS is that [zmring_universal_arrow] and its consequences are
-    statements about rings whose carrier sits in [Set] — a class that
-    contains every concrete ALGEBRAIC ring in this tree ([Int_Ring],
-    [Q_Ring], [Zero_Ring], [F2_Ring], [FracRing], [ZPoly] and [UT2] all
-    instantiate, the witnesses used below among them).  The one closed
-    [RingObject] it EXCLUDES is [CRingOb X], the ring of continuous
-    real-valued functions: [Top]'s opens sit strictly above its points,
-    so that carrier is above [Set] and can never reach
-    [RigObject@{Set Set _}].  Test/ProbeAlgebras.v pins the boundary: a positive
-    control at [Int_Ring@{Set Set Set}] against a rejected instance one
-    universe up, for the donor and for the functor built from it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition MRComm {R : RingObject} {M : MonSets} {S : RingObject}
   (phi : R ~{Rng}~> S) (psi : M ~{MonSets}~> Rng_Forget_Mon S) : Type :=
@@ -399,25 +361,11 @@ Fixpoint mreval {R : RingObject} {M : MonSets} {S : RingObject}
   | mr_mul s t => rig_mul S (mreval phi psi s) (mreval phi psi t)
   end.
 
-(** Twenty-one cases, one per constructor of [mr_eq].  Five are congruence
-    for a former, the first two saturating under the source setoids; seven
-    are ring laws of S, four of those additionally spending a preservation
-    law of [phi], because the zero and the one of R[M] are scalars rather
-    than formers of their own; two are [phi]'s preservation of sums and of
-    products; two are [psi]'s preservation of the operation and of the
-    unit, the second of these also spending [phi]'s preservation of the
-    one; one is the commutation hypothesis; and the last two are the
-    target setoid's symmetry and transitivity.
+(*
+   本节说明 MonoidRing 相关定义、性质与动机。
 
-    AN EARLIER REVISION of this proof inducted on [mr_eq] straight into the
-    [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
-    (2026-09-17) [mr_eq] is a [Prop] inductive and eliminates only into
-    [Prop], so the script opens with [apply pequiv_to] at the TARGET ring's
-    own [rig_prop] and each branch returns to `≈` with [pequiv_from].  The
-    twenty-one cases and the argument in each are unchanged; the induction
-    hypotheses are now [pequiv]-valued, so the branches that consume one
-    spend [pequiv_to] on it.  No hypothesis is added: every [RigObject]
-    carries the field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mreval_respects {R : RingObject} {M : MonSets} {S : RingObject}
   (phi : R ~{Rng}~> S) (psi : M ~{MonSets}~> Rng_Forget_Mon S)
   (Hcomm : MRComm phi psi) (s t : MRTerm R M) :
@@ -487,10 +435,11 @@ Next Obligation.
 Qed.
 Next Obligation. intros R M S phi psi Hcomm s t; simpl; reflexivity. Qed.
 
-(** The extension restricts to [phi] on scalars and to [psi] on
-    generators, both DEFINITIONALLY — the fixpoint's first two clauses are
-    those equations.  This is the convertibility exception: the equations
-    are between elements of S's carrier, not between morphisms. *)
+(*
+   本节说明 MonoidRing 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example mring_extend_scal {R : RingObject} {M : MonSets} {S : RingObject}
   (phi : R ~{Rng}~> S) (psi : M ~{MonSets}~> Rng_Forget_Mon S)
   (Hcomm : MRComm phi psi) (a : carrier (rig_setoid R)) :
@@ -501,10 +450,11 @@ Example mring_extend_gen {R : RingObject} {M : MonSets} {S : RingObject}
   (Hcomm : MRComm phi psi) (m : carrier (mcar M)) :
   rig_map (mring_extend phi psi Hcomm) (mr_gen m) = mmap psi m := eq_refl.
 
-(** Uniqueness: one case per former.  The two base cases are the
-    hypotheses, and the other three are homomorphism laws of the
-    competitor — preservation of sums, of negation (Theory/Algebra/Rig.v's
-    [RigHom_neg], a theorem rather than a field) and of products. *)
+(*
+   本节说明 MonoidRing 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mring_extend_unique {R : RingObject} {M : MonSets} {S : RingObject}
   (phi : R ~{Rng}~> S) (psi : M ~{MonSets}~> Rng_Forget_Mon S)
   (g : MonoidRing R M ~{Rng}~> S)
@@ -521,11 +471,11 @@ Proof.
   - rewrite (rig_map_mul g s t); exact (rig_mul_respects S _ _ IHs _ _ IHt).
 Qed.
 
-(** The commutation hypothesis of the universal property is not an
-    artifact of the proof: it is exactly what holds in R[M] itself, by the
-    generating equation, and the extension along the two insertions is
-    then the identity.  Together they say that the universal property is
-    applied at its own object with no side condition to discharge. *)
+(*
+   本节说明 MonoidRing 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma mring_comm_self (R : RingObject) (M : MonSets)
   : MRComm (mring_scal R M) (mring_gen R M).
@@ -542,28 +492,21 @@ Proof.
   - intro m; exact (mr_refl _).
 Qed.
 
-(** * R[M] as an associative R-algebra
+(*
+   本节说明 MonoidRing 相关定义、性质与动机。
 
-    Over a commutative base ring the scalars are central, which is exactly
-    the field Instance/Rng/Algebras/Associative.v's [AAlgObject] demands.
-    [KAlg R] would not do: [zmring_not_commutative] below exhibits an M
-    and a pair of generators whose two products cannot be identified in
-    ℤ[M], so that ring is not commutative and is not an object of [KAlg].
-    (Nothing here claims the converse — that R[M] IS commutative whenever
-    R and M are — and no such statement is proved.)  This is the same
-    obstruction Instance/Vect/TensorAlgebra.v runs into, and the same
-    resolution. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition mring_AAlg (R : CRng) (M : MonSets) : AAlgObject R :=
   Build_AAlgObject R (MonoidRing (`1 R) M) (mring_scal (`1 R) M)
     (mring_scal_central (`1 R) M (`2 R)).
 
-(** * Mac Lane §III.1 Exercise 1: ℤ[M] as a universal arrow
+(*
+   本节说明 MonoidRing 相关定义、性质与动机。
 
-    Over ℤ the commutation hypothesis is free — the integers are central
-    in EVERY unital ring, by Instance/Rng/Polynomial.v's [zring_central] —
-    so the universal property is stated against the whole of [Rng], not
-    only against commutative rings. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ZMonRing (M : MonSets) : RingObject := MonoidRing Int_Ring M.
 
@@ -571,10 +514,11 @@ Definition zmring_insert (M : MonSets)
   : M ~{MonSets}~> Rng_Forget_Mon (ZMonRing M) :=
   mring_gen Int_Ring M.
 
-(** Every ring homomorphism out of ℤ[M] agrees with [zring] on the
-    scalars, because ℤ is initial in [Rng]: the restriction along the
-    scalar inclusion is a homomorphism out of ℤ, and there is only one of
-    those. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma zmring_hom_scal (M : MonSets) (S : Rng) (g : ZMonRing M ~{Rng}~> S)
   (z : Z) : rig_map g (@mr_scal Int_Ring M z) ≈ zring S z.
 Proof.

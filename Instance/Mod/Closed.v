@@ -36,18 +36,18 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Engineering note (c): [mt_eq_Equivalence] (Instance/Mod/Tensor.v) is
-   a Lemma, not an Instance, so [transitivity] and setoid [rewrite] cannot
-   see it on goals that have unfolded to [mt_eq] — and the error names the
-   wrong culprit when they cannot. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Existing Instance mt_eq_Equivalence.
 
-(** ** The internal hom
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
 
-    The module of R-linear maps V ⟶ W.  Carrier, addition, zero and
-    negation are Instance/Mod.v's own hom-algebra; the ACTION is the
-    pointwise (r · φ) v := r · φ v, and that is where commutativity
-    lands. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section InternalHom.
 
@@ -55,10 +55,11 @@ Context (R : RingObject).
 Context (Rcomm : ∀ a b : carrier (rig_setoid (ring_rig R)),
             rig_mul (ring_rig R) a b ≈ rig_mul (ring_rig R) b a).
 
-(* Negation of a module homomorphism.  Instance/Mod.v supplies
-   [rmod_hom_add] and [rmod_hom_zero] but no negation, and the obvious name
-   [rmod_hom_neg] is taken by Instance/FdVect/DoubleDual.v — hence the
-   local name. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition hm_neg {M N : RModObject R} (f : RModHom M N) :
   RModHom M N := {|
   rm_hom := ab_hom_neg (rm_hom f)
@@ -98,12 +99,11 @@ Next Obligation.
 Qed.
 Next Obligation. intros V W f v; simpl; apply ab_neg_left. Qed.
 
-(** *** The pointwise action, and the one use of commutativity
+(*
+   本节说明分配律相关定义、性质与动机。
 
-    Preservation of zero and of addition are annihilation and
-    distributivity in W, and neither mentions [Rcomm] — the two lemmas
-    below are what the probe section uses as controls.  The remaining
-    clause, that r · φ is still LINEAR, is the one that does. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma hm_smul_zero (V W : RModObject R)
   (r : carrier (rig_setoid (ring_rig R))) (f : RModHom V W) :
@@ -124,15 +124,11 @@ Proof.
   apply rm_smul_distr_l.
 Qed.
 
-(* THE ONE USE OF COMMUTATIVITY IN THE WHOLE FILE.
+(*
+   本节说明 Closed 相关定义、性质与动机。
 
-   The `Proof using R Rcomm` annotation is LOAD-BEARING and is the
-   instrument the header describes: Lib.v sets
-   [Default Proof Using "Type"], [Rcomm] occurs in no statement here, and
-   without the annotation this lemma fails at [Qed] with "The following
-   section variable is used but not declared: Rcomm."  Do not remove it,
-   and do not silence it with `Set Default Proof Using "All"` — that would
-   destroy the measurement rather than pass it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hm_smul_linear (V W : RModObject R)
   (r : carrier (rig_setoid (ring_rig R))) (f : RModHom V W) :
   ∀ s v, rm_smul W r (cmon_map (rm_hom f) (rm_smul V s v))
@@ -184,12 +180,11 @@ Example HomMod_carrier (V W : RModObject R) :
 
 End InternalHom.
 
-(** ** Currying and uncurrying
+(*
+   本节说明 Closed 相关定义、性质与动机。
 
-    [hm_curry] sends f : V ⊗ W ⟶ X to v ↦ (w ↦ f (v ⊗ w)); [hm_uncurry]
-    factors the bilinear map (v, w) ↦ (g v) w through the tensor.  Both
-    round trips are below, and both are cheap for the reason the header
-    gives: [tensor_med] computes on generators. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Adjunction.
 
@@ -344,10 +339,11 @@ End Uncurry.
 
 Arguments hm_uncurry {V W X} g.
 
-(* The uncurried map's value at a generator is φ applied to the argument,
-   at LEIBNIZ equality.  This is [tensor_med]'s own `eq_refl` generator
-   equation (Instance/Mod/Tensor.v) instantiated, and it is what makes
-   everything below cheap. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example hm_uncurry_gen {V W X : RModObject R}
   (g : V ~{RMod R}~> IH W X) v w :
   mval (hm_uncurry g) (mt_gen v w) = mval (mval g v) w := eq_refl.
@@ -455,14 +451,11 @@ Qed.
 
 End ExpIso.
 
-(** ** THE HEADLINE
+(*
+   本节说明幺半结构、hom、幺半群相关定义、性质与动机。
 
-    Every field is filled by `:=` with no tactic and no transport.  The
-    underlying symmetric monoidal structure is Instance/Mod/Monoidal.v's
-    [ModSymmetric] itself, not a copy; the internal hom is [HomMod]; the
-    bijection is [exp_iso_Mod]; the universal property is
-    [ump_exponents_Mod].  A plain [Definition] rather than an [Instance],
-    for the reason the header gives. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition RMod_SymMonClosed (R : RingObject)
   (Rcomm : ∀ a b : carrier (rig_setoid (ring_rig R)),
@@ -474,14 +467,11 @@ Definition RMod_SymMonClosed (R : RingObject)
   ump_exponents'   := @ump_exponents_Mod R Rcomm
 |}.
 
-(** *** What the class returns, measured at [eq_refl]
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Seven identifications.  Three of them concern the class's DEFINED
-    fields — [curry'], [uncurry'] and [eval'] have bodies rather than being
-    arguments, so a consumer could have received a repackaging; these
-    record that they receive this file's own constants instead.  Two more
-    check the join with Instance/Mod/Monoidal.v: the tensor's object action
-    and the reduction of `bimap h id` to [mt_fmap h id]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Slot.
 
@@ -571,12 +561,11 @@ Next Obligation. intros W W' X j w; simpl; reflexivity. Qed.
 Next Obligation. intros W W' X j phi psi w; simpl; reflexivity. Qed.
 Next Obligation. intros W W' X j r phi w; simpl; reflexivity. Qed.
 
-(** *** The three FORWARD squares
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Each holds by [reflexivity]: the two sides are pointwise the same
-    term.  Note that this is agreement in the hom-SETOID; the whole
-    morphism records are NOT Leibniz-equal, and the probe section pins
-    that. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* (a) In V, contravariantly: precomposing with i ⊗ id downstairs is
        precomposing with i upstairs. *)
@@ -599,14 +588,11 @@ Theorem cur_natural_X {V W X X' : RModObject R}
   cur (k ∘ f) ≈ ihom_post k ∘ cur f.
 Proof. intros v w; reflexivity. Qed.
 
-(** *** The three BACKWARD squares
+(*
+   本节说明 Closed 相关定义、性质与动机。
 
-    NOT definitional.  Both sides are recursions over [MTerm] — the
-    left-hand one built from a single bilinear map, the right-hand one a
-    composite — so they agree at every generator but are different terms
-    at a variable tensor.  Each needs one [tensor_hom_ext] and then
-    [reflexivity], and nothing else: no [tensor_factor_commutes], no
-    transitivity chain. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem unc_natural_V {V V' W X : RModObject R}
   (i : V' ~{RMod R}~> V) (g : V ~{RMod R}~> IH W X) :
@@ -636,13 +622,11 @@ Qed.
 
 End Naturality.
 
-(** ** Acceptance tests over ℤ
+(*
+   本节说明 Closed 相关定义、性质与动机。
 
-    ℤ is commutative (Instance/Rng.v's [Int_Ring_commutative]), so the
-    whole structure is inhabited at a concrete base.  The bilinear map is
-    Instance/Mod/Tensor.v's own [Int_mul_bilinear] — nothing is
-    rebuilt — and every Example below closes by `eq_refl`: these are
-    computations, not equational arguments. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Local Notation Zc := Int_Ring_commutative.
 Local Notation ZIH := (HomMod Int_Ring Zc).
@@ -698,24 +682,11 @@ Example Zsmc_exp :
   @exponent_obj (RMod Int_Ring) Int_Mod_SymMonClosed Int_RMod Int_RMod
     = ZEnd := eq_refl.
 
-(** ** Probes
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    THIRTEEN negatives of THREE KINDS — two TYPING, three CONVERSION,
-    eight FORMABILITY — kept lexically apart, each beside an APPLIED
-    positive control, plus a scope-free instrument check.  With
-    Instance/Mod/Monoidal.v's eight that is twenty-one negatives across the
-    pair, in four kinds; the two instrument checks are guards and are not
-    counted among them, so the two files carry twenty-three [Fail]
-    commands in all.  A [Fail] that succeeds prints nothing under this
-    repository's [coqc], so each negative below
-    was stripped of its [Fail] and compiled alone, and its failure KIND
-    read off the WHOLE error message rather than the tail: the TYPING two
-    report a bare type mismatch with no `cannot unify` and no universe
-    clause, the CONVERSION three end in `cannot unify`, and the
-    FORMABILITY eight end in a universe inconsistency naming the levels
-    the probe section declared — `Cannot enforce rc = ra because
-    ra < rc` for the five that test FIRST=THIRD, and `Cannot enforce
-    rb = ra because rb < ra` for the three that test FIRST=SECOND. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* INSTRUMENT CHECK — scope-free, guards that [Fail] is doing anything. *)
 Fail Example mod_closed_instrument : (true = false) := eq_refl.
@@ -729,9 +700,11 @@ Context (V W : RModObject R).
 Context (r : carrier (rig_setoid (ring_rig R))).
 Context (f : RModHom V W).
 
-(* NEGATIVE 1.  The [Default Proof Using] instrument, read from outside
-   the proof: [hm_smul_linear] carries [Rcomm] as an ARGUMENT, so [V]
-   lands in the commutativity slot and the application is ill-typed. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@hm_smul_linear R V W r f).
 
 (* CONTROLS.  Its two siblings — same section, same statement shape, same
@@ -752,10 +725,11 @@ Check (@mt_gen Int_Ring ZEnd Int_RMod
 
 (** *** Kind 2: CONVERSION *)
 
-(* NEGATIVE 3.  The round trip is an `≈`, not a Leibniz identity of
-   morphism records: [hm_uncurry (hm_curry f)] is a [tensor_med] over
-   [uncur_bilinear], while [Zmul_tensor_hom] is one over
-   [Int_mul_bilinear], and the two bilinear records are different terms. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_rt_strict :
   hm_uncurry Int_Ring Zc (hm_curry Int_Ring Zc Zmul_tensor_hom)
     = Zmul_tensor_hom := eq_refl.
@@ -789,9 +763,11 @@ Example probe_unc_nat_gen :
     = mval (hm_uncurry R Rcomm g ∘ mt_fmap i (@id (RMod R) W))
            (mt_gen v w) := eq_refl.
 
-(* NEGATIVE 5.  The FORWARD square is `≈` by [reflexivity], but the two
-   morphism RECORDS are still not Leibniz-equal — so "holds by
-   [reflexivity]" must not be over-read as "is the same term". *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_cur_nat_strict :
   hm_curry R Rcomm (hm_uncurry R Rcomm g ∘ mt_fmap i (@id (RMod R) W))
     = hm_curry R Rcomm (hm_uncurry R Rcomm g) ∘ i := eq_refl.
@@ -806,15 +782,11 @@ Example probe_cur_nat_at :
 
 End ProbeConversion.
 
-(** *** Kind 3: FORMABILITY (universes)
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    The header's measurement, guarded.  A library file CAN carry a
-    section-local [Universes]/[Constraint] block without constraining
-    itself — Instance/Fun/Group.v establishes that, and the two
-    Test/Probe files that claimed otherwise are corrected there — so the
-    probes live here rather than in a separate file.  All five controls
-    are APPLIED, at the very levels where the five negatives are
-    rejected. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeUniverses.
 
@@ -834,46 +806,36 @@ Check (@tensor_gen Ru V W).
 Check (HomMod Ru Rcu V W).
 Check (@ihom_post Ru Rcu V W W).
 
-(* CONTROLS 6, 7 and 8, WHICH USED TO BE NEGATIVES.  An earlier revision read:
-   "NEGATIVE 6.  The DONOR.  [tensor_med] (Instance/Mod/Tensor.v) already
-   identifies the ring's first and third universes, while [TensorMod] and
-   [tensor_gen] above do not"; "NEGATIVE 7.  Instance/Mod/Monoidal.v's arrow
-   action inherits it"; "NEGATIVE 8.  Hence this file's currying."  All three
-   were re-measured after the PR "algebraic carriers are sets" (2026-09-17)
-   and all three are now FORMABLE at the declared separation.  The cause is
-   the move of [mt_eq] to [Prop]: [tensor_med_respects] no longer inducts on a
-   [Type]-valued relation into a [Type]-valued goal but runs through [pequiv],
-   and the identification the old proof forced is gone.  Negatives 9 and 10
-   below still fire, which is the instrument check that the section still
-   constrains anything at all. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (@tensor_med Ru V W).
 Check (@mt_fmap Ru V W).
 Check (@hm_curry Ru Rcu V W W).
 
-(* NEGATIVE 9.  Instance/Mod/Monoidal.v's symmetric structure.  The ring
-   is given EXPLICITLY: written `ModSymmetric Rcu` this probe is a FALSE
-   GUARD — it still fails, but on an unresolved implicit (`?R`) with a
-   plain type mismatch and no universe clause at all, so it would say
-   nothing about the constraint.  Compare the trap
-   Structure/Limit/Product/Finite.v records. *)
+(*
+   本节说明幺半结构、（余）极限、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@ModSymmetric Ru Rcu).
 
-(* NEGATIVE 10.  And therefore the headline.  Note the binder/block trap:
-   `RMod_SymMonClosed@{u u0}`'s constraint block carries no equation at
-   all, and only the binder `R : RingObject@{u0 u0 u0}` reveals this. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (RMod_SymMonClosed Ru Rcu).
 
 End ProbeUniverses.
 
-(** The OTHER identification, guarded separately.
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The section above declares the ring's FIRST and THIRD universes apart
-    and so tests only that equation.  This one declares the FIRST and
-    SECOND apart, which is the identification the header attributes to
-    Instance/Mod/Monoidal.v's [ModMonoidal] rather than to anything
-    declared here.  Without this section that attribution would be
-    measured and unguarded, and nothing in the build would notice an
-    upstream annotation changing it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeMiddleUniverse.
 
@@ -885,9 +847,11 @@ Context (Rcu : ∀ a b : carrier (rig_setoid (ring_rig Ru)),
             rig_mul (ring_rig Ru) a b ≈ rig_mul (ring_rig Ru) b a).
 Context (V W : RModObject Ru).
 
-(* CONTROLS: nothing this file declares identifies the ring's first two
-   universes, so all four are formable with them declared strictly apart.
-   Each is APPLIED to [Ru], which is the argument carrying the levels. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (@hm_curry Ru Rcu V W W).
 Check (HomMod Ru Rcu V W).
 Check (@exp_iso_Mod Ru Rcu).

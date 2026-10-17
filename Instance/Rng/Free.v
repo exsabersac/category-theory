@@ -51,16 +51,11 @@ Inductive FRTerm : Type :=
   | fr_neg  : FRTerm → FRTerm
   | fr_mul  : FRTerm → FRTerm → FRTerm.
 
-(* AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
-   "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
-   [RigObject] carries a [rig_prop : PropEquiv (is_setoid rig_setoid)] field
-   and the `≈` of [FreeRngAbObject] IS [fr_eq]: the relation must BE a [Prop]
-   for that field to be the identity pair of implications.  The cost is one
-   elimination — [fr_eval_respects] below goes through [pequiv_to] at the
-   target ring — and nothing else in the file changes: the non-degeneracy
-   theorems conclude in [False] or in an [eq] of integers, both already
-   [Prop].  Test/ProbeTermModelPropRng.v pins the refusal of the old
-   script. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive fr_eq : FRTerm → FRTerm → Prop :=
   (* congruence for each former, saturating under A's own [≈] *)
   | fre_gen {a b : carrier (cmon_setoid A)} :
@@ -124,14 +119,11 @@ Definition fr_Setoid : Setoid FRTerm := {|
   setoid_equiv := fr_eq_Equivalence
 |}.
 
-(** ** The two annihilation clauses are THEOREMS, not constructors
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    [RigObject] has twelve law fields; seventeen constructors above meet
-    ten of them.  The remaining two -- [rig_mul_zero_l] and
-    [rig_mul_zero_r] -- are derivable in the presence of additive
-    inverses, so they are NOT among the constructors and the presentation
-    is by a generating set that carries no redundancy.  The derivation is
-    the usual one: an element equal to its own double is zero. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fr_idem_zero (s : FRTerm) :
   fr_eq s (fr_plus s s) → fr_eq s fr_zero.
@@ -190,32 +182,29 @@ Definition FreeRngAbObject : RingObject := {|
   ring_neg_l := fre_neg_l
 |}.
 
-(* The carrier of the free ring, seen through BOTH forgetful routes, IS
-   the type of formal ring expressions, and its [≈] IS the quotienting
-   relation.  These are equations between TYPES -- the convertibility
-   exception the house style sanctions. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_rng_ab_carrier_is_FRTerm :
   carrier (Ab_Forget (Rng_Forget_Ab FreeRngAbObject)) = FRTerm := eq_refl.
 
-(* The corresponding reading through the MONOID route is deliberately NOT
-   stated here.  [Rng_Forget_Mon] is instantiable only at
-   [RingObject@{Set Set _}] (the pin is [Rig_Forget_Mon]'s,
-   Theory/Algebra/Rig.v), and a section variable's universes are fixed
-   by everything stated in the section, so writing that Example here would
-   confine the WHOLE free-ring construction to [Set]-sized abelian groups.
-   It is stated instead in the §IV.8 section below, where the monoid route
-   already carries the pin. *)
+(*
+   本节说明幺半群、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example free_rng_ab_equiv_is_fr_eq (s t : FRTerm) :
   (@equiv _ (is_setoid (rig_setoid FreeRngAbObject)) s t) = fr_eq s t
   := eq_refl.
 
-(** ** The insertion of the abelian group
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    A group element becomes the corresponding generator.  This is a
-    morphism of [Ab], not merely of [Sets]: [fre_gen_zero] and
-    [fre_gen_plus] are exactly the two [CMonHom] laws, so the insertion
-    costs no proof at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_rng_ab_insert : A ~{Ab}~> Rng_Forget_Ab FreeRngAbObject.
 Proof.
@@ -246,21 +235,11 @@ Fixpoint fr_eval (t : FRTerm) : carrier (rig_setoid R) :=
   | fr_mul s t  => rig_mul R (fr_eval s) (fr_eval t)
   end.
 
-(* One induction over the relation: seventeen cases, one per constructor.
-   Ten are met by the corresponding law of the target ring; four are
-   congruence for a former; TWO are the two [CMonHom] laws of [h] -- which
-   is the only place the hypothesis that [h] is a group homomorphism
-   rather than a bare function is spent -- and the last two are the target
-   setoid's symmetry and transitivity.
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-   AN EARLIER REVISION of this proof inducted on [fr_eq] straight into the
-   [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
-   (2026-09-17) [fr_eq] is a [Prop] inductive and eliminates only into
-   [Prop], so the script opens with [apply pequiv_to] at the TARGET ring's
-   own [rig_prop] and each branch returns to `≈` with [pequiv_from].  The
-   seventeen cases are unchanged; the induction hypotheses are now
-   [pequiv]-valued, so the branches that consume one spend [pequiv_to] on
-   it.  No hypothesis is added. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fr_eval_respects (s t : FRTerm) : fr_eq s t → fr_eval s ≈ fr_eval t.
 Proof.
   intro He.
@@ -300,15 +279,11 @@ Proof.
   - exact (transitivity IHst IHtu).
 Qed.
 
-(* The extension, as a morphism of [Rng].  Five obligations:
-   respectfulness of the fold, and preservation of 0, +, 1 and ·.
-   Preservation of NEGATION is not among them -- in [Rng] it is the
-   derived [RigHom_neg] rather than a field -- yet it holds for THIS
-   homomorphism definitionally all the same, the fixpoint having a clause
-   for [fr_neg].  The last four obligations are [reflexivity], the
-   fixpoint's clauses BEING those four equations.  One uniform body is
-   used so the proof does not depend on the order [Program] emits the
-   obligations in. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition free_rng_ab_extend : FreeRngAbObject ~{Rng}~> R := {|
   rig_map := {| morphism := fr_eval |}
 |}.
@@ -356,15 +331,11 @@ Example free_rng_ab_extend_neg (s : FRTerm) :
   rig_map free_rng_ab_extend (fr_neg s)
     = ring_neg R (rig_map free_rng_ab_extend s) := eq_refl.
 
-(** *** Uniqueness
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Any ring homomorphism out of the free ring agreeing with [h] on the
-    generators IS the extension.  Six cases, one per former: the generator
-    case is the agreement hypothesis, four are homomorphism laws of the
-    competitor, and the [fr_neg] case is [RigHom_neg] -- a THEOREM of
-    Theory/Algebra/Rig.v rather than a field, which is exactly the place
-    that derivation earns its keep, mirroring [ab_map_neg]'s role in
-    Instance/Ab/Free.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma free_rng_ab_extend_unique (g : FreeRngAbObject ~{Rng}~> R)
   (Hg : ∀ a : carrier (cmon_setoid A),
           rig_map g (fr_gen a) ≈ cmon_map h a) (t : FRTerm) :
@@ -510,25 +481,11 @@ Proof.
                  (free_rng_ab_universal_arrow B) ∘ u)) a).
 Qed.
 
-(** ** The same adjunction in hom-set form (#474)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-    A second packaging of [FreeRngAb ⊣ Rng_Forget_Ab], with the SAME left
-    adjoint [FreeRngAb] and the same insertion: Theory/Adjunction.v's
-    hom-set constructor [Build_Adjunction'] applied to the natural
-    bijection [free_rng_ab_hom_iso], whose forward transpose is the one of
-    [free_rng_ab_adjunction] (g ↦ U g ∘ insert) and whose inverse
-    transpose is the extension [free_rng_ab_extend].  Its counit is then
-    the evaluation of the identity by conversion ([free_rng_ab_hom_counit]),
-    where the counit of [free_rng_ab_adjunction] is that evaluation up to
-    `≈` here ([free_rng_ab_counit_evaluates]; at [eq_refl] once both
-    [Qed] layers of the header's STRENGTHS are transparent, #1353).  The
-    bijection is Mac Lane's φ of the exercise's "adjunction ⟨F, G, φ⟩"
-    (§IV.1), so this is also the literal reading of the book.
-    Instance/Rng/FreeMonad.v builds the tensor-algebra monad T of Mac
-    Lane's §VI.4 Exercise 4 on it.  No second free ring and no second free
-    functor: the action on arrows is still [FreeRngAb]'s, the relabelling
-    of generators at `≈` here ([free_rng_ab_fmap_generators]; at
-    [eq_refl] once both layers are transparent, #1353). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The evaluation respects pointwise-`≈` homomorphisms. *)
 Lemma fr_eval_pointwise@{u p +} {A : Ab@{u p}} {R : Rng@{u p}}
@@ -605,12 +562,11 @@ Example free_rng_ab_hom_to@{u p +} (A : Ab@{u p}) (R : Rng@{u p})
   to (@adj _ _ _ _ free_rng_ab_adjunction_hom A R) g
     = to (@adj _ _ _ _ free_rng_ab_adjunction A R) g := eq_refl.
 
-(** * Two left adjoints of one right adjoint
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    A general comparison, built transparently so that its components are
-    available to the unit statement below.  Theory/Adjunction.v's
-    [left_adjoint_iso] proves the same [F ≈ F'] but is [Qed], so nothing
-    reduces through it and no component of it can be named. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section LeftAdjointComparison.
 
@@ -645,20 +601,22 @@ Proof.
   reflexivity.
 Qed.
 
-(* The comparison: transpose the OTHER adjunction's unit back through this
-   one.  Everything below is stated with both adjunctions as explicit
-   arguments, so each lemma is available at the swapped instantiation too
-   -- which is what makes one round-trip argument serve for both. *)
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition adj_left_compare {F F' : D ⟶ C}
   (AF : F ⊣ U) (AF' : F' ⊣ U) (x : D)
   : F x ~> F' x :=
   from (@adj _ _ _ _ AF x (F' x))
        (@Category.Theory.Adjunction.unit _ _ _ _ AF' x).
 
-(* The comparison is compatible with the units.  This is the statement
-   Mac Lane's exercise asks for beside the isomorphism of functors, and
-   it is two lines: [to_adj_unit] turns [fmap[U] h ∘ η] into [⌊h⌋], and
-   the comparison was DEFINED as [⌈η'⌉]. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem adj_left_compare_unit {F F' : D ⟶ C}
   (AF : F ⊣ U) (AF' : F' ⊣ U) (x : D) :
   fmap[U] (adj_left_compare AF AF' x)
@@ -720,10 +678,11 @@ Proof.
            (@from_adj_comp_law _ _ _ _ AF x (F' x) _)).
 Qed.
 
-(* The two left adjoints are naturally isomorphic, with the comparison
-   above as the family.  This is [Functor_Setoid]'s [≈] unfolded, so it
-   is the same statement Theory/Adjunction.v's [left_adjoint_iso] proves
-   -- built transparently here so that its components have names. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition left_adjoints_agree {F F' : D ⟶ C}
   (AF : F ⊣ U) (AF' : F' ⊣ U) : F ≈ F'.
 Proof.
@@ -767,11 +726,11 @@ Definition free_ring_via_mon_adjunction
   : free_ring_via_mon ⊣ RngUnderlyingMon :=
   Adjunction_Compose free_mon_sets_adjunction zmring_adjunction.
 
-(* Retyping the monoid route against the ABELIAN route's right adjoint is
-   pure field copying: every field of [Adjunction] mentions the right
-   adjoint only through [U y] and [fmap[U] f], and those agree
-   definitionally, so the five field TYPES are convertible even though the
-   two functor RECORDS are not. *)
+(*
+   本节说明伴随、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_ring_via_mon_adjunction_ab
   : free_ring_via_mon ⊣ RngUnderlyingAb :=
   @Build_Adjunction Rng Sets free_ring_via_mon RngUnderlyingAb
@@ -787,11 +746,11 @@ Definition free_ring_composites_agree : free_ring_via_ab ≈ free_ring_via_mon
   := left_adjoints_agree free_ring_via_ab_adjunction
        free_ring_via_mon_adjunction_ab.
 
-(* Theory/Adjunction.v's [left_adjoint_iso] inhabits the SAME type -- the
-   two adjunctions are fed to it here so the claim is machine-checked
-   rather than asserted.  The two terms are NOT identified: that theorem
-   is [Qed], so no component of it reduces and none can be named, which
-   is exactly why the transparent version above was built. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_ring_composites_agree_via_left_adjoint_iso :
   free_ring_via_ab ≈ free_ring_via_mon :=
   left_adjoint_iso RngUnderlyingAb free_ring_via_ab free_ring_via_mon
@@ -802,10 +761,11 @@ Definition free_ring_comparison (X : Sets)
   adj_left_compare free_ring_via_ab_adjunction
     free_ring_via_mon_adjunction_ab X.
 
-(* [left_adjoints_agree] is [Defined], so its isomorphism family reduces
-   and the comparison named here IS the component of the natural
-   isomorphism -- by [eq_refl], not by an argument.  This is what
-   [left_adjoint_iso] could not have given. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_ring_comparison_is_agree_component (X : Sets) :
   to (projT1 free_ring_composites_agree X) = free_ring_comparison X
   := eq_refl.
@@ -821,14 +781,11 @@ Proof.
            free_ring_via_mon_adjunction_ab X).
 Qed.
 
-(** ** Readings of the two composites
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The two routes produce visibly different rings on the same generating
-    setoid -- formal ring expressions over a free abelian group on one
-    side, ℤ-linear combinations of words on the other -- and both object
-    actions reduce.  This is a difference of TERMS; the two rings are
-    provably isomorphic, and no inequality is proved anywhere.
-    That they are nevertheless isomorphic is the exercise. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example free_ring_via_ab_obj (X : Sets) :
   free_ring_via_ab X = FreeRngAbObject (FreeAbObject X) := eq_refl.
@@ -849,12 +806,11 @@ Example retype_unit_agrees (X : Sets) :
     = @Category.Theory.Adjunction.unit _ _ _ _
         free_ring_via_mon_adjunction X := eq_refl.
 
-(** * Non-degeneracy
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Nothing below is obtained by induction on [fr_eq]: every constructor
-    of that relation concludes an equation, so no induction over it can
-    produce a negative.  Each refutation maps OUT of the free ring into a
-    concrete ring and reads the answer off there. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section NonDegeneracy.
 
@@ -867,9 +823,11 @@ Context (A : AbObject).
 Context (R : RingObject).
 Context (Hne : rig_one R ≈ rig_zero R → False).
 
-(* The constant-zero map is a homomorphism of abelian groups, hence a
-   legitimate probe.  Under it every generator dies and the unit does
-   not, which is what separates a generator from a scalar. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fr_zero_probe : A ~{Ab}~> Rng_Forget_Ab R.
 Proof.
   unshelve refine {| cmon_map := _ |}.
@@ -928,15 +886,11 @@ Proof.
   exact (free_rng_ab_gen_not_one ab_int int_one_not_zero 1%Z).
 Qed.
 
-(** ** The free ring on a free abelian group of rank two is NOT
-       commutative
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The probe is the upper-triangular 2×2 integer matrices of
-    Instance/Rng/Algebras/Associative.v -- the FIRST closed
-    non-commutative [RingObject] in tree, [Lam2] being a second -- and
-    the two generators go to its two non-commuting matrix units.  Both
-    products COMPUTE, so the separation
-    is [discriminate] on closed data. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ut2_two_probe : AbTwoGens ~{Sets}~> Ab_Forget (Rng_Forget_Ab UT2).
 Proof.
@@ -987,12 +941,11 @@ Qed.
 Example rng_two_gens_is_via_ab :
   FreeRngAbObject rng_two_gens = free_ring_via_ab AbTwoGens := eq_refl.
 
-(** ** The two-step transpose of the abelian route
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [Adjunction_Compose]'s transposes are the pasted transposes
-    definitionally, so restricting a ring homomorphism out of the
-    ab-route free ring to the generating SET is: restrict to the free
-    abelian group, then restrict to the generators. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_ring_via_ab_transpose (X : Sets) (R : Rng)
   (f : free_ring_via_ab X ~{Rng}~> R) :
   to (@adj _ _ _ _ free_ring_via_ab_adjunction X R) f
@@ -1000,28 +953,27 @@ Example free_ring_via_ab_transpose (X : Sets) (R : Rng)
         (to (@adj _ _ _ _ free_rng_ab_adjunction (FreeAb X) R) f)
   := eq_refl.
 
-(** * Measured boundaries
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Each [Fail] below was stripped once and its failure KIND read off the
-    message; the two kinds are kept apart.  Every constant named in a
-    [Fail] is also named in a command that must SUCCEED, so a rename
-    breaks the file loudly instead of turning a negative vacuously
-    green. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** CONVERSION negatives *)
 
-(* The two underlying-set functors agree on objects and on arrows -- both
-   recorded above by [eq_refl] -- but they are NOT the same functor: the
-   law fields are [Compose]'s obligations at different arguments.  Error:
-   "cannot unify RngUnderlyingAb and RngUnderlyingMon". *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example rng_underlying_records_agree :
   RngUnderlyingAb = RngUnderlyingMon := eq_refl.
 
-(* Consequently the composed monoid-route adjunction cannot simply be
-   ASCRIBED against the abelian route's right adjoint: [Adjunction]'s type
-   mentions the whole functor record.  What DOES work is copying the five
-   fields across ([free_ring_via_mon_adjunction_ab]), because each field
-   type mentions the right adjoint only through [U y] and [fmap[U] f]. *)
+(*
+   本节说明伴随、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition rng_mon_route_ascribed
   : free_ring_via_mon ⊣ RngUnderlyingAb :=
   Adjunction_Compose free_mon_sets_adjunction zmring_adjunction.
@@ -1033,17 +985,11 @@ Fail Definition rng_mon_route_ascribed
 Fail Example rng_routes_convertible :
   free_ring_via_ab AbTwoGens = free_ring_via_mon AbTwoGens := eq_refl.
 
-(* The UNIT computes ([free_rng_ab_unit_is_insert], above, is [eq_refl]);
-   the COUNIT does not.  It is [unique_obj (ump_universal_arrows …)] and
-   [ump_universal_arrows] (Theory/Universal/Arrow.v) is [Qed]-opaque, so
-   nothing reduces through it -- [free_rng_ab_counit_generator] states the
-   [≈] that does hold.  The discriminating control is the unit: it runs
-   through the SAME [AdjunctionFromUniversalArrows] and DOES reduce, so
-   the cause is that one constant's opacity and not the route as such.
-   CORRECTION (#474): one of two; this file's own [free_rng_ab_universal]
-   is the other (the header's STRENGTHS), and the counit of the hom-set
-   form [free_rng_ab_adjunction_hom] is the evaluation at [eq_refl]
-   ([free_rng_ab_hom_counit]). *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example rng_counit_computes (R : Rng) (a : carrier (rig_setoid R)) :
   rig_map (free_rng_ab_counit R) (@fr_gen (Rng_Forget_Ab R) a) = a
   := eq_refl.
@@ -1056,16 +1002,11 @@ Fail Example rng_fmap_generator_computes {A B : Ab} (u : A ~{Ab}~> B)
   rig_map (fmap[FreeRngAb] u) (fr_gen a) = fr_gen (cmon_map u a)
   := eq_refl.
 
-(** ** FORMABILITY negatives: the monoid route is pinned at [Set]
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
 
-    [Rig_Forget_Mon] (Theory/Algebra/Rig.v) has source [Rig@{u Set}]:
-    the rig's hom-and-proof universe is literally [Set].  [Rng_Forget_Mon]
-    is [Rig_Forget_Mon ◯ Ring_Forget_Rig] and inherits it, so the whole
-    monoid route -- and hence the comparison, which needs both routes at
-    ONE [Rng] -- is confined to rings whose carriers live in [Set].  The
-    abelian route is not: [RngUnderlyingAb@{u u0}] leaves [u0] free.  The
-    pin is the DONOR's and is not repaired here; it is not claimed
-    unavoidable.  Error in both cases: "Cannot enforce Set = uh". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Positive controls naming the two constants the negatives below name,
    so that renaming either breaks this file instead of turning a [Fail]

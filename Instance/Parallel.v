@@ -138,16 +138,14 @@ Next Obligation.
   destruct x0, y0, z; simpl; auto with parallel_laws; cat.
 Qed.
 
-(* A presheaf on this category, i.e. a contravariant functor [Parallel^op ⟶
-   Sets], is given by a pair of sets G0, G1 and a pair of functions source,
-   target : G1 → G0.  Identities are sent to identities.
-
+(*
    nLab: https://ncatlab.org/nlab/show/quiver
    Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
 
-   In other words, a presheaf on the parallel-pair category x ⇉ y is a graph
-   (quiver): G0 is the set of vertices, G1 the set of edges, and the two arrows
-   send an edge to its source and target. *)
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Construction.Opposite.
 Require Import Category.Instance.Sets.

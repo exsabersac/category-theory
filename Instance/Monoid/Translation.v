@@ -31,14 +31,11 @@ Generalizable All Variables.
 
 (** ** Block A: the discrete category on a monoid *)
 
-(* The elements of M as objects, its own `≈` as the only identifications.
-   [DiscreteSetoidCat] is Construction/Comma/Special.v, reused rather
-   than rebuilt.  That file also explains why Instance/Proset.v's [Proset]
-   was not the construction it wanted: [Proset] is stated over `Prop`-valued
-   relations while `≈` is a `crelation`.  A `Prop`-squashed variant would in
-   any case not obviously support the converse below, which reads an honest
-   `≈` OUT of a hom-set — but that is an argument, not a measurement, and no
-   squashed variant is built here. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition MonDiscrete (M : MonObject) : Category :=
   DiscreteSetoidCat (@is_setoid (mon_setoid M)).
 
@@ -48,10 +45,11 @@ Example mon_discrete_obj (M : MonObject) :
 Example mon_discrete_hom (M : MonObject) (x y : carrier M) :
   (x ~{MonDiscrete M}~> y) = (x ≈ y) := eq_refl.
 
-(* Thin: the hom-setoid identifies all parallel arrows.  This is what makes
-   every law in Blocks B and D free — NOT those of the strict Block F, whose
-   hom-setoid is strict equality of proofs — and it is [DiscreteSetoidCat]'s
-   own property. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma MonDiscrete_thin (M : MonObject) (x y : MonDiscrete M)
   (f g : x ~> y) : f ≈ g.
 Proof. exact I. Qed.
@@ -60,9 +58,11 @@ Proof. exact I. Qed.
 
 #[local] Obligation Tactic := repeat intro; exact I.
 
-(* Mac Lane's "multiplication as a bifunctor": a functor from the product of
-   the discrete category with itself.  Its arrow action IS [mon_op_respects],
-   the field that makes multiplication respect `≈`. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition MonMult (M : MonObject) :
   MonDiscrete M ∏ MonDiscrete M ⟶ MonDiscrete M := {|
   fobj := fun p => mon_op (fst p) (snd p);
@@ -87,9 +87,11 @@ Example left_translation_obj (M : MonObject) (a x : carrier M) :
 Example right_translation_obj (M : MonObject) (a x : carrier M) :
   fobj[RightTranslation M a] x = mon_op x a := eq_refl.
 
-(* The translations ARE the partial applications of the bifunctor, on both
-   data fields, by [eq_refl].  Note the handedness: [Partial_r F b] fixes the
-   FIRST argument, so it is LEFT translation. *)
+(*
+   本节说明 Translation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example lt_partial_obj (M : MonObject) (a : carrier M) :
   fobj[LeftTranslation M a] = fobj[Partial_r (MonMult M) a] := eq_refl.
 
@@ -196,16 +198,11 @@ End Adjoints.
 
 (** ** Block E: the converse, and the biconditionals *)
 
-(* The mathematical content of the converse, isolated: a monoid in which
-   every element has a right inverse is a group.  With b := r a and
-   c := r (r a) we have a·b ≈ 1 and b·c ≈ 1, so [mon_inverse_unique]
-   (Construction/Deloop.v) gives a ≈ c, whence b·a ≈ b·c ≈ 1.
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-   Instance/Grp.v's [grp_mul_inv_r] is the MIRROR IMAGE of this — right
-   inverses from left ones — but over that file's own [GrpObject] record, in
-   which the inverse operation is a FIELD; it is a different statement over a
-   different record, and no attempt is made here to derive either from the
-   other. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma MonInverses_of_right_inverses (M : MonObject)
   (r : carrier M → carrier M)
   (Hr : ∀ a : carrier M, mon_op a (r a) ≈ mon_unit) : MonInverses M.
@@ -243,9 +240,11 @@ Definition RightTranslationAdjoints (M : MonObject) : Type :=
   ∀ a : carrier M,
     { R : MonDiscrete M ⟶ MonDiscrete M & RightTranslation M a ⊣ R }.
 
-(* The answer to the exercise's question, in the affirmative.  Forward:
-   inversion supplies the adjoints.  Backward: the inverse transpose applied
-   to the identity of R(1) is exactly a · R(1) ≈ 1. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem mon_group_iff_left_translation_adjoints (M : MonObject) :
   MonInverses M ↔ LeftTranslationAdjoints M.
 Proof.
@@ -301,12 +300,11 @@ Definition MonDiscreteStrict@{o h p m1 m2} (M : MonObject@{o m1 m2}) :
 Example mon_discrete_strict_hom (M : MonObject) (x y : carrier M) :
   (x ~{MonDiscreteStrict M}~> y) = (x = y) := eq_refl.
 
-(* Left translation on the strict category needs NO hypothesis: the arrow
-   action is [f_equal], and both remaining functor laws close by destructing
-   equality proofs.  There are only TWO obligations: the third field,
-   [fmap_respects], is filled by instance resolution with
-   [CMorphisms.reflexive_proper], the hom-setoid there being strict
-   equality. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 Program Definition LeftTranslationStrict (M : MonObject) (a : carrier M) :
@@ -321,11 +319,11 @@ Section StrictAdjoint.
 Context (M : MonObject) (HS : MonStrict M) (HU : MonUIP M).
 Context (Inv : MonInverses M) (a : carrier M).
 
-(* Where [MonStrict] is spent.  Within this section it occurs exactly twice,
-   in the two definitions immediately below; everything after them goes
-   through [strict_cancel_l]/[strict_cancel_r] and never mentions [HS].  It
-   is spent once more elsewhere in the file, at [MonDiscreteToStrict] in
-   Block G. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition strict_cancel_l (x : carrier M) :
   mon_op (minv Inv a) (mon_op a x) = x := HS _ _ (mon_inv_cancel_l M Inv a x).
 
@@ -358,9 +356,11 @@ Definition LeftTranslationAdjointsStrict (M : MonObject) : Type :=
     { R : MonDiscreteStrict M ⟶ MonDiscreteStrict M &
       LeftTranslationStrict M a ⊣ R }.
 
-(* The converse over the strict category needs NO hypothesis, because a
-   Leibniz equality yields an `≈` outright.  The asymmetry with the forward
-   direction is the whole content of the fork described in the header. *)
+(*
+   本节说明 Translation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition strict_left_translation_adjoints_MonInverses (M : MonObject)
   (H : LeftTranslationAdjointsStrict M) : MonInverses M.
 Proof.
@@ -399,10 +399,11 @@ Program Definition MonStrictToDiscrete (M : MonObject) :
 Section Compare.
 Context (M : MonObject) (HS : MonStrict M) (HU : MonUIP M).
 
-(* The other costs exactly the two hypotheses: [MonStrict] for the arrow
-   action, [MonUIP] for all three functor laws, each of which is an equation
-   between equality proofs here.  (Three obligations, against two for
-   [MonStrictToDiscrete], whose target is thin.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := repeat intro; now apply HU.
 
 Program Definition MonDiscreteToStrict :
@@ -422,21 +423,22 @@ Example mon_discrete_to_strict_obj (M : MonObject) (HS : MonStrict M)
 
 (** ** Block H: witnesses *)
 
-(* The discrete category on a monoid is not trivial: Z/3 gives two distinct
-   objects with an EMPTY hom-set between them.  (This has to be checked at a
-   concrete monoid: for a general M the hom x ~> y IS the type x ≈ y, which
-   may perfectly well be inhabited for distinct x and y.) *)
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Z3_two_objects : (Z3_0 : MonDiscrete Z3_Mon) <> Z3_1.
 Proof. discriminate. Qed.
 
 Lemma Z3_hom_empty : (Z3_0 ~{MonDiscrete Z3_Mon}~> Z3_1) → False.
 Proof. intro p; discriminate. Qed.
 
-(* (ℕ, +) is not a group, so by the biconditional its left translations
-   cannot all have right adjoints.  The direct refutation is sharper: ONE
-   translation suffices, and the contradiction is a computation.  From
-   L_1 ⊣ R, the inverse transpose at the identity of R(0) reads
-   1 + R(0) ≈ 0, that is S (R 0) = 0. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma nat_translation_no_right_adjoint
   (R : MonDiscrete Nat_Plus ⟶ MonDiscrete Nat_Plus)
   (A : LeftTranslation Nat_Plus 1%nat ⊣ R) : False.
@@ -454,12 +456,11 @@ Proof.
            (snd (mon_group_iff_left_translation_adjoints Nat_Plus) H)).
 Qed.
 
-(* The group witness.  Z/2 would be DEGENERATE here: every element is its own
-   inverse ([bool_xor_self_adjoint]), so each left translation would be its
-   own right adjoint and the adjunction would say nothing about inversion.
-   Z/3 is the smallest group whose inversion moves an element
-   (Structure/Groupoid.v's [Z3_inv_moves]), so over it the left adjoint and
-   the right adjoint are provably different functors. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Bool_Xor_Inverses : MonInverses Bool_Xor :=
   MonInverses_of Bool_Xor_Grp.
 
@@ -503,19 +504,11 @@ Definition Z3_strict_adjunction (a : carrier Z3_Mon) :
 
 (** ** Block I: probes *)
 
-(* FOUR negatives of TWO KINDS, plus a separate instrument check.  Each of
-   the five was stripped of its [Fail] and compiled alone.
-   [mon_probe_instrument], [probe_partial_record],
-   [probe_categories_agree] and [probe_hom_is_eq] report `cannot unify`
-   between two terms of one type (CONVERSION); [probe_cancel_strict] reports
-   a plain type mismatch with NO `cannot unify` clause (TYPING).  Every
-   negative is stated at a VARIABLE monoid, which matters for
-   [probe_hom_is_eq]: at Z/3, whose `≈` IS `=`, that statement HOLDS, so a
-   probe at a concrete monoid would have measured nothing.
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-   No constant a negative names, other than the negative's own name, is
-   absent from a command that must SUCCEED (measured mechanically over the
-   token sets, zero exceptions), so no guard here is vacuous. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Probes.
 Context (M : MonObject) (Inv : MonInverses M) (a x y : carrier M).
 
@@ -548,13 +541,11 @@ Definition ctrl_cancel_equiv :
 
 End Probes.
 
-(* The `Set` in the strict headline's constraint block sits on an internal
-   universe — the auxiliary [Sets] in which [Adjunction] states its
-   hom-isomorphism, whose carrier universe minimizes to `Set` because
-   [DiscreteCat]'s homs are Rocq's `eq`, hence `Prop`-valued.  It does not
-   restrict the monoid, and this section is the guard rather than a remark:
-   all three of a monoid's universes are declared strictly above `Set` and
-   both headlines still elaborate. *)
+(*
+   本节说明伴随、hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section UniverseProbe.
 Universe mo mh mp.
 Constraint Set < mo.

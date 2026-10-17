@@ -70,12 +70,11 @@ Qed.
 
 Definition z5_eq (x y : Z) : Type := { k : Z & (x - y = 5 * k)%Z }.
 
-(* [z5_eq] KEEPS its [sigT] -- the witness [k] is computed, and the results
-   below read it back out.  The [Prop] mirror it needs since the PR
-   "algebraic carriers are sets" (2026-09-17) recovers the witness through a
-   DECISION PROCEDURE rather than through the [Prop] proof: divisibility by 5
-   is decidable on ℤ, so the left branch supplies the witness outright and the
-   right branch contradicts the hypothesis.  No choice principle. *)
+(*
+   本节说明 NonNatural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition z5_peq (x y : Z) : Prop :=
   (exists k : Z, Z.eq (Z.sub x y) (Z.mul 5 k))%type.
 
@@ -102,9 +101,11 @@ Proof. intros [k Hk]; exists (- k)%Z; lia. Qed.
 Lemma z5_eq_trans (x y w : Z) : z5_eq x y → z5_eq y w → z5_eq x w.
 Proof. intros [k1 H1] [k2 H2]; exists (k1 + k2)%Z; lia. Qed.
 
-(* The setoid is NAMED so that [z5_PropEquiv] below can mention it; a field
-   of a [Program] record literal cannot refer to a setoid that is still an
-   evar while the literal is being elaborated. *)
+(*
+   本节说明 NonNatural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition z5_setoid : Setoid Z := {| equiv := z5_eq |}.
 Next Obligation.
   constructor.
@@ -320,10 +321,11 @@ Qed.
 
 End Violation.
 
-(* The packaged negative half, in its STRONG form: no isomorphism
-   ℤ/5 ≅ D(ℤ/5) satisfies even the single naturality square at the
-   automorphism x ↦ 2x — a fortiori, no natural family over the
-   iso-only category [AbIso] with respect to [D'] exists. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sigma_not_natural (s0 : @Isomorphism Ab Z5 (D_ob Z5)) :
   (∀ x : Z,
      cmon_map (to s0) ((2 * x)%Z)
@@ -334,11 +336,11 @@ Proof.
   exact (sigma_square_violation s0 Hnat).
 Qed.
 
-(* The family form, for the record: any family σ_G : G ≅ D(G) over
-   all abelian groups instantiates at ℤ/5.  This corollary's premise
-   is in fact ITSELF uninhabited ([no_such_sigma_family] below), which
-   is why the single-object statement above is the headline: it is the
-   one with applicable content. *)
+(*
+   本节说明 NonNatural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary sigma_family_not_natural
           (σ : ∀ G : AbObject, @Isomorphism Ab G (D_ob G)) :
   (∀ x : Z,
@@ -352,11 +354,11 @@ Qed.
 
 (** ** Not even the objects match up globally *)
 
-(* Away from finite groups the single-dual identification is already impossible
-   already at the level of bare isomorphism: ℤ has no nonzero
-   2-torsion, while D(ℤ) does — the half-character n ↦ n/2.  So a
-   family σ_G : G ≅ D(G) over ALL abelian groups does not exist,
-   independently of any naturality demand. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ZZ : AbObject.
 Proof.

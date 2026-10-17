@@ -28,11 +28,11 @@ Local Notation "⊖ x" := (ring_neg R x) (at level 35, right associativity).
 Local Notation "0R" := (rig_zero R).
 Local Notation "1R" := (rig_one R).
 
-(** ** Ring arithmetic
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    The consequences of the ring axioms used below that Instance/Rng.v
-    does not already carry ([ring_neg_r], [ring_neg_add] and
-    [ring_neg_involutive] are taken from there). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ring_neg_unique (a b : K) : a ⊕ b ≈ 0R → b ≈ ⊖ a.
 Proof.
@@ -237,14 +237,11 @@ Qed.
 
 End Determinant.
 
-(** * The commutative development
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    Everything from here on spends commutativity of the base ring.  The
-    section sets [Default Proof Using "All"] (Lib.v's project-wide
-    default is ["Type"], which discharges only the section variables
-    occurring in a statement, and [Rcomm] occurs in almost none of
-    them), so every lemma below takes the ring and its commutativity
-    proof as its two leading arguments. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DeterminantComm.
 
@@ -265,13 +262,11 @@ Local Notation det := (det R).
 Local Notation minor := (minor R).
 Local Notation pow_neg1 := (pow_neg1 R).
 
-(** ** Multilinearity in the columns
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    Column 0 enters the recursion linearly and every other column enters
-    only through the minors, so both clauses are a direct induction.
-    The hypotheses are stated in "agree away from column j" form rather
-    than through a substitution operator, which keeps them free of
-    decidable-equality noise at the point of use. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma mul_swap (a b c : K) : a ⊗ (b ⊗ c) ≈ b ⊗ (a ⊗ c).
 Proof. rewrite <- !rig_mul_assoc; now rewrite (Rcomm a b). Qed.
@@ -365,18 +360,11 @@ Proof.
   - intro i; rewrite (Hj i); symmetry; apply rig_mul_zero_l.
 Qed.
 
-(** ** The Laplace expansion along the first row
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Both the definition (expansion along column 0) and the row expansion
-    reduce, after one further expansion of each minor, to the same
-    double sum over the matrix with row 0 and row i, and column 0 and
-    column j, deleted — the terms MATCH pairwise, so no cancellation or
-    involution argument is needed.  This is the one place where the two
-    orders of deletion have to be reconciled, and [fin_delete] was
-    defined so that both reconciliations
-    ([fin_delete F1 c = FS c] and
-     [fin_delete (FS i) (FS r) = FS (fin_delete i r)]) hold by
-    conversion. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma row_expand_term (p q x y d : K) :
   (⊖ p) ⊗ x ⊗ (q ⊗ y ⊗ d) ≈ (⊖ q) ⊗ y ⊗ (p ⊗ x ⊗ d).
@@ -443,13 +431,11 @@ Proof.
       rewrite !fin_delete_F1, fin_delete_FS_FS; reflexivity.
 Qed.
 
-(** ** Alternation
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    With columns 0 and 1 equal, the row expansion has exactly two
-    surviving terms: deleting any LATER column leaves columns 0 and 1
-    still equal and still adjacent, so those minors vanish by induction,
-    while deleting column 0 or column 1 leaves literally the same
-    matrix.  The two survivors carry opposite signs and cancel. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma add_head_zero (a b c : K) : a ⊕ b ≈ 0R → a ⊕ (b ⊕ c) ≈ c.
 Proof using Type.
@@ -505,13 +491,11 @@ Proof.
         apply Heq.
 Qed.
 
-(** ** Transpositions of columns
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    [fswap p q] is the transposition of the index set; the determinant
-    of a column-transposed matrix is the negative.  Position (0,1) comes
-    from alternation by bilinearity, a transposition of two LATER
-    columns comes by induction through the minors, and the general case
-    is the conjugate [τ σ τ] of those two. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fswap {n : nat} (p q x : Fin.t n) : Fin.t n :=
   match Fin.eq_dec x p with
@@ -832,12 +816,11 @@ Proof.
            intro Heq; apply Hpq; now rewrite Heq.
 Qed.
 
-(** ** General alternation
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Two equal columns anywhere kill the determinant.  This does NOT
-    follow from [det M ≈ ⊖ det M] — that is vacuous in characteristic 2
-    — so the two columns are transported to positions 0 and 1 by at most
-    two transpositions and [det_alt01] is applied there. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma neg_eq_zero (x : K) : ⊖ x ≈ 0R → x ≈ 0R.
 Proof using Type.
@@ -898,16 +881,11 @@ Proof.
         apply neg_eq_zero; rewrite <- Hs; exact HM1.
 Qed.
 
-(** ** Reindexing the columns by an arbitrary map
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    [permat f] is the 0/1 matrix of [f].  For EVERY [f] — injective or
-    not — reindexing the columns of A by f multiplies the determinant by
-    [det (permat f)].  The induction moves [f F1] to position 0 by a
-    transposition; either some later index is then also sent to 0, in
-    which case both sides vanish by [det_alt], or the residual map
-    restricts to the smaller index set and the induction hypothesis
-    applies inside every minor.  Injectivity is never assumed: the
-    dichotomy is settled by a finite search. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition permat {n : nat} (f : Fin.t n → Fin.t n) : Matrix R n n :=
   fun i j => delta R i (f j).
@@ -1028,18 +1006,11 @@ Proof.
       reflexivity.
 Qed.
 
-(** ** Multiplicativity
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    Column j of the product [A ∘ B] is the B-weighted combination of the
-    columns of A, so the determinant expands over the columns of B.  The
-    expansion is kept NESTED ([expand], one [fin_sum] per column) rather
-    than flattened into a sum over all maps [Fin.t n → Fin.t n]: the
-    products [Π_j B (f j) j] then never have to be formed, and the whole
-    combinatorial layer — enumerating maps, isolating the injective
-    ones, and reading off their signs — disappears.  [det (A ∘ B)] and
-    [det B] are literally the same nested sum with different leaves, and
-    [det_perm] relates those leaves by the CONSTANT factor [det A], so
-    [expand_scale] pulls it out through every level at once. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition setcol {n : nat} (M : Matrix R n n) (j : Fin.t n)
   (v : Fin.t n → K) : Matrix R n n :=
@@ -1115,15 +1086,11 @@ Fixpoint expand {n : nat} (B : Matrix R n n) (js : list (Fin.t n))
       fin_sum R (fun l => B l j ⊗ expand B js' Phi (upd_fn f j l))
   end.
 
-(* DISCLOSURE: this is the tree's THIRD copy of the Fin enumeration —
-   Instance/FinSet/Skeleton.v's [fin_enum] (with [fin_enum_full] and
-   [fin_enum_nodup], and its own [nodup_map_FS]) has the identical
-   body, and Instance/FinSet/Pushout.v carries [all_fin]/[In_all_fin].
-   It is re-derived here to keep Instance/Matr free of a
-   cross-hierarchy dependency on the FinSet development for ~15 lines
-   of list code, following the naming-disclosure convention
-   Skeleton.v itself sets; the map-FS NoDup helper is named
-   [map_FS_NoDup] here to avoid colliding with Skeleton.v's. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint all_fins (n : nat) : list (Fin.t n) :=
   match n with
   | O => nil
@@ -1237,19 +1204,20 @@ Proof.
   apply Rcomm.
 Qed.
 
-(* The same theorem in the vocabulary of Instance/Matr.v: the
-   determinant of a composite is the product of the determinants.  For
-   square matrices [Matr]'s index flip is invisible — composition at
-   [n ~> n] is the plain matrix product. *)
+(*
+   本节说明 Determinant 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary det_compose {n : nat} (A B : n ~{Matr (ring_rig R)}~> n) :
   det (A ∘ B) ≈ det A ⊗ det B.
 Proof. apply det_mul. Qed.
 
-(** ** Transposition
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    Having both expansions makes [det Aᵀ ≈ det A] a three-line
-    induction: the column-0 expansion of the transpose is the row-0
-    expansion of the original, minor for minor. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pow_neg1_square (k : nat) : pow_neg1 k ⊗ pow_neg1 k ≈ 1R.
 Proof using Type.
@@ -1283,19 +1251,11 @@ Proof.
   - apply (IH (minor A Fin.F1 j)).
 Qed.
 
-(** ** Expansion along an arbitrary column
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    [rotf j] moves column j to the front, keeping the others in order;
-    it is exactly the map [F1 ↦ j], [FS c ↦ fin_delete j c], so the
-    minors of the rotated matrix along column 0 ARE the minors of the
-    original along column j, definitionally.  Its permutation matrix has
-    determinant [(-1)^j] by a single application of the first-column
-    expansion — no induction — and [det_perm] does the rest.
-
-    Expanding along column j with the entries of a DIFFERENT column k
-    gives zero (the "alien cofactor" identity): that is the expansion of
-    the matrix whose column j has been overwritten by column k, which
-    has two equal columns. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition rotf {m : nat} (j c : Fin.t (S m)) : Fin.t (S m) :=
   Fin.caseS' c (fun _ => Fin.t (S m)) j (fun c' => fin_delete j c').
@@ -1363,20 +1323,11 @@ Proof.
     apply rig_mul_zero_r.
 Qed.
 
-(** ** The adjugate, and invertibility
+(*
+   本节说明 Determinant 相关定义、性质与动机。
 
-    [adj A] is the transposed cofactor matrix.  Both Laplace identities
-    together say [adj A ∘ A ≈ A ∘ adj A ≈ det A · I]: the diagonal
-    entries are the expansion of [det A] along a column (resp. a row),
-    and the off-diagonal entries are the alien-cofactor zero.  The row
-    identity is the column identity at the transpose, which is why
-    [det_transpose] was worth having.
-
-    Consequently a square matrix is invertible exactly when its
-    determinant is a unit — stated elementwise (and in [Matr]'s
-    composition vocabulary) rather than through an [Isomorphism], so
-    that it composes with whatever invertibility interface the GL_n
-    development prefers. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition adj {m : nat} (A : Matrix R (S m) (S m)) : Matrix R (S m) (S m) :=
   fun i j => pow_neg1 (fidx i) ⊗ pow_neg1 (fidx j) ⊗ det (minor A j i).
@@ -1501,13 +1452,11 @@ Qed.
 
 End DeterminantComm.
 
-(** ** Naturality in the ring
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Mac Lane's §I.4 point: [det] is a map of functors, natural in the
-    commutative ring.  Only the [RigHom] structure is used — preservation
-    of negation is Theory/Algebra/Rig.v's theorem [RigHom_neg], not an
-    extra hypothesis — so this is the entrywise-image statement at the
-    level of matrices; the naturality square of §I.4 is its packaging. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DetMap.
 

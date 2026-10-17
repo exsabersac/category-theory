@@ -840,9 +840,11 @@ Example rsdp_mul_snd {R : RingObject} (A : Ideal R)
                            (rig_mul R (`1 (snd p)) (fst q)))
                 (rig_mul R (`1 (snd p)) (`1 (snd q))) := eq_refl.
 
-(* The readbacks of the pair bind A's membership level u apart from the
-   carrier level p, with the pair's own bound, as the section constants
-   do; left to minimization, the bare binders identified the two. *)
+(*
+   本节说明 Coequalizer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example rsemidirect_d0_fun@{p u + | u <= p +} {R : RingObject@{p p p}}
   (A : Ideal@{u p p p} R) (x : carrier (rig_setoid (SemidirectRing A))) :

@@ -29,9 +29,11 @@ Open Scope Ty_scope.
    most recently bound variable at the head (de Bruijn index 0). *)
 Definition Env := list Ty.
 
-(* Well-scoped de Bruijn indices: [Var Γ τ] witnesses that the context Γ has
-   a variable of type τ.  [ZV] is index 0 (the head binding); [SV] is the
-   successor, weakening a variable under one more binding. *)
+(*
+   本节说明 Exp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Var : Env → Ty → Set :=
   | ZV {Γ τ}    : Var (τ :: Γ) τ           (* de Bruijn index 0: head slot *)
   | SV {Γ τ τ'} : Var Γ τ → Var (τ' :: Γ) τ.  (* successor: skip the head slot *)

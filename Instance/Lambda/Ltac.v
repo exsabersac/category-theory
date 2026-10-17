@@ -11,17 +11,11 @@ From Coq Require Import Program.
    warning locally since it is pervasive in the dependently-typed goals below. *)
 Local Set Warnings "-deprecated-notation".
 
-(* [reduce_jmeq] specialises induction hypotheses (and other quantified
-   premises) of the shape
-       ∀ x .., a = b → p ~= q → .. → Goal
-   by supplying the witnesses and discharging each side-condition with the
-   reflexive proof [eq_refl] / [JMeq_refl].  Such hypotheses arise from
-   [dependent induction] / [dependent destruction]: the equality premises
-   record how the indices of the eliminated term match those at the recursive
-   call, and at each use site they hold definitionally.  The match is unrolled
-   for one to four trailing [~=] premises, optionally preceded by three
-   implicit arguments and one homogeneous [=] premise, covering the arities
-   that actually occur in this development. *)
+(*
+   本节说明 Ltac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac reduce_jmeq :=
   repeat match goal with
   | [ H : ∀ _: _, _ ~= _ → _ |- _ ] =>
@@ -43,13 +37,11 @@ Ltac reduce_jmeq :=
       specialize (H _ _ _ eq_refl JMeq_refl JMeq_refl JMeq_refl JMeq_refl)
   end.
 
-(* [reduce] runs [reduce_jmeq], then exhaustively breaks apart structured
-   hypotheses left in the context: it collapses [existT] equalities via
-   [inj_pair2] (relying on UIP for the index type) and destructs conjunctions,
-   pairs, existentials, [sig] ([{x | P}]) and [sigT] ([{x & P}]) witnesses,
-   substituting freed variables along the way.  The net effect is to flatten a
-   tangle of dependent-equality and packaging hypotheses into their plain
-   components. *)
+(*
+   本节说明 Ltac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac reduce :=
   reduce_jmeq;
   repeat (match goal with
@@ -62,15 +54,16 @@ Ltac reduce :=
           | [ H : { _ : _ & _ } |- _ ] => destruct H
           end; subst).
 
-(* [inv H] is the usual "invert and clean up" idiom: derive the constructor
-   constraints of [H] by [inversion], [subst] the resulting equations, discard
-   the now-redundant [H], and finish with [reduce] to dispatch the dependent
-   equalities (often [existT] equalities) that inversion of an indexed
-   inductive leaves behind.  Used throughout to case-analyse the reduction and
-   value judgements. *)
+(*
+   本节说明 Ltac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac inv H := inversion H; subst; clear H; reduce.
 
-(* [equality] closes goals that are purely a matter of (dis)equality between
-   constructor terms, combining propositional reasoning ([intuition]) with the
-   congruence-closure decision procedure ([congruence]). *)
+(*
+   本节说明 Ltac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac equality := intuition congruence.

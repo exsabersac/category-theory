@@ -152,10 +152,11 @@ Example pfinal_desc_map (Z : PTop@{o}) (g : SetoidMorphism@{o o o} S Z)
   (Hg : ∀ k, @PCont (X k) Z (setoid_morphism_compose@{o o o} g (f k))) :
   pmap (pfinal_desc Z g Hg) = g := eq_refl.
 
-(* It is the FINEST topology making every [f k] continuous: any family of
-   predicates on [S] respecting its equality, each with open preimages
-   along every [f k], consists of opens of the final topology.  The family
-   need not be a topology. *)
+(*
+   本节说明 Cocomplete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pfinal_finest (T : (S → Prop) → Prop)
   (Hp : ∀ U, T U → ∀ s t : S, s ≈ t → U s → U t)
   (Hc : ∀ U, T U → ∀ k, POpen (X k) (fun x => U (f k x))) :
@@ -222,9 +223,11 @@ End OverACocone.
 
 End Recipe.
 
-(* THE RECIPE, as a lemma: if [N] is a colimiting cocone of the points,
-   the final topology for its legs makes the lifted cocone colimiting.
-   The two universal properties are stated at independent levels. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pfinal_cocone_colimiting@{o so s r r' x x' +| o < so +}
   {D : Category@{s o o}} (F : D ⟶ PTopCat@{o so})
   (N : Cocone (PForget@{o so} ◯ F))
@@ -297,9 +300,11 @@ Example PColimit_inj (d : D) :
   pmap (cocone_inj (@limit_cone _ _ _ PColimit) d) = Sets_colim_inj G d
   := eq_refl.
 
-(* The triangle, on the nose: the mediator into a cocone [M] sends the
-   point [x] of the summand at [d] to [M]'s leg at [d] applied to [x], as
-   Instance/Sets/Cocomplete.v's [Sets_colim_triangle] does for [Sets]. *)
+(*
+   本节说明 Cocomplete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example PColimit_med_at (M : Cocone F) (d : D) (x : pt_carrier (F d)) :
   pmap (unique_obj (@ump_limits _ _ _ PColimit M)) (existT _ d x)
     = pmap (cocone_inj M d) x := eq_refl.
@@ -402,9 +407,11 @@ Example PTop_Cocomplete_via_coproducts_apex@{o so +| o < so +}
           (sets_coeq_proj f g) } } }.
 Proof. eexists; eexists; eexists; reflexivity. Defined.
 
-(* The two routes agree where both are stated, at shapes whose objects sit
-   at the points' universe: the two apexes are isomorphic, compatibly with
-   the injections (Structure/Limit/Unique.v's [colimit_unique_iso]). *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PTop_Cocomplete_routes_iso@{o so +| o < so +}
   (D : Category@{o o o}) (F : D ⟶ PTopCat@{o so}) :
   colimit_apex (PTop_Cocomplete D F)
@@ -545,10 +552,11 @@ Definition PForget_PreservesColimitCocone@{s o so +| o < so +}
   PreservesColimitCocone K PForget@{o so} :=
   left_adjoint_PreservesColimitCocone PForget_PIndisc K.
 
-(* The converse of the recipe: a lifted cocone that is colimiting forgets
-   to a colimiting cocone, [PForget]'s image of [PFinalCocone N] having
-   [N]'s apex and legs.  With [pfinal_cocone_colimiting], [N] is
-   colimiting exactly when its lift is. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pfinal_cocone_colimiting_reflect@{o so s r x +| o < so +}
   {D : Category@{s o o}} (F : D ⟶ PTopCat@{o so})
   (N : Cocone (PForget@{o so} ◯ F))

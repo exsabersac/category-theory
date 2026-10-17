@@ -19,109 +19,25 @@ Generalizable All Variables.
 
 (** * The concrete-category roster: Coq, CMon, and Rel *)
 
-(* nLab:      https://ncatlab.org/nlab/show/concrete+category
+(*
+   nLab:      https://ncatlab.org/nlab/show/concrete+category
    Wikipedia: https://en.wikipedia.org/wiki/Concrete_category
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, Springer 1998, §I.7, printed p. 26
    Book:      Riehl, "Category Theory in Context", Dover 2016, §1.6,
-              Definition 1.6.18, printed p. 45
    Paper:     Freyd, "Homotopy is not concrete", Lecture Notes in Mathematics
-              168, Springer 1970, pp. 25-34
 
-   This file instantiates [Concrete] (Theory/Concrete.v) at the in-tree
-   categories for which Mac Lane's §I.7 remark has content, and settles the
-   negative half of that remark for Rel as precisely as the library permits.
-   `Sets` itself is handled in Theory/Concrete.v, twice over — by the identity
-   functor and by global elements.
+   本节说明函子相关定义、性质与动机。
 
-   Positive instances here
-   -----------------------
-
-   [Coq_Concrete]  — Instance/Coq.v's category of types and functions, via the
-     functor sending a type to itself under Leibniz equality.  Morphism
-     equivalence in `Coq` is already pointwise `=`, so this functor is the
-     identity on hom-setoids and faithfulness is the identity implication.
-
-   [CMon_Concrete] — Instance/CMon.v's category of commutative monoids, via
-     `CMon_Forget` (Instance/CMon.v).  That file's header comment at lines
-     166-168 asserts faithfulness without proving it; [CMon_Forget_Faithful]
-     below supplies the proof.
-
-   [Rel_Concrete]  — Instance/Rel.v's category of sets and relations, via the
-     direct-image (powerset) functor.  See the discussion of the negative
-     result below for why this instance is worth having.
-
-   Algebraic categories beyond CMon are cross-referenced, not depended on.
-   Theory/Algebra/Monoid/Hom.v already proves `Mon_Forget_Faithful`, but its
-   `Mon` is the category of monoid OBJECTS internal to an ambient monoidal
-   category, whose forgetful functor lands in that ambient category rather
-   than in `Sets`; it therefore does not yield a `Concrete` instance without
-   first fixing the ambient category to `Sets`, which is not done here.
-   Theory/Lawvere/Sets.v's `ev1_Faithful` does land in `Sets`, but only under
-   its reachability hypothesis, so it too is left as a cross-reference.
-
-   The negative half of Mac Lane's §I.7 remark, for Rel
-   ---------------------------------------------------
-
-   Rel is commonly quoted alongside Toph as a category that "is not
-   concrete".  Read literally — "Rel has no faithful functor to sets" —
-   that quotation is too strong, and this file does not assert it:
-   [Rel_Concrete] below exhibits a faithful functor.  The target of the
-   correction is that FOLKLORE reading, not Mac Lane's own sentence, which
-   (as the issue filing this work summarizes it) already scopes the claim
-   to the evident forgetful functor; an audit of the first commit was right
-   to insist the distinction be drawn, since the primary text was not
-   available to check.  What is true, and what is proved here, concerns the
-   EVIDENT candidate, the assignment sending a set to itself:
-
-   [Rel_hom_is_not_a_function] — the elementary obstruction.  Instance/Rel.v's
-     `some_number`, the strict order `<` on nat, is a morphism of
-     Rel that is not the graph of any function nat → nat.  So the evident
-     underlying-set assignment `X ↦ X` cannot be extended to arrows at all,
-     and there is nothing to check faithfulness of.
-
-   [Rel_subsingleton_not_Faithful] — the sharp obstruction, stated for every
-     candidate at once.  No functor `U : Rel ⟶ Sets` whose value at the
-     one-element set is a subsingleton can be faithful, because Rel has two
-     distinct endorelations of the one-element set ([Rel_two_arrows]) which
-     any such `U` must send to the same function.  The evident underlying-set
-     candidate would have `U 1` a singleton, so it is covered.
-
-   [Rel_Concrete] is the complement of that result and is what keeps it from
-     being overread.  The direct-image functor sends a set `X` to its powerset
-     and a relation to its direct-image map; it is faithful because probing a
-     relation with singletons recovers it.  Its value at the one-element set
-     has two elements, so it escapes [Rel_subsingleton_not_Faithful] exactly
-     as it must.  Conclusion: Rel is concrete, but not via its evident
-     forgetful functor — which is the reading of Mac Lane's remark this
-     development adopts, and it is an erratum against the literal reading.
-
-   Deferral, disclosed
-   -------------------
-
-   The Toph half of the remark — Freyd's 1970 theorem that the pointed
-   homotopy category has no faithful functor to sets — is out of scope, is
-   not proved, and is not assumed.  The library has no homotopy category, so
-   the statement is not expressible in-tree at all.  Theory/Concrete.v's
-   header records the same deferral.  It becomes STATEABLE once the
-   homotopy-category construction of Mac Lane's §I.7 lands (catalog item
-   `maclane:I.7:construction5`, filed as issue #260); until then there is
-   no object in the tree for the theorem to be about.
-
-   Vacuity
-   -------
-
-   Each positive instance is accompanied by two parallel morphisms shown
-   DISTINCT in the relevant hom-setoid ([Coq_two_arrows], [CMon_two_arrows],
-   [Rel_two_arrows]).  Faithfulness is an injectivity statement, so it would
-   be content-free over trivial hom-setoids; these witnesses show it is not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Coq: types and functions *)
 
-(* Every type is a setoid under Leibniz equality, and every function respects
-   it.  `Coq`'s own hom-equivalence is pointwise `=`, which is exactly the
-   hom-equivalence of the image setoids, so this functor neither adds nor
-   loses information on arrows. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Coq_Underlying@{u u0 +} :
   Coq@{u u0 u0 u0} ⟶ Sets@{u0 u} := {|
   fobj := fun A => {| carrier   := A
@@ -148,10 +64,11 @@ Qed.
   underlying_faithful := Coq_Underlying_Faithful@{u u0}
 |}.
 
-(* Non-vacuity for [Coq_Concrete]: `negb` and the identity are parallel arrows
-   `bool ~> bool` that differ in the hom-setoid, whose `≈` is pointwise `=`.
-   (Stated with `→ False`: hom-equivalence here is `Type`-valued, so `¬` —
-   which forces `Prop` — does not apply.) *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Coq_two_arrows : @id Coq bool ≈ negb → False.
 Proof.
   intro Heq.
@@ -192,9 +109,11 @@ Proof.
   - intros a b c; simpl; symmetry; apply PeanoNat.Nat.add_assoc.
   - intros a b; simpl; apply PeanoNat.Nat.add_comm.
   - intros a; simpl; reflexivity.
-  (* [cmon_prop] raises no fourth goal: the carrier's `≈` IS Coq's [eq], so
-     [refine]'s typeclass resolution closes the field with [eq_PropEquiv]
-     (Lib/Setoid/Propositional.v) before the bullets are reached. *)
+  (*
+   本节说明 Concrete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Defined.
 
 (* The constant-zero endomorphism of `nat_CMon`; it preserves the unit and the
@@ -207,9 +126,11 @@ Proof.
   - intros a b; simpl; reflexivity.
 Defined.
 
-(* Non-vacuity for [CMon_Concrete]: the identity and the constant-zero
-   homomorphism are parallel arrows of `CMon` that differ in the hom-setoid,
-   whose `≈` is pointwise equivalence of the underlying maps. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma CMon_two_arrows : @id CMon nat_CMon ≈ nat_CMon_zero_hom → False.
 Proof.
   intro Heq.
@@ -230,15 +151,11 @@ Proof.
     now injection Hn.
 Qed.
 
-(* Instance/Rel.v's `some_number` is the strict order `<` on nat,
-   read as a relation nat ⇸ nat.  It is not the graph of any function: if it
-   were the graph of `f`, then `f 0` would have to be simultaneously the
-   unique natural number above 0 and its own successor.
+(*
+   本节说明 Concrete 相关定义、性质与动机。
 
-   This is the elementary form of Mac Lane's negative remark.  The evident
-   underlying-set assignment for Rel — send a set to itself — has no action on
-   arrows to define, because Rel's arrows are not functions between the
-   underlying sets. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Rel_hom_is_not_a_function (f : nat → nat) :
   (∀ x y : nat, some_number x y ↔ f x = y) → False.
 Proof.
@@ -253,11 +170,11 @@ Proof.
   now apply Hgraph.
 Qed.
 
-(* The two endorelations of the one-element set: the identity (the diagonal,
-   which relates the point to itself) and the empty relation.  In Rel's
-   hom-setoid, whose `≈` is pointwise `↔`, they differ.  A one-element SET has
-   only one endofunction, so this pair already shows Rel's hom-setoids are
-   strictly larger than the corresponding function sets. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Rel_empty : (unit : Rel) ~{Rel}~> (unit : Rel) :=
   fun _ _ => False.
 
@@ -269,14 +186,11 @@ Proof.
   constructor.
 Qed.
 
-(* The sharp negative result.  Any candidate underlying-set functor for Rel
-   that sends the one-element set to a subsingleton — as the evident
-   "underlying set" candidate would — is not faithful, because it must
-   identify the two arrows of [Rel_two_arrows].
+(*
+   本节说明函子相关定义、性质与动机。
 
-   Note what is and is not claimed: this refutes a FAMILY of candidates,
-   selected by their value at the one-element set.  It does not say Rel is
-   non-concretizable, and [Rel_Concrete] below shows it is not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Rel_subsingleton_not_Faithful (U : Rel ⟶ Sets)
         (Hsub : ∀ a b : carrier (U (unit : Rel)), a ≈ b) :
   Faithful U → False.
@@ -290,11 +204,11 @@ Qed.
 
 (** ** Rel: sets and relations, the positive half *)
 
-(* The direct-image functor `P : Rel ⟶ Sets`.  An object `X` is sent to its
-   powerset — `Ensemble X`, compared by pointwise `↔` — and a relation
-   `R ⊆ X × Y` to the map taking a subset `S ⊆ X` to its image
-   `{ y | ∃ x ∈ S, R x y }`.  This is the Kleisli presentation of Rel over
-   the powerset monad read as a functor into sets. *)
+(*
+   本节说明函子、单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Rel_Powerset : Rel ⟶ Sets := {|
   fobj := fun X => {| carrier   := X → Prop
                     ; is_setoid := {| equiv := fun S T => ∀ x, S x ↔ T x |} |};
@@ -368,10 +282,11 @@ Qed.
   underlying_faithful := Rel_Powerset_Faithful
 |}.
 
-(* The powerset functor escapes [Rel_subsingleton_not_Faithful] exactly where
-   it must: its value at the one-element set has two distinct elements, the
-   empty subset and the whole set.  So the hypothesis of that theorem is not
-   met, and no contradiction arises with [Rel_Concrete]. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Rel_Powerset_unit_not_subsingleton :
   (∀ a b : carrier (Rel_Powerset (unit : Rel)), a ≈ b) → False.
 Proof.

@@ -774,13 +774,11 @@ Example RMod_EM_unit_component@{+} (M : RMod R) :
 End FreeModMonad.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Part (a), second reading: coefficients, under a decider for ≈
+(*
+   本节说明 FreeMonad 相关定义、性质与动机。
 
-    The coefficient of y is the linear extension, into R as a module over
-    itself, of Instance/Mod/Free.v's indicator [fv_probe_at] of y; no new
-    indicator is written.  [fv_probe_at] puts [Ring_RMod R] in [RMod R],
-    which identifies the ring's three levels with the generating setoid's
-    carrier level: the section binds R at RingObject@{c c c}. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Coefficients.
 

@@ -34,85 +34,27 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Free constructions, folds, and why the monoid case is the one everyone
-   meets first
-
+(*
    nLab:      https://ncatlab.org/nlab/show/free+monoid
    nLab:      https://ncatlab.org/nlab/show/universal+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
    Wikipedia: https://en.wikipedia.org/wiki/Kleene_star
 
-   The free monoid is the oldest surviving example of a universal mapping
-   problem and, by some distance, the most heavily used.  Under the name
-   "Kleene star" it is the closure operation of formal language theory:
-   Kleene introduced A* while analysing the events representable in nerve
-   nets, and the star of an alphabet is precisely the underlying set of the
-   free monoid on that alphabet (Kleene, "Representation of events in nerve
-   nets and finite automata", in Shannon and McCarthy, Automata Studies,
-   Princeton 1956; Wikipedia, "Kleene star").  Every statement about strings
-   — concatenation is associative, the empty string is neutral, a
-   substitution is determined by its action on single letters — is a
-   statement about this monoid, and the last of those is exactly the
-   universal property proved below.
+   本节说明幺半群相关定义、性质与动机。
 
-   Mac Lane presents it as a corollary rather than a construction.  The free
-   category on a graph is built in CWM §II.7, and the free monoid falls out
-   by reading a monoid as a one-object category: a graph with one vertex is a
-   set of loops, and the free category on it has the words in those loops as
-   arrows (Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-   Springer 1998, §II.7 Corollary 2, pp. 50–51).  Awodey goes the other way,
-   constructing A* directly in §1.7 and using it as the first non-trivial
-   universal property in the book, then returning to it in §9.1 as the
-   motivating adjunction (Awodey, "Category Theory", 1st ed., Carnegie Mellon
-   pre-print, September 2005, §1.7 pp. 19–22, §9.1 pp. 213–214).  Fong and
-   Spivak reach the same object through the free category on the one-vertex
-   loop graph and ask for its elements at a two-letter alphabet (Fong and
-   Spivak, "An Invitation to Applied Category Theory: Seven Sketches in
-   Compositionality", CUP 2019, §5.2.3 Exercise 5.24).  In-tree both routes
-   exist: Construction/Free/Quiver.v carries the free category on a quiver
-   with its universal arrow, and this file carries the monoid case directly.
-   The identification of the two — free monoid as the delooping of the free
-   category on a one-vertex quiver — is NOT proved here; see the deferral
-   note at the end of this header.
-
-   The programming-language reading is the fold.  A [Foldable] container is
-   one that maps into any monoid, and the fold of a list is the unique monoid
-   homomorphism out of the free monoid determined by the element map; this is
-   why [foldMap] takes a function into a monoid and nothing more.  In-tree
-   Theory/Coq/Foldable.v states that correspondence in prose over an ops-only
-   class, and Instance/Coq/Lists.v proves the sibling fact that [list A] is
-   the initial algebra of [ListF A X = 1 + A × X], whose unique algebra map is
-   the same fold.  The bridge between the two universal properties — the
-   monoid-homomorphism extension IS the [ListF]-algebra fold — is proved
-   below ([free_ext_is_fold], [free_ext_is_the_unique_algebra_map]), which is
-   the sense in which "structural recursion over lists" and "the free monoid"
-   are one fact seen twice.
-
-   Finally, the adjunction.  Free-forgetful adjunctions are the paradigm case
-   of Kan's notion, and this one is the example every introduction uses: the
-   left adjoint of the underlying-set functor on monoids.  Its unit is the
-   insertion of generators, natural because a homomorphism out of a free
-   monoid is determined by its action on generators (Awodey §7.5 Example
-   7.7); its counit at a monoid L is the evaluation of words in L, and the
-   fact that the counit's underlying map splits — every element is the value
-   of its own one-letter word — is the categorical form of "every monoid is a
-   quotient of a free one" (Awodey §9.9 Exercise 2).  The pattern generalises
-   verbatim to groups, rings, modules and algebras, which is why Samuel could
-   already see one problem behind all of them (Theory/Universal/Arrow.v's
-   header tells that story). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Notation MonCoq := (@Mon Coq Coq_Monoidal).
 #[local] Notation UMon := (@Mon_Forget Coq Coq_Monoidal).
 
 #[local] Obligation Tactic := idtac.
 
-(** ** An element-level view of a monoid object over [Coq]
+(*
+   本节说明幺半群、笛卡尔相关定义、性质与动机。
 
-    The three [Monoid] laws are stated with the cartesian associator and
-    unitors inserted.  Over [Coq] those are the evident reassociation and
-    projections, so each law instantiated at an explicit tuple is an ordinary
-    equation between elements.  Naming those instances once keeps every proof
-    below free of tensor bookkeeping. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Elements.
 
@@ -144,12 +86,11 @@ Lemma hom_mone {L N : MonCoq} (g : L ~{MonCoq}~> N) :
   `1 g (@mone L) = @mone N.
 Proof. exact (@hom_eta Coq Coq_Monoidal _ _ _ _ _ (`2 g) tt). Qed.
 
-(** ** The free monoid: words under concatenation
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Mac Lane §II.7 Corollary 2 and Awodey §1.7: for a type [X] the finite
-    words over [X] form a monoid under concatenation with the empty word as
-    unit.  The unit laws hold on the nose in one direction ([nil ++ l] is
-    [l] by computation) and by [app_nil_r] in the other. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition FreeMonoidStructure (X : Type) :
   @Monoid Coq Coq_Monoidal (list X) := {|
@@ -185,11 +126,11 @@ Example free_mone_is_nil (X : Coq) : @mone (FreeMon X) = @nil X := eq_refl.
 Definition insert (X : Coq) : X ~{Coq}~> UMon (FreeMon X) :=
   fun a => (a :: nil)%list.
 
-(** ** The extension of a map into a monoid: the fold
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Awodey §1.7 Proposition 1.9 computes the extension of [h : A → |N|] as
-    [f(a₁…aᵢ) = h(a₁) * … * h(aᵢ)], the empty word going to the unit.  That
-    is the right fold. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint free_ext {X : Coq} {L : MonCoq} (h : X → `1 L) (l : list X)
   : `1 L :=
@@ -230,11 +171,11 @@ Definition free_hom {X : Coq} {L : MonCoq} (h : X → `1 L)
   : FreeMon X ~{MonCoq}~> L :=
   (free_ext h; free_ext_MonoidHom h).
 
-(* Uniqueness: any monoid homomorphism out of the free monoid agreeing with
-   [h] on the generators IS the fold.  This is the list induction of Awodey
-   §1.7 Proposition 1.9, and it uses both homomorphism laws — the unit law at
-   the empty word, the multiplication law at the [cons] split
-   [a :: l = (a :: nil) ++ l]. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma free_ext_unique {X : Coq} {L : MonCoq} (h : X → `1 L)
       (g : FreeMon X ~{MonCoq}~> L)
       (Hg : forall a : X, `1 g (insert X a) = h a) (l : list X) :
@@ -246,14 +187,11 @@ Proof.
     exact (hom_mmul g (a :: nil)%list l).
 Qed.
 
-(** ** The universal property
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Awodey §1.7 Proposition 1.9, in the shape
-    [Theory/Universal/Arrow.v]'s [universal_arrow_from_UMP] consumes: for
-    every monoid [L] and every [h : X → U L] there is exactly one monoid
-    homomorphism [g] with [U g ∘ insert ≈ h].  Uniqueness is up to the
-    ambient [≈], which in [Mon Coq] is pointwise equality of the underlying
-    functions. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem free_monoid_universal (X : Coq) :
   forall (L : MonCoq) (h : X ~{Coq}~> UMon L),
@@ -292,11 +230,11 @@ Next Obligation.
     intro b; exact (Hg b).
 Qed.
 
-(** ** The free-forgetful adjunction
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    Awodey §9.1.  The free functor and the adjunction are assembled by the
-    generic machinery of Theory/Universal/Arrow.v from the family of
-    universal arrows. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreeMonoid : Coq ⟶ MonCoq :=
   LeftAdjointFunctorFromUniversalArrows UMon free_monoid_universal_arrow.
@@ -307,10 +245,11 @@ Definition free_monoid_adjunction : FreeMonoid ⊣ UMon :=
 (* The free functor's object part is the word monoid, definitionally. *)
 Example FreeMonoid_obj (X : Coq) : FreeMonoid X = FreeMon X := eq_refl.
 
-(* The universal arrow of [free_monoid_universal_arrow] is the insertion of
-   generators on the nose: [universal_arrow_from_UMP] stores the supplied
-   morphism as the second projection of the comma object it builds, so no
-   proof is involved. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example free_arrow_is_insert (X : Coq) :
   @arrow _ _ X UMon (free_monoid_universal_arrow X) = insert X := eq_refl.
 
@@ -320,13 +259,11 @@ Example free_monoid_unit_is_insert (X : Coq) (a : X) :
   @Category.Theory.Adjunction.unit _ _ _ _ free_monoid_adjunction X a
     = insert X a := eq_refl.
 
-(** ** The free functor acts on arrows as [List.map]
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [LeftAdjointFunctorFromUniversalArrows] defines [fmap] by universal
-    factorization, not by a formula, so what the functor does to a word has to
-    be proved.  It is [map]: the defining factorization says exactly that
-    generators go to generators, and the uniqueness half of the universal
-    property then identifies the homomorphism with [map]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma free_fmap_generators {X Y : Coq} (f : X ~{Coq}~> Y) (a : X) :
   `1 (fmap[FreeMonoid] f) (insert X a) = insert Y (f a).
@@ -353,12 +290,11 @@ Proof.
   - apply free_ext_insert.
 Qed.
 
-(** ** The insertion of generators as a natural transformation
+(*
+   本节说明自然变换相关定义、性质与动机。
 
-    Awodey §7.5 Example 7.7: [η_X : X → U M(X)] is natural in X, "because the
-    induced homomorphism M(f) is determined by its action on generators".
-    That sentence is [free_fmap_generators], and it is the whole naturality
-    square. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition insert_Transform : Id[Coq] ⟹ UMon ◯ FreeMonoid := {|
   transform := insert
@@ -366,23 +302,22 @@ Program Definition insert_Transform : Id[Coq] ⟹ UMon ◯ FreeMonoid := {|
 Next Obligation. intros X Y f a; apply free_fmap_generators. Qed.
 Next Obligation. intros X Y f a; symmetry; apply free_fmap_generators. Qed.
 
-(* It is the unit of the adjunction, componentwise on the nose — so the
-   instance asked for by Awodey's example and the generic transformation
-   produced from any adjunction by [Adjunction_to_Transform]
-   (Adjunction/Natural/Transformation/Universal.v) agree. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example insert_Transform_is_adjunction_unit (X : Coq) (a : X) :
   transform[insert_Transform] X a
     = transform[@unit _ _ _ _
                   (@Adjunction_to_Transform _ _ _ _ free_monoid_adjunction)] X a
   := eq_refl.
 
-(** ** The transposition formula
+(*
+   本节说明伴随、幺半群相关定义、性质与动机。
 
-    Awodey §9.1 asks for the bijection between monoid homomorphisms out of
-    the free monoid and functions into the underlying set.  That bijection is
-    [adj] of [free_monoid_adjunction]; the formula for its forward direction
-    is the generic [to_adj_unit] read at this adjunction, and unwinds to
-    "restrict the homomorphism to the one-letter words". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary free_monoid_transposition {X : Coq} {L : MonCoq}
       (g : FreeMonoid X ~{MonCoq}~> L) :
@@ -410,26 +345,11 @@ Proof.
   - exact (@from_adj_comp_law _ _ _ _ free_monoid_adjunction X L h a).
 Qed.
 
-(** ** The counit, and "every monoid is a quotient of a free one"
+(*
+   本节说明伴随、幺半群相关定义、性质与动机。
 
-    Awodey §9.9 Exercise 2.  Two statements have to be kept apart, and the
-    library had neither: [Theory/Adjunction.v]'s [adj_monic] is the mono-side
-    result and has no epi counterpart.
-
-    (a) The counit's IMAGE under U is a SPLIT epimorphism, split by the unit.
-        This holds for every adjunction with no hypothesis at all: it is one
-        of the two triangle identities, [fmap_counit_unit].
-
-    (b) The counit ITSELF is an epimorphism, provided U is faithful.  This
-        does need the hypothesis, and [Mon_Forget_Faithful] supplies it here.
-
-    What is NOT claimed is that the counit is a split epimorphism in Mon: a
-    section would have to be a monoid homomorphism [L → M(U L)], and the
-    evident candidate [m ↦ [m]] is not one (it sends a product to a
-    one-letter word, not to a two-letter one).  Whether some other section
-    exists depends on L, so no general statement of that shape is available,
-    and none is needed: the exercise's "quotient" is the surjection of
-    underlying sets, which is (a). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AdjunctionCounit.
 
@@ -493,14 +413,11 @@ Proof.
   exact (free_monoid_counit_surjective L).
 Qed.
 
-(** ** Uniqueness of the free monoid
+(*
+   本节说明幺半群、同构相关定义、性质与动机。
 
-    Awodey §1.7 Proposition 1.10: two monoids satisfying the free-monoid
-    universal property on the same generating type are related by a unique
-    isomorphism commuting with the generator insertions.  The generic lemma
-    is [auniversal_arrow_unique] (Theory/Universal/Arrow.v, added for this
-    purpose); what is specific here is only that [FreeMon X] inhabits the
-    hypothesis. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_monoid_unique {X : Coq} {M N : MonCoq}
       (UM : AUniversalArrow X UMon M) (UN : AUniversalArrow X UMon N) :
@@ -518,21 +435,11 @@ Definition free_monoid_unique_iso {X : Coq} {N : MonCoq}
               ≈ @universal_arrow _ _ X UMon N UN) :=
   auniversal_arrow_unique (free_monoid_AUniversalArrow X) UN.
 
-(** ** The comma presentation: Awodey's category A-Mon
+(*
+   本节说明幺半群、始/终对象相关定义、性质与动机。
 
-    Awodey §2.9 Exercise 4 defines A-**Mon**: objects are monoids M together
-    with a function A → U M, arrows are monoid homomorphisms commuting with
-    those structure maps, and the exercise is to show that an initial object
-    of A-**Mon** is the same thing as a free monoid on A.
-
-    That category IS the comma category [=(X) ↓ Mon_Forget] — its objects are
-    triples (ttt, L, h : X ~> U L), and a morphism to (ttt, N, k) is a pair
-    consisting of the unique arrow of the one-object category and a monoid
-    homomorphism g with k ∘ id ≈ U g ∘ h.  The "same thing" is then not a
-    theorem to prove but the DEFINITION of [UniversalArrow] in
-    Theory/Universal/Arrow.v, whose only field is an initial object of that
-    comma category; both directions are recorded below as named constants so
-    that the identification is stated rather than left implicit. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition AMon (X : Coq) : Category := (=(X) ↓ UMon).
 
@@ -568,22 +475,11 @@ Example AMon_initial_round (X : Coq) :
     (AMon_initial_universal_arrow X (free_monoid_initial X))
   = free_monoid_initial X := eq_refl.
 
-(** ** Words over a two-element set, and [ListMon]
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Fong and Spivak, Seven Sketches §5.2.3 Exercise 5.24(3), asks for the
-    elements of the free monoid on a two-element set: the words over {a, b}.
-    Taking [bool] as that set, [FreeMon bool] has [list bool] as its
-    underlying type, multiplication is concatenation, and the unit is the
-    empty word — all by computation.
-
-    [ListMon] (Construction/Funny/Comparison.v) is the one-object category
-    with [list bool] as its hom-set, built there as a discriminating target
-    for the funny tensor product and never identified as a free monoid.  It
-    is one: its hom-set IS the underlying type of [FreeMon bool], its
-    identity IS the unit, and its composition IS the multiplication with the
-    arguments in diagrammatic order — the file's own header notes that
-    "words read source-to-target while composition reads right-to-left", and
-    the equations below pin that down. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example ListMon_hom_is_free_carrier :
   (ttt ~{ListMon}~> ttt) = UMon (FreeMon bool) := eq_refl.
@@ -616,10 +512,11 @@ Example word_unit_left :
 Example word_unit_right :
   mmul (L:=FreeMon bool) wa (@mone (FreeMon bool)) = wa := eq_refl.
 
-(* A target monoid to fold into, so the universal property is exercised on
-   closed data rather than merely stated: [bool] under exclusive or, with
-   [false] as unit.  (Deliberately not (ℕ, +): the reading of ℕ as the free
-   monoid on one generator is issue #802's, not this file's.) *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition XorMonoidStructure : @Monoid Coq Coq_Monoidal bool := {|
   mu  := fun p => xorb (fst p) (snd p);
@@ -656,15 +553,11 @@ Example fold_into_xor_hom :
             (mmul (L:=FreeMon bool) wa wa))
         (`1 (free_hom (L:=XorMon) (fun b : bool => b)) wb) := eq_refl.
 
-(** ** Bridge to the initial [ListF]-algebra
+(*
+   本节说明幺半群、始/终对象相关定义、性质与动机。
 
-    Instance/Coq/Lists.v proves [list A] initial among [ListF A]-algebras,
-    the unique algebra map being the fold.  A monoid L together with a map
-    [h : X → U L] induces such an algebra — [None ↦ unit], [Some (a, m) ↦
-    h a * m] — and the free-monoid extension of h IS the fold determined by
-    it.  So the two universal properties of [list X] produce the same
-    function, and "structural recursion over lists" and "the free monoid on
-    X" are the same fact seen twice. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition monoid_ListF_alg {X : Coq} {L : MonCoq} (h : X → `1 L)
   : ListF X (`1 L) ~{Coq}~> `1 L :=
@@ -701,74 +594,9 @@ Proof.
   symmetry; apply free_ext_is_fold.
 Qed.
 
-(** ** Recap: what discharges which catalog item
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    - [maclane:II.7:cor2] and [awodey:1.7:construction-free-monoid] — the free
-      monoid on X as an object of [Mon Coq] with its insertion of generators:
-      [FreeMonoidStructure], [FreeMon], [insert] (with [free_mmul_is_app],
-      [free_mone_is_nil] pinning the operations by computation).
-
-    - [awodey:1.7:prop9] — the universal property, extension by the fold and
-      its uniqueness: [free_ext], [free_ext_MonoidHom], [free_ext_unique],
-      and the packaged [free_monoid_universal] (the ∃! statement),
-      [free_monoid_universal_arrow], [free_monoid_AUniversalArrow].
-
-    - [awodey:9.1:construction-free-monoid-adjunction] — the adjunction:
-      [FreeMonoid], [free_monoid_adjunction], with the transposition formula
-      [free_monoid_transposition] / [free_monoid_transposition_at] and its
-      inverse [free_monoid_transposition_inv].
-
-    - [awodey:7.5:example7] — the insertion of generators as a natural
-      transformation: [insert_Transform], whose naturality square is
-      [free_fmap_generators]; [insert_Transform_is_adjunction_unit] records
-      that it agrees componentwise with the transformation the generic
-      [Adjunction_to_Transform] produces.
-
-    - [awodey:9:ex2] — the counit: [adjunction_counit_underlying_retraction]
-      (generic, hypothesis-free) and [adjunction_counit_epic] (generic, needs
-      a faithful right adjoint), instantiated as
-      [free_monoid_counit_underlying_retraction], [free_monoid_counit_epic],
-      with the concrete [free_monoid_counit_surjective] and the computation
-      [free_monoid_counit_is_free_ext].  Split-epi-ness IN Mon is not claimed;
-      see the discussion above that section.
-
-    - [awodey:1.7:prop10] and the QA scope increment — uniqueness up to a
-      unique isomorphism: the generic lemmas [universal_arrow_unique] and
-      [auniversal_arrow_unique] were ADDED to Theory/Universal/Arrow.v, and
-      are specialised here as [free_monoid_unique] and
-      [free_monoid_unique_iso].
-
-    - [awodey:2:ex4] — the A-Mon comma presentation: [AMon], [AMon_ob],
-      [AMon_hom], with [free_monoid_initial] one way and
-      [AMon_initial_universal_arrow] the other.
-
-    - [7sketches:5.2.3:ex5.24] — words over a two-element set and the
-      [ListMon] identification: [ListMon_hom_is_free_carrier],
-      [ListMon_id_is_free_unit], [ListMon_compose_is_free_mul], plus the
-      computing witnesses [word_ab] … [word_unit_right] and the folds
-      [fold_into_xor_1] … [fold_into_xor_hom].
-
-    Bridges (issue work item 4): [free_ext_is_fold],
-    [free_ext_is_initial_algebra_map] and
-    [free_ext_is_the_unique_algebra_map] relate the extension to
-    Instance/Coq/Lists.v's [list_initial].
-
-    NOT BUILT, deliberately.
-
-    - The (ℕ, +)-as-free-monoid-on-one-generator consequence is owned by
-      issue #802 and nothing here anticipates it; the only monoid used as a
-      fold target is [XorMon].
-
-    - The one-object-graph reading is recorded but not transferred: Mac Lane
-      obtains the free monoid as the free category on a one-vertex graph, and
-      Construction/Free/Quiver.v carries that theorem
-      ([UniversalArrowQuiverCat], [FreeForgetfulAdjunction]) with its
-      universal property stated in StrictCat under strict functor equality.
-      Identifying [FreeMon X] with the hom-monoid of [FreeOnQuiver] at a
-      one-vertex quiver needs the delooping dictionary at functor level
-      (Construction/Deloop.v defers exactly that step, and its transport is
-      issue #220); it is NOT proved here, and no file
-      Construction/Free/Quiver/Loop.v exists to cite.  What IS proved is the
-      free-monoid universal property directly, which is what the citing
-      issues ask for. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 

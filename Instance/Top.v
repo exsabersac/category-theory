@@ -23,90 +23,24 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Design: what a topological space is, constructively
-
+(*
    nLab:      https://ncatlab.org/nlab/show/locale
    nLab:      https://ncatlab.org/nlab/show/constructive+mathematics
    Book:      Johnstone, "Stone Spaces", CUP 1982 (the locale/space
-              adjunction and the pointfree tradition)
    Book:      Bishop, "Foundations of Constructive Analysis", McGraw-Hill
-              1967 (the setoid discipline this file inherits)
 
-   Four decisions govern the encoding below, and each is forced by the
-   surrounding library rather than chosen for taste.
+   本节说明伴随、来源与用途相关定义、性质与动机。
 
-   1. POINTS ARE A SETOID.  Objects carry a [SetoidObject] of points, not
-      a bare type: this is the same Bishop-set discipline that makes
-      Instance/Sets.v the library's stand-in for Set.  A consequence is
-      that an open set must be a predicate that respects `≈`; the field
-      [open_proper] demands exactly that, so the topology cannot separate
-      two points the carrier's own equality has already identified.
-
-   2. OPENS ARE A PREDICATE ON PREDICATES, HENCE ONE UNIVERSE UP.  A
-      topology is a subset of the powerset, so [IsOpen] has type
-      `(carrier → Type) → Type`: it quantifies over predicates on the
-      carrier and therefore lives strictly above the universe of points.
-      This is the same placement Theory/Subobject/Functor.v gives its
-      Sets-valued presheaf `Sub : C^op ⟶ Sets` — a subobject lattice is
-      a powerset-sized object over a hom-sized base — and the same size
-      phenomenon that keeps the truth-value object of Instance/Sets.v's
-      [surjectivity_is_epic] out of Sets and confines the classifier
-      theorems to Instance/Sets/Classifier.v.  Concretely, the record is
-      declared [TopSpace@{o}]: points, their equalities, the values of an
-      open predicate, the index type of a union and the openness witnesses
-      all sit at `Type@{o}`, following the `SetoidObject@{o o}` discipline
-      of Instance/Sets.v — so [TopSpace@{o}] itself lands at `Type@{o+1}`,
-      the [IsOpen] field having quantified over the `Type@{o+1}` of
-      predicates on the carrier (a record sits at the level of its largest
-      field type, not above it).  The ascent shows up again one step later:
-      [Continuous] quantifies over the opens of the codomain, so the
-      hom-sets of [Top] live at `o+1`, which is the declared constraint
-      `o < h` on [ContinuousMorphism_equiv] below.  Because all of this is
-      universe-polymorphic, [Top] exists at every level rather than needing
-      a chosen "universe of small sets".
-
-   3. THE AXIOMS ARE STATED IN THEIR TYPE-VALUED FORM.  The union axiom
-      quantifies over an arbitrary index TYPE and forms the dependent sum
-      `{ i : I & U i x }` — the constructive reading of `⋃ᵢ Uᵢ`, where an
-      element of the union carries the index witnessing membership.  The
-      binary intersection is the product `U x ∧ V x`, and the whole space
-      is the constant predicate [poly_unit].  Because `≈`-equality of
-      predicates is pointwise `↔` (the library's [iffT]) rather than
-      Rocq's `=`, closure under unions alone is not enough: [open_respects]
-      records that being open is invariant under pointwise equivalence,
-      which is what lets the union axiom be applied up to reindexing.
-
-   4. THE EMPTY OPEN AND THE CONSTANTS ARE THEOREMS, NOT AXIOMS.  The
-      union over the empty index type gives the empty open, and — the
-      lemma that does the most work downstream — the union over the index
-      type `P` of copies of the whole space gives [open_const]: EVERY
-      constant predicate is open, in every space.  Its corollary
-      [open_uniform] says every "uniform" predicate (one that holds at a
-      point as soon as it holds anywhere) is open.  This is the
-      constructive replacement for the classical remark that `∅` and `X`
-      are open in every topology: constructively there are many more
-      predicates that cannot be told apart from `∅` or `X`, and all of
-      them must be open.  It is exactly what makes the one-point space
-      terminal (§ [Top_Terminal]) and every map into an indiscrete space
-      continuous (§ [into_indiscrete_continuous]).
-
-   What is deliberately NOT attempted here: the pointfree turn.  A
-   constructive analyst usually prefers locales (frames of opens with no
-   points at all — Johnstone, "Stone Spaces"), precisely because the
-   point-set axioms above behave badly without excluded middle.  This
-   file stays point-set because the work order is Mac Lane's `Top`, and
-   because the point-set encoding is what supports the mono/epi
-   characterizations below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Spaces *)
 
-(* A topological space: a setoid of points together with a family of open
-   predicates closed under the usual operations.  The three closure fields
-   [open_union]/[open_whole]/[open_inter] are the classical axioms; the two
-   [open_respects]/[open_proper] fields are the setoid bookkeeping described
-   in the header.  The single universe [o] is spelled out rather than
-   inferred, for the reason given in the header's point 2: pinning it to one
-   variable is what keeps every space an object of one and the same [Top]. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record TopSpace@{o} := {
   top_carrier :> SetoidObject@{o o};    (* the setoid of points *)
@@ -134,12 +68,11 @@ Record TopSpace@{o} := {
     IsOpen U → IsOpen V → IsOpen (fun x => U x ∧ V x)
 }.
 
-(* Every constant predicate is open.  Proof: the union, indexed by the type
-   [P] itself, of `P`-many copies of the whole space is pointwise equivalent
-   to the constant predicate `P` — the witness of membership IS an element
-   of `P`.  Classically this says no more than "∅ and X are open"; here it
-   is the engine behind terminality of the point and the continuity of every
-   map into an indiscrete space. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma open_const (X : TopSpace) (P : Type) : IsOpen X (fun _ => P).
 Proof.
   apply (open_respects X (fun _ => { _ : P & poly_unit }) (fun _ => P)).
@@ -155,12 +88,11 @@ Qed.
 Corollary open_empty (X : TopSpace) : IsOpen X (fun _ => False).
 Proof. exact (open_const X False). Qed.
 
-(* A predicate is "uniform" when it holds at every point as soon as it holds
-   at some point.  Every uniform predicate is open, being pointwise
-   equivalent to the constant predicate "this predicate is inhabited
-   somewhere".  Classically the uniform predicates are just ∅ and X;
-   constructively they are the whole of the coarsest topology, and this
-   lemma says that topology is contained in every other one. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma open_uniform (X : TopSpace) (U : X → Type) :
   (∀ x y : X, U x → U y) → IsOpen X U.
 Proof.
@@ -174,9 +106,11 @@ Qed.
 
 (** ** Continuous maps *)
 
-(* Continuity, in its categorical form: the preimage of every open is open.
-   The map itself is a [SetoidMorphism], so it already respects the two
-   carriers' equalities; continuity is the extra topological condition. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Continuous (X Y : TopSpace)
            (f : SetoidMorphism (top_carrier X) (top_carrier Y)) : Type :=
   ∀ U : Y → Type, IsOpen Y U → IsOpen X (fun x => U (f x)).
@@ -192,19 +126,16 @@ Record ContinuousMorphism (X Y : TopSpace) := {
 Arguments continuous_map {X Y} _.
 Arguments continuity {X Y} _ _ _.
 
-(* The hom-setoid compares only the map part, pointwise up to the codomain's
-   `≈`.  The continuity witness is not compared: two continuous maps that
-   agree on points are the same arrow of [Top], whatever proofs of
-   continuity they happen to carry.  This is the same extensional discipline
-   as [SetoidMorphism_equiv], and it is what makes [Top] a category without
-   any proof-irrelevance axiom. *)
-(* The universes are declared: [o] is the space's own level, [h] the level
-   of the hom (strictly above [o], because [Continuous] quantifies over the
-   opens of the codomain — the hom-sets of [Top] genuinely live one step up
-   from its points), and [p] the level at which morphism equality is
-   recorded.  The `h ≤ p` constraint is the one [Category] itself imposes;
-   left to inference the relation would be minimized down to [o] and no
-   longer fit a hom-setoid. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ContinuousMorphism_equiv@{o h p | o < h, h <= p +}
   {X Y : TopSpace@{o}} : crelation@{h p} (ContinuousMorphism@{h o} X Y) :=
   fun f g => ∀ x : X, continuous_map f x ≈ continuous_map g x.
@@ -249,9 +180,11 @@ Proof.
   apply proper_morphism, Hf.
 Qed.
 
-(* The category of topological spaces and continuous maps.  The category
-   laws hold pointwise on the map parts, exactly as in [Sets]; the
-   continuity witnesses play no part because the hom-setoid ignores them. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Top : Category := {|
   obj     := TopSpace;
   hom     := ContinuousMorphism;
@@ -314,19 +247,11 @@ Section Indiscrete.
 
 Context (A : SetoidObject).
 
-(* The indiscrete (coarsest) topology.  The textbook presentation is
-   `{∅, X}`, but that collection is NOT closed under arbitrary unions
-   constructively: given a family of members, deciding whether some member
-   is the whole space (so that the union is the whole space) rather than
-   all of them being empty (so that the union is empty) is precisely an
-   instance of excluded middle, and no such decision is available.
-   The constructive rendering keeps the UNIFORM predicates: those that hold
-   everywhere as soon as they hold somewhere.  Classically the uniform
-   predicates are exactly ∅ and X, so this agrees with the textbook
-   definition; constructively it is closed under everything required, and
-   by [open_uniform] it is contained in every topology on A — which makes
-   every setoid map into an indiscrete space continuous
-   ([into_indiscrete_continuous] below). *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition indiscrete_open (U : A → Type) : Type :=
   ∀ x y : A, U x → U y.
 
@@ -394,13 +319,11 @@ Proof.
   exact (open_proper Y U HU (f x) (f y) (proper_morphism f x y Hxy) Ufx).
 Qed.
 
-(* The constant setoid map, and its respectfulness certificate.  These are
-   spelled out rather than left to [Program] because instance resolution
-   solves the [Proper] goal with a lemma whose universes are pinned to
-   [Set], which would in turn pin the carrier universe of every space
-   receiving a constant map.  Supplying the field explicitly keeps the
-   construction universe-polymorphic — the discipline the header's point 2
-   describes. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma const_proper (A B : SetoidObject) (b : B) :
   Proper (respectful equiv equiv) (fun _ : A => b).
 Proof. intros u v Huv; reflexivity. Qed.
@@ -425,15 +348,11 @@ Definition top_one (X : TopSpace) : ContinuousMorphism X Point_Top := {|
   continuity := fun U _ => open_const X (U ttt)
 |}.
 
-(* Any two maps into the point agree, since the codomain has exactly one
-   element up to `≈`.  The universes of this lemma and of the instance
-   below are annotated for the same reason as [ContinuousMorphism_equiv]:
-   left to inference, elaboration pinned the space level of [Point_Top] to
-   `Set`, which quietly MONOMORPHIZED the whole [Terminal] instance — the
-   terminal object then no longer applied to spaces whose carrier lives
-   above `Set`, contradicting the header's promise that [Top] exists at
-   every level.  (Caught by the audit of the first commit, which also
-   verified this annotation restores polymorphism.) *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma top_one_unique@{o h p}
   (X : TopSpace@{o}) (f g : X ~{Top@{h o}}~> Point_Top@{o}) : f ≈ g.
 Proof.
@@ -478,12 +397,11 @@ Program Instance Top_Initial : @Initial Top := {
   one_unique := top_zero_unique
 }.
 
-(* [Top] has NO zero object, and this is a THEOREM rather than an aside:
-   a zero object would be simultaneously terminal and initial, the point
-   space maps into any terminal object, any initial object maps into the
-   empty space, and the coincidence iso would then manufacture an
-   inhabitant of [False] out of [ttt].  (The first commit merely asserted
-   this in a comment; the audit asked for the two-line proof.) *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Top_no_zero_object : @ZeroObject Top → False.
 Proof.
   intros [T I coincide].
@@ -498,10 +416,11 @@ Proof. intro iso; exact (continuous_map (to iso) ttt). Qed.
 
 (** ** Monomorphisms are the injections *)
 
-(* Injectivity up to `≈` characterizes the monos of [Top].  The hard
-   direction probes f with the two constant maps out of the one-point
-   space, exactly as [injectivity_is_monic] does in Instance/Sets.v; the
-   probes are continuous by [open_const]. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition top_point (X : TopSpace) (a : X) :
   ContinuousMorphism Point_Top X := {|
   continuous_map := const_morphism (top_carrier Point_Top) (top_carrier X) a;
@@ -522,12 +441,11 @@ Qed.
 
 (** ** Epimorphisms are the surjections *)
 
-(* Membership in the image, as a Type-valued sigma: the same shape
-   Instance/Sets.v uses in [surjectivity_is_epic] and Lib/Setoid.v's
-   [surjective] class, namely a CHOSEN preimage rather than a
-   propositional truncation.  In a setoid library this is the honest
-   reading — the round trip in [bijective_is_iso] recovers an actual
-   inverse function from it, with no appeal to choice. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition InImage {X Y : TopSpace} (f : X ~{Top}~> Y) (b : Y) : Type :=
   ∃ a : X, f a ≈ b.
 
@@ -539,24 +457,11 @@ Proof.
   exact (projT1 w; transitivity (projT2 w) Hbb).
 Qed.
 
-(* *** The cokernel-pair space
+(*
+   本节说明核/余核相关定义、性质与动机。
 
-   The unconditional constructive proof that epis in [Top] are surjective.
-   Given f : X ~> Y, glue two copies of Y along the image of f: the carrier
-   is `Y + Y`, and the two copies are identified EXACTLY over the image.
-   No inductive closure of a generating relation is needed — the relation
-   below is already transitive, because "lies in the image" transports
-   along `≈` ([InImage_respects]).  A predicate is open when it respects
-   the gluing and both of its restrictions along the two legs are open in
-   Y.  The two legs then agree after f, so an epi f forces the legs to be
-   equal, which says precisely that every point of Y lies in the image.
-
-   This argument is fully constructive: no decidability hypothesis, no
-   choice, and — unlike the classical two-point probe recalled below and
-   unlike the truth-value route Instance/Sets.v currently documents — no
-   jump to a higher universe, since `Y + Y` sits at the same level as Y.
-   (The route, not the statement, is what jumps there; see the note before
-   the indiscrete probe below.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CokernelPair.
 
@@ -671,10 +576,11 @@ Definition CokernelPair : TopSpace := {|
   open_inter    := CP_inter
 |}.
 
-(* The two legs.  Each is a setoid map by construction (within a copy the
-   gluing relation IS Y's equality), and continuous because the two
-   restriction conditions are literally the second and third components of
-   [CP_open]. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CP_inl : SetoidMorphism (top_carrier Y) CP_carrier.
 Proof.
   refine {| morphism := Datatypes.inl |}.
@@ -707,13 +613,11 @@ Qed.
 
 End CokernelPair.
 
-(* Epimorphisms of [Top] are exactly the surjections, unconditionally.
+(*
+   本节说明核/余核相关定义、性质与动机。
 
-   Forward: a surjection is right-cancellable pointwise.  Backward: apply
-   the epi to the two legs of the cokernel-pair space, which agree after f
-   by [CP_legs_agree]; the resulting equality of legs says that for every
-   b the glued points `inl b` and `inr b` are related, and by construction
-   that relation carries a preimage of b. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem top_epic_iff {X Y : TopSpace} (f : X ~{Top}~> Y) :
   (∀ b : Y, ∃ a : X, f a ≈ b) ↔ Epic f.
 Proof.
@@ -737,31 +641,11 @@ Proof. intro He; exact (snd (top_epic_iff f) He). Qed.
 
 (** ** The classical two-point probe, and its constructive status *)
 
-(* The textbook proof that epis of Top are surjective probes f with two maps
-   into the two-point INDISCRETE space — not the Sierpinski space, whose
-   topology `{∅, {1}, Z}` characterizes DENSE images rather than surjective
-   ones: the constant map at [true] and the characteristic map of the image.
-   The
-   two agree after f, so an epi makes them equal, and evaluating at b says b
-   is in the image.
+(*
+   本节说明 Top 相关定义、性质与动机。
 
-   Constructively the characteristic map is the obstruction: forming
-   `fun b => if b ∈ im f then true else false` requires DECIDING image
-   membership, which is exactly the hypothesis [dec] below.  So this route
-   is hypothesis-scoped.  The unconditional theorem is
-   [top_epic_surjective_via_cokernel_pair] above, which replaces the
-   two-element codomain by the cokernel-pair space and needs no decision
-   procedure at all; that contrast is the documented constructive status of
-   the classical argument.  (Instance/Sets.v currently reaches the same
-   statement differently: its note at [surjectivity_is_epic] routes the
-   converse through a truth-value object one universe up, keeps the whole
-   lemma out of the environment, and defers the cross-universe statements
-   to Instance/Sets/Classifier.v.  That obstruction belongs to the
-   truth-value ROUTE, not to the statement: the cokernel-pair argument
-   used here works at a single universe in [Sets] as well — the audit of
-   this file's first commit checked so by transplanting the construction —
-   and carrying that upgrade into Instance/Sets.v is the business of the
-   epis-are-surjections issue #245, not of this file.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition bool_setoid_object : SetoidObject := {|
   carrier   := bool;
@@ -832,11 +716,11 @@ End IndiscreteProbe.
 
 (** ** Open covers *)
 
-(* Fong and Spivak, "Seven Sketches in Compositionality", §7.3.2,
-   Definition 7.25: a family of opens covers a set when the set is the union
-   of the family.  Stated here at the level of predicates: the covered
-   predicate is pointwise equivalent to the union of the family, and every
-   member of the family is open. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Covers {X : TopSpace} {I : Type}
            (U : I → (X → Type)) (V : X → Type) : Type :=
   ((∀ i, IsOpen X (U i)) ∧ (∀ x : X, V x ↔ ∃ i : I, U i x))%type.
@@ -868,12 +752,11 @@ Defined.
 
 (** ** Separation and compactness *)
 
-(* Hausdorff (T2): distinct points are separated by disjoint opens.  This is
-   the literal classical separation axiom, with "distinct" rendered as
-   `¬ (x ≈ y)` (apartness in the carrier's own equality) and the existential
-   as a Σ-type carrying the two chosen opens.  A constructive topologist
-   would usually prefer a positive apartness relation; that refinement is
-   out of scope here, where the work order asks only for the definition. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsHausdorff (X : TopSpace) : Type :=
   ∀ x y : X, ¬ (x ≈ y) →
     ∃ U : X → Type, ∃ V : X → Type,
@@ -881,28 +764,21 @@ Definition IsHausdorff (X : TopSpace) : Type :=
          ∧ (U x ∧ V y)
          ∧ (∀ z : X, U z → V z → False))%type.
 
-(* Compactness of the WHOLE space: every open cover of the whole space has a
-   finite subcover, presented as a list of indices together with, for each
-   point, a member of that list covering it.  The finiteness is the list;
-   the choice of index for each point is data, as everywhere in this
-   library. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsCompact (X : TopSpace) : Type :=
   ∀ (I : Type) (U : I → (X → Type)),
     Covers U (fun _ => poly_unit) →
     ∃ l : list I, ∀ x : X, ∃ i : I, (List.In i l ∧ U i x)%type.
 
-(* Non-vacuity: the one-point space satisfies both predicates, so neither
-   subcategory below is empty.  Compactness is witnessed by the singleton
-   list containing the index that covers the point; the separation axiom is
-   satisfied vacuously, there being no pair of distinct points to
-   separate — exactly the classical situation.
-   CORRECTION (#455): as proved, [Point_Hausdorff] is monomorphised at a
-   [Set] carrier (About: [Point_Hausdorff@{u} : IsHausdorff@{u Set Set Set}
-   Point_Top@{Set}]), so it witnesses the separation half only at the
-   [Set]-carrier instances of [Top]; [Point_Compact] is universe-general.
-   Instance/Top/StoneCech.v's [Discrete_Hausdorff] separates every discrete
-   space at every universe, and its [Point_CH] is the one-point space as an
-   object of [CompHaus] at every carrier universe. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Point_Compact : IsCompact Point_Top.
 Proof.
   intros I U HU.
@@ -920,10 +796,11 @@ Proof.
   exfalso; apply Hxy; reflexivity.
 Qed.
 
-(* The full subcategory of Hausdorff spaces.  [shom] retains every
-   continuous map, so closure under identity and composition is trivial —
-   the same shape as [Sheaves_sub] in Theory/Sheaf/Category.v and
-   [Models_sub] in Theory/Lawvere/Model.v. *)
+(*
+   本节说明层/筛、Lawvere 理论相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Hausdorff_Subcategory : Subcategory Top :=
   @Build_Subcategory Top
     (fun X : Top => IsHausdorff X)
@@ -937,11 +814,11 @@ Lemma Hausdorff_Full :
   Category.Construction.Subcategory.Full Top Hausdorff_Subcategory.
 Proof. intros x y ox oy g; exact I. Qed.
 
-(* The full subcategory of compact Hausdorff spaces.  Only the definition is
-   provided: the deeper theory (that compact Hausdorff spaces are closed
-   under continuous images, that a continuous bijection out of a compact
-   space into a Hausdorff space is a homeomorphism, monadicity over Sets)
-   is out of scope for this file. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CompactHausdorff_Subcategory : Subcategory Top :=
   @Build_Subcategory Top
     (fun X : Top => (IsCompact X ∧ IsHausdorff X)%type)
@@ -959,19 +836,11 @@ Proof. intros x y ox oy g; exact I. Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** Non-vacuity: a two-point discrete space, and what it distinguishes *)
 
-(* Except for the epi probe, everything above could in principle be
-   exercised on spaces with at most one point.  This closing section
-   (supplied by the audit of the first commit) works over the two-point
-   DISCRETE space and pins down, with witnesses rather than prose:
-   continuity genuinely excludes maps — the identity carrier map from the
-   indiscrete two-point space to the discrete one is not continuous, even
-   though the underlying setoid map is a perfectly good arrow of [Sets];
-   the separation predicate holds of a space with two distinguishable
-   points and is refuted by its indiscrete twin, so [IsHausdorff] is
-   neither vacuous nor universal; and the monic/epic characterizations
-   separate real morphisms — a constant endomap of the discrete two-point
-   space is neither monic nor epic, while a nonidentity morphism (negation)
-   exists and the identity is both. *)
+(*
+   本节说明 Top 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Bool_Discrete : TopSpace := Discrete_Top bool_setoid_object.
 

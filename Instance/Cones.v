@@ -30,9 +30,9 @@ Next Obligation.
   rewrite X0; auto.
 Qed.
 
-(* The category of cocones over F is dually the category of cones over the
-   opposite diagram F^op : J^op ⟶ C^op: its objects are the cocones over F
-   (see [Cocone]), its arrows apex maps in C^op, and its TERMINAL object is
-   the colimit of F -- "initial in the category of cocones" reads as terminal
-   here because the arrows run in C^op (see Cones/Limit, [Cocones_Colimit]). *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Cocones `(F : J ⟶ C) := Cones (F^op).

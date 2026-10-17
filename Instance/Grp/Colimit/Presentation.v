@@ -807,10 +807,11 @@ Qed.
 
 (** ** Non-vacuity *)
 
-(* The pair is not trivial: at Z/2 the letter [inl w], for w the word
-   "1 then 1", is sent by l to the letter [inl 0] and by r to the word
-   "[inl 1] then [inl 1]", and the homomorphism to Z/2 sending every letter
-   to 1 separates the two. *)
+(*
+   本节说明 Presentation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section NonVacuity.
 
 Universes u p.

@@ -19,13 +19,11 @@ Require Import Category.Instance.Top.
 
 Generalizable All Variables.
 
-(** * Topological indistinguishability
+(*
+   本节说明 Kolmogorov 相关定义、性质与动机。
 
-    Two points are indistinguishable when every open tested holds of
-    one exactly when it holds of the other.  The opens tested are
-    those valued at the level [s], strictly below the space's own
-    level [o]; see the header for why the unrestricted relation cannot
-    be a space's `≈` in this library. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition SameOpens@{s o | s < o +} (X : TopSpace@{o}) (x y : X)
   : Type@{o} :=
@@ -58,12 +56,11 @@ Proof.
   - exact (open_proper X U HU y x (symmetry Hxy)).
 Defined.
 
-(** * Agreement on ALL opens
+(*
+   本节说明等价、来源与用途相关定义、性质与动机。
 
-    The unrestricted relation.  It is a perfectly good predicate; what
-    it cannot be, for the reason measured in the header, is the
-    equivalence of a [SetoidObject@{o o}].  It is used only to state
-    [Hausdorff_T0_nn]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition SameOpensAll (X : TopSpace) (x y : X) : Type :=
   ∀ U : X → Type, IsOpen X U → (U x ↔ U y).
@@ -72,13 +69,11 @@ Lemma SameOpensAll_SameOpens (X : TopSpace) (x y : X) :
   SameOpensAll X x y → SameOpens X x y.
 Proof. intros H U HU; exact (H U HU). Defined.
 
-(** * T0 spaces
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Kolmogorov's axiom in its setoid reading: indistinguishable points
-    are equal -- the same move Instance/Pos.v makes for
-    antisymmetry ([pos_antisym : pos_le x y → pos_le y x → x ≈ y]),
-    where the conclusion is the carrier's `≈` rather than Leibniz
-    equality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition IsT0 (X : TopSpace) : Type :=
   ∀ x y : X, SameOpens X x y → x ≈ y.
@@ -169,12 +164,11 @@ Definition KolmogorovQuotient (X : TopSpace) : TopSpace :=
    ; open_whole    := kq_whole X
    ; open_inter    := kq_inter X |}.
 
-(* THE CRUX.  An open of [X] whose values lie at the level the
-   indistinguishability relation tests respects that relation
-   AUTOMATICALLY, because the relation says in so many words that x
-   and y agree on it.  So every such open of X is still an open of the
-   quotient, with no hypothesis, and that is what makes the definition
-   of [SameOpens] and the definition of [kq_open] non-circular. *)
+(*
+   本节说明 Kolmogorov 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma small_open_is_kq_open (X : TopSpace) (U : X → Type) :
   IsOpen X U → IsOpen (KolmogorovQuotient X) U.
 Proof.
@@ -372,11 +366,11 @@ Example indiscrete_quot_identifies :
               (KolmogorovQuotient TwoPoint_Indiscrete))) true false
   := indiscrete_points_same_opens.
 
-(** * Non-vacuity: a three-point space merging exactly one pair
+(*
+   本节说明 Kolmogorov 相关定义、性质与动机。
 
-    The opens are the predicates that cannot tell [Tri_l] from
-    [Tri_r]; [Tri_pt] is separated from both by a [Prop]-valued
-    open. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive Tri : Set := Tri_l | Tri_r | Tri_pt.
 

@@ -295,25 +295,21 @@ Qed.
 
 (** ** Exercise 5: groups act on finite sets by permutations *)
 
-(* Each group element acts on the finite-set value as an isomorphism
-   of FinSet — a permutation.  The isomorphism is Construction/
-   Deloop/Functors.v's [action_automorphism] read at the FinSet
-   target (the donor is general in the target category and carries
-   the definitional readings [action_automorphism_to]/[_from]);
-   nothing is re-proved here. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition perm_of_group_element {G : GrpObject}
         (F : Deloop G ⟶ FinSet) (g : carrier G) :
   @Isomorphism FinSet (F ttt) (F ttt) :=
   action_automorphism F g.
 
-(* The identification with permutation representations, at the object
-   level and along the spine correspondence: a permutation
-   representation is a dimension with a homomorphism into the
-   endomorphism monoid of that object of FinSet — mirroring
-   [MatrixRep] — and the passage to and from functors is the spine,
-   with the round trips already in the tree.  Invertibility is NOT
-   part of the data: over a group it is automatic
-   ([perm_rep_acts_by_bijections]). *)
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FinPermRep (M : MonObject) : Type :=
   { n : nat & MonHom M (hom_monoid FinSet n) }.
 

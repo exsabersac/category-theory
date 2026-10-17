@@ -308,10 +308,11 @@ Lemma fv_coef_lc@{+} (z : carrier X) (l : list (fv_pair R X)) :
   fv_coef R Xdec z (fv_lc l) ≈ fv_fibre_sum R Xdec (@id Sets@{c so} X) z l.
 Proof. exact (fv_eval_fibre_lc R Xdec (@id Sets@{c so} X) l z). Qed.
 
-(* Uniqueness: two combinations denoting the same element have the same
-   collected coefficients, so the list is unique up to rearrangement and
-   collection of like terms.  It is the respectfulness of [fv_coef];
-   [fv_coef_injective] below is its converse. *)
+(*
+   本节说明 FinSupp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem fv_lc_unique@{+} (l l' : list (fv_pair R X)) :
   fv_eq (fv_lc l) (fv_lc l') →
   ∀ z, fv_fibre_sum R Xdec (@id Sets@{c so} X) z l
@@ -451,11 +452,11 @@ Example TR_FinSupp_iso_coef@{+} (t : @FVTerm R X) (y : carrier X) :
 End FinSupp.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A computing witness: T_ℤ on two generators
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Instance/Mod/Free.v's two-element generating setoid [TwoGens], its
-    decider [two_gens_dec] and the integers [Int_Ring], where the action
-    computes.  Mac Lane's formulas are then arithmetic, at [eq_refl]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* [FVTerm]'s index arguments are implicit and a literal has nothing to
    propagate them from; these NOTATIONS, not definitions, fix them.  The

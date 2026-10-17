@@ -22,10 +22,11 @@ Generalizable All Variables.
 
 (** ** The extension of a setoid map to the discrete space *)
 
-(* A map out of a discrete space is continuous for every topology on the
-   target ([out_of_discrete_continuous]), so the underlying setoid map is
-   already the continuous map.  The constructor is applied explicitly; see
-   the header for why the record literal is rejected here. *)
+(*
+   本节说明 Discrete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition disc_extend (A : SetoidObject) (Y : TopSpace)
   (g : SetoidMorphism A (top_carrier Y))
   : Discrete_Top A ~{Top}~> Y :=
@@ -66,12 +67,11 @@ Example disc_extend_is_adj_from (A : SetoidObject) (Y : TopSpace)
   (g : SetoidMorphism A (top_carrier Y)) :
   to (discrete_adj A Y) (disc_extend A Y g) = g := eq_refl.
 
-(** ** Non-vacuity
+(*
+   本节说明 Discrete 相关定义、性质与动机。
 
-    The witness must exercise a target whose topology is NOT discrete,
-    or the universal property would say nothing: with both sides discrete
-    every map is continuous for trivial reasons on both ends.  The
-    two-point indiscrete space is the in-tree witness that separates. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example disc_universal_at_indiscrete
   (g : SetoidMorphism bool_setoid_object

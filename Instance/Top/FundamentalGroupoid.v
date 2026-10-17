@@ -32,242 +32,18 @@ Set Default Proof Using "All".
 
 (** * The fundamental groupoid of a topological space *)
 
-(* nLab:      https://ncatlab.org/nlab/show/fundamental+groupoid
+(*
+   nLab:      https://ncatlab.org/nlab/show/fundamental+groupoid
    nLab:      https://ncatlab.org/nlab/show/fundamental+group
    Wikipedia: https://en.wikipedia.org/wiki/Fundamental_groupoid
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.5, printed p. 20 (PDF p. 30) — the construction of
-              the fundamental groupoid, immediately after Definition 9
    Book:      Riehl, "Category Theory in Context", Example 1.1.13(ii),
-              printed p. 8 (PDF p. 28); Corollary 1.5.14 and Remark 1.5.15,
-              printed p. 36 (PDF p. 56)
    Paper:     Brown, "From groups to groupoids: a brief survey", Bulletin of
-              the London Mathematical Society 19, 1987
 
-   The fundamental groupoid π(X) of a space: its objects are the points of X,
-   its arrows are the homotopy classes rel endpoints of paths, composition is
-   the reparametrized concatenation and the inverse of a class is the class of
-   the reversed path.  Every claim made below about what a printed source says
-   is a paraphrase of the statement at the cited location; none of the books
-   named above was consulted for this file, and nothing here quotes them.  The
-   printed/PDF page pairs come from the in-tree page maps:
-   doc/plan/books/riehl/pagemap.md, whose Riehl offset is a uniform +20, and
-   doc/plan/books/maclane/pagemap.md, whose offset is +10 over the printed
-   range 7-53 and is expressly NOT uniform across that book.
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
 
-   Contents:
-
-       Path X a b              a continuous map out of [0,1] with endpoints
-       ArrowHomotopy a b p q   a homotopy rel endpoints between two arrows
-       PathHomotopy p q        the same, between two paths
-       ah_refl/ah_sym/ah_trans homotopy is an equivalence relation
-       path_concat, path_rev   concatenation and reversal
-       straight_homotopy       the straight-line homotopy of parameters, which
-                               is the single construction behind all four laws
-       unit_left/right,
-       assoc, inverse          the category and groupoid laws, each as an
-                               explicit homotopy
-       path_concat_respects    concatenation is well defined on classes, by
-                               pasting rather than reparametrizing
-       FundamentalGroupoid X   π(X) as a Category
-       fundamental_groupoid_is_groupoid          IsGroupoid (π X)
-       equal_points_iso        `≈`-equal points are isomorphic objects
-       fundamental_group X a                     the vertex group at a
-       fundamental_group_basepoint_independent   Riehl Corollary 1.5.14
-       pointwise_homotopic     two paths agreeing pointwise are homotopic
-       interval_to_discrete_constant_dec         every continuous map from
-                                                 [0,1] to a discrete space
-                                                 with decidable equality is
-                                                 constant
-       interval_to_discrete_constant             that theorem at the two-point
-                                                 discrete space
-       fundamental_group_inclusion_equivalence   Riehl Remark 1.5.15, at a
-                                                 single space only
-       no_path_true_false, Bool_Discrete_pi_not_connected,
-       TwoPoint_Indiscrete_pi_connected          the non-vacuity witnesses
-       Bool_Discrete_loops_trivial,
-       TwoPoint_Indiscrete_loops_trivial         both vertex groups trivial,
-                                                 at every base point
-
-   THE INTERVAL, AND WHAT IT COSTS.  The unit interval, the unit square, the
-   pasting lemma and the reparametrizations all come from
-   Instance/Top/Interval.v, whose header states the choice in full: the
-   STANDARD LIBRARY REALS, at a price of at most two stdlib axioms,
-
-       ClassicalDedekindReals.sig_forall_dec
-       FunctionalExtensionality.functional_extensionality_dep
-
-   which is exactly what π(X) itself, [fundamental_groupoid_is_groupoid] and
-   the base-point corollary [fundamental_group_basepoint_independent] each
-   carry, plus a third,
-
-       ClassicalDedekindReals.sig_not_dec
-
-   for the results below that go through the least-upper-bound property.  Two
-   is a CEILING and not an invariable charge: 34 of Interval.v's 160 constants
-   carry only the first, and so does one of this file's.
-
-   `Print Assumptions` was run on every constant of this file — all 113 of
-   them, which is the 108 recorded in the `.glob` file TOGETHER WITH the five
-   Program obligations [FundamentalGroupoid_obligation_1] .. [_5] that the
-   [Program Definition] of π(X) generates and that no `.glob` sweep sees.  The
-   split is:
-
-       1 constant  closed under the global context ([bool_carriers_agree])
-       1           carries [sig_forall_dec] ALONE ([const_arrow_eval])
-     103           carry exactly the two above (98 of the glob-recorded
-                   constants, plus all five obligations)
-       8           carry the third as well
-
-   and the eight are the two internal lemmas of the least-upper-bound
-   argument, [gval_endpoints] and [f_endpoints]; the general theorem they
-   establish, [interval_to_discrete_constant_dec], with its two-point
-   corollary [interval_to_discrete_constant]; and the four results about the
-   discrete witness that use it — [no_path_true_false],
-   [Bool_Discrete_not_pathconnected], [Bool_Discrete_pi_not_connected] and
-   [Bool_Discrete_loops_trivial].  No constant of this file carries any
-   further axiom, and no constant of Instance/Top/Interval.v carries the third
-   at all.  These figures are measured per constant, not sampled and not
-   inferred from a headline, and they are enumerated in docs/AXIOMS.md under
-   "Stdlib axioms".  (An earlier revision said every remaining constant
-   carried the first two; [const_arrow_eval] does not, and the direction of
-   that error was to over-report the cost.)  No axiom is declared in either
-   file, and the core theory is untouched: these two files are the only ones
-   in the tree that import the reals.  CORRECTION (#410): not so;
-   docs/AXIOMS.md, under "Stdlib axioms", names the development files that
-   import the classical reals, and Instance/Top/Circle.v,
-   Instance/Top/Solenoid.v and Instance/Top/Solenoid/Presentations.v
-   import the standard library's constructive Cauchy reals
-   (Reals/Cauchy), which carry no axiom.  CORRECTION (#462): so does
-   Instance/Top/Components/Paths.v.
-
-   WHERE THE WORK IS.  Concatenation is not associative and the constant paths
-   are not units — not on the nose, and not even up to the hom-setoid of Top.
-   Each law holds only up to a homotopy that has to be exhibited.  All four are
-   instances of ONE construction, [straight_homotopy]: for an arrow p out of
-   the interval and two reparametrizations φ, ψ that agree at 0 and at 1,
-
-       H(t, s) = p((1 - s)·φ(t) + s·ψ(t))
-
-   is a homotopy rel endpoints from p∘φ to p∘ψ.  The four laws then reduce to
-   four POINTWISE identities, each proved by case analysis on the parameter:
-
-       p·1_b  agrees with  p ∘ rf_dbl                 (unit_right_pointwise)
-       1_a·p  agrees with  p ∘ rf_dbl'                (unit_left_pointwise)
-       (p·q)·r agrees with (p·(q·r)) ∘ rf_assoc       (assoc_pointwise)
-       p·p‾   agrees with  p ∘ rf_tent                (inverse_pointwise)
-
-   where [rf_assoc] is the piecewise-linear map min(2t, t + 1/4, t/2 + 1/2).
-   Well-definedness on classes ([path_concat_respects]) is separate: it pastes
-   two homotopies side by side across the square rather than reparametrizing.
-   The second inverse law is not proved again — it is the first applied to the
-   reversed path, together with the pointwise identity p‾‾ = p.
-
-   ON `=` VERSUS `≈`.  No morphism of any category is ever compared with `=`
-   here: composition, the identity and every law are stated with `≈`, and the
-   hom-setoid of π(X) is [PathHomotopy].  Two other uses of `=` do occur and
-   are both deliberate.  The first is equality of REAL NUMBERS -- `ival x =
-   ival y` and the arithmetic of the reparametrizations -- which is Leibniz
-   equality on `R` and not a statement about morphisms.  The second is in the
-   non-vacuity section, where the carrier setoid of [bool_setoid_object]
-   (Instance/Top.v) takes `eq` for its `≈`, so on those two spaces the two
-   relations are the same relation; this is the same remark Structure/Groupoid.v
-   makes for [Deloop Nat_Plus], and it is scoped to that carrier and to no
-   other.  The one further `=` is [bool_carriers_agree], an equality of
-   SetoidObjects that holds by [eq_refl] and is strictly stronger than any
-   statement `≈` could make.
-
-   OBJECTS ARE POINTS, NOT CLASSES OF POINTS.  The object type is the carrier
-   of X, so two `≈`-equal points are distinct objects.  They are canonically
-   isomorphic — [equal_points_iso] below builds the isomorphism from the
-   constant path — and a groupoid tolerates isomorphic-but-distinct objects,
-   so the object type carries redundancy but no distinction that π cannot
-   undo.  The alternative would need a quotient the library does not have.
-
-   RIEHL COROLLARY 1.5.14 (base-point independence).  For a path-connected
-   space the fundamental groups at any two base points are isomorphic.  It is
-   derived HERE THROUGH THE STRUCTURE THEOREM for connected groupoids, not by
-   an independent conjugation argument: path-connectedness makes π(X)
-   connected, Structure/Groupoid/Connected.v's [connected_deloop_equiv]
-   makes the delooping of each vertex group EQUIVALENT to π(X), and
-   Structure/Groupoid/Basepoint.v's [deloop_ff_moniso] converts a fully
-   faithful functor between one-object categories into a group ISOMORPHISM.
-   The two words are used in their exact senses; the structure theorem gives
-   an equivalence of categories, and what comes out at the end is a bijection
-   of underlying setoids preserving unit and multiplication.
-
-   RIEHL REMARK 1.5.15, AND WHAT IS NOT PROVED.  Riehl's remark at that
-   location compares the fundamental group and the fundamental groupoid as
-   parallel functors on based path-connected spaces: the inclusion of the
-   former into the latter is a natural transformation each of whose components
-   is an equivalence of categories, while the inverse equivalences require
-   choosing, for each point, a path to the base point, and those choices are
-   not preserved by based maps — so the inverses do NOT assemble into a
-   natural transformation.  Only the COMPONENT is formalized here, as
-   [fundamental_group_inclusion_equivalence]: at a single path-connected
-   space, the inclusion of the vertex group at a is an equivalence.  Neither
-   functor on based spaces is constructed, the naturality of the inclusion is
-   not stated, and the negative statement about the inverses is not proved.
-   Recording that asymmetry as a theorem would need a category of based
-   spaces and a space where the choices genuinely differ; nothing below
-   asserts it, in either direction.
-
-   NON-VACUITY, AND ITS LIMIT.  Degenerate spaces make the whole construction
-   trivially true, so a witness is supplied that separates two topologies on
-   ONE set.  [Bool_Discrete] and [TwoPoint_Indiscrete] (Instance/Top.v) have the same setoid of points — [bool_setoid_object] — and π tells
-   them apart: it is provably NOT connected on the discrete one
-   ([Bool_Discrete_pi_not_connected]) and IS connected on the indiscrete one
-   ([TwoPoint_Indiscrete_pi_connected]).  The discrete half rests on
-   [interval_to_discrete_constant], the least-upper-bound argument showing
-   every continuous map from the interval to the two-point discrete space is
-   constant — the one genuinely topological fact about [0,1] proved anywhere
-   in this development, and the reason π reads the topology rather than the
-   underlying set.  CORRECTION (#462): not the only proof of it in the tree.
-   Instance/Top/Components/Paths.v proves the same two-point fact for its own
-   interval [PInterval], over the constructive Cauchy reals in [PTopCat]
-   ([interval_bool_endpoints], [interval_bool_constant]), by bisection and
-   closed under the global context; nothing here is rebuilt on it.
-
-   That argument is proved once in the general form
-   [interval_to_discrete_constant_dec]: for EVERY discrete space whose
-   equality is decidable, every continuous map out of [0,1] is constant.  The
-   two-point statement is that theorem at [bool_setoid_object].  What is still
-   not proved is connectedness of [0,1] in the general topological sense — no
-   separation of the interval by a pair of disjoint nonempty opens — nor
-   constancy of maps into a discrete space whose equality is not decidable;
-   the decider is what makes the supremum's defining predicate a [Prop], as
-   the note above [rclamp] explains.
-
-   The limit is worth stating plainly: NO SPACE WITH A NONTRIVIAL FUNDAMENTAL
-   GROUP is exhibited.  Both witnesses have trivial vertex groups AT EVERY
-   BASE POINT, both halves quantifying over the point rather than fixing it,
-   and both are proved rather than assumed: [Bool_Discrete_loops_trivial] for
-   the discrete one, [TwoPoint_Indiscrete_loops_trivial] for the other.  So
-   the pair is a contrast in CONNECTEDNESS and in nothing else.  Producing
-   one would mean building the circle and computing π₁(S¹) ≅ ℤ, which needs
-   covering-space theory or a winding-number argument, and neither is
-   attempted.  So the base-point-independence corollary is exercised on a
-   witness where both groups happen to be trivial; what the witness
-   establishes is that its HYPOTHESIS is a real restriction and that its
-   derivation runs, not that the conclusion is ever interesting.
-
-   EXPORTED, WITH NO CURRENT CONSUMER.  Counted from the `.glob` reference
-   records rather than by reading, nine constants below are referenced by
-   nothing in the tree.  Eight are terminal by design — this file is a leaf of
-   the dependency graph, and [bool_carriers_agree],
-   [Bool_Discrete_not_pathconnected], [Bool_Discrete_pi_not_connected],
-   [Bool_Discrete_loops_trivial], [TwoPoint_Indiscrete_pi_connected],
-   [TwoPoint_Indiscrete_basepoint_iso],
-   [TwoPoint_Indiscrete_inclusion_equivalence] and
-   [TwoPoint_Indiscrete_loops_trivial] are the witnesses, which exist to be the
-   end of a chain.  The ninth, [equal_points_iso], is a genuine orphan: it
-   discharges the header's remark on the object type by exhibiting the
-   canonical isomorphism between `≈`-equal points, and nothing consumes it
-   because nothing in this development needs to move along one.  It is kept;
-   nothing here is removed on this file's own judgement, and the decision to
-   keep or drop is the maintainer's.  (The corresponding count for
-   Instance/Top/Interval.v is eight, disclosed in that file's header, and for
-   Structure/Groupoid/Basepoint.v seven, disclosed in its.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Paths *)
 
@@ -286,11 +62,11 @@ Arguments path_tgt {X a b} _.
 
 (** ** Homotopy rel endpoints *)
 
-(* A homotopy rel endpoints between two arrows out of the interval: a map of
-   the square whose bottom edge is p, whose top edge is q, and whose two
-   vertical edges are constant at a and at b.  It is stated for bare arrows
-   rather than for [Path] records because the reparametrization lemmas below
-   produce arrows first and only then package endpoints. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record ArrowHomotopy {X : TopSpace} (a b : X) (p q : I_Top ~{Top}~> X) := {
   ah_map :> Sq_Top ~{Top}~> X;
 
@@ -595,13 +371,11 @@ Definition path_concat {X : TopSpace} {a b c : X}
 
 (** ** The straight-line homotopy of parameters *)
 
-(* The single homotopy construction the category laws need: given an arrow p
-   out of the interval and two reparametrizations φ, ψ agreeing at 0 and at 1,
-   the maps p∘φ and p∘ψ are homotopic rel endpoints, along
-   H(t, s) = p((1 - s)·φ(t) + s·ψ(t)).
-   The two arrows u and v are not required to BE the composites: they need only
-   agree with them pointwise, which is how the concatenations below -- defined
-   by pasting rather than by composition -- are fed to it. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Straight.
 
@@ -729,10 +503,11 @@ Proof.
     rewrite Hy; unfold rf_dbl'; Rlin.
 Qed.
 
-(* Associativity: the two bracketings agree pointwise after the piecewise
-   linear reparametrization [rf_assoc].  This is the computation Mac Lane's
-   construction turns on, and it is the reason concatenation is associative
-   only up to homotopy. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma assoc_pointwise {X : TopSpace} {a b c d : X}
       (p : Path X a b) (q : Path X b c) (r : Path X c d) (x y : Ipt) :
   ival y = rf_assoc (ival x) →
@@ -1040,11 +815,11 @@ Definition Path_Setoid {X : TopSpace} (a b : X) : Setoid (Path X a b) := {|
 
 #[local] Obligation Tactic := idtac.
 
-(* Mac Lane, CWM 2nd ed., §I.5, printed p. 20: the objects are the points of
-   X, the arrows are the homotopy classes of paths, composition is the
-   reparametrized concatenation and the identity is the constant path.  Every
-   law holds only up to homotopy, and each is witnessed by one of the four
-   explicit homotopies built above. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition FundamentalGroupoid (X : TopSpace) : Category := {|
   obj     := carrier (top_carrier X);
   hom     := fun a b => Path X a b;
@@ -1080,10 +855,11 @@ Proof.
   - exact (inverse_homotopy f).
 Defined.
 
-(* `≈`-equal points are distinct OBJECTS of π(X), but canonically isomorphic
-   ones: the constant path at a is already a path from a to a', its target
-   condition being the given `≈`.  This is what the header's remark on the
-   object type asserts, proved rather than left as a remark. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition equal_points_path {X : TopSpace} {a a' : X} (H : a ≈ a') :
   Path X a a' := {|
   path_map := const_arrow a;
@@ -1108,20 +884,11 @@ Definition pathconnected_Connected {X : TopSpace} (K : PathConnected X) :
 Definition fundamental_group (X : TopSpace) (a : X) : GrpObject :=
   vertex_group (fundamental_groupoid_is_groupoid X) a.
 
-(* Riehl, "Category Theory in Context", §1.5 Corollary 1.5.14, printed p. 36
-   (PDF p. 56).  The derivation is the one Riehl gives: the fundamental
-   groupoid of a path-connected space is a CONNECTED groupoid, the structure
-   theorem [connected_deloop_equiv] makes the delooping of the vertex group at
-   each point EQUIVALENT to it, and an equivalence between the resulting
-   one-object categories yields an ISOMORPHISM of the two groups.  That last
-   step is [deloop_ff_moniso]; the assembled statement is
-   [connected_vertex_moniso] in Structure/Groupoid/Basepoint.v.  Nothing here
-   conjugates by a chosen path directly.
+(*
+   本节说明等价、同构相关定义、性质与动机。
 
-   The two words are used in their exact senses: an equivalence of categories
-   is what the structure theorem produces, and a group isomorphism -- a
-   bijection of underlying setoids preserving unit and multiplication, which
-   is what [MonIso] is -- is what comes out. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem fundamental_group_basepoint_independent {X : TopSpace}
         (K : PathConnected X) (a b : X) :
   MonIso (fundamental_group X a) (fundamental_group X b).
@@ -1143,37 +910,11 @@ Defined.
 
 (** ** Every map from the interval to a two-point discrete space is constant *)
 
-(* The one genuinely topological fact proved here about [0,1].  It is the
-   least-upper-bound argument, run on the clamped composite so that the
-   supremum may be taken over a predicate on all of R.  This is what makes the
-   fundamental groupoid detect path components rather than merely the
-   underlying set of points.
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   The argument is developed once, for an ARBITRARY discrete space whose
-   equality is decidable ([interval_to_discrete_constant_dec]), and the
-   two-point statement this file's witnesses use
-   ([interval_to_discrete_constant]) is that theorem at [bool_setoid_object]
-   with [Bool.bool_dec] for the decider.  Nothing about the codomain is used
-   beyond the decider: [rclamp], [clampI], [I_scale] and the supremum argument
-   never mention it.
-
-   WHY A DECIDER, AND WHY IT COSTS NOTHING.  The supremum is taken over a
-   predicate on R, so the set being bounded must live in [Prop]; but this
-   library's `≈` is a [crelation] (Lib/Setoid.v), hence [Type]-valued, and
-   `gval t ≈ gval 0` cannot be a conjunct of a [Prop] directly.  The decider
-   supplies the [Prop] shadow -- [gsame] below, with [gsame_intro] and
-   [gsame_elim] crossing between the two -- and it is a HYPOTHESIS, so no
-   axiom is incurred: [interval_to_discrete_constant_dec] carries exactly the
-   same three axioms as the two-point corollary and no others.  For the same
-   [Type]-valued reason the decider is stated with [sum] rather than with
-   [sumbool]: `{x ≈ y} + {~ (x ≈ y)}` does not typecheck for a general
-   [SetoidObject].
-
-   SCOPE: what is proved is constancy of continuous maps out of [0,1] into a
-   discrete space with decidable equality.  Connectedness of [0,1] in the
-   general sense -- no separation by a pair of disjoint nonempty opens, or
-   constancy of maps into a discrete space whose equality is not decidable --
-   is neither stated nor proved here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition rclamp (r : R) : R := Rmax 0 (Rmin 1 r).
 
@@ -1216,9 +957,11 @@ Context (f : I_Top ~{Top}~> Discrete_Top A).
 
 Definition gval (r : R) : A := f (clampI r).
 
-(* Every predicate that respects `≈` is open in the discrete topology
-   (Instance/Top.v's [discrete_open]), so the fibre through [clampI r] is
-   open and continuity hands back a radius on which [gval] does not move. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma gval_locally_constant (r : R) :
   { d : R & ((0 < d) ∧ (∀ r' : R, Rabs (r - r') < d → gval r' ≈ gval r))%type }.
 Proof.
@@ -1235,10 +978,11 @@ Proof.
     apply rclamp_lip.
 Qed.
 
-(* The [Prop] shadow of `gval t ≈ gval 0`, which is what lets [Egv] be a
-   predicate on R and so be handed to [completeness].  This is the only place
-   the decider is used, and the two lemmas below are the two directions of the
-   translation. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition gsame (t : R) : Prop :=
   if dec (gval t) (gval 0) then True else False.
 
@@ -1368,12 +1112,11 @@ Proof.
   rewrite <- H1, <- H0; exact H.
 Qed.
 
-(* The two-point case, which is the one the witnesses below use.  [Bool_Discrete]
-   IS [Discrete_Top bool_setoid_object] (Instance/Top.v) and that setoid
-   takes [eq] for its `≈`, so the conclusion is stated with `=` here and the
-   general theorem discharges it by conversion.  [Bool.bool_dec] returns a
-   [sumbool], which is transported to the [sum] the general statement asks for;
-   see the note above on why that statement cannot use [sumbool] itself. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem interval_to_discrete_constant (f : I_Top ~{Top}~> Bool_Discrete)
         (x : Ipt) : f x = f I_zero.
 Proof.
@@ -1386,16 +1129,11 @@ Qed.
 
 (** ** The vertex-group inclusion is an equivalence *)
 
-(* Riehl, "Category Theory in Context", §1.5 Remark 1.5.15, printed p. 36
-   (PDF p. 56), COMPONENTWISE ONLY.  Riehl's remark compares two functors on
-   based path-connected spaces -- the fundamental group and the fundamental
-   groupoid -- and observes that the inclusion of the former into the latter is
-   natural while the inverse equivalences, which depend on a choice of path
-   from each point to the base point, are not.  What is proved here is only the
-   statement at a single space: the inclusion of the vertex group at a is an
-   equivalence of categories.  The functoriality in based maps, the naturality
-   of the inclusion, and the negative statement about the inverses are NOT
-   formalized here; see the header for the scope. *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fundamental_group_inclusion {X : TopSpace} (a : X) :
   Deloop (fundamental_group X a) ⟶ FundamentalGroupoid X :=
   vertex_incl (fundamental_groupoid_is_groupoid X) a.
@@ -1410,11 +1148,11 @@ Defined.
 
 (** ** Non-vacuity: the construction separates two topologies on one set *)
 
-(* The two spaces below have the SAME setoid of points -- Instance/Top.v's
-   [bool_setoid_object] -- and differ only in their topology.  The fundamental
-   groupoid tells them apart: it is provably not connected on the discrete one
-   and is connected on the indiscrete one.  So the construction is reading the
-   topology, not the underlying set, and neither statement is vacuous. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example bool_carriers_agree :
   top_carrier Bool_Discrete = top_carrier TwoPoint_Indiscrete := eq_refl.
@@ -1447,13 +1185,11 @@ Proof.
               K true false)).
 Qed.
 
-(* At EVERY point of the discrete space the vertex group is trivial, the base
-   point being bound rather than fixed at [true]: by
-   [interval_to_discrete_constant] a loop at [a] takes the value [a] at every
-   parameter, so it is homotopic to the constant loop.  The conclusion is a
-   statement about HOMOTOPY CLASSES -- the hom-setoid at [a] has exactly one
-   class -- and not that the type of loops has exactly one inhabitant, which is
-   false: two loops with different continuity witnesses are different terms. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Bool_Discrete_loops_trivial (a : bool)
         (f : a ~{FundamentalGroupoid Bool_Discrete}~> a) : f ≈ id.
 Proof.
@@ -1504,9 +1240,11 @@ Definition TwoPoint_Indiscrete_pi_connected :
   Connected (FundamentalGroupoid TwoPoint_Indiscrete) :=
   pathconnected_Connected TwoPoint_Indiscrete_pathconnected.
 
-(* Riehl's Corollary 1.5.14 at the witness: the fundamental groups of the
-   indiscrete two-point space at its two distinct base points are isomorphic,
-   the isomorphism obtained through the structure theorem. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TwoPoint_Indiscrete_basepoint_iso :
   MonIso (fundamental_group TwoPoint_Indiscrete true)
          (fundamental_group TwoPoint_Indiscrete false) :=
@@ -1519,12 +1257,11 @@ Definition TwoPoint_Indiscrete_inclusion_equivalence :
   EquivalenceOfCategories (fundamental_group_inclusion (X:=TwoPoint_Indiscrete) true) :=
   fundamental_group_inclusion_equivalence TwoPoint_Indiscrete_pathconnected true.
 
-(* On the indiscrete space every homotopy is available, because every setoid
-   map out of the square is continuous into it.  So any two paths with the
-   same endpoints are homotopic, and its vertex groups are trivial too.  This
-   is what makes the pair a contrast in CONNECTEDNESS and nothing else: both
-   witnesses have trivial fundamental groups, and neither exhibits a
-   nontrivial one. *)
+(*
+   本节说明 FundamentalGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition indiscrete_ah_fun {a b : bool} (p q : Path TwoPoint_Indiscrete a b)
            (z : BS_Sq) : bool :=
   if Rle_dec (sq_s z) (1/2) then path_map p (bs_fst z) else path_map q (bs_fst z).

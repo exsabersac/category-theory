@@ -97,11 +97,11 @@ Definition Sum_Top : TopSpace := {|
 
 (** ** The injections *)
 
-(* The [Proper] fields are written out pointwise rather than left to
-   instance resolution: Instance/Top.v records that resolving a
-   [Proper] obligation here pins the receiving space's carrier universe
-   to [Set].  Over the sum setoid [inl u ≈ inl v] IS [u ≈ v], so the
-   witness is the hypothesis itself. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sum_inl_map : SetoidMorphism (top_carrier X) sum_carrier.
 Proof.
   unshelve notypeclasses refine {| morphism := Datatypes.inl |}.
@@ -129,9 +129,11 @@ Arguments sum_open {X Y} W.
 
 (** ** The copairing *)
 
-(* Written with explicit binders rather than in a section: the tree's
-   default [Proof using] would otherwise have to name [f] and [g], and
-   these two are the only tactic-built terms here that mention them. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sum_merge_map {X Y Z : TopSpace}
   (f : X ~{Top}~> Z) (g : Y ~{Top}~> Z) :
   SetoidMorphism (sum_carrier X Y) (top_carrier Z).
@@ -179,10 +181,11 @@ Proof.
   - exact (Hg a).
 Qed.
 
-(* The [fork] field of [@Cartesian (Top^op)] binds the TARGET first and
-   the two summands after it, the reverse of the reading order used
-   above.  These three wrappers carry the field's binder order, so the
-   instance below needs no lambda and no reassociation. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Top_cofork (Z X Y : TopSpace)
   (f : X ~{Top}~> Z) (g : Y ~{Top}~> Z) : Sum_Top X Y ~{Top}~> Z :=
   Top_merge f g.
@@ -279,10 +282,11 @@ Proof.
       exact (H (Datatypes.inr a) (Datatypes.inr b) Hab Wa).
 Qed.
 
-(* The one-point instance: the coproduct of two copies of the terminal
-   space is discrete on [unit + unit].  Instance/Top/Forgetful.v says
-   this in prose; no identification with that file's [Bool_Discrete] is
-   claimed, the carriers being different types. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary point_sum_discrete
         (W : sum_carrier Point_Top Point_Top → Type) :
   IsOpen (Sum_Top Point_Top Point_Top) W

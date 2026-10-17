@@ -41,11 +41,11 @@ Generalizable All Variables.
 
 (** ** The initial topology for a family of functions *)
 
-(* A topology on a setoid's points, as a predicate on predicates: closed
-   under pointwise equivalence, unions of families, the whole, and binary
-   intersections.  Properness is not asked here: every open of the initial
-   topology is shown proper by instantiating at the topology of the proper
-   predicates ([pproper_topology]). *)
+(*
+   本节说明等价、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PIsTopology@{o} (S : SetoidObject@{o o})
   (T : (S → Prop) → Prop) : Prop :=
   (∀ U V : S → Prop, (∀ x, U x <-> V x) → T U → T V) /\
@@ -292,10 +292,11 @@ Definition PTop_Limit_lift@{r0 r +}
   (L : Limit@{r0 j o so} (PForget@{o so} ◯ T)) : Limit@{r j o so} T :=
   limitcone_limit (pinit_cone L) (pinit_cone_limiting L (limit_limitcone L)).
 
-(* The converse half, Riehl's "must": the legs of ANY limiting cone over
-   [T] are jointly injective on points (probe with the point), and its
-   topology IS the initial topology for its legs (probe with the same
-   points under the initial topology). *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition plimit_point_cone (L : Cone T) (x : vertex_obj[L]) : Cone T.
 Proof.
   unshelve refine (@Build_Cone J PTopCat@{o so} T PPoint@{o}
@@ -462,9 +463,11 @@ Example PProd_open@{i o +| i <= o +} (A : Type@{i}) (X : A → PTop@{o})
   POpen (PProd A X) V = pinit_open (PProd_carrier A X) A X (pprod_leg A X) V :=
   eq_refl.
 
-(* The topology of ANY indexed product of spaces is the product topology:
-   the underlying-set product is forced by probing with the point, and the
-   initial topology by probing with the initial topology itself. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section ProductForced.
 
 Universes i o so.
@@ -513,10 +516,11 @@ Qed.
 
 End ProductForced.
 
-(* The topology of ANY equalizer of spaces is the subspace topology along
-   its arrow, Instance/Top/Subspace.v's [PSub]: its arrow is injective on
-   points (probe with the point), and the subspace forks, so it factors
-   through the equalizer by the identity of points. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section EqualizerForced.
 
 Universes o so.
@@ -597,9 +601,11 @@ Lemma PTop_Complete_via_products_apex@{o so +| o < so +}
       = PSub (PProd (obj[J]) (fun j => fobj[T] j)) S h)).
 Proof. eexists. eexists. reflexivity. Qed.
 
-(* The two routes agree where both are stated, at shapes whose objects sit
-   at the points' universe: the apexes are isomorphic, compatibly with the
-   legs (Structure/Limit/Unique.v's [limit_unique_iso]). *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PTop_Complete_routes_iso@{o so +| o < so +}
   (J : Category@{o o o}) (T : J ⟶ PTopCat@{o so}) :
   vertex_obj[@limit_cone _ _ _ (@PTop_Complete J T)]

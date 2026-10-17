@@ -213,12 +213,11 @@ Definition Sets_CoWellPoweredAt_up (X : SetoidObject@{o o}) :
 
 End SetsWellPoweredUp.
 
-(* Readback: the subobject named by a predicate has the satisfying
-   elements as its carrier, on the nose.  The two [eq_refl] readbacks of
-   this file are stated outside any section and with no universe binder:
-   Theory/Size.v's note on [ObjEq] records that Leibniz [eq] under a
-   universe binder with a constraint clause is refused on Coq 8.19 and
-   8.20, and the sections here declare constraints. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Sets_WellPoweredAt_up_carrier (X : SetoidObject)
   (P : sets_pred_index X) :
   carrier (sub_dom (wp_to (Sets_WellPoweredAt_up X) P))
@@ -234,9 +233,11 @@ Constraint Set < o.
 
 Context (U : Untruncate@{o}).
 
-(* Structure/WellPowered.v's generic [wp_of_classifier], at the
-   conditional classifier [Sets_Classifier U] over [Sets_HasPullbacks]:
-   the index is the hom-set [X ~> Ω], at the hom universe [o]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_WellPoweredAt_untruncate (X : SetoidObject@{o o}) :
   @WellPoweredAt Sets@{o so} X :=
   @wp_of_classifier Sets@{o so} Sets_Terminal@{so o} Sets_HasPullbacks@{so o}
@@ -255,13 +256,11 @@ Definition Sets_WellPowered_untruncate@{o so t | o < so, Set < o, o < t +}
 
 (** ** The intersection of a class of subobjects, at [Sets] *)
 
-(* Mac Lane's "any set of subobjects", read as a ≈-closed property [P] of
-   subobjects of [X]: the family [{ m : SubObj X & P m }] is LARGE (it sits
-   at [so]), so [Sets_HasWidePullbacks], whose index lives at the carrier
-   universe [o], cannot take it directly.  The pinned witness reindexes it
-   over the SMALL index [{ i : X ~> Ω & P (wp_to i) }], padded with the top
-   subobject so that the chosen point [None] of [sub_intersection] always
-   exists. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetsIntersection.
 

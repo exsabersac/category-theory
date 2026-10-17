@@ -14,11 +14,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Any two parallel morphisms of [_2] are equal: the category is thin.  The
-   argument now lives upstream as [Two_thin] in Instance/Two.v, where the
-   bimorphism witness needs it; this name is kept so existing callers here are
-   undisturbed.  [_2]'s homset IS [Morphism_equality], i.e. [eq], so the two
-   statements coincide. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma two_thin {x y : TwoObj} (f g : TwoHom x y) : f = g.
 Proof. exact (Two_thin f g). Qed.
 

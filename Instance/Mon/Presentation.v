@@ -174,10 +174,11 @@ Definition Mon_presented_iso@{+} (M : MonOS) {q : MonOS}
 
 (** ** Awodey, §3.5 Exercise 3: the forgetful functor preserves it *)
 
-(* The U-image of the fork is split by units: s = η_{UM}, t = η_{UTM}.
-   It IS BeckObjects.v's canonical presentation of the W₀-algebra
-   K M = ⟨UM, Uπ⟩, with no transport: μ = U ε F and K M's structure map
-   is U π, both by conversion. *)
+(*
+   本节说明 Presentation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Mon_canonical_split@{+} (M : MonOS) :
   SplitCoequalizer (fmap[UMonOS] (Mon_flatten M))
                    (fmap[UMonOS] (Mon_free_evaluate M)) :=

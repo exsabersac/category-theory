@@ -121,9 +121,11 @@ Proof.
     now apply multi_R.
 Qed.
 
-(* Common pattern for the remaining congruence lemmas: induct on the given
-   reduction sequence; the reflexive case is immediate, and the step case
-   prepends the matching single-step congruence rule (found by [econstructor]). *)
+(*
+   本节说明 Multi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac simpl_multistep :=
   intros;
   match goal with

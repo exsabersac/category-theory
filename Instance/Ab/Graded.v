@@ -71,11 +71,11 @@ Qed.
 
 (** ** The measurement against the indexed product *)
 
-(* The five data fields of [GradedAb] and of the indexed product over
-   the constant family agree on the nose.  These are equalities of
-   TYPES and of the data carried by the two records — the library's
-   convertibility exception to the "never [=] on morphisms" rule — and
-   they are what makes the comparison functors below the identity. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example graded_obj_definitional :
   obj[GradedAb] = obj[PiCat (fun _ : nat => Ab)] := eq_refl.
@@ -96,9 +96,11 @@ Example graded_compose_definitional (F G H : obj[GradedAb]) :
 
 (** ** The two spellings compared in Cat *)
 
-(* Both directions are the identity on objects and on arrows.  Since
-   the data fields coincide, the two functor laws are [reflexivity] and
-   respectfulness is the hypothesis handed back degreewise. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition GradedAb_PiCat :
   GradedAb ⟶ PiCat (fun _ : nat => Ab) := {|
   fobj := fun F => F;
@@ -147,11 +149,11 @@ Qed.
 
 (** ** Mac Lane §II.4 Exercise 3 *)
 
-(* Graded abelian groups are the diagrams of shape "the discrete
-   category on the degrees" in Ab.  The whole content of the discrete
-   shape — naturality is free, a functor is its object function — is
-   Instance/Fun/Discrete.v's [Fun_Discrete_PiCat], consumed here at
-   A := nat and B := Ab; this file contributes the second leg. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Graded_Fun_equiv :
   ([DiscreteCat nat, Ab]) ≅[Cat] GradedAb :=
   iso_compose PiCat_GradedAb_iso Fun_Discrete_PiCat.

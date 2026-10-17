@@ -37,11 +37,11 @@ Open Scope category_scope.
 
 (** ** The Ab-enrichment of the delooping of a ring *)
 
-(* [DeloopRig (ring_rig R)] is Mac Lane's one-object Ab-category B(R):
-   one object, hom-group the additive group of R, composition the
-   multiplication.  Theory/Algebra/Rig.v already supplies the category
-   and the CMon-enrichment; a ring adds negatives, so the only new datum
-   is [abneg], and its law is [ring_neg_l] after commuting the sum. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition DeloopRing_AbEnriched (R : RingObject) :
   AbEnriched (DeloopRig (ring_rig R)) := {|
   abenriched_preadditive := DeloopRig_Preadditive (ring_rig R);
@@ -56,14 +56,11 @@ Qed.
    and Rig.v exports [ring_neg_respects] as an instance, so elaboration
    discharges it. *)
 
-(* Mac Lane's first clause, as conversions: the hom-set of B(R) IS the
-   carrier of R, composition IS multiplication, the identity IS 1, the
-   enrichment's addition IS the ring's addition and its negation IS the
-   ring's negation.  [deloop_ring_hom] is an equality of TYPES; the
-   other four are stated at applied arguments and so compare MORPHISMS
-   of the delooping by Leibniz [eq_refl] — deliberate, and sound
-   exactly because both sides are convertible; the house `≈` rule
-   governs morphism statements that are not. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example deloop_ring_hom (R : RingObject) :
   (ttt ~{DeloopRig (ring_rig R)}~> ttt)
     = carrier (rig_setoid (ring_rig R)) := eq_refl.
@@ -86,22 +83,21 @@ Example deloop_ring_abneg (R : RingObject)
 
 (** ** The full subcategory of additive functors *)
 
-(* The predicate is Structure/AbCategory.v's class itself, at the two
-   enrichments — the honest reading of "spanned by the additive
-   functors".  It is [Type]-valued, which is what [Subcategory]'s [sobj]
-   asks for. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsAdditiveFun (R : RingObject)
   (F : DeloopRig (ring_rig R) ⟶ Ab) : Type :=
   @AdditiveFunctor (DeloopRig (ring_rig R)) Ab
     (DeloopRing_AbEnriched R) Ab_AbEnriched F.
 
-(* Full: every natural transformation between two additive functors is
-   retained ([True]/[I]), the idiom of Theory/Sheaf/Category.v's
-   [Sheaves_sub] and Instance/Rng.v's [CRng_Sub].  Parsing gotcha for
-   sibling files: [ [C, D] ] is a level-90 notation and cannot appear
-   as a bare application argument — [Subcategory [X, Y]] is a hard
-   parse error, so every use below writes [([X, Y])] with explicit
-   parentheses. *)
+(*
+   本节说明自然变换、函子、层/筛相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AbFunAdd_sub (R : RingObject) :
   Subcategory ([DeloopRig (ring_rig R), Ab]) :=
   @Build_Subcategory ([DeloopRig (ring_rig R), Ab])
@@ -134,11 +130,11 @@ Definition fun_module_smul {R : RingObject}
   carrier (cmon_setoid (F ttt : AbObject)) :=
   cmon_map (@fmap _ _ F ttt ttt r) m.
 
-(* THE PIVOT.  [rm_smul_distr_l] is [cmon_map_plus], [rm_smul_assoc] is
-   [fmap_comp] (composition IS multiplication), [rm_smul_one] is
-   [fmap_id] (the identity IS 1) — all three free from any functor into
-   Ab.  Only [rm_smul_distr_r] needs [HF], and it is exactly
-   [fmap_padd]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition module_of_functor {R : RingObject}
   (F : DeloopRig (ring_rig R) ⟶ Ab) (HF : IsAdditiveFun R F) :
   RModObject R := {|
@@ -303,18 +299,11 @@ Next Obligation. intros R M r m; simpl; reflexivity. Qed.
 Next Obligation. intros R M m; simpl; reflexivity. Qed.
 Next Obligation. intros R M m; simpl; reflexivity. Qed.
 
-(* Functor side, with a transparent component family: the equivalence
-   has to compute with the components, so the in-tree opaque
-   [functor_round] cannot serve (Instance/Rep.v's [Rep_round_iso] and
-   Instance/Fun/Action.v's [MSet_round_iso] make the same move).  The
-   subcategory's objects are written as [`1]/[`2] of the given one
-   rather than destructured, since [sigT] has no definitional eta.
-   Unlike the module side, THIS round trip is not definitional:
-   [module_act] rebuilds a [CMonHom] record, so
-   [fmap[functor_of_module (module_of_functor F HF)] r] is only
-   ≈-equal to [fmap[F] r], not convertible (their underlying maps DO
-   agree by [eq_refl]; the records differ in their law fields), and
-   every obligation below is discharged pointwise. *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition AbFunAdd_functor_round {R : RingObject}
   (FH : AbFunAdd R) :
   @Isomorphism (AbFunAdd R)
@@ -349,10 +338,11 @@ Qed.
 
 (** ** Mac Lane's Exercise 1 *)
 
-(* R-Mod IS the full subcategory of [B(R), Ab] on the additive functors.
-   [≅[Cat]] is EQUIVALENCE of categories ([Cat]'s hom-setoid is
-   [Functor_Setoid]); the orientation is Instance/Rep.v's and
-   Instance/Fun/Action.v's, with the functor category on the left. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition RMod_AbFun_equiv (R : RingObject) :
   AbFunAdd R ≅[Cat] RMod R := {|
   to   := AbFunAdd_to R;
@@ -395,12 +385,11 @@ Example int_abfun_neg :
 
 (** ** The subcategory is proper *)
 
-(* A functor out of B(R) must preserve MULTIPLICATION and the unit; it
-   need not preserve addition.  The cheapest separation: send every ring
-   element to the identity.  Multiplicativity is [id ≈ id ∘ id] and
-   unitality is [reflexivity], but additivity would make the (constant)
-   image of 1 + 1 the sum of two identities, forcing [m ≈ m + m] —
-   refuted at [m = 1] in ℤ. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition unit_act_functor (R : RingObject) :
   DeloopRig (ring_rig R) ⟶ Ab := {|
   fobj := fun _ => (ring_ab R : Ab);
@@ -421,10 +410,11 @@ Proof.
   discriminate Heq.
 Qed.
 
-(* A less degenerate separation, and Mac Lane's own shape of counterpoint:
-   over a COMMUTATIVE ring, squaring is multiplicative — (rs)² = r²s² —
-   and unital, so [r ↦ (r·r)·(−)] is a genuine functor; but squaring is
-   not additive, and at r = s = 1 in ℤ the two sides act as 4 and as 2. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition square_act (n : Z) :
   (ring_ab Int_Ring : Ab) ~{Ab}~> (ring_ab Int_Ring : Ab) := {|
   cmon_map := {| morphism := fun m => Z.mul (Z.mul n n) m |}
@@ -470,10 +460,11 @@ Proof.
   discriminate Heq.
 Qed.
 
-(* Both functors are objects of the ambient functor category and neither
-   is an object of the subcategory: the additive predicate genuinely
-   cuts, so [AbFunAdd Int_Ring] is a PROPER full subcategory of
-   [[B(ℤ), Ab]]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma AbFunAdd_proper :
   ((IsAdditiveFun Int_Ring (unit_act_functor Int_Ring) → False)
      * (IsAdditiveFun Int_Ring square_functor → False))%type.

@@ -401,10 +401,11 @@ Proof.
            (fun j U HU => Hc j U HU) V HV).
 Qed.
 
-(* The underlying-set functor preserves the limit.  [Top_Forget] lands in
-   the lifted [Sets@{h hs}], where no [Adjunction] record joins it to the
-   discrete-space functor (Instance/Top/Forgetful.v's header), so the
-   mediator is built directly: the tuple of the legs. *)
+(*
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition sol_forget_med@{s o so h hs | o < so, o < h, h < hs +}
   (p : positive)
   (M : Cone (Top_Forget@{o h hs} ◯ CircleTower@{s h o} p)) :

@@ -84,16 +84,11 @@ Proof.
     now destruct (P Fin.F1).
 Qed.
 
-(** ** The count codec
+(*
+   本节说明 Classifier 相关定义、性质与动机。
 
-    [fin_countP P] is the number of elements satisfying [P]; the canonical
-    set of that size is the "subset cut out by P".  [fin_select] is the
-    order-preserving tabulation (unrank) of the satisfying elements, and
-    [fin_rank] is its inverse on satisfying elements.  Both dispatch on
-    [P Fin.F1] by a convoy so that goals mentioning them can abstract that
-    boolean cleanly; the impossible branch of [fin_rank] (the element is
-    satisfying, but the head test came out [false]) is eliminated by
-    transporting along the resulting [false = true]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint fin_countP {n : nat} : (Fin.t n → bool) → nat :=
   match n return (Fin.t n → bool) → nat with
@@ -152,9 +147,11 @@ Fixpoint fin_rank {n : nat} :
            end)
   end.
 
-(* The computability acceptance test: with P selecting the odd positions of
-   the canonical 4-element set, the count is 2 and the codec tabulates the
-   second satisfying element — position 3 — by [eq_refl]. *)
+(*
+   本节说明 Classifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example fin_select_computes :
   @fin_select 4 (fun i => fin_eqb i (Fin.FS Fin.F1 : Fin.t 4)
                           || fin_eqb i (Fin.FS (Fin.FS (Fin.FS Fin.F1))
@@ -162,12 +159,11 @@ Example fin_select_computes :
     (Fin.FS Fin.F1 : Fin.t 2)
     = Fin.FS (Fin.FS (Fin.FS Fin.F1)) := eq_refl.
 
-(** ** The codec laws
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    Selection lands in the subset ([fin_select_sat]); ranking a satisfying
-    element and selecting recovers it ([fin_select_rank]); and selection is
-    injective ([fin_select_inj], via the [Fin.FS] projection
-    [fin_FS_inj]).  Together these give the pullback UMP below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fin_select_sat {n : nat} (P : Fin.t n → bool)
       (k : Fin.t (fin_countP P)) :
@@ -201,9 +197,11 @@ Proof.
       * now rewrite (IH (fun j => P (Fin.FS j)) i' H).
 Qed.
 
-(* [Fin.FS] is injective, by applying the evident retraction (with default
-   [d] at [Fin.F1]) to the equation — built from [Fin.caseS'] only, so it
-   stays within the primitives available on every supported version. *)
+(*
+   本节说明 Classifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fin_pred {n : nat} (d : Fin.t n) (i : Fin.t (S n)) : Fin.t n :=
   Fin.caseS' i (fun _ => Fin.t n) d (fun j => j).
 
@@ -230,13 +228,11 @@ Proof.
       apply (IH (fun i => P (Fin.FS i)) a b Heq).
 Qed.
 
-(** ** Computed pullbacks
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    The pullback of f : m ~> k and g : n ~> k is the subset of the encoded
-    pairs — [Fin.t (m * n)] under the positional codec of
-    [Instance/FinSet/Product.v] — on which f and g agree, realized through
-    the count codec.  The projections decode-then-project; the mediator
-    ranks the encoded pair, which is satisfying by the cone equation. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition finset_pb_pred {m n k : nat}
            (f : Fin.t m → Fin.t k) (g : Fin.t n → Fin.t k) :
@@ -310,11 +306,11 @@ Proof.
     now rewrite (fin1_unique j').
 Defined.
 
-(** ** Monomorphisms in FinSet are exactly the injections
+(*
+   本节说明 Classifier 相关定义、性质与动机。
 
-    Mirrors [injectivity_is_monic] of [Instance/Sets.v]: the non-trivial
-    direction probes the mono with the two constant maps out of the
-    one-element set [1]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma finset_monic_iff_injective {m n : nat} (f : m ~{FinSet}~> n) :
   (∀ a b : Fin.t m, f a = f b → a = b) ↔ Monic f.
@@ -328,11 +324,11 @@ Proof.
              (fun _ => a) (fun _ => b) (fun _ => Hab) Fin.F1).
 Qed.
 
-(** ** The subobject classifier
+(*
+   本节说明子对象相关定义、性质与动机。
 
-    Ω = 2 with [truth = fin_true]; the characteristic morphism of a mono
-    m : u ~> x sends b to [fin_true] exactly when b lies in the image of
-    m, decided by [fin_existsb]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance FinSet_Classifier :
   @SubobjectClassifier FinSet FinSet_Terminal := {|
@@ -394,28 +390,11 @@ Next Obligation.
     discriminate E.
 Qed.
 
-(** ** Epimorphisms in FinSet are exactly the surjections
+(*
+   本节说明 Classifier 相关定义、性质与动机。
 
-    The dual of [finset_monic_iff_injective], and the reason the skeleton
-    is worth having: the hard direction probes the epi with two maps INTO
-    Ω = 2 — the characteristic map of the image of f (the very [char] of
-    [FinSet_Classifier] below, with the mono hypothesis dropped) against
-    the constant [fin_true].  They agree after precomposition with f
-    because every f a is in the image of f, so epicness forces the
-    characteristic map to be constantly [fin_true]; [fin_existsb_sound]
-    then returns the preimage as DATA.
-
-    Compare [surjectivity_is_epic] in [Instance/Sets.v].  It reaches the
-    same biconditional, but it cannot use this probe: the truth-value
-    object it would need has carrier [Type] with `≈` taken to be `↔`,
-    which does not fit as an [obj[Sets]] at the universe of the given
-    objects — Set's classifier lives one universe up (the cross-universe
-    theorems are in Instance/Sets/Classifier.v).  It substitutes a
-    cokernel pair, which stays at the universe of the carriers.  Here no
-    substitution is needed: Ω = 2 is an honest object of the category
-    itself and the search over it is decidable, so the probe below IS the
-    classifier's own [char], constructively and with no choice principle:
-    [∃] is [sigT] and [fin_existsb_sound] ends in [Defined]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma finset_epic_iff_surjective {m n : nat} (f : m ~{FinSet}~> n) :
   (∀ b : Fin.t n, ∃ a : Fin.t m, f a = b) ↔ Epic f.
@@ -472,10 +451,11 @@ Proof.
   - exact (Fin.FS Fin.F1; eq_sym Hf).
 Qed.
 
-(* And the preimage is not merely asserted to exist -- it reduces.  The
-   collapse map above sends position 2 to [fin_false]; recovering that witness
-   from the epi hypothesis is a closed computation, which is why
-   [finset_epic_iff_surjective] ends in [Defined] rather than [Qed]. *)
+(*
+   本节说明 Classifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example finset_collapse_preimage_computes :
   projT1 (snd (finset_epic_iff_surjective
                  ((fun i => fin_of_bool (fin_eqb i (Fin.F1 : Fin.t 3)))

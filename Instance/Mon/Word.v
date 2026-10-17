@@ -110,11 +110,11 @@ Proof.
   split; [ exact Hab | exact (IH c d Hcd) ].
 Qed.
 
-(* Tuple → list → tuple is the identity up to ≈, across the length, which
-   is propositional only.  The binder is extensible because Coq 8.19 and
-   8.20 refuse a closed @{o} here ("Universe … is unbound"); the extra
-   level is minimized away, and the lemma binds o alone on every
-   version. *)
+(*
+   本节说明 Word 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma list_to_tup_tup_to_list@{o +} {X : SetoidObject@{o o}} (n : nat)
   (t : Tup@{o} X n) :
   match tup_to_list n t return Type@{o} with

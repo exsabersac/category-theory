@@ -51,13 +51,11 @@ Context (P Q : C^op ⟶ Sets).
 Definition PshExp_obj (c : C) : Sets :=
   [[[C^op, Sets]]]( @product_obj _ PshCart (Curried_CoHom C c) P, Q ).
 
-(* Awodey's Q^P(h) = Hom(y h × 1_P, Q): precomposition with the
-   representable's action on h, crossed with the identity of P.  The
-   variance comes out on the nose with no transport, because
-   [Curried_CoHom C] is [Curried_Hom C^op] and its source is [(C^op)^op],
-   which is [C] definitionally: for [h : c ~{C^op}~> c'] the arrow
-   [fmap[Curried_CoHom C] h] runs from the representable at [c'] to the
-   representable at [c], which is the direction precomposition wants. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PshExp_fmap (c c' : C) (h : c ~{C^op}~> c') :
   PshExp_obj c ~{Sets}~> PshExp_obj c'.
 Proof.
@@ -202,9 +200,11 @@ Proof.
   unfold op; cat.
 Qed.
 
-(* Proposition 8.13 / Riehl (4.4.12), as an isomorphism of hom-setoids in
-   [Sets].  Only the two isomorphism laws are written: the two
-   respectfulness obligations are closed by the default tactic. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition presheaf_exp_iso :
   @Isomorphism Sets
     ([[[C^op, Sets]]]( @product_obj _ PshCart X P, Q ))
@@ -256,10 +256,11 @@ End NaturalX.
 
 (** ** D: Theorem 8.14, first clause *)
 
-(* The universe binders are load-bearing and the trailing [+] is
-   required; see the header.  [ump_exponents'] is the one written
-   obligation: its goal normalises [op id ∘ id] to [id] by
-   [fmap_respects] and then applies [fmap_id]. *)
+(*
+   本节说明 Exponential 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Functor_Category_Closed@{o h so +}
   (C : Category@{o h h}) :
   @Closed ([C^op, Sets@{h so}])
@@ -274,12 +275,11 @@ Next Obligation.
   exact (@fmap_id _ _ x _ c).
 Qed.
 
-(* Riehl's Set^C, the covariant reading of the same theorem: a [:=] with
-   no tactic and no transport, since [(C^op)^op] is [C].  Annotated like
-   the instance so that it is delivered at the same universes; written
-   unannotated it minimizes to [Category@{u0 u0 u0}] and is refused where
-   the instance is accepted (measured; the probe pins the annotated form
-   as a control at that very C). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Functor_Category_Closed_cov@{o h so +} (C : Category@{o h h}) :
   @Closed ([C, Sets@{h so}])
     (@Functor_Category_Cartesian C Sets@{h so} Sets_Cartesian) :=
@@ -353,9 +353,11 @@ Next Obligation.
   apply proper_morphism; split; simpl; [ reflexivity | assumption ].
 Qed.
 
-(* The [match] is forced: [obj[1]] is [poly_unit], which has no eta here,
-   so a component written as a plain function elaborates its second
-   projection at the wrong object and the definition is rejected. *)
+(*
+   本节说明 Exponential 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition one_from_comp
   (g : @exponent_obj Sets Sets_Cartesian Sets_Closed
          (fobj[P] ttt) (fobj[Q] ttt)) (d : obj[_1^op])

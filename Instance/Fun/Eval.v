@@ -28,10 +28,11 @@ Context {P : Category@{jo jh jh}} {X : Category@{co ch ch}}.
 
 (** ** The evaluation functor at a fixed object *)
 
-(* Mac Lane §V.3's E_c : [P, X] ⟶ X — objects to their value at p,
-   transformations to their component at p.  The same data as
-   Adjunction/Diagonal/Connected.v's [EvalAt] (measured, see the header);
-   declared here in the light home the issue asks for. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Eval (p : P) : [P, X] ⟶ X := {|
   fobj := fun H => H p;
   fmap := fun _ _ s => transform[s] p
@@ -39,11 +40,11 @@ Program Definition Eval (p : P) : [P, X] ⟶ X := {|
 
 (** ** The two-variable evaluation *)
 
-(* The bifunctor [P, X] ∏ P ⟶ X whose partial application at p is [Eval p].
-   The arrow action is in [Cat_Closed]'s order, [fmap[K] f ∘ transform[s] p]
-   (Instance/Fun/Eval/Cat.v shows the two agree at [eq_refl]); the other
-   order, [transform[s] q ∘ fmap[H] f], is the same arrow by naturality and
-   is the one Functor/Hom/Yoneda/Natural.v's [YoEval] uses. *)
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition EvalBi : ([P, X] ∏ P) ⟶ X := {|
   fobj := fun Hp => fst Hp (snd Hp);
   fmap := fun Hp Kq sf =>

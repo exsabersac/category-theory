@@ -27,179 +27,19 @@ Set Default Proof Using "All".
 
 (** * Homotopy, the homotopy category, and their pointed forms *)
 
-(* nLab:      https://ncatlab.org/nlab/show/homotopy+category
+(*
+   nLab:      https://ncatlab.org/nlab/show/homotopy+category
    nLab:      https://ncatlab.org/nlab/show/homotopy
    nLab:      https://ncatlab.org/nlab/show/pointed+topological+space
    Wikipedia: https://en.wikipedia.org/wiki/Homotopy_category
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.7, printed pp. 25-26 (PDF pp. 35-36) -- the two
-              constructions formalized here, [Toph] and [Toph_*], from the
-              roll-call of large categories that opens at printed p. 24
    Book:      Mac Lane, ibid., §II.8 "Quotient Categories", printed p. 51
-              (PDF p. 61) -- the remark that [Toph] IS a quotient of [Top]
-              by a congruence on its hom-sets, which is how it is built
    Book:      Riehl, "Category Theory in Context", §1.1 Exercise 1.1.iv,
-              printed p. 3 ff. (PDF p. 23 ff.)
 
-   Two continuous maps are homotopic when one can be deformed continuously
-   into the other; homotopy is an equivalence relation on each hom-set of
-   [Top] and is compatible with composition, so the quotient is a category
-   -- the homotopy category [Toph], where the arrows are deformation
-   classes.  The pointed forms keep a chosen point and deform only through
-   maps that fix it.
+   本节说明hom、等价相关定义、性质与动机。
 
-   Every claim below about what a printed source says is a paraphrase; no
-   book was opened for this file and nothing here quotes one.  The
-   printed/PDF page pairs come from the in-tree page maps
-   doc/plan/books/maclane/pagemap.md (whose offset over the printed range
-   7-53 is +10, and which is expressly NOT uniform across that book) and
-   doc/plan/books/riehl/pagemap.md (a uniform +20).
-
-   Contents:
-
-       Homotopy               a homotopy of two continuous maps, as data
-       homotopy_const/_sym
-         /_trans/_comp        the four congruence clauses
-       homotopic              the relation, at [HomRelT Top]
-       homotopy_congruence    it is a [HomCongruence]
-       Toph, TophProj         the quotient category and its projection
-       PointedTop, PointedMap
-         Top_pointed          Mac Lane's [Top_*]
-       BasedHomotopy          a homotopy constant at the basepoint
-       based_homotopy_congruence, Toph_pointed
-       homotopy_of_square     square arrows are homotopies of interval maps
-       interval_contraction   the straight-line contraction of [0,1]
-       HomotopyEquivalence    and its coincidence with [Toph]-isomorphism
-       interval_iso_point_in_Toph
-                              the interval IS the point in [Toph] ...
-       interval_not_iso_point_in_Top
-                              ... and is not, in [Top]
-
-   THE CYLINDER, AND WHY THERE IS NOT ONE.  A homotopy is classically a
-   continuous map out of the cylinder `X × [0,1]`, and this tree has no
-   such object to map out of: [Top] carries no products here (only
-   [Top_Terminal] and [Top_Initial] are instantiated, and Instance/Top.v's
-   own header scopes the remark that the product topology is the
-   categorical product to the mathematics at large, "none of it formalized
-   here").  Supplying the cylinder directly does not rescue the plan
-   either, and the obstruction is a universe obstruction rather than a
-   matter of labour.  Writing the product topology out -- W is open when
-   every `(x, t)` in it carries an open `U ∋ x` of X and a radius `r > 0`
-   with `U × B(t, r) ⊆ W` -- the condition existentially quantifies over an
-   OPEN of X, and the opens of X live one universe above its points,
-   whereas the [IsOpen] field of [TopSpace@{o}] must land at the universe
-   of the points.  Measured rather than assumed, with the carrier
-   `Cyl_pt X := X × Ipt`:
-
-       Cyl_pt X : Type@{o}                                    ACCEPTED
-       cyl_open X : (Cyl_pt X → Type@{o}) → Type@{o}          REJECTED
-       cyl_open X : (Cyl_pt X → Type@{o}) → Type@{o2}, o < o2 ACCEPTED
-
-   So the cylinder object exists, one universe up, as a [TopSpace@{o2}] --
-   an object of a DIFFERENT [Top] from the one X belongs to.  The
-   inclusions `X ~> Cyl X` are then not arrows of any single category, the
-   relation "there is a map out of the cylinder restricting to f and g"
-   is not a relation on a hom-set of [Top], and it could not be a
-   [HomRelT Top] at all.  This is the same stratification Top/Forgetful.v
-   documents for the underlying-set functor, met here from the other side.
-
-   The packaging taken instead carries the certificate directly: a
-   [Homotopy] is a function `X → Ipt → Y` respecting `≈`, with the joint
-   continuity condition stated as the rectangle condition it would have
-   satisfied, plus the two endpoint equations.  Everything then stays in
-   one [Top].  The cost is that cylinder functoriality is not available as
-   a lemma, which is why [cong_comp] below is the DIAGONAL homotopy rather
-   than the textbook two-step composite; the diagonal needs no cylinder,
-   its certificate being the two given certificates chained through each
-   other, and it is the shorter proof besides.  For maps out of the
-   interval the cylinder does exist -- it is the unit square of
-   Instance/Top/Interval.v -- and [homotopy_of_square] is the bridge, which
-   is how the witnesses at the end of the file are obtained.
-
-   HOMOTOPY IS DATA.  [HomRelT] (Construction/Quotient.v) is the
-   [Type]-valued relation family, so [homotopic] carries the chosen
-   homotopy rather than its bare existence, and no truncation is applied
-   anywhere.  This settles the presentational point of Riehl's Exercise
-   1.1.iv in the strong direction: the relation whose quotient is taken is
-   at the level of witnesses, and reflexivity, symmetry, transitivity and
-   the composition clause are CONSTRUCTIONS on those witnesses --
-   respectively the constant track, the reversed track, the concatenated
-   track and the diagonal -- not proofs that something exists.
-
-   THE CONGRUENCE IS NAMED, AND Toph IS THE QUOTIENT.  Mac Lane's §II.8
-   remark is formalized as such: [homotopy_congruence] is a
-   [HomCongruence homotopic] instance and [Toph] is literally
-   `Quotient Top homotopic`, not a hand-built category that happens to
-   look like one.  Everything the quotient machinery already proves is
-   thereby inherited rather than restated -- the category laws, the
-   projection functor with its fullness ([TophProj_Full]) and its
-   identity-on-objects action, and the descent of isomorphisms.  The
-   coincidence of homotopy equivalences with the isomorphisms of [Toph]
-   needs no proof at all for the same reason: the composites of an
-   isomorphism of the quotient ARE homotopies, by the definition of the
-   quotient's hom-setoid.
-
-   BASED MEANS BASED THROUGHOUT.  A based homotopy is not merely a
-   homotopy between two based maps: its whole track at the basepoint must
-   be the basepoint, `H(x₀, t) ≈ y₀` for EVERY t, which is the field
-   [bhtpy_base].  The weaker reading -- endpoints based -- is already
-   implied by the two endpoint equations of [Homotopy] and would not give
-   a congruence on [Top_*] in the sense the classes of based maps need.
-   Each of the four clauses is checked at the basepoint: constant,
-   reversed, concatenated (by cases on which half of the time interval t
-   falls in) and diagonal.
-
-   WHAT IS NOT HERE.  The standard example of a [Toph]-arrow that is not
-   monic despite being monic in [Top] -- the inclusion of the circle in
-   the disc, non-monic in [Toph] because the disc is contractible -- is
-   DEFERRED: it needs the circle and the disc as spaces and a genuine
-   piece of algebraic topology to see that the two maps it separates are
-   not homotopic.  Neither space is in this tree.  CORRECTION (#410):
-   the circle now is, Instance/Top/Circle.v's [Circle], R/Z over the
-   standard library's constructive Cauchy reals [CReal] rather than
-   over the classical [R] this file's paths and homotopies use; the
-   disc still is not, and the example stays deferred.  What is delivered
-   instead is the contractibility of the interval, which is the same
-   phenomenon at a shape where the tree can prove it: `I_Top` and
-   `Point_Top` are isomorphic in [Toph] ([interval_iso_point_in_Toph]) and
-   are provably not isomorphic in [Top] ([interval_not_iso_point_in_Top]),
-   the two categories having the same objects and the same arrows.  Also
-   not here: any cylinder functor, any comparison of [Toph] with the
-   fundamental groupoid of Instance/Top/FundamentalGroupoid.v (whose
-   [ArrowHomotopy] is homotopy REL ENDPOINTS of maps out of the interval,
-   a different and finer relation than the free homotopy of this file),
-   and the homotopy-extension property.
-
-   THE AXIOM FOOTPRINT.  No axiom is declared here, and no classical
-   principle is invoked beyond what the standard library's reals already
-   spend through Instance/Top/Interval.v's kit.  Measured per constant
-   with [Print Assumptions], not sampled from the headlines: over the 69
-   constants the `.glob` records as def/prf/proj/inst entries, the four
-   record types it records as `rec` entries, and the four [Program]
-   obligations of [Top_pointed] that genuinely appear in no `.glob`
-   entry of any kind -- 77 in all -- the split is
-
-        17 closed under the global context: the whole [Top_pointed] spine
-           ([PointedTop] and [PointedMap] with their four projections,
-           the hom-setoid and its [Equivalence], [ptop_id], [ptop_compose]
-           and its respectfulness, [Top_pointed] itself and its four
-           obligations) together with [top_const]
-        60 carry exactly [ClassicalDedekindReals.sig_forall_dec] and
-           [FunctionalExtensionality.functional_extensionality_dep], the
-           two the standard library's own construction of R carries
-         0 carry [ClassicalDedekindReals.sig_not_dec]
-
-   The four obligations were measured DIRECTLY:
-   [Print Assumptions Category.Instance.Top.Homotopy.Top_pointed_obligation_1]
-   (and _2 .. _4, under the fully qualified names -- the short names do
-   not resolve after Import) each reports closed under the global
-   context.
-
-   The third axiom is the one picked up by anything routed through the
-   least-upper-bound property; nothing here is, the interval entering only
-   as a parameter domain.  That [Top_pointed] is closed while [Toph] is
-   not is exactly right and worth reading off: the category of pointed
-   spaces mentions no interval, and only the homotopy relation does. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Homotopy of continuous maps *)
 
@@ -282,11 +122,11 @@ Context {f g h : X ~{Top}~> Y}.
 Context (H1 : Homotopy f g).
 Context (H2 : Homotopy g h).
 
-(* The concatenated track: the first homotopy at double speed on the first
-   half of the time interval, the second on the other half.  Both halves are
-   defined on ALL of the interval -- [I_dbl] and [I_dbl'] are clamped, not
-   partial -- so nothing here needs a subspace, exactly as in
-   Instance/Top/Interval.v's [paste_arrow]. *)
+(*
+   本节说明 Homotopy 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition htrans_fun (x : X) (t : Ipt) : Y :=
   if Rle_dec (ival t) (1/2)
   then htpy_map H1 x (I_dbl t)
@@ -339,12 +179,11 @@ Proof.
     rewrite !I_dbl'_eval, Ht; reflexivity.
 Qed.
 
-(* Joint continuity of the concatenation.  This is the pasting argument of
-   [paste_open] redone one level down, on certificates rather than on a
-   domain that is a ball space: away from the seam the rectangle of the
-   relevant half is shrunk so as to stay on its own side, and AT the seam
-   both rectangles are available -- the base opens are intersected and the
-   two radii halved -- because the two halves agree there. *)
+(*
+   本节说明 Homotopy 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma htrans_cont (V : Y → Type) (HV : IsOpen Y V) (x : X) (t : Ipt) :
   V (htrans_fun x t) →
   { r : R & ((0 < r) ∧
@@ -443,12 +282,11 @@ Context {g g' : X ~{Top}~> Y}.
 Context (H1 : Homotopy f f').
 Context (H2 : Homotopy g g').
 
-(* The DIAGONAL track: deform the inner map and the outer one at the same
-   time.  The two-step route -- first [f ∘ g ~ f ∘ g'] by postcomposition,
-   then [f ∘ g' ~ f' ∘ g'] by precomposition, then concatenate -- would need
-   the cylinder functoriality that the packaging below deliberately does not
-   build; the diagonal needs neither, and its certificate is exactly the two
-   given certificates chained through each other. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hcomp_fun (x : X) (t : Ipt) : Z :=
   htpy_map H1 (htpy_map H2 x t) t.
 
@@ -537,14 +375,11 @@ Record PointedMap (X Y : PointedTop) := {
 Arguments ptop_map {X Y} _.
 Arguments ptop_preserves {X Y} _.
 
-(* The hom-setoid is Top's own, read on the underlying maps.  Stating it
-   again pointwise would place the relation at the universe of the POINTS'
-   equality, one step below where [Category] needs a hom-setoid to live
-   (Instance/Top.v annotates [ContinuousMorphism_equiv] for exactly
-   this reason); inheriting the donor's setoid inherits its placement.  It
-   also makes `p ≈ q` in [Top_pointed] definitionally `ptop_map p ≈ ptop_map
-   q` in [Top], which is what lets the based constructions below hand their
-   hypothesis straight to the unbased ones. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma PointedMap_equiv_Equivalence {X Y : PointedTop} :
   Equivalence (fun p q : PointedMap X Y => ptop_map p ≈ ptop_map q).
 Proof.
@@ -604,10 +439,11 @@ Program Definition Top_pointed : Category := {|
 
 (** ** Based homotopy *)
 
-(* A based homotopy is a homotopy whose whole TRACK at the basepoint is the
-   basepoint -- not merely one whose endpoints are based maps, which the two
-   endpoint equations of [Homotopy] already give.  This is the condition that
-   makes the based classes compose. *)
+(*
+   本节说明 Homotopy 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record BasedHomotopy {X Y : PointedTop} (p q : X ~{Top_pointed}~> Y) := {
   bhtpy :> Homotopy (ptop_map p) (ptop_map q);
   bhtpy_base : ∀ t : Ipt, htpy_map bhtpy (ptop_pt X) t ≈ ptop_pt Y
@@ -693,9 +529,11 @@ Definition top_const (X Y : TopSpace) (b : Y) : X ~{Top}~> Y :=
     (const_morphism (top_carrier X) (top_carrier Y) b)
     (fun U _ => open_const X (U b)).
 
-(* Balls are open in the topology they generate.  Stated here rather than in
-   Instance/Top/Interval.v because it is this file that needs it: the base
-   open of a rectangle over the interval is a ball. *)
+(*
+   本节说明 Homotopy 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ball_open_ball (A : BallSpace) (x : A) (d : R) :
   ball_open A (fun y => bdist x y < d).
 Proof.
@@ -707,21 +545,21 @@ Proof.
     lra.
 Qed.
 
-(* The bridge to the tree's existing machinery.  For maps OUT OF THE
-   INTERVAL the cylinder is the unit square, which Instance/Top/Interval.v
-   already builds as a ball space; so an arrow of the square with the two
-   edge conditions is a homotopy in the sense of this file, and the
-   certificate is read off from the sup-metric ball the square's own
-   continuity supplies -- its base leg is a ball of the interval, open by
-   [ball_open_ball], and its time leg is the same radius. *)
+(*
+   本节说明 Homotopy 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition homotopy_of_square {X : TopSpace} (F : Sq_Top ~{Top}~> X)
            (f g : I_Top ~{Top}~> X)
            (Hbot : ∀ t : Ipt, F (sq_pt t I_zero) ≈ f t)
            (Htop : ∀ t : Ipt, F (sq_pt t I_one) ≈ g t) : Homotopy f g.
 Proof.
-  (* the constructor is applied explicitly: with a record literal the field
-     is elaborated before the domain space is known, and the domain here is
-     [I_Top], whose points are [Ipt] only up to unfolding *)
+  (*
+   本节说明 Homotopy 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   unshelve refine (@Build_Homotopy I_Top X f g (fun x t => F (sq_pt x t))
                      _ _ _ _).
   - intros x x' t t' Hx Ht.
@@ -790,9 +628,11 @@ Proof.
   lra.
 Qed.
 
-(* So the projection genuinely identifies: two arrows Top keeps apart are one
-   arrow of Toph.  This is the "arrows are not functions" moral of the
-   homotopy category, machine-checked rather than asserted. *)
+(*
+   本节说明 Homotopy 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Toph_identifies_id_and_const :
   @equiv _ (@homset Toph I_Top I_Top)
     (fmap[TophProj] (@id Top I_Top)) (fmap[TophProj] I_const_zero).
@@ -847,12 +687,11 @@ Proof. exact interval_based_contraction. Qed.
 
 (** ** Homotopy equivalences are the isomorphisms of Toph *)
 
-(* This is what the quotient is FOR: a map with a homotopy inverse is not
-   invertible in [Top], and becomes invertible in [Toph].  Both directions
-   are repackagings -- the composites of an isomorphism of the quotient ARE
-   homotopies, by the definition of the quotient's hom-setoid -- which is
-   the point: nothing has to be proved because [Toph] was built as the
-   quotient rather than by hand. *)
+(*
+   本节说明hom、同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition HomotopyEquivalence {X Y : TopSpace} (f : X ~{Top}~> Y) : Type :=
   { g : Y ~{Top}~> X &
     (homotopic Y Y (f ∘ g) (@id Top Y) ∧
@@ -867,11 +706,11 @@ Definition Toph_iso_homotopy_equivalence {X Y : TopSpace} (i : X ≅[Toph] Y) :
   HomotopyEquivalence (to i) :=
   (from i; (iso_to_from i, iso_from_to i)).
 
-(* The two passages are mutually inverse ON THE NOSE -- both round
-   trips are Leibniz [eq_refl]-level, so "homotopy equivalences ARE the
-   isomorphisms of Toph" is a genuine bijection, not merely a pair of
-   maps.  ([eq] on these sigma/record values is the convertibility
-   exception: both sides are the same term after destructuring.) *)
+(*
+   本节说明等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example homotopy_equivalence_round {X Y : TopSpace}
         (f : X ~{Top}~> Y) (E : HomotopyEquivalence f) :
   Toph_iso_homotopy_equivalence (homotopy_equivalence_Toph_iso f E) = E.

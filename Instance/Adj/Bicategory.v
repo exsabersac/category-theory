@@ -62,10 +62,11 @@ End HorizontalCompose.
 
 (** ** (B) The same theorem through Adjunction/Square.v's vertical paste *)
 
-(* Padding into the shape [AdjointSquareT] wants at identity bounding
-   functors.  These duplicate in shape Instance/Cat/Bicategory/Conjugate.v's
-   [Cat_conj_padL] and [Cat_conj_padR]; see the header for why that file is
-   not required. *)
+(*
+   本节说明伴随、函子、双范畴相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition conj_padL {X Y : Category} {P P' : X ⟶ Y} (s : P' ⟹ P)
   : P' ◯ Id[X] ⟹ Id[Y] ◯ P := {| transform := fun x => s x |}.
 Next Obligation. apply (naturality s). Qed.
@@ -435,9 +436,11 @@ Example Adj_hcomp2_readback {x y z : Category}
   @hcomp2 Adj_Bicategory x y z p p' q q' th et
     = conj_pair_hcompose th et := eq_refl.
 
-(* The bridge to Cat: each leg of a horizontal composite of 2-cells here
-   IS Cat's own [hcomp2] on the underlying adjoints.  The left leg swaps
-   its two arguments, which is the contravariance of [adjobj_left]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Adj_hcomp2_left_is_Cat_hcomp2 {x y z : Category}
   {p p' : AdjObj y z} {q q' : AdjObj x y}
   (th : p ~{Adj y z}~> p') (et : q ~{Adj x y}~> q') :

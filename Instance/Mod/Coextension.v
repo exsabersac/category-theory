@@ -427,17 +427,11 @@ Proof.
   discriminate.
 Qed.
 
-(** ** Probes
+(*
+   本节说明（余）端、（余）强度相关定义、性质与动机。
 
-    Every strength claim the header makes is pinned here, each negative
-    beside an APPLIED positive control.  Each was stripped of its [Fail]
-    and compiled alone, and its WHOLE error read: negatives 1-4 and 7
-    end in [cannot unify] (CONVERSION); negatives 5 and 6 are plain type
-    mismatches with no [cannot unify] and no universe clause (TYPING);
-    negatives 8-14 end in
-    [universe inconsistency: Cannot enforce rc = ra] (FORMABILITY).
-    Fifteen [Fail] commands in all: fourteen guarded negatives and one
-    scope-free instrument check. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CoexProbeStrength.
 
@@ -478,10 +472,11 @@ Example coex_ctrl_handedness :
   cmon_map (coex_act R A r f) s
     = cmon_map f (rig_mul (ring_rig R) s r) := eq_refl.
 
-(* NEGATIVE 3 (CONVERSION).  The OTHER handedness — translation on the
-   left, (r · f)(s) = f (r s) — is a different map.  Over a
-   non-commutative ring the two genuinely differ, and it is the built
-   one that gives a LEFT module. *)
+(*
+   本节说明 Coextension 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example coex_probe_handedness_swapped :
   cmon_map (coex_act R A r f) s
     = cmon_map f (rig_mul (ring_rig R) r s) := eq_refl.
@@ -493,11 +488,11 @@ Example coex_ctrl_distr_l_pointwise :
     = cmon_map (cmon_plus (coex_group R A)
                   (coex_act R A r f) (coex_act R A r f')) s := eq_refl.
 
-(* NEGATIVE 4 (CONVERSION).  The two RECORDS are nevertheless distinct:
-   [coex_act] is a [Program Definition], so each side carries its own
-   opaque [cmon_map_zero] and [cmon_map_plus] obligations, built at
-   different arguments.  So what separates them is exactly the law
-   fields, the data having been shown to agree just above. *)
+(*
+   本节说明 Coextension 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example coex_probe_distr_l_record :
   coex_act R A r (cmon_plus (coex_group R A) f f')
     = cmon_plus (coex_group R A)
@@ -506,10 +501,11 @@ Fail Example coex_probe_distr_l_record :
 (* CONTROL for negative 5: the counit IS an arrow of [Ab]. *)
 Check (coex_counit R A : rm_ab (CoextObj R A) ~{Ab}~> A).
 
-(* NEGATIVE 5 (TYPING).  It is NOT an arrow of [RMod R] — [A] is an
-   [AbObject] and there is no coercion into [obj[RMod R]].  This is the
-   shape of the adjunction rather than an accident: for a RIGHT adjoint
-   the counit lives upstairs, in [Ab]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (coex_counit R A : CoextObj R A ~{RMod R}~> A).
 
 (* CONTROL for negative 6: the adjunction as delivered. *)
@@ -524,10 +520,11 @@ End CoexProbeStrength.
 (* CONTROL for negative 7: the comparison map out exists and computes. *)
 Check (cmon_map coex_int_eval (coex_int_mul 3)).
 
-(* NEGATIVE 7 (CONVERSION).  Hom(ℤ, ℤ) is NOT ℤ on the nose — the
-   carriers are [AbHom (ring_ab Int_Ring) (ring_ab Int_Ring)] and [Z] —
-   so [coex_int_muls_distinct] is a statement about a genuinely
-   constructed object and not about ℤ in disguise. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example coex_probe_int_strict : CoextInt = Int_RMod := eq_refl.
 
 Section CoexProbeUniverses.
@@ -537,11 +534,11 @@ Constraint ra < rc.
 
 Context (Ru : RingObject@{rc ra rb}) (Au Bu : AbObject).
 
-(* CONTROLS.  With the ring's FIRST and THIRD universes declared strictly
-   apart, all of these are formable, each APPLIED to the argument that
-   carries the levels — so the identification below is neither the module
-   category's, nor [ring_ab]'s, nor the forgetful functor's, nor
-   [hom_ab]'s, nor the functor TYPE's. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (RMod Ru).
 Check (ring_ab Ru).
 Check (RMod_Forget_Ab Ru).
@@ -550,11 +547,11 @@ Check (Ab ⟶ RMod Ru).
 Check (Ring_RMod Ru).
 Check (obj[RMod Ru]).
 
-(* NEGATIVE 8 (FORMABILITY).  THE DONOR, and it is neither this file's
-   nor [Ab]-the-category's: the wall is met already at [AbHom], i.e. the
-   moment a ring's additive group is read as the SOURCE of a
-   homomorphism of abelian groups.  That is where [coex_group] begins,
-   and everything below inherits it. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (AbHom (ring_ab Ru) Au).
 
 (* NEGATIVE 9 (FORMABILITY).  The same wall met the other way round. *)
@@ -566,11 +563,11 @@ Fail Check (coex_act Ru Au).
 (* NEGATIVE 11 (FORMABILITY).  Hence the carrier. *)
 Fail Check (coex_group Ru Au).
 
-(* NEGATIVE 12 (FORMABILITY).  A SECOND, INDEPENDENT donor:
-   Instance/Mod.v's own [Ring_RMod] is rejected at the very same levels
-   with the very same message, and it mentions neither [Ab] nor this
-   file.  So the identification would be met here even if the abelian
-   side were repaired. *)
+(*
+   本节说明 Coextension 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Ring_RMod Ru : obj[RMod Ru]).
 
 (* NEGATIVE 13 (FORMABILITY).  Hence the functor. *)

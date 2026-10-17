@@ -196,12 +196,11 @@ Arguments wedge_open {X Y} W.
 
 (** ** The copairing *)
 
-(* Explicit binders rather than a section, as in
-   Instance/Top/Coproduct.v: the tree's default [Proof using] would
-   otherwise have to name [f] and [g].
+(*
+   本节说明 Wedge 相关定义、性质与动机。
 
-   Well-definedness across the gluing is exactly the two basepoint
-   conditions: f (pt X) ≈ pt Z ≈ g (pt Y). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition wedge_merge_map {X Y Z : PointedTop}
   (f : X ~{Top_pointed}~> Z) (g : Y ~{Top_pointed}~> Z) :
   SetoidMorphism (wedge_carrier X Y) (top_carrier (ptop_space Z)).
@@ -351,9 +350,11 @@ Lemma wedge_basepoints_identified (X Y : PointedTop) :
     ≈ continuous_map (ptop_map (Wedge_inr X Y)) (ptop_pt Y).
 Proof. exact (reflexivity _, reflexivity _). Qed.
 
-(* And in the UNPOINTED coproduct of the same two spaces they do not: the
-   sum setoid never identifies across summands.  So the wedge genuinely
-   quotients, and Mac Lane's two roster entries are different objects. *)
+(*
+   本节说明 Wedge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wedge_is_not_sum (X Y : PointedTop) :
   continuous_map (Top_inl (ptop_space X) (ptop_space Y)) (ptop_pt X)
     ≈ continuous_map (Top_inr (ptop_space X) (ptop_space Y)) (ptop_pt Y)

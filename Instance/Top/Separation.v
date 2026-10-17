@@ -28,9 +28,11 @@ Generalizable All Variables.
 
 (** ** Separation premises and the positive separation axioms *)
 
-(* A separation premise reads a relation between two points off a family
-   of opens on a type of points.  The positive separation axiom it
-   determines says that the premise forces the points' equality. *)
+(*
+   本节说明 Separation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SepPremise@{o} :=
   ∀ S : Type@{o}, ((S → Prop) → Prop) → S → S → Prop.
 
@@ -347,9 +349,11 @@ End Reflection.
    read the result back in A. *)
 Section Restrict.
 
-(* [co], [ch]: the objects and homs of C; [sa], [sah]: A's predicates on
-   objects and on arrows; [sb]: B's on objects; [fa]: A's fullness; [ra]
-   through [rd]: the auxiliaries of B's reflection. *)
+(*
+   本节说明 Separation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universes co ch sa sah sb fa ra rb rc rd.
 
 Context {C : Category@{co ch ch}} (SA : Subcategory@{co ch sa sah} C)

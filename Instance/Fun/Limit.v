@@ -69,9 +69,11 @@ Qed.
 
 (** ** The arrow part: the mediator between adjacent pointwise limits *)
 
-(* An arrow f : p ~> q of P turns the limit at p into a cone over the
-   diagram evaluated at q, with legs fmap[D j] f after the legs at p;
-   coherence is the naturality of fmap[D] g followed by cone coherence. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition plim_cone_at {p q : P} (f : p ~{P}~> q) :
   Cone (Eval q ◯ D) := {|
   vertex_obj := plim_obj p;
@@ -225,11 +227,11 @@ End Pointwise.
 
 (** ** Corollary 1: [P, X] has the limits X has, and is complete when X is *)
 
-(* Both corollaries are annotated at the DEFINITION: written bare, they
-   minimize P's object universe down onto its hom universe (measured; the
-   probe pins the unannotated form's refusal at a strictly smaller object
-   level and the annotated form's acceptance).  The [+] takes in the two
-   levels [Functor_Category_pointwise_limit] leaks. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Fun_HasLimitsOfShape@{jo jh co ch io u u0 u1 u2 u3 +}
   {J : Category@{io ch ch}} {P : Category@{jo jh jh}} {X : Category@{co ch ch}}
   (LX : ∀ F : J ⟶ X, Limit@{u io ch co} F) :

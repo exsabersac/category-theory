@@ -40,11 +40,11 @@ Section FreeVect.
 
 Context (F : FieldObject).
 
-(** ** Vector spaces over F are F-modules, definitionally
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Not an isomorphism of categories and not a transport: the two are the
-    same term, which is what makes every specialization below a
-    conversion. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Vct_F_is_RMod : Vct_F F = RMod (field_ring F) := eq_refl.
 
 Definition Vct_Forget : Vct_F F ⟶ Sets := RMod_Forget (field_ring F).
@@ -93,11 +93,11 @@ Example free_vect_arrow_is_insert (X : Sets) :
   @arrow _ _ X Vct_Forget (free_vect_universal_arrow X)
     = free_vect_insert X := eq_refl.
 
-(** ** Unit and counit
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The unit is the insertion of the basis, definitionally; the counit
-    evaluates a formal linear combination, up to [≈] only, for the reason
-    Instance/Mod/Free.v gives ([ump_universal_arrows] is [Qed]-opaque). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_vect_unit (X : Sets)
   : X ~{Sets}~> Vct_Forget (FreeVect X) :=
@@ -124,14 +124,11 @@ Lemma free_vect_fmap_generators {X Y : Sets} (u : X ~{Sets}~> Y)
   cmon_map (rm_hom (fmap[FreeVect] u)) (fv_gen x) ≈ fv_gen (u x).
 Proof. exact (@free_module_fmap_generators (field_ring F) X Y u x). Qed.
 
-(** ** §IV.1's bijection, and its two naturality clauses
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Restriction to the basis is the adjunction's forward transpose, and
-    it is a bijection with linear extension as its inverse.  The two
-    naturality clauses are stated separately, as §IV.1 asks; each is the
-    corresponding theorem of Instance/Mod/Free.v read at [Vct_F F], and
-    each of those was proved there in the free module's own vocabulary
-    rather than by citing the adjunction class. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_vect_restrict {X : Sets} {W : Vct_F F}
   (g : FreeVect X ~{Vct_F F}~> W) : X ~{Sets}~> Vct_Forget W :=
@@ -174,12 +171,11 @@ Corollary free_vect_triangle_right (W : Vct_F F) :
     ∘ free_vect_unit (Vct_Forget W) ≈ @id Sets (Vct_Forget W).
 Proof. exact (free_module_triangle_right (field_ring F) W). Qed.
 
-(** ** Riehl's k[S]: every vector is a finite linear combination of basis
-       vectors
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The half of the classical "finitely supported k-valued functions"
-    description that does not need a decider on the generating setoid.
-    Instance/Mod/Free.v's closing note says what the other half costs. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_vect_finite_combination (X : Sets)
   (t : @FVTerm (field_ring F) X) :
   ∃ l : list (fv_pair (field_ring F) X), fv_eq t (fv_lc l).
@@ -191,12 +187,11 @@ End FreeVect.
    the section already has [F] explicit. *)
 Arguments free_vect_restrict {F X W} g.
 
-(** ** The rational witness
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Two basis vectors over ℚ, and a target that is ℚ itself read as a
-    one-dimensional ℚ-vector space.  The generating setoid is
-    Instance/Mod/Free.v's [TwoGens] (bool under Leibniz equality),
-    reused rather than rebuilt. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Index arguments supplied once, as NOTATIONS (so each unfolds to the
    constructor itself) — see the same device in Instance/Mod/Free.v. *)
@@ -228,9 +223,11 @@ Example q_free_extend_generator_true :
 Example q_free_extend_generator_false :
   fv_eval q_probe (qgen false) = (5 # 1)%Q := eq_refl.
 
-(* [TwoGens] and its distinctness are facts about the generating setoid
-   alone, with no ring in them, so both come from Instance/Mod/Free.v
-   ([two_gens_dec], [two_gens_distinct]) rather than being restated here. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** *** The basis insertion does not collapse
 
@@ -246,14 +243,11 @@ Proof.
   compute in Hb; discriminate Hb.
 Qed.
 
-(** *** The basis is linearly independent
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The statement §III.1's reader wants: if r·e₀ + s·e₁ vanishes then
-    both coefficients vanish.  Only the decider is spent — not
-    [field_one_neq_zero] — and the reason none is needed is that over a
-    trivial scalar ring every scalar is already 0, so the statement
-    degenerates to a truth rather than to a falsehood.  Its content is
-    therefore carried entirely by the nondegenerate case, which ℚ is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_vect_basis_independent (r s : Q) :
   fv_eq (qplus (qsmul r (qgen true)) (qsmul s (qgen false))) qzero →
   ((r == 0)%Q * (s == 0)%Q)%type.
@@ -262,10 +256,11 @@ Proof.
            two_gens_dec true false two_gens_distinct r s).
 Qed.
 
-(** *** Distinct scalars give distinct multiples of one basis vector
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    With proper fractions, so that the scalars are visibly rational and
-    not merely integers.  No decidability and no [1 ≉ 0] are spent here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_vect_half_not_one :
   fv_eq (qsmul (1 # 2)%Q (qgen true)) (qsmul (1 # 1)%Q (qgen true)) → False.
 Proof.

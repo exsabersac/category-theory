@@ -33,13 +33,11 @@ Record MonotoneFun := {
   mono_pres : ∀ x y, R x y → S (mono_map x) (mono_map y)
 }.
 
-(* The thin-category smart constructor: BECAUSE the target is a proset —
-   every hom-setoid a subsingleton with the all-True equivalence — the
-   functor laws cost nothing.  This is Seven Sketches §3.3.2's "the
-   functor laws are automatic in a thin category", operationalized.
-   The file sets [Obligation Tactic := idtac] (Pos.v's idiom), so the
-   three laws are discharged explicitly: each is an equation between
-   parallel morphisms in a thin target, hence [I]. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Functor_of_monotone (f : MonotoneFun) :
   Proset P ⟶ Proset Q := {|
   fobj := mono_map f;
@@ -110,10 +108,11 @@ Example Seventeen_TwentyFour_Proset_bot :
 Example Seventeen_TwentyFour_Proset_top :
   Seventeen_TwentyFour_Proset true = 24%nat := eq_refl.
 
-(* The same map read out of the library's walking arrow [_2] —
-   hand-built, since [_2] is not presented as a [Proset] (its homs are
-   an inductive type compared by strict equality), so it sits outside
-   the correspondence's domain. *)
+(*
+   本节说明 Monotone 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Seventeen_TwentyFour : _2 ⟶ LessThanEqualTo_Category := {|
   fobj := fun x => match x with TwoX => 17%nat | TwoY => 24%nat end;
   fmap := fun x y f => _
@@ -142,13 +141,11 @@ Example Seventeen_TwentyFour_top : Seventeen_TwentyFour TwoY = 24%nat
 Definition nondecreasing (f : nat → nat) : Type :=
   ∀ m n : nat, (m <= n)%nat → (f m <= f n)%nat.
 
-(* The pair is built with the family and both component types
-   explicit: [x ~> y] in [LessThanEqualTo_Category] IS [x <= y] and
-   its objects ARE [nat], but Coq 8.19/8.20's unifier declines to
-   unfold the [hom] and [obj] projections inside the evar problems
-   that infer a sigma pair's parts, while ascriptions route the same
-   identifications through ordinary conversion, which every supported
-   version performs. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition nondecreasing_of_endo
   (F : LessThanEqualTo_Category ⟶ LessThanEqualTo_Category) :
   { f : nat → nat & nondecreasing f } :=
@@ -167,9 +164,11 @@ Example nondecreasing_round (f : { f : nat → nat & nondecreasing f }) :
 
 (** ** Example 61: the tree of life, by generators *)
 
-(* Five classification terms: a tiny fragment of the tree of life.
-   The GENERATING edges point from the more specific to the more
-   general term; the preorder is their reflexive-transitive closure. *)
+(*
+   本节说明 Monotone 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Taxon : Set := Life | Animal | Plant | Mammal | Bird.
 
 Inductive taxon_edge : Taxon → Taxon → Prop :=

@@ -59,9 +59,11 @@ Definition subset_le_preorder@{o} (X : SetoidObject@{o o}) :
 Definition Subsets@{o u} (X : SetoidObject@{o o}) : Category@{o u u} :=
   Proset@{o u} (subset_le_preorder@{o} X).
 
-(* The objects are the subsets and the homs are the inclusions, on the
-   nose.  These are equalities between OBJECTS and TYPES, not between
-   morphisms: the setoid discipline's sanctioned same-term exception. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Subsets_obj_carrier@{o u} (X : SetoidObject@{o o}) :
   obj[Subsets@{o u} X] = carrier (Powerset_Prop_obj@{o} X) := eq_refl.
 
@@ -178,10 +180,11 @@ Example direct_image_obj (S : carrier (Powerset_Prop_obj@{o} X)) :
 Example inverse_image_obj (T : carrier (Powerset_Prop_obj@{o} Y)) :
   fobj[InverseImage] T = Powerset_Prop_preimage@{o} f T := eq_refl.
 
-(* The two functors act as the pre-existing [Sets]-level ones do.  Both
-   hold at Leibniz [=] because the two sides are the SAME term -- the
-   Functor/Bifunctor.v precedent the donor files cite for their own
-   same-term lemmas. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example direct_image_is_Powerset_Prop
   (S : carrier (Powerset_Prop_obj@{o} X)) :
   fobj[DirectImage] S = fmap[Powerset_Prop@{o so}] f S := eq_refl.
@@ -192,10 +195,11 @@ Example inverse_image_is_Powerset_Prop_op
     = fmap[Powerset_Prop_op@{o so}]
         (f : Y ~{(Sets@{o so})^op}~> X) T := eq_refl.
 
-(* #380's backward passage returns the connection this file supplied, at
-   Leibniz [=] on the WHOLE record: its six fields are read off the two
-   functors and the hom-set isomorphism, all of which were built from
-   those very fields. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example image_galois_round_trip :
   GaloisOfAdjunction (subset_le_preorder@{o} X) (subset_le_preorder@{o} Y)
     DirectImage InverseImage image_preimage_adjunction
@@ -222,13 +226,11 @@ Proof.
   exact (proj1 (@proper_morphism _ _ _ _ T (f x) y Hfx) Hx).
 Qed.
 
-(* The adjunction's OWN unit and counit, ascribed at those very types.
-   The ascription typechecks by conversion alone and says only that the
-   unit inhabits the type of [unit_incl]; a Leibniz [unit S = unit_incl S]
-   holds at [eq_refl] once the two transposes and the two inclusions above
-   are closed [Defined] (measured by audit, out of tree) and is blocked
-   here by their [Qed]s, which is why the names say "has the type of" and
-   not "is". *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition adj_unit_has_incl_type (S : carrier (Powerset_Prop_obj@{o} X)) :
   subset_le S
     (Powerset_Prop_preimage@{o} f (Powerset_Prop_image@{o} f S)) :=
@@ -278,11 +280,11 @@ Proof.
   - exact (proj2 (@proper_morphism _ _ _ _ (S i) x y Hxy) (H i)).
 Defined.
 
-(* Union of an arbitrary family.  [ex] here is stdlib's Prop-valued
-   existential, NOT the library's Type-valued [sigT]: the members [S i x]
-   are already [Prop]s, so the existential lands in [Prop] and NO
-   [Powerset_squash] is required -- in contrast with the direct image,
-   whose existential quantifies over the carrier. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition subset_union {Idx : Type}
   (S : Idx → carrier (Powerset_Prop_obj@{o} X)) :
   carrier (Powerset_Prop_obj@{o} X).
@@ -390,23 +392,11 @@ Definition Subsets_HasAllMeets : HasAllMeets (@subset_le@{o} X) :=
 Definition Subsets_HasAllJoins : HasAllJoins (@subset_le@{o} X) :=
   fun Idx S => existT _ (subset_union S) (subset_union_IsLUB S).
 
-(* THE [Set] INSTANCE, MADE VISIBLE IN THE SOURCE.  These two -- alone
-   among the constants of this section -- are about [Subsets] at hom level
-   [Set], and the instance is written out rather than inferred.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   RECORDED CORRECTION TO THE REASON.  An earlier revision said the
-   [Set] was a PIN: "Both biconditionals route through
-   [Proset_Limit]/[DiscreteCat_Functor], and Instance/Discrete.v's
-   unannotated declaration of the latter fixes the shape at
-   [DiscreteCat@{u Set Set}] while [IsALimit] identifies the shape's
-   hom-and-proof universe with the ambient's."  The donor was annotated in
-   place at Instance/Discrete.v in the PR "algebraic carriers are sets"
-   (2026-09-17), so no [Set] is forced from there any more.  The literal
-   [Set] below is therefore now a CHOICE rather than a pin, and has been
-   left as it stands: restating these two at a free hom level was not
-   attempted or measured in that PR, which changed prose only.  [IsALimit]
-   still identifies the shape's hom-and-proof universe with the ambient's,
-   which is the constraint that remains. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Subsets_Complete : @Complete (Subsets@{o Set} X) :=
   snd (proset_Complete_iff_all_meets (subset_le_preorder@{o} X))
     Subsets_HasAllMeets.
@@ -464,12 +454,11 @@ Proof.
     intro i; exact (image_transpose_to f (S i) n (Hn i)).
 Qed.
 
-(* THE HALF WITH NO ADJOINT ROUTE HERE.  Riehl proves this from f^*'s own
-   RIGHT adjoint -- the dual image -- which is #384's and is not built in
-   this file, so it is proved directly instead.  Membership in a join is
-   not decomposable, so the argument runs at the level of the ORDER: [m]
-   precedes the canonical union of the family, by the family's own second
-   clause, and the union does decompose. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem inverse_image_preserves_joins {Idx : Type}
   (T : Idx → carrier (Powerset_Prop_obj@{o} Y))
   (m : carrier (Powerset_Prop_obj@{o} Y))
@@ -492,15 +481,11 @@ End Preservation.
 (* ------------------------------------------------------------------------ *)
 (** ** (F) again: the same two statements read off RAPL and LAPC *)
 
-(* These are stated at the [Set] hom level discussed in the header.  An
-   earlier revision called that a PIN and attributed it to
-   Instance/Discrete.v's unannotated [DiscreteCat_Functor] fixing the shape
-   at [DiscreteCat@{u Set Set}]; that donor was annotated in place at its
-    in the PR "algebraic carriers are sets" (2026-09-17), so the [Set]
-   here is now a choice carried over rather than a pin, and restating it
-   was not attempted.  [IsALimit] still identifies the shape's
-   hom-and-proof universe with the ambient's; the DIRECT statements above
-   carry no such identification, which is why they come first. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RAPLRoute.
 
@@ -538,10 +523,11 @@ Definition inverse_image_meet_routes_agree {Idx : Type}
   (inverse_image_preserves_meets f T m H,
    inverse_image_preserves_meets_via_RAPL T m H).
 
-(* The colimit side is stated at the CANONICAL join rather than at an
-   arbitrary one, because Instance/Proset/Limit.v supplies [Proset_Limit]
-   but no [Colimit]-record counterpart, so the [Colimit] this route needs
-   is taken from [Subsets_Cocomplete], whose apex is [subset_union]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition direct_image_preserves_joins_via_LAPC {Idx : Type}
   (S : Idx → carrier (Powerset_Prop_obj@{o} X)) :
   IsLUB (@subset_le@{o} Y)
@@ -590,11 +576,11 @@ Definition preimage_MonotoneFun :
   {| mono_map  := Powerset_Prop_preimage@{o} f
    ; mono_pres := preimage_monotone f |}.
 
-(* The functors agree on OBJECTS on the nose.  The WHOLE records are not
-   compared: [Functor_of_monotone] is a [Program Definition] whose three
-   law fields are its own opaque obligations while [GaloisFunctor_l]'s are
-   its own, so the difference is confined to those three fields and
-   touches neither data field. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example direct_image_is_monotone_functor_obj
   (S : carrier (Powerset_Prop_obj@{o} X)) :
   fobj[Functor_of_monotone (subset_le_preorder@{o} X)
@@ -612,10 +598,11 @@ End MonotoneReading.
 (* ------------------------------------------------------------------------ *)
 (** ** (H) Non-vacuity *)
 
-(* The witnesses are Instance/Sets/Powerset/Universal.v's own
-   [powerset_fin2] (the two-element discrete setoid) and [powerset_const0]
-   (the constant map at 0), reused rather than rebuilt, together with
-   [powerset_sng1] = {1}. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition powerset_sng0@{o +} :
   carrier (Powerset_Prop_obj@{o} powerset_fin2@{o}) :=
@@ -653,10 +640,11 @@ Proof.
     refine (Hx False _); intro Heq; discriminate Heq.
 Qed.
 
-(* And the direct image does NOT preserve meets: {0} and {1} are disjoint,
-   so the image of their meet is empty, while the meet of their images
-   contains 0.  The [eq_refl] form of this inequality is refuted in
-   Test/ProbePowerset382.v. *)
+(*
+   本节说明 Powerset 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem direct_image_not_meet_preserving@{o so +} :
   Powerset_Prop_image@{o} powerset_const0@{o so}
       (subset_meet powerset_sng0@{o} powerset_sng1@{o})

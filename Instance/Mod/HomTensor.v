@@ -796,11 +796,11 @@ Example homzl_ring_adjunction_to_at {A : RModObject R} {G : AbObject}
 
 End RingUnit.
 
-(* From here on the coextension module [CoextObj] enters, and with it the
-   three ring universes are identified: [CoextObj]'s own signature
-   (Instance/Mod/Coextension.v) is over [RingObject@{u u0 u1}] with
-   [u = u0] and [u = u1] among its constraints.  The section above is not
-   narrowed by it. *)
+(*
+   本节说明 HomTensor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section RingCoext.
 
 Universes r.

@@ -22,16 +22,16 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** Lifting setoids one universe up *)
 
-(* [SetoidObject] is a non-cumulative record, so a SetoidObject@{o o} is not
-   itself a SetoidObject@{so so} even when o ≤ so; but its carrier and
-   equivalence re-typecheck at the higher level, so the lift is a rebuild.
-   The carrier and the relation are definitionally unchanged. *)
-(* The lift is assembled from named, universe-annotated pieces.  Writing it
-   as one nested record expression makes the elaborator unify the low- and
-   high-level class heads first-order, which collapses the levels to o = so;
-   ascribing each piece its high-level type separately (with the class heads
-   η-expanded away, so conversion goes through δ on the definitional classes
-   [Reflexive]/[Symmetric]/[Transitive]) keeps the honest o ≤ so. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 Classifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition equiv_lift@{o so} {A : Type@{o}} (S : Setoid@{o o} A) :
   crelation@{so so} A := λ a b, @equiv A S a b.
@@ -74,22 +74,11 @@ Definition SetoidMorphism_Lift@{o so} {X Y : SetoidObject@{o o}}
 (* ------------------------------------------------------------------------ *)
 (** ** The truth-value object, one universe up *)
 
-(* The setoid of truth values: carrier Type@{o} — the type of the library's
-   Type-valued propositions at level o — under bi-implication [iffT] (which
-   is what `↔` denotes in this library, cf. Lib/Foundation.v).  Its carrier
-   forces o < so, which is exactly the classifier's size obstruction: this
-   is a SetoidObject@{so so}, i.e. an object of Sets one universe up, and
-   provably not an obj[Sets@{o so}].  Prop (with `iff`) would fit at level o
-   size-wise, but could not receive the Type@{o}-valued characteristic
-   predicate λ b, ∃ a, m a ≈ b without truncating away the witness that
-   [sets_char_pullback] and [sets_char_unique] must recover; Type@{o} with
-   iffT is the strongest formulation the universe checker accepts WITHOUT
-   a hypothesis.  With one, the truncated [Powerset_Omega] of
-   Instance/Sets/Powerset/Universal.v — carrier [Prop], hence an object of
-   [Sets] at level o — serves at ONE level instead, once the truncation
-   can be inverted; that is exactly what
-   Instance/Sets/Classifier/OneLevel.v's [Untruncate] buys, and its
-   [Sets_Classifier] is the resulting instance. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PropSetoid_equiv@{o so} : crelation@{so so} Type@{o} :=
   λ P Q : Type@{o}, P ↔ Q.
@@ -127,12 +116,11 @@ Definition sets_to_unit@{so} {X : SetoidObject@{so so}} :
 (* ------------------------------------------------------------------------ *)
 (** ** The characteristic map *)
 
-(* The characteristic map of m : A ~> B sends b to the truth value
-   "b is in the image of m", i.e. the Type@{o}-valued ∃ a, m a ≈ b.  It is
-   a morphism of Sets ONE UNIVERSE UP: its domain is the lift of B and its
-   codomain is [PropSetoid].  Note that no monicity is needed for the map
-   itself to be well-defined — [Monic] enters only in the classification
-   theorems below. *)
+(*
+   本节说明 Classifier 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition char_setoid@{o so} {A B : SetoidObject@{o o}}
   (m : A ~{Sets@{o so}}~> B) :
   SetoidMorphism@{so so so} (Setoid_Lift@{o so} B) PropSetoid@{o so}.
@@ -154,23 +142,11 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** The classifying pullback square *)
 
-(* The full subobject-classifier pullback property, at cross-universe
-   strength: in Sets@{so sso} — one level above the mono's home Sets@{o so} —
-   the square
+(*
+   本节说明拉回/推出、子对象、（余）强度相关定义、性质与动机。
 
-        Setoid_Lift A ── sets_to_unit ──> 1
-              |                           |
-     SetoidMorphism_Lift m           sets_true
-              v                           v
-        Setoid_Lift B ── char_setoid m ─> PropSetoid
-
-   is a pullback in the apex-pinned sense of Theory/Morphisms/Stability.v.
-   The one-level [IsPullback] form is not statable: its ambient category
-   would have to contain [PropSetoid], and no obj[Sets@{o so}] can (see the
-   header).  Everything else — apex, legs, and the cones quantified over —
-   lives honestly at the higher level, so beyond the forced lifting nothing
-   is weakened.  Monicity of m enters exactly twice: to make the mediator
-   well-defined on setoids, and to make it unique. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sets_char_pullback@{o so sso} {A B : SetoidObject@{o o}}
   (m : A ~{Sets@{o so}}~> B) (Hm : @Monic Sets@{o so} A B m) :
   @IsPullback Sets@{so sso}
@@ -223,13 +199,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** Uniqueness of the characteristic map *)
 
-(* Any χ making the (lifted) square a pullback agrees with [char_setoid m]
-   componentwise up to iff — which is exactly morphism equivalence in the
-   hom-setoid of Sets@{so sso}.  Forward direction: probe the universal
-   property with the subobject {b' : B & χ b'} of truth-values-of-χ; its
-   mediator into the apex recovers, for each b with χ b, a preimage under m.
-   Backward direction: transport the commuting square's χ (m a) ↔ ⊤ along
-   m a ≈ b using the properness of χ.  Monicity of m is not needed here. *)
+(*
+   本节说明拉回/推出、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sets_char_unique@{o so sso} {A B : SetoidObject@{o o}}
   (m : A ~{Sets@{o so}}~> B)
   (chi : Setoid_Lift@{o so} B ~{Sets@{so sso}}~> PropSetoid@{o so})
@@ -279,15 +253,11 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** The one-level shadow: the classified subobject *)
 
-(* While the truth-value OBJECT is forced one universe up, the pullback APEX
-   is not: the sub-setoid {b : B & ∃ a, m a ≈ b} — carrier-wise the preimage
-   of true under [char_setoid m] — involves only level-o data, and
-   Instance/Sets/Image.v already provides it as [Sets_Image m] together with
-   its monic first projection.  So at the SAME level Sets@{o so}, the
-   subobject (A, m) of B equals the image subobject in the subobject setoid
-   of Theory/Subobject.v.  The domain isomorphism is a ↦ (m a; (a; _)) with
-   inverse (b; (a; _)) ↦ a; monicity of m makes the inverse respect ≈.
-   Ends in Defined: the equivalence transports an isomorphism. *)
+(*
+   本节说明拉回/推出、同构、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sets_char_subobject@{o so} {A B : SetoidObject@{o o}}
   (m : A ~{Sets@{o so}}~> B) (Hm : @Monic Sets@{o so} A B m) :
   @equiv _ (@SubObj_Setoid Sets@{o so} B)
@@ -323,25 +293,11 @@ Defined.
 
 (** ** The lift is inert for epicness *)
 
-(* A note on scope, because this file is where one would expect the
-   epis-are-surjections theorem to live.  It is NOT here: it is proved at one
-   universe in Instance/Sets.v as [surjectivity_is_epic], using the cokernel
-   pair of h with itself rather than a truth-value object.
+(*
+   本节说明核/余核、来源与用途相关定义、性质与动机。
 
-   That is worth saying plainly, because the opposite was believed for a long
-   time -- long enough that Instance/Sets.v carried an abandoned proof and a
-   header note blaming size.  The classifier obstruction this file opens with
-   is real: a characteristic map must receive a [Type@{o}]-valued truth value,
-   and no object of Sets@{o so} carries one.  But epis-are-surjections does
-   NOT inherit it.  The classical truth-value probe is only one probe; the
-   cokernel pair `carrier B + carrier B`, glued along the image of h, tests
-   the same thing and never leaves the universe of the carriers.
-
-   What this file can still contribute is that lifting is inert for epicness:
-   being epic against level-o probes and being epic against level-so probes
-   are the same condition.  One direction uses this file's own machinery --
-   [char_setoid] against the constantly-true map -- and the other goes through
-   the one-universe theorem, whose cokernel-pair probe is itself level-o. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The constantly-true probe: the terminal map followed by [sets_true]. *)
 Definition sets_all_true@{o so sso} (X : SetoidObject@{so so}) :

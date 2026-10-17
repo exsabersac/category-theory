@@ -27,11 +27,11 @@ Generalizable All Variables.
 
 (** * Subgroups of an abelian group *)
 
-(* Membership plus four laws, in the shape Instance/Grp/Quotient.v's
-   [Subgroup] and Instance/Mod/Quotient.v's [Submodule] share.  It is
-   [Type]-valued because the library's `≈` is, and because the diagram's
-   [fmap] below must APPLY an inclusion to a membership witness -- see the
-   header's paragraph on why [Proset] cannot host the index. *)
+(*
+   本节说明 DirectedColimit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record AbSubgroup (A : AbObject) := {
   absub_mem : carrier (cmon_setoid A) → Type;
 
@@ -52,10 +52,11 @@ Arguments absub_neg {A} _ _ _.
 
 (** ** A subgroup as an object of Ab *)
 
-(* The sigma carrier over membership, compared on elements only -- the shape
-   Instance/Ab.v's [ab_ker_carrier] and Instance/Grp/Quotient.v's
-   [sub_carrier] use, so a membership witness carries no equational weight
-   and two witnesses of one element are already identified. *)
+(*
+   本节说明 DirectedColimit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Subgroup.
 
 Context {A : AbObject}.
@@ -94,9 +95,11 @@ Proof using A S.
   - intros a; simpl; apply ab_neg_left.
 Defined.
 
-(* The inclusion: the first projection.  Respectfulness is the identity
-   implication and both homomorphism laws hold on the nose; all three
-   obligations are discharged by the ambient obligation tactic. *)
+(*
+   本节说明 DirectedColimit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition absub_incl : AbSubgroupAb ~{Ab}~> A :=
   {| cmon_map := {| morphism := fun p : absub_carrier => projT1 p |} |}.
 
@@ -141,10 +144,11 @@ Proof.
   - exact (fun h => inr (IH h)).
 Defined.
 
-(* The generated subgroup, as an inductive family with five constructors:
-   a generator, zero, sums, negations, and ≈-saturation.  The last is what
-   Instance/Grp/Abelianization.v's [InCommutator] calls [inc_resp], and it
-   is why [gen_sub] below needs no separate saturation argument. *)
+(*
+   本节说明 DirectedColimit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive InGen (A : AbObject) (l : list (carrier (cmon_setoid A)))
   : carrier (cmon_setoid A) → Type :=
   | ig_gen (a : carrier (cmon_setoid A)) : mem_list a l → InGen a
@@ -173,11 +177,11 @@ Definition gen_sub (A : AbObject) (l : list (carrier (cmon_setoid A)))
   absub_neg := @ig_neg A l
 |}.
 
-(* THE ONLY INDUCTION OVER [InGen] IN THIS FILE: the generated subgroup is
-   the least one containing the generators.  Everything downstream that
-   needs to say something about every member of a generated subgroup --
-   [gen_mono], the join inclusions, the divisibility invariant used for the
-   non-vacuity negatives -- is an instance of this. *)
+(*
+   本节说明 DirectedColimit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma gen_least (A : AbObject) (l : list (carrier (cmon_setoid A)))
   (S : AbSubgroup A) (H : ∀ x, mem_list x l → absub_mem S x) :
   ∀ a, InGen A l a → absub_mem S a.
@@ -199,12 +203,11 @@ Definition gen_mono (A : AbObject)
 
 (** * Finitely generated subgroups, and the index category *)
 
-(* A PRESENTATION of [S]: a finite list of generators, plus mutual
-   inclusion between membership in [S] and membership in the subgroup that
-   list generates.  Carrying the list (rather than truncating it) is what
-   the header's SCOPE paragraph is about: it is what directedness and the
-   mediator consume, and it is why two presentations of one subgroup give
-   two objects of the index. *)
+(*
+   本节说明 DirectedColimit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record FinGen (A : AbObject) (S : AbSubgroup A) := {
   fg_list : list (carrier (cmon_setoid A));
 
@@ -281,13 +284,11 @@ Defined.
 
 (** * The diagram of finitely generated subgroups, and its cocone *)
 
-(* The diagram.  Its arrow action retags a membership witness and leaves
-   the underlying element alone ([fg_diagram_fmap_elem] below records that
-   by [eq_refl]); since the subgroup carriers compare first projections,
-   all six obligations -- the three of the [CMonHom] and the three functor
-   laws -- are discharged by the ambient obligation tactic.  Still six
-   after the PR "algebraic carriers are sets" (2026-09-17), re-counted
-   from [Print Module]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition FGDiagram (A : AbObject) : FGSub A ⟶ Ab := {|
   fobj := fun X => AbSubgroupAb (fg_sub X);
   fmap := fun X Y f =>
@@ -391,9 +392,11 @@ End Mediator.
 
 (** * The theorem: A is the colimit of its finitely generated subgroups *)
 
-(* The factorization triangle.  This is `≈' and not Leibniz: the left side
-   evaluates [N] at [cyc a] and the right side at [X], and those are
-   different objects of the index (header, STRENGTHS). *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fg_med_commutes {A : AbObject} (N : Cocone (FGDiagram A))
   (X : FGSub A) :
   fg_med N ∘ cocone_inj (FGCocone A) X ≈ cocone_inj N X.

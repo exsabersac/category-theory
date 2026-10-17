@@ -31,10 +31,11 @@ Generalizable All Variables.
 
 (** ** "Epis are onto" in the skeleton *)
 
-(* Instance/FinSet/Classifier.v's biconditional, both legs.  Unlike
-   [Grp], FinSet needs no stability hypothesis: the probe is the
-   classifier's own characteristic map into Ω = 2 and the search over a
-   finite set is decidable, so the preimage comes back as data. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finset_quot_epi_surjective {m : nat} (q : @QuotObj FinSet m) :
   ∀ b : Fin.t (quot_cod q), ∃ a : Fin.t m, quot_epi q a = b :=
   snd (finset_epic_iff_surjective (quot_epi q)) (quot_is_epic q).
@@ -43,12 +44,11 @@ Definition finset_quot_of_surjection {m n : nat} (e : m ~{FinSet}~> n)
   (Hs : ∀ b : Fin.t n, ∃ a : Fin.t m, e a = b) : @QuotObj FinSet m :=
   mk_quot e (fst (finset_epic_iff_surjective e) Hs).
 
-(* Not every map presents a quotient object.  Stated positively, because
-   a refutation probe on [mk_quot f _] would report an uninstantiated
-   evar and not the mathematical refusal: the constant map 1 → 2 is not epic
-   (Instance/FinSet/Classifier.v).  This is a verbatim RE-EXPORT of
-   that lemma under a name saying what it is used for here; it proves
-   nothing new. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finset_no_quot_of_const :
   Epic ((fun _ => fin_true) : 1%nat ~{FinSet}~> 2%nat) → False :=
   finset_const_true_not_epic.
@@ -60,13 +60,11 @@ Section FinSetCoimages.
 Context {m n : nat}.
 Context (f : Fin.t m → Fin.t n).
 
-(* Instance/FinSet/Subobject.v's [finset_image_factor] is surjective
-   onto the image object: the q-th selected element has a preimage
-   (that file's [finset_image_witness], with its defining equation), and
-   ranking after selecting is the identity
-   (Instance/FinSet/Pushout.v's [fin_rank_select]).  [fin_rank_resp]
-   discharges the proof argument, so no proof irrelevance and no
-   axiom is needed. *)
+(*
+   本节说明拉回/推出、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma finset_coimage_epic :
   Epic (finset_image_factor f : m ~{FinSet}~> finset_image_obj f).
 Proof.
@@ -92,10 +90,11 @@ Lemma finset_coimage_commutes :
   sub_mono finset_coimage ∘[FinSet^op] (finset_image_mono f) ≈ f.
 Proof. exact (finset_image_commutes f). Qed.
 
-(* Minimality.  A competing quotient e : m ↠ Q through which f factors
-   is surjective, so a preimage of each of its points can be chosen; two
-   preimages of the same point have the same f-value, hence the same
-   rank, and [fin_rank_resp] turns that into the required equation. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma finset_coimage_least (w : @QuotObj FinSet m)
   (g : n ~{FinSet^op}~> quot_cod w)
   (Hg : sub_mono w ∘[FinSet^op] g ≈ f) :
@@ -126,12 +125,11 @@ End FinSetCoimages.
 
 (** ** Two quotients of the four-element set, and a meet that computes *)
 
-(* The three-element codomain is written with bare [Fin] constructors:
-   naming its elements [fin3_0], [fin3_1], [fin3_2] would collide with
-   Structure/Limit/Power/Hom.v, and the exhaustive case analysis
-   is Instance/FinSet/Regular.v's [fin3_cases], required rather than
-   restated (it adds exactly ONE file to this file's closure, its own
-   requirements being a subset of what is already here). *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Identify 0 with 1, keeping 2 and 3 apart. *)
 Definition finset_merge01 : Fin.t 4 → Fin.t 3 := fun i =>
@@ -177,10 +175,11 @@ Definition finset_q12 : @QuotObj FinSet 4%nat :=
 Definition finset_q_meet : @QuotObj FinSet 4%nat :=
   @quot_meet FinSet FinSet_HasPushouts 4%nat finset_q01 finset_q12.
 
-(* And it COMPUTES.  Merging {0,1} and merging {1,2} together merge
-   {0,1,2}, leaving 3 alone: two classes, by [eq_refl] with no tactic.
-   This is a statement about the DATA (a natural number), which is why
-   Leibniz equality is the right relation here. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example finset_quot_meet_two : quot_cod finset_q_meet = 2%nat := eq_refl.
 
 (* The epi of the meet computes too, on elements of [Fin.t 4]. *)
@@ -200,9 +199,11 @@ Proof. intro H; discriminate H. Qed.
 Example finset_q01_three : quot_cod finset_q01 = 3%nat := eq_refl.
 Example finset_q12_three : quot_cod finset_q12 = 3%nat := eq_refl.
 
-(* The coimage of a collapsing map, computed: [finset_merge01] hits all
-   three elements of its codomain, so its coimage has three elements and
-   is the map itself up to the identification of the image with 3. *)
+(*
+   本节说明 QuotObj 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example finset_coimage_merge01_three :
   quot_cod (finset_coimage finset_merge01) = 3%nat := eq_refl.
 

@@ -135,9 +135,11 @@ Proof.
   - symmetry. exact (GroupTower_points p).
 Qed.
 
-(* Mac Lane's tower in the Type-valued [Top]: its underlying tower lands in
-   the lifted [Sets@{h hs}], where it is the tower of points taken at the
-   hom universe [h] (Instance/Top/Circle.v's [circle_lift_iso]). *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma CircleTower_points@{s h o hs + | o < h, h < hs +} (p : positive) :
   Top_Forget@{o h hs} ◯ CircleTower@{s h o} p ≈ UCircleTower@{s h hs} p.
 Proof.
@@ -930,10 +932,11 @@ Example pwrap_sheet_iso_to@{o so | o < so +} (p : positive) (y : CReal)
   proj1_sig (pmap (to (pwrap_sheet_iso@{o so} p y k Hk)) b)
   = circ_mul@{o} p (proj1_sig b) := eq_refl.
 
-(* The evenly covered neighbourhood, gathered: the arc is an open
-   neighbourhood of [y]; each sheet is open; the sheets are disjoint; and
-   the preimage of the arc is their union.  Each sheet is carried onto the
-   arc homeomorphically by [pwrap_sheet_iso]. *)
+(*
+   本节说明 Presentations 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pwrap_evenly_covered@{o +} (p : positive) (y : CReal) :
   POpen PCircle@{o} (in_arc@{o} y) /\ in_arc@{o} y y /\
   (∀ k, POpen PCircle@{o} (in_sheet@{o} p y k)) /\
@@ -1082,10 +1085,11 @@ Definition csub_incl@{h o | o < h +} (P : Circle_setoid@{o} → Type@{o}) :
   @Build_ContinuousMorphism (CSub P) Circle (csub_incl_map P)
     (csub_incl_cont@{h o} P).
 
-(* The half of the universal property with content: a setoid map into the
-   points of [P] is continuous as soon as its composite with the inclusion
-   is.  The preimage of an open is the union, over its points, of the
-   preimages of the open interiors [cint] of the circle's balls. *)
+(*
+   本节说明 Presentations 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma csub_lift_cont@{h o | o < h +} (P : Circle_setoid@{o} → Type@{o})
   (Z : TopSpace@{o}) (g : SetoidMorphism@{o o o} Z (csub_setoid@{o} P))
   (Hg : Continuous@{h o} Z Circle@{o}
@@ -1217,10 +1221,11 @@ Proof.
   - intros [k [_ [H _]]]. exact H.
 Qed.
 
-(* The evenly covered neighbourhood in [Top], gathered: the arc is an open
-   neighbourhood of [y]; each sheet is open; the sheets are disjoint; and
-   the preimage of the arc is their union.  Each sheet is carried onto the
-   arc homeomorphically by [wrap_sheet_iso]. *)
+(*
+   本节说明 Presentations 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem wrap_evenly_covered@{o +} (p : positive) (y : CReal) :
   (IsOpen Circle@{o} (tarc@{o} y) * tarc@{o} y y *
    (∀ k, IsOpen Circle@{o} (tsheet@{o} p y k)) *

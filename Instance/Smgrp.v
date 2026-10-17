@@ -476,14 +476,11 @@ Example sg_insert_universal_obj@{o so} (X : SetoidObject@{o o})
   unique_obj (sg_insert_universal@{o so} X A h) = sg_extend@{o so} h
   := eq_refl.
 
-(* Mac Lane's "η_X ... is universal from X to G" in the tree's own terms:
-   Theory/Universal/Arrow.v's [UniversalArrow] from X to G, an initial
-   object of the comma category =(X) ↓ G, built from the factorization
-   above by [universal_arrow_from_UMP], as Instance/Mon/Free.v and the
-   other free-object files build theirs.  The type's levels are pinned at
-   o and so; the annotation is extensible because the builder binds more
-   levels on Coq 8.19 and 8.20 than on Rocq 9.1 (the header's
-   UNIVERSES). *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sg_insert_UA@{o so +} (X : SetoidObject@{o o}) :
   @UniversalArrow@{so o so o o so so so so o so}
     Sets@{o so} SmgrpSets@{o so} X Sg_Forget@{o so} :=

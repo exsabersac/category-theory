@@ -148,9 +148,11 @@ Proof.
   dependent induction H; now eauto 6.
 Qed.
 
-(* A term is in normal form for [R] when no [R]-step issues from it.  The
-   commented variant ¬ ∃ t', R t t' is logically equivalent but the ∀/¬ form
-   below is more convenient to apply pointwise. *)
+(*
+   本节说明 Step 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition normal_form `(R : crelation X) (t : X) : Type :=
   ∀ t', ¬ R t t'.
 

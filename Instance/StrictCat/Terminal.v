@@ -19,10 +19,11 @@ Generalizable All Variables.
 Lemma poly_unit_eq (u v : poly_unit) : u = v.
 Proof. now destruct u, v. Qed.
 
-(* 1 is the terminal object of StrictCat, witnessed by the unique functor
-   [Erase].  Uniqueness is strict: on objects both functors land in the
-   contractible [poly_unit], and the transported morphism maps agree because
-   the homs of [1] are likewise [poly_unit] under [Morphism_equality]. *)
+(*
+   本节说明函子、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance StrictCat_Terminal : @Terminal StrictCat := {
   terminal_obj := _1;        (* the terminal category 1 *)

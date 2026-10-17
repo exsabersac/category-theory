@@ -33,9 +33,11 @@ Generalizable All Variables.
 
 (** ** Natural transformations over a discrete shape are bare families *)
 
-(* Over a discrete domain, naturality is free: the only morphisms are
-   equality proofs, and both functors send them into the conjugates of
-   identities.  So a transformation is exactly a family of components. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Discrete_Transform {A : Type} {B : Category}
         {F G : DiscreteCat A ⟶ B} (η : ∀ a : A, F a ~> G a) : F ⟹ G := {|
   transform := η
@@ -53,10 +55,11 @@ Next Obligation.
   rewrite HF, HG; cat.
 Qed.
 
-(* The characterization as a hom-setoid isomorphism in Sets: over a
-   discrete shape the transformation setoid IS the setoid of
-   componentwise families — the discrete-shape analogue of
-   [One_hom_iso], and the morphism half of [Fun_Discrete_PiCat]. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Discrete_hom_iso {A : Type} {B : Category}
         (F G : DiscreteCat A ⟶ B) :
   ({| carrier := F ⟹ G;
@@ -120,9 +123,11 @@ Next Obligation.
   intros A B f g h η θ a; reflexivity.
 Qed.
 
-(* The comparison functor [Fun_Discrete_from ◯ Fun_Discrete_to] rebuilds a
-   functor from its object function; the rebuilt functor is naturally
-   isomorphic to the original with identity components. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition DiscreteCat_Functor_iso {A : Type} {B : Category}
         (F : DiscreteCat A ⟶ B) :
   @Isomorphism ([DiscreteCat A, B]) (DiscreteCat_Functor (fobj[F])) F := {|
@@ -388,10 +393,11 @@ Next Obligation.
   now rewrite H, H0.
 Qed.
 
-(* Functors from a discrete shape into the discrete two-object target,
-   up to natural isomorphism, are exactly characteristic functions: an
-   isomorphism in [DiscreteCat bool] IS an equality proof, so the
-   Functor_Setoid equivalence collapses to pointwise equality. *)
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Fun_Discrete_bool_subsets (X : Type) :
   Fun_objects_setoid (DiscreteCat X) (DiscreteCat bool) ≅[Sets]
   CharFun_setoid X := {|
@@ -423,11 +429,11 @@ Qed.
 
 (** ** The diagonal argument *)
 
-(* No family of predicates indexed by A is extensionally surjective onto
-   the predicates on A: the diagonal predicate [fun x => ¬ f x x]
-   differs from every member of the family at its own index.  Fully
-   constructive — the biconditional at the diagonal point is already a
-   contradiction. *)
+(*
+   本节说明 Discrete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem cantor_predicates {A : Type} (f : A → A → Prop) :
   ¬ (∀ P : A → Prop, ∃ a : A, ∀ x : A, f a x ↔ P x).
 Proof.
@@ -449,12 +455,11 @@ Proof.
   destruct (f a a); discriminate.
 Qed.
 
-(* The size half of Mac Lane's remark, through the characteristic-function
-   correspondence: no X-indexed family of functors exhausts
-   [DiscreteCat X, DiscreteCat bool] up to natural isomorphism.  The
-   two-valued target is the smallest at which the functor category
-   already outgrows the shape; for a universe-sized discrete shape the
-   escape is structural (Instance/Cat.v's size note). *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Fun_Discrete_no_surjection {X : Type}
         (Φ : X → (DiscreteCat X ⟶ DiscreteCat bool)) :
   ¬ (∀ G : DiscreteCat X ⟶ DiscreteCat bool,
@@ -471,12 +476,11 @@ Qed.
 
 (** ** The morphism half of [1, B] ≅ B (Seven Sketches, Example 3.53) *)
 
-(* Between two functors from the terminal category, a natural
-   transformation is exactly a morphism between their values: the only
-   morphism of [1] is its identity, so naturality is the vacuous square
-   conjugated by [fmap_id].  Stated as a hom-setoid isomorphism in Sets,
-   so the identification is not left at the object level.  The object
-   half is Theory/Shapes.v's [One_Fun_iso]. *)
+(*
+   本节说明自然变换、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition One_hom_iso {B : Category} (F G : _1 ⟶ B) :
   ({| carrier := F ⟹ G; is_setoid := @Transform_Setoid _1 B F G |} : SetoidObject)
     ≅[Sets]

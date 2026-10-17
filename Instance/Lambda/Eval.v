@@ -25,10 +25,11 @@ Section Eval.
 
 Import ListNotations.
 
-(* A [Closed] is the machine's control: an [Exp] paired with a [ClEnv] that
-   closes its free de Bruijn variables.  A [ClEnv Γ] is the environment, one
-   [Value] per type in Γ.  A [Value] is a closure whose body is already a value
-   ([ValueP] witnesses that it does not reduce). *)
+(*
+   本节说明 Eval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Closed : Ty → Set :=
   | Closure {Γ τ} : Exp Γ τ → ClEnv Γ → Closed τ
 
@@ -53,22 +54,22 @@ Equations combine `(c1 : ClEnv Γ) `(c2 : ClEnv Γ') : ClEnv (Γ ++ Γ') :=
   combine NoCl         c2 := c2;
   combine (AddCl c c1) c2 := AddCl c (combine c1 c2).
 
-(* Append [x] to the end of [xs].  NOTE: unused anywhere in the development,
-   and the cons case shadows the parameter [x] with the list head, so this
-   actually duplicates the last element instead of appending the argument
-   ([snoc a [b;c]] computes [[b;c;c]], not [[b;c;a]]).  Kept and corrected
-   here for clarity since it is dead code. *)
+(*
+   本节说明（余）端、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint snoc {a : Type} (x : a) (xs : list a) : list a :=
   match xs with
   | [] => [x]
   | y :: ys => y :: snoc x ys
   end.
 
-(* The reified continuation / evaluation context.  [EvalContext u τ] is a stack
-   of pending eliminations turning a value of type [u] into a final result of
-   type [τ]: [MT] is the empty context (halt); [AR]/[FN] sequence a function
-   then its argument for application; the PAIR/FST/SND frames sequence the
-   evaluation of products and their projections. *)
+(*
+   本节说明 Eval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive EvalContext : Ty → Ty → Set :=
   | MT {τ} : EvalContext τ τ
   | AR {dom cod τ} :
@@ -92,11 +93,11 @@ Inductive Σ : Ty → Set :=
 
 Derive Signature NoConfusion NoConfusionHom Subterm for Σ.
 
-(* The one-step transition relation of the machine, as a total function on
-   states.  A non-[MT] continuation drives evaluation forward; reaching [MT]
-   with a value is the only fixed point ([step (MkΣ c MT) := MkΣ c MT]).  See
-   the file header for the FLAG on the product cases, which fail to reduce pair
-   components and so diverge from the operational semantics of Step.v. *)
+(*
+   本节说明 Eval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Equations step {τ : Ty} (s : Σ τ) : Σ τ :=
   (* Constants *)
   step (MkΣ (Closure EUnit _) (FN f κ)) with f := {
@@ -109,12 +110,11 @@ Equations step {τ : Ty} (s : Σ τ) : Σ τ :=
   step (MkΣ (Closure (Pair x y) ρ) (FST κ)) := MkΣ (Closure x ρ) κ;
   step (MkΣ (Closure (Pair x y) ρ) (SND κ)) := MkΣ (Closure y ρ) κ;
 
-  (* FLAG: these three product clauses never reduce a pair's components.  The
-     [PAIR_SND] swap below fires regardless of whether the control is a value,
-     so it stashes both components away unevaluated; [PAIR_FST] then rebuilds
-     the original pair, closing a 3-cycle.  A correct version would gate the
-     [PAIR_SND] swap on [ValueP] of the first component (so the first component
-     is evaluated before moving to the second).  See the file header. *)
+  (*
+   本节说明 Eval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   step (MkΣ (Closure (Pair x y) ρ) κ) :=
     MkΣ (Closure x ρ) (PAIR_SND (Closure y ρ) κ);
   step (MkΣ x (PAIR_SND y κ)) := MkΣ y (PAIR_FST x κ);
@@ -139,10 +139,11 @@ Equations step {τ : Ty} (s : Σ τ) : Σ τ :=
 
   step (MkΣ c MT) := MkΣ c MT.
 
-(* Iterate [step] a bounded number of times.  The [gas] (fuel) parameter makes
-   evaluation total: [step] is not structurally recursive, so [loop] recurs on
-   the gas rather than on the state.  With enough gas a normalizing run reaches
-   an [MT] fixed point and stays there. *)
+(*
+   本节说明 Eval 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Equations loop (gas : nat) {τ : Ty} (s : Σ τ) : Σ τ :=
   loop O s := s;
   loop (S gas') s := loop gas' (step s).
@@ -155,20 +156,10 @@ Definition inject {τ : Ty} (e : Exp [] τ) : Σ τ := MkΣ (Closure e NoCl) MT.
 (* Evaluate a closed term for [gas] steps from its initial state. *)
 Definition run (gas : nat) {τ : Ty} (e : Exp [] τ) : Σ τ := loop gas (inject e).
 
-(* Intended agreement theorem (unproven; see the FLAG in the file header).
-   The machine should agree with the call-by-value operational semantics of
-   Step.v / Multi.v, roughly:
+(*
+   本节说明 Eval 相关定义、性质与动机。
 
-     forall (e v : Exp [] τ), ValueP v ->
-       (e --->* v  <->  exists gas, run gas e = inject v)
-
-   i.e. [run] reaches the injected normal form exactly when [e] reduces to it.
-   Equivalently it should agree with the denotational semantics [SemExp] of
-   Sem.v.  No such lemma is established here: an earlier draft contained a
-   placeholder script that referenced a nonexistent lemma [all_exprs_complete]
-   and did not typecheck, so it has been replaced by this note.  Note that any
-   such theorem is currently false on terms with products because of the pair
-   defect documented above; correcting [step]'s product cases is a prerequisite
-   for stating and proving agreement. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 End Eval.

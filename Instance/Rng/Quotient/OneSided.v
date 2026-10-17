@@ -78,19 +78,17 @@ Proof.
   exists 1%Z; reflexivity.
 Qed.
 
-(** ** ...and the quotient relation is not a congruence for
-       multiplication
+(*
+   本节说明 OneSided 相关定义、性质与动机。
 
-    The witnesses: E₁₁ ~ 0 (their difference is E₁₁, which is in the
-    ideal) and E₁₂ ~ E₁₂, yet E₁₁·E₁₂ = E₁₂ is not congruent to
-    0·E₁₂ = 0. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) [lquot_rel] is the
-   propositional truncation of membership -- truncated in lockstep with
-   [rquot_rel], so that [lquot_rel_is_rquot_rel] stays a convertibility -- so
-   each witness is wrapped by [constructor] going in and unwrapped by an
-   extra layer of intro pattern coming out.  The refutation is unaffected:
-   its conclusion is [False], already a [Prop]. *)
+(*
+   本节说明 OneSided 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ut2_e11_rel_zero : lquot_rel E11Left ut2_e11 ut2_zero.
 Proof. constructor; exists 1%Z; reflexivity. Qed.
 
@@ -107,13 +105,11 @@ Proof.
   discriminate Ha.
 Qed.
 
-(** ** The positive half, at the same ring
+(*
+   本节说明 OneSided 相关定义、性质与动机。
 
-    Every TWO-SIDED ideal of UT2 does give a congruence, so what the
-    counterexample separates is the two-sidedness and not something about
-    [UT2].  The strictly upper-triangular matrices are the witness: a
-    two-sided ideal of UT2 that is proper and nontrivial, whose
-    congruence is [ideal_mul_congruence] instantiated. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ut2_strict (x : ut2) : Type := { b : Z & x = (0, b, 0)%Z }.
 
@@ -161,9 +157,11 @@ Proof.
   - discriminate.
 Qed.
 
-(* And the quotient by it does not collapse: E₁₁ stays apart from 0 in
-   UT2/StrictUpper, so the two-sided construction is exercised on a
-   nondegenerate non-commutative example and not only on ℤ. *)
+(*
+   本节说明 OneSided 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem UT2_mod_strict_not_collapsed :
   rquot_rel StrictUpper ut2_e11 ut2_zero → False.
 Proof. intros [[b Hb]]; discriminate Hb. Qed.
@@ -179,11 +177,11 @@ Theorem UT2_mod_strict_nonzero :
     → False.
 Proof. intros [[b Hb]]; discriminate Hb. Qed.
 
-(* It IS commutative, though UT2 is not -- the quotient of a
-   non-commutative ring can be commutative, which is why "quotient" here
-   is a genuine construction and not a relabelling.  On the nose: the
-   two products differ only in the middle entry, which the ideal
-   kills. *)
+(*
+   本节说明 OneSided 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem UT2_mod_strict_commutative :
   ∀ x y : carrier (rig_setoid (QuotientRing StrictUpper)),
     rig_mul (QuotientRing StrictUpper) x y

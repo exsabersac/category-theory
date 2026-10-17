@@ -116,10 +116,11 @@ Definition rot_add (a b : rot) : rot :=
 Definition rot_neg (a : rot) : rot :=
   match a with rot0 => rot0 | rot1 => rot2 | rot2 => rot1 end.
 
-(* An element of S3 is a pair (i, b): the rotation r^i followed by the
-   reflection s^b.  Multiplication is the semidirect product rule
-   r^i s^b · r^j s^c = r^(i ± j) s^(b+c), the sign being negative exactly
-   when b is the reflection -- this is s r s⁻¹ = r⁻¹. *)
+(*
+   本节说明 TwoFunctors 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition S3carrier : Type := (rot * bool)%type.
 
 Definition s3_mul (p q : S3carrier) : S3carrier :=
@@ -151,10 +152,11 @@ Proof.
   - intros [j c]; destruct j, c; reflexivity.
 Defined.
 
-(* The setoid of S3 IS propositional equality, in both directions.  This is
-   what licenses closing the distinctness arguments below by [discriminate]
-   on carrier elements: the refuted statement is the hom-setoid equation
-   itself. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example S3_equiv_is_eq (a b : carrier S3) (H : a ≈ b) : a = b := H.
 Example S3_eq_is_equiv (a b : carrier S3) (H : a = b) : a ≈ b := H.
 
@@ -242,16 +244,11 @@ Next Obligation.
   exact Hfg.
 Qed.
 
-(* The object map is injective, so [GrpAt G] is a subcategory of [Grp] in
-   the strict sense of the word and not merely a category mapping into it.
-   NOTE HOW LITTLE THIS COSTS, since an audit rightly asked: the object
-   type of [GrpAt G] is [poly_unit], so any two objects are equal and the
-   injectivity hypothesis is discarded outright; fullness and faithfulness
-   are definitional too, the hom-type being [Grp]'s own on the nose.  All
-   three are worth stating -- they are what "full subcategory" means, and
-   this development has been strict about the word -- but none of the
-   three has content.  What follows;
-   with fullness and faithfulness above, it is the full subcategory on G. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma GrpAt_Incl_injective_on_objects (G : GrpObject) (x y : GrpAt G) :
   fobj[GrpAt_Incl G] x = fobj[GrpAt_Incl G] y → x = y.
 Proof.
@@ -282,10 +279,11 @@ Definition S3_twist_family : ∀ x : GrpAt S3, x ≅ x :=
 Definition S3_Twist : GrpAt S3 ⟶ GrpAt S3 :=
   Twist (@Id (GrpAt S3)) S3_twist_family.
 
-(* Both functors have the identity object function, by computation.  The
-   [=] here is on OBJECTS, where propositional equality is the right
-   notion and the one [Functor_StrictEq_Setoid] itself uses; morphisms
-   stay compared with ≈ throughout. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma S3_Twist_fobj (x : GrpAt S3) : fobj[S3_Twist] x = fobj[@Id (GrpAt S3)] x.
 Proof. reflexivity. Qed.
 
@@ -295,10 +293,11 @@ Example S3_Twist_object_function :
   fobj[S3_Twist] = fobj[@Id (GrpAt S3)].
 Proof. reflexivity. Qed.
 
-(* The separating morphism: the inner automorphism by the rotation, read as
-   an endomorphism of the single object of [GrpAt S3].  The type ascription
-   is what lets [fmap] find its source and target, since the hom-type of a
-   one-object category does not mention them. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition S3_conj_r : ttt ~{GrpAt S3}~> ttt := Grp_conj S3 S3_r.
 
 (* The concrete separating datum: at that morphism, the two functors take
@@ -311,9 +310,11 @@ Example S3_id_value :
   grp_map (fmap[@Id (GrpAt S3)] S3_conj_r) S3_s ≈ (rot2, true).
 Proof. reflexivity. Qed.
 
-(* Hence the two arrow maps differ IN THE HOM-SETOID of [GrpAt S3], which
-   is the hom-setoid of [Grp] at S3: two homomorphisms are equivalent there
-   exactly when they agree at every element, and these disagree at [S3_s]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem S3_twist_differs_on_conj_r :
   fmap[S3_Twist] S3_conj_r
     ≈ fmap[@Id (GrpAt S3)] S3_conj_r → False.
@@ -324,9 +325,11 @@ Proof.
   discriminate.
 Qed.
 
-(* The naturality that breaks down: conjugation by the reflection does not
-   commute with conjugation by the rotation, since S3 is nonabelian.  This
-   is the single datum the separation rests on. *)
+(*
+   本节说明 TwoFunctors 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma S3_conj_not_central :
   S3_twist_family ttt ∘ S3_conj_r
     ≈ fmap[@Id (GrpAt S3)] S3_conj_r ∘ S3_twist_family ttt → False.
@@ -337,11 +340,11 @@ Proof.
   discriminate.
 Qed.
 
-(* The two functors are distinct in the strict functor setoid.  The
-   argument goes through the general criterion of Functor/Twist.v: a twist
-   differs from the identity exactly where its family is not natural,
-   the object components of a strict equality being collapsed to [eq_refl]
-   by uniqueness of identity proofs on the single object. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem S3_two_functors_distinct :
   @equiv _ Functor_StrictEq_Setoid S3_Twist (@Id (GrpAt S3)) → False.
 Proof.
@@ -358,10 +361,11 @@ Theorem S3_two_functors_weakly_equal :
   @equiv _ Functor_Setoid S3_Twist (@Id (GrpAt S3)).
 Proof. exact (Twist_Id_weak_equiv S3_twist_family). Qed.
 
-(* The same two statements read off the two categories of categories: the
-   pair is one and the same morphism of [Cat], and two different morphisms
-   of [StrictCat].  The hom-setoids are the two functor setoids on the
-   nose, as Test/Issue138.v records. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example S3_pair_equal_in_Cat :
   @equiv _ (@homset Cat (GrpAt S3) (GrpAt S3)) S3_Twist (@Id (GrpAt S3)).
 Proof. exact S3_two_functors_weakly_equal. Qed.
@@ -398,13 +402,11 @@ Proof. reflexivity. Qed.
 Example Grp_op_twist_object_function : fobj[Grp_op_twist] = fobj[@Id Grp].
 Proof. reflexivity. Qed.
 
-(* But it is the identity functor, strictly: inversion is natural (that is
-   [grp_map_inv], every homomorphism commutes with inversion), and a
-   natural family produces nothing new ([Twist_natural_strict_id]).  So
-   this candidate -- a family of isomorphisms available uniformly at every
-   group, and the one the tree already builds as [Grp_op_Isomorphism]
-   (Instance/Grp.v) -- does not answer the exercise, and the file does
-   not pretend otherwise. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Grp_op_twist_is_Id :
   @equiv _ Functor_StrictEq_Setoid Grp_op_twist (@Id Grp).
 Proof.

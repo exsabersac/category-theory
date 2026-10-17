@@ -29,9 +29,11 @@ Section RowOps.
 
 Context (R : RigObject).
 
-(* A row operation on matrices with n rows: a natural endomorphism of
-   the presheaf represented by n.  [Presheaves] is the functor category
-   [(Matr R)^op, Sets]; its homs are natural transformations. *)
+(*
+   本节说明自然变换、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition row_operation (n : nat) : Type :=
   @hom (@Presheaves (Matr R) Sets)
     (@Curried_CoHom (Matr R) n) (@Curried_CoHom (Matr R) n).
@@ -77,10 +79,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Riehl, Corollary 2.2.10: every row operation is left multiplication
-   by its representing matrix.  The proof is the [iso_from_to] round
-   trip of the embedding, read pointwise — the [from] direction is
-   literally left-composition. *)
+(*
+   本节说明 Yoneda 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem row_operations_are_left_multiplication {n : nat}
   (η : row_operation n) (m : nat) (M : m ~{Matr R}~> n) :
   transform[η] m M ≈ representing_matrix η ∘[Matr R] M.

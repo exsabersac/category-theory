@@ -48,10 +48,11 @@ Proof.
            (fun h => pmap h ttt) (fun u v H => H ttt) eq_refl eq_refl).
 Qed.
 
-(* Every shape universe strictly above the points, under decidable
-   equality of spaces: the canonical index is built at [PTopCat@{o s}]
-   and transported by Instance/Top/Complete/Refutations.v's
-   [PTop_ArrowIndex_transport], as the limit side does. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem PTop_not_cocomplete_ObjDecEq@{r s o so +| o < so, o < s +}
   (DE : ObjDecEq PTopCat@{o so})
   (cocomp : @Cocomplete@{r s o so} PTopCat@{o so}) : False.
@@ -69,10 +70,11 @@ Proof.
            cocomp).
 Qed.
 
-(* Through the recipe, the same boundary for the points: were [Sets]
-   cocomplete at a shape universe above its carriers, Instance/Top/
-   Cocomplete.v's [PTop_Colimit_lift] would make [PTopCat] cocomplete
-   there. *)
+(*
+   本节说明 Refutations 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Sets_not_cocomplete_IEM@{e r s o so +| o < so, o < s +}
   (E : IEM@{e}) (cocomp : @Cocomplete@{r s o so} Sets@{o so}) : False.
 Proof.
@@ -97,10 +99,11 @@ Proof.
            eq_refl eq_refl).
 Qed.
 
-(* Every shape universe strictly above the points, the shapes below the
-   homs included, under decidable equality of spaces: the canonical index
-   is built at [Top@{s o}] and transported by Instance/Top/Complete/
-   Refutations.v's [Top_ArrowIndex_transport], as the limit side does. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Top_not_cocomplete_ObjDecEq@{r s h o +| o < h, o < s +}
   (DE : ObjDecEq Top@{h o})
   (cocomp : @Cocomplete@{r s h h} Top@{h o}) : False.

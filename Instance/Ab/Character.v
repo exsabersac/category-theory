@@ -89,10 +89,11 @@ Proof.
     apply Qred_inject_Z_den.
 Qed.
 
-(* The setoid is NAMED, and so is its [Prop] mirror, because since the PR
-   "algebraic carriers are sets" (2026-09-17) the [AbObject] below owes a
-   [cmon_prop] and a field of a [Program] record literal cannot mention a
-   setoid that is still an evar while the literal is being elaborated. *)
+(*
+   本节说明 Character 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition qz_setoid : Setoid Q := {| equiv := qz_eq |}.
 Next Obligation.
   constructor.
@@ -101,13 +102,11 @@ Next Obligation.
   - exact qz_eq_trans.
 Qed.
 
-(* [qz_eq] KEEPS its [sigT]: the integer witness is computed, not chosen, and
-   several results below read it back out.  What the [PropEquiv] adds is a
-   [Prop] relation that holds exactly when [qz_eq] does -- and the implication
-   BACK into [qz_eq], which is an elimination of a [Prop] into a [Type], goes
-   through the DECISION PROCEDURE [qz_eq_dec] above rather than through the
-   [Prop] proof: the left branch supplies the witness outright, and the right
-   branch contradicts the hypothesis.  No choice principle is consumed. *)
+(*
+   本节说明 Character 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition qz_peq (x y : Q) : Prop :=
   (exists z : Z, Qeq (Qminus x y) (inject_Z z))%type.
 

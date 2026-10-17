@@ -72,12 +72,11 @@ Example cone_apex_iso_leg_cone :
 Example cone_apex_iso_leg_family :
   limit_leg (limit_is_alimit (Sets_Limit F)) = Sets_limit_leg F := eq_refl.
 
-(* And the comparison is not opaque: its forward leg IS the cone-set
-   mediator of Mac Lane's proof.  Read its strength exactly: this is
-   [limit_unique_iso]'s forward leg being [limit_med] at ANY two limits of
-   ANY diagram, instantiated here -- the generic form is accepted -- so
-   what it pins is that this comparison reduces, not anything specific to
-   the cone set. *)
+(*
+   本节说明（余）极限、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example cone_apex_iso_to_is_med :
   to cone_apex_iso
   = cone_set_med F (alimit_cone (limit_is_alimit (Sets_Limit F)))
@@ -85,14 +84,11 @@ Example cone_apex_iso_to_is_med :
 
 End Compare.
 
-(* MAC LANE'S DISCRETE SENTENCE, AT THE CONE SET ITSELF.  "If J is
-   discrete, the set Cone( *, F) of J-cones is just the cartesian product
-   Pi_j F_j" -- the object the sentence NAMES is the cone set, and
-   Instance/Sets/Complete.v's [discrete_iprod_iso] states it of the
-   compatible-family apex.  One [iso_compose] carries it across, which is
-   what makes the quoted sentence a theorem about its own subject rather
-   than about the other oracle.  [{A : Set}] is inherited from
-   [discrete_iprod_iso]; see that file's universe note. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cone_apex_discrete_iprod_iso {A : Set} (f : A -> obj[Sets]) :
   cone_apex (DiscreteCat_Functor f) ≅[Sets] Sets_iprod_obj f :=
   iso_compose (discrete_iprod_iso f)
@@ -232,20 +228,20 @@ Example coneset_adj_from_is_untranspose (X : obj[Sets])
   transform[from (@adj _ _ _ _ (ConeSet_Diagonal_Limit_Adjunction J) X F) h] j
   = @vertex_map _ _ _ _ (cone_untranspose F X h) j := eq_refl.
 
-(* This one discriminates nothing and is kept for the display: it IS
-   Adjunction/Diagonal/Limit.v's [lim_counit_component_strict] at this
-   oracle, and the same statement is accepted at an arbitrary
-   [HasLimitsOfShape] and at the pre-existing [Sets] oracle.  What carries
-   content is [coneset_lim_leg] above, which names [cone_leg_at]. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example coneset_counit (j : J) :
   transform[lim_counit (ConeSet_HasLimitsOfShape J) F] j
   = cone_leg_at F j ∘ id := eq_refl.
 
-(* The forward transposition, at the setoid grade.  Its [eq_refl] form is
-   refused at CONVERSION and is pinned in the probe.  The header says what
-   is and is not localized: the [ACone] round trip's leg family does return
-   on the nose, but these two sides differ already at a point, so the
-   refusal is not attributed to the coherence field. *)
+(*
+   本节说明 Cone 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coneset_adj_to_is_transpose (X : obj[Sets]) (p : ACone X F) :
   to (@adj _ _ _ _ (ConeSet_Diagonal_Limit_Adjunction J) X F)
      (snd (Cone_Natural_Transform F X) p)
@@ -321,11 +317,11 @@ Section Karoubi.
 Context {X : SetoidObject}.
 Context (e : X ~{Sets}~> X).
 
-(* Instance/Sets/Karoubi.v's fixed-point sub-setoid, recorded as the
-   [(id, e)] equalizer the issue names.  No idempotency is required.  The
-   carrier is spelled [e a ≈ a], so this order costs two [symmetry] steps
-   MORE than [(e, id)] does; the third, in the uniqueness obligation, is
-   needed at either order.  See the header. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition karoubi_med {Z : SetoidObject} (h : Z ~{Sets}~> X)
   (Hh : @id Sets X ∘ h ≈ e ∘ h) : Z ~{Sets}~> sets_split_obj e := {|
   morphism := fun z => (h z; _)
@@ -355,10 +351,11 @@ Context (D : Diagram G Sets).
 Definition tuple_compat (x : ∀ i : G, D i) : Type :=
   ∀ (i j : G) (e : edges i j), dedge D e (x i) ≈ x j.
 
-(* The bridge, and the section's only new mathematical content: a family
-   compatible on generators is compatible along every path.  Two smaller
-   proofs sit below it -- [tuple_obj]'s setoid obligation and the
-   [dpath_fmap] step inside [tuple_bwd]. *)
+(*
+   本节说明 Cone 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tuple_compat_paths (x : ∀ i : G, D i) (H : tuple_compat x)
   {i j : G} (p : tlist edges i j) : dpath D p (x i) ≈ x j.
 Proof.

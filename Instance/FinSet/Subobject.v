@@ -53,9 +53,11 @@ Section FinSetImages.
 Context {m n : nat}.
 Context (f : Fin.t m → Fin.t n).
 
-(* The hit predicate: k is in the image when some a of the domain is
-   carried to it.  [fin_existsb] decides this, and its soundness lemma
-   returns the least witness as DATA, which is what [im_least] consumes. *)
+(*
+   本节说明 Subobject 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition finset_hit : Fin.t n → bool :=
   fun k => fin_existsb (fun a : Fin.t m => fin_eqb (f a) k).
 
@@ -186,14 +188,11 @@ Example finset_product_two_three :
 (* The third arithmetic clause, 2 + 3 = 5, is [ex11_coproduct_five] above
    and is not restated here. *)
 
-(* The four codes of the power object of 2, named by their POSITIONS in
-   [Fin.t (Pow 2)] rather than by [fin_tabulate] of a characteristic
-   function, and each read out through [finpow_mem] at both elements of
-   the base.  [finpow_two_is_Pow] pins the two readings of the index type
-   together.  The bit table is the enumeration:
+(*
+   本节说明 Subobject 相关定义、性质与动机。
 
-       position 0 -> {0,1}   position 1 -> {0}
-       position 2 -> {1}     position 3 -> {} *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example finpow_two_is_Pow : finpow 2%nat = @Pow FinSet FinSet_Topos 2%nat
   := eq_refl.

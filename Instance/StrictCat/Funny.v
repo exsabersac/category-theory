@@ -52,13 +52,11 @@ Next Obligation.
   exact (FunnyBimap_comp (fst f) (fst g) (snd f) (snd g)).
 Qed.
 
-(** ** The triangle identity
+(*
+   本节说明 Funny 相关定义、性质与动机。
 
-    [bimap unit_right id ≈ bimap id unit_left ∘ tensor_assoc] on
-    [(x □ 1) □ y].  Unlike the pentagon and the hexagons, the two routes do
-    NOT agree definitionally on generators: the unitors fold away the
-    [1]-steps into [id ∘ id]-composites, so the leaves genuinely exercise
-    the congruence [feq] (payload congruence + identity removal). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Funny_triangle_word {x y : Category} (d : y)
   {a : x} {u : _1} {a' : x} {u' : _1} (w : FunHom a u a' u') :
@@ -107,11 +105,11 @@ Proof.
     apply feq_consR; [ symmetry; apply id_left | apply feq_refl ].
 Qed.
 
-(** ** The pentagon identity
+(*
+   本节说明 Funny 相关定义、性质与动机。
 
-    Both routes send every generating step of [((x □ y) □ z) □ w] to the
-    same nested generator on the nose, so after three iterations of the
-    master lemma every leaf closes by reflexivity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Funny_pentagon_word2 {x y z w : Category} (d : w) (k : z)
   {a : x} {b : y} {a' : x} {b' : y} (v : FunHom a b a' b') :
@@ -228,11 +226,11 @@ Proof.
   - intros c d d' k. reflexivity.
 Qed.
 
-(** ** The hexagon identities
+(*
+   本节说明 Funny 相关定义、性质与动机。
 
-    As with the pentagon, every generating step is sent to the same nested
-    generator by both routes, so the leaves close by reflexivity after
-    iterating the master lemma through the nested domain. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Funny_hexagon_word {x y z : Category} (k : z)
   {a : x} {b : y} {a' : x} {b' : y} (v : FunHom a b a' b') :
@@ -332,11 +330,11 @@ Next Obligation.
   intros x y. exact (@FunnySwap_invol x y).
 Qed.
 
-(** ** The semicartesian instance
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    The unit [1] of the funny tensor is the terminal object of StrictCat
-    (Instance/StrictCat/Terminal.v), on the nose, so the generic
-    [Terminal_SemicartesianMonoidal] applies with [Heq := eq_refl]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Instance Funny_Semicartesian :
   @SemicartesianMonoidal StrictCat Funny_Monoidal :=

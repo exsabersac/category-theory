@@ -37,10 +37,11 @@ Require Import Category.Instance.Rng.
 Require Import Category.Instance.Mod.
 Require Import Category.Structure.AbCategory.
 Require Import Category.Theory.Algebra.Rig.
-(* The integer witness of §G needs the [Z] scope; Theory/Algebra/Rig.v
-   takes the same import, this is the spelling the tree uses, and on Rocq
-   9.1 it emits the tree-wide "From Coq" deprecation warning, as that
-   file does. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
@@ -55,10 +56,11 @@ Section BalancedTensor.
 
 Context {X : RingObject}.
 
-(* [N] is a RIGHT X-module and [M] a LEFT X-module.  The two scalar
-   arguments are of the SAME type: the carrier of the opposite ring's
-   additive setoid is the carrier of the ring's, on the nose, and that is
-   what lets the balance rule below be stated with no transport. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (N : RModObject (Ring_op X)).
 Context (M : RModObject X).
 
@@ -70,10 +72,11 @@ Example bal_scalars_agree :
   carrier (rig_setoid (ring_rig (Ring_op X)))
     = carrier (rig_setoid (ring_rig X)) := eq_refl.
 
-(* Formal sums over the two carriers: generators, zero, sum, negation.
-   There is NO formal scalar former; the result is an abelian group, and
-   any residual module structure is bolted on afterwards through the
-   universal property. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive bsum : Type :=
   | bs_gen  : NC → MC → bsum
   | bs_zero : bsum
@@ -149,9 +152,11 @@ Definition BalTensor : AbObject := {|
 
 (** ** Balanced biadditive maps and the universal property *)
 
-(* A map into an abelian group, additive in each variable and balanced
-   over X.  Preservation of zero and negation in each variable follows,
-   as always for monoid maps between groups, and is not demanded. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record BalBiadditive (A : AbObject) := {
   bal_map : NC → MC → carrier (cmon_setoid A);
   bal_respects : Proper (equiv ==> equiv ==> equiv) bal_map;
@@ -192,11 +197,11 @@ Lemma bal_med_respects {A : AbObject} (β : BalBiadditive A) (s t : bsum) :
   bs_eq s t → bal_med_fun β s ≈ bal_med_fun β t.
 Proof.
   intro He.
-  (* Since the PR "algebraic carriers are sets" (2026-09-17) [bs_eq] is a
-     [Prop] inductive and eliminates only into [Prop] goals, while `≈` is
-     [Type]-valued.  [pequiv_to] puts a [Prop] goal in front of the
-     elimination; each branch returns to `≈` with [pequiv_from].  The twelve
-     cases and what discharges each are exactly as before. *)
+  (*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   apply pequiv_to.
   induction He as
     [ n n' m m' Hn Hm
@@ -344,10 +349,11 @@ Arguments bal_gen_zero_r {X} N M n.
 
 (** *** The Ab-enrichment of a module category *)
 
-(* Instance/Mod.v supplies [rmod_hom_add] and [rmod_hom_zero] but no
-   negation, and the name [rmod_hom_neg] is taken by
-   Instance/FdVect/DoubleDual.v (Instance/Mod/Closed.v records
-   the same collision and works around it with a file-local name). *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition rmod_hom_negate {R : RingObject} {M N : RModObject R}
         (f : RModHom M N) : RModHom M N := {|
   rm_hom := ab_hom_neg (rm_hom f)
@@ -358,12 +364,11 @@ Next Obligation.
   symmetry; apply rm_smul_neg_r.
 Qed.
 
-(* Instance/Mod/Coextension.v records that the tree has no
-   [AbEnriched (RMod R)], only Instance/Mod.v's [Preadditive].  It
-   is one negation away, and the hom-group below is Adjunction/
-   Additive.v's [hom_ab] read at it, so nothing is rebuilt.  A plain
-   [Definition], not an [Instance]: this is a reading of a hom-setoid,
-   not something resolution should search for. *)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition RMod_AbEnriched (R : RingObject) :
   AbEnriched (RMod R) := {|
   abenriched_preadditive := RMod_Preadditive R;
@@ -390,9 +395,11 @@ Local Notation EE := (bimodule_right_RMod E).
 
 (** *** The right S-action on N ⊗_R E *)
 
-(* The action of s is the mediator of (n, e) ↦ n ⊗ (e ⊲ s).  The ONLY
-   law of the bimodule the balance clause consumes is [bm_compat]; no
-   centrality and no commutativity appears anywhere in this section. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition rt_bilin_act (N : RModObject (Ring_op R)) (s : SC) :
   BalBiadditive N (bm_left E) (BalTensor N (bm_left E)) := {|
   bal_map := fun n e => bs_gen n (bm_rsmul E e s)
@@ -464,10 +471,11 @@ Proof.
            (be_add_r n (bm_rsmul E e s) (bm_rsmul E e s'))).
 Qed.
 
-(* The associativity law is stated over [Ring_op S], where the product
-   [rig_mul (ring_rig (Ring_op S)) s s'] reduces to [rig_mul S s' s]; on
-   generators the two sides are e ⊲ (s' s) and (e ⊲ s') ⊲ s, which is
-   [bm_rsmul_assoc] verbatim.  Associativity ONLY. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rt_act_assoc (N : RModObject (Ring_op R)) (s s' : SC)
   (x : carrier (cmon_setoid (BalTensor N (bm_left E)))) :
   rt_act N (rig_mul (ring_rig (Ring_op S)) s s') x
@@ -489,12 +497,11 @@ Proof.
   exact (be_gen (reflexivity n) (bm_rsmul_one E e)).
 Qed.
 
-(* N ⊗_R E as an object of [ModR S].  The constructor is named
-   explicitly with its ring argument: a record literal here elaborates
-   the scalar argument's type against [S] and infers the parameter to be
-   [S] rather than [Ring_op S], which silently asks the associativity
-   field for the WRONG multiplication order.  This is the trap
-   Instance/Mod.v records for [bimodule_right_RMod]. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RTensor (N : RModObject (Ring_op R)) :
   RModObject (Ring_op S) :=
   @Build_RModObject (Ring_op S)
@@ -598,9 +605,11 @@ Example tw_fmap_gen {N N' : RModObject (Ring_op R)}
 
 (** *** hom_S(E, M) and its right R-action *)
 
-(* The underlying abelian group is Adjunction/Additive.v's [hom_ab] read
-   at the enrichment above, so its carrier, zero, addition and negation
-   are [RMod_Preadditive]'s own; nothing is rebuilt. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hs_group (M : RModObject (Ring_op S)) : AbObject :=
   hom_ab (RMod_AbEnriched (Ring_op S)) EE M.
 
@@ -613,10 +622,11 @@ Example hs_group_plus (M : RModObject (Ring_op S)) :
 Example hs_group_zero (M : RModObject (Ring_op S)) :
   cmon_zero (hs_group M) = @rmod_hom_zero (Ring_op S) EE M := eq_refl.
 
-(* The right R-action, by TRANSLATION through E's LEFT R-action:
-   (f ⊲ r)(e) = f (r · e).  This is Instance/Mod/Coextension.v's idiom,
-   with the translating action supplied by the bimodule instead
-   of by the ring's own multiplication. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition hs_act (M : RModObject (Ring_op S)) (r : RC)
   (f : EE ~{ModR S}~> M) : EE ~{ModR S}~> M := {|
   rm_hom := {| cmon_map := {| morphism := fun e =>
@@ -1021,10 +1031,11 @@ Context {R S : RingObject}.
 Local Notation RC := (carrier (rig_setoid (ring_rig R))).
 Local Notation SC := (carrier (rig_setoid (ring_rig S))).
 
-(* A morphism of (R,S)-bimodules: a homomorphism of the LEFT R-modules
-   that additionally commutes with the right S-action.  Nothing about
-   the left action is restated — [bh_hom] is a coercion, and the record
-   has exactly one field of its own. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record BimodHom (E E' : Bimodule R S) := {
   bh_hom :> RModHom (bm_left E) (bm_left E');
 
@@ -1100,9 +1111,11 @@ Next Obligation. intros E E' f e; simpl; reflexivity. Qed.
 Next Obligation. intros E E' E'' E''' f g h e; simpl; reflexivity. Qed.
 Next Obligation. intros E E' E'' E''' f g h e; simpl; reflexivity. Qed.
 
-(* A bimodule map IS a map of the associated RIGHT S-modules, and the
-   proof is its own [bh_right] field with the two arguments swapped —
-   the flip that [bimodule_right_RMod] performs on the action. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition bimod_hom_right {E E' : Bimodule R S}
   (h : BimodHom E E') :
   bimodule_right_RMod E ~{ModR S}~> bimodule_right_RMod E' := {|
@@ -1119,10 +1132,11 @@ Example bimodcat_id_map (E : Bimodule R S)
 
 (** *** The tensor as a bifunctor of both variables *)
 
-(* Functoriality in the BIMODULE argument.  Scout B's item 1(ii): this
-   is a PREREQUISITE of Mac Lane's Theorem 3, not an output of it — the
-   theorem forces the arrow action of the RIGHT adjoint, and says
-   nothing about the arrow action of the left one. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition bt_map_bal {N N' : RModObject (Ring_op R)}
   {E E' : Bimodule R S} (f : N ~{ModR R}~> N') (h : E ~{BimodCat}~> E') :
   BalBiadditive N (bm_left E) (BalTensor N' (bm_left E')) := {|
@@ -1224,9 +1238,11 @@ Example bimod_tensor_partial_gen (E : Bimodule R S)
 
 (** *** Mac Lane part (b): the adjunction with a parameter *)
 
-(* The partial functor at E and [TensorWith E] agree on objects and on
-   generators, so the hom-setoid isomorphism of part (a) is reused
-   verbatim; both naturality obligations close by [reflexivity]. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition bt_partial_adj (E : Bimodule R S) :
   Partial_l BimodTensor E ⊣ HomS E.
 Proof.
@@ -1303,11 +1319,11 @@ Arguments bal_gen_left {X} N M m.
 
 (** *** The left R-action on a balanced tensor over S *)
 
-(* This engine is shared: §D's tensor of two bimodules and §E's
-   left-module mirror are its two instantiations.  Given a bimodule
-   _R E _S and a LEFT S-module N, the balanced tensor E ⊗_S N carries a
-   left R-action r · (e ⊗ n) := (r · e) ⊗ n, whose balance clause is
-   again [bm_compat] and nothing else. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BimoduleLeftTensor.
 
@@ -1449,10 +1465,11 @@ Arguments LTensor {R S} E N.
 
 (** *** The tensor of two bimodules *)
 
-(* For _R E _S and _S E1 _T, the balanced tensor E ⊗_S E1 carries BOTH
-   residual actions on ONE group: the left R-action of §D's engine and
-   the right T-action of §B's, and they commute for a reason with no
-   content — on a generator both sides are (r · e) ⊗ (e1 ⊲ t). *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BimoduleTensorBimodule.
 
@@ -1611,10 +1628,11 @@ Arguments bimodule_adjunction_composite {R S T} E E1.
 
 (** *** The associativity comparison, and part (c)'s conclusion *)
 
-(* (N ⊗_R E) ⊗_S E1  ≅  N ⊗_R (E ⊗_S E1), in [ModR T].  Both legs are a
-   mediator of a mediator: the outer balanced map sends (x, e1) to the
-   value at x of the inner one, so every clause below is [bal_hom_ext] at
-   one or two levels with a reflexivity on generators at the bottom. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TensorAssocAt.
 
@@ -1871,10 +1889,11 @@ Context (E1 : Bimodule S T).
 Local Notation EE := (bimodule_right_RMod E).
 Local Notation BTB := (BimodTensorBimod E E1).
 
-(* Two homomorphisms out of (N ⊗_R E) ⊗_S E1 agreeing on the DOUBLE
-   generators agree, and dually out of N ⊗_R (E ⊗_S E1).  Each is
-   [bal_hom_ext] applied twice, the inner application through the
-   one-variable readings of the generator former. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ta_double_ext (N : RModObject (Ring_op R)) (A : AbObject)
   (u v : AbHom (BalTensor (RTensor E N) (bm_left E1)) A) :
   (∀ n e e1,
@@ -1937,12 +1956,11 @@ Arguments tensor_assoc_iso {R S T} E E1.
 
 (** *** Transporting an adjunction along an isomorphism of left adjoints *)
 
-(* [adjunction_along_left_iso] — a functor naturally isomorphic to a left
-   adjoint is a left adjoint with the SAME right adjoint — was built here
-   for part (c) as its first consumer and moved, verbatim and still
-   [Defined] (plus a section-local [Obligation Tactic := idtac], this
-   file's setting), to the end of Theory/Adjunction.v by #431, its second
-   consumer; [aali_cell], [aali_iso], [aali_to_is_transpose] moved too. *)
+(*
+   本节说明伴随、函子、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** *** Mac Lane's "describe the composite" *)
 
@@ -1952,9 +1970,11 @@ Context {R S T : RingObject}.
 Context (E : Bimodule R S).
 Context (E1 : Bimodule S T).
 
-(* The composite adjunction IS the adjunction of the tensor of the two
-   bimodules, up to the natural isomorphism above — on the left by
-   transport, and then on the right by uniqueness of right adjoints. *)
+(*
+   本节说明伴随、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition bimodule_tensor_bimod_adjunction :
   TensorWith (BimodTensorBimod E E1) ⊣ (HomS E ◯ HomS E1) :=
   adjunction_along_left_iso
@@ -1988,14 +2008,11 @@ Arguments bimodule_hom_composite_iso {R S T} E E1.
 
 (** ** E. The left-module mirror, and Riehl's Corollary 4.6.10 *)
 
-(* Riehl, "Category Theory in Context", §4.6 Corollary 4.6.10, printed
-   p. 169: for an R-S bimodule M the functor M ⊗_S − is right exact,
-   because Corollary 4.6.9 makes a left adjoint between abelian
-   categories right exact.  The adjunction it needs is the LEFT-module
-   one, S-Mod ⇄ R-Mod, and it is §B read on the other side: the same
-   balanced tensor of §A, with the residual action taken from E's LEFT
-   R-module structure and the hom-module translated through E's RIGHT
-   S-action. *)
+(*
+   本节说明阿贝尔范畴、伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Multiplication by a scalar as an endomorphism of the underlying
    group, over an ARBITRARY ring.  [bth_lmul] of §B is its instance at
@@ -2440,15 +2457,11 @@ End BimoduleLeftAdjunction.
 
 (** *** Riehl 4.6.10, at the strength the tree can state *)
 
-(* Riehl's conclusion is right exactness; a whole-tree sweep for
-   right-exactness or finite-colimit vocabulary returns three lines, all
-   prose in unrelated headers, so there is no [RightExact] and no
-   [PreservesFiniteColimits] to inhabit.  What IS available is
-   Structure/Limit/Preservation.v's [PreservesAllColimits] through
-   Adjunction/Continuity.v, and preservation of ALL colimits is
-   STRICTLY STRONGER than right exactness — it is not the same
-   statement, and the difference is disclosed rather than glossed.
-   Riehl's Corollary 4.6.9 additivity clause is NOT delivered. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition bimodule_left_tensor_preserves_colimits
   {R S : RingObject} (E : Bimodule R S) :
@@ -2467,28 +2480,21 @@ Definition bimodule_tensor_bimod_preserves_colimits
   PreservesAllColimits (TensorWith (BimodTensorBimod E E1)) :=
   left_adjoint_preserves_colimits (bimodule_tensor_bimod_adjunction E E1).
 
-(* [Arguments] declared inside a [Section] do not survive its [End], so
-   §C's two settings for the projections of [BimodHom] are gone outside
-   it; they are restored here, before §F's first use. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Arguments bh_hom {R S E E'} b.
 Arguments bh_right {R S E E'} b m s.
 
 (** ** F. The second closure, and the two-variable adjunction *)
 
-(* Riehl, "Category Theory in Context", §4.4 Definition 4.4.7: a
-   two-variable adjunction is a triple F : A × B → C, G : A^op × C → B,
-   H : B^op × C → A with C(F(a,b),c) ≅ B(b,G(a,c)) ≅ A(a,H(b,c)).  For
-   [BimodTensor] the first leg is §C's [bimodule_parametrized_adjunction]
-   and the bifunctor G is [bimodule_hom_bifunctor]; what is added here is
-   the SECOND closure, the right adjoint of ⊗ in the MODULE variable, and
-   with it the third leg through Adjunction/Parameter.v's
-   [mutually_right_adjoint].
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   The second closure of a bimodule tensor is again a BIMODULE: for a
-   right R-module N and a right S-module M the abelian group of group
-   homomorphisms N → M carries a left R-action (r · f)(n) = f (n ⊲ r) and
-   a right S-action (f ⊲ s)(n) = (f n) ⊲ s, and these commute for a
-   reason with no content — both sides send n to (f (n ⊲ r)) ⊲ s. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomAbBimodule.
 
@@ -2864,13 +2870,11 @@ Arguments HomAbFunctor {R S} N.
 
 (** *** All three legs of Riehl's Definition 4.4.7 *)
 
-(* The mirror hypothesis of Adjunction/Parameter.v is a family
-   [∀ x, Partial_r F x ⊣ H x], which is exactly what §F has just built;
-   [mirror_family] packages it, and [mutually_right_adjoint] then
-   supplies Riehl's Proposition 4.4.6(iii) — her Exercise 4.4.ii — as an
-   inhabitant of Adjunction/Right.v's own [AdjointOnTheRight].  With
-   §C's [pa_adj] that is all three legs of Definition 4.4.7 for
-   [BimodTensor]. *)
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BimoduleTwoVariable.
 
@@ -2900,9 +2904,11 @@ Example btv_right_obj (M : RModObject (Ring_op S))
 
 End BimoduleTwoVariable.
 
-(* Riehl's third leg, with its two hom-setoids written out: a map of
-   bimodules E → hom_Ab(N, M) is the same thing as a map of right
-   R-modules N → hom_S(E, M).  The term is the class's own [aor]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition bimodule_third_leg {R S : RingObject}
   (M : RModObject (Ring_op S)) (E : Bimodule R S)
   (N : RModObject (Ring_op R)) :
@@ -2918,15 +2924,11 @@ Definition bimodule_third_leg {R S : RingObject}
 
 (** ** G. A concrete witness at a named pair of rings *)
 
-(* Instance/Mod.v's [Ring_Bimodule] makes every ring an
-   (R,R)-bimodule over itself and its [Int_Bimodule] is that at ℤ, so
-   the whole development instantiates with no new algebra.  Everything
-   below COMPUTES: the actions, the unit, the counit and both legs of the
-   associativity comparison reduce on closed integers.  The stdlib
-   identifier [Z] is never named (only the [%Z] numerals carry the
-   scope) — the binders go through the ring's own carrier and the
-   arithmetic through its own rig laws — so this section adds no [Require]
-   to the file. *)
+(*
+   本节说明 Bimodule 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section IntegerWitness.
 

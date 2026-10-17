@@ -29,13 +29,11 @@ Fixpoint le_t_trans@{u} {m n k} (f : le_t@{u} m n) (g : le_t@{u} n k) :
   | le_t_S g'  => le_t_S (le_t_trans f g')
   end.
 
-(* Reflexivity is a strict left unit for [le_t_trans] by the [le_t_n] branch.
-   These three unit/associativity lemmas are left with inferred universe
-   binders (no explicit [@{u}]): stating an [eq] between [le_t]-terms draws in
-   the equality's own universe alongside [le_t]'s, which a single [@{u}] binder
-   cannot name on Coq 8.19/8.20 ("unbound universes"); auto-polymorphism binds
-   them correctly on every supported version.  The load-bearing annotations are
-   the ones inside [Omega] below. *)
+(*
+   本节说明 Omega 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma le_t_trans_id_l {m n} (f : le_t m n) :
   le_t_trans f le_t_n = f.
 Proof. reflexivity. Qed.

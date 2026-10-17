@@ -78,10 +78,11 @@ Proof. constructor. intros x y f g m; simpl; reflexivity. Defined.
 
 (** ** 2. Watts' theorem, the book's text form *)
 
-(* SAFT at (RMod R)^op: complete because RMod R is cocomplete, cogenerated
-   by R, well-powered because RMod R is co-well-powered under [U].  The
-   continuity of [Ab_Forget ◯ T] is T's composed with [Ab_Forget]'s; the
-   Sets level [pa] is forced (the header's UNIVERSES). *)
+(*
+   本节说明 Watts 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition watts_theorem_sets@{c o x a pk pa ra rt +}
   {R : RingObject@{c c c}} (T : (RMod@{o x c c c} R)^op ⟶ Ab@{a c})
   (contT : @PreservesImageLimit@{o c a c pk c pa c}
@@ -184,9 +185,11 @@ Definition watts_ex3@{a c p o x b g pk pa ra rt +}
     (watts_ex3_sets T contT G U
        : Representable@{ra rt pa o c} (Ab_Forget ◯ T)).
 
-(* Exercise 3 as the book words it: "Use Exercise 2(b)".  The premises
-   [HI] and [HC] are Exercise 2(b)'s "Q/Z ... is known to be an injective
-   cogenerator of Ab", taken as hypotheses (Instance/Mod/Cogenerator.v). *)
+(*
+   本节说明 Watts 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition watts_ex3_QZ@{r o x b pk pa ra rt +}
   {R : RingObject@{r r r}} (T : RMod@{o x r r r} R ⟶ Ab@{b r})
   (AF : @AdditiveFunctor (RMod@{o x r r r} R) Ab@{b r}
@@ -233,11 +236,11 @@ Proof.
   intros M N f m; simpl. reflexivity.
 Defined.
 
-(* The additive upgrade with NO hypothesis: [rmod_representable], R
-   representing the forgetful functor to sets, carried along
-   [RMod_Forget_equiv] to a representation of [Ab_Forget ◯ RMod_Forget_Ab
-   R], and upgraded.  The representing object is [Ring_RMod R] by
-   conversion, so the statement names it. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition watt_at_forget@{c o x b +} (R : RingObject@{c c c}) :
   @Isomorphism (@Fun (RMod@{o x c c c} R) Ab@{b c})
     (HomAb (RMod_AbEnriched R) (Ring_RMod R)) (RMod_Forget_Ab R) :=
@@ -298,10 +301,11 @@ Definition watts_theorem_coext@{c o x b +} (R : RingObject@{c c c})
   watts_theorem (HomAbForget R A) (HomAbForget_additive R A)
     (Continuous_PreservesImageLimit (HomAbForget_continuous R A)) U.
 
-(* The coextension adjunction represents the witness directly: its hom
-   bijection Hom_R(M, CoextObj R A) ≅ Hom_Ab(U M, A), natural in M.  The
-   naturality square, evaluated at a ∈ N and r ∈ R, is R-linearity of f
-   and g together with 1 · r ≈ r. *)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition coext_representable@{c o x b ra rt +} (R : RingObject@{c c c})
   (A : AbObject@{c c c}) :
   Representable@{ra rt x o c}
@@ -368,10 +372,11 @@ Proof.
   intros M N f m; simpl. reflexivity.
 Defined.
 
-(* Ab(ℤ, X) ≅ X, natural in X, as an isomorphism of Ab-valued functors:
-   the additive upgrade at T := Id[Ab], fed the representation of
-   [Ab_Forget] by the free group on one point that
-   Adjunction/Representability/Sets.v reads off [free_ab_adjunction]. *)
+(*
+   本节说明伴随、函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ab_hom_Z_iso@{a c +} :
   @Isomorphism (@Fun Ab@{a c} Ab@{a c})
     (HomAb Ab_AbEnriched (FreeAb SetsOne)) Id[Ab@{a c}] :=
@@ -403,10 +408,11 @@ Definition watts_theorem_Fz@{c o x a pk pa ra rt +}
 
 (** ** 6. What the unconditional theorem subsumes *)
 
-(* [watts_theorem]'s statement, derived from Instance/Mod/Watts/
-   Unconditional.v's [watts_theorem_unconditional] without the special
-   adjoint functor theorem: the continuity hypothesis converted by
-   [PreservesImageLimit_Continuous], and [U] carried but not consumed. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition watts_theorem_via_unconditional@{c o x a pk pa +}
   {R : RingObject@{c c c}} (T : (RMod@{o x c c c} R)^op ⟶ Ab@{a c})
   (AF : @AdditiveFunctor ((RMod@{o x c c c} R)^op) Ab@{a c}
@@ -419,10 +425,11 @@ Definition watts_theorem_via_unconditional@{c o x a pk pa +}
       (CoHomAb (RMod_AbEnriched R) A) T } :=
   watts_theorem_unconditional T AF (PreservesImageLimit_Continuous contT).
 
-(* The text form's witness M ↦ Hom_Ab(U M, A) with NO [Untruncate]: the
-   module the unconditional theorem returns is the coextension, up to
-   isomorphism in RMod R ([repr_unique_iso] against
-   [coext_representable]). *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition watts_unconditional_coext@{c o x b +} (R : RingObject@{c c c})
   (A : AbObject@{c c c}) :
   projT1 (watts_theorem_unconditional

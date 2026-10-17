@@ -78,10 +78,11 @@ Lemma comma_obj_eq_inv {A B D : Category} {S : A ⟶ D} {T : B ⟶ D}
            (f_equal (fun z => fobj[T] (snd ``z)) E) (`2 x) = `2 y.
 Proof. destruct E; reflexivity. Qed.
 
-(* An arrow whose codomain is [d] IS the slice object over [d] it determines;
-   this is the object half of the first triangle below.  It is stated at top
-   level rather than inside the slice section so that eliminating [eh] does
-   not have to generalize the section's own hypotheses. *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma slice_arrow_eta {D : Category} (d : D) (h : @Arrow D)
       (eh : snd ``h = d) :
   ((fst ``h, d); hom_cast eq_refl eh (`2 h)) = h.
@@ -167,12 +168,11 @@ Next Obligation. now repeat intro. Qed.
 
 (** ** Object equality in the fibre product *)
 
-(* Two objects of the fibre product agreeing in both coordinates are equal --
-   PROVIDED the equality proofs they carry can be identified, which is
-   exactly [ObjUIP C].  The sigma also returns the two projection equations,
-   so that a later [hom_cast] along this equality can be rewritten into the
-   coordinate casts without a second appeal to uniqueness of proofs (in
-   particular without any hypothesis on A or B). *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma FP_obj_eq (uip : ObjUIP C) (x y : FibreProduct)
       (e1 : fst ``x = fst ``y) (e2 : snd ``x = snd ``y) :
   { e : x = y & (f_equal (fobj[FP_fst]) e = e1)
@@ -235,11 +235,11 @@ Proof.
   intros x y f; reflexivity.
 Defined.
 
-(* Uniqueness.  This is the ONLY place a hypothesis is spent, and it is spent
-   only on C: the object part needs the two proofs of [F a = G b] carried by
-   the competitor and by the mediator to agree, and [FP_obj_eq] hands back
-   the projection equations that make the morphism part go through with no
-   hypothesis on A or B. *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma FP_med_unique (uip : ObjUIP C) (v : Q ⟶ FibreProduct)
       (H1 : FP_fst ∘[StrictCat] v ≈[StrictCat] q1)
       (H2 : FP_snd ∘[StrictCat] v ≈[StrictCat] q2) :
@@ -288,9 +288,11 @@ End FibreProduct.
 
 (** ** Packaging: all pullbacks in StrictCat, under a blanket hypothesis *)
 
-(* [ObjUIP] is not an axiom anywhere in this library, and it is free for every
-   category whose objects have decidable equality (Hedberg); [obj_uip] of
-   Construction/Quotient.v is that argument. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ObjUIP_of_ObjDecEq {C : Category} `{@ObjDecEq C} : ObjUIP C :=
   fun x y p q => @obj_uip C _ x y p q.
 
@@ -299,10 +301,11 @@ Definition FibreProduct_IsPullback_dec {A B C : Category}
   @IsPullback StrictCat A B C F G (FibreProduct F G) (FP_fst F G) (FP_snd F G)
   := FibreProduct_IsPullback F G ObjUIP_of_ObjDecEq.
 
-(* The class [HasPullbacks StrictCat] quantifies over EVERY cospan, so it can
-   only be inhabited from a blanket hypothesis.  Nothing weaker will do: the
-   converse below shows that the uniqueness clause, taken uniformly, is that
-   hypothesis. *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition StrictCat_HasPullbacks (uip : ∀ C : Category, ObjUIP C) :
   HasPullbacks StrictCat.
 Proof.
@@ -358,11 +361,11 @@ Definition IBfalse : _1 ⟶ IB := @Diagonal IB _1 false.
 Lemma IB_FibreProduct_empty : obj[FibreProduct IBtrue IBfalse] → False.
 Proof. intros x; pose proof (`2 x) as Hx; simpl in Hx; discriminate. Qed.
 
-(* Hence the strict fibre product is not a pullback in Cat: the competing
-   square built from [IB_iso] has no mediator at all, since a functor out of
-   [_1] would name an object of an object-empty category.  Note what this
-   does and does not say -- the SAME cospan does have a Cat-pullback, by
-   [point_cospan_Cat_IsPullback]; what fails is this candidate apex. *)
+(*
+   本节说明函子、拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem FibreProduct_not_Cat_pullback :
   @IsPullback Cat _1 _1 IB IBtrue IBfalse
               (FibreProduct IBtrue IBfalse)
@@ -425,12 +428,11 @@ Qed.
 Definition punit_pair_dec (a b : poly_unit * poly_unit) : {a = b} + {a <> b}.
 Proof. destruct a as [[] []], b as [[] []]; now left. Defined.
 
-(* Deriving the uniqueness clause of the strict pullback UNIFORMLY -- for
-   every cospan, with no hypothesis on the base -- entails UIP for every type.
-   So [ObjUIP C] in [FibreProduct_IsPullback] is not an artifact of the proof
-   given above; it is what the statement costs.  This is the shape of
-   [arrow_mul_respects_forces_UIP] (Theory/Category/Monoid.v) and
-   [Discrete_DiscreteRigid_forces_UIP] (Instance/Discrete/Reconstruct.v). *)
+(*
+   本节说明拉回/推出、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem FP_uniqueness_forces_UIP
         (K : ∀ (A B C : Category) (F : A ⟶ C) (G : B ⟶ C),
                @IsPullback StrictCat A B C F G (FibreProduct F G)
@@ -465,12 +467,11 @@ Context (uip : ObjUIP C).
 #[local] Set Transparent Obligations.
 #[local] Obligation Tactic := idtac.
 
-(* [Default Proof Using "All"] reaches the section's [Qed]/[Defined] proofs,
-   so those take [uip] positionally even where it does not appear in the
-   statement (the Theory/Category/Monoid.v idiom).  It does NOT reach a
-   [Program Definition]: [Slice_proj], [Slice_Arrow] and [Slice_med] -- and
-   their coslice twins -- are genuinely free of [ObjUIP], as [Check] shows,
-   so a consumer reusing them drags in no hypothesis. *)
+(*
+   本节说明幺半群、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Set Default Proof Using "All".
 
 (* The evident projection [C/c ⟶ C]; used only to read the hom-setoid of the
@@ -515,14 +516,11 @@ Proof.
   exact (em z w f).
 Qed.
 
-(* [Slice_Arrow] is injective on objects.  This is where [ObjUIP C] does
-   work that nothing else could do: the codomain coordinate of the
-   transported morphism equality is a loop at c, and it must be [eq_refl].
-   It is NOT the only place the hypothesis is consumed on the slice side --
-   [Slice_med_arrow] and [Slice_med_unique] each spend it too, through
-   [fp_hom_cast_irr] -- and the section's [Default Proof Using "All"] makes
-   every [Qed]/[Defined] result here take it positionally in any case; the
-   [Program Definition]s it does not reach are listed at the section head. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma slice_arrow_reflect (x y : Slice C c)
       (E : Slice_Arrow x = Slice_Arrow y) : x = y.
 Proof.

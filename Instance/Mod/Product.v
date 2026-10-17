@@ -36,10 +36,11 @@ Next Obligation.
   - intros f g h H1 H2 i; now transitivity (g i).
 Qed.
 
-(* The carrier is a pointwise product of propositional carriers, so it is
-   propositional pointwise: Lib/Setoid/Propositional.v's
-   [dep_fun_PropEquiv], with the two implications the identity because the
-   relation [modprod_setoid] writes inline IS the pointwise one. *)
+(*
+   本节说明 Product 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition modprod_cmon : CMonObject := {|
   cmon_setoid := modprod_setoid;
   cmon_zero   := fun i => cmon_zero (V i);

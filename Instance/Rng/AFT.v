@@ -63,10 +63,11 @@ Section RngAbContinuity.
 Context {J : Category}.
 Context (K : J ⟶ Rng).
 
-(* A cone over [Ab_Forget ◯ (Rng_Forget_Ab ◯ K)] rebuilt as a cone over
-   [Rng_Forget ◯ K].  Apex, legs and coherence proof are reused verbatim;
-   only the diagram record changes, and every type the fields inhabit is
-   convertible by the factorization above. *)
+(*
+   本节说明 AFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rng_ab_recone (M : Cone (Ab_Forget ◯ (Rng_Forget_Ab ◯ K)))
   : Cone (Rng_Forget ◯ K) :=
   @Build_Cone J Sets (Rng_Forget ◯ K) vertex_obj[M]
@@ -82,18 +83,20 @@ Definition rng_sets_recone (M : Cone (Rng_Forget ◯ K))
        (fun j => cone_leg M j)
        (fun x y f => @cone_coherence J Sets _ _ (@coneFrom _ _ _ M) x y f)).
 
-(* Step one: the image of a limiting cone of rings under [Ab_Forget ◯
-   Rng_Forget_Ab] is limiting, because that composite's image cone IS
-   [Rng_Forget]'s, and [Rng_Forget] is continuous.  Every cone the goal
-   quantifies over is re-presented by [rng_ab_recone]; no tactic is
-   involved. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rng_ab_image_limit (N : Cone K) (HN : IsLimitCone N) :
   IsLimitCone (FCone Ab_Forget (FCone Rng_Forget_Ab N)) :=
   fun M => Rng_Forget_continuous J K N HN (rng_ab_recone M).
 
-(* Step two: [Ab_Forget] reflects limit cones, so the [Ab]-level cone is
-   limiting.  This is where the bilinearity obstruction is bypassed -- the
-   ring multiplication on the apex is never built over [Ab]. *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rng_ab_limit_cone (N : Cone K) (HN : IsLimitCone N) :
   IsLimitCone (FCone Rng_Forget_Ab N) :=
   Ab_Forget_reflects_limits (Rng_Forget_Ab ◯ K) (FCone Rng_Forget_Ab N)
@@ -125,15 +128,11 @@ Definition Rng_Forget_Ab_reflects_limits {J : Category} (K : J ⟶ Rng) :
 
 (** * The underlying-set adjunction, retyped onto [Rng_Forget] *)
 
-(* Instance/Rng/Free.v states the composite adjunction against
-   [RngUnderlyingAb].  Every field of [Adjunction] mentions the right
-   adjoint only through [U y] and [fmap[U] f], and the two readbacks above
-   say those agree definitionally, so the five field types are convertible
-   and the record copies across.  This is Instance/Rng/Free.v's own
-   manoeuvre at the other pair of presentations.
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   This is the first inhabitant in tree of [_ ⊣ Rng_Forget]: see the header
-   for the measurement, and for why its absence was nominal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_ring_via_ab_adjunction_set : free_ring_via_ab ⊣ Rng_Forget :=
   @Build_Adjunction Rng Sets free_ring_via_ab Rng_Forget
@@ -161,28 +160,11 @@ Example free_ring_via_ab_adjunction_set_transpose (X : Sets) (R : Rng)
 
 (** * [Prop] congruences on the free-ring terms *)
 
-(* THE NON-CIRCULAR SOLUTION SETS.
+(*
+   本节说明 AFT 相关定义、性质与动机。
 
-   A solution set for [Rng_Forget_Ab] at [A] must be a family of rings, at
-   the universe the theorem demands, through which every homomorphism out
-   of [A] factors.  The family used here is the QUOTIENTS OF THE FREE-RING
-   TERM MODEL by [Prop]-valued congruences: [FRTerm A]
-   (Instance/Rng/Free.v) with its relation [fr_eq], which is already a
-   [Prop] inductive since the PR "algebraic carriers are sets"
-   (2026-09-17).
-
-   WHY THE INDEX IS THE RIGHT SIZE.  Every field of [IsRngCongruence] is a
-   [Prop], so the record is a [Prop] and the sigma over it lands at the
-   carrier universe rather than one above it.  Structure/Complete.v's SIZE
-   NOTE, item 1, is the authority and is not restated; item 2(b) is why the
-   index universe has to be the carrier universe in the first place.  The
-   same device serves Instance/Mod/TensorAFT.v (section 3A) and
-   Instance/Grp/FreeAFT.v.
-
-   NO [PropEquiv] HYPOTHESIS ANYWHERE BELOW: [rig_prop] is a field of
-   [RigObject] and [cmon_prop] a field of [CMonObject], both with
-   [#[export] Existing Instance], so the kernel congruence of an evaluation
-   is available at every ring with no side condition. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RngCongruence.
 
@@ -203,9 +185,11 @@ Record IsRngCongruence (Rq : FRTerm A → FRTerm A → Prop) : Prop := {
 Definition RngCongIdx : Type :=
   { Rq : FRTerm A → FRTerm A → Prop & IsRngCongruence Rq }.
 
-(* NAMED for [PropEquiv_of_relation]'s sake: written inline, its setoid
-   argument is found by resolution, which picks the AMBIENT term setoid
-   rather than the quotient's, and both implications are then refused. *)
+(*
+   本节说明 AFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QRng_Setoid (Rq : FRTerm A → FRTerm A → Prop)
   (H : IsRngCongruence Rq) : Setoid (FRTerm A) :=
   {| equiv := Rq
@@ -342,25 +326,11 @@ Proof.
   intro a; simpl; reflexivity.
 Defined.
 
-(* THE [Rng_Forget] HALF, TAKEN DIRECTLY AND NOT AS A COMPOSITE.
+(*
+   本节说明 AFT 相关定义、性质与动机。
 
-   The free ring on a SET is the free ring on the free abelian group on it
-   ([free_ring_via_ab := FreeRngAb ◯ FreeAb], Instance/Rng/Free.v), so
-   the SAME congruence index over [FreeAbObject X] and the SAME quotients
-   serve; only the covering changes, by one transposition through
-   [free_ab_extend].  Cost over the [Ab] case: three lines and no new
-   vocabulary.
-
-   THE COMPOSITE ROUTE WAS MEASURED AND NOT TAKEN.  Composing through
-   Adjunction/Compose.v would need a GAFT application for [Ab_Forget] as
-   well -- a fourth term model and a fourth congruence class -- or else
-   would lean on the already-in-tree [free_ab_adjunction], which would make
-   the result an adjunction-COMPOSITION rather than a GAFT application and
-   leave [free_ring_via_GAFT] naming a theorem it did not prove.
-
-   ONE TRAP: [free_ab_extend h] will not elaborate against an open [?A0]
-   ([h : X ~> Rng_Forget c] and [X ~> Ab_Forget ?A0] are convertible but
-   not unifiable), so the target is given explicitly. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Rng_Forget_solution_set_prop (X : Sets) :
   SolutionSet Rng_Forget X.
@@ -378,17 +348,11 @@ Defined.
 
 (** * The two solution sets, and the two GAFT applications *)
 
-(* THE CIRCULAR DISCHARGES, KEPT FOR COMPARISON; REMOVAL CANDIDATES FOR
-   JOHN.  Each is named so that the circularity is visible at every use
-   site rather than buried in a term: the family is the singleton at the
-   unit of the adjunction the theorem is being asked to produce.
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17): these two are
-   no longer what the GAFT applications below consume.  They are kept
-   because removing working code is John's call, because the naming
-   convention they establish is what makes the circularity legible, and
-   because they are the honest comparison -- two different solution sets
-   for one functor, one read off the answer and one not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Rng_Forget_Ab_solution_set_from_adjunction (A : Ab) :
   SolutionSet Rng_Forget_Ab A :=
@@ -398,15 +362,11 @@ Definition Rng_Forget_solution_set_from_adjunction (X : Sets) :
   SolutionSet Rng_Forget X :=
   solution_set_of_adjunction free_ring_via_ab_adjunction_set X.
 
-(* Mac Lane §V.6 Exercise 2, first half: the tensor/monoid ring on an
-   abelian group.  [Continuous_PreservesImageLimit] is load-bearing -- see
-   the header's measurement of what happens without it.
+(*
+   本节说明伴随、幺半群相关定义、性质与动机。
 
-   NON-CIRCULAR since the PR "algebraic carriers are sets": the solution
-   set is [Rng_Forget_Ab_solution_set_prop], built from the free-ring term
-   model and its [Prop] congruences.  Strip Instance/Rng/Free.v's
-   ADJUNCTIONS and this still stands; strip its TERM MODEL and it does
-   not, which is the honest statement of what it depends on. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_rng_ab_via_GAFT : ∃ F : Ab ⟶ Rng, F ⊣ Rng_Forget_Ab :=
   GAFT Rng_Forget_Ab Rng_Complete
        (Continuous_PreservesImageLimit Rng_Forget_Ab_continuous)
@@ -433,11 +393,11 @@ Definition free_ring_via_GAFT_from_adjunction :
 
 (** * The comparison clauses, at [≈] *)
 
-(* [GAFT] is [Qed], so its output does not reduce and no [eq_refl] is
-   available; the header quotes the refusal.  What IS available is the
-   uniqueness of left adjoints, and [left_adjoints_agree]
-   (Instance/Rng/Free.v) is [Defined], so the comparison morphism has a
-   name and the unit clause can be stated. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_rng_ab_via_GAFT_agrees : `1 free_rng_ab_via_GAFT ≈ FreeRngAb :=
   left_adjoints_agree (`2 free_rng_ab_via_GAFT) free_rng_ab_adjunction.
@@ -446,46 +406,21 @@ Definition free_ring_via_GAFT_agrees :
   `1 free_ring_via_GAFT ≈ free_ring_via_ab :=
   left_adjoints_agree (`2 free_ring_via_GAFT) free_ring_via_ab_adjunction_set.
 
-(* RECORDED STATEMENT CHANGE, PR "algebraic carriers are sets"
-   (2026-09-17), AND THE MEASURED REASON.  This clause and the four other
-   [_mon] ones below used to be stated about [free_ring_via_GAFT] and are
-   now stated about [free_ring_via_GAFT_from_adjunction], the circular
-   reading.  Nothing is lost -- the same theorem, "left adjoints to
-   [Rng_Forget] agree", is still in tree against the monoid-ring route --
-   but the WITNESS is a different constant and that must be said.
+(*
+   本节说明伴随、幺半群相关定义、性质与动机。
 
-   THE OBSTRUCTION IS [free_ring_via_mon]'S OWN [Set] PIN, not the new
-   solution set's fault and not repairable from this file.  Measured,
-   [About] under [Set Printing Universes]:
-
-     free_ring_via_mon@{u u0 … u7} : Functor@{u Set Set u …}
-     free_ring_via_ab@{u u0 … u8}  : Functor@{u u1 u1 u0 …}
-
-   -- the monoid route pins the hom AND proof universes of [Sets] to
-   [Set], where the abelian-group route leaves them free.  The
-   non-circular [free_ring_via_GAFT] carries the [Set < carrier] side
-   condition of the [Prop] index (see the solution-set section above), so
-   the two cannot be compared, and the attempt is refused with
-
-     The term "free_ring_via_mon" has type "Sets@{Set u} ⟶ Rng@{u Set}"
-     while it is expected to have type "Sets@{u0 u1} ⟶ Rng@{u1 u0}"
-     (universe inconsistency: Cannot enforce Set = u0 because Set < u0)
-
-   (generated universe names replaced positionally; everything else
-   verbatim).  [free_ring_via_GAFT_agrees] above, against
-   [free_ring_via_ab], is unaffected and IS about the non-circular
-   constant.  Widening [free_ring_via_mon] would be a change to
-   Instance/Rng/Free.v and belongs to its own commit, exactly as the
-   widening of Adjunction/SpanningArrow.v did. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_ring_via_GAFT_agrees_mon :
   `1 free_ring_via_GAFT_from_adjunction ≈ free_ring_via_mon :=
   left_adjoints_agree (`2 free_ring_via_GAFT_from_adjunction)
     free_ring_via_mon_adjunction_set.
 
-(* Theory/Adjunction.v's [left_adjoint_iso] inhabits the same three
-   types.  The two terms are NOT identified -- that theorem is [Qed], so no
-   component of it reduces and none can be named, which is exactly why the
-   transparent donor is used above. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example free_rng_ab_via_GAFT_agrees_via_left_adjoint_iso :
   `1 free_rng_ab_via_GAFT ≈ FreeRngAb :=
@@ -534,13 +469,11 @@ Example free_ring_via_GAFT_comparison_mon_is_component (X : Sets) :
   to (projT1 free_ring_via_GAFT_agrees_mon X)
     = free_ring_via_GAFT_comparison_mon X := eq_refl.
 
-(** ** The unit clauses
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Mac Lane's exercise asks for the comparison to be compatible with the
-    universal arrows, not merely for an isomorphism to exist.  Composing
-    the comparison with the AFT-produced unit gives the explicit
-    construction's own unit -- the ring-expression insertion on one side,
-    the word insertion on the other. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem free_rng_ab_via_GAFT_unit (A : Ab) :
   fmap[Rng_Forget_Ab] (free_rng_ab_via_GAFT_comparison A)

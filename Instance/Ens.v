@@ -16,14 +16,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Cross-reference: Mac Lane's Ens_V — objects the members of a set V of sets,
-   arrows ALL functions between them (CWM 2nd ed., §I.2, printed p. 11) — is a
-   DIFFERENT construction from the two categories below, and it lives in
-   Instance/EnsV.v. There an object is a code x : V decoded by El : V → Type,
-   and a morphism x ~> y is an arbitrary function El x → El y with no side
-   condition at all; here a morphism carries the constraint A = f⁻¹(B). Both are
-   kept: [Ens] and [EnsT] record membership preservation-and-reflection, while
-   [EnsV] records Mac Lane's set-sized sub-universe of the category of sets. *)
+(*
+   本节说明 Ens 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Ens : Category := {|
   obj     := ∃ T : Type, Ensemble T;
@@ -37,15 +34,14 @@ Next Obligation. equivalence; rewrite H, H0; reflexivity. Qed.
 Next Obligation. firstorder. Qed.
 Next Obligation. proper; rewrite H, H0; reflexivity. Qed.
 
-(* nLab: https://ncatlab.org/nlab/show/Set
+(*
+   nLab: https://ncatlab.org/nlab/show/Set
    Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
 
-   [EnsT T] is the same construction restricted to a single fixed carrier type
-   [T]: objects are the [Ensemble]s (subsets) of [T], and a morphism from [A] to
-   [B] is an endofunction [f : T -> T] with [∀ x, x ∈ A ↔ f x ∈ B], i.e.
-   [A = f⁻¹(B)]. As above this is membership preservation-and-reflection, not
-   injectivity. Morphisms are compared pointwise on [T], with identity and
-   composition the identity function and function composition. *)
+   本节说明 Ens 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition EnsT (T : Type) : Category := {|
   obj     := Ensemble T;

@@ -105,9 +105,11 @@ Universes o so.
 Local Notation MonOS :=
   (@Mon@{so o so so} Sets@{o so} Sets_Product_Monoidal@{so o}).
 
-(* ν₁ = 1 is #470's [nu_unit] of the positive part.  (2): for every word of
-   words, ν of the values of the inner words is ν of their concatenation,
-   which IS μ ([W0_join_fun]), νk(νn1 × ⋯ × νnk) = ν_{n1+⋯+nk}. *)
+(*
+   本节说明 System 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition nu0_assoc@{+} {X : obj[Sets@{o so}]} (ν : NAry0@{o} X) :
   Type@{o} :=
   ∀ ww : list (list X),

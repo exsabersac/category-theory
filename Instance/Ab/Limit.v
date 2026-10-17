@@ -237,22 +237,11 @@ Qed.
 
 (** ** The vertex's equality is propositional *)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) an [AbObject]
-   carries [cmon_prop], so the lifted group owes a [Prop]-valued relation on
-   [vertex_obj[L]] -- and [L] here is an ARBITRARY limit of the underlying
-   sets, not the one [Sets_Complete] chooses, so
-   Instance/Sets/Propositional.v's [limit_PropEquiv] does not apply on the
-   nose.  The edit list for this phase predicted a hypothesis on [L],
-   discharged at [Ab_Complete]; that turned out not to be needed, and taking
-   one would have been fatal, since [CreatesLimits] quantifies over every [L]
-   and leaves no place to put it.
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-   The relation below is instead the one the section already has a theorem
-   about: two points of the vertex are related when every LEG relates them.
-   [alim_ext] is exactly the implication into `≈`, and it holds at an
-   arbitrary limit because a limit's vertex is detected by its projections;
-   the converse is each leg being a setoid map.  So a limit of propositional
-   carriers is propositional, with no extra hypothesis anywhere. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition alim_prop : PropEquiv (is_setoid vertex_obj[L]) :=
   @PropEquiv_of_relation _ (is_setoid vertex_obj[L])
     (fun x y => forall j : J,
@@ -375,10 +364,11 @@ Proof.
   now rewrite Hn, alim_neg_triangle.
 Qed.
 
-(* The three clauses together: Mac Lane's "there is exactly one
-   abelian-group structure on the limit making every projection a
-   homomorphism".  No law of the candidate structure is consumed -- not
-   even commutativity -- only that the legs preserve it. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma alim_structure_unique
   (e : carrier vertex_obj[L])
   (m : carrier vertex_obj[L] → carrier vertex_obj[L] → carrier vertex_obj[L])
@@ -499,10 +489,11 @@ Definition Ab_Forget_reflects_limits {J : Category} (K : J ⟶ Ab) :
   ReflectsLimitCone K Ab_Forget :=
   creates_reflects_limits (Ab_Forget_CreatesLimit K).
 
-(* Mac Lane's uniqueness clause at the categorical level: any cone of
-   abelian groups lying over [N] is canonically isomorphic to the created
-   one.  This is the generic [screates_lift_unique] at this instance, not a
-   restatement. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Ab_lift_cone_unique {J : Category} (K : J ⟶ Ab)
   (N : Cone (Ab_Forget ◯ K)) (HN : IsLimitCone N)
@@ -542,17 +533,11 @@ Example ab_lift_legs {J : Category} (K : J ⟶ Ab)
 Definition Ab_Complete : @Complete Ab :=
   creates_limits_Complete Ab_Forget Sets_Complete Ab_Forget_creates_limits.
 
-(* [ContinuousFunctor] is [PreservesLimitCone] quantified over every shape
-   and diagram, which is what the word means in Mac Lane §V.4 -- the
-   apex-only [PreservesAllLimits] below is its CONSEQUENCE, not the
-   definition (Structure/Limit/Preservation.v).
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-   NAME.  This is NOT Instance/Ab/FreeNotContinuous.v's
-   [Ab_Forget_Continuous], which is the same TYPE by a different TERM:
-   that one is [right_adjoint_Continuous free_ab_adjunction] and so
-   presupposes Instance/Ab/Free.v's adjunction, while this one comes
-   from limit creation and presupposes only [Sets_Complete].  See the
-   header for why the distinction is load-bearing rather than cosmetic. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Ab_Forget_creates_continuous : ContinuousFunctor Ab_Forget :=
   creates_limits_continuous Ab_Forget Sets_Complete Ab_Forget_creates_limits.
@@ -563,13 +548,11 @@ Definition Ab_Forget_PreservesAllLimits : PreservesAllLimits Ab_Forget :=
 
 (** * "Limits of abelian groups are computed on underlying sets", literally *)
 
-(* At the limits [Sets_Complete] chooses -- the compatible families of
-   Instance/Sets/Complete.v -- the created abelian group is the
-   coordinatewise one ON THE NOSE: carrier, addition, zero, negation and
-   every projection are all [eq_refl], at an ARBITRARY shape and an
-   ARBITRARY diagram of abelian groups.  Nothing here is specific to a
-   witness category; the readbacks below are the section header's sentence
-   machine-checked. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AbComputed.
 

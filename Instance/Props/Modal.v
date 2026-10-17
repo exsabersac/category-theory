@@ -108,12 +108,11 @@ Qed.
 
 (** ** The monad of the currying adjunction (− ∧ B) ⊣ (B ⇒ −) *)
 
-(* The two composites of Structure/Cartesian/Closed/Adjunction.v's
-   [Prod_Functor B] and [Exp_Functor B] at [Props], for a closed
-   structure [CL] (in use, always [Props_Closed]).  Taking [CL] as an
-   argument keeps its exponential level e in the type: [Exp_Functor] and
-   [Prod_Functor] each carry a level absent from their own types, pinned
-   here to e. *)
+(*
+   本节说明伴随、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition curry_functor@{u h e | h < e +}
   (CL : @Closed@{u h e} Props@{u h} Props_Cartesian@{u h}) (B : Prop) :
   Props@{u h} ⟶ Props@{u h} :=

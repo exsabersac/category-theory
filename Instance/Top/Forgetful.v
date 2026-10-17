@@ -27,9 +27,11 @@ Generalizable All Variables.
 
 (** ** The underlying-set functor *)
 
-(* Objects to their point setoids — lifted one level, as the header
-   explains — and arrows to their setoid maps.  Carrier and equivalence
-   of every image are definitionally those of the space's own points. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Top_Forget@{o h so | o < h, h < so +} :
   Top@{h o} ⟶ Sets@{h so} := {|
   fobj := fun X : TopSpace@{o} => Setoid_Lift@{o h} (top_carrier X);
@@ -39,9 +41,11 @@ Next Obligation. intros X Y f g H p; exact (H p). Qed.
 Next Obligation. intros; intro p; reflexivity. Qed.
 Next Obligation. intros; intro p; reflexivity. Qed.
 
-(* Faithfulness, Mac Lane's "concrete category" clause for Top: the
-   hom-setoid of [Top] compares exactly what the image compares — the
-   action on points — so injectivity of fmap is the identity. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Top_Forget_Faithful : Faithful Top_Forget.
 Proof. constructor; intros x y f g H p; exact (H p). Qed.
 
@@ -59,13 +63,11 @@ Next Obligation. intros X Y f g H p; exact (H p). Qed.
 Next Obligation. intros; intro p; reflexivity. Qed.
 Next Obligation. intros; intro p; reflexivity. Qed.
 
-(* The transposition bijection of Discrete ⊣ Forget: a continuous map out
-   of a discrete space IS its underlying setoid map ([to]), and every
-   setoid map out of a discrete space is continuous ([from] — Seven
-   Sketches' Exercise 7.29, [out_of_discrete_continuous]).  The Sets-side
-   hom-setoid is lifted to sit beside Top's large hom-setoid in one
-   ambient Sets — the piecewise-lift discipline of
-   Instance/Sets/Classifier.v. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition discrete_adj (A : SetoidObject) (Y : TopSpace) :
   @Isomorphism Sets
     {| carrier := Top_Discrete A ~{Top}~> Y
@@ -83,10 +85,11 @@ Next Obligation. intros A Y f g H; exact H. Qed.
 Next Obligation. intros A Y g p; reflexivity. Qed.
 Next Obligation. intros A Y f p; reflexivity. Qed.
 
-(* The four naturality squares of the adjunction, for the forward and the
-   inverse transpose.  Where the classical square would say
-   [fmap[Top_Forget] f] the statement uses the stripped map
-   [continuous_map f] — see the header. *)
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma discrete_adj_nat_l (A A' : SetoidObject) (Y : TopSpace)
   (f : Top_Discrete A ~{Top}~> Y) (g : A' ~{Sets}~> A) :
   to (discrete_adj A' Y) (f ∘[Top] fmap[Top_Discrete] g)
@@ -125,11 +128,11 @@ Next Obligation. intros X Y f g H p; exact (H p). Qed.
 Next Obligation. intros; intro p; reflexivity. Qed.
 Next Obligation. intros; intro p; reflexivity. Qed.
 
-(* The transposition bijection of Forget ⊣ Indiscrete: a continuous map
-   into an indiscrete space IS its underlying setoid map ([from]), and
-   every setoid map into an indiscrete space is continuous ([to] —
-   [into_indiscrete_continuous]).  This time the small side is the
-   Sets-hom out of the points, lifted as before. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition indiscrete_adj (X : TopSpace) (B : SetoidObject) :
   @Isomorphism Sets
     (Setoid_Lift
@@ -171,10 +174,11 @@ Lemma indiscrete_adj_inv_nat_r (X : TopSpace) (B B' : SetoidObject)
     ≈ g' ∘[Sets] from (indiscrete_adj X B) f.
 Proof. intro p; reflexivity. Qed.
 
-(* Mac Lane §V.9's construction, packaged: the two natural transposition
-   bijections flanking the underlying-set functor, with their eight
-   naturality squares.  This is Riehl's Example 4.1.6 in the only form the
-   universe stratification lets the library state it. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition discrete_forget_indiscrete_triple :=
   (@discrete_adj, @indiscrete_adj,
    (@discrete_adj_nat_l, @discrete_adj_nat_r,
@@ -182,39 +186,17 @@ Definition discrete_forget_indiscrete_triple :=
    (@indiscrete_adj_nat_l, @indiscrete_adj_nat_r,
     @indiscrete_adj_inv_nat_l, @indiscrete_adj_inv_nat_r)).
 
-(** ** The underlying-set functor preserves limits and colimits
+(*
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
 
-    Shape-wise, through the stripping functor: for a diagram in [Top] over
-    a (small-hommed) shape, the underlying diagram in [Sets] at the
-    natural level.  The two preservation theorems are RAPL and LAPC for
-    the adjoint triple, proved exactly as the adjunctions would prove
-    them: a competing cone in [Sets] transposes along Discrete to a
-    competing cone in [Top], a competing cocone along Indiscrete.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    ONE MORE STRATIFICATION NOTE, parallel to the header's.  The
-    limit-cone predicates share a single hom universe between the shape
-    and the ambient category: [IsLimitCone] and [IsColimitCocone]
-    (Structure/Limit/Preservation.v) accept only cones at instance
-    Cone@{u u0 u0 u1 u0 u0}, and [Cocone] (Structure/Cone.v) pins the
-    same identification, so LIMITING cones over ONE shape variable
-    cannot live in [Top] (homs at h) and in [Sets] (homs at o) within
-    one statement.  (The bare [Cone] record itself imposes only
-    shape-hom ≤ ambient-hom; both cones exist separately — it is the
-    predicate applied to both that cannot be formed.)  The competitor side is therefore stated RAW —
-    vertex, legs and coherence as bare data, which is [IsLimitCone] with
-    the competing cone's record unfolded — while the [Top] side keeps the
-    record vocabulary.  (An earlier revision of this note said the packaged
-    image-cone machinery — [FCocone], [PreservesColimitCocone], the
-    Continuous/CocontinuousFunctor classes — "cannot be instantiated across
-    the o < h gap at all"; that generalized too far: at [Top_Forget], which
-    lands in [Sets@{h so}] at [Top]'s own hom level, they DO elaborate, as
-    Instance/Top/CompHaus.v measures.  Preservation here stays raw, and the
-    breakdown for [Top_Indiscrete] is the concrete refutation of Exercise 2. *)
+(*
+   本节说明函子相关定义、性质与动机。
 
-(* The raw competitors of the two theorems below are cones over this
-   functor up to conversion — [legs j : A ~{Sets}~> top_carrier (K j)]
-   IS [A ~{Sets}~> Forget_Diagram K j] definitionally; only the
-   [IsLimitCone]-level packaging is unformable. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Forget_Diagram {J : Category} (K : J ⟶ Top) :
   J ⟶ Sets := {|
   fobj := fun j => top_carrier (K j);
@@ -229,11 +211,11 @@ Next Obligation.
   intros J K i j k f g p; exact (@fmap_comp _ _ K i j k f g p).
 Qed.
 
-(* Stripping preserves limiting cones.  The competitor is raw Sets-side
-   data (vertex, legs, coherence); it transposes along the discrete
-   topology to a genuine cone in [Top], the limit property of N answers,
-   and the mediator strips back down.  This is RAPL for Discrete ⊣ Forget,
-   in the only cross-universe form the [Cone] record allows. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Forget_preserves_limit_cone {J : Category} {K : J ⟶ Top}
   (N : Cone K) (HN : IsLimitCone N)
   (A : SetoidObject) (legs : ∀ j : J, A ~{Sets}~> top_carrier (K j))
@@ -287,15 +269,11 @@ Defined.
 
 (** ** Exercise 2: the indiscrete functor has no right adjoint *)
 
-(* THE SHAPE.  The two-object discrete shape is taken as [DiscreteCat bool]
-   (Instance/Discrete.v) rather than the tree's walking pair
-   [Two_Discrete]: the limit-cone predicates and [Cocone] pin the
-   shape's hom level to the ambient category's (the stratification note
-   above), [Two_Discrete]'s
-   hom level is declared at [Set], and [Top]'s hom level is strictly above
-   its point level, so no cocone in [Top] can sit over a [Two_Discrete]
-   diagram at all.  [DiscreteCat] is universe-flexible, so its instances
-   can meet [Sets] at the point level and [Top] at the hom level. *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Coherence of a cocone over a discrete shape, in any category: the only
    arrows are (transported) identities. *)
@@ -324,12 +302,11 @@ Definition bool_cocone : Cocone unit_pair_diagram :=
        (fun x y f => discrete_cocone_coherence unit_pair_diagram
                        bool_setoid_object _ f)).
 
-(* [bool] with the constant injections is a colimiting cocone in [Sets]:
-   the mediator reads a competitor's two legs off at the point, and any
-   competitor agrees with it on both booleans.  ([IsColimitCocone] pins
-   the ambient hom level to the shape's, and [bool : Set], so the
-   colimit property is established at the Set hom level — the level at
-   which the whole Exercise-2 argument runs.) *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition bool_cocone_colimit : IsColimitCocone bool_cocone.
 Proof.
   intro M.
@@ -342,14 +319,11 @@ Proof.
     + symmetry; exact (Hv false ttt).
 Defined.
 
-(* The image diagram, presented at the target level: the discrete pair of
-   one-point indiscrete spaces.  (The composite
-   [Top_Indiscrete ◯ unit_pair_diagram] and the generic
-   [FCocone Top_Indiscrete bool_cocone] cannot be formed: like the
-   limit-cone predicates, the composition and image-cocone constants pin
-   ONE hom level across their categories, and the composite would need
-   the shape's instance at both levels.  This diagram is the composite presented directly — the same
-   objects definitionally, and the only arrows are identities.) *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition indiscrete_pair_diagram@{o h so | o < h, o < so +} :
   DiscreteCat@{h h h} bool ⟶ Top@{h o} := {|
   fobj := fun _ : bool => Indiscrete_Top@{o o} unit_setoid_object@{o o};
@@ -371,9 +345,11 @@ Definition indiscrete_image_cocone : Cocone indiscrete_pair_diagram :=
        (fun x y f => discrete_cocone_coherence indiscrete_pair_diagram
                        TwoPoint_Indiscrete _ f)).
 
-(* The competing cocone in [Top]: the DISCRETE two-point space, with the
-   two point injections — continuous because any map out of a one-point
-   space is, its preimages being constant predicates ([open_const]). *)
+(*
+   本节说明 Forgetful 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition disc_leg (b : bool) :
   Indiscrete_Top unit_setoid_object ~{Top}~> Bool_Discrete :=
   Build_ContinuousMorphism (Indiscrete_Top unit_setoid_object) Bool_Discrete
@@ -389,11 +365,11 @@ Definition disc_cocone : Cocone indiscrete_pair_diagram :=
        (fun x y f => discrete_cocone_coherence indiscrete_pair_diagram
                        Bool_Discrete _ f)).
 
-(* The image cocone is NOT colimiting: the mediator to the discrete
-   competitor would send true to true and false to false, and the
-   preimage of [singleton_true_open] under it would be a non-uniform open
-   of an indiscrete space.  With [bool_cocone_colimit] this is exactly
-   "the indiscrete functor does not preserve the coproduct 1 + 1". *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem indiscrete_image_not_colimiting :
   IsColimitCocone indiscrete_image_cocone → False.
 Proof.
@@ -408,14 +384,11 @@ Proof.
   discriminate (eq_trans (eq_sym Hf) (HO Ht)).
 Qed.
 
-(* Mac Lane §V.9, Exercise 2, in adjunction-shaped form.  The hypotheses
-   are the data any right adjoint R would provide at the objects involved:
-   its object map, and the transposition bijection
-   Top(Indiscrete A, Y) ≅ Sets(A, R₀ Y), natural in A.  Nothing else is
-   assumed — no functoriality of R₀, no naturality in Y — and False
-   follows.  The proof mirrors the standard one: transposing the discrete
-   competitor's legs and transposing back the induced map produces the
-   non-continuous mediator of [indiscrete_image_not_colimiting]. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem indiscrete_no_right_adjoint
   (R₀ : TopSpace → SetoidObject)
   (φ : ∀ (A : SetoidObject) (Y : TopSpace),

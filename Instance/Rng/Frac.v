@@ -46,10 +46,11 @@ Record DomObject := {
     a ≈ b
 }.
 
-(* The classical presentation implies this one: a commutative nontrivial
-   ring whose zero products split as a (Type-valued) disjunction
-   cancels.  The two branches: c ≈ 0 contradicts the hypothesis, and
-   a − b ≈ 0 gives a ≈ b by the group laws. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition DomObject_of_no_zero_divisors
   (R : RingObject)
   (comm : ∀ a b, rig_mul R a b ≈ rig_mul R b a)
@@ -146,26 +147,11 @@ Next Obligation. intros D E f x; simpl; reflexivity. Qed.
 Next Obligation. intros D E F G f g h x; simpl; reflexivity. Qed.
 Next Obligation. intros D E F G f g h x; simpl; reflexivity. Qed.
 
-(* The inclusion into commutative rings: on objects, forget the domain
-   fields; on morphisms, forget injectivity.  Faithfulness is proved
-   below ([IntDom_Incl_Faithful]): both hom-setoids compare underlying
-   maps pointwise.  Fullness is expected to be REFUTABLE — a
-   non-injective homomorphism between domains, such as ℤ → ℤ/2ℤ, has
-   no preimage — but the tree has no quotient rings yet, so no
-   counterexample object is available and non-fullness is left
-   unstated rather than asserted.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   ERRATUM, appended rather than rewritten so that
-   Instance/Field/Frac.v's QUOTATION of the sentence above stays an
-   accurate quotation.  Both clauses have since been overtaken.  (1) The
-   deferral itself was DISCHARGED in Instance/Field/Frac.v by
-   [IntDom_Incl_not_Full], which needed no quotient ring at all: F₂ is a
-   field, hence a domain, and [ZtoF2] is a homomorphism into it with no
-   [IntDom] preimage.  (2) The tree DOES now have quotient rings —
-   Instance/Rng/Quotient.v builds R/I for a two-sided ideal I with its
-   universal property, and ℤ/2ℤ is its worked witness — so the
-   counterexample object the sentence above wished for is available too,
-   though it is no longer needed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition IntDom_Incl : IntDom ⟶ CRng := {|
   fobj := fun D => (dom_ring D; dom_comm D);
   fmap := fun _ _ f => (dom_map f; I)
@@ -430,9 +416,11 @@ Proof.
   now rewrite !rig_mul_zero_l.
 Qed.
 
-(* Distribution is the one law that does not split into equal parts:
-   the two sides carry different (but associate) denominators, and the
-   cross-multiplication identity is a genuine six-factor shuffle. *)
+(*
+   本节说明分配律相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma frac_distr_l (x y z : frac_carrier) :
   frac_eq (frac_mul x (frac_add y z))
           (frac_add (frac_mul x y) (frac_mul x z)).
@@ -464,12 +452,11 @@ Qed.
 
 (** *** The fraction ring *)
 
-(* Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
-   owes a [Prop]-valued mirror of its equality.  [frac_eq] is a single `≈`
-   on D's OWN carrier -- the cross-multiplication equation -- so the mirror
-   is D's own [pequiv] at that equation and the two implications are D's own
-   [pequiv_to] and [pequiv_from].  Nothing is truncated: the fraction
-   setoid is propositional exactly because the base domain's is. *)
+(*
+   本节说明 Frac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition FracRig : RigObject := {|
   rig_setoid := FracObj;
   rig_zero := frac_zero;

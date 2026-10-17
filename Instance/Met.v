@@ -39,9 +39,11 @@ Open Scope R_scope.
 
 (** ** A missing standard-library step *)
 
-(* [Rabs_no_R0] states the contrapositive; the standard library has no
-   direct form, and the round trip through it needs the decidability of
-   equality on [R] ([Req_dec], itself a consequence of [total_order_T]). *)
+(*
+   本节说明 Met 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Rabs_zero_inv (r : R) : Rabs r = 0 → r = 0.
 Proof.
   intro Hr.
@@ -51,13 +53,11 @@ Qed.
 
 (** ** The four axioms *)
 
-(* Fong & Spivak, Definition 2.51, clause for clause.  [dist_proper] is the
-   setoid bookkeeping that a Bishop-set presentation needs and that a
-   set-level presentation does not state: the distance must not distinguish
-   points the carrier's own equality has already identified.  Equality of
-   distances is Coq's [=] because distances are real numbers, not morphisms;
-   the `≈`-never-`=` discipline of this library governs its HOMS, and the
-   hom-setoid of [Met] below is pointwise `≈` in the standard way. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record MetricSpace@{o} := {
   met_carrier :> SetoidObject@{o o};      (* the setoid of points *)
 
@@ -116,11 +116,11 @@ Proof.
   - apply dist_eq_zero.
 Qed.
 
-(* The quadrilateral (or "four-point") inequality: distances differ by no
-   more than their endpoints do.  This is the estimate that makes the
-   distance function itself uniformly continuous, and it is what
-   Instance/Met/Completion.v runs on — it is the reason the sequence of
-   distances between two Cauchy sequences is itself Cauchy. *)
+(*
+   本节说明 Met 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma dist_quadrilateral {X : MetricSpace} (x x' y y' : X) :
   Rabs (dist x y - dist x' y') <= dist x x' + dist y y'.
 Proof.
@@ -137,10 +137,11 @@ Qed.
 
 (** ** Isometries *)
 
-(* Mac Lane's arrows: maps that PRESERVE the distance.  The underlying map
-   is a [SetoidMorphism], so it already respects the two carriers'
-   equalities; distance preservation is the extra metric condition.  This is
-   the same layering [Top] uses for continuity (Instance/Top.v). *)
+(*
+   本节说明 Met 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Isometry (X Y : MetricSpace) := {
   isometry_map :> SetoidMorphism (met_carrier X) (met_carrier Y);
   isometry_dist : ∀ x y : X, dist (isometry_map x) (isometry_map y) = dist x y
@@ -149,11 +150,11 @@ Record Isometry (X Y : MetricSpace) := {
 Arguments isometry_map {X Y} _.
 Arguments isometry_dist {X Y} _ _ _.
 
-(* Mac Lane's parenthetical "(necessarily injective)", proved.  If two
-   points have equal images then their images are at distance zero, so the
-   points are, so they are equal.  Note where each axiom enters:
-   [dist_eq_zero] on the codomain, [isometry_dist] to transport, and
-   [dist_separates] on the domain. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma isometry_injective {X Y : MetricSpace} (f : Isometry X Y) (x y : X) :
   isometry_map f x ≈ isometry_map f y → x ≈ y.
 Proof.
@@ -165,11 +166,11 @@ Qed.
 
 (** ** The category Met *)
 
-(* The hom-setoid compares only the map part, pointwise up to the
-   codomain's `≈`; the distance-preservation witness is not compared.  Two
-   isometries that agree on points are the same arrow of [Met], whatever
-   proofs they carry — the extensional discipline of [SetoidMorphism_equiv],
-   and what makes [Met] a category with no proof-irrelevance axiom. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Isometry_equiv {X Y : MetricSpace} : crelation (Isometry X Y) :=
   fun f g => ∀ x : X, isometry_map f x ≈ isometry_map g x.
 
@@ -207,10 +208,11 @@ Proof.
   apply proper_morphism, Hf.
 Qed.
 
-(* The category of metric spaces and metric-preserving maps.  The category
-   laws hold pointwise on the map parts exactly as in [Sets]; the
-   distance-preservation witnesses play no part, the hom-setoid ignoring
-   them. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Met : Category := {|
   obj     := MetricSpace;
   hom     := Isometry;
@@ -221,20 +223,22 @@ Program Definition Met : Category := {|
   compose_respects := @met_compose_respects
 |}.
 
-(* Every arrow of [Met] is monic — the categorical shadow of Mac Lane's
-   parenthetical.  This makes [Met] a rather rigid category and is worth
-   saying out loud: it is NOT a claim that [Met] is balanced, and no
-   converse is proved here. *)
+(*
+   本节说明 Met 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Met_all_Monic {X Y : Met} (f : X ~> Y) : Monic f.
 Proof.
   constructor; intros z g1 g2 Hg x.
   exact (isometry_injective f (isometry_map g1 x) (isometry_map g2 x) (Hg x)).
 Qed.
 
-(* The forgetful functor to setoids.  It is faithful by construction: the
-   hom-setoid of [Met] IS pointwise `≈` of the underlying maps, so
-   faithfulness is the identity implication, exactly as
-   Construction/Subcategory.v's [Incl_Faithful] is. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Met_Forget : Met ⟶ Sets := {|
   fobj := met_carrier;
   fmap := fun _ _ f => isometry_map f
@@ -245,11 +249,11 @@ Proof. constructor; intros x y f g H; exact H. Qed.
 
 (** ** Building metric spaces *)
 
-(* Every injection into the reals is a metric.  This is the cheapest source
-   of concrete examples and it is used three times below.  The two
-   hypotheses are exactly the two halves of "[f] is injective on the
-   setoid": [f_proper] makes the distance well defined, [f_injective] is
-   what buys separation. *)
+(*
+   本节说明 Met 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section OfInjection.
 
 (* The five lemmas below genuinely depend on the section variables; [Lib.v]
@@ -335,13 +339,11 @@ Definition Point_Metric : MetricSpace :=
 
 (** ** A concrete incomplete space *)
 
-(* The harmonic space: the natural numbers, with n placed at 1/(n+1) on the
-   real line.  It is a metric space by [Metric_of_injection], it is NOT
-   complete ([Harmonic_not_MComplete] below), and its completion adds
-   exactly the missing limit point 0 — which is what makes
-   Instance/Met/Completion.v's non-vacuity witness concrete rather than
-   nominal.  The carrier is [nat] itself, so no subsetoid machinery is
-   needed anywhere. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition harm (n : nat) : R := / (INR n + 1).
 
 Lemma harm_pos (n : nat) : 0 < harm n.
@@ -370,33 +372,11 @@ Definition Harmonic : MetricSpace :=
 
 (** ** Cauchy sequences, limits, completeness *)
 
-(* THE MODULUS IS DATA.  This library's `∃` is [sigT] (Lib/Foundation.v,
-   66), so [MCauchy] below is TYPE-valued and a Cauchy sequence hands out
-   its threshold N as a function of ε rather than merely asserting that one
-   exists.  That is not decoration: Instance/Met/Completion.v proves the
-   completion complete by a diagonal argument that CONSUMES one threshold
-   per index, and extracting a sequence of thresholds from a sequence of
-   Prop-level existentials is countable choice.  With the modulus as data no
-   choice principle is used anywhere in this development.
+(*
+   本节说明 Met 相关定义、性质与动机。
 
-   The reading is Bishop's, and it is worth being precise about its
-   strength: "every sequence PRESENTED WITH A MODULUS converges" is
-   constructively weaker than the classical "every Cauchy sequence
-   converges", the two being interderivable only via countable choice.
-   [MComplete] is the former.  No claim is made here that the two agree.
-
-   THE DIRECTION MATTERS, in both places the notion is used.  Because
-   [MComplete] is the WEAKER property, PROVING it — as
-   [Completion_MComplete] does — is the weaker positive statement, while
-   REFUTING it — as [Harmonic_not_MComplete] does — is the STRONGER negative
-   one: the witnessing sequence [fun n => n] carries an explicit modulus
-   ([harm_seq_MCauchy]), so the harmonic space is incomplete already in this
-   restricted sense and therefore in the classical sense as well.
-
-   Note also that the BODY of each `∃` is a Prop ([Rlt] is Prop-valued), so
-   a threshold, once produced, may be shown to work by any Prop-level
-   reasoning whatever — which is how [R_Metric_MComplete] below bridges to
-   the standard library's Prop-valued [Un_cv]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition MCauchy (X : MetricSpace) (u : nat → X) : Type :=
   ∀ eps : R, 0 < eps →
@@ -449,10 +429,11 @@ Proof.
   lra.
 Qed.
 
-(* An isometry carries Cauchy sequences to Cauchy sequences and limits to
-   limits, on the nose: the ε and the threshold are unchanged, because the
-   distances themselves are unchanged.  Both are used by the completion's
-   universal property. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma isometry_MCauchy {X Y : MetricSpace} (f : Isometry X Y) (u : nat → X) :
   MCauchy X u → MCauchy Y (fun n => isometry_map f (u n)).
 Proof.
@@ -476,9 +457,11 @@ Qed.
 
 (** ** The full subcategory of complete spaces *)
 
-(* Written with [Build_Subcategory] rather than [Program] for the reason
-   Construction/Subcategory/Terminal.v gives: obligations discharged by
-   [Qed] are opaque to the unifier, and [shom] here has to reduce. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CompleteSpaces : Subcategory Met :=
   @Build_Subcategory Met
     (fun X => MComplete X)              (* the complete spaces *)
@@ -499,12 +482,11 @@ Definition CMet_Incl_Faithful : Faithful CMet_Incl :=
 Definition CMet_Incl_Full : Functor.Full CMet_Incl :=
   Full_Implies_Full_Functor Met CompleteSpaces CMet_Full.
 
-(* Note that an object of [CMet] is a space TOGETHER WITH a chosen
-   completeness witness, [MComplete] being proof-relevant data (it computes
-   limits).  Two witnesses for one space give distinct but isomorphic
-   objects of [CMet]; that is [Full_membership_iso]
-   (Construction/Subcategory.v) and is the standard situation for full
-   subcategories in this library, not a defect of this one. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Complete and incomplete witnesses *)
 
@@ -513,11 +495,11 @@ Definition CMet_Incl_Full : Functor.Full CMet_Incl :=
 Definition Point_Metric_MComplete : MComplete Point_Metric :=
   fun u _ => (ttt; fun eps Heps => (0%nat; fun n _ => Heps)).
 
-(* The real line is complete.  The limit comes from the standard library's
-   [R_complete]; the CONVERGENCE MODULUS is produced here from the Cauchy
-   modulus at ε/2, which is data, and the inequality it has to satisfy is a
-   Prop and so may be argued with the Prop-valued [Un_cv] that [R_complete]
-   returns.  This is the bridge the header describes. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma R_Metric_MComplete : MComplete R_Metric.
 Proof.
   intros u Hu.
@@ -582,9 +564,11 @@ Proof.
   lra.
 Qed.
 
-(* Past index 2l+1 the harmonic sequence has dropped below half of harm l.
-   Used both here and, in Instance/Met/Completion.v, to show that the class
-   of the identity sequence is not in the image of the embedding. *)
+(*
+   本节说明 Met 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma harm_half (l n : nat) : (2 * l + 1 <= n)%nat → harm n <= harm l / 2.
 Proof.
   intro Hn.

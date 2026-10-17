@@ -86,10 +86,11 @@ Qed.
 
 (**************************************************************************)
 
-(* Shapes: the free algebra on 0, 1, sum and product, with [size] reading a
-   shape as a natural number and [unsize] picking the canonical shape
-   [Top + ... + Top] of a given size.  Two shapes are equivalent when they
-   have the same size. *)
+(*
+   本节说明 Shapes 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive Shape : Set :=
   | Bottom

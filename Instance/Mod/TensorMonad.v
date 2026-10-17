@@ -242,10 +242,11 @@ Proof.
   - intros m. reflexivity.
 Defined.
 
-(* Algebra round trip: identity components; the structure maps agree on
-   each generator r ⊗ m by [reflexivity] and on every formal sum by
-   [tensor_hom_ext], the uniqueness half of the tensor's universal
-   property. *)
+(*
+   本节说明 TensorMonad 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RMod_unit_iso@{a c p o x} {R : RingObject@{a c p}}
   (X : @EilenbergMoore@{o o x c} Ab@{o c} (TensorF@{a c p o x} R)
          (TensorMonad@{a c p o x} R)) :
@@ -294,9 +295,11 @@ Proof.
     intros M N h m; simpl. reflexivity.
 Defined.
 
-(* Riehl's Example 5.5.7(i): the forgetful functor is monadic, and the
-   equivalence is the canonical comparison functor of [zext_adjunction]
-   itself (her Definition 5.3.1), not some other equivalence. *)
+(*
+   本节说明函子、单子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RMod_Forget_Ab_Monadic@{a c p o x} (R : RingObject@{a c p}) :
   @Monadic@{o x o o o c o a} (RMod@{o x a p c} R) Ab@{o c}
     (RMod_Forget_Ab@{x o o a p c} R).

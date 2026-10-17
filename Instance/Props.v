@@ -24,9 +24,11 @@ Generalizable All Variables.
 Program Definition Props : Category := {|
   obj     := Prop;                         (* objects are propositions *)
   hom     := Basics.impl;                  (* P ~> Q is the implication P → Q *)
-  (* The hom-setoid is trivial, so any two proofs P → Q are identified: Props
-     is thin. (This needs no proof-irrelevance axiom; `equiv := True` does it
-     definitionally, the same idiom as Proset.v and Roof.v.) *)
+  (*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   homset  := fun P Q => {| equiv := fun f g => True |};
   id      := fun _ x => x;                 (* identity implication P → P *)
   compose := fun _ _ _ g f x => g (f x)    (* transitivity of implication *)
@@ -58,9 +60,11 @@ Program Instance Props_Cartesian : @Cartesian Props := {
   exr  := fun _ _ p => proj2 p             (* second projection P ∧ Q → Q *)
 }.
 
-(* Coproduct: disjunction. P ∨ Q is the join, with the injections or_introl/
-   or_intror and case analysis providing the copairing. (product_obj names the
-   coproduct here, since Cocartesian is Cartesian read in Props^op.) *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Props_Cocartesian : @Cocartesian Props := {
   product_obj := or;                       (* P + Q = P ∨ Q *)

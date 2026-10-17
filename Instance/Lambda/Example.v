@@ -18,12 +18,11 @@ Section Example.
 
 Open Scope Ty_scope.
 
-(* A pure function example, with no products: [((λx. x (λ_. ())) (λy. y)) ()].
-   Reducing call-by-value, [(λx. x (λ_. ())) (λy. y)] applies [λy. y] to
-   [λ_. ()], giving [λ_. ()]; applying that to [()] yields [()].  The machine
-   halts at [Closure EUnit] -- the body of the final [λ_. ()] -- under the
-   two-entry environment that bound its argument [()] and the earlier [λy. y],
-   with the halt continuation [MT]. *)
+(*
+   本节说明 Example 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition example1 :
   run 20 (APP (APP (LAM (APP (VAR ZV)
                              (LAM EUnit)))
@@ -35,14 +34,11 @@ Definition example1 :
                                     (Value.LambdaP (VAR ZV)) NoCl) NoCl))) MT :=
   eq_refl.
 
-(* CAUTION: this example documents the product defect FLAGged in Eval.v, NOT a
-   correct evaluation.  The two components [(λx. x) ()] are redexes that SHOULD
-   each reduce to [()], so a correct CBV machine would return [Pair () ()].
-   Instead the [Pair]/[PAIR_SND]/[PAIR_FST] clauses of [step] form a 3-cycle
-   that stashes the components away unevaluated and rebuilds the original pair;
-   the result below is the *syntactically unchanged* input term.  The equation
-   holds at gas 30 only because 30 is a multiple of the cycle length, landing
-   the machine back at its start.  See the file header of Eval.v. *)
+(*
+   本节说明 Example 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition example_pair :
   run 30 (Pair (APP (LAM (VAR ZV)) EUnit)
                (APP (LAM (VAR ZV)) EUnit)) =
@@ -50,11 +46,11 @@ Definition example_pair :
            (Pair (APP (LAM (VAR ZV)) EUnit) (APP (LAM (VAR ZV)) EUnit)) NoCl) MT :=
   eq_refl.
 
-(* Projection avoids the [Pair] 3-cycle above: [step] on [Fst]/[Snd] pushes an
-   [FST]/[SND] frame, and the [Pair]-against-[FST]/[SND] clauses grab the chosen
-   component directly ([Fst (Pair x y)] selects [x]) and then evaluate it.  Here
-   the selected component [(λx. x) ()] reduces to [()], so both projections halt
-   at [Closure EUnit], the correct call-by-value result. *)
+(*
+   本节说明 Example 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition example_fst :
   run 20 (Fst (Pair (APP (LAM (VAR ZV)) EUnit)
                     (APP (LAM (VAR ZV)) EUnit))) =

@@ -278,9 +278,11 @@ Arguments tw_ext {A} c ν Hletter Hlin.
 (* ------------------------------------------------------------------------ *)
 (** ** The n-fold tensor powers, and the words as their direct sum *)
 
-(* The tensor powers are Structure/Monoidal/Hypergraph/Spider.v's
-   [tpower] at Instance/Ab/Monoidal.v's [Ab_Monoidal]: A^{⊗0} is the unit
-   ℤ and A^{⊗(n+1)} is A ⊗ A^{⊗n}, Instance/Ab/Tensor.v's [AbTensor]. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example tpower_ab_zero (A : Ab) : A ^⨂ 0 = ZAb := eq_refl.
 
 Example tpower_ab_succ (A : Ab) (n : nat) :

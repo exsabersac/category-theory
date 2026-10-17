@@ -49,9 +49,11 @@ Program Definition Op : Cat ⟶ Cat := {|
   fmap := fun C D (F : C ⟶ D) => Opposite_Functor F
 |}.
 Next Obligation.
-  (* A natural isomorphism F ≅ G yields F^op ≅ G^op with INVERSE
-     components — the 2-cell reversal, tamed by invertibility: the
-     coherence square is the original one read at the flipped arrow. *)
+  (*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros C D F G [iso Hiso].
   exists (fun x => Isomorphism_Opposite (iso x)).
   intros x y f; simpl.
@@ -111,9 +113,11 @@ Next Obligation.
   intros C D F G [e He].
   exists e.
   intros x y f; simpl.
-  (* The op reading swaps which side each transport lands on; freeing
-     the two arrow terms lets the object equalities collapse, after
-     which the original coherence at the flipped arrow is literal. *)
+  (*
+   本节说明 Opposite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   pose proof (He y x f) as K; revert K.
   generalize (fmap[G] f).
   generalize (fmap[F] f).

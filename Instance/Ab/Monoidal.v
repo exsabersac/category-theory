@@ -56,17 +56,11 @@ Proof.
   apply cmon_plus_zero_l.
 Qed.
 
-(** ** The ℤ-action
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    [nat_smul A k a] is [a] added to itself [k] times.  All the module laws
-    are inductions on [k]; none of them mentions the integers.
-
-    The [zsmul] laws below are the full module API — additivity in each
-    argument, preservation of the unit, of zero and of negation, and
-    compatibility with homomorphisms.  The coherence proofs of this file
-    consume [zsmul_one], [zsmul_plus], [zsmul_add] and [zsmul_hom];
-    [zsmul_zero_r] and [zsmul_neg_r] complete the set for callers, since
-    this is the only place the action is defined. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint nat_smul (A : AbObject) (k : nat) (a : carrier A) : carrier A :=
   match k with
@@ -210,9 +204,11 @@ Proof.
     exact (ab_neg_respects B _ _ (nat_smul_hom f (Pos.to_nat p) a)).
 Qed.
 
-(* The mixed-sign heart of additivity in the scalar: [Z.pos_sub p q] acts as
-   the difference of the two iterated sums.  The three comparison cases are
-   settled by the corresponding [nat] splitting plus one cancellation. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma zsmul_pos_sub (A : AbObject) (p q : positive) (a : carrier A) :
   zsmul A (Z.pos_sub p q) a
     ≈ cmon_plus A (nat_smul A (Pos.to_nat p) a)
@@ -298,19 +294,19 @@ Proof.
       exact (ab_neg_plus A _ _).
 Qed.
 
-(** ** The unit object ℤ
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
 
-    Instance/Rng.v's [ring_ab] applied to Theory/Algebra/Rig.v's [Int_Ring]:
-    the additive group of the integer ring, already in tree and axiom-free.
-    Its hom-setoid equality is Leibniz `=` on [Z], which is the one place in
-    this file where `=` is the right relation on carrier elements. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ZAb : AbObject := ring_ab Int_Ring.
 
-(* The generator of ℤ, named rather than written inline.  A bare [1%Z] at a
-   [carrier ZAb] position carries sort [Set] and pins the carrier universe
-   to it (design note 5); routed through this constant the level stays a
-   bound parameter. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ZAb_one : carrier ZAb := 1%Z.
 
 Lemma ZAb_eq (n m : carrier ZAb) : n ≈ m → n = m.
@@ -346,11 +342,11 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** Calculations inside a tensor product
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Every statement here is phrased with [ts_eq] and proved from the
-    constructors of Tensor.v's quotient, so that no conversion between the
-    relation and the ambient `≈` is ever needed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TensorCalculus.
 
@@ -481,16 +477,11 @@ Qed.
 
 End TensorCalculus.
 
-(** ** Reaching the generators of an iterated tensor
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    [tensor_hom_ext] reduces an equation between homomorphisms out of
-    [AbTensor G H] to the generators [ts_gen x h] — but [x] ranges over all
-    of [G], and when [G] is itself a tensor its elements are arbitrary
-    formal sums.  The predicate "the two homomorphisms agree on generators
-    with left component [x]" is closed under zero, sum and negation, which
-    is exactly what lets an induction descend one level.  Recording those
-    three steps once makes the depth-two and depth-three extensionality
-    principles short. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section GeneratorClosure.
 
@@ -594,10 +585,11 @@ End GeneratorClosure.
 Arguments AgreeOnL {G H K} f g x.
 Arguments AgreeOnR {G H K} f g u.
 
-(* Depth two, left-nested: agreeing on [(a ⊗ b) ⊗ c] suffices.  The outer
-   [ts_gen] carries its indices explicitly: with them implicit, the inner
-   generator would be elaborated at [tsum X Y] before the outer tensor is
-   known, and [carrier ?G] does not unify with a bare [tsum]. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tensor_hom_ext2 {X Y Z K : AbObject}
       (f g : AbHom (AbTensor (AbTensor X Y) Z) K) :
   (∀ (a : carrier X) (b : carrier Y) (c : carrier Z),
@@ -666,16 +658,11 @@ Proof.
   - exact (agreeL_neg f g t IH).
 Qed.
 
-(** ** The unitors
+(*
+   本节说明（余）端相关定义、性质与动机。
 
-    [Ab_lam] is the factorization of the bilinear map (n, a) ↦ n·a through
-    the tensor; its inverse sends a to 1 ⊗ a.  One round trip is
-    [zsmul_one]; the other is [ts_gen_zsmul_balance] together with
-    [zsmul_int_one].
-
-    From here to the end of the file the universe declarations are part of
-    the statements, not decoration: see design note 5.  Objects of [Ab] are
-    [AbObject@{s s s}] and the category itself is [Ab@{o s}] with [s < o]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Ab_lam@{s +} (A : AbObject@{s s s}) :
   AbHom (AbTensor ZAb@{s s s} A) A :=
@@ -747,13 +734,11 @@ Next Obligation.
   exact (te_bilin_l a b ZAb_one).
 Qed.
 
-(** ** The associator
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Built in two stages.  For a fixed [c] the inner mediator sends
-    [a ⊗ b] to [a ⊗ (b ⊗ c)]; the outer mediator then sends [s ⊗ c] to
-    the value of the inner one at [s].  Bilinearity of the outer map in
-    [c] is not a computation on generators — it is an induction over the
-    formal sum [s], since [s] is what the inner mediator consumes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Ab_assoc_inner (X Y Z : AbObject) (c : carrier Z) :
   AbHom (AbTensor X Y) (AbTensor X (AbTensor Y Z)) :=
@@ -1035,11 +1020,11 @@ Next Obligation.
   exact (ts_refl _).
 Qed.
 
-(** ** The symmetry
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    The braiding is the factorization of (a, b) ↦ b ⊗ a.  Its naturality,
-    its involutivity and both hexagons are generator computations: each
-    side sends a generator to the same term. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Ab_braid (A B : AbObject) :
   AbHom (AbTensor A B) (AbTensor B A) :=

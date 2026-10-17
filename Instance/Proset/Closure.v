@@ -34,10 +34,11 @@ Generalizable All Variables.
 
 (** ** Products: Mac Lane II.3 Ex. 2 *)
 
-(* NOTE: the ∧ below is Category.Lib's Type-valued product notation
-   (template-polymorphic, so the body still lands in Prop); its
-   witnesses are therefore projected by [fst]/[snd] and built by
-   pairing, not [proj1]/[conj]. *)
+(*
+   本节说明 Closure 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition prod_rel {A B : Type} (R : relation A) (S : relation B) :
   relation (A * B) :=
   fun p q => R (fst p) (fst q) ∧ S (snd p) (snd q).
@@ -90,9 +91,11 @@ Next Obligation.
   intros A B R S P Q x y z h h'; exact I.
 Qed.
 
-(* The product preorder's thin category IS the product of the thin
-   categories: both functors are the identity on objects, and every
-   morphism-level obligation is trivial by thinness on either side. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Proset_prod_iso {A B : Type}
   {R : relation A} {S : relation B} (P : RelationClasses.PreOrder R) (Q : RelationClasses.PreOrder S) :
   Proset (PreOrder_prod P Q) ≅[Cat] Proset P ∏ Proset Q := {|
@@ -180,12 +183,11 @@ Next Obligation.
   intros f g h p q x; exact I.
 Qed.
 
-(* Mac Lane II.4 Ex. 4, concrete half: the functor category between two
-   preorders is the pointwise-ordered preorder of monotone maps.  Both
-   object round trips are definitional by record eta (the monoid-side
-   one literally, the functor-side one up to the proof fields, which
-   [Functor_Setoid]'s natural isomorphisms never inspect); every
-   morphism-level obligation is thinness on one side or the other. *)
+(*
+   本节说明函子、幺半群、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Fun_Proset_iso :
   @Fun (Proset P) (Proset Q) ≅[Cat] MonotoneProset := {|
   to   := Fun_Proset_to;
@@ -217,12 +219,11 @@ End MonotoneOrder.
 
 (** ** Seven Sketches §1.2.2: the worked product Roof ∏ 2 *)
 
-(* The six-object product of the V-shaped preorder with the walking
-   arrow.  One decision procedure settles the whole Hasse diagram: for
-   every ordered pair of objects it either produces the (unique)
-   morphism — enumerating the fifteen related pairs — or refutes it —
-   the twenty-one unrelated ones.  The refutations are by inversion on
-   the impossible component, with no decidability or axiom imported. *)
+(*
+   本节说明 Closure 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition roof_two_hom_dec :
   ∀ x y : Roof ∏ _2, (x ~> y) + ((x ~> y) → False).
 Proof.

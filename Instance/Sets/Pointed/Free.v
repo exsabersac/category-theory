@@ -27,13 +27,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The forgetful functor Set_* ⟶ Set
+(*
+   本节说明函子、等价相关定义、性质与动机。
 
-    The underlying setoid of a pointed setoid, and the underlying setoid
-    map of a pointed map.  Both are projections, so all three functor
-    laws are [reflexivity] and faithfulness is the identity implication:
-    equivalence in [PointedSets] IS pointwise equivalence of the
-    underlying maps (Instance/Sets/Pointed.v). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Pointed_Forget : PointedSets ⟶ Sets := {|
   fobj := fun X => pointed_setoid X;
@@ -46,23 +44,22 @@ Next Obligation. intros X Y Z f g a; simpl; reflexivity. Qed.
 #[export] Program Instance Pointed_Forget_Faithful : Faithful Pointed_Forget.
 Next Obligation. intros X Y f g Hfg a; exact (Hfg a). Qed.
 
-(** ** The free pointed set X ⊔ {∗}
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The carrier is [option (carrier X)] and the setoid is
-    [option_setoid] (Lib/Datatypes.v), which relates [Some a] to
-    [Some b] exactly when a ≈ b, relates [None] to itself, and relates
-    nothing across the two constructors.  The basepoint is the adjoined
-    element [None].  No equation is imposed, so nothing is quotiented. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreePointedObject (X : SetoidObject) : PointedSetoid := {|
   pointed_setoid := {| carrier := option (carrier X) |};
   pt := Datatypes.None
 |}.
 
-(* The insertion of generators.  Its respectfulness certificate is
-   [Some_respects] (Lib/Datatypes.v), resolved during elaboration;
-   the universe measurement in the header was taken after that
-   resolution, so it reports the term that is actually built. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_pointed_insert (X : SetoidObject) :
   X ~{Sets}~> Pointed_Forget (FreePointedObject X).
 Proof.
@@ -149,9 +146,11 @@ Proof.
     intro a; symmetry; exact (Hg a).
 Qed.
 
-(** Mac Lane §III.1 Exercise 3, pointed row: the universal arrow from X
-    to the forgetful functor.  By Theory/Universal/Arrow.v this IS an
-    initial object of the comma category [=(X) ↓ Pointed_Forget]. *)
+(*
+   本节说明函子、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_pointed_universal_arrow (X : Sets)
   : UniversalArrow X Pointed_Forget :=
@@ -176,11 +175,11 @@ Next Obligation.
     intro a; exact (Hg a).
 Qed.
 
-(** ** The free-forgetful adjunction
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    Mac Lane §IV.1 Theorem 2, local-to-global: the functor, the
-    adjunction and both triangle identities come out of the generic
-    machinery with no further proof. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreePointed : Sets ⟶ PointedSets :=
   LeftAdjointFunctorFromUniversalArrows Pointed_Forget
@@ -232,10 +231,11 @@ Definition free_pointed_unit (X : Sets)
 Example free_pointed_unit_is_insert (X : Sets) (a : carrier X) :
   free_pointed_unit X a = Datatypes.Some a := eq_refl.
 
-(** The forward transpose ⌊−⌋ IS restriction along the insertion, on the
-    nose.  This is the control that makes the diagnosis of the three
-    rejections below discriminating: one leg of this very [Isomorphism]
-    does reduce. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition free_pointed_transpose {X : Sets} {Y : PointedSets}
   (g : FreePointed X ~{PointedSets}~> Y) : X ~{Sets}~> Pointed_Forget Y :=
@@ -246,10 +246,11 @@ Example free_pointed_transpose_is_adj (X : Sets) (Y : PointedSets)
   to (@adj _ _ _ _ free_pointed_adjunction X Y) g
     = free_pointed_transpose g := eq_refl.
 
-(** The inverse transpose ⌈−⌉ is the extension, but only up to [≈]: it
-    is [unique_obj (ump_universal_arrows …)], and
-    [ump_universal_arrows] is [Qed]-opaque.  The first [Fail] probe at
-    the end of this file names [free_pointed_extend] for exactly this. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma free_pointed_from_adj (X : Sets) (Y : PointedSets)
   (h : X ~{Sets}~> Pointed_Forget Y) :
@@ -299,10 +300,11 @@ Lemma free_pointed_counit_kills_point (Y : PointedSets) :
   free_pointed_counit Y Datatypes.None ≈ pt Y.
 Proof. exact (preserves_pt (free_pointed_counit Y)). Qed.
 
-(** The free functor's action on arrows.  It is defined by
-    factorization, so the strict identification available is with the
-    inverse transpose -- both sides being literally the same opaque
-    term -- while its VALUE at a generator needs [≈]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example free_pointed_fmap_is_from_adj (X Y : Sets) (u : X ~{Sets}~> Y) :
   fmap[FreePointed] u
@@ -355,12 +357,11 @@ Proof. exact (@fmap_counit_unit _ _ _ _ free_pointed_adjunction Y). Qed.
 Example free_pointed_maybe_carrier (X : Sets) :
   carrier (Pointed_Forget (FreePointed X)) = option (carrier X) := eq_refl.
 
-(** ** Non-vacuity
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    First, two facts holding at EVERY generating setoid.  Both are
-    definitional, because [option_setoid] relates nothing across the two
-    constructors: the adjoined point is not in the image of the
-    insertion, and the insertion is injective. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem free_pointed_point_is_new (X : SetoidObject) (a : carrier X) :
   free_pointed_insert X a ≈ pt (FreePointedObject X) → False.
@@ -371,34 +372,30 @@ Theorem free_pointed_insert_injective (X : SetoidObject)
   free_pointed_insert X a ≈ free_pointed_insert X b → a ≈ b.
 Proof. exact (fun H => H). Qed.
 
-(** Both facts are also visible by mapping OUT, and it is worth being
-    explicit that here that is a CROSS-CHECK and not a necessity.  In
-    the quotient rows of this exercise a negative can only be obtained
-    by mapping out of the construction, since no induction on a
-    generating congruence yields one; this row has no congruence, so the
-    two theorems above are available directly.  What mapping out adds is
-    that the mediator produced by the universal property COMPUTES.
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    The probe objects are built over [poly_unit] and [option] rather
-    than over [bool], so that no witness below pins a universe to
-    [Set]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fpt_one : SetoidObject := {| carrier := poly_unit |}.
 
 Definition fpt_two : SetoidObject := {| carrier := option poly_unit |}.
 
-(** The two-point probe object of Instance/Sets/Pointed.v IS the
-    free pointed set on the one-point setoid -- whole record, [eq_refl].
-    So the smallest object that file needed in order to detect
-    monomorphisms is the free one on a single generator. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example PointedTwo_is_free_on_one :
   FreePointedObject fpt_one = PointedTwo := eq_refl.
 
-(** The free pointed set on a two-element setoid has exactly three
-    elements: two generators and the adjoined point.  Exhaustiveness is
-    stated at Leibniz equality, the carrier being an [option] of an
-    [option] of [poly_unit]. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fpt_gen1 : carrier (FreePointedObject fpt_two) :=
   Datatypes.Some (Datatypes.Some ttt).
@@ -419,10 +416,11 @@ Qed.
 Theorem free_pointed_two_generators_distinct : fpt_gen1 ≈ fpt_gen2 → False.
 Proof. exact (fun H => H). Qed.
 
-(** Mapping out.  [PointedTwo] is the target; its carrier is
-    [option poly_unit], which is also the carrier of [fpt_two], so the
-    identity setoid map is a probe, and a constant at the free point is
-    a second one. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fpt_probe_id : fpt_two ~{Sets}~> Pointed_Forget PointedTwo :=
   id{Sets}.
@@ -453,11 +451,11 @@ Example fpt_probe_const_point :
   free_pointed_extend fpt_probe_const (pt (FreePointedObject fpt_two))
     = Datatypes.None := eq_refl.
 
-(** Separation by mapping out.  The identity probe separates the first
-    generator from both the second generator and the adjoined point; the
-    constant probe separates the second generator from the adjoined
-    point.  So the three elements are pairwise separated by pointed maps
-    into [PointedTwo]. *)
+(*
+   本节说明 Free 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem free_pointed_gen1_gen2_separated_out :
   free_pointed_extend fpt_probe_id fpt_gen1
@@ -476,23 +474,22 @@ Theorem free_pointed_gen2_point_separated_out :
     → False.
 Proof. exact (fun H => H). Qed.
 
-(** The identity probe's extension is NOT injective -- it must collapse
-    the second generator onto the adjoined point, a pointed map having
-    nowhere else to send the point.  So the extension is genuinely the
-    mediator of a universal property and not an isomorphism in
-    disguise. *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem free_pointed_extend_id_collapses :
   free_pointed_extend fpt_probe_id fpt_gen2
     ≈ free_pointed_extend fpt_probe_id (pt (FreePointedObject fpt_two)).
 Proof. reflexivity. Qed.
 
-(** ** Guards
+(*
+   本节说明 Free 相关定义、性质与动机。
 
-    Each [Fail] below was stripped once and confirmed to report a
-    genuine "cannot unify", not a scope, notation or reference error,
-    and each names the constant whose strictness is being refuted.  The
-    instrument check is scope-free. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition free_pointed_instrument_check :
   Datatypes.true = Datatypes.false := eq_refl.

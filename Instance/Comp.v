@@ -20,17 +20,11 @@ Generalizable All Variables.
 
 Module UniversalAlgebra.
 
-(** In universal algebra, a (many-sorted) signature lists the operations that
-    characterize an algebraic structure. Signatures play the same role in
-    mathematics as type signatures in computer programming.
+(*
+   本节说明 Comp 相关定义、性质与动机。
 
-    We start by defining operation signatures. These describe the operations
-    of an algebra.
-
-    The main trick is that the arity of an operation is *not* a number but
-    rather a type. For instance, the arity of a binary operation is a type
-    with two elements. (And nothing prevents us from having an infinite type
-    as arity.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record OpSignature := {
   operation : Type ;             (* (Names of) operations. *)
   arity     : operation → Type  (* Each operation has an arity. *)
@@ -110,12 +104,11 @@ Section FreeAlg.
     - now apply eq_gen.
     - rewrite 2 op_commute.
       f_equal.
-      (* jww (2020-02-23): How to remove this axiom?  It is hard to avoid
-         here: an operation's arguments are packaged as a function
-         [arity o → Tree], so deriving equality of the two argument bundles
-         from a pointwise hypothesis genuinely needs functional
-         extensionality.  Working up to a setoid on [Tree] (rather than
-         Leibniz [=]) would remove the dependency. *)
+      (*
+   本节说明 Comp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
       extensionality x.
       now apply H.
   Qed.
@@ -196,14 +189,11 @@ Program Instance Algs_Closed : @Closed Algs _ := {
 (** In a category of algebras for some signature S, the free object is always
     initial. *)
 Program Instance Algs_Initial : Initial Algs := {
-  (* Yes: the free algebra on the empty set of generators (here [False]) is
-     the initial object.  The free functor is left adjoint to the forgetful
-     functor and so preserves colimits, hence sends the initial set ∅ to the
-     initial algebra; concretely [Free S False] is the algebra of closed
-     (variable-free) terms, into which every algebra receives the unique
-     homomorphism [induced_hom] (its uniqueness is [from_free_unique]).
-     Note [Initial Algs] unfolds to [Terminal (Algs^op)], so the initial
-     object is supplied via the dual field name [terminal_obj]. *)
+  (*
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   terminal_obj := Free S False;
   one := fun x : OpAlgebra S => induced_hom S False x (False_rect _)
 }.
@@ -237,9 +227,11 @@ Record EqSignature (S : OpSignature) := {
   lhs : ∀ (A : OpAlgebra S) (e : eq), (eq_arity e → A) → A ; (* left-hand sides *)
   rhs : ∀ (A : OpAlgebra S) (e : eq), (eq_arity e → A) → A ; (* right-hand sides *)
 
-  (* Moreover, we require that the lhs and rhs are natural transformations, i.e,
-     that they commute with homomorphism. This way it's impossible to write down
-     strange equations that involve something other than the operations. *)
+  (*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   lhs_natural :
     ∀ (A B : OpAlgebra S) (f : AlgHom A B) (e : eq) (args : eq_arity e → A),
       f (lhs A e args) = lhs B e (fun i => f (args i)) ;

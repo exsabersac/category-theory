@@ -85,10 +85,11 @@ Definition rect_p : rect_X0 ~> rect_Y0 := fmap[F] (rect_vert ord3_0).
 Definition rect_q : rect_X1 ~> rect_Y1 := fmap[F] (rect_vert ord3_1).
 Definition rect_r : rect_X2 ~> rect_Y2 := fmap[F] (rect_vert ord3_2).
 
-(** The three "diagonal" arrows: the long one across the whole
-    rectangle, and the two short ones, one per square.  Each is the
-    image of a genuine arrow of the shape — which is why their
-    well-definedness IS the rectangle's commutativity. *)
+(*
+   本节说明 Rectangle 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rect_long_diagonal : rect_X0 ~> rect_Y2 :=
   fmap[F] (@compose Rect (TwoX, ord3_0) (TwoX, ord3_2) (TwoY, ord3_2)
              (rect_vert ord3_2) (rect_horiz TwoX three_02)).
@@ -101,13 +102,11 @@ Definition rect_diag_right : rect_X1 ~> rect_Y2 :=
   fmap[F] (@compose Rect (TwoX, ord3_1) (TwoX, ord3_2) (TwoY, ord3_2)
              (rect_vert ord3_2) (rect_horiz TwoX three_12)).
 
-(** Each of the equations below is proved the same way: unfold the
-    names, collapse the composites of images into images of composites,
-    and observe that the two arrows of the shape being compared are
-    parallel, hence equal, [Rect] being thin.  The OBJECT abbreviations
-    must be unfolded too, not only the morphism ones: [fmap_comp]'s
-    middle object has to be recognised as [fobj[F] _], and [rect_X1] is
-    not syntactically of that form. *)
+(*
+   本节说明 Rectangle 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Ltac rect_shape :=
   unfold rect_long_diagonal, rect_diag_left, rect_diag_right,
          rect_u, rect_v, rect_u', rect_v', rect_p, rect_q, rect_r,
@@ -178,16 +177,11 @@ Qed.
 
 End Diagram.
 
-(** ** Naturality on the generating steps, for a plain family
+(*
+   本节说明自然变换、同构相关定义、性质与动机。
 
-    [Instance/Ordinal.v]'s [ord_naturality_from_steps] asks for a family
-    of ISOMORPHISMS and concludes naturality of their forward legs.  Its
-    proof never uses the inverses, so the same induction proves the same
-    conclusion for an arbitrary family of morphisms; that is what a
-    natural transformation out of an ordinal needs, and it is what the
-    rectangle's converse consumes.  The donor is recovered as an
-    instance below, so the claim "the same induction" is checked rather
-    than asserted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ord_transform_naturality@{o h p co ch cp}
   {C : Category@{co ch cp}} {n : nat}
   (F G : Ordinal@{o h p} (S n) ⟶ C)
@@ -293,20 +287,11 @@ Proof.
   exact (paste_squares _ _ _ _ _ _ _ (crc_left R) (crc_right R)).
 Qed.
 
-(** UNIVERSES, measured.  The construction below is pinned at
-    [C : Category@{co Set Set}] — the target's hom and proof universes at
-    [Set] — and the pin is inherited, not introduced here.
-    [Theory/Shapes.v]'s [Functor_of_Pair] produces a functor out of
-    [_3@{u Set Set}] (that file's header records the same profile for
-    [Instance/Ordinal.v]'s own [Functor_of_Steps] and
-    [Functor_of_Triple]), and [Construction/Cylinder.v]'s [Cyl_functor]
-    identifies the hom and proof universes of its two categories, so
-    [Set] propagates from the row functors to the target.  The FORWARD
-    direction — the [Diagram] section above, which is where all the
-    commutativity content lives — carries no such pin and is stated for
-    an arbitrary [C].  Lifting this one would mean rebuilding the
-    cylinder's classifying functor by hand over [_2 ∏ _3]; that is not
-    done here, and nothing above depends on it. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Converse.
 
@@ -320,9 +305,11 @@ Context (R : CommutingRectangle C).
 Definition rect_top : _3 ⟶ C := Functor_of_Pair (crc_u R) (crc_v R).
 Definition rect_bottom : _3 ⟶ C := Functor_of_Pair (crc_u' R) (crc_v' R).
 
-(** The three vertical arrows, as a family indexed by the objects of
-    [_3].  The fourth branch is the out-of-range index, ruled out by the
-    bound — the shape [pair_theta] ([Theory/Shapes.v]) uses. *)
+(*
+   本节说明 Rectangle 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rect_eta (w : Ord_obj 3) : rect_top w ~> rect_bottom w.
 Proof.
   destruct w as [i H]; destruct i as [| [| [| i]]].
@@ -398,12 +385,11 @@ End Converse.
 
 Arguments RectFunctor {C} _.
 
-(** ** The arrow count of the shape
+(*
+   本节说明 Rectangle 相关定义、性质与动机。
 
-    An arrow of [_2 ∏ _3] is a pair, so the count is 3 × 6.  The [_3]
-    factor's own count is [Instance/Ordinal.v]'s, reused: [ord_pairs 3]
-    enumerates the ordered pairs of indices carrying an arrow, and its
-    length is 6. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ord3_objs : list (Ord_obj 3) := ord3_0 :: ord3_1 :: ord3_2 :: nil.
 

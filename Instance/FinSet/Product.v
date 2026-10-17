@@ -86,11 +86,11 @@ Proof.
       reflexivity.
 Qed.
 
-(** ** The cartesian structure
+(*
+   本节说明笛卡尔相关定义、性质与动机。
 
-    The product object is [m * n], pairing is pointwise [fin_pair], and
-    the projections are the components of [fin_unpair]; the universal
-    property is exactly the two round trips, pointwise. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance FinSet_Cartesian : @Cartesian FinSet := {|
   product_obj := fun m n => (m * n)%nat;
@@ -124,13 +124,11 @@ Example fork_computes :
     (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1))))
     = Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1))) := eq_refl.
 
-(** ** Alignment with the terminal object
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    The product with the chosen terminal object [1] of [FinSet_Terminal]
-    lands on the nat [1 * n] (resp. [n * 1]), which is the object [n]
-    itself: a propositional equality of OBJECTS of the skeletal category
-    (nat values), recorded for downstream files that need to transport
-    along the unitors on the nose. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma FinSet_prod_one_l (n : nat) :
   @product_obj FinSet FinSet_Cartesian

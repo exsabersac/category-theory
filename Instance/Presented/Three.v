@@ -31,14 +31,16 @@ Generalizable All Variables.
 
 (* ---------- (A) presentations that generate the same congruence ---------- *)
 
-(* Leastness of the generated congruence, in the shape a comparison of two
-   presentations wants: it is enough that every generating equation of [R]
-   is DERIVABLE in [S], not that it is one of [S]'s own generators. *)
-(* [Construction/Quotient.v]'s [cc_least] is exactly this, applied at
-   the congruence [CongClosure S].  That file's own comment on the sibling
-   [cc_kernel] says such a passage is "a one-line corollary of
-   leastness ... not a second induction", so this is a term and not an
-   induction. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pq_cc_mono {C : Category} (R S : HomRelT C)
   (HRS : ∀ x y (f g : x ~> y), R x y f g → CongClosure S x y f g)
   {x y : C} {f g : x ~> y} :
@@ -51,10 +53,11 @@ Context {C : Category} (R S : HomRelT C).
 Context (HRS : ∀ x y (f g : x ~> y), R x y f g → CongClosure S x y f g).
 Context (HSR : ∀ x y (f g : x ~> y), S x y f g → CongClosure R x y f g).
 
-(* Both quotients have the same objects, the same hom TYPES, the same
-   identities and the same composition -- only the hom-setoid differs -- so
-   the comparison is the identity on everything, and all its content is the
-   respectfulness obligation. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition pq_same_to : QuotientCong C R ⟶ QuotientCong C S := {|
   fobj := fun x => x;
   fmap := fun x y f => f
@@ -173,14 +176,11 @@ Definition three_a : ord3_0 ~{_3}~> ord3_1 := le_t_S le_t_n.
 Definition three_b : ord3_1 ~{_3}~> ord3_2 := le_t_S le_t_n.
 Definition three_c : ord3_0 ~{_3}~> ord3_2 := le_t_S (le_t_S le_t_n).
 
-(* PRIOR ART, and the three are not merely analogous but the SAME TERMS:
-   [Theory/Shapes.v] already names all three non-identity arrows
-   of [_3].  They are spelled out again here rather than consumed for one
-   reason, and it is a reason about STRENGTH: that file DEFINES its 0 -> 2
-   arrow as the composite ([three_02 := three_12 ∘ three_01]), so with it
-   [three_table_ba] below would hold by unfolding a definition, where
-   written independently as a raw [le_t] term it holds because
-   [le_t_trans] COMPUTES.  The identification is recorded instead. *)
+(*
+   本节说明（余）强度、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example three_a_is_shapes : three_a = three_01 := eq_refl.
 Example three_b_is_shapes : three_b = three_12 := eq_refl.
 Example three_c_is_shapes : three_c = three_02 := eq_refl.
@@ -201,12 +201,11 @@ Proof. exact (le_t_zero_absurd p). Qed.
 Theorem three_no_21 (p : ord3_2 ~{_3}~> ord3_1) : False.
 Proof. exact (le_t_zero_absurd (le_t_SS_inv p)). Qed.
 
-(* THE TABLE.  Ten composable pairs, every one an equation of TERMS:
-   composition in [Ordinal n] is [le_t_trans], which recurses on its second
-   argument and so reduces outright on these closed indices.  The [≈] of
-   [Ordinal n] is [Morphism_equality], i.e. Leibniz equality, so stating
-   these with [=] is the same claim read at its strongest, and no
-   [ord_thin] appeal is needed anywhere in the table. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example three_table_ba : three_b ∘ three_a = three_c := eq_refl.
 
 Example three_table_a_id0 : three_a ∘ three_id0 = three_a := eq_refl.
@@ -261,10 +260,11 @@ Proof.
                            | exact (three_no_21 p) ] ].
 Qed.
 
-(* The count, as a number.  [three_homcount] gives the number of arrows
-   between each ordered pair of objects; the two lemmas either side of it
-   say that it is 1 exactly on the listed pairs, and the per-pair
-   statements above say what those numbers mean. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition three_homcount (x y : Ord_obj 3) : nat :=
   if Nat.leb (ord_val x) (ord_val y) then 1%nat else 0%nat.
 
@@ -307,11 +307,11 @@ Definition three_nonidentity_total : nat :=
 Theorem three_nonidentity_total_3 : three_nonidentity_total = 3%nat.
 Proof. reflexivity. Qed.
 
-(* [Instance/Ordinal.v]'s independent count of endpoint pairs, read at
-   n = 3.  Its left side is TWICE the morphism count, and its proof there
-   is one rewrite by [ord_pairs_length] and the closed form
-   [ord_tri_closed], so the six above is confirmed by an argument that
-   shares no text with the fold. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary three_morphism_count : (2 * length (ord_pairs 3) = 3 * (3 + 1))%nat.
 Proof. exact (ord_morphism_count 3). Qed.
 
@@ -319,9 +319,11 @@ Example three_ord_pairs_6 : length (ord_pairs 3) = 6%nat := ord_pairs_3.
 
 (* ---------- deciding equality of morphisms ---------- *)
 
-(* A morphism of 3, bundled with its endpoints, is determined by the pair
-   of endpoint indices -- objects by [ord_obj_eq], the arrow between them
-   by thinness.  Both halves are [Instance/Ordinal.v]'s, consumed. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem three_mor_eq_coords (a b : OrdMor 3) :
   ord_coords a = ord_coords b → a = b.
 Proof. exact (@ord_coords_inj 3 a b). Qed.
@@ -343,10 +345,11 @@ Proof.
   - right; intro E; apply E1; now rewrite E.
 Defined.
 
-(* At the level of PARALLEL arrows the decision is total and always
-   answers yes.  That is not a weakness of the procedure: it is exactly
-   what thinness of 3 says, and all the content sits in the endpoint
-   analysis above -- which pairs of objects carry an arrow at all. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition three_equiv_dec (x y : Ord_obj 3) (p q : x ~{_3}~> y) :
   ((p ≈ q) + (p ≈ q → False))%type := inl (three_thin x y p q).
 
@@ -357,13 +360,11 @@ Proof. intros [g _ _]; exact (three_no_10 g). Qed.
 
 (* ---------- (D) presentation (i): the commutative triangle ---------- *)
 
-(* Generators a : 0 -> 1, b : 1 -> 2, c : 0 -> 2; one relation c = b ∘ a.
-   Every piece of the presentation is [Construction/Free/Quiver/
-   Presented.v]'s, CONSUMED: [Ord3Quiver], [Ord3Eqns], [Ord3Finite],
-   [Ord3Presentation], [Ord3], [ord3_path_c], [ord3_path_ab],
-   [ord3_free_distinct] and [ord3_relation_holds].  What is added here is
-   the classification of the free paths, thinness, and the comparison with
-   [_3]. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example three_pres_i_is_Ord3 : FinitelyPresented Ord3Presentation = Ord3 :=
   eq_refl.
 
@@ -374,11 +375,11 @@ Definition o3_a : Ord3_0 ~{FreeOrd3}~> Ord3_1 :=
 Definition o3_b : Ord3_1 ~{FreeOrd3}~> Ord3_2 :=
   tlist_singleton (B:=@edges Ord3Quiver) Ord3_b.
 
-(* The specification: for each ordered pair of nodes, exactly which paths
-   join them.  [False] marks the three pairs joined by no path.  The
-   equalities are LEIBNIZ, not [≈] -- the strengthening
-   [Instance/Square.v] documents, and what makes the free count
-   below a count of arrows rather than of [≈]-classes. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition o3_spec (y : Ord3Node) :
   ∀ x : Ord3Node, (x ~{FreeOrd3}~> y) → Type :=
   match y as y0 return ∀ x : Ord3Node, (x ~{FreeOrd3}~> y0) → Type with
@@ -402,10 +403,11 @@ Definition o3_spec (y : Ord3Node) :
       end
   end.
 
-(* One induction on the path: the empty path forces source and target to
-   agree, and a step is one of the three edges, which pins the source and
-   hands the rest to the induction hypothesis.  The 0 -> 2 branch is the
-   only one entering the disjunction, once on each side. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem o3_classify (y x : Ord3Node) (p : x ~{FreeOrd3}~> y) : o3_spec y x p.
 Proof.
   induction p as [ | i j e p IH ].
@@ -426,10 +428,11 @@ Proof. exact (o3_classify _ _ p). Qed.
 Corollary free_ord3_no_21 (p : Ord3_2 ~{FreeOrd3}~> Ord3_1) : False.
 Proof. exact (o3_classify _ _ p). Qed.
 
-(* Any two parallel arrows of the PRESENTED triangle agree.  The only pair
-   the classification leaves apart is [ord3_path_c] against
-   [ord3_path_ab], and the imposed relation is exactly what closes it --
-   [ord3_relation_holds], consumed. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ord3_thin (x y : Ord3Node) (p q : x ~{Ord3}~> y) : p ≈ q.
 Proof.
   pose proof (o3_classify y x p) as Hp.
@@ -447,10 +450,11 @@ Qed.
 Definition ord3_equiv_dec (x y : Ord3Node) (p q : x ~{Ord3}~> y) :
   ((p ≈ q) + (p ≈ q → False))%type := inl (ord3_thin x y p q).
 
-(* The comparison into 3.  [_3] is thin, so both the quiver
-   homomorphism's respectfulness and the merging hypothesis the presented
-   category's universal property asks for are [ord_thin]; the functor
-   itself is [PresentedFunctor], consumed. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition o3_ord (n : Ord3Node) : Ord_obj 3 :=
   match n with
   | Ord3_0 => ord3_0
@@ -525,9 +529,11 @@ Proof. now destruct n. Qed.
 Lemma o3_ord_node (x : Ord_obj 3) : o3_ord (o3_node (ord_val x)) = x.
 Proof. destruct (ord3_cases x) as [[E | E] | E]; subst; reflexivity. Qed.
 
-(* Presentation (i) presents the category 3, at [StrictCat] strength: both
-   object components are the equalities above, and both morphism
-   components are discharged by thinness of the two sides. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Ord3_iso : Ord3 ≅[StrictCat] _3 := {|
   to := Ord3_to;
   from := Ord3_from
@@ -539,11 +545,11 @@ Next Obligation.
   exists o3_node_ord; intros x y f; apply ord3_thin.
 Qed.
 
-(* How much the relation does.  [o3_classify] bounds each free hom-set
-   from above, and [ord3_free_distinct] (Presented.v, consumed) shows
-   the 0 -> 2 one really does have two elements, so the free category on
-   the triangle quiver has SEVEN arrows against 3's six: the presentation
-   makes exactly one identification. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ord3_nodes : list Ord3Node := Ord3_0 :: Ord3_1 :: Ord3_2 :: nil.
 
 Definition ord3_all_pairs : list (Ord3Node * Ord3Node) :=
@@ -575,20 +581,22 @@ Example ord3_merge_arithmetic :
 
 (* ---------- (E) presentation (ii): two generators, no relations -------- *)
 
-(* THE FREENESS VERDICT.  Awodey's question "is 3 free?" is answered YES,
-   by CONSUMING [Construction/Free/Quiver/Examples.v]'s [ordinal_free]
-   at m = 3.  The category 3 is the free category on the linear two-edge
-   graph 0 -> 1 -> 2: the arrow 0 -> 2 is the two-edge PATH, forced by
-   composition, and not a generator subject to a relation. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (* [Examples.v]'s [chain_free] IS this constant -- same type, same
    body -- so it is aliased rather than restated; the local name is kept
    so this section reads without a cross-file alias. *)
 Definition three_is_free : FreeOnQuiver (LinQuiver 3) ≅[StrictCat] _3 :=
   chain_free.
 
-(* The three witnesses of that reading, all from Examples.v: the two
-   generating steps have path length one, and the arrow they compose to
-   has path length two -- it is a composite, not a fourth edge. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example three_gen_0_length : tlist_length chain_e0 = 1%nat := chain_e0_length.
 Example three_gen_1_length : tlist_length chain_e1 = 1%nat := chain_e1_length.
 Example three_composite_length : tlist_length chain_e10 = 2%nat :=
@@ -620,9 +628,11 @@ Proof.
   - exact (False_rect _ (E e)).
 Defined.
 
-(* An edge of the linear quiver is a proof of a [nat] equation, so two
-   edges with the same endpoints agree by UIP on [nat] -- Hedberg, no
-   axiom.  That is Examples.v's [linear_edge_unique], consumed. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma lin3_edge_rt (x y : LinQuiver 3) (e : @edges (LinQuiver 3) x y) :
   lin3_edge x y (lin3_eindex x y e) ≈ e.
 Proof. apply linear_edge_unique. Qed.
@@ -671,11 +681,11 @@ Definition lin3_equiv_dec (x y : LinQuiver 3) (p q : x ~{Lin3}~> y) :
 
 (* ---------- (F) presentation (iii): the equation written backwards ----- *)
 
-(* The same three generators, and the same single equation with its two
-   sides exchanged: [Ord3Eqns] imposes c = b ∘ a, [Ord3RevEqns] imposes
-   b ∘ a = c.  As presentation DATA the two are different, and section (H)
-   below says how they are told apart; as categories they coincide,
-   because a congruence is symmetric. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Ord3RevEqns : FiniteEquations Ord3Quiver := {|
   fe_count := Ord3_count;
   fe_lhs := Ord3_rhs;
@@ -737,11 +747,11 @@ Definition ord3_rev_equiv_dec (x y : Ord3Node) (p q : x ~{Ord3Rev}~> y) :
 
 (* ---------- (G) presentation (iv): four generators, two relations ------ *)
 
-(* Generators a : 0 -> 1, b : 1 -> 2 and TWO parallel arrows c, d : 0 -> 2,
-   with both of them equated to the composite: c = b ∘ a and d = b ∘ a.
-   The nodes are [Ord3Node] again, so Presented.v's node enumeration
-   ([Ord3_node], [Ord3_index], [Ord3_node_rt]) is reused; the edges are
-   new. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Tri4Edge : Ord3Node → Ord3Node → Set :=
   | Tri4_a : Tri4Edge Ord3_0 Ord3_1
   | Tri4_b : Tri4Edge Ord3_1 Ord3_2
@@ -800,11 +810,11 @@ Proof.
     + left; right; rewrite IH; reflexivity.
 Qed.
 
-(* The three 0 -> 2 paths of the free category are pairwise distinct.  For
-   c against ab and d against ab the intermediate node already separates
-   them, as in Presented.v's [ord3_free_distinct]; c against d is the case
-   that needs UIP on the nodes, which they have by decidable equality
-   (Hedberg, through [UIP_dec] -- no axiom is assumed). *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ord3_node_eq_dec (x y : Ord3Node) : {x = y} + {x <> y}.
 Proof.
   destruct x, y; solve [ left; reflexivity | right; discriminate ].
@@ -989,9 +999,11 @@ Next Obligation.
   exists o3_node_ord; intros x y f; apply tri4_thin.
 Qed.
 
-(* The four-generator quiver's free category has EIGHT arrows -- the three
-   0 -> 2 paths are pairwise distinct by the three lemmas above -- so this
-   presentation makes exactly two identifications. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition tri4_free_homcount (x y : Ord3Node) : nat :=
   match x, y with
   | Ord3_0, Ord3_0 => 1%nat
@@ -1068,10 +1080,11 @@ Definition tri4_rel_total : nat :=
 Theorem tri4_rel_total_2 : tri4_rel_total = 2%nat.
 Proof. reflexivity. Qed.
 
-(* The three quivers have three different generator counts, so no two of
-   (i), (ii), (iv) are the same presentation data; (iii) shares (i)'s
-   quiver, hence its generator count, and so differs from (ii) and (iv) by
-   the same numbers. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem three_presentation_counts_differ :
   (((ord3_gen_total = lin3_gen_total → False) *
     (ord3_gen_total = tri4_gen_total → False)) *
@@ -1093,17 +1106,19 @@ Example ord3_lhs_is_c :
 Example ord3_rev_lhs_is_ab :
   @fe_lhs _ Ord3RevEqns Ord3_0 Ord3_2 Fin.F1 = ord3_path_ab := eq_refl.
 
-(* ...and those two are not the same arrow of the free category.  This is
-   Presented.v's [ord3_free_distinct], consumed; it is the reason the
-   two presentation records are distinguishable even though the categories
-   they present are isomorphic. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ord3_presentations_differ : ord3_path_c ≈ ord3_path_ab → False.
 Proof. exact ord3_free_distinct. Qed.
 
-(* AWODEY §4.5 EXERCISE 3.  Four presentations of the category 3.  Every
-   one is isomorphic to [_3] in [StrictCat], hence to each of the others;
-   and by the counts above the four presentation records are pairwise
-   distinguishable. *)
+(*
+   本节说明 Three 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition three_four_presentations :
   (((Ord3 ≅[StrictCat] _3) * (Lin3 ≅[StrictCat] _3)) *
    ((Ord3Rev ≅[StrictCat] _3) * (Tri4 ≅[StrictCat] _3)))%type :=

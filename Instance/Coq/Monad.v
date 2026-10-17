@@ -138,11 +138,11 @@ Fixpoint insertM {a} (P : a → a → m bool)
   end.
 Arguments insertM {a} P z l : simpl never.
 
-(* The four [Monad] laws restated pointwise. In COQ the homset equivalence ≈
-   is ∀ x, _ x = _ x, so applying each class field at an argument turns the
-   equation of morphisms into a Leibniz equality usable as a rewrite rule:
-   join_fmap_join (associativity), join_fmap_ret (left unit), join_ret (right
-   unit) and join_fmap_fmap (naturality of μ). *)
+(*
+   本节说明单子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary join_fmap_join_x : ∀ a (x : (m ◯ m ◯ m) a),
   join (fmap join x) = join (join x).

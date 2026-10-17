@@ -34,12 +34,11 @@ Generalizable All Variables.
 (** ** Powers of an endomorphism *)
 (* ---------------------------------------------------------------------- *)
 
-(* The construction is a matrix power when C is [Matr R] -- which is the
-   only use made of it below -- but nothing in it is about matrices, so
-   it is developed once for an arbitrary endomorphism.  The recursion
-   peels a factor off on the LEFT, [A ∘ Aʲ], because that is the
-   orientation in which the monoid homomorphism law below is the functor
-   composition law read forwards. *)
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Powers.
 
@@ -84,9 +83,11 @@ Qed.
 
 (** ** The inverse of a commuting square *)
 
-(* If the front square of an isomorphism pair commutes then so does the
-   back one.  This is the only content in either direction of the two
-   characterizations below: everything else is projection. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma iso_square_from {a b a' b' : C} (f : a ~> b) (g : a' ~> b')
   (P : a ≅ a') (Q : b ≅ b') :
   g ∘ to P ≈ to Q ∘ f → f ∘ from P ≈ from Q ∘ g.
@@ -117,17 +118,11 @@ Context {C : Category}.
    just the packaging. *)
 Definition arrow_pack {a b : C} (f : a ~> b) : @Arrow C := ((a, b); f).
 
-(* Two morphisms are isomorphic in the arrow category exactly when they
-   are conjugate by a pair of isomorphisms, one at each end.
+(*
+   本节说明hom、等价、同构相关定义、性质与动机。
 
-   The forward direction is projection: the two components of an
-   isomorphism of [Arrow C] are morphisms of C, its two inverse laws are
-   componentwise by Construction/Comma.v's hom-equivalence, and the
-   commuting square is literally the second projection of the forward
-   morphism -- so every field of the two isomorphisms produced below is
-   an existing subterm, and the last line is an [exact].  The backward
-   direction is where [iso_square_from] is spent, on the square that the
-   inverse pair owes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem arrow_iso_iff {a b a' b' : C} (f : a ~> b) (g : a' ~> b') :
   (arrow_pack f ≅[@Arrow C] arrow_pack g)
     ↔ (∃ P : a ≅ a', ∃ Q : b ≅ b', g ∘ to P ≈ to Q ∘ f).
@@ -159,19 +154,21 @@ Section MatrixEquivalence.
 
 Context {R : RigObject}.
 
-(* Two matrices are EQUIVALENT when one is carried to the other by an
-   invertible change of basis in the source and, independently, one in
-   the target.  The definition is the categorical spelling B P ≈ Q A;
-   the classical B ≈ Q A P⁻¹ is [matrix_equivalence_classical]. *)
+(*
+   本节说明 FunExercises 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition MatrixEquivalent {n1 m1 n2 m2 : nat}
   (A : n1 ~{Matr R}~> m1) (B : n2 ~{Matr R}~> m2) : Type :=
   ∃ P : n1 ≅[Matr R] n2, ∃ Q : m1 ≅[Matr R] m2,
     B ∘ to P ≈ to Q ∘ A.
 
-(* Mac Lane's answer for the walking arrow: isomorphic objects of the
-   arrow category of [Matr R] are exactly the equivalent matrices.  No
-   universe restriction: the arrow category is a comma category, and
-   nothing here forms a functor category. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem matrix_equivalence_iso {n1 m1 n2 m2 : nat}
   (A : n1 ~{Matr R}~> m1) (B : n2 ~{Matr R}~> m2) :
   (arrow_pack A ≅[@Arrow (Matr R)] arrow_pack B) ↔ MatrixEquivalent A B.
@@ -201,16 +198,11 @@ End MatrixEquivalence.
 (** ** The same statement read in the functor category [_2, C] *)
 (* ---------------------------------------------------------------------- *)
 
-(* Mac Lane writes the exercise about the functor category, so the
-   reading is supplied -- by TRANSPORT along Theory/Shapes.v's
-   comparison rather than by a second proof.  [Arrow_of_Fun] carries a
-   functor F to [arrow_pack (arrow_of F)] definitionally, so the forward
-   leg is [fobj_iso] followed by [arrow_iso_iff]; the backward leg goes
-   out through [Fun_of_Arrow], whose value at [Arrow_of_Fun F] is
-   [Walk (arrow_of F)], and returns along [Walk_arrow_of_iso].
+(*
+   本节说明函子相关定义、性质与动机。
 
-   The universe restriction [Category@{o Set Set}] is inherited verbatim
-   from [Two_Fun_Arrow] and is disclosed in the header. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TwoFunIso.
 
@@ -239,15 +231,11 @@ End TwoFunIso.
 (** ** Part two: the delooped free monoid, and matrix similarity *)
 (* ---------------------------------------------------------------------- *)
 
-(* EVERYTHING BELOW IS PINNED, and by three mechanisms rather than one:
-   [MonHom M N] takes its two monoids at ONE universe instance, and so
-   does [Functor_Setoid] -- so already [pow_hom]'s type and the round
-   trip [functor_of_endo (endo_of_functor F) ≈ F] require C's hom and
-   proof universes to be [Set], before any functor category is
-   mentioned; the functor category then requires it a third time.  The
-   powers themselves ([mat_pow] and its four laws above), the
-   arrow-category characterization, and matrix equivalence are free of
-   the restriction. *)
+(*
+   本节说明函子、hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Two lemmas that need nothing from the delooping live OUTSIDE the
    pinned section, at an arbitrary category: the fess audit measured
@@ -256,11 +244,11 @@ Section Intertwining.
 
 Context {C : Category}.
 
-(* A morphism S intertwining A with B intertwines every power with the
-   corresponding power; the induction is the same associativity shuffle
-   as [mat_pow_add].  This is what makes a natural transformation
-   between two of these functors a single unconstrained morphism
-   together with ONE equation instead of a family of them. *)
+(*
+   本节说明自然变换、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pow_intertwine {x y : C} (A : x ~> x) (B : y ~> y) (S : x ~> y)
   (H : S ∘ A ≈ B ∘ S) (k : nat) :
   S ∘ mat_pow A k ≈ mat_pow B k ∘ S.
@@ -272,10 +260,11 @@ Proof.
     now rewrite comp_assoc.
 Qed.
 
-(* An endomorphism conjugate to an identity is an identity: the
-   similarity class of [id] is a singleton.  This is what makes the
-   negative witnesses below cheap, and it is the categorical content of
-   "only the identity matrix is similar to the identity matrix". *)
+(*
+   本节说明 FunExercises 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma similar_to_id {x y : C} (B : y ~> y) :
   (∃ P : x ≅ y, to P ∘ id ≈ B ∘ to P) → B ≈ id.
 Proof.
@@ -299,10 +288,11 @@ Context {C : Category@{u Set Set}}.
 
 (** *** The dictionary: endomorphisms versus functors out of B (ℕ, +) *)
 
-(* Powers of A, as a homomorphism from the free monoid on one generator
-   into the endomorphism monoid of x.  [mon_map_unit] is [mat_pow_zero]
-   and [mon_map_op] is [mat_pow_add]; nothing else is required, which is
-   the sense in which (ℕ, +) is free on one generator. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition pow_hom {x : C} (A : x ~> x) :
   MonHom Nat_Plus (hom_monoid C x) := {|
   mon_map := mat_pow A
@@ -320,18 +310,19 @@ Next Obligation. intros x A j k; exact (mat_pow_add A j k). Qed.
 Definition functor_of_endo {x : C} (A : x ~> x) : Deloop Nat_Plus ⟶ C :=
   functor_of_hom_monoid x (pow_hom A).
 
-(* ...and the endomorphism named by a functor: the image of the
-   generator.  (The objects of [Deloop Nat_Plus] must be given
-   explicitly: its hom is the same setoid at every pair, so a natural
-   number carries no information about the endpoints.) *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition endo_of_functor (F : Deloop Nat_Plus ⟶ C) : F ttt ~> F ttt :=
   @fmap _ _ F ttt ttt 1%nat.
 
-(* FREENESS, as a theorem: the image of k is the k-th power of the image
-   of the generator.  The base case is [fmap_id] -- the identity of
-   [Deloop Nat_Plus] IS the natural number 0 -- and the step is
-   [fmap_comp] at [1 ∘ k], the composite in the delooping being [1 + k],
-   which is [S k] by computation. *)
+(*
+   本节说明 FunExercises 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fmap_is_pow (F : Deloop Nat_Plus ⟶ C) (k : nat) :
   @fmap _ _ F ttt ttt k ≈ mat_pow (endo_of_functor F) k.
 Proof.
@@ -346,12 +337,11 @@ Lemma endo_of_functor_of_endo {x : C} (A : x ~> x) :
   endo_of_functor (functor_of_endo A) ≈ A.
 Proof. exact (mat_pow_one A). Qed.
 
-(* The other, at the strength Instance/Cat.v's hom-equivalence supplies:
-   a natural isomorphism with identity components, which is what
-   [Functor_Setoid] asks for.  A strict equality of functor records is
-   NOT available and is not claimed -- the two records differ in how
-   [fmap] is presented, exactly as in Theory/Shapes.v's
-   [Walk_arrow_of_strict] discussion. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma functor_of_endo_round (F : Deloop Nat_Plus ⟶ C) :
   functor_of_endo (endo_of_functor F) ≈ F.
 Proof.
@@ -365,9 +355,11 @@ Qed.
 
 (** *** Naturality collapses to the generator *)
 
-(* An intertwiner IS a natural transformation, its single component
-   repeated at the single object ([pow_intertwine], hoisted above the
-   section, supplies naturality at every power from the one square). *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition transform_of_intertwiner {x y : C}
   (A : x ~> x) (B : y ~> y) (S : x ~> y) (H : S ∘ A ≈ B ∘ S) :
   functor_of_endo A ⟹ functor_of_endo B := {|
@@ -382,17 +374,11 @@ Next Obligation.
   exact (pow_intertwine A B S H k).
 Qed.
 
-(* Mac Lane's answer for the delooped free monoid, at the level of an
-   arbitrary category: the functors named by two endomorphisms are
-   isomorphic exactly when the endomorphisms are conjugate.
+(*
+   本节说明函子、幺半群、同构相关定义、性质与动机。
 
-   Forward, the isomorphism's component at the single object is the
-   conjugator, its two inverse laws are that component's, and the
-   conjugation equation is naturality AT THE GENERATOR -- the only
-   instance of naturality used.  Backward, the transformation is built
-   from the conjugator by [transform_of_intertwiner], its inverse from
-   the inverse conjugator through the square [iso_square_from] derives,
-   and the two isomorphism laws are checked at the single object. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem endo_iso_iff {x y : C} (A : x ~> x) (B : y ~> y) :
   (@Isomorphism ([Deloop Nat_Plus, C])
      (functor_of_endo A) (functor_of_endo B))
@@ -481,26 +467,20 @@ Qed.
 
 End MatrixSimilarity.
 
-(* Mac Lane's part one written where he writes it -- over [_2] rather
-   than over the arrow category.  [Walk A] is the functor that names A,
-   and [arrow_of (Walk A)] is A back again definitionally, so this is
-   [two_fun_iso_iff] read at that functor and costs no proof.  The
-   price is a universe restriction on R's FIRST TWO universes only
-   (the [_2] side pins object and hom levels to [Set]; the fess audit
-   measured that the third stays free, which is why this corollary
-   lives in its own section rather than the similarity section, whose
-   [RigObject@{Set Set Set}] context would over-pin it), and it is why
-   the [Arrow] form is the one stated for an arbitrary rig. *)
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section MatrixEquivalenceFun.
 
 Universe q.
 
-(* The instance is written [@{q Set Set}], not [@{Set Set q}]: since the PR
-   "algebraic carriers are sets" (2026-09-17) the record's AUXILIARY universe
-   -- the one bounding the [rig_prop] field's own sort, which carries the
-   [Set+1] -- is the FIRST argument rather than the third.  The roles are
-   unchanged: the carrier and proof levels are still pinned at [Set] and the
-   third is still free. *)
+(*
+   本节说明 FunExercises 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context {R : RigObject@{q Set Set}}.
 
 Corollary matrix_equivalence_iso_Fun {n1 m1 n2 m2 : nat}
@@ -577,11 +557,11 @@ Program Definition zswap_iso : 2%nat ≅[Matr Int_Rig] 2%nat := {|
 Next Obligation. entrywise. Qed.
 Next Obligation. entrywise. Qed.
 
-(* Both products are [[0,0],[1,0]], as computation checks at the one
-   entry that is not zero.  (Matrix ENTRIES, so [=] rather than [≈]:
-   these are elements of the rig's carrier, the convertibility
-   exception, and the equation between the matrices themselves is the
-   [≈] of [zmat_e11_similar_e22] below.) *)
+(*
+   本节说明 FunExercises 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example zswap_e11_entry :
   (@compose (Matr Int_Rig) 2%nat 2%nat 2%nat zmat_swap zmat_e11)
     (Fin.FS Fin.F1) Fin.F1 = 1%Z := eq_refl.
@@ -619,11 +599,11 @@ Definition zmat_e11_e22_two_iso :
 
 (** *** The two relations are genuinely different *)
 
-(* The shear [[1,1],[0,1]] is invertible, so it is equivalent to the
-   identity; but it is not the identity, so by [similar_to_id] it is not
-   similar to it.  This is the separation the exercise turns on: over
-   the walking arrow the two matrices are isomorphic, and over the
-   delooped free monoid they are not. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition zmat_shear : 2%nat ~{Matr Int_Rig}~> 2%nat := zmat22 1 1 0 1.
 Definition zmat_shear_inv : 2%nat ~{Matr Int_Rig}~> 2%nat :=
   zmat22 1 (-1) 0 1.
@@ -692,10 +672,11 @@ Qed.
 (** ** Acceptance tests *)
 (* ---------------------------------------------------------------------- *)
 
-(* The object action of the functor named by a square matrix is the
-   dimension, definitionally -- Mac Lane's "an object of [Matr_K]^(B N)
-   is a square matrix" read as an equation.  (Objects, so [=] rather than
-   [≈]: this is the convertibility exception.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example functor_of_square_obj (n : nat) (A : n ~{Matr Int_Rig}~> n) :
   functor_of_square A ttt = n := eq_refl.
 

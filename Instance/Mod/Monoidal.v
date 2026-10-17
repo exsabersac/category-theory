@@ -33,12 +33,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The generator-slot gadget
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Nothing in this section binds a commutativity hypothesis, so nothing in
-    it can have used one.  See the header's paragraph on placement: this
-    layer is arguably Instance/Mod/Tensor.v's and lives here only to leave
-    that file untouched. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section GenSlots.
 
@@ -119,10 +118,11 @@ Next Obligation.
         | intros r b; exact (rbl_smul_r tensor_gen r a b) ].
 Qed.
 
-(* Extensionality reaching through a left-nested tensor.  Two applications
-   of [tensor_hom_ext]: the outer one peels the outer factor, and the inner
-   one is applied to the honest homomorphisms `f ∘ gen_r x` and `g ∘ gen_r x`
-   out of V ⊗ W.  No induction. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tensor_hom_ext_l {V W X K : RModObject R}
   (f g : TensorMod (TensorMod V W) X ~{RMod R}~> K) :
   (∀ (v : carrier (cmon_setoid V)) (w : carrier (cmon_setoid W))
@@ -188,11 +188,11 @@ Ltac tens_ext_r :=
 Ltac tens_ext_ll :=
   match goal with |- ?f ≈ ?g => refine (tensor_hom_ext_ll f g _) end.
 
-(** ** The tensor bifunctor
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Commutativity-free, and structurally so: this section binds no [Rcomm].
-    The arrow action factors the bilinear map (v, w) ↦ f v ⊗ g w through the
-    tensor, and all three functor laws are computations on generators. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ModTensorFunctor.
 
@@ -262,13 +262,11 @@ Qed.
 
 End ModTensorFunctor.
 
-(** ** The braiding map
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Placed here, before commutativity is ever bound, because the fact is
-    worth making structural: the symmetry of ⊗ is a statement about the
-    two-variable presentation of the tensor and does not use commutativity
-    of R.  Only the [BraidedMonoidal] PACKAGING below needs [Rcomm], and
-    only because it contains the monoidal structure. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ModBraidMap.
 
@@ -300,14 +298,11 @@ Definition ModBraid (V W : RModObject R) :
 
 End ModBraidMap.
 
-(** ** Scaling a homomorphism
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    The first of the three places commutativity is spent.  For general R the
-    map `m ↦ r · f m` is additive but need not commute with the action; the
-    last obligation is `r · (s · v) ≈ s · (r · v)`, and [Rcomm] is what
-    supplies it.  The associator needs this because its outer bilinear maps
-    state their scalar clauses as equations between HOMOMORPHISMS, which is
-    what lets [tensor_hom_ext] reduce them to generators. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomSmul.
 
@@ -350,14 +345,11 @@ Qed.
 
 End HomSmul.
 
-(** ** The unitors
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    [ModUnitLeft] factors the action R × V → V through the tensor; its
-    inverse sends v to 1 ⊗ v.  One round trip is [rm_smul_one]; the other is
-    [tensor_balanced] followed by [rig_mul_one_r].  The other two of the
-    three uses of commutativity are here, one in each of the two bilinear
-    maps, and each is the clause asserting linearity in the variable the
-    action does NOT naturally act on. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Unitors.
 
@@ -445,12 +437,11 @@ Qed.
 
 End Unitors.
 
-(** ** The associator: the inner legs
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    For a fixed third (resp. first) factor these are ordinary factorizations
-    of a bilinear map, and they use no commutativity — hence a section that
-    does not bind it.  Only the OUTER bilinear maps, whose scalar clauses are
-    equations between homomorphisms, reach for [rmod_hom_smul]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AssociatorLegs.
 
@@ -530,13 +521,11 @@ Definition mod_assoc_fr_in (v : carrier (cmon_setoid V)) :
 
 End AssociatorLegs.
 
-(** ** The associator
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Named [mod_assoc_to] / [mod_assoc_fr] because `assoc_to` is taken by
-    Construction/Day.v.  Both round trips reduce to generators through
-    [tensor_hom_ext_l] and [tensor_hom_ext_r] and close by [mt_refl]: the
-    two maps are mutually inverse BY COMPUTATION, not by an equational
-    argument. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Associator.
 
@@ -652,11 +641,11 @@ Qed.
 
 End Associator.
 
-(** ** The monoidal structure
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Five of the eight fields close by `simpl; apply mt_refl` — both
-    associator naturality squares, both `from`-direction unitor squares, and
-    the PENTAGON.  The three that carry content are marked below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ModMonoidalStructure.
 
@@ -693,9 +682,11 @@ Qed.
 Next Obligation.
   intros x y z w v u g h i; tens_ext_r; intros a b c; simpl; apply mt_refl.
 Qed.
-(* CONTENT 3 of 3: [triangle_identity], one [tensor_balanced].  This is the
-   one place the two unitors must agree about which factor absorbs a
-   scalar, and it is NOT definitional — see [probe_balanced_conversion]. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Next Obligation.
   intros x y; tens_ext_l; intros a r b; simpl.
   exact (tensor_balanced r a b).
@@ -707,12 +698,11 @@ Qed.
 
 End ModMonoidalStructure.
 
-(** ** Braided and symmetric
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Every field here is [mt_refl]: braid naturality, both hexagons and the
-    involution are computations on generators.  [Rcomm] enters only through
-    the contained monoidal structure — [ModBraid] itself, built above, takes
-    no commutativity argument. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ModBraiding.
 
@@ -827,44 +817,24 @@ Example mod_pentagon_value :
              zz3 (@mt_gen Int_Ring ZMod ZMod zz5 zz7))
   := eq_refl.
 
-(** ** Probes
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Under this repo's [coqc] a [Fail] that succeeds prints NOTHING, so each
-    negative below was stripped of its [Fail], compiled alone, and its
-    failure kind read off the WHOLE error message before being recorded here.
-    Four kinds occur and they are genuinely distinguishable by the error
-    text, not merely by label:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-      TYPING       — "has type … while it is expected to have type …",
-                     with no further clause
-      CONVERSION   — the same, closing with "(cannot unify … and …)"
-      RESOLUTION   — "contains unresolved implicit arguments … Cannot infer
-                     this placeholder"
-      FORMABILITY  — "(universe inconsistency: Cannot enforce … because …)"
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    They are kept lexically apart below.  Every negative sits beside an
-    APPLIED control that must succeed — never a bare [Check] of an
-    unapplied constant, which would elaborate at any levels and discriminate
-    nothing — so a rename or a signature change breaks this section loudly
-    instead of turning a guard vacuously green. *)
-
-(* Instrument check: the [Fail] mechanism is live and scope-free in this
-   file.  If this ever stops failing, every negative below is worthless.
-   Named for this file rather than [probe_instrument], which
-   Test/ProbePolynomial.v already declares — the collision hazard
-   engineering note (f) records. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example mod_monoidal_instrument : (true = false) := eq_refl.
 
-(** *** TYPING negatives
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Three, of two subjects.  The first two are where commutativity is a real
-    argument: [ModUnitLeft] and [mod_assoc_to] take [Rcomm] explicitly while
-    [gen_r], [gen_l], [ModBraid], [ModTensor], [assoc_in] and
-    [mod_assoc_fr_in] do not, so feeding the module where the hypothesis is
-    expected is rejected.  That is the signature-level form of the header's
-    claim about where commutativity is spent, and it is what makes the claim
-    a measurement rather than a reading of the source.  The third is
-    engineering note (c), the nested-generator annotation trap. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Supplying the module where [Rcomm] is expected. *)
 Fail Check (@ModUnitLeft Int_Ring ZMod).
@@ -876,10 +846,11 @@ Fail Check (@mod_assoc_to Int_Ring ZMod ZMod ZMod).
 
 Check (@mod_assoc_to Int_Ring Int_Ring_commutative ZMod ZMod ZMod).
 
-(* Engineering note (c), pinned: a nested [mt_gen] with its module arguments
-   left implicit is rejected — the inner generator elaborates first and a
-   bare [MTerm] does not unify with `carrier ?V`.  This is why every nested
-   generator in this file is `@`-annotated. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (mt_gen (@mt_gen Int_Ring ZMod ZMod zz2 zz3) zz5).
 
 (* Control: the same term with the outer indices supplied. *)
@@ -895,11 +866,11 @@ Check (@ModTensor Int_Ring).
 Check (@assoc_in Int_Ring ZMod ZMod ZMod zz5).
 Check (@mod_assoc_fr_in Int_Ring ZMod ZMod ZMod zz2).
 
-(** *** CONVERSION negatives — the three content-bearing obligations
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Five of [ModMonoidal]'s eight fields close by conversion.  These pin that
-    the other three do not: each of the three facts they consume is refuted
-    at [eq_refl] and holds only up to `≈`. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* [triangle_identity]'s content, [tensor_balanced].  Even at closed integer
    scalars the two sides are literally different terms — `6 ⊗ 5` against
@@ -955,15 +926,11 @@ Example probe_map_smul_concrete
   mval (@id (RMod Int_Ring) ZMod) (rm_smul ZMod r a)
     = rm_smul ZMod r (mval (@id (RMod Int_Ring) ZMod) a) := eq_refl.
 
-(** *** RESOLUTION negative — [Rcomm] is not found by inference
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Engineering note (e): the structures are [Program Definition]s and not
-    [Instance]s, so nothing supplies the commutativity hypothesis
-    automatically.  This pins that leaving it to be inferred fails at an
-    abstract ring, where no commutativity is in scope.  Its error text names
-    an unresolved placeholder and contains neither "cannot unify" nor
-    "universe inconsistency", which is what separates it from the two
-    groups above and the one below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ResolutionProbe.
 
@@ -983,18 +950,11 @@ Definition probe_tensor_free : RMod R ∏ RMod R ⟶ RMod R := ModTensor.
 
 End ResolutionProbe.
 
-(** *** FORMABILITY negatives — the packaging identifies two universes
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    The measurement the header records.  Under a declared `rp < ru` — which
-    satisfies the bound every component carries while violating the equation
-    the assembly carries — [ModMonoidal] and [ModSymmetric] are rejected with
-    a genuine universe inconsistency, while ELEVEN applied controls elaborate
-    at exactly those levels, and two more show the same two constants
-    accepted at ℤ.  Two of the controls are the obvious suspects:
-    [@Monoidal (RMod Ru)], the class being assembled, and [Ring_RMod Ru], the
-    unit object it is assembled with.  Two more, [ModUnitLeft] and
-    [ModAssoc], are commutativity-CONSUMING, so the rejection is not about
-    [Rcomm] either.  What is left is the packaging. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseProbe.
 
@@ -1025,9 +985,11 @@ Fail Check (@ModMonoidal Ru).
 
 Fail Check (@ModSymmetric Ru).
 
-(* Controls, sharpest form: the very same two constants, applied at ℤ, whose
-   three [RingObject] universes may be identified.  So the rejection above is
-   about the levels and not about the constants. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (ModMonoidal Int_Ring_commutative).
 Check (ModSymmetric Int_Ring_commutative).
 

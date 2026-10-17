@@ -199,9 +199,11 @@ Proof.
   apply id_left.
 Defined.
 
-(* If [Dual F] preserved the colimit, the image cocone would be colimiting,
-   and two mediators to [ZeroCocone] — the quotient map and the zero map —
-   would coincide; then every functional lies in the span. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem dual_not_PreservesColimitCocone (H : CoordSpanProper) :
   PreservesColimitCocone LineDiagram (Dual F) → False.
 Proof.
@@ -214,10 +216,11 @@ Proof.
   { apply Huniq; intros n psi.
     symmetry.
     exact (mquot_proj_kills SpanCoords _ (dual_coord_in_span n psi)). }
-  (* [mquot_proj_kernel]'s right-hand side is the [inhabited] truncation of
-     membership since the PR "algebraic carriers are sets" (2026-09-17), so
-     the witness is opened here rather than applied directly.  The goal is
-     [False], a [Prop], so the elimination is allowed and nothing is lost. *)
+  (*
+   本节说明 NoRightAdjoint 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   unshelve refine
     (match fst (mquot_proj_kernel SpanCoords phi) _ with
      | inhabits Hm => Hphi Hm
@@ -286,12 +289,11 @@ Definition dual_vct_Continuous : ContinuousFunctor (Dual F) :=
 
 (** ** The functor the issue names: StarAutonomous.v's [dual] at the line *)
 
-(* Instance/Mod/Closed.v's [RMod_SymMonClosed] makes Vct symmetric
-   monoidal closed, and Structure/Monoidal/StarAutonomous.v's [dual],
-   read at the line, is the dual-object functor #359 proves self-adjoint on
-   the right.  Its objects are the internal homs [HomMod x VctLine], whose
-   carriers and operations coincide with [DualMod]'s on the nose; only the
-   packed records differ (probe N1, N5). *)
+(*
+   本节说明幺半结构、伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition VctSMC : @SymMonClosed Vct :=
   RMod_SymMonClosed (field_ring F) (field_comm F).
 

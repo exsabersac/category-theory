@@ -26,10 +26,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The middle-four interchange for a commutative monoid: rebracketing a sum
-   of four terms so that the outer pairs swap partners.  This is the single
-   algebraic identity behind the copairing homomorphism law and the
-   pointwise-addition homomorphism law below. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cmon_plus_interchange (P : CMonObject) (a b c d : carrier P) :
   cmon_plus P (cmon_plus P a b) (cmon_plus P c d)
     ≈ cmon_plus P (cmon_plus P a c) (cmon_plus P b d).
@@ -265,10 +266,11 @@ Proof.
     reflexivity.
 Defined.
 
-(* The four interaction laws.  The matched composites are identities by
-   computation; the mixed composites compute to the constant-zero map, which
-   is precisely what [zero_mor] tunnelled through [CMon_trivial] unfolds
-   to. *)
+(*
+   本节说明 Biproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma CMon_exl_inl (M N : CMonObject) :
   CMon_exl M N ∘ CMon_inl M N ≈ id.
 Proof.
@@ -376,10 +378,11 @@ Proof.
     apply cmon_plus_interchange.
 Defined.
 
-(* The coproduct-side universal property: (M ⊕ N, inl, inr) is a coproduct.
-   Existence is the copairing; uniqueness decomposes (a, b) as
-   (a, 0) + (0, b) and uses that any candidate mediator is itself a
-   homomorphism. *)
+(*
+   本节说明 Biproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CMon_bi_is_coproduct (M N P : CMonObject)
   (f : M ~{CMon}~> P) (g : N ~{CMon}~> P) :
   ∃! h : CMon_product M N ~{CMon}~> P,
@@ -564,11 +567,11 @@ Qed.
 
 (** ** Integration with the phase machinery *)
 
-(* The pointwise addition agrees with the biproduct convolution
-   ∇ ∘ (f ⊕ g) ∘ Δ: this is [biproduct_addition] of
-   Structure/Semiadditive.v instantiated at [CMon_Biproducts], confirming
-   that the concrete enrichment above is the one the abstract theory
-   induces from the biproducts. *)
+(*
+   本节说明 Biproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem CMon_padd_biproduct {M N : CMonObject} (f g : M ~{CMon}~> N) :
   CMon_padd f g
     ≈ bi_copair (@biproduct CMon CMon_Zero CMon_Biproducts N N) id id

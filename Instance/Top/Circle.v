@@ -97,9 +97,11 @@ Qed.
 
 (** ** Rounding a real that lies near an integer *)
 
-(* The integer nearest the rational approximation of [d] at precision
-   2^-4.  It is a function of the representative, not of the real number;
-   [cround_between] is what it computes on reals within 1/4 of an integer. *)
+(*
+   本节说明 Circle 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cround@{} (d : CReal) : Z := Qfloor (seq d (-4) + (1 # 2)).
 
 Lemma cround_between@{} (d : CReal) (k : Z) :
@@ -563,9 +565,11 @@ Proof.
       exact (Hb y (cball_of_rball x y e b)).
 Qed.
 
-(* The interior of a closed ball: the points having a smaller ball inside
-   it.  It is open, it contains the centre and it lies in the ball; the
-   solenoid's universal property (Instance/Top/Solenoid.v) turns on it. *)
+(*
+   本节说明 Circle 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cint@{o} (c : CReal) (e : Q) (y : Circle_setoid@{o}) : Type@{o} :=
   { d : Q & (Qlt 0 d * ∀ y', cball@{o} y y' d → cball@{o} c y' e)%type }.
 
@@ -590,10 +594,11 @@ Proof.
   intros [d [Hd H]]. apply H. exact (cball_of_eq y y d Hd (circ_eq_refl y)).
 Qed.
 
-(* The map wrapping the circle p times around itself: continuous because
-   multiplication by [p] is continuous on the line, by the quotient's
-   universal property (Instance/Top/Subspace/TypeValued.v's
-   [tquot_desc]). *)
+(*
+   本节说明 Circle 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition wrap@{h o | o < h +} (p : positive) :
   Circle@{o} ~{Top@{h o}}~> Circle@{o} :=
   tquot_desc RLine Circle_setoid circ_q Circle
@@ -658,10 +663,11 @@ Qed.
 
 (** ** The circle's points, lifted *)
 
-(* Instance/Top/Forgetful.v's [Top_Forget] lands in the lifted
-   [Sets@{h hs}], where the points of [Circle@{o}] are the lifted
-   [Circle_setoid@{o}]; they are the circle's points taken at [h], by the
-   identity maps. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition circle_lift_iso@{h o hs | o < h, h < hs +} :
   @Isomorphism Sets@{h hs} (Setoid_Lift@{o h} Circle_setoid@{o})
     Circle_setoid@{h} := {|

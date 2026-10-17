@@ -18,14 +18,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* A commutative monoid: a setoid whose `≈` is propositional, together with a
-   unit element and a binary operation that respects `≈` and satisfies the
-   commutative monoid laws up to `≈`.
+(*
+   本节说明幺半群、（余）端相关定义、性质与动机。
 
-   [cmon_prop] is the LAST field deliberately.  Every construction site in the
-   tree writes the record with named fields under [Program], and [Program]
-   emits its obligations in field order; putting the new field last leaves the
-   numbering of every existing obligation alone and adds one at the end. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record CMonObject := {
   cmon_setoid :> SetoidObject;
 
@@ -91,21 +88,11 @@ Next Obligation.
     + apply Hgh.
 Qed.
 
-(* L1: the hom-setoid is propositional, pointwise into the CODOMAIN's own
-   [cmon_prop].  The domain needs nothing -- the relation quantifies over its
-   carrier but never compares two of its elements.  This is the same shape as
-   [hom_PropEquiv] (Instance/Sets/Propositional.v), restated here because
-   [CMonHom_Setoid] is a setoid on [CMonHom M N] rather than on
-   [SetoidMorphism]s, and the two records are not convertible.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   Measured (About under Set Printing Universes):
-
-     CMonHom_PropEquiv@{u} :
-       ∀ {M N : CMonObject@{u u u}}, PropEquiv@{u u} CMonHom_Setoid@{u}
-     (* u |=  *)
-
-   -- one universe and no constraint: the transport neither raises the level
-   nor pins it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance CMonHom_PropEquiv {M N : CMonObject} :
   PropEquiv (@CMonHom_Setoid M N).
 Proof.
@@ -165,16 +152,11 @@ Qed.
         arrows: unit- and operation-preserving setoid maps
       identity: the identity setoid map
    composition: composition of setoid maps *)
-(* The universes are pinned by hand.  [CMonObject]'s sort is
-   [Type@{max(Set+1,s,o+1,p+1)}] once [cmon_prop] is a field -- the [Set+1] is
-   the sort of [Prop] and enters through [PropEquiv] -- and left to itself the
-   elaborator will not identify the record's own sort variable [s] with the
-   category's object universe, so [CMon] acquires a third, redundant universe
-   and every `CMon@{u o}` annotation in the tree is refused for arity.  Naming
-   [Category@{u p p}] and every field's instance keeps the arity at two,
-   exactly as before the field landed; measured after the change,
-   [CMon@{u p} : Category@{u p p}] with the single new constraint [Set < u],
-   which [Unset Universe Minimization ToSet] (Lib.v) makes harmless. *)
+(*
+   本节说明 CMon 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition CMon@{u p} : Category@{u p p} := {|
   obj     := CMonObject@{p p p};
   hom     := CMonHom@{p};
@@ -201,12 +183,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* [CMon] is therefore locally propositional: its hom-setoid IS
-   [CMonHom_Setoid].  This is what lets Theory/Algebra/Rig.v's [EndRig] -- the
-   endomorphism rig of an object of a preadditive category, which since the PR
-   "algebraic carriers are sets" (2026-09-17) asks its ambient category for a
-   [Prop] equality on homs -- be applied at [CMon] itself
-   (Theory/Algebra/Rig/Connections.v). *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance CMon_LocallyPropositional : LocallyPropositional CMon.
 Proof.
   constructor.

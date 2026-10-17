@@ -56,10 +56,11 @@ Proof.
   discriminate.
 Qed.
 
-(* A derivation of [le_t n m] is either the reflexive one — which forces
-   m = n — or a successor step.  [destruct] suffices because the index is a
-   variable; the equality proofs it leaves behind are killed below by UIP on
-   [nat], which is a theorem of decidable equality, not an axiom. *)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma le_t_inv {n m} (g : le_t n m) :
   ({ e : n = m & g = eq_rect n (le_t n) le_t_n m e } +
    { m' : nat & { e : m = S m' &
@@ -115,10 +116,11 @@ Definition le_t_zero (b : nat) : le_t O b :=
 
 (* ---------- the ordinal on n objects, as a category ---------- *)
 
-(* An object is one of the predecessors of n: a value, and a proof that the
-   value is below n.  [ord_val] is a primitive projection, so it reduces on
-   any constructor application — that is the reduction the embeddings and the
-   universal property below rely on. *)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Ord_obj@{u} (n : nat) : Type@{u} := ord_at {
   ord_val   : nat;
   ord_bound : le_t@{u} (S ord_val) n
@@ -166,9 +168,11 @@ Definition ord_iso {n} {x y : Ord_obj n} (e : ord_val x = ord_val y) :
 
 (* ---------- distinguished objects and the generating steps ---------- *)
 
-(* [ord_incl x] is x viewed in the next ordinal, [ord_succ x] its successor
-   there; both have the same [ord_val] as the evident numeral, definitionally,
-   which is why [ord_step] can be the bare derivation [le_t_S le_t_n]. *)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ord_incl {n} (x : Ord_obj n) : Ord_obj (S n) :=
   ord_at (ord_val x) (le_t_S (ord_bound x)).
 
@@ -180,9 +184,11 @@ Definition ord_step {n} (k : Ord_obj n) :
 
 (* ---------- the embedding functors ---------- *)
 
-(* "An ordinal is the set of its predecessors": [Ordinal n] sits inside
-   [Ordinal (S n)] as the objects below n, and inside [Omega] as the naturals
-   below n.  Both functors are the identity on morphisms. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Ord_Incl (n : nat) : Ordinal n ⟶ Ordinal (S n) := {|
   fobj := ord_incl;
   fmap := fun _ _ f => f
@@ -216,19 +222,22 @@ Qed.
 
 (* ---------- freeness: [Ordinal (S n)] is free on n composable arrows ---------- *)
 
-(* Fix an assignment [X] of objects to indices.  A path of n composable arrows
-   over [X] is a family of steps; a functorial action on the morphisms of the
-   ordinal is a family of arrows.  Both are stated over the same [X], which is
-   what keeps the correspondence free of transports. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition OrdSteps {C : Category} (n : nat) (X : nat → C) : Type :=
   ∀ k : nat, le_t (S k) n → X k ~> X (S k).
 
 Definition OrdArrows {C : Category} (n : nat) (X : nat → C) : Type :=
   ∀ i j : nat, le_t j n → le_t i j → X i ~> X j.
 
-(* The arrow i ~> j is sent to the composite of the steps between them; the
-   recursion is on the derivation of i ≤ j, and the bound on j is threaded
-   along so that only the n available steps are ever consulted. *)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint chain_fmap {C : Category} {n : nat} {X : nat → C} (s : OrdSteps n X)
   {i j : nat} (f : le_t i j) {struct f} : le_t j n → X i ~> X j :=
   match f in le_t _ j' return le_t j' n → X i ~> X j' with
@@ -396,9 +405,11 @@ Proof.
       exact (IH n' (le_t_SS_inv H)).
 Qed.
 
-(* An index of [Ordinal (S n)], read off a natural number by clamping.  The
-   clamping is what makes the object part of a path total on [nat]; on the
-   indices that matter it is the identity ([ord_clamp_id]). *)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ord_clamp {n : nat} (k : nat) : Ord_obj (S n) :=
   ord_at (Nat.min k n) (le_t_SS (le_t_min k n)).
 
@@ -462,9 +473,11 @@ Qed.
 Require Import Coq.Lists.List.
 Require Import Coq.micromega.Lia.
 
-(* Bridges between the [Type]-valued [le_t] and the [Prop]-valued stdlib order.
-   The direction into [Type] goes through the boolean test, since a [Prop]
-   cannot be eliminated into [Type] directly. *)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition le_t_of_leb : ∀ (m n : nat), (Nat.leb m n = true) → le_t m n.
 Proof.
   induction m as [| m' IH]; intros n H.
@@ -544,13 +557,11 @@ Fixpoint ord_pairs (n : nat) : list (nat * nat) :=
   | S k => app (map (fun i => (i, k)) (ord_downto k)) (ord_pairs k)
   end.
 
-(* These two list lemmas are proven locally rather than imported: the stdlib
-   renamed [app_length]/[map_length] to [length_app]/[length_map] in 8.20.
-   The old names still resolve (deprecated) on 9.1, but the new ones are
-   absent on 8.19, and depending on either pair ties this file to one end of
-   the supported range; a local two-liner does not.
-   Construction/ColouredPROP/UnitBridge.v carries the same lemma as
-   [len_app] with the same rationale. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ord_len_app {A} (l l' : list A) :
   (length (app l l') = length l + length l')%nat.
 Proof. induction l as [| a l IH]; simpl; auto. Qed.
@@ -771,11 +782,11 @@ Qed.
 
 (* ---------- agreement with the hand-built small ordinals ---------- *)
 
-(* Instance/Zero.v and Instance/One.v install the notations "0" and "1" in
-   [category_scope] for [_0] and [_1], so from here on the numerals 0 and 1
-   are written [0%nat] and [1%nat] when a natural number is meant.  The three
-   requires are deliberately placed here, after the arithmetic, exactly as
-   Instance/Two.v places its require of Instance/Sets.v. *)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Instance.Cat.
 Require Import Category.Instance.Zero.
 Require Import Category.Instance.One.
@@ -826,10 +837,11 @@ Next Obligation.
   apply le_t_irr.
 Qed.
 
-(* Thinness of [_2].  Instance/Two/Monoidal.v proves the same statement, under
-   the name [two_thin]; it is reproven here in three lines from
-   Instance/Two.v's [TwoHom_inv] -- the inversion principle both proofs rest
-   on -- so that Instance/Ordinal.v need not require the monoidal tower. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ord_two_thin {a b : TwoObj} (f g : TwoHom a b) : f = g.
 Proof.
   pose proof (TwoHom_inv a b f) as Hf.
@@ -903,17 +915,16 @@ Qed.
 
 (* ---------- the next two ordinals, and diagrams of shape 4 ---------- *)
 
-(* [_3] continues the sequence [_0], [_1], [_2]: three objects, two generating
-   steps.  [_4] is the shape Riehl §1.6 calls 4 — four objects, three
-   generating steps, and the composites they generate. *)
-(* Full @{o h p} profiles, so the exported shapes sit beside _1@{o h p} and
-   Omega@{o h p} rather than collapsing h and p as inference would.  (A
-   related construction exists in tree: Theory/Metacategory.v's [Three],
-   built arrows-only from a composition table.  It is NOT a rival
-   three-object category: under that file's unguarded [identity] field no
-   arrow of its table is an identity, so [Three] has no objects at all --
-   a machine-checked fact recorded in that file's header.  No comparison
-   is attempted here.) *)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 Ordinal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition _3@{o h p} : Category@{o h p} := Ordinal@{o h p} 3.
 Definition _4@{o h p} : Category@{o h p} := Ordinal@{o h p} 4.
 

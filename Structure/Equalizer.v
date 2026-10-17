@@ -11,31 +11,24 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/equalizer
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
 
-   Given a parallel pair f, g : x ~> y in C, an equalizer is an object e
-   together with an equalizing map i : e ~> x that equalizes the pair,
+   给定 C 中平行对 f, g : x ~> y，等化子是对象 e 连同等化映射 i : e ~> x，使该对等化，
 
        f ∘ i ≈ g ∘ i,
 
-   and is universal with this property: for every object n and every map
-   m : n ~> x with f ∘ m ≈ g ∘ m there is a unique u : n ~> e with i ∘ u ≈ m
-   (Wikipedia; nLab calls i the "equalizing map" and e the universal such
-   object). Equivalently the equalizer is the limit of the parallel-pair
-   diagram
+   且对此性质普遍：对每个对象 n 与每个满足 f ∘ m ≈ g ∘ m 的映射 m : n ~> x，存在唯一
+   u : n ~> e 满足 i ∘ u ≈ m（Wikipedia；nLab 称 i 为「等化映射」、e 为普遍此类对象）。
+   等价地，等化子是平行对图
 
-       e ~> x ⇉ y,
+       e ~> x ⇉ y
 
-   i.e. the limit over the two-object/two-arrow shape [Parallel] (see
-   [Instance/Parallel.v]). That is exactly how it is defined here: an
-   [Equalizer] is a [Limit] of a functor F : Parallel ⟶ C.
+   的极限，即两对象/两箭头形状 [Parallel] 上的极限（见 [Instance/Parallel.v]）。此处
+   恰如此定义：[Equalizer] 是函子 F : Parallel ⟶ C 的 [Limit]。
 
-   This file does not restate the equalizing map or the universal property as
-   fresh fields; they are inherited from [Limit] (see [Structure/Limit.v]).
-   Under the shape [Parallel] the limit cone's two legs are the equalizing map
-   i (the leg over [ParX], landing in x) and its composite with the pair (the
-   leg over [ParY], landing in y); the leg-coherence law forces f ∘ i ≈ g ∘ i,
-   and [ump_limits] supplies the unique mediating u for every competing cone.
-   Use [APair f g : Parallel ⟶ C] from [Instance/Parallel.v] to obtain the
-   diagram F from an actual parallel pair f, g. *)
+   本文件不把等化映射或普遍性质重述为新字段；它们从 [Limit] 继承（见 [Structure/Limit.v]）。
+   在形状 [Parallel] 下，极限锥的两条腿是等化映射 i（在 [ParX] 上、落入 x）及其与该对的
+   复合（在 [ParY] 上、落入 y）；腿连贯定律强制 f ∘ i ≈ g ∘ i，[ump_limits] 为每个竞争锥
+   供给唯一中介 u。用 [Instance/Parallel.v] 的 [APair f g : Parallel ⟶ C] 从实际平行对
+   f, g 得到图 F。 *)
 
 (* Where equalizers come from, and what they are for
 

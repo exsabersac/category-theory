@@ -19,51 +19,18 @@ Generalizable All Variables.
    Wikipedia:
    https://en.wikipedia.org/wiki/Adjoint_functors#Preservation_of_limits
 
-   "The most important property of adjoints is their continuity: every
-    functor that has a left adjoint (and therefore is a right adjoint) is
-    continuous (i.e. commutes with limits in the category theoretical
-    sense); every functor that has a right adjoint (and therefore is a
-    left adjoint) is cocontinuous (i.e. commutes with colimits)."
-                                                             -- Wikipedia
+   「伴随最重要的性质是其连续性：每个有左伴随的函子（因而是右伴随）连续
+   （即与范畴意义下的极限交换）；每个有右伴随的函子（因而是左伴随）余连续
+   （即与余极限交换）。」—— Wikipedia
 
-   This file proves both statements for the hom-setoid adjunctions of
-   [Theory/Adjunction.v], packaged in the preservation vocabulary of
-   [Structure/Limit/Preservation.v].
+   本文件对 [Theory/Adjunction.v] 的 hom-setoid 伴随证明两陈述，打包在
+   [Structure/Limit/Preservation.v] 的保持词汇中。
 
-   Fix an adjunction A : F ⊣ U, with F : D ⟶ C the left adjoint and
-   U : C ⟶ D the right adjoint, and write ⌊-⌋ : (F x ~> y) → (x ~> U y)
-   for the forward transpose and ⌈-⌉ for its inverse. Given a limit L of
-   a diagram G : J ⟶ C, the object U L is exhibited directly as a limit
-   of U ◯ G ([rapl_is_alimit]):
-
-   - the legs of the image cone are fmap[U] applied to the legs of L
-     ([rapl_acone]);
-   - a competing cone N over U ◯ G transposes leg by leg along ⌈-⌉ into
-     a cone over G whose apex is F applied to the vertex of N, the leg
-     coherence being [from_adj_nat_r] combined with the coherence of N
-     ([rapl_transposed_cone]);
-   - the mediating morphism supplied by L in C transposes back along ⌊-⌋
-     to the mediating morphism in D ([rapl_med]), which commutes with
-     the image legs by [to_adj_nat_r] ([rapl_med_commutes]);
-   - a competitor v that also commutes with the image legs transposes
-     along ⌈-⌉ to a mediator for the transposed cone, so ⌈v⌉ agrees with
-     the C-side mediator by L's universal property, and v with
-     [rapl_med] because the two transposes are mutually inverse up to ≈
-     ([rapl_med_unique]).
-
-   Continuity of the right adjoint is then packaged as
-   [right_adjoint_preserves_limits] : [PreservesAllLimits] U, with the
-   per-diagram form [right_adjoint_preserves_limit] and a bundled
-   [Limit (U ◯ G)] witness [rapl_limit]. The dual results
-   [left_adjoint_preserves_colimit] / [left_adjoint_preserves_colimits]
-   ride [Adjunction/Opposite.v]: the opposite adjunction U^op ⊣ F^op
-   makes F^op a right adjoint between the opposite categories, and
-   [PreservesColimit] is by definition [PreservesLimit] of the opposite
-   diagram for the opposite functor, so LAPC is RAPL read backwards.
-
-   Nothing below is registered for instance resolution; preservation
-   witnesses are always passed explicitly, following the convention of
-   [Structure/Limit/Preservation.v]. *)
+   固定伴随 A : F ⊣ U，F : D ⟶ C 左伴随、U : C ⟶ D 右伴随，写 ⌊-⌋ : (F x ~> y) → (x ~> U y)
+   为正向转置、⌈-⌉ 为其逆。给定图 G : J ⟶ C 的极限 L，对象 U L 被直接展示为 U ◯ G 的极限
+   （[rapl_is_alimit]）：像锥的腿是对 L 的腿应用 fmap[U]；竞争锥经 ⌈-⌉ 逐腿转置；中介经 ⌊-⌋
+   转回；唯一性由两转置在 ≈ 下互逆。右伴随连续性打包为 [right_adjoint_preserves_limits] :
+   [PreservesAllLimits] U；对偶结果给出左伴随的余连续性。 *)
 
 Section RAPL.
 

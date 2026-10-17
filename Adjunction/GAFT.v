@@ -26,48 +26,33 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
 
-   The General Adjoint Functor Theorem (GAFT, Freyd; Mac Lane CWM V.6) gives
-   sufficient conditions for a functor [U : C ⟶ D] to have a left adjoint.  It
-   has two ingredients, one universal-arrow-shaped and one solution-set-shaped:
+   一般伴随函子定理 (GAFT, Freyd; Mac Lane CWM V.6) 给出函子 [U : C ⟶ D] 有左伴随的
+   充分条件。它有两成分，一呈普遍箭头形，一呈解集形：
 
-     - if every object [d : D] has a *universal arrow* into [U] — packaged
-       here as an initial object of the comma category [=(d) ↓ U] — then those
-       arrows assemble into a left adjoint.  This is [GAFT_from_initials], and
-       it is immediate from [Theory/Universal/Arrow.v]
-       ([AdjunctionFromUniversalArrows]).
+     - 若每个对象 [d : D] 都有进入 [U] 的*普遍箭头*——此处打包为逗号范畴 [=(d) ↓ U]
+       的初始对象——则这些箭头组装成左伴随。这是 [GAFT_from_initials]，直接来自
+       [Theory/Universal/Arrow.v]（[AdjunctionFromUniversalArrows]）。
 
-     - Freyd's theorem then *manufactures* those initial objects from a
-       completeness hypothesis on [C], a limit-preservation hypothesis on [U],
-       and a *solution set* at each [d].  A solution set is a small family of
-       arrows [d ~> U (sol_obj i)] through which every [d ~> U c] factors; it
-       is exactly a *weakly* initial family in [=(d) ↓ U].  Comma completeness
-       ([Construction/Comma/Limit.v]) plus the passage from a weakly initial
-       family to a genuine initial object ([Theory/WeaklyInitial.v]) then
-       promote that weakly initial family to an initial object, feeding
-       [GAFT_from_initials].
+     - Freyd 定理随后从 [C] 的完备性假设、[U] 的极限保持假设，以及每个 [d] 处的*解集*
+       *制造*那些初始对象。解集是小族箭头 [d ~> U (sol_obj i)]，每个 [d ~> U c] 经其分解；
+       恰是 [=(d) ↓ U] 中的*弱*初始族。逗号完备性（[Construction/Comma/Limit.v]）加上
+       从弱初始族到真正初始对象的通路（[Theory/WeaklyInitial.v]）把该弱初始族提升为
+       初始对象，喂给 [GAFT_from_initials]。
 
-   VARIANCE.  [Theory/Universal/Arrow.v] states its universal-arrow adjunction
-   for a functor [U0 : D0 ⟶ C0] and produces a left adjoint [C0 ⟶ D0].  We
-   instantiate it with [C0 := D], [D0 := C], [U0 := U], so that [=(c) ↓ U0]
-   with [c : C0 = D] is our [=(d) ↓ U] and the induced left adjoint is
-   [D ⟶ C], exactly as required by the packaging [{ F : D ⟶ C & F ⊣ U }].
+   变差。[Theory/Universal/Arrow.v] 对其函子 [U0 : D0 ⟶ C0] 陈述普遍箭头伴随并产出
+   左伴随 [C0 ⟶ D0]。我们以 [C0 := D]、[D0 := C]、[U0 := U] 实例化，使 [=(c) ↓ U0]
+   （[c : C0 = D]）即我们的 [=(d) ↓ U]，诱导左伴随为 [D ⟶ C]，恰如打包
+   [{ F : D ⟶ C & F ⊣ U }] 所需。
 
-   HYPOTHESIS FORM (donor-signature deviation, recorded honestly).  The
-   operative preservation hypothesis of [GAFT] is [PreservesImageLimit U] from
-   [Construction/Comma/Limit.v], the cone-level statement that [U] carries a
-   limit cone of any diagram to a limit cone (the image cone
-   [(U L, fmap[U] π_•)] is universal).  This is the mathematically correct
-   reading of "U preserves limits", and it is precisely what
-   [Comma_Complete] consumes.  The apex-only class [PreservesAllLimits] of
-   [Structure/Limit/Preservation.v] records only that the apex object [U L]
-   carries *some* limit structure, whose legs need not be the image legs; as
-   [Construction/Comma/Limit.v] documents in detail, two cone structures on the
-   same apex can differ by a non-invertible endomorphism, so apex-only
-   preservation does not by itself make the image cone universal.  Taking the
-   cone-level [PreservesImageLimit] is therefore a strengthening to the correct
-   notion of preservation — a leaner, honest hypothesis — and never a weakening
-   of the conclusion, which remains a full left adjoint [F ⊣ U].  This mirrors
-   the identical, documented choice made by [Comma_Complete] itself. *)
+   假设形式（donor-signature 偏差，诚实记录）。[GAFT] 的操作性保持假设是
+   [Construction/Comma/Limit.v] 的 [PreservesImageLimit U]，锥层陈述：[U] 把任意图的
+   极限锥带到极限锥（像锥 [(U L, fmap[U] π_•)] 普遍）。这是「U 保持极限」的数学正确读法，
+   恰是 [Comma_Complete] 所消耗的。[Structure/Limit/Preservation.v] 的仅顶点类
+   [PreservesAllLimits] 只记录顶点对象 [U L] 携带*某个*极限结构，腿不必是像腿；如
+   [Construction/Comma/Limit.v] 详述，同顶点上两锥结构可差非可逆自同态，故仅顶点保持
+   本身不使像锥普遍。取锥层 [PreservesImageLimit] 因此是加强到正确保持概念——更瘦、诚实的
+   假设——从不削弱结论，结论仍是完整左伴随 [F ⊣ U]。这镜像 [Comma_Complete] 自身的
+   相同、已文档化选择。 *)
 
 (* The converse of continuity: provenance, obstruction, and use
 

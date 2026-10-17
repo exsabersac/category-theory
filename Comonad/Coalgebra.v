@@ -17,36 +17,20 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/coalgebra+over+a+comonad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
-   For a comonad (W, extract, duplicate) = (W, ε, δ) on a category C — see
-   Comonad/Core.v for the covariant API — a W-coalgebra on an object a is a
-   costructure map γ : a ~> W a ([w_coalg]) satisfying the counit law
-   ε ∘ γ ≈ id ([w_counit_law]) and the coaction law W γ ∘ γ ≈ δ ∘ γ
-   ([w_coaction]).  A morphism of W-coalgebras (a, γ^a) ~> (b, γ^b) is a
-   C-morphism f : a ~> b intertwining the costructure maps,
-   γ^b ∘ f ≈ W f ∘ γ^a ([w_coalg_hom_commutes]).
+   对范畴 C 上的余单子 (W, extract, duplicate) = (W, ε, δ)——共变 API 见 Comonad/Core.v——
+   对象 a 上的 W-余代数是余结构映射 γ : a ~> W a（[w_coalg]），服从余单位律 ε ∘ γ ≈ id
+   （[w_counit_law]）与余作用律 W γ ∘ γ ≈ δ ∘ γ（[w_coaction]）。W-余代数态射
+   (a, γ^a) ~> (b, γ^b) 是交织余结构映射的 C-态射 f : a ~> b，
+   γ^b ∘ f ≈ W f ∘ γ^a（[w_coalg_hom_commutes]）。
 
-   Since [Comonad C W] is by definition [@Monad (C^op) (W^op)]
-   (Theory/Monad.v), a W-coalgebra is exactly an Eilenberg–Moore algebra
-   ([TAlgebra], Monad/Algebra.v) for that opposite monad, and the category
-   of W-coalgebras — the co-Eilenberg–Moore category C_W — is obtained
-   here, dually to Monad/Eilenberg/Moore.v, as the opposite of the
-   Eilenberg–Moore category of the opposite monad, rather than by
-   re-proving the category laws:
+   因 [Comonad C W] 按定义是 [@Monad (C^op) (W^op)]（Theory/Monad.v），W-余代数恰是该对偶
+   单子的 Eilenberg–Moore 代数（[TAlgebra]，Monad/Algebra.v），W-余代数范畴——co-Eilenberg–Moore
+   范畴 C_W——此处对偶于 Monad/Eilenberg/Moore.v，取为对偶单子的 Eilenberg–Moore 范畴的对偶：
 
        CoEilenbergMoore := (EilenbergMoore (W^op))^op
 
-   Because duality is built into this library so that C^op^op = C holds by
-   reflexivity, the two presentations agree definitionally: the classes
-   [WCoalgebra]/[WCoalgebraHom] below are covariant re-readings of
-   [TAlgebra]/[TAlgebraHom] over the opposite monad, converted in both
-   directions field by field with [exact] (no proofs are re-done), and the
-   hom-sets of [CoEilenbergMoore] are literally the algebra homomorphisms
-   of the opposite monad ([coeilenberg_moore_hom], which holds by
-   reflexivity).  The covariant category [WCoalgebras] assembled from the
-   classes below is isomorphic in Cat to [CoEilenbergMoore]
-   ([WCoalgebras_CoEilenbergMoore_Iso]); both functors are the identity on
-   carriers and underlying morphisms, and the natural isomorphisms
-   witnessing the two round trips have identity components. *)
+   因对偶使 C^op^op = C 由 reflexivity 成立，两呈现定义上一致；共变范畴 [WCoalgebras]
+   在 Cat 中同构于 [CoEilenbergMoore]。 *)
 
 (* What a coalgebra is for
 

@@ -11,21 +11,17 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/bifunctor
    Wikipedia: https://en.wikipedia.org/wiki/Bifunctor
 
-   A bifunctor is just a functor F : C ∏ D ⟶ E out of a product category, so we
-   do not formalize it as a separate structure; we only provide helpers for the
-   action of such an F on pairs of arrows.  The central helper is [bimap f g],
-   the lift of (f, g) through F.  A functor on C ∏ D is equivalent to giving two
-   "partial" actions, one in each variable, that are separately functorial and
-   compatible via the interchange (middle-four exchange) law
+   双函子只是出自积范畴的函子 F : C ∏ D ⟶ E，故不单独形式化为结构；只提供此类 F
+   对箭头对的作用助手。中心助手是 [bimap f g]，即 (f, g) 经 F 的提升。C ∏ D 上的函子
+   等价于给出两「偏」作用（各变元一个），分别函子性，并经交换（中四交换）律相容：
 
      bimap (f ∘ h) (g ∘ i) ≈ bimap f g ∘ bimap h i    ([bimap_comp]),
 
-   together with bimap id id ≈ id ([bimap_id_id]).  The two "swap" forms of
-   interchange, bimap f id ∘ bimap id g ≈ bimap f g and its mirror, are recorded
-   as [bimap_id_right_left] / [bimap_id_left_right].  Currying a bifunctor
-   C ∏ D ⟶ E into C ⟶ [D, E] is exhibited concretely for the hom-bifunctor by
-   [Curried_Hom] in Functor/Hom.v; the prototypical bifunctor, the tensor ⊗,
-   appears in Structure/Monoidal. *)
+   以及 bimap id id ≈ id ([bimap_id_id])。交换的两种「swap」形式
+   bimap f id ∘ bimap id g ≈ bimap f g 及其镜像记为
+   [bimap_id_right_left] / [bimap_id_left_right]。把双函子 C ∏ D ⟶ E curry 成
+   C ⟶ [D, E] 对 hom-双函子由 Functor/Hom.v 的 [Curried_Hom] 具体展示；典范双函子
+   张量 ⊗ 出现在 Structure/Monoidal。 *)
 
 Section Bifunctor.
 

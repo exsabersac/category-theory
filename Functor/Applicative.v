@@ -13,26 +13,20 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/applicative+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
-   An applicative functor is the categorical structure underlying the
-   Haskell [Applicative] class (McBride and Paterson, "Applicative
-   programming with effects", JFP 18(1), 2008): it is precisely a strong lax
-   monoidal endofunctor on a (closed, symmetric/braided) monoidal category.
-   Here it is packaged as an endofunctor F : C ⟶ C on a monoidal closed
-   category that is both [StrongFunctor] and [LaxMonoidalFunctor].
+   Applicative 函子是 Haskell [Applicative] 类背后的范畴结构（McBride and Paterson,
+   "Applicative programming with effects", JFP 18(1), 2008）：恰是（闭、对称/辫）
+   幺半范畴上的强松弛幺半自函子。此处打包为幺半闭范畴上既是 [StrongFunctor] 又是
+   [LaxMonoidalFunctor] 的自函子 F : C ⟶ C。
 
-   Under that characterization the two operations of the FP class correspond
-   to the comparison maps of the lax monoidal structure:
+   在该刻画下，FP 类的两个运算对应松弛幺半结构的比较映射：
 
-       pure : x ~> F x          ↔ the unit comparison (built in [Pure] from
-                                   lax_pure : I ~> F I and the strength),
-       ap   : F (x ⇒ y) ⨂ F x   ↔ the tensor comparison lax_ap (μ), composed
-              ~> F y              with F eval through the internal hom ⇒.
+       pure : x ~> F x          ↔ 单位比较（由 lax_pure : I ~> F I 与强度在 [Pure] 中建造）
+       ap   : F (x ⇒ y) ⨂ F x   ↔ 张量比较 lax_ap (μ)，经内部 hom ⇒ 与 F eval 复合
+              ~> F y
 
-   The closed structure supplies the internal hom ⇒ and its evaluation
-   eval : (x ⇒ y) ⨂ x ~> y, which is what turns the bare tensor comparison
-   F (x ⇒ y) ⨂ F x ~> F ((x ⇒ y) ⨂ x) into the Haskell-style <*>.  This is
-   the categorical, law-respecting account; the lawless FP type class lives
-   in Theory/Coq/Applicative.v. *)
+   闭结构提供内部 hom ⇒ 及其求值 eval : (x ⇒ y) ⨂ x ~> y，把裸张量比较
+   F (x ⇒ y) ⨂ F x ~> F ((x ⇒ y) ⨂ x) 变成 Haskell 风格的 <*>。这是范畴的、尊重定律的
+   叙述；无定律的 FP 类型类在 Theory/Coq/Applicative.v。 *)
 
 Section ApplicativeFunctor.
 

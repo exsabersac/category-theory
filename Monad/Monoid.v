@@ -14,21 +14,15 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/monad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
-   The endofunctor category [[C, C]] is monoidal with functor composition [∘]
-   as tensor and the identity functor [Id] as unit (this monoidal structure is
-   [Compose_Monoidal]). A monad on [C] is exactly a monoid object in this
-   monoidal category: the carrier is the endofunctor [M], the monoid unit
-   [mempty : Id ⟹ M] is the monad unit [ret] (η), and the monoid
-   multiplication [mappend : M ∘ M ⟹ M] is the monad multiplication [join]
-   (μ). Because the tensor here is strict composition, the unitors and
-   associator are identities, so the monoid unit/associativity laws collapse to
-   the bare monad laws [join_ret], [join_fmap_ret] and [join_fmap_join]; the
-   naturality squares of [mempty]/[mappend] become [fmap_ret] and
-   [join_fmap_fmap]. This is the precise content of the slogan "a monad is a
-   monoid in the category of endofunctors".
+   自函子范畴 [[C, C]] 以函子复合 [∘] 为张量、恒等函子 [Id] 为单位是幺半的（该幺半结构是
+   [Compose_Monoidal]）。[C] 上的单子恰是此幺半范畴中的幺半对象：载体是自函子 [M]，
+   幺半单位 [mempty : Id ⟹ M] 是单子单位 [ret]（η），幺半乘法 [mappend : M ∘ M ⟹ M]
+   是单子乘法 [join]（μ）。因张量是严格复合，单位子与结合子是恒等，故幺半单位/结合律
+   塌缩为裸单子定律 [join_ret]、[join_fmap_ret] 与 [join_fmap_join]；[mempty]/[mappend]
+   的自然性方块变成 [fmap_ret] 与 [join_fmap_fmap]。这正是口号「单子是自函子范畴中的幺半群」
+   的精确内容。
 
-   [Monoid_Monad] proves the correspondence as a genuine logical equivalence
-   ([↔]), constructing a monad from any such monoid object and vice versa. *)
+   [Monoid_Monad] 把该对应证明为真正逻辑等价（[↔]），从任一此类幺半对象构造单子，反之亦然。 *)
 
 Definition Endofunctors `(C : Category) := ([C, C]).
 

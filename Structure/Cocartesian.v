@@ -10,15 +10,12 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/coproduct
    Wikipedia: https://en.wikipedia.org/wiki/Coproduct
 
-   A cocartesian category has all finite coproducts. For objects x and y the
-   coproduct `x + y` comes with injections `inl : x ~> x + y` and
-   `inr : y ~> x + y`, and the universal mapping property states that for any
-   object w with `f : y ~> x` and `g : z ~> x` there is a unique copairing
-   `f ▽ g : y + z ~> x` (the `merge`, written [f, g] in the literature)
-   satisfying `f ▽ g ∘ inl ≈ f` (inl_merge) and `f ▽ g ∘ inr ≈ g` (inr_merge);
-   uniqueness is recorded by [merge_inv] together with [merge_inl_inr]
-   (`inl ▽ inr ≈ id`). This is exactly the dual of the cartesian product: a
-   coproduct in C is a product in C^op, with all arrows reversed. *)
+   余笛卡尔范畴有全部有限余积。对对象 x、y，余积 `x + y` 带有内射 `inl : x ~> x + y`
+   与 `inr : y ~> x + y`，普遍映射性质说：对任意对象 w 与 `f : y ~> x`、`g : z ~> x`，
+   存在唯一余配对 `f ▽ g : y + z ~> x`（`merge`，文献写作 [f, g]）满足
+   `f ▽ g ∘ inl ≈ f`（inl_merge）与 `f ▽ g ∘ inr ≈ g`（inr_merge）；唯一性由
+   [merge_inv] 与 [merge_inl_inr]（`inl ▽ inr ≈ id`）记录。这恰是笛卡尔积的对偶：
+   C 中的余积是 C^op 中的积，所有箭头反向。 *)
 
 (* To be cocartesian is just to be cartesian in the opposite category; but to
    avoid confusion, we'd like a set of notations specific to categories with

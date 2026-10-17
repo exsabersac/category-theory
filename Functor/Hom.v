@@ -15,22 +15,16 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/hom-functor
    Wikipedia: https://en.wikipedia.org/wiki/Hom_functor
 
-   For a (locally small) category C, the hom-functor sends a pair of objects
-   (a, b) to the hom-set hom[C] a b, regarded as a setoid object of Sets. On a
-   morphism of C^op ∏ C — that is, a pair (f, g) with f : a' ~{C}~> a (an arrow
-   a ~{C^op}~> a') and g : b ~{C}~> b' — it sends an arrow q : a ~> b to the
-   composite g ∘ q ∘ f : a' ~> b', i.e. pre-compose with f and post-compose
-   with g. The bifunctor is therefore contravariant in its first argument and
-   covariant in its second; equivalently it is the identity profunctor on C.
+   对（局部小）范畴 C，hom 函子把对象对 (a, b) 送到 hom 集 hom[C] a b，视为 Sets 的
+   setoid 对象。对 C^op ∏ C 的态射——即对 (f, g)，f : a' ~{C}~> a（箭头 a ~{C^op}~> a'）
+   且 g : b ~{C}~> b'——它把箭头 q : a ~> b 送到复合 g ∘ q ∘ f : a' ~> b'，即前复合 f、
+   后复合 g。故双函子在第一变元反变、第二变元共变；等价地是 C 上的恒等双函子。
 
-   Fixing one argument yields the two partial hom-functors: the covariant
-   Hom(a, -) : C ⟶ Sets (acting by post-composition) and the contravariant
-   Hom(-, b) : C^op ⟶ Sets (acting by pre-composition). The curried form
-   Curried_Hom : C^op ⟶ [C, Sets] packages the covariant family, and as a
-   full and faithful embedding it is the Yoneda embedding (Yoneda_Full and
-   Yoneda_Faithful below); this is the basis of representability, developed in
-   Functor/Representable.v. Since hom-sets here are setoids, Hom lands in Sets,
-   the category of setoids. *)
+   固定一变元得到两个偏 hom 函子：共变 Hom(a, -) : C ⟶ Sets（后复合作用）与反变
+   Hom(-, b) : C^op ⟶ Sets（前复合作用）。curry 形式 Curried_Hom : C^op ⟶ [C, Sets]
+   打包共变族，作为满忠实嵌入即 Yoneda 嵌入（下文 Yoneda_Full 与 Yoneda_Faithful）；
+   这是可表性的基础，见 Functor/Representable.v。因此处 hom 集是 setoid，Hom 落在
+   setoid 范畴 Sets。 *)
 
 (* Bifunctors can be curried:
 

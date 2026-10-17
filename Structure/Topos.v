@@ -11,44 +11,30 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* Elementary toposes.
+(* 初等 topos。
 
    nLab:      https://ncatlab.org/nlab/show/topos
    nLab:      https://ncatlab.org/nlab/show/power+object
    Wikipedia: https://en.wikipedia.org/wiki/Topos
 
-   An elementary topos is a category with finite limits that is cartesian
-   closed and has a subobject classifier.  Finite limits are carried
-   EXPLICITLY here as terminal object + binary products + pullbacks, and we
-   deliberately do not add equalizers to the class.
+   初等 topos 是有有限极限、笛卡尔闭且有子对象分类子的范畴。有限极限此处*显式*携带为
+   终对象 + 二元积 + 拉回，故意不把等化子加入类。
 
-   That redundancy is now a CHOICE rather than a gap.  The reduction of
-   pullbacks to products and equalizers, and its converse, ARE formalized --
-   [Structure/Pullback/Reduction.v]'s [pullback_of_equalizer] /
-   [HasPullbacks_of_Cartesian_HasEqualizers] and [equalizer_of_pullback], with
-   [Cartesian_of_HasPullbacks_Terminal] and
-   [HasEqualizers_of_HasPullbacks_Terminal] going the other way.  The class
-   keeps its components explicit anyway, so that an instance may supply
-   whichever it computes with and no consumer pays for a reduction it does not
-   want.
+   该冗余现是*选择*而非缺口。拉回到积与等化子的归约及其逆*已*形式化——
+   [Structure/Pullback/Reduction.v] 的 [pullback_of_equalizer] /
+   [HasPullbacks_of_Cartesian_HasEqualizers] 与 [equalizer_of_pullback]，反向有
+   [Cartesian_of_HasPullbacks_Terminal] 与 [HasEqualizers_of_HasPullbacks_Terminal]。
+   类仍显式保留分量，使实例可供给它实际计算用的那些，消费者不必为不需要的归约付费。
 
-   Scope that precisely, because the redundancy claim is narrower than "finite
-   limits are redundant": what is related is the BINARY and PARALLEL-PAIR
-   generators.  Equalizers ARE now derived for every topos, as
-   [Structure/Topos/Monadic.v]'s [topos_HasEqualizers], and finite
-   completeness is stated there at the level of the four elementary
-   generators -- terminal object, binary products, pullbacks, equalizers --
-   as [topos_finitely_complete].  The [Limit]-shaped reading is now
-   [Structure/Limit/Finite.v]'s [FinitelyComplete], which
-   [finitely_complete_of_pullbacks_terminal] derives from the class's
-   terminal object and pullbacks.  Finite COLIMITS are Structure/Topos/
-   Colimits.v's [topos_has_finite_colimits] -- Paré's theorem, through the
-   monadic power-object functor of [Structure/Topos/Monadic.v] -- again at
-   generator level: initial object, binary coproducts, coequalizers, pushouts.
+   精确划定范围，因冗余声称窄于「有限极限冗余」：相关的是二元与平行对生成子。等化子现对
+   每个 topos 导出，见 [Structure/Topos/Monadic.v] 的 [topos_HasEqualizers]；有限完备性
+   在四个初等生成子层陈述——终对象、二元积、拉回、等化子——为 [topos_finitely_complete]。
+   [Limit]-形读法现是 [Structure/Limit/Finite.v] 的 [FinitelyComplete]，由类的终对象与拉回经
+   [finitely_complete_of_pullbacks_terminal] 导出。有限余极限是 Structure/Topos/Colimits.v
+   的 [topos_has_finite_colimits]——Paré 定理，经 [Structure/Topos/Monadic.v] 的单子幂对象函子——
+   仍在生成子层：初始对象、二元余积、余等化子、推出。
 
-   Universe note: the class is a plain record of the component classes, each
-   universe-polymorphic over the ambient category; it introduces no universe
-   constraints beyond those of its fields. *)
+   宇宙注记：类是分量类的普通记录，各对环境范畴宇宙多态；除其字段外不引入宇宙约束。 *)
 
 (* Where toposes come from, and what they are for
 

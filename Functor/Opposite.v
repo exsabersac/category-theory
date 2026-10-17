@@ -10,23 +10,18 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/opposite+functor
    Wikipedia: https://en.wikipedia.org/wiki/Opposite_category
 
-   Given F : C ⟶ D, the opposite functor F^op : C^op ⟶ D^op acts the same as
-   F on both objects and morphisms; only the (formally reversed) source and
-   target categories change. On objects (F^op) x := F x, and a morphism
-   f : x ~{C^op}~> y (that is, f : y ~> x in C) is sent to fmap[F] f, read as a
-   morphism F x ~{D^op}~> F y. The functoriality fields are the corresponding
-   fields of F with their object indices swapped, and fmap_comp is reindexed to
-   match the reversed composition of C^op (g ∘ f there is f ∘ g in C).
+   给定 F : C ⟶ D，对偶函子 F^op : C^op ⟶ D^op 在对象与态射上与 F 作用相同；仅
+   （形式反向的）源与目标范畴改变。对象上 (F^op) x := F x；态射 f : x ~{C^op}~> y
+   （即 C 中 f : y ~> x）被送到 fmap[F] f，读作态射 F x ~{D^op}~> F y。函子性字段是
+   F 的对应字段，对象指标交换，fmap_comp 重指标以匹配 C^op 的反向复合（彼处 g ∘ f
+   是 C 中的 f ∘ g）。
 
-   Because the underlying duality is built in so that (C^op)^op = C holds by
-   reflexivity, and F^op reuses the same object/morphism maps as F, the
-   construction is involutive: (F^op)^op = F, provable by [reflexivity] (see
-   Opposite_Functor_invol below). A contravariant functor C ⟶ D is, by
-   definition, an ordinary functor out of C^op; see [contramap] at the end.
+   因底层对偶使 (C^op)^op = C 由 reflexivity 成立，且 F^op 复用与 F 相同的对象/态射映射，
+   构造对合：(F^op)^op = F，可由 [reflexivity] 证明（见下文 Opposite_Functor_invol）。
+   反变函子 C ⟶ D 按定义是出自 C^op 的普通函子；见文末 [contramap]。
 
-   On 1-cells (functors) oppositization is covariant, but note that on 2-cells
-   (natural transformations) it reverses direction: a natural transformation
-   F^op ⟹ G^op corresponds to one G ⟹ F, so op is the 2-functor Cat^co ⟶ Cat. *)
+   在 1-胞（函子）上对偶化共变，但注意在 2-胞（自然变换）上方向反转：自然变换
+   F^op ⟹ G^op 对应 G ⟹ F，故 op 是 2-函子 Cat^co ⟶ Cat。 *)
 
 Definition Opposite_Functor `(F : C ⟶ D) : C^op ⟶ D^op :=
   @Build_Functor (C^op) (D^op) F

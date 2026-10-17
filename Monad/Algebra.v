@@ -10,17 +10,13 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
-   For a monad (T, ret, join) on a category C — with unit ret (η : Id ⟹ T)
-   and multiplication join (μ : T ○ T ⟹ T) — a T-algebra on an object [a] is
-   a structure map t_alg (h : T a ~> a) satisfying two laws. The unit law
-   t_alg ∘ ret ≈ id (h ∘ η_a = id_a) says the structure map undoes the unit,
-   and the action law t_alg ∘ fmap t_alg ≈ t_alg ∘ join (h ∘ T h = h ∘ μ_a)
-   says it is compatible with the multiplication: flattening with μ first and
-   acting once agrees with acting twice. These are the Eilenberg–Moore
-   algebras; together with the morphisms below they form the Eilenberg–Moore
-   category C^T (nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category),
-   assembled in [Monad.Eilenberg.Moore]. The free algebra (T a, join) on each
-   object recovers a left adjoint to the forgetful functor C^T ⟶ C. *)
+   对范畴 C 上的单子 (T, ret, join)——单位 ret（η : Id ⟹ T）与乘法 join（μ : T ○ T ⟹ T）——
+   对象 [a] 上的 T-代数是结构映射 t_alg（h : T a ~> a），服从两定律。单位律
+   t_alg ∘ ret ≈ id（h ∘ η_a = id_a）说结构映射撤销单位；作用律
+   t_alg ∘ fmap t_alg ≈ t_alg ∘ join（h ∘ T h = h ∘ μ_a）说它与乘法相容：先用 μ 压平再作用一次
+   与作用两次一致。这些是 Eilenberg–Moore 代数；连同下文态射构成 Eilenberg–Moore 范畴 C^T
+   （nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category），组装于
+   [Monad.Eilenberg.Moore]。每个对象上的自由代数 (T a, join) 恢复遗忘函子 C^T ⟶ C 的左伴随。 *)
 Class TAlgebra `(T : C ⟶ C) `{@Monad C T} (a : C) := {
   t_alg : T a ~> a;
 

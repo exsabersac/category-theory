@@ -26,45 +26,21 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/coalgebra+over+a+comonad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
-   Theory/Monad.v defines [Comonad := @Monad (C^op) (W^op)], and duality is
-   built into this library so that C^op^op = C and (W^op)^op = W hold by
-   reflexivity.  This file packages the consequences of that choice for the
-   theory of resolutions:
+   Theory/Monad.v 定义 [Comonad := @Monad (C^op) (W^op)]，且本库对偶使 C^op^op = C 与
+   (W^op)^op = W 由 reflexivity 成立。本文件打包该选择对分解理论的后果：
 
-   - the conversions between comonads on C and monads on C^op — and,
-     mirrored, between monads on C and comonads on C^op — are the identity,
-     with round trips holding by [reflexivity]
-     ([op_Monad_of_Comonad], [Comonad_of_op_Monad], [op_Comonad_of_Monad],
-     [Monad_of_op_Comonad]);
+   - C 上余单子与 C^op 上单子之间的转换——镜像地，C 上单子与 C^op 上余单子——是恒等，
+     往返由 [reflexivity] 成立（[op_Monad_of_Comonad]、[Comonad_of_op_Monad] 等）；
 
-   - every adjunction F ⊣ U (F : D ⟶ C the left adjoint) induces a comonad
-     on C with endofunctor F ◯ U ([Adjunction_Comonad]), the formal dual of
-     [Adjunction_Monad] in Monad/Adjunction.v: dualize the adjunction with
-     Adjunction/Opposite.v to U^op ⊣ F^op and take the monad it induces on
-     C^op.  That monad lives on the composite F^op ◯ U^op, while the goal
-     [@Comonad C (F ◯ U)] unfolds to a monad on (F ◯ U)^op.  The two
-     composites share their object and morphism maps definitionally, but
-     Compose rebuilds its functor-law fields per application, so the two
-     functor records are distinct terms; the comonad is therefore assembled
-     by [Build_Monad] with every field taken unchanged from the dual monad
-     (the field types are convertible across the two composites — no law is
-     re-proved);
+   - 每个伴随 F ⊣ U（F : D ⟶ C 左伴随）在 C 上以自函子 F ◯ U 诱导余单子
+     （[Adjunction_Comonad]），是 Monad/Adjunction.v 中 [Adjunction_Monad] 的形式对偶：
+     用 Adjunction/Opposite.v 对偶伴随得 U^op ⊣ F^op，取其在 C^op 上诱导的单子；
 
-   - the two canonical resolutions of a comonad arise from the monad
-     resolutions of Monad/Kleisli/Adjunction.v and
-     Monad/Eilenberg/Moore/Adjunction.v by dualizing: for the co-Kleisli
-     category the forgetful functor x ↦ W x is LEFT adjoint to the cofree
-     one ([CoKleisli_Adjunction]), and likewise for the co-Eilenberg–Moore
-     category of coalgebras ([CoEM_Adjunction]) — under op the free/
-     forgetful pair of the monad world trades sides, which is why a comonad
-     is resolved as forgetful ⊣ cofree.  Each adjunction is literally the
-     [Opposite_Adjunction] of its monad counterpart; the covariant reading
-     lemmas beside them record what the functors, units and counits are in
-     terms of [extract], [duplicate] and [extend] of Comonad/Core.v, each
-     holding by [reflexivity] or by a single identity law.  The composite
-     Forget ◯ Cofree recovers W on the nose for both resolutions
-     ([CoKleisli_Comonad_agrees], [CoEM_Comonad_agrees]), dually to
-     [Kleisli_Monad_agrees] and [EM_Monad_agrees]. *)
+   - 余单子的两种典范分解来自 Monad/Kleisli/Adjunction.v 与
+     Monad/Eilenberg/Moore/Adjunction.v 的单子分解经对偶：对 co-Kleisli 范畴，遗忘
+     x ↦ W x 是余自由的*左*伴随（[CoKleisli_Adjunction]），余代数的 co-Eilenberg–Moore
+     同理（[CoEM_Adjunction]）——在 op 下单子世界的自由/遗忘对换边，故余单子分解为
+     遗忘 ⊣ 余自由。复合 Forget ◯ Cofree 对两分解在表面上恢复 W。 *)
 
 (* The two resolutions as extremes
 

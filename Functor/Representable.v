@@ -15,21 +15,17 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/representable+functor
    Wikipedia: https://en.wikipedia.org/wiki/Representable_functor
 
-   A functor F : C ⟶ Sets is representable when it is naturally isomorphic to
-   a covariant hom-functor Hom(A, ─) for some object A of C, the representing
-   object. In library notation this natural isomorphism is
+   函子 F : C ⟶ Sets 可表 (representable)，当它自然同构于某对象 A ∈ C 的共变
+   hom 函子 Hom(A, ─)。库记号中该自然同构为
 
-       [Hom A,─] ≅ F     (an iso in the functor category [C, Sets]),
+       [Hom A,─] ≅ F     （函子范畴 [C, Sets] 中的同构），
 
-   so [represented] below is precisely Wikipedia's pair (A, Φ): [repr_obj] is
-   A and [represented] is the natural iso Φ : Hom(A, ─) ⟹ F. By the Yoneda
-   lemma such a Φ is determined by a single universal element of F(A), namely
-   Φ_A(id A), and the representing object is unique up to (unique) isomorphism;
-   the universal-element half is developed in Structure/UniversalProperty.v,
-   and the uniqueness half is [repr_unique_iso] below, the τ = id case of the
-   induced-arrow correspondence in the second half of this file. A contravariant
-   representable G : C^op ⟶ Sets (a presheaf) is instead naturally isomorphic
-   to Hom(─, A); see [Hom ─,A] (Curried_CoHom) in Functor/Hom.v. *)
+   故下文 [represented] 恰是 Wikipedia 的对 (A, Φ)：[repr_obj] 是 A，[represented]
+   是自然同构 Φ : Hom(A, ─) ⟹ F。由 Yoneda 引理，此类 Φ 由 F(A) 的单个普遍元决定，
+   即 Φ_A(id A)，且表示对象在（唯一）同构下唯一；普遍元半边在 Structure/UniversalProperty.v
+   开发，唯一性半边是下文 [repr_unique_iso]，即本文件后半诱导箭头对应的 τ = id 情形。
+   反变可表 G : C^op ⟶ Sets（预层）则自然同构于 Hom(─, A)；见 Functor/Hom.v 的
+   [Hom ─,A]（Curried_CoHom）。 *)
 
 (* Wikipedia: "Let C be a locally small category and let Set be the category
    of sets. For each object A of C let Hom(A,–) be the hom functor that maps

@@ -4,18 +4,16 @@ Require Import Category.Theory.Isomorphism.
 
 Generalizable All Variables.
 
-(* A pullback (also called a fibered product) is the limit of a cospan
-   `b → a ← c`; it is dual to the pushout (a pullback in C is a pushout in
-   C^op).
+(* 拉回 (pullback)（也称纤维积）是共跨 `b → a ← c` 的极限；对偶于推出（C 中的拉回是
+   C^op 中的推出）。
 
    nLab:      https://ncatlab.org/nlab/show/pullback
    Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
 
-   Universal property, in this library's notation: a pullback of f and g is an
-   object [Pull] with projections [pullback_fst : Pull ~> x] and
-   [pullback_snd : Pull ~> y] satisfying f ∘ pullback_fst ≈ g ∘ pullback_snd,
-   such that for every (Q, q1, q2) with f ∘ q1 ≈ g ∘ q2 there is a unique
-   u : Q ~> Pull with pullback_fst ∘ u ≈ q1 and pullback_snd ∘ u ≈ q2. *)
+   本库记号下的普遍性质：f 与 g 的拉回是对象 [Pull]，带投影
+   [pullback_fst : Pull ~> x] 与 [pullback_snd : Pull ~> y]，满足
+   f ∘ pullback_fst ≈ g ∘ pullback_snd，使得对每个满足 f ∘ q1 ≈ g ∘ q2 的 (Q, q1, q2)
+   存在唯一 u : Q ~> Pull 满足 pullback_fst ∘ u ≈ q1 与 pullback_snd ∘ u ≈ q2。 *)
 
 (* Given a cospan in C:
 

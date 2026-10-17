@@ -10,32 +10,24 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/limit
    Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
 
-   Wikipedia: "Let F : J ⟶ C be a diagram of shape J in a category C. A cone
-   to F is an object N of C together with a family ψX : N ⟶ F(X) of morphisms
-   indexed by the objects X of J, such that for every morphism f : X ⟶ Y in J,
-   we have F(f) ∘ ψX = ψY.
+   Wikipedia：「设 F : J ⟶ C 是范畴 C 中形状为 J 的图。到 F 的锥是 C 的对象 N 连同
+   由 J 的对象 X 指标的态射族 ψX : N ⟶ F(X)，使得对 J 中每个态射 f : X ⟶ Y，
+   有 F(f) ∘ ψX = ψY。
 
-   "A limit of the diagram F : J ⟶ C is a cone (L, φ) to F such that for any
-   other cone (N, ψ) to F there exists a unique morphism u : N ⟶ L such that
-   φX ∘ u = ψX for all X in J.
+   「图 F : J ⟶ C 的极限是到 F 的锥 (L, φ)，使得对到 F 的任意其他锥 (N, ψ) 存在
+   唯一态射 u : N ⟶ L 满足对所有 X ∈ J 有 φX ∘ u = ψX。
 
-   "One says that the cone (N, ψ) factors through the cone (L, φ) with the
-   unique factorization u. The morphism u is sometimes called the mediating
-   morphism."
+   「称锥 (N, ψ) 经锥 (L, φ) 以唯一分解 u 分解。态射 u 有时称为中介态射。」
 
-   Equivalently, the limit is the terminal object of the category of cones
-   over F: the universal cone through which every other cone factors uniquely
-   (nLab). The cone (L, φ) is recorded here as a [Cone F] (see
-   [Structure/Cone.v]); a [Limit] bundles such a terminal cone with its
-   universal property. In library notation the universal property reads:
+   等价地，极限是 F 上锥范畴的终对象：每个其他锥经其唯一分解的普遍锥（nLab）。
+   锥 (L, φ) 此处记为 [Cone F]（见 [Structure/Cone.v]）；[Limit] 把此类终锥与其普遍性质
+   捆绑。库记号中普遍性质读作：
 
        ∀ N : Cone F, ∃! u : vertex_obj[N] ~> vertex_obj[L],
          ∀ x : J, φ_x ∘ u ≈ ψ_x,
 
-   where φ = vertex_map[L] are the limit's legs and ψ = vertex_map[N] are the
-   competing cone's legs. (The same presheaf-representability view appears in
-   [Structure/UniversalProperty/Limit.v], where representing [ConePresheaf F]
-   is shown equivalent to being a limit.) *)
+   其中 φ = vertex_map[L] 是极限的腿，ψ = vertex_map[N] 是竞争锥的腿。（同一预层可表性
+   视角见 [Structure/UniversalProperty/Limit.v]，证明表示 [ConePresheaf F] 等价于是极限。） *)
 
 (* Where limits come from, and what they are for
 

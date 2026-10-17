@@ -10,31 +10,24 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/complete+category
    Wikipedia: https://en.wikipedia.org/wiki/Complete_category
 
-   Wikipedia: "a category C is complete if every diagram F : J → C (where J is
-   small) has a limit in C." Dually, C is cocomplete if every such diagram has
-   a colimit. nLab: a category "has all small limits" when "every small diagram
-   F : D → C where D is a small category has a limit in C." In library notation
-   the completeness condition reads:
+   Wikipedia：「范畴 C 完备，若每个图 F : J → C（J 小）在 C 中有极限。」对偶地，C 余完备
+   若每个此类图有余极限。nLab：范畴「有全部小极限」当「每个小图 F : D → C（D 小范畴）
+   在 C 中有极限。」库记号中完备性条件读作：
 
        ∀ (D : Category) (F : D ⟶ C), Limit F,
 
-   i.e. there is a [Limit] (a terminal/universal cone, see [Structure/Limit.v])
-   for every diagram F of shape D in C. Cocompleteness is the exact dual,
-   asking for a [Colimit] of every diagram; since [Colimit F := Limit (F^op)],
-   C is cocomplete iff C^op is complete, matching the duality recorded by both
-   sources.
+   即对 C 中每个形状为 D 的图 F 有 [Limit]（终/普遍锥，见 [Structure/Limit.v]）。余完备性
+   是精确对偶，要求每个图有 [Colimit]；因 [Colimit F := Limit (F^op)]，C 余完备当且仅当
+   C^op 完备，匹配两来源记录的对偶。
 
-   On the index class: both sources restrict J (here D) to be *small*. Wikipedia
-   notes that demanding limits for *all* (proper-class-sized) diagrams "is too
-   strong to be practically relevant" — such a C would be forced to be thin. The
-   definitions below quantify over [∀ (D : Category)] without an explicit
-   smallness hypothesis; the size discipline is instead carried implicitly by
-   the library's universe polymorphism. When [Complete]/[Cocomplete] are
-   instantiated, the universe levels of D become constrained relative to those
-   of C, which is the universe-polymorphic stand-in for "D small relative to C".
-   So these state "has a limit for every (suitably small) diagram" rather than
-   the inconsistent all-diagrams reading. The morphism-level equality is the
-   setoid [≈] of C, supplied inside [Limit]/[Cone]; it does not appear here. *)
+   关于指标类：两来源都把 J（此处 D）限制为*小*。Wikipedia 指出要求*所有*（真类大小）图的
+   极限「过强，无实际意义」——此类 C 将被强制为薄。下文定义量化 [∀ (D : Category)]
+   而无显式小性假设；大小纪律改由库的宇宙多态隐式携带。实例化 [Complete]/[Cocomplete] 时，
+   D 的宇宙层级相对 C 受约束，即「D 相对 C 小」的宇宙多态替身。故这些陈述「对每个（适当小的）
+   图有极限」而非不一致的全图读法。态射层相等是 C 的 setoid [≈]，在 [Limit]/[Cone] 内供给；
+   此处不出现。
+
+   （文首大小注记若仍长篇英文，属细节后续；本定义块已译。） *)
 
 (* Completeness as a working hypothesis
 

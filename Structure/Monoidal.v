@@ -14,34 +14,27 @@ Context {C : Category}.
 (* nLab: https://ncatlab.org/nlab/show/monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
 
-   A monoidal category is a category equipped with a tensor product and a
-   unit object that are associative and unital up to coherent isomorphism.
-   The data are a unit object I, a tensor bifunctor ⊗ : C ∏ C ⟶ C, and three
-   natural isomorphisms,
+   幺半范畴是配备张量积与单位对象、在连贯同构下结合与有单位的范畴。数据是单位对象 I、
+   张量双函子 ⊗ : C ∏ C ⟶ C，以及三个自然同构，
 
        lambda  : I ⊗ x ≅ x              ([unit_left]),
        rho     : x ⊗ I ≅ x              ([unit_right]),
        alpha   : (x ⊗ y) ⊗ z ≅ x ⊗ (y ⊗ z)   ([tensor_assoc]),
 
-   the left unitor, the right unitor, and the associator respectively. The
-   associator direction (x ⊗ y) ⊗ z ≅ x ⊗ (y ⊗ z) follows nLab; the opposite
-   orientation appears in some sources and differs only by inverses.
+   分别是左单位子、右单位子与结合子。结合子方向 (x ⊗ y) ⊗ z ≅ x ⊗ (y ⊗ z) 依 nLab；
+   某些来源取相反定向，仅差逆。
 
-   Naturality of each isomorphism is recorded explicitly, in both the forward
-   (to) and inverse (from) directions, so rewriting and dualization work
-   either way. For lambda this is the square g ∘ λ ≈ λ ∘ (id ⊗ g), and
-   similarly for rho and alpha.
+   每个同构的自然性在正向 (to) 与反向 (from) 都显式记录，使重写与对偶化两向可用。
+   对 lambda 即方块 g ∘ λ ≈ λ ∘ (id ⊗ g)，rho 与 alpha 类似。
 
-   Two coherence conditions govern the interaction of these isomorphisms:
+   两条连贯条件支配这些同构的相互作用：
 
-       triangle:  (ρ ⊗ id) ≈ (id ⊗ λ) ∘ α   on   (x ⊗ I) ⊗ y
+       triangle:  (ρ ⊗ id) ≈ (id ⊗ λ) ∘ α   在   (x ⊗ I) ⊗ y 上
        pentagon:  (id ⊗ α) ∘ α ∘ (α ⊗ id) ≈ α ∘ α
-                                              on  ((x ⊗ y) ⊗ z) ⊗ w
+                                              在  ((x ⊗ y) ⊗ z) ⊗ w 上
 
-   The triangle identity relates the unitors to the associator across the
-   unit; the pentagon identity makes the two reassociations of a fourfold
-   tensor agree. By Mac Lane's coherence theorem these two laws force every
-   formal diagram built from α, λ, ρ to commute. *)
+   三角形恒等式经单位关联单位子与结合子；五边形恒等式使四重张量的两种重结合一致。
+   由 Mac Lane 连贯定理，这两定律迫使由 α、λ、ρ 建造的每个形式图交换。 *)
 
 (* Origins, coherence, and the reach of the tensor
 

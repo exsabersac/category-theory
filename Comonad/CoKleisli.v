@@ -14,36 +14,23 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/co-Kleisli+category
    Wikipedia: https://en.wikipedia.org/wiki/Kleisli_category
 
-   The co-Kleisli category C_W of a comonad (W, extract, duplicate) =
-   (W, ε, δ) on C has the same objects as C, while a co-Kleisli morphism
-   x ⇸ y is an ordinary C-morphism W x ~> y.  The identity on x is the
-   counit extract (ε_x), and the co-Kleisli composite of f : W y ~> z after
-   g : W x ~> y is
+   范畴 C 上余单子 (W, extract, duplicate) = (W, ε, δ) 的 co-Kleisli 范畴 C_W 与 C
+   有相同对象，而 co-Kleisli 态射 x ⇸ y 是普通 C-态射 W x ~> y。x 上的恒等是余单位
+   extract（ε_x），f : W y ~> z 在 g : W x ~> y 之后的 co-Kleisli 复合是
 
        f ∘_W g  ≈  f ∘ fmap[W] g ∘ duplicate    (f ∘ W g ∘ δ),
 
-   which is exactly f composed onto the extension of g (f ∘ extend g).
+   恰是 f 复合到 g 的扩展上（f ∘ extend g）。
 
-   Since [Comonad C W] is by definition [@Monad (C^op) (W^op)], the
-   co-Kleisli category is obtained here as the opposite of the Kleisli
-   category of that opposite monad, rather than by re-proving the category
-   laws:
+   因 [Comonad C W] 按定义是 [@Monad (C^op) (W^op)]，co-Kleisli 范畴此处取为该对偶单子的
+   Kleisli 范畴的对偶，而非重证范畴定律：
 
        CoKleisli := (Kleisli (C^op) (W^op))^op
 
-   Because duality is built into this library so that C^op^op = C holds by
-   reflexivity, the covariant components of this construction are
-   definitionally the expected ones: the hom-sets are literally
-   W x ~{C}~> y ([cokleisli_hom], which holds by reflexivity), the identity
-   is literally [extract] ([cokleisli_id]), and the categorical composite
-   [cokleisli_compose f g] (f after g) is literally f ∘ extend g.  The
-   fish operators name this the other way round: [f =>= g] runs the LEFT
-   operand first (Monad/Kleisli.v convention), so [f =>= g ≈ g ∘ extend f]
-   ([cokleisli_compose_extend]).  The category laws, inherited from
-   Monad/Kleisli.v by duality and re-read covariantly, are the co-Kleisli
-   triple laws [extract_extend], [extend_extract] and [extend_comp] of
-   Comonad/Core.v; they appear below as [comonad_id_left],
-   [comonad_id_right] and [comonad_comp_assoc]. *)
+   因对偶使 C^op^op = C 由 reflexivity 成立，此构造的共变分量定义上即所期望：hom 集字面上是
+   W x ~{C}~> y（[cokleisli_hom]），恒等字面上是 [extract]，范畴复合 [cokleisli_compose f g]
+   字面上是 f ∘ extend g。范畴定律由 Monad/Kleisli.v 经对偶继承，共变重读为 Comonad/Core.v
+   的 co-Kleisli 三定律。 *)
 
 (* Context-dependent maps, dataflow, and linear logic
 

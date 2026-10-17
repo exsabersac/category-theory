@@ -12,22 +12,17 @@ Generalizable All Variables.
    nLab: https://ncatlab.org/nlab/show/closed+monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Closed_monoidal_category
 
-   This file is an in-progress stub for a "closed category" in the sense of
-   Eilenberg and Kelly: a category C equipped with an internal hom bifunctor
+   本文件是 Eilenberg–Kelly 意义下「闭范畴」的进行中草稿：范畴 C 配备内部 hom 双函子
 
        [-, -] : C^op ∏ C ⟶ C,
 
-   a unit object I, a natural isomorphism x ≅ [I, x], an identity element
-   I ~> [x, x], and a composition morphism [y, z] ~> [[x, y], [x, z]],
-   subject to coherence axioms. Unlike a closed *monoidal* category, a closed
-   category need not carry a tensor product; the internal hom is primitive and
-   the tensor-hom adjunction Hom(x ⊗ y, z) ≅ Hom(x, [y, z]) is not assumed.
+   单位对象 I、自然同构 x ≅ [I, x]、恒等元 I ~> [x, x]，以及复合态射
+   [y, z] ~> [[x, y], [x, z]]，服从连贯公理。与闭*幺半*范畴不同，闭范畴不必携带张量积；
+   内部 hom 是原始的，不假定张量-hom 伴随 Hom(x ⊗ y, z) ≅ Hom(x, [y, z])。
 
-   The [Closed] class capturing this structure is sketched but commented out
-   below (see the jww TODO); only the two helper functors [Curry] and [Flip]
-   are live. The fully worked closed *monoidal* category, with tensor, an
-   evaluation morphism eval[a, b] : (a ⇒ b) ⊗ a ~> b, and the currying
-   universal property, lives instead in [Structure.Monoidal.Closed]. *)
+   捕捉该结构的 [Closed] 类已草拟但下文注释掉（见 jww TODO）；仅两助手函子 [Curry]
+   与 [Flip] 可用。完整开发的闭*幺半*范畴——带张量、求值态射 eval[a, b] : (a ⇒ b) ⊗ a ~> b
+   以及 curry 普遍性质——在 [Structure.Monoidal.Closed]。 *)
 
 (* Where closed categories come from, and why the hom is primitive
 

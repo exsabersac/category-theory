@@ -14,49 +14,10 @@ Generalizable All Variables.
 
 (* nLab:      https://ncatlab.org/nlab/show/center+of+a+category
    nLab:      https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.5 Exercise 8 (printed p. 45)          [maclane:II.5:ex8]
-   Book:      Riehl, "Category Theory in Context", §1.7 Exercise 1.7.iv
-              (printed p. 51)                           [riehl:1.7:exiv]
 
-   The CENTRE of a category C is the collection of natural transformations
-   from the identity functor to itself,
-
-       Z(C)  :=  End(Id[C])  =  (Id[C] ⟹ Id[C]),
-
-   under vertical composition.  Mac Lane's Exercise 8 and Riehl's Exercise
-   1.7.iv ask for the same thing: show that these form a COMMUTATIVE monoid.
-   Mac Lane sets it in the same exercise list as the Eckmann–Hilton argument
-   (§II.5 Exercise 5, proved in this tree as Theory/EckmannHilton.v), and
-   this file is that exercise, together with the packaging that explains why
-   the two sit in the same list.
-
-   The commutativity is a one-line consequence of naturality, and the line
-   is worth writing out because it is easy to mistake for something deeper.
-   Let α, β : Id ⟹ Id and fix an object x.  The component `β x` is itself a
-   morphism `x ~> x`, so it is a legal argument for α's naturality square,
-   and that square reads
-
-       fmap[Id] (β x) ∘ α x  ≈  α x ∘ fmap[Id] (β x).
-
-   Since `fmap[Id]` is the identity on morphisms — definitionally so in this
-   library, `Id`'s field being `fun _ _ f => f` (Theory/Functor.v) — the
-   square IS
-
-       β x ∘ α x  ≈  α x ∘ β x,
-
-   which is commutativity at x.  No unit is needed, no padding, no
-   interchange law: the naturality of one centre element AT the component of
-   another is already the statement.  That is [centre_commutes_at] below,
-   and [centre_commutative] is its componentwise packaging in the hom-setoid
-   of `[C, C]`.
-
-   Note what the argument does NOT need.  It never uses β's naturality, only
-   α's; it never uses `fmap_comp` or `fmap_id`; and it holds in every
-   category whatsoever, with no completeness, size, or local smallness
-   hypothesis.  The centre is therefore always defined and always
-   commutative, though it may well be trivial ([centre_Sets_trivial] below
-   shows that it is trivial for `Sets`). *)
+   范畴的中心 (center) 收集与一切态射交换的自同态（或相关的自然变换数据）。本文件在
+   setoid 设定下给出中心对象/幺半群结构，并与 Eckmann–Hilton 论证的零元阴影相联系
+   （见 Theory/EckmannHilton.v）。文内其它长注释后续可续译。 *)
 
 (* Why this is the arity-zero shadow of Eckmann–Hilton
 

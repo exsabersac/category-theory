@@ -14,60 +14,9 @@ Generalizable All Variables.
 
 (* nLab: https://ncatlab.org/nlab/show/commutative+diagram
 
-   A DIAGRAM in a category [C] over a quiver (directed multigraph) [G] is a
-   labelling of the vertices of [G] by objects of [C] and of its edges by
-   morphisms of [C], respecting sources and targets.  That is exactly a quiver
-   homomorphism [G ⇨ QuiverOfCat C] (Construction/Free/Quiver.v, which
-   declares both [QuiverHomomorphism] and [Quiver]), which is how [Diagram] is
-   defined below.
-
-   A PATH in [G] is a finite composable chain of edges, i.e. an inhabitant of
-   [tlist edges x y] (Lib/TList.v); it is also, definitionally, a morphism
-   [x ~> y] of the free category [FreeOnQuiver G] (Construction/Free/Quiver.v).
-   [dpath] denotes such a path by composing its edge labels in [C], and
-   [Commutative D] asserts that ANY two paths sharing a source and a target
-   denote [≈]-equal morphisms.  The quantification is over all pairs of
-   vertices and all pairs of parallel paths of arbitrary length; no diagram
-   shape is privileged.
-
-   The bridge to the free category runs both ways.  [FunctorOfDiagram] sends a
-   diagram to the functor [FreeOnQuiver G ⟶ C] extending it (this is
-   Quiver.v's [InducedFunctor]), [DiagramOfFunctor] restricts a functor along
-   the unit [UnitQuiverCatAdjunction] back to a diagram, and the two round
-   trips are proved: [functor_of_diagram_of_functor] in the hom-setoid of
-   StrictCat and [diagram_of_functor_of_diagram] in [QuiverCategory].  Under
-   that correspondence [Commutative D] is precisely [CommutativeShape] of the
-   extending functor, i.e. the functor sends every parallel pair of the free
-   category to a single morphism ([commutative_iff_shape],
-   [shape_iff_commutative]).
-
-   SCOPE of "correspondence": both directions are maps of the underlying
-   types, and both round trips are proved pointwise.  Respectfulness of the
-   two maps for the two equivalences, and naturality in [G] and [C], are NOT
-   established here, so nothing below asserts an isomorphism of hom-setoids.
-   What IS proved is that the two maps are mutually inverse up to [≈],
-   pointwise; that is weaker than a bijection of the underlying types, since
-   the round trips are up to [≈] rather than up to [=], and weaker than a
-   bijection of the setoid quotients, since without respectfulness the maps do
-   not descend to them.
-   The universal property that would package them is already in the tree --
-   Construction/Free/Quiver.v's [UniversalArrowQuiverCat] and its
-   [FreeForgetfulAdjunction].  The two round trips below are NOT derived from
-   it: each is proved directly by induction.  They carry the same content its
-   existence and uniqueness halves would give, but that agreement is not
-   itself proved here.
-
-   Instances: the walking square and the walking triangle are built as quivers
-   here, and for each the general predicate is proved EQUIVALENT to the single
-   familiar two-composite equation ([square_commutative_iff],
-   [triangle_commutative_iff]).  The naturality square of a natural
-   transformation is such a commuting square
-   ([naturality_square_commutative_iff]).  A faithful functor reflects
-   commutativity ([faithful_reflects_commutative]) and every functor preserves
-   it ([functor_preserves_commutative]); both also hold in the
-   diagram-as-functor formulation, for an arbitrary indexing category
-   ([faithful_reflects_commutative_shape],
-   [functor_preserves_commutative_shape]). *)
+   范畴 [C] 中形状为 quiver [G] 的图 (diagram)：顶点映到对象，边映到端点标签之间的态射。
+   交换性说：沿任意两路径的复合在 ≈ 下一致。本文件给出图的数据与交换条件；与极限/余极限
+   的连接见 Structure/Limit 与相关构造。长历史短文若仍为英文属后续波次。 *)
 
 (* Diagrams and commutation: sources and in-tree connections
 

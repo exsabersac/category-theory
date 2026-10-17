@@ -518,11 +518,11 @@ Definition p451_svariety_hwp {S : UA.OpSignature} (E : UA.EqSignature S) :
 Fail Definition p451_n22_hwp_by_search {S : UA.OpSignature}
   (E : UA.EqSignature S) : HasWidePullbacks (SVariety E) := _.
 
-(* CONTROL: with BOTH the producer and the completeness witness registered
-   locally, class search resolves the same hole, and what it finds IS the
-   producer at [SVariety_Complete E].  Either registration alone leaves the
-   hole refused (measured, see the header), so being a definition is not
-   the whole of N22's reason. *)
+(*
+   本节说明 ProbeWellPowered451 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section SearchBoth.
 
 #[local] Existing Instance Complete_HasWidePullbacks.

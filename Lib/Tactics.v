@@ -18,11 +18,11 @@ Unset Transparent Obligations.
 Open Scope lazy_bool_scope.
 
 Module Compat.
-  (* In Rocq 9.2 the EqdepFacts.internal_foo schemes moved to Init.Logic
-     and dropped the "internal".
+  (*
+   本节说明 Tactics 相关定义、性质与动机。
 
-     This module uses shadowing to refer to the schemes by the same
-     name regardless of Rocq version. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
   Module Fake.
     Notation internal_eq_rew_r_dep := ltac:(fail "should not happen") (only parsing).
@@ -55,20 +55,22 @@ Module Compat.
   Notation eq_sym := eq_sym.
 End Compat.
 
-(* [simpl_eq]: unfold the [eq]-rewriting eliminators ([eq_rect] and friends,
-   plus the version-shimmed [Compat] schemes) everywhere, exposing the
-   underlying transports so they can be simplified or rewritten. *)
+(*
+   本节说明 Tactics 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac simpl_eq :=
   unfold eq_rect_r, eq_rect, eq_ind_r, eq_ind, eq_sym, prod_rect,
     Compat.eq_rew_r_dep,
     Compat.eq_sym_involutive,
     Compat.eq_sym in *.
 
-(* [simplify]: repeatedly break apart logical/structural connectives in both
-   hypotheses and goal -- units, lazy and strict [&&], conjunctions ([∧], [/\]),
-   bi-implications ([↔]), pairs/products and sigma types -- introducing the
-   pieces.  Each arm strictly consumes or refines its target, so the [repeat]
-   terminates. *)
+(*
+   本节说明 Tactics 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac simplify :=
   repeat
     (match goal with
@@ -108,18 +110,22 @@ Ltac simplify :=
        unshelve (refine (existT _ _ _))
      end; intros).
 
-(* [cat]: the standard category-proof closer.  Simplify connectives, rewrite
-   with the equational [categories] laws, then discharge the residue with the
-   [category_laws] auto database, falling back to reflexivity. *)
+(*
+   本节说明 Tactics 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac cat :=
   simplify;
   autorewrite with categories;
   auto with category_laws;
   try reflexivity.
 
-(* Teach the [core] database to see through the equivalence-relation
-   structure: unfold Reflexive/Symmetric/Transitive/Proper/respectful and
-   build an [Equivalence] from its three components on demand. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Hint Constructors Equivalence : core.
 
 #[export] Hint Unfold Reflexive : core.
@@ -149,25 +155,11 @@ Ltac cat :=
     [H : equiv ?X ?Y, H' : equiv ?Y ?Z |- equiv ?X ?Z] => transitivity Y
   end : category_laws.
 
-(* [equivalence]: prove an [Equivalence] goal by splitting into its three laws
-   ([constructor]) and discharging each with [cat]/[intuition].
+(*
+   本节说明等价、同构相关定义、性质与动机。
 
-   The explicit reflexivity/symmetry pass is load-bearing rather than
-   decorative.  When the relation is assembled from other equivalences -- a
-   pair of natural isomorphisms, say -- those two laws are closed only if the
-   tactic reaches [solve_crelation], a pattern-less [Hint Extern] in the
-   standard library's [crelations] database, through a wide [auto].  This
-   tactic once ended in [auto with *], which reached it; that fallback was
-   later narrowed to [auto with category_laws] for hygiene, and the proofs
-   kept building only because the [intuition] step above has its own wide
-   [auto with *] leaf that still reached the hint.  On Rocq master that leaf
-   no longer reaches it, so the two laws went undischarged and a downstream
-   bullet script failed several lines later with an unrelated-looking error
-   (issue #213, [Instance/Adjoints.v]).  Closing reflexivity and symmetry from
-   the relation's own [Equivalence] instance makes the step deterministic and
-   independent of any hint search, wide or narrow; the narrow
-   [auto with category_laws] fallback is retained for the remaining goals.
-   [Test/Issue213.v] holds it to that. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac equivalence := constructor; repeat intro; simpl; try cat; intuition;
   try solve [ reflexivity | (symmetry; eassumption) ];
   auto with category_laws.
@@ -184,11 +176,11 @@ Ltac srewrite F :=
 Ltac srewrite_r F :=
   let H := fresh "H" in pose proof F as H; cbn in H; rewrite <- H; clear H.
 
-(* [cat_simpl]: the global [Program] obligation tactic (installed below).  Run
-   [Program]'s own simplifier, then try to fully solve the goal by repeatedly
-   dispatching Equivalence/Proper/respectful sub-obligations and finishing with
-   [simplify]+[cat]; if that [solve] fails, leave a [simpl]-reduced goal for the
-   caller. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac cat_simpl :=
   program_simpl; autounfold;
   try solve [

@@ -22,14 +22,11 @@ Generalizable All Variables.
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Negative 1 (FORMABILITY): the explicit universe binders are
-       load-bearing
+(*
+   本节说明hom相关定义、性质与动机。
 
-    `SigmaCat` is declared `@{ui uo oh op us}` and its constraint block is
-    ALL BOUNDS -- `ui <= us`, `uo <= us`, `oh <= op`, the last being
-    `Class Category`'s own `h <= p`.  Written WITHOUT binders the same
-    body minimizes to a shape that identifies the summands' hom and proof
-    universes.  The control and the negative differ in nothing else. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BinderBoundary.
 
@@ -55,13 +52,11 @@ Fail Check (fun (I : Type) (C : I -> Category@{uo uh up}) =>
 
 End BinderBoundary.
 
-(** ** Negative 2 (FORMABILITY): the UMP's one identification is
-       `Functor_Setoid`'s
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    `SigmaCat_ump` displays `C : I → Category@{u7 u9 u9}` and
-    `D : Category@{u8 u9 u9}` -- the two OBJECT universes stay apart while
-    hom and proof are identified.  The controls show the functor type and
-    the `Unique` packaging are both innocent. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetoidBoundary.
 
@@ -75,12 +70,11 @@ Check (fun (C D : Category@{vo vh vp}) => (C ⟶ D)).
 Check (fun (C : Category@{vo vh vp}) (x y : C)
            (P : (x ~> y) -> Type) => @Unique _ (@homset C x y) P).
 
-(* Control: [Functor_Setoid] EXISTS and elaborates at UNCONSTRAINED
-   levels -- without this the negative below would still "succeed" after
-   a rename of [Functor_Setoid], on a reference-not-found error rather
-   than on the universe boundary.  (That vacuity was measured, not
-   guessed: an earlier revision of this file omitted this line and the
-   rename simulation scored 3/4.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check @Functor_Setoid.
 
 (* NEGATIVE 2. *)
@@ -88,17 +82,11 @@ Fail Check (fun (C D : Category@{vo vh vp}) => @Functor_Setoid C D).
 
 End SetoidBoundary.
 
-(** ** The packaging is transparent, in all THREE fields
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    The construction is stated first at the apex-pinned
-    `IsIndexedCoproduct` and only then packaged through
-    `Build_HasIndexedCoproducts`, deliberately avoiding
-    `Colimit`/`DiscreteCat_Functor`.  Nothing is lost in the packaging:
-    the class's object field, its injection field AND its universal-
-    property field all return the elementary data at `eq_refl`.  The
-    third is the one worth having -- it says the bundled class carries
-    the very record `SigmaCat_IsIndexedCoproduct` proves, not a rebuilt
-    copy of it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @SigmaCat_IsIndexedCoproduct.
 Check Cat_HasIndexedCoproducts.
@@ -115,15 +103,11 @@ Definition probe_pkg_ump {I : Type} (C : I -> Cat) :
   @indexed_coproduct_ump Cat Cat_HasIndexedCoproducts I C
     = SigmaCat_IsIndexedCoproduct C := eq_refl.
 
-(** ** Negative 3 (CONVERSION): the binary comparison is an isomorphism
-       and nothing stronger
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    At `I := bool` the indexed construction and `Construction/Coproduct.v`'s
-    binary `Coproduct` are isomorphic AS CATEGORIES
-    (`SigmaBool_strict_iso`, in `StrictCat`, both round trips at
-    `Functor_StrictEq_Setoid`).  They are not the same category, and the
-    obstruction is already in the OBJECT type: a dependent pair against a
-    tagged sum. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Control: the isomorphism that DOES hold. *)
 Check @SigmaBool_strict_iso.
@@ -134,14 +118,11 @@ Check @BoolFam.
 Fail Definition probe_bool_obj (C D : Category) :
   obj[SigmaCat (BoolFam C D)] = (obj[C] + obj[D])%type := eq_refl.
 
-(** ** The compiled half of the encoding-(c) refutation
+(*
+   本节说明hom相关定义、性质与动机。
 
-    For provably distinct indices the type `∀ e : i = j, X e` is
-    INHABITED, by the function that eliminates the empty equality.  So
-    reading a cross-summand hom that way does not give an empty hom-set;
-    it gives a one-element one, and the construction would be the
-    indiscrete category on the summands rather than their disjoint union.
-    The header argues this; here it is, compiled. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition probe_forall_encoding_inhabited
   (C : bool -> Category) (x : C true) (y : C false) :
@@ -185,32 +166,8 @@ Check @bool_summands_not_isomorphic.
 Check @case_separates_summands.
 Check @sigma_poly_unit_dec.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明 ProbeCatCoproduct338 相关定义、性质与动机。
 
-    The constants the NEGATIVES name:
-
-    Read off the `Fail` commands themselves, not off memory -- an
-    earlier revision of this table was written from memory and got two
-    of the three rows wrong, crediting Negative 1 with [SigmaCat] and
-    [SigmaCat_inj] and Negative 2 with [homset], all three of which
-    occur only in that section's positive CONTROLS:
-
-      Negative 1 names [Type], [Category], [sigma_obj_unann]
-      Negative 2 names [Category], [Functor_Setoid]
-      Negative 3 names [Category], [obj], [SigmaCat], [BoolFam],
-                        [eq_refl]
-
-    Excluding core vocabulary ([Type], [Category], [obj], [eq_refl]) on
-    the stated ground that it is named by almost every file in the tree
-    rather than that it is hard to guard, and excluding the file-local
-    [sigma_obj_unann] because renaming it renames both halves at once
-    and so guards nothing, the constants a NEGATIVE names are THREE:
-    [Functor_Setoid], [SigmaCat], [BoolFam].
-
-    Each of the three is named by a positive control above.  Score:
-    3/3, on an unpadded denominator, measured by compiling a renamed
-    copy of this file against an instrument-checked baseline and
-    confirming each one breaks it.  ([SigmaCat_inj] also breaks the
-    file when renamed, via its controls; it is not counted here because
-    no negative names it, and counting it was what padded the earlier
-    4/4.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

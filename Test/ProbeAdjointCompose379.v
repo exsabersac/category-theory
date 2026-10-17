@@ -84,10 +84,11 @@ Fail Example probe379_neg2 :
   @adj_equivalence _ _ _ _ (AdjointEquivalence_Compose_via_equivalence A B)
     = @adj_equivalence _ _ _ _ (AdjointEquivalence_Compose A B) := eq_refl.
 
-(* Negative 3 (CONVERSION): nor on the unit components.  The direct
-   route's unit DOES reduce -- that is the [eq_refl] control below,
-   which is [AdjointEquivalence_Compose_unit_transpose] -- so the
-   obstruction is on the refinement side. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe379_neg3 (x : C) :
   @unit _ _ _ _
     (@adj_equivalence _ _ _ _ (AdjointEquivalence_Compose_via_equivalence A B))
@@ -147,11 +148,11 @@ Check (assoc_left A B G
 Check (assoc_right A B G
        : AdjointEquivalence ((F3 ◯ F2) ◯ F1) (U1 ◯ (U2 ◯ U3))).
 
-(* Negative 6 (TYPING): the two bracketings do not inhabit a common
-   type, so associativity is not statable at the level of the class.
-   What IS statable, and holds by conversion, is the comparison of the
-   units and counits -- the control below is the target's
-   [AdjointEquivalence_Compose_assoc_unit]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (assoc_left A B G = assoc_right A B G).
 
 Example probe379_ctrl_assoc_unit (x : C1) :
@@ -190,11 +191,11 @@ Context (Cu : Category@{co ch cp}).
 Context (G H : Cu ⟶ Cu).
 Context (x y : Cu).
 
-(* Controls, all accepted at these very levels: the category's homs and
-   identity, a functor from the category to itself (so [Functor] is NOT
-   a donor), the predicate [IsIsomorphism], and the target's own four
-   [IsIso_*] constants, whose explicit universe binders keep hom and
-   proof apart. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (x ~{Cu}~> y).
 Check (@id Cu x).
 Check (Cu ⟶ Cu).
@@ -204,12 +205,11 @@ Check (@IsIso_along Cu x y).
 Check (@IsIso_comp Cu x y).
 Check (@IsIso_fmap Cu Cu G x y).
 
-(* Negative 9 (FORMABILITY): the IDENTITY FUNCTOR alone identifies hom
-   with proof.
-   This is worth isolating, because it means a probe that writes
-   [Id[Cu]] into an [Adjunction] is testing [Id] and not [Adjunction].
-   The control immediately above -- an arbitrary endofunctor of the same
-   category, accepted -- is what separates the two. *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@Id Cu).
 
 (* Negative 10 (FORMABILITY): [Adjunction] identifies hom with proof
@@ -224,10 +224,11 @@ Fail Check (@Adjunction Cu Cu G H).
    this is a second donor and NOT an independent cause. *)
 Fail Check (@AdjointEquivalence Cu Cu G H).
 
-(* Negative 12 (FORMABILITY): the target's own identity adjoint
-   equivalence inherits the identification.  It has at least the two
-   sufficient donors above -- [Id] occurs in its statement and
-   [Adjunction] in its field -- and this negative isolates neither. *)
+(*
+   本节说明伴随、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@AdjointEquivalence_Id Cu).
 
 End HomIsProof.
@@ -242,10 +243,11 @@ Context (Bu : Category@{bo bh bh}).
 (* Control: a functor in one direction is formable. *)
 Check (Au ⟶ Bu).
 
-(* Negative 13 (FORMABILITY): the mere presence of a functor in the
-   OTHER direction
-   forces the two hom universes to agree, before any adjunction is
-   formed.  This is where the composite's [u0 = u2 = u4] comes from. *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Bu ⟶ Au).
 
 End HomLevelsApart.

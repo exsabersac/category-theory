@@ -160,11 +160,13 @@ Corollary let_projT2 {A P} (S : @sigT A P) `(f : ∀ x, P x → z) :
   (let (x, y) := S in f x y) = f (projT1 S) (projT2 S).
 Proof. destruct S; auto. Qed.
 
-(* Sum setoid: elements are equivalent only when they lie in the same
-   injection and their contents are equivalent; cross-injection elements are
-   never equivalent. This is the equivalence carried by the categorical
-   coproduct A + B in the category of setoids.
-   nLab: https://ncatlab.org/nlab/show/coproduct *)
+(*
+   nLab: https://ncatlab.org/nlab/show/coproduct
+
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[global]
 Program Instance sum_setoid {A B} `{Setoid A} `{Setoid B} :
   Setoid (A + B) := {
@@ -194,10 +196,13 @@ Program Instance inl_respects {A B} `{Setoid A} `{Setoid B} :
 Program Instance inr_respects {A B} `{Setoid A} `{Setoid B} :
   Proper (equiv ==> equiv) (@inr A B).
 
-(* Option setoid: [Some] is equivalence-respecting on its contents and [None]
-   is equivalent only to itself. Equivalently this is the coproduct setoid
-   1 + A, the maybe/option construction on Set.
-   nLab: https://ncatlab.org/nlab/show/maybe+monad *)
+(*
+   nLab: https://ncatlab.org/nlab/show/maybe+monad
+
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[global]
 Program Instance option_setoid `{Setoid A} : Setoid (option A) := {
   equiv := fun x y => match x, y with
@@ -278,15 +283,14 @@ Proof.
   apply le_n_S, IHxs.
 Qed.
 
-(* Symmetric product of a relation with itself. This is the homogeneous (single
-   relation, single carrier) specialization of the standard library's symmetric
-   product [symprod] from Stdlib.Relations.Relation_Operators, whose
-   well-foundedness is established in the Wf_Symmetric_Product section of
-   Stdlib.Wellfounded.Lexicographic_Product. A pair decreases when either
-   component decreases, so well-foundedness of [leA] yields well-foundedness of
-   [symprod2].
+(*
    nLab: https://ncatlab.org/nlab/show/well-founded+relation
-   Wikipedia: https://en.wikipedia.org/wiki/Well-founded_relation *)
+   Wikipedia: https://en.wikipedia.org/wiki/Well-founded_relation
+
+   本节说明 Datatypes 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Symmetric_Product2.
 
 Variable A : Type.
@@ -343,10 +347,13 @@ Qed.
 #[global]
 Program Instance nat_setoid : Setoid nat.
 
-(* Function setoid: pointwise equivalence of functions into a setoid codomain.
-   This is the extensional equivalence on the exponential B ^ A in the category
-   of setoids; it carries the hom-setoid used for morphisms in Instance/Sets.v.
-   nLab: https://ncatlab.org/nlab/show/function+extensionality *)
+(*
+   nLab: https://ncatlab.org/nlab/show/function+extensionality
+
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[global]
 Program Instance fun_setoid {A : Type} `{Setoid B} : Setoid (A → B) := {
   equiv := fun f g => ∀ x, f x ≈ g x

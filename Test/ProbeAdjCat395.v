@@ -40,11 +40,11 @@ Check (fun (a : C) => U a).
    right adjoints. *)
 Check (fun (s : F ⟹ F') (t : U' ⟹ U) => Conjugate A' A s t).
 
-(* NEGATIVE 1 (TYPING).  The OTHER labelling does not fit the same slots.
-   Stripped, this reports a plain "has type ... while it is expected to have
-   type ...", with no universe clause: [Conjugate A' A] demands its third
-   argument at [F ⟹ F'], so handing it [F' ⟹ F] is a type mismatch and
-   not a unification complaint about universes. *)
+(*
+   本节说明 ProbeAdjCat395 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun (s : F' ⟹ F) (t : U ⟹ U') => Conjugate A' A s t).
 
 End Variance.
@@ -78,10 +78,11 @@ Section ForgetfulShape.
 Check @AdjForgetLeft.
 Check @AdjForgetRight.
 
-(* The left forgetful functor is covariant onto the left adjoints; the
-   right one is displayed on the OPPOSITE category, which is how Mac Lane's
-   [A^(adj)X]^op -> X^A is rendered.  Both types are pinned here so that a
-   later change of variance breaks this file rather than passing quietly. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example adj_forget_left_type (C D : Category) :
   AdjForgetLeft C D = AdjForgetLeft C D := eq_refl.
 

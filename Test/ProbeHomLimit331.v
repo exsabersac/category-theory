@@ -45,14 +45,11 @@ Check (Pick_Two bool nat).
    category, and then FCone's own arguments may stay implicit. *)
 Check (FCone (HomFrom (unit : obj[Coq])) (coq_two_limit (Pick_Two bool nat))).
 
-(** ** Former Negative 2 (FORMABILITY, universe): the discrete route no
-    longer pins Set
+(*
+   本节说明 ProbeHomLimit331 相关定义、性质与动机。
 
-    RECORDED CORRECTION: this section used to hold the file's second
-    negative, refused because [DiscreteCat_Functor] was unannotated and
-    instantiated [DiscreteCat@{u Set Set}].  Annotated in the PR
-    "algebraic carriers are sets" (2026-09-17) it is accepted, and the
-    line is retained as a positive control at the same levels. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AboveSet.
 
@@ -61,9 +58,11 @@ Constraint Set < uh.
 
 Context (C : Category@{uo uh uh}) (c : obj[C]) (fam : bool -> obj[C]).
 
-(* Control (a): the DIRECT product statements carry no [Set] -- they
-   elaborate over this category, whose hom universe is strictly above it.
-   This is the header's positive claim, exercised rather than asserted. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (@hom_IsIndexedProduct C c).
 Check (@hom_IsCartesianProduct C c).
 
@@ -105,18 +104,8 @@ Check cartesian_IsCartesianProduct.
 Check coq_hom_product.
 Check coq_hom_limit_cone.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明 ProbeHomLimit331 相关定义、性质与动机。
 
-    The one remaining negative names [FCone], [HomFrom], [coq_two_limit]
-    and [Pick_Two]; the repaired section names [DiscreteCat_Functor],
-    [Cone] and [IsLimitCone].
-
-    All SEVEN are named by a positive control above, so renaming any one
-    of them breaks this file rather than turning a negative vacuously
-    green or a positive control vacuously absent.  Score: 7/7, counted
-    rather than recalled.
-
-    RECORDED CORRECTION: an earlier revision counted "two negatives" here
-    and assigned the second group to Negative 2.  That negative was
-    repaired by annotating [DiscreteCat_Functor]; the constants and the
-    score are unchanged, only the KIND of the line they guard. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

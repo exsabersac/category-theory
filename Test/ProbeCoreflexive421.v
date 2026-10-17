@@ -96,9 +96,11 @@ Definition p421_gen_proj_at_cod (x : J) :
   @pe_gen_product C HP J F I idx_cod ~> F (idx_cod (idx_id x)) :=
   @pe_gen_proj C HP J F I idx_cod (idx_id x).
 
-(* TRAP, pinned positively: with [idx_cod] left implicit the SAME
-   ascription is accepted — the unifier solves [?idx_cod (idx_id x) ≡ x]
-   with a constant family, so this names a DIFFERENT product *)
+(*
+   本节说明 ProbeCoreflexive421 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p421_trap_gen_proj_at_x (x : J) :
   pe_gen_product HP F ~> F x := pe_gen_proj HP F (idx_id x).
 

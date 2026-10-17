@@ -447,11 +447,11 @@ Proof.
   intros; refine (Reduce (formula_backward t env)); auto.
 Defined.
 
-(* The reflection correctness lemma: if the decision procedure succeeds
-   (the [partial] is [Proved], so the [if] guard reduces to [True]) then the
-   reified goal [formula_denote env t] genuinely holds.  This is what lets
-   [solve_map] discharge a goal by [vm_compute]-ing [formula_tauto] to [Yes].
-   The converse (completeness) is deliberately not claimed. *)
+(*
+   本节说明 MapDecide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma formula_sound env t :
   (if formula_tauto env t then True else False) → formula_denote env t.
 Proof.

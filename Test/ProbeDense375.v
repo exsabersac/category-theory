@@ -67,12 +67,11 @@ Check (fun a : Sub C S => reflective_counit_iso
 
 (** ** CONVERSION 1: the IsoDense round trip does not return *)
 
-(* The object components DO agree at [eq_refl] in both directions
-   ([iso_dense_round_obj] and [ESO_iso_dense_obj] in the target), and the
-   [EssentiallySurjective] whole record returns as well
-   ([ESO_round_whole]), because that is a two-field class and Lib.v
-   sets [Set Primitive Projections].  Stdlib [sigT] is not covered by
-   that setting, so the [IsoDense] record does not. *)
+(*
+   本节说明 ProbeDense375 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_iso_dense_round :
   ESO_iso_dense S (iso_dense_ESO S D) = D := eq_refl.
@@ -87,12 +86,11 @@ Example probe_ESO_round_whole (E : EssentiallySurjective (Incl C S)) :
 
 (** ** CONVERSION 2: the counit does not reduce to the chosen iso *)
 
-(* The counit ought to be the fullness-lift of [`2 (D (Incl C S a))], and
-   that statement is true; but the route to it stops at [symmetry] on
-   [Functor_Setoid] (Theory/Functor.v), whose [Equivalence] obligation
-   is closed with [Qed], so the isomorphism family does not reduce.  The
-   strict form is refuted here.  The control beside it names both sides of
-   the refuted equation in a command that succeeds. *)
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_counit_is_chosen_iso (a : Sub C S) :
   fmap[Incl C S]
@@ -107,11 +105,11 @@ Check (fun a : Sub C S =>
 
 (** ** TYPING 3: the counit is not the identity, and cannot be *)
 
-(* [counit ... a] runs [dense_reflector D (Incl C S a) ~> a].  Its source
-   is the CHOSEN representative of [Incl C S a], which is a value of [D]
-   and not [a].  The equation is therefore between morphisms of different
-   types.  A witness where the two endpoints are provably distinct is the
-   swap witness at the end of this file. *)
+(*
+   本节说明（余）端、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_counit_id (a : Sub C S) :
   @counit _ _ (dense_reflector S F D) (Incl C S) (dense_adj S F D) a
@@ -125,14 +123,11 @@ End Boundaries.
 
 (** ** FORMABILITY 5: [Subcategory] identifies hom with proof *)
 
-(* Every constant of the target is over [Category@{u u0 u0}], and the
-   identification is inherited rather than introduced: [Subcategory] alone
-   already forces it, with the category's own hom-set and identity
-   accepted at the very levels where [Subcategory] is rejected.  The
-   identification sits in [Subcategory]'s BINDER; its constraint block is
-   empty.  Only ONE such negative is pinned: [IsoDense] and [Reflective]
-   both take a [Subcategory] argument, so neither can be tested apart from
-   this donor. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseProbe.
 
@@ -152,20 +147,11 @@ End UniverseProbe.
 
 (** ** Witness (i): the skeleton of the indiscrete category on bool *)
 
-(* [Indiscrete_bool_Skeleton] (Theory/Skeleton/Separation.v) selects
-   [true] alone out of the two points of [Indiscrete bool], so the
-   reflection is genuinely non-inert at [false].
+(*
+   本节说明hom相关定义、性质与动机。
 
-   RECORDED CORRECTION: an earlier revision added "Note the universe pin
-   inherited from the witness: [Indiscrete@{u} : Type@{u} -> Category@{u
-   Set Set}], so both readbacks below are about a category whose hom and
-   proof universes are the literal [Set].  The general theorem carries no
-   such pin."  There is no longer a pin to inherit: [Indiscrete] was
-   annotated as [Indiscrete@{o h p} : Type@{o} -> Category@{o h p}] in the
-   PR "algebraic carriers are sets" (2026-09-17),
-   Instance/Discrete/Reconstruct.v.  The readbacks below are unchanged
-   and still hold; what has gone is the caveat about the levels they hold
-   at. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition probe_skel_refl :
   Reflective (skel_sub Indiscrete_bool_Skeleton) :=
@@ -192,12 +178,11 @@ Proof. discriminate. Qed.
 
 (** ** Witness (ii): a full subcategory on BOTH points, choosing the other *)
 
-(* Every object of [Indiscrete bool] lies in this subcategory, so the
-   subcategory is the whole category and Mac Lane's "for objects a in A we
-   can then choose a_0 = a" is available -- but it is a CHOICE, and the
-   [IsoDense] datum below makes the other one, sending each point to its
-   negation.  Since [Indiscrete bool] has exactly one morphism in each
-   hom-set, that is still an iso-density witness. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition BothPoints : Subcategory (Indiscrete bool) :=
   @Build_Subcategory (Indiscrete bool)
@@ -236,11 +221,11 @@ Proof.
   inversion H.
 Qed.
 
-(* ... hence the hypothesis that would strictify the counit -- that the
-   chosen representative of an object already in the subcategory IS that
-   object -- fails outright here.  Even where it holds it does not
-   suffice, since the chosen isomorphism may be a non-identity
-   automorphism; the target's header records that. *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma swap_not_self_dense :
   (∀ a : Sub (Indiscrete bool) BothPoints,

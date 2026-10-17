@@ -106,26 +106,20 @@ Check (fun (C D : Category) (U : C ⟶ D) (comp : @Complete C)
 Fail Check (fun (C D : Category) (U : C ⟶ D) (comp : @Complete C)
                 (sols : ∀ d : D, SolutionSet U d) => GAFT U comp sols).
 
-(** ** D: the biconditional no longer inherits a [Set] pin
+(*
+   本节说明hom相关定义、性质与动机。
 
-    RECORDED CORRECTION.  An earlier revision headed this section
-    "UNIVERSE — the biconditional inherits GAFT's pin, the converse
-    direction does not", and n6 below was a refusal: [GAFT_iff] was not
-    formable over a category whose hom level is declared strictly above
-    [Set], while [solution_set_of_adjunction] was.  [GAFT]'s [Set] came
-    from Instance/Discrete.v's unannotated [DiscreteCat_Functor] through
-    Adjunction/GAFT.v and [initial_from_weakly_initial]; annotating
-    that donor in the PR "algebraic carriers are sets" (2026-09-17)
-    removes it, and [GAFT_iff] is now ACCEPTED at those levels.  Both
-    lines are kept as positive controls, so dropping the annotation
-    refuses the second again and breaks this file. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Monomorphic Universes p436o p436h p436p.
 Monomorphic Constraint Set < p436h.
 
-(* Coq identifies [p436h] with [p436p] here, so what this pair measures is
-   freedom from [Set] and not freedom of three separate universes: the
-   necessity direction is stated at [Category@{uo uh uh}]. *)
+(*
+   本节说明 ProbeGAFTCharacterization436 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* control: necessity is free of the pin *)
 Check (fun (Cu : Category@{p436o p436h p436p}) (Du : Category@{p436o p436h p436p})

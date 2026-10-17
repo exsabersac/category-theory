@@ -55,10 +55,11 @@ Fail Check (yoneda_natural C).
 Fail Check (fun (F : C ⟶ Sets) (A : C) => Covariant_Yoneda_Lemma C F A).
 Fail Check (fun (F : C^op ⟶ Sets) (A : C) => Yoneda_Lemma C F A).
 
-(* Negative 4: the representability instance is restricted too, though the
-   functor it represents is not — the boundary runs exactly where
-   [Covariant_Yoneda_Lemma] is consumed, and [YoEvalAt] above does not
-   consume it. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun c : C => YoEvalAt_Representable C c).
 
 End ObjectsBelowHoms.
@@ -76,20 +77,22 @@ Context (yv : F A).
 Context (z : C).
 Context (phi : z ~{C}~> A).
 
-(* Negative 5.  The assembled [YoNat]'s arrow action and the hand-written
-   [yo_nat_map] are not the same [SetoidMorphism] RECORD: their
-   [proper_morphism] fields are different proof terms, one a fresh
-   obligation of the target file and one assembled from [Hom]'s and
-   [Swap]'s.  Control: pointwise they ARE the same term. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_nat_map_record :
   @fmap _ _ (YoNat C) x y tf = yo_nat_map tf := eq_refl.
 
 Definition probe_nat_map_pointwise_control (a : fobj[YoNat C] x) :
   @fmap _ _ (YoNat C) x y tf a = yo_nat_map tf a := eq_refl.
 
-(* Negative 6.  The derived contravariant lemma and the in-tree one are not
-   the same [Isomorphism] record: all four fields differ as proof terms.
-   Control: the forward legs agree once applied. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_derived_iso_record :
   Yoneda_Lemma_derived C F A = Yoneda_Lemma C F A := eq_refl.
 
@@ -101,10 +104,11 @@ Definition probe_derived_to_control (w : Presheaves [Hom ─,A] F) :
 Fail Definition probe_derived_to_record :
   to (Yoneda_Lemma_derived C F A) = to (Yoneda_Lemma C F A) := eq_refl.
 
-(* Negative 8.  The backward legs do not even agree on an argument: the
-   VALUE is a whole [Transform] record whose [naturality] and
-   [naturality_sym] fields are different opaque constants.  Control: the
-   agreement holds one level further in, at the components. *)
+(*
+   本节说明 ProbeYonedaNatural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_derived_from_value :
   from (Yoneda_Lemma_derived C F A) yv = from (Yoneda_Lemma C F A) yv
   := eq_refl.

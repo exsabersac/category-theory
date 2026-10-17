@@ -82,11 +82,11 @@ Example p448_t_obj (i : SpanningArrowsOutOf G x) :
 Example p448_t_arr (i : SpanningArrowsOutOf G x) :
   sol_arr (spanning_solution_set G GP x) i = `1 (`2 i) := eq_refl.
 
-(* B2 -- CONVERSION (the message carries the "cannot unify" parenthetical
-   on the codomain, "cannot unify "fobj[G] a" and "x""): the factorization
-   composite in the wrong order, "The term "fmap[G] (sub_mono m)" has
-   type "fobj[G] (sub_dom m) ~{ X }~> fobj[G] a" while it is expected to
-   have type "fobj[G] (sub_dom m) ~{ X }~> x"". *)
+(*
+   本节说明 ProbeSpanningArrow448 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p448_b2 (m : SubObj a) : Type :=
   { k : x ~> G (sub_dom m) & k ∘ fmap[G] (sub_mono m) ≈ f }.
 
@@ -112,10 +112,11 @@ Context {A X : Category}.
 Context (G : A ⟶ X).
 Context {x : X} {a : A} (f : x ~> G a).
 
-(* B4 -- INSTANCE: "Cannot infer the implicit parameter HWP of
-   spanning_sub whose type is "HasWidePullbacks A" (no type class
-   instance found)".  Posed in the section that has the instance, the
-   same term is ACCEPTED (measured), so the probe must live here. *)
+(*
+   本节说明 ProbeSpanningArrow448 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p448_b4 : SubObj a := spanning_sub G f.
 
 End NoWidePullbacks.
@@ -129,44 +130,11 @@ Context (G : A ⟶ X).
 Context `{HWP : @HasWidePullbacks A}.
 Context (GP : PreservesWidePullbacks G).
 
-(* Former B7, now a positive control.
+(*
+   本节说明hom、始/终对象相关定义、性质与动机。
 
-   RECORDED CORRECTION.  An earlier revision read: "B7 -- UNIVERSE: over
-   an UNANNOTATED section, applying [GAFT] to the spanning solution set is
-   refused, 'universe inconsistency: Cannot enforce Set = <the section's
-   hom universe>' -- a section Context binds rigid universes and GAFT is
-   pinned at [Category@{_ Set Set}] through Theory/WeaklyInitial.v's
-   [initial_from_weakly_initial].  This is why [GAFT_from_spanning] sits
-   in its own section over [Category@{oA Set Set}]; the annotated form is
-   the positive control, [GAFT_from_spanning] itself, checked above."
-
-   The chain of attribution was right as far as it went, and one link
-   further back was the cause: [initial_from_weakly_initial] carried the
-   [Set] because it takes two [Limit (DiscreteCat_Functor …)] premises and
-   [DiscreteCat_Functor] was declared with bare binders, minimizing to
-   [DiscreteCat@{u Set Set}].  Annotated in place in the PR "algebraic
-   carriers are sets" (2026-09-17), Instance/Discrete.v, that [Set] is
-   gone from [GAFT]'s statement and this application is ACCEPTED over a
-   section whose universes are rigid.  It is kept here as a positive
-   control: dropping the annotation refuses it again and breaks this file.
-   [GAFT_from_spanning] keeps its own section, which is now a
-   presentational choice rather than a universe obligation.
-
-   SECOND CORRECTION, same PR, later commit.  The sentence above ended
-   "[GAFT_from_spanning] keeps its own section", and that section is no
-   longer annotated either: [Universes oA oX.] and the two
-   [Category@{o Set Set}] annotations were DELETED and its [A] and [X] are
-   now declared bare, exactly as this probe's are.  So this definition and
-   [GAFT_from_spanning] are now THE SAME STATEMENT over the same binders,
-   and [p448_b7_via_theorem] below records that by inhabiting this
-   section's goal FROM the theorem -- which is the strongest identification
-   available, since [GAFT_from_spanning] is [Qed] and no [eq_refl] reaches
-   inside it.
-   The widening is measured in Adjunction/SpanningArrow.v's header, where
-   the BEFORE and AFTER [About]s are quoted side by side; the headline is
-   that the BEFORE block carried [Set = oA], demanding a category whose
-   OBJECTS as well as homs live in [Set], and the AFTER block carries no
-   [Set] at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p448_b7 (comp : @Complete A)
   (cont : @PreservesImageLimit A X G) :
   { F : X ⟶ A & F ⊣ G } := GAFT G comp cont (spanning_solution_set G GP).

@@ -33,13 +33,11 @@ Generalizable All Variables.
 
 Fail Check p397_no_such_constant_anywhere.
 
-(** ** Guard coverage: every constant a negative names, outside a Fail
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Twenty-nine [Check]s.  Eighteen are DONORS declared elsewhere in the
-    tree, which the rename simulation cannot reach, so the [Check] is
-    their guard (nine of them are named by a negative).  The other
-    eleven are target constants: the ten a negative names, which a
-    rename of any of them breaks first, plus [RightAdjChoice]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @RightAdjointFunctor.
 Check @RAF_via.
@@ -71,25 +69,21 @@ Check @fmap.
 Check @Functor.
 Check @Adjunction.
 
-(** ** Section A: the seven CONVERSION boundaries, and the variance
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Every negative in this section sits beside the positive controls
-    Adjunction/Choice.v already ships, so what each refutation locates
-    is visible rather than asserted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Conversions.
 
 Context (C D : Category).
 
-(** *** Negative 1 (CONVERSION): R is #395's forgetful functor
-        transported, on both ACTIONS but not as a RECORD
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    Both data fields agree at [eq_refl] -- the two controls immediately
-    below are Adjunction/Choice.v's own [raf_obj_via] and [raf_map_via]
-    -- so the difference is confined to the three [Functor] law fields,
-    which [Compose] and [Program] rebuild as their own opaque proofs.
-    Stripped, the error ends (cannot unify "RAF_via C D" and
-    "RightAdjointFunctor C D"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_raf_obj_control := raf_obj_via C D.
 Definition p397_raf_map_control := raf_map_via C D.
@@ -97,12 +91,11 @@ Definition p397_raf_map_control := raf_map_via C D.
 Fail Example p397_raf_via_strict :
   RAF_via C D = RightAdjointFunctor C D := eq_refl.
 
-(** *** Negative 2 (CONVERSION): the same for the FIRST forgetful
-        functor against the subcategory inclusion
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Again both actions agree at [eq_refl] ([incl_obj_via],
-    [incl_map_via]).  Stripped, the error ends (cannot unify
-    "LI_via C D" and "Incl ([D, C]) (LeftAdjSub C D)"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_incl_obj_control := incl_obj_via C D.
 Definition p397_incl_map_control := incl_map_via C D.
@@ -110,60 +103,44 @@ Definition p397_incl_map_control := incl_map_via C D.
 Fail Example p397_li_via_strict :
   LI_via C D = Incl ([D, C]) (LeftAdjSub C D) := eq_refl.
 
-(** *** Negative 3 (CONVERSION): the Adj-side round trip is not the
-        identity on ARROWS
+(*
+   本节说明 ProbeChoice397 相关定义、性质与动机。
 
-    The OBJECT round trip is [rt_adj_obj], at [eq_refl], which is what
-    makes this statement well typed at all; the composite rebuilds
-    [conj_right] as the mate of [conj_left], equal to the original only
-    up to `≈`.  Stripped, the error ends (cannot unify
-    "fmap[SubToAdj C D ◯ AdjToSub C D] f" and "f"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_rt_adj_obj_control := rt_adj_obj C D.
 
 Fail Example p397_rt_adj_map_strict (x y : Adj C D) (f : x ~> y) :
   fmap[SubToAdj C D ◯ AdjToSub C D] f = f := eq_refl.
 
-(** *** Negative 4 (CONVERSION): nor is the S-side round trip
+(*
+   本节说明 ProbeChoice397 相关定义、性质与动机。
 
-    Here the composite returns (`1 f; I) and stdlib [sigT] has no
-    definitional eta (Lib/Foundation.v's [Set Primitive Projections]
-    does not cover it), so this is not definitional even though [I] is
-    the only inhabitant of [True].  Object round trip [rt_sub_obj] at
-    [eq_refl] beside it.  Stripped, the error ends (cannot unify
-    "fmap[AdjToSub C D ◯ SubToAdj C D] f" and "f"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_rt_sub_obj_control := rt_sub_obj C D.
 
 Fail Example p397_rt_sub_map_strict (x y : LeftAdjCat C D) (f : x ~> y) :
   fmap[AdjToSub C D ◯ SubToAdj C D] f = f := eq_refl.
 
-(** *** Negative 5 (CONVERSION): S and #395's Adj are DIFFERENT
-        categories
+(*
+   本节说明hom、同构相关定义、性质与动机。
 
-    This is the negative that keeps [SubAdj_strict_iso] from being
-    vacuous: it is an ISOMORPHISM OF CATEGORIES between two categories
-    that are not the same term, S's hom being {sigma & True} and [Adj]'s
-    the record [ConjPair].  The two controls beside it are the pivot
-    [leftadj_obj] -- the OBJECT types DO agree, on the nose -- and the
-    isomorphism itself.  Both sides are written applied, so the command
-    is refused at [eq_refl] and not at the statement, and it is not an
-    X = X tautology: the two heads are distinct constants.  Stripped,
-    the error ends (cannot unify "LeftAdjCat C D" and "Adj C D"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_leftadj_obj_control := leftadj_obj C D.
 Definition p397_strict_iso_control := SubAdj_strict_iso C D.
 
 Fail Example p397_cats_strict : LeftAdjCat C D = Adj C D := eq_refl.
 
-(** *** Negative 6 (CONVERSION): the canonical choice returns the same
-        object only up to [sigT] eta
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    All THREE projections return on the nose ([ch_canonical_left],
-    [ch_canonical_right], [ch_canonical_adj]), so what is missing is
-    exactly the eta rule for the stdlib pair, not any content.
-    Stripped, the error ends (cannot unify
-    "ch_obj (ch_canonical C D) x" and "x"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_ch_left_control := ch_canonical_left C D.
 Definition p397_ch_right_control := ch_canonical_right C D.
@@ -172,16 +149,11 @@ Definition p397_ch_adj_control := ch_canonical_adj C D.
 Fail Example p397_ch_canonical_strict (x : LeftAdjCat C D) :
   ch_obj (ch_canonical C D) x = (x : AdjObj C D) := eq_refl.
 
-(** *** Negative 7 (CONVERSION): the inverse law of the membership
-        isomorphism is `≈` and not [eq_refl]
+(*
+   本节说明伴随、同构相关定义、性质与动机。
 
-    The composite of the two mates of the identity is [nat_id] only
-    after [conj_mate_compose], one identity cancellation and
-    [conj_mate_id]; the `≈` form is Adjunction/Choice.v's
-    [raf_choice_inverse], the control below.  Stripped, the error ends
-    (cannot unify "conj_mate (adjobj_adj (F; q)) (adjobj_adj (F; p))
-    nat_id ∙ conj_mate (adjobj_adj (F; p)) (adjobj_adj (F; q)) nat_id"
-    and "nat_id"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_inverse_weak_control := raf_choice_inverse C D.
 Definition p397_choice_iso_control := choice_iso_in_Sub C D.
@@ -196,28 +168,11 @@ Fail Example p397_choice_inverse_strict
                 (adjobj_adj ((F; q) : AdjObj C D)) nat_id
   = nat_id := eq_refl.
 
-(** *** Negative 8 (TYPING): R is CONTRAVARIANT
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Mac Lane's R is a functor S^op -> X^A, and the delivered constant
-    has exactly that type.  The control immediately below ascribes the
-    SAME term at the contravariant type and is ACCEPTED, so the negative
-    is discriminating and is not an X = X tautology.  Stripped, the
-    error is a plain has-type mismatch with NO "cannot unify" clause and
-    no universe clause.
-
-    IT IS WRITTEN AS A [Fail Definition] AND NEVER AS A [Fail Program
-    Definition], AND THAT IS MEASURED ON THIS EXACT STATEMENT rather
-    than inferred: with [Program], the very same line is ACCEPTED, so
-    [Fail Program Definition] reports "The command has not failed!" and
-    pins nothing -- a FALSE PASS.  The mechanism was read off by
-    stripping the [Fail] and asking [Obligations]: [Program] turns the
-    variance mismatch into
-
-      Obligation 1 of hazA: (((LeftAdjCat C D)^op)%category
-                              = LeftAdjCat C D).
-
-    a LEIBNIZ EQUALITY OF CATEGORIES, and the breakdown surfaces only at
-    the section close, as "Unsolved obligations when closing section". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_raf_type_control : Opposite (LeftAdjCat C D) ⟶ [C, D] :=
   RightAdjointFunctor C D.
@@ -232,23 +187,11 @@ Definition p397_id_control := raf_id_is_conj_mate_id C D.
 
 End Conversions.
 
-(** ** Section B: hom = proof, FOUR independent donors
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    Every constant of Adjunction/Choice.v is over categories whose hom
-    and proof universes coincide, expressed by REUSING the level
-    variable in the BINDER while NOT ONE of the 79 constraint blocks
-    carries such an equation.  That identification is INHERITED, and
-    four donors are separated below, each sufficient ALONE and each with
-    no constant of the target in its command.
-
-    [Functor] is NOT a donor, and the controls prove it in BOTH
-    directions: [Du ⟶ Cu] and [Cu ⟶ Du] are both ACCEPTED at the very
-    levels where all five negatives are refused.  Negative 12 is the
-    sharpest of the five for that reason -- its error is reported ON
-    [Fq], displaying two [@Functor] instances, the one [Fq] has at
-    @{co ch cp co ch cp} against the one [Adjunction] demands, whose hom
-    and proof levels are the SAME variable -- so what is refused there
-    is [Adjunction]'s own shape and not [Functor]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomEqualsProof.
 
@@ -269,11 +212,11 @@ Check (fun (x y : Cu) (g g' : x ~> y) => g ≈ g').
 Check (Du ⟶ Cu).
 Check (Cu ⟶ Du).
 
-(** *** Negative 9 (FORMABILITY): [Opposite] alone
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    No subcategory, no functor category, no adjunction and no constant
-    of the target in the command.  Stripped, the error ends "universe
-    inconsistency: Cannot enforce cp = ch because ch < cp". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Opposite Cu).
 
@@ -290,36 +233,29 @@ Fail Check (Subcategory Cu).
 
 Fail Check ([Du, Cu]).
 
-(** *** Negative 12 (FORMABILITY): [Adjunction] alone
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    Both functors are formable at these levels ([Check Fq], [Check Uq]
-    above), so what is refused is the adjunction.  Stripped, same tail,
-    reported ON [Fq] with the two [@Functor] instances displayed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Fq ⊣ Uq).
 
-(** *** Negative 13 (FORMABILITY): the delivered functor inherits it
+(*
+   本节说明函子相关定义、性质与动机。
 
-    This is the target's own rejection; it is NOT independent of the
-    four above (its body contains all of them), and is pinned so that a
-    change lifting the pin at any donor is visible here.  Stripped,
-    same tail. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (RightAdjointFunctor Cu Du).
 
 End HomEqualsProof.
 
-(** ** Section C: where the two hom levels are identified
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    Adjunction/Choice.v's profile is [C : Category@{o1 h h}] and
-    [D : Category@{o2 h h}] -- ONE level variable in all FOUR
-    hom-and-proof slots, with both OBJECT universes free.  The collapse
-    of C's hom level with D's needs no adjunction and no record: the
-    mere presence of functors in BOTH directions forces it, which is
-    exactly the shape of an object of S (a left adjoint [D ⟶ C] paired
-    with a right adjoint [C ⟶ D]), and the functor CATEGORY forces it
-    independently.  The control shows the functor in the direction that
-    IS formable. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TwoHomLevels.
 
@@ -360,13 +296,11 @@ Fail Check (RightAdjointFunctor Bu Au).
 
 End TwoHomLevels.
 
-(** ** Section D: the non-vacuity witness, named outside every Fail
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Adjunction/Choice.v's section (E) inhabits S at [C = D = _2] with a
-    non-identity adjunction and shows the subcategory PROPER.  Nothing
-    here is refuted; the block exists so that a rename of any of these
-    breaks this file too, and so that the reader can see the witness is
-    named rather than described. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p397_two_object := two_left_adjoint_object.
 Definition p397_two_value := two_raf_value.

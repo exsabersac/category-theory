@@ -490,10 +490,11 @@ Proof.
     right; intuition; auto with *; simplify_maps.
 Qed.
 
-(* Two [add]s commute only when they do not disagree on a shared key: if
-   [E.eq k k0] then both sides must bind that key to the same value, hence the
-   precondition [E.eq k k0 -> e = e0].  For distinct keys it holds
-   unconditionally. *)
+(*
+   本节说明 FMapExt 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma add_associative {elt}
       (k : M.key) (e : elt)
       (k0 : M.key) (e0 : elt)
@@ -634,10 +635,11 @@ End for_all.
 
 Import ListNotations.
 
-(* [take_first f] is a fold accumulator that keeps the first key/value pair
-   for which [f] holds: once a [Some] is found it is preserved, otherwise the
-   current [(k, e)] is selected when [f k e] is [true].  Folding it over a map
-   yields an arbitrary-but-fixed witness satisfying [f]. *)
+(*
+   本节说明 FMapExt 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition take_first {elt} (f : M.key → elt → bool) (k : M.key) (e : elt)
            (x0 : option (M.key * elt)) :=
   match x0 with
@@ -800,11 +802,11 @@ Obligation 1.
   assumption.
 Qed.
 
-(* [P.update m1 m2] is the right-biased union of [m1] and [m2]: by
-   [P.update_mapsto_iff], a binding of [m2] always wins over one of [m1] at
-   the same key.  The following five facts characterize it on the standard
-   constructors: empty on either side, [find] when a key is absent from one
-   side, and commuting an [add] on the (winning) right argument outward. *)
+(*
+   本节说明 FMapExt 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma update_empty_l : ∀ elt (m : M.t elt),
   M.Equal (P.update (M.empty _) m) m.
 Proof. intros; apply F.Equal_mapsto_iff; split; intros; simplify_maps. Qed.

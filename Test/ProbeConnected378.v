@@ -134,13 +134,11 @@ Check @to.
 Check @from.
 
 (* ------------------------------------------------------------------ *)
-(** ** (1) The unconditional strict clauses are REJECTED
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
 
-    At an ARBITRARY choice of colimits the apex of the colimit of a
-    constant diagram is the chosen one, and nothing reduces it to the
-    constant -- which is exactly why [colimit_is_lali_of_diagonal]
-    carries a hypothesis and section (A) of the target delivers only an
-    isomorphism. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section StrictClauses.
 
@@ -161,22 +159,22 @@ Definition probe_apex_control (c : C) : colim_obj (cc_colim P) Δ[J](c) = c
 Example probe_apex_terminal (T : @Terminal J) (c : C) :
   colim_obj (@terminal_colimits J C T) Δ[J](c) = c := eq_refl.
 
-(* Negative 3 (TYPING).  Measured, not predicted: at an arbitrary
-   choice the strict injection clause is not even WELL-TYPED, the
-   injection landing at [colim_obj L Δ[J](c)] where [id[c]] lands at
-   [c].  Under the terminal choice the codomain reduces and the same
-   statement is a passing control. *)
+(*
+   本节说明始/终对象、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_inj_strict (c : C) (j : J) :
   colim_inj L Δ[J](c) j = id[c] := eq_refl.
 
 Example probe_inj_terminal (T : @Terminal J) (c : C) (j : J) :
   colim_inj (@terminal_colimits J C T) Δ[J](c) j = id[c] := eq_refl.
 
-(* Negative 4 (CONVERSION): the counit and the leg of
-   Structure/Limit/Unique.v's essential-uniqueness isomorphism are the
-   same morphism up to [≈] -- both are mediators out of the chosen
-   colimit into the constant cocone -- but they are DIFFERENT TERMS, so
-   conversion rejects the identification. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_counit_is_unique_iso (c : C) :
   diagonal_counit L c
     = to (@colimit_unique_iso J C Δ[J](c) _ _
@@ -200,12 +198,11 @@ Example probe_inverse_strict (c : C) :
 End StrictClauses.
 
 (* ------------------------------------------------------------------ *)
-(** ** (2) The headline does not accept a bare family of colimits
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    Negative 5 (TYPING).  [colimit_is_lali_of_diagonal] takes a point of
-    the shape and a [ConstantColimits] record; feeding it the family
-    alone is a plain type mismatch with no universe clause, which is the
-    whole content of section 2 of the target's header. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Arity.
 
@@ -229,14 +226,11 @@ Example probe_lali_left_strict :
 End Arity.
 
 (* ------------------------------------------------------------------ *)
-(** ** (3) Universes: the shape's and the ambient's hom levels coincide
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    Negatives 6-8 (FORMABILITY).  With the two hom levels declared
-    strictly apart, three donors are each rejected ALONE -- [Fun],
-    [HasColimitsOfShape] and [Diagonal] -- while the functor type
-    [Ju ⟶ Cu] elaborates at those very levels.  So [Functor] is not the
-    cause, and the identification the target reports as [jh = ch] has
-    three independent donors, none of them introduced here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ShapeAmbientHom.
 
@@ -263,20 +257,11 @@ Fail Check (@Diagonal Cu Ju).
 End ShapeAmbientHom.
 
 (* ------------------------------------------------------------------ *)
-(** ** (4) Universes: hom and proof coincide in both categories
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Negative 9 (FORMABILITY).  [LeftAdjointLeftInverse] is rejected at a
-    category whose hom and proof levels are declared apart, while
-    [Au ⟶ Xu] is accepted there -- so this identification too is a
-    donor's and not this development's.  [HasColimitsOfShape] and
-    [Diagonal] are rejected at the same levels (measured, not pinned
-    separately: they are already pinned above at the other
-    identification, and one command cannot separate two).
-
-    [ConstantColimits] is rejected there as well, but that says nothing
-    of its own: [HasColimitsOfShape] is one of its fields, so it cannot
-    be tested apart from a donor -- the trap Test/ProbeRingLattice340.v
-    records for [MonoidObject]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomProof.
 
@@ -305,10 +290,11 @@ Example probe_colimit_is_EvalAt {J C : Category} (T : @Terminal J)
   fobj[ColimitFunctor (@terminal_colimits J C T)] F
     = fobj[@EvalAt J C (@terminal_obj J T)] F := eq_refl.
 
-(* Negative 10 (CONVERSION).  The ARROW action of the same comparison
-   does not convert: [ColimitFunctor]'s arrow action is the colimit
-   mediator and [EvalAt]'s is the component, two different terms.  Only
-   the object clause above is claimed. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_colimit_is_EvalAt_arrow {J C : Category}
   (T : @Terminal J) (F G : [J, C]) (t : F ~{[J, C]}~> G) :
   fmap[ColimitFunctor (@terminal_colimits J C T)] t

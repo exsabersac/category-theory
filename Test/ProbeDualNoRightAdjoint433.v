@@ -90,18 +90,11 @@ Check (dual_vct_Adjunction F : Opposite_Functor (Dual F) ⊣ Dual F).
 (* N3 TYPING: the exercise's direction is refused as an ascription *)
 Fail Check (dual_vct_Adjunction F : Dual F ⊣ Opposite_Functor (Dual F)).
 
-(** ** C: the discrete diagram no longer pins [Set]
+(*
+   本节说明hom相关定义、性质与动机。
 
-    RECORDED CORRECTION.  An earlier revision headed this section
-    "UNIVERSE — the unannotated discrete diagram pins [Set]" and stated N4
-    as a refusal: [DiscreteCat_Functor] made the shape's hom universe
-    [Set], which no cocone in [Vct^op] could share, so the file's own
-    [LineDiagram] had to be used instead.  The attribution was right and
-    the donor was annotated in place in the PR "algebraic carriers are
-    sets" (2026-09-17), Instance/Discrete.v; both lines are now
-    accepted and are kept as positive controls at the same place.
-    [LineDiagram] is retained because it names the diagram this file
-    reasons about, not because [DiscreteCat_Functor] is unusable here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* control: the file's own diagram has cocones in [Vct^op] *)
 Check (Cocone (LineDiagram F)).

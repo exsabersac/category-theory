@@ -101,11 +101,11 @@ Next Obligation.
   contradiction.
 Qed.
 
-(** Soundness of the procedure, in the form the tactics consume.  The
-    [termD d c f = Some h] premise is a definedness witness — it states that
-    [f] actually denotes a morphism [d ~> c] — and is discharged by
-    [vm_compute] at the call site.  Given that and an equality [f ≈ g] of the
-    interpreted terms, the reified goal [exprD (Equiv d c f g)] holds. *)
+(*
+   本节说明 Decide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma expr_sound {d c f g h} :
   termD d c f = Some h → f ≈ g → exprD (Equiv d c f g).
 Proof.

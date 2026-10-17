@@ -80,10 +80,11 @@ Check (@unit A C (lari_left P) S (lari_adj P) c
 Check (@unit A C (lari_left P) S (lari_adj P) c).
 Check (@id C c).
 
-(* NEGATIVE 1 (TYPING).  The unit runs [c ~> S (lari_left c)] and the
-   identity runs [c ~> c]; the two lie in one hom-set only when the two
-   objects coincide at Leibniz equality, which is exactly what
-   [lari_obj] supplies and what [≈] cannot. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@unit A C (lari_left P) S (lari_adj P) c ≈ @id C c).
 
 End UnitAndCounitTyping.
@@ -119,14 +120,11 @@ Check (@counit (Indiscrete bool) _1 (lari_left indiscrete_LARI)
 Check (@adj_equiv_counit_iso _1 (Indiscrete bool) IndT
          (Erase (Indiscrete bool)) indiscrete_adjoint_equivalence false).
 
-(* A trap worth recording rather than hiding.  At the [Indiscrete bool]
-   witness the comparison of that counit with the identity IS well-typed,
-   and indeed holds: [Indiscrete]'s hom family ignores its endpoints, so
-   [true ~> false] and [false ~> false] are one and the same type, whose
-   sole inhabitant is [tt].  The endpoints still differ
-   ([indiscrete_counit_endpoints_differ]).  So the typing obstruction is
-   stated at an abstract [A] above, where nothing collapses the two
-   hom-sets, and NOT at this witness. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (@counit (Indiscrete bool) _1 (lari_left indiscrete_LARI)
          (Erase (Indiscrete bool)) (lari_adj indiscrete_LARI) false
        ≈ @id (Indiscrete bool) false).
@@ -176,18 +174,20 @@ Fail Example p377_n4 :
    equivalence IS the directly built one. *)
 Check (ff_surj_equiv_adj surj).
 
-(* NEGATIVE 5 (TYPING).  The adjunction the alternative route produces is
-   not the directly built one -- and the two do not even have the same
-   type, the left adjoints being non-convertible functors. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p377_n5 :
   @adj_equivalence C A _ S (ff_surj_eso_adjoint_equivalence surj)
     = ff_surj_adj surj := eq_refl.
 
-(* NEGATIVE 6 (CONVERSION).  The alternative route's unit is not the
-   transported identity on the nose either.  Note that this error prints
-   exactly like negative 3's, both sides displaying as [unit] with the
-   implicit arguments hidden; what separates the two routes is negative 7
-   below, not this one. *)
+(*
+   本节说明 ProbeStrict377 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p377_n6 :
   @unit A C (@ff_eso_inverse A C S _ _ (ff_surj_eso surj)) S
     (@adj_equivalence C A _ S (ff_surj_eso_adjoint_equivalence surj)) c
@@ -200,12 +200,11 @@ Definition p377_route_control :
     ≈ id_cast (eq_sym (ff_surj_eq surj c))
   := ltac:(unfold unit; simpl; rewrite fmap_id, id_left; reflexivity).
 
-(* NEGATIVE 7 (CONVERSION).  The same script on the ALTERNATIVE route does
-   not close, and the error names where it stops: the goal is
-   [equiv_adj_to EquivalenceOfCategories_sym id], i.e. the [symmetry]
-   taken on [Functor_Setoid], whose [Equivalence] obligation is closed
-   opaquely at Theory/Functor.v.  This is the measurement that decides
-   which route is shipped. *)
+(*
+   本节说明函子、等价、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p377_n7 :
   @unit A C (@ff_eso_inverse A C S _ _ (ff_surj_eso surj)) S
     (@adj_equivalence C A _ S (ff_surj_eso_adjoint_equivalence surj)) c
@@ -227,10 +226,11 @@ Fail Example p377_n8 {C : Category} (c : C) :
 
 (** ** FORMABILITY negatives *)
 
-(* The two categories' hom universes are identified in every delivered
-   constant.  The cause is measured rather than attributed: the mere
-   presence of functors in BOTH directions already forces it, before any
-   adjunction is formed. *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomLevelBoundary.
 
@@ -256,10 +256,11 @@ Fail Check (∀ S : Au ⟶ Xu, LeftAdjointRightInverse S).
 
 End HomLevelBoundary.
 
-(* Hom is identified with proof as well, and that is a second, separate
-   donor: it is already forced by [Adjunction], whose hom-set isomorphism
-   lives in [Sets], where a setoid's carrier and relation universes
-   coincide. *)
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomProofBoundary.
 

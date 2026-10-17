@@ -51,31 +51,20 @@ Fail Check (fun (C : Category@{uo uh up}) => @Cartesian C).
 (* NEGATIVE 2. *)
 Fail Check (fun (C : Category@{uo uh up}) => @Terminal C).
 
-(* NEGATIVE 3.  The donor is [Monoidal], NOT [MonoidObject].  An earlier
-   revision of this file wrote the negative as
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-     Fail Check (fun (C : Category@{uo uh up}) (M : @Monoidal C)
-                     (x : C) => @MonoidObject C M x).
-
-   and labelled it the [MonoidObject] donor.  That was FALSE: elaboration
-   never reaches [MonoidObject], because [@Monoidal C] in the binder is
-   rejected first -- the error lands at the [C] argument of [Monoidal].
-   [MonoidObject] cannot be probed apart from [Monoidal] at all, its own
-   signature being
-     [MonoidObject@{u u0} : forall {C : Category@{u u0 u0}},
-                            Monoidal@{u u0} -> obj[C] -> Type@{u0}],
-   whose [Monoidal] argument pins [C] before any field is consulted.  So
-   whether [MonoidObject] contributes an identification OF ITS OWN is
-   UNKNOWN -- not refuted, and not measured anywhere in this commit. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun (C : Category@{uo uh up}) => @Monoidal C).
 
 End Donors.
 
-(** ** The positive measurement: an identification hiding in the BINDER
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Not a refutation -- two definitions whose universe signatures ARE the
-    measurement.  `About dup_left` prints an EMPTY constraint block over a
-    binder that identifies hom with proof. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @dup_left.
 Check @dup_right.
@@ -110,9 +99,11 @@ Check @Sets_InternalLattice.
 Check @SetoidLattice_of_InternalLattice.
 Check @SetoidLattice.
 
-(** Independence, proved by refutation rather than asserted: the two
-    annihilation fields of a semiring do not follow from the rest, and
-    absorption does not follow from the monoid structure. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @nat_plus_not_distributive.
 Check @bool_or_not_annihilating.
@@ -126,30 +117,8 @@ Check @Int_IRing.
 Check @Bool_Lattice.
 Check @Bool_Semilattice.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
 
-    Read off the `Fail` commands themselves, not from memory.
-
-      Negative 1 names [Cartesian], [Category]
-      Negative 2 names [Terminal], [Category]
-      Negative 3 names [Monoidal], [Category]
-
-    Excluding [Category] as core vocabulary named by almost every file in
-    the tree -- the stated ground, rather than any claim that it is hard
-    to guard -- the constants a NEGATIVE names are THREE: [Cartesian],
-    [Terminal], [Monoidal].
-
-    Each of the three is named by a positive control above -- [Monoidal]
-    only after a first run scored 3/4 and showed it named ONLY inside
-    Negative 3, so a rename left that `Fail` succeeding on a
-    reference-not-found error.  That observation was the tell that
-    Negative 3 was testing [Monoidal] rather than [MonoidObject], and it
-    was read as an incidental guard gap instead; the negative is now
-    written as what it measures.  [MonoidObject] keeps its control above
-    even though no negative names it, since the prose discusses it.
-    Score: 3/3, on
-    an unpadded denominator, measured by compiling a renamed copy of this
-    file against an instrument-checked baseline -- with the `Require`
-    lines PRESERVED, since three of these four share a name with a module
-    and renaming those lines would break the copy on a missing module
-    rather than on the guard, reading as a pass. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

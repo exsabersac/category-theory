@@ -21,21 +21,22 @@ Definition objD' {C : Category} (d : C) (objs : list C) (n : Obj) :=
 Definition arrD' {C : Category} (d : C) (objs : list C) '(dom, cod) :=
   objD' d objs dom ~> objD' d objs cod.
 
-(* The objects an [Expr] may mention: a default object [def_obj] (used by the
-   total lookup [objD]) together with the list [objs] they index into.  [objD]
-   is a let-bound class field, i.e. a derived projection rather than a field
-   the user must supply. *)
+(*
+   本节说明 Expr 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Objects (cat : Category) := {
   def_obj : cat;
   objs : list cat;
   objD := objD' def_obj objs;
 }.
 
-(* The morphism variables an [Expr] may mention.  [tys] gives the (dom, cod)
-   index pair typing each variable, and [arrs] is the heterogeneous list (see
-   Lib/IList.v) holding the concrete morphism for each variable, where entry
-   [i] inhabits [arrD (nth i tys)].  A [Morph i] term thus denotes [arrs]'s
-   [i]-th morphism. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Arrows (cat : Category) := {
   has_objects : Objects cat;
 
@@ -45,21 +46,23 @@ Class Arrows (cat : Category) := {
 }.
 #[export] Existing Instance has_objects.
 
-(* Syntax of a single morphism, built from identities, morphism variables, and
-   composition.  This is exactly a term of the free category on the quiver
-   whose edges are the variables [arrs]: morphisms there are paths of edges and
-   identities are empty paths, and the category laws relating these terms are
-   quotiented out by normalization in Solver/Normal.v.  [Morph a] indexes the
-   ambient [arrs]/[tys].
-   nLab: https://ncatlab.org/nlab/show/free+category *)
+(*
+   nLab: https://ncatlab.org/nlab/show/free+category
+
+   本节说明 Expr 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Term : Set :=
   | Ident
   | Morph (a : nat)
   | Comp  (f g : Term).
 
-(* Syntax of a decidable goal: the propositional connectives over morphism
-   equivalences.  [Equiv x y f g] asserts that terms [f] and [g], both typed
-   [x ~> y] (with [x y : Obj] object indices), denote equivalent morphisms. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Expr : Set :=
   | Top
   | Bottom

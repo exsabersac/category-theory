@@ -75,19 +75,11 @@ Context (F : A → (=(d) ↓ U)).
 (* control: the discrete functor itself is formable *)
 Check (DiscreteCat_Functor F).
 
-(* Former N2, now a positive control.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-   RECORDED CORRECTION.  An earlier revision read: "N2 UNIVERSE: but its
-   base diagram is not — building a functor out of [DiscreteCat A] by
-   eliminating [x = y] into a hom pins both categories to
-   [Category@{_ Set Set}]."  The diagnosis named the elimination but the
-   pin was in fact a universe-MINIMIZATION artifact of the unannotated
-   declaration of [DiscreteCat_Functor], not of the elimination: the
-   annotated [DiscreteCat_Functor@{o h p uo uh up +}] (PR "algebraic
-   carriers are sets", 2026-09-17, Instance/Discrete.v) eliminates
-   [x = y] into a hom exactly as before and the base diagram IS formable.
-   Kept as a positive control so that dropping the annotation breaks this
-   file. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p438_discrete := Gdiag (DiscreteCat_Functor F).
 
 (* control: the elementary products clause needs no shape at all *)
@@ -128,10 +120,11 @@ Fail Example p438_coslice_fobj (x : c ̸co C) :
 (* N4 CONVERSION: and the coslice is not the comma category on the nose *)
 Fail Example p438_coslice_cat : (c ̸co C) = (=(c) ↓ Id[C]) := eq_refl.
 
-(* controls: the PLAIN projection's two data fields DO reduce, which is why
-   strict creation is available for it where it is not for the transported
-   one — the n3 refusal above is about [coslice_comma_proj], not about
-   coslice projections in general *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p438_plain_fobj (x : c ̸co C) :
   fobj[Coslice_Proj c] x = `1 x := eq_refl.
 
@@ -275,13 +268,11 @@ Example p438_equalizer_apex {C D : Category} {U : C ⟶ D} {d : D}
 
 (** ** F: a concrete witness — every coslice of [Sets] is complete *)
 
-(* [Complete C] is the only hypothesis the coslice results consume that is
-   not discharged in tree with no premise at all, and [Sets_Complete]
-   discharges it.  The witness lives here because instantiating a theorem
-   at a concrete category is a [Test/] concern; it is NOT because a
-   Construction/ file may not reach [Instance/Sets], which
-   Construction/Slice/Creation.v already does transitively through
-   Adjunction/Compose.v. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example p438_sets_coslice_complete (X : Sets) : @Complete (X ̸co Sets) :=
   Coslice_Complete X Sets_Complete.

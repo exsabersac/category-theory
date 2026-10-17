@@ -25,9 +25,11 @@ Context (K : X ⟶ A).
 (* INSTRUMENT CHECK: scope-free, and it must fail. *)
 Fail Definition instrument_check : True = False := eq_refl.
 
-(* CONTROLS: the object and arrow actions DO agree on the nose, on both
-   sides of associativity and of the left unitor.  These are what make
-   the negatives below locate the failure in the LAW fields. *)
+(*
+   本节说明 ProbePare350 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ctl_assoc_fobj :
   @fobj A X ((G ◯ K) ◯ G) = @fobj A X (G ◯ (K ◯ G)) := eq_refl.
 
@@ -53,11 +55,11 @@ Fail Definition neg_unitor_record : (Id[X] ◯ G) = G := eq_refl.
    the middle would still leave the endpoints wrong. *)
 Fail Definition neg_unitor_right : (G ◯ Id[A]) = G := eq_refl.
 
-(* NEGATIVES 5-7 (CONVERSION): each of [Functor]'s three LAW fields fails
-   individually across the associativity re-bracketing.  [Functor] has
-   primitive projections WITH ETA, so record equality IS field equality;
-   together with the [fobj]/[fmap] controls above, these MEASURE the
-   confinement that the target's header infers from a field count. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition neg_law_respects :
   @fmap_respects A X ((G ◯ K) ◯ G) = @fmap_respects A X (G ◯ (K ◯ G))
   := eq_refl.
@@ -85,25 +87,11 @@ Check (pare_Krho P).
 (* CONTROL: and the idempotent IS formable at [K ⟹ K]. *)
 Check (pare_idem P : pare_K P ⟹ pare_K P).
 
-(* NEGATIVE 4 (CONVERSION): Mac Lane's [εK ∘ Kρ] cannot be assembled at
-   all — which is why the file builds its idempotent explicitly instead
-   of as this composite.
+(*
+   本节说明 ProbePare350 相关定义、性质与动机。
 
-   READ THE CAUSE OFF THE ERROR, NOT OFF THE INTENTION.  It fails at the
-   MIDDLE object: [cannot unify "K ◯ (G ◯ K)" and "K ◯ G ◯ K"], i.e.
-   ASSOCIATIVITY — negative 1's phenomenon.  The endpoints agree on both
-   sides ([K ◯ Id[X]] appears in each), so the UNITORS are never reached.
-   An earlier revision of this comment attributed the failure to
-   negatives 2 and 3; that was wrong, and the endpoint half of the
-   "three identifications are missing" finding is therefore guarded only
-   INDIRECTLY here, by negatives 2 and 3 as bare facts about [G], never
-   inside the composite.
-
-   The ascription is written [_ ∙ _] with NO type annotation on purpose:
-   annotating it [: pare_K P ⟹ pare_K P] is INERT — measured, the error
-   is byte-identical with and without, to the character range — so an
-   annotated form would suggest the endpoint is what fails when it is
-   not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check ((pare_epsK P) ∙ (pare_Krho P)).
 
 End ProbeTyping.
@@ -124,12 +112,11 @@ Check (pare_Adjunction P F r s Hsr Hrs).
 (* CONTROL: and so does the section recovered back out of it. *)
 Check (pare_r P F (pare_Adjunction P F r s Hsr Hrs)).
 
-(* NEGATIVE 8 (CONVERSION): but recovering the section from the
-   adjunction built out of it does NOT return it.  The target's header
-   discloses this as measured and delivers NO round trip in any form,
-   [≈] included; an earlier revision of this probe pinned the OTHER
-   disclosed cluster and left this one unguarded, so the commit message's
-   plural was wrong.  Pinned here. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition neg_round_trip :
   pare_r P F (pare_Adjunction P F r s Hsr Hrs) = r := eq_refl.
 

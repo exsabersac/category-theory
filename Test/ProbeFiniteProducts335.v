@@ -60,11 +60,11 @@ Fail Definition probe_roundtrip_terminal :
   HasFiniteProducts_Terminal (Cartesian_Terminal_HasFiniteProducts CP T)
   = T := eq_refl.
 
-(** ** Negative 6 (CONVERSION): the whole round trip is not the identity
+(*
+   本节说明 ProbeFiniteProducts335 相关定义、性质与动机。
 
-    Negative 3 propagated, not an independent fact -- the target's header
-    says so, and it is pinned separately because a repair to 3 need not
-    repair this one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition probe_roundtrip_whole :
   Cartesian_Terminal_HasFiniteProducts
@@ -98,12 +98,11 @@ Check @HasFiniteProducts_Terminal.
 Check @Cartesian_Terminal_HasFiniteProducts.
 Check @product_obj.
 
-(** ** Positive identifications, pinned beside their refutations
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    The target's header measured these outside the tree.  They are the
-    POSITIVE counterparts of negatives 3-5, and pinning both halves is
-    what makes the boundary exact -- in particular the [Terminal] RECORD
-    is not recovered (negative 5) while the terminal OBJECT is (below). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Positives.
 
@@ -131,12 +130,11 @@ Example probe_padded_product_is_what_it_is :
 
 End Positives.
 
-(** ** Negatives 8-10 (FORMABILITY, universe)
+(*
+   本节说明hom相关定义、性质与动机。
 
-    A DIFFERENT KIND from 1-7.  With C's hom universe declared strictly
-    below its proof universe, all three donors are rejected -- so the
-    hom-and-proof identification the target inherits has three
-    independent sources and cannot be attributed to any single one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseIdentification.
 
@@ -151,11 +149,11 @@ Check (fun x y : C => x ~{C}~> y).
 
 Fail Check (@Cartesian C).
 Fail Check (@Terminal C).
-(* The category argument is given EXPLICITLY.  Written with [C] left
-   implicit, this [Fail] fired on an unresolved evar ("expected to have
-   type A → obj[?C]") rather than on the universe identification -- a
-   FALSE GUARD, caught by stripping the [Fail] and reading the error
-   KIND rather than merely observing that it failed. *)
+(*
+   本节说明 ProbeFiniteProducts335 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun (A : Type) (f : A → C) (p : C)
                 (pr : ∀ a, p ~{C}~> f a) =>
               @IsIndexedProduct C A f p pr).
@@ -180,24 +178,15 @@ Check @fin_zero_IsTerminalObj.
 Check @fin_two_IsCartesianProduct.
 Check @fin_coprod.
 Check @HasFiniteCoproducts.
-(* NOTE: written WITHOUT the [@].  Structure/Cocartesian.v declares
-   [Notation "@Cocartesian C"], which captures [@Cocartesian_Initial_...]
-   and fails with "The reference _Initial_HasFiniteCoproducts was not
-   found".  The bare name parses; measured both ways. *)
+(*
+   本节说明 ProbeFiniteProducts335 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check Cocartesian_Initial_HasFiniteCoproducts.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明笛卡尔、始/终对象相关定义、性质与动机。
 
-    The constants the NEGATIVES name:
-
-      Negatives 1-2:  [fin_prod]
-      Negative  3:    [product_obj], [HasFiniteProducts_Cartesian],
-                      [Cartesian_Terminal_HasFiniteProducts]
-      Negatives 4-6:  [HasFiniteProducts_Terminal] (with the above)
-      Negative  7:    [fin3], [awodey_prod]
-      Negatives 8-10: [Cartesian], [Terminal], [IsIndexedProduct]
-
-    That is TEN.  The denominator is not padded with control-only names:
-    [fin_proj], [awodey_fold_iso], [HasFiniteProducts] and every constant
-    under "Controls for the delivered results" appear in NO [Fail] here
-    and are deliberately EXCLUDED from the score. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

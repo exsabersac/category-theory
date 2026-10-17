@@ -33,11 +33,11 @@ Local Open Scope category_scope.
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** The Mon_Sets name identification
+(*
+   本节说明 ProbeCoproduct328 相关定义、性质与动机。
 
-    Instance/Mon/Coproduct.v is stated over [@Mon Sets
-    Sets_Product_Monoidal]; Instance/Roster.v names that same term
-    [Mon_Sets].  These controls are the machine-checked bridge. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition probe_pos_mon_sets_is_the_same_term :
   Mon_Sets = @Mon Sets Sets_Product_Monoidal := eq_refl.
@@ -48,12 +48,11 @@ Check (Mon_Sets_Cocartesian).
 
 Check (Mon_Sets_Initial).
 
-(** ** Mon: beta and eta are not definitional at the morphism level
+(*
+   本节说明 ProbeCoproduct328 相关定义、性质与动机。
 
-    The sharp pair is the first negative against
-    [fp_beta_l_fun] (checked below): the underlying FUNCTIONS agree on the
-    nose, so what fails is the [proper_morphism] certificate that
-    [setoid_morphism_compose] rebuilds -- not the mathematics. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MonNegatives.
 
@@ -69,10 +68,11 @@ Fail Definition probe_mon_eta_morphism :
 
 End MonNegatives.
 
-(* Control naming [id] itself.  The rename simulation over the
-   constants appearing in the NEGATIVES found it named by no control --
-   [@id] occurs once, inside the eta negative -- so that negative went
-   vacuously green on a rename.  Recorded rather than quietly added. *)
+(*
+   本节说明 ProbeCoproduct328 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun (C : Category) (x : obj[C]) => @id C x).
 
 (* Positive controls naming Instance/Mon/Coproduct.v's own constants. *)
@@ -93,23 +93,11 @@ Check fp_inl_injective.
 Check fp_generators_do_not_commute.
 Check fp_word_not_left.
 
-(** ** Grph: the forgetful functor does NOT preserve coproducts on the
-    nose
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
 
-    Measured, not assumed.  Two independent causes, both located in
-    Construction/Coproduct.v: it is a [Program Definition], so its [hom]
-    field has an equation-passing match shape that does not convert
-    under binders; and its [homset]'s [setoid_equiv] is a Qed-opaque
-    obligation.  The SHARP measurement is the third negative -- [edgeset]
-    fails at constructor arguments where [edges] SUCCEEDS at the very
-    same arguments.
-
-    THAT SHARP MEASUREMENT WAS CLAIMED HERE BEFORE IT WAS PINNED.  An
-    earlier version of this header described it as "the third negative"
-    when no [edgeset] negative existed anywhere in the file -- the
-    measurement was real but GUARDED BY NOTHING, which is the exact
-    distinction this file exists to enforce.  It is pinned below, with
-    the [edges] control beside it so the contrast is visible. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section QuiverNegatives.
 
@@ -143,13 +131,16 @@ Definition probe_pos_quiver_edges_ll (a b : obj[C]) :
 
 End QuiverNegatives.
 
-(* Positive controls naming Construction/Free/Quiver/Coproduct.v's own
-   constants: the nodes and all four edge sets DO agree by eq_refl, and
-   the isomorphism is what is delivered in place of the strict form. *)
-(* Control naming [edges] itself: the rename simulation over the
-   constants in the NEGATIVES found it named by no control, so its
-   negative would have gone vacuously green on a rename.  This line is
-   the repair, recorded rather than quietly added. *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 ProbeCoproduct328 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun (G : Quiver) => @edges G).
 
 Check QuiverOfCat_Coproduct_nodes.

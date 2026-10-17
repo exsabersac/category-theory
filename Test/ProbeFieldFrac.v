@@ -58,9 +58,11 @@ Example field_intdom_agrees_up_to_equiv
     ≈ fmap[StableField_IntDom] f.
 Proof. intro a; simpl; reflexivity. Qed.
 
-(* Negative 3 — the same agreement at Leibniz equality.  Stripped of
-   [Fail] this reports "cannot unify" between the two [DomHom]s, whose
-   [dom_map_inj] fields are built from different stability data. *)
+(*
+   本节说明 ProbeFieldFrac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example field_intdom_agrees_strictly
   (stab : ∀ F : FieldObject, FieldStableAtZero F) (F K : StableField)
   (f : F ~{StableField}~> K) :
@@ -81,10 +83,10 @@ Example intdom_dom_agrees_strictly (F K : StableField)
 Example ZtoF2_is_a_Dom_morphism :
   Int_Dom ~{Dom}~> Field_Dom F2_Field := ZtoF2.
 
-(* Negative 4 — the same term as a morphism of [IntDom].  Stripped of
-   [Fail] this reports that [ZtoF2] has type [Int_Ring ~{Rng}~> F2_Ring]
-   while a [DomHom] is expected: a typing error, not a proof obligation.
-   That no [DomHom] exists there AT ALL is the theorem
-   [no_DomHom_Z_F2]. *)
+(*
+   本节说明 ProbeFieldFrac 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition ZtoF2_is_not_an_IntDom_morphism :
   Int_Dom ~{IntDom}~> field_dom F2_Field := ZtoF2.

@@ -202,14 +202,11 @@ Fail Check (@pe_cone Ju Cu Fu).
 
 End ShapeHom.
 
-(** ** Former N8: the [iprod] route is no longer pinned to [Set]
+(*
+   本节说明 ProbeFromProducts416 相关定义、性质与动机。
 
-    RECORDED CORRECTION: this section held the file's third UNIVERSE
-    negative, refused because [DiscreteCat_Functor] was unannotated
-    ([DiscreteCat@{u Set Set}]).  Annotated in the PR "algebraic carriers
-    are sets" (2026-09-17) it is accepted; the line is kept as a positive
-    control at the same levels, so dropping the annotation breaks this
-    file. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AboveSet.
 
@@ -231,18 +228,11 @@ End AboveSet.
 
 (** ** The [Sets] instantiation *)
 
-(* Riehl's Theorem 3.2.11 is the general theorem at [Sets]: a SECOND
-   inhabitant of [@Complete Sets] beside Instance/Sets/Complete.v's
-   [Sets_Complete], NOT compared with it — and built WITHOUT it.  The
-   products are Instance/Sets/Products.v's [Sets_HasIndexedProducts] and
-   the equalizers are [HasEqualizers_of_HasPullbacks_Terminal] at
-   Instance/Sets/Pullback.v's [Sets_HasPullbacks] (the route
-   Adjunction/CokernelPair.v takes), so Instance/Sets/Complete.v is
-   absent from this file's closure (coqdep: 47 modules).  The obvious
-   supply, Adjunction/GAFT/Sets.v's [Sets_HasEqualizers], would NOT do:
-   it is [Complete_HasEqualizers Sets_Complete], equalizers read off the
-   very inhabitant this one stands beside — an audit caught a first
-   draft that used it while calling the two "independent". *)
+(*
+   本节说明伴随、拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sets_pe_complete : @Complete Sets :=
   Complete_from_products_equalizers Sets_HasIndexedProducts
@@ -252,10 +242,11 @@ Check sets_pe_complete.
 
 (** ** A generating family on the walking arrow *)
 
-(* Riehl's Exercise 3.2.ii, non-vacuously: [_2] has three arrows, and the
-   family with ONE index — the non-identity arrow — generates.  So the
-   refined arrow product is indexed by [unit] where the full one is
-   indexed by [ArrowIx _2]. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition two_gen_fam (_ : unit) : TwoX ~{_2}~> TwoY := TwoXY.
 

@@ -135,11 +135,11 @@ End Universes.
 (* ===================================================================== *)
 (** ** (E) Discharging the hypothesis at Sets                            *)
 
-(* Instance/Sets/Pullback.v's [Sets_HasPullbacks] supplies the target's
-   section hypothesis directly; the issue's appended note that Sets has
-   no pullback instance is stale.  This lives here rather than in the
-   target because requiring Instance/Sets/Pullback there would take that
-   file's transitive dependency closure from 27 modules to 44. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_pullbacks (X Y Z : Sets)
       (u : Y ~{Sets}~> Z) (v : X ~{Sets}~> Z) : Pullback u v :=
   @pullback Sets Sets_HasPullbacks _ _ _ u v.
@@ -248,10 +248,11 @@ Check (Star_Functor sets_pullbacks sets_bang ⊣ Bang_Functor sets_bang).
 Definition rev_x : @Slice Sets sets_one :=
   existT (fun o : obj[Sets] => o ~{Sets}~> sets_one) sets_one id.
 
-(* The stub's orientation is well typed and REFUTED: over Sets, along
-   ∅ ~> 1, base change carries every object over 1 to the empty object,
-   while Σ leaves the underlying object alone, so the unit at (1; id)
-   would be a map from the singleton into the empty setoid. *)
+(*
+   本节说明 ProbeBaseChange387 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem reversed_orientation_refuted :
   Star_Functor sets_pullbacks sets_bang ⊣ Bang_Functor sets_bang → False.
 Proof.

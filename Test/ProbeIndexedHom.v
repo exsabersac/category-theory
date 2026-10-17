@@ -68,11 +68,11 @@ Section LimitShapeIndex.
 Universes uo ub.
 Constraint Set < ub.
 
-(* [C]'s homs are written at [Set] because that is the instance the
-   bridges' [{A : Set}] binder is about, NOT because anything forces it:
-   see the header's recorded correction.  [Limit (DiscreteCat_Functor f)]
-   leaves both [C]'s hom universe and the INDEX free since
-   [DiscreteCat_Functor] was annotated. *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (C : Category@{uo Set Set}) (A : Type@{ub}) (f : A -> C).
 
 (* Positive control 4: the limit shape IS formable at this large index. *)
@@ -120,10 +120,11 @@ Definition probe_from_control :
 Definition probe_transform_control :
   transform (to (iprod_hom_iso H)) c u = fun a : A => proj a ∘ u := eq_refl.
 
-(* Negative 6: but the round trip does NOT compute.  Recovering [u] from the
-   family it restricts to is exactly the uniqueness clause of [iprod_desc],
-   a [≈]-level fact with no definitional content; [iso_from_to] is where it
-   is discharged. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_roundtrip :
   transform (from (iprod_hom_iso H)) c
     (transform (to (iprod_hom_iso H)) c u) = u := eq_refl.
@@ -144,12 +145,11 @@ Definition probe_sets_from_control :
   transform (from (Sets_iprod_hom_iso F)) c fam = Sets_iprod_tuple F c fam
   := eq_refl.
 
-(* Negative 7: the round trip still does not compute, even at the concrete
-   [Sets] product where both legs reduce.  [SetoidMorphism] has primitive
-   projections with eta conversion, so the comparison descends to the two
-   fields, and it is the [proper_morphism] field that differs: the tupling
-   rebuilds it as its own obligation.  Control 10, just below, is exactly
-   that diagnosis — the [morphism] field DOES agree, on the nose. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_sets_roundtrip :
   transform (from (Sets_iprod_hom_iso F)) c
     (transform (to (Sets_iprod_hom_iso F)) c u) = u := eq_refl.

@@ -562,12 +562,11 @@ Definition p457_ptop_equalizers@{o so +| o < so +} :
 Definition p457_ptop_coequalizers@{o so +| o < so +} :
   @HasCoequalizers PTopCat@{o so} := PTop_HasCoequalizers.
 
-(* CONTROL: the four readbacks, restated at [eq_refl]: the equalizer is
-   the subspace on the equalizer in [Sets] and its arrow the inclusion,
-   the coequalizer the quotient topology on the coequalizer in [Sets] and
-   its arrow the projection; and the equalizer object is the value of
-   [rari_right (subspace_RARI x)] at the downstairs equalizer, as
-   Proposition 1 builds it. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p457_ptop_equalizer_obj@{o so +| o < so +} {x y : PTopCat@{o so}}
   (f g : x ~> y) :
   `1 (@equalizer _ PTop_HasEqualizers x y f g)
@@ -649,10 +648,11 @@ Example p457_ppoint_maps@{o} :
 Definition p457_ppoint_maps_differ@{o so | o < so +} :
   ppoint_false ≈[PTopCat@{o so}] ppoint_true → False := ppoint_maps_differ.
 
-(* CONTROL: the equalizer of the identity and the constant [true] is the
-   subspace on the [Sets] equalizer of the underlying maps, the value of
-   the subspace construction at [PBool] there, and exactly [true] lies in
-   it. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p457_pbool_equalizer_obj@{o so +| o < so +} :
   `1 PBool_equalizer@{o so _ _ _ _ _}
     = PSub PBool
@@ -683,10 +683,11 @@ Definition p457_pbool_equalizer_points@{o so +| o < so +} (b : bool) :
   <-> b = true :=
   PBool_equalizer_points b.
 
-(* CONTROL: the coequalizer of the two points is the quotient topology on
-   the [Sets] coequalizer of the underlying maps, the value of the
-   quotient construction at [PBool] there, and every point is identified
-   with [true] in it. *)
+(*
+   本节说明 ProbeSubspace457 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p457_pbool_coequalizer_obj@{o so +| o < so +} :
   `1 PBool_coequalizer@{o so _ _ _ _ _ _}
     = PQuot PBool
@@ -838,9 +839,11 @@ Definition p457_top_to_lifted_sets@{o h so +| o < h +} :=
 Fail Definition p457_top_to_point_sets_so@{o h so +| o < h +} :=
   (Top@{h o} ⟶ Sets@{o so}).
 
-(* CONTROL: the sliced forgetful functor at [Top_Forget] and the quotient
-   functor are each formed, and the transposition between them is the
-   identity on underlying maps; the adjunction is not formed. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p457_top_forget_under@{o h so +| o < h, h < so +}
   (X : TopSpace@{o}) :
   @Coslice Top@{h o} X ⟶ @Coslice Sets@{h so} (Top_Forget@{o h so} X) :=

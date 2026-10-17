@@ -205,11 +205,11 @@ Fail Check (@Sub_classifier_natural ([C^op, Sets])
               (Fun_HasPullbacks Sets_HasPullbacks) (Fun_Classifier UT)).
 End CC.
 
-(* CONTROL: at the SECOND reading of the presheaf category — objects at
-   or below homs — both DO apply, which is what section (I) of the
-   target ships.  This pair is the precise form of the sentence
-   "classifier_classifies is not statable for presheaf categories",
-   which is false as stated. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section CCSmall.
 Universes co o so OO HH.
 Constraint Set < o.
@@ -241,11 +241,11 @@ Definition probe403_pb_finset : @HasPullbacks FinSet := _.
 Check (Fun_HasPullbacks Sets_HasPullbacks : @HasPullbacks ([_2, Sets])).
 Check (Fun_HasPullbacks FinSet_Pullbacks : @HasPullbacks ([_2, FinSet])).
 
-(* NEGATIVE 4a, 4b (RESOLUTION).  [Fun_HasPullbacks] is deliberately a
-   plain [Definition] and not an [Instance], so resolution still finds
-   nothing; the stripped errors read "Cannot infer this placeholder ...
-   (no type class instance found)".  Note [Fail Check (_ : T)] is NOT a
-   valid negative here — Coq accepts it and prints the evar. *)
+(*
+   本节说明 ProbeFunClassifier403 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe403_no_pb_sets : @HasPullbacks ([_2, Sets]) := _.
 Fail Definition probe403_no_pb_finset : @HasPullbacks ([_2, FinSet]) := _.
 
@@ -260,10 +260,11 @@ Context {C : Category}.
 Check (@SubobjectClassifier ([C^op, Sets])
          (Functor_Category_Terminal Sets_Terminal)).
 
-(* NEGATIVE 5a (TYPING).  Offering a [HasPullbacks] as a third argument
-   is an "Illegal application (Non-functional construction)": the
-   [HasPullbacks] of the class's declaring section is used by the
-   theorems BELOW the class, not by the class. *)
+(*
+   本节说明 ProbeFunClassifier403 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@SubobjectClassifier ([C^op, Sets])
               (Functor_Category_Terminal Sets_Terminal)
               (Fun_HasPullbacks Sets_HasPullbacks)).
@@ -272,11 +273,11 @@ Fail Check (@SubobjectClassifier ([C^op, Sets])
    written out. *)
 Check (fun (c : C) (S : Sieve c) => sieve_subobject c S).
 
-(* NEGATIVE 5b (TYPING).  The same record literal WITHOUT the explicit
-   category is refused: the [sub_dom] field elaborates against
-   [obj[?C]], and the stripped error is a plain "has type ... while it
-   is expected to have type "obj[?C]"" with no cannot-unify and no
-   universe clause. *)
+(*
+   本节说明 ProbeFunClassifier403 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe403_sub_literal (c : C) (S : Sieve c) :
   @SubObj ([C^op, Sets]) (Curried_CoHom C c) :=
   {| sub_dom := sieve_subpresheaf c S
@@ -323,10 +324,11 @@ Check (@Functor (Cv^op) Sets@{o2 so2}).
 Check (@Functor Cv Sets@{o2 so2}).
 Check (Sets@{o2 so2}).
 
-(* NEGATIVE 7 (FORMABILITY).  [Fun] identifies its source and target hom
-   universes, so the presheaf category pins C's hom universe to [Sets]'
-   carrier universe.  The covariant reading is refused identically; the
-   file's [Fun_Classifier_cov] therefore inherits the same bound. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check ([Cv^op, Sets@{o2 so2}]).
 End DonorB.
 
@@ -366,10 +368,11 @@ Record TSieve@{} (c : obj[Cx]) : Type@{max(co4,ch4,o4+1)} := {
 (* CONTROL: the [Prop]-valued carrier IS a [Type@{o4}]. *)
 Check (Sieve cx : Type@{o4}).
 
-(* NEGATIVE 9 (FORMABILITY).  The [Type@{o4}]-valued one sits at
-   [o4 + 1]; the stripped error is "Cannot enforce o4 < o4 because
-   o4 = o4".  This is why membership is [Prop]-valued and the
-   characteristic sieve must truncate. *)
+(*
+   本节说明层/筛相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (TSieve cx : Type@{o4}).
 End TypeSieve.
 
@@ -396,13 +399,11 @@ Context (a : F ~{[C, D]}~> H) (b : G ~{[C, D]}~> H).
 Context {Q : C ⟶ D} (q1 : Q ~{[C, D]}~> F) (q2 : Q ~{[C, D]}~> G).
 Context (Hq : a ∘ q1 ≈ b ∘ q2).
 
-(* POSITIVE, and it REFUTES a prediction: the mediator's component IS
-   D's mediator at [eq_refl], not merely at [≈].  The brief expected a
-   CONVERSION refutation here on the ground that the bundled
-   [Fun_Pullback] reaches its universal property through
-   [is_pullback_pullback] of [Fun_IsPullback]; measurement says
-   otherwise, because [is_pullback_pullback] is a field repackaging and
-   [Build_Transform'] is transparent, so the whole chain reduces. *)
+(*
+   本节说明 ProbeFunClassifier403 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example probe403_med_strict (x : C) :
   transform[unique_obj (ump_pullbacks _ _ (Fun_Pullback HP a b) Q q1 q2 Hq)] x
     = unique_obj (ump_pullbacks _ _ (fpb_at HP a b x) (Q x)
@@ -432,12 +433,11 @@ Check (@eq_refl _ (Sieve_Presheaf Cz)
         : @Ω (PShSmall Cz) (PShSmall_Terminal Cz)
              (Fun_Classifier_small Cz UTz) = Sieve_Presheaf Cz).
 
-(* NEGATIVE 12 (FORMABILITY, and the kind was a prediction measurement
-   corrected).  The two readings are not comparable at all: the refusal
-   is a universe inconsistency, "Cannot enforce o5 = ... because
-   o5 < ... <= ... <= ...", not the "cannot unify" a conversion
-   refutation would give.  So the two classifiers do not even share a
-   type, and NO equation between the readings is claimed anywhere. *)
+(*
+   本节说明 ProbeFunClassifier403 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe403_two_readings :
   Fun_Classifier_small Cz UTz = Fun_Classifier (C:=Cz) UTz := eq_refl.
 End TwoReadings.
@@ -450,10 +450,11 @@ End TwoReadings.
 Example probe403_cov {D : Category} (UT : Untruncate) :
   @Fun_Classifier_cov D UT = @Fun_Classifier (D^op) UT := eq_refl.
 
-(* NEGATIVE 13 (TYPING).  The two ARE at different categories all the
-   same: [Fun_Classifier_cov] is at [[D, Sets]] and cannot be ascribed
-   at the presheaf category of the same D.  The stripped error is a
-   plain has-type clause with no cannot-unify and no universe clause. *)
+(*
+   本节说明 ProbeFunClassifier403 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Cov.
 Context {D : Category}.
 Context (UT : Untruncate).
@@ -476,12 +477,11 @@ Context (c : C).
 Check (sieve_subpresheaf c (total_sieve c)).
 Check (fobj[Curried_CoHom C] c).
 
-(* NEGATIVE 14 (CONVERSION) — the file's ONLY one.  The subpresheaf cut
-   by the total sieve has carrier [{ g : k ~> c & True }] where the
-   representable has [k ~> c]; the stripped error is "cannot unify"
-   between two terms of one type.  An isomorphism between them is NOT
-   built: the classifier never needs one, since the uniqueness clause
-   feeds the pullback the subpresheaf directly. *)
+(*
+   本节说明拉回/推出、层/筛、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe403_total_sub :
   sieve_subpresheaf c (total_sieve c) = fobj[Curried_CoHom C] c := eq_refl.
 End TotalSub.

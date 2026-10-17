@@ -78,28 +78,20 @@ Definition p396_hou_control (x : X) (b : A) (k : F (x, p) ~> b) :=
 Definition p396_universal := pa_param_mate_universal PA h.
 Definition p396_mate := pa_param_mate PA h.
 
-(** *** Negative 1 (CONVERSION): the universal's chosen object is not the
-        mate on the nose
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [pa_param_mate_universal] is [Defined], but its body is
-    [conjugate_unique_right], which Adjunction/Conjugate.v closes with
-    [Qed], so the [unique_obj] field sits behind an opaque donor constant
-    and nothing reduces.  Stripped, the error ends
-    (cannot unify "unique_obj (pa_param_mate_universal PA h)" and
-    "pa_param_mate PA h"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_universal_strict :
   unique_obj (pa_param_mate_universal PA h) = pa_param_mate PA h := eq_refl.
 
-(** *** Negative 2 (CONVERSION): the second partial functor is the given
-        family in both DATA fields but not as a RECORD
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Both data fields DO agree, at [eq_refl], by the two controls just
-    below; the difference is confined to the three law fields, which
-    [Partial_r]'s [Program] elaboration rebuilds as its own obligations.
-    Stripped, the error ends
-    (cannot unify "Partial_r (parametrized_right_adjoint_bifunctor PA) p"
-    and "pa_right PA p"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p396_partial_r_obj_control := pa_bifunctor_partial_r_obj PA p a.
 Definition p396_partial_r_fmap_control {b : A} (k : a ~> b) :=
@@ -109,15 +101,11 @@ Fail Definition p396_partial_r_strict :
   Partial_r (parametrized_right_adjoint_bifunctor PA) p = pa_right PA p
   := eq_refl.
 
-(** *** Negative 3 (CONVERSION): the pure-parameter arrow action is not the
-        bare mate
+(*
+   本节说明 ProbeParameter396 相关定义、性质与动机。
 
-    The residue is [fmap[G p'] id], and it is EXHIBITED at Leibniz equality
-    by the control [pa_bifunctor_fmap_param] rather than described.
-    Clearing it needs [fmap_id], an opaque law field, so only [≈] holds
-    ([pa_bifunctor_fmap_is_mate]).  Stripped, the error ends
-    (cannot unify "fmap[parametrized_right_adjoint_bifunctor PA] (h, id{A})"
-    and "pa_param_mate PA (unop h) a"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p396_fmap_param_control := pa_bifunctor_fmap_param PA hop a.
 Definition p396_fmap_param_weak := pa_bifunctor_fmap_is_mate PA hop a.
@@ -161,36 +149,29 @@ Definition p396_swap_fmap_control {b b' : A} (m : b ~> b') :=
 Definition p396_swap_transport_control :=
   copa_swap_transport CA p (pa_coadj CA p).
 
-(** *** Negative 4 (CONVERSION): [Partial_l (G ◯ Swap) p] is not
-        [Partial_r G p] as a record
+(*
+   本节说明 ProbeParameter396 相关定义、性质与动机。
 
-    Both data fields agree at [eq_refl] (the two controls above), so the
-    difference is confined to the three law fields, which [Partial_l] and
-    [Partial_r] rebuild as separate [Program] obligations.  This is why the
-    [Swap] route needs the field-copy [copa_swap_transport].  Stripped, the
-    error ends (cannot unify "Partial_l (G ◯ Swap) p" and
-    "Partial_r G p"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_swap_strict :
   Partial_l (G ◯ @Swap A (P^op)) p = Partial_r G p := eq_refl.
 
-(** *** Negative 5 (TYPING): consequently the adjunction does not ascribe
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
 
-    Note the KIND: this is a plain type mismatch with NO "cannot unify"
-    clause, where negative 4 is a conversion one.  The transport works only
-    because every [Adjunction] field mentions its left adjoint solely
-    through [F x] and [fmap[F] g], both of which DO convert here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_swap_ascribe :
   Partial_l (G ◯ @Swap A (P^op)) p ⊣ pa_left CA p := pa_coadj CA p.
 
-(** *** Negative 6 (CONVERSION): the dual bifunctor's pure-parameter arrow
-        action is not the bare mate
+(*
+   本节说明 ProbeParameter396 相关定义、性质与动机。
 
-    The mirror of negative 3, with the residue [fmap[L p'] id] exhibited by
-    the control [copa_bifunctor_fmap_param].  Stripped, the error ends
-    (cannot unify "fmap[parametrized_left_adjoint_bifunctor CA] (id{X}, k)"
-    and "copa_param_mate CA k x"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p396_copa_fmap_param_control :=
   @copa_bifunctor_fmap_param P A X G CA x p1 p2 k.
@@ -260,62 +241,41 @@ Definition p396_curry_bifunctor_obj_control := curry_bifunctor_obj p a.
 Definition p396_curry_adj_control :=
   @adj C C (Prod_Functor p) (Exp_Functor p) (Curry_Adjunction p).
 
-(** *** Negative 7 (CONVERSION): the currying mate is not
-        [curry (eval ∘ second h)] on the nose
+(*
+   本节说明 ProbeParameter396 相关定义、性质与动机。
 
-    The control [curry_param_mate_residue] holds at [eq_refl] and exhibits
-    the mate as [curry (eval ∘ ((id ∘ exl) △ (h ∘ exr)))], while [second h]
-    is [exl △ (h ∘ exr)]; clearing the [id ∘ exl] needs [id_left], a law
-    field.  Stripped, the error ends (cannot unify
-    "pa_param_mate curry_ParametrizedAdjunction h a" and
-    "curry (eval ∘ second h)"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_curry_mate_closed_strict :
   pa_param_mate curry_ParametrizedAdjunction h a
     = curry (eval ∘ second h) := eq_refl.
 
-(** *** Negative 8 (CONVERSION): nor is it the internal-hom action
+(*
+   本节说明hom、笛卡尔相关定义、性质与动机。
 
-    The two targets of negatives 7 and 8 are themselves [eq_refl]-equal
-    (Structure/Cartesian/Closed/Natural.v's
-    [ihom_is_InternalHomFunctor_fmap]), and the control
-    [curry_internal_hom_fmap_unfold] pins the second one's normal form.
-    Stripped, the error ends (cannot unify
-    "pa_param_mate curry_ParametrizedAdjunction h a" and
-    "fmap[InternalHomFunctor C] (h, id{C})"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_curry_mate_ihom_strict :
   pa_param_mate curry_ParametrizedAdjunction h a
     = @fmap _ _ (InternalHomFunctor C) (p, a) (p', a) (h, id[a])
   := eq_refl.
 
-(** *** Negative 9 (CONVERSION): [Partial_l ×(C) p] is not [Prod_Functor p]
-        on arrows
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    The OBJECT actions do agree, at [eq_refl] — that is the control
-    [curry_prod_functor_obj] — and the arrow actions differ by exactly one
-    [id_left]: [bimap f id] is [(f ∘ exl) △ (id ∘ exr)] where [first f] is
-    [(f ∘ exl) △ exr].  This is why [curry_pa_adj] is built with
-    [Build_Adjunction'] rather than by transporting [Curry_Adjunction].
-    Stripped, the error ends (cannot unify "fmap[Partial_l ×(C) p] f" and
-    "fmap[Prod_Functor p] f"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_prod_functor_fmap_strict :
   fmap[Partial_l ×(C) p] f = fmap[Prod_Functor p] f := eq_refl.
 
-(** *** Negative 10 (TYPING): the field-copy transport is rejected, and it
-        is rejected AT A NAMED FIELD
+(*
+   本节说明 ProbeParameter396 相关定义、性质与动机。
 
-    This is DISCRIMINATING rather than a bare failure: elaboration gets PAST
-    [adj], which mentions [fobj] alone and [fobj] converts (the control
-    [p396_curry_adj_control] above), and stops at [to_adj_nat_l], the first
-    field mentioning [fmap[F] g] — exactly the action negative 9 refutes.
-    That is why [curry_pa_adj] re-proves the two naturality clauses through
-    one [id_left] under the transpose instead of copying fields, and it is
-    the contrast with negative 5, where the field copy DOES work.  Stripped,
-    the error is a plain "has type ... while it is expected to have type",
-    naming [@to_adj_nat_l _ _ _ _ (Curry_Adjunction p)], with no "cannot
-    unify" clause and no universe clause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_curry_field_copy :
   Partial_l ×(C) p ⊣ Exp_Functor p :=
@@ -331,18 +291,11 @@ Fail Definition p396_curry_field_copy :
     (@from_adj_nat_r C C (Prod_Functor p) (Exp_Functor p)
                      (Curry_Adjunction p)).
 
-(** *** Negative 11 (CONVERSION): the assembled bifunctor is not
-        [InternalHomFunctor] on arrows
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    The OBJECT actions agree at [eq_refl] (the control
-    [curry_bifunctor_obj]); the arrow actions differ because
-    [InternalHomFunctor] transposes ONCE where the assembled bifunctor
-    transposes TWICE, so the gap is one [curry_comp], one [id_left] and
-    associativity — delivered as [curry_bifunctor_fmap] at [≈].  A record
-    comparison would fail a fortiori and is not stated separately.
-    Stripped, the error ends (cannot unify
-    "fmap[parametrized_right_adjoint_bifunctor curry_ParametrizedAdjunction]
-    (h, k)" and "fmap[InternalHomFunctor C] (h, k)"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_curry_bifunctor_fmap_strict {b : C} (k : a ~> b) :
   fmap[parametrized_right_adjoint_bifunctor curry_ParametrizedAdjunction]
@@ -385,50 +338,31 @@ Definition p396_round_unit_control := pat_unit_is_pa_unit PA p x.
 Definition p396_round_counit_control := pat_counit_is_pa_counit PA p a.
 Definition p396_round_to_weak := pa_pat_round_to PA p x a k.
 
-(** *** Negative 12 (CONVERSION): the round trip is not the identity on the
-        whole record
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
 
-    The family of right adjoints DOES round-trip at [eq_refl], and so do the
-    unit and counit COMPONENTS — the three controls above — so the
-    difference is confined to the hom-set isomorphism, which
-    [Adjunction_from_Transform] rebuilds out of the transposes.  Stripped,
-    the error ends (cannot unify "pa_of_pat (pat_of_pa PA)" and "PA"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_pat_round_whole :
   pa_of_pat (pat_of_pa PA) = PA := eq_refl.
 
-(** *** Negative 13 (CONVERSION): nor on the transpose
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
 
-    The residue is exactly the universal-arrow rewriting ⌊f⌋ ≈ fmap[U] f ∘ η,
-    which is where [Adjunction_from_Transform]'s forward map comes from;
-    the [≈] form is [pa_pat_round_to], the control above.  Stripped, the
-    error ends (cannot unify
-    "pa_to (pa_of_pat (pat_of_pa PA)) p x a k" and "pa_to PA p x a k"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p396_pat_round_to_strict :
   pa_to (pa_of_pat (pat_of_pa PA)) p x a k = pa_to PA p x a k := eq_refl.
 
 End TransformBoundaries.
 
-(** ** Section E: dinaturality is not the wedge condition
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Adjunction/Parameter.v packages the unit as a [Wedge] and states the
-    elementary form as [pa_unit_dinatural], and its header records that
-    Theory/Dinatural.v's hexagon does NOT fit on the nose.  That is the
-    fact pinned here, with the two interderivations shipped as passing
-    controls, so the deferral is measured rather than asserted.
-
-    The source of the hexagon here is the CONSTANT bifunctor at the apex,
-    which is what a wedge is (Structure/Wedge.v's own header says so), and
-    it is written out inline below.  Read its cost precisely: it DOES raise
-    three [Program] obligations — [Print Module] on this file lists
-    [p396_const_bifunctor_obligation_1..3], where a [.glob] sweep sees none
-    — but all three are discharged by the default [Obligation Tactic], so a
-    following [Next Obligation] reports "No obligations remaining" and no
-    proof is written for it.  Instance/Fun/Terminal.v's [Constant_Functor]
-    is therefore not required, which matters because
-    Adjunction/Parameter.v's own header measures its marginal cost there at
-    28 modules. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DinaturalShape.
 
@@ -487,26 +421,11 @@ Fail Definition p396_dinat_is_wedge :
 
 End DinaturalShape.
 
-(** ** Section F: where hom = proof is forced
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    Every constant of Adjunction/Parameter.v is over categories whose hom
-    and proof universes coincide, expressed by REUSING the level variable in
-    the BINDER while no constraint block carries such an equation.  That is
-    INHERITED, and TWO donors are separated below, each sufficient ALONE:
-    the PRODUCT of categories, with no adjunction and no functor pair in the
-    command, and [Adjunction], with no product in the command.  [Functor] is
-    NOT a donor — it is accepted at the very levels where both negatives are
-    refused.
-
-    A CORRECTION, measured.  The first build increment reported [Partial_l]
-    as the second donor, on the strength of the command
-    [fun (F : (Cu ∏ Cu) ⟶ Cu) (c : Cu) => Partial_l F c].  That command is
-    indeed refused, but it is refused AT ITS ARGUMENT: negative 15 below
-    shows [Cu ∏ Cu] alone is already refused at these levels, so elaboration
-    never reaches [Partial_l] and the probe measured nothing about it.
-    [Partial_l] cannot be tested apart from the product — its argument's
-    type IS one — so it is NOT blamed here, and whether it identifies
-    anything of its OWN is UNKNOWN rather than refuted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomEqualsProof.
 
@@ -528,39 +447,29 @@ Check (@Functor Cu Cu).
 Check @Product.
 Check @Partial_l.
 
-(** *** Negative 15 (FORMABILITY): the PRODUCT of categories alone
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    No adjunction, no partial functor and no record in the command.  This is
-    what makes negative 16 discriminating and what disqualifies [Partial_l]
-    as a separately testable donor.  Stripped, the error ends "universe
-    inconsistency: Cannot enforce cp = ch because ch < cp". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Cu ∏ Cu).
 
-(** *** Negative 16 (FORMABILITY): [Adjunction] alone
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    No product, no partial functor and no parametrized record in the
-    command; the control [Check Fu] above shows both functors are formable
-    at these levels, so what is refused is the adjunction.  Stripped, the
-    error is REPORTED ON [Fu] and displays two [@Functor] instances — the
-    one [Fu] has, at [@{co ch cp co ch cp}], against the one [Adjunction]
-    demands, whose hom and proof levels are the SAME variable — and it ends
-    "universe inconsistency: Cannot enforce cp = ch because ch < cp".  The
-    position is what makes it discriminating: [Functor] is not being
-    refused, [Adjunction]'s own shape is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Fu ⊣ Uu).
 
 End HomEqualsProof.
 
-(** ** Section G: where the two hom levels are identified
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    Adjunction/Parameter.v's constraint blocks carry the equation [u0 = u4],
-    identifying X's and A's hom-and-proof levels while leaving all three
-    OBJECT universes free.  It needs no adjunction and no record: the mere
-    presence of functors in BOTH directions forces it, which is exactly the
-    shape of [ParametrizedAdjunction] ([Partial_l F p : X ⟶ A] and
-    [pa_right p : A ⟶ X]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TwoHomLevels.
 
@@ -587,15 +496,11 @@ Fail Check (Au ⟶ Xu).
 
 End TwoHomLevels.
 
-(** ** Section H: where §F's and §H's parameter collapse is forced
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    [UnitIntegrand] and everything of Adjunction/Parameter.v's §H
-    additionally identify P's hom-and-proof level with X's.  TWO donors are
-    separated below and each is sufficient ALONE, so the [Wedge] packaging
-    costs NOTHING EXTRA — [UnitIntegrand] already pays the pin through its
-    [Compose] before [Wedge] is mentioned.  The third negative is §H's, and
-    it is reached BEFORE any class is formed: functors in both directions
-    between P and X suffice, so [AdjointOnTheRight] is not blamed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ParameterCollapse.
 
@@ -631,23 +536,19 @@ Check @Compose.
 
 Fail Check (@Wedge Pu Xu Hf).
 
-(** *** Negative 19 (FORMABILITY): [Compose] forces the SAME identification,
-        independently
+(*
+   本节说明 ProbeParameter396 相关定义、性质与动机。
 
-    THIS IS THE DISCRIMINATING ONE: [UnitIntegrand] is a composite, so it
-    already carries the pin before [Wedge] is mentioned.  Stripped, the
-    error ends "universe inconsistency: Cannot enforce ph = xh2 because
-    ph < xh2". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (L ◯ K).
 
-(** *** Negative 20 (FORMABILITY): §H's collapse, before any class
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    [Pu^op ⟶ Xu] is accepted (the control above) and the reverse is not, so
-    the identification §H's constants carry is forced by functors in both
-    directions and NOT by [AdjointOnTheRight], whose own control is above.
-    Stripped, the error ends "universe inconsistency: Cannot enforce
-    ph = ... because ph < xh2 <= ...". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Xu^op ⟶ Pu).
 

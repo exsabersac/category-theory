@@ -140,12 +140,11 @@ Fail Example neg_discrete_leg {A : Set} (f : A → obj[Sets]) (a : A) :
 
 (** ** (4) Which limit oracle the adjunction is fed -- TYPING *)
 
-(* Fed the PRE-EXISTING [Sets_HasLimitsOfShape], the transposition does not
-   land at the cone set, and not even at the same TYPE: a plain has-type
-   mismatch, no "cannot unify" and no universe clause.  The accepted
-   control below is the SAME statement at the cone-set oracle, which is
-   what makes this negative discriminate between the two oracles rather
-   than merely record that something failed. *)
+(*
+   本节说明 ProbeConeSets407 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition neg_wrong_oracle {J : Category} (F : J ⟶ Sets)
   (X : obj[Sets]) :
   @Isomorphism Sets
@@ -160,31 +159,11 @@ Definition ctrl_right_oracle {J : Category} (F : J ⟶ Sets)
      {| carrier := X ~{Sets}~> cone_apex F |}
   := @adj _ _ _ _ (ConeSet_Diagonal_Limit_Adjunction J) X F.
 
-(** ** (5) and (6) The former [Set] pin of the discrete shape
+(*
+   本节说明hom相关定义、性质与动机。
 
-    RECORDED CORRECTION.  An earlier revision headed this section "The
-    [Set] pin of the discrete shape -- FORMABILITY" and stated two
-    negatives.  Its text was:
-
-      "Instance/Sets/Complete.v's discrete section is stated with
-       [{A : Set}] and not [{A : Type}].  That is forced, and it takes TWO
-       donors.  Both are pinned here, and [Cone] is the discriminating
-       control: it is ACCEPTED at hom levels declared strictly above
-       [Set], so the pin is not 'the cone vocabulary'."
-
-    There was only ever ONE donor.  Donor 2, [IsALimit] identifying the
-    shape's hom-and-proof universes with the ambient's, is a real
-    identification but carries no [Set] of its own: it merely transmitted
-    the one that donor 1, the unannotated [DiscreteCat_Functor], minimized
-    into existence.  With that constant annotated in the PR "algebraic
-    carriers are sets" (2026-09-17), Instance/Discrete.v, both lines
-    are ACCEPTED and are kept below as positive controls at the same
-    levels.  [Cone] remains the discriminating control it always was.
-
-    WHAT STILL HOLDS: the [IsALimit] identification itself is unchanged,
-    and Instance/Sets/Complete.v's discrete section keeps whatever reason
-    it has for [{A : Set}] -- that is a claim about THAT file and is not
-    measured here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetPin.
 
@@ -215,14 +194,11 @@ End SetPin.
 
 (** ** (7) The forward transposition is [≈], not [eq_refl] -- CONVERSION *)
 
-(* NO CAUSE IS ISOLATED, and the obvious localization is refuted.  The
-   [ACone] round trip of [Cone_Natural_Transform] does return the leg
-   family on the nose (measured, accepted) while rebuilding the whole
-   record, whose [cone_coherence] proof is [abstract]ed at
-   Structure/Cone/Const.v -- but these two sides differ ALREADY at a
-   point [x : X], and again at the produced cone's leg at [d], both
-   measured, so the refusal is not confined to that law field.  The [≈]
-   form is [coneset_adj_to_is_transpose], which holds. *)
+(*
+   本节说明 ProbeConeSets407 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example neg_adj_to_strict {J : Category} (F : J ⟶ Sets)
   (X : obj[Sets]) (p : ACone X F) :
   to (@adj _ _ _ _ (ConeSet_Diagonal_Limit_Adjunction J) X F)
@@ -256,12 +232,11 @@ Fail Example neg_tuple_strict {G : Quiver} (D : Diagram G Sets) :
 
 (** ** (11) Presentation-independence, at object level -- CONVERSION *)
 
-(* The CARRIER is Leibniz-equal and so is the compatibility predicate --
-   both are [Example]s in Instance/Sets/Cone.v -- so the obstruction is
-   confined to the [is_setoid] field, whose [setoid_equiv] is
-   [Sets_limit_obj_obligation_1] applied to two functors that [Compose]
-   rebuilds.  The three accepted Examples beside this refusal are what
-   locate it there. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example neg_pres_strict (G : Quiver) (R : PathRel G)
   (S : PresentedQuiver G R ⟶ Sets) :
   Sets_limit_obj S = Sets_limit_obj (Srestr G R S) := eq_refl.

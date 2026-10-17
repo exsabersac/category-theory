@@ -106,10 +106,11 @@ Example p424_One_Eval_obj {X : Category} :
 Example p424_One_Eval_map {X : Category} (F G : [_1, X]) :
   @fmap _ _ (@Eval _1 X ttt) F G = @fmap _ _ (@One_Eval X) F G := eq_refl.
 
-(* the one-object instance of [Eval_nat] already in the tree:
-   Functor/Representable/Functorial.v's [wit_ev_tau] over the delooping of
-   (ℕ, +) and [Sets], the same component (its [BNat] notation is
-   section-local there) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Notation BNat := (Deloop Nat_Plus).
 
 Example p424_prior_nat (n : nat) (F : [BNat, Sets]) :

@@ -559,11 +559,11 @@ Definition p453_sets_id_cover@{o so +| Set < o, o < so +}
   SAFT_cover_wp (@Id Sets@{o so}) Sets_Complete Sets_Id_PreservesImageLimit
     (Sets_Cogenerator_untruncate Un) (Sets_WellPowered_untruncate Un).
 
-(* POSITIVE CONTROL: the cover needs no well-poweredness at all.  At an
-   arbitrary complete, continuous, cogenerated [C], Structure/
-   WellPowered.v's [wp_trivial], indexed by [SubObj] itself, supplies the
-   datum, at [w s t] with [wp_trivial]'s own bounds: its index [w] at or
-   above the objects. *)
+(*
+   本节说明 ProbeSAFT453 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p453_cover_trivial@{o dobj h so dp cp w s t pl pa +|
     h <= so, h < dp, h < cp, o <= w, h <= w, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)

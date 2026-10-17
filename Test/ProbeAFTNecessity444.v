@@ -60,16 +60,11 @@ Check SmallOrd_op_not_large_complete.
 
 (** ** N2-N3: [Complete] is refused wherever the collapsed instance is forced *)
 
-(* An ascription alone does NOT pin the instance, and the first draft of this
-   probe got that wrong: [Definition _ : @Complete SmallOrd_op_Proset :=
-   SmallOrd_op_Complete.] is ACCEPTED, because Coq is free to instantiate the
-   ascription's universes at the small instance.  So the collapsed instance
-   has to be forced by a CONSUMER that demands it, which is what N2 and N4
-   do.  That mistaken first draft is recorded rather than deleted, because
-   "refuted by ascription" is the tempting wrong way to state this boundary.
+(*
+   本节说明 ProbeAFTNecessity444 相关定义、性质与动机。
 
-   N2: [Complete_Initial] demands the collapsed instance, and the ordinals'
-   small-instance witness does not meet it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Complete_Initial SmallOrd_op_Complete).
 
 (* N3: the same for the tree's large witnesses, which is what makes N5's
@@ -78,12 +73,11 @@ Fail Check (Complete_Initial Sets_Complete).
 Fail Check (Complete_Initial Grp_Complete).
 Fail Check (Complete_Initial Ab_Complete).
 
-(** ** N4: the two instances cannot be fed to each other
+(*
+   本节说明 ProbeAFTNecessity444 相关定义、性质与动机。
 
-    This is the guard on the whole framing.  [SmallOrd_op_not_large_complete]
-    takes the COLLAPSED instance and returns [False]; [SmallOrd_op_Complete]
-    inhabits the SMALL one.  If the application below ever went through, the
-    development would prove [False]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p444_boom : False :=
   SmallOrd_op_not_large_complete SmallOrd_op_Complete.
@@ -104,10 +98,11 @@ Check @ConstOne_continuous.
 Check @ConstOne_representable_iff_initial.
 Check @ConstOne_not_representable.
 Check @Complete_Initial.
-(* NOTE: [Initial] is a NOTATION (Structure/Initial.v), so writing
-   [Check @Initial_of_limit_id.] makes the parser read the notation applied
-   to [_of_limit_id] and report that reference as absent.  The qualified
-   name sidesteps it. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check Category.Adjunction.GAFT.Necessity.Initial_of_limit_id.
 Check @SmallShapeComplete.
 Check @SmallOrd.

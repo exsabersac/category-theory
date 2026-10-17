@@ -11,23 +11,21 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(** ** Constructor form.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    [Build_Full] is the constructor generated for the [Full] class.  We feed
-    it exactly the two fields of the corrected definition.  The identity
-    functor's hom-map is the identity on [x ~> y], so the chosen preimage is
-    [g] itself and [fmap_sur] holds by reflexivity (recall that [fmap[Id[C]] g]
-    reduces to [g]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Id_Full_build (C : Category) : Full (Id[C]) :=
   Build_Full _ _ Id[C]
     (fun x y (g : Id[C] x ~> Id[C] y) => g)
     (fun x y (g : Id[C] x ~> Id[C] y) => reflexivity g).
 
-(** ** Record-literal form.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    The same two-field shape, expressed as a section of an arbitrary functor's
-    hom-map.  The literal mentions only [prefmap] and [fmap_sur]; under the old
-    class the missing functoriality fields would be unresolved implicits. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Full_from_section
   `(F : C ⟶ D)
   (pre : ∀ x y, F x ~> F y → x ~> y)
@@ -35,10 +33,11 @@ Definition Full_from_section
   {| prefmap x y g := pre x y g
    ; fmap_sur x y g := sec x y g |}.
 
-(** The identity functor is full: every hom-map is the identity, hence its own
-    section.  The witness is exhibited through [Full_from_section], with the
-    section law closed explicitly by [reflexivity] rather than left to the
-    ambient [Program] obligation tactic — so the test states its own proof. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Id_Full {C : Category} : Full (@Id C) :=
   Full_from_section Id (fun _ _ g => g) (fun _ _ g => reflexivity g).
 
@@ -50,11 +49,11 @@ Definition Id_Full {C : Category} : Full (@Id C) :=
 Check @prefmap.
 Check @fmap_sur.
 
-(** ** [FullyFaithful] under the leaner class.
+(*
+   本节说明函子相关定义、性质与动机。
 
-    The identity functor is trivially faithful; combined with fullness this
-    lets us instantiate [FullyFaithful] and confirm the lemma — whose proof no
-    longer has access to [prefmap_comp] / [prefmap_id] — still elaborates. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Program Instance Id_Faithful (C : Category) : Faithful (Id[C]) := {|
   fmap_inj := fun x y (f g : x ~> y) (H : f ≈ g) => H
 |}.

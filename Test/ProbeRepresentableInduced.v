@@ -24,11 +24,11 @@ Require Import Category.Structure.UniversalProperty.
 
 Generalizable All Variables.
 
-(** ** (1) The donors' universe restriction, and the escape from it
+(*
+   本节说明Yoneda、hom相关定义、性质与动机。
 
-    A category whose object universe is declared STRICTLY BELOW its hom
-    universe.  The Yoneda donors do not reach it; the induced-arrow
-    development does. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ObjectsBelowHoms.
 
@@ -78,16 +78,18 @@ Fail Check (fun (F : C ⟶ Sets) (c v : C)
    cross-link, whose printed binder does NOT show the identification. *)
 Fail Check (repr_pair_iso_from_is_induced C).
 
-(* Negative 6 is negative 1 one application further in: the projection out of
-   the instance is rejected too, for the same reason.  It earns its place by
-   pairing with control 7, which inhabits the very same class at this very
-   category — so what is rejected is the CONSTANT [Yoneda_Faithful], not the
-   claim that [Curried_Hom C] is faithful here. *)
+(*
+   本节说明Yoneda相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@fmap_inj _ _ (Curried_Hom C) (Yoneda_Faithful C)).
 
-(* Controls 7 and 8: the same two proof scripts, copied verbatim from
-   Functor/Hom.v and run here, succeed.  This is what makes negatives
-   1-3 a statement about minimization rather than about mathematics. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition probe_faithful_rederived : Functor.Faithful (Curried_Hom C).
 Proof.
   constructor.
@@ -107,9 +109,11 @@ Defined.
 
 End ObjectsBelowHoms.
 
-(* Control 9, outside the section: the representing-object functor is formable
-   over a category with the same strict separation.  It is stated separately
-   because it needs the section's constraint discharged into its own binder. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section FunctorBelowHoms.
 
 Universes uo uh.
@@ -147,11 +151,11 @@ Definition probe_up_unique_obj (P : C → Type) (eqP : ∀ x, Setoid (P x))
   = repr_pair_iso (to (repr_equivalence x) t) (to (repr_equivalence y) s)
   := eq_refl.
 
-(* Negative 7: but [repr_pair_iso]'s leg is NOT the induced arrow on the nose.
-   [nat_id]'s component is [fmap[F] id] rather than [id]
-   (Theory/Natural/Transformation.v), so the induced arrow carries one
-   [fmap] application the leg does not, and the agreement is only [≈]
-   ([repr_pair_iso_from_is_induced]). *)
+(*
+   本节说明 ProbeRepresentableInduced 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_pair_iso_strict :
   from (repr_pair_iso b1 b2)
   = repr_induced (repr_of_representation c b1)

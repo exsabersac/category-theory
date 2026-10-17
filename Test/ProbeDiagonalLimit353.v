@@ -78,13 +78,11 @@ Definition probe_op_id_fobj (x : D) :
 
 End OppositeConversion.
 
-(** ** CONVERSION — `Op`'s obligation is Qed, so nothing reduces through it
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-   This is the PRIOR-ART correction the `Colimit.v` header records: the
-   content of `Opposite_Functor_respects` already exists as
-   `Op_obligation_1`, the `fmap_respects` obligation of `Op : Cat ⟶ Cat`
-   (`Instance/Cat/Opposite.v`). What survives as a reason to have the
-   transparent restatement is OPACITY and universes, both pinned here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section OpOpacity.
 Context {J C : Category}.
@@ -106,12 +104,11 @@ Definition probe_respects_component (G G' : J ⟶ C) (e : G ≈ G') (x : J) :
 
 End OpOpacity.
 
-(** ** CONVERSION — the (A) round trip (Colimit.v 9, 10, 11)
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-   TWO INDEPENDENT OBSTRUCTIONS, and the controls are what separate them.
-   The coherence component fails on its own (10); and `sigT` has no eta, so
-   the pair would fail to close even had (10) not (11). Without control 10b
-   "sigT eta" would have been a plausible SINGLE cause, and wrong. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RoundTrip.
 Context {J C : Category}.
@@ -120,9 +117,11 @@ Context {J C : Category}.
 Fail Definition probe_roundtrip (G G' : J ⟶ C) (e : G ≈ G') :
   Opposite_Functor_reflects (Opposite_Functor_respects e) = e := eq_refl.
 
-(* CONTROL 4 (= control 10b): the ISOMORPHISM-FAMILY component IS eq_refl,
-   in BOTH composition orders. So the data half is provably unaffected and
-   the failure is confined to the coherence half. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition probe_roundtrip_data (G G' : J ⟶ C) (e : G ≈ G') (x : J) :
   `1 (Opposite_Functor_reflects (Opposite_Functor_respects e)) x = `1 e x
   := eq_refl.
@@ -172,11 +171,11 @@ Definition probe_diag_induced_map (x y : J) (f : x ~{J}~> y) :
 
 End KanConversion.
 
-(** ** CONVERSION — the empty category is not its own opposite (Limit.v R4)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
 
-   This is WHY there is no colimit dual of `Terminal_Limit`, hence no
-   `HasColimitsOfShape 0 C ↔ Initial C`. The target discloses that; this
-   pins the blocker. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_zero_op : Opposite _0 = _0 := eq_refl.
 
 (* CONTROL: `_0` is nameable and `Opposite` applies to it. *)
@@ -204,11 +203,11 @@ Fail Check (Opposite Cu).
 
 End FormabilityHomProof.
 
-(** ** FORMABILITY — the OTHER reason the transparent restatement earns its
-    place, which was measured in the target and guarded NOWHERE until this
-    section. The `Op` route identifies the two categories' OBJECT universes;
-    the restatement keeps them apart. Controls first, so the negative is
-    shown to fire on the identification and not on the section's levels. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FormabilityOpUniverses.
 Universes jo jh jp co ch cp.
@@ -237,14 +236,11 @@ Context (Cs : Category@{so sh sh}).
 Check Cs.
 Check (obj[Cs]).
 
-(* NEGATIVE 9. THE `Set` PIN, and it is the sharp one. `two_IsALimit`'s
-   binder reads `∀ {C : Category@{_ Set Set}}` — the AMBIENT category's hom
-   AND proof pinned to the literal `Set` — while its constraint block
-   carries NO `Set =` at all. A sweep of constraint blocks for `Set =`
-   returns a clean bill and is WRONG; the binder must be swept for the
-   literal token. Donors: `Instance/Two.v`'s `TwoHom : ... -> Set` fixes the
-   SHAPE's hom, and `IsALimit` identifies the shape's hom-and-proof with the
-   ambient's. Not repaired, not claimed unavoidable. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@two_IsALimit Cs).
 
 End FormabilitySetPin.

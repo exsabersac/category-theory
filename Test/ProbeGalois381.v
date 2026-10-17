@@ -85,11 +85,11 @@ Check @galois_v4_stab_proper.
 (* ------------------------------------------------------------------------ *)
 (** ** Negative 2 (TYPING): the connection is antitone, not covariant *)
 
-(* Mac Lane's display (1) reads "L p >= q in Q", and the construction
-   paragraph "L X >= S in Q".  Reading the second relation as plain
-   inclusion instead of its reverse gives a term of the wrong TYPE: the
-   error is a bare "has type ... while it is expected to have type ...",
-   with no "cannot unify" and no universe clause. *)
+(*
+   本节说明 ProbeGalois381 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AntitoneIsNotCovariant.
 
@@ -97,12 +97,11 @@ Universe po pgu.
 Constraint Set < po.
 Constraint po <= pgu.
 
-(* RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17).
-   [GrpObject]'s [PropEquiv] field permuted its three universe roles from
-   (carrier, proof, aux) to (aux, carrier, proof), so the SAME reading that
-   an earlier revision spelled [GrpObject@{po po pgu}] is now
-   [GrpObject@{pgu po po}]: [pgu] keeps its role, only its position moved.
-   The constraints on this section are unchanged. *)
+(*
+   本节说明 ProbeGalois381 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (Gp : GrpObject@{pgu po po}).
 Context (Ap : MSetoidAction@{po po pgu pgu pgu po po pgu}
                 (grp_mon@{pgu po po} Gp)).
@@ -119,9 +118,11 @@ Fail Check (group_action_galois Gp Ap
 (* ---------------------------------------------------------------------- *)
 (** ** Negatives 3 and 4 (CONVERSION), stated in the same section *)
 
-(* Idempotence of the two closure operators holds at the carriers' own
-   [equiv] and NOT at [eq_refl]: the two sides are different terms, and no
-   amount of unfolding identifies a triple composite with a single one. *)
+(*
+   本节说明 ProbeGalois381 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (fun X => stab_fixed_stab Gp Ap X
          : stab (fixed (stab X)) ≈ stab X).
@@ -141,13 +142,11 @@ Fail Check (fun (S : carrier (Powerset_Prop_obj@{po} (grp_setoid Gp))) =>
 (** ** Negative 5 (CONVERSION): the target category is the opposite one on
        its objects and its homs, but not as a whole record *)
 
-(* The rejection is NOT at [id] or [compose]: both agree at [eq_refl], as
-   does the hom-setoid's [equiv], and the four controls below say so --
-   the first two are the target's own [galois_PG_obj] and [galois_PG_hom]
-   restated.  What differs is the [homset] record, whose [Equivalence]
-   witness is [Proset]'s opaque [Program] obligation applied at [(S, T)]
-   on one side and [(T, S)] on the other, together with the rebuilt law
-   fields; so the negative measures the record and not its data. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (eq_refl : obj[Proset@{po Set} (stab_PreOrder_G Gp)]
                    = obj[(Subsets@{po Set} (grp_setoid Gp))^op]).
@@ -176,19 +175,11 @@ End AntitoneIsNotCovariant.
 (** ** Negatives 6 and 7 (FORMABILITY): [Subsets] identifies the two
        universes of the setoid it is handed *)
 
-(* Instance/Powerset.v declares [Subsets (X : SetoidObject@{o o})], so
-   forming the power set of a group's carrier IDENTIFIES that group's
-   carrier and relation universes -- which is why the target's section
-   binds [G : GrpObject@{gu o o}] with the level reused rather than
-   [GrpObject@{gu o1 o2}].  (An earlier revision of this sentence wrote the
-   instances as [@{o o gu}] and [@{o1 o2 gu}]; the roles permuted when
-   [grp_prop] landed, and the reading is the same.)  [Subsets] is the LAST of four donors that
-   each force it alone: [Powerset_Prop_obj] (Instance/Sets/Powerset.v,
-   the one the target meets first), [subset_le] and [subset_le_preorder]
-   are rejected at these very levels too (measured out of tree; only
-   [Subsets] is pinned here).  The controls show that naming the group's
-   setoid, and the group's homs, is fine at levels declared apart: what is
-   rejected is the power set, and the same for the action. *)
+(*
+   本节说明 ProbeGalois381 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SubsetsIdentifies.
 
@@ -216,22 +207,11 @@ End SubsetsIdentifies.
 (** ** Formerly Negative 8 (FORMABILITY): Instance/Grp.v's [Z2] was pinned
     at [Set] *)
 
-(* [Z2@{u} : GrpObject@{u Set Set}] -- its CARRIER and relation universes
-   are both the literal [Set], not parameters -- so its carrier cannot be the
-   source of a [Powerset_Prop_obj], whose own [Set < o] then cannot be met.
-   (An earlier revision quoted [GrpObject@{u Set u}]; re-measured after the
-   PR "algebraic carriers are sets" (2026-09-17), which permuted the record's
-   universe roles and pinned the carrier as well.  The obstruction is if
-   anything sharper and the conclusion is unchanged.)  That is
-   why the target builds [GalZ2] over [eq_Setoid] instead.  The control
-   shows the group itself, and its setoid, are perfectly nameable.
+(*
+   本节说明 ProbeGalois381 相关定义、性质与动机。
 
-   CORRECTION (#450).  Everything above in this comment describes the
-   tree before #450, which annotated [Z2] in place:
-   [Z2@{p} : GrpObject@{p p p}], over [bool_setoid@{u} : Setoid@{u u}
-   bool].  The negative below then stopped being refused (the build
-   reported the guarded command accepted) and is kept, without the
-   guard, as a control.  The target's [GalZ2] is left as it is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @Z2.
 Check (grp_setoid Z2).

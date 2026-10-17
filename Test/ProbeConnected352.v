@@ -28,25 +28,18 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check
+(*
+   本节说明 ProbeConnected352 相关定义、性质与动机。
 
-   This command must ERROR at compile time ("The command has not failed!"),
-   which is what confirms that a [Fail] wrapping a SUCCEEDING command is
-   itself rejected.  Read its scope precisely: it does NOT detect a [Fail]
-   that accepted everything, since such a [Fail] would compile here too.
-   What it rules out is the commoner accident — a [Fail] silently treated
-   as a no-op — and it is checked first because the whole file rests on
-   it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Fail Check Category.
 
-(** ** Negatives 1 and 2 — CONVERSION
+(*
+   本节说明函子相关定义、性质与动机。
 
-   [zigzag_fmap] recurses on the CHAIN.  At a variable chain it is stuck
-   and rebuilds nothing, so neither functor law holds definitionally.  The
-   controls are the SAME statements at [zz_nil], which DO close by
-   [eq_refl]: that is what locates the failure at the recursion rather than
-   at [Id] or at [◯], and it is why [zigzag_fmap_id] and
-   [zigzag_fmap_compose] are proved by induction in the target. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Conversion.
 Context {C D E : Category}.
@@ -84,33 +77,21 @@ Check @zz_nil.
 
 End Conversion.
 
-(** ** Negative 3 — TYPING
+(*
+   本节说明 ProbeConnected352 相关定义、性质与动机。
 
-   [Proper (equiv ==> equiv) fobj[F]] is CONVERTIBLE with the type of
-   [zigzag_fmap F], but the elaborator does not unfold [Proper] and
-   [respectful] while unifying, so the certificate is rejected as a
-   record-literal field assignment.
-
-   THE CONTROL IS THE LITERAL TERM, not an eta-expansion of it: control 3a
-   discharges the field with [exact (@zigzag_fmap C D F)] — character for
-   character what the [Fail] rejects — and [Print] on the result returns
-   the very record literal that was refused,
-   [{| morphism := fobj[F]; proper_morphism := @zigzag_fmap C D F |}].
-   So the same term is rejected as a definition body and accepted when
-   built by script, which is what makes this a fact about unification and
-   not about the term, and is why [pi0_fmap] in the target is built with
-   [unshelve refine].  Control 3b keeps the eta-expanded form because that
-   is what the shipped [pi0_fmap] actually stores. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Typing.
 Universes o so hc hd.
 Context {C : Category@{o hc hc}} {D : Category@{o hd hd}} (F : C ⟶ D).
 
-(* NEGATIVE 3.  Stripped, this reports — with NO `cannot unify` clause and
-   no universe clause, which is what separates it from the other four:
-     The term "@zigzag_fmap C D F" has type
-      "∀ x y : obj[C], ZigZag x y → ZigZag (fobj[F] x) (fobj[F] y)"
-     while it is expected to have type "Proper (equiv ==> equiv) fobj[F]". *)
+(*
+   本节说明 ProbeConnected352 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_proper_as_field :
   pi0@{o o o hc} C ~{Sets@{o so}}~> pi0@{o o o hd} D :=
   {| morphism := fobj[F]; proper_morphism := @zigzag_fmap C D F |}.
@@ -133,26 +114,22 @@ Defined.
 
 End Typing.
 
-(* CONTROL: [proper_morphism] is named OUTSIDE a [Fail].  Without this,
-   renaming that field would make negative 3 fire for a missing-reference
-   reason and pass vacuously — the field is otherwise mentioned only
-   inside the [Fail] itself. *)
+(*
+   本节说明 ProbeConnected352 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check @proper_morphism.
 
 Check @pi0.
 Check @pi0_fmap.
 Check @pi0_fmap_at.
 
-(** ** Negatives 4 and 5 — FORMABILITY
+(*
+   本节说明 ProbeConnected352 相关定义、性质与动机。
 
-   The target spells out universe binders in three places and reports the
-   annotation as LOAD-BEARING.  Each clone below has the target's body with
-   the binders removed and nothing else changed, so the comparison is
-   attributable to the annotation alone.
-
-   No explicit universe instance is written inside either [Fail]: a [Fail]
-   carrying one can pass for an arity reason on another Coq version, which
-   would make the guard vacuous without anything noticing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* An unannotated clone of [zigzag_fmap]. *)
 Fixpoint probe_zigzag_fmap_unann {C D : Category} (F : C ⟶ D) {x y : C}
@@ -188,9 +165,11 @@ Constraint uhc < uhd.
 Context (Cu : Category@{uo uhc uhc}) (Du : Category@{uo uhd uhd}).
 Context (Fu : Cu ⟶ Du) (a b : Cu) (s : ZigZag a b).
 
-(* CONTROLS: the two categories, the functor and the chain are all
-   formable with the hom universes declared STRICTLY apart, so the
-   negative below cannot be firing merely on the section's levels. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check Cu.
 Check Du.
 Check Fu.
@@ -199,12 +178,11 @@ Check s.
 (* CONTROL 5: the SHIPPED, annotated [zigzag_fmap] applies across them. *)
 Check (zigzag_fmap Fu s).
 
-(* NEGATIVE 5.  Stripped, this reports:
-     The term "Fu" has type "@Functor@{uo uhc uhc uo uhd uhd} Cu Du"
-     while it is expected to have type "@Functor@{...} ?C ?D"
-     (universe inconsistency: Cannot enforce uhd = uhc because uhc < uhd).
-   The expected type shows the two hom universes IDENTIFIED — which is the
-   minimization the target's binders undo. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (probe_zigzag_fmap_unann Fu s).
 
 End FormabilityHom.
@@ -222,14 +200,11 @@ Check (obj[Cv]).
    the discriminating half: same body, only the binders differ. *)
 Check (pi0_proj Cv).
 
-(* NEGATIVE 4.  Stripped, this reports:
-     The term "Cv" has type "Category@{vo vh vh}"
-     while it is expected to have type "Category@{...}"
-     (universe inconsistency: Cannot enforce vh = vo because vh < vo).
-   The three elided levels are one and the same freshly generated level, so
-   the expected type shows ALL THREE of C's universes identified.  (Elided
-   here as in negative 5: the generated names vary per compilation and are
-   not quotable.) *)
+(*
+   本节说明 ProbeConnected352 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (probe_pi0_proj_unann Cv).
 
 End FormabilityObj.

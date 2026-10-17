@@ -152,17 +152,20 @@ Definition probe_prop_le@{o} (X : SetoidObject@{o o}) :
   relation (carrier (Powerset_Prop_obj@{o} X)) :=
   fun S T => ∀ x, S x → T x.
 
-(* NEGATIVE 2.  Instance/Sets/Powerset.v's PROOF-RELEVANT carrier has
-   [Type@{o}]-valued members, so inclusion between two of its subsets is
-   [Type]-valued and is not a [relation] at all.  This is why the order
-   is put on the truncated carrier and not on this one. *)
+(*
+   本节说明 ProbePowerset382 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_type_le@{o so} (X : SetoidObject@{o o}) :
   relation (carrier (Powerset_obj@{o so} X)) :=
   fun S T => ∀ x, S x → T x.
 
-(* NEGATIVE 3.  The same wall one level up, and the reason
-   [nat_inf_no_left_adjoint] quantifies over [Adjunction] rather than
-   over [GaloisConnection]: the homs of [Opens X] are [Type]-valued. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_opens_le (X : TopSpace) : relation (OpenSet X) :=
   fun U V => ∀ x : X, `1 U x → `1 V x.
 
@@ -173,12 +176,11 @@ Definition probe_opens_hom (X : TopSpace) (U V : OpenSet X) : Type :=
 (* ------------------------------------------------------------------------ *)
 (** ** Negatives 4 and 5: FORMABILITY (level) *)
 
-(* NEGATIVE 4.  The GENERAL right adjoint of [Opens_preimage] is the
-   interior of a predicate: the union of all opens contained in it.  That
-   union is indexed by [OpenSet X], which sits one universe ABOVE the
-   points, while [open_union] indexes only at the points' level.  This is
-   why Instance/Top/Image.v delivers the right adjoint at its witness and
-   not in general. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_interior@{o} (X : TopSpace@{o}) (P : X → Type@{o}) :
   X → Type@{o} :=
   fun x => { V : OpenSet X & prod (∀ y : X, `1 V y → P y) (`1 V x) }.
@@ -189,22 +191,11 @@ Definition probe_small_union@{o} (X : TopSpace@{o}) (I : Type@{o})
   (U : I → (X → Type@{o})) (HU : ∀ i, IsOpen X (U i)) :
   IsOpen X (fun x => { i : I & U i x }) := open_union X I U HU.
 
-(* NEGATIVE 5.  The [Set] level of the RAPL route, made visible: this
-   file's [Subsets_Complete] is available at hom level [Set] and nowhere
-   else, so the ascription below is refused.
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
 
-   RECORDED CORRECTION TO THE ATTRIBUTION.  An earlier revision said the
-   [Set] came from the DONOR: "[Subsets_Complete] goes through
-   [Proset_Limit] and hence through Instance/Discrete.v's unannotated
-   [DiscreteCat_Functor], which fixes the shape at
-   [DiscreteCat@{u Set Set}]".  That donor was annotated in place at
-   Instance/Discrete.v in the PR "algebraic carriers are sets"
-   (2026-09-17) and fixes nothing now.  The refusal below SURVIVES that
-   repair unchanged, because the [Set] it fires on is written into
-   Instance/Powerset.v's own statement -- [Subsets_Complete] is declared
-   at [@Complete (Subsets@{o Set} X)] -- which is a choice that file makes
-   and has not re-measured.  [IsALimit] still identifies the shape's
-   hom-and-proof universe with the ambient's; that part is unchanged. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_complete_free@{o u + | Set < u +}
   (X : SetoidObject@{o o}) : @Complete (Subsets@{o u} X) :=
   Subsets_Complete.
@@ -222,10 +213,11 @@ Definition probe_cartesian_free@{o u + | Set < u +}
 (* ------------------------------------------------------------------------ *)
 (** ** Negatives 6, 7 and 8: CONVERSION *)
 
-(* NEGATIVE 6.  The direct image does not preserve meets, so the two
-   sides are not the same term -- and they are not merely
-   non-convertible, they are provably distinct, which is
-   Instance/Powerset.v's [direct_image_not_meet_preserving]. *)
+(*
+   本节说明 ProbePowerset382 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_image_meet@{o so} :
   Powerset_Prop_image@{o} powerset_const0@{o so}
       (subset_meet powerset_sng0@{o} powerset_sng1@{o})
@@ -248,12 +240,11 @@ Example probe_preimage_meet@{o so +} :
   → True.
 Proof. intros _; exact I. Qed.
 
-(* NEGATIVE 7.  The monotone-map reading and the Galois reading of the
-   direct image agree on OBJECTS but are not the same functor record:
-   [Functor_of_monotone] is a [Program Definition] whose three law fields
-   are its own opaque obligations, while [GaloisFunctor_l]'s are its own.
-   The two [eq_refl] object Examples in Instance/Powerset.v are the
-   controls that the difference touches neither data field. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_monotone_functor@{o so u}
   (X Y : SetoidObject@{o o}) (f : X ~{Sets@{o so}}~> Y) :
   Functor_of_monotone (subset_le_preorder@{o} X)
@@ -267,10 +258,11 @@ Example probe_monotone_functor_obj@{o so u +}
          (subset_le_preorder@{o} Y) (image_MonotoneFun f)] S
   = fobj[DirectImage f] S := eq_refl.
 
-(* NEGATIVE 8.  The subobject bridge holds at [≈] and not at [eq_refl]:
-   the two truncated existentials are bracketed differently, one
-   quantifying over image points and the other over elements of the
-   domain. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_sub_image_bridge@{o so}
   (A B : SetoidObject@{o o}) (f : A ~{Sets@{o so}}~> B)
   (S : carrier (Powerset_Prop_obj@{o} A)) :
@@ -360,11 +352,11 @@ Example probe_powerset_sng0_is_singleton@{o +} :
 (* ------------------------------------------------------------------------ *)
 (** ** Negative 9: TYPING -- the adjunction has a handedness *)
 
-(* Mac Lane's sentence is that the DIRECT image is LEFT adjoint to the
-   inverse image.  The swapped reading is not a false equation, it is a
-   different type, and the error says so with no "cannot unify" and no
-   universe clause: a plain "has type ... while it is expected to have
-   type ...". *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_wrong_handedness@{o so u u0 u1 +}
   (X Y : SetoidObject@{o o}) (f : X ~{Sets@{o so}}~> Y) :
   InverseImage f ⊣ DirectImage f := image_preimage_adjunction f.

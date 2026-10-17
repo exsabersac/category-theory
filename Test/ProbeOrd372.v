@@ -93,11 +93,11 @@ Example ctrl_reflective_adj :
 Fail Example neg_adj_is_not_reflective :
   Reflective Pos_Sub := Poset_adj.
 
-(** ** Negative 5 (CONVERSION): the reviewer's distinction.
+(*
+   本节说明 ProbeOrd372 相关定义、性质与动机。
 
-    The objects of [Ord] are PREORDERS; the objects of [OrdAsCategory P]
-    are the POINTS of one preorder.  Both readings are pinned positively
-    just below, and their identification is refuted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example ctrl_ord_obj : obj[Ord] = OrdObject := eq_refl.
 

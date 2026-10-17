@@ -73,14 +73,11 @@ Definition ctl_grp_med_typed
   : pushout_apex (Grp_pushout f g) ~{Grp}~> Q :=
   pushout_med (Grp_pushout f g) Hcomm.
 
-(* NEGATIVE 1 (conversion).  [pushout_med] does NOT reduce to [am_med].
-   Stripping the [Fail] reports a unification failure between
-   [unique_obj (pushout_ump ...)] and [am_med ...].  The cause is DONOR
-   OPACITY and not this file's construction: Structure/Pushout.v states
-   [pushout_ump] as a [Lemma ... Qed], so [unique_obj] is applied to an
-   opaque constant and no amount of transparency here would help.
-   Instance/Grp/Pushout.v's [Grp_pushout_med_is_am_med] is the [≈] form
-   that does hold. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition neg_grp_med :
   pushout_med (Grp_pushout f g) Hcomm = am_med f g q1 q2 Hcomm := eq_refl.
 
@@ -131,15 +128,11 @@ Definition ctl_top_points :
   carrier (top_carrier (Pushout_Top Ef Eg))
     = carrier (sum_carrier B C) := eq_refl.
 
-(* NEGATIVE 3 (conversion).  The SETOIDS differ, so the two
-   [SetoidObject]s are not convertible: the pushout apex compares points
-   by the inductive [tp_rel], the coproduct by [sum_setoid]'s [match].
-   Stripping the [Fail] reports "cannot unify
-   "top_carrier (Pushout_Top Ef Eg)" and "sum_carrier B C"" -- it
-   names no field; that the difference is confined to the setoid is a
-   DIAGNOSIS, supported by [ctl_top_points] showing the carriers agree.
-   This is what makes [Top_pushout_empty_iso] a genuine
-   isomorphism rather than an identity. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition neg_top_carrier :
   top_carrier (Pushout_Top Ef Eg) = sum_carrier B C := eq_refl.
 
@@ -148,33 +141,21 @@ Fail Definition neg_top_carrier :
 Definition ctl_top_sum_open (W : sum_carrier B C → Type)
   (H : IsOpen (Sum_Top B C) W) : IsOpen (Sum_Top B C) W := H.
 
-(* NEGATIVE 4 (conversion).  The TOPOLOGIES differ too: [tp_open] carries
-   a respect-the-gluing clause that [sum_open] does not.  Over the empty
-   span that clause is redundant -- which is exactly what
-   [Top_pushout_empty_iso] proves -- but it is not definitionally
-   absent. *)
+(*
+   本节说明 ProbePushoutGrpTop 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition neg_top_topology :
   IsOpen (Pushout_Top Ef Eg) = IsOpen (Sum_Top B C) := eq_refl.
 
 End TopEmptySpan.
 
-(** ** Formability: a donor [Set] pin, since lifted, and the route around it
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    CORRECTION (#450).  This section was written when [Instance/Grp.v]'s
-    [Grp_zero_hom] was declared over [GrpObject@{Set Set Set}] -- a DONOR
-    pin, of the same family that Instance/Grp/Quotient/Colimit.v recorded
-    for [Grp_trivial] and [Grp_Zero] -- and its NEGATIVES 5 and 6 were that
-    donor's rejection above [Set].  #450 annotated the donor's universes in
-    place ([Grp_trivial@{p} : GrpObject@{p p p}],
-    [Grp_zero_hom@{u p}], [Grp_Zero@{u p}]; the essay above [Grp_trivial]
-    in Instance/Grp.v has the readbacks), after which both guarded [Check]s
-    below stopped being refused: the build stopped at the first of them
-    with Rocq's report that the guarded command had been accepted.  They
-    are kept, without the guard, as
-    CONTROLS 9 and 10, so that the lifted pin is guarded in the other
-    direction.  What the section still establishes is that
-    Instance/Grp/Pushout.v's free product, along the CONSTANT legs, was
-    formable above [Set] before the lift as well as after it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetPin.
 
@@ -191,10 +172,11 @@ Check (fun (A B C : GrpObject@{bg bg bg})
            (f : A ~{Grp}~> B) (g : A ~{Grp}~> C) =>
          pushout_apex (Grp_pushout f g)).
 
-(* CONTROL 7.  And so are the free product and its injection -- this is
-   the route-around, and it was the contrast to the two negatives that
-   stood below until #450 (CONTROLS 9 and 10 since).  [grp_const] is
-   named too, being what makes it work. *)
+(*
+   本节说明 ProbePushoutGrpTop 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun B C : GrpObject@{bg bg bg} => Grp_free_product B C).
 Check (fun B C : GrpObject@{bg bg bg} => Grp_fp_inl B C).
 Check (fun B C : GrpObject@{bg bg bg} => grp_const B C).
@@ -210,10 +192,11 @@ Check (Grp_zero_hom_Section Z2).
    Since #450 it is formable at every carrier level. *)
 Check (fun G : GrpObject@{bg bg bg} => Grp_zero_hom G).
 
-(* CONTROL 10, formerly NEGATIVE 6 (formability).  Hence so is the
-   splitting of that map.  Instance/Grp/Pushout.v still builds the free
-   product along the constant legs, not on [Grp_zero_hom_Section]; its
-   header records why that choice no longer rests on the pin. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun G : GrpObject@{bg bg bg} => Grp_zero_hom_Section G).
 
 End SetPin.

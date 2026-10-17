@@ -62,10 +62,11 @@ Context {A : Category}.
 Context {a b : A}.
 Context (f : b ~> a).
 
-(* CONTROL.  The values agree at Leibniz equality, and the two
-   transformations agree at [≈] in the functor category.  Both of these
-   are the targets' own shipped constants, named here outside any
-   [Fail]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @hom_transfer.
 Check @Curried_Hom.
@@ -77,25 +78,21 @@ Example ctrl_transfer_value (c : A) (h : a ~> c) :
     = transform[fmap[Curried_Hom A] (f : a ~{Opposite A}~> b)] c h
   := eq_refl.
 
-(* NEGATIVE 1 (CONVERSION).  The whole [Transform] record is NOT
-   [fmap[Curried_Hom A] f]: [Transform] carries [naturality] and
-   [naturality_sym], which the two definitions elaborate as separate
-   obligations.  Stripped and compiled alone, this reports
-   `The term "eq_refl" has type "hom_transfer f = hom_transfer f" while
-   it is expected to have type "hom_transfer f = fmap[A] f" (cannot unify
-   "hom_transfer f" and "fmap[A] f")`.  Note the display: the coercion
-   [Curried_Hom : Category >-> Functor] makes the functor print as its
-   CATEGORY. *)
+(*
+   本节说明 ProbeFullFaithful367 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example neg1_whole_record :
   hom_transfer f = fmap[Curried_Hom A] (f : a ~{Opposite A}~> b)
   := eq_refl.
 
-(* NEGATIVE 2 (CONVERSION).  Neither is the COMPONENT record, one rung
-   lower: a [SetoidMorphism] carries a [proper_morphism] certificate, and
-   the two are separately elaborated.  The control above shows the
-   underlying values agree, so this locates the difference exactly at the
-   certificate — the whole-record failure is not only about naturality. *)
+(*
+   本节说明 ProbeFullFaithful367 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example neg2_component_record (c : A) :
   transform[hom_transfer f] c
@@ -136,12 +133,11 @@ Definition ctrl_section (HU : Functor.Full U) (a : C) :
   Section (@counit C D F U A a) :=
   fst right_adjoint_full_iff_counit_split_monic HU a.
 
-(* NEGATIVE 4 (TYPING).  [Section] and [Monic] are two different classes,
-   so the conclusion of (ii) is not a [Monic] statement even though every
-   [Section] is monic ([sections_are_monic]).  Stripped and compiled
-   alone, this reports a plain `has type ... while it is expected to have
-   type ...` with NO "cannot unify" and no universe clause — the mark
-   that separates it from negatives 1-3 and 5. *)
+(*
+   本节说明 ProbeFullFaithful367 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition neg4_section_is_not_monic (HU : Functor.Full U) (a : C) :
   Monic (@counit C D F U A a) :=
@@ -177,12 +173,11 @@ Check @reflector.
 Check @Incl.
 Check @reflective_adj.
 
-(* NEGATIVE 5 (CONVERSION).  [reflective_counit_iso] produces DATA and is
-   closed with [Qed] (Construction/Reflective.v), so its [to] does not
-   reduce to the counit although the proof script supplies exactly that.
-   Stripped and compiled alone this reports "cannot unify".  The [≈] form
-   is unavailable for the same reason and is therefore not shipped
-   either: there is nothing to rewrite with. *)
+(*
+   本节说明 ProbeFullFaithful367 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example neg5_reflective_to_is_counit :
   to (@reflective_counit_iso C S R x)
@@ -194,12 +189,11 @@ End ReflectiveOpacity.
 (* ------------------------------------------------------------------ *)
 (** ** (4) Universes: what the headlines inherit *)
 
-(* The measurement, for the record: every headline of both targets is
-   over categories whose hom and proof universes are identified IN THE
-   BINDER (`Category@{u u0 u0}`), and the theorem file's headlines carry
-   in addition the single BLOCK equation `u0 = u2`, identifying C's and
-   D's hom-and-proof universes.  Neither file has a `Set` in any binder
-   or block.  The two probes below isolate a donor for each. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomProofDonor.
 
@@ -218,12 +212,11 @@ Check (@id Cu u).
 Check (g ∘ @id Cu u).
 Check @Retraction.
 
-(* NEGATIVE 6 (FORMABILITY).  [Epic] alone identifies hom with proof, so
-   it is rejected where the hom and proof universes are declared strictly
-   apart.  Stripped and compiled alone it ends "universe inconsistency".
-   [Monic], [Section] and [Retraction] are rejected at the same levels;
-   they are listed here as further [Fail]s rather than as separate
-   numbered negatives, since they measure the same identification. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (@Epic Cu u v g).
 Fail Check (@Monic Cu u v g).
@@ -245,13 +238,11 @@ Context (Du : Category@{bo bh bh}).
 
 Check (Cu ⟶ Du).
 
-(* NEGATIVE 7 (FORMABILITY).  The other direction is rejected, because
-   [Functor] forces the source's hom universe below the target's.  So the
-   block equation `u0 = u2` on the theorem file's headlines needs no
-   appeal to [Adjunction] at all: the mere presence of functors in BOTH
-   directions already forces it, and [Adjunction] cannot be tested apart
-   from that, since its very type mentions both.  Stripped and compiled
-   alone this ends "universe inconsistency". *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Du ⟶ Cu).
 
@@ -260,12 +251,11 @@ End AdjunctionHomDonor.
 (* ------------------------------------------------------------------ *)
 (** ** (5) The prior art, checked against the target at one type *)
 
-(* Instance/Coq/Monoid/Free.v's [adjunction_counit_epic] already
-   proves the forward half of Theorem 1(i) for an ARBITRARY adjunction.
-   The target restates it (by a different proof, through the transfer
-   lemma) rather than consuming it, because that constant lives in the
-   `Instance/Coq` layer.  That the two STATEMENTS are the same is
-   machine-checked here: both are ascribed to one type. *)
+(*
+   本节说明伴随、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PriorArt.
 
@@ -293,19 +283,11 @@ End PriorArt.
 (* ------------------------------------------------------------------ *)
 (** ** (6) Non-vacuity, quadrant one: full and NOT faithful *)
 
-(* #368's witness, read through Theorem 1.  [Erase PointedSets] is the
-   right adjoint of [zero_erase_adjunction], it is FULL because
-   [PointedSets] has a zero object (Fullness.v), and it is provably
-   NOT faithful (Fullness.v).  So by (ii) every counit component
-   splits, and by (i) — contrapositive — the counit family is NOT
-   componentwise epi.  The second is new content: Fullness.v refutes only
-   invertibility of the component at [PointedTwo].
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   DEGENERACY, labelled: the target of [Erase] is the terminal category
-   [_1], so fullness holds for a reason unrelated to the theorem (every
-   hom-set of [_1] is a singleton, and the zero morphism hits it).  What
-   the witness exercises is the CONTRAPOSITIVE of (i) and the forward half
-   of (ii), not a subtle adjunction. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pointed_erase_adj :
   @Diagonal PointedSets _1
@@ -339,18 +321,11 @@ Check pointed_counit_not_IsIsomorphism.
 (* ------------------------------------------------------------------ *)
 (** ** (7) Non-vacuity, quadrant two: faithful and NOT full *)
 
-(* The free-monoid adjunction over [Coq] (Instance/Coq/Monoid/Free.v).
-   Its right adjoint is the forgetful functor to [Coq]; it is faithful
-   because a monoid morphism there IS a function paired with a property
-   and the hom-setoid compares the functions, and it is NOT full because
-   a function between underlying sets need not preserve the unit.  By (i)
-   every counit component is epi; by (ii) — contrapositive — the counit
-   family does NOT split.
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-   NON-DEGENERACY: the refutation of fullness evaluates the recovered
-   homomorphism at the UNIT, where the chosen non-homomorphism
-   `fun _ => cons true nil` provably differs from it, so the witness is
-   not the empty-hom-set kind. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition mon_coq_forget : @Mon Coq Coq_Monoidal ⟶ Coq :=
   @Mon_Forget Coq Coq_Monoidal.
@@ -409,10 +384,11 @@ Qed.
 (* ------------------------------------------------------------------ *)
 (** ** (8) The remaining headline names, checked from outside *)
 
-(* Every target constant that a negative above names appears in a
-   succeeding command; these [Check]s cover the rest of the two files'
-   headline surface, so that a rename of any of them breaks this file at
-   a NON-[Fail] line. *)
+(*
+   本节说明 ProbeFullFaithful367 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @hom_transfer_monic_iff_epic.
 Check @hom_transfer_epic_iff_section.

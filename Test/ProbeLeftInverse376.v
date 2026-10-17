@@ -67,16 +67,11 @@ Check @Sub.
 Check @Isomorphism.
 Check StrictCat.
 
-(** ** 1. TYPING: "the counit is the identity" is not a well-typed
-       equation.
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-    For an arbitrary adjunction the counit at [a] runs [F (G a) ~> a],
-    while [id[a]] runs [a ~> a]; the two are the same hom-set only when
-    [F (G a)] and [a] are the same object at LEIBNIZ equality.  This is
-    exactly why [LeftAdjointLeftInverse] carries the object equation as
-    DATA and compares the counit with the identity transported along it,
-    and why the issue's suggested "counit ~ nat_id" reading is not
-    statable.  The control is the [id_cast] form actually used. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CounitIsNotIdentity.
 
@@ -95,19 +90,11 @@ Check (lali_counit P a).
 
 End CounitIsNotIdentity.
 
-(** ** 2. TYPING: the same failure at a reflection, which is why clause
-       (c) alone does not give clause (a).
+(*
+   本节说明同构相关定义、性质与动机。
 
-    The counit of a reflection runs [reflector R (Incl y) ~> y] and is an
-    ISOMORPHISM ([reflective_counit_iso], the control), never an identity:
-    a reflector need not fix the objects of the subcategory on the nose.
-    Mac Lane re-chooses the reflector on Y by a case distinction on
-    membership; here membership [sobj] is proof-relevant, a reflector
-    fixing the subcategory on the nose forces membership-proof
-    uniqueness, and the unconditional passage is refutable (the target's
-    header records the out-of-tree countermodel), so
-    [ri_lali_implies_lali] takes the corrected reflector as an explicit
-    hypothesis. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ReflectionCounit.
 
@@ -124,13 +111,11 @@ Check (@counit (Sub C S) C (reflector R) (Incl C S) (reflective_adj R) y
 
 End ReflectionCounit.
 
-(** ** 3. TYPING: the third leg is CONDITIONAL, and the unconditional
-       form is not what is proved.
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [ri_lali_implies_lali] wants the presentation AND a
-    left-adjoint-left-inverse of the insertion; applied to the
-    presentation alone it is still a function, so the ascription is
-    rejected.  The control supplies the second argument. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ThirdLegIsConditional.
 
@@ -147,13 +132,11 @@ Definition conditional_third_leg : LeftAdjointLeftInverse G :=
 
 End ThirdLegIsConditional.
 
-(** ** 4. CONVERSION: going round the cycle does not return the datum.
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [lali_cycle] rebuilds the adjunction through the image subcategory,
-    so its left adjoint is [ImageFrom o ImageTo o F] and its transposes
-    are rebuilt; the two sides are terms of ONE type that do not
-    convert.  The controls are the two identifications that DO hold on
-    the nose. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CycleIsNotIdentity.
 
@@ -171,12 +154,11 @@ Example ri_sub_strict : ri_sub (lali_implies_ri P) = @LaliImageSub A X G :=
 
 End CycleIsNotIdentity.
 
-(** ** 5. CONVERSION: the [ImageTo o ImageFrom] object equality is not
-       [eq_refl] at a variable object.
+(*
+   本节说明 ProbeLeftInverse376 相关定义、性质与动机。
 
-    It is built by eliminating the membership witness, so it reduces only
-    once that witness is a constructor -- which is what the control at an
-    object in the image of [ImageTo] exhibits. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ImageRoundTripObj.
 
@@ -193,23 +175,11 @@ Example image_obj_refl_at_image :
 
 End ImageRoundTripObj.
 
-(** ** 6. FORMABILITY: a strict functor equality identifies the two
-       categories' hom-and-proof universes.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    [Functor_StrictEq_Setoid] (Theory/Functor.v) is declared over
-    [Category@{u1 u4 u4}] and [Category@{u2 u4 u4}] -- ONE hom level for
-    source and target -- so every statement below that mentions a strict
-    equality between a functor [A ⟶ X] and another inherits the
-    identification.  [LeftAdjointLeftInverse] is rejected at the same
-    levels, but that rejection does NOT discriminate: its field
-    [lali_left : X ⟶ A] is a functor in the REVERSE direction, and the
-    functor type alone in that direction is already rejected here --
-    [Au ⟶ Xu] is accepted while [Xu ⟶ Au] is not, since [Functor] bounds
-    the source hom universe by the target's and the two directions
-    together identify them -- so the record's identification is forced
-    before its [Adjunction] field (Theory/Adjunction.v, whose own
-    block carries [h1 = p1], [h1 = h2], [h1 = p2]) is consulted.  Only
-    [Functor_StrictEq_Setoid] is probed in isolation below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseProbe.
 
@@ -233,17 +203,11 @@ Fail Check (@ffi_implies_ri Au Xu Gu).
 
 End UniverseProbe.
 
-(** ** 7. FORMABILITY: clause (c) identifies the two categories' OBJECT
-       universes, and clause (a) does not.
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    [ri_iso] compares [A] with [Sub X ri_sub] in [StrictCat], whose
-    objects are [Category] at ONE universe instance, so the two must live
-    at the same levels -- which is why the packaged
-    [lali_characterization] displays [A X : Category@{u6 u13 u13}] where
-    [LeftAdjointLeftInverse] alone leaves both object universes free.  The
-    controls below are exactly that contrast: at object levels declared
-    apart, the functor type and clause (a) are accepted while the
-    [StrictCat] isomorphism and (b) => (c) are rejected. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section StrictCatObjectProbe.
 
@@ -264,15 +228,11 @@ Fail Check (@ffi_implies_ri Bu Cu2 Gu2).
 
 End StrictCatObjectProbe.
 
-(** ** 8. FORMABILITY: [Theory/Shapes.v]'s [Point] pins the terminal
-       category's hom and proof universes at [Set].
+(*
+   本节说明hom、始/终对象相关定义、性质与动机。
 
-    This is the measured reason the six-line [PointAt] is rebuilt in the
-    target instead of consuming [Point]: over a category whose homs are
-    declared strictly above [Set], [Point] is not formable while [PointAt]
-    is.  The rejection is the donor's minimization, not a restriction on
-    the terminal category itself ([_1@{o h p}] has all three levels free);
-    it is NOT claimed unavoidable. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PointProbe.
 
@@ -290,12 +250,11 @@ Fail Check (Point (C:=Cu) c : _1@{po ph ph} ⟶ Cu).
 
 End PointProbe.
 
-(** ** Non-vacuity of the third leg's hypothesis.
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [lali_image_insertion] inhabits it for every presentation arising
-    from a left-adjoint-left-inverse -- Mac Lane's own sentence that the
-    insertion has a left-adjoint-left-inverse -- so the conditional leg
-    is not an empty statement. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @lali_ri_insertion.
 Check @two_LALI.

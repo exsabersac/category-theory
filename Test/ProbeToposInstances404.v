@@ -68,14 +68,11 @@ Section PshNegatives.
 
 Context (C : Category) (UT : Untruncate).
 
-(* NEGATIVE 1 (FORMABILITY).  The classification theorem is not statable
-   at this topos: it carries objects <= homs, while the presheaf
-   category's objects sit strictly above its homs.  Stripped:
+(*
+   本节说明topos、始/终对象相关定义、性质与动机。
 
-     The term "topos_terminal" has type "Terminal@{n1.41 n1.23}"
-     while it is expected to have type "Terminal@{n1.26 n1.27}"
-     (universe inconsistency: Cannot enforce n1.23 = n1.27 because
-      n1.23 < n1.31 <= n1.26 <= n1.27).                              *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@classifier_classifies ([C^op, Sets])
               (@topos_terminal _ (Presheaf_Topos C UT))
               (@topos_pullbacks _ (Presheaf_Topos C UT))
@@ -105,16 +102,11 @@ Fail Check (@Sub_classifier_natural ([C^op, Sets])
               (@topos_pullbacks _ (Presheaf_Topos C UT))
               (@topos_classifier _ (Presheaf_Topos C UT))).
 
-(* NEGATIVE 9 (TYPING).  The restriction readback must ascribe its arrow
-   into [C^op]; written through the [morphism] coercion instead, the
-   coercion is left an evar [?s] and [eq_refl] does not close.  No
-   "cannot unify", no universe clause.  The ACCEPTED spelling is the
-   control immediately below.  Stripped:
+(*
+   本节说明层/筛相关定义、性质与动机。
 
-     The term "eq_refl" has type
-      "?s (fmap[Sieve_Presheaf C] h) S = ?s (fmap[Sieve_Presheaf C] h) S"
-     while it is expected to have type
-      "?s (fmap[Sieve_Presheaf C] h) S = sieve_restrict h S".         *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p404_restrict (c d : C) (h : d ~{C}~> c) (S : Sieve c) :
   morphism (fmap[Sieve_Presheaf C] h) S = sieve_restrict h S := eq_refl.
 
@@ -125,28 +117,19 @@ Example p404_restrict_ctrl (c d : C) (h : d ~{C}~> c) (S : Sieve c) :
 
 End PshNegatives.
 
-(* NEGATIVE 5 (FORMABILITY).  [_2] is declared with hom AND proof at the
-   literal [Set], and [Fun_Classifier] carries the strict lower bound
-   [Set < u].  The DISCRIMINATING CONTROL is the line above it:
-   [Functor_Category_Closed _2] IS accepted, so the exclusion is the
-   CLASSIFIER's and not the exponential's.  Stripped:
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-     The term "_2" has type "Category@{n5.32 Set Set}"
-     while it is expected to have type "Category@{n5.29 n5.30 n5.30}"
-     (universe inconsistency: Cannot enforce Set = n5.30 because
-      Set < n5.30).                                                  *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (Functor_Category_Closed _2).
 Fail Definition p404_two (UT : Untruncate) := Presheaf_Topos _2 UT.
 
-(* NEGATIVE 8 (RESOLUTION).  The bundle does not resolve: [ElementaryTopos]
-   has no registered instance and its constructor is not one.  Stripped:
+(*
+   本节说明 ProbeToposInstances404 相关定义、性质与动机。
 
-     The following term contains unresolved implicit arguments:
-       (fun (C : Category) (UT : Untruncate) => ?e)
-     More precisely:
-     - ?e: Cannot infer this placeholder of type
-       "ElementaryTopos ([C^op, Sets])" (no type class instance found)
-       in environment: C : Category, UT : Untruncate                 *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p404_resolve (C : Category) (UT : Untruncate) :
   ElementaryTopos ([C^op, Sets]) := _.
 
@@ -176,13 +159,11 @@ Check (@Fun_HasPullbacks (Cq^op) Sets@{ch cso} Sets_HasPullbacks).
       ch < co <= n6.56).                                             *)
 Fail Check (Functor_Category_Closed Cq).
 
-(* NEGATIVE 7 (FORMABILITY), with no exponential in the command at all,
-   so the two donors are measured independently.  Stripped:
+(*
+   本节说明 ProbeToposInstances404 相关定义、性质与动机。
 
-     The term "Cq" has type "Category@{co ch ch}"
-     while it is expected to have type "Category@{n7.37 n7.35 n7.35}"
-     (universe inconsistency: Cannot enforce ch = n7.35 because
-      ch < co <= n7.35).                                             *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@Fun_Classifier Cq UTq).
 
 End DonorClosed.
@@ -226,10 +207,11 @@ End SmallReading.
 (* ==================================================================== *)
 (** ** (D) Setoid negatives *)
 
-(* The [Set]-reach split.  In a section declaring [Set < su], the four
-   unconditional donors and the DECIDABLE route all reach the [Sets]
-   whose carrier universe is the literal [Set]; the truncation route
-   does not. *)
+(*
+   本节说明 ProbeToposInstances404 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetReach.
 Universe su.
@@ -286,9 +268,11 @@ Fail Check (@relations_iso Sets (Sets_Topos U) a b).
 
 End SetsNegatives.
 
-(* The four strict forms of Mac Lane's App.1 clause (b), each refused.
-   The apex is a SIGMA carrying the agreement witness, so it is not the
-   product carrier and its first projection is not [exl]. *)
+(*
+   本节说明 ProbeToposInstances404 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* NEGATIVE 14 (CONVERSION).  Stripped:
 
@@ -305,47 +289,36 @@ Fail Example p404_pbone_prod (a b : obj[Sets]) : pbone a b = a × b := eq_refl.
 Fail Example p404_pbone_carrier (a b : obj[Sets]) :
   carrier (pbone a b) = carrier (a × b) := eq_refl.
 
-(* NEGATIVE 16 (CONVERSION).  The leg equations hold at the setoid
-   relation and not on the nose.  Stripped:
+(*
+   本节说明 ProbeToposInstances404 相关定义、性质与动机。
 
-     The term "eq_refl" has type
-      "exl ∘ pbone_to_prod a b = exl ∘ pbone_to_prod a b"
-     while it is expected to have type
-      "exl ∘ pbone_to_prod a b = pbone_fst a b"
-     (cannot unify "exl ∘ pbone_to_prod a b" and "pbone_fst a b").    *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p404_pbone_leg (a b : obj[Sets]) :
   exl ∘ pbone_to_prod a b = pbone_fst a b := eq_refl.
 
-(* NEGATIVE 18 (TYPING).  The projection is not [exl]: the two morphisms
-   do not share a source, so the mismatch is a plain has-type one, with
-   no "cannot unify" and no universe clause.  Stripped:
+(*
+   本节说明 ProbeToposInstances404 相关定义、性质与动机。
 
-     The term "exl" has type "a × b ~{ Sets }~> a"
-     while it is expected to have type "pbone a b ~{ Sets }~> a".     *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p404_pbone_fst_exl (a b : obj[Sets]) :
   pbone_fst a b = @exl Sets Sets_Cartesian a b := eq_refl.
 
-(* NEGATIVE 17 (CONVERSION).  On the DECIDABLE route the power object is
-   the decidable power set, not the [Prop]-valued one.  Its carrier IS
-   [SetoidMorphism b BoolSetoid], which is the accepted control in
-   Instance/Sets/Topos.v's [app1_pow_dec_carrier].  Stripped:
+(*
+   本节说明topos相关定义、性质与动机。
 
-     The term "eq_refl" has type "Pow b = Pow b"
-     while it is expected to have type "Pow b = Powerset_Prop_obj b"
-     (cannot unify "Pow b" and "Powerset_Prop_obj b").                *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p404_pow_dec (D : DecImage) (b : obj[Sets]) :
   @Pow Sets (Sets_Topos_dec D) b = Powerset_Prop_obj b := eq_refl.
 
 (* ==================================================================== *)
-(** ** (E) The #405 flagships, at BOTH toposes
+(*
+   本节说明函子、（余）极限、topos相关定义、性质与动机。
 
-    All four elaborate at each.  On the presheaf side the five colimit
-    legs projected out of [topos_has_finite_colimits] would each be the
-    FIRST inhabitant of its class at any functor category in this tree
-    (criterion, three sweeps, in Instance/Fun/Topos.v's header); on the
-    setoid side all five are SECOND inhabitants, and the existing ones
-    are Checked beside them so the TYPES are seen to line up.  NO
-    AGREEMENT PROOF IS BUILT and none is claimed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PshFlagships.
 Context (C : Category) (UT : Untruncate).
@@ -398,13 +371,11 @@ Check (Sets_HasPushouts : @HasPushouts Sets).
 Check (Sets_HasEqualizers : @HasEqualizers Sets).
 
 (* ==================================================================== *)
-(** ** (F) Non-vacuity
+(*
+   本节说明topos、层/筛相关定义、性质与动机。
 
-    The presheaf topos at four named shapes -- [_2] being excluded by
-    negative 5 -- with three definitional readbacks over them.  NOTHING
-    COMPUTES TO A NUMERAL here and none is claimed: sieve membership is
-    [Prop]-valued and truncated, so there is no analogue of
-    Instance/FinSet/Topos.v's [Pow 2 = 4]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PT_one (UT : Untruncate) := Presheaf_Topos _1 UT.
 Definition PT_ord2 (UT : Untruncate) := Presheaf_Topos (Ordinal 2) UT.

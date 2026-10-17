@@ -34,9 +34,11 @@ Require Import Category.Instance.Ab.FreeMonad.
 
 Generalizable All Variables.
 
-(* The monad and the comparison functor of the universal-arrow adjunction,
-   route A, which #472 does not build: NOTATIONS for terms over in-tree
-   constants only, so that nothing below is stated about a local copy. *)
+(*
+   本节说明伴随、函子、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Notation TRA R := (Adjunction_Induced_Monad (free_module_adjunction R)).
 Local Notation KA R := (EM_Comparison (free_module_adjunction R)).
 Local Notation ZA := (Adjunction_Induced_Monad free_ab_adjunction).

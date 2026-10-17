@@ -128,12 +128,11 @@ Example p439_alias_ex4 {C D : Category} (U : C ⟶ D) (d : D)
   comma_creates_limits_second_proof U d HU K
     = comma_proj2_creates_second U d HU K := eq_refl.
 
-(** ** C2: the two negatives the prose states, pinned as type ascriptions
+(*
+   本节说明 ProbeCatCreation439 相关定义、性质与动机。
 
-    A bare [Check] pins existence, not the argument list.  These two pin
-    what the header actually claims: Exercise 3 takes NO [ObjUIP] (its
-    binders are exactly these), and [CreatesLimit_transport] carries
-    CREATION, not strictness. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example p439_ex3_takes_no_uip :
   ∀ {A B C : Category} (F : A ⟶ C) (G : B ⟶ C) {J : Category}

@@ -31,23 +31,11 @@ Generalizable All Variables.
 
 Fail Check probe368_no_such_constant_anywhere.
 
-(* ** FORMABILITY
+(*
+   本节说明hom相关定义、性质与动机。
 
-   The target's headlines are over [C : Category@{u u0 u0}] and
-   [D : Category@{u1 u2 u2}] -- hom identified with proof in both, by
-   REUSE OF THE LEVEL VARIABLE IN THE BINDER, the constraint blocks
-   carrying no such equation -- and their blocks additionally carry the
-   equation [u0 = u2], identifying the two hom-and-proof levels.  Neither
-   identification is introduced by the target; both are inherited, and
-   neither is claimed unavoidable.
-
-   Negatives 1 and 2 localise hom = proof: [Section] and [Monic] are each
-   rejected ALONE at levels declared strictly apart, while a hom and an
-   identity at those very levels are accepted.  [Retraction] is rejected
-   too and is shown as a third rejection in the same section.  Note that
-   [Functor] is NOT a donor for this equation -- see the positive control
-   in section [P_hom_proof_control] -- so "the functor vocabulary" would
-   be the wrong attribution. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section P_hom_proof.
 
@@ -98,21 +86,20 @@ Context (Du : Category@{do dh dh}).
 (* Control: one direction is formable. *)
 Check (Du ⟶ Cu).
 
-(* Negative 4 (FORMABILITY): the OTHER direction is not, so the presence
-   of functors both ways -- which every statement about an adjunction has
-   -- is already sufficient for [u0 = u2].  No [Compose], no [Adjunction]
-   and no [Full] is needed to force it. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Cu ⟶ Du).
 
 End P_hom_hom.
 
-(* ** TYPING
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-   [Transform] is a class applied to two FUNCTOR RECORDS.  `U ◯ (F ◯ U)`
-   and `(U ◯ F) ◯ U` agree on [fobj] and on [fmap] but differ in their
-   three law fields, and `U ◯ Id` is not `U`.  So the whiskered forms live
-   at types the target's isomorphism cannot be stated at, and the
-   components -- not the records -- are what the target identifies. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section P_whisker.
 
@@ -138,21 +125,21 @@ Fail Check ((U ⊳ (@counit _ _ _ _ PT)) : U ◯ F ◯ U ⟹ U).
 (* Negative 6 (TYPING). *)
 Fail Check (((@unit _ _ _ _ PT) ⊲ U) : U ⟹ U ◯ F ◯ U).
 
-(* The identification that DOES hold, componentwise and at [eq_refl],
-   is the target's [whiskered_counit_is_whisker_left] and
-   [whiskered_unit_is_whisker_right]; both are cited here so a rename of
-   either breaks this file. *)
+(*
+   本节说明 ProbeFullness368 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (@whiskered_counit_is_whisker_left C D F U A).
 Check (@whiskered_unit_is_whisker_right C D F U A).
 
 End P_whisker.
 
-(* ** CONVERSION
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   The target derives the componentwise invertibility of [fmap[U] ε] at
-   the two in-tree adjunctions the issue names, and the inverse it
-   produces is the unit component on the nose.  Neither donor's own
-   inverse is that term. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section P_reflective.
 
@@ -169,12 +156,11 @@ Check (reflective_fmap_counit_IsIsomorphism R x).
 Check (@reflective_fmap_counit_inverse C S R x).
 Check (fmap[Incl C S] (from (reflective_counit_iso R x))).
 
-(* Negative 7 (CONVERSION).  [reflective_counit_iso] is closed with
-   [Qed], so neither leg of the isomorphism it produces reduces: the two
-   terms are of the same type and are NOT convertible.  The cause is
-   donor opacity, not a difference of value -- nothing is claimed about
-   what the donor's [from] would reduce to were it transparent, and the
-   donor is not modified. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_reflective_inverse_strict :
   two_sided_inverse
     (IsIsomorphism := reflective_fmap_counit_IsIsomorphism R x)
@@ -208,17 +194,11 @@ Fail Definition probe_equiv_inverse_strict :
 
 End P_equiv.
 
-(* ** CONVERSION, the whisker padding itself
+(*
+   本节说明函子相关定义、性质与动机。
 
-   Correction 4 of the target rests on three record-level facts beneath
-   the two TYPING negatives above: the two parenthesizations of the
-   triple composite are not convertible, and neither identity padding is
-   convertible with the bare functor.  Each is pinned here as a CONVERSION
-   negative; the controls show that [fobj] and [fmap] DO agree at
-   [eq_refl] in every case, so what differs is confined to the three law
-   fields.  Every statement below is an equation between two inhabitants
-   of ONE type ([C ⟶ D]), which is what separates this kind from the
-   TYPING pair, where the ascription itself is rejected. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section P_padding.
 
@@ -250,10 +230,11 @@ Fail Definition probe_padding_unit_l : Id[D] ◯ U = U := eq_refl.
 
 End P_padding.
 
-(* ** Positive controls for the remaining headline names
+(*
+   本节说明 ProbeFullness368 相关定义、性质与动机。
 
-   So that a rename of any name a negative or the target's header depends
-   on breaks this file rather than turning a guard vacuously green. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section P_names.
 

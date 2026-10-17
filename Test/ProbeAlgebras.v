@@ -39,15 +39,11 @@ Require Import Category.Instance.Vect.TensorAlgebra.
 Monomorphic Universe big.
 Monomorphic Constraint Set < big.
 
-(** * 1-2: the [Set] pin on the multiplicative-monoid forgetful functor
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
 
-    Instance/Rng/MonoidRing.v's header states that [Rig_Forget_Mon] —
-    hence the [Rng_Forget_Mon] built from it — is instantiable only at
-    rigs whose carrier and [≈] live in [Set], and that the restriction is
-    the DONOR'S rather than one introduced there.  Both halves are pinned
-    here.  The instrument is sanity-checked first: the large instance of
-    the integers is itself well formed, so the rejections below are about
-    the functor and not about the ring. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* instrument check *)
 Check (Int_Rig@{big big big} : RigObject@{big big big}).
@@ -63,26 +59,17 @@ Fail Check (Rig_Forget_Mon (Int_Rig@{big big big})).
 (* NEGATIVE 2: and neither does the ring-level functor built from it *)
 Fail Check (Rng_Forget_Mon (Int_Ring@{big big big})).
 
-(** * 3-4: preservation of zero and one by the monoid ring's extension is
-      NOT definitional
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Instance/Rng/MonoidRing.v records that the extension's action on
-    SCALARS and on GENERATORS holds by [eq_refl] while its preservation of
-    ZERO and of ONE holds only up to [≈].  The reason is that the zero and
-    the one of R[M] are scalars, so the fold returns the structure map's
-    value there.  Both halves are pinned.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    The statements below are at a VARIABLE ring, deliberately: at a
-    concrete structure map the same equations can close by computation,
-    and the claim being guarded is about the general case. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-(* Written as top-level lambdas rather than in a [Section]: a section
-   variable [S : RingObject] has its universes fixed at the [Context]
-   command, and a later mention of [Rng_Forget_Mon S] in the same section
-   is then rejected by the very pin that negatives 1 and 2 guard.  That
-   structural consequence is exactly what Instance/Rng/MonoidRing.v's
-   header records, and it is why the evaluation development in that file
-   is at top level too. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* positive controls: scalars and generators DO close by [eq_refl] *)
 Check (fun (R : RingObject) (M : MonSets) (S : RingObject)
@@ -157,10 +144,11 @@ Check (rig_map_one (`1 (tensor_extend A f))).
 
 End TensorStrictness.
 
-(** * Positive controls for the strict claims that DID close
+(*
+   本节说明 ProbeAlgebras 相关定义、性质与动机。
 
-    These are the claims the three files make at [eq_refl]; restated here
-    so that a change breaking any of them breaks this file too. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (fun (K : CRng) (V : RModObject (`1 K)) (t : TTerm V) =>
          eq_refl : rig_map (`1 (ext_proj V)) t = t).

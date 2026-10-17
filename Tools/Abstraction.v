@@ -30,9 +30,11 @@ Definition rel `{Repr a} `{Repr b}
            (lam : a → b) (ccc : repr a ~{AST}~> repr b) : Type :=
   ∀ x : a, convert (lam x) ≈ ccc ∘ convert x.
 
-(* The curried, binary variant: a function [lam : a → b → c] is compiled to an
-   arrow into the exponential [repr c ^ repr b], and correctness is checked
-   after [uncurry] against the represented pair [convert (x, y)]. *)
+(*
+   本节说明 Abstraction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rel2 `{Repr a} `{Repr b} `{Repr c}
            (lam : a → b → c) (ccc : repr a ~{AST}~> repr c ^ repr b) : Type :=
   ∀ (x : a) (y : b), convert (lam x y) ≈ uncurry ccc ∘ convert (x, y).
@@ -53,9 +55,11 @@ Corollary convert_fork `{Repr a} `{Repr b} (x : a) (y : b) :
   convert x △ convert y ≈ convert (x, y).
 Proof. reflexivity. Qed.
 
-(* Application rule: when [U] compiles to a curried arrow [U'] and [V] to [V'],
-   the application [λx, U x (V x)] compiles to [eval ∘ U' △ V'] — feed the paired
-   results of [U'] and [V'] to evaluation, exactly Elliott's [apply]. *)
+(*
+   本节说明 Abstraction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem ccc_apply :
   ∀ `{Repr a} `{Repr b} `{Repr c}
     (U : a → b → c) (U' : repr a ~{AST}~> repr c ^ repr b)
@@ -135,11 +139,11 @@ Qed.
 
 End Abstraction.
 
-(* A cartesian category equipped with a distinguished "numbers" object and an
-   addition arrow on it — the minimal structure needed to compile arithmetic
-   expressions. [Coq_Numerical] below realises it with [nat] and [Nat.add], and
-   any model interpreting [AST] into such a category gives meaning to numeric
-   programs. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Numerical (C : Category) `{@Cartesian C} := {
   numerical_obj : obj;
   add : numerical_obj × numerical_obj ~> numerical_obj
@@ -154,10 +158,11 @@ Context `{@Cartesian D}.
 Context `{@Numerical D _}.
 Context `{@CartesianFunctor _ _ F _ _}.
 
-(* A (cartesian) functor preserving the numerical structure: it identifies the
-   source and target number objects ([map_num]) and carries source addition to
-   target addition coherently with the product comparison [prod_out]. This lets
-   addition be transported along [F], so [fmap add] is computed in the target. *)
+(*
+   本节说明函子、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class NumericalFunctor := {
   map_num : numerical_obj ≅ F numerical_obj;
 

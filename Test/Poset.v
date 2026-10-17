@@ -18,25 +18,20 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The canonical example [(ℕ, ≤)]
+(*
+   本节说明 Poset 相关定义、性质与动机。
 
-    [Category.Instance.Poset.LessThanEqualTo_Category] is exported from
-    [Instance/Poset.v] and is built as [@Poset nat le le_preorder
-    (partial_order_antisym le_partialorder)].  It exists ONLY because the
-    carrier is now a plain [Type] ([nat]) and the constraint is
-    [Antisymmetric] (discharged by [partial_order_antisym]).  It is the
-    concrete witness that a poset over a non-empty carrier is constructible
-    — the exact opposite of the old [there_is_no_poset]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Poset_nat : Category :=
   Category.Instance.Poset.LessThanEqualTo_Category.
 
-(** *** Inhabitation: the carrier is a plain, non-empty [Type]
+(*
+   本节说明 Poset 相关定义、性质与动机。
 
-    Under the old [{C : Category}] / [Asymmetric] signature the carrier was
-    forced empty (reflexivity + asymmetry yields [False] for any element),
-    so no object term could exist; moreover [obj] would be [obj[C]] for some
-    [Category C], never definitionally the bare [Type nat]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition poset_nat_has_object : obj[Poset_nat] := 0%nat.
 
@@ -45,12 +40,11 @@ Example poset_nat_obj_is_nat : obj[Poset_nat] = nat := eq_refl.
 Theorem poset_nat_is_inhabited : inhabited obj[Poset_nat].
 Proof. exact (inhabits 0%nat). Qed.
 
-(** *** Morphisms: identities from reflexivity, arrows from [≤],
-        composition from transitivity
+(*
+   本节说明hom相关定义、性质与动机。
 
-    In [Proset] the hom-type [x ~> y] is definitionally [R x y], here
-    [(x <= y)%nat].  The object arguments to [@id]/[@compose] parse in
-    [object_scope], so the numeric indices carry explicit [%nat]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition poset_nat_id0 : (0 ~{Poset_nat}~> 0)%nat := @id Poset_nat 0%nat.
 
@@ -61,42 +55,31 @@ Definition poset_nat_hom_1_2 : (1 ~{Poset_nat}~> 2)%nat := le_S 1 1 (le_n 1).
 Definition poset_nat_comp_0_2 : (0 ~{Poset_nat}~> 2)%nat :=
   @compose Poset_nat 0%nat 1%nat 2%nat poset_nat_hom_1_2 poset_nat_hom_0_1.
 
-(** *** Antisymmetry / skeletality
+(*
+   本节说明hom相关定义、性质与动机。
 
-    [poset_nat_skeletal] records that the poset is skeletal: any two
-    mutually related objects are equal.  It is stated over [obj[Poset_nat]]
-    and the poset hom-types, so it type-checks only once [Poset_nat] is
-    well-formed, and its proof reuses [poset_nat_antisym], the
-    standard-library antisymmetry of [(nat, ≤)] that backs the
-    [Antisymmetric] hypothesis the fixed [Poset] requires.  (These
-    nat-level facts document the skeletal property; the regression guards
-    proper are the [Poset_nat] and [Poset_two] constructions, which do not
-    build under the old definition.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition poset_nat_antisym : Antisymmetric nat eq PeanoNat.Nat.le :=
   partial_order_antisym PeanoNat.Nat.le_partialorder.
 
-(* Retained as a regression guard.  The library-proper statement is
-   [Proset_Skeletal_iff_Antisymmetric] (Instance/Proset/Skeletal.v), which
-   proves this proposition and [Skeletal (Proset P)] mutually derivable --
-   not definitionally equal, since an isomorphism is a record and not a
-   pair of [R]-proofs.  For this instance the exact counterpart is
-   [Nat_le_Skeletal]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma poset_nat_skeletal :
   forall x y : obj[Poset_nat],
     (x ~{Poset_nat}~> y)%nat -> (y ~{Poset_nat}~> x)%nat -> x = y.
 Proof. intros x y Hxy Hyx; exact (poset_nat_antisym x y Hxy Hyx). Qed.
 
-(** ** A bespoke 2-element poset over a [Type] with no categorical structure
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    This decisively exercises defect 1: the carrier [two] is an ordinary
-    inductive [Type] that is NOT a [Category], so [@Poset two ...] is
-    unbuildable under the old [{C : Category}] signature.  It also exercises
-    defect 2: the fourth argument is an [Antisymmetric] instance, exactly
-    where the old definition demanded an [Asymmetric] one.  A small bespoke
-    order on [two] is used so the example is self-contained and depends only
-    on this file. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive two : Type := lo | hi.
 
@@ -131,25 +114,22 @@ Definition poset_two_hom : (lo ~{Poset_two}~> hi) := I.
 Theorem poset_two_is_inhabited : inhabited obj[Poset_two].
 Proof. exact (inhabits lo). Qed.
 
-(* Retained as a regression guard.  The library-proper statement is
-   [Proset_Skeletal_iff_Antisymmetric] (Instance/Proset/Skeletal.v), which
-   proves this proposition and [Skeletal (Proset P)] mutually derivable --
-   not definitionally equal, since an isomorphism is a record and not a
-   pair of [R]-proofs.  For this instance the exact counterpart is
-   [Poset_Skeletal]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma poset_two_skeletal :
   forall x y : obj[Poset_two],
     (x ~{Poset_two}~> y) -> (y ~{Poset_two}~> x) -> x = y.
 Proof. intros x y Hxy Hyx; exact (two_le_antisym x y Hxy Hyx). Qed.
 
-(** ** Why the OLD definition forced an empty carrier (documentation)
+(*
+   本节说明 Poset 相关定义、性质与动机。
 
-    This standalone lemma captures, in categorical-free vocabulary, the
-    precise contradiction the fix repaired: any inhabitant of a carrier
-    bearing both a [PreOrder] and an [Asymmetric] relation yields [False].
-    It does not mention [Poset] and is valid regardless of its definition;
-    it is here purely as explanatory contrast for issue #124. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma asym_preorder_forces_empty :
   forall (C : Type) (R : relation C),

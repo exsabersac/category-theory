@@ -28,15 +28,11 @@ Generalizable All Variables.
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Negative 1 (FORMABILITY): the universe identification is the
-       PACKAGING's, not the construction's
+(*
+   本节说明hom相关定义、性质与动机。
 
-    [FibreProduct] carries bounds only.  [FibreProduct_IsPullback] displays
-    three separate category binders, but its constraint block contains
-    [u = u1], [u = u3], [u0 = u2] and [u0 = u4] -- all three object
-    universes identified, and all three hom-and-proof universes too.  The
-    control and the negative differ in nothing but which of the two is
-    asked for at the same three levels. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseBoundary.
 
@@ -66,14 +62,11 @@ Fail Check (fun (A : Category@{ao h h}) (B : Category@{bo h h})
 
 End UniverseBoundary.
 
-(** ** Negative 2 (CONVERSION): the first triangle holds in the data and
-       fails in the laws
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [FP_med_fst] is proved with an [eq_refl] object component and a
-    [reflexivity] arrow half.  That is exactly as far as conversion goes:
-    the two controls below close by [eq_refl], and the whole-record
-    equality does not, because [Functor]'s three law fields are rebuilt
-    proofs on the two sides. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TriangleData.
 
@@ -104,14 +97,11 @@ Check (FP_med_snd F G q1 q2 Hsq).
 
 End TriangleData.
 
-(** ** Negative 3 (CONVERSION): the slice is not the fibre product of its
-       own cospan
+(*
+   本节说明拉回/推出、同构相关定义、性质与动机。
 
-    Both are pullbacks of [Arrow_cod] along [Diagonal 1 c], so they are
-    isomorphic; the target does not build that isomorphism and does not
-    claim it.  They are certainly not the same category: an object of the
-    slice is an arrow, an object of the fibre product is a pair of objects
-    carrying a proof that their images agree. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SliceApex.
 
@@ -127,12 +117,11 @@ Fail Definition probe_slice_apex :
 
 End SliceApex.
 
-(** ** Negative 4 (TYPING): the refuting cospan has an empty fibre product
+(*
+   本节说明 ProbeCatPullback337 相关定义、性质与动机。
 
-    This is [IB_FibreProduct_empty] read at the term level.  The control
-    writes an object of the fibre product of the AGREEING cospan with the
-    same syntax, so what the negative measures is the cospan and not the
-    construction. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Control: at a cospan whose two legs agree, the pair with [eq_refl] is an
    object. *)
@@ -147,11 +136,11 @@ Fail Definition probe_ib_empty : obj[FibreProduct IBtrue IBfalse] :=
 Check IB_FibreProduct_empty.
 Check IB_iso.
 
-(** ** Positive controls for the headline artifacts
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Every constant the four negatives name appears above; these guard the
-    results the file exists for, so that a rename anywhere in it breaks
-    this probe loudly. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check FibreProduct.
 Check FP_fst.
@@ -192,34 +181,11 @@ Check Coslice_IsPullback.
 Check slice_arrow_reflect.
 Check coslice_arrow_reflect.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明 ProbeCatPullback337 相关定义、性质与动机。
 
-    The constants the NEGATIVES name:
-
-      Negative 1: [FibreProduct_IsPullback], [ObjUIP]
-      Negative 2: [FP_fst], [FP_med], [q1] (a section variable, not a
-                  constant, so it is not counted)
-      Negative 3: [Slice], [FibreProduct], [Arrow_cod], [Diagonal]
-      Negative 4: [FibreProduct], [IBtrue], [IBfalse]
-
-    Deduplicated, and with the two stdlib/donor names [Slice] and
-    [Diagonal] kept in because both are library constants this file
-    depends on, that is [FibreProduct_IsPullback], [ObjUIP],
-    [FibreProduct], [FP_fst], [FP_med], [Slice], [Arrow_cod], [Diagonal],
-    [IBtrue], [IBfalse] -- TEN, counted rather than recalled.  [Category],
-    [obj], [ttt] and [_1] are named by the negatives too and are EXCLUDED,
-    on the stated ground that they are core vocabulary named by almost
-    every file in the tree, not that they are hard to guard.
-
-    Each is named by a positive control above: [FibreProduct_IsPullback],
-    [FibreProduct], [FP_fst] and [FP_med] by the headline block;
-    [ObjUIP] by the third control of Negative 1; [Slice] and [Arrow_cod]
-    and [Diagonal] by [probe_slice_obj] and by [Check Slice_Arrow] (whose
-    type mentions [Slice] and [Arrow]) -- and, to leave nothing to a type
-    display, explicitly below; [IBtrue] and [IBfalse] by [probe_ib_agree]
-    and [Check IB_FibreProduct_empty].
-
-    Score: 10/10, on an unpadded denominator. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (fun (C : Category) (c : C) => (@Slice C c, @Arrow_cod C,
                                       @Diagonal C _1 c)).

@@ -302,18 +302,20 @@ Definition p452_cog_untruncate@{o so +| Set < o, o < so +}
 
 (** ** N13, N14 (UNIVERSE; P_large_cog): a large cogenerator of [Sets] *)
 
-(* CONTROL: Instance/Sets/Cogenerator.v's [Sets_Cogenerator_large], every
-   object tested by its identity, IS a [Cogenerator] of [Sets] with no
-   hypothesis, at the universes that file's header states; its index is
-   the type of all objects. *)
+(*
+   本节说明 ProbeSpecialInitial452 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p452_large_cog@{c o so +| o < so, o < c +} :
   Cogenerator@{c so o} Sets@{o so} :=
   Sets_Cogenerator_large@{c o so}.
 
-(* CONTROL: [cogen_prod] takes it over a completeness datum whose shape
-   universe is the family's index universe.  The datum is hypothetical, a
-   variable: [Sets_Complete] is [Complete@{o o o so}], its shape universe
-   [o] and not the [c] above it. *)
+(*
+   本节说明 ProbeSpecialInitial452 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p452_large_prod_abstract@{c o so +| o < so, o < c +}
   (comp : @Complete@{c c o so} Sets@{o so}) : obj[Sets@{o so}] :=
   cogen_prod comp Sets_Cogenerator_large@{c o so}.

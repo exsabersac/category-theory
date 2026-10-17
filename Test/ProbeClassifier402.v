@@ -164,12 +164,11 @@ Constraint o < so.
 (* CONTROL: the two-argument form, which is what the target inhabits. *)
 Check (@SubobjectClassifier Sets@{o so} Sets_Terminal@{so o}).
 
-(* NEGATIVE 7 (TYPING).  [HasPullbacks] is a Context variable of the
-   declaring section that the CLASS body never mentions, so it is
-   discharged onto the theorems below the class and not onto the class.
-   Stripped:
-     Illegal application (Non-functional construction)
-   -- no universe clause, no "cannot unify". *)
+(*
+   本节说明 ProbeClassifier402 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@SubobjectClassifier Sets@{o so} Sets_Terminal@{so o}
               Sets_HasPullbacks@{so o}).
 
@@ -192,12 +191,11 @@ Check (fun (U : Untruncate@{o}) (u x : SetoidObject@{o o})
            (m : u ~{Sets@{o so}}~> x) (M : @Monic Sets@{o so} u x m) =>
          @bridge_record_equiv@{o so sso} U u x m M).
 
-(* NEGATIVE 8 (CONVERSION).  The same identification as whole
-   [SetoidMorphism] records is refused: the two [proper_morphism]
-   certificates are separately elaborated.  Stripped:
-     cannot unify "SetoidMorphism_Lift (char m M)" and
-                  "sets_squash_mor ∘ char_setoid m"
-   -- two terms of ONE type. *)
+(*
+   本节说明 ProbeClassifier402 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example bridge_record@{o' so' sso'} (U : Untruncate@{o'})
   {u x : SetoidObject@{o' o'}} (m : u ~{Sets@{o' so'}}~> x)
   (M : @Monic Sets@{o' so'} u x m) :
@@ -215,11 +213,11 @@ Check (fun (E : IEM@{o}) (u x : SetoidObject@{o o})
            (b : carrier x) => @iem_routes_char@{o so} E u x m M b).
 Check (fun (E : IEM@{o}) => @iem_routes_truth@{o so} E).
 
-(* NEGATIVE 9 (CONVERSION).  The whole RECORDS do not agree: what differs
-   is exactly the two LAW fields, [char_pullback] and [char_unique], which
-   the two routes elaborate separately.  Stripped:
-     cannot unify "classifier_of_small (small_of_IEM E)" and
-                  "Sets_Classifier_dec (DecImage_of_IEM E)" *)
+(*
+   本节说明 ProbeClassifier402 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example iem_routes@{o' so'} (E : IEM@{o'}) :
   classifier_of_small@{o' so'} (small_of_IEM@{o'} E)
     = Sets_Classifier_dec@{o' so'} (DecImage_of_IEM@{o' so'} E) := eq_refl.

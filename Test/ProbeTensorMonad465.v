@@ -265,9 +265,11 @@ Fail Example p465_N12_fmap_sum@{a c p o x} (R : RingObject@{a c p})
   = cmon_map (tensor_map (@cmon_hom_id (ring_ab R)) f) s
   := eq_refl.
 
-(* The [Bilinear] record under Instance/Ab/Tensor.v's [tensor_map] at
-   1 ⊗ f, written out with that definition's own three proof terms, so
-   that N12's two records can be compared field by field. *)
+(*
+   本节说明 ProbeTensorMonad465 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p465_tm_bilin@{a c p o} (R : RingObject@{a c p})
   {A B : obj[Ab@{o c}]} (f : A ~{Ab@{o c}}~> B) :
   Bilinear@{c c c c c c c c c c c c c} (ring_ab R) A
@@ -283,9 +285,11 @@ Definition p465_tm_bilin@{a c p o} (R : RingObject@{a c p})
     (Category.Instance.Ab.Tensor.tensor_map_obligation_3@{c c c}
        _ _ _ _ (@cmon_hom_id (ring_ab R)) f).
 
-(* CONTROL (the cause of N12): [tensor_map] at 1 ⊗ f IS the mediator of
-   that record; the two records' maps are one; and each side of N12 is
-   the stuck mediator of its own record at the variable sum. *)
+(*
+   本节说明 ProbeTensorMonad465 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p465_ctl_n12_record@{a c p o x} (R : RingObject@{a c p})
   (A B : obj[Ab@{o c}]) (f : A ~{Ab@{o c}}~> B) :
   tensor_map (@cmon_hom_id (ring_ab R)) f

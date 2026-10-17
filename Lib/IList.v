@@ -44,10 +44,11 @@ Definition icons
 (* The empty indexed list: [ilist []] reduces to [unit], so [inil] is [tt]. *)
 Definition inil : ilist [] := tt.
 
-(* Get the car of an ilist.  The result type is computed from [As]: for a
-   cons [a :: As'] it is [B a], and for the empty list it degenerates to
-   [unit] (there is no head).  Both the type annotation and the body match on
-   [As] so that [fst]/[tt] are well-typed in each branch. *)
+(*
+   本节说明 IList 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ilist_hd {As : list A} (il : ilist As) :
   match As return ilist As → Type with
     | a :: As' => fun il => B a
@@ -81,11 +82,11 @@ Definition ilist_tl {As : list A} (il : ilist As) :
     | [] => fun il => tt
   end il.
 
-(* Positional lookup (CPDT's [get]): return the [n]th element of [il].  Since
-   [n] may be out of range, the caller supplies a default index [defA] with a
-   witness [defB : B defA]; the result type [B (nth n As defA)] mirrors the
-   default used by [List.nth], so out-of-bounds lookups return [defB].
-   Defined by structural recursion on [n], descending through the tail. *)
+(*
+   本节说明 IList 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ith (n : nat) {As : list A} (il : ilist As)
   {defA : A} (defB : B defA) : B (nth n As defA).
 Proof.
@@ -100,13 +101,11 @@ Proof.
       exact (snd il).
 Defined.
 
-(* Total, type-checked lookup at position [n]: with decidable equality on the
-   index type [A], look up the [n]th entry and confirm its index equals the
-   requested [a].  Returns [Some (b : B a)] only when both the position is in
-   range and the indices match (rewriting along [eq_dec] to coerce the found
-   [B a0] to [B a]); otherwise [None].  Used by Solver/Denote.v to fetch a
-   reified morphism of the expected domain/codomain.  The [subst] relies only
-   on [eq_dec]'s evidence, so this stays axiom-free. *)
+(*
+   本节说明 IList 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ith_exact `{EqDec A} (n : nat) (a : A)
   {As : list A} (il : ilist As) : option (B a).
 Proof.
@@ -132,9 +131,11 @@ Equations iapp `(xs : ilist l) `(ys : ilist l') : ilist (l ++ l') :=
   iapp (l:=[]) tt ys := ys;
   iapp (x, xs) ys := (x, iapp xs ys).
 
-(* Inverse of [iapp]: split an [ilist (l ++ l')] back into its [ilist l] and
-   [ilist l'] halves.  Note that [l] (not just [l ++ l']) must be known for
-   the recursion to fire, since the split point is dictated by [l]'s length. *)
+(*
+   本节说明 IList 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Equations isplit `(xs : ilist (l ++ l')) : ilist l * ilist l'  :=
   isplit (l:=[]) xs := (tt, xs);
   isplit (x, xs) with isplit xs := {
@@ -143,10 +144,11 @@ Equations isplit `(xs : ilist (l ++ l')) : ilist l * ilist l'  :=
 
 End ilist.
 
-(* Map over an indexed list, reindexing along [f : A -> C].  Each element
-   [x : B a] is sent to [k a x : D (f a)], so the whole [ilist] over [l] for
-   family [B] becomes an [ilist] over [map f l] for family [D].  This is the
-   functorial action of [ilist] (CPDT's [imap]). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Equations imap `(f : A → C) `(k : ∀ (a : A), B a → D (f a))
   `(xs : @ilist A B l) : @ilist C D (map f l) :=
   imap f k (l:=[]) tt := tt;

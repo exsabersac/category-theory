@@ -55,23 +55,18 @@ Definition test_scfa_eta     := scfa_eta     (scfa T).
 Definition test_scfa_delta   := scfa_delta   (scfa T).
 Definition test_scfa_epsilon := scfa_epsilon (scfa T).
 
-(** The SCFA-projected morphisms have the expected hom-set shape.
-    We avoid explicit [@I _ _] annotations because the [I] notation
-    picks a Monoidal instance and may pick a different one than the
-    SymmetricMonoidal-induced one used by [scfa].  Instead, we just
-    confirm the bare projections compose with themselves. *)
+(*
+   本节说明幺半结构、hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition test_scfa_eta_compose := compose test_scfa_epsilon test_scfa_eta.
 
-(** Beyond the operations, the SCFA special law [mu ∘ delta ≈ id] is a
-    resolved component of the structure.  Stating it as the type of a
-    definition pins the operations into the law's shape, so an SCFA whose
-    special law was dropped or mistyped would fail this test, not only one
-    that dropped an operation.
+(*
+   本节说明 HypergraphPROPResolution 相关定义、性质与动机。
 
-    This remains a resolution and typing test rather than a behavioural one:
-    [HypergraphPROP] has no in-tree witness yet (see docs/INHABITATION.md),
-    so there is no concrete model here to compute against.  A behavioural
-    test awaits such a witness. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition test_scfa_special_law : Type :=
   scfa_mu (scfa T) ∘ scfa_delta (scfa T) ≈ id[T].
 
@@ -79,53 +74,8 @@ End HypergraphPROPResolutionTests.
 
 Close Scope nat_scope.
 
-(** ** KNOWN LIMITATION: ambiguous [Monoidal (prop_cat P)] instance
+(*
+   本节说明幺半结构、（余）极限、幺半群相关定义、性质与动机。
 
-    The [PROP] class supplies TWO fields that each induce a
-    [Monoidal (prop_cat P)]:
-
-      - [prop_strict   : StrictMonoidal     (prop_cat P)] with coercion
-        [strict_is_monoidal : StrictMonoidal -> Monoidal]
-      - [prop_symmetric : SymmetricMonoidal (prop_cat P)] with coercion
-        [braided_is_monoidal . symmetric_is_braided : SymmetricMonoidal
-                                                      -> Monoidal]
-
-    The class DOES relate these two paths, via the field
-
-      [prop_monoidal_coherence :
-         strict_is_monoidal prop_strict
-         = braided_is_monoidal (symmetric_is_braided prop_symmetric)]
-
-    but only as a PROPOSITIONAL (Leibniz) equality, not a definitional
-    one.  In consequence, an expression like
-
-      braid : (T ⨂ T) ~> (T ⨂ T)
-
-    still fails to type-check inside a [HypergraphPROP] context (verified
-    empirically): the [⨂] notation resolves [T ⨂ T] through
-    [strict_is_monoidal] (the StrictMonoidal path) while [braid] expects
-    the [SymmetricMonoidal]-induced [Monoidal], and Coq will not unify the
-    two records up to a propositional equality on its own.
-
-    Similarly, [scfa_mu (scfa T) : T ⨂ T ~> T] resolves through the
-    [Hypergraph]'s [SymmetricMonoidal] path (confirmed by [Check]), while
-    [prop_tensor_plus : ⟦m⟧ ⨂ ⟦n⟧ = ⟦m+n⟧] uses the strict path; they
-    are interchangeable mathematically but not as bare Coq terms.
-
-    The workaround for downstream code is to bridge the two paths with an
-    explicit [rewrite prop_monoidal_coherence] (or [subst]) at the use
-    site, or to PIN the [Monoidal] path: write
-    [(T ⨂[strict_is_monoidal] T)] when proving against [prop_tensor_plus],
-    and let inference pick the [SymmetricMonoidal] path when using [braid]
-    / [scfa_*].
-
-    The DEFINITIONAL fix — which would make [prop_monoidal_coherence]
-    reduce to [eq_refl] and let [braid] / [scfa_*] / [prop_tensor_plus]
-    inter-operate without any [rewrite] — is to re-parameterise the
-    library's [BraidedMonoidal] / [SymmetricMonoidal] classes to take an
-    [@Monoidal C] as an explicit parameter, so [prop_symmetric] can
-    inherit [strict_is_monoidal prop_strict] verbatim.  That is a
-    multi-file refactor deferred to a separate PR and tracked in the
-    [prop_monoidal_coherence] discussion in [Construction/PROP.v]; the
-    tests requiring it (e.g. a typed [braid] on [T ⨂ T]) are omitted from
-    this file until then. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

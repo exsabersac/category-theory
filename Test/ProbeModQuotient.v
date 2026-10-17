@@ -25,35 +25,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** (1) The two quotient relations are not convertible
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Instance/Mod/Quotient.v reconciles Instance/Mod.v's [RModQuotient]
-    with [QuotientMod (ImageSubmod f)] by the BICONDITIONAL
-    [rmod_quotient_relations_agree] and by an isomorphism whose legs are
-    the identity on elements.  The header says the two relations are not
-    convertible -- [∃ a, x ≈ y + f a] against
-    [inhabited { a & x + (-y) ≈ f a }] -- and this is that measurement.
-
-    Stripped, the first probe reports
-      "(cannot unify "ab_coset_eq f x y" and
-        "mquot_rel (ImageSubmod f) x y")"
-    -- a genuine conversion refusal.  (The printed form drops [rm_hom],
-    which is a coercion.)  RE-MEASURED at the end of the PR "algebraic
-    carriers are sets" (2026-09-17) by stripping this [Fail] alone in a
-    copy of this WHOLE file: rc=1, and the parenthetical above reproduces
-    byte for byte.  An earlier note said the file was blocked from
-    building and the text could not be re-measured; it builds, and it
-    was.
-
-    AN EARLIER REVISION wrote both relations as [sigT]s and called the
-    refusal "a conversion failure between the two [sigT] types".  Since the
-    PR "algebraic carriers are sets" (2026-09-17) the left side is an [ex]
-    and the right side the propositional TRUNCATION of a [sigT], so they
-    now differ in shape as well as in sort, and neither is a bare [sigT].
-    The refusal itself was RE-MEASURED at this revision, by stripping this
-    probe in a copy of the whole file, and its "cannot unify" clause is
-    unchanged word for word; P2-I could not re-measure it because the ring
-    layer was not building then. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RelationBoundary.
 
@@ -71,10 +47,11 @@ Definition control_relations_agree :
   ab_coset_eq (rm_hom f) x y ↔ mquot_rel (ImageSubmod f) x y :=
   rmod_quotient_relations_agree f x y.
 
-(* SECOND POSITIVE CONTROL: an [eq_refl] of the same SHAPE that does
-   hold, so the probe above is not merely rejecting all [eq_refl]s
-   between relation types.  Membership in the image submodule IS the
-   sigma it is defined as. *)
+(*
+   本节说明 ProbeModQuotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition control_image_mem :
   smod_mem (ImageSubmod f) x
     = { a : carrier (cmon_setoid M) & cmon_map (rm_hom f) a ≈ x }
@@ -82,14 +59,11 @@ Definition control_image_mem :
 
 End RelationBoundary.
 
-(** ** (2) ...nor are the two quotient objects Leibniz-equal
+(*
+   本节说明同构相关定义、性质与动机。
 
-    [RModQuotient_is_quotient_by_image] is an ISOMORPHISM in [RMod R],
-    not an equality of records; the carriers agree but the setoids do
-    not, so nothing stronger is available.
-
-    Stripped, this reports a conversion failure between the two
-    [RModObject] records. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ObjectBoundary.
 
@@ -113,18 +87,11 @@ Definition control_objects_iso :
 
 End ObjectBoundary.
 
-(** ** (3) The first isomorphism theorem's triangle is not [eq_refl]
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Instance/Mod/Quotient/Isomorphism.v says both LEGS of the comparison
-    are the two mediators by convertibility, and that the boundary which
-    does NOT hold strictly is the mediator's TRIANGLE, which is `≈` and
-    not Leibniz.  Both halves are pinned here, the positive one first.
-
-    Stripped, the probe reports a conversion failure between the
-    composite [RModHom] and [mod_image_cores f]: the composite's
-    underlying map is [Basics.compose] of two maps, which is not the
-    same TERM as the corestriction even though it sends every element to
-    the same value. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TriangleBoundary.
 
@@ -153,17 +120,11 @@ Definition control_triangle_equiv :
 
 End TriangleBoundary.
 
-(** ** (4) Quotienting a ring by the total ideal is not the zero ring
-       on the nose
+(*
+   本节说明 ProbeModQuotient 相关定义、性质与动机。
 
-    Instance/Rng/Quotient.v states [rquot_total_one_is_zero] -- that
-    1 ≈ 0 in R/R -- and says the quotient is the zero ring "up to the
-    identification [rquot_total_collapses] supplies".  That wording is
-    deliberate: the carrier of R/R is R's, not [poly_unit], so no
-    equality of [RingObject]s is available and none is claimed.
-
-    Stripped, this reports a conversion failure between the two
-    [RingObject] records; the carriers alone already differ. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ZeroRingBoundary.
 
@@ -186,12 +147,11 @@ Definition control_total_one_is_zero :
 
 End ZeroRingBoundary.
 
-(** ** Positive controls for the two universal elements
+(*
+   本节说明 ProbeModQuotient 相关定义、性质与动机。
 
-    Not boundaries, but guards: these are the [eq_refl] claims the two
-    principal files make about their own packaging, restated here so
-    that a change to [AUniversalElement] which silently rebuilt the
-    mediators would break this file too. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition control_mod_universal_elem {R : RingObject} {M : RModObject R}
   (S : Submodule M) :

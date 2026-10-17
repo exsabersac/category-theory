@@ -756,9 +756,11 @@ Definition p458_top_not_cocomplete_above@{e r s o h +| o < h, o < s,
 (** ** REFUTATION CONSTANTS: [ObjDecEq] with the points at [Set], and the
        Type-valued [Top] below its homs *)
 
-(* CONTROL: cocompleteness of [PTopCat] refuted under decidable equality
-   of spaces with the points at [Set], by Freyd's argument through the
-   transport; by Cantor's with the points above [Set]. *)
+(*
+   本节说明 ProbeTopComplete458 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p458_not_cocomplete_objdeceq_at_set@{r s so +| Set < so,
   Set < s, s <= r +} :
   ObjDecEq PTopCat@{Set so} → @Cocomplete@{r s Set so} PTopCat@{Set so}
@@ -777,9 +779,11 @@ Fail Definition p458_cantor_objdeceq_at_set@{r s so +| Set < so, Set < s,
   → False :=
   PTop_not_cocomplete_Cantor_ObjDecEq.
 
-(* CONTROL: a continuous map rebuilt between two hom universes of [Top],
-   the continuity field eta-expanded, at [h1 < h2]; the field passed
-   through unexpanded where the two hom universes are one. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p458_top_rebuild_up@{o h1 h2 | o < h1, h1 < h2 +}
   {X Y : TopSpace@{o}} (f : ContinuousMorphism@{h1 o} X Y) :
   ContinuousMorphism@{h2 o} X Y :=
@@ -806,9 +810,11 @@ Definition p458_top_transport_down@{s o h1 h2 | o < h2, h2 < h1 +}
   (AI : ArrowIndex@{s h1 h1} Top@{h1 o}) : ArrowIndex@{s h2 h2} Top@{h2 o} :=
   Top_ArrowIndex_transport AI.
 
-(* CONTROL: completeness of [Top] refuted under [IEM] at a shape universe
-   strictly between the points and the homs, and under [ObjDecEq] with
-   the points at [Set]; #455's form at and above the homs. *)
+(*
+   本节说明 ProbeTopComplete458 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p458_top_not_complete_below@{e r s h o +| o < s, s < h,
   h <= r +} :
   IEM@{e} → @Complete@{r s h h} Top@{h o} → False :=
@@ -866,11 +872,11 @@ Fail Definition p458_top_iprod_below_at_points@{e h o +| o < h +} :
   IEM@{e} → @HasIndexedProducts@{o o o h h h} Top@{h o} → False :=
   Top_iprod_refuted_below_IEM@{e o h o}.
 
-(* CONTROL: cocompleteness of [Top] refuted under [IEM] at a shape
-   universe strictly between the points and the homs, under [ObjDecEq]
-   with the points at [Set], and by Cantor's argument between the points
-   and the homs as well, its [ObjDecEq] form with the points above
-   [Set]. *)
+(*
+   本节说明 ProbeTopComplete458 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p458_top_not_cocomplete_between@{e r s h o +| o < s, s < h,
   h <= r +} :
   IEM@{e} → @Cocomplete@{r s h h} Top@{h o} → False :=

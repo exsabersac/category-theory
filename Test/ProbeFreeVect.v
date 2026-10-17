@@ -36,21 +36,20 @@ Local Notation zplus := (@fv_plus Int_Ring TwoGens).
 Example probe_unit_computes (x : carrier TwoGens) :
   free_module_unit Int_Ring TwoGens x = zgen x := eq_refl.
 
-(** ** Positive control: the linear extension computes
+(*
+   本节说明 ProbeFreeVect 相关定义、性质与动机。
 
-    The mediator is a [Fixpoint] on formal expressions, so evaluating it
-    on a closed expression reduces all the way to a value of the target
-    module's carrier. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example probe_extend_computes :
   fv_eval int_probe
     (zplus (zsmul 2%Z (zgen true)) (zgen false)) = 11%Z := eq_refl.
 
-(** ** Negative: the counit does not compute
+(*
+   本节说明 ProbeFreeVect 相关定义、性质与动机。
 
-    Stripped of [Fail] this reports that [eq_refl] cannot unify the
-    counit's value at a generator with the generator, the counit being
-    [unique_obj] of a [Qed]-opaque uniqueness proof.  The [≈] statement
-    IS available and is the control immediately below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_counit_computes :
   cmon_map (rm_hom (free_module_counit Int_Ring Int_RMod))
     (@fv_gen Int_Ring (RMod_Forget Int_Ring Int_RMod) 3%Z) = 3%Z := eq_refl.

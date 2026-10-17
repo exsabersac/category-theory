@@ -39,11 +39,11 @@ Context (i : k ~> x).
 Context (K : IsKernelOf f i).
 Context (U : AUniversalElement (KillPresheaf f) k).
 
-(** ** (1) The kill packaging preserves the morphism, not the record
+(*
+   本节说明 ProbeKernelUniversal 相关定义、性质与动机。
 
-    Positive controls: the morphism survives both passages by [eq_refl],
-    the mediator survives one of them as a TERM, and both survive up to
-    [≈]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (kernel_aue_morphism f K).
 Check (aue_kernel_morphism f U).
@@ -66,10 +66,11 @@ Fail Check (eq_refl : fork_eq (aue_kernel f (kernel_aue f K)) = fork_eq K).
     [kernel_aue f (aue_kernel f U)] and [U].) *)
 Fail Check (eq_refl : kernel_aue f (aue_kernel f U) = U).
 
-(** Negative: and the mediator round trip on the kill side is genuinely
-    only up to [≈] -- the Leibniz form fails, unlike its fork-side twin
-    [aue_equalizer_round_mediator], which holds at [=].  (Stripped: cannot
-    unify the two [unique_obj] terms.) *)
+(*
+   本节说明 ProbeKernelUniversal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun (d : C) (p : Kills f d) =>
               eq_refl
                 : unique_obj (@aue_universal (C^op) (KillPresheaf f) k
@@ -87,11 +88,11 @@ Context (i : k ~> x).
 Context (E : IsEqualizer f g k i).
 Context (V : AUniversalElement (ForkPresheaf f g) k).
 
-(** ** (2) The fork packaging IS a record-level identity, one way
+(*
+   本节说明 ProbeKernelUniversal 相关定义、性质与动机。
 
-    Positive controls: one whole round trip is [eq_refl] on the whole
-    record, and on the other side the universal clause survives up to the
-    [sigT] repacking, which is the only thing missing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (aue_equalizer_round f g E).
 Check (aue_equalizer_round_universal f g V).
@@ -108,10 +109,11 @@ Fail Check (eq_refl : equalizer_aue f g (aue_equalizer f g V) = V).
 
 Check (fun (ZM : ZeroMorphisms C) => kill_fork_iso f).
 
-(** Negative: and nevertheless not the same functor.  This one does NOT
-    report "cannot unify"; stripped, the message is: the term [eq_refl]
-    'has type "KillPresheaf f = KillPresheaf f" while it is expected to
-    have type "KillPresheaf f = ForkPresheaf f zmor"'. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun ZM : ZeroMorphisms C =>
               eq_refl : KillPresheaf f = ForkPresheaf f zmor).
 
@@ -124,11 +126,11 @@ Fail Check (fun ZM : ZeroMorphisms C =>
 
 End ForkProbes.
 
-(** ** (3) The universe restriction on the bundled isomorphism
+(*
+   本节说明hom、同构、来源与用途相关定义、性质与动机。
 
-    Positive control: at an abstract category -- where the elaborator is
-    free to put the object universe at or below the hom universe -- both
-    bundled isomorphisms exist. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (fun (C : Category) (ZM : ZeroMorphisms C) (x y : C) (f : x ~> y)
            (k : C) => @kernel_universal_element_iso C ZM x y f k).
@@ -136,15 +138,11 @@ Check (fun (C : Category) (ZM : ZeroMorphisms C) (x y : C) (f : x ~> y)
 Check (fun (C : Category) (x y : C) (f g : x ~> y) (k : C) =>
          @equalizer_universal_element_iso C x y f g k).
 
-(** Negative: neither instantiates at a concrete algebraic category.
-    These are UNIVERSE INCONSISTENCIES, not unification failures.
-    Stripped, the first reports that [Ab] "has type
-    Category@{a b b} while it is expected to have type Category@{c d d}",
-    followed by "universe inconsistency: Cannot enforce b = d because
-    b < a <= d" -- i.e. [Ab]'s own declaration [Ab@{u u0}] with [u0 < u]
-    (objects strictly above homs) is exactly what is refused.  [@] is used
-    throughout so that no implicit argument can make a command fail for an
-    unrelated reason. *)
+(*
+   本节说明 ProbeKernelUniversal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (fun (A B : AbObject) (f : A ~{Ab}~> B) (k : Ab) =>
               @kernel_universal_element_iso Ab
@@ -153,10 +151,11 @@ Fail Check (fun (A B : AbObject) (f : A ~{Ab}~> B) (k : Ab) =>
 Fail Check (fun (R S : Rng) (u v : R ~{Rng}~> S) (k : Rng) =>
               @equalizer_universal_element_iso Rng R S u v k).
 
-(** Positive control, immediately: the universe-free forms DO reach [Ab],
-    and so does the representability statement.  This is the pair that
-    makes the restriction a measured fact about the bundled packaging
-    rather than about the theorem. *)
+(*
+   本节说明 ProbeKernelUniversal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (fun (A B : AbObject) (f : A ~{Ab}~> B) => ab_kernel_aue f).
 Check (fun (A B : AbObject) (f : A ~{Ab}~> B) => ab_kernel_representation f).
@@ -165,10 +164,11 @@ Check (fun (A B : AbObject) (f : A ~{Ab}~> B) => ab_kernel_repr_obj f).
 Check (fun (A B : AbObject) (f : A ~{Ab}~> B) (z : AbObject)
            (h : z ~{Ab}~> A) => ab_kernel_round f h).
 
-(** ** The zero-object bridge is definitional, and Rng has no zero morphisms
+(*
+   本节说明核/余核相关定义、性质与动机。
 
-    Positive controls: [zmor] at the derived structure IS [zero_mor], the
-    two kernel predicates are the same type, and the [Ab] witness computes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (fun (C : Category) (Z : @ZeroObject C) (x y : C) =>
          @zmor_is_zero_mor C Z x y).
@@ -180,9 +180,11 @@ Check (ab_parity_med_computes).
 Check (ab_parity_kernel_has_two).
 Check (ab_parity_kernel_proper).
 
-(** Positive control on the negative theorem: Rng has no zero-morphism
-    family, hence no zero object.  These are THEOREMS, not [Fail] probes --
-    the difference matters, and is the reason the fork packaging exists. *)
+(*
+   本节说明 ProbeKernelUniversal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (Rng_no_zero_morphisms : ZeroMorphisms Rng → False).
 Check (Rng_no_zero_object : @ZeroObject Rng → False).

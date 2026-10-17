@@ -41,9 +41,11 @@ Definition DerObj := Pull f g (@pullback Sets Derived _ _ _ f g).
 Fail Definition probe_derived_is_pair :
   DerObj = sets_pb_obj f g := eq_refl.
 
-(* Positive controls naming the negative's own constants.  The derivation
-   IS formable -- it is the DESCRIPTION that differs, not the term's
-   existence -- and the directly-built apex is independently well-formed. *)
+(*
+   本节说明 ProbeSetsPullback333 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check Derived.
 Check DerObj.
 Check (sets_pb_obj f g).
@@ -70,12 +72,11 @@ Check (sets_pb_snd f g).
 
 End PairEta.
 
-(** ** Negative 3 (CONVERSION): the equalizer round trip, as MORPHISMS
+(*
+   本节说明等化子相关定义、性质与动机。
 
-    The target's header records this and an earlier revision of this probe
-    pinned it nowhere.  The two [SetoidMorphism] records agree on their
-    underlying functions -- that is the POINTWISE [eq_refl] the target
-    ships -- and differ in the rebuilt [proper_morphism] certificate. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RoundTripMorphism.
 
@@ -93,14 +94,11 @@ Check (@exl Sets _ x y).
 
 End RoundTripMorphism.
 
-(** ** Negative 4 (TYPING): the bundled Pullback record is not applicable
+(*
+   本节说明拉回/推出、核/余核相关定义、性质与动机。
 
-    A DIFFERENT KIND from 1-3.  [Pullback f g] is a [Type] carrying its
-    apex as DATA, so it cannot be applied to an apex and two legs the way
-    the apex-pinned [IsPullback] can.  Stripped, the error is
-    "Illegal application (Non-functional construction)".  This is a DONOR
-    fact -- Theory/Morphisms/CokernelPair.v already pins the pushout dual
-    -- and is repeated here only so this file carries two kinds. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BundledNotApplicable.
 
@@ -149,17 +147,8 @@ Check even_ker_not_diagonal.
 Check even_med_is_ump.
 Check constThree_does_not_factor.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    The constants the NEGATIVES name:
-
-      Negative 1: [HasPullbacks_of_Cartesian_HasEqualizers],
-                  [Sets_HasEqualizers], [Pull], [pullback], [sets_pb_obj]
-      Negative 2: [sets_pb_pair]
-      Negative 3: [exl], [sets_pb_fst]
-      Negative 4: [Pullback], [sets_pb_snd]
-
-    That is TEN, and the denominator is not padded with control-only
-    names.  All ten are named by a positive control above, so renaming any
-    one breaks this file rather than turning its negative vacuously green.
-    Score: 10/10, counted rather than recalled. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

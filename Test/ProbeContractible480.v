@@ -216,10 +216,11 @@ Check @Category.Structure.Coequalizer.Absolute.contractible_coequalizer_absolute
 (* ------------------------------------------------------------------------ *)
 (** ** A reflexive pair with a coequalizer that is not contractible *)
 
-(* Required here, after every other command, so that the sections above
-   are elaborated under the targets' import lists alone: the lines
-   Instance/Grp/Coequalizer.v adds to them, in its order, and that
-   module. *)
+(*
+   本节说明 ProbeContractible480 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Lib.Setoid.Propositional.
 Require Import Category.Structure.Coequalizer.Reflexive.
 Require Import Category.Monad.Monadicity.Crude.

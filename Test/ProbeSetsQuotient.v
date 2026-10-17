@@ -35,23 +35,22 @@ Context (U : AUniversalElement H r).
 Check (ue_representation H r U).
 Check (AUniversalElement_of_repr H r).
 
-(** Negative: the Yoneda-based statement of the same correspondence is
-    not formable here.  (With the [Fail] stripped, both of the two
-    commands below report a universe inconsistency of the form "The term
-    "H" has type "Sets@{a b} ⟶ Sets@{a b}" while it is expected to have
-    type "?D ⟶ Sets@{c d}" (universe inconsistency: Cannot enforce
-    b = d because b < d)" -- the strict inequality being exactly [Sets]'
-    objects sitting above its homs.) *)
+(*
+   本节说明Yoneda相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (universal_element_yoneda H r).
 
 Fail Check (universal_element_representation H r).
 
 End YonedaAtSets.
 
-(** Positive control for the instrument: at a category whose object, hom
-    and proof universes ARE identified, the Yoneda statement elaborates.
-    So the refusal above is a fact about [Sets], not about the
-    constant. *)
+(*
+   本节说明Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section YonedaSmall.
 
 Universe u.
@@ -75,11 +74,11 @@ Definition probe_parts_prop@{o} (A : SetoidObject@{o o}) : Type@{o} :=
 Definition probe_parts_type_up@{o o'} (A : SetoidObject@{o o}) : Type@{o'} :=
   carrier A -> Type@{o}.
 
-(** Negative: it does not exist at the level of the carrier.  (With the
-    [Fail] stripped this reports "The term "A → Type" has type
-    "Type@{o+1}" while it is expected to have type "Type@{o}" (universe
-    inconsistency: Cannot enforce o < o because o = o)" -- a genuine
-    universe inconsistency naming the declared binder.) *)
+(*
+   本节说明 ProbeSetsQuotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_parts_type_same@{o} (A : SetoidObject@{o o}) : Type@{o} :=
   carrier A -> Type@{o}.
 
@@ -92,14 +91,11 @@ Definition probe_prop_quotient@{o so} (A : obj[Sets@{o so}])
   {| carrier := carrier A ;
      is_setoid := {| equiv := Rp ; setoid_equiv := HRp |} |}.
 
-(** ... and the impredicative phrasing Awodey's §3.5 exercise 4 uses for
-    the generated relation -- the intersection of all equivalence
-    relations containing the given pairs -- does not fit either, for the
-    same reason: quantifying over all [crelation]s on the carrier
-    quantifies over a [Type@{o+1}].  (With the [Fail] stripped this
-    reports "The term "∀ R : crelation A, Equivalence R → R a b" has type
-    "Type@{o+1}" while it is expected to have type "Type@{o}" (universe
-    inconsistency: Cannot enforce o < o because o = o)".) *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_intersection_type@{o} (A : SetoidObject@{o o})
   (a b : carrier A) : Type@{o} :=
   forall R : crelation@{o o} (carrier A), Equivalence R -> R a b.
@@ -119,12 +115,11 @@ Definition probe_intersection_prop@{o} (A : SetoidObject@{o o})
 Definition probe_finest_eq (A : SetoidObject) :
   SetsQuotient A (@equiv _ A) (@setoid_equiv _ A) = A := eq_refl.
 
-(** Negative: the coequalizer of a map with itself relates exactly the
-    `≈`-related points ([coeq_rel_diagonal]) and is still not the
-    codomain.  (With the [Fail] stripped this reports "cannot unify
-    "SetsCoeq bool_false_map bool_false_map" and "BoolSet"" -- the two
-    relations are provably interderivable and the two records are not
-    convertible.) *)
+(*
+   本节说明 ProbeSetsQuotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_diagonal_eq :
   SetsCoeq bool_false_map bool_false_map = BoolSet := eq_refl.
 

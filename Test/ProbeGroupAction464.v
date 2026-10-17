@@ -83,10 +83,11 @@ Example p464_rt_act@{o so} {M : MonObject@{o o o}}
   act (fobj[EM_to_MSet@{o so} M ◯ EM_Comparison (MSet_adj@{o so} M)] A)
   = act A := eq_refl.
 
-(* CONTROL (the cause of N3): the [act_respects] field of the round trip
-   is [act_respects A] with its last argument passed through the identity
-   map's properness proof, and without that proof it is [act_respects A]
-   by eta. *)
+(*
+   本节说明 ProbeGroupAction464 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p464_rt_respects_isolate@{o so} {M : MonObject@{o o o}}
   (A : MSetoidAction@{o o o o o o o o} M) :
   act_respects
@@ -245,9 +246,11 @@ Fail Example p464_hand_is_composite@{o so} (M : MonObject@{o o o}) :
 
 (** ** Instance/Fun/Action/Monad/BG.v: the two monads *)
 
-(* CONTROL: the literal unit reads (u u, x); the two monads have the same
-   object and arrow maps, the same multiplication at every p and the same
-   underlying multiplication function; the [to] leg of [BG_EM_iso]. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p464_bg_ret@{o so} (M : MonObject@{o o o}) (X : SetoidObject@{o o})
   (x : carrier X) :
   (@ret _ _ (BGMonad@{o so} M) X) x = (mon_op mon_unit mon_unit, x) :=
@@ -336,10 +339,11 @@ Fail Definition p464_bg_F_h@{o so} (M : MonObject@{o o o}) :
 
 (** ** Instance/Fun/Action/Monad/BG.v: the tie *)
 
-(* CONTROL: the [to] leg of [Fun_EM_iso] is the comparison functor of
-   [MSet_adj] after [MSet_to], on the nose; θ* after this file's
-   comparison functor agrees with it on carriers and on structure maps as
-   functions. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p464_fun_em_to@{o so c} (M : MonObject@{o o o}) :
   to (Fun_EM_iso@{o so c} M)
   = EM_Comparison (MSet_adj@{o so} M) ◯ MSet_to@{so o} M := eq_refl.

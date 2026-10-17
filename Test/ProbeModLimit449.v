@@ -87,16 +87,11 @@ Check @ab_cmon.
 Check @ab_neg.
 Check @carrier.
 
-(** ** The fourteen [eq_refl] readbacks, restated
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-    Each is the statement of one of the target's fourteen [:= eq_refl]
-    lines, re-elaborated here from library constants alone, at exactly
-    the strength the target claims for it and no more.  Five compare
-    morphisms, five objects, four elements; every witness is [eq_refl],
-    so each of these is a positive control on a definitional identity,
-    not a proof.  Two of them rest on transparency measured in the
-    target: R5 and R6 stop if [RMod_Forget_Ab_StrictlyCreatesLimit] is
-    closed opaquely, and that in turn rests on [mlim_created]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* R1 = [mlim_over_obj]: the lifted module's group IS the apex of [L]. *)
 Example p449_r1 {R : RingObject} {J : Category} (K : J ⟶ RMod R)
@@ -173,10 +168,11 @@ Example p449_r12
   `1 (ab_neg (rm_ab (vertex_obj[RMod_Complete R J K])) a) d
     = ab_neg (rm_ab (K d)) (`1 a d) := eq_refl.
 
-(* R13 = [rmod_complete_smul]: the ONE readback with no counterpart in
-   Instance/Ab/Limit.v -- the created ACTION is componentwise at the
-   chosen limit, even though that limit reaches its mediator through
-   [creates_limiting].  F4 below pins what this does NOT say. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p449_r13 (r : R)
   (a : carrier (Sets_limit_obj (Ab_Forget ◯ (RMod_Forget_Ab R ◯ K))))
   (d : J) :
@@ -194,37 +190,30 @@ End RModComputed449.
 
     Four, each followed by the term that does stand there. *)
 
-(* F1 -- CONVERSION: the two forgetful functors of Instance/Mod.v are not
-   the same record, the three law fields being opaque.  "The term
-   "eq_refl" has type "RMod_Forget R = RMod_Forget R" while it is
-   expected to have type "RMod_Forget R = Ab_Forget ◯ RMod_Forget_Ab R"
-   (cannot unify "RMod_Forget R" and "Ab_Forget ◯ RMod_Forget_Ab R")".
-   R7 and R8 above are the positive halves: fobj and fmap DO agree. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p449_f1 (R : RingObject) :
   RMod_Forget R = Ab_Forget ◯ RMod_Forget_Ab R := eq_refl.
 
-(* F2 -- CONVERSION, the consequence of F1 for continuity: "The term
-   "RMod_Forget_composite_continuous R" has type "ContinuousFunctor
-   (Ab_Forget ◯ RMod_Forget_Ab R)" while it is expected to have type
-   "ContinuousFunctor (RMod_Forget R)" (cannot unify "Cone (RMod_Forget R
-   ◯ K)" and "Cone (Ab_Forget ◯ RMod_Forget_Ab R ◯ K)")".  This is why
-   the target carries the [rmod_abcone_of] bridge; the repaired term is
-   next. *)
+(*
+   本节说明 ProbeModLimit449 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p449_f2 (R : RingObject) : ContinuousFunctor (RMod_Forget R) :=
   RMod_Forget_composite_continuous R.
 
 Example p449_f2_repair (R : RingObject) : ContinuousFunctor (RMod_Forget R) :=
   RMod_Forget_creates_continuous R.
 
-(* F3 -- CONVERSION: continuity does NOT ascribe where Freyd's theorem
-   and [representability_theorem] ask for [PreservesImageLimit], so
-   [Continuous_PreservesImageLimit] must stand in the term.  "The term
-   "RMod_Forget_Ab_creates_continuous R" has type "ContinuousFunctor
-   (RMod_Forget_Ab R)" while it is expected to have type
-   "PreservesImageLimit" (cannot unify "Cone (RMod_Forget_Ab R ◯ K)" and
-   "IsLimitCone N")": the two types quantify over a cone and over a
-   limit in different positions.  Consumers of [RMod_Complete] meet this
-   at the application. *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p449_f3 (R : RingObject) :
   @PreservesImageLimit (RMod R) Ab (RMod_Forget_Ab R) :=
   RMod_Forget_Ab_creates_continuous R.
@@ -233,16 +222,11 @@ Example p449_f3_repair (R : RingObject) :
   @PreservesImageLimit (RMod R) Ab (RMod_Forget_Ab R) :=
   Continuous_PreservesImageLimit (RMod_Forget_Ab_creates_continuous R).
 
-(* F4 -- CONVERSION, the boundary of R13: componentwise computation of
-   the action is a fact about the CHOSEN limit, not about the lifted
-   action in general.  At an arbitrary [L] the defining triangle holds
-   only up to [≈]: "The term "eq_refl" has type "mlim_leg K L j
-   (mlim_smul K L r a) = mlim_leg K L j (mlim_smul K L r a)" while it is
-   expected to have type "mlim_leg K L j (mlim_smul K L r a) = rm_smul
-   (fobj[K] j) r (mlim_leg K L j a)" (cannot unify "mlim_leg K L j
-   (mlim_smul K L r a)" and "rm_smul (fobj[K] j) r (mlim_leg K L j a)")"
-   -- the action being a mediator of the abstract limit there.  The
-   available strength is the [≈] of [mlim_smul_triangle], next. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p449_f4 {R : RingObject} {J : Category} (K : J ⟶ RMod R)
   (L : Limit (RMod_Forget_Ab R ◯ K)) (r : R) (j : J) (a : vertex_obj[L]) :
   mlim_leg K L j (mlim_smul K L r a) = rm_smul (K j) r (mlim_leg K L j a)

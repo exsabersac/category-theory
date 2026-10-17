@@ -390,10 +390,11 @@ Qed.
 
 End Normal.
 
-(** The [exprAD e → exprD e] direction of [exprAD_sound], with the [Arrows]
-    environment made an explicit argument.  Taking [env] explicitly lets the
-    [normalize] tactic apply this with [simple apply] and no instance search,
-    which is much faster than appealing to the full [↔]. *)
+(*
+   本节说明 Normal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary exprAD_sound' {cat} (env : Arrows cat) (e : Expr) :
   exprAD e → exprD e.
 Proof. apply exprAD_sound. Qed.

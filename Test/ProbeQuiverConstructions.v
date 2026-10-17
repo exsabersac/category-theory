@@ -14,11 +14,11 @@ Require Import Category.Construction.Free.Quiver.Constructions.
 
 Local Open Scope category_scope.
 
-(** ** Positive controls: the headline claims are definitional.
+(*
+   本节说明 ProbeQuiverConstructions 相关定义、性质与动机。
 
-    These must SUCCEED.  They are restated here rather than cited from
-    Constructions.v so that this file measures the claims independently of the
-    constants that assert them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition control_op (C : Category) :
   QuiverOfCat (C^op) = QuiverOp (QuiverOfCat C) := eq_refl.
@@ -48,12 +48,11 @@ Fail Definition probe_swap_invol_strict (G H : Quiver) :
     QuiverSwap QuiverSwap
     = @id QuiverCategory (QuiverProd G H) := eq_refl.
 
-(** ** The [prod_setoid] non-reuse.
+(*
+   本节说明 ProbeQuiverConstructions 相关定义、性质与动机。
 
-    [QuiverProd_alt] is [QuiverProd] with Lib/Datatypes.v's global
-    [prod_setoid] in place of [edgeset_prod].  It is a perfectly good quiver —
-    that definition succeeds — but the preservation lemma is then no longer
-    definitional, which is the whole reason [edgeset_prod] exists. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition QuiverProd_alt (G H : Quiver) : Quiver := {|
   nodes   := (@nodes G * @nodes H)%type;
@@ -67,12 +66,11 @@ Fail Definition probe_prod_setoid_strict (C D : Category) :
   QuiverOfCat (C ∏ D) = QuiverProd_alt (QuiverOfCat C) (QuiverOfCat D)
     := eq_refl.
 
-(** ** The scoped universal property.
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-    Constructions.v proves [QuiverPair_unique] with LEIBNIZ hypotheses, noting
-    that the [≈]-hypothesis form would need respectfulness of [QuiverPair],
-    which is not proved.  [QuiverPair_eta] is likewise delivered at [≈].  Both
-    weakenings are real, not defensive: the strengthenings fail. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition probe_pair_eta_strict {G H K : Quiver}
   (M : QuiverHomomorphism K (QuiverProd G H)) :

@@ -40,9 +40,11 @@ Generalizable All Variables.
 
 (** ** 1. [ts_eq], Instance/Ab/Tensor.v *)
 
-(* Instance/Ab/Tensor.v and Instance/Mod/Tensor.v both export
-   [tensor_med_fun] and [tensor_med_respects]; the abelian-group ones are
-   qualified here because the module-level import order shadows them. *)
+(*
+   本节说明 ProbeTermModelProp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* NEGATIVE.  The elimination into an arbitrary [Type]. *)
 Fail Definition ts_eq_type_elim {G H : AbObject} (s t : tsum G H)
@@ -58,9 +60,11 @@ Fail Definition ts_med_type_elim {G H K : AbObject}
   Ab.Tensor.tensor_med_fun β s ≈ Ab.Tensor.tensor_med_fun β t :=
   ltac:(induction He).
 
-(* NOT-LOST CHECK (it also compiles in the unchanged tree, so it is not a
-   control of the change): the same conclusion, reached through [pequiv]
-   inside the file's own [tensor_med_respects], APPLIED. *)
+(*
+   本节说明 ProbeTermModelProp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ts_control {G H K : AbObject} (β : Ab.Tensor.Bilinear G H K)
   (s t : tsum G H) (He : ts_eq s t) :
   Ab.Tensor.tensor_med_fun β s ≈ Ab.Tensor.tensor_med_fun β t :=

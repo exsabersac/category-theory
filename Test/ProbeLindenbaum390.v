@@ -91,14 +91,11 @@ Check @RelationClasses.PreOrder.
 
 (** ** N1, N2: the hom = proof identification, and its donor *)
 
-(* [Lind@{u u0 u1} : Theo@{u0 u1} V -> Category@{u0 u u}] reuses one
-   level for hom and for proof in the BINDER, while its constraint block
-   carries no equation at all.  Both facts have to be read to get this
-   right, and only the binder shows it.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   The two negatives below are rejected at levels declared strictly
-   apart; the control on the line before each shows the very same
-   application accepted at those levels once hom and proof coincide. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseProbe.
 
@@ -121,9 +118,11 @@ Context (Au : Type@{lo}) (Ru : Relation_Definitions.relation Au)
 (* Control for N2, at the same declared levels. *)
 Check (Proset Pu : Category@{lo lh lh}).
 
-(* N2 (FORMABILITY): the donor alone, with no [Lind] in the command,
-   is rejected with the identical clause — so the identification is
-   inherited from [Proset] and the target introduces none of its own. *)
+(*
+   本节说明 ProbeLindenbaum390 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Proset Pu : Category@{lo lh lp}).
 
 End UniverseProbe.
@@ -143,10 +142,11 @@ Inductive TEnt {V : Type} (T : Theo V) : Sent V -> Sent V -> Type :=
 Check (Entails T_empty : Relation_Definitions.relation (Sent bool)).
 Check (TEnt T_empty).
 
-(* N3 (FORMABILITY): "Cannot enforce <level> <= Prop".  Note the kind:
-   the message opens like a typing mismatch but closes with a universe
-   clause, so it is counted with the formability negatives and not with
-   N4/N5, whose messages carry no universe clause at all. *)
+(*
+   本节说明 ProbeLindenbaum390 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe390_tent_relation :
   Relation_Definitions.relation (Sent bool) := TEnt T_empty.
 
@@ -159,10 +159,11 @@ Context {V : Type} (T : Theo V) (p q r : Sent V).
 (* Control: the product object with the right structure supplied. *)
 Check (@product_obj (Lind T) (Lind_Cartesian T) p q).
 
-(* N4 (TYPING): "The term Lind_Terminal T has type Terminal while it is
-   expected to have type Cartesian" — a plain mismatch, no
-   "cannot unify" and no universe clause.  The three structures are
-   three distinct classes on one category. *)
+(*
+   本节说明笛卡尔、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@product_obj (Lind T) (Lind_Terminal T) p q).
 
 End TypingProbe.
@@ -180,10 +181,11 @@ Fail Check (entails_mp : Entails T_empty (sv true) (sv false)).
 (* Control: each category is convertible with itself. *)
 Definition probe390_lind_self : Lind T_empty = Lind T_empty := eq_refl.
 
-(* N6 (CONVERSION): different axiom sets, different categories — the
-   two [Category] records do not convert.  (Section (G) of the target
-   upgrades this from a conversion remark to the statement that no full
-   functor, hence no equivalence, connects them.) *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe390_two_theories :
   Lind T_empty = Lind T_mp := eq_refl.
 

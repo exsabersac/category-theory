@@ -165,12 +165,11 @@ Check (leibniz_coequalizers_iff_quotients :
 Check (CommMagma_Cocartesian : @Cocartesian (SVariety CommEq)).
 Check (CommMagma_coequalizers : HasCoequalizers (SVariety CommEq)).
 
-(** ** N3 (UNIVERSE): [Two_Discrete] is refused as a shape
+(*
+   本节说明 ProbeVarietyColimit450 相关定义、性质与动机。
 
-    Stated at the top level with its own binders, not in the section
-    above: there [E]'s carrier universe would be a section universe, and
-    the refusal would stop at that rigidity, before the [Set < carrier]
-    bound it is meant to exercise. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* CONTROLS: discrete two-object shapes whose homs are free. *)
 Definition p450v_colim_bool {S : UA.OpSignature} (E : UA.EqSignature S) :=

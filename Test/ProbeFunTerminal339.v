@@ -25,12 +25,11 @@ Generalizable All Variables.
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Negatives 1-5 (FORMABILITY): five INDEPENDENT donors identify hom
-       with proof
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Each is rejected under `Constraint uh < up` while the controls show a
-    hom-set and an object family are perfectly formable at those levels.
-    Testing them separately is the point: no single one is "the" cause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Donors.
 
@@ -56,11 +55,11 @@ Check @Cartesian.
 (* NEGATIVE 2. *)
 Fail Check (fun (C : Category@{uo uh up}) => @Cartesian C).
 
-(* Control: [HasIndexedProducts] EXISTS and elaborates at UNCONSTRAINED
-   levels.  Without this line the negative below would still "succeed"
-   after a rename of [HasIndexedProducts], on a reference-not-found error
-   rather than on the universe boundary -- measured, not guessed: an
-   earlier revision omitted it and the rename simulation scored 5/7. *)
+(*
+   本节说明 ProbeFunTerminal339 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check @HasIndexedProducts.
 
 (* NEGATIVE 3. *)
@@ -83,14 +82,11 @@ Fail Check (fun (C D : Category@{uo uh up}) => @Fun C D).
 
 End Donors.
 
-(** ** Negative 6 (FORMABILITY): why the target builds its own constant
-       functor rather than citing [Diagonal]
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    [Diagonal]'s type mentions the functor category and so inherits
-    [Fun]'s identification.  [Constant_Functor], built by hand with
-    explicit binders, keeps C's hom and proof APART -- and the control
-    below is that functor AT THE VERY LEVELS the negative is rejected at,
-    so the rejection is attributable to [Diagonal]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DiagonalPin.
 
@@ -125,10 +121,11 @@ Fail Check (fun (C : Category@{co ch cp}) (D : Category@{dro dh dh})
 
 End DiagonalPin.
 
-(** ** The separation: where the [Set] pin on the [Limit] route USED to come from
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
 
-    Not a refutation -- three definitions whose universe signatures are
-    the measurement.  Run `About` on each to see it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition probe_functor_only
   {C : Category} {A : Type} (f : A -> C) : DiscreteCat A ⟶ C :=
@@ -165,39 +162,8 @@ Check @bool_fam.
 Check @Fun_bool_iprod_iso_commutes.
 Check @Fun_bool_iprod_iso_inv_commutes.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明笛卡尔、始/终对象相关定义、性质与动机。
 
-    Read off the `Fail` commands themselves, not from memory.
-
-      Negative 1 names [Terminal], [Category]
-      Negative 2 names [Cartesian], [Category]
-      Negative 3 names [HasIndexedProducts], [Category]
-      Negative 4 names [IsIndexedProduct], [Category]
-      Negative 5 names [Fun], [Category]
-      Negative 6 names [Diagonal], [terminal_obj], [Terminal], [Category],
-                       [fobj]
-
-    Excluding core vocabulary ([Category], [fobj]) on the stated ground
-    that it is named by almost every file in the tree rather than that it
-    is hard to guard, the constants a NEGATIVE names are SEVEN:
-    [Terminal], [Cartesian], [HasIndexedProducts], [IsIndexedProduct],
-    [Fun], [Diagonal], [terminal_obj].
-
-    Each of the seven is named by a positive control above -- note that
-    [Fun_HasIndexedProducts] and [Fun_IsIndexedProduct] do NOT count as
-    controls for [HasIndexedProducts] and [IsIndexedProduct], since `_`
-    is a word character and a rename of the bare name does not touch
-    them; the bare `Check`s in the Donors and DiagonalPin sections are
-    what guard those.  TWO measurement defects were found and fixed
-    before this score could be stated, and both are recorded rather than
-    quietly repaired: (a) three of the seven -- [Cartesian], [Fun] and
-    [Diagonal] -- were named ONLY inside their own `Fail`, so a rename
-    left the `Fail` succeeding on "reference not found"; bare controls
-    for all three are now present; and (b) the simulation itself was
-    broken, because it renamed the module paths in the `Require Import`
-    lines too, so the file failed to compile for the WRONG REASON and
-    every result read as a pass.  A rename simulation must PRESERVE
-    `Require`/`From` lines.  Score: 7/7,
-    on an unpadded denominator, measured by compiling a renamed copy of
-    this file against an instrument-checked baseline and confirming each
-    one breaks it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

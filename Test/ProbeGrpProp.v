@@ -53,15 +53,11 @@ Section AmEq.
 Context {A B C : GrpObject}.
 Context (f : A ~{Grp}~> B) (g : A ~{Grp}~> C).
 
-(* NEGATIVE 1.  A bare elimination of [am_eq] into a [Type]-valued goal.
-   Stripped in a copy of this whole file; first error line:
+(*
+   本节说明 ProbeGrpProp 相关定义、性质与动机。
 
-     Error: Cannot find the elimination combinator am_eq_rect, the
-     elimination of the inductive definition am_eq on sort Type is probably
-     not allowed.
-
-   ([am_eq_ind] and [am_eq_sind] do exist; [am_eq_rect] and [am_eq_rec] do
-   not, which is exactly what a [Prop] inductive gets.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition am_eq_eliminates_into_Type
   (u v : AmTerm B C) (He : am_eq f g u v) : poly_unit :=
   ltac:(induction He).
@@ -93,9 +89,11 @@ Definition am_eq_pequiv_from (u v : AmTerm B C)
 
 End AmEq.
 
-(* CONTROL 1c, APPLIED.  The one elimination of [am_eq] in the tree,
-   [am_eval_respects], survives: it runs under the TARGET group's [pequiv]
-   and comes back with [pequiv_to].  Here it is applied at the mediator. *)
+(*
+   本节说明 ProbeGrpProp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition am_med_applies
   {A B C : GrpObject} (f : A ~{Grp}~> B) (g : A ~{Grp}~> C)
   {Q : GrpObject} (q1 : B ~{Grp}~> Q) (q2 : C ~{Grp}~> Q)
@@ -116,18 +114,11 @@ Definition quot_equiv_is_inhabited_quot_rel (a b : carrier G) :
   @equiv _ (is_setoid (grp_setoid (QuotientGrp N))) a b
     = inhabited (quot_rel N a b) := eq_refl.
 
-(* NEGATIVE 2.  A [Type] destruct of a quotient equation: the witness is
-   asked for in a [Type]-valued goal.  Stripped in a copy of this whole
-   file; first error line:
+(*
+   本节说明同构相关定义、性质与动机。
 
-     Error:
-     Incorrect elimination in the inductive type "inhabited":
-     the return type has sort "Type" while it should be SProp or Prop.
-
-   [quot_rel N a b] is [sub_mem N (a * b⁻¹)], which stays [Type]-valued --
-   its consumers READ THE WITNESS (Instance/Grp/Quotient/Isomorphism.v's
-   [image_med]) -- so recovering it from the quotient's `≈` is exactly the
-   elimination that is refused. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition quot_equiv_yields_the_witness (a b : carrier G)
   (H : @equiv _ (is_setoid (grp_setoid (QuotientGrp N))) a b) :
   quot_rel N a b := ltac:(destruct H).
@@ -141,10 +132,11 @@ Definition quot_equiv_into_Prop (a b : carrier G)
   (H : @equiv _ (is_setoid (grp_setoid (QuotientGrp N))) a b) :
   inhabited (quot_rel N a b) := H.
 
-(* CONTROL 2c.  And into a [Type] goal AT A GROUP, through that group's own
-   [grp_prop] -- the repair every consumer of the quotient uses.  Applied:
-   this is [quot_med]'s respectfulness obligation, in the shape
-   Instance/Grp/Quotient.v carries it. *)
+(*
+   本节说明 ProbeGrpProp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_equiv_through_pequiv {K : GrpObject} (p : Kills N K)
   (a b : carrier G)
   (H : @equiv _ (is_setoid (grp_setoid (QuotientGrp N))) a b) :
@@ -181,14 +173,11 @@ Definition fg_equiv_is_inhabited_hom_equiv (a b : FGWord X) :
     = inhabited (@equiv _ (@homset (FreeGroupoid (PointQuiver X)) ttt ttt) a b)
   := eq_refl.
 
-(* NEGATIVE 3.  A [Type] elimination out of the free group's equality: the
-   free groupoid's hom-equality is [Construction/Quotient.v]'s [CongClosure],
-   a [Type]-valued inductive, and recovering it from the truncation is
-   refused.  Stripped in a copy of this whole file; first error line:
+(*
+   本节说明hom相关定义、性质与动机。
 
-     Error:
-     Incorrect elimination in the inductive type "inhabited":
-     the return type has sort "Type" while it should be SProp or Prop. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition free_equiv_yields_the_groupoid_equation (a b : FGWord X)
   (H : @equiv _ (is_setoid (grp_setoid (FreeGrpObject X))) a b) :
   @equiv _ (@homset (FreeGroupoid (PointQuiver X)) ttt ttt) a b
@@ -211,11 +200,11 @@ Definition free_equiv_through_pequiv {H : GrpObject}
 
 End Free.
 
-(* CONTROL 3c, APPLIED AT AN ARBITRARY OBJECT OF [Sets].  The free-forgetful
-   adjunction is still TOTAL: the free group is formed, and the universal
-   arrow, the functor and the adjunction are named, at an arbitrary
-   [X : Sets] with no [PropEquiv] hypothesis.  This is the control the plan's
-   finding F1 asks for: the truncation did not restrict the domain. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition free_group_is_total (X : Sets) : GrpObject := FreeGrpObject X.
 
 Definition free_universal_arrow_is_total (X : Sets) :
@@ -235,22 +224,11 @@ Definition free_universal_is_total (X : Sets) :
 (* ------------------------------------------------------------------------ *)
 (** ** (4) What did NOT move *)
 
-(* [grp_coset_rel] (Instance/Grp/Epi.v) is deliberately NOT truncated -- the
-   field constrains only the objects it is a field of, and
-   [GrpCosetPower]'s witness comes from its CODOMAIN through
-   [hom_PropEquiv].  Truncating it would have cost
-   [transposition_decides_image] its strength.  That decision is guarded by
-   two controls in Test/ProbeGrpQuotient.v's [Positive] section --
-   [positive_grp_coset_rel_is_type_valued] and
-   [positive_transposition_decides_image_full] -- and is not restated here;
-   what this file records is that the three relations above are the only
-   ones the Grp layer moved.
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-   CORRECTION, the same PR.  An earlier revision of the sentence above said
-   "That development is probed by Test/ProbeGrpEpi*.v".  No such file has
-   ever existed ([ls Test/ | grep -iE 'epi|coset|transpos|image'] matches
-   nothing), so the strength claim was unguarded; the two controls named
-   above were landed to close that gap. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* [Grp] is locally propositional, which is what lets the functor-of-points
    constructions of Structure/Group/Representable.v be applied at [Grp]

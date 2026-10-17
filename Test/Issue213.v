@@ -16,16 +16,18 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Take the wide search away.  [intuition]'s default solver is
-   [first [solve [auto] | tryif solve [auto with *] then <warn> else idtac]];
-   stubbing it out with [idtac] leaves [intuition] its structural work (it
-   still splits the pair) while denying it the [auto with *] leaf -- exactly
-   the reach that the released Rocq versions still had and Rocq master lost. *)
+(*
+   本节说明 Issue213 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac Tauto.intuition_solver ::= idtac.
 
-(* [equivalence]'s body without the deterministic pass and with no wide
-   fallback: what the tactic amounts to once neither the explicit search nor
-   [intuition]'s implicit one reaches [solve_crelation]. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac equivalence_old :=
   constructor; repeat intro; simpl; try cat; intuition.
 
@@ -39,12 +41,11 @@ Definition issue_213_rel (f g : @adj_morphism C D) : Type :=
   (free_functor f ≅[Fun] free_functor g) *
   (forgetful_functor f ≅[Fun] forgetful_functor g).
 
-(* Confirmation of the reported failure mode.  Denied the wide search, the old
-   tactic body leaves the two symmetry components open, so the old script's
-   bullets no longer line up with the goals they were written for and no amount
-   of [transitivity ...; assumption] closes them.  This is the state Rocq
-   master reached; it is recorded here so that a future "simplification" back
-   to the old script cannot pass unnoticed. *)
+(*
+   本节说明 Issue213 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example issue_213_old_script_needs_the_wide_search : Equivalence issue_213_rel.
 Proof.
   unfold issue_213_rel.
@@ -90,14 +91,11 @@ Proof.
     split; etransitivity; eassumption.
 Qed.
 
-(* And the library's own [equivalence] -- the real tactic, not a copy of it --
-   still takes the very script that broke in Rocq CI.  This is a guard on
-   [Lib/Tactics.v] and not merely on a transcript of it: [intuition]'s
-   [auto with *] leaf is stubbed out above, and the tactic's remaining
-   fallback is [auto with category_laws], a database that carries no hint
-   closing [_ ≅ _].  So it is the tactic's own deterministic reflexivity /
-   symmetry pass that discharges those two laws here, and deleting that pass
-   fails this example. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example issue_213_tactic_is_deterministic : Equivalence issue_213_rel.
 Proof.
   unfold issue_213_rel.

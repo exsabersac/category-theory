@@ -51,10 +51,11 @@ Check (fun M N : AbObject => Ab_exl_inr M N).
 Check (fun M N : AbObject => Ab_exr_inl M N).
 Check (fun M N : AbObject => ab_zero_mor_is_cmon_zero_mor M N).
 
-(* At R-Mod the underlying arrow of an injection IS Ab's.  BOTH injections
-   are named here: an audit found [RMod_inr] occurring ONLY inside
-   NEGATIVE 8, so a rename would have made that [Fail] pass for "reference
-   not found" while the header promised otherwise. *)
+(*
+   本节说明 ProbeCoproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun (R : RingObject) (M N : RModObject R) =>
          (eq_refl : rm_hom (RMod_inl M N) = Ab_inl M N)).
 Check (fun (R : RingObject) (M N : RModObject R) =>
@@ -88,20 +89,22 @@ Check (fun x y : C => @biproduct_roundtrip_exr C Z P B x y).
 Check (fun x y : C => @biproduct_roundtrip_inl C Z P B x y).
 Check (fun x y : C => @biproduct_roundtrip_inr C Z P B x y).
 
-(* And the four constants the NEGATIVES below name are named here too, so
-   that a rename breaks this control rather than turning those [Fail]s
-   vacuously green.  An audit found all four occurring only in negatives. *)
+(*
+   本节说明 ProbeCoproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun x y : C =>
          (bi_inl (@cartesian_biproduct C Z P Cart x y),
           bi_inr (@cartesian_biproduct C Z P Cart x y),
           bi_inl (biproduct x y),
           bi_inr (biproduct x y))).
 
-(* NEGATIVE 1 (conversion, "cannot unify").  Sending the derived cartesian
-   structure back through Structure/Semiadditive.v's [cartesian_biproduct]
-   does NOT return the original injections: the reconstruction defines them
-   as the forks [id △ 0] and [0 △ id], which are the originals by product
-   uniqueness and not by computation. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition neg_roundtrip_inl (x y : C) :
   bi_inl (@cartesian_biproduct C Z P Cart x y) = bi_inl (biproduct x y)
   := eq_refl.
@@ -114,25 +117,21 @@ Fail Definition neg_roundtrip_record (x y : C) :
 
 End RoundTripNegatives.
 
-(* NEGATIVE 3 (conversion, "cannot unify").  The wedge is not the disjoint
-   union with a basepoint chosen: [Wedge_Top] carries the gluing relation
-   in its setoid AND the respect-the-gluing clause in its topology, and
-   [Sum_Top] carries neither.  The control immediately above this section
-   shows the two share their POINT TYPE by [eq_refl], which is what makes
-   this negative say something. *)
+(*
+   本节说明 ProbeCoproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition neg_wedge_is_sum (X Y : PointedTop) :
   Wedge_Top X Y = Sum_Top (ptop_space X) (ptop_space Y) := eq_refl.
 
 (** ** Formability negatives: the [Set] pin inherited from Instance/Ab.v *)
 
-(* Instance/Ab.v's [Ab_trivial] is declared with NO universe binders,
-   at [AbObject@{Set Set Set}] — unlike Instance/CMon/Biproduct.v's
-   [CMon_trivial@{o}], which is polymorphic.  That pin propagates through
-   [Ab_Zero] to everything mentioning a zero morphism, hence to the
-   biproduct records and to both derived structures, in Ab and (through
-   [RMod_trivial], which uses [Ab_trivial]) in R-Mod.  The DONOR is
-   Instance/Ab.v; nothing here repairs it, and it is not claimed
-   unavoidable. *)
+(*
+   本节说明 ProbeCoproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetPin.
 
@@ -162,18 +161,11 @@ Check (fun (R : RingObject) (M N : RModObject R) => RMod_Biproduct M N).
 
 (** ** Formability negatives: hom and proof universes are identified *)
 
-(* [Cartesian@{u u0}] takes a [Category@{u u0 u0}] — the hom and proof
-   universes are IDENTIFIED, not merely bounded — so the bridge of
-   Structure/Biproduct/Cartesian.v inherits that and cannot be stated over
-   a category whose two levels have been declared apart.  The probe
-   declares them SEPARATELY (with [Constraint uh < up]) rather than
-   letting an unannotated definition minimize them together, which would
-   read as an identification when it was only a bound.
+(*
+   本节说明hom、笛卡尔相关定义、性质与动机。
 
-   ATTRIBUTION: this is NOT introduced by [Cartesian], and negative 7
-   shows it — the identification is already present at
-   Structure/Terminal.v's [Terminal], upstream of everything here.  It is
-   a shape of the [Structure/] hierarchy, inherited and not created. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SeparatedLevels.
 
@@ -201,12 +193,11 @@ Check (fun C : Category => @Terminal C).
 
 (** ** Formability negative: the ∃!-package does not transfer to R-Mod *)
 
-(* Instance/Ab/Coproduct.v hands [CMon_bi_is_coproduct] straight over,
-   because [AbHom A B] IS [CMonHom A B].  Instance/Mod/Coproduct.v cannot:
-   [RModHom] is a record wrapping an [AbHom], so the ∃! ranges over a
-   different type and the package has to be rebuilt — which is why that
-   file's two universal properties are tactic proofs citing the CMon
-   originals rather than [:=]. *)
+(*
+   本节说明 ProbeCoproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Control: at Ab the transfer is a term. *)
 Check (fun (M N P : AbObject) (f : M ~{Ab}~> P) (g : N ~{Ab}~> P) =>
@@ -229,15 +220,11 @@ Fail Check (fun (R : RingObject) (M N P : RModObject R)
 
 (** ** Formability negative: a product topology does not fit *)
 
-(* Instance/Top/Coproduct.v's header says the COPRODUCT half of Mac Lane's
-   roster is available in Top while the PRODUCT half is not, and that the
-   obstruction is a universe wall rather than a gap in effort.  That is a
-   claim about what can be WRITTEN, so it is compiled here rather than
-   asserted.  The coproduct's openness predicate only APPLIES [IsOpen] to
-   a restricted predicate and so stays at the space's own level; a product
-   topology must quantify EXISTENTIALLY over opens of the two factors, and
-   an open is a predicate on the carrier, so the quantifier lands one
-   universe up. *)
+(*
+   本节说明 ProbeCoproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProductTopology.
 

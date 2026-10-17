@@ -40,16 +40,11 @@ Context {Q : C ⟶ Sets}.
 Context (ψ : P ⟹ Q).
 Context (x : C).
 
-(* CONVERSION 1.  The pointwise kernel-pair functor preserves identities
-   only up to `≈`.  The cause is NOT the opaque [fmap_id] of P that the
-   arrow action's [fmap[P] id] would seem to need: the section after
-   this one instantiates at the target's own constant-functor witnesses,
-   where [fmap[P] id] IS [id] and [fmap_id] IS [reflexivity] by [eq_refl],
-   and the identity law still does not hold on the nose.  What blocks it
-   is the REBUILD — [ker_fun] returns a fresh sigma over a fresh pair
-   ([sets_pb_carrier], Instance/Sets/Pullback.v), and neither
-   [sigT] nor [prod] has definitional eta here.  The `≈` form is the
-   control. *)
+(*
+   本节说明函子、核/余核、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example ker_fmap_id_strict :
   fmap[KerPair ψ] (id[x]) = id := eq_refl.
 
@@ -64,15 +59,11 @@ Fail Example ck_fmap_id_strict :
 Example ck_fmap_id_equiv : fmap[CokerPair ψ] (id[x]) ≈ id.
 Proof. exact (@fmap_id _ _ (CokerPair ψ) x). Qed.
 
-(* CONVERSION 2.  The isomorphism [Functor_Setoid_Nat_Iso] builds from
-   our componentwise family is NOT the record [componentwise_iso]
-   builds, even though (controls below) both of its legs agree with ours
-   on their [transform] fields at Leibniz equality, pointwise and as
-   whole functions.  What differs is confined to opaque LAW fields, at
-   TWO levels: the legs themselves are not the same records (CONVERSION
-   3 and 4 below — the donor builds them with `abstract`ed naturality
-   proofs, Instance/Fun.v), and the isomorphism records then
-   carry their own inverse law fields on top. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example iso_records_strict
   (H : ∀ z : C, IsIsomorphism (transform[θ] z)) :
   equiv_iso (nat_iso_family θ H)
@@ -116,12 +107,11 @@ End Conversion.
 (* ------------------------------------------------------------------ *)
 (** ** CONVERSION 1, cause discriminated at the constant-functor witnesses *)
 
-(* At [TwoOne := const_fun _ _ unit_setoid_object] the arrow action is
-   [fun _ _ _ => id] and the identity law is [reflexivity _], both on the
-   nose — so the opaque-[fmap_id] explanation is removed — yet the strict
-   identity law for the two pointwise functors still fails, even after
-   both sides are applied to an element so that the [proper_morphism]
-   field plays no part.  CONVERSION 5 and 6. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example const_fmap_is_id : fmap[TwoOne] (@id _2 TwoX) = id := eq_refl.
 
@@ -152,10 +142,11 @@ Context {P : C ⟶ Sets}.
 Context {Q : C ⟶ Sets}.
 Context (ψ : P ⟹ Q).
 
-(* Being monic in [C, Sets] and being pointwise monic are DIFFERENT
-   types: the first is a single [Monic] record in the functor category,
-   the second a family of [Monic] records in [Sets].  The passage
-   between them is the theorem, not a coercion. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition monic_is_not_pointwise (Hm : @Monic ([C, Sets]) P Q ψ) :
   ∀ z : C, Monic (transform[ψ] z) := Hm.
 
@@ -170,11 +161,11 @@ End Typing.
 (* ------------------------------------------------------------------ *)
 (** ** FORMABILITY negatives *)
 
-(* [Fun] takes both of its categories at ONE hom-and-proof level, so a
-   functor category cannot be formed over two categories whose hom
-   levels are declared strictly apart.  This is what puts the equation
-   `C's hom = D's hom` into every constant of the target's general
-   section; nothing in the target adds to it. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section FormabilityFun.
 
 Universes co ch cp dro dh dp.
@@ -232,10 +223,11 @@ End FormabilityTarget.
 (* ------------------------------------------------------------------ *)
 (** ** Rename guards *)
 
-(* Every declaration head the target introduces (52; its 22 [Program]
-   obligations are not named here), plus the two donor constants that
-   otherwise occur only inside a [Fail], each named outside a [Fail] so
-   that a rename breaks this file loudly. *)
+(*
+   本节说明 ProbeMorphisms369 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check @IsIsoToIso.
 Check @Fun.

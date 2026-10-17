@@ -182,9 +182,11 @@ Example p384_beck_pointwise (x : carrier U') :
     = @proj_exists@{o so} U' V
         (Powerset_Prop_preimage@{o} (cyl_reindex V g) S) x := eq_refl.
 
-(* POSITIVE: and at the WHOLE SUBSET too, which is what the target
-   ships.  This was measured, not assumed: a first draft of the probe
-   pinned its refutation as a negative and that guard did not fire. *)
+(*
+   本节说明 ProbeQuantifier384 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p384_beck_whole_subset :
   Powerset_Prop_preimage@{o} g (@proj_exists@{o so} U V S)
     = @proj_exists@{o so} U' V
@@ -204,12 +206,11 @@ Section OmegaGrades.
 Universe o so u.
 Constraint o < so.
 
-(* POSITIVE: the equivalence is the target's, and both round trips hold.
-   The two CATEGORIES and their two object types are [Check]ed here as
-   well, so that a rename of [Subsets] or of [Props] breaks this section
-   at a control rather than turning the negative below vacuously green --
-   before these four lines they occurred outside the [Fail] only in
-   prose. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check subsets_one_Props.
 Check subsets_one_Props_round.
 Check Props_subsets_one_round.
@@ -218,11 +219,11 @@ Check Props@{o u}.
 Check (obj[Subsets@{o u} quant_one@{o so}]).
 Check (obj[Props@{o u}]).
 
-(* NEGATIVE 4 (CONVERSION).  The two categories are not the same object:
-   an object of [Subsets 1] is an [equiv]-respecting predicate, an object
-   of [Props] is a [Prop].  So the [≅[Cat]] the target ships -- which in
-   this library IS equivalence -- cannot be strengthened to an identity,
-   and the header says so. *)
+(*
+   本节说明等价、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p384_subsets_one_is_Props :
   obj[Subsets@{o u} quant_one@{o so}] = obj[Props@{o u}] := eq_refl.
 

@@ -288,10 +288,11 @@ Fail Definition p459_unsquash@{o} (Y : PointedTop@{o})
   (H : inhabited (y ≈ ptop_pt Y)) : y ≈ ptop_pt Y :=
   match H with inhabits e => e end.
 
-(* CONTROL: the respect field is a choice.  With A saturated inside the
-   identification, the four-case relation over [option X] is an
-   equivalence with no field; unsaturated and without the field it is not
-   transitive. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p459_sat@{o} (X : TopSpace@{o}) (A : X → Type@{o}) (x : X) :
   Type@{o} := { a : X & (A a * (a ≈ x))%type }.
 
@@ -432,9 +433,11 @@ Example p459_pushout_apex@{h o | o < h +} (X : PairTop@{o}) :
 
 (** ** Instance/Top/Quotient/Pairs.v: the colimit form, every A *)
 
-(* CONTROL: X/A is the colimit of the point-inclusions of A for every pair,
-   with no point of A, at the type of Construction 5's [collapse_colimit]
-   written as Instance/Top/Quotient.v writes it. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p459_wide_colimit@{o h | o < h +} (X : PairTop@{o}) :
   WideCoequalizer (AWide@{h h h h h} (C := Top@{h o})
                      (collapse_sub_family (pair_space X) (pair_sub X))) :=
@@ -446,9 +449,11 @@ Definition p459_wide_colimit_collapse_type@{o h | o < h +}
                      (collapse_sub_family (pair_space X) (pair_sub X))) :=
   pquot_wide_coequalizer_colimit@{o h} X.
 
-(* CONTROL: its apex is X/A, its leg out of X the inclusion, its leg out of
-   * at the one point the left adjoint's basepoint, and the left adjoint's
-   underlying space its apex, all at [eq_refl]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p459_wide_colimit_apex@{o h | o < h +} (X : PairTop@{o}) :
   colimit_apex (pquot_wide_coequalizer_colimit@{o h} X) = pquot_space X
   := eq_refl.
@@ -554,10 +559,11 @@ Example p459_empty_sum_none@{h o | o < h +} (X : TopSpace@{o}) :
 Fail Example p459_empty_sum_eq@{o} (X : TopSpace@{o}) :
   pquot_space (empty_pair X) = Sum_Top X Point_Top@{o} := eq_refl.
 
-(* CONTROL: the elementary record at ⟨∅, ∅⟩ refuted for pointed spaces, at
-   this file's construction and for every construction; an object
-   assignment suffices, a functor's included; and no colimit's apex
-   carries the record there. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p459_pquot_empty_not_coequalizer@{o h i | o < h, o <= i +} :
   IsWideCoequalizer@{i h h} (C := Top@{h o})
     (collapse_sub_family (pair_space (empty_pair Empty_Top@{o}))

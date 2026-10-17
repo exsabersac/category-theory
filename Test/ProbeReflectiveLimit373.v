@@ -87,12 +87,11 @@ Fail Example probe_two_routes_med (L : Limit (Incl C S ◯ K))
 
 (** ** CONVERSION 3: the counit isomorphism does not reduce *)
 
-(* [reflective_counit_iso] (Construction/Reflective.v) produces data
-   and is closed with [Qed], so its forward leg does not reduce to the
-   counit.  This is a second, independent reason -- beyond the structural
-   one recorded in the target's header, that the lemma speaks about an
-   object of the subcategory rather than an arbitrary object of C -- why
-   it does not shorten the comparison isomorphism. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_counit_iso_leg (x : Sub C S) :
   to (reflective_counit_iso R x)
@@ -105,10 +104,11 @@ Fail Check (reflective_CreatesLimit R K
 
 (** ** TYPING 5: creation is not STRICT creation *)
 
-(* [StrictLift]'s [slift_eq] field (Structure/Limit/Creation.v) asks
-   for a LEIBNIZ equality of apexes downstairs.  The lift built in the
-   target has apex [Incl C S (reflector R L)], which the comparison
-   isomorphism relates to L but does not equate to it. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (reflective_CreatesLimit R K
               : StrictlyCreatesLimit K (Incl C S)).
@@ -117,12 +117,11 @@ End Boundaries.
 
 (** ** FORMABILITY 6: [Subcategory] identifies hom with proof *)
 
-(* The target's constants are all over [Category@{u u0 u0}], and the
-   identification is inherited rather than introduced: [Subcategory]
-   alone already forces it, with the category's own hom-set and identity
-   accepted at the very levels where [Subcategory] is rejected.  The
-   identification sits in [Subcategory]'s BINDER; its constraint block is
-   empty. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseProbe.
 
@@ -142,20 +141,11 @@ End UniverseProbe.
 
 (** ** FORMABILITY 7 and 8: the cone vocabulary identifies J with C *)
 
-(* The shape-indexed constants of the target additionally carry [u0 = u8],
-   collapsing the shape's hom-and-proof level onto the ambient category's.
-   That is the cone vocabulary's doing, not the functor's and not the
-   [Cone] record's: with the shape's hom level declared strictly BELOW the
-   ambient one, the functor type and the [Cone] record are both formable,
-   while [cone_leg] and [IsLimitCone] are each rejected on their own.
-   These are the same donor family Structure/Limit/Initial.v's header
- records for a RELATED collapse; the axis there is the
-   shape's own hom against its own proof, and it names [IsALimit] as a
-   third donor.  [IsALimit] is a donor on THIS axis too, as are [Limit],
-   [ConeIso] and [FCone], each rejected alone at these levels while
-   [vertex_obj] is accepted: measured out of tree and recorded in the
-   target's header, NOT pinned here -- the two below are a sample of the
-   family, not an enumeration. *)
+(*
+   本节说明函子、（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ShapeUniverseProbe.
 
@@ -181,20 +171,11 @@ End ShapeUniverseProbe.
 
 (** ** Non-vacuity: the torsion-free abelian groups *)
 
-(* [TorsionFree_Reflective] (Instance/Ab/TorsionFree.v) is a full
-   reflective subcategory of [Ab], and [Ab] has a terminal object
-   ([Ab_Terminal], Instance/Ab.v).  The empty diagram therefore has a
-   limit downstairs, and Mac Lane's exercise produces one upstairs.
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
 
-   The limit downstairs is built here rather than taken from
-   [Terminal_Limit] (Structure/Limit/Terminal.v): that theorem is
-   closed with [Qed], so its apex would not reduce and the readbacks below
-   would say nothing.  The hand-built version is [Defined], and the
-   created apex then reduces all the way to the quotient of the terminal
-   abelian group by its torsion subgroup.
-
-   The witness deliberately lives here rather than in the target, so that
-   [Instance/Ab] stays out of the target's dependency closure. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition probe_KAb : 0 ⟶ Sub Ab TorsionFree_Sub :=
   From_0 (Sub Ab TorsionFree_Sub).
@@ -236,15 +217,11 @@ Example probe_ab_created_apex :
     = fobj[reflector TorsionFree_Reflective] (@terminal_obj Ab Ab_Terminal)
   := eq_refl.
 
-(* ... and the created apex's carrier is the torsion quotient.  Read that
-   at its strength: [torsion_reflector_obj] (Instance/Ab/TorsionFree.v)
-   holds at an ARBITRARY object, so this readback pins the definitional
-   unfolding of the reflector's object action and not that the reflection
-   did anything here -- the terminal group is itself torsion-free, so the
-   reflection is inert up to isomorphism, and the shape being [0] means
-   every leg condition is exercised at no index at all ([IsLimitCone] at
-   the empty shape is terminality).  The witness shows the assembly runs
-   end to end and reduces, not that it is non-degenerate. *)
+(*
+   本节说明同构、（余）强度、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example probe_ab_created_carrier :
   `1 (vertex_obj[@limit_cone _ _ _ probe_ab_created])

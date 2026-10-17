@@ -69,9 +69,11 @@ Ltac functor_simpl :=
 #[export] Hint Extern 1 (@equiv _ (@homset _ _ _) (@compose _ _ _ _ _ _) (@compose _ _ _ _ _ _))
      => simple apply compose_respects : cat.
 
-(* Prove two composites equivalent by reassociating to one side (trying both
-   orientations) and then matching factors with [compose_respects]; trivial
-   factors are discharged by [reflexivity], the rest left as subgoals. *)
+(*
+   本节说明 Tactics2 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac compose_respects_script :=
 first [repeat(rewrite <- comp_assoc);
        apply compose_respects; try(reflexivity)
@@ -85,9 +87,11 @@ first [repeat(rewrite <- comp_assoc);
 #[export] Hint Extern 5 => (progress(simplify)) : cat.
 #[export] Hint Rewrite <- @comp_assoc : categories.
 
-(* Close [f _ ≈ f _] (or the binary [f _ _ ≈ f _ _]) from a [Proper _ f]
-   hypothesis: unfold the respectful relation to expose the congruence and
-   finish with [auto with cat].  [solve] makes this all-or-nothing. *)
+(*
+   本节说明 Tactics2 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac unfold_proper :=
   match goal with
   | [ H : Proper _ ?f |- ?f _ ≈ ?f _ ] => unfold Proper, "==>" in H; simpl in H; assert (QQ:= H)

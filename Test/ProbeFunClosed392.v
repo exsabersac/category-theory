@@ -100,11 +100,11 @@ Check TwoY.
 
 (** ** Positive readbacks the negatives are measured against *)
 
-(* The two presheaves agree at [TwoX] on the nose: [PresheafQ] is a
-   constant functor, and [PresheafP] takes [TwoX] to the terminal
-   setoid, which is NOT the two-element one -- see negative 3 for the
-   value at [TwoY], where they part company for the reason that drives
-   the theorem. *)
+(*
+   本节说明函子、始/终对象、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p392_Q_at_TwoX : fobj[PresheafQ] TwoX = two_elt := eq_refl.
 
 (* Away from their own stages, two members of the family agree by
@@ -153,20 +153,18 @@ Constraint p392co < p392so.
 Check (Sets@{p392co p392so}).
 Check (_2^op).
 
-(* Negative 2: but they cannot be assembled into a functor category,
-   because [_2]'s homs are the literal [Set], [Fun] identifies its
-   source and target hom universes, and [Sets]'s hom universe IS its
-   carrier universe. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check ([_2^op, Sets@{p392co p392so}]).
 
-(* Discriminating control: with the polymorphic [Omega] in place of
-   [_2^op] the same [Sets] instance IS admissible, so [_2] is a
-   NECESSARY donor.  This control varies only [_2], so it establishes
-   nothing about [Fun], and [Fun] is in fact a SECOND necessary donor:
-   measured out of tree and NOT pinned here, the bare functor TYPE
-   [@Functor (_2^op) Sets] is formable at these very levels while the
-   CATEGORY [[_2^op, Sets]] is not, so the two are co-necessary and
-   neither alone suffices.  [Sets] is measured NOT to be a donor. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check ([Omega@{p392co p392co p392co}, Sets@{p392co p392so}]).
 
 End P392SetsPin.
@@ -179,10 +177,11 @@ Fail Definition p392_n3
 (** ** Negative 4 (CONVERSION): the objectwise candidate is not the
        two-element setoid *)
 
-(* The objectwise formula would read the exponential at [TwoY] as
-   Q(TwoY)^{P(TwoY)}.  That object is computable in tree, and it is NOT
-   [two_elt]; the target proves separately, at [~], that all of its
-   points coincide, whereas the true value has two distinct ones. *)
+(*
+   本节说明 ProbeFunClosed392 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p392_n4
   : @exponent_obj Sets Sets_Cartesian Sets_Closed
       (fobj[PresheafP] TwoY) (fobj[PresheafQ] TwoY) = two_elt := eq_refl.

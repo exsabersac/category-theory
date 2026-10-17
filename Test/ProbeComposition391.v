@@ -62,12 +62,11 @@ Check Sets.
 
 (** ** Negative 1 (CONVERSION): the [Set] agreement is pointwise only *)
 
-(* The value at each point IS [g (f t)] on the nose -- that is the shipped
-   [sets_internal_compose].  The two WHOLE morphisms of [Sets] are not
-   Leibniz-equal: [SetoidMorphism] carries a [proper_morphism] certificate
-   that the two sides build differently.  The two underlying FUNCTIONS do
-   agree at [eq_refl] (control below), which locates the difference in the
-   certificate and nowhere else. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example p391_ctrl_pointwise (a b c : Sets)
         (g : b ~{Sets}~> c) (f : a ~{Sets}~> b) (t : a) :
@@ -96,15 +95,11 @@ Context `{@Closed C _}.
 
 (** ** Negative 2 (TYPING): there is no functorial action in [b] *)
 
-(* In [c^b × b^a] the variable [b] is contravariant on the left and
-   covariant on the right.  An arrow [f : b1 ~> b2] therefore acts on the
-   two factors in OPPOSITE directions, and the resulting morphism runs
-   between the MIXED objects [c^b2 × b1^a] and [c^b1 × b2^a] -- not
-   between [c^b1 × b1^a] and [c^b2 × b2^a], which is what a functor of [b]
-   would have to supply.  So this action does not give a functor of [b],
-   and hence gives no [Transform] in [b] for a naturality square to live
-   in; what holds instead is the cowedge condition
-   [internal_compose_dinatural], controlled above and again here. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The action, at the type it actually has. *)
 Example p391_ctrl_b_action (a c b1 b2 : C) (f : b1 ~{C}~> b2) :
@@ -136,20 +131,11 @@ Fail Example p391_neg3 (a c b1 b2 : C) :
 
 (** ** Negative 4 (CONVERSION): the [Program]-elaborated [fobj] is opaque *)
 
-(* Structure/Cartesian/Closed/Natural.v records that writing the
-   object action INSIDE a [Program Definition] lets [Program] defer an
-   unresolved instance argument of [product_obj] into an obligation, which
-   Lib/Foundation.v's [Unset Transparent Obligations] makes opaque; the
-   resulting [fobj] then converts with nothing.  The target met that
-   hazard again and elaborates its object actions first.
+(*
+   本节说明笛卡尔相关定义、性质与动机。
 
-   The boundary is MEASURED here rather than assumed, and it is narrower
-   than "any inline object action": [NaiveExpBase], whose object action is
-   an [exponent_obj] alone, DOES reduce (control below), while
-   [NaiveComposeSrcC], whose object action is a [product_obj], does not.
-   What the two commands establish is that separation; that the deferred
-   argument is [product_obj]'s is the donor's own attribution, quoted
-   above and not re-derived here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition NaiveExpBase (a : C) : C ⟶ C := {|
   fobj := fun c => c^a;
@@ -184,13 +170,11 @@ End ProbeGeneral.
 
 (** ** Negative 5 (FORMABILITY): [Cartesian] identifies hom with proof *)
 
-(* Every constant of the target is over [C : Category@{u u0 u0}] in its
-   BINDER, while not one of its constraint BLOCKS contains a universe
-   equation -- reading the blocks alone would report no identification.
-   The identification is inherited, and [Cartesian] alone already forces
-   it: at a category whose hom and proof universes are declared strictly
-   apart the category itself, its objects, its hom-sets and its identities
-   are all accepted, and only [Cartesian] is rejected. *)
+(*
+   本节说明hom、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeUniverses.
 

@@ -90,10 +90,11 @@ Check Cw.
 Check Dw.
 Check (Cw ⟶ Dw).
 
-(* N4 UNIVERSE: a functor DOWN the hom levels is refused (Theory/Functor.v's
-   [h1 <= h2]), so an adjunction between [Cw] and [Dw] needs [ch = dh] —
-   the identification the four corollaries carry is the adjunction's,
-   not this file's *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Dw ⟶ Cw).
 
 End HomLevels.

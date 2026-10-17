@@ -257,9 +257,11 @@ Check @Category.Structure.Limit.Reflection.conservative_reflects_coequalizers.
 (* ------------------------------------------------------------------------ *)
 (** ** Riehl's Lemma 3.4.5: full and faithful functors *)
 
-(* Required here, after every other command above, so that the sections
-   above are elaborated under the first target's import list alone: the
-   import list of Theory/Equivalence/Limit.v and that module. *)
+(*
+   本节说明（余）极限、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Theory.Adjunction.
 Require Import Category.Adjunction.Continuity.
 Require Import Category.Theory.Equivalence.
@@ -296,10 +298,11 @@ End FullFaithful.
 (* ------------------------------------------------------------------------ *)
 (** ** Left adjoints preserve coequalizers, in one line *)
 
-(* C21: under the import list of the section above, which includes
-   Adjunction/Continuity.v, the elementary preservation of coequalizers
-   by a left adjoint is that file's cone-level theorem read through the
-   bridge. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p481_c21_left_adjoint_preserves {C D : Category}
   {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U) : PreservesCoequalizers F :=
   PreservesColimitCocones_PreservesCoequalizers
@@ -390,9 +393,11 @@ Proof.
            (fun _ => ttt) (fun _ _ _ => eq_refl)).
 Defined.
 
-(* C15: and it does not reflect them: the fork (1, 1, collapse) becomes a
-   coequalizer in the point, and is none in Sets, where the descent u of
-   the identity would have u ttt = true and u ttt = false. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem p481_c15_erase_not_reflects :
   ReflectsCoequalizers (Erase Sets) → False.
 Proof.

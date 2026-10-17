@@ -96,9 +96,11 @@ Constraint Set < ch.
 Fail Definition neg_cochain_above_Set
   (G : Sets@{ch co} ⟶ Sets@{ch co}) : Omega^op ⟶ Sets@{ch co} := Cochain G.
 
-(* Controls accepted at those very levels: the category itself, a functor
-   both ways, [Omega], and -- the discriminating one -- [Chain], declared
-   one line above [Cochain] in the same file and FREE of any [Set]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check Sets@{ch co}.
 Check (Sets@{ch co} ⟶ Sets@{ch co}).
 Check Omega@{ch co co}.

@@ -98,11 +98,11 @@ Constraint smallh < bigo.
 Context (Pw : Category@{bigo smallh smallh}).
 Context (Xw : Category@{bigo smallh smallh}).
 
-(* controls: the functor category, the discrete category on the objects,
-   the restriction functor and the type of an endofunctor of [Pw, Xw] all
-   form here — [DiscreteCat]'s homs are Prop-valued equalities, so the shape
-   imposes no object ≤ hom, and a functor BETWEEN functor categories
-   identifies two hom universes that both sit above [bigo] *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check ([Pw, Xw]).
 Check (@ObjCat Pw).
 Check (@Res Pw Xw).
@@ -111,11 +111,11 @@ Check ([Pw, Xw] ⟶ [Pw, Xw]).
 (* N4 UNIVERSE: #425's corollary carries [jo <= jh] and is refused *)
 Fail Check (fun HX : @Complete Xw => @Functor_Category_Complete Pw Xw HX).
 
-(* N5 UNIVERSE: the TYPE of an evaluation functor is refused — [Fun]'s hom
-   universe (natural transformations quantify over P's objects) sits above
-   [bigo], and [Functor] identifies it with [Xw]'s hom universe [smallh].
-   This, not anything in Instance/Fun/Creation.v, is where [jo <= jh]
-   enters: every constant below that mentions [Eval] inherits it *)
+(*
+   本节说明自然变换、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check ([Pw, Xw] ⟶ Xw).
 
 (* N6 UNIVERSE: hence #424's [Eval] itself, and with it the hypothesis

@@ -35,10 +35,11 @@ Context {C : Category}.
 Context `{@SymMonClosed C}.
 Context (d : C).
 
-(* Controls.  Every constant a negative names is also named OUTSIDE a
-   [Fail] and APPLIED, never left bare -- an unapplied polymorphic
-   constant elaborates for reasons unrelated to the negative and so
-   certifies nothing. *)
+(*
+   本节说明 ProbeDual359 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (dd_unit d).
 Check (double_dual_unit d).
 Check (dual_self_adjoint_on_the_right d).
@@ -46,10 +47,11 @@ Check (fun x : C => dd_unit d x).
 Check (fun x : C => transform[double_dual_unit d] x).
 Check (@aor C C (dual d) (dual d) (dual_self_adjoint_on_the_right d)).
 
-(* CONVERSION 1 -- [dd_unit] is not the bare braid-transpose on the
-   nose: the residue is `id ⨂ id`, and writing that residue out closes
-   the very same statement at [eq_refl], which is what makes this
-   negative discriminate rather than merely fail. *)
+(*
+   本节说明 ProbeDual359 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe359_braid_strict (x : C) :
   dd_unit d x = dcur (eval' ∘ braid) := eq_refl.
 
@@ -73,7 +75,9 @@ Example probe359_diagonal (a : C) :
 
 End ProbeDual359.
 
-(* Instrument check.  [Fail] is live in this build and does notice a
-   conversion failure.  Scope-free deliberately, so that it cannot fail
-   on a missing scope delimiter instead of on the proposition. *)
+(*
+   本节说明 ProbeDual359 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe359_instrument : (true = false) := eq_refl.

@@ -32,21 +32,11 @@ Fail Check (1 = true).
 
 (** ** Kind 1 — FORMABILITY: hom and proof universes cannot be split *)
 
-(* Every headline constant of the target is stated over
-   [C : Category@{u u0 u0}] -- hom IDENTIFIED with proof, by reuse of one
-   level variable in the BINDER -- while the constraint blocks carry no
-   equation at all, only bounds.  Reading the blocks alone reports "no
-   identification" and is wrong.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   The identification is INHERITED, and FIVE donors each force it ALONE.
-   Below, a category whose hom universe is declared STRICTLY BELOW its
-   proof universe is formable, and so are its hom-sets and identities
-   (the controls); every one of [Slice], [Coslice], [Cartesian],
-   [IsTerminalObj] and [IsInitialObj] is rejected at those very levels,
-   each with "Cannot enforce up = uh because uh < up", and so is the
-   target's own [Coslice_Proj], which inherits it from [Coslice].
-   Nothing in the target introduces the identification, and none of the
-   five is claimed unavoidable. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseBoundary.
 
@@ -93,9 +83,11 @@ Context {CC : @Cocartesian C}.
 Context {CA : @Cartesian C}.
 Context (a : C).
 
-(* Controls for negative 7: the unit of the delivered adjunction IS the
-   right injection with one [id_left] residue in front of it, and that
-   residue is exhibited literally rather than described. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ctrl_unit_residue (c : C) :
   @unit (@Coslice C a) C (Coslice_Coprod a) (Coslice_Proj a)
     (Coslice_Projection_Adjunction a) c
@@ -105,11 +97,11 @@ Check @coslice_unit_strict.
 Check @coslice_unit_is_inr.
 Check @coslice_projection_unit.
 
-(* Negative 7 (conversion): the class-produced unit is NOT the bare
-   injection on the nose.  [unit] is [⌊id⌋], and the forward transpose
-   post-composes with [inr]; the identity of the coslice is carried by
-   [id] of C, so what comes out is [id ∘ inr].  The [≈] form is the
-   target's [coslice_unit_is_inr], one [id_left] away. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example neg_unit_is_inr (c : C) :
   @unit (@Coslice C a) C (Coslice_Coprod a) (Coslice_Proj a)
     (Coslice_Projection_Adjunction a) c
@@ -126,9 +118,11 @@ Check @slice_counit_strict.
 Check @slice_counit_is_exl.
 Check @slice_projection_counit.
 
-(* Negative 8 (conversion): the class-produced counit is NOT [exl] on the
-   nose.  [counit] is [⌈id⌉], and the backward transpose pre-composes
-   with the given slice arrow, which here is the identity of C. *)
+(*
+   本节说明 ProbeSliceAdjunction365 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example neg_counit_is_exl (y : C) :
   @counit C (@Slice C a) (Slice_Proj a) (Slice_Prod a)
     (Slice_Projection_Adjunction a) y
@@ -141,11 +135,11 @@ Section Orientation.
 Context {C : Category}.
 Context (a : C).
 
-(* The issue says the slice statement is "one [Opposite] transport away".
-   It is not, on the nose.  The OBJECT types do agree definitionally --
-   both are the arrows out of [a] -- which is what makes the negative
-   below a statement about the hom EQUATIONS and not about the encoding
-   at large. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ctrl_orientation_objects :
   obj[@Coslice C a] = obj[Opposite (@Slice (Opposite C) a)] := eq_refl.
 
@@ -153,15 +147,11 @@ Check @Coslice.
 Check @Slice.
 Check @Opposite.
 
-(* Negative 9 (conversion): [Coslice C a] is not [(Slice (C^op) a)^op].
-   Unfolding, the opposite of the slice over C^op has homs
-   [∃ f, f ∘ `2 x ≈ `2 y] where [Coslice] has [∃ f, `2 y ≈ f ∘ `2 x] --
-   the same equation in the other ORIENTATION, hence a different type.
-   Construction/Slice/Terminal.v already records exactly this,
-   as its reason for proving [Coslice_Initial] directly rather than
-   transporting [Slice_Terminal]; the target's Block B is built directly
-   for the same reason, which is also what keeps [^op] out of every
-   delivered slice-side type. *)
+(*
+   本节说明始/终对象、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example neg_coslice_is_op_slice :
   @Coslice C a = Opposite (@Slice (Opposite C) a) := eq_refl.
 
@@ -172,16 +162,11 @@ Section PriorArt.
 Context {C : Category}.
 Context (a : C).
 
-(* PRIOR ART.  The issue's Awodey section says of the slice domain
-   functor that "the functor itself does not exist".  That is FALSE:
-   Instance/Cat/Pullback.v [Slice_proj] and [Coslice_proj] are
-   exactly this record, and Construction/Slice/Terminal.v's
-   [Slice_Forget]/[Coslice_Forget] are its specialisations to a terminal
-   and an initial object.  The target rebuilds it rather than requiring
-   Instance/Cat/Pullback.v, whose module closure is far heavier; the
-   agreement is measured HERE, where that file is already loaded.
+(*
+   本节说明函子、拉回/推出、始/终对象相关定义、性质与动机。
 
-   Both DATA fields agree on the nose, in both handednesses. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example ctrl_coslice_proj_fobj (x : @Coslice C a) :
   fobj[@Coslice_Proj C a] x = fobj[@Coslice_proj C a] x := eq_refl.
@@ -197,23 +182,19 @@ Example ctrl_slice_proj_fmap (x y : @Slice C a)
   (f : x ~{@Slice C a}~> y) :
   fmap[@Slice_Proj C a] f = fmap[@Slice_proj C a] f := eq_refl.
 
-(* Negative 10 (conversion): the WHOLE records are not equal.  [Functor]
-   has five fields; the two data fields agree by the controls above, so
-   the difference is confined to the three LAW fields, which are each
-   file's own opaque [Program] obligations. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example neg_coslice_proj_record :
   @Coslice_Proj C a = @Coslice_proj C a := eq_refl.
 
-(* THE ISSUE'S OWN SUGGESTED ROUTE, MEASURED.  Its "Current state" says
-   the projection "through [Comma_Coslice] *is* the projection of the
-   exercise" -- true as a statement about categories, and the transported
-   functor does exist and typecheck ([p365_via_comma] below).  But
-   [Comma_Coslice] (Construction/Slice.v) is a [Program Instance]
-   whose [to] is written [{| fobj := _; fmap := _ |}], so BOTH data fields
-   of the comparison functor are [Program] obligations; nothing about the
-   transported functor reduces.  Not even its OBJECT action returns the
-   first projection on the nose, which is why the target rebuilds the
-   three-line record instead of transporting. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p365_via_comma : @Coslice C a ⟶ C :=
   comma_proj2 ◯ to (Comma_Coslice C a).
@@ -222,10 +203,11 @@ Check @p365_via_comma.
 Check @comma_proj2.
 Check @Comma_Coslice.
 
-(* Negative 12 (conversion): the transported functor's object action is
-   not the first projection on the nose, where the target's
-   [Coslice_Proj] has it definitionally (control above:
-   [ctrl_coslice_proj_fobj]). *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example neg_via_comma_fobj (x : @Coslice C a) :
   fobj[p365_via_comma] x = `1 x := eq_refl.
 

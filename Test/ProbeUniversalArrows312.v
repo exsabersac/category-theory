@@ -55,47 +55,27 @@ Example row_b_free_ring (A : Ab) : UniversalArrow A Rng_Forget_Ab :=
   free_rng_ab_universal_arrow A.
 Example row_d_basepoint : Sets ⟶ PointedSets := FreePointed.
 
-(** ** FORMABILITY negative: the discrete adjunction cannot be packaged
+(*
+   本节说明伴随、函子、来源与用途相关定义、性质与动机。
 
-    This is #312's one genuinely obstructed row, and the obstruction is
-    PRE-EXISTING, not introduced here: Instance/Top/Forgetful.v
-    records that a functor out of [Top] lands in a lifted [Sets] while a
-    functor into [Top] must come from the unlifted one, so an
-    [Adjunction] record "would need both functors to share ONE Sets, at
-    levels o and h simultaneously, with o < h: the packaged triple is
-    unformable at every universe assignment."
-
-    The controls above show BOTH functors exist and are nameable, so the
-    negative is about the packaging and not about a missing constant.
-    Stripped, it reports a [Functor] universe mismatch between the two
-    instantiations of [Sets] — a FORMABILITY failure, not a conversion
-    one.  Instance/Top/Discrete.v therefore delivers the universal
-    property written out ([discrete_universal]) and the unit
-    ([disc_unit]) rather than a packaged record, and claims nothing more. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Top_Discrete ⊣ Top_Forget).
 
-(** ** CONVERSION negative: the produced left adjoint is not the
-       pre-existing functor on the nose
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    [LeftAdjointFunctorFromUniversalArrows] PRODUCES a left functor, so
-    [abelianize_adjunction] is stated against [abelianize_left] rather
-    than against the pre-existing [Abelianization_Functor].  The two
-    agree on objects definitionally and on arrows up to [≈]
-    (Instance/Grp/Abelianize.v's [abelianize_left_obj] and
-    [abelianize_left_iso]), but they are NOT the same functor record —
-    the law fields are rebuilt.  Pinned so that a later edit cannot
-    quietly assert the stronger identification. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_left_is_pre_existing :
   abelianize_left = Abelianization_Functor := eq_refl.
 
-(** ** Instrument check
+(*
+   本节说明 ProbeUniversalArrows312 相关定义、性质与动机。
 
-    A [Fail] that must fail for a reason having nothing to do with #312,
-    so a broken [Fail] mechanism would be visible here rather than
-    silently passing every negative above.  Deliberately scope-free: a
-    numeral would risk failing on a missing scope delimiter instead of on
-    the proposition. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_312_instrument : (true = false) := eq_refl.

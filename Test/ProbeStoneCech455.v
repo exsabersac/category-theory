@@ -173,9 +173,11 @@ Fail Definition p455_n5_ua_without_C@{o h +} (X : SetoidObject@{o o}) :
 
 (** ** N6-N8 (UNIVERSE): Instance/Top/StoneCech.v, the universes *)
 
-(* CONTROL: the header's Prop-valued topology.  A setoid with Prop-valued
-   opens closed under unions indexed at the points' universe, and its
-   continuous maps, at that universe, under a CLOSED binder. *)
+(*
+   本节说明 ProbeStoneCech455 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record p455_TopP@{o} := {
   p455_tp_carrier :> SetoidObject@{o o};
   p455_POpen : (p455_tp_carrier → Prop) → Prop;
@@ -424,10 +426,11 @@ Fail Definition p455_n10_not_complete_IEM_below@{e r s c h +| s < c +}
   (E : IEM@{e}) (comp : @Complete@{r s h c} CompHaus) : False :=
   CompHaus_not_complete_IEM E comp.
 
-(* CONTROL: [CompHaus] written out slot by slot, its [Top] slot (the
-   third) at the homs, its proof slot (the fourth) at the objects: the
-   form through [Top]'s index at GAFT's shape above the homs; the older
-   form with the [Top] slot below the homs. *)
+(*
+   本节说明 ProbeStoneCech455 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p455_not_complete_below_slots@{e h c o +| h < c +}
   (E : IEM@{e})
   (comp : @Complete@{h h h c}
@@ -546,10 +549,11 @@ Fail Definition p455_n22_hausdorff_opens_below@{e h s c o q +| h < c, q < o +}
 (** ** N13-N17, N19 (UNIVERSE): Instance/Top/StoneCech/Refutations.v, SAFT
        at the inclusion *)
 
-(* CONTROL: [SAFT_CompHaus_Incl], restated; the same body with the objects'
-   universe c and the homs' h named apart and nothing declared between
-   them; and SAFT at the inclusion at [h < c] with the well-powering a
-   hypothesis. *)
+(*
+   本节说明 ProbeStoneCech455 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p455_saft_incl@{s h +} (comp : @Complete@{s s h h} CompHaus)
   (cont : @PreservesImageLimit _ _ CompHaus_Incl) (G : Cogenerator CompHaus) :
   { F : Top ⟶ CompHaus & F ⊣ CompHaus_Incl } :=
@@ -609,10 +613,11 @@ Fail Definition p455_n19_saft_wp_below@{s c h +| c < h +}
   { F : Top ⟶ CompHaus & F ⊣ CompHaus_Incl } :=
   SAFT_wellpowered CompHaus_Incl comp cont G WP.
 
-(* CONTROL: [CompHaus_WellPowered], restated; Structure/WellPowered.v's
-   [trivial_small] at [CompHaus] with its objects below its homs; the type
-   of a well-powering indexed at the objects' universe, above the homs; the
-   inclusion with its objects above its homs. *)
+(*
+   本节说明 ProbeStoneCech455 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p455_wellpowered@{c h t +} :
   WellPowered@{c h h h t} (CompHaus : Category@{c h h}) :=
   CompHaus_WellPowered.

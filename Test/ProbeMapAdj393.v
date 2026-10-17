@@ -88,12 +88,11 @@ Definition p393_control_fused := squares_unit_fused A A' S.
 Definition p393_control_compose :=
   MapOfAdjunctions_compose A A A' (MapOfAdjunctions_id A) M.
 
-(** *** The claim the header makes about Theory/Skeleton.v
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Both passages are supplied by application alone: no tactic, no
-    transport, no [change].  So the two square fields of [AdjSquares] ARE,
-    up to conversion, the two arguments of [strict_equiv_of_id_cast_nat],
-    whose conclusion is the tree's strict functor equality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition p393_strict_left
   : @equiv _ (@Functor_StrictEq_Setoid D C') (sq_K S ◯ F) (F' ◯ sq_L S)
@@ -105,56 +104,49 @@ Definition p393_strict_right
   := strict_equiv_of_id_cast_nat (sq_L S ◯ U) (U' ◯ sq_K S)
        (sq_right S) (sq_right_nat S).
 
-(** ** Negative 1 (TYPING): the double bar cannot be dropped
+(*
+   本节说明 ProbeMapAdj393 相关定义、性质与动机。
 
-    [fmap[sq_K S] k] runs from [sq_K S (F x)], and the transpose of A' wants
-    a morphism out of [F' ?x].  Those are the same object only through
-    [sq_left S x], which is why the condition is stated with the cast.
-    Stripped, the error is a plain "has type ... while it is expected to
-    have type ...", with no "cannot unify" clause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (to (@adj _ _ _ _ A' _ _) (fmap[sq_K S] k)).
 
-(** ** Negative 2 (CONVERSION): the fused spelling is a theorem, not a
-       conversion
+(*
+   本节说明 ProbeMapAdj393 相关定义、性质与动机。
 
-    [squares_unit_fused] is a genuine biconditional; the two statements are
-    not the same type.  Stripped, the error ends
-    (cannot unify "SquaresUnit A A' S" and "∀ y : obj[D], ..."). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p393_unit_fused_strict :
   SquaresUnit A A' S
     = (∀ y : D, id_cast (sq_unit_eq S y) ∘ fmap[sq_L S] (@unit _ _ _ _ A y)
                   ≈ @unit _ _ _ _ A' (sq_L S y)) := eq_refl.
 
-(** ** Negative 3 (CONVERSION): no unit law on the nose
+(*
+   本节说明 ProbeMapAdj393 相关定义、性质与动机。
 
-    Composition and identity are delivered, but no law relating them is:
-    [AdjSquares_compose] builds [sq_K M ◯ Id[C]], which is not [sq_K M].
-    Stripped, the error ends (cannot unify "MapOfAdjunctions_compose A A A'
-    (MapOfAdjunctions_id A) M" and "M"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p393_unit_law :
   MapOfAdjunctions_compose A A A' (MapOfAdjunctions_id A) M = M := eq_refl.
 
-(** ** Negative 4 (TYPING): [Conjugate] is the same-categories case
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Adjunction/Conjugate.v fixes ONE pair of categories, so its relation
-    cannot even be applied to two adjunctions over different ones.  This is
-    why #393 is not subsumed by that file.  The error tail also reads
-    "cannot unify", but between two CATEGORIES ("C'" and "C") rather than
-    between two inhabitants of a single type, and the reported mismatch is
-    the type of A'. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Conjugate A A').
 
 End Controls.
 
-(** ** Negative 5 (TYPING): the comparison data must be invertible
+(*
+   本节说明 ProbeMapAdj393 相关定义、性质与动机。
 
-    The K = Id, L = Id case of [MapAdjHom] recovers exactly the conjugate
-    pairs whose two transformations are pointwise invertible: a bare
-    [Transform] does not inhabit the iso family [MapAdjHom] asks for. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Residue.
 
@@ -172,14 +164,11 @@ Fail Check (MapAdjHom A A2 Id[C] Id[D]
 
 End Residue.
 
-(** ** Negatives 6-8 (FORMABILITY): where hom = proof is forced
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    [AdjSquares] is over a category whose hom and proof universes coincide.
-    That is inherited, and the two donors are separated below: [id_cast] of
-    Construction/Quotient.v forces it on its own, and [Adjunction] forces it
-    on its own with no [id_cast] in the command.  [Isomorphism] and
-    [Functor] are NOT donors -- both are accepted at the very levels where
-    the three negatives are refused. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Formability.
 

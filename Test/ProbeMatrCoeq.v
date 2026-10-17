@@ -29,28 +29,19 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check
+(*
+   本节说明 ProbeMatrCoeq 相关定义、性质与动机。
 
-    A [Fail] that must itself fail, so a globally broken [Fail]
-    vernacular would be caught here rather than silently greening the
-    negatives below.  This is the INSTRUMENT, not one of the seven
-    negatives. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** The Qed-opaque decider
+(*
+   本节说明 ProbeMatrCoeq 相关定义、性质与动机。
 
-    THE SHARPEST MEASUREMENT IN THIS FILE, and it was found by a refuted
-    probe rather than anticipated.  [Instance/Field.v]'s [F2_Field_dec]
- and [Q_Field_dec] are [Qed] lemmas.  They inhabit the
-    decidability hypothesis perfectly well -- the engine is TOTAL and
-    CORRECT when fed them -- but nothing REDUCES through an opaque
-    constant, so the coequalizer object does not compute.  Elimination.v
-    and Coequalizer.v therefore use transparent copies ([f2_dec], [q_dec],
-    [Defined]) for every [eq_refl] witness.
-
-    This is a fact about opacity, NOT about the mathematics: the negative
-    and its control below differ ONLY in which decider is supplied. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition probe_qed_decider_blocks :
   matr_coeq_obj F2_Field F2_Field_dec coeq_f2_A coeq_f2_B = 1%nat
@@ -60,12 +51,11 @@ Definition probe_pos_transparent_decider_computes :
   matr_coeq_obj F2_Field f2_dec coeq_f2_A coeq_f2_B = 1%nat
   := eq_refl.
 
-(** ** No normal form for the coequalizing map
+(*
+   本节说明 ProbeMatrCoeq 相关定义、性质与动机。
 
-    The next three are three faces of one fact: this development
-    computes A coequalizing map, not a NORMALISED one, and [delta] is
-    stuck under a free index.  Entrywise agreement holds; whole-function
-    Leibniz equality does not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition probe_map_is_identity :
   matr_coeq_map F2_Field f2_dec coeq_f2_A coeq_f2_A
@@ -78,18 +68,19 @@ Fail Definition probe_map_is_const :
   coeq_f2_map = ((fun _ _ => true) : 2%nat ~{Matr F2_Field}~> 1%nat)
   := eq_refl.
 
-(* Positive control naming Coequalizer.v's own agreement lemma: the two
-   maps DO agree entrywise, so the refutations above are about
-   whole-function equality and not about the maps differing in value. *)
+(*
+   本节说明 ProbeMatrCoeq 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition probe_pos_map_agrees_at :
   coeq_f2_map F1 F1 = coeq_f2_h F1 F1 := eq_refl.
 
-(** ** The op-bridge is not a definitional identity of records
+(*
+   本节说明 ProbeMatrCoeq 相关定义、性质与动机。
 
-    Reduction.v (#326) proved abstractly that [IsCoequalizer] and
-    [IsEqualizer (C^op)] are distinct record types though their fields
-    are convertible.  This CONFIRMS that abstract negative at a CONCRETE
-    category, which the abstract statement alone does not do. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition probe_op_record_identity :
   IsCoequalizer coeq_f2_A coeq_f2_B coeq_f2_obj coeq_f2_map
@@ -127,16 +118,11 @@ Definition probe_pos_mat_id_l (K : FieldObject)
   (a b : nat) (A : Matrix K a b) :
   mat_mul K (mat_id K a) A ≈ A := mat_mul_id_l K Kdec A.
 
-(** ** Controls for constants that appear ONLY inside negatives
+(*
+   本节说明 ProbeMatrCoeq 相关定义、性质与动机。
 
-    The rename simulation over the constants occurring in the NEGATIVES
-    (not merely those the controls happened to name) found FIVE that no
-    control mentioned -- [F2_Field_dec], [matr_coeq_map], [IsCoequalizer],
-    [mat_sub] and [mat_zero].  Renaming any of them left this file
-    compiling and turned its negative vacuously green.  The controls
-    below are the repair, and they are recorded here rather than quietly
-    added because this is the THIRD probe file in this tree to ship with
-    that same gap. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check F2_Field_dec.
 

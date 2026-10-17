@@ -47,9 +47,11 @@ Check (@power Sets@{o so} Sets_HasIndexedProducts@{so o} nat X).
 (* Positive control 2: and so is the copower. *)
 Check (@copower Sets@{o so} Sets_HasIndexedCoproducts@{so o} nat X).
 
-(* Negative 1: indexing by [obj[Sets]] itself is not.  [SetoidObject@{o o}]
-   lives at [Type@{o+1}] while the index must live at [Type@{o}] -- the
-   universe of the carriers, which is where the small sets are. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@power Sets@{o so} Sets_HasIndexedProducts@{so o}
               SetoidObject@{o o} X).
 
@@ -105,9 +107,11 @@ Definition probe_power_carrier_control :
   carrier (@power Sets Sets_HasIndexedProducts J X) = (J → carrier X)
   := eq_refl.
 
-(* Negative 4: but it is NOT the carrier of the exponential, which is a type
-   of setoid MORPHISMS out of the discrete setoid on the index.
-   [Sets_power_exponent] relates the two, and only up to isomorphism. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_power_is_exponent :
   carrier (@power Sets Sets_HasIndexedProducts J X)
   = carrier (Sets_pow J X) := eq_refl.

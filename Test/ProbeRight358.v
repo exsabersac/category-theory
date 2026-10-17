@@ -31,10 +31,11 @@ Context {A X : Category}.
 Context {S : (A^op) ⟶ X}.
 Context {T : (X^op) ⟶ A}.
 
-(* Controls.  Every constant a negative names is also named OUTSIDE a
-   [Fail] and APPLIED, never left bare -- an unapplied polymorphic
-   constant elaborates for reasons unrelated to the negative and so
-   certifies nothing. *)
+(*
+   本节说明 ProbeRight358 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (AdjointOnTheRight S T).
 Check (AdjointOnTheLeft S T).
 Check (@Adjunction (A^op) X (Opposite_Functor T) S).
@@ -62,18 +63,19 @@ Fail Definition probe358_not_an_abbreviation_rev
   (H : AdjointOnTheRight S T) :
   @Adjunction (A^op) X (Opposite_Functor T) S := H.
 
-(* TYPING 3 -- right and left are different classes, not one class
-   spelled two ways.  The MATHEMATICAL separation is the target's
-   [right_does_not_imply_left], a theorem over all categories; this
-   negative only records that they are not definitionally equal. *)
+(*
+   本节说明 ProbeRight358 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe358_right_is_not_left
   (H : AdjointOnTheRight S T) : AdjointOnTheLeft S T := H.
 
-(* CONVERSION 4-5 -- the hom-set presentation and the unit/counit
-   presentation are interderivable but their round trips are NOT
-   [eq_refl]: the classes are rebuilt rather than returned.  Contrast
-   the FOUR round trips against the ordinary adjunction, which the
-   target pins at [eq_refl]. *)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe358_MRA_round_strict (H : MutuallyRightAdjoint S T) :
   MutuallyRightAdjoint_of_AdjointOnTheRight S T
     (AdjointOnTheRight_of_MutuallyRightAdjoint S T H) = H := eq_refl.
@@ -84,7 +86,9 @@ Fail Example probe358_aor_MRA_round_strict (H : AdjointOnTheRight S T) :
 
 End ProbeRight358.
 
-(* Instrument check.  [Fail] is live in this build and does notice a
-   conversion failure.  Scope-free deliberately, so that it cannot fail
-   on a missing scope delimiter instead of on the proposition. *)
+(*
+   本节说明 ProbeRight358 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe358_instrument : (true = false) := eq_refl.

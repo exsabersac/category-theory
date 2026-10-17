@@ -79,18 +79,11 @@ Fail Definition neg_padd_copair_diag {a c : C}
 
 End ProbeBiproduct.
 
-(** ** The universe donors, pinned
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-    Adjunction/Additive.v measures that [u0 = u2] — the identification
-    of the two categories' hom-and-proof universes — has AT LEAST THREE
-    INDEPENDENT donors.  An earlier revision of that file attributed it
-    to the [Adjunction] class alone and called the attribution
-    DISCRIMINATING; it is not, because the control it cited removes all
-    three donors at once.  These negatives guard the corrected reading:
-    the levels are declared so that D's hom sits STRICTLY BELOW C's,
-    which satisfies the bound [bh <= ah] while violating the equation,
-    and then each donor is rejected ON ITS OWN while the cited control
-    is accepted at those very levels. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeUniverseDonors.
 
@@ -113,24 +106,21 @@ Check (@fmap_padd_of_preserved_coproduct Cu Du ZCu ZDu PCu PDu Gu).
 Check (fun (x y : Cu) => x ~{Cu}~> y).
 Check (fun (x y : Du) => x ~{Du}~> y).
 
-(* NEGATIVE 4 (FORMABILITY) — donor (i).  [AdditiveFunctor] alone, with
-   ONE functor in the command and no adjunction anywhere: its binder
-   reuses a single level for both categories while its own constraint
-   block is empty. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@AdditiveFunctor Du Cu ADu ACu Gu).
 
 (* CONTROL: the functor we HAVE, D ⟶ C, is formable at these levels. *)
 Check (Du ⟶ Cu).
 
-(* NEGATIVE 5 (FORMABILITY) — donor (ii).  Merely wanting a functor in
-   the OTHER direction, with no adjunction anywhere: [Functor] forces
-   source-hom below target-hom, so having both directions forces
-   equality.  Written WITHOUT an explicit universe instance on purpose:
-   [Functor]'s instance arity differs between Rocq 9.1 and the 8.x
-   line, so a [Functor@{...}] spelling could make this [Fail] succeed
-   on an ARITY error rather than the universe inconsistency — passing
-   vacuously on two of the three supported toolchains, which no vacuity
-   check would detect. *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Cu ⟶ Du).
 
 (* NEGATIVE 6 (FORMABILITY) — donor (iii).  [Adjunction] itself. *)

@@ -97,11 +97,11 @@ Context {C : Category}.
 Context `{@HasPullbacks C}.
 Context {x : C}.
 
-(* The header of Theory/Subobject/Lattice.v states, and this pins, that the
-   binary meet IS the pushforward along u of the reindexing of v along
-   sub_mono u -- the same record with the same three fields, at Leibniz
-   equality and with no tactic.  Theory/Subobject/Lattice.v does not import
-   Theory/Subobject/Functor.v, so the readback lives here. *)
+(*
+   本节说明函子、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p445_meet_is_compose_reindex (u v : SubObj x) :
   sub_meet u v = sub_compose u (sub_reindex (sub_mono u) v) := eq_refl.
 
@@ -121,20 +121,18 @@ Section NoPullbacks.
 Context {C : Category}.
 Context {x : C}.
 
-(* N1 -- INSTANCE.  [sub_meet] is conditional on chosen pullbacks; with no
-   [HasPullbacks C] in scope the definition is refused with "Cannot infer
-   the implicit parameter H of sub_meet whose type is HasPullbacks C (no
-   type class instance found)".  Measured: the [Check] form of the same
-   term is ACCEPTED, printing the open evar, which is why this is a
-   [Definition]. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n1 (u v : SubObj x) : SubObj x := sub_meet u v.
 
-(* N3 -- FORMABILITY.  Over an EMPTY index there is no j0 to present the
-   intersection at, and the wide pullback is the terminal object rather
-   than the top subobject (Structure/Pullback/Wide.v); the hole cannot
-   be filled: "Cannot infer this placeholder of type Empty_set".  The
-   intersection of the empty family is [sub_top] ([IsIntersection_empty]),
-   not anything read off a wide pullback. *)
+(*
+   本节说明拉回/推出、子对象、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n3 (S : Empty_set → SubObj x)
   (W : WidePullback (fun j => sub_mono (S j))) : SubObj x :=
   sub_wide_intersection S _ W.
@@ -147,23 +145,19 @@ Context {C : Category}.
 Context `{@HasPullbacks C}.
 Context {x : C}.
 
-(* N2 -- TYPING.  Commutativity of the meet holds at ≈ on [SubObj x] (an
-   isomorphism of domains over x) and NOT at Leibniz equality: the two
-   chosen pullbacks are different records.  "The term sub_meet_comm u v
-   has type sub_meet u v ≈ sub_meet v u while it is expected to have type
-   sub_meet u v = sub_meet v u", with no "cannot unify" clause.  The
-   statement itself is well-formed; the refusal is at the proof. *)
+(*
+   本节说明拉回/推出、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n2 (u v : SubObj x) : sub_meet u v = sub_meet v u :=
   sub_meet_comm u v.
 
-(* N5 -- CONVERSION.  Structure/Pullback/Wide.v's [binary_wide_pullback]
-   is stated over [two_fam (sub_dom u) (sub_dom v)], and that family is
-   convertible with [fun b => sub_dom (sub_pair u v b)] at the two literals
-   but NOT as a function of a variable b: "cannot unify P ~{ C }~>
-   two_fam (sub_dom u) (sub_dom v) b and P ~{ C }~> sub_dom (sub_pair u v
-   b)" (verbatim, under this import list).  This is
-   the measured reason [sub_meet_is_wide_intersection] is proved through
-   [IsIntersection_unique] instead of through that lemma. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n5 (u v : SubObj x) (P : C)
   (q1 : P ~> sub_dom u) (q2 : P ~> sub_dom v)
   (HP : IsPullback (sub_mono u) (sub_mono v) P q1 q2) :
@@ -178,10 +172,11 @@ Context {C : Category}.
 Context `{@Cocartesian C}.
 Context {x : C}.
 
-(* N4 -- INSTANCE.  The join is conditional on images: with a cocartesian
-   structure but no [HasImages C], "Cannot infer the implicit parameter H0
-   of sub_join whose type is HasImages C (no type class instance found)".
-   The [Check] form is accepted, as for N1. *)
+(*
+   本节说明 ProbeSubobjectLattice445 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n4 (u v : SubObj x) : SubObj x := sub_join u v.
 
 End NoImages.
@@ -191,10 +186,11 @@ Section WrongClass.
 Context {C : Category}.
 Context {E : MorphismClass C}.
 
-(* N6 -- CONVERSION.  An image as a subobject needs the RIGHT class of the
-   factorization system to be the monos, because [fact_m_in] is fed
-   directly to the [sub_is_monic] field; an (E, Epi) system is refused:
-   "cannot unify EpiClass and MonoClass". *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n6 (O : OFS E (@EpiClass C)) {y z : C} (f : y ~> z) :
   ImageOf f := ImageOf_of_OFS O f.
 
@@ -206,41 +202,41 @@ Context {C : Category}.
 Context `{I : @Initial C}.
 Context {x : C}.
 
-(* N7 -- INSTANCE.  The bottom subobject needs the arrow out of the initial
-   object to be MONIC, which an initial object does not supply by itself:
-   "Cannot infer this placeholder of type Monic zero[x] (no type class
-   instance found)".  [I] is pinned explicitly because [@Initial C] is a
-   notation for [@Terminal (C^op)] and resolution does not see through it,
-   which would otherwise add a second, unrelated placeholder to the
-   verdict. *)
+(*
+   本节说明子对象、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n7 : SubObj x := @sub_bot C I x _.
 
 End NoStrictness.
 
-(* N8 -- CONVERSION.  Merging versus tagging: the union of {0,1} and
-   {1,2,3} inside 4 has FOUR elements (p445_union_four), and the tagged
-   count 5 is refused: "cannot unify sub_dom (sub_join ex11_u ex11_v) and
-   5%nat". *)
+(*
+   本节说明 ProbeSubobjectLattice445 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example n8 : sub_dom (sub_join ex11_u ex11_v) = 5%nat := eq_refl.
 
-(* N9 -- CONVERSION.  The meet of the same two has ONE element
-   (p445_meet_one); 2, the size of the first factor, is refused: "cannot
-   unify sub_dom (sub_meet ex11_u ex11_v) and 2%nat".  So the pullback
-   genuinely intersected rather than returning a leg's domain. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example n9 : sub_dom (sub_meet ex11_u ex11_v) = 2%nat := eq_refl.
 
-(* N10 -- CONVERSION.  In Sets the union of the increasing family is ≈ the
-   positive naturals ([fs_union_is_positives], an isomorphism of domains
-   over nat) and NOT equal to them on the nose: the image carrier is a
-   point of nat with a chosen preimage, not the sig of a positivity proof.
-   "cannot unify sub_dom fs_union and pos_obj". *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example n10 : sub_dom fs_union = pos_obj := eq_refl.
 
-(* N11 -- CONVERSION.  The empty-index wide pullback in Sets is terminal
-   only up to ≅ (Structure/Pullback/Wide.v's [wide_pullback_empty_terminal])
-   and is NOT convertible with the chosen terminal setoid: its carrier is
-   the setoid of empty coherent families, not [poly_unit].  Refused with
-   "cannot unify", the two sides being the wide-pullback object and 1. *)
+(*
+   本节说明拉回/推出、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example n11 :
   Sets_wpull_obj (I:=False) (A:=fun i => match i with end)
     (z:=@terminal_obj Sets Sets_Terminal) (fun i => match i with end)

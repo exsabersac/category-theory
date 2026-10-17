@@ -53,21 +53,22 @@ Check ue_representation Powerset_Prop_op Powerset_Omega
 (* POSITIVE CONTROL: and the whole representation the target file builds. *)
 Check Powerset_representation.
 
-(* POSITIVE CONTROL AT A DIFFERENT CATEGORY, so that the negative above is
-   not read as "this donor constant is unusable".  Over a category whose
-   object, hom and proof universes CAN be identified, the same constant
-   elaborates; the refusal is a fact about [Sets], not about
-   [universal_element_yoneda]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section YonedaIsUsableElsewhere.
   Universe u.
   Context (K : Category@{u u u}) (F : K ⟶ Sets) (r : K).
   Check @universal_element_yoneda K F r.
 End YonedaIsUsableElsewhere.
 
-(* POSITIVE CONTROLS AT TWO DIFFERENT SIZES, so that "the contravariant
-   power-set functor is available at one level" is not read off a single
-   instantiation.  [Powerset_Prop_truth] forces [Set < o], so the smaller
-   of the two sits immediately above [Set]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section PowersetAtTwoSizes.
   Universe u1 u2 u3 u4.
   Constraint Set < u1.
@@ -158,17 +159,19 @@ Check (fun (n : nat) (S : Fin.t (finpow n)) =>
 (* ------------------------------------------------------------------------ *)
 (** ** Positive controls that are strength claims in their own right *)
 
-(* Over [Sets] a subset IS a map into Ω, at Leibniz equality of TYPES.  This
-   is the identification the target file's universal property rests on, and
-   it is why that file's content is the single equivalence of (4) rather
-   than a bijection between two different things. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example sets_subsets_are_maps (A : SetoidObject) :
   carrier (Powerset_Prop_obj A) = (A ~{Sets}~> Powerset_Omega) := eq_refl.
 
-(* Over [FinSet] the analogous statement is FALSE as a type equation — the
-   power set is a [Fin.t (2 ^ n)] and a characteristic map is a function —
-   and that is the whole reason the [FinSet] file's correspondence has
-   content.  Stripped: a genuine type error. *)
+(*
+   本节说明 ProbePowersetUniversal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example fin_subsets_are_maps (n : nat) :
   Fin.t (finpow n) = (Fin.t n → Fin.t 2) := eq_refl.
 

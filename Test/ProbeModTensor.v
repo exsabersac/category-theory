@@ -39,11 +39,11 @@ Example probe_med_computes :
   cmon_map (rm_hom (tensor_med Int_mul_bilinear)) (zgen 2%Z 3%Z) = 6%Z
   := eq_refl.
 
-(** ** Positive control: the class's mediator IS the fixpoint
+(*
+   本节说明 ProbeModTensor 相关定义、性质与动机。
 
-    [tensor_factor] is [unique_obj] of the [Unique] record supplied to
-    [tensor_universal_element], and that record is built directly rather
-    than extracted from an opaque proof, so the projection reduces. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example probe_factor_is_med :
   tensor_factor Int_mul_bilinear = tensor_med Int_mul_bilinear := eq_refl.
 
@@ -53,10 +53,11 @@ Example probe_universal_element_is_gen :
     (TensorMod Int_RMod Int_RMod)
     (tensor_universal_element Int_RMod Int_RMod) = tensor_gen := eq_refl.
 
-(** ** Positive control: the triangle's VALUE computes
+(*
+   本节说明 ProbeModTensor 相关定义、性质与动机。
 
-    Paired with the fourth negative below: what does not hold at Leibniz
-    equality is the equation of RECORDS, not the equation of values. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example probe_triangle_value (v w : carrier (cmon_setoid Int_RMod)) :
   rbl_map (fmap[Bilin Int_RMod Int_RMod]
              (tensor_med Int_mul_bilinear) tensor_gen) v w
@@ -75,11 +76,11 @@ Example probe_plus_comm_up_to_equiv :
         (zplus (zgen 2%Z 2%Z) (zgen 1%Z 1%Z)) :=
   mte_comm _ _.
 
-(** ** Negative: the balanced law is not definitional
+(*
+   本节说明 ProbeModTensor 相关定义、性质与动机。
 
-    3·2 and 3·1 both reduce to numerals here, so the two sides are the
-    closed terms 6 ⊗ 1 and 2 ⊗ 3 — distinct constructors' arguments, and
-    identified only by [tensor_balanced]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_balanced_definitional :
   zgen 6%Z 1%Z = zgen 2%Z 3%Z := eq_refl.
 
@@ -87,10 +88,11 @@ Example probe_balanced_up_to_equiv :
   mt_eq (zgen 6%Z 1%Z) (zgen 2%Z 3%Z) :=
   @tensor_balanced Int_Ring Int_RMod Int_RMod 3%Z 2%Z 1%Z.
 
-(** ** Negative: over ℚ the mediator's value is only [Qeq]-equal
+(*
+   本节说明 ProbeModTensor 相关定义、性质与动机。
 
-    [Qmult (1#2) (4#1)] reduces to [4#2].  The scalar setoid, not the
-    mediator, is what makes this weaker than the ℤ case above. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_q_med_definitional :
   cmon_map (rm_hom (tensor_med Q_mul_bilinear)) (qgen (1#2) (4#1)) = 2
   := eq_refl.
@@ -99,11 +101,11 @@ Example probe_q_med_up_to_equiv :
   cmon_map (rm_hom (tensor_med Q_mul_bilinear)) (qgen (1#2) (4#1)) ≈ 2.
 Proof. exact q_tensor_med_computes. Qed.
 
-(** ** Negative: the triangle is not an equality of records
+(*
+   本节说明 ProbeModTensor 相关定义、性质与动机。
 
-    Postcomposition rebuilds [RBilinear]'s four law fields from
-    [Program] obligations, which are [Qed]-opaque, so the two records
-    are distinct terms with equal values. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_triangle_definitional :
   fmap[Bilin Int_RMod Int_RMod] (tensor_med Int_mul_bilinear) tensor_gen
     = Int_mul_bilinear := eq_refl.

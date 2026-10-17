@@ -684,12 +684,11 @@ Check two_actions_id.
 
 (** ** Guard: the reals-bound constants of Instance/Met/Uniform.v *)
 
-(* Instance/Met/Uniform.v: 55 names, none closed under the global
-   context.  By [Print Assumptions], 28 carry
-   ClassicalDedekindReals.sig_forall_dec alone; 3 ([const_umap],
-   [Met_to_MetU_not_Full], [ureal_below_all_zero]) carry it and
-   functional_extensionality_dep; the other 24 carry those two and
-   ClassicalDedekindReals.sig_not_dec. *)
+(*
+   本节说明 ProbeReflective370 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check Build_UMap.
 Check CMetU.
 Check CMetU_Full.

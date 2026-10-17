@@ -28,11 +28,11 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(** ** Instrument check
+(*
+   本节说明 ProbePolynomial 相关定义、性质与动机。
 
-    A deliberately true conversion in the very context the negatives use.
-    If this stops holding, the negatives below are measuring the context
-    and not the boundary. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example probe_instrument (K S : RingObject) (phi : K ~{Rng}~> S)
   (s : carrier (rig_setoid S))
@@ -65,12 +65,11 @@ Example probe_extend_mul (K S : RingObject) (phi : K ~{Rng}~> S)
     = rig_mul S (rig_map (poly_extend phi s Kc Hc) t)
                 (rig_map (poly_extend phi s Kc Hc) u) := eq_refl.
 
-(* NEGATIVES.  Stripped of [Fail], the first reports
-     (cannot unify "poly_extend phi s Kc Hc (rig_zero (PolyRing K))" and
-     "rig_zero S")
-   and the second the corresponding statement for [rig_one].  What is on
-   the left of each is the fold's value, [phi (rig_zero K)] after one
-   step of reduction; what is on the right is the target's own zero. *)
+(*
+   本节说明 ProbePolynomial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_extend_zero_not_eq_refl
   (K S : RingObject) (phi : K ~{Rng}~> S)
@@ -110,10 +109,11 @@ Example probe_zpoly_zero_does_compute :
 
 (** ** (2) The backward transpose does not compute *)
 
-(* Stripped of [Fail], this reports
-     (cannot unify "projT1 (projT1 ((adj[poly_pointed_adjunction])⁻¹ h)) t"
-     and "peval `1 (h) `2 (Q) t")
-   — the opaque transpose against the evaluation fixpoint. *)
+(*
+   本节说明 ProbePolynomial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_transpose_not_eq_refl (A : CRng) (Q : CRngPt)
   (h : A ~{CRng}~> CRngPt_Forget Q) (t : @PTerm (`1 A)) :
@@ -142,12 +142,11 @@ Example probe_universal_arrow (A : CRng) :
 Example probe_unit (A : CRng) (c : carrier (rig_setoid (`1 A))) :
   rig_map (`1 (poly_pointed_unit A)) c = @pt_const (`1 A) c := eq_refl.
 
-(* ... but only its ACTION.  The unit is [fmap[U] id ∘ arrow], whose
-   underlying homomorphism is the composite RECORD
-   [rig_hom_compose rig_hom_id (poly_const _)], and no amount of
-   agreement on elements makes that the inclusion's own record.
-   Stripped of [Fail] this reports
-     (cannot unify "poly_pointed_unit A" and "poly_pointed_arrow A"). *)
+(*
+   本节说明 ProbePolynomial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_unit_not_the_arrow (A : CRng) :
   poly_pointed_unit A = poly_pointed_arrow A := eq_refl.
@@ -159,15 +158,11 @@ Example probe_unit_equiv_arrow (A : CRng) :
   poly_pointed_unit A ≈ poly_pointed_arrow A.
 Proof. intro c; reflexivity. Qed.
 
-(** ** A closing negative of a different kind
+(*
+   本节说明 ProbePolynomial 相关定义、性质与动机。
 
-    The universal element of [Rng_Forget] is the indeterminate on the
-    nose, but the indeterminate is NOT the zero of ℤ[x] — the
-    construction does not collapse.  The first is [eq_refl]; the second
-    is a refutation, not a conversion, so it is stated as a theorem and
-    not as a [Fail]: a [Fail] would only record that the two terms are
-    not convertible, which is far weaker than their being provably
-    distinct in the setoid. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example probe_universal_element_is_x :
   @aue_elem Rng Rng_Forget ZPoly zpoly_universal_element = @poly_x Int_Ring

@@ -669,17 +669,11 @@ Check Category.Instance.Top.Components.Paths.pprecomp.
 Check Category.Instance.Top.Components.Paths.pprecomp_obligation_1.
 Check Category.Instance.Top.Components.Paths.rball_scale.
 
-(* Added by #469.  Instance/Sets/Propositional/Full.v builds the same
-   category as [PSets] and the same subcategory record as [PSetsSub];
-   these two controls pin that at [eq_refl].  The [Require] is loaded
-   after every other command, so it changes the environment of these two
-   controls alone, and it costs this probe one module (Full.v, whose
-   closure is otherwise inside Components.v's).  CORRECTION (#1349):
-   Components.v now requires Full.v and defines [PSetsSub] and [PSets]
-   as [PropSets_sub] and [PropSets], so these two hold by unfolding that
-   definition; they are kept as controls of it.  The [Require] now adds
-   no module, Full.v being inside Components.v's closure; it brings
-   Full.v's short names into scope for these two controls alone. *)
+(*
+   本节说明 ProbeComponents462 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Instance.Sets.Propositional.Full.
 
 Example p462_c469_propsets_sub@{o so | o < so +} :

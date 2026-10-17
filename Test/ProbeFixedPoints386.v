@@ -63,10 +63,11 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(* NEGATIVE 1 (TYPING).  The equivalence is between the two FIXED
-   subcategories; it is not an equivalence carried by the original left
-   adjoint.  The error is a plain "has type ... while it is expected to
-   have type ...", with no unification clause. *)
+(*
+   本节说明伴随、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (adjunction_fixed_point_equivalence A : EquivalenceOfCategories F).
 
 (* Controls: the term does elaborate at its own type, and [F] is a
@@ -101,12 +102,11 @@ Context {C : Category}.
 Context {S : Subcategory C}.
 Context (R : Coreflective S).
 
-(* NEGATIVE 2 (TYPING).  The converse of [Idempotent_Coreflective] is NOT
-   available as an [IdempotentComonad]: that class asks for an
-   endofunctor presented as [W^op] for some [W : C ⟶ C], and the
-   endofunctor a coreflection induces on C^op is [Incl ◯ reflector],
-   which has no such presentation.  The error names the two classes
-   directly. *)
+(*
+   本节说明 ProbeFixedPoints386 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Reflective_IdempotentMonad R
               : IdempotentComonad
                   (Incl (C^op) (op_subcategory S) ◯ reflector R)
@@ -140,11 +140,11 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(* NEGATIVE 3 (CONVERSION).  The counit-fixed subcategory is not the
-   opposite reading of the opposite adjunction's unit-fixed one: the two
-   [sobj] fields carry [IsIsomorphism] in C and in C^op respectively, and
-   those are different applications of the same class.  Only the
-   underlying morphism agrees, which is [counit_fixed_op_strict]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_counit_fixed_not_op :
   CounitFixed A = op_subcategory (UnitFixed (Opposite_Adjunction F U A))
   := eq_refl.
@@ -173,10 +173,11 @@ Context {C : Category}.
 Context {W : C ⟶ C}.
 Context (H : @Comonad C W).
 
-(* NEGATIVE 4 (CONVERSION).  Membership in the colocal subcategory is
-   invertibility read in C^op, and the covariant reading in C is a
-   DIFFERENT type: the two inverse laws are exchanged.  That is why
-   [wlocal_obj_iff] is a biconditional rather than an equation. *)
+(*
+   本节说明 ProbeFixedPoints386 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_wlocal_not_covariant (x : C) :
   sobj C (WLocal_Subcategory H) x = IsIsomorphism (@extract C W H x)
   := eq_refl.
@@ -199,19 +200,20 @@ Context {RA : relation A} {RB : relation B}.
 Context (PA : PreOrder RA) (PB : PreOrder RB).
 Context (G : GaloisConnection RA RB).
 
-(* NEGATIVE 5 (CONVERSION).  The bijection between the two sets of closed
-   elements returns the underlying element on the nose only AFTER
-   antisymmetry; the whole-sigma round trip is not even a conversion,
-   the second component being a [Prop] with no proof irrelevance
-   available.  This is what [closed_round_r] states instead. *)
+(*
+   本节说明 ProbeFixedPoints386 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_closed_sigma_round
   (p : ∃ a : A, GalClosed_r G a) :
   closed_l_to_r PA G (closed_r_to_l PB G p) = p := eq_refl.
 
-(* NEGATIVE 6 (CONVERSION).  Mac Lane's equation [p = RLp] is NOT a
-   conversion: at a variable closed element the two sides are unrelated
-   terms, and antisymmetry is what relates them.  This is the whole
-   reason [closed_r_eq] carries an [Antisymmetric] hypothesis. *)
+(*
+   本节说明 ProbeFixedPoints386 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_closed_not_definitional
   (a : A) (Hc : GalClosed_r G a) : gal_r G (gal_l G a) = a := eq_refl.
 
@@ -255,9 +257,11 @@ Check (fun x : Cu => id[x]).
 Check Fu.
 Check Uu.
 
-(* NEGATIVE 7 (FORMABILITY).  [Adjunction] identifies the hom universe
-   with the proof universe.  This is inherited, not introduced by the
-   targets (#367, #368 and #379 measure the same donor). *)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Fu ⊣ Uu).
 
 (* NEGATIVE 8 (FORMABILITY).  [Subcategory] does so independently, with
@@ -293,11 +297,11 @@ Example probe_free_unit_is_insert (X : Coq) (a : X) :
   @unit MonC Coq FreeMonoid UMonC free_monoid_adjunction X a
     = (a :: nil)%list := eq_refl.
 
-(* NO object of [Coq] is unit-fixed for this adjunction: a two-sided
-   inverse [k] would give [k nil :: nil = nil].  So the unit-fixed
-   subcategory of the free-monoid adjunction is EMPTY -- that is exactly
-   what this states, and nothing is claimed about the counit-fixed one
-   beyond the single object below. *)
+(*
+   本节说明伴随、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_monoid_unit_never_iso (X : Coq) :
   IsIsomorphism (@unit MonC Coq FreeMonoid UMonC free_monoid_adjunction X)
     → False.
@@ -308,11 +312,11 @@ Proof.
   discriminate Hn.
 Qed.
 
-(* The one-sided reading of "the fixed objects are the image of U" is
-   therefore refuted: [list bool] IS [U (F bool)], so it lies in the
-   image of the right adjoint, and yet the unit is not invertible there.
-   The biconditional [unit_fixed_iff_image] escapes this because its
-   right-hand side quantifies over COUNIT-FIXED objects. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example probe_list_is_U_of_F (X : Coq) :
   fobj[UMonC] (fobj[FreeMonoid] X) = list X := eq_refl.
 

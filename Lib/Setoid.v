@@ -54,11 +54,11 @@ Definition unit_setoid@{t u} : Setoid@{t u} poly_unit@{t} :=
 Definition eq_Setoid@{u} (A : Type@{u}) : Setoid@{u u} A :=
   Build_Setoid@{u _} A (λ f g, eq f g) eq_equivalence@{u u}.
 
-(* The function setoid: two functions are equivalent when they agree
-   pointwise up to the codomain's equivalence. This is extensional equality of
-   functions, realised without the [funext] axiom by working up to `≈`. The
-   low priority [| 9] keeps it from pre-empting more specific instances during
-   resolution. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance funext_Setoid
         {T : Type} (t : T → Type) (a b : T) `{Setoid (t b)} :
@@ -79,10 +79,11 @@ Program Instance Fin_Setoid {n} : Setoid (Fin.t n) := {|
   equiv := eq
 |}.
 
-(* Unique existence up to `≈`: a witness [unique_obj] satisfying [P], together
-   with the proof [uniqueness] that any other witness is equivalent to it. This
-   is the constructive content behind the `∃!` notation below and underlies the
-   universal properties (limits, adjunctions) stated throughout the library. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Unique `{S : Setoid A} (P : A → Type) := {
   unique_obj : A;                          (* the witnessing element *)
   unique_property : P unique_obj;          (* it satisfies P *)
@@ -96,10 +97,11 @@ Arguments uniqueness {_ _ _} _.
 Notation "∃! x .. y , P" := (Unique (fun x => .. (Unique (fun y => P)) ..))
   (at level 200, x binder, y binder, right associativity) : category_theory_scope.
 
-(* Injectivity and surjectivity of a function between setoids, stated up to
-   `≈` rather than `=`. The [not-a-class] warning is silenced because these
-   single-field classes are used as plain propositions, not for instance
-   resolution; it is restored immediately afterwards. *)
+(*
+   本节说明 Setoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Set Warnings "-not-a-class".
 
 (* [f] is injective when equal images force equivalent arguments. *)

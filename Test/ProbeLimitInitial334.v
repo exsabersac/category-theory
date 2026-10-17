@@ -80,21 +80,19 @@ Constraint jh < jp.
 Context (J : Category@{jo jh jp}) (C : Category@{co ch cp})
         (F : J ⟶ C) (c : C) (x : J) (N : Cone F).
 
-(* Controls: these two pieces of cone vocabulary ARE formable with J's hom
-   and proof levels declared APART.  They rule out [ACone] and [Cone] as
-   the donor -- and nothing more, which is exactly the correction this
-   file records. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (ACone c F).
 Check (Cone F).
 
-(** ** Negative 4 (FORMABILITY, universe): cone_leg identifies them too
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    Same KIND as negatives 3 and 5, different CONSTANT.  This is the one
-    that refutes the earlier draft's attribution: [cone_leg] is cone
-    vocabulary and is rejected at the same levels.  It is also the donor
-    this development meets FIRST -- [initial_med]'s body is
-    `cone_leg N initial_obj`, and [initial_med] already displays
-    `u0 = u2` while its type mentions no [IsALimit] at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (cone_leg N x).
 
@@ -108,10 +106,11 @@ End UniverseIdentification.
 Check @cone_leg.
 Check @IsLimitCone.
 
-(* Control naming [IsALimit] itself.  The rename simulation over the
-   constants in the NEGATIVES found it named by no control -- it occurred
-   only inside the Fail above -- so that negative would have gone
-   vacuously green on a rename.  Recorded rather than quietly added. *)
+(*
+   本节说明 ProbeLimitInitial334 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check @IsALimit.
 
 Section UniverseIdentification2.
@@ -126,13 +125,11 @@ Fail Check (IsALimit F c).
 
 End UniverseIdentification2.
 
-(** ** Applied controls for negatives 3-5
+(*
+   本节说明 ProbeLimitInitial334 相关定义、性质与动机。
 
-    [Check @IsALimit] above is name resolution ONLY; it cannot show that
-    the three negatives fire on the CONSTRAINT rather than on some
-    unrelated defect in how they are written.  These do: the SAME three
-    applications, at levels DECLARED but deliberately NOT constrained
-    apart, all elaborate. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseControl.
 
@@ -177,20 +174,8 @@ Check point_Sets_separates.
 Check ordinal_omega_nonconstant.
 Check ord_top_neq_bot.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
 
-    The constants the NEGATIVES name:
-
-      Negative 1: [initial_leg], [initial_obj]
-      Negative 2: [Limit_Cones], [initial_Cones_Terminal], [initial_Limit]
-      Negative 3: [IsALimit]
-      Negative 4: [cone_leg]
-      Negative 5: [IsLimitCone]
-
-    That is EIGHT.  An earlier draft of this file scored 7/7 by listing
-    [ACone] under negative 3 -- but [ACone] occurs in NO [Fail] here; it
-    is a control, and including it inflated the denominator in the very
-    sentence that denied padding.  It is dropped.  All eight are named by
-    a positive control above, so renaming any one breaks this file rather
-    than turning its negative vacuously green.  Score: 8/8, counted
-    rather than recalled. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

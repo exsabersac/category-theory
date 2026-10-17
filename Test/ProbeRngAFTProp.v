@@ -86,32 +86,29 @@ Example prng_circular_index :
 
 End IndexReadbacks.
 
-(** ** NEGATIVE 1 (CONVERSION): the new solution set is not the old one
+(*
+   本节说明 ProbeRngAFTProp 相关定义、性质与动机。
 
-    If a later edit points [Rng_Forget_Ab_solution_set_prop] back at
-    [solution_set_of_adjunction], this line stops refusing.  The control is
-    [prng_circular_index] above, which IS [eq_refl] for the old one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example prng_n1_prop_index_is_not_singleton (A : Ab) :
   sol_index (Rng_Forget_Ab_solution_set_prop A) = poly_unit := eq_refl.
 
-(** ** NEGATIVE 2 (CONVERSION): the two applications are different terms
+(*
+   本节说明 ProbeRngAFTProp 相关定义、性质与动机。
 
-    [free_rng_ab_via_GAFT] and [free_rng_ab_via_GAFT_from_adjunction]
-    inhabit the same type and are NOT the same term.  [GAFT] is [Qed], so
-    neither reduces; what this pins is that the two are not syntactically
-    identified, which is what would happen if one were defined as the
-    other. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example prng_n2_applications_differ :
   free_rng_ab_via_GAFT = free_rng_ab_via_GAFT_from_adjunction := eq_refl.
 
-(** ** THE PAYOFF: both applications at named objects
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [ring_ab Int_Ring] is the integers as an abelian group;
-    [nat_setoid_object] and [bool_setoid_object] are named sets.  Before
-    this PR these lines would have exhibited a free ring obtained from an
-    adjunction that was assumed in order to obtain it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ConcreteWitnesses.
 

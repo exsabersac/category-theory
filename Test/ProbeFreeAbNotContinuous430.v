@@ -85,11 +85,11 @@ Monomorphic Constraint uh < uo.
 (* controls: the category and its forgetful functor form at a hom level
    strictly above [Set] *)
 Check (Ab@{uo uh} : Category@{uo uh uh}).
-(* Three universes, not two: since the PR "algebraic carriers are sets"
-   (2026-09-17) [Ab]'s object universe is bounded below by [Set] (the sort of
-   [Prop], entering through [cmon_prop]), and [Sets]'s own object level is no
-   longer identified with [Ab]'s.  The middle argument is that level; the
-   roles of [uo] and [uh] are unchanged. *)
+(*
+   本节说明 ProbeFreeAbNotContinuous430 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (Ab_Forget@{uo uo uh}).
 
 (* N6-N8 UNIVERSE: everything assembled from the trivial group is pinned

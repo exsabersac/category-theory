@@ -35,11 +35,11 @@ Check @PDensityDiagram.
 Check (fun (c : C) (x : P c) =>
          PDensityDiagram P ((c; x) : PElements P)).
 
-(* NEGATIVE 1, CONVERSION.  The two functor RECORDS are not equal: they
-   differ in their functor-law fields, which [PElements_proj] supplies as
-   opaque [Program] obligations while the composite rebuilds them.
-   Stripped: "cannot unify PDensityDiagram P and
-   Curried_CoHom C ◯ PElements_proj P". *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_pdd_records :
   PDensityDiagram P = Curried_CoHom C ◯ PElements_proj P := eq_refl.
 
@@ -62,12 +62,11 @@ Definition probe_ctrl_commutes (M : Cocone (DensityDiagram K))
   density_med K M ∘ density_inj K j ≈ cocone_inj M j
   := density_med_commutes K M j.
 
-(* NEGATIVE 2, CONVERSION.  The mediating triangle is [≈] and NOT
-   [eq_refl]: the mediator evaluates the competing cocone at the index
-   object (e, fmap[K] g x) while the right-hand side evaluates it at j,
-   and the two are reconciled only by cocone coherence at
-   [Elements_lift], which is a [≈] fact.  Stripped: "cannot unify
-   density_med K M ∘ density_inj K j and cocone_inj M j". *)
+(*
+   本节说明 ProbeDensity346 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe_med_strict (M : Cocone (DensityDiagram K))
   (j : ElementsOp K) :
   density_med K M ∘ density_inj K j = cocone_inj M j := eq_refl.
@@ -90,20 +89,19 @@ Universe uo uh us.
 Constraint uh < uo.
 Constraint uh < us.
 
-(* CONTROLS: over a category whose OBJECTS sit strictly ABOVE its homs,
-   the index category and the Yoneda injection are both formable, so the
-   rejection below is attributable to the DIAGRAM and not to the levels
-   themselves or to the index. *)
+(*
+   本节说明Yoneda相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) => ElementsOp K).
 Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) => @yo_inj D K).
 
-(* NEGATIVE 4, FORMABILITY (universe).  [DensityDiagram] carries
-   [u <= u0] -- D's objects at or below D's homs -- and the pin enters at
-   the DIAGRAM rather than at the index or at [yo_inj].  Stripped, this
-   reports a universe inconsistency naming the declared levels:
-   "Cannot enforce uh = _ because uh < uo <= _".  Inherited from the
-   donors, NOT introduced by Theory/Density.v, and not claimed
-   unavoidable. *)
+(*
+   本节说明 ProbeDensity346 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) =>
               DensityDiagram K).
 

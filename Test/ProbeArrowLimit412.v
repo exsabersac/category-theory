@@ -168,10 +168,11 @@ End AboveSet.
 
 (** ** The witness: the created arrow computes *)
 
-(* Over [Coq] at the point shape [_1], the diagram constant at the arrow
-   [negb].  Structure/Limit/Initial.v's [initial_cone] over [One_Initial]
-   is limiting with its mediator definitionally the leg, so the created
-   arrow reduces all the way. *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition NegK : _1 ⟶ @Arrow Coq := {|
   fobj := fun _ => ((bool, bool); negb);

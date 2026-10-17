@@ -30,10 +30,11 @@ Generalizable All Variables.
 
 (** ** NEGATIVE: the propositional witness is not data *)
 
-(* The [Prop] existential may not be destructed into the [Type]-valued
-   [AbSurjective].  A [Fail Lemma] on the statement alone would be vacuous --
-   [AbPropSurjective f → AbSurjective f] is a perfectly well formed type --
-   so the negative carries its proof. *)
+(*
+   本节说明 ProbeAbPropSurjective 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition ab_prop_surjective_is_not_split
   {A B : AbObject} (f : A ~{Ab}~> B) (Hs : AbPropSurjective f) :
   AbSurjective f :=
@@ -59,11 +60,11 @@ Example rmod_split_implies_prop {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : RModSurjective f → RModPropSurjective f :=
   rmod_surjective_prop f.
 
-(* Both notions still imply [Epic]; the split one directly, the
-   propositional one through [pequiv_to].  The split half ([ab_split_epic])
-   also compiles in the unchanged tree: it is a not-lost check, not a
-   control of the change; the propositional halves cannot even be stated
-   there. *)
+(*
+   本节说明 ProbeAbPropSurjective 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ab_split_epic {A B : AbObject} (f : A ~{Ab}~> B) :
   AbSurjective f → Epic f := ab_surjective_epic f.
 

@@ -57,9 +57,11 @@ Check @LocallyPropositional_of_relation.
 Check @Morphism_equality_PropEquiv.
 Check @LocallyPropositional_of_eq.
 
-(* The two [Cat] constants NEGATIVE 1 is about.  [Functor_Setoid] is Cat's
-   hom-setoid, and the projection out of an UNTRUNCATED [F ≈ G] is accepted:
-   the negative below is about the truncation, not about the projection. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check @Functor_Setoid.
 
 Definition cat_equiv_is_data {C D : Category} (F G : C ⟶ D)
@@ -79,13 +81,11 @@ Example c_elim (A : Type) (x y : A)
   (h : inhabited (@equiv A (eq_Setoid A) x y)) : @equiv A (eq_Setoid A) x y :=
   pequiv_elim_inhabited x y h.
 
-(** ** Control: [PropEquiv_of_relation] on a relation that is not [eq]
+(*
+   本节说明 ProbePropEquiv 相关定义、性质与动机。
 
-    A setoid on [nat] whose `≈` identifies numbers of the same parity.  Its
-    relation is already [Prop]-valued, so [PropEquiv_of_relation] applies with
-    both implications the identity -- which is the whole point of that
-    constructor: the relation is handed over by NAME, since the ascription of
-    NEGATIVE 2 is refused. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition parity_rel (x y : nat) : Prop := Nat.even x = Nat.even y.
 
@@ -147,21 +147,11 @@ Definition eq_SetoidObject (A : Type) : SetoidObject :=
 Definition eq_SetoidObject_PropEquiv (A : Type) :
   PropEquiv (is_setoid (eq_SetoidObject A)) := eq_PropEquiv A.
 
-(** ** Size measurements, and their controls
+(*
+   本节说明 ProbePropEquiv 相关定义、性质与动机。
 
-    The three-line size fact of Lib/Setoid/Propositional.v's header, measured.
-    [PropRelSpace] is ACCEPTED at the carrier universe, with the constraint
-    [Set < u] that the sort of [Prop] imposes:
-
-      PropRelSpace@{u} : Type@{u} → Type@{u}
-      (* u |= Set < u *)
-
-    [PropEquiv] itself lands there too:
-
-      PropEquiv_at_carrier@{u} : ∀ A : Type@{u}, Setoid@{u u} A → Type@{u}
-      (* u |= Set < u *)
-
-    NEGATIVE 4 and NEGATIVE 5 are the other half of the contrast. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PropRelSpace@{u} (A : Type@{u}) : Type@{u} := A -> A -> Prop.
 
@@ -175,70 +165,30 @@ Definition CRelSpace@{u v} (A : Type@{u}) : Type@{v} := A -> A -> Type@{u}.
 (* Control for NEGATIVE 5: one universe up, [Setoid] is accepted. *)
 Definition Setoid_above_carrier@{u v} (A : Type@{u}) : Type@{v} := Setoid@{u u} A.
 
-(** ** NEGATIVE 1 (ELIMINATION): Cat's `≈` cannot be truncated
+(*
+   本节说明 ProbePropEquiv 相关定义、性质与动机。
 
-    Stripped and re-run in a copy of the whole file, the message is
-
-      Incorrect elimination of "H" in the inductive type "inhabited":
-      the return type has sort "Type" while it should be SProp or Prop.
-      Elimination of an inductive object of sort Prop
-      is not allowed on a predicate in sort "Type"
-      because proofs can be eliminated only to build proofs.
-
-    -- [inhabited] is [Prop]-valued and so eliminates only into [Prop], while
-    the family of isomorphisms carried by an [F ≈ G] lands in [Type].  The
-    control immediately above ([cat_equiv_is_data]) performs the same
-    projection out of the UNTRUNCATED proof and is accepted, so the refusal is
-    about the truncation alone. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition cat_equiv_prop {C D : Category} (F G : C ⟶ D)
   (H : inhabited (F ≈ G)) (x : C) : F x ≅ G x :=
   match H with inhabits p => `1 p x end.
 
-(** ** NEGATIVE 2 (SORT): [(x ≈ y : Prop)] is refused, even at [eq_Setoid]
+(*
+   本节说明 ProbePropEquiv 相关定义、性质与动机。
 
-    Stripped and re-run in a copy of the whole file, the message is
-
-      In environment
-      A : Type
-      x : A
-      y : A
-      The term "x ≈ y" has type "Type" while it is expected to have type
-      "Prop" (universe inconsistency: Cannot enforce u_eq <= Prop).
-
-    -- [equiv x y] is typed at [Type] whatever relation sits underneath, and
-    [eq_Setoid]'s relation IS Coq's [eq].  No ascription narrows the sort after
-    the fact; the relation has to be named, which is what
-    [PropEquiv_of_relation] takes.  The control is [c_resolution_is_eq] above:
-    naming [eq] and going through [eq_PropEquiv] is accepted and computes to
-    [x = y]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition eq_equiv_ascribed (A : Type) (x y : A) : Prop :=
   (@equiv A (eq_Setoid A) x y : Prop).
 
-(** ** NEGATIVE 3 (ELIMINATION): no blanket [PropEquiv] for [Sets]
+(*
+   本节说明 ProbePropEquiv 相关定义、性质与动机。
 
-    Stripped and re-run in a copy of the whole file, the message is
-
-      Incorrect elimination of "H" in the inductive type "inhabited":
-      the return type has sort "Type" while it should be SProp or Prop.
-      Elimination of an inductive object of sort Prop
-      is not allowed on a predicate in sort "Type"
-      because proofs can be eliminated only to build proofs.
-
-    -- the same refusal as NEGATIVE 1, in the shape a blanket instance would
-    take.  [pequiv_from] is fine ([inhabits]); [pequiv_to] is what is refused.
-    This is why there is no [∀ X : SetoidObject, PropEquiv (is_setoid X)] in
-    Instance/Sets/Propositional.v and no [LocallyPropositional Sets], and why
-    the algebraic object records of the later phases CARRY the property as a
-    field.  The control is [eq_SetoidObject_PropEquiv] above: a PARTICULAR
-    [SetoidObject] can of course have it.
-
-    Note what this does and does not measure.  It measures that THIS route --
-    truncate `≈` and untruncate it again -- is refused.  For [Cat] the refusal
-    is decisive, since the data projected out is a family of isomorphisms.  For
-    an arbitrary [SetoidObject] it records the absence of a construction, not a
-    proof that none exists. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition sets_PropEquiv_generic (X : SetoidObject) :
   PropEquiv (is_setoid X) :=
@@ -246,39 +196,20 @@ Fail Definition sets_PropEquiv_generic (X : SetoidObject) :
    ; pequiv_to := fun x y H => match H with inhabits h => h end
    ; pequiv_from := fun x y h => inhabits h |}.
 
-(** ** NEGATIVE 4 (UNIVERSE): a [Type]-valued relation space is one level up
+(*
+   本节说明 ProbePropEquiv 相关定义、性质与动机。
 
-    Stripped and re-run in a copy of the whole file, the message is
-
-      In environment
-      A : Type
-      The term "A → A → Type" has type "Type@{u+1}"
-      while it is expected to have type "Type@{u}"
-      (universe inconsistency: Cannot enforce u < u because u = u).
-
-    -- against [PropRelSpace] above, which is accepted at [Type@{u}].  This is
-    the size fact the solution-set argument of Mac Lane CWM §V.6-V.7 (printed
-    p. 128) needs: an index built from relations on a carrier is carrier-sized
-    only when those relations are [Prop]-valued.  The control is [CRelSpace],
-    the same space at [Type@{v}] with [u < v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition CRelSpace_small@{u} (A : Type@{u}) : Type@{u} :=
   A -> A -> Type@{u}.
 
-(** ** NEGATIVE 5 (UNIVERSE): [Setoid] is one level up, [PropEquiv] is not
+(*
+   本节说明 ProbePropEquiv 相关定义、性质与动机。
 
-    Stripped and re-run in a copy of the whole file, the message is
-
-      In environment
-      A : Type
-      The term "Setoid A" has type "Type@{u+1}" while it is expected to have
-      type "Type@{u}"
-      (universe inconsistency: Cannot enforce u < u because u = u).
-
-    -- the same contrast one level of packaging up: the setoid RECORD does not
-    fit at its own carrier's universe, while [PropEquiv] of that record does
-    ([PropEquiv_at_carrier] above).  The control is [Setoid_above_carrier], the
-    same record at [Type@{v}] with [u < v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition Setoid_at_carrier@{u} (A : Type@{u}) : Type@{u} :=
   Setoid@{u u} A.

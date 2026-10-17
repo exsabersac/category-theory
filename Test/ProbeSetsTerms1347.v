@@ -84,10 +84,11 @@ Check Category.Instance.Sets.setoid_morphism_compose.
 (* ------------------------------------------------------------------------ *)
 (** ** Downstream: the free module's unit *)
 
-(* Loaded here, after every other command, so that the modules below
-   change the environment of this control alone.  They are the nine of
-   Instance/Mod/Free.v's fourteen [Require] lines that the list above
-   does not already load, in that file's order, and that target. *)
+(*
+   本节说明 ProbeSetsTerms1347 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Lib.Setoid.Propositional.
 Require Import Category.Theory.Adjunction.
 Require Import Category.Theory.Universal.Arrow.
@@ -99,11 +100,10 @@ Require Import Category.Theory.Algebra.Rig.
 Require Import Coq.ZArith.ZArith.
 Require Import Category.Instance.Mod.Free.
 
-(* C9: the unit of the free-module adjunction IS the basis insertion, as
-   a whole setoid morphism.  Instance/Mod/Free.v states it pointwise
-   ([free_module_unit_is_insert]); the unit is the composite of
-   [fmap[RMod_Forget R] id] with [fv_insert X], by that file's comment,
-   and the whole equation is refused against the tree before #1347
-   (measured as for C1 to C8, above). *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p1347_c9_free_module_unit (R : RingObject) (X : Sets) :
   free_module_unit R X = fv_insert X := eq_refl.

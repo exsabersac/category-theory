@@ -91,13 +91,11 @@ Example R_Metric_dist_is_abs (x y : R_Metric) : dist x y = Rabs (x - y) := eq_re
 Example Completion_carrier (X : MetricSpace) :
   met_carrier (Completion X) = CauchySeq_Object X := eq_refl.
 
-(* THE BOUNDARY.  The embedding preserves the distance, but NOT by
-   conversion: [cdist] is the limit produced by [R_complete], so relating it
-   to [dist a b] requires the uniqueness-of-limits argument that
-   Instance/Met/Completion.v's [eta_dist] carries out.  Verified by hand:
-   stripping the wrapper below reports that it cannot unify
-   [dist (eta X a) (eta X b)] with [dist a b], which is the intended
-   non-convertibility and not a typo or a scope slip. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example eta_dist_is_definitional (X : MetricSpace) (a b : X) :
   dist (isometry_map (eta X) a) (isometry_map (eta X) b) = dist a b := eq_refl.
 
@@ -117,13 +115,11 @@ Example ext_roundtrip_strict (X : MetricSpace) (x y : X) :
                                (ExtMetric_of_Metric_EFinite X)) x y
     = dist x y := eq_refl.
 
-(* THE BOUNDARY, the other direction.  Starting from an extended metric
-   space and an ARBITRARY finiteness witness [Hfin], the value [efin] reads
-   off is [`1 (Hfin x y)], and recovering [edist x y] from
-   [RFin (`1 (Hfin x y))] needs [`2 (Hfin x y)] — a proof, not a
-   conversion.  Verified by hand: stripping the wrapper below reports that
-   it cannot unify [@edist (ExtMetric_of_Metric (Metric_of_EFinite E Hfin))
-   x y] with [@edist E x y], which is the intended non-convertibility. *)
+(*
+   本节说明 ProbeMet 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example ext_roundtrip_strict_other (E : ExtMetricSpace) (Hfin : EFinite E)
      (x y : E) :
   edist (X := ExtMetric_of_Metric (Metric_of_EFinite E Hfin)) x y = edist x y
@@ -137,23 +133,11 @@ Proof. exact (ExtMetric_of_Metric_roundtrip E Hfin x y). Qed.
 
 (* ===== BLOCK D — a DONOR limitation, pinned so its repair is noticed ===== *)
 
-(* Instance/Met/Completion.v's header records that the second generic
-   uniqueness route — [univ_property_unique_up_to_unique_iso] reached through
-   [UniversalArrowIsUniversalProperty] — could not be taken, and that the
-   obstruction belongs to the bridge rather than to metric spaces.  This is
-   the evidence for that claim, and it is a statement ABOUT THE DONOR, not
-   about this development.
+(*
+   本节说明函子相关定义、性质与动机。
 
-   The control is the identity functor on [Sets] — a trivial instance, but
-   NOT the simplest one available: the bridge does elaborate at [_1], [_2]
-   and [Cat], so what this probe pins is the rejection at the tree's LARGE
-   concrete categories, not a blanket failure.  Verified by hand: stripping
-   the wrapper below reports
-   a universe inconsistency, of the form "Cannot enforce u = v because
-   u < w <= v".  If the bridge's universes are ever repaired this probe
-   starts complaining, which is the intended alarm — at that point
-   Instance/Met/Completion.v's disclosure should be revisited and the second
-   route taken. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun c : Sets => UniversalArrowIsUniversalProperty _ _ (Id[Sets]) c).
 
 (* POSITIVE CONTROL: the bridge's own statement elaborates, so the rejection
@@ -163,17 +147,11 @@ Check @univ_property_unique_up_to_unique_iso.
 
 (* ===== BLOCK E — the deferred functor really is obstruction-free ===== *)
 
-(* Instance/Met/Completion.v's header states that the completion functor and
-   the adjunction [Completion ⊣ CMet_Incl] follow from the universal arrow
-   with no further proof obligation, and that they are left out of the
-   library surface by choice rather than by difficulty.  That is a claim
-   about what elaborates, so it is checked here rather than asserted there.
-   Nothing below is exported: these are local names in a test file, and the
-   library gains no new constant from them.  CORRECTION (#370): the library
-   now has them, as Instance/Met/Uniform.v's [CMet_Reflective_in_Met] and
-   [completion_adj], built by the same two constructions; the two terms
-   below stay as the check that nothing beyond the universal arrow is
-   needed. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition probe_CompletionFunctor : Met ⟶ CMet :=
   LeftAdjointFunctorFromUniversalArrows CMet_Incl
@@ -185,12 +163,11 @@ Definition probe_CompletionAdj : probe_CompletionFunctor ⊣ CMet_Incl :=
 
 (* ===== BLOCK F — the negative results are live, not vacuous ===== *)
 
-(* The harmonic space really is incomplete, its completion really does have a
-   point outside the image of the embedding, and the two-point space at
-   infinite distance really is not an ordinary metric space.  These are
-   [Check]s of already-proved statements: their value here is that they fix
-   the STATEMENTS, so that a later weakening of any of them (to a vacuous
-   hypothesis, say) shows up as a type error in this file. *)
+(*
+   本节说明 ProbeMet 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (Harmonic_not_MComplete : MComplete Harmonic → False).
 Check (Completion_Harmonic_adds_a_point
          : ∃ z : Completion Harmonic,

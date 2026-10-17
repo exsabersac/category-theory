@@ -81,10 +81,11 @@ Fail Example probe_counit_computes (H : Grp) (w : FGWord (Grp_Forget H)) :
   free_group_counit H w = free_grp_extend (@id Sets (Grp_Forget H)) w
   := eq_refl.
 
-(* The generator clause of the universal property is not even well-typed
-   without the object agreement in scope — this is why the bundled
-   [free_groupoid_universal] nests [Hobj] inside the sigma.  (Stripped of
-   [Fail]: a typing error on the two sides of [≈].) *)
+(*
+   本节说明 ProbeFreeGroupoid 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (∀ (G : Quiver) (D : Category)
               (F : QuiverHomomorphism G (QuiverOfCat D))
               (K : FreeGroupoid G ⟶ D)

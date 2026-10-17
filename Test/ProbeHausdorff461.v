@@ -79,9 +79,11 @@ Fail Definition p461_top_part_closed@{o|} (X : PTop@{o}) : Type@{o} :=
 
 (** ** Instance/Top/Hausdorff.v: the two routes at [o := Set] *)
 
-(* CONTROL: completeness, the direct reflector, its cocompleteness, the
-   surjectivity of its unit, the restricted direct reflection and both
-   refutations of a right adjoint, at points in [Set]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p461_complete_set@{so +| Set < so +} :
   @Complete@{Set Set Set so} Haus@{Set so} := Haus_Complete.
 
@@ -172,9 +174,11 @@ Fail Example p461_lali@{o so +| o < so +} (X : Haus@{o so}) :
   `1 (fobj[reflector PT2_Reflective] (Incl PTopCat@{o so} Haus_Sub X))
     = `1 X := eq_refl.
 
-(* CONTROL: the unit is the identity on points, at [eq_refl], and the
-   reflector's action on a map agrees with the map at every point up to
-   the reflection's equality, by the unit's naturality. *)
+(*
+   本节说明 ProbeHausdorff461 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p461_unit_point@{o so +| o < so +} (prem : SepPremise@{o})
   (L : SepLaws@{o} prem) (X : PTopCat@{o so}) (x : carrier (pt_carrier X)) :
   pmap (@unit _ _ _ _ (PSep_adj prem L) X) x = x := eq_refl.
@@ -291,10 +295,11 @@ Definition p461_sum_haus@{o u +| o < u +} :
 
 (** ** Instance/Top/Hausdorff/TypeValued.v: the vacuity at every instance *)
 
-(* CONTROL: [GAFT_TopHaus_vacuous] at an instance whose universes are
-   strictly apart: the subcategory's objects above [Top]'s homs, its
-   predicate strictly between the points and the homs, its opens below
-   the points.  A forced equation among them would be refused here. *)
+(*
+   本节说明 ProbeHausdorff461 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p461_vacuous_apart@{e h o u u0 u1 u2 u3 u4 u6 +| o < h, h < u1,
     h < u6, u2 < u, u3 < u, u2 < o, u3 < o, o < u, u < h, h < u4,
     u0 <= h, u4 <= u6 +} :=

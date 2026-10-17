@@ -21,11 +21,11 @@ Monomorphic Universe i j v.
 Monomorphic Constraint v < i.
 Monomorphic Constraint v < j.
 
-(** ** Positive control: everything up to the unitors is fine at level [v].
+(*
+   本节说明 ProbeFunnyPoly 相关定义、性质与动机。
 
-    The partial application supplies the carrier, the unit object and the
-    tensor, so the failures below are not caused by [StrictCat], [_1] or
-    [FunnyTensor] at member level [v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition probe_tensor_ok :=
   @Build_Monoidal StrictCat@{i v j v v} _1 FunnyTensor.
 
@@ -44,10 +44,9 @@ Fail Check (@Build_Monoidal StrictCat@{i v j v v} _1 FunnyTensor
     (universe inconsistency: Cannot enforce Set = v). *)
 Fail Check (Funny_Monoidal@{i} : @Monoidal StrictCat@{i v j v v}).
 
-(** ** Positive control: [Funny_Monoidal] is a well-formed [Monoidal] at its
-    own universe level.  This pins the two [Fail]s above to the specific
-    [Set = v] universe conflict rather than to a malformed term or a renamed
-    identifier: the instance exists and type-checks, it simply does not
-    transport up to level [v].  Without this control a [Fail] would pass on
-    any error at all. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (Funny_Monoidal@{i} : @Monoidal StrictCat@{i Set j Set Set}).

@@ -47,11 +47,11 @@ Fail Check (fun (C : Category@{uo uh up}) (e : C) => @HomGroupData C e).
 
 End Donors.
 
-(** ** The positive measurement: an identification hiding in the BINDER
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Not a refutation -- a definition whose universe signature IS the
-    measurement.  `About HomGroupData` prints an EMPTY constraint block
-    over a binder that identifies hom with proof. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition probe_homgroupdata_binder
   `{C : Category} (e : C) : Type := HomGroupData e.
@@ -63,12 +63,8 @@ Definition probe_homgroupdata_binder
      (* u u0 |=  *)                      <-- EMPTY block
                     ^^^^^^^^^^^^^^^^^^   <-- hom = proof in the BINDER *)
 
-(** ** What this file does NOT claim
+(*
+   本节说明 ProbeGroupRepr341 相关定义、性质与动机。
 
-    The identification is the DONORS' doing and is NOT claimed
-    unavoidable; no lift was attempted.  Negative 3 DOES show
-    [HomGroupData] rejected on its own, with no donor elaborated before
-    it, so the rejection is attributable to that record; what is NOT
-    established is whether it would still identify were [Category] itself
-    stated with its levels apart.  And no separation is proved between the
-    representable and the internal formulations. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

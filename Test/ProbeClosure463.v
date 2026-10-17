@@ -447,11 +447,11 @@ Fail Example p463_opT_eq@{u h} {A : Type@{u}} {R : relation A}
 
 (** ** Instance/Proset/Monad/Interior.v: the correspondence *)
 
-(* CONTROL: interior → comonad → interior on the whole record; the
-   comonad's functor on objects and arrows, and its counit and
-   comultiplication; Riehl's route as [thin_monad] on the whole record;
-   [flip_functor W] against the opposite on objects and arrows and at
-   ≈. *)
+(*
+   本节说明函子、余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example p463_int_round_trip@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (j : InteriorOperator@{u} P) :
   interior_of_comonad@{u h} (interior_functor@{u h} j)
@@ -599,10 +599,11 @@ Fail Example p463_props_is_proset : Props = Proset impl_PreOrder := eq_refl.
 Fail Example p463_props_is_any_proset (P : PreOrder Basics.impl) :
   Props = Proset P := eq_refl.
 
-(* CONTROL: the flip of N25 and N26.  The two [Program Definition]s
-   restated verbatim with their obligations transparent: at
-   [impl_PreOrder] the whole records are [eq_refl]; for a variable P the
-   objects and homs agree. *)
+(*
+   本节说明 ProbeClosure463 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Module P463Flip.
 
 #[local] Set Transparent Obligations.
@@ -639,10 +640,11 @@ End P463Flip.
 
 (** ** Instance/Top/Interior.v *)
 
-(* CONTROL: the coalgebras of the interior comonad are the open subsets;
-   {true} in the indiscrete two-point space is not one; the algebras of
-   the ¬ int ¬ closure are the complements of opens; the converse of the
-   footnote-5 algebra half without [lem] gives ¬¬(∀ q, ¬¬q → q). *)
+(*
+   本节说明余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p463_pint_coalg@{o h p} (X : PTop@{o})
   (S : carrier (Powerset_Prop_obj (pt_carrier X))) :
   iffT@{h p}

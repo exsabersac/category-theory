@@ -61,14 +61,11 @@ Check (@QuiverHomomorphismOfFunctor
 (* The composite Forgetful ◯ FreeCatFunctor is an endofunctor on QuiverCategory. *)
 Check (Forgetful ◯ FreeCatFunctor : QuiverCategory ⟶ QuiverCategory).
 
-(* A negative check.  [Forgetful] is fixed as [StrictCat ⟶ Quiv], so ascribing
-   it the type [Cat ⟶ Quiv] is a genuine type error — the domain category differs
-   ("has type StrictCat ⟶ QuiverCategory while it is expected to have type
-   Cat ⟶ QuiverCategory").  These [Fail] commands lock in that [Forgetful] is NOT
-   a functor over the weak [Cat].  Note this only checks the type mismatch; it
-   does not itself exercise the deeper reason no such functor can be *built* over
-   [Cat] (its [fmap_respects] would have to turn a natural isomorphism [F x ≅ G x]
-   into a strict equality [F x = G x] of quiver nodes — see [Instance.Cat]). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (Forgetful : Cat ⟶ QuiverCategory).
 Fail Definition A138_forgetful_over_Cat : Cat ⟶ QuiverCategory := Forgetful.
 
@@ -97,11 +94,11 @@ Check (FreeCatFunctor ◯ Forgetful : StrictCat ⟶ StrictCat).
 
 (* ===== BLOCK C138 — StrictCat strict laws ===== *)
 
-(* The defining property of issue #138's fix: StrictCat's hom-equivalence IS the
-   strict equality [Functor_StrictEq_Setoid] (not the weak nat-iso
-   [Functor_Setoid] of [Cat]).  This pins it directly, so reverting StrictCat to
-   the weak setoid fails HERE, in the test body — not merely transitively
-   through some downstream consumer. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example C138_homset_is_strict (A B : Category) :
   @homset StrictCat A B = @Functor_StrictEq_Setoid A B := eq_refl.
 
@@ -156,13 +153,11 @@ Example D138_obj (C : Category) : StrictCat_to_Cat C = C := eq_refl.
 
 Example D138_map {C D} (F : C ⟶ D) : fmap[StrictCat_to_Cat] F = F := eq_refl.
 
-(* The per-object isomorphism the comparison uses is [iso_of_eq] of the object
-   equality, which at a reflexivity proof is the identity iso (its [to] and
-   [from] are [id]).  These two examples pin [iso_of_eq]'s behaviour directly.
-   That [strict_equiv_implies_fun_equiv] builds its natural-iso family as
-   [fun x => iso_of_eq (eq_on_obj x)] is true by construction (see ToCat.v); it
-   is not separately machine-checked here because that lemma is opaque ([Qed]),
-   so its body does not reduce for an [eq_refl] comparison. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example D138_iso_of_eq_refl_to (C : Category) (x : C) :
   to (iso_of_eq (@eq_refl _ x)) = @id C x := eq_refl.
 

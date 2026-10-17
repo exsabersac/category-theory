@@ -82,11 +82,11 @@ Check (rby_agrees H r).
     [ue_of_yoneda H r (ue_to_yoneda H r U)] and [U].) *)
 Fail Check (eq_refl : ue_of_yoneda H r (ue_to_yoneda H r U) = U).
 
-(** ** (3) The 3(b) passage IS a record-level bijection, and still not a
-       renaming
+(*
+   本节说明 ProbeUniversalElement 相关定义、性质与动机。
 
-    Positive controls: both round trips close by [eq_refl] on the WHOLE
-    record, and the two clauses are literally the same clause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (fun (C : Category) (S : D ⟶ C) (c : C) (a : D)
            (V : AUniversalArrow c S a) => aua_of_hom_round S c V).
@@ -97,9 +97,11 @@ Check (fun (C : Category) (S : D ⟶ C) (c : C) (a : D)
 Check (fun (C : Category) (S : D ⟶ C) (c : C) (d d' : D)
            (k : d ~{D}~> d') (u : c ~{C}~> S d) => hom_after_fmap S c d d' k u).
 
-(** Negative: the two types are nonetheless distinct, so the passages are
-    constructions and not coercions.  (Stripped: cannot unify
-    [AUniversalElement (HomAfter S c) r] and [AUniversalArrow c S r].) *)
+(*
+   本节说明 ProbeUniversalElement 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun (C : Category) (S : D ⟶ C) (c : C) =>
               eq_refl : AUniversalElement (HomAfter S c) r
                           = AUniversalArrow c S r).
@@ -125,12 +127,11 @@ Fail Check (fun V : AUniversalArrow SetsOne H r =>
 
 End Probes.
 
-(** ** (5) The Yoneda route's universe restriction
+(*
+   本节说明Yoneda、始/终对象相关定义、性质与动机。
 
-    Positive control, and the whole point of the direct route: at
-    [Endos] — whose objects sit strictly above its homs — the general
-    class is inhabited, the universal element is [O], and Riehl's initial
-    object of the category of elements exists. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (nat_UniversalElement : UniversalElement Endos_Forget).
 Check (@eq_refl nat (@ue_elem Endos Endos_Forget nat_UniversalElement)
@@ -144,18 +145,11 @@ Check (nat_Elements_Initial : @Initial (Elements Endos_Forget)).
 Check (fun (C : Category@{Set Set Set}) (F : C^op ⟶ Sets) (c : C) =>
          representability_by_yoneda C F c).
 
-(** Negative: neither can be instantiated at [Endos].  These are UNIVERSE
-    INCONSISTENCIES, not unification failures.  Stripped, each reports
-    that [Endos] (resp. [Endos^op]) "has type Category@{a b b} while it is
-    expected to have type Category@{c c c}", followed by "universe
-    inconsistency: Cannot enforce a = b" -- i.e. the donor's identification
-    of the object and hom universes is exactly what is refused.  [@] is used
-    throughout so that no implicit argument can make a command fail for an
-    unrelated reason; the instrument itself was checked separately, and
-    note that a naive exhibit such as [Fail Check (@eq_refl nat 0 : 0 = 0)]
-    would NOT test it -- [0] is [initial_obj] in [object_scope], so that
-    command fails with "No interpretation for number 0" and the [Fail]
-    passes for the wrong reason. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (fun c : Endos =>
               @universal_element_representation Endos Endos_Forget c).

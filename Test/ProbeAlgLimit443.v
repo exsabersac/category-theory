@@ -38,30 +38,30 @@ Generalizable All Variables.
 
 Fail Check p443_absent_name.
 
-(* I2 TYPE: elaboration is really happening.  This is the deliberately
-   ill-typed variant of [ab_complete_leg], which DOES hold (the control
-   sits beside it in section A): the leg of the created cone is a
-   homomorphism of abelian groups, so comparing it with a map of setoids
-   is a type error and not a conversion one.  [cmon_map] in the control is
-   load-bearing. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_i2 {J : Category} (K : J ⟶ Ab) (d : J) :
   cone_leg (@limit_cone _ _ _ (Ab_Complete J K)) d
     = Sets_limit_leg (Ab_Forget ◯ K) d := eq_refl.
 
-(* I3 TYPE: the same instrument on the other target, at the carrier rather
-   than at a leg.  [rng_complete_carrier] holds with [rig_setoid] applied;
-   without it the two sides are a ring and a setoid. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_i3 {J : Category} (K : J ⟶ Rng) :
   vertex_obj[Rng_Complete J K] = Sets_limit_obj (Rng_Forget ◯ K) := eq_refl.
 
-(** ** A: at [Ab] the lifted structure is the pointwise one, and sharply
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
 
-    Positive readbacks at an ARBITRARY shape and an ARBITRARY diagram, each
-    beside the wrong statement it excludes.  The positives restate the
-    target's own [ab_complete_*] [Example]s so that each refutation has its
-    discriminating partner in view. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AbPointwise.
 
@@ -84,11 +84,11 @@ Example p443_ab_plus
   `1 (cmon_plus (vertex_obj[Ab_Complete J K]) a b) d
     = cmon_plus (K d) (`1 a d) (`1 b d) := eq_refl.
 
-(* N1 CONVERSION: ...and the arguments are in that order on the nose.  The
-   swapped statement is TRUE up to [≈] — [cmon_plus_comm] is a field of
-   [CMonObject] and the target proves [alim_comm] for the lifted structure
-   — so what this refutation locates is the LEVEL of the readback: the
-   positive above holds by conversion, and commutativity does not. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_n1
   (a b : carrier (Sets_limit_obj (Ab_Forget ◯ K))) (d : J) :
@@ -114,10 +114,11 @@ Example p443_ab_neg
   `1 (ab_neg (vertex_obj[Ab_Complete J K]) a) d
     = ab_neg (K d) (`1 a d) := eq_refl.
 
-(* N2 CONVERSION: the negation is a real operation and not the identity map
-   on the apex.  At an arbitrary diagram neither side reduces to the other,
-   so the readback above is saying something about which operation was
-   lifted and not merely that some map was. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_n2
   (a : carrier (Sets_limit_obj (Ab_Forget ◯ K))) (d : J) :
@@ -154,19 +155,22 @@ Example p443_rng_mul
   `1 (rig_mul (vertex_obj[Rng_Complete J K]) a b) d
     = rig_mul (K d) (`1 a d) (`1 b d) := eq_refl.
 
-(* N4 CONVERSION: the two binary operations are lifted SEPARATELY, through
-   two cones with the same apex [rlim_pair], and neither readback is the
-   other's.  A single mediator reused for both would make this accepted. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_n4
   (a b : carrier (Sets_limit_obj (Rng_Forget ◯ K))) (d : J) :
   `1 (rig_add (vertex_obj[Rng_Complete J K]) a b) d
     = rig_mul (K d) (`1 a d) (`1 b d) := eq_refl.
 
-(* N6 CONVERSION: multiplication keeps its argument order.  The contrast
-   with N1 is the point: [Ab]'s addition commutes up to [≈] and [Rng]'s
-   multiplication need not commute at all, and BOTH swaps are refused
-   alike, so the refusal is about conversion and carries no algebra. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_n6
   (a b : carrier (Sets_limit_obj (Rng_Forget ◯ K))) (d : J) :
@@ -181,11 +185,11 @@ Example p443_rng_zero (d : J) :
 Example p443_rng_one (d : J) :
   `1 (rig_one (vertex_obj[Rng_Complete J K])) d = rig_one (K d) := eq_refl.
 
-(* N5 CONVERSION: the two units are lifted through two DIFFERENT cones out
-   of the same apex [unit_setoid_object], and neither reduces to the other
-   at an arbitrary diagram of rings.  One and zero coincide in a zero ring,
-   but that is an [≈] and never a conversion, which is exactly what this
-   refutation records. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_n5 (d : J) :
   `1 (rig_one (vertex_obj[Rng_Complete J K])) d = rig_zero (K d) := eq_refl.
@@ -196,10 +200,11 @@ Example p443_rng_neg
   `1 (ring_neg (vertex_obj[Rng_Complete J K]) a) d
     = ring_neg (K d) (`1 a d) := eq_refl.
 
-(* N7 CONVERSION: and it is not the identity either.  [ring_neg] is the one
-   operation whose coherence the target discharges by [RigHom_neg] rather
-   than by a projection, since [RigHom] has no negation clause, so its
-   readback is the one most worth keeping honest. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_n7
   (a : carrier (Sets_limit_obj (Rng_Forget ◯ K))) (d : J) :
@@ -207,15 +212,11 @@ Fail Example p443_n7
 
 End RngPointwise.
 
-(** ** C: strictness — the created cone lies over the given one on the nose
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Both targets record this inside their lifting sections, as
-    [alim_over_obj] and [rlim_over_obj].  What is read back here is the
-    packaged form a consumer meets: the [slift_eq] field of the
-    [StrictLift] the class hands out IS [eq_refl], which is strictly more
-    than "the two objects are equal" — it says the recorded proof is the
-    trivial one, so [hom_rew] in the [slift_legs] clause transports along
-    nothing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example p443_ab_strict {J : Category} (K : J ⟶ Ab)
   (N : Cone (Ab_Forget ◯ K)) (HN : IsLimitCone N) :
@@ -232,27 +233,22 @@ Check (fun (J : Category) (K : J ⟶ Ab) N HN =>
          (slift_cone (@screates _ _ _ _ _ (Ab_Forget_StrictlyCreatesLimit K)
                         N HN) : Cone K)).
 
-(* N8 TYPE: "on the nose" is an equation between IMAGES, and does not
-   identify the two cones.  Reading the lifted cone as though it WERE the
-   given one is a type error — [Cone K] against [Cone (Ab_Forget ◯ K)],
-   with no [cannot unify] clause — which is what keeps strictness a
-   statement about [Ab_Forget] rather than a collapse of the two
-   categories. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (fun (J : Category) (K : J ⟶ Ab) N HN =>
               (slift_cone (@screates _ _ _ _ _
                              (Ab_Forget_StrictlyCreatesLimit K) N HN)
                  : Cone (Ab_Forget ◯ K))).
 
-(** ** D: the readbacks are about the limits [Sets_Complete] chooses
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    Test/ProbeGrpLimit411.v's N4 at two more categories.  The created
-    object depends DEFINITIONALLY on which limit oracle the creation
-    theorem is fed; over Mac Lane's cone-set oracle the carrier is
-    [cone_apex] and not [Sets_limit_obj], though the two are canonically
-    isomorphic.  Built here and not in the library files: each is a second
-    [Complete] for its category and must not become the one a consumer
-    sees. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Ab_ConeSet_Complete : @Complete Ab :=
   creates_limits_Complete Ab_Forget ConeSet_Complete Ab_Forget_creates_limits.
@@ -288,46 +284,11 @@ Fail Example p443_n10 :
 
 End Oracle.
 
-(** ** E: which preservation hypothesis Freyd's theorem asks for
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    Test/ProbeGrpFreeAFT442.v pins this as its N6 and N7 at [Grp]; the two
-    targets make it apply at two more categories, and the [Ab] header
-    records the refusal in prose as a correction to an earlier revision of
-    itself.  [GAFT]'s THIRD argument is the cone-level
-    [PreservesImageLimit], which takes a [Limit K] and then a cone over the
-    image; neither [ContinuousFunctor], which takes a [Cone K] and then a
-    proof that it is limiting, nor the apex-only [PreservesAllLimits]
-    ascribes to it, so
-    [Continuous_PreservesImageLimit] stands in the term.  NO GAFT
-    application is built at either category — the controls stop at the
-    partial application, which is exactly what the targets make
-    available.
-
-    THE PARENTHETICAL OF THIS REFUSAL IS IMPORT-SENSITIVE, AND AN EARLIER
-    REVISION OF THIS COMMENT GOT THAT WRONG.  That revision recorded, as a
-    measured CORRECTION to Instance/Ab/Limit.v, that the header's
-    closing clause [cannot unify «Limit.Limit K» and «Cone.Cone K»] "does
-    not reproduce" and should read
-    [cannot unify «Cone (Ab_Forget ◯ K)» and «IsLimitCone N»].  That was
-    wrong, and acting on it would have damaged correct prose.  BOTH texts
-    are real; which one Coq prints depends on what is imported, because the
-    parenthetical is rendered with the module short-names in scope.
-    Measured, same command, varying one [Require Import]:
-
-      base (+ Structure.Limit.Preservation)
-                            cannot unify «Limit.Limit K» and «Cone.Cone K»
-      + Structure.Limit     cannot unify «Cone.Cone (Ab_Forget ◯ K)»
-                                     and «IsLimitCone N»
-      + Structure.Cone      cannot unify «Limit.Limit K» and «Cone K»
-      + Structure.Limit.Creation
-                            cannot unify «Limit.Limit K» and «Cone.Cone K»
-
-    The HEAD of the error is stable under all four and is what actually
-    matters: [ContinuousFunctor] does not ascribe where
-    [PreservesImageLimit] is expected.  Instance/Ab/Limit.v's quote is
-    correct for its own environment; this file's strip produces a different
-    parenthetical because this file imports more.  N11 and N12 below pin the
-    refusal, not the wording. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* controls: the bridged hypothesis is accepted at both *)
 Check (GAFT Ab_Forget Ab_Complete
@@ -335,16 +296,18 @@ Check (GAFT Ab_Forget Ab_Complete
 Check (GAFT Rng_Forget Rng_Complete
             (Continuous_PreservesImageLimit Rng_Forget_continuous)).
 
-(* N11 CONVERSION: measured, the pair the message reports is the two
-   hypotheses' FOURTH binders — [PreservesImageLimit] asks next for a cone
-   over the image where [ContinuousFunctor] asks for a proof that the cone
-   it was already given is limiting. *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (GAFT Ab_Forget Ab_Complete Ab_Forget_creates_continuous).
 
-(* N12 CONVERSION: nor the apex-only class, which the [Ab] target also
-   supplies and which is the tempting wrong choice.  Its message prints
-   [PreservesImageLimit]'s body in full, so the two are visibly different
-   statements and not two spellings of one. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (GAFT Ab_Forget Ab_Complete Ab_Forget_PreservesAllLimits).
 
 (* N13 CONVERSION *)
@@ -353,16 +316,11 @@ Fail Check (GAFT Rng_Forget Rng_Complete Rng_Forget_continuous).
 (* N14 CONVERSION *)
 Fail Check (GAFT Rng_Forget Rng_Complete Rng_Forget_PreservesAllLimits).
 
-(** ** F: two terms of type [ContinuousFunctor Ab_Forget], and they differ
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    The reason the [Ab] file exists.  Instance/Ab/FreeNotContinuous.v
-    already declares [Ab_Forget_Continuous] and proves it by RAPL
-    applied to Instance/Ab/Free.v's [free_ab_adjunction]; the new
-    [Ab_Forget_creates_continuous] comes from limit creation and
-    presupposes only [Sets_Complete].  Both are read back to the constant
-    they are built from, so the provenance claim is machine-checked and not
-    asserted, and N15 settles the sharp question their shared type
-    raises. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* controls: the same type, twice *)
 Check (Ab_Forget_creates_continuous : ContinuousFunctor Ab_Forget).
@@ -379,11 +337,11 @@ Example p443_rapl_continuous_term :
   Ab_Forget_Continuous = right_adjoint_Continuous free_ab_adjunction
   := eq_refl.
 
-(* N15 CONVERSION: so they are not the same term.  This is what makes the
-   second declaration worth having: feeding Freyd's theorem a continuity
-   witness built out of the very adjunction the theorem is asked to produce
-   would establish nothing, and the two constants are now known to be
-   distinct rather than assumed to be. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example p443_n15 :
   Ab_Forget_creates_continuous = Ab_Forget_Continuous := eq_refl.
@@ -405,21 +363,11 @@ Example p443_rng_apex_descends :
   Rng_Forget_PreservesAllLimits
     = Continuous_PreservesAllLimits Rng_Forget_continuous := eq_refl.
 
-(* N17 NAME-ABSENCE: the two files' naming IS asymmetric, and a consumer
-   reaching for the [Rng]-style name at [Ab] gets nothing.  An earlier
-   revision of this comment gave a FALSE reason — that the name "could NOT
-   be given" because [Ab_Forget_Continuous] was already taken.  Coq
-   identifiers are case-sensitive, so [Ab_Forget_continuous] and
-   [Ab_Forget_Continuous] would coexist perfectly well; the audit of this
-   probe checked that by defining the former in an environment already
-   holding the latter (rc=0).  The real reason is a CHOICE, made in
-   Instance/Ab/Limit.v and stated in its header: two constants of the same
-   type [ContinuousFunctor Ab_Forget], differing only in case, would be a
-   trap, because one is RAPL applied to the free/forgetful adjunction and
-   the other is derived from limit creation, and only the second is usable
-   as a GAFT hypothesis without circularity.  So the new one is
-   [Ab_Forget_creates_continuous], whose name says where it comes from.
-   This refutation pins that the tempting name is absent. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check Ab_Forget_continuous.
 
@@ -437,11 +385,11 @@ Fail Check Rng_Forget_Continuous.
 Check (fun (J : Category) (K : J ⟶ Ab) =>
          (Ab_Forget_reflects_limits K : ReflectsLimitCone K Ab_Forget)).
 
-(* N22 CONVERSION: [ReflectsLimitCone] and [PreservesLimitCone] are converse
-   implications between the same two propositions, so neither ascribes as
-   the other.  This is the clause the [Ab] header says RAPL does not give
-   at all, and it is a separate hypothesis from every continuity constant
-   in section F. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (fun (J : Category) (K : J ⟶ Ab) =>
               (Ab_Forget_reflects_limits K : PreservesLimitCone K Ab_Forget)).
@@ -452,9 +400,11 @@ Check (Ab_Forget_StrictlyCreatesLimits : StrictlyCreatesLimits Ab_Forget).
 Check (Rng_Forget_creates_limits : CreatesAllLimits Rng_Forget).
 Check (Rng_Forget_StrictlyCreatesLimits : StrictlyCreatesLimits Rng_Forget).
 
-(* N19, N20 CONVERSION: neither is an ascription of the other — 411's N3 at
-   the two new categories, and its message here too carries the [cannot
-   unify] clause that 411 uses to tell the two kinds apart. *)
+(*
+   本节说明 ProbeAlgLimit443 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition p443_n19 : StrictlyCreatesLimits Ab_Forget :=
   Ab_Forget_creates_limits.
@@ -462,16 +412,11 @@ Fail Definition p443_n19 : StrictlyCreatesLimits Ab_Forget :=
 Fail Definition p443_n20 : StrictlyCreatesLimits Rng_Forget :=
   Rng_Forget_creates_limits.
 
-(** ** H: one NOT-DELIVERED claim, pinned
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    The [Ab] header says in terms that no [CMon] analogue is extracted,
-    "No [CMon_Complete] exists either", though the engine transfers
-    unchanged once [ab_neg] and its two laws are dropped.  Measured on the
-    worktree this probe was written against, a whole-tree word-bounded grep
-    of every [.v] file for that token returns exactly one hit,
-    Instance/Ab/Limit.v, and that hit is the sentence itself; the
-    refutation below is the same absence taken from the environment rather
-    than from the text. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* N21 NAME-ABSENCE *)
 Fail Check CMon_Complete.

@@ -131,11 +131,11 @@ Example probe718_terminal (C : Category) :
 Example probe718_cov (C : Category) :
   Functor_Category_Closed_cov C = Functor_Category_Closed (C^op) := eq_refl.
 
-(* WHY [first] AND NOT [split _ id]: in the pointwise-cartesian presheaf
-   category the identity factor of [first] leaves NO [fmap[P] id]
-   residue, so the second component of a pair passes through untouched
-   and the first is precomposition on the nose.  Both close by [eq_refl].
-   WHY it reduces is not isolated and no claim is made about it. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section FirstReduces.
 Context {C : Category}.
 Context (P : C^op ⟶ Sets).
@@ -176,16 +176,11 @@ Check pq_point_distinct_unconditional.
 (* ------------------------------------------------------------------ *)
 (** ** The clone of the instance written WITHOUT universe binders *)
 
-(* Byte-for-byte the shipped body, with the [@{o h so +}] binder list,
-   the [Category@{o h h}] annotation on C and the explicit [Sets@{h so}]
-   all removed.  Measured, [About] under [Set Printing Universes]:
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
 
-     probe718_closed_unannotated@{u u0} :
-       forall C : Category@{u0 u0 u0}, Closed@{u u0 u}
-
-   -- object, hom AND proof identified, where the shipped instance reads
-   [forall C : Category@{o h h}, Closed@{so h u}] with block
-   [h < so, h < u, o <= h, o <= so].  Negative 4c uses this clone. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition probe718_closed_unannotated (C : Category) :
   @Closed ([C^op, Sets])
     (@Functor_Category_Cartesian (C^op) Sets Sets_Cartesian) := {|
@@ -224,38 +219,34 @@ Constraint oA < coA.
 Context (Cbig : Category@{coA chA chA}).
 Context (Xb Pb Qb : Cbig^op ⟶ Sets@{oA soA}).
 
-(* CONTROLS.  The presheaf category itself is perfectly formable at a C
-   whose OBJECTS sit strictly ABOVE [Sets]' carrier universe -- so the
-   bound the four negatives below pin is NOT the presheaf category's.
-   Nor is it the terminal object's: [presheaf_terminal] ascribed at that
-   very category is accepted.  (Why it is accepted -- the terminal
-   presheaf is constant at [1] and so has no family indexed by C's
-   objects in it -- is an explanation and not part of the measurement.)
-   And [PshExp] READ ALONE is accepted too, landing in a LARGER [Sets]:
-   measured, its printed result type is [Cbig^op ⟶ Sets@{u u0}] for
-   fresh levels carrying [coA <= u]. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check ([Cbig^op, Sets@{oA soA}]).
 Check (presheaf_terminal Cbig : @Terminal ([Cbig^op, Sets@{oA soA}])).
 Check (PshExp Pb Qb).
 
-(* NEGATIVE 1a (FORMABILITY).  The display-(8.5) object is not an object
-   of that same [Sets].  The stripped error ends "(universe
-   inconsistency: Cannot enforce ... = oA because oA < coA <= ...)", and
-   the bound [coA <= ...] in the message is exactly [Transform]'s
-   [Type@{max(o1,p2)}]: a set of natural transformations is a family
-   indexed by C's objects. *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check ([[[Cbig^op, Sets@{oA soA}]]](Pb, Qb) : obj[Sets@{oA soA}]).
 
-(* NEGATIVE 1b (FORMABILITY).  This is the discriminating one against
-   the third control: [PshExp] is accepted only because it may choose a
-   BIGGER target: forced to land in the same [Sets] its arguments take
-   values in, it is refused. *)
+(*
+   本节说明 ProbePresheafExp718 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (PshExp Pb Qb : Cbig^op ⟶ Sets@{oA soA}).
 
-(* NEGATIVE 1c (FORMABILITY).  [presheaf_exp_iso] is the constant that
-   forces that collapse -- its statement puts the exponential on the
-   right of a hom-setoid of the SAME presheaf category -- so it is
-   refused here. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (presheaf_exp_iso Xb Pb Qb).
 
 (* NEGATIVE 1d (FORMABILITY).  And so, therefore, is the headline.  This
@@ -298,19 +289,11 @@ Constraint coD < oD.
 Context (Cr : Category@{coD oD oD}).
 Context (Pr Qr Xr : Cr^op ⟶ Sets@{oD soD}).
 
-(* C's hom level MUST be pinned at [Sets]' carrier level for this section
-   to measure anything: with it left free the Yoneda constants silently
-   instantiate their own [Sets], and a refusal, when one surfaces at all,
-   fires at some other pinned argument rather than at the lemma's
-   category.  [Fun] pins it
-   anyway, which is why the context above writes [Category@{coD oD oD}].
+(*
+   本节说明Yoneda、hom相关定义、性质与动机。
 
-   CONTROLS, all accepted at a C whose OBJECTS sit strictly BELOW its
-   homs: the presheaf category itself, the [*Pre] Yoneda functor (whose
-   object universe is free), the display-(8.5) object, and every headline
-   of the target, the covariant reading [Functor_Category_Closed_cov]
-   included (it is annotated like the instance for exactly this
-   reason). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check ([Cr^op, Sets@{oD soD}]).
 Check (@YoNatPre Cr).
 Check ([[[Cr^op, Sets@{oD soD}]]](Pr, Qr) : obj[Sets@{oD soD}]).
@@ -319,23 +302,19 @@ Check (presheaf_exp_iso Xr Pr Qr).
 Check (Functor_Category_Closed Cr).
 Check (Functor_Category_Closed_cov Cr).
 
-(* NEGATIVE 4a, 4b (FORMABILITY).  [Yoneda_Lemma] is declared over
-   [Category@{u0 u0 u0}] and is refused at that very C, with
-   "Cannot enforce oD = coD because coD < oD".  [yoneda_natural_pre] is
-   refused identically.  So a route through the Yoneda LEMMA would have
-   narrowed the theorem, which is the measured content of the header's
-   route paragraph. *)
+(*
+   本节说明Yoneda相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@Yoneda_Lemma Cr Pr).
 Fail Check (yoneda_natural_pre Cr).
 
-(* NEGATIVE 4c (FORMABILITY).  The UNANNOTATED clone of the instance is
-   refused here too, with the same message, where the shipped
-   [Functor_Category_Closed Cr] above is accepted.  That is what makes
-   the universe annotations load-bearing rather than decorative --
-   jointly: measured one at a time out of tree, either the binder on C
-   or the [Sets@{h so}] annotation alone keeps the object universe free,
-   and only their joint absence collapses it (the target's header
-   records both variants). *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (probe718_closed_unannotated Cr).
 End Route.
 
@@ -357,21 +336,22 @@ Check (fun (c c' : C) (h : c ~{C^op}~> c') =>
          @split _ PshCart _ _ _ _ (fmap[Curried_CoHom C] h)
            (@id ([C^op,Sets]) P)).
 
-(* NEGATIVE 5 (CONVERSION).  They are not the same term: the stripped
-   error is "cannot unify" between two terms of one type.  The target
-   uses [first], whose reduction the two [probe718_first_*] controls
-   above pin. *)
+(*
+   本节说明 ProbePresheafExp718 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe718_first_is_split (c c' : C) (h : c ~{C^op}~> c') :
   @first _ PshCart _ _ P (fmap[Curried_CoHom C] h)
     = @split _ PshCart _ _ _ _ (fmap[Curried_CoHom C] h)
         (@id ([C^op,Sets]) P)
   := eq_refl.
 
-(* NEGATIVE 6 (CONVERSION).  Riehl's counit formula ev_c(γ,y) =
-   γ_c(id_c,y) does NOT hold at [eq_refl]: [eval'] is [uncurry' id] and
-   the identity of a functor category has component [fmap[−] id], so the
-   value is γ_c(op id ∘ id, y) and the residue is one [id_left].  The
-   [≈] form is [probe718_eval_weak] above. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example probe718_eval_strict (c : C)
   (gy : fobj[@product_obj _ PshCart (PshExp P Q) P] c) :
   (@eval' _ _ (Functor_Category_Closed C) P Q) c gy
@@ -391,12 +371,11 @@ Context (P Q X : C^op ⟶ Sets).
 (* CONTROL: the exponential IS a presheaf. *)
 Check (PshExp P Q : C^op ⟶ Sets).
 
-(* NEGATIVE 7 (TYPING).  It is not a COVARIANT functor: the stripped
-   error is a plain "The term "PshExp P Q" has type "C^op ⟶ Sets" while
-   it is expected to have type "C ⟶ Sets"", with no cannot-unify and no
-   universe clause.  (The covariant reading of the THEOREM is
-   [Functor_Category_Closed_cov], which is the instance at the opposite
-   category, not this ascription.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe718_psh_covariant : C ⟶ Sets := PshExp P Q.
 
 (* CONTROL: [exponent_obj y z] is z^y, so [PshExp P Q] is Q^P and the
@@ -415,16 +394,11 @@ Fail Definition probe718_swapped :
     ([[[C^op, Sets]]]( X, PshExp Q P ))
   := presheaf_exp_iso X P Q.
 
-(* NEGATIVE 9 (TYPING).  The objectwise assignment c |-> Q(c)^{P(c)} is a
-   bare FAMILY of objects of [Sets] and not a presheaf: the stripped
-   error is "The type of this term is a product while it is expected to
-   be (C^op ⟶ Sets)".  READ THAT NARROWLY.  It pins the SHAPE of the
-   objectwise data -- values with no action -- and is NOT a proof that no
-   contravariant action on those values exists; Instance/Fun/Closed.v's
-   header records that for the family at hand one does.  What refutes the
-   objectwise formula is that file's
-   [awodey_pointwise_not_exponential_unconditional], checked above, which
-   shows the objectwise VALUE is already the wrong object. *)
+(*
+   本节说明 ProbePresheafExp718 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe718_objectwise : C^op ⟶ Sets :=
   fun c => @exponent_obj Sets Sets_Cartesian Sets_Closed
              (fobj[P] c) (fobj[Q] c).

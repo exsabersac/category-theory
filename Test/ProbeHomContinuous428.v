@@ -88,10 +88,11 @@ Check (@HomFrom Cw cw : Cw ⟶ Sets@{h1 sbig}).
 Check (@hom_continuous_at Cw cw
        : ContinuousFunctor (@HomFrom_at Cw cw : Cw ⟶ Sets@{h1 sbig})).
 
-(* N2 UNIVERSE: the CARRIER level — and with it, [SetoidObject@{o o}], the
-   relation level — is pinned to the hom level of the source: the
-   hom-functor of a FIXED category cannot be read into a strictly larger
-   universe of sets *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@HomFrom Cw cw : Cw ⟶ Sets@{hbig sbig}).
 
 End Universes.

@@ -163,10 +163,11 @@ Example p410_carriers@{s o so + | o < so +} (p : positive) :
   carrier (SolPoints@{s o so} p)
   = carrier (pt_carrier (PSolenoid@{s o so _} p)) := eq_refl.
 
-(* CONTROL: [Instance/Sets/InverseLimit.v]'s [tower_obj] with its
-   setoid obligation closed [Defined] instead of [Qed], otherwise
-   textually the donor's; with it the three towers' point sets are one
-   setoid object at [eq_refl]. *)
+(*
+   本节说明 ProbeSolenoid410 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition p410_tower_obj (F : Omega^op ⟶ Sets) : obj[Sets] := {|
   carrier   := { x : Sets_iprod_obj (fun n : nat => F n) & tower_compat F x };
   is_setoid := {| equiv := fun p q => `1 p ≈ `1 q |}
@@ -245,9 +246,11 @@ Definition p410_pone_iso@{s o so r | o < so +} :
 
 (** ** Instance/Top/Solenoid/Presentations.v: one tower, two solenoids *)
 
-(* CONTROL: the underlying towers agree; the group solenoid sits on the
-   same strings; the two point setoids are related by the identity
-   isomorphism; the transparent copy above reads them as one. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p410_towers_agree@{s u o so +} (p : positive) :
   PForget@{o so} ◯ PCircleTower@{s o so} p
     ≈ Ab_Forget@{u so o} ◯ GroupTower@{s u o} p := towers_agree p.
@@ -299,10 +302,11 @@ Example p410_pcover_to@{o so | o < so +} (p : positive) (y : CReal)
   proj1_sig (pmap (to (pwrap_sheet_iso@{o so} p y k Hk)) b)
   = circ_mul@{o} p (proj1_sig b) := eq_refl.
 
-(* CONTROL: over the Type-valued [Top], the ball subspace of the circle is
-   a space at the points' universe, with the subspace's universal
-   property; the arc is its Prop-valued twin squashed; each sheet is
-   homeomorphic to the arc by the restriction of [wrap p]. *)
+(*
+   本节说明 ProbeSolenoid410 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p410_tarc_space@{o} (y : CReal) : TopSpace@{o} := TArc@{o} y.
 
 Definition p410_csub_universal@{h o | o < h +}

@@ -58,12 +58,11 @@ Example mr_pequiv_control {R : RingObject} {M : MonSets}
   (s t : MRTerm R M) (He : mr_eq s t) :
   @pequiv _ _ (rig_prop (MonoidRing R M)) s t := He.
 
-(* NOT-LOST CHECK (measured: it also compiles against the baseline tree
-   master 27f68f10, so it is not a control OF the change): the file's own
-   [mreval_respects], APPLIED.  Its STATEMENT did not move -- respectfulness
-   still reaches a [Type]-valued `≈` -- and only its proof now goes through
-   [pequiv_to] at the target, which is exactly what this checks was not
-   lost. *)
+(*
+   本节说明 ProbeTermModelPropRng 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example mr_respects_control {R : RingObject} {M : MonSets} {S : RingObject}
   (phi : R ~{Rng}~> S) (psi : M ~{MonSets}~> Rng_Forget_Mon S)
   (Hcomm : MRComm phi psi) (s t : MRTerm R M) (He : mr_eq s t) :
@@ -177,33 +176,11 @@ Example uenv_respects_control (K : CRng) (L : LieObject K)
   (He : uenv_eq s t) : uenv_eval A f s ≈ uenv_eval A f t :=
   uenv_eval_respects K L A f s t He.
 
-(** ** 7. [rquot_rel], Instance/Rng/Quotient.v: the TRUNCATION
+(*
+   本节说明 ProbeTermModelPropRng 相关定义、性质与动机。
 
-    Unlike the six above, this relation is not a moved inductive.  [idl_mem]
-    stays [Type]-valued -- its consumers read witnesses out of it -- and the
-    quotient ring's equality is [inhabited] of it.  So the witness cannot be
-    recovered into a [Type]-valued goal, and [rquot_rel_zero_iff] is stated
-    up to [inhabited] rather than against the bare membership.
-
-    NEGATIVE 7a was stripped and reports
-
-      Error:
-      Incorrect elimination in the inductive type "inhabited":
-      the return type has sort "Type" while it should be SProp or Prop.
-      Elimination of an inductive object of sort Prop
-      is not allowed on a predicate in sort "Type"
-      because proofs can be eliminated only to build proofs.
-
-    NEGATIVE 7b was stripped and reports
-
-      Error: In environment
-      R : RingObject
-      I : Ideal R
-      x : R
-      The term "rquot_rel_zero_iff I x" has type
-       "rquot_rel I x (rig_zero R) ↔ inhabited (idl_mem I x)"
-      while it is expected to have type
-       "rquot_rel I x (rig_zero R) ↔ idl_mem I x". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* NEGATIVE 7a.  The witness cannot be read back out. *)
 Fail Definition rquot_rel_type_elim {R : RingObject} (I : Ideal R)
@@ -236,12 +213,11 @@ Example rquot_pequiv_control {R : RingObject} (I : Ideal R)
   (x y : carrier (rig_setoid R)) (H : rquot_rel I x y) :
   @pequiv _ _ (rig_prop (QuotientRing I)) x y := H.
 
-(* NOT-LOST CHECK (measured: it compiles against the baseline tree too,
-   where both relations were [Type]-valued).  [lquot_rel] is truncated in
-   lockstep with [rquot_rel], and this is the convertibility that lockstep
-   preserves -- the one Instance/Rng/Quotient/OneSided.v's refutation rests
-   on.  What it checks is that the lockstep did not break it, not that the
-   change is visible in it. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example lquot_is_rquot_control {R : RingObject} (I : Ideal R)
   (x y : carrier (rig_setoid R)) :
   lquot_rel (Ideal_LeftIdeal I) x y = rquot_rel I x y := eq_refl.

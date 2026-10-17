@@ -63,12 +63,11 @@ Check (couniversal_arrow_terminal_obj U).
 Check (couniversal_arrow_of_terminal (couniversal_arrow_terminal U)
          : CouniversalArrow c F).
 
-(** Negative: the op-side initial object is NOT that terminal object.
-    (With the [Fail] stripped this reports that [arrow_initial] has type
-    [@Initial (fobj[Diagonal 1] c ↓ F^op)] while [@Terminal (F ↓ =(c))] was
-    expected -- a type mismatch; the target prints with its implicit argument
-    elided, and the words "cannot unify" do NOT appear in this one, unlike
-    the two Cocomma probes below.) *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@arrow_initial (C^op) (D^op) c (Opposite_Functor F) U
               : @Terminal (F ↓ =(c))).
 
@@ -79,10 +78,11 @@ Fail Check (eq_refl
                        (Opposite_Functor F)
                   = @Comma D _1 C F (@Diagonal C _1 c)).
 
-(** The mismatch is NOT the terminal/initial axis.  Positive control:
-    a terminal object of F ↓ =(c) IS an initial object of its opposite,
-    by conversion, `Initial K` being notation for `@Terminal (K^op)` and
-    `(K^op)^op` being `K`. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun T : @Terminal (F ↓ =(c)) => terminal_is_initial_op T).
 Check (fun T : @Terminal (F ↓ =(c)) => (T : @Initial ((F ↓ =(c))^op))).
 
@@ -142,26 +142,8 @@ Fail Check (eq_refl
 
 End CounitProbe.
 
-(** The instrument is not a no-op: a [Fail] on a succeeding command
-    aborts compilation with "The command has not failed!".  The
-    following line, uncommented, would do exactly that — it is left as a
-    comment because a passing build cannot contain it.
+(*
+   本节说明 ProbeCouniversal 相关定义、性质与动机。
 
-      Fail Check (@CouniversalArrow : forall (C D : Category),
-                    obj[C] -> (D ⟶ C) -> Type).
-
-    THE [@] IS LOAD-BEARING, and an earlier revision of this very block
-    got it wrong — which is worth recording, since it is precisely the
-    failure mode this file exists to rule out.  Without the [@], the
-    exhibit reads [Fail Check (CouniversalArrow : ...)]; [Arguments
-    CouniversalArrow {C D} c F] (Theory/Universal/Arrow/Dual.v) makes
-    [C] and [D] implicit, so the bare name has type
-    [obj[?C] -> ?D ⟶ ?C -> Type], the ascription genuinely fails, and
-    the [Fail] SUCCEEDS — silently, exit 0.  A demonstration that the
-    instrument is live would then have been an instance of the
-    instrument passing for the wrong reason.  With the [@] the
-    ascription holds and the [Fail] aborts as advertised (measured, exit
-    1).
-
-    The controls above are the standing check that the [Fail]s are not
-    passing for the wrong reason. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

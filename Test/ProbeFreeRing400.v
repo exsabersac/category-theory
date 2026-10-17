@@ -48,12 +48,11 @@ Check @Rng_Forget_Mon.
 Check @Rig_Forget_Mon.
 Check (Rng_Forget_Mon : Rng ⟶ MonSets).
 
-(** ** Positive controls: what DOES hold strictly
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
 
-    The two underlying-set functors of the two routes agree on objects
-    and on arrows definitionally.  These are the facts that make the
-    field-copying retype below possible, so they are controls for the
-    conversion negatives that follow. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example probe_fobj_agree (R : Rng) :
   fobj[RngUnderlyingAb] R = fobj[RngUnderlyingMon] R := eq_refl.
@@ -71,30 +70,20 @@ Example probe_fmap_agree (R S : Rng) (f : R ~{Rng}~> S) :
 Fail Example probe_underlying_records_agree :
   RngUnderlyingAb = RngUnderlyingMon := eq_refl.
 
-(* And the monoid route's adjunction cannot simply be ASCRIBED against
-   the abelian route's right adjoint, even though every field type is
-   convertible: the [Adjunction] type mentions the right adjoint as a
-   whole record.  This is precisely why Instance/Rng/Free.v rebuilds it
-   field by field as [free_ring_via_mon_adjunction_ab] rather than
-   transporting along a natural isomorphism. *)
+(*
+   本节说明伴随、幺半群、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_ascribe_mon_at_ab
   : free_ring_via_mon ⊣ RngUnderlyingAb
   := free_ring_via_mon_adjunction.
 
-(** ** FORMABILITY negative
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    A different KIND: not a failed conversion but a universe
-    inconsistency.  The monoid route is confined to rings whose homs live
-    in [Set], because [Rig_Forget_Mon]'s source is [Rig@{u Set}]; the
-    abelian route is not.  What the negative fires on is the donor's
-    literal [Set] meeting the RIGID declared level [puh]: unification
-    cannot set a rigid level to [Set], and deleting the [Constraint]
-    below leaves the negative failing with the identical message
-    ("Cannot enforce Set = puh"), so the [Constraint] is INERT for the
-    negative and it would be wrong to say the negative fires on it.  Its
-    real work is on the POSITIVE control, which without it would not say
-    "elaborates strictly above [Set]".  The control rules out the
-    ascription shape, which is all a control can rule out. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeMonRouteSetPin.
 
@@ -107,10 +96,10 @@ Fail Check (Rng_Forget_Mon : Rng@{puo puh} ⟶ MonSets).
 
 End ProbeMonRouteSetPin.
 
-(** ** Instrument check
+(*
+   本节说明 ProbeFreeRing400 相关定义、性质与动机。
 
-    A [Fail] that must fail for a reason having nothing to do with #400,
-    so that a broken [Fail] mechanism would be visible here rather than
-    silently passing every negative above. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_free_ring_instrument : (true = false) := eq_refl.

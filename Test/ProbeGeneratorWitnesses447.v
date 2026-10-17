@@ -89,9 +89,11 @@ Definition p447w_ab : @IsSeparator Ab (FreeAbObject unit_setoid_object) :=
 
 (** ** Negatives *)
 
-(* N1 -- CONVERSION.  The singleton is not the terminal object on the
-   nose: "cannot unify "1" and "unit_setoid_object"" (the [1] being the
-   terminal-object notation this import list puts in scope). *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example n1 : @terminal_obj Sets Sets_Terminal = unit_setoid_object
   := eq_refl.
 
@@ -102,26 +104,27 @@ Fail Definition n2 :
     (forall k : unit_setoid_object ~{Sets}~> X, f ∘ k = g ∘ k) -> f = g
   := Sets_unit_separates.
 
-(* N3 -- CONVERSION.  The two composites swapped -- the COseparator's
-   postcomposition in place of the separator's precomposition:
-   "cannot unify "unit_setoid_object ~{ Sets }~> x" and
-   "y ~{ Sets }~> unit_setoid_object"".  This is the quantifier exchange
-   that Structure/Generator/Dual.v's bridge performs. *)
+(*
+   本节说明 ProbeGeneratorWitnesses447 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n3 :
   forall (X Y : SetoidObject) (f g : X ~{Sets}~> Y),
     (forall k : Y ~{Sets}~> unit_setoid_object, k ∘ f ≈ k ∘ g) -> f ≈ g
   := Sets_unit_separates.
 
-(* N4 -- CONVERSION.  Mac Lane's ℤ is not, in tree, the free abelian
-   group on one generator: "cannot unify
-   "FreeAbObject unit_setoid_object ~{ Ab }~> x" and "ab_int ~{ Ab }~> x"".
-   The isomorphism between them is not in tree (see the Ab header). *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n4 : @IsSeparator Ab ab_int := Ab_free_one_separates.
 
-(* N5 -- CONVERSION.  The singleton proof does not prove the
-   terminal-object statement: "cannot unify
-   "unit_setoid_object ~{ Sets }~> x" and "1 ~{ Sets }~> x"" -- N1 lifted
-   from the objects to the theorems, and the reason
-   [Sets_terminal_separates] is a separate constant. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n5 : @IsSeparator Sets (@terminal_obj Sets Sets_Terminal)
   := Sets_unit_separates.

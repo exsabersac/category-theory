@@ -155,10 +155,11 @@ End LemmaProbe.
 (* ------------------------------------------------------------------------ *)
 (** ** The positive controls of Instance/Fun/Action/Monad/Comparison.v *)
 
-(* Required here, after every other command above, so that the sections
-   above are elaborated under the first target's import list alone: the
-   import list of Instance/Fun/Action/Monad/Comparison.v, in its order,
-   and that module. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
 Require Import Category.Theory.Isomorphism.

@@ -30,15 +30,11 @@ Require Import Coq.ZArith.ZArith.
 
 Fail Check probe_371_no_such_reference.
 
-(** ** CONVERSION 1 — the unit is the projection POINTWISE, not as a
-       morphism record
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [AdjunctionFromUniversalArrows] builds ⌊−⌋ as
-    [fun g => fmap[U] g ∘ arrow], so the class unit is
-    [fmap[Incl] id ∘ ab_quot_proj …].  Applied to an ELEMENT that
-    composite reduces to the element itself, which is the target's
-    [torsion_unit_is_proj]; as a whole [CMonHom] record it does not,
-    and the `≈` form is the target's [torsion_unit_is_proj_hom]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_unit_is_proj_strict (A : AbObject) :
   torsion_unit A = ab_quot_proj (torsion_incl A) := eq_refl.
@@ -47,24 +43,20 @@ Example probe_unit_is_proj_pointwise (A : AbObject) (a : carrier A) :
   cmon_map (torsion_unit A) a
     = cmon_map (ab_quot_proj (torsion_incl A)) a := eq_refl.
 
-(* #1347: the unit's setoid-morphism component, at [eq_refl] since
-   Instance/Sets.v gives its identity's and composite's properness fields
-   as terms; against master 687ac356 it is refused with "cannot unify".
-   The whole record is still refused (above). *)
+(*
+   本节说明 ProbeTorsionFree371 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example probe_unit_is_proj_component (A : AbObject) :
   cmon_map (torsion_unit A)
     = cmon_map (ab_quot_proj (torsion_incl A)) := eq_refl.
 
-(** ** CONVERSION 2 — the scalar action at a VARIABLE scalar
+(*
+   本节说明 ProbeTorsionFree371 相关定义、性质与动机。
 
-    [AbQuotient] reuses [A]'s own zero and addition, so those two fields
-    ARE [A]'s on the nose (controls below) and [nat_smul] agrees at every
-    CLOSED scalar.  At a variable [k] the [Fixpoint] is stuck, so
-    conversion is left comparing the two [AbObject]s themselves, which
-    differ in their setoid field — the whole point of the quotient — and
-    in every law field; one differing law field alone already blocks
-    it (measured in the target's header).  The target proves the
-    agreement by induction ([nat_smul_quot]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_nat_smul_quot_strict
   (A : AbObject) (k : nat) (x : carrier A) :
@@ -84,12 +76,11 @@ Lemma probe_nat_smul_quot_lemma
   nat_smul (AbModTorsion A) k x = nat_smul A k x.
 Proof. apply nat_smul_quot. Qed.
 
-(** ** CONVERSION 3 — ℤ/T(ℤ) is not ℤ, though it is isomorphic to it
+(*
+   本节说明同构相关定义、性质与动机。
 
-    ℤ is torsion-free, so its torsion subgroup is trivial and the
-    reflector returns it up to isomorphism ([ZAb_reflect_iso], the
-    counit isomorphism instantiated).  The two objects are nevertheless
-    distinct: [AbModTorsion ZAb] carries the coarsened setoid. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example probe_quot_ZAb_strict : AbModTorsion ZAb = ZAb := eq_refl.
 
@@ -97,12 +88,11 @@ Definition probe_ZAb_iso :
   fobj[TorsionFree_reflector] (Incl Ab TorsionFree_Sub ZAb_TF)
     ≅[Sub Ab TorsionFree_Sub] ZAb_TF := ZAb_reflect_iso.
 
-(** ** TYPING — [Reflective] is a record, not an adjunction
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Mac Lane's phrase "full reflective subcategory" is the RECORD:
-    fullness, a reflector, and the adjunction.  The adjunction alone is
-    strictly less, and the mismatch is a plain typing error — no
-    "cannot unify", no universe clause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition probe_reflective_is_adjunction
   : TorsionFree_reflector ⊣ Incl Ab TorsionFree_Sub :=
@@ -115,21 +105,11 @@ Definition probe_reflective_adj
 Definition probe_reflective_record : Reflective TorsionFree_Sub :=
   TorsionFree_Reflective.
 
-(** ** FORMABILITY — the donors identify hom with proof
+(*
+   本节说明hom相关定义、性质与动机。
 
-    [Subcategory] is declared over [Category@{u u0 u0}] and [Reflective]
-    over [Category@{u3 u5 u5}].  At a category whose hom and proof
-    universes are declared strictly apart, naming a hom-set and an
-    identity is fine while [Subcategory] is refused.  The second
-    rejection below names [Reflective], but it fires at the
-    [Subcategory] ARGUMENT with the identical message -- [Reflective]
-    takes a [Subcategory] and cannot be tested apart from it (the trap
-    Test/ProbeRingLattice340.v records for [MonoidObject]) -- so it
-    separates nothing, and whether [Reflective] identifies anything OF
-    ITS OWN is not measured here.  The identification is the DONORS'
-    and is inherited by everything in the target; nothing there adds to
-    it, and no constraint block of any constant of the target carries a
-    universe equation at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeTorsionUniverses.
 

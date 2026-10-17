@@ -205,14 +205,11 @@ Definition topos_FinitelyComplete {C : Category} (T : ElementaryTopos C) :
   @FinitelyComplete C :=
   finitely_complete_of_pullbacks_terminal topos_pullbacks topos_terminal.
 
-(* N10 CONVERSION: the terminal object recovered from the empty finite limit
-   at [FinSet] BY THE PULLBACK ROUTE does NOT compute to the numeral [1] —
-   the chain runs through the chosen equalizer of
-   [HasEqualizers_of_HasPullbacks_Terminal], whose object is opaque (see the
-   diagnosis in the header).  The witness is named [_pb] since #415:
-   Instance/FinSet/Limit.v's [FinSet_FinitelyComplete], over the native
-   equalizer, DOES compute it — its
-   [FinSet_FinitelyComplete_terminal_computes]. *)
+(*
+   本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p417_finset_terminal_computes :
   @terminal_obj FinSet (FinitelyComplete_Terminal FinSet_FinitelyComplete_pb)
   = 1%nat := eq_refl.

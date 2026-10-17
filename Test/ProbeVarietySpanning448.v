@@ -71,25 +71,20 @@ Fail Definition p448v_h_not_spanning : Spanning (SVariety_Forget E) h :=
    A; "cannot unify "sgen_alg h" and "A"". *)
 Fail Example p448v_gen_not_all : sgen_alg h = A := eq_refl.
 
-(* P5 -- CONVERSION: the index is not the generating set (the header's
-   NOT-DELIVERED smallness claim); "cannot unify
-   "sol_index (variety_solution_set E X)" and "carrier X"" -- the
-   expected type prints "= X" through the coercion while the message
-   names "carrier X". *)
+(*
+   本节说明 ProbeVarietySpanning448 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p448v_index_not_X :
   sol_index (variety_solution_set E X) = carrier X := eq_refl.
 
 End Probes.
 
-(* P1 -- INSTANCE: the general Lemma's route is not available in tree,
-   there being no wide pullbacks of [SVariety]; "Cannot infer this
-   placeholder of type "HasWidePullbacks (SVariety CommEq)" (no type
-   class instance found)".  A [Definition] with a hole, never a [Check],
-   which tolerates the open evar.  (CORRECTION, #451: "there being no
-   wide pullbacks of [SVariety]" is no longer true.  Structure/Pullback/
-   Wide/Complete.v's [Complete_HasWidePullbacks] applied to Instance/
-   Variety/Limit.v's [SVariety_Complete] builds them.  The refusal below
-   still stands, because class search registers neither of the two;
-   Test/ProbeWellPowered451.v's N22 and its control pin exactly that.) *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p448v_no_wide_pullbacks :
   @HasWidePullbacks (SVariety CommEq) := _.

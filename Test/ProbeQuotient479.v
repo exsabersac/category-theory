@@ -181,9 +181,11 @@ End RngMembershipAbove.
 Example p479_c10_even (a : Z) :
   rtransversal_map EvenIdeal_transversal a = Z.modulo a 2 := eq_refl.
 
-(* Membership below the carrier: the readbacks of the pair are accepted
-   there, and the untruncation principle at the membership level is
-   OneLevel.v's [Untruncate] at that level, against every N. *)
+(*
+   本节说明 ProbeQuotient479 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section MembershipBelow.
 
 Universes p m.

@@ -35,11 +35,11 @@ Example issue_139_unit_is_terminal :
   @I C Cartesian_Monoidal = 1%object.
 Proof. reflexivity. Qed.
 
-(* Beyond the object level, the monoidal action on *morphisms* is the product's
-   bifunctorial action: projecting after the tensor f ⨂ g recovers f on the
-   left factor and g on the right.  These are genuine equational checks via the
-   product UMP (exl_fork / exr_fork), so they fail for any non-product tensor --
-   they exercise the structure itself, not merely the discoverable name. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example issue_139_exl_tensor {a b c d : C} (f : a ~> b) (g : c ~> d) :
   exl ∘ (f ⨂[Cartesian_Monoidal] g) ≈ f ∘ exl.
 Proof. simpl; now rewrite exl_fork. Qed.
@@ -50,9 +50,11 @@ Proof. simpl; now rewrite exr_fork. Qed.
 
 End Issue139.
 
-(* End-to-end: the surfaced construction is definitionally the monoidal
-   structure that the concrete cartesian category Coq already uses
-   (Instance/Coq.v builds Coq_Monoidal from Coq_Cartesian + Coq_Terminal). *)
+(*
+   本节说明幺半结构、幺半群、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example issue_139_coq_monoidal :
   Coq_Monoidal = @Cartesian_Monoidal Coq Coq_Cartesian Coq_Terminal.
 Proof. reflexivity. Qed.

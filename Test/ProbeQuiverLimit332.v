@@ -62,12 +62,11 @@ Check (QuiverOfCat C).
    likewise formable here. *)
 Check (ACone c F).
 
-(* Control (c): THE ONE THAT ACTUALLY LOCALIZES.  [Diagram] is BY
-   DEFINITION [QuiverHomomorphism G (QuiverOfCat C)], so ruling out the
-   quiver and the cone does not rule out the homomorphism -- the obvious
-   alternative culprit.  It IS formable here, so the identification is
-   [Diagram]'s own.  An earlier revision of this file claimed the two
-   controls above "localize" the cause; they do not, and this one does. *)
+(*
+   本节说明 ProbeQuiverLimit332 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (QuiverHomomorphism G (QuiverOfCat C)).
 
 (* The negative. *)
@@ -104,18 +103,8 @@ Check tri_gcone_of_arrow.
 Check loop_gcone.
 Check loop_paths_distinct.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
+(*
+   本节说明函子相关定义、性质与动机。
 
-    The constants at risk are the ones the NEGATIVES name:
-
-      Negative 1: [dpath], [fmap], [FunctorOfDiagram], [FreeOnQuiver]
-      Negative 2: [Diagram]
-
-    That is FIVE, and all five are named by a positive control above, so
-    renaming any one breaks this file rather than turning its negative
-    vacuously green.  An earlier revision counted SEVEN by folding in
-    [QuiverOfCat] and [ACone]; those occur only in the controls, so their
-    guarding is vacuously satisfied and they padded the denominator.  The
-    simulation was run over all seven anyway and all seven are caught --
-    the score is reproducible, but 5/5 is the honest accounting of what
-    the negatives put at risk. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

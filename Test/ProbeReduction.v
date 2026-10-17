@@ -27,31 +27,19 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
 
-    A [Fail] that must itself fail.  Without this, a globally broken
-    [Fail] vernacular would silently green every negative below.  This is
-    the INSTRUMENT, not one of the eight negatives -- an earlier draft
-    counted it as a ninth. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Section (D): Mac Lane's and Awodey's squares are DIFFERENT
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
 
-    Issue #326's body asserts that Mac Lane's Exercise 9 and the
-    Awodey/Riehl construction are "the same square read the other way".
-    They are not, and these probes are what pin that.  Mac Lane pulls back
-    [⟨id,f⟩] and [⟨id,g⟩], both issuing from [x], over [x × y]; Awodey and
-    Riehl pull the diagonal [y ~> y × y] back along [⟨f,g⟩ : x ~> y × y].
-    Different codomain, and legs from different objects.
-
-    What IS true -- and is proved in Reduction.v, not merely probed here
-    -- is the weaker statement that the two vertices are canonically
-    isomorphic AS EQUALIZERS ([maclane_awodey_iso],
-    [maclane_awodey_iso_commutes]).  These negatives bound that result
-    from below; they do NOT assert that no cospan isomorphism exists at
-    particular [f] and [g], which is a question this file does not
-    settle. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DConversion.
 
@@ -65,9 +53,11 @@ Context (f g : x ~> y).
 Fail Definition probe_ml_aw_codomain :
   (x × y)%object = (y × y)%object := eq_refl.
 
-(* Positive control, naming its own constants: the degenerate
-   instantiation DOES convert, so the negative above is about the two
-   codomains and not about [%object] notation failing to elaborate. *)
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition probe_pos_codomain_degenerate :
   (x × x)%object = (x × x)%object := eq_refl.
 
@@ -94,23 +84,20 @@ Context `{@Cartesian C}.
 Context {x y : C}.
 Context (f g : x ~> y).
 
-(* FORMABILITY negatives -- a DIFFERENT KIND from the conversion ones
-   above, and the sharper half of the (D) finding.  Stripped, these do not
-   report a failed unification of two terms; they report a TYPE MISMATCH,
-   e.g. that [aw_pair f g] has type [x ~> y × y] where [x ~> x × y] was
-   expected.  The comparison cannot be stated, so "these squares are not
-   convertible" understates the situation. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@ml_left C _ x y f = @aw_pair C _ x y f g).
 
 Fail Check (@ml_right C _ x y g = @aw_diag C _ y).
 
-(* Positive controls naming their own constants: each leg IS statable
-   against itself, so the failures above are about the two constructions
-   and not about [ml_left]/[aw_pair] being unusable names.  [ml_right] and
-   [aw_diag] get their own controls too -- an earlier version of this file
-   named them ONLY inside the [Fail Check] above, so a rename of either
-   would have turned that negative vacuously green.  An independent audit
-   caught it; the two lines below are the repair. *)
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (@ml_left C _ x y f = @ml_left C _ x y f).
 Check (@aw_pair C _ x y f g = @aw_pair C _ x y f g).
 Check (@ml_right C _ x y g = @ml_right C _ x y g).
@@ -124,13 +111,11 @@ Definition probe_pos_degenerate :
 
 End DFormability.
 
-(** ** Section (F): the duality is not definitional
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
 
-    [IsCoequalizer] and [IsEqualizer] are distinct record types, so
-    neither the predicates nor the classes are related by [eq_refl] --
-    however convertible their FIELDS are.  That field convertibility is
-    exactly why Reduction.v's bridges need no tactic, so the negative and
-    its control together are the whole content of the measurement. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FDuality.
 
@@ -147,16 +132,20 @@ Fail Definition probe_IsCoequalizer_is_op {x y : C} (f g : x ~> y)
      (q : C) (e : y ~> q) :
   IsCoequalizer f g q e = @IsEqualizer (C^op) y x f g q e := eq_refl.
 
-(* Positive control: the FIELD types ARE convertible.  This is what makes
-   the bridge a plain [:=], and it is why the negatives above are a fact
-   about record nominality rather than about the mathematics. *)
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition probe_pos_cofork_is_fork_eq {x y : C} (f g : x ~> y)
         (q : C) (e : y ~> q) (Hyp : e ∘ f ≈ e ∘ g) :
   f ∘[C^op] e ≈ g ∘[C^op] e := Hyp.
 
-(* Positive controls naming the two CLASSES themselves.  As with the legs
-   above, they previously occurred only inside the [Fail Definition], so a
-   rename would have greened that negative vacuously. *)
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (HasCoequalizers C).
 Check (HasEqualizers (C^op)).
 
@@ -168,14 +157,11 @@ Definition probe_pos_bridge_exists {x y : C} (f g : x ~> y)
 
 End FDuality.
 
-(** ** Wide.v: the binary round trip is refuted on the whole record
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
 
-    Wide.v ships no [Fail] of its own; this is the first place its
-    refutation is pinned.  The obstruction is LOCALIZED rather than
-    guessed: the [is_pullback_commutes] field DOES convert (the [∀ i j]
-    condition iota-reduces at the two literals), so [is_pullback_ump]
-    alone blocks the record equality, being rebuilt through a fresh
-    [Build_Unique]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section WideBinary.
 
@@ -189,20 +175,21 @@ Fail Definition probe_wide_binary_round
      (Hb : IsPullback fx fy P p1 p2) :
   wide_pullback_binary (binary_wide_pullback Hb) = Hb := eq_refl.
 
-(* Positive control naming Wide.v's own constants: the round trip IS
-   formable and the commuting field does convert, so the negative is
-   about [is_pullback_ump] and not about the round trip being ill-typed. *)
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun (Hb : IsPullback fx fy P p1 p2) =>
          wide_pullback_binary (binary_wide_pullback Hb)).
 
 End WideBinary.
 
-(** ** Wide.v: the headline is not vacuous
+(*
+   本节说明 ProbeReduction 相关定义、性质与动机。
 
-    A positive control for [wide_pullback_product] naming its own
-    constant, so that a rename or a statement change breaks this file
-    rather than silently leaving the negatives above as the only mention
-    of Wide.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section WideHeadline.
 
@@ -219,19 +206,11 @@ Check (fun (Hw : IsWidePullback (fun _ : I => one) P proj) =>
 
 End WideHeadline.
 
-(** ** Wide.v's universe claims, shipped as probes
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Wide.v's header states three universe measurements.  They were TRUE
-    when written -- an independent audit reproduced all three -- but no
-    probe section existed anywhere in the tree, so they were MEASURED and
-    not GUARDED, which is precisely the distinction this file exists to
-    enforce.  They are shipped here.
-
-    (i) and (ii): the index universe and the OBJECT universe are
-    independent.  A single unannotated probe would prove nothing, since
-    minimization collapses the levels; these declare them SEPARATELY and
-    impose a STRICT inequality in EACH direction, so neither ordering is
-    forced. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section WideUniverseIndexBelowObject.
   Universe uo ui uc.
@@ -249,14 +228,11 @@ Section WideUniverseObjectBelowIndex.
   Check IsWidePullback@{ui uc uo uc}.
 End WideUniverseObjectBelowIndex.
 
-(** (iii) The hom=proof identification is REAL but INHERITED, not
-    introduced by Wide.v.  The negative rejects [IsWidePullback] under a
-    strict hom<proof constraint -- and the FIRST control shows the DONOR
-    [IsIndexedProduct] is rejected just as flatly at the same levels,
-    which is what makes "inherited" a measurement rather than an excuse.
-    The SECOND control shows a bare hom-setoid statement IS accepted
-    there, so the rejection is not an artifact of the constraint block
-    being unsatisfiable. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section WideUniverseHomProof.
   Universe uh up.

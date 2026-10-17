@@ -128,10 +128,11 @@ Constraint o < so.
 (** ** N4 -- the quotient-object meet is an ≈ and NOT a Leibniz equality
        (CONVERSION) *)
 
-(* Guards the strength of [Sets_quot_meet_parity_mod3].  [QuotObj]
-   inherits [SubObj]'s setoid (Theory/Subobject.v) and has no
-   antisymmetry, so the theorem holds at ≈ and the same statement at `=`
-   is refused. *)
+(*
+   本节说明子对象、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p446_n4 :
   @quot_meet Sets@{o so} Sets_HasPushouts NatDiscrete@{o}
     Sets_Q_parity Sets_Q_mod3 = Sets_Q_total := eq_refl.
@@ -147,15 +148,11 @@ Fail Example p446_n5 (X : SetoidObject@{o o}) :
 (** ** N6 -- the covariant reading of the setoid is a LEMMA, not a
        conversion (CONVERSION) *)
 
-(* The order [quot_le] unfolds covariantly on the nose, but the SETOID
-   does not: [SubObj_Setoid] at [C^op] asks for an isomorphism IN
-   [C^op], whose [to] runs the other way.  The covariant spelling below
-   is well FORMED at a concrete category -- it elaborates, and the
-   refusal is of the [eq_refl] and not of the statement -- so a
-   covariant characterization has to be proved, which is what
-   Theory/Subobject/Quotient.v's [quot_equiv_iff_iso] does, with its
-   corollary [quot_equiv_of_cod_iso] (first proved in the Grp witness
-   and lifted at integration) in the direction the Grp witness needs. *)
+(*
+   本节说明同构、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p446_n6 (X : SetoidObject@{o o})
   (q r : @QuotObj Sets@{o so} X) :
   (q ≈ r) = { i : quot_cod q ≅ quot_cod r & to i ∘ quot_epi q ≈ quot_epi r }

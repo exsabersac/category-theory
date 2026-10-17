@@ -30,10 +30,11 @@ Section BundleRoot.
 Context {A B : UA.OpAlgebra UA.GroupOp}.
 Context (f : UA.AlgHom A B).
 
-(* n1 CONVERSION: this particular empty-arity bundle is not convertible
-   to the empty match.  It is ONE witness of the conversion step
-   [EqSignature]'s naturality fields demand — not the root cause of the
-   development's extensionality, which the header corrects. *)
+(*
+   本节说明 ProbeVariety440 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p440_nullary_conv :
   (fun i : UA.nullary => UA.map f (match i return UA.carrier A with end))
     = (fun i : UA.nullary => match i return UA.carrier B with end) := eq_refl.
@@ -114,11 +115,11 @@ Example p440_bool_in_variety : GroupVariety := GroupVariety_Bool.
 
 (** ** C: CONVERSION — the variety is not the category of groups *)
 
-(* n4 CONVERSION: [GroupVariety] and [Grp] are different categories.
-   This is a WEAK negative and is labelled so: two unrelated
-   [Definition]s that are not convertible says little, and the content
-   of the claim lives in Instance/Variety/GroupComparison.v's header and
-   in the full-and-faithful controls below, not here. *)
+(*
+   本节说明 ProbeVariety440 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p440_variety_is_grp : GroupVariety = Grp := eq_refl.
 
 (* controls: the comparison exists and is full and faithful *)

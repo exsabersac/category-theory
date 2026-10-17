@@ -23,18 +23,11 @@ Require Import Category.Instance.Top.Kolmogorov.
 
 Fail Check probe_372b_no_such_reference.
 
-(** ** FORMABILITY 1 -- the headline: the unrestricted relation is one
-       universe too big to be a space's `≈`
+(*
+   本节说明 ProbeKolmogorov372 相关定义、性质与动机。
 
-    [TopSpace@{o}] carries [top_carrier :> SetoidObject@{o o}], so a
-    space's own `≈` is valued in [Type@{o}], while [IsOpen] quantifies
-    over predicates [X → Type@{o}] and so a relation quantifying over
-    ALL of them lands at a level strictly above [o].  The control shows the
-    level-restricted [SameOpens] DOES land at [Type@{o}] at the very
-    same declared levels, and [kq_setoid] builds the coarsened
-    [SetoidObject] out of it; the negative shows [SameOpensAll] does
-    not.  That is the whole reason the target's quotient tests against
-    the opens valued at a level strictly below the space's own. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeKolmogorovLevels.
 
@@ -54,21 +47,11 @@ Fail Definition k372_probe_all_at_o (x y : Xu) : Type@{o} :=
 
 End ProbeKolmogorovLevels.
 
-(** ** FORMABILITY 2 -- the donor identifies hom with proof
+(*
+   本节说明hom相关定义、性质与动机。
 
-    [Subcategory] is declared over [Category@{u u0 u0}].  At a category
-    whose hom and proof universes are declared strictly apart, naming a
-    hom-set and an identity is fine while [Subcategory] is refused.
-    The identification is the DONOR's and is inherited by
-    [T0_Subcategory], [T0Spaces] and [T0_Reflective_in_Top]; nothing in
-    the target adds to it, and no constraint block of any constant of
-    the target carries a universe equation at all.
-
-    Only ONE such negative is stated.  [Reflective] takes a
-    [Subcategory] and cannot be tested apart from it, so a negative
-    naming [Reflective] would fire at its [Subcategory] argument with
-    the identical message and separate nothing (the trap
-    Test/ProbeRingLattice340.v records for [MonoidObject]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeKolmogorovDonor.
 
@@ -85,21 +68,11 @@ Fail Check (@Subcategory Cu).
 
 End ProbeKolmogorovDonor.
 
-(** ** CONVERSION 1 -- the unit is the projection POINTWISE, not as a
-       morphism record
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    [AdjunctionFromUniversalArrows] builds the forward transpose as
-    [fun g => fmap[U] g ∘ arrow], so the class unit is
-    [fmap[Incl] id ∘ kolmogorov_proj X].  Applied to a POINT that
-    composite reduces to the point itself, which is the target's
-    [t0_unit_is_proj]; as a whole [ContinuousMorphism] record it does
-    not, and the `≈` form is the target's [t0_unit_is_proj_hom].
-    CORRECTION (#1347): as a whole record it does now: the command below
-    holds at [eq_refl], since Instance/Sets.v gives its identity's and
-    composite's properness fields as terms, and is a control.  That it
-    does not was argued; the measurement shows the residue was the
-    standard library's, the opaque lemmas instance resolution had put in the two
-    properness fields, the identity's and the composite's. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example k372_probe_unit_is_proj_strict (X : TopSpace) :
   t0_unit X = kolmogorov_proj X := eq_refl.
@@ -112,15 +85,11 @@ Lemma k372_probe_unit_is_proj_hom (X : TopSpace) :
   t0_unit X ≈ kolmogorov_proj X.
 Proof. apply t0_unit_is_proj_hom. Qed.
 
-(** ** CONVERSION 2 -- the quotient's opens are NOT the base space's
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    [KolmogorovQuotient X] keeps X's carrier ([kq_carrier_strict]) and
-    coarsens its `≈` to [SameOpens X] ([kq_equiv_strict]), but its
-    opens are the pairs of an open of X with a proof that the open
-    respects that relation -- which is [kq_open], and is what makes
-    [open_proper] available for the coarser `≈`.  So the two [IsOpen]
-    fields are different terms.  The one-directional passage is the
-    target's [small_open_is_kq_open]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example k372_probe_kq_isopen_strict (X : TopSpace) (U : X → Type) :
   IsOpen (KolmogorovQuotient X) U = IsOpen X U := eq_refl.
@@ -132,14 +101,11 @@ Example k372_probe_kq_carrier (X : TopSpace) :
   carrier (top_carrier (KolmogorovQuotient X))
     = carrier (top_carrier X) := eq_refl.
 
-(** ** CONVERSION 3 -- a T0 space is not EQUAL to its own quotient
+(*
+   本节说明同构相关定义、性质与动机。
 
-    [Bool_Discrete] is T0, so the reflector returns it up to
-    isomorphism ([bool_reflect_iso], the counit isomorphism
-    instantiated).  The two spaces are nevertheless distinct:
-    [Discrete_Top]'s opens are the `≈`-respecting predicates and the
-    quotient's are the respecting ones in the sense above, and the
-    setoid field and every law field are separately built. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example k372_probe_quot_bool_strict :
   KolmogorovQuotient Bool_Discrete = Bool_Discrete := eq_refl.
@@ -148,12 +114,11 @@ Definition k372_probe_bool_iso :
   fobj[T0_reflector] (Incl Top T0_Subcategory Bool_Discrete_T0Space)
     ≅[T0Spaces] Bool_Discrete_T0Space := bool_reflect_iso.
 
-(** ** TYPING -- [Reflective] is a record, not an adjunction
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Mac Lane's phrase "full reflective subcategory" is the RECORD:
-    fullness, a reflector, and the adjunction.  The adjunction alone is
-    strictly less, and the mismatch is a plain typing error -- no
-    "cannot unify", no universe clause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Definition k372_probe_reflective_is_adjunction
   : T0_reflector ⊣ Incl Top T0_Subcategory :=

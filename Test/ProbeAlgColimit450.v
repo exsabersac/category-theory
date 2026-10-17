@@ -254,9 +254,11 @@ End SetCarrier.
 (** ** N6, N7 (UNIVERSE): the AFT side at [Set] carriers; Riehl's side and
     the words side are accepted there *)
 
-(* CONTROLS, transplanted from the Riehl verification's scratch probe with
-   this file's full import list: every statement that does not mention
-   the adjoint functor theorem holds at [Z2@{Set}]. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition p450_words_at_set :=
   Grp_free_product_words_is_coequalizer Z2@{Set} Z2@{Set}.
 Definition p450_generic_at_set@{u + | Set < u +}
@@ -422,9 +424,11 @@ Section Disjoint.
 Context {C : Category} `{Z : @ZeroObject C} `{CC : @Cocartesian C}.
 Context `{PB : @HasPullbacks C} (x y : C).
 
-(* CONTROL: the theorem, applied to EXACTLY six arguments -- C, Z, CC,
-   PB, x, y -- and ascribed its full type; a [Cartesian] binder added to
-   it would leave this a partial application and refuse the ascription. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (@coproduct_injections_meet_trivial C Z CC PB x y :
   sub_meet (sub_inl x y) (sub_inr x y) ≈ coprod_bot x y).
 

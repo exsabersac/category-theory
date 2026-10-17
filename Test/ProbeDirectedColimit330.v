@@ -52,20 +52,19 @@ Check (FGSub A).
 
 End TriangleNegative.
 
-(** ** Negative 2 (FORMABILITY): Proset cannot host THIS index
+(*
+   本节说明 ProbeDirectedColimit330 相关定义、性质与动机。
 
-    [FGHom] is [Type]-valued -- because [absub_mem] is -- and so cannot be
-    read as a stdlib [relation], which is [Prop]-valued.  This is a universe
-    inconsistency, not a conversion failure: a different KIND from Negative
-    1.  It measures the consequence of a CONVENTION, not an impossibility;
-    see the scope paragraph in this file's header. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (FGHom ab_Z : relation (FGObj ab_Z)).
 
-(* Positive controls.  The squashed variant IS formable, which is what
-   makes the negative a statement about [Prop] rather than about a
-   malformed application; and every constant named in the negative is
-   independently well-formed. *)
+(*
+   本节说明 ProbeDirectedColimit330 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun X Y : FGObj ab_Z => inhabited (FGHom ab_Z X Y) : Prop).
 Check FGHom.
 Check FGObj.

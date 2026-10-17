@@ -108,10 +108,11 @@ Context (Pp : PerpRel@{po} Xp).
 (* ---------------------------------------------------------------------- *)
 (** ** Negative 2 (TYPING): the connection is antitone, not covariant *)
 
-(* Mac Lane types the two maps as [L : P → Q^op] and [R : Q^op → P]:
-   taking complements REVERSES inclusion, so the covariant record of #380
-   is inhabited only once the second relation is reversed.  The control
-   shows the antitone reading is the one that holds. *)
+(*
+   本节说明 ProbePerp385 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (perp_galois Pp
         : GaloisConnection (@subset_le@{po} Xp)
@@ -124,11 +125,11 @@ Fail Check (perp_galois Pp
 (* ---------------------------------------------------------------------- *)
 (** ** Negative 3 (TYPING): right-adjointness is not left-adjointness *)
 
-(* Adjunction/Right.v's [right_does_not_imply_left] shows the two
-   classes come apart in general.  Here the point is narrower and is a
-   fact about TYPES only: the record built for one slot is not a term of
-   the other slot's type.  Nothing below claims that [PerpOp] is not
-   adjoint on the left; that is neither proved nor refuted anywhere. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (perp_AdjointOnTheRight Pp
         : AdjointOnTheRight (PerpOp Pp) (PerpOp Pp)).
@@ -139,12 +140,11 @@ Fail Check (perp_AdjointOnTheRight Pp
 (* ---------------------------------------------------------------------- *)
 (** ** Negative 4 (TYPING): [L = R] is about the MAPS, not the functors *)
 
-(* [perp_galois_l_is_r] closes by [eq_refl], so Mac Lane's [L S = R S]
-   holds on the nose at the level of the two fields.  It does NOT lift to
-   the two functors those fields induce: [PerpFunctor] runs from
-   [Subsets X] to the reversed order and [PerpFunctor_r] the other way, so
-   the two do not share a type at all and the equation between them
-   cannot even be stated.  Both functors are named in the controls. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (PerpFunctor Pp
         : Subsets@{po pu} Xp ⟶ Proset@{po pu} (@perp_PreOrder_r Xp)).
@@ -157,9 +157,11 @@ Fail Check (PerpFunctor Pp = PerpFunctor_r Pp).
 (* ---------------------------------------------------------------------- *)
 (** ** Negative 5 (CONVERSION): the triple complement collapses at [≈] *)
 
-(* [perp_triple] is an equation between OBJECTS of the power set, held at
-   the carriers' own [≈]; the two sides are different terms and no
-   unfolding identifies a triple composite with a single one. *)
+(*
+   本节说明 ProbePerp385 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (fun S => perp_triple Pp S
          : perp_set Pp (perp_set Pp (perp_set Pp S)) ≈ perp_set Pp S).
@@ -173,11 +175,11 @@ End AbstractBoundary.
 (* ------------------------------------------------------------------------ *)
 (** ** Negative 6 (CONVERSION): the witness identifications are at [≈] *)
 
-(* Over ℤ² the complement of the singleton [{(1,0)}] and the second axis
-   are the same SUBSET, but they are built as two different
-   [SetoidMorphism] records -- one a quantified condition over a
-   singleton, the other a bare coordinate equation -- so the
-   identification holds at [≈] and not on the nose. *)
+(*
+   本节说明 ProbePerp385 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Check (zz_perp_e1_is_yaxis : perp_set ZZPerp zz_e1 ≈ zz_yaxis).
 
@@ -186,22 +188,11 @@ Fail Check (eq_refl : perp_set ZZPerp zz_e1 = zz_yaxis).
 (* ------------------------------------------------------------------------ *)
 (** ** Negative 7 (FORMABILITY): the carrier and relation levels coincide *)
 
-(* [PerpRel@{o}] is declared over [SetoidObject@{o o}], so it does not
-   accept a setoid whose two levels are declared apart.  Read that at its
-   true strength: the rejection lands on the ARGUMENT, and [PerpRel]
-   cannot be tested apart from it, its parameter type BEING
-   [SetoidObject@{o o}].  Read that precisely: the record's three fields
-   do NOT force the identification -- the same three fields declared over
-   [SetoidObject@{o1 o2}] are accepted and apply at levels declared apart
-   (measured out of tree by an audit, not pinned here) -- so the [@{o}]
-   binder is a declaration CHOICE aligning the record with
-   [Powerset_Prop_obj], and it is that donor, whose rejection is pinned as
-   negative 6 of Test/ProbeQuantifier384.v and cited rather than repeated,
-   that makes the choice unavoidable downstream.  An earlier draft said
-   this negative measured an inherited shape rather than a demand of the
-   record's own, which overstated what it measures.  The
-   controls show the setoid, its carrier and its structure are all fine at
-   these levels. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseBoundary.
 

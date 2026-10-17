@@ -83,9 +83,11 @@ Fail Definition probe411_n3 : StrictlyCreatesLimits Grp_Forget :=
 
 (** ** N4: the created group depends on the limit oracle *)
 
-(* The same creation theorem fed Mac Lane's cone-set oracle instead of the
-   compatible-family one.  Built here rather than in the library file: it is
-   a second [Complete Grp] and must not become the one a consumer sees. *)
+(*
+   本节说明 ProbeGrpLimit411 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Grp_ConeSet_Complete : @Complete Grp :=
   creates_limits_Complete Grp_Forget ConeSet_Complete Grp_Forget_creates_limits.

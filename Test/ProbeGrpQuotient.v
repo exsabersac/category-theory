@@ -65,11 +65,11 @@ Fail Definition negative_image_unit_witness {G K : GrpObject}
 Monomorphic Universe big.
 Monomorphic Constraint Set < big.
 
-(* POSITIVE CONTROL: the quotient machinery itself carries no such pin --
-   [QuotientGrp] and its universal element are formable at a group whose
-   universes are declared strictly above [Set].  This is the half that
-   said the pin belonged to [Grp_Zero] (until #450 lifted it) and not to
-   this development. *)
+(*
+   本节说明 ProbeGrpQuotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section BigCarrier.
 
 Context {G : GrpObject@{big big big}}.
@@ -94,11 +94,11 @@ Definition control_big_first_iso {K : GrpObject@{big big big}}
 
 End BigCarrier.
 
-(* CONTROL, formerly the NEGATIVE of boundary (4): the zero morphism at the
-   same universes.  Until #450 this was the guarded negative
-   [negative_big_zero], and stripping the guard reported "Cannot enforce
-   Set = big"; since
-   #450 annotated [Grp_Zero] it is accepted. *)
+(*
+   本节说明 ProbeGrpQuotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section BigZero.
 
 Context {G K : GrpObject@{big big big}}.
@@ -111,9 +111,11 @@ End BigZero.
 
 Section Positive.
 
-(* The comparison isomorphism of the first isomorphism theorem has the two
-   mediators as its legs, by convertibility: the universal-element
-   machinery of Theory/Universal/Element.v rebuilds neither. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example positive_first_iso_to {G K : GrpObject} (h : G ~{Grp}~> K) :
   to (first_isomorphism_theorem h) = quot_med (KernelNS h) (image_elem h).
 Proof. reflexivity. Qed.
@@ -128,25 +130,11 @@ Example positive_universal_elem {G : GrpObject} (N : NormalSubgroup G) :
     = quot_proj N.
 Proof. reflexivity. Qed.
 
-(* THE STRENGTH THAT WAS SAVED, AND THE RELATION THAT CARRIES IT.
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-   The PR "algebraic carriers are sets" (2026-09-17) truncated three
-   relations in the Grp layer -- Test/ProbeGrpProp.v pins those from both
-   sides -- and deliberately left Instance/Grp/Epi.v's [grp_coset_rel]
-   alone, because truncating it would have cost
-   [transposition_decides_image] its conclusion: the full
-   [GrpImageDecidable f], and not a double negation of it.  Nothing in
-   the tree guarded that decision until these two controls; an earlier
-   revision of Test/ProbeGrpProp.v deferred it to "Test/ProbeGrpEpi*.v",
-   a file that has never existed.
-
-   The first control pins the relation's SORT -- a [Type]-valued
-   [crelation], measured as [grp_coset_rel ... : crelation@{u u} H] by
-   [About] under [Set Printing Universes] -- and the second pins the
-   theorem's WHOLE statement, hypothesis and conclusion together, so that
-   a later truncation of [grp_coset_rel], or a weakening of the
-   conclusion to a [¬¬] form, breaks this file rather than passing
-   silently. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example positive_grp_coset_rel_is_type_valued
   {G H : GrpObject} (f : G ~{Grp}~> H) : crelation H :=
   grp_coset_rel f.

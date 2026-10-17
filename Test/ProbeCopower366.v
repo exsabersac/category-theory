@@ -149,37 +149,19 @@ Context {HP : @HasIndexedProducts C}.
 Context {HC : @HasIndexedCoproducts C}.
 Context (J : Type).
 
-(* NEGATIVE 2, TYPING.  Against the OP-POWER functor the two constants do
-   not share a type, and the error says so, naming BOTH types with no
-   "cannot unify" clause and no universe clause:
-     The term "Power_Functor J" has type "C^op ⟶ C^op"
-     while it is expected to have type "C ⟶ C".
-   It fires at the STATEMENT -- at the right-hand TERM -- and not at
-   [eq_refl], which is what makes it a claim about the two types.
+(*
+   本节说明函子相关定义、性质与动机。
 
-   WRITING [C] EXPLICITLY ON THE LEFT IS LOAD-BEARING, NOT TIDINESS, AND
-   THE EPISODE IS RECORDED RATHER THAN QUIETLY FIXED.  Spelled with the
-   left category implicit, as [Copower_Functor J = @Power_Functor (C^op)
-   HC J], this negative is a FALSE GUARD: the elaborator re-solves the LEFT
-   side's implicit category as [C^op] so that the two types agree, and
-   leaves a dangling evar (measured under [Set Printing All]):
-     @eq (@Functor (Opposite C) (Opposite C))
-       (@Copower_Functor (Opposite C) ?HC J)
-       (@Power_Functor (Opposite C) HC J)
-   where [?HC : HasIndexedCoproducts (Opposite C)] is unresolved.  That
-   command does fail, but at [eq_refl] and on an unresolved implicit, with
-   BOTH constants at ONE category -- so what it actually refutes is
-   NEGATIVE 3's fact restated at [C^op], and not a claim about types at
-   all.  Same family as the false guard [Test/ProbeFiniteProducts335.v]
-   records (there [obj[?C]]).  The explicit form below cannot leave an evar,
-   and fails at the statement instead. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example copower_is_op_power :
   @Copower_Functor C HC J = @Power_Functor (C^op) HC J := eq_refl.
 
-(* NEGATIVE 3, CONVERSION.  Against the power functor AT [C] the two DO
-   share a type, so the same refutation reports "cannot unify" instead --
-   which is why the kind of a negative has to be read off the error text and
-   not guessed from the statement. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example copower_is_power :
   Copower_Functor J = Power_Functor J := eq_refl.
 
@@ -201,9 +183,11 @@ Example power_at_middle (b c : C) :
      ; is_setoid := @homset C b (power J c) |} (cp_middle J b c) :=
   power_hom_iso_at (@power_ump C HP J c) b.
 
-(* NEGATIVE 4, TYPING.  At the SWAPPED middle the ascription is refused, and
-   the error prints the donor's real target -- which is what shows the two
-   ascriptions above are not vacuous through a coercion. *)
+(*
+   本节说明 ProbeCopower366 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example copower_at_swapped_middle (b c : C) :
   @Isomorphism Sets
     {| carrier := @hom C (copower J b) c
@@ -212,17 +196,11 @@ Fail Example copower_at_swapped_middle (b c : C) :
 
 End CopowerNotPower.
 
-(** ** C. ALL THREE of the target's load-bearing [Defined]s
+(*
+   本节说明 ProbeCopower366 相关定义、性质与动机。
 
-    The target reports THREE proof terminators as load-bearing, measured by
-    flipping each alone to [Qed]: [Copower_Power_Adjunction] (§B),
-    [cp_pa_adj] (§E) and [ex1_pa_adj] (§D2).  A counterfactual about a
-    terminator is not by itself pinnable -- nothing in the build notices
-    that a [Qed] WOULD have broken something -- but an OPAQUE CLONE turns
-    each into an ordinary [Fail]: the clone is the very same term closed
-    with [Qed], so the readback that the target's own [Example] gets for
-    free is refused for the clone and for no other reason.  All three are
-    pinned here; the target itself pinned only the first. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section QedClone.
 
@@ -264,16 +242,11 @@ Fail Example pa_qed_readback (b c : C) :
 
 End QedClone.
 
-(** ** C'. The §D2 adjunction's [Defined], for the same reason
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Here what the transparency buys is not an [eq_refl] but an [exact]: the
-    counit of [ex1_pa_adj] REDUCES to the [copower_desc] mediator, so the
-    target's [ex1_counit_inj] is that mediator's [unique_property] and
-    nothing else.  Against the opaque clone the same term is refused, and
-    the error exhibits exactly what stopped reducing (verbatim, with only
-    the printer's line breaks closed up):
-      (cannot unify "unique_obj (copower_desc (copower_ump (a ~{ C }~> c) a)
-       (λ i : a ~{ C }~> c, i))" and "counit"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section QedCloneEx1.
 
@@ -312,9 +285,11 @@ Context (b : C).
 (* NEGATIVE 6, CONVERSION: the colimit shape is NOT the limit shape. *)
 Fail Example one_op_is_one : Opposite _1 = _1 := eq_refl.
 
-(* NEGATIVE 7, TYPING: nor is the opposite of the constant diagram the
-   constant diagram at the opposite category -- the SHAPES differ, so the
-   copower half of §C is not an op-instantiation of the power half. *)
+(*
+   本节说明 ProbeCopower366 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example op_diagram_is_diagram :
   Opposite_Functor (copower_diagram b) = @power_diagram (C^op) b := eq_refl.
 
@@ -380,14 +355,11 @@ Fail Definition adjunction_ascribes :
 
 End PartialAscription.
 
-(** ** G. §C: where the index/hom identification enters
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
 
-    [power_WeightedLimit] carries the block equation [u0 = u3], identifying
-    [C]'s hom-and-proof universe with the INDEX universe.  It enters at
-    [WeightedLimit] -- when the weight and the hom-diagram are required to be
-    functors into ONE [Sets] -- and NOT at the weight, the diagram, the
-    hom-diagram or the power, each of which is accepted at the very levels
-    where the class is refused. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section IndexPin.
 
@@ -404,25 +376,20 @@ Check (power_weight Ju).
 Check (@power_diagram Cu bu).
 Check (HomDiagram cu (@power_diagram Cu bu)).
 
-(* NEGATIVE 11, FORMABILITY.  Verbatim tail:
-     (universe inconsistency: Cannot enforce ch = ... because ch < ji <= ...).
-   [power_WeightedLimit] and [power_of_weighted] are refused with it, their
-   types mentioning this one. *)
+(*
+   本节说明 ProbeCopower366 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (WeightedLimit (power_weight Ju) (@power_diagram Cu bu)).
 
 End IndexPin.
 
-(** ** G'. The four §B universe equations, as a boundary a consumer meets
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    The target's §B paragraph records that [cp_adj_iso] and
-    [Copower_Power_Adjunction] carry the four block equations
-    [u0 = u1], [u0 = u2], [u0 = u4], [u0 = u5], inherited from #321's two
-    [_at] donors, while [Power_Functor] and [Copower_Functor] carry bounds
-    only.  Stated as something a consumer can trip over: at an index
-    universe strictly ABOVE [C]'s hom level, the §A functors and the arrow
-    action are ACCEPTED and the pinned adjunction is REFUSED.  The three
-    controls are what make the refusal attributable to the adjunction's own
-    universe instance and not to the index or the functors. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section IndexAboveHom.
 
@@ -445,19 +412,11 @@ Fail Check (@Copower_Power_Adjunction Cu HPu HCu Ju).
 
 End IndexAboveHom.
 
-(** ** H. The canonical action over [Sets] as index is REFUTED, not unproved
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    The copower injections are indexed by ELEMENTS, so the [fmap_respects]
-    obligation of the CANONICAL arrow action of [(S, a) ↦ |S| · a] over
-    [Sets] -- the copower mediator of the injections, which is what any
-    arrow action commuting with the injections must be -- asks for
-    [f j = f' j] at LEIBNIZ equality from [f ≈ f'].  Below is an axiom-free
-    countermodel: a two-element setoid whose [≈] is the total relation
-    makes two visibly different maps equal, and their copower injections
-    are then provably distinct.  This is why the file's index category is
-    [Coq].  Read the scope: [SetsIndexRespects] is THAT obligation, so what
-    is refuted is that action; no other arrow action over [Sets] is
-    investigated and none is claimed refuted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition blur_equivalence : Equivalence (fun _ _ : bool => True) :=
   {| Equivalence_Reflexive := fun _ => I

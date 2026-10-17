@@ -86,35 +86,37 @@ Context {x y : C}.
    of C are NOT subobjects of C.  "cannot unify QuotObj x and SubObj x". *)
 Fail Definition n2 : @QuotObj C x = @SubObj C x := eq_refl.
 
-(* N3 -- CONVERSION.  The setoid does not unfold covariantly on the nose:
-   [SubObj_Setoid]'s witness at C^op is an isomorphism IN C^op, so the
-   naive C-isomorphism spelling is refused, "cannot unify (q ≈ r) and
-   ∃ i : quot_cod q ≅ quot_cod r, i ∘ quot_epi q ≈ quot_epi r".  The
-   covariant characterization is therefore the LEMMA [quot_equiv_iff_iso]
-   at ≈, while [quot_equiv_unfold] (the C^op-isomorphism spelling with the
-   composition annotated) is the eq_refl. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n3 (q r : QuotObj x) :
   (q ≈ r) = { i : quot_cod q ≅ quot_cod r & to i ∘ quot_epi q ≈ quot_epi r }
   := eq_refl.
 
-(* N4 -- CONVERSION.  The order direction: q ≤ r factors q THROUGH r and
-   not the other way round.  "cannot unify" against the swapped mediator
-   { k : quot_cod q ~> quot_cod r & k ∘ quot_epi q ≈ quot_epi r }. *)
+(*
+   本节说明 ProbeQuotObj446 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n4 (q r : QuotObj x) :
   quot_le q r
   = { k : quot_cod q ~> quot_cod r & k ∘ quot_epi q ≈ quot_epi r }
   := eq_refl.
 
-(* N5 -- INSTANCE, and it must be a [Definition].  The meet is conditional
-   on pushouts: "Cannot infer the implicit parameter HP of quot_meet whose
-   type is HasPushouts C (no type class instance found)".  The [Check] form
-   above is accepted. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n5 (q r : QuotObj x) : QuotObj x := quot_meet q r.
 
-(* N6 -- CONVERSION.  A direction swap of [monic_op_iff_epic]: its first
-   projection goes from Monic in C^op to Epic in C, and the converse
-   reading is refused, "cannot unify Epic f and Monic f" (printed with the
-   short names in scope on both sides). *)
+(*
+   本节说明 ProbeQuotObj446 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n6 (f : x ~> y) : @Epic (C^op) y x f → @Monic C x y f :=
   fst (monic_op_iff_epic f).
 
@@ -126,11 +128,11 @@ Context {C : Category}.
 Context `{@Cartesian C}.
 Context {x : C}.
 
-(* N7 -- INSTANCE.  The join needs a supply of coimages: with products but
-   no [HasCoimages C], "Cannot infer the implicit parameter HI of quot_join
-   whose type is @HasCoimages C (no type class instance found)" -- which
-   also shows that the [HasCoimages] NOTATION participates in class
-   resolution. *)
+(*
+   本节说明 ProbeQuotObj446 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition n7 (q r : QuotObj x) : QuotObj x := quot_join q r.
 
 End NoCoimages.

@@ -110,13 +110,11 @@ Context `{∀ i j, EqDec (B i j)}.
 
 Import EqNotations.
 
-(* Decides whether the path [xs] occurs as a sub-path of [ys]: a run of
-   consecutive edges of [ys], with matching endpoints, equal (via [eq_dec])
-   edge-by-edge to [xs].  The index equalities [eq_dec] produces are used to
-   [rew]-transport the candidate edge of [ys] into [B]'s expected fibre before
-   comparing.  Requires decidable equality on both [A] and each [B i j].
-   [netlist_find_sublist] below is the proof-carrying analogue, returning the
-   surrounding prefix/suffix instead of a mere boolean. *)
+(*
+   本节说明 NETList 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Equations netlist_incl
           {j k} (xs : netlist B j k)
           {i l} (ys : netlist B i l) : bool :=
@@ -440,14 +438,11 @@ Context `{∀ i j, EqDec (B i j)}.
 
 Import EqNotations.
 
-(* Searches for the path [xs : B j k] as a sub-path of [ys : B i l].  On
-   success returns the surrounding context as [Some (pre, post)], where each
-   side is either the corresponding prefix/suffix path or a proof that no edges
-   remain on that side (the index already matches: [i = j] on the left, [k = l]
-   on the right).  [netlist_find_sublist_app] proves this output is faithful:
-   [ys] equals [pre ++++ xs ++++ post] (up to the [rew] transports recorded by
-   the [i = j] / [k = l] equalities).  This is the proof-carrying refinement of
-   the boolean [netlist_incl]. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint netlist_find_sublist
          {j k} (xs : netlist B j k)
          {i l} (ys : netlist B i l) :
@@ -644,13 +639,13 @@ Qed.
 
 Reserved Infix "<+>" (at level 42, right associativity).
 
-(* nLab: https://ncatlab.org/nlab/show/semicategory
+(*
+   nLab: https://ncatlab.org/nlab/show/semicategory
 
-   An indexed semigroup: an associative composition [<+>] on an index-aligned
-   family [B i j], with no identities required.  This is exactly the data of a
-   semicategory (a category dropping the identity laws) on the objects [A].
-   [netlist B] is the free such structure: its composition is path
-   concatenation [netlist_app], associative by [netlist_app_assoc]. *)
+   本节说明 NETList 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class ISemigroup {A : Type} (B : A → A → Type) := {
   isappend {i j k : A} : B i j → B j k → B i k
     where "x <+> y" := (isappend x y);

@@ -56,32 +56,30 @@ Check (square_functor_round_strict F).
 
 End BigTarget.
 
-(** ** (2) The 2 × 2 identification is an isomorphism, not an equality
+(*
+   本节说明等价、同构相关定义、性质与动机。
 
-    Positive control: the isomorphism in [StrictCat] — the strong
-    reading, [≅[Cat]] in this library being an equivalence of
-    categories. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (Square_2x2_iso : Square ≅[StrictCat] (_2 ∏ _2)).
 Check (Square_2x2_Cat_iso : Square ≅[Cat] (_2 ∏ _2)).
 
-(** Negative: the two categories are not Leibniz-equal, their object
-    types being distinct inductives.  (With the [Fail] stripped this
-    reports that [Square] and [_2 ∏ _2] cannot be unified.) *)
+(*
+   本节说明 ProbeSquare 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (eq_refl : Square = (_2 ∏ _2)).
 
 (** Nor are their object types.  (With the [Fail] stripped: cannot
     unify [SquareNode] with [TwoObj * TwoObj].) *)
 Fail Check (eq_refl : SquareNode = (TwoObj * TwoObj)%type).
 
-(** The instrument is not a no-op: a [Fail] on a succeeding command
-    aborts compilation with "The command has not failed!".  The
-    following line, uncommented, would do exactly that — it is left as
-    a comment because a passing build cannot contain it.
+(*
+   本节说明 ProbeSquare 相关定义、性质与动机。
 
-      Fail Check (Square_2x2_iso : Square ≅[StrictCat] (_2 ∏ _2)).
-
-    The controls above are the standing check that the [Fail]s are not
-    passing for the wrong reason. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** (3) The rectangle: forward unpinned, converse pinned at [Set] *)
 

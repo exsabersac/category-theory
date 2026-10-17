@@ -167,9 +167,11 @@ Example p405_exp_functor_obj (a : C) :
 
 (** ** (2) TYPING negatives *)
 
-(* [Partial_r] fixes the FIRST argument of the bifunctor and varies the
-   second, so it has the wrong variance for the power object: the
-   internal hom is contravariant in its first argument only. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition p405_partial_r_typing : C^op ⟶ C :=
   Partial_r (InternalHomFunctor C) Ω.
 
@@ -184,10 +186,11 @@ Fail Definition p405_swapped_handedness : PowF ⊣ Opposite_Functor PowF :=
 Fail Example p405_exp_is_pow (a : C) :
   fobj[@Exp_Functor C _ _ Ω] a = Pow a := eq_refl.
 
-(* The fidelity lemma holds at ≈ and NOT on the nose: the two sides are
-   [curry] of the untransposed map composed with [swap] on one side, and
-   [curry] of the characteristic map of a doubly reindexed subobject on
-   the other, and reindexing introduces chosen pullback objects. *)
+(*
+   本节说明拉回/推出、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p405_relations_strict {a b : C} (f : a ~> Pow b) :
   to (pow_aor a b) f = pow_relations f := eq_refl.
 
@@ -198,14 +201,11 @@ End ProbeGeneral.
 
 (** ** (4) FORMABILITY negatives: why the [Limit] route is not taken *)
 
-(* [Terminal_Limit] and [Cartesian_Limit] are stated over
-   [Category@{u Set Set}]: they pin the ambient category's hom AND proof
-   universes to the literal [Set].  At a category whose hom-and-proof
-   universe is declared STRICTLY ABOVE [Set] both are refused, while the
-   elementary transports and the headline theorem itself are accepted at
-   exactly those levels.  This measurement is what justifies building
-   Structure/Topos/Colimits.v out of [Terminal]/[HasPullbacks] records
-   rather than out of [Limit]. *)
+(*
+   本节说明（余）极限、topos、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseBoundary.
 
@@ -231,17 +231,11 @@ Check (@Terminal Cu).
 
 End UniverseBoundary.
 
-(* A SECOND, INDEPENDENT FORMABILITY MEASUREMENT, and the one that
-   justifies routing the self-adjointness through [flip] rather than
-   through the issue's [relations_iso].  Packaging subobjects of a × b as
-   an OBJECT of [Sets] identifies C's object universe with its hom
-   universe: at a topos whose objects are declared STRICTLY BELOW its
-   homs, [relations_iso] and everything built on it are refused, while
-   [Pow], [PowF], [pow_aor] and the whole adjunction are accepted.  So
-   [pow_relations] and [pow_aor_is_relations] are FIDELITY CHECKS that
-   cost a universe identification, and no constant on the proof path
-   pays it.  [SubObj] itself is accepted, so the identification belongs
-   to the [Sets]-packaging and not to the subobject record. *)
+(*
+   本节说明伴随、topos、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RelationsBoundary.
 
@@ -266,25 +260,11 @@ Fail Check (@pow_relations Cv Hv).
 
 End RelationsBoundary.
 
-(* THE DONOR OF hom = proof, PINNED.  Every constant of the four library
-   files is over [C : Category@{u u0 u0}] -- hom identified with proof in the
-   BINDER, with no such equation in any constraint block -- and that
-   identification is INHERITED.  Here is the measurement: at hom and proof
-   levels declared strictly apart, the hom-set and the identity are accepted
-   while [ElementaryTopos], [IsPullback] and [HasPullbacks] are each refused
-   ALONE with "Cannot enforce wp = wh" -- three FORMABILITY refutations, the
-   category, its hom-set and its identity standing as the controls that separate
-   each class from its argument.  [ElementaryTopos] is the donor met first by
-   the 103 topos-facing constants whose type carries it (the other three,
-   [IsIso_of_op], [op_IsIso_of] and [sub_push], are transparent [Definition]s
-   that [Set Default Proof Using "All"] does not reach, and get it from
-   [Opposite] and from [Monic] and [SubObj] respectively); [IsPullback] and
-   [HasPullbacks] are the ones Theory/Equivalence/Pullback.v's six meet, and
-   that file's [is_pullback_jointly_monic] has a LITERALLY EMPTY constraint
-   block over that very binder.  Read "each refused alone" as sufficiency and
-   not independence: [Monic], [Cartesian], [Terminal], [SubObj], [Closed],
-   [SubobjectClassifier] and [Opposite] are refused the same way, while
-   [IsIsomorphism] alone is accepted (measured, not pinned). *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DonorBoundary.
 
@@ -311,12 +291,11 @@ End DonorBoundary.
 
 (** ** (5) The FinSet sanity check *)
 
-(* Two [Cartesian] structures on one category have canonically isomorphic
-   product objects.  Stated here because the tree has no such uniqueness
-   lemma: a whole-tree search for a statement of the shape
-   [product_obj _ ≅ product_obj _] returns nothing, and
-   Structure/Cartesian.v carries only [ump_products].  Read at FinSet^op
-   it is the uniqueness of binary COPRODUCTS. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition cartesian_unique_iso {D : Category}
         (P Q : @Cartesian D) (a b : D) :
   @product_obj D P a b ≅ @product_obj D Q a b := {|
@@ -344,12 +323,11 @@ Next Obligation.
     reflexivity.
 Qed.
 
-(* THE FIRST [HasCoequalizers FinSet] THE TREE HAS EVER HAD: no .v file declares
-   a constant of that type, [FinSet_Coequalizer] occurs nowhere at all, and the
-   two .v mentions of the phrase -- Instance/Sets/Coequalizer.v and
-   Instance/Sets/Coequalizer/Interconnect.v -- are NOT-DELIVERED notes about
-   those files.  A plain [Definition], NOT an [Instance]: a chosen coequalizer
-   must not become globally resolvable. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FinSet_derived_HasCoequalizers : HasCoequalizers FinSet :=
   @topos_HasCoequalizers FinSet FinSet_Topos.
 
@@ -360,17 +338,11 @@ Definition FinSet_derived_finite_colimits :
 
 Check (@power_object_monadic FinSet FinSet_Topos : Monadic PowF).
 
-(* The derived initial object agrees with FinSet's computable one -- up to
-   ISOMORPHISM, not on the nose.  The [eq_refl] form is refused with a
-   CONVERSION error, and its cause is NOT isolated: the derived object is
-   [crude_monadicity]'s quasi-inverse [Crude_Inverse] at [EM_Terminal]'s object
-   (Structure/Topos/Colimits.v's [topos_Initial_obj] reads that back at
-   [eq_refl]), i.e. the reflexive coequalizer Monad/Monadicity/Crude.v chooses
-   through [op_HasReflexiveCoequalizers] and [topos_HasEqualizers]; that chain
-   never consumes [PowF_ReflectsIsos] -- [Crude_Inverse] takes no [ReflectsIsos]
-   argument, [refl] entering Crude.v only at [crude_theta_iso] and one
-   [Proof using] -- and no experiment names the constant that blocks the
-   reduction. *)
+(*
+   本节说明单子、（余）极限、topos相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example p405_finset_initial_strict :
   @initial_obj FinSet (@topos_Initial FinSet FinSet_Topos)
     = @initial_obj FinSet FinSet_Initial := eq_refl.

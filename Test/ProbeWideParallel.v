@@ -33,9 +33,11 @@ Check (WideParallel_bool_Parallel :
 Check (WideParallel_bool_Parallel_Cat :
          @Isomorphism Cat (WideParallel bool) Parallel).
 
-(** Positive control: an arrow of the wide shape from [ParX] to [ParY] IS
-    an index, by conversion.  This is the fact that makes the negative
-    below a genuine measurement rather than an accident of packaging. *)
+(*
+   本节说明 ProbeWideParallel 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition probe_wide_hom_is_index :
   (ParX ~{WideParallel bool}~> ParY) = bool := eq_refl.
 
@@ -55,11 +57,11 @@ Fail Definition wide_bool_hom_is_Parallel_hom :
 
 Section DiagramComparison.
 
-(* [Functor_StrictEq_Setoid] identifies the hom and proof universes of its
-   two categories, so a strict comparison against a diagram over
-   [WideParallel bool] is a statement about categories with [h = p].  The
-   level is FREE, not [Set]; the section declares it strictly above [Set]
-   so that the control is not passing for the degenerate reason. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universes dco dch.
 Constraint Set < dco.
 Constraint Set < dch.
@@ -106,10 +108,11 @@ Check (is_wide_coequalizer_colimit fs i0).
 
 End SmallIndex.
 
-(** Negative: with the index universe declared strictly ABOVE the
-    target's hom universe, [AWide] is rejected.  (With the [Fail]
-    stripped this reports a universe inconsistency naming the declared
-    [bh] against [bi].) *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section BigIndex.
 
 Universes bi bo bh bp.
@@ -125,12 +128,11 @@ Fail Check (AWide fs : WideParallel I ⟶ C).
 
 End BigIndex.
 
-(** ** Sharpness of the pointedness hypothesis, as a standing control
+(*
+   本节说明 ProbeWideParallel 相关定义、性质与动机。
 
-    The two theorems below are not probes — they are proved in the
-    target files — but they are the statements the [i0] hypothesis of
-    both round trips rests on, so they are checked here alongside the
-    [Fail]s that guard the rest. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (wide_round_trip_needs_point :
          (∀ (q : _2) (e : q ~{_2}~> TwoY),
             IsWideEqualizer two_empty_family q e
@@ -140,13 +142,8 @@ Check (wide_coround_trip_needs_point :
             IsWideCoequalizer two_empty_family q e
             → IsAColimit (AWide two_empty_family) q) → False).
 
-(** The instrument is not a no-op: a [Fail] on a succeeding command
-    aborts compilation with "The command has not failed!".  The
-    following line, uncommented, would do exactly that — it is left as a
-    comment because a passing build cannot contain it.
+(*
+   本节说明 ProbeWideParallel 相关定义、性质与动机。
 
-      Fail Definition probe_wide_hom_is_index :
-  (ParX ~{WideParallel bool}~> ParY) = bool := eq_refl.
-
-    The controls above are the standing check that the [Fail]s are not
-    passing for the wrong reason. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

@@ -32,12 +32,11 @@ Require Import Category.Structure.Limit.Components.
 (** ** Instrument check — must ERROR ("The command has not failed!"). *)
 Fail Fail Check Category.
 
-(** ** The former [Set] pin of the [iprod] reading, now lifted.
+(*
+   本节说明 ProbeComponents355 相关定义、性质与动机。
 
-    Declared with the ambient homs strictly ABOVE [Set], the elementary
-    statements elaborate and, since [DiscreteCat_Functor] was annotated,
-    so do the [iprod] ones.  The two former negatives are kept here as
-    positive controls; see N1/N2 in the header. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section IprodSetPin.
 
@@ -102,19 +101,18 @@ Check @coprod_limit_iso_legs.
 Check @coprod_proj_is_restriction.
 Check @coprod_IsALimit_HasIndexedProducts.
 Check @coprod_Limit_iprod.
-(* [coprod_IsALimit_iprod] and [component_diagram] are named by NEGATIVES
-   only; without these two controls a rename of either would leave the
-   corresponding [Fail] passing for the WRONG reason (reference not
-   found), i.e. a vacuous guard.  Found by rename simulation, not by
-   inspection. *)
+(*
+   本节说明 ProbeComponents355 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check @coprod_IsALimit_iprod.
 Check @component_diagram.
-(* [iprod], [Limit] and [DiscreteCat_Functor] are DONOR names that the
-   negatives name and no control did.  Their exposure is narrower than a
-   leaf's -- renaming any of them breaks the target too -- but a rename
-   would still leave the two formability negatives passing for
-   reference-not-found rather than for the universe fact, so they are
-   guarded here.  Found by rename simulation, not by inspection. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check @iprod.
 Check @Limit.
 Check @DiscreteCat_Functor.

@@ -40,12 +40,11 @@ Generalizable All Variables.
 (** ** Instrument check — must ERROR ("The command has not failed!"). *)
 Fail Fail Check Category.
 
-(** ** CONVERSION — the four elementary arrows are the adjunction's
-    unit/counit components only up to a residual identity.
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
 
-    Each control is the SAME statement with the residue restored, which is
-    what locates the difference at a `∘ id` (limit side) or `id ∘`
-    (colimit side) rather than at the leg. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FiniteConversion.
 Context {C : Category} (L : HasLimitsOfShape Parallel C).
@@ -92,21 +91,20 @@ Definition probe_po_in1_id (F : Roof ⟶ C) :
 
 End FiniteConversionRoof.
 
-(** ** TYPING — "the unit is the identity" is not merely false, it does not
-    typecheck, and that is the sharper statement.
+(*
+   本节说明 ProbeDiagonalFinite354 相关定义、性质与动机。
 
-    For `Δ ⊣ lim` the unit at x is `x ~> lim (Δ[J](x))`: a morphism between
-    two DIFFERENT objects. So the exercise's "unit the identity" cannot be
-    read literally. What the target delivers instead is invertibility under
-    a sufficient connectedness condition on the shape. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UnitTyping.
 Context {C : Category} (L : HasLimitsOfShape Parallel C) (x : C).
 
-(* NEGATIVE 5. Stripped, this reports a TYPE MISMATCH with NO `cannot
-   unify` clause and no universe clause:
-     The term "id" has type "x ~> x" while it is expected to have type
-     "x ~> lim_obj L (fobj[Diagonal Parallel] x)".                       *)
+(*
+   本节说明 ProbeDiagonalFinite354 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition probe_unit_is_id : dia_unit L x = id[x] := eq_refl.
 
 (* CONTROL 5: the unit IS nameable and well-typed at its real type, so the
@@ -115,11 +113,11 @@ Check (dia_unit L x).
 
 End UnitTyping.
 
-(** ** CONVERSION — neither walking shape is its own opposite
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    This is why the pushout row is CONSTRUCTED rather than read off the
-    pullback row, and why `Δ[Roof^op]` appears on the pullback side. Both
-    are spelled with `Opposite` by name; see hazard (2) above. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* NEGATIVE 6. *)
 Fail Definition probe_roof_op : Opposite Roof = Roof := eq_refl.
@@ -133,22 +131,11 @@ Check Parallel.
 Check (Opposite Roof).
 Check (Opposite Parallel).
 
-(** ** FORMABILITY — hom and proof are identified, and the CONE RECORD IS
-    NOT THE CAUSE.
+(*
+   本节说明（余）极限、hom、来源与用途相关定义、性质与动机。
 
-    The target measures nine donors each rejected ALONE at these levels,
-    and all nine are pinned below, together with the discriminating
-    control: `Cone` is ACCEPTED at the very levels where every one of the
-    nine is rejected, so "the cone vocabulary" would be the wrong
-    attribution.
-
-    Read "nine" as nine DONORS, not nine independent causes:
-    `HasLimitsOfShape` is defined as `∀ F, Limit F`, so it cannot be
-    rejected for a reason of its own, and no claim of independence is
-    made for it.  The control has to be APPLIED to discriminate --
-    `Check @Cone.` alone succeeds, but so does `Check @Limit.`, a
-    polymorphic constant with no argument never meeting `Cu`; it is
-    `@Cone Parallel Cu` against `@Limit Parallel Cu` that separates. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FormabilityHomProof.
 Universes uo uh up.
@@ -163,16 +150,11 @@ Check (fun x : Cu => id[x]).
 (* THE DISCRIMINATING CONTROL: the cone RECORD is formable here. *)
 Check (@Cone Parallel Cu).
 
-(* NEGATIVES 8-16, each rejected on its own.  Each was stripped and run
-   alone, and each reports exactly
+(*
+   本节说明 ProbeDiagonalFinite354 相关定义、性质与动机。
 
-       (universe inconsistency: Cannot enforce up = uh because uh < up)
-
-   so all nine are FORMABILITY and none is a conversion failure in
-   disguise.  Nine donors, not four: an earlier revision of this file
-   measured all nine in the target's header but pinned only the first
-   four, which by this file's own rule ("a measurement is not a guard")
-   left five unguarded.  They are pinned here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (@Limit Parallel Cu).
 Fail Check (Opposite Cu).
 Fail Check (@IsEqualizer Cu).

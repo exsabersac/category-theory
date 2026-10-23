@@ -1,135 +1,153 @@
 # 04 · 函子
 
-**CTFP**：约 1.7–1.8（函子相关章）。  
-**DaoFP**：`8-Functoriality` 一带。  
-**笔记**：[haskell-algebra-notes · 函子组合](https://github.com/exsabersac/haskell-algebra-notes)。
+**CTFP**：1.7 *Functors*；1.8 *Functoriality*。  
+**DaoFP**：`8-Functors`（先回顾范畴种类：Sets、对偶、积范畴、切片/余切片；再函子、自函子、双函子；编程 fmap）。
 
-## 这个概念在干什么
+> 原创教学复述；不摘录书中正文。
 
-函子是**范畴之间的同态**：把对象送到对象、态射送到态射，并**保住恒等与复合**。
+## 1. 书侧故事：把「结构」搬到另一范畴
 
-两句并行的话：
+范畴论的「态射」不只存在于对象之间——范畴与范畴之间也有态射，叫 **函子**。一对映射：
 
-1. **向外**：把一整套结构从世界 A 搬到世界 B（同调、遗忘、自由、嵌入…）；
-2. **向内**：进入 `C` 的函子 `J ⟶ C` 就是 `C` 里形状为 `J` 的图——极限理论吃的就是这种图（见 [06](06-limits.md)）。
+- 对象：`fobj : C → D`；  
+- 态射：`fmap : (x ~> y) → (F x ~> F y)`；  
 
-范畴论历史上，函子与自然变换才是主角；范畴是为了让它们有定义域/陪域才引入的（Eilenberg–Mac Lane）。
+并满足：
 
-## 短例子
+- `fmap id ≈ id`；  
+- `fmap (f ∘ g) ≈ fmap f ∘ fmap g`。
+
+CTFP 强调定律不可省略：随便写个 `map` 若弄破恒等或复合，就不是函子。*Functoriality* 继续问：积、余积、指数、复合类型何时**自动**获得 `fmap`（双函子、协变/反变位置）。
+
+DaoFP 的路径更「先建世界再谈映射」：先让你熟悉对偶、积范畴、切片，再定义函子——因为许多例子天然是 `C^op ⟶ D` 或 `C × D ⟶ E`。
+
+你的笔记 [docs/函子组合/](https://github.com/exsabersac/haskell-algebra-notes/tree/main/docs/%E5%87%BD%E5%AD%90%E7%BB%84%E5%90%88) 把函子当可叠积木；本库用函子复合实例对应这件事。
+
+## 2. 编程直觉
 
 ```haskell
-class Functor f where
-  fmap :: (a -> b) -> f a -> f b
--- 定律：
--- fmap id = id
--- fmap (g . f) = fmap g . fmap f
+fmap id = id
+fmap (f . g) = fmap f . fmap g
 ```
 
-`Maybe`、`[]`、`(->) r` 都是自函子（在 Hask ≈ 类型范畴上）。  
-本库的差别：**还有第三条**——`fmap` 必须尊重态射的 `≈`（`fmap_respects`）。Haskell 里常被 parametricity「藏起来」；在一般 E-category 上必须手写。
+| 例子 | 方差 | 范畴论说法 |
+|------|------|------------|
+| `List`/`Maybe` | 协变 | `C ⟶ C` 自函子 |
+| `Predicate a = a -> Bool` | 对 `a` 反变 | `C^op ⟶ Set`（精神） |
+| `Either e` / `(,) e` | 对右侧协变 | 固定一变元的双函子 |
+| `a -> b` | 对 `b` 协变、对 `a` 反变 | Hom 函子 |
 
-## 本库：`Theory/Functor.v`
+本库不单独建 `Contravariant` 类也能表达反变：走 `Opposite`。
+
+## 3. 本库：`Theory/Functor.v`
 
 ```coq
-Class Functor {C : Category} {D : Category} := {
+Class Functor {C D : Category} := {
   fobj : C → D;
-  fmap {x y : C} (f : x ~> y) : fobj x ~> fobj y;
+  fmap {x y} (f : x ~> y) : fobj x ~> fobj y;
 
-  fmap_respects : ∀ x y,
-    Proper (equiv ==> equiv) (@fmap x y);
-
-  fmap_id {x : C} : fmap (@id C x) ≈ id;
-  fmap_comp {x y z : C} (f : y ~> z) (g : x ~> y) :
+  fmap_respects : ∀ x y, Proper (equiv ==> equiv) (@fmap x y);
+  fmap_id {x} : fmap (@id C x) ≈ id;
+  fmap_comp {x y z} (f : y ~> z) (g : x ~> y) :
     fmap (f ∘ g) ≈ fmap f ∘ fmap g
 }.
 ```
 
-记号：函子常写作 `F : C ⟶ D`（粗箭头）；对象作用可写 `F x`（经 coercion / 记号），态射作用 `fmap[F] f`。
+记号：`C ⟶ D`；`fmap` 亦可 `<$>`。`Coercion fobj`：函子可当对象函数用。
 
-### 三条定律分别防什么
+相关：
 
-| 定律 | 若破坏会怎样 |
-|------|----------------|
-| `fmap_id` | 「结构映射」连恒等都不保，复合语义崩 |
-| `fmap_comp` | 不能把复合搬进映像——图的交换性全坏 |
-| `fmap_respects` | 无法在 setoid 上重写；`f≈g` 推不出 `fmap f ≈ fmap g` |
+- `Full` / `Faithful`：满 / 忠实；  
+- `AFunctor`：先给对象映射再补全；  
+- 恒等函子、复合函子实例（同文件后部）；  
+- `Theory/Coq/Functor.v`：编程向。
 
-### 函子相等是什么
+## 4. CoqIDE 证明走读
 
-本库默认函子的 setoid（`Functor_Setoid`）不是「对象映射点点 `=`」，而更接近**自然同构意义下的相等**（读文件后部）。因此 `Id`、复合 `◯` 组成的「范畴的范畴」在 `Instance/Cat.v` 里能工作，但相等要按库定义理解——这是读 Cat 实例时的常见卡点。
+### 4.1 解释类体
 
-更严的 `Functor_StrictEq_Setoid` 也在同文件末尾，需要时再切换。
+打开 `Theory/Functor.v`，跳到 `Class Functor`，逐步解释。确认 `Existing Instance fmap_respects`（或等价导出）已执行，否则 `rewrite` 在 `fmap` 下可能失败。
 
-## 编程子库：`Theory/Coq/Functor.v`
-
-面向 Gallina/程序员习惯的仅 fmap 类；定律按实例消解。与 `Theory/Functor.v` 抽象层次不同：**学范畴定义读 Theory；写 Coq 程序感读 Theory/Coq**。`Functor/Applicative.v` 是后续加厚缺口之一。
-
-## 「种」与保结构：`Functor/Structure/`
-
-若源范畴有终对象/积/幺半等，目标也有，你可以要求函子**保**这些结构，例如：
-
-- `Functor/Structure/Terminal.v` → `TerminalFunctor`
-- `Functor/Structure/Cartesian.v` → `CartesianFunctor`
-- `Functor/Structure/Monoidal.v` → `MonoidalFunctor`
-
-Lawvere 模型「保有限积的函子」就是这一纪律的代数版（见 [11](11-lawvere-free.md)）。
-
-## 易混对比
-
-| 易混 | 分清 |
-|------|------|
-| 自函子 `C ⟶ C` vs 一般函子 | Monad/代数吃自函子；极限形状图常是 `J ⟶ C` |
-| `fmap` 方向 | 共变：`x~>y` 变成 `Fx~>Fy`；反变要经 `C^op` 或单独记 |
-| 函子 vs 函数 | 函子动整层范畴；函数是某个范畴里的一条态射 |
-| Haskell 第二定律「可推导」 | 在任意 setoid 范畴上 **`fmap_comp` 不可省** |
-
-## CoqIDE 步骤
-
-1. 打开 `Theory/Functor.v`，解释完 `Class Functor` 三个定律字段。
-2. 找到函子复合与 `Id` 的定义（同文件后部），看 `fun_equiv_id_left` 一类引理的陈述——感受「差一个自然同构」。
-3. 打开 `Theory/Coq/Functor.v`，对比字段多少。
-4. 打开 `Functor/Structure/Cartesian.v` 瞄一眼「保积」要多交哪些证明。
-5. （可选）`Instance/Fun.v`：函子范畴 `[C,D]` 的对象是函子、态射是自然变换——为 [05](05-natural.md) 铺路。
-
-## 相关笔记
-
-函子水平复合、Day 卷积等见笔记「函子组合」目录：[haskell-algebra-notes](https://github.com/exsabersac/haskell-algebra-notes)。
-
-
-## 在库里「当函子用」时实际发生什么
-
-声明 `{F : C ⟶ D}` 后，你通常会写 `fmap[F] f`。若 `F` 来自 typeclass 推断失败，显式传入：
+### 4.2 手写重写
 
 ```coq
-fmap (F:=MyFunctor) f
-(* 或 *)
-fmap[MyFunctor] f
+Section FmapWalk.
+  Context `{Functor C D} {x : C} {y : D} (h : fobj x ~> y).
+  Example ex : h ∘ fmap id ≈ h.
+  Proof.
+    rewrite fmap_id.   (* Goal: h ∘ id ≈ h *)
+    rewrite id_right.
+    reflexivity.
+  Qed.
+End FmapWalk.
 ```
 
-复合记号在库中常见为 `G ◯ F`（先 `F` 后 `G`，与 `∘` 同序习惯一致——读定义确认）。  
-恒等函子 `Id`：`fobj` 是恒等、`fmap` 是恒等态射；定律义务几乎是 `reflexivity` / `cat`。
+再试 `cat` 一键版，对比。
 
-### 反变怎么处理
+### 4.3 复合函子的 `fmap_comp`
 
-本库偏好：**不另建 Contravariant 类**，而是写 `C^op ⟶ D` 或 `C ⟶ D^op`。  
-Yoneda 预层是 `C^op ⟶ Sets`；读 `fmap` 时记住 `C^op` 的态射已经反向。  
-若你从 Haskell `Contravariant` 过来，先画一次 `op`，再对字段。
-
-### 证明 `fmap_comp` 的常见形状
-
-Goal：
+设 `G ◯ F`，`fmap` 定义为 `fmap[G] (fmap[F] f)`。Goal：
 
 ```text
-fmap (f ∘ g) ≈ fmap f ∘ fmap g
+fmap[G] (fmap[F] (f ∘ g))
+  ≈ fmap[G] (fmap[F] f) ∘ fmap[G] (fmap[F] g)
 ```
 
-若 `fmap` 定义为「对底层函数加工」：
+步骤：
 
-1. 展开 `fmap`；
-2. 用底层范畴的 `comp_assoc` / 函数复合定义；
-3. `proper` 处理 `≈`；
-4. 收尾 `reflexivity` 或 `cat`。
+1. `rewrite (fmap_comp (f:=f) (g:=g) (Functor0:=F))` 得内层拆开；  
+2. `rewrite (fmap_comp (Functor0:=G))`；  
+3. `cat` 或 `reflexivity`。
 
-Sets 实例里这往往化成点点相等；抽象范畴里则依赖你对 `fobj` 的构造方式。
+**练习**：在 IDE 里对抽象 `F`/`G` 写 `Example`，不要打开具体实例。
+
+### 4.4 建实例时的 Obligation
+
+`Program Instance` 某函子常见三类义务：
+
+1. `Proper` → `proper`；  
+2. `fmap_id` → 计算 / `reflexivity`；  
+3. `fmap_comp` → 计算或用已有引理。
+
+Sets 上容器实例：义务常变成函数级等式；看 `Instance/` 如何 `simpl`。
+
+### 4.5 Full / Faithful
+
+```coq
+Class Full `(F : C ⟶ D) := { ... }.      (* 对态射「满」 *)
+Class Faithful `(F : C ⟶ D) := { ... }. (* 对态射「单」 *)
+```
+
+Yoneda 嵌入满忠实——预告 [07](07-yoneda.md)。现在只需读定义字段。
+
+## 5. 书侧加厚：Functoriality 检查清单
+
+读 CTFP 1.8 / DaoFP 双函子节时，可用这张表自问（原创）：
+
+| 构造 | 问 | 本库去哪验证 |
+|------|----|--------------|
+| 积 `×` | 是否双函子？ | `Cartesian` 的 `first`/`second`/`split` |
+| 指数 | 方差？ | `Closed` 后续引理 |
+| 复合 `G∘F` | 是否函子？ | `Functor` 复合实例 |
+| 对偶 | `F^op`？ | `Opposite` + 函子 |
+
+## 6. 易混对比
+
+| 说法 | 澄清 |
+|------|------|
+| 有 map 就有函子 | 缺定律则否 |
+| 自函子 = Monad | Monad 是自函子 + η/μ |
+| 满忠实 = 等价 | 还缺本质满 |
+| `fmap_respects` 烦 | E-category 必需 |
+
+## 7. CoqIDE 检查清单
+
+1. [ ] 解释五字段。  
+2. [ ] 手写 `rewrite fmap_id`。  
+3. [ ] 抽像证明复合函子的 `fmap_comp`。  
+4. [ ] 找到 Id 与复合实例。  
+5. [ ] 扫 Full/Faithful。  
+6. [ ] 笔记「函子组合」对照 10 分钟。  
+7. [ ] （可选）`Theory/Coq/Functor.v`。
 
 下一篇：[05 自然变换](05-natural.md)

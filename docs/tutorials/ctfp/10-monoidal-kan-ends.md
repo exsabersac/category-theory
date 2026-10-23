@@ -1,142 +1,126 @@
-# 10 · 幺半范畴、Kan 扩张与 End / Profunctor
+# 10 · 幺半范畴、Kan 扩张、Ends / Profunctor
 
-**CTFP**：约 3.10–3.12（Ends、Kan、充实/张量相关）。  
-**DaoFP**：约 §18 Profunctor、§20 Kan。  
-**笔记**：[幺半范畴](https://github.com/exsabersac/haskell-algebra-notes)、[Kan 扩展](https://github.com/exsabersac/haskell-algebra-notes)；Optics 后续可接 End。
+**CTFP**：3.10 *Ends and Coends*；3.11 *Kan Extensions*；3.12 *Enriched Categories*；3.15 *Monads, Monoids and Categories*。  
+**DaoFP**：`18-Ends`、`20-Kan`（§19 Tambara/Optics 为缺口）、`21-Enrichment`；§5 中 Monoidal 引言。
 
-本篇三节独立可读；建议顺序：幺半 → Kan → End。
+> 原创教学复述。对读笔记 [幺半范畴](https://github.com/exsabersac/haskell-algebra-notes/tree/main/docs/%E5%B9%9A%E5%8D%8A%E8%8C%83%E7%95%B4)、[Kan扩展](https://github.com/exsabersac/haskell-algebra-notes/tree/main/docs/Kan%E6%89%A9%E5%B1%95)。
 
----
+## 1. 书侧三条线
 
-## A. 幺半范畴
+**幺半范畴**：`⊗`、单位、连贯。单对象≈幺半群；`([C,C],∘,Id)` 的 monoid 对象≈Monad（3.15 精神）。
 
-### 机制
+**Ends / Profunctor**：`C^op×D⟶Set`；End≈对角极限式；Nat 可写 End；Day/optics 常用 coend。
 
-范畴 `C` 带张量 `⊗ : C × C → C`、单位对象 `I`，以及结合子、左右单位子等**连贯同构**（Mac Lane 连贯性：所有合法图交换）。
+**Kan**：沿 `K` 最佳延拓 `Ran`/`Lan`；局部 UMP；全局常 `Induced ⊣ Ran`；极限是特例；左伴随可写为某右 Kan（笔记已有）。
 
-特例：
+## 2. 本库路径
 
-- **笛卡尔幺半**：`⊗ = ×`，`I = 1`（有投影/对角）；
-- **End 上的复合**：自函子合成是幺半，其 monoid 对象恰是 Monad（回 [09](09-monad-algebra.md)）。
-
-### 本库
-
-- `Structure/Monoidal.v`：`Class Monoidal`
-- `Structure/Monoidal/*`：对称、闭幺半、Heunen–Vicary 笛卡尔幺半等变体
-- `Structure/Monoid.v` / `Theory/Algebra/Monoid.v`：monoid **对象**（在已有幺半结构里）
-
-读 `Monoidal` 时盯：张量的函子性、单位子、五边形/三角形义务落在哪些字段。不要与 `Cartesian` 混用字段名。
-
-### 短例子
-
-```haskell
--- 笛卡尔：(a,b) 张量，() 单位
--- 列表拼接是 monoid：[] 与 (++)
--- Monad：fmap 复合当 ⊗，Id 当 I，ret/join 当 monoid 结构
-```
-
-### 易混
-
-| 笛卡尔 `×` | 一般 `⊗` |
-|------------|----------|
-| 有 `exl`/`exr`/对角 | 一般没有规范投影 |
-| CCC 走 `Cartesian/Closed` | 闭幺半走 `Monoidal/Closed` |
-
----
-
-## B. Kan 扩张
-
-### 机制
-
-沿函子 `K : A ⟶ B`「延拓」`F : A ⟶ C`：
-
-- **左 Kan** `Lan_K F`：最「自由」的延拓（左伴随于预复合）；
-- **右 Kan** `Ran_K F`：最「强制」的延拓（右伴随于预复合）。
-
-预复合 `− ◯ K : [B,C] ⟶ [A,C]`；当伴随存在时，左/右伴随就是 Lan/Ran。
-
-极限/余极限、伴随自身、密度、神经实现……许多构造是 Kan 的特例。笔记「左伴随作为 Kan」即此观点。
-
-### 本库：`Theory/Kan/Extension.v`
+| 主题 | 路径 |
+|------|------|
+| 幺半 | `Structure/Monoidal*`；`Theory/Algebra/Monoid.v` |
+| End/Coend | `Structure/End.v`、`Coend.v` |
+| Profunctor/Dinatural | `Theory/Profunctor.v`、`Dinatural.v` |
+| Day | `Construction/Day.v` |
+| Kan | `Theory/Kan/Extension.v`；`Structure/Limit/Kan/*` |
 
 ```coq
-Program Definition Induced : ([B, C]) ⟶ ([A, C]) := {|
-  fobj := fun G => G ◯ F;   (* 注意：文件里延拓所沿函子名是 F *)
-  fmap := fun _ _ f => {| transform := fun z => transform[f] (F z) |}
-|}.
-
-Class RightKan := { … }  (* 右 Kan：Induced 的右伴随数据 *)
-(* 左 Kan 对偶/并列定义于同文件后文 *)
+Class RightKan := { Ran : [A,C]⟶[B,C]; ran_adjoint : Induced ⊣ Ran }.
+Class LocalRightKan (X) := {
+  LocalRan : B⟶C; ran_transform : LocalRan◯F ⟹ X;
+  ump_ran M μ : ∃! δ, μ ≈ ran_transform ∙ δ ⊲ F
+}.
 ```
 
-先读懂 `Induced`（预复合），再读 `RightKan`/`LeftKan` 的单位—余单位或 Hom 陈述。`Structure/Limit/Kan/` 把极限接回 Kan 语言。
+## 3. CoqIDE 证明走读
 
-### 短例子
+### 3.1 Monoidal
 
-- 沿嵌入延拓离散图 → 与（余）极限相关；
-- 密度公式：`Lan ≅ coend` 形状（与下节 End/Coend 相连）；
-- Haskell 里 Kan 常出现在「把限制在子类上的函子延拓出去」的优化/编码（Hinze 等）；本库偏数学定义。
+识别 tensor、单位、结合子/单位子。大 `≈` Goal 先试 `cat`，再对张量 functoriality 重写。
 
-### 易混
+### 3.2 End
 
-| Kan 扩张 | 极限 |
-|----------|------|
-| 延拓的是**函子** | 极限吃的是图 `J⟶C` |
-| 一般沿任意 `K` | 极限 ≈ 沿特定形状的 Kan |
+楔 / dinatural UMP。方程≈「两端复合相等」。对照自然性，多反变端。
 
----
+### 3.3 `RightKan_to_LocalRightKan`
 
-## C. End / Coend / Profunctor
+用 `from adj nat_id` 造 counit；Obligation 出现 `from_adj_nat_l`、`iso_from_to`——复习 [08](08-adjunction.md)。跟至少一条 Obligation。
 
-### 机制
+### 3.4 Day
 
-Profunctor `P : C^op × D → Sets`（或充实版）上：
+`Construction/Day.v`：指认 coend；Obligation 常 dinatural 重排。第一次能指认即可。
 
-- **End** `∫_c P(c,c)`：双变元的「极限式」——对对角两端自然的 dinatural 族的万有端；
-- **Coend** `∫^c P(c,c)`：对偶的「余极限式」。
+## 4. 口诀（导航用，非替代证明）
 
-编程/optics：`Iso`、`Lens` 等常用 profunctor 编码；Day 卷积用 coend 定义函子张量。见 `Construction/Day.v`、`Theory/Profunctor.v`、`Theory/Dinatural.v`。
+- `Nat(F,G) ≅ ∫ Hom(Fc,Gc)`  
+- 右 Kan 的 end 公式（精神）  
+- `lim ≅ Ran` 沿到终范畴  
 
-### 本库
+充实：E-category≈充实到 setoid；真 V-enriched 更重。
 
-| 文件 | 内容 |
-|------|------|
-| `Structure/End.v` | End |
-| `Structure/Coend.v` | Coend |
-| `Theory/Profunctor.v` | Profunctor |
-| `Theory/Dinatural.v` | dinatural 变换 |
-| `Construction/Day.v` | Day 卷积 |
+## 5. 易混 / 清单
 
-读 End 定义时，抓住：**不是普通自然变换**，而是 dinatural（两端同变元时方向相反）。这是与 [05](05-natural.md) 的分界。
+End≠玩积分号；Kan 需假设；Optics 缺口。  
+检查：Monoidal 字段；End UMP；`ump_ran`；Kan 转换 Obligation；笔记 UP 文对照。
 
-### 缺口声明
 
-Ends → Optics 的范畴侧桥，笔记有 Optics By Example 摘要，本教程不展开实现；把 End/Profunctor 字段读懂即可接到笔记。
 
----
+## 6. 幺半：书侧 + 本库加厚
 
-## CoqIDE 步骤（分三次做完）
+CTFP 3.15 与笔记「是不是幺半群」「自由幺半群与列表」共同指出：Monad 是自函子范畴里的 monoid。读 `Structure/Monoidal.v` 时：
 
-**幺半**
+1. 找出 `tensor`、`unit_obj`；  
+2. 找出结合子、左/右单位子字段名；  
+3. 找一条连贯性定理，看 Goal 有多少个 `⊗`；  
+4. 问：若 `⊗` 取 `∘`、单位取 `Id`，字段是否像 Monad 定律？
 
-1. `Structure/Monoidal.v`：解释 `Class Monoidal` 数据字段与一两个连贯义务。  
-2. 对照 `Structure/Cartesian.v`：列出「笛卡尔多出来的投影」。  
-3. `Monad/Monoid.v` 或 `Theory/Algebra/Monoid.v`：看 Monad↔monoid 的方向。
+笛卡尔积是特殊幺半；CCC 的指数是相对积张量的内齐 Hom——回 [03](03-closed.md)。
 
-**Kan**
+## 7. Ends：书侧 + IDE
 
-4. `Theory/Kan/Extension.v`：先解释 `Induced`，再进入 `RightKan`。  
-5. 扫 `Structure/Limit/Kan/` 文件名，建立「极限 ⊆ Kan 故事」印象。
+DaoFP §18 / CTFP 3.10：从 profunctor 到 end。本库：
 
-**End**
+1. 打开 `Structure/End.v`，找 wedge / dinatural 条件；  
+2. 找 UMP（普遍楔）；  
+3. 打开 `Theory/Dinatural.v` 对照「比自然性多反变端」；  
+4. `Theory/Profunctor.v` 扫 `Class` 名。
 
-6. `Theory/Dinatural.v` 与 `Structure/End.v` 各读定义段。  
-7. （选）`Construction/Day.v` 看 coend 出现位置；`Theory/Profunctor.v` 看类型形状。
+口念：`Nat(F,G)` 像 `∫ Hom(Fc,Gc)`——再在库里找是否形式化了该同构。
 
-## 相关笔记
+## 8. Kan：书侧 + IDE 加厚
 
-- [幺半范畴](https://github.com/exsabersac/haskell-algebra-notes)  
-- [Kan 扩展](https://github.com/exsabersac/haskell-algebra-notes)  
-- Optics 目录（Ends 应用）
+1. 读笔记「定义与UP」标题与定义框（不抄长文）。  
+2. 打开 `Theory/Kan/Extension.v`，对照 `LocalRightKan`。  
+3. 逐步 `RightKan_to_LocalRightKan` 第一条 Obligation：标出 `adj` 出现处。  
+4. 读笔记「左伴随作为右Kan」：用本课语言复述一句。  
+5. `Structure/Limit/Kan/` 列出文件名，标哪个接 [06](06-limits.md)。
+
+## 9. Day / Optics 缺口
+
+`Construction/Day.v` 指认 coend。Optics / Tambara（DaoFP §19、笔记 Optics）标为后续加厚，本课只要求：知道 Ends/Profunctor 是入口。
+
+## 10. CoqIDE 检查清单（扩）
+
+1. [ ] Monoidal 字段表自填。  
+2. [ ] End 或 Coend UMP。  
+3. [ ] Dinatural 与 natural 一句对比。  
+4. [ ] `ump_ran` 解释。  
+5. [ ] Kan 转换至少一Obligation。  
+6. [ ] Day 文件指认 coend。  
+7. [ ] 笔记三篇 Kan/幺半打开过。
+
+
+
+
+## 11. 综合例子：从「Nat 是 end」想到本库该打开谁
+
+书侧常说自然变换集合是某种 end。落地检查清单：
+
+1. 打开 `Theory/Natural/Transformation.v` 确认变换 setoid；  
+2. 打开 `Structure/End.v` 看 end 的对象是否声明为某 Setoid/Sets 对象；  
+3. 搜 `Nat`/`Transform`/`End` 同时出现的引理；  
+4. 若尚无完整同构，记下「缺口」——教程不假装库里有而未形式化的定理。
+
+这是诚实读库的态度：书负责直觉，库负责已证部分，缺口显式标明。
+
 
 下一篇：[11 Lawvere 与 Free](11-lawvere-free.md)

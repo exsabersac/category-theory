@@ -1,121 +1,130 @@
 # 07 · Yoneda 引理与可表函子
 
-**CTFP**：约 2.4–2.6（Yoneda 相关章）。  
-**DaoFP**：多在自然变换/可表附近提及。  
-**笔记**：Yoneda 专题偏薄——本篇补机制；读完可反哺 [haskell-algebra-notes](https://github.com/exsabersac/haskell-algebra-notes)。
+**CTFP**：2.4 *Representable Functors*；2.5 *The Yoneda Lemma*；2.6 *Yoneda Embedding*。  
+**DaoFP**：`9-NaturalTransformations` 后半（Representable、guessing game）；编程侧常见 Yoneda 编码直觉。
 
-## 这个概念在干什么
+> 原创教学复述；不摘录书中正文。笔记 Yoneda 偏薄——本篇写厚。
 
-一句话：
+## 1. 书侧故事
 
-> 预层 `F` 在对象 `A` 上的值，等于从可表预层 `Hom(−,A)` 到 `F` 的自然变换。
+### 可表函子
 
-形式（反变 Yoneda，Sets 值）：
+预层 `F : C^op ⟶ Sets` **可表**，若存在对象 `A` 与自然同构 `F ≅ Hom(−, A)`。CTFP 用「猜 `A`」说明：若你掌握 `F` 与所有测试对象的自然交互，你就在指认 `A`。DaoFP 的 guessing game 同一精神。
 
-```text
-Nat( Hom(−, A) , F )  ≃  F A
-```
+### Yoneda 引理
 
-正向读：要知道 `F A`，等价于知道所有「探针」`Hom(X,A)` 如何被 `F` 作用后与 `F X` 交互的自然方式。  
-口号：**对象由它发出/接收的箭头刻画**——与第 01 篇「不看对象内部」一脉相承。
+对任意预层 `F` 与对象 `A`：
 
-## 短例子（编程）
+> `Nat(Hom(−,A), F) ≅ F(A)`
 
-```haskell
--- 固定 a，自然变换 Hom(a, –) ⟹ F 的分量在 id 处取值：
---   η_a (id) ∈ F a
--- 反过来，给 y ∈ F a，定义
---   η_x (f : a -> x) = fmap f y
-```
+- 左→右：自然变换 `η` 交给 `η_A(id_A)`；  
+- 右→左：元素 `y ∈ F(A)` 生成 `phi ↦ F(phi)(y)`。
 
-`Coyoneda` / 表示引理在 Haskell 优化里常见：把 `fmap` 积攒成「存在一个 b 与 b→a 与 F b」。本库是数学陈述优先，但同一双向构造。
+### Yoneda 嵌入
 
-## 本库路径
+`A ↦ Hom(−,A)` 给出满忠实函子 `C ⟶ [C^op, Sets]`。对象之间的态射完全反映到预层范畴——「只谈箭头」方法论的定理版。
 
-| 路径 | 作用 |
-|------|------|
-| `Functor/Hom.v` | hom 函子（可表的原材料） |
-| `Functor/Hom/Yoneda.v` | Yoneda 引理主陈述 `Yoneda_Lemma` |
-| `Functor/Hom/Yoneda/Iso.v`、`Natural.v` | 同构/自然性细化 |
-| `Theory/Universal/Element.v` | 万有元视角 |
-| `Theory/Coend/Yoneda.v` | coend 形式的 Yoneda |
+### 程序员口译
 
-主文件中的实例（简化阅读）：
+理想化下 `∀ x. (a -> x) -> f x` 与 `f a` 同构（Yoneda 编码）。可积攒 `fmap` 再一次性作用。严格 Hask 有底序；本库在 Sets 预层上形式化更干净。
+
+## 2. 本库落点
+
+- 主文件：`Functor/Hom/Yoneda.v`（`Yoneda_Lemma`）  
+- 配套：`Functor/Hom/Yoneda/Iso.v`、`Natural.v`  
+- 相关：`Theory/Universal/Element.v`、`Theory/Coend/Yoneda.v`
 
 ```coq
 Program Instance Yoneda_Lemma `(C : Category) `(F : C^op ⟶ Sets) :
   ∀ A : C, Presheaves [Hom ─,A] F ≅ F A := {
   to   := {| morphism := fun x => transform[x] A id |};
   from := {| morphism := fun y : F A =>
-             {| transform := fun x : C =>
+             {| transform := fun x =>
                 {| morphism := fun phi => fmap[F] phi y |} |} |}
 }.
 ```
 
-### 两个方向在干什么
+## 3. CoqIDE 证明走读（核心）
 
-**`to`（自然变换 → 元）**  
-取自然变换 `x : Hom(−,A) ⟹ F`，看它在对象 `A`、态射 `id : A ~> A` 上的分量：`transform[x] A id`，得到 `F A` 的元。
+打开 `Yoneda.v`，解释 `Yoneda_Lemma`，**不要跳过 Obligation**。
 
-**`from`（元 → 自然变换）**  
-给定 `y : F A`，在每个 `X` 上把 `phi : A ~> X`（注意 `C^op` 方向）送到 `fmap[F] phi y`。自然性靠 `F` 的 `fmap_comp`。
+| 约序 | 在维护什么 | 手段 |
+|------|------------|------|
+| Proper（transform） | `phi≈phi′` ⇒ fmap 相等 | `proper`；`fmap_respects` |
+| 自然性 | 方块 | `destruct F`；`fmap_comp`；`symmetry` |
+| naturality_sym | 另一朝向 | `fmap_comp` |
+| from 的 Proper | 元素相等 ⇒ 变换相等 | `proper_morphism` |
+| fmap_id 段 | `fmap id y ≈ y` | `fmap_id` |
+| 闭合自然性 | 用 η 的自然性 | `rewrite naturality`；`cat` |
+| to∘from / from∘to | 互逆 | `fmap_id`；对 id 取值 |
 
-往返证明在 `Next Obligation` 里：一边用 `fmap_id` 收回 `y`，另一边用自然性把任意分量写成「先 `id` 再 `fmap`」。
+### 推荐节奏
 
-### 你在 Goal 里会看到什么
+1. 纸上写两向映射，不看 Coq。  
+2. IDE 只读 `to`/`from` 数据结构。  
+3. 逐条 Obligation，每条记一行笔记。  
+4. 互逆向对照本节「精神计算」：  
+   - `to(from y) = fmap id y ≈ y`；  
+   - `from(to η)` 的分量用自然性改写成 `fmap phi (η id)`。
 
-- `Presheaves` / `Sets`：相等是点点或 setoid 态射相等；
-- `transform[…]`：自然变换分量；
-- 大量 `fmap` 与 `naturality`——Yoneda 证明几乎是自然性的习题课。
+### 精神计算（from∘to）
 
-## 可表函子
+`to η = η_A(id)`。`from` 之后在 `phi : A ~> x` 上的分量是 `fmap phi (η_A(id))`。自然性把 `η_x ∘ fmap[Hom] phi` 与 `fmap[F] phi ∘ η_A` 联系起来，而 `Hom` 的 fmap 是预复合，于是落到 `η_x(phi)`。逐步对上 Obligation 里的 `rewrite naturality`。
 
-`F` **可表**，若存在 `A` 使 `F ≅ Hom(−,A)`（或共变 `Hom(A,−)`）。  
-Yoneda 嵌入 `A ↦ Hom(−,A)` 全忠实：对象之间的箭头 ↔ 可表预层之间的自然变换。这保证「只看箭头」的世界观是忠的。
+## 4. 嵌入与满忠实
 
-## 易混对比
+读 CTFP 2.6 时记住本库目标：指出 `Yoneda` 嵌入函子，并找到 Full/Faithful 实例或定理（路径以源码为准）。满忠实 ⇒ 反映同构：若 `Hom(−,A) ≅ Hom(−,B)` 则 `A ≅ B`（在合适陈述下）。
 
-| 易混 | 分清 |
+## 5. 易混对比
+
+| 说法 | 澄清 |
 |------|------|
-| 共变 vs 反变 Yoneda | 本主文件对 `C^op ⟶ Sets`；共变版对偶/另述 |
-| Yoneda 引理 vs Yoneda 嵌入 | 引理是 `Nat(Hom(−,A),F)≃F A`；嵌入是 `A↦Hom(−,A)` 这个函子 |
-| 「`F A` 的元素」 | 在 `Sets` 实例里真是 carrier 的元；一般预层要按 Sets 结构读 |
-| CoYoneda / coend 形式 | 见 `Theory/Coend/Yoneda.v`；先掌握引理双向再读 |
+| Yoneda=fmap | 否；是 Nat≃元素 |
+| 嵌入=等价 | 一般非本质满 |
+| 共变版 | 对偶地陈述 |
+| CPS 就是 Yoneda | 相关直觉；证明仍看自然性 |
 
-## CoqIDE 步骤
+## 6. CoqIDE 检查清单
 
-1. 先打开 `Functor/Hom.v`，确认 `Hom` 函子的 `fobj`/`fmap`（反变在哪一臂）。
-2. 打开 `Functor/Hom/Yoneda.v`，定位 `Yoneda_Lemma`。
-3. 逐步解释 `to` 与 `from` 的 Program 定义；每个 `Next Obligation` 用一句话概括在证什么（Proper / 自然性 / fmap_id / 往返）。
-4. 打开 `Yoneda/Natural.v` 或 `Iso.v`，看引理如何被包装成更易用的同构。
-5. （可选）`Theory/Universal/Element.v`：用「万有元」语言复述同一事实。
-
-## 相关笔记
-
-建议在 [haskell-algebra-notes](https://github.com/exsabersac/haskell-algebra-notes) 补一篇 Yoneda 短文：Haskell `Coyoneda` ↔ 本文件 `from`/`to`。当前笔记以 Kan/Lawvere/初始代数更厚。
+1. [ ] 口述引理两向。  
+2. [ ] 过完（可分次）全部 Obligation。  
+3. [ ] 标出 `rewrite naturality` 出现处。  
+4. [ ] 扫 Iso/Natural 配套。  
+5. [ ] 回 [05](05-natural.md) 核对字段。  
+6. [ ] （可选）Universal/Element。
 
 
-## 把引理当成「计算规则」
 
-**计算 `to ∘ from`**：从元 `y` 造出自然变换，再在 `id` 处取样 → 应回到 `y`。关键等式是 `fmap id y ≈ y`，即 `fmap_id`。
+## 7. 更细的 Obligation 跟踪表（打印着用）
 
-**计算 `from ∘ to`**：从自然变换 `η` 取出 `η_A(id)`，再定义 `φ ↦ fmap φ (η_A(id))`。自然性说：
+复制下表，在 CoqIDE 过 `Yoneda_Lemma` 时打勾：
 
-```text
-η_X(φ) ≈ fmap φ (η_A(id))
-```
+| # | Obligation 主题（自填） | 用到的引理/字段 | ✓ |
+|---|-------------------------|-----------------|---|
+| 1 | | | |
+| 2 | | | |
+| 3 | | | |
+| 4 | | | |
+| 5 | | | |
+| 6 | | | |
+| 7 | | | |
+| 8 | | | |
 
-（φ 看作从 A 出去的箭时的标准 Yoneda 计算。）于是任意分量被「id 分量 + fmap」重建——这就是为什么自然变换被一个元完全决定。
+若超过 8 条，继续加行。目标不是速度，是每条都能用中文说「这是在维护 Yoneda 的哪一半」。
 
-### 嵌入全忠实（意义）
+## 8. 书侧对照（CTFP 2.4–2.6 × DaoFP representable）
 
-Yoneda 嵌入 `よ : C ⟶ [C^op, Sets]`，`よ(A) = Hom(−,A)`。  
-全忠实大意：`C(A,B)` 与 `Nat(よ A, よ B)` 同构。  
-于是「只讨论预层与自然变换」时，仍能无损取回对象之间的箭。这是「箭头世界观」的技术担保。
+| 主题 | 带走的一句话 | 下一步 |
+|------|--------------|--------|
+| Representable | F≅Hom(−,A) | 找普遍元 |
+| Yoneda Lemma | Nat≃F(A) | 跟完 Obligation |
+| Embedding | 满忠实嵌入 | Full/Faithful |
+| Guessing game | 交互决定对象 | Universal element |
+| 编程 Yoneda 编码 | 积攒 fmap | 直觉 only |
 
-### 和笔记、Kan 的衔接
+## 9. 与自然变换课的强制链接
 
-- 密度公式 / 余端形式：`Theory/Coend/Yoneda.v` 与 [10](10-monoidal-kan-ends.md)；  
-- 表示引理在 Haskell 的 `Coyoneda f a = ∃ b. (b → a, f b)` ≈ 自由在 fmap 上的表示——建议写入 [haskell-algebra-notes](https://github.com/exsabersac/haskell-algebra-notes) 补缺口。
+若 [05](05-natural.md) 的会话 B（恒等变换）没做，先做再回来——Yoneda 的 `from` 方向构造的正是「由元素生成的自然变换」，自然性 Obligation 与会话 B 同源。
+
 
 下一篇：[08 伴随](08-adjunction.md)

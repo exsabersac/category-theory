@@ -1,29 +1,28 @@
 # 02 · 终/始对象、积与余积
 
-**CTFP**：约 1.5–1.6（积与余积相关章）。  
-**DaoFP**：`4-SumTypes`、`5-ProductTypes` 一带。
+**CTFP**：1.5 *Products and Coproducts*；1.6 *Simple Algebraic Data Types*。  
+**DaoFP**：`4-SumTypes`、`5-ProductTypes`（并连带逻辑引入/消去、对偶、幺半直觉）。
 
-## 这个概念在干什么
+> 教学复述，非书摘。
 
-「配对」「二选一」「空」「单元」这些日常结构，范畴论不用「里面有几个字段」来定义，而用 **普遍性质（UMP）**：
+## 1. 书侧故事：用「普遍性质」代替「里面有什么」
 
-> 给出想要的投影/嵌入行为之后，存在唯一的中介箭头去完成图。
+CTFP 讲积/余积时，核心不是「积是有序对」这句话本身，而是：**给出投影行为之后，存在唯一的中介箭头**。程序员熟悉的 `(fst, snd)` / `Left|Right` 是 **Set** 上的模型；范畴论把「模型」换成「UMP（普遍映射性质）」，以便同一句话在别的范畴里仍有意义。
 
-终对象、积、拉回、极限……都是同一句话的不同形状。本篇先掌握最小的几块：`Terminal`、`Initial`、`Cartesian`、`Cocartesian`。
+DaoFP 把和类型、积类型写成引入/消去规则，并点出与逻辑的对应（合取≈积、析取≈余积、真≈终、假≈始）。它还强调 **对偶**：把箭头反转，积的图变成余积的图——所以你学一套，得两套。
 
-## 终对象与初始对象
+CTFP 1.6 进一步把 `Maybe`、列表等 ADT 看成用积/余积/1/0「搭积木」。本篇先把积木的 UMP 钉死；递归 ADT / 初始代数放到 [09](09-monad-algebra.md)、[11](11-lawvere-free.md) 与笔记 `docs/初始代数/`。
 
-### 机制
+### 四个最小积木
 
-- **终对象** `1`：对每个 `x`，有且仅有一条 `! : x ~> 1`（在 `≈` 下唯一）。
-- **初始对象** `0`：对偶——对每个 `x` 有且仅有 `¡ : 0 ~> x`。
+| 概念 | 程序员直觉（Set） | UMP 一句话 |
+|------|-------------------|------------|
+| 终对象 `1` | `()` / `unit` | 到 `1` 的箭头唯一 |
+| 初始对象 `0` | `Void` / `Empty` | 从 `0` 出发的箭头唯一 |
+| 积 `x × y` | `(x, y)` | 一对投影；配对 `⟨f,g⟩` 唯一 |
+| 余积 `x + y` | `Either x y` | 一对嵌入；`case` 唯一 |
 
-在 **Set**：
-
-- 终对象 ≈ 单元素集 `()` / `unit`；
-- 初始对象 ≈ 空集 `Void` / `Empty`。
-
-「有且仅有」在本库拆成：**存在性数据** + **唯一性定律**。
+## 2. 终对象与初始对象
 
 ### 本库：`Structure/Terminal.v`
 
@@ -35,113 +34,183 @@ Class Terminal := {
 }.
 ```
 
-记号：对象侧常写 `1`，态射侧 `one` / `one[x]`。
+记号：对象侧 `1`，态射侧 `one` / `one[x]`。
 
-立刻能用的推论：
+**数据 vs 定律**：`one` 是「存在」；`one_unique` 是「唯一（在 ≈ 下）」。没有唯一性，只是「某个对象有进入射」，还不是终对象。
 
-- `one ∘ f ≈ one`（进终对象的箭头合成后还是那条唯一箭头）；
-- `const f := f ∘ one`：经 `1` 分解的「常值」态射；
-- `terminal_unique`：两个终对象之间有（唯一）同构。
+#### 证明走读 A：`one_comp`
 
-初始对象在 `Structure/Initial.v`，可由对偶从终对象导出；读时对照 `0` 与 `zero` 命名。
-
-### 编程直觉
-
-```haskell
--- 终：只有一个值
-data () = ()
-
--- 初始：没有值；absurd :: Void -> a
+```coq
+Corollary one_comp `{@Terminal C} {x y : C} {f : x ~> y} :
+  one ∘ f ≈ one.
+Proof. intros; apply one_unique. Qed.
 ```
 
-全局元（element）常写成 `1 ~> X`：从单元进 `X` 的箭头 ≈ 「挑一个点」。这在后来谈生成元、Yoneda 时还会出现。
+| 步骤 | 说明 |
+|------|------|
+| Goal | `one ∘ f ≈ one`，类型都是 `x ~> 1` |
+| `apply one_unique` | 任意两条进 `1` 的箭都 `≈`，无需知道 `f` 是什么 |
+| 完成 | 这是 UMP 的力量：不展开具体范畴 |
 
-## 二元积：`Structure/Cartesian.v`
+CoqIDE：打开 `Terminal.v`，解释到该 Corollary，用「逐步」看 Proof 前后 Goal（若 IDE 支持把光标放进 Proof）。
 
-### 机制
+#### 证明走读 B：`terminal_unique`（终对象在同构下唯一）
 
-对象 `x × y` 配上投影 `exl : x×y ~> x`、`exr : x×y ~> y`，使得：对任意 `f : a ~> x`、`g : a ~> y`，存在唯一 `⟨f,g⟩ : a ~> x×y` 满足
-
-```text
-exl ∘ ⟨f,g⟩ ≈ f
-exr ∘ ⟨f,g⟩ ≈ g
+```coq
+Program Definition terminal_unique {C : Category} (T1 T2 : @Terminal C) :
+  @terminal_obj C T1 ≅ @terminal_obj C T2 := {|
+  to   := @one C T2 (@terminal_obj C T1);
+  from := @one C T1 (@terminal_obj C T2)
+|}.
+Next Obligation. apply (@one_unique C T2). Qed.
+Next Obligation. apply (@one_unique C T1). Qed.
 ```
 
-本库把 UMP 写成**双条件** `ump_products`：
+**在干什么**：`1₁ → 1₂` 取 T2 的 `one`；回来取 T1 的 `one`。互逆的 Goal 是 `to ∘ from ≈ id`——但两边都是「进到某个终对象」的箭，故 `one_unique` 一次性打掉。
+
+CoqIDE 练习：
+
+1. 解释 `Program Definition terminal_unique`。  
+2. 打开 Obligations，看 `Next Obligation` 的 Goal 是否为 `≈ id`。  
+3. 自己想：若不用 `one_unique`，能不能靠展开 `Sets` 证明？能，但那就不是「对任意范畴」的定理了。
+
+`Initial.v` 对偶：字段常叫 `zero` / `zero_unique`（具体以文件为准）。把箭头倒过来读即可。
+
+### 常值映射
+
+```coq
+Definition const `{@Terminal C} {x y : C} {f : 1 ~> y} := f ∘ one[x].
+```
+
+直觉：先把 `x` 唯一地丢进 `1`，再沿 `f` 选出 `y` 里的「点」。这正是 DaoFP / CTFP 说的「全局元 / 元素当箭头」。
+
+## 3. 积：`Structure/Cartesian.v`
 
 ```coq
 Class Cartesian := {
-  product_obj : obj → obj → obj where "x × y" := (product_obj x y);
-  fork {x y z} (f : x ~> y) (g : x ~> z) : x ~> y × z;  (* ⟨f,g⟩，记号 △ *)
+  product_obj : obj → obj → obj
+    where "x × y" := (product_obj x y);
+
+  fork {x y z} (f : x ~> y) (g : x ~> z) : x ~> y × z;  (* ⟨f,g⟩，记号常 △ *)
+
   exl {x y} : x × y ~> x;
   exr {x y} : x × y ~> y;
-  fork_respects : … Proper …;
+
+  fork_respects : ∀ x y z,
+    Proper (equiv ==> equiv ==> equiv) (@fork x y z);
+
   ump_products {x y z} (f : x ~> y) (g : x ~> z) (h : x ~> y × z) :
     h ≈ fork f g ↔ (exl ∘ h ≈ f) * (exr ∘ h ≈ g)
 }.
 ```
 
-读法：
+### UMP 怎么读成中文
 
-- 左→右：配对确实投影回 `f`、`g`（存在性）；
-- 右→左：任何同时满足两投影方程的 `h` 都等于 `fork f g`（唯一性）。
+对给定的 `f : x ~> y`、`g : x ~> z`：
 
-派生等式（文件后文 corollary）：`exl_fork`、`exr_fork`、`fork_exl_exr`（η：`⟨exl,exr⟩ ≈ id`）等。证明积相关引理时，优先找这些，而不是每次展开 `ump_products`。
+- **存在**：`fork f g`（配对）满足 `exl ∘ ⟨f,g⟩ ≈ f` 且 `exr ∘ ⟨f,g⟩ ≈ g`；
+- **唯一**：任何也满足这两条投影方程的 `h`，都有 `h ≈ ⟨f,g⟩`。
 
-`first` / `second`：只改积的一侧，`first f = f × id` 的形状，后面 CCC 的 `ump_exponents` 会用到。
+库把存在+唯一收成**一个双向** `ump_products`：左边是「`h` 就是配对」，右边是「投影还原 `f,g`」。
 
-另有谓词版 `IsCartesianProduct`：不捆绑「范畴上全局选好的积」，只说「`z` 是 `x,y` 的一个积」。做「在同构下唯一」时有用。
+### 证明走读 C：从 UMP 取「投影—配对」
 
-### 短例子
+文件中有类似：
 
-```haskell
--- 积
-fst :: (a, b) -> a
-snd :: (a, b) -> b
-(-- | 配对) (&&&) :: (a -> b) -> (a -> c) -> a -> (b, c)
+```coq
+Corollary exl_fork {x z w : C} (f : x ~> z) (g : x ~> w) :
+  exl ∘ (f △ g) ≈ f.
 ```
 
-UMP 翻译成程序员语言：若你有 `h : a -> (b,c)`，则 `h` 本质就是 `(fst.h, snd.h)`；没有另一种「秘密配对方式」。
+典型证明模式（精神；以源码为准）：
 
-## 余积（和）：`Structure/Cocartesian.v`
+```coq
+Proof.
+  apply (proj1 (proj2 (ump_products f g (f △ g)) _)).
+  (* 或 destruct (ump_products ...) 取方向 *)
+Qed.
+```
 
-对偶于积：
+更可读的写法往往是：
 
-- 对象 `x + y`；
-- 注入 `inl` / `inr`；
-- 余配对（case 分析）`f ▽ g`；
-- UMP：出 `x+y` 的箭头由两臂唯一决定。
+```coq
+Proof.
+  apply ump_products.  (* 若陈述形式允许 *)
+  (* 实际常见： *)
+  pose proof (ump_products f g (f △ g)) as U.
+  (* U : (f△g ≈ f△g) ↔ (exl∘(f△g)≈f)*(exr∘(f△g)≈g) *)
+  (* 左边 refl，故得右边 *)
+Qed.
+```
 
-Haskell：`Either a b`、`Left`/`Right`、`either f g`。  
-Sets 里余积是不交并；在别的范畴可能是「更自由的和」。
+CoqIDE 建议：
 
-## 和极限的关系（预告）
+1. 搜索 `exl_fork`，逐步进入 Proof。  
+2. 看中间 Goal 是否出现 `ump_products`。  
+3. 再看 `fork_exl_exr`：`exl △ exr ≈ id`——「配对两个投影 = 积上的恒等」。
 
-- 终对象 = **空图**的极限；
-- 积 = **离散两点图**的极限；
-- 等化子、拉回 = 别的形状的极限。
+### 证明走读 D：`fork_comp`（配对与复合）
 
-所以 [06](06-limits.md) 不是新宗教，而是把本篇 UMP 话术统一起来。先把 `Terminal`/`Cartesian` 的字段摸熟，读 `Cone`/`Limit` 会轻松很多。
+直觉：`⟨f,g⟩ ∘ h ≈ ⟨f∘h, g∘h⟩`。证明通常：
 
-## 易混对比
+1. 要证两条箭 `≈`，用 UMP 的唯一性：证明它们跟投影复合后都等于同一对 `f∘h, g∘h`；  
+2. 或用已证的 `exl_fork_comp` / `exr_fork_comp` 再拼。
 
-| 易混 | 分清 |
+这是「**不要展开积的具体实现，只打投影方程**」的标准范畴论证明风格；本库鼓励你这样做。
+
+### 派生组合子
+
+| 名字 | 约义 | 用途 |
+|------|------|------|
+| `first f` | `f × id` | 只改左分量 |
+| `second f` | `id × f` | 只改右分量 |
+| `split f g` | `f × g` | 两路并行 |
+| `swap` | `exr △ exl` | 交换 |
+
+看 `first_comp`、`swap_invol` 等定理时，Goal 仍是 `≈`；证明链仍是 UMP + `cat`。
+
+`IsCartesianProduct`：不要求「全局的 `×`  bifunctor 式 API」，只说「这三个对象构成一组积结构」——读实例或证明「某对象是积」时用。
+
+## 4. 余积：`Structure/Cocartesian.v`
+
+对偶：
+
+- `exl`/`exr` → 嵌入 `inl`/`inr`（名称以源码为准）；
+- `fork`/`△` → `merge`/`case`/`▽`；
+- UMP：给出 `f : y ~> x`、`g : z ~> x`，存在唯一 `y + z ~> x`。
+
+程序员：`Either` 的 `either f g`。DaoFP §4 的 Bool / Maybe 枚举是余积积木的特例。
+
+CoqIDE：打开 `Cocartesian.v`，对照 `Cartesian.v` 画一张「箭头反转」草图，标注哪张图对应 UMP。
+
+## 5. 和 ADT 的关系（CTFP 1.6 视角，短述）
+
+- `Maybe a` ≈ `1 + a`；
+- 非空列表等可用积/余积嵌套表达形状；
+- **递归**需要初始代数 / 不动点（本篇不展开），见笔记与 [11](11-lawvere-free.md)。
+
+## 6. 易混对比
+
+| 说法 | 澄清 |
 |------|------|
-| 积 vs 张量 `⊗` | 笛卡尔积有对角/投影；单oidal 张量一般**没有**到两因子的规范投影 |
-| `fork` vs 元组值构造 | `fork` 是**任意对象上的配对态射**，不假设对象是集合 |
-| 终对象 vs 单位类型「有用」 | 范畴终对象只保证唯一箭头；「能携带信息」是编程附加 |
-| `one_unique` 写成 `f = g` | 本库是 `f ≈ g` |
+| 「积就是 pair 类型」 | Set 上的模型；一般范畴只有 UMP |
+| 有 `exl/exr` 就有积 | 还缺配对与唯一性（`ump_products`） |
+| 终对象 = 初始对象 | 仅在零范畴等病态情况；Set 里 `()` ≠ `Void` |
+| `fork_respects` 多余？ | setoid 范畴必需，否则 `≈` 不能传入配对 |
+| 余积是「积的另一种写法」 | 对偶，不是语法糖 |
 
-## CoqIDE 步骤
+## 7. CoqIDE 检查清单
 
-1. 打开 `Structure/Terminal.v`，解释完 `Class Terminal`，再看 `terminal_unique` 的 `Program Definition`——观察 `Next Obligation` 如何只调用 `one_unique`。
-2. 打开 `Structure/Cartesian.v`，停在 `ump_products`；用「左→右 / 右→左」各讲一遍。
-3. 向下找到 `exl_fork` 或同类 corollary，看它如何从 UMP 推出来（典型证明：对 `ump_products` 取 → 方向）。
-4. 打开 `Structure/Cocartesian.v`，对照注入/余配对命名，确认自己能说出对偶字典：`× ↔ +`、`fork ↔` 余配对、`exl/exr ↔ inl/inr`。
-5. （可选）在 `Instance/Sets.v` 或 `Instance/Coq.v` 搜 `Terminal` / `Cartesian` 实例，看 `one`、`fork` 在具体范畴里填了什么。
+1. [ ] `Terminal`：解释 `one` / `one_unique`；跑通理解 `one_comp`。  
+2. [ ] 逐步看完 `terminal_unique` 的两个 Obligation。  
+3. [ ] `Cartesian`：解释 `ump_products` 双向各表示什么。  
+4. [ ] 找到 `exl_fork`、`fork_exl_exr`，能复述证明思路（用 UMP，不展开）。  
+5. [ ] 扫 `first`/`second`/`swap` 定义。  
+6. [ ] `Cocartesian` 与积对照 5 分钟。  
+7. [ ] （可选）`Instance/Sets` 或 `Instance/Coq` 里看积实例如何填字段。
 
-## 相关笔记
+## 和笔记的衔接
 
-积/和本身偏基础；与后续代数笔记的衔接见 [09](09-monad-algebra.md)、[11](11-lawvere-free.md)。总库：[haskell-algebra-notes](https://github.com/exsabersac/haskell-algebra-notes)。
+积/余积本身偏基础；进阶见笔记 [docs/幺半范畴/](https://github.com/exsabersac/haskell-algebra-notes/tree/main/docs/%E5%B9%9A%E5%8D%8A%E8%8C%83%E7%95%B4)（单对象时的 monoid 对象）与 ADT/初始代数系列。
 
 下一篇：[03 指数与笛卡尔闭](03-closed.md)

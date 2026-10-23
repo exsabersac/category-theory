@@ -211,6 +211,21 @@ Qed.
 
 这是 Conal Elliott 想法的 Coq 实现（他先在并面向 Haskell 实现）。希望范畴这一媒介能提供一种可靠方式，把 Gallina 项搬到其他句法域，而不依赖 Coq 的 extraction。
 
+## 新手教程 (Beginner tutorials)
+
+本 fork 的 `docs/tutorials/` 提供一套**简体中文**入门教程，教你如何浏览与使用本库（不是范畴论教材）：
+
+- [教程索引](docs/tutorials/INDEX.md)
+- 00 [仓库概览与学习路线](docs/tutorials/00-overview.md)
+- 01 [环境搭建与编译](docs/tutorials/01-setup.md)
+- 02 [第一个证明游走](docs/tutorials/02-first-walk.md)
+- 03 [常用结构](docs/tutorials/03-structures.md)
+- 04 [伴随与 Monad](docs/tutorials/04-adjunction-monad.md)
+- 05 [Instance 实例库](docs/tutorials/05-instances.md)
+- 06 [如何扩展](docs/tutorials/06-extending.md)
+
+建议从索引按顺序读；Coq 标识符与 `Require` 路径保持英文。日常请固定同一 Coq 版本（推荐 Platform 8.20），避免混用 `.vo`。
+
 ## 许可证 (License)
 
 本库以 BSD-3-Clause 许可提供，副本见 [`LICENSE.md`](LICENSE.md)。可自由用于任何目的（含专有衍生作品），只要在衍生作品中保留许可证副本。回指本仓库的致谢非必需，但非常欢迎。

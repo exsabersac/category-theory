@@ -213,18 +213,18 @@ Qed.
 
 ## 新手教程 (Beginner tutorials)
 
-本 fork 的 `docs/tutorials/` 提供一套**简体中文**入门教程，教你如何浏览与使用本库（不是范畴论教材）：
+本 fork 的 `docs/tutorials/` 提供**简体中文**教程：
 
-- [教程索引](docs/tutorials/INDEX.md)
-- 00 [仓库概览与学习路线](docs/tutorials/00-overview.md)
-- 01 [环境搭建与编译](docs/tutorials/01-setup.md)
-- 02 [第一个证明游走](docs/tutorials/02-first-walk.md)
-- 03 [常用结构](docs/tutorials/03-structures.md)
-- 04 [伴随与 Monad](docs/tutorials/04-adjunction-monad.md)
-- 05 [Instance 实例库](docs/tutorials/05-instances.md)
-- 06 [如何扩展](docs/tutorials/06-extending.md)
+**A. 怎么逛库** — [教程索引](docs/tutorials/INDEX.md)
 
-建议从索引按顺序读；Coq 标识符与 `Require` 路径保持英文。日常请固定同一 Coq 版本（推荐 Platform 8.20），避免混用 `.vo`。
+- 00 [仓库概览](docs/tutorials/00-overview.md) · 01 [环境](docs/tutorials/01-setup.md) · 02 [带读](docs/tutorials/02-first-walk.md)
+- 03 [结构](docs/tutorials/03-structures.md) · 04 [伴随与 Monad](docs/tutorials/04-adjunction-monad.md) · 05 [Instance](docs/tutorials/05-instances.md) · 06 [扩展](docs/tutorials/06-extending.md)
+
+**B. CTFP / DaoFP × Coq** — [ctfp 索引](docs/tutorials/ctfp/INDEX.md)
+
+概念进度对齐 [CTFP](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/) / [DaoFP](https://github.com/BartoszMilewski/DaoFP) 章节名，落到 `Category.*` 定义与证明；并链到 [haskell-algebra-notes](https://github.com/exsabersac/haskell-algebra-notes)。只引章节标题，不摘录书中正文。
+
+标识符与 `Require` 保持英文；固定同一 Coq 版本（推荐 Platform 8.20）。
 
 ## 许可证 (License)
 

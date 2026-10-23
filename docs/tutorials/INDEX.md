@@ -1,6 +1,6 @@
 # 新手教程索引
 
-面向第一次打开本库（[exsabersac/category-theory](https://github.com/exsabersac/category-theory)）的读者：讲清**怎么逛、怎么编、怎么 Require、怎么顺着定义往下读**，不讲范畴论教科书。
+面向第一次打开本库（[exsabersac/category-theory](https://github.com/exsabersac/category-theory)）的读者。
 
 约定：
 
@@ -9,7 +9,7 @@
 - 态射相等用 `≈`，不要用 `=`（见 [`docs/NOTATION.md`](../NOTATION.md)）。
 - `.vo` 必须与当前解释器版本一致；建议同一材料固定用 **Coq Platform 8.20**（详见 [01](01-setup.md)）。
 
-## 目录
+## A. 怎么逛库（工具向）
 
 | 篇 | 文件 | 内容 |
 |----|------|------|
@@ -21,20 +21,27 @@
 | 05 | [05-instances.md](05-instances.md) | Sets、Cat 等实例怎么用 |
 | 06 | [06-extending.md](06-extending.md) | 自己写 Instance / 引理的约定 |
 
-## 建议阅读顺序
+建议：00 → 01 → 02，再按需 03–06。
 
-1. 扫一眼 [00](00-overview.md)，知道各大目录干什么。
-2. 按 [01](01-setup.md) 把某个 `.v` 在 IDE 里跑通（不必整库 `make`）。
-3. 跟 [02](02-first-walk.md) 打开三个核心文件，看清类型类字段。
-4. 需要积 / 极限时看 [03](03-structures.md)；需要伴随 / 单子时看 [04](04-adjunction-monad.md)。
-5. 想在具体范畴里试手，看 [05](05-instances.md)；要贡献代码看 [06](06-extending.md)。
+## B. CTFP / DaoFP × Coq（概念向）
+
+把 Milewski CTFP / DaoFP 章节接到本库证明；顺序对齐 FP 对照表。入口：
+
+**→ [ctfp/INDEX.md](ctfp/INDEX.md)**
+
+| 篇 | 内容 |
+|----|------|
+| 00 | 路线图与完整对照表 |
+| 01–03 | 范畴 → 积/和 → CCC |
+| 04–07 | 函子 → 自然变换 → 极限 → Yoneda |
+| 08–09 | 伴随 → Monad / EM（区分 F-代数） |
+| 10–11 | 幺半·Kan·End → Lawvere / Free（重点） |
+| 12 | Sets / Cat / Coq 落地 |
+
+Haskell 侧笔记：[haskell-algebra-notes](https://github.com/exsabersac/haskell-algebra-notes)。
 
 ## 相关官方文档（库内）
 
-- [`README.md`](../../README.md) — 构建方式、库结构总览、主要记号
-- [`docs/NOTATION.md`](../NOTATION.md) — 记号速查
-- [`docs/AXIOMS.md`](../AXIOMS.md) — 公理审计（核心理论 vs 实例层）
-- [`docs/INHABITATION.md`](../INHABITATION.md) — 哪些旗舰结果有树内见证
-- [`docs/SIZE.md`](../SIZE.md) — 宇宙与大小
-- [`docs/INDEX.md`](../INDEX.md) — 关键文件与概念的分项索引
-- [`CLAUDE.md`](../../CLAUDE.md) — 架构与开发备忘
+- [`README.md`](../../README.md)
+- [`docs/NOTATION.md`](../NOTATION.md)、[`AXIOMS.md`](../AXIOMS.md)、[`INHABITATION.md`](../INHABITATION.md)、[`SIZE.md`](../SIZE.md)
+- [`docs/INDEX.md`](../INDEX.md)、[`CLAUDE.md`](../../CLAUDE.md)

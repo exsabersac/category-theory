@@ -16,7 +16,7 @@ bullet 内「上文/下文」相对本节顺序，即原顺序。
 约三分之一 `.v` 文件有自己的 bullet（2026-09-09 计约 300/926 个不同粗体头），故缺席不是信号。
 插入 bullet 的 `Edit` 曾两次吃掉后随标题，故插入前后检查
 `grep -c '^- \*\*' docs/INDEX.md` 与 `grep -c '^## ' docs/INDEX.md`；`make index-check`
-（lefthook 与 CI 运行）在五个 `## ` 标题未按序全在时失败。新手入门请先看 [docs/tutorials/INDEX.md](tutorials/INDEX.md)（仓库概览、环境、带读 Category/Functor、Structure、伴随与 Monad、Instance、扩展约定）。
+（lefthook 与 CI 运行）在五个 `## ` 标题未按序全在时失败。新手入门请先看 [docs/tutorials/INDEX.md](tutorials/INDEX.md)（逛库教程）；CTFP/DaoFP 对照见 [tutorials/ctfp/INDEX.md](tutorials/ctfp/INDEX.md)。
 
 配套文档：docs/AXIOMS.md（公理审计）、
 docs/INHABITATION.md（哪些旗舰结果有树内具体见证）、docs/SIZE.md（大小与基础）、docs/NOTATION.md。

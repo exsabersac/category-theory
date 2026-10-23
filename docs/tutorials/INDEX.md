@@ -25,7 +25,7 @@
 
 ## B. CTFP / DaoFP × Coq（概念向）
 
-把 Milewski CTFP / DaoFP 章节接到本库证明；顺序对齐 FP 对照表。入口：
+把 Milewski CTFP / DaoFP 章节接到本库证明；每篇为可独立读懂的深度中文教程（机制→直觉→字段/Goal→易混→CoqIDE），不是索引或摘录页。入口：
 
 **→ [ctfp/INDEX.md](ctfp/INDEX.md)**
 

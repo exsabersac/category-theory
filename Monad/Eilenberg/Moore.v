@@ -92,6 +92,33 @@ monad 实例由名称绑定，以便 [TAlgebra] 的实例参数
  这个类别。 
 *)
 
+(*
+   【EilenbergMoore 范畴定义展开】/ Definition walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Eilenberg–Moore 范畴 C^T：对象是 T-代数 (a, ν : T a ~> a)；
+      态射是与结构映射交换的底层箭头（代数同态）。见 Monad/Algebra.v。
+      Objects = T-algebras; morphisms = algebra homs. See Monad/Algebra.v.
+      Haskell 对照：可想成「带 join 相容结构的载体」；不如 Kleisli 常见于
+      日常代码，但是单子「终结分解」的数学家侧。
+      Less common in day-to-day Haskell; the terminal resolution of a monad.
+
+   2) 关键字段 / Key Category fields
+      - obj := ∃ a, TAlgebra T a
+      - hom := TAlgebraHom（须 t_alg_hom ∘ ν_a ≈ ν_b ∘ T(-)）
+      - id / compose 继承自 C 的底层 id/∘，义务验证仍是代数同态。
+      相等是底层态射的 ≈。/ Equality = ≈ of underlying morphisms.
+
+   3) 与 Kleisli / 伴随 / Relation
+      自由代数函子 ⊣ 遗忘函子 恢复原单子 T（Moore/Adjunction.v）；
+      Kleisli 是初始分解，EM 是终结分解。
+      Free ⊣ Forget recovers T; Kleisli initial, EM terminal.
+
+   阅读顺序：TAlgebra（Algebra.v）→ 本 Category → EM_Adjunction。
+   Reading order: TAlgebra → this Category → EM_Adjunction.
+*)
+
 Program Definition EilenbergMoore `(T : C ⟶ C) `{H : @Monad C T} : Category := {|
   obj     := ∃ a : C, @TAlgebra C T H a;
   hom     := fun x y => TAlgebraHom T ``x ``y (projT2 x) (projT2 y);

@@ -71,6 +71,34 @@ Context `{@Monad C M}.
 
 #[local] Obligation Tactic := program_simpl.
 
+(*
+   【Kleisli 范畴定义展开】/ Definition walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Kleisli 范畴 C_T：对象同 C；态射 a ⇸ b 是 C 中的 a ~> M b；
+      恒等 = ret；复合 = bind（join ∘ fmap f ∘ g）。
+      Same objects as C; homs are a ~> M b; id = ret; compose = bind.
+      Haskell 对照：Kleisli 箭头 a -> m b，合成是 (<=<) / (>>> )；
+      范畴版把这套提升为真正的 Category 实例，定律由单子定律推出。
+      Haskell analogy: Kleisli arrows a → m b with (<=<); here a real Category.
+
+   2) 关键字段 / Key Category fields
+      - obj := C
+      - hom x y := x ~> M y
+      - id := ret
+      - compose f g := join ∘ fmap[M] f ∘ g   （即 g >>= f）
+      全部相等是 ≈（Hom-Setoid 继承自 C）。
+      Equality is ≈ throughout (Hom-setoids from C).
+
+   3) 与 EM 的关系 / Relation to Eilenberg–Moore
+      C_T 经 Kleisli_EM 嵌入自由代数满子范畴（见 Monad/Kleisli/Comparison.v）。
+      Embeds into free algebras in C^T via Kleisli_EM.
+
+   阅读顺序：hom/id/compose → Obligation（单子律）→ 后文伴随。
+   Reading order: hom/id/compose → obligations (monad laws) → adjunction later.
+*)
+
 Program Definition Kleisli : Category := {|
   obj     := C;
   hom     := fun x y => x ~> M y;

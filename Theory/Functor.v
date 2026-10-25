@@ -51,28 +51,82 @@ Generalizable All Variables.
    [Functor_StrictEq_Setoid]。 *)
 
 (*
-   关于函子的来源与用途
+   关于函子的来源与用途 / On the origin and use of functors
 
    SEP:  https://plato.stanford.edu/entries/category-theory/
    nLab: https://ncatlab.org/nlab/show/General+Theory+of+Natural+Equivalences
 
-   本节说明自然变换、函子、等价相关定义、性质与动机。
+   本节说明函子相关定义、性质与动机。
+   This section motivates the functor definition below.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   （英文长注释已压缩；Coq 标识符/Require/API 未改。）
+   (Long English prose compressed; Coq identifiers/Require/API unchanged.)
+*)
+
+(*
+   【Class Functor 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Theory/Category.v @ b81c379；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Functor = 范畴之间的「同态」：对象映射 + 态射映射，且保恒等与复合。
+      Functor = a homomorphism of categories: map objects and morphisms,
+      preserving identities and composition.
+      Haskell 对照：类型构造子 ≈ fobj，fmap/<$> ≈ fmap；此处定律是真正的
+      证明义务（另加 fmap_respects），不是靠 parametricity 省掉。
+      Haskell analogy: type constructor ≈ fobj, fmap/<$> ≈ fmap; here the
+      laws (plus fmap_respects) are real proof obligations.
+
+   2) 头与宇宙 / Header & universes
+        Functor@{o1 h1 p1 o2 h2 p2} {C : Category@{o1 h1 p1}} {D : …}
+      - 前三个宇宙属定义域范畴 C，后三个属陪域 D。
+        / First triple = domain category C; second = codomain D.
+      - {C} {D} 隐式：写成 C ⟶ D 时常可省略。
+        / {C}{D} implicit; often elided via notation C ⟶ D.
+
+   3) 数据字段 / Data fields
+      - fobj : C → D — 对象上的作用（后文 Coercion，可把 F 当函数用）
+        / action on objects (later a Coercion: use F as a function)
+      - fmap : (x ~> y) → (F x ~> F y) — 态射上的作用
+        / action on morphisms
+
+   4) 尊重等价 / Respect for ≈
+      fmap_respects : f ≈ g ⇒ fmap f ≈ fmap g（Proper）。
+      因 Hom 是 Setoid，没有这条就不能对 fmap 做 setoid 改写；
+      Haskell 里通常看不见这条「第三定律」。
+      Required for setoid rewriting; the “third law” Haskell hides.
+
+   5) 函子律（均对 ≈）/ Functor laws (up to ≈)
+      - fmap_id   : fmap id ≈ id
+      - fmap_comp : fmap (f ∘ g) ≈ fmap f ∘ fmap g
+      注意复合顺序与 Category 一致：先 g 后 f。
+      Composition order matches Category: g then f.
+
+   6) 不在本 Class 里、但文件稍后会给 / Nearby, not in this Class
+      Functor_Setoid：两个函子「相等」= 自然同构，不是对象上逐点 =。
+      Functor_Setoid: equality of functors = natural iso, not pointwise =.
+      Full / Faithful：满/信另用子类描述本质满性等。
+      Full/Faithful: separate classes for (essentially) surjective-on-homs, etc.
+
+   阅读顺序：C/D 宇宙 → fobj → fmap → fmap_respects → 两条律。
+   Reading order: universes of C/D → fobj → fmap → fmap_respects → two laws.
 *)
 
 Class Functor@{o1 h1 p1 o2 h2 p2}
   {C : Category@{o1 h1 p1}} {D : Category@{o2 h2 p2}} := {
-  fobj : C → D;                                (* action on objects *)
-  fmap {x y : C} (f : x ~> y) : fobj x ~> fobj y;  (* action on morphisms *)
+  fobj : C → D;  (* 对象上的作用 / action on objects *)
+  fmap {x y : C} (f : x ~> y) : fobj x ~> fobj y;
+    (* 态射上的作用 / action on morphisms *)
 
-  fmap_respects : ∀ x y,                       (* fmap respects ≈ (setoid law) *)
+  fmap_respects : ∀ x y,
+    (* fmap 尊重 ≈（Setoid 律）/ fmap respects ≈ (setoid law) *)
     Proper@{h2 p2} (respectful@{h1 p1 h2 p2 h2 p2}
                       equiv@{h1 p1} equiv@{h2 p2}) (@fmap x y);
 
-  fmap_id {x : C} : fmap (@id C x) ≈ id;       (* functor law: preserves identities *)
-  fmap_comp {x y z : C} (f : y ~> z) (g : x ~> y) :  (* functor law: preserves composition *)
+  fmap_id {x : C} : fmap (@id C x) ≈ id;
+    (* 保恒等 / preserves identities *)
+  fmap_comp {x y z : C} (f : y ~> z) (g : x ~> y) :
     fmap (f ∘ g) ≈ fmap f ∘ fmap g
+    (* 保复合 / preserves composition *)
 }.
 #[export] Existing Instance fmap_respects.
 

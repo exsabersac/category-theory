@@ -51,23 +51,64 @@ Section Monad.
 
 Context `{M : C ⟶ C}.
 
+(*
+   【Class Monad 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Monad = 自函子 M : C ⟶ C + 单位 ret + 乘法 join，服从结合与单位律。
+      Monad = endofunctor M plus unit ret and multiplication join, with laws.
+      Haskell 对照：return ≈ ret，join ≈ Data.Monad.join；bind 下文定义为
+      join ∘ fmap f（即 >>=）。范畴版更一般：C 任意，不只是 Hask；定律是字段。
+      Haskell analogy: return ≈ ret, join ≈ join; bind := join ∘ fmap f.
+      Categorical version: any endofunctor on any C; laws are Class fields.
+
+   2) 头与上下文 / Header & context
+      Section Monad; Context `{M : C ⟶ C}` — fmap 来自已有 Functor 实例，
+      本 Class 不再声明 fobj/fmap。
+      fmap comes from M's Functor instance; not redeclared here.
+
+   3) 数据字段 / Data fields
+      - ret {x}  : x ~> M x      — η : Id ⟹ M（单位 / unit）
+      - join {x} : M (M x) ~> M x — μ : M ○ M ⟹ M（乘法 / multiplication）
+
+   4) 定律（均对 ≈）/ Laws (all up to ≈)
+      - fmap_ret       : ret ∘ f ≈ fmap f ∘ ret     （η 自然 / unit natural）
+      - join_fmap_join : join ∘ fmap join ≈ join ∘ join  （结合 / assoc）
+      - join_fmap_ret  : join ∘ fmap ret ≈ id       （左单位 / left unit）
+      - join_ret       : join ∘ ret ≈ id            （右单位 / right unit）
+      - join_fmap_fmap : join ∘ fmap (fmap f) ≈ fmap f ∘ join
+        （μ 自然 / multiplication natural）
+      Hom 是 Setoid，全部对 ≈；没有「看不见的」parametricity 捷径。
+      All up to ≈ on setoid Homs; no free-theorem shortcut.
+
+   5) 不在本 Class 里、但附近会给 / Nearby
+      bind / >>= ：本节后文 MonadLib。Kleisli、Eilenberg–Moore：Monad/ 目录。
+      bind below; Kleisli & Eilenberg–Moore under Monad/.
+
+   阅读顺序：ret → join → 两自然性 → 结合律 → 两单位律 → bind。
+   Reading order: ret → join → naturalities → assoc → units → bind.
+*)
+
 Class Monad := {
-  ret {x}  : x ~> M x;          (* unit η : Id    ⟹ M *)
-  join {x} : M (M x) ~> M x;    (* mult μ : M ○ M ⟹ M *)
+  ret {x}  : x ~> M x;
+    (* 单位 η ≈ return / unit η ≈ return *)
+  join {x} : M (M x) ~> M x;
+    (* 乘法 μ ≈ join / multiplication μ ≈ join *)
 
-  (* naturality of the unit η: ret ∘ f ≈ fmap f ∘ ret *)
   fmap_ret {x y} (f : x ~> y) : ret ∘ f ≈ fmap f ∘ ret;
+    (* η 的自然性 / naturality of unit *)
 
-  (* associativity μ ∘ Mμ ≈ μ ∘ μM *)
   join_fmap_join {x} : join ∘ fmap (@join x) ≈ join ∘ join;
-  (* left unit law μ ∘ Mη ≈ id *)
+    (* 结合律 / associativity *)
   join_fmap_ret  {x} : join ∘ fmap (@ret x) ≈ id;
-  (* right unit law μ ∘ ηM ≈ id *)
+    (* 左单位 / left unit *)
   join_ret       {x} : join ∘ @ret (M x) ≈ id;
+    (* 右单位 / right unit *)
 
-  (* naturality of the multiplication μ: join ∘ fmap (fmap f) ≈ fmap f ∘ join *)
   join_fmap_fmap {x y} (f : x ~> y) :
     join ∘ fmap (fmap f) ≈ fmap f ∘ join
+    (* μ 的自然性 / naturality of multiplication *)
 }.
 
 End Monad.

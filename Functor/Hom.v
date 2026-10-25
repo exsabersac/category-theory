@@ -80,6 +80,32 @@ Bifunctors can be curried:
  我们通过应用 [P] 映射到的函子类别。 
 *)
 
+(*
+   【Hom / Curried_Hom 定义展开】/ Definition walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Hom : C^op ∏ C ⟶ Sets 把对象对 (a,b) 送到 Hom-集（此处为 setoid），
+      把态射对 (f,g) 作用为 q ↦ g ∘ q ∘ f（前复合 f、后复合 g）。
+      Hom sends (a,b) to the Hom-setoid and (f,g) to pre/post-compose.
+      Haskell 对照：没有直接的标准库对应；可想成「把箭头当值」的 bifunctor，
+      第一变元反变、第二变元共变。范畴版落在 Sets（setoid），相等是 ≈。
+      Think: bifunctor on arrows-as-values; lands in Sets; equality is ≈.
+
+   2) 关键字段 / Key fields of the Program Definition
+      - fobj (a,b) = {| carrier := a ~> b; is_setoid := homset |}
+      - fmap (f,g) = λ q. snd(f,g) ∘ q ∘ fst(f,g)
+      Curried_Hom : C^op ⟶ [C, Sets] 是 curry 形式，即 Yoneda 嵌入的载体。
+      Curried_Hom is the curried form (carrier of the Yoneda embedding).
+
+   3) ≈ / Proper
+      Hom 的态射是 Sets 中的函数，须尊重 ≈（Program 会生成义务）。
+      Morphisms in Sets must respect ≈ (Program generates obligations).
+
+   阅读顺序：Hom 双函子 → Curried_Hom → 后文 Yoneda_Full/Faithful。
+   Reading order: Hom bifunctor → Curried_Hom → Yoneda facts below.
+*)
+
 Program Definition Hom `(C : Category) : C^op ∏ C ⟶ Sets := {|
   fobj := fun p => {| carrier   := @hom C (fst p) (snd p)
                     ; is_setoid := @homset (C) (fst p) (snd p) |};

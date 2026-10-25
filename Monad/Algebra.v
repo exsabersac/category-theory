@@ -35,6 +35,29 @@ nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
    （nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category），组装于
    [Monad.Eilenberg.Moore]。每个对象上的自由代数 (T a, join) 恢复遗忘函子 C^T ⟶ C 的左伴随。 
 *)
+(*
+   【Class TAlgebra 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      T-代数 = 载体 a + 结构映射 t_alg : T a ~> a，服从单位与作用律。
+      它们是 Eilenberg–Moore 范畴的对象。
+      T-algebra = carrier + structure map; objects of the EM category.
+      Haskell 对照：可想成「能把 T a 解释回 a」且与 return/join 相容；
+      日常代码较少直接写，但是理解 EM / 单子性的钥匙。
+      Everyday Haskell rarely writes these; key to EM / monadicity.
+
+   2) 数据与定律（均对 ≈）/ Data & laws (up to ≈)
+      - t_alg : T a ~> a
+      - t_id     : t_alg ∘ ret ≈ id
+      - t_action : t_alg ∘ fmap t_alg ≈ t_alg ∘ join
+      下文 TAlgebraHom：底层箭头与两边 t_alg 交换（也是 ≈）。
+      TAlgebraHom below: underlying arrow commuting with both t_alg's.
+
+   阅读顺序：t_alg → 两律 → TAlgebraHom → EilenbergMoore。
+   Reading order: t_alg → two laws → TAlgebraHom → EilenbergMoore.
+*)
+
 Class TAlgebra `(T : C ⟶ C) `{@Monad C T} (a : C) := {
   t_alg : T a ~> a;
 

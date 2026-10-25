@@ -116,6 +116,33 @@ Wikipedia: "A hom-set adjunction between two categories C and D consists of
  从 D^op × C 到 Set（集合的类别）的双函子。” 
 *)
 
+(*
+   【Class Adjunction_Hom 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      伴随的 Hom-双函子呈现：自然同构
+        Hom_C(F −, −) ≅ Hom_D(−, U −)
+      作为 [D^op ∏ C, Sets] 中的同构（字段 hom_adj）。
+      Hom-bifunctor presentation: natural iso of the two Hom bifunctors.
+      Haskell 对照：与 Theory/Adjunction.v 的逐点 Hom-同构是同一想法的
+      「打包成函子」版本；leftAdjunct/rightAdjunct 仍是 to/from。
+      Same idea as Theory/Adjunction.v, packaged as an iso of bifunctors.
+
+   2) 数据字段 / Data field
+      - hom_adj : Hom C ◯ F^op ∏⟶ Id  ≅  Hom D ◯ Id^op ∏⟶ U
+      自然性来自「函子范畴中的同构」；分量层相等仍是 ≈。
+      Naturality comes with the iso in the functor category; ≈ at components.
+
+   3) 附近 / Nearby
+      hom_unit / hom_counit 由转置 id 得到；与 Transform / Universal 形式互转
+      见本文件后文四个 Program Definition。
+      unit/counit from transposing ids; conversions below.
+
+   阅读顺序：hom_adj → hom_unit/counit → 与其他呈现的互转。
+   Reading order: hom_adj → unit/counit → conversions below.
+*)
+
 Class Adjunction_Hom := {
   hom_adj : Hom C ◯ F^op ∏⟶ Id ≅[[D^op ∏ C, Sets]] Hom D ◯ Id^op ∏⟶ U
 }.

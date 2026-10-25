@@ -58,6 +58,31 @@ Context {D : Category}.
 Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 
+(*
+   【Class Adjunction_Transform 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      伴随的单位/余单位呈现：η : Id ⟹ U◯F 与 ε : F◯U ⟹ Id，加两条三角恒等式。
+      Unit/counit presentation of an adjunction, plus triangle identities.
+      Haskell 对照：某些 Adjunction 编码里的 unit/counit；与 Theory/Adjunction.v
+      的 Hom-同构形式等价（互转见同目录 Universal 等）。
+      Equivalent to the Hom-iso form in Theory/Adjunction.v.
+
+   2) 数据字段 / Data fields
+      - unit   : Id ⟹ U ◯ F   （η；分量是自然变换）
+      - counit : F ◯ U ⟹ Id   （ε）
+      二者是 Transform，故自带自然性方块（对 ≈）。
+      Both are Transforms, so they carry naturality (up to ≈).
+
+   3) 三角律（均对 ≈）/ Triangle laws (up to ≈)
+      - counit_fmap_unit : ε(F X) ∘ F(η X) ≈ id
+      - fmap_counit_unit : U(ε X) ∘ η(U X) ≈ id
+
+   阅读顺序：unit → counit → 两条三角 → 与 Hom 形式对照。
+   Reading order: unit → counit → triangles → compare with Hom form.
+*)
+
 Class Adjunction_Transform := {
   unit   : Id ⟹ U ◯ F;
   counit : F ◯ U ⟹ Id;

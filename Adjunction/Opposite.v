@@ -56,6 +56,26 @@ nLab：https://ncatlab.org/nlab/show/adjoint+functor
  to_adj_nat_r 来自 from_adj_nat_l，并且双重用于 from-side 字段。 
 *)
 
+(*
+   【Opposite_Adjunction 定义展开】/ Definition walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      F ⊣ U 对偶为 U^op ⊣ F^op：左右角色互换，Hom 方向随 ^op 反转。
+      Dual of F ⊣ U is U^op ⊣ F^op (left/right swap with opposites).
+      Haskell 对照：少直接写法；记住「对偶交换左右伴随」即可。
+      Takeaway: duality swaps left and right adjoints.
+
+   2) 关键点 / Key points
+      - 对偶 iso 的 to/from = 原 adj 在交换变元上的 from/to
+      - 四条 nat 字段交叉取自对侧（to_l ← from_r 等）
+      - (A^op)^op = A；相等与自然性仍对 ≈
+        / involution; equality/naturality still up to ≈
+
+   阅读顺序：Opposite_Adjunction 字段 → ^op 记法 → invol 引理。
+   Reading order: fields → ^op notation → involution corollary.
+*)
+
 Program Definition Opposite_Adjunction `(F : D ⟶ C) `(U : C ⟶ D)
         (A : F ⊣ U) :
   U^op ⊣ F^op := {|

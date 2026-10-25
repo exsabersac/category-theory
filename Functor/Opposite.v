@@ -47,6 +47,29 @@ nLab: https://ncatlab.org/nlab/show/opposite+functor
    F^op ⟹ G^op 对应 G ⟹ F，故 op 是 2-函子 Cat^co ⟶ Cat。 
 *)
 
+(*
+   【Opposite_Functor 定义展开】/ Definition walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      F^op : C^op ⟶ D^op 与 F 在对象/态射数据上相同，只是源/靶范畴形式对偶。
+      F^op reuses F's object/morphism maps; only formal opposites change.
+      Haskell 对照：contramap / Contravariant；本库用「出自 C^op 的普通函子」
+      表达反变，文末 contramap 把 C-箭头读成 C^op-箭头再 fmap。
+      Haskell analogy: Contravariant/contramap; here contravariance = Functor
+      out of C^op; contramap below reads C-arrows as C^op-arrows.
+
+   2) 关键点 / Key points
+      - fmap_comp 指标对调，以匹配 C^op 的反向复合。
+        / fmap_comp reindexed for reversed composition in C^op.
+      - (F^op)^op = F（对合，reflexivity）/ involution on the nose.
+      - 定律仍对 ≈（来自 F 的 fmap_respects / fmap_id / fmap_comp）。
+        / laws still up to ≈, inherited from F.
+
+   阅读顺序：Opposite_Functor → ^op 记法 → contramap。
+   Reading order: Opposite_Functor → ^op notation → contramap.
+*)
+
 Definition Opposite_Functor `(F : C ⟶ D) : C^op ⟶ D^op :=
   @Build_Functor (C^op) (D^op) F
     (λ (x y : C ^op) (f : x ~{ C ^op }~> y), @fmap C D F y x f)

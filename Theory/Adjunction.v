@@ -67,9 +67,11 @@ Generalizable All Variables.
    见证，是历史上中心的例子族，但并非全部：极限与 Kan 扩张本身也是伴随（分别对对角与限制函子）。 *)
 
 (*
-   本节说明伴随、函子、等价相关定义、性质与动机。
+   本节说明伴随相关定义、性质与动机。
+   This section motivates adjunctions.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   （英文长注释已压缩；Coq 标识符/Require/API 未改。）
+   (Long English prose compressed; Coq identifiers/Require/API unchanged.)
 *)
 
 Section Adjunction.
@@ -83,33 +85,68 @@ Context {U : C ⟶ D}.
 Reserved Notation "⌊ f ⌋".
 Reserved Notation "⌈ f ⌉".
 
-(* o3 p3 are universes larger than either C or D. *)
+(*
+   【Class Adjunction 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Adjunction F ⊣ U = 左伴随 F : D ⟶ C 与右伴随 U : C ⟶ D 之间的自然
+      Hom-同构：Hom_C(F x, y) ≅ Hom_D(x, U y)。本文件用 setoid 同构族 adj。
+      Adjunction = natural Hom-iso Hom_C(F x, y) ≅ Hom_D(x, U y).
+      Haskell 对照：leftAdjunct/rightAdjunct ≈ ⌊-⌋/⌈-⌉；unit/counit 特殊化为
+      某些 Monad/Comonad 的 return/extract。范畴版更一般，定律是字段。
+      Haskell analogy: leftAdjunct/rightAdjunct ≈ ⌊-⌋/⌈-⌉; laws are fields.
+
+   2) 头与宇宙 / Header & universes
+        Adjunction@{o3 p3 so sh sp}
+      - o3 p3：比 C、D 更大的宇宙（Sets 所在）/ universes larger than C, D
+      - so sh sp：Hom-Setoid 作为 Sets 对象时的宇宙参数
+        / universes for viewing Hom-setoids as objects of Sets
+      Context 已固定 F（左）与 U（右）。/ Context fixes left F and right U.
+
+   3) 数据字段 / Data fields
+      - adj {x y} : (F x ~> y) ≅ (x ~> U y)  （在 Sets 中的同构）
+        ⌊f⌋ := to adj f    （正向转置 / forward transpose）
+        ⌈f⌉ := from adj f  （反向转置 / inverse transpose）
+
+   4) 自然性（均对 ≈）/ Naturality (all up to ≈)
+      - to_adj_nat_l / to_adj_nat_r   ：⌊-⌋ 对两变元自然
+      - from_adj_nat_l / from_adj_nat_r ：⌈-⌉ 对两变元自然
+      Hom 是 Setoid，故用 ≈；adj 本身是 Sets 中的同构（含 iso 往返律）。
+      Homs are setoids (≈); adj is an iso in Sets (with iso laws).
+
+   5) 不在本 Class 里、但附近会给 / Nearby
+      unit η := ⌊id⌋、counit ε := ⌈id⌉ 及三角恒等式：本节后文派生。
+      单位/余单位形式：Adjunction/Natural/Transformation.v。
+      unit/counit derived below; NT form under Adjunction/Natural/.
+
+   阅读顺序：adj / ⌊⌋⌈⌉ → 四条 nat → 后文 unit/counit。
+   Reading order: adj / transposes → four nat fields → unit/counit below.
+*)
+
+(* o3 p3 are universes larger than either C or D. / o3 p3 大于 C 或 D 的宇宙 *)
 Class Adjunction@{o3 p3 so sh sp} := {
-  (* adj {x y} : F x ~{C}~> y ≊ x ~{D}~> U y *)
   adj {x y} :
+    (* Hom 同构：F x ~> y  ≊  x ~> U y / Hom-iso *)
     @Isomorphism@{so sh p3} Sets@{o3 so}
       {| carrier := @hom C (F x) y; is_setoid := @homset C (F x) y |}
       {| carrier := @hom D x (U y); is_setoid := @homset D x (U y) |}
     where "⌊ f ⌋" := (to   adj f)
       and "⌈ f ⌉" := (from adj f);
 
-  (* Naturality iso both arguments, stated forward transpose
- ⌊-⌋ = adj (自然性 x, via F) ... （已译） *)
   to_adj_nat_l {x y z} (f : F y ~> z) (g : x ~> y) :
     ⌊f ∘ fmap[F] g⌋ ≈ ⌊f⌋ ∘ g;
-  (* ... naturality in y, via U. *)
+    (* ⌊-⌋ 在 x 上自然（经 F）/ naturality in x via F *)
   to_adj_nat_r {x y z} (f : y ~> z) (g : F x ~> y) :
     ⌊f ∘ g⌋ ≈ fmap[U] f ∘ ⌊g⌋;
+    (* ⌊-⌋ 在 y 上自然（经 U）/ naturality in y via U *)
 
-  (*
-   本节说明 Adjunction 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
   from_adj_nat_l {x y z} (f : y ~> U z) (g : x ~> y) :
     ⌈f ∘ g⌉ ≈ ⌈f⌉ ∘ fmap[F] g;
+    (* ⌈-⌉ 在 x 上自然 / naturality in x *)
   from_adj_nat_r {x y z} (f : y ~> z) (g : x ~> U y) :
     ⌈fmap[U] f ∘ g⌉ ≈ f ∘ ⌈g⌉
+    (* ⌈-⌉ 在 y 上自然 / naturality in y *)
 }.
 
 Definition Build_Adjunction'

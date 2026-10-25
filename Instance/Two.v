@@ -165,6 +165,26 @@ Local Set Warnings "-intuition-auto-with-star".
  类别2有两个对象TwoX、TwoY，它们的恒等态射，以及一个从第一个对象到第二个对象的非恒等态射TwoXY : TwoX ~> TwoY。由于2是薄的（对象之间最多有一个箭头），同态集合通过Morphism_equality携带严格的（莱布尼茨）等式。
 *)
 
+(*
+   【2 / _2 walking-arrow 实例展开】/ Walking-arrow category walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      2 = walking arrow：两对象 TwoX/TwoY，恒等，及唯一非恒等箭 TwoXY : X~>Y。
+      Walking arrow: two objects and one non-id arrow X→Y.
+      函子 2⟶C 恰选 C 中一条箭；常作「箭头范畴/自然性方块」的形状。
+      Functor 2⟶C = pick one arrow in C. Classic diagram shape.
+
+   2) 关键字段 / Key fields
+      - obj := TwoObj；hom := TwoHom（归纳定义的箭）
+      - homset := Morphism_equality（薄）；id/compose 按对象情况匹配
+
+   Haskell 对照：像「有向边」的最小数据；富化到 2 可得预序（见 Enriched/Two）。
+   Analogy: minimal directed edge; enriching in 2 recovers preorders.
+
+   阅读：TwoObj/TwoHom → _2 → 后文与 Sets/箭头相关构造。
+   Read: TwoObj/TwoHom → _2 → later arrow-related uses.
+*)
 Program Definition _2 : Category := {|
   obj     := TwoObj;
   hom     := TwoHom;

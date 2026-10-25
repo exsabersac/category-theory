@@ -370,6 +370,26 @@ Qed.
  --------
  拓扑空间与连续映射的范畴。范畴定律在映射部分逐点成立，正如在 [Sets] 中一样；连续性见证不参与其中，因为 Hom-集合等价忽略了它们。
 *)
+(*
+   【Top 范畴实例展开】/ Top instance walkthrough
+   （薄注即可；受众同 Functor.v）
+
+   1) 这是什么 / What this is
+      Top = 拓扑空间与连续映射：对象 TopSpace；态射 ContinuousMorphism。
+      Topology spaces + continuous maps.
+      ≈ 只看底层 setoid 映射逐点，连续性证明不参与相等（与 Sets 同风格）。
+      ≈ ignores continuity witnesses; compares underlying maps.
+
+   2) 关键字段 / Key fields
+      - obj := TopSpace；hom := ContinuousMorphism
+      - homset := ContinuousMorphism_Setoid；id/compose := top_id/_compose
+
+   Haskell 对照：无直接对应；可想成「带开集数据的 Sets」。
+   Analogy: Sets equipped with open-set data.
+
+   阅读：TopSpace/Continuous → Top → Terminal/Initial → 子范畴（Hausdorff 等）。
+   Read: spaces/maps → Top → (co)limits → subcategories.
+*)
 Program Definition Top : Category := {|
   obj     := TopSpace;
   hom     := ContinuousMorphism;

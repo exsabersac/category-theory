@@ -44,6 +44,27 @@ Generalizable All Variables.
  维基百科：“从任意对象 X 到任意其他对象 Y 至多只有一个态射的范畴是前序。这样的范畴被称为稀薄范畴。从这个意义上说，范畴‘推广’了前序，通过允许对象之间存在多个关系：每个态射都是一个独特的（有名的）前序关系。”
 *)
 
+(*
+   【Proset 范畴实例展开】/ Proset instance walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      Proset P 把预序 (A,R) 变成薄范畴：对象=元素；x~>y 当且仅当 R x y（至多一条箭）。
+      Thin category of a preorder: at most one arrow x→y, namely the fact R x y.
+      id=自反；compose=传递。不必反对称 → 互≤可同构但不相等（区别于 Poset）。
+      id=refl; compose=trans. Without antisym, mutual ≤ ⇒ iso ≠ equality.
+
+   2) 关键字段 / Key fields
+      - obj := A；hom := R
+      - homset.equiv := True（任意两平行箭视为相等 → 薄）
+      - id := reflexivity；compose := transitivity（注意顺序 g 然后 f）
+
+   Haskell 对照：像「证明无关的约束」——只有是否成立，没有多名箭头。
+   Analogy: proof-irrelevant constraints; presence/absence only.
+
+   阅读：Proset 记录 → LessThanEqualTo_Category 例子 → 再看 Poset.v。
+   Read: Proset → ≤ example → then Poset.v.
+*)
 Program Definition Proset {A : Type} {R : relation A} (P : PreOrder R) :
   Category := {|
   obj     := A;

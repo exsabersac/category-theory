@@ -62,6 +62,24 @@ Local Set Warnings "-intuition-auto-with-star".
  组合                通过存在性证明的关系复合恒等式是 [Singleton] : `id A a = Singleton a`，因此 `In (id A a) b` 当且仅当 `b = a` — 对角线 Δ_A。然后 `R : A ~> B` 与 `S : B ~> C` 的复合是 `(S ∘ R) a c = ∃ b, R a b ∧ S b c`，标准的存在证据关系复合（注意图示顺序：[compose f g] 首先应用 `g`，然后是 `f`）。REL 是一个 dagger 范畴：共轭 `R† = { (b, a) | (a, b) ∈ R }` 是一个带有 `(S ∘ R)† = R† ∘ S†` 的逆元，而 dagger 见证了自对偶 `Rel ≅ Rel^op`。此外，它在局部上是偏序的（关系按包含顺序排列）并且是 dagger-紧闭的。该文件构建了裸范畴、它的初始对象，以及函数作为关系的广义嵌入 `Coq ⟶ Rel`；共轭/dagger 结构、Cat 中的自对偶、嵌入的忠实性以及终端/零对象的完备性都位于 Instance/Rel/Dagger.v（基于 Structure/Dagger.v 的 [DaggerCategory] 类）。局部偏序性和紧闭性仍未形式化。范畴定律在没有公理的情况下成立。
 *)
 
+(*
+   【Rel 范畴实例展开】/ Rel instance walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      Rel = 关系范畴：对象同 Coq 类型；态射是关系 R ⊆ A×B（写成 A → Ensemble B）。
+      Rel = relations; objects = Coq types; homs = relations A→Ensemble B.
+      Haskell 对照：像多值/不确定计算（a → Set b），复合是「存在中间点」。
+      dagger：转置 R†；自对偶 Rel ≅ Rel^op（详见 Rel/Dagger.v）。
+      Analogy: a→Set b; compose via ∃. Dagger = converse (see Dagger.v).
+
+   2) 关键字段 / Key fields
+      - obj := obj[Coq]；hom := A ~> Ensemble B
+      - ≈ := 逐点 ↔；id := Singleton（对角线）；compose := ∃e, g a e ∧ f e b
+
+   阅读：Rel 记录 → Rel_Initial → Relation_Functor : Coq ⟶ Rel。
+   Read: Rel → Rel_Initial → Relation_Functor.
+*)
 Program Definition Rel : Category := {|
   obj     := @obj Coq;                  (* objects are Coq types (sets) / 对象是 Coq 类型（集合） *)
   hom     := fun A B => A ~> Ensemble B; (* a relation `R ⊆ A × B`, curried / 一个关系 `R ⊆ A × B`，柯里化 *)

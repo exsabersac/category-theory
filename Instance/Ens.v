@@ -58,6 +58,25 @@ Generalizable All Variables.
  交叉引用：Mac Lane 的 Ens_V —— 对于一组集合 V 的成员作为对象，所有它们之间的函数作为箭头（CWM 第2版，第I.2节，第11页印刷版）——是与下面两个范畴不同的构造，它位于 Instance/EnsV.v 中。在那里，一个对象是由 El : V → Type 解码的代码 x : V，而一个态射 x ~> y 是任意的函数 El x → El y，并且没有任何附加条件；在这里，一个态射携带约束 A = f⁻¹(B)。两者都保留：[Ens] 和 [EnsT] 记录成员资格的保持与反射，而 [EnsV] 记录 Mac Lane 的集合大小的集合范畴子宇宙。
 *)
 
+(*
+   【Ens 范畴实例展开】/ Ens instance walkthrough
+   （薄注：与 Sets/Coq/EnsV 的差异；受众同 Functor.v）
+
+   1) 这是什么 / What this is
+      Ens ≠ 教科书 Set。对象是 Coq Ensemble（子集谓词，打包 ∃ T, Ensemble T）；
+      态射 f 满足成员双向：x∈A ↔ f x∈B（A = f⁻¹(B)），不是任意函数、也不是单射。
+      Not classical Set: morphisms preserve-and-reflect membership, not arbitrary maps.
+      对照：Sets=setoid；Coq=裸 Type→；EnsV=Mac Lane Ens_V（任意函数，见 EnsV.v）。
+      Contrast: Sets=setoids; Coq=raw Type; EnsV=arbitrary functions (Mac Lane).
+
+   2) 关键字段 / Key fields
+      - obj := ∃ T, Ensemble T
+      - hom := ∃ f, ∀x, In A x ↔ In B (f x)
+      - ≈ := 逐点 = on carriers；id/compose = 普通函数 id/∘
+
+   阅读：先看与 Sets/Coq 差异 → Ens → 可选 EnsT（固定载体 T）。
+   Read: contrast with Sets/Coq → Ens → optional EnsT.
+*)
 Program Definition Ens : Category := {|
   obj     := ∃ T : Type, Ensemble T;
   hom     := fun A B =>

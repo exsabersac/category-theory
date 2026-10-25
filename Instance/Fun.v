@@ -145,6 +145,28 @@ Context {D : Category}.
  论文: Eilenberg, Mac Lane，《自然等价的一般理论》，美国数学会会报 58, 1945函子范畴和范畴论本身一样古老。该学科的创始论文已经包含一个标题为“函子的范畴”的第 II.8 节，尽管文中并未提到范畴的范畴，而且其作者将所有低于此级别的内容视为脚手架：“范畴的整体概念本质上是辅助性的；我们的基本概念本质上是函子和自然变换的概念”（埃伦伯格–麦克莱恩 1945，第 247 页，斯坦福哲学百科全书引述）。弗莱德将其起源浓缩为一句口号——范畴是必须定义以便定义函子的，而函子是必须定义以便定义自然变换的（弗莱德，《阿贝尔范畴》，1964，引言）。[Fun] 将该构造实现为一类一级范畴，因此同构、极限和伴随的环境机制同样适用于上一级的函子：“自然同构”无非就是 ` [C, D]ZZ ` 中的同构，而 [Functor_Setoid_Nat_Iso]（带有独立的方向 [iso_equiv] 和 [equiv_iso]）将这样的同构化简为逐分量的族，因此变换的可逆性可以逐个对象进行检查。三种典型的用途组织了这些应用。预层范畴 ` [C^op, Sets]ZZ ` 是主要的情况：它们的极限、余极限、满射和单射通过对象逐一计算，它们是笛卡尔闭的，并且向它们的 Yoneda 嵌入是完全忠实的——对于一个小范畴，它的自由余完备——所以每一个范畴都嵌入到由自身构建的函子范畴中（nLab，“预层范畴”与“Yoneda 嵌入”）；在 in-tree, Functor/Hom/Yoneda.v 中严格针对这些 Hom-集合体发展了引理和嵌入，而 Theory/Sheaf.v 则将 `Presheaves` 定义为字面意义上的 ` [U^op, C]ZZ `。图表类别是取极限的领域：在 C 中的 J 形图是 ` [J, C]ZZ ` 的一个对象，圆锥是从恒等函子出发的一个态射，而完备性则是环绕对角线 Δ : C ⟶ [J, C] 的伴随三明治 colim ⊣ Δ ⊣ lim（参见 Functor/Diagonal.v）。而 ` [C, D]ZZ ` 是指数对象，表明 Cat 是笛卡尔闭的（参见 Instance/Cat/Cartesian/Closed.v）；等价地，函子类别是 2-范畴 Cat 的态射类别（参见 nLab，“functor category”）。表示论使用的是相同的构造：一个表示是从单对象域出发的函子，而表示之间的交错映射是自然变换（参见 nLab，“representation”）。二范畴的阅读解释了此文件的中间部分。鞭状律和相干同构 [nat_λ]、[nat_ρ] 和 [nat_α] 恰恰是 Instance/Cat/Bicategory.v 使用的数据，使 Cat 在定义上成为一个二范畴，`bicat C D ≡  [C, D]ZZ ` 调和了下面提到的反向命名（`hunit_left := nat_ρ`、`hunit_right := nat_λ`）。自然变换的水平复合是 Godement 积，以 Roger Godement 命名，其两个定义公式的一致性本身就是交换律（nLab，“Godement product”）；[whisker_left_right] 在此处陈述了其鞭状形式。下一层，函子范畴 ` [C, C]ZZ ` 在组合下是单oidal的，一个单子恰好是其中的一个幺半群（Monad/Monoid.v, [Compose_Monoidal]）；下面的类 [Pointed] 和 [WellPointed] 位于相同的地址。计算阅读依赖于参数性。在多态语言中，自然变换是类型为 `forall a. F a -> G a` 的函数，参数性产生自然性方格作为自由定理，因此函子和多态函数形成一个函子范畴，其垂直合成是按组成部分的程序合成（Milewski，《自然变换》，2015）。在整个过程中，支配原则是按点继承：当 D 对某种形状具有极限（或余极限，nLab）时，` [C, D]ZZ ` 也按点具有极限（对于极限，参见 Instance/Fun/Limit.v 定理；不完全的 D 可以具有非按点的极限），并且当 C 是小范畴而 D 是笛卡尔闭并完备时，` [C, D]ZZ ` 是笛卡尔闭的（nLab，“函子范畴”）。仅最后一条条款不是继承的，而且它对 D 的假设也不是装饰性的：Instance/Fun/Closed.v 展示了一个 C（在普通意义上是小的——它的对象是自然数）和一个笛卡尔闭合的 D，对于该 D，` [C, D]ZZ ` 完全不承载任何笛卡尔闭合结构，因此 D 的完备性不能简单地被省略；此外，它还表明，即使存在这样的指数对象，它也不一定是按点计算的。nLab 中的一般形式条款在此仍然被引用，而不是证明；对于预层情况 D := Sets 所证明的是 Instance/Fun/Exponential.v 的 `Functor_Category_Closed`，即 Awodey 定理 8.14 的第一条款和 Riehl 的引理 4.4.11，其指数对象是显示公式 (8.5) 的 `Q^P(c) = Nat(y c × P, Q)`，并且不是按点计算的。在这里，小是指一个有界的度量宇宙，而不是一个类——该文件的常量携带 C 的对象宇宙，在 `Sets` 的承载宇宙上或之下，这就是 Awodey 所说的“对任何小范畴 C”在此库中的含义——此外，在 Theory/Size.v 中还有一个 `Class Small`，因此这个词的两种读法被区分开，而不是说不存在。继承的结构是按点继承的，在 Instance/Fun/Cartesian.v（二元积）和 Instance/Fun/Terminal.v（终对象和索引积）中被实例化。
 *)
 
+(*
+   【Fun / [C,D] 函子范畴实例展开】/ Functor category walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      Fun = [C,D]：对象是函子 C⟶D；态射是自然变换；复合是垂直复合。
+      Functor category: objects=functors, morphisms=natural transformations.
+      Haskell 对照：forall a. F a → G a 的多态函数 + 自由定理≈自然性；
+      这里自然性是真正证明字段。预层 [C^op,Sets]、图 [J,C] 都是特例。
+      Analogy: polymorphic F a→G a; naturality is a real proof here.
+
+   2) 关键字段 / Key fields
+      - obj := C ⟶ D；hom := Transform（自然变换）
+      - id := nat_id；compose := nat_compose（垂直）
+      - ≈ 分量逐点取 D 的 ≈；同构 = 自然同构
+
+   3) 记号 / Notation
+      [ C , D ] := Fun；Cat 的指数对象即此（笛卡尔闭）。
+
+   阅读：Fun 记录 → 垂直复合定律 → Pointed / iso_equiv 等。
+   Read: Fun → vertical laws → Pointed / nat-iso helpers.
+*)
 Program Definition Fun : Category := {|
   obj     := C ⟶ D;                 (* objects are functors C ⟶ D / 对象是函子 C ⟶ D *)
   hom     := @Transform C D;        (* morphisms are natural transformations / 态射是自然变换 *)

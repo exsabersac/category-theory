@@ -54,6 +54,26 @@ Generalizable All Variables.
  伴随关系 (R ∧ P) ⊢ Q  ↔  R ⊢ (P → Q)，即演绎定理。
 *)
 
+(*
+   【Props 范畴实例展开】/ Props instance walkthrough
+   （薄注；受众同 Functor.v）
+
+   1) 这是什么 / What this is
+      Props = 命题按蕴涵排序的薄范畴：对象=Prop；P~>Q = 证明 P→Q。
+      Thin category of propositions ordered by implication.
+      ≈ := True（证明无关）。逻辑：1=True，0=False，×=∧，+=∨，指数=→（Heyting）。
+      Proof-irrelevant ≈. Logic: True/False/∧/∨/→ as (co)limits/exp.
+
+   2) 关键字段 / Key fields
+      - obj := Prop；hom := Basics.impl
+      - homset.equiv := True；id/compose = 蕴涵的自反/传递
+
+   Haskell 对照：像 Constraint/证明无关的 ⇒；Curry–Howard 的命题侧。
+   Analogy: proof-irrelevant constraints; CH propositions side.
+
+   阅读：Props → Terminal/Initial/Cartesian/Closed 逻辑实例。
+   Read: Props → logical (co)limits/CCC structure below.
+*)
 Program Definition Props : Category := {|
   obj     := Prop;                         (* objects are propositions / 对象是命题 *)
   hom     := Basics.impl;                  (* P ~> Q is the implication P → Q / P ~> Q 是蕴含 P → Q *)

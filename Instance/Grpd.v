@@ -127,6 +127,25 @@ Definition Grpd_sub : Subcategory Cat :=
     (fun _ _ _ _ _ _ _ _ _ _ => I)
     (fun _ _ => I).
 
+(*
+   【Grpd 范畴实例展开】/ Grpd instance walkthrough
+   （薄注；受众同 Functor.v）
+
+   1) 这是什么 / What this is
+      Grpd = Cat 的满子范畴：对象是群胚（每个态射可逆，IsGroupoid）；
+      态射=底层函子（自动保逆）。由 Subcategory 裁出，非手写新 Category。
+      Full subcategory of Cat on groupoids; morphisms=functors.
+
+   2) 关键读法 / How to read
+      Grpd_sub：sobj := IsGroupoid；shom := True（满）
+      Grpd := Sub Cat Grpd_sub；Incl : Grpd ⟶ Cat 忠且满。
+
+   Haskell 对照：像「所有箭头可逆的范畴」——类似类型等价/同伦 1-型直觉。
+   Analogy: categories with all arrows invertible (1-types intuition).
+
+   阅读：IsGroupoid → Grpd_sub → Grpd → Incl/访问器。
+   Read: IsGroupoid → Grpd_sub → Grpd → Incl/accessors.
+*)
 Definition Grpd : Category := Sub Cat Grpd_sub.
 
 (*

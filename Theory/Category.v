@@ -54,7 +54,7 @@ Reserved Infix "∘" (at level 40, left associativity).
    Theory/Isomorphism.v  Require 本文件。 *)
 
 (*
-   关于范畴的来源与用途
+   关于范畴的来源与用途 / On the origin and use of categories
 
    SEP:   https://plato.stanford.edu/entries/category-theory/
    nLab:  https://ncatlab.org/nlab/show/E-category
@@ -62,36 +62,99 @@ Reserved Infix "∘" (at level 40, left associativity).
    Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
 
    本节说明自然变换、函子、等价相关定义、性质与动机。
+   This section motivates natural transformations, functors, and the
+   surrounding definitions.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   （英文长注释已压缩；Coq 标识符/Require/API 未改。）
+   (Long English prose compressed; Coq identifiers/Require/API unchanged.)
+*)
+
+(*
+   【Class Category 语法与字段展开】/ Syntax & field walkthrough
+
+   1) Class 是 Coq 命令（与 Record / Inductive 同级），声明类型类；
+      Instance 填实现。Class ≈ Haskell class，Instance ≈ instance；
+      差别是定律也写成字段，须交证明，并参与类型类搜索。
+      [Class] is a vernacular command (alongside Record/Inductive).
+      Class ≈ Haskell class; Instance ≈ instance. Laws are fields
+      (proofs required) and take part in typeclass search.
+
+   2) Record 是单构造子 Inductive 的糖（命名字段+投影）；Class 在
+      Record 上再加实例搜索。多构造子形状用 Inductive；捆字段用
+      Record/Class。
+      Record ≈ single-constructor Inductive with projections; Class
+      adds instance search. Use Inductive for variants; Record/Class
+      to bundle fields.
+
+   3) 宇宙头 / Universe header
+        Category@{o h p | h <= p} : Type@{max(o+1,h+1,p+1)}
+      - o : 对象 [obj] 所在宇宙 / universe of objects
+      - h : 态射载体 [uhom]/[hom] 所在宇宙 / universe of hom carriers
+      - p : Setoid 等价关系的命题宇宙，约束 h <= p
+            / universe of equivalence proofs, with h <= p
+      类本身落在更高一层，避免自指。
+      The class lives one level above to avoid self-membership.
+
+   4) 数据字段 / Data fields
+      - obj : 对象集合 / collection of objects
+      - uhom : Hom setoid 的宇宙别名 / universe alias for hom-setoids
+      - hom / where "a ~> b" : 态射类型与局部记法
+        / morphism type and local notation
+      - homset : 每个 Hom 是 Setoid@{h p}，相等是 ≈ 而非定义相等 =
+        / each Hom is a Setoid; equality is ≈, not definitional =
+
+   5) 运算 / Operations
+      - id {x} : 恒等；{x} 为隐式参数 / identity; {x} implicit
+      - compose {x y z} f g / "f ∘ g" : 先 g 后 f（数学常见顺序）
+        / apply g then f (usual mathematical order)
+
+   6) 尊重等价 / Respect for equivalence
+      compose_respects : Proper (equiv ==> equiv ==> equiv) compose
+      f≈f' 且 g≈g' ⇒ f∘g ≈ f'∘g'。否则无法对复合做 setoid 改写。
+      Without this, setoid rewriting through compose is illegitimate.
+
+   7) 公理（均对 ≈）/ Laws (all up to ≈)
+      id_left / id_right : 左右单位 / unit laws
+      comp_assoc / comp_assoc_sym : 结合律两个方向（后者便于对偶与 rewrite）
+      / associativity both ways (sym helps duality & rewrite)
+
+   8) dom / cod : 由态射类型推出的源/靶缩写，非额外数据。
+      / domain/codomain abbreviations derived from the morphism type.
+
+   阅读顺序建议：obj → hom/homset → id/compose → Proper → 四条律。
+   Suggested reading order: obj → hom/homset → id/compose → Proper → laws.
 *)
 
 Class Category@{o h p | h <= p} : Type@{max(o+1,h+1,p+1)} := {
-  obj : Type@{o};                       (* collection of objects *)
+  obj : Type@{o};  (* 对象集合 / collection of objects *)
 
-  uhom := Type@{h} : Type@{h+1};        (* universe of hom-setoids *)
-  hom : obj → obj → uhom where "a ~> b" := (hom a b);  (* morphisms x ~> y *)
-  homset : ∀ X Y, Setoid@{h p} (X ~> Y);  (* hom is a setoid; equality is ≈ *)
+  uhom := Type@{h} : Type@{h+1};  (* Hom-setoid 宇宙 / universe of hom-setoids *)
+  hom : obj → obj → uhom
+    where "a ~> b" := (hom a b);  (* 态射；局部记法 ~> / morphisms; local ~> *)
+  homset : ∀ X Y, Setoid@{h p} (X ~> Y);
+    (* 每个 Hom 是 Setoid；相等为 ≈ / each Hom is a setoid; equality is ≈ *)
 
-  id {x} : x ~> x;                      (* identity morphism on x *)
+  id {x} : x ~> x;  (* 恒等（{x} 隐式）/ identity ({x} implicit) *)
   compose {x y z} (f: y ~> z) (g : x ~> y) : x ~> z
-    where "f ∘ g" := (compose f g);     (* composition f ∘ g *)
+    where "f ∘ g" := (compose f g);  (* 复合：先 g 后 f / compose: g then f *)
 
-  compose_respects {x y z} :            (* compose respects ≈ (bifunctorial Proper) *)
+  compose_respects {x y z} :
+    (* 复合尊重 ≈（双 Proper）/ compose respects ≈ (bifunctorial Proper) *)
     Proper@{h p} (respectful@{h p h p h p} equiv
                     (respectful@{h p h p h p} equiv equiv))
       (@compose x y z);
 
-  dom {x y} (f : x ~> y) := x;          (* domain (source) of a morphism *)
-  cod {x y} (f : x ~> y) := y;          (* codomain (target) of a morphism *)
+  dom {x y} (f : x ~> y) := x;  (* 源 / domain (source) *)
+  cod {x y} (f : x ~> y) := y;  (* 靶 / codomain (target) *)
 
-  id_left  {x y} (f : x ~> y) : id ∘ f ≈ f;  (* left unit law *)
-  id_right {x y} (f : x ~> y) : f ∘ id ≈ f;  (* right unit law *)
+  id_left  {x y} (f : x ~> y) : id ∘ f ≈ f;  (* 左单位 / left unit *)
+  id_right {x y} (f : x ~> y) : f ∘ id ≈ f;  (* 右单位 / right unit *)
 
   comp_assoc {x y z w} (f : z ~> w) (g : y ~> z) (h : x ~> y) :
-    f ∘ (g ∘ h) ≈ (f ∘ g) ∘ h;         (* associativity *)
+    f ∘ (g ∘ h) ≈ (f ∘ g) ∘ h;  (* 结合律 / associativity *)
   comp_assoc_sym {x y z w} (f : z ~> w) (g : y ~> z) (h : x ~> y) :
-    (f ∘ g) ∘ h ≈ f ∘ (g ∘ h)          (* associativity, dual form (built-in duality) *)
+    (f ∘ g) ∘ h ≈ f ∘ (g ∘ h)
+    (* 结合律对称形式（内建对偶）/ associativity, dual form *)
 }.
 #[export] Existing Instance homset.
 #[export] Existing Instance compose_respects.

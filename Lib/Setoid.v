@@ -43,9 +43,65 @@ Unset Transparent Obligations.
  对称   x ≈ y  ->  y ≈ x
  传递   x ≈ y  ->  y ≈ z  ->  x ≈ z
 *)
+
+(*
+   【Class Setoid 语法与字段展开】/ Syntax & field walkthrough
+
+   给会 Haskell、刚碰 Coq/范畴论的读者：本库几乎处处用 ≈ 而不是 =。
+   For a Haskell programmer new to Coq/category theory: this library
+   almost always equates morphisms with ≈, not Coq's =.
+
+   1) Class Setoid A ≈「给类型 A 配上一种『当一样』的关系」。
+      Class Setoid A ≈ "equip type A with a chosen 'count as equal' relation".
+      Class ≈ Haskell class；Instance ≈ instance。定律是字段，须交证明。
+      Class ≈ Haskell class; Instance ≈ instance. Laws are fields (proofs required).
+
+   2) 为何不只用 Haskell 的 Eq？
+      Why not just Haskell's Eq?
+      - Eq 是可判定的 (== : a -> a -> Bool)；这里的 ≈ 是证明态的关系，
+        一般不可计算、也比 Bool 粗或细（例如函数的逐点 ≈）。
+        Eq is decidable (== : a -> a -> Bool); ≈ here is a proof-relevant
+        relation — usually not computable, and coarser/finer than Bool
+        (e.g. pointwise ≈ on functions).
+      - 范畴里「态射相等」常是自然同构一类数据，不能塞进 Bool。
+        In categories, "morphism equality" often carries data (e.g. a
+        natural iso), which Bool cannot hold.
+      - 所以本库用 Setoid + Proper（尊重 ≈），而不是 Eq + ==。
+        Hence Setoid + Proper (respect ≈), not Eq + ==.
+
+   3) 字段顺序 / Field order
+      - equiv : crelation A
+        A 上的二元关系，记法 f ≈ g。crelation = Type 值关系（证明可带数据）。
+        Binary relation on A, notation f ≈ g. crelation = Type-valued
+        (proofs may carry data), not Prop-truncated.
+      - setoid_equiv : Equivalence equiv
+        打包三条律：Reflexive / Symmetric / Transitive
+        （自反 x≈x、对称、传递）。没有这三条就不能当「相等」用，
+        也不能做 setoid rewrite。
+        Packages Reflexive / Symmetric / Transitive. Without them ≈ is
+        not usable as equality, nor for setoid rewriting.
+
+   4) ≈ 与 = 的区别（一眼）/ ≈ vs = at a glance
+      - =  : Leibniz 相等；同一对象；可无条件替换一切。
+             Leibniz equality; same object; unconditional substitution.
+      - ≈  : 选定的等价；更粗；只能在 Proper 声明过的上下文里改写。
+             Chosen equivalence; coarser; rewrite only where Proper says so.
+
+   5) Proper 直觉 / Proper intuition
+      Proper (equiv ==> equiv ==> equiv) f  意思是：
+      「自变量各自 ≈ 时，f 的结果也 ≈」——否则不能对 f 做 rewrite。
+      Means: if arguments are ≈ pairwise, then f's results are ≈.
+      Without it, rewriting under f is illegitimate.
+
+   阅读顺序：equiv → Equivalence 三律 → 记法 ≈ → 下文离散/函数 setoid。
+   Read: equiv → three laws → notation ≈ → discrete/function setoids below.
+*)
+
 Class Setoid A := {
-  equiv : crelation A;                  (* the equivalence ≈ on A / A 上的等价 ≈ *)
-  setoid_equiv : Equivalence equiv      (* refl/symm/trans laws for ≈ / ≈ 的自反/对称/传递律 *)
+  equiv : crelation A;
+    (* 等价关系 ≈ / the equivalence ≈ on A *)
+  setoid_equiv : Equivalence equiv
+    (* 自反/对称/传递 / refl/symm/trans laws for ≈ *)
 }.
 #[export] Existing Instance setoid_equiv.
 
@@ -138,6 +194,15 @@ Program Instance Fin_Setoid {n} : Setoid (Fin.t n) := {|
  --------
  在 `≈` 下的唯一存在：见证 [unique_obj] 满足 [P]，并有证明 [uniqueness] 说任何其他见证都与之等价。这是下文 `∃!` 记号背后的构造性内容，并支撑库中陈述的（余）极限、伴随等泛性质。
 *)
+(*
+   【Class Unique 字段展开】/ Unique field walkthrough
+
+   「在 ≈ 下唯一存在」：给一个满足 P 的见证，并证明别的见证都 ≈ 它。
+   Unique existence up to ≈: a witness of P, plus proof any other is ≈ it.
+   范畴泛性质（极限、伴随）里的「唯一」指的就是这个，不是 =。
+   Universal properties use this uniqueness, not Leibniz =.
+*)
+
 Class Unique `{S : Setoid A} (P : A → Type) := {
   unique_obj : A;                          (* the witnessing element / 见证元素 *)
   unique_property : P unique_obj;          (* it satisfies P / 它满足 P *)

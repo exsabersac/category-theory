@@ -39,6 +39,32 @@
  这些策略是项目内部便利设施，无外部文献对应；底层思想（setoid 重写、等价关系、[Proper]/尊重态射）是标准 Coq/Rocq 机制。此处策略皆不作弊：不留下未证目标、不引入公理；要么推进并关闭目标，要么失败。
 *)
 
+(*
+   【常用 tactic 一眼表】/ Tactic cheat-sheet (beginner)
+
+   本库态射用 ≈，标准 eq 自动化不够；下面几条是日常收尾工具。
+   Morphisms use ≈, so eq-automation is not enough; these close goals daily.
+
+   - cat        : 拆联结词 → autorewrite categories → auto category_laws
+                  （最常用收尾 / the usual closer）
+   - cat_simpl  : Program 义务默认策略；先尝试自动证完 Equivalence/Proper
+                  （Global Obligation Tactic）
+   - simplify   : 反复拆 ∧/∨/对/sigma/单位
+   - equivalence: 证 Equivalence（constructor + 三律）
+   - proper     : 证 Proper / respectful
+   - construct  : unshelve econstructor 开记录
+   - simpl_eq   : 展开 eq_rect 等传送子
+   - sapply / srewrite / srewrite_r : 先 cbn 再 apply/rewrite（看清投影）
+   - inv / spose : 反演；引入并 simpl 假设
+
+   提示库 / Hint DBs
+   - categories    : 范畴等式律（供 autorewrite）
+   - category_laws : setoid 自反/对称/传递等（供 auto）
+
+   不必一次记全；看到证明里 cat / cat_simpl 即可对照本表。
+   No need to memorize all; match cat / cat_simpl in proofs to this table.
+*)
+
 Require Import Coq.Bool.Bool.
 
 Require Export Category.Lib.Setoid.

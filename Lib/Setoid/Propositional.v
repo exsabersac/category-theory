@@ -172,10 +172,40 @@ Generalizable All Variables.
 
  ——因而在 [Sets] 与每个具体代数载体所用的 [Setoid@{u u}] 上，该类本身落在载体宇宙 [Type@{u}]（只要 [u] 高于 [Set]）。最大值中的 [Set+1] 是 [Prop] 的排序，不可避免；但也无害，因 [Unset Universe Minimization ToSet]（Lib.v）使载体宇宙离开 [Set]。
 *)
+
+(*
+   【Class PropEquiv 语法与字段展开】/ PropEquiv field walkthrough
+
+   给小白的短导读（细节见上方长注释）：
+   Short beginner note (details in the long comment above):
+
+   本库默认 ≈ 在 Type（证明可带数据，如「一族同构」）。
+   Default ≈ lives in Type (proofs may carry data, e.g. a family of isos).
+
+   有些 setoid 的相等其实是「纯命题」——只要知道成立即可，不必看证明内容。
+   Some setoids have "mere propositional" equality — only truth matters.
+   PropEquiv 给这种 setoid 另备一条 Prop 值关系 pequiv，并与 ≈ 双向互推。
+   PropEquiv equips such a setoid with a Prop-valued pequiv, iff-linked to ≈.
+
+   字段顺序 / Field order
+   - pequiv : A → A → Prop     Prop 里的相等 / equality in Prop
+   - pequiv_to                 pequiv → ≈
+   - pequiv_from               ≈ → pequiv
+
+   不是把 ≈ 改成 Prop；≈ 仍是 Type。只是多一个可互换的命题影子。
+   Does NOT change ≈ to Prop; ≈ stays Type. Adds a propositional twin.
+
+   初读可略过本文件；等碰到 GAFT / LocallyPropositional 再回来。
+   Skip on first pass; return for GAFT / LocallyPropositional.
+*)
+
 Class PropEquiv@{u p} {A : Type@{u}} (S : Setoid@{u p} A) := {
-  pequiv : A -> A -> Prop;                              (* the Prop equality / Prop 相等 *)
-  pequiv_to : forall x y, pequiv x y -> @equiv A S x y;   (* it implies `≈` / 它蕴涵 `≈` *)
-  pequiv_from : forall x y, @equiv A S x y -> pequiv x y  (* and follows from it / 且由其推出 *)
+  pequiv : A -> A -> Prop;
+    (* Prop 值相等 / the Prop equality *)
+  pequiv_to : forall x y, pequiv x y -> @equiv A S x y;
+    (* pequiv ⇒ ≈ / it implies ≈ *)
+  pequiv_from : forall x y, @equiv A S x y -> pequiv x y
+    (* ≈ ⇒ pequiv / and follows from ≈ *)
 }.
 
 (* * ** Derived structure / * ** 派生结构 *)

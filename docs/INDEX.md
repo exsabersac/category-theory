@@ -17,7 +17,7 @@ bullet 内「上文/下文」相对本节顺序，即原顺序。
 插入 bullet 的 `Edit` 曾两次吃掉后随标题，故插入前后检查
 `grep -c '^- \*\*' docs/INDEX.md` 与 `grep -c '^## ' docs/INDEX.md`；`make index-check`
 （lefthook 与 CI 运行）在五个 `## ` 标题未按序全在时失败。配套文档：docs/AXIOMS.md（公理审计）、
-docs/INHABITATION.md（哪些旗舰结果有树内具体见证）、docs/SIZE.md（大小与基础）、docs/NOTATION.md。
+docs/INHABITATION.md（哪些旗舰结果有树内具体见证）、docs/SIZE.md（大小与基础）、docs/NOTATION.md、docs/Coq指令详解.md（本仓库 Coq 指令小白向详解）。
 
 **中文翻译说明（zh-CN）**：导言、节标题与各 bullet 描述已尽量译为简体中文（标识符/路径保持英文）。
 超长测量 bullet 在中文摘要后保留英文细节以便对照与 grep。

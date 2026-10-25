@@ -16,31 +16,508 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** 每个取值于集合的函子典范地是 representable 的余极限。 *)
+(** Every set-valued functor is canonically a colimit of representables. / 每个取值为集合的函子都是代表函子的余极限。 *)
 
-(* nLab: https://ncatlab.org/nlab/show/density+theorem
+(*
+nLab: https://ncatlab.org/nlab/show/density+theorem
+   nLab: https://ncatlab.org/nlab/show/co-Yoneda+lemma
+   nLab: https://ncatlab.org/nlab/show/category+of+elements
+   Wikipedia: https://en.wikipedia.org/wiki/Dense_functor
+
+   BOOK LOCATIONS.  Recorded from the statement of issue #346: Mac Lane,
+   "Categories for the Working Mathematician" (2nd ed.), III.7, Theorem 1
+   and the dual remark, book pp. 76-77; Awodey, "Category Theory", 8.6,
+   Proposition 8.10, for the presheaf orientation.  Those texts were not
+   consulted while writing this file.  The locations are given so a
+   reader can look the theorem up; nothing beyond the locations is
+   reproduced here, and no claim is made about the wording or numbering
+   at those places.
+
+   THE STATEMENT.  For K : D -> Sets, index a diagram by the OPPOSITE of
+   the category of elements of K, send the element (d, x) to the
+   covariant representable [Hom d,-], and send an element-carrying
+   morphism to the corresponding precomposition.  The Yoneda family
+   whose value at (d, x) is the transformation g |-> fmap[K] g x is then
+   a cocone with apex K, and it is COLIMITING in [D, Sets].
+
+   THE VARIANCE IS FORCED, AND IT IS PINNED AS A TYPING NEGATIVE.  The
+   assignment d |-> [Hom d,-] is CONTRAVARIANT (that is what
+   [Curried_Hom D : D^op -> [D, Sets]] says), so the index category is
+   [(Elements K)^op] and not [Elements K].  Probe negative 3 below shows
+   that the covariant reading does not even typecheck: [Curried_Hom D]
+   composed with [Elements_proj K] is rejected because [Elements_proj K]
+   lands in D and not in D^op.
+
+   A CORRECTION TO THE ISSUE'S "CURRENT STATE"
+   -------------------------------------------
+
+   The issue says no category-of-elements index exists in the tree.
+   That is STALE.  [Construction/Elements.v] declares [Elements],
+   [Elements_proj], [Elements_lift], [PElements] and [PElements_proj],
+   and [Construction/Elements/Kan.v] builds cone machinery over
+   [Elements_proj].  Both were landed by issue #345, and this file
+   consumes them rather than rebuilding anything.
+
+   Three absence measurements in the issue DO still hold, re-run here.
+   [rg Colimit] over [Structure/Coend.v], [Structure/End.v] and
+   [Instance/Sets/Coend.v] returns 0 in each, so there is still no
+   in-tree lemma identifying a coend with a colimit.  No categorical
+   density statement existed: the five files matching [densit|dense] are
+   [Theory/Kan/Extension.v], [Instance/Top.v], [Instance/Field.v],
+   [Instance/Grp/Epi.v] and [Instance/Met/Completion.v], all of them
+   topological, metric or image density -- with one refinement an audit
+   supplied: Theory/Kan/Extension.v's hits are all "codensity"/"codense",
+   a CATEGORICAL notion, but they lie entirely in header prose and
+   formalise nothing, which strengthens rather than weakens the absence
+   claim.
+
+   A THIRD absence claim of the issue is FALSE and is corrected here
+   rather than repeated.  It says the [IsColimitCocone]/[IsAColimit] hits
+   are exhausted by [Functor/Hom/Limit.v]'s hom-functor preservation
+   results and prose in [Structure/Limit/Initial.v].  Fourteen files
+   mention the two predicates.  Most are generic ([Adjunction/
+   Continuity.v], [Structure/Limit/{Initial,Unique,Preservation}.v],
+   [Structure/Coequalizer/Wide.v], [Theory/{Adamek,Equivalence/Limit}.v],
+   [Functor/Hom/Limit.v]), and [Structure/Limit/Initial.v] carries a real
+   [terminal_IsColimitCocone] rather than prose -- conditional on the
+   INDEX category having a terminal object.  Concrete instantiations do
+   exist: [Instance/Top/Forgetful.v]'s [bool_cocone_colimit], in [Sets],
+   and [Instance/Ab/DirectedColimit.v]'s [ab_fg_colimit], in [Ab], with
+   [Instance/Proset/{Limit,Order}.v] carrying the apex-only form in
+   [Proset].  What is genuinely new is the AMBIENT: over that survey no
+   [IsColimitCocone] in the tree has a FUNCTOR CATEGORY as its ambient
+   category.  That is a statement about those fourteen files, not a
+   survey of the tree.
+
+   RELATION TO Construction/Elements/Kan.v, WHICH THE ISSUE DOES NOT NAME
+   ---------------------------------------------------------------------
+
+   That file is a genuine donor and is [Require]d here, but it is NOT the
+   same theorem in the other variance, and the reason is worth stating
+   because it looks as though it should be.
+
+     - Kan.v relates [K ==> [Hom a,-]] -- maps INTO a representable --
+       to cones over [Elements_proj K : Elements K -> D], a diagram in D.
+     - This file is about [[Hom d,-] ==> K] -- maps OUT of a
+       representable -- and a cocone over a diagram in [D, Sets].
+
+   The two diagrams land in different categories (D versus [D, Sets]),
+   so neither statement is the formal dual of the other and nothing of
+   Kan.v's headline transfers.  [KanNat], [KanCone], [KanDelta] and
+   [kan_coyoneda] are used NOWHERE below.
+
+   What DID transfer, literally: [elements_same] (the morphism
+   (d, x) ~> (d, y) whose underlying D-morphism is the identity,
+   existing because [fmap[K] id x] is `≈` to x, hence to y).  It is
+   consumed once, in [den_med_respects], for exactly the reason Kan.v
+   records for [kan_leg_respects]: objects of [Elements K] are compared
+   by LEIBNIZ equality, so two `≈`-equal elements over one object of D
+   are two DIFFERENT objects, and a cocone assigns them two a priori
+   unrelated legs -- whereas the transformation built out of them must
+   have a component that RESPECTS `≈`.  That respectfulness is DERIVED
+   from cocone coherence, not assumed.  From [Construction/Elements.v]
+   itself this file consumes [elements_id_cond], [elements_comp_cond],
+   [elements_respects_cond] and [Elements_lift]; the last is what turns
+   cocone coherence into the naturality square of the mediator.
+
+   THE ROUTE DECISION, AND WHY IT IS NOT A MATTER OF TASTE
+   ------------------------------------------------------
+
+   The issue asks for an explicit choice between proving the colimit
+   form DIRECTLY and building a coend-is-a-colimit bridge and
+   transporting [coyoneda_reduction] along it.  The direct route is
+   taken, and the second route is BLOCKED rather than merely dearer.
+
+     (1) The bridge does not exist and is not a lookup.  The 0-hit
+         measurement above is a measurement of names; the shape argument
+         is stronger.  A coend in this tree is a cowedge over an
+         integrand [C^op * C -> Sets] ([Structure/Coend.v]), whose index
+         is the product category, while a colimit is a cocone over a
+         diagram indexed by [(Elements K)^op].  Relating them is a
+         construction in its own right, not a repackaging.
+
+     (2) Even with the bridge, the transport runs the wrong way round.
+         [Theory/Coend/Yoneda.v] opens [Section Yoneda] with
+         [Context (c : C)], so [YoI] and [coyoneda_reduction] both
+         DEPEND on c and the reduction is a pointwise isomorphism of
+         setoids at a fixed c.  Turning it into a statement in
+         [D, Sets] needs naturality in c FIRST -- that is, the issue's
+         own work item 3 would have to precede work item 1.
+
+     (3) And that naturality has to be BUILT.  It needs
+         [c |-> coend_obj (SetsCoend (YoI c))] to be a functor, hence an
+         action of the coend on a map of integrands.  [Structure/Coend.v]
+         declares no such action -- it mentions [Functor] only in its
+         [Require] lines -- and [SetsCoend F : Coend F] is built at one
+         fixed integrand ([Instance/Sets/Coend.v]).
+
+         AN EARLIER DRAFT CONCLUDED FROM THOSE TWO FACTS THAT "the tree
+         supplies no such action", AND THAT IS FALSE.  An audit found the
+         action already built, for a different integrand family, in
+         [Construction/Day.v]: [Day_map] with
+         [Day : C ⟶ Sets] whose [fobj] is literally
+         [fun c => coend_obj (SetsCoend (DayI F G c))] -- that IS
+         "[c |-> coend_obj (SetsCoend (I c))] is a functor" -- together
+         with [DFG_c], the action of the coend on a map of
+         integrands induced by a pair of transformations, and the
+         integrand-AGNOSTIC [day_theta_leg_cowedge], which takes
+         ANY transform of integrands and whose proof uses only
+         [coend_cowedge] and [naturality_sym].  Transcribing that pattern
+         to [YoI] is perhaps sixty lines, not a lookup.
+
+         So the honest word is DEARER, not BLOCKED, and the bad evidence
+         is named as bad: the measurement offered was a name grep on the
+         abstract class file rather than a survey of its CONSUMERS -- the
+         very failure mode this tree records elsewhere.  Steps (1) and
+         (2) are unaffected and do stand, and the direct route remains
+         the right choice on cost; what changes is only the strength of
+         the word.
+
+   The direct route by contrast needs NO new index and NO new diagram:
+   [DensityDiagram] is [Curried_Hom D] composed with
+   [(Elements_proj K)^op], a plain [Definition] with no obligation, so
+   all three functor laws are inherited.  The whole file contains no
+   [Program] and therefore no obligations at all, which is what the
+   [eq_refl] measurements below rest on.
+
+   [Theory/Coend/Yoneda.v] IS nevertheless imported, for work item 3
+   alone and not as a route; the measured cost of that import is SIX
+   modules ([Structure/Wedge.v], [Structure/End.v], [Structure/Coend.v],
+   [Instance/Sets/End.v], [Instance/Sets/Coend.v] and the file itself)
+   on top of a 30-module base closure.
+
+   WHAT IS DELIVERED, IN ORDER
+   ---------------------------
+
+   (1) [ElementsOp], [DensityDiagram] and the cocone: [yo_inj] (the
+       Yoneda transformation at an element), [density_inj],
+       [density_cocone_coherence] and [DensityCocone], whose apex is K
+       and whose injections are the [yo_inj]s, both by [eq_refl].
+
+   (2) The mediator, built from a competing cocone by EVALUATION AT THE
+       IDENTITY: [den_med_component e] sends z : K e to the value at
+       [id[e]] of the competing injection at the object (e, z).  Its
+       respectfulness ([den_med_respects]) and its naturality
+       ([den_med_naturality]) are both derived from cocone coherence --
+       at [elements_same] and at [Elements_lift] respectively -- and
+       nothing else.
+
+   (3) [density : IsColimitCocone DensityCocone], Mac Lane's Theorem 1
+       at CONE level, together with the derived apex-only
+       [density_IsAColimit], the bundled [DensityColimit], the mediator
+       accessors, the elementary covering statement
+       [density_elements_covered] and the corollary
+       [density_jointly_epic].
+
+   (4) The presheaf dual as named artifacts: [PDensityDiagram],
+       [PDensityCocone], [presheaf_density].
+
+   (5) The connection to the coend form, four [eq_refl] identifications
+       and one naturality theorem; see below.
+
+   (6) A non-vacuity witness over the terminal category, in which the
+       mediator COMPUTES.
+
+   (7) A probe section: four negatives of THREE KINDS, each against
+       positive controls, plus an instrument check.
+
+   THE PRESHEAF DUAL IS A ZERO-CONTENT SPECIALIZATION, AND THAT IS
+   MEASURED RATHER THAN ASSERTED
+   ---------------------------------------------------------------
+
+   The issue calls the dual a zero-content specialization.  Here it
+   genuinely is, and the reason is a coincidence of definitions that had
+   to be checked: [PElements P] is DEFINED in
+   [Construction/Elements.v] as [(Elements P)^op], which is exactly this
+   file's [ElementsOp P].  [presheaf_index] records the identity by
+   [eq_refl].  Consequently [PDensityDiagram], [PDensityCocone] and
+   [presheaf_density] are the general constants at [D := C^op] with no
+   tactic, no transport and no coercion, and
+   [pdensity_diagram_obj] records by [eq_refl] that the diagram's value
+   at (c, x) is the contravariant representable [Hom -,c] -- because
+   [Curried_CoHom C] is by definition [Curried_Hom C^op].
+
+   In particular the gap [Construction/Elements.v] discloses --
+   [PElements P ≅[Cat] (=(1) ↓ P)^op] is not proved, for want of a
+   transport of a Cat-isomorphism along opposites -- DOES NOT BITE.  The
+   dual never touches the comma presentation.
+
+   What is NOT definitional is the other evident description of the
+   diagram: [Curried_CoHom C ◯ PElements_proj P] agrees with
+   [PDensityDiagram] on objects AND on arrows, both by [eq_refl]
+   ([pdd_via_proj_obj], [pdd_via_proj_fmap]), but the two FUNCTOR RECORDS
+   are not convertible, and the cause is located -- [PElements_proj] is a
+   [Program Definition] whose functor-law fields are opaque obligations,
+   where [(Elements_proj P)^op] rebuilds them from [Elements_proj]'s.
+   That is probe negative 1.
+
+   THE COEND CONNECTION, AT THE STRENGTH IT ACTUALLY REACHES
+   ---------------------------------------------------------
+
+   Work item 3 asks for a connection to [coyoneda_reduction] with a
+   naturality-in-c upgrade.  What is delivered is the upgrade of the
+   LEGS, which is what is stateable without coend functoriality, and it
+   is delivered at [eq_refl]:
+
+     - [coy_leg_is_density_inj]: the coend's cowedge leg
+       [coy_leg F c x] at the pair (g, a) IS the density cocone's
+       injection at (x, a), evaluated at c and applied to g.  The two
+       constructions share their legs -- but read that precisely, since
+       an earlier draft over-read it as "the SAME legs, on the nose":
+       the Example is a VALUE equation at a fixed [a], and the two
+       morphisms have DIFFERENT domains ([coy_leg F c x] is a
+       [SetoidMorphism] out of [(x ~> c) * F x], while
+       [transform[density_inj F (x;a)] c] is one out of [x ~> c]).  The
+       coend leg is the UNCURRIED family of injections, not the same
+       morphism.
+     - [coy_leg_natural_in_apex]: for fixed x and a, the family
+       c |-> coy_leg F c x (-, a) EXTENDS to a natural transformation
+       [Hom x,-] ==> F, whose value at every c and g is the coend leg by
+       [reflexivity].  [coy_leg_natural_witness] identifies the witness
+       as [yo_inj F a], by [eq_refl].  This is the naturality in c that
+       [Theory/Coend/Yoneda.v] cannot state, and the density cocone's
+       injections are exactly it.
+     - [coy_from_at] and [coy_to_from_is_covering]: the coend's inverse
+       map is "insert at the identity", [b |-> ci c (id, b)], and
+       composing it with [coy_to] gives the density injection at (c, b)
+       applied to [id] -- which is [density_elements_covered]'s left-hand
+       side.  So the coend's inverse and this file's mediator formula are
+       the same move, and the identification is [eq_refl].
+
+   NOT delivered here, and disclosed rather than approximated: the
+   isomorphism [coyoneda_reduction] is NOT upgraded to an isomorphism in
+   [C, Sets], because per (3) above that needs an action of the coend on
+   its parameter which the tree does not have; and the coend apex is NOT
+   identified with the colimit apex, so nothing below says that a coend
+   IS a colimit.
+
+   STRENGTHS, MEASURED STRICT-FIRST
+   --------------------------------
+
+   Everything was tried at [eq_refl] first.  What HOLDS strictly, each
+   pinned as an [Example]: the diagram's object action
+   ([density_diagram_obj]); the injections' values
+   ([density_inj_at], [pdensity_inj]); the cocone's apex and its
+   injections ([density_cocone_apex], [density_cocone_inj]); the
+   extracted mediator against the named one
+   ([density_med_is_den_med]); the presheaf index and the presheaf
+   diagram's object action; the two [pdd_via_proj_*] actions; all four
+   coend identifications; and both witness computations.
+
+   What is only `≈`, with the diagnosis: [den_med_commutes] (equivalently
+   [density_med_commutes]).  It is refuted at [eq_refl] as probe negative
+   2, and the cause is structural rather than a packaging accident -- the
+   mediator evaluates the competing cocone at the object
+   (e, fmap[K] g x) of the index, while the right-hand side evaluates it
+   at the DIFFERENT object j, and the two are brought together by cocone
+   coherence at [Elements_lift], which is a `≈` fact.  So no rearrangement
+   of the definitions makes this one strict.
+
+   NON-VACUITY
+   -----------
+
+   Over the terminal category 1 with K the constant functor at the
+   two-element setoid on [bool]:
+
+     - the index is genuinely non-trivial -- the two objects (ttt, true)
+       and (ttt, false) are distinct ([kbool_objects_differ]) and their
+       injections are distinct morphisms of [1, Sets]
+       ([kbool_injections_differ]), so the cocone is not a one-object
+       degeneracy;
+     - the diagram is CONSTANT at one representable
+       ([kbool_diagram_constant], [eq_refl]) and there are no morphisms
+       between the two elements, so the theorem here says exactly that
+       the two-element set is the coproduct of two copies of the
+       singleton -- a recognizable instance rather than a vacuous one;
+     - the apex is NOT itself a representable
+       ([kbool_not_representable]): [Hom ttt,-] is singleton-valued over
+       1, and a natural isomorphism would collapse [true] onto [false].
+       So the theorem is not the trivial "a representable is a colimit of
+       one representable";
+     - and the mediator COMPUTES.  [NegCocone] is a competing cocone,
+       with the same apex but with the injections twisted by [negb], and
+       [neg_med_true]/[neg_med_false] evaluate the produced mediator to
+       [false] and [true] by [eq_refl], with [neg_med_not_id] proving it
+       is not the identity transformation.  Nothing here is [Qed]-blocked
+       on the value side; the competing cocone's coherence proof is
+       opaque but the mediator's value does not pass through it.
+
+   UNIVERSES (measured in the constraint blocks with [Set Printing
+   Universes], and separately pinned by a formability negative -- not
+   read off the binders)
+   ---------------------------------------------------------------------
+
+   Every constant below displays [D : Category@{u u0 u0}], hom and proof
+   IDENTIFIED.  That is the donors' doing, not this file's: [Instance/
+   Fun.v]'s [Fun] demands hom = proof in both its arguments, and
+   [Sets@{u0 u1}] is a [Category@{u1 u0 u0}].  Nothing here adds to it.
+
+   The interesting constraint is [u <= u0] -- D's OBJECT universe at or
+   below its HOM universe -- and the block shows exactly where it enters:
+
+     - [ElementsOp@{u u0 u1 u2 u3}] does NOT carry it.  Its block bounds
+       both u and u0 below u2, the object universe of the elements
+       category, and nothing forces u below u0.
+     - [yo_inj@{u u0 u1 u2 u3}] does NOT carry it either.
+     - [DensityDiagram@{u u0 u1 u2}] DOES.  So the pin enters at the
+       DIAGRAM, not at the index and not at the Yoneda transformation.
+     - [density_inj], [DensityCocone], [density], [density_IsAColimit],
+       [DensityColimit], [density_med], [density_jointly_epic] and
+       [presheaf_density] each carry [u <= u0] and [u <= u1].
+       [PDensityDiagram] carries [u <= u0] but not [u <= u1].
+       [den_med@{u u0 u1 u2 u3}] carries [u1 = u2] in addition.
+     - [coy_leg_natural_in_apex@{u u0 u1 u2 u3 u4}] carries NEITHER;
+       the coend-connection theorem is free of the pin.
+
+   Probe negative 4 pins this at one universe setting: inside a section
+   declaring [Constraint uh < uo], [ElementsOp] and [yo_inj] are both
+   formable and [DensityDiagram] is REJECTED, with the error naming the
+   declared levels.  The same restriction is what
+   [Construction/Elements/Kan.v] records for [KanNat] and [KanCone] --
+   there too a set of transformations, or of cones, is a family indexed
+   by objects, so the objects must fit where hom-sets live.  It is stated
+   rather than worked around and is NOT claimed unavoidable.
+
+   The witness section does NOT pin [Set], which is the opposite of what
+   a concrete [bool]-carrying witness usually costs and was checked
+   rather than assumed: printing the universes of all FIFTEEN witness
+   constants turns up no occurrence of [Set] at all (an earlier draft
+   said fourteen; an audit recounted).  [bool : Set] only
+   ever contributes [Set <= u], which is a bound and not an
+   identification, and the carrier setoid is built with
+   [Lib/Setoid.v]'s polymorphic [eq_Setoid] rather than left to instance
+   resolution -- the idiom [Instance/Sets/Pullback.v] records, whose
+   point is exactly that resolving [eq_equivalence] at an unannotated
+   binder is what pins the level.
+
+   TWO ENGINEERING FINDINGS, RECORDED BECAUSE THEY COST TIME
+   ---------------------------------------------------------
+
+   [Category.Functor.Opposite] opens [functor_scope], in which [_ ^op] is
+   the OPPOSITE FUNCTOR.  Argument and ascription positions that bind
+   [category_scope] are safe -- every [C^op] below sits in one -- but a
+   bare type ascription is not: [(ttt : _1^op)] is read as an opposite
+   FUNCTOR and fails with a message naming neither culprit.  The
+   representable in [kbool_not_representable] is therefore spelled
+   [@Curried_Hom _1 ttt].  This is the same family as the notation guard
+   [Instance/Rng/Mod.v] records.
+
+   Second: a [Transform] is [hom] of a functor category only by
+   unfolding, so writing [f ∘ g] with f built by [Build_Transform] leaves
+   [∘]'s category as an unresolved metavariable.  Every such definition
+   below is given the type [_ ~{[D, Sets]}~> _] explicitly rather than
+   [_ ⟹ _], which is the whole fix.
+
+   PROBE ACCOUNTING
+   ----------------
+
+   FOUR negatives of THREE KINDS, kept lexically apart, each stripped
+   once and its failure kind read off the message tail:
+
+     1  CONVERSION   the two presheaf-diagram records
+     2  CONVERSION   the mediator triangle at [eq_refl]
+     3  TYPING       the covariant composite (the variance)
+     4  FORMABILITY  the universe pin, at [Constraint uh < uo]
+
+   against EIGHT positive commands ([ctrl_pdd_obj], [ctrl_pdd_fmap],
+   [ctrl_diag_def], [ctrl_med_commutes] and FOUR [Check]s -- an earlier
+   draft said seven and three, which an audit recounted), plus an
+   instrument check ([Fail Fail Check density]) confirming that [Fail]
+   reports an error when its command SUCCEEDS.
+
+   RENAME SIMULATION, WITH ITS LIMIT STATED.  Of the ELEVEN constants the
+   four negatives name, SIX are donors -- [Curried_CoHom],
+   [PElements_proj], [Cocone], [cocone_inj], [Curried_Hom],
+   [Elements_proj] -- and renaming any one of them breaks a control, 6/6.
+   The other FIVE ([PDensityDiagram], [DensityDiagram], [ElementsOp],
+   [density_med], [density_inj]) are declared in this file,
+   and there a rename that touched the definitions but NOT the [Fail]
+   bodies would leave the negative vacuously green: the controls are
+   renamed in lockstep, so no in-file control can catch it.  That is a
+   limit of keeping the probe in the target file, which this work's
+   single-file scope imposes.  (An earlier draft counted TWELVE and put
+   [density] among the file-local five; an audit corrected both --
+   [density] is named by NO negative, only by the instrument check
+   [Fail Fail Check density].  Test/ProbeDensity346.v guards it anyway,
+   so the coverage claim is unaffected and the count was the error.)
+   The tree's usual remedy is a separate
+   [Test/Probe*.v], where the target's names are not renamed alongside.
+   It is recorded rather than papered over.
+
+   AXIOMS.  All 62 constants of this module report "Closed under the
+   global context".  The count is exact rather than a floor: the file
+   contains no [Program], no [Record]/[Class]/[Inductive] and no
+   [Instance], so there are no obligations and no constructors for a name
+   sweep to miss, and [Print Module] lists exactly these 62.  (The
+   [.glob] shows 64, because two of the five [Fail] commands are NAMING
+   commands and a [Fail Example] still records a [def] entry, while a
+   [Fail Check] records none.)
+
+   NOT DELIVERED
+   -------------
+
+     - no identification of the coend with the colimit, hence no
+       upgrade of [coyoneda_reduction] itself to a natural isomorphism,
+       for the reason given in the route discussion;
+     - no pointwise-colimit lemma for functor categories, so nothing here
+       says that this colimit is computed pointwise in [D, Sets] -- which
+       is the step that would make the density theorem AT c literally the
+       co-Yoneda reduction;
+     - no density of the Yoneda embedding as a PROPERTY: no [Dense]
+       predicate is declared, and no left Kan extension along
+       [Curried_Hom] is formed, so no connection is made with
+       [Theory/Kan/Extension.v] or [Structure/Limit/Kan/Pointwise.v];
+     - no functoriality or naturality of the construction in K, and no
+       uniqueness of the diagram or the cocone up to isomorphism;
+     - no statement that [Elements_proj] is a discrete opfibration, and
+       no comparison with [Construction/Grothendieck.v];
+     - no [Cocomplete] hypothesis and no consequence of the form "a
+       functor out of [D, Sets] preserving colimits is determined by its
+       values on representables";
+     - the presheaf dual is delivered as named artifacts, not as a
+       separate development; nothing is stated in [StrictCat], and the
+       colimit is a cocone-level fact plus its apex-only reading, with no
+       separation between the two proved.
+
+--------
+nLab: https://ncatlab.org/nlab/show/density+theorem
    nLab: https://ncatlab.org/nlab/show/co-Yoneda+lemma
 
    密度定理 / 余 Yoneda：每个函子（在适当设定下）是 representable 的（余）极限；
    余 Yoneda 把预层表示为 Yoneda 嵌入下元素范畴上的余极限。本文件形式化相关同构与组装。
-   原英文文首极长（约 25KB）；本波次译为定义性导言，细节原文若仍残留于文件其它处，属后续波次。 *)
+   原英文文首极长（约 25KB）；本波次译为定义性导言，细节原文若仍残留于文件其它处，属后续波次。
+*)
 
 Section Density.
 
 Context {D : Category}.
 Context (K : D ⟶ Sets).
 
-(* * ** The index 范畴 diagram representables （已译） *)
+(** ** The index category and the diagram of representables / ** 指数范畴与可表示对象的图 *)
 
-(*指数是 对要素范畴的OPOSITE:展开了。
+(*
+The index is the OPPOSITE of the category of elements: the assignment
+   d |-> [Hom d,-] is contravariant, so a morphism (d, x) ~> (d', x') of
+   [Elements K] must give a transformation running backwards.
+
+--------
+指数是 对要素范畴的OPOSITE:展开了。
 d霄->ZWP. 页:1
-56. ZWP1 但这必须让签约国实现婿的则是历史。*)
+56. ZWP1 但这必须让签约国实现婿的则是历史。
+*)
 
 Definition ElementsOp : Category := (Elements K)^op.
 
-(*Sung的某些方面。 ,,,,,,,, 继,,,,,,,,,,,,,,,,,,,,是吗,采取协调一致的。
+(*
+A pure assembly: the covariant Yoneda embedding of D composed with
+   the opposite of the elements projection.  No obligation, so all three
+   functor laws are inherited.
+
+--------
+Sung的某些方面。 ,,,,,,,, 继,,,,,,,,,,,,,,,,,,,,是吗,采取协调一致的。
 与元素充分发挥的相反。 没有义务,合作和协调
-迥促使*)
+迥促使
+*)
 
 Definition DensityDiagram : ElementsOp ⟶ [D, Sets] :=
   Curried_Hom D ◯ (Elements_proj K)^op.
@@ -48,12 +525,16 @@ Definition DensityDiagram : ElementsOp ⟶ [D, Sets] :=
 Example density_diagram_obj (d : D) (x : K d) :
   DensityDiagram ((d; x) : ElementsOp) = [Hom d,─] := eq_refl.
 
-(* 相关说明。 （已译） *)
+(** ** The Yoneda transformation at an element / ** 一个元素处的Yoneda变换 *)
 
 (*
-   本节说明hom相关定义、性质与动机。
+For x an element of K d, the transformation [Hom d,-] ==> K whose
+   component at e carries g : d ~> e to [fmap[K] g x].  Respectfulness is
+   [elements_respects_cond] and both naturality orientations are
+   [fmap_comp] read at an element.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+对于 x ∈ K d，变换 [Hom d,-] ==> K，其在 e 处的分量将 g : d ~> e 映射为 [fmap[K] g x]。尊重性是 [elements_respects_cond]，并且两个自然性方向在一个元素处均为 [fmap_comp]。
 *)
 
 Definition yo_component {d : D} (x : K d) (e : D) :
@@ -76,7 +557,7 @@ Definition yo_inj {d : D} (x : K d) : [Hom d,─] ⟹ K :=
     (fun e e' f => yo_naturality x f)
     (fun e e' f => yo_naturality_sym x f).
 
-(** ** The canonical cocone *)
+(** ** The canonical cocone / ** 典范余锥 *)
 
 Definition density_inj (j : ElementsOp) :
   @hom ([D, Sets]) (DensityDiagram j) K := yo_inj (`2 j).
@@ -85,9 +566,13 @@ Example density_inj_at (d : D) (x : K d) (e : D) (g : d ~> e) :
   transform[density_inj ((d; x) : ElementsOp)] e g = fmap[K] g x := eq_refl.
 
 (*
-   本节说明 Density 相关定义、性质与动机。
+Cocone coherence.  For f : x ~> y in [Elements K] the diagram sends f
+   to precomposition with its underlying D-morphism, so the condition
+   reads [fmap[K] (g ∘ `1 f) (`2 x) ≈ fmap[K] g (`2 y)] at every e and
+   g -- which is [elements_comp_cond] fed the carried witness `2 f.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Cocone 一致性。对于 f : x ~> y 在 [Elements K] 中，该图将 f 映射到其底层 D-态射的预组合，因此条件表示为 [fmap[K] (g ∘ `1 f) (`2 x) ≈ fmap[K] g (`2 y)] 在每个 e 和 g 处——这是 [elements_comp_cond] 传入承载的见证 `2 f。
 *)
 
 Lemma density_cocone_coherence {x y : Elements K}
@@ -112,16 +597,22 @@ Example density_cocone_apex : vertex_obj[DensityCocone] = K := eq_refl.
 Example density_cocone_inj (j : ElementsOp) :
   cocone_inj DensityCocone j = density_inj j := eq_refl.
 
-(* 相关说明。 （已译） *)
+(** ** The mediating transformation out of K / ** 从K的中介变换 *)
 
 Section Mediator.
 
 Context (M : Cocone DensityDiagram).
 
 (*
-   本节说明 Density 相关定义、性质与动机。
+Respectfulness in the ELEMENT argument, derived from cocone coherence
+   at [elements_same] and not assumed.  Two `≈`-equal elements over one
+   object of D are DIFFERENT objects of [Elements K] -- objects are
+   compared by Leibniz equality -- so their injections are a priori
+   unrelated; [elements_same] is the morphism between them whose
+   underlying D-morphism is the identity.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+在 ELEMENT 参数中的尊重性，来源于 [elements_same] 处的 cocone 一致性，而不是被假定的。两个在一个 D 对象上的 `≈` 相等元素是 [Elements K] 的不同对象——对象是通过莱布尼兹等式比较的——因此它们的注入先验上是无关的；[elements_same] 是它们之间的态射，其底层的 D-态射是恒等态射。
 *)
 
 Lemma den_med_respects {e : D} (z w : K e) (H : z ≈ w) :
@@ -135,8 +626,13 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Evaluation at 恒等: z : K e goes value at [id[e]] of
- competing injection at 对象 (e, z). （已译） *)
+(*
+Evaluation at the identity: z : K e goes to the value at [id[e]] of
+   the competing injection at the object (e, z).
+
+--------
+在恒等映射处的评价：z : K e 对应于在对象 (e, z) 上的竞争注入在 [id[e]] 的值。
+*)
 
 Definition den_med_component (e : D) :
   @hom Sets (K e) (vertex_obj[M] e) :=
@@ -144,9 +640,14 @@ Definition den_med_component (e : D) :
     (fun z => transform[cocone_inj M ((e; z) : ElementsOp)] e id)
     (fun z w H => den_med_respects z w H).
 
-(* Naturality: one step competing injection's own 自然性, then
- cocone 融贯性 at chosen lift [Elements_lift K z f], whose image
- under projection is f itself definitionally.（已译） *)
+(*
+Naturality: one step of the competing injection's own naturality, then
+   cocone coherence at the chosen lift [Elements_lift K z f], whose image
+   under the projection is f itself definitionally.
+
+--------
+自然性：竞争注射自身自然性的一步，然后在所选升举 [Elements_lift K z f] 上进行余锥相干性，其在投影下的像从定义上就是 f 本身。
+*)
 
 Lemma den_med_naturality {e e' : D} (f : e ~> e') :
   fmap[vertex_obj[M]] f ∘ den_med_component e
@@ -198,7 +699,7 @@ Qed.
 
 End Mediator.
 
-(** ** Mac Lane III.7 Theorem 1 *)
+(** ** Mac Lane III.7 Theorem 1 / ** 麦克·莱恩 III.7 定理 1 *)
 
 Definition density : IsColimitCocone DensityCocone.
 Proof.
@@ -208,7 +709,7 @@ Proof.
   - exact (den_med_unique M).
 Defined.
 
-(* 相关说明。 （已译） *)
+(** ** Derived packagings and corollaries / ** 派生包装和推论 *)
 
 Definition density_IsAColimit : IsAColimit DensityDiagram K :=
   colimitcocone_isacolimit density.
@@ -232,14 +733,19 @@ Lemma density_med_uniq (M : Cocone DensityDiagram)
   density_med M ≈ v.
 Proof. exact (den_med_unique M v). Qed.
 
-(* The elementary content: every element K e value at [id[e]]
- injection at own 对象 index. （已译） *)
+(*
+The elementary content: every element of K e is the value at [id[e]]
+   of the injection at its own object of the index.
+
+--------
+基础内容：K e 的每个元素都是在其索引对象上注入的 [id[e] 值。
+*)
 
 Lemma density_elements_covered {e : D} (z : K e) :
   transform[density_inj ((e; z) : ElementsOp)] e id ≈ z.
 Proof. apply elements_id_cond. Qed.
 
-(* 相关说明。 （已译） *)
+(* The injections are jointly epic: K is generated by representables. / 这些注入是共同的史诗：K 由可表示对象生成。 *)
 
 Lemma density_jointly_epic {G : [D, Sets]}
       (u v : K ~{[D, Sets]}~> G) :
@@ -254,21 +760,32 @@ Qed.
 
 End Density.
 
-(* 相关说明。 （已译） *)
+(** ** The presheaf dual (Mac Lane III.7, the dual remark; Awodey 8.6) / ** 预层对偶（Mac Lane III.7，对偶备注；Awodey 8.6） *)
 
 Section PresheafDensity.
 
 Context {C : Category}.
 Context (P : C^op ⟶ Sets).
 
-(* 相关说明。 （已译） *)
+(*
+The index needs no construction: [PElements P] is DEFINED as
+   [(Elements P)^op], which is [ElementsOp P] on the nose.
+
+--------
+索引不需要构造：[PElements P] 被定义为 [(Elements P)^op]，而 [(Elements P)^op] 正好是 [ElementsOp P]。
+*)
 
 Example presheaf_index : ElementsOp P = PElements P := eq_refl.
 
 Definition PDensityDiagram : PElements P ⟶ [C^op, Sets] := DensityDiagram P.
 
-(* The value at (c, x) CONTRAVARIANT representable, because
- [Curried_CoHom C] 定义 [Curried_Hom C^op]. （已译） *)
+(*
+The value at (c, x) is the CONTRAVARIANT representable, because
+   [Curried_CoHom C] is by definition [Curried_Hom C^op].
+
+--------
+在 (c, x) 的值是逆变可表示的，因为 [Curried_CoHom C] 根据定义就是 [Curried_Hom C^op]。
+*)
 
 Example pdensity_diagram_obj (c : C) (x : P c) :
   PDensityDiagram ((c; x) : PElements P) = [Hom ─,c] := eq_refl.
@@ -282,9 +799,13 @@ Example pdensity_inj (c : C) (x : P c) (e : C) (g : e ~{C}~> c) :
     = fmap[P] g x := eq_refl.
 
 (*
-   本节说明函子相关定义、性质与动机。
+The other evident description of the diagram agrees on objects AND on
+   arrows, both by [eq_refl]; the two functor RECORDS do not (probe
+   negative 1), because [PElements_proj] is a [Program Definition] whose
+   law fields are opaque obligations.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+图表的另一个明显描述在对象和箭头上都一致，都由 [eq_refl] 完成；两个函子 RECORDS 不一致（探测结果为 -1），因为 [PElements_proj] 是一个 [Program Definition]，其规律字段是不透明的义务。
 *)
 
 Example pdd_via_proj_obj (c : C) (x : P c) :
@@ -297,10 +818,15 @@ Example pdd_via_proj_fmap (x y : PElements P) (f : x ~{PElements P}~> y) :
 
 End PresheafDensity.
 
-(* 相关说明。 （已译） *)
+(** ** The connection to the coend form of co-Yoneda / ** 与共Yoneda的共端形式的连接 *)
 
-(* These two [Require]s section alone. They NOT the
- route 定理 above proved; see header. （已译） *)
+(*
+These two [Require]s are for this section alone.  They are NOT the
+   route by which the theorem above is proved; see the header.
+
+--------
+这两个 [Require] 仅适用于本节。它们不是用来证明上面定理的途径；见标题。
+*)
 
 Require Import Category.Instance.Sets.Coend.
 Require Import Category.Theory.Coend.Yoneda.
@@ -310,16 +836,32 @@ Section CoendConnection.
 Context {C : Category}.
 Context (F : C ⟶ Sets).
 
-(* 相关说明。 （已译） *)
+(*
+The coend's cowedge leg IS the density cocone's injection, on the
+   nose: both send (g, a) to [fmap[F] g a].
+
+--------
+共端的cowedge腿就是密度锥的注入，准确来说：两者都将 (g, a) 发送到 [fmap[F] g a]。
+*)
 
 Example coy_leg_is_density_inj (c x : C) (g : x ~{C}~> c) (a : F x) :
   coy_leg F c x (g, a)
     = transform[density_inj F ((x; a) : ElementsOp F)] c g := eq_refl.
 
 (*
-   本节说明Yoneda、hom、（余）端相关定义、性质与动机。
+The naturality-in-c upgrade of the LEGS.  [Theory/Coend/Yoneda.v]
+   fixes c as a section variable; an audit sharpened the attribution,
+   since that variable IS generalised at [End Yoneda] and so does not by
+   itself prevent the statement -- what does is that Yoneda.v imports
+   neither [Category.Instance.Fun] nor
+   [Category.Theory.Natural.Transformation], so it has no vocabulary for
+   [[Hom x,-] ==> F].  The conclusion stands.  The family of
+   coend legs at fixed (x, a) extends to a natural transformation out of
+   the representable, and that transformation is the density cocone's
+   injection.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+LEGS 的自然升级。[Theory/Coend/Yoneda.v] 修复了 c 作为段变量；一次审核加强了归属，因为该变量在 [End Yoneda] 已被泛化，因此它本身并不能阻止该语句 —— 阻止的是 Yoneda.v 既没有导入 [Category.Instance.Fun]，也没有导入 [Category.Theory.Natural.Transformation]，因此它没有 [[Hom x,-] 的词汇 ==> F]。结论依然成立。在固定 (x, a) 下的共端 legs 系列扩展为从可表示对象出发的自然变换，而该变换是密度圆锥的注入。
 *)
 
 Theorem coy_leg_natural_in_apex (x : C) (a : F x) :
@@ -331,9 +873,13 @@ Example coy_leg_natural_witness (x : C) (a : F x) :
   `1 (coy_leg_natural_in_apex x a) = yo_inj F a := eq_refl.
 
 (*
-   本节说明（余）端相关定义、性质与动机。
+The coend's inverse map is "insert at the identity", and running it
+   back through the mediator gives the density injection at (c, b)
+   applied to [id] -- the left-hand side of [density_elements_covered].
+   So the two constructions share their inverse formula as well.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+共端的逆映射是“在恒等处插入”，并且将其通过中介者返回会得到在 (c, b) 处的密度注入应用于 [id] —— [density_elements_covered] 的左侧。因此，这两种构造也共享它们的逆公式。
 *)
 
 Example coy_from_at (c : C) (b : F c) :
@@ -345,16 +891,21 @@ Example coy_to_from_is_covering (c : C) (b : F c) :
 
 End CoendConnection.
 
-(** ** Non-vacuity *)
+(** ** Non-vacuity / ** 非空性 *)
 
 Require Import Category.Instance.One.
 Require Import Category.Functor.Diagonal.
 
 Section Witness.
 
-(* The two-element setoid, 常值 函子 at it over the
- terminal 范畴. Over 1 representables singleton-valued,
- so K provably not one them. （已译） *)
+(*
+The two-element setoid, and the constant functor at it over the
+   terminal category.  Over 1 the representables are singleton-valued,
+   so this K is provably not one of them.
+
+--------
+二元集合等价类，以及在终结范畴上它的常量函子。在 1 上，可表示的函子值是单元素的，因此可以证明这个 K 不是其中之一。
+*)
 
 Definition DensityBool : Sets :=
   {| carrier := bool ; is_setoid := eq_Setoid bool |}.
@@ -367,9 +918,12 @@ Definition et : ElementsOp KBool := (ttt; true).
 Definition ef : ElementsOp KBool := (ttt; false).
 
 (*
-   本节说明 Density 相关定义、性质与动机。
+The diagram is CONSTANT at the one representable, and there are no
+   morphisms between the two elements, so the theorem here says that the
+   two-element set is the coproduct of two copies of the singleton.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+该图在可表示的单元素处是恒定的，并且两个元素之间没有态射，所以这里的定理说，二元素集合是两个单元素集合的余积。
 *)
 
 Example kbool_diagram_constant :
@@ -387,16 +941,28 @@ Proof.
 Qed.
 
 (*
-   本节说明 Density 相关定义、性质与动机。
+The two elements are not merely DISTINCT objects of the index: there
+   is no morphism between them either, in the covariant [Elements]
+   reading.  This is what makes the "2 = 1 + 1" description above honest
+   rather than decorative, and an audit found it asserted in prose and
+   pinned nowhere, so it is a lemma now.  A morphism (ttt;true) ~> (ttt;
+   false) carries a D-morphism (necessarily [id], D being [_1]) together
+   with a proof that it transports [true] to [false].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+这两个元素不仅仅是索引中的不同对象：在协变 [Elements] 阅读中，它们之间也没有态射。这就是使上面“2 = 1 + 1”的描述是真实而非装饰的原因，而审计发现它在散文中被断言却没有固定位置，所以现在它是一个引理。一个态射 (ttt;true) ~> (ttt;false) 携带一个 D-态射（必然是 [id]，D 为 [_1]），以及一个证明它将 [true] 传输到 [false] 的证明。
 *)
 Lemma kbool_no_hom_et_ef :
   ((ttt; true) ~{Elements KBool}~> (ttt; false)) → False.
 Proof. intros [f Hf]; simpl in Hf; discriminate. Qed.
 
-(* The apex is not a representable: [Hom ttt,-] is singleton-valued over
-   1, so an isomorphism would collapse [true] onto [false]. *)
+(*
+The apex is not a representable: [Hom ttt,-] is singleton-valued over
+   1, so an isomorphism would collapse [true] onto [false].
+
+--------
+顶点不可表示：[Hom ttt,-] 在 1 上是单值的，所以同构会将 [true] 压缩到 [false] 上。
+*)
 
 Lemma kbool_not_representable :
   KBool ≅[[1, Sets]] @Curried_Hom _1 ttt → False.
@@ -411,7 +977,13 @@ Proof.
   discriminate.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+A competing cocone with the same apex but injections twisted by
+   [negb].  The mediator it produces computes.
+
+--------
+一个具有相同顶点但注入被 [negb] 扭转的竞争余锥。它产生的中介者进行计算。
+*)
 
 Definition neg_inj (j : ElementsOp KBool) :
   @hom ([1, Sets]) (DensityDiagram KBool j) KBool :=
@@ -447,12 +1019,17 @@ Proof. intro H; pose proof (H ttt true) as Hb; discriminate. Qed.
 
 End Witness.
 
-(* 相关说明。 （已译） *)
+(** ** Probe: negatives of three kinds, with positive controls / ** 探针：三种阴性对照，以及阳性对照 *)
 
 (*
-   本节说明 Density 相关定义、性质与动机。
+Each [Fail] below was stripped once and its error read off, so its
+   KIND is known and it is not vacuously green.  Every constant named in
+   a negative is also named in a control in the same section, so a rename
+   breaks the file loudly instead of turning a negative into a
+   "reference not found" false pass.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+下面的每个 [Fail] 都被剥离过一次，并读取了其错误，因此其类型已知，并且它不是空绿色的。每个在否定中命名的常量也在同一部分的控制中被命名，因此重命名会明显破坏文件，而不是将否定变成“未找到引用”的错误通过。
 *)
 
 Section ProbeConversion.
@@ -460,7 +1037,7 @@ Section ProbeConversion.
 Context {C : Category}.
 Context (P : C^op ⟶ Sets).
 
-(* Controls: two 函子 agree 对象 arrows. （已译） *)
+(* Controls: the two functors agree on objects and on arrows. / 控制：这两个函子在对象和箭头上都是一致的。 *)
 
 Definition ctrl_pdd_obj (c : C) (x : P c) :
   PDensityDiagram P ((c; x) : PElements P)
@@ -472,11 +1049,18 @@ Definition ctrl_pdd_fmap (x y : PElements P) (f : x ~{PElements P}~> y) :
     = @fmap _ _ (Curried_CoHom C ◯ PElements_proj P) x y f
   := pdd_via_proj_fmap P x y f.
 
-(* NEGATIVE 1 (CONVERSION). Stripped, this reports
- [cannot unify "PDensityDiagram P" and
- "Curried_CoHom C ◯ PElements_proj P"]. The two records differ only
- their 函子-law fields, which [PElements_proj] supplies as
- opaque [Program] obligations.（已译） *)
+(*
+NEGATIVE 1 (CONVERSION).  Stripped, this reports
+   [cannot unify "PDensityDiagram P" and
+   "Curried_CoHom C ◯ PElements_proj P"].  The two records differ only
+   in their functor-law fields, which [PElements_proj] supplies as
+   opaque [Program] obligations.
+
+--------
+负面 1（转换）。剥离后，该报告显示
+   [无法统一 "PDensityDiagram P" 和
+   "Curried_CoHom C ◯ PElements_proj P"]. 这两个记录仅在其函子律字段上有所不同，而 [PElements_proj] 将其作为不透明的 [Program] 义务提供。
+*)
 
 Fail Example neg_pdd_records :
   PDensityDiagram P = Curried_CoHom C ◯ PElements_proj P := eq_refl.
@@ -488,7 +1072,7 @@ Section ProbeMediator.
 Context {D : Category}.
 Context (K : D ⟶ Sets).
 
-(* Controls. *)
+(* Controls. / 控制。 *)
 
 Example ctrl_diag_def :
   DensityDiagram K = Curried_Hom D ◯ (Elements_proj K)^op := eq_refl.
@@ -499,24 +1083,44 @@ Definition ctrl_med_commutes (M : Cocone (DensityDiagram K))
   := density_med_commutes K M j.
 
 (*
-   本节说明 Density 相关定义、性质与动机。
+NEGATIVE 2 (CONVERSION).  Stripped, this reports
+   [cannot unify "density_med K M ∘ density_inj K j" and
+   "cocone_inj M j"].  The mediator evaluates the competing cocone at the
+   object (e, fmap[K] g x) of the index while the right-hand side
+   evaluates it at j, and the two are reconciled only by cocone coherence
+   at [Elements_lift], which is a `≈` fact.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+负 2（转换）。去掉修饰后，这报告了
+   [无法统一“density_med K M ∘ density_inj K j”和
+   “cocone_inj M j”]。中介在索引的对象 (e, fmap[K] g x) 上评估竞争锥，而右侧在 j 上评估它，这两者仅通过 [Elements_lift] 上的锥一致性得以调和，这是一个 `≈` 的事实。
 *)
 
 Fail Example neg_med_commutes_strict (M : Cocone (DensityDiagram K))
   (j : ElementsOp K) :
   density_med K M ∘ density_inj K j = cocone_inj M j := eq_refl.
 
-(* Control negative 3: 复合 formable OPPOSITE of
- projection. （已译） *)
+(*
+Control for negative 3: the composite is formable with the OPPOSITE of
+   the projection.
+
+--------
+负三的控制：复合材料可以用投影的相反面形成。
+*)
 
 Check (Curried_Hom D ◯ (Elements_proj K)^op).
 
 (*
-   本节说明 Density 相关定义、性质与动机。
+NEGATIVE 3 (TYPING).  Stripped, this reports
+   ["Elements_proj K" has type "Elements K ⟶ D" while it is expected to
+   have type "Elements K ⟶ D^op" (cannot unify "D" and "(D^op)")].
+   This is the variance: the diagram of representables cannot be indexed
+   by [Elements K] covariantly.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+负 3（输入）。去掉后，这条报告显示
+   [“Elements_proj K”的类型是“Elements K ⟶ D”，而预期类型是“Elements K ⟶ D^op”（无法统一“D”和“(D^op)”）]。
+   这是方差问题：可表示对象的图不能以协变方式由 [Elements K] 索引。
 *)
 
 Fail Check (Curried_Hom D ◯ Elements_proj K).
@@ -529,18 +1133,28 @@ Universe uo uh us.
 Constraint uh < uo.
 Constraint uh < us.
 
-(* Controls: at 范畴 whose OBJECTS sit strictly ABOVE homs,
- both index 范畴 Yoneda transformation formable,
- [DensityDiagram] itself nameable. （已译） *)
+(*
+Controls: at a category whose OBJECTS sit strictly ABOVE its homs,
+   both the index category and the Yoneda transformation are formable,
+   and [DensityDiagram] itself is nameable.
+
+--------
+控制：在一个其对象严格位于其同态之上的范畴中，既可以构造出指数范畴，也可以构造出 Yoneda 变换，并且 [DensityDiagram] 本身是可命名的。
+*)
 
 Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) => ElementsOp K).
 Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) => @yo_inj D K).
 Check @DensityDiagram.
 
 (*
-   本节说明 Density 相关定义、性质与动机。
+NEGATIVE 4 (FORMABILITY).  Stripped, this reports a universe
+   inconsistency naming the declared levels: [Cannot enforce uh = _
+   because uh < uo <= _].  So the constraint [u <= u0] read off
+   [DensityDiagram]'s block is real, and it enters at the DIAGRAM rather
+   than at the index or at [yo_inj].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+负面 4（可成形性）。剥离后，这报告了一个宇宙不一致，标明了已声明的级别：[无法强制 uh = _ 因为 uh < uo <= _]。因此，从 [DensityDiagram] 块读取的约束 [u <= u0] 是真实的，并且它进入 DIAGRAM，而不是在索引或 [yo_inj] 处。
 *)
 
 Fail Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) =>
@@ -548,6 +1162,13 @@ Fail Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) =>
 
 End ProbeUniverse.
 
-(* 相关说明。 （已译） *)
+(*
+Instrument check: [Fail] does report an error when its command
+   SUCCEEDS, so the four negatives above are genuine failures and not an
+   inert tactic.
+
+--------
+仪器检查：当其命令成功时，[Fail]确实会报告错误，因此上述四个否定是真正的故障，而不是一种无效的策略。
+*)
 
 Fail Fail Check density.

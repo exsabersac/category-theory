@@ -4,7 +4,26 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/monad
+(*
+nLab: https://ncatlab.org/nlab/show/monad
+   Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
+
+   A monad on a category C is an endofunctor M : C ⟶ C equipped with two
+   natural transformations: a unit ret (η : Id ⟹ M) and a multiplication
+   join (μ : M ○ M ⟹ M), satisfying the associativity law join ∘ fmap join ≈
+   join ∘ join (μ ∘ Mμ ≈ μ ∘ μM) and the two unit laws join ∘ fmap ret ≈ id
+   (μ ∘ Mη ≈ id) and join ∘ ret ≈ id (μ ∘ ηM ≈ id). Equivalently, a monad is
+   a monoid object in the endofunctor category [C, C] with composition as the
+   tensor.
+
+   This is the join/return presentation. Its bind-based reformulation is
+   recorded below as [bind], with the usual Haskell notations m >>= f and
+   f >> g. The naturality squares for η and μ are kept explicit as the laws
+   [fmap_ret] and [join_fmap_fmap] (in many treatments these are folded into
+   "η and μ are natural transformations").
+
+--------
+nLab: https://ncatlab.org/nlab/show/monad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
    范畴 C 上的单子是配备两个自然变换的自函子 M : C ⟶ C：单位 ret（η : Id ⟹ M）
@@ -15,9 +34,97 @@ Generalizable All Variables.
 
    这是 join/return 呈现。其基于 bind 的改写下文记为 [bind]，带常用 Haskell 记号
    m >>= f 与 f >> g。η 与 μ 的自然性方块显式保留为定律 [fmap_ret] 与 [join_fmap_fmap]
-   （许多处理把它们折入「η 与 μ 是自然变换」）。 *)
+   （许多处理把它们折入「η 与 μ 是自然变换」）。
+*)
 
-(* 单子从何而来，以及用途为何
+(*
+Where monads come from, and what they are for
+
+   nLab:  https://ncatlab.org/nlab/show/monad
+   nLab:  https://ncatlab.org/nlab/show/monad+(in+computer+science)
+   Paper: Eilenberg, Moore, "Adjoint functors and triples", Illinois
+          Journal of Mathematics 9(3), 1965
+   Paper: Moggi, "Notions of computation and monads", Information and
+          Computation 93(1), 1991
+
+   The concept predates its name by a decade.  Godement introduced it in
+   the appendix of "Topologie algébrique et théorie des faisceaux"
+   (Hermann, 1958) as the device behind the canonical flabby resolution
+   of a sheaf; the abstract notion, known in that era as the "standard
+   construction", was studied by Huber ("Homotopy theory in general
+   categories", Mathematische Annalen 144, 1961), who is credited with
+   the observation that every adjunction F ⊣ U endows the composite
+   U ◯ F with monad structure — realized in this library as
+   [Adjunction_Monad] in Monad/Adjunction.v.  Whether every monad so
+   arises was answered affirmatively twice in the same year: Kleisli
+   ("Every standard construction is induced by a pair of adjoint
+   functors", Proceedings of the AMS 16(3), 1965) rebuilt the adjunction
+   from the free algebras, and Eilenberg and Moore (op. cit.) from all
+   algebras, coining "triple" along the way.  Both resolutions are
+   present here — Monad/Kleisli.v with Monad/Kleisli/Adjunction.v, and
+   [TAlgebra] of Monad/Algebra.v with Monad/Eilenberg/Moore/Adjunction.v
+   — and among the adjunctions inducing a given monad the first is
+   initial, the second terminal.  Beck's monadicity theorem then
+   characterizes which functors are, up to equivalence, forgetful
+   functors from algebras (Monad/Monadicity/Beck.v).  The name "monad"
+   itself is Bénabou's ("Introduction to bicategories", Springer LNM 47,
+   1967), and the monoid-object remark of the header above — Mac Lane's
+   slogan that a monad is just a monoid in the category of endofunctors
+   ("Categories for the Working Mathematician", 1971) — is proved as a
+   genuine equivalence by [Monoid_Monad] in Monad/Monoid.v.
+
+   CORRECTION (#468).  The "genuine equivalence" above is a logical
+   equivalence (↔) of the two structures on one endofunctor, with no
+   morphisms on either side.  The statement about categories is
+   Monad/Morphism/Monoid.v's [Monads_Mon_Equivalence]: Monad/Morphism.v's
+   category [Monads C] of monads on C and their morphisms is equivalent to
+   Mac Lane's Mon_{C^C}, Theory/Algebra/Monoid/Hom.v's [Mon] at the
+   composition tensor of Structure/Monoidal/Compose.v.
+
+   Two further readings organize the mathematics.  As an algebraic
+   theory in packaged form, a monad carries its variety of algebras
+   with it: Linton ("Some aspects of equational categories", La Jolla
+   1965 conference proceedings, Springer 1966) proved finitary monads
+   on Set equivalent to Lawvere theories, the thread taken up in
+   Theory/Lawvere/Monad.v, while non-finitary monads reach further —
+   the algebras of the ultrafilter monad are exactly the compact
+   Hausdorff spaces (Manes, "A triple theoretic construction of compact
+   algebras", Springer LNM 80, 1969).  As a generalized closure
+   operator — on a poset category a monad is precisely one, the unit
+   giving extensivity and [join] idempotency — the concept categorifies
+   to the idempotent monads of reflective subcategories in
+   Construction/Reflective/Idempotent.v.
+
+   CORRECTION (#463).  The closure-operator reading above was asserted
+   here without proof; Instance/Poset.v cited this file for it.  It is
+   proved at Instance/Proset/Monad.v ([closure_of_monad],
+   [closure_monad], [talgebra_iff_closed]), and it is sharper than the
+   sentence says: [join] gives only T(Tx) ≤ Tx, and idempotency up to ≅
+   also uses [ret] at Tx.  Structure/Thin/Monad.v's [thin_join_IsIso]
+   makes that so in any thin category, and [thin_IdempotentMonad] makes
+   every monad on a thin category an [IdempotentMonad] of
+   Construction/Reflective/Idempotent.v, where idempotency is a
+   hypothesis.  The equation T(Tx) = Tx needs antisymmetry, taken as a
+   hypothesis in [closure_idem_eq].  The dual, a comonad on a preorder as
+   an interior operator, is Instance/Proset/Monad/Interior.v.
+
+   Computationally, a value of type M x is a computation that may
+   perform effects while producing an x.  Moggi (LICS 1989; op. cit.
+   1991) interpreted the effects of programming languages — state,
+   exceptions, nondeterminism, continuations — as strong monads on a
+   cartesian closed category, the strength hypothesis being the reason
+   Monad/Strong.v exists; Wadler ("The essence of functional
+   programming", POPL 1992) carried the discipline into Haskell, where
+   effects coexist with purity.  Under this reading [ret] embeds a pure
+   value, [bind] sequences two effectful steps, and programs x ~> M y
+   compose as morphisms of the Kleisli category.  The bind presentation
+   is equivalent to the join/return one used in this file (Manes,
+   "Algebraic Theories", Springer 1976; Moggi 1991, Def. 1.2), and is
+   the surface syntax elaborated Haskell-style in
+   Instance/Coq/Monad.v.
+
+--------
+单子从何而来，以及用途为何
 
    nLab:  https://ncatlab.org/nlab/show/monad
    nLab:  https://ncatlab.org/nlab/show/monad+(in+computer+science)
@@ -45,70 +152,63 @@ Generalizable All Variables.
    更正 (#468)。上文「真正等价」是同一自函子上两种结构的逻辑等价（↔），无宇宙层级变化；
    它不是范畴等价。计算侧读法经 Moggi（1991）进入编程：计算的「概念」是单子，
    return/bind 呈现（下文 [bind]）成为 Haskell 等语言的效应接口；Theory/Coq/Monad.v
-   承载面向程序员的那一层。 *)
+   承载面向程序员的那一层。
+*)
 
 Section Monad.
 
 Context `{M : C ⟶ C}.
 
+
 (*
    【Class Monad 语法与字段展开】/ Syntax & field walkthrough
-   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+   （口吻对齐 Category/Functor；join/return 呈现）
 
    1) 这是什么 / What this is
-      Monad = 自函子 M : C ⟶ C + 单位 ret + 乘法 join，服从结合与单位律。
-      Monad = endofunctor M plus unit ret and multiplication join, with laws.
-      Haskell 对照：return ≈ ret，join ≈ Data.Monad.join；bind 下文定义为
-      join ∘ fmap f（即 >>=）。范畴版更一般：C 任意，不只是 Hask；定律是字段。
-      Haskell analogy: return ≈ ret, join ≈ join; bind := join ∘ fmap f.
-      Categorical version: any endofunctor on any C; laws are Class fields.
+      自函子 M : C ⟶ C + 单位 ret(η) + 乘法 join(μ)，服从结合与单位律（均 ≈）。
+      Endofunctor + unit + multiply; laws up to ≈.
+      Haskell 对照（一次）：return ≈ ret，join 或 (>>=) ≈ bind（下文定义）；
+      这里 η/μ 的自然性也写成字段，不靠「它们是自然变换」一句话带过。
+      Haskell analogy (once): return ≈ ret; join/(>>=) nearby; naturality is explicit.
 
-   2) 头与上下文 / Header & context
-      Section Monad; Context `{M : C ⟶ C}` — fmap 来自已有 Functor 实例，
-      本 Class 不再声明 fobj/fmap。
-      fmap comes from M's Functor instance; not redeclared here.
+   2) 头与上下文 / Header
+      Section Context `{M : C ⟶ C}` — M 已是 Functor 实例。
+      Class Monad 无额外宇宙参数。
 
-   3) 数据字段 / Data fields
-      - ret {x}  : x ~> M x      — η : Id ⟹ M（单位 / unit）
-      - join {x} : M (M x) ~> M x — μ : M ○ M ⟹ M（乘法 / multiplication）
+   3) 数据字段 / Data
+      - ret  {x} : x ~> M x
+      - join {x} : M (M x) ~> M x
 
-   4) 定律（均对 ≈）/ Laws (all up to ≈)
-      - fmap_ret       : ret ∘ f ≈ fmap f ∘ ret     （η 自然 / unit natural）
-      - join_fmap_join : join ∘ fmap join ≈ join ∘ join  （结合 / assoc）
-      - join_fmap_ret  : join ∘ fmap ret ≈ id       （左单位 / left unit）
-      - join_ret       : join ∘ ret ≈ id            （右单位 / right unit）
-      - join_fmap_fmap : join ∘ fmap (fmap f) ≈ fmap f ∘ join
-        （μ 自然 / multiplication natural）
-      Hom 是 Setoid，全部对 ≈；没有「看不见的」parametricity 捷径。
-      All up to ≈ on setoid Homs; no free-theorem shortcut.
+   4) 定律（均对 ≈）/ Laws (up to ≈)
+      - fmap_ret       : η 的自然性
+      - join_fmap_join : 结合律 μ ∘ Mμ ≈ μ ∘ μM
+      - join_fmap_ret / join_ret : 左右单位
+      - join_fmap_fmap : μ 的自然性
 
-   5) 不在本 Class 里、但附近会给 / Nearby
-      bind / >>= ：本节后文 MonadLib。Kleisli、Eilenberg–Moore：Monad/ 目录。
-      bind below; Kleisli & Eilenberg–Moore under Monad/.
+   5) 邻近 / Nearby
+      bind / >>= 在本 Class 后由 join+fmap 导出；伴随诱导单子见 Monad/Adjunction.v。
 
-   阅读顺序：ret → join → 两自然性 → 结合律 → 两单位律 → bind。
-   Reading order: ret → join → naturalities → assoc → units → bind.
+   阅读顺序：ret/join → 自然性 → 结合 → 单位律 → bind。
+   Reading order: ret/join → naturality → assoc → units → bind.
 *)
 
 Class Monad := {
-  ret {x}  : x ~> M x;
-    (* 单位 η ≈ return / unit η ≈ return *)
-  join {x} : M (M x) ~> M x;
-    (* 乘法 μ ≈ join / multiplication μ ≈ join *)
+  ret {x}  : x ~> M x;          (* unit η : Id    ⟹ M / 单位 η : Id ⟹ M *)
+  join {x} : M (M x) ~> M x;    (* mult μ : M ○ M ⟹ M / 乘 μ : M ○ M ⟹ M *)
 
+  (* naturality of the unit η: ret ∘ f ≈ fmap f ∘ ret / 单位 η 的自然性：ret ∘ f ≈ fmap f ∘ ret *)
   fmap_ret {x y} (f : x ~> y) : ret ∘ f ≈ fmap f ∘ ret;
-    (* η 的自然性 / naturality of unit *)
 
+  (* associativity μ ∘ Mμ ≈ μ ∘ μM / 结合律 μ ∘ Mμ ≈ μ ∘ μM *)
   join_fmap_join {x} : join ∘ fmap (@join x) ≈ join ∘ join;
-    (* 结合律 / associativity *)
+  (* left unit law μ ∘ Mη ≈ id / 左单位律 μ ∘ Mη ≈ id *)
   join_fmap_ret  {x} : join ∘ fmap (@ret x) ≈ id;
-    (* 左单位 / left unit *)
+  (* right unit law μ ∘ ηM ≈ id / 右单位律 μ ∘ ηM ≈ id *)
   join_ret       {x} : join ∘ @ret (M x) ≈ id;
-    (* 右单位 / right unit *)
 
+  (* naturality of the multiplication μ: join ∘ fmap (fmap f) ≈ fmap f ∘ join / 乘法 μ 的自然性：join ∘ fmap (fmap f) ≈ fmap f ∘ join *)
   join_fmap_fmap {x y} (f : x ~> y) :
     join ∘ fmap (fmap f) ≈ fmap f ∘ join
-    (* μ 的自然性 / naturality of multiplication *)
 }.
 
 End Monad.
@@ -137,12 +237,19 @@ Require Import Category.Construction.Opposite.
 Require Import Category.Functor.Opposite.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/comonad
+nLab: https://ncatlab.org/nlab/show/comonad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
-   本节说明单子、余单子相关定义、性质与动机。
+   A comonad is the formal dual of a monad: a counit ε : M ⟹ Id and a
+   comultiplication δ : M ⟹ M ○ M satisfying the dual coassociativity and
+   counit laws. Since duality is C^op^op = C by reflexivity here, it is
+   obtained for free as a monad on the opposite category.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+nLab: https://ncatlab.org/nlab/show/comonad
+   维基百科: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
+
+   上下文函子（comonad）是单子（monad）的形式对偶：一个余单位 ε : M ⟹ Id 和一个共乘 δ : M ⟹ M ○ M，满足对偶的结合律和余单位律。由于对偶性在此处为自反性 C^op^op = C，因此它作为对立范畴上的单子可以直接获得。
 *)
 
 Definition Comonad `{M : C ⟶ C} := @Monad (C^op) (M^op).

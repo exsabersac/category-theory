@@ -12,14 +12,92 @@ Generalizable All Variables.
 Infix "∘∘" := vcompose : category_scope.
 Notation "f ∘∘∘ g" := (hcompose (f, g)) : category_scope.
 
-(** The mates correspondence in a bicategory *)
+(** The mates correspondence in a bicategory / 双范畴中的伴随对应 *)
 
 (*
- nLab: https://ncatlab.org/nlab/show/mate
+nLab: https://ncatlab.org/nlab/show/mate
+   Kelly & Street, "Review of the elements of 2-categories", LNM 420 (1974).
+   Johnson & Yau, "2-Dimensional Categories" (2021), §6.
 
-   本文件给出 mate 对应。
+   Fix a bicategory `B` and two internal adjunctions `f ⊣ u` (between 0-cells
+   `x, y`) and `f' ⊣ u'` (between `x', y'`), together with 1-cells `a : x ~~> x'`
+   and `b : y ~~> y'`. The mates correspondence is the natural bijection between
+   the 2-cells filling the two squares
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+        f' ∘ a  ⟹  b ∘ f            (in `bicat x y'`)
+        a  ∘ u  ⟹  u' ∘ b           (in `bicat y x'`)
+
+   sending `σ` to its *mate* `σ̂`, obtained by pasting the unit `η'` of `f' ⊣ u'`
+   on the left, whiskering `σ` in the middle, and pasting the counit `ε` of
+   `f ⊣ u` on the right, everything bracketed by the coherence isomorphisms.
+
+   Rather than manipulate that fivefold paste directly, the mate is factored
+   through two *hom-adjunctions* induced by an internal adjunction — the natural
+   bijections
+
+        precomp :  bicat(f ∘ c, d)  ≅  bicat(c, u ∘ d)       (whisker by η, ε)
+        postcomp:  bicat(c, e ∘ f)  ≅  bicat(c ∘ u, e)       (whisker by ε, η)
+
+   each of which is a genuine bijection by the two triangle (zig-zag) identities
+   of the adjunction, established here as `precomp_left`/`precomp_right` and
+   `postcomp_left`/`postcomp_right`. The mate is then
+
+        mate σ = postcomp (α⁻¹ ∘ precomp σ)
+
+   for the associator iso `α = hassoc u' b f`, and the round trips
+   `mate_roundtrip_left`/`mate_roundtrip_right` fall out of the two
+   hom-adjunction round trips together with `α ∘ α⁻¹ = id`. The bijection is
+   packaged as `mate_iso`, an `Isomorphism` in `Sets` of the two 2-cell
+   hom-setoids.
+
+   Scope: the bijection and its round trips are delivered here at full strength
+   over an arbitrary bicategory. The pasting/composition *functoriality* of
+   mates (the double category of adjunctions) is deliberately out of scope
+   (descope ledger entry 10); it is a follow-on that would ride a double-category
+   framework. That entry is now NARROWED, though not discharged. Its Cat-level
+   content, stated in ordinary-category vocabulary rather than over an arbitrary
+   bicategory, is delivered elsewhere: `Adjunction/Square.v` proves that mates
+   commute with the horizontal and vertical pasting of adjoint squares (#398),
+   and `Instance/Adj/Bicategory.v` proves that horizontal composition of
+   conjugate pairs is a bifunctor and assembles `Adj_Bicategory` (#399). What
+   remains out of scope here is exactly what the entry names and those two files
+   disclaim: the double category of adjunctions, and the statement in an
+   ARBITRARY bicategory.
+
+   The heart of the two hom-adjunctions is a pair of whiskered
+   triangle identities (`precomp_zig_id`/`precomp_zag_id`,
+   `postcomp_zig_id`/`postcomp_zag_id`), each reduced to `adj_triangle_left` or
+   `adj_triangle_right` of the underlying adjunction through the reusable
+   coherence engine of `Theory/Bicategory/Adjunction.v` (unitor/associator
+   naturalities, `pent_solve`, the `*_solve` normal forms) plus the local
+   inverse-coherence helpers assembled in the `Helpers` section below.
+
+--------
+nLab: https://ncatlab.org/nlab/show/mate
+   Kelly & Street, 《2-范畴元素的综述》，LNM 420 (1974)。
+   Johnson & Yau, 《二维范畴》(2021)，§6。
+
+固定一个双范畴 `B` 以及两个内部伴随 `f ⊣ u`（在 0-元 `x, y` 之间）和 `f' ⊣ u'`（在 `x', y'` 之间），以及 1-元 `a : x ~~> x'` 和 `b : y ~~> y'`。伴随对应是填充这两个方形的 2-元之间的自然双射。
+
+f' ∘ a  ⟹  b ∘ f            （在 `bicat x y'` 中）
+        a  ∘ u  ⟹  u' ∘ b           （在 `bicat y x'` 中）
+
+将 `σ` 发送到它的 *配对* `σ̂`，通过在左侧粘贴 `f' ⊣ u'` 的单元 `η'`，中间进行 `σ` 的胡须化，并在右侧粘贴 `f ⊣ u` 的余单位 `ε`，所有操作都被相干同构括起来。
+
+与其直接操纵那个五倍胶水，该伴随通过由内部伴随引起的两个*同伴随*进行分解——自然双射
+
+预组合：bicat(f ∘ c, d) ≅ bicat(c, u ∘ d) （通过 η, ε 进行点缀）
+后组合：bicat(c, e ∘ f) ≅ bicat(c ∘ u, e) （通过 ε, η 进行点缀）
+
+每一个都是由伴随的两个三角形（之字形）恒等式所确保的真正双射，这里表示为 `precomp_left`/`precomp_right` 和 `postcomp_left`/`postcomp_right`。然后伴随映射是
+
+伴随 σ = 后复合 (α⁻¹ ∘ 前复合 σ)
+
+对于关联器 iso `α = hassoc u' b f`，以及往返 `mate_roundtrip_left`/`mate_roundtrip_right`，它们与 `α ∘ α⁻¹ = id` 一起属于两个同态伴随往返。这个双射被封装为 `mate_iso`，一个在 `Sets` 中的 `Isomorphism`，用于两个 2-胞体同态集合体。
+
+范围：这里提供了双射及其往返操作的完整能力，适用于任意的双范畴。配偶（伴随关系的双范畴）的粘贴/组合*函子性*刻意不在讨论范围内（参见范围外账目条目10）；这是一个后续问题，将依赖双范畴框架。该条目现已被缩小范围，但尚未完成处理。其Cat级内容，用普通范畴的语言陈述而非在任意双范畴上，已在其他地方给出：`Adjunction/Square.v` 证明了配偶与伴随方格的水平和垂直粘贴可交换（#398），而 `Instance/Adj/Bicategory.v` 证明了共轭对的水平组合是一个双函子，并组装 `Adj_Bicategory`（#399）。这里仍不在讨论范围内的正是该条目所命名以及这两个文件所声明的内容：伴随的双范畴，以及在任意双范畴中的陈述。
+
+两个同余伴随的核心是一对带胡须的三角恒等式（`precomp_zig_id`/`precomp_zag_id`，`postcomp_zig_id`/`postcomp_zag_id`），每个都是通过 `Theory/Bicategory/Adjunction.v` 的可重用相干引擎（单位/结合子自然性，`pent_solve`，`*_solve` 正规形式）以及在下面 `Helpers` 部分组装的局部逆相干辅助工具，简化为基础伴随的 `adj_triangle_left` 或 `adj_triangle_right`。
 *)
 
 Section Helpers.
@@ -131,13 +209,13 @@ Qed.
 Notation η := (adj_unit f u).
 Notation ε := (adj_counit f u).
 
-(* ---------- precomposition hom-adjunction bicat(f∘c,d) ≅ bicat(c,u∘d) ------ *)
+(* ---------- precomposition hom-adjunction bicat(f∘c,d) ≅ bicat(c,u∘d) ------ / ---------- 预组合同余伴随 bicat(f∘c,d) ≅ bicat(c,u∘d) ------ *)
 
-(* Unit-side cell: c ⟹ u∘(f∘c). *)
+(* Unit-side cell: c ⟹ u∘(f∘c). / 单位侧单元格：c ⟹ u∘(f∘c)。 *)
 Definition preΘ {w : bi0cell} (c : bicat w x) : c ~> (u ∘∘∘ (f ∘∘∘ c)) :=
   to (hassoc u f c) ∘∘ rwhisker η c ∘∘ from (hunit_left c).
 
-(* Counit-side cell: f∘(u∘d) ⟹ d. *)
+(* Counit-side cell: f∘(u∘d) ⟹ d. / 余单位侧单元：f∘(u∘d) ⟹ d。 *)
 Definition preΞ {w : bi0cell} (d : bicat w y) : (f ∘∘∘ (u ∘∘∘ d)) ~> d :=
   to (hunit_left d) ∘∘ rwhisker ε d ∘∘ from (hassoc f u d).
 
@@ -155,8 +233,13 @@ Proof. intros p q H. unfold precomp_to. now rewrite (lwhisker_cong u _ _ H). Qed
   Proper (equiv ==> equiv) (@precomp_from w c d).
 Proof. intros p q H. unfold precomp_from. now rewrite (lwhisker_cong f _ _ H). Qed.
 
-(* The zig cell preΞ(f∘c) ∘∘ (f ⊲ preΘ c) 恒等 — whiskered left
- triangle 恒等, reduced adj_triangle_left via coherence engine. （已译） *)
+(*
+The zig cell preΞ(f∘c) ∘∘ (f ⊲ preΘ c) is the identity — whiskered left
+   triangle identity, reduced to adj_triangle_left via the coherence engine.
+
+--------
+zig 单元 preΞ(f∘c) ∘∘ (f ⊲ preΘ c) 是恒等 — 带胡须的左三角恒等，通过相干引擎简化为 adj_triangle_left。
+*)
 Lemma precomp_zig_id {w : bi0cell} (c : bicat w x) :
   preΞ (f ∘∘∘ c) ∘∘ lwhisker f (preΘ c) ≈ bi2id.
 Proof.
@@ -182,7 +265,7 @@ Proof.
     + apply rwhisker_id.
 Qed.
 
-(* Naturality slide: preΞ d after left-whiskering σ recovers σ before preΞ. *)
+(* Naturality slide: preΞ d after left-whiskering σ recovers σ before preΞ. / 自然性幻灯片：在左搅拌 σ 之后的 preΞ d 恢复了 preΞ 之前的 σ。 *)
 Lemma precomp_slide {w : bi0cell} {c : bicat w x} {d : bicat w y}
   (σ : (f ∘∘∘ c) ~> d) :
   preΞ d ∘∘ lwhisker f (lwhisker u σ) ≈ σ ∘∘ preΞ (f ∘∘∘ c).
@@ -216,8 +299,13 @@ Proof.
   now rewrite bi2id_right.
 Qed.
 
-(* The zag cell (u ⊲ preΞ D) ∘∘ preΘ (u∘D) 恒等 — whiskered right
- triangle 恒等, reduced adj_triangle_right via coherence engine. （已译） *)
+(*
+The zag cell (u ⊲ preΞ D) ∘∘ preΘ (u∘D) is the identity — whiskered right
+   triangle identity, reduced to adj_triangle_right via the coherence engine.
+
+--------
+Zag 单元 (u ⊲ preΞ D) ∘∘ preΘ (u∘D) 是恒等 — 带鬚右三角恒等，通过相干引擎简化为 adj_triangle_right。
+*)
 Lemma precomp_zag_id {w : bi0cell} (D : bicat w y) :
   lwhisker u (preΞ D) ∘∘ preΘ (u ∘∘∘ D) ≈ bi2id.
 Proof.
@@ -243,7 +331,7 @@ Proof.
     + apply rwhisker_id.
 Qed.
 
-(* Mirror 自然性 slide, unit-side cell preΘ. （已译） *)
+(* Mirror naturality slide, for the unit-side cell preΘ. / 镜面自然滑动，用于单元侧单元预Θ。 *)
 Lemma precomp_slide' {w : bi0cell} {c : bicat w x} {d : bicat w y}
   (τ : c ~> (u ∘∘∘ d)) :
   lwhisker u (lwhisker f τ) ∘∘ preΘ c ≈ preΘ (u ∘∘∘ d) ∘∘ τ.
@@ -278,13 +366,13 @@ Proof.
   now rewrite bi2id_left.
 Qed.
 
-(* ---------- postcomposition hom-adjunction bicat(c,e∘f) ≅ bicat(c∘u,e) ----- *)
+(* ---------- postcomposition hom-adjunction bicat(c,e∘f) ≅ bicat(c∘u,e) ----- / ---------- 后组合同态伴随 bicat(c,e∘f) ≅ bicat(c∘u,e) ----- *)
 
-(* Counit-side cell: (e∘f)∘u ⟹ e. *)
+(* Counit-side cell: (e∘f)∘u ⟹ e. / 余单位侧的单元: (e∘f)∘u ⟹ e。 *)
 Definition postΛ {w : bi0cell} (e : bicat y w) : ((e ∘∘∘ f) ∘∘∘ u) ~> e :=
   to (hunit_right e) ∘∘ lwhisker e ε ∘∘ to (hassoc e f u).
 
-(* Unit-side cell: c ⟹ (c∘u)∘f. *)
+(* Unit-side cell: c ⟹ (c∘u)∘f. / 单位边单元: c ⟹ (c∘u)∘f。 *)
 Definition postΠ {w : bi0cell} (c : bicat x w) : c ~> ((c ∘∘∘ u) ∘∘∘ f) :=
   from (hassoc c u f) ∘∘ lwhisker c η ∘∘ from (hunit_right c).
 
@@ -424,7 +512,7 @@ Qed.
 
 End HomAdjunction.
 
-(** The mates correspondence *)
+(** The mates correspondence / 伙伴通信 *)
 
 Section Mates.
 Context {B : Bicategory}.
@@ -433,11 +521,11 @@ Context {f : bicat x y} {u : bicat y x} (Af : BicatAdjunction f u).
 Context {f' : bicat x' y'} {u' : bicat y' x'} (Af' : BicatAdjunction f' u').
 Context {a : bicat x x'} {b : bicat y y'}.
 
-(* 相关说明。 （已译） *)
+(* Forward mate: paste η' on the left, whisker σ, paste ε on the right. / 前置件：在左边粘贴 η'，胡须 σ，在右边粘贴 ε。 *)
 Definition mate (σ : (f' ∘∘∘ a) ~> (b ∘∘∘ f)) : (a ∘∘∘ u) ~> (u' ∘∘∘ b) :=
   postcomp_to Af (from (hassoc u' b f) ∘∘ precomp_to Af' σ).
 
-(* 相关说明。 （已译） *)
+(* Backward mate: paste η on the left, whisker τ, paste ε' on the right. / 反向搭档：在左边粘贴 η，胡须 τ，在右边粘贴 ε'。 *)
 Definition mate_inv (τ : (a ∘∘∘ u) ~> (u' ∘∘∘ b)) : (f' ∘∘∘ a) ~> (b ∘∘∘ f) :=
   precomp_from Af' (to (hassoc u' b f) ∘∘ postcomp_from Af τ).
 
@@ -465,13 +553,13 @@ Proof.
   now rewrite (postcomp_right Af).
 Qed.
 
-(* The two 2-cell hom-setoids, presented as objects of Sets. *)
+(* The two 2-cell hom-setoids, presented as objects of Sets. / 作为集合对象呈现的两个 2-单元格同类集。 *)
 Definition mate_dom : SetoidObject :=
   {| carrier := (f' ∘∘∘ a) ~{bicat x y'}~> (b ∘∘∘ f) |}.
 Definition mate_cod : SetoidObject :=
   {| carrier := (a ∘∘∘ u) ~{bicat y x'}~> (u' ∘∘∘ b) |}.
 
-(* The mates correspondence as a bijection in Sets. *)
+(* The mates correspondence as a bijection in Sets. / 配偶的对应作为集合中的双射。 *)
 #[local] Obligation Tactic := idtac.
 Program Definition mate_iso : @Isomorphism Sets mate_dom mate_cod := {|
   to   := {| morphism := mate |};

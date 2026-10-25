@@ -5,7 +5,29 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/natural+transformation
+(*
+nLab: https://ncatlab.org/nlab/show/natural+transformation
+   Wikipedia: https://en.wikipedia.org/wiki/Natural_transformation
+
+   Naturality infrastructure. This file provides the `Naturality` type class,
+   whose method `natural f` computes the *naturality statement* appropriate to
+   the type `A` of the family `f`. Instance resolution on `A` selects the right
+   square: for a family `f : ∀ A, F A ~> G A` the statement is the ordinary
+   naturality square `fmap[G] g ∘ f x ≈ f y ∘ fmap[F] g` (i.e. `G g ∘ η_x ≈
+   η_y ∘ F g`); for families of several arguments it is the joint, per-variable
+   square; and for families of isomorphisms it is the conjunction of the `to`
+   and `from` squares. This lets a single `natural f` notation discharge the
+   naturality obligations that arise throughout the library (see
+   `prove_naturality` and `Structure/Monoidal/Naturality.v`).
+
+   Note: the multi-argument `Arity*` instances express naturality *separately*
+   in each (covariant) argument, combined into one square via the bifunctorial
+   action `P(g,h) = FB h ∘ FA g`. This is distinct from a dinatural
+   transformation (https://ncatlab.org/nlab/show/dinatural+transformation),
+   whose hexagon mixes the two variances of a single variable.
+
+--------
+nLab: https://ncatlab.org/nlab/show/natural+transformation
    Wikipedia: https://en.wikipedia.org/wiki/Natural_transformation
 
    自然性基础设施。本文件提供 `Naturality` 类型类，其方法 `natural f` 按族 `f` 的类型
@@ -17,10 +39,16 @@ Generalizable All Variables.
 
    注意：多变元 `Arity*` 实例分别表达每个（共变）变元中的自然性，经双函子作用
    `P(g,h) = FB h ∘ FA g` 合成一方块。这有别于双自然变换
-   （https://ncatlab.org/nlab/show/dinatural+transformation），其六边形混合单变元的两种变差。 *)
+   （https://ncatlab.org/nlab/show/dinatural+transformation），其六边形混合单变元的两种变差。
+*)
 
-(* `Naturality A` equips type `A` 态射 families 命题
- `natural f` asserts `f` natural. （已译） *)
+(*
+`Naturality A` equips a type `A` of morphism families with the proposition
+   `natural f` that asserts `f` is natural.
+
+--------
+`Naturality A` 为一类 `A` 的态射族配备了命题 `natural f`，该命题断言 `f` 是自然的。
+*)
 (*
    【Class Naturality 语法与字段展开】/ Syntax & field walkthrough
    （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
@@ -48,15 +76,19 @@ Generalizable All Variables.
 *)
 
 Class Naturality (A : Type) : Type := {
-  natural (f : A) : Type            (* 自然性 statement family f （已译） *)
+  natural (f : A) : Type            (* the naturality statement for a family f / 族 f 的自然性陈述 *)
 }.
 
 Arguments natural {A _} _ /.
 
 (*
-   本节说明 Naturality 相关定义、性质与动机。
+Discharge a `natural _ * natural _ * ...` goal (a tuple of naturality
+   squares, as produced for isomorphism families and for the conjunctions in
+   `monoidal_naturality`): unfold the structure `H`, split the products, then
+   close each square with the caller-supplied tactic `tac`.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+释放一个 `natural _ * natural _ * ...` 目标（一个自然性平方的元组，由同构族和 `monoidal_naturality` 中的结合生成）：展开结构 `H`，拆分乘积，然后使用调用者提供的策略 `tac` 关闭每个平方。
 *)
 Ltac prove_naturality H tac :=
   simpl; destruct H; simpl;
@@ -78,9 +110,14 @@ Program Instance Functor_Naturality
                ∀ x y (g : x ~{C}~> y), fmap[G] g ∘ f x ≈ f y ∘ fmap[F] g
 }.
 
-(* Retained exploratory code: partial-application 函子 bi/curried
- 函子. Superseded `Mapping`-based `Arity*` instances below, which
- avoid materialising `C ⟶ C` 函子 per argument; kept reference.（已译） *)
+(*
+Retained exploratory code: partial-application functors for bi/curried
+   functors. Superseded by the `Mapping`-based `Arity*` instances below, which
+   avoid materialising a `C ⟶ C` functor per argument; kept for reference.
+
+--------
+保留的探索性代码：用于双/柯里化函子的部分应用函子。已被下面基于 `Mapping` 的 `Arity*` 实例取代，这些实例避免了为每个参数生成 `C ⟶ C` 函子；保留以供参考。
+*)
 (*
 Program Instance PartialApply_Product_Left {F : C × C ⟶ C} {x : C} : C ⟶ C := {
   fobj := fun y => F (x, y);
@@ -133,15 +170,74 @@ Qed.
 Next Obligation.
   sapply (@fmap_comp _ _ F x Y0 z f g y).
 Qed.
- *)
+
+--------
+程序实例 PartialApply_Product_Left {F : C × C ⟶ C} {x : C} : C ⟶ C := {
+  fobj := fun y => F (x, y);
+  fmap := fun _ _ f => fmap[F] (id[x], f)
+}.
+下一个义务。
+  proper; 重写; 自反性。
+结束。
+下一个义务。
+  重写 <- fmap_comp。
+  简化。
+  重写 id_left。
+  自反性。
+结束。
+
+程序实例 PartialApply_Curried_Left {F : C ⟶ [C, C]} {x : C} : C ⟶ C := {
+  fobj := fun y => F x y;
+  fmap := fun _ _ f => fmap[F x] f
+}.
+下一步义务。应用 fmap_comp。已完成。
+
+程序实例 PartialApply_Product_Right {F : C × C ⟶ C} {y : C} : C ⟶ C := {
+  fobj := fun x => F (x, y);
+  fmap := fun _ _ f => fmap[F] (f, id[y])
+}.
+下一个义务。
+  proper; 重写; 自反性。
+结束。
+下一个义务。
+  重写 <- fmap_comp。
+  简化。
+  重写 id_left。
+  自反性。
+结束。
+
+程序实例 PartialApply_Curried_Right {F : C ⟶ [C, C]} {y : C} : C ⟶ C := {
+  fobj := fun x => F x y;
+  fmap := fun _ _ f => fmap[F] f y
+}。
+下一义务。
+  proper。
+  使用 (@fmap_respects _ _ F x Y0 x y X0)。
+结束。
+下一义务。
+  假设证据 (@fmap_id _ _ F x y)。
+  在 X0 中简化。
+  重写 X0。
+  应用 fmap_id。
+结束。
+下一义务。
+  使用 (@fmap_comp _ _ F x Y0 z f g y)。
+结束。
+*)
 
 (*
-   本节说明 Naturality 相关定义、性质与动机。
+A `Mapping F` records a morphism action `map : (x ~> y) → (F x ~> F y)` for
+   an object map `F : C → C`, without demanding the functor laws. It supplies
+   the per-variable action `F(f)`/`G(f)` used inside the `Arity*` naturality
+   squares below, so that those squares can be stated for object maps that are
+   functorial in each argument (e.g. the partial applications of a bifunctor)
+   even when no single `C ⟶ C` functor is to hand.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+一个 `Mapping F` 记录了对对象映射 `F : C → C` 的态射作用 `map : (x ~> y) → (F x ~> F y)`，而不要求函子定律。它提供了在下面 `Arity*` 自然性方格中使用的每变量作用 `F(f)`/`G(f)`，使得这些方格可以对在每个参数上都是函子性的对象映射（例如双函子的部分应用）进行陈述，即使没有单一的 `C ⟶ C` 函子可用。
 *)
 Class Mapping {C : Category} (F : C → C) : Type := {
-  map {x y} (f : x ~> y) : F x ~> F y;    (* the morphism action F f of F *)
+  map {x y} (f : x ~> y) : F x ~> F y;    (* the morphism action F f of F / F 的射影作用 F f *)
 }.
 
 #[export]
@@ -178,9 +274,13 @@ Program Instance ArityOne {C : Category}
 }.
 
 (*
-   本节说明 Naturality 相关定义、性质与动机。
+Naturality of a family `f : ∀ A B, P A B ~> Q A B` jointly in both
+   (covariant) arguments: for `g : x ~> y` and `h : z ~> w` the square reads
+   `Q(g,h) ∘ f x z ≈ f y w ∘ P(g,h)`, where the bifunctorial actions factor as
+   `Q(g,h) = GB h ∘ GA g` and `P(g,h) = FB h ∘ FA g`.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+一个族 `f : ∀ A B, P A B ~> Q A B` 在两个（协变）参数中联合的自然性：对于 `g : x ~> y` 和 `h : z ~> w`，正方形为 `Q(g,h) ∘ f x z ≈ f y w ∘ P(g,h)`，其中二函子作用分解为 `Q(g,h) = GB h ∘ GA g` 和 `P(g,h) = FB h ∘ FA g`。
 *)
 #[export]
 Program Instance ArityTwo {C : Category}
@@ -284,9 +384,12 @@ Program Instance ArityFive {C : Category}
 }.
 
 (*
-   本节说明 Naturality 相关定义、性质与动机。
+For a family of isomorphisms `f : ∀ A, P A ≅ Q A`, naturality means both the
+   forward components `to (f A)` and the backward components `from (f A)` are
+   natural; the statement is the product (`*`) of the two squares.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+对于同构族 `f : ∀ A, P A ≅ Q A`，自然性意味着正向分量 `to (f A)` 和反向分量 `from (f A)` 都是自然的；该陈述是两个方格的乘积 (`*`)。
 *)
 #[export]
 Program Instance Transform_ArityOne {C : Category}

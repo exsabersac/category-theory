@@ -14,20 +14,76 @@ Require Import Category.Theory.Algebra.CommutativeComonoid.
 
 Generalizable All Variables.
 
-(*
- nLab:      https://ncatlab.org/nlab/show/comonoid
- nLab:      https://ncatlab.org/nlab/show/monoidal+functor
- Reference: Fong & Spivak, "Hypergraph Categories",
- Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
+(**
+* Tensor and unit comonoids in a symmetric monoidal category
 
-   本文件给出张量相关构造。
+    In any symmetric monoidal category the (commutative) comonoids are
+    closed under the tensor product and inhabited at the unit object:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    - given comonoids on [X] and [Y], the canonical morphisms
+      [canonical_tensor_delta]/[canonical_tensor_epsilon] of
+      Structure/Monoidal/Hypergraph.v — the doubled comultiplication
+      routed through the middle interchange, and the doubled counit
+      collapsed by the unitor — form a comonoid on [X ⨂ Y]
+      ([Comonoid_Tensor]), cocommutative when the components are
+      ([CommutativeComonoid_Tensor]);
+    - the unit object carries the trivial comonoid [δ := λ⁻¹, ε := id]
+      ([Comonoid_Unit], [CommutativeComonoid_Unit]).
+
+    This is the classical fact that the squaring-style structure maps of
+    the tensor bifunctor make it a symmetric (strong) monoidal functor
+    [C ∏ C ⟶ C], so it carries comonoids to comonoids (Fong–Spivak,
+    "Hypergraph Categories", §2; the [scfa_tensor_*]/[scfa_unit_*]
+    coherence fields of the [Hypergraph] class assert exactly these
+    composites, and Structure/Monoidal/CopyDiscard.v assumes them as the
+    supply-coherence fields).  Here the comonoid laws are PROVED rather
+    than assumed, so downstream developments can derive a comonoid on a
+    composite boundary from per-generator comonoids without any
+    boundary-level axiom.
+
+    Tensoring two DIFFERENT comonoids needs the interchange coherences
+    of Structure/Monoidal/Braided/Proofs.v at mixed arguments: the
+    four-slot naturality [swap_inner_natural], the involution
+    [swap_inner_invol], the unit coherences [swap_inner_unit_left2] /
+    [swap_inner_unit_right2] in their solved and inverse orientations,
+    and the inverted associativity hexagon [swap_inner_assoc_inv].  The
+    diagonal forms consumed by the copy-discard stack are one-line
+    instances of the same lemmas.
+
+    nLab:      https://ncatlab.org/nlab/show/comonoid
+    nLab:      https://ncatlab.org/nlab/show/monoidal+functor
+    Reference: Fong & Spivak, "Hypergraph Categories",
+               J. Pure Appl. Algebra 223(11):4746–4777, 2019
+               (arXiv:1806.08304), §2
+    Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
+               string diagrams", MSCS 29(7):938–971, 2019
+               (arXiv:1709.00322), §2
+
+--------
+* 对称单体范畴中的张量和单位余单子
+
+在任何对称单体范畴中，（交换的）余单体在张量积下是封闭的，并且在单位对象处是有的：
+
+- 给定在 [X] 和 [Y] 上的余单体，规范态射 [canonical_tensor_delta]/[canonical_tensor_epsilon]（来自 Structure/Monoidal/Hypergraph.v）——通过中间交换路由的加倍余乘法，以及由单元器坍缩的加倍余单位——在 [X ⨂ Y]（[Comonoid_Tensor]）上形成一个余单体，当各分量为 [CommutativeComonoid_Tensor] 时，该余单体是余交换的；
+- 单位对象携带平凡的余单体 [δ := λ⁻¹, ε := id]（[Comonoid_Unit], [CommutativeComonoid_Unit]）。
+
+这是一个经典事实，即张量双函子的平方风格结构映射使其成为一个对称（强）单幺函子 [C ∏ C ⟶ C]，因此它将余单子映射到余单子（Fong–Spivak，《超图范畴》，§2；[scfa_tensor_*]/[scfa_unit_*] 的一致性域的 [Hypergraph] 类恰好断言这些复合，Structure/Monoidal/CopyDiscard.v 将其作为供给一致性域假设）。这里余单子定律是被证明的，而不是被假设的，因此后续的发展可以从每个生成元的余单子推出复合边界上的余单子，而无需任何边界级别的公理。
+
+对两个不同的余单体进行张量运算需要 Structure/Monoidal/Braided/Proofs.v 中的交互相干性，在混合参数下：四槽自然性 [swap_inner_natural]，反演性 [swap_inner_invol]，单位相干性 [swap_inner_unit_left2] / [swap_inner_unit_right2] 的已求解和逆向，以及反向结合六边形 [swap_inner_assoc_inv]。复制-丢弃堆栈使用的对角形式是相同引理的一行实例。
+
+nLab：https://ncatlab.org/nlab/show/comonoid
+nLab：https://ncatlab.org/nlab/show/monoidal+functor
+参考文献：Fong & Spivak，《超图范畴》，
+J. Pure Appl. Algebra 223(11):4746–4777, 2019
+(arXiv:1806.08304)，第2节
+参考文献：Cho & Jacobs，《通过字符串图进行解离和贝叶斯反演》，
+MSCS 29(7):938–971, 2019
+(arXiv:1709.00322)，第2节
 *)
 
 (* ------------------------------------------------------------------ *)
 
-(** ** The tensor of two comonoids *)
+(** ** The tensor of two comonoids / ** 两个余单体的张量 *)
 
 Section ComonoidTensor.
 
@@ -35,15 +91,20 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
 (*
-   本节说明 Tensor 相关定义、性质与动机。
+Hypergraph.v's [mid_swap_inv] is definitionally the diagonal of the
+   interchange; this bridge lets the canonical morphisms be rewritten
+   into [swap_inner] form (the mirror orientation of Deterministic.v's
+   [swap_inner_diag], restated locally to keep this file independent of
+   the copy-discard stack).
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Hypergraph.v 的 [mid_swap_inv] 从定义上是交换的对角线；这个桥接让典型的态射可以被重写成 [swap_inner] 形式（Deterministic.v 的 [swap_inner_diag] 的镜像取向，本地重新表述以保持该文件独立于复制-丢弃栈）。
 *)
 Lemma mid_swap_inv_swap_inner (x y : C) :
   mid_swap_inv x y ≈ swap_inner x x y y.
 Proof. reflexivity. Qed.
 
-(* * *** The comonoid laws canonical tensor 态射 （已译） *)
+(** *** The comonoid laws of the canonical tensor morphisms / *** 典范张量态射的余单子律 *)
 
 Theorem canonical_tensor_delta_coassoc {X Y : C}
         (CX : Comonoid X) (CY : Comonoid Y) :
@@ -55,8 +116,13 @@ Theorem canonical_tensor_delta_coassoc {X Y : C}
 Proof.
   unfold canonical_tensor_delta.
   rewrite !mid_swap_inv_swap_inner.
-  (* Push doubled comultiplication through interchange each
- side (four-slot 自然性), leaving component redexes. （已译） *)
+  (*
+Push the doubled comultiplication through the interchange on each
+     side (four-slot naturality), leaving the component redexes.
+
+--------
+将双倍余乘法通过每一边的交换（四槽自然性）推进，留下组件的还原式。
+*)
   assert (L : bimap (swap_inner X X Y Y
                        ∘ bimap (@delta _ _ _ CX) (@delta _ _ _ CY))
                     id[(X ⨂ Y)%object]
@@ -98,12 +164,12 @@ Proof.
   rewrite <- !comp_assoc.
   rewrite L; clear L.
   rewrite R; clear R.
-  (* Component coassociativity on the left branch. *)
+  (* Component coassociativity on the left branch. / 左分支上的分量共结合性。 *)
   rewrite (@delta_coassoc C _ X CX).
   rewrite (@delta_coassoc C _ Y CY).
   rewrite !bimap_comp.
   rewrite <- !comp_assoc.
-  (* 相关说明。 （已译） *)
+  (* Peel the shared tail; the residual is the inverted hexagon. / 剥去共享的尾部；剩余的是倒六边形。 *)
   rewrite !comp_assoc.
   comp_right.
   comp_right.
@@ -121,7 +187,13 @@ Proof.
   rewrite mid_swap_inv_swap_inner.
   rewrite bimap_comp_id_right.
   rewrite <- !comp_assoc.
-  (* 相关说明。 （已译） *)
+  (*
+Push the doubled counit through the interchange, then use the
+     component counit laws.
+
+--------
+将加倍的余单位通过互换，然后使用分量余单位定律。
+*)
   assert (T : bimap (bimap (@epsilon _ _ _ CX) (@epsilon _ _ _ CY))
                     id[(X ⨂ Y)%object]
                 ∘ (swap_inner X X Y Y
@@ -175,7 +247,7 @@ Proof.
   apply id_left.
 Qed.
 
-(** *** The packaged tensor comonoid *)
+(** *** The packaged tensor comonoid / *** 打包的张量余单体 *)
 
 Definition Comonoid_Tensor {X Y : C} (CX : Comonoid X) (CY : Comonoid Y) :
   Comonoid (X ⨂ Y) :=
@@ -186,7 +258,7 @@ Definition Comonoid_Tensor {X Y : C} (CX : Comonoid X) (CY : Comonoid Y) :
     (canonical_tensor_delta_counit_left CX CY)
     (canonical_tensor_delta_counit_right CX CY).
 
-(* The projections compute canonical 态射 nose. （已译） *)
+(* The projections compute to the canonical morphisms on the nose. / 这些投影精确地计算为典范态射。 *)
 Lemma Comonoid_Tensor_delta {X Y : C} (CX : Comonoid X) (CY : Comonoid Y) :
   @delta _ _ _ (Comonoid_Tensor CX CY) ≈ canonical_tensor_delta CX CY.
 Proof. reflexivity. Qed.
@@ -195,7 +267,7 @@ Lemma Comonoid_Tensor_epsilon {X Y : C} (CX : Comonoid X) (CY : Comonoid Y) :
   @epsilon _ _ _ (Comonoid_Tensor CX CY) ≈ canonical_tensor_epsilon CX CY.
 Proof. reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(** *** Cocommutativity of the tensor comonoid / *** 张量余单子的余交换性 *)
 
 Theorem canonical_tensor_delta_cocomm {X Y : C}
         (CX : CommutativeComonoid X) (CY : CommutativeComonoid Y) :
@@ -203,7 +275,7 @@ Theorem canonical_tensor_delta_cocomm {X Y : C}
 Proof.
   unfold canonical_tensor_delta.
   rewrite !mid_swap_inv_swap_inner.
-  (* 相关说明。 （已译） *)
+  (* The braid slides across the interchange onto the components. / 辫子滑过立交桥进入组件。 *)
   assert (BW : @braid C _ (X ⨂ Y)%object (X ⨂ Y)%object
                  ∘ swap_inner X X Y Y
                ≈ swap_inner X X Y Y
@@ -250,10 +322,20 @@ End ComonoidTensor.
 
 (* ------------------------------------------------------------------ *)
 
-(*
-   本节说明 Tensor 相关定义、性质与动机。
+(**
+** The trivial comonoid on the unit object
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    [δ_I := λ⁻¹, ε_I := id] — the structure the [Hypergraph] class
+    asserts through its [scfa_unit_delta]/[scfa_unit_epsilon] fields
+    and Fong–Spivak show is the unique unit-compatible choice.  The
+    laws are pure unitor coherence (Kelly's λ_I ≈ ρ_I).
+
+--------
+** 单位对象上的平凡余单体
+
+    [δ_I := λ⁻¹, ε_I := id] — [Hypergraph] 类通过其 [scfa_unit_delta]/[scfa_unit_epsilon] 字段断言的结构
+    并且 Fong–Spivak 显示这是唯一与单位兼容的选择。
+    这些律是纯单位子一致性（Kelly 的 λ_I ≈ ρ_I）。
 *)
 
 Section ComonoidUnit.

@@ -16,21 +16,150 @@ Require Import Equations.Prop.Logic.
 
 Generalizable All Variables.
 
-(** * 骨骼与骨骼范畴 *)
+(** * Skeletons and skeletal categories / * 骨骼和骨骼范畴 *)
 
-(* nLab: https://ncatlab.org/nlab/show/skeleton
+(*
+nLab: https://ncatlab.org/nlab/show/skeleton
+   Wikipedia: https://en.wikipedia.org/wiki/Skeleton_(category_theory)
+
+   A category is SKELETAL when isomorphic objects are equal, and a SKELETON
+   of C is a full subcategory of C containing exactly one object from each
+   isomorphism class.  Mac Lane states both (Categories for the Working
+   Mathematician, 2nd ed., §IV.4, Definition 3, p. 93), then records that a
+   category is equivalent to each of its skeletons (Remark 1, p. 95) and
+   asks in Exercise 1 (p. 95) for the two comparison results: any two
+   skeletons of one category are isomorphic, and two categories are
+   equivalent exactly when their skeletons are isomorphic.  Riehl defines a
+   skeleton instead as any skeletal category equivalent to C (Category
+   Theory in Context, §1.5, Definition 1.5.16, p. 36); that reading is
+   [skeletal_equivalence_is_isomorphism] below, of which the subcategory
+   form is a corollary, and her Remark 1.5.17 (pp. 36-37) matches Mac
+   Lane's.  She computes examples
+   (Example 1.5.18, p. 37).  Awodey asks for the skeletal subcategory and
+   for a property invariant under isomorphism of categories but not under
+   equivalence (Category Theory, 1st ed., §7.10, Exercises 12 and 11,
+   p. 188); skeletality is that property, and both halves are proved in
+   Theory/Skeleton/Separation.v.  Fong & Spivak observe that a partial
+   order is exactly a skeletal preorder (Seven Sketches in
+   Compositionality, §1.2.2, remark 35, p. 13), which is
+   [Proset_Skeletal_iff_Antisymmetric] in Instance/Proset/Skeletal.v.
+
+   HYPOTHESES AS DATA (honest reading, per the campaign discipline).  The
+   existence of a skeleton is equivalent to the axiom of choice, a caveat
+   Theory/Equivalence.v has carried since long before this file, so no
+   existence claim is made here: the choice is carried as the record
+   [Skeleton], a full subcategory together with, for each object of C, a
+   chosen object of that subcategory isomorphic to it and a proof that it is
+   the only one.  Every field is load-bearing.  [skel_full] is what makes the
+   inclusion full, [skel_rep] and [skel_iso] are the essential surjectivity
+   that [skeleton_inclusion_is_equivalence] consumes — the counit of the
+   resulting equivalence IS the chosen family, and [skel_reflect_obj] holds by
+   [reflexivity] — and [skel_uniq] is what [skeleton_is_skeletal] consumes.
+   This is the discipline of Theory/Equivalence.v's [EssentiallySurjective],
+   where "there exists a preimage" is replaced by "here is one", and the
+   packaging of [SolutionSet] in Adjunction/SAFT.v and [AdamekData] in
+   Theory/Adamek.v: a leaner-but-honest hypothesis form that never weakens the
+   conclusion.
+
+   WHY [skel_uniq] IS STATED AT THE SIGMA LEVEL.  Its conclusion equates
+   objects of [Sub C skel_sub], which are dependent pairs, so it also
+   identifies membership proofs.  That is not extra strength imposed for
+   convenience.  In a full subcategory two membership proofs for one object
+   already give isomorphic objects of [Sub] ([Full_membership_iso],
+   Construction/Subcategory.v), so any notion of skeletality for [Sub]
+   identifies them anyway; and the weakening is provably unavailable.
+   [skeleton0_skeletal_forces_UIP] shows that the carrier-level clause (the
+   record [Skeleton0] below) cannot yield [Skeletal (Sub C s0_sub)] without
+   entailing UIP for every type, by a free-loop-space countermodel over
+   [DiscreteCat] — while [skeleton0_is_skeletal_carrier] shows the carrier
+   statement itself survives, which is what makes the separation sharp.  This
+   is the house pattern of [arrow_mul_respects_forces_UIP]
+   (Theory/Category/Monoid.v) and [Discrete_DiscreteUpToIso_forces_UIP]
+   (Instance/Discrete/Reconstruct.v).
+
+   WHY [StrictCat] AND NOT [Cat].  Mac Lane's Exercise 1 and Riehl's Remark
+   1.5.17 both say ISOMORPHIC, on the nose.  [Cat]'s hom-setoid is
+   [Functor_Setoid] (Instance/Cat.v), i.e. natural isomorphism, so an
+   isomorphism in [Cat] between two skeletons says only that they are
+   equivalent — which already follows from [skeleton_inclusion_is_equivalence]
+   on both sides, with no skeletality used at all.  The discriminating
+   statement is [≅[StrictCat]], whose hom-setoid is [Functor_StrictEq_Setoid]
+   (Theory/Functor.v), and that is what [skeletons_are_isomorphic] proves.
+   [Skeletal_StrictCat_invariant] and
+   [skeletality_is_not_equivalence_invariant] (Theory/Skeleton/Separation.v)
+   are the two halves that demonstrate the distinction is real.  Note also
+   that [skeletons_isomorphic_iff_equivalent] is an iff relative to GIVEN
+   skeletons on both sides: it says nothing whatever about categories for
+   which no [Skeleton] is supplied, which is the only reading available
+   under the no-existence discipline above.
+
+   THE CRUX, AND WHY NO RIGIDITY HYPOTHESIS IS NEEDED.  The two evident
+   comparison functors between skeletons are not mutually strict inverses:
+   their composite conjugates by an automorphism of the object it sits at, and
+   a skeletal category can have plenty of those.  The correction is the
+   half-adjoint (adjointification) move of the HoTT book, applied at the level
+   of OBJECT TYPES only: from the two object bijections one builds a corrected
+   counit [adjointified] satisfying the triangle [half_adjoint_triangle],
+   after which the loop that would otherwise have to be collapsed is [eq_refl]
+   by construction.  The alternative — assuming object-level UIP on one
+   skeleton, in the idiom of [ObjDecEq] (Construction/Quotient.v) — is thereby
+   avoided, and the whole file stays free of rigidity hypotheses.  Note also
+   that [skel_reflect] is the identity on the OBJECTS of the skeleton
+   ([skel_reflect_incl_obj], on the nose) and only naturally isomorphic to the
+   identity on morphisms ([skeleton_remark]); the strict statement holds for
+   the CORRECTED inverse used in Exercise 1, not for the canonical reflector.
+
+   NON-FUNCTORIALITY, and what is proved instead.  The assignment of a
+   skeleton to a category is not known to be functorial, and is expected
+   not to be: a functor F : C ⟶ D need not
+   carry chosen representatives to chosen representatives, so F has no strict
+   lift to the chosen skeletons.  What there is, and what is proved here, is
+   the comparison functor [skel_comparison] together with
+   [skel_comparison_natural]: the inclusion of the comparison is naturally
+   isomorphic to the restriction, which is exactly Riehl's clause, and no
+   more.  The pseudofunctor that would package this coherently is out of scope
+   for a reason and not for want of effort: [Pseudofunctor]
+   (Theory/Bicategory/Pseudofunctor.v) requires a total object assignment from
+   categories to skeletal categories, which IS the existence claim this file
+   refuses to make, and there is no bicategory of skeletal categories in tree
+   (Instance/Cat/Bicategory.v supplies [Cat] only).  The negative half — that
+   no strictly functorial choice exists — needs a counterexample and is
+   not attempted here.
+
+   SCOPE OF THE IMPORTS.  This is a heavyweight Theory module: stating
+   [≅[StrictCat]] needs Instance/StrictCat.v and Instance/StrictCat/ToCat.v,
+   the bundled [≃] needs Theory/Equivalence/Bundled.v, the [≅[Fun]] forms
+   need Instance/Fun.v, and the forcing countermodel needs
+   Instance/Discrete.v's [DiscreteCat].  That is precedented — Theory/
+   Equivalence.v already requires Instance/Fun.v and Instance/Cat.v — but it
+   is deliberate rather than incidental.  The separating witnesses, which
+   would additionally drag Instance/Discrete/Reconstruct.v and
+   Instance/Two.v, are kept OFF this cone in Theory/Skeleton/Separation.v,
+   the same split rationale Instance/Discrete/Reconstruct.v records for
+   itself.
+
+--------
+nLab: https://ncatlab.org/nlab/show/skeleton
    Wikipedia: https://en.wikipedia.org/wiki/Skeleton_(category_theory)
 
    范畴的骨骼 (skeleton) 是选择每个同构类恰一个代表对象所得的等价子范畴：骨骼等价于原范畴，
    且同构对象在骨骼中重合。本文件在库的 setoid/宇宙纪律下构造骨骼与相关等价数据；长证明旁注
-   若仍为英文属后续波次。 *)
+   若仍为英文属后续波次。
+*)
 
-(* * ** The half-adjoint correction, at level 对象 types （已译） *)
+(** ** The half-adjoint correction, at the level of object types / ** 半伴随校正，在对象类型层面 *)
 
 (*
-   本节说明 Skeleton 相关定义、性质与动机。
+The path algebra needed for [half_adjoint_triangle] below.  These are the
+   HoTT-book lemmas for [f_equal] (there written [ap]) and for homotopies,
+   proved here by [destruct] on the path so that nothing outside
+   Coq.Init.Logic is used.  [f_equal_idmap] has no standard-library name,
+   and [ap_ap] is preferred to the standard [f_equal_compose] because it is
+   always applied with both functions given explicitly, which is what makes
+   it fire against beta-reduced indices.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+下面是 [half_adjoint_triangle] 所需的路径代数。这些是 HoTT 书中的引理，针对 [f_equal]（在那里写作 [ap]）和同伦，在这里由 [destruct] 在路径上证明，以便不使用 Coq.Init.Logic 之外的任何内容。[f_equal_idmap] 没有标准库名称，而 [ap_ap] 优于标准的 [f_equal_compose]，因为它总是同时显式地应用两个函数，这正是使它对 beta 简化的索引起作用的原因。
 *)
 
 Section HalfAdjoint.
@@ -75,9 +204,13 @@ Proof.
 Qed.
 
 (*
-   本节说明伴随相关定义、性质与动机。
+The corrected counit.  The raw [eps] satisfies no triangle: [eps (f a)]
+   and [f_equal f (eta a)] are two proofs of one object equality, and
+   identifying them is exactly what UIP would buy.  [adjointified] repairs
+   [eps] so that the triangle holds by path algebra alone.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+修正后的余单位。原始的 [eps] 不满足三角形：[eps (f a)] 和 [f_equal f (eta a)] 是一个对象相等性的两个证明，而将它们识别正是 UIP 能提供的。[adjointified] 修复了 [eps]，使得三角形仅通过路径代数就成立。
 *)
 
 Definition adjointified (b : B) : f (g b) = b :=
@@ -95,12 +228,16 @@ Qed.
 
 End HalfAdjoint.
 
-(* * ** Strict 函子 equality family 对象 equalities （已译） *)
+(** ** Strict functor equality from a family of object equalities / ** 从一族对象相等性得到严格函子相等性 *)
 
 (*
-   本节说明函子相关定义、性质与动机。
+[Functor_StrictEq_Setoid] compares functors by a family of object
+   equalities together with a transported-morphism condition.  Stating that
+   condition with [id_cast] instead of raw [transport] keeps every proof
+   below inside the ordinary categorical calculus.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[Functor_StrictEq_Setoid] 通过一族对象等价以及一个传递态射条件来比较函子。用 [id_cast] 而不是原始的 [transport] 来说明该条件，可以使下面的每个证明都保持在普通范畴演算之内。
 *)
 
 Lemma transport_square {D : Category} {a a' b b' : D}
@@ -122,20 +259,31 @@ Definition strict_equiv_of_id_cast_nat
   existT _ e (fun x y f => snd (transport_square (e x) (e y)
                                   (fmap[F] f) (fmap[G] f)) (H x y f)).
 
-(** ** Skeletal categories *)
+(** ** Skeletal categories / ** 骨架范畴 *)
 
-(* Mac Lane §IV.4 Definition 3, second half; Riehl Definition 1.5.16.  A
+(*
+Mac Lane §IV.4 Definition 3, second half; Riehl Definition 1.5.16.  A
    plain [Definition], not a [Class]: nothing here is registered for
-   instance resolution, following Theory/Equivalence.v. *)
+   instance resolution, following Theory/Equivalence.v.
+
+--------
+Mac Lane §IV.4 定义 3，下半部分；Riehl 定义 1.5.16。一个普通的 [Definition]，而不是 [Class]：这里没有任何东西被注册用于实例解析，遵循 Theory/Equivalence.v。
+*)
 
 Definition Skeletal (C : Category) := ∀ x y : C, x ≅ y → x = y.
 
-(* * ** An 等价 between skeletal 范畴 同构 （已译） *)
+(** ** An equivalence between skeletal categories is an isomorphism / ** 骨架范畴之间的等价是一种同构 *)
 
 (*
-   本节说明伴随、等价相关定义、性质与动机。
+The general lemma, of which Mac Lane's Exercise 1 is a corollary.  The
+   quasi-inverse supplied by the equivalence is corrected twice: its action
+   on morphisms is replaced by the [prefmap] of a [hom_cast] (so that the
+   two composites are strictly, not merely naturally, the identities), and
+   its object counit is replaced by [adjointified] (so that no rigidity
+   hypothesis is needed).
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+一般引理，其中 Mac Lane 的练习 1 是一个推论。由等价提供的准逆经过两次修正：它在态射上的作用被替换为 [prefmap] 的 [hom_cast]（这样两个复合严格地，而不仅仅是自然地，成为恒等映射），并且它的对象余单位被替换为 [adjointified]（因此不需要任何刚性假设）。
 *)
 
 Section SkeletalEquivalence.
@@ -200,9 +348,14 @@ Proof using All.
   reflexivity.
 Qed.
 
-(* The [!Eps_triangle] rewrite below crux: RAW counit the
- goal would carry loop at intermediate 对象 UIP could
- collapse. （已译） *)
+(*
+The [!Eps_triangle] rewrite below is the crux: with the RAW counit the
+   goal would carry a loop at the intermediate object that only UIP could
+   collapse.
+
+--------
+下面的 [!Eps_triangle] 重写是关键：使用 RAW counit，目标将在中间对象上携带一个只有 UIP 才能折叠的循环。
+*)
 
 Lemma FinvF_strict :
   @equiv _ (@Functor_StrictEq_Setoid A A) (Finv ◯ F) Id[A].
@@ -227,12 +380,18 @@ End SkeletalEquivalence.
 
 Arguments skeletal_equivalence_is_isomorphism {A B} SA SB F E.
 
-(* 相关说明。 （已译） *)
+(** ** "A is a skeleton of C", packaged as data / ** “A 是 C 的骨架”，打包为数据 *)
 
 (*
-   本节说明同构、（余）强度相关定义、性质与动机。
+Mac Lane §IV.4 Definition 3, first half; Riehl Definition 1.5.16.  The
+   uniqueness clause concludes in [Sub C skel_sub], not in C: see the header
+   for why that strengthening is necessary rather than convenient.  Note
+   also that Lib/Setoid.v's [Unique]/[∃!] must NOT be used here: at object
+   level the exported [ob_setoid] makes [≈] mean isomorphism, so [Unique]
+   would state a vacuity.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Mac Lane §IV.4 定义 3，前半部分；Riehl 定义 1.5.16。唯一性条款在 [Sub C skel_sub] 中结束，而不是在 C 中：参见标题中解释为什么这种加强是必要的，而不是方便的。还请注意，这里不得使用 Lib/Setoid.v 的 [Unique]/[∃!]：在对象层面，导出的 [ob_setoid] 使 [≈] 意味着同构，因此 [Unique] 会表述一个空洞性。
 *)
 
 Section Skeleton.
@@ -278,8 +437,13 @@ Program Definition Incl_EssSurj : EssentiallySurjective (skel_incl S) := {|
   eso_iso := fun x => iso_sym (skel_iso S x)
 |}.
 
-(* Mac Lane §IV.4 Remark 1, first half: 含入 skeleton an
- 等价. [Defined], so reflector below reduces. （已译） *)
+(*
+Mac Lane §IV.4 Remark 1, first half: the inclusion of a skeleton is an
+   equivalence.  [Defined], so that the reflector below reduces.
+
+--------
+Mac Lane §IV.4 备注 1，上半部分：包含一个骨架是一个等价。[Defined]，因此下面的反射器被简化。
+*)
 
 Theorem skeleton_inclusion_is_equivalence :
   EquivalenceOfCategories (skel_incl S).
@@ -291,7 +455,7 @@ Defined.
 Definition skeleton_equivalence : skel_cat S ≃ C :=
   (skel_incl S; skeleton_inclusion_is_equivalence).
 
-(* 相关说明。 （已译） *)
+(* the reflector, and the two halves of the Remark / 反射器，以及 Remark 的两半 *)
 Definition skel_reflect : C ⟶ skel_cat S :=
   @quasi_inverse _ _ _ skeleton_inclusion_is_equivalence.
 
@@ -321,9 +485,16 @@ Definition skeleton_unit_iso {C : Category} (S : Skeleton C) :
   equiv_iso (skeleton_unit S).
 
 (*
-   本节说明同构相关定义、性质与动机。
+Mac Lane §IV.4 Remark 1, in the issue's own orientation.  The second
+   component is at OBJECTS only: [skel_reflect S ◯ skel_incl S ≈[StrictCat]
+   Id] is not derivable in general for the CANONICAL reflector (it holds in
+   degenerate cases such as [Indiscrete_bool_Skeleton]), since it would need a
+   normality coherence tying the chosen isomorphism to the chosen equality.
+   The strict statement holds instead for the CORRECTED inverse built in
+   Exercise 1 below.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Mac Lane §IV.4 注释 1，在问题本身的取向下。第二个分量仅在对象上：[skel_reflect S ◯ skel_incl S ≈[StrictCat] Id] 对于规范反射器来说通常不可推导（它在退化情况下如 [Indiscrete_bool_Skeleton] 中成立），因为这需要一个将所选同构与所选等式联系起来的正规一致性。严格的陈述则适用于下面练习 1 中构建的修正逆。
 *)
 
 Definition skeleton_remark {C : Category} (S : Skeleton C) :
@@ -332,12 +503,41 @@ Definition skeleton_remark {C : Category} (S : Skeleton C) :
   (iso_sym (skeleton_counit_iso S), skel_reflect_incl_obj S).
 
 (*
-   本节说明 Skeleton 相关定义、性质与动机。
+THE GROUPOID OF FINITE SETS AND BIJECTIONS is not in tree, and this
+   development does not pretend otherwise.  Riehl's Example 1.5.18 computes
+   its skeleton — the naturals, with the symmetric groups as automorphism
+   groups and no morphisms between distinct numbers — but "the skeleton OF"
+   needs the ambient groupoid, and there is none: Construction/Groupoid.v
+   supplies only the core [Groupoid C] of a given C, and building the groupoid
+   of ALL finite sets over [Sets] would reproduce the universe obstruction
+   docs/INHABITATION.md already records for cospans, where [Sets] places its
+   objects one universe above its homs.  The skeleton-side facts about
+   [Groupoid FinSet] — that it is skeletal, that its off-diagonal hom-sets are
+   empty, and that its automorphism monoid at [n] is the group of bijections
+   of the canonical n-element set — are each cheap over the
+   [hom_monoid]/[GrpObject] of Construction/Deloop.v, but they are statements
+   about [Groupoid FinSet], not about a skeleton of anything, and they are
+   left for a follow-up rather than stated.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+有限集和双射的群不在树中，并且这个
+ 发展不会假装不是这样。 Riehl 的示例 1.5.18 计算
+ 它的骨架——自然群，对称群作为自同构
+ 群并且不同数字之间没有态射——但是“骨架”
+ 需要环境 groupoid，但没有：Construction/Groupoid.v
+ 仅提供给定 C 的核心 [Groupoid C]，并构建 groupoid
+ [Sets] 上的所有有限集将重现宇宙障碍
+ docs/INHABITATION.md 已经记录了 cospans，[Sets] 将其放置在其中
+ 物体在其本位之上一个宇宙。 骨架方面的事实
+ [Groupoid FinSet] — 它是骨架，它的非对角线角集是
+ 空，并且 [n] 处的自同构幺半群是双射群
+ 规范的 n 元素集 - 每个元素都比
+ Construction/Deloop.v 的 [hom_monoid]/[GrpObject]，但它们是语句
+ 关于 [Groupoid FinSet]，而不是任何东西的骨架，它们是
+ 留下后续行动而不是陈述。
 *)
 
-(** ** Mac Lane §IV.4 Exercise 1 *)
+(** ** Mac Lane §IV.4 Exercise 1 / ** 麦克莱恩 §IV.4 练习 1 *)
 
 Definition skeletons_of_equivalent_are_isomorphic
   {C D : Category} (S : Skeleton C) (T : Skeleton D) (Eq : C ≃ D) :
@@ -371,7 +571,7 @@ Definition skeletons_isomorphic_iff_equivalent
   (skeletons_of_equivalent_are_isomorphic S T,
    equivalent_of_isomorphic_skeletons S T).
 
-(* * ** Riehl Remark 1.5.17: comparison 函子 along arbitrary F （已译） *)
+(** ** Riehl Remark 1.5.17: the comparison functor along an arbitrary F / ** Riehl 注 1.5.17：沿任意 F 的比较函子 *)
 
 Definition skel_comparison {C D : Category}
   (S : Skeleton C) (T : Skeleton D) (F : C ⟶ D) : skel_cat S ⟶ skel_cat T :=
@@ -393,7 +593,7 @@ Definition skel_comparison_natural_iso {C D : Category}
   skel_incl T ◯ skel_comparison S T F ≅[Fun] F ◯ skel_incl S :=
   equiv_iso (skel_comparison_natural S T F).
 
-(* 相关说明。 （已译） *)
+(** ** Why the uniqueness clause cannot be weakened to carriers / ** 为什么唯一性条款不能对承运人减弱 *)
 
 Section Skeleton0.
 Context {C : Category}.
@@ -419,8 +619,13 @@ Proof.
   - exact (iso_from_to i).
 Qed.
 
-(* The countermodel: over discrete 范畴, select membership proofs
- free loop space each 对象. （已译） *)
+(*
+The countermodel: over a discrete category, select as membership proofs
+   the free loop space of each object.
+
+--------
+反例模型：在一个离散范畴上，选择作为成员证明的每个对象的自由环空间。
+*)
 
 Program Definition Loop_Sub (A : Type) : Subcategory (DiscreteCat A) := {|
   sobj := fun x => x = x;
@@ -451,7 +656,7 @@ Proof.
   intros x y p q; destruct p; symmetry; apply loops.
 Qed.
 
-(* * ** A skeletal 范畴 own skeleton （已译） *)
+(** ** A skeletal category is its own skeleton / ** 一个骨架范畴就是它自己的骨架 *)
 
 Program Definition Wide_Sub (C : Category) : Subcategory C := {|
   sobj := fun _ => poly_unit;
@@ -481,12 +686,17 @@ End SkeletalOwnSkeleton.
 Lemma DiscreteCat_Skeletal (A : Type) : Skeletal (DiscreteCat A).
 Proof. intros x y f; exact (to f). Qed.
 
-(* 相关说明。 （已译） *)
+(** ** Awodey §7.10 Exercise 11, positive half / ** Awodey §7.10 练习 11，正半部分 *)
 
-(* Skeletality IS invariant under 同构 范畴. The other
- half — that it is not invariant under 等价 — is
- [skeletality_is_not_equivalence_invariant] in
- Theory/Skeleton/Separation.v.（已译） *)
+(*
+Skeletality IS invariant under isomorphism of categories.  The other
+   half — that it is not invariant under equivalence — is
+   [skeletality_is_not_equivalence_invariant] in
+   Theory/Skeleton/Separation.v.
+
+--------
+在范畴同构下，骨架性是保持不变的。另一半——即它在等价下不保持不变——在 Theory/Skeleton/Separation.v 中是 [skeletality_is_not_equivalence_invariant]。
+*)
 
 Theorem Skeletal_StrictCat_invariant {C D : Category}
         (i : C ≅[StrictCat] D) : Skeletal C → Skeletal D.
@@ -503,7 +713,13 @@ Proof.
 Qed.
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+The posetal REFLECTION — that every preorder HAS a skeleton — is a
+   different statement and is not made: it needs an object-level quotient, and
+   Construction/Quotient.v quotients homs only.  The catalog assigns that
+   clause to #372.  What is proved is the given-skeleton form,
+   [skeleton_of_proset_antisymmetric] (Instance/Proset/Skeletal.v): the
+   carrier of a skeleton of a preorder is antisymmetric, that is, a poset.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+集合性反射——每个预序都有一个骨架——是一个不同的陈述，而且没有被提出：它需要一个对象层面的商，而 Construction/Quotient.v 只对态射取商。目录将该条款分配给 #372。证明的是给定骨架形式，[skeleton_of_proset_antisymmetric] (Instance/Proset/Skeletal.v)：一个预序骨架的载体是反对称的，也就是说，它是一个偏序集。
 *)

@@ -7,28 +7,269 @@ Require Import Category.Theory.Equivalence.FullFaithful.
 
 Generalizable All Variables.
 
-(** Arrows-only metacategories over an arbitrary type of arrows *)
+(** Arrows-only metacategories over an arbitrary type of arrows / 针对任意箭头类型的仅箭头元范畴 *)
 
 (*
- nLab: https://ncatlab.org/nlab/show/metacategory
+nLab: https://ncatlab.org/nlab/show/metacategory
    nLab: https://ncatlab.org/nlab/show/category
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+         Springer 1998, I.1 (the "arrows-only" description) and I.8
+   Book: Riehl, "Category Theory in Context", Dover 2016, §1.1
 
-   本文件给出一般情形。
+   Mac Lane's single-sorted axiomatization of a category, stated here over an
+   ARBITRARY type of arrows, where Theory/Metacategory.v works over [nat] and
+   Theory/Metacategory/ArrowsOnly.v over [N], each with the composable pairs
+   held in one finite map. The data are arrows, the composable pairs, and the
+   composite assigned to each such pair; there is no separate sort of objects.
+   Objects are recovered as the identity arrows.
+   [Category_from_Metacategory] rebuilds a [Category] from that data and
+   [ToArrows] runs the passage the other way, the two being mutually inverse
+   in the precise senses recorded below — the content of Mac Lane's I.1 and of
+   his remark in I.8.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   THE DATA. Composition is kept as its GRAPH: [mcomp g f h] reads "g∙f is
+   defined, and equals h", so that the composable pairs and the composite
+   operation are a single datum. This follows Mac Lane's own phrasing
+   ("certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
+   an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f"), and
+   both sibling files already encode composition this way, as an entry of a
+   finite map ([M.MapsTo (f, g) h pairs], resp. [M.find (f, g) pairs = Some
+   h]). A partial FUNCTION [arrow → arrow → option arrow] was rejected: it
+   makes definedness decidable by construction, since one may always ask
+   whether the value is [None], and decidable definedness is not part of the
+   first-order theory. What the option form would give for free —
+   single-valuedness — is here the explicit field [mcomp_unique], which is
+   what makes the graph the graph of a partial operation.
+
+   Arrows carry a setoid, and this is forced by the converse passage. The
+   arrows of a category are its bundled morphisms, and morphisms in this
+   library are identified only up to the hom-setoid's ≈, never up to Coq's
+   [=]; a metacategory over a bare type could therefore not receive them
+   without collapsing that identification. Every law below is accordingly
+   stated up to ≈.
+
+   THE THREE AXIOMS. Mac Lane requires:
+
+     (i)   the composite (k∙g)∙f is defined if and only if k∙(g∙f) is defined,
+           and when either is defined they are equal;
+     (ii)  the triple composite k∙g∙f is defined whenever both k∙g and g∙f are;
+     (iii) for each arrow g there exist identity arrows u and u' such that g∙u
+           and u'∙g are defined.
+
+   Axiom (i) is stated here as the two fields [mcomp_assoc_l] and
+   [mcomp_assoc_r], at full strength: "(k∙g)∙f is defined" is read as "k∙g is
+   defined AND (k∙g)∙f is defined", so that each half also ASSERTS the
+   definedness of the other association. Both sibling files instead state the
+   biconditional under the hypothesis that k∙g and g∙f are BOTH already
+   defined (Theory/Metacategory.v,
+   Theory/Metacategory/ArrowsOnly.v), which is strictly weaker. The
+   difference is not cosmetic: under the weaker reading Mac Lane's remark that
+   the identities flanking an arrow are unique is refutable, and
+   [weak_identity_not_unique] at the end of this file exhibits a four-arrow
+   countermodel in which one arrow has two distinct source identities. The
+   weak form is recovered from the strong one as [mcomp_law], so nothing is
+   lost; [Weaken] records the implication at the level of records.
+
+   Axiom (iii) is a CONJUNCTION, as Mac Lane states it. Both sibling files
+   encode it with implications where the conjunction belongs, and both say so
+   in place (Theory/Metacategory.v,
+   Theory/Metacategory/ArrowsOnly.v): as written there the axiom is
+   satisfied by any non-identity witness and so constrains nothing. It is a
+   real axiom here, and it is load-bearing — [mident_idem] derives u∙u = u for
+   every identity from it, which is why the objects below need only carry
+   their identity proof, where ArrowsOnly.v's [object] must carry a separate
+   [obj_def] field to exclude arrows that are identities only vacuously.
+
+   THE TWO PASSAGES. [Category_from_Metacategory] takes objects to be the
+   identity arrows and morphisms to be the arrows flanked by the two given
+   identities, with composition read off the graph; single-valuedness makes
+   the choice of composite [Proper], and [mcompose_char] characterizes it.
+   [ToArrows] takes the arrows of a category to be its bundled morphisms
+   [Arr], with composability [atgt b = asrc a] an identity of objects. That
+   identity type is where the two settings genuinely differ: Mac Lane's
+   objects form a SET, so an identification of two objects carries no
+   information, and the faithful translation of that assumption into
+   intensional type theory is the hypothesis [obj_uip] that the objects of [C]
+   are an h-set. The library already threads this assumption where the same
+   issue arises (Construction/Grothendieck/Strict.v, whose constructors take
+   fibrewise UIP and discharge it by an inline axiom-free Hedberg;
+   Theory/Multicategory/Representable.v, which threads UIP on object lists).
+   It is used at exactly TWO places here.  [Arr_comp_unique]: without it the
+   composite of a composable pair is only well defined relative to a chosen
+   identification of the endpoints.  And [ToArrows_fmap_inj] -- which IS
+   [ToArrows_Faithful] -- where it collapses the two homogeneous equality
+   proofs a bundled morphism carries; faithfulness of the comparison rests on
+   it.  Every other field of [ToArrows] is proved without it.
+
+   THE ROUND TRIP, AND ITS EXACT STRENGTH. On the category side,
+   [ToArrows_Equivalence] proves that [ToArrows_Functor], which sends x to the
+   identity arrow at x and f to the bundle of f, is an
+   [EquivalenceOfCategories] between [C] and
+   [Category_from_Metacategory (ToArrows obj_uip)]. It is an EQUIVALENCE and
+   not an isomorphism of categories, and this is not slack in the proof: the
+   objects of the reconstruction are pairs of an arrow and a proof that it is
+   an identity, so an object of [C] is recovered together with a proof
+   component that no functor can strip. The three ingredients are proved
+   separately and are available on their own — [ToArrows_Full],
+   [ToArrows_Faithful], [ToArrows_EssentiallySurjective].
+
+   On the metacategory side the composite passage CAN be formed, under the
+   analogous hypothesis on the reconstruction's objects:
+   [MetaRoundTrip] below applies [ToArrows] to
+   [Category_from_Metacategory M], and [MetaRoundTrip_Equivalence] is the
+   category-level equivalence at that instance.  What this file does NOT
+   define is a notion of equivalence OF METACATEGORIES, so no
+   metacategory-level comparison of [MetaRoundTrip M] with [M] is stated --
+   that comparison has nowhere to live until such a notion exists.  What is
+   proved instead, hypothesis-free, is the content such a comparison would
+   need: [arrow_realized] shows every arrow of [M] underlies a morphism of
+   the reconstruction, and [arrow_endpoints] shows that ≈-equal arrows have
+   ≈-equal endpoints -- the correspondence is surjective up to ≈ with
+   endpoints determined (injectivity up to [Arr_eq] is NOT proved here). That
+   second half is precisely Mac Lane's uniqueness remark
+   ([mident_unique_src], [mident_unique_tgt]) in use, and
+   [arrow_endpoints_iso] upgrades it to canonical isomorphisms of objects via
+   [mobject_iso]. No claim is made that the two passages are mutually inverse
+   on the nose in either direction.
+
+--------
+nLab：https://ncatlab.org/nlab/show/metacategory
+ nLab：https://ncatlab.org/nlab/show/category
+ 书：Mac Lane，“工作数学家的范畴”，第二版，
+ Springer 1998，I.1（“仅箭头”描述）和 I.8
+ 书籍：Riehl，“语境中的范畴论”，Dover 2016，§1.1
+
+麦克莱恩（Mac Lane）对范畴的单排序公理化，在这里通过一个
+ 任意类型的箭头，其中 Theory/Metacategory.v 在 [nat] 上工作并且
+ Theory/Metacategory/ArrowsOnly.v over [N]，每个都有可组合对
+ 保存在一张有限的地图中。 数据是箭头、可组合对和
+ 分配给每个这样的对的合成； 没有单独的对象类型。 
+对象被恢复为恒等箭头。 
+[Category_from_Metacategory] 根据该数据重建 [Category]，并
+ [ToArrows] 以另一种方式运行通道，两者互逆
+ 在下面记录的精确意义上 - Mac Lane 的 I.1 的内容和
+ 他在 I.8 中的评论。
+
+数据。 成分保持其图形：[mcomp g f h] 读取“g∙f 是
+ 定义，并且等于 h"，因此可组合对和复合
+ 操作是单个数据。 这遵循 Mac Lane 自己的措辞
+ （“某些有序对 ⟨g, f⟩，称为可组合箭头对，并且
+ 为每个可组合对 ⟨g, f⟩ 分配箭头 g∙f" 的操作，以及
+ 两个同级文件已经以这种方式编码组合，作为 a 的条目
+ 有限映射（[M.MapsTo (f, g) h pairs]，分别 [M.find (f, g) 对 = Some
+ h]）。 部分 FUNCTION [arrow → arrow → option arrow] 被拒绝：它
+ 使定义可以通过构造来确定，因为人们可能总是会问
+ 该值是否为 [None]，并且可判定定义不属于
+ 一阶理论。 期权表格将免费提供什么——
+ 单值性 — 这里是显式字段 [mcomp_unique]，它是
+ 是什么使该图成为部分操作的图。
+
+箭头带有 setoid，这是由反向通道强制的。 的
+ 范畴的箭头是它的捆绑态射，并且这个范畴中的态射
+ 文库只能识别到 hom-setoid 的 ≈，而不能识别到 Coq 的
+ 保护10X； 因此，裸类型上的元范畴无法接收它们
+ 而不破坏该恒等。 以下每条法律均相应
+ 规定为 ≈。
+
+三个公理。 麦克莱恩要求：
+
+(i) 复合 (k∙g)∙f 当且仅当 k∙(g∙f) 被定义时才被定义，
+ 当其中任何一个被定义时，它们是相等的；
+ (ii) 只要 k∙g 和 g∙f 都为，则定义三重复合 k∙g∙f；
+ (iii) 对于每个箭头 g 都存在恒等箭头 u 和 u' 使得 g∙u
+ 和 u'∙g 被定义。
+
+Axiom (i) 在此表示为两个字段 [mcomp_assoc_l] 和
+ [mcomp_assoc_r]，全强度：“(k∙g)∙f 被定义”读作“k∙g 是
+ 定义 AND (k∙g)∙f 被定义”，因此每一半也断言
+ 其他关联的定义。 两个同级文件都说明了
+ 双条件，假设 k∙g 和 g∙f 都已经
+ 定义（理论/Metacategory.v，
+ Theory/Metacategory/ArrowsOnly.v)，这是严格较弱的。 的
+ 差异不是表面的：在较弱的情况下阅读 Mac Lane 的评论
+ 箭头两侧的恒等是唯一的，是可以反驳的，并且
+ 该文件末尾的 [weak_identity_not_unique] 显示了一个四箭头
+ 反模型，其中一根箭头具有两个不同的源恒等。 的
+ 弱形式是从强形式恢复的，如 [mcomp_law]，所以什么都没有
+ 丢失； [Weaken] 在记录级别记录含义。
+
+正如 Mac Lane 所说，公理 (iii) 是一个连词。 两个同级文件
+ 用连词所属的含义对其进行编码，并且两者都这么说
+ 到位（理论/Metacategory.v，
+ Theory/Metacategory/ArrowsOnly.v)：正如那里所写，公理是
+ 任何非恒等证人都满意，因此没有任何限制。 它是一个
+ 这里是真正的公理，并且它是承重的 — [mident_idem] 推导出 u∙u = u
+ 它的每一个恒等，这就是为什么下面的物体只需要携带
+ 他们的恒等证明，其中 ArrowsOnly.v 的 [object] 必须携带单独的
+ [obj_def] 字段用于排除仅是空的恒等式的箭头。
+
+两段。 [Category_from_Metacategory] 以物体为
+ 恒等箭头和态射是给定的两个两侧的箭头
+ 恒等，并从图表中读出组成； 单值性使得
+ 选择复合[Proper]和[mcompose_char]表征了它。 [ToArrows] 将范畴的箭头作为其捆绑态射
+ [Arr] 与 [atgt b = asrc a] 具有可组合性，是对象的标识。 那
+ 恒等类型是这两种设置真正不同的地方：Mac Lane 的
+ 对象形成一个 SET，因此两个对象的标识不包含任何内容
+ 信息，并将该假设忠实地转化为
+ 内涵类型理论是 [obj_uip] 的假设，[C] 的对象
+ 是一个 h 集。
+该库已经将这个假设线程化了，同样的情况
+ 出现问题（Construction/Grothendieck/Strict.v，其构造函数采用
+ fibrewise UIP 并通过内联无公理 Hedberg 释放它；
+ Theory/Multicategory/Representable.v，将 UIP 线程化到对象列表上）。 它在这里正好用在两个地方。 [Arr_comp_unique]：没有它
+ 可组合对的组合仅相对于所选的被明确定义
+ 端点的识别。 [ToArrows_fmap_inj]——这是
+ [ToArrows_Faithful]——它破坏了两个同构等式
+ 证明捆绑态射所携带的； 比较的真实性取决于
+ 它。 [ToArrows] 的所有其他领域都无需它即可得到证明。
+
+往返行程及其确切的强度。 在品类方面，
+ [ToArrows_Equivalence] 证明 [ToArrows_Functor]，它将 x 发送到
+ x 和 f 处到 f 束的恒等箭头是
+ [EquivalenceOfCategories] 介于 [C] 和
+ [Category_from_Metacategory (ToArrows obj_uip)]。 这是一个等价且
+ 不是范畴的同构，而且证明也毫不松懈：
+ 重建的对象是一对箭头和一个证明
+ 恒等，因此 [C] 的对象与证明一起被恢复
+ 任何函子都无法剥离的组件。 三种成分已被证明
+ 单独提供 - [ToArrows_Full]，
+ [ToArrows_Faithful]、[ToArrows_EssentiallySurjective]。
+
+在元范畴方面，可以形成复合通道，在
+ 关于重建对象的类似假设：
+ 下面的 [MetaRoundTrip] 适用于 [ToArrows]
+ [Category_from_Metacategory M] 和 [MetaRoundTrip_Equivalence] 是
+ 在这种情况下范畴级别的等效性。 该文件不做什么
+ 定义是元范畴的等价概念，所以没有
+ [MetaRoundTrip M] 与 [M] 的元范畴级别比较如下：
+ 在这样的概念存在之前，这种比较就没有立足之地。 什么是
+ 相反，无假设的证明是这样的比较所要表达的内容
+ 需要：[arrow_realized] 显示 [M] 的每个箭头都基于态射
+ 重建，[arrow_endpoints] 显示 ≈- 等箭头有
+ ≈-相等端点——对应关系是满射的，直到 ≈
+ 确定的端点（此处未证明高达 [Arr_eq] 的注入性）。 那
+ 后半句正是Mac Lane的独特言论
+ （[mident_unique_src]、[mident_unique_tgt]）正在使用中，以及
+ [arrow_endpoints_iso] 将其升级为对象的规范同构
+ XPTECT53X。 没有声称这两段经文是互逆的
+ 在鼻子上的任一方向。
 *)
 
 Record Metacategory : Type := {
-  (* 相关说明。 （已译） *)
+  (* "The data for an arrows-only metacategory C consist of arrows," / 只包含箭头的元范畴 C 的数据包括箭头， *)
   marr : Type;
 
-  (* Arrows carry a chosen equivalence. *)
+  (* Arrows carry a chosen equivalence. / 箭头传递一种选择的等价性。 *)
   marr_setoid : Setoid marr;
 
-  (* "certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
+  (*
+"certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
      an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f".
-     [mcomp g f h] reads "g∙f is defined, and equals h".（标题）（已译） *)
+     [mcomp g f h] reads "g∙f is defined, and equals h".
+
+--------
+某些有序对 ⟨g, f⟩，称为可组合箭头对，以及一个操作，将每个可组合的有序对 ⟨g, f⟩ 分配给一个箭头 g∙f。[mcomp g f h] 表示“g∙f 已定义，并且等于 h”。
+*)
   mcomp : marr → marr → marr → Type;
 
   mdefined (g f : marr) := ∃ h, mcomp g f h;
@@ -39,26 +280,26 @@ Record Metacategory : Type := {
     @equiv _ marr_setoid h h' →
     mcomp g f h → mcomp g' f' h';
 
-  (* 相关说明。 （已译） *)
+  (* The graph is single-valued: it is the graph of a partial operation. / 该图是单值的：它是部分运算的图。 *)
   mcomp_unique {g f h h'} :
     mcomp g f h → mcomp g f h' → @equiv _ marr_setoid h h';
 
-  (* Axiom (i), left-to-right *)
+  (* Axiom (i), left-to-right / 公理 (i)，从左到右 *)
   mcomp_assoc_l {k g f kg kgf} :
     mcomp k g kg → mcomp kg f kgf → ∃ gf, mcomp g f gf ∧ mcomp k gf kgf;
 
-  (* Axiom (i), right-to-left *)
+  (* Axiom (i), right-to-left / 公理 (i)，从右到左 *)
   mcomp_assoc_r {k g f gf kgf} :
     mcomp g f gf → mcomp k gf kgf → ∃ kg, mcomp k g kg ∧ mcomp kg f kgf;
 
-  (* Axiom (ii) *)
+  (* Axiom (ii) / 公理（二） *)
   mcomp_match {k g f kg gf} :
     mcomp k g kg → mcomp g f gf → ∃ kgf, mcomp kg f kgf;
 
   mident (u : marr) :=
     (∀ f, mdefined f u → mcomp f u f) ∧ (∀ g, mdefined u g → mcomp u g g);
 
-  (* Axiom (iii), as a conjunction *)
+  (* Axiom (iii), as a conjunction / 公理（iii），作为一个连接词 *)
   mident_law (g : marr) :
     ∃ u u', (mident u ∧ mident u') ∧ (mdefined g u ∧ mdefined u' g)
 }.
@@ -72,7 +313,7 @@ Section Metacategory.
 
 Context (M : Metacategory).
 
-(* The weak biconditional form of axiom (i). *)
+(* The weak biconditional form of axiom (i). / 公理（i）的弱双条件形式。 *)
 Lemma mcomp_law {k g f kg gf} :
   mcomp M k g kg → mcomp M g f gf →
   ∀ kgf, mcomp M kg f kgf ↔ mcomp M k gf kgf.
@@ -86,13 +327,13 @@ Proof.
                             (reflexivity _) Hcomp).
 Qed.
 
-(* Every identity composes with itself. *)
+(* Every identity composes with itself. / 每个恒等都与自身组成。 *)
 Lemma mident_idem {u} : mident M u → mcomp M u u u.
 Proof.
   intro Hu.
   destruct (mident_law M u) as [s [t [[Hs _] [[su Hsu] _]]]].
-  pose proof (snd Hu s (su; Hsu)) as Hus.   (* u∙s ≈ s *)
-  pose proof (fst Hs u (su; Hsu)) as Hsu'.  (* u∙s ≈ u *)
+  pose proof (snd Hu s (su; Hsu)) as Hus.   (* u∙s ≈ s / u∙s ≈ s *)
+  pose proof (fst Hs u (su; Hsu)) as Hsu'.  (* u∙s ≈ u / u∙s ≈ u *)
   pose proof (mcomp_unique M Hus Hsu') as Heq.
   exact (mcomp_respects M (reflexivity _) Heq Heq Hus).
 Qed.
@@ -238,8 +479,13 @@ Definition Category_from_Metacategory : Category := {|
   comp_assoc_sym := fun x y z w f g h => symmetry (@mcompose_assoc x y z w f g h)
 |}.
 
-(* The 复合 chosen [mcompose] characterised 复合
- graph: any [h] [mcomp (mor_arr f) (mor_arr g) h] IS 复合. （已译） *)
+(*
+The composite chosen by [mcompose] is characterised by the composition
+   graph: any [h] with [mcomp (mor_arr f) (mor_arr g) h] IS that composite.
+
+--------
+由 [mcompose] 选择的复合材料的特征是组成图：任何具有 [mcomp (mor_arr f) (mor_arr g) h] 的 [h] 都是该复合材料。
+*)
 Lemma mcompose_char {x y z} (f : mmorphism y z) (g : mmorphism x y) h :
   mcomp M (mor_arr f) (mor_arr g) h → mor_arr (mcompose f g) ≈ h.
 Proof.
@@ -248,7 +494,7 @@ Proof.
   exact (mcomp_unique M Hh' H).
 Qed.
 
-(* Objects whose underlying identity arrows agree are isomorphic. *)
+(* Objects whose underlying identity arrows agree are isomorphic. / 其底层恒等箭头一致的对象是同构的。 *)
 Definition mobject_iso_to {x y : mobject} (H : obj_arr x ≈ obj_arr y) :
   mmorphism x y :=
   {| mor_arr := obj_arr y
@@ -279,15 +525,20 @@ Arguments mor_dom _ {_ _} _.
 Arguments mor_cod _ {_ _} _.
 
 
-(* * * The converse passage: every 范畴 arrows-only metacategory （已译） *)
+(** * The converse passage: every category is an arrows-only metacategory / * 相反的论述：每个范畴都是仅有箭头的元范畴 *)
 
 Section ToArrows.
 
 Context {C : Category}.
 
-(* The 对象 [C] must form SET: arrows-only presentation identifies
- arrows whose endpoints agree, intensional type theory comparison
- 恒等 type. （已译） *)
+(*
+The objects of [C] must form a SET: an arrows-only presentation identifies
+   arrows whose endpoints agree, and in intensional type theory that comparison
+   is an identity type.
+
+--------
+[C] 的对象必须形成一个集合：仅包含箭头的表示法用来识别端点相同的箭头，而在内涵型理论中，这种比较是一种同一类型。
+*)
 Context (obj_uip : ∀ (x y : C) (p q : x = y), p = q).
 
 Record Arr : Type := {
@@ -451,7 +702,7 @@ Definition ToArrows : Metacategory := {|
 End ToArrows.
 
 
-(** * Round trip, category side *)
+(** * Round trip, category side / * 往返，范畴边 *)
 
 Section RoundTripCategory.
 
@@ -563,7 +814,7 @@ Defined.
 End RoundTripCategory.
 
 
-(** * Round trip, metacategory side *)
+(** * Round trip, metacategory side / * 往返，元范畴侧 *)
 
 Section RoundTripMetacategory.
 
@@ -614,7 +865,7 @@ Qed.
 End RoundTripMetacategory.
 
 
-(* 相关说明。 （已译） *)
+(** * Why axiom (i) is stated in two halves / * 为什么公理（i）分为两部分陈述 *)
 
 Record WeakMetacategory : Type := {
   wmarr : Type;
@@ -631,8 +882,13 @@ Record WeakMetacategory : Type := {
   wmcomp_unique {g f h h'} :
     wmcomp g f h → wmcomp g f h' → @equiv _ wmarr_setoid h h';
 
-  (* Axiom (i) exactly as encoded in Theory/Metacategory.v and
-     Theory/Metacategory/ArrowsOnly.v. *)
+  (*
+Axiom (i) exactly as encoded in Theory/Metacategory.v and
+     Theory/Metacategory/ArrowsOnly.v.
+
+--------
+公理 (i) 完全如在 Theory/Metacategory.v 和 Theory/Metacategory/ArrowsOnly.v 中编码。
+*)
   wmcomp_law {k g f kg gf} :
     wmcomp k g kg → wmcomp g f gf →
     ∀ kgf, wmcomp kg f kgf ↔ wmcomp k gf kgf;
@@ -649,7 +905,7 @@ Record WeakMetacategory : Type := {
 
 #[export] Existing Instance wmarr_setoid.
 
-(* Every metacategory is one, by [mcomp_law]. *)
+(* Every metacategory is one, by [mcomp_law]. / 每一个元范畴都是一个，由 [mcomp_law]。 *)
 Definition Weaken (M : Metacategory) : WeakMetacategory := {|
   wmarr           := marr M;
   wmarr_setoid    := marr_setoid M;
@@ -661,7 +917,13 @@ Definition Weaken (M : Metacategory) : WeakMetacategory := {|
   wmident_law     := mident_law M
 |}.
 
-(* 相关说明。 （已译） *)
+(*
+The countermodel: four arrows, with [Ag] flanked by TWO distinct source
+   identities [Au] and [Aw].
+
+--------
+反例：四支箭，[Ag] 被两个不同的源恒等 [Au] 和 [Aw] 所夹在中间。
+*)
 Inductive four := Ag | Au | Aw | Av.
 
 Definition fcomp (a b c : four) : Prop :=
@@ -704,11 +966,11 @@ Proof.
   unshelve refine {| wmarr := four
                    ; wmarr_setoid := eq_Setoid four
                    ; wmcomp := fcomp |}.
-  - (* respects *) intros g g' f f' h h' Hg Hf Hh H; simpl in *; subst; exact H.
-  - (* unique *) intros g f h h' H1 H2; simpl; four_crush.
-  - (* weak axiom (i) *) intros k g f kg gf H1 H2 kgf; split; intro H; four_crush.
-  - (* axiom (ii) *) intros k g f kg gf H1 H2; four_crush; four_exists.
-  - (* axiom (iii) *)
+  - (* respects / 尊重 *) intros g g' f f' h h' Hg Hf Hh H; simpl in *; subst; exact H.
+  - (* unique / 独特 *) intros g f h h' H1 H2; simpl; four_crush.
+  - (* weak axiom (i) / 弱公理 (i) *) intros k g f kg gf H1 H2 kgf; split; intro H; four_crush.
+  - (* axiom (ii) / 公理（二） *) intros k g f kg gf H1 H2; four_crush; four_exists.
+  - (* axiom (iii) / 公理（iii） *)
     intro g; destruct g.
     + exists Au, Av; repeat split;
       solve [ apply fident_Au | apply fident_Av | four_exists ].
@@ -720,8 +982,13 @@ Proof.
       solve [ apply fident_Av | four_exists ].
 Defined.
 
-(* Under the weak encoding of axiom (i), Mac Lane's uniqueness remark is
-   refuted: [Ag] has two distinct source identities. *)
+(*
+Under the weak encoding of axiom (i), Mac Lane's uniqueness remark is
+   refuted: [Ag] has two distinct source identities.
+
+--------
+在公理 (i) 的弱编码下，Mac Lane 的唯一性备注被否定：[Ag] 有两个不同的源恒等。
+*)
 Theorem weak_identity_not_unique :
   ∃ (W : WeakMetacategory) (g u u' : wmarr W),
     ((wmident W u ∧ wmident W u') ∧ (wmdefined W g u ∧ wmdefined W g u'))
@@ -736,12 +1003,19 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(* * ** The metacategory-side 复合 （已译） *)
+(** ** The metacategory-side composite / ** 元范畴侧复合体 *)
 
 (*
-   本节说明等价相关定义、性质与动机。
+The composite passage on the metacategory side, formed under the same
+   shape of hypothesis the file already takes for [ToArrows]: uniqueness of
+   identity proofs on the RECONSTRUCTION's objects.  (An earlier revision of
+   this header claimed the composite could not be formed at all; that was
+   false, and the audit that caught it supplied these two definitions.)  No
+   metacategory-level comparison with [M] is stated, because this file
+   defines no notion of equivalence of metacategories -- see the header.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+在元范畴侧形成的复合段落，根据该文件为 [ToArrows] 已采用的假设形式：RECONSTRUCTION 对象上恒等证明的唯一性。（该标题的早期修订版声称根本无法形成复合段落；这是错误的，发现这一错误的审计提供了这两个定义。）没有与 [M] 进行元范畴级别的比较，因为该文件没有定义元范畴的等价概念——见标题。
 *)
 Definition MetaRoundTrip (M : Metacategory)
   (mobj_uip : ∀ (x y : mobject M) (p q : x = y), p = q) : Metacategory :=

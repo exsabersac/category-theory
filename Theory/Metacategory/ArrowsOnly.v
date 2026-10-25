@@ -10,16 +10,39 @@ Require Import Category.Theory.Functor.
 Generalizable All Variables.
 Set Transparent Obligations.
 
-(** Arrows-only metacategories *)
+(** Arrows-only metacategories / 仅箭头的元范畴 *)
 
 (*
- nLab: https://ncatlab.org/nlab/show/category
+nLab: https://ncatlab.org/nlab/show/category
    nLab: https://ncatlab.org/nlab/show/metacategory
    Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
 
-   本文件给出仅态射视角的元范畴。
+   The single-sorted ("arrows-only") axiomatization of a category, due to
+   Mac Lane (Categories for the Working Mathematician, I.1, "arrows-only"
+   description). A category is given purely by a collection of arrows together
+   with a partial composition; there is no separate sort of objects. Objects
+   are recovered as the identity arrows: an arrow [u] is an identity when
+   [f ∘ u ≈ f] for every [f] whose composite with [u] is defined, and dually
+   [u ∘ g ≈ g] for every such [g].
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Here the partial composition is represented concretely by a finite map
+   [pairs : M.t arrow] over [arrow := N], where [M.find (f, g) pairs = Some h]
+   records that the composite of the composable pair [(f, g)] is [h]. Thus
+   [composite f g h] is the proposition "g and f compose to h", [defined f g]
+   says their composite exists, and the record's law fields impose Mac Lane's
+   matchability (existence of composites for composable pairs), associativity,
+   and existence of identities. [Category_from_Metacategory] below shows every
+   such metacategory yields a [Category] whose objects are the identity arrows
+   [{i | is_identity i}].
+
+--------
+nLab: https://ncatlab.org/nlab/show/category
+nLab: https://ncatlab.org/nlab/show/metacategory
+Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
+
+单一类型（“仅箭头”）的范畴公理化，由 Mac Lane 提出（《为工作数学家准备的范畴论》，I.1，“仅箭头”描述）。一个范畴完全由一组箭头以及部分复合定义；没有独立的对象类型。对象通过恒等箭头来恢复：当对于每个与其复合定义的 [f]，箭头 [u] 都满足 [f ∘ u ≈ f] 时，箭头 [u] 是恒等箭头；反之亦然，对于每个这样的 [g]，箭头 [u ∘ g ≈ g] 也是恒等箭头。
+
+这里部分组合通过一个有限映射具体表示为 [pairs : M.t arrow] 在 [arrow := N] 上，其中 [M.find (f, g) pairs = Some h] 记录了可组合对 [(f, g)] 的复合是 [h]。因此，[composite f g h] 是命题“g 和 f 组合成 h”，[defined f g] 表示它们的复合存在，并且记录的公理字段施加了 Mac Lane 的可匹配性（可组合对的复合存在性）、结合性以及单位元存在性。下面的 [Category_from_Metacategory] 显示，每一个这样的元范畴都会产生一个 [Category]，其对象是单位箭头 [{i | is_identity i}]。
 *)
 
 Record Metacategory := {
@@ -33,18 +56,27 @@ Record Metacategory := {
     defined f g := (h; H);
 
   (*
-   本节说明 ArrowsOnly 相关定义、性质与动机。
+Matchability (Mac Lane C-1): whenever [fg] is the composite of [(f, g)]
+     and [gh] is the composite of [(g, h)], the composite [(fg, h)] also
+     exists. This is the arrows-only form of "composable pairs have a
+     composite": the composable triple [f, g, h] always has the composite
+     [(f ∘ g) ∘ h].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+可匹配性（Mac Lane C-1）：每当 [fg] 是 [(f, g)] 的复合，而 [gh] 是 [(g, h)] 的复合时，复合 [(fg, h)] 也存在。这是“可复合对具有复合”的仅箭头形式：可复合的三元组 [f, g, h] 总是有复合 [(f ∘ g) ∘ h]。
 *)
   composite_correct {f g h fg gh : arrow} :
     composite f g fg ->
     composite g h gh → ∃ fgh, composite fg h fgh;
 
   (*
-   本节说明 ArrowsOnly 相关定义、性质与动机。
+Associativity (Mac Lane C-2): for a composable triple, associating to the
+     left, [(fg, h)], agrees with associating to the right, [(f, gh)]. The
+     biconditional captures that one composite is defined exactly when the
+     other is, and then they are the same arrow.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+结合性（Mac Lane C-2）：对于一个可组合的三元组，向左结合的 [(fg, h)] 与向右结合的 [(f, gh)] 是一致的。这个双重条件表达的是，当且仅当另一个复合定义时，一个复合才定义，并且它们是相同的箭头。
 *)
   composition_law {f g h fg gh : arrow} :
     composite f g fg ->
@@ -52,18 +84,73 @@ Record Metacategory := {
     ∀ fgh, composite fg h fgh ↔ composite f gh fgh;
 
   (*
-   本节说明 ArrowsOnly 相关定义、性质与动机。
+Identity arrows (objects). [u] is an identity when it acts neutrally on
+     either side of every composite in which it participates: [f ∘ u ≈ f]
+     whenever [f ∘ u] is defined, and [u ∘ g ≈ g] whenever [u ∘ g] is defined.
+     These are exactly the arrows that stand in for objects.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+恒等箭头（对象）。当 [u] 在它参与的每一个组合的任一侧上起中立作用时，它就是一个恒等：每当 [f ∘ u] 被定义时为 [f ∘ u ≈ f]，每当 [u ∘ g] 被定义时为 [u ∘ g ≈ g]。这些正是代表对象的箭头。
 *)
   is_identity (u : arrow) :=
     (∀ f, defined f u → composite f u f) ∧
     (∀ g, defined u g → composite u g g);
 
   (*
-   本节说明 ArrowsOnly 相关定义、性质与动机。
+Existence of identities (Mac Lane): to each arrow [f] there should be a
+     source identity and a target identity whose composites with [f] recover
+     [f]. As currently written, however, this axiom is vacuous.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+     jww (TODO): The two [->] below should be [/\], and the current form does
+     impose no constraint — arrow [1%N] of [Two] is genuinely not an identity,
+     so it witnesses the existential and discharges both implications. But
+     that substitution alone is not a repair: with conjunctions the axiom
+     quantifies over all of [N], while [composable_pairs n] mentions finitely
+     many arrows, so an arrow occurring in no composable pair ([100%N], say)
+     has no flanking identities and the record becomes uninhabitable by every
+     model in this file. A faithful repair must first fix the arrow type:
+     either relativize the axiom to arrows that occur in [pairs], or take
+     [arrow] to be the support of the table rather than all of [N]. Only then
+     does the remaining work — supplying identity witnesses for each example
+     metacategory — become possible. Theory/Metacategory/General.v states the
+     axiom in Mac Lane's conjunctive form over an arrow type that is exactly
+     the arrows.
+
+     The defect does not affect [Category_from_Metacategory], which builds its
+     category from objects [{i | is_identity i}], not from [identity_law].
+     Note however that the [obj_def] field of [object] is doing the work this
+     axiom should do: it is what excludes arrows that are identities only
+     vacuously (every arrow absent from [pairs] satisfies [is_identity]). In
+     General.v, where the axiom is conjunctive, [obj_def] is derivable and the
+     object record carries only the identity proof.
+
+--------
+恒等的存在（Mac Lane）：每个箭头 [f] 都应该有一个
+ 源恒等和目标恒等，其与 [f] 组合恢复
+ [f]。 然而，正如目前所写的那样，这个公理是空洞的。
+
+jww (TODO): 下面的两个 [->] 应该是 [/\]，并且当前的形式确实
+ 不施加任何约束——[Two] 的箭头 [1%N] 实际上不是一个恒等式，
+ 因此它见证了存在主义并释放了这两种含义。 但是
+ 单独的替换并不是修复：使用连词公理
+ 对所有 [N] 进行量化，而 [composable_pairs n] 则有限地提及
+ 许多箭头，因此箭头出现在不可组合的对中（例如 [100%N]）
+ 没有侧翼恒等，并且记录变得不适合每个人居住
+ 该文件中的模型。 忠实的修复必须首先修复箭头类型：
+ 将公理与 [pairs] 中出现的箭头相对化，或者采用
+ [arrow]成为该表的支持而不是[N]的全部。 只有那时
+ 完成剩下的工作——为每个例子提供恒等证人
+ 元范畴——成为可能。 Theory/Metacategory/General.v 指出
+ Mac Lane 的合取形式的公理在箭头类型上恰好是
+ 箭头。
+
+该缺陷不会影响 [Category_from_Metacategory]，它构建了其
+ 来自对象 [{i | is_identity i}] 的范畴，而不是来自 [identity_law] 的范畴。 
+但请注意，[object] 的 [obj_def] 字段正在执行此工作
+ axiom 应该做的：它排除仅是恒等式的箭头
+ 空洞（[pairs] 中缺少的每个箭头都满足 [is_identity]）。 在
+ General.v，其中公理是合取的，[obj_def] 是可导的，并且
+ 对象记录仅携带恒等证明。
 *)
   identity_law (x y f : arrow) : composite x y f ->
     ∃ u u', is_identity u → is_identity u' ->
@@ -189,9 +276,14 @@ Proof.
   reflexivity.
 Qed.
 
-(* Every meta-范畴, defined wholly terms axioms 范畴
- theory, gives rise 范畴 interpreted context set
- theory. （已译） *)
+(*
+Every meta-category, defined wholly in terms of the axioms of category
+   theory, gives rise to a category interpreted in the context of set
+   theory.
+
+--------
+每一个元范畴，如果完全根据范畴论的公理来定义，就会产生一个在集合论背景下解释的范畴。
+*)
 
 Program Definition Category_from_Metacategory : Category := {|
   obj     := object;
@@ -324,7 +416,7 @@ Definition composable_pairs_step (n : N) (z : M.t N) : M.t N :=
 Definition composable_pairs : N → M.t N :=
   N.peano_rect _ (M.empty _) (λ n, composable_pairs_step (N.succ n)).
 
-(* The number composable pairs, 对象 N, tetrahedral_number （已译） *)
+(* The number of composable pairs, for objects N, is the tetrahedral_number / 对于对象 N，可组合对的数量是四面体数 *)
 Definition tetrahedral_number (n : N) := (n * (n + 1) * (n + 2)) / 6.
 
 #[local] Obligation Tactic :=
@@ -593,4 +685,30 @@ Next Obligation.
   generalize dependent y.
   generalize dependent x.
   induction n; cbn; intros; eauto.
+
+--------
+程序定义 from_composablePairs (n : N) : 元范畴 := {|
+  pairs := composable_pairs n
+|}。
+下一步义务。
+  归纳依赖 gh。
+  归纳依赖 fg。
+  归纳依赖 h。
+  归纳依赖 g。
+  归纳依赖 f。
+  使用 N.peano_rect 对 n 归纳；引入。
+    在 H 中简化；区分。
+下一步义务。
+  归纳依赖 gh。
+  归纳依赖 fg。
+  归纳依赖 h。
+  归纳依赖 g。
+  归纳依赖 f。
+  对 n 归纳；简化；引入。
+    区分。
+下一步义务。
+  归纳依赖 f。
+  归纳依赖 y。
+  归纳依赖 x。
+  对 n 归纳；简化；引入；自动求解。
 *)

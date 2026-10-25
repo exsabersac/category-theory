@@ -15,9 +15,42 @@ Require Import Category.Construction.Chain.
 
 Generalizable All Variables.
 
-(* * * Adámek's initial-algebra 定理 over ω-chain （已译） *)
+(** * Adámek's initial-algebra theorem over the ω-chain / * Adámek 在 ω 链上的初代数定理 *)
 
-(* nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
+(*
+nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
+   Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
+
+   For an endofunctor [F] on a category [C] with an initial object [0],
+   Adámek's theorem builds the initial [F]-algebra as the colimit of the
+   ω-indexed chain
+
+       0 --¡--> F 0 --F¡--> F² 0 --F²¡--> ...
+
+   ([Construction/Chain.v], packaged as [Chain F : Omega ⟶ C]).  Writing
+   [A] for the apex of a colimit [L : Colimit (Chain F)], the structure map
+   [α : F A ~> A] is the mediating morphism out of the shifted cocone, and
+   [(A, α)] is initial in the category [FAlg F] of [F]-algebras.
+
+   The colimit [A] is a colimit of the shifted diagram [F ◯ Chain F] with apex
+   [F A] precisely when [F] preserves it.  An abstract [PreservesColimit]
+   witness, however, only records that [F A] carries SOME colimit of
+   [F ◯ Chain F]; two colimit cocones at the shared apex [F A] differ by a free
+   apex-automorphism, so it does not expose that the cocone legs at [F A] are
+   the image legs [fmap[F] (colimit_inj HL n)].  That leg agreement is genuine
+   data the initiality argument consumes, so it is packaged here as the honest
+   hypothesis [AdamekData] and [adamek] is proven directly from it.
+
+   The discharge [PreservesColimit -> AdamekData] is therefore not carried in
+   this file, and [Theory/Adamek/Corollaries.v] does not supply it either: it
+   is deferred as a fast-follow (ledger 17; see the matching note in that
+   file).  The cocone-level class [PreservesColimitCocone]
+   (Structure/Limit/Preservation.v) is the vocabulary that discharge would
+   be stated in; the ledger entry stays open until it is written.
+   The [AdamekData] interface is the load-bearing contract in the interim.
+
+--------
+nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
    Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
 
    对带初始对象 [0] 的范畴 [C] 上的自函子 [F]，Adámek 定理把初始 [F]-代数建为
@@ -38,11 +71,17 @@ Generalizable All Variables.
    因此 [PreservesColimit -> AdamekData] 的消解不在本文件中，[Theory/Adamek/Corollaries.v]
    也不提供：留作快速后续（ledger 17；见该文件对应注记）。余锥层类
    [PreservesColimitCocone]（Structure/Limit/Preservation.v）是陈述该消解的词汇；
-   在写出之前 ledger 条目保持开放。过渡期内 [AdamekData] 接口是承重契约。 *)
+   在写出之前 ledger 条目保持开放。过渡期内 [AdamekData] 接口是承重契约。
+*)
 
-(* Shift order 证明 [m ≤ n] [S m ≤ S n], recursion the
- derivation. It mentions [le_t] (Instance/Omega.v), so it lives above
- 范畴-indexed development. （已译） *)
+(*
+Shift of an order proof [m ≤ n] to [S m ≤ S n], by recursion on the
+   derivation.  It only mentions [le_t] (Instance/Omega.v), so it lives above
+   the category-indexed development.
+
+--------
+通过对推导的递归，将一个阶证明 [m ≤ n] 转移到 [S m ≤ S n]。它只提到了 [le_t]（Instance/Omega.v），因此它存在于范畴索引开发之上。
+*)
 Fixpoint le_S_shift@{u} {m n} (p : le_t@{u} m n) : le_t@{u} (S m) (S n) :=
   match p in le_t _ n' return le_t@{u} (S m) (S n') with
   | le_t_n    => le_t_n
@@ -50,18 +89,26 @@ Fixpoint le_S_shift@{u} {m n} (p : le_t@{u} m n) : le_t@{u} (S m) (S n) :=
   end.
 
 (*
-   本节说明 Adamek 相关定义、性质与动机。
+Predictable obligation alignment for the (op-)cocone records below: with
+   [idtac] every obligation SHIFTS to an explicit [Next Obligation], rather
+   than being silently discharged by the ambient [cat_simpl].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+下面（op-）共圆记录的可预测义务对齐：使用 [idtac]，每个义务都会转移到显式的 [Next Obligation]，而不是被环境 [cat_simpl] 默默解除。
 *)
 #[local] Obligation Tactic := idtac.
 
 Section Adamek.
 
 (*
-   本节说明（余）极限、hom相关定义、性质与动机。
+[Colimit]/[IsALimit] force the diagram category and the target to share
+   their hom/prop universe, and [Chain] pins [Omega]'s hom/prop to [Set]
+   (Instance/Omega.v, Construction/Chain.v).  The target [C] therefore carries
+   its hom/prop at [Set]; the object level [cobj] stays polymorphic, so every
+   result below is universe-polymorphic in the size of the objects.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[Colimit]/[IsALimit] 强制图范畴和目标共享它们的 hom/prop 宇宙，[Chain] 将 [Omega] 的 hom/prop 固定到 [Set]（Instance/Omega.v, Construction/Chain.v）。因此，目标 [C] 在 [Set] 处携带它的 hom/prop；对象层次的 [cobj] 保持多态，因此下面的每个结果在对象大小上都是宇宙多态的。
 *)
 Universe cobj.
 Context {C : Category@{cobj Set Set}}.
@@ -69,11 +116,17 @@ Context `{HI : @Initial C}.
 Context (F : C ⟶ C).
 Context (L : Colimit (Chain F)).
 
-(* 相关说明。 （已译） *)
+(* The colimit apex and its apex-pinned colimit witness, read covariantly. / 余极点顶点及其顶点固定余极点见证，从协变角度读。 *)
 Definition A : C := colimit_apex L.
 Definition HL := colimit_is_acolimit L.
 
-(* 相关说明。 （已译） *)
+(*
+Definitional unfolding rules for the chain transports, used to control
+   rewriting without unleashing [simpl] on the ambient fixpoints.
+
+--------
+用于链传输的定义性展开规则，用于在不释放 [simpl] 至环境不动点的情况下控制重写。
+*)
 Lemma chain_hom_n {m} : chain_hom F (@le_t_n m) = id.
 Proof. reflexivity. Qed.
 
@@ -85,8 +138,13 @@ Lemma chain_step_step (n : nat) :
   chain_step F (S n) = fmap[F] (chain_step F n).
 Proof. reflexivity. Qed.
 
-(* Transporting shifted order 证明 image under [F] transporting
- original: [chain_hom (S p) ≈ F (chain_hom p)]. （已译） *)
+(*
+Transporting a shifted order proof is the image under [F] of transporting
+   the original: [chain_hom (S p) ≈ F (chain_hom p)].
+
+--------
+运输一个已移位的订单证明是在[F]下运输原始订单的映像：[chain_hom (S p) ≈ F (chain_hom p)]。
+*)
 Lemma chain_hom_S {m n} (p : le_t m n) :
   chain_hom F (le_S_shift p) ≈ fmap[F] (chain_hom F p).
 Proof.
@@ -98,8 +156,13 @@ Proof.
     now rewrite fmap_comp.
 Qed.
 
-(* The honest 假设: [F A] carries colimit shifted diagram whose
- injections exactly image legs [fmap[F] (colimit_inj HL n)]. （已译） *)
+(*
+The honest hypothesis: [F A] carries a colimit of the shifted diagram whose
+   injections are exactly the image legs [fmap[F] (colimit_inj HL n)].
+
+--------
+诚实的假设：[F A] 承载了平移图的余极限，其注射正好是像腿 [fmap[F] (colimit_inj HL n)].
+*)
 Record AdamekData : Type := {
   adamek_colim : IsAColimit (F ◯ Chain F) (F A) ;
   adamek_legs  : ∀ n : nat,
@@ -112,7 +175,7 @@ Context (D : AdamekData).
 
 Local Notation HFL := (adamek_colim D).
 
-(* 相关说明。 （已译） *)
+(* The shifted cocone over [F ◯ Chain F] with apex [A], legs [inj (S n)]. / 以 [A] 为顶点、[inj (S n)] 为边的 [F ◯ Chain F] 上的移位余圆锥。 *)
 Program Definition Ashift : Cocone (F ◯ Chain F) :=
   @Build_Cone (Omega^op) (C^op) ((F ◯ Chain F)^op) A
     (@Build_ACone (Omega^op) (C^op) A ((F ◯ Chain F)^op)
@@ -125,11 +188,16 @@ Next Obligation.
   exact (colimit_inj_coherence HL (le_S_shift f)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The [F]-algebra structure map, mediating out of the shifted cocone. / [F]-代数结构映射，从移位余锥中介出。 *)
 Definition alpha : F A ~> A := colimit_med HFL Ashift.
 
-(* The defining step 关系 structure map, phrased through image
- legs folding leg agreement [adamek_legs]. （已译） *)
+(*
+The defining step relation of the structure map, phrased through the image
+   legs by folding in the leg agreement [adamek_legs].
+
+--------
+通过在腿一致性 [adamek_legs] 中折叠，结构映射的定义步长关系通过像腿来表述。
+*)
 Lemma STEP (n : nat) :
   alpha ∘ fmap[F] (colimit_inj HL n) ≈ colimit_inj HL (S n).
 Proof.
@@ -142,9 +210,12 @@ Section Mediator.
 Context (aβ : FAlg F).
 
 (*
-   本节说明函子相关定义、性质与动机。
+The competing cocone's legs into the carrier [``aβ], built by recursion on
+   the chain index: [lam 0] is the unique map out of [0], and each step
+   postcomposes the algebra map [`2 aβ] with the functorial image.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+竞争余锥的腿进入载体 [``aβ]，这是通过在链索引上递归构建的：[lam 0] 是从 [0] 唯一映射出去的映射，每一步将代数映射 [`2 aβ] 与函子像后组合。
 *)
 Fixpoint lam (n : nat) : chain_obj F n ~> ``aβ :=
   match n with
@@ -152,7 +223,7 @@ Fixpoint lam (n : nat) : chain_obj F n ~> ``aβ :=
   | S k => `2 aβ ∘ fmap[F] (lam k)
   end.
 
-(* 相关说明。 （已译） *)
+(* [lam] respects the generating step of the chain. / [lam] 尊重链的生成步骤。 *)
 Lemma LAMSTEP (n : nat) : lam (S n) ∘ chain_step F n ≈ lam n.
 Proof.
   induction n as [| k IH].
@@ -166,7 +237,7 @@ Proof.
       reflexivity.
 Qed.
 
-(* [lam] is a cocone over the whole chain: it respects every transport. *)
+(* [lam] is a cocone over the whole chain: it respects every transport. / [lam] 是整个链上的余锥：它尊重每一种传输。 *)
 Lemma lam_coh {m n} (f : le_t m n) : lam n ∘ chain_hom F f ≈ lam m.
 Proof.
   induction f as [| n' f' IH].
@@ -177,7 +248,7 @@ Proof.
     exact IH.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The competing cocone itself, over [Chain F] with apex [``aβ]. / 竞争余锥本身，在 [Chain F] 上，顶点为 [``aβ]。 *)
 Program Definition Lam : Cocone (Chain F) :=
   @Build_Cone (Omega^op) (C^op) ((Chain F)^op) (``aβ)
     (@Build_ACone (Omega^op) (C^op) (``aβ) ((Chain F)^op) lam _).
@@ -187,13 +258,19 @@ Next Obligation.
   exact (lam_coh f).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The mediating carrier map out of the colimit apex. / 从余极顶点映射出的中介载体。 *)
 Definition u : A ~> ``aβ := colimit_med HL Lam.
 
 Lemma u_inj (n : nat) : u ∘ colimit_inj HL n ≈ lam n.
 Proof. exact (colimit_med_commutes HL Lam n). Qed.
 
-(* 相关说明。 （已译） *)
+(*
+The shifted competing cocone over [F ◯ Chain F], apex [``aβ], legs
+   [lam (S n)]; its mediators separate the two sides of the algebra square.
+
+--------
+在 [F ◯ Chain F] 上的位移竞争共锥，顶点 [``aβ]，腿 [lam (S n)]；其中介将代数平方的两边分开。
+*)
 Program Definition T : Cocone (F ◯ Chain F) :=
   @Build_Cone (Omega^op) (C^op) ((F ◯ Chain F)^op) (``aβ)
     (@Build_ACone (Omega^op) (C^op) (``aβ) ((F ◯ Chain F)^op)
@@ -205,12 +282,25 @@ Next Obligation.
   exact (lam_coh (le_S_shift f)).
 Qed.
 
-(* The mediator [u] 态射 [F]-algebras [(A, α) ~> (`⟦0⟧2 aβ)]:
- both [u ∘ α] [`2 aβ ∘ F u] mediate shifted cocone [T]. （已译） *)
+(*
+The mediator [u] is a morphism of [F]-algebras [(A, α) ~> (``aβ, `2 aβ)]:
+   both [u ∘ α] and [`2 aβ ∘ F u] mediate the shifted cocone [T].
+
+--------
+中介者 [u] 是 [F]-代数 [(A, α) ~> (``aβ, `2 aβ)] 的一个态射：
+   [u ∘ α] 和 [`2 aβ ∘ F u] 都调解了移位余锥 [T]。
+*)
 Lemma u_alg : u ∘ alpha ≈ `2 aβ ∘ fmap[F] u.
 Proof.
   apply (colimit_med_eq HFL T).
-  (* 相关说明。 （已译） *)
+  (*
+The colimit injections of [HFL] have domain [(F ◯ Chain F) n]; folding it
+     to the [F]-image form [F ((Chain F) n)] lets the [F]-image lemmas
+     [STEP]/[fmap_comp] key on the goal.
+
+--------
+[HFL] 的余积注入的定义域是 [(F ◯ Chain F) n]；将其折叠为 [F]-像的形式 [F ((Chain F) n)] 使得 [F]-像引理 [STEP]/[fmap_comp] 可以对目标进行关键处理。
+*)
   - intro n.
     rewrite (adamek_legs D n).
     rewrite <- comp_assoc.
@@ -226,7 +316,13 @@ Proof.
     reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+Any [F]-algebra map out of [(A, α)] agrees with the mediator [u] on the
+   underlying carrier, by induction along the chain injections.
+
+--------
+沿着链注入，通过归纳法，任何从 [(A, α)] 出发的 [F]-代数映射在基础承载上都与中介 [u] 一致。
+*)
 Lemma hom_is_u (h : @FAlgHom C F A (``aβ) alpha (`2 aβ)) :
   falg_hom[h] ≈ u.
 Proof.
@@ -249,16 +345,25 @@ Qed.
 
 End Mediator.
 
-(* The candidate 始 代数 [(A, α)], as 对象 [FAlg F]. Naming it
- explicit carrier type pins sigma predicate to
- [fun => FAlgebra F a], which bare [(A; alpha)] would otherwise leave
- ambiguous.（已译） *)
+(*
+The candidate initial algebra [(A, α)], as an object of [FAlg F].  Naming it
+   with an explicit carrier type pins the sigma predicate to
+   [fun a => FAlgebra F a], which bare [(A; alpha)] would otherwise leave
+   ambiguous.
+
+--------
+候选初代数 [(A, α)]，作为 [FAlg F] 的一个对象。用显式载体类型命名它，将 sigma 谓词固定到 [fun a => FAlgebra F a]，否则空的 [(A; alpha)] 会留下歧义。
+*)
 Definition muF : FAlg F := existT (fun a : C => FAlgebra F a) A alpha.
 
 (*
-   本节说明函子、始/终对象相关定义、性质与动机。
+The unique [F]-algebra map from the initial algebra to any algebra [y]
+   (an arrow [muF ~> y] in [FAlg F], i.e. into the terminal object of
+   [(FAlg F)^op]).  The morphisms are stated inside [FAlg F] rather than through
+   the opposite so the parser reads the category [^op], not the functor one.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+从初始代数到任意代数的唯一 [F]-代数映射 [y]（一个箭头 [muF ~> y] 在 [FAlg F] 中，即进入 [(FAlg F)^op] 的终对象）。这些态射是在 [FAlg F] 内部声明的，而不是通过对偶，因此解析器读取的是范畴 [^op]，而不是函子范畴。
 *)
 Definition adamek_one (y : FAlg F) :
   muF ~{FAlg F}~> y :=
@@ -273,10 +378,15 @@ Proof.
   - symmetry. exact (hom_is_u y g).
 Qed.
 
-(* [(A, α)] is 始 [FAlg F], i.e. 终 [(FAlg F)^op]. The
- 反 范畴 is named explicitly through [Opposite]: [FAlg F] its
- 反 share 对象, so bare record literal cannot recover which side
- 终 对象 lives on.（已译） *)
+(*
+[(A, α)] is initial in [FAlg F], i.e. terminal in [(FAlg F)^op].  The
+   opposite category is named explicitly through [Opposite]: [FAlg F] and its
+   opposite share objects, so a bare record literal cannot recover which side
+   the terminal object lives on.
+
+--------
+[(A, α)] 是 [FAlg F] 中的初始项，即 [(FAlg F)^op] 中的终端项。相反范畴通过 [Opposite] 明确命名：[FAlg F] 及其相反项共享对象，因此单纯的记录字面量无法确定终端对象属于哪一侧。
+*)
 Definition adamek : @Initial (FAlg F) :=
   @Build_Terminal (Opposite (FAlg F)) muF adamek_one adamek_one_unique.
 

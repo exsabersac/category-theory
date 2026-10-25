@@ -6,14 +6,49 @@ Module FMapExt (E : DecidableType) (M : WSfun E).
 Module P := WProperties_fun E M.
 Module F := P.F.
 
-(* 相关说明。 （已译） *)
+(* * * Extensions to Coq's weak finite-map library / * * 对 Coq 弱有限映射库的扩展 *)
 
 (*
+ nLab: https://ncatlab.org/nlab/show/decidable+equality
  Wikipedia: https://en.wikipedia.org/wiki/Associative_array
 
-   本文件给出 FMapExt 相关定义与性质。
+ A finite map (associative array) over a key type with decidable equality
+ [E : DecidableType], implemented by the standard-library weak signature
+ [M : WSfun E].  [P] and [F] abbreviate the derived [WProperties_fun] and
+ [WFacts_fun] modules.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ This module layers convenience on top of Coq's [FMapFacts]:
+
+ - Tactics [normalize] and [simplify_maps] that decompose [MapsTo]/[find]
+ goals and hypotheses through the standard [add]/[remove]/[map]/[mapi]/
+ [filter]/[update]/[empty] characterization lemmas, plus [relational] and
+ [apply_for_all] for the recurring [Proper]/[for_all] bookkeeping.
+ - [Proper] instances so map operations ([MapsTo], [find], [fold], [add],
+ [filter], [update]) respect key equality [E.eq] and extensional map
+ equality [M.Equal], which the bare signature does not provide.
+ - Computational ([Type]-valued) counterparts [in_mapsto_iffT],
+ [add_mapsto_iffT] and a decision procedure [mapsto_dec] for use where the
+ [Prop]-valued [FMapFacts] versions cannot eliminate into [Type].
+ - Algebraic facts about [filter], [for_all], [update] and [add]/[remove]
+ interaction that are absent from [FMapFacts] (e.g. [filter_idempotent],
+ [filter_add_true], [for_all_add_true], [update_find_l], [remove_add]).
+
+ Every lemma is constructive: no axioms are used beyond the chosen [M]. 
+
+ --------
+ nLab: https://ncatlab.org/nlab/show/decidable+equality
+ Wikipedia: https://en.wikipedia.org/wiki/Associative_array
+
+ 在键类型具可判定相等 [E : DecidableType] 上的有限映射（关联数组），由标准库弱签名 [M : WSfun E] 实现。[P] 与 [F] 分别缩写派生的 [WProperties_fun] 与 [WFacts_fun] 模块。
+
+ 本模块在 Coq 的 [FMapFacts] 之上叠加便利层：
+
+ - 策略 [normalize] 与 [simplify_maps]：经标准 [add]/[remove]/[map]/[mapi]/[filter]/[update]/[empty] 刻画引理分解 [MapsTo]/[find] 目标与假设；另有 [relational] 与 [apply_for_all] 处理常见的 [Proper]/[for_all] 簿记。
+ - [Proper] 实例，使映射运算（[MapsTo]、[find]、[fold]、[add]、[filter]、[update]）尊重键相等 [E.eq] 与外延映射相等 [M.equal]——裸签名并不提供这些。
+ - 计算性（`Type` 值）对应物 [in_mapsto_iffT]、[add_mapsto_iffT] 以及决策过程 [mapsto_dec]，用于 [Prop] 值的 [FMapFacts] 版本无法消去到 [Type] 的场合。
+ - 关于 [filter]、[for_all]、[update] 与 [add]/[remove] 交互、而 [FMapFacts] 缺失的代数事实（如 [filter_idempotent]、[filter_add_true]、[for_all_add_true]、[update_find_l]、[remove_add]）。
+
+ 每条引理皆构造性：除所选 [M] 外不使用公理。
 *)
 
 Ltac normalize :=
@@ -378,9 +413,14 @@ Proof.
   apply (H x); assumption.
 Qed.
 
-(* Deciding [MapsTo k e m] needs decidable equality on the value type [elt]:
-   [find] settles whether some value is bound at [k], but matching it against
-   the specific [e] requires comparing the two values.（标题）（已译） *)
+(*
+ Deciding [MapsTo k e m] needs decidable equality on the value type [elt]:
+ [find] settles whether some value is bound at [k], but matching it against
+ the specific [e] requires comparing the two values. 
+
+ --------
+ 判定 [MapsTo k e m] 需要值类型 [elt] 上可判定相等：[find] 可断定 [k] 是否绑定某值，但要与特定 [e] 匹配则须比较两值。
+*)
 Lemma mapsto_dec : ∀ elt k e (m : M.t elt),
   (∀ x y : elt, {x = y} + {x <> y}) ->
   { M.MapsTo k e m } + { ~ M.MapsTo k e m }.
@@ -476,7 +516,7 @@ Qed.
   Proper (E.eq ==> eq ==> M.Equal ==> M.Equal) (M.add (elt:=elt)) :=
   (@F.add_m_Proper elt).
 
-(* Adding to an FMap overwrites the previous entry. *)
+(* Adding to an FMap overwrites the previous entry. / 向 FMap 添加会覆盖先前条目。 *)
 Lemma remove_add : ∀ elt k (e : elt) m,
   M.Equal (M.add k e (M.remove k m)) (M.add k e m).
 Proof.
@@ -491,9 +531,13 @@ Proof.
 Qed.
 
 (*
-   本节说明 FMapExt 相关定义、性质与动机。
+ Two [add]s commute only when they do not disagree on a shared key: if
+ [E.eq k k0] then both sides must bind that key to the same value, hence the
+ precondition [E.eq k k0 -> e = e0].  For distinct keys it holds
+ unconditionally. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 两次 [add] 仅当在共享键上不冲突时可交换：若 [E.eq k k0] 则两侧须把该键绑到同一值，故有前提 [E.eq k k0 -> e = e0]。键不同时无条件成立。
 *)
 Lemma add_associative {elt}
       (k : M.key) (e : elt)
@@ -636,9 +680,13 @@ End for_all.
 Import ListNotations.
 
 (*
-   本节说明 FMapExt 相关定义、性质与动机。
+ [take_first f] is a fold accumulator that keeps the first key/value pair
+ for which [f] holds: once a [Some] is found it is preserved, otherwise the
+ current [(k, e)] is selected when [f k e] is [true].  Folding it over a map
+ yields an arbitrary-but-fixed witness satisfying [f]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [take_first f] 是折叠累加器，保留使 [f] 成立的首个键/值对：一旦找到 [Some] 即保持，否则当 [f k e] 为 [true] 时选取当前 [(k, e)]。对其折叠映射得到满足 [f] 的任意但固定的见证。
 *)
 Definition take_first {elt} (f : M.key → elt → bool) (k : M.key) (e : elt)
            (x0 : option (M.key * elt)) :=
@@ -647,9 +695,14 @@ Definition take_first {elt} (f : M.key → elt → bool) (k : M.key) (e : elt)
   | None => if f k e then Some (k, e) else None
   end.
 
-(* Lift relation [P] [A] [option A]: two values are related when both
- are [None] both are [Some] [P]-related contents. Used give
- [take_first] extensional 等价 its [option (key * elt)] result.（已译） *)
+(*
+ Lift a relation [P] on [A] to [option A]: two values are related when both
+ are [None] or both are [Some] of [P]-related contents.  Used to give
+ [take_first] an extensional equivalence on its [option (key * elt)] result. 
+
+ --------
+ 把 [A] 上关系 [P] 提升到 [option A]：两者皆 [None]，或皆为内容在 [P] 下相关的 [Some] 时相关。用于给 [take_first] 的 [option (key * elt)] 结果以外延等价。
+*)
 Definition optionP {A} (P : relation A) : relation (option A) :=
   fun x y => match x, y with
              | Some x', Some y' => P x' y'
@@ -676,7 +729,7 @@ Obligation 3.
   firstorder.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Componentwise lift of relations [P] and [Q] to the product [A * B]. / 关系 [P]、[Q] 到积 [A * B] 的分量提升。 *)
 Definition pairP {A B} (P : relation A) (Q : relation B) : relation (A * B) :=
   fun p p' => match p, p' with
               | (x, y), (x', y') => P x x' /\ Q y y'
@@ -803,9 +856,14 @@ Obligation 1.
 Qed.
 
 (*
-   本节说明 FMapExt 相关定义、性质与动机。
+ [P.update m1 m2] is the right-biased union of [m1] and [m2]: by
+ [P.update_mapsto_iff], a binding of [m2] always wins over one of [m1] at
+ the same key.  The following five facts characterize it on the standard
+ constructors: empty on either side, [find] when a key is absent from one
+ side, and commuting an [add] on the (winning) right argument outward. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [P.update m1 m2] 是 [m1] 与 [m2] 的右偏置并：由 [P.update_mapsto_iff]，[m2] 的绑定总是胜过 [m1] 在同键上的绑定。以下五条事实用标准构造子刻画它：任一侧为空、一侧缺键时的 [find]，以及把（胜出的）右侧上的 [add] 外提到外侧。
 *)
 Lemma update_empty_l : ∀ elt (m : M.t elt),
   M.Equal (P.update (M.empty _) m) m.

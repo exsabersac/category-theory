@@ -9,14 +9,51 @@ Open Scope lazy_bool_scope.
 
 Set Transparent Obligations.
 
-(** A theory of type-aligned lists, using the Coq-Equations plugin *)
+(* * A theory of type-aligned lists, using the Coq-Equations plugin / * 类型对齐列表的理论，使用 Coq-Equations 插件 *)
 
 (*
+ nLab: https://ncatlab.org/nlab/show/free+category
  Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
 
-   本文件给出 TList 相关定义与性质。
+ A [tlist B i j] is a Typed list: a type-aligned sequence of values of [B]
+ whose adjacent indices line up, [B i j0], [B j0 j1], ..., [B jn j].
+ Reading [B] as the hom-family of a quiver (directed graph) on the index
+ type [A], such a chain is exactly a PATH in that quiver, i.e. a composable
+ chain of edges/morphisms from [i] to [j].  Unlike [netlist] (Lib/NETList.v),
+ [tlist] has a nil constructor [tnil : tlist B i i], the empty path, so it
+ includes paths of length zero.  These are precisely the morphisms of the
+ free category / path category on the quiver [B], with [tnil] the identity
+ and [tlist_app] (+++) the composition (associativity is [tlist_app_assoc]);
+ see Construction/Free.v.  The same data structure is known in the Haskell
+ community as a "type-aligned sequence" (Atze van der Ploeg,
+ https://github.com/atzeus/type-aligned).
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ Note on indexing: the underlying inductive [tlist'] is defined "snoc-first"
+ with the source index fixed in the parameter [k] and the target varying, so
+ that [tcons] can prepend an edge while recursing on the tail.  The exposed
+ [tlist B i j] flips these into the conventional source-then-target order
+ [tlist B i j := tlist' j i].
+
+ Operations below give this family its path algebra: [tlist_app] (+++)
+ concatenates two head-to-tail composable paths and is associative; [tnil]
+ is its two-sided unit ([tlist_app_tnil_l]/[tlist_app_tnil_r]).  The
+ remaining operations are the expected constructors/destructors (singleton,
+ rcons, uncons, head/tail/init/last), structural maps ([tlist_map] over the
+ edge family, [tlist_mapv] to a plain list), [tlist_rev] (reverse, given an
+ edge-flipping operation), [tlist_concat] (flatten a path of paths), and
+ decidable structure (equality, setoid equivalence) used when [A] and each
+ [B i j] have decidable equality.  Formalized with the Equations plugin,
+ with UIP enabled so dependent matches on the index equalities reduce. 
+
+ --------
+ nLab: https://ncatlab.org/nlab/show/free+category
+ Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
+
+ [tlist B i j] 是 Typed list：一组类型对齐的 [B] 值序列，相邻下标衔接，形如 [B i j0]、[B j0 j1]、…、[B jn j]。把 [B] 读作指标类型 [A] 上 quiver（有向图）的 hom 族时，这样的链恰是该 quiver 中从 [i] 到 [j] 的路径，即边/态射的可复合链。与 [netlist]（Lib/NETList.v）不同，[tlist] 有 nil 构造子 [tnil : tlist B i i]（空路径），因而包含长度为零的路径。它们恰是 quiver [B] 上自由范畴 / 路径范畴的态射，以 [tnil] 为恒等、[tlist_app] (+++) 为复合（结合律为 [tlist_app_assoc]）；见 Construction/Free.v。同一数据结构在 Haskell 社区称为 “type-aligned sequence”（Atze van der Ploeg, https://github.com/atzeus/type-aligned）。
+
+ 关于指标：底层归纳类型 [tlist'] 以 “先 snoc” 方式定义，源指标固定在参数 [k]、目标变动，以便 [tcons] 在尾部递归时前置一条边。对外暴露的 [tlist B i j] 再翻成惯用的先源后目标顺序 [tlist B i j := tlist' j i]。
+
+ 下文运算给出该族的路径代数：[tlist_app] (+++) 拼接首尾可接的路径且结合；[tnil] 是其双边单位（[tlist_app_tnil_l]/[tlist_app_tnil_r]）。其余是预期的构造/消去（单点、rcons、uncons、head/tail/init/last）、结构映射（沿边族的 [tlist_map]、到普通列表的 [tlist_mapv]）、[tlist_rev]（给定翻边运算的反转）、[tlist_concat]（展平路径的路径），以及在 [A] 与各 [B i j] 可判定相等时使用的可判定结构（相等、setoid 等价）。用 Equations 插件形式化。
 *)
 
 Inductive tlist' {A :Type} {B : A → A → Type} (k : A) : A -> Type :=
@@ -30,14 +67,14 @@ Next Obligation.
   apply Transitive_Closure.wf_clos_trans.
   intros a.
   destruct a as [? pr0].
-  (* destruct a as [[] pr0]. *)
+  (* destruct a as [[] pr0]. / destruct a as [[] pr0]. *)
   simpl in pr0.
   induction pr0.
-  - (* tnil *)
+  - (* tnil / tnil *)
     constructor.
     intros y H.
     inversion H; subst; clear H.
-  - (* tcons *)
+  - (* tcons / tcons *)
     constructor. intros [ l m] pr1 . simpl in *.
     dependent induction pr1.
     assumption.

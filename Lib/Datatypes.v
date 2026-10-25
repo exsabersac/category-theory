@@ -9,17 +9,40 @@ Unset Transparent Obligations.
 
 Import ListNotations.
 
-(* 相关说明。 （已译） *)
+(* * * Basic datatypes and setoid structure / * * 基本数据类型与 setoid 结构 *)
 
 (*
+ Utility lemmas and setoid instances for the standard-library datatypes used
+ throughout the development: lists, products, sums, options, functions and a
+ binary symmetric product for well-founded recursion.
+
+ The list induction helpers [rev_list_rect] and [rev_rect] mirror the
+ reverse-induction principles of the Rocq standard library
+ (Stdlib.Lists.List); they are reproduced here so that this file does not
+ depend on their exact location across Coq/Rocq versions.
+
+ The product, sum, option, list and function setoid instances equip those
+ type constructors with the pointwise/componentwise equivalence that makes
+ them objects of the category of setoids (see Instance/Sets.v); these are the
+ constructive analogues of the categorical product, coproduct and maybe
+ monad on Set:
+
  nLab:    https://ncatlab.org/nlab/show/setoid
  nLab:    https://ncatlab.org/nlab/show/product
  nLab:    https://ncatlab.org/nlab/show/coproduct
- Wikipedia: https://en.wikipedia.org/wiki/Setoid *)
+ Wikipedia: https://en.wikipedia.org/wiki/Setoid 
 
-   本文件给出 Datatypes 相关定义与性质。
+ --------
+ 本开发全程使用的标准库数据类型的辅助引理与 setoid 实例：列表、积、和、option、函数，以及用于良基递归的二元对称积。
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ 列表归纳辅助 [rev_list_rect] 与 [rev_rect] 对标 Rocq 标准库（Stdlib.Lists.List）的反向归纳原理；在此复写以免依赖它们在各 Coq/Rocq 版本中的确切路径。
+
+ 积、和、option、列表与函数的 setoid 实例为这些类型构造子配备逐点/分量等价，使它们成为 setoid 范畴中的对象（见 Instance/Sets.v）；它们是 Set 上范畴积、余积与 maybe 单子的构造性对应：
+
+ nLab:    https://ncatlab.org/nlab/show/setoid
+ nLab:    https://ncatlab.org/nlab/show/product
+ nLab:    https://ncatlab.org/nlab/show/coproduct
+ Wikipedia: https://en.wikipedia.org/wiki/Setoid
 *)
 
 Definition rev_list_rect (A : Type) (P : list A → Type) (H : P [])
@@ -119,11 +142,24 @@ Qed.
 
 Local Set Warnings "-intuition-auto-with-star".
 
-(* 相关说明。 （已译） *)
+(*
+ The only inductive types from the standard library used in this development
+ are products and sums, so we must show how they interact with constructive
+ setoids. 
 
-(* Product setoid: 等价 componentwise, 等价 关系
- carried categorical product A × B 范畴 setoids.
- nLab: https://ncatlab.org/nlab/show/product （已译） *)
+ --------
+ 本开发所用标准库归纳类型仅有积与和，故须说明它们与构造性 setoid 如何交互。
+*)
+
+(*
+ Product setoid: equivalence is componentwise, the equivalence relation
+ carried by the categorical product A × B in the category of setoids.
+ nLab: https://ncatlab.org/nlab/show/product 
+
+ --------
+ 积 setoid：等价按分量，即 setoid 范畴中范畴积 A × B 所携带的等价关系。
+ nLab: https://ncatlab.org/nlab/show/product
+*)
 #[global]
 Program Instance prod_setoid {A B} `{Setoid A} `{Setoid B} :
   Setoid (A * B) := {
@@ -159,11 +195,15 @@ Corollary let_projT2 {A P} (S : @sigT A P) `(f : ∀ x, P x → z) :
 Proof. destruct S; auto. Qed.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/coproduct
+ Sum setoid: elements are equivalent only when they lie in the same
+ injection and their contents are equivalent; cross-injection elements are
+ never equivalent. This is the equivalence carried by the categorical
+ coproduct A + B in the category of setoids.
+ nLab: https://ncatlab.org/nlab/show/coproduct 
 
-   本节说明等价相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 和 setoid：仅当落在同一注入且内容等价时元素才等价；跨注入永不等价。这是 setoid 范畴中范畴余积 A + B 所携带的等价。
+ nLab: https://ncatlab.org/nlab/show/coproduct
 *)
 #[global]
 Program Instance sum_setoid {A B} `{Setoid A} `{Setoid B} :
@@ -195,11 +235,14 @@ Program Instance inr_respects {A B} `{Setoid A} `{Setoid B} :
   Proper (equiv ==> equiv) (@inr A B).
 
 (*
-   nLab: https://ncatlab.org/nlab/show/maybe+monad
+ Option setoid: [Some] is equivalence-respecting on its contents and [None]
+ is equivalent only to itself. Equivalently this is the coproduct setoid
+ 1 + A, the maybe/option construction on Set.
+ nLab: https://ncatlab.org/nlab/show/maybe+monad 
 
-   本节说明等价相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Option setoid：[Some] 对其内容尊重等价，[None] 仅与自身等价。等价地说即余积 setoid 1 + A，Set 上的 maybe/option 构造。
+ nLab: https://ncatlab.org/nlab/show/maybe+monad
 *)
 #[global]
 Program Instance option_setoid `{Setoid A} : Setoid (option A) := {
@@ -282,12 +325,20 @@ Proof.
 Qed.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/well-founded+relation
-   Wikipedia: https://en.wikipedia.org/wiki/Well-founded_relation
+ Symmetric product of a relation with itself. This is the homogeneous (single
+ relation, single carrier) specialization of the standard library's symmetric
+ product [symprod] from Stdlib.Relations.Relation_Operators, whose
+ well-foundedness is established in the Wf_Symmetric_Product section of
+ Stdlib.Wellfounded.Lexicographic_Product. A pair decreases when either
+ component decreases, so well-foundedness of [leA] yields well-foundedness of
+ [symprod2].
+ nLab: https://ncatlab.org/nlab/show/well-founded+relation
+ Wikipedia: https://en.wikipedia.org/wiki/Well-founded_relation 
 
-   本节说明 Datatypes 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 关系与自身的对称积。这是标准库对称积 [symprod]（Stdlib.Relations.Relation_Operators）的齐次特例（单一关系、单一载体）；其良基性见 Stdlib.Wellfounded.Lexicographic_Product 的 Wf_Symmetric_Product 节。当任一分量下降时序对下降，故 [leA] 良基蕴涵 [symprod2] 良基。
+ nLab: https://ncatlab.org/nlab/show/well-founded+relation
+ Wikipedia: https://en.wikipedia.org/wiki/Well-founded_relation
 *)
 Section Symmetric_Product2.
 
@@ -339,18 +390,26 @@ Proof.
   induction l2; auto.
 Qed.
 
-(* The discrete setoid [nat]: no [equiv] field supplied, Program
- resolves [equiv := eq] (with [eq_equivalence]), giving setoid whose
- 等价 Leibniz equality. （已译） *)
+(*
+ The discrete setoid on [nat]: with no [equiv] field supplied, Program
+ resolves [equiv := eq] (with [eq_equivalence]), giving the setoid whose
+ equivalence is Leibniz equality. 
+
+ --------
+ 离散 setoid [nat]：未给出 [equiv] 字段时，Program 解析为 [equiv := eq]（配 [eq_equivalence]），即 Leibniz 相等的 setoid。
+*)
 #[global]
 Program Instance nat_setoid : Setoid nat.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/function+extensionality
+ Function setoid: pointwise equivalence of functions into a setoid codomain.
+ This is the extensional equivalence on the exponential B ^ A in the category
+ of setoids; it carries the hom-setoid used for morphisms in Instance/Sets.v.
+ nLab: https://ncatlab.org/nlab/show/function+extensionality 
 
-   本节说明hom、等价相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 函数 setoid：到 setoid 陪域的函数的逐点等价。这是 setoid 范畴中指数 B ^ A 上的外延等价；它承载 Instance/Sets.v 中态射所用的 hom-setoid。
+ nLab: https://ncatlab.org/nlab/show/function+extensionality
 *)
 #[global]
 Program Instance fun_setoid {A : Type} `{Setoid B} : Setoid (A → B) := {

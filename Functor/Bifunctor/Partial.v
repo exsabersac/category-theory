@@ -1,4 +1,4 @@
-(* 相关说明。 （已译） *)
+(** * Bifunctors and transformations from partial data  / * 双函子和部分数据的转换*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -12,28 +12,95 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(*
+(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+              §II.3, printed pp. 37–38 (PDF pp. 47–48) — maclane:II.3:prop1
+              (a bifunctor is determined by its partial functors),
+              maclane:II.3:def3 (naturality in one variable),
+              maclane:II.3:prop2 (bifunctor naturality is componentwise)
    Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.6,
+              Lemma 7.14 (the bifunctor lemma), printed p. 168 (PDF
+              pp. 177–178) — awodey:7.6:lem14: the same iff, stated over
+              raw object/arrow data
    nLab:      https://ncatlab.org/nlab/show/bifunctor
 
-   本文件给出偏函子/偏作用。
+   Mac Lane's two propositions: a bifunctor is assembled from functors in
+   each separate variable agreeing on objects exactly when the one-sided
+   arrow actions satisfy the interchange condition (Proposition 1), and a
+   family of arrows between bifunctors is a natural transformation exactly
+   when it is natural in each variable separately (Proposition 2).  The
+   NECESSITY directions have long been in tree as Functor/Bifunctor.v's
+   bimap calculus; this file adds everything else:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+     - [Partial_l]/[Partial_r]: the partial functors of a bifunctor,
+       bundled as named [Functor]s (work item 1)
+     - [Build_Bifunctor]: Awodey's raw-data smart constructor — an
+       object map, two separately functorial arrow actions, and the
+       interchange law yield a bifunctor — with [Build_Bifunctor_l]/
+       [Build_Bifunctor_r] computing its partials back to the data and
+       [Build_Bifunctor_unique] the uniqueness half, and
+       [bifunctor_iff_partial] the FULL IFF over the bundled [RawLaws]
+       (necessity by the bimap calculus through the casts, sufficiency
+       the constructor)
+     - [Bifunctor_from_partial]: Mac Lane's family form — functors
+       [L c : B ⟶ D] and [M b : C ⟶ D] agreeing on objects, with the
+       commutation condition — routed through the raw constructor
+       along the agreement casts (design note 2)
+     - [NaturalIn1]/[NaturalIn2] (definitionally the naturality of the
+       partial-functor families — [NaturalIn1_partials] — with the
+       per-c [Transform_partial_l]), [Transform_from_partial] with
+       [transform_natural_in1]/[transform_natural_in2], and the iff
+       [transform_iff_natural_in_each]: Proposition 2, both directions
+       (work items 3–4), round trips in both composites
 
-(* 相关说明。 （已译） *)
+   Design:
+
+   1. RAW DATA FIRST.  Awodey's phrasing takes a SINGLE object map
+      [S₀ : B → C → D] with two arrow actions over it, so no object
+      agreement — and hence no transport — appears anywhere in the
+      CONSTRUCTOR or its computation lemmas; the interchange condition
+      is stated directly.  (Uniqueness necessarily quantifies over an
+      arbitrary bifunctor, so [Build_Bifunctor_unique] and the iff's
+      realization side carry the agreement equation and its casts —
+      that is the statement's content, not an artifact.)  Mac Lane's family form carries the agreement
+      [L c b = M b c] as Leibniz equalities on objects (the only
+      relation objects have here), and design note 2's [cast2] moves
+      [M]'s arrow action onto [L]'s objects; the family constructor is
+      then an instance of the raw one.
+
+   2. THE FAMILY FORM PAYS FOR ITS OBJECT EQUATIONS.  [cast2] is the
+      endpoint transport (the [acast] idiom of Theory/Multicategory.v,
+      specialized to homs), and the family constructor's interchange
+      hypothesis is stated UNDER the casts — exactly the price Mac
+      Lane's "agreeing on objects" costs in a proof assistant, paid
+      once here rather than by every consumer.
+
+   3. UNIQUENESS IS [Functor_Setoid].  Proposition 1's "unique functor
+      S" is rendered as uniqueness up to Cat's hom-equivalence: any
+      bifunctor whose object map is the data's and whose arrow actions
+      restrict to the data's one-sided actions is ≈ the constructed
+      one.  The witnessing natural isomorphism has cast components
+      built from the object agreement (identity components when the
+      agreement is definitional). *)
+
+(** ** Endpoint casts (design note 2)  / ** 端点转换（设计说明 2）*)
 
 Definition cast2 {D : Category} {x y x' y' : obj[D]}
   (ex : x = x') (ey : y = y') (f : x ~> y) : x' ~> y' :=
   eq_rect x (fun w => w ~> y')
     (eq_rect y (fun z => x ~> z) f y' ey) x' ex.
 
-(* An 对象 equality yields 同构, 恒等 the
- equality reflexivity. （已译） *)
+(*
+An object equality yields an isomorphism, the identity when the
+   equality is reflexivity. 
+
+--------
+对象相等产生同构，即当
+ 平等是自反性。 
+*)
 Definition eq_iso {D : Category} {x y : obj[D]} (e : x = y) : x ≅ y :=
   match e in _ = z return x ≅ z with eq_refl => iso_id end.
 
-(* Cast algebra over generic equalities, each law by destructing them. *)
+(* Cast algebra over generic equalities, each law by destructing them.  / 将代数置于一般等式之上，通过破坏它们来制定每条定律。*)
 Lemma cast2_respects {D : Category} {x y x' y' : obj[D]}
   (ex : x = x') (ey : y = y') (f g : x ~> y) :
   f ≈ g → cast2 ex ey f ≈ cast2 ex ey g.
@@ -55,7 +122,7 @@ Proof.
   destruct e1, e2, e3; simpl; reflexivity.
 Qed.
 
-(* * ** The partial 函子 bifunctor (work item 1) （已译） *)
+(** ** The partial functors of a bifunctor (work item 1)  / ** 双函子的部分函子（工作项 1）*)
 
 Program Definition Partial_l {B C D : Category}
   (F : B ∏ C ⟶ D) (c : C) : B ⟶ D := {|
@@ -103,14 +170,20 @@ Next Obligation.
   - reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(** ** Awodey's raw-data constructor (Proposition 1, converse)  / ** Awodey 的原始数据构造函数（命题 1，相反）*)
 
 Section BuildBifunctor.
 
 Context {B C D : Category}.
 
-(* The raw data: 对象 map, one-sided arrow actions, separate
- functoriality, interchange law. （已译） *)
+(*
+The raw data: an object map, one-sided arrow actions, separate
+   functoriality, and the interchange law. 
+
+--------
+原始数据：对象映射、单向箭头动作、单独的
+ 函子性和交换律。 
+*)
 Context (S0 : B → C → D).
 Context (actl : ∀ (b b' : B), (b ~> b') → ∀ c : C, S0 b c ~> S0 b' c).
 Context (actr : ∀ (b : B) (c c' : C), (c ~> c') → S0 b c ~> S0 b c').
@@ -127,8 +200,14 @@ Context (actr_comp : ∀ (b : B) (c c' c'' : C) (g : c' ~> c'')
 Context (interchange : ∀ (b b' : B) (f : b ~> b') (c c' : C)
   (g : c ~> c'), actl b b' f c' ∘ actr b c c' g ≈ actr b' c c' g ∘ actl b b' f c).
 
-(* The bifunctor: arrows act left-then-right; interchange law makes
- choice immaterial drives 复合 law. （已译） *)
+(*
+The bifunctor: arrows act left-then-right; the interchange law makes
+   the choice immaterial and drives the composition law. 
+
+--------
+双函子：箭头先左后右； 互换法使得
+ 选择无关紧要并驱动组合法则。 
+*)
 Program Definition Build_Bifunctor : B ∏ C ⟶ D := {|
   fobj := fun p => S0 (fst p) (snd p);
   fmap := fun p q fg =>
@@ -155,9 +234,16 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* The constructed bifunctor's partials compute back data, with
- 恒等 components: one-sided actions [Build_Bifunctor] are
- given actions up unit law. （已译） *)
+(*
+The constructed bifunctor's partials compute back to the data, with
+   identity components: the one-sided actions of [Build_Bifunctor] are
+   the given actions up to a unit law. 
+
+--------
+构造的双函子的部分计算回数据，其中
+ 身份组件：[Build_Bifunctor] 的片面行为是
+ 给定的动作达到单位律。 
+*)
 Lemma Build_Bifunctor_l (c : C) {b b' : B} (f : b ~> b') :
   fmap[Partial_l Build_Bifunctor c] f ≈ actl b b' f c.
 Proof.
@@ -175,9 +261,16 @@ Proof.
 Qed.
 
 (*
-   本节说明函子相关定义、性质与动机。
+Uniqueness (Proposition 1's "unique functor S", design note 3): any
+   bifunctor with the same object map whose one-sided actions are the
+   data's agrees with the construction up to Functor_Setoid, with
+   identity components. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+唯一性（命题1的“唯一函子S”，设计说明3）：任意
+ 具有相同对象映射的双函子，其单侧动作是
+ 数据与 Functor_Setoid 的构造一致，其中
+ 身份组件。 
 *)
 Lemma Build_Bifunctor_unique (S' : B ∏ C ⟶ D)
   (Hobj : ∀ b c, S' (b, c) = S0 b c)
@@ -208,14 +301,21 @@ Proof.
 Defined.
 
 (*
-   本节说明函子相关定义、性质与动机。
+The laws of a bifunctor's own partial data, bundled: the necessity
+   half of Proposition 1, each field one of Functor/Bifunctor.v's bimap
+   lemmas.  [bifunctor_iff_partial] below is the full iff the
+   propositions state. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+双函子自身部分数据的法则，捆绑：必要性
+ 命题 1 的一半，Functor/Bifunctor.v 的 bimap 的每个字段之一
+ 引理。 下面的 [bifunctor_iff_partial] 是完整的 iff
+ 命题陈述。 
 *)
 
 End BuildBifunctor.
 
-(* 相关说明。 （已译） *)
+(** ** Mac Lane's family form (Proposition 1)  / ** Mac Lane 的家庭形式（命题 1）*)
 
 Section FamilyForm.
 
@@ -229,8 +329,14 @@ Context (commute : ∀ (b b' : B) (f : b ~> b') (c c' : C) (g : c ~> c'),
     ≈ cast2 (eq_sym (agree c b')) (eq_sym (agree c' b')) (fmap[M b'] g)
         ∘ fmap[L c] f).
 
-(* The family form, instance raw constructor: 对象 through
- L, right action through M along agreement casts. （已译） *)
+(*
+The family form, an instance of the raw constructor: objects through
+   L, the right action through M along the agreement casts. 
+
+--------
+系列形式，原始构造函数的实例：对象通过
+ L、右动作通过M沿着约定施放。 
+*)
 Program Definition Bifunctor_from_partial : B ∏ C ⟶ D :=
   Build_Bifunctor (fun b c => L c b)
     (fun b b' f c => fmap[L c] f)
@@ -270,9 +376,16 @@ Qed.
 End FamilyForm.
 
 (*
-   本节说明函子相关定义、性质与动机。
+The family form's partial functors are the given families, on arrows
+   (work item 2's "whose partial functors are the given families"): the
+   left on the nose, the right up to the agreement casts — the asymmetry
+   design note 2 prices. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+族形式的偏函子是箭头上给定的族
+ （工作项 2 的“其部分函子是给定的族”）：
+ 左边是鼻子，右边是一致的——不对称
+ 设计说明2价格。 
 *)
 Lemma Bifunctor_from_partial_l {B C D : Category}
   (L : C → (B ⟶ D)) (M : B → (C ⟶ D)) agree commute
@@ -292,9 +405,9 @@ Proof.
   exact (Build_Bifunctor_r _ _ _ _ _ _ _ _ _ _ b g).
 Qed.
 
-(** ** Proposition 1 as an iff *)
+(** ** Proposition 1 as an iff  / ** 命题 1 作为 iff*)
 
-(* The raw laws, bundled. *)
+(* The raw laws, bundled.  / 原始法律，捆绑在一起。*)
 Record RawLaws {B C D : Category} (S0 : obj[B] → obj[C] → obj[D])
   (actl : ∀ b b' : B, (b ~> b') → ∀ c : C, S0 b c ~> S0 b' c)
   (actr : ∀ (b : B) (c c' : C), (c ~> c') → S0 b c ~> S0 b c') := {
@@ -313,9 +426,16 @@ Record RawLaws {B C D : Category} (S0 : obj[B] → obj[C] → obj[D])
 }.
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+Awodey's Lemma 7.14 / Mac Lane's Proposition 1, as the iff over raw
+   data: the laws hold exactly when the data is realized by a bifunctor
+   whose one-sided actions restrict to it (along the object agreement,
+   with [cast2] pricing it as everywhere else). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Awodey 的引理 7.14 / Mac Lane 的命题 1，作为原始数据的 iff
+ 数据：当数据由双函子实现时，定律完全成立
+ 其单方面的行为限制了它（沿着目标协议，
+ [cast2] 的定价与其他地方一样）。 
 *)
 Theorem bifunctor_iff_partial {B C D : Category}
   (S0 : obj[B] → obj[C] → obj[D])
@@ -388,16 +508,23 @@ Proof.
                (symmetry (@bimap_id_left_right B C D S c' c g b b' f))).
 Qed.
 
-(* * ** Proposition 2: 自然性 each variable (work items 3–4) （已译） *)
+(** ** Proposition 2: naturality in each variable (work items 3–4)  / ** 命题 2：每个变量的自然性（工作项目 3-4）*)
 
 Section PartialNaturality.
 
 Context {B C D : Category}.
 Context {S S' : B ∏ C ⟶ D}.
 
-(* A family components between bifunctors, 自然性 one
- variable at time (maclane:II.3:def3): each fixed c family
- natural b, dually. （已译） *)
+(*
+A family of components between bifunctors, and naturality in one
+   variable at a time (maclane:II.3:def3): for each fixed c the family
+   is natural in b, and dually. 
+
+--------
+双函子之间的一系列组件，以及一个组件的自然性
+ 一次变量 (maclane:II.3:def3)：对于每个固定的 c 系列
+ 在 b 中是自然的，并且是对偶的。 
+*)
 Definition NaturalIn1 (α : ∀ b c, S (b, c) ~> S' (b, c)) : Type :=
   ∀ c b b' (f : b ~> b'),
     α b' c ∘ @bimap B C D S b b' c c f id
@@ -408,8 +535,14 @@ Definition NaturalIn2 (α : ∀ b c, S (b, c) ~> S' (b, c)) : Type :=
     α b c' ∘ @bimap B C D S b b c c' id g
       ≈ @bimap B C D S' b b c c' id g ∘ α b c.
 
-(* Necessity: 自然变换 over product natural in
- each variable — instantiate at (f, id) (id, g). （已译） *)
+(*
+Necessity: a natural transformation over the product is natural in
+   each variable — instantiate at (f, id) and (id, g). 
+
+--------
+必然性：产品的自然转变是自然的
+ 每个变量 - 在 (f, id) 和 (id, g) 处实例化。 
+*)
 Definition transform_natural_in1 (τ : S ⟹ S') :
   NaturalIn1 (fun b c => transform τ (b, c)) :=
   fun c b b' f => @naturality_sym _ _ _ _ τ (b, c) (b', c) (f, id).
@@ -418,9 +551,16 @@ Definition transform_natural_in2 (τ : S ⟹ S') :
   NaturalIn2 (fun b c => transform τ (b, c)) :=
   fun b c c' g => @naturality_sym _ _ _ _ τ (b, c) (b, c') (id, g).
 
-(* Sufficiency: componentwise 自然性 assembles 自然性 over
- product, splitting pair arrow through interchange
- factorization bimap f g ≈ bimap f id ∘ bimap id g. （已译） *)
+(*
+Sufficiency: componentwise naturality assembles to naturality over
+   the product, by splitting a pair arrow through the interchange
+   factorization bimap f g ≈ bimap f id ∘ bimap id g. 
+
+--------
+充分性：组件的自然性组装成自然性
+ 产品，通过将一对箭头分开通过交换
+ 因式分解 bimap f g ≈ bimap f id ∘ bimap id g。 
+*)
 Program Definition Transform_from_partial
   (α : ∀ b c, S (b, c) ~> S' (b, c))
   (H1 : NaturalIn1 α) (H2 : NaturalIn2 α) : S ⟹ S' := {|
@@ -453,15 +593,27 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* One round-trip 复合, definitionally: assembling family and
- reading components back 恒等. （已译） *)
+(*
+One round-trip composite, definitionally: assembling a family and
+   reading its components back is the identity. 
+
+--------
+一次往返复合，定义为：组建一个家庭并
+ 读回其组件就是身份。 
+*)
 Example Transform_from_partial_transform
   (α : ∀ b c, S (b, c) ~> S' (b, c))
   (H1 : NaturalIn1 α) (H2 : NaturalIn2 α) (b : B) (c : C) :
   transform (Transform_from_partial α H1 H2) (b, c) = α b c := eq_refl.
 
-(* The other 复合, pointwise: disassembling transformation and
- reassembling it gives same components. （已译） *)
+(*
+The other composite, pointwise: disassembling a transformation and
+   reassembling it gives the same components. 
+
+--------
+另一种组合，逐点：分解变换并
+ 重新组装它会得到相同的组件。 
+*)
 Example Transform_from_partial_eta (τ : S ⟹ S') (p : obj[B ∏ C]) :
   transform
     (Transform_from_partial (fun b c => transform τ (b, c))
@@ -471,8 +623,14 @@ Proof.
   destruct p; simpl; reflexivity.
 Qed.
 
-(* [NaturalIn1] IS 自然性 partial-函子 families, the
- nose (work item 3's phrasing) — per-c Transform it promises. （已译） *)
+(*
+[NaturalIn1] IS naturality of the partial-functor families, on the
+   nose (work item 3's phrasing) — and the per-c Transform it promises. 
+
+--------
+[NaturalIn1] 是部分函子族的自然性，在
+ nose（工作项 3 的措辞）——以及它所承诺的 per-c Transform。 
+*)
 Example NaturalIn1_partials (α : ∀ b c, S (b, c) ~> S' (b, c)) :
   NaturalIn1 α
     = (∀ (c : C) (b b' : B) (f : b ~> b'),
@@ -493,7 +651,8 @@ Next Obligation.
   exact (H1 c b b' f).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Proposition 2 as the iff: a family underlies a transformation over
+   the product exactly when it is natural in each variable. *)
 Theorem transform_iff_natural_in_each
   (α : ∀ b c, S (b, c) ~> S' (b, c)) :
   (NaturalIn1 α * NaturalIn2 α)

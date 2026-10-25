@@ -21,6 +21,32 @@ Generalizable All Variables.
 
 (* `Naturality A` equips type `A` 态射 families 命题
  `natural f` asserts `f` natural. （已译） *)
+(*
+   【Class Naturality 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Naturality A 按族 f : A 的「形状」算出该写哪条自然性命题；
+      调用 natural f 即可。真正的自然变换 Class 在
+      Theory/Natural/Transformation.v（Transform / F ⟹ G）。
+      Naturality A picks the right naturality statement for family shape A.
+      The Transform class itself lives in Theory/Natural/Transformation.v.
+      Haskell 对照：帮你对 η :: forall x. F x -> G x 自动想起
+      fmap g ∘ η = η ∘ fmap g；多变元时展开成联合方块。
+      Helps recall the naturality square; multi-arg expands to joint squares.
+
+   2) 字段 / Field
+      - natural (f : A) : Type — 命题（方块），不是证明本身。
+        / the proposition (square), not the proof.
+
+   3) ≈
+      各 Instance（如 Functor_Naturality）里的方块使用 Hom 的 ≈。
+      Instances state squares up to ≈.
+
+   阅读顺序：本 Class → Functor_Naturality → 再去读 Transform。
+   Reading order: this Class → Functor_Naturality → Transform.
+*)
+
 Class Naturality (A : Type) : Type := {
   natural (f : A) : Type            (* 自然性 statement family f （已译） *)
 }.

@@ -10,14 +10,58 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(*
+(** * The Eilenberg–Moore free/forgetful adjunction
+
     nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
     Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
-   本文件给出伴随相关构造与性质。
+    Monad/Adjunction.v shows that every adjunction F ⊣ U induces a monad
+    U ◯ F on the domain of F.  This file provides the terminal converse
+    resolution, through the Eilenberg–Moore category C^T of algebras
+    (Monad/Eilenberg/Moore.v) of a monad (T, ret, join) = (T, η, μ) on C:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    - [EM_Forget] U^T : C^T ⟶ C sends an algebra (a, ν) to its carrier a,
+      and an algebra homomorphism to its underlying C-arrow;
+    - [EM_Free] F^T : C ⟶ C^T sends x to the free algebra (T x, μ_x): the
+      structure map is the multiplication join, whose algebra laws are the
+      monad laws [join_ret] and [join_fmap_join], and a morphism f : x ~> y
+      becomes the homomorphism fmap[T] f, which intertwines the two free
+      actions by the multiplication naturality [join_fmap_fmap];
+    - [EM_Adjunction] F^T ⊣ U^T: the transpose ⌊g⌋ of an algebra map
+      g : (T x, μ_x) ~> (b, ν) is t_alg_hom[g] ∘ ret, and the transpose
+      ⌈f⌉ of f : x ~> b is its universal extension ν ∘ fmap[T] f, packaged
+      as an algebra homomorphism by [EM_extend].  That the two transposes
+      are mutually inverse is the universal property of the free algebra:
+      [EM_extend_ret] (extension restricted along η recovers f) and
+      [EM_extend_unique] (every algebra map out of a free algebra is the
+      extension of its own restriction).
+
+    The adjunction presents the monad we started with:
+    [EM_Monad_agrees] identifies the composite U^T ◯ F^T with T (a natural
+    isomorphism whose components are identities), [EM_unit_agrees]
+    identifies the adjunction unit with ret, and [EM_join_agrees]
+    identifies the U^T-image of the counit — which is exactly the
+    multiplication of the monad that Monad/Adjunction.v extracts from this
+    adjunction — with join.  The counit itself acts at (b, ν) by the
+    structure map ν ([EM_counit_agrees]).
+
+    This is the terminal resolution of T; the initial one is the Kleisli
+    adjunction of Monad/Kleisli/Adjunction.v, whose comparison into C^T
+    lands in the free algebras.
+
+    CORRECTION (#475).  No such comparison existed when this was written.
+    The comparison of the Kleisli adjunction into algebras is now
+    Monad/Comparison.v's [EM_Comparison] at [Kleisli_Adjunction]
+    (constructible since PR #201, merged 2026-07-19), Riehl's own
+    construction of her K (Lemma 5.2.14); but its codomain is the
+    algebras of the monad the Kleisli adjunction induces, not C^T, and
+    its structure map at c is μ ∘ T id, not μ.  Into C^T itself it is
+    Monad/Kleisli/Comparison.v's [Kleisli_EM], which forgets to the same
+    functor ([EM_Comparison_Kleisli_obj], [EM_Comparison_Kleisli_map])
+    and whose arrow action is this file's [EM_extend] (the inverse
+    transpose under [EM_Adjunction]) at [eq_refl], full and faithful onto
+    the free algebras.  The terminality and the initiality are Mac Lane's
+    Theorem VI.5.3, which issue #476 tracks. *)
 
 Section EilenbergMooreAdjunction.
 
@@ -27,10 +71,17 @@ Context `{H : @Monad C T}.
 
 #[local] Obligation Tactic := program_simpl.
 
-(*
-   本节说明函子、等价相关定义、性质与动机。
+(**
+The forgetful functor C^T ⟶ C: project the carrier of an algebra and
+    the underlying arrow of an algebra homomorphism.  Since equivalence of
+    algebra homomorphisms in C^T is equivalence of their underlying arrows,
+    all three functor laws hold on the nose. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+健忘函子 C^T ⟶ C：投影代数的载体并
+ 代数同态的基本箭头。 由于等价于
+ C^T 中的代数同态是其基本箭头的等价，
+ 所有三个函子定律都适用。 
 *)
 
 Program Definition EM_Forget : EilenbergMoore T ⟶ C := {|
@@ -41,10 +92,19 @@ Next Obligation. proper. Qed.
 Next Obligation. reflexivity. Qed.
 Next Obligation. reflexivity. Qed.
 
-(*
-   本节说明函子、单子相关定义、性质与动机。
+(**
+The free-algebra functor C ⟶ C^T: on objects, the free algebra
+    (T x, μ_x); on morphisms, fmap[T].  The algebra laws for μ_x are the
+    monad unit law join_ret and the associativity join_fmap_join, and the
+    homomorphism square for fmap[T] f is the multiplication naturality
+    join_fmap_fmap. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+自由代数函子 C ⟶ C^T：在对象上，自由代数
+ (Tx,μ_x); 关于态射，fmap[T]。 μ_x 的代数定律是
+ monad 单位法 join_ret 和结合律 join_fmap_join，以及
+ fmap[T] 的同态平方 f 是乘法自然性
+ join_fmap_fmap。 
 *)
 
 Program Definition EM_Free : C ⟶ EilenbergMoore T := {|
@@ -58,10 +118,23 @@ Next Obligation. proper; now rewrites. Qed.
 Next Obligation. apply fmap_id. Qed.
 Next Obligation. apply fmap_comp. Qed.
 
-(*
-   本节说明 Adjunction 相关定义、性质与动机。
+(**
+The universal property of the free algebra, on underlying arrows.  Fix
+    an algebra (b, ν) and an arrow f : x ~> b.  Its extension ν ∘ fmap[T] f
+    is an algebra homomorphism (T x, μ_x) ~> (b, ν)
+    ([EM_extend_is_alg_hom]); it restricts along η back to f
+    ([EM_extend_ret]); and it is the only such homomorphism, in that any
+    algebra map g out of the free algebra is the extension of g ∘ η
+    ([EM_extend_unique]). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+自由代数的普遍性质，在基础箭头上。 修复
+ 代数 (b, ν) 和箭头 f : x ~> b。 其扩展名 ν ∘ fmap[T] f
+ 是代数同态 (T x, μ_x) ~> (b, ν)
+ （[EM_extend_is_alg_hom]）； 它沿着 η 限制回到 f
+ （[EM_extend_ret]）； 它是唯一的同态，因为任何
+ 自由代数中的代数映射 g 是 g ∘ η 的扩展
+ ([EM_extend_unique])。 
 *)
 
 Lemma EM_extend_is_alg_hom {x b : C} (N : @TAlgebra C T H b)
@@ -98,7 +171,7 @@ Proof.
   apply id_right.
 Qed.
 
-(** The extension, packaged as a morphism of C^T out of a free algebra. *)
+(** The extension, packaged as a morphism of C^T out of a free algebra.  / 该扩展被包装为自由代数中 C^T 的态射。*)
 
 Program Definition EM_extend {x : C} {y : EilenbergMoore T}
         (f : x ~{C}~> `1 y) : EM_Free x ~{EilenbergMoore T}~> y := {|
@@ -106,10 +179,17 @@ Program Definition EM_extend {x : C} {y : EilenbergMoore T}
 |}.
 Next Obligation. apply EM_extend_is_alg_hom. Qed.
 
-(*
-   本节说明 Adjunction 相关定义、性质与动机。
+(**
+[EM_extend_unique], restated for a morphism of C^T out of a free
+    algebra: extending the restriction of g recovers g.  The structure map
+    of the free algebra is definitionally join, so the commuting square of
+    g is exactly the hypothesis that [EM_extend_unique] consumes. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[EM_extend_unique]，重述为自由态中 C^T 的态射
+ 代数：扩展 g 的限制恢复 g。 结构图
+ 自由代数的定义是连接，所以通勤平方
+ g正是[EM_extend_unique]消耗的假设。 
 *)
 
 Lemma EM_restrict_extend {x : C} {y : EilenbergMoore T}
@@ -120,9 +200,16 @@ Proof.
   apply (@t_alg_hom_commutes _ _ _ _ _ _ _ g).
 Qed.
 
-(** The transposition isomorphism of hom-setoids: an algebra homomorphism
+(**
+The transposition isomorphism of hom-setoids: an algebra homomorphism
     F^T x ~{C^T}~> (b, ν) corresponds to a C-arrow x ~> b, forward by
-    restriction along η, backward by [EM_extend]. *)
+    restriction along η, backward by [EM_extend]. 
+
+--------
+hom-setoids 的转置同构：代数同态
+ F^T x ~{C^T}~> (b, ν) 对应于 C 箭头 x ~> b，向前移动
+ 沿 η 的限制，向后由 [EM_extend] 限制。 
+*)
 
 Program Definition EM_adj_iso (x : C) (y : EilenbergMoore T) :
   @Isomorphism Sets
@@ -138,10 +225,15 @@ Next Obligation. proper; now rewrites. Qed.
 Next Obligation. apply EM_extend_ret. Qed.
 Next Obligation. apply EM_restrict_extend. Qed.
 
-(*
-   本节说明 Adjunction 相关定义、性质与动机。
+(**
+Naturality of the transposition in the source argument, on underlying
+    arrows: restricting after precomposition with a free arrow fmap[T] g is
+    restricting first and then precomposing with g in C. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+源论证中换位的自然性，基于基础
+ 箭头：使用自由箭头 fmap[T] g 预合成后进行限制
+ 先限制，然后与 C 中的 g 预合成。 
 *)
 
 Lemma EM_transpose_nat_l {x y b : C} (h : T y ~{C}~> b) (g : x ~{C}~> y) :
@@ -157,14 +249,20 @@ Program Definition EM_Adjunction : EM_Free ⊣ EM_Forget :=
 Next Obligation. apply EM_transpose_nat_l. Qed.
 Next Obligation. apply comp_assoc_sym. Qed.
 
-(** The unit 伴随 unit 单子. （已译） *)
+(** The unit of the adjunction is the unit of the monad.  / 附加词的单位是单子的单位。*)
 
 Lemma EM_unit_agrees {x : C} :
   @unit _ _ _ _ EM_Adjunction x ≈ ret[T].
 Proof. apply id_left. Qed.
 
-(** 本节：The counit at algebra (b, ν) acts structure map ν, stated on
- underlying arrow algebra homomorphism. （已译） *)
+(**
+The counit at an algebra (b, ν) acts by the structure map ν, stated on
+    the underlying arrow of the algebra homomorphism. 
+
+--------
+代数 (b, ν) 的计数通过结构图 ν 起作用，如下所示
+ 代数同态的基本箭头。 
+*)
 
 Lemma EM_counit_agrees {y : EilenbergMoore T} :
   t_alg_hom[@counit _ _ _ _ EM_Adjunction y] ≈ t_alg[`2 y].
@@ -174,8 +272,14 @@ Proof.
   apply id_right.
 Qed.
 
-(** The multiplication 单子 induced 伴随 (per
- Monad/Adjunction.v it U^T-image counit) join. （已译） *)
+(**
+The multiplication of the monad induced by this adjunction (per
+    Monad/Adjunction.v it is the U^T-image of the counit) is join. 
+
+--------
+由该附加引起的单子的倍增（每
+ Monad/Adjunction.v 它是 counit 的 U^T 图像）是 join。 
+*)
 
 Lemma EM_join_agrees {x : C} :
   fmap[EM_Forget] (@counit _ _ _ _ EM_Adjunction (EM_Free x)) ≈ join[T].
@@ -185,8 +289,14 @@ Proof.
   apply id_right.
 Qed.
 
-(** The resolution recovers T: 复合 U^T ◯ F^T naturally
- isomorphic T, 恒等 components. （已译） *)
+(**
+The resolution recovers T: the composite U^T ◯ F^T is naturally
+    isomorphic to T, with identity components. 
+
+--------
+分辨率恢复T：复合U^T◯F^T自然是
+ 与 T 同构，具有恒等分量。 
+*)
 
 Theorem EM_Monad_agrees : EM_Forget ◯ EM_Free ≈ T.
 Proof.

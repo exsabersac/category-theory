@@ -8,9 +8,35 @@ Require Import Category.Functor.Structure.Monoidal.Pure.
 
 Generalizable All Variables.
 
-(** Applicative functors. *)
+(** Applicative functors.  / 应用函子。*)
 
-(* nLab: https://ncatlab.org/nlab/show/applicative+functor
+(*
+nLab: https://ncatlab.org/nlab/show/applicative+functor
+   Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
+
+   An applicative functor is the categorical structure underlying the
+   Haskell [Applicative] class (McBride and Paterson, "Applicative
+   programming with effects", JFP 18(1), 2008): it is precisely a strong lax
+   monoidal endofunctor on a (closed, symmetric/braided) monoidal category.
+   Here it is packaged as an endofunctor F : C ⟶ C on a monoidal closed
+   category that is both [StrongFunctor] and [LaxMonoidalFunctor].
+
+   Under that characterization the two operations of the FP class correspond
+   to the comparison maps of the lax monoidal structure:
+
+       pure : x ~> F x          ↔ the unit comparison (built in [Pure] from
+                                   lax_pure : I ~> F I and the strength),
+       ap   : F (x ⇒ y) ⨂ F x   ↔ the tensor comparison lax_ap (μ), composed
+              ~> F y              with F eval through the internal hom ⇒.
+
+   The closed structure supplies the internal hom ⇒ and its evaluation
+   eval : (x ⇒ y) ⨂ x ~> y, which is what turns the bare tensor comparison
+   F (x ⇒ y) ⨂ F x ~> F ((x ⇒ y) ⨂ x) into the Haskell-style <*>.  This is
+   the categorical, law-respecting account; the lawless FP type class lives
+   in Theory/Coq/Applicative.v. 
+
+--------
+nLab: https://ncatlab.org/nlab/show/applicative+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
    Applicative 函子是 Haskell [Applicative] 类背后的范畴结构（McBride and Paterson,
@@ -26,7 +52,8 @@ Generalizable All Variables.
 
    闭结构提供内部 hom ⇒ 及其求值 eval : (x ⇒ y) ⨂ x ~> y，把裸张量比较
    F (x ⇒ y) ⨂ F x ~> F ((x ⇒ y) ⨂ x) 变成 Haskell 风格的 <*>。这是范畴的、尊重定律的
-   叙述；无定律的 FP 类型类在 Theory/Coq/Applicative.v。 *)
+   叙述；无定律的 FP 类型类在 Theory/Coq/Applicative.v。 
+*)
 
 Section ApplicativeFunctor.
 
@@ -36,9 +63,9 @@ Context {F : C ⟶ C}.
 
 Class Applicative := {
   applicative_is_strong : StrongFunctor F;             (* tensorial strength *)
-  applicative_is_lax_monoidal : LaxMonoidalFunctor F;  (* lax monoidal: η and μ *)
+  applicative_is_lax_monoidal : LaxMonoidalFunctor F;  (* lax monoidal: η and μ  / 松弛幺半群： η 和 μ*)
 
-  (* 相关说明。 （已译） *)
+  (* <*> recovered from the tensor comparison μ = lax_ap and F eval  / <*> 从张量比较中恢复 μ = lax_ap 和 F eval*)
   ap {x y} : F (x ⇒ y) ⨂ F x ~> F y :=
     fmap[F] eval ∘ @lax_ap _ _ _ _ F _ (x ⇒ y) x
 }.

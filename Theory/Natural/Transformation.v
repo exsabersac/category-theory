@@ -46,21 +46,61 @@ Context {G : C ⟶ D}.
    积见同目录后续。 *)
 
 (*
-   本节说明 Transformation 相关定义、性质与动机。
+   本节说明自然变换相关定义、性质与动机。
+   This section motivates natural transformations.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   （英文长注释已压缩；Coq 标识符/Require/API 未改。）
+   (Long English prose compressed; Coq identifiers/Require/API unchanged.)
+*)
+
+(*
+   【Class Transform 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Theory/Functor.v @ c826572；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Transform = 两平行函子 F, G : C ⟶ D 之间的「态射」：每个对象一个分量，
+      且与 fmap 交换（自然性方块）。记法 F ⟹ G。
+      Transform = a morphism of parallel functors: a component per object,
+      commuting with fmap (naturality square). Notation F ⟹ G.
+      Haskell 对照：η :: forall x. F x -> G x 若对任意 f 都有
+      fmap f . η = η . fmap f，即自然变换；此处交换律是证明义务。
+      Haskell analogy: a polymorphic η that commutes with fmap; here the
+      square is a real proof obligation.
+
+   2) 头与上下文 / Header & context
+      Section 内 Context {F G : C ⟶ D}；Class Transform 无额外宇宙参数。
+      Context fixes F, G; Class Transform has no extra universe params.
+
+   3) 数据字段 / Data fields
+      - transform {x} : F x ~> G x — 分量 η_x（后文 Coercion，可写 N x）
+        / component at x (later a Coercion: use N as a function)
+
+   4) 自然性（均对 ≈）/ Naturality (up to ≈)
+      - naturality     : fmap[G] f ∘ transform ≈ transform ∘ fmap[F] f
+      - naturality_sym : 同一方块的对称方向（便于 rewrite / 对偶）
+        / same square, opposite orientation (helps rewrite & duality)
+      Hom 是 Setoid，故用 ≈；分量相等见后文 Transform_Setoid（逐点 ≈）。
+      Homs are setoids, so ≈; Transform_Setoid equates transforms pointwise.
+
+   5) 不在本 Class 里、但附近会给 / Nearby
+      垂直复合、whiskering、Godement 积：同目录后续文件。
+      Vertical compose, whiskering, Godement product: later in this directory.
+
+   阅读顺序：transform → naturality → naturality_sym。
+   Reading order: transform → naturality → naturality_sym.
 *)
 
 Class Transform := {
-  transform {x} : F x ~> G x;             (* the component at each object x *)
+  transform {x} : F x ~> G x;
+    (* 分量 η_x / component at each object x *)
 
-  (* naturality square: `G f ∘ η_x ≈ η_y ∘ F f` *)
   naturality {x y} (f : x ~> y) :
     fmap[G] f ∘ transform ≈ transform ∘ fmap[F] f;
+    (* 自然性方块 / naturality square *)
 
-  (* the symmetric orientation 自然性 square (built-in dual) （已译） *)
   naturality_sym {x y} (f : x ~> y) :
     transform ∘ fmap[F] f ≈ fmap[G] f ∘ transform
+    (* 对称方向（内建对偶）/ symmetric orientation (built-in dual) *)
   }.
 
 (*

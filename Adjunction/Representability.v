@@ -15,19 +15,197 @@ Require Import Category.Theory.Universal.Element.
 
 Generalizable All Variables.
 
-(*
+(** * Adjoints by pointwise representability
+
     nLab:      https://ncatlab.org/nlab/show/adjoint+functor
     nLab:      https://ncatlab.org/nlab/show/representable+functor
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
+
     Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+          GTM 5, Springer 1998, §IV.1 Corollary 2 and Exercise 1,
+          printed pp. 85-86 -- maclane:IV.1:cor2, maclane:IV.1:ex1.
     Book: Riehl, "Category Theory in Context", Dover 2016, §4.4 -- the
+          same statement, and the source of the uniqueness clause
+          discussed below.
 
-   本文件给出伴随相关构造与性质。
+    Mac Lane's Corollary 2 reads: a functor G : D ⟶ C has a left adjoint
+    precisely when the functor Hom_C(c, G−) : D ⟶ Sets is representable
+    for every object c : C -- and a choice of representations IS a choice
+    of universal arrows.  Exercise 1 asks the same question in the other
+    orientation, where representations of Hom_D(F−, a) for every a : D
+    assemble into a RIGHT adjoint of F.  Both orientations are delivered,
+    and each as a genuine biconditional
+    ([adjunction_iff_pointwise_representable],
+    [coadjunction_iff_pointwise_representable]) rather than as a pair of
+    unrelated passages.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    THE VARIANCE, BECAUSE THE TWO DONOR FILES USE OPPOSITE LETTERS.
+    Theory/Adjunction.v declares [Adjunction] over [F : D ⟶ C] (left) and
+    [U : C ⟶ D] (right), so its [unit] is indexed by objects of D.
+    Theory/Universal/Arrow.v instead names its functor [U : D ⟶ C] and
+    builds a LEFT adjoint [C ⟶ D] out of universal arrows from objects of
+    C.  This file follows the second convention throughout: [F : C ⟶ D]
+    is the left adjoint, [G : D ⟶ C] the right one, and [unit] at c : C
+    has type [c ~> G (F c)] -- which is exactly the type
+    [AUniversalArrow c G (F c)] wants for its arrow.  Nothing here
+    transports between the two spellings; [F ⊣ G] with those variances is
+    already [@Adjunction D C F G] on the nose.
 
-(* * ** From 伴随 pointwise representability （已译） *)
+    WHAT MAKES THE CHAIN COMPOSABLE, AND IT IS NEW.  The chain Mac Lane
+    runs is "representation at every c" ⟹ "universal arrow at every c" ⟹
+    "left adjoint".  Its last step is
+    [AdjunctionFromUniversalArrows], which consumes the COMMA-INITIAL
+    [UniversalArrow]; but the representability side arrives at the OTHER
+    encoding, [AUniversalArrow], since that is what
+    Theory/Universal/Element.v's [AUniversalArrow_of_hom] produces.
+    Theory/Universal/Arrow.v carried both classes without relating them,
+    so the chain could not previously be run end to end.  It is
+    [ua_of_aua]/[aua_of_ua] in that file -- landed alongside this work --
+    that closes the gap: every passage below from the direct encoding to
+    the comma-packaged one goes through [ua_of_aua], and there is no
+    other route.  Note the asymmetry this repairs: the COUNIVERSAL side
+    already had its packaging passage
+    ([ACouniversalArrow_of_CouniversalArrow] and its inverse,
+    Theory/Universal/Arrow/Dual.v, whose own comment records that
+    "Theory/Universal/Arrow.v carries both encodings but never relates
+    them"), so the dual was composable before the primal was.
+
+    Nothing else here is rebuilt.  [HomAfter] (Theory/Universal/Element.v)
+    IS Mac Lane's Hom_C(c, G−) and is used as given; before this file its
+    only occurrences in the tree were its own module and one probe file.
+    [Representable] (Functor/Representable.v) is used as given too, and
+    this is emphatically not its first consumer -- 25 files on master
+    Require that module (27 with this file and its probe), and one of the
+    inhabitants,
+    [Curry_Representable] (Structure/Cartesian/Closed/Adjunction.v),
+    is itself in an adjunction file.
+
+    RELATION TO Adjunction/Determination.v.  [adj_unit_universal] below
+    is the PRIMAL MIRROR of that file's [adj_counit_couniversal]: from an
+    arbitrary adjunction, each unit component packaged as a universal
+    arrow, where that file packages each counit component as a
+    couniversal one.  The two are at the SAME strength -- both arrow
+    readbacks are [eq_refl] (see Test/ProbeDetermination347.v for the
+    counit side) -- so this is a mirror and not an improvement, and the
+    counit-side statement is not duplicated here.
+
+    STRENGTHS, MEASURED STRICT-FIRST.  Four object-and-arrow readbacks
+    hold at [eq_refl] and are shipped as [Example]s:
+
+      * [adj_unit_universal_obj]  : the universal object is F c;
+      * [adj_unit_universal_arrow]: the universal arrow IS [unit];
+      * [adj_representable_obj]   : the representing object is F c;
+      * [left_adjoint_of_representable_obj]: the induced left adjoint
+        agrees ON OBJECTS with the chosen representing objects, which is
+        the check Mac Lane's "a choice of representations is a choice of
+        universal arrows" actually asks for.
+
+    So does the object half of the round trip,
+    [representable_roundtrip_obj]: reading an adjunction out as
+    representations and building the left adjoint back returns F on
+    objects, definitionally.
+
+    THE ONE PLACE THE STRICT FORM FAILS, WITH A CAUSE THAT
+    DISCRIMINATES.  Recovering the UNIT from a family of universal arrows
+    reaches only [≈], and the reason is neither a rebuilt record nor an
+    opaque donor: the transpose of the identity is [fmap[G] id ∘ arrow],
+    one [fmap_id] and one [id_left] away from [arrow].  That is not an
+    inference -- [representable_roundtrip_arrow_residue] and
+    [adjunction_of_representable_unit_residue] state the offending term
+    literally, and both close by [eq_refl], so the residue is exhibited
+    rather than guessed.  The strict forms were attempted and rejected;
+    the [≈] statements are [representable_roundtrip_arrow],
+    [adjunction_of_representable_unit] and
+    [adjunction_of_natural_universal_unit].  Theory/Universal/Arrow/Dual.v
+    records the same residue for [counit_couniversal], from the dual side.
+
+    THE DUAL ORIENTATION IS INSTANTIATION, NOT A SECOND DEVELOPMENT.
+    [CoHomBefore F a] is [HomAfter (Opposite_Functor F) a], read at
+    a : D^op, and its value at d is Hom_{D^op}(a, F d) = Hom_D(F d, a) --
+    so [couniversal_of_corepresentable] is [universal_of_representable]
+    applied at the opposite categories, with no transport and no tactic,
+    and [CouniversalArrow a F] is definitionally the [UniversalArrow] it
+    returns.  Everything downstream is then Dual.v's
+    [RightAdjointFunctorFromCouniversalArrows] and
+    [AdjunctionFromCouniversalArrows].  The object readback
+    [right_adjoint_of_corepresentable_obj] is [eq_refl] as well, and so
+    is [adj_corepresentable_obj] on the forward leg, which is
+    [adj_representable] at [Opposite_Adjunction].  NOTATION HAZARD, and
+    it is the reason no [^op] appears on a functor below: [_ ^op] is
+    declared in three scopes and Functor/Opposite.v opens [functor_scope],
+    so every opposite functor here is written [Opposite_Functor F] by
+    name, following Theory/Universal/Arrow/Dual.v.
+
+    UNIQUENESS: WHAT IS DELIVERED IS NOT THE STRONGEST READING, AND THE
+    TWO ARE KEPT APART.  Riehl's clause asks that the extension of the
+    object assignment c ↦ repr_obj (R c) to a functor be unique.  Three
+    things are proved, in decreasing strength of what they fix:
+
+      1. [unit_square_forces_fmap] -- THE UNIT SQUARE HAS AT MOST ONE
+         SOLUTION up to [≈].  Read the hypotheses exactly: it takes BOTH
+         that [fmap[L] f] satisfies the square at f AND that g does, and
+         concludes they agree, so it is SYMMETRIC in the two -- which is
+         why the proof is the uniqueness field used twice.  It is NOT the
+         stronger "any g satisfying the square is [fmap[L] f]": for an
+         arbitrary L and an arbitrary family H nothing ties [fmap[L]] to
+         H, and without the first hypothesis the conclusion is false.
+         The instance [left_adjoint_of_representable_fmap_unique] is
+         sound because it discharges that hypothesis from the proved
+         [left_adjoint_of_representable_natural].
+
+      2. [adjunction_of_natural_universal] -- a functor carrying a
+         NATURAL family of universal arrows is itself left adjoint to G,
+         on the nose rather than up to comparison.  So the object
+         assignment is honoured by an actual adjunction, not merely by
+         one isomorphic to it.
+
+      3. [natural_universal_left_adjoint_iso] and
+         [left_adjoint_of_representable_iso] -- via the in-tree
+         [left_adjoint_iso], any left adjoint of G is naturally
+         isomorphic to the induced one.  This is the WEAKER statement:
+         it says nothing about the object assignment, and it is not
+         claimed to be Riehl's clause.
+
+    NOT DELIVERED, and stated plainly.  There is no equation, and no
+    isomorphism, between two functor RECORDS pinning the object
+    assignment: comparing L with the induced functor when their object
+    actions are Leibniz-equal but not definitionally so needs a transport
+    in the type of [fmap], and no such transport is performed here.  So
+    the strong reading exists only in the two forms (1) and (2) above.
+    UNIVERSES, MEASURED RATHER THAN DISCLAIMED.  The Yoneda-free
+    constructions are used throughout, as Theory/Universal/Element.v's own
+    header directs, and the payoff is visible in the binders: the
+    delivered constants are over [C : Category@{u u0 u0}] and
+    [D : Category@{u1 u2 u2}], object universes FREE of hom, whereas
+    [Yoneda_Lemma@{u u0}] is over [Category@{u0 u0 u0}] with all three
+    identified -- so that restriction is genuinely not inherited.  But the
+    constraint blocks DO carry one identification, and it is recorded here
+    rather than left for a reader to find: [u0 = u2], collapsing C's and
+    D's hom-and-proof universes to one, in
+    [adjunction_iff_pointwise_representable],
+    [left_adjoint_of_representable] and [adj_representable].
+    ([ua_of_aua] carries no equation at all.)  Its CAUSE is not
+    attributed: no isolating experiment against the candidate donors was
+    run, so nothing here says which of them forces it, and it is not
+    claimed unavoidable.
+
+    Scope the Yoneda claim precisely: it is about the CONSTANT chain, not
+    the module closure.  Every passage consumed here
+    ([UniversalElement_of_Representable], [Representable_of_UniversalElement],
+    [AUniversalElement_of_hom], [AUniversalArrow_of_hom] and the two
+    [AUniversalElement]/[UniversalElement] passages) is a record literal
+    over [ue_representation]/[AUniversalElement_of_repr], none of which
+    touches [Yoneda_Lemma] -- but Functor/Hom/Yoneda IS in this file's
+    transitive closure, pulled in by Theory/Universal/Element.v.
+
+    Also absent: no naturality of the family of representations in c (the
+    proved [left_adjoint_of_representable_natural] is a different object,
+    naturality of the universal ARROWS rather than of the representing
+    isomorphisms); no concrete witness instantiating either biconditional
+    at a named category; and no uniqueness statement for the
+    representations themselves. *)
+
+(** ** From an adjunction to pointwise representability  / ** 从附加到逐点表示性*)
 
 Section Forward.
 
@@ -40,9 +218,24 @@ Context (A : F ⊣ G).
 #[local] Existing Instance A.
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+Mac Lane §IV.1 Corollary 2, the easy leg: each unit component is a
+   universal arrow.  The mediating morphism is the inverse transpose
+   [⌈f⌉], its property is [to_adj_unit] followed by
+   [from_adj_comp_law], and its uniqueness is [adj_univ] read
+   backwards.  Note the ORIENTATION: [AUniversalArrow] concludes
+   [fmap[G] g ∘ universal_arrow ≈ f] where [ump_universal_arrows]
+   concludes the mirror, so a [symmetry] is spent in the uniqueness
+   field. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Mac Lane §IV.1 推论 2，简单的腿：每个单元组件都是一个
+ 通用箭头。 中介态射是逆转置
+ [⌈f⌉]，它的属性是[to_adj_unit]后面是
+ [from_adj_comp_law]，其独特之处在于[adj_univ]的读取
+ 向后。 注意方向：[AUniversalArrow] 总结
+ [fmap[G] g ∘ universal_arrow ≈ f] 其中 [ump_universal_arrows]
+ 镜子得出结论，所以 [symmetry] 花费在独特性上
+ 场。 
 *)
 Definition adj_unit_auniversal (c : C) : AUniversalArrow c G (F c).
 Proof using A F G.
@@ -61,20 +254,41 @@ Proof using A F G.
       exact Hv.
 Defined.
 
-(* 相关说明。 （已译） *)
+(*
+The comma-initial packaging, through the passage that makes the whole
+   chain composable. 
+
+--------
+以逗号开头的包装，通过通道使整个
+ 链可组合。 
+*)
 Definition adj_unit_universal (c : C) : UniversalArrow c G :=
   ua_of_aua (adj_unit_auniversal c).
 
-(* Both readbacks survive packaging, because
- [universal_arrow_from_UMP] builds comma 对象 ((ttt, a); η) and
- two projections return what they were given. （已译） *)
+(*
+Both readbacks survive the packaging, because
+   [universal_arrow_from_UMP] builds the comma object as ((ttt, a); η) and
+   the two projections return what they were given. 
+
+--------
+两个读回都在包装中保存完好，因为
+ [universal_arrow_from_UMP] 将逗号对象构建为 ((ttt, a); η) 和
+ 这两个投影返回给定的内容。 
+*)
 Example adj_unit_universal_obj (c : C) :
   @arrow_obj C D c G (adj_unit_universal c) = F c := eq_refl.
 
 Example adj_unit_universal_arrow (c : C) :
   @arrow C D c G (adj_unit_universal c) = @unit D C F G A c := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+Mac Lane's Hom_C(c, G−) with its universal element, then its
+   representation.  Both steps are Theory/Universal/Element.v's, applied. 
+
+--------
+Mac Lane 的 Hom_C(c, G−) 及其通用元素，则其
+ 代表。 这两个步骤都是 Theory/Universal/Element.v 的应用。 
+*)
 Definition adj_auniversal_element (c : C)
   : AUniversalElement (HomAfter G c) (F c) :=
   AUniversalElement_of_hom G c (adj_unit_auniversal c).
@@ -90,7 +304,7 @@ Example adj_representable_obj (c : C) :
 
 End Forward.
 
-(* * ** From pointwise representability 伴随 （已译） *)
+(** ** From pointwise representability to an adjunction  / ** 从逐点表示到附加*)
 
 Section Converse.
 
@@ -98,10 +312,18 @@ Context {C : Category}.
 Context {D : Category}.
 Context (G : D ⟶ C).
 
-(* A representation of Hom_C(c, G−) IS a universal arrow from c to G:
+(*
+A representation of Hom_C(c, G−) IS a universal arrow from c to G:
    read it as a universal element, then across
    [AUniversalArrow_of_hom].  No tactic is spent -- the whole passage is
-   three applications.（标题）（已译） *)
+   three applications. 
+
+--------
+Hom_C(c, G−) 的表示是从 c 到 G 的通用箭头：
+ 将其视为通用元素，然后跨越
+ [AUniversalArrow_of_hom]。 没有花任何策略——整个段落都是
+ 三个应用程序。 
+*)
 Definition auniversal_of_representable
   (R : ∀ c : C, Representable (HomAfter G c)) (c : C)
   : AUniversalArrow c G (@repr_obj D (HomAfter G c) (R c)) :=
@@ -127,18 +349,30 @@ Definition adjunction_of_representable
   : left_adjoint_of_representable R ⊣ G :=
   AdjunctionFromUniversalArrows G (universal_of_representable R).
 
-(* The check Mac Lane's phrasing calls for: 左伴随 built a
- family representations agrees ON OBJECTS chosen
- 表示 对象, definitionally. （已译） *)
+(*
+The check Mac Lane's phrasing calls for: the left adjoint built from a
+   family of representations agrees ON OBJECTS with the chosen
+   representing objects, definitionally. 
+
+--------
+检查 Mac Lane 的措辞要求：左伴随由
+ 代表家族与选定的对象达成一致
+ 从定义上讲，表示对象。 
+*)
 Example left_adjoint_of_representable_obj
   (R : ∀ c : C, Representable (HomAfter G c)) (c : C) :
   fobj[left_adjoint_of_representable R] c
     = @repr_obj D (HomAfter G c) (R c) := eq_refl.
 
 (*
-   本节说明 Representability 相关定义、性质与动机。
+The unit does NOT return the chosen universal arrow on the nose, and
+   the obstruction is exhibited rather than described: the transpose of
+   the identity is literally the arrow with an [fmap[G] id] in front. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+该装置不会将所选的通用箭头返回到鼻子上，并且
+ 障碍是展示出来的，而不是描述的：转置
+ 身份实际上是前面带有 [fmap[G] id] 的箭头。 
 *)
 Example adjunction_of_representable_unit_residue
   (R : ∀ c : C, Representable (HomAfter G c)) (c : C) :
@@ -159,7 +393,7 @@ Qed.
 
 End Converse.
 
-(** ** The round trip *)
+(** ** The round trip  / ** 往返行程*)
 
 Section RoundTrip.
 
@@ -169,13 +403,19 @@ Context {F : C ⟶ D}.
 Context {G : D ⟶ C}.
 Context (A : F ⊣ G).
 
-(* Reading 伴随 out family representations building
- 左伴随 back returns F 对象, definitionally. （已译） *)
+(*
+Reading an adjunction out as a family of representations and building
+   the left adjoint back returns F on objects, definitionally. 
+
+--------
+将附加语读作一系列表示和构建
+ 定义上，左伴随返回在对象上返回 F。 
+*)
 Example representable_roundtrip_obj (c : C) :
   fobj[left_adjoint_of_representable G (adj_representable A)] c = F c
   := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* On arrows the same residue appears, for the same reason.  / 出于相同的原因，在箭头上会出现相同的残基。*)
 Example representable_roundtrip_arrow_residue (c : C) :
   @arrow C D c G (universal_of_representable G (adj_representable A) c)
     = fmap[G] (id{D}) ∘ @unit D C F G A c := eq_refl.
@@ -190,7 +430,7 @@ Qed.
 
 End RoundTrip.
 
-(* 相关说明。 （已译） *)
+(** ** Mac Lane §IV.1 Corollary 2 as a biconditional  / ** Mac Lane §IV.1 推论 2 作为双条件*)
 
 Section Biconditional.
 
@@ -198,8 +438,14 @@ Context {C : Category}.
 Context {D : Category}.
 Context (G : D ⟶ C).
 
-(* Stated over arbitrary G, no 伴随 ambient
- context -- point sectioning. （已译） *)
+(*
+Stated over an arbitrary G, with no adjunction in the ambient
+   context -- the point of the sectioning. 
+
+--------
+在任意 G 上陈述，环境中没有附加物
+ 上下文——分割的点。 
+*)
 Theorem adjunction_iff_pointwise_representable :
   (∀ c : C, Representable (HomAfter G c)) ↔ { L : C ⟶ D & L ⊣ G }.
 Proof.
@@ -212,7 +458,7 @@ Defined.
 
 End Biconditional.
 
-(* 相关说明。 （已译） *)
+(** ** The dual orientation (Mac Lane §IV.1 Exercise 1)  / ** 双重方向（Mac Lane §IV.1 练习 1）*)
 
 Section Dual.
 
@@ -220,15 +466,29 @@ Context {C : Category}.
 Context {D : Category}.
 Context (F : C ⟶ D).
 
-(* d ↦ Hom_D(F d, a), 函子 C^op ⟶ Sets. It [HomAfter] at the
- opposite 函子: value at d Hom_{D^op}(a, F d), is
- Hom_D(F d, a). （已译） *)
+(*
+d ↦ Hom_D(F d, a), as a functor C^op ⟶ Sets.  It is [HomAfter] at the
+   opposite functor: the value at d is Hom_{D^op}(a, F d), which is
+   Hom_D(F d, a). 
+
+--------
+d ↦ Hom_D(F d, a)，作为函子 C^op ⟶ 集合。 它是 [HomAfter] 位于
+ 相反函子：d 处的值为 Hom_{D^op}(a, F d)，即
+ Hom_D(F d, a)。 
+*)
 Definition CoHomBefore (a : D) : C^op ⟶ Sets :=
   HomAfter (Opposite_Functor F) a.
 
-(* [CouniversalArrow F] 定义 [UniversalArrow] the
- opposite 范畴 [universal_of_representable] returns there, so
- 这是 instantiation nothing else. （已译） *)
+(*
+[CouniversalArrow a F] is by definition the [UniversalArrow] in the
+   opposite categories that [universal_of_representable] returns there, so
+   this is instantiation and nothing else. 
+
+--------
+根据定义，[CouniversalArrow a F] 是 [UniversalArrow]
+ [universal_of_representable] 返回的类别相反，所以
+ 这只是实例化，仅此而已。 
+*)
 Definition couniversal_of_corepresentable
   (R : ∀ a : D, Representable (CoHomBefore a)) (a : D)
   : CouniversalArrow a F :=
@@ -259,9 +519,16 @@ Context {F : C ⟶ D}.
 Context {G : D ⟶ C}.
 Context (A : F ⊣ G).
 
-(* The forward leg dualizes instantiating [adj_representable] at the
- opposite 伴随; [Opposite_Adjunction] carries [F ⊣ G] to
- [Opposite_Functor G ⊣ Opposite_Functor F]. （已译） *)
+(*
+The forward leg dualizes by instantiating [adj_representable] at the
+   opposite adjunction; [Opposite_Adjunction] carries [F ⊣ G] to
+   [Opposite_Functor G ⊣ Opposite_Functor F]. 
+
+--------
+通过在
+ 相反的附加词； [Opposite_Adjunction] 搭载 [F ⊣ G]
+ [Opposite_Functor G ⊣ Opposite_Functor F]。 
+*)
 Definition adj_corepresentable (a : D) : Representable (CoHomBefore F a) :=
   adj_representable (Opposite_Adjunction F G A) a.
 
@@ -289,7 +556,7 @@ Defined.
 
 End DualBiconditional.
 
-(** ** Uniqueness of the extension *)
+(** ** Uniqueness of the extension  / ** 扩展的唯一性*)
 
 Section Uniqueness.
 
@@ -299,16 +566,25 @@ Context (G : D ⟶ C).
 Context (L : C ⟶ D).
 Context (H : ∀ c : C, AUniversalArrow c G (L c)).
 
-(* 相关说明。 （已译） *)
+(* Naturality of the family in c: the unit square.  / c 中族的自然性：单位平方。*)
 Definition UnitNatural : Type :=
   ∀ (x y : C) (f : x ~{C}~> y),
     fmap[G] (fmap[L] f) ∘ @universal_arrow C D x G (L x) (H x)
       ≈ @universal_arrow C D y G (L y) (H y) ∘ f.
 
 (*
-   本节说明 Representability 相关定义、性质与动机。
+Riehl's uniqueness clause, read pointwise on arrows with the object
+   assignment held fixed: an arrow satisfying the unit square at f IS
+   [fmap[L] f].  Both sides factor the same morphism through the same
+   universal arrow, so the whole proof is the uniqueness field used
+   twice. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+里尔的唯一性子句，在带有对象的箭头上逐点阅读
+ 赋值保持固定：满足 f IS 处单位平方的箭头
+ [fmap[L] f]。 双方通过相同的方式分解相同的态射
+ 通用箭头，所以整个证明就是所使用的唯一性字段
+ 两次。 
 *)
 Lemma unit_square_forces_fmap {x y : C} (f : x ~{C}~> y)
       (g : L x ~{D}~> L y)
@@ -325,9 +601,18 @@ Proof.
 Qed.
 
 (*
-   本节说明伴随、函子、hom相关定义、性质与动机。
+A functor carrying a NATURAL family of universal arrows is itself a
+   left adjoint of G -- not merely isomorphic to one -- with that family
+   as the unit.  The hom-set isomorphism is the universal factorization;
+   naturality in the first variable is where [N] is spent, and naturality
+   in the second is [fmap_comp] with an associativity. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+携带自然系列通用箭头的函子本身就是一个
+ G 的左伴随——不仅仅是同构于 1——与该族
+ 为单位。 hom-set同构是通用因式分解；
+ 第一个变量中的自然性是 [N] 的用处，自然性
+ 第二个是具有关联性的 [fmap_comp]。 
 *)
 Definition adjunction_of_natural_universal (N : UnitNatural) : L ⊣ G.
 Proof.
@@ -361,7 +646,7 @@ Proof.
       rewrite fmap_comp, <- comp_assoc; reflexivity).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* Only up to [≈], and for the residue reason recorded in the header.  / 仅限[≈]，且残留原因记录在标头中。*)
 Lemma adjunction_of_natural_universal_unit (N : UnitNatural) (c : C) :
   @unit D C L G (adjunction_of_natural_universal N) c
     ≈ @universal_arrow C D c G (L c) (H c).
@@ -371,7 +656,7 @@ Proof.
   apply id_left.
 Qed.
 
-(* The weaker, object-assignment-free comparison. *)
+(* The weaker, object-assignment-free comparison.  / 较弱的、无对象分配的比较。*)
 Corollary natural_universal_left_adjoint_iso (N : UnitNatural)
           (L' : C ⟶ D) (AL' : L' ⊣ G) : L ≈ L'.
 Proof.
@@ -387,8 +672,14 @@ Context {D : Category}.
 Context (G : D ⟶ C).
 Context (R : ∀ c : C, Representable (HomAfter G c)).
 
-(* The induced 函子's arrow action defined BY factorization, so
- 自然性 factorization's own property read backwards. （已译） *)
+(*
+The induced functor's arrow action is defined BY the factorization, so
+   naturality is that factorization's own property read backwards. 
+
+--------
+诱导函子的箭头作用由因式分解定义，因此
+ 自然性是因子分解本身的属性是倒着读的。 
+*)
 Lemma left_adjoint_of_representable_natural :
   UnitNatural G (left_adjoint_of_representable G R)
     (auniversal_of_representable G R).
@@ -415,7 +706,7 @@ Proof.
            (left_adjoint_of_representable_natural x y f) Hg).
 Qed.
 
-(* The weaker statement again, at induced 函子. （已译） *)
+(* The weaker statement again, at the induced functor.  / 又是在诱导函子处的较弱陈述。*)
 Corollary left_adjoint_of_representable_iso (L : C ⟶ D) (AL : L ⊣ G) :
   L ≈ left_adjoint_of_representable G R.
 Proof.

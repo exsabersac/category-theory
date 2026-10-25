@@ -17,18 +17,251 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(* * * Continuity covariant hom-函子 （已译） *)
+(** * Continuity of the covariant hom-functor  / * 协变 hom 函子的连续性*)
 
-(*
+(* nLab:      https://ncatlab.org/nlab/show/hom-functor
    nLab:      https://ncatlab.org/nlab/show/continuous+functor
    Wikipedia: https://en.wikipedia.org/wiki/Hom_functor
+   Mac Lane:  Categories for the Working Mathematician, 2nd ed. (GTM 5),
+              §III.4 "Products and coproducts", the remark at book p. 70
+              [maclane:III.4:remark3]: the covariant hom-functor
+              C(c, −) carries a product existing in C to a product in
+              Set.  That remark states the continuity of representables
+              for the special case of products; Mac Lane proves
+              preservation of limits in general only later, in §V.4
+              "Preservation of limits", and it is the §V.4 statement --
+              every limit of every shape, not only products -- that this
+              file leads with.
 
-   本文件给出极限相关。
+   WHAT IS DELIVERED, AND AT WHICH LEVEL.  The headline is
+   [hom_ContinuousFunctor c : ContinuousFunctor [Hom c,─]], for an
+   arbitrary category C and an arbitrary object c of it.  The word
+   "continuous" is used in the sense Structure/Limit/Preservation.v
+   fixes: its header states in terms that [ContinuousFunctor] --
+   preservation of limits of all shapes IN THE CONE SENSE -- "is what
+   the word means in Mac Lane §V.4", and that the apex-only
+   [PreservesAllLimits] is a CONSEQUENCE ([Continuous_PreservesAllLimits])
+   and not the definition.  Both readings are exposed here:
+   [hom_PreservesLimitCone] and [hom_ContinuousFunctor] at cone level,
+   [hom_PreservesLimit] and [hom_PreservesAllLimits] as the weaker
+   apex-only corollaries, obtained through the donor's own bridges.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+   The apex-only reading says that the setoid [C(c, L)] carries SOME
+   limit structure over [[Hom c,─] ◯ K], with legs unconstrained; the
+   cone-level reading says that the image cone -- apex [C(c, L)], legs
+   post-composition with the legs of the limit cone -- is itself
+   universal.  The two notions are separated in general by the
+   countermodel of Structure/Limit/Preservation/Separation.v.  NO
+   separation is proved here for hom-functors: nothing below shows that
+   the apex-only statement is strictly weaker FOR THIS FUNCTOR.
 
-(* * ** The covariant hom-函子 preserves limit cones （已译） *)
+   THE PROOF, AND WHY NO [Sets_Complete] APPEARS.  [PreservesLimitCone]
+   quantifies over CONES, not over limits that must first be
+   constructed, so no completeness of Sets is needed anywhere -- and
+   this is structural, not a matter of the proof text: the transitive
+   dependency closure of this file is 52 modules, itself included, and
+   contains neither Instance/Sets/Complete.v nor
+   Instance/Sets/Products.v (measured with coqdep over the _CoqProject
+   build set).  Nothing below constructs a limit in Sets, and the
+   theorem asserts none.
+
+   The argument is one observation.  Let N be a limiting cone over
+   K : J ⟶ C and let M be a competing cone in Sets over
+   [Hom c,─] ◯ K, with apex a setoid S.  Each ELEMENT s of S yields the
+   family [fun x => cone_leg M x s], which is a cone over K with apex c
+   -- its coherence is literally M's own coherence read at s
+   ([hom_fibre_coherence], [hom_fibre_cone]).  The universal property of
+   N supplies a unique mediator [hom_med_fun s : c ~> vertex_obj[N]].
+   The mediating map of Sets is [s ↦ hom_med_fun s]; its respectfulness
+   and the uniqueness clause both come from that same [∃!], since two
+   [≈]-equal elements of S give fibre cones with [≈]-equal legs.
+
+   THE ISSUE'S THIRD BULLET IS DISCHARGED, AND AN EARLIER REVISION FAILED
+   TO SAY SO.  #331 asks to "derive [PreservesImageLimit] for hom-functors
+   where applicable".  Structure/Limit/Preservation.v records that
+   [ContinuousFunctor] IS [PreservesImageLimit] definitionally -- the very
+   hypothesis Construction/Comma/Limit.v introduced and Adjunction/GAFT.v
+   and Adjunction/SAFT.v consume -- so [hom_ContinuousFunctor] already
+   inhabits it for every hom-functor, with no further work.  That was
+   neither claimed nor listed as undelivered before this paragraph.
+
+   WHAT THE CONE LEVEL BUYS HERE, MEASURED.  The legs of the produced
+   limiting cone ARE post-composition with the legs of N, at Leibniz
+   equality: [hom_preserved_leg] is [eq_refl], with
+   [hom_preserved_leg_value] spelling out the action on an element.  The
+   mediator produced is the named one: [hom_preserved_mediator] records
+   [unique_obj (hom_PreservesLimitCone K N HN M) = hom_med HN M] by
+   [eq_refl], and [hom_med_commutes] / [hom_med_unique] are its
+   commutation and uniqueness clauses.  The apex-only corollary names
+   neither the legs nor the mediator.  SCOPE the first of these:
+   [hom_preserved_leg] is an instance of a fact about cone-level
+   preservation for an ARBITRARY functor (the same [eq_refl] holds with
+   [HomFrom c] replaced by any [F : C ⟶ D]), so it measures what the cone
+   level pins in general rather than anything specific to hom-functors.
+   [hom_preserved_mediator] IS specific -- it names this file's own
+   [hom_med].
+
+   PRODUCTS -- MAC LANE'S OWN CASE -- ARE PROVED DIRECTLY, AND THE
+   REASON IS A MEASUREMENT.  [hom_IsIndexedProduct] and
+   [hom_IsCartesianProduct] state the §III.4 remark at the tree's
+   elementary product records ([IsIndexedProduct] of
+   Structure/Limit/Product.v, [IsCartesianProduct] of
+   Structure/Cartesian.v), for an arbitrary index [Type] and an
+   arbitrary apex-pinned product.  They are NOT derived from the
+   headline, and that is deliberate.  Indexed products ARE presented as
+   limits of discrete diagrams in tree ([limit_is_indexed_product]), so
+   the derivation is available -- but it costs the general statement ONE
+   IDENTIFICATION, and (since 2026-09-17) no longer a [Set] pin:
+
+     [DiscreteCat_Functor@{o h p uo uh up u}] has type
+       [∀ {A : Type@{o}} {C : Category@{uo uh up}},
+          (A → obj[C]) → DiscreteCat@{o h p} A ⟶ C],
+
+   so the discrete shape's hom and proof universes are FREE, while
+
+     [IsLimitCone@{u u0 u1 u2 u3}] has type
+       [∀ {J : Category@{u1 u2 u2}} {C : Category@{u3 u2 u2}} …]
+
+   -- the shape's hom-and-proof universe is IDENTIFIED with the ambient
+   category's (and [PreservesLimitCone] identifies all three of J, C, D
+   at one such universe).  Routing the product corollaries through the
+   discrete presentation therefore ties the discrete shape's hom and
+   proof universes to C's, which is what costs the general statement.
+   The direct statements carry no such identification (see UNIVERSES).
+   No bridge is invented and no such derivation is attempted.
+
+   RECORDED CORRECTION, AND READ THE CAUSE PRECISELY.  An earlier
+   revision of this paragraph quoted
+   [DiscreteCat_Functor@{u u0 u1 u2} : … → DiscreteCat@{u Set Set} A ⟶ C]
+   and [family_cone : … → Cone@{u Set Set u1 u2 u2}], and concluded that
+   the discrete route "pins C's hom and proof universes to [Set]".  The
+   diagnosis was right and is now HISTORY: the cause was
+   [DiscreteCat_Functor]'s UNANNOTATED declaration (Instance/Discrete.v,
+   [{A : Type} {C : Category}]), whose minimized type instantiated
+   [DiscreteCat@{u Set Set}] -- never [DiscreteCat] itself, which is
+   declared [DiscreteCat@{o h p} (A : Type@{o}) : Category@{o h p}]
+   (Instance/Discrete.v) with hom and proof FREE.  That donor was
+   annotated in place at Instance/Discrete.v in the PR "algebraic
+   carriers are sets" (2026-09-17).  Measured after it, with
+   [Set Printing Universes]: [family_cone@{u u0 u1 u2}] returns
+   [Cone@{u u2 u2 u1 u2 u2}], [iprod@{u u0 u1 u2 u3}] and
+   [limit_is_indexed_product@{u u0 u1 u2 u3}] are stated over
+   [C : Category@{u1 u2 u2}], and no literal [Set] appears in any of the
+   three.  An earlier revision also attributed the pin to "a donor
+   ANNOTATION defect of the [Build_Quiver_Standard_Eq] family
+   (Construction/Free/Quiver/Examples.v, issue #300's erratum)"; that
+   attribution named the wrong donor and is withdrawn -- [About] puts it
+   on [DiscreteCat_Functor] alone.  What is still NOT established is that
+   the WHOLE derivation closes: the tree has [limit_is_indexed_product]
+   but not its converse.  So the corollaries stay proved directly, for
+   the identification above rather than for a [Set] floor that no longer
+   exists.  What IS exhibited is the cone-level witness
+   [coq_hom_limit_cone], which is measurably still at
+   [Functor@{u0 Set Set u1 Set Set}] -- and NOT for the reason this
+   paragraph used to give.  That [Set] survives the repair, and its cause
+   is the one the next clause always named: [Two_Discrete] has
+   [TwoDHom : TwoDObj → TwoDObj → Set], and [Coq]'s own homs are
+   [Set]-valued.
+
+   THE CONTRAVARIANT TWIN.  [HomTo c := [Hom ─,c]] is
+   [@HomFrom (C^op) c] by [eq_refl] ([hom_to_is_op_hom_from]), so the
+   whole contravariant section is instantiation: every constant in it is
+   supplied by [:=] with no tactic and no obligation.  What duality
+   delivers is [cohom_ContinuousFunctor c : ContinuousFunctor [Hom ─,c]]
+   -- continuity for a functor out of C^op, i.e. limits of C^op are
+   carried to limits of Sets -- and, read covariantly in C,
+   [cohom_colimit_to_limit], which turns a COLIMIT cocone of C into a
+   limit cone of Sets.  That reading needs no repackaging: [Cocone K] is
+   [Cone (K^op)] and [IsColimitCocone] is [IsLimitCone] at the opposite
+   diagram, both definitionally (Structure/Cone.v,
+   Structure/Limit/Preservation.v).  The variance of the product
+   corollaries follows: [cohom_IsIndexedProduct] takes an
+   [IsIndexedCoproduct] in C and returns an [IsIndexedProduct] in Sets,
+   its projections being PREcomposition with the coproduct injections.
+
+   UNIVERSES, measured in the constraint blocks rather than read off the
+   binders.  [hom_ContinuousFunctor] and [hom_PreservesLimitCone] are
+   over [C : Category@{u u0 u0}]: C's hom and proof universes are
+   IDENTIFIED, and identified further with the carrier universe of the
+   target Sets.  Both identifications are the donors' -- [Sets]' objects
+   are [SetoidObject@{o o}], which identifies a setoid's carrier and
+   relation universes, and [ContinuousFunctor] itself is declared over
+   [{C : Category@{u7 u5 u5}} {D : Category@{u6 u5 u5}}].  C's OBJECT
+   universe is not identified with them.  In [hom_PreservesLimitCone]
+   the shape J appears as [Category@{u3 u0 u0}]: its object universe is
+   free, its hom and proof universes are the ambient category's, which
+   is [PreservesLimitCone]'s own doing as quoted above.  The two product
+   corollaries are freer: [hom_IsIndexedProduct] carries an index
+   [A : Type@{u1}] -- bounded above, but identified with neither of C's
+   universes -- and no occurrence of [Set] in its constraint block, and
+   neither does [hom_IsCartesianProduct].  None of these restrictions is
+   claimed unavoidable.
+
+   NON-VACUITY.  Two witnesses, both over Instance/Coq.v and both using
+   limits already in tree; no new category and no new limit is built.
+   (1) [coq_hom_product] instantiates the binary product corollary at
+   [Coq_Cartesian], and the three [eq_refl] Examples COMPUTE: the two
+   projections of [Coq(unit, bool × nat)] read off the components of a
+   map out of [unit], and pairing them back returns the pair.  (2)
+   [coq_hom_limit_cone] and its instance [coq_hom_bool_nat_limit] take
+   the in-tree [Limit] supplied by [Cartesian_Limit] at [Coq_Cartesian]
+   and apply the CONE-LEVEL headline to it, so the headline is exercised
+   as such and not only through its product corollary.  Witness (2) does
+   not compute -- [Cartesian_Limit] is [Qed] -- and it carries the
+   [Set] pin analysed above; witness (1) computes and does not.
+
+   ENGINEERING NOTES.  (a) Lib.v sets [Default Proof Using "Type"], so
+   the two tactic proofs whose section witness [H] appears only in the
+   proof and not in the statement carry an explicit [Proof using H]
+   (the Structure/Equalizer/Wide.v idiom).  (b) Structure/Cartesian.v
+   carries both the bundled [Cartesian] class and the apex-pinned
+   [IsCartesianProduct], but no passage from the first to the second:
+   a shape search for [IsCartesianProduct] finds the class at
+   Structure/Cartesian.v with three consumers further down it, and the
+   only terms of that type CONSTRUCTED anywhere are [product_of_pullback]
+   (Structure/Pullback/Reduction.v) and [pb_prod_IsCartesianProduct]
+   (itself an application of the former), both from a pullback over
+   the terminal object.  An earlier revision counted "four other files"
+   and then "the other two"; the count was stale and the two figures were
+   inconsistent, and Structure/Pullback.v mentions the name only inside a
+   comment.  The ABSENCE claim -- no [Cartesian → IsCartesianProduct]
+   passage -- is unchanged and holds.
+   [cartesian_IsCartesianProduct] below supplies the missing
+   repackaging; it is used only to state witness (1), and is a plain
+   [Program Definition], not an [Instance].
+   (c) Written [FCone (HomFrom unit) (coq_two_limit …)] the elaborator
+   rejects the functor, reporting [HomFrom unit : Coq ⟶ Sets] as expected
+   to have type [Coq ⟶ Coq].  THE CAUSE IS [HomFrom]'s IMPLICIT
+   [{C : Category}], undeterminable from a bare [unit : Type] -- NOT
+   [FCone]'s category arguments, which may be left implicit: both
+   [FCone (HomFrom (unit : obj[Coq])) (…)] and
+   [fun u : Coq => FCone (HomFrom u) (…)] elaborate, and
+   [coq_hom_limit_cone] below writes them implicitly.  An earlier revision
+   of this note said the three category arguments "must be spelled
+   explicitly" and were "not repaired by an ascription"; both were wrong,
+   and the second is refuted by the first form above.
+
+   WHAT IS NOT DELIVERED (scoped to this file).  No converse and no
+   characterisation: nothing says that hom-functors are the only
+   continuous functors, and no separation between the cone-level and
+   apex-only readings is proved for them.  Cocontinuity of [Hom c,─] is
+   not addressed in either direction.  Nothing is proved about
+   REFLECTION or CREATION of limits ([ReflectsLimitCone], [CreatesLimit]
+   are untouched).  The canonical comparison map is not instantiated here:
+   [comparison_iso_of_PreservesLimitCone] gives its invertibility from the
+   headline, performed since #428 in Functor/Hom/Continuous.v.  The result
+   is per-object: [Curried_Hom C : C^op ⟶ [C, Sets]] is NOT shown
+   continuous, no limit is computed in a functor category, and the
+   family [c ↦ the preserved cone] is not exhibited as natural in c here
+   (#428's [remark2_natural] is the equation; none in [[C^op, Sets]]).  No relation
+   is drawn to RAPL (Adjunction/Continuity.v) or to the Yoneda
+   development; the two are neither derived from nor used by this file.
+   The nullary case (terminal objects) is not stated separately.  On the
+   dual side the coproduct corollaries are stated but not instantiated
+   at any concrete category, and no indexed-product witness is given
+   anywhere -- witness (1) is binary. *)
+
+(** ** The covariant hom-functor preserves limit cones  / ** 协变 hom 函子保留极限锥*)
 
 Section HomContinuous.
 
@@ -37,7 +270,16 @@ Context (c : C).
 
 Definition HomFrom : C ⟶ Sets := [Hom c ,─].
 
-(* 相关说明。 （已译） *)
+(*
+An element of the apex of a cone over [Hom c,─] ◯ K is itself a cone
+   over K with apex c: its legs are the legs of M read at that element,
+   and its coherence is M's coherence read there. 
+
+--------
+[Hom c,─] ◯ K 上圆锥体顶点的元素本身就是圆锥体
+ 在 K 上，顶点为 c：它的腿是在该元素处读取的 M 的腿，
+ 它的连贯性就是 M 在那里读到的连贯性。 
+*)
 
 Section Fibre.
 
@@ -59,9 +301,16 @@ Definition hom_fibre_cone (s : vertex_obj[M]) : Cone K :=
 End Fibre.
 
 (*
-   本节说明 Limit 相关定义、性质与动机。
+The mediating map of Sets: it sends an element to the mediator its
+   fibre cone determines.  Respectfulness is not an extra hypothesis --
+   it follows from uniqueness of the mediator, since [≈]-equal elements
+   give fibre cones with [≈]-equal legs. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Sets 的中介映射：它将一个元素发送到其中介者
+ 纤维锥决定。 尊重并不是一个额外的假设——
+ 它遵循中介者的唯一性，因为 [≈] 元素相等
+ 为纤维锥提供 [≈] 等腿。 
 *)
 
 Section Mediator.
@@ -97,7 +346,7 @@ Definition hom_med : vertex_obj[M] ~{Sets}~> fobj[HomFrom] (vertex_obj[N]) :=
 
 End Mediator.
 
-(* 相关说明。 （已译） *)
+(* The headline, per diagram and then over all shapes at once.  / 标题，每个图表，然后一次覆盖所有形状。*)
 
 Definition hom_PreservesLimitCone {J : Category} (K : J ⟶ C) :
   PreservesLimitCone K HomFrom.
@@ -116,9 +365,14 @@ Definition hom_ContinuousFunctor : ContinuousFunctor HomFrom :=
   fun J K => hom_PreservesLimitCone K.
 
 (*
-   本节说明函子相关定义、性质与动机。
+The apex-only readings, through the donor's own bridges.  These are
+   WEAKER: they name no legs and no mediator.  Whether they are strictly
+   weaker for this particular functor is not settled here. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+仅顶点读数，通过捐赠者自己的桥梁。 这些是
+ 较弱者：他们没有提到任何腿，也没有提到调解人。 是否严格
+ 对于这个特定函子来说较弱的问题没有在这里解决。 
 *)
 
 Definition hom_PreservesLimit {J : Category} (K : J ⟶ C) :
@@ -128,7 +382,7 @@ Definition hom_PreservesLimit {J : Category} (K : J ⟶ C) :
 Definition hom_PreservesAllLimits : PreservesAllLimits HomFrom :=
   Continuous_PreservesAllLimits hom_ContinuousFunctor.
 
-(* 相关说明。 （已译） *)
+(* What the cone level pins down, and the apex-only reading does not.  / 锥体水平仪所确定的内容，而仅顶点读数则不能确定。*)
 
 Example hom_preserved_leg {J : Category} {K : J ⟶ C} (N : Cone K) (x : J) :
   cone_leg (FCone HomFrom N) x = fmap[HomFrom] (cone_leg N x) := eq_refl.
@@ -142,12 +396,19 @@ Example hom_preserved_mediator {J : Category} {K : J ⟶ C} {N : Cone K}
   (HN : IsLimitCone N) (M : Cone (HomFrom ◯ K)) :
   unique_obj (hom_PreservesLimitCone K N HN M) = hom_med HN M := eq_refl.
 
-(** ** Mac Lane's own case: products *)
+(** ** Mac Lane's own case: products  / ** Mac Lane自身案例：产品*)
 
 (*
-   本节说明（余）极限相关定义、性质与动机。
+Indexed products, at the elementary record of Structure/Limit/Product.v
+   and for an arbitrary index [Type].  Proved directly; the header
+   records the measured universe cost of routing this through the
+   discrete-diagram presentation instead. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+索引产品，位于 Structure/Limit/Product.v 的基本记录中
+ 以及任意索引 [Type]。 直接证明； 标题
+ 记录通过路由进行路由的测量的宇宙成本
+ 相反，采用离散图表示。 
 *)
 
 Section IndexedProducts.
@@ -207,9 +468,16 @@ Defined.
 
 End IndexedProducts.
 
-(* The binary case, at apex-pinned [IsCartesianProduct]: the
- conclusion [C(c, z)] product [C(c, x)] [C(c, y)]
- Sets, post-复合 two projections. （已译） *)
+(*
+The binary case, at the apex-pinned [IsCartesianProduct]: the
+   conclusion is that [C(c, z)] is a product of [C(c, x)] and [C(c, y)]
+   in Sets, with post-composition as the two projections. 
+
+--------
+二进制情况，位于顶点固定的 [IsCartesianProduct] 处：
+ 结论是[C(c, z)]是[C(c, x)]和[C(c, y)]的产物
+ 在集合中，后期合成作为两个投影。 
+*)
 
 Section BinaryProducts.
 
@@ -258,11 +526,18 @@ End BinaryProducts.
 
 End HomContinuous.
 
-(* 相关说明。 （已译） *)
+(** ** The contravariant twin: colimits of C become limits of Sets  / ** 逆变孪生：C 的余极限成为集合的极限*)
 
-(* [Hom ─,c] IS covariant hom-函子 C^op, definitionally, so
- every 常值 here instantiation: all supplied [:=] with
- no tactic. （已译） *)
+(*
+[Hom ─,c] IS the covariant hom-functor of C^op, definitionally, so
+   every constant here is instantiation: all are supplied by [:=] with
+   no tactic. 
+
+--------
+[Hom ─,c] 是 C^op 的协变 hom 函子，从定义上来说，所以
+ 这里的每个常量都是实例化：全部由 [:=] 提供
+ 没有战术。 
+*)
 
 Section HomContravariant.
 
@@ -279,19 +554,40 @@ Definition cohom_ContinuousFunctor : ContinuousFunctor HomTo :=
 Definition cohom_PreservesLimitCone {J : Category} (K : J ⟶ C^op) :
   PreservesLimitCone K HomTo := @hom_PreservesLimitCone (C^op) c J K.
 
-(* The covariant reading C: colimiting cocone C is carried a
- limiting cone Sets. [Cocone K] is [Cone (K^op)] and
- [IsColimitCocone] is [IsLimitCone] at 反 diagram, so no
- repackaging is needed.（已译） *)
+(*
+The covariant reading in C: a colimiting cocone of C is carried to a
+   limiting cone of Sets.  [Cocone K] is [Cone (K^op)] and
+   [IsColimitCocone] is [IsLimitCone] at the opposite diagram, so no
+   repackaging is needed. 
+
+--------
+C 中的协变读数：C 的共界 cocone 被传送到 a
+ 集合的极限锥。 [Cocone K] 是 [Cone (K^op)] 且
+ [IsColimitCocone] 是 [IsLimitCone] 的相反图，所以没有
+ 需要重新包装。 
+*)
 
 Definition cohom_colimit_to_limit {J : Category} {K : J ⟶ C}
   (N : Cocone K) (HN : IsColimitCocone N) : IsLimitCone (FCone HomTo N) :=
   cohom_PreservesLimitCone (Opposite_Functor K) N HN.
 
 (*
-   本节说明 Limit 相关定义、性质与动机。
+Coproducts of C become products in Sets; the projections are
+   PREcomposition with the injections.  DISPLAY HAZARD: [Check] prints
+   the hypothesis of [cohom_IsCartesianProduct] as
+   [IsCartesianProduct x y z] with the category argument suppressed, so
+   the printed type reads as though the product were taken in C.  It is
+   not: the source spells [@IsCartesianProduct (C^op) x y z], i.e. z is
+   the COPRODUCT of x and y in C. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+C 的副积成为集合中的积； 预测是
+ 注射前进行预组合。 显示危险：[Check] 打印
+ [cohom_IsCartesianProduct] 的假设为
+ [IsCartesianProduct x y z] 抑制了类别参数，所以
+ 打印的字体读起来就好像该产品是用 C 语言编写的。 
+不是：源拼写为 [@IsCartesianProduct (C^op) x y z]，即 z 是
+ C 中 x 和 y 的余积。 
 *)
 
 Definition cohom_IsIndexedProduct {A : Type} {g : A → C} {q : C}
@@ -307,12 +603,20 @@ Definition cohom_IsCartesianProduct {x y z : C}
 
 End HomContravariant.
 
-(** ** Non-vacuity *)
+(** ** Non-vacuity  / ** 非空性*)
 
-(* The repackaging Structure/Cartesian.v does not carry: bundled
- [Cartesian] structure read at one chosen pair as apex-pinned
- 积. Supplied here only state witness below; deliberately
- not registered as [Instance].（已译） *)
+(*
+The repackaging Structure/Cartesian.v does not carry: a bundled
+   [Cartesian] structure read at one chosen pair as an apex-pinned
+   product.  Supplied here only to state the witness below; deliberately
+   not registered as an [Instance]. 
+
+--------
+重新打包的 Structure/Cartesian.v 不携带：捆绑的
+ [Cartesian] 结构在选定的一对上读取作为顶点固定
+ 产品。 此处提供仅用于陈述以下证人； 故意
+ 未注册为 [Instance]。 
+*)
 
 Program Definition cartesian_IsCartesianProduct {C : Category}
   `{@Cartesian C} (x y : C) : IsCartesianProduct x y (x × y) := {|
@@ -322,8 +626,14 @@ Program Definition cartesian_IsCartesianProduct {C : Category}
 |}.
 Next Obligation. apply ump_products. Qed.
 
-(* Witness (1): binary product 推论 at [Coq_Cartesian]. The
- three Examples below compute [eq_refl]. （已译） *)
+(*
+Witness (1): the binary product corollary at [Coq_Cartesian].  The
+   three Examples below compute by [eq_refl]. 
+
+--------
+证人 (1)：[Coq_Cartesian] 处的二元乘积推论。 的
+ 下面的三个示例由 [eq_refl] 计算。 
+*)
 
 Definition coq_hom_product (u x y : Coq) :
   @IsCartesianProduct Sets (fobj[HomFrom u] x) (fobj[HomFrom u] y)
@@ -344,9 +654,16 @@ Example coq_hom_fork_computes :
     = (true, 3%nat) := eq_refl.
 
 (*
-   本节说明（余）极限、笛卡尔相关定义、性质与动机。
+Witness (2): the CONE-LEVEL headline at an in-tree limit -- the one
+   [Cartesian_Limit] produces from [Coq_Cartesian].  It does not compute
+   ([Cartesian_Limit] is [Qed]) and its ambient category is measurably
+   [Coq@{u1 Set Set}], for the reason the header analyses. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+见证人 (2)：树内限制处的锥体级标题——唯一的一个
+ [Cartesian_Limit] 由 [Coq_Cartesian] 产生。 它不计算
+ （[Cartesian_Limit] 是 [Qed]），其环境类别可测量
+ [Coq@{u1 Set Set}]，因为标题分析。 
 *)
 
 Definition coq_two_limit (F : Two_Discrete ⟶ Coq) : Limit F :=

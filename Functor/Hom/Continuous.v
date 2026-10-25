@@ -28,19 +28,293 @@ Require Import Category.Theory.Equivalence.Limit.
 
 Generalizable All Variables.
 
-(* * * Hom-函子 continuous: 同构 form consequences （已译） *)
+(** * Hom-functors are continuous: the isomorphism form and its consequences  / * 本函子是连续的：同构形式及其后果*)
 
-(*
+(* Mac Lane §V.4 Theorem 1 and Remarks 1-3 (book pp. 116-117;
+   maclane:V.4:thm1, maclane:V.4:remark1-3); Awodey §5.5 Proposition 5.27
+   and Corollary 5.29 with the coproduct remark, and §7.2's remark that a
+   functor naturally isomorphic to a representable preserves limits; Riehl
+   §3.5 display (3.5.1), Exercise 3.5.i, Theorem 3.5.2 and Theorem 3.5.6.
    nLab: https://ncatlab.org/nlab/show/continuous+functor
+         https://ncatlab.org/nlab/show/representable+functor
 
-   本文件给出 hom 形式的伴随/同态。
+   BACKGROUND.  The covariant hom-functor C(c, −) : C ⟶ Sets preserves every
+   limit that exists in C — the archetypal continuous functor — so a limit is
+   computed representably: C(c, lim F) ≅ lim C(c, F−), naturally in c.
+   Dually C(−, c) carries colimits to limits.  Theorem 1 and Remark 3 at CONE
+   level are Functor/Hom/Limit.v's (#331): [hom_ContinuousFunctor],
+   [cohom_ContinuousFunctor], [cohom_colimit_to_limit].  What was missing,
+   and what this file adds, is the ISOMORPHISM form — the two sides read as
+   objects of Sets and compared — together with the three Riehl §3.5 items
+   and Awodey's transport along a natural isomorphism.  Every theorem here
+   is a transport or an instantiation of a landed one; the file proves no
+   universal property from scratch.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+   STALE PREMISES, RE-MEASURED.
+     - "There is no preservation witness for the hom-functor — no
+       [PreservesLimit G (Curried_Hom C c)]": FALSE since #331.
+       Functor/Hom/Limit.v has [HomFrom c := [Hom c,─]],
+       [hom_PreservesLimitCone], [hom_ContinuousFunctor],
+       [hom_PreservesLimit], [hom_PreservesAllLimits],
+       [hom_IsIndexedProduct], [HomTo c := [Hom ─, c]] with
+       [hom_to_is_op_hom_from : HomTo = @HomFrom (C^op) c := eq_refl],
+       [cohom_ContinuousFunctor], [cohom_colimit_to_limit],
+       [cohom_IsIndexedProduct].  Work items 1 (Theorem 1) and 3
+       (Remark 3) were therefore done before this issue was opened; the
+       issue's pinned names are supplied here as aliases,
+       [hom_preserves_limits] and [cohom_carries_colimits_to_limits].
+     - "[Curried_CoHom] has no consumer beyond Yoneda": FALSE
+       (Functor/Hom/Limit.v consumes it as [HomTo]).  "There is no
+       [Cocartesian] companion file" to Adjunction/Diagonal/Product.v: FALSE
+       (Adjunction/Diagonal/Coproduct.v [Diagonal_Coproduct_Adjunction]).
+       Awodey's ingredients "missing" — equalizers in Sets and the general
+       Sets limit — exist: [Sets_HasEqualizers], and [Sets_Limit] /
+       [Sets_Complete] at Instance/Sets/Complete.v.
+     - "The cone-level statement that h ↦ (limit_leg L x ∘ h) is a limiting
+       cone over [HomDiagram c F] in Sets is absent": PARTIAL.  It is present
+       over [HomFrom c ◯ F], and that functor is NOT definitionally
+       [HomDiagram c F] (Structure/Limit/Weighted.v): the two agree on
+       objects and on the ACTION of [fmap], both at [eq_refl], and differ at
+       the whole [fmap] field, whose respectfulness proof is an opaque
+       [Program] obligation: [Curried_Hom]'s ([Curried_Hom_obligation_1],
+       discharged by Functor/Hom.v's default obligation tactic, no line of
+       its own) against [HomDiagram]'s (Weighted.v, written out) —
+       probe N1, beside its two accepted controls.  A
+       naming gap, not a mathematical one; this file states Remark 2 over
+       the composite (#331's vocabulary) and the Riehl items over
+       [HomDiagram] (Weighted.v's), and builds no bridge.
+     - The Riehl §3.5 verifier notes are TRUE as stated: [cone_of_nat] /
+       [nat_of_cone] (Weighted.v) had no round-trip lemma outside
+       [wl_iso]'s obligations, which presuppose a limit; nothing
+       related [Sets_End] to [Limit]; [wlim_natural] is naturality of the
+       composite through C(X, lim F), not of (3.5.1) itself.
+     - Work item 4's "discharge the Instance/Ens.v header caveat": that
+       header carries no universe caveat (a search of the file finds
+       "caveat" nowhere and "universe" only, describing [EnsV] as Mac
+       Lane's set-sized sub-universe); it explains that [Ens] is not the
+       classical category of sets.  Nothing to discharge; not edited.
+
+   WHAT IS DELIVERED (51 named constants plus 19 [Program] obligations,
+   every one closed under the global context).
+     (A) TRANSPORT (Awodey §7.2).  For [e : F ≈ G] (a natural isomorphism of
+         functors C ⟶ D): [fun_equiv_whisker] (whiskering [e] by a diagram;
+         [Proof using e], the Structure/Equalizer/Wide.v idiom),
+         [transport_isalimit] (Theory/Equivalence/Limit.v's
+         [isalimit_transport], which transports along an isomorphism of
+         DIAGRAMS — nothing in tree transported [PreservesLimitCone] along
+         an isomorphism of FUNCTORS), [transport_cone],
+         [transport_coneiso_legs], [transport_coneiso],
+         [transport_islimitcone], and the two headline transports
+         [PreservesLimitCone_transport : PreservesLimitCone K F →
+         PreservesLimitCone K G] and [ContinuousFunctor_transport].
+     (B) RIEHL (3.5.1), NO LIMIT ASSUMED.  [cone_of_nat_mor] /
+         [nat_of_cone_mor] (Weighted.v's conversions as Sets-morphisms),
+         [nat_cone_nat] / [cone_nat_cone] (the round trips, one line each),
+         [cone_nat_iso : Nat(Δ1, HomDiagram X F) ≅[Sets] Cone(X, F)] —
+         Exercise 3.5.i's isomorphism, independent of [wl_iso] — with
+         [cone_of_nat_natural] / [nat_of_cone_natural] (naturality in X
+         against [HomDiagram_precompose] and [ConePresheaf]'s [fmap], both
+         [reflexivity]); and the tuple presentation [limtuple_to_cone] /
+         [cone_to_limtuple] / [limtuple_cone_iso : Sets_limit_obj
+         (HomDiagram X F) ≅[Sets] Cone(X, F)].
+     (C) THE END/LIMIT BRIDGE.  [homend_functor := HomDiagram X F ◯ Snd],
+         [end_to_limtuple] / [limtuple_to_end] / [end_limtuple_iso]
+         (Instance/Sets/End.v's compatible families against the Sets-limit
+         tuples; the wedge condition reduces to the tuple condition by
+         [fmap_id]), [end_cone], [end_coneiso], [end_IsLimitCone] and
+         [end_Limit : Limit (HomDiagram X F)] with the end as its apex — the
+         one missing link the issue isolates.
+     (D) REMARK 2.  Over [L : Limit F] and [c : C]: [homlim_cone] /
+         [homlim_islimit] (Instance/Sets/Complete.v's limit of the
+         hom-diagram), [homimg_islimit] (#331's theorem at the limit cone),
+         [remark2_coneiso] (a [ConeIso], hence leg-compatible), the
+         isomorphism of Sets-objects [remark2_iso c : Sets_limit_obj (HomFrom
+         c ◯ F) ≅ C(c, lim F)] with [remark2_iso_legs] / [remark2_iso_from],
+         [homlim_reindex] (precomposition on the limit side),
+         [remark2_reindexed_cone], and NATURALITY IN c as the equation
+         [remark2_natural : to (remark2_iso c') (homlim_reindex h p) ≈ to
+         (remark2_iso c) p ∘ h] (by [limit_med_eq]).  Riehl's own direction
+         (3.5.3): [remark2_comparison] is the canonical comparison
+         C(c, lim F) → lim C(c, F−) and [remark2_comparison_iso] its
+         invertibility — the instantiation of
+         [comparison_iso_of_PreservesLimitCone] that Functor/Hom/Limit.v's
+         header recorded as not performed.
+     (E) REMARK 3.  [remark3_iso c : Sets_limit_obj (HomTo c ◯ F^op) ≅
+         C(colim F, c)] and [remark3_natural], instantiations of (D) at
+         [(J^op, C^op, F^op)] — the first a bare [:=], the second a one-line
+         [exact] under [Qed]: [Colimit F] IS [Limit F^op]
+         (Structure/Limit.v) and [HomTo c] IS [HomFrom c] on [C^op], so
+         no proof step beyond the instantiation is needed.
+     (F) THE PRODUCT AND COPRODUCT INSTANCES AS ISOMORPHISMS.  [hom_iprod_iso
+         : C(c, ∏ aᵢ) ≅[Sets] ∏ᵢ C(c, aᵢ)] and [cohom_icoprod_iso : C(∐ aⱼ,
+         c) ≅[Sets] ∏ⱼ C(aⱼ, c)] by Structure/Limit/Product/Finite.v's
+         [iprod_unique_iso] against #331's [hom_IsIndexedProduct] /
+         [cohom_IsIndexedProduct] and [Sets_IsIndexedProduct] — reuse, not
+         re-derivation — with [hom_iprod_iso_to] / [cohom_icoprod_iso_to]
+         (the forward maps are postcomposition with the projections,
+         precomposition with the injections) and naturality in c
+         ([hom_iprod_iso_natural], [cohom_icoprod_iso_natural]); Awodey's
+         coproduct remark is the second.
+     (G) THE ISSUE'S NAMES, AND REMARK 1.  [hom_preserves_limits] and
+         [cohom_carries_colimits_to_limits], aliases of #331's
+         [hom_ContinuousFunctor] and [cohom_colimit_to_limit]; Awodey §7.2's
+         remark as stated, [representable_iso_ContinuousFunctor : HomFrom c ≈
+         G → ContinuousFunctor G], one application of (A) to #331; and
+         [HomFrom_at@{o h s +} : C ⟶ Sets@{h s}] with [hom_continuous_at :
+         ContinuousFunctor HomFrom_at] for every level [s > h] of the
+         universe HOLDING Sets' objects — see UNIVERSES for exactly how
+         little of "any universe of sets" that is.
+
+   UNIVERSES (measured by [About] under [Set Printing Universes] on all 50
+   constants).
+     - REMARK 1, DELIVERED ONLY AS POLYMORPHISM OVER C.  [Sets@{o so} :
+       Category@{so o o}] (Instance/Sets.v) instantiates
+       [SetoidObject@{o o}], so a set's CARRIER and RELATION levels are one
+       level [o], and the second parameter [so] is only the level of the
+       universe HOLDING the collection of setoids — Sets' object level.
+       [HomFrom c] lands in [Sets@{h s}] for [C : Category@{o h h}] with
+       [h < s]: every set in its image has carrier AND relation at C's hom
+       level [h], and what [HomFrom_at] / [hom_continuous_at] vary is [s]
+       alone, which says nothing about the size of the sets.  The
+       hom-functor of a FIXED C cannot be read into a strictly larger
+       universe of sets (probe N2: [HomFrom cw : Cw ⟶ Sets@{hbig sbig}]
+       under [Constraint h1 < hbig] is refused, "Cannot enforce h1 = hbig
+       because h1 < hbig", beside the accepted [Sets@{h1 sbig}] control).
+       What survives of Mac Lane's Remark 1 is that the theorem is ONE
+       universe-polymorphic constant, instantiable at any C and hence at any
+       hom level; a lift would need a Sets-to-Sets lift functor, which the
+       tree does not have.  (An earlier revision of this paragraph called
+       [s] "the relation level" and the remark "half true"; measured, [s] is
+       the object level and the remark holds only as polymorphism over C.)
+     - SHAPES.  40 of the first 50 blocks carry [u0 = u2]: the 39
+       shape-indexed constants other than [cohom_carries_colimits_to_limits]
+       (whose J and C already share their hom variable in the binder, so the
+       identification needs no equation), where it reads J's hom = the hom
+       of the category carrying the limit ([PreservesLimitCone], [Limit] and
+       [Cone] identify shape hom with ambient hom), plus
+       [ContinuousFunctor_transport], where — as for all of section (A) — it
+       reads C's hom = D's hom; five of section (A)'s eight constants add
+       [u0 = u7] for J.  Of the ten constants taking [L : Limit F], eight
+       add [u0 = u3], the limit's own level ([homimg_islimit] and
+       [remark2_comparison] carry [u0 = u2] alone).  Every object level
+       stays free of equations; the 51st block, [representable_iso_ContinuousFunctor]'s,
+       carries no equation.  (An earlier revision said "all 40 constants
+       with a shape J" and "the eight … stated against L"; both descriptors
+       are corrected above to the sets the criteria pick out.)
+     - SMALLNESS, THE FOOTNOTE RIEHL SIDESTEPS.  23 constants carry the
+       bound J's OBJECT level ≤ C's hom level, which is Sets' carrier level
+       ([u <= u2] with [u] J's object level; the same string occurs in three
+       further, shape-free blocks — [cohom_icoprod_iso],
+       [cohom_icoprod_iso_to], [hom_iprod_iso_natural] — where [u] is C's
+       object level or the shared index binder, 26 textual matches in all)
+       — every constant that forms [Sets_Limit] /
+       [Sets_limit_cone] of the hom-diagram or the functor category
+       [[J, Sets]] (whose hom quantifies over J's objects); sections (B),
+       (C), (D), (E) except the pure carrier maps ([end_to_limtuple],
+       [limtuple_to_end], [end_limtuple_iso], [homlim_reindex],
+       [remark2_reindexed_cone], [homimg_islimit], [homend_functor], the two
+       round-trip lemmas).  The other 17 shape-indexed constants, section
+       (A) among them, carry no such bound, and neither does #331's theorem:
+       probe N3 pins it — under [Constraint h < jo], [HomFrom cw ◯ F] and
+       [hom_PreservesLimitCone cw F] are accepted and [Sets_Limit (HomFrom
+       cw ◯ F)] is refused, "Cannot enforce h = … because h < jo <= …".
+       Riehl's footnote extending (3.5.1) to large diagrams is exactly what
+       this bound excludes; removing it is a change to Instance/Sets/
+       Complete.v's construction, not a deliverable here.
+     - THE INDEX COLLAPSE.  The four product/coproduct constants
+       ([hom_iprod_iso], [hom_iprod_iso_to], [cohom_icoprod_iso],
+       [cohom_icoprod_iso_to]) carry [u0 = u1]: the index type's universe is
+       C's hom level, from [Sets_iprod_obj@{u0 u0 u0 u0 u0}]
+       (Instance/Sets/Products.v); the two naturality lemmas absorb the same
+       identification into a shared binder variable ([A : Type@{u}] beside
+       [C : Category@{u3 u u}]).  Not a [Set] pin; disclosed as a collapse.
+     - THE ALIASES DO NOT MINIMIZE.  [hom_preserves_limits] and
+       [cohom_carries_colimits_to_limits], written bare over [{C :
+       Category}], keep C's object level distinct from its hom level ([C :
+       Category@{u8 u9 u9}], [Category@{u4 u5 u5}]) and carry no equation,
+       like their donors — measured against [hom_ContinuousFunctor] and
+       [cohom_colimit_to_limit] before deciding not to annotate them
+       (Instance/Fun/Limit.v's corollaries did minimize when written bare;
+       this pair does not).
+     - No word-bounded [Set], no [JMeq] / [EqdepFacts] / [eq_rect_r] in any
+       block; the eight constants of section (C) and their seven obligations
+       carry stdlib [prod_rect] bounds from the product shape [J^op ∏ J].
+
+   COUNTS AND CONVENTIONS.
+     - 51 [.glob] declaration heads (38 [def], 13 [prf]) plus 19 [Program]
+       obligations the [.glob] cannot see ([cone_nat_iso] 2,
+       [cone_of_nat_mor] 1, [cone_to_limtuple] 1, [end_cone] 1,
+       [end_limtuple_iso] 2, [end_to_limtuple] 2, [homlim_reindex] 2,
+       [limtuple_cone_iso] 2, [limtuple_to_cone] 2, [limtuple_to_end] 2,
+       [nat_of_cone_mor] 1, [remark2_reindexed_cone] 1), all "Closed under
+       the global context", zero [Axioms:] lines; the gate carries the 51
+       heads, fully qualified, the issue's two names among them.
+       [Obligation Tactic := idtac] locally, so every obligation is written
+       out (189 files in the tree do the same).
+     - Two [Defined] ([fun_equiv_whisker], [end_coneiso]), each flipped to
+       [Qed] alone in a copy of the file: [fun_equiv_whisker] is
+       LOAD-BEARING ([transport_coneiso_legs]'s [change … with] needs the
+       whiskered components to reduce; the library stops at that line),
+       [end_coneiso] is not (library and probe compile unchanged) and stays
+       transparent because it is data.  Thirty-two [Qed] tokens outside this
+       header (13 lemmas, 19 obligations).
+     - Closure 73 files excluding self: Theory/Equivalence/Limit.v costs 7
+       at the margin and is required for [isalimit_transport] alone —
+       dropping it would take the closure to 66 at the price of about 35
+       lines duplicating a landed mediator, so it stays; Functor/Hom/Limit.v
+       2, Instance/Sets/Complete.v 2, Instance/Sets/End.v 1,
+       Structure/Limit/Product/Finite.v 1, Structure/Limit/Weighted.v 1, the
+       other 21 [Require]s 0.  Name collisions: each of the 51 names has 0
+       word occurrences in any other [.v] file, except the mention of
+       [remark2_natural] this commit adds to Functor/Hom/Limit.v's header
+       prose.  Full [make] on Rocq 9.1 and the Coq 8.19/8.20 Nix source
+       builds are run before push and recorded on the pull request and by
+       CI, not claimed here.
+     - Test/ProbeHomContinuous428.v mirrors the [Require] list and carries 4
+       refutation commands (1 instrument + N1 CONVERSION + N2 UNIVERSE + N3
+       UNIVERSE), each stripped one at a time in a copy of the whole file
+       and each beside its accepted controls (the objectwise and elementwise
+       [eq_refl]s for N1; the free object level of Sets for N2; the hom-diagram
+       and #331's preservation at the large shape for N3); five [eq_refl]
+       readbacks; guard coverage 24 identifier tokens inside the
+       refutations / 21 also named outside, comments stripped, with three
+       exhaustive exceptions (the keyword, the refuted declaration's name,
+       the absent name); rename-simulated 12/12 ([HomFrom], [HomDiagram],
+       [Sets_Limit], [fmap], [carrier], [remark2_iso], [end_Limit],
+       [hom_PreservesLimitCone], [hom_continuous_at], [HomFrom_at], [Sets],
+       [ContinuousFunctor]; module paths excluded), every first break on a
+       positive line.  [make todo] grows by those 4 lines only (2233 → 2237
+       over master 1de68608), so the issue's "adds no new hits" box is not
+       met as written; disclosed.
+     - Two sentences of Functor/Hom/Limit.v's NOT DELIVERED block (the
+       comparison instantiation, naturality in c) now point here;
+       line-neutral, and its INDEX bullet says the same.
+
+   NOT DELIVERED.
+     - Remark 2 as an isomorphism of PRESHEAVES, i.e. an [Isomorphism] in
+       [[C^op, Sets]] with the left side [c ↦ Sets_limit_obj (HomFrom c ◯
+       F)] packaged as a functor; [remark2_natural] is the equation form,
+       as [wlim_natural] states its own naturality.
+     - Riehl's footnote (large diagrams): see SMALLNESS.
+     - A Remark 2 over [HomDiagram c F], or any bridge between the two
+       presentations of the hom-diagram (an identity-component natural
+       transformation between them typechecks; not built).
+     - Continuity of [Curried_Hom C : C^op ⟶ [C, Sets]] itself,
+       cocontinuity, reflection, creation, converse and characterisation —
+       all listed as not delivered by Functor/Hom/Limit.v and outside this
+       issue.
+     - Awodey §7.2's consequence for [U : Grp ⟶ Sets] (#411's) and the
+       concreteness vocabulary (#263, #644).
+     - Remark 1 as a LIFT of a fixed category's hom-functor into a larger
+       universe of sets.
+     - No edit to Functor/Hom.v, Structure/Limit/Weighted.v, Instance/Sets/
+       Complete.v, Instance/Sets/End.v, Theory/Equivalence/Limit.v or
+       Instance/Ens.v; the two Functor/Hom/Limit.v sentences are the only
+       prose edits. *)
 
 #[local] Obligation Tactic := idtac.
 
-(* * * A. Awodey 7.2 -- preservation transports along natural 同构 （已译） *)
+(** * A. Awodey 7.2 -- preservation transports along a natural isomorphism  / * A. Awodey 7.2——保存沿着自然同构传输*)
 
 Section Transport.
 
@@ -100,7 +374,7 @@ Definition ContinuousFunctor_transport (P : ContinuousFunctor F) :
 
 End Transport.
 
-(* 相关说明。 （已译） *)
+(** * B. Riehl (3.5.1) -- Nat(Δ1, C(X,F-)) ≅ Cone(X,F), no limit assumed  / * B. Riehl (3.5.1) -- Nat(Δ1, C(X,F-)) ≅ Cone(X,F)，假设没有限制*)
 
 Section RoundTrip.
 
@@ -147,7 +421,14 @@ Lemma nat_of_cone_natural {X X' : C} (h : X' ~{C}~> X) (κ : ACone X F) :
     ≈ nat_compose (HomDiagram_precompose h F) (nat_of_cone X κ).
 Proof. intros j u; simpl; reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(*
+The tuple presentation: the Sets-limit apex of the hom-diagram IS the
+   cone setoid.  Again no limit in C is assumed. 
+
+--------
+元组表示：hom 图的集合极限顶点是
+ 锥体。 再次假设 C 没有限制。 
+*)
 
 Program Definition limtuple_to_cone (X : C) :
   Sets_limit_obj (HomDiagram X F) ~{Sets}~> fobj[ConePresheaf F] X :=
@@ -170,7 +451,7 @@ Next Obligation. intros X p j; reflexivity. Qed.
 
 End RoundTrip.
 
-(* 相关说明。 （已译） *)
+(** * C. Riehl 3.5 -- the end/limit bridge  / * C. Riehl 3.5——终点/极限桥*)
 
 Section EndBridge.
 
@@ -206,7 +487,14 @@ Program Definition end_limtuple_iso :
 Next Obligation. intros p j; reflexivity. Qed.
 Next Obligation. intros s j; reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(*
+The end, read as a cone over the hom-diagram: the legs are the end's own
+   projections and the coherence is its wedge condition. 
+
+--------
+末端，在 hom 图上读作圆锥体：腿是末端自己的
+ 投影和相干性是它的楔子条件。 
+*)
 Program Definition end_cone : Cone (HomDiagram X F) :=
   {| vertex_obj := Sets_End_obj homend_functor
    ; coneFrom := {| vertex_map := fun j => end_projection homend_functor j |} |}.
@@ -222,7 +510,7 @@ Proof.
   intros j p; reflexivity.
 Defined.
 
-(* 相关说明。 （已译） *)
+(* The one missing link the issue isolates: the end IS a limit in Sets.  / 该问题孤立出一个缺失的环节：最后是集合的限制。*)
 Definition end_IsLimitCone : IsLimitCone end_cone :=
   limitcone_transport end_coneiso
     (limit_limitcone (Sets_Limit (HomDiagram X F))).
@@ -232,7 +520,7 @@ Definition end_Limit : Limit (HomDiagram X F) :=
 
 End EndBridge.
 
-(* 相关说明。 （已译） *)
+(** * D. Mac Lane V.4 Remark 2 -- lim C(c,F-) ≅ C(c, lim F), natural in c  / * D. Mac Lane V.4 备注 2 -- lim C(c,F-) ≅ C(c, lim F)，c 中的自然数*)
 
 Section Remark2.
 
@@ -303,9 +591,16 @@ Proof.
     now rewrite (remark2_iso_legs c p j).
 Qed.
 
-(* Riehl 3.5.3 her own direction: CANONICAL comparison map
- C(c, lim F) --> lim C(c, F-) is invertible. This performs the
- 复合 Functor/Hom/Limit.v's header records as not performed.（已译） *)
+(*
+Riehl 3.5.3 in her own direction: the CANONICAL comparison map
+   C(c, lim F) --> lim C(c, F-) is invertible.  This performs the
+   composition Functor/Hom/Limit.v's header records as not performed. 
+
+--------
+Riehl 3.5.3 的方向：CANONICAL 比较图
+ C(c, lim F) --> lim C(c, F-) 是可逆的。 这执行
+ 组合 Functor/Hom/Limit.v 的标头记录未执行。 
+*)
 Definition remark2_comparison (c : C) :
   fobj[HomFrom c] (vertex_obj[@limit_cone _ _ _ L])
     ~{Sets}~> Sets_limit_obj (HomFrom c ◯ F) :=
@@ -319,7 +614,14 @@ Definition remark2_comparison_iso (c : C) :
 
 End Remark2.
 
-(* 相关说明。 （已译） *)
+(**
+* E. Mac Lane V.4 Remark 3 -- the contravariant hom carries colimits
+        in C to limits in Sets 
+
+--------
+* E. Mac Lane V.4 备注 3 -- 逆变 hom 带有余极限
+ 在 C 中限制集合 
+*)
 
 Section Remark3.
 
@@ -327,8 +629,14 @@ Context {J C : Category}.
 Context {F : J ⟶ C}.
 Context (L : Colimit F).
 
-(* Pure instantiation Remark 2 at opposite 范畴: [Colimit F] IS
- [Limit (F^op)] [HomTo c] IS [HomFrom c] [C^op]. （已译） *)
+(*
+Pure instantiation of Remark 2 at the opposite category: [Colimit F] IS
+   [Limit (F^op)] and [HomTo c] IS [HomFrom c] on [C^op]. 
+
+--------
+备注 2 在相反类别的纯实例化：[Colimit F] IS
+ [Limit (F^op)] 和 [HomTo c] 是 [C^op] 上的 [HomFrom c]。 
+*)
 Definition remark3_iso (c : C) :
   @Isomorphism Sets (Sets_limit_obj (HomTo c ◯ F^op))
     {| carrier := vertex_obj[@limit_cone _ _ _ L] ~{C}~> c
@@ -343,8 +651,14 @@ Proof. exact (@remark2_natural (J^op) (C^op) (F^op) L c c' h p). Qed.
 
 End Remark3.
 
-(* * * F. The product coproduct instances, isomorphisms of
- Sets-对象 rather than family-level universal properties （已译） *)
+(**
+* F. The product and coproduct instances, as isomorphisms of
+        Sets-objects rather than family-level universal properties 
+
+--------
+* F. 乘积和余积实例，作为同构
+ 集合对象而不是族级通用属性 
+*)
 
 Section ProductInstance.
 
@@ -405,8 +719,14 @@ Qed.
 End CoproductInstance.
 
 
-(* Naturality in c of the two product instances, which is what makes them
-   natural isomorphisms of Sets-objects rather than pointwise bijections. *)
+(*
+Naturality in c of the two product instances, which is what makes them
+   natural isomorphisms of Sets-objects rather than pointwise bijections. 
+
+--------
+两个产品实例的 c 中的自然性，这就是它们的本质
+ 集合对象的自然同构而不是逐点双射。 
+*)
 
 Lemma hom_iprod_iso_natural {C : Category} {A : Type} {f : A → C} {p : C}
   {proj : ∀ a : A, p ~{C}~> f a} (H : IsIndexedProduct f p proj)
@@ -428,12 +748,19 @@ Proof.
   now rewrite comp_assoc.
 Qed.
 
-(* 相关说明。 （已译） *)
+(** * G. The issue's names, and Mac Lane's Remark 1 on universes  / * G. 问题的名称，以及 Mac Lane 关于宇宙的评论 1*)
 
 (*
-   本节说明 Continuous 相关定义、性质与动机。
+The issue's two pinned names, as aliases of #331's theorems.  NOT
+   annotated: measured against their donors, written bare they do not
+   minimize (see the header's UNIVERSES; an earlier revision of this comment
+   said the opposite). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+该问题有两个固定名称，作为 #331 定理的别名。 不
+ 注释：根据他们的捐赠者衡量，赤裸裸地写着他们不
+ 最小化（请参阅标题的 UNIVERSES；此评论的早期修订版
+ 说反了）。 
 *)
 Definition hom_preserves_limits {C : Category} (c : C) :
   ContinuousFunctor (@HomFrom C c) := hom_ContinuousFunctor c.
@@ -442,16 +769,33 @@ Definition cohom_carries_colimits_to_limits {C : Category} (c : C)
   {J : Category} {K : J ⟶ C} (N : Cocone K) (HN : IsColimitCocone N) :
   IsLimitCone (FCone (HomTo c) N) := cohom_colimit_to_limit c N HN.
 
-(* Awodey §7.2's remark as stated: a functor naturally isomorphic to a
-   representable preserves limits — one application of section A to #331. *)
+(*
+Awodey §7.2's remark as stated: a functor naturally isomorphic to a
+   representable preserves limits — one application of section A to #331. 
+
+--------
+Awodey §7.2 的评论如下：函子自然同构于
+ 可表示保留限制——A 节到 #331 的一个应用。 
+*)
 Definition representable_iso_ContinuousFunctor {C : Category} (c : C)
   {G : C ⟶ Sets} (e : @HomFrom C c ≈ G) : ContinuousFunctor G :=
   ContinuousFunctor_transport e (hom_ContinuousFunctor c).
 
 (*
-   本节说明函子、hom相关定义、性质与动机。
+Remark 1, as far as the tree supports it: [Sets@{o so} : Category@{so o o}]
+   keeps every set's carrier and relation at one level [o], and [so] is only
+   the level of the universe holding the collection of setoids.  So the
+   hom-functor of a category at hom level [h] is continuous into
+   [Sets@{h s}] for every [s > h] — its sets stay at level [h] throughout
+   (probe N2 pins the refusal at a larger carrier level). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+备注1，只要树支持：[Sets@{o so} : Category@{so o o}]
+ 将每组的载体和关系保持在一个级别 [o]，而 [so] 只是
+ 持有集合的宇宙水平。 所以
+ hom 级别 [h] 类别的 hom 函子连续为
+ [Sets@{h s}] 适用于每个 [s > h] — 其套件始终保持在 [h] 水平
+ （探针 N2 将拒绝固定在较大的载波级别）。 
 *)
 Definition HomFrom_at@{o h s +} {C : Category@{o h h}} (c : C) :
   C ⟶ Sets@{h s} := @HomFrom C c.

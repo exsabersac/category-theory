@@ -13,9 +13,61 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(** * Adjoint (co)continuity: RAPL and LAPC  / * 伴随（共）连续性：RAPL 和 LAPC*)
 
-(* nLab: https://ncatlab.org/nlab/show/adjoints+preserve+(co-)limits
+(*
+nLab: https://ncatlab.org/nlab/show/adjoints+preserve+(co-)limits
+   Wikipedia:
+   https://en.wikipedia.org/wiki/Adjoint_functors#Preservation_of_limits
+
+   "The most important property of adjoints is their continuity: every
+    functor that has a left adjoint (and therefore is a right adjoint) is
+    continuous (i.e. commutes with limits in the category theoretical
+    sense); every functor that has a right adjoint (and therefore is a
+    left adjoint) is cocontinuous (i.e. commutes with colimits)."
+                                                             -- Wikipedia
+
+   This file proves both statements for the hom-setoid adjunctions of
+   [Theory/Adjunction.v], packaged in the preservation vocabulary of
+   [Structure/Limit/Preservation.v].
+
+   Fix an adjunction A : F ⊣ U, with F : D ⟶ C the left adjoint and
+   U : C ⟶ D the right adjoint, and write ⌊-⌋ : (F x ~> y) → (x ~> U y)
+   for the forward transpose and ⌈-⌉ for its inverse. Given a limit L of
+   a diagram G : J ⟶ C, the object U L is exhibited directly as a limit
+   of U ◯ G ([rapl_is_alimit]):
+
+   - the legs of the image cone are fmap[U] applied to the legs of L
+     ([rapl_acone]);
+   - a competing cone N over U ◯ G transposes leg by leg along ⌈-⌉ into
+     a cone over G whose apex is F applied to the vertex of N, the leg
+     coherence being [from_adj_nat_r] combined with the coherence of N
+     ([rapl_transposed_cone]);
+   - the mediating morphism supplied by L in C transposes back along ⌊-⌋
+     to the mediating morphism in D ([rapl_med]), which commutes with
+     the image legs by [to_adj_nat_r] ([rapl_med_commutes]);
+   - a competitor v that also commutes with the image legs transposes
+     along ⌈-⌉ to a mediator for the transposed cone, so ⌈v⌉ agrees with
+     the C-side mediator by L's universal property, and v with
+     [rapl_med] because the two transposes are mutually inverse up to ≈
+     ([rapl_med_unique]).
+
+   Continuity of the right adjoint is then packaged as
+   [right_adjoint_preserves_limits] : [PreservesAllLimits] U, with the
+   per-diagram form [right_adjoint_preserves_limit] and a bundled
+   [Limit (U ◯ G)] witness [rapl_limit]. The dual results
+   [left_adjoint_preserves_colimit] / [left_adjoint_preserves_colimits]
+   ride [Adjunction/Opposite.v]: the opposite adjunction U^op ⊣ F^op
+   makes F^op a right adjoint between the opposite categories, and
+   [PreservesColimit] is by definition [PreservesLimit] of the opposite
+   diagram for the opposite functor, so LAPC is RAPL read backwards.
+
+   Nothing below is registered for instance resolution; preservation
+   witnesses are always passed explicitly, following the convention of
+   [Structure/Limit/Preservation.v]. 
+
+--------
+nLab: https://ncatlab.org/nlab/show/adjoints+preserve+(co-)limits
    Wikipedia:
    https://en.wikipedia.org/wiki/Adjoint_functors#Preservation_of_limits
 
@@ -30,7 +82,8 @@ Generalizable All Variables.
    为正向转置、⌈-⌉ 为其逆。给定图 G : J ⟶ C 的极限 L，对象 U L 被直接展示为 U ◯ G 的极限
    （[rapl_is_alimit]）：像锥的腿是对 L 的腿应用 fmap[U]；竞争锥经 ⌈-⌉ 逐腿转置；中介经 ⌊-⌋
    转回；唯一性由两转置在 ≈ 下互逆。右伴随连续性打包为 [right_adjoint_preserves_limits] :
-   [PreservesAllLimits] U；对偶结果给出左伴随的余连续性。 *)
+   [PreservesAllLimits] U；对偶结果给出左伴随的余连续性。 
+*)
 
 Section RAPL.
 
@@ -49,12 +102,17 @@ Context {J : Category}.
 Context (G : J ⟶ C).
 Context (L : Limit G).
 
-(** ** The image cone over [U L] *)
+(** ** The image cone over [U L]  / ** [U L] 上的像锥*)
 
 (*
-   本节说明（余）极限相关定义、性质与动机。
+The legs of the image cone: U applied to the legs of the limit cone.
+   The codomain [U (G x)] is convertible with [(U ◯ G) x], so the family
+   assembles into an [ACone] over the composite diagram below. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+像锥的腿：U 应用于极限锥的腿。 
+共域 [U (G x)] 可与 [(U ◯ G) x] 转换，因此该系列
+ 通过下面的组合图组装成 [ACone]。 
 *)
 
 Definition rapl_leg (x : J) : U L ~{D}~> U (G x) :=
@@ -71,12 +129,17 @@ Qed.
 Definition rapl_acone : ACone (U L) (U ◯ G) :=
   @Build_ACone J D (U L) (U ◯ G) rapl_leg (@rapl_leg_coherence).
 
-(* * ** Transposing competing cone across 伴随 （已译） *)
+(** ** Transposing a competing cone across the adjunction  / ** 将竞争锥体移过附加物*)
 
 (*
-   本节说明（余）极限相关定义、性质与动机。
+A cone N over U ◯ G with vertex n has legs n ~> U (G x); the inverse
+   transpose ⌈-⌉ turns them into legs F n ~> G x, i.e. into a cone over
+   G with apex F n, ready to be mediated by the limit L in C. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+U ◯ G 上的圆锥 N，顶点为 n，有边 n ~> U (G x)； 反之
+ 转置 ⌈-⌉ 将它们变成腿 F n ~> G x，即变成圆锥体
+ G 具有顶点 F n，准备好由 C 中的极限 L 调节。 
 *)
 
 Definition rapl_transposed_leg (N : Cone (U ◯ G)) (x : J) :
@@ -99,10 +162,16 @@ Definition rapl_transposed_cone (N : Cone (U ◯ G)) : Cone G :=
     (@Build_ACone J C (F (vertex_obj[N])) G
        (rapl_transposed_leg N) (@rapl_transposed_coherence N)).
 
-(* * ** The mediating 态射 普遍性质 （已译） *)
+(** ** The mediating morphism and the universal property  / ** 中介态射和普适性*)
 
-(* Mediate transposed cone through L C, then transpose the
- resulting 态射 back along ⌊-⌋ land D. （已译） *)
+(*
+Mediate the transposed cone through L in C, then transpose the
+   resulting morphism back along ⌊-⌋ to land in D. 
+
+--------
+通过 C 中的 L 调解转置锥体，然后转置
+ 由此产生的态射沿着 ⌊-⌋ 返回到 D。 
+*)
 
 Definition rapl_med (N : Cone (U ◯ G)) : vertex_obj[N] ~{D}~> U L :=
   ⌊ limit_med (limit_is_alimit L) (rapl_transposed_cone N) ⌋.
@@ -149,12 +218,12 @@ Definition rapl_ump (N : Cone (U ◯ G)) :
     ∀ x : J, rapl_leg x ∘ u ≈ cone_leg N x :=
   Build_Unique _ _ _ (rapl_med N) (rapl_med_commutes N) (rapl_med_unique N).
 
-(* RAPL for one diagram, apex-pinned: U L underlies a limit of U ◯ G. *)
+(* RAPL for one diagram, apex-pinned: U L underlies a limit of U ◯ G.  / 一张图的 RAPL，顶点固定：U L 是 U ◯ G 极限的基础。*)
 
 Definition rapl_is_alimit : IsALimit (U ◯ G) (U L) :=
   @Build_IsALimit J D (U ◯ G) (U L) rapl_acone rapl_ump.
 
-(* 相关说明。 （已译） *)
+(* The bundled form of the same witness.  / 同一证人的捆绑形式。*)
 
 Definition rapl_cone : Cone (U ◯ G) :=
   @Build_Cone J D (U ◯ G) (U L) rapl_acone.
@@ -164,12 +233,23 @@ Definition rapl_limit : Limit (U ◯ G) :=
 
 End Diagram.
 
-(* 相关说明。 （已译） *)
+(** ** Right adjoints preserve limiting CONES, not merely limit apexes  / ** 右伴随保留限制圆锥，而不仅仅是限制顶点*)
 
 (*
-   本节说明（余）极限相关定义、性质与动机。
+[rapl_ump] already has the [IsLimitCone] shape: its legs [rapl_leg] are
+   [fmap[U]] of the given legs, which is definitionally what [FCone]'s legs
+   are, so the cone-level reading of RAPL is a repackaging of the cone as a
+   [Limit] record and nothing more.  This is the statement
+   Construction/Comma/Limit.v identified as the operative one, and it is
+   what [PreservesImageLimit] there has always been. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[rapl_ump] 已经具有 [IsLimitCone] 的形状：它的腿 [rapl_leg] 是
+ [fmap[U]] 给定的腿，这定义为 [FCone] 的腿
+ 是，所以 RAPL 的锥体水平读数是将锥体重新包装为
+ [Limit] 记录仅此而已。 这是声明
+ Construction/Comma/Limit.v 被确定为执行项，它是
+ [PreservesImageLimit] 一直以来都有什么。 
 *)
 
 Definition right_adjoint_PreservesLimitCone {J : Category} (G : J ⟶ C) :
@@ -179,7 +259,7 @@ Definition right_adjoint_PreservesLimitCone {J : Category} (G : J ⟶ C) :
 Definition right_adjoint_Continuous : ContinuousFunctor U :=
   fun J G => right_adjoint_PreservesLimitCone G.
 
-(* 相关说明。 （已译） *)
+(** ** Right adjoints preserve limits  / ** 右伴随保留极限*)
 
 Definition right_adjoint_preserves_limit {J : Category} (G : J ⟶ C) :
   PreservesLimit G U :=
@@ -190,12 +270,25 @@ Definition right_adjoint_preserves_limits : PreservesAllLimits U :=
 
 End RAPL.
 
-(* 相关说明。 （已译） *)
+(** ** Left adjoints preserve colimits  / ** 左伴随保留余界*)
 
 (*
-   本节说明伴随相关定义、性质与动机。
+By duality: [Opposite_Adjunction] turns A : F ⊣ U into U^op ⊣ F^op, in
+   which F^op is the right adjoint, and [PreservesColimit G F] is by
+   definition [PreservesLimit G^op F^op], so it is an instance of RAPL for
+   the opposite adjunction at the opposite diagram. The explicit constants
+   [Opposite] / [Opposite_Functor] / [Opposite_Adjunction] are used instead
+   of the three ^op notations, which would otherwise compete for the same
+   syntax across scopes. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+通过对偶性：[Opposite_Adjunction] 将 A : F ⊣ U 转换为 U^op ⊣ F^op，在
+ 其中 F^op 是右伴随，[PreservesColimit G F] 是
+ 定义 [PreservesLimit G^op F^op]，因此它是 RAPL 的一个实例
+ 对面图中的相反附加物。 显式常量
+ 使用 [Opposite] / [Opposite_Functor] / [Opposite_Adjunction] 代替
+ 三个 ^op 符号的，否则它们会竞争相同的
+ 跨范围的语法。 
 *)
 
 Definition left_adjoint_preserves_colimit
@@ -209,7 +302,7 @@ Definition left_adjoint_preserves_colimits
   PreservesAllColimits F :=
   fun J G => left_adjoint_preserves_colimit A G.
 
-(* 相关说明。 （已译） *)
+(** ** Left adjoints preserve colimiting COCONES  / ** 左伴随保留共界 COCONES*)
 
 Definition left_adjoint_PreservesColimitCocone
   {C D : Category} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U)
@@ -226,9 +319,14 @@ Definition left_adjoint_Cocontinuous
   fun J G => left_adjoint_PreservesColimitCocone A G.
 
 (*
-   本节说明伴随、（余）极限相关定义、性质与动机。
+Covariant accessor: the image of a colimit apex under the left adjoint,
+   pinned as a colimit of the composite diagram via the covariant reading
+   [preserves_colimit] of [Structure/Limit/Preservation.v]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+协变访问器：左伴随下的余极限顶点的图像，
+ 通过协变读数固定为复合图的余极限
+ [Structure/Limit/Preservation.v] 的 [preserves_colimit]。 
 *)
 
 Definition lapc_is_acolimit

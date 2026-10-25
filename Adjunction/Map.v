@@ -12,20 +12,228 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Maps of adjunctions *)
+(** * Maps of adjunctions  / * 附件地图*)
 
-(*
+(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
    nLab: https://ncatlab.org/nlab/show/mate
+   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7,
+     p. 99: the definition of a map of adjunctions, which the page gives as
+     unnumbered prose (catalog id `maclane:IV.7:def1`), and Proposition 1,
+     which the page does number in bold.
+   Riehl, "Category Theory in Context", §4.2, printed p. 143,
+     Exercise 4.2.v (strict morphism of adjunctions).
 
-   本文件给出 Map 相关结构。
+   Given two adjunctions A : F ⊣ U over (C, D) and A' : F' ⊣ U' over
+   (C', D') -- so F : D ⟶ C and U : C ⟶ D, the library's orientation -- a
+   MAP OF ADJUNCTIONS from A to A' is a pair of functors K : C ⟶ C' and
+   L : D ⟶ D' such that the two squares
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+       K ◯ F  =  F' ◯ L        (as functors D ⟶ C')
+       L ◯ U  =  U' ◯ K        (as functors C ⟶ D')
 
-(*
-   本节说明 Map 相关定义、性质与动机。
+   commute, together with one further condition on the hom-sets, which
+   Mac Lane displays as the commuting square
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+       C(F x, a)  --φ-->  D(x, U a)
+           | K                | L
+           v                  v
+       C'(K F x, K a)     D'(L x, L U a)
+           ||                 ||
+       C'(F' L x, K a) --φ'-> D'(L x, U' K a)
+
+   for ALL objects x of D and a of C.  The two double bars are the object
+   equalities supplied by the two squares.  [SquaresHom] below is exactly
+   that square, quantified over every transposable arrow k : F x ~> a
+   rather than evaluated at one distinguished argument.
+
+   LETTERS.  Mac Lane writes K : A → A' and L : X → X', where his F : X → A
+   is the left adjoint; so his A is this file's C and his X is this file's
+   D, and the names [sq_K] and [sq_L] follow him.  Riehl writes the same two
+   functors H : C → C' and K : D → D', but her F : C → D is the left
+   adjoint, so her source category is this file's D: her H is this file's L
+   and her K is this file's K.  The two books therefore agree on the letter
+   K and disagree on the other one.
+
+   PROPOSITION 1 (Mac Lane) / Exercise 4.2.v (Riehl).  Given the two squares,
+   the hom-set condition is equivalent to the unit condition Lη = η'L and to
+   the counit condition Kε = ε'K.  All three are proved here, in both
+   directions and as separately named constants:
+   [squares_hom_iff_unit], [squares_hom_iff_counit] and
+   [map_of_adjunctions_unit_iff_counit].
+
+   THE MODELLING DECISION, AND WHAT WAS MEASURED.
+
+   "The squares commute" is an equality of functors, and this library has
+   two of those.  BOTH readings are delivered here, and the choice of which
+   is primary is settled by the sources rather than by convenience.
+
+   (a) The STRICT reading, taken as primary.  Mac Lane's display (3) joins
+   C'(K F x, K a) to C'(F' L x, K a) with a double bar, and Riehl's version
+   of the same square joins D'(K F c, K d) to D'(F' H c, K d) with an equals
+   sign; her exercise is titled "strict morphism of adjunctions" and writes
+   KF = F'H.  So both sources identify the two hom-sets by an EQUALITY of
+   objects.  [AdjSquares] therefore carries [sq_left : ∀ x, K (F x) =
+   F' (L x)] as data, at Leibniz equality of objects, together with the
+   transported agreement of the two arrow actions ([sq_left_nat], written
+   with [id_cast] of Construction/Quotient.v -- the same shape
+   Adjunction/LeftInverse.v uses for its [lali_obj]/[lali_counit] pair and
+   Theory/Equivalence/Strict.v for [lari_obj]/[lari_unit]).
+
+   Those two fields ARE, up to conversion, the two arguments of
+   Theory/Skeleton.v's [strict_equiv_of_id_cast_nat], whose conclusion is
+   [@equiv _ (@Functor_StrictEq_Setoid _ _) (K ◯ F) (F' ◯ L)] -- the tree's
+   strict functor equality.  That passage is NOT taken inside this file, on
+   a measured ground: requiring Theory/Skeleton.v takes this file's
+   transitive dependency closure from 21 modules to 32, pulling in
+   Instance/Cat, Instance/Fun, Instance/StrictCat, Instance/StrictCat/ToCat,
+   Instance/Discrete, Structure/Discrete, Construction/Subcategory and the
+   three Theory/Equivalence modules.  Test/ProbeMapAdj393.v pays that cost
+   once and checks the claim there, by applying that very constant to the
+   two fields of an arbitrary [AdjSquares].
+
+   (b) The ≈ reading, also delivered.  Under [Functor_Setoid] -- the
+   library's default setoid on functors, which IS natural isomorphism -- the
+   two squares become [K ◯ F ≈ F' ◯ L] and [L ◯ U ≈ U' ◯ K].  This reading
+   DOES typecheck: an element of [Functor_Setoid] equality supplies a family
+   of isomorphisms K (F x) ≅ F' (L x), and inserting those isomorphisms in
+   place of the double bars makes the hom-set condition well typed with no
+   transport at all.  [WeakAdjSquares], [WeakSquaresHom] and
+   [WeakMapOfAdjunctions] are that version, with its own three-way
+   equivalence ([weak_hom_iff_unit], [weak_hom_iff_counit],
+   [weak_unit_iff_counit]).  So the objection that the ≈ version cannot be
+   stated is refuted by construction.
+
+   Neither version is a rewriting of the other: both are instantiations of
+   ONE engine, the section [MapCompare], which fixes an arbitrary pair of
+   comparison ISOMORPHISM families [al], [be] and proves the three-way
+   equivalence over them.  The strict record feeds it [id_cast_iso] of its
+   object equalities; the ≈ record feeds it the first projection of its two
+   [Functor_Setoid] witnesses.  [strict_hom_is_weak_hom] records, at
+   Leibniz equality of TYPES and by [reflexivity], that the strict hom
+   condition IS the ≈ one at the comparison isomorphisms the strict data
+   supplies, so the passage
+   [WeakMapOfAdjunctions_of_MapOfAdjunctions] costs no proof at all.
+
+   WHAT IS LOST relative to Mac Lane's own formulation, and what is gained.
+   Under (b) the two squares hold only up to isomorphism, so
+   [wsq_K W (F x)] and [F' (wsq_L W x)] need not be the same object;
+   nothing in the ≈ version supports substituting one for the other in a
+   type, which is what Mac
+   Lane's double bar does.  Under (a) they are the same object, and the
+   price is that the two squares are Leibniz equations between objects,
+   which a category presented up to isomorphism will rarely satisfy.  The
+   engine shows that the mathematics of Proposition 1 needs neither: it
+   needs only invertible comparisons, natural in the sense recorded by
+   [CompareLeftNat] and [CompareRightNat].
+
+   WHICH NATURALITY EACH DIRECTION SPENDS.  The four passages of the engine
+   take their naturality hypotheses EXPLICITLY, so the type of each records
+   what it consumes.  [map_hom_to_unit] and [map_hom_to_counit] consume
+   neither.  [map_unit_to_hom] consumes only the RIGHT square's naturality;
+   [map_counit_to_hom] only the LEFT square's.
+
+   RELATION TO Adjunction/Conjugate.v, WHICH IS THE SAME SECTION OF THE
+   SAME BOOK.  That file already states both of the conditions Proposition 1
+   equates with the hom-set square: [ConjugateUnit] and
+   [ConjugateCounit], with [conjugate_characterizations]
+   proving the four-way equivalence including [Conjugate ↔ ConjugateCounit].  Its configuration is different -- two adjunctions between the
+   SAME pair of categories, compared by natural transformations σ : F' ⟹ F
+   and τ : U ⟹ U', with no functors and no squares -- and this file is the
+   general case with arbitrary K and L between DIFFERENT categories.  The
+   two are related here, ON THE NOSE: [map_adj_hom_is_conjugate] proves
+
+       MapAdjHom A A' Id[C] Id[D] al be = Conjugate A A' conj_sigma conj_tau
+
+   at Leibniz equality of TYPES, by [reflexivity], where [conj_sigma] has
+   components [from (al x)] and [conj_tau] components [to (be a)].  No
+   padding transformation is needed, because [Id]'s object and arrow actions
+   are the literal identities; the padding trap that
+   Instance/Cat/Bicategory/Conjugate.v records is a bicategorical one and
+   does not arise on this route.
+
+   THE RESIDUE of that identification, stated exactly.  A map of adjunctions
+   supplies INVERTIBLE comparison data -- an equality of objects under (a),
+   an isomorphism under (b) -- whereas [Conjugate σ τ] places no
+   invertibility requirement on σ or τ.  So what the K = Id, L = Id case
+   recovers is a conjugate pair whose two transformations are pointwise
+   invertible, and not every conjugate pair arises this way.  Only that
+   one inclusion is machine-checked.  The converse -- that every conjugate
+   pair with both legs pointwise invertible does arise this way -- is NOT
+   built below, and no constant in this file takes an invertibility-family
+   hypothesis.  Conjugate.v's own
+   [conjugate_invertible_iff] says that under the square those two
+   pointwise invertibility conditions imply each other, so demanding it of
+   one of the two comparison families is no weaker than demanding it of
+   both.  Nothing here claims more.
+
+   RELATION TO Theory/Bicategory/Mates.v: NOT MACHINE-CHECKED HERE.  That
+   file's [mate] carries a 2-cell f' ∘ a ⟹ b ∘ f to a 2-cell a ∘ u ⟹ u' ∘ b
+   over bounding 1-cells a and b, and the expected statement is that a map
+   of adjunctions is the case in Cat where a := L, b := K and the two
+   comparison 2-cells are identities, each being the mate of the other.
+   That statement is NOT proved in this file and is not asserted: exhibiting
+   it needs C and D as 0-cells of the Cat bicategory and the padding
+   transformations between F' ◯ Id and F' that
+   Instance/Cat/Bicategory/Conjugate.v is built to mediate.  For the record,
+   the closure cost was measured: Theory/Bicategory/Mates.v alone is +3
+   modules over this file's 21, Instance/Cat/Bicategory/Adjunction.v is +8
+   and Instance/Cat/Bicategory/Conjugate.v is +14; the reason it is not done
+   is the missing padding work, not the dependency cone.  The
+   ordinary-vocabulary shadow of [mate] is Conjugate.v's [conj_mate], and
+   the relation to THAT is the on-the-nose identification above.
+
+   RELATION TO Instance/Adj.v.  That file's [Adj] now takes as its hom
+   exactly the conjugate pairs -- Mac Lane's own arrows of the category of
+   adjunctions -- carrying the hom-set square as a field, so the CAVEAT it
+   used to hold, recording a bare product setoid with no such condition, is
+   discharged.  The identity-bounding-functor case of this file's
+   [MapAdjHom] is that same square, which is what [map_adj_hom_is_conjugate]
+   records above.  This file adds no instance and changes no other file.
+
+   UNIVERSES, read off both the binder and the constraint block.
+   [AdjSquares@{u u0 u1 u2 u3 u4}] is over C : Category@{u u0 u0},
+   D : Category@{u1 u0 u0}, C' : Category@{u2 u3 u3} and
+   D' : Category@{u4 u3 u3}: hom is identified with proof, and C's hom level
+   with D's, by REUSING the level variable in the BINDER, while its
+   constraint block carries only the bound u0 <= u3 and no equation at all.
+   All four object universes are free.  The engine's theorems read the other
+   way round: [map_adj_unit_iff_counit]'s binder keeps C's and D's hom levels
+   apart while its BLOCK carries u0 = u2 and u6 = u8, so reading either one
+   alone gets it wrong.  Of the 126 constants this file contributes, ZERO
+   carry a [Set] in a binder or a block.  The hom = proof identification is
+   inherited and has at least two donors, each sufficient on its own and
+   pinned in the probe: [id_cast] of Construction/Quotient.v, and
+   [Adjunction] with no [id_cast] in the command.  [Isomorphism] and
+   [Functor] are NOT donors -- both are accepted at hom and proof levels
+   declared strictly apart, where the three negatives are refused.
+
+   WHAT IS NOT DELIVERED.  No category (or 2-category) of adjunctions and
+   maps between them: [MapOfAdjunctions_id] and [MapOfAdjunctions_compose]
+   are the identity and composition, but no associativity or unit law is
+   stated, and none could be stated as a morphism equation without first
+   choosing a setoid on maps of adjunctions, which is not done.  No converse
+   to [WeakMapOfAdjunctions_of_MapOfAdjunctions].  No mates statement, as
+   above.  No transport of a map of adjunctions along an equivalence, no
+   relation to Adjunction/Compose.v, and no statement about when K or L is
+   full, faithful or an equivalence. *)
+
+(**
+** Two [id_cast] identities not present in Construction/Quotient.v
+
+    Both belong beside their donors in that file's [HomCast] section; they
+    are stated here because this file is their only consumer so far.  Both
+    are proved by eliminating the object equalities, whose endpoints are
+    universally quantified variables here, so no uniqueness of identity
+    proofs is used and no hypothesis is taken. 
+
+--------
+** Construction/Quotient.v 中不存在两个 [id_cast] 身份
+
+ 两者都属于该文件的 [HomCast] 部分中的捐赠者旁边； 他们
+ 之所以在这里声明，是因为该文件是迄今为止它们唯一的使用者。 两者都
+ 通过消除对象等式来证明，其端点是
+ 这里的变量是通用量化的，因此没有唯一性
+ 使用证明并且不采取假设。 
 *)
 
 Lemma id_cast_sym_trans {X : Category} {u v w : X} (p : u = v) (q : v = w) :
@@ -37,12 +245,17 @@ Lemma fmap_id_cast_sym {X Y : Category} (G : X ⟶ Y) {u v : X} (e : u = v) :
   id_cast (eq_sym (f_equal G e)) ≈ fmap[G] (id_cast (eq_sym e)).
 Proof. destruct e; simpl; symmetry; apply fmap_id. Qed.
 
-(* * ** The engine: comparison isomorphisms three-way 等价 （已译） *)
+(** ** The engine: comparison isomorphisms and the three-way equivalence  / ** 引擎：比较同构和三向等价*)
 
 (*
-   本节说明 Map 相关定义、性质与动机。
+Everything Proposition 1 needs is a pair of invertible comparison
+   families [al] and [be] between the two composites, plus the naturality of
+   each.  The strict and the ≈ readings below are both instances. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+命题1需要的一切就是一对可逆比较
+ 两种复合材料之间的 [al] 和 [be] 系列，以及自然性
+ 每个。 下面的严格和 ≈ 读数都是实例。 
 *)
 
 Section MapCompare.
@@ -66,7 +279,7 @@ Notation "'ε' a"  := (@counit _ _ _ _ A  a) (at level 9).
 Notation "'η²' x" := (@unit   _ _ _ _ A' x) (at level 9).
 Notation "'ε²' a" := (@counit _ _ _ _ A' a) (at level 9).
 
-(* Naturality of the two comparison families. *)
+(* Naturality of the two comparison families.  / 两个比较家族的自然性。*)
 
 Definition CompareLeftNat : Type :=
   ∀ (x y : D) (f : x ~> y),
@@ -76,7 +289,7 @@ Definition CompareRightNat : Type :=
   ∀ (a b : C) (f : a ~> b),
     to (be b) ∘ fmap[L] (fmap[U] f) ≈ fmap[U'] (fmap[K] f) ∘ to (be a).
 
-(* An invertible natural family is natural in the inverse direction too. *)
+(* An invertible natural family is natural in the inverse direction too.  / 可逆自然族在相反方向上也是自然的。*)
 Lemma compare_left_nat_from (Hal : CompareLeftNat) (x y : D) (f : x ~> y) :
   from (al y) ∘ fmap[F'] (fmap[L] f) ≈ fmap[K] (fmap[F] f) ∘ from (al x).
 Proof.
@@ -89,22 +302,22 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Mac Lane's display (3), quantified over every transposable arrow. *)
+(* Mac Lane's display (3), quantified over every transposable arrow.  / Mac Lane 的显示 (3)，对每个转座箭头进行量化。*)
 Definition MapAdjHom : Type :=
   ∀ (x : D) (a : C) (k : F x ~> a),
     ⌊ fmap[K] k ∘ from (al x) ⌋² ≈ to (be a) ∘ fmap[L] ⌊ k ⌋.
 
-(* 相关说明。 （已译） *)
+(* Mac Lane's Lη = η'L, with the comparison split across the two sides.  / Mac Lane 的 Lη = η'L，比较分为两侧。*)
 Definition MapAdjUnit : Type :=
   ∀ x : D,
     to (be (F x)) ∘ fmap[L] (η x) ≈ fmap[U'] (from (al x)) ∘ η² (L x).
 
-(* Mac Lane's Kε = ε'K, likewise. *)
+(* Mac Lane's Kε = ε'K, likewise.  / 同样，Mac Lane 的 Kε = ε'K。*)
 Definition MapAdjCounit : Type :=
   ∀ a : C,
     fmap[K] (ε a) ∘ from (al (U a)) ≈ ε² (K a) ∘ fmap[F'] (to (be a)).
 
-(* Mac Lane's own argument: chase the identity arrow around display (3). *)
+(* Mac Lane's own argument: chase the identity arrow around display (3).  / Mac Lane 自己的论点：追逐显示器周围的恒等箭头 (3)。*)
 Lemma map_hom_to_unit : MapAdjHom → MapAdjUnit.
 Proof.
   intros H x.
@@ -128,7 +341,7 @@ Proof.
   now rewrite <- (to_adj_unit (H:=A)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The dual chase: instantiate display (3) at the counit.  / 双追踪：在单元上实例化显示 (3)。*)
 Lemma map_hom_to_counit : MapAdjHom → MapAdjCounit.
 Proof.
   intros H a.
@@ -179,7 +392,7 @@ Qed.
 
 End MapCompare.
 
-(* * ** The two squares, at Leibniz equality 对象 （已译） *)
+(** ** The two squares, at Leibniz equality of objects  / ** 莱布尼茨物体相等的两个正方形*)
 
 Section StrictSquares.
 
@@ -187,9 +400,18 @@ Context {C D : Category} {F : D ⟶ C} {U : C ⟶ D}.
 Context {C' D' : Category} {F' : D' ⟶ C'} {U' : C' ⟶ D'}.
 
 (*
-   本节说明函子相关定义、性质与动机。
+Mac Lane's display (2).  The [_nat] fields are the transported agreement
+   of the two arrow actions; together with the object equalities above them
+   they are the two arguments of Theory/Skeleton.v's
+   [strict_equiv_of_id_cast_nat], whose conclusion is the tree's strict
+   functor equality (see the header, and Test/ProbeMapAdj393.v). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Mac Lane 的显示屏 (2)。 [_nat] 字段是传输协议
+ 两个箭头动作； 以及它们之上的对象平等
+ 它们是 Theory/Skeleton.v 的两个参数
+ [strict_equiv_of_id_cast_nat]，其结论是树的严格
+ 函子相等（参见标题和 Test/ProbeMapAdj393.v）。 
 *)
 Record AdjSquares : Type := {
   sq_K : C ⟶ C';
@@ -206,7 +428,7 @@ Record AdjSquares : Type := {
       ≈ fmap[U'] (fmap[sq_K] f) ∘ id_cast (sq_right a)
 }.
 
-(* The comparison isomorphisms engine 所消耗. （已译） *)
+(* The comparison isomorphisms the engine consumes.  / 引擎消耗的比较同构。*)
 
 Definition sq_al (S : AdjSquares) (x : D) : sq_K S (F x) ≅ F' (sq_L S x)
   := id_cast_iso (sq_left S x).
@@ -214,7 +436,7 @@ Definition sq_al (S : AdjSquares) (x : D) : sq_K S (F x) ≅ F' (sq_L S x)
 Definition sq_be (S : AdjSquares) (a : C) : sq_L S (U a) ≅ U' (sq_K S a)
   := id_cast_iso (sq_right S a).
 
-(* The 复合 对象 equalities Mac Lane's Lη = η'L Kε = ε'K use. （已译） *)
+(* The composite object equalities Mac Lane's Lη = η'L and Kε = ε'K use.  / 复合对象等式 Mac Lane 的 Lη = η'L 和 Kε = ε'K 使用。*)
 
 Definition sq_unit_eq (S : AdjSquares) (x : D)
   : sq_L S (U (F x)) = U' (F' (sq_L S x))
@@ -226,14 +448,14 @@ Definition sq_counit_eq (S : AdjSquares) (a : C)
 
 End StrictSquares.
 
-(* 相关说明。 （已译） *)
+(** ** Mac Lane's Definition 1 and Proposition 1  / ** Mac Lane 的定义 1 和命题 1*)
 
 Section StrictMap.
 
 Context {C D : Category} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U).
 Context {C' D' : Category} {F' : D' ⟶ C'} {U' : C' ⟶ D'} (A' : F' ⊣ U').
 
-(* Display (3), quantified over every transposable arrow. *)
+(* Display (3), quantified over every transposable arrow.  / 显示 (3)，对每个转座箭头进行量化。*)
 Definition SquaresHom (S : @AdjSquares C D F U C' D' F' U') : Type :=
   ∀ (x : D) (a : C) (k : F x ~> a),
     to (@adj _ _ _ _ A' _ _)
@@ -251,7 +473,14 @@ Definition SquaresCounit (S : @AdjSquares C D F U C' D' F' U') : Type :=
     fmap[sq_K S] (@counit _ _ _ _ A a) ∘ id_cast (eq_sym (sq_left S (U a)))
       ≈ @counit _ _ _ _ A' (sq_K S a) ∘ fmap[F'] (id_cast (sq_right S a)).
 
-(* 相关说明。 （已译） *)
+(*
+Each of the three IS the engine's condition at the comparison
+   isomorphisms [sq_al], [sq_be], at Leibniz equality of types. 
+
+--------
+三者中的每一个都是比较时发动机的状况
+ 同构 [sq_al]、[sq_be]，莱布尼兹类型相等。 
+*)
 
 Lemma squares_hom_is_generic (S : @AdjSquares C D F U C' D' F' U') :
   SquaresHom S = MapAdjHom A A' (sq_K S) (sq_L S) (sq_al S) (sq_be S).
@@ -297,7 +526,14 @@ Proof.
            (sq_left_CompareLeftNat S) (sq_right_CompareRightNat S)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+Mac Lane's own spelling: the whole identification on one side, so that
+   the two displayed equations read Lη = η'L and Kε = ε'K. 
+
+--------
+Mac Lane自己的拼写：整个标识在一侧，这样
+ 显示的两个方程为 Lη = η'L 和 Kε = ε'K。 
+*)
 
 Theorem squares_unit_fused (S : @AdjSquares C D F U C' D' F' U') :
   SquaresUnit S
@@ -340,7 +576,7 @@ Proof.
     now rewrite id_right.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Definition 1: the squares together with display (3). *)
 Record MapOfAdjunctions : Type := {
   map_squares : @AdjSquares C D F U C' D' F' U';
   map_hom : SquaresHom map_squares
@@ -365,7 +601,14 @@ Definition MapOfAdjunctions_of_counit
   : MapOfAdjunctions :=
   {| map_squares := S; map_hom := snd (squares_hom_iff_counit S) H |}.
 
-(* 相关说明。 （已译） *)
+(*
+Building a map from either of the two other conditions leaves the squares
+   untouched, on the nose. 
+
+--------
+从其他两个条件中的任何一个构建地图都会留下方块
+ 未触及，在鼻子上。 
+*)
 
 Example map_of_unit_squares
   (S : @AdjSquares C D F U C' D' F' U') (H : SquaresUnit S) :
@@ -379,7 +622,7 @@ Proof. reflexivity. Qed.
 
 End StrictMap.
 
-(** ** Identity and composition *)
+(** ** Identity and composition  / ** 身份和组成*)
 
 Section SquaresIdComp.
 
@@ -470,7 +713,7 @@ Next Obligation.
   now rewrite id_cast_trans.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The data of both is read back on the nose.  / 两者的数据都在鼻子上读回。*)
 
 Example map_id_K : map_K A A MapOfAdjunctions_id = Id[C].
 Proof. reflexivity. Qed.
@@ -494,14 +737,14 @@ Proof. reflexivity. Qed.
 
 End MapIdComp.
 
-(* * ** The ≈ reading: squares up natural 同构 （已译） *)
+(** ** The ≈ reading: the squares up to natural isomorphism  / ** ≈ 读数：自然同构的平方*)
 
 Section WeakSquares.
 
 Context {C D : Category} {F : D ⟶ C} {U : C ⟶ D}.
 Context {C' D' : Category} {F' : D' ⟶ C'} {U' : C' ⟶ D'}.
 
-(* [≈] on functors is [Functor_Setoid], which IS natural isomorphism. *)
+(* [≈] on functors is [Functor_Setoid], which IS natural isomorphism.  / 函子上的 [≈] 是 [Functor_Setoid]，它是自然同构。*)
 Record WeakAdjSquares : Type := {
   wsq_K : C ⟶ C';
   wsq_L : D ⟶ D';
@@ -535,7 +778,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* A strict square is in particular a ≈ one. *)
+(* A strict square is in particular a ≈ one.  / 严格的平方尤其是 a ≈ 1。*)
 
 Lemma strict_weak_left (S : @AdjSquares C D F U C' D' F' U') :
   ∀ (x y : D) (f : x ~> y),
@@ -618,9 +861,14 @@ Record WeakMapOfAdjunctions : Type := {
 }.
 
 (*
-   本节说明hom、同构相关定义、性质与动机。
+The strict hom condition IS the ≈ one at the comparison isomorphisms the
+   strict data supplies -- at Leibniz equality of types, by [reflexivity].
+   The passage below therefore carries [map_hom] across unchanged. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+严格的 hom 条件是比较同构处的 ≈ 1
+ 严格的数据供应——莱布尼兹类型相等，作者：[reflexivity]。 
+因此，下面的段落将 [map_hom] 保持不变。 
 *)
 Lemma strict_hom_is_weak_hom (S : @AdjSquares C D F U C' D' F' U') :
   SquaresHom A A' S = WeakSquaresHom (WeakAdjSquares_of_AdjSquares S).
@@ -634,7 +882,7 @@ Definition WeakMapOfAdjunctions_of_MapOfAdjunctions
 
 End WeakMap.
 
-(* * ** The 恒等-bounding-函子 case IS Adjunction/Conjugate.v （已译） *)
+(** ** The identity-bounding-functor case IS Adjunction/Conjugate.v  / ** 恒等边界函子的情况是 Adjunction/Conjugate.v*)
 
 Section ConjugateCase.
 
@@ -668,12 +916,33 @@ Proof. reflexivity. Qed.
 
 End ConjugateCase.
 
-(* * ** A map 伴随 not 恒等 （已译） *)
+(** ** A map of adjunctions that is not the identity  / ** 不是恒等的附属物地图*)
 
 (*
-   本节说明伴随、来源与用途相关定义、性质与动机。
+The witness carries an ARBITRARY adjunction: the product of A with itself
+   carries the symmetry [Swap] as a map of adjunctions to itself.  The
+   product of two adjunctions is built here because the tree has none, and
+   that was measured two ways: no term anywhere has a type of the shape
+   [_ ∏⟶ _ ⊣ _ ∏⟶ _] (swept multiline over declaration heads, since a
+   same-line grep under-approximates), and the only names in the tree
+   pairing those two words are Adjunction/Diagonal/Product.v's
+   [Diagonal_Product_Adjunction] and, read case-insensitively,
+   Adjunction/Diagonal/Coproduct.v's [Diagonal_Coproduct_Adjunction] --
+   both diagonal adjunctions inside one category, and both a different
+   construction. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+证人携带任意附加物：A与其自身的乘积
+ 携带对称性 [Swap] 作为其自身附加图。 的
+ 在这里构建两个附加项的乘积，因为树没有附加项，并且
+ 这是通过两种方式测量的：任何地方都没有任何术语具有形状类型
+ [_ ∏⟶ _ ⊣ _ ∏⟶ _]（在声明头上扫过多行，因为
+ 同行 grep 近似值），以及树中唯一的名称
+ 配对这两个词是 Adjunction/Diagonal/Product.v's
+ [Diagonal_Product_Adjunction] 以及，不区分大小写读取，
+ Adjunction/Diagonal/Coproduct.v 的 [Diagonal_Coproduct_Adjunction] --
+ 两个对角附加词都在一个类别内，并且都是不同的
+ 建设。 
 *)
 
 Section ProductAdjunction.
@@ -725,9 +994,14 @@ Section SwapWitness.
 Context {C D : Category} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U).
 
 (*
-   本节说明 Map 相关定义、性质与动机。
+Both squares hold at [eq_refl]: [Swap] and [_ ∏⟶ _] are both spelled
+   with [fst]/[snd] rather than by matching on a pair, so the two composites
+   reduce to the same term at a variable object. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+两个方块均位于 [eq_refl]：[Swap] 和 [_ ∏⟶ _] 均拼写为
+ 使用 [fst]/[snd] 而不是通过配对进行匹配，因此这两种复合材料
+ 在变量对象上减少到相同的项。 
 *)
 Program Definition SwapSquares :
   @AdjSquares (C ∏ C) (D ∏ D) (F ∏⟶ F) (U ∏⟶ U)
@@ -753,8 +1027,14 @@ Example swap_map_K_moves (x y : C) :
     = (y, x).
 Proof. reflexivity. Qed.
 
-(* So swap map agrees 恒等 map at (x, y) two
- 对象 coincide. （已译） *)
+(*
+So the swap map agrees with the identity map at (x, y) only when the two
+   objects coincide. 
+
+--------
+因此，只有当两者一致时，交换映射才与 (x, y) 处的恒等映射一致
+ 物体重合。 
+*)
 Theorem swap_map_not_identity (x y : C) :
   fobj[map_K (AdjunctionProduct A A) (AdjunctionProduct A A) SwapMap] (x, y)
     = fobj[map_K (AdjunctionProduct A A) (AdjunctionProduct A A)
@@ -764,12 +1044,19 @@ Proof. intros H; exact (f_equal snd H). Qed.
 
 End SwapWitness.
 
-(* * ** An unconditional separation, over two-对象 范畴 （已译） *)
+(** ** An unconditional separation, over a two-object category  / ** 在两个对象类别上无条件分离*)
 
 (*
-   本节说明伴随、hom相关定义、性质与动机。
+The base category is chosen only to supply two objects that are distinct
+   at Leibniz equality; its hom-setoid is trivial, so the SEPARATION below
+   is object-level.  All the equational content of the witness above is
+   proved at an arbitrary adjunction A. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+选择基本类别仅是为了提供两个不同的对象
+ 莱布尼茨平等； 它的 hom-setoid 是微不足道的，所以下面的分离
+ 是对象级别的。 上述证人的所有等式内容是
+ 在任意附加条件下证明 A. 
 *)
 
 Program Definition MapAdjTwo : Category := {|

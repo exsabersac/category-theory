@@ -23,21 +23,547 @@ Require Import Category.Adjunction.SpanningArrow.
 
 Generalizable All Variables.
 
-(* * * The special adjoint 函子 定理, characterization （已译） *)
+(** * The special adjoint functor theorem, as a characterization  / * 特殊伴随定理，作为表征*)
 
-(*
+(* nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
 
-   本文件给出特殊伴随函子定理相关。
+   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+   §V.8, Theorem 2, the unnumbered Lemma inside its proof and the
+   Corollary after it, book pp. 129-130 (PDF pp. 138-139; catalogue ids
+   [maclane:V.8:thm2], [maclane:V.8:lem1], [maclane:V.8:cor1]).  Awodey,
+   "Category Theory", §9.8, Remark 9.35, printed pp. 255-256
+   ([awodey:9.8:remark35]).  Riehl, "Category Theory in Context",
+   Theorem 4.7.10 and Corollary 4.7.13, printed pp. 177-178
+   ([riehl:4.7:thm10], [riehl:4.7:cor13]), and the Epilogue's two
+   restatements, printed p. 252 ([riehl:E.1:thm-gaft] clause (iii),
+   [riehl:E.1:thm-representability-criteria] clause (i)).  CITED BY
+   LOCATION AND BY THE IN-TREE CATALOGUE: the printed books were not
+   consulted for this file, and every statement attributed to them below
+   is the catalogue's summary, read from doc/plan/books/maclane/
+   inventory/V.json, doc/plan/books/awodey/inventory/inventory-9.json
+   and doc/plan/books/riehl/inventory/inventory-4.json and
+   inventory-E.json.  Mac Lane's three items read there:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+     thm2 -- "Let A be small-complete with small hom-sets and a small
+     cogenerating set Q, and suppose every set of subobjects of an
+     object of A has a pullback (hence an intersection).  Let X have
+     small hom-sets.  Then a functor G : A -> X has a left adjoint if
+     and only if G preserves all small limits and all pullbacks of
+     families of monics."
+
+     lem1 -- an arrow of the comma category (x ↓ G) is monic if and only
+     if its underlying arrow in A is; for the harder half "the comma
+     projection ... creates all limits (by the lemma of section 6), in
+     particular kernel pairs, and A has all kernel pairs, so the
+     projection preserves kernel pairs".
+
+     cor1 -- "If A is small-complete, well-powered, with small hom-sets
+     and a small cogenerating set, and X has small hom-sets, then a
+     functor G : A -> X has a left adjoint if and only if it is
+     continuous (preserves all small limits).  In particular, every
+     continuous functor K : A -> Set is representable."
+
+   Awodey's Remark 9.35 is cor1's sufficiency (a complete, locally small,
+   well-powered category with a cogenerating set; a functor out of it
+   that preserves limits has a left adjoint; the proof is referred to
+   Mac Lane).  Riehl's 4.7.10 is taken up in the fidelity paragraph
+   below.  The representability half of cor1 (with Riehl's E.1
+   criterion) and Riehl's 4.7.13 are the satellite Adjunction/SAFT/
+   Characterization/Corollaries.v's; this file proves the theorem, the
+   lemma and the adjoint half of the Corollary.
+
+   ** What is proved
+
+   THE MONOS LEMMA, STRONGER THAN THE BOOK.  [comma_monic_of_underlying]:
+   an arrow of [=(d) ↓ U] whose C-component is monic is monic, with no
+   hypothesis.  [underlying_monic_of_comma_monic]: the converse, from ONE
+   kernel pair [K] of the underlying arrow in C and nothing about [U].
+   The kernel-pair object takes the comma structure [fmap[U] (kp_diag m
+   K) ∘ `2 X] through its diagonal [kp_diag] ([kp_obj]); both projections
+   are then comma arrows into [X] ([kp_fst], [kp_snd], whose triangles
+   close by [kp_diag_fst] and [kp_diag_snd]); the comma-monic [m]
+   equalizes them; and a pair [g1 g2 : z ~> a] equalized by the
+   underlying arrow factors through the kernel pair, so [z] need carry
+   no comma structure.  [comma_monic_iff_underlying_monic] is the book's
+   biconditional over [HasPullbacks C].  Mac Lane's route asks the comma
+   projection to create kernel pairs, which needs G to preserve them;
+   here G preserves nothing, so the lemma holds for every functor, and
+   #438's Construction/Comma/Creation.v is neither needed nor imported.
+   That some object with a comma structure must receive the pair is a
+   meta-argument, not built here: two arrows out of an object with no
+   arrow from [d] into its image under [U] are invisible to the comma.
+
+   THE COMMA'S COGENERATING FAMILY.  [comma_cogenerator]: a cogenerating
+   family [G] of C gives the family of comma objects [(cog_obj G j, k)],
+   indexed by [{ j : cog_index G & d ~> U (cog_obj G j) }] -- Mac Lane's
+   Q', indexed by the arrows OUT OF [d] -- and separation descends to
+   [cog_separates G].  It was prototyped for #452 and is landed here.
+
+   WELL-POWEREDNESS OF THE COMMA.  [comma_WellPoweredAt]: well-
+   poweredness of C at the underlying object of [X] gives well-
+   poweredness of the comma at [X].  Its index [comma_wp_index] pairs a
+   C-subobject index with a factorization of [X]'s structure arrow
+   through [fmap[U]] of that subobject's mono.  [comma_wp_to] uses the
+   easy half of the monos lemma and [comma_wp_from] the hard half,
+   through [underlying_sub], a comma subobject read in C;
+   [comma_wp_to_from] lifts the C-isomorphism of [wp_to_from] to the
+   comma.  [U] preserving monos is never asked for: the stored
+   factorization makes the reverse triangle hold by construction.
+   [comma_WellPowered] does so at every object.
+
+   THE COROLLARY, TRANSPARENT (Mac Lane cor1, Awodey 9.35).
+   [SAFT_wellpowered U comp cont G WP : { F : D ⟶ C & F ⊣ U }] takes
+   [comp : Complete C], [cont : PreservesImageLimit U] (Construction/
+   Comma/Limit.v's cone-level continuity), [G : Cogenerator C]
+   (Adjunction/SAFT.v) and [WP : WellPowered C] (#451's Structure/
+   WellPowered.v), and nothing else: no covering datum and no subobject
+   index.  At each [d], [SAFT_comma_initial] is #452's
+   [special_initial_object_wellpowered_at] in the comma, fed
+   [Comma_Complete cont comp], [comma_cogenerator U d G] and
+   [comma_WellPoweredAt] at the comma's cogenerator product;
+   [SAFT_universal_arrow] packages it; [SAFT_left] is Theory/Universal/
+   Arrow.v's transparent [LeftAdjointFunctorFromUniversalArrows] and
+   [SAFT_adjunction] its [AdjunctionFromUniversalArrows]; and
+   [SAFT_wellpowered] is the pair.  Adjunction/GAFT.v's
+   [GAFT_from_initials] does the same assembly and ends in [Qed]; it is
+   not used.  [SAFT_wellpowered_iff] is the Corollary's biconditional,
+   left adjoint ↔ [PreservesImageLimit U], its necessity Construction/
+   Comma/Limit.v's [right_adjoint_PreservesImageLimit].
+
+   Where [U] preserves the intersection in the Corollary: #452's
+   theorem takes it as Structure/WellPowered.v's [complete_intersection]
+   in the comma, the wide pullback of a family indexed at [Complete]'s
+   shape universe ([wp_class_family]), built from the comma's products
+   and equalizers, which [Comma_Complete] creates from C's through
+   [cont].  Mac Lane's second preservation clause is spent inside
+   continuity there, and the Corollary's "continuous" is all it asks.
+
+   THEOREM 2.  [HasSubobjectWidePullbacks C]: every family of subobjects
+   of an object of C, indexed by a type at a universe [q], has a wide
+   pullback.  That is the book's "every set of subobjects of an object of
+   A has a pullback", read as a LIMIT (Structure/Pullback/Wide.v's
+   [WidePullback]) and with the index a universe parameter (the class
+   reading, for the reason Structure/WellPowered.v's header gives: a set
+   of subobjects is a set of equivalence classes, carried by a large
+   family).  "Preserves all pullbacks of families of monics" is
+   Adjunction/SpanningArrow.v's [PreservesWidePullbacks] (#448), reused
+   unchanged.  [SAFT_thm2 U comp cont G HW HU] builds at each [d] the
+   least subobject of the comma's cogenerator product [X]: [least_index U
+   d X] is Mac Lane's corresponding family, the C-subobjects of [X]'s
+   underlying object through which [X]'s structure arrow factors
+   ([SubFactorsThrough]); [HW] intersects it in C; [HU] makes [U]'s image
+   of that wide pullback a wide pullback, whose mediator [least_lift] is
+   the D-arrow that makes the intersection a comma object ([least_dom]);
+   [least_sub] is the resulting subobject and [least_le] its leastness,
+   witnessed by the projection at [least_index_of v], a comma subobject
+   read in C with its own factorization.  Only the existence half of
+   [HU]'s universal property is used, and #452's
+   [special_initial_object_least] consumes only [∀ v, sub_le w v].  The
+   adjoint is assembled as in the Corollary ([SAFT_thm2_initial],
+   [SAFT_thm2_universal_arrow], [SAFT_thm2_left],
+   [SAFT_thm2_adjunction]).  For an empty family,
+   Structure/Pullback/Wide.v's [WidePullback] has no leg to [x] and is a
+   terminal object (that file's paragraph THE EMPTY INDEX IS A REAL
+   BOUNDARY), so [HasSubobjectWidePullbacks] asks there for a terminal
+   object, not for [x] as Mac Lane's pullback of an empty set of
+   subobjects of [x] is, and [PreservesWidePullbacks] asks [U] to
+   preserve it.  The proof never consults that case, since [least_index]
+   always holds [least_top]; a terminal object is the limit of the empty
+   diagram, which [Complete] provides (not restated as a constant here).
+   [Complete_HasSubobjectWidePullbacks] is the route from completeness,
+   at every index universe [q <= so].
+   [right_adjoint_PreservesWidePullbacks] is the necessity of the second
+   clause, absent from the tree before this file (at master 9613c9a5 a
+   grep for the name over the .v files found no file; the same grep for
+   [right_adjoint_PreservesImageLimit] found eight): a right adjoint
+   preserves every wide pullback, of monos or not, at every index
+   universe; the monicity clause of [PreservesWidePullbacks] is accepted
+   and ignored, as in Instance/Mod/Spanning.v's
+   [Bilin_PreservesWidePullbacks].  The proof transposes along [adj] with
+   [from_adj_nat_r], [to_adj_nat_r] and [from_adj_comp_law], since a wide
+   pullback has no shape category for Adjunction/Continuity.v's
+   [rapl_ump] (Adjunction/SpanningArrow.v's "WHY [PreservesWidePullbacks]
+   IS BESPOKE"); with the [Require] of Instance/Sets.v dropped, its [from
+   (adj ...) (q i)] is refused ("Illegal application (Non-functional
+   construction)", measured).  [SAFT_iff] is Theorem 2 as the book states
+   it: left adjoint ↔ [PreservesImageLimit U * PreservesWidePullbacks U].
+
+   WHY #452's [HasClassIntersections] CANNOT BE THEOREM 2's HYPOTHESIS.
+   It asks for a greatest lower bound in the subobject order (Theory/
+   Subobject/Lattice.v's [IsIntersection]) and carries no limit cone.
+   The comma step needs the intersection [w] of the corresponding family
+   to receive [X]'s structure arrow, an arrow [d ~> U w] over the arrows
+   [d ~> U m_k]; that is a mediator into [U]'s image of a LIMIT cone,
+   which [HU] supplies for a wide pullback, and a glb gives [U] no cone
+   to preserve.  Adjunction/SAFT/InitialObject.v's header reads the glb
+   form as weaker than the book's hypothesis and so safe for Theorem 1;
+   for Theorem 2 it is the other direction.  A bridge from
+   [HasSubobjectWidePullbacks] to [HasClassIntersections] through
+   Lattice.v's [sub_wide_intersection_IsIntersection] is not written.
+
+   IN TREE, THEOREM 2 IS APPLIED ONLY AT A THIN CATEGORY.  Completeness
+   supplies [HasSubobjectWidePullbacks] at every index [q <= so],
+   whatever the objects' universe ([Complete_HasSubobjectWidePullbacks]),
+   and Theorem 2 asks it at [q] at or above the objects, where
+   [least_index] lives ([o <= lq], [About least_index];
+   Test/ProbeSAFT453.v's N26, [p453_n26_least_index_small], refuses
+   [least_index] handed to [HW] at [q < o], beside the control
+   [p453_least_index_at_objects]); so completeness serves Theorem 2 only
+   when the objects fit in the shape universe.  In a scratch file
+   carrying this file's import list, the same term asked for the index at
+   the objects' universe, [fun x I S => complete_wide_pullback comp (fun
+   i => Subobject.sub_mono (S i)) : HasSubobjectWidePullbacks@{o h o o k}
+   C] from [comp : Complete@{so so h o} C], is accepted at [o <= so, h <=
+   so], closed under the global context, and refused at [so < o], at the
+   index: "The term "i" has type "?J" while it is expected to have type
+   "I" (unable to find a well-typed instantiation for "?J": cannot ensure
+   that "Type@{o}" is a subtype of "Type@{…}")".  Test/ProbeSAFT453.v
+   pins it as N22 ([p453_n22_hw_large], beside the control
+   [p453_hw_at_objects] at [o <= so]) and peels it as N23
+   ([p453_n23_hw_large_index]); its [p453_hw_is_library] reads
+   [Complete_HasSubobjectWidePullbacks] at the index at the objects as
+   that same term, by [eq_refl].  [so < o] is the regime of the adjoint
+   functor theorems; at [o <= so], Structure/Complete/Freyd.v's
+   [small_complete_is_thin] makes a category with decidable object
+   equality and decidable hom-setoids thin, as
+   Adjunction/SAFT/InitialObject.v's header measures for its own small
+   route.  No other route to [HasSubobjectWidePullbacks] at the objects'
+   universe was attempted (a [Prop]-valued intersection under
+   [Untruncate], say).  What IS known: (i) every right adjoint satisfies
+   [PreservesWidePullbacks] ([right_adjoint_PreservesWidePullbacks]), and
+   Instance/Mod/Spanning.v's [Bilin_PreservesWidePullbacks] is a witness
+   proved directly rather than through an adjunction; (ii)
+   Adjunction/SAFT/Characterization/Examples.v's
+   [subsets_inverse_image_thm2] applies [SAFT_thm2] at the thin [Subsets
+   Y] with [U := InverseImage f], every premise inhabited --
+   Instance/Powerset/WellPowered.v's [Subsets_Complete_free Y],
+   [Complete_HasSubobjectWidePullbacks] of it (objects at or below its
+   shape universe), Adjunction/SAFT/InitialObject/Examples.v's
+   [Subsets_Cogenerator_empty Y], and both preservation premises read off
+   Instance/Powerset.v's [image_preimage_adjunction f] itself.  That is
+   CIRCULAR, as Adjunction/GAFT/Sets.v's [Sets_Id_PreservesImageLimit]
+   is: the premises come from the adjunction whose left adjoint the
+   theorem then builds, so the witness shows them satisfiable together
+   and constructs no adjoint that was not known.  (iii) At [Sets] no
+   [HasSubobjectWidePullbacks] at the objects' universe was built.  At
+   [Sets@{o so}] ([Set < o < so], objects at [so], homs and
+   [Sets_Complete]'s shapes at [o]), [Complete_HasSubobjectWidePullbacks
+   Sets_Complete] is accepted as [HasSubobjectWidePullbacks@{so o o o
+   k}], the index at the homs, in a scratch file carrying this file's
+   import list and Instance/Sets/Complete.v; in the same file the term
+   above at [Sets_Complete] is refused as [HasSubobjectWidePullbacks@{so
+   o so so k}], the index at the objects: "(universe inconsistency:
+   Cannot enforce o = <1> because o < so <= <2> <= <1>)" (<1>, <2> the
+   scratch file's generated universes).  Test/ProbeSAFT453.v pins the
+   pair: the refusal as N24 ([p453_n24_sets_hw_large]), the acceptance as
+   [p453_sets_hw_library] (the constant) and [p453_sets_hw_small] (its
+   body).  Instance/Sets/SubobjectLattice.v's [Sets_HasWidePullbacks]
+   indexes its families at the hom universe too
+   (Adjunction/SpanningArrow.v's NOT DELIVERED (3) measures that for its
+   [FactoringFamily], a family of the same shape as [least_index]).
+
+   RIEHL 4.7.10, A FIDELITY FLAG AND A STATED DEVIATION.  The catalogue's
+   summary, paraphrased: a CONTINUOUS functor U : A -> S between locally
+   small categories, out of a COMPLETE A with a small coseparating set in
+   which every collection of subobjects of a fixed object has an
+   INTERSECTION, has a left adjoint; the proof says that intersections of
+   subobjects are "created" in s ↓ U.  Creating an intersection of a
+   large collection in s ↓ U needs U to preserve it, and continuity,
+   preservation of small limits, does not reach it here:
+   [PreservesImageLimit] quantifies over shapes at [so] (the binder
+   [PreservesImageLimit@{o h dobj h pk so pa so}]), while the
+   corresponding family [least_index] has its sort at [lq] with [o <= lq]
+   ([About least_index]), so at [so < o] no shape continuity speaks of is
+   indexed by it (read off the two [About]s, not measured as a refusal).
+   Riehl's statement is approached here from two sides, each with a
+   hypothesis her catalogue summary does not list: the Corollary adds
+   well-poweredness and asks no intersections, and Theorem 2 adds
+   [PreservesWidePullbacks]; neither is her statement.  So the Riehl
+   4.7.10 checkbox of #453, "the in-tree statement's hypothesis list
+   matches the book's", is NOT met as worded, and neither is the
+   Epilogue's clause (iii) ([riehl:E.1:thm-gaft]), whose summary glosses
+   the intersection as "a wide pullback": both are stated deviations of
+   #453.  Whether Riehl's "collection" is meant small, or her proof
+   supplies the preservation some other way, stays open until the printed
+   page is read.
+
+   THE COVERING DATUM.  Adjunction/SAFT.v's [SAFT] takes a covering datum
+   [SubobjectCover], which Adjunction/SAFT/Sets.v's
+   [SubobjectCover_Id_Sets_absurd] refutes at [Id[Sets]].
+   [SAFT_wellpowered]'s premises are the book's list (complete, small
+   homs through the shared [h], a small cogenerating family,
+   well-powered, continuous), and it applies at that very [Id[Sets]]:
+   Adjunction/SAFT/Characterization/Examples.v's [sets_id_saft Un] is
+   [SAFT_wellpowered (@Id Sets@{o so}) Sets_Complete
+   Sets_Id_PreservesImageLimit (Sets_Cogenerator_untruncate Un)
+   (Sets_WellPowered_untruncate Un)] at [Set < o < so] for [Un :
+   Untruncate@{o}], closed under the global context, and its
+   [sets_id_old_cover_refuted Un] applies [SubobjectCover_Id_Sets_absurd]
+   to the same three witnesses (the well-powering through
+   Adjunction/SAFT/WellPowered.v's [WellPowered_SubobjectIndex]).  So
+   Awodey's checkbox "[SubobjectCover] becomes a theorem" cannot be met
+   as worded -- the datum is refuted at [Id[Sets]], where under
+   [Untruncate] the book's hypotheses hold -- and is met by supersession:
+   [SAFT], [SubobjectCover] and their satellites stay, unchanged.  The
+   covering datum over the [d]-dependent product, which IS a theorem, is
+   the satellite Adjunction/SAFT/Characterization/Cover.v's.
+
+   ** Strengths, measured
+
+   [eq_refl]:
+     - [SAFT_left_obj]: [fobj[`1 (SAFT_wellpowered U comp cont G WP)] d]
+       IS [snd (`1 (Subobject.sub_dom (complete_intersection
+       (Comma_Complete cont comp) (wp_class_family (comma_WellPoweredAt …)
+       (fun _ => True)))))], the C-object under the intersection of all
+       subobjects of the comma's cogenerator product -- Mac Lane's
+       initial object of the comma, read in C;
+     - [SAFT_thm2_left_obj]: [fobj[`1 (SAFT_thm2 U comp cont G HW HU)] d]
+       IS [WPull (HW _ (least_index U d X) (fun k => `1 k))], [X] the
+       comma's cogenerator product: the C-wide pullback of the
+       corresponding family.
+   Through [GAFT_from_initials] neither holds: in a scratch file carrying
+   this file's import list and Adjunction/GAFT.v (under the import list
+   alone [GAFT_from_initials] is not in scope), [GAFT_from_initials U
+   (SAFT_comma_initial U comp cont G WP)] and [GAFT_from_initials U
+   (SAFT_thm2_initial U comp cont G HW HU)] are accepted, and the same
+   [eq_refl] against each is refused by conversion, "(cannot unify
+   "fobj[projT1 (…)] d" and "snd (projT1 (Subobject.sub_dom
+   (complete_intersection …" and "(cannot unify "fobj[projT1 (…)] d" and
+   "WPull (HW …" respectively, beside the two readbacks above restated
+   there as controls.  Test/ProbeSAFT453.v pins both refusals, as N4 and
+   N5 ([p453_n4_gaft_route_obj], [p453_n5_thm2_gaft_route_obj]), beside
+   the formed routes [p453_gaft_route] and [p453_thm2_gaft_route] and the
+   transparent controls [p453_left_obj] and [p453_thm2_left_obj].  So the
+   decision to make Theorem 2 transparent too is measured, not assumed.
+   Everything else is [≈].  Forty-seven constants ([Print Module]), no
+   [Program] obligation: forty-two transparent and five [Qed], two
+   [Monic] proofs ([comma_monic_of_underlying],
+   [underlying_monic_of_comma_monic]) and three [≈] between arrows
+   ([kp_diag_fst], [kp_diag_snd], [least_lift_commutes]); the readbacks
+   compile with the five opaque.
+
+   ** Universes, measured
+
+   With [Set Printing Universes. About …], stdlib bounds and the comma
+   category's unnamed internal universes omitted ([oc] below is the
+   comma's object universe, printed unnamed):
+
+     comma_monic_iff_underlying_monic@{o hc dobj h …} :
+       {C : Category@{o hc hc}} {D : Category@{dobj h h}} … →
+       HasPullbacks@{o hc} C → Monic@{oc h} m ↔ Monic@{o hc} (snd `1 m)
+       (* hc <= h *)
+     comma_cogenerator@{o hc dobj h c cc …} :
+       Cogenerator@{c o hc} C → Cogenerator@{cc oc h} (=(d) ↓ U)
+       (* hc <= h, c <= cc, h <= cc *)
+     comma_WellPoweredAt@{o hc dobj h w s t … wc sc tc …} :
+       WellPoweredAt@{w o s hc t} (snd `1 X) → WellPoweredAt@{wc oc sc h tc} X
+       (* hc < t, h < tc, o <= s, hc <= s, hc <= h, w <= wc, h <= wc,
+          oc <= sc, h <= sc *)
+     comma_WellPowered@{o hc dobj h w s t sc tc …} :
+       WellPowered@{o hc w s t} C → WellPowered@{oc h h sc tc} (=(d) ↓ U)
+     SAFT_wellpowered@{o dobj h so c w s t pk pa …} :
+       Complete@{so so h o} → PreservesImageLimit@{o h dobj h pk so pa so}
+       → Cogenerator@{c o h} C → WellPowered@{o h w s t} C →
+       ∃ F, Adjunction@{o h h dobj h h h h pa h …} F U
+       (* h <= so, c <= so, w <= h, o <= s, h <= s, h < t, h < pk,
+          h < pa, so < pk, o <= pk, dobj <= pk *)
+     HasSubobjectWidePullbacks@{o h q r k} : Category@{o h h} → Type@{k}
+       (* q < k, q <= r, h <= r, o <= k, h <= k, r <= k *)
+     Complete_HasSubobjectWidePullbacks@{o h so q r k …} :
+       Complete@{so so h o} → HasSubobjectWidePullbacks@{o h q r k} C
+       (* h <= so, q <= so, q <= r, h <= r, q < k, r <= k, o <= k *)
+     SAFT_thm2@{o dobj h so c pk pa q r rd pw k …} :
+       … → HasSubobjectWidePullbacks@{o h q r k} C →
+       PreservesWidePullbacks@{o h dobj h pw q r rd} U → ∃ F, F ⊣ U
+       (* h <= so, c <= so, o <= q, h <= q, q <= r, q <= rd, q < pw, … *)
+     right_adjoint_PreservesWidePullbacks@{o dobj h pw q r rd …} :
+       F ⊣ U → PreservesWidePullbacks@{o h dobj h pw q r rd} U
+       (* q < pw, q <= r, q <= rd, h <= r, h <= rd, r <= pw, rd <= pw *)
+
+   [SAFT_wellpowered_iff] and [SAFT_iff] carry the blocks of
+   [SAFT_wellpowered] and [SAFT_thm2].  No constant here carries an
+   equation between two universes it names (the About of all forty-seven,
+   searched for " = ", finds none).
+
+   - [h < so] holds.  In a scratch file carrying this file's import list,
+     [SAFT_wellpowered] and [SAFT_wellpowered_iff] are accepted at [h <
+     so, so < o, c < so, w < h], [SAFT_thm2] and [SAFT_iff] at [h < so,
+     so < o, c < so, o < q, h < q], and [SAFT_wellpowered] at
+     Adjunction/SAFT.v's own regime ([Complete@{h h h o}],
+     [Cogenerator@{h o h}]); all closed.  The instrument, the same
+     application of [SAFT_wellpowered] at [so < h], is refused there:
+     "Universe inconsistency. Cannot enforce h <= so because so < h".
+     Test/ProbeSAFT453.v pins the acceptances ([p453_small],
+     [p453_small_iff], [p453_thm2_small], [p453_thm2_small_iff]; the
+     Corollary at Adjunction/SAFT.v's regime inside [p453_cover_iso]) and
+     the instrument as N8 ([p453_n8_shapes_below_homs]), which that
+     command's binder alone refuses (the probe's paragraph KINDS).
+     Nothing relates [o] to [so].  The [so = h] that one unannotated
+     comma instantiation printed for #452
+     (Adjunction/SAFT/InitialObject.v's "What #453 needs from here") was
+     minimization.
+   - C's homs may sit below D's ([hc <= h]) in the monos lemma and the
+     comma constructions; the theorems share [h], as
+     [PreservesImageLimit]'s own identification of the two hom universes
+     requires.
+   - The cogenerator's index [c] is free below [so].  #452's donor
+     collapse (the index of the family handed to [cogen_prod] equals
+     [so]) is absorbed by [comma_cogenerator], whose index [cc] is free
+     above [c] and [h] and is set to [so] where the comma's
+     [cogen_prod] is taken.
+   - Theorem 2's class index [q] is bounded by [o <= q, h <= q], where
+     [least_index] lives (Test/ProbeSAFT453.v's N9 refuses [q < o] at
+     [SAFT_thm2]'s binder, and its N26 at the body, the paragraph IN TREE
+     above).  [HW]'s and [HU]'s C-side wide-pullback universe [r] is one
+     universe in this term: [wide_pullback_is_pullback] hands [HW]'s cone
+     to [HU] at one universe ([About]: from [WidePullback@{u u0 u1 u2}]
+     to [IsWidePullback@{u u0 u1 u2}]), and in a scratch file carrying
+     this file's import list, the body of [SAFT_thm2_initial] restated
+     with [HU]'s slot named [r2] apart from [HW]'s [r] reads back "r =
+     r2".  Test/ProbeSAFT453.v pins that as a refusal at [r < r2], N27
+     ([p453_n27_initial_r_apart], at [wide_pullback_is_pullback]), beside
+     the readback's control [p453_thm2_initial_r_le]; its N10 records the
+     same identification in [SAFT_thm2]'s own binder, which gives [HW]
+     and [HU] one [r].  Rebuilding the [IsWidePullback] record at a
+     second universe from [HW]'s fields was not tried.
+   - The conclusion's [Adjunction] carries [pa] in its strict slot, as
+     Adjunction/SAFT.v's [SAFT] readback carries its
+     [PreservesImageLimit] slot.  The donor is Construction/Comma/
+     Limit.v's [Comma_Complete]: [About Comma_Complete] under [Set
+     Printing Implicit] shows its comma at [Comma@{… u5 u5 u5}] and the
+     comma's [Diagonal] at [Diagonal@{… u5 …}], [u5] being the auxiliary
+     slot of its [PreservesImageLimit@{u u0 u1 u2 u4 u3 u5 u6}], and
+     [AdjunctionFromUniversalArrows] passes the comma's universe on to
+     the adjunction.
+   - Four collapses were found and removed, each measured by [About]:
+     (a) a top-level [comma_WellPoweredAt] identified the comma's
+     internal universe strictly above C's homs with [WellPowered]'s [t],
+     and [Comma_Complete] identifies the same comma universe with [pa]
+     (the previous item), so [SAFT_wellpowered] read "t = pa"; stated in
+     the section [CommaWellPowered], where the comma's universes are
+     fixed when [X] is declared, the equation is gone.  Naming
+     [PreservesImageLimit]'s slots alone does not remove it: with [pa]
+     named and [comma_WellPoweredAt] top-level, the readback was that
+     equation between two named universes.
+     (b) Assembling the Σ-type by the tactic [exists] brought "t = pa"
+     back, where the term [existT _ (SAFT_left …) (SAFT_adjunction …)]
+     does not, so [SAFT_wellpowered] and [SAFT_thm2] are terms.  (c)
+     [least_index] at an unnamed sort made [SAFT_thm2] read "q = r" and
+     "q = rd"; its sort [lq] and the wide-pullback universes [r] and
+     [rd] of the [least_*] binders are named.  (d) A top-level
+     [comma_WellPowered] read "oc = sc", from [comma_wp_to_from]'s
+     setoid universe collapsing onto the comma's objects, and put the
+     comma's [Diagonal] universe at [tc]; [comma_wp_to_from] names its
+     setoid universes, and [comma_WellPowered] is stated over a [Let] of
+     the comma in the section [CommaWellPoweredAll].
+   - [underlying_sub] is top-level, with its own binder [@{o hc dobj h +|
+     hc <= h +}].  Declared inside [CommaWellPowered] it did not use [W]
+     but inherited the section's [w s t] and their constraints ([hc < t],
+     [o <= s], [hc <= s], [About]); top-level, [About underlying_sub]
+     names [o hc dobj h] and no universe of [W].
+   - Stdlib bounds are inherited: [h < eq_rect_r.u0] and the [VectorDef]
+     bounds appear ([About]) on Structure/Limit/Finite.v's
+     [FinitelyComplete_HasPullbacks], reached through #452's
+     [complete_pullbacks], and [so <= Fin.case0.u0] on #452's
+     [special_initial_object_wellpowered_at];
+     [Complete_HasSubobjectWidePullbacks] carries the [Fin.case0] and
+     [VectorDef] bounds of Structure/Pullback/Wide/Complete.v's
+     [complete_wide_pullback] ([About]: on its [Complete]'s first
+     universe).
+
+   ** Non-vacuity
+
+   The Corollary applies at [Id[Sets]] under one [Untruncate] (the
+   covering-datum paragraph), and its landed witnesses -- that one, the
+   hom-functors of [Sets], and the thin [Subsets Y] and [Indiscrete] --
+   are the satellite Adjunction/SAFT/Characterization/Examples.v's.
+   (An earlier revision ended there, as if the list were complete; since
+   #454 Instance/Mod/Watts.v also applies the Corollary,
+   Corollaries.v's [continuous_Set_functor_representable], at the
+   non-thin (RMod R)^op under one [Untruncate] -- at the functor
+   M ↦ Hom_Ab(U M, A), [watts_theorem_coext] -- and at RMod R under
+   [Untruncate] and a cogenerator taken as a hypothesis,
+   [watts_ex3_forget].)  Theorem 2 applies at the thin [Subsets Y] only,
+   circularly (clause (ii) of the paragraph IN TREE, THEOREM 2 IS APPLIED
+   ONLY AT A THIN CATEGORY, [subsets_inverse_image_thm2]).  The monos
+   lemma and the comma constructions are consumed by both theorems at
+   each [d].
+
+   ** Not delivered
+
+   No [HasSubobjectWidePullbacks] at an index at or above the objects,
+   the one Theorem 2 asks, at a category that is not thin, so Theorem 2
+   is not applied at one; [SAFT_iff] is a conditional there.
+
+   NO ROUTE FROM WELL-POWEREDNESS TO THEOREM 2's HYPOTHESES.  No constant
+   derives [HasSubobjectWidePullbacks] from [WellPowered] and [Complete]
+   (a whole-word grep for the name over the .v files outside Test/ finds
+   this file only), nor [PreservesWidePullbacks] from continuity over a
+   well-powered [C].  That is Mac Lane's route from Theorem 2 to the
+   Corollary (the catalogue's [def1]: "if A is well-powered and
+   small-complete, then every set of subobjects of an object has an
+   intersection, formed by the usual pullback, so the extra hypothesis of
+   Theorems 1 and 2 is automatic"), and the first clause of #453's Work
+   item 3; here the Corollary is proved directly, by
+   [comma_WellPoweredAt], and [SAFT_wellpowered] is not derived from
+   [SAFT_thm2].  This is a stated deviation of #453.  What a derivation
+   would need: a wide pullback of a family indexed at [q], [o <= q], from
+   limits of shapes at [so < o].  Well-poweredness reindexes the family's
+   members onto the small [wp_index], as Structure/WellPowered.v's
+   [wellpowered_complete_has_intersections] does for a class given by a
+   predicate, but the indices that the family hits form a small type only
+   as a [Prop]-truncated image (a Σ over the family's index is at [q]
+   again).  A cone over the family then gives, at a hit index, an arrow
+   into that member only once a member of the family hitting it is
+   chosen, an elimination of that truncation into [Type] (unique choice
+   for an arrow through a mono); or images, to factor the cone's common
+   arrow into [x] before comparing it with the greatest lower bound; or a
+   resizing along [wp_to_from].  None of the three is attempted here, and
+   whether the tree supplies one is not measured; nothing here says the
+   derivation is impossible.
+
+   Mac Lane's own route for the monos lemma, through the comma projection
+   creating kernel pairs, is not written.  Only the left adjoint's value
+   on objects is read back; its action on arrows and the unit are not
+   measured at [eq_refl].  [SubobjectCover] is not derived (it is
+   refuted), and [SAFT_wellpowered] is not compared with
+   Adjunction/SAFT.v's [SAFT].  One direction separates them in tree: at
+   [Id[Sets]] under [Untruncate] [SAFT_wellpowered]'s premises hold and
+   [SAFT]'s covering datum is refuted (the covering-datum paragraph).
+   The other direction, a category where [SAFT]'s premises hold and
+   [WellPowered] does not, is not exhibited; [SubobjectIndex] alone lacks
+   well-poweredness's exhaustiveness clause
+   ([SubobjectIndex_not_exhaustive]), which does not settle it for
+   [SubobjectIndex] and [cover] together.  The Riehl question above is
+   open.  The scratch measurements quoted name their environments.
+   Test/ProbeSAFT453.v pins, where each is cited above, the refusals
+   quoted here and the body-level refusals behind two of its readbacks
+   (N4, N5, N8, N22-N24, N26, N27); it does not pin the "Illegal
+   application" refusal with Instance/Sets.v's [Require] dropped (a
+   shorter import list than a probe may carry) nor the [About] readbacks
+   of the Universes section, and of the collapses there it pins (a)-(c)
+   as staying removed and not (d).  The file compiles with Coq 8.19.2 and
+   8.20.1 against copies of prebuilt trees of its closure, the files that
+   differ from this tree's compiled afresh, and all forty-seven constants
+   report closed there too.
+
+   MEASUREMENTS.  Forty-seven constants ([Print Module]), no [Program]
+   obligation; each reports "Closed under the global context" by its
+   fully qualified name.  Closure 112 files excluding itself, counted
+   over .Makefile.coq.d (Adjunction/SAFT/InitialObject.v's is 110). *)
+
+(** ** The monos lemma  / ** 单引理*)
+
+(*
+The easy half: an arrow of the comma whose C-component is monic is
+   monic.  No hypothesis. 
+
+--------
+简单的一半：C 分量为 monic 的逗号箭头是
+ 莫尼克。 没有假设。 
 *)
-
-(** ** The monos lemma *)
-
-(* The easy half: arrow comma whose C-component monic is
- monic. No 假设. （已译） *)
 Lemma comma_monic_of_underlying@{o hc dobj h +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   {X Y : =(d) ↓ U} (m : X ~{=(d) ↓ U}~> Y) :
@@ -51,9 +577,13 @@ Proof.
 Qed.
 
 (*
-   本节说明核/余核相关定义、性质与动机。
+The hard half, from ONE kernel pair [K] of the underlying arrow in C
+   and nothing about [U]: the kernel-pair object takes the comma
+   structure [fmap[U] (kp_diag m K) ∘ `2 X] through its diagonal, and
+   the two projections become comma arrows into [X] equalized by [m]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+困难的一半，来自 C 中底层箭头的一个内核对 [K]，并且与 [U] 无关：内核对对象通过其对角线取逗号结构 [fmap[U] (kp_diag m K) ∘ `2 X]，并且两个投影变成逗号箭头进入由 [m] 等化的 [X]。 
 *)
 Definition kp_diag@{o hc dobj h +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
@@ -137,11 +667,18 @@ Definition comma_monic_iff_underlying_monic@{o hc dobj h +| hc <= h +}
   (underlying_monic_of_comma_monic m (pullback _ _),
    comma_monic_of_underlying m).
 
-(* * ** The cogenerating family comma 范畴 （已译） *)
+(** ** The cogenerating family of the comma category  / ** 逗号范畴的同生族*)
 
-(* Mac Lane's Q': 对象 [(cog_obj G j, k)], one each arrow
- [k : d ~> U (cog_obj G j)]. The index universe [cc] free above the
- old index homs. （已译） *)
+(*
+Mac Lane's Q': the objects [(cog_obj G j, k)], one for each arrow
+   [k : d ~> U (cog_obj G j)].  The index universe [cc] is free above the
+   old index and the homs. 
+
+--------
+Mac Lane 的 Q'：对象 [(cog_obj G j, k)]，每个箭头一个
+ [k : d ~> U (cog_obj G j)]。 索引宇宙 [cc] 是免费的
+ 旧索引和霍姆斯。 
+*)
 Definition comma_cogenerator@{o hc dobj h c cc +| hc <= h, c <= cc, h <= cc +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
   (G : Cogenerator@{c o hc} C) : Cogenerator@{cc _ h} (=(d) ↓ U).
@@ -157,12 +694,19 @@ Proof.
     simpl; cat.
 Defined.
 
-(* * ** Well-poweredness comma 范畴 （已译） *)
+(** ** Well-poweredness of the comma category  / ** 逗号类别的强大功能*)
 
 (*
-   本节说明子对象相关定义、性质与动机。
+A comma subobject read in C, through the monos lemma.  Top-level, so
+   that it carries only the universes its type names: declared in the
+   section below it inherited the well-powering's [w s t] and their
+   constraints without naming [W]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+通过单引理在 C 中读取逗号子对象。 顶级，所以
+ 它只携带其类型名称的宇宙：在
+ 下面的部分继承了well-powering的[w s t]及其
+ 不命名 [W] 的约束。 
 *)
 Definition underlying_sub@{o hc dobj h +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
@@ -174,9 +718,16 @@ Definition underlying_sub@{o hc dobj h +| hc <= h +}
        (Subobject.sub_is_monic v)).
 
 (*
-   本节说明 Characterization 相关定义、性质与动机。
+A section rather than top-level binders, and the reason is measured
+   (the header's universes section, collapse (a)): declared here, the
+   comma category's universes are fixed when [X] is declared, and none of
+   them is identified with [W]'s [t]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+一个section而不是顶级binder，原因是实测
+ （标题的 Universes 部分，折叠 (a)）：在此声明，
+ 当声明 [X] 时，逗号类别的 Universe 是固定的，并且没有一个
+ 它们被识别为 [W] 的 [t]。 
 *)
 Section CommaWellPowered.
 
@@ -187,9 +738,14 @@ Context {C : Category@{o hc hc}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
 Context (HP : HasPullbacks C) (X : =(d) ↓ U).
 Context (W : WellPoweredAt@{w o s hc t} (snd (`1 X))).
 
-(* A subobject [X] comma: C-subobject underlying
- 对象, named [W], factorization [X]'s structure arrow
- through [U] mono. （已译） *)
+(*
+A subobject of [X] in the comma: a C-subobject of the underlying
+   object, named by [W], with a factorization of [X]'s structure arrow
+   through [U] of its mono. 
+
+--------
+[X] 在逗号中的一个子对象：一个底层对象的 C-子对象，由 [W] 命名，其结构箭头 [X] 通过其单态的 [U] 进行分解。 
+*)
 Definition comma_wp_index : Type :=
   { i : wp_index W &
     { s : d ~> U (Subobject.sub_dom (wp_to W i)) &
@@ -265,9 +821,16 @@ Definition comma_WellPoweredAt@{wc sc tc +| w <= wc, h <= wc, h <= sc, h < tc +}
 
 End CommaWellPowered.
 
-(* At every 对象. The comma [Let] section, so its
- universes fixed before result type names [sc] [tc]
- (collapse (d) header). （已译） *)
+(*
+At every object.  The comma is a [Let] of the section, so that its
+   universes are fixed before the result type names [sc] and [tc]
+   (collapse (d) of the header). 
+
+--------
+在每一个物体上。 逗号是该部分的 [Let]，因此它的
+ Universe 在结果类型名称 [sc] 和 [tc] 之前固定
+ （标题的折叠（d））。 
+*)
 Section CommaWellPoweredAll.
 
 Universes o hc dobj h w s t sc tc.
@@ -283,12 +846,19 @@ Definition comma_WellPowered : @WellPowered@{_ h h sc tc} K :=
 
 End CommaWellPoweredAll.
 
-(* 相关说明。 （已译） *)
+(** ** The Corollary: the well-powered form  / ** 推论：动力充足的形式*)
 
 (*
-   本节说明始/终对象相关定义、性质与动机。
+#452's special initial-object theorem in the comma [=(d) ↓ U]: its
+   completeness from [Comma_Complete], its cogenerating family from
+   [comma_cogenerator], its well-poweredness at the one object that
+   matters from [comma_WellPoweredAt]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+#452 逗号 [=(d) ↓ U] 中的特殊初始对象定理：其
+ [Comma_Complete] 的完整性，其联产系列来自
+ [comma_cogenerator]，其在单一物体上的强大功能
+ [comma_WellPoweredAt] 的重要事项。 
 *)
 Definition SAFT_comma_initial@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
@@ -310,8 +880,14 @@ Definition SAFT_universal_arrow@{o dobj h so c w s t pk pa +|
   UniversalArrow d U :=
   {| arrow_initial := SAFT_comma_initial U comp cont G WP d |}.
 
-(* The left adjoint, transparent: Theory/Universal/Arrow.v's assembly,
-   not Adjunction/GAFT.v's [Qed] [GAFT_from_initials]. *)
+(*
+The left adjoint, transparent: Theory/Universal/Arrow.v's assembly,
+   not Adjunction/GAFT.v's [Qed] [GAFT_from_initials]. 
+
+--------
+左伴随，透明：Theory/Universal/Arrow.v 的汇编，
+ 不是 Adjunction/GAFT.v 的 [Qed] [GAFT_from_initials]。 
+*)
 Definition SAFT_left@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -330,7 +906,14 @@ Definition SAFT_adjunction@{o dobj h so c w s t pk pa +|
   SAFT_left U comp cont G WP ⊣ U :=
   @AdjunctionFromUniversalArrows D C U (SAFT_universal_arrow U comp cont G WP).
 
-(* 相关说明。 （已译） *)
+(*
+The pair is a term, not an [exists]: the tactic form re-introduces
+   the equation "t = pa" (collapse (b) of the header). 
+
+--------
+该对是一个术语，而不是 [exists]：策略形式重新引入
+ 等式“t = pa”（标题的折叠（b））。 
+*)
 Definition SAFT_wellpowered@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -340,8 +923,14 @@ Definition SAFT_wellpowered@{o dobj h so c w s t pk pa +|
   { F : D ⟶ C & F ⊣ U } :=
   existT _ (SAFT_left U comp cont G WP) (SAFT_adjunction U comp cont G WP).
 
-(* READBACK, [eq_refl]: 左伴随 at [d] C-对象 under the
- intersection all subobjects comma's cogenerator product. （已译） *)
+(*
+READBACK, [eq_refl]: the left adjoint at [d] is the C-object under the
+   intersection of all subobjects of the comma's cogenerator product. 
+
+--------
+READBACK，[eq_refl]：[d] 处的左伴随是
+ 逗号的联合生成器乘积的所有子对象的交集。 
+*)
 Example SAFT_left_obj@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -359,9 +948,16 @@ Example SAFT_left_obj@{o dobj h so c w s t pk pa +|
               (fun _ => True))))) :=
   eq_refl.
 
-(* Mac Lane's Corollary, Awodey's Remark 9.35: over a complete,
+(*
+Mac Lane's Corollary, Awodey's Remark 9.35: over a complete,
    well-powered C with a small cogenerating family, [U] has a left
-   adjoint iff it is continuous. *)
+   adjoint iff it is continuous. 
+
+--------
+Mac Lane 的推论，Awodey 的评论 9.35：在一个完整的、
+ [U] 具有小型热电联产系列，动力强劲，有一个左侧
+ 伴随当且仅当它是连续的。 
+*)
 Definition SAFT_wellpowered_iff@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -372,20 +968,26 @@ Definition SAFT_wellpowered_iff@{o dobj h so c w s t pk pa +|
   (fun H => right_adjoint_PreservesImageLimit (`2 H),
    fun cont => SAFT_wellpowered U comp cont G WP).
 
-(* 相关说明。 （已译） *)
+(** ** Theorem 2: every set of subobjects has a pullback  / ** 定理 2：每组子对象都有一个回调*)
 
-(* Mac Lane's "every set subobjects 对象 has pullback": a
- LIMIT, over index at universe [q] (the class reading). （已译） *)
+(*
+Mac Lane's "every set of subobjects of an object has a pullback": a
+   LIMIT, over an index at the universe [q] (the class reading). 
+
+--------
+Mac Lane 的“对象的每组子对象都有一个回调”：
+ LIMIT，超过 Universe [q] 的索引（类读数）。 
+*)
 Definition HasSubobjectWidePullbacks@{o h q r k +}
   (C : Category@{o h h}) : Type@{k} :=
   ∀ (x : C) (I : Type@{q}) (S : I → SubObj x),
     WidePullback@{q r o h} (fun i => Subobject.sub_mono (S i)).
 
-(* Completeness supplies it at every index universe [q] at below its
- shape universe [so], whatever 对象' universe: Structure/
- Pullback/Wide/Complete.v's [complete_wide_pullback] at each family.
- Theorem 2 asks it at [q] at above 对象 (the header's
- paragraph IN TREE, THEOREM 2 IS APPLIED ONLY AT A THIN CATEGORY).（已译） *)
+(* Completeness supplies it at every index universe [q] at or below its
+   shape universe [so], whatever the objects' universe: Structure/
+   Pullback/Wide/Complete.v's [complete_wide_pullback] at each family.
+   Theorem 2 asks it at [q] at or above the objects (the header's
+   paragraph IN TREE, THEOREM 2 IS APPLIED ONLY AT A THIN CATEGORY). *)
 Definition Complete_HasSubobjectWidePullbacks@{o h so q r k +|
     h <= so, q <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C) :
@@ -393,9 +995,16 @@ Definition Complete_HasSubobjectWidePullbacks@{o h so q r k +|
   fun x I S => complete_wide_pullback comp (fun i => Subobject.sub_mono (S i)).
 
 (*
-   本节说明拉回/推出、子对象相关定义、性质与动机。
+The least subobject of a comma object [X], from a C-wide pullback of
+   Mac Lane's corresponding family that [U] carries to a wide pullback.
+   [least_index] is that family: the C-subobjects of [X]'s underlying
+   object through which [X]'s structure arrow factors. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+逗号对象 [X] 的最小子对象，来自 C 范围的回调
+ Mac Lane 的相应系列 [U] 进行了大幅回调。 
+[least_index] 就是这个家族：[X] 底层的 C 子对象
+ [X] 的结构箭头因素通过该对象。 
 *)
 Definition least_index@{o hc dobj h lq +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
@@ -407,9 +1016,16 @@ Definition least_top@{o hc dobj h lq +| hc <= h +}
   (X : =(d) ↓ U) : least_index U d X :=
   (sub_top; factors_through_top U (`2 X)).
 
-(* The D-arrow [U] intersection: mediator the
- factorizations, [HU]'s wide pullback supplies. Only this
- existence half 普遍性质 used. （已译） *)
+(*
+The D-arrow into [U] of the intersection: the mediator of the
+   factorizations, which [HU]'s wide pullback supplies.  Only this
+   existence half of its universal property is used. 
+
+--------
+D 箭头进入 [U] 的交点：中介者
+ 因式分解，这是 [HU] 的宽回调提供的。 只有这个
+ 存在其通用属性的一半被使用。 
+*)
 Definition least_lift@{o hc dobj h lq r rd +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   {X : =(d) ↓ U}
@@ -481,7 +1097,7 @@ Definition least_sub@{o hc dobj h lq r rd +| hc <= h +}
        (Subobject.sub_is_monic
           (sub_wide_intersection (fun k => `1 k) (least_top U d X) W))).
 
-(* A comma subobject [v] read as a member of the corresponding family. *)
+(* A comma subobject [v] read as a member of the corresponding family.  / 逗号子对象 [v] 被读取为相应族的成员。*)
 Definition least_index_of@{o hc dobj h lq +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   (HP : HasPullbacks C) {X : =(d) ↓ U} (v : SubObj X) : least_index U d X.
@@ -514,10 +1130,16 @@ Proof.
 Defined.
 
 
-(** ** Theorem 2, sufficiency *)
+(** ** Theorem 2, sufficiency  / ** 定理2，充分性*)
 
-(* #452's 定理 over least subobject, comma, at least
- subobject built above; assembled transparently Corollary is. （已译） *)
+(*
+#452's theorem over a least subobject, in the comma, at the least
+   subobject built above; assembled transparently as the Corollary is. 
+
+--------
+#452 最小子对象定理，用逗号表示，至少
+ 上面构建的子对象； 正如推论一样透明地组装。 
+*)
 Definition SAFT_thm2_initial@{o dobj h so c pk pa q r rd pw k +|
     h <= so, c <= so, o <= q, h <= q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -584,8 +1206,14 @@ Definition SAFT_thm2@{o dobj h so c pk pa q r rd pw k +|
   existT _ (SAFT_thm2_left U comp cont G HW HU)
     (SAFT_thm2_adjunction U comp cont G HW HU).
 
-(* READBACK, [eq_refl]: 左伴随 at [d] C-wide pullback of
- corresponding family comma's cogenerator product. （已译） *)
+(*
+READBACK, [eq_refl]: the left adjoint at [d] is the C-wide pullback of
+   the corresponding family of the comma's cogenerator product. 
+
+--------
+READBACK，[eq_refl]：[d] 处的左伴随是 C 范围的回调
+ 逗号的热电联产产品的相应系列。 
+*)
 Example SAFT_thm2_left_obj@{o dobj h so c pk pa q r rd pw k +|
     h <= so, c <= so, o <= q, h <= q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -603,12 +1231,17 @@ Example SAFT_thm2_left_obj@{o dobj h so c pk pa q r rd pw k +|
                 (fun k => `1 k)) :=
   eq_refl.
 
-(* 相关说明。 （已译） *)
+(** ** Theorem 2, necessity: right adjoints preserve wide pullbacks  / ** 定理 2，必要性：右伴随保留宽回调*)
 
-(* Every wide 拉回, monos not, at every index universe: the
- monicity clause [Hm] is accepted ignored. Elementary, by
- transposition along [adj], since wide 拉回 has no shape
- 范畴 [rapl_ump].（已译） *)
+(*
+Every wide pullback, of monos or not, at every index universe: the
+   monicity clause [Hm] is accepted and ignored.  Elementary, by
+   transposition along [adj], since a wide pullback has no shape
+   category for [rapl_ump]. 
+
+--------
+每一次大幅回调，无论是单一的还是其他，在每个指数范围内：单调性条款 [Hm] 被接受并忽略。通过沿 [adj] 的换位，这是基本的，因为大幅回调对于 [rapl_ump] 没有形状类别。 
+*)
 Definition right_adjoint_PreservesWidePullbacks@{o dobj h pw q r rd +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} {F : D ⟶ C} {U : C ⟶ D}
   (A : F ⊣ U) : PreservesWidePullbacks@{o h dobj h pw q r rd} U.
@@ -637,12 +1270,20 @@ Proof.
       apply from_adj_respects. exact (Hv i).
 Defined.
 
-(** ** Theorem 2, the biconditional *)
+(** ** Theorem 2, the biconditional  / ** 定理 2，双条件*)
 
-(* Mac Lane §V.8 Theorem 2: over 完备 C small cogenerating
- family which every family subobjects has wide 拉回, [U] has
- 左伴随 iff it preserves small limits wide pullbacks of
- monos.（已译） *)
+(*
+Mac Lane §V.8 Theorem 2: over a complete C with a small cogenerating
+   family in which every family of subobjects has a wide pullback, [U] has
+   a left adjoint iff it preserves small limits and wide pullbacks of
+   monos. 
+
+--------
+Mac Lane §V.8 定理 2：在具有小型联生的完整 C 上
+ 其中每个子对象系列都有较宽的回调，[U] 具有
+ 左伴随当且仅当它保留了小限制和大回调
+ 莫诺斯。 
+*)
 Definition SAFT_iff@{o dobj h so c pk pa q r rd pw k +|
     h <= so, c <= so, o <= q, h <= q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)

@@ -20,26 +20,236 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* * * Adjunctions limits 函子 范畴 （已译） *)
+(** * Adjunctions and limits in functor categories  / * 函子范畴中的附加和限制*)
 
-(*
+(* Mac Lane §V.5, construction 1 and Remark 1 (book p. 119;
+   maclane:V.5:construction1, maclane:V.5:remark1); Riehl §4.3 Proposition
+   4.3.6 with Exercises 4.3.ii and 4.3.iii (riehl:4.3:prop6, riehl:4.3:exii,
+   riehl:4.3:exiii).
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
+         https://ncatlab.org/nlab/show/limit
 
-   本文件给出伴随相关构造与性质。
+   BACKGROUND.  An adjunction [F ⊣ G : X ⇄ A] lifts to the functor
+   categories over any shape [J] by postcomposition, [F ◯ − ⊣ G ◯ −], the
+   induced unit and counit being the originals whiskered by the diagram;
+   Riehl's proposition adds the precomposition half, [− ◯ G ⊣ − ◯ F].  Mac
+   Lane's remark combines the first with the diagonal-limit adjunctions
+   [Δ ⊣ Lim] into a square of adjoint pairs whose left adjoints commute,
+   [F^J ∘ Δ = Δ ∘ F], so that by uniqueness of adjoints the right adjoints
+   agree up to natural isomorphism, [Lim ◯ G^J ≅ G ◯ Lim] — a
+   "sophisticated" restatement of the theorem that right adjoints preserve
+   limits.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+   STALE PREMISES, RE-MEASURED.
+     - "The postcomposition functors [F ◯ −] are not defined anywhere; the
+       only functor between functor categories is precomposition": FALSE.
+       Functor/Construction/Postcompose.v's [Postcompose : [D, E] ⟶
+       [D, E']] (#318) is [J ◯ −] on objects and left whiskering on arrows,
+       with its three laws; docs/INDEX.md's Adjunction/Diagonal/Limit.v
+       bullet lists eleven constants typed [[X, Y] ⟶ _].  Work item 1 was
+       done by #318; [postcompose] below is that functor at a fixed shape.
+     - "[Cat_Hcompose] is a bifunctor never partially applied": FALSE
+       (Postcompose.v's [PostcomposeViaHcompose]; and it sits at
+       Instance/Cat/Bicategory.v, [Induced] at Theory/Kan/
+       Extension.v).
+     - "[Lim] is never a functor [[J, C] ⟶ C]; the general [Δ ⊣ Lim] exists
+       only in the binary-product case": STALE since #353.
+       Adjunction/Diagonal/Limit.v has [HasLimitsOfShape],
+       [LimitFunctor : [J, C] ⟶ C], [Diagonal_Limit_Adjunction : Δ ⊣
+       LimitFunctor] and [lim_counit], whose components ARE
+       the limit legs, one identification at [eq_refl] and the other at
+       [≈] — the "cone being
+       the value of the [Δ ⊣ Lim] counit" of work item 3.
+     - "[right_adjoint_iso] at Theory/Adjunction.v": the cited site is a
+       [Qed] line, and [left_adjoint_iso] is likewise miscited.  The
+       Riehl clauses' citations are off by a few lines each
+       ([left_adjoint_impl], the Kan class fields
+       [ran_adjoint] and [lan_adjoint], and [precomp_zig_id] in
+       Theory/Bicategory/Mates.v); their substance holds: before this
+       file no standalone [Adjunction] term had both functors between
+       functor categories.
+     - Work item 3 writes the square as an EQUALITY, [F^J ∘ Δ = Δ ∘ F].  It
+       is not one: [(postcompose F ◯ Δ) x] carries [fmap := fun _ _ _ =>
+       fmap[F] id] where [Δ (F x)] carries [id] (probe N1).  It holds as a
+       natural isomorphism with identity components, [square_iso], which
+       is all the argument needs.
 
-(* * ** Postcomposition: [F ◯ −] 函子 between 函子 范畴 （已译） *)
+   WHAT IS DELIVERED (39 named constants plus 32 [Program] obligations,
+   every one closed under the global context).
+     (1) [postcompose F : [J, X] ⟶ [J, A]] — #318's [Postcompose] at the
+         shape [J], with [postcompose_obj] and [postcompose_component] at
+         [eq_refl]; and [precompose F : [D, E] ⟶ [C, E]] — Theory/Kan/
+         Extension.v's [Induced], with [precompose_obj] and
+         [precompose_component] at [eq_refl].  Neither is a new functor.
+     (2) MAC LANE'S CONSTRUCTION 1 / RIEHL 4.3.6 (a), by the unit-counit
+         route of Exercise 4.3.ii: [postcompose_unit], [postcompose_counit]
+         (Adjunction/Natural/Transformation.v transformations whose
+         naturality in the diagram is the naturality of the original unit
+         and counit — taken from [Adjunction_to_Transform]'s two
+         [Transform] fields, Adjunction/Natural/Transformation/
+         Universal.v, so nothing about them is re-derived), the two
+         triangle identities componentwise from the originals in
+         [postcompose_adjunction_transform], and
+         [postcompose_adjunction : postcompose F ⊣ postcompose G] through
+         [Adjunction_from_Transform] (Universal.v).  The readbacks
+         [postcompose_unit_component] and [postcompose_counit_component]
+         say, at [eq_refl], that the CONSTRUCTED unit and counit ARE the
+         whiskered originals.  The delivered adjunction's own accessors
+         [unit] and [counit] (Theory/Adjunction.v, the transposes
+         of identities) carry a [fmap_id] residue — [⌊id⌋] is [fmap
+         [postcompose G] id ∘ postcompose_unit] — so THEY are the whiskered
+         originals at [≈] only ([postcompose_adjunction_unit],
+         [postcompose_adjunction_counit]; the [eq_refl] form is refused,
+         probe N5).  An earlier revision glossed the [eq_refl] readbacks
+         as the reviewer's condition on the nose; the condition holds on
+         the nose for the construction and at [≈] for the adjunction.
+     (3) RIEHL 4.3.6 (b), the precomposition half: [precompose_unit] with
+         components [fmap[S] (η c)], [precompose_counit] with components
+         [fmap[T] (ε d)], the triangle identities through [fmap_comp] and
+         [fmap_id], and [precompose_adjunction : precompose G ⊣ precompose
+         F] — the direction reverses (probe N3).  Nothing here is obtained
+         from (2) by duality: it is the mirror construction, written out.
+     (4) THE SQUARE.  [square_at x], [square_iso : postcompose F ◯ Δ ≅[Fun]
+         Δ ◯ F] (every component an identity) and [square_equiv], the same
+         as functor equality in the orientation the transport wants.
+     (5) MAC LANE'S REMARK 1.  [left_route : postcompose F ◯ Δ ⊣ LimitFunctor
+         ◯ postcompose G] and [right_route : Δ ◯ F ⊣ G ◯ LimitFunctor] by
+         Adjunction/Compose.v's [Adjunction_Compose]; [left_route'] by
+         transporting the first across the square with Theory/Adjunction.v's
+         [adjunction_along_left_iso] (see RELOCATION); then
+         [Lim_commutes_right_adjoint : LimitFunctor LX ◯ postcompose G ≈ G ◯
+         LimitFunctor LA] is ONE application of [right_adjoint_iso] — the
+         uniqueness of right adjoints, not a re-proof — with the readings
+         [Lim_commutes_nat_iso] (in [[[J, A], X]]) and, pointwise,
+         [lim_of_right_adjoint T : lim_obj LX (G ◯ T) ≅ G (lim_obj LA T)].
+     (6) THE CONE-LEVEL CLAUSE.  [right_adjoint_carries_lim_counit T :
+         IsLimitCone (FCone G (limit_cone (LA T)))] — a right adjoint carries
+         the limiting cone of [T], whose legs are the components of the
+         [Δ ⊣ Lim] counit ([carried_leg_is_counit], at [≈] through
+         Adjunction/Diagonal/Limit.v), to a limiting cone.  Its proof
+         is Adjunction/Continuity.v's [right_adjoint_PreservesLimitCone]
+         (an earlier revision cited [right_adjoint_Continuous] instead),
+         the tree's DIRECT proof of RAPL, and NOT a consequence drawn from
+         (5): [right_adjoint_iso] is [Qed], so the components of the
+         remark's isomorphism cannot be identified with the canonical
+         comparison, and the passage from "the right adjoints are
+         isomorphic" to "the image cone is limiting" is not formalized.
+         Mac Lane's remark is delivered as the isomorphism it states; the
+         limit-preservation it restates is supplied by the existing
+         theorem beside it.
+
+   RELOCATION.  The transport [adjunction_along_left_iso : F ≈ F' → F' ⊣ G
+   → F ⊣ G] existed only in Instance/Mod/Bimodule.v (#401), whose header
+   declared it there "because part (c) is its first consumer" and said it
+   "belongs beside Theory/Adjunction.v"; requiring Bimodule.v from this
+   file would have added 44 files to the closure (an earlier revision said
+   48; measured 74 → 118 by coqdep and by [Print Libraries]).  The section
+   [AdjunctionAlongIso] is moved verbatim to the end of Theory/Adjunction.v
+   (carrying [adjunction_along_left_iso] with it; it needs a
+   section-local [Obligation Tactic := idtac], Bimodule.v's file-wide
+   setting, or Lib's global [cat_simpl] runs on its obligations first);
+   Bimodule.v keeps a pointer comment and its
+   header figures are corrected in place (427 constants, 213 [Qed], five
+   [Defined], 82 [eq_refl] — 440, 220, six and 83 before); the gate
+   entries for the thirteen moved constants are requalified; the one
+   outside citation of a later Bimodule.v line (docs/INDEX.md's
+   Instance/InnerProduct/Galois.v bullet) is repointed.  No statement or
+   proof of the moved section changes, and it stays [Defined].
+
+   UNIVERSES (measured by [About] under [Set Printing Universes] on all 39
+   constants).  Every block identifies the hom levels of the shape and the
+   two categories ([u0 = u2], [u0 = u4]; the two naturality lemmas, in
+   which [J] does not occur, carry [u2 = u4] alone; the four [≈] accessor
+   lemmas carry the same blocks as their adjunctions and no cap) — the identification
+   is Instance/Fun.v's [Fun] ([u0 = u2]) and [Postcompose]'s /
+   [Induced]'s own, exactly as Postcompose.v records, and bare and
+   annotated binders give the same blocks; nothing minimizes and no block
+   or type names [Set].  Stdlib caps, each attributed by [About] on the
+   donor: [prod_rect] is first carried by [square_at]'s own obligations
+   (no donor of the square carries it) and inherited by [square_iso] and
+   [square_equiv]; [eq_rect_r] comes from [Diagonal_Limit_Adjunction] into
+   [left_route] and [right_route], and from [lim_counit_is_limit_leg] into
+   [carried_leg_is_counit]; [Logic_lemmas.equality] and [prod_rect] come
+   from [adjunction_along_left_iso] into [left_route'] and the three
+   remark constants — [right_adjoint_iso] itself carries no cap.
+
+   COUNTS AND CONVENTIONS.
+     - 39 [.glob] declaration heads (32 [def], 7 [prf]) plus 32 [Program]
+       obligations, all "Closed under the global context", zero [Axioms:]
+       lines; the gate carries the 39 heads, fully qualified, the issue's
+       [postcompose_adjunction] and [Lim_commutes_right_adjoint] among them.
+     - No [Defined]: every construction is a [:=] term or a [Program]
+       record, and every proof is [Qed] — 40 [Qed] tokens (32 obligations,
+       the two naturality lemmas, the four [≈] accessor lemmas,
+       [Lim_commutes_right_adjoint] and [carried_leg_is_counit]).  Nothing that computes is hidden behind a
+       [Qed]: the eight [eq_refl] readbacks of (1)-(3) reduce through
+       [:=] definitions and [Program] records alone.  [Lim_commutes_right_
+       adjoint] is opaque by its donor already ([right_adjoint_iso], [Qed]).
+     - Closure 74 files excluding self: Adjunction/Diagonal/Limit.v costs
+       31 at the margin, Functor/Construction/Postcompose.v 8,
+       Adjunction/Compose.v 2, Adjunction/Continuity.v 2,
+       Adjunction/Natural/Transformation/Universal.v 1, the other fourteen
+       [Require]s 0.  Name collisions: [postcompose] and [precompose] occur
+       as WORDS in the prose of 3 and 8 files (Theory/Natural/
+       Transformation.v, Theory/Equivalence/Colimit.v, …),
+       never as declarations; the other 37 names have 0 occurrences.
+     - Test/ProbeFunctorCategory431.v mirrors the [Require] list and carries
+       6 refutation commands (1 instrument + N1 and N5 CONVERSION + N2-N3
+       TYPING + N4 UNIVERSE), each stripped one at a time in a copy of the
+       whole file beside its accepted controls; N4's message reads "The
+       term Xw has type Category@{xo xh xh} while it is expected to have
+       type Category@{_ jh jh} (universe inconsistency: Cannot enforce xh =
+       jh because jh < xh)", and the pin is [Fun]'s, not this file's; six
+       [eq_refl] readbacks; guard coverage 29 identifier tokens
+       inside the refutations / 25 also named outside, comments
+       stripped, with four exhaustive exceptions (the keyword, the two
+       refuted declarations' names, the absent name); rename-simulated over
+       the seven library names the refutations use — [postcompose],
+       [precompose], [postcompose_adjunction], [precompose_adjunction],
+       [Diagonal], [eq_refl], [transform]; module-path components and the
+       section binders excluded — every first break on a positive line (an earlier revision said "11/11"
+       over a set it did not name).  [make todo] grows by those 6 lines
+       only (2255 → 2261 over master 1be50678; the relocation adds none),
+       so the issue's "adds no new hits" box is not met as written;
+       disclosed.
+
+   NOT DELIVERED.
+     - The passage from the remark's isomorphism to limit preservation
+       (see (6)); a transparent uniqueness-of-adjoints; the right-hand
+       transport [G ≈ G' → F ⊣ G → F ⊣ G'].
+     - Continuity or cocontinuity of [postcompose] and [precompose]
+       themselves; the Kan adjunctions [Induced ⊣ Ran] and [Lan ⊣ Induced],
+       which stay Theory/Kan/Extension.v's class fields.
+     - Riehl's Exercise 4.3.iii route (the adjunction from the hom-set
+       bijection, [left_adjoint_impl]): the unit-counit route produces the
+       same artifact, so no separate constant is built.
+     - A concrete instance: every result here is conditional on an
+       abstract [F ⊣ G] (and [HasLimitsOfShape]); nothing in the tree
+       instantiates [postcompose_adjunction], [precompose_adjunction] or
+       [Lim_commutes_right_adjoint] at a named adjunction, and
+       docs/INHABITATION.md is not touched (the donor
+       Adjunction/Diagonal/Limit.v carries [Sets_Diagonal_Limit_Adjunction];
+       composing with it would need a named [F ⊣ G] into or out of Sets).
+     - No edit to Functor/Construction/Postcompose.v, Theory/Kan/
+       Extension.v, Adjunction/Diagonal/Limit.v or Adjunction/Compose.v. *)
+
+(** ** Postcomposition: [F ◯ −] as a functor between functor categories  / ** 后合成：[F ◯ −] 作为函子类别之间的函子*)
 
 Section Postcomposition.
 
 Context {J X A : Category}.
 
 (*
-   本节说明函子相关定义、性质与动机。
+Work item 1 was already discharged by #318: Functor/Construction/
+   Postcompose.v's [Postcompose] is [F ◯ −] on objects and left
+   whiskering on arrows, with its three laws.  This is the issue's name
+   for it at a fixed shape [J]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+工作项 1 已由 #318 解除：Functor/Construction/
+ Postcompose.v 的 [Postcompose] 在对象上是 [F ◯ −]，左侧
+ 箭上胡须，以其三个定律。 这是问题的名称
+ 对于它的固定形状 [J]。 
 *)
 Definition postcompose (F : X ⟶ A) : [J, X] ⟶ [J, A] := Postcompose (D:=J) F.
 
@@ -51,7 +261,7 @@ Example postcompose_component (F : X ⟶ A) {S T : J ⟶ X} (θ : S ⟹ T) (j : 
 
 End Postcomposition.
 
-(* 相关说明。 （已译） *)
+(** ** Mac Lane V.5 construction 1: [F ⊣ G] gives [postcompose F ⊣ postcompose G]  / ** Mac Lane V.5构建1：[F ⊣ G]给出[postcompose F ⊣ postcompose G]*)
 
 Section PostcomposeAdjunction.
 
@@ -62,9 +272,16 @@ Context (Adj : F ⊣ G).
 #[local] Obligation Tactic := idtac.
 
 (*
-   本节说明伴随、自然变换相关定义、性质与动机。
+The unit and counit of [Adj] as natural transformations, with their
+   naturality unrestricted in the codomain: Adjunction/Natural/
+   Transformation/Universal.v's [Adjunction_to_Transform] already proves
+   it, and its components ARE Theory/Adjunction.v's [unit] and [counit]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[Adj] 的单位和单位作为自然变换，及其
+ 共域中的自然性不受限制：附加/自然/
+ Transformation/Universal.v 的 [Adjunction_to_Transform] 已经证明
+ 它及其组件是 Theory/Adjunction.v 的 [unit] 和 [counit]。 
 *)
 Let η : Id ⟹ G ◯ F := @Transformation.unit _ _ _ _ (Adjunction_to_Transform (A:=Adj)).
 Let ε : F ◯ G ⟹ Id := @Transformation.counit _ _ _ _ (Adjunction_to_Transform (A:=Adj)).
@@ -79,7 +296,14 @@ Lemma postcompose_counit_natural {x y : A} (f : x ~> y) :
     ≈ f ∘ @Category.Theory.Adjunction.counit _ _ F G Adj x.
 Proof. exact (@naturality_sym _ _ _ _ ε _ _ f). Qed.
 
-(* 相关说明。 （已译） *)
+(*
+The induced unit: at a diagram [S], the original unit whiskered by [S]
+   — component [η (S j)]. 
+
+--------
+诱导单元：在图表 [S] 中，原始单元被 [S] 打乱
+ — [η (S j)] 组件。 
+*)
 Program Definition postcompose_unit_at (S : J ⟶ X) : S ⟹ G ◯ (F ◯ S) := {|
   transform := fun j => @Category.Theory.Adjunction.unit _ _ F G Adj (S j)
 |}.
@@ -97,7 +321,14 @@ Next Obligation.
   intros S T θ j; simpl; symmetry; apply postcompose_unit_natural.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+The induced counit: at [T], the original counit whiskered by [T] —
+   component [ε (T j)]. 
+
+--------
+诱导计数：在 [T] 处，由 [T] 生成的原始计数 —
+ [ε (T j)] 组件。 
+*)
 Program Definition postcompose_counit_at (T : J ⟶ A) : F ◯ (G ◯ T) ⟹ T := {|
   transform := fun j => @Category.Theory.Adjunction.counit _ _ F G Adj (T j)
 |}.
@@ -116,9 +347,14 @@ Qed.
 Next Obligation. intros S T θ j; simpl; apply postcompose_counit_natural. Qed.
 
 (*
-   本节说明 FunctorCategory 相关定义、性质与动机。
+The triangle identities hold componentwise from the originals; the
+   identity of [[J, A]] at [F ◯ S] has component [fmap[F] (fmap[S] id)],
+   not [id], so each obligation first folds it with [fmap_id]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+三角形恒等式保持与原始三角形相同的分量； 的
+ [[J, A] 的身份] [F ◯ S] 具有组件 [fmap[F] (fmap[S] id)]，
+ 不是 [id]，因此每个义务首先将其与 [fmap_id] 折叠。 
 *)
 Program Definition postcompose_adjunction_transform :
   postcompose (J:=J) F ∹ postcompose (J:=J) G := {|
@@ -137,7 +373,14 @@ Qed.
 Definition postcompose_adjunction : postcompose (J:=J) F ⊣ postcompose (J:=J) G :=
   Adjunction_from_Transform postcompose_adjunction_transform.
 
-(* 相关说明。 （已译） *)
+(*
+Readbacks: the induced unit and counit are the whiskered originals on
+   the nose. 
+
+--------
+读回：诱导单位和计数单位是上面的胡须原件
+ 鼻子。 
+*)
 Example postcompose_unit_component (S : J ⟶ X) (j : J) :
   transform[transform[postcompose_unit] S] j
     = @Category.Theory.Adjunction.unit _ _ F G Adj (S j) := eq_refl.
@@ -147,9 +390,16 @@ Example postcompose_counit_component (T : J ⟶ A) (j : J) :
     = @Category.Theory.Adjunction.counit _ _ F G Adj (T j) := eq_refl.
 
 (*
-   本节说明伴随相关定义、性质与动机。
+The delivered adjunction's own accessors are the transposes of
+   identities, [⌊id⌋] and [⌈id⌉], which carry a [fmap_id] residue over the
+   constructed transformations; they agree with the whiskered originals
+   at [≈] (the [eq_refl] form is refused, probe N5). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+交付的附加物自己的访问器是转置
+ 身份，[⌊id⌋] 和 [⌈id⌉]，它们在
+ 构建的转换； 他们同意胡须原件
+ 在 [≈]（[eq_refl] 形式被拒绝，探测 N5）。 
 *)
 Lemma postcompose_adjunction_unit (S : J ⟶ X) (j : J) :
   transform[@Category.Theory.Adjunction.unit _ _ _ _ postcompose_adjunction S] j
@@ -163,14 +413,20 @@ Proof. simpl; rewrite !fmap_id; apply id_right. Qed.
 
 End PostcomposeAdjunction.
 
-(* 相关说明。 （已译） *)
+(** ** Riehl 4.3.6 (b): precomposition, [F ⊣ G] gives [precompose G ⊣ precompose F]  / ** Riehl 4.3.6 (b)：预合成，[F ⊣ G] 给出 [precompose G ⊣ precompose F]*)
 
 Section Precomposition.
 
 Context {C D E : Category}.
 
-(* Theory/Kan/Extension.v's [Induced] [− ◯ F]; 这是 name the
- 命题's notation, [F^*]. （已译） *)
+(*
+Theory/Kan/Extension.v's [Induced] is [− ◯ F]; this is its name in the
+   proposition's notation, [F^*]. 
+
+--------
+Theory/Kan/Extension.v 的 [Induced] 是 [− ◯ F]； 这是它的名字
+ 命题的符号，[F^*]。 
+*)
 Definition precompose (F : C ⟶ D) : [D, E] ⟶ [C, E] := @Induced C D F E.
 
 Example precompose_obj (F : C ⟶ D) (S : D ⟶ E) :
@@ -192,7 +448,14 @@ Context (Adj : F ⊣ G).
 Let η : Id ⟹ G ◯ F := @Transformation.unit _ _ _ _ (Adjunction_to_Transform (A:=Adj)).
 Let ε : F ◯ G ⟹ Id := @Transformation.counit _ _ _ _ (Adjunction_to_Transform (A:=Adj)).
 
-(* 相关说明。 （已译） *)
+(*
+The unit: at [S : C ⟶ E] it is [S] whiskered onto the original unit,
+   component [fmap[S] (η c)]. 
+
+--------
+装置：在 [S : C ⟶ E] 中，它是 [S] 的原型装置，
+ 组分 [fmap[S] (η c)]。 
+*)
 Program Definition precompose_unit_at (S : C ⟶ E) : S ⟹ (S ◯ G) ◯ F := {|
   transform := fun c => fmap[S] (@Category.Theory.Adjunction.unit _ _ F G Adj c)
 |}.
@@ -213,7 +476,7 @@ Program Definition precompose_unit :
 Next Obligation. intros S T θ c; simpl; apply naturality_sym. Qed.
 Next Obligation. intros S T θ c; simpl; apply naturality. Qed.
 
-(* The counit: at [T : D ⟶ E] it is [fmap[T] (ε d)]. *)
+(* The counit: at [T : D ⟶ E] it is [fmap[T] (ε d)].  / 单位：在 [T : D ⟶ E] 处，它是 [fmap[T] (ε d)]。*)
 Program Definition precompose_counit_at (T : D ⟶ E) : (T ◯ F) ◯ G ⟹ T := {|
   transform := fun d => fmap[T] (@Category.Theory.Adjunction.counit _ _ F G Adj d)
 |}.
@@ -234,7 +497,14 @@ Program Definition precompose_counit :
 Next Obligation. intros S T θ d; simpl; apply naturality_sym. Qed.
 Next Obligation. intros S T θ d; simpl; apply naturality. Qed.
 
-(* 相关说明。 （已译） *)
+(*
+The triangle identities are the originals under [fmap[S]] / [fmap[T]],
+   through [fmap_comp] and [fmap_id]. 
+
+--------
+三角形恒等式是 [fmap[S]] / [fmap[T]] 下的原始，
+ 通过 [fmap_comp] 和 [fmap_id]。 
+*)
 Program Definition precompose_adjunction_transform :
   precompose (E:=E) G ∹ precompose (E:=E) F := {|
   Transformation.unit   := precompose_unit;
@@ -264,7 +534,7 @@ Example precompose_counit_component (T : D ⟶ E) (d : D) :
   transform[transform[precompose_counit] T] d
     = fmap[T] (@Category.Theory.Adjunction.counit _ _ F G Adj d) := eq_refl.
 
-(* Likewise delivered 伴随's own accessors. （已译） *)
+(* Likewise for the delivered adjunction's own accessors.  / 对于交付的附件自己的访问器也是如此。*)
 Lemma precompose_adjunction_unit (S : C ⟶ E) (c : C) :
   transform[@Category.Theory.Adjunction.unit _ _ _ _ precompose_adjunction S] c
     ≈ fmap[S] (@Category.Theory.Adjunction.unit _ _ F G Adj c).
@@ -277,7 +547,7 @@ Proof. simpl; rewrite !fmap_id; apply id_right. Qed.
 
 End PrecomposeAdjunction.
 
-(* 相关说明。 （已译） *)
+(** ** Mac Lane V.5 Remark 1: the square of adjoint pairs  / ** Mac Lane V.5 备注 1：伴随对的平方*)
 
 Section Square.
 
@@ -286,10 +556,18 @@ Context (F : X ⟶ A).
 
 #[local] Obligation Tactic := idtac.
 
-(* The left adjoints commute — but NOT nose: [(postcompose F ◯ Δ) x]
- has [fmap := fun _ _ _ => fmap[F] id] where [Δ (F x)] has [id] (探针
- N1). They agree up natural 同构 whose every component is
- 恒等.（已译） *)
+(*
+The left adjoints commute — but NOT on the nose: [(postcompose F ◯ Δ) x]
+   has [fmap := fun _ _ _ => fmap[F] id] where [Δ (F x)] has [id] (probe
+   N1).  They agree up to a natural isomorphism whose every component is
+   an identity. 
+
+--------
+左伴随通勤 - 但不在鼻子上：[(postcompose F ◯ Δ) x]
+ 具有 [fmap := fun _ _ _ => fmap[F] id]，其中 [Δ (F x)] 具有 [id]（探针
+ N1）。 他们同意自然同构，其每个组成部分都是
+ 一个身份。 
+*)
 Program Definition square_at (x : X) :
   (postcompose (J:=J) F ◯ @Diagonal X J) x ≅[Fun] (@Diagonal A J ◯ F) x := {|
   to   := {| transform := fun _ => id |};
@@ -314,7 +592,7 @@ Next Obligation. intros x y f j; simpl; cat. Qed.
 Next Obligation. intros x j; simpl; cat. Qed.
 Next Obligation. intros x j; simpl; cat. Qed.
 
-(* The same square 函子 equality, oriented transport below. （已译） *)
+(* The same square as functor equality, oriented for the transport below.  / 与函子相等相同的正方形，面向下面的传输。*)
 Definition square_equiv :
   @Diagonal A J ◯ F ≈ postcompose (J:=J) F ◯ @Diagonal X J :=
   iso_equiv (iso_sym square_iso).
@@ -329,45 +607,62 @@ Context (Adj : F ⊣ G).
 Context (LX : HasLimitsOfShape J X).
 Context (LA : HasLimitsOfShape J A).
 
-(* Left column then top row: [Δ_X ⊣ Lim_X] composed with
-   [postcompose F ⊣ postcompose G]. *)
+(*
+Left column then top row: [Δ_X ⊣ Lim_X] composed with
+   [postcompose F ⊣ postcompose G]. 
+
+--------
+左列然后顶行：XPROTECT 0X 与 XPROTECT 1X 组成。 
+*)
 Definition left_route :
   (postcompose (J:=J) F ◯ @Diagonal X J)
     ⊣ (LimitFunctor LX ◯ postcompose (J:=J) G) :=
   Adjunction_Compose (Diagonal_Limit_Adjunction LX) (postcompose_adjunction Adj).
 
-(* Bottom row then right column: [F ⊣ G] composed with [Δ_A ⊣ Lim_A]. *)
+(* Bottom row then right column: [F ⊣ G] composed with [Δ_A ⊣ Lim_A].  / 底行右列：[F ⊣ G] 与 [Δ_A ⊣ Lim_A] 组成。*)
 Definition right_route :
   (@Diagonal A J ◯ F) ⊣ (G ◯ LimitFunctor LA) :=
   Adjunction_Compose Adj (Diagonal_Limit_Adjunction LA).
 
-(* Transport left route across square, so both routes are
- 伴随 SAME 左伴随. （已译） *)
+(*
+Transport the left route across the square, so that both routes are
+   adjunctions of the SAME left adjoint. 
+
+--------
+将左边的路线运输穿过广场，这样两条路线都可以
+ SAME 左伴随的附加词。 
+*)
 Definition left_route' :
   (@Diagonal A J ◯ F) ⊣ (LimitFunctor LX ◯ postcompose (J:=J) G) :=
   adjunction_along_left_iso (square_equiv F) left_route.
 
-(* Uniqueness of right adjoints (Theory/Adjunction.v's [right_adjoint_iso])
-   — not a re-proof. *)
+(*
+Uniqueness of right adjoints (Theory/Adjunction.v's [right_adjoint_iso])
+   — not a re-proof. 
+
+--------
+右伴随的唯一性（Theory/Adjunction.v 的 [right_adjoint_iso]）
+ ——不是重新证明。 
+*)
 Theorem Lim_commutes_right_adjoint :
   LimitFunctor LX ◯ postcompose (J:=J) G ≈ G ◯ LimitFunctor LA.
 Proof using A Adj F G J LA LX X.
   exact (right_adjoint_iso _ _ _ left_route' right_route).
 Qed.
 
-(* The same statement as a natural isomorphism in [[[J, A], X]]. *)
+(* The same statement as a natural isomorphism in [[[J, A], X]].  / 与 [[[J, A], X]] 中的自然同构相同的陈述。*)
 Definition Lim_commutes_nat_iso :
   LimitFunctor LX ◯ postcompose (J:=J) G ≅[Fun] G ◯ LimitFunctor LA :=
   equiv_iso Lim_commutes_right_adjoint.
 
-(* Pointwise: [lim (G ◯ T) ≅ G (lim T)], the classical reading of RAPL. *)
+(* Pointwise: [lim (G ◯ T) ≅ G (lim T)], the classical reading of RAPL.  / Pointwise：[lim (G ◯ T) ≅ G (lim T)]，RAPL 的经典读法。*)
 Definition lim_of_right_adjoint (T : J ⟶ A) :
   lim_obj LX (G ◯ T) ≅ G (lim_obj LA T) :=
   projT1 Lim_commutes_right_adjoint T.
 
 End Remark.
 
-(** ** The cone-level conclusion *)
+(** ** The cone-level conclusion  / ** 锥体水平结论*)
 
 Section ConeLevel.
 
@@ -377,9 +672,22 @@ Context (Adj : F ⊣ G).
 Context (LA : HasLimitsOfShape J A).
 
 (*
-   本节说明伴随、（余）极限相关定义、性质与动机。
+"A right adjoint carries a limiting cone to a limiting cone, the cone
+   being the value of the [Δ ⊣ Lim] counit": the limiting cone of [T] is
+   [limit_cone (LA T)], whose legs are the components of [lim_counit LA T]
+   ([lim_counit_is_limit_leg]), and [G] carries it to a limiting cone over
+   [G ◯ T].  The proof is Adjunction/Continuity.v's direct RAPL
+   ([right_adjoint_PreservesLimitCone]); see the header for why it is not
+   derived from [Lim_commutes_right_adjoint]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+“右伴随将一个极限锥体带到一个极限锥体，该锥体
+ 是 [Δ ⊣ Lim] 单位的值”：[T] 的极限锥体是
+ [limit_cone (LA T)]，其腿是 [lim_counit LA T] 的组件
+ ([lim_counit_is_limit_leg])，[G] 将其带到限制锥体
+ [G ◯ T]。 证明是 Adjunction/Continuity.v 的直接 RAPL
+ （[right_adjoint_PreservesLimitCone]）； 请参阅标题以了解为什么它不是
+ 源自 [Lim_commutes_right_adjoint]。 
 *)
 Definition right_adjoint_carries_lim_counit (T : J ⟶ A) :
   IsLimitCone (FCone G (@limit_cone _ _ _ (LA T))) :=

@@ -16,17 +16,334 @@ Require Import Category.Structure.Terminal.
 Require Import Category.Instance.One.
 Require Import Category.Instance.Two.
 
-(*
+(** * Left-adjoint-left-inverses, and Mac Lane's Exercise IV.4.4
+
     nLab: https://ncatlab.org/nlab/show/reflective+subcategory
     nLab: https://ncatlab.org/nlab/show/adjoint+functor
     nLab: https://ncatlab.org/nlab/show/full+subcategory
     nLab: https://ncatlab.org/nlab/show/fully+faithful+functor
+
     Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+          GTM 5, Springer 1998, SS IV.4, printed p. 94 (the definition)
+          and p. 95 (Exercise 4).
 
-   本文件给出伴随相关构造与性质。
+    Transliterated to ASCII from the page images, p. 94:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+      "A functor F : X -> A is said to be a left-adjoint-left-inverse of
+       G : A -> X when there is an adjunction <F, G; eta, 1> : X -> A
+       with counit the identity.  This means (Exercise 4) that G is an
+       isomorphism of A to a reflective subcategory of X.  In the case of
+       the Proposition 2 just above, we have shown that the insertion
+       A -> C has a left-adjoint-left-inverse."
+
+    and p. 95, Exercise 4:
+
+      "Given a functor G : A -> X, prove the three following conditions
+       logically equivalent:
+        (a) G has a left-adjoint-left-inverse.
+        (b) G has a left adjoint, and is full, faithful, and injective on
+            objects.
+        (c) There is a full reflective subcategory Y of X and an
+            isomorphism H : A ~= Y such that G = KH, where K : Y -> X is
+            the insertion."
+
+    Exercise 3 on the same page (S : A -> C full, faithful and SURJECTIVE
+    on objects gives an adjoint equivalence with UNIT the identity, and a
+    left-adjoint-RIGHT-inverse) and Exercise 5 (the colimit functor over a
+    connected shape can be chosen to be a left-adjoint-left-inverse) are
+    different catalog items; they are cited here and not delivered.
+
+    ** The design crux: "counit the identity" is not an equation
+
+    In this library the counit of [F ⊣ G] at [a] runs [F (G a) ~> a]
+    (Theory/Adjunction.v) while [id[a]] runs [a ~> a], so the two
+    live in one hom-set only when [F (G a)] and [a] are the same object at
+    LEIBNIZ equality.  The equation "counit ~ id", and with it the reading
+    "counit ~ nat_id" that suggests itself, is therefore not merely
+    unproved: it does not typecheck.  That rejection is a TYPING error
+    with no "cannot unify" and no universe clause, pinned in
+    Test/ProbeLeftInverse376.v against the [id_cast] form as its control.
+
+    [LeftAdjointLeftInverse G] consequently carries the object equation as
+    DATA -- a left adjoint [F], an adjunction, a family
+    [lali_obj a : F (G a) = a], and the counit condition stated against the
+    identity TRANSPORTED along it, [counit a ~ id_cast (lali_obj a)], over
+    Construction/Quotient.v's transport kit.  The equivalent phrasing on
+    functors ([F ◯ G] strictly equal to [Id[A]], i.e. [~] at
+    Theory/Functor.v's [Functor_StrictEq_Setoid]) is the same data
+    rearranged: its object component is [lali_obj] and its morphism
+    coherence is the naturality that [counit] already has.  That
+    rearrangement is not performed here.
+
+    ** What is delivered, and at what strength
+
+    Clause (a) is the record [LeftAdjointLeftInverse] just described, with
+    accessors [lali_left], [lali_adj], [lali_obj], [lali_counit], together
+    with [lali_counit_iso] (the transported identity, as an isomorphism)
+    and [lali_counit_IsIsomorphism] (the counit itself is invertible, its
+    inverse the reverse cast).
+
+    Clause (b) is the record [LeftAdjointFFInjective] -- a left adjoint,
+    [Full G], [Faithful G], and [InjectiveOnObjects G], the last a plain
+    [Definition] introduced here because the tree has no such predicate
+    (measured below), with its closure properties [InjectiveOnObjects_Id],
+    [InjectiveOnObjects_Compose] and the cancellation
+    [InjectiveOnObjects_cancel] (an injective composite [G ◯ F] has an
+    injective right-hand factor [F], the one applied first; nothing is
+    stated about [G]), all three [:=] terms.
+
+    Clause (c) is the record [ReflectiveIsoPresentation]: a subcategory
+    [ri_sub], a [Reflective] structure on it (Construction/Reflective.v,
+    whose [reflective_full] field is the fullness clause), an isomorphism
+    [ri_iso : A ≅[StrictCat] Sub X ri_sub], and the factorization
+    [ri_factor] stating [G] strictly equal to [Incl ◯ to ri_iso] -- Mac
+    Lane's "G = KH", at the strongest equality the library supports for
+    functors.  [StrictCat] is forced: an isomorphism in [Cat] is an
+    EQUIVALENCE (Instance/Cat.v), which would not pin the object
+    assignment that clause (a) is about.
+
+    The three legs, and which are direct:
+
+      [lali_implies_ffi]      (a) => (b), DIRECT and UNCONDITIONAL.
+      [ffi_implies_ri]        (b) => (c), DIRECT and UNCONDITIONAL.
+      [ri_lali_implies_lali]  (c) => (a), CONDITIONAL: see below.
+
+    packaged as [lali_characterization].  Two further legs are COMPOSED
+    rather than proved: [lali_implies_ri] ((a) => (c), the first two) and
+    [ri_lali_implies_ffi] ((c) => (b) under the same hypothesis as leg
+    three, then leg one).
+
+    ** The third leg is conditional, and the hypothesis is Mac Lane's own
+       choice step
+
+    [ri_lali_implies_lali] takes, beyond the presentation, a
+    [LeftAdjointLeftInverse (Incl X (ri_sub Pres))]: the insertion's own
+    reflector must fix the subcategory ON THE NOSE.  That is clause (a)
+    restated for the insertion, and the file says so rather than dressing
+    it up.  It is the step Mac Lane performs by hand on p. 94 -- "For
+    objects a in A subset of C we can then choose a_0 = a = Ka and
+    eta_{Ka} the identity" -- and it is STRONGER than his step: a
+    left-adjoint-left-inverse [L] of [Incl X S] forces, for any two
+    membership proofs [p q : sobj S x] over one ambient object,
+    [(x; p) = (x; q)] as objects of [Sub X S] (the term is
+    [eq_trans (eq_sym (lali_obj L (x; p))) (lali_obj L (x; q))], since
+    [Incl]'s object action [`1] cannot see the proof), i.e.
+    proof-irrelevance of membership on inhabited fibres, which Mac Lane's
+    set-theoretic subcategory has for free and this library's
+    [Subcategory] does not supply.  What a bare [Reflective] gives is an
+    ISOMORPHISM [reflective_counit_iso] (Construction/Reflective.v),
+    never an identity; the corresponding ill-typed equation is pinned as
+    the probe's second TYPING negative.
+
+    The hypothesis is NOT vacuous, and that is proved rather than argued:
+    [lali_image_insertion] shows that whenever the presentation comes from
+    a left-adjoint-left-inverse, the insertion of the image subcategory has
+    one -- which is Mac Lane's own closing sentence on p. 94 -- and
+    [lali_ri_insertion]/[lali_cycle] run the cycle (a) => (c) => (a) all
+    the way round with the hypothesis discharged.  ([lali_cycle P] is NOT
+    [P]: the adjunction is rebuilt through the image subcategory, refuted
+    at [eq_refl] and pinned.)
+
+    NOT delivered, and each for a stated reason:
+
+      - No unconditional (c) => (a) and no unconditional (c) => (b) --
+        and both are REFUTABLE in this library, not merely unavailable.
+        [Subcategory]'s [sobj] is proof-relevant, so [Sub X S] may carry
+        two distinct objects over one ambient object, which no functor
+        out of [X] can separate: clause (a) for [Incl X S] forces
+        membership-proof uniqueness (the term above), and clause (b)'s
+        injectivity on objects forces the same.  An audit compiled the
+        countermodel out of tree, axiom-free: the subcategory of [_1]
+        with [sobj := fun _ => bool] and all morphisms, whose insertion
+        is a [ReflectiveIsoPresentation] (a constant reflector at
+        [(ttt; true)], [ri_iso] the identity) yet has neither a
+        left-adjoint-left-inverse nor an injective-on-objects left
+        adjoint, [true = false] following by [discriminate].  It is NOT
+        shipped.  Mac Lane's clause (c) is classically true because a
+        set-theoretic subcategory has proof-IRRELEVANT membership; the
+        formalized clause is strictly weaker, and that gap -- not a
+        missing case distinction on membership, which a decider would
+        not repair -- is what the third leg's hypothesis pays for.
+      - No (b) => (a).  Producing [F' (G a) = a] from injectivity on
+        objects is a left inverse of [fobj[G]] on the nose, which
+        injectivity alone does not give constructively.  That one is
+        argued, not refuted.
+      - No [iffT] packaging, no uniqueness of the left-adjoint-left-
+        inverse, no dual (Exercise 3), no Exercise 5, and nothing relating
+        this to Construction/Subcategory/Dense.v's
+        [dense_full_subcategory_reflective] -- that is a (c)-shaped
+        witness whose counit is an isomorphism ([dense_counit_iso]) and
+        not the identity, so it does not discharge the hypothesis, and no
+        bridge is built.
+
+    ** Route, and what it costs
+
+    (a) => (b) is proved DIRECTLY from the transposition corollaries of
+    Theory/Adjunction.v: fullness by [prefmap h := ⌈h⌉ ∘ id_cast (eq_sym
+    (lali_obj a))] with [fmap_to_adj_counit] and [from_adj_comp_law],
+    faithfulness by injectivity of [⌊-⌋] followed by cancelling the
+    transported identity.  The one-line alternative -- instantiating
+    Adjunction/FullFaithful.v's
+    [right_adjoint_fully_faithful_iff_counit_iso] -- was measured and
+    declined: requiring that module takes this file's transitive
+    in-project closure from 36 modules to 95 (its own closure is 87; all
+    three measured on this worktree, each excluding the measured file
+    itself).
+
+    (b) => (c) builds the image subcategory ([LaliImageSub], membership
+    [{a : A & G a = x}], every ambient morphism retained), the comparison
+    [ImageIso : A ≅[StrictCat] Sub X LaliImageSub] whose inverse
+    [ImageFrom] is Theory/Skeleton.v's [Finv] pattern ([prefmap] of a
+    [hom_cast], functor laws by faithfulness), and the reflection
+    [ImageReflective].  The reflection adjunction is assembled, not
+    re-derived: [strict_equivalence] reads an isomorphism in [StrictCat]
+    as an [EquivalenceOfCategories] whose cells are [id_cast_iso]es,
+    Theory/Equivalence/Adjoint.v's [equiv_adjunction] turns that into an
+    adjunction, Adjunction/Compose.v's [Adjunction_Compose] pastes it onto
+    [F ⊣ G], and [rs_adj] moves the right adjoint along the strict
+    equality [G ◯ ImageFrom ~ Incl].
+
+    (c) => (a) is the same three steps in the other order:
+    [lali_along_strict_iso] (transport a left-adjoint-left-inverse along
+    an isomorphism of categories) then [lali_along_right_strict]
+    (transport it along a strict equality of the right adjoint).  The
+    counit computation in each is the only place with content, and both
+    close through [equiv_adjunction_counit_at]: because the equivalence's
+    counit cell is an [id_cast_iso] BY CONSTRUCTION, no half-adjoint
+    correction is needed -- Theory/Skeleton.v's [adjointified] is NOT
+    used, and the loop it exists to kill never appears.
+
+    Two by-products, both small and both stated for reuse:
+    [strict_id_cast_nat] is the missing inverse of Theory/Skeleton.v's
+    [strict_equiv_of_id_cast_nat] (that file packages only one direction of
+    [transport_square]), and [strict_equivalence] is the passage
+    [StrictCat]-isomorphism => [EquivalenceOfCategories] with CONTROLLED
+    cells, which is what makes the counit computable.
+
+    ** Prior art, measured
+
+    [InjectiveOnObjects] is new: the tree's only prior statements of that
+    shape are [GrpAt_Incl_injective_on_objects]
+    (Instance/Grp/TwoFunctors.v) and [slice_arrow_reflect]/
+    [coslice_arrow_reflect] (Instance/Cat/Pullback.v, each
+    under that section's [ObjUIP C]; its comment names the
+    property), each for one concrete functor, with no general predicate
+    anywhere -- an audit found the two slice ones after a first draft
+    named only the first.  The
+    nearest relatives to clause (a) are Adjunction/Compose.v's
+    [Adjunction_Id_counit] (the counit of [Id ⊣ Id] is the identity -- the
+    degenerate case, recovered here as [Id_LALI]),
+    Construction/Reflective.v's [reflective_counit_iso] (an
+    isomorphism, strictly weaker) and
+    Construction/Localization/Universal.v's [reflection_retract]
+    ([Refl ◯ Iota ≈ Id] at [Cat] level, i.e. up to natural isomorphism
+    rather than on the nose).  Theory/Skeleton.v's
+    [skeletal_equivalence_is_isomorphism] is the precedent for building a
+    [≅[StrictCat]] out of fullness, faithfulness and object data, and its
+    [Finv] is the pattern [ImageFrom] follows.
+
+    Two constants are rebuilt rather than consumed, each for a measurement:
+
+      - [PointAt], the functor [1 ⟶ C] picking an object, duplicates
+        Theory/Shapes.v's [Point], whose source is pinned at
+        [_1@{_ Set Set}]: over a category whose homs are declared strictly
+        above [Set], [Point x : _1@{o h h} ⟶ C] is rejected with "Cannot
+        enforce Set = h" while [PointAt] is accepted (both pinned in the
+        probe).  Consuming [Point] would have confined the terminal example
+        to [Set]-homed categories.  The pin is the donor's minimization,
+        not a property of [_1] (whose three levels are free), and is not
+        claimed unavoidable.
+      - [TwoY_Terminal] duplicates Instance/Two/Monoidal.v's
+        [Two_Terminal] (renamed here to avoid the collision).  That module
+        costs 16 modules on this file's closure (36 -> 52, measured) for a
+        twelve-line witness, so it is not required.
+
+    ** Examples
+
+    [Id_LALI] is the identity adjunction, degenerate by design.
+    [terminal_LALI] is general: for ANY category with a terminal object,
+    the functor [1 ⟶ C] picking it has a left-adjoint-left-inverse, namely
+    [Erase C] -- the object equation is one case analysis on the single
+    object of [1] (it reads [ttt = a], not [a = a]) and the counit
+    condition is discharged because [1]'s hom-setoid is Leibniz equality
+    on [poly_unit], so any two of its morphisms agree.  It is
+    instantiated at the walking arrow, where
+    [two_lali_moves_TwoX] proves the composite [G ◯ F] is not the identity
+    (it carries [TwoX] to [TwoY]), so the example is not an isomorphism of
+    categories in disguise.
+
+    ** Universes, measured off both binder and block
+
+    [InjectiveOnObjects@{ao ah ap xo xh xp}] is FREE: six binders, an empty
+    equation set, and only the bounds [Functor] itself imposes.  Its three
+    closure constants are not: [InjectiveOnObjects_Id] carries [ch = cp],
+    which is [Id]'s own ([Id] takes two levels, its category being
+    [Category@{o h h}]), and [InjectiveOnObjects_Compose] and
+    [InjectiveOnObjects_cancel] put all three categories' hom-and-proof
+    levels at ONE level, which is [Compose]'s (declared over three
+    categories sharing one such level) -- both inherited, neither
+    introduced here.  Everything
+    that mentions an adjunction or a strict functor equality identifies the
+    two categories' hom-and-proof universes, and the identification sits in
+    the BINDER, not the block: [LeftAdjointLeftInverse@{u u0 u1 u2 u3}] is
+    over [A : Category@{u2 u3 u3}] and [X : Category@{u u3 u3}] -- one
+    level [u3] for four slots -- while its block carries no equation at
+    all.  THREE donors would each do it, and none is tested in isolation
+    by the record: [Functor] in the REVERSE direction suffices ALONE -- at
+    hom levels declared apart [Au ⟶ Xu] is accepted while [Xu ⟶ Au] is
+    REJECTED (both in the probe), and [lali_left : X ⟶ A] is a field, so
+    with the parameter [G : A ⟶ X] the identification is forced before
+    either of the other two is consulted; [Adjunction]
+    (Theory/Adjunction.v) carries [h1 = p1], [h1 = h2], [h1 = p2] in
+    its own block, and [Functor_StrictEq_Setoid] (Theory/Functor.v)
+    is declared over [Category@{u1 u4 u4}] and [Category@{u2 u4 u4}] --
+    only the last is probed in isolation, its command naming no reverse
+    functor.  The probe's [Au ⟶ Xu] control shows only that [Functor]
+    bounds source-hom by target-hom in ONE direction; it does not
+    discriminate among the three, and an earlier draft called two of
+    them independent on that control's strength.  None of the three is
+    introduced here and none is claimed unavoidable.
+
+    At the PACKAGED [lali_characterization] one more level pair is
+    identified: its binder reads [A X : Category@{u6 u13 u13}], so the two
+    OBJECT universes coincide as well.  That is clause (c)'s doing, not
+    clause (a)'s -- [ri_iso] compares [A] with [Sub X ri_sub] inside
+    [StrictCat], whose objects are [Category] at ONE universe instance --
+    and the contrast is exhibited in the probe: at object levels declared
+    apart, [LeftAdjointLeftInverse G] and [LeftAdjointFFInjective G] are
+    still formable while [@Isomorphism StrictCat] and [ffi_implies_ri] are
+    not.
+
+    Two constants keep the two categories' OBJECT universes apart:
+    [lali_along_strict_iso] and [lali_image_insertion] (measured: binders
+    [A : Category@{u u0 u0}], [X : Category@{u1 u2 u2}], the block
+    carrying [u0 = u2] -- the hom identification every adjunction
+    constant here has -- and no equation between [u] and [u1]), because
+    they only PROJECT the object families out of strict equalities
+    instead of building one between [A] and [X].
+
+    Exactly five of the 118 constants carry [Set] -- [TwoY_Terminal],
+    [two_LALI] and the three [two_lali_*] readbacks -- inherited from
+    Instance/Two.v's [TwoHom : TwoObj -> TwoObj -> Set].  The general
+    theory, all 113 others, is [Set]-free.
+
+    ** Registration
+
+    Nothing here is registered for instance resolution: every record is
+    data (a chosen left adjoint, a chosen subcategory, a chosen
+    isomorphism), passed explicitly at use sites, following the rule
+    Theory/Equivalence.v states for quasi-inverses.
+
+    ** Engineering notes
+
+    [image_to_from_strict] and [image_incl_strict] MUST be [Defined], not
+    [Qed]: [ii_counit] reads their object families back through [`1], and
+    with [Qed] the projection is stuck and the transitivity step does not
+    close -- which is how the need was found, and which an audit
+    re-measured by flipping each to [Qed] in a scratch copy (each alone
+    breaks [ii_counit]).  [image_from_to_strict] and [image_factor] are
+    [Defined] for uniformity, not necessity: measured, either or both
+    compile as [Qed]. *)
 
 Generalizable All Variables.
 
@@ -75,7 +392,7 @@ Local Notation e := (lali_obj P).
 
 Definition lali_counit_iso (a : A) : F (G a) ≅ a := id_cast_iso (e a).
 
-(* 相关说明。 （已译） *)
+(* The counit itself is invertible, its inverse the reverse cast.  / 计数本身是可逆的，它的逆是反向转换。*)
 Program Definition lali_counit_IsIsomorphism (a : A) :
   IsIsomorphism (@counit A X F G (lali_adj P) a) := {|
   two_sided_inverse := id_cast (eq_sym (e a))
@@ -124,7 +441,7 @@ Definition lali_injective_on_objects : InjectiveOnObjects G :=
 
 End Consequences.
 
-(* * ** Strict 函子 equality, [id_cast] form （已译） *)
+(** ** Strict functor equality, in [id_cast] form  / ** 严格函子相等，采用 [id_cast] 形式*)
 
 Definition strict_id_cast_nat {C D : Category} {F H : C ⟶ D}
   (E : @equiv _ (@Functor_StrictEq_Setoid C D) F H)
@@ -133,7 +450,7 @@ Definition strict_id_cast_nat {C D : Category} {F H : C ⟶ D}
   fst (transport_square (`1 E x) (`1 E y) (fmap[F] f) (fmap[H] f))
       (`2 E x y f).
 
-(* * ** The inverse [id_cast] 同构, without [eq_sym_involutive] （已译） *)
+(** ** The inverse of an [id_cast] isomorphism, without [eq_sym_involutive]  / ** [id_cast] 同构的逆，没有 [eq_sym_involutive]*)
 
 Program Definition id_cast_iso_sym {C : Category} {x y : C} (e : x = y) :
   y ≅ x := {|
@@ -143,7 +460,7 @@ Program Definition id_cast_iso_sym {C : Category} {x y : C} (e : x = y) :
 Next Obligation. intros; destruct e; cat. Qed.
 Next Obligation. intros; destruct e; cat. Qed.
 
-(* * ** An 同构 范畴 等价 范畴 （已译） *)
+(** ** An isomorphism of categories is an equivalence of categories  / ** 范畴的同构是范畴的等价*)
 
 Section StrictEquivalence.
 
@@ -174,7 +491,7 @@ Qed.
 
 End StrictEquivalence.
 
-(* * ** Transporting along strict equality 右伴随 （已译） *)
+(** ** Transporting along a strict equality of the right adjoint  / ** 沿着右伴随的严格相等进行传输*)
 
 Section RightStrict.
 
@@ -270,7 +587,7 @@ Proof.
   now rewrite id_cast_trans.
 Defined.
 
-(* * ** Clause (b): 左伴随, full, faithful, injective 对象 （已译） *)
+(** ** Clause (b): a left adjoint, full, faithful, injective on objects  / ** 子句 (b)：对象上的左伴随、完全、忠实、单射*)
 
 Record LeftAdjointFFInjective {A X : Category} (G : A ⟶ X) : Type := {
   ffi_left : X ⟶ A;
@@ -295,7 +612,7 @@ Definition lali_implies_ffi {A X : Category} {G : A ⟶ X}
   ffi_injective := lali_injective_on_objects P
 |}.
 
-(** ** The image subcategory *)
+(** ** The image subcategory  / ** 图像子类别*)
 
 Section Image.
 
@@ -344,7 +661,7 @@ Next Obligation.
 Qed.
 
 
-(** The two round trips, at strict functor equality. *)
+(** The two round trips, at strict functor equality.  / 两次往返，严格函子相等。*)
 
 Definition image_from_to_obj (a : A) : ImageFrom (ImageTo a) = a := eq_refl.
 
@@ -381,8 +698,14 @@ Definition ImageIso : @Isomorphism StrictCat A (Sub X LaliImageSub) :=
     image_to_from_strict image_from_to_strict.
 
 
-(** The image subcategory full reflective, [G] factors through
- 嵌入. （已译） *)
+(**
+The image subcategory is full and reflective, and [G] factors through
+    its insertion. 
+
+--------
+图像子类别是完整且反射的，[G] 通过因素
+ 它的插入。 
+*)
 
 Definition image_equivalence : @EquivalenceOfCategories A (Sub X LaliImageSub)
     ImageTo :=
@@ -430,7 +753,7 @@ Defined.
 
 End Image.
 
-(* * ** Clause (c): full reflective subcategory 同构 （已译） *)
+(** ** Clause (c): a full reflective subcategory and an isomorphism  / ** 子句 (c)：完全反思子范畴和同构*)
 
 Record ReflectiveIsoPresentation {A X : Category} (G : A ⟶ X) : Type := {
   ri_sub : Subcategory X;
@@ -453,7 +776,7 @@ Definition ffi_implies_ri {A X : Category} {G : A ⟶ X}
   ri_factor := @image_factor A X G
 |}.
 
-(* * ** Transporting left-adjoint-left-inverse along 同构 （已译） *)
+(** ** Transporting a left-adjoint-left-inverse along an isomorphism  / ** 沿同构传输左伴随左逆*)
 
 Section StrictIsoTransport.
 
@@ -499,7 +822,7 @@ Definition lali_along_strict_iso : LeftAdjointLeftInverse (K ◯ to H) := {|
 
 End StrictIsoTransport.
 
-(** ** The characterization *)
+(** ** The characterization  / ** 表征*)
 
 Definition strict_sym {C D : Category} {F H : C ⟶ D}
   (E : @equiv _ (@Functor_StrictEq_Setoid C D) F H) :
@@ -538,7 +861,7 @@ Definition lali_implies_ri {A X : Category} {G : A ⟶ X}
   (P : LeftAdjointLeftInverse G) : ReflectiveIsoPresentation G :=
   ffi_implies_ri (lali_implies_ffi P).
 
-(* * ** The 嵌入 image subcategory has left-adjoint-left-inverse （已译） *)
+(** ** The insertion of the image subcategory has a left-adjoint-left-inverse  / ** 图像子类别的插入有左伴随左逆*)
 
 Section ImageInsertion.
 
@@ -594,7 +917,14 @@ Definition lali_image_insertion :
 
 End ImageInsertion.
 
-(* 相关说明。 （已译） *)
+(**
+** The cycle closes on presentations that come from a left-adjoint-
+       left-inverse 
+
+--------
+** 该循环以来自左伴随的演示结束
+ 左逆 
+*)
 
 Definition lali_ri_insertion {A X : Category} {G : A ⟶ X}
   (P : LeftAdjointLeftInverse G) :
@@ -605,7 +935,7 @@ Definition lali_cycle {A X : Category} {G : A ⟶ X}
   (P : LeftAdjointLeftInverse G) : LeftAdjointLeftInverse G :=
   ri_lali_implies_lali (lali_implies_ri P) (lali_ri_insertion P).
 
-(** ** Examples *)
+(** ** Examples  / ** 示例*)
 
 Definition Id_LALI {C : Category} : LeftAdjointLeftInverse (Id[C]) := {|
   lali_left := Id[C];
@@ -625,9 +955,20 @@ Local Notation One := (_1@{o h h}).
 Local Notation t := (@terminal_obj C T).
 
 (*
-   本节说明函子相关定义、性质与动机。
+The functor 1 ⟶ C picking out an object.  [Theory/Shapes.v]'s
+   [Point] is this functor, but its source is pinned at [_1@{_ Set Set}]
+   (measured: [Point x : _1@{o h h} ⟶ C] is rejected with "Cannot enforce
+   Set = h"), which would confine the example below to categories whose
+   homs live in [Set]; the six lines are rebuilt here with the universe
+   binders that keep C arbitrary. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+函子 1 ⟶ C 挑选出一个对象。 [Theory/Shapes.v] 的
+ [Point] 就是这个函子，但其源固定在 [_1@{_ Set Set}]
+ （测量：[Point x : _1@{o h h} ⟶ C] 被拒绝，并显示“无法强制执行
+ Set = h")，这会将下面的示例限制为以下类别：
+ 霍姆斯住在 [Set]； 六行与宇宙在此重建
+ 保持 C 任意性的绑定器。 
 *)
 
 Program Definition PointAt (c : C) : One ⟶ C := {|
@@ -667,7 +1008,7 @@ Defined.
 
 End TerminalPoint.
 
-(** A non-degenerate instance: the walking arrow. *)
+(** A non-degenerate instance: the walking arrow.  / 一个非退化的例子：行走的箭头。*)
 
 Program Definition TwoY_Terminal : @Terminal _2 := {|
   terminal_obj := TwoY;
@@ -699,10 +1040,21 @@ Lemma two_lali_moves_TwoX :
   PointAt (C:=_2) TwoY (lali_left two_LALI TwoX) = TwoX → False.
 Proof. simpl; discriminate. Qed.
 
-(*
-   本节说明 LeftInverse 相关定义、性质与动机。
+(**
+** Strict readbacks
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    Every identification below holds at Leibniz equality, by [eq_refl];
+    the two that do NOT are pinned in Test/ProbeLeftInverse376.v (the
+    round trip [lali_cycle P = P], and the object equality of
+    [ImageTo ◯ ImageFrom] at a variable object of the subcategory). 
+
+--------
+** 严格的复读
+
+ 下面的每个恒等式都满足莱布尼兹等式，由 [eq_refl] 得出；
+ 两个不固定在 Test/ProbeLeftInverse376.v 中（
+ 往返 [lali_cycle P = P]，以及对象相等性
+ [ImageTo ◯ ImageFrom] 位于子类别的变量对象）。 
 *)
 
 Section Readbacks.

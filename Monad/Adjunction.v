@@ -10,9 +10,37 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * 由伴随诱导的单子。 *)
+(** * The monad induced by an adjunction.  / * 由附加词引发的单子。*)
 
-(* nLab: https://ncatlab.org/nlab/show/monad
+(*
+nLab: https://ncatlab.org/nlab/show/monad
+   Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
+
+   Every adjunction F ⊣ U, with F : D ⟶ C (left adjoint) and U : C ⟶ D (right
+   adjoint), induces a monad on the domain category D whose endofunctor is the
+   composite U ◯ F. Its unit is the adjunction unit, ret = η : Id ⟹ U ◯ F, and
+   its multiplication is the counit whiskered on both sides by the adjoints,
+   join = U ε F : U F U F ⟹ U F, i.e. join_X = fmap[U] (ε (F X)) = U(ε_{F X}).
+   The monad laws are exactly the triangle (zig-zag) identities of the
+   adjunction: the unit laws are counit_fmap_unit (ε F ∘ F η = id) transported
+   through U and fmap_counit_unit (U ε ∘ η U = id), while associativity is
+   naturality of ε. Dually, F ◯ U is a comonad on C.
+
+   Two proofs are given below, one for each presentation of an adjunction in
+   this library: [Adjunction_Monad] works from the hom-set (transpose) form
+   F ⊣ U, building ret and join from the transposes ⌊id⌋ and fmap[U] ⌈id⌉; and
+   [Adjunction_Nat_Monad] works from the counit/unit form F ∹ U, reading off η
+   and U ε directly. Both yield the same monad U ◯ F.
+
+   The converse — that every monad arises from an adjunction — also holds, via
+   the Kleisli (initial) and Eilenberg–Moore (terminal) resolutions (see
+   Monad/Kleisli.v and Monad/Eilenberg/Moore.v). But the bare composite U ◯ F
+   does not by itself remember an adjunction: one could compose Id with an
+   arbitrary monad M and recover no adjoint, so a presentation of the monad
+   alone, without the adjunction data, is not enough to reconstruct F and U. 
+
+--------
+nLab: https://ncatlab.org/nlab/show/monad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
    每个伴随 F ⊣ U 在复合 U ◯ F 上诱导单子：单位是伴随的单位 η，乘法是 U ε F
@@ -21,7 +49,8 @@ Generalizable All Variables.
 
    逆命题——每个单子都来自伴随——也成立，经 Kleisli（初始）与 Eilenberg–Moore（终结）
    分解（见 Monad/Kleisli.v 与 Monad/Eilenberg/Moore.v）。但裸复合 U ◯ F 本身不记住伴随：
-   可把 Id 与任意单子 M 复合而得不到伴随，故仅有单子呈现、无伴随数据，不足以重建 F 与 U。 *)
+   可把 Id 与任意单子 M 复合而得不到伴随，故仅有单子呈现、无伴随数据，不足以重建 F 与 U。 
+*)
 
 Section AdjunctionMonad.
 

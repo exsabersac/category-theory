@@ -1,7 +1,618 @@
-(*
-   本文件为测试：ProbeSubspace457。
+(**
+* Probe for Mac Lane V.9's sliced adjoint inverses (issue #457)
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    Pins the measured boundaries of the five files #457 adds for Mac Lane
+    §V.9, book pp. 132-134 (catalog ids maclane:V.9:construction2, the
+    subspace topology as a right-adjoint-right-inverse of the sliced
+    underlying-set functor; maclane:V.9:construction3, the quotient
+    topology as a left-adjoint-right-inverse of the cosliced one; and
+    maclane:V.9:prop1, Proposition 1 with its dual; the book numbers only
+    Proposition 1, and the ids are names, not book numbering) and for
+    Seven Sketches' Exercise 7.32: Structure/SlicedInverse.v and its
+    satellite Structure/SlicedInverse/Strict.v (Proposition 1 abstractly,
+    where faithfulness is spent, and its refutation without it),
+    Instance/Top/Prop.v (spaces with Prop-valued opens, the category
+    [PTopCat] and its forgetful functor [PForget]),
+    Instance/Top/Subspace.v (the two constructions over them, packaged,
+    and the equalizers and coequalizers of [PTopCat] they give) and
+    Instance/Top/Subspace/TypeValued.v (what of them is formable over the
+    Type-valued [Top] of Instance/Top.v, and where the rest stops).  N1,
+    N2, N7-N14, N18, N20, N21 and N25 restate a refusal that a target
+    header records, measured by #457's builders, scouts and reviews in
+    scratch files; N15-N17 and N26 restate the measurements behind the
+    headers' account of the two [Sets] (N17 and N26 are
+    Instance/Top/Forgetful.v's first wall, N26 at that file's own
+    [Sets@{o so}]); N3-N6 and N19 are this file's own; N22-N24 are the
+    scouts' measurements of encodings no target adopts.  The positive
+    controls restate the files' claims independently.
+
+    THE IMPORT LIST, measured by comparing [Require] lines by script.  First
+    Structure/SlicedInverse/Strict.v's fifteen lines verbatim and in order,
+    one of them the target Structure/SlicedInverse.v; then the four lines
+    Structure/SlicedInverse.v adds, in its order
+    (Theory/Universal/Arrow/Dual.v, Adjunction/Opposite.v,
+    Adjunction/Determination.v, Structure/Equalizer/Fork.v); then the
+    satellite itself; then the four lines Instance/Top/Subspace.v adds, in
+    its order (Structure/Pullback/Reduction.v, Instance/Sets/Pullback.v,
+    Instance/Sets/Coequalizer.v and the target Instance/Top/Prop.v, whose
+    own four lines are already present), and Subspace.v itself; then the
+    three lines Instance/Top/Subspace/TypeValued.v adds
+    (Instance/Sets/Classifier.v, Instance/Top.v, Instance/Top/Forgetful.v)
+    and TypeValued.v itself.  That is every [Require] of the five targets.
+    One line is added for one section, Instance/Sets/Powerset.v, for the
+    truncation [Powerset_squash] of the squashed subspace (N20-N22).  Thirty
+    lines.  Two modules are named [Strict] (Theory/Equivalence/Strict.v and
+    the satellite); the guard block's [Strict.] names resolve to the
+    satellite ([Locate]), and no other command names either module.  A
+    shorter import list is what makes a probe pass for no reason.
+
+    DISCIPLINE.  The instrument was checked both ways: the refutation of an
+    absent name is refused for that reason, and each of the one hundred and
+    twenty-five definitions, examples, lemmas and records of this file that
+    is not a refutation (seventy, forty-three, ten and two), wrapped in one
+    in a copy of this WHOLE file, stops the build at that command with the
+    report that the guarded command had been accepted (one hundred and
+    twenty-five of one hundred and twenty-five, by a script over the
+    copies).  Every negative other than that instrument and N7 is a
+    [Definition] or an [Example], never a [Check], so that an open evar or a
+    missing instance cannot satisfy it; N7 is a [Qed].  Each negative was
+    stripped of its refutation keyword in a copy of this WHOLE file, one at
+    a time, compiled, and its error read; each of the twenty-seven copies
+    stops inside the stripped command (by the File line that precedes its
+    error, compared by a script with the command's extent).  The kind
+    recorded is the kind of that error, and each negative has positive
+    controls beside it; every identifier a negative uses, its own name and
+    the universes its binder names aside, is used by some positive control
+    of this file (by a script over the identifiers of the commands, the
+    guard block not counted).  In one further copy of this WHOLE file, each
+    negative but the instrument and N7 was followed by a BINDER INSTRUMENT,
+    the same universe binder, arguments and return type with a trivial body
+    (a hypothesis of the return type, or [Datatypes.unit] where the command
+    states none): all twenty-five are accepted, so every negative is refused
+    by its body.  And each of the sixteen negatives whose binder declares
+    constraints, N10-N12 and N14-N26, was rewritten in a copy of this WHOLE
+    file with those constraints removed and the "+" kept: with its
+    refutation keyword each copy compiles, and stripped of it each is
+    refused at the same File line with the same clause (compared by a
+    script, serial universe names aside), so no refusal rests on a
+    constraint the binder alone declares.  N23's [s < o] is forced by its
+    hypothesis [HV], whose type [p457_small_sub_open@{s o}] carries it.
+    Every UNIVERSE negative is a top-level definition whose universes are
+    declared in its own binder, never a [Section]'s; N8 and N9 declare none,
+    their universes being [Set].  Quotations are Rocq 9.1.1's under this
+    file's import list, with the error's environment block left out; Rocq
+    prints the "cannot unify" parenthetical with the short names in scope,
+    and a universe the stripped copy names after itself and a serial number
+    is written <1>, <2>, ..., numbered afresh in each quotation in order of
+    first appearance.  The file also compiles on Coq 8.19.2 and 8.20.1, with
+    no warning, against the prebuilt trees of this library for those
+    versions with the five targets compiled beside them from this tree.
+    Under this import list the file's dependency closure is ninety-five
+    [Category] modules ([Print Libraries]); of the ninety that are not
+    targets, eighty-nine are this tree's byte for byte in both prebuilt
+    trees (compared by [cmp]), and the ninetieth, Instance/Top.v, differs
+    from both only by #457's CORRECTION sentences in its header comment, the
+    prebuilt trees carrying the base commit's text.  The stripped copies
+    were compiled there as well, and every one of the twenty-seven is
+    refused on both at the File line of its Rocq 9.1.1 refusal.  Under
+    8.20.1 every error is the Rocq 9.1.1 one up to the serial names; under
+    8.19.2 all but N15-N17 and N26 are, those four printing the same type
+    mismatch with no universe clause (compared by a script over the copies).
+
+    KINDS.  Twenty-seven refutations, counted as the lines that open with
+    the refutation keyword: NAME-ABSENCE (the instrument), CONVERSION (N1,
+    N2, N10-N12, N19, N25), INSTANCE (N3-N6), SECTION-VARIABLE (N7) and
+    UNIVERSE (N8, N9, N13-N18, N20-N24, N26): one, seven, four, one and
+    fourteen.  No refusal is a BINDER one: every binder instrument is
+    accepted.  The INSTANCE refusals carry the parenthetical "(no type
+    class instance found)".  N20 and N22 are universe clauses whose other
+    side is the sort [Prop]: the truncation eliminates only into
+    propositions, as in Test/ProbeCompHaus413.v's N1.  N12 and N25 are
+    unification refusals reported by the tactic that closes the body.
+
+    LABELS.  The pins carry the N-numbers of this file; #457's scouts,
+    builders and reviews measured most of them in scratch files under other
+    names, recorded here so that the target headers can cite either.  Scout
+    A's N1 and N2 are N13 and N14, its N3 is N23, its N4, N5 and N6 are N20,
+    N21 and N22, its N7, N8 and N9 are N15, N16 and N17, its N10 is N24, its
+    M1 is N8 (with the control [p457_psub_at_set]) and its M2 is N10 and
+    N11.  Builder A's p2/V1 is N7 and its p6/M1 is N1.  Builder B's W1 is
+    N10 and N11, its W2 is N13, its W3 N14 and its W4 N18; its union-design
+    file's [m1_idx_union_at_Set], [idx_to_family_at_Set] and
+    [m1_PSub_at_Set] are N8, N9 and [p457_psub_at_set]; its SqN4 and SqN5
+    are N20 and N21; its and its review's flip of [psub_obj] to [Qed] is
+    N12.  Builder A's review's LOW-5 (descent at [Erase Parallel] with no
+    [Faithful]) is [p457_desc_at_erase], and builder B's review's LOW 8
+    ([Top_Forget_under X y] is a lift) is [p457_forget_under_lift].  The
+    stage-two review's flip of [tquot_obj_stripped] to [Qed] is N25, its N17
+    at a fresh [so] is N26, and its same-shape controls for N4 and N6 are
+    [p457_prop1_at_pforget] and [p457_prop1_dual_at_pforget].  The labels
+    are not constants: each refutation carries its own in a comment on the
+    line above it, the instrument's reading "The instrument".  N25 and N26,
+    added after the rest, sit beside the negatives they extend, N26 after
+    N17 and N25 after N19, so the body runs N1-N17, N26, N18, N19, N25,
+    N20-N24.
+
+    ** Structure/SlicedInverse.v and Structure/SlicedInverse/Strict.v
+
+    N1 (CONVERSION).  Structure/SlicedInverse.v's header, Strengths: the
+    book forms read the downstairs equalizer by projections so that their
+    readbacks reach [eq_refl].  Proposition 1's object and arrow readbacks
+    are restated ([p457_prop1_obj], [p457_prop1_arrow]), as is its
+    reduction to the form over whole right adjoints applied to
+    [rari_right] and [rari_adj] ([p457_prop1_by_adjoints], at [eq_refl]:
+    the right-inverse clause is not consulted).  The same book form written
+    with [destruct] on the downstairs equalizer ([p457_eq_by_match],
+    formed) has its object readback refused, N1:
+      The term "eq_refl" has type "projT1 (equalizer f g) = projT1
+      (equalizer f g)" while it is expected to have type "projT1
+      (equalizer f g) = projT1 (fobj[rari_right (L x)] (projT1 (equalizer
+      (fmap[G] f) (fmap[G] g)); projT1 (projT2 (equalizer (fmap[G] f)
+      (fmap[G] g)))))" (cannot unify "projT1 (equalizer f g)" and "projT1
+      (fobj[rari_right (L x)] (projT1 (equalizer (fmap[G] f) (fmap[G] g));
+      projT1 (projT2 (equalizer (fmap[G] f) (fmap[G] g)))))").
+
+    N2 (CONVERSION).  The same header: [rari_over], that the lift sits
+    over [S], is Leibniz but not [eq_refl], the field [rari_obj] being its
+    only source at a variable right-adjoint-right-inverse.  It is restated
+    at its Leibniz type ([p457_rari_over]), the equalizer's object
+    readback [rari_eq_obj] is restated at [eq_refl] ([p457_rari_eq_obj]),
+    and at [eq_refl], N2:
+      The term "eq_refl" has type "fobj[G] (projT1 (fobj[rari_right L]
+      (S; s))) = fobj[G] (projT1 (fobj[rari_right L] (S; s)))" while it is
+      expected to have type "fobj[G] (projT1 (fobj[rari_right L] (S; s)))
+      = S" (cannot unify "fobj[G] (projT1 (fobj[rari_right L] (S; s)))"
+      and "S").
+
+    N3-N6 (INSTANCE).  The same header, Where each hypothesis is spent:
+    faithfulness is spent in the fork equation alone, and descent (the
+    existence and uniqueness of the mediating arrow) takes none.  Pinned
+    at the countermodel [Erase Parallel], where no [Faithful] instance
+    exists and faithfulness is refuted ([Erase_Parallel_not_faithful]):
+    with the equalizer [p457_erase_eq] of the erased pair in [_1] and the
+    couniversal arrow [p457_erase_U] of [erase_slice_RARI], descent is
+    applied there with no [Faithful] in scope ([p457_desc_at_erase]), and
+    the fork equation of the lift is false there
+    ([p457_fork_refuted_at_erase], closed); so is the dual cofork
+    ([p457_codesc_at_erase], [p457_cofork_refuted_at_erase], over
+    [p457_erase_coeq] and [p457_erase_V]).  The lemmas [sliced_fork] and
+    [cosliced_cofork] (restated with faithfulness, [p457_cofork] and N7's
+    lemma) and the book forms [equalizers_from_sliced_RARI] and
+    [coequalizers_from_sliced_LARI] are applied there with the
+    faithfulness argument left to resolution, N3, N4, N5 and N6, each:
+      ?GF: Cannot infer this placeholder of type "Faithful (Erase
+      Parallel)" (no type class instance found).
+    after "The following term contains unresolved implicit arguments:"
+    and the term.  The same two book forms applied the same way at
+    [PForget], where resolution finds [PForget_Faithful], are formed
+    ([p457_prop1_at_pforget], [p457_prop1_dual_at_pforget]) and ARE
+    Instance/Top/Subspace.v's [PTop_HasEqualizers] and
+    [PTop_HasCoequalizers], at [eq_refl]
+    ([p457_prop1_at_pforget_is_ptop],
+    [p457_prop1_dual_at_pforget_is_ptop]).  The refutations are restated
+    at their stated types ([p457_prop1_needs_faithfulness],
+    [p457_prop1_dual_needs_faithfulness]).
+
+    N7 (SECTION-VARIABLE).  Builder A's measurement of the same boundary
+    by [Proof using].  In a section declaring [E], [U] and the instance
+    [GF] as Structure/SlicedInverse.v's [SlicedEqualizer] does, descent
+    closes under [Proof using E U] from the constant [sliced_desc]
+    ([p457_desc_using]); the fork equation from the constant
+    [sliced_fork], under [Proof using E U], has its [Qed] refused, N7:
+      The following section variable is used but not declared: GF.
+    and the same statement, with faithfulness a hypothesis in place of the
+    section's instance, closes under [Proof using E U]
+    ([p457_fork_using]).  The refused proof is discarded by [Restart],
+    which Rocq warns about in batch mode; that warning is switched off
+    for the section alone.
+
+    Controls of the rest of the two files: [p457_sliced_fobj] and
+    [p457_cosliced_fobj] (the sliced functors' object maps at
+    [eq_refl]), [p457_prop1] and [p457_prop1_dual] (Proposition 1 and its
+    dual at their stated types), [p457_prop1_dual_obj] (the dual's object
+    readback at [eq_refl]) and [p457_rari_lali_rari] (the round trip
+    through left-adjoint-left-inverses at [eq_refl]).
+
+    ** Instance/Top/Prop.v
+
+    Controls.  The homs of [PTopCat] sit at the points' universe:
+    [PMor X Y] is ascribed [Type@{o}] under the CLOSED binder [@{o}]
+    ([p457_pmor_at_o]), where Test/ProbeStoneCech455.v's N6 refuses
+    Instance/Top.v's [ContinuousMorphism].  [PTopCat@{o so}] is a
+    [Category@{so o o}] and [PForget@{o so}] lands in [Sets@{o so}], the
+    [Sets] whose objects are the point setoids, both under a binder that
+    names [o] and [so] only ([p457_ptopcat], [p457_pforget]); its object
+    and arrow readbacks hold at [eq_refl] ([p457_pforget_fobj],
+    [p457_pforget_fmap]) and its faithfulness is found by resolution
+    ([p457_pforget_faithful]).  Compare N17 and N26.
+
+    Controls of the concrete spaces.  The discrete space's points and opens
+    read back at [eq_refl] under the CLOSED binder [@{o}]
+    ([p457_pdiscrete_carrier], [p457_pdiscrete_open],
+    [p457_pdisc_open_body]), its five axioms are formed
+    ([p457_pdisc_axioms]), every setoid map out of it is continuous
+    ([p457_pdisc_cont]) and becomes an arrow with that map as its
+    underlying one ([p457_pdisc_mor_map]); the constant map computes
+    ([p457_pconst_at]); [PPoint] and [PBool] are the discrete spaces on
+    Instance/Sets.v's one- and two-point setoids ([p457_ppoint],
+    [p457_pbool], at [eq_refl] under [@{o}]), and [PBool]'s two points are
+    distinct ([p457_pbool_points_distinct]).
+
+    N8, N9 (UNIVERSE).  Instance/Top/Prop.v's header, THE UNION AXIOM,
+    MEASURED BOTH WAYS.  Design (a), unions over an index type at the
+    points' universe, is the record [p457_PTopIdx].  The index of the
+    subspace's union witness under (a), (index, open) pairs
+    ([p457_idx_witness_index]), is a union index above [Set]
+    ([p457_idx_union_above], under [Set < o]); at [Set], N8:
+      The term "p457_idx_witness_index X S h I V" has type "Type" while it
+      is expected to have type "Set" (universe inconsistency: Cannot
+      enforce Set+1 <= Set).
+    Design (a) gives the chosen design (b) above [Set]
+    ([p457_idx_to_family]); the direct derivation at [Set], N9:
+      The term "{U : X → Prop | F U}" has type "Type" while it is expected
+      to have type "Set" (universe inconsistency: Cannot enforce Set+1 <=
+      Set).
+    Under (b) the subspace is formed at [PTop@{Set}] ([p457_psub_at_set])
+    and (a) holds at every index universe, under the CLOSED binder
+    [@{o i}] ([p457_union_indexed], restating [popen_union_indexed]).
+    That (b) is strictly stronger than (a) at [Set] is not claimed here or
+    there.
+
+    ** Instance/Top/Subspace.v
+
+    Controls.  The subspace's opens are the book's verbatim, at [eq_refl]
+    under the CLOSED binder [@{o}] ([p457_psub_open]); the universal
+    properties over ARBITRARY spaces mapping in and out
+    ([p457_psub_universal], [p457_pquot_universal]); Exercise 7.32's
+    definition at [eq_refl] ([p457_ex732_def]) and its part 3
+    ([p457_ex732_part3]).
+
+    N10, N11 (CONVERSION).  Instance/Top/Subspace.v's header, STRENGTHS: the
+    object equations, that the sliced forgetful functor after [L] (and the
+    cosliced one after [M]) is the identity on objects, are Leibniz and
+    not [eq_refl] at a variable, slice objects being stdlib [sigT] pairs
+    with no eta.  They are stated here at Structure/SlicedInverse.v's
+    [Sliced PForget X] and [Cosliced PForget X], the functors Proposition
+    1 and its dual consume.  At an explicit pair they hold at [eq_refl]
+    ([p457_psub_obj_pair], [p457_pquot_obj_pair]), at a variable the first
+    component does ([p457_psub_obj_carrier]), and the equations hold by
+    [psub_obj] and [pquot_obj] ([p457_psub_obj], [p457_pquot_obj]).  At
+    [eq_refl] and a variable, N10:
+      The term "eq_refl" has type "fobj[Sliced PForget X] (fobj[PSub_Functor
+      X] c) = fobj[Sliced PForget X] (fobj[PSub_Functor X] c)" while it is
+      expected to have type "fobj[Sliced PForget X] (fobj[PSub_Functor X]
+      c) = c" (cannot unify "fobj[Sliced PForget X] (fobj[PSub_Functor X]
+      c)" and "c").
+    and N11 the same with [Cosliced] and [PQuot_Functor].
+
+    N12 (CONVERSION).  The same header: [psub_obj] is [Defined] because
+    the counit's triangle fact needs its transport to reduce.  The counit
+    is [id_cast] of [psub_obj] by the tactic [psub_counit] is proved with
+    ([p457_psub_counit]); with the same equation closed [Qed]
+    ([p457_psub_obj_opaque]), N12:
+      Unable to unify "projT1 (id_cast (p457_psub_obj_opaque X (x; h)))
+      t" with "t".
+
+    Controls of the packaging and of the witnesses.  [subspace_RARI] and
+    [quotient_LARI] at the types #457's plan states, [∀ X : PTop@{o},
+    RightAdjointRightInverse (Sliced PForget@{o so} X)] and [∀ X :
+    PTop@{o}, LeftAdjointRightInverse (Cosliced PForget@{o so} X)]
+    ([p457_subspace_RARI], [p457_quotient_LARI]), with [rari_right],
+    [rari_obj] and [lari_left] read back at [eq_refl] as [PSub_Functor X],
+    [psub_obj X] and [PQuot_Functor X] ([p457_subspace_RARI_right],
+    [p457_subspace_RARI_obj], [p457_quotient_LARI_left]).
+    [PTop_HasEqualizers] and [PTop_HasCoequalizers] at
+    [@HasEqualizers PTopCat@{o so}] and [@HasCoequalizers PTopCat@{o so}]
+    ([p457_ptop_equalizers], [p457_ptop_coequalizers]; that they are the
+    book forms at [PForget] is under N3-N6).  The four readbacks restated
+    at [eq_refl]: the equalizer is [PSub] on the equalizer in [Sets] and
+    its arrow [psub_incl], the coequalizer is [PQuot] on the coequalizer
+    in [Sets] and its arrow [pquot_proj] ([p457_ptop_equalizer_obj],
+    [p457_ptop_equalizer_arrow], [p457_ptop_coequalizer_obj],
+    [p457_ptop_coequalizer_arrow]); and the equalizer object is the value
+    of [rari_right (subspace_RARI x)] at the downstairs equalizer, as
+    Proposition 1 builds it ([p457_ptop_equalizer_rari]).
+
+    Controls of the witnesses at concrete spaces.  The two constructions at
+    [PBool] at their types, their adjoints read back at [eq_refl]
+    ([p457_pbool_subspace_RARI], [p457_pbool_quotient_LARI],
+    [p457_pbool_subspace_RARI_right], [p457_pbool_quotient_LARI_left]).
+    The two pairs are pairs of different maps: the constant [pbool_true]
+    against the identity of [PBool], and the two points of [PBool] out of
+    [PPoint] ([p457_pbool_true_map], [p457_pbool_maps_differ],
+    [p457_ppoint_maps], [p457_ppoint_maps_differ]).  The equalizer of the
+    first is [PSub PBool] on the equalizer in [Sets] and the value of
+    [rari_right] of the subspace construction at [PBool] there
+    ([p457_pbool_equalizer_obj], [p457_pbool_equalizer_rari], at
+    [eq_refl]), and exactly [true] lies in it
+    ([p457_pbool_equalizer_points]); the coequalizer of the second is
+    [PQuot PBool] on the coequalizer in [Sets] and the value of
+    [lari_left] of the quotient construction at [PBool] there
+    ([p457_pbool_coequalizer_obj], [p457_pbool_coequalizer_lari], at
+    [eq_refl]), and every point is identified with [true] in it
+    ([p457_pbool_coequalizer_points]).
+
+    ** Instance/Top/Subspace/TypeValued.v
+
+    N13 (UNIVERSE).  TypeValued.v's header, THE SUBSPACE DOES NOT: the
+    book's predicate, quantifying over the opens of X, is formed one
+    universe up ([p457_tsub_open], restating [tsub_open] at [o < o1], and
+    [p457_tsub_open_body], its body there); at [Type@{o}], N13:
+      The term "∃ U : X → Type, IsOpen X U ∧ ∀ s : S, V s ↔ U (h s)" has
+      type "Type@{max(o+1,<1>,<2>)}" while it is expected to have type
+      "Type@{o}" (universe inconsistency: Cannot enforce o < o because o =
+      o).
+
+    N14 (UNIVERSE).  The same: supplied as the [IsOpen] of a
+    [TopSpace@{o}] it is refused.  Its five axioms are formed
+    ([p457_tsub_axioms]), and the same record literal at the quotient's
+    opens is a [TopSpace@{o}] ([p457_tquot_package]; [p457_tquot] restates
+    [TQuot]); N14:
+      The term "tsub_open X S h" has type "(S → Type@{o}) → Type@{o1}"
+      while it is expected to have type "(S → Type@{o}) → Type@{o}"
+      (universe inconsistency: Cannot enforce o1 <= o because o < o1).
+    The universal properties over ARBITRARY spaces are restated
+    ([p457_tsub_universal], [p457_tquot_universal]).
+
+    N15-N17, N26 (UNIVERSE).  The same header, THE SLICED FUNCTORS: the
+    sliced underlying-set functors at Instance/Top/Forgetful.v's
+    [Top_Forget] land in the slices of the LIFTED [Sets@{h so}].  An
+    object of the slice of the unlifted [Sets@{o so}] carries the discrete
+    topology at the points' universe ([p457_unlifted_slice_space]) and one
+    of the lifted slice carries it one universe up
+    ([p457_lifted_slice_space_h]); at the points' universe, N15:
+      The term "Discrete_Top `1 (x)" has type "TopSpace@{h}" while it is
+      expected to have type "TopSpace@{o}" (universe inconsistency: Cannot
+      enforce h = o because o < h).
+    and N16 the same for the coslice, whose controls are
+    [p457_unlifted_coslice_space] and [p457_lifted_coslice_space_h].
+    [Top_Forget] is restated into the lifted [Sets] ([p457_top_forget]);
+    the TYPE of a functor from [Top@{h o}] into a [Sets] whose objects are
+    the point setoids, Instance/Top/Forgetful.v's first wall, is not
+    formed, N17:
+      The term "Sets" has type "Category@{h o o}" while it is expected to
+      have type "Category@{<1> <2> <3>}" (universe inconsistency: Cannot
+      enforce o = <2> because o < h <= <2>).
+    N17 takes the universe of that [Sets]'s objects to be [h]; at
+    Forgetful.v's own [Sets@{o so}], [so] fresh, the type into the lifted
+    [Sets@{h so}] is formed ([p457_top_to_lifted_sets]) and the type into
+    [Sets@{o so}] is not, N26:
+      The term "Sets" has type "Category@{so o o}" while it is expected to
+      have type "Category@{<1> <2> <3>}" (universe inconsistency: Cannot
+      enforce o = <2> because o < h <= <2>).
+
+    N18 (UNIVERSE).  The same header: the adjunction
+    [TQuot_Functor X ⊣ Top_Forget_under X] is refused.  Each functor is
+    formed ([p457_tquot_functor], [p457_top_forget_under]), the
+    transposition between them is the identity on underlying maps
+    ([p457_tquot_adj_to_map], at [eq_refl]), and [Top_Forget_under X y] is
+    the lift of [tstrip_under X y] ([p457_forget_under_lift], at
+    [eq_refl]); the adjunction's type, N18:
+      The term "TQuot_Functor X" has type "@Functor@{so o o h h h}
+      (Coslice@{so so h o} Sets@{o so} (top_carrier X)) (Coslice@{h h <1>
+      h} Top@{h o} X)" while it is expected to have type
+      "@Functor@{<2> <3> <3> <4> <3> <3>} ?D ?C" (universe inconsistency:
+      Cannot enforce h = o because o < h).
+    The adjunction asks its two categories for one hom universe
+    (Theory/Adjunction.v's [Adjunction], [About]: [h1 = h2]); the
+    quotient functor's domain has its homs at [o] and its codomain at
+    [h].
+
+    N19 (CONVERSION).  The same header, STRENGTHS: [tquot_obj_stripped]
+    is Leibniz by [destruct].  At a pair it holds at [eq_refl]
+    ([p457_tquot_obj_stripped_pair]) and at a variable by the lemma
+    ([p457_tquot_obj_stripped]); at [eq_refl] and a variable, N19:
+      The term "eq_refl" has type "tstrip_under X (fobj[TQuot_Functor X]
+      c) = tstrip_under X (fobj[TQuot_Functor X] c)" while it is expected
+      to have type "tstrip_under X (fobj[TQuot_Functor X] c) = c" (cannot
+      unify "tstrip_under X (fobj[TQuot_Functor X] c)" and "c").
+
+    N25 (CONVERSION).  The same paragraph: [tquot_obj_stripped] is
+    [Defined], and load-bearing.  The transposed identity is [id_cast] of
+    its inverse by the tactic [tquot_unit_stripped] is proved with
+    ([p457_tquot_unit]); with the same equation closed [Qed]
+    ([p457_tquot_obj_stripped_opaque]), N25:
+      Unable to unify "projT1 (id_cast (Compat.eq_sym
+      (p457_tquot_obj_stripped_opaque X (x; h)))) t" with "t".
+    Rocq prints the constant [eq_sym] through its abbreviation
+    [Compat.eq_sym] of Lib/Tactics.v.
+
+    N20-N22 (UNIVERSE).  The same header: a squashed, local encoding fits
+    in a [TopSpace@{o}] and is not stated there, the "if" half of its
+    universal property being refused along both routes a proof would
+    take.  The encoding is rebuilt here from #457's scouting prototype:
+    [p457_sq_box] (an open of X around the image of a point, with its
+    preimage inside V, at [o1]), [p457_sq_open] (V respects [≈] and each
+    of its points MERELY has a box) and [p457_sq_subspace], a
+    [TopSpace@{o}] with [h] continuous out of it ([p457_sq_h_cont]) and
+    the "only if" half ([p457_sq_only_if]).  Its opens include the book's,
+    [tsub_open], for predicates respecting the points' equality
+    ([p457_sq_global_to_local]).  The truncation eliminates into a
+    proposition ([p457_sq_elim_prop]); into the Type-valued [IsOpen Z],
+    the first route, N20:
+      The term "IsOpen Z (λ z : Z, V (g z))" has type "Type" while it is
+      expected to have type "Prop" (universe inconsistency: Cannot enforce
+      o <= Prop).
+    A union indexed by the points of Z is a union ([p457_union_by_points]);
+    one indexed by the box data, the second route, N21:
+      The term "p457_sq_box X S h V (g z0)" has type "Type@{o1}" while it
+      is expected to have type "Type@{o}" (universe inconsistency: Cannot
+      enforce o1 <= o because o < o1).
+    And the local form does not give back the book's global witness, N22:
+      The term "∃ U : X → Type, IsOpen X U ∧ ∀ s : S, V s ↔ U (h s)" has
+      type "Type" while it is expected to have type "Prop" (universe
+      inconsistency: Cannot enforce max(o+1, <1>, <2>) <= Prop).
+    That the squashed encoding is not the subspace topology is not a
+    theorem here: two proof routes are refused, nothing more.
+
+    N23, N24 (UNIVERSE).  Two further encodings, neither adopted by a
+    target.  Instance/Top/Kolmogorov.v's small-opens idea puts the
+    predicate at [o] when the opens quantified over are valued at [s < o]
+    ([p457_small_sub_open]), and, given an open [HV] of that encoding,
+    whose type forces [s < o], a union of [s]-valued witnesses over an
+    index at [s] is [s]-valued ([p457_small_union_at_s]); over an index at
+    [o], the index [open_union] takes, N23:
+      The term "∃ i : I, U i x" has type "Type@{max(s,o)}" while it is
+      expected to have type "Type@{s}" (universe inconsistency: Cannot
+      enforce o <= s because s < o).
+    A two-level record whose opens are valued one universe above the
+    points ([p457_Top2]) hosts the book's predicate ([p457_sub2_open]),
+    but its continuity is a type one universe up ([p457_cont2]); at the
+    points' universe, N24:
+      The term "∀ U : Y → Type, p457_IsOpen2 Y U → p457_IsOpen2 X (λ x :
+      X, U (f x))" has type "Type@{max(o+1,o1)}" while it is expected to
+      have type "Type@{o}" (universe inconsistency: Cannot enforce o < o
+      because o = o).
+    So that encoding moves the subspace's wall and keeps the homs above
+    the points.
+
+    NOT PINNED HERE.  (a) [About] readbacks as such: the constraint blocks
+    the headers list, the donors Structure/SlicedInverse.v's Universes
+    section isolates, and the minimization of the unannotated
+    [One_HasEqualizers] to a [Set] hom level; pinned here only where a
+    CLOSED binder carries them ([p457_pmor_at_o], [p457_psub_open],
+    [p457_union_indexed] and the controls of the concrete spaces under
+    [@{o}]) or a refusal does.  (b) Flip censuses ([Defined] against
+    [Qed]) other than N12's and N25's, among them builder B's review's
+    measurement that [psub_adjunction] and [pquot_adjunction] closed [Qed]
+    refuse the triangle facts and Instance/Top/Prop.v's measurement that
+    [PDiscrete] built in proof mode and closed [Qed] refuses its points'
+    readback at [eq_refl], and the closure of the targets under [Print
+    Assumptions]: measurements of the build rather than of commands; the
+    Makefile's print-assumptions gate is where closure is kept.  (c) The
+    universal property of Instance/Top/Presheaf.v's [OpenSub], re-derived
+    in #457's scratch files: Presheaf.v requires the stdlib reals, which no
+    target imports.  (d) The sliced functor in comma form,
+    Construction/Comma/Functorial.v's [Comma_reindex] at [Top_Forget],
+    measured by #457's scouts and cited by Structure/SlicedInverse.v.
+
+    The guard block at the end names the three hundred and forty-three
+    constants of the five targets, so that a rename breaks this file:
+    seventy-three of Structure/SlicedInverse.v, thirty-nine of
+    Structure/SlicedInverse/Strict.v, fifty-one of Instance/Top/Prop.v,
+    one hundred and eleven of Instance/Top/Subspace.v and sixty-nine of
+    Instance/Top/Subspace/TypeValued.v.  They are the [def], [prf],
+    [proj], [rec] and [inst] entries of the targets' .glob files (two
+    hundred and fifty; the [abbrev] entries, the local notations [B],
+    [PT], [G] and [SetsEq], left out), the ninety [Program] obligations
+    and the three record constructors, which is exactly the list
+    [Print Module] gives for each (compared by script); the three records
+    have no elimination scheme ([Locate] of the [_rect], [_ind], [_rec],
+    [_sind] and [_cases] names finds none).  The obligations are not
+    reachable by their short names under this import list; each is named
+    by the shortest qualified name [Locate] gives for it,
+    Instance/Top/Prop.v's by [Top.Prop.], [Prop] being a keyword.  Under
+    the full import list, [Locate] lists exactly one object for each of
+    the three hundred and forty-three.
+
+--------
+* 探测 Mac Lane V.9 的切片伴随逆（问题 #457）
+
+固定五个文件 #457 为 Mac Lane 添加的测量边界 §V.9，书页132-134（目录 ID Maclane:V.9:construction2，
+ 子空间拓扑作为切片的右伴随右逆
+ 底层集函子； Maclane:V.9:construction3，商
+ 拓扑作为余切拓扑的左伴随右逆； 和
+ Maclane:V.9:prop1，命题 1 及其对偶； 仅书号
+ 命题 1，id 是名称，而不是书号）并且对于
+ 七个草图的练习 7.32：Structure/SlicedInverse.v 及其
+ 卫星 Structure/SlicedInverse/Strict.v （命题 1 抽象地，
+ 忠诚被花费的地方，以及没有忠诚的反驳），
+ Instance/Top/Prop.v（带有 Prop 值的空间打开，类别
+ [PTopCat] 及其健忘函子 [PForget]），
+ Instance/Top/Subspace.v（它们之上的两个结构，已打包，
+ 以及他们提供的 [PTopCat] 的均衡器和辅助均衡器）和
+ Instance/Top/Subspace/TypeValued.v（其中哪些可以通过
+ Instance/Top.v 的类型值 [Top]，以及其余的停止位置）。N1、N2、N7-N14、N18、N20、N21 和 N25 重述了由目标头记录的拒绝，这些记录由 #457 的构建者、侦察员和在草稿文件中的审查测量；N15-N17 和 N26 重述了头部对两个 [Sets] 的说明背后的测量（N17 和 N26 是 Instance/Top/Forgetful.v 的第一道墙，N26 位于该文件自己的 [Sets@{o so}]）；N3-N6 和 N19 是该文件自己的；N22-N24 是侦察员对没有目标采用的编码进行的测量。正控制独立地重述了文件的主张。
+
+导入列表，通过脚本比较 [Require] 行来衡量。首先，逐字按顺序列出 Structure/SlicedInverse/Strict.v 的十五行，其中一行是目标文件 Structure/SlicedInverse.v；然后按顺序列出 Structure/SlicedInverse.v 添加的四行（Theory/Universal/Arrow/Dual.v，Adjunction/Opposite.v，Adjunction/Determination.v，Structure/Equalizer/Fork.v）；然后是卫星文件本身；接着按顺序列出 Instance/Top/Subspace.v 添加的四行（Structure/Pullback/Reduction.v，Instance/Sets/Pullback.v，Instance/Sets/Coequalizer.v，以及目标文件 Instance/Top/Prop.v，其自身的四行已经存在），然后是 Subspace.v 本身；最后列出 Instance/Top/Subspace/TypeValued.v 添加的三行（Instance/Sets/Classifier.v，Instance/Top.v，Instance/Top/Forgetful.v）以及 TypeValued.v 本身。这是五个目标中的每一个 [Require]。为一个部分添加了一行，即 Instance/Sets/Powerset.v，用于截断 [Powerset_squash] 的压缩子空间 (N20-N22)。三十行。两个模块被命名为 [Strict]（Theory/Equivalence/Strict.v 和卫星）；保护块的 [Strict.] 名称解析到卫星（[Locate]），没有其他命令命名任何模块。较短的导入列表使得探针无缘无故通过。
+
+纪律。该工具以两种方式进行了检查：由于这个原因，缺席名字的反驳被拒绝，而这个文件中每一条不是反驳的125条定义、例子、引理和记录（七十、四十三、十和二），在这个完整文件的一个副本中被包裹起来，在该命令处停止构建，并报告守护命令已被接受（125条中的125条，通过副本上的脚本）。除了该仪器和 N7 外，每个负项都是 [Definition] 或 [Example]，从不使用 [Check]，因此打开的 evar 或缺失的实例无法满足它；N7 是 [Qed]。每个负项在此整个文件的副本中都被去掉了其驳斥关键字，一次一个，编译后读取其错误；这二十七个副本中的每一个都在被剥去的命令内部停止（通过该命令的范围与脚本比较，在错误之前的文件行）。记录的类型是那种错误的类型，每个否定项旁边都有正控制；每个否定项使用的标识符，除去它自己的名字及其绑定器命名的宇宙，都被本文件的某个正控制使用（通过对命令标识符的一个脚本计算，不包括守护块）。在这个完整文件的另一个副本中，除了仪器和 N7 之外，每个否定都跟随着一个绑定器仪器，相同的宇宙绑定器、参数和返回类型，并带有一个简单的主体（返回类型的假设，或者当命令声明没有时使用 [Datatypes.unit]）：所有二十五个都被接受，因此每个否定都被其主体拒绝。每一个声明了约束的十六个否定，N10-N12 和 N14-N26，都被重写在这个完整文件的一个副本中，去掉了这些约束，但保留了“+”：每个副本在带有反驳关键字时都可以编译，而去掉关键字时，则在同一文件行以相同的子句被拒绝（通过脚本比较，序列宇宙名称除外），所以没有拒绝是仅由绑定器声明的约束引起的。N23 的 [s < o] 由它的假设 [HV] 强制，该假设的类型 [p457_small_sub_open@{s o}] 承载它。每个 UNIVERSE 负例都是一个顶层定义，其宇宙在其自身的绑定器中声明，从不在 [Section] 中声明；N8 和 N9 不声明任何，其宇宙为 [Set]。引用是 Rocq 9.1.1 中的，在此文件的导入列表下，省略了错误的环境块；Rocq 使用作用域内的简短名称打印“无法统一”的括号，并且一个宇宙的精简副本以自身和一个序列号命名，写作 <1>, <2>, ...，在每个引用中按首次出现的顺序重新编号。该文件也能在 Coq 8.19.2 和 8.20.1 上编译，且没有警告，针对该库的预构建树以及从该树旁边编译的五个目标。在这个导入列表下，该文件的依赖闭包为九十五个 [Category] 模块（[Print Libraries]）；在这九十个非目标模块中，有八十九个在两个预构建树中与该树完全相同（通过 [cmp] 比较），第九十个 Instance/Top.v 的差异仅在其头部注释中的 #457 的 CORRECTION 语句，预构建树则保留基提交的文本。精简版本的副本也在那里进行了汇编，二十七份副本中的每一份都在其 Rocq 9.1.1 拒绝的文件行上被拒绝。根据 8.20.1，每个错误都是 Rocq 9.1.1 的错误，直到序列名称；根据 8.19.2，除了 N15-N17 和 N26 之外，其他所有错误都是这些错误，这四份副本打印了相同类型的不匹配且没有宇宙子句（通过脚本在副本上进行比较）。
+
+种类。二十七个驳斥，被计算为以驳斥关键字开头的行：NAME-ABSENCE（工具），CONVERSION（N1、N2、N10-N12、N19、N25），INSTANCE（N3-N6），SECTION-VARIABLE（N7）和UNIVERSE（N8、N9、N13-N18、N20-N24、N26）：分别为一、七、四、一和十四。没有拒绝是BINDER类型：每个binder工具都被接受。INSTANCE拒绝带有括号“(no type class instance found)”。N20和N22是宇宙条款，其另一侧是类型[Prop]：截断只消除到命题，就像Test/ProbeCompHaus413.v的N1中一样。N12 和 N25 是由关闭主体的策略报告的统一拒绝。
+
+标签。引脚带有本文件的 N 编号；#457 的侦察员、构建者和审查员在其他名称的临时文件中测量了大多数引脚，并记录在此，以便目标头可以引用其中任意一个。侦察员 A 的 N1 和 N2 是 N13 和 N14，它的 N3 是 N23，它的 N4、N5 和 N6 是 N20、N21 和 N22，它的 N7、N8 和 N9 是 N15、N16 和 N17，它的 N10 是 N24，它的 M1 是 N8（带控制 [p457_psub_at_set]），它的 M2 是 N10 和 N11。构建者 A 的 p2/V1 是 N7，它的 p6/M1 是 N1。建造者 B 的 W1 是 N10 和 N11，其 W2 是 N13，其 W3 是 N14，W4 是 N18；其联合设计文件的 [m1_idx_union_at_Set]、[idx_to_family_at_Set] 和 [m1_PSub_at_Set] 分别是 N8、N9 和 [p457_psub_at_set]；其 SqN4 和 SqN5 分别是 N20 和 N21；其评审将 [psub_obj] 翻转为 [Qed] 是 N12。建造者 A 的评审 LOW-5（在 [Erase Parallel] 下降且无 [Faithful]）是 [p457_desc_at_erase]，而建造者 B 的评审 LOW-8（[Top_Forget_under X y] 是上升）是 [p457_forget_under_lift]。第二阶段评审将 [tquot_obj_stripped] 翻转为 [Qed] 是 N25，其 N17 在新的 [so] 是 N26，其 N4 和 N6 的同形控制分别是 [p457_prop1_at_pforget] 和 [p457_prop1_dual_at_pforget]。这些标签不是常量：每个反驳在其上方一行的注释中都有自己的标签，仪器的读数为“仪器”。N25 和 N26 在其他标签之后添加，位于它们扩展的负数旁，N26 在 N17 之后，N25 在 N19 之后，因此主体顺序为 N1-N17、N26、N18、N19、N25、N20-N24。
+
+** Structure/SlicedInverse.v 和 Structure/SlicedInverse/Strict.v
+
+N1（转换）。Structure/SlicedInverse.v 的头部，优点：书本形式通过投影读取楼下均衡器，以便它们的回读达到 [eq_refl]。命题 1 的对象和箭头回读被重述（[p457_prop1_obj]，[p457_prop1_arrow]），以及其归约到应用于 [rari_right] 和 [rari_adj] 的整个右伴随形式（[p457_prop1_by_adjoints]，在 [eq_refl]：不参考右逆条款）。用 [destruct] 在楼下的等化器（[p457_eq_by_match]，已形成）上写的相同书籍形式，其对象回读被拒绝，N1：
+术语“eq_refl”的类型为“projT1 (equalizer f g) = projT1 (equalizer f g)”，而预期类型为“projT1 (equalizer f g) = projT1 (fobj[rari_right (L x)] (projT1 (equalizer (fmap[G] f) (fmap[G] g)); projT1 (projT2 (equalizer (fmap[G] f) (fmap[G] g)))))”（无法统一“projT1 (equalizer f g)”和“projT1 (fobj[rari_right (L x)] (projT1 (equalizer (fmap[G] f) (fmap[G] g)); projT1 (projT2 (equalizer (fmap[G] f) (fmap[G] g)))))”）。
+
+N2（转换）。相同的标题：[rari_over]，电梯位于 [S] 之上，是 Leibniz，但不是 [eq_refl]，字段 [rari_obj] 是其唯一来源，在变量右伴随-右逆上。它在其 Leibniz 类型 ([p457_rari_over]) 下被重述，均衡器的对象回读 [rari_eq_obj] 在 [eq_refl] ([p457_rari_eq_obj]) 下被重述，并且在 [eq_refl]，N2：
+  术语 "eq_refl" 的类型为 "fobj[G] (projT1 (fobj[rari_right L] (S; s))) = fobj[G] (projT1 (fobj[rari_right L] (S; s)))"，而期望的类型为 "fobj[G] (projT1 (fobj[rari_right L] (S; s))) = S" (无法统一 "fobj[G] (projT1 (fobj[rari_right L] (S; s)))" 和 "S")。
+
+N3-N6（实例）。相同的标题，每个假设的用途：忠实性仅用于分叉方程，而下行（中介箭头的存在性和唯一性）不使用任何假设。固定在对偶模型 [Erase Parallel] 上，其中不存在 [Faithful] 实例，并且忠实性被否定（[Erase_Parallel_not_faithful]）：使用 [_1] 中被抹去对的等化器 [p457_erase_eq] 和 [erase_slice_RARI] 的共通箭 [p457_erase_U]，在没有 [Faithful] 范围内的地方应用下降（[p457_desc_at_erase]），并且提升的叉方程在那里是错误的（[p457_fork_refuted_at_erase]，封闭）；双共叉也是如此（[p457_codesc_at_erase], [p457_cofork_refuted_at_erase]，位于 [p457_erase_coeq] 和 [p457_erase_V] 上）。引理 [sliced_fork] 和 [cosliced_cofork]（用忠实性重述，[p457_cofork] 和 N7 的引理）以及书籍形式 [equalizers_from_sliced_RARI] 和 [coequalizers_from_sliced_LARI] 在那里被应用，忠实性参数留待解析，N3、N4、N5 和 N6 各自：
+  ?GF：无法推断此类型为“Faithful (Erase Parallel)”的占位符（未找到类型类实例）。在“以下项包含未解决的隐式参数：”之后，以及该项。同样的两本书的形式以相同的方式应用于 [PForget]，其中解析找到 [PForget_Faithful]，形成了 ([p457_prop1_at_pforget], [p457_prop1_dual_at_pforget]) 并且是 Instance/Top/Subspace.v 的 [PTop_HasEqualizers] 和 [PTop_HasCoequalizers]，在 [eq_refl] ([p457_prop1_at_pforget_is_ptop], [p457_prop1_dual_at_pforget_is_ptop])。反驳在其声明的类型 ([p457_prop1_needs_faithfulness], [p457_prop1_dual_needs_faithfulness]) 中重新陈述。
+
+N7（部分变量）。A 建筑师使用 [Proof using] 测量同一边界。在声明 [E]、[U] 以及实例 [GF] 为 Structure/SlicedInverse.v 的 [SlicedEqualizer] 的部分中，下降操作在常量 [sliced_desc]（[p457_desc_using]）下于 [Proof using E U] 下闭合；在常量 [sliced_fork] 下的叉方程，在 [Proof using E U] 下，其 [Qed] 被拒绝，N7：
+      以下部分变量被使用但未声明：GF。并且相同的语句，将忠实性假设作为部分实例代替，在 [Proof using E U]（[p457_fork_using]）下闭合。被拒绝的证明被 [Restart] 丢弃，Rocq 在批处理模式下对此发出警告；该警告仅在该部分被关闭。
+
+其余两个文件的控制：[p457_sliced_fobj] 和 [p457_cosliced_fobj]（在 [eq_refl] 的切片函子对象映射），[p457_prop1] 和 [p457_prop1_dual]（命题 1 及其在所述类型下的对偶），[p457_prop1_dual_obj]（在 [eq_refl] 的对偶对象回读）以及 [p457_rari_lali_rari]（通过 [eq_refl] 的左伴随左逆的往返）。
+
+** 实例/顶层/属性.v
+
+控件。[PTopCat] 的同态位于这些点的宇宙中：
+    [PMor X Y] 被归于 CLOSED 绑定器 [@{o}] 下的 [Type@{o}]
+    （[p457_pmor_at_o]），其中 Test/ProbeStoneCech455.v 的 N6 拒绝
+    Instance/Top.v 的 [ContinuousMorphism]。[PTopCat@{o so}] 是一个
+    [Category@{so o o}]，并且 [PForget@{o so}] 落在 [Sets@{o so}] 中，
+    [Sets] 的对象是点集合（point setoids），都在一个只命名
+    [o] 和 [so] 的绑定器下（[p457_ptopcat], [p457_pforget]）；它的对象和箭头回读在 [eq_refl]（[p457_pforget_fobj],
+    [p457_pforget_fmap]）处成立，并且它的忠实性通过解析找到
+    （[p457_pforget_faithful]）。比较 N17 和 N26。
+
+混凝土空间的控制。离散空间的点和开集在 CLOSED 绑定器 [@{o}] 下的 [eq_refl] 中回读（[p457_pdiscrete_carrier], [p457_pdiscrete_open], [p457_pdisc_open_body]），其五个公理被形成（[p457_pdisc_axioms]），从它出的每个集点映射都是连续的（[p457_pdisc_cont]），并且以该映射作为其底层映射成为一个箭头（[p457_pdisc_mor_map]）；常映射计算（[p457_pconst_at]）；[PPoint] 和 [PBool] 是 Instance/Sets.v 中一元和二元集点的离散空间（[p457_ppoint], [p457_pbool], 在 [eq_refl] 的 [@{o}] 下），并且 [PBool] 的两个点是不同的（[p457_pbool_points_distinct]）。
+
+N8, N9（宇宙）。Instance/Top/Prop.v 的头文件，联合公理，两种方式测量。设计 (a)，在点的宇宙上对某个索引类型进行联合，是记录 [p457_PTopIdx]。子空间联合证据在 (a) 下的索引，（索引，开集）对 ([p457_idx_witness_index])，是高于 [Set] 的联合索引（[p457_idx_union_above]，在 [Set < o] 下）；在 [Set]，N8：
+  术语 “p457_idx_witness_index X S h I V” 的类型是 “Type”，而预期类型是 “Set”（宇宙不一致：无法强制 Set+1 <= Set）。设计 (a) 给出了上面在 [Set] ([p457_idx_to_family]) 选择的设计 (b)；在 [Set], N9 处的直接推导：
+      术语 "{U : X → Prop | F U}" 的类型是 "Type"，而期望它的类型是 "Set"（宇宙不一致：无法强制 Set+1 <= Set）。在 (b) 下，子空间在 [PTop@{Set}] ([p457_psub_at_set]) 处形成，并且 (a) 在每个索引宇宙上成立，在 CLOSED 绑定器 [@{o i}] ([p457_union_indexed], 重述 [popen_union_indexed]) 下。这里或那里并未声明 (b) 在 [Set] 处严格强于 (a)。
+
+** 实例/顶层/子空间.v
+
+控件。子空间的开放集是书上的逐字内容，位于 [eq_refl] 下的 CLOSED 文件夹 [@{o}]（[p457_psub_open]）；关于任意空间的进出映射的普遍性质（[p457_psub_universal], [p457_pquot_universal]）；练习 7.32 的定义在 [eq_refl]（[p457_ex732_def]）及其第 3 部分（[p457_ex732_part3]）。
+
+N10、N11（转换）。Instance/Top/Subspace.v 的头部，优势：对象方程，即在 [L] 之后切片的遗忘函子（以及在 [M] 之后的余切片函子）在对象上是恒等的，是莱布尼茨而非 [eq_refl] 在某变量上，切片对象是没有 eta 的 stdlib [sigT] 对。它们在 Structure/SlicedInverse.v 的 [Sliced PForget X] 和 [Cosliced PForget X] 中陈述，函子命题 1 及其对偶函数使用。在一个显式对中，他们在 [eq_refl] ([p457_psub_obj_pair], [p457_pquot_obj_pair]) 处保持，在一个变量上，第一个分量执行 ([p457_psub_obj_carrier])，并且方程通过 [psub_obj] 和 [pquot_obj] ([p457_psub_obj], [p457_pquot_obj]) 保持。在 [eq_refl] 和一个变量上，N10：
+  术语 "eq_refl" 的类型为 "fobj[Sliced PForget X] (fobj[PSub_Functor X] c) = fobj[Sliced PForget X] (fobj[PSub_Functor X] c)"，而预期类型为 "fobj[Sliced PForget X] (fobj[PSub_Functor X] c) = c"（无法统一 "fobj[Sliced PForget X] (fobj[PSub_Functor X] c)" 和 "c"）。N11 与 [Cosliced] 和 [PQuot_Functor] 相同。
+
+N12（转换）。相同的头：[psub_obj] 变成 [Defined]，因为辅单位三角形事实需要它的传递来简化。辅单位是 [psub_obj] 的 [id_cast]，通过策略 [psub_counit] 使用 ([p457_psub_counit]) 证明；在相同的方程关闭 [Qed] ([p457_psub_obj_opaque]) 时，N12：无法统一 "projT1 (id_cast (p457_psub_obj_opaque X (x; h))) t" 与 "t"。
+
+包装和见证者的控制。[subspace_RARI] 和 [quotient_LARI] 在类型 #457 的计划状态下，[∀ X : PTop@{o}, RightAdjointRightInverse (Sliced PForget@{o so} X)] 和 [∀ X : PTop@{o}, LeftAdjointRightInverse (Cosliced PForget@{o so} X)] ([p457_subspace_RARI], [p457_quotient_LARI])，与 [rari_right]、[rari_obj] 和 [lari_left] 一起在 [eq_refl] 读回为 [PSub_Functor X]、[psub_obj X] 和 [PQuot_Functor X] ([p457_subspace_RARI_right], [p457_subspace_RARI_obj], [p457_quotient_LARI_left])。[PTop_HasEqualizers] 和 [PTop_HasCoequalizers] 在 [@HasEqualizers PTopCat@{o so}] 和 [@HasCoequalizers PTopCat@{o so}] ([p457_ptop_equalizers], [p457_ptop_coequalizers]；它们在 [PForget] 的书本形式在 N3-N6 下)。在 [eq_refl] 重新陈述的四个重述：在 [Sets] 的等化器上的等化器是 [PSub] 及其箭头 [psub_incl]， 在 [Sets] 的余等化器上的余等化器是 [PQuot] 及其箭头 [pquot_proj]（[p457_ptop_equalizer_obj]、[p457_ptop_equalizer_arrow]、[p457_ptop_coequalizer_obj]、[p457_ptop_coequalizer_arrow]）；等化器对象是楼下等化器上 [rari_right (subspace_RARI x)] 的值，如命题 1 构造的那样（[p457_ptop_equalizer_rari]）。
+
+混凝土空间中见证人的控制。在 [PBool] 上的两种构造及其类型，它们的伴随在 [eq_refl] 被回读（[p457_pbool_subspace_RARI], [p457_pbool_quotient_LARI], [p457_pbool_subspace_RARI_right], [p457_pbool_quotient_LARI_left]）。这两对是不同映射的配对：常量 [pbool_true] 对应 [PBool] 的恒等映射，以及 [PBool] 中的两点来自 [PPoint]（[p457_pbool_true_map], [p457_pbool_maps_differ], [p457_ppoint_maps], [p457_ppoint_maps_differ]）。第一个的等化器是在 [Sets] 的等化器上的 [PSub PBool]，以及在 [PBool] 的子空间构造的 [rari_right] 的值（在 [eq_refl] 的 [p457_pbool_equalizer_obj]，[p457_pbool_equalizer_rari]），并且其内恰好包含 [true]（[p457_pbool_equalizer_points]）；第二个的余等化器是在 [Sets] 的余等化器上的 [PQuot PBool]，以及在 [PBool] 的商构造的 [lari_left] 的值（在 [eq_refl] 的 [p457_pbool_coequalizer_obj]，[p457_pbool_coequalizer_lari]），并且其内的每个点都与 [true] 相同（[p457_pbool_coequalizer_points]）。
+
+** 实例/顶层/子空间/类型值.v
+
+N13（宇宙）。TypeValued.v 的头部，子空间不：书的谓词，对 X 的开集进行量化，是在一个宇宙上构成的 ([p457_tsub_open]，重述 [tsub_open] 于 [o < o1]，并 [p457_tsub_open_body]，其主体在那里)；在 [Type@{o}]，N13：
+      术语 “∃ U : X → Type, IsOpen X U ∧ ∀ s : S, V s ↔ U (h s)” 的类型是 “Type@{max(o+1,<1>,<2>)}”，而预期类型是 “Type@{o}”（宇宙不一致：无法强制 o < o 因为 o = o）。
+
+N14（宇宙）。同样：作为一个 [IsOpen] 的 [TopSpace@{o}] 提供时，它被拒绝。它的五个公理被形成（[p457_tsub_axioms]），并且在商的打开处的相同记录字面量是一个 [TopSpace@{o}]（[p457_tquot_package]；[p457_tquot] 重述 [TQuot]）；N14：
+      术语“tsub_open X S h”的类型是“(S → Type@{o}) → Type@{o1}”，而期望的类型是“(S → Type@{o}) → Type@{o}”（宇宙不一致性：无法强制 o1 <= o 因为 o < o1）。
+    在任意空间上的全称性质被重述（[p457_tsub_universal], [p457_tquot_universal]）。
+
+N15-N17, N26（宇宙）。相同的标题，切片函子：在 Instance/Top/Forgetful.v 中，切片的基础集合函子落在提升的切片中。未提升的切片的一个对象在点的宇宙处携带离散拓扑，并且一个提升的切片在高一层的宇宙中携带它；在点的宇宙处，N15：
+  术语“Discrete_Top `1 (x)” 类型为 “TopSpace@{h}”，而预期类型为 “TopSpace@{o}”（宇宙不一致：无法强制 h = o，因为 o < h）。以及 N16 对于余切片也是一样，其控制是 [p457_unlifted_coslice_space] 和 [p457_lifted_coslice_space_h]。[Top_Forget] 被重新表述为提升后的 [Sets] ([p457_top_forget])；从 [Top@{h o}] 到 [Sets] 的函子类型，其对象是点集合体，Instance/Top/Forgetful.v 的第一道屏障，并未形成，N17：
+      术语 “Sets” 的类型是 “Category@{h o o}”，而其预期的类型是 “Category@{<1> <2> <3>}” （宇宙不一致：无法强制 o = <2>，因为 o < h <= <2>）。N17 将 [Sets] 的对象的宇宙视为 [h]；在 Forgetful.v 自身的 [Sets@{o so}], [so] fresh 中，升起后的类型 [Sets@{h so}] 被形成（[p457_top_to_lifted_sets]），而类型进入 [Sets@{o so}] 则没有，N26：
+      术语 "Sets" 的类型是 "Category@{so o o}"，而期望它的类型是 "Category@{<1> <2> <3>}"（宇宙不一致：无法强制 o = <2> 因为 o < h <= <2>）。
+
+N18（宇宙）。同一标题：附加[TQuot_Functor X ⊣ Top_Forget_under X]被拒绝。每个函子由 ([p457_tquot_functor], [p457_top_forget_under]) 形成，它们之间的换位在基础映射上是恒等的 ([p457_tquot_adj_to_map], 在 [eq_refl])，并且 [Top_Forget_under X y] 是 [tstrip_under X y] ([p457_forget_under_lift], 在 [eq_refl]) 的提升；伴随的类型为 N18：
+术语 “TQuot_Functor X” 的类型是 “@Functor@{so o o h h h} (Coslice@{so so h o} Sets@{o so} (top_carrier X)) (Coslice@{h h <1> h} Top@{h o} X)” ，而期望的类型是 “@Functor@{<2> <3> <3> <4> <3> <3>} ?D ?C”（宇宙不一致：无法强制 h = o，因为 o < h）。伴随要求它的两个范畴提供一个同构宇宙（Theory/Adjunction.v 的 [Adjunction]、[About]：[h1 = h2]）；商函子（quotient functor）的定义域在 [o] 上有它的同态，在值域在 [h] 上。
+
+N19（转换）。相同的标题，优势：[tquot_obj_stripped] 是由 [destruct] 的莱布尼茨。在一对情况下它在 [eq_refl]（[p457_tquot_obj_stripped_pair]）处保持，并且在引理下的变量（[p457_tquot_obj_stripped]）；在 [eq_refl] 和一个变量，N19：术语“eq_refl”的类型为“tstrip_under X (fobj[TQuot_Functor X] c) = tstrip_under X (fobj[TQuot_Functor X] c)”，而期望的类型为“tstrip_under X (fobj[TQuot_Functor X] c) = c”（无法统一“tstrip_under X (fobj[TQuot_Functor X] c)”和“c”）。
+
+N25（转换）。同一段落：[tquot_obj_stripped] 是 [Defined]，并且是承重的。通过策略 [tquot_unit_stripped] 的逆元，转置恒等式为 [id_cast]，可通过 ([p457_tquot_unit]) 证明；使用相同的封闭方程 [Qed]（[p457_tquot_obj_stripped_opaque]），N25：无法统一“projT1 (id_cast (Compat.eq_sym (p457_tquot_obj_stripped_opaque X (x; h)))) t”和“t”。Rocq 通过其在 Lib/Tactics.v 中的缩写 [Compat.eq_sym] 打印常量 [eq_sym]。
+
+N20-N22（宇宙）。相同的头部：一个压缩的本地编码适合在 [TopSpace@{o}] 中，并且在那里没有说明，它的普遍属性的“如果”部分沿两条路径都被拒绝，证明将会需要。这里的编码是从 #457 的侦察原型重建的：[p457_sq_box]（在一个点的像周围的 X 的开集，它的原像在 V 内，在 [o1]），[p457_sq_open]（V 遵守 [≈] 并且其每个点仅仅有一个盒子）和 [p457_sq_subspace]，一个 [TopSpace@{o}]，从中连续出 [h]（[p457_sq_h_cont]）以及“仅当”部分（[p457_sq_only_if]）。它的开集包括书中的 [tsub_open]，对于关于点的相等的谓词 ([p457_sq_global_to_local])。截断会转化为一个命题 ([p457_sq_elim_prop])；转化为类型值的 [IsOpen Z]，第一条路径，N20：
+  术语 "IsOpen Z (λ z : Z, V (g z))" 的类型是 "Type"，而期望的类型是 "Prop"（宇宙不一致：无法强制 o <= Prop）。一个由 Z 的点索引的并集是一个并集 ([p457_union_by_points])；
+由盒子数据索引的，第二条路径，N21：
+术语 "p457_sq_box X S h V (g z0)" 的类型为 "Type@{o1}"，而它被期望的类型是 "Type@{o}"（宇宙不一致：无法强制 o1 <= o 因为 o < o1）。本地形式也没有返回书中的全局见证，N22：
+术语 "∃ U : X → Type, IsOpen X U ∧ ∀ s : S, V s ↔ U (h s)" 的类型为 "Type"，而它被期望的类型是 "Prop"（宇宙不一致：无法强制 max(o+1, <1>, <2>) <= Prop）。被压缩的编码不是子空间拓扑，这里不是一个定理：两种证明方法都被拒绝，仅此而已。
+
+N23，N24（宇宙）。另外两种编码，都未被目标采用。实例/顶部/Kolmogorov.v 的 small-opens 思想在 opens 被赋值为 [s < o] ([p457_small_sub_open]) 时，将谓词放在 [o] 上，并且，给定该编码的一个 open [HV]，其类型强制 [s < o]，在索引为 [s] 上对 [s] 值见证的并集是 [s] 值的 ([p457_small_union_at_s])；在索引为 [o] 上，索引 [open_union] 取 N23：
+  术语 "∃ i : I, U i x" 的类型为 "Type@{max(s,o)}"，而预期类型为 "Type@{s}"（宇宙不一致：无法强制 o <= s，因为 s < o）。一个两级记录，其 opens 的值位于比点高一层的宇宙 ([p457_Top2]) 上，承载了该书的谓词 ([p457_sub2_open])，但其连续性位于高一级的宇宙 ([p457_cont2])；在点的宇宙中，N24：
+      术语 "∀ U : Y → Type, p457_IsOpen2 Y U → p457_IsOpen2 X (λ x : X, U (f x))" 的类型为 "Type@{max(o+1,o1)}"，而预期类型为 "Type@{o}"（宇宙不一致：无法强制 o < o，因为 o = o）。因此，该编码移动了子空间的界限，并保持 hom 在点上方。
+
+这里未固定。（a）[About] 的回读如下：约束阻止了标题列表，捐赠者 Structure/SlicedInverse.v 的 Universes 部分被隔离，以及将未注释的 [One_HasEqualizers] 最小化到 [Set] 同质级别；仅当一个 CLOSED 绑定器携带它们（[p457_pmor_at_o]、[p457_psub_open]、[p457_union_indexed] 及 [@{o}] 下具体空间的控件）或拒绝时，才在此固定。(b) 翻转普查（[Defined] 对 [Qed]）除了 N12 和 N25 之外，其中构建者 B 的审查测量 [psub_adjunction] 和 [pquot_adjunction] 关闭 [Qed] 拒绝三角事实，以及 Instance/Top/Prop.v 的测量 [PDiscrete] 在证明模式下构建并关闭 [Qed] 拒绝其点在 [eq_refl] 的回读，以及在 [Print Assumptions] 下目标的关闭：构建的测量而不是命令的测量；Makefile 的 print-assumptions 门是保持关闭的地方。(c) Instance/Top/Presheaf.v 的 [OpenSub] 的通用性质，在 #457 的草稿文件中重新推导：Presheaf.v 需要 stdlib 实数库，但没有任何目标导入该库。(d) 逗号形式的切片函子，Construction/Comma/Functorial.v 中 [Comma_reindex] 处的 [Top_Forget]，由 #457 的侦查器测量，并在 Structure/SlicedInverse.v 中引用。
+
+末尾的守卫块列出了五个目标的三百四十三个常量，这样重命名会破坏此文件：Structure/SlicedInverse.v 中有七十三个，Structure/SlicedInverse/Strict.v 中有三十九个，Instance/Top/Prop.v 中有五十一个，Instance/Top/Subspace.v 中有一百一十一个，Instance/Top/Subspace/TypeValued.v 中有六十九个。它们是目标的 .glob 文件中的 [def]、[prf]、[proj]、[rec] 和 [inst] 条目（共二百五十个；[abbrev] 条目，以及本地标记 [B]、[PT]、[G] 和 [SetsEq] 被排除在外）、九十个 [Program] 义务和三个记录构造函数，这正是 [Print Module] 为每一个（通过脚本对比）提供的列表；这三个记录没有消除方案（[Locate] 的 [_rect]、[_ind]、[_rec]、[_sind] 和 [_cases] 名称中找不到）。根据此导入列表，这些义务无法通过它们的简称访问；每一个都由 [Locate] 提供的最短限定名称命名，Instance/Top/Prop.v 由 [Top.Prop.] 提供，[Prop] 是一个关键字。在完整的导入列表下，[Locate] 为三百四十三个中的每一个列出了一个对象。
 *)
 
 Require Import Category.Lib.
@@ -37,14 +648,14 @@ Require Import Category.Instance.Sets.Powerset.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(** ** Instrument: the refutation keyword is live / ** 工具：反驳关键词是实时的 *)
 
-(* The instrument *)
+(* The instrument / 乐器 *)
 Fail Check probe457_absent_name.
 
-(* * ** Structure/SlicedInverse.v: sliced 函子 Proposition 1 （已译） *)
+(** ** Structure/SlicedInverse.v: the sliced functors and Proposition 1 / ** Structure/SlicedInverse.v：切片函子和命题1 *)
 
-(* CONTROL: [Sliced_fobj] and [Cosliced_fobj], restated. *)
+(* CONTROL: [Sliced_fobj] and [Cosliced_fobj], restated. / 控制：[Sliced_fobj] 和 [Cosliced_fobj]，重申。 *)
 Example p457_sliced_fobj@{oA hA oX hX +} {A : Category@{oA hA hA}}
   {X : Category@{oX hX hX}} (G : A ⟶ X) (a : A) (h : @Slice A a) :
   Sliced G a h = (G (`1 h); fmap[G] (`2 h)) := eq_refl.
@@ -53,7 +664,13 @@ Example p457_cosliced_fobj@{oA hA oX hX +} {A : Category@{oA hA hA}}
   {X : Category@{oX hX hX}} (G : A ⟶ X) (a : A) (h : @Coslice A a) :
   Cosliced G a h = (G (`1 h); fmap[G] (`2 h)) := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: Proposition 1, restated at its stated type; it IS the form
+   over whole right adjoints applied to [rari_right] and [rari_adj].
+
+--------
+控制：命题1，以其声明的类型重新表述；它是作用于 [rari_right] 和 [rari_adj] 的整个右伴随的形式。
+*)
 Definition p457_prop1@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) `{GF : @Faithful A X G}
   `{HX : @HasEqualizers X}
@@ -68,7 +685,14 @@ Example p457_prop1_by_adjoints@{oA oX h +} {A : Category@{oA h h}}
     = equalizers_from_sliced_right_adjoints G (fun a => rari_right (L a))
         (fun a => rari_adj (L a)) := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: the readbacks of [equalizers_from_sliced_RARI_obj] and
+   [_arrow], restated: the equalizer built IS the lift of the downstairs
+   one.
+
+--------
+控制：[equalizers_from_sliced_RARI_obj] 和 [_arrow] 的回读，重述：构建的均衡器就是楼下那个的提升。
+*)
 Example p457_prop1_obj@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) `{GF : @Faithful A X G}
   `{HX : @HasEqualizers X}
@@ -91,7 +715,13 @@ Example p457_prop1_arrow@{oA oX h +} {A : Category@{oA h h}}
              `1 (`2 (@equalizer X HX _ _ (fmap[G] f) (fmap[G] g))))) :=
   eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+The same book form with the downstairs equalizer read by [destruct],
+   builder A's out-of-tree measurement restated.
+
+--------
+与楼下均衡器相同的书籍形式，由 [destruct] 阅读，重申了构建者 A 的非树测量。
+*)
 Definition p457_eq_by_match@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) `{GF : @Faithful A X G}
   `{HX : @HasEqualizers X}
@@ -117,7 +747,7 @@ Fail Example p457_eq_by_match_obj@{oA oX h +} {A : Category@{oA h h}}
              `1 (`2 (@equalizer X HX _ _ (fmap[G] f) (fmap[G] g))))) :=
   eq_refl.
 
-(* CONTROL: [rari_eq_obj] restated, and [rari_over] at its Leibniz type. *)
+(* CONTROL: [rari_eq_obj] restated, and [rari_over] at its Leibniz type. / 控制：[rari_eq_obj] 重申，而 [rari_over] 采用其莱布尼茨类型。 *)
 Example p457_rari_eq_obj@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) {x y : A} (f g : x ~> y) {S : X}
   (s : S ~> G x) (E : IsEqualizer (fmap[G] f) (fmap[G] g) S s)
@@ -137,9 +767,15 @@ Fail Example p457_rari_over_refl@{oA oX h +} {A : Category@{oA h h}}
   (L : RightAdjointRightInverse (Sliced G x)) :
   G (`1 (rari_right L (S; s))) = S := eq_refl.
 
-(* 相关说明。 （已译） *)
+(** ** Structure/SlicedInverse.v: where faithfulness is spent / ** Structure/SlicedInverse.v：忠实度被耗尽的地方 *)
 
-(* 相关说明。 （已译） *)
+(*
+The countermodel's data: an equalizer in [_1] of the erased pair, and
+   the couniversal arrow of the right-adjoint-right-inverse at [ParX].
+
+--------
+反例模型的数据：在 [_1] 中被抹去对的均衡器，以及在 [ParX] 上右伴随右逆的对普遍箭头。
+*)
 Definition p457_erase_eq :=
   @equalizer _1 One_HasEqualizers _ _
     (fmap[Erase Parallel] par_arrow_one) (fmap[Erase Parallel] par_arrow_two).
@@ -148,13 +784,18 @@ Definition p457_erase_U :=
   rari_couniversal (Erase Parallel) (`1 (`2 p457_erase_eq))
     (erase_slice_RARI ParX).
 
-(* CONTROL: descent at [Erase Parallel], where no [Faithful] instance
-   exists: [sliced_desc] takes none. *)
+(*
+CONTROL: descent at [Erase Parallel], where no [Faithful] instance
+   exists: [sliced_desc] takes none.
+
+--------
+控制：在 [Erase Parallel] 下降时，没有 [Faithful] 实例存在：[sliced_desc] 不获取任何。
+*)
 Definition p457_desc_at_erase :=
   @sliced_desc _ _ (Erase Parallel) ParX ParY par_arrow_one par_arrow_two
     _ (`1 (`2 p457_erase_eq)) (`2 (`2 p457_erase_eq)) p457_erase_U.
 
-(* 相关说明。 （已译） *)
+(* CONTROL: the fork equation of the lift is FALSE there. / 控制：升力的叉式方程在那里是错误的。 *)
 Definition p457_fork_refuted_at_erase :
   par_arrow_one
     ∘ sliced_eq_arrow (Erase Parallel) (`1 (`2 p457_erase_eq)) p457_erase_U
@@ -168,8 +809,13 @@ Fail Definition p457_fork_at_erase :=
   @sliced_fork _ _ (Erase Parallel) ParX ParY par_arrow_one par_arrow_two
     _ (`1 (`2 p457_erase_eq)) (`2 (`2 p457_erase_eq)) p457_erase_U _.
 
-(* CONTROL: the same application at [PForget], its faithfulness found by
-   resolution, IS Instance/Top/Subspace.v's [PTop_HasEqualizers]. *)
+(*
+CONTROL: the same application at [PForget], its faithfulness found by
+   resolution, IS Instance/Top/Subspace.v's [PTop_HasEqualizers].
+
+--------
+控制：在 [PForget] 上的相同应用程序，其通过分辨率发现的忠实性，位于 IS Instance/Top/Subspace.v 的 [PTop_HasEqualizers]。
+*)
 Definition p457_prop1_at_pforget@{o so +| o < so +} :=
   @equalizers_from_sliced_RARI _ _ PForget@{o so} _
     (@HasEqualizers_of_HasPullbacks_Terminal Sets Sets_Terminal
@@ -185,7 +831,7 @@ Fail Definition p457_prop1_at_erase :=
   @equalizers_from_sliced_RARI _ _ (Erase Parallel) _ One_HasEqualizers
     erase_slice_RARI.
 
-(* The dual, over [Erase Parallel]'s coslices. *)
+(* The dual, over [Erase Parallel]'s coslices. / 双重，超过 [Erase Parallel] 的余切片。 *)
 Definition p457_erase_coeq :=
   @coeq _1 One_HasCoequalizers _ _
     (fmap[Erase Parallel] par_arrow_one) (fmap[Erase Parallel] par_arrow_two).
@@ -206,7 +852,7 @@ Definition p457_cofork_refuted_at_erase :
   → False :=
   parallel_pair_uncoforked _.
 
-(* CONTROL: cofork 引理, at stated type, faithfulness. （已译） *)
+(* CONTROL: the cofork lemma, at its stated type, with faithfulness. / 控制：共叉引理，在其声明的类型下，具有保真性。 *)
 Definition p457_cofork@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) {x y : A} (f g : x ~> y) {Q : X}
   (q : G y ~> Q) (E : IsCoequalizer (fmap[G] f) (fmap[G] g) Q q)
@@ -220,8 +866,13 @@ Fail Definition p457_cofork_at_erase :=
   @cosliced_cofork _ _ (Erase Parallel) ParX ParY par_arrow_one par_arrow_two
     _ (`1 (`2 p457_erase_coeq)) (`2 (`2 p457_erase_coeq)) p457_erase_V _.
 
-(* CONTROL: the same application at [PForget] IS
-   [PTop_HasCoequalizers]. *)
+(*
+CONTROL: the same application at [PForget] IS
+   [PTop_HasCoequalizers].
+
+--------
+控制：在 [PForget] 上的相同应用程序是 [PTop_HasCoequalizers]。
+*)
 Definition p457_prop1_dual_at_pforget@{o so +| o < so +} :=
   @coequalizers_from_sliced_LARI _ _ PForget@{o so} _ Sets_HasCoequalizers
     quotient_LARI.
@@ -235,7 +886,7 @@ Fail Definition p457_prop1_dual_at_erase :=
   @coequalizers_from_sliced_LARI _ _ (Erase Parallel) _ One_HasCoequalizers
     erase_coslice_LARI.
 
-(* 相关说明。 （已译） *)
+(* The same boundary read by [Proof using], builder A's measurement. / 由[Proof using]读取的相同边界，建造者A的测量。 *)
 Section ForkUsing.
 
 Local Set Warnings "-undo-batch-mode".
@@ -250,7 +901,7 @@ Context (E : IsEqualizer (fmap[G] f) (fmap[G] g) S s).
 Context (U : CouniversalArrow ((S; s) : @Slice X (G x)) (Sliced G x)).
 Context `{GF : @Faithful A X G}.
 
-(* CONTROL: descent under [Proof using E U]. *)
+(* CONTROL: descent under [Proof using E U]. / 控制：在 [Proof using E U] 下下降。 *)
 Lemma p457_desc_using {z : A} (k : z ~> x) (Hk : f ∘ k ≈ g ∘ k) :
   ∃! u : z ~> sliced_eq_obj G s U, sliced_eq_arrow G s U ∘ u ≈ k.
 Proof using E U. exact (sliced_desc G f g s E U k Hk). Qed.
@@ -267,9 +918,9 @@ Qed.
 
 End ForkUsing.
 
-(* 相关说明。 （已译） *)
+(** ** Structure/SlicedInverse.v and its satellite: the refutations / ** Structure/SlicedInverse.v 及其相关文件：反驳 *)
 
-(* 相关说明。 （已译） *)
+(* CONTROL: [prop1_needs_faithfulness] and the satellite's dual, restated. / 控制：[prop1_needs_faithfulness] 和卫星的双重功能，重申。 *)
 Definition p457_prop1_needs_faithfulness :
   (∀ (A X : Category) (G : A ⟶ X), @HasEqualizers X →
      (∀ a : A, RightAdjointRightInverse (Sliced G a)) → @HasEqualizers A)
@@ -282,9 +933,9 @@ Definition p457_prop1_dual_needs_faithfulness :
   → False :=
   prop1_dual_needs_faithfulness.
 
-(* 相关说明。 （已译） *)
+(** ** Structure/SlicedInverse/Strict.v: the bridge and the dual form / ** Structure/SlicedInverse/Strict.v：桥与对偶形式 *)
 
-(* CONTROL: round trip, dual's 对象 readback, restated. （已译） *)
+(* CONTROL: the round trip, and the dual's object readback, restated. / 控制：往返行程，以及双重对象回读，重述。 *)
 Example p457_rari_lali_rari@{oA oC h +} {A : Category@{oA h h}}
   {C : Category@{oC h h}} {S : A ⟶ C} (P : RightAdjointRightInverse S) :
   lali_rari (rari_lali P) = P := eq_refl.
@@ -307,10 +958,15 @@ Example p457_prop1_dual_obj@{oA oX h +} {A : Category@{oA h h}}
              `1 (`2 (@coeq X HX _ _ (fmap[G] f) (fmap[G] g))))) :=
   eq_refl.
 
-(* * ** Instance/Top/Prop.v: 范畴 forgetful 函子 （已译） *)
+(** ** Instance/Top/Prop.v: the category and its forgetful functor / ** Instance/Top/Prop.v：这个范畴及其遗忘函子 *)
 
-(* CONTROL: homs sit at points' universe, under CLOSED binder
- [@{o}]; 范畴 forgetful 函子 land ONE [Sets]. （已译） *)
+(*
+CONTROL: the homs sit at the points' universe, under the CLOSED binder
+   [@{o}]; the category and the forgetful functor land in ONE [Sets].
+
+--------
+控制：homs 位于点的宇宙下，置于闭合的绑定器下 [@{o}]；该范畴和遗忘函子落在一个 [Sets] 中。
+*)
 Definition p457_pmor_at_o@{o} (X Y : PTop@{o}) : Type@{o} := PMor@{o} X Y.
 
 Definition p457_ptopcat@{o so | o < so +} : Category@{so o o} :=
@@ -328,9 +984,15 @@ Example p457_pforget_fmap@{o so | o < so +} {X Y : PTop@{o}}
 Definition p457_pforget_faithful@{o so | o < so +} :
   Faithful PForget@{o so} := _.
 
-(* 相关说明。 （已译） *)
+(** ** Instance/Top/Prop.v: the union axiom, measured both ways / ** Instance/Top/Prop.v：联合公理，从两方面测量 *)
 
-(* 相关说明。 （已译） *)
+(*
+The alternative design (a): unions over an index TYPE at the points'
+   universe, Test/ProbeStoneCech455.v's [p455_TopP] completed.
+
+--------
+替代设计 (a)：在点的宇宙上对索引类型进行联合，Test/ProbeStoneCech455.v 的 [p455_TopP] 已完成。
+*)
 Record p457_PTopIdx@{o} := {
   p457_pi_carrier :> SetoidObject@{o o};
   p457_PIOpen : (p457_pi_carrier → Prop) → Prop;
@@ -345,14 +1007,20 @@ Record p457_PTopIdx@{o} := {
     p457_PIOpen U → p457_PIOpen V → p457_PIOpen (fun x => U x /\ V x)
 }.
 
-(* 相关说明。 （已译） *)
+(*
+The index of the subspace's union witness under (a): (index, open)
+   pairs whose open witnesses the member.
+
+--------
+在 (a) 下子空间并集的指标: (指标, 开集) 对，其开集见证成员。
+*)
 Definition p457_idx_witness_index@{o +} (X : p457_PTopIdx@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S X) (I : Type@{o})
   (V : I → S → Prop) :=
   { p : (I * (X → Prop))%type &
     (p457_PIOpen X (snd p) /\ ∀ s, V (fst p) s <-> snd p (h s)) }.
 
-(* CONTROL: above [Set] it is a union index. *)
+(* CONTROL: above [Set] it is a union index. / 控制：在 [Set] 之上它是一个联合索引。 *)
 Definition p457_idx_union_above@{o | Set < o +} (X : p457_PTopIdx@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S X)
   (I : Type@{o}) (V : I → S → Prop) :=
@@ -364,7 +1032,7 @@ Fail Definition p457_idx_union_at_set (X : p457_PTopIdx@{Set})
   (I : Set) (V : I → S → Prop) :=
   p457_piopen_union X (p457_idx_witness_index X S h I V).
 
-(* CONTROL: design (a) gives (b) above [Set] ... *)
+(* CONTROL: design (a) gives (b) above [Set] ... / 控制：设计 (a) 提供 (b) 以上 [Set] ... *)
 Lemma p457_idx_to_family@{o | Set < o +} (X : p457_PTopIdx@{o})
   (F : (X → Prop) → Prop) :
   (∀ U, F U → p457_PIOpen X U) →
@@ -379,13 +1047,19 @@ Proof.
   - apply p457_piopen_union. intros [U FU]; exact (HF U FU).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* ... and the direct derivation at [Set] is refused. / ... 并且在 [Set] 的直接派生被拒绝。 *)
 (* N9 *)
 Fail Definition p457_idx_to_family_at_set (X : p457_PTopIdx@{Set})
   (F : (X → Prop) → Prop) :=
   p457_piopen_union X { U : X → Prop | F U }.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: under the chosen design (b) the subspace is formed at [Set],
+   and (a) follows at every index universe.
+
+--------
+控制：在所选设计 (b) 下，子空间在 [Set] 处形成，且 (a) 在每个索引宇宙处随后出现。
+*)
 Definition p457_psub_at_set (X : PTop@{Set}) (S : SetoidObject@{Set Set})
   (h : SetoidMorphism@{Set Set Set} S X) : PTop@{Set} := PSub X S h.
 
@@ -394,9 +1068,16 @@ Definition p457_union_indexed@{o i} (X : PTop@{o}) (I : Type@{i})
   (∀ k, POpen X (U k)) → POpen X (fun x => ex (fun k => U k x)) :=
   popen_union_indexed X I U.
 
-(* 相关说明。 （已译） *)
+(** ** Instance/Top/Prop.v: the concrete spaces / ** Instance/Top/Prop.v：具体的空间 *)
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: the discrete space's points and opens read back at [eq_refl]
+   under the CLOSED binder [@{o}], its five axioms are formed, and every
+   setoid map out of it is continuous.
+
+--------
+控制：离散空间的点并在 [eq_refl] 下打开读取。在 CLOSED 绑定器 [@{o}] 下，其五个公理被形成，并且从中映射出的每一个集合映射都是连续的。
+*)
 Example p457_pdiscrete_carrier@{o} (S : SetoidObject@{o o}) :
   pt_carrier (PDiscrete S) = S := eq_refl.
 
@@ -422,7 +1103,13 @@ Example p457_pdisc_mor_map@{o} (S : SetoidObject@{o o}) (Y : PTop@{o})
 Example p457_pconst_at@{o} (S : SetoidObject@{o o}) (Y : PTop@{o}) (y : Y)
   (s : S) : pconst S Y y s = y := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: the point and the two points, on Instance/Sets.v's setoids,
+   and the two points of [PBool] are distinct.
+
+--------
+控制：在 Instance/Sets.v 的集合类上，单点和双点，以及 [PBool] 的两个点是不同的。
+*)
 Example p457_ppoint@{o} :
   pt_carrier PPoint@{o} = unit_setoid_object@{o o} := eq_refl.
 
@@ -432,10 +1119,15 @@ Example p457_pbool@{o} :
 Definition p457_pbool_points_distinct@{o} :
   @equiv _ PBool@{o} false true → False := PBool_points_distinct.
 
-(* 相关说明。 （已译） *)
+(** ** Instance/Top/Subspace.v: the constructions / ** Instance/Top/Subspace.v：构造 *)
 
-(* CONTROL: book's opens verbatim, universal properties over
- ARBITRARY spaces, Exercise 7.32's 定义, restated. （已译） *)
+(*
+CONTROL: the book's opens verbatim, the universal properties over
+   ARBITRARY spaces, and Exercise 7.32's definition, restated.
+
+--------
+控制：书本逐字打开，对任意空间的通用属性，以及练习7.32的定义，重新陈述。
+*)
 Example p457_psub_open@{o} (X : PTop@{o}) (S : SetoidObject@{o o})
   (h : SetoidMorphism@{o o o} S X) (V : S → Prop) :
   POpen (PSub X S h) V
@@ -464,10 +1156,15 @@ Definition p457_ex732_part3@{o +} (X : PTop@{o}) (P : X → Prop) :
   @PCont (ex732_Sub X P) X (ex732_incl X P) :=
   ex732_part3 X P.
 
-(* * ** Instance/Top/Subspace.v: 对象 equations （已译） *)
+(** ** Instance/Top/Subspace.v: the object equations / ** Instance/Top/Subspace.v：对象方程 *)
 
-(* CONTROL: at explicit pair 对象 equation holds at [eq_refl],
- at variable first component does. （已译） *)
+(*
+CONTROL: at an explicit pair the object equation holds at [eq_refl],
+   and at a variable its first component does.
+
+--------
+控制：在显式对上，对象方程在 [eq_refl] 处成立，而在变量上，其第一个分量成立。
+*)
 Example p457_psub_obj_pair@{o so +| o < so +} (X : PTop@{o})
   (S : SetoidObject@{o o}) (h : S ~{Sets@{o so}}~> PForget@{o so} X) :
   Sliced PForget@{o so} X (PSub_Functor X (S; h)) = (S; h) := eq_refl.
@@ -476,7 +1173,7 @@ Example p457_psub_obj_carrier@{o so +| o < so +} (X : PTop@{o})
   (c : @Slice Sets@{o so} (PForget@{o so} X)) :
   `1 (Sliced PForget@{o so} X (PSub_Functor X c)) = `1 c := eq_refl.
 
-(* CONTROL: at a variable it holds by [psub_obj], Leibniz. *)
+(* CONTROL: at a variable it holds by [psub_obj], Leibniz. / 控制：在一个变量上，它由 [psub_obj] 持有，莱布尼茨。 *)
 Definition p457_psub_obj@{o so +| o < so +} (X : PTop@{o})
   (c : @Slice Sets@{o so} (PForget@{o so} X)) :
   Sliced PForget@{o so} X (PSub_Functor X c) = c := psub_obj X c.
@@ -499,13 +1196,19 @@ Fail Example p457_pquot_obj_refl@{o so +| o < so +} (X : PTop@{o})
   (c : @Coslice Sets@{o so} (PForget@{o so} X)) :
   Cosliced PForget@{o so} X (PQuot_Functor X c) = c := eq_refl.
 
-(* The object equation closed [Qed] instead of [Defined]. *)
+(* The object equation closed [Qed] instead of [Defined]. / 对象方程关闭了 [Qed] 而不是 [Defined]。 *)
 Lemma p457_psub_obj_opaque@{o so +| o < so +} (X : PTop@{o})
   (c : @Slice Sets@{o so} (PForget@{o so} X)) :
   Sliced PForget@{o so} X (PSub_Functor X c) = c.
 Proof. destruct c; reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: the counit is [id_cast] of [psub_obj], by the tactic
+   [psub_counit] is proved with.
+
+--------
+控制：余单位是[id_cast] 的 [psub_obj]，通过策略 [psub_counit] 来证明。
+*)
 Definition p457_psub_counit@{o so +| o < so +} (X : PTop@{o})
   (c : @Slice Sets@{o so} (PForget@{o so} X)) :
   @counit _ _ _ _ (psub_adjunction X) c ≈ id_cast (psub_obj X c) :=
@@ -517,11 +1220,16 @@ Fail Definition p457_psub_counit_opaque@{o so +| o < so +} (X : PTop@{o})
   @counit _ _ _ _ (psub_adjunction X) c ≈ id_cast (p457_psub_obj_opaque X c) :=
   ltac:(destruct c; intro t; simpl; reflexivity).
 
-(* 相关说明。 （已译） *)
+(** ** Instance/Top/Subspace.v: the packaging and the witnesses / ** Instance/Top/Subspace.v：打包和证据 *)
 
-(* CONTROL: subspace quotient constructions two records, at
- types #457's plan states, adjoints subspace's
- 对象 equation read back. （已译） *)
+(*
+CONTROL: the subspace and quotient constructions in the two records, at
+   the types #457's plan states, with their adjoints and the subspace's
+   object equation read back.
+
+--------
+控制：在两个记录中的子空间和商构造，在类型#457的计划状态下，带有它们的伴随以及子空间的对象方程的回读。
+*)
 Definition p457_subspace_RARI@{o so +| o < so +} :
   ∀ X : PTop@{o}, RightAdjointRightInverse (Sliced PForget@{o so} X) :=
   subspace_RARI.
@@ -542,7 +1250,13 @@ Example p457_quotient_LARI_left@{o so +| o < so +} (X : PTop@{o}) :
   @lari_left _ _ (Cosliced PForget@{o so} X) (quotient_LARI X)
     = PQuot_Functor X := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: Proposition 1 and its dual at [PForget], at the plan's
+   types.
+
+--------
+控制：命题1及其对偶在[PForget]，在计划的类型上。
+*)
 Definition p457_ptop_equalizers@{o so +| o < so +} :
   @HasEqualizers PTopCat@{o so} := PTop_HasEqualizers.
 
@@ -550,9 +1264,15 @@ Definition p457_ptop_coequalizers@{o so +| o < so +} :
   @HasCoequalizers PTopCat@{o so} := PTop_HasCoequalizers.
 
 (*
-   本节说明等化子相关定义、性质与动机。
+CONTROL: the four readbacks, restated at [eq_refl]: the equalizer is
+   the subspace on the equalizer in [Sets] and its arrow the inclusion,
+   the coequalizer the quotient topology on the coequalizer in [Sets] and
+   its arrow the projection; and the equalizer object is the value of
+   [rari_right (subspace_RARI x)] at the downstairs equalizer, as
+   Proposition 1 builds it.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+控制：在 [eq_refl] 上重述的四个回读：等化器是在 [Sets] 上的等化器的子空间及其箭头为包含映射，余等化器是在 [Sets] 上的余等化器上的商拓扑及其箭头为投射映射；等化器对象是 [rari_right (subspace_RARI x)] 在下层等化器处的值，正如命题 1 构建它时所示。
 *)
 Example p457_ptop_equalizer_obj@{o so +| o < so +} {x y : PTopCat@{o so}}
   (f g : x ~> y) :
@@ -600,9 +1320,15 @@ Example p457_ptop_coequalizer_arrow@{o so +| o < so +} {x y : PTopCat@{o so}}
     = pquot_proj y (SetsCoeq (fmap[PForget] f) (fmap[PForget] g))
         (sets_coeq_proj (fmap[PForget] f) (fmap[PForget] g)) := eq_refl.
 
-(* 相关说明。 （已译） *)
+(** ** Instance/Top/Subspace.v: the witnesses at concrete spaces / ** Instance/Top/Subspace.v：具体空间中的证人 *)
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: the two constructions at the concrete two-point space, with
+   their adjoints read back at [eq_refl].
+
+--------
+控制：在具体的两点空间上的两个构造，其伴随通过 [eq_refl] 读取回来。
+*)
 Definition p457_pbool_subspace_RARI@{o so +| o < so +} :
   RightAdjointRightInverse (Sliced PForget@{o so} PBool@{o}) :=
   PBool_subspace_RARI.
@@ -619,7 +1345,7 @@ Example p457_pbool_quotient_LARI_left@{o so +| o < so +} :
   @lari_left _ _ (Cosliced PForget@{o so} PBool@{o}) PBool_quotient_LARI
     = PQuot_Functor PBool := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* CONTROL: the two pairs are pairs of DIFFERENT maps. / 控制：这两对是不同地图的配对。 *)
 Example p457_pbool_true_map@{o} :
   pmap pbool_true@{o} = pconst bool_setoid_object PBool true := eq_refl.
 
@@ -635,9 +1361,13 @@ Definition p457_ppoint_maps_differ@{o so | o < so +} :
   ppoint_false ≈[PTopCat@{o so}] ppoint_true → False := ppoint_maps_differ.
 
 (*
-   本节说明等化子相关定义、性质与动机。
+CONTROL: the equalizer of the identity and the constant [true] is the
+   subspace on the [Sets] equalizer of the underlying maps, the value of
+   the subspace construction at [PBool] there, and exactly [true] lies in
+   it.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+控制：恒等映射和常数 [true] 的均衡器是在基础映射的 [Sets] 均衡器上的子空间构造在 [PBool] 的值，并且恰好 [true] 位于其中。
 *)
 Example p457_pbool_equalizer_obj@{o so +| o < so +} :
   `1 PBool_equalizer@{o so _ _ _ _ _}
@@ -670,9 +1400,13 @@ Definition p457_pbool_equalizer_points@{o so +| o < so +} (b : bool) :
   PBool_equalizer_points b.
 
 (*
-   本节说明 ProbeSubspace457 相关定义、性质与动机。
+CONTROL: the coequalizer of the two points is the quotient topology on
+   the [Sets] coequalizer of the underlying maps, the value of the
+   quotient construction at [PBool] there, and every point is identified
+   with [true] in it.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+控制：两个点的联合等价器是底层映射的 [Sets] 联合等价器上的商拓扑，即商构造在 [PBool] 处的值，并且每个点在其中都与 [true] 识别为同一元素。
 *)
 Example p457_pbool_coequalizer_obj@{o so +| o < so +} :
   `1 PBool_coequalizer@{o so _ _ _ _ _ _}
@@ -695,9 +1429,15 @@ Definition p457_pbool_coequalizer_points@{o so +| o < so +} (b : bool) :
   @equiv _ (`1 PBool_coequalizer@{o so _ _ _ _ _ _}) b true :=
   PBool_coequalizer_points b.
 
-(* 相关说明。 （已译） *)
+(** ** Instance/Top/Subspace/TypeValued.v: the subspace predicate / ** Instance/Top/Subspace/TypeValued.v：子空间谓词 *)
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: the book's predicate is formed one universe up, as
+   [tsub_open], and its body is accepted there.
+
+--------
+控制：这本书的谓词在上一个宇宙中形成，作为 [tsub_open]，并且它的主体在那里被接受。
+*)
 Definition p457_tsub_open@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) : Type@{o1} :=
@@ -716,12 +1456,18 @@ Fail Definition p457_tsub_open_at_o@{o +} (X : TopSpace@{o})
   { U : top_carrier X → Type@{o} &
     (IsOpen X U ∧ (∀ s : S, V s ↔ U (h s)))%type }.
 
-(* 相关说明。 （已译） *)
+(* CONTROL: the quotient is a space at the points' universe. / 控制：商是点的宇宙中的一个空间。 *)
 Definition p457_tquot@{o +} (X : TopSpace@{o}) (T : SetoidObject@{o o})
   (q : SetoidMorphism@{o o o} (top_carrier X) T) : TopSpace@{o} :=
   TQuot X T q.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: the five axioms of the unpackaged subspace, and the same
+   record literal at the quotient's opens, packaged at [o].
+
+--------
+控制：未打包子空间的五个公理，以及商空间开集上的相同记录文字，在 [o] 打包。
+*)
 Definition p457_tsub_axioms@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X)) :=
   (tsub_open_respects@{o o1} X S h, tsub_open_proper@{o o1} X S h,
@@ -751,7 +1497,7 @@ Fail Definition p457_tsub_package@{o o1 +| o < o1 +} (X : TopSpace@{o})
   open_whole    := tsub_open_whole X S h;
   open_inter    := tsub_open_inter X S h |}.
 
-(* CONTROL: the universal properties over ARBITRARY spaces, restated. *)
+(* CONTROL: the universal properties over ARBITRARY spaces, restated. / 控制：任意空间上的通用性质，重述。 *)
 Definition p457_tsub_universal@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (Z : TopSpace@{o}) (g : SetoidMorphism@{o o o} (top_carrier Z) S) :
@@ -766,11 +1512,16 @@ Definition p457_tquot_universal@{o +} (X : TopSpace@{o})
     ↔ Continuous X Z (setoid_morphism_compose k q) :=
   tquot_universal X T q Z k.
 
-(* 相关说明。 （已译） *)
+(** ** Instance/Top/Subspace/TypeValued.v: the slices of the two [Sets] / ** Instance/Top/Subspace/TypeValued.v：两个 [Sets] 的切片 *)
 
-(* CONTROL: 对象 slice UNLIFTED [Sets] carries the
- discrete topology at points' universe; one LIFTED [Sets]
- carries it one universe up. （已译） *)
+(*
+CONTROL: an object of the slice of the UNLIFTED [Sets] carries the
+   discrete topology at the points' universe; one of the LIFTED [Sets]
+   carries it one universe up.
+
+--------
+控制：未提升的 [Sets] 切片的一个对象在点的宇宙处携带离散拓扑；提升后的 [Sets] 的一个对象将其提升一个宇宙。
+*)
 Definition p457_unlifted_slice_space@{o so +| o < so +} (X : TopSpace@{o})
   (x : @Slice Sets@{o so} (top_carrier X)) : TopSpace@{o} :=
   Discrete_Top (`1 x).
@@ -786,7 +1537,7 @@ Fail Definition p457_lifted_slice_space@{o h so +| o < h, h < so +}
   TopSpace@{o} :=
   Discrete_Top (`1 x).
 
-(* 相关说明。 （已译） *)
+(* CONTROL: the same for the coslices. / 控制：对于余弦切片也是相同的。 *)
 Definition p457_unlifted_coslice_space@{o so +| o < so +} (X : TopSpace@{o})
   (x : @Coslice Sets@{o so} (top_carrier X)) : TopSpace@{o} :=
   Discrete_Top (`1 x).
@@ -802,9 +1553,14 @@ Fail Definition p457_lifted_coslice_space@{o h so +| o < h, h < so +}
   TopSpace@{o} :=
   Discrete_Top (`1 x).
 
-(* CONTROL: [Top_Forget] 进入 LIFTED [Sets], restated; type a
- 函子 进入 [Sets] whose 对象 point setoids not
- formed. （已译） *)
+(*
+CONTROL: [Top_Forget] into the LIFTED [Sets], restated; the type of a
+   functor into the [Sets] whose objects are the point setoids is not
+   formed.
+
+--------
+控制：将 [Top_Forget] 输入提升的 [Sets]，重述；一个函子类型输入 [Sets]，其对象是点集同构，并未形成。
+*)
 Definition p457_top_forget@{o h so +| o < h, h < so +} :
   Top@{h o} ⟶ Sets@{h so} :=
   Top_Forget@{o h so}.
@@ -813,9 +1569,14 @@ Definition p457_top_forget@{o h so +| o < h, h < so +} :
 Fail Definition p457_top_to_point_sets@{o h +| o < h +} :=
   (Top@{h o} ⟶ Sets@{o h}).
 
-(* CONTROL: type 函子 进入 lifted [Sets@{h so}] is
- formed; Instance/Top/Forgetful.v's own [Sets@{o so}], the
- universe [so] 对象 fresh, it not. （已译） *)
+(*
+CONTROL: the type of a functor into the lifted [Sets@{h so}] is
+   formed; into Instance/Top/Forgetful.v's own [Sets@{o so}], the
+   universe [so] of its objects fresh, it is not.
+
+--------
+控制：一个函子进入提升的 [Sets@{h so}] 的类型已经形成；进入 Instance/Top/Forgetful.v 自己的 [Sets@{o so}]，其对象的新宇宙 [so]，则没有。
+*)
 Definition p457_top_to_lifted_sets@{o h so +| o < h +} :=
   (Top@{h o} ⟶ Sets@{h so}).
 
@@ -824,9 +1585,12 @@ Fail Definition p457_top_to_point_sets_so@{o h so +| o < h +} :=
   (Top@{h o} ⟶ Sets@{o so}).
 
 (*
-   本节说明伴随、函子相关定义、性质与动机。
+CONTROL: the sliced forgetful functor at [Top_Forget] and the quotient
+   functor are each formed, and the transposition between them is the
+   identity on underlying maps; the adjunction is not formed.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+控制：在 [Top_Forget] 上形成了切片遗忘函子和商函子，并且它们之间的换位在基础映射上是恒等的；伴随未形成。
 *)
 Definition p457_top_forget_under@{o h so +| o < h, h < so +}
   (X : TopSpace@{o}) :
@@ -842,7 +1606,7 @@ Example p457_tquot_adj_to_map@{o h so +| o < h, o < so +} (X : TopSpace@{o})
   (k : TQuot_Functor X x ~{@Coslice Top@{h o} X}~> y) :
   `1 (to (tquot_adj X x y) k) = continuous_map (`1 k) := eq_refl.
 
-(* CONTROL: [Top_Forget_under X y] IS the lift of [tstrip_under X y]. *)
+(* CONTROL: [Top_Forget_under X y] IS the lift of [tstrip_under X y]. / 控制：[Top_Forget_under X y] 是 [tstrip_under X y] 的提升装置。 *)
 Example p457_forget_under_lift@{o h so +| o < h, h < so +} (X : TopSpace@{o})
   (y : @Coslice Top@{h o} X) :
   Top_Forget_under@{o h so} X y
@@ -854,7 +1618,7 @@ Fail Definition p457_tquot_adjunction@{o h so +| o < h, h < so +}
   (X : TopSpace@{o}) :=
   (TQuot_Functor@{o h so _} X ⊣ Top_Forget_under@{o h so} X).
 
-(* The stripped object equation: Leibniz, [eq_refl] only at a pair. *)
+(* The stripped object equation: Leibniz, [eq_refl] only at a pair. / 剥离的对象方程：莱布尼茨，[eq_refl] 仅在一对上。 *)
 Example p457_tquot_obj_stripped_pair@{o h so +| o < h, o < so +}
   (X : TopSpace@{o}) (T : SetoidObject@{o o})
   (q : top_carrier X ~{Sets@{o so}}~> T) :
@@ -870,15 +1634,20 @@ Fail Example p457_tquot_obj_stripped_refl@{o h so +| o < h, o < so +}
   (X : TopSpace@{o}) (c : @Coslice Sets@{o so} (top_carrier X)) :
   tstrip_under@{o h so _ _} X (TQuot_Functor X c) = c := eq_refl.
 
-(* The stripped object equation closed [Qed] instead of [Defined]. *)
+(* The stripped object equation closed [Qed] instead of [Defined]. / 被剥离的对象方程关闭了 [Qed] 而不是 [Defined]。 *)
 Lemma p457_tquot_obj_stripped_opaque@{o h so +| o < h, o < so +}
   (X : TopSpace@{o}) (c : @Coslice Sets@{o so} (top_carrier X)) :
   tstrip_under@{o h so _ _} X (TQuot_Functor X c) = c.
 Proof. destruct c; reflexivity. Qed.
 
-(* CONTROL: transposed 恒等 [id_cast] inverse of
- [tquot_obj_stripped], tactic [tquot_unit_stripped] proved
- with. （已译） *)
+(*
+CONTROL: the transposed identity is [id_cast] of the inverse of
+   [tquot_obj_stripped], by the tactic [tquot_unit_stripped] is proved
+   with.
+
+--------
+控制：转置的恒等式是 [id_cast] 的逆 [tquot_obj_stripped]，通过策略 [tquot_unit_stripped] 证明。
+*)
 Definition p457_tquot_unit@{o h so +| o < h, o < so +}
   (X : TopSpace@{o}) (c : @Coslice Sets@{o so} (top_carrier X)) :
   to (tquot_adj X c (TQuot_Functor X c)) id
@@ -894,12 +1663,17 @@ Fail Definition p457_tquot_unit_opaque@{o h so +| o < h, o < so +}
   id_cast (eq_sym (p457_tquot_obj_stripped_opaque X c)) :=
   ltac:(destruct c; intro t; simpl; reflexivity).
 
-(* 相关说明。 （已译） *)
+(** ** The squashed, local subspace over [Top] / ** [Top] 上被压缩的本地子空间 *)
 
-(* Scout A's local encoding, rebuilt: V is open when it respects [≈] and
+(*
+Scout A's local encoding, rebuilt: V is open when it respects [≈] and
    each point of V MERELY has an open of X around its image whose preimage
    lies in V.  Instance/Sets/Powerset.v's [Powerset_squash] is the
-   truncation.（标题）（已译） *)
+   truncation.
+
+--------
+侦查 A 的本地编码，重建：当 V 遵守 [≈] 并且 V 的每一点仅在其像周围拥有一个开集，其原像位于 V 中时，V 是开集。Instance/Sets/Powerset.v 的 [Powerset_squash] 是截断。
+*)
 Definition p457_sq_box@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) (s : S) : Type@{o1} :=
@@ -921,7 +1695,7 @@ Lemma p457_sq_pair@{o1} {A B : Type@{o1}} :
   Powerset_squash@{o1} (A * B)%type.
 Proof. intros a b Q k; exact (a Q (fun x => b Q (fun y => k (x, y)))). Qed.
 
-(* CONTROL: it IS a space at the points' universe. *)
+(* CONTROL: it IS a space at the points' universe. / 控制：它是点的宇宙中的一个空间。 *)
 Definition p457_sq_subspace@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X)) :
   TopSpace@{o}.
@@ -960,8 +1734,13 @@ Proof.
       * apply p457_sq_pair; [exact (HbU s u) | exact (HbV s v)].
 Defined.
 
-(* CONTROL: [h] continuous out it, "only if" half the
- 普遍性质 holds. （已译） *)
+(*
+CONTROL: [h] is continuous out of it, and the "only if" half of the
+   universal property holds.
+
+--------
+控制：[h] 是连续的，并且普遍性只在“仅当”部分成立。
+*)
 Lemma p457_sq_h_cont@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X)) :
   Continuous (p457_sq_subspace@{o o1} X S h) X h.
@@ -981,7 +1760,13 @@ Lemma p457_sq_only_if@{o o1 +| o < o1 +} (X : TopSpace@{o})
   Continuous Z X (setoid_morphism_compose h g).
 Proof. intros Hg U HU. exact (Hg _ (p457_sq_h_cont X S h U HU)). Qed.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: its opens include the book's, [tsub_open], for predicates
+   respecting the points' equality.
+
+--------
+控制：它的打开包括书籍的 [tsub_open]，用于关于点的平等的谓词。
+*)
 Lemma p457_sq_global_to_local@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) :
@@ -994,7 +1779,7 @@ Proof.
   intros t b; exact (snd (HVU t) b).
 Qed.
 
-(* CONTROL: the squashed box eliminates into a proposition. *)
+(* CONTROL: the squashed box eliminates into a proposition. / 控制：压扁的盒子消除成一个命题。 *)
 Definition p457_sq_elim_prop@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (Z : TopSpace@{o}) (g : SetoidMorphism@{o o o} (top_carrier Z) S)
@@ -1010,7 +1795,7 @@ Fail Definition p457_sq_elim_open@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (z0 : top_carrier Z) (v : V (g z0)) :=
   (snd HV (g z0) v) (IsOpen Z (fun z => V (g z))).
 
-(* CONTROL: a union indexed by the points of Z. *)
+(* CONTROL: a union indexed by the points of Z. / 控制：由 Z 点索引的丛。 *)
 Definition p457_union_by_points@{o +} (Z : TopSpace@{o}) :=
   @open_union Z (top_carrier Z).
 
@@ -1030,17 +1815,30 @@ Fail Definition p457_sq_local_to_global@{o o1 +| o < o1 +} (X : TopSpace@{o})
     { U : top_carrier X → Type@{o} &
       (IsOpen X U ∧ (∀ s : S, V s ↔ U (h s)))%type }.
 
-(* 相关说明。 （已译） *)
+(** ** Two further encodings of the subspace over Type-valued opens / ** 类型值开集上子空间的另外两种编码 *)
 
-(* Instance/Top/Kolmogorov.v's small-opens idea: quantifying over opens
-   valued at [s < o] puts the predicate at [o] ... *)
+(*
+Instance/Top/Kolmogorov.v's small-opens idea: quantifying over opens
+   valued at [s < o] puts the predicate at [o] ...
+
+--------
+Instance/Top/Kolmogorov.v 的 small-opens 想法：在 opens 上进行量化
+  ，其值为 [s < o] 会将谓词置于 [o] ...
+*)
 Definition p457_small_sub_open@{s o +| s < o +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) : Type@{o} :=
   { U : top_carrier X → Type@{s} &
     (IsOpen X U ∧ (∀ s0 : S, V s0 ↔ U (h s0)))%type }.
 
-(* 相关说明。 （已译） *)
+(*
+CONTROL: ... and, given an open of that encoding (whose type forces
+   [s < o]), the union of [s]-valued witnesses over an index at [s] is
+   [s]-valued ...
+
+--------
+控制: ... 并且，考虑到该编码的一个打开（其类型强制 [s < o]），在 [s] 上的索引上 [s] 值证人的并集是 [s] 值 ...
+*)
 Definition p457_small_union_at_s@{s o +| s < o +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) (HV : p457_small_sub_open@{s o} X S h V)
@@ -1048,7 +1846,7 @@ Definition p457_small_union_at_s@{s o +| s < o +} (X : TopSpace@{o})
   top_carrier X → Type@{s} :=
   fun x => { i : I & U i x }.
 
-(* ... but over an index at [o], the index [open_union] takes, it is not. *)
+(* ... but over an index at [o], the index [open_union] takes, it is not. / ...但是在 [o] 的索引上，索引 [open_union] 却没有采用。 *)
 (* N23 *)
 Fail Definition p457_small_union_at_o@{s o +| s < o +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
@@ -1057,7 +1855,7 @@ Fail Definition p457_small_union_at_o@{s o +| s < o +} (X : TopSpace@{o})
   top_carrier X → Type@{s} :=
   fun x => { i : I & U i x }.
 
-(* A two-level record, its opens valued one universe above the points. *)
+(* A two-level record, its opens valued one universe above the points. / 一个两级记录，其打开的值比这些点高一个宇宙。 *)
 Record p457_Top2@{o o1} := {
   p457_t2_carrier :> SetoidObject@{o o};
   p457_IsOpen2 : (p457_t2_carrier → Type@{o}) → Type@{o1};
@@ -1072,27 +1870,27 @@ Record p457_Top2@{o o1} := {
     p457_IsOpen2 U → p457_IsOpen2 V → p457_IsOpen2 (fun x => U x ∧ V x)
 }.
 
-(* CONTROL: it hosts the book's subspace predicate ... *)
+(* CONTROL: it hosts the book's subspace predicate ... / 控制：它包含了书的子空间谓词... *)
 Definition p457_sub2_open@{o o1 +| o < o1 +} (X : p457_Top2@{o o1})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S X)
   (V : S → Type@{o}) : Type@{o1} :=
   { U : X → Type@{o} &
     (p457_IsOpen2 X U ∧ (∀ s : S, V s ↔ U (h s)))%type }.
 
-(* ... and its continuity is a type one universe up ... *)
+(* ... and its continuity is a type one universe up ... / ... 它的连续性是一个类型一宇宙向上 ... *)
 Definition p457_cont2@{o o1 +| o < o1 +} (X Y : p457_Top2@{o o1})
   (f : SetoidMorphism@{o o o} X Y) : Type@{o1} :=
   ∀ U : Y → Type@{o}, p457_IsOpen2 Y U → p457_IsOpen2 X (fun x => U (f x)).
 
-(* ... not at the points' universe. *)
+(* ... not at the points' universe. / ... 不是在这些点的宇宙。 *)
 (* N24 *)
 Fail Definition p457_cont2_at_o@{o o1 +| o < o1 +} (X Y : p457_Top2@{o o1})
   (f : SetoidMorphism@{o o o} X Y) : Type@{o} :=
   ∀ U : Y → Type@{o}, p457_IsOpen2 Y U → p457_IsOpen2 X (fun x => U (f x)).
 
-(** ** Guard block *)
+(** ** Guard block / ** 防守格挡 *)
 
-(* Structure/SlicedInverse.v: 73 names, 19 obligations *)
+(* Structure/SlicedInverse.v: 73 names, 19 obligations / Structure/SlicedInverse.v：73 个名称，19 个义务 *)
 Check @Sliced.
 Check @Cosliced.
 Check @Sliced_fobj.
@@ -1167,7 +1965,7 @@ Check @SlicedInverse.erase_slice_hom_iso_obligation_4.
 Check @SlicedInverse.erase_slice_hom_iso_obligation_5.
 Check @SlicedInverse.erase_slice_hom_iso_obligation_6.
 
-(* Structure/SlicedInverse/Strict.v: 39 names, 11 obligations *)
+(* Structure/SlicedInverse/Strict.v: 39 names, 11 obligations / Structure/SlicedInverse/Strict.v：39 个名称，11 个义务 *)
 Check @rari_lali.
 Check @lali_rari.
 Check @rari_lali_left.
@@ -1208,7 +2006,7 @@ Check @Strict.erase_coslice_hom_iso_obligation_4.
 Check @Strict.erase_coslice_hom_iso_obligation_5.
 Check @Strict.erase_coslice_hom_iso_obligation_6.
 
-(* Instance/Top/Prop.v: 51 names, 8 obligations *)
+(* Instance/Top/Prop.v: 51 names, 8 obligations / Instance/Top/Prop.v：51 个名称，8 个义务 *)
 Check @pt_carrier.
 Check @POpen.
 Check @popen_respects.
@@ -1261,7 +2059,7 @@ Check @Top.Prop.PForget_obligation_1.
 Check @Top.Prop.PForget_obligation_2.
 Check @Top.Prop.PForget_obligation_3.
 
-(* Instance/Top/Subspace.v: 111 names, 26 obligations *)
+(* Instance/Top/Subspace.v: 111 names, 26 obligations / Instance/Top/Subspace.v：111 个名称，26 个义务 *)
 Check @psub_open.
 Check @psub_open_respects.
 Check @psub_open_proper.
@@ -1374,7 +2172,7 @@ Check @Subspace.pquot_adj_iso_obligation_5.
 Check @Subspace.pquot_adj_iso_obligation_6.
 Check @Subspace.pquot_adj_iso_obligation_7.
 
-(* Instance/Top/Subspace/TypeValued.v: 69 names, 26 obligations *)
+(* Instance/Top/Subspace/TypeValued.v: 69 names, 26 obligations / Instance/Top/Subspace/TypeValued.v：69 个名称，26 个义务 *)
 Check @tcont_respects.
 Check @tquot_open.
 Check @tquot_open_respects.

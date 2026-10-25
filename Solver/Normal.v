@@ -9,10 +9,57 @@ Require Import Category.Solver.Expr.
 Require Import Category.Solver.Denote.
 Require Import Category.Solver.Reify.
 
-(*
-   本文件给出 Normal 相关定义与性质。
+(**
+* Normalization: a normal form for free-category expressions
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    This file is the heart of the reflective solver
+    (https://en.wikipedia.org/wiki/Computational_reflection).  The only laws
+    available for the syntactic [Term]s of Solver/Expr.v are the category
+    axioms — associativity of [Comp] and the left/right identity laws for
+    [Ident] — so the [Term]s are exactly the free category on the reified
+    generators (https://ncatlab.org/nlab/show/free+category).  A morphism of a
+    free category has a unique normal form: the *flattened list* of its
+    generating arrows, with associativity making the bracketing irrelevant and
+    the identity laws deleting every [Ident].
+
+    The normal form is encoded by the mutually inductive [Morphism]:
+
+      - [Identity] is the empty composite (the unit);
+      - [Morphisms c] wraps a non-empty list [c : Composition] of arrows,
+        where [Single f] is the one-element list [[f]] and [Composed f fs] is
+        the cons [f :: fs].
+
+    The list is ordered outermost-first, matching the [Comp f g = f ∘ g]
+    convention of [termD] (f is applied last): [Composed f fs] denotes
+    [f ∘ denote fs].  Composition of normal forms is therefore list
+    concatenation ([append], proven associative by [append_assoc]) with
+    [Identity] as the unit ([combine]); [to_morphism] folds a [Term] into its
+    normal form and [from_morphism] reads a normal form back as a [Term].
+
+    Soundness is the statement that normalization is invisible under the
+    denotation of Solver/Denote.v.  It is proven in both directions —
+    [from_morphism_to_morphism] and [from_morphism_to_morphism_r] — giving
+    [termD d c (from_morphism (to_morphism t)) ≈ termD d c t]; the key step is
+    that [combine] (list concatenation) denotes composition, established by the
+    paired lemmas [from_morphism_app] and [from_morphism_app_r].  Lifting this
+    to the whole proposition language yields [exprAD_sound : exprAD e ↔ exprD e]
+    (an [↔], so the [normalize] tactic is both sound and complete for the goals
+    it accepts), and [exprAD_sound'] specializes it for fast tactic use.
+
+--------
+* 归一化：自由范畴表达式的规范形式
+
+这个文件是反射求解器的核心
+    (https://en.wikipedia.org/wiki/Computational_reflection).  Solver/Expr.v 的语法 [Term] 唯一可用的定律是范畴公理——[Comp] 的结合律以及 [Ident] 的左/右恒等律——因此 [Term] 恰好是再化生成元的自由范畴 (https://ncatlab.org/nlab/show/free+category).  自由范畴的态射有唯一的标准形式：其生成箭头的*扁平化列表*，结合律使括号无关紧要，恒等律删除每一个 [Ident]。
+
+该正常形式由相互归纳的 [Morphism] 编码：
+
+- [Identity] 是空的复合体（该单元）；
+- [Morphisms c] 包裹一个非空列表 [c : Composition] 的箭头，其中 [Single f] 是单元素列表 [[f]，而 [Composed f fs] 是构造的 [f :: fs]。
+
+该列表按最外层优先排序，与[termD]的[Comp f g = f ∘ g]约定相匹配（f最后应用）：[Composed f fs]表示[f ∘ denote fs]。因此，标准形式的组合就是列表连接（[append]，通过[append_assoc]证明了结合性）以[Identity]作为单位（[combine]）；[to_morphism]将[Term]折叠成其标准形式，而[from_morphism]将标准形式读取回[Term]。
+
+健全性是指在 Solver/Denote.v 的含义下归一化是不可见的。这在两个方向上都得到了证明——[from_morphism_to_morphism] 和 [from_morphism_to_morphism_r]——得出 [termD d c (from_morphism (to_morphism t)) ≈ termD d c t]；关键步骤是 [combine]（列表连接）表示组合，这是通过配对引理 [from_morphism_app] 和 [from_morphism_app_r] 确立的。将其提升到整个命题语言得到 [exprAD_sound : exprAD e ↔ exprD e]（一个 [↔]，所以 [normalize] 策略对于它接受的目标既健全又完备），而 [exprAD_sound'] 将其专门化以便快速使用策略。
 *)
 
 Section Normal.
@@ -298,9 +345,14 @@ Proof.
     now rewrite x1, IHt1, IHt2.
 Qed.
 
-(* Normalization gives us way define 范畴 reified terms,
- whose hom-setoid identifies two terms exactly they share normal
- form. （已译） *)
+(*
+Normalization gives us a way to define the category of reified terms,
+   whose hom-setoid identifies two terms exactly when they share a normal
+   form.
+
+--------
+归一化为我们提供了一种定义具体化项类别的方法，其同类集仅在两个项共享规范形式时才将其识别为相同。
+*)
 
 #[local]
 Program Instance Terms : Category := {
@@ -390,10 +442,14 @@ Qed.
 
 End Normal.
 
-(*
-   本节说明 Normal 相关定义、性质与动机。
+(**
+The [exprAD e → exprD e] direction of [exprAD_sound], with the [Arrows]
+    environment made an explicit argument.  Taking [env] explicitly lets the
+    [normalize] tactic apply this with [simple apply] and no instance search,
+    which is much faster than appealing to the full [↔].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[exprAD e → exprD e] 对 [exprAD_sound] 的方向，在 [Arrows] 环境中给出了一个显式的参数。显式地采用 [env] 使得 [normalize] 策略可以用 [simple apply] 应用这个，而不进行实例搜索，这比依赖完整的 [↔] 要快得多。
 *)
 Corollary exprAD_sound' {cat} (env : Arrows cat) (e : Expr) :
   exprAD e → exprD e.
@@ -426,16 +482,21 @@ Example ex_normalize
   f ∘ (id ∘ g ∘ h) ≈ (f ∘ g) ∘ h.
 Proof.
   intros.
-  (* Set Ltac Profiling. *)
+  (* Set Ltac Profiling. / 设置 Ltac 分析。 *)
   normalize.
   clear.
 (*
-  reify_and_change.
-  clear.                        (* no effect *)
+reify_and_change.
+  clear.                        (* no effect
+
+--------
+具象化并更改。
+清除。                        （* 无效果
+*)
 *)
 (*
-  structure.                    (* only works on Coq 8.16 *)
+  structure.                    (* only works on Coq 8.16 / 结构。                    （* 仅适用于 Coq 8.16 *)
 *)
   reflexivity.
-  (* Show Ltac Profile. *)
+  (* Show Ltac Profile. / 显示 Ltac 配置文件。 *)
 Qed.

@@ -9,18 +9,63 @@ Require Import Category.Solver.Denote.
 Require Import Category.Solver.Reify.
 Require Import Category.Solver.Normal.
 
-(*
-   本文件给出 Decide 相关定义与性质。
+(**
+* The decision procedure and its soundness theorem
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    This file is the top of the [Solver/] reflective tower (Expr → Denote →
+    Normal → Reify → Decide).  It assembles a decision procedure for morphism
+    equalities and proves the one fact that makes the reflective tactic sound:
+    if the procedure reports that two reified terms are equal, then their
+    denotations are equal under [≈].  The technique is the standard "proof by
+    reflection" (https://en.wikipedia.org/wiki/Computational_reflection):
+    compute a verdict on the syntax, then transport that verdict to the
+    original goal.
+
+    The decision is structural: by [to_morphism] (Solver/Normal.v) a [Term] of
+    the free category (https://ncatlab.org/nlab/show/free+category) is sent to a
+    flat normal form, and two terms are judged equal exactly when their normal
+    forms are [eq_dec]-equal.  Because [Term] normal forms have decidable
+    equality and normalization is sound w.r.t. denotation, agreement of normal
+    forms implies agreement of denotations.
+
+    The verdict type [partial], its [Yes]/[No] constructors and the
+    [Reduce]/[||]/[&&] notation are the decidability monad of Adam Chlipala's
+    "Certified Programming with Dependent Types" (CPDT): a [partial P] is either
+    a proof of [P] ([Proved]) or [Uncertain].  Note the asymmetry — an
+    [Uncertain] result carries no refutation, it merely records that the
+    procedure could not establish the goal.  Consequently only soundness is
+    proved here, never the converse: the procedure is sound but not claimed to
+    be complete, and an honest [Uncertain] is always permitted.  Soundness
+    alone is exactly what a reflective tactic needs.
+
+    [expr_sound] is the soundness lemma the tactics below rely on; the
+    [categorify] and [categorical] entry points reify a categorical goal (via
+    Solver/Reify.v), apply [expr_sound], and discharge the residual
+    well-typedness side-condition by [vm_compute].
+
+--------
+* 决策程序及其正确性定理
+
+该文件是 [Solver/] 反射塔的顶层（Expr → Denote → Normal → Reify → Decide）。它组装了一个用于态射等式的决策程序，并证明了使反射策略正确的一个事实：如果该程序报告两个重构的项相等，那么在 [≈] 下它们的表示也是相等的。该技术是标准的“通过反射证明”（https://en.wikipedia.org/wiki/Computational_reflection): 先对语法计算出一个判决，然后将该判决转移到原始目标）。
+
+该决定是结构性的：通过 [to_morphism]（Solver/Normal.v）将自由范畴的 [Term]（https://ncatlab.org/nlab/show/free+category)）发送到平坦的规范形式，只有当它们的规范形式 [eq_dec] 相等时，两个项才被判断为相等。因为 [Term] 规范形式具有可判定的相等性，并且归一化在意义上是正确的，所以规范形式的一致性意味着意义的一致性。
+
+裁决类型 [partial]，其 [Yes]/[No] 构造函数以及 [Reduce]/[||]/[&&] 表示法是 Adam Chlipala 的《基于依赖类型的认证编程》(Certified Programming with Dependent Types, CPDT) 的可判定性单子：一个 [partial P] 要么是 [P] ([Proved]) 的证明，要么是 [Uncertain]。请注意这种不对称——[Uncertain] 结果不携带反证，它仅仅记录该过程未能建立目标。因此这里只证明了正确性，从未证明相反情况：该过程是正确的，但不保证是完整的，而且总是允许进行诚实的 [Uncertain]。仅证明正确性正是反射策略所需要的。
+
+[expr_sound] 是下面策略所依赖的健全性引理；[categorify] 和 [categorical] 入口点通过 Solver/Reify.v 对一个范畴目标进行具体化，应用 [expr_sound]，并通过 [vm_compute] 解决剩余的良态性附加条件。
 *)
 
 Section Decide.
 
 Context `{Arrows}.
 
-(** 本节：[partial] [Yes]/[No]/[Reduce] machinery below taken from
- Certified Programming Dependent Types (CPDT). （已译） *)
+(**
+[partial] and the [Yes]/[No]/[Reduce] machinery below are taken from
+    Certified Programming with Dependent Types (CPDT).
+
+--------
+[partial] 和下面的 [Yes]/[No]/[Reduce] 机械取自《使用依赖类型的认证编程 (CPDT)》.
+*)
 
 Inductive partial (P : Type) : Type :=
 | Proved : P → partial
@@ -101,10 +146,15 @@ Next Obligation.
   contradiction.
 Qed.
 
-(*
-   本节说明 Decide 相关定义、性质与动机。
+(**
+Soundness of the procedure, in the form the tactics consume.  The
+    [termD d c f = Some h] premise is a definedness witness — it states that
+    [f] actually denotes a morphism [d ~> c] — and is discharged by
+    [vm_compute] at the call site.  Given that and an equality [f ≈ g] of the
+    interpreted terms, the reified goal [exprD (Equiv d c f g)] holds.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+过程的健全性，以策略所使用的形式。[termD d c f = Some h] 前提是定义性证据——它声明 [f] 实际上表示一个态射 [d ~> c]——并在调用处由 [vm_compute] 消解。考虑到这一点，以及解释项的等式 [f ≈ g]，重新化的目标 [exprD (Equiv d c f g)] 成立。
 *)
 Lemma expr_sound {d c f g h} :
   termD d c f = Some h → f ≈ g → exprD (Equiv d c f g).
@@ -150,12 +200,12 @@ Example ex_categorical (C : Category) (x y z w : C)
 Proof.
   intros.
   categorical.
-  (* normalize. *)
-  (* categorify. *)
+  (* normalize. / 规范化。 *)
+  (* categorify. / 分类化 *)
   (* assert (Comp (Morph 2) (Comp (Morph 1) (Morph 0)) ≈ *)
-  (*           Comp (Comp (Morph 2) (Morph 1)) (Morph 0)). { *)
-  (*   now vm_compute. *)
+  (*           Comp (Comp (Morph 2) (Morph 1)) (Morph 0)). { / Comp (Comp (形态 2) (形态 1)) (形态 0)). { *)
+  (*   now vm_compute. / 现在 vm_compute。 *)
   (* } *)
-  (* rewrite X. *)
-  (* now vm_compute. *)
+  (* rewrite X. / 重写 X。 *)
+  (* now vm_compute. / 现在 vm_compute。 *)
 Qed.

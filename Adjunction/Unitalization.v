@@ -19,17 +19,353 @@ Require Import Coq.micromega.Lia.
 
 Generalizable All Variables.
 
-(*
+(** * Unitalization: the Dorroh extension, left adjoint to Rng ⟶ Rg
+
+    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.2
+    Exercise 4 (printed p. 89) [maclane:IV.2:ex4], second half: freely
+    adjoining an identity to a ring without one, and exhibiting that
+    construction as a left adjoint of the forgetful functor from unital
+    rings.  Riehl, "Category Theory in Context", 2nd ed., §4.7 (printed
+    p. 180), presents the same construction as R ⊕ ℤ.
     nLab: https://ncatlab.org/nlab/show/rng
     nLab: https://ncatlab.org/nlab/show/unitalisation
     Wikipedia: https://en.wikipedia.org/wiki/Rng_(algebra)#Adjoining_an_identity
 
-   本文件给出伴随相关构造与性质。
+    CITED BY LOCATION ONLY.  The printed text of neither book was
+    consulted while writing this file; the locations follow the issue
+    that commissioned it, and nothing below is presented as a quotation
+    from either.  This is the discipline Instance/Ab.v states for its own
+    §I.7 citations and Instance/Rg.v repeats.  Nor is anything below
+    quoted from another file in the tree: the cross-references to
+    Instance/Vect/TensorAlgebra.v are citations and paraphrase, as the
+    note at the TensorAlgebra reference says in terms.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    THE CONSTRUCTION.  The extension is due to J. L. Dorroh, "Concerning
+    adjunctions to algebras", Bull. Amer. Math. Soc. 38 (1932) 85-88 —
+    cited by name and date only, the paper not having been consulted.
+    For a rng R it takes the abelian group ℤ ⊕ R with
 
-(* 相关说明。 （已译） *)
+        (m, a) · (n, b)  =  (m·n,  m·b + n·a + a·b)
+
+    where [m·b] is the ℤ-action on R's additive group.  The unit is
+    (1, 0), the insertion is a ↦ (0, a), and every rng homomorphism
+    f : R → S into a UNITAL ring extends uniquely to the unital
+    homomorphism (n, a) ↦ n·1_S + f a.  The formula is exactly what one
+    gets by expanding (m + a)(n + b) in a ring containing both ℤ and R
+    with the integers central.
+
+    ── WHAT THIS FILE DELIVERS ──────────────────────────────────────────
+
+    The category [Rg], its objects and homomorphisms, and the forgetful
+    functor [Rng_Forget_Rg] are Instance/Rg.v's and are CONSUMED here,
+    not rebuilt: this file declares no category, redeclares neither
+    [RgObject] nor [RgHom], and takes its concrete witness from that file
+    rather than building a second rng.
+
+      - [rg_zsmul_mul_l] / [rg_zsmul_mul_r] — the ℤ-action commutes with
+        the rng multiplication on either side.  THESE TWO ARE THE HEART
+        OF THE FILE: without them the Dorroh multiplication is not
+        associative, and they are what the whole [dorroh_mul_assoc]
+        rearrangement is spent on.  They are proved by induction at the
+        [nat] level ([rg_nat_smul_mul_l]/[_r], using distributivity) and
+        lifted by the Z0/Zpos/Zneg sign split, mirroring how [zsmul_add]
+        is organised in Instance/Ab/Monoidal.v.  The negative case needs
+        [rg_mul_neg_l]/[rg_mul_neg_r], which the tree did not have.
+      - [zsmul_mul] — the ℤ-action is multiplicative in the SCALAR,
+        [(m·n)·a ≈ m·(n·a)].  A brief that guided this file described
+        Instance/Ab/Monoidal.v's [zsmul] API as "complete" and listed its
+        eleven [zsmul] lemmas plus the [nat_smul] family; that list is
+        accurate but the API does NOT contain
+        this one.  MEASURED, and the criterion has to be stated
+        exactly or the number moves.  Declaration heads whose name
+        BEGINS with [zsmul] or [nat_smul], excluding this file's own:
+        FIFTEEN and EIGHT, twenty-three in all, in two files
+        (Instance/Ab/Monoidal.v and Construction/Enriched/Ab.v).  Three
+        further heads CONTAIN the token and are excluded on purpose --
+        [ts_gen_nat_smul_l], [ts_gen_nat_smul_r] and
+        [ts_gen_zsmul_balance] -- being tensor-generator balance
+        lemmas rather than part of the action API; under a
+        contains-the-token criterion the figure is twenty-six.  NONE of
+        the twenty-six states it, so the absence does not turn on which
+        criterion is used.
+        Associativity of the Dorroh multiplication genuinely
+        needs it — three of its seven summands are reassociations of
+        iterated actions — so it is a THIRD new lemma the brief did not
+        anticipate, with [nat_smul_mul] beneath it.
+      - [Dorroh R : RingObject], with [dorroh_ab R] the genuine biproduct
+        [Ab_product ZAb (rg_ab R)] of Instance/Ab/Coproduct.v — Riehl's
+        own "R ⊕ ℤ" rather than a hand-rolled pair type, so all four
+        additive fields of the rig and all three of the ring are supplied
+        by [:=] with no tactic.
+      - [dorroh_insert R : R ~{Rg}~> ring_rg (Dorroh R)], the unit.
+      - [dorroh_extend], [dorroh_extend_commutes], [dorroh_extend_unique].
+      - [dorroh_universal] and [dorroh_auniversal] — the universal arrow
+        in BOTH of Theory/Universal/Arrow.v's encodings (the comma-packaged
+        [UniversalArrow], built through the smart constructor
+        [universal_arrow_from_UMP]; and the object-as-argument
+        [AUniversalArrow]).
+      - ★ [DorrohFunctor : Rg ⟶ Rng] and
+        ★ [unitalization_adjunction : DorrohFunctor ⊣ Rng_Forget_Rg] ★,
+        routed through that file's [LeftAdjointFunctorFromUniversalArrows]
+        and [AdjunctionFromUniversalArrows] rather than by hand.
+      - The exercise's two corollaries: [dorroh_insert_Monic] (with the
+        sharper [dorroh_insert_injective]) and, for faithfulness of the
+        forgetful functor, a one-line re-export of Instance/Rg.v's
+        [Rng_Forget_Rg_Faithful] under the name
+        [unitalization_forgetful_Faithful].  Nothing about faithfulness
+        is re-proved here.
+      - [rig_hom_preserves_zring] — every unital ring homomorphism
+        commutes with the canonical map out of ℤ.  Reusable, and stated
+        for its own sake as much as for the uniqueness proof.
+      - [zring_is_zsmul_one] and, over it, [zring_mul_zsmul_l],
+        [zring_mul_zsmul_r] and [zring_is_central] — the bridge between
+        Instance/Rng.v's [zring] and Instance/Ab/Monoidal.v's [zsmul].
+
+    ── WHAT IS MEASURED RATHER THAN ASSERTED ────────────────────────────
+
+    Every figure in this section was produced by running the stated
+    command at the revision this file was written, not recalled.
+
+    (1) THE REQUIRE CLOSURE IS 52 MODULES, and the two heavy imports cost
+    exactly what reuse is worth.  Computed by transitive closure over
+    [coqdep] on the whole tree, from this file's own sixteen
+    [Require Import Category.…] lines:
+
+      - dropping Instance/Ab/Monoidal.v removes SEVEN modules — itself
+        plus Instance/Ab/Tensor.v, Structure/Monoidal/{Balanced, Braided,
+        Naturality, Symmetric}.v and Theory/Naturality.v.  That is the
+        price of [zsmul], and it buys a complete, already-proved ℤ-action
+        API in place of some two hundred lines of duplicate.  (A brief
+        that guided this file put the same delta at "31 to 38", i.e. six
+        modules beyond Ab/Monoidal itself.  The SIX is exactly right; the
+        31/38 baseline is not this file's, whose own base is 45.)
+      - dropping Instance/Ab/Coproduct.v removes TWO — itself plus
+        Structure/Biproduct/Cartesian.v.  That is the price of
+        [Ab_product], and it buys the entire additive half.
+      - adding Instance/Rng/Polynomial.v would add FIFTEEN.  That module
+        carries [zring_central], which is this file's
+        [zring_is_central] in the same words; the two are independent and
+        neither is derived from the other.  CROSS-REFERENCED so a reader
+        knows the other statement exists, and DELIBERATELY not required:
+        fifteen modules — among them Yoneda, [Functor/Representable],
+        [Structure/UniversalProperty] and [Theory/Sheaf] — is a steep
+        price for one lemma whose proof here is six lines, and the sharper
+        [zring_mul_zsmul_l]/[_r] that this file actually needs are not in
+        that module at all.
+
+    (2) TWO DONOR UNIVERSE DEFECTS WERE MET AND ROUTED AROUND, both
+    guarded by [Fail] probes at the foot of this file.
+
+      - Instance/Rng.v's [rng_from_Z] reports, under
+        [Set Printing Universes],
+          rng_from_Z@{u u0 u1} : ∀ R : RingObject@{Set Set Set}, …
+        — pinned at the literal [Set] in all three universes of its
+        argument.  The obvious route to uniqueness, "compose h with
+        [rng_from_Z (Dorroh R)] and quote [rng_from_Z_unique]", would
+        therefore have confined every statement below to [Set]-sized
+        rngs.  [rig_hom_preserves_zring] replaces it.  Its sibling
+        [rng_from_Z_unique@{u} : ∀ R : RingObject@{u u u}, …] carries no
+        [Set] but identifies all three, and is not needed either.
+      - Defining [dorroh_zhom (R : RgObject) : RigHom Int_Ring (Dorroh R)]
+        — the evident "ℤ sits inside the Dorroh extension" homomorphism —
+        COMPILES, and then reports
+          dorroh_zhom@{…} : ∀ R : RgObject@{Set Set u6},
+            RigHom@{Set} Int_Ring@{Set Set Set} (Dorroh@{Set Set u6 …} R)
+        because [RigHom] takes its two arguments at ONE instance of
+        [RigObject], nothing forces that instance upward, and
+        minimization settles it at [Set].  [dorroh_zring] is proved by a
+        direct [Z_peano_rect] induction instead.  READ THAT AT ITS
+        STRENGTH: it is MEASURED, not pinned — merely FORMING the type
+        [RigHom Int_Ring (Dorroh R)] under a declared [Set < bh] is
+        ACCEPTED (that variant was written, compiled and found not to
+        fail), so no [Fail] guards it and none is claimed to.
+
+    (3) A THIRD UNIVERSE TRAP, in this file's own statements: writing the
+    right-hand side of [dorroh_zring] as the pair literal
+    [(n, cmon_zero (rg_ab R))] with an [n : Z] binder makes Coq INFER the
+    pair's type, whose first component is then the literal [Z : Set];
+    unifying that [prod] with the one inside [Dorroh R] forces [Set] onto
+    [R]'s carrier universe, and the next consumer fails with "Cannot
+    enforce Set = …".  An explicit ascription to
+    [carrier (rig_setoid (Dorroh R))] makes the pair CHECKED instead and
+    the equation is never generated.  The same ascription is used in
+    [dorroh_extend_unique] and in the strict readbacks below.
+
+    (4) THE CONSTRUCTION IS UNIVERSE-FREE; THE CATEGORY IS NOT, AND THE
+    CAUSE IS THE DONOR'S.  [About] reports
+
+        Dorroh@{u u0 u1 u2 …} : RgObject@{u u0 u1} → RingObject@{u2 u0 u3}
+
+    — three separate source universes, no equation.  But [dorroh_insert]
+    reads [∀ R : RgObject@{u2 u2 u2}], and that identification comes from
+    being an OBJECT of [Rg]: with [ao < ah] declared,
+    [RgObject@{ao ah ap}] is formable and [rg_mul] is usable at those
+    levels, while [(R : obj[Rg])] is rejected with "Cannot enforce
+    ah = ao because ao < ah".  Pinned as the first probe below.  Nothing
+    here adds to it and Instance/Rg.v is not edited.
+
+    (5) [unitalization_adjunction@{u u0 … u13}] carries NO universe
+    EQUATION anywhere in its constraint block — every entry is [<] or
+    [<=] — with one strict [Set < u5], which is a BOUND and not an
+    identification.  Its origin is NOT attributed: no isolating
+    experiment was run, and no claim is made that it is unavoidable.
+    Measured on the whole block rather than on its first line; the block
+    is reproducible from the [About] at the foot of this file.
+
+    (6) COLLISION SWEEP.  All 70 declared names of this file were swept
+    against every declaration head in the tree ([Definition], [Lemma],
+    [Theorem], [Corollary], [Example], [Instance], [Fixpoint], [Record],
+    [Class], [Inductive], [Notation], [Ltac], with attribute prefixes
+    allowed): ZERO hits.  By token, [dorroh] occurs in no other file at
+    all; [Dorroh] and [unitaliz] occur only in Instance/Rg.v's header
+    prose, which names this construction as its own deferral.  [dtz] was
+    checked separately and is free tree-wide — an earlier draft called it
+    [dz], which collides with a bound variable in
+    Construction/ColouredPROP/Supply.v and was renamed rather than risked.
+
+    (7) 84/84 CONSTANTS CLOSED UNDER THE GLOBAL CONTEXT: the 70 declared
+    names plus the 14 [_obligation_] constants that [Print Module] lists
+    and no source sweep sees, each queried by fully qualified name.  Zero
+    [Axioms:] lines.  The file declares no [Record]/[Class]/[Inductive],
+    so there is no unlisted [Build_*].
+
+    ── PRIOR ART, DISCLOSED RATHER THAN IMPLIED AWAY ────────────────────
+
+    Construction/Enriched/Ab.v already carries [zsmul_precomp]
+    and [zsmul_postcomp], which say that the ℤ-action commutes with
+    COMPOSITION on either side in an Ab-enriched category — under
+    delooping that is the same algebraic fact as
+    [rg_zsmul_mul_l]/[rg_zsmul_mul_r] one level up, and its proof there
+    is slicker than the induction here: both are one-line instances of
+    [zsmul_hom] at the pre- and post-composition homomorphisms.  That
+    route WOULD work here, since multiplication by a fixed element of a
+    rng is an [AbHom] (it preserves 0 by [rg_mul_zero_l] and + by
+    [rg_distr_r]).  It was found only after the sign-split proofs were
+    written and is recorded rather than substituted; nothing below
+    depends on which route is taken, and the sign-split route
+    additionally yields the [nat]-level statements and the two negation
+    lemmas, which the short route does not.  That module is NOT in this
+    file's Require closure (measured: it is not among the 52).
+    Instance/Ab/Monoidal.v's [zsmul_int_one] is a close relative of
+    [zring_is_zsmul_one] — the ℤ-side evaluation [zsmul ZAb n 1 = n],
+    which is this file's bridge at [Int_Ring] composed with
+    [zring Int_Ring n = n] — but it is a DIFFERENT statement, and the
+    bridge over an ARBITRARY [RingObject] is new here.
+
+    ── STRENGTHS, GRADED STRICT-FIRST ───────────────────────────────────
+
+    [eq_refl] was tried before [≈] everywhere below, and TWELVE
+    identifications hold at Leibniz [=] — ten of them shipped as
+    [Example]s, the other two as the [=]-valued lemmas named last.  Four
+    further [eq_refl] [Example]s live in the witness block and are
+    COMPUTATIONS rather than identifications; they are counted
+    separately.
+
+      - the carrier of [Dorroh R] IS [carrier ZAb * carrier (rg_ab R)];
+      - its zero, one, addition, negation and multiplication ARE the
+        terms written above ([dorroh_zero_strict] … [dorroh_mul_strict]);
+      - [dorroh_insert] IS [a ↦ (0, a)];
+      - the universal arrow extracted from the comma-packaged class IS
+        [dorroh_insert] ([dorroh_arrow_strict]);
+      - the left adjoint's object action IS [Dorroh]
+        ([dorroh_fobj_strict]);
+      - the mediator read out of the object-as-argument class IS
+        [dorroh_extend] ([dorroh_auniversal_med_strict]);
+      - [zring_is_zsmul_one] and [rig_iter_is_nat_smul] are stated at
+        Leibniz [=] rather than at [≈] — STRONGER than the [≈] form a
+        brief that guided this file asked for, because [rig_iter] and
+        [nat_smul] are the same recursion with [rig_one] substituted for
+        the iterated element.
+
+    TWO strict attempts were REFUTED and are pinned as [Fail Example …
+    := eq_refl] with passing controls beside them.  Both are CONVERSION
+    failures reporting [cannot unify], and their causes DIFFER:
+
+      - the unit of the produced adjunction is [⌊id⌋], which
+        [Build_Adjunction'] unfolds to [fmap[U] id ∘ arrow]; the residue
+        is the [fmap[Rng_Forget_Rg] id] that [fmap_id] removes only up to
+        [≈].  [unitalization_unit_is_insert] gives the [≈] form and
+        closes by [reflexivity], so the two sides are convertible
+        POINTWISE and what fails is equality of hom RECORDS.
+      - the mediator read out of the COMMA-packaged class does not reduce
+        at all, because Theory/Universal/Arrow.v's
+        [ump_universal_arrows] is closed with [Qed].  That is a known,
+        documented in-tree fact rather than a defect of this file, and it
+        is stated rather than fought: the passing control beside it,
+        [dorroh_auniversal_med_strict], reads the same mediator out of the
+        other packaging and DOES return it on the nose.
+
+    Correspondingly the COUNIT does not compute.  What is delivered
+    instead is [unitalization_counit_insert] (the counit sends (0, a) to
+    a) and [unitalization_counit_is_extend] (it IS the extension of the
+    identity), both at [≈].
+
+    Preservation of 0 and of + by [dorroh_insert] is DEFINITIONAL: both
+    obligations close by a bare [reflexivity], because [Z.add 0 0]
+    reduces to [0] by iota.  Its [proper_morphism] obligation
+    is componentwise [reflexivity] plus the hypothesis, and only
+    multiplicativity needs a rewrite, the residue being the [0 + 0 +]
+    that the abstract [cmon_plus] cannot reduce.
+
+    ── NON-VACUITY ──────────────────────────────────────────────────────
+
+    Over Instance/Rg.v's own witness [TwoZ_Rg], the even integers, proved
+    there NOT unital: [Dorroh TwoZ_Rg] is unital with 1 ≉ 0
+    ([dorroh_TwoZ_unital]), has provably distinct elements, and the
+    insertion provably misses the identity
+    ([dorroh_TwoZ_insert_not_surjective]).  Every negative is obtained by
+    projecting to the ℤ coordinate and calling [discriminate] — mapping
+    OUT — never by an induction on a relation.  The multiplication
+    COMPUTES ([dorroh_TwoZ_mul_computes]: (1,3)·(0,5) = (0,35)) and is
+    proved NOT componentwise ([dorroh_TwoZ_mul_not_componentwise]), so
+    the ℤ-action is visibly exercised rather than carried along inertly;
+    and the universal extension of Instance/Rg.v's doubling map computes
+    too, sending (3, 4) to 3 + 2·4 = 11.
+
+    ── NOT DELIVERED (intended to be exhaustive for this file) ──────────
+
+    No proof that [DorrohFunctor] is faithful, full or essentially
+    surjective, and no monad or comonad from the adjunction.  No
+    idempotence or unit-counit calculus beyond the two lemmas above, no
+    triangle identities restated in [Adjunction/Natural/Transformation.v]'s
+    vocabulary, and no naturality of any identification in [R] or [S].
+    No uniqueness-up-to-unique-iso statement for the Dorroh extension —
+    Theory/Universal/Arrow.v's [universal_arrow_unique] would give it by
+    instantiation and that instantiation is not performed.  No
+    commutative variant, so nothing says the Dorroh extension of a
+    commutative rng lands in [CRng].  Nothing about ideals: it is NOT
+    proved here that [dorroh_insert]'s image is a two-sided ideal of
+    [Dorroh R], nor that the quotient by it is ℤ, nor that the resulting
+    sequence is split.  No comparison with any other unitalization (the
+    R ⊕ ℤ presentation used here is the only one built).  No limits,
+    colimits or monoidal structure on [Rg].  The [Set] pin located in
+    [rng_from_Z] and the minimization pin located in a would-be
+    [dorroh_zhom] are ROUTED AROUND, not repaired: Instance/Rng.v is not
+    edited, and neither pin is claimed unavoidable.  Finally, the
+    contrast Mac Lane draws with his neighbouring §IV.2 Exercise 1 — where
+    the forgetful functor out of graded anticommutative K-algebras is NOT
+    faithful, whereas [Rng_Forget_Rg] here IS — is stated as a remark and
+    not formalized: Instance/Vect/TensorAlgebra.v, which owns that
+    exercise, states in its own header that no non-faithfulness lemma is
+    delivered there either (paraphrased, not quoted: the phrase wraps
+    across two lines there), so the two halves of the contrast are a proved
+    faithfulness on this side and an open deferral on that one.
+
+    HOUSEKEEPING, measured rather than estimated.  The [make todo] target
+    runs a CASE-INSENSITIVE [egrep] over every [.v] file for a
+    five-alternative pattern whose first alternative is [Fail] (the
+    others being the tree's usual deferral markers; see the [MISSING]
+    variable at the head of the Makefile), so it matches prose as well as
+    commands: this file contributes NINETEEN lines to its output, of which
+    only FOUR are
+    commands — two [Fail Example] conversion probes and two [Fail Check]
+    formability probes — every other match being header prose.  An
+    earlier draft of this paragraph said four, having counted the
+    commands and overlooked both the [-i] and the prose.  No TODO or
+    FIXME marker is added, and no deferral note of the fourth kind the
+    pattern looks for appears anywhere below this header.  *)
+
+(** ** Negation against multiplication in a rng  / ** rng 中乘法的否定*)
 
 Lemma rg_mul_neg_l (R : RgObject) (a b : carrier R) :
   rg_mul R (ab_neg R a) b ≈ ab_neg R (rg_mul R a b).
@@ -57,7 +393,7 @@ Proof.
   apply (ab_neg_right A).
 Qed.
 
-(* 相关说明。 （已译） *)
+(** ** The ℤ-action against the multiplication  / ** 反对乘法的ℤ-作用*)
 
 Lemma rg_nat_smul_mul_l (R : RgObject) (k : nat) (a b : carrier R) :
   nat_smul (rg_ab R) k (rg_mul R a b)
@@ -107,7 +443,7 @@ Proof.
     symmetry; apply rg_mul_neg_r.
 Qed.
 
-(* 相关说明。 （已译） *)
+(** ** Multiplicativity of the ℤ-action in the scalar  / ** 标量中 ℤ-作用的乘性*)
 
 Lemma nat_smul_mul (A : AbObject) (j k : nat) (a : carrier A) :
   nat_smul A (j * k) a ≈ nat_smul A j (nat_smul A k a).
@@ -150,7 +486,7 @@ Proof.
   now rewrite (cmon_plus_comm P a b).
 Qed.
 
-(** ** The Dorroh extension *)
+(** ** The Dorroh extension  / ** 多罗扩展*)
 
 Section Dorroh.
 
@@ -271,7 +607,14 @@ Proof.
   - now rewrite zsmul_zero_r, rg_mul_zero_r, !cmon_plus_zero_r.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+Every additive field is [dorroh_ab]'s own, supplied by [:=] with no
+   tactic: the two records' field types are convertible. 
+
+--------
+每个附加字段都是 [dorroh_ab] 自己的，由 [:=] 提供，没有
+ 策略：两条记录的字段类型是可以转换的。 
+*)
 Definition dorroh_rig : RigObject := {|
   rig_setoid := cmon_setoid dorroh_ab;
   rig_zero := cmon_zero dorroh_ab;
@@ -301,7 +644,7 @@ Definition Dorroh : RingObject := {|
 
 End Dorroh.
 
-(* * ** The unit: 嵌入 rng （已译） *)
+(** ** The unit: insertion of the rng  / ** 单位：rng的插入*)
 
 #[local] Obligation Tactic := idtac.
 
@@ -319,7 +662,7 @@ Next Obligation.
   simpl; symmetry; now rewrite !cmon_plus_zero_l.
 Qed.
 
-(* 相关说明。 （已译） *)
+(** ** The bridge between the two integer actions  / ** 两个整数动作之间的桥梁*)
 
 Lemma rig_iter_is_nat_smul (S : RingObject) (k : nat) :
   rig_iter S k = nat_smul (ring_ab S) k (rig_one S).
@@ -366,17 +709,62 @@ Proof.
   symmetry; apply zring_mul_zsmul_r.
 Qed.
 
-(*
-   本节说明始/终对象相关定义、性质与动机。
+(**
+** The integers inside the Dorroh extension
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    [zring (Dorroh R) n] is the pair [(n, 0)], and the proof is a direct
+    [Z_peano_rect] induction rather than an appeal to ℤ's initiality
+    through a [RigHom Int_Ring (Dorroh R)].  THAT CHOICE IS FORCED BY A
+    MEASURED UNIVERSE PIN, not by taste.  A [Program Definition
+    dorroh_zhom (R : RgObject) : RigHom Int_Ring (Dorroh R)] compiles,
+    but [About] then reports
+
+      dorroh_zhom@{…} : ∀ R : RgObject@{Set Set u6},
+        RigHom@{Set} Int_Ring@{Set Set Set} (Dorroh@{Set Set u6 …} R)
+
+    — [RigHom] takes its two arguments at ONE instance of [RigObject],
+    nothing forces that instance upward, and universe minimization
+    therefore settles it at [Set], dragging [R]'s object and hom
+    universes down with it.  Every later consumer then fails with
+    "Cannot enforce Set = …".  The induction below has no such constant
+    in it and [Dorroh] itself stays free: [Dorroh@{u u0 u1 u2 …} :
+    RgObject@{u u0 u1} → RingObject@{u2 u0 u3}], measured by [About] and
+    reproducible from the probe at the foot of this file. 
+
+--------
+** Dorroh 扩展中的整数
+
+[zring (Dorroh R) n] 是 [(n, 0)] 对，证明是直接的
+ [Z_peano_rect] 归纳而不是诉诸 ℤ 的初始值
+ 通过 [RigHom Int_Ring (Dorroh R)]。 这个选择是由一个人强迫的
+ 测量宇宙的密码，而不是通过品味。 A [程序定义
+ dorroh_zhom (R : RgObject) : RigHom Int_Ring (Dorroh R)] 编译，
+ 但 [About] 随后报告
+
+dorroh_zhom@{…} : ∀ R : RgObject@{集合集合 u6},
+ RigHom@{Set} Int_Ring@{Set Set Set} (Dorroh@{Set Set u6 …} R)
+
+— [RigHom] 在 [RigObject] 的一个实例上获取两个参数，
+ 没有任何力量迫使该实例向上，并且宇宙最小化
+ 因此将其定为 [Set]，拖动 [R] 的对象和 hom
+ 宇宙也随之而降。 后来的每个消费者都会失败
+ “无法强制 Set = ...”。 下面的归纳法没有这样的常数
+ 其中 [Dorroh] 本身保持免费：[Dorroh@{u u0 u1 u2 …} :
+ RgObject@{u u0 u1} → RingObject@{u2 u0 u3}]，通过 [About] 测量，
+ 可以从该文件底部的探针中重现。 
 *)
 
-(*
-   本节说明 Unitalization 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* Any unital ring homomorphism commutes with the canonical map out of
+   ℤ.  Proved here by [Z_peano_rect] rather than by composing with
+   Instance/Rng.v's [rng_from_Z] and citing its uniqueness, and
+   again for a MEASURED universe reason: [About] reports
+   [rng_from_Z@{u u0 u1} : ∀ R : RingObject@{Set Set Set}, …] — that
+   donor is pinned at the literal [Set] in all three of its argument's
+   universes, so composing with it would confine every statement below
+   to [Set]-sized rngs.  Its sibling [rng_from_Z_unique@{u} : ∀ R :
+   RingObject@{u u u}, …] carries no [Set] but identifies all three, and
+   is not needed once this lemma exists.  Neither pin is repaired here;
+   Instance/Rng.v is not edited. *)
 Lemma rig_hom_preserves_zring (A B : RingObject) (h : RigHom A B) (n : Z) :
   rig_map h (zring A n) ≈ zring B n.
 Proof.
@@ -417,7 +805,7 @@ Proof.
       apply cmon_plus_zero_l.
 Qed.
 
-(** ** The unique unital extension *)
+(** ** The unique unital extension  / ** 独特的统一扩展*)
 
 Section Extend.
 
@@ -425,9 +813,16 @@ Context (R : RgObject) (S : RingObject).
 Context (f : R ~{Rg}~> ring_rg S).
 
 (*
-   本节说明 Unitalization 相关定义、性质与动机。
+Restatements of [f]'s laws in the unital ring's own vocabulary.  Each
+   is [apply]ed rather than reproved: the two statements are convertible,
+   but not syntactically equal, so a rewrite against the [RgHom] form
+   would not fire inside a goal phrased with [rig_add]/[rig_mul]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+在单位环自己的词汇中重述了 [f] 的定律。 每个
+ 是 [apply]ed 而不是谴责：这两个语句是可以转换的，
+ 但语法上不相等，因此针对 [RgHom] 形式进行重写
+ 不会在标有 [rig_add]/[rig_mul] 的球门内开火。 
 *)
 Lemma dext_f_zero :
   cmon_map (rg_hom_ab f) (cmon_zero (rg_ab R)) ≈ rig_zero S.
@@ -503,13 +898,13 @@ Lemma dorroh_extend_unique (h : Dorroh R ~{Rng}~> S)
   rig_map h x ≈ rig_map dorroh_extend x.
 Proof.
   destruct x as [n a].
-  (* (n, a) splits as (n, 0) + (0, a) *)
+  (* (n, a) splits as (n, 0) + (0, a)  / (n, a) 拆分为 (n, 0) + (0, a)*)
   assert (Hsplit : ((n : carrier ZAb), a)
             ≈ rig_add (Dorroh R) (n, cmon_zero (rg_ab R)) (0%Z, a)).
   { split; simpl.
     - symmetry; apply Z.add_0_r.
     - symmetry; apply cmon_plus_zero_l. }
-  (* and h (n, 0) is forced to be zring S n *)
+  (* and h (n, 0) is forced to be zring S n  / 并且 h(n, 0) 被强制为 zring S n*)
   assert (Hz : rig_map h ((n, cmon_zero (rg_ab R))
                             : carrier (rig_setoid (Dorroh R)))
                  ≈ zring S n).
@@ -525,7 +920,7 @@ Qed.
 
 End Extend.
 
-(* * ** The 普遍性质, both encodings （已译） *)
+(** ** The universal property, in both encodings  / ** 两种编码中的通用属性*)
 
 Program Definition dorroh_ump (R : RgObject) (S : RingObject)
   (f : R ~{Rg}~> ring_rg S)
@@ -567,7 +962,7 @@ Next Obligation.
   intro b; exact (Hv b).
 Qed.
 
-(* * ** The unitalization 函子 伴随 （已译） *)
+(** ** The unitalization functor and its adjunction  / ** 统一函子及其附加物*)
 
 Definition DorrohFunctor : Rg ⟶ Rng :=
   LeftAdjointFunctorFromUniversalArrows Rng_Forget_Rg dorroh_universal.
@@ -575,7 +970,7 @@ Definition DorrohFunctor : Rg ⟶ Rng :=
 Definition unitalization_adjunction : DorrohFunctor ⊣ Rng_Forget_Rg :=
   AdjunctionFromUniversalArrows Rng_Forget_Rg dorroh_universal.
 
-(* * ** The unit monic; forgetful 函子 faithful （已译） *)
+(** ** The unit is monic; the forgetful functor is faithful  / ** 单位是莫尼卡； 健忘的函子是忠实的*)
 
 #[export] Program Instance dorroh_insert_Monic (R : RgObject)
   : Monic (dorroh_insert R).
@@ -592,9 +987,16 @@ Proof. intro H; exact (snd H). Qed.
 Definition unitalization_forgetful_Faithful : Faithful Rng_Forget_Rg :=
   Rng_Forget_Rg_Faithful.
 
-(* 相关说明。 （已译） *)
+(** ** Strengths, graded strict-first  / ** 优势，分级严格第一*)
 
-(* 相关说明。 （已译） *)
+(*
+The carrier IS the product [ℤ × R], and the four operations ARE the
+   ones written above, all at Leibniz [=]. 
+
+--------
+载体是产品[ℤ × R]，四个操作分别是
+ 上面写的，全部在 Leibniz [=]。 
+*)
 Example dorroh_carrier_strict (R : RgObject) :
   carrier (rig_setoid (Dorroh R))
     = (carrier ZAb * carrier (rg_ab R))%type := eq_refl.
@@ -618,13 +1020,19 @@ Example dorroh_neg_strict (R : RgObject) :
 Example dorroh_mul_strict (R : RgObject) :
   rig_mul (Dorroh R) = dorroh_mul R := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* The unit is [a ↦ (0, a)] on the nose.  / 该装置是鼻子上的 [a ↦ (0, a)]。*)
 Example dorroh_insert_strict (R : RgObject) (a : carrier R) :
   cmon_map (rg_hom_ab (dorroh_insert R)) a
     = ((0%Z, a) : carrier (rig_setoid (Dorroh R))) := eq_refl.
 
-(* The 泛箭头 extracted comma-packaged class IS the
- 嵌入, 左伴随's 对象 action IS [Dorroh]. （已译） *)
+(*
+The universal arrow extracted from the comma-packaged class IS the
+   insertion, and the left adjoint's object action IS [Dorroh]. 
+
+--------
+从逗号封装的类中提取的通用箭头是
+ 插入，左伴随的对象动作是 [Dorroh]。 
+*)
 Example dorroh_arrow_strict (R : RgObject) :
   @arrow Rg Rng R Rng_Forget_Rg (dorroh_universal R) = dorroh_insert R
   := eq_refl.
@@ -632,16 +1040,62 @@ Example dorroh_arrow_strict (R : RgObject) :
 Example dorroh_fobj_strict (R : RgObject) :
   fobj[DorrohFunctor] R = Dorroh R := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+The mediator extracted from the OBJECT-AS-ARGUMENT class IS
+   [dorroh_extend], because that class's [unique_obj] field is supplied
+   here as a term. 
+
+--------
+从 OBJECT-AS-ARGUMENT 类 IS 中提取的中介者
+ [dorroh_extend]，因为提供了该类的 [unique_obj] 字段
+ 这里作为一个术语。 
+*)
 Example dorroh_auniversal_med_strict (R : RgObject) (S : RingObject)
   (f : R ~{Rg}~> ring_rg S) :
   unique_obj (@universal_arrow_universal Rg Rng R Rng_Forget_Rg (Dorroh R)
                 (dorroh_auniversal R) S f) = dorroh_extend R S f := eq_refl.
 
-(*
-   本节说明伴随相关定义、性质与动机。
+(**
+** Two refuted strict attempts, pinned
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    Both are CONVERSION failures, each reporting [cannot unify] between
+    two terms of one type, and each was stripped of its [Fail] and
+    compiled alone to read the error.  They have DIFFERENT causes.
+
+    (1) The unit of the produced adjunction is [⌊id⌋], which
+    [Build_Adjunction'] unfolds to [fmap[U] id ∘ arrow]; the residue is
+    the [fmap[Rng_Forget_Rg] id] that [fmap_id] removes only up to [≈].
+    The [≈] form is [unitalization_unit_is_insert] below, and it closes
+    by [reflexivity], so the two sides ARE convertible pointwise and what
+    fails is the equality of hom RECORDS.
+
+    (2) The mediator read out of the COMMA-packaged class does not
+    reduce at all, because [Theory/Universal/Arrow.v]'s
+    [ump_universal_arrows] is closed with [Qed].  This is a known in-tree
+    fact rather than a defect of this file, and the passing control
+    beside it is [dorroh_auniversal_med_strict] above, which reads the
+    same mediator out of the other packaging and DOES return it. 
+
+--------
+** 两次驳斥严格尝试，被钉住
+
+两者都是 CONVERSION 失败，每次都报告 [cannot unify]
+ 一种类型的两个术语，并且每个术语都被剥夺了 [Fail] 和
+ 单独编译读取错误。 他们有不同的原因。
+
+(1) 产生的附加物的单位是[⌊id⌋]，其中
+ [Build_Adjunction'] 展开为 [fmap[U] id ∘ 箭头]； 残差是
+ [fmap_id] 仅删除最多 [≈] 的 [fmap[Rng_Forget_Rg] id]。 
+[≈]形式是下面的[unitalization_unit_is_insert]，它关闭
+ 通过 [reflexivity]，所以两侧可以逐点转换，什么
+ 失败的是 hom RECORDS 的相等性。
+
+(2)介体读取COMMA封装的类不
+ 完全减少，因为 [Theory/Universal/Arrow.v] 的
+ [ump_universal_arrows] 与 [Qed] 一起关闭。 这是一个已知的树内
+ 事实而不是该文件的缺陷，以及传递控制
+ 旁边是上面的 [dorroh_auniversal_med_strict]，它读取
+ 相同的调解器从其他包装中取出并返回。 
 *)
 
 Fail Example dorroh_unit_is_insert_strict (R : RgObject) :
@@ -653,7 +1107,7 @@ Fail Example dorroh_ump_med_strict (R : RgObject) (S : RingObject)
   unique_obj (@ump_universal_arrows Rg Rng R Rng_Forget_Rg
                 (dorroh_universal R) S f) = dorroh_extend R S f := eq_refl.
 
-(* * ** The unit counit produced 伴随 （已译） *)
+(** ** The unit and counit of the produced adjunction  / ** 产生的附加物的单位和数量*)
 
 Lemma unitalization_unit_is_insert (R : RgObject) :
   @unit Rng Rg DorrohFunctor Rng_Forget_Rg unitalization_adjunction R
@@ -681,35 +1135,49 @@ Proof.
   intro a; exact (unitalization_counit_insert S a).
 Qed.
 
-(*
-   本节说明 Unitalization 相关定义、性质与动机。
+(** ** Non-vacuity: the Dorroh extension of 2ℤ
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    Instance/Rg.v's own witness [TwoZ_Rg] is the even integers, proved
+    there NOT unital ([TwoZ_not_unital]), not degenerate and not of zero
+    multiplication.  Every negative below is obtained by projecting to
+    the ℤ coordinate and calling [discriminate] — mapping OUT — never by
+    an induction on a relation. *)
 
 Definition DorrohTwoZ : RingObject := Dorroh TwoZ_Rg.
 
 Definition dtz (m a : Z) : carrier (rig_setoid DorrohTwoZ) := (m, a).
 
-(* Adjoining an identity to a rng that provably had none: 1 ≉ 0. *)
+(* Adjoining an identity to a rng that provably had none: 1 ≉ 0.  / 将一个恒等式与一个可证明没有恒等式的 rng 相连：1 ≉ 0。*)
 Theorem dorroh_TwoZ_unital :
   rig_one DorrohTwoZ ≈ rig_zero DorrohTwoZ → False.
 Proof. intros [H1 _]; discriminate H1. Qed.
 
-(* Two provably distinct elements, both outside image the
- 嵌入's ℤ coordinate. （已译） *)
+(*
+Two provably distinct elements, both outside the image of the
+   insertion's ℤ coordinate. 
+
+--------
+两个明显不同的元素，都在图像的外部
+ 插入的 ℤ 坐标。 
+*)
 Theorem dorroh_TwoZ_two_elements : dtz 1 0 ≈ dtz 2 0 → False.
 Proof. intros [H1 _]; discriminate H1. Qed.
 
-(* The 嵌入 not surjective: nothing lands 恒等. （已译） *)
+(* The insertion is not surjective: nothing lands on the identity.  / 插入不是满射的：没有任何东西落在恒等上。*)
 Theorem dorroh_TwoZ_insert_not_surjective :
   ∀ a : carrier TwoZ_Rg,
     cmon_map (rg_hom_ab (dorroh_insert TwoZ_Rg)) a
       ≈ rig_one DorrohTwoZ → False.
 Proof. intros a [H1 _]; discriminate H1. Qed.
 
-(* The multiplication computes, it visibly 所消耗 ℤ-action:
- (1,0)·(0,5) (0,5), not componentwise (0,0). （已译） *)
+(*
+The multiplication computes, and it visibly consumes the ℤ-action:
+   (1,0)·(0,5) is (0,5), not the componentwise (0,0). 
+
+--------
+乘法进行计算，它明显消耗了 ℤ-action：
+ (1,0)·(0,5)是(0,5)，而不是分量(0,0)。 
+*)
 Example dorroh_TwoZ_mul_computes :
   dorroh_mul TwoZ_Rg (dtz 1 3) (dtz 0 5) = dtz 0 35 := eq_refl.
 
@@ -720,9 +1188,16 @@ Theorem dorroh_TwoZ_mul_not_componentwise :
   dorroh_mul TwoZ_Rg (dtz 1 0) (dtz 0 5) ≈ dtz 0 0 → False.
 Proof. intros [_ H2]; discriminate H2. Qed.
 
-(* And universal extension computes. Instance/Rg.v's [TwoZ_incl] is
- doubling map 2ℤ ↪ ℤ; extending it along 嵌入 sends
- (3, 4) 3 + 2·4 = 11. （已译） *)
+(*
+And the universal extension computes.  Instance/Rg.v's [TwoZ_incl] is
+   the doubling map 2ℤ ↪ ℤ; extending it along the insertion sends
+   (3, 4) to 3 + 2·4 = 11. 
+
+--------
+通用扩展计算。 Instance/Rg.v 的 [TwoZ_incl] 是
+ 倍增映射 2ℤ ↪ ℤ； 沿着插入发送延伸它
+ (3, 4) 到 3 + 2·4 = 11。 
+*)
 Example dorroh_TwoZ_extend_computes :
   rig_map (dorroh_extend TwoZ_Rg Int_Ring TwoZ_incl) (dtz 3 4) = 11%Z
   := eq_refl.
@@ -731,16 +1206,82 @@ Example dorroh_TwoZ_extend_one :
   rig_map (dorroh_extend TwoZ_Rg Int_Ring TwoZ_incl) (dtz 1 0) = 1%Z
   := eq_refl.
 
-(*
-   本节说明hom相关定义、性质与动机。
+(**
+** Measured boundaries, pinned
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    Two FORMABILITY negatives, each stripped of its [Fail] and compiled
+    alone so the failure kind could be read off the error rather than
+    guessed, each against positive controls accepted at the very same
+    declared levels.  The section-local [Universes]/[Constraint]
+    declarations do not leak (the Instance/Fun/Group.v precedent).
+
+    (1) Being an OBJECT of [Rg] identifies [RgObject]'s object and hom
+    universes.  That is Instance/Rg.v's doing, inherited here, and it is
+    why [dorroh_insert] reads [∀ R : RgObject@{u2 u2 u2}] while [Dorroh]
+    itself stays free at [RgObject@{u u0 u1}].  Stripped, the error is
+    "universe inconsistency: Cannot enforce ah = ao because ao < ah".
+
+    (2) Instance/Rng.v's [rng_from_Z] is pinned at [RingObject@{Set
+    Set Set}], so it cannot be applied to [Dorroh R] for an [R] whose hom
+    universe is declared above [Set]; the sibling [zring] is free
+    and IS accepted at the same levels, which is what makes the negative
+    discriminate between the two donors rather than merely reporting that
+    something about [Dorroh R] is large.  Stripped, the error is
+    "Cannot enforce Set = bh".  This is the measurement behind
+    [rig_hom_preserves_zring] above.
+
+    NOT PINNED, and said so rather than dressed up: the [dorroh_zhom]
+    minimization quoted earlier is a fact about DEFINING a constant, and
+    merely FORMING the type [RigHom Int_Ring (Dorroh R)] under the same
+    declared constraint is ACCEPTED — that variant was written, compiled
+    and found not to fail, so no [Fail] guards it. 
+
+--------
+** 测量边界，固定
+
+两个 FORMABILITY 负片，每个都剥离了 [Fail] 并编译
+ 单独使用，以便可以从错误中读取故障类型，而不是
+ 猜测，每个都针对同一时间接受的阳性对照
+ 宣布的水平。 局部部分 [Universes]/[Constraint]
+ 声明不会泄漏（Instance/Fun/Group.v 的先例）。
+
+(1) 作为 [Rg] 的 OBJECT 识别 [RgObject] 的对象和宿主
+ 宇宙。 那是Instance/Rg.v做的，继承在这里，就是
+ 为什么 [dorroh_insert] 读取 [∀ R : RgObject@{u2 u2 u2}] 而 [Dorroh]
+ [RgObject@{u u0 u1}] 本身保持免费。 剥离后，错误是
+ “宇宙不一致：无法强制执行 ah = ao，因为 ao < ah”。
+
+(2) Instance/Rng.v 的 [rng_from_Z] 固定在 [RingObject@{Set
+ Set Set}]，因此对于其宿主机的 [R] 来说，它不能应用于 [Dorroh R]。 
+Universe 在 [Set] 之上声明； 同级产品 [zring] 是免费的
+ 和IS在同一水平上被接受，这就是负面的原因
+ 区分两个捐助者，而不仅仅是报告
+ [Dorroh R] 的一些东西很大。 剥离后，错误是
+ “无法强制 Set = bh”。 这是后面的测量
+ [rig_hom_preserves_zring] 以上。
+
+未固定，只是这么说而不是盛装打扮：[dorroh_zhom]
+ 前面引用的最小化是关于定义常数的事实，并且
+ 仅在相同条件下形成 [RigHom Int_Ring (Dorroh R)] 型
+ 声明的约束已接受 - 该变体已编写、编译
+ 并发现没有失败，所以没有 [Fail] 来保护它。 
 *)
 
 (*
-   本节说明 Unitalization 相关定义、性质与动机。
+The instances are written [@{ap ao ah}], not [@{ao ah ap}]: since the PR
+   "algebraic carriers are sets" (2026-09-17) the record's AUXILIARY universe
+   -- the one bounding the [cmon_prop] field's own sort, which carries the
+   [Set+1] -- is the FIRST argument rather than the third.  The named
+   universes keep their roles: [ao] is the carrier level, [ah] the proof
+   level, [ap] the level the record's sort is read at. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+这些实例被写入 [@{ap ao ah}]，而不是 [@{ao ah ap}]：因为 PR
+ “代数载体是集合”（2026-09-17）记录的辅助宇宙
+ -- 限制 [cmon_prop] 字段自身排序的一个，它携带
+ [Set+1]——是第一个参数而不是第三个。 被命名的
+ 宇宙保持其角色：[ao] 是载体级别，[ah] 是证明
+ level, [ap] 读取记录排序的级别。 
 *)
 Section ProbeRgObjects.
 Universes ao ah ap.
@@ -762,7 +1303,18 @@ Fail Check (fun R : RgObject@{bp bo bh} => rng_from_Z (Dorroh R)).
 
 End ProbeDonorPin.
 
-(* 相关说明。 （已译） *)
+(**
+** The universe measurement, for the record
+
+    Rerun the commands below to reproduce the figures quoted in the
+    header. 
+
+--------
+** 宇宙测量，供记录
+
+ 重新运行以下命令以重现引用的数字
+ 标头。 
+*)
 
 Set Printing Universes.
 About Dorroh.

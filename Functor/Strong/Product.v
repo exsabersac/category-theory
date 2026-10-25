@@ -12,14 +12,59 @@ Require Import Category.Structure.Monoidal.Heunen_Vicary.Proofs.
 
 Generalizable All Variables.
 
-(** Strength of a pointwise product of strong functors *)
+(** Strength of a pointwise product of strong functors  / 强函子逐点积的强度*)
 
 (*
+nLab: https://ncatlab.org/nlab/show/tensorial+strength
    Wikipedia: https://en.wikipedia.org/wiki/Strong_monad
 
-   本文件给出积（分量）构造。
+   In a cartesian monoidal category (tensor = product, unit = terminal) the
+   pointwise product functor F :*: G : x ↦ F x ⨂ G x (see Functor/Product.v)
+   inherits a tensorial strength from strengths on F and on G.  Writing
+   strength[F], strength[G] for the two given left strengths and using the
+   copying diagonal ∆ together with the projections proj_left, proj_right of
+   the cartesian structure, the product strength is
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+     strength[F:*:G][x,y]
+       : x ⨂ (F y ⨂ G y) ~> F (x ⨂ y) ⨂ G (x ⨂ y)
+       = (strength[F] ∘ id ⨂ proj_left) ⨂ (strength[G] ∘ id ⨂ proj_right)
+           ∘ ∆(x ⨂ F y ⨂ G y).
+
+   Operationally: copy the input pair, on one copy keep x and the F-summand
+   (id ⨂ proj_left) then slide x inside F via strength[F], on the other copy
+   keep x and the G-summand (id ⨂ proj_right) then slide x inside G via
+   strength[G], and pair the results.  This construction genuinely uses the
+   cartesian assumption: the diagonal ∆ (copying x so it can be fed to both
+   factors) and the projections are only available because ⨂ is the product.
+   The two obligations discharge Kock's unit law ([strength_id_left]) and
+   associativity law ([strength_assoc]) for the resulting strength; the
+   leading obligation discharges naturality in both arguments. 
+
+--------
+nLab：https://ncatlab.org/nlab/show/tensorial+strength
+ 维基百科：https://en.wikipedia.org/wiki/Strong_monad
+
+在笛卡尔幺半群范畴中（张量=乘积，单位=终端）
+ 逐点积函子 F :*: G : x ↦ F x ⨂ G x （参见 Functor/Product.v）
+ 从 F 和 G 的强度继承张量强度。 写作
+ Strength[F]、strength[G] 对于两个给定的左侧强度并使用
+ 复制对角线 Δ 以及投影 proj_left、proj_right
+ 笛卡尔结构，乘积强度为
+
+强度[F:*:G][x,y]
+ : x ⨂ (F y ⨂ G y) ~> F (x ⨂ y) ⨂ G (x ⨂ y)
+ = (strength[F] ∘ id ⨂ proj_left) ⨂ (strength[G] ∘ id ⨂ proj_right)
+ ∘ Δ(x ⨂ F y ⨂ G y)。
+
+操作上：复制输入对，在一份副本上保留 x 和 F 被加数
+ (id ⨂ proj_left) 然后通过 Strength[F] 将 x 在另一个副本上滑动到 F 内
+ 保留 x 和 G 被加数 (id ⨂ proj_right)，然后通过以下方式将 x 滑入 G 内
+ Strength[G]，并对结果进行配对。 该结构真正使用了
+ 笛卡尔假设：对角线 Δ（复制 x，以便可以将其馈送到
+ 因子）并且预测仅可用，因为 ⨂ 是乘积。 
+这两项义务履行Coq单位定律 ([strength_id_left]) 和
+ 所得强度的关联律 ([strength_assoc])； 的
+ 主导义务在这两个论点中都体现了自然性。 
 *)
 
 Section ProductStrong.

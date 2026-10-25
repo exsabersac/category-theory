@@ -8,15 +8,102 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(** * Conjugate natural transformations  / * 共轭自然变换*)
 
-(*
+(* nLab: https://ncatlab.org/nlab/show/mate
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
+   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7,
+     pp. 99-100: Definition 2 (conjugate transformations) and Theorem 2 (the
+     four characterizations and the bijection).
+   Riehl, "Category Theory in Context", 2nd ed., §4.3, p. 148: the same
+     bijection, and exercise (iv).
 
-   本文件给出共轭/mate 相关。
+   Fix two adjunctions between the same pair of categories, A : F ⊣ U and
+   A' : F' ⊣ U' with F, F' : D ⟶ C and U, U' : C ⟶ D.  Mac Lane calls
+   σ : F' ⟹ F and τ : U ⟹ U' CONJUGATE when the two hom-set transposes carry
+   one into the other:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+       ⌊ k ∘ σ x ⌋²  ≈  τ a ∘ ⌊ k ⌋        for every k : F x ~> a,
+
+   which is [Conjugate] below, quantified over every transposable arrow
+   rather than evaluated at one distinguished argument.  Reading the same
+   square through the inverse transposes gives [ConjugateFrom], and
+   [conjugate_iff_from] shows the two readings agree.
+
+   Mac Lane's Theorem 2 is that four further equations are each equivalent to
+   that square, and [conjugate_characterizations] proves all four:
+
+       (mate)        τ  =  U'ε ∘ U'σU ∘ η'U
+       (mate_inv)    σ  =  ε'F ∘ F'τF ∘ F'η
+       (unit)        τF ∘ η  =  U'σ ∘ η'
+       (counit)      ε ∘ σU  =  ε' ∘ F'τ
+
+   The first two are the pasting composites that Theory/Bicategory/Mates.v's
+   [mate] and [mate_inv] compute — [ConjugateMate_pasting] and
+   [ConjugateMateInv_pasting] give them in that three-fold spelling — while
+   the counit equation had no statement in tree before this file, and the
+   unit equation only in the degenerate case F = F', as the hypothesis of
+   Theory/Bicategory/Adjunction.v [mate_charac] and the conclusion of
+   [mate_unit_compat].
+   Each σ has one and only one conjugate, and each τ one and only one
+   ([conjugate_unique_right], [conjugate_unique_left]), both obtained by
+   evaluating the square at a universal arrow: at k := ε for τ, at k := id
+   for σ.  The two operators [conj_mate] and [conj_mate_inv] package that as
+   [conjugate_bijection], an isomorphism in Sets of the two transformation
+   setoids, shaped after Mates.v [mate_iso].
+
+   WHY THIS LIVES HERE, IN ORDINARY VOCABULARY.  Mates.v already delivers the
+   bijection over an arbitrary bicategory with arbitrary bounding 1-cells,
+   and Mac Lane's setting is the case where both bounding cells are
+   identities.  That route is not the
+   source's DEFINITION, which is a hom-set square, and it is expensive:
+   making C and D objects of Cat pulls Instance/Cat, Instance/Fun and the
+   whole bicategory chain into a development that otherwise needs the seven
+   modules above.  It is not a typability barrier — Cat is universe-
+   polymorphic, so Instance/Cat/Bicategory/Conjugate.v takes arbitrary C and
+   D (and Cat itself) through the bicategory — the cost is the dependency
+   cone, which is also why the print-assumptions audit lists this file and
+   not the satellite.  The two are reconciled in
+   Instance/Cat/Bicategory/Conjugate.v, where padding transformations mediate
+   between F' ⟹ F and the bicategorical F' ◯ Id ⟹ Id ◯ F — not the same
+   type, since the two functor records carry different [fmap_respects],
+   [fmap_id] and [fmap_comp] fields, which are data here and which record
+   eta cannot identify — and
+   [Cat_conj_mate_agrees] identifies [conj_mate] with [mate].
+
+   ORIENTATION.  Riehl states the same bijection with the primes exchanged,
+   pairing F ⟹ F' with U' ⟹ U.  That is this relation with its two
+   adjunction arguments swapped, [Conjugate A' A], not a second theorem.
+
+   SCOPE, three disclosures.
+
+   (1) [conj_unit_nat] and [conj_counit_nat] are the naturality squares of
+   the unit and counit at an ARBITRARY morphism.  Theory/Adjunction.v
+   [counit_comp] and [unit_comp] look like these but pin one endpoint to
+   an F- or U-image, and are not usable for the two [Transform] obligations
+   here.  The general unit form already exists at
+   Theory/Equivalence/Adjoint.v and the general counit form twice, once in
+   that same file and once in Construction/Reflective.v;
+   importing either pulls the equivalence-of-categories or the reflective
+   subcategory development into a file that otherwise needs the seven modules
+   above, so this file re-derives them in two lines each.  Consolidating those three
+   with the two below into Theory/Adjunction.v is a separate hygiene change.
+
+   (2) [conjugate_id] and [conjugate_compose] are the identity-bounding-cell
+   shadow of the pasting functoriality that Mates.v deliberately leaves out
+   of scope (its descope ledger entry 10, the double category of
+   adjunctions).  They do not discharge that entry; the general bicategorical
+   statement remains out of scope there.  They are also the VERTICAL half of
+   what Instance/Adj/Bicategory.v (#399) later completes: that file adds the
+   HORIZONTAL composition of conjugate pairs, proves it a bifunctor and
+   derives the interchange law from it, and narrows Mates.v's note
+   accordingly — again without discharging entry 10, whose
+   arbitrary-bicategory and double-category content stays open.
+
+   (3) [conjugate_invertible_iff] is pointwise: it converts a componentwise
+   two-sided inverse for σ into one for τ and back, using only the square and
+   neither transformation's naturality.  It does not state invertibility in
+   the functor categories [D,C] and [C,D]. *)
 
 Section Conjugate.
 
@@ -36,7 +123,7 @@ Notation "'ε'"  := (@counit _ _ _ _ A).
 Notation "'η²'" := (@unit   _ _ _ _ A') (at level 0).
 Notation "'ε²'" := (@counit _ _ _ _ A') (at level 0).
 
-(* ---- 定义: Mac Lane IV.7 Definition 2, hom-set square ---- （已译） *)
+(* ---- the definition: Mac Lane IV.7 Definition 2, the hom-set square ----  / ---- 定义：Mac Lane IV.7 定义 2、hom-set square ----*)
 
 Definition Conjugate (σ : F' ⟹ F) (τ : U ⟹ U') : Type :=
   ∀ (x : D) (a : C) (k : F x ~> a), ⌊ k ∘ σ x ⌋² ≈ τ a ∘ ⌊ k ⌋.
@@ -74,7 +161,7 @@ Proof.
     now rewrite (from_adj_comp_law (H:=A')).
 Qed.
 
-(* ---- general naturality of unit and counit ---- *)
+(* ---- general naturality of unit and counit ----  / ---- 单位和单位的一般性质 ----*)
 
 Lemma conj_unit_nat {x y : D} (g : x ~> y) :
   fmap[U] (fmap[F] g) ∘ η ≈ η ∘ g.
@@ -90,7 +177,7 @@ Proof.
   rewrite <- from_adj_nat_r, <- from_adj_nat_l; cat.
 Qed.
 
-(* ---- the four characterizations ---- *)
+(* ---- the four characterizations ----  / ----四个特征----*)
 
 Definition ConjugateMate (σ : F' ⟹ F) (τ : U ⟹ U') : Type :=
   ∀ a : C, τ a ≈ fmap[U'] ε ∘ ⌊ σ (U a) ⌋².
@@ -104,7 +191,7 @@ Definition ConjugateUnit (σ : F' ⟹ F) (τ : U ⟹ U') : Type :=
 Definition ConjugateCounit (σ : F' ⟹ F) (τ : U ⟹ U') : Type :=
   ∀ a : C, ε ∘ σ (U a) ≈ ε² ∘ fmap[F'] (τ a).
 
-(* 相关说明。 （已译） *)
+(* the pasting spellings, for statement fidelity  / 粘贴拼写，以确保语句保真度*)
 
 Lemma ConjugateMate_pasting (σ : F' ⟹ F) (τ : U ⟹ U') :
   ConjugateMate σ τ ↔
@@ -122,7 +209,7 @@ Proof.
   now rewrite fmap_comp.
 Qed.
 
-(* ---- the eight directed legs ---- *)
+(* ---- the eight directed legs ----  / ---- 八条定向腿 ----*)
 
 Lemma conjugate_to_mate (σ : F' ⟹ F) (τ : U ⟹ U') :
   Conjugate σ τ → ConjugateMate σ τ.
@@ -241,7 +328,7 @@ Proof.
   - exact (counit_to_conjugate σ τ).
 Qed.
 
-(* ---- the two operators ---- *)
+(* ---- the two operators ----  / ---- 两个操作员 ----*)
 
 Program Definition conj_mate (σ : F' ⟹ F) : U ⟹ U' := {|
   transform := λ a, ⌊ ε ∘ σ (U a) ⌋²
@@ -302,7 +389,7 @@ Proof.
   now rewrite fmap_comp.
 Qed.
 
-(* ---- existence, uniqueness, the bijection ---- *)
+(* ---- existence, uniqueness, the bijection ----  / ---- 存在性、唯一性、双射 ----*)
 
 Theorem conjugate_conj_mate (σ : F' ⟹ F) : Conjugate σ (conj_mate σ).
 Proof.
@@ -371,7 +458,7 @@ Next Obligation. exact conj_mate_inv_mate. Qed.
 
 End Conjugate.
 
-(* ---- identity and vertical composition ---- *)
+(* ---- identity and vertical composition ----  / ---- 同一性和垂直构图 ----*)
 
 Section ConjugateCompose.
 
@@ -417,7 +504,7 @@ Qed.
 
 End ConjugateCompose.
 
-(* ---- Riehl 4.3(iv): invertibility transfers, both directions ---- *)
+(* ---- Riehl 4.3(iv): invertibility transfers, both directions ----  / ---- Riehl 4.3(iv)：可逆性传输，双向 ----*)
 
 Section ConjugateIso.
 

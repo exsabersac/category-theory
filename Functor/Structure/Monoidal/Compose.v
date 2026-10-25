@@ -9,14 +9,57 @@ Require Import Category.Functor.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(** Composition of monoidal functors. *)
+(** Composition of monoidal functors.  / 幺半群函子的组成。*)
 
 (*
+nLab: https://ncatlab.org/nlab/show/monoidal+functor
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_functor
 
-   本文件给出复合相关构造（伴随/函子/单子等的复合）。
+   The composite of two monoidal functors G : C ⟶ D and F : D ⟶ E is again a
+   monoidal functor F ◯ G : C ⟶ E, in both the lax and the strong forms. The
+   composite comparison maps are built from those of the factors, with the
+   outer functor F applied to the inner comparison and then composed with F's
+   own comparison (writing the inner functor as G here, the outer as F):
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+       η^{F◯G}    = F η^G ∘ η^F                : I ~> F (G I)
+       μ^{F◯G}_xy = F μ^G_{x,y} ∘ μ^F_{G x,G y} : F (G x) ⨂ F (G y)
+                                                    ~> F (G (x ⨂ y))
+
+   matching nLab and Wikipedia (μ^{G∘F} = G(μ^F) ∘ μ^G with G outer). The
+   coherence obligations (associativity and the two unit laws) for the
+   composite follow from those of each factor together with naturality of the
+   comparison maps; both instances below discharge them with no axioms.
+
+   This is composition of 1-morphisms in the 2-category MonCat of monoidal
+   categories, monoidal functors, and monoidal natural transformations (with
+   the strong functors forming a sub-2-category MonCat_strong); it is not a
+   groupoid, since a strong monoidal functor has invertible comparison maps
+   but need not be invertible as a functor. 
+
+--------
+nLab：https://ncatlab.org/nlab/show/monoidal+functor
+ 维基百科：https://en.wikipedia.org/wiki/Monoidal_functor
+
+两个幺半群函子 G : C ⟶ D 和 F : D ⟶ E 的复合又是 a
+ 幺半群函子 F ◯ G : C ⟶ E，有松散形式和强形式。 的
+ 综合比较图是根据这些因素构建的，其中
+ 外部函子 F 应用于内部比较，然后与 F 组合
+ 自己的比较（这里将内部函子写为G，外部函子写为F）：
+
+η^{F◯G} = F η^G ∘ η^F : I ~> F (G I)
+ μ^{F◯G}_xy = F μ^G_{x,y} ∘ μ^F_{G x,G y} : F (G x) ⨂ F (G y)
+ 〜> F (G (x ⨂ y))
+
+匹配 nLab 和 Wikipedia（μ^{G∘F} = G(μ^F) ∘ μ^G 与 G 外部）。 的
+ 的一致性义务（结合性和两个单位定律）
+ 综合结果是根据每个因素以及自然性得出的
+ 比较图； 下面的两个例子都没有公理地释放它们。
+
+这是幺半群的 2 类 MonCat 中 1-态射的组合
+ 类别、幺半群函子和幺半群自然变换（带有
+ 形成子 2 类别 MonCat_strong 的强函子）； 它不是一个
+ groupoid，因为强幺半群函子具有可逆比较映射
+ 但不必作为函子可逆。 
 *)
 
 Section MonoidalFunctors.
@@ -35,9 +78,18 @@ Context {F : D ⟶ E}.
 #[local] Obligation Tactic := program_simpl.
 
 (*
-   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+Any two strong monoidal functors compose to create a strong monoidal
+   functor. This is composition of 1-morphisms in the sub-2-category
+   MonCat_strong of monoidal categories and strong monoidal functors. The
+   composite comparison maps are F μ^G ∘ μ^F and F η^G ∘ η^F (F outer), and
+   remain invertible because each factor's are. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+任意两个强幺半群函子组合起来创建一个强幺半群
+ 函子。 这是子 2 范畴中 1-态射的组合
+ MonCat_strong 的幺半群范畴和强幺半群函子。 的
+ 复合比较图为 F μ^G ∘ μ^F 和 F η^G ∘ η^F（F 外），以及
+ 保持可逆，因为每个因子都是可逆的。 
 *)
 
 #[export] Program Instance Compose_MonoidalFunctor
@@ -267,9 +319,18 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+Likewise, any two lax monoidal functors compose to create a lax monoidal
+   functor. This is composition of 1-morphisms in the 2-category MonCat_lax of
+   monoidal categories and lax monoidal functors. The composite comparison
+   maps are F μ^G ∘ μ^F and F η^G ∘ η^F (F outer), exactly as in the strong
+   case but without requiring invertibility. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+同样，任何两个松散幺半群函子组合起来创建一个松散幺半群
+ 函子。 这是 2 范畴 MonCat_lax 中 1-态射的组合
+ 幺半群范畴和松散幺半群函子。 综合比较
+ 映射为 F μ^G ∘ μ^F 和 F η^G ∘ η^F（F 外层），与强映射中的完全相同
+ 情况但不需要可逆性。 
 *)
 
 #[export] Program Instance Compose_LaxMonoidalFunctor

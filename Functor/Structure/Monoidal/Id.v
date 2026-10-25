@@ -9,14 +9,45 @@ Require Import Category.Functor.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(** The identity functor is monoidal. *)
+(** The identity functor is monoidal.  / 恒等函子是幺半群的。*)
 
 (*
+nLab: https://ncatlab.org/nlab/show/monoidal+functor
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_functor
 
-   本文件给出幺半相关结构。
+   The identity functor Id[C] on a monoidal category C is canonically a strong
+   (indeed strict) monoidal functor.  Because Id x = x on the nose, the two
+   comparison maps are identities,
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+       η     = id : I ~> Id I        (unit comparison, here pure_iso = iso_id),
+       μ_x_y = id : Id x ⨂ Id y ~> Id (x ⨂ y)   (tensor comparison),
+
+   so both are trivially invertible (strong) and equal to identities (strict).
+   The three coherence squares — left and right unitality against λ and ρ, and
+   associativity against the associator α — collapse to the monoidal axioms of
+   C itself, discharged below by tensor_assoc and bimap_id_id.  This instance
+   is the unit of the 2-category MonCat of monoidal categories and (strong)
+   monoidal functors.  [Id_MonoidalFunctor] gives the strong form and
+   [Id_LaxMonoidalFunctor] the lax form, both axiom-free. 
+
+--------
+nLab：https://ncatlab.org/nlab/show/monoidal+functor
+ 维基百科：https://en.wikipedia.org/wiki/Monoidal_functor
+
+ 幺半群类别 C 上的恒等函子 Id[C] 是典型的强函数
+ （实际上是严格的）幺半群函子。 因为Id x = x在鼻子上，所以两个
+ 比较图是身份，
+
+ η = id : I ~> Id I（单位比较，这里pure_iso = iso_id），
+ μ_x_y = id : Id x ⨂ Id y ~> Id (x ⨂ y) （张量比较），
+
+ 所以两者都是可逆的（强）并且等于恒等式（严格）。 
+三个相干平方——针对 λ 和 ρ 的左右单位性，以及
+ 与关联子 α 相关的结合性 — 崩溃为幺半群公理
+ C本身，由tensor_assoc和bimap_id_id在下面释放。 本实例
+ 是幺半群类别的 2 类别 MonCat 的单位，并且（强）
+ 幺半群函子。 [Id_MonoidalFunctor] 赋予坚固的形状和
+ [Id_LaxMonoidalFunctor] 宽松形式，两者均无公理。 
 *)
 
 Section MonoidalFunctors.

@@ -9,16 +9,389 @@ Require Import Category.Construction.Karoubi.Universal.
 
 Generalizable All Variables.
 
-(*
+(**
+* Paré's criterion: a left adjoint exists exactly when an idempotent
+      splits
+
     nLab:      https://ncatlab.org/nlab/show/adjoint+functor
     nLab:      https://ncatlab.org/nlab/show/idempotent
     nLab:      https://ncatlab.org/nlab/show/Cauchy+complete+category
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
+
     Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+          GTM 5, Springer 1998, §IV.1 Exercise 4, printed p. 86 --
+          [maclane:IV.1:ex4].  Mac Lane credits the exercise to R. Paré.
+          CITED BY LOCATION: the printed page was not consulted and no
+          sentence of it is reproduced here.  The in-tree catalog entry
+          (doc/plan/books/maclane/inventory/IV.json, id maclane:IV.1:ex4)
+          summarizes it as: "(Pare) Given functors G : A -> X, K : X -> A
+          and natural transformations epsilon : KG -> id_A, rho : id_X ->
+          GK with G-epsilon after rho-G equal to 1_G, prove that
+          epsilon-K composed with K-rho is an idempotent in the functor
+          category A^X, and that G has a left adjoint if and only if this
+          idempotent splits; explicitly, if it splits as alpha . beta with
+          beta . alpha = 1 and beta : K -> F, then F is a left adjoint of
+          G with unit G-beta . rho and counit epsilon . alpha-G."
 
-   本文件给出伴随相关构造与性质。
+    The names below follow that summary letter for letter.  [PareData]
+    bundles G, K, ε, ρ and the single triangle; [pare_idem] is his
+    εK ∘ Kρ, an endomorphism of K in the functor category [[X, A]] (his
+    A^X); a splitting's retraction is his β and its section his α; and
+    [pare_unit] and [pare_counit] are Gβ ∘ ρ and ε ∘ αG themselves, not a
+    convenient variant of them -- see WHY THE UNIT AND COUNIT COST NOTHING
+    below.  The headline is [pare_left_adjoint_iff_splits].
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    WHAT IS DELIVERED.  The hypotheses as the record [PareData A X]; the
+    idempotent [pare_idem] with [pare_idem_Idempotent] inhabiting
+    [Theory/Morphisms.v]'s own [Idempotent] class at [[X, A]]; both
+    directions ([pare_Adjunction] and its [SplitIdempotent]-fed wrapper
+    [pare_adjunction_of_split] one way, [pare_SplitIdempotent] and
+    [pare_splits_of_adjunction] the other); the biconditional
+    [pare_left_adjoint_iff_splits]; and the Cauchy-complete corollary
+    [pare_left_adjoint_of_CauchyComplete].  Both sides of the
+    biconditional are [Type]-valued and every passage is [Defined], so a
+    consumer gets the adjoint as DATA rather than as an opaque existence
+    claim; [pare_adjunction_of_split_unit] and its counit twin check at
+    [eq_refl] that the [SplitIdempotent]-fed wrapper hands
+    [pare_Adjunction] the splitting's own retraction and section.
+
+    THE TWO SIDES, AND WHY THEY ARE SHAPED THIS WAY.  [SplitIdempotent]
+    carries the idempotent it splits as a FIELD, so the class alone cannot
+    say WHICH idempotent splits, and its retract object is an INDEX, so it
+    cannot be bound inside the class either.  [PareSplits] therefore binds
+    both -- the retract F and the splitting S -- and then asserts
+    [split_idem S ≈ pare_idem P].  That is deliberately the shape of the
+    donor's own [split_of] field ([Construction/Karoubi/Universal.v]),
+    which is why the Cauchy-complete corollary below is a [:=] with no
+    tactic and no repackaging.  The other side, "G has a left adjoint", is
+    [∃ F, F ∹ G] in [Adjunction_Transform]'s unit/counit form.
+
+    THE ONE STRUCTURAL FRICTION, AND IT IS MAC LANE'S OWN NOTATION.
+    Neither of his two vertical composites is formable in this library.
+    For the triangle the elaborator says
+
+      The term "rho ⊲ G" has type "Id[X] ◯ G ⟹ G ◯ K ◯ G"
+      while it is expected to have type "Id[X] ◯ G ⟹ G ◯ (K ◯ G)"
+      (cannot unify "G ◯ K ◯ G" and "G ◯ (K ◯ G)")
+
+    and for the idempotent, at [pare_epsK] ∙ [pare_Krho], the same failure
+    between "pare_K P ◯ (pare_G P ◯ pare_K P)" and
+    "pare_K P ◯ pare_G P ◯ pare_K P".  THREE identifications are missing,
+    not one: associativity of [Compose] and BOTH unitors -- [Id[X] ◯ G = G]
+    and [G ◯ Id[A] = G] are each rejected too, so even repairing the middle
+    would leave the endpoints wrong ([Gε ∘ ρG] would land at
+    [Id[X] ◯ G ⟹ G ◯ Id[A]], not at [G ⟹ G], and [εK ∘ Kρ] at
+    [K ◯ Id[X] ⟹ Id[A] ◯ K], not at [K ⟹ K]).  All of these were measured
+    and rejected; they are not guarded here, probes being out of scope for
+    this file.  The obstruction is LOCATED rather than asserted:
+    [pare_assoc_fobj], [pare_assoc_fmap], [pare_unitor_fobj] and
+    [pare_unitor_fmap] show at [eq_refl] that [fobj] and [fmap] agree,
+    [Functor] has exactly five fields, and the whole records do not agree,
+    so the difference is confined to the remaining three -- which
+    Theory/Functor.v's printed body identifies as [Compose_obligation_1..3]
+    at different arguments, opaque under [Unset Transparent Obligations].
+
+    Consequently the record carries the triangle COMPONENTWISE and
+    [pare_idem] is hand-built.  That is a change of spelling and not of
+    content, and the file says so with computation rather than prose: the
+    four whiskered pieces ARE named ([pare_Geps], [pare_rhoG], [pare_epsK],
+    [pare_Krho]), their components read back at [eq_refl]
+    ([pare_Geps_at] and its three siblings), and [pare_idem_at] shows the
+    idempotent's component IS [pare_epsK P x ∘ pare_Krho P x].
+
+    WHY THE UNIT AND COUNIT COST NOTHING, WHICH IS THE ASYMMETRY WORTH
+    KNOWING.  The two composites Mac Lane forms for the ADJUNCTION happen
+    to have endpoints that already agree on the nose: [ρ : Id[X] ⟹ G ◯ K]
+    meets [G ⊳ β : G ◯ K ⟹ G ◯ F], and [α ⊲ G : F ◯ G ⟹ K ◯ G] meets
+    [ε : K ◯ G ⟹ Id[A]], with [Id[X]] and [Id[A]] in exactly the positions
+    [Adjunction_Transform] wants.  So [pare_unit] and [pare_counit] are
+    plain [Definition]s -- [(G ⊳ r) ∙ ρ] and [ε ∙ (s ⊲ G)] -- with NO
+    obligation of their own, naturality inherited from [nat_compose] and
+    the two whiskerings.  The theory below discharges naturality by hand
+    exactly three times ([pare_idem_natural], [pare_r_natural],
+    [pare_s_natural]); the two transformations of the inhabitation section
+    have theirs closed by [Program]'s default obligation tactic.  Only the
+    two composites Mac Lane names were measured against the elaborator;
+    [pare_r] and [pare_s] are hand-built because the whiskered spellings
+    [(ε ⊲ F) ∙ (K ⊳ η)] and [(δ ⊲ K) ∙ (F ⊳ ρ)] have the same shape, which
+    is an argument by inspection and not a second measurement.
+
+    ITEM 2's ROUTE: [split_pair_idempotent] DOES NOT APPLY.  That lemma
+    (Theory/Morphisms.v) reads [g ∘ h ≈ id → Idempotent (h ∘ g)].  The
+    triangle is indeed a one-sided inverse pair, but it is a pair on G --
+    [Gε] and [ρG], whose other composite is an endomorphism of GKG --
+    whereas the idempotent to be produced is an endomorphism of K.
+    There is no instantiation of that lemma whose conclusion is
+    [Idempotent (εK ∘ Kρ)].  Idempotence is therefore a component
+    computation, [pare_idem_idem], whose one reusable step is
+    [pare_eps_absorb] (ε absorbs the idempotent read at G a); the triangle
+    is spent there, once, and nowhere else in that argument.
+
+    STRENGTHS, MEASURED STRICT-FIRST.  Seventeen [eq_refl] Examples HOLD and
+    none was weakened to [≈]: the four [fobj]/[fmap] agreements above; the
+    four whiskered components; [pare_idem_at]; [pare_unit_at] and
+    [pare_counit_at]; and, on the produced adjunction,
+    [pare_Adjunction_unit] and [pare_Adjunction_counit] (the record's
+    projections return the named transformations) together with
+    [pare_Adjunction_unit_at] and [pare_Adjunction_counit_at] (their
+    components are [fmap[G] (r x) ∘ rho x] and [eps a ∘ s (G a)]).  That
+    last pair is the reviewer bar for "literally the prescribed unit and
+    counit", checked rather than claimed; the remaining two are the
+    wrapper checks just mentioned.
+
+    MEASURED AND REJECTED, NOT GUARDED HERE.  Besides the formability
+    failures above: with [Adj := pare_Adjunction P F r s Hsr Hrs], the
+    round trip [pare_r P F Adj = r] is rejected with [cannot unify].  No
+    round trip is delivered in any form, [≈] included.
+
+    THE CAUCHY-COMPLETE COROLLARY IS A CONDITIONAL WITH NO IN-TREE
+    PREMISE WITNESS, AND THAT IS STATED RATHER THAN LEFT TO BE FOUND.
+    [pare_splits_of_CauchyComplete] is [split_of] applied at [pare_idem],
+    a [:=] with no tactic, and [pare_left_adjoint_of_CauchyComplete] is
+    [snd] of the biconditional applied to it.  But the tree's only two
+    [IdempotentsSplit] instances are [Karoubi_IdempotentsSplit]
+    (Karoubi envelopes) and [Sets_IdempotentsSplit] (Sets), and neither is
+    a functor category, so nothing in tree discharges [CauchyComplete
+    ([X, A])] for any X and A.
+
+    INHABITATION.  [pare_of_adjunction] turns any adjunction into Paré
+    data by forgetting one of its two triangles -- a record literal with no
+    tactic, [pare_triangle]'s type being literally [fmap_counit_unit]'s --
+    and [pare_of_adjunction_idem] proves such data DEGENERATE: its
+    idempotent is the identity, by the other triangle.  [pare_triv] is a
+    uniform family -- not a closed term, and never instantiated here at
+    a concrete category (everything the identity on a category), and
+    [pare_triv_left_adjoint] runs the assembly end to end on it.  Read the
+    scope: no [PareData] whose idempotent is provably NOT an identity is
+    exhibited, so the biconditional is never exercised at a nontrivial
+    splitting.
+
+    ENGINEERING NOTES.  (a) [Lib.v] sets [Default Proof Using "Type"],
+    so the three results whose statements do not mention [Hsr]/[Hrs] --
+    [pare_split_law], [pare_tri_one], [pare_tri_two] -- carry an explicit
+    [Proof using All].  (b) The whiskering notations [⊳] and [⊲] are at
+    level 10 with arguments at level 9, so [G ⊳ pare_eps P] does not parse
+    as intended; every whiskering below parenthesizes the application.
+    (c) Writing a section abbreviation as [Let eps (a : A) : … := ε a]
+    leaves a beta-redex [(λ a, …) a] in every exported statement; writing
+    [Let eps : ∀ a : A, … := ε] instead, letting the [transform] coercion
+    fire against the ascription, gives the same clean component type with
+    no redex.  Both forms were tried; the second is what ships.
+
+    AXIOMS.  All 83 constants declared here report "Closed under the
+    global context": the 69 [def]/[prf]/[proj]/[rec] entries of the [.glob],
+    the 13 [Program] obligations the [.glob] does not record, and
+    [Build_PareData], which appears in neither.  That is a one-time
+    measurement made with [Print Assumptions] over all 83; NINETEEN of
+    them are additionally carried PERMANENTLY by the [print-assumptions]
+    make target, on which [check] depends, so the file IS wired into the
+    gate.  (An earlier revision of this sentence said it was not wired
+    into any make target; that was false of its own commit.)
+
+    NOT DELIVERED.  No round trip in either direction and at any strength;
+    no uniqueness of the left adjoint (the tree's [left_adjoint_iso] is not
+    instantiated -- it is Theory/Adjunction.v, in the hom-set
+    presentation, which this file never enters); no hom-set [⊣] reading
+    (Adjunction/Natural/Transformation/Universal.v converts, and that
+    conversion is not performed here); no [PareData] with a nontrivial
+    idempotent, hence no non-degenerate exercise of the biconditional; no
+    [IdempotentsSplit] instance for any functor category; no dual (right
+    adjoint from the mirrored hypotheses); nothing relating [pare_idem] to
+    the Karoubi envelope beyond consuming
+    [Construction/Karoubi/Universal.v]'s [IdempotentsSplit] class; and no
+    universe measurement of any kind. 
+
+--------
+* Paré 准则：当幂等时左伴随恰好存在
+ 分裂
+
+nLab：https://ncatlab.org/nlab/show/adjoint+functor
+ nLab：https://ncatlab.org/nlab/show/idempotent
+ nLab：https://ncatlab.org/nlab/show/Cauchy+complete+category
+ 维基百科：https://en.wikipedia.org/wiki/Adjoint_functors
+
+书：Mac Lane，“工作数学家的类别”，第二版，
+ GTM 5，Springer 1998，§IV.1 练习 4，印刷页。 86——
+ [maclane:IV.1:ex4]。 Mac Lane 将这项工作归功于 R. Paré。 
+按位置引用：未查阅印刷页，也没有
+ 这里转载了它的句子。 树内目录条目
+ （doc/plan/books/maclane/inventory/IV.json，id maclane:IV.1:ex4）
+ 将其总结为：“（Pare）给定函子 G : A -> X, K : X -> A
+ 和自然变换 epsilon : KG -> id_A, rho : id_X ->
+ GK 与 rho-G 后的 G-epsilon 等于 1_G，证明
+ epsilon-K 与 K-rho 组成，在函子中是幂等的
+ 类别 A^X，并且 G 有左伴随当且仅当
+ 幂等分裂； 明确地，如果它分裂为 alpha 。 贝塔与
+ 测试版。 alpha = 1 且 beta : K -> F，则 F 是 的左伴随
+ G，单位为 G-beta 。 rho 和计数 epsilon 。 阿尔法-G。”
+
+下面的名字遵循逐个字母的摘要。 保护1X
+ 束 G、K、ε、ρ 和单个三角形； [pare_idem] 是他的
+ εK ∘ Kρ，函子范畴 [[X, A] 中 K 的自同态]（his
+ A^X); 分裂的回缩是他的 β，其截面是他的 α； 和
+ [pare_unit] 和 [pare_counit] 是 Gβ ∘ ρ 和 ε ∘ αG 本身，而不是
+ 它们的方便变体 - 了解为什么单位和计数不花费任何费用
+ 下面。 标题是 [pare_left_adjoint_iff_splits]。
+
+交付了什么。 假设记录为[PareData A X]； 的
+ 幂等 [pare_idem] 与 [pare_idem_Idempotent] 驻留
+ [Theory/Morphisms.v] 自己的 [Idempotent] 类位于 [[X, A]]； 两者
+ 方向（[pare_Adjunction] 及其 [SplitIdempotent] 馈送包装机
+ [pare_adjunction_of_split] 单向、[pare_SplitIdempotent] 和
+ [pare_splits_of_adjunction] 其它）； 双条件的
+ [pare_left_adjoint_iff_splits]； 和柯西完全推论
+ [pare_left_adjoint_of_CauchyComplete]。 两侧
+ 双条件是 [Type] 值，并且每个通道都是 [Defined]，所以
+ 消费者将伴随物作为数据而不是作为不透明的存在
+ 索赔； [pare_adjunction_of_split_unit] 及其孪生检查
+ [SplitIdempotent] 馈送包装手的 [eq_refl]
+ [pare_Adjunction] 分裂自身的回缩和截面。
+
+两侧，以及为什么它们是这样的形状。 保护26X
+ 具有幂等性，它作为 Field 分割，因此单独的类不能
+ 说哪个幂等分裂，它的收回对象是一个INDEX，所以它
+ 也不能绑定在类内部。 [PareSplits] 因此结合
+ 两者——收回F和分裂S——然后断言
+ [split_idem S ≈ pare_idem P]。 这是故意设计的形状
+ 捐赠者自己的 [split_of] 场 ([Construction/Karoubi/Universal.v])，
+ 这就是为什么下面的柯西完全推论是 [:=]，没有
+ 策略并且没有重新包装。 另一边，“G 有左伴随”，是
+ [∃ F, F ∹ G] 采用 [Adjunction_Transform] 的单元/单元形式。
+
+一种结构摩擦，这是 MAC Lane 自己的符号。 
+他的两个垂直组合都无法在这个库中形成。 
+对于三角形，阐述者说
+
+术语“rho ⊲ G”的类型为“Id[X] ◯ G ⟹ G ◯ K ◯ G”
+ 而预计类型为“Id[X] ◯ G ⟹ G ◯ (K ◯ G)”
+ （不能统一“G ◯ K ◯ G”和“G ◯（K ◯ G）”）
+
+对于幂等，在 [pare_epsK] ∙ [pare_Krho] 处，同样的失败
+ 在“pare_K P ◯ (pare_G P ◯ pare_K P)”和
+ “pare_K P ◯ pare_G P ◯ pare_K P”。 三个身份证明缺失，
+ 不是一个：[Compose] 和两个单位的结合性 -- [Id[X] ◯ G = G]
+ 和 [G ◯ Id[A] = G] 也都被拒绝，所以即使修复中间
+ 会使端点错误（[Gε ∘ ρG] 会落在
+ [Id[X] ◯ G ⟹ G ◯ Id[A]]，不在 [G ⟹ G] 处，而 [εK ∘ Kρ] 处
+ [K ◯ Id[X] ⟹ Id[A] ◯ K]，不在 [K ⟹ K]）。 所有这些都被测量了
+ 并被拒绝； 他们在这里没有守卫，探测器超出了探测范围
+ 这个文件。 障碍物是定位的而不是断言的：
+ [pare_assoc_fobj]、[pare_assoc_fmap]、[pare_unitor_fobj] 和
+ [pare_unitor_fmap] 在 [eq_refl] 上表明 [fobj] 和 [fmap] 一致，
+ [Functor] 正好有五个字段，并且整个记录不一致，
+ 所以差异仅限于剩下的三个——
+ Theory/Functor.v 的印刷体标识为 [Compose_obligation_1..3]
+ 在不同的参数下，[Unset Transparent Obligations] 下不透明。
+
+因此，记录带有三角形 COMPONENTWISE 和
+ [pare_idem] 是手工制作的。 这是拼写的改变，而不是
+ 内容，文件用计算而不是散文来表达：
+ 四个胡须部件被命名为（[pare_Geps]、[pare_rhoG]、[pare_epsK]、
+ [pare_Krho]），其组件在 [eq_refl] 上读回
+ （[pare_Geps_at] 及其三个兄弟），[pare_idem_at] 显示
+ 幂等的组件是[pare_epsK P x ∘ pare_Krho P x]。
+
+为什么单位和计数不花钱，这是不对称的价值
+ 知道。 ADJUNCTION 的两种复合 Mac Lane 形式发生
+ 具有与鼻子一致的端点：[ρ : Id[X] ⟹ G ◯ K]
+ 满足 [G ⊳ β : G ◯ K ⟹ G ◯ F]，[α ⊲ G : F ◯ G ⟹ K ◯ G] 满足
+ [ε : K ◯ G ⟹ Id[A]]、[Id[X]] 和 [Id[A]] 位于完全相同的位置
+ [Adjunction_Transform] 想要。 所以 [pare_unit] 和 [pare_counit] 是
+ 普通 [Definition]s -- [(G ⊳ r) ∙ ρ] 和 [ε ∙ (s ⊲ G)] -- 无
+ 他们自己的义务，从 [nat_compose] 继承的自然性和
+ 两个胡须。 下面的理论通过手工释放自然性
+ 正好三倍（[pare_idem_natural]、[pare_r_natural]、
+ [pare_s_natural]）； 居住区的两次改造
+ 通过 [Program] 的默认义务策略关闭了他们的账户。 只有
+ 两个复合 Mac Lane 名称与精心设计者进行了比较；
+ [pare_r] 和 [pare_s] 是手工构建的，因为胡须拼写
+ [(ε ⊲ F) ∙ (K ⊳ η)] 和 [(δ ⊲ K) ∙ (F ⊳ ρ)] 具有相同的形状，
+ 是通过检查得出的论证，而不是第二次测量。
+
+第 2 项的路线：[split_pair_idempotent] 不适用。 那个引理
+ （Theory/Morphisms.v）读取 [g ∘ h ≈ id → Idempotent (h ∘ g)]。 的
+ 三角形确实是单边逆对，但它是 G 上的一对——
+ [Gε] 和 [ρG]，其另一个复合体是 GKG 的自同态——
+ 而要产生的幂等是 K 的自同态。 
+不存在其结论为的引理的实例
+ XPTECT93X。 因此幂等性是一个组件
+ 计算，[pare_idem_idem]，其一个可重用的步骤是
+ [pare_eps_absorb]（ε 吸收 G a 处的幂等读取）； 三角形
+ 在那场争论中，只在那里度过了一次，而没有在其他地方度过。
+
+优势，严格第一。 十七个 [eq_refl] 示例 HOLD 和
+ 没有一个被削弱到[≈]：上面的四个[fobj]/[fmap]协议； 的
+ 四个胡须组件； [pare_idem_at]； [pare_unit_at] 和
+ [pare_counit_at]； 并且，在产生的附加物上，
+ [pare_Adjunction_unit] 和 [pare_Adjunction_counit]（记录的
+ 投影返回命名的变换）以及
+ [pare_Adjunction_unit_at] 和 [pare_Adjunction_counit_at]（它们的
+ 组件是 [fmap[G] (r x) ∘ rho x] 和 [eps a ∘ s (G a)])。 那
+ 最后一对是“字面上规定的单位和
+ counit”，检查而不是声明； 剩下的两个是
+ 刚才提到的包装检查。
+
+被测量和拒绝，而不是在这里被保护。 除了成型性之外
+ 上述故障：使用 [Adj := pare_Adjunction P F r s Hsr Hrs]，
+ 往返 [pare_r P F Adj = r] 被 [cannot unify] 拒绝。 否
+ 往返可以任何形式交付，包括 [≈]。
+
+柯西完全推论是没有树内的条件
+ 前提证人，这是陈述出来的，而不是留下来寻找的。 
+[pare_splits_of_CauchyComplete]是[split_of]应用于[pare_idem]，
+ [:=] 没有策略，而 [pare_left_adjoint_of_CauchyComplete] 是
+ 双条件的 [snd] 应用于它。 但这棵树只有两棵
+ [IdempotentsSplit] 实例是 [Karoubi_IdempotentsSplit]
+ （Karoubi 信封）和 [Sets_IdempotentsSplit]（套装），两者都不是
+ 函子类别，因此树中没有任何内容放电 [CauchyComplete
+ ([X, A])] 对于任何 X 和 A。
+
+居住。 [pare_of_adjunction] 将任何附加物变成 Paré
+ 通过忘记其两个三角形之一来获取数据——一个没有任何内容的记录文字
+ 策略，[pare_triangle] 的类型实际上是 [fmap_counit_unit] 的 --
+ [pare_of_adjunction_idem] 证明了此类数据的退化：其
+ 幂等是另一个三角形的恒等式。 [pare_triv] 是
+ 统一族——不是一个封闭的术语，也从未在这里实例化过
+ 一个具体的类别（类别上的所有内容），以及
+ [pare_triv_left_adjoint] 在其上端到端地运行程序集。 阅读
+ 范围：没有 [PareData] 其幂等性可证明不是身份
+ 展示出来，所以双条件永远不会在非平凡的情况下执行
+ 分裂。
+
+工程笔记。 (a) [Lib.v] 设置 [Default Proof Using "Type"]，
+ 因此，三个结果的陈述均未提及 [Hsr]/[Hrs] --
+ [pare_split_law]、[pare_tri_one]、[pare_tri_two] -- 携带显式
+ [Proof using All]。 (b) 晶须符号 [⊳] 和 [⊲] 位于
+ 级别 10，参数级别为 9，因此 [G ⊳ pare_eps P] 不会解析
+ 按预期； 下面的每一条猫须都将应用程序括起来。 
+(c) 将节缩写写为 [Let eps (a : A) : … := ε a]
+ 在每个导出的语句中留下 beta-redex [(λ a, …) a]； 写作
+ 相反，[Let eps : ∀ a : A, … := ε]，让 [transform] 强制
+ 对抗归属的火，给出了与以下相同的干净组件类型
+ 没有redex。 这两种形式都被尝试过； 第二个是运送什么。
+
+公理。 此处声明的所有 83 个常量均报告“Closed under the
+ 全局上下文”：[.glob] 的 69 个 [def]/[prf]/[proj]/[rec] 条目，
+ [.glob] 未记录的 13 项 [Program] 义务，以及
+ [Build_PareData]，两者都没有出现。 那是一次性的
+ 使用 [Print Assumptions] 对所有 83 项进行测量； 十九个
+ 它们还由 [print-assumptions] 永久携带
+ make 目标，[check] 依赖于该目标，因此该文件被连接到
+ 门。 （这句话的早期修订版说它没有连线
+ 进入任何 make 目标； 它自己的提交是错误的。）
+
+未交付。 无论强度如何，任何方向都不得往返；
+ 左伴随没有唯一性（树的 [left_adjoint_iso] 不是
+ 实例化——它是 Theory/Adjunction.v，在 hom-set 中
+ 演示文稿，该文件永远不会进入）； 无 hom-set [⊣] 读数
+ （Adjunction/Natural/Transformation/Universal.v 转换，并且
+ 这里不进行转换）； 没有 [PareData] 与一个不平凡的
+ 幂等，因此不存在双条件的非退化运用； 不
+ 适用于任何函子类别的 [IdempotentsSplit] 实例； 无双重（右
+ 镜像假设的伴随）； 与 [pare_idem] 无关
+ 卡鲁比信封超越消费
+ [Construction/Karoubi/Universal.v] 的 [IdempotentsSplit] 类； 没有
+ 任何类型的宇宙测量。 
 *)
 
 Record PareData (A X : Category) := {
@@ -47,9 +420,42 @@ Let eps : ∀ a : A, K (G a) ~> a := pare_eps P.
 Let rho : ∀ x : X, x ~> G (K x) := pare_rho P.
 
 (*
-   本节说明函子、来源与用途相关定义、性质与动机。
+WHERE THE FRICTION IS, LOCATED RATHER THAN ASSERTED.  Mac Lane's
+   Gε ∘ ρG and εK ∘ Kρ are not formable here (the header PARAPHRASES the
+   elaborator -- the real message displays [pare_G P]/[pare_K P] where
+   the header writes [G]/[K]; both types and the [cannot unify] pair
+   match exactly, only the display is normalised).  The obstruction is
+   that [Compose] is not associative on
+   the nose and [Id] is not a strict unit for it -- but only in the LAW
+   fields: [Functor] has exactly five fields, [fobj] and [fmap] agree at
+   [eq_refl] below, and the whole records do not agree, so the difference
+   is confined to the remaining three.  That step is sharp for a reason
+   worth stating: [Functor] has primitive projections WITH ETA CONVERSION
+   (Rocq reports this on [Print Functor]), so record equality IS field
+   equality.  Test/ProbePare350.v turns the confinement from an inference
+   into a MEASUREMENT, failing each of the three law fields
+   individually.  Reading Theory/Functor.v's printed body confirms what
+   those three are: [Compose_obligation_1..3] applied to different
+   arguments, and [Unset Transparent Obligations] makes them opaque. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+摩擦力在哪里，是在哪里，而不是在哪里。 麦克莱恩的
+ Gε ∘ ρG 和 εK ∘ Kρ 在这里不可形成（标题 PARAPHRASES
+ elaborator——真实消息显示 [pare_G P]/[pare_K P]，其中
+ 标头写 [G]/[K]； 两种类型以及 [cannot unify] 对
+ 完全匹配，仅显示被标准化）。 阻碍是
+ [Compose] 不关联
+ 鼻子和 [Id] 并不是它的严格单位——但仅在法律中
+ 字段：[Functor] 正好有五个字段，[fobj] 和 [fmap] 一致
+ [eq_refl] 下面，和整条记录不一致，所以有区别
+ 仅限于剩下的三个。 这一步之所以尖锐是有原因的
+ 值得一提的是：[Functor] 具有带 ETA 转换的原始投影
+ （Rocq 在 [Print Functor] 上报告了这一点），因此记录相等 IS 字段
+ 平等。 Test/ProbePare350.v 转变推理的限制
+ 进入测量，三个法律领域均未通过
+ 单独。 阅读 Theory/Functor.v 的打印正文证实了这一点
+ 这三个是： [Compose_obligation_1..3] 应用于不同的
+ 参数，[Unset Transparent Obligations] 使它们不透明。 
 *)
 Example pare_assoc_fobj :
   @fobj A X ((G ◯ K) ◯ G) = @fobj A X (G ◯ (K ◯ G)) := eq_refl.
@@ -60,7 +466,14 @@ Example pare_unitor_fobj :
 Example pare_unitor_fmap :
   @fmap A X (Id[X] ◯ G) = @fmap A X G := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+The four whiskered composites Mac Lane writes.  Each is formable on its
+   own; it is only their vertical composites that are not. 
+
+--------
+麦克莱恩（Mac Lane）写道，这四种胡须复合材料。 每个都可以在其上形成
+ 拥有； 只有它们的垂直复合材料不是。 
+*)
 Definition pare_Geps : G ◯ (K ◯ G) ⟹ G ◯ Id[A] := G ⊳ (pare_eps P).
 Definition pare_rhoG : Id[X] ◯ G ⟹ (G ◯ K) ◯ G := (pare_rho P) ⊲ G.
 Definition pare_epsK : (K ◯ G) ◯ K ⟹ Id[A] ◯ K := (pare_eps P) ⊲ K.
@@ -87,7 +500,7 @@ Lemma pare_eps_nat {a b : A} (g : a ~> b) :
 Proof. exact (naturality (pare_eps P) _ _ g). Qed.
 
 (* ---------------------------------------------------------------------- *)
-(** ** The idempotent εK ∘ Kρ *)
+(** ** The idempotent εK ∘ Kρ  / ** 幂等 εK ∘ Kρ*)
 
 Lemma pare_idem_natural {x y : X} (f : x ~> y) :
   fmap[K] f ∘ (eps (K x) ∘ fmap[K] (rho x))
@@ -147,7 +560,7 @@ Definition pare_idem_Idempotent : @Idempotent ([X, A]) K pare_idem.
 Proof. constructor; intro x; apply pare_idem_idem. Qed.
 
 (* ---------------------------------------------------------------------- *)
-(* * ** From splitting 左伴随 （已译） *)
+(** ** From a splitting to a left adjoint  / ** 从分裂到左伴随*)
 
 Section FromSplitting.
 
@@ -156,8 +569,14 @@ Context (r : K ⟹ F) (s : F ⟹ K).
 Context (Hsr : ∀ x, s x ∘ r x ≈ pare_idem x).
 Context (Hrs : ∀ x, r x ∘ s x ≈ id).
 
-(* [Hsr] unfolded components εK ∘ Kρ; two statements are
- convertible, so 这是 [Hsr] itself no 证明 step. （已译） *)
+(*
+[Hsr] unfolded to the components of εK ∘ Kρ; the two statements are
+   convertible, so this is [Hsr] itself with no proof step. 
+
+--------
+[Hsr] 展开为 εK ∘ Kρ 的分量； 这两个语句是
+ 可转换，所以这是 [Hsr] 本身，没有证明步骤。 
+*)
 Lemma pare_split_law (x : X) :
   s x ∘ r x ≈ eps (K x) ∘ fmap[K] (rho x).
 Proof using All. exact (Hsr x). Qed.
@@ -180,7 +599,14 @@ Proof using All.
   rewrite <- comp_assoc.
   rewrite <- pare_s_nat.
   rewrite fmap_comp.
-  (* 相关说明。 （已译） *)
+  (*
+the next two are not a no-op: they change which subterm the following
+     rewrite matches first. 
+
+--------
+接下来的两个不是空操作：它们更改以下子项
+ 首先重写匹配。 
+*)
   rewrite <- comp_assoc.
   rewrite comp_assoc.
   rewrite <- pare_eps_nat.
@@ -231,7 +657,7 @@ Example pare_Adjunction_counit_at (a : A) :
 End FromSplitting.
 
 (* ---------------------------------------------------------------------- *)
-(* * ** From 左伴随 splitting （已译） *)
+(** ** From a left adjoint to a splitting  / ** 从左伴随到分裂*)
 
 Section FromAdjunction.
 
@@ -369,7 +795,7 @@ Qed.
 End FromAdjunction.
 
 (* ---------------------------------------------------------------------- *)
-(* * ** The biconditional, Cauchy-complete 推论 （已译） *)
+(** ** The biconditional, and the Cauchy-complete corollary  / ** 双条件和柯西完全推论*)
 
 Definition PareSplits : Type :=
   ∃ (F : X ⟶ A) (S : @SplitIdempotent ([X, A]) K F),
@@ -394,9 +820,14 @@ Proof.
 Defined.
 
 (*
-   本节说明 Pare 相关定义、性质与动机。
+The wrapper does not lose the prescribed unit and counit: what it feeds
+   [pare_Adjunction] is the splitting's own retraction and section, and the
+   two proof arguments do not appear in either field. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+包装机不会丢失规定的单位和数量：它喂的是什么
+ [pare_Adjunction] 是分裂本身的回缩和截面，并且
+ 两个证明参数不会出现在任一字段中。 
 *)
 Example pare_adjunction_of_split_unit (F : X ⟶ A)
         (S : @SplitIdempotent ([X, A]) K F)
@@ -436,12 +867,27 @@ Definition pare_left_adjoint_of_CauchyComplete
 End Pare.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Inhabitation *)
+(** ** Inhabitation  / ** 居住*)
 
 (*
-   本节说明伴随相关定义、性质与动机。
+Every adjunction is Paré data: forget one of its two triangles.  This is
+   a record literal with no tactic -- [pare_triangle]'s type is literally
+   [fmap_counit_unit]'s.  It also says exactly how degenerate such data is:
+   [pare_of_adjunction_idem] shows the idempotent is then the identity, by
+   the OTHER triangle, so a splitting is available for free and nothing is
+   learned.  This exercises the hypotheses and not a nontrivial splitting;
+   no [PareData] whose idempotent is provably not an identity is exhibited
+   anywhere below. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+每个附属物都是 Paré 数据：忘记它的两个三角形之一。 这是
+ 没有策略的记录文字——[pare_triangle] 的类型是字面意思
+ [fmap_counit_unit] 的。 它还准确地说明了此类数据的退化程度：
+ [pare_of_adjunction_idem] 显示幂等性就是恒等式，通过
+ 另一个三角形，所以分裂是免费的，什么都没有
+ 学到了。 这练习了假设，而不是一个不平凡的分裂；
+ 没有显示幂等性不是恒等式的 [PareData]
+ 下面的任何地方。 
 *)
 Definition pare_of_adjunction {A X : Category} {F : X ⟶ A} {G : A ⟶ X}
            (Adj : F ∹ G) : PareData A X := {|
@@ -456,8 +902,14 @@ Lemma pare_of_adjunction_idem {A X : Category} {F : X ⟶ A} {G : A ⟶ X}
       (Adj : F ∹ G) (x : X) : pare_idem (pare_of_adjunction Adj) x ≈ id.
 Proof. exact (@counit_fmap_unit _ _ _ _ Adj x). Qed.
 
-(* A uniform family -- not closed term, never instantiated here at
- concrete 范畴: everything 恒等 范畴. （已译） *)
+(*
+A uniform family -- not a closed term, and never instantiated here at
+   a concrete category: everything the identity on a category. 
+
+--------
+一个统一的家族——不是一个封闭的术语，也从未在这里实例化过
+ 具体类别：类别上的所有内容。 
+*)
 Program Definition pare_triv_rho (C : Category) : Id[C] ⟹ Id[C] ◯ Id[C] :=
   {| transform := λ _, id |}.
 
@@ -475,8 +927,14 @@ Lemma pare_triv_idem (C : Category) (x : C) :
   pare_idem (pare_triv C) x ≈ id.
 Proof. simpl; cat. Qed.
 
-(* The assembly run end end inhabitant: 恒等 idempotent
- splits identities, what comes back out Id ∹ Id. （已译） *)
+(*
+The assembly run end to end on that inhabitant: the identity idempotent
+   splits by identities, and what comes back out is Id ∹ Id. 
+
+--------
+程序集在该居民上端到端运行：身份幂等
+ 按身份分裂，返回的是 Id ∹ Id。 
+*)
 Definition pare_triv_left_adjoint (C : Category) : Id[C] ∹ Id[C].
 Proof.
   refine (pare_Adjunction (pare_triv C) Id[C] nat_id nat_id _ _).

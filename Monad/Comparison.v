@@ -14,15 +14,47 @@ Require Import Category.Instance.Fun.
 
 Generalizable All Variables.
 
-(*
+(** * The Eilenberg–Moore comparison functor
+
     nLab: https://ncatlab.org/nlab/show/monadic+adjunction
     nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
     Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
 
-   本文件给出比较函子相关。
+    Every adjunction F ⊣ U with F : D ⟶ C induces a monad T = U ◯ F on D
+    (Monad/Adjunction.v), and the Eilenberg–Moore category D^T of T-algebras
+    carries the terminal resolution F^T ⊣ U^T of that monad
+    (Monad/Eilenberg/Moore/Adjunction.v).  The comparison functor
+    K = [EM_Comparison] : C ⟶ D^T mediates between the given resolution and
+    the terminal one: it sends an object c to the algebra (U c, U ε_c) — the
+    unit law is the zig-zag identity [fmap_counit_unit] and the action law is
+    the U-image of a counit naturality square — and a morphism h to
+    fmap[U] h, an algebra homomorphism again by naturality of ε.  The
+    comparison commutes with both resolutions:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+      [EM_Comparison_Forget]  U^T ◯ K ≈ U    (identity components), and
+      [EM_Comparison_Free]    K ◯ F ≈ F^T    (identity underlying arrows).
+
+    U is a monadic functor ([Monadic]) when it has a left adjoint whose
+    comparison functor is an equivalence of categories
+    (Theory/Equivalence.v): then C is, up to equivalence, the category of
+    algebras for the monad it induces.  Beck's monadicity theorem
+    characterizes the adjunctions with this property.
+
+    Mac Lane's comparisons of two resolutions of one monad (§VI.7), the
+    Lemma constructing them, and the uniqueness of K, up to a unique
+    compatible isomorphism, among the comparisons over the identity
+    identification of the two monads (Awodey's clause, in that coherent
+    form) are Monad/Comparison/Resolution.v (#482); without the
+    coherence the clause is false (Instance/Fun/Action/Monad/Comparison.v).
+
+    The induced monad is packaged here as [Adjunction_Induced_Monad], with
+    the same underlying data as [Adjunction_Monad]: ret = η, and
+    join = U ε F.  The latter is a Qed-sealed theorem, so those readings
+    stay hidden inside its proof term (compare the remark in
+    Comonad/Duality.v); the algebra laws of the comparison need them
+    definitionally, hence this transparent packaging, whose law fields are
+    proved below from the zig-zag identities and the naturality of the unit
+    and counit transposes. *)
 
 Section EilenbergMooreComparison.
 
@@ -32,10 +64,15 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(*
-   本节说明 Comparison 相关定义、性质与动机。
+(**
+Naturality of the unit at an arbitrary morphism of D.  (The library's
+    [unit_comp] is the special case whose codomain is an object U y; the
+    proof below is the same transposition argument.) 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+D 任意态射下单位的自然性。（图书馆的
+ [unit_comp] 是特殊情况，其共域是对象 U y； 的
+ 下面的证明是相同的换位论证。） 
 *)
 
 Lemma adj_unit_natural {x y : D} (f : x ~> y) :
@@ -48,8 +85,14 @@ Proof.
   cat.
 Qed.
 
-(** Naturality counit at arbitrary 态射 C. (The library's
- [counit_comp] special case whose domain 对象 F x.) （已译） *)
+(**
+Naturality of the counit at an arbitrary morphism of C.  (The library's
+    [counit_comp] is the special case whose domain is an object F x.) 
+
+--------
+C 的任意态射下的计数自然性。（图书馆的
+ [counit_comp] 是一种特殊情况，其域是对象 F x。） 
+*)
 
 Lemma adj_counit_natural {x y : C} (g : x ~> y) :
   @counit _ _ _ _ A y ∘ fmap[F] (fmap[U] g) ≈ g ∘ @counit _ _ _ _ A x.
@@ -61,8 +104,14 @@ Proof.
   cat.
 Qed.
 
-(** The 单子 laws (U ◯ F, η, U ε F), named lemmas so 单子
- below fully transparent record. （已译） *)
+(**
+The monad laws for (U ◯ F, η, U ε F), as named lemmas so that the monad
+    below is a fully transparent record. 
+
+--------
+(U ◯ F, η, U ε F) 的单子定律，如命名引理所示，因此单子
+ 下面是完全透明的记录。 
+*)
 
 Lemma Induced_Monad_join_fmap_join (x : D) :
   fmap[U] (@counit _ _ _ _ A (F x))
@@ -94,8 +143,14 @@ Proof.
   apply adj_counit_natural.
 Qed.
 
-(** The 单子 induced 伴随, transparent unit and
- multiplication: ret = η join = U ε F. （已译） *)
+(**
+The monad induced by the adjunction, with transparent unit and
+    multiplication: ret = η and join = U ε F. 
+
+--------
+由附加引起的单子，具有透明单位和
+ 乘法：ret = η 且 join = U ε F。 
+*)
 
 Definition Adjunction_Induced_Monad : @Monad D (U ◯ F) :=
   @Build_Monad D (U ◯ F)
@@ -107,9 +162,16 @@ Definition Adjunction_Induced_Monad : @Monad D (U ◯ F) :=
     (fun x => @fmap_counit_unit _ _ _ _ A (F x))
     (fun x y f => Induced_Monad_join_fmap_fmap f).
 
-(** The comparison algebra U c: structure map U ε_c. Its unit law
- zig-zag 恒等, action law U-image counit
- 自然性 square at ε_c. （已译） *)
+(**
+The comparison algebra on U c: the structure map is U ε_c.  Its unit law
+    is the zig-zag identity, and its action law is the U-image of the counit
+    naturality square at ε_c. 
+
+--------
+U c 上的比较代数：结构图为U ε_c。 其单位律
+ 是 zig-zag 恒等式，其作用律是单位的 U 形像
+ ε_c 处的自然度平方。 
+*)
 
 Lemma EM_Comparison_Algebra_id (c : C) :
   fmap[U] (@counit _ _ _ _ A c) ∘ @unit _ _ _ _ A (U c) ≈ id.
@@ -132,8 +194,14 @@ Definition EM_Comparison_Algebra (c : C) :
     (EM_Comparison_Algebra_id c)
     (EM_Comparison_Algebra_action c).
 
-(** U h intertwines comparison algebras: 交换方块 the
- U-image counit 自然性 at h. （已译） *)
+(**
+U h intertwines the comparison algebras: the commuting square is the
+    U-image of counit naturality at h. 
+
+--------
+U h 将比较代数交织在一起：通勤平方是
+ h 处的单位自然性的 U 图像。 
+*)
 
 Lemma EM_Comparison_fmap_commutes {c c' : C} (h : c ~> c') :
   fmap[U] h ∘ fmap[U] (@counit _ _ _ _ A c)
@@ -157,8 +225,14 @@ Lemma EM_Comparison_fmap_respects {c c' : C} (h h' : c ~> c') (E : h ≈ h') :
   fmap[U] h ≈ fmap[U] h'.
 Proof. now rewrite E. Qed.
 
-(** The comparison 函子 K : C ⟶ D^T. Its 函子 laws those U,
- since 态射 D^T compared underlying arrows. （已译） *)
+(**
+The comparison functor K : C ⟶ D^T.  Its functor laws are those of U,
+    since morphisms of D^T are compared on their underlying arrows. 
+
+--------
+比较函子 K : C ⟶ D^T。 它的函子定律是 U 的函子定律，
+ 因为 D^T 的态射是在其基础箭头上进行比较的。 
+*)
 
 Definition EM_Comparison :
   C ⟶ @EilenbergMoore D (U ◯ F) Adjunction_Induced_Monad :=
@@ -169,10 +243,15 @@ Definition EM_Comparison :
     (fun c => @fmap_id C D U c)
     (fun c c' c'' f g => @fmap_comp C D U c c' c'' f g).
 
-(*
-   本节说明单子相关定义、性质与动机。
+(**
+Forgetting after comparing is U, on the nose: the iso family is the
+    identity, mirroring [EM_Monad_agrees].  It ends [Defined] (#482):
+    Monad/Comparison/Resolution.v reads the identity components back. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+对比后忘记是U，鼻子上：iso家族是
+ 身份，镜像 [EM_Monad_agrees]。 [Defined] 结束（#482）：
+ Monad/Comparison/Resolution.v 读回身份组件。 
 *)
 
 Theorem EM_Comparison_Forget :
@@ -183,10 +262,21 @@ Proof.
   cat.
 Defined.
 
-(*
-   本节说明函子、同构相关定义、性质与动机。
+(**
+Comparing after F is the free-algebra functor F^T.  At each d : D both
+    sides yield the carrier U (F d) with structure map U ε_{F d} — the free
+    algebra's join reads off exactly so, as in [EM_join_agrees] — but the
+    two TAlgebra records package distinct proofs of the algebra laws, so the
+    objects are not literally equal; the identity arrow of D underlies an
+    isomorphism between them. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+F后面比较的是自由代数函子F^T。 在每个 d : D 都
+ 边产生具有结构映射 U ε_{F d} 的载体 U (F d) — 自由
+ 代数的连接读起来完全如此，如 [EM_join_agrees] 中那样——但是
+ 两个 TAlgebra 记录打包了代数定律的不同证明，因此
+ 对象并不完全相等； D 的恒等箭头是
+ 它们之间的同构。 
 *)
 
 Lemma EM_Comparison_Free_id_commutes (d : D) :
@@ -236,7 +326,7 @@ Definition EM_Comparison_Free_iso (d : D) :
     (EM_Comparison_Free_id_id d)
     (EM_Comparison_Free_id_id d).
 
-(* It ends [Defined] (#482), like [EM_Comparison_Forget]. *)
+(* It ends [Defined] (#482), like [EM_Comparison_Forget].  / 它以 [Defined] (#482) 结束，就像 [EM_Comparison_Forget] 一样。*)
 
 Theorem EM_Comparison_Free :
   EM_Comparison ◯ F ≈ @EM_Free D (U ◯ F) Adjunction_Induced_Monad.
@@ -248,8 +338,14 @@ Defined.
 
 End EilenbergMooreComparison.
 
-(** A functor U is monadic when it has a left adjoint whose Eilenberg–Moore
-    comparison functor is an equivalence of categories. *)
+(**
+A functor U is monadic when it has a left adjoint whose Eilenberg–Moore
+    comparison functor is an equivalence of categories. 
+
+--------
+当函子 U 具有左伴随且其 Eilenberg-Moore 时，它是一元的
+ 比较函子是类别的等价性。 
+*)
 
 Definition Monadic {C D : Category} (U : C ⟶ D) : Type :=
   ∃ (F : D ⟶ C) (A : F ⊣ U), EquivalenceOfCategories (EM_Comparison A).

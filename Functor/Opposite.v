@@ -5,9 +5,32 @@ Require Import Category.Construction.Opposite.
 
 Generalizable All Variables.
 
-(** The opposite (dual) functor F^op : C^op ⟶ D^op. *)
+(** The opposite (dual) functor F^op : C^op ⟶ D^op.  / 相反（对偶）函子 F^op ：C^op ⟶ D^op。*)
 
-(* nLab: https://ncatlab.org/nlab/show/opposite+functor
+(*
+nLab: https://ncatlab.org/nlab/show/opposite+functor
+   Wikipedia: https://en.wikipedia.org/wiki/Opposite_category
+
+   Given F : C ⟶ D, the opposite functor F^op : C^op ⟶ D^op acts the same as
+   F on both objects and morphisms; only the (formally reversed) source and
+   target categories change. On objects (F^op) x := F x, and a morphism
+   f : x ~{C^op}~> y (that is, f : y ~> x in C) is sent to fmap[F] f, read as a
+   morphism F x ~{D^op}~> F y. The functoriality fields are the corresponding
+   fields of F with their object indices swapped, and fmap_comp is reindexed to
+   match the reversed composition of C^op (g ∘ f there is f ∘ g in C).
+
+   Because the underlying duality is built in so that (C^op)^op = C holds by
+   reflexivity, and F^op reuses the same object/morphism maps as F, the
+   construction is involutive: (F^op)^op = F, provable by [reflexivity] (see
+   Opposite_Functor_invol below). A contravariant functor C ⟶ D is, by
+   definition, an ordinary functor out of C^op; see [contramap] at the end.
+
+   On 1-cells (functors) oppositization is covariant, but note that on 2-cells
+   (natural transformations) it reverses direction: a natural transformation
+   F^op ⟹ G^op corresponds to one G ⟹ F, so op is the 2-functor Cat^co ⟶ Cat. 
+
+--------
+nLab: https://ncatlab.org/nlab/show/opposite+functor
    Wikipedia: https://en.wikipedia.org/wiki/Opposite_category
 
    给定 F : C ⟶ D，对偶函子 F^op : C^op ⟶ D^op 在对象与态射上与 F 作用相同；仅
@@ -21,7 +44,8 @@ Generalizable All Variables.
    反变函子 C ⟶ D 按定义是出自 C^op 的普通函子；见文末 [contramap]。
 
    在 1-胞（函子）上对偶化共变，但注意在 2-胞（自然变换）上方向反转：自然变换
-   F^op ⟹ G^op 对应 G ⟹ F，故 op 是 2-函子 Cat^co ⟶ Cat。 *)
+   F^op ⟹ G^op 对应 G ⟹ F，故 op 是 2-函子 Cat^co ⟶ Cat。 
+*)
 
 Definition Opposite_Functor `(F : C ⟶ D) : C^op ⟶ D^op :=
   @Build_Functor (C^op) (D^op) F
@@ -31,30 +55,54 @@ Definition Opposite_Functor `(F : C ⟶ D) : C^op ⟶ D^op :=
     (λ (x y z : C ^op) (f : y ~{ C ^op }~> z)
       (g : x ~{ C ^op }~> y), @fmap_comp _ _ F _ _ _ g f).
 
-(* Mirrors C^op notation 范畴, at same level/scope. （已译） *)
+(* Mirrors the C^op notation on categories, at the same level/scope.  / 在同一级别/范围上反映类别上的 C^op 表示法。*)
 
 Notation "F ^op" := (@Opposite_Functor _ _ F)
   (at level 7, format "F ^op", left associativity) : functor_scope.
 
 Open Scope functor_scope.
 
-(* The op 函子 involution 函子: applying it twice recovers F
- nose. Both sources state (C^op)^op = C, F^op reuses F's maps. （已译） *)
+(*
+The op functor is an involution on functors: applying it twice recovers F
+   on the nose. Both sources state (C^op)^op = C, and F^op reuses F's maps. 
+
+--------
+op 函子是函子的对合：应用它两次可以恢复 F
+ 在鼻子上。 两个来源都表明 (C^op)^op = C，并且 F^op 重用 F 的映射。 
+*)
 
 Corollary Opposite_Functor_invol `{F : C ⟶ D} : (F^op)^op = F.
 Proof. reflexivity. Qed.
 
-(* A 函子 F : C^op ⟶ D is contravariant 函子 C: it reverses the
- direction 态射. [contramap] applies it C-arrow f : x ~> y by
- reading f as C^op-arrow (op f), yielding F y ~> F x D.（已译） *)
+(*
+A functor F : C^op ⟶ D is a contravariant functor on C: it reverses the
+   direction of morphisms. [contramap] applies it to a C-arrow f : x ~> y by
+   reading f as the C^op-arrow (op f), yielding F y ~> F x in D. 
+
+--------
+函子 F : C^op ⟶ D 是 C 上的逆变函子：它反转
+ 态射的方向。 [contramap] 将其应用于 C 箭头 f : x ~> y
+ 将 f 读作 C^op 箭头 (op f)，产生 D 中的 F y ~> F x。 
+*)
 
 Definition contramap `{F : C^op ⟶ D} `(f : x ~{C}~> y) :
   F y ~{D}~> F x := fmap (op f).
 
 (*
-   本节说明函子、（余）极限、hom相关定义、性质与动机。
+The fullness and faithfulness rows of Mac Lane §IV.3 Exercise 1's
+   dualization table, for an ARBITRARY functor — previously reachable
+   only through the equivalence detour of Theory/Equivalence/Limit.v.
+   The op-functor's hom-action at (x, y) is the original's at (y, x), so
+   each property transports by reindexing, in both directions; every
+   obligation is an [exact] at the swapped indices. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Mac Lane §IV.3 练习 1 的完整行和忠实行
+ 对偶表，用于任意函子 - 以前可达
+ 只能通过 Theory/Equivalence/Limit.v 的等价迂回。 
+运算函子在 (x, y) 处的 hom-action 是原始函子在 (y, x) 处的 hom-action，所以
+ 每个属性都通过重新索引在两个方向上进行传输； 每个
+ 义务是交换索引处的 [exact]。 
 *)
 
 #[local] Obligation Tactic := idtac.

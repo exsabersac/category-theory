@@ -29,23 +29,126 @@ Require Import Category.Adjunction.Representability.Sets.
 
 Generalizable All Variables.
 
-(*
+(** * Resizing a solution set
+
     nLab:      https://ncatlab.org/nlab/show/solution+set+condition
     nLab:      https://ncatlab.org/nlab/show/essentially+small+category
     nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors#General_adjoint_functor_theorem
+    Riehl:     Category Theory in Context, §4.6 (the solution set condition)
 
-   本文件给出一般伴随函子定理相关。
+    Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+    §V.7, book p. 128 (PDF p. 137), Lemma 2 (catalog id
+    `maclane:V.7:lem2`), is the mathematical content this file makes
+    expressible.  CITED BY LOCATION AND BY THE IN-TREE CATALOG
+    (doc/plan/books/maclane/inventory/V.json); the printed text was not
+    consulted and no sentence of it is reproduced here.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    ** What the file is for
 
-(* 相关说明。 （已译） *)
+    A [SolutionSet U d] (Adjunction/GAFT.v) and an [ElementSolutionSet K]
+    (Adjunction/Representability/Sets.v) each carry an INDEX, a bare
+    [Type@{i}] with no structure on it.  [GAFT] and
+    [representability_theorem] then take limits over the DISCRETE category
+    on that index, so they demand the index at the shape-object universe of
+    the [Complete] they are handed.  Structure/Complete.v's SIZE NOTE is the
+    authority on that chain and is not restated here; item 2(b) is the link
+    that matters, and item 1 is why a naively-built index sits one universe
+    too high.
 
-(*
-   本节说明 Resize 相关定义、性质与动机。
+    Mac Lane's answer, in the book, is Lemma 2: the family is a PROPER
+    CLASS as first written, but the members are quotients of one fixed
+    object, so a SET of representatives up to isomorphism suffices.  This
+    file gives the three shapes in which that answer can be supplied, and
+    the four maps that consume them.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    ** The three shapes, weakest premise last
+
+    [SmallType] (Theory/Size.v) -- a Leibniz round trip onto a small
+    carrier.  The strongest premise: it says the index ITSELF is small.
+
+    [SmallCovering] -- a small type and a map into the index whose image
+    still covers.  No round trip and no surjectivity onto the index: the
+    small family need only remain a solution set.  This is literally a
+    [SolutionSet] at the small index factored through the large one, and it
+    is the honest minimum, since covering is the only thing the index is
+    ever used for.
+
+    [SmallUpToIso] -- for each large index a small one, an ISOMORPHISM of
+    the two solution objects, and the compatibility of the two solution
+    arrows.  This is Mac Lane's own "a small set of representatives up to
+    isomorphism", and it is the shape a quotient presentation can actually
+    supply: a quotient of a term model is isomorphic to, not equal to, an
+    arbitrary spanning codomain.  [covering_of_iso] shows it implies
+    [SmallCovering], so the three are ordered.
+
+    ** THE BINDERS ARE THE THEOREM
+
+    The point of every statement here is that the OUTPUT index universe is
+    a DIFFERENT binder from the input's.  An earlier prototype of these
+    constants left both to inference; the elaborator then identified them
+    and the constants were resizings in name only -- they typechecked and
+    said nothing.  Written with the input index [i] and the output index
+    [w] declared separately, the constraint block says what was intended.
+    Measured, [About] under [Set Printing Universes]:
+
+      resize_solution_set@{i w dobj cobj h} :
+        ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} {U : C ⟶ D}
+          {d : obj[D]} (S : SolutionSet@{i dobj cobj h} U d),
+        SmallType@{w i} (sol_index S) → SolutionSet@{w dobj cobj h} U d
+      (* i w dobj cobj h |= *)
+
+    -- an EMPTY constraint block, so [i] and [w] are unrelated and [w] may
+    be taken as low as the consumer needs.  The same for
+    [resize_element_solution_set].  [resize_by_covering] and
+    [resize_up_to_iso] cannot quite reach an empty block, because the small
+    carrier's own universe [u] enters through the record field: they read
+    [u <= w], which is the identification that says the output index is the
+    carrier the premise supplied, and nothing more.
+
+    A [@{w +}] annotation is a DECLARATION form only.  At a USE site the
+    hypothesis is written unannotated and the identification is read off
+    the [About]; there is no way to write [SmallCovering@{w +}] as an
+    argument type.
+
+    ** What is NOT delivered
+
+    (1) NO SMALLNESS IS PROVED HERE.  Every constant takes its smallness as
+    a hypothesis.  The one in-tree discharge is
+    Instance/Mod/TensorAFT.v's [tensor_spanning_SmallUpToIso], Mac Lane's
+    Lemma 2 at [RMod R]; [Instance/Variety/Spanning.v]'s
+    [variety_solution_set] stays conditional, varieties having no
+    [PropEquiv] on their term algebras.
+
+    (2) NO TRUNCATION, hence no uniqueness.  [SmallType] is data (see its
+    header in Theory/Size.v): two resizings of one index need not agree,
+    and [resize_solution_set] applied to two of them gives two solution
+    sets.  Nothing here says the resulting adjoint is independent of the
+    choice, and the AFT's own output is only determined up to isomorphism
+    in any case.
+
+    (3) NO CONVERSE.  Nothing here says a solution set at a low index
+    yields a [SmallType] of a high one, and nothing says an index that
+    cannot be resized obstructs the theorem.
+    Adjunction/GAFT/Necessity.v is the file about necessity and is
+    untouched by this one.
+
+    (4) NOTHING IS AN [Instance].  These are readings of a hypothesis, not
+    structures resolution should search for. *)
+
+(** ** Resizing along a Leibniz round trip  / ** 沿着莱布尼兹往返调整大小*)
+
+(**
+The index is replaced by the small carrier and every field is
+    transported along [st_to].  The covering is the only field with
+    content: a cover at a large index [i] is transported to the small
+    representative [st_from H i] by destructing the round trip. 
+
+--------
+索引被小载体取代，每个字段都是
+ 沿着 [st_to] 运输。 覆盖物是唯一具有
+ 内容：大索引处的封面 [i] 被传送到小索引处
+ 代表[st_from H i]通过破坏往返行程。 
 *)
 Definition resize_solution_set@{i w dobj cobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
@@ -63,10 +166,18 @@ Proof.
   exists t; exact e.
 Defined.
 
-(* * The element-indexed twin. [esol_covers] has no [Arguments] line, so
- 函子 is explicit: it is [esol_covers K E x], not
- [esol_covers E x]. Outside [Adjunction/Representability/Sets.v]'s own
- section [ElementSolutionSet] takes FOUR universes, not one.（已译） *)
+(**
+The element-indexed twin.  [esol_covers] has no [Arguments] line, so
+    the functor is explicit: it is [esol_covers K E x], not
+    [esol_covers E x].  Outside [Adjunction/Representability/Sets.v]'s own
+    section [ElementSolutionSet] takes FOUR universes, not one. 
+
+--------
+元素索引孪生。 [esol_covers] 没有 [Arguments] 线，因此
+ 函子是明确的：它是 [esol_covers K E x]，而不是
+ [esol_covers E x]。 [Adjunction/Representability/Sets.v] 自己之外的
+ [ElementSolutionSet] 部分需要四个宇宙，而不是一个。 
+*)
 Definition resize_element_solution_set@{cobj h su i w}
   {C : Category@{cobj h h}} (K : C ⟶ Sets@{h su})
   (E : ElementSolutionSet@{cobj h su i} K)
@@ -83,14 +194,27 @@ Proof.
   exists t; exact e.
 Defined.
 
-(** ** The two weaker premises *)
+(** ** The two weaker premises  / ** 两个较弱的前提*)
 
-(** 本节：[C] [D] written out rather than generalized: records are
- declared at top level, so no section variable scope them. （已译） *)
+(**
+[C] and [D] are written out rather than generalized: the records are
+    declared at top level, so no section variable is in scope for them. 
 
-(** 本节：A small type whose image under [sc_to] still covers. Nothing says the
- map injective, surjective, small carrier determines the
- index -- covering survives. （已译） *)
+--------
+[C] 和 [D] 是写出的而不是概括的：记录是
+ 在顶层声明，因此没有节变量在它们的范围内。 
+*)
+
+(**
+A small type whose image under [sc_to] still covers.  Nothing says the
+    map is injective, surjective, or that the small carrier determines the
+    index -- only that the covering survives. 
+
+--------
+[sc_to] 下的图像仍然覆盖的小型类型。 什么也没说
+ 映射是单射的、满射的，或者小载体决定了
+ 索引——只有覆盖物幸存下来。 
+*)
 Record SmallCovering@{w +} {C D : Category} {U : C ⟶ D} {d : D}
   (S : SolutionSet U d) := {
   sc_carrier : Type@{w};
@@ -101,10 +225,17 @@ Record SmallCovering@{w +} {C D : Category} {U : C ⟶ D} {d : D}
                    & fmap[U] t ∘ sol_arr S (sc_to s) ≈ h } }
 }.
 
-(*
-   本节说明同构相关定义、性质与动机。
+(**
+Mac Lane's shape: an ISO in the comma category rather than a Leibniz
+    round trip.  For each large index a small representative, an
+    isomorphism of the two solution objects, and the compatibility of the
+    two solution arrows over it. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+麦克莱恩的形状：逗号类别中的 ISO，而不是莱布尼茨
+ 往返。 对于每个大索引一个小的代表，
+ 两个解决方案对象的同构性以及兼容性
+ 其上有两个解决方案箭头。 
 *)
 Record SmallUpToIso@{w +} {C D : Category} {U : C ⟶ D} {d : D}
   (S : SolutionSet U d) := {
@@ -126,10 +257,16 @@ Arguments si_carrier {C D U d S} _.
 Arguments si_to {C D U d S} _ _.
 Arguments si_rep {C D U d S} _ _.
 
-(* 相关说明。 （已译） *)
+(** ** Resizing along the two weaker premises  / ** 沿着两个较弱的前提调整大小*)
 
-(** 本节：With [SmallCovering] resizing record literal: premise IS
- covering field. （已译） *)
+(**
+With [SmallCovering] the resizing is a record literal: the premise IS
+    the covering field. 
+
+--------
+对于 [SmallCovering]，调整大小是一个记录文字：前提是
+ 覆盖场。 
+*)
 Definition resize_by_covering@{w i dobj cobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   (S : SolutionSet@{i dobj cobj h} U d) (H : SmallCovering S)
@@ -139,10 +276,17 @@ Definition resize_by_covering@{w i dobj cobj h +}
    ; sol_arr := fun s => sol_arr S (sc_to H s)
    ; sol_covers := fun c h => sc_covers H c h |}.
 
-(*
-   本节说明同构相关定义、性质与动机。
+(**
+With [SmallUpToIso] the cover is transported ACROSS the isomorphism:
+    a cover [t] of [h] through the large index [i] becomes [t ∘ to phi]
+    through the representative, and the triangle closes by [fmap_comp]
+    and the compatibility clause. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+使用 [SmallUpToIso]，封面可跨同构传输：
+ 一个覆盖[t]的[h]通过大索引[i]变成[t ∘ to phi]
+ 通过代表，三角形以 [fmap_comp] 闭合
+ 和兼容性条款。 
 *)
 Definition resize_up_to_iso@{w i dobj cobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
@@ -163,9 +307,9 @@ Proof.
   exact e.
 Defined.
 
-(* 相关说明。 （已译） *)
+(** ** The ordering of the three premises  / ** 三个场地的顺序*)
 
-(** Mac Lane's shape implies the minimum. *)
+(** Mac Lane's shape implies the minimum.  / 麦克莱恩的形状意味着最低限度。*)
 Definition covering_of_iso {C D : Category} {U : C ⟶ D} {d : D}
   (S : SolutionSet U d) (H : SmallUpToIso S) : SmallCovering S.
 Proof.
@@ -178,7 +322,7 @@ Proof.
   exact e.
 Defined.
 
-(** And so does the strongest. *)
+(** And so does the strongest.  / 最强者也是如此。*)
 Definition covering_of_smalltype {C D : Category} {U : C ⟶ D} {d : D}
   (S : SolutionSet U d) (H : SmallType (sol_index S)) : SmallCovering S.
 Proof.
@@ -190,12 +334,21 @@ Proof.
   exists t; exact e.
 Defined.
 
-(** ** The consumer *)
+(** ** The consumer  / ** 消费者*)
 
-(*
-   本节说明hom、来源与用途相关定义、性质与动机。
+(**
+[representability_theorem] accepts a resized element solution set at
+    the universe it demands -- which is the whole purpose of the file.  The
+    output index is written [h], the ambient hom level, because that is
+    where item 2(b) of Structure/Complete.v's SIZE NOTE puts the shape
+    universe of [Complete@{h h h cobj}]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[representability_theorem] 接受调整大小的元素解决方案集
+ 它所需要的宇宙——这就是该文件的全部目的。 的
+ 输出索引写为 [h]，即环境 hom 电平，因为这是
+ 其中 Structure/Complete.v 的尺寸注释的第 2(b) 项放置了形状
+ [Complete@{h h h cobj}] 的宇宙。 
 *)
 Definition representable_of_small@{cobj h su i +}
   {C : Category@{cobj h h}} (K : C ⟶ Sets@{h su})

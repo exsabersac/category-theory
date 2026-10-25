@@ -10,9 +10,31 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** The hom-functor Hom(-,-) : C^op ∏ C ⟶ Sets. *)
+(** The hom-functor Hom(-,-) : C^op ∏ C ⟶ Sets.  / hom 函子 Hom(-,-) ：C^op ∏ C ⟶ 集合。*)
 
-(* nLab: https://ncatlab.org/nlab/show/hom-functor
+(*
+nLab: https://ncatlab.org/nlab/show/hom-functor
+   Wikipedia: https://en.wikipedia.org/wiki/Hom_functor
+
+   For a (locally small) category C, the hom-functor sends a pair of objects
+   (a, b) to the hom-set hom[C] a b, regarded as a setoid object of Sets. On a
+   morphism of C^op ∏ C — that is, a pair (f, g) with f : a' ~{C}~> a (an arrow
+   a ~{C^op}~> a') and g : b ~{C}~> b' — it sends an arrow q : a ~> b to the
+   composite g ∘ q ∘ f : a' ~> b', i.e. pre-compose with f and post-compose
+   with g. The bifunctor is therefore contravariant in its first argument and
+   covariant in its second; equivalently it is the identity profunctor on C.
+
+   Fixing one argument yields the two partial hom-functors: the covariant
+   Hom(a, -) : C ⟶ Sets (acting by post-composition) and the contravariant
+   Hom(-, b) : C^op ⟶ Sets (acting by pre-composition). The curried form
+   Curried_Hom : C^op ⟶ [C, Sets] packages the covariant family, and as a
+   full and faithful embedding it is the Yoneda embedding (Yoneda_Full and
+   Yoneda_Faithful below); this is the basis of representability, developed in
+   Functor/Representable.v. Since hom-sets here are setoids, Hom lands in Sets,
+   the category of setoids. 
+
+--------
+nLab: https://ncatlab.org/nlab/show/hom-functor
    Wikipedia: https://en.wikipedia.org/wiki/Hom_functor
 
    对（局部小）范畴 C，hom 函子把对象对 (a, b) 送到 hom 集 hom[C] a b，视为 Sets 的
@@ -24,21 +46,54 @@ Generalizable All Variables.
    Hom(-, b) : C^op ⟶ Sets（前复合作用）。curry 形式 Curried_Hom : C^op ⟶ [C, Sets]
    打包共变族，作为满忠实嵌入即 Yoneda 嵌入（下文 Yoneda_Full 与 Yoneda_Faithful）；
    这是可表性的基础，见 Functor/Representable.v。因此处 hom 集是 setoid，Hom 落在
-   setoid 范畴 Sets。 *)
+   setoid 范畴 Sets。 
+*)
 
 (*
-   本节说明函子、来源与用途相关定义、性质与动机。
+Bifunctors can be curried:
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+  C × D ⟶ E --> C ⟶ [D, E] ~~~ (C, D) → E --> C → D → E
+
+  Where ~~~ should be read as "Morally equivalent to".
+
+  Note: We do not need to define Bifunctors as a separate class, since they
+  can be derived from functors mapping to a category of functors. So in the
+  following two definitions, [P] is effectively our bifunctor.
+
+  The trick to [bimap] is that both the [Functor] instances we need (for
+  [fmap] and [fmap1]), and the [Natural] instance, can be found in the
+  category of functors we're mapping to by applying [P]. 
+
+--------
+双函子可以柯里化：
+
+ C × D ⟶ E --> C ⟶ [D, E] ~~~ (C, D) → E --> C → D → E
+
+ 其中~~~应理解为“道德上等同于”。 
+
+注意：我们不需要将 Bifunctor 定义为单独的类，因为它们
+ 可以从映射到函子类别的函子中导出。 所以在
+ 根据两个定义，[P] 实际上是我们的双函子。 
+
+[bimap] 的技巧是我们需要的两个 [Functor] 实例（对于
+ [fmap] 和 [fmap1]）以及 [Natural] 实例可以在
+ 我们通过应用 [P] 映射到的函子类别。 
 *)
 
 Program Definition Hom `(C : Category) : C^op ∏ C ⟶ Sets := {|
   fobj := fun p => {| carrier   := @hom C (fst p) (snd p)
                     ; is_setoid := @homset (C) (fst p) (snd p) |};
   fmap := fun x y (f : x ~{C^op ∏ C}~> y) =>
-            (* g ↦ snd f ∘ g ∘ fst f: post-compose C-component
- (covariant second 论元), pre-compose the
- C^op-component (contravariant first). （已译） *)
+            (*
+g ↦ snd f ∘ g ∘ fst f: post-compose with the C-component
+               (covariant in the second argument), pre-compose with the
+               C^op-component (contravariant in the first). 
+
+--------
+g ↦ snd f ∘ g ∘ fst f：使用 C 组件进行后期合成
+ （第二个参数中的协变），预先组合
+ C^op-分量（第一个逆变）。 
+*)
             {| morphism := fun g => snd f ∘ g ∘ fst f |}
 |}.
 Next Obligation. now rewrite !comp_assoc. Qed.
@@ -66,9 +121,14 @@ Coercion Curried_Hom : Category >-> Functor.
 Notation "[Hom A , ─]" := (@Curried_Hom _ A) : functor_scope.
 
 (*
-   本节说明自然变换、Yoneda、hom相关定义、性质与动机。
+Faithfulness of the Yoneda embedding: if f and g (arrows of C^op) induce
+   the same natural transformation [Hom _,─] ⟹ [Hom _,─], then evaluating that
+   transformation at the identity already forces f ≈ g. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+米田嵌入的忠实度：如果 f 和 g（C^op 的箭头）归纳
+ 相同的自然变换 [Hom _,─] ⟹ [Hom _,─]，然后评估
+ 恒等式的变换已经迫使 f ≈ g。 
 *)
 #[export] Instance Yoneda_Faithful (C : Category) : Faithful (Curried_Hom C).
 Proof.
@@ -79,9 +139,14 @@ Proof.
 Qed.
 
 (*
-   本节说明自然变换、函子、Yoneda相关定义、性质与动机。
+Fullness of the Yoneda embedding: every natural transformation between hom-
+   functors arises from a morphism, recovered as its component at the identity
+   (the [prefmap] field, fun c d f => f c id). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+米田嵌入的完整性：家庭之间的每一次自然转变
+ 函子源自态射，在恒等式上恢复为它的组成部分
+ （[prefmap] 字段，fun c d f => f c id）。 
 *)
 #[export] Instance Yoneda_Full (C : Category) : Full (Curried_Hom C).
 Proof.
@@ -93,9 +158,16 @@ Proof.
 Defined.
 
 (*
-   本节说明自然变换、Yoneda、hom相关定义、性质与动机。
+The fully-faithful Yoneda bijection on hom-sets: full + faithful means
+   fmap[Curried_Hom C] is, in Sets, an isomorphism between (d ~> c) = (c ~{C^op}~> d)
+   and the natural transformations [Hom c,─] ⟹ [Hom d,─] (here fobj[C] is the
+   coercion of C through Curried_Hom). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+hom-sets 上完全忠实的米田双射：完全 + 忠实的意思
+ fmap[Curried_Hom C] 在集合中是 (d ~> c) = (c ~{C^op}~> d) 之间的同构
+ 以及自然变换 [Hom c,─] ⟹ [Hom d,─] （这里 fobj[C] 是
+ 通过 Curried_Hom 对 C 进行强制转换）。 
 *)
 Corollary Yoneda_Embedding' (C: Category) (c d : C) :
   @IsIsomorphism Sets {| carrier := hom d c |}
@@ -115,9 +187,18 @@ Proof.
 Defined.
 
 (*
-   本节说明函子、hom相关定义、性质与动机。
+The opposite hom-functor Hom_C^op(-,-) : C ∏ C^op ⟶ Sets, presented two
+   ways. CoHom_Alt is Hom on C^op precomposed with the factor-swap Swap; on the
+   pair (a, b) both forms give the set hom[C^op] a b = hom[C] b a, so they are
+   the same bifunctor (covariant in the first argument, contravariant in the
+   second). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+相反的 hom 函子 Hom_C^op(-,-) : C ∏ C^op ⟶ 集合，提出了两个
+ 方式。 CoHom_Alt 是 C^op 上的 Hom，与因子交换 Swap 预先组合； 于
+ 对 (a, b) 两种形式都给出集合 hom[C^op] a b = hom[C] b a，因此它们是
+ 相同的双函数（第一个参数是协变的，第二个参数是逆变的）
+ 第二）。 
 *)
 Program Definition CoHom_Alt `(C : Category) : C ∏ C^op ⟶ Sets :=
   Hom C ◯ Swap.
@@ -131,9 +212,16 @@ Program Definition CoHom `(C : Category) : C ∏ C^op ⟶ Sets := {|
 Next Obligation. now rewrite <- ! comp_assoc. Qed.
 
 (*
-   本节说明函子、Yoneda、hom相关定义、性质与动机。
+The curried contravariant hom-functor: Curried_CoHom C c = [Hom ─,c] is the
+   presheaf Hom(-, c) : C^op ⟶ Sets, obtained as the covariant Curried_Hom on
+   C^op. This is the contravariant Yoneda embedding C ⟶ [C^op, Sets] used to
+   present presheaves. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+柯里化逆变 hom 函子：Curried_CoHom C c = [Hom ─,c] 是
+ presheaf Hom(-, c) : C^op ⟶ 集合，作为协变 Curried_Hom 获得
+ C^op。 这是逆变米田嵌入 C ⟶ [C^op, Sets] 用于
+ 目前预滑轮。 
 *)
 Definition Curried_CoHom `(C : Category) : C ⟶ [C^op, Sets] :=
   Curried_Hom C^op.

@@ -15,9 +15,30 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** The hom-set (hom-isomorphism) characterization of an adjunction. *)
+(** The hom-set (hom-isomorphism) characterization of an adjunction.  / 附加词的 hom-set（hom-同构）表征。*)
 
-(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
+(*
+nLab: https://ncatlab.org/nlab/show/adjoint+functor
+   Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
+
+   An adjunction F ⊣ U between F : D ⟶ C (left adjoint) and U : C ⟶ D (right
+   adjoint) is here a natural isomorphism of the two hom-bifunctors
+
+     hom_adj : Hom C ◯ F^op ∏⟶ Id ≅ Hom D ◯ Id^op ∏⟶ U
+
+   in the functor category [D^op ∏ C, Sets]; that is, a family of bijections
+   Hom_C(F a, b) ≅ Hom_D(a, U b) natural in both a and b (the two naturality
+   squares for the forward and inverse transposes). The transposes (adjuncts)
+   are to hom_adj : (F a ~> b) → (a ~> U b) and from hom_adj : (a ~> U b) →
+   (F a ~> b). Transposing the identities yields the unit η a := to hom_adj
+   id[F a] : a ~> U (F a) (hom_unit) and counit ε b := from hom_adj id[U b] :
+   F (U b) ~> b (hom_counit); these satisfy the triangle identities and so
+   recover the counit/unit form [Category.Adjunction.Natural.Transformation]
+   and the universal-morphism form [Category.Theory.Adjunction], with which
+   this presentation is shown equivalent below (the four conversions). 
+
+--------
+nLab: https://ncatlab.org/nlab/show/adjoint+functor
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
    F : D ⟶ C（左伴随）与 U : C ⟶ D（右伴随）之间的伴随 F ⊣ U 此处是两 hom-双函子的自然同构
@@ -30,7 +51,8 @@ Generalizable All Variables.
    转置恒等得到单位 η a := to hom_adj id[F a] : a ~> U (F a)（hom_unit）与余单位
    ε b := from hom_adj id[U b] : F (U b) ~> b（hom_counit）；它们满足三角恒等式，从而
    恢复 counit/unit 形式 [Category.Adjunction.Natural.Transformation] 与普遍态射形式
-   [Category.Theory.Adjunction]，并与本呈现下文证明等价（四种转换）。 *)
+   [Category.Theory.Adjunction]，并与本呈现下文证明等价（四种转换）。 
+*)
 
 Section AdjunctionHom.
 
@@ -40,11 +62,58 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 
 (*
-   Wikipedia: "A hom-set adjunction between two categories C and D consists of
+Wikipedia: "A hom-set adjunction between two categories C and D consists of
+   two functors F : C ← D and G : C → D and a natural isomorphism
 
-   本节说明伴随、函子、同构相关定义、性质与动机。
+     Φ : homC(F −, −) → homD(−, G −).
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   "This specifies a family of bijections
+
+     Φy,x : homC(F y, x) → homD(y, G x)
+
+   for all objects x in C and y in D.
+
+   "In this situation we say that F is left adjoint to G and G is right
+   adjoint to F, and may indicate this relationship by writing Φ : F ⊣ G, or
+   simply F ⊣ G.
+
+   "This definition is a logical compromise in that it is somewhat more
+   difficult to satisfy than the universal morphism definitions [see
+   Category.Theory.Adjunction], and has fewer immediate implications than the
+   counit-unit definition [see Category.Adjunction.Natural.Transformation]. It
+   is useful because of its obvious symmetry, and as a stepping-stone between
+   the other definitions.
+
+   "In order to interpret Φ as a natural isomorphism, one must recognize
+   homC(F –, –) and homD(–, G –) as functors. In fact, they are both
+   bifunctors from D^op × C to Set (the category of sets)." 
+
+--------
+维基百科：“两个类别 C 和 D 之间的 hom-set 附加包括：
+ 两个函子 F : C ← D 和 G : C → D 以及自然同构
+
+Φ : homC(F −, −) → homD(−, G −)。
+
+“这指定了一个双射族
+
+Φy,x : homC(F y, x) → homD(y, G x)
+
+对于 C 中的所有对象 x 和 D 中的 y。
+
+“在这种情况下，我们说 F 与 G 左邻，而 G 是右邻
+ 与 F 伴随，并且可以通过写作 Φ : F ⊣ G 来表示这种关系，或者
+ 简单来说 F ⊣ G。
+
+“这个定义是一个逻辑上的妥协，因为它在某种程度上更
+ 比通用态射定义更难以满足[参见
+ Category.Theory.Adjunction]，并且比
+ 单位-单位定义 [see Category.Adjunction.Natural.Transformation]。 它
+ 由于其明显的对称性而很有用，并且可以作为之间的垫脚石
+ 其他定义。
+
+“为了将 Φ 解释为一种自然同构，我们必须认识到
+ homC(F –, –) 和 homD(–, G –) 作为函子。 事实上，他们都是
+ 从 D^op × C 到 Set（集合的类别）的双函子。” 
 *)
 
 Class Adjunction_Hom := {

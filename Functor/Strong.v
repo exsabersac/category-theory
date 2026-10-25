@@ -11,9 +11,39 @@ Require Import Category.Functor.Construction.Product.
 
 Generalizable All Variables.
 
-(** Strong functors (functors with a tensorial strength) *)
+(** Strong functors (functors with a tensorial strength)  / 强函子（具有张量强度的函子）*)
 
-(* nLab: https://ncatlab.org/nlab/show/tensorial+strength
+(*
+nLab: https://ncatlab.org/nlab/show/tensorial+strength
+   Wikipedia: https://en.wikipedia.org/wiki/Strong_monad
+
+   A strong functor is an endofunctor F : C ⟶ C on a monoidal category
+   (C, ⊗, I) equipped with a tensorial (left) strength: a natural family
+
+     strength[x,y] : x ⨂ F y ~> F (x ⨂ y)          (left strength)
+
+   subject to two coherence laws relating it to the monoidal structure.  In
+   library notation, writing λ = [unit_left] and α = [tensor_assoc]:
+
+     - unit:  F(λ) ∘ strength[I,x]                 ≈ λ_{F x}    ([strength_id_left])
+     - assoc: F(α) ∘ strength[x⨂y,z]
+                ≈ strength[x,y⨂z] ∘ (id ⨂ strength[y,z]) ∘ α    ([strength_assoc])
+
+   These are Kock's two conditions; the correspondence between such families
+   and strengths is what justifies the name "tensorial strength" (Kock 1972,
+   "Strong functors and monoidal monads").  The dual [RightStrongFunctor]
+   carries a right strength F x ⨂ y ~> F (x ⨂ y), with the mirror laws stated
+   via ρ = [unit_right] and α⁻¹.  On a symmetric monoidal C the two strengths
+   are interderivable by twisting with the braiding, and they coincide.
+
+   "Strong" here means tensorial strength, NOT "strong (i.e. pseudo) monoidal
+   functor"; the two notions are unrelated.  On a closed monoidal C a strength
+   is equivalently a C-enrichment of F, and a strength on a monad's underlying
+   functor (compatible with η and μ) is exactly what is needed to internalize
+   Kleisli composition, yielding a strong monad. 
+
+--------
+nLab: https://ncatlab.org/nlab/show/tensorial+strength
    Wikipedia: https://en.wikipedia.org/wiki/Strong_monad
 
    强函子是幺半范畴 (C, ⊗, I) 上配备张量（左）强度的自函子 F : C ⟶ C：自然族
@@ -33,31 +63,32 @@ Generalizable All Variables.
 
    此处「强」指张量强度，*不是*「强（即伪）幺半函子」；两概念无关。在闭幺半 C 上强度
    等价于 F 的 C-充实；单子底层函子上（与 η、μ 相容）的强度恰是内化 Kleisli 复合所需，
-   从而得到强单子。 *)
+   从而得到强单子。 
+*)
 
 Class StrongFunctor `{@Monoidal C} (F : C ⟶ C) := {
-  strength {x y} : x ⨂ F y ~> F (x ⨂ y);          (* left strength A ⨂ FB ~> F(A ⨂ B) *)
-  strength_natural : natural (@strength);          (* natural in both arguments *)
+  strength {x y} : x ⨂ F y ~> F (x ⨂ y);          (* left strength A ⨂ FB ~> F(A ⨂ B)  / 左强度 A ⨂ FB ~> F(A ⨂ B)*)
+  strength_natural : natural (@strength);          (* natural in both arguments  / 两个论点都很自然*)
 
   strength_id_left {x} :                           (* unit law: F(λ) ∘ str ≈ λ *)
     fmap[F] (to unit_left) ∘ strength
       << I ⨂ F x ~~> F x >>
     to (@unit_left _ _ (F x));
 
-  strength_assoc {x y z} :                          (* associativity law w.r.t. α *)
+  strength_assoc {x y z} :                          (* associativity law w.r.t. α  / 结合律 α*)
     fmap[F] (to (@tensor_assoc _ _ x y z)) ∘ strength
       << (x ⨂ y) ⨂ F z ~~> F (x ⨂ y ⨂ z) >>
     strength ∘ bimap id strength ∘ to (@tensor_assoc _ _ x y (F z))
 }.
 
 Class RightStrongFunctor `{@Monoidal C} (F : C ⟶ C) := {
-  rstrength_nat : (⨂) ◯ F ∏⟶ Id ⟹ F ◯ (⨂);        (* right strength as a natural transformation *)
+  rstrength_nat : (⨂) ◯ F ∏⟶ Id ⟹ F ◯ (⨂);        (* right strength as a natural transformation  / 正确的力量作为自然的转变*)
 
   rstrength {x y} : F x ⨂ y ~> F (x ⨂ y) := transform[rstrength_nat] (x, y);
 
   rrstrength_id_right {x} :                          (* unit law: F(ρ) ∘ rstr ≈ ρ *)
     fmap[F] (to unit_right) ∘ rstrength ≈ to (@unit_right _ _ (F x));
-  rstrength_assoc {x y z} :                          (* associativity law w.r.t. α⁻¹ *)
+  rstrength_assoc {x y z} :                          (* associativity law w.r.t. α⁻¹  / 结合律 α⁻1*)
     rstrength ∘ bimap rstrength id ∘ from (@tensor_assoc _ _ (F x) y z)
       ≈ fmap[F] (from (@tensor_assoc _ _ x y z)) ∘ rstrength
 }.
@@ -67,15 +98,21 @@ Section Strong.
 Context `{@Monoidal C}.
 Context {F : C ⟶ C}.
 
-(* The 恒等 函子 strong, 恒等 strength. （已译） *)
+(* The identity functor is strong, with the identity as its strength.  / 恒等函子很强，恒等作为它的力量。*)
 #[export] Program Instance Id_StrongFunctor : StrongFunctor Id[C] := {
   strength := fun _ _ => id
 }.
 
 #[local] Obligation Tactic := program_simpl.
 
-(* Strong 函子 closed under 复合: strength F ◯ G is
- built first sliding through G, then lifting through F's strength. （已译） *)
+(*
+Strong functors are closed under composition: the strength of F ◯ G is
+   built by first sliding through G, then lifting that through F's strength. 
+
+--------
+强函子在组合下是封闭的：F ◯ G 的强度为
+ 首先通过 G 滑动，然后通过 F 的力量将其抬起。 
+*)
 #[export] Program Instance Compose_StrongFunctor (F G : C ⟶ C) :
   StrongFunctor F → StrongFunctor G → StrongFunctor (F ◯ G) := {
   strength := fun _ _ => fmap[F] strength ∘ strength
@@ -128,7 +165,13 @@ Qed.
 
 End Strong.
 
-(* [strength[F]] names strength given strong 函子 F at implicit
- arguments, mirroring [fmap[F]] convention. （已译） *)
+(*
+[strength[F]] names the strength of a given strong functor F at implicit
+   arguments, mirroring the [fmap[F]] convention. 
+
+--------
+[strength[F]] 隐式命名给定强函子 F 的强度
+ 参数，反映 [fmap[F]] 约定。 
+*)
 Notation "strength[ F ]" := (@strength _ _ F%functor _ _ _)
   (at level 9, format "strength[ F ]") : morphism_scope.

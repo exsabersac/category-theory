@@ -13,42 +13,588 @@ Require Import Category.Theory.Equivalence.Adjoint.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(** * Fullness of an adjoint: Mac Lane §IV.3 Exercises 3 and 6.  / * 伴随的完备性：Mac Lane §IV.3 练习 3 和 6。*)
 
 (*
-   本文件给出伴随相关构造与性质。
+Sources.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Mac Lane, *Categories for the Working Mathematician*, 2nd ed., §IV.3,
+   printed page 92 (PDF page 101 of the scan this repository calibrates
+   against in doc/plan/books/maclane/pagemap.md).  The two exercises are
+   quoted here as PRINTED, read off the page image rather than the OCR
+   layer, because the order of the letters in Exercise 3's triple decides
+   which adjoint its hypothesis is about (see "The two readings of
+   Exercise 3" below).
+
+     Exercise 3.  "If ⟨G, F, φ⟩ : X ⇀ A is an adjunction with G full and
+     every unit η_x a monic, then every η_x is also epi."
+
+     Exercise 6.  "Given an adjunction ⟨F, G, η, ε⟩ with either F or G
+     full, prove that Gε : GFG → G is invertible with inverse ηG :
+     G → GFG."
+
+   Note the triple: Exercise 3 writes ⟨G, F, φ⟩ where the table's left
+   column and Exercise 5 write ⟨F, G, φ⟩, and Theorem 1 and Exercise 6
+   ⟨F, G, η, ε⟩ -- F first.  Under §IV.1's convention ⟨F, G, φ⟩ : X ⇀ A has
+   F : X ⟶ A the LEFT adjoint and G : A ⟶ X the RIGHT adjoint.  This
+   library's convention (Theory/Adjunction.v) writes F ⊣ U with
+   F : D ⟶ C left and U : C ⟶ D right, so for the ⟨F, G, φ⟩ exercises
+   the dictionary is
+
+       Mac Lane's G  =  this file's U,      Mac Lane's F  =  this file's F,
+       Mac Lane's X  =  this file's D,      Mac Lane's A  =  this file's C.
+
+   Throughout, "the right adjoint is full" means [Full U] and "the left
+   adjoint is full" means [Full F].  Every name below carries the suffix
+   [_right] or [_left] accordingly; the suffix names WHICH ADJOINT IS
+   ASSUMED FULL, never a handedness of the conclusion.  nLab background:
+   https://ncatlab.org/nlab/show/adjoint+functor and
+   https://ncatlab.org/nlab/show/fully+faithful+functor . 
+
+--------
+来源。
+
+Mac Lane，*工作数学家的类别*，第二版，第 IV.3 节，
+ 打印第 92 页（此存储库校准的扫描的 PDF 第 101 页
+ 反对 doc/plan/books/maclane/pagemap.md）。 这两个练习是
+ 此处引用为打印，读取页面图像而不是 OCR
+ 层，因为练习3的三元组中字母的顺序决定
+ 它的假设是关于它的（参见“这两个读物
+ 练习 3"（见下文）。
+
+练习 3.“如果 ⟨G, F, φ⟩ : X ⇀ A 是一个附词，其中 G full 并且
+ 每个单位 η_x 都是 monic，那么每个 η_x 也是 epi。”
+
+练习 6.“给定附加词 ⟨F, G, η, ε⟩ 以及 F 或 G
+ full，证明 Gε : GFG → G 可逆 ηG 可逆：
+ G → GFG。”
+
+注意三元组：练习 3 在表格左侧写入 ⟨G, F, φ⟩
+ 列和练习 5 写出 ⟨F, G, φ⟩，以及定理 1 和练习 6
+ ⟨F, G, η, ε⟩ - 首先是 F。 根据 §IV.1 的约定 ⟨F, G, φ⟩ : X ⇀ A 有
+ F : X ⟶ A 左伴随，G : A ⟶ X 右伴随。 这个
+ 库的约定 (Theory/Adjunction.v) 将 F ⊣ U 写为
+ F : D ⟶ C 向左，U : C ⟶ D 向右，因此对于 ⟨F、G、φ⟩ 练习
+ 字典是
+
+Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
+ Mac Lane 的 X = 此文件的 D，Mac Lane 的 A = 此文件的 C。
+
+自始至终，“右伴随满”意味着 [Full U]，“左伴随满”意味着“左伴随满”。 
+伴随已满”表示 [Full F]。 下面的每个名字都带有后缀
+ 相应地 [_right] 或 [_left]； 后缀名称 WHICH ADJOINT IS
+ 假定完整，从来没有结论的偏执。 nLab背景：
+ https://ncatlab.org/nlab/show/adjoint+functor 和
+ https://ncatlab.org/nlab/show/fully+faithful+functor。 
 *)
 
 (*
-   本节说明（余）强度相关定义、性质与动机。
+** What is delivered, at what strength
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   (A) The reusable core, two split-morphism lemmas that are the real
+   content of both exercises:
+
+     - [counit_split_mono_of_full_right] : [Full U] makes every counit
+       component a [Section] (a split monomorphism), with the left inverse
+       exhibited as the named [counit_inv_of_full_right].
+     - [unit_split_epi_of_full_left] : [Full F] makes every unit component
+       a [Retraction] (a split epimorphism), with the right inverse
+       exhibited as [unit_inv_of_full_left].
+
+   Both are proved from NATURALITY of the counit resp. the unit at the
+   chosen preimage, together with one triangle identity.  This is shorter
+   than the transpose-comparison route (compute ⌊s ∘ ε⌋ and ⌊id⌋, then use
+   injectivity of the transpose), and it needs no injectivity lemma at
+   all; see "Corrections to the commissioning brief" below.
+
+   (B) Exercise 6.  The law the library did not have is
+   [unit_fmap_counit], `η_{Ua} ∘ Uε_a ≈ id`; the other law is the
+   pre-existing triangle [fmap_counit_unit].  It is PROVED TWICE, by two
+   genuinely different arguments:
+
+     - [unit_fmap_counit_of_full_right] uses (A)'s left inverse s, whose
+       U-image IS η_{Ua}, so `η_{Ua} ∘ Uε_a ≈ U(s ∘ ε_a) ≈ U id ≈ id`;
+     - [unit_fmap_counit_of_full_left] uses (A)'s right inverse r for
+       η_{Ua}: a morphism with a left inverse and a right inverse has them
+       coincide ([split_inverses_agree]), so `Uε_a ≈ r` and the law
+       follows.
+
+   Packaged componentwise as [fmap_counit_IsIsomorphism_of_full], and AS
+   NATURAL TRANSFORMATIONS as
+
+       [whiskered_counit_iso_of_full]
+         : Full F + Full U → @Isomorphism ([C, D]) (U ◯ F ◯ U) U
+
+   with forward leg [whiskered_counit] (component `fmap[U] (counit a)`)
+   and backward leg [whiskered_unit] (component `unit (U a)`).  The sum
+   type is the faithful rendering of Mac Lane's "either F or G full"; the
+   two one-hypothesis readings [whiskered_counit_iso_of_full_left] and
+   [_right] are `:=` at [inl] and [inr], so both directions are reachable
+   by conversion.
+
+   The other handedness is delivered too, at the same strength:
+   [fmap_unit_counit_of_full_left]/[_right], the componentwise
+   [counit_at_F_IsIsomorphism_of_full], and
+
+       [whiskered_unit_iso_of_full]
+         : Full F + Full U → @Isomorphism ([D, C]) (F ◯ U ◯ F) F.
+
+   Note the ROLE SWAP, which is not an accident of presentation: on the
+   [U ◯ F ◯ U] side the cheap hypothesis is [Full U] and on the
+   [F ◯ U ◯ F] side it is [Full F].
+
+   (C) Exercise 3, in BOTH readings of its printed triple.  With the
+   full functor the RIGHT adjoint ([Full U]): [unit_epic_of_full_monic],
+   whose engine is [unit_at_UF_of_full_right], `η_{U(F x)} ≈ UF η_x`,
+   exactly what (B) buys -- `Uε_{F x}` is invertible and both sides are
+   its inverse -- and whose monic hypothesis is genuinely consumed.  With
+   the full functor the LEFT adjoint ([Full F]): [unit_epic_of_full_left],
+   where the monic hypothesis is idle, and the sharpening it then
+   licenses, [unit_iso_of_full_monic] (split epi + monic = iso).
+
+   (D) The two in-tree instances item 3 of the issue asks for, both as a
+   [:=] of (B) with no tactic: [reflective_fmap_counit_IsIsomorphism] over
+   Construction/Reflective.v and [equiv_fmap_counit_IsIsomorphism] over
+   Theory/Equivalence/Adjoint.v.  In both the inverse this file produces
+   is read back at [eq_refl] as the unit component; the comparison with
+   the DONORS' own inverses is graded in the "Strengths" note below (one
+   is `≈`, the other is refuted, and the cause of the refutation is donor
+   opacity).
+
+   (E) Non-vacuity: a generic witness separating this file's hypothesis
+   from the stronger "full and faithful" under which the reflective case
+   was already known, together with its instantiation at [PointedSets].
+   Labelled degenerate where it is degenerate.
+
+   Universes, measured on the printed constants with [Set Printing
+   Universes] and read off BOTH the binder and the constraint block, since
+   here they disagree.  Every headline is over [C : Category@{u u0 u0}]
+   and [D : Category@{u1 u2 u2}] -- hom identified with proof in each, and
+   expressed by REUSING THE LEVEL VARIABLE IN THE BINDER, so a reader who
+   checks only the block concludes "no identification" and is wrong.  The
+   blocks carry one equation, [u0 = u2], collapsing the two categories'
+   hom-and-proof levels, plus bounds.  No [Set] occurs in any binder or
+   block of sections (A)-(D).  In (E), [Full_Erase_of_ZeroObject] carries
+   EXPLICIT universe binders because written unannotated it minimizes to
+   [C : Category@{u Set Set}] -- a pin, and one that
+   [zero_erase_adjunction] over the same [Erase C] does not acquire, so
+   it was that definition's own -- while the two [PointedSets] lemmas
+   carry the bound [Set < u] that instance's declaration brings with it.
+   The one constant that escapes both identifications in its BLOCK is
+   [split_inverses_agree@{u u0}], whose public block is EMPTY (its binder
+   still reuses the level, being over [Category@{u u0 u0}]).
+
+   Attribution, probed rather than assumed (Test/ProbeFullness368.v).
+   For hom = proof there are THREE donors, each rejected ALONE under a
+   declared [Constraint ch < cp] while a hom and an identity at those very
+   levels are accepted: [Section], [Retraction] and [Monic].  [Functor] is
+   NOT among them -- a functor type elaborates at those levels -- so
+   attributing the identification to the functor vocabulary would be
+   wrong.  For [u0 = u2] the donor is weaker than one might guess: it is
+   not [Compose], not [Adjunction] and not [Full], but the mere presence
+   of functors in BOTH directions, [Functor] forcing source-hom <=
+   target-hom; under a declared [Constraint dh < ch] the type [Cu ⟶ Du] is
+   rejected while [Du ⟶ Cu] is accepted.  Neither identification is
+   introduced here and neither is claimed unavoidable. 
+
+--------
+** 交付什么、强度如何
+
+(A) 可重用核心，两个真实的分裂态射引理
+ 两个练习的内容：
+
+- [counit_split_mono_of_full_right]：[Full U] 使每个单元
+ 组件 a [Section]（分裂单态），左逆
+ 展出的型号为 [counit_inv_of_full_right]。 
+- [unit_split_epi_of_full_left] : [Full F] 制造每个单元组件
+ [Retraction]（分裂外同态），具有正确的逆
+ 展出为[unit_inv_of_full_left]。
+
+两者都从国家的自然性中得到证明。 该单位位于
+ 选择的原像，以及一个三角形恒等式。 这个比较短
+ 比转置比较路线（计算 ⌊s ∘ ε⌋ 和 ⌊id⌋，然后使用
+ 转置的单射性），并且它不需要单射引理
+ 全部； 请参阅下面的“对调试简介的更正”。
+
+(B) 练习 6. 图书馆没有的定律是
+ [unit_fmap_counit], `η_{Ua} ∘ Uε_a ≈ id`; 另一条法律是
+ 预先存在的三角形 [fmap_counit_unit]。 它被两个人证明了两次
+ 真正不同的论点：
+
+- [unit_fmap_counit_of_full_right] 使用 (A) 的左逆 s，其
+ U-图像是 η_{Ua}，所以 `η_{Ua} ∘ Uε_a ≈ U(s ∘ ε_a) ≈ U id ≈ id`；
+ - [unit_fmap_counit_of_full_left] 使用 (A) 的右逆 r
+ η_{Ua}：具有左逆和右逆的态射
+ 重合 ([split_inverses_agree])，因此 `Uε_a ≈ r` 和定律
+ 接下来。
+
+按组件封装为 [fmap_counit_IsIsomorphism_of_full] 和 AS
+ 自然转变为
+
+保护14X
+ ：全 F + 全 U → @同构 ([C, D]) (U ◯ F ◯ U) U
+
+带前腿 [whiskered_counit]（组件“fmap[U]（a 组）”）
+ 和后腿 [whiskered_unit]（组件“单元（U a）”）。 总和
+ type 是 Mac Lane 的“要么 F 要么 G full”的忠实渲染； 的
+ 两个单假设读数 [whiskered_counit_iso_of_full_left] 和
+ [_right]在[inl]和[inr]处是`:=`，所以两个方向都是可达的
+ 通过转换。
+
+另一种惯用手也以同样的强度传递：
+ [fmap_unit_counit_of_full_left]/[_right]，按组件
+ [counit_at_F_IsIsomorphism_of_full]，和
+
+保护26X
+ ：全 F + 全 U → @同构 ([D, C]) (F ◯ U ◯ F) F。
+
+请注意角色交换，这并非呈现的偶然：在
+ [U ◯ F ◯ U] 方面，便宜的假设是 [Full U]，而在
+ [F ◯ U ◯ F]这边是[Full F]。
+
+(C) 练习 3，在其印刷三重的两个阅读中。 随着
+ 完全函子右伴随 ([Full U])：[unit_epic_of_full_monic]，
+ 其引擎为 [unit_at_UF_of_full_right]，`η_{U(F x)} ≈ UF η_x`，
+ 正是 (B) 购买的东西 - `Uε_{F x}` 是可逆的，两边都是
+ 它的反面——并且它的单音假说被真正地消耗了。 与
+ 左伴随 ([Full F]) 的完整函子：[unit_epic_of_full_left]，
+ 一元假设闲置的地方，然后锐化它
+ 许可证，[unit_iso_of_full_monic]（拆分 Epi + monic = iso）。
+
+(D) 问题第 3 项要求的两个树内实例，均作为
+ (B) [:=] 无战术：[reflective_fmap_counit_IsIsomorphism] 过
+ Construction/Reflective.v 和 [equiv_fmap_counit_IsIsomorphism] 之上
+ 理论/等价/伴随.v. 在相反的情况下，该文件产生
+ 在 [eq_refl] 中作为单元组件读回； 与的比较
+ 捐赠者自己的倒数在下面的“优势”注释中分级（一
+ 是`≈`，另一个被反驳，反驳的原因是donor
+ 不透明度）。
+
+(E) 非真空：区分该文件假设的通用证据
+ 从更强的“完整和忠实”出发，反思案例
+ 连同其在 [PointedSets] 上的实例化已经众所周知。 
+退化的地方被标记为退化。
+
+宇宙，通过[Set Printing]对打印的常数进行测量
+ Universes] 并读出活页夹和约束块，因为
+ 在这里他们不同意。 每个标题都超过 [C : Category@{u u0 u0}]
+ 和 [D : Category@{u1 u2 u2}]——每个都用证明来识别 hom，并且
+ 通过 REUSING THE LEVEL VARIABLE IN THE BINDER 来表达，因此读者
+ 仅检查该块得出“无识别”的结论，并且是错误的。 的
+ 块带有一个方程，[u0 = u2]，折叠了两个类别'
+ hom-andproof级别，加上界限。 [Set] 不会出现在任何活页夹或
+ (A)-(D) 部分的块。 在 (E) 中，[Full_Erase_of_ZeroObject] 携带
+ 显式的 Universe 绑定器，因为未注释的形式编写，因此可以最大限度地减少
+ [C : Category@{u Set Set}]——一个引脚，一个
+ [zero_erase_adjunction] 不会超过相同的 [Erase C]，因此
+ 这是该定义自己的——而两个 [PointedSets] 引理
+ 携带实例声明带来的绑定 [Set < u]。 
+在其 BLOCK 中转义两个标识的一个常量是
+ [split_inverses_agree@{u u0}]，其公共块为 EMPTY（其绑定器
+ 仍然重复使用该级别，超过 [Category@{u u0 u0}]）。
+
+归因，探究而不是假设（Test/ProbeFullness368.v）。 
+对于 hom = 证据，有三个捐赠者，每个捐赠者都单独被拒绝
+ [Constraint ch < cp] 是一个 hom 和一个身份在那些非常
+ 可接受的级别：[Section]、[Retraction] 和 [Monic]。 [Functor] 是
+ 不在其中——函子类型在这些级别上进行了阐述——所以
+ 将识别归因于函子词汇表将是
+ 错了。 对于 [u0 = u2]，供体比人们想象的要弱：它是
+ 不是 [Compose]，不是 [Adjunction]，也不是 [Full]，而是仅仅存在
+ 两个方向上的函子数，[Functor] 强制 source-hom <=
+ 目标-hom； 在声明的 [Constraint dh < ch] 下，类型 [Cu ⟶ Du] 是
+ 拒绝，而 [Du ⟶ Cu] 被接受。 两个身份都不是
+ 这里介绍了这两种情况，但都没有声称是不可避免的。 
 *)
 
 (*
-   本节说明伴随、函子相关定义、性质与动机。
+** The two readings of Exercise 3
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The page prints ⟨G, F, φ⟩ : X ⇀ A, and issue #368 paraphrases the
+   hypothesis faithfully as "the left-listed functor is full".  Read by
+   the §IV.1 convention that the first-listed functor of a triple X ⇀ A
+   is the left adjoint X ⟶ A, that is fullness of the LEFT adjoint, and
+   then the monic hypothesis is idle: [Full F] already makes every η_x a
+   split epi ([unit_split_epi_of_full_left]), hence epi with no further
+   assumption ([unit_epic_of_full_left]), and what the monic hypothesis
+   adds is invertibility ([unit_iso_of_full_monic]).  Read with G the
+   RIGHT adjoint -- its role in Theorem 1 and Exercises 5 and 6, though
+   not "everywhere" on the page, the dual column of the table listing G
+   FIRST as the left adjoint of the opposite adjunction A ⇀ X -- and
+   under which the printed hypothesis is not idle, it is
+   [unit_epic_of_full_monic]: the monic hypothesis is consumed
+   at the CODOMAIN of the two test arrows, not at x, which is why it
+   must be assumed at every object, and no splitting of η_x is
+   available.
+
+   Whether ⟨G, F, φ⟩ is a misprint for ⟨F, G, φ⟩ is not decidable from
+   the page and is not decided here.  Both readings are delivered and
+   both are named in Test/ProbeFullness368.v's controls; the
+   right-adjoint one is where the content is, the left-adjoint one is
+   the literal print.  An earlier draft of this header transcribed the
+   triple as ⟨F, G, φ⟩ and on that basis called the issue's paraphrase
+   wrong; the page image refutes the transcription, not the issue. 
+
+--------
+** 练习3的两个阅读
+
+该页面打印 ⟨G, F, φ⟩ : X ⇀ A，第 368 期释义为
+ 假设忠实地为“左侧列出的函子已满”。 阅读者
+ §IV.1 约定，三重 X ⇀ A 的第一个列出的函子
+ 是左伴随 X ⟶ A，即 LEFT 伴随的完备性，并且
+ 那么单调假设是无效的：[Full F] 已经使每个 η_x a
+ 拆分 Epi ([unit_split_epi_of_full_left])，因此 Epi 无需进一步
+ 假设（[unit_epic_of_full_left]），以及一元假设是什么
+ 添加的是可逆性（[unit_iso_of_full_monic]）。 与 G 一起阅读
+ 右伴随——它在定理 1 和练习 5 和 6 中的作用
+ 页面上不是“到处”，表格的双列列出了 G
+ FIRST 作为相反伴随词 A ⇀ X 的左伴随词 - 并且
+ 在这种情况下，印刷的假设并不是闲置的，它是
+ [unit_epic_of_full_monic]：单调假设被消耗
+ 在两个测试箭头的 CODOMAIN 处，而不是在 x 处，这就是为什么它
+ 必须对每个对象进行假设，并且 η_x 不会分裂
+ 可用。
+
+⟨G, F, φ⟩ 是否是 ⟨F, G, φ⟩ 的印刷错误无法确定
+ 页面并没有在这里决定。 两份读物均已交付并
+ 两者都在 Test/ProbeFullness368.v 的控件中命名； 的
+ 右伴随的是内容所在，左伴随的是内容所在
+ 字面打印。 该标题的早期草稿转录了
+ 三倍为 ⟨F, G, φ⟩ 并在此基础上称为该问题的释义
+ 错误； 页面图像反驳了转录，而不是问题。 
 *)
 
 (*
-   本节说明 Fullness 相关定义、性质与动机。
+** Corrections to the commissioning brief
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   1. The brief prescribes a transpose-comparison proof for (A): compute
+      ⌊s ∘ ε_a⌋ and ⌊id⌋, find both equal to η_{Ua}, and close by
+      injectivity of ⌊-⌋.  That derivation is correct but longer than
+      necessary.  Naturality of ε at s does it in three steps -- two
+      rewrites and one [exact] -- and uses no injectivity lemma; the same
+      remark applies to the dual.  This file takes the naturality route.
+
+   2. The brief prescribes, for [unit_fmap_counit_of_full_left], a
+      transpose computation showing that `F(Uε_a)` and `ε_{F(Ua)}` are
+      both left inverses of `F η_{Ua}`, which is epi because η_{Ua}
+      splits.  That is also correct, and also longer than necessary: with
+      η_{Ua} split on both sides, its two inverses coincide and the law is
+      immediate.  This file takes the short route and never forms `F η`.
+
+   3. The brief allows two files; the hard rules of the commission allow
+      only [Adjunction/Fullness.v] and [Test/ProbeFullness368.v], so items
+      (D) and (E) are appended to this file behind mid-file [Require]s
+      rather than placed in a satellite.
+
+   4. The brief calls the whiskering mismatch a "PACKAGING HAZARD ...
+      measure before choosing".  Measured, it is real and it is a TYPING
+      rejection, not a universe one: [Transform] is a class applied to two
+      FUNCTOR RECORDS, and `U ◯ (F ◯ U)` and `(U ◯ F) ◯ U`, while they
+      agree on [fobj] and on [fmap], differ in their three law fields
+      (distinct [Compose_obligation_*] instances), so the two [Transform]
+      types are not convertible.  Likewise `U ◯ Id` is not `U` and
+      `Id ◯ U` is not `U`.  Hence [whisker_left U counit] lands at
+      `U ◯ (F ◯ U) ⟹ U ◯ Id` and [whisker_right unit U] at
+      `Id ◯ U ⟹ (U ◯ F) ◯ U`, and NEITHER can be ascribed at the type
+      this file's isomorphism needs.  The transformations are therefore
+      hand-built at the single parenthesization `U ◯ F ◯ U` (which is
+      `(U ◯ F) ◯ U`, [Compose] being left-associative), and the
+      identification with the whiskered forms is recorded COMPONENTWISE by
+      [eq_refl] ([whiskered_counit_is_whisker_left],
+      [whiskered_unit_is_whisker_right]) rather than at record level.  The
+      two ascriptions are pinned in Test/ProbeFullness368.v as TYPING
+      negatives and the three Leibniz refutations as CONVERSION ones.
+
+   5. The brief asks whether [Adjunction/Opposite.v]'s
+      [Opposite_Adjunction] makes (A.2) a [:=] instance of (A.1) at the
+      opposite categories.  Measured, and the answer is "available but
+      not cheaper".  The component identification IS definitional: with
+      [Aop := Opposite_Adjunction A], the term
+      `@unit (Opposite D) (Opposite C) U^op F^op Aop x` and
+      `@counit C D F U A x` are equal by [eq_refl].  But the passage is
+      not a bare [:=]: it needs [Full_op] (Functor/Opposite.v) to turn
+      [Full F] into [Full (F^op)], and [Retraction_of_op_Section]
+      (Theory/Morphisms/Duality.v) to turn the [Section] in [D^op] that
+      (A.1) produces into the [Retraction] in [D] that (A.2) asserts --
+      [Section] and [Retraction] are distinct records, so that step is a
+      construction and not a conversion.  Since the direct proof is three
+      steps and mirrors (A.1) line for line, the direct route is taken.
+      The [eq_refl] identification above was measured out of tree and is
+      NOT pinned in this file or in the probe; nothing below depends on
+      it.  Note in passing the notation hazard it exposes: with
+      [Adjunction.Opposite] required, `D^op` on a CATEGORY parses in
+      [adjunction_scope] and elaborates as [Opposite_Adjunction D], so
+      the measurement had to spell [Opposite D] by name.
+
+   6. The brief's file path for the scanned book is stale; the copy this
+      file was read against lives under the user's iCloud Desktop, not
+      under ~/dl.  The page is the one the brief names: PDF 101 = printed
+      92, and the calibration in doc/plan/books/maclane/pagemap.md is
+      correct.
+
+   7. The brief cites `Theory/Adjunction.v` for [counit_fmap_unit] and
+      for [fmap_counit_unit]; both are right at the revision this
+      file was built on, and the issue's own citation lands on a line of
+      the first corollary's proof script.  An earlier draft of this note
+      "corrected" the brief to two `Qed.` lines.
+      Line numbers are not relied on below. 
+
+--------
+** 对调试简介的更正
+
+1. 简述规定了 (A) 的转置比较证明：计算
+ ⌊s ∘ ε_a⌋ 和 ⌊id⌋，找到都等于 η_{Ua}，并且接近
+ ⌊-⌋ 的内射性。 该推导是正确的，但长于
+ 必要的。 ε at s 的自然性分三步完成——两步
+ 重写一个 [exact]——并且不使用单射引理； 一样的
+ 备注适用于对偶。 这个文件走的是自然路线。
+
+2. 简报规定，对于 [unit_fmap_counit_of_full_left]，
+ 转置计算显示“F(Uε_a)”和“ε_{F(Ua)}”是
+ 两者都是 `F η_{Ua}` 的左逆，这是 epi 因为 η_{Ua}
+ 分裂。 这也是正确的，而且也比必要的更长：
+ η_{Ua} 两边分裂，其两个倒数重合，定律为
+ 立即。 该文件采用最短路线并且不会形成“F η”。
+
+3.简报允许两个文件； 委员会的硬性规则允许
+ 仅 [Adjunction/Fullness.v] 和 [Test/ProbeFullness368.v]，因此项目
+ (D) 和 (E) 附加到该文件中间文件 [Require] 的后面
+ 而不是放置在卫星中。
+
+4. 简报称猫须褶皱不匹配是“包装危险……”
+ 选择前先衡量”。 测量过，是真实的，而且是打字的
+ 拒绝，不是宇宙一：[Transform] 是一个应用于两个的类
+ FUNCTOR RECORDS，以及 `U ◯ (F ◯ U)` 和 `(U ◯ F) ◯ U`，同时它们
+ 同意 [fobj] 和 [fmap]，在三个法律领域有所不同
+ （不同的 [Compose_obligation_*] 实例），因此两个 [Transform]
+ 类型不可转换。 同样，“U ◯ Id”不是“U”并且
+ “Id ◯ U”不是“U”。 因此 [whisker_left U counit] 落在
+ `U ◯ (F ◯ U) ⟹ U ◯ Id` 和 [whisker_right unit U] 位于
+ `Id ◯ U ⟹ (U ◯ F) ◯ U`，并且都不能归因于类型
+ 这个文件的同构需要。 因此，这些变换是
+ 在单括号“U ◯ F ◯ U”处手工构建（即
+ `(U ◯ F) ◯ U`，[Compose] 是左关联的），并且
+ 与须状形式的识别被记录为 COMPONENTWISE
+ [eq_refl]（[whiskered_counit_is_whisker_left]，
+ [whiskered_unit_is_whisker_right]）而不是创纪录的水平。 的
+ 两个归属被固定在 Test/ProbeFullness368.v 中作为 TYPING
+ 否定和三个莱布尼茨反驳作为转换。
+
+5.简报询问[Adjunction/Opposite.v]是否
+ [Opposite_Adjunction] 在以下位置使 (A.2) 成为 (A.1) 的 [:=] 实例
+ 相反的类别。 测量了一下，答案是“可用，但是
+ 不便宜”。 组件标识是定义性的：
+ [Aop := Opposite_Adjunction A]，术语
+ `@unit (D 对边) (C 对边) U^op F^op Aop x` 和
+ `@counit C D F U A x` 与 [eq_refl] 相等。 但这段话是
+ 不是一个裸露的 [:=]：它需要 [Full_op] (Functor/Opposite.v) 才能转动
+ [Full F] 变为 [Full (F^op)] 和 [Retraction_of_op_Section]
+ (Theory/Morphisms/Duality.v) 将 [Section] 转变为 [D^op]
+ (A.1) 在 [D] 中生成 [Retraction]，(A.2) 断言——
+ [Section] 和 [Retraction] 是不同的记录，因此该步骤是
+ 建设而不是转换。
+由于直接证明是三
+ 步骤和镜子（A.1）线换线，采取直接路线。 上面的 [eq_refl] 标识是在树上测量的，并且是
+ 未固定在此文件或探针中； 下面没有什么取决于
+ 它。 注意传递它所暴露的符号危险：
+ 需要 [Adjunction.Opposite]，CATEGORY 上的 `D^op` 解析为
+ [adjunction_scope] 并详细阐述为 [Opposite_Adjunction D]，因此
+ 测量的名称必须拼写为 [Opposite D]。
+
+6. 扫描书籍的摘要文件路径已过时； 复制这个
+ 文件是针对用户 iCloud 桌面下的生命读取的，而不是
+ 在〜/ dl下。 该页面的简要名称为：PDF 101 = 打印
+ 92，doc/plan/books/maclane/pagemap.md中的校准是
+ 正确。
+
+7. 简报引用了 [counit_fmap_unit] 的“Theory/Adjunction.v”和
+ 适用于 [fmap_counit_unit]； 修订本时两者都是正确的
+ 文件是建立在这个基础上的，并且该问题自己的引文位于一行
+ 第一个推论的证明脚本。 本说明的早期草稿
+ 将摘要“更正”为两行“Qed”。 
+下面不依赖行号。 
 *)
 
 (*
-   本节说明伴随、同构相关定义、性质与动机。
+** Not delivered
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   - Mac Lane §IV.3 Theorem 1 (G faithful ⟺ every ε_a epi; G full ⟺
+     every ε_a split monic, whose forward half IS (A) here; hence full and
+     faithful ⟺ ε an isomorphism) is Adjunction/FullFaithful.v's (#367).
+     Nothing here states or uses a faithfulness characterisation; the one
+     [Faithful] stated here is refuted ([Erase_PointedSets_not_Faithful]).
+   - No CONVERSE: it is not shown that invertibility of Uε forces either
+     adjoint to be full, and no separating example is offered.
+   - No claim that [unit_iso_of_full_monic]'s hypotheses are independent,
+     and no example of an adjunction with monic non-epi unit components.
+   - The [Opposite_Adjunction] identification of correction 5 is measured
+     but not pinned: no [Example] in this file or in the probe records it,
+     so a later change to [Opposite_Adjunction] would not be caught here.
+   - No `≈`-level comparison between this file's inverse and the one
+     inside [reflective_counit_iso]: that lemma is closed with [Qed], so
+     neither leg of the isomorphism it produces reduces, and no equation
+     naming either leg's VALUE is available by conversion (the iso laws
+     themselves of course still hold).  The [eq_refl] form is refuted and
+     pinned in Test/ProbeFullness368.v; the `≈` form is not attempted and
+     is NOT claimed impossible -- what is claimed is that this file does
+     not deliver it.  The donor is not modified.
+   - No adjunction in which NEITHER adjoint is full and the new law is
+     refuted, so the theorem is shown to have satisfiable hypotheses and
+     a non-faithful witness, but is not shown to exclude a named
+     adjunction.
+   - Nothing is registered as an [Instance]; every result here is a plain
+     [Definition]/[Lemma], so typeclass resolution is unperturbed.
+   - No statement in [StrictCat], and no Leibniz equality between the
+     hand-built transformations and the whiskered ones. 
+
+--------
+** 未交付
+
+- Mac Lane §IV.3 定理 1（G 忠实 ⟺ 每 ε_a epi；G 完整 ⟺
+ 每个 ε_a 分裂 monic，其前半部分在这里是 (A)； 因此充分且
+ Faithful ⟺ ε 是一个同构）是 Adjunction/FullFaithful.v 的 (#367)。 这里没有任何内容陈述或使用忠诚度特征； 那个
+ 这里所说的[Faithful]被反驳（[Erase_PointedSets_not_Faithful]）。 - 没有 CONVERSE：也没有表明 Uε 力的可逆性
+ 伴随是完整的，并且没有提供单独的示例。 - 没有声称 [unit_iso_of_full_monic] 的假设是独立的，
+ 也没有与单峰非外延单元组件附加的例子。 - 校正5的[Opposite_Adjunction]识别测量
+ 但未固定：此文件或探测器中没有 [Example] 记录它，
+ 因此稍后对 [Opposite_Adjunction] 的更改不会被捕获到这里。
+- 此文件的逆文件与原文件之间没有“≈”级别的比较
+ 在 [reflective_counit_iso] 内部：该引理由 [Qed] 封闭，所以
+ 它产生的同构的两条腿都不会减少，并且没有方程
+ 可以通过转换来命名任一腿的 VALUE（iso 法则
+ 他们自己当然仍然持有）。 [eq_refl] 形式被驳斥并且
+ 固定在 Test/ProbeFullness368.v 中； 未尝试使用“≈”形式，并且
+ 并不是声称不可能——所声称的是这个文件确实如此
+ 不交付它。 捐赠者没有被修改。 - 没有伴随物，其中任何一个伴随物都是满的，并且新的法律是
+ 被反驳，因此该定理被证明有可满足的假设并且
+ 不忠实的证人，但并未显示出排除指定的人
+ 附属物。
+- 没有任何内容被注册为 [Instance]； 这里的每个结果都是简单的
+ [Definition]/[Lemma]，因此类型类解析不受干扰。 - [StrictCat] 中没有声明，并且之间没有莱布尼茨等式
+ 手工构建的转换和胡须转换。 
 *)
 
 (*
-   本节说明同构相关定义、性质与动机。
+** A general splitting lemma
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   If f has a left inverse s and a right inverse t then s ≈ t, so f ∘ s ≈
+   id as well: a two-sided splitting is unique.  Stated over an arbitrary
+   category because both handednesses below need it, in C and in D.  This
+   is elementary and folklore, and it is IN TREE already: it is
+   Theory/Isomorphism.v's [comp_inverse_unique] with the arguments
+   reordered, which the one-line proof below cites (an earlier draft
+   mislocated that donor under Structure/Groupoid.v, which only uses it). 
+
+--------
+** 一般分裂引理
+
+ 如果 f 有左逆 s 和右逆 t，则 s ≈ t，因此 f ∘ s ≈
+ id 也是如此：两侧分割是唯一的。 任意陈述
+ 类别，因为下面的两种惯用手都需要它，在 C 和 D 中。 
+是基本的和民间传说，它已经在树上了：它是
+ Theory/Isomorphism.v 的 [comp_inverse_unique] 及其参数
+ 重新排序，下面的单行证明引用了这一点（早期的草案
+ 在 Structure/Groupoid.v 下错误定位了该捐赠者，该捐赠者仅使用它）。 
 *)
 
 Lemma split_inverses_agree {E : Category} {x y : E} (f : x ~> y)
@@ -68,12 +614,21 @@ Notation "'η' x" := (@unit C D F U A x)
 Notation "'ε' x" := (@counit C D F U A x)
   (at level 9, only parsing).
 
-(* ** (A) The split-morphism core *)
+(* ** (A) The split-morphism core  / ** (A) 分裂态射核心*)
 
 (*
-   本节说明伴随、函子相关定义、性质与动机。
+The left inverse of ε_a supplied by fullness of the right adjoint: the
+   chosen U-preimage of the unit at U a.  [Full]'s [prefmap] is a bare
+   section of [fmap] -- no functoriality and no respectfulness is demanded
+   of it (Theory/Functor.v) -- so nothing below may rewrite under it; all
+   that is used is [fmap_sur]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+ε_a 的左逆由右伴随的完备性提供：
+ 选择 U a 处单元的 U 原像。 [Full] 的 [prefmap] 是裸露的
+ [fmap] 部分——不要求任何功能性和尊重性
+ 它的（Theory/Functor.v）——所以下面的任何内容都不能在它下面重写； 全部
+ 使用的是[fmap_sur]。 
 *)
 
 Definition counit_inv_of_full_right (HU : Full U) (a : C) : a ~> F (U a) :=
@@ -83,9 +638,16 @@ Lemma counit_inv_of_full_right_fmap (HU : Full U) (a : C) :
   fmap[U] (counit_inv_of_full_right HU a) ≈ η (U a).
 Proof. exact (@fmap_sur C D U HU a (F (U a)) (η (U a))). Qed.
 
-(* Mac Lane §IV.3: G full makes every counit component a split mono.  The
+(*
+Mac Lane §IV.3: G full makes every counit component a split mono.  The
    argument is naturality of ε at s, whose U-image is η, followed by one
-   triangle identity. *)
+   triangle identity. 
+
+--------
+Mac Lane §IV.3：G full 使每个单元组件成为分离单声道。 的
+ 参数是 ε 在 s 处的自然性，其 U 图像为 η，后跟 1
+ 三角形恒等式。 
+*)
 
 Lemma counit_inv_of_full_right_comp (HU : Full U) (a : C) :
   counit_inv_of_full_right HU a ∘ ε a ≈ id.
@@ -100,8 +662,14 @@ Definition counit_split_mono_of_full_right (HU : Full U) (a : C) :
   {| section      := counit_inv_of_full_right HU a
    ; section_comp := counit_inv_of_full_right_comp HU a |}.
 
-(* The dual, 左伴随: chosen F-preimage counit at
- F x right inverse η_x, so η_x split epi. （已译） *)
+(*
+The dual, for the left adjoint: the chosen F-preimage of the counit at
+   F x is a right inverse for η_x, so η_x is a split epi. 
+
+--------
+对偶，对于左伴随：所选的单位 F 原像
+ F x 是 η_x 的右逆，因此 η_x 是分裂 Epi。 
+*)
 
 Definition unit_inv_of_full_left (HF : Full F) (x : D) : U (F x) ~> x :=
   @prefmap D C F HF (U (F x)) x (ε (F x)).
@@ -123,12 +691,19 @@ Definition unit_split_epi_of_full_left (HF : Full F) (x : D) :
   {| retract      := unit_inv_of_full_left HF x
    ; retract_comp := unit_inv_of_full_left_comp HF x |}.
 
-(* ** (B) Exercise 6, componentwise *)
+(* ** (B) Exercise 6, componentwise  / ** (B) 练习 6，按组件*)
 
 (*
-   本节说明伴随相关定义、性质与动机。
+The law the library did not have.  First proof, from fullness of the
+   RIGHT adjoint: η_{Ua} is literally the U-image of the left inverse of
+   ε_a, so the composite is the U-image of a composite that is already
+   known to be the identity. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+图书馆没有法律。 第一个证明，从完备性
+ 右伴随： η_{Ua} 实际上是左逆的 U 图像
+ ε_a，因此合成物是已经合成的合成物的 U 图像
+ 已知是身份。 
 *)
 
 Lemma unit_fmap_counit_of_full_right (HU : Full U) (a : C) :
@@ -141,9 +716,14 @@ Proof.
 Qed.
 
 (*
-   本节说明伴随相关定义、性质与动机。
+Second proof, from fullness of the LEFT adjoint, by a route sharing no
+   step with the first: η_{Ua} has a right inverse by (A) and a left
+   inverse by the triangle identity, so the two coincide. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+第二个证明，来自 LEFT 伴随的完备性，通过共享 no 的路径
+ 步骤与第一个： η_{Ua} 有一个右逆 (A) 和一个左逆
+ 按三角形恒等式逆，因此两者重合。 
 *)
 
 Lemma unit_fmap_counit_of_full_left (HF : Full F) (a : C) :
@@ -163,7 +743,7 @@ Definition unit_fmap_counit (H : Full F + Full U) (a : C) :
   | inr HU => unit_fmap_counit_of_full_right HU a
   end.
 
-(* Exercise 6, componentwise: Uε_a is invertible with inverse η_{Ua}. *)
+(* Exercise 6, componentwise: Uε_a is invertible with inverse η_{Ua}.  / 练习 6，按分量：Uε_a 可通过逆 η_{Ua} 可逆。*)
 
 Definition fmap_counit_IsIsomorphism_of_full (H : Full F + Full U) (a : C) :
   IsIsomorphism (fmap[U] (ε a)) :=
@@ -171,11 +751,18 @@ Definition fmap_counit_IsIsomorphism_of_full (H : Full F + Full U) (a : C) :
    ; is_right_inverse  := @fmap_counit_unit C D F U A a
    ; is_left_inverse   := unit_fmap_counit H a |}.
 
-(* ** (B) Exercise 6, other handedness, componentwise *)
+(* ** (B) Exercise 6, other handedness, componentwise  / ** (B) 练习 6，其他利手性，组件*)
 
-(* Here roles two hypotheses swap: cheap one [Full F],
- because F η_x then F-image 复合 already known be
- 恒等. （已译） *)
+(*
+Here the roles of the two hypotheses swap: the cheap one is [Full F],
+   because F η_x is then the F-image of a composite already known to be
+   the identity. 
+
+--------
+这里两个假设的角色互换：便宜的一个是 [Full F]，
+ 因为 F η_x 是已知复合材料的 F 图像
+ 身份。 
+*)
 
 Lemma fmap_unit_counit_of_full_left (HF : Full F) (x : D) :
   fmap[F] (η x) ∘ ε (F x) ≈ id.
@@ -210,9 +797,20 @@ Definition counit_at_F_IsIsomorphism_of_full (H : Full F + Full U) (x : D) :
    ; is_left_inverse   := fmap_unit_counit H x |}.
 
 (*
-   本节说明自然变换相关定义、性质与动机。
+** (B) Exercise 6 as natural transformations
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [Compose] is left-associative, so `U ◯ F ◯ U` denotes `(U ◯ F) ◯ U`,
+   and both transformations below are typed at that one parenthesization.
+   See correction 4 in the header for why the whiskered forms cannot be
+   used directly. 
+
+--------
+** (B) 练习 6 作为自然变换
+
+ [Compose] 是左关联的，因此 `U ◯ F ◯ U` 表示 `(U ◯ F) ◯ U`，
+ 下面的两种转换都是在该括号处键入的。 
+请参阅标题中的更正 4 了解为什么不能使用须状形式
+ 直接使用。 
 *)
 
 Program Definition whiskered_counit : U ◯ F ◯ U ⟹ U := {|
@@ -236,9 +834,16 @@ Next Obligation. now rewrite (adj_unit_naturality A (fmap[U] f)). Qed.
 Next Obligation. now rewrite (adj_unit_naturality A (fmap[U] f)). Qed.
 
 (*
-   本节说明 Fullness 相关定义、性质与动机。
+The headline of Exercise 6.  The hypothesis is a sum, which is the
+   faithful rendering of "either F or G full"; the two single-hypothesis
+   readings below are [inl]/[inr] applications, hence reachable by
+   conversion. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+练习 6 的标题。假设是一个和，即
+ 忠实地呈现“F 或 G full”； 两个单一假设
+ 下面的读数是 [inl]/[inr] 应用程序，因此可以通过
+ 转换。 
 *)
 
 Program Definition whiskered_counit_iso_of_full (H : Full F + Full U) :
@@ -263,7 +868,7 @@ Definition whiskered_counit_iso_of_full_right (HU : Full U) :
   @Isomorphism ([C, D]) (U ◯ F ◯ U) U :=
   whiskered_counit_iso_of_full (inr HU).
 
-(* The other handedness, in [D, C]. *)
+(* The other handedness, in [D, C].  / 另一种惯用手，在 [D, C] 中。*)
 
 Program Definition whiskered_unit_F : F ◯ U ◯ F ⟹ F := {|
   transform := fun x => ε (F x)
@@ -308,9 +913,18 @@ Definition whiskered_unit_iso_of_full_right (HU : Full U) :
   whiskered_unit_iso_of_full (inr HU).
 
 (*
-   本节说明伴随相关定义、性质与动机。
+** (C) Exercise 3, with the RIGHT adjoint full
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The engine.  Under [Full U] the arrow Uε_{F x} is invertible by (B),
+   and both η_{U(F x)} and UF η_x are its inverse on the left, so the two
+   agree.  Only associativity and the two facts are used. 
+
+--------
+** (C) 练习 3，右伴随满
+
+ 发动机。 在 [Full U] 下，箭头 Uε_{F x} 可通过 (B) 可逆，
+ 且 η_{U(F x)} 和 UF η_x 都是其左侧的逆，因此两者
+ 同意。 仅使用结合性和两个事实。 
 *)
 
 Lemma unit_at_UF_of_full_right (HU : Full U) (x : D) :
@@ -328,9 +942,16 @@ Proof.
 Qed.
 
 (*
-   本节说明伴随相关定义、性质与动机。
+Exercise 3 read with G the right adjoint: U full, every unit component
+   monic, conclusion every unit component epi.  The monic hypothesis is used
+   at the CODOMAIN z of the two test arrows, never at x -- which is why it
+   must be assumed for every object and not merely at x. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+练习 3 用 G 读出右伴随：U full，每个单位分量
+ monic，总结每个单元组件 Epi。 使用一元假设
+ 在两个测试箭头的 CODOMAIN z 处，而不是在 x 处——这就是为什么它
+ 必须对每个对象进行假设，而不仅仅是在 x 处。 
 *)
 
 Lemma unit_epic_of_full_monic (HU : Full U)
@@ -344,16 +965,30 @@ Proof.
   now rewrite X.
 Qed.
 
-(* ** (C) Exercise 3, LEFT adjoint full (the literal print)
+(*
+** (C) Exercise 3, with the LEFT adjoint full (the literal print)
 
- With LEFT adjoint full conclusion needs no monic 假设 at
- all, η_x being split epi outright. （已译） *)
+   With the LEFT adjoint full the conclusion needs no monic hypothesis at
+   all, η_x being a split epi outright. 
+
+--------
+** (C) 练习 3，LEFT 伴随词完整（文字打印）
+
+ 当 LEFT 伴随完全时，结论不需要一元假设
+ 总之， η_x 是一个完全分裂的 Epi。 
+*)
 
 Lemma unit_epic_of_full_left (HF : Full F) (x : D) : Epic (η x).
 Proof. now apply retractions_are_epic, unit_split_epi_of_full_left. Qed.
 
-(* ... monic 假设 then upgrades conclusion epi to
- invertible, sharpest statement reading supports. （已译） *)
+(*
+... and the monic hypothesis then upgrades the conclusion from epi to
+   invertible, which is the sharpest statement that reading supports. 
+
+--------
+...然后单子假说将结论从 epi 升级为
+ 可逆，这是阅读所支持的最尖锐的说法。 
+*)
 
 Definition unit_iso_of_full_monic (HF : Full F)
            (Hm : ∀ y : D, Monic (η y)) (x : D) : IsIsomorphism (η x).
@@ -367,11 +1002,20 @@ Proof.
     now rewrite id_left, id_right.
 Defined.
 
-(* ** A by-product
+(*
+** A by-product
 
- Under fullness either adjoint unit invertible at every 对象
- image U -- (B) read backwards, inverse being
- Uε_a. （已译） *)
+   Under fullness of either adjoint the unit is invertible at every object
+   in the image of U -- which is (B) read backwards, the inverse being
+   Uε_a. 
+
+--------
+** 副产品
+
+ 在任一个伴随物都满足的情况下，单位在每个对象上都是可逆的
+ 在 U 的图像中——即 (B) 向后读，其逆是
+ Uε_a。 
+*)
 
 Definition unit_at_U_IsIsomorphism_of_full (H : Full F + Full U) (a : C) :
   IsIsomorphism (η (U a)) :=
@@ -381,11 +1025,13 @@ Definition unit_at_U_IsIsomorphism_of_full (H : Full F + Full U) (a : C) :
 
 End Fullness.
 
-(*
-   本节说明 Fullness 相关定义、性质与动机。
+(* ** Componentwise identification with the whiskered transformations
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+   Recorded at Leibniz equality, which is the strongest grade available:
+   the record-level identifications do not typecheck (correction 4), and
+   are refuted in Test/ProbeFullness368.v.  These two [Example]s, and the
+   two inverse readbacks in section (D) below, are the file's only four
+   uses of [=] on morphisms, and all four are deliberately strict. *)
 
 Require Import Category.Adjunction.Natural.Transformation.
 Require Import Category.Adjunction.Natural.Transformation.Universal.
@@ -403,26 +1049,67 @@ Example whiskered_unit_is_whisker_right
 Proof. reflexivity. Qed.
 
 (*
-   本节说明函子相关定义、性质与动机。
+** (D) The two in-tree instances the issue asks for
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   From here on [Construction/Subcategory.v] is in scope, and it exports
+   its OWN [Full] (a predicate on a [Subcategory], first argument a
+   [Category]).  That name therefore shadows Theory/Functor.v's from this
+   point down; the mid-file [Require] idiom of Functor/Diagonal.v keeps
+   the development above untouched, and the one place the functor notion
+   is still needed is spelled [Functor.Full] in full. 
+
+--------
+** (D) 问题要求的两个树内实例
+
+ 从这里开始，[Construction/Subcategory.v] 就在范围内，并且它导出
+ 它自己的 [Full]（[Subcategory] 上的谓词，第一个参数 a
+ [Category]）。 因此，该名称掩盖了 Theory/Functor.v 的含义
+ 点向下； Functor/Diagonal.v 的中间文件 [Require] 习惯用法保留
+ 上面的发展未受影响，并且一处函子概念
+ 仍然需要完整拼写 [Functor.Full]。 
 *)
 
 Require Import Category.Construction.Subcategory.
 Require Import Category.Construction.Reflective.
 
 (*
-   本节说明伴随、hom相关定义、性质与动机。
+[Adjunction.Natural.Transformation] is in scope from the [Example]s
+   above and exports its own [unit]/[counit] (fields of the unit-counit
+   class), so the hom-set-form [unit]/[counit] must be named through this
+   alias from here down.  The alias is [HomSetAdj] rather than the
+   obvious [Adj] because [Instance/Adj.v] already declares a constant
+   [Adj], and a module of that name in scope beside it is a collision
+   waiting to mis-resolve. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[Adjunction.Natural.Transformation] 属于 [Example] 的范围
+ 上面并导出自己的 [unit]/[counit] （unit-counit 的字段
+ 类），因此 hom-set-form [unit]/[counit] 必须通过此命名
+ 别名从这里开始。 别名是 [HomSetAdj] 而不是
+ 明显的 [Adj] 因为 [Instance/Adj.v] 已经声明了一个常量
+ [Adj]，与它旁边范围内的同名模块发生冲突
+ 等待错误解决。 
 *)
 
 Module HomSetAdj := Category.Theory.Adjunction.
 
 (*
-   本节说明伴随相关定义、性质与动机。
+A full reflective subcategory: the inclusion is full, so the RIGHT
+   adjoint is full and the [inr] branch applies.  [Construction/
+   Reflective.v]'s [reflective_counit_iso] concludes something STRONGER --
+   that the counit itself is invertible, not merely its U-image -- from
+   something stronger, since that inclusion is faithful as well as full.
+   What is recorded here is that the weaker conclusion is an instance of
+   this file's theorem: the passage is a [:=] with no tactic. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+完整的反射子类别：包含完整，所以正确
+ 伴随已满并且 [inr] 分支适用。 [建筑/
+ Reflective.v] 的 [reflective_counit_iso] 得出了更强大的结论——
+ 国家本身是可逆的，而不仅仅是它的 U 形像——来自
+ 更强大的东西，因为这种包容是忠实且完整的。 
+这里记录的是较弱的结论是一个例子
+ 该文件的定理：该段落是一个没有策略的 [:=]。 
 *)
 
 Definition reflective_fmap_counit_IsIsomorphism {C : Category}
@@ -435,7 +1122,7 @@ Definition reflective_fmap_counit_IsIsomorphism {C : Category}
     (reflective_adj R)
     (inr (Full_Implies_Full_Functor C S (reflective_full R))) x.
 
-(* 相关说明。 （已译） *)
+(* The inverse this file produces is the unit at [Incl x], on the nose.  / 该文件生成的逆值是鼻子上 [Incl x] 处的单位。*)
 
 Example reflective_fmap_counit_inverse {C : Category}
   {S : Subcategory C} (R : Reflective S) (x : Sub C S) :
@@ -446,9 +1133,16 @@ Example reflective_fmap_counit_inverse {C : Category}
   := eq_refl.
 
 (*
-   本节说明伴随、等价相关定义、性质与动机。
+An adjoint equivalence: the LEFT adjoint is the one the tree proves
+   full ([Equivalence_Full]), so the [inl] branch is taken -- no in-tree
+   [Full] of the quasi-inverse was found, so [inr] is not exercised --
+   and the instance is again a [:=]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+伴随等价：左伴随是树证明的伴随
+ full ([Equivalence_Full])，因此采用 [inl] 分支——没有树内
+ 找到了准逆的 [Full]，因此 [inr] 没有被执行——
+ 该实例又是 [:=]。 
 *)
 
 Require Import Category.Theory.Equivalence.
@@ -470,9 +1164,16 @@ Example equiv_fmap_counit_inverse {C D : Category} {F : C ⟶ D}
         (@quasi_inverse C D F E d)
   := eq_refl.
 
-(* The donor's own counit 同构 about counit itself; its
- inverse, pushed through [quasi_inverse], agrees file's up to
- `≈` -- both inverse same arrow. （已译） *)
+(*
+The donor's own counit isomorphism is about the counit itself; its
+   inverse, pushed through [quasi_inverse], agrees with this file's up to
+   `≈` -- both are inverse to the same arrow. 
+
+--------
+捐赠者自己的计数同构是关于计数本身的； 它的
+ 逆，通过 [quasi_inverse] 推送，与此文件的最多一致
+ `≈`——两者都与同一个箭头相反。 
+*)
 
 Lemma equiv_fmap_counit_inverse_agrees {C D : Category} {F : C ⟶ D}
   (E : @EquivalenceOfCategories C D F) (d : D) :
@@ -498,9 +1199,54 @@ Proof.
 Qed.
 
 (*
-   本节说明伴随、函子、hom相关定义、性质与动机。
+** (E) Non-vacuity, and what the hypothesis does NOT force
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The two instances of (D) both have a right adjoint that is full AND
+   faithful, so neither separates this file's hypothesis from the
+   stronger one under which [reflective_counit_iso] already worked.  The
+   witness below does separate them, and it is generic: whenever C has a
+   ZERO object, the erasing functor [Erase C : C ⟶ 1] is FULL -- every
+   hom-set of C is inhabited, by the zero morphism -- and it acquires a
+   left adjoint, the constant functor at the initial object
+   ([Initial_Erase_Adjunction], consumed here, not rebuilt).  Argued, not
+   proved here: it is not faithful as soon as C has two distinct parallel
+   arrows, and its counit components are invertible only at objects
+   isomorphic to the zero object -- what IS proved is the [PointedSets]
+   instance below -- while their U-images are, this file's theorem
+   applying.
+
+   The witness is DEGENERATE in one specific and disclosed respect: the
+   target category of U is 1, where every arrow is invertible, so the
+   CONCLUSION of Exercise 6 is true there for a reason that has nothing to
+   do with the theorem.  What the witness genuinely exhibits is that the
+   HYPOTHESIS [Full U] is satisfiable by a functor that is not faithful
+   and whose counit is not invertible, which is exactly the gap between
+   this file and Construction/Reflective.v. 
+
+--------
+** (E) 非空性，以及假设不强制的内容
+
+(D) 的两个实例都有一个满 AND 的右伴随
+ 忠实的，所以都没有将该文件的假设与
+ 更强大的一种，[reflective_counit_iso] 已经在其中工作了。 的
+ 下面的见证确实将它们分开，并且它是通用的：每当 C 有一个
+ 零对象，擦除函子 [Erase C : C ⟶ 1] 已满 - 每个
+ C 的 hom 集被零态射所占据——并且它获得了
+ 左伴随，初始对象处的常函子
+ （[Initial_Erase_Adjunction]，此处消耗，未重建）。 争论过，没有
+ 此处证明：只要 C 有两个不同的平行，它就不忠实
+ 箭头及其单位分量仅在对象处可逆
+ 与零物体同构——所证明的是[PointedSets]
+ 下面的实例——虽然他们的 U 图像是，但该文件的定理
+ 申请。
+
+证人在一个特定且公开的方面是堕落的：
+ U 的目标类别为 1，其中每个箭头都是可逆的，因此
+ 练习 6 的结论是正确的，原因与此无关
+ 与定理做。 证人真正展示的是
+ 假设 [Full U] 可以被不忠实的函子满足
+ 其单位不可逆，这正是之间的差距
+ 该文件和 Construction/Reflective.v。 
 *)
 
 Require Import Category.Structure.Terminal.
@@ -535,8 +1281,14 @@ Definition zero_erase_fmap_counit_IsIsomorphism {C : Category}
     (Erase C) (zero_erase_adjunction Z)
     (inr (Full_Erase_of_ZeroObject Z)) a.
 
-(* [PointedSets] has zero 对象, so above applies it; there
- 右伴随 provably NOT faithful. （已译） *)
+(*
+[PointedSets] has a zero object, so the above applies to it; and there
+   the right adjoint is provably NOT faithful. 
+
+--------
+[PointedSets] 有一个零对象，因此上述内容适用于它； 在那里
+ 右伴随可证明是不忠实的。 
+*)
 
 Lemma Erase_PointedSets_not_Faithful :
   Faithful (Erase PointedSets) → False.
@@ -551,7 +1303,14 @@ Proof.
   contradiction.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+And its counit at the two-point pointed set is not invertible, though
+   its [Erase]-image is: the [Erase]-image lives in 1. 
+
+--------
+但它在两点指向集上的单位是不可逆的
+ 它的 [Erase]-image 是： [Erase]-image 位于 1 中。 
+*)
 
 Lemma pointed_counit_not_IsIsomorphism :
   IsIsomorphism

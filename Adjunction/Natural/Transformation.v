@@ -5,15 +5,50 @@ Require Import Category.Theory.Natural.Transformation.
 
 Generalizable All Variables.
 
-(** The counit/unit (natural-transformation) characterization of an
-    adjunction. *)
+(**
+The counit/unit (natural-transformation) characterization of an
+    adjunction. 
+
+--------
+的单位/单位（自然转化）表征
+ 附属物。 
+*)
 
 (*
+nLab: https://ncatlab.org/nlab/show/adjoint+functor
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-   本文件给出自然变换变体。
+   An adjunction F ⊣ U between F : D ⟶ C (the left adjoint) and U : C ⟶ D
+   (the right adjoint) is given here in counit/unit form: a unit
+   η : Id ⟹ U ◯ F and a counit ε : F ◯ U ⟹ Id satisfying the two triangle
+   (zig-zag) identities. Componentwise these are
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+     ε (F X) ∘ fmap[F] (η X) ≈ id[F X]   (counit_fmap_unit), i.e. εF ∘ Fη = 1_F,
+     fmap[U] (ε X) ∘ η (U X) ≈ id[U X]   (fmap_counit_unit), i.e. Uε ∘ ηU = 1_U.
+
+   This is the data of an adjunction with which the hom-set form
+   [Category.Adjunction.Hom] and the universal-morphism form
+   [Category.Theory.Adjunction] are shown equivalent: the transposes of the
+   identities recover η and ε, and conversely η, ε with these identities
+   reconstruct the natural hom-set isomorphism. 
+
+--------
+nLab：https://ncatlab.org/nlab/show/adjoint+functor
+ 维基百科：https://en.wikipedia.org/wiki/Adjoint_functors
+
+ F : D ⟶ C（左伴随）和 U : C ⟶ D 之间的附加 F ⊣ U
+ （右伴随）在这里以单位/单位形式给出：一个单位
+ η : Id ⟹ U ◯ F 和一个满足两个三角形的单位 ε : F ◯ U ⟹ Id
+ （之字形）身份。 按组件来说，这些是
+
+ ε (F X) ∘ fmap[F] (η X) ≈ id[F X] (counit_fmap_unit)，即 εF ∘ Fη = 1_F，
+ fmap[U] (ε X) ∘ η (U X) ≈ id[U X] (fmap_counit_unit)，即 Uε ∘ ηU = 1_U。 
+
+这是 hom-set 形式的附加词的数据
+ [Category.Adjunction.Hom] 和全态射形式
+ [Category.Theory.Adjunction] 显示为等价：
+ 恒等式恢复 η 和 ε，反之，用这些恒等式恢复 η, ε
+ 重建自然的 hom-set 同构。 
 *)
 
 Section AdjunctionTransform.

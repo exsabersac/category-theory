@@ -20,12 +20,47 @@ Require Import Category.Instance.One.
 
 Generalizable All Variables.
 
-(* * * A 假设-free instantiation created limits （已译） *)
+(** * A hypothesis-free instantiation of created limits  / * 所创建极限的无假设实例化*)
 
 (*
-   本文件给出例子。
+Monad/Eilenberg/Moore/Limit.v proves that [EM_Forget T] strictly creates
+   every limit for every monad T on every category.  That is a conditional
+   statement about an arbitrary monad; this file discharges every
+   hypothesis at once, over objects the library already builds: the
+   identity monad on [Coq] (Monad/Strong.v), the empty diagram
+   ([From_0], Instance/Zero.v), and the terminal object of [Coq]
+   downstairs (Instance/Coq.v).  What comes out is the created terminal
+   algebra, and its carrier is the apex of the limit downstairs by
+   [eq_refl] — creation on the nose.  (Nothing here reduces: the equality
+   holds by projection, not by evaluation, for the reason in the next
+   paragraph.)
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Two small points of usage.  [Terminal_Limit]
+   (Structure/Limit/Terminal.v) is an [↔], which in this library is
+   [iffT] (Lib/Foundation.v), so its halves are taken with [fst] and [snd]
+   rather than [proj1]/[proj2].  And it is [Qed]-opaque, so the strictness
+   equality below is stated against [vertex_obj[Lbelow]] — the apex of the
+   limit actually produced — rather than against [unit]. 
+
+--------
+Monad/Eilenberg/Moore/Limit.v 证明 [EM_Forget T] 严格创建
+ 每个类别上每个单子 T 的每个限制。 那是有条件的
+ 关于任意单子的声明； 该文件释放每个
+ 立即对库已经构建的对象进行假设：
+ [Coq] (Monad/Strong.v) 上的恒等 monad，空图
+ （[From_0]，Instance/Zero.v），以及[Coq]的终端对象
+ 楼下（实例/Coq.v）。 出来的是创建的终端
+ 代数，其载体是楼下极限的顶点
+ [eq_refl] — 鼻子上的创作。 （这里没有减少：平等
+ 通过预测而不是通过评估成立，原因如下
+ 段。）
+
+两个小使用点。 保护5X
+ (Structure/Limit/Terminal.v) 是一个 [↔]，在这个库中是
+ [iffT] (Lib/Foundation.v)，因此它的一半与 [fst] 和 [snd] 一起使用
+ 而不是 [proj1]/[proj2]。 而且它是[Qed]-不透明的，所以严格性
+ 下面的等式针对 [vertex_obj[Lbelow]] 进行陈述 - 的顶点
+ 实际产生的限制——而不是针对 [unit]。 
 *)
 
 Definition IdC : Coq ⟶ Coq := Id[Coq].
@@ -33,24 +68,30 @@ Definition IdC : Coq ⟶ Coq := Id[Coq].
 Definition Kempty : 0 ⟶ @EilenbergMoore Coq IdC (@Id_Monad Coq) :=
   From_0 _.
 
-(* The 终对象 [Coq], read limit empty diagram. （已译） *)
+(* The terminal object of [Coq], read as the limit of the empty diagram.  / [Coq] 的终端对象，读作空图的界限。*)
 
 Definition Lbelow : Limit (EM_Forget IdC ◯ Kempty) :=
   snd (Terminal_Limit Coq (EM_Forget IdC ◯ Kempty)) Coq_Terminal.
 
-(* 相关说明。 （已译） *)
+(* The created lift, and the fact that it is limiting.  / 所产生的升力，以及它是有限的事实。*)
 
 Definition created_terminal_algebra :
   IsALimit Kempty (em_apex IdC Kempty Lbelow) :=
   em_created IdC Kempty Lbelow.
 
-(* The carrier created algebra apex limit downstairs,
- definitionally: [EM_Forget]'s 对象 map first projection. （已译） *)
+(*
+The carrier of the created algebra is the apex of the limit downstairs,
+   definitionally: [EM_Forget]'s object map is the first projection. 
+
+--------
+创建的代数的载体是楼下极限的顶点，
+ 定义上：[EM_Forget] 的对象图是第一个投影。 
+*)
 
 Definition created_carrier :
   `1 (em_apex IdC Kempty Lbelow) = vertex_obj[Lbelow] := eq_refl.
 
-(* Terminality upstairs, read back through the empty-diagram theorem. *)
+(* Terminality upstairs, read back through the empty-diagram theorem.  / 楼上的终结，回读一下空图定理。*)
 
 Definition created_terminal :
   @Terminal (@EilenbergMoore Coq IdC (@Id_Monad Coq)) :=
@@ -58,13 +99,77 @@ Definition created_terminal :
     {| limit_cone := em_cone IdC Kempty Lbelow
      ; ump_limits := @ump_limit _ _ _ _ (em_created IdC Kempty Lbelow) |}.
 
-(* 相关说明。 （已译） *)
+(** ** Mac Lane's "exactly one pair", on the nose: refuted  / ** 麦克莱恩的“恰好一对”，在鼻子上：被驳斥*)
 
-(*
-   本节说明单子、（余）极限、Eilenberg–Moore相关定义、性质与动机。
+(* Issue #467.  Mac Lane's Definition of creation (§V.1, p. 112) asks in
+   clause (i) that to every limiting cone τ: x →· VF there be EXACTLY ONE
+   pair ⟨a, σ⟩ with Va = x and Vσ = τ.  Monad/Eilenberg/Moore/Limit.v
+   proves that clause for V = [EM_Forget T] at [≈] ([em_alg_unique],
+   [em_lift_alg_unique]).  This section proves, without axioms, that its
+   on-the-nose form is false for [EM_Forget], so the [≈]-form is the
+   faithful reading in this setting rather than a weakening of it.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+   The counterexample.  [Bool2] is [bool] under the indiscrete relation
+   (every two points are ≈), a setoid that is terminal in [Sets].  For the
+   identity monad on [Sets] ([IdSM]) every endomap of [bool] is then a
+   structure map ([alg_of]), both algebra laws holding at an indiscrete
+   codomain.
+   [A_id] and [A_true] are [Bool2] with the structure maps [fun b => b]
+   and [fun _ => true], and [A_id_ne_A_true] shows that they are
+   different objects of the Eilenberg-Moore category; its proof carries
+   the property "the structure map is pointwise the identity" along the
+   equation by a [match], with no Eqdep and no UIP.  Over the one-object
+   shape [1], [K1] is the diagram at [A_id] and [N1] the cone downstairs
+   with apex [Bool2] and leg [id]; [N1_limiting] shows it limiting.  Each
+   of [A_id] and [A_true] carries a cone over [K1] whose one leg is [id]
+   as a function ([leg_id_from]), and each lies over [N1] with the apex
+   equation [eq_refl] and its leg EQUAL to [N1]'s ([lift1_at]); yet their
+   apexes differ, while [em_lift_alg_unique_Sets], [em_lift_alg_unique]
+   at the example, makes each isomorphic to the created apex over the
+   transport.  [em_lift_not_unique_leibniz] is the uniqueness half of
+   clause (i) for [K1], with [=] on the apex and on every leg and τ
+   ranging over the limiting cones, refuted at τ = [N1].
+   [em_limiting_lift_not_unique_leibniz] refutes it again among lifts
+   that are themselves limiting, as both are ([lift1_limiting]: every two
+   maps into [Bool2] are ≈), so restricting clause (i) by clause (ii)
+   does not rescue it.
+
+   This is the setoid encoding, not Mac Lane.  For him, over any X, a
+   T-algebra is a pair ⟨x, h⟩ with h an arrow of X (p. 140), arrows are
+   compared by equality, and the universal property of the limit
+   determines h, so two lifts agree as pairs.  Here h is a
+   setoid morphism that the universal property determines only up to the
+   carrier's [≈], and on [Bool2] that relation identifies every two maps.
+   The statements' [=] between morphisms is the one exception in this
+   file to the library's rule of comparing morphisms by [≈]: it is the
+   thing refuted.  Test/ProbeEMCreates467.v restates both refutations
+   against these constants.
+
+   Universes, read off [About]: every constant binds [o] and [so], the
+   arrows and the objects of [Sets@{o so}] ([o] is also the carriers'
+   level; [Bool2] binds its two setoid levels); those that mention the
+   shape [1] add [j], its objects; and those that say "limiting" add [l]
+   and [l0], the levels of [IsLimitCone].  The only strict bound is
+   [o < so], from [Sets]; the stdlib caps are inherited, [compose] and
+   [ID] from Instance/Sets.v, [eq_ind], [eq_ind_r] and
+   [Logic_lemmas.equality] from [_1] (Instance/One.v), and the sigma
+   projections' from [EilenbergMoore].
+
+   Three constructions are written the long way, each for a measured
+   reason.  The monad is [IdSM], built here with every field given,
+   rather than the library's [Id_Monad] (Monad/Strong.v, a [Program
+   Instance] local to its section, the monad of the Coq example above):
+   [Id_Monad]'s universe list has three levels on Rocq 9.1.1 (one of
+   them bounded only from below), five on Coq 8.20.1 and seventeen on
+   8.19.2, so that no explicit instance of it compiles on all three,
+   and, left implicit under these binders, Coq 8.20.1 reports one of its
+   levels unbound ("Universe … is unbound" at [EMS]); [IdSM] also
+   carries none of [Id_Monad]'s [prod_rect] and [projections] caps.  The
+   functor [K1] is built with every field given, because [refine] with
+   its respectfulness field left open resolves that field by an instance
+   at [Set] and collapses [o] to [Set].  And [A_id_ne_A_true] reads its
+   final equation at [bool] before [discriminate], which otherwise adds
+   an [eq_ind] cap of its own. *)
 
 Definition Bool2@{o p} : SetoidObject@{o p} :=
   {| carrier := bool
@@ -148,9 +253,20 @@ Definition lift1_at@{j o so} (a : EMS@{o so})
     p (fun _ => Hleg).
 
 (*
-   本节说明单子、同构相关定义、性质与动机。
+The [≈]-form holds here, as it does for every monad: whatever its
+   structure map [f], the lift at [Bool2] is isomorphic in [EMS] to the
+   apex created from [N1], by an isomorphism lying over the transport,
+   which is [eq_refl] here, so that the underlying map is [id] on the
+   nose (Test/ProbeEMCreates467.v).  This is [em_lift_alg_unique] at the
+   example, and the theorems below refute its [=]-form. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[≈] 形式在这里成立，就像它对每个单子一样：无论它是什么
+ 结构图 [f]，[Bool2] 处的升力与 [EMS] 中的升力同构
+ 由 [N1] 创建的顶点，通过传输上的同构，
+ 这里是 [eq_refl]，因此底层映射是 [id]
+ 鼻子（测试/ProbeEMCreates467.v）。 这是 [em_lift_alg_unique]，位于
+ 例如，下面的定理反驳了它的 [=] 形式。 
 *)
 
 Definition em_lift_alg_unique_Sets@{l l0 j o so} (f : bool → bool) :=

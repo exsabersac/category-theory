@@ -8,22 +8,68 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* * * Identity 复合 hom-set 伴随 （已译） *)
+(** * Identity and composition of hom-set adjunctions  / * 同组附加词的同一性和组成*)
 
-(*
+(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-   本文件给出复合相关构造（伴随/函子/单子等的复合）。
+   Adjunctions compose. Given F ⊣ U with F : D ⟶ C (the convention of
+   Theory/Adjunction.v: F is the left adjoint) and F' ⊣ U' with F' : C ⟶ E,
+   the composite functors are again adjoint: F' ◯ F ⊣ U ◯ U'. In the hom-set
+   presentation this is literally composition of the two adjunction
+   isomorphisms in Sets,
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+       (F' (F x) ~{E}~> y)  ≊  (F x ~{C}~> U' y)  ≊  (x ~{D}~> U (U' y)),
 
-(** ** The identity adjunction *)
+   pasted by [iso_compose]; each naturality field of the composite is the
+   corresponding field of one constituent placed under the transpose of the
+   other (the transposes are setoid morphisms, so they respect ≈ — this is
+   [to_adj_respects]/[from_adj_respects]).
+
+   The identity functor is self-adjoint via the identity isomorphism of each
+   hom-setoid, giving Id ⊣ Id, the unit for this composition. Alongside the
+   two constructions we record the definitional characterization of the
+   composite's transposes and the standard whiskering formulas for its unit
+   and counit:
+
+       η″ ≈ fmap[U] η′ ∘ η          (unit of the composite)
+       ε″ ≈ ε′ ∘ fmap[F'] ε         (counit of the composite)
+
+   Both nLab (adjoint functor, "basic properties") and Wikipedia
+   ("composition" under properties of adjoints) state this composition law.
+
+   Relation to Instance/Adjoints.v: that pre-existing module already
+   carries both witnesses — [adj_id], an exported instance, and
+   [adj_comp] with its ⊚ notation — as the identity and the composition
+   of its category [Adjoints] of categories and adjunctions.
+   [Adjunction_Id] below therefore reuses [adj_id] rather than re-deriving
+   it, and the corollaries [Adjunction_Compose_adj_comp_to]/[_from] record
+   that [Adjunction_Compose A A'] and [adj_comp F' U' F U A' A] — which
+   have the identical type (F' ◯ F) ⊣ (U ◯ U') — agree definitionally on
+   both transposes.  Integration decision (for the maintainer): pick a
+   single canonical home for adjunction composition — either refactor
+   Instance/Adjoints.v's [adj_comp] to consume [Adjunction_Compose], or
+   derive this file's composite from [adj_comp] — before later phases
+   standardize on one of the two names; until then the agreement
+   corollaries keep the two APIs interchangeable. *)
+
+(** ** The identity adjunction  / ** 身份附加*)
 
 (*
-   本节说明伴随、hom、同构相关定义、性质与动机。
+Id[C] ⊣ Id[C]: the transposing isomorphism is the identity isomorphism
+   on each hom-setoid, both transposes are the identity function, and all
+   four naturality squares hold by reflexivity.  The witness is [adj_id]
+   from Instance/Adjoints.v — reused, not re-derived, so the corollaries
+   below speak about the very witness that typeclass resolution produces
+   for Id ⊣ Id goals (adj_id is an exported instance there). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Id[C] ⊣ Id[C]：转置同构是恒同同构
+ 在每个 hom-setoid 上，两个转置都是恒等函数，并且所有
+ 四个自然性方格通过自反性成立。 见证人是[adj_id]
+ 来自 Instance/Adjoints.v — 重用，而不是重新派生，因此推论
+ 下面谈谈类型类解析产生的见证
+ 对于 Id ⊣ Id 目标（adj_id 是那里的导出实例）。 
 *)
 
 Definition Adjunction_Id {C : Category} : Id[C] ⊣ Id[C] := adj_id.
@@ -37,9 +83,14 @@ Corollary Adjunction_Id_counit {C : Category} {x : C} :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明伴随相关定义、性质与动机。
+The same two equations, stated syntactically about [adj_id] itself, for
+   proof scripts whose goals mention the resolved instance rather than the
+   [Adjunction_Id] alias (the two are definitionally equal). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+相同的两个方程，从语法上讲关于 [adj_id] 本身，对于
+ 其目标提及已解析实例而不是实例的证明脚本
+ [Adjunction_Id] 别名（两者定义相同）。 
 *)
 
 Corollary adj_id_unit {C : Category} {x : C} :
@@ -50,7 +101,7 @@ Corollary adj_id_counit {C : Category} {x : C} :
   @counit _ _ _ _ (@adj_id C) x ≈ id[x].
 Proof. reflexivity. Qed.
 
-(** ** Composition of adjunctions *)
+(** ** Composition of adjunctions  / ** 附加语的构成*)
 
 Section AdjunctionCompose.
 
@@ -64,9 +115,16 @@ Context {U' : E ⟶ C}.
 Context (A : F ⊣ U).
 Context (A' : F' ⊣ U').
 
-(* The 复合 transposing 同构: paste two hom-setoid
- isomorphisms Sets. Its [to] transposes through A' then A; its
- [from] transposes back through A then A'. （已译） *)
+(*
+The composite transposing isomorphism: paste the two hom-setoid
+   isomorphisms in Sets. Its [to] transposes through A' and then A; its
+   [from] transposes back through A and then A'. 
+
+--------
+复合转置同构：粘贴两个hom-setoid
+ 集合中的同构。 它的 [to] 通过 A' 转置，然后是 A； 它的
+ [from] 通过 A 然后 A' 转回。 
+*)
 
 Definition adj_compose_iso (x : D) (y : E) :
   @Isomorphism Sets
@@ -74,8 +132,14 @@ Definition adj_compose_iso (x : D) (y : E) :
     {| carrier := @hom D x (U (U' y)) ; is_setoid := @homset D x (U (U' y)) |} :=
   iso_compose (@adj _ _ _ _ A x (U' y)) (@adj _ _ _ _ A' (F x) y).
 
-(* Naturality 复合's forward transpose source 论元:
- inner step A''s [to_adj_nat_l], outer step A's. （已译） *)
+(*
+Naturality of the composite's forward transpose in the source argument:
+   inner step by A''s [to_adj_nat_l], outer step by A's. 
+
+--------
+源参数中复合材料前向转置的自然性：
+ 内部步骤由 A 的 [to_adj_nat_l] 执行，外部步骤由 A 的执行。 
+*)
 Lemma adj_compose_to_nat_l (x y : D) (z : E)
       (f : F' (F y) ~> z) (g : x ~> y) :
   to (adj_compose_iso x z) (f ∘ fmap[F'] (fmap[F] g))
@@ -89,8 +153,14 @@ Proof.
   - apply to_adj_nat_l.
 Qed.
 
-(* Naturality 复合's forward transpose target 论元:
- inner step A''s [to_adj_nat_r], outer step A's. （已译） *)
+(*
+Naturality of the composite's forward transpose in the target argument:
+   inner step by A''s [to_adj_nat_r], outer step by A's. 
+
+--------
+目标参数中复合材料前向转置的自然性：
+ 内部步骤由 A 的 [to_adj_nat_r] 执行，外部步骤由 A 的执行。 
+*)
 Lemma adj_compose_to_nat_r (x : D) (y z : E)
       (f : y ~> z) (g : F' (F x) ~> y) :
   to (adj_compose_iso x z) (f ∘ g)
@@ -104,8 +174,14 @@ Proof.
   - apply to_adj_nat_r.
 Qed.
 
-(* The two inverse-transpose fields, dually: inner step by A's law under
-   A''s inverse transpose, outer step by A''s law. *)
+(*
+The two inverse-transpose fields, dually: inner step by A's law under
+   A''s inverse transpose, outer step by A''s law. 
+
+--------
+两个反转置场，对偶：根据 A 定律的内步
+ A' 的逆转置，按 A 定律进行外步。 
+*)
 Lemma adj_compose_from_nat_l (x y : D) (z : E)
       (f : y ~> U (U' z)) (g : x ~> y) :
   from (adj_compose_iso x z) (f ∘ g)
@@ -133,9 +209,14 @@ Proof.
 Qed.
 
 (*
-   本节说明伴随相关定义、性质与动机。
+Assemble the composite adjunction. All four naturality fields are
+   populated explicitly (the standalone-lemma-then-record pattern), so the
+   dual-side laws are available without re-derivation. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+组装复合附件。 所有四个自然场都是
+ 显式填充（独立引理然后记录模式），因此
+ 无需重新推导即可获得双边定律。 
 *)
 
 Definition Adjunction_Compose : (F' ◯ F) ⊣ (U ◯ U') :=
@@ -146,9 +227,16 @@ Definition Adjunction_Compose : (F' ◯ F) ⊣ (U ◯ U') :=
     adj_compose_from_nat_l
     adj_compose_from_nat_r.
 
-(* The transposes 复合 pasted transposes, definitionally:
- forward transpose goes through A' then A, inverse transpose
- back through A then A'. （已译） *)
+(*
+The transposes of the composite are the pasted transposes, definitionally:
+   the forward transpose goes through A' and then A, the inverse transpose
+   back through A and then A'. 
+
+--------
+复合的转置是粘贴的转置，定义为：
+ 正向转置经过 A'，然后经过 A，即逆转置
+ 返回A，然后A'。 
+*)
 
 Corollary Adjunction_Compose_to {x : D} {y : E} (f : F' (F x) ~> y) :
   to (@adj _ _ _ _ Adjunction_Compose x y) f
@@ -161,9 +249,18 @@ Corollary Adjunction_Compose_from {x : D} {y : E} (g : x ~> U (U' y)) :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明伴随相关定义、性质与动机。
+Agreement with [adj_comp] from Instance/Adjoints.v: composing the same
+   two adjunctions there (with the arguments in its convention's order)
+   yields the identical composite type (F' ◯ F) ⊣ (U ◯ U'), and the two
+   constructions have definitionally equal transposes, in both
+   directions. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+与 Instance/Adjoints.v 中的 [adj_comp] 达成一致：组成相同的内容
+ 那里有两个附加词（参数按约定的顺序排列）
+ 产生相同的复合类型 (F' ◯ F) ⊣ (U ◯ U')，并且两个
+ 结构在定义上具有相等的转置
+ 方向。 
 *)
 
 Corollary Adjunction_Compose_adj_comp_to {x : D} {y : E}
@@ -178,8 +275,14 @@ Corollary Adjunction_Compose_adj_comp_from {x : D} {y : E}
     ≈ from (@adj _ _ _ _ (adj_comp F' U' F U A' A) x y) g.
 Proof. reflexivity. Qed.
 
-(* The unit 复合 A''s unit whiskered U, after A's unit;
- dually counit A''s counit after A's counit whiskered F'. （已译） *)
+(*
+The unit of the composite is A''s unit whiskered by U, after A's unit;
+   dually the counit is A''s counit after A's counit whiskered by F'. 
+
+--------
+复合材料的单元是A'的单元，在A的单元之后加上U；
+ 对偶，该单位是 A' 的单位，在 A 的单位被 F' 胡须标记之后。 
+*)
 
 Corollary Adjunction_Compose_unit {x : D} :
   @unit _ _ _ _ Adjunction_Compose x

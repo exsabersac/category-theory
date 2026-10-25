@@ -20,18 +20,66 @@ Require Import Category.Theory.Algebra.Frobenius.
 Generalizable All Variables.
 
 (*
-    nLab: https://ncatlab.org/nlab/show/Frobenius+algebra
-    nLab: https://ncatlab.org/nlab/show/no-cloning+theorem *)
+   * * Collapse theorems for over-structured tensors
 
-   本文件给出幺半相关结构。
+   Two classical "no-go" results delimiting how much algebraic structure a
+   monoidal category can carry before it degenerates.  Both are theorems
+   about *seam discipline*: they are the mathematical reason copying
+   (comonoid/Frobenius) structure must be withheld from a tensor that is
+   already cartesian, and uniform copying must be withheld from a tensor
+   that is compact closed.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   1. Frobenius collapse: a Frobenius object in a semicartesian (in
+   particular, cartesian) monoidal category is isomorphic to the unit.
+
+   2. Abramsky's no-cloning theorem (arXiv:0910.2401): in a compact closed
+   category, uniform copying — a natural, monoidal, coassociative,
+   cocommutative diagonal, i.e. exactly a [RelevanceMonoidal] structure —
+   forces the braiding at every diagonal square to be the identity.
+
+   nLab: https://ncatlab.org/nlab/show/Frobenius+algebra
+   nLab: https://ncatlab.org/nlab/show/no-cloning+theorem 
+
+   --------
+   * * 针对过度结构化张量的塌缩定理
+
+   两个经典的“不可达”结果限制了单体范畴在退化之前可以承载的代数结构量。两者都是关于*接缝规律*的定理：它们是数学上解释为什么复制（余单体/Frobenius）结构必须从已经是笛卡尔的张量中排除，并且为什么均匀复制必须从紧闭的张量中排除的原因。
+
+   1. Frobenius塌缩：半笛卡尔（特别是笛卡尔）单体范畴中的Frobenius对象同构于单位对象。2. Abramsky 的不可克隆定理 (arXiv:0910.2401)：在一个紧闭范畴中，统一复制——一种自然的、幺半群的、满足余结合律和余交换律的对角结构，即完全的 [RelevanceMonoidal] 结构——会迫使每个对角方块处的编织是恒等映射。
+
+   nLab: https://ncatlab.org/nlab/show/Frobenius+algebra
+   nLab: https://ncatlab.org/nlab/show/no-cloning+theorem
 *)
 
 (*
-   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+   * ** Frobenius objects collapse in (semi)cartesian monoidal categories
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Let (X, μ, η, δ, ε) be a Frobenius algebra in a monoidal category whose
+   unit I is terminal ([SemicartesianMonoidal]).  Terminality identifies ε
+   with the discard map, so the comonoid counit laws say precisely that the
+   projections retract δ.  Projecting the Frobenius law
+
+   (μ ⨂ id) ∘ α⁻¹ ∘ (id ⨂ δ) ≈ δ ∘ μ
+
+   with proj_right then collapses the multiplication: μ ≈ proj_right (in
+   generalized-element notation, μ(x, y) = y).  Evaluating the monoid's
+   right unit law at that equation yields η ∘ ε ≈ id, and ε ∘ η ≈ id[I]
+   holds by terminality, so ε : X ≅ I : η.
+
+   The cartesian case (Fox's setting, where the tensor is the product) is
+   the instance used by the seam-discipline arguments: a cartesian colour
+   cannot host a Frobenius algebra on any object except (up to iso) the
+   unit.  Note the proof below never uses the diagonal: semicartesian
+   suffices. 
+
+   --------
+   * ** Frobenius 对象在（半）笛卡尔单态范畴中塌缩  
+
+   设 (X, μ, η, δ, ε) 是单态范畴中的一个 Frobenius 代数，其单位 I 是终对象 ([SemicartesianMonoidal])。终性将 ε 识别为丢弃映射，因此余单子余单位律恰好说明投影是 δ 的回退。将 Frobenius 律
+
+   (μ ⨂ id) ∘ α⁻¹ ∘ (id ⨂ δ) ≈ δ ∘ μ  
+
+   用 proj_right 投影后就塌缩了乘法：μ ≈ proj_right（在广义元素记法中，μ(x, y) = y）。在该方程上评估单子右单位律得到 η ∘ ε ≈ id，并且 ε ∘ η ≈ id [I] 由终性成立，所以 ε : X ≅ I : η。笛卡尔情况（Fox 的设定，其中张量是积）是缝合学科论证中使用的实例：笛卡尔对象不能在除单位（最多同构）之外的任何对象上承载 Frobenius 代数。注意下面的证明从未使用对角线：半笛卡尔就足够了。
 *)
 
 Section FrobeniusCollapse.
@@ -40,7 +88,7 @@ Context {C : Category}.
 Context `{M : @Monoidal C}.
 Context `{SM : @SemicartesianMonoidal C M}.
 
-(* 相关说明。 （已译） *)
+(* The counit of any comonoid is the discard map (both live in the terminal hom-set X ~> I), so the left counit law makes proj_right retract delta. / 任何余单子的余单位都是丢弃映射（都位于终端同态集 X ~> I 中），因此左余单位律使 proj_right 收缩 δ。 *)
 Lemma proj_right_delta {X : C} (Co : Comonoid X) :
   proj_right ∘ delta[Co] ≈ id[X].
 Proof.
@@ -51,7 +99,7 @@ Proof.
   apply iso_to_from.
 Qed.
 
-(* Mirror image: proj_left retracts delta via the right counit law. *)
+(* Mirror image: proj_left retracts delta via the right counit law. / 镜像：proj_left 通过右余单位律回缩 delta。 *)
 Lemma proj_left_delta {X : C} (Co : Comonoid X) :
   proj_left ∘ delta[Co] ≈ id[X].
 Proof.
@@ -68,9 +116,12 @@ Context {X : C}.
 Context (F : @Frobenius C M X).
 
 (*
-   本节说明 Collapse 相关定义、性质与动机。
+ Projecting the left Frobenius law with proj_right collapses the
+ multiplication to the right projection: μ(x, y) = y on generalized
+ elements.  (Dually, the right Frobenius law would give μ ≈ proj_left.) 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 使用 proj_right 投影左 Frobenius 定律会将乘法坍缩到右投影：μ(x, y) = y 在广义元素上。(对偶地，右 Frobenius 定律会得到 μ ≈ proj_left。)
 *)
 Lemma frobenius_mu_collapse : mu[F] ≈ @proj_right C M SM X X.
 Proof.
@@ -89,8 +140,13 @@ Proof.
   apply id_left.
 Qed.
 
-(* The monoid's right unit law μ ∘ (id ⨂ η) ≈ ρ evaluated at
-   μ ≈ proj_right forces η to be a two-sided inverse of ε on X. *)
+(*
+ The monoid's right unit law μ ∘ (id ⨂ η) ≈ ρ evaluated at
+ μ ≈ proj_right forces η to be a two-sided inverse of ε on X. 
+
+ --------
+ 单元的右单元律 μ ∘ (id ⨂ η) ≈ ρ 在 μ ≈ proj_right 上的求值强制 η 成为 X 上 ε 的双边逆。
+*)
 Lemma frobenius_eta_epsilon : eta[F] ∘ epsilon[F] ≈ id[X].
 Proof using C F M SM X.
   pose proof (mu_unit_right (Monoid := F)) as MU.
@@ -102,9 +158,14 @@ Proof using C F M SM X.
   apply iso_to_from.
 Qed.
 
-(* A Frobenius 对象 semicartesian 幺半范畴 isomorphic to
- monoidal unit, counit unit Frobenius structure as
- two directions. （已译） *)
+(*
+ A Frobenius object in a semicartesian monoidal category is isomorphic to
+ the monoidal unit, with the counit and unit of the Frobenius structure as
+ the two directions. 
+
+ --------
+ 半笛卡尔单体范畴中的 Frobenius 对象同构于单体对象，其 Frobenius 结构的余单位和单位分别作为两个方向。
+*)
 Theorem frobenius_collapse_semicartesian : X ≅ I.
 Proof using C F M SM X.
   isomorphism.
@@ -119,9 +180,15 @@ End FrobeniusObject.
 End FrobeniusCollapse.
 
 (*
-   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+ The cartesian instance: in a cartesian monoidal category — where the
+ tensor is the categorical product — every Frobenius object collapses to
+ the terminal unit (cf. Heunen & Vicary, "Categories for Quantum Theory",
+ Oxford UP, 2019, Ch. 5 on Frobenius structures).  This is the
+ load-bearing form for seam discipline: no special commutative Frobenius
+ structure can live on a colour whose ambient tensor is cartesian. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 笛卡尔实例：在一个笛卡尔单体范畴中——其张量是范畴积——每个弗罗贝尼乌斯对象都坍缩为终单位（参见 Heunen & Vicary，《量子理论的范畴》，牛津大学出版社，2019，第5章关于弗罗贝尼乌斯结构）。 这是接缝规范的承重形式：没有特殊的交换弗罗贝尼乌斯结构可以存在于其环境张量为笛卡尔的颜色上。
 *)
 Theorem frobenius_collapse {C : Category} `{H : @CartesianMonoidal C} {X : C}
         (F : @Frobenius C _ X) : X ≅ I.
@@ -130,9 +197,46 @@ Proof.
 Qed.
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * ** Abramsky's no-cloning theorem
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Abramsky, "No-Cloning in categorical quantum mechanics" (arXiv:0910.2401),
+   §4.  Uniform copying in a symmetric monoidal category is a monoidal
+   natural diagonal that is coassociative and cocommutative — precisely the
+   [RelevanceMonoidal] structure.  The proofs below consume only
+   [diagonal_natural] (naturality), [diagonal_unit] (∆I = λ⁻¹),
+   [diagonal_braid2] (monoidality) and [braid_diagonal] (cocommutativity);
+   coassociativity ([diagonal_tensor_assoc]) is carried by the class but
+   never used, so the no-go applies just as well to a non-coassociative
+   copying operation.
+
+   The theorem: if such a category is moreover compact closed, the braiding
+   σ_{x,x} on every diagonal square is the identity ("the twist map is the
+   identity", the boxed Second Step of op. cit.), from which Abramsky's
+   Theorem 11 (every endomorphism is a scalar multiple of the identity)
+   follows.  The proof formalized here reorganizes the paper's Lemma 13:
+
+   1. Copying the cup η : I ~> x* ⨂ x and regrouping by colour shows the
+   two-cup state braid2 ∘ (η ⨂ η) ∘ λ⁻¹ *is* the copied state
+   (∆x* ⨂ ∆x) ∘ η          ([cups_mid_diagonal]);
+
+   2. cocommutativity of ∆x therefore lets the two x-wires of the two-cup
+   state be swapped silently  ([cups_mid_braid]) — the "confusion of
+   entanglements";
+
+   3. capping each input x-wire against one of the two duals turns that
+   silent swap into σ ∘ - on the outputs ([close_braid]), while a double
+   yanking evaluates the closure of the two-cup state to the braiding
+   itself ([close_cups_mid]); combining gives σ ≈ σ ∘ σ ≈ id. 
+
+   --------
+   * ** Abramsky 的不可克隆定理
+
+   Abramsky, 《范畴量子力学中的不可克隆》(arXiv:0910.2401),
+   §4. 对称幺半范畴中的统一复制是一种具有余结合性和余交换性的幺半自然对角线 —— 正是 [RelevanceMonoidal] 结构。以下证明仅使用了 [diagonal_natural]（自然性）、[diagonal_unit]（∆I = λ⁻¹）、[diagonal_braid2]（幺半性）和 [braid_diagonal]（余交换性）；余结合性（[diagonal_tensor_assoc]）由类提供，但从未使用，因此该不可行结论同样适用于非余结合的复制操作。定理：如果这样的范畴另外是紧闭范畴，那么每个对角方格上的编织σ_{x,x}是恒等映射（“扭转映射是恒等映射”，即引文中的第二步方框），由此可以得出Abramsky的定理11（每个自同态都是恒等映射的标量倍）。这里形式化的证明重新组织了论文的引理13：
+
+   1. 复制cup η : I ~> x* ⨂ x 并按颜色重新组合，显示两杯态 braid2 ∘ (η ⨂ η) ∘ λ⁻¹ *就是*复制后的态 (∆x* ⨂ ∆x) ∘ η          ([cups_mid_diagonal])；
+
+   2. 因为∆x是协交换的，所以可以悄无声息地交换两杯态的两个x线 ([cups_mid_braid])——即“纠缠的混乱”；3. 将每个输入 x-线封顶到两个对偶之一，会将该静默交换转变为输出上的 σ ∘ - ([close_braid])，而双拉动则会将双杯态的闭合计算为编织本身 ([close_cups_mid])；组合后得到 σ ≈ σ ∘ σ ≈ id。
 *)
 
 Section NoCloning.
@@ -141,8 +245,13 @@ Context {C : Category}.
 Context `{R : @RelevanceMonoidal C}.
 Context `{CC : @CompactClosed C (@relevance_is_symmetric C R)}.
 
-(* Naturality diagonal, rewriting form: ∆ natural
- transformation 恒等 函子 squaring 函子. （已译） *)
+(*
+ Naturality of the diagonal, in rewriting form: ∆ is a natural
+ transformation from the identity functor to the squaring functor. 
+
+ --------
+ 对角线的自然性，以重写形式表示：∆ 是从恒等函子到平方函子的自然变换。
+*)
 Lemma diagonal_natural' {a b : C} (f : a ~> b) :
   f ⨂ f ∘ ∆a ≈ ∆b ∘ f.
 Proof.
@@ -150,9 +259,14 @@ Proof.
   apply X0.
 Qed.
 
-(* The middle-four interchange involutive: swapping middle two
- factors twice 恒等. (The two instances have middle
- arguments transposed.) （已译） *)
+(*
+ The middle-four interchange is involutive: swapping the middle two
+ factors twice is the identity.  (The two instances have their middle
+ arguments transposed.) 
+
+ --------
+ 中间四项交换是自反的：将中间两个因子交换两次就是恒等操作。（这两个实例的中间参数被互换。）
+*)
 Lemma braid2_invol {a b c e : C} :
   @braid2 C R a c b e ∘ @braid2 C R a b c e ≈ id[((a ⨂ b) ⨂ (c ⨂ e))%object].
 Proof.
@@ -171,9 +285,14 @@ Proof.
   apply iso_from_to.
 Qed.
 
-(* [braid2] is definitional field [RelevanceMonoidal]; statements of
- other fields (e.g. [diagonal_braid2]) carry its body inlined. This fold
- 引理 lets those occurrences be rewritten back named form.（已译） *)
+(*
+ [braid2] is a definitional field of [RelevanceMonoidal]; statements of
+ other fields (e.g. [diagonal_braid2]) carry its body inlined.  This fold
+ lemma lets those occurrences be rewritten back to the named form. 
+
+ --------
+ [braid2] 是 [RelevanceMonoidal] 的定义字段；其他字段的语句（例如 [diagonal_braid2]）将其主体内联。这个折叠引理允许那些出现被重写回命名形式。
+*)
 Lemma braid2_unfold {a b c e : C} :
   @braid2 C R a b c e ≈
   tensor_assoc⁻¹ ∘ id ⨂ (tensor_assoc ∘ braid ⨂ id ∘ tensor_assoc⁻¹)
@@ -181,9 +300,15 @@ Lemma braid2_unfold {a b c e : C} :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
+ The generic monoidal coherences the argument below leans on —
+ [unit_identity_from] (λ_I⁻¹ ≈ ρ_I⁻¹), the solved triangle forms
+ [tensor_assoc_unit_right] and [tensor_assoc_from_unit_left], and the
+ solved pentagon [pentagon_step] — are imported from the shared toolkit
+ in Structure/Monoidal/Braided/Proofs.v, where they are stated for any
+ [Monoidal] category. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 下面论证依赖的一般单伴性相干性——[unit_identity_from]（λ_I⁻¹ ≈ ρ_I⁻¹）、已解决的三角形形成 [tensor_assoc_unit_right] 和 [tensor_assoc_from_unit_left]，以及已解决的五边形 [pentagon_step]——是从 Structure/Monoidal/Braided/Proofs.v 的共享工具包中导入的，其中它们对任何 [Monoidal] 类别都作了陈述。
 *)
 
 Section Cloning.
@@ -192,15 +317,15 @@ Context {x : C}.
 
 Notation d := (dual x).
 
-(* The two parallel cups η ⨂ η, as a single state of (x* ⨂ x) ⨂ (x* ⨂ x). *)
+(* The two parallel cups η ⨂ η, as a single state of (x* ⨂ x) ⨂ (x* ⨂ x). / 两个平行的杯 η ⨂ η，作为 (x* ⨂ x) ⨂ (x* ⨂ x) 的单一状态。 *)
 Definition cups : I ~> ((d ⨂ x) ⨂ (d ⨂ x))%object :=
   cc_unit x ⨂ cc_unit x ∘ unit_left⁻¹.
 
-(* The same state regrouped by colour, as a state of (x* ⨂ x* ) ⨂ (x ⨂ x). *)
+(* The same state regrouped by colour, as a state of (x* ⨂ x* ) ⨂ (x ⨂ x). / 同一态按颜色重新组合，作为态 (x* ⨂ x* ) ⨂ (x ⨂ x)。 *)
 Definition cups_mid : I ~> ((d ⨂ d) ⨂ (x ⨂ x))%object :=
   braid2 ∘ cups.
 
-(* 相关说明。 （已译） *)
+(* Naturality of ∆ at the cup, with ∆I = λ⁻¹: copying the cup is the diagonal of the cup. This is the upper square of Abramsky's Lemma 13. / 在杯子的∆的自然性，且∆I = λ⁻¹：复制杯子是杯子的对角线。这是Abramsky引理13的上方正方形。 *)
 Lemma cups_diagonal : cups ≈ ∆(d ⨂ x) ∘ cc_unit x.
 Proof.
   unfold cups.
@@ -208,7 +333,7 @@ Proof.
   apply diagonal_natural'.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Regrouped by colour, the two-cup state is the tensor of the two componentwise diagonals: monoidality of ∆ ([diagonal_braid2]) cancels against the regrouping via [braid2_invol]. / 按颜色重新分组，双杯状态是两个分量对角线的张量：∆（[diagonal_braid2]）的幺半群性与通过[braid2_invol]进行的重新分组相抵消。 *)
 Lemma cups_mid_diagonal : cups_mid ≈ ∆d ⨂ ∆x ∘ cc_unit x.
 Proof.
   unfold cups_mid.
@@ -220,7 +345,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Cocommutativity of ∆x, tensored on the right: the two x-wires of the regrouped two-cup state can be swapped silently. This is the state-level "confusion of entanglements". / ∆x 的余交换性，右侧张量：可以悄无声息地交换重新分组的双杯状态的两个 x 线。这是状态层面的“纠缠混淆”。 *)
 Lemma cups_mid_braid :
   id[(d ⨂ d)%object] ⨂ braid ∘ cups_mid ≈ cups_mid.
 Proof.
@@ -231,7 +356,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The two-cup state built sequentially: the second cup is tensored to the right of the first. / 两个杯子状态按顺序构建：第二个杯子在第一个的右侧张量化。 *)
 Lemma cups_split :
   cups ≈ id[(d ⨂ x)%object] ⨂ cc_unit x ∘ unit_right⁻¹ ∘ cc_unit x.
 Proof.
@@ -244,13 +369,18 @@ Proof.
   reflexivity.
 Qed.
 
-(* A single yanking stage: cap leading x against leading dual and
- pass remainder through. [bend] at Z := x, precomposed cup, is
- left snake 恒等. （已译） *)
+(*
+ A single yanking stage: cap the leading x against the leading dual and
+ pass the remainder through.  [bend] at Z := x, precomposed with a cup, is
+ the left snake identity. 
+
+ --------
+ 单一拉动阶段：将前导 x 与前导双进行对齐，然后将其余部分通过。[bend] 在 Z := x 时，预组合一个 cup，是左蛇形恒等式。
+*)
 Definition bend {Z : C} : (x ⨂ (d ⨂ Z))%object ~> Z :=
   unit_left ∘ cc_counit x ⨂ id[Z] ∘ tensor_assoc⁻¹.
 
-(* bend is natural in the pass-through component. *)
+(* bend is natural in the pass-through component. / 弯曲在直通组件中是自然的。 *)
 Lemma bend_natural {Z Z' : C} (q : Z ~> Z') :
   bend ∘ id[x] ⨂ (id[d] ⨂ q) ≈ q ∘ bend.
 Proof.
@@ -270,15 +400,20 @@ Proof.
   reflexivity.
 Qed.
 
-(* The left snake 恒等, phrased [bend]. （已译） *)
+(* The left snake identity, phrased with [bend]. / 左蛇身份，用 [bend] 表示。 *)
 Lemma bend_snake : bend ∘ id[x] ⨂ cc_unit x ∘ unit_right⁻¹ ≈ id[x].
 Proof.
   unfold bend.
   apply snake_left.
 Qed.
 
-(* A 推论 second hexagon: braiding whole pair past x then
- swapping inside left factor braiding two inner x-wires. （已译） *)
+(*
+ A corollary of the second hexagon: braiding a whole pair past x and then
+ swapping inside the left factor is braiding the two inner x-wires. 
+
+ --------
+ 第二个六边形的一个推论：将一整对编织过x，然后在左因子内交换，就是编织两个内部的x线。
+*)
 Lemma braid_pass {y : C} :
   braid ⨂ id[x] ∘ tensor_assoc⁻¹ ∘ @braid C _ (y ⨂ x)%object x
     ≈ tensor_assoc⁻¹ ∘ id[y] ⨂ braid ∘ tensor_assoc.
@@ -301,9 +436,12 @@ Proof.
 Qed.
 
 (*
-   本节说明 Collapse 相关定义、性质与动机。
+ Passing a wire over a freshly inserted cup from the right equals passing
+ it under from the left: the hexagon absorbs the crossing.  (In Abramsky's
+ diagrams this is how the crossing of the "confused" cups is normalized.) 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 将一根线从右侧穿过新插入的杯子，相当于从左侧从下方穿过：六角形吸收了交叉。（在Abramsky的图中，这就是“混乱”杯子的交叉如何被规范化的方式。）
 *)
 Lemma cup_pass :
   tensor_assoc ∘ braid ⨂ id[x] ∘ tensor_assoc⁻¹ ∘ id[x] ⨂ cc_unit x
@@ -325,9 +463,13 @@ Proof.
 Qed.
 
 (*
-   本节说明 Collapse 相关定义、性质与动机。
+ The α-normalized two-cup state, sequentially: first cup at the head, the
+ second inserted inside it, with the crossing pushed onto the x-wires by
+ [cup_pass].  This is the state that the two-stage closure below consumes
+ snake by snake. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ α-归一化的双杯状态，顺序如下：第一个杯在顶部，第二个杯插入其中，交叉通过 [cup_pass] 推到 x 线。这就是下面两阶段闭合逐条消耗蛇的状态。
 *)
 Lemma cups_mid_nested :
   to tensor_assoc ∘ cups_mid
@@ -351,7 +493,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The left snake 恒等, solved inverse unitor. （已译） *)
+(* The left snake identity, solved for the inverse unitor. / 左蛇身份，解出逆单位元。 *)
 Lemma snake_left_from :
   cc_counit x ⨂ id[x] ∘ tensor_assoc⁻¹ ∘ id[x] ⨂ cc_unit x ∘ unit_right⁻¹
     ≈ unit_left⁻¹.
@@ -362,8 +504,13 @@ Proof.
   apply snake_left.
 Qed.
 
-(* Yanking spectator: inserting cup beside wire capping it
- against leading input 恒等 both wires. （已译） *)
+(*
+ Yanking with a spectator: inserting a cup beside a wire and capping it
+ against the leading input is the identity on both wires. 
+
+ --------
+ 与观察者拉扯：在一根电线上放置一个杯子并盖上它，对主输入两根电线都是恒等操作。
+*)
 Lemma spectator_snake :
   bend ∘ id[x] ⨂ (tensor_assoc ∘ cc_unit x ⨂ id[x] ∘ unit_left⁻¹)
     ≈ id[(x ⨂ x)%object].
@@ -393,7 +540,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The two-input closure: tensor a colour-grouped state next to the two inputs and cap each input in turn against the state's dual wires; the state's two x-wires are the outputs. / 双输入闭包：将一个按颜色分组的张量状态放在两个输入旁边，并依次将每个输入与状态的对偶线连接；状态的两条 x 线是输出。 *)
 Definition close (v : I ~> ((d ⨂ d) ⨂ (x ⨂ x))%object) :
   (x ⨂ x)%object ~> (x ⨂ x)%object :=
   bend ∘ id[x] ⨂ (bend ∘ id[x] ⨂ (to tensor_assoc ∘ v) ∘ unit_right⁻¹).
@@ -406,7 +553,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* A braid on the x-wires of the state emerges from the closure as a braid on its outputs. / 状态的 x 线上的一个编织从闭包中出现，作为其输出上的一个编织。 *)
 Lemma close_braid (v : I ~> ((d ⨂ d) ⨂ (x ⨂ x))%object) :
   close (id[(d ⨂ d)%object] ⨂ braid ∘ v) ≈ braid ∘ close v.
 Proof.
@@ -429,7 +576,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Double yanking: closing the colour-grouped two-cup state evaluates to the braiding — the first input caps the first cup and flows out on the second output, and conversely. / 双拉：关闭按颜色分组的双杯状态会得到编织——第一个输入封闭第一个杯子并从第二个输出流出，反之亦然。 *)
 Lemma close_cups_mid : close cups_mid ≈ braid.
 Proof.
   unfold close.
@@ -459,9 +606,15 @@ Proof.
 Qed.
 
 (*
-   本节说明 Collapse 相关定义、性质与动机。
+ Abramsky's no-cloning theorem (arXiv:0910.2401, Theorem 11, second
+ step): in a compact closed category with uniform copying, the braiding
+ on every diagonal square is the identity.  The copied two-cup state is
+ silently swap-invariant ([cups_mid_braid]); pushing the swap through
+ the closure ([close_braid]) and evaluating ([close_cups_mid]) forces
+ σ ≈ σ ∘ σ ≈ id. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Abramsky 的不可克隆定理（arXiv:0910.2401，第 11 定理，第二步）：在具有统一复制的紧闭范畴中，每个对角方格上的编织都是恒等映射。被复制的双杯态在静默下是交换不变的（[cups_mid_braid]）；将交换操作通过闭包（[close_braid]）并进行求值（[close_cups_mid]）会强制 σ ≈ σ ∘ σ ≈ id。
 *)
 Theorem no_cloning : @braid C _ x x ≈ id[(x ⨂ x)%object].
 Proof using C CC R x.

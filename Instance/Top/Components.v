@@ -23,47 +23,510 @@ Require Import Category.Instance.Sets.Classifier.OneLevel.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(* * * Connected components: Mac Lane §V.9 Exercise 1 / * * 连通分支：Mac Lane §V.9 练习 1 *)
 
 (*
+ Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ read from the page images:
+ - §V.9 Exercise 1, book p. 135 (PDF p. 144) (catalog id
+ maclane:V.9:ex1):
+ "For the full subcategory Lconn of locally connected spaces in Top,
+ prove that D: Set → Lconn has a left adjoint C, assigning to each
+ space X the set of its connected components, but show that this
+ functor C can have no left adjoint (because of misbehavior on
+ equalizers)."
+ - D is the functor of §V.9, book p. 132 (PDF p. 141): the forgetful
+ functor G : Top → Set "is faithful, and has a left adjoint D which
+ assigns to each set S the discrete topology on S (i.e., all
+ subsets of S are open)."  The book defines neither local
+ connectedness nor the connected components of a space, and names
+ no equalizer.
+ - §IV.2 Exercise 9 (Smythe), book p. 90 (PDF p. 99): the functor
+ O : Cat → Set of objects "has a left adjoint D which assigns to
+ each set X the discrete category on X, and that D in turn has a
+ left adjoint assigning to each category the set of its connected
+ components"; Exercise 7(b) on the same page defines "the connected
+ components of J" for a category J.  That is this exercise's twin
+ for categories.
+ Riehl, "Category Theory in Context", 2nd ed., §3.3, Example 3.3.2,
+ printed pp. 99-100 (PDF pp. 119-120), read from the page images
+ (catalog id riehl:3.3:example2, Riehl's Example 3.3.2):
+ "Precomposing with the endpoint inclusions 0, 1 : ∗ ⇉ I defines a
+ functor P : Top → Set^{•⇉•} that carries a space X to the parallel
+ pair of functions Path(X) ≅ Top(I, X) ⇉ Top(∗, X) ≅ Point(X) that
+ evaluate a path at its endpoints.  Their coequalizer [...] defines
+ the set of path components of X, the quotient of the set of points
+ in X by the relation that identifies any pair of points connected
+ by a path.  Proposition 3.3.1 tells us that this coequalizer defines
+ a functor, the path components functor π₀ := Top → Set^{•⇉•} →
+ Set" (the two arrows labelled P and colim).  That is the
+ PATH-components functor on all of Top, a different functor from
+ Mac Lane's; it is the satellite Instance/Top/Components/Paths.v's,
+ not this file's.
  nLab: https://ncatlab.org/nlab/show/Top
  nLab: https://ncatlab.org/nlab/show/locally+connected+space
  nLab: https://ncatlab.org/nlab/show/connected+space
  Wikipedia: https://en.wikipedia.org/wiki/Locally_connected_space
 
-   本文件给出具体实例。
+ BACKGROUND.  "It is not generally true that a topological space is the
+ disjoint union space (coproduct in Top) of its connected components.
+ The spaces such that this is true for all open subspaces are the
+ locally connected topological spaces" (nLab), equivalently those in
+ which "every point has a neighborhood basis of connected open subsets"
+ (nLab's definition; Wikipedia's is the same).  In such a space every
+ component is open, hence clopen, and nLab draws the consequence for
+ the functors to sets: on locally connected spaces there is "an adjoint
+ quadruple of adjoint functors Π₀ ⊣ Δ ⊣ Γ ⊣ ∇ : Set → LocConn", Π₀ the
+ components, Δ the discrete space, Γ the points and ∇ the codiscrete
+ space, "the adjunction structure as on a cohesive topos"; "the
+ continuity of the unit X → ΔΠ₀X is immediate from a locally connected
+ space's being the coproduct of its connected components."  Mac Lane's
+ exercise is the leftmost adjunction of that quadruple and the reason
+ it stops there: Π₀ does not preserve equalizers, so it is not a right
+ adjoint.  Local connectedness is what the first half needs; below, the
+ discrete functor on all spaces has no left adjoint at all.  The twin
+ for categories, Mac Lane's §IV.2 Exercise 9, is Instance/Cat/
+ Components.v's [Components_Disc_Adjunction : Pi0 ⊣ Cat_Disc], over
+ Theory/Connected/Components.v's π₀ of a category.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ ENCODING.  Everything is over Instance/Top/Prop.v's [PTopCat], by the
+ maintainer's decision for the §V.9 issues.  Over Instance/Top.v's
+ Type-valued [Top] the wall is the functor, not the component relation.
+ C must land among the point setoids, the objects of [Sets@{o so}], and
+ a functor [Top@{h o} ⟶ Sets@{o so}] is refused ("Cannot enforce o = ...
+ because o < h <= ..."): the homs of [Top] sit at [h], above the points,
+ and a functor cannot lower the hom level, the reason
+ Instance/Top/Forgetful.v's header gives for landing its underlying-set
+ functor in [Sets@{h so}].  One universe up the functor is formable, and
+ so is an [Adjunction] record between [Top] and [Sets@{h so}], but not
+ one whose right adjoint is Forgetful.v's discrete functor [Top_Discrete
+ : Sets@{o so} ⟶ Top@{h o}], whose domain must be the point setoids
+ ("Cannot enforce ... = h because h < ...").  The relation itself is
+ formable over [Top]: [comp_rel] restated there, with its neighbourhoods
+ as [ex (fun O : X → Type@{o} => inhabited (IsOpen X O) /\ ...)], is a
+ proposition, accepted under the closed universe list [@{o}] of the
+ points' universe alone, and [About] reads back an empty constraint
+ block on Rocq 9.1.  Only its Type-valued forms are refused at
+ [Type@{o}], each with "universe inconsistency: Cannot enforce o < o
+ because o = o": the sum over Type-valued subsets [{ W : X → Type@{o} &
+ (W x * W y) }], the quasi-component form [∀ U : X → Type@{o}, IsOpen X
+ U → U x → U y] and connectedness quantified over discrete targets [∀ (S
+ : SetoidObject@{o o}) (g : X → S), ...]; all three are accepted at
+ [Type@{h}] under [o < h].  Test/ProbeComponents462.v pins the functor
+ as N1 and the adjunction as N2, each beside its control one universe
+ up, the three Type-valued forms as N3, N4 and N5 beside theirs, and the
+ Prop-valued relation as the control [tcomp_rel_prop].  Over [PTopCat]
+ the homs sit at the points' universe (Instance/Top/Prop.v's [PMor]),
+ every relation below is a proposition, and the components sit at the
+ points' universe [o].
+
+ MAC LANE'S SET: THE PROPOSITIONAL SETS, AND ALL OF [Sets] UNDER
+ [Untruncate].  The tree's [Sets] has a Type-valued [≈], while
+ continuity is a proposition and so is the component relation
+ [comp_rel], and a proposition is not eliminated into a type.
+ Extracting from [comp_rel X x y] a Type-valued witness is refused,
+ and so is turning [inhabited (pmap g x ≈ pmap g y)] into
+ [pmap g x ≈ pmap g y] ("Incorrect elimination of "HR" in the
+ inductive type "inhabited": the return type has sort "Type" while it
+ should be SProp or Prop"), Test/ProbeComponents462.v's N6 and N7;
+ through a [PropEquiv] of the target it is accepted, Lib/Setoid/
+ Propositional.v's [pequiv_elim_inhabited], that probe's control.
+ The obstruction is not in the proof alone.
+ [components_on_all_Sets_unsquashes]: ANY left adjoint of the discrete
+ functor [LDisc : Sets ⟶ Lconn] yields
+ [inhabited (∀ Q : Type@{o}, inhabited Q → Q)].  The unit at the
+ indiscrete two-point space is continuous into a discrete space, so
+ its two values are only merely equal, and transposing the identity
+ into the two-point setoid whose [true ≈ false] is [Q] ([SquashSetoid],
+ continuous as soon as [Q] is merely inhabited, [squash_id_cont])
+ unsquashes [Q].  That principle is the truncation of
+ Instance/Sets/Classifier/OneLevel.v's hypothesis [Untruncate@{o}],
+ [∀ P : Type@{o}, Powerset_squash P → P]: each gives the other
+ ([unsquash_Untruncate], [Untruncate_unsquash]), and
+ [components_on_all_Sets_Untruncate] states the conclusion as
+ [inhabited Untruncate@{o}]; [unsquash_choice] derives from the
+ principle functional choice for relations between types at [o].
+ The converse holds.  Under [Untruncate] a continuous map into a
+ discrete space on ANY setoid is constant on components
+ ([comp_respect_U]: the proposition carried along a connected subset
+ is [Powerset_squash] of [≈]), and [components_left_adjoint_discrete_Sets
+ U : components_functor_Sets ⊣ LDisc] is Mac Lane's adjunction with
+ his Set read literally as all of [Sets], [components_functor_Sets]
+ being C followed by the inclusion of [PSets].  So the literal
+ statement holds under [Untruncate], and any adjunction of its shape
+ makes [Untruncate] merely true: the truncation of the hypothesis is
+ necessary.  [Untruncate] has no axiom-free inhabitant in the tree and
+ follows from informative excluded middle (OneLevel.v's header and
+ [untruncate_of_IEM]).  So Set is read unconditionally as [PSets], the
+ full subcategory of [Sets] on the setoids whose equality is logically
+ a proposition (Instance/Sets/Propositional.v's [PropEquivObj]), the
+ reading the concrete algebraic categories take (the size note in
+ Structure/Complete.v's header).  This is the one deviation from the
+ book's statement beyond the [PTopCat] encoding (ENCODING above), and
+ it is lifted at [Sets] under [Untruncate].
+ CORRECTION (#1349): above, [SquashSetoid] is Instance/Sets/Propositional/
+ Full.v's now, and [unsquash_Untruncate] and [Untruncate_unsquash]
+ are derived from that file's [untr_of_choice] and [choice_of_untr],
+ which #469 had stated in Instance/Pos/Monadicity.v.
+
+ WHAT IS HERE.
+ - Connectedness, Prop-valued.  [LocConstOn X W φ]: a Prop-valued [φ]
+ is locally constant on [W]; [PConnectedSub X W]: every such [φ] is
+ constant on [W]; [PConnected X]: the whole space is.  [PLocConn X]
+ is nLab's and Wikipedia's definition: every open neighbourhood of a
+ point contains a connected open one.  [comp_rel X x y]: x and y
+ lie in a common connected subset, the relation whose classes are
+ the connected components; it is an equivalence relation
+ constructively ([point_connected]: a point is connected;
+ [union_connected]: two connected subsets sharing a point have a
+ connected union).  [CompSet X] is the set of components, the
+ points under [comp_rel]; [comp_PropEquiv]: its equality is the
+ proposition [comp_rel] itself.
+ - The other forms.  [PConnectedSep]: two disjoint opens covering the
+ space do not split it; [PConnectedBool]: every continuous map into
+ [PBool] is constant.  [connected_no_separation] and
+ [connected_bool_constant] derive both from [PConnectedSub] for a
+ subset, [PConnected_Sep] and [PConnected_Bool] for the space.  The
+ locally-constant form is the one the adjunction needs: its
+ transpose takes φ z := [pequiv (g x) (g z)], a proposition, where
+ a [bool]-valued indicator would need a decidable equality on the
+ target.
+ - [image_connected]: continuous images of connected subsets are
+ connected; hence [comp_setoid_map] and [CompTop : PTopCat ⟶
+ PSets], the components functor on ALL of [PTopCat], which needs no
+ local connectedness.
+ - The categories.  [PSets]: the [Sub] of [Sets] on [PropEquivObj]
+ ([PSetsSub]).  [Lconn]: the [Sub] of [PTopCat] on [PLocConn]
+ ([Lconn_Sub], Instance/Top/Separation.v's [PFullSub]).  Both are
+ pinned by hand, as Instance/Top/Hausdorff.v pins [Haus].
+ CORRECTION (#1349): #469 built the same category again, as
+ Instance/Sets/Propositional/Full.v's [PropSets_sub] and
+ [PropSets]; on the maintainer's decision to unify them,
+ [PSetsSub] and [PSets] are now defined as those two, under
+ #462's names, so the hand pin of [PSets] is that file's.
+ - [components_functor : Lconn ⟶ PSets], Mac Lane's C, the issue's
+ pinned name: [CompTop] after the inclusion.
+ - D.  [LDisc : Sets ⟶ Lconn] is Instance/Top/Complete.v's [PDisc]
+ corestricted to [Lconn], not a second discrete functor: its object
+ and arrow parts ARE [PDisc]'s ([LDisc_PDisc_obj],
+ [LDisc_PDisc_fmap]) and its three functor laws are [PDisc]'s,
+ with [pdisc_locconn], a discrete space is locally connected.
+ [PSetsDisc : PSets ⟶ Lconn], Mac Lane's D, is [LDisc] after the
+ inclusion of [PSets].
+ - [components_left_adjoint_discrete : components_functor ⊣
+ PSetsDisc], the pinned name, by Theory/Adjunction.v's
+ [Build_Adjunction'] from [comp_adj_iso], a hom-set bijection that
+ is the identity on points both ways.  [comp_respect]: a continuous
+ map into a discrete space on a propositional set is constant on
+ components.  [comp_cont]: in a locally connected space a map
+ constant on components is continuous into a discrete space, the
+ preimage of an open being the union of the connected open sets
+ that meet it.  Local connectedness is used once, at
+ the whole space, for a connected open neighbourhood of each point
+ (read off [comp_cont]'s proof), so the adjunction would hold on
+ the larger class of spaces whose every point has a connected open
+ neighbourhood; the book's class is kept.
+ - Mac Lane's Set as all of [Sets], under [Untruncate] (MAC LANE'S
+ SET above).  [components_functor_Sets : Lconn ⟶ Sets] is C
+ followed by the inclusion of [PSets]; [comp_adj_iso_U] has
+ [comp_adj_iso]'s two maps, with [comp_respect_U] for the
+ respectfulness of the backward one; and
+ [components_left_adjoint_discrete_Sets U :
+ components_functor_Sets ⊣ LDisc].  The other direction is
+ [components_on_all_Sets_unsquashes] with
+ [components_on_all_Sets_Untruncate], [unsquash_Untruncate],
+ [Untruncate_unsquash] and [unsquash_choice].
+ - Exercise 1's second half, on a concrete equalizer.  [PZig], the
+ points [zig_a], [zig_c], [zig_b] with [zig_a] and [zig_b] open and
+ the whole space the only open set containing [zig_c], is connected
+ ([PZig_connected], so [PZig_one_component]) and locally connected
+ ([PZig_PLocConn]).  The pair [zig_f_map] (constant at [false]) and
+ [zig_g_map] ([true] exactly at [zig_c]) into Instance/Top/
+ Cocomplete.v's indiscrete two-point space [PTwoIndisc] has as its
+ equalizer the discrete two-point space [PBool] on the two open
+ points ([PTop_zig_equalizer] in [PTopCat], [Lconn_zig_equalizer]
+ in [Lconn] by fullness).  [components_zig_not_preserved]: the
+ image under C is not an equalizer, since C of the equalizing map
+ identifies the two components of [PBool]
+ ([pbool_two_components]) while an equalizing map is monic
+ (Structure/Equalizer/Fork.v's [equalizer_monic]).
+ [components_no_left_adjoint], the pinned name: every L with
+ [L ⊣ components_functor] is refuted, by Adjunction/Continuity/
+ Equalizer.v's [not_PreservesEqualizers_no_left_adjoint] on that
+ equalizer.
+ - For ANY left adjoint of D.  [discrete_left_adjoint_not_preserved]:
+ every C with [C ⊣ PSetsDisc], whatever its definition, sends the
+ same equalizer to a fork that is not one.  The unit at [PZig] is
+ continuous into a discrete space, so it identifies the images of
+ [zig_a], [zig_c] and [zig_b], and by naturality the images of the
+ two points of [PBool], which the transpose of the identity of
+ [PBool] separates.  [discrete_left_adjoint_no_left_adjoint]: no
+ such C has a left adjoint.
+ - A second witness.  [Lconn_swap_equalizer]: the identity and the
+ swap [swap_L] of [PTwoIndisc] have the empty discrete space
+ [LEmpty] (on Theory/Concrete.v's [empty_setoid_object]) as their
+ equalizer in [Lconn].  [components_swap_not_preserved]: C sends it
+ to a fork whose vertex is empty, while the one component of the
+ two-point space forks the image pair.
+ - What the restriction to [Lconn] buys.  [pconv_not_locconn]:
+ Instance/Top/Complete.v's convergent sequence [PConv] is not
+ locally connected, an isolated point [Some K] being relatively
+ clopen in any open neighbourhood of the limit point.
+ [discrete_no_left_adjoint_on_PTop]: D into all of [PTopCat]
+ ([PSetsDiscTop], [PDisc] after the inclusion of [PSets]) has no
+ left adjoint.  The unit at [PConv] is continuous into a discrete
+ space, hence constant on a tail, and Complete.v's indicator
+ [pconv_ind_mor N] of a point of that tail would factor through
+ it.  [PDisc_no_left_adjoint]: the same for [PDisc : Sets ⟶
+ PTopCat] itself, the open set being a truncation [inhabited]
+ eliminated into the goal [False].  The book states only the
+ [Lconn] half.
+
+ STRENGTHS, measured strict first.
+ - At [eq_refl]: [components_obj] (C X is [CompSet] of X's space),
+ [components_equiv] (its equality IS [comp_rel]),
+ [components_fmap] (C f is f on points), [LDisc_PDisc_obj],
+ [LDisc_PDisc_fmap], [PSetsDisc_obj] (D S is the discrete space on
+ S), [adj_to_points] and [adj_from_points] (both transposes are the
+ identity on points), [components_unit_points] (the unit sends
+ a point to itself, as a point of its component set), and
+ [adj_Sets_to_points] and [adj_Sets_from_points] (the same two
+ transposes for the reading into all of [Sets]).
+ - Up to [≈]: the functor laws and the equalizers' universal
+ properties.  The refutations are [… → False] statements and use
+ no classical principle.
+ - Eleven proofs end [Defined] (counted by token).  Ten are
+ load-bearing, measured by closing each alone [Qed] in a scratch
+ copy of this file and reading the first refusal:
+ [comp_setoid_map] ([CompTop]'s obligations),
+ [components_left_adjoint_discrete] ([adj_to_points]),
+ [components_left_adjoint_discrete_Sets] ([adj_Sets_to_points]),
+ [SquashSetoid] ([squash_id]), [squash_id] ([squash_id_cont]),
+ [PZig] ([PZig_connected]), [zig_f_set], [zig_g_set] and
+ [zig_e_set] ([PTop_zig_equalizer]), and [swap_set]
+ ([Lconn_swap_equalizer]).  [empty_set_map] is [Defined] by the
+ data convention only: closed [Qed], nothing in the file is
+ refused.  56 [Qed], counted by token.  CORRECTION (#1349): ten
+ [Defined] and 52 [Qed] now, by token.  [SquashSetoid] moved to
+ Instance/Sets/Propositional/Full.v, where it is still [Defined]
+ and still load-bearing for [squash_id] (that file's STRENGTHS),
+ and [squash_sym] and [squash_trans] moved with it; and
+ [unsquash_Untruncate] and [Untruncate_unsquash] are definitions
+ by term.  The ten that remain, the nine others named above and
+ [empty_set_map], are as measured above.
+ - Every constant of the file is closed under the global context
+ ([Print Assumptions] on each, obligations, the inductive, its
+ constructors and its schemes included).
+
+ UNIVERSES, read by [About] under [Set Printing Universes] on all
+ 125 constants of this file's [Print Module] listing (the fourteen
+ [Program] obligations of [CompTop], [LDisc], [comp_adj_iso] and
+ [comp_adj_iso_U], and the inductive [zig_pt] with its four schemes,
+ among them; no record is declared).  CORRECTION (#1349): 121 now,
+ the squash setoid's four having moved to Instance/Sets/Propositional/
+ Full.v.  [About] in the trees before and after #1349 reads the same
+ block for each of the 121 and for the four moved.
+ - No universe is pinned at [Set] and no block carries [Set < o]: the
+ points may be in [Set].  At [o := Set],
+ [components_left_adjoint_discrete],
+ [components_left_adjoint_discrete_Sets],
+ [components_no_left_adjoint],
+ [discrete_left_adjoint_no_left_adjoint],
+ [components_on_all_Sets_unsquashes],
+ [components_on_all_Sets_Untruncate],
+ [discrete_no_left_adjoint_on_PTop], [PDisc_no_left_adjoint],
+ [components_zig_not_preserved] and [components_swap_not_preserved]
+ are accepted under [Set < so] and, where a hypothesis's
+ adjunction brings its own object universe, [Set] below that one:
+ Test/ProbeComponents462.v's ten controls named [p462_..._at_Set].
+ - [Set < so] is carried by 61 blocks, the bound [PTopCat]
+ records for [PTop]'s sort and [PSetsSub] for [PropEquivObj]'s
+ (Instance/Sets/Propositional.v's [PropEquivObj@{u u0 u1}] has
+ [Set < u]); [o < so] implies it.
+ - [PSets@{o so} : Category@{so o o}] is [Sub@{so o so o so o so}]
+ and [Lconn@{o so} : Category@{so o o}] is [Sub@{so o o o so o
+ so}].  [PSetsSub]'s object predicate sits at [so], not [o]:
+ placed at [o] it is accepted only with [Set < o] in its block
+ (read by [About] in a scratch file requiring this one), and at
+ [o := Set] it is refused ("Universe inconsistency. Cannot enforce
+ Set < Set because Set = Set"), the sort of [PropEquivObj S] being
+ at least [Set+1]: Test/ProbeComponents462.v's N8, beside the
+ controls [p462_psets_sub_at_o] and [p462_psets_sub_Set].
+ [components_functor], [components_functor_Sets], [PSetsDisc] and
+ [PSetsDiscTop] pin Theory/Functor.v's [Compose@{u u0 u1 u2 u3}],
+ whose own block is [u3 < u2], at [@{so so so so o}]: its
+ auxiliary [u2] is [so].
+ - [components_left_adjoint_discrete@{o so}] and
+ [components_left_adjoint_discrete_Sets@{o so}]: the [Adjunction]
+ record at [@{so o o so o o o o so o so}].  Their hom-isomorphisms
+ live in [Sets@{o so}] ([comp_adj_iso], [comp_adj_iso_U]); the
+ record's last slot, unconstrained in [Adjunction]'s own block
+ (Instance/Top/Complete.v's [PDisc_PForget@{o so u u0}] leaves it
+ free as [u0]), is pinned at [so].
+ - The theorems that take an [Adjunction] as a hypothesis are bound
+ [@{o so +| o < so +}], so they refute adjunctions at every
+ universe instance: [components_on_all_Sets_unsquashes],
+ [components_on_all_Sets_Untruncate],
+ [components_no_left_adjoint], [discrete_left_adjoint_not_preserved],
+ [discrete_no_left_adjoint_on_PTop] and [PDisc_no_left_adjoint]
+ read back [@{o so u u0}] with [o < u], [u] the object universe of
+ the hypothesis's hom-isomorphisms.
+ [discrete_left_adjoint_no_left_adjoint@{o so ua ub u u0}] takes
+ two adjunctions and names their object universes [ua] and [ub] in
+ its binder, each above [o]; measured under the bare binder
+ [@{o so +| o < so +}], minimization identified the two, reading
+ back [@{o so u u0 u1}] with the one [u] in both hypotheses.
+ - Strict stdlib caps.  [o < Projections.u0] is carried by
+ nine blocks, first in dependency order by
+ [comp_adj_iso_obligation_3], which projects [Lconn]'s objects,
+ whose first component is a [PTop@{o}] at [o+1]; every one of them
+ also carries [so <= Projections.u0] with [o < so], which imply it.
+ [o < False_rect.u0] is carried by five blocks, [LEmpty],
+ [Lconn_swap_equalizer], [components_swap_not_preserved],
+ [empty_set_map] and [swap_e], from Instance/Sets.v's
+ [False_Setoid@{u}], whose own block is [u < False_rect.u0],
+ through Theory/Concrete.v's [empty_setoid_object@{t u}] (block
+ [t < False_rect.u0], [t = u]).
+ - Empty blocks: the connectedness predicates and lemmas
+ ([LocConstOn], [PConnectedSub], [PConnected], [PLocConn],
+ [comp_rel] and its three laws, [point_connected],
+ [union_connected], [locconst_restrict], [connected_no_separation],
+ [PConnectedSep], [PConnected_Sep]), [CompSetoid], [CompSet],
+ [comp_PropEquiv], [comp_respect], [comp_cont], [pdisc_locconn],
+ the squash setoid ([squash_rel], [squash_sym], [squash_trans],
+ [SquashSetoid]), [unsquash_Untruncate], [Untruncate_unsquash] and
+ [comp_respect_U].  CORRECTION (#1349): the squash setoid's four
+ are Full.v's now, with these empty blocks, and the two
+ [Untruncate] constants, now derived, keep theirs empty.  The rest
+ of the [@{o}] constants, but [empty_set_map] above, carry stdlib
+ caps only ([o <= Logic_lemmas.equality.u0], [eq_Setoid]'s and
+ [bool_setoid_object]'s; the [eq_ind], [eq_ind_r] or [eq_rect_r]
+ caps of some proofs; [unsquash_choice]'s
+ [o <= Subset_projections.u0]).  [zig_pt], its constructors,
+ [zig_pt_ind], [zig_pt_sind], [zig_g_fun], [zig_e_fun],
+ [zig_lift_fun] and [negb_no_fixpoint] are [@{}]; [zig_pt_rect]
+ and [zig_pt_rec] are [@{u}], the motive.
+
+ ROUTE AND COST.  [Print Libraries] on a file requiring this one lists
+ 117 [Category.*] modules besides it; sixteen of them come with
+ Instance/Sets/Powerset.v and Instance/Sets/Classifier/OneLevel.v,
+ required for [Powerset_squash] and [Untruncate] (the same count
+ without those two Requires is 101).  CORRECTION (#1349): 118 besides
+ it now, the one more Instance/Sets/Propositional/Full.v, required for
+ [PSets] and the squash setoid; sixteen still come with those two
+ files (102 without them, measured the same way).  Theory/Concrete.v
+ is required but not imported: it declares its own
+ [bool_setoid_object], which would shadow Instance/Sets.v's, the one
+ [PBool] and [PTwoIndisc] are built on.  Coq.Arith.PeanoNat serves the
+ arguments at [PConv].
+
+ NOT DELIVERED.
+ - The converses of the connectedness bridges: [PConnectedSep] or
+ [PConnectedBool] implying [PConnected] needs a decision of [φ] at
+ each point (excluded middle, an informative one for the [bool]
+ form); not attempted.  Classically the three forms agree.
+ - The empty space: nLab's connected-space page does not regard it as
+ connected, and [PConnectedSub] holds of the empty predicate,
+ vacuously.  Immaterial to [comp_rel], whose subsets contain the
+ points they relate.
+ - An unconditional adjunction into all of [Sets]: any such
+ adjunction makes [Untruncate] merely true
+ ([components_on_all_Sets_Untruncate]), and [Untruncate] has no
+ axiom-free inhabitant in the tree; the adjunction is delivered
+ under it ([components_left_adjoint_discrete_Sets]).
+ - Riehl's path-components functor is the satellite
+ Instance/Top/Components/Paths.v's; no comparison of path
+ components with connected components is delivered in either file.
+ Such a comparison would also cross a difference of codomains: the
+ satellite's [PPi0] lands in [Sets], its equality [colim_rel] being
+ Type-valued, where C lands in [PSets] (and its reading into all
+ of [Sets], [components_functor_Sets], is a left adjoint only under
+ [Untruncate]).
+ - Anything over the Type-valued [Top] beyond the refusals under
+ ENCODING; no comparison of [PTopCat] with [Top].
+ - The rest of nLab's quadruple (the points and the codiscrete space
+ on [Lconn]) and C's preservation of finite products; the component
+ of a point as a subspace, and a locally connected space as the sum
+ of its components. 
+
+ --------
+ Mac Lane，《为工作中的数学家准备的范畴》，第2版（GTM 5），
+ 从书页图像中阅读：
+ - §V.9 练习 1，书页 135（PDF 页 144）（目录 ID maclane:V.9:ex1）：
+ “对于 Top 中的局部连通空间的全子范畴 Lconn，证明 D: Set → Lconn 有一个左伴随 C，分配给每个空间 X 其连通分支的集合，但要证明这个函子 C 不能有左伴随（因为在等化器上表现不良）。”
+ - D 是 §V.9 的函子，书页 132（PDF 页141)：遗忘函子 G : Top → Set 是忠实的，并且有一个左伴随 D，它将每个集合 S 分配为 S 上的离散拓扑（即 S 的所有子集都是开集）。书中既没有定义局部连通性，也没有定义空间的连通分支，而且也没有提到等化子。- §IV.2 习题 9（Smythe），书中第 90 页（PDF 第 99 页）：对象函子 O : Cat → Set “有一个左伴随 D，它将每个集合 X 分配为 X 上的离散范畴，并且该 D 又有一个左伴随，将每个范畴分配为其连通分支的集合”；同一页的习题 7(b) 为范畴 J 定义了“J 的连通分支”。这就是针对范畴的该习题的对应题。Riehl，《Category Theory in Context》，第 2 版，§3.3，示例 3.3.2，印刷页。99-100（PDF 第 119-120 页），请参阅页面图像
+ （目录编号 riehl:3.3:example2，Riehl 的例子 3.3.2）：
+ “通过端点包含 0, 1 : ∗ ⇉ I 进行预组合定义了一个函子 P : Top → Set^{•⇉•}，它将空间 X 映射到平行的函数对 Path(X) ≅ Top(I, X) ⇉ Top(∗, X) ≅ Point(X)，该函数对在路径的端点处进行评估。它们的并列余数 [...] 定义了 X 的路径分支集合，即 X 中点的集合通过将任意由路径连接的点对识别为同一元素的关系进行商集。命题 3.3.1 告诉我们，这个并列余数定义了一个函子，即路径分支函子 π₀ := Top → Set^{•⇉•} → Set（两个箭头分别标记为 P 和 colim）。这是 Top 上的 PATH-组件函子，与 Mac Lane 的不同；它是卫星文件 Instance/Top/Components/Paths.v 的，而不是本文件的。 nLab:  https://ncatlab.org/nlab/show/Top 
+ nLab:  https://ncatlab.org/nlab/show/locally+connected+space 
+ nLab:  https://ncatlab.org/nlab/show/connected+space 
+ Wikipedia:  https://en.wikipedia.org/wiki/Locally_connected_space背景。“拓扑空间通常并非其连通分支的互不相交的并集空间（Top中的余积）。对于所有开子空间都成立的空间就是局部连通的拓扑空间”（nLab），等价于那些“每个点都有由连通开子集构成的邻域基础”的空间（nLab的定义；维基百科的定义相同）。在这样的空间中，每个分量都是开放的，因此是开闭的，nLab 推导出集合函子（functors to sets）的结论：在局部连通空间上，有“一个伴随四重（adjoint quadruple）的伴随函子 Π₀ ⊣ Δ ⊣ Γ ⊣ ∇ : Set → LocConn”，Π₀ 为连通分量，Δ 为离散空间，Γ 为点，∇ 为余离散空间，“伴随结构如同在凝聚拓扑（cohesive topos）上”；“从局部连通空间是其连通分量的直和这一事实，可以立即得出单位 X → ΔΠ₀X 的连续性。” Mac Lane 的练习是该四重中的最左边的伴随，也是它停止于此的原因：Π₀ 不保持等化子，因此它不是右伴随。局部连通性是前半部分所需的条件；如下所示，离散函子在所有空间上根本没有左伴随。类别的孪生，对于范畴，Mac Lane 的 §IV.2 练习 9，是 Instance/Cat/Components.v 的 [Components_Disc_Adjunction : Pi0 ⊣ Cat_Disc]，关于类别的 Theory/Connected/Components.v 的 π₀。编码。一切都发生在 Instance/Top/Prop.v 的 [PTopCat] 上，由维护者根据 §V.9 问题的决定。在 Instance/Top.v 的类型值 [Top] 上，墙是函子，而不是分量关系。C 必须落在点集合主义者之间，即 [Sets@{o so}] 的对象，并且一个函子 [Top@{h o} ⟶ Sets@{o so}] 被拒绝（“无法强制 o = ... 因为 o < h <= ...”）：[Top] 的同态位于 [h] 上，位于点之上，而函子无法降低同态的层级，这也是 Instance/Top/Forgetful.v 的头部给出的在 [Sets@{h so}] 中安放其基础集函子的原因。在一个宇宙中，上方函子是可构造的，并且在 [Top] 和 [Sets@{h so}] 之间的 [Adjunction] 记录也是可构造的，但其右伴随不是 Forgetful.v 的离散函子 [Top_Discrete : Sets@{o so} ⟶ Top@{h o}]，因为其定义域必须是点的集合同构（"无法强制 ... = h 因为 h < ..."）。该关系本身在 [Top] 上是可构造的：在那里的 [comp_rel] 重新表述，其邻域是 [ex (fun O : X → Type@{o} => inhabited (IsOpen X O) /\ ...)]，是一个命题，在仅点的宇宙的封闭宇宙列表 [@{o}] 下被接受，而 [About] 在 Rocq 9.1 上回读为空约束块。只有它的类型值形式在 [Type@{o}] 被拒绝，每个形式都显示“宇宙不一致：无法强制 o < o 因为 o = o”：类型值子集的求和 [{ W : X → Type@{o} & (W x * W y) }]，准组成形式 [∀ U : X → Type@{o}, IsOpen X U → U x → U y] 和在离散目标上量化的连通性 [∀ (S : SetoidObject@{o o}) (g : X → S), ...]；在 [Type@{h}] 下使用 [o < h]，这三种形式都被接受。Test/ProbeComponents462.v 将函子固定为 N1，将伴随映射固定为 N2，每个旁边是其控制一个宇宙向上的形式，三种类型值形式作为 N3、N4 和 N5，分别旁边是它们的形式，而命题值关系作为控制 [tcomp_rel_prop]。在 [PTopCat] 上，homs 位于点的宇宙（Instance/Top/Prop.v 的 [PMor]），下面的每个关系都是一个命题，并且组件位于点的宇宙 [o]。MAC LANE 的集合：命题集合，以及 [Sets] 在 [Untruncate] 下的所有内容。树的 [Sets] 具有一个类型值的 [≈]，而连续性是一个命题，组件关系 [comp_rel] 也是一个命题，并且命题不会被消除为类型。从 [comp_rel X x y] 提取一个类型值的证据被拒绝，将 [inhabited (pmap g x ≈ pmap g y)] 转换为 [pmap g x ≈ pmap g y] 也不被允许（“在归纳类型‘inhabited’中错误地消除了‘HR’：返回类型的範畴为'Type'，而它应为 SProp 或 Prop”），Test/ProbeComponents462.v 的 N6 和 N7；通过目标的 [PropEquiv] 被接受，Lib/Setoid/Propositional.v 的 [pequiv_elim_inhabited]，对该探针的控制。阻碍不仅存在于证明中。[components_on_all_Sets_unsquashes]：离散函子 [LDisc : Sets ⟶ Lconn] 的任何左伴随都会产生 [inhabited (∀ Q : Type@{o}, inhabited Q → Q)]。在不可分的两点空间中的单位是连续映入离散空间的，因此它的两个值只是简单地相等，并且将恒等映射转置到两点集的集合上，其 [true ≈ false] 为 [Q]（[SquashSetoid]，一旦 [Q] 仅仅被占据就连续，[squash_id_cont]）会解压 [Q]。该原理是 Instance/Sets/Classifier/OneLevel.v 的假设 [Untruncate@{o}] 的截断，[∀ P : Type@{o}, Powerset_squash P → P]：每个给出另一个（[unsquash_Untruncate], [Untruncate_unsquash]），并且 [components_on_all_Sets_Untruncate] 将结论表述为 [inhabited Untruncate@{o}]；[unsquash_choice] 来源于类型之间关系的函数选择原理位于 [o]。其逆命题也成立。在 [Untruncate] 下，任意集合体上的连续映射到离散空间在分量上是常值的（[comp_respect_U]：沿着连通子集携带的命题是 [Powerset_squash] 的 [≈]），并且 [components_left_adjoint_discrete_Sets U : components_functor_Sets ⊣ LDisc] 是 Mac Lane 的伴随，其中他的集合字面上读作所有的 [Sets]，[components_functor_Sets] 是 C 后跟 [PSets] 的包含。因此，字面陈述在 [Untruncate] 下成立，而且其形状的任何伴随都使得 [Untruncate] 只是成立：假设的截断是必要的。[Untruncate] 在树中没有无公理的元素，并且从信息化排中律（OneLevel.v 的标题和 [untruncate_of_IEM]）可以推导出。因此，Set 被无条件地读取为 [PSets]，即 [Sets] 的子范畴全体，它作用于那些等式在逻辑上为命题的集合体（Instance/Sets/Propositional.v 的 [PropEquivObj]），这是具体代数范畴采取的读取方式（参见 Structure/Complete.v 头部的大小说明）。这是超出 [PTopCat] 编码（上文 ENCODING）的书中陈述的唯一偏差，并且它在 [Sets] 下通过 [Untruncate] 提升。更正（#1349）：上述 [SquashSetoid] 现在是 Instance/Sets/Propositional/Full.v 的内容，而 [unsquash_Untruncate] 和 [Untruncate_unsquash] 是从该文件的 [untr_of_choice] 和 [choice_of_untr] 推导出来的，#469 已在 Instance/Pos/Monadicity.v 中声明。这里是什么。- 连通性，命题值。[LocConstOn X W φ]：一个命题值 [φ] 在 [W] 上是局部常数的；[PConnectedSub X W]：每一个这样的 [φ] 在 [W] 上是常数的；[PConnected X]：整个空间是。[PLocConn X] 是 nLab 和维基百科的定义：一个点的每个开邻域都包含一个连通的开邻域。[comp_rel X x y]：x 和 y 位于同一个连通子集中的关系，其类是连通分支；它是一个构造性的等价关系（[point_connected]：一个点是连通的；[union_connected]：两个共享一个点的连通子集的并集是连通的）。[CompSet X] 是分支的集合，是 [comp_rel] 下的点；[comp_PropEquiv]：它的相等性就是命题 [comp_rel] 本身。- 其他形式。[PConnectedSep]：两个互不相交的开集覆盖空间并不会将其分裂；[PConnectedBool]：每一个连续映射到[PBool]都是常数映射。[connected_no_separation]和[connected_bool_constant]都源自[PConnectedSub]对于一个子集的情况，[PConnected_Sep]和[PConnected_Bool]对应空间的情况。局部常值形式是伴随需要的那一种：它的伴随映射定义φ z := [pequiv (g x) (g z)]，这是一个命题，其中a [bool]-值指示器需要目标上的可判等式。- [image_connected]：连通子集的连续像是连通的；因此[comp_setoid_map]以及[CompTop : PTopCat ⟶ PSets]，作用于[PTopCat]所有对象的连通分支函子，不需要局部连通性。- 范畴。[PSets]：[Sub]在[PropEquivObj]上的[Sets]（[PSetsSub]）。[Lconn] ：在 [PLocConn] 上的 [PTopCat] 的 [Sub] （[Lconn_Sub]，Instance/Top/Separation.v 的 [PFullSub]）。两者都是手动固定的，正如 Instance/Top/Hausdorff.v 固定 [Haus] 一样。更正 (#1349)：#469 再次构建了相同的类别，如 Instance/Sets/Propositional/Full.v 的 [PropSets_sub] 和 [PropSets]；根据维护者统一它们的决定，[PSetsSub] 和 [PSets] 现在定义为这两个类别，并使用 #462 的名称，因此 [PSets] 的手动固定在该文件中。- [components_functor : Lconn ⟶ PSets]，Mac Lane 的 C，本问题的固定名称：包括后的 [CompTop]。- D.[LDisc : Sets ⟶ Lconn] 是 Instance/Top/Complete.v 的 [PDisc] 核心限制在 [Lconn] 上，而不是第二个离散函子：它的对象部分和箭头部分是 [PDisc] 的（[LDisc_PDisc_obj]，[LDisc_PDisc_fmap]），它的三个函子定律是 [PDisc] 的，并且 [pdisc_locconn]，离散空间是局部连通的。[PSetsDisc : PSets ⟶ Lconn]，Mac Lane 的 D，是 [LDisc] 在包含 [PSets] 之后。- [components_left_adjoint_discrete : components_functor ⊣ PSetsDisc]，固定名称，由 Theory/Adjunction.v 的 [Build_Adjunction'] 从 [comp_adj_iso] 出发，是一个在点上双向恒等的 Hom 集双射。[comp_respect]：映射到命题集上离散空间的连续映射在各组成部分上是常值的。[comp_cont]：在一个局部连通空间中，一个在连通分支上恒定的映射到离散空间是连续的，其开集的原象是与之相交的连通开集的并。局部连通性仅使用一次，即在整个空间中，为每个点找到一个连通开邻域（参考 [comp_cont] 的证明），所以该伴随在更大类空间上也成立，即每个点都有连通开邻域；书中保留了这个类。——Mac Lane 的集合作为所有 [Sets]，在 [Untruncate] 下（见上文 MAC LANE'S SET）。[components_functor_Sets : Lconn ⟶ Sets] 是 C，随后包含了 [PSets]；[comp_adj_iso_U] 拥有 [comp_adj_iso] 的两个映射，并且为了尊重后者使用 [comp_respect_U]；以及 [components_left_adjoint_discrete_Sets U : components_functor_Sets ⊣ LDisc]。另一个方向是 [components_on_all_Sets_unsquashes] 与 [components_on_all_Sets_Untruncate]、[unsquash_Untruncate]、[Untruncate_unsquash] 和 [unsquash_choice]。- 练习 1 的后半部分，关于一个具体的等化器。[PZig]，点 [zig_a]、[zig_c]、[zig_b] 使用 [zig_a] 和 [zig_b] 开放，并且整个空间是唯一包含 [zig_c] 的开集，是连通的（[PZig_connected]，因此 [PZig_one_component]）并且局部连通（[PZig_PLocConn]）。成对的 [zig_f_map]（在 [false] 上为恒定）和 [zig_g_map]（[true] 恰好在 [zig_c] 上）进入 Instance/Top/Cocomplete.v 中不可分离的两点空间 [PTwoIndisc]，其等化器是由两个开点形成的离散两点空间 [PBool]（[PTop_zig_equalizer] 在 [PTopCat] 中，[Lconn_zig_equalizer] 在 [Lconn] 中，由于充实性）。[components_zig_not_preserved]：在 C 下的像不是等化器，因为等化映射的 C 将 [PBool]（[pbool_two_components]）的两个分量识别为同一，而等化映射是单射的（Structure/Equalizer/Fork.v 的 [equalizer_monic]）。[components_no_left_adjoint]，被固定的名称：每个带有 [L ⊣ components_functor] 的 L 都被 Adjunction/Continuity/Equalizer.v 上该等化器的 [not_PreservesEqualizers_no_left_adjoint] 所否定。——对于 D 的任何左伴随。[discrete_left_adjoint_not_preserved]：
+ 每个 C 与 [C ⊣ PSetsDisc]，无论其定义如何，都将相同的等化器发送到一个不是分叉的叉。位于 [PZig] 的单元连续进入一个离散空间，因此它识别 [zig_a]、[zig_c] 和 [zig_b] 的像，并且通过自然性也识别 [PBool] 的两个点的像，而 [PBool] 的恒等转置将它们分开。[discrete_left_adjoint_no_left_adjoint]：没有这样的 C 拥有左伴随。- 第二个证据。[Lconn_swap_equalizer]：[PTwoIndisc] 的恒等和交换 [swap_L] 具有空的离散空间 [LEmpty]（位于 Theory/Concrete.v 的 [empty_setoid_object]）作为它们在 [Lconn] 中的等化器。[components_swap_not_preserved]：C 将其发送到一个顶点为空的叉，而两点空间的一个分量则将像对分叉。- 对 [Lconn] 的限制买到了什么。[pconv_not_locconn]：
+ Instance/Top/Complete.v 的收敛序列 [PConv] 不是局部连通的，一个孤立点 [Some K] 在极限点的任意开邻域中都是相对开闭的。[discrete_no_left_adjoint_on_PTop]：D 映入整个 [PTopCat] 
+ （[PSetsDiscTop]，[PDisc] 在包含 [PSets] 后）没有左伴随。[PConv] 处的单位映射是连续映入一个离散空间，因此在一个尾段上是常数，并且 Complete.v 中该尾段某点的指标 [pconv_ind_mor N] 会通过它因子分解。[PDisc_no_left_adjoint]：[PDisc : Sets ⟶
+ PTopCat] 本身也是如此，开集是一个截断 [inhabited]，被消去到目标 [False]。书中只陈述了 [Lconn] 的一半。优势，严格度优先测量。- 在 [eq_refl] ：[components_obj]（C X 是 X 空间的 [CompSet]），[components_equiv]（其等式是 [comp_rel]），[components_fmap]（C f 在点上是 f），[LDisc_PDisc_obj]，[LDisc_PDisc_fmap]，[PSetsDisc_obj]（D S 是 S 上的离散空间），[adj_to_points] 和 [adj_from_points]（两个转置在点上都是恒等），[components_unit_points]（单位将一个点发送到其作为组件集合的点自身），以及 [adj_Sets_to_points] 和 [adj_Sets_from_points]（相同的两个转置用于读入整个 [Sets]）。- 到 [≈]：函子定律和等化器的泛性质。反驳是 [… → False] 陈述，并且不使用任何经典原则。- 十一项证明结束于 [Defined]（按标记计数）。十个是承重的，通过单独关闭每个 [Qed] 在这个文件的草稿副本中并读取第一拒绝来测量：
+ [comp_setoid_map]（[CompTop] 的义务），
+ [components_left_adjoint_discrete]（[adj_to_points]），
+ [components_left_adjoint_discrete_Sets]（[adj_Sets_to_points]），
+ [SquashSetoid]（[squash_id]），[squash_id]（[squash_id_cont]），
+ [PZig]（[PZig_connected]），[zig_f_set]，[zig_g_set] 和
+ [zig_e_set]（[PTop_zig_equalizer]），以及 [swap_set]
+ （[Lconn_swap_equalizer]）。[empty_set_map] 仅按照数据约定是 [Defined]：关闭 [Qed]，文件中没有内容被拒绝。56 [Qed]，通过标记计数。更正 (#1349)：十个 [Defined] 和 52 [Qed] 现在，通过标记。[SquashSetoid] 移动到了 Instance/Sets/Propositional/Full.v，在那里它仍然是 [Defined]，并且仍然对 [squash_id]（该文件的 STRENGTHS）起支撑作用，[squash_sym] 和 [squash_trans] 随之移动；[unsquash_Untruncate] 和 [Untruncate_unsquash] 是按项定义的。剩下的十个，即上面提到的九个以及 [empty_set_map]，按上述方式测量。- 文件的每个常量在全局上下文下都是封闭的（[Print Assumptions] 对每个，包括义务、归纳类型、它的构造函数及其方案）。宇宙，由 [About] 在 [Set Printing Universes] 下读取，涉及本文件 [Print Module] 列表的全部 125 个常量（[CompTop]、[LDisc]、[comp_adj_iso] 和 [comp_adj_iso_U] 的十四项义务，以及带有其四个方案的归纳 [zig_pt]；其中没有声明记录）。更正 (#1349)：现在为 121，压缩集合的四个元素已移动到 Instance/Sets/Propositional/Full.v。[About] 在 #1349 前后的树中，每个 121 个及移动的四个元素读取同样的块。- 在 [Set] 没有固定的宇宙，也没有块携带 [Set < o]：这些点可能在 [Set]。在 [o := Set]、[components_left_adjoint_discrete]、[components_left_adjoint_discrete_Sets]、[components_no_left_adjoint]、[discrete_left_adjoint_no_left_adjoint]、[components_on_all_Sets_unsquashes]、[components_on_all_Sets_Untruncate]、[discrete_no_left_adjoint_on_PTop]、[PDisc_no_left_adjoint]、[components_zig_not_preserved] 和 [components_swap_not_preserved] 下被接受于 [Set < so]，并且，当一个假设的附加引入其自身的对象宇宙时，[Set] 位于该宇宙之下：Test/ProbeComponents462.v 的十个控件名为 [p462_..._at_Set] - [Set < so] 由61个模块承载，绑定的 [PTopCat] 记录了 [PTop] 的类型，而 [PSetsSub] 记录了 [PropEquivObj] 的 (Instance/Sets/Propositional.v 的 [PropEquivObj@{u u0 u1}] 有 [Set < u]); [o < so] 表明它。 - [PSets@{o so} : Category@{so o o}] 是 [Sub@{so o so o so o so}]，并且 [Lconn@{o so} : Category@{so o o}] 是 [Sub@{so o o o so o so}]。[PSetsSub] 的对象谓词位于 [so]，而不是 [o]：
+ 放置在 [o] 时，仅在其块中有 [Set < o] 时才被接受
+ （由 [About] 在需要此文件的临时文件中读取），而在
+ [o := Set] 时被拒绝（“宇宙不一致。无法强制执行 Set < Set 因为 Set = Set”），[PropEquivObj S] 的排序至少是 [Set+1]：Test/ProbeComponents462.v 的 N8，旁边是控制 [p462_psets_sub_at_o] 和 [p462_psets_sub_Set]。[components_functor]、[components_functor_Sets]、[PSetsDisc] 和 [PSetsDiscTop] 引脚 Theory/Functor.v 的 [Compose@{u u0 u1 u2 u3}]，其自身块是 [u3 < u2]，在 [@{so so so so o}]：其辅助 [u2] 是 [so]。- [components_left_adjoint_discrete@{o so}] 和 [components_left_adjoint_discrete_Sets@{o so}]：[Adjunction] 记录在 [@{so o o so o o o o so o so}]。他们的同态同构存在于 [Sets@{o so}]（[comp_adj_iso]，[comp_adj_iso_U]）；该记录的最后一个槽在 [Adjunction] 自身块中没有约束（Instance/Top/Complete.v 的 [PDisc_PForget@{o so u u0}] 将其作为 [u0] 保持自由），被固定在 [so]。——以 [Adjunction] 作为假设的定理被绑定为 [@{o so +| o < so +}]，因此它们否定每个宇宙实例的连接：[components_on_all_Sets_unsquashes]，[components_on_all_Sets_Untruncate]，[components_no_left_adjoint]，[discrete_left_adjoint_not_preserved]，[discrete_no_left_adjoint_on_PTop] 和 [PDisc_no_left_adjoint] 会使用 [o < u] 读回 [@{o so u u0}]，[u] 是假设的同态同构的对象宇宙。[discrete_left_adjoint_no_left_adjoint@{o so ua ub u u0}] 取两个附加并在其绑定器中命名它们的对象宇宙 [ua] 和 [ub] ，每个都位于 [o] 之上；在裸绑定器 [@{o so +| o < so +}] 下测量，最小化将两者识别为相同，并回读 [@{o so u u0 u1}] 与两个假设中的同一 [u]。- 严格的标准库限制。[o < Projections.u0] 由九个块承载，首先按依赖顺序由 [comp_adj_iso_obligation_3] ，它投影 [Lconn] 的对象，其第一个组件是位于 [o+1] 的 [PTop@{o}]；它们中的每一个也携带 [so <= Projections.u0] 与 [o < so] ，这意味着它。[o < False_rect.u0] 由五个模块承载，[LEmpty]、[Lconn_swap_equalizer]、[components_swap_not_preserved]、[empty_set_map] 和 [swap_e]，从 Instance/Sets.v 的 [False_Setoid@{u}]，它自身的模块是 [u < False_rect.u0]，通过 Theory/Concrete.v 的 [empty_setoid_object@{t u}]（模块 [t < False_rect.u0]、[t = u]）。- 空模块：连通性谓词和引理（[LocConstOn]、[PConnectedSub]、[PConnected]、[PLocConn]、[comp_rel] 及其三个律法、[point_connected]、[union_connected]、[locconst_restrict]、[connected_no_separation]、[PConnectedSep]、[PConnected_Sep]）、[CompSetoid]、[CompSet]、[comp_PropEquiv]、[comp_respect]、[comp_cont]、[pdisc_locconn]、压缩集合等价类（[squash_rel]、[squash_sym]、[squash_trans]、[SquashSetoid]）、[unsquash_Untruncate]、[Untruncate_unsquash] 和 [comp_respect_U]。更正 (#1349)：压缩集的四个现在是 Full.v 的，用这些空块，并且两个 [Untruncate] 常量现在是派生的，保持它们的空。其余的 [@{o}] 常量，但上面的 [empty_set_map] 仅携带 stdlib caps（[o <= Logic_lemmas.equality.u0]、[eq_Setoid] 和 [bool_setoid_object]；一些证明的 [eq_ind]、[eq_ind_r] 或 [eq_rect_r] caps；[unsquash_choice] 的 [o <= Subset_projections.u0]）。[zig_pt] 及其构造函数，[zig_pt_ind]、[zig_pt_sind]、[zig_g_fun]、[zig_e_fun]、[zig_lift_fun] 和 [negb_no_fixpoint] 是 [@{}]；[zig_pt_rect] 和 [zig_pt_rec] 是 [@{u}]，即动机。路线和成本。[Print Libraries] 在一个需要它的文件上列出了除了它之外的 117 个 [Category.*] 模块；其中十六个带有 Instance/Sets/Powerset.v 和 Instance/Sets/Classifier/OneLevel.v，这些文件是 [Powerset_squash] 和 [Untruncate] 所需的（不包括这两个 Requires 的计数为 101）。修正 (#1349)：除了它之外现在是 118 个，多了一个 Instance/Sets/Propositional/Full.v，这个文件是 [PSets] 和压缩等价类集所需的；仍有十六个附带这两个文件（不带它们计数为 102，测量方式相同）。Theory/Concrete.v 是必需的，但未被导入：它声明了自己的 [bool_setoid_object]，这将覆盖 Instance/Sets.v 中的 [PBool] 和 [PTwoIndisc] 所依赖的内容。Coq.Arith.PeanoNat 提供了 [PConv] 的参数。未交付。- 已连接性桥的逆命题：[PConnectedSep] 或 [PConnectedBool] 暗示 [PConnected] 需要在每个点作出 [φ] 的决定（排中律，对于 [bool] 形式是信息性的）；未尝试。经典情况下，三种形式一致。- 空集：nLab 的连通空间页面不认为它是连通的，[PConnectedSub] 对空谓词成立，形式上成立。对 [comp_rel] 无关紧要，其子集包含它们相关的点。- 无条件地附加到所有 [Sets]：任何这样的附加都使 [Untruncate] 仅仅成立（[components_on_all_Sets_Untruncate]），并且 [Untruncate] 在树中没有无公理的成员；附加在其下交付（[components_left_adjoint_discrete_Sets]）。- Riehl 的路径分量函子是卫星  
+ Instance/Top/Components/Paths.v 中的；在任一文件中都没有路径分量与连通分量的比较。这样的比较也会跨越陪域的差异：  
+ 卫星的 [PPi0] 落在 [Sets]，其等式 [colim_rel] 是类型值的，而 C 落在 [PSets]（并且其进入 [Sets]、[components_functor_Sets] 的映射，仅在 [Untruncate] 下为左伴随）。  
+ - 在类型值的 [Top] 上的任何内容，超出 ENCODING 下的拒绝；没有 [PTopCat] 与 [Top] 的比较。- nLab 四元组的其余部分（点和  [Lconn] 上的余连续空间）以及 C 对有限乘积的保持；点的分量作为子空间，以及局部连通空间作为其分量的总和。
 *)
 
 #[local] Obligation Tactic := idtac.
 
-(* * ** Connectedness, Prop-valued locally-常值 form （已译） *)
+(* * ** Connectedness, in the Prop-valued locally-constant form / * ** 连接性，在取值为命题的局部常值形式中 *)
 
-(* A Prop-valued function [φ] locally 常值 subset [W]: every
- point [W] has open neighbourhood whose trace [W] value of
- [φ] does not change. （已译） *)
+(*
+ A Prop-valued function [φ] is locally constant on the subset [W]: every
+ point of [W] has an open neighbourhood on whose trace in [W] the value of
+ [φ] does not change. 
+
+ --------
+ 一个取 Prop 值的函数 [φ] 在子集 [W] 上是局部常数的：[W] 的每个点都有一个开邻域，在该邻域与 [W] 的交集上，[φ] 的值保持不变。
+*)
 Definition LocConstOn@{o} (X : PTop@{o}) (W φ : X → Prop) : Prop :=
   ∀ z, W z → ex (fun O => POpen X O /\ O z /\
                            ∀ w, W w → O w → (φ w <-> φ z)).
 
-(* [W] is connected: every Prop-valued function locally constant on [W] is
-   constant on [W]. *)
+(*
+ [W] is connected: every Prop-valued function locally constant on [W] is
+ constant on [W]. 
+
+ --------
+ [W] 已连接：每一个在 [W] 上局部恒定的 Prop 值函数在 [W] 上是恒定的。
+*)
 Definition PConnectedSub@{o} (X : PTop@{o}) (W : X → Prop) : Prop :=
   ∀ φ, LocConstOn X W φ → ∀ a b, W a → W b → φ a → φ b.
 
-(* 相关说明。 （已译） *)
+(* The space is connected: the whole space is a connected subset. / 该空间是连通的：整个空间是一个连通子集。 *)
 Definition PConnected@{o} (X : PTop@{o}) : Prop :=
   PConnectedSub X (fun _ => True).
 
-(* Local connectedness: every open neighbourhood of a point contains a
-   connected open neighbourhood of it. *)
+(*
+ Local connectedness: every open neighbourhood of a point contains a
+ connected open neighbourhood of it. 
+
+ --------
+ 局部连通性：一点的每个开邻域都包含它的一个连通开邻域。
+*)
 Definition PLocConn@{o} (X : PTop@{o}) : Prop :=
   ∀ x U, POpen X U → U x →
     ex (fun N => POpen X N /\ N x /\ (∀ y, N y → U y) /\ PConnectedSub X N).
 
-(* Two points lie common connected subset: 关系 whose classes
- connected components. （已译） *)
+(*
+ Two points lie in a common connected subset: the relation whose classes
+ are the connected components. 
+
+ --------
+ 两点位于一个共同的连通子集中：其类是连通分支的关系。
+*)
 Definition comp_rel@{o} (X : PTop@{o}) (x y : X) : Prop :=
   ex (fun W => PConnectedSub X W /\ W x /\ W y).
 
@@ -76,7 +539,7 @@ Proof.
   intros w ww Ow; exact (HOw w (HW w ww) Ow).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* A point, as the subset of the points equal to it, is connected. / 一个点，作为等于它的点的子集，是连通的。 *)
 Lemma point_connected@{o} (X : PTop@{o}) (x : X) :
   PConnectedSub X (fun z => inhabited (x ≈ z)).
 Proof.
@@ -100,7 +563,7 @@ Lemma comp_rel_sym@{o} (X : PTop@{o}) (x y : X) :
   comp_rel X x y → comp_rel X y x.
 Proof. intros [W [HW [wx wy]]]; exists W; exact (conj HW (conj wy wx)). Qed.
 
-(* Two connected subsets sharing a point have a connected union. *)
+(* Two connected subsets sharing a point have a connected union. / 两个共享一个点的连通子集的并集是连通的。 *)
 Lemma union_connected@{o} (X : PTop@{o}) (W1 W2 : X → Prop) (c : X) :
   PConnectedSub X W1 → PConnectedSub X W2 → W1 c → W2 c →
   PConnectedSub X (fun z => W1 z \/ W2 z).
@@ -124,7 +587,7 @@ Proof.
   exact (conj (or_introl w1x) (or_intror w2z)).
 Qed.
 
-(* The points under component 关系. （已译） *)
+(* The points under the component relation. / 在组成关系下的点。 *)
 Definition CompSetoid@{o} (X : PTop@{o}) : Setoid@{o o} X := {|
   equiv := comp_rel X;
   setoid_equiv := {|
@@ -133,29 +596,34 @@ Definition CompSetoid@{o} (X : PTop@{o}) : Setoid@{o o} X := {|
     Equivalence_Transitive := comp_rel_trans X |}
 |}.
 
-(* 相关说明。 （已译） *)
+(* The set of connected components, at the points' universe. / 在点的宇宙中的连通分支集合。 *)
 Definition CompSet@{o} (X : PTop@{o}) : SetoidObject@{o o} :=
   {| carrier := pt_carrier X; is_setoid := CompSetoid X |}.
 
-(* Its equality is a proposition, [comp_rel] itself. *)
+(* Its equality is a proposition, [comp_rel] itself. / 它的平等性是一个命题，[comp_rel]本身。 *)
 Definition comp_PropEquiv@{o} (X : PTop@{o}) :
   PropEquiv@{o o} (is_setoid (CompSet X)) :=
   @PropEquiv_of_relation@{o o} _ (CompSetoid X) (comp_rel X)
     (fun _ _ h => h) (fun _ _ h => h).
 
-(* 相关说明。 （已译） *)
+(* * ** The no-separation and two-point forms / * ** 无分隔和两点形式 *)
 
-(* No separation of the space by two disjoint open sets covering it. *)
+(* No separation of the space by two disjoint open sets covering it. / 空间不能被两个互不相交的开集覆盖而分开。 *)
 Definition PConnectedSep@{o} (X : PTop@{o}) : Prop :=
   ∀ U V, POpen X U → POpen X V → (∀ z, U z \/ V z) →
     (∀ z, U z → V z → False) → ∀ a b, U a → U b.
 
-(* Every continuous map into the discrete two-point space is constant. *)
+(* Every continuous map into the discrete two-point space is constant. / 每个连续映射到离散两点空间都是常值映射。 *)
 Definition PConnectedBool@{o} (X : PTop@{o}) : Prop :=
   ∀ g : PMor@{o} X PBool@{o}, ∀ a b, pmap g a = pmap g b.
 
-(* A connected subset lies in one side of every pair of disjoint opens
-   covering it. *)
+(*
+ A connected subset lies in one side of every pair of disjoint opens
+ covering it. 
+
+ --------
+ 一个连通子集位于覆盖它的每一对不相交开集的一侧。
+*)
 Lemma connected_no_separation@{o} (X : PTop@{o}) (W : X → Prop)
   (HW : PConnectedSub X W) (U V : X → Prop) :
   POpen X U → POpen X V → (∀ z, W z → U z \/ V z) →
@@ -173,8 +641,13 @@ Proof.
     + destruct (Hdis z wz h vz).
 Qed.
 
-(* A continuous map into the discrete two-point space is constant on a
-   connected subset. *)
+(*
+ A continuous map into the discrete two-point space is constant on a
+ connected subset. 
+
+ --------
+ 映射到离散的两点空间的连续映射在连通子集上是常数映射。
+*)
 Lemma connected_bool_constant@{o} (X : PTop@{o}) (W : X → Prop)
   (HW : PConnectedSub X W) (g : PMor@{o} X PBool@{o}) :
   ∀ a b, W a → W b → pmap g a = pmap g b.
@@ -200,7 +673,7 @@ Corollary PConnected_Bool@{o} (X : PTop@{o}) :
   PConnected X → PConnectedBool X.
 Proof. intros H g a b. exact (connected_bool_constant X _ H g a b I I). Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Continuous images of connected sets are connected / * ** 连续映射下的连通集是连通的 *)
 
 Lemma image_connected@{o} {X Y : PTop@{o}} (f : PMor@{o} X Y)
   (W : X → Prop) :
@@ -229,7 +702,7 @@ Proof.
          |exists x'; exact (conj wx' eq_refl)].
 Qed.
 
-(* A continuous map sends components into components. *)
+(* A continuous map sends components into components. / 连续映射将连通分支映射到连通分支。 *)
 Definition comp_setoid_map@{o} {X Y : PTop@{o}} (f : PMor@{o} X Y) :
   SetoidMorphism@{o o o} (CompSet X) (CompSet Y).
 Proof.
@@ -237,12 +710,16 @@ Proof.
   intros x x' H; exact (comp_rel_map f x x' H).
 Defined.
 
-(* * ** The 范畴: propositional sets locally connected spaces （已译） *)
+(* * ** The categories: propositional sets and locally connected spaces / * ** 类别：命题集与局部连通空间 *)
 
 (*
-   本节说明 Components 相关定义、性质与动机。
+ Mac Lane's Set, read as the full subcategory of [Sets] on the setoids
+ whose equality is a proposition.  Since #1349 it is
+ Instance/Sets/Propositional/Full.v's [PropSets], under #462's names;
+ [About] reads the same blocks for both names as before. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 麦克莱恩的集合，被读作集合论子类别 [Sets] 在那些其等式是命题的集合标记上。自 #1349 起，它是 Instance/Sets/Propositional/Full.v 的 [PropSets]，根据 #462 的命名；[About] 对于两个名字读取相同的块，如前所述。
 *)
 Definition PSetsSub@{o so | o < so +} : Subcategory@{so o so o} Sets@{o so} :=
   PropSets_sub@{o so}.
@@ -250,7 +727,7 @@ Definition PSetsSub@{o so | o < so +} : Subcategory@{so o so o} Sets@{o so} :=
 Definition PSets@{o so | o < so +} : Category@{so o o} :=
   PropSets@{o so}.
 
-(* 相关说明。 （已译） *)
+(* Mac Lane's Lconn: the full subcategory of [PTopCat] on the locally connected spaces. / Mac Lane 的 Lconn：在局部连通空间上的 [PTopCat] 的全子范畴。 *)
 Definition Lconn_Sub@{o so | o < so +} :
   Subcategory@{so o o o} PTopCat@{o so} :=
   PFullSub@{o so} PLocConn@{o}.
@@ -258,9 +735,9 @@ Definition Lconn_Sub@{o so | o < so +} :
 Definition Lconn@{o so | o < so +} : Category@{so o o} :=
   Sub@{so o o o so o so} PTopCat@{o so} Lconn_Sub@{o so}.
 
-(** ** The components functor *)
+(** ** The components functor / ** 组件函子 *)
 
-(* On all [PTopCat]: no local connectedness needed 函子. （已译） *)
+(* On all of [PTopCat]: no local connectedness is needed for the functor. / 在所有的 [PTopCat] 上：该函子不需要局部连通性。 *)
 Program Definition CompTop@{o so | o < so +} :
   PTopCat@{o so} ⟶ PSets@{o so} := {|
   fobj := fun X => (CompSet X; comp_PropEquiv X);
@@ -274,13 +751,13 @@ Next Obligation.
   intros X Y Z f g x; simpl. apply comp_rel_of_equiv; reflexivity.
 Qed.
 
-(* Mac Lane's C, on the locally connected spaces. *)
+(* Mac Lane's C, on the locally connected spaces. / 麦克莱恩的《C》，关于局部连通空间。 *)
 Definition components_functor@{o so | o < so +} :
   Lconn@{o so} ⟶ PSets@{o so} :=
   @Compose@{so so so so o} Lconn@{o so} PTopCat@{o so} PSets@{o so}
     CompTop@{o so} (Incl@{so o o o so so} PTopCat@{o so} Lconn_Sub@{o so}).
 
-(* * ** The discrete-space 函子 [Lconn] （已译） *)
+(* * ** The discrete-space functor into [Lconn] / * ** 离散空间函子到 [Lconn] *)
 
 Lemma pdisc_locconn@{o} (S : SetoidObject@{o o}) : PLocConn (PDiscrete S).
 Proof.
@@ -292,8 +769,13 @@ Proof.
   - apply point_connected.
 Qed.
 
-(* Instance/Top/Complete.v's [PDisc], corestricted [Lconn]: 对象
- arrow parts, three laws. （已译） *)
+(*
+ Instance/Top/Complete.v's [PDisc], corestricted to [Lconn]: its object
+ and arrow parts, and its three laws. 
+
+ --------
+ Instance/Top/Complete.v 的 [PDisc] ，限制到 [Lconn] ：它的对象和箭头部分，以及它的三个定律。
+*)
 Program Definition LDisc@{o so | o < so +} : Sets@{o so} ⟶ Lconn@{o so} := {|
   fobj := fun S => (fobj[PDisc@{o so}] S; pdisc_locconn S);
   fmap := fun S T f => (fmap[PDisc@{o so}] f; I)
@@ -306,15 +788,20 @@ Next Obligation.
   intros S T U f g. exact (@fmap_comp _ _ PDisc@{o so} S T U f g).
 Qed.
 
-(* Mac Lane's D : Set → Lconn, at the propositional sets. *)
+(* Mac Lane's D : Set → Lconn, at the propositional sets. / Mac Lane 的 D：集合 → Lconn，在命题集合上。 *)
 Definition PSetsDisc@{o so | o < so +} : PSets@{o so} ⟶ Lconn@{o so} :=
   @Compose@{so so so so o} PSets@{o so} Sets@{o so} Lconn@{o so}
     LDisc@{o so} (Incl@{so o so o so so} Sets@{o so} PSetsSub@{o so}).
 
-(** ** Exercise 1, first half: C ⊣ D *)
+(** ** Exercise 1, first half: C ⊣ D / ** 练习 1，上半部分：C ⊣ D *)
 
-(* Every continuous map into a discrete space on a propositional set is
-   constant on each connected subset. *)
+(*
+ Every continuous map into a discrete space on a propositional set is
+ constant on each connected subset. 
+
+ --------
+ 在命题集合上，映入离散空间的每一个连续映射在每个连通子集上都是常值的。
+*)
 Lemma comp_respect@{o} (X : PTop@{o}) (S : SetoidObject@{o o})
   (P : PropEquiv@{o o} (is_setoid S)) (g : PMor@{o} X (PDiscrete S))
   (x y : X) :
@@ -338,9 +825,14 @@ Proof.
       exact (transitivity (pequiv_to _ _ q) (pequiv_to _ _ p)).
 Qed.
 
-(* In locally connected space every map 常值 components is
- continuous 进入 discrete space: components open. Local
- connectedness used once, at whole space. （已译） *)
+(*
+ In a locally connected space every map constant on components is
+ continuous into the discrete space: the components are open.  Local
+ connectedness is used once, at the whole space. 
+
+ --------
+ 在局部连通的空间中，每个在连通分支上恒定的映射都是到离散空间的连续映射：连通分支是开集。局部连通性仅在整个空间上使用一次。
+*)
 Lemma comp_cont@{o} (X : PTop@{o}) (LC : PLocConn X) (S : SetoidObject@{o o})
   (h : SetoidMorphism@{o o o} (CompSet X) S) :
   @PCont X (PDiscrete S)
@@ -364,7 +856,7 @@ Proof.
   - apply popen_union. intros N [HN _]; exact HN.
 Qed.
 
-(* The hom-set bijection: both directions 恒等 points. （已译） *)
+(* The hom-set bijection: both directions are the identity on points. / Hom-集双射：两个方向在点上都是恒等映射。 *)
 Program Definition comp_adj_iso@{o so | o < so +}
   (X : Lconn@{o so}) (S : PSets@{o so}) :
   @Isomorphism Sets@{o so}
@@ -395,7 +887,7 @@ Proof.
   - intros x y z f g t; simpl. reflexivity.
 Defined.
 
-(** ** Readbacks *)
+(** ** Readbacks / ** 回读 *)
 
 Example components_obj@{o so | o < so +} (X : Lconn@{o so}) :
   `1 (fobj[components_functor@{o so}] X) = CompSet (`1 X) := eq_refl.
@@ -430,18 +922,22 @@ Example adj_from_points@{o so | o < so +} (X : Lconn@{o so}) (S : PSets@{o so})
   `1 (from (@adj _ _ _ _ components_left_adjoint_discrete@{o so} X S) g) x
     = pmap (`1 g) x := eq_refl.
 
-(* The unit sends each point to itself, its own component. *)
+(* The unit sends each point to itself, its own component. / 该单位将每个点发送到它本身，即它自己的分量。 *)
 Example components_unit_points@{o so | o < so +} (X : Lconn@{o so})
   (x : pt_carrier (`1 X)) :
   pmap (`1 (@unit _ _ _ _ components_left_adjoint_discrete@{o so} X)) x = x
   := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* * ** Why Set is read as the propositional sets / * ** 为什么 Set 被读作命题集 *)
 
 (*
-   本节说明 Components 相关定义、性质与动机。
+ The setoid on [bool] whose [true ≈ false] is a given type [Q] is
+ Instance/Sets/Propositional/Full.v's [SquashSetoid], over its
+ [squash_rel], [squash_sym] and [squash_trans]: #1349 moved the four
+ there from this file, names, binders and proofs unchanged. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在  [bool] 上的集合等价类，其  [true ≈ false] 是给定类型  [Q] ，是 Instance/Sets/Propositional/Full.v 的  [SquashSetoid] ，在其 [squash_rel]、[squash_sym] 和 [squash_trans] 上：#1349 将四个从此文件移动到那里，名称、绑定器和证明保持不变。
 *)
 
 Definition squash_id@{o} (Q : Type@{o}) :
@@ -451,8 +947,13 @@ Proof.
   intros x y e; simpl in e; subst; left; reflexivity.
 Defined.
 
-(* Merely inhabited [Q] makes 恒等 continuous indiscrete
- two-point space 进入 discrete space [SquashSetoid Q]. （已译） *)
+(*
+ Merely inhabited [Q] makes the identity continuous from the indiscrete
+ two-point space into the discrete space on [SquashSetoid Q]. 
+
+ --------
+ 仅被居住的 [Q] 使得从不可分二点空间到 [SquashSetoid Q] 上的离散空间的恒等映射是连续的。
+*)
 Lemma squash_id_cont@{o} (Q : Type@{o}) (iq : inhabited Q) :
   @PCont PTwoIndisc@{o} (PDiscrete (SquashSetoid Q)) (squash_id Q).
 Proof.
@@ -478,14 +979,19 @@ Qed.
 Definition LTwoIndisc@{o so | o < so +} : Lconn@{o so} :=
   (PTwoIndisc@{o}; PTwoIndisc_PLocConn@{o}).
 
-(* A 左伴随 discrete 函子 ALL [Sets] turns every
- merely inhabited type at points' universe inhabitant. （已译） *)
+(*
+ A left adjoint of the discrete functor into ALL of [Sets] turns every
+ merely inhabited type at the points' universe into an inhabitant. 
+
+ --------
+ 一个离散函子到 [Sets] 的左伴随把点宇宙中所有仅仅有元素的类型变成一个元素。
+*)
 Theorem components_on_all_Sets_unsquashes@{o so +| o < so +}
   (C' : Lconn@{o so} ⟶ Sets@{o so}) (A : C' ⊣ LDisc@{o so}) :
   inhabited (∀ Q : Type@{o}, inhabited Q → Q).
 Proof.
   pose (eta := to (@adj _ _ _ _ A LTwoIndisc (C' LTwoIndisc)) id).
-  (* 相关说明。 （已译） *)
+  (* the unit is continuous, so its two values are MERELY equal / 该单位是连续的，所以它的两个值仅仅是相等的 *)
   assert (He : inhabited (pmap (`1 eta) true ≈ pmap (`1 eta) false)).
   { pose proof (pcont (`1 eta)
                   (fun s => inhabited (pmap (`1 eta) true ≈ s))) as Hc.
@@ -513,7 +1019,7 @@ Proof.
   destruct H as [H|q]; [discriminate H|exact q].
 Qed.
 
-(* 相关说明。 （已译） *)
+(* That principle gives functional choice for relations between types at the points' universe. / 该原理为点的宇宙中类型之间的关系提供了功能选择。 *)
 Lemma unsquash_choice@{o} (U : inhabited (∀ Q : Type@{o}, inhabited Q → Q))
   (A B : Type@{o}) (R : A → B → Prop) :
   (∀ a, ex (fun b => R a b)) → ex (fun f : A → B => ∀ a, R a (f a)).
@@ -524,12 +1030,17 @@ Proof.
   intro a. exact (proj2_sig _).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Mac Lane's Set as all of [Sets], under [Untruncate] / * ** 麦克·莱恩的集合作为所有的 [Sets]，在 [Untruncate] 下 *)
 
 (*
-   本节说明 Components 相关定义、性质与动机。
+ The unsquashing principle is Instance/Sets/Classifier/OneLevel.v's
+ [Untruncate], truncated: each gives the other.  Since #1349 both are
+ transparent definitions, derived from Instance/Sets/Propositional/
+ Full.v's [untr_of_choice] (under [inhabited]) and [choice_of_untr],
+ which write [Untruncate@{o}] out; the two forms convert. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 未压缩原理是 Instance/Sets/Classifier/OneLevel.v 的 [Untruncate]，截断：每个给出另一个。自 #1349 以来，两者都是透明定义，源自 Instance/Sets/Propositional/Full.v 的 [untr_of_choice]（在 [inhabited] 下）和 [choice_of_untr]，它们写出了 [Untruncate@{o}]；这两种形式可以相互转换。
 *)
 Definition unsquash_Untruncate@{o} :
   inhabited (∀ Q : Type@{o}, inhabited Q → Q) → inhabited Untruncate@{o} :=
@@ -539,8 +1050,13 @@ Definition Untruncate_unsquash@{o} (U : Untruncate@{o}) (Q : Type@{o}) :
   inhabited Q → Q :=
   choice_of_untr@{o} U Q.
 
-(* So a left adjoint of the discrete functor into all of [Sets] makes
-   [Untruncate] merely true. *)
+(*
+ So a left adjoint of the discrete functor into all of [Sets] makes
+ [Untruncate] merely true. 
+
+ --------
+ 因此，映入所有  [Sets]  的离散函子有一个左伴随，使得  [Untruncate]  仅仅是正确的。
+*)
 Corollary components_on_all_Sets_Untruncate@{o so +| o < so +}
   (C' : Lconn@{o so} ⟶ Sets@{o so}) (A : C' ⊣ LDisc@{o so}) :
   inhabited Untruncate@{o}.
@@ -548,9 +1064,14 @@ Proof.
   exact (unsquash_Untruncate (components_on_all_Sets_unsquashes C' A)).
 Qed.
 
-(* Under [Untruncate], a continuous map into a discrete space on ANY
-   setoid is constant on components: the proposition carried along the
-   connected subset is the truncation [Powerset_squash] of [≈].（标题）（已译） *)
+(*
+ Under [Untruncate], a continuous map into a discrete space on ANY
+ setoid is constant on components: the proposition carried along the
+ connected subset is the truncation [Powerset_squash] of [≈]. 
+
+ --------
+ 在 [Untruncate] 下，一个映射到离散空间的连续映射在任何集合等价关系上在连通分支上是常数的：沿着连通子集传递的命题是 [≈] 的截断 [Powerset_squash]。
+*)
 Lemma comp_respect_U@{o} (U : Untruncate@{o}) (X : PTop@{o})
   (S : SetoidObject@{o o}) (g : PMor@{o} X (PDiscrete S)) (x y : X) :
   comp_rel X x y → pmap g x ≈ pmap g y.
@@ -571,15 +1092,20 @@ Proof.
     + apply q. intro h. apply p. intro h'. exact (k (transitivity h h')).
 Qed.
 
-(* Mac Lane's C into all of [Sets]: [components_functor] followed by the
-   inclusion of [PSets]. *)
+(*
+ Mac Lane's C into all of [Sets]: [components_functor] followed by the
+ inclusion of [PSets]. 
+
+ --------
+ Mac Lane 的 C 进入所有的 [Sets]：[components_functor]，随后包括 [PSets]。
+*)
 Definition components_functor_Sets@{o so | o < so +} :
   Lconn@{o so} ⟶ Sets@{o so} :=
   @Compose@{so so so so o} Lconn@{o so} PSets@{o so} Sets@{o so}
     (Incl@{so o so o so so} Sets@{o so} PSetsSub@{o so})
     components_functor@{o so}.
 
-(* 相关说明。 （已译） *)
+(* The hom-set bijection into all of [Sets]: [comp_adj_iso]'s maps, with [comp_respect_U] for the backward map's respectfulness. / 将所有 [Sets] : [comp_adj_iso] 的映射的同态集合双射，与 [comp_respect_U] 对反向映射的尊重性。 *)
 Program Definition comp_adj_iso_U@{o so | o < so +} (U : Untruncate@{o})
   (X : Lconn@{o so}) (S : Sets@{o so}) :
   @Isomorphism Sets@{o so}
@@ -599,8 +1125,13 @@ Next Obligation. intros U X S g g' H x; exact (H x). Qed.
 Next Obligation. intros U X S g x; simpl; reflexivity. Qed.
 Next Obligation. intros U X S h x; simpl; reflexivity. Qed.
 
-(* Mac Lane's C ⊣ D with his Set read literally, as all of [Sets], under
-   [Untruncate]. *)
+(*
+ Mac Lane's C ⊣ D with his Set read literally, as all of [Sets], under
+ [Untruncate]. 
+
+ --------
+ 麦克·莱恩的 C ⊣ D 与他的集合字面上阅读，就像所有的 [Sets] , 在 [Untruncate] 下。
+*)
 Definition components_left_adjoint_discrete_Sets@{o so | o < so +}
   (U : Untruncate@{o}) :
   @Adjunction@{so o o so o o o o so o so} Sets@{o so} Lconn@{o so}
@@ -626,9 +1157,9 @@ Example adj_Sets_from_points@{o so | o < so +} (U : Untruncate@{o})
   from (@adj _ _ _ _ (components_left_adjoint_discrete_Sets@{o so} U) X S)
     g x = pmap (`1 g) x := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* * ** Exercise 1, second half: a concrete equalizer C does not preserve / * ** 练习1，下半部分：具体均衡器C不保持 *)
 
-(* 相关说明。 （已译） *)
+(* The three-point space: [zig_a] and [zig_b] are open points, and the only open set containing [zig_c] is the whole space. / 三点空间：[zig_a] 和 [zig_b] 是开点，且包含 [zig_c] 的唯一开集是整个空间。 *)
 Inductive zig_pt@{} : Set := zig_a | zig_c | zig_b.
 
 Definition zig_setoid@{o} : SetoidObject@{o o} :=
@@ -659,7 +1190,7 @@ Proof.
   exact (proj2 (HOw b I (Hall b)) (proj1 (HOw a I (Hall a)) pa)).
 Qed.
 
-(* It has one component. *)
+(* It has one component. / 它有一个组件。 *)
 Corollary PZig_one_component@{o} (x y : zig_pt) : comp_rel PZig@{o} x y.
 Proof. exists (fun _ => True). exact (conj PZig_connected (conj I I)). Qed.
 
@@ -683,8 +1214,13 @@ Proof.
     + apply point_connected.
 Qed.
 
-(* The parallel pair 进入 indiscrete two-point space: 常值 at
- [false], [true] exactly at [zig_c]. （已译） *)
+(*
+ The parallel pair into the indiscrete two-point space: constant at
+ [false], and [true] exactly at [zig_c]. 
+
+ --------
+ 平行对映射到不连续的两点空间：在 [false] 上保持常数，在 [true] 上正好位于 [zig_c]。
+*)
 Definition zig_g_fun@{} (z : zig_pt) : bool :=
   match z with zig_c => true | _ => false end.
 
@@ -708,7 +1244,7 @@ Definition zig_f_map@{o} : PMor@{o} PZig@{o} PTwoIndisc@{o} :=
 Definition zig_g_map@{o} : PMor@{o} PZig@{o} PTwoIndisc@{o} :=
   pindisc_mor bool_setoid_object@{o o} PZig@{o} zig_g_set@{o}.
 
-(* 相关说明。 （已译） *)
+(* Their equalizer: the two open points, as the discrete two-point space. / 它们的均衡器：两个开点，作为离散的两点空间。 *)
 Definition zig_e_fun@{} (b : bool) : zig_pt := if b then zig_a else zig_b.
 
 Definition zig_e_set@{o} :
@@ -756,7 +1292,7 @@ Proof.
       destruct (pmap v w), (pmap k w); simpl in *; congruence.
 Qed.
 
-(* The same fork in [Lconn], by fullness. *)
+(* The same fork in [Lconn], by fullness. / 在 [Lconn] 中，相同的叉子，由充实性。 *)
 Definition LZig@{o so | o < so +} : Lconn@{o so} :=
   (PZig@{o}; PZig_PLocConn@{o}).
 
@@ -786,7 +1322,7 @@ Proof.
     + intros v Hv. exact (Huniq (`1 v) Hv).
 Qed.
 
-(* The discrete two-point space has two components. *)
+(* The discrete two-point space has two components. / 离散的两点空间有两个分量。 *)
 Lemma pbool_two_components@{o} : comp_rel PBool@{o} true false → False.
 Proof.
   intros [W [HW [wt wf]]].
@@ -797,11 +1333,11 @@ Proof.
   discriminate (HW _ L true false wt wf eq_refl).
 Qed.
 
-(* The one-point propositional set. *)
+(* The one-point propositional set. / 一个点的命题集合。 *)
 Definition PSetsOne@{o so | o < so +} : PSets@{o so} :=
   (unit_setoid_object@{o o}; unit_PropEquiv@{o o}).
 
-(* 相关说明。 （已译） *)
+(* C does not preserve the equalizer: C of the three-point space is one component, so C of the equalizing map identifies the two components of [PBool] and is not monic. / C 不保留等化器：三点空间的 C 是一个连通分支，因此等化映射的 C 会将 [PBool] 的两个分支识别为一个，不是单态的。 *)
 Theorem components_zig_not_preserved@{o so | o < so +} :
   @IsEqualizer PSets@{o so} _ _
     (fmap[components_functor@{o so}] zig_f@{o so})
@@ -825,7 +1361,7 @@ Proof.
   exact (pbool_two_components (@monic _ _ _ _ M _ k1 k2 Hk ttt)).
 Qed.
 
-(* Hence C has no left adjoint: a right adjoint preserves the equalizer. *)
+(* Hence C has no left adjoint: a right adjoint preserves the equalizer. / 因此 C 没有左伴随：右伴随保持等化器。 *)
 Theorem components_no_left_adjoint@{o so +| o < so +}
   (L : PSets@{o so} ⟶ Lconn@{o so}) (B : L ⊣ components_functor@{o so}) :
   False.
@@ -835,9 +1371,14 @@ Proof.
            L B).
 Qed.
 
-(* The same ANY 左伴随 D, whatever 定义: unit
- at three-point space continuous discrete space, so it
- identifies two images equalizer. （已译） *)
+(*
+ The same for ANY left adjoint of D, whatever its definition: the unit
+ at the three-point space is continuous into a discrete space, so it
+ identifies the two images of the equalizer. 
+
+ --------
+ 对于 D 的任何左伴随，无论其定义如何：三点空间处的单位映射是连续映射到离散空间，因此它识别了等化器的两个像。
+*)
 Theorem discrete_left_adjoint_not_preserved@{o so +| o < so +}
   (C : Lconn@{o so} ⟶ PSets@{o so}) (A : C ⊣ PSetsDisc@{o so}) :
   @IsEqualizer PSets@{o so} _ _ (fmap[C] zig_f@{o so}) (fmap[C] zig_g@{o so})
@@ -914,9 +1455,9 @@ Proof.
            (discrete_left_adjoint_not_preserved C A) L B).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** A second witness: the swap of the indiscrete two-point space / * ** 第二个见证：不连续的两点空间的交换 *)
 
-(* The empty space, discrete. *)
+(* The empty space, discrete. / 空旷的空间，离散的。 *)
 Definition LEmpty@{o so | o < so +} : Lconn@{o so} :=
   LDisc@{o so} Concrete.empty_setoid_object@{o o}.
 
@@ -948,7 +1489,7 @@ Definition swap_e@{o so | o < so +} :
 Lemma negb_no_fixpoint@{} (b : bool) : b = negb b → False.
 Proof. destruct b; discriminate. Qed.
 
-(* The equalizer 恒等 swap empty space. （已译） *)
+(* The equalizer of the identity and the swap is the empty space. / 恒等映射与交换映射的等化器是空集。 *)
 Lemma Lconn_swap_equalizer@{o so | o < so +} :
   @IsEqualizer Lconn@{o so} LTwoIndisc@{o so} LTwoIndisc@{o so}
     id swap_L@{o so} LEmpty@{o so} swap_e@{o so}.
@@ -971,8 +1512,13 @@ Proof.
     + intros v _ p; destruct (Hno p).
 Qed.
 
-(* C does not preserve it: one component two-point space a
- fork 进入 empty set. （已译） *)
+(*
+ C does not preserve it: the one component of the two-point space is a
+ fork into the empty set. 
+
+ --------
+ C 不保留它：两点空间的一个分量是一个指向空集的分叉。
+*)
 Theorem components_swap_not_preserved@{o so | o < so +} :
   @IsEqualizer PSets@{o so} _ _ (fmap[components_functor@{o so}] id)
     (fmap[components_functor@{o so}] swap_L@{o so})
@@ -992,9 +1538,9 @@ Proof.
   exact (`1 v ttt).
 Qed.
 
-(* * ** Outside [Lconn]: D all [PTopCat] has no 左伴随 （已译） *)
+(* * ** Outside [Lconn]: D on all of [PTopCat] has no left adjoint / * ** 在 [Lconn] 之外： D 在所有 [PTopCat] 上没有左伴随 *)
 
-(* 相关说明。 （已译） *)
+(* The convergent sequence is not locally connected at its limit point: the isolated point [Some K] is relatively clopen in every neighbourhood of it. / 收敛序列在其极限点处不是局部连通的：孤立点 [Some K] 在它的每个邻域中都是相对开闭的。 *)
 Lemma pconv_not_locconn@{o} : PLocConn PConv@{o} → False.
 Proof.
   intro LC.
@@ -1017,7 +1563,7 @@ Proof.
   discriminate (HC _ L (Some K) None (HK K (le_n K)) nN eq_refl).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* D into all of [PTopCat], from the propositional sets. / 从命题集合中，将 D 引入 [PTopCat] 的所有部分。 *)
 Definition PSetsDiscTop@{o so | o < so +} : PSets@{o so} ⟶ PTopCat@{o so} :=
   @Compose@{so so so so o} PSets@{o so} Sets@{o so} PTopCat@{o so}
     PDisc@{o so} (Incl@{so o so o so so} Sets@{o so} PSetsSub@{o so}).
@@ -1029,7 +1575,7 @@ Proof.
   pose (Q := C' PConv).
   pose (eta := to (@adj _ _ _ _ A PConv Q) id).
   pose (P := `2 Q).
-  (* 相关说明。 （已译） *)
+  (* continuity of the unit at the propositional singleton of eta None / 在 eta None 的命题单元上的单位连续性 *)
   assert (Hopen : POpen PConv
             (fun z => @pequiv _ _ P (pmap eta z) (pmap eta None))).
   { apply (pcont eta (fun s => @pequiv _ _ P s (pmap eta None))).
@@ -1057,9 +1603,14 @@ Proof.
   rewrite <- HN1, <- HN0 in Hg. discriminate Hg.
 Qed.
 
-(* The same all [Sets]: Instance/Top/Complete.v's [PDisc] has no
- 左伴随. The open set now truncation, eliminated 进入
- goal [False]. （已译） *)
+(*
+ The same with all of [Sets]: Instance/Top/Complete.v's [PDisc] has no
+ left adjoint.  The open set is now a truncation, eliminated into the
+ goal [False]. 
+
+ --------
+ 与所有 [Sets] : Instance/Top/Complete.v 中的情况相同，[PDisc] 没有左伴随。现在开集是一个截断，被消去到目标 [False]。
+*)
 Theorem PDisc_no_left_adjoint@{o so +| o < so +}
   (C' : PTopCat@{o so} ⟶ Sets@{o so}) (A : C' ⊣ PDisc@{o so}) : False.
 Proof.

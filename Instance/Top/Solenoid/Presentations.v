@@ -36,26 +36,358 @@ Require Import Category.Instance.Top.Solenoid.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(* * * The two presentations of the p-adic solenoid / * * p进数螺线管的两种表示 *)
 
 (*
+ Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ §V.1, book pp. 110-111 (PDF pp. 119-120), read from the page images
+ (catalog id maclane:V.1:construction3).  Book p. 111:
+ "Again, in Top, take each object F_n to be a circle S^1, and each
+ arrow f_n : S^1 → S^1 to be the continuous map wrapping the domain
+ circle S^1 uniformly p times around the codomain circle. ... This L
+ is the limit space in Top; it is known as the p-adic solenoid."
+ Book p. 110, earlier in the same section:
+ "Limits in Grp and other categories may be constructed from the set
+ of all cones in much the same way.  For example, if F : ω^op → Grp
+ ... then each F_n is a group, the set L of all cones (all matching
+ strings x) is also a group under pointwise multiplication
+ ((xy)_n = x_n y_n), and the projection μ_n : L → F_n with x ↦ x_n
+ is a group homomorphism"
+ and, of the example between them: "The p-adic integers Z_p (with p a
+ prime) illustrate this construction.  Take F : ω^op → Rng with
+ F_n = Z/p^nZ".  Book p. 111, after Theorem 2: "The same argument will
+ construct all small limits in Rng, Ab, R-Mod and similar algebraic
+ categories, using the forgetful functors U to Set."
+ Riehl, "Category Theory in Context", §3.6, Example 3.6.3, printed
+ p. 116 (PDF p. 136), read from the page image (catalog id
+ riehl:3.6:example3): "consider the diagram ω^op → Top whose objects
+ are circles S^1 and in which each generating map is the "pth power
+ map," the covering map that wraps the domain circle uniformly p times
+ around the codomain circle ... The inverse limit defines the p-adic
+ solenoid."
  nLab: https://ncatlab.org/nlab/show/solenoid ("The P-adic solenoid is a
+ compact, connected topological group")
  Wikipedia: https://en.wikipedia.org/wiki/Solenoid_(mathematics)
  Wikipedia: https://en.wikipedia.org/wiki/Inverse_limit (Examples: "The
+ p-adic solenoid is the inverse limit of the topological groups
+ R/p^nZ ... Its elements are exactly of form n+r, where n is a p-adic
+ integer, and r ∈ [0,1) is the "remainder".")
  Wikipedia: https://en.wikipedia.org/wiki/Covering_space ("Another
+ covering of the unit circle is the map q:S¹→S¹ with q(z)=z^n")
 
-   本文件给出具体实例。
+ BACKGROUND.  Instance/Top/Solenoid.v builds the solenoid as the book
+ asks, a limit of circles in a category of spaces.  The solenoid is also
+ an abelian group (nLab, Wikipedia), and the p-adic integers sit inside
+ it (Wikipedia's inverse-limit article).  This file relates the two
+ readings on the one circle of Instance/Top/Circle.v, R/Z over the
+ constructive Cauchy reals: the group-theoretic tower, the circle GROUP
+ under the p-th power endomorphism in [Ab], and the space tower, the
+ circle SPACE under the p-fold wrapping map; the p-adic integers, as the
+ fibre of the solenoid over the base point; and Riehl's word "covering",
+ as evenly covered neighbourhoods of the wrapping map, over both
+ categories of spaces.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ WHAT THE APPENDED ITEM ASKS, READ AGAINST THE PAGES.  Issue #410's
+ appended Riehl item asks for "the two presentations related -- the
+ group-theoretic one this issue names and the covering-space one", and
+ its catalog sentence describes Riehl's presentation as "a diagram of
+ covering maps rather than as a limit of the p-adic groups".  That
+ phrase is the issue text's own.  The page quoted above presents Mac
+ Lane's solenoid as a limit of circles, the p-adic integers being the
+ separate example before it; neither book draws a map between the two
+ examples, and both books give the one diagram.  What Riehl does give is
+ two names for its map, "pth power map" and "covering map".  On R/Z the
+ p-th power is x ↦ p·x, which is Instance/Top/Circle.v's [circ_mul p],
+ the map under [wrap p] and [pwrap p].  So the group-theoretic
+ presentation built here is the tower of that endomorphism of the circle
+ group, and the p-adic groups enter as the fibre.
+
+ THE CIRCLE GROUP.  [CircleGroup] is Instance/Top/Circle.v's
+ [Circle_setoid] with the addition, zero and negation of the reals.  An
+ [AbObject] owes [cmon_prop], a [Prop]-valued mirror of its equality
+ (Lib/Setoid/Propositional.v); the circle's equality keeps its integer
+ as data, and Instance/Top/Circle.v's [circ_PropEquiv] supplies the
+ mirror, recomputing the integer by rounding ([cround]), with no choice
+ principle.  [circ_pow p] is x ↦ p·x, and its underlying map IS
+ [circ_mul p] ([circ_pow_map]).
+
+ ONE UNDERLYING TOWER.  [GroupTower p] is Instance/Top/Solenoid.v's
+ [EndoTower] of [circ_pow p] in [Ab].  Three statements identify the
+ underlying towers.
+ - [GroupTower_points]: [Ab_Forget ◯ GroupTower p ≈ UCircleTower p].
+ - [towers_agree]: [PForget ◯ PCircleTower p ≈ Ab_Forget ◯
+ GroupTower p], through [UCircleTower p].
+ - [CircleTower_points]: [Top_Forget ◯ CircleTower p ≈ UCircleTower p]
+ for Mac Lane's tower in the Type-valued [Top].  [Top_Forget] lands
+ in the lifted [Sets@{h hs}], so the right side is the tower of
+ points taken at the hom universe [h], and the components
+ (Instance/Top/Circle.v's [circle_lift_iso]) are the identity maps
+ between the lifted [Circle_setoid@{o}] and [Circle_setoid@{h}].
+ Each is [≈] in [Functor_Setoid], with identity maps as components.
+ The generating function on points is x ↦ p·x at [eq_refl] in all
+ three categories ([group_step_fn], [pspace_step_fn],
+ [space_step_fn]).
+
+ THE GROUP SOLENOID.  [GroupSolenoid p] is Instance/Ab/Limit.v's
+ [Ab_Forget_lifts_limits] at the matching strings [Sets_tower_Limit] of
+ the underlying tower: Mac Lane's sentence on book p. 110, at the circle
+ group, by the creation argument of his Theorem 2.  Its points are
+ #408's matching strings ([group_solenoid_points], [eq_refl]), and its
+ operations are pointwise ([gsol_plus_coord], [gsol_zero_coord],
+ [gsol_neg_coord], each [eq_refl]).  Against the space solenoids:
+ [solenoid_carriers_agree] and [solenoid_equiv_agree] identify the
+ carrier and the relation with those of Instance/Top/Solenoid.v's
+ [SolPoints p] at [eq_refl]; [gsol_leg_map] identifies the group legs
+ with the projections [sol_pr] at [eq_refl]; and
+ [solenoid_points_iso] is the identity isomorphism in [Sets].  The
+ equation [SolPoints p = Ab_Forget (GSolenoid p)] between the two setoid
+ objects is refused at [eq_refl]: Instance/Sets/InverseLimit.v's
+ [tower_obj] builds its [Equivalence] by a [Qed] obligation applied to
+ the functor, and the two towers are different terms
+ (Test/ProbeSolenoid410.v's N7, "cannot unify").  That is the donor's
+ opacity and nothing more.  The probe's [p410_tower_obj], the donor's
+ definition with its obligation closed [Defined], accepts [eq_refl]
+ for [UCircleTower p] against [Ab_Forget ◯ GroupTower p]
+ ([p410_flip_group]) and against [PForget ◯ PCircleTower p]
+ ([p410_flip_ptop]).  So the identity isomorphism is the strongest
+ statement available without editing the donor; it is not the
+ strongest possible statement.
+
+ THE FIBRE OVER THE BASE POINT IS Z_p.  [SolFibre p] is the kernel of
+ the leg μ_0 in [Ab] (Instance/Ab.v's [AbKernel]).  Its carrier IS
+ { x : SolPoints p & circ_eq (μ_0 x) 0 } ([sol_fibre_carrier],
+ [eq_refl]), the fibre over 0 of the leg μ_0 of the pinned
+ [solenoid_limit].  [ZpAb p] is the additive group ([ring_ab]) of
+ Instance/Rng/Zp.v's [Zp ZComm p], Mac Lane's Z_p = Lim F.
+ [Zp_fibre_iso p] is an isomorphism in [Ab] between them, so both
+ directions are additive.  The forward map sends f to the string of
+ torsion points (f_n / p^n)_n ([zp_to_fibre_coord], [eq_refl]); the
+ integers of its matching condition come from Instance/Rng/Zp.v's
+ [res_to_dvd], which decides divisibility.  The backward map sends x to
+ the integers a_n with a_0 the integer of μ_0 x ≈ 0 and
+ a_(n+1) = a_n + p^n k_n, k_n the integer of the matching condition
+ p x_(n+1) ≈ x_n ([fibre_int]).  So a_n is p^n x_n as a real
+ ([fibre_int_spec]).  (A remark, not formalized: multiplying the n-th
+ coordinate by p^n carries this tower to the tower R/p^nZ of Wikipedia's
+ inverse-limit article, whose points n+r with r = 0 are its p-adic
+ integers n.)  The integers are read off the witnesses the circle's
+ setoid keeps as data; by Instance/Top/Circle.v's [circ_eq_of_peq] they
+ are also recomputable by rounding, but a version built on [cround]
+ was not written.  [zp_one_to_unit_string]: the
+ p-adic integer 1 goes to Instance/Top/Solenoid.v's [unit_string] (at
+ [eq_refl] on coordinates), which [unit_string_not_zero] there
+ separates from 0 when 1 < p.  The hypothesis 1 < p is Zp.v's own,
+ through [res_to_dvd].
+
+ THE COVERING PROPERTY, IN BOTH CATEGORIES OF SPACES.  A map is a
+ covering when every point has an open neighbourhood that is evenly
+ covered: its preimage is a disjoint union of open sheets, each carried
+ homeomorphically onto it (Wikipedia, Covering space).  Over [PTopCat],
+ for a point y:
+ - the arc [in_arc y] is the interior of the circle's closed ball of
+ radius 1/4 about y: open ([in_arc_open]), containing y
+ ([in_arc_centre]);
+ - [sheet_index p y z] is the residue mod p of the integer that brings
+ p·z within 1/4 of y, computed by [cround] ([arc_shift]);
+ [in_sheet p y k z] says p·z lies in the arc and the index is k;
+ - each sheet is open ([in_sheet_open]: the index is locally
+ constant, by [int_near_zero]), two sheets are disjoint
+ ([in_sheet_disjoint]), and the preimage of the arc is the union of
+ the sheets 0 <= k < p ([in_sheet_preimage]);
+ [pwrap_evenly_covered] gathers these;
+ - [pwrap_sheet_iso]: each sheet, as a subspace (Instance/Top/
+ Subspace.v's [ex732_Sub], the subspace on a subset), is isomorphic
+ in [PTopCat] to the arc as a subspace.  The forward arrow is the
+ restriction of [pwrap p] ([pwrap_sheet_iso_to], [eq_refl]); the
+ inverse is the local section [sheet_lift], x ↦ (x + m + k)/p with
+ m = [arc_shift y x], continuous because it divides distances by p
+ ([sheet_lift_lip]).
+ So every point of the circle has an evenly covered neighbourhood with p
+ sheets.  The fibre over y has exactly p points: [fibre_pt p y k] for
+ 0 <= k < p lies over y ([fibre_pt_over]); two of them are equal only
+ when their indices are ([fibre_pt_distinct]); and every point over y
+ is one of them, the index computed ([fibre_exhaust]).  Nothing uses a
+ hypothesis on p beyond positivity; at p = 1 there is one sheet.
+
+ Over the Type-valued [Top] the book's subspace does not reach the
+ points' universe: Instance/Top/Subspace/TypeValued.v's [tsub_open]
+ quantifies over the opens of the ambient space and is valued one
+ universe above the points, and supplying it at the arc as the opens
+ of a [TopSpace@{o}] is refused, "Cannot enforce o1 <= o because
+ o < o1" (Test/ProbeSolenoid410.v's N8; its [p410_tsub_arc_whole] is
+ the same predicate accepted one universe up).  The subspaces of the
+ circle are nonetheless spaces at [o], by the technique of
+ Instance/Top/Solenoid.v's [Solenoid p]: a ball base, characterised by
+ its universal property.
+ - [CSub P], for any Type-valued predicate [P] on the circle's
+ points, has as points the points of the circle with a witness of
+ [P], compared as points of the circle, and as opens the
+ predicates each of whose points has a ball of the circle,
+ [cball], inside them among the points of [P].  [csub_incl], the
+ inclusion, is continuous ([csub_incl_cont]).  [csub_universal]: a
+ setoid map from ANY space into the points of [P] is continuous
+ into [CSub P] iff its composite with the inclusion is continuous
+ into [Circle]; the content, [csub_lift_cont], takes the union
+ over the points of an open of the preimages of the open interiors
+ [cint] of the circle's balls, Instance/Top/Solenoid.v's
+ [sol_lift_cont] argument without its finite intersection.
+ [csub_coarsest]: every topology on the points of [P] making the
+ inclusion continuous contains every open of [CSub P].  So
+ [CSub P] carries the initial topology for the inclusion, which is
+ the subspace topology.
+ - The arc is [tarc y], the Type-valued interior [cint y (1/4)]
+ itself, and [in_arc y x] IS [inhabited (tarc y x)]
+ ([in_arc_squash], [eq_refl]); [tsheet p y k z] is the Type-valued
+ [in_sheet].  The Prop-valued arc is not used here: the sections
+ consume the radius that [tarc] carries as data.  Whether
+ [in_arc y] is itself open in [Circle] is not stated in this file.
+ - [wrap_evenly_covered]: the arc is open ([tarc_open]) and contains
+ y ([tarc_centre]), each sheet is open ([tsheet_open]), the sheets
+ are disjoint ([tsheet_disjoint]), and the preimage of the arc is
+ the union of the sheets 0 <= k < p ([tsheet_preimage]), an
+ [iffT].
+ - [wrap_sheet_iso]: [TSheet p y k], the sheet as [CSub], is
+ isomorphic in [Top] to [TArc y], the arc as [CSub].  The forward
+ arrow [wrap_sheet] is the restriction of [wrap p], continuous by
+ [csub_lift_cont] from the continuity of [wrap p] after the
+ inclusion ([wrap_sheet_iso_to], [eq_refl]); the inverse
+ [tsheet_lift_mor] is the same local section [sheet_lift].
+ The sections, the index, the Lipschitz bound and the fibre count are
+ statements about the circle's points, shared by the two coverings.
+ The names follow Instance/Top/Circle.v's: [wrap_*] for the
+ Type-valued map, [pwrap_*] for the [PTopCat] one; [ArcSpace],
+ [SheetSpace] and [sheet_lift_mor] are the [PTopCat] subspaces and
+ section, [TArc], [TSheet] and [tsheet_lift_mor] the [Top] ones.
+
+ STRENGTHS.  At [eq_refl]: [circ_pow_map], [GroupTower_step],
+ [group_step_fn], [pspace_step_fn], [space_step_fn],
+ [group_solenoid_points], [solenoid_carriers_agree],
+ [solenoid_equiv_agree], [gsol_leg_map], [gsol_plus_coord],
+ [gsol_zero_coord], [gsol_neg_coord], [sol_fibre_carrier],
+ [zp_to_fibre_coord], [zp_one_to_unit_string], [pwrap_sheet_iso_to],
+ [in_arc_squash], [wrap_sheet_iso_to].  Up to [≈] in
+ [Functor_Setoid]: [GroupTower_points], [towers_agree],
+ [CircleTower_points].  Isomorphisms: [solenoid_points_iso] in [Sets],
+ [Zp_fibre_iso] in [Ab], [pwrap_sheet_iso] in [PTopCat],
+ [wrap_sheet_iso] in [Top].  Type-valued equivalences ([↔], the
+ library's [iffT]): [csub_universal], and the last component of
+ [wrap_evenly_covered].  [Print Assumptions] prints "Closed under the
+ global context" for every one of the file's 164 constants, listed by
+ [Print Module] and including its 30 [Program] obligations.
+
+ UNIVERSES, read by [About] under [Set Printing Universes] on the 164
+ constants.
+ - Lists: [@{o}] (53 constants: the arcs, sheets and subspaces of both
+ coverings and their lemmas), [@{s u o so r}] (35: the group
+ solenoid, its fibre and the maps between the fibre and Z_p),
+ [@{}] (28: the rational and real arithmetic), [@{h o}] (13: the
+ inclusion of [CSub] and its universal property, and the maps and
+ isomorphism of the [Top] covering), [@{s o so}] (9: [ZpAb], the
+ coordinates [zp_coord] and the integers [fibre_int]), [@{o so}]
+ (7: the maps of [PTopCat]), [@{u}] (5), [@{u o}] (4: [circ_pow]),
+ [@{s u o}] (2), [@{s u o so u0 u1}] (2), and single constants at
+ [@{s h o hs u u0}], [@{s u o so}], [@{s o so u}], [@{s h o hs}],
+ [@{i}] and [@{o u u0 u1}].  Here [s] is [Omega]'s object
+ universe, [o] the points, [so] their [Sets] and [PTopCat]
+ universe, [u] [Ab]'s object universe, [h] and [hs] [Top]'s homs
+ and their [Sets], [r] the limit.
+ - [GroupTower_points] and [towers_agree] read [@{s u o so u0 u1}],
+ [CircleTower_points] [@{s h o hs u u0}]: the two extra universes
+ are Theory/Functor.v's [Functor_Setoid] setoid universes, bounded
+ below by the shape and target universes.  [pspace_step_fn]'s extra
+ [u] is [Compose]'s auxiliary ([About Compose]: u3 < u2).
+ [zres_of_eq] is [@{o u u0 u1}]: Instance/Rng/Zp.v's [ResRing]
+ universes, u1 above o by [ResRing]'s own bound.
+ - [GroupSolenoid] instantiates [Ab_Forget_lifts_limits] with its
+ limit universe and both auxiliaries [r], adding [u <= r] and
+ [so <= r], and [Sets_tower_Limit] with its auxiliary at [o].  [ZpAb]
+ instantiates Instance/Rng/Zp.v's [Zp@{o o o o so s so o so}]: the
+ integer ring, the carrier and one auxiliary at [o], three
+ auxiliaries at [so], one at [s].
+ - No block carries an equation, and no universe is instantiated at
+ [Set].  Strict bounds among the file's universes: [o < so] (55
+ blocks), [o < u] (45, [Ab]'s own), [o < h] (15, [Top]'s: the 13
+ [@{h o}] constants, [CircleTower_points] and [space_step_fn]),
+ [h < hs] (2, [Top_Forget]'s, the last two), [o < u1] (1,
+ [zres_of_eq]).
+ - The word [Set] occurs 878 times: [Set < u] in 44 blocks ([Ab]'s
+ own bound, first carried by [circ_pow]'s first obligation);
+ [Set < so] in 31, from [PTopCat] (9 blocks, first [towers_agree])
+ and from [Zp]'s own [Set] bound on the auxiliary set to [so] (22,
+ first [ZpAb]); and otherwise strict lower bounds of the standard
+ library's monomorphic universes: [Basics.flip.u0], [.u1], [.u2] in
+ 145 blocks, [Morphisms.Proper.u0] and [Morphisms.Relations.u0] in
+ 102 and [Morphisms.GenericInstances.u0] in 86 (all first
+ [int_near_zero]), and [eq_ind_r.u0] in 78 (first [CircleGroup]'s
+ first obligation).  Instance/Top/Circle.v's header explains these
+ bounds; a one-line scratch lemma that rewrites with [Zlt_Qlt], an
+ equation between two propositions, carries [eq_ind_r.u0] alone,
+ [Prop] having sort [Set+1].
+ - [<=] caps on global universes, first carriers in file order:
+ [Basics.compose] and [ID] ([circ_pow]'s obligations, through
+ [Ab]),
+ [eq_rect_r], [eq_ind], [eq_ind_r] and [Logic_lemmas.equality]
+ ([GroupTower], through [Omega]), [Projections] and [prod_rect]
+ ([GroupSolenoid]), [projections] ([CircleTower_points]) and
+ [Subset_projections] ([ArcSpace]); on [h], the [Top_Forget] caps
+ of [CircleTower_points] and [space_step_fn].
+ - [zp_coord_respects@{s o so +}], [pwrap_evenly_covered@{o +}] and
+ [wrap_evenly_covered@{o +}] have extensible universe lists: Coq
+ 8.19.2 and 8.20.1 refuse their closed lists ("unbound"); [About]
+ reads back [@{s o so}], [@{o}] and [@{o}] on Rocq 9.1 and on Coq
+ 8.19.2.  [csub_coarsest@{h o +}]
+ has one because Rocq 9.1 itself refuses its closed list, "Universes
+ ... are unbound", at the coercion of [csub_setoid P] in its binder
+ for [Tp]; [About] reads back [@{h o}].
+
+ NOT DELIVERED.  Covering-space theory beyond evenly covered
+ neighbourhoods (path lifting, the fundamental group of the circle);
+ the fibre as a SUBSPACE homeomorphic to Z_p with its profinite
+ topology ([Zp_fibre_iso] is an isomorphism of groups, and a grep for
+ [ZpCarrier], [Zp ZComm] and [Zp_int] over the tree's .v files finds
+ only Instance/Rng/Zp.v, its probe, Instance/Rng/Limit.v's header and
+ this file, none of them topologizing Z_p); continuity of the
+ solenoid's addition, so no topological group on either solenoid;
+ the tower R/p^nZ of Wikipedia's article and the presentation of the
+ solenoid as (R × Z_p)/Z; an identification at [eq_refl] of the
+ group solenoid's points with the space solenoids' as setoid objects
+ (refused because of the donor's opacity, and the donor is not
+ edited); a version of the fibre inverse that rounds instead of
+ reading the witnesses; a comparison of [CSub] with the subspaces of
+ Instance/Top/Subspace/TypeValued.v beyond the universal property
+ both satisfy (the latter one universe up); any comparison functor
+ between [Top] and [PTopCat].  Nothing here uses primality. 
+
+ --------
+ Mac Lane，《为在职数学家准备的范畴论》，第二版（GTM 5），§V.1，书本第110-111页（PDF第119-120页），根据页面图像阅读（目录ID maclane:V.1:construction3）。书本第111页：
+ “同样，在 Top 中，将每个对象 F_n 取为一个圆 S^1，每个箭头 f_n : S^1 → S^1 取为将域圆 S^1 均匀地绕到值域圆 p 次的连续映射。……这个 L 是 Top 中的极限空间；它被称为 p 进索林那。”
+ 书本第110页，同一节较早处：
+ “Grp 和其他范畴中的极限可以通过所有锥的集合以类似的方式构造。例如，如果 F : ω^op → Grp ……那么每个 F_n 都是一个群，所有锥（所有匹配的串 x）的集合 L 在逐点乘法下 ((xy)_n = x_n y_n) 也是一个群，并且映射 μ_n : L → F_n，x ↦ x_n 是一个群同态。
+
+ 以及，它们之间的例子：“p-进整数 Z_p（p 为素数）说明了这个构造。取 F : ω^op → Rng 且 F_n = Z/p^nZ。” 书第 111 页，在定理 2 之后：“同样的论证可以在 Rng、Ab、R-Mod 及类似的代数范畴中构造所有小极限，使用到 Set 的遗忘函子 U。”
+
+ Riehl，《Category Theory in Context》，§3.6，第 3.6.3 例，印刷版第 116 页 (PDF 页数)136)，从页面图像读取（目录id riehl:3.6:example3）：“考虑图 ω^op → Top，其对象是圆 S^1，并且每个生成映射都是‘p 次幂映射’，覆盖映射将定义域圆均匀地绕到值域圆 p 次……逆极限定义了 p 进螺旋。”
+ nLab: https://ncatlab.org/nlab/show/solenoid （“p 进螺旋是一个紧致的、连通的拓扑群”）
+ 维基百科: https://en.wikipedia.org/wiki/Solenoid_(mathematics)
+ 维基百科: https://en.wikipedia.org/wiki/Inverse_limit （例子：“p 进螺旋是拓扑群 R/p^nZ 的逆极限……它的元素正好是形如 n+r 的形式，其中 n 是 p 进整数，r ∈ [0,1) 是‘余数’。”）
+ 维基百科: https://en.wikipedia.org/wiki/Covering_space （“单位圆的另一个覆盖是映射 q:S¹→S¹，定义为 q(z)=z^n”）背景。Instance/Top/Solenoid.v 按书中的要求构建了螺线管，它是在空间范畴中圆的极限。螺线管也是一个阿贝尔群（nLab，维基百科），p-进整数包含在其中（维基百科的逆极限条目）。该文件将 Instance/Top/Circle.v 中一个圆的两种理解联系起来，即在构造性柯西实数上的 R/Z：群论塔，ZWZ4WZZ 中在 p 次幂自同态下的圆群，以及空间塔，在 p 倍缠绕映射下的圆空间；p-进整数作为基点上的螺线管纤维；以及 Riehl 所说的“覆盖”，即在两个空间范畴下缠绕映射的均匀覆盖邻域。附录条目所提出的问题，请对照这些页面阅读。第410期的附录Riehl条目要求“与本期提到的群论相关展示以及覆盖空间展示的两个展示”，其目录句将Riehl的展示描述为“一个覆盖映射的图，而不是p进整数群的极限”。这个短语是期刊文本本身的。上面引用的页面将Mac Lane的螺线体表示为圆的极限，p进整数是之前的单独示例；两本书都没有在两个示例之间绘制映射，并且两本书都只给出一个图。Riehl所给的是它映射的两个名称，“p次幂映射”和“覆盖映射”。在R/Z上，p次幂映射是x ↦ p·x，即Instance/Top/Circle.v中的[circ_mul p]，在[wrap p]和[pwrap p]下的映射。所以这里构建的群论表示是那个圆群自同态的塔，而p进群作为纤维出现。
+
+ 圆群。[CircleGroup] 是 Instance/Top/Circle.v 的 [Circle_setoid]，具有实数的加法、零元和取反。一个 [AbObject] 借助 [cmon_prop]，一个 [Prop] 值的等式镜像（Lib/Setoid/Propositional.v）；圆的等式保留其整数作为数据，而 Instance/Top/Circle.v 的 [circ_PropEquiv] 提供了镜像，通过四舍五入重新计算整数（[cround]），无需选择公理。[circ_pow p] 是 x ↦ p·x，其底层映射是 [circ_mul p]（[circ_pow_map]）。一个基本塔。[GroupTower p] 是 Instance/Top/Solenoid.v 中的 [EndoTower] ，属于 [circ_pow p] 在 [Ab] 中。三个语句标识了基本塔。- [GroupTower_points] ： [Ab_Forget ◯ GroupTower p ≈ UCircleTower p] 。- [towers_agree] ：[PForget ◯ PCircleTower p ≈ Ab_Forget ◯ GroupTower p]，通过 [UCircleTower p] 。- [CircleTower_points] ： [Top_Forget ◯ CircleTower p ≈ UCircleTower p] 对于 Type 值 [Top] 中的 Mac Lane 塔。[Top_Forget] 落在提升的 [Sets@{h hs}] 中，因此右侧是取在同构宇 [h] 下的点塔，并且组件 (Instance/Top/Circle.v 中的 [circle_lift_iso] ) 是提升的 [Circle_setoid@{o}] 和 [Circle_setoid@{h}] 之间的同一映射。每个在 [Functor_Setoid] 中都是 [≈] ，组件为同一映射。在三个范畴中 ([group_step_fn]、[pspace_step_fn]、[space_step_fn] )，点的生成函数是 x ↦ p·x，在 [eq_refl] 中。群螺线管。[GroupSolenoid p] 是 Instance/Ab/Limit.v 中 [Ab_Forget_lifts_limits] 在基础塔的匹配字符串 [Sets_tower_Limit] 处的实例：Mac Lane 在书第110页关于圈群的句子，通过他的定理2的创建论证。它的点是 #408 的匹配字符串 ([group_solenoid_points], [eq_refl])，其运算是逐点的 ([gsol_plus_coord], [gsol_zero_coord], [gsol_neg_coord]，每个 [eq_refl])。针对空间螺线管：[solenoid_carriers_agree] 和 [solenoid_equiv_agree] 指认了承载器及其与 Instance/Top/Solenoid.v 中 [SolPoints p] 在 [eq_refl] 的关系；[gsol_leg_map] 将群支与投影 [sol_pr] 在 [eq_refl] 处对应；并且 [solenoid_points_iso] 是 [Sets] 中的恒等同构。两个集合对象之间的方程 [SolPoints p = Ab_Forget (GSolenoid p)] 在 [eq_refl] 处被拒绝：Instance/Sets/InverseLimit.v 的 [tower_obj] 通过应用于函子的一项 [Qed] 义务构建其 [Equivalence]，并且两个塔是不同的项（Test/ProbeSolenoid410.v 的 N7，“无法统一”）。这就是捐赠者的不透明性，仅此而已。探针的 [p410_tower_obj] ，捐赠者具有其义务已关闭的定义 [Defined]，接受 [eq_refl] 对 [UCircleTower p] 与 [Ab_Forget ◯ GroupTower p] ([p410_flip_group]) 以及对 [PForget ◯ PCircleTower p] ([p410_flip_ptop])。因此，同一性同构是在不修改捐赠者的情况下可用的最强陈述；它并不是可能的最强陈述。在基点上的纤维是 Z_p。[SolFibre p] 是 [Ab] 中腿 μ_0 的核（Instance/Ab.v 的 [AbKernel]）。它的承载集合是 { x : SolPoints p & circ_eq (μ_0 x) 0 }（[sol_fibre_carrier], [eq_refl]），即固定 [solenoid_limit] 的腿 μ_0 在 0 处的纤维。[ZpAb p] 是 Instance/Rng/Zp.v 的 [Zp ZComm p] 的加法群（[ring_ab]），Mac Lane 的 Z_p = Lim F。[Zp_fibre_iso p] 是 [Ab] 中它们之间的同构，因此两个方向都是加法的。前向映射将 f 发送到挠点串 (f_n / p^n)_n（[zp_to_fibre_coord], [eq_refl]）；其匹配条件的整数来自 Instance/Rng/Zp.v 的 [res_to_dvd]，决定了可整除性。反向映射将 x 映射到整数 a_n，其中 a_0 是 μ_0 x ≈ 0 的整数，并且 a_(n+1) = a_n + p^n k_n，k_n 是满足条件 p x_(n+1) ≈ x_n 的整数 ([fibre_int])。所以 a_n 是作为实数的 p^n x_n ([fibre_int_spec])。（一个备注，未规范化：将第 n 个坐标乘以 p^n 会将这个塔映射到维基百科逆极限文章中的塔 R/p^nZ，其点 n+r 当 r = 0 时就是其 p 进整数 n。）这些整数从圆的集合体保留的数据中读取；根据 Instance/Top/Circle.v 的 [circ_eq_of_peq]，它们也可以通过四舍五入重新计算，但基于 [cround] 的版本尚未编写。[zp_one_to_unit_string]：p 进整数 1 映射到 Instance/Top/Solenoid.v 的 [unit_string]（在坐标 [eq_refl] 处），在那里 [unit_string_not_zero] 当 1 < p 时将其与 0 区分开。假设 1 < p 是 Zp.v 自己的，通过 [res_to_dvd]。覆盖性质，在两类空间中。一个映射是覆盖映射，当且仅当每个点都有一个均匀覆盖的开邻域：它的原像是一组互不相交的开片的并集，每个开片都同胚地映射到该邻域上（维基百科，覆盖空间）。在 [PTopCat] 上，对于一点 y：
+ - 弧 [in_arc y] 是以 y 为中心、半径为 1/4 的闭圆的内部：开集 ([in_arc_open])，包含 y ([in_arc_centre])；
+ - [sheet_index p y z] 是将 p·z 带入距 y 不超过 1/4 的整数的模 p 余数，由 [cround] 计算 ([arc_shift])；
+ [in_sheet p y k z] 表明 p·z 位于弧上，索引为 k；
+ - 每个层是开集 ([in_sheet_open]：索引在局部保持恒定，由 [int_near_zero])，两个层是互不相交的 ([in_sheet_disjoint])，弧的原像是层的并 0 <= k < p ([in_sheet_preimage])；
+ [pwrap_evenly_covered] 收集了这些；
+ - [pwrap_sheet_iso]：每个层作为子空间 (Instance/Top/Subspace.v 的 [ex732_Sub]，在子集上的子空间)，在 [PTopCat] 中同构于作为子空间的弧。正向箭头是 [pwrap p]（[pwrap_sheet_iso_to], [eq_refl]）的限制；反向箭头是局部截面 [sheet_lift]，x ↦ (x + m + k)/p，其中 m = [arc_shift y x]，由于它将距离除以 p 而连续（[sheet_lift_lip]）。因此，圆上的每个点都有一个被 p 张覆盖均匀的邻域。位于 y 上的纤维恰好有 p 个点：0 <= k < p 时的 [fibre_pt p y k] 位于 y 上（[fibre_pt_over]）；其中两个相等仅在它们的索引为（[fibre_pt_distinct]）时才会相等，并且 y 上的每个点都是其中之一，其索引计算为（[fibre_exhaust]）。除了正数性之外，对 p 不使用任何假设；当 p = 1 时，有一个覆盖层。在类型值为 [Top] 的上，书中的子空间无法达到点的宇宙：Instance/Top/Subspace/TypeValued.v 中的 [tsub_open] 对环境空间的开集进行量化，并且其值位于点的上一个宇宙，将其作为 [TopSpace@{o}] 上的开集提供在弧上会被拒绝，“无法强制 o1 <= o 因为 o < o1”（Test/ProbeSolenoid410.v 中的 N8；其 [p410_tsub_arc_whole] 是同一谓词，在上一个宇宙中被接受）。然而，圆的子空间仍然是 [o] 上的空间，通过 Instance/Top/Solenoid.v 中的 [Solenoid p] 技术：一个球基，由其泛性质描述。- [CSub P]，对于圆的点上的任何类型值谓词 [P]，有作为点的圆的点，并带有 [P] 的证据，作为圆的点进行比较，并作为开集的谓词，其每个点在 [P] 的点中都有圆的球体 [cball] 在其内部。ZWZ132WZZ，即包含，是连续的（[csub_incl_cont]）。[csub_universal]：从任意空间到 [P] 点的集合映射，当且仅当其与包含的复合映射连续到 [Circle] 时，才连续映射到 [CSub P]；内容 [csub_lift_cont] 对预像的开集内部 [cint] 的圆的球体取点的并集，Instance/Top/Solenoid.v 的 [sol_lift_cont] 参数不包括其有限交集。[csub_coarsest]：在 [P] 的点上，使包含映射连续的每一个拓扑都包含 [CSub P] 的每一个开集。因此 [CSub P] 具有包含映射的初始拓扑，即子空间拓扑。- 这个弧是 [tarc y]，类型值的内部 [cint y (1/4)] 自身，且 [in_arc y x] 是 [inhabited (tarc y x)]（[in_arc_squash]，[eq_refl]）；[tsheet p y k z] 是类型值的 [in_sheet]。这里没有使用 Prop 值弧：截面消耗了 [tarc] 作为数据所携带的半径。[in_arc y] 是否在 [Circle] 中本身是开集，在此文件中没有说明。- [wrap_evenly_covered]：弧是开集（[tarc_open]）并包含 y（[tarc_centre]），每张图是开集（[tsheet_open]），这些图是互不相交的（[tsheet_disjoint]），且弧的原像是 0 <= k < p 的图的并（[tsheet_preimage]），一个 [iffT]。- [wrap_sheet_iso]：[TSheet p y k]，将图作为 [CSub]，在 [Top] 中同构于 [TArc y]，将弧作为 [CSub]。前向箭头 [wrap_sheet] 是 [wrap p] 的限制，通过 [csub_lift_cont] 从 [wrap p] 的连续性得到连续性，经过包含（[wrap_sheet_iso_to]，[eq_refl]）；逆向 [tsheet_lift_mor] 是相同的局部截面 [sheet_lift]。截面、指标、利普希茨界和纤维计数都是关于圆上点的陈述，由两个覆盖所共享。这些名称遵循 Instance/Top/Circle.v 的命名：类型值映射为 [wrap_*]，[PTopCat] 的为 [pwrap_*]；[PTopCat] 的子空间和截面分别为 [ArcSpace]、[SheetSpace] 和 [sheet_lift_mor]；[Top] 的为 [TArc]、[TSheet] 和 [tsheet_lift_mor]。优势。在 [eq_refl] : [circ_pow_map], [GroupTower_step], [group_step_fn], [pspace_step_fn], [space_step_fn], [group_solenoid_points], [solenoid_carriers_agree], [solenoid_equiv_agree], [gsol_leg_map], [gsol_plus_coord], [gsol_zero_coord], [gsol_neg_coord], [sol_fibre_carrier], [zp_to_fibre_coord], [zp_one_to_unit_string], [pwrap_sheet_iso_to], [in_arc_squash], [wrap_sheet_iso_to] 中。最多到 [≈] 在 [Functor_Setoid] : [GroupTower_points], [towers_agree], [CircleTower_points] 中。同构：[solenoid_points_iso] 在 [Sets] 中，[Zp_fibre_iso] 在 [Ab] 中，[pwrap_sheet_iso] 在 [PTopCat] 中，[wrap_sheet_iso] 在 [Top] 中。类型值等价（[↔]，库的 [iffT]）：[csub_universal]，以及 [wrap_evenly_covered] 的最后组成部分。[Print Assumptions] 对文件的每一个 164 个常量打印“在全局上下文下封闭”，这些常量由 [Print Module] 列出，并包括其 30 个 [Program] 义务。宇宙，由 [About] 在 [Set Printing Universes] 下读取，关于 164 个常数。- 列表：[@{o}]（53 个常数：两者覆盖及其引理的弧、表和子空间）、[@{s u o so r}]（35：群螺线管，其纤维以及纤维与 Z_p 之间的映射）、[@{}]（28：有理数和实数运算）、[@{h o}]（13：[CSub] 的包含及其通用性质，以及 [Top] 覆盖的映射和同构）、[@{s o so}]（9：[ZpAb]，坐标 [zp_coord] 和整数 [fibre_int]）、[@{o so}]（7：[PTopCat] 的映射）、[@{u}]（5）、[@{u o}]（4：[circ_pow]）、[@{s u o}]（2）、[@{s u o so u0 u1}]（2），以及单独的常数 [@{s h o hs u u0}]、[@{s u o so}]、[@{s o so u}]、[@{s h o hs}]、[@{i}] 和 [@{o u u0 u1}]。这里 [s] 是 [Omega] 的对象宇宙，[o] 是点，[so] 它们的 [Sets] 和 [PTopCat] 宇宙，[u] 是 [Ab] 的对象宇宙，[h] 和 [hs] [Top] 的同态及其 [Sets]，[r] 是极限。- [GroupTower_points] 和 [towers_agree] 读作 [@{s u o so u0 u1}]，[CircleTower_points] [@{s h o hs u u0}]：两个额外的宇宙是 Theory/Functor.v 的 [Functor_Setoid] 集合宇宙，由形状和目标宇宙在下界约束。[pspace_step_fn] 的额外 [u] 是 [Compose] 的辅助（[About Compose]：u3 < u2）。[zres_of_eq] 是 [@{o u u0 u1}]：Instance/Rng/Zp.v 的 [ResRing] 宇宙，u1 位于 o 之上，由 [ResRing] 自身的界约束。- [GroupSolenoid] 实例化 [Ab_Forget_lifts_limits] 及其极限宇宙和两个辅助 [r]，同时添加 [u <= r] 和 [so <= r]，以及 [Sets_tower_Limit] 及其在 [o] 的辅助。[ZpAb] 实例化 Instance/Rng/Zp.v 的 [Zp@{o o o o so s so o so}]：整数环、载体和在 [o] 的一个辅助、在 [so] 的三个辅助、在 [s] 的一个辅助。- 没有区块携带方程，也没有宇宙在 [Set] 被实例化。文件宇宙之间的严格边界：[o < so]（55 个区块）、[o < u]（45 个，[Ab] 自身的）、[o < h]（15 个，[Top] 的：13 个 [@{h o}] 常数、[CircleTower_points] 和 [space_step_fn]）、[h < hs]（2 个，[Top_Forget] 的，最后两个）、[o < u1]（1 个，[zres_of_eq]）。- 单词 [Set] 出现了 878 次：[Set < u] 在 44 个块中（[Ab] 自身的界限，最初由 [circ_pow] 的第一个义务承担）；[Set < so] 出现在 31 个块中，来自 [PTopCat]（9 个块，最初 [towers_agree]），以及来自 [Zp] 自身的 [Set] 在辅助集合上对 [so] 的界限（22 个块，最初 [ZpAb]）；其余为标准库单态宇宙的严格下界：[Basics.flip.u0]，[.u1]，[.u2] 出现在 145 个块中，[Morphisms.Proper.u0] 和 [Morphisms.Relations.u0] 出现在 102 个块中，[Morphisms.GenericInstances.u0] 出现在 86 个块中（均最初 [int_near_zero]），以及 [eq_ind_r.u0] 出现在 78 个块中（最初 [CircleGroup] 的第一个义务）。Instance/Top/Circle.v 的头部解释了这些界限；一个用 [Zlt_Qlt] 重写的单行临时引理，一个在两个命题之间的等式，仅携带 [eq_ind_r.u0]，[Prop] 具有类型 [Set+1]。- [<=] 在全局宇宙上的上限，文件顺序中的第一个载体：[Basics.compose] 和 [ID]（[circ_pow] 的义务，通过 [Ab]），[eq_rect_r]、[eq_ind]、[eq_ind_r] 和 [Logic_lemmas.equality]（[GroupTower]，通过 [Omega]），[Projections] 和 [prod_rect]（[GroupSolenoid]），[projections]（[CircleTower_points]）和 [Subset_projections]（[ArcSpace]）；在 [h] 上，[Top_Forget] 是 [CircleTower_points] 和 [space_step_fn] 的上限。- [zp_coord_respects@{s o so +}]、[pwrap_evenly_covered@{o +}] 和 [wrap_evenly_covered@{o +}] 有可扩展的宇宙列表：Coq 8.19.2 和 8.20.1 拒绝它们的封闭列表（“未绑定”）；[About] 在 Rocq 9.1 和 Coq 8.19.2 上回读 [@{s o so}]、[@{o}] 和 [@{o}]。[csub_coarsest@{h o +}] 有一个，因为 Rocq 9.1 本身在其 [Tp] 的绑定器中对 [csub_setoid P] 的类型转换时拒绝其封闭列表，“宇宙...未绑定”；[About] 回读 [@{h o}]。未送达。覆盖空间理论超出均匀覆盖邻域（路径提升，圆的基本群）；作为与其拟有限拓扑同胚的 Z_p 的子空间的纤维（[Zp_fibre_iso] 是群的同构，并且在树的 .v 文件中对 [ZpCarrier]、[Zp ZComm] 和 [Zp_int] 的 grep 仅找到 Instance/Rng/Zp.v、它的探针、Instance/Rng/Limit.v 的头文件和此文件，它们都没有使 Z_p 拓扑化）；螺旋线加法的连续性，因此任一螺旋线上都没有拓扑群；维基百科文章中的塔 R/p^nZ 以及螺旋线作为 (R × Z_p)/Z 的表示；在 [eq_refl] 将群螺旋线的点与空间螺旋线的点作为集合对象进行识别（因提供者的不透明性被拒绝，且提供者未被编辑）；纤维逆的一个版本 tha使用 t 轮次而不是阅读证人；将 [CSub] 与 Instance/Top/Subspace/TypeValued.v 的子空间进行比较，超出它们所满足的通用性质（后者的宇宙更高）；在 [Top] 与 [PTopCat] 之间的任何比较函子。这里没有使用质数性。
 *)
 
 Open Scope category_scope.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** An integer near zero *)
+(** ** An integer near zero / ** 接近零的整数 *)
 
-(* 相关说明。 （已译） *)
+(* An integer that is the difference of two reals within [ra] and [rb] of zero, with ra + rb < 1, is zero. / 一个整数，它是两个实数在 [ra] 和 [rb] 范围内与零的差，且 ra + rb < 1，则为零。 *)
 Lemma int_near_zero@{} (t : Z) (a b : CReal) (ra rb : Q) :
   CRealLe (CReal_abs a) (inject_Q ra) →
   CRealLe (CReal_abs b) (inject_Q rb) →
@@ -77,7 +409,7 @@ Proof.
   cbv [Qlt Qnum Qden] in U1, U2. lia.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The circle group and its p-th power map / * ** 圆群及其 p 次幂映射 *)
 
 Program Definition CircleGroup@{o} : AbObject@{o o o} := {|
   ab_cmon := {|
@@ -101,7 +433,7 @@ Next Obligation.
 Qed.
 Next Obligation. intros a. apply circ_eq_of_creal. simpl. ring. Qed.
 
-(* Riehl's "pth power map", written additively. *)
+(* Riehl's "pth power map", written additively. / Riehl 的“pth 幂映射”，以加法形式书写。 *)
 Program Definition circ_pow@{u o} (p : positive) :
   CircleGroup@{o} ~{Ab@{u o}}~> CircleGroup@{o} := {|
   cmon_map := circ_mul@{o} p
@@ -112,7 +444,7 @@ Next Obligation. intros p a b. apply circ_eq_of_creal. simpl. ring. Qed.
 Example circ_pow_map@{u o} (p : positive) :
   cmon_map (circ_pow@{u o} p) = circ_mul@{o} p := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* * ** The group tower and the space towers have one underlying tower / * ** 团体塔和空间塔有一个共同的基础塔 *)
 
 Definition GroupTower@{s u o} (p : positive) :
   Omega@{s o o}^op ⟶ Ab@{u o} :=
@@ -135,9 +467,12 @@ Proof.
 Qed.
 
 (*
-   本节说明hom、来源与用途相关定义、性质与动机。
+ Mac Lane's tower in the Type-valued [Top]: its underlying tower lands in
+ the lifted [Sets@{h hs}], where it is the tower of points taken at the
+ hom universe [h] (Instance/Top/Circle.v's [circle_lift_iso]). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Mac Lane 在类型值的 [Top] 中的塔：它的基础塔位于提升的 [Sets@{h hs}] 中，在那里它是取自同伦宇宙 [h] 的点的塔（Instance/Top/Circle.v 的 [circle_lift_iso]）。
 *)
 Lemma CircleTower_points@{s h o hs + | o < h, h < hs +} (p : positive) :
   Top_Forget@{o h hs} ◯ CircleTower@{s h o} p ≈ UCircleTower@{s h hs} p.
@@ -149,7 +484,7 @@ Proof.
   - exact (IH (CReal_mult (posR p) x)).
 Qed.
 
-(* The generating function of each tower, read on points. *)
+(* The generating function of each tower, read on points. / 每个塔的生成函数，在点上的读取方式。 *)
 Example group_step_fn@{s u o so +} (p : positive) (n : nat) (x : CReal) :
   fmap[Ab_Forget@{u so o} ◯ GroupTower@{s u o} p] (omega_step n) x
   = CReal_mult (posR p) x := eq_refl.
@@ -163,9 +498,9 @@ Example space_step_fn@{s h o hs + | o < h, h < hs +} (p : positive)
   fmap[Top_Forget@{o h hs} ◯ CircleTower@{s h o} p] (omega_step n) x
   = CReal_mult (posR p) x := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* * ** The group solenoid, on the same matching strings / * ** 组电磁阀，在相同的匹配弦上 *)
 
-(* 相关说明。 （已译） *)
+(* Instance/Ab/Limit.v's creation of limits by [Ab_Forget], at the matching strings of the underlying tower. / Instance/Ab/Limit.v 由 [Ab_Forget] 在底层塔的匹配字符串上创建限制。 *)
 Definition GroupSolenoid@{s u o so r | o < u, o < so +} (p : positive) :
   Limit@{r s o u} (GroupTower@{s u o} p) :=
   Ab_Forget_lifts_limits@{r r r u s o so} (GroupTower@{s u o} p)
@@ -200,7 +535,7 @@ Example gsol_leg_map@{s u o so r | o < u, o < so +} (p : positive)
   (n : nat) (x : SolPoints@{s o so} p) :
   cmon_map (gsol_leg@{s u o so r} p n) x = sol_pr@{s o so} p n x := eq_refl.
 
-(* Mac Lane's pointwise operations (book p. 110), read back. *)
+(* Mac Lane's pointwise operations (book p. 110), read back. / Mac Lane 的逐点运算（书第110页），回读。 *)
 Example gsol_plus_coord@{s u o so r | o < u, o < so +} (p : positive)
   (n : nat) (a b : SolPoints@{s o so} p) :
   sol_pr@{s o so} p n (cmon_plus (GSolenoid@{s u o so r} p) a b)
@@ -227,9 +562,9 @@ Next Obligation. intros p x y H. exact H. Qed.
 Next Obligation. intros p x n. apply circ_eq_refl. Qed.
 Next Obligation. intros p x n. apply circ_eq_refl. Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The fibre over the base point is the p-adic integers / * ** 基点上的纤维是p进整数 *)
 
-(* 相关说明。 （已译） *)
+(* The rational identities behind the fibre, stated on bare integers so that [ring] sees syntactic atoms. / 纤维背后的有理恒等式，在裸整数上陈述，以便 [ring] 看见语法原子。 *)
 Lemma q_fibre_step@{} (p P : positive) (a b k : Z) :
   a = (b + Zpos P * k)%Z →
   Qeq ((Zpos p # 1) * (a # (p * P)) - (b # P)) (k # 1).
@@ -275,7 +610,7 @@ Proof.
   rewrite <- inject_Q_plus. apply inject_Q_morph_T. exact (q_fibre_add _ _ _).
 Qed.
 
-(* Dividing by p^n undoes multiplying by it. *)
+(* Dividing by p^n undoes multiplying by it. / 除以 p^n 可以抵消乘以它的操作。 *)
 Lemma creal_recover@{} (P : positive) (a : Z) (x : CReal) :
   CRealEq (inject_Z a) (CReal_mult (inject_Z (Zpos P)) x) →
   CRealEq (inject_Q (a # P)) x.
@@ -297,7 +632,7 @@ Proof.
   cbv [Qeq Qmult Qnum Qden]. rewrite !Pos2Z.inj_mul. ring.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The real identities behind the inverse, on universally quantified reals so that [ring] sees syntactic atoms. / 在全称量化实数上的逆运算背后的真实身份，以便 [ring] 看见语法原子。 *)
 Lemma fibre_real_step@{} (P p s0 s1 a k : CReal) :
   CRealEq a (CReal_mult P s0) →
   CRealEq (CReal_minus (CReal_mult p s1) s0) k →
@@ -336,16 +671,16 @@ Proof.
   simpl. rewrite IH. reflexivity.
 Qed.
 
-(* The additive group of Instance/Rng/Zp.v's p-adic integers. *)
+(* The additive group of Instance/Rng/Zp.v's p-adic integers. / Instance/Rng/Zp.v 的 p-进整数的加法群。 *)
 Definition ZpAb@{s o so | o < so +} (p : positive) : AbObject@{o o o} :=
   ring_ab@{o o o} (Zp@{o o o o so s so o so} ZComm@{o o o} (Zpos p)).
 
-(* Equal integers are equal residues. *)
+(* Equal integers are equal residues. / 相等的整数有相等的余数。 *)
 Lemma zres_of_eq@{o +} (p : positive) (n : nat) (x y : Z) :
   x = y → @equiv _ (rig_setoid (ResRing ZComm@{o o o} (Zpos p) n)) x y.
 Proof. intro E. apply (res_of_dvd (Zpos p) n x y 0%Z). lia. Qed.
 
-(* * *** From p-adic integers 进入 fibre: f ↦ (f_n / p^n)_n （已译） *)
+(* * *** From the p-adic integers into the fibre: f ↦ (f_n / p^n)_n / * *** 从 p-进整数到纤维：f ↦ (f_n / p^n)_n *)
 
 Definition zp_coord@{s o so | o < so +} (p : positive)
   (f : carrier (cmon_setoid (ZpAb@{s o so} p))) (n : nat) : CReal :=
@@ -392,7 +727,7 @@ Proof.
   apply q_fibre_diff. lia.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The fibre of the leg μ_0 over the base point 0: the kernel of μ_0. / 腿 μ_0 在基点 0 上的纤维：μ_0 的核。 *)
 Definition SolFibre@{s u o so r | o < u, o < so +} (p : positive) :
   AbObject@{o o o} :=
   AbKernel@{o o o o o o u u} (gsol_leg@{s u o so r} p 0).
@@ -429,14 +764,14 @@ Example zp_to_fibre_coord@{s u o so r | o < u, o < so +} (p : positive)
   sol_pr@{s o so} p n (projT1 (cmon_map (zp_to_fibre@{s u o so r} p Hp) f))
   = inject_Q ((`1 f n) # ppow p n) := eq_refl.
 
-(* The p-adic integer 1 goes to Instance/Top/Solenoid.v's [unit_string]. *)
+(* The p-adic integer 1 goes to Instance/Top/Solenoid.v's [unit_string]. / p-adic 整数 1 对应到 Instance/Top/Solenoid.v 的 [unit_string]。 *)
 Example zp_one_to_unit_string@{s u o so r | o < u, o < so +}
   (p : positive) (Hp : (1 < p)%positive) :
   `1 (projT1 (cmon_map (zp_to_fibre@{s u o so r} p Hp)
                 (rig_one (Zp@{o o o o so s so o so} ZComm@{o o o} (Zpos p)))))
   = `1 (unit_string@{s o so} p) := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* * *** From the fibre back: the integers p^n x_n, read off the witnesses / * *** 从纤维返回：整数 p^n x_n，读取见证者 *)
 
 Fixpoint fibre_int@{s o so | o < so +} (p : positive)
   (x : SolPoints@{s o so} p) (z0 : Z) (n : nat) : Z :=
@@ -525,7 +860,7 @@ Next Obligation.
   exact E.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The fibre of μ_0 over the base point is Z_p, as abelian groups. / μ_0 在基点上的纤维作为阿贝尔群是 Z_p。 *)
 Program Definition Zp_fibre_iso@{s u o so r | o < u, o < so +}
   (p : positive) (Hp : (1 < p)%positive) :
   @Isomorphism Ab@{u o} (ZpAb@{s o so} p) (SolFibre@{s u o so r} p) := {|
@@ -543,7 +878,7 @@ Next Obligation.
   exact (creal_scale_back _ _).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The covering in [PTopCat]: evenly covered neighbourhoods / * ** [PTopCat] 中的覆盖：均匀覆盖的社区 *)
 
 Lemma qmin_pos@{} (a b : Q) :
   Qlt 0 a → Qlt 0 b → { e : Q & (Qlt 0 e * Qle e a * Qle e b)%type }.
@@ -568,7 +903,7 @@ Proof.
   intro H. apply Qmult_lt_0_compat; [exact H|]. cbv [Qlt Qnum Qden]. lia.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Multiplication by [p], with the integer translate kept explicit. / 用 [p] 进行乘法，同时保持整数平移显式。 *)
 Lemma mul_ball@{} (p : positive) (z z' : CReal) (i : Z) (e : Q) :
   CRealLe (CReal_abs (CReal_plus (CReal_minus z' z) (inject_Z i)))
           (inject_Q (e * (1 # p))) →
@@ -590,7 +925,7 @@ Proof.
     rewrite !Pos2Z.inj_mul; nia.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The arc about [y]: the interior of the closed ball of radius 1/4. / 关于[y]的弧：半径为1/4的闭球的内部。 *)
 Definition in_arc@{o} (y : CReal) (x : Circle_setoid@{o}) : Prop :=
   inhabited (cint@{o} y (1 # 4) x).
 
@@ -604,7 +939,7 @@ Qed.
 Lemma in_arc_centre@{o} (y : CReal) : in_arc@{o} y y.
 Proof. constructor. apply cint_centre. reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(* The integer that carries a point of the arc to within 1/4 of [y], computed by rounding. / 将弧上的某一点带到 [y] 1/4 范围内的整数，通过四舍五入计算得到。 *)
 Definition arc_shift@{} (y x : CReal) : Z := cround (CReal_minus y x).
 
 Lemma in_arc_shift@{o} (y x : CReal) : in_arc@{o} y x →
@@ -621,7 +956,7 @@ Proof.
   rewrite Ej. exact Hj.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The sheet of [z] over the arc: the residue mod p of the integer that brings p z within 1/4 of [y]. / 弧上的 [z] 表：将 p z 带到 [y] 的 1/4 以内的整数的模 p 余数。 *)
 Definition sheet_index@{} (p : positive) (y z : CReal) : Z :=
   Z.modulo (- arc_shift y (CReal_mult (posR p) z)) (Zpos p).
 
@@ -675,7 +1010,7 @@ Lemma in_sheet_disjoint@{o} (p : positive) (y : CReal) (k k' : Z)
   in_sheet@{o} p y k z → in_sheet@{o} p y k' z → k = k'.
 Proof. intros [_ H] [_ H']. rewrite <- H, <- H'. reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(* The preimage of the arc under the wrapping map is the union of the p sheets. / 在包裹映射下，弧的原像是 p 个层的并集。 *)
 Lemma in_sheet_preimage@{o} (p : positive) (y : CReal)
   (z : Circle_setoid@{o}) :
   in_arc@{o} y (CReal_mult (posR p) z)
@@ -688,9 +1023,9 @@ Proof.
   - intros [k [_ [H _]]]. exact H.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * *** The local sections of the wrapping map / * *** 包装图的局部区域 *)
 
-(* 相关说明。 （已译） *)
+(* On the arc about [y], the lift of [x] into sheet [k]: (x + arc_shift y x + k) / p. / 关于[y]的弧，[x]提升到[k]表面： (x + arc_shift y x + k) / p。 *)
 Definition sheet_lift@{} (p : positive) (y : CReal) (k : Z) (x : CReal) :
   CReal :=
   CReal_mult (inject_Q (1 # p))
@@ -763,7 +1098,7 @@ Proof.
   change (inject_Z 0) with (inject_Q 0). unfold CReal_minus. ring.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The lift contracts distances by the factor p. / 升降机按因子 p 缩短距离。 *)
 Lemma sheet_lift_lip@{u} (p : positive) (y : CReal) (k : Z) (x x' : CReal)
   (d : Q) :
   Qle d (1 # 4) → in_arc@{u} y x → in_arc@{u} y x' → cball@{u} x x' d →
@@ -801,7 +1136,7 @@ Proof.
     apply Qle_refl.
 Qed.
 
-(* On sheet [k], lifting after wrapping gives the point back. *)
+(* On sheet [k], lifting after wrapping gives the point back. / 在工作表 [k] 上，包裹后抬起会将点返回。 *)
 Lemma sheet_lift_wrap@{u} (p : positive) (y : CReal) (k : Z) (z : CReal) :
   in_sheet@{u} p y k z →
   circ_eq@{u} (sheet_lift p y k (CReal_mult (posR p) z)) z.
@@ -821,9 +1156,9 @@ Proof.
   unfold sheet_lift. fold m. rewrite E, inv_p_mul. unfold CReal_minus. ring.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * *** Each sheet is homeomorphic to the arc, by the wrapping map / * *** 每个层都通过包裹映射同胚于弧 *)
 
-(* 相关说明。 （已译） *)
+(* The subspaces are Instance/Top/Subspace.v's [ex732_Sub], the subspace topology on a subset, reused. / 这些子空间是 Instance/Top/Subspace.v 的 [ex732_Sub]，子集上的子空间拓扑，被重复使用。 *)
 Definition ArcSpace@{o} (y : CReal) : PTop@{o} :=
   ex732_Sub PCircle@{o} (in_arc@{o} y).
 
@@ -924,9 +1259,13 @@ Example pwrap_sheet_iso_to@{o so | o < so +} (p : positive) (y : CReal)
   = circ_mul@{o} p (proj1_sig b) := eq_refl.
 
 (*
-   本节说明 Presentations 相关定义、性质与动机。
+ The evenly covered neighbourhood, gathered: the arc is an open
+ neighbourhood of [y]; each sheet is open; the sheets are disjoint; and
+ the preimage of the arc is their union.  Each sheet is carried onto the
+ arc homeomorphically by [pwrap_sheet_iso]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 均匀覆盖的邻域，聚集：弧是 [y] 的一个开邻域；每个片都是开集；这些片互不相交；弧的逆像是它们的并集。每个片都通过 [pwrap_sheet_iso] 同胚地映射到该弧上。
 *)
 Theorem pwrap_evenly_covered@{o +} (p : positive) (y : CReal) :
   POpen PCircle@{o} (in_arc@{o} y) /\ in_arc@{o} y y /\
@@ -943,7 +1282,7 @@ Proof.
   exact (in_sheet_preimage p y).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * *** The fibre of the wrapping map over a point has exactly p points / * *** 包裹映射在一点上的纤维正好有 p 个点 *)
 
 Definition fibre_pt@{} (p : positive) (y : CReal) (k : Z) : CReal :=
   sheet_lift p y k y.
@@ -964,7 +1303,7 @@ Proof.
     exact (sheet_lift_in p y k' Hk' y (in_arc_centre y)).
 Qed.
 
-(* Every point over [y] is one of them, and which one is computed. *)
+(* Every point over [y] is one of them, and which one is computed. / [y] 上的每个点都是其中之一，而且是哪一个是可以计算的。 *)
 Definition fibre_exhaust@{o} (p : positive) (y z : CReal) :
   circ_eq@{o} (CReal_mult (posR p) z) y →
   { k : Z & ((0 <= k < Zpos p)%Z * circ_eq@{o} z (fibre_pt p y k))%type }.
@@ -981,9 +1320,9 @@ Proof.
   - exact (sheet_lift_respects p y _ _ _ HU (in_arc_centre y) H).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* * ** A subspace of the circle over the Type-valued [Top], by its balls / * ** 由其球体形成的 Type 值 [Top] 上圆的一个子空间 *)
 
-(* 相关说明。 （已译） *)
+(* The points of a Type-valued predicate [P] on the circle, compared as points of the circle; the membership data is invisible to [≈]. / 在圆上的类型值谓词 [P] 的点，作为圆上的点进行比较；成员数据对 [≈] 是不可见的。 *)
 Program Definition csub_setoid@{o} (P : Circle_setoid@{o} → Type@{o}) :
   SetoidObject@{o o} := {|
   carrier := { x : CReal & P x };
@@ -996,7 +1335,7 @@ Next Obligation.
   - intros a b c H1 H2; exact (circ_eq_trans _ _ _ H1 H2).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* An open: every point has a ball of the circle inside it, among the points of [P]. It quantifies over a radius, never over opens, so it sits at the points' universe. / 一个开集：每一点都有一个圆的球包含在其中，位于[P]的点中。它对半径进行量化，从不对开集进行量化，所以它位于点的宇宙中。 *)
 Definition csub_open@{o} (P : Circle_setoid@{o} → Type@{o})
   (V : csub_setoid@{o} P → Type@{o}) : Type@{o} :=
   ∀ a, V a → { e : Q & (Qlt 0 e * ∀ b : csub_setoid@{o} P,
@@ -1074,9 +1413,13 @@ Definition csub_incl@{h o | o < h +} (P : Circle_setoid@{o} → Type@{o}) :
     (csub_incl_cont@{h o} P).
 
 (*
-   本节说明 Presentations 相关定义、性质与动机。
+ The half of the universal property with content: a setoid map into the
+ points of [P] is continuous as soon as its composite with the inclusion
+ is.  The preimage of an open is the union, over its points, of the
+ preimages of the open interiors [cint] of the circle's balls. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 具有以下内容的泛性质的一半：一个集合对应映射到 [P] 的点是一旦与包含映射组合就连续。开集的原像是该开集的圆球的开内部 [cint] 的原像在其各点上的并集。
 *)
 Lemma csub_lift_cont@{h o | o < h +} (P : Circle_setoid@{o} → Type@{o})
   (Z : TopSpace@{o}) (g : SetoidMorphism@{o o o} Z (csub_setoid@{o} P))
@@ -1100,8 +1443,13 @@ Proof.
     exact (Hg (cint (projT1 (g z0)) e) (cint_open _ _)).
 Qed.
 
-(* The 普遍性质 subspace topology, over ANY space
- 映射 in. （已译） *)
+(*
+ The universal property of the subspace topology, over ANY space
+ mapping in. 
+
+ --------
+ 任意空间映入时，子空间拓扑的普遍性质。
+*)
 Theorem csub_universal@{h o | o < h +} (P : Circle_setoid@{o} → Type@{o})
   (Z : TopSpace@{o}) (g : SetoidMorphism@{o o o} Z (csub_setoid@{o} P)) :
   Continuous@{h o} Z (CSub@{o} P) g ↔
@@ -1112,7 +1460,7 @@ Proof.
   - exact (csub_lift_cont P Z g).
 Qed.
 
-(* The coarsest topology making 含入 continuous. （已译） *)
+(* The coarsest topology making the inclusion continuous. / 使包含映射连续的最粗拓扑。 *)
 Lemma csub_coarsest@{h o + | o < h +} (P : Circle_setoid@{o} → Type@{o})
   (T : (csub_setoid@{o} P → Type@{o}) → Type@{o})
   (Tr : ∀ U V, (∀ x, U x ↔ V x) → T U → T V)
@@ -1131,16 +1479,16 @@ Proof.
            (fun U HU => Hc U HU) V HV).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The covering over the Type-valued [Top] / * ** 覆盖在类型值 [Top] 上 *)
 
-(* 相关说明。 （已译） *)
+(* The arc about [y], Type-valued: the interior of the closed ball of radius 1/4 itself. The Prop-valued [in_arc] is its squash. / 关于 [y] 的弧线，类型值：半径为 1/4 的闭球的内部本身。命题值 [in_arc] 是它的压缩。 *)
 Definition tarc@{o} (y : CReal) : Circle_setoid@{o} → Type@{o} :=
   cint@{o} y (1 # 4).
 
 Example in_arc_squash@{o} (y x : CReal) :
   in_arc@{o} y x = inhabited (tarc@{o} y x) := eq_refl.
 
-(* Sheet [k] over the arc, Type-valued. *)
+(* Sheet [k] over the arc, Type-valued. / 弧上的表 [k]，类型值。 *)
 Definition tsheet@{o} (p : positive) (y : CReal) (k : Z)
   (z : Circle_setoid@{o}) : Type@{o} :=
   (tarc@{o} y (CReal_mult (posR p) z) * (sheet_index p y z = k))%type.
@@ -1209,9 +1557,13 @@ Proof.
 Qed.
 
 (*
-   本节说明 Presentations 相关定义、性质与动机。
+ The evenly covered neighbourhood in [Top], gathered: the arc is an open
+ neighbourhood of [y]; each sheet is open; the sheets are disjoint; and
+ the preimage of the arc is their union.  Each sheet is carried onto the
+ arc homeomorphically by [wrap_sheet_iso]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在 [Top] 中均匀覆盖的邻域，集合：弧是 [y] 的一个开邻域；每个片是开的；这些片彼此不相交；弧的原像是它们的并。每个片都被 [wrap_sheet_iso] 同胚地映射到弧上。
 *)
 Theorem wrap_evenly_covered@{o +} (p : positive) (y : CReal) :
   (IsOpen Circle@{o} (tarc@{o} y) * tarc@{o} y y *
@@ -1229,7 +1581,7 @@ Proof.
   - exact (tsheet_preimage p y).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The arc and the sheets as spaces: ball subspaces of the circle. / 作为空间的弧和片：圆的球子空间。 *)
 Definition TArc@{o} (y : CReal) : TopSpace@{o} := CSub@{o} (tarc@{o} y).
 
 Definition TSheet@{o} (p : positive) (y : CReal) (k : Z) : TopSpace@{o} :=
@@ -1244,8 +1596,13 @@ Next Obligation.
   intros p y k a b H. exact (proper_morphism (circ_mul p) _ _ H).
 Qed.
 
-(* The restriction [wrap p] continuous, because [wrap p] after the
- 含入 is. （已译） *)
+(*
+ The restriction of [wrap p] is continuous, because [wrap p] after the
+ inclusion is. 
+
+ --------
+ [wrap p] 的限制是连续的，因为 [wrap p] 包含后的映射是连续的。
+*)
 Lemma wrap_sheet_cont@{h o | o < h +} (p : positive) (y : CReal) (k : Z) :
   Continuous@{h o} (TSheet@{o} p y k) (TArc@{o} y) (wrap_sheet_map@{o} p y k).
 Proof.
@@ -1262,7 +1619,7 @@ Definition wrap_sheet@{h o | o < h +} (p : positive) (y : CReal) (k : Z) :
   @Build_ContinuousMorphism (TSheet p y k) (TArc y) (wrap_sheet_map p y k)
     (wrap_sheet_cont@{h o} p y k).
 
-(* 相关说明。 （已译） *)
+(* The local section [sheet_lift] lands in sheet [k]. / 本地部分 [sheet_lift] 位于工作表 [k] 中。 *)
 Lemma tsheet_lift_in@{o} (p : positive) (y : CReal) (k : Z)
   (Hk : (0 <= k < Zpos p)%Z) (x : CReal) :
   tarc@{o} y x → tsheet@{o} p y k (sheet_lift p y k x).
@@ -1310,7 +1667,7 @@ Definition tsheet_lift_mor@{h o | o < h +} (p : positive) (y : CReal)
   @Build_ContinuousMorphism (TArc y) (TSheet p y k) (tsheet_lift_map p y k Hk)
     (tsheet_lift_cont@{h o} p y k Hk).
 
-(* 相关说明。 （已译） *)
+(* Each sheet is homeomorphic to the arc, by the wrapping map, in [Top]. / 每个片都是通过包裹映射在 [Top] 中与弧同胚的。 *)
 Program Definition wrap_sheet_iso@{h o | o < h +} (p : positive)
   (y : CReal) (k : Z) (Hk : (0 <= k < Zpos p)%Z) :
   @Isomorphism Top@{h o} (TSheet@{o} p y k) (TArc@{o} y) := {|

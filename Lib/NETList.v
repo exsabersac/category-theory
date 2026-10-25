@@ -1,4 +1,4 @@
-(** A theory of type-aligned lists, using the Coq-Equations plugin *)
+(* * A theory of type-aligned lists, using the Coq-Equations plugin / * 类型对齐列表的理论，使用 Coq-Equations 插件 *)
 
 Require Import Coq.Bool.Bool.
 Require Import Coq.Lists.List.
@@ -13,18 +13,58 @@ Set Transparent Obligations.
 Open Scope lazy_bool_scope.
 
 (*
+ nLab: https://ncatlab.org/nlab/show/free+category
  Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
 
-   本文件给出 NETList 相关定义与性质。
+ A [netlist B i j] is a NON-Empty Typed list: a type-aligned sequence of
+ values of [B] whose adjacent indices line up, [B i j0], [B j0 j1], ...,
+ [B jn j].  Reading [B] as the hom-family of a quiver (directed graph) on
+ the index type [A], such a chain is exactly a non-empty PATH in that
+ quiver, i.e. a composable chain of edges/morphisms from [i] to [j].  These
+ are the (length >= 1) morphisms of the free category / path category on
+ the quiver [B].
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ The "NET" prefix abbreviates "Non-Empty Typed": [tfin] is a one-edge path
+ and [tadd] prepends an edge, so a netlist always carries at least one edge
+ (there is no nil constructor).  The same data structure is known in the
+ Haskell community as a non-empty "type-aligned sequence" (Atze van der
+ Ploeg, https://github.com/atzeus/type-aligned).
+
+ Operations below give this family its path algebra: [netlist_app] (++++)
+ concatenates two head-to-tail composable paths and is associative
+ ([netlist_app_assoc]), making [netlist B] an [ISemigroup] (a category
+ without identities, i.e. a semicategory) at the end of the file.  The
+ remaining operations are the expected destructors (head/tail/init/last,
+ uncons), structural maps ([netlist_map] over the edge family, [netlist_mapv]
+ to a plain list), [netlist_rev] (reverse, given an edge-flipping operation),
+ [netlist_concat] (flatten a path of paths), and decidable structure
+ (equality, setoid equivalence, and the [netlist_incl] / [netlist_find_sublist]
+ sub-path searches) used when [A] and each [B i j] have decidable equality.
+ Formalized with the Equations plugin, with UIP enabled so dependent matches
+ on the index equalities reduce. 
+
+ --------
+ nLab: https://ncatlab.org/nlab/show/free+category
+ Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
+
+ [netlist B i j] 是 NON-Empty Typed list：一组类型对齐的 [B] 值序列，相邻下标衔接，形如 [B i j0]、[B j0 j1]、…、[B jn j]。把 [B] 读作指标类型 [A] 上 quiver 的 hom 族时，这样的链恰是该 quiver 中从 [i] 到 [j] 的非空路径，即可复合的边/态射链。它们是 quiver [B] 上自由范畴 / 路径范畴中长度 ≥ 1 的态射。
+
+ 前缀 “NET” 表示 “Non-Empty Typed”：[tfin] 是单边路径，[tadd] 前置一边，故 netlist 总至少含一边（无 nil 构造子）。同一数据结构在 Haskell 社区称为非空 “type-aligned sequence”（Atze van der Ploeg, https://github.com/atzeus/type-aligned）。
+
+ 下文运算给出该族的路径代数：[netlist_app] (++++) 拼接首尾可接路径且结合（[netlist_app_assoc]），使 [netlist B] 在文件末成为 [ISemigroup]（无恒等的范畴，即半范畴）。其余是预期消去（head/tail/init/last、uncons）、结构映射（沿边族的 [netlist_map]、到普通列表的 [netlist_mapv]）、[netlist_rev]（给定翻边的反转）、[netlist_concat]（展平路径的路径），以及在 [A] 与各 [B i j] 可判定相等时使用的可判定结构（相等、setoid 等价，以及 [netlist_incl]/[netlist_find_sublist] 子路径搜索）。用 Equations 插件形式化，启用 UIP 使指标相等上的依赖匹配可化简。
 *)
 
 Inductive netlist {A : Type} (B : A → A → Type) : A → A → Type :=
-  (* [tfin x] is the singleton path consisting of one edge [x : B i j];
-     [tadd j x xs] prepends an edge [x : B i j] onto a path [xs : B j k],
-     yielding a path [B i k].  There is no nil case, so every path is
-     non-empty. *)
+  (*
+ [tfin x] is the singleton path consisting of one edge [x : B i j];
+ [tadd j x xs] prepends an edge [x : B i j] onto a path [xs : B j k],
+ yielding a path [B i k].  There is no nil case, so every path is
+ non-empty. 
+
+ --------
+ [tfin x] 是由单边 [x : B i j] 组成的单点路径；
+ [tadd j x xs] 把边 [x : B i j] 前置到路径 [xs : B j k]，得到路径 [B i k]。无 nil 情形，故每条路径非空。
+*)
   | tfin : ∀ i j : A, B i j → netlist i j
   | tadd : ∀ i j k : A, B i j → netlist j k → netlist i k.
 
@@ -111,9 +151,16 @@ Context `{∀ i j, EqDec (B i j)}.
 Import EqNotations.
 
 (*
-   本节说明 NETList 相关定义、性质与动机。
+ Decides whether the path [xs] occurs as a sub-path of [ys]: a run of
+ consecutive edges of [ys], with matching endpoints, equal (via [eq_dec])
+ edge-by-edge to [xs].  The index equalities [eq_dec] produces are used to
+ [rew]-transport the candidate edge of [ys] into [B]'s expected fibre before
+ comparing.  Requires decidable equality on both [A] and each [B i j].
+ [netlist_find_sublist] below is the proof-carrying analogue, returning the
+ surrounding prefix/suffix instead of a mere boolean. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 判定路径 [xs] 是否作为 [ys] 的子路径出现：即 [ys] 上一串连续边，端点匹配，并经 [eq_dec] 逐边等于 [xs]。[eq_dec] 产生的指标相等用于把 [ys] 的候选边 [rew]-传送到 [B] 的期望纤维后再比较。要求 [A] 与各 [B i j] 皆可判定相等。下文 [netlist_find_sublist] 是携带证明的对应物，返回周围前缀/后缀而非单纯布尔。
 *)
 Equations netlist_incl
           {j k} (xs : netlist B j k)
@@ -403,7 +450,14 @@ End NetlistProofsRev.
 
 Section NetlistProofsInj.
 
-(* 相关说明。 （已译） *)
+(*
+ Dependending on the choice of A, this can be either
+ Eqdep.EqdepTheory.inj_pair2  (incurs axiom)
+ or Eqdep_dec.inj_pair2_eq_dec   (when A is decidable)
+
+ --------
+ 取决于 A 的选取，这可以是 Eqdep.EqdepTheory.inj_pair2（引入公理），或 Eqdep_dec.inj_pair2_eq_dec（当 A 可判定时）。
+*)
 Hypothesis inj_pair2 :
   ∀ (U : Type) (P : U → Type) (p : U) (x y : P p),
     (p; x) = (p; y) → x = y.
@@ -436,9 +490,17 @@ Context `{∀ i j, EqDec (B i j)}.
 Import EqNotations.
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+ Searches for the path [xs : B j k] as a sub-path of [ys : B i l].  On
+ success returns the surrounding context as [Some (pre, post)], where each
+ side is either the corresponding prefix/suffix path or a proof that no edges
+ remain on that side (the index already matches: [i = j] on the left, [k = l]
+ on the right).  [netlist_find_sublist_app] proves this output is faithful:
+ [ys] equals [pre ++++ xs ++++ post] (up to the [rew] transports recorded by
+ the [i = j] / [k = l] equalities).  This is the proof-carrying refinement of
+ the boolean [netlist_incl]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在 [ys : B i l] 中搜索子路径 [xs : B j k]。成功时返回周围上下文 [Some (pre, post)]，每一侧或为对应前缀/后缀路径，或为该侧已无边的证明（指标已匹配：左侧 [i = j]，右侧 [k = l]）。[netlist_find_sublist_app] 证明此输出忠实：[ys] 等于 [pre ++++ xs ++++ post]（至多差 [i = j]/[k = l] 所记录的 [rew] 传送）。这是布尔 [netlist_incl] 的携带证明精细化。
 *)
 Fixpoint netlist_find_sublist
          {j k} (xs : netlist B j k)
@@ -637,11 +699,18 @@ Qed.
 Reserved Infix "<+>" (at level 42, right associativity).
 
 (*
-   nLab: https://ncatlab.org/nlab/show/semicategory
+ nLab: https://ncatlab.org/nlab/show/semicategory
 
-   本节说明 NETList 相关定义、性质与动机。
+ An indexed semigroup: an associative composition [<+>] on an index-aligned
+ family [B i j], with no identities required.  This is exactly the data of a
+ semicategory (a category dropping the identity laws) on the objects [A].
+ [netlist B] is the free such structure: its composition is path
+ concatenation [netlist_app], associative by [netlist_app_assoc]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ nLab: https://ncatlab.org/nlab/show/semicategory
+
+ 指标半群：在指标对齐族 [B i j] 上的结合复合 [<+>]，不要求恒等。这恰是对象 [A] 上半范畴（去掉恒等律的范畴）的数据。[netlist B] 是自由此种结构：其复合为路径拼接 [netlist_app]，结合律由 [netlist_app_assoc] 给出。
 *)
 Class ISemigroup {A : Type} (B : A → A → Type) := {
   isappend {i j k : A} : B i j → B j k → B i k

@@ -9,19 +9,84 @@ Unset Transparent Obligations.
 Close Scope nat_scope.
 
 (*
+ nLab: https://ncatlab.org/nlab/show/setoid
  Wikipedia: https://en.wikipedia.org/wiki/Setoid
 
-   本文件给出 Foundation 相关定义与性质。
+ Foundational plumbing shared by the whole library. There is no single
+ mathematical object defined here; instead this file fixes the global
+ conventions under which everything downstream is built:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ - The library is setoid-based (see Lib/Setoid.v): a type is equipped with a
+ chosen equivalence relation `≈` standing in for equality, in the sense of
+ Bishop sets / setoids. To make those equivalences and the `Proper`
+ machinery `Type`-valued rather than `Prop`-valued, we work in `Type`
+ throughout and use Coq's `CMorphisms`/`CRelationClasses` (the `Type`-valued
+ analogues of `Morphisms`/`RelationClasses`).
+
+ - Accordingly the logical connectives are rebound to their constructive,
+ `Type`-valued forms in `category_theory_scope`: `exists`/`∃` denote `sigT`,
+ `∧` denotes `prod`, `∨` denotes `sum`, and `↔` denotes `iffT`. These carry
+ computational content, unlike the `Prop`-valued `ex`/`and`/`or`/`iff`.
+
+ - Notation also supplies the sigma-type projections `` ``x `` / `` `1 x `` /
+ `` `2 x `` / `` `3 x `` (the latter projecting a two-predicate `sigT2`) and
+ the pairing `( x ; y )`, plus unicode forms for `∀`, `→`, `¬`, `≠`, and
+ `λ`. 
+
+ --------
+ nLab: https://ncatlab.org/nlab/show/setoid
+ Wikipedia: https://en.wikipedia.org/wiki/Setoid
+
+ 本文件是整库共用的基础设施，并不定义单一数学对象；它固定下游一切构建所依赖的全局约定：
+
+ - 本库以 setoid 为基础（见 Lib/Setoid.v）：类型配备选定的等价关系 `≈` 以充当相等，即 Bishop 集合 / setoid 意义下的相等。为使这些等价与 `Proper` 机制取值为 `Type` 而非 `Prop`，我们全程在 `Type` 中工作，并使用 Coq 的 `CMorphisms`/`CRelationClasses`（即 `Morphisms`/`RelationClasses` 的 `Type` 值对应物）。
+
+ - 相应地，逻辑联结词在 `category_theory_scope` 中被重绑定为构造性的 `Type` 值形式：`exists`/`∃` 表示 `sigT`，`∧` 表示 `prod`，`∨` 表示 `sum`，`↔` 表示 `iffT`。它们携带计算内容，不同于 `Prop` 值的 `ex`/`and`/`or`/`iff`。
+
+ - 记号还提供 sigma 类型投影 ``x`` / `` `1 x `` / `` `2 x `` / `` `3 x ``（后者投影二元谓词 `sigT2`）以及配对 `( x ; y )`，并提供 `∀`、`→`、`¬`、`≠`、`λ` 的 Unicode 形式。
 *)
 
-Declare Scope category_theory_scope.
+(*
+   【Foundation 基础设施导读】/ Foundation plumbing walkthrough
+
+   本文件不定义「范畴」对象，只定全库共用的记号与约定。
+   This file defines no category object — only shared notations/conventions.
+
+   1) 作用域 / Scope
+      category_theory_scope：下文 Unicode 与 Type 值联结词都开在这里。
+      category_theory_scope: Unicode + Type-valued connectives live here.
+
+   2) Type 值联结词（不是 Prop）/ Type-valued connectives (not Prop)
+      ∃ / exists  →  sigT   （有见证的存在，可取出数据）
+      ∧           →  prod   （对，不是 and）
+      ∨           →  sum    （带标签的或，不是 or）
+      ↔           →  iffT
+      对照 Haskell（只此一次）：更像 (a,b) / Either a b / 依赖对，
+      而不是 Bool 命题。
+      Haskell analogy (once): closer to (a,b) / Either / dependent pairs
+      than to Bool-valued propositions.
+
+   3) Sigma 投影 / Sigma projections
+      (x ; y) 打包；``x / `1 x 取第一分量；`2 / `3 取后续。
+      (x ; y) packs; ``x / `1 projects first; `2 / `3 later components.
+
+   4) 为何要 CMorphisms？
+      Why CMorphisms?
+      Proper / respectful 要落在 Type（与 ≈ 同宇宙），标准 Morphisms 多在 Prop。
+      Proper/respectful must live in Type (with ≈); std Morphisms is often Prop.
+
+   阅读顺序：开 scope → 投影记号 → 联结词重绑定 → 再读 Lib/Setoid.v。
+   Read: open scope → projections → connectives → then Lib/Setoid.v.
+*)
+
+Declare Scope category_theory_scope.  (* 库用作用域 / library scope *)
 Delimit Scope category_theory_scope with category_theory.
 Open Scope category_theory_scope.
 
 Notation "`` x" := (@projT1 _ _ x) (at level 0) : category_theory_scope.
+  (* sigma 第一投影 / first projection of sigT *)
 Notation "( x ; y )" := (existT _ x y) (at level 0) : category_theory_scope.
+  (* 依赖对打包 / pack dependent pair *)
 
 Notation "`1 x" := (@projT1 _ _ x) (at level 0) : category_theory_scope.
 Notation "`2 x" := (@projT2 _ _ x) (at level 0) : category_theory_scope.
@@ -60,7 +125,9 @@ Notation "¬ x" := (x → False)
 Notation "x ≠ y" := (x <> y) (at level 70) : category_theory_scope.
 
 Infix "∧" := prod (at level 80, right associativity) : category_theory_scope.
+  (* Type 值合取=积 / Type-valued ∧ = product *)
 Infix "∨" := sum (at level 85, right associativity) : category_theory_scope.
+  (* Type 值析取=和 / Type-valued ∨ = sum *)
 
 Notation "'λ'  x .. y , t" := (fun x => .. (fun y => t) ..)
   (at level 10, x binder, y binder, t at level 200, right associativity) :

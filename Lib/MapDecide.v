@@ -2,36 +2,70 @@ From Coq Require Import NArith.
 From Coq Require Import FMaps.
 From Coq Require Import Lia.
 
-(* 相关说明。 （已译） *)
+(* Override ++> notation with the crelation-based version. / 用基于 crelation 的版本覆盖 ++> 记号。 *)
 #[local] Set Warnings "-notation-overridden".
 Require Import Category.Lib.
 Require Import Category.Lib.FMapExt.
 
 Generalizable All Variables.
 
-(** A reflective decision procedure for FMap membership goals *)
+(* * A reflective decision procedure for FMap membership goals / * 针对 FMap 成员资格目标的反射式判定过程 *)
 
 (*
-   本文件给出 MapDecide 相关定义与性质。
+ Wikipedia: https://en.wikipedia.org/wiki/Associative_array
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ This module implements proof by reflection (the computational-reflection
+ technique of CPDT chapter 15, Adam Chlipala) for goals about finite maps.
+ FMap goals such as [M.MapsTo (x, y) f m] and implications between them are
+ reified into the inductive syntax [formula] (see [reify]); a Gallina
+ decision procedure [formula_backward]/[formula_forward] decides the reified
+ goal and returns a [partial] proof object; and [formula_sound] reflects a
+ successful decision back into the original FMap proposition.
+
+ Soundness contract: every tactic here is sound by construction.  The
+ procedure can only emit [Yes] (i.e. [Proved]) when it carries an actual
+ proof of [formula_denote env t], so a goal closed via [map_decide] /
+ [solve_map] is genuinely true; the procedure is intentionally incomplete
+ (it may answer [No]/[Uncertain]) but never unsound.  There is no canonical
+ nLab/Wikipedia page for proof by reflection; see CPDT,
+ http://adam.chlipala.net/cpdt/html/Cpdt.Reflection.html. 
+
+ --------
+ Wikipedia: https://en.wikipedia.org/wiki/Associative_array
+
+ 本模块用反射证明（CPDT 第 15 章 Adam Chlipala 的计算反射技术）处理有限映射相关目标。诸如 [M.MapsTo (x, y) f m] 及其蕴涵被具体化（[reify]）为归纳语法 [formula]；Gallina 判定过程 [formula_backward]/[formula_forward] 判定具体化目标并返回 [partial] 证明对象；[formula_sound] 再把成功判定反射回原始 FMap 命题。
+
+ 可靠性约定：此处每条策略构造上可靠。仅当过程携带 [formula_denote env t] 的实际证明时才发出 [Yes]（即 [Proved]），故经 [map_decide]/[solve_map] 关闭的目标确实为真；过程有意不完备（可答 [No]/[Uncertain]）但从不不可靠。反射证明无标准 nLab/Wikipedia 页；见 CPDT，http://adam.chlipala.net/cpdt/html/Cpdt.Reflection.html。
 *)
 
-(* 相关说明。 （已译） *)
+(* For the time being, this module is fixed to maps from [N * N → N]. / 暂将本模块固定为映射 [N * N → N]。 *)
 
 Module PO := PairOrderedType N_as_OT N_as_OT.
 Module M  := FMapList.Make(PO).
 Module Import FMapExt := FMapExt PO M.
 
-(* *************************************************************************
- * Data type 表示 partial results, taken Chlipala's CPDT （已译） *)
+(*
+   *************************************************************************
+   * Data type for representing partial results, taken from Chlipala's CPDT
 
-(* CPDT: http://adam.chlipala.net/cpdt/html/Cpdt.Reflection.html
+   --------
+   *************************************************************************
+   * 表示部分结果的数据类型，取自 Chlipala 的 CPDT
+*)
 
- [partial P], written [[P]], type verified-but-possibly-failing
- decision: [Proved] carries actual 证明 [P], while [Uncertain]
- carries nothing. Because way produce [Yes] supply a
- 证明, any procedure returning [[P]] sound construction. （已译） *)
+(*
+ CPDT: http://adam.chlipala.net/cpdt/html/Cpdt.Reflection.html
+
+ [partial P], written [[P]], is the type of a verified-but-possibly-failing
+ decision: [Proved] carries an actual proof of [P], while [Uncertain]
+ carries nothing.  Because the only way to produce a [Yes] is to supply a
+ proof, any procedure returning [[P]] is sound by construction. 
+
+ --------
+ CPDT: http://adam.chlipala.net/cpdt/html/Cpdt.Reflection.html
+
+ [partial P]（写作 [[P]]）是已验证但可能失败的判定类型：[Proved] 携带 [P] 的实际证明，[Uncertain] 不携带任何内容。产生 [Yes] 的唯一方式是提供证明，故任何返回 [[P]] 的过程构造上可靠。
+*)
 
 Inductive partial (P : Prop) : Set :=
 | Proved : P → partial
@@ -51,7 +85,14 @@ Notation "'Reduce' v" := (if v then Yes else No) (at level 100) : partial_scope.
 Notation "x || y" := (if x then Yes else Reduce y) : partial_scope.
 Notation "x && y" := (if x then Reduce y else No) : partial_scope.
 
-(* 相关说明。 （已译） *)
+(*
+   *************************************************************************
+   * A term language for theorems involving FMaps
+
+   --------
+   *************************************************************************
+   * 涉及 FMap 的定理的项语言
+*)
 
 Record environment : Set := {
   vars : positive → N
@@ -160,7 +201,14 @@ Fixpoint formula_denote env (t : formula) : Prop :=
   | Impl p q => formula_denote env p → formula_denote env q
   end.
 
-(* 相关说明。 （已译） *)
+(*
+   *************************************************************************
+   * Compute structural size of formulas, for well-founded recursion
+
+   --------
+   *************************************************************************
+   * 计算公式的结构大小，用于良基递归
+*)
 
 Fixpoint map_expr_size (t : map_expr) : nat :=
   match t with
@@ -203,7 +251,14 @@ Proof.
   now rewrite formula_size_subst_formula.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+   *************************************************************************
+   * Substitution of variables throughout a formula
+
+   --------
+   *************************************************************************
+   * 在整个公式中替换变量
+*)
 
 Definition substitution (x y : term) : option (term * term) :=
   match x, y with
@@ -302,7 +357,14 @@ Proof.
   now apply (term_denote_substitution Heqo).
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+   *************************************************************************
+   * Code for removing conflicted map entries
+
+   --------
+   *************************************************************************
+   * 移除冲突映射条目的代码
+*)
 
 Definition conflicted (x y : term) : bool :=
   match x, y with
@@ -328,7 +390,14 @@ Proof.
   rewrite N.eqb_refl; reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+   *************************************************************************
+   * Computational decision procedure for map membership
+
+   --------
+   *************************************************************************
+   * 映射成员资格的计算性判定过程
+*)
 
 Import ListNotations.
 
@@ -437,9 +506,14 @@ Proof.
 Defined.
 
 (*
-   本节说明 MapDecide 相关定义、性质与动机。
+ The reflection correctness lemma: if the decision procedure succeeds
+ (the [partial] is [Proved], so the [if] guard reduces to [True]) then the
+ reified goal [formula_denote env t] genuinely holds.  This is what lets
+ [solve_map] discharge a goal by [vm_compute]-ing [formula_tauto] to [Yes].
+ The converse (completeness) is deliberately not claimed. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 反射正确性引理：若判定过程成功（[partial] 为 [Proved]，故 [if] 守卫化简为 [True]），则具体化目标 [formula_denote env t] 确实成立。这使 [solve_map] 能通过把 [formula_tauto] [vm_compute] 到 [Yes] 来消解目标。有意不声称逆命题（完备性）。
 *)
 Lemma formula_sound env t :
   (if formula_tauto env t then True else False) → formula_denote env t.
@@ -447,7 +521,14 @@ Proof.
   unfold formula_tauto; destruct t, (formula_backward _ env); tauto.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+   *************************************************************************
+   * Environment management tactics
+
+   --------
+   *************************************************************************
+   * 环境管理策略
+*)
 
 Ltac inList x xs :=
   match xs with
@@ -504,7 +585,14 @@ Ltac allVars xs e :=
   | _ => xs
   end.
 
-(* 相关说明。 （已译） *)
+(*
+   *************************************************************************
+   * Reflection tactics
+
+   --------
+   *************************************************************************
+   * 反射策略
+*)
 
 Ltac reifyValue env t :=
   match t with
@@ -570,7 +658,14 @@ Ltac reify :=
     change (formula_denote {| vars := env |} r1)
   end.
 
-(* 相关说明。 （已译） *)
+(*
+   *************************************************************************
+   * User interface tactics
+
+   --------
+   *************************************************************************
+   * 用户界面策略
+*)
 
 Ltac solve_map := reify; apply formula_sound; vm_compute; auto.
 

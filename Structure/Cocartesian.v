@@ -134,6 +134,28 @@ Generalizable All Variables.
  论文: Cockett, 《分配范畴导论》，计算机科学中的数学结构 3(3), 1993余积与积同时进入了范畴论，两者彼此定义为对方的镜像。在《群的对偶性》（1948年11月在美国数学学会发表的讲演，1950年出版）中，Mac Lane 通过其普适图来刻画群的直积，指出这一性质“可以作为定义”，因为它决定了对象的同构类型，然后通过将每一条箭头反转的相同图来刻画自由积，并明确指出这两个图是对偶的。这篇论文，被《斯坦福哲学百科全书》认为“使用箭头来定义某些基本概念”（Marquis，“范畴论”，SEP），因此在范畴本身于1945年出现在Eilenberg和Mac Lane之后的五年里，就包含了这个文件的雏形。麦克·莱恩在同一节中还指出，这个库的结构具有不对称性：直积存在性的证明并不是自由积存在性证明的对偶，因为两种论证都处理了相关群的元素。泛性质可以无代价地跨对偶传播；而构造则不行。本文件引入的符号是前半部分的形式表达——在 C 中的余积在 C^op 中就是积，下面几乎每个引理都通过在 Structure/Cartesian.v 中的一行调用其原始版本而解决——而后半部分则说明了为什么 Instance/Sets/Cocartesian.v、Instance/Coq.v 和 Instance/Props.v 必须手工展示它们的余积。泛性质所打包的是情况分析。一个从 x + y 出发的态射恰好是一对子句，每个加数一个，而余配 f ▽ g 是唯一一个限制于那些子句的态射：余积的态射恰好对应于其加数的态射族（维基百科，“余积”）。因此，一个定义涵盖了表面上几乎没有相似之处的构造——集合的离散并、群的自由积、向量空间的直和、指点空间的楔和、交换代数的张量积、偏序集中的连接（维基百科，“余积”）。然而，当具体结构的乘积在底层集合的笛卡尔积上均匀地排列时，余积可以且通常确实与同一范畴中的积有显著不同（维基百科，“余积”）：群的自由积的底层集合并不是一个不相交的并集，而且这些嵌入甚至不必是单射（nLab，“余积”）。从计算角度来看，这个文件是和类型的代数。[inl] 和 [inr] 是构造子，而 [merge] 是案例拆分——Haskell 的 either，Milewski 的“因式分解器”，“积与余积”，《程序员的范畴论》（2015）。[inl_merge] 和 [inr_merge] 是它的 beta 规则，将拆分应用于构造子以计算匹配的分支；[merge_inl_inr] 是 eta 定律，正如旁边的注释已经记录的那样（nLab，“和类型”；Harper，《编程语言的实用基础》，§12）；而 [merge_inv] 是外延性，当两个拆分的分支完全相同时，它们才相等。[left]、[right] 和 [cover] 映射单个或两个求和分量，反映了 Structure/Cartesian.v 中的 first、second 和 split，而 [paws]——Cartesian 的 swap 反写——是对称性。Instance/Coq.v 字面上实现了词汇表，copairing 是对和类型的匹配，并且在骨架 FinSet 上，coproduct 结构通过 eq_refl 对封闭值进行计算 (Instance/FinSet.v)。这些卫星在三个方向上扩展结构。以 Structure/Initial.v 的初始对象为单位，下面的同构 [coprod_assoc]、[coprod_comm]、[coprod_zero_l] 和 [coprod_zero_r] 是 (C, +, 0) 上对称单体范畴结构的组成部分（维基百科，“余积”）。Structure/Bicartesian.v 将余积与积结合，而 Structure/Distributive.v 则要求典范态射 x × y + x × z ~> x × (y + z) 可逆；在任何分配范畴中，对象 1 + 1 是布尔代数，并且映射到其上的函数提供布尔逻辑（Cockett 1993），而伴随的扩展性概念被 Carboni、Lack 和 Walters 在“Introduction to extensive and distributive categories”，JPAA 84，1993 中与分配性区分开来。Structure/BiCCC.v 显示在双笛卡尔闭范畴中不需要这样的公理，其中闭性使得积函子成为左伴随，因此保持余极限，而双笛卡尔闭范畴提供了直觉主义命题逻辑的语义和证明理论（nLab，“bicartesian closed category”）。当余积和积作为双积一致时，Structure/Semiadditive.v 在每个同态集合上推导出一个交换幺半群。保持余积的函子通过与此文件相同的对偶装置获得，如 Functor/Structure/Cartesian.v 中的 [CocartesianFunctor]。
 *)
 
+(*
+   【Cocartesian 记号与字段展开】/ Notation & field walkthrough
+
+   1) 这是什么 / What this is
+      Cocartesian C := Cartesian (C^op) —— 有限余积 = 对偶范畴里的积；不重写 UMP 字段。
+      Finite coproducts = products in C^op; UMP inherited, not restated.
+      Haskell：Either / (+)；inl/inr 构造子，merge = either / case 拆分。
+      Haskell: Either; inl/inr constructors; merge ≈ either.
+
+   2) 本节给出的共变读法 / Covariant API in this Section
+      - Coprod / + —— 余积对象 / coproduct object
+      - merge / ▽ —— 余配对 [f,g] / copairing
+      - inl, inr —— 左右内射 / injections
+      - left/right/cover/paws —— 映射分量与交换
+
+   3) 定律（对偶自 Cartesian）/ Laws (dual of product laws)
+      inl_merge / inr_merge / merge_inl_inr / merge_inv
+
+   阅读：Cartesian → 本 Notation → merge/inl/inr → β/η 律。
+   Read: Cartesian → this Notation → merge/inl/inr → β/η laws.
+*)
+
 Notation "'Cocartesian' C" := (@Cartesian (C^op))
   (at level 9) : category_theory_scope.
 Notation "@Cocartesian C" := (@Cartesian (C^op))

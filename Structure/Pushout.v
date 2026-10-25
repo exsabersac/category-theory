@@ -65,6 +65,24 @@ Section Pushout.
 Context {C : Category}.
 
 (** Pushout of the span [y <-f- x -g-> z]. / 拉出跨度 [y <-f- x -g-> z] 。 *)
+(*
+   【IsPushout / HasPushouts 定义展开】/ Definition walkthrough
+
+   1) 不新开「推出 Class」：IsPushout f g := Pullback (C^op) … —— 字面是 C^op 中的拉回。
+      Pushout = pullback in the opposite category (definitional duality).
+
+   2) 几何图景 / Picture
+      跨度 y <-f- x -g-> z 的推出：顶点 P，内射 in1 : y ~> P、in2 : z ~> P，
+      交换 in1∘f ≈ in2∘g，且对其它交换余锥唯一中介（pushout_ump）。
+      Cocone over a span; UMP = unique mediator out of the apex.
+
+   3) HasPushouts：为每个跨度选一个 IsPushout（= HasPullbacks (C^op)）。
+      Choice of a pushout for every span.
+
+   阅读：Pullback → 本文件访问器 → HasPushouts。Set 中 ≈ 粘合商。
+   Read: Pullback → accessors here → HasPushouts. In Set ≈ quotient glue.
+*)
+
 Definition IsPushout {x y z : C} (f : x ~> y) (g : x ~> z) : Type :=
   @Pullback (C^op) y z x f g.
 

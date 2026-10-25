@@ -61,6 +61,25 @@ Context {C : Category}.
 Context `{@ClosedMonoidal C}.
 Context {F : C ⟶ C}.
 
+(*
+   【Class Applicative 语法与字段展开】/ Syntax & field walkthrough（薄）
+
+   1) 这是什么 / What this is
+      范畴版 Haskell Applicative：强 + 松弛幺半的自函子 F : C ⟶ C
+      （需 ClosedMonoidal C）。
+      Categorical Applicative = StrongFunctor + LaxMonoidalFunctor.
+      Haskell：pure / <*>；此处 pure 来自 lax 单位+强度，ap 来自 μ 与 eval。
+      Haskell pure/<*> recovered from lax unit+strength and μ with eval.
+
+   2) 字段 / Fields
+      - applicative_is_strong / applicative_is_lax_monoidal（两 Instance）
+      - ap := fmap eval ∘ lax_ap —— 即 <*>
+        / the <*> recovered from tensor comparison
+
+   阅读：Strong → LaxMonoidal → Pure → 本 Class；无定律 FP 版在 Theory/Coq/Applicative.v。
+   Read: Strong → LaxMonoidal → Pure → here; lawless FP in Theory/Coq/.
+*)
+
 Class Applicative := {
   applicative_is_strong : StrongFunctor F;             (* tensorial strength *)
   applicative_is_lax_monoidal : LaxMonoidalFunctor F;  (* lax monoidal: η and μ  / 松弛幺半群： η 和 μ*)

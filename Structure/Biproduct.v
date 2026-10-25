@@ -55,6 +55,25 @@ Context `{Z : @ZeroObject C}.
  --------
  x 和 y 的双积：满足四条交互律的注入和投影，使得 (biproduct_obj, bi_exl, bi_exr) 是 x 和 y 的积，并且 (biproduct_obj, bi_inl, bi_inr) 是余积。
 *)
+(*
+   【Record Biproduct 语法与字段展开】/ Syntax & field walkthrough（薄）
+
+   1) 这是什么 / What this is
+      双积 = 同一对象既是积又是余积，且投影/内射满足「矩阵单位」四律
+      （对角 id、反对角零）。需 ZeroObject。
+      Object that is both product and coproduct with matrix-unit laws; needs 0.
+
+   2) 数据 / Data
+      biproduct_obj；bi_inl/bi_inr；bi_exl/bi_exr
+      四交互律 + bi_is_product / bi_is_coproduct（两侧 UMP）
+
+   3) HasBiproducts：每对对象选一个 Biproduct（半加性原料）。
+      Choice of biproducts; feedstock for semiadditive structure.
+
+   阅读：ZeroObject → 四律 → 两侧 UMP → bi_pair/bi_copair。
+   Read: ZeroObject → four laws → both UMPs → mediators.
+*)
+
 Record Biproduct (x y : C) := {
   biproduct_obj : C;
 

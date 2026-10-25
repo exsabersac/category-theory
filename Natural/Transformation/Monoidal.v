@@ -42,6 +42,14 @@ lax_pure_transform : N_I ∘ ε^F ≈ ε^G            （单位兼容性），
 根据 nLab 和 Wikipedia（`f_I ∘ ε_1 = ε_2` 和 `μ_2 ∘ (f_x ⊗ f_y) = f_{x⊗y} ∘ μ_1`）。从方程的角度来看：先比较单位，再进行转换，与目标的单位相符；先对两个分量做张量运算，再进行比较，与先比较再转换相符。在对称幺半范畴之间的单体自然变换自动是对称的，因此在这种情况下不需要额外的公理。 
 *)
 
+(*
+   【Class LaxMonoidal_Transform 展开】/ Walkthrough（薄）
+   入口见 Theory/Natural/Transformation.v。
+
+   与松弛幺半结构交换的自然变换（保 η、μ = lax_pure / lax_ap）。
+   Nat. trans. commuting with lax monoidal comparisons η, μ.
+*)
+
 Class LaxMonoidal_Transform `{@Monoidal C}
       `{!LaxMonoidalFunctor F}
       `{!LaxMonoidalFunctor G} (N : F ⟹ G) := {

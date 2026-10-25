@@ -408,6 +408,23 @@ Generalizable All Variables.
 *)
 
 (* C is complete: every diagram F : D ⟶ C has a limit (terminal cone) in C. / C 是完备的：每个图 F : D ⟶ C 在 C 中都有极限（终锥）。 *)
+(*
+   【Complete / Cocomplete 定义展开】/ Definition walkthrough（薄）
+
+   1) 完备 = 对任意小图 F : D ⟶ C 都有极限（终锥）。
+      Complete = has all (small) limits: ∀ D F, Limit F.
+      余完备 Cocomplete = 有全部余极限 = Complete (C^op)。
+      Cocomplete = all colimits = Complete of the opposite.
+
+   2) 宇宙 / Universes
+      r/so/h/o：极限证明宇宙、形状对象宇宙、hom 宇宙、环境对象宇宙；
+      约束 so<=r、h<=r 继承自 Limit。
+      Same universe package as Limit; so indexes diagram shapes.
+
+   阅读：Cone → Limit → 本 ∀ 量化；「小」由图范畴 D 的宇宙体现。
+   Read: Cone → Limit → this ∀; “small” = universe of shape D.
+*)
+
 Definition Complete@{r so h o | so <= r, h <= r} {C : Category@{o h h}} :=
   ∀ (D : Category@{so h h}) (F : D ⟶ C), Limit@{r so h o} F.
 

@@ -55,6 +55,21 @@ nLab：https://ncatlab.org/nlab/show/monoidal+category
  函子”），这不是逐点构造。 
 *)
 
+(*
+   【Product 实例展开】/ Instance walkthrough（薄）
+
+   1) 逐点张量：F :*: G 在对象上是 F x ⨂ G x，在箭头上是 fmap F f ⨂ fmap G f。
+      Pointwise tensor of two functors into a monoidal D.
+      不是 Functor/Construction/Product.v 的分量积 F ∏⟶ G。
+      Distinct from componentwise F ∏⟶ G on product categories.
+
+   2) 依赖：需 `@Monoidal D`；函子律由 ⊗ 的双函子性逐点推出。
+      Needs Monoidal D; laws follow pointwise from bifunctoriality of ⊗.
+
+   阅读：Monoidal → Bifunctor/bimap → 本 Instance → 记号 F :*: G。
+   Read: Monoidal → bimap → this Instance → notation F :*: G.
+*)
+
 #[export]
 Program Instance Product
         {C : Category} {D : Category} `{@Monoidal D}

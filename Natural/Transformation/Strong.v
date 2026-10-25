@@ -48,6 +48,14 @@ x ⨂ F y --- id ⨂ N_y ---> x ⨂ G y
 交换图：N_{x⨂y} ∘ strength[F] ≈ strength[G] ∘ (id_x ⨂ N_y)。这是尊重强度的强函子之间的态射的概念（Kock 1972；Moggi 1991；Ratkovic 2012，第 3.1.4 定义）；在闭合环境下，它对应于所引入的 C-增强之间的增强自然变换。除此单个方形之外，不需要额外的一致性：N 的普通自然性已经提供了其余部分。 
 *)
 
+(*
+   【Class Strong_Transform 展开】/ Walkthrough（薄）
+   入口见 Theory/Natural/Transformation.v。
+
+   与张量强度 strength 交换的自然变换（Applicative_Transform 的一半）。
+   Nat. trans. commuting with tensorial strength.
+*)
+
 Class Strong_Transform {C : Category} `{@Monoidal C}
       {F : C ⟶ C} `{@StrongFunctor _ _ F}
       {G : C ⟶ C} `{@StrongFunctor _ _ G} (N : F ⟹ G) := {

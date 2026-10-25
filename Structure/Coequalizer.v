@@ -83,6 +83,25 @@ Generalizable All Variables.
  --------
  基本的泛性质：e 在 q 上对 f、g 形成余共轭，并且每一个从 y 出发的余共轭映射 h 都唯一地沿 e 下降。
 *)
+(*
+   【IsCoequalizer / HasCoequalizers 定义展开】/ Definition walkthrough
+
+   1) 两种呈现 / Two presentations
+      Equalizer.v：Coequalizer (APair f g) := Colimit …（形状 Parallel）。
+      本文件：初等「共叉」Record IsCoequalizer —— e∘f ≈ e∘g + 唯一下降。
+      Elementary cofork record; coincides with the colimit presentation.
+
+   2) 字段 / Fields
+      - cofork : e ∘ f ≈ e ∘ g
+      - coeq_desc : 凡 h 亦共叉 ⇒ ∃! u, u∘e ≈ h
+
+   3) HasCoequalizers：每对平行箭头选一个初等余等化子。
+      Choice of an elementary coequalizer for every parallel pair.
+
+   阅读：Equalizer/Parallel → IsCoequalizer → 与 Colimit 互转 → HasCoequalizers。
+   Read: Equalizer shape → IsCoequalizer → convert ↔ Colimit → HasCoequalizers.
+*)
+
 Record IsCoequalizer {C : Category} {x y : C} (f g : x ~> y)
   (q : C) (e : y ~> q) := {
   (* the coequalizing map absorbs the parallel pair / 共等化映射吸收平行对 *)

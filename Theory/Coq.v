@@ -1,5 +1,23 @@
 Require Import Category.Lib.
 
+(*
+   【Theory/Coq 衔接展开】/ Bridge walkthrough（薄）
+
+   1) 本文件做什么 / Role
+      聚合再导出 Theory/Coq/*：在 Coq 的 Type（「类型范畴」）上直接写
+      Haskell 风格 Functor/Applicative/Monad/…，并标明与本库范畴定义的对应。
+      Re-exports the Type-level FP tower and ties each class to its categorical twin.
+
+   2) 宇宙/衔接直觉 / Universes & bridge
+      Instance/Coq.v 等把 Type 做成 Category；此处类是「程序员 API」，
+      定律在 Proofs 子模块，范畴侧在 Theory/Functor、Monad、Applicative 等。
+      Type-as-category lives in Instance/Coq; this is the programmer-facing API.
+
+   3) 阅读顺序 / Reading
+      本聚合 → Theory/Coq/Functor → Applicative → Monad；对照 Functor.v / Monad.v。
+      Start here → Coq/Functor → Applicative → Monad; compare with categorical files.
+*)
+
 (** Aggregator for the applied functional-programming layer over Coq types / 针对 Coq 类型的应用函数式编程层的聚合器 *)
 
 (*

@@ -51,6 +51,24 @@ nLab：https://ncatlab.org/nlab/show/diagonal+functor
  熟悉的 (-) + (-) ⊣ Δ ⊣ (-) × (-)。 
 *)
 
+(*
+   【Diagonal 实例展开】/ Instance walkthrough
+
+   1) 这是什么 / What this is
+      Δ[J] : C ⟶ [J, C] —— 把对象 c 送到「常值函子」（处处 c、箭头为 id），
+      把 f : c ~> c' 送到分量处处为 f 的自然变换。
+      Sends c to the constant functor at c; f to the constant nat. trans. at f.
+      锥的来源：锥 = Δ(c) ⟹ F；故 lim ⊣ Δ ⊣ 不对，正确是 colim ⊣ Δ ⊣ lim。
+      Cones are Δ(c) ⟹ F; adjunction sandwich: colim ⊣ Δ ⊣ lim.
+
+   2) 二元情形 / Binary case
+      Diagonal_Product : C ⟶ C ∏ C，c ↦ (c,c)；J=离散两点时与上面一致。
+      Binary diagonal c ↦ (c,c).
+
+   阅读：常值函子 → Δ → 锥/极限 → 二元 Δ。
+   Read: constant functor → Δ → cones/limits → binary Δ.
+*)
+
 #[export]
 Program Instance Diagonal {C : Category} (J : Category) : C ⟶ [J, C] := {
   fobj := fun x =>

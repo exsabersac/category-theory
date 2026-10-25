@@ -157,6 +157,23 @@ Generalizable All Variables.
  迫使逆变作用和协变作用一致(nLab, "coend")；这可以将共端理解为一个商，而不是一族方程。许多典型构造本质上是混合方差的，正是这些构造，而不是协变图，才是共端旨在表达的。符号和微积分逐层积累。Yoneda 在他 1960 年的论文第 §4 节中引入了端与共端的积分符号，尽管采用的约定与现代的相反：他将共端称为“积分”，将端称为“共积分”（Yoneda 1960；nLab，“end”）。Mac Lane 给出了教材式的描述——《Categories for the Working Mathematician》第 IX 章定义了准自然变换，并将端与共端作为普遍的（共）楔子呈现，本文件通过 Structure/Wedge 和 Structure/End 继承了该呈现方式（Mac Lane 1971）。Mac Lane 还使用共端将代数拓扑中的一个构造表示为函子张量积，`F ⊗_C G ≅ ∫^c F c ⊗ G c`，其中 `C` 被赋予环的角色（Loreggian 的综述中有报道）。Loregian 后来提供了第一本书长度的论述，并将这一技术描述为范畴论工作者的“秘密武器”（Loregian 2021）。这个工具本身就是微积分：一种紧凑的积分操作代数，可以替代冗长的图式追踪。它的基本约化是共约内达引理（co-Yoneda，或者称“忍者约内达”引理）——每个函子都是可表示函子的共内端，`∫^{c'} C(c', c) · F c' ≅ F c`——在 Sets 的 Theory/Coend/Yoneda.v 中证明；它的第二条规则是 Fubini 交换律 `∫^{(c,d)} H ≅ ∫^c ∫^d H`（Theory/Coend/Fubini.v）。在这些之上运行的应用包括：Day卷积，它通过`(F * G) c ≅ ∫^{a,b} C(a ⊗ b, c) · F a · G b`使函子范畴成为幺半群 (Day 1970；Construction/Day.v)；Profunctor的复合`(Q ∘ P)(c, e) ≅ ∫^d P(c, d) × Q(d, e)` (Theory/Profunctor.v, Construction/Profunctor/Compose.v)；逐点左Kan扩展`∫^c D(K c, d) · F c`，扩展的coend表示，而Theory/Kan/Extension.v通过伴随建立该表示；以及将单纯集合的几何实现作为单个coend (nLab, "coend")。从计算的角度来看，coend 是一种存在类型。`∫^c F(c, c)` 的一个元素是一个对 `(c, a)` 和 `a : F(c, c)` —— 一个隐藏对象和一个值 —— 根据同自然性粘合模掉的，其中 `(c, F(f, 1) b)` 被识别为 `(c', F(1, f) b)`；相对地，end 是一个多态的 `∀ c. …`，并携带一个自然性附加条件（Milewski，《程序员的范畴论》，§26）。这是 Instance/Sets/Coend.v 中具体 coend 的形式，其中一个在见证上的注入正是通过该关系取商，并且这也解释了为什么存在类型和参数编码在 profunctor-optics 库中可以代替 coend（Clarke 等，《Profunctor Optics，一次范畴更新》，arXiv 2020）。
 *)
 
+(*
+   【Coend API 展开】/ API walkthrough（薄）
+
+   1) Coend 定义在 End.v（对偶）；本文件给**共变**访问器与建造。
+      Coend is defined by duality in End.v; this file is the covariant API.
+      ∫^c F(c,c) ≈「存在类型」：隐藏对象 c 与值，按余楔关系商掉。
+      Computational reading: existential (c, a : F(c,c)) modulo cowedge.
+
+   2) 要点 / Key pieces
+      coend_obj / coend_inj —— 顶点与内射
+      Cowedge_cond / coend_med / Build_Coend —— 余楔条件、中介、构造
+      连到 profunctor 复合、Day 卷积、Kan（见文首史注）。
+
+   阅读：End/Wedge → 本 Section → Yoneda/Fubini（Theory/Coend/）。
+   Read: End/Wedge → this Section → Yoneda/Fubini under Theory/Coend/.
+*)
+
 Section Coend.
 
 Context {C : Category}.

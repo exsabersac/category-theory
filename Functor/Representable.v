@@ -86,6 +86,28 @@ Wikipedia: "Let C be a locally small category and let Set be the category
  对于某个对象 A 或 C。” 
 *)
 
+(*
+   【Class Representable 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 这是什么 / What this is
+      F : C ⟶ Sets「可表」⇔ 存在 A 使 Hom(A,─) ≅ F（函子范畴中的自然同构）。
+      F is representable iff naturally iso to a covariant hom-functor.
+      Haskell/Yoneda 直觉：F 的行为由「在 A 处的一个普遍元」完全决定。
+      Yoneda intuition: F is determined by a universal element of F(A).
+
+   2) 数据字段 / Data
+      - repr_obj : C —— 表示对象 A / the representing object A
+      - represented : [Hom repr_obj,─] ≅ F —— 自然同构 Φ
+        / natural iso Φ : Hom(A,─) ⟹ F in [C, Sets]
+
+   3) 邻近 / Nearby
+      下文 repr_unique_iso：表示对象在同构下唯一；反变情形见 Hom ─,A。
+      Uniqueness up to iso below; contravariant case → Hom(─,A).
+
+   阅读：Hom 函子 → Yoneda → repr_obj → represented → 唯一性。
+   Read: Hom → Yoneda → repr_obj → represented → uniqueness.
+*)
+
 Class Representable `(F : C ⟶ Sets) := {
   repr_obj : C;                          (* the representing object A  / 代表对象A*)
   represented : [Hom repr_obj,─] ≅ F     (* natural iso Φ : Hom(A, ─) ⟹ F  / 自然 iso Φ : Hom(A, ─) ⟹ F*)

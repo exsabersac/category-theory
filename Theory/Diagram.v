@@ -182,6 +182,24 @@ A diagram in [C] of shape [G]: vertices go to objects, edges to morphisms
 --------
 [C] 中形状为 [G] 的图：顶点对应对象，边对应其端点标签之间的态射。源和目标的保持是自动的，因为 [Quiver] 的边是由其端点索引的。
 *)
+(*
+   【Diagram 定义展开】/ Definition walkthrough
+
+   1) 这是什么 / What this is
+      图 = 箭图同态 G → QuiverOfCat C：顶点→对象、边→态射（端点已索引，源靶自动保）。
+      Diagram = quiver homomorphism into the underlying quiver of C.
+      与「函子 J ⟶ C」：自由范畴 FreeOnQuiver G 上的函子与交换图互通（下文桥）。
+      Bridges to functors on FreeOnQuiver; commutativity = path denotations agree.
+
+   2) 邻近 / Nearby
+      dedge / dpath —— 边标签与路径复合
+      Commutative —— 同端点路径表示相等
+      FunctorOfDiagram / DiagramOfFunctor —— 与函子互转
+
+   阅读：Quiver → Diagram → dpath → Commutative → Free 桥 → 走路方形等例子。
+   Read: Quiver → Diagram → paths → commutativity → free bridge → walking shapes.
+*)
+
 Definition Diagram : Type := QuiverHomomorphism G (QuiverOfCat C).
 
 Context (D : Diagram).

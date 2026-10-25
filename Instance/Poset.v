@@ -160,6 +160,23 @@ Proof.
   split; auto. intros x y z; apply eq_trans.
 Qed.
 
+(*
+   【Poset 范畴实例展开】/ Poset instance walkthrough
+   （薄注：与 Proset 的差异）
+
+   1) 这是什么 / What this is
+      Poset = 带反对称的预序 → 仍调用 Proset P 建薄范畴；反对称不改 Hom，
+      只使同构对象相等（骨架薄范畴）。≠ Instance/Pos.v 的 [Pos]（对象=偏序集）。
+      Same thin category as Proset; antisym only skeletons isos. Not Pos.v's Pos.
+
+   2) 读法 / How to read
+      定义几乎是一行：Poset P := Proset P（多一个 Antisymmetric 假设）。
+      One-liner: Poset P := Proset P with Antisymmetric.
+      序论词典（伴随=Galois、积=交…）见上文长注释与 Proset/*。
+
+   阅读：先 Proset.v → 本定义 → LessThanEqualTo_Category。
+   Read: Proset.v first → this alias → ≤ example.
+*)
 Definition Poset {C : Type} `{R : relation C}
            `(P : PreOrder C R) `{@Antisymmetric C eq eq_equiv R} : Category := Proset P.
 

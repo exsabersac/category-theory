@@ -54,6 +54,28 @@ Import EqNotations.
  --------
  在 [A] 上的离散范畴：对象是 [A] 的元素，态射是等式的证明，复合是等式的传递性。显式的 [@{o h p}] 绑定遵循惯例 2.4.11（参见 Instance/One.v）。
 *)
+(*
+   【DiscreteCat 范畴实例展开】/ DiscreteCat instance walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      DiscreteCat A：离散范畴——对象=A 的元素；态射=等式证明 x=y；只有恒等箭。
+      Discrete category on A: only identity arrows (equality proofs).
+      Haskell 对照：像「只有 id、没有非平凡 fmap 来源」的索引集；常作极限图形状。
+      Analogy: index set with only ids; common shape for (co)limits/products.
+
+   2) 关键字段 / Key fields
+      - obj := A；hom := fun x y => x = y
+      - homset := Morphism_equality（严格 =）
+      - id := eq_refl；compose := eq_trans
+
+   3) 宇宙 / Universes
+      显式 @{o h p} 很重要：避免 hom 被最小化到 Set 后污染 Limit/GAFT。
+      Explicit universes prevent Set-minimization breaking limits.
+
+   阅读：DiscreteCat → 下文由函数诱导的函子 DiscreteCat A ⟶ C。
+   Read: DiscreteCat → induced functors from functions A→C below.
+*)
 Program Definition DiscreteCat@{o h p} (A : Type@{o}) : Category@{o h p} := {|
   obj     := A;                       (* objects are elements of A / 对象是 A 的元素 *)
   hom     := fun x y => x = y;        (* morphisms are equality proofs / 态射是等式证明 *)

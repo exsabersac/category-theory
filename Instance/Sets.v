@@ -268,6 +268,30 @@ Qed.
  单位：集合的典型单位
  组合：保持等价关系的集合映射的组合
 *)
+(*
+   【Sets 范畴实例展开】/ Sets instance walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Sets = setoid（Bishop 集合）的范畴：对象带选定的 ≈，态射是尊重 ≈ 的映射。
+      Sets = category of setoids: objects carry ≈; morphisms respect ≈.
+      Haskell 对照：≈ 比 Hask 的「类型+函数」多一层外延相等；库用它当 Hom/Yoneda
+      的落脚点，免函数外延性公理。对比 Instance/Coq.v（裸 Type + 逐点 =）。
+      Haskell analogy: richer than Hask (extensional ≈ on carriers). Contrast Coq.v.
+
+   2) 关键字段 / Key Category fields
+      - obj := SetoidObject          （载体 Type + Setoid）
+      - hom := SetoidMorphism        （函数 + Proper 证明）
+      - homset := SetoidMorphism_Setoid  （≈ = 逐点对陪域 ≈）
+      - id / compose := setoid_morphism_id / _compose
+
+   3) ≈ 是什么 / What ≈ is
+      两个 setoid 映射 f≈g 当且仅当 ∀x, f x ≈ g x（陪域的 ≈）。定义上外延。
+      f≈g iff pointwise on the codomain's ≈ — extensional by definition.
+
+   阅读顺序：SetoidObject → SetoidMorphism → Sets 记录字段 → 后文 Terminal/Initial。
+   Read: SetoidObject → SetoidMorphism → Sets fields → structure below.
+*)
 Program Definition Sets@{o so} : Category@{so o o} := {|
   obj     := SetoidObject@{o o} : Type@{so};
   hom     := λ x y, SetoidMorphism@{o o o} x y : Type@{o};

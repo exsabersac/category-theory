@@ -35,6 +35,23 @@ Generalizable All Variables.
  1 是只有一个对象和一个（恒等）态射的范畴。在这里，唯一的对象和唯一的箭头都是 [ttt]，这是宇宙多态单位类型 [poly_unit] 的唯一元素；同态集族是严格相等的，在这种情况下该同态是显然可收缩的。1 是 Cat 的终对象：对于每个范畴 C，都存在一个唯一的函子 `! : C ⟶ 1` ([Erase])，将每个对象和态射映射到 [ttt]。与之对偶，从 1 出发的函子会选择目标范畴中的对象，所以 [1, C] ≃ C。Theory/Shapes.v 证明了这两种理解：[Point] 和 [point_of] 及其对象的往返映射，以及 [One_Fun_iso : [_1, C] ≅ [Cat] C] 对于函子范畴——这在 Instance/Cat.v 的意义上是范畴的等价，而不是范畴的同构。对偶的概念——初始/空范畴 0——存在于 Instance/Zero.v。
 *)
 
+(*
+   【1 / _1 终范畴实例展开】/ Terminal category walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      1 = 终范畴：一个对象、一条恒等箭（皆为 poly_unit 的 ttt）。Cat 中的终对象。
+      Terminal category: one object, one arrow. Terminal object of Cat.
+      Haskell 对照：像 unit 类型升到范畴层；C⟶1 唯一（Erase）；1⟶C 挑对象。
+      Analogy: unit at category level; ! : C⟶1 unique; functors 1⟶C pick objects.
+
+   2) 关键字段 / Key fields
+      - obj := poly_unit；hom := fun _ _ => poly_unit
+      - homset := Morphism_equality；id/compose := ttt
+
+   阅读：_1 → Erase → Cat_Terminal；对偶见 Zero.v。
+   Read: _1 → Erase → Cat_Terminal; dual in Zero.v.
+*)
 Program Definition _1@{o h p} : Category@{o h p} := {|
   obj     := poly_unit@{o};            (* the single object / 单个物体 *)
   hom     := fun _ _ => poly_unit@{h}; (* the single (identity) arrow / 单（恒等）箭头 *)

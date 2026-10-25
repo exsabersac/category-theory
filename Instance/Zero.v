@@ -37,6 +37,23 @@ Generalizable All Variables.
 #[local] Obligation Tactic :=
   intros; try match goal with [ H : Empty_set |- _ ] => inversion H end.
 
+(*
+   【0 / _0 初范畴实例展开】/ Empty category walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      0 = 空范畴：对象与 Hom 皆 Empty_set；定律空成立。Cat 的初对象。
+      Empty category; initial object of Cat.
+      函子 0⟶C 唯一（From_0，空定义）。对偶终范畴见 One.v。
+      Unique ¡ : 0⟶C. Dual terminal category in One.v.
+
+   2) 关键字段 / Key fields
+      - obj/hom := Empty_set；homset := Morphism_equality
+      - id/compose 等由 Obligation 对空假设 inversion 消解
+
+   阅读：_0 → From_0 → Cat_Initial。
+   Read: _0 → From_0 → Cat_Initial.
+*)
 Program Definition _0 : Category := {|
   obj    := Empty_set;
   hom    := fun _ _ => Empty_set;

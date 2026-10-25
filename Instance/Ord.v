@@ -355,6 +355,28 @@ Qed.
 
 (** ** The category / ** 类别 *)
 
+(*
+   【Ord 范畴实例展开】/ Ord instance walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      Ord = 预序的范畴（Mac Lane Preord）：对象是 OrdObject（setoid+≤）；
+      态射是单调且尊重 ≈ 的映射（OrdHom）。≠ Proset（单个预序→薄范畴）。
+      Category OF preorders; morphisms = monotone maps. Not “a preorder as a category”.
+
+   2) 关键字段 / Key fields
+      - obj := OrdObject（ord_setoid + ord_le + refl/trans/Proper）
+      - hom := OrdHom（SetoidMorphism + ord_mono）
+      - ≈ 在 OrdHom_Setoid：底层 setoid 映射逐点 ≈
+      - id / compose := ord_hom_id / ord_hom_compose
+
+   3) 邻近 / Nearby
+      Ord_Forget : Ord ⟶ Sets；Posets := Sub Ord …（偏序满子范畴）。
+      Forget to Sets; Posets = full subcategory of antisymmetric ones.
+
+   阅读：OrdObject → OrdHom → Ord → Forget/Posets。
+   Read: OrdObject → OrdHom → Ord → Forget/Posets.
+*)
 Program Definition Ord : Category := {|
   obj     := OrdObject;
   hom     := OrdHom;

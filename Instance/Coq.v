@@ -138,6 +138,29 @@ Generalizable All Variables.
  将类型和函数视为一个类别的阅读实践体现了劳维尔在他直接公理化集合类别时所采用的结构立场——首先考虑对象和复合，成员关系是一个派生概念（Lawvere，《集合类别的一种初等理论》，PNAS 52, 1964，ETCS 的起源）。在这种观点下，一个集合就是任何可以组合的东西，而 [Coq] 是在 Type 宇宙中实现的立场，是经过机器验证的，而非假定的。这个实例是 Curry–Howard–Lambek 三者关系的一半。Lambek 的“演绎系统与范畴”系列（II, LNM 86, 1969；III, LNM 274, 1972）将演绎系统重新表述为范畴，第三部分将笛卡尔闭范畴与直觉主义命题演算和组合逻辑配对；类型化 λ 演算与笛卡尔闭范畴之间的精炼等价出现在 Lambek 和 Scott 的《高阶范畴逻辑导论》（CUP 1986）的第一部分。在树状结构中，这种对应关系是双向的：Instance/Lambda.v 构建了一个作为语法笛卡尔闭范畴的简单类型 λ 演算，而 Instance/Lambda/Sem.v 将该语法解释到这个范畴中——标准模型满足其自身的内部语言。在 Haskell 中所谓的民间传说在这里是一个定理：Bauer 观察到，对于所谓的 Haskell 类型和函数的范畴，从未有严格的态射等价被确定，并且在自然候选下，恒等律在 seq 下无法保持（Bauer，《Hask 不是一个范畴》，2016）。Coq 函数是全函数，上述标题正好确定了态射等价。在《Instance/Sets.v》中，劳动分工遵循了内涵类型理论中已知的断层线。Hofmann 表明，内涵的同一类型不能识别按点相等的函数，也不会产生商类型，并且 setoid 模型可以恢复二者（Hofmann，《内涵类型理论中的外延概念》，爱丁堡论文，1995）；因此，Rocq 标准库将 functional_extensionality_dep 作为公理而不是定理声明。这两个实例分别占据了那条线的两侧：Instance/Sets.v 在每个态射上以尊重的方式做簿记，但获得指数对象时不依赖公理（Instance/Sets/Cartesian/Closed.v）；而在这里，类别定律以及  [Coq_Terminal]、[Coq_Initial]、[Coq_Cartesian] 和 [Coq_Cocartesian] 的结构仅通过莱布尼茨重写就成立，并且正好只使用了一个公理，在 [Coq_Closed] 中，柯里化必须在 [exp_iso] 成为同类集同构之前尊重点对点等价。集合论一侧有其自身的边界：用于 Instance/Sets.v 的规范真值对象无法适应单一的宇宙层级——它的承载对象本身就是宇宙，而谓词型 Type 层级将其放在更高的一个层级上，宇宙约束图保持无环（Rocq 参考手册，排序）——因此 Instance/Sets/Classifier.v 处理跨宇宙的分类器定理。这里的收益是计算上的：组合字面上是 λ x, g (f x)，所以 [Coq] 上的一个范畴方程就是一个可运行的程序等价，而保持在指数外的发展保持无公理。Instance/Coq/Lists.v 证明了 list A 是其基础函子在逐点相等下的初始代数，仅用列表归纳；Theory/Coq/Monad/Proofs.v 定义了 Haskell 风格 Monad 类的合法性是由该范畴上的单子引起的。边界本身是机器检查的：Instance/Coq/Comonad/Store.v 显示，这里一个 store 函子所需要的尊重性字段已经隐含了函数外延性，并转而在 Instance/Sets.v 上承载 Store —— 这是 Leibniz 模型停止、集合等价模型接管的一个实时标志。应用程序通过笛卡尔闭结构运行。由于简单类型 λ 演算可以由任何笛卡尔闭范畴建模，因此针对该范畴编写的类型化程序可以在其他范畴中重新解释——Elliott 的方法，“编译到范畴”（PACMPL 1, ICFP 2017），在 Tools/Abstraction.v 中以树内的方式实践。面向程序员的类型作为对象、函数作为箭头（Milewski, “Category: The Essence of Composition”, 2014）的图景在此文件中得到了严格化，而 [Coq_StrongFunctor] 包，一次性为每个自函子提供了基于集合的效果处理账户所隐含的规范强度 (Kock, “Strong functors and monoidal monads”, Arch. Math. 23, 1972) 。
 *)
 
+(*
+   【Coq 范畴实例展开】/ Coq instance walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      Coq = Type 与函数的范畴：对象是 Type，态射是 A→B，≈ 是逐点 Leibniz 相等。
+      Coq = types and functions; ≈ is pointwise =.
+      Haskell 对照：最接近民间「Hask」；但 Hask 因 seq 等并非严格范畴，
+      这里函数是全的，≈ 定义明确。对比 Sets（setoid，零公理外延）。
+      Closest to folklore Hask; total functions; contrast Sets (setoid ≈).
+
+   2) 关键字段 / Key fields
+      - obj := Type；hom := λ A B, A → B
+      - homset.equiv := ∀x, f x = g x
+      - id := λ x, x；compose := λ g f x, g (f x)
+
+   3) 结构速览 / Structure nearby
+      Terminal=unit；Cartesian=×；Closed 需函数外延性公理；Initial=False。
+      Terminal=unit; products=×; Closed needs funext; Initial=False.
+
+   阅读：Coq 记录 → Terminal/Cartesian → Closed（公理边界）→ StrongFunctor。
+   Read: Coq record → Terminal/Cartesian → Closed (axiom) → StrongFunctor.
+*)
 #[export]
 Program Instance Coq : Category := {
   obj     := Type;                                   (* objects are types / 对象是类型 *)

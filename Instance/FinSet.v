@@ -135,6 +135,27 @@ Generalizable All Variables.
  FinSet 由一个乘法 2 → 1 和一个单位 0 → 1 在交换单元方程下表示，并且它锚定了网络理论链，其中有限集合的余跨度构成特殊交换 Frobenius 单元的道具，并跨越双交换双单元的道具（Lack 以及 Rosebrugh、Sabadini 和 Walters 的结果，汇编在 Baez、Coya、Rebro 的《网络理论中的道具》，类别理论与应用 33, 2018）——在 Theory/Algebra/Frobenius.v 中讨论的互连代数。这一影响远远超出了代数。FinSet 是一个初等拓扑，其包含到 Set 中是一个逻辑态射，而从 FinSet 到 Set 的函子范畴是对象理论的分类拓扑（nLab）。FinSet 上的预层是 Grandis 的增强对称单纯集合（“有限集合与对称单纯集合”，《范畴理论的理论与应用》8, 2001），单纯形范畴 Δ 嵌入到 FinSet 中。该骨架上的协变预层同样是带变量绑定的抽象语法的数学宇宙（Fiore, Plotkin, Turi，《抽象语法与变量绑定》，LICS 1999）：一个对象 n 是 n 个自由变量的上下文，态射是重命名，绑定签名通过带有可证明正确的替换结构获得初代数语义——这是作用良好范围的 De Bruijn 表示的基础。在这个库中，骨架还有另一个具体的理由来证明其存在价值：它会进行计算。对象是字面上的自然数，因此对象的相等性是可判定的——[FinSet_ObjDecEq] 的内容——并且根据 Hedberg 的论证，对对象的 UIP（唯一身份证明）则无需公理即可成立，而态射是标准库 [Fin.t] 上的诚实 Coq 函数，这个类型是依赖类型传统中规范的 n 元类型。因此，可以使范畴结构进行评估，并且由 [fin_split] 和 [fin_join] 在此建立的闭合计算规范会传播到每个卫星：Instance/FinSet/Product.v 中的位置乘积编解码器 [fin_pair] 和 [fin_unpair]，Instance/FinSet/Closed.v 中的枚举指数编解码器 [fin_tabulate] 和 [fin_apply]，计数拉回（[FinSet_Pullbacks]）以及 Instance/FinSet/Classifier.v 中可判定的子对象分类器 Ω := 2，最终在 Instance/FinSet/Topos.v 中形成 [FinSet_Topos]，其合理性示例 — 其中 [FinSet_Pow_two] 计算 2 的幂对象为 4 — 通过 [eq_refl] 得到验证。
 *)
 
+(*
+   【FinSet 范畴实例展开】/ FinSet instance walkthrough
+   （口吻对齐 Theory/Functor.v；受众：Coq 小白 + Haskell）
+
+   1) 这是什么 / What this is
+      FinSet = 有限集的骨架：对象=nat（大小 n）；态射=Fin.t m → Fin.t n。
+      Skeletal FinSet: objects=nats; morphisms=functions on Fin.t.
+      Haskell 对照：像 Finite/已知大小的向量索引；可计算、对象相等可判定。
+      Analogy: sized finite types; decidable object equality; evaluates.
+
+   2) 关键字段 / Key fields
+      - obj := nat；hom := Fin.t m → Fin.t n
+      - ≈ := 逐点 =（fun_setoid）；id/compose = 普通函数
+
+   3) 为何骨架 / Why skeletal
+      每个有限集 ≃ 某个 Fin n；骨架便于 Lawvere 理论 / 初等 topos 计算。
+      Every finite set ≃ Fin n; used for Lawvere theories & topos structure.
+
+   阅读：FinSet → HomEqProp/ObjDecEq → Initial/Terminal/Cocartesian。
+   Read: FinSet → decidability helpers → (co)limits structure.
+*)
 Program Definition FinSet : Category := {|
   obj := nat;
   hom := fun m n => Fin.t m → Fin.t n;

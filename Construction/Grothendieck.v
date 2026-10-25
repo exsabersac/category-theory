@@ -406,6 +406,34 @@ Qed.
    * ** 显示的 B 类别，其总类别，投影
 *)
 
+(*
+   【Grothendieck 构造展开】/ Grothendieck walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      把「索引范畴」A : IndexedCat B（每个 b 一个纤维范畴 + 沿箭头的重索引）
+      摊平成一个总范畴 ∫ A，并带投影 ∫ A ⟶ B。
+      Flatten an indexed family of categories into one total category over B.
+      Haskell 直觉：像「依赖和」Σ (b : B). Fib(b)，态射还要带基态射与纤维态射。
+      Like a dependent sum of categories, with reindexing in the morphisms.
+
+   2) 两步交付 / Two steps
+      Grothendieck_Displayed : Displayed B
+        - dobj x      = 纤维 idx_fib A x 的对象
+        - dhom … f    = idx_map A f dx ~> dy（先沿 f 前推再比）
+        - did / dcomp  用 idx_id / idx_comp 的同构调解
+      Grothendieck := Total … ；Grothendieck_Proj := Total_Proj …
+      Displayed presentation first, then total category.
+
+   3) 为何要 IndexedCat / Why IndexedCat
+      裸 Functor B Cat 缺跨应用连贯等式；本库用 IndexedCat 的 idx_resp /
+      idx_comp / idx_cocycle 等字段放电显示范畴定律。
+      Coherence fields discharge Displayed laws.
+
+   阅读：IndexedCat → Displayed 字段 → Total → Proj。
+   Read: IndexedCat → Displayed fields → Total → Proj.
+*)
+
 Program Definition Grothendieck_Displayed : Displayed B := {|
   dobj := fun x => idx_fib A x;
   dhom := fun x y dx dy f => idx_map A f dx ~{ idx_fib A y }~> dy;

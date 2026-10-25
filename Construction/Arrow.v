@@ -169,6 +169,28 @@ Generalizable All Variables.
  cod ⊣ ids ⊣ dom (nLab，伴随串)。经典应用贯穿于同伦论。Quillen 模型范畴的提升问题（Quillen，《同伦理论代数》，Springer 数学讲义 43，1967）是交换方格——即箭头范畴中的态射 e → m——并且弱分解系统的两类在其形成的收回下都是封闭的，一个模型结构恰好是两个交错的此类系统（nLab，弱分解系统；模型范畴）。在这个库中，Theory/Orthogonality.v 正是以这种方格形式陈述唯一提升，并证明了收回闭性 [ortho_left_retract]。正交分解系统——最先由 Mac Lane 研究（“群的对偶性”，Bull. AMS 56, 1950），基本存在于 Freyd 和 Kelly（“连续函子的范畴，I”，J. Pure Appl.代数 2, 1972)，并由 Bousfield 命名（“范畴中分解系统的构造”，J. Pure Appl. Algebra 9, 1977）——同样存在于这里：这两个类是箭头范畴的充足子范畴（nLab，正交分解系统），并且构造本身携带分类模范畴，一个 K 上的正交分解系统是适当地定义为 Cat 上平方自函子 K ↦ K² 的模范畴的 Eilenberg–Moore 代数（Korostenski 和 Tholen，“分解系统作为 Eilenberg-Moore 代数”，J. Pure Appl. Algebra 85, 1993）。在树中，这些系统是 Structure/Factorization.v 的类 [OFS]。余域投射开启了纤维范畴理论。余域函子 [comma_proj2] 总是一个 Grothendieck 上纤维，并且当且仅当 C 具有拉回时才是一个纤维 —— 一个映射的笛卡尔升举就是它的拉回方格 —— 其纤维为切片范畴 C/c（Construction/Slice.v），因此其名称为“自索引”和“基本纤维”（nLab，余域纤维）。本库证明了与当前表述等价的纤维表示：Construction/Displayed/Codomain.v 将箭头范畴显示在 C 上，建立 Cat 中的同构 [Codomain_Total_Arrow_iso]，并从 [codomain_cleaving] 中选定的拉回构造笛卡尔升举。箭头范畴的拉回闭合子范畴是泰勒的展示映射类，它们是依赖类型的语义对应：一个展示映射 p : B → A 对应判定 x:A ⊢ B(x)，替换被解释为拉回，在同伦类型论中，展示映射是纤维化 (Taylor, 《数学的实际基础》，CUP 1999；nLab，展示映射)。标题中的 [2, C] 等价在 Theory/Shapes.v 中被证明为 [Two_Fun_Arrow : [_2, C] ≅ [Cat] Arrow C]，在 Instance/Two.v 的 walking arrow [_2] 上，对于 [C : Category@{o Set Set}] —— 这是一个侧面真正强制的限制，因为 Instance/Fun.v 的 [Fun] 识别了源和目标的同伦宇，而 [_2] 的同伦存在于 [Set] 中。准确地阅读它的强度：[≅[Cat] ] 这里是类别的等价，因为 Instance/Cat.v 确定函子直到自然同构。两次往返中的一次是严格的 -- [Arrow_Fun_Arrow_strict] 那里说复合箭头 C -> [_2, C] -> 箭头 C 是 [Functor_StrictEq_Setoid] -等于恒等映射 -- 而另一次则由一族其分量都是恒等映射的自然同构来见证，仅此而已；该文件的头部精确记录了 [StrictCat] 同构所需的内容，但并未声称存在。上面的陪域同构是与显示的表述的独立比较。Mac Lane 的练习 II.4.7 — 进入箭头范畴的函子正好是自然变换 — 是 Construction/Arrow/Functor.v：提取 [Arrow_extract]（边界函子加上组装成变换的通用箭头）、引入 [Arrow_intro]（作为函子物化的变换，自然性提供方格），以及作为集合等价同构的 [Arrow_classification]；不同于 [_2] 的比较，它没有携带 Set 级别的宇宙标记（库的环境 h = p 约束来自 [Functor] 仍然适用），且从未离开逗号表示法。
 *)
 
+(*
+   【Arrow 范畴定义展开】/ Arrow walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Arrow C = C ⃗ := (Id[C] ↓ Id[C])：对象 = C 的态射；态射 = 交换方块。
+      Objects are morphisms of C; morphisms are commuting squares.
+      等价说法：[2, C]（行走箭头 2 = {0 → 1} 上的函子范畴）。
+      Also [2, C] / Arr(C) / C².
+
+   2) 一行定义 / One-liner
+      不重写 Category 字段，直接特化逗号：S = T = Id。
+      No new fields — specialize Comma to identity functors.
+
+   3) 用途直觉 / Why care
+      「关于映射的命题」变成 C ⃗ 里的普通范畴论（提升问题、分解系统、余域纤维…）。
+      Statements about maps become ordinary category theory in C ⃗.
+
+   阅读：先懂 Comma → 本定义一行 → 想到「态射当对象」。
+   Read Comma first → this alias → morphisms-as-objects.
+*)
+
 Definition Arrow {C : Category} : Category := (Id[C] ↓ Id[C]).
 
 Notation "C ⃗" := (@Arrow C) (at level 90) : category_scope.

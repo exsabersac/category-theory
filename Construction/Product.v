@@ -109,6 +109,31 @@ Generalizable All Variables.
  nLab（竞争张量）：https://ncatlab.org/nlab/show/funny+tensor+product产品范畴的存在是为了使多个变量的函子不需要自身的理论。在该学科的创始论文（Eilenberg 和 Mac Lane，《自然同构的一般理论》，美国数学会学报 1945 年）中，两个参数的函子被直接公理化：其第 3 节设定了一个对象函数和一个映射函数，并遵循一个恒等条件和一个交换条件，将一对复合的像与像的交错复合相等 — 文中没有出现产品范畴，因为该论文从未构造过它。这个包装是 Mac Lane 《为工作中的数学家而写的范畴论》第 II.3 节（1971 年）的教材式总结，该书定义了 C × D，将双函子重新定义为从它出发的普通函子，并通过两族在对象上相符且满足交换律的部分函子来刻画这样的函子。Riehl 引入乘积的原因也是相同的，以便协变和逆变的表象函子“组合成一个单一的双函子，这就是二元函子的名称”（Riehl，《语境中的范畴论》，Dover 2016，第 1.3.12 定义）。一旦掌握了 [Product]，每一个关于函子的一般定理——自然性、复合、伴随、极限——都可以直接应用于多变量函子。这个定义一次性地封装了交换律。函子 F : C ∏ D ⟶ E 在一对可组合的对态射上的函子性是中间四交换：Functor/Bifunctor.v 将其读作 [bimap_comp]，其中 [bimap] 应用于 f 和 g 时字面上就是在对 (f, g) 上的 fmap（[bimap_fmap] 在 Leibniz 等式下成立），并且通过任意顺序将 (f, g) 分解为 (f, id) 和 (id, g) 可以恢复 Mac Lane 的两个部分函子（[bimap_comp_id_left], [bimap_comp_id_right]）及其对换性（[bimap_id_right_left], [bimap_id_left_right]）。Haskell 的 Data.Bifunctor 类在类型类形式中包含相同的内容，其中默认的 bimap 组合了两个单侧操作，并且这是合乎规律的，因为它们是可交换的；单独的函子性通常不能产生联合函子性，而这两种概念分离的范畴是 Structure/Premonoidal.v 中的前单元范畴（Milewski，“Functoriality”，2015）。分类完全没有交替的单独函子映射的伴随构造是 Construction/Funny.v 中的有趣张量积；实际上 Cat 恰好具有两种对称闭单范畴结构——这个笛卡尔积和有趣张量——而没有其他结构（Foltz、Lair 和 Kelly，“代数范畴中具有很少或没有单范畴闭结构”，Journal of Pure and Applied Algebra 1980）。混合变差通过对立来处理：一个槽中的逆变是该槽中来自相对范畴的协变，而 [Product_Opposite] 使得记账无需传输。主要示例是函子/Hom.v 中的同态双函子 [Hom] : C^op ∏ C ⟶ Sets，其柯里化形式 [Curried_Hom] 是 Yoneda 展开的基础；进一步的使用者包括 Structure/Monoidal.v 中的张量 ⊗ : C ∏ C ⟶ C，Theory/Bicategory.v 中的水平组合 [hcompose]，作为函子 C^op ∏ D ⟶ Sets 的 Profunctors C ⇸ D 在 Theory/Profunctor.v 中，以及 Theory/Dinatural.v 中的双自然变换。张量双函子也承载着单体范畴的物理解读，在量子基础和量子信息学中对复合系统建模（Coecke 和 Paquette，《Categories for the practising physicist》，2009）；ZX-演算的实例 Instance/ZX.v 正是为了该张量而导入此文件。双图是从指标范畴的积出的函子，而 [Swap] 是通过它们交换极限的对称性（Riehl 2016，第 3.8.1 定理）。在 Cat 本身中，Instance/Cat/Cartesian.v 将此构造作为积对象，Functor/Construction/Product.v 提供其在函子 F ∏⟶ G 上的作用，Instance/Cat/Cartesian/Closed.v 增加了柯里化同构，展示了 Cat 作为笛卡尔闭范畴。
 *)
 
+(*
+   【Product 范畴定义展开】/ Product walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Product C D = C ∏ D：对象是对 (c,d)，态射是对 (f,g)，运算分量做。
+      Product of categories (in Cat), not a product *object* inside one category
+      (that is Structure/Cartesian.v).
+      Haskell 对照：Data.Bifunctor 的「两个参数一起变」—— bifunctor = 出积范畴的函子。
+      Haskell: Bifunctor ≈ ordinary Functor out of C ∏ D.
+
+   2) 关键字段 / Key fields
+      - obj  := C * D
+      - hom  := 分量 Hom 的积 / product of component homs
+      - ≈    := 分量 ≈ 的合取 / componentwise ≈
+      - id   := (id, id)；compose 分量复合 / componentwise compose
+
+   3) 投影 / Projections
+      Fst / Snd（π₁, π₂）：忘掉另一分量；E ⟶ C ∏ D ≃ 一对函子 E ⟶ C 与 E ⟶ D。
+      A map into the product is a pair of maps.
+
+   阅读：对象对 → 态射对 → 分量 ≈ → id/compose → Fst/Snd。
+   Read: object pairs → morphism pairs → componentwise ≈ → ops → projections.
+*)
+
 Definition Product (C D : Category) : Category := {|
   obj     := C * D;
   hom     := fun x y => (fst x ~> fst y) * (snd x ~> snd y);

@@ -40,6 +40,32 @@ Context {D : Category}.
 
 Local Set Warnings "-intuition-auto-with-star".
 
+(*
+   【Coproduct 范畴定义展开】/ Coproduct walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Coproduct C D = C ∐ D：对象是带标签并 C + D（inl / inr）；
+      态射只活在同一侧，跨侧 Hom 是 False（空）。
+      Tagged disjoint union of categories; no arrows between summands.
+      Haskell 对照：Either a b —— 但这里两侧各自带着自己的态射。
+      Haskell: Either, but each side keeps its own morphisms.
+
+   2) 关键字段 / Key fields
+      - obj := C + D
+      - hom：match 两侧；同侧用原 Hom，异侧 False
+      - id / compose：按所在侧继承；≈ 也是该侧的 ≈
+
+   3) 与积的对比 / vs Product
+      积 = Cat 的笛卡尔积；余积 = Cat 的余积。
+      函子 C ∐ D ⟶ E ≃ 一对 C ⟶ E 与 D ⟶ E（像 case 分析）。
+      Maps *out* of a coproduct are pairs of maps (like case).
+      对象余积在 Structure/Cocartesian.v，勿混。
+
+   阅读：inl/inr → 同侧 Hom → False 跨侧 → 侧内定律。
+   Read: tags → within-summand homs → False across → laws per side.
+*)
+
 Program Definition Coproduct : Category := {|
   obj     := C + D;            (* tagged disjoint union of objects / 带标签的对象不相交并集 *)
   hom     := fun x y =>        (* within a summand; False across summands / 在同一项内；在各项之间为假 *)

@@ -137,6 +137,31 @@ Generalizable All Variables.
  论文: Weinstein, 《群群：统一内在与外在对称性》，美国数学学会通告 43, 1996群oid比范畴早近二十年。Heinrich Brandt 在 1926/27 年发表在《Mathematische Annalen》上的一篇论文中引入并命名了它们，这篇论文是他在扩展高斯的二元二次型的复合到四元型过程中花费超过十三年的成果；同一思想体系使他能够将理想算术推广到四元数代数，有限群oid代替了经典的有限阿贝尔类群（Brown 1987）。实际上，Brandt 要求每对对象之间都有一条箭头——连通情况，仍称为 Brandt 群oid——而现代的定义，即每个态射都可逆的范畴，则是后来的一种放宽。布朗还记录了这样的评论，即布兰特的公理影响了埃伦贝格和麦克莱恩对范畴的定义，同时也记录了埃伦贝格对此的否认：如果他们考虑过群类，他们就会用它们作为示例。群族相比群提供的是对象之间的对称性，而不是单个对象的对称性。韦恩斯坦的综述从一个观察开始：许多对象表现出明显可以识别的对称性，但几乎没有或根本没有非平凡的自同构：一个有限的浴室瓷砖具有一个四元素的对称群，而其可见的重复图案是通过限制环境群作用的变换群族来恢复的（韦恩斯坦 1996）。同样，结构的重新定位驱动了集合 A 上的基本群范畴 π₁(X, A)：对于交集不连通的并集，没有一个好的单一基点选择，而 Brown 对 van Kampen 定理的表述——每个分支一个基点，结果是群范畴的合并自由积，遵循 Higgins——更简单地证明了一个更强的定理（Brown 1987）。Ehresmann 从 1950 年起，加入了拓扑和可微分结构，使群范畴成为微分几何的工作工具；Grothendieck 用它们来驯服模问题中出现的等价关系，Connes 则用群范畴卷积代替了难以处理的商上的函数代数（Brown 1987；Weinstein 1996）。类型理论从内部重新发现了这个概念。在内涵型马丁-洛夫类型理论中，一个类型的等同性证明可以组合、逆转，并且在高阶等同性下满足结合律，因此每个类型具有群oid结构，而不仅仅是等价关系；将类型解释为群oid可以得到一个模型，其中等同性证明的唯一性不可导出（Hofmann 和 Streicher，《群oid模型反驳等同性证明的唯一性》，LICS 1994），而完整的迭代等同性类型的层级是弱 ω-群oid（Lumsdaine，《从内涵型理论得到弱 ω-范畴》，TLCA 2009；van den Berg 和 Garner，《类型是弱 ω-群oid》，伦敦数学学会会刊 102, 2011）。群oid同样能够模拟同伦 1 型，这是同伦假设的第一阶梯（nLab: groupoid）。在这个库中，核心是由同构构成的集合，并且是可组合的。因为  [Groupoid C] 是一个真实的范畴，所以通用的重写引理——[id_left]、[comp_assoc]、[compose_respects]——可以逐字应用于同构链，而 Structure/UniversalProperty.v 正是依赖于这一点，通过在 [Groupoid] 中计算函子范畴到 Sets 的过程来完成一个泛性质的唯一性部分。Theory/Isomorphism.v 提供了构造中的每一个态射级字段，其 [iso_sym] 提供了逆，使结果成为一个群oid而不仅仅是一个范畴。该文件构造了给定 C 的核心。本段早期的修订版本继续说明树中不存在独立的群oid范畴，因此上面标题中的伴随性评论仍然是文字说明，而非定理。现在需要进行一个修正，因为两个部分自那以后都已经建成。Instance/Grpd.v 将 [Grpd] 定义为由 [IsGroupoid] 切出的 [Cat] 的完全子范畴，并且 [Grpd_Incl] 是它的全忠实包含，而 Construction/Groupoid/Core.v 将该文件的 [Groupoid] 作为函子 [Core : Cat ⟶ Grpd] 的对象部分，并证明 [Incl_Core_Adjunction : Adjunction Grpd_Incl Core]。同一个包含的另一伴随——局部化，它普遍地把每个态射取逆，而不是舍弃非可逆的态射（nLab: core）——是在 Construction/Fractions.v 中构建的，通过生成元和关系，并且其普遍性质具有严格强度；该文件的头部记录了它与封装的 [Adjunction] 之间还存在的内容，并且它不是 Construction/Localization.v，后者构建反射正交子范畴的局部化，是一个不同的构造。Theory/Category/Semi.v 记录了范畴公理的互补弱化，在群范畴要求逆元的情况下舍弃恒等态射。
 *)
 
+(*
+   【Groupoid（核心）定义展开】/ Groupoid/core walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      群胚 = 每个态射都可逆的范畴。Groupoid C = C 的核心（core）：
+      对象照旧，态射只保留同构 x ≅ y。
+      Maximal subgroupoid: same objects, only isomorphisms as arrows.
+      Haskell 对照：把「可逆的」挑出来 —— 像只保留有 Inverse 的那部分 API。
+      Keep only the invertible part of the API.
+
+   2) 字段怎么填 / Fields
+      - obj     := @obj C
+      - hom     := @Isomorphism C     — 态射 = 同构记录
+      - homset  := @iso_setoid C      — ≈ = to/from 分量的 ≈
+      - id / compose := iso_id / iso_compose
+
+   3) 为何有用 / Why
+      从群胚进 C 的函子必经核心；Core ⊣ Incl（见 Construction/Groupoid/Core.v）。
+      Functors from a groupoid into C factor through the core.
+
+   阅读：Isomorphism → iso_setoid → iso_id/compose → 「全是可逆」。
+   Read: Iso as hom → iso ≈ → iso ops → everything invertible.
+*)
+
 Program Definition Groupoid (C : Category) : Category := {|
   obj     := @obj C;
   hom     := @Isomorphism C;

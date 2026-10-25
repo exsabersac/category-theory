@@ -41,6 +41,34 @@ Context (C : Category).
  一个C的子范畴D由C的对象的子集合[sobj]给出，同时对于每一对选定的对象，给出C-态射之间的子集合[shom]，并且该集合在恒等态射([sid])和复合([scomp])下封闭。源/目标封闭条件（如果f : x ~> y在D中，则x和y也在D中）在这里通过构造而成立：[shom]仅由已经从[sobj]选定的对象ox, oy索引。这些条件使 D 本身成为一个类别（见下文 [Sub]），对于它的包含 D ⟶ C（见下文 [Incl]）是一个函子；这个包含总是忠实的，因为在每个同态集合上它是一个 σ 型的第一个投影——如下文 [Incl_Faithful] 所证明。一个子类别是全子类别，当 [shom] 保留所选对象之间的每个 C-态射（见下文 [Full]），并且是宽子类别（lluf），当 [sobj] 选择 C 的每一个对象（见下文 [Wide]）。在一个全子类别中，一个环境同构可以提升（见下文 [Full_sub_iso]），特别地，对于一个对象的两个成员证明会得到 [Sub] 中同构的对象（见下文 [Full_membership_iso]）——这就是为什么骨架的唯一性条款是在 [Sub] 对象的层面上陈述，而不是它们的承载对象上（Theory/Skeleton.v）。
 *)
 
+(*
+   【Record Subcategory 语法与字段展开】/ Subcategory walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      子范畴 = 选出一些对象 + 它们之间的一些态射，且对 id 与复合封闭。
+      Selected objects + selected morphisms, closed under id and compose.
+      Haskell 对照：像「带约束的 newtype + 只暴露部分操作」，但是要交封闭证明。
+      Like a restricted API, with closure proofs.
+
+   2) Record 字段 / Record fields
+      - sobj : C → Type          — 「x 被选中」的证据类型
+      - shom … : (x ~> y) → Type — 「f 被选中」的证据
+      - scomp / sid              — 复合与恒等的封闭性（证明义务）
+
+   3) 组装出的范畴 / Built category
+      Sub：对象 { x & sobj x }，态射 { f & shom … f }；
+      Incl : Sub ⟶ C 总是忠实（Faithful）—— ≈ 定义成底层 ≈。
+      Incl is always faithful by encoding.
+
+   4) 修饰词 / Adjectives
+      Full：选中对象之间保留全部态射；Wide：选中全部对象。
+      Full = all homs between selected objs; Wide = all objects.
+
+   阅读：sobj → shom → sid/scomp → Sub → Incl。
+   Read: sobj → shom → closure → Sub → Incl.
+*)
+
 Record Subcategory := {
   sobj : C → Type;                  (* sub-collection of the objects of C / C 的对象的子集合 *)
 

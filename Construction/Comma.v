@@ -159,6 +159,34 @@ Context {T : B ⟶ C}.
 #[local] Set Transparent Obligations.
 #[local] Obligation Tactic := idtac.
 
+(*
+   【Comma 范畴定义展开】/ Comma walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      给定 S : A ⟶ C、T : B ⟶ C，逗号范畴 S ↓ T 把「S 像到 T 像之间的一条箭头」
+      提升成对象，把交换方块提升成态射。
+      Objects = mediating arrows h : S a ~> T b; morphisms = commuting squares.
+      名字来自 Lawvere 原记号里的逗号；(S, T) → 现代写成 S ↓ T。
+
+   2) 编码（本文件）/ Encoding here
+      - obj := ∃ p : A ∏ B, S (fst p) ~> T (snd p)
+        `1 x = (a,b)，`2 x = h
+      - hom := ∃ (f,g),  `2 y ∘ S f ≈ T g ∘ `2 x   （交换方）
+      - ≈ 只看 (f,g) 的分量 ≈，方块证明不参与相等
+        / ≈ ignores the square proof (irrelevant)
+
+   3) 特殊情形 / Special cases
+      Id ↓ Id = 箭头范畴 Arrow；Id ↓ Δ(c) ≃ 切片 C/c；Δ(c) ↓ Id ≃ 余切片。
+      Arrow / Slice / Coslice are commas.
+
+   4) 投影 / Projections
+      comma_proj1 / comma_proj2 找回 a、b；comma_proj_nat 的分量就是那条 h。
+
+   阅读：三元组 (a,b,h) → 交换方 (f,g) → 分量 ≈ → 投影。
+   Read: triples → commuting pairs → componentwise ≈ → projections.
+*)
+
 Program Definition Comma : Category := {|
   (* objects: triples (a, b, h : S a ~> T b) / 对象：三元组 (a, b, h : S a ~> T b) *)
   obj     := ∃ p : A ∏ B, S (fst p) ~{C}~> T (snd p);

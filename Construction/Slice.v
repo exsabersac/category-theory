@@ -151,6 +151,31 @@ Generalizable All Variables.
  用笛卡尔提升交换拉回。另外两篇阅读材料标志着该理论的延续。拓扑理论的基本定理指出，每一个拓扑的切片仍然是一个拓扑；该构造在 SGA4（Artin、Grothendieck、Verdier，SGA4 1972，第三和第四卷的 exposés III.5 和 IV.5）中出现为“topos induit”，而这个名称归功于 McLarty（McLarty，《Elementary Categories, Elementary Toposes》，牛津大学出版社 1992）。相对于 Structure/Topos.v 中的 [ElementaryTopos]，它仍然是关于此构造的主要定理，而该定理尚未在此处形式化。而在余模范畴的意义下，环境余代数 e × − 与一个指向 e 的单一态射是相同的，因此它的余代数范畴同构于 e 上的切片范畴（nLab，“coreader comonad”）；Instance/Coq/Comonad/Env.v 和 Comonad/Coalgebra.v 提供了余模范畴及其余代数范畴，与 [Slice] 的对应关系仍然是一个待陈述的自然推论。
 *)
 
+(*
+   【Slice / Coslice 定义展开】/ Slice walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      固定 c : C。切片 C/c（记 C ̸ c）：对象 = 指向 c 的箭头 a ~> c；
+      态射 = 使三角形交换的 f（g' ∘ f ≈ g）。
+      Objects over c; morphisms = commuting triangles.
+      余切片 c/C：对象 = 从 c 出发的箭头；对偶三角形。
+      Haskell / 类型论对照：依赖类型「在 c 上的族」；Set/I ≃ I-索引族。
+      Type-theory: families over a base; Set/I ≃ I-indexed families.
+
+   2) 编码 / Encoding
+      - obj := ∃ a, a ~> c     （`1 = 定义域，`2 = 结构映射）
+      - hom := ∃ f, `2 y ∘ f ≈ `2 x
+      - ≈ 只比较底层 f（三角形证明无关）
+
+   3) 与逗号 / Via comma
+      C/c ≅ (Id ↓ =(c))，c/C ≅ (=(c) ↓ Id)（本文件 Comma_Slice / Comma_Coslice）。
+      Direct encoding is handier; comma is the theory link.
+
+   阅读：对象=入 c 的箭 → 交换三角 → ≈ 看底层 → 逗号同构。
+   Read: arrows into c → triangles → ≈ on underlying → comma iso.
+*)
+
 Program Definition Slice `(C : Category) `(c : C) : Category := {|
   obj     := ∃ a : C, a ~> c;
   hom     := fun x y => ∃ f : (`1 x) ~> (`1 y), `2 y ∘ f ≈ `2 x;

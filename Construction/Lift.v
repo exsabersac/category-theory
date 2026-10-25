@@ -70,6 +70,25 @@ Generalizable All Variables.
  - [Lift_after T : C ⟶ LiftCat X] 对于 [T : C ⟶ X]：T 被读入 X 的重建，T 的操作精确应用 ([Lift_after_fobj], [Lift_after_fmap], 位于 [eq_refl])。在每个数据中，它是 [Lift_in X ◯ T]，但 Theory/Functor.v 的 [Compose] 给它的三个范畴一个同态层，因此当提升的同态层严格高于 X 时无法形成 [Lift_in X ◯ T]（在 Test/ProbeAbsolute477.v 中被拒绝）；[Lift_after] 直接构建。宇宙，由 [About] 创作。[LiftCat@{co ch xo xh}] 位于 [C : Category@{co ch ch}] 之上，并在约束条件“co <= xo”和“ch <= xh”下返回 [Category@{xo xh xh}]，除此之外没有其他约束；[Lift_in@{co ch xo xh}] 及其两个回读具有相同的两者。[Lift_after@{co ch xo xh yo yh}] 在“ch <= xh”（来自 [T] 本身）、“ch <= yh”、“xo <= yo”和“xh <= yh”的约束下，将 [X : Category@{xo xh xh}] 提升到 [@{yo yh}]，并且其两个回读相同四者。没有块包含方程。[Lift_in]、[Lift_after] 及四个回读的语句都指明了它们所谈论的提升的实例（本文件常量的六个显式宇宙实例）：提升的层级单独在下方有界，否则最小化将其设置为它所提升的层级。未交付。从 [LiftCat C] 到 C 没有函子返回，一旦同态层被提升：在 “ch < xh” 时，类型 [LiftCat C ⟶ C] 本身被拒绝（“无法强制 ch = …”，Test/ProbeAbsolute477.v），因为 [Functor] 的 [fmap_respects] 是通过 [respectful] 在目标层级上进行类型化的，因此通过目标层级界定了源的同态层；仅提升对象时，回路是可形成的。除了同态层之外，证明层没有提升。关于 [LiftCat] 保持或反映的结构，没有超出其在 Structure/Limit/Absolute.v 和 Structure/Coequalizer/Absolute.v 中使用的那部分，那部分是它的箭头、≈ 和复合是 C 的。
 *)
 
+(*
+   【LiftCat 定义展开】/ LiftCat walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      Coq 宇宙不累积：Category@{co ch} 不能直接当成更高宇宙的 Category。
+      LiftCat C 用同一套对象/箭头/≈/运算，在更高宇宙里「重包」一遍。
+      Rebuild C at higher universes; data unchanged.
+      不是数学上的新构造，是证明助手工程需要（#477 绝对余极限等）。
+
+   2) 交付 / Deliverables
+      LiftCat C : Category@{xo xh}（需 co≤xo, ch≤xh）
+      Lift_in : C ⟶ LiftCat C（对象与箭头定义性恒等）
+      Lift_after T：把 T : C ⟶ X 读进 LiftCat X
+
+   阅读：宇宙约束 → 同数据重包 → Lift_in 当「恒等嵌入」。
+   Read: universe bounds → same data → identity-like Lift_in.
+*)
+
 Definition LiftCat@{co ch xo xh +} (C : Category@{co ch ch}) :
   Category@{xo xh xh}.
 Proof.

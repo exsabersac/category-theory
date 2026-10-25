@@ -481,6 +481,31 @@ Qed.
    --------
    * 商类 [C/R]：与 [C] 拥有相同的对象和态射，其 Hom-集合等价关系从 [≈] 粗化到 [R]。类律成立因为 [R] 包含 [≈]（通过 [cong_incl]），并且 [C] 已经满足它们直到 [≈]。
 *)
+(*
+   【Quotient 范畴定义展开】/ Quotient walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      固定同态合同 R（含原 ≈、对复合封闭），商范畴 C/R：
+      对象与箭头载体不变，只把「相等」从 ≈ 加粗成 R。
+      Same objs/arrows; coarsen equality of arrows from ≈ to R.
+      Haskell 对照：新type 包同一载体，改 Eq 实例 —— 这里改的是 Setoid。
+      Like changing the Eq/Setoid, not the carrier.
+
+   2) 前置 / Prerequisites above in this file
+      HomRelT + HomCongruence（cong_incl / cong_comp / 等价律）；
+      另有 id_cast 运输工具、生成最小合同 CongClosure 等。
+
+   3) 本定义字段 / Fields of Quotient
+      obj/hom/id/compose 同 C；homset.equiv := R；定律用 cong_incl 从 C 抬上来。
+
+   4) 泛性质 / UP（下文）
+      QuotientProj : C ⟶ C/R；满足 R 的函子唯一提升为 QuotientLift。
+
+   阅读：先 HomCongruence → Quotient 改 ≈ → Proj / Lift。
+   Read: congruence → coarsen ≈ → projection & lift.
+*)
+
 Definition Quotient (C : Category) (R : HomRelT C)
   `{@HomCongruence C R} : Category := {|
   obj := @obj C;

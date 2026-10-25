@@ -208,6 +208,34 @@ Proof. intro Hfg; exact (@fmap_respects _ _ K _ _ f g Hfg x). Qed.
  对象是成对的 (d, x)，其中 x 是集合同构 K d 的一个元素；态射是携带该元素的 D-态射。同构集合仅关注底层的 D-态射，因此携带条件不进行比较。
 *)
 
+(*
+   【Elements 范畴定义展开】/ Elements walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      对 K : D ⟶ Sets，元素范畴 el(K)：对象 = (d, x)（x ∈ K d）；
+      态射 = 把 x「运」到 y 的 D-态射 f（fmap[K] f x ≈ y）。
+      Objects (d, x∈Kd); arrows are D-maps carrying the element.
+      Haskell 对照：像「带标签的值」+(f 作用后要对上) —— 依赖对 + 相干条件。
+      Like tagged values with a transport condition.
+
+   2) 编码 / Encoding
+      - obj := ∃ d, K d
+      - hom := ∃ f, fmap[K] f (`2 x) ≈ `2 y
+      - ≈ 只比底层 D-态射（条件证明无关）→ Elements_proj 定义性忠实
+
+   3) 两条 ≈ / Two different ≈
+      条件里的 ≈ 是 Sets 目标 setoid 的；homset 的 ≈ 是 D 自己的。
+      Neither is Leibniz =.
+
+   4) 旁路 / Nearby routes
+      ElementsComma := Δ(1) ↓ K（逗号表述）；本文件用同构比较，不用逗号当初定义。
+      Grothendieck 路线因离散纤维的 = vs ≈ 未采用。
+
+   阅读：(d,x) → 搬运条件 → 分量 ≈ → Elements_proj。
+   Read: pairs → carry condition → ≈ on D → projection.
+*)
+
 Program Definition Elements : Category := {|
   obj := ∃ d : D, K d;
   hom := fun x y => ∃ f : `1 x ~{D}~> `1 y, fmap[K] f (`2 x) ≈ `2 y;

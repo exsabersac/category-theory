@@ -147,6 +147,32 @@ Context {C : Category@{o h p}}.
  态射承载体 [tlist hom] 是 van der Ploeg 和 Kiselyov 的类型对齐序列：一个元素类型在端点对齐的序列，也就是说是自由范畴的一个态射。他们使用这种序列来修复自由单子、迭代器和可扩展效应中的左关联绑定的二次开销，而 Lib/TList.v 则直接引用了 van der Ploeg 的类型对齐库。该文件的后半部分是通过评估归一化，按类别陈述。[Mor] 是复合体的原始语法，[tlist] 路径是其正规形式，[morDA] 是归一化器——扁平化正好消除了结合性和单位繁文缛节——而 [Mor_Setoid] 通过正规形式比较项，[morD] 给出它们在 C 中的语义。串联严格满足结合律和单位律，这就是为什么 [Free] 可以将裸的 [eq] 作为其态射等价；由此可得，当且仅当它们的边路径一致时，两个形式复合体才被类别法则识别，这正是决定类别法则方程的反射策略的语义核心。在 [tlistDA_morDA] 处观察到的往返不对称性是归一化器的一般特征：规范形式在反射后再归一化下是稳定的，而任意语法仅能根据规则被恢复。
 *)
 
+(*
+   【Free 范畴定义展开】/ Free walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      忘掉 C 的复合与恒等，只留「有向图」（quiver），再自由拼路径得到范畴。
+      Free category / path category on the underlying quiver of C.
+      Haskell 对照：列表是自由幺半群；这里 tlist 是「端点对齐的路径列表」。
+      Lists free monoid; tlist = endpoint-aligned paths.
+
+   2) 关键字段 / Key fields
+      - obj  := C                 — 顶点 = 原对象
+      - hom  := tlist hom         — 态射 = 可复合箭头的有限路径
+      - ≈    := eq                — 路径比 Leibniz 相等（严格！）
+      - id   := tnil              — 空路径
+      - compose := fun … f g => g +++ f
+        （+++ 从源往靶拼；∘ 右到左，故参数对调）
+
+   3) 旁边 / Nearby
+      FreeFunctor : Free ⟶ C 把路径折回 C 中的复合（ counit 风格）。
+      FreeSyntax = 形式语法树；与 Free 的伴随在文件末尾。
+
+   阅读：quiver → tlist 路径 → tnil/+++ → FreeFunctor 求值。
+   Read: quiver → path lists → empty/concat → evaluate in C.
+*)
+
 Program Definition Free@{fo fh fp} : Category@{fo fh fp} := {|
   obj     := C;                              (* vertices = objects of C / 顶点 = C 的对象 *)
   hom     := tlist hom;                      (* morphisms = paths of C-arrows / 态射 = C-箭头的路径 *)

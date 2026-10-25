@@ -82,6 +82,26 @@ Proof.
   - rewrite IH; now rewrite comp_assoc.
 Qed.
 
+(*
+   【Chain 定义展开】/ Chain walkthrough
+   （口吻对齐 Theory/Category.v；受众：Coq 小白 + 范畴论小白的 Haskell 程序员）
+
+   1) 这是什么 / What this is
+      有初对象 0 与自函子 F 时，初代数链：
+      0 → F0 → F²0 → …（ω 图）。其（F 保持的）余极限给出初 F-代数（Adámek）。
+      Initial-algebra chain as a diagram Omega ⟶ C.
+      Haskell 对照：递归类型的「迭代逼近」—— Nat = μX. 1+X 的链 0,1,1+1,…。
+      Approximating μF by iterating F on 0.
+
+   2) 零件 / Pieces
+      chain_obj / chain_step：对象与一步映射；
+      chain_hom：沿 m≤n 的运输；Chain : Omega ⟶ C 打成函子。
+      Cochain：对偶（终对象 + 余链）。
+
+   阅读：chain_obj → chain_step → Chain 函子 → 再谈 Colimit。
+   Read: objects → steps → functor → then colimit elsewhere.
+*)
+
 Program Definition Chain : Omega ⟶ C := {|
   fobj := chain_obj;
   fmap := fun _ _ p => chain_hom p

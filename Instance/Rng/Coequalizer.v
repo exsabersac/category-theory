@@ -20,16 +20,166 @@ Require Import Coq.micromega.Lia.
 
 Generalizable All Variables.
 
-(* * * Quotient rings coequalizers, split under forgetful 函子 （已译） *)
+(* * * Quotient rings as coequalizers, split under the forgetful functor / * * 商环作为共同化子，在遗忘函子下分裂 *)
 
 (*
+ Book:   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ §VI.6 "Split Coequalizers", Exercise 1, book p. 150 (PDF
+ p. 159), item maclane:VI.6:ex1, read from the page image; the
+ group example it refers to is Instance/Grp/Coequalizer.v
  nLab:   https://ncatlab.org/nlab/show/split+coequalizer
  nLab:   https://ncatlab.org/nlab/show/quotient+ring
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_ring
 
-   本文件给出具体实例。
+ WHAT THE BOOK SAYS.  "In Rng give a similar construction to show that
+ every quotient R/A of a ring R by an ideal A can be represented as a
+ coequalizer, and show that the resulting fork is split after the
+ application of the forgetful functors to sets."  Mac Lane's Rng is the
+ category of rings with identity, as is the tree's [Rng]
+ (Instance/Rng.v).
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ THE CONSTRUCTION.  The book leaves it to the reader.  Here it is the
+ group example's, additively: R ×₀ A has elements the pairs (r, a) with
+ a ∈ A carrying its membership witness, added componentwise and
+ multiplied by (r, a)(r', a') = (rr', (ra' + ar') + aa'), with unit
+ (1, 0); ∂₀(r, a) = r and ∂₁(r, a) = r + a, the latter multiplicative
+ because (r + a)(r' + a') expands to rr' + ((ra' + ar') + aa').  The
+ ideal's two absorption laws put ra' and ar' in A, which is where
+ two-sidedness is spent.  The ring laws of R ×₀ A are not expanded:
+ (∂₀, ∂₁) is jointly injective ([rsdp_ext], cancelling r from r + a)
+ and carries every operation to R's ([rsdp_d1_add], [rsdp_d1_mul] and
+ the rest), so each law is R's, read twice.
+
+ WHAT IS HERE, in the group file's order and with its names prefixed
+ by r where they would collide.
+ - [SemidirectRing A], [rsemidirect_d0], [rsemidirect_d1].
+ [rsdp_d1_add] is Instance/CMon/Biproduct.v's middle-four
+ interchange [cmon_plus_interchange] at R's additive monoid.
+ - With no hypothesis: [rsemidirect_cofork],
+ [rsemidirect_cofork_iff_kills] (a ring map coforks the pair
+ exactly when it kills A), [rquot_proj_IsCoequalizer] (the descent
+ being Instance/Rng/Quotient.v's mediator [rquot_med]) and
+ [rsemidirect_U_cofork].
+ - [RTransversal A] (a representative in each class, with the
+ untruncated witness that s a - a ∈ A) and
+ [Rng_U_split_iff_transversal]: the U-image pair has a split
+ coequalizer if and only if A has a transversal; the splitting is
+ [rtransversal_split], with t r = (r, s(p r) - r)
+ ([rtransversal_t]), and [rsplit_transversal] reads a transversal
+ off any splitting; then [rtransversal_U_IsCoequalizer] and
+ [rtransversal_U_AbsoluteCoequalizer].
+ - [Rng_U_IsCoequalizer_iff_untruncates]: U p is a coequalizer in
+ Sets if and only if the class relation untruncates
+ ([RCosetUntruncates]); [rtransversal_untruncates].
+ - UNCONDITIONAL ALTERNATIVE, attempted and delivered: U corestricted
+ to PropSets carries p to a coequalizer (not a split one):
+ [Rng_ForgetP] factors [Rng_Forget] through Instance/Sets/
+ Propositional/Full.v's [PropSets] by [rig_prop], and
+ [PropSets_rquot_IsCoequalizer] holds with no hypothesis.  In
+ [Sets] the coequalizer of the U-image pair is, with no
+ hypothesis, the untruncated quotient [rquot_mem_object]
+ ([rquot_mem_IsCoequalizer]), Instance/Sets/Quotient.v's
+ [SetsQuotient] with [sets_quot_proj], its descent [sets_quot_med].
+ - [Rng_split_iff_hom_rtransversal]: the pair splits in Rng itself
+ exactly when p has a ring-homomorphic section with untruncated
+ witnesses ([HomRTransversal]); t is then a ring map
+ ([hom_rtransversal_t], again by joint injectivity).
+ - Witnesses.  Transversals at A = R ([TotalIdeal_transversal], 0),
+ at A trivial ([TrivialIdeal_transversal], the identity, a ring
+ map, so the fork splits in Rng: [TrivialIdeal_Rng_split]) and at
+ 2Z ⊂ Z ([EvenIdeal_transversal], a ↦ a mod 2, over
+ Instance/Rng/Quotient.v's [EvenIdeal]).  At 2Z the fork does not
+ split in Rng ([EvenIdeal_not_split_in_Rng]): a ring map
+ s : Z/2Z → Z has s(1 + 1) = 1 + 1 = 2, while 1 + 1 ≡ 0 sends it
+ to s 0 = 0.
+
+ THE CONSTRUCTIVE QUESTION is the group file's, with the class of r
+ for the coset, and its two taboos are proved here at A_P ◁ Z ([AP]:
+ all of Z when P holds and zero when it does not, its membership the
+ Prop [or P (a = 0)]).  A transversal of A_P decides P
+ ([AP_rtransversal_decides]), so Exercise 1's "split after the
+ application of the forgetful functors", asked of every ideal,
+ decides every proposition ([Rng_U_split_taboo]); and the class
+ relation untruncates at A_P outright ([AP_untruncates]), so
+ untruncation does not give a transversal constructively
+ ([runtruncation_transversal_taboo]).  The group file's third
+ statement, untruncation for every N being the untruncation principle
+ (its N_S), is not repeated for ideals.
+
+ THE TWINS are deliberate, for the reasons the group file's THE RING
+ TWIN gives; the generic parts are Instance/Sets/Quotient.v's and
+ Lib/Setoid/Propositional.v's, stated once.  A candidate this file
+ does not take: [rquot_mem] and its four lemmas ([rquot_mem_of_equiv],
+ [rquot_mem_refl], [rquot_mem_sym], [rquot_mem_trans]) repeat
+ Instance/Rng/Quotient.v's [rquot_rel] lemmas without the truncation,
+ where Instance/Grp/Quotient.v keeps the untruncated [quot_rel] and its
+ lemmas upstream; Rng/Quotient.v could do the same and derive its
+ [rquot_rel] ones, a change to that file left to the maintainer.
+
+ STRENGTHS.  At [eq_refl]: the multiplication's two components
+ ([rsdp_mul_fst], [rsdp_mul_snd]); ∂₀ and ∂₁ ([rsemidirect_d0_fun],
+ [rsemidirect_d1_fun]); the descent IS [rquot_med]
+ ([rquot_proj_IsCoequalizer_desc]); the splitting's e, s and t's
+ second component s(p r) - r ([rtransversal_split_e],
+ [rtransversal_split_s], [rtransversal_split_t_snd]); law 3 of each
+ splitting, ∂₀ (t r) = r, pointwise ([rtransversal_split_law3],
+ [hom_rtransversal_Rng_split_law3]); the round trip
+ ([rtransversal_round_trip]); the transversal at 2Z
+ ([EvenIdeal_transversal_fun]).  At ≈ only: the ring laws of R ×₀ A
+ and laws 1, 2 and 4 of each splitting; law 4, ∂₁ (t r) =
+ r + (s(p r) - r) against s(p r), is refused at [eq_refl]
+ (Test/ProbeQuotient479.v, R4).
+
+ UNIVERSES, by [About] on each of the 84 gated names (a script).  As
+ in the group file: the construction binds R : RingObject@{u u0 u1}
+ freely; the rest binds R : RingObject@{p p p} in the binder,
+ [Rng@{u p}]'s object shape, and A : Ideal@{u p p p} R, the nine
+ readbacks of the pair and its splittings outside the sections with
+ the bound, @{p u + | u <= p +} (bare, their binders had u put at p
+ by minimization, measured); no block carries an equation; every name
+ generic in A that mentions the pair, a splitting of it, t or the
+ untruncated quotient carries "u <= p", first at [rsemidirect_d0]
+ (R6 refuses it at a membership level above the carrier, C15 and C16
+ accept [rtransversal_untruncates] and [SemidirectRing] there, C18
+ accepts [rtransversal_split_e] below it).  The witnesses
+ at the total, trivial and even ideals, and [Rng_U_split_taboo] at
+ A_P, take those ideals' membership level at the carrier level.
+ [rquot_mem_object] is annotated at [SetoidObject@{p p}], and its
+ equivalence is built from three lemmas in place, since a separate
+ [Equivalence] lemma read "p = u" (measured).  [Rng_ForgetP] keeps the
+ object levels of [Rng] and [PropSets] apart and
+ [PropSets_rquot_IsCoequalizer] names them (go, so), through
+ [Rng_ForgetP@{go p so}], the one explicit universe instance this file
+ writes of a constant of its own, closed at three levels (three on
+ Coq 8.19.2 and 8.20.1 as well).  No block mentions [Set] except as a
+ bound "Set < _".  [rtransversal_U_AbsoluteCoequalizer] names its
+ target levels.  On Coq 8.19.2 and 8.20.1 ([About] in a build of the
+ files' closure and the probe under each) every one of the 84 names
+ binds the same levels except [SemidirectRing], fifteen against Rocq
+ 9.1's ten, and its readbacks [rsdp_mul_fst] and [rsdp_mul_snd],
+ eleven against nine; no explicit universe instance of them is
+ written, and no block carries an equation.
+
+ STALE PREMISES.  The group file's: Rng is stale since PR #1091
+ (merged 2026-08-14, #257) and quotient rings since PR #1171 (merged
+ 2026-08-19, #314, Instance/Rng/Quotient.v).
+
+ NOT DELIVERED.  A transversal for every ideal: the taboo above; R ×₀ A
+ as the kernel pair of p; for ideals, the group file's N_S statement
+ and its consequence for Monad/Monadicity/Crude.v (the pair's
+ reflexivity is not built here); a ring isomorphism theorem
+ (Instance/Rng/Quotient.v records why). 
+
+ --------
+ 书籍:   Mac Lane，《面向工作数学家的范畴》，第2版，
+ §VI.6 “分解余等化器”，练习 1，书页 150（PDF 页 159），条目 maclane:VI.6:ex1，从页面图像阅读；它提到的群示例是 Instance/Grp/Coequalizer.v
+ nLab:    https://ncatlab.org/nlab/show/split+coequalizer 
+ nLab:    https://ncatlab.org/nlab/show/quotient+ring 
+ 维基百科:  https://en.wikipedia.org/wiki/Quotient_ring 
+
+ 书中内容。 “在 Rng 中给出类似的构造以表明，每个由理想 A 生成的环 R 的商 R/A 都可以表示为余等化器，并且显示在将忘记函子应用到集合后，得到的叉是可分解的。” Mac Lane 的 Rng 是带单位环的范畴，正如树的 [Rng] (Instance/Rng.v) 一样。构造。本书把它留给读者。这里是群例的加法形式：R ×₀ A 的元素是对 (r, a)，其中 a ∈ A 并携带其成员性证明，逐分量相加，并按 (r, a)(r', a') = (rr', (ra' + ar') + aa') 进行乘法，单位元为 (1, 0)； ∂₀(r, a) = r 且 ∂₁(r, a) = r + a，后者是乘法性的，因为 (r + a)(r' + a') 展开为 rr' + ((ra' + ar') + aa')。理想的两个吸收律将 ra' 和 ar' 放入 A，这就是双边性所起的作用。R ×₀ A 的环律没有展开： (∂₀, ∂₁) 是共同单射的（[rsdp_ext]，从 r + a 中消去 r）并且将每个运算映射到 R 的运算（[rsdp_d1_add]、[rsdp_d1_mul] 以及其余部分），所以每条律都是 R 的，读两次。这里所指的是，在群文件的顺序中，并在名称发生冲突时加上前缀 r。- [SemidirectRing A]、[rsemidirect_d0]、[rsemidirect_d1]。[rsdp_d1_add] 是 Instance/CMon/Biproduct.v 的中间四元交换 [cmon_plus_interchange] 在 R 的加法幺半群中。- 无假设情况下：[rsemidirect_cofork]、[rsemidirect_cofork_iff_kills]（一个环映射完全共叉这一对当且仅当它使 A 消失）、[rquot_proj_IsCoequalizer]（下降是 Instance/Rng/Quotient.v 的中介 [rquot_med]）以及 [rsemidirect_U_cofork]。- [RTransversal A]（每个类中的一个代表，带有未截断的证据，即 s a - a ∈ A）以及 [Rng_U_split_iff_transversal]：当且仅当 A 拥有一个横集时，U-像对才有一个分裂的共等化器；分裂为 [rtransversal_split]，且 t r = (r, s(p r) - r)（[rtransversal_t]），并且 [rsplit_transversal] 可从任意分裂中读出一个横集；然后是 [rtransversal_U_IsCoequalizer] 和 [rtransversal_U_AbsoluteCoequalizer]。 - [Rng_U_IsCoequalizer_iff_untruncates]：当且仅当类关系未截断（[RCosetUntruncates]）时，U p 才是 Sets 中的共等化器；[rtransversal_untruncates]。- 无条件替代方案，已尝试并实施：U 在限制到 PropSets 后将 p 映射为共等化器（不是分裂的）；[Rng_ForgetP] 通过实例/Sets/Propositional/Full.v 的 [PropSets] 经 [rig_prop] 因式分解 [Rng_Forget]，且 [PropSets_rquot_IsCoequalizer] 在没有假设的情况下成立。在 [Sets] 中，U-像对的共同化子在没有任何假设的情况下，是未截断的商 [rquot_mem_object]（[rquot_mem_IsCoequalizer]），Instance/Sets/Quotient.v 中的 [SetsQuotient] 与 [sets_quot_proj]，它的下降 [sets_quot_med]。- [Rng_split_iff_hom_rtransversal]：当且仅当 p 有一个带有未截断见证的环同态截面（[HomRTransversal]）时，这一对在 Rng 自身中分裂；此时 t 是一个环映射（[hom_rtransversal_t]，再次由于联合单射性）。- 见证。A = R 的横截面（[TotalIdeal_transversal], 0），A 处平凡（[TrivialIdeal_transversal]，恒等映射，一个环映射，因此在 Rng 中叉式分裂：[TrivialIdeal_Rng_split]），以及 2Z ⊂ Z 处（[EvenIdeal_transversal]，a ↦ a mod 2，在 Instance/Rng/Quotient.v 的 [EvenIdeal] 上）。在 2Z 中，叉图在 Rng ([EvenIdeal_not_split_in_Rng]) 中不分裂：环映射 s : Z/2Z → Z 有 s(1 + 1) = 1 + 1 = 2，而 1 + 1 ≡ 0 将其映射到 s 0 = 0。建设性问题是群文件的，与陪集的类 r 相关，其两个禁忌在这里在 A_P ◁ Z ([AP]：当 P 成立时为 Z 全体，当不成立时为零，其成员为 Prop [or P (a = 0)]) 被证明。A_P 的横截面决定 P ([AP_rtransversal_decides])，所以练习 1 中的“在应用遗忘函子之后分裂”，对每个理想提出的，决定了每个命题 ([Rng_U_split_taboo])；并且类关系在 A_P 处直接取消截断 ([AP_untruncates])，所以取消截断并不能建设性地给出横截面 ([runtruncation_transversal_taboo])。群文件的第三个陈述，即对每个 N 的取消截断是取消截断原理（它的 N_S），没有对理想重复。双子是有意为之的，原因是群文件中的THE RING TWIN给出的；通用部分是Instance/Sets/Quotient.v和Lib/Setoid/Propositional.v，只陈述一次。该文件不采用的候选项有：[rquot_mem]及其四个引理（[rquot_mem_of_equiv]、[rquot_mem_refl]、[rquot_mem_sym]、[rquot_mem_trans]）重复了Instance/Rng/Quotient.v的[rquot_rel]引理，而没有截断，Instance/Grp/Quotient.v在上游保留了未截断的[quot_rel]及其引理；Rng/Quotient.v也可以做同样处理并推导出其[rquot_rel]引理，这个文件的更改留给维护者。优势。在 [eq_refl]：乘法的两个组成部分（[rsdp_mul_fst]，[rsdp_mul_snd]）；∂₀ 和 ∂₁（[rsemidirect_d0_fun]，[rsemidirect_d1_fun]）；下降是 [rquot_med]（[rquot_proj_IsCoequalizer_desc]）；分裂的 e、s 和 t 的第二个分量 s(p r) - r（[rtransversal_split_e]，[rtransversal_split_s]，[rtransversal_split_t_snd]）；每个分裂的定律 3，∂₀ (t r) = r，逐点（[rtransversal_split_law3]，[hom_rtransversal_Rng_split_law3]）；往返（[rtransversal_round_trip]）；在 2Z 处的横截面（[EvenIdeal_transversal_fun]）。仅在 ≈ 时：R ×₀ A 的环律以及每个分裂的定律 1、2 和 4；定律 4，∂₁ (t r) = r + (s(p r) - r) 对抗 s(p r)，在 [eq_refl] 被拒绝（Test/ProbeQuotient479.v，R4）。宇宙，由 [About] 在 84 个受限名称上的每一个（一个脚本）。如在组文件中：构造将 R : RingObject@{u u0 u1} 自由绑定；其余在绑定器中将 R : RingObject@{p p p} 绑定，[Rng@{u p}] 的对象形状，以及 A : Ideal@{u p p p} R，配对及其分裂在绑定部分外的九个回读，绑定为 @{p u + | u <= p +}（裸的，它们的绑定器通过最小化将 u 设置在 p，已测量）；没有块携带方程；A 中每个提到该配对、其分裂、t 或未截断商的泛型名称都携带“u <= p”，首次出现在 [rsemidirect_d0]（R6 在承载器以上级别拒绝它，C15 和 C16 在那里接受 [rtransversal_untruncates] 和 [SemidirectRing]，C18 在其下接受 [rtransversal_split_e]）。在 total、trivial 甚至 ideals 上的证人，以及在 A_P 上的 [Rng_U_split_taboo]，将这些 ideals 的成员级别视为承载级别。[rquot_mem_object] 在 [SetoidObject@{p p}] 处被注释，其等价性是由三个固定的引理构建的，因为单独的 [Equivalence] 引理读取了“p = u”（已测量）。[Rng_ForgetP] 保持 [Rng] 和 [PropSets] 的对象级别分开，并通过 [PropSets_rquot_IsCoequalizer] 命名它们（go, so），通过 [Rng_ForgetP@{go p so}]，这是该文件对其自身常量的一个显式宇宙实例写入，在三层级上封闭（在 Coq 8.19.2 和 8.20.1 上也是三层）。没有块提到 [Set]，除了作为一个绑定的 “Set < _”。[rtransversal_U_AbsoluteCoequalizer] 命名其目标级别。在 Coq 8.19.2 和 8.20.1 上（[About] 在文件闭包的构建中以及每个下的探针中）84 个名称中的每一个绑定相同的层级，除了 [SemidirectRing]，十五个对比 Rocq 9.1 的十个，以及它的回读 [rsdp_mul_fst] 和 [rsdp_mul_snd]，十一对九；没有写明它们的显式宇宙实例，也没有区块包含等式。
+
+ 陈旧前提。组文件的：Rng 自 PR #1091（2026-08-14 合并，#257）以来已陈旧，商环自 PR #1171（2026-08-19 合并，#314，Instance/Rng/Quotient.v）以来已陈旧。未送达。每个理想的横截线：上述禁忌；R ×₀ A 作为 p 的核对；对于理想，群文件的 N_S 声明及其对 Monad/Monadicity/Crude.v 的推论（这里没有建立对偶的自反性）；一个环同构定理（Instance/Rng/Quotient.v 记录了原因）。
 *)
 
 Section RngSemidirect.
@@ -37,7 +187,7 @@ Section RngSemidirect.
 Context {R : RingObject}.
 Context (A : Ideal R).
 
-(* 相关说明。 （已译） *)
+(* * ** The ideal as a setoid, compared on elements / * ** 理想作为一个集合，按元素比较 *)
 
 Definition ideal_carrier : Type := { a : carrier (rig_setoid R) & idl_mem A a }.
 
@@ -79,7 +229,7 @@ Definition rsdp_add (p q : rsdp_carrier) : rsdp_carrier :=
 Definition rsdp_one : rsdp_carrier :=
   (rig_one R, @existT _ (idl_mem A) (rig_zero R) (idl_zero A)).
 
-(* (r, a)(r', a') = (rr', ra' + ar' + aa'). *)
+(* (r, a)(r', a') = (rr', ra' + ar' + aa'). / (r, a)(r', a') = (rr', ra' + ar' + aa'). *)
 Definition rsdp_mul (p q : rsdp_carrier) : rsdp_carrier :=
   (rig_mul R (fst p) (fst q),
    @existT _ (idl_mem A)
@@ -95,11 +245,11 @@ Definition rsdp_neg (p : rsdp_carrier) : rsdp_carrier :=
   (ring_neg R (fst p),
    @existT _ (idl_mem A) (ring_neg R (`1 (snd p))) (idl_neg A _ (`2 (snd p)))).
 
-(* ∂₁(r, a) = r + a, on the raw carrier. *)
+(* ∂₁(r, a) = r + a, on the raw carrier. / ∂₁(r, a) = r + a，在原始承载上。 *)
 Definition rsdp_d1 (p : rsdp_carrier) : carrier (rig_setoid R) :=
   rig_add R (fst p) (`1 (snd p)).
 
-(* 相关说明。 （已译） *)
+(* The pair (∂₀, ∂₁) is jointly injective: the second component is recovered from r + a by cancelling r. / 这一对 (∂₀, ∂₁) 是联合单射的：第二个分量可以通过从 r + a 中消去 r 来恢复。 *)
 Lemma rsdp_ext (p q : rsdp_carrier) :
   fst p ≈ fst q → rsdp_d1 p ≈ rsdp_d1 q → @equiv _ rsdp_setoid p q.
 Proof.
@@ -116,15 +266,20 @@ Proof.
   unfold rsdp_d1; simpl; now rewrite Hr, Haa.
 Qed.
 
-(* ∂₁ carries each operation of R ×₀ A to the one of R. *)
+(* ∂₁ carries each operation of R ×₀ A to the one of R. / ∂₁ 将 R ×₀ A 的每个运算映射到 R 的运算。 *)
 Lemma rsdp_d1_zero : rsdp_d1 rsdp_zero ≈ rig_zero R.
 Proof. apply rig_add_zero_l. Qed.
 
 Lemma rsdp_d1_one : rsdp_d1 rsdp_one ≈ rig_one R.
 Proof. apply rig_add_zero_r. Qed.
 
-(* The middle-four interchange of Instance/CMon/Biproduct.v, at R's
-   additive monoid. *)
+(*
+ The middle-four interchange of Instance/CMon/Biproduct.v, at R's
+ additive monoid. 
+
+ --------
+ 在 R 的加法幺半群上的 Instance/CMon/Biproduct.v 的 middle-four 交换律。
+*)
 Lemma rsdp_d1_add (p q : rsdp_carrier) :
   rsdp_d1 (rsdp_add p q) ≈ rig_add R (rsdp_d1 p) (rsdp_d1 q).
 Proof. unfold rsdp_d1; simpl; apply (cmon_plus_interchange (rig_cmon R)). Qed.
@@ -157,60 +312,65 @@ Proof using R A.
                  ; rig_prop := prod_PropEquiv (rig_prop R) ideal_PropEquiv |};
     ring_neg := rsdp_neg
   |}.
-  - (* rig_add_respects *)
+  - (* rig_add_respects / 致敬 *)
     intros [r [a Ha]] [r' [a' Ha']] [Hr Haa] [s [b Hb]] [s' [b' Hb']] [Hs Hb0].
     simpl in *; split; simpl; now apply rig_add_respects.
-  - (* rig_mul_respects *)
+  - (* rig_mul_respects / 刚性乘法尊重 *)
     intros [r [a Ha]] [r' [a' Ha']] [Hr Haa] [s [b Hb]] [s' [b' Hb']] [Hs Hb0].
     simpl in *; split; simpl.
     + now apply rig_mul_respects.
     + now rewrite Hr, Haa, Hs, Hb0.
-  - (* rig_add_assoc *)
+  - (* rig_add_assoc / 环加法结合律 *)
     intros p q s; apply rsdp_ext; simpl; [ apply rig_add_assoc |].
     rewrite !rsdp_d1_add; apply rig_add_assoc.
-  - (* rig_add_comm *)
+  - (* rig_add_comm / rig_add_comm *)
     intros p q; apply rsdp_ext; simpl; [ apply rig_add_comm |].
     rewrite !rsdp_d1_add; apply rig_add_comm.
-  - (* rig_add_zero_l *)
+  - (* rig_add_zero_l / rig_add_zero_l *)
     intros p; apply rsdp_ext; simpl; [ apply rig_add_zero_l |].
     rewrite rsdp_d1_add, rsdp_d1_zero; apply rig_add_zero_l.
-  - (* rig_mul_assoc *)
+  - (* rig_mul_assoc / 环乘法结合律 *)
     intros p q s; apply rsdp_ext; simpl; [ apply rig_mul_assoc |].
     rewrite !rsdp_d1_mul; apply rig_mul_assoc.
-  - (* rig_mul_one_l *)
+  - (* rig_mul_one_l / rig_mul_one_l *)
     intros p; apply rsdp_ext; simpl; [ apply rig_mul_one_l |].
     rewrite rsdp_d1_mul, rsdp_d1_one; apply rig_mul_one_l.
-  - (* rig_mul_one_r *)
+  - (* rig_mul_one_r / rig_乘以_一_r *)
     intros p; apply rsdp_ext; simpl; [ apply rig_mul_one_r |].
     rewrite rsdp_d1_mul, rsdp_d1_one; apply rig_mul_one_r.
-  - (* rig_distr_l *)
+  - (* rig_distr_l / 刚性分布_l *)
     intros p q s; apply rsdp_ext; simpl; [ apply rig_distr_l |].
     rewrite rsdp_d1_mul, !rsdp_d1_add, !rsdp_d1_mul; apply rig_distr_l.
-  - (* rig_distr_r *)
+  - (* rig_distr_r / 刚性分布_r *)
     intros p q s; apply rsdp_ext; simpl; [ apply rig_distr_r |].
     rewrite rsdp_d1_mul, !rsdp_d1_add, !rsdp_d1_mul; apply rig_distr_r.
-  - (* rig_mul_zero_l *)
+  - (* rig_mul_zero_l / 环_乘_零_左 *)
     intros p; apply rsdp_ext; simpl; [ apply rig_mul_zero_l |].
     rewrite rsdp_d1_mul, rsdp_d1_zero; apply rig_mul_zero_l.
-  - (* rig_mul_zero_r *)
+  - (* rig_mul_zero_r / 环_乘_零_右 *)
     intros p; apply rsdp_ext; simpl; [ apply rig_mul_zero_r |].
     rewrite rsdp_d1_mul, rsdp_d1_zero; apply rig_mul_zero_r.
-  - (* ring_neg_respects *)
+  - (* ring_neg_respects / 未尊重戒指 *)
     intros [r [a Ha]] [r' [a' Ha']] [Hr Haa]; simpl in *.
     split; simpl; now rewrite ?Hr, ?Haa.
-  - (* ring_neg_l *)
+  - (* ring_neg_l / 铃声_负_L *)
     intros p; apply rsdp_ext; simpl; [ apply ring_neg_l |].
     rewrite rsdp_d1_add, rsdp_d1_neg, rsdp_d1_zero; apply ring_neg_l.
 Defined.
 
 End RngSemidirect.
 
-(* 相关说明。 （已译） *)
+(* U corestricted to the propositional setoids, by [rig_prop], as the group file's [Grp_ForgetP]. / 你被限制在命题集合体上，由 [rig_prop]，作为群文件的 [Grp_ForgetP]。 *)
 Definition Rng_ForgetP@{u p so | p < so +} : Rng@{u p} ⟶ PropSets@{p so} :=
   PropSets_lift Rng_Forget (fun R => rig_prop R).
 
-(* The pair, coequalizer splitting live [Rng], whose 对象
- [RingObject@{p p p}]; binder says so. （已译） *)
+(*
+ The pair, the coequalizer and the splitting live in [Rng], whose objects
+ are [RingObject@{p p p}]; the binder says so. 
+
+ --------
+ 这一对、余等化子和分裂存在于 [Rng] 中，其对象是 [RingObject@{p p p}]；绑定器是这么说的。
+*)
 
 Section RngSemidirectPair.
 
@@ -219,7 +379,7 @@ Universe p.
 Context {R : RingObject@{p p p}}.
 Context (A : Ideal R).
 
-(* 相关说明。 （已译） *)
+(* * ** The parallel pair ∂₀, ∂₁ : R ×₀ A ⇉ R / * ** 平行对 ∂₀, ∂₁ : R ×₀ A ⇉ R *)
 
 (* ∂₀(r, a) = r. *)
 Definition rsemidirect_d0 : SemidirectRing A ~{Rng}~> R.
@@ -248,7 +408,7 @@ Proof.
   - exact (rsdp_d1_mul A).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* * ** The projection coforks the pair, and is its coequalizer / * ** 投影将该对分叉，并且是它的余等化器 *)
 
 Lemma rsemidirect_cofork :
   rquot_proj A ∘ rsemidirect_d0 ≈ rquot_proj A ∘ rsemidirect_d1.
@@ -294,7 +454,7 @@ Definition rsemidirect_cofork_iff_kills {K : RingObject} (h : R ~{Rng}~> K) :
          rig_map h a ≈ rig_zero K) :=
   (rsemidirect_cofork_kills h, kills_rsemidirect_cofork h).
 
-(* 相关说明。 （已译） *)
+(* The descent is the quotient's own mediator [rquot_med]. / 下降是商的自身中介 [rquot_med]。 *)
 Definition rquot_proj_IsCoequalizer :
   IsCoequalizer rsemidirect_d0 rsemidirect_d1 (QuotientRing A) (rquot_proj A).
 Proof.
@@ -311,15 +471,15 @@ Proof.
                  (existT _ h (rsemidirect_cofork_kills h Hh)) |}.
 Defined.
 
-(* The U-image fork, no 假设: image cofork. （已译） *)
+(* The U-image is a fork, with no hypothesis: the image of the cofork. / U-图像是一个叉，没有假设：协叉的图像。 *)
 Lemma rsemidirect_U_cofork :
   fmap[Rng_Forget] (rquot_proj A) ∘ fmap[Rng_Forget] rsemidirect_d0
     ≈ fmap[Rng_Forget] (rquot_proj A) ∘ fmap[Rng_Forget] rsemidirect_d1.
 Proof. intro p; exact (rsemidirect_cofork p). Qed.
 
-(* * ** Transversals, splitting after forgetful 函子 （已译） *)
+(* * ** Transversals, and the splitting after the forgetful functor / * ** 横线，以及遗忘函子后的分解 *)
 
-(* 相关说明。 （已译） *)
+(* A transversal of A: a map of setoids out of U(R/A) choosing a representative of each coset, with the untruncated witness that the representative lies in the coset it represents. / A 的横截面：一个从 U(R/A) 出发的集合同构映射，选择每个陪集的一个代表元素，并提供未截断的证据，表明该代表元素位于它所代表的陪集中。 *)
 Record RTransversal := {
   rtransversal_map :
     fobj[Rng_Forget] (QuotientRing A) ~{Sets}~> fobj[Rng_Forget] R;
@@ -327,7 +487,7 @@ Record RTransversal := {
     idl_mem A (ab_sub (ring_ab R) (rtransversal_map a) a)
 }.
 
-(* The additive form of Mac Lane's t: t r = (r, s(p r) - r). *)
+(* The additive form of Mac Lane's t: t r = (r, s(p r) - r). / Mac Lane 的 t 的加法形式：t r = (r, s(p r) - r)。 *)
 Definition rtransversal_t (T : RTransversal) :
   fobj[Rng_Forget] R ~{Sets}~> fobj[Rng_Forget] (SemidirectRing A).
 Proof.
@@ -360,8 +520,13 @@ Proof.
     exact (ab_add_sub_cancel (ring_ab R) (rtransversal_map T r) r).
 Defined.
 
-(* Any map out U R coforks U-image pair 常值 cosets,
- given coset witness untruncated: ~ b read off (b, - b). （已译） *)
+(*
+ Any map out of U R that coforks the U-image pair is constant on cosets,
+ given the coset witness untruncated: a ~ b is read off (b, a - b). 
+
+ --------
+ 任何从 U R 出发的映射，如果它共同分叉 U-像对，则在陪集上是常数，给定未截断的陪集见证：a ~ b 是从 (b, a - b) 读取的。
+*)
 Lemma rU_cofork_descends {Z : obj[Sets]}
   (h : fobj[Rng_Forget] R ~{Sets}~> Z)
   (Hh : h ∘ fmap[Rng_Forget] rsemidirect_d0
@@ -378,8 +543,13 @@ Proof.
   - symmetry; exact E.
 Qed.
 
-(* Conversely, ANY split coequalizer of the U-image pair yields a
-   transversal. *)
+(*
+ Conversely, ANY split coequalizer of the U-image pair yields a
+ transversal. 
+
+ --------
+ 相反，U-像对的任何分裂余等化子都会产生一个横断面。
+*)
 
 Definition rsplit_transversal
   (S : SplitCoequalizer (fmap[Rng_Forget] rsemidirect_d0)
@@ -424,7 +594,7 @@ Definition rtransversal_U_AbsoluteCoequalizer@{xo xh +} (T : RTransversal) :
     (fobj[Rng_Forget] (QuotientRing A)) (fmap[Rng_Forget] (rquot_proj A)) :=
   split_coequalizer_absolute (rtransversal_split T).
 
-(* 相关说明。 （已译） *)
+(* * ** Whether U preserves the coequalizer: exactly when cosets untruncate / * ** U 是否保留共同终结：恰好在陪集不截断时 *)
 
 Definition rquot_mem (a b : carrier (rig_setoid R)) : Type :=
   idl_mem A (ab_sub (ring_ab R) a b).
@@ -464,7 +634,7 @@ Proof.
   - exact (idl_plus A _ _ K1 K2).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The untruncated quotient, Instance/Sets/Quotient.v's [SetsQuotient], and its projection [sets_quot_proj], as in the group file. / 未截断的商，Instance/Sets/Quotient.v 中的 [SetsQuotient]，以及它的投影 [sets_quot_proj]，如同群文件中所示。 *)
 Definition rquot_mem_object : SetoidObject@{p p} :=
   SetsQuotient (rig_setoid R) rquot_mem
     {| Equivalence_Reflexive := rquot_mem_refl
@@ -487,8 +657,13 @@ Proof.
   - exact (ab_sub_neg (ring_ab R) (rig_add R r a) r).
 Qed.
 
-(* With no 假设, coequalizer Sets U-image pair the
- untruncated quotient, [sets_quot_med] at [rU_cofork_descends]. （已译） *)
+(*
+ With no hypothesis, the coequalizer in Sets of the U-image pair is the
+ untruncated quotient, by [sets_quot_med] at [rU_cofork_descends]. 
+
+ --------
+ 在没有假设的情况下，集合中 U-像对的共同余子是由 [sets_quot_med] 在 [rU_cofork_descends] 上的未截断商。
+*)
 Definition rquot_mem_IsCoequalizer :
   IsCoequalizer (fmap[Rng_Forget] rsemidirect_d0)
     (fmap[Rng_Forget] rsemidirect_d1) rquot_mem_object rquot_mem_proj.
@@ -546,7 +721,7 @@ Definition Rng_U_IsCoequalizer_iff_untruncates :
     ↔ RCosetUntruncates :=
   (rU_IsCoequalizer_untruncates, untruncates_rU_IsCoequalizer).
 
-(* A transversal untruncates the cosets, directly: a ~ s a ≈ s b ~ b. *)
+(* A transversal untruncates the cosets, directly: a ~ s a ≈ s b ~ b. / 一个横截面不截断陪集，直接地：a ~ s a ≈ s b ~ b。 *)
 Lemma rtransversal_untruncates (T : RTransversal) : RCosetUntruncates.
 Proof.
   intros a b Hab.
@@ -559,9 +734,9 @@ Proof.
     + exact (rtransversal_coset T b).
 Qed.
 
-(* * ** Unconditionally: U 进入 propositional setoids preserves p （已译） *)
+(* * ** Unconditionally: U into the propositional setoids preserves p / * ** 无条件地：U 进入命题等价类保持 p *)
 
-(* As the group file's [PropSets_quot_IsCoequalizer]: not a split one. *)
+(* As the group file's [PropSets_quot_IsCoequalizer]: not a split one. / 由于该组文件的 [PropSets_quot_IsCoequalizer]：不是拆分的文件。 *)
 Definition PropSets_rquot_IsCoequalizer@{go so +} :
   IsCoequalizer (fmap[Rng_ForgetP@{go p so}] rsemidirect_d0)
     (fmap[Rng_ForgetP@{go p so}] rsemidirect_d1)
@@ -585,7 +760,7 @@ Proof.
     + intros v Hv x; symmetry; exact (Hv x).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* * ** Split in Rng itself: exactly when p has a ring-homomorphic section / * ** 在 Rng 本身中分裂：正好在 p 有一个环同态截面时 *)
 
 Definition HomRTransversal : Type :=
   { s : QuotientRing A ~{Rng}~> R
@@ -596,7 +771,7 @@ Definition hom_rtransversal_transversal (H : HomRTransversal) : RTransversal :=
   {| rtransversal_map := fmap[Rng_Forget] (`1 H)
    ; rtransversal_coset := `2 H |}.
 
-(* 相关说明。 （已译） *)
+(* t is a ring homomorphism as soon as s is: by the joint injectivity of (∂₀, ∂₁), since ∂₀ t = 1 and ∂₁ t = s p are. / 只要 s 是环同态，t 就是：由于 (∂₀, ∂₁) 的联合单射性，因为 ∂₀ t = 1 且 ∂₁ t = s p。 *)
 Lemma hom_rtransversal_t_ext (H : HomRTransversal)
   (p : carrier (rig_setoid R)) (q : rsdp_carrier A) :
   p ≈ fst q → rig_map (`1 H) p ≈ rsdp_d1 A q →
@@ -666,7 +841,7 @@ Definition Rng_split_iff_hom_rtransversal :
 
 End RngSemidirectPair.
 
-(* Its law 3 holds pointwise by conversion, t being the same map. *)
+(* Its law 3 holds pointwise by conversion, t being the same map. / 它的定律 3 通过转换在每一点上成立，t 是相同的映射。 *)
 Example hom_rtransversal_Rng_split_law3@{p u + | u <= p +}
   {R : RingObject@{p p p}} {A : Ideal@{u p p p} R}
   (H : HomRTransversal A) (r : carrier (rig_setoid R)) :
@@ -676,9 +851,9 @@ Example hom_rtransversal_Rng_split_law3@{p u + | u <= p +}
 Arguments rtransversal_map {R A} _.
 Arguments rtransversal_coset {R A} _ _.
 
-(** ** Witnesses *)
+(** ** Witnesses / ** 证人 *)
 
-(* A = R: every coset is R, represented by 0. *)
+(* A = R: every coset is R, represented by 0. / A = R：每个陪集都是 R，由 0 表示。 *)
 Definition TotalIdeal_transversal (R : RingObject) :
   RTransversal (TotalIdeal R).
 Proof.
@@ -689,8 +864,13 @@ Proof.
   - intro a; exact ttt.
 Defined.
 
-(* A trivial: every element represents own coset, 恒等 is
- ring homomorphism, so fork splits Rng itself. （已译） *)
+(*
+ A trivial: every element represents its own coset, and the identity is
+ a ring homomorphism, so the fork splits in Rng itself. 
+
+ --------
+ 一个简单情况：每个元素表示它自己的陪集，单位元是一个环同态，因此这个分叉在环的范畴中自身分裂。
+*)
 Definition TrivialIdeal_transversal (R : RingObject) :
   RTransversal (TrivialIdeal R).
 Proof.
@@ -718,7 +898,7 @@ Definition TrivialIdeal_Rng_split (R : RingObject) :
                    (rsemidirect_d1 (TrivialIdeal R)) :=
   hom_rtransversal_Rng_split (TrivialIdeal R) (TrivialIdeal_hom_rtransversal R).
 
-(* Z/2Z: the remainder mod 2 represents each class. *)
+(* Z/2Z: the remainder mod 2 represents each class. / Z/2Z：模2的余数表示每个类。 *)
 Definition EvenIdeal_transversal : RTransversal EvenIdeal.
 Proof.
   unshelve refine
@@ -737,8 +917,13 @@ Proof.
     lia.
 Defined.
 
-(* But no ring homomorphism Z/2Z → Z exists: s(1 + 1) = 1 + 1 = 2 while
-   1 + 1 ≡ 0, so the fork at Z ⊇ 2Z does not split in Rng. *)
+(*
+ But no ring homomorphism Z/2Z → Z exists: s(1 + 1) = 1 + 1 = 2 while
+ 1 + 1 ≡ 0, so the fork at Z ⊇ 2Z does not split in Rng. 
+
+ --------
+ 但是不存在从 Z/2Z 到 Z 的环同态：s(1 + 1) = 1 + 1 = 2，而 1 + 1 ≡ 0，所以 Z ⊇ 2Z 处的分叉在 Rng 中不分裂。
+*)
 Theorem EvenIdeal_not_split_in_Rng :
   SplitCoequalizer (rsemidirect_d0 EvenIdeal) (rsemidirect_d1 EvenIdeal)
     → False.
@@ -759,9 +944,9 @@ Proof.
   lia.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The constructive taboo, at an ideal of Z / * ** 建设性的禁忌，在Z的理想中 *)
 
-(* 相关说明。 （已译） *)
+(* A_P ◁ Z: all of Z when P holds and zero when it does not, with the Prop-valued membership P or a = 0, as the group file's N_P. / A_P ◁ Z：当 P 成立时为 Z 的全部，当 P 不成立时为零，其 Prop 值的成员关系为 P 或 a = 0，作为组文件的 N_P。 *)
 Definition AP (P : Prop) : Ideal Int_Ring.
 Proof.
   unshelve refine
@@ -783,7 +968,7 @@ Defined.
 Lemma AP_untruncates (P : Prop) : RCosetUntruncates (AP P).
 Proof. intros a b H; unfold rquot_mem; simpl; destruct H as [H]; exact H. Qed.
 
-(* 相关说明。 （已译） *)
+(* A transversal of A_P decides P: its values at 0 and 1 agree when P holds, and lie in the classes of 0 and 1. / A_P 的一个截面决定了 P：当 P 成立时，它在 0 和 1 处的取值相同，并且位于 0 和 1 的类中。 *)
 Definition AP_rtransversal_decides (P : Prop) (T : RTransversal (AP P)) :
   (P + (P → False))%type.
 Proof.
@@ -805,21 +990,26 @@ Proof.
   - right; intro p; exact (E (Hs p)).
 Defined.
 
-(* Exercise 1's "split after application forgetful 函子",
- asked every ideal, decides every 命题. （已译） *)
+(*
+ Exercise 1's "split after the application of the forgetful functors",
+ asked of every ideal, decides every proposition. 
+
+ --------
+ 练习 1 中的“在应用遗忘函子之后的拆分”，对每个理想的要求决定了每个命题。
+*)
 Definition Rng_U_split_taboo :
   (∀ P : Prop, SplitCoequalizer (fmap[Rng_Forget] (rsemidirect_d0 (AP P)))
                                 (fmap[Rng_Forget] (rsemidirect_d1 (AP P)))) →
   ∀ P : Prop, (P + (P → False))%type :=
   fun H P => AP_rtransversal_decides P (rsplit_transversal (AP P) (H P)).
 
-(* Untruncation holds at A_P outright, while a transversal decides P. *)
+(* Untruncation holds at A_P outright, while a transversal decides P. / 在 A_P 上直接保持未截断，而横断面决定 P。 *)
 Definition runtruncation_transversal_taboo :
   (∀ P : Prop, RCosetUntruncates (AP P) → RTransversal (AP P)) →
   ∀ P : Prop, (P + (P → False))%type :=
   fun H P => AP_rtransversal_decides P (H P (AP_untruncates P)).
 
-(** ** Readbacks *)
+(** ** Readbacks / ** 回读 *)
 
 Example rsdp_mul_fst {R : RingObject} (A : Ideal R)
   (p q : carrier (rig_setoid (SemidirectRing A))) :
@@ -833,9 +1023,12 @@ Example rsdp_mul_snd {R : RingObject} (A : Ideal R)
                 (rig_mul R (`1 (snd p)) (`1 (snd q))) := eq_refl.
 
 (*
-   本节说明 Coequalizer 相关定义、性质与动机。
+ The readbacks of the pair bind A's membership level u apart from the
+ carrier level p, with the pair's own bound, as the section constants
+ do; left to minimization, the bare binders identified the two. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 该对的回读将 A 的会员等级 u 与承载等级 p 分开绑定，并具有该对自身的绑定，就像部分常数一样；在最小化的情况下，裸绑定器识别了两者。
 *)
 
 Example rsemidirect_d0_fun@{p u + | u <= p +} {R : RingObject@{p p p}}
@@ -868,7 +1061,7 @@ Example rtransversal_split_t_snd@{p u + | u <= p +} {R : RingObject@{p p p}}
     = ab_sub (ring_ab R) (rtransversal_map T (rig_map (rquot_proj A) r)) r
   := eq_refl.
 
-(* Law 3 of the splitting, ∂₀ ∘ t = 1, holds pointwise by conversion. *)
+(* Law 3 of the splitting, ∂₀ ∘ t = 1, holds pointwise by conversion. / 分解的定律3，∂₀ ∘ t = 1，通过转换在每一点上成立。 *)
 Example rtransversal_split_law3@{p u + | u <= p +} {R : RingObject@{p p p}}
   {A : Ideal@{u p p p} R} (T : RTransversal A) (r : carrier (rig_setoid R)) :
   rig_map (rsemidirect_d0 A) (scoeq_t (rtransversal_split A T) r) = r

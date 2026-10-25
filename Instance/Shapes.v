@@ -19,15 +19,85 @@ Unset Universe Polymorphism.
 Set Universe Minimization ToSet.
 Set Transparent Obligations.
 
-(** Shape-indexed tries as exponentials of types *)
+(** Shape-indexed tries as exponentials of types / 形状索引的字典树作为类型的指数 *)
 
 (*
-   本文件给出具体实例。
+ A [Shape] is a binary expression tree over the constructors [Bottom],
+ [Top], [Plus] and [Times].  Reading it as an arithmetic expression with
+ [Bottom = 0], [Top = 1], [Plus = +] and [Times = *] gives its [size], the
+ number of leaves it carries.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ [Trie a s] is the type of [a]-labelled tries of shape [s].  It realises the
+ exponential [a^s], indexed not by a number but by the shape itself, so that
+ the standard exponent laws hold definitionally on the constructors:
+
+ a^0     = 1          (Unit  : Trie a Bottom)
+ a^1     = a          (Id    : a -> Trie a Top)
+ a^(b+c) = a^b * a^c  (Join  : Trie a b -> Trie a c -> Trie a (Plus b c))
+ a^(b*c) = (a^b)^c    (Joins, the nested/representable case)
+
+ This is the "logarithm of a type" / Naperian-functor view: a trie of shape
+ [s] is isomorphic to a function from the [size s] positions, equivalently to
+ a length-[size s] vector ([vec]/[trie] are mutually inverse, [vec_trie] and
+ [trie_vec]).  See Gibbons, "APLicative Programming with Naperian Functors".
+
+ The file catalogues, for each carrier type [a]:
+ - [Tries a]    : the category of tries over [a], shapes as objects;
+ - [Vectors a]  : the category of vectors over [a], lengths as objects;
+ each shown [Terminal] and [Cartesian] (Plus / plus are the products), and
+ - [Cardinality a : Tries a -> Vectors a]   (s |-> size s, t |-> vec t)
+ - [Canonicity a  : Vectors a -> Tries a]   (n |-> unsize n)
+ forming the adjunction [Cardinality a ⊣ Canonicity a].  Since [vec]/[trie]
+ are inverse this adjunction is in fact an equivalence presented in adjoint
+ form.
+
+ nLab (representable functor, of which these tries are an instance):
+ https://ncatlab.org/nlab/show/representable+functor
+ nLab (polynomial functor / container, the shapes-and-positions view):
+ https://ncatlab.org/nlab/show/polynomial+functor
+ Wikipedia (representable functor):
+ https://en.wikipedia.org/wiki/Representable_functor
+ Wikipedia (the exponent laws annotated on the [Trie] constructors):
+ https://en.wikipedia.org/wiki/Exponentiation
+
+ Note: because [Trie] is indexed by [Shape] and the homsets are quotiented
+ through stdlib [Vector.t], the dependent [inversion]/[dependent induction]
+ used by [Trie_left], [Trie_right] and [Tries_Cartesian]/[Tries_Terminal]
+ relies on [Eqdep.Eq_rect_eq] (Streicher K / UIP on [Shape]).  This is the
+ only axiom this file depends on; [Vectors], [Cardinality], [Canonicity] and
+ [Card_Canon_Adjunction] are axiom-free. 
+
+ --------
+ [Shape] 是一个二元表达式树，其构造器包括 [Bottom]、[Top]、[Plus] 和 [Times]。按算术表达式读取它，使用 [Bottom = 0]、[Top = 1]、[Plus = +] 和 [Times = *]，可以得到它的 [size]，即它所携带的叶子节点的数量。
+
+ [Trie a s] 是形状为 [s] 的 [a] 标记的字典树的类型。它实现了指数 [a^s]，其索引不是数字，而是形状本身，因此在构造器上定义上保持标准的指数法则：
+
+ a^0     = 1          (Unit  : Trie a Bottom)
+ a^1     = a          (Id    : a -> Trie a Top)
+ a^(b+c) = a^b * a^c  (Join  : Trie a b -> Trie a c -> Trie a (Plus b c))
+ a^(b*c) = (a^b)^c    (Joins, 嵌套/可表示情况)这是“类型的对数”/ Naperian-函子视图：形状为 [s] 的 trie 同构于来自 [size s] 位置的函数，等价于一个长度为 [size s] 的向量（[vec] / [trie] 互为逆，[vec_trie] 和 [trie_vec]）。参见 Gibbons，《使用 Naperian 函子进行应用式编程》。该文件对每种载体类型 [a] 进行目录编制：
+ -  [Tries a]     ：在 [a] 上的 tries 类别，形状作为对象；
+ -  [Vectors a]   ：在 [a] 上的向量类别，长度作为对象；
+ 每个显示 [Terminal] 和 [Cartesian]（Plus / plus 是乘积），以及
+ -  [Cardinality a : Tries a -> Vectors a]   （s |-> size s, t |-> vec t）
+ -  [Canonicity a  : Vectors a -> Tries a]   （n |-> unsize n）
+ 形成了伴随 [Cardinality a ⊣ Canonicity a]。由于 [vec] / [trie] 是逆的，这个伴随实际上是以伴随形式呈现的等价。nLab（可表示函子，这些 tries 是其一个实例）：
+ https://ncatlab.org/nlab/show/representable+functor 
+ nLab（多项式函子 / 容器，形状与位置的视角）：
+ https://ncatlab.org/nlab/show/polynomial+functor 
+ 维基百科（可表示函子）：
+ https://en.wikipedia.org/wiki/Representable_functor 
+ 维基百科（指数律注释在 [Trie] 构造子上）：
+ https://en.wikipedia.org/wiki/Exponentiation 
+
+ 注意：因为 [Trie] 是由 [Shape] 索引的，并且 hom 集通过 stdlib [Vector.t] 被商化，
+ [Trie_left]、[Trie_right] 和 [Tries_Cartesian] / [Tries_Terminal] 使用的依赖 [inversion] / [dependent induction] 
+ 依赖于 [Eqdep.Eq_rect_eq]（Streicher K / 在 [Shape] 上的 UIP）。这是
+ 该文件唯一依赖的公理；[Vectors]、[Cardinality]、[Canonicity] 和
+ [Card_Canon_Adjunction] 是无公理的。
 *)
 
-(* 相关说明。 （已译） *)
+(* These two lemmas are missing in Coq 8.11 and earlier. / 这两个引理在 Coq 8.11 及更早版本中缺失。 *)
 Lemma map_id A: ∀ n (v : t A n),
   map (fun x => x) v = v.
 Proof.
@@ -87,9 +157,13 @@ Qed.
 (**************************************************************************)
 
 (*
-   本节说明 Shapes 相关定义、性质与动机。
+ Shapes: the free algebra on 0, 1, sum and product, with [size] reading a
+ shape as a natural number and [unsize] picking the canonical shape
+ [Top + ... + Top] of a given size.  Two shapes are equivalent when they
+ have the same size. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 形状：在 0、1、加法和乘法上的自由代数，其中 [size] 将形状读取为自然数，[unsize] 选择给定大小的规范形状 [Top + ... + Top]。当两个形状具有相同的大小时，它们是等价的。
 *)
 
 Inductive Shape : Set :=
@@ -122,8 +196,13 @@ Program Instance Shape_Setoid : Setoid Shape := {|
 
 (**************************************************************************)
 
-(* Tries: exponential [a^s], [vec]/[trie] 同构 to
- length-[size s] vectors [Trie_map] making [Trie _ s] 函子 [a]. （已译） *)
+(*
+ Tries: the exponential [a^s], with [vec]/[trie] the isomorphism to
+ length-[size s] vectors and [Trie_map] making [Trie _ s] a functor in [a]. 
+
+ --------
+ 尝试：指数[a^s]，其中[vec] / [trie]是到长度[size s]向量的同构，并且[Trie_map]使[Trie _ s]在[a]中成为一个函子。
+*)
 
 Unset Uniform Inductive Parameters.
 
@@ -133,7 +212,7 @@ Inductive Trie (a : Type) : Shape → Type :=
   | Join {x y} :
     Trie a x → Trie a y → Trie a (Plus x y) (* a^(b+c) = a^b * a^c *)
   | Joins {x y} :
-    (* This allows us to positively express Trie (Trie a y) x *)
+    (* This allows us to positively express Trie (Trie a y) x / 这让我们能够正面表达 Trie（Trie a y）x *)
     ∀ z, (z → Trie a y) ->
          Trie z x → Trie a (Times x y).      (* a^(b*c) = (a^b)^c *)
 
@@ -234,8 +313,13 @@ Qed.
 
 (**************************************************************************)
 
-(* The 范畴 [Tries a] [Vectors a], terminal/cartesian
- structure, 伴随 [Cardinality ⊣ Canonicity a] between them. （已译） *)
+(*
+ The categories [Tries a] and [Vectors a], their terminal/cartesian
+ structure, and the adjunction [Cardinality a ⊣ Canonicity a] between them. 
+
+ --------
+ 类别 [Tries a] 和 [Vectors a]，它们的终端/笛卡尔结构，以及它们之间的伴随 [Cardinality a ⊣ Canonicity a]。
+*)
 
 #[export]
 Program Instance Trie_Functor (s : Shape) : Coq ⟶ Sets := {|
@@ -262,7 +346,7 @@ Qed.
 Program Definition Tries (a : Type) : Category := {|
   obj     := Shape;
   hom     := λ x y,
-    (* This is a setoid morphism within a smaller category than Coq. *)
+    (* This is a setoid morphism within a smaller category than Coq. / 这是一个在比 Coq 更小的范畴中的集合同态。 *)
     ∃ f : Trie a x → Trie a y, Proper (equiv ==> equiv) f;
   homset  := λ _ _, {| equiv := fun f g => ∀ x, `1 f x ≈ `1 g x |};
   id      := λ _, (λ x, x; _);

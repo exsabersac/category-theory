@@ -6,16 +6,32 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** The initial (empty) category 0. *)
+(** The initial (empty) category 0. / 初始（空）类别 0。 *)
 
 (*
+ nLab:      https://ncatlab.org/nlab/show/empty+category
  nLab:      https://ncatlab.org/nlab/show/initial+object
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
  Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
-   本文件给出具体实例。
+ 0 is the empty category: no objects and hence no morphisms.  Here the object
+ type and every hom are [Empty_set], so the identity, composition, and all
+ category laws hold vacuously (each obligation is discharged by [inversion] on
+ the empty hypothesis); the hom-setoid is strict equality.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ 0 is the initial object of Cat: for every category C there is a unique
+ functor `¡ : 0 ⟶ C` ([From_0]), defined vacuously since there is nothing to
+ map.  Dually, [_1] is the terminal/point category 1 (Instance/One.v). 
+
+ --------
+ nLab：       https://ncatlab.org/nlab/show/empty+category 
+ nLab：       https://ncatlab.org/nlab/show/initial+object 
+ 维基百科：  https://en.wikipedia.org/wiki/Category_of_small_categories 
+ 维基百科：  https://en.wikipedia.org/wiki/Initial_and_terminal_objects 
+
+ 0 是空范畴：没有对象，因此也没有态射。这里的对象类型和每个同态集合都是 [Empty_set]，所以恒等、复合以及所有范畴律都是空值成立（每个义务都由在空假设下的 [inversion] 完成）；同态集是严格相等。
+
+ 0 是 Cat 的初始对象：对于每个范畴 C，存在唯一函子 `¡ : 0 ⟶ C`（[From_0]），由于没有任何要映射的内容，因此它是空定义的。对偶地，[_1] 是终端/点范畴 1（Instance/One.v）。
 *)
 
 #[local] Obligation Tactic :=

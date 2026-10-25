@@ -23,21 +23,81 @@ Require Import Category.Structure.Monoidal.Semicartesian.
 Generalizable All Variables.
 
 (*
-   本文件给出具体实例。
+   * * The funny tensor product as a symmetric monoidal structure on StrictCat
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   This file assembles the funny tensor product [□] (Construction/Funny.v)
+   into a tensor bifunctor [FunnyTensor : StrictCat ∏ StrictCat ⟶ StrictCat]
+   and the instances
+
+   [@Monoidal StrictCat], [@BraidedMonoidal StrictCat],
+   [@SymmetricMonoidal StrictCat], [@SemicartesianMonoidal StrictCat _]
+
+   with tensor [□] and unit the terminal category [1].
+
+   A load-bearing caveat: there is NO such tensor on the weak [Cat]
+   (Instance/Cat.v), whose hom-setoid [Functor_Setoid] identifies functors
+   up to natural isomorphism.  The funny tensor product is not invariant
+   under equivalence of categories: with I the "walking isomorphism"
+   chaotic groupoid on two objects, [Functor_Setoid] identifies [Id[I]]
+   with the constant functor at a point (they are naturally isomorphic by
+   chaotic naturality), yet [1 □ 1 ≅ 1] while [I □ I] is equivalent to the
+   group ℤ — the interchange loop
+   [(fapp (rstep u) (lstep u))⁻¹ ∘ (fapp (lstep u) (rstep u))]
+   at (a, a) is free ([fapp t u] is "t then u", Construction/Funny.v).
+   Hence [fmap_respects] of a would-be
+   [tensor : Cat ∏ Cat ⟶ Cat] is FALSE, and the obstruction persists with one
+   argument fixed ([− □ I] is already non-Proper).  The tensor therefore
+   lives on [StrictCat] (Instance/StrictCat.v), whose hom-setoid
+   [Functor_StrictEq_Setoid] compares functors strictly — the same shape of
+   problem as the issue #138 discussion recorded in Instance/StrictCat.v.
+
+   Per Foltz–Lair–Kelly ("Algebraic categories with few monoidal biclosed
+   structures or none", JPAA 17(2) (1980) 171-177), up to isomorphism there
+   are exactly two monoidal biclosed structures on Cat, and both are
+   symmetric: the cartesian one and this funny one.  The braiding is
+   [FunnySwap] (Construction/Funny/Swap.v), and the unit [1] is terminal in
+   StrictCat (Instance/StrictCat/Terminal.v), making the structure
+   semicartesian.
+
+   Proof method: every coherence law is a strict equality of two functors
+   out of an iterated funny tensor product, so it reduces via the master
+   lemma [Funny_strict_eq]/[Funny_strict_eq_word]
+   (Construction/Funny/StrictEq.v) to transported agreement on the
+   generating steps.  For the nested domains ((x □ y) □ z etc.) the master
+   lemma is applied ITERATIVELY: a generator of the outer level is
+   [lstep w]/[rstep w] with w a whole inner word, and
+   [fmap[F ◯ FunnyL d] w ≡ fmap[F] (lstep w)] holds definitionally, so
+   agreement on outer left generators is again a strict-equality-of-functors
+   problem one level down.  At the leaves all coherence routes send each
+   generating step to the SAME nested generator on the nose — except in the
+   triangle, where the unitors produce [id ∘ f]-shaped payloads and the
+   congruence [feq]'s identity-removal and payload-congruence rules fire. 
+
+   --------
+   * * 有趣的张量积作为 StrictCat 上的对称单体结构
+
+   本文件将有趣的张量积 [□]（Construction/Funny.v）
+   组装为张量双函子 [FunnyTensor : StrictCat ∏ StrictCat ⟶ StrictCat]
+   以及以下实例
+
+   [@Monoidal StrictCat], [@BraidedMonoidal StrictCat],
+   [@SymmetricMonoidal StrictCat], [@SemicartesianMonoidal StrictCat _]
+
+   其张量为 [□]，单位为终端范畴 [1]。一个承重的警告：在弱  [Cat] (Instance/Cat.v) 上没有这样的张量，其同态集  [Functor_Setoid] 将函子识别为自然同构的等价。这个有趣的张量积在范畴等价下并不保持不变：令 I 为两个对象上的“行走同构”混乱群oid，[Functor_Setoid] 识别 [Id[I] 与常值函子在一点上的对应（它们通过混乱的自然性是自然同构的），然而 [1 □ 1 ≅ 1] 而 [I □ I] 与群 ℤ 等价——(a, a) 处的交换回路 [(fapp (rstep u) (lstep u))⁻¹ ∘ (fapp (lstep u) (rstep u))] 是自由的（[fapp t u] 是“t 然后 u”，Construction/Funny.v）。因此，[fmap_respects] 作为一个可能的 [tensor : Cat ∏ Cat ⟶ Cat] 是假的，并且当固定一个参数时这种阻碍仍然存在（[− □ I] 已经不是 Proper）。因此，该张量存在于 [StrictCat] (Instance/StrictCat.v) 上，其同态集合 [Functor_StrictEq_Setoid] 严格比较函子 —— 与 Instance/StrictCat.v 中记录的第 138 号问题讨论的形状相同。
+
+   根据 Foltz–Lair–Kelly（“具有少量或没有单模双闭结构的代数范畴”，JPAA 17(2) (1980) 171-177），最多同构而言，在 Cat 上恰有两种单模双闭结构，并且两者都是对称的：笛卡尔结构和这个有趣的结构。编织为 [FunnySwap] (Construction/Funny/Swap.v)，单位 [1] 是 StrictCat (Instance/StrictCat/Terminal.v) 中的终对象，从而使该结构成为半笛卡尔的。证明方法：每个相干律都是两个函子严格相等，从迭代的有趣张量积出发，所以它通过主引理 [Funny_strict_eq] / [Funny_strict_eq_word] （Construction/Funny/StrictEq.v）简化为生成步骤上的传递一致性。对于嵌套域（例如 (x □ y) □ z 等），主引理是迭代应用的：外层的生成元是 [lstep w] / [rstep w]，其中 w 是整个内层词，并且 [fmap[F ◯ FunnyL d] w ≡ fmap [F] (lstep w) 在定义上成立，因此外层左生成元的一致性再次变成了一层下的函子严格相等问题。在叶子处，所有的连贯路径都将每个生成步骤精确地发送到相同的嵌套生成器 —— 除了在三角形中，那里单元器会生成 [id ∘ f] 形状的载荷，并且一致性 [feq] 的身份移除和载荷一致性规则会触发。
 *)
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The tensor bifunctor *)
+(** ** The tensor bifunctor / ** 张量双函子 *)
 
 Program Definition FunnyTensor : (StrictCat ∏ StrictCat) ⟶ StrictCat := {|
   fobj := fun p => (fst p □ snd p)%category;
   fmap := fun _ _ FG => FunnyBimap (fst FG) (snd FG)
 |}.
 Next Obligation.
-  (* fmap_respects: componentwise strict equality is preserved. *)
+  (* fmap_respects: componentwise strict equality is preserved. / fmap_respects：逐组件严格相等性得以保留。 *)
   intros p q F G E.
   exact (FunnyBimap_respects (fst F) (fst G) (fst E) (snd F) (snd G) (snd E)).
 Qed.
@@ -47,15 +107,26 @@ Next Obligation.
   exact (@FunnyBimap_id (fst p) (snd p)).
 Qed.
 Next Obligation.
-  (* fmap_comp *)
+  (* fmap_comp / fmap_组合 *)
   intros p q r f g.
   exact (FunnyBimap_comp (fst f) (fst g) (snd f) (snd g)).
 Qed.
 
 (*
-   本节说明 Funny 相关定义、性质与动机。
+   * ** The triangle identity
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [bimap unit_right id ≈ bimap id unit_left ∘ tensor_assoc] on
+   [(x □ 1) □ y].  Unlike the pentagon and the hexagons, the two routes do
+   NOT agree definitionally on generators: the unitors fold away the
+   [1]-steps into [id ∘ id]-composites, so the leaves genuinely exercise
+   the congruence [feq] (payload congruence + identity removal). 
+
+   --------
+   * ** 三角恒等式
+
+   [bimap unit_right id ≈ bimap id unit_left ∘ tensor_assoc] 开启
+   [(x □ 1) □ y] 。 与五边形和六边形不同，这两条路径在生成元上在定义上不一致：单位元将
+   [1] 步骤折叠为 [id ∘ id] 复合，因此叶子真正使用了同余 [feq]（负载同余 + 恒等删除）。
 *)
 
 Lemma Funny_triangle_word {x y : Category} (d : y)
@@ -73,11 +144,10 @@ Proof.
            ((FunnyBimap Id[x] Funny_unit_left_to ◯ @FunnyAssocTo x _1 y)
               ◯ @FunnyL (x □ _1) y d)
            (fun _ _ => eq_refl)).
-  - (* lstep f: route 1 folds to [lstep (id ∘ f)], route 2 to [lstep f]. *)
+  - (* lstep f: route 1 folds to [lstep (id ∘ f)], route 2 to [lstep f]. / 步骤 f：路线 1 折叠到 [lstep (id ∘ f)]，路线 2 折叠到 [lstep f]。 *)
     intros c c' f u0.
     apply feq_consL; [ apply id_left | apply feq_refl ].
-  - (* rstep g (g : 1-step): route 1 gives [lstep (id ∘ id)], route 2
-       [rstep (id ∘ id)]; both collapse to fnil. *)
+  - (* rstep g (g : 1-step): route 1 gives [lstep (id ∘ id)], route 2 [rstep (id ∘ id)]; both collapse to fnil. / rstep g (g : 1-步): 路线 1 给出 [lstep (id ∘ id)]，路线 2 给出 [rstep (id ∘ id)]；两者都归约为 fnil。 *)
     intros c u0 u1 g.
     eapply feq_trans.
     { apply feq_consL; [ apply id_left | apply feq_refl ]. }
@@ -100,15 +170,22 @@ Proof.
            (fun _ _ => eq_refl)).
   - intros [a u] [a' u'] w d.
     exact (Funny_triangle_word d w).
-  - (* rstep h: route 1 gives [rstep h], route 2 [rstep (id ∘ h)]. *)
+  - (* rstep h: route 1 gives [rstep h], route 2 [rstep (id ∘ h)]. / rstep h：路线1给出[rstep h]，路线2给出[rstep (id ∘ h)]。 *)
     intros c d d' h.
     apply feq_consR; [ symmetry; apply id_left | apply feq_refl ].
 Qed.
 
 (*
-   本节说明 Funny 相关定义、性质与动机。
+   * ** The pentagon identity
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Both routes send every generating step of [((x □ y) □ z) □ w] to the
+   same nested generator on the nose, so after three iterations of the
+   master lemma every leaf closes by reflexivity. 
+
+   --------
+   * ** 五边形恒等式
+
+   两条路径都将 [((x □ y) □ z) □ w] 的每个生成步骤精确地发送到相同的嵌套生成器上，因此在主引理迭代三次之后，每个叶子都会通过自反性闭合。
 *)
 
 Lemma Funny_pentagon_word2 {x y z w : Category} (d : w) (k : z)
@@ -173,7 +250,7 @@ Proof.
   - intros c d d' h. reflexivity.
 Qed.
 
-(** ** The monoidal instance *)
+(** ** The monoidal instance / ** 单体实例 *)
 
 #[export] Program Instance Funny_Monoidal : @Monoidal StrictCat := {
   I := _1;
@@ -207,11 +284,19 @@ Next Obligation.
   intros x y z w. exact (@Funny_pentagon x y z w).
 Qed.
 
-(* * ** Naturality braiding
+(*
+   * ** Naturality of the braiding
 
- The joint (arity-2) 自然性 square consumed [braid_natural]:
- both routes send [lstep f] [rstep (fmap[g] f)] [rstep k] to
- [lstep (fmap[h] k)] definitionally. （已译） *)
+   The joint (arity-2) naturality square consumed by [braid_natural]:
+   both routes send [lstep f] to [rstep (fmap[g] f)] and [rstep k] to
+   [lstep (fmap[h] k)] definitionally. 
+
+   --------
+   * ** 编织的自然性
+
+   由  [braid_natural] 消耗的联合（二元）自然性方形：
+   两条路径都将  [lstep f]  送到  [rstep (fmap[g]  f)]，并且将  [rstep k]  送到  [lstep (fmap[h]  k)] ，这是按定义的。
+*)
 
 Lemma Funny_braid_natural {x y z w : Category} (g : x ⟶ y) (h : z ⟶ w) :
   @equiv _ (@Functor_StrictEq_Setoid (x □ z) (w □ y))
@@ -227,9 +312,16 @@ Proof.
 Qed.
 
 (*
-   本节说明 Funny 相关定义、性质与动机。
+   * ** The hexagon identities
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   As with the pentagon, every generating step is sent to the same nested
+   generator by both routes, so the leaves close by reflexivity after
+   iterating the master lemma through the nested domain. 
+
+   --------
+   * ** 六边形恒等式
+
+   与五边形一样，每一个生成步骤都通过两条路径被发送到相同的嵌套生成器，因此在将主引理迭代穿过嵌套域后，叶子通过自反性闭合。
 *)
 
 Lemma Funny_hexagon_word {x y z : Category} (k : z)
@@ -306,7 +398,7 @@ Proof.
     exact (Funny_hexagon_sym_word c W).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The braided and symmetric instances / * ** 编织和对称的实例 *)
 
 #[export] Program Instance Funny_Braided : @BraidedMonoidal StrictCat := {
   braided_is_monoidal := Funny_Monoidal;
@@ -331,9 +423,16 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明始/终对象相关定义、性质与动机。
+   * ** The semicartesian instance
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The unit [1] of the funny tensor is the terminal object of StrictCat
+   (Instance/StrictCat/Terminal.v), on the nose, so the generic
+   [Terminal_SemicartesianMonoidal] applies with [Heq := eq_refl]. 
+
+   --------
+   * ** 半笛卡尔实例
+
+   有趣张量的单位 [1] 是 StrictCat (Instance/StrictCat/Terminal.v) 的终对象，直接如此，所以通用的 [Terminal_SemicartesianMonoidal] 可用 [Heq := eq_refl] 应用。
 *)
 
 #[export] Instance Funny_Semicartesian :

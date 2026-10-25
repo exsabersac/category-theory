@@ -18,21 +18,284 @@ Require Import Category.Instance.FinSet.Classifier.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(* * * A one-level subobject classifier for [Sets], conditionally / * * [Sets] 的一级子对象分类器，有条件地 *)
 
 (*
-   本文件给出集合范畴相关实例。
+ Mac Lane, CWM 2nd ed., §IV.9 construction 1, book p. 105
+ ([maclane:IV.9:construction1]).  Verbatim:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ "The characteristic function of a subset S ⊂ X is the two-valued
+ function ψ_S : X → {0, 1} on X with the values
+
+ ψ_S x = 0  if x ∈ S ;    ψ_S x = 1  if x ∈ X but x ∉ S .   (1)"
+
+ "Such characteristic functions are often used in probability theory;
+ in logic, {0, 1} is the set of two "truth values" with 0 the value
+ "truth".  One says that the monomorphism (the typical subset)
+ t : {0} → {0, 1} is a "subobject classifier" for the category of
+ sets."
+
+ "In general, a subobject classifier for a category C with a terminal
+ object 1 is defined to be a monomorphism t : 1 ↣ Ω such that every
+ monomorphism m in C is a pullback of t in an unique way.  In other
+ words, for each m there exists a unique pullback square
+
+ S ──→ 1
+ m│     │t                                                   (3)
+ ↓     ↓
+ X ─ψ→ Ω ."
+
+ Fong & Spivak, *Seven Sketches in Compositionality*, §7.2.2, printed
+ p. 229 ([7sketches:7.2.2:construction-subobject-classifier-set]).  Verbatim:
+
+ "The subobject classifier in Set is the set of booleans,
+
+ Ω_Set := 𝔹 = {true, false}.                              (7.14)"
+
+ "⌜m⌝(y) := true   if m(x) = y for some x ∈ X
+ false  otherwise"
+
+ "X = {y ∈ Y | p(y) = true}.                                   (7.15)"
+
+ THE CONVENTION SWAP.  Mac Lane's ψ_S takes the value 0 ON the subset
+ and 1 off it, with 0 the value "truth"; Seven Sketches, the tree's
+ [FinSet_Classifier] (whose [truth] is [fin_true]) and everything below
+ put [true] — here [ptrue], resp. [Powerset_truth_point] — ON the
+ subset.  The two conventions differ by the swap 0 ↔ 1, an automorphism
+ of the two-element truth object, and this file follows the tree.  Read
+ that swap as one of NAMES: [fin_true] is [Fin.F1], the first element
+ of [Fin.t 2], so as a numeral it is Mac Lane's 0 and only its name is
+ Seven Sketches'; neither [ptrue] nor [Powerset_truth_point] carries a
+ numeral at all (a measurement made while landing
+ Instance/Fun/Classifier.v, whose sieve classifier carries none
+ either).
+
+ WHAT IS DELIVERED, AND AT WHICH STRENGTH.  A genuine
+ [@SubobjectClassifier Sets@{o so} Sets_Terminal] instance at ONE
+ universe level, CONDITIONALLY, in two shapes:
+
+ [Sets_Classifier     : Untruncate@{o} -> SubobjectClassifier]
+ with Ω := [Powerset_Omega] (the level-o [Prop] truth-value setoid
+ of Instance/Sets/Powerset.v) and truth := [Powerset_truth_point],
+ both read back by [eq_refl];
+
+ [Sets_Classifier_dec : DecImage@{o so} -> SubobjectClassifier]
+ with Ω := [BoolSetoid] (a polymorphic two-element setoid — Seven
+ Sketches' 𝔹 at level o) and truth := [ptrue], both [eq_refl].
+
+ [Untruncate] says every impredicative truncation at level o can be
+ inverted; [DecImage] says every mono's image membership is decidable.
+ Neither has an axiom-free inhabitant in this tree.  Both follow from
+ informative excluded middle [IEM] at level o, and [DecImage] is in fact
+ EQUIVALENT to it ([DecImage_iff_IEM]).
+
+ THE DISCLOSURE, IN THREE PARTS, as the issue's Definition of Done asks.
+ (i) NO unconditional axiom-free instance is built here.  (ii) NO
+ impossibility theorem is proved here.  (iii) An in-tree impossibility
+ proof is out of reach in a precise sense: the classifier IS derivable
+ from Coq's own classical axioms — a scratch development compiled
+ against this worktree builds the instance out of [classic] and
+ [constructive_indefinite_description] (Coq.Logic.ClassicalEpsilon) and
+ [Print Assumptions] reports exactly those two — so an in-tree
+ impossibility theorem would refute a classically valid statement.  That
+ is an ARGUMENT, not a theorem: nothing below proves it, and the
+ classical instance is deliberately not shipped.
+
+ WHY A NEW FILE.  Instance/Sets/Powerset.v and
+ Instance/Sets/Powerset/Universal.v both Require
+ Instance/Sets/Classifier.v, so that file cannot Require either of them
+ and the instance whose Ω is [Powerset_Omega] cannot live there.  The
+ precedent for a cycle-forced sibling is Structure/Limit/Indexed/Hom.v.
+
+ THE MEASURED FACTS THIS FILE RESTS ON, each compiled.
+
+ - [SubobjectClassifier] takes TWO arguments, a category and a
+ [Terminal]; the [HasPullbacks] of its declaring section is used by
+ the theorems below the class, not by the class.  Offering
+ [Sets_HasPullbacks] as a third argument is an "Illegal application"
+ (a TYPING refusal), pinned in the probe.
+ - The CLASS is formable at [Sets@{o so}]: this file inhabits it.
+ - [classifier_classifies], [Sub_classifier_natural] and
+ [Sub_Representable] are NOT: each carries the BOUND [u <= u0] over
+ [C : Category@{u u0 u0}] — objects ≤ homs — while
+ [Sets@{o so} : Category@{so o o}] has o < so.  The
+ refusals are universe inconsistencies (FORMABILITY), and
+ [char_reindex] IS accepted at [Sets] as the control.  So at [Sets]
+ the classification theorem is replaced by its two round trips,
+ section (I) below, which build no object of [Sets] with carrier
+ [SubObj x] (their ≈ is still the [SubObj_Setoid] instance).
+ - [SubObj x] is a [Type@{so}], so no [{| carrier := SubObj x |}] is an
+ [obj[Sets@{o so}]] (control: a hom-setoid IS one), and
+ Instance/Sets/Classifier.v's [PropSetoid] is likewise refused
+ (controls: [Powerset_Omega] and [BoolSetoid] accepted).  Both are
+ pinned.
+ - The naive elimination of an impredicative truncation without
+ [Untruncate], namely [fun P h => h P (fun p => p)], is refused with
+ "Cannot enforce o <= Prop"; the [Prop]-valued instantiation
+ [powerset_squash_prop_inert] of Instance/Sets/Powerset/Universal.v
+ is the accepted control.  That refusal is exactly what [Untruncate]
+ buys, and why this hypothesis and not a weaker one.
+
+ THE RESIZING READING.  A one-level classifier for [Sets] is inter-derivable
+ with a resizing-shaped structure: an object Ω of [Sets] at level o with a
+ point t, an assignment w carrying every [Type@{o}] to a truth value, an
+ introduction and an elimination rule identifying [w P ≈ t] with P, and
+ extensionality of Ω at t.  That is the record [SmallClassifierExt], and
+ [classifier_iff_small] is the pair of passages, both directions, over an
+ arbitrary [Sets@{o so}].  [Sets_Classifier] is built THROUGH it;
+ [Sets_Classifier_dec] is built directly from [char_of_dec] and its two law
+ lemmas, and [classifier_of_small] of [small_of_IEM] is a THIRD classifier,
+ refuted equal to [Sets_Classifier_dec] at [eq_refl] in the probe.  So the
+ resizing structure is an engine rather than a by-product: the [sce_ext] field
+ of the forward passage spends [char_unique] twice (through
+ [subone_pt_classifies]) and [char_respects] once (itself derived, in
+ Structure/SubobjectClassifier.v, from [char_pullback], [char_unique], the
+ pullback lemma [is_pullback_precompose_iso] and [one_unique]).
+
+ ONE STORY, NOT TWO.  The one-level characteristic map IS the truncation of
+ Instance/Sets/Classifier.v's cross-universe one.  Measured strict first, two
+ grades and no third:
+
+ value    [char (Sets_Classifier U) m M b
+ = Powerset_squash (char_setoid m b)]  by [eq_refl];
+ record   the same identification as [SetoidMorphism] records, one
+ universe up, is refused at [eq_refl] (a CONVERSION refusal,
+ pinned, the two [proper_morphism] certificates being
+ separately elaborated) and holds at ≈
+ ([bridge_record_equiv]);
+ whole    no [Transform] is involved on either side, so there is no
+ third grade to measure.
+
+ So Classifier.v's [sets_char_pullback] and [sets_char_unique] and the
+ instances here are one construction seen at two levels, joined by
+ [Powerset_squash]; they are not parallel developments.
+
+ UNIVERSES.  Every top-level constant of sections (B)–(J) carries explicit
+ binders; of section (K)'s ten, the six [FinSet] constants carry none and the
+ four [iem_routes_*] carry [@{o so}].  Not one constraint block of this file
+ contains a universe EQUATION; the blocks are bounds only.  [Sets_Classifier]
+ and everything downstream of [Powerset_Omega] — thirteen constants — carry
+ the strict lower bound [Set < o], which is [Prop : Type@{Set+1}] arriving
+ through [Powerset_Prop_truth] — a BOUND, never a pin, but not inert: it
+ excludes exactly the [Sets] whose carrier universe is the literal [Set].
+ Measured: [Sets@{Set so}] and [Sets_Terminal@{so Set}] are formable and
+ [Sets_Classifier_dec@{Set so}] is accepted there, while
+ [Sets_Classifier@{Set so}] and [Powerset_Omega@{Set}] are refused, so the two
+ conditional instances differ in reach as well as in truth object.
+ [Sets_Classifier_dec] and the whole [BoolSetoid] route carry no [Set] in any
+ binder or block (the [max(Set, …)] in [DecImage]'s and [IEM]'s own sorts is
+ the sum type's and is inert).  The six [FinSet] constants of section (K)
+ carry a [Set] bound of their own ([Set < u1], [Set < u2]), inherited from
+ [FinSet]'s declaration and not from [Powerset_Omega].
+
+ WHAT IS NOT DELIVERED.  No unconditional axiom-free instance and no
+ impossibility theorem (see the three-part disclosure above).  No proof that
+ [Untruncate] or [DecImage] is underivable — only that this tree has no
+ axiom-free inhabitant of either, with [IEM] cited as what would give both.
+ No naturality: [Sub_classifier_natural] is not statable at [Sets].  No
+ [ElementaryTopos Sets] and no power objects at [Sets].  No functor
+ [FinSet ⟶ Sets], so the two accounts below are related in prose and by a
+ shared statement shape, not by transport.  The two conditional instances'
+ truth objects are NOT compared: no isomorphism [BoolSetoid ≅ Powerset_Omega]
+ is built, under [IEM] or otherwise.  No round trip for
+ [classifier_iff_small]: the two passages are inter-derivable, and neither
+ composite is compared with the identity at any strength.  Nothing here is
+ registered as an [Instance] — the hypotheses must not become globally
+ resolvable, and neither must a chosen classifier.
+
+ COUNTS, WITH THEIR CRITERIA.  Constants closed under the global context:
+ 92/92 with zero [Axioms:] lines, counted as the 89 entries [Print Module]
+ emits at five-space indent plus the two constructors of [poly_bool] and the
+ [Build_*] of [SmallClassifierExt], which it lists only on a continuation line
+ or after a [:=]; every one queried FULLY QUALIFIED, and all 92 are in the
+ [print-assumptions] gate.  ([Print Module] wraps this module's own head
+ across three lines, so a line-anchored sweep of its output harvests no
+ spurious name here; and it renders the eighteen [Qed]-closed constants as
+ [Parameter] — a display convention, not an axiom.)  [Defined] tokens: 14, of
+ which ELEVEN are load-bearing — measured by flipping each ALONE to [Qed]:
+ only [IEM_of_DecImage], [sce_pullback] and [char_of_dec_pullback] survive the
+ flip, and they are kept [Defined] because they produce data.  Statements
+ closed by [:= eq_refl]: 18.  Transitive in-project closure excluding this
+ file: 70 modules, with drop-one marginals Instance/Sets/Powerset/Universal
+ 19, Instance/Sets/Pullback 12, Instance/FinSet/Classifier 2 and every other
+ Require 0; of the seventeen Requires, sixteen are textually load-bearing
+ (dropping any one stops the build) and only Structure/Pullback is not,
+ arriving through Structure/SubobjectClassifier.  Name collisions swept
+ whole-word over every [.v] of the build set, instrument-checked at [Full] and
+ [Monoid]: no DECLARATION collides with any of the 92 (after one rename
+ recorded in the report), the only whole-word hits outside this file and its
+ probe being the prose pointers to [Sets_Classifier], [Untruncate] and
+ [DecImage] that this same change writes into Instance/Sets/Classifier.v and
+ Instance/Sets/Powerset/Universal.v.  This file contributes ZERO [make todo]
+ hits; its probe carries the refutation commands. 
+
+ --------
+ Mac Lane, CWM 第二版，§IV.9 构造 1，书籍第 105 页
+ ([maclane:IV.9:construction1])。逐字翻译：
+
+ “子集 S ⊂ X 的特征函数是定义在 X 上的二值函数 ψ_S : X → {0, 1}，其取值为：
+
+ ψ_S x = 0  如果 x ∈ S ;    ψ_S x = 1  如果 x ∈ X 且 x ∉ S 。   (1)”
+
+ “这种特征函数在概率论中经常使用；在逻辑中，{0, 1} 是两个‘真值’的集合，其中 0 表示‘真’。人们说单态射（典型子集） t : {0} → {0, 1} 是集合范畴的‘子对象分类器’。”一般来说，对于具有终对象 1 的范畴 C，子对象分类器被定义为单态射 t : 1 ↣ Ω，使得 C 中的每一个单态射 m 都是 t 的唯一方式的拉回。换句话说，对于每个 m，存在一个唯一的拉回方格
+
+ S ──→ 1
+ m│     │t           (3)
+ ↓     ↓
+ X ─ψ→ Ω 。
+
+ Fong & Spivak, 《组合性中的七个示意图》, §7.2.2, 印刷页 229 ([7sketches:7.2.2:construction-subobject-classifier-set])。逐字翻译：
+
+ “Set 中的子对象分类器是布尔集合，
+
+ Ω_Set := 𝔹 = {true, false}。                             (7.14)”
+
+ “⌜m⌝(y) := true   如果存在某个 x ∈ X 使得 m(x) = y
+ false  否则
+ ”
+
+ “X = {y ∈ Y | p(y) = true}。                                   (7.15)”约定互换。Mac Lane 的 ψ_S 在子集上取值为 0，而在子集外取值为 1，其中 0 表示“真”；《七个素描》中，树的 [FinSet_Classifier]（其 [truth] 是 [fin_true]）以及其下的所有内容都赋值为 [true]——此处 [ptrue]，分别为 [Powerset_truth_point]——在子集上。两种约定的区别在于 0 ↔ 1 的互换，这是二元真值对象的一个自同构，本文件遵循该树。将该互换解读为名称之一：[fin_true] 是 [Fin.F1]，[Fin.t 2] 的第一个元素，所以作为数字它是 Mac Lane 的 0，其名称仅为《七个素描》；[ptrue] 和 [Powerset_truth_point] 根本不包含任何数字（在加载 Instance/Fun/Classifier.v 时测量得到，其筛子分类器也不包含数字）。交付的内容以及其强度。在单一宇宙层次上的一个真正的 [@SubobjectClassifier Sets@{o so} Sets_Terminal] 实例，有条件地以两种形式存在：
+
+ [Sets_Classifier     : Untruncate@{o} -> SubobjectClassifier]
+ 其中 Ω := [Powerset_Omega]（Instance/Sets/Powerset.v 中的 level-o [Prop] 真值集合体）且 truth := [Powerset_truth_point]，
+ 两者均由 [eq_refl] 读取回；
+
+ [Sets_Classifier_dec : DecImage@{o so} -> SubobjectClassifier]
+ 其中 Ω := [BoolSetoid]（一个多态的双元素集合体——Seven Sketches 的 𝔹 在 level o）且 truth := [ptrue]，
+ 两者均为 [eq_refl]。
+
+ [Untruncate] 表示 level o 的每个不可自指截断都可以被逆转；[DecImage] 表示每个单态的像成员资格是可判定的。此树中二者都没有无公理的元素。两者都可由 level o 的信息化排中律 [IEM] 推出，实际上 [DecImage] 与其等价（[DecImage_iff_IEM]）。披露分为三部分，如本期的完成定义所要求。
+ (i) 这里没有构建无条件无公理的实例。 (ii) 这里没有证明不可能性定理。 (iii) 精确意义上，树内不可能性证明是无法实现的：分类器可以从 Coq 自身的经典公理中推导出来——在这个工作树下编译的临时开发可以通过 [classic] 和 [constructive_indefinite_description]（Coq.Logic.ClassicalEpsilon）构建实例，而 [Print Assumptions] 正好报告这两个——因此，树内的不可能性定理将否定一个经典上有效的陈述。那是一个论证，而不是定理：下面没有任何内容能够证明它，并且经典实例是故意不发布的。为什么要创建新文件。Instance/Sets/Powerset.v 和 Instance/Sets/Powerset/Universal.v 都需要 Instance/Sets/Classifier.v，因此该文件不能依赖它们中的任何一个，并且 Ω 是 [Powerset_Omega] 的实例不能放在那里。循环强制的兄弟文件的先例是 Structure/Limit/Indexed/Hom.v。
+
+ 这个文件依赖的已测事实，每一个都已编译。- [SubobjectClassifier] 接受两个参数，一个类别和一个 [Terminal]；其声明部分的 [HasPullbacks] 被类下的定理使用，而不是类本身。提供 [Sets_HasPullbacks] 作为第三个参数是“非法应用”（一种类型拒绝），在探针中被固定。 - 该类可在 [Sets@{o so}] 处形成：该文件位于其中。 - [classifier_classifies]、[Sub_classifier_natural] 和 [Sub_Representable] 不可：每个都携带 [u <= u0] 在 [C : Category@{u u0 u0}] 上的约束 — 对象 ≤ 同态 — 而 [Sets@{o so} : Category@{so o o}] 有 o < so。拒绝是宇宙不一致性（可形成性），而 [char_reindex] 在 [Sets] 处被接受作为控制。所以在 [Sets] 中，分类定理被其两个循环替代，见下文第（I）节，它们不会构建载体为 [SubObj x] 的 [Sets] 对象（它们的 ≈ 仍然是 [SubObj_Setoid] 实例）。- [SubObj x] 是一个 [Type@{so}]，因此没有 [{| carrier := SubObj x |}] 是一个 [obj[Sets@{o so}] ]（控制：同态集确实是一个），并且 Instance/Sets/Classifier.v 的 [PropSetoid] 也同样被拒绝（控制：[Powerset_Omega] 和 [BoolSetoid] 被接受）。两者都被固定。- 对无 [Untruncate] 的不可预测截断的天真消解，即 [fun P h => h P (fun p => p)]，被拒绝，显示“无法强制 o <= Prop”；Instance/Sets/Powerset/Universal.v 中 [Prop] 取值的实例 [powerset_squash_prop_inert] 是被接受的控制。那次拒绝正是 [Untruncate] 的作用所在，也是为什么采用这个假设而不是更弱的假设。调整大小的读数。[Sets] 的一级分类器可以与一个调整大小形状的结构互导：一个位于 o 级别并带有一个点 t 的 [Sets] 对象 Ω，一个将每个 [Type@{o}] 指派为真值的赋值 w，一个识别 [w P ≈ t] 与 P 的引入和消去规则，以及 Ω 在 t 的外延性。那就是记录 [SmallClassifierExt]，并且 [classifier_iff_small] 是两个方向的段落对，适用于任意的 [Sets@{o so}]。[Sets_Classifier] 是通过它构建的；[Sets_Classifier_dec] 直接由 [char_of_dec] 及其两个定理引理构建，并且 [small_of_IEM] 的 [classifier_of_small] 是第三个分类器，在探测中被判定等于 [Sets_Classifier_dec] 于 [eq_refl]。因此，调整大小的结构是一个引擎，而不是副产品：前向通道的 [sce_ext] 字段花费了 [char_unique] 两次（通过 [subone_pt_classifies]）和 [char_respects] 一次（它本身在 Structure/SubobjectClassifier.v 中由 [char_pullback]、[char_unique]、拉回引理 [is_pullback_precompose_iso] 和 [one_unique] 推导而来）。
+
+ 一个故事，而不是两个。单级特征映射确实是 Instance/Sets/Classifier.v 的跨宇宙映射的截断。先严格度量，两个等级，没有第三个：value    [char (Sets_Classifier U) m M b = Powerset_squash (char_setoid m b)] 由 [eq_refl] 定义；
+ record   与 [SetoidMorphism] 记录相同的标识，在一个宇宙级别上，被 [eq_refl] 拒绝（一个 CONVERSION 拒绝，被固定，两个 [proper_morphism] 证书分别被详细阐述）并在 ≈( [bridge_record_equiv] ) 上成立；
+ whole    在任一方都没有 [Transform] 参与，所以没有第三等级可以衡量。
+
+ 因此，Classifier.v 的 [sets_char_pullback] 和 [sets_char_unique] 及此处的实例是在两个层次上看到的一个构造，由 [Powerset_squash] 连接；它们不是平行发展的。宇宙。每个(B)–(J)部分的顶级常量都带有显式绑定器；在(K)部分的十个常量中，六个[FinSet]常量不带绑定器，四个[iem_routes_*]常量带有[@{o so}]。这个文件中没有一个约束块包含宇宙方程；这些块只是边界。[Sets_Classifier]及[Powerset_Omega]之后的所有内容——共十三个常量——带有严格下界[Set < o]，该下界是通过[Powerset_Prop_truth]到达的[Prop : Type@{Set+1}]——一个边界，从不是固定点，但也不是惰性：它精确排除了那些载体宇宙是字面量[Set]的[Sets]。测量：[Sets@{Set so}]和[Sets_Terminal@{so Set}]是可形成的，并且[Sets_Classifier_dec@{Set so}]在其中被接受，而[Sets_Classifier@{Set so}]和[Powerset_Omega@{Set}]被拒绝，因此这两个条件实例在可达性和真值对象上也不同。[Sets_Classifier_dec] 和整个 [BoolSetoid] 路线在任何绑定或块中都不携带 [Set] （[DecImage] 和 [IEM] 自身类型中的 [max(Set, …)] 是求和类型的，并且是惰性的）。第 (K) 节的六个 [FinSet] 常量有它们自己的 [Set] 范围（[Set < u1]、[Set < u2]），继承自 [FinSet] 的声明，而非 [Powerset_Omega]。未交付的内容。没有无条件的无公理实例，也没有不可能定理（参见上文三部分的披露）。没有证明 [Untruncate] 或 [DecImage] 无法推导——仅表明该树没有任何无公理的居民属于其中任何一个，[IEM] 被引用为可以提供两者的内容。没有自然性：[Sub_classifier_natural] 在 [Sets] 处无法表达。没有 [ElementaryTopos Sets]，也没有 [Sets] 处的幂对象。没有函子 [FinSet ⟶ Sets]，所以下面的两个说明是通过文字和共享的陈述形式相关，而非通过迁移。两个条件实例的真值对象未进行比较：没有在 [IEM] 下或其他情况下建立同构 [BoolSetoid ≅ Powerset_Omega]。[classifier_iff_small] 没有循环往返：两个推导过程可以相互推导，但没有将任一组合与任何强度下的恒等映射进行比较。这里没有任何东西被注册为 [Instance] —— 假设不能成为全局可解析的，所选的分类器也不能。计数及其标准。在全局上下文下封闭的常量：
+ 92/92 条零 [Axioms:] 行，计为 89 条目 [Print Module]
+ 以五个空格的缩进发出，外加 [poly_bool] 的两个构造函数和
+ [SmallClassifierExt] 的 [Build_*]，仅在续行或 [:=] 之后列出；每个都以完全限定方式查询，并且所有 92 个都在 [print-assumptions] 门中。([Print Module] 将该模块自身的头部
+ 跨三行包裹，因此对其输出进行按行锚定的扫描不会在此处收获任何虚假的名称；它将十八个 [Qed] 封闭常量呈现为 [Parameter] —— 这是一种显示约定，而不是公理。) [Defined] 令牌：14，其中 ELEVEN 是承载负载的 —— 通过将每个 ALONE 翻转为 [Qed] 测量：只有 [IEM_of_DecImage]、[sce_pullback] 和 [char_of_dec_pullback] 在翻转中存活，并且它们被保持为 [Defined] 因为它们生成数据。由 [:= eq_refl] 封闭的语句：18。排除此文件的传递项目内闭包：70 个模块，其中 drop-one marginals Instance/Sets/Powerset/Universal 19 个，Instance/Sets/Pullback 12 个，Instance/FinSet/Classifier 2 个，其他所有 Require 0 个；在十七个 Requires 中，十六个在文本上是负载的（删除任何一个都会停止构建），只有 Structure/Pullback 例外，通过 Structure/SubobjectClassifier 引入。名称冲突在整个构建集的每一个 [.v] 上全字匹配检查，通过 [Full] 和 [Monoid] 仪器检测：没有任何声明与 92 个（报告中记录的一次重命名之后）相冲突，除该文件及其探针之外唯一的全字匹配命中是对 [Sets_Classifier]、[Untruncate] 和 [DecImage] 的散文指针，此更改将其写入 Instance/Sets/Classifier.v 和 Instance/Sets/Powerset/Universal.v。该文件贡献了零 [make todo] 命中；其探针包含反驳命令。
 *)
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (B) The image predicate, and subobjects of the terminal setoid / * **（B）图像谓词，及终端等价关系集合的子对象 *)
 
    (*
-   本节说明子对象、始/终对象相关定义、性质与动机。
+ [sets_in_image m b] is Mac Lane's "b ∈ S" and Seven Sketches' "m(x) = y
+ for some x": the [Type@{o}]-valued sigma that Instance/Sets/Classifier.v's
+ [char_setoid] also computes.  [SubOne P] is the subobject of the terminal
+ setoid cut by a proposition P, with [subone_incl] its inclusion; the
+ inclusion is monic for EVERY P, because its DOMAIN [SubOne P] is subterminal
+ — its setoid is [triv_rel], so any two morphisms into it already agree, which
+ is what left-cancellation asks (terminality of the CODOMAIN would not do it:
+ the unique map [BoolSetoid ~> 1] is not monic).  Together they let a truth
+ value be probed by a subobject of 1, which is how section (D) runs. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [sets_in_image m b] 是 Mac Lane 的 “b ∈ S”和 Seven Sketches 的 “m(x) = y 对于某些 x”：Instance/Sets/Classifier.v 的 [char_setoid] 也计算的 [Type@{o}] 值 sigma。[SubOne P] 是由命题 P 切割的终对象集合的子对象，[subone_incl] 是它的包含映射；对于每个 P，这个包含映射都是单射，因为它的定义域 [SubOne P] 是子终对象——它的集合是 [triv_rel]，因此任意两个指向它的态射已经一致，这正是左消去法所需的（伴随对象的终端性并不能保证：唯一映射 [BoolSetoid ~> 1] 不是单射）。它们一起让真值能够通过 1 的子对象被探测，这就是 (D) 节的运作方式。
 *)
 
 Definition sets_in_image@{o} {u x : SetoidObject@{o o}}
@@ -67,12 +330,20 @@ Lemma subone_incl_monic@{o so} (P : Type@{o}) :
 Proof. constructor; intros z g1 g2 _ ?; exact ttt. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (C) The three hypotheses, and the passages between them / * **（C）三种假设及其之间的段落 *)
 
 (*
-   本节说明始/终对象相关定义、性质与动机。
+ [DecImage] is the issue's "decidability discipline": every mono's
+ image membership is decidable.  [Untruncate] inverts the
+ impredicative truncation of Instance/Sets/Powerset.v at level o.
+ [IEM] is informative excluded middle at level o.  IEM gives both, and
+ [DecImage] gives IEM back — the terminal setoid's point is in the
+ image of [subone_incl P] exactly when P — so [DecImage] and [IEM] are
+ EQUIVALENT.  Whether [Untruncate] implies [IEM] is not settled here
+ and no passage in that direction is built. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [DecImage] 是该问题的“可判定性学科”：每个单射的像归属是可判定的。[Untruncate] 颠倒了 Instance/Sets/Powerset.v 在层级 o 的自指截断。[IEM] 是层级 o 的信息化排中律。IEM 给出了两者，[DecImage] 返还 IEM — 当且仅当 P 时，终端集合类的点在 [subone_incl P] 的像中 — 因此 [DecImage] 和 [IEM] 是等价的。[Untruncate] 是否蕴含 [IEM] 在此未定，且没有建立该方向的传递。
 *)
 
 Inductive poly_bool@{u} : Type@{u} := ptrue | pfalse.
@@ -137,15 +408,23 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (D) The resizing characterisation / * ** (D) 调整大小的特征 *)
 
 (*
-   本节说明 OneLevel 相关定义、性质与动机。
+ A one-level classifier for [Sets] is exactly the record below: an
+ object Ω at level o, a point t, an assignment w of a truth value to
+ every [Type@{o}], introduction and elimination identifying [w P ≈ t]
+ with P, and extensionality of Ω at t.  The two passages are
+ [classifier_of_small] and [small_of_classifier], packaged as
+ [classifier_iff_small].  [sce_ext] on the forward side spends
+ [char_unique] twice (through [subone_pt_classifies]) and
+ [char_respects] once (through [subone_respects]). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [Sets] 的一级分类器正是下面的记录：一个位于级别 o 的对象 Ω，一个点 t，对于每个 [Type@{o}] 的真值指派 w，引入和消去将 [w P ≈ t] 识别为 P，以及 Ω 在 t 的外延性。这两段文本是 [classifier_of_small] 和 [small_of_classifier]，打包为 [classifier_iff_small]。在正向上，[sce_ext] 花费 [char_unique] 两次（通过 [subone_pt_classifies]）和 [char_respects] 一次（通过 [subone_respects]）。
 *)
 
-(* ---- the converse: a small classifier gives a SubobjectClassifier ---- *)
+(* ---- the converse: a small classifier gives a SubobjectClassifier ---- / ---- 反之：一个小分类器给出一个子对象分类器 ---- *)
 
 Definition sce_truth@{o so} (S : SmallClassifierExt@{o}) :
   (@terminal_obj Sets@{o so} Sets_Terminal@{so o})
@@ -274,7 +553,7 @@ Proof.
   - intro z; reflexivity.
 Qed.
 
-(* ---- forward: a SubobjectClassifier gives a small one ---- *)
+(* ---- forward: a SubobjectClassifier gives a small one ---- / ---- 转发：一个子对象分类器给出一个小的 ---- *)
 
 Definition sce_of_w@{o so}
   (HS : @SubobjectClassifier Sets@{o so} Sets_Terminal@{so o})
@@ -404,12 +683,17 @@ Definition classifier_iff_small@{o so} :
   := (small_of_classifier@{o so}, classifier_of_small@{o so}).
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (E) The [Untruncate] instance, and the two-element small classifier / * **（E）[Untruncate] 实例，以及二元小分类器 *)
 
-(* [Sets_Classifier] is the issue's Verification-block name.  Its Ω is
-   [Powerset_Omega] and its truth [Powerset_truth_point], both by
-   [eq_refl]; the hypothesis is used exactly once, in [sce_elim].
-   [small_of_IEM] is Seven Sketches' Ω_Set = 𝔹 as a small classifier.（标题）（已译） *)
+(*
+ [Sets_Classifier] is the issue's Verification-block name.  Its Ω is
+ [Powerset_Omega] and its truth [Powerset_truth_point], both by
+ [eq_refl]; the hypothesis is used exactly once, in [sce_elim].
+ [small_of_IEM] is Seven Sketches' Ω_Set = 𝔹 as a small classifier. 
+
+ --------
+ [Sets_Classifier] 是该问题的验证块名称。它的 Ω 是 [Powerset_Omega]，其真值为 [Powerset_truth_point]，均由 [eq_refl] 提供；假设在 [sce_elim] 中被使用了一次。[small_of_IEM] 是 Seven Sketches 的 Ω_Set = 𝔹，作为一个小分类器。
+*)
 
 Definition small_of_untruncate@{o} (U : Untruncate@{o}) :
   SmallClassifierExt@{o}.
@@ -456,12 +740,18 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (F) The per-mono characteristic map, and the [DecImage] instance / * **（F）每单体特征图，以及 [DecImage] 实例 *)
 
 (*
-   本节说明 OneLevel 相关定义、性质与动机。
+ [char_of_dec] is Seven Sketches' ⌜m⌝ built from the decidability of
+ ONE mono's image — no global hypothesis appears in its type — with
+ the classifying square [char_of_dec_pullback] and the uniqueness
+ clause [char_of_dec_unique] proved for it directly.  The global
+ instance [Sets_Classifier_dec] is that data taken at every mono, so
+ its [char] IS [char_of_dec] by [eq_refl]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [char_of_dec] 是 Seven Sketches 的 ⌜m⌝，它由 ONE 单态的像的可判定性构建——其类型中没有出现全局假设——结合分类方格 [char_of_dec_pullback] 和直接为其证明的唯一性条款 [char_of_dec_unique]。全局实例 [Sets_Classifier_dec] 是在每个单态处取得的数据，因此它的 [char] 通过 [eq_refl] 是 [char_of_dec]。
 *)
 
 Definition SetsDec@{o so} {u x : SetoidObject@{o o}}
@@ -625,29 +915,34 @@ Definition Sets_Classifier_IEM@{o so} (E : IEM@{o}) :
   Sets_Classifier@{o so} (untruncate_of_IEM@{o} E).
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (G) The bridge to the cross-universe characteristic map / * **（G）跨宇宙特征图的桥梁 *)
 
 (*
-   本节说明 OneLevel 相关定义、性质与动机。
+ Instance/Sets/Classifier.v's [char_setoid] and this file's [char]
+ are one map at two levels, joined by [Powerset_squash].  The value
+ identification is [eq_refl]; the identification as [SetoidMorphism]
+ records holds only at ≈, and its strict form is pinned in
+ Test/ProbeClassifier402.v as a CONVERSION refusal. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Instance/Sets/Classifier.v 的 [char_setoid] 和该文件的 [char] 是两个层级的同一映射，通过 [Powerset_squash] 连接。值的标识为 [eq_refl]；作为 [SetoidMorphism] 的标识记录仅在 ≈ 时成立，其严格形式固定在 Test/ProbeClassifier402.v 中，作为一个 CONVERSION 拒绝。
 *)
 
-(* 相关说明。 （已译） *)
+(* the value grade, pointwise on the carrier of Omega, at eq_refl / 在 eq_refl 处，Omega 的载体上的值等级（逐点） *)
 Example bridge_pointwise@{o so} (U : Untruncate@{o})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
   (M : @Monic Sets@{o so} u x m) (b : carrier x) :
   @char Sets@{o so} Sets_Terminal@{so o} (Sets_Classifier@{o so} U) u x m M b
     = Powerset_squash@{o} (char_setoid@{o so} m b) := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* the same grade, unfolded: the value IS the truncation of sets_in_image / 相同的等级，展开：该值就是 sets_in_image 的截断 *)
 Example bridge_value@{o so} (U : Untruncate@{o})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
   (M : @Monic Sets@{o so} u x m) (b : carrier x) :
   @char Sets@{o so} Sets_Terminal@{so o} (Sets_Classifier@{o so} U) u x m M b
     = Powerset_squash@{o} (sets_in_image@{o} m b) := eq_refl.
 
-(* the cross-universe char's value IS sets_in_image *)
+(* the cross-universe char's value IS sets_in_image / 跨宇宙角色的值是 sets_in_image *)
 Example bridge_char_setoid@{o so} {u x : SetoidObject@{o o}}
   (m : u ~{Sets@{o so}}~> x) (b : carrier x) :
   char_setoid@{o so} m b = sets_in_image@{o} m b := eq_refl.
@@ -678,9 +973,9 @@ Lemma bridge_record_equiv@{o so sso} (U : Untruncate@{o})
 Proof. intro b; simpl; split; intro H; exact H. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (H) The book's rule: char m b is truth exactly on the image / * **（H）这本书的规则：字符 m b 在图像上准确地表示真实 *)
 
-(* 相关说明。 （已译） *)
+(* Mac Lane's (1) with the 0 ↔ 1 swap, and Seven Sketches' ⌜m⌝ rule. / Mac Lane 的 (1) 与 0 ↔ 1 的交换，以及《七个素描》的 ⌜m⌝ 规则。 *)
 
 Lemma classifier_of_small_char_iff@{o so} (S : SmallClassifierExt@{o})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
@@ -715,12 +1010,19 @@ Definition sets_classifier_dec_char_iff@{o so} (D : DecImage@{o so})
   := char_of_dec_iff@{o so} m M (D u x m M) b.
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (I) The two round trips, against [Sets_HasPullbacks] / * **（I）两次往返，针对 [Sets_HasPullbacks] *)
 
 (*
-   本节说明拉回/推出、hom、来源与用途相关定义、性质与动机。
+ [classifier_classifies] is not statable at [Sets] (its object
+ universe is bounded by its hom universe); what survives are its two
+ round trips, which build no object of [Sets] with carrier [SubObj x]
+ (their ≈ is still the [SubObj_Setoid] instance).  Both are
+ supplied by [:=] with no tactic, over Instance/Sets/Pullback.v's
+ [Sets_HasPullbacks], which is named in both statements.  No second
+ pullback structure is constructed anywhere in this file. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [classifier_classifies] 在 [Sets] 处不可表述（它的对象宇宙受其同类宇宙的限制）；存留下来的只有它的两次来回操作，它们不会构建带有载体 [SubObj x] 的 [Sets] 对象（它们的 ≈ 仍然是 [SubObj_Setoid] 实例）。两者都由 [:=] 提供且没有策略，基于 Instance/Sets/Pullback.v 的 [Sets_HasPullbacks]，该名称在两个陈述中都有出现。在此文件的任何地方都没有构建第二个拉回结构。
 *)
 
 Definition sets_truth_subobject@{o so} (U : Untruncate@{o}) :
@@ -757,12 +1059,18 @@ Definition sets_pullback_roundtrip@{o so} (U : Untruncate@{o})
        Sets_HasPullbacks@{so o} (Sets_Classifier@{o so} U) x s.
 
 (* ------------------------------------------------------------------------ *)
-(* * ** (J) A concrete decidable mono, no global 假设 （已译） *)
+(* * ** (J) A concrete decidable mono, with no global hypothesis / * **（J）一个具体可判定的单子，没有全局假设 *)
 
 (*
-   本节说明子对象、始/终对象相关定义、性质与动机。
+ The point [pfalse] of the two-element setoid, included from the
+ terminal setoid.  Its image membership is decidable outright, so
+ [char_of_dec] applies with no hypothesis at all, and the resulting
+ characteristic map is negation — it MOVES both points, so the witness
+ is not the generic subobject in disguise.  The mono is proved not
+ invertible. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 两个元素的等价集 [pfalse]，由终端等价集引入。它的像成员资格是可以直接判定的，因此 [char_of_dec] 在没有任何假设的情况下适用，得到的特征映射是取反——它移动了两个点，因此该证据不是伪装的通用子对象。单态被证明不可逆。
 *)
 
 Definition dec_false@{o so} :
@@ -819,12 +1127,22 @@ Example char_of_dec_from_DecImage@{o so} (D : DecImage@{o so}) :
       (D _ _ dec_false@{o so} (point_monic@{o so} dec_false@{o so})) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** (K) [FinSet]: display (7.15) where Ω really is the two-element set / * ** (K) [FinSet]：显示 (7.15)，其中 Ω 实际上是二元集合 *)
 
 (*
-   本节说明 OneLevel 相关定义、性质与动机。
+ Unconditional, and pure instantiation: [classifier_classifies] IS
+ statable at [FinSet], whose objects are naturals.  [FinSet]'s
+ characteristic map reduces on a closed injection, so Seven Sketches'
+ ⌜m⌝ computes.  The [eq_refl] for Ω = 2 is stated a third time here
+ (Instance/FinSet/Subsets.v has [FinSet_Omega_is_two] and
+ Test/ProbePowersetUniversal.v an [Example] [finset_omega_is_two] with
+ the same statement, which is why the name below carries a prefix);
+ Instance/FinSet/Subsets.v is NOT required, its closure being 99
+ modules against this file's 70.  Nothing transports between [FinSet]
+ and [Sets]: no functor between them exists in this tree. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 无条件且纯实例化：[classifier_classifies] 可以在 [FinSet] 上说明，其对象是自然数。[FinSet] 的特征映射在闭合注入上简化，因此 Seven Sketches 的 ⌜m⌝ 可以计算。对于 Ω = 2 的 [eq_refl] 在此处第三次说明（Instance/FinSet/Subsets.v 有 [FinSet_Omega_is_two]，而 Test/ProbePowersetUniversal.v 有 [Example] [finset_omega_is_two] 与相同的说明，这就是下面名称带前缀的原因）；Instance/FinSet/Subsets.v 并非必须，其闭包有 99 个模块，而本文件只有 70 个。在 [FinSet] 和 [Sets] 之间没有传输：它们之间在此树中不存在函子。
 *)
 
 Definition finset_classifier_classifies (n : obj[FinSet]) :
@@ -854,9 +1172,14 @@ Example finset_char_at_FS :
     fin_incl_1_2 fin_incl_1_2_monic (Fin.FS Fin.F1) = fin_false := eq_refl.
 
 (*
-   本节说明 OneLevel 相关定义、性质与动机。
+ The two routes from [IEM] to a classifier, [classifier_of_small] of
+ [small_of_IEM] and [Sets_Classifier_dec] of [DecImage_of_IEM], agree
+ on all three DATA fields at [eq_refl] — Ω, [char], and the [truth]
+ MORPHISM — while the whole records do not (pinned in the probe): what
+ differs is exactly the two law fields. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 从 [IEM] 到分类器的两条路线，[small_of_IEM] 的 [classifier_of_small] 和 [DecImage_of_IEM] 的 [Sets_Classifier_dec]，在 [eq_refl] 的三个数据字段——Ω、[char] 和 [truth] 形态映射——上完全一致，而整个记录并不一致（在探针中固定）：不同的正是两个法律字段。
 *)
 Example iem_routes_omega@{o so} (E : IEM@{o}) :
   @Ω Sets@{o so} Sets_Terminal@{so o}

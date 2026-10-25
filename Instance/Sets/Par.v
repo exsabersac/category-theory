@@ -4,15 +4,39 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** The 范畴 partial maps, built 范畴 setoids. （已译） *)
+(** The category of partial maps, built on the category of setoids. / 部分映射的范畴，建立在等价集合的范畴之上。 *)
 
 (*
+ nLab: https://ncatlab.org/nlab/show/partial+function
  nLab: https://ncatlab.org/nlab/show/maybe+monad
  Wikipedia: https://en.wikipedia.org/wiki/Partial_function
 
-   本文件给出集合范畴相关实例。
+ This is the category PAR (also written Par or Pfn) of setoids and partial
+ maps. Following the standard presentation, a partial map A ⇀ B is encoded
+ as a total setoid map A → option B (= A → 1 + B): the elements sent to
+ [None] are exactly those outside the domain of definition. Equivalently
+ this is the Kleisli category of the maybe monad [option] on [Sets]; in Set
+ (a Boolean topos) every Kleisli map of [option] is a partial function, so
+ PAR ≅ Kleisli(option).
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ objects: setoids
+ arrows: partial setoid maps  f : A → option B   (None = undefined)
+ identity: the total map  x ↦ Some x
+ composition: Kleisli composition — (f ∘ g) x = match g x with
+ None => None | Some b => f b end  (undefined if either is) 
+
+ --------
+ nLab:  https://ncatlab.org/nlab/show/partial+function 
+ nLab:  https://ncatlab.org/nlab/show/maybe+monad 
+ Wikipedia:  https://en.wikipedia.org/wiki/Partial_function 
+
+ 这是集合类和偏函数的类别 PAR（也写作 Par 或 Pfn）。按照标准表述，偏函数 A ⇀ B 被编码为全集合类映射 A → option B (= A → 1 + B)：被送到 [None] 的元素正好是定义域之外的元素。同样地，这也是 maybe monad [option] 在 [Sets] 上的 Kleisli 类别；在 Set（一个布尔托普斯）中，每个 [option] 的 Kleisli 映射都是偏函数，因此 PAR ≅ Kleisli(option)。
+
+ 对象：集合类
+ 箭头：偏集合类映射  f : A → option B   (None = 未定义)
+ 恒等映射：全映射  x ↦ Some x
+ 复合：Kleisli 复合 — (f ∘ g) x = match g x with
+ None => None | Some b => f b end  (如果任意一个未定义，则未定义)
 *)
 
 Program Definition Part : Category := {|
@@ -92,11 +116,19 @@ Arguments option_setoid A {_}.
 Arguments sum_setoid A B {_ _}.
 
 (*
-   https://arxiv.org/abs/2305.16524).
+ The categorical product in PAR is NOT the set product [x * y] but the
+ "classical product" A & B := A + B + (A × B): a partial pair records that
+ only the left component is defined, only the right is, both are, or neither
+ (the latter being [None]). This is forced because a partial map into a
+ product must be allowed to converge on one projection while diverging on
+ the other. PAR, being the Kleisli category of the maybe monad on Set, is a
+ classical distributive restriction category, and there A + B + (A × B) is a
+ genuine categorical product (Cockett & Lemay, "Classical Distributive
+ Restriction Categories", TAC 42 (2024) No. 6,
+ https://arxiv.org/abs/2305.16524). 
 
-   本节说明单子、分配律、Kleisli相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在 PAR 中，范畴积不是集合积 [x * y]，而是“经典积” A & B := A + B + (A × B)：部分对记录了只有左分量已定义、只有右分量已定义、两者都已定义或都未定义（后者为 [None]）。这是必须的，因为指向积的部分映射必须允许在一个投影上收敛而在另一个投影上发散。PAR 作为集合上 maybe monad 的 Kleisli 范畴，是一个经典的分配限制范畴，在那里 A + B + (A × B) 是真正的范畴积（Cockett & Lemay，《Classical Distributive Restriction Categories》，TAC 42 (2024) 第 6 期，https://arxiv.org/abs/2305.16524).）。
 *)
 
 #[export]
@@ -185,21 +217,33 @@ Next Obligation.
     destruct p; simpl in *; auto.
 Qed.
 
-(** 本节：PAR not closed classical product naive way. （已译） *)
+(** PAR is not closed for the classical product in the naive way. / PAR 并不是以天真的方式对经典乘积闭合的。 *)
 
 (*
-   本节说明同构相关定义、性质与动机。
+ The maps [to]/[from] below attempt a currying isomorphism
+ (A & B ⇀ C) ≅ (A ⇀ (B ⇀ C)) for the classical product
+ A & B = A + B + (A × B). The [_impossible] lemmas show no such iso exists:
+ each direction loses information, so neither round trip is the identity. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 下面的映射 [to] / [from] 试图构造一个柯里化同构
+ (A & B ⇀ C) ≅ (A ⇀ (B ⇀ C)) 对于经典积
+ A & B = A + B + (A × B)。[_impossible] 引理表明不存在这样的同构：
+ 每个方向都会丢失信息，因此无论哪种往返都不是恒等映射。
 *)
 
-(* This invalid 定义, since there three ways we could produce
- [option c], but no way decide which. （已译） *)
+(*
+ This is an invalid definition, since there are three ways we could produce
+ an [option c], but no way to decide which. 
+
+ --------
+ 这是一个无效的定义，因为我们可以有三种方式生成一个 [option c]，但没有办法决定使用哪一种。
+*)
 Definition to {a b c} :
   (a + (b + (a * b)) → option c) → (a → option (b → option c)) :=
   fun f a => Some (fun b => f (inr (inr (a, b)))).
 
-(* 相关说明。 （已译） *)
+(* Meanwhile, there is only one scenario that yields an [option c] here, leaving us unable to use the information at hand for the other two. / 与此同时，只有一个情景会在这里产生 [option c]，这使我们无法利用手头的信息处理另外两个情景。 *)
 Definition from {a b c} :
   (a → option (b → option c)) → (a + (b + (a * b)) → option c) :=
   fun f x =>
@@ -222,7 +266,7 @@ Proof.
   unfold to, from.
   destruct (f x).
   - f_equal.
-  - (* Stuck proving False. *)
+  - (* Stuck proving False. / 卡住了，显示为假。 *)
 Abort.
 
 Lemma to_from_impossible {a b c} :
@@ -247,7 +291,7 @@ Proof.
   extensionality x.
   unfold to, from.
   destruct x; simpl.
-  - (* Stuck proving a fact we can't determine. *)
+  - (* Stuck proving a fact we can't determine. / 陷入证明我们无法确定的事实中。 *)
     admit.
   - destruct s; simpl.
     + admit.

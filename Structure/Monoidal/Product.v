@@ -8,15 +8,42 @@ Require Import Category.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(** Product (componentwise) monoidal structure on C ∏ D *)
+(** Product (componentwise) monoidal structure on C ∏ D / C × D 上的乘积（按分量）单幺半群结构 *)
 
 (*
-   nLab: https://ncatlab.org/nlab/show/MonCat
-   Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
+ nLab: https://ncatlab.org/nlab/show/monoidal+category
+ nLab: https://ncatlab.org/nlab/show/MonCat
+ Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
 
-   本文件给出积（分量）构造。
+ Given monoidal categories (C, ⊗_C, I_C) and (D, ⊗_D, I_D), the product
+ category C ∏ D carries the pointwise monoidal structure:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ tensor:  (c, d) ⊗ (c', d')  =  (c ⊗_C c', d ⊗_D d')
+ unit:    I                  =  (I_C, I_D)
+
+ The associator and the left/right unitors act componentwise, pairing the
+ corresponding isomorphism from C with the one from D; likewise their
+ naturality squares. The triangle and pentagon coherence laws hold in C ∏ D
+ because they already hold in each factor and equivalence in C ∏ D is the
+ componentwise conjunction (see Construction.Product). This construction is
+ the cartesian product in the (2-)category MonCat of monoidal categories.
+
+ Note: this is the *product* monoidal structure (a pointwise tensor built
+ from two given monoidal structures), not the *cartesian* monoidal structure
+ (tensor = categorical product, unit = terminal object), which is a distinct
+ notion. 
+
+ --------
+ nLab: https://ncatlab.org/nlab/show/monoidal+category
+ nLab: https://ncatlab.org/nlab/show/MonCat
+ Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
+
+ 给定幺半群范畴 (C, ⊗_C, I_C) 和 (D, ⊗_D, I_D)，它们的积范畴 C ∏ D 具有逐点幺半群结构：
+
+ 张量: (c, d) ⊗ (c', d') = (c ⊗_C c', d ⊗_D d')
+ 单位: I = (I_C, I_D)
+
+ 结合子和左/右单位子在每个分量上作用，将 C 的对应同构与 D 的对应同构配对；它们的自然性方形也同样如此。三角形和五边形的相容律在 C ∏ D 中成立，因为它们已经在每个因子中成立，并且 C ∏ D 中的等价是逐分量的结合（参见 Construction.Product）。这个构造是在幺半群范畴 MonCat（2-范畴）中的笛卡尔积。注意：这是*乘积*单范畴结构（一个基于两个给定单范畴结构构建的逐点张量），而不是*笛卡尔*单范畴结构（张量 = 范畴积，单位 = 终对象），这是一个不同的概念。
 *)
 
 #[local] Obligation Tactic := simpl; intros; simplify; simpl in *.

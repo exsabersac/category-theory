@@ -18,12 +18,22 @@ Require Import Category.Theory.Coend.Fubini.
 
 Generalizable All Variables.
 
-(* Discharge every [Program] obligation hand: default [cat_simpl] would
- destructure product-范畴 对象, renaming variables proofs
- below refer to. （已译） *)
+(*
+ Discharge every [Program] obligation by hand: the default [cat_simpl] would
+ destructure the product-category objects, renaming the variables the proofs
+ below refer to. 
+
+ --------
+ 通过手动履行每一个 [Program] 义务：默认的 [cat_simpl] 会解构产品类别对象，重命名下面证明中提到的变量。
+*)
 #[local] Obligation Tactic := idtac.
 
-(** Element-level readings 函子 laws [Sets]-valued 函子. （已译） *)
+(*
+   * Element-level readings of the functor laws for a [Sets]-valued functor. 
+
+   --------
+   * 函子定律的元素级读数，函子值为[Sets]值。
+*)
 Local Lemma fmap_id_app {K : Category} (G : K ⟶ Sets) {x : K} (z : G x) :
   fmap[G] (@id K x) z ≈ z.
 Proof. exact (@fmap_id K Sets G x z). Qed.
@@ -33,27 +43,148 @@ Local Lemma fmap_comp_app {K : Category} (G : K ⟶ Sets) {x y z : K}
   fmap[G] (g ∘ f) w ≈ fmap[G] g (fmap[G] f w).
 Proof. exact (@fmap_comp K Sets G x y z g f w). Qed.
 
-(** * Day convolution on [[C, Sets]] *)
+(** * Day convolution on [[C, Sets]] / * 日卷积在 [[C, Sets] ] *)
 
 (*
-   Wikipedia: https://en.wikipedia.org/wiki/Day_convolution
+ nLab:      https://ncatlab.org/nlab/show/Day+convolution
+ Wikipedia: https://en.wikipedia.org/wiki/Day_convolution
 
-   本文件给出构造。
+ For a monoidal category [(C, ⨂, I)] the Day convolution of two functors
+ [F, G : C ⟶ Sets] is the functor whose value at [c] is the coend
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ (Day F G) c  :=  ∫^{a,b}  C(a ⨂ b, c) × F a × G b.
+
+ It is the left Kan extension of [F ⊗ G] along [⨂], and makes [[C, Sets]] a
+ monoidal category with unit the covariant representable [C(I, −)]. This file
+ realises it over the concrete [Sets]-coend of Instance/Sets/Coend, so every
+ construction is [funext]-free.
+
+ For a fixed target [c] the integrand is the bifunctor
+
+ DayI F G c : (C ∏ C)^op ∏ (C ∏ C) ⟶ Sets,
+ ((a1,b1),(a2,b2)) ↦ C(a1 ⨂ b1, c) × F a2 × G b2,
+
+ contravariant in [(a1,b1)] through the hom [C(a1 ⨂ b1, c)] (precomposition
+ by the tensor of the two moves) and covariant in [(a2,b2)] through
+ [F a2 × G b2]; its diagonal [DayI F G c ((a,b),(a,b)) = C(a ⨂ b, c) × F a × G b]
+ is the coend summand. As in Construction/Profunctor/Compose the integrand is
+ written directly so that [fmap[DayI F G c]] computes definitionally to the
+ pointwise triple map, and the setoid product is [prod_setoid] (Lib/Datatypes).
+
+ [Day F G] is functorial in [c] covariantly (post-compose the hom [C(a ⨂ b, −)]),
+ the action being the coend mediator of the transported injections. The
+ bifunctoriality in [(F, G)], the unit [C(I, −)], the unitor isomorphisms
+ (via the co-Yoneda reduction of Theory/Coend/Yoneda), and the associator
+ isomorphism [Day (Day F G) H ≅ Day F (Day G H)] are developed below. The
+ associator is a natural isomorphism of functors, built by hand from a pair of
+ nested coend mediators (one per side of the tensor) glued by the monoidal
+ associator [tensor_assoc] of [C]; the abstract Fubini theorem of
+ Theory/Coend/Fubini does not apply directly here, since the doubly-nested
+ integrand lives over a product category and needs the interchange gluing
+ supplied explicitly below. The induced monoidal structure on [[C, Sets]]
+ itself — the [Day_Monoidal] instance packaging these isomorphisms with the
+ pentagon and triangle coherences — is deferred to a downstream file
+ (ledger 5). 
+
+ --------
+ nLab: https://ncatlab.org/nlab/show/Day+convolution
+ Wikipedia: https://en.wikipedia.org/wiki/Day_convolution
+
+ 对于一个单类范畴 [(C, ⨂, I)]，两函子 [F, G : C ⟶ Sets] 的 Day 卷积是一个函子，其在 [c] 处的值为余端
+
+ (Day F G) c := ∫^{a,b} C(a ⨂ b, c) × F a × G b。
+
+ 它是沿 [⨂] 的 [F ⊗ G] 的左 Kan 扩张，并使得 [[C, Sets] 成为一个单类范畴，其单位是协变可表示 [C(I, −)]。本文件在具体的 [Sets] -余端的 Instance/Sets/Coend 上实现它，因此每个构造都是 [funext] -自由的。
+
+ 对于固定的目标 [c]，积分函数是双函子
+
+ DayI F G c : (C ∏ C)^op ∏ (C ∏ C) ⟶ Sets,
+ ((a1,b1),(a2,b2)) ↦ C(a1 ⨂ b1, c) × F a2 × G b2在  [(a1,b1)] 中是逆变的，通过同态  [C(a1 ⨂ b1, c)]（通过两个变换的张量进行前合成），在  [(a2,b2)] 中是协变的，通过  [F a2 × G b2]；其对角  [DayI F G c ((a,b),(a,b)) = C(a ⨂ b, c) × F a × G b] 是共端求和项。正如在 Construction/Profunctor/Compose 中，积分表达式是直接写出的，因此  [fmap[DayI F G c] 从定义上计算为逐点三重映射，并且集合商积是  [prod_setoid]（Lib/Datatypes）。[Day F G] 在 [c] 上是函子共变的（在同态 [C(a ⨂ b, −)] 上进行后组合），其作用是通过传输注入的共端介子实现的。下面将展开 [(F, G)] 的双函子性、单位 [C(I, −)]、通过理论/共端/杨达的余约简得到的单元同构，以及结合子同构 [Day (Day F G) H ≅ Day F (Day G H)]。结合子是函子之间的自然同构，由一对嵌套的共端介子手工构建（每一侧张量一个），通过 [C] 的单体结合子 [tensor_assoc] 进行粘合；理论/共端/Fubini 中的抽象 Fubini 定理在这里不直接适用，因为双重嵌套的被积函数位于乘积范畴上，需要如下明确提供的交换粘合。在 [[C, Sets] ] 上诱导的单oidal 结构本身 — 将这些同构与五边形和三角形一致性一起封装的 [Day_Monoidal] 实例 — 被推迟到下游文件（分类账 5）。
 *)
 
 (*
-   关于the convolution的来源与用途
+ Where the convolution comes from, and what it is for
 
-   nLab:  https://ncatlab.org/nlab/show/promonoidal+category
-   Paper: Day, "On closed categories of functors", Lecture Notes in
-   Paper: Im, Kelly, "A universal property of the convolution monoidal
-   Paper: Rivas, Jaskelioff, "Notions of Computation as Monoids",
+ nLab:  https://ncatlab.org/nlab/show/promonoidal+category
+ Paper: Day, "On closed categories of functors", Lecture Notes in
+ Mathematics 137, Springer 1970
+ Paper: Im, Kelly, "A universal property of the convolution monoidal
+ structure", Journal of Pure and Applied Algebra 43, 1986
+ Paper: Rivas, Jaskelioff, "Notions of Computation as Monoids",
+ Journal of Functional Programming 27, 2017
 
-   本节说明函子、来源与用途相关定义、性质与动机。
+ The construction is due to Brian Day, who introduced it in "On closed
+ categories of functors" (Lecture Notes in Mathematics 137, Springer
+ 1970) and in his thesis of the same year.  Day worked at the
+ generality of enriched functor categories and read the tensor above
+ as a categorified convolution: the coend sums over the ways the
+ target decomposes through [⨂] as the convolution of two functions
+ sums over the ways an argument splits.  His theorem was that the
+ resulting functor category is not merely monoidal but biclosed, the
+ internal hom being an end, dual to the coend that defines the tensor.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ The construction depends only on the representable profunctor carried
+ by the tensor, and so applies whenever the base bears a promonoidal
+ structure rather than a monoidal one.  Day named such
+ structures premonoidal in 1970 and renamed them promonoidal in 1974
+ (nLab: promonoidal category); the later name is the one to keep,
+ because the premonoidal categories of Structure/Premonoidal.v are the
+ unrelated Power–Robinson notion for effectful computation, and the two
+ are not to be conflated.
+
+ The purpose the tensor serves is fixed by a universal property.  The
+ objectwise product of two functors ignores the tensor of the base
+ entirely; Day convolution is instead its canonical lifting to the
+ functor category, and Im and Kelly showed that the presheaf category
+ so equipped is the free monoidal cocompletion of the base — the
+ universal cocomplete monoidal category receiving it, with the Yoneda
+ embedding strong monoidal (Im, Kelly, 1986).  That theorem is stated
+ for presheaves [C^op, Set]; this file works with the covariant
+ [C, Sets] and assembles the ingredients a monoidal structure needs —
+ the bifunctor [Day_Tensor], the unit [unit_Day], the unitors [lu_iso]
+ and [ru_iso], and the associator [day_assoc_iso] — but does not prove
+ the universal property itself.
+
+ The chief computational use is that monoids for this tensor are the
+ lax monoidal functors, equivalently the applicative functors of
+ functional programming.  A monad is a monoid in the endofunctor
+ category under composition; an applicative functor is a monoid in the
+ same category under Day convolution, which unlike composition is
+ symmetric (Rivas, Jaskelioff, 2017), the correspondence that
+ Structure/Monoid.v records as the intended payoff of this file.
+ Where a monad sequences effects with a data dependency, an
+ applicative combines independent effects, and the symmetry of the Day
+ tensor is that independence; the free monoids for it are the free
+ applicative functors.
+
+ Read as data, an element of the convolution [Day F G] is an
+ existential package quantifying the coend indices: two independently
+ produced values [F a] and [G b] together with a consumer
+ [C(a ⨂ b, c)] for their tensor, the summand
+ ∃ a b. C(a ⨂ b, c) × F a × G b that the integrand [DayI] makes
+ precise.  At the cartesian tensor the consumer curries to [a → b → c],
+ and this is the shape shipped as Data.Functor.Day in the
+ kan-extensions library (Kmett), where the same tensor also gives
+ a symmetric monoidal product on comonads. 
+
+ --------
+ 卷积的来源及其用途
+
+ nLab:   https://ncatlab.org/nlab/show/promonoidal+category 
+ 论文: Day, 《On closed categories of functors》，数学讲义 137，Springer 1970
+ 论文: Im, Kelly, 《A universal property of the convolution monoidal structure》，纯与应用代数杂志 43，1986
+ 论文: Rivas, Jaskelioff, 《Notions of Computation as Monoids》，函数式编程杂志 27，2017这个构造归功于布赖恩·戴（Brian Day），他在《论函子闭范畴》（Lecture Notes in Mathematics 137, Springer 1970）以及同年的论文中提出了这一概念。戴在富涵函子范畴的一般性层面上进行研究，并将上述张量理解为范畴化的卷积：coend 对目标通过 [⨂] 分解的方式求和，就像卷积对函数的求和处理参数的分裂方式一样。他的定理是，所得到的函子范畴不仅是单范畴的，而且是双闭的，其中内部 Hom 是一个 end，与定义张量的 coend 对偶。该构造仅依赖于由张量所承载的可表示的双函子，因此只要基范畴具有前单元结构而不是单元结构时，该构造都适用。Day 在 1970 年将此类结构命名为前单元（premonoidal），并在 1974 年将其重新命名为前模单元（promonoidal）（nLab：promonoidal category）；后者名称应当保留，因为 Structure/Premonoidal.v 中的前单元范畴是与效果计算相关的 Power–Robinson 概念，两者不能混淆。张量的作用由一个普遍性质决定。该
+ 两个函子的对象乘积忽略基的张量
+ 完全如此;日卷积则是其典范提升到
+ 函子范畴，Im和Kelly证明了预层范畴
+ 因此，基的自由幺半群余完备化即为
+ 接收该范畴的普遍余完备幺半范畴，其中 Yoneda
+ 强幺半群嵌入（Im， Kelly， 1986）。该定理如下
+ 对于预层[C^op, Set];该文件与协变函数一起工作
+ [C, Sets]并组装单体结构所需的成分——
+ 双函子[Day_Tensor]，单位[unit_Day]，单位子 [lu_iso]
+ [ru_iso] ，结合子[day_assoc_iso] ——但不证明
+ 即普遍性质本身。主要的计算用途是，这个张量的幺半群是松单子函子，等价于函数式编程中的应用函子。一个单子是在端函子范畴下通过组合得到的幺半群；应用函子是在同一范畴下通过 Day 卷积得到的幺半群，与组合不同，Day 卷积是对称的（Rivas, Jaskelioff, 2017），Structure/Monoid.v 将其记录为此文件的预期收益。当单子通过数据依赖来顺序化效应时，应用函子将独立的效应组合在一起，而 Day 张量的对称性就是这种独立性；它的自由幺半群是自由应用函子。作为数据来读取，卷积元素 [Day F G] 是一个存在性包，量化共端指标：两个独立生成的值 [F a] 和 [G b]，以及它们张量的消费者 [C(a ⨂ b, c)]，即被积分器 [DayI] 具体化的求和项 ∃ a b. C(a ⨂ b, c) × F a × G b。在笛卡尔张量处，消费者柯里化为 [a → b → c]，这就是作为 Data.Functor.Day 在 kan-extensions 库（Kmett）中传输的形状，其中相同的张量也在余幺半群上提供对称单幺积。
 *)
 
 Section Day.
@@ -61,12 +192,15 @@ Section Day.
 Context {C : Category}.
 Context `{M : @Monoidal C}.
 
-(* 相关说明。 （已译） *)
+(* * ** The integrand bifunctor at a fixed target / * ** 在固定目标下的积分双函子 *)
 
 (*
-   本节说明hom相关定义、性质与动机。
+ [DayI F G c ((a1,b1),(a2,b2)) = C(a1 ⨂ b1, c) × F a2 × G b2]. The action on
+ [((ua,ub),(va,vb))] precomposes the hom with [ua ⨂ ub] (contravariant) and
+ acts by [fmap[F] va], [fmap[G] vb] on the covariant factors. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [DayI F G c ((a1,b1),(a2,b2)) = C(a1 ⨂ b1, c) × F a2 × G b2]。对 [((ua,ub),(va,vb))] 的作用将 hom 与 [ua ⨂ ub]（逆变）预组合，并且在协变因子上通过 [fmap[F] va]，[fmap[G] vb] 作用。
 *)
 Program Definition DayI (F G : C ⟶ Sets) (c : C) :
   (C ∏ C)^op ∏ (C ∏ C) ⟶ Sets := {|
@@ -118,13 +252,24 @@ Next Obligation.
     + apply fmap_comp_app.
 Qed.
 
-(** The Day convolution 对象 at [c]: coend apex integrand. （已译） *)
+(*
+   * The Day convolution object at [c]: the coend apex of the integrand. 
+
+   --------
+   * 在 [c] 的 Day 卷积对象：被积函数的共端顶点。
+*)
 Definition Day_obj (F G : C ⟶ Sets) (c : C) : SetoidObject :=
   coend_apex_setoid (DayI F G c).
 
-(* 相关说明。 （已译） *)
+(* * ** Functoriality in the target [c] / * ** 目标 [c] 中的函子性 *)
 
-(* 相关说明。 （已译） *)
+(*
+ The change-of-target map at [((a1,b1),(a2,b2))]: post-compose the hom factor
+ with [k], leaving [F], [G] untouched. 
+
+ --------
+ 在 [((a1,b1),(a2,b2))] 的目标变换映射：将同质因子与 [k] 后组合，保持 [F]、[G] 不变。
+*)
 Program Definition Day_theta_map (F G : C ⟶ Sets) (c1 c2 : C)
   (k : c1 ~{C}~> c2) (p : (C ∏ C)^op ∏ (C ∏ C)) :
   DayI F G c1 p ~{Sets}~> DayI F G c2 p := {|
@@ -136,7 +281,7 @@ Next Obligation.
   - exact Hfg.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Naturality of the change-of-target map in the coend index. / 余端指数中变换目标映射的自然性。 *)
 Lemma Day_theta_natural (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
   ∀ (x y : (C ∏ C)^op ∏ (C ∏ C)) (m : x ~{(C ∏ C)^op ∏ (C ∏ C)}~> y),
     fmap[DayI F G c2] m ∘ Day_theta_map F G c1 c2 k x
@@ -152,7 +297,12 @@ Definition Day_theta (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
   Build_Transform' (Day_theta_map F G c1 c2 k)
                    (Day_theta_natural F G c1 c2 k).
 
-(* On diagonal change-of-target map [id] 恒等. （已译） *)
+(*
+ On the diagonal the change-of-target map for [id] is the identity. 
+
+ --------
+ 在对角线上，[id] 的目标变换映射是恒等映射。
+*)
 Lemma Day_theta_id (F G : C ⟶ Sets) (c : C) (ab : C ∏ C) :
   transform[Day_theta F G c c id] (ab, ab) ≈ id.
 Proof.
@@ -161,7 +311,12 @@ Proof.
   - split; reflexivity.
 Qed.
 
-(* On diagonal change-of-target map sends 复合 复合. （已译） *)
+(*
+ On the diagonal the change-of-target map sends a composite to a composite. 
+
+ --------
+ 在对角线上，目标变换映射将复合映射到复合上。
+*)
 Lemma Day_theta_comp (F G : C ⟶ Sets) (c1 c2 c3 : C)
   (k1 : c1 ~{C}~> c2) (k2 : c2 ~{C}~> c3) (ab : C ∏ C) :
   transform[Day_theta F G c2 c3 k2] (ab, ab)
@@ -173,7 +328,7 @@ Proof.
   - split; reflexivity.
 Qed.
 
-(* Change-of-target respects equivalence of the target morphism. *)
+(* Change-of-target respects equivalence of the target morphism. / 目标变换尊重目标态射的等价性。 *)
 Lemma Day_theta_respects (F G : C ⟶ Sets) (c1 c2 : C)
   (k k' : c1 ~{C}~> c2) (ab : C ∏ C) :
   k ≈ k' ->
@@ -185,7 +340,12 @@ Proof.
   - split; reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+ The transported injections form a cowedge over the source integrand. 
+
+ --------
+ 传输的注射在源积分上形成一个楔形顶点。
+*)
 Lemma Day_leg_cowedge (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
   Cowedge_cond (DayI F G c1)
     (coend_obj (SetsCoend (DayI F G c2)))
@@ -206,7 +366,12 @@ Proof.
   reflexivity.
 Qed.
 
-(* The action [Day F G] target 态射: coend mediator. （已译） *)
+(*
+ The action of [Day F G] on a target morphism: the coend mediator. 
+
+ --------
+ [Day F G] 对目标态射的作用：余端中介。
+*)
 Definition Day_map (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
   coend_obj (SetsCoend (DayI F G c1))
     ~{Sets}~> coend_obj (SetsCoend (DayI F G c2)) :=
@@ -216,7 +381,7 @@ Definition Day_map (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
                        ∘ transform[Day_theta F G c1 c2 k] (ab, ab))
             (Day_leg_cowedge F G c1 c2 k).
 
-(* The mediator recovers each transported injection. *)
+(* The mediator recovers each transported injection. / 调解员回收每个运输的注射器。 *)
 Lemma Day_map_inj (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) (ab : C ∏ C) :
   Day_map F G c1 c2 k ∘ coend_inj (SetsCoend (DayI F G c1))
     ≈ coend_inj (SetsCoend (DayI F G c2))
@@ -229,7 +394,7 @@ Proof.
            (Day_leg_cowedge F G c1 c2 k) ab).
 Qed.
 
-(** The Day convolution [Day F G : C ⟶ Sets]. *)
+(** The Day convolution [Day F G : C ⟶ Sets]. / 日卷积 [Day F G : C ⟶ Sets] . *)
 Program Definition Day (F G : C ⟶ Sets) : C ⟶ Sets := {|
   fobj := fun c => coend_obj (SetsCoend (DayI F G c));
   fmap := fun c1 c2 k => Day_map F G c1 c2 k
@@ -284,7 +449,12 @@ Next Obligation.
     reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** The monoidal unit: the covariant representable at [I] 
+
+   --------
+   * ** 单位对象：在 [I] 上的协变可表示对象
+*)
 
 Program Definition unit_Day : C ⟶ Sets := {|
   fobj := fun x => {| carrier := I ~{C}~> x; is_setoid := @homset C I x |};
@@ -309,13 +479,23 @@ Next Obligation.
   symmetry; apply comp_assoc.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** Left unitor: [Day unit_Day G ≅ G] via co-Yoneda 
+
+   --------
+   * ** 左单位元: [Day unit_Day G ≅ G]  通过余 Yoneda
+*)
 
 Section LeftUnitor.
 Context (G : C ⟶ Sets).
 
-(* Forward leg at [(a,b)]: collapse [C(I,a)] factor 进入 hom by
- [u ↦ h ∘ (u ⨂ 1) ∘ λ⁻¹], then transport [y : G b] along map [b ~> c]. （已译） *)
+(*
+ Forward leg at [(a,b)]: collapse the [C(I,a)] factor into the hom by
+ [u ↦ h ∘ (u ⨂ 1) ∘ λ⁻¹], then transport [y : G b] along that map [b ~> c]. 
+
+ --------
+ 在 [(a,b)] 的前腿：将 [C(I,a)] 因子通过 [u ↦ h ∘ (u ⨂ 1) ∘ λ⁻¹] 合并到 hom 中，然后沿着映射 [b ~> c] 传输 [y : G b] 。
+*)
 Program Definition lu_leg (c : C) (ab : C ∏ C) :
   DayI unit_Day G c (ab, ab) ~{Sets}~> G c := {|
   morphism := fun huy =>
@@ -359,12 +539,22 @@ Proof.
     reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+ Forward map at [c]: the coend mediator collapsing the [C(I,−)] factor. 
+
+ --------
+ 在 [c] 的前向映射：将 [C(I,−)] 因子折叠的共端中介器。
+*)
 Definition lu_to (c : C) :
   coend_apex_setoid (DayI unit_Day G c) ~{Sets}~> G c :=
   coend_mediator (DayI unit_Day G c) (lu_leg c) (lu_cowedge c).
 
-(* Inverse map at [c]: [z ↦ ci (I,c) (λ_c, 1_I, z)]. *)
+(*
+ Inverse map at [c]: [z ↦ ci (I,c) (λ_c, 1_I, z)]. 
+
+ --------
+ 在 [c] 的逆映射：[z ↦ ci (I,c) (λ_c, 1_I, z)]。
+*)
 Program Definition lu_from (c : C) :
   G c ~{Sets}~> coend_apex_setoid (DayI unit_Day G c) := {|
   morphism := fun z => ci (DayI unit_Day G c) (I, c)
@@ -374,7 +564,12 @@ Next Obligation.
   apply ce_point; split; simpl; [ reflexivity | split; [ reflexivity | exact Hz ] ].
 Qed.
 
-(* The pointwise left-unitor isomorphism [Day unit_Day G c ≅ G c]. *)
+(*
+ The pointwise left-unitor isomorphism [Day unit_Day G c ≅ G c]. 
+
+ --------
+ 逐点左单位元同构 [Day unit_Day G c ≅ G c]。
+*)
 Program Definition lu_iso_pt (c : C) :
   coend_apex_setoid (DayI unit_Day G c) ≅[Sets] G c := {|
   to   := lu_to c;
@@ -394,7 +589,13 @@ Next Obligation.
            (fun ab => coend_inj (SetsCoend (DayI unit_Day G c)) (x := ab))
            (fun ab ab' g => coend_cowedge (SetsCoend (DayI unit_Day G c)) g)).
   - intro ab; destruct ab as [a b]; intros [h [u y0]]; simpl.
-    (* 相关说明。 （已译） *)
+    (*
+ [ci (I,c) (λ_c, 1, fmap m y0) ≈ ci (a,b) (h,u,y0)], the co-Yoneda glue
+ chain collapsing [a := I] through [u : I ~> a], with [m := h ∘ (u⨂1) ∘ λ_b⁻¹]. 
+
+ --------
+ [ci (I,c) (λ_c, 1, fmap m y0) ≈ ci (a,b) (h,u,y0)]，共Yoneda粘连链通过[a := I]崩塌到[u : I ~> a]，带有[m := h ∘ (u⨂1) ∘ λ_b⁻¹]。
+*)
     apply ce_sym.
     apply (ce_trans (DayI unit_Day G c) _
              (ci (DayI unit_Day G c) (a, b)
@@ -438,7 +639,12 @@ Next Obligation.
   - intro ab. apply id_left.
 Qed.
 
-(* Post-composition by [fmap[G] k] keeps the forward legs a cowedge. *)
+(*
+ Post-composition by [fmap[G] k] keeps the forward legs a cowedge. 
+
+ --------
+ 由 [fmap[G] k] 创作后的作品保持前腿呈牛角形。
+*)
 Lemma lu_leg_post_cowedge (c1 c2 : C) (k : c1 ~{C}~> c2) :
   Cowedge_cond (DayI unit_Day G c1) (G c2)
     (fun ab => fmap[G] k ∘ lu_leg c1 ab).
@@ -449,7 +655,7 @@ Proof.
   exact (lu_cowedge c1 x y f).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Naturality of the forward map in the target [c]. / 目标 [c] 中前向映射的自然性。 *)
 Lemma lu_to_natural (c1 c2 : C) (k : c1 ~{C}~> c2) :
   fmap[G] k ∘ lu_to c1 ≈ lu_to c2 ∘ Day_map unit_Day G c1 c2 k.
 Proof.
@@ -468,7 +674,12 @@ Proof.
     reflexivity.
 Qed.
 
-(* The natural left-unitor isomorphism [Day unit_Day G ≅ G] in [[C, Sets]]. *)
+(*
+ The natural left-unitor isomorphism [Day unit_Day G ≅ G] in [[C, Sets]]. 
+
+ --------
+ 自然左单元同构 [Day unit_Day G ≅ G] 在 [[C, Sets] 中。
+*)
 Definition lu_iso : Day unit_Day G ≅[Fun] G.
 Proof.
   apply equiv_iso.
@@ -487,13 +698,23 @@ Defined.
 
 End LeftUnitor.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** Right unitor: [Day F unit_Day ≅ F] via co-Yoneda 
+
+   --------
+   * ** 右单位元:  [Day F unit_Day ≅ F] 通过 co-Yoneda
+*)
 
 Section RightUnitor.
 Context (F : C ⟶ Sets).
 
-(* Forward leg at [(a,b)]: collapse [C(I,b)] factor 进入 hom by
- [v ↦ h ∘ (1 ⨂ v) ∘ ρ⁻¹], then transport [x : F a] along map [a ~> c]. （已译） *)
+(*
+ Forward leg at [(a,b)]: collapse the [C(I,b)] factor into the hom by
+ [v ↦ h ∘ (1 ⨂ v) ∘ ρ⁻¹], then transport [x : F a] along that map [a ~> c]. 
+
+ --------
+ 在 [(a,b)] 的前腿：将 [C(I,b)] 因子通过 [v ↦ h ∘ (1 ⨂ v) ∘ ρ⁻¹] 合并到 hom 中，然后沿着映射 [a ~> c] 传输 [x : F a] 。
+*)
 Program Definition ru_leg (c : C) (ab : C ∏ C) :
   DayI F unit_Day c (ab, ab) ~{Sets}~> F c := {|
   morphism := fun hxv =>
@@ -659,10 +880,20 @@ Defined.
 
 End RightUnitor.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** The Day tensor as a bifunctor [[C,Sets] ∏ [C,Sets] ⟶ [C,Sets]] 
 
-(* Change-of-函子 map integrand: apply [α] [β] covariant
- [F]- [G]-factors, leaving hom factor untouched. （已译） *)
+   --------
+   * ** 日张量作为双函子  [[C,Sets]  ∏  [C,Sets]  ⟶  [C,Sets] ]
+*)
+
+(*
+ Change-of-functor map on the integrand: apply [α] and [β] on the covariant
+ [F]- and [G]-factors, leaving the hom factor untouched. 
+
+ --------
+ 积分子上的函子变换映射：在协变的 [F] 和 [G] 因子上应用 [α] 和 [β]，保持同态因子不变。
+*)
 Program Definition DFG_map (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c : C) (p : (C ∏ C)^op ∏ (C ∏ C)) :
   DayI F G c p ~{Sets}~> DayI F' G' c p := {|
@@ -693,7 +924,12 @@ Definition DFG_theta (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c : C) : DayI F G c ⟹ DayI F' G' c :=
   Build_Transform' (DFG_map F F' G G' α β c) (DFG_natural F F' G G' α β c).
 
-(* On diagonal, 恒等 transformations act 恒等. （已译） *)
+(*
+ On the diagonal, identity transformations act as the identity. 
+
+ --------
+ 在对角线上，恒等变换表现为恒等。
+*)
 Lemma DFG_theta_id (F G : C ⟶ Sets) (c : C) (ab : C ∏ C) :
   transform[DFG_theta F F G G (@nat_id C Sets F) (@nat_id C Sets G) c] (ab, ab)
     ≈ id.
@@ -702,7 +938,7 @@ Proof.
     [ reflexivity | split; [ apply fmap_id_app | apply fmap_id_app ] ].
 Qed.
 
-(* On the diagonal, composition of transformations composes. *)
+(* On the diagonal, composition of transformations composes. / 在对角线上，变换的组合会组合起来。 *)
 Lemma DFG_theta_comp (F F' F'' G G' G'' : C ⟶ Sets)
   (α : F ⟹ F') (α' : F' ⟹ F'') (β : G ⟹ G') (β' : G' ⟹ G'')
   (c : C) (ab : C ∏ C) :
@@ -714,7 +950,7 @@ Proof.
   intros [h [a b]]; split; simpl; [ reflexivity | split; reflexivity ].
 Qed.
 
-(* Change-of-functor respects equivalence of the transformations. *)
+(* Change-of-functor respects equivalence of the transformations. / 函子变换尊重变换的等价性。 *)
 Lemma DFG_theta_respects (F F' G G' : C ⟶ Sets)
   (α α' : F ⟹ F') (β β' : G ⟹ G') (c : C) (ab : C ∏ C) :
   α ≈ α' -> β ≈ β' ->
@@ -726,7 +962,12 @@ Proof.
   - split; [ exact (Hα (fst ab) a) | exact (Hβ (snd ab) b) ].
 Qed.
 
-(* The change-of-函子 legs form cowedge over source integrand. （已译） *)
+(*
+ The change-of-functor legs form a cowedge over the source integrand. 
+
+ --------
+ 变函子腿在源积分函数上形成一个余楔形。
+*)
 Lemma DFG_leg_cowedge (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c : C) :
   Cowedge_cond (DayI F G c)
@@ -748,7 +989,12 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+ The action of the Day tensor on a pair of transformations, at target [c]. 
+
+ --------
+ Day 张量在目标 [c] 上对一对变换的作用。
+*)
 Definition DFG_c (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c : C) :
   coend_obj (SetsCoend (DayI F G c))
@@ -772,9 +1018,14 @@ Proof.
            (DFG_leg_cowedge F F' G G' α β c) ab).
 Qed.
 
-(* Any transform Day-integrands post-composed injections a
- cowedge; abstracts 自然性-plus-coend-glue 论元 shared the
- target- 函子-change legs. （已译） *)
+(*
+ Any transform of Day-integrands post-composed with the injections is a
+ cowedge; this abstracts the naturality-plus-coend-glue argument shared by the
+ target- and functor-change legs. 
+
+ --------
+ 经过注入后组成的任意日积分函数的变换都是共楔；这抽象了目标变换和函子变化环节中共享的自然性加余极限拼接论证。
+*)
 Lemma day_theta_leg_cowedge (A A' B B' : C ⟶ Sets) (c1 c2 : C)
   (T : DayI A B c1 ⟹ DayI A' B' c2) :
   Cowedge_cond (DayI A B c1)
@@ -794,7 +1045,12 @@ Proof.
   reflexivity.
 Qed.
 
-(* Naturality 函子-change action target [c]. （已译） *)
+(*
+ Naturality of the functor-change action in the target [c]. 
+
+ --------
+ 函子变换作用在目标 [c] 中的自然性。
+*)
 Lemma DFG_c_natural (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c1 c2 : C) (k : c1 ~{C}~> c2) :
   fmap[Day F' G'] k ∘ DFG_c F F' G G' α β c1
@@ -826,14 +1082,24 @@ Proof.
     intros [h [x y]]; reflexivity.
 Qed.
 
-(* The Day tensor of a pair of transformations, as a morphism of [[C, Sets]]. *)
+(*
+ The Day tensor of a pair of transformations, as a morphism of [[C, Sets]]. 
+
+ --------
+ 一对变换的Day张量，作为 [[C, Sets] ] 的一个态射。
+*)
 Definition Day_tensor_nat (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') : Day F G ⟹ Day F' G' :=
   Build_Transform' (F := Day F G) (G := Day F' G')
                    (fun c => DFG_c F F' G G' α β c)
                    (fun c1 c2 k => DFG_c_natural F F' G G' α β c1 c2 k).
 
-(** The Day convolution tensor as a bifunctor on [[C, Sets]]. *)
+(*
+   * The Day convolution tensor as a bifunctor on [[C, Sets]]. 
+
+   --------
+   * 作为 [[C, Sets] 上的双函子的日卷积张量。
+*)
 Program Definition Day_Tensor : ([C, Sets] ∏ [C, Sets]) ⟶ [C, Sets] := {|
   fobj := fun FG => Day (fst FG) (snd FG);
   fmap := fun FG FG' αβ =>
@@ -1011,7 +1277,12 @@ Proof.
         { apply fmap_id_app. }
 Qed.
 
-(* The inner forward leg respects 等价 [k] [e]. （已译） *)
+(*
+ The inner forward leg respects equivalence of [k] and [e]. 
+
+ --------
+ 内前腿尊重 [k] 和 [e] 的等价性。
+*)
 Lemma ato_inner_leg_respects (p d : C) (k k' : (p ⨂[M] d)%object ~{C}~> c)
   (e e' : H d) (ab : C ∏ C) :
   k ≈ k' -> e ≈ e' ->
@@ -1025,7 +1296,7 @@ Proof.
   - apply ce_point; split; [ reflexivity | split; [ reflexivity | exact He ] ].
 Qed.
 
-(* The inner forward mediator out of [(Day F G) p]. *)
+(* The inner forward mediator out of [(Day F G) p]. / [(Day F G) p] 的内前中场。 *)
 Definition ato_inner_med (p d : C) (k : (p ⨂[M] d)%object ~{C}~> c) (e : H d) :
   coend_obj (SetsCoend (DayI F G p))
     ~{Sets}~> coend_obj (SetsCoend (DayI F (Day G H) c)) :=
@@ -1034,7 +1305,13 @@ Definition ato_inner_med (p d : C) (k : (p ⨂[M] d)%object ~{C}~> c) (e : H d) 
             (ato_inner_leg p d k e)
             (ato_inner_cowedge p d k e).
 
-(* 相关说明。 （已译） *)
+(*
+ The outer forward leg at [(p,d)]: apply the inner mediator to the
+ [(Day F G) p] datum, carrying the hom [k] and the [H] datum [e]. 
+
+ --------
+ 在 [(p,d)] 的外前腿：将内侧中介器应用于 [(Day F G) p] 基准，同时携带 hom [k] 和 [H] 基准 [e]。
+*)
 Program Definition ato_outer_leg (pd : C ∏ C) :
   DayI (Day F G) H c (pd, pd)
     ~{Sets}~> coend_obj (SetsCoend (DayI F (Day G H) c)) := {|
@@ -1069,7 +1346,7 @@ Next Obligation.
   - exact (Hmed x').
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The inner mediator computes on an injection to the inner leg. / 内部中介对内腿的注入进行计算。 *)
 Lemma ato_inner_med_ci (p d : C) (k : (p ⨂[M] d)%object ~{C}~> c) (e : H d)
   (ab : C ∏ C) (elt : DayI F G p (ab, ab)) :
   ato_inner_med p d k e (ci (DayI F G p) ab elt)
@@ -1080,7 +1357,7 @@ Proof.
            (ato_inner_leg p d k e) (ato_inner_cowedge p d k e) ab elt).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Hom reassociation for the outer [(p,d)]-move. / 用于外部 [(p,d)] 移动的同源重组合。 *)
 Lemma hom_outer_eq (p1 d1 p2 d2 : C) (k : (p2 ⨂[M] d2)%object ~{C}~> c)
   (a0 b0 : C) (gp : p1 ~{C}~> p2) (gd : d1 ~{C}~> d2)
   (h0 : (a0 ⨂[M] b0)%object ~{C}~> p1) :
@@ -1191,7 +1468,12 @@ Proof.
              (fmap[H] gd e) (a0, b0) (gp ∘ h0, (f0, g0))). }
 Qed.
 
-(* The forward mediator [Day (Day F G) H c ~> Day F (Day G H) c]. *)
+(*
+ The forward mediator [Day (Day F G) H c ~> Day F (Day G H) c]. 
+
+ --------
+ 前向中介 [Day (Day F G) H c ~> Day F (Day G H) c]。
+*)
 Definition assoc_to :
   coend_obj (SetsCoend (DayI (Day F G) H c))
     ~{Sets}~> coend_obj (SetsCoend (DayI F (Day G H) c)) :=
@@ -1200,10 +1482,25 @@ Definition assoc_to :
             ato_outer_leg ato_outer_cowedge.
 
 (* ---------------------------------------------------------------- *)
-(* Backward direction: [Day F (Day G H) c ~> Day (Day F G) H c].    *)
-(* 相关说明。 （已译） *)
-(* 相关说明。 （已译） *)
-(* [tensor_assoc] (rather than its inverse).                        *)
+(*
+ Backward direction: [Day F (Day G H) c ~> Day (Day F G) H c].    
+
+ --------
+ 相反方向：[Day F (Day G H) c ~> Day (Day F G) H c]。
+*)
+(*
+ Mirror of the forward machinery: the inner coend now eliminates  
+
+ --------
+ 前进机械的镜像：内端现在被消除
+*)
+(*
+ the [(Day G H) x] factor on the right, reassociating with        
+
+ --------
+ 右侧的 [(Day G H) x] 因子，重新结合
+*)
+(* [tensor_assoc] (rather than its inverse). / [tensor_assoc]（而不是它的逆）。 *)
 (* ---------------------------------------------------------------- *)
 
 Program Definition afr_inner_leg (a x : C)
@@ -1494,7 +1791,12 @@ Proof.
              (fmap[F] ga f0) (b0, d0) (gx ∘ m0, (g0, hh0))). }
 Qed.
 
-(* The backward mediator [Day F (Day G H) c ~> Day (Day F G) H c]. *)
+(*
+ The backward mediator [Day F (Day G H) c ~> Day (Day F G) H c]. 
+
+ --------
+ 倒退的中介 [Day F (Day G H) c ~> Day (Day F G) H c]。
+*)
 Definition assoc_from :
   coend_obj (SetsCoend (DayI F (Day G H) c))
     ~{Sets}~> coend_obj (SetsCoend (DayI (Day F G) H c)) :=
@@ -1503,10 +1805,15 @@ Definition assoc_from :
             afr_outer_leg afr_outer_cowedge.
 
 (* ---------------------------------------------------------------- *)
-(* Round trips.                                                     *)
+(* Round trips. / 往返行程 *)
 (* ---------------------------------------------------------------- *)
 
-(* Reinjection of a [(Day G H) x] datum into [Day F (Day G H) c] at [(a,x)]. *)
+(*
+ Reinjection of a [(Day G H) x] datum into [Day F (Day G H) c] at [(a,x)]. 
+
+ --------
+ 在 [(a,x)] 将 [(Day G H) x] 数据重新注入到 [Day F (Day G H) c]。
+*)
 Program Definition afr_rebuild (a x : C)
   (k : (a ⨂[M] x)%object ~{C}~> c) (f0 : F a) :
   coend_obj (SetsCoend (DayI G H x))
@@ -1518,9 +1825,13 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明（余）端相关定义、性质与动机。
+ On the inner coend, [assoc_to] undoes [afr_inner_med]: the outer/inner
+ [tensor_assoc] introduced by [afr_inner_leg] cancels the [tensor_assoc]
+ inverse of [ato_inner_leg], and a single [ce_glue] at [(id, m)] realigns
+ the outer coend index. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在内部余端，[assoc_to] 撤销了 [afr_inner_med]：由 [afr_inner_leg] 引入的外/内 [tensor_assoc] 抵消了 [ato_inner_leg] 的 [tensor_assoc] 逆，位于 [(id, m)] 的单个 [ce_glue] 重新对齐了外部余端索引。
 *)
 Lemma round_to_from (a x : C)
   (k : (a ⨂[M] x)%object ~{C}~> c) (f0 : F a) :
@@ -1601,7 +1912,12 @@ Proof.
   - intros [a x] elt; reflexivity.
 Qed.
 
-(* Reinjection of a [(Day F G) p] datum into [Day (Day F G) H c] at [(p,d)]. *)
+(*
+ Reinjection of a [(Day F G) p] datum into [Day (Day F G) H c] at [(p,d)]. 
+
+ --------
+ 在 [(p,d)] 将 [(Day F G) p] 数据重新注入到 [Day (Day F G) H c]。
+*)
 Program Definition ato_rebuild (p d : C)
   (k : (p ⨂[M] d)%object ~{C}~> c) (e : H d) :
   coend_obj (SetsCoend (DayI F G p))
@@ -1612,7 +1928,12 @@ Next Obligation.
   apply ce_point; simpl; split; [ reflexivity | split; [ exact HW | reflexivity ] ].
 Qed.
 
-(* On the inner coend, [assoc_from] undoes [ato_inner_med]. *)
+(*
+ On the inner coend, [assoc_from] undoes [ato_inner_med]. 
+
+ --------
+ 在内部共端上，[assoc_from] 撤销了 [ato_inner_med]。
+*)
 Lemma round_from_to (p d : C)
   (k : (p ⨂[M] d)%object ~{C}~> c) (e : H d) :
   assoc_from ∘ ato_inner_med p d k e ≈ ato_rebuild p d k e.
@@ -1692,7 +2013,12 @@ Proof.
   - intros [p d] elt; reflexivity.
 Qed.
 
-(* The pointwise associator isomorphism [Day (Day F G) H c ≅ Day F (Day G H) c]. *)
+(*
+ The pointwise associator isomorphism [Day (Day F G) H c ≅ Day F (Day G H) c]. 
+
+ --------
+ 逐点结合子同构 [Day (Day F G) H c ≅ Day F (Day G H) c]。
+*)
 Program Definition assoc_iso_pt :
   coend_obj (SetsCoend (DayI (Day F G) H c))
     ≅[Sets] coend_obj (SetsCoend (DayI F (Day G H) c)) := {|
@@ -1704,13 +2030,20 @@ Next Obligation. exact assoc_from_to. Qed.
 End Associator.
 
 (* ---------------------------------------------------------------- *)
-(* Naturality [c] natural associator 同构. （已译） *)
+(* Naturality in [c] and the natural associator isomorphism. / [c] 中的自然性以及自然结合子同构。 *)
 (* ---------------------------------------------------------------- *)
 
 Section AssocNat.
 Context (F G H : C ⟶ Sets).
 
-(* 相关说明。 （已译） *)
+(*
+ Naturality of the forward associator in the coend variable [c]. On a
+ generator both sides collapse to the same [ci], differing only by the
+ reassociation [k ∘ (kk ∘ …) = (k ∘ kk) ∘ …]. 
+
+ --------
+ 在共端变量 [c] 中前向结合子的自然性。在生成元上，两边都坍塌到相同的 [ci]，只是通过重新结合 [k ∘ (kk ∘ …) = (k ∘ kk) ∘ …] 不同。
+*)
 Lemma assoc_to_natural (c1 c2 : C) (k : c1 ~{C}~> c2) :
   Day_map F (Day G H) c1 c2 k ∘ assoc_to F G H c1
     ≈ assoc_to F G H c2 ∘ Day_map (Day F G) H c1 c2 k.
@@ -1770,8 +2103,13 @@ Proof.
     + apply ce_point; simpl; split; [ reflexivity | split; reflexivity ].
 Qed.
 
-(* The natural associator isomorphism [Day (Day F G) H ≅ Day F (Day G H)]
-   in [[C, Sets]]. *)
+(*
+ The natural associator isomorphism [Day (Day F G) H ≅ Day F (Day G H)]
+ in [[C, Sets]]. 
+
+ --------
+ 自然结合同构  [Day (Day F G) H ≅ Day F (Day G H)] 在  [[C, Sets] 中。
+*)
 Definition day_assoc_iso : Day (Day F G) H ≅[Fun] Day F (Day G H).
 Proof.
   apply equiv_iso.

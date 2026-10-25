@@ -32,27 +32,266 @@ Require Import Category.Instance.Mod.Free.
 
 Generalizable All Variables.
 
-(* * * Colimits R-modules, adjoint 函子 定理 （已译） *)
+(* * * Colimits of R-modules, from the adjoint functor theorem / * * R-模的余极限，来自伴随函子定理 *)
 
 (*
+ nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
  nLab:      https://ncatlab.org/nlab/show/Mod
  nLab:      https://ncatlab.org/nlab/show/Eilenberg-Watts+theorem
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_modules
  Wikipedia: https://en.wikipedia.org/wiki/Direct_sum_of_modules
 
-   本文件给出余极限实例。
+ Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ §V.8, book p. 131 (PDF p. 140): Watt's theorem applies the special
+ adjoint functor theorem to a functor out of (R-Mod)^op, and that
+ theorem asks first of all that its source be small-complete -- that
+ is, that R-Mod be small-COCOMPLETE.  Classically the colimits of
+ modules are direct sums and quotients.  Here they are obtained instead
+ from Freyd's general adjoint functor theorem, §V.6 Theorem 2
+ (Adjunction/GAFT.v's [GAFT]), on the template #450 laid down for
+ groups, rings and setoid varieties
+ (Instance/Grp/Colimit.v, Instance/Rng/Colimit.v, Instance/Variety/
+ Colimit.v); Instance/Grp/Colimit.v's header gives the argument in full
+ and is not repeated.  Watt's theorem itself is not stated here.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ ** THE SURVEY, MEASURED
+
+ Before this file [RMod R] had no [Cocomplete], [FinitelyCocomplete] or
+ [HasCoequalizers] declaration: over every [.v] file of the tree but this
+ one and
+ Instance/Mod/WellPowered.v, [grep -nE] with the pattern
+ ['@?Cocomplete *\(?(RMod|ModR)'] finds nothing, and with
+ ['(HasCoequalizers|Cocomplete|FinitelyCocomplete) *\(?\(?RMod']
+ nothing (instrument check: the first pattern with [Grp|Rng] in place of
+ the module names finds Instance/Rng/Colimit.v's
+ [Rng_Cocomplete_via_GAFT] and Test/ProbeAlgColimit450.v's checks).
+ Instance/Mod/Limit.v's NOT DELIVERED said "No colimits and no
+ cocompleteness for [RMod R]" and is corrected in place.  What did exist
+ is the zero module (Instance/Mod.v's [RMod_Initial] and [RMod_Zero]) and
+ the binary direct sum (Instance/Mod/Coproduct.v's [RMod_Biproducts],
+ [RMod_Cocartesian]) -- both only at [Set] carriers (NON-VACUITY,
+ below).
+
+ ** THE ROUTE
+
+ For each shape J with homs at the carrier universe and objects at or
+ below it, [GAFT] is applied to the diagonal Δ[J] : RMod R ⟶ [J, RMod R]
+ ([RMod_colim_via_GAFT]) with Instance/Mod/Limit.v's [RMod_Complete],
+ Adjunction/Diagonal/Limit.v's [Diagonal_continuous] through
+ Construction/Comma/Creation.v's [Continuous_PreservesImageLimit], and a
+ solution set at each diagram ([Diagonal_RMod_solution_set]);
+ [Diagonal_left_adjoint_HasColimits] reads the colimits off, and
+ [RMod_Cocomplete_via_GAFT] assembles them.
+
+ ** THE SOLUTION SET: COCONE CONGRUENCES ON THE FREE-MODULE TERMS
+
+ The index is a family of [Prop]-valued congruences on a term model,
+ never a Σ over the objects of [RMod R] (Structure/Complete.v's size note
+ explains why the latter is one universe too high).  The term model is
+ Instance/Mod/Free.v's [FVTerm] over the DISJOINT UNION of the carriers,
+ [MGen] = Σ j, carrier (D j), taken with Leibniz equality.  A member of
+ the index ([MDCongIdx]) is a relation with a proof of [IsModCoconeCong]:
+ a module congruence on the terms ([IsModCongruence]: an equivalence
+ that contains the term model's own [fv_eq] and respects the three
+ formers), which identifies the letters of `≈`-equal elements
+ ([mcc_resp]), makes each insertion preserve zero, addition and the
+ action ([mcc_zero], [mcc_plus], [mcc_smul]; Instance/Mod.v's [RModHom]
+ carries all three laws as fields) and identifies each element with its
+ image under the arrows of the diagram ([mcc_nat]).  Those clauses make
+ the insertions module homomorphisms into the quotient [MDQ i]
+ ([mdq_leg]) and a cocone ([mdq_arr]).  The covering: a cocone
+ h : D ⟹ Δ(M) flattens to a map of generators ([mflat]), whose fold
+ through Free.v's [fv_eval] has kernel [mker] -- a [Prop] because the
+ TARGET carries [cmon_prop] -- and that kernel is a cocone congruence
+ ([mker_cocone]).  The mediator [mker_med] out of the quotient is the
+ fold itself, and the covering equation holds by [reflexivity], the fold
+ of an inserted letter computing to the leg.
+
+ [mker_cocone] ENDS IN [Defined], following the template, but here the
+ transparency is NOT load-bearing: measured by closing it with [Qed] in a
+ copy of this whole file, the copy compiles.  The template needs it
+ because its mediator is a pre-existing constant ([fg_ker_med],
+ [rng_ker_med]) whose type names the congruence PROOF of the kernel;
+ [mker_med] is built directly at [MDQ (mker_idx M h)], whose proof
+ components enter only the quotient's law fields, never its carrier or
+ its `≈`, so no conversion through [mker_cocone] is ever asked for.
+
+ ** FINITE COLIMITS, THROUGH THE EXISTING BRIDGES
+
+ As in Instance/Grp/Colimit.v: [RMod_Cocartesian_via_GAFT] is
+ Structure/Limit/Finite.v's [FinitelyComplete_Cartesian] of the
+ cocompleteness read in (RMod R)^op, [RMod_HasCoequalizers_via_GAFT] is
+ Structure/Pullback/Reduction.v's [HasCoequalizers_of_HasEqualizers_op]
+ after [FinitelyComplete_HasEqualizers], and [RMod_Initial_via_GAFT] is
+ [FinitelyCocomplete_Initial].  Read back through those bridges' bodies,
+ the coproduct is the AFT pushout over the AFT initial object, the
+ coequalizer is assembled from AFT pushouts and the AFT initial object,
+ and the initial module is the AFT colimit of the empty diagram; the
+ direct reading at a discrete two-object shape is not the one used.
+ Nothing in this file is registered as an [Instance]; Instance/Mod/
+ Coproduct.v's [#[export]] [RMod_Cocartesian] is not imported.
+
+ ** NON-VACUITY, AND WHY NOTHING IS COMPARED WITH THE DIRECT SUM
+
+ The natural witnesses would compare [RMod_Initial_via_GAFT] with
+ Instance/Mod.v's zero module and [RMod_Cocartesian_via_GAFT] with the
+ direct sum, but both donors are pinned at [Set] carriers: [About] reads
+ [RMod_Initial@{u u0 u1} : ∀ R : RingObject@{u1 Set u1}, …] and
+ [RMod_Cocartesian@{…} : ∀ R : RingObject@{u5 Set u5}, …], while every
+ colimit here needs [Set < carrier] (UNIVERSES).  Measured in copies of
+ this whole file, [initial_unique (RMod_Initial_via_GAFT R) (RMod_Initial
+ R)] and Theory/Adjunction.v's [left_adjoint_iso] over the two
+ [Diagonal_Coproduct_Adjunction]s (Adjunction/Diagonal/Coproduct.v, with
+ Instance/Mod/Coproduct.v imported), each at an unannotated
+ [R : RingObject], are refused alike: "The term "R" has type
+ "RingObject@{… …23423 …}" while it is expected to have type
+ "RingObject@{… Set …}" (universe inconsistency: Cannot enforce Set =
+ …23423 because Set < …23423)" (the second with its own universe
+ numbers).  So non-vacuity is shown without them:
+ [RMod_initial_via_GAFT_trivial] (every element of the AFT initial
+ module is ≈ 0: the identity and the zero homomorphism are two arrows
+ out of it); [RMod_inl_via_GAFT_retract] and
+ [RMod_inl_via_GAFT_injective] (the left injection of the AFT coproduct
+ is split by the copairing of the identity with the zero homomorphism,
+ Instance/Mod.v's [rmod_hom_zero], hence injective); and
+ [RMod_coproduct_via_GAFT_nontrivial]: the AFT coproduct of ℤ with itself,
+ as a ℤ-module at [Int_Ring@{c c c}] above [Set], is not a subsingleton,
+ by Instance/Mod/Free.v's [int_one_neq_zero].
+
+ ** STRENGTHS
+
+ Nothing about a colimit object computes: [GAFT] ends in [Qed], so each
+ colimit is an existence result, and the four non-vacuity lemmas are
+ `≈`-statements or refutations.  6 [Defined] and 5 [Qed], counted by
+ token.  Flipping each [Defined] to [Qed] in a copy of the whole file,
+ [mdq_leg], [mdq_arr], [mflat] and [mker_med] are load-bearing and
+ [mker_cocone] and [Diagonal_RMod_solution_set] recompile ([GAFT]
+ consumes the solution set without unfolding it).
+
+ ** UNIVERSES, MEASURED
+
+ By [About] under [Set Printing Universes], stdlib bounds left out.  The
+ section names the ring's (auxiliary, carrier, proof) universes [a c p],
+ [RMod]'s object and second universe [o x], and the shape's object
+ universe [jo], with J : Category@{jo c c} and D : J ⟶ RMod@{o x a p c} R.
+
+ MDCongIdx@{a c p o x jo u u0} : … → Type@{u}
+ ( * Set < u, c <= u * )
+ Diagonal_RMod_solution_set@{a c p o x jo u u0} :
+ SolutionSet@{u o o c} (Diagonal J) D    ( * Set < u, c <= u * )
+ RMod_colim_via_GAFT@{a c p o x jo u u0 u1} :
+ ∀ (R : RingObject@{a c p}) (J : Category@{jo c c}),
+ ∃ K : [J, RMod@{o x a p c} R] ⟶ RMod@{o x a p c} R, K ⊣ Diagonal J
+ ( * Set < c, jo <= c * )
+ RMod_Cocomplete_via_GAFT@{a c p o x so u u0} :
+ ∀ R : RingObject@{a c p}, Cocomplete@{c so c o} (RMod@{o x a p c} R)
+ ( * Set < c, so <= c * )
+
+ plus RMod's own [Set < o], [c < o], [c < x], [c <= a], [p <= a],
+ [a <= o] in every block, and no equation among [a], [c], [p]: the ring's
+ three universes stay distinct.  At [so := c] the last reads
+ [Cocomplete@{c c c o}], the shape [Complete_op_of_Cocomplete] turns into
+ the [Complete@{c c c o}] of (RMod R)^op.  The index [u] of the solution
+ set is bounded only by [c <= u] and [Set < u], so [GAFT], which takes it
+ AT the hom universe, forces [u = c] and hence [Set < c]; that bound is
+ [GAFT]'s, not the solution set's.  Measured in a copy of this whole file
+ under [Monomorphic Constraint Set < go, Set < gx, gp <= ga, ga <= go]:
+ at R : RingObject@{ga Set gp}, J : Category@{Set Set Set} and
+ D : J ⟶ RMod@{go gx ga gp Set} R, [@Diagonal_RMod_solution_set R J D]
+ is accepted, and [RMod_colim_via_GAFT R J] is refused with "The term "R"
+ has type "RingObject@{ga Set gp}" while it is expected to have type
+ "RingObject@{… … …}" (universe inconsistency: Cannot enforce Set = …
+ because Set < …)".  Removing [Set < c] from [RMod_colim_via_GAFT]'s
+ binder, in a copy, re-infers it ([About] prints [Set < c] again).  As in
+ #450, [RMod_Cocartesian_via_GAFT] and [RMod_HasCoequalizers_via_GAFT]
+ add the strict stdlib bound [c < eq_rect_r.u0], inherited from
+ Structure/Limit/Finite.v's [FinitelyComplete_HasPullbacks];
+ [RMod_Initial_via_GAFT] does not carry it.
+
+ ** AXIOMS AND MEASUREMENTS
+
+ [Print Module] lists 41 names (37 constants, field projections
+ included, the two records [IsModCongruence] and [IsModCoconeCong] and
+ their constructors); every one reports "Closed under the global
+ context" under [Print Assumptions] by its fully qualified name.  No
+ [Program] obligation belongs to this module: [Print Module] lists none,
+ and [strings] on the .vo finds no [_obligation_] name of this module.
+
+ ** NOT DELIVERED
+
+ No element-level description of any colimit built here: no direct sum
+ of an arbitrary family, no quotient by the submodule generated by the
+ image of f - g, and none of the colimit objects computes.  No comparison
+ with Instance/Mod.v's zero module or Instance/Mod/Coproduct.v's direct
+ sum (the [Set] pin above).  No statement that [RMod_Forget_Ab] or
+ [RMod_Forget] preserves or creates any colimit.  No filtered-colimit
+ route.  No [Ab] counterpart (no [Cocomplete Ab] is added).  Nothing at
+ [Set]-level carriers.  No [Instance] is registered. 
+
+ --------
+ nLab:       https://ncatlab.org/nlab/show/adjoint+functor+theorem 
+ nLab:       https://ncatlab.org/nlab/show/Mod 
+ nLab:       https://ncatlab.org/nlab/show/Eilenberg-Watts+theorem 
+ 维基百科:  https://en.wikipedia.org/wiki/Category_of_modules 
+ 维基百科:  https://en.wikipedia.org/wiki/Direct_sum_of_modules麦克莱恩，《为工作数学家而设的范畴论》，第2版（GTM 5），§V.8，书本第131页（PDF第140页）：瓦特定理将特殊伴随函子定理应用于一个来自 (R-Mod)^op 的函子，而该定理首先要求其源范畴是小完备的——也就是说，R-Mod 要小共完备。经典上，模的余极限是直和与商。这里它们则是通过弗雷德的一般伴随函子定理获得的，参见 §V.6 定理2（Adjunction/GAFT.v 的 [GAFT]），该定理基于为群、环和集合类变体建立的模板 #450（Instance/Grp/Colimit.v, Instance/Rng/Colimit.v, Instance/Variety/Colimit.v）；Instance/Grp/Colimit.v 的页眉给出了完整论证，这里不再重复。瓦特定理本身未在此处陈述。
+
+ ** 调查，测量在这个文件 [RMod R] 之前，没有 [Cocomplete] 、[FinitelyCocomplete] 或 [HasCoequalizers] 声明：在树的每个 [.v] 文件中都是如此，除了这个文件和 Instance/Mod/WellPowered.v，[grep -nE] 与模式 ['@?Cocomplete *\(?(RMod|ModR)'] 没有找到任何内容，并且与 ['(HasCoequalizers|Cocomplete|FinitelyCocomplete) *\(?\(?RMod'] 也没有找到任何内容（仪器检查：第一个模式用 [Grp|Rng] 替换模块名称后找到 Instance/Rng/Colimit.v 的 [Rng_Cocomplete_via_GAFT] 和 Test/ProbeAlgColimit450.v 的检查）。Instance/Mod/Limit.v 的 NOT DELIVERED 显示“[RMod R] 没有余积也没有余完备性”，并已在原地修正。确实存在的是零模块（Instance/Mod.v 的 [RMod_Initial] 和 [RMod_Zero]）以及二元直接和（Instance/Mod/Coproduct.v 的 [RMod_Biproducts], [RMod_Cocartesian]）——两者都仅在 [Set] 载体上（非空性，见下文）。
+
+ ** 路径对于每个在载体宇宙具有 Hom 且对象位于其之上或之下的形状 J，[GAFT] 被应用到对角 Δ [J]：RMod R ⟶ [J, RMod R] ([RMod_colim_via_GAFT])，并使用 Instance/Mod/Limit.v 的 [RMod_Complete]、Adjunction/Diagonal/Limit.v 的 [Diagonal_continuous] 以及 Construction/Comma/Creation.v 的 [Continuous_PreservesImageLimit]，并在每个图 ([Diagonal_RMod_solution_set]) 上有一个解集；[Diagonal_left_adjoint_HasColimits] 读取余极限，[RMod_Cocomplete_via_GAFT] 将它们组装起来。
+
+ **解集：自由模项上的余锥同余该指标是一族在项模型上的 [Prop] 值余数，从不是在 [RMod R] 对象上的 Σ（Structure/Complete.v 的大小说明解释了为何后者比预期的宇宙高一个）。项模型是 Instance/Mod/Free.v 中 [FVTerm] 在承载集合的 DISJOINT UNION 上的集合，[MGen] = Σ j, carrier (D j)，并采用 Leibniz 等式。索引的一个成员（[MDCongIdx]）是具有[IsModCoconeCong]证明的关系：关于项的模同余（[IsModCongruence]：包含项模型自身的[fv_eq]并遵守前三个形式的等价关系），它识别`≈`-相等元素的字母（[mcc_resp]），使每次插入保留零、加法和作用（[mcc_zero]、[mcc_plus]、[mcc_smul]；Instance/Mod.v的[RModHom]将三条定律作为字段承载），并将每个元素与图表箭头下的映像识别（[mcc_nat]）。这些条款使插入成为商[MDQ i]（[mdq_leg]）的模同态以及余锥（[mdq_arr]）。覆盖：一个余锥 h : D ⟹ Δ(M) 被展平成一个生成元的映射 ([mflat])，它通过 Free.v 的 [fv_eval] 的折叠有核 [mker] —— 一个 [Prop]，因为目标包含 [cmon_prop] —— 并且该核是一个余锥同余 ([mker_cocone])。商中的调解元 [mker_med] 就是折叠本身，并且覆盖方程由 [reflexivity] 成立，即对插入字母的折叠计算到腿。[mker_cocone]  以 [Defined] 结束，遵循模板，但这里的透明性不是承重的：通过在整个文件的副本中使用 [Qed]  关闭它来测量，副本可以编译。模板需要它，因为它的中介是一个预先存在的常数（[fg_ker_med]，[rng_ker_med]），其类型命名了内核的一致性证明；[mker_med] 直接在 [MDQ (mker_idx M h)] 构建，其证明组件只进入商的律字段，永远不会进入其承载或 `≈`，因此从未要求通过 [mker_cocone] 进行转换。
+
+ ** 有限余极限，通过现有桥正如在 Instance/Grp/Colimit.v 中：[RMod_Cocartesian_via_GAFT] 是 Structure/Limit/Finite.v 的 [FinitelyComplete_Cartesian] 在 (RMod R)^op 中读取余完备性，[RMod_HasCoequalizers_via_GAFT] 是 Structure/Pullback/Reduction.v 的 [HasCoequalizers_of_HasEqualizers_op] 在 [FinitelyComplete_HasEqualizers] 之后，[RMod_Initial_via_GAFT] 是 [FinitelyCocomplete_Initial]。通过这些桥的主体回读，直和是 AFT 在 AFT 初始对象上的并推，余等化子是由 AFT 并推和 AFT 初始对象组装起来的，初始模是空图的 AFT 余极限；在离散的两个对象形状上直接读取的不是使用的方式。此文件中没有注册为 [Instance]；Instance/Mod/Coproduct.v 的 [#[export]] [RMod_Cocartesian] 没有被导入。
+
+ ** 非空性，以及为什么没有与直和进行比较自然的见证会将 [RMod_Initial_via_GAFT] 与 Instance/Mod.v 的零模比较，将 [RMod_Cocartesian_via_GAFT] 与直和比较，但两个施主都固定在 [Set] 载体上：[About] 读取 [RMod_Initial@{u u0 u1} : ∀ R : RingObject@{u1 Set u1}, …] 和 [RMod_Cocartesian@{…} : ∀ R : RingObject@{u5 Set u5}, …]，而这里的每个余极限都需要 [Set < carrier]（宇宙）。以整个文件的副本为单位，[initial_unique (RMod_Initial_via_GAFT R) (RMod_Initial R)] 与 Theory/Adjunction.v 的 [left_adjoint_iso] 在两个 [Diagonal_Coproduct_Adjunction] 上（Adjunction/Diagonal/Coproduct.v，导入了 Instance/Mod/Coproduct.v），每个在未标注的 [R : RingObject] 上，也同样被拒绝：“术语 'R' 的类型是 'RingObject@{… …23423 …}'，而它被期望的类型是 'RingObject@{… Set …}'（宇宙不一致：无法强制 Set = …23423 因为 Set < …23423）”（第二个则带有其自身的宇宙编号）。因此，可以在没有它们的情况下显示非空性：
+ [RMod_initial_via_GAFT_trivial]（AFT 初始模的每个元素 ≈ 0：恒等映射和零同态是两个从中出的箭头）；[RMod_inl_via_GAFT_retract] 和
+ [RMod_inl_via_GAFT_injective]（AFT 余积的左注入被恒等映射与零同态的共配对拆分，Instance/Mod.v 的 [rmod_hom_zero]，因此是单射）；以及
+ [RMod_coproduct_via_GAFT_nontrivial]：ℤ 与自身的 AFT 余积，作为上面 [Set] 的 ℤ-模在 [Int_Ring@{c c c}] 处，不是单元素集合，依据 Instance/Mod/Free.v 的 [int_one_neq_zero]。
+
+ ** 优势关于余极限对象没有任何计算：[GAFT] 以 [Qed] 结尾，因此每个余极限都是存在性结果，而四个非空引理是 `≈`-陈述或反驳。6 [Defined] 和 5 [Qed]，按标记计数。在整个文件的副本中将每个 [Defined] 翻转为 [Qed]，[mdq_leg]、[mdq_arr]、[mflat] 和 [mker_med] 都是承重的，而 [mker_cocone] 和 [Diagonal_RMod_solution_set] 可重新编译（[GAFT] 在不展开的情况下消耗解集）。
+
+ ** 宇宙，已测量
+
+ 由 [About] 在 [Set Printing Universes] 下进行测量，stdlib边界省略。本节命名环的（辅助、承载、证明）宇宙为 [a c p]，[RMod] 的对象和第二宇宙为 [o x]，形状的对象宇宙为 [jo]，J : Category@{jo c c} 且 D : J ⟶ RMod@{o x a p c} R。MDCongIdx@{a c p o x jo u u0} : … → Type@{u}
+ ( * 集合 < u, c <= u * )
+ Diagonal_RMod_solution_set@{a c p o x jo u u0} :
+ SolutionSet@{u o o c} (Diagonal J) D    ( * 集合 < u, c <= u * )
+ RMod_colim_via_GAFT@{a c p o x jo u u0 u1} :
+ ∀ (R : RingObject@{a c p}) (J : Category@{jo c c}),
+ ∃ K :  [J, RMod@{o x a p c} R]  ⟶ RMod@{o x a p c} R, K ⊣ Diagonal J
+ ( * 集合 < c, jo <= c * )
+ RMod_Cocomplete_via_GAFT@{a c p o x so u u0} :
+ ∀ R : RingObject@{a c p}, Cocomplete@{c so c o} (RMod@{o x a p c} R)
+ ( * 集合 < c, so <= c * )加上 RMod 自身的 [Set < o]、[c < o]、[c < x]、[c <= a]、[p <= a]、[a <= o] 在每个区块中，并且在 [a]、[c]、[p] 之间没有等式：环的三个宇宙保持独立。在 [so := c] 上最后读取 [Cocomplete@{c c c o}]，形状 [Complete_op_of_Cocomplete] 变为 (RMod R)^op 的 [Complete@{c c c o}]。解集的指标 [u] 仅被 [c <= u] 和 [Set < u] 限制，因此 [GAFT]，在同源宇宙处，迫使 [u = c] 从而导致 [Set < c]；这个界限是 [GAFT] 的，而不是解集的。在整个文件的副本中测量
+ 在 [Monomorphic Constraint Set < go, Set < gx, gp <= ga, ga <= go] 下：
+ 于 R : RingObject@{ga Set gp}, J : Category@{Set Set Set} 和
+ D : J ⟶ RMod@{go gx ga gp Set} R,  [@Diagonal_RMod_solution_set R J D] 
+ 被接受，而 [RMod_colim_via_GAFT R J] 被拒绝，显示 “The term "R"
+ has type "RingObject@{ga Set gp}" while it is expected to have type
+ "RingObject@{… … …}" (universe inconsistency: Cannot enforce Set = …
+ because Set < …)"。从 [RMod_colim_via_GAFT] 的绑定器中移除 [Set < c]，
+ 在副本中重新推断它（[About] 再次打印 [Set < c]）。如同在
+ #450 中，[RMod_Cocartesian_via_GAFT] 和 [RMod_HasCoequalizers_via_GAFT] 
+ 添加了严格的 stdlib 绑定 [c < eq_rect_r.u0]，继承自
+ Structure/Limit/Finite.v 的 [FinitelyComplete_HasPullbacks]；
+ [RMod_Initial_via_GAFT] 没有携带它。
+
+ ** 公理与测量[Print Module] 列出了 41 个名称（包含 37 个常量和字段投影，还包括两个记录 [IsModCongruence] 和 [IsModCoconeCong] 及其构造函数）；每一个名称在 [Print Assumptions] 下通过其完全限定名报告“在全局上下文下封闭”。该模块没有任何 [Program] 义务：[Print Module] 没有列出任何，[strings] 在 .vo 文件中也没有找到该模块的 [_obligation_] 名称。
+
+ ** 未交付这里没有对任何构建的余极限的元素级描述：没有任意族的直和，没有按 f - g 的像生成的子模取商，也没有余极限对象的计算。没有与 Instance/Mod.v 的零模或 Instance/Mod/Coproduct.v 的直和（上面的 [Set] 引脚）进行比较。没有说明 [RMod_Forget_Ab] 或 [RMod_Forget] 保持或创建任何余极限。没有过滤余极限路径。没有 [Ab] 对应项（没有添加 [Cocomplete Ab]）。在 [Set] 级载体上没有任何内容。没有注册 [Instance]。
 *)
 
-(** ** The solution set at a diagram *)
+(** ** The solution set at a diagram / ** 图表上的解集 *)
 
 Section ModDiagonalSolutionSet.
 
 (*
-   本节说明函子相关定义、性质与动机。
+ The ring's (auxiliary, carrier, proof) universes, [RMod]'s object and
+ second universes, and the shape's object universe; the shape's homs are
+ at the carrier, which is what the functor category [J, RMod R] asks. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 环的（辅助的、承载的、证明的）宇宙、[RMod] 的对象和第二宇宙，以及形状的对象宇宙；形状的 Hom 位于承载上，这就是函子范畴 [J, RMod R] 所要求的。
 *)
 Universes a c p o x jo.
 Constraint Set < o, c < o, c < x, p <= a, c <= a, a <= o, jo <= c.
@@ -61,7 +300,7 @@ Context {R : RingObject@{a c p}}.
 Context {J : Category@{jo c c}}.
 Context (D : J ⟶ RMod@{o x a p c} R).
 
-(* 相关说明。 （已译） *)
+(* The generators: the disjoint union of the carriers, with Leibniz equality. Each factor's own `≈` enters through [mcc_resp] below. / 生成元：承载体的不交并，并带有莱布尼茨等式。每个因子的自身`≈`通过下面的[mcc_resp]进入。 *)
 Definition MGen : SetoidObject :=
   {| carrier := { j : obj[J] & carrier (cmon_setoid (D j)) };
      is_setoid := eq_Setoid _ |}.
@@ -69,9 +308,14 @@ Definition MGen : SetoidObject :=
 Definition mins (j : J) (a : carrier (cmon_setoid (D j))) : @FVTerm R MGen :=
   @fv_gen R MGen (existT (fun j => carrier (cmon_setoid (D j))) j a).
 
-(* A congruence free-module terms: 等价 关系 that
- contains term model's own 关系 [fv_eq] compatible with
- three formers. （已译） *)
+(*
+ A congruence on the free-module terms: an equivalence relation that
+ contains the term model's own relation [fv_eq] and is compatible with
+ the three formers. 
+
+ --------
+ 自由模项上的合同：一种等价关系，它包含项模型自身的关系 [fv_eq]，并且与三种前导结构兼容。
+*)
 Record IsModCongruence (Rq : @FVTerm R MGen → @FVTerm R MGen → Prop) : Prop := {
   mc_refl  : ∀ s, Rq s s;
   mc_sym   : ∀ s t, Rq s t → Rq t s;
@@ -82,7 +326,7 @@ Record IsModCongruence (Rq : @FVTerm R MGen → @FVTerm R MGen → Prop) : Prop 
   mc_smul  : ∀ r s s', Rq s s' → Rq (fv_smul r s) (fv_smul r s')
 }.
 
-(* 相关说明。 （已译） *)
+(* ... that makes the insertions a cocone of module homomorphisms. / ... 这使得这些插入成为模同态的余锥。 *)
 Record IsModCoconeCong (Rq : @FVTerm R MGen → @FVTerm R MGen → Prop) : Prop := {
   mcc_mod  : IsModCongruence Rq;
   mcc_resp : ∀ j a b, a ≈ b → Rq (mins j a) (mins j b);
@@ -97,8 +341,13 @@ Record IsModCoconeCong (Rq : @FVTerm R MGen → @FVTerm R MGen → Prop) : Prop 
 Definition MDCongIdx : Type :=
   { Rq : @FVTerm R MGen → @FVTerm R MGen → Prop & IsModCoconeCong Rq }.
 
-(* NAMED, for [PropEquiv_of_relation]'s sake (Instance/Mod/TensorAFT.v's
-   [QMod_Setoid] records why). *)
+(*
+ NAMED, for [PropEquiv_of_relation]'s sake (Instance/Mod/TensorAFT.v's
+ [QMod_Setoid] records why). 
+
+ --------
+ 为 [PropEquiv_of_relation] 的缘故命名（Instance/Mod/TensorAFT.v 中的 [QMod_Setoid] 记录了原因）。
+*)
 Definition MDQ_Setoid (i : MDCongIdx) : Setoid (@FVTerm R MGen) :=
   {| equiv := `1 i
    ; setoid_equiv :=
@@ -115,7 +364,7 @@ Proof.
   - exact (mc_gen _ (mcc_mod _ (`2 i)) _ _ (fe_smul Hr (fv_refl s'))).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The quotient module: the free module's carrier and formers with the congruence as its `≈`. Every law is the term model's own, passed through [mc_gen]. / 商模：自由模的载体和形成者，以同余作为其 `≈`。每条定律都是项模型自身的，通过 [mc_gen]。 *)
 Definition MDQ (i : MDCongIdx) : obj[RMod R] :=
   {| rm_ab := {|
        ab_cmon := {|
@@ -170,7 +419,7 @@ Proof.
   exact (mcc_nat _ (`2 i) j k f a).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* The covering: the kernel of a cocone's extension to the term model. / 覆盖：余圆扩展到项模型的核心。 *)
 Section Cover.
 
 Context (M : obj[RMod R]) (h : D ~{[J, RMod R]}~> fobj[@Diagonal (RMod R) J] M).
@@ -185,7 +434,7 @@ Defined.
 Definition mker : @FVTerm R MGen → @FVTerm R MGen → Prop :=
   fun s t => @pequiv _ _ (cmon_prop M) (fv_eval mflat s) (fv_eval mflat t).
 
-(* 相关说明。 （已译） *)
+(* [Defined] only to follow the #450 template; the transparency is measured NOT load-bearing here (the header's paragraph on it). / [Defined] 仅遵循 #450 模板；这里的透明度不是承重测量（页眉的段落说明了这一点）。 *)
 Lemma mker_cocone : IsModCoconeCong mker.
 Proof using h.
   unfold mker.
@@ -222,7 +471,7 @@ Defined.
 
 Definition mker_idx : MDCongIdx := existT _ mker mker_cocone.
 
-(* 相关说明。 （已译） *)
+(* The mediator out of the quotient: the term model's own fold. Respectfulness IS [pequiv_to]; the three homomorphism laws hold by [reflexivity], the fold's clauses being those equations. / 商中的中介者：术语模型自身的折叠。 尊重是 [pequiv_to]；三个同态律由 [reflexivity] 保持，折叠的条款就是那些方程式。 *)
 Definition mker_med : MDQ mker_idx ~{RMod R}~> M.
 Proof using h.
   unshelve econstructor; [unshelve econstructor; [unshelve econstructor|..]|].
@@ -248,7 +497,7 @@ Defined.
 
 End ModDiagonalSolutionSet.
 
-(* 相关说明。 （已译） *)
+(* * ** Every colimit of R-modules within the shape discipline / * ** 在形状学科内的每一个 R-模的余极限 *)
 
 Definition RMod_colim_via_GAFT@{a c p o x jo +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, jo <= c +}
@@ -265,7 +514,7 @@ Definition RMod_Cocomplete_via_GAFT@{a c p o x so +|
   fun J F =>
     Diagonal_left_adjoint_HasColimits (projT2 (RMod_colim_via_GAFT R J)) F.
 
-(* 相关说明。 （已译） *)
+(* * ** Coproducts, coequalizers and the initial module / * **余积、共等化子与初始模 *)
 
 Definition RMod_FinitelyCocomplete_via_GAFT@{a c p o x +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o +}
@@ -292,10 +541,15 @@ Definition RMod_Initial_via_GAFT@{a c p o x +|
   (R : RingObject@{a c p}) : @Initial (RMod@{o x a p c} R) :=
   FinitelyCocomplete_Initial (RMod_FinitelyCocomplete_via_GAFT R).
 
-(** ** Non-vacuity *)
+(** ** Non-vacuity / ** 非空性 *)
 
-(* The initial module 定理 produces zero module: the
- 恒等 zero homomorphism two arrows out it. （已译） *)
+(*
+ The initial module the theorem produces is the zero module: the
+ identity and the zero homomorphism are two arrows out of it. 
+
+ --------
+ 定理产生的初始模是零模：恒等映射和零同态是从它出发的两个箭头。
+*)
 Lemma RMod_initial_via_GAFT_trivial@{a c p o x +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o +}
   {R : RingObject@{a c p}}
@@ -306,8 +560,13 @@ Proof.
   exact (@zero_unique (RMod R) (RMod_Initial_via_GAFT R) _ id rmod_hom_zero a0).
 Qed.
 
-(* The left injection coproduct split copairing the
- 恒等 zero homomorphism ... （已译） *)
+(*
+ The left injection of the coproduct is split by the copairing of the
+ identity with the zero homomorphism ... 
+
+ --------
+ 余积的左注入被恒等映射与零同态的余配对分裂...
+*)
 Lemma RMod_inl_via_GAFT_retract@{a c p o x +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o +}
   {R : RingObject@{a c p}} (M N : obj[RMod@{o x a p c} R]) :
@@ -315,7 +574,7 @@ Lemma RMod_inl_via_GAFT_retract@{a c p o x +|
     ∘ @inl (RMod R) (RMod_Cocartesian_via_GAFT R) M N ≈ id.
 Proof. exact (@inl_merge (RMod R) (RMod_Cocartesian_via_GAFT R) _ _ _ _ _). Qed.
 
-(* ... and is therefore injective. *)
+(* ... and is therefore injective. / ... 因此是单射的。 *)
 Lemma RMod_inl_via_GAFT_injective@{a c p o x +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o +}
   {R : RingObject@{a c p}} (M N : obj[RMod@{o x a p c} R])
@@ -332,7 +591,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The coproduct of ℤ with itself, as a ℤ-module, is not a subsingleton. / 作为 ℤ-模，ℤ 与自身的余积不是单元素集合。 *)
 Example RMod_coproduct_via_GAFT_nontrivial@{c o x +| Set < c, c < o, c < x +} :
   (∀ a0 b0 : carrier (cmon_setoid
        (@Coprod (RMod@{o x c c c} Int_Ring@{c c c})

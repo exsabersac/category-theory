@@ -13,12 +13,71 @@ Require Import Category.Instance.Coq.
 Generalizable All Variables.
 
 (*
-   本文件给出骨架分离相关。
+   * * Apex-only preservation is strictly weaker than cone-level preservation
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The library has said for some time — in prose — that the apex-only
+   preservation class is too weak: Construction/Comma/Limit.v's STATUS
+   header records that two cone structures on one apex can differ by a
+   non-invertible endomorphism, so knowing that the image APEX carries some
+   limit structure does not make the image CONE universal.  This file turns
+   that standing paragraph into theorems, with the cheapest concrete
+   witness the tree affords and no hand-rolled categories:
+
+   C := Roof            (Instance/Roof.v — the walking span)
+   J := Two_Discrete    (Instance/Two/Discrete.v — two objects, no arrows)
+   D := Coq             (Instance/Coq.v)
+   K := Pick_Two RNeg RPos          (the two feet of the span)
+   F := ASpan fst fst   (Structure/Span.v — both legs to first projection)
+
+   Upstairs, RZero with the legs ZeroNeg/ZeroPos is the limiting cone of K
+   — the span has no other object with maps to both feet.  Downstairs the
+   composite diagram picks out (bool, bool), whose limit is bool × bool
+   with the two genuine projections.  But F sends BOTH legs of the limiting
+   cone to fst, so the image cone at bool × bool has legs (fst, fst) — and
+   a cone whose two legs disagree, such as (id, negb) at apex bool, has
+   no mediator through it ([sep_image_not_limiting]).
+
+   The results, in increasing strength:
+   [apex_limit_without_limit_cone] — the image apex DOES carry a limit of
+   the composite diagram while the image cone at that very apex is not
+   universal (per-diagram separation); [sep_PreservesLimit] +
+   [sep_not_PreservesLimitCone] — the apex-only class is inhabited at
+   (K, F) while the cone-level class is refuted (class-level separation);
+   [PreservesLimit_not_PreservesLimitCone] — no uniform strengthening
+   exists; [sep_comparison_is_dup] / [sep_comparison_not_iso] /
+   [sep_apex_iso] — the documented endomorphism exhibited: the canonical
+   comparison IS the duplicator (w, w') ↦ (w, w), not invertible, even
+   though the apex-only witness still yields SOME isomorphism between the
+   same two objects.  The weak class produces an isomorphism; it just
+   cannot promise the canonical one.
+
+   The other half of the comparison story — cone-level preservation IS
+   invertibility of the canonical comparison — is
+   [LimitCone_comparison_iso] / [comparison_iso_LimitCone] in
+   Structure/Limit/Preservation.v; this file supplies the strictness of
+   the inclusion. 
+
+   --------
+   * * 仅顶点保留严格比锥级保留弱
+
+   该库已经用文字说明了一段时间——顶点保留类太弱：《Construction/Comma/Limit.v》的STATUS头部记录了在一个顶点上的两个锥结构可以通过一个不可逆的自同态而不同，因此，知道像APEX具有某种极限结构并不能使像CONE成为普适锥。这个文件将该段说明转化为定理，并使用树提供的最廉价的具体证据，而不是手工构造的范畴：C := Roof            (实例/Roof.v — 行走跨度)
+   J := Two_Discrete    (实例/Two/Discrete.v — 两个对象，无箭头)
+   D := Coq             (实例/Coq.v)
+   K := Pick_Two RNeg RPos          (跨度的两只脚)
+   F := ASpan fst fst   (结构/Span.v — 两条腿都映射到第一个投影)
+
+   在楼上，带有腿 ZeroNeg/ZeroPos 的 RZero 是 K 的极限锥
+   — 该跨度没有其他对象同时映射到两只脚。 在楼下，
+   复合图选出 (bool, bool)，其极限是 bool × bool
+   并具有两个真正的投影。但 F 将极限锥的两条腿都发送到 fst，
+   因此 bool × bool 上的像锥的腿为 (fst, fst) —
+   而一个两条腿不一致的锥，例如在顶点 bool 上的 (id, negb)，
+   没有通过它的中介 ([sep_image_not_limiting])。结果，按强度递增排列：
+   [apex_limit_without_limit_cone]  — 图像顶点确实承载了复合图的极限，而在该顶点的图像锥并非普遍的（逐图分离）；  [sep_PreservesLimit]  + [sep_not_PreservesLimitCone]  — 仅顶点类在 (K, F) 中存在，而锥级类被驳斥（类级分离）；
+   [PreservesLimit_not_PreservesLimitCone]  — 不存在统一的增强； [sep_comparison_is_dup]  /  [sep_comparison_not_iso]  / [sep_apex_iso]  — 所记录的自同态表现为：典型比较是复制器 (w, w') ↦ (w, w)，不可逆，即便仅顶点的证据仍能在相同两个对象之间产生某些同构。弱类产生一个同构；它只是无法保证典型同构。比较故事的另一半 —— 圆锥级别的保持就是规范比较的可逆性 —— 在 Structure/Limit/Preservation.v 中的 [LimitCone_comparison_iso] / [comparison_iso_LimitCone]；该文件提供了包含的严格性。
 *)
 
-(* * ** A coherence helper two-对象 discrete shape （已译） *)
+(* * ** A coherence helper for the two-object discrete shape / * ** 两对象离散形状的连贯性助手 *)
 
 Lemma two_discrete_cone_coherence {C : Category} (H : Two_Discrete ⟶ C)
   (c : C) (leg : ∀ x : Two_Discrete, c ~{C}~> H x)
@@ -31,7 +90,7 @@ Proof.
   rewrite fmap_id; apply id_left.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The diagram: the two feet of the walking span / * ** 图示：行走跨的两个支点 *)
 
 Definition SepK : Two_Discrete ⟶ Roof := @Pick_Two Roof RNeg RPos.
 
@@ -44,7 +103,7 @@ Definition sep_cone : Cone SepK :=
                  end)
        (fun x y f => I)).
 
-(* 相关说明。 （已译） *)
+(* Only the apex of the span carries legs into both feet. / 只有跨的顶点将腿延伸到双脚。 *)
 
 Lemma sep_apex (v : Roof) (f : v ~{Roof}~> RNeg) (g : v ~{Roof}~> RPos) :
   RZero = v.
@@ -73,12 +132,12 @@ Proof.
   - intros v _; exact I.
 Defined.
 
-(* * ** The 函子: both legs span go first projection （已译） *)
+(* * ** The functor: both legs of the span go to the first projection / * ** 函子：跨度的两条边都指向第一个投影 *)
 
 Definition SepF : Roof ⟶ Coq :=
   @ASpan Coq (prod bool bool) bool bool (@fst bool bool) (@fst bool bool).
 
-(* 相关说明。 （已译） *)
+(* * ** [bool × bool] with its genuine projections is the limit downstairs / * ** [bool × bool] 其真实的投影是楼下的极限 *)
 
 Definition sep_prod_cone : Cone (SepF ◯ SepK) :=
   @Build_Cone Two_Discrete Coq (SepF ◯ SepK) (prod bool bool)
@@ -107,7 +166,7 @@ Proof.
     subst; reflexivity.
 Defined.
 
-(* 相关说明。 （已译） *)
+(* * ** The image cone is NOT limiting, though its apex carries a limit / * ** 图像圆锥并不受限，尽管它的顶点有一个限制 *)
 
 Definition sep_image_isalimit : IsALimit (SepF ◯ SepK) (SepF RZero) :=
   limitcone_isalimit sep_prod_IsLimitCone.
@@ -132,15 +191,20 @@ Proof.
   rewrite H1 in H2; discriminate.
 Qed.
 
-(* Statement (A): apex carries limit 复合 diagram, the
- image cone at very apex not universal. （已译） *)
+(*
+ Statement (A): the apex carries a limit of the composite diagram, and the
+ image cone at that very apex is not universal. 
+
+ --------
+ 陈述 (A)：顶点承载复合图的极限，并且在该顶点的像锥不是通用的。
+*)
 
 Definition apex_limit_without_limit_cone :
   IsALimit (SepF ◯ SepK) vertex_obj[FCone SepF sep_cone]
     * (IsLimitCone (FCone SepF sep_cone) → False) :=
   (sep_image_isalimit, sep_image_not_limiting).
 
-(* 相关说明。 （已译） *)
+(* * ** Statement (B): the class-level separation / * ** 陈述 (B)：类级别的分离 *)
 
 Definition sep_PreservesLimit : PreservesLimit SepK SepF :=
   @Build_PreservesLimit Two_Discrete Roof SepK Coq SepF
@@ -161,7 +225,7 @@ Proof.
   exact (sep_not_PreservesLimitCone (H _ _ _ SepK SepF sep_PreservesLimit)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The documented non-invertible endomorphism, exhibited / * ** 已记录的不可逆自同态，展示 *)
 
 Definition sep_dup : prod bool bool ~{Coq}~> prod bool bool :=
   fun p => (fst p, fst p).
@@ -197,8 +261,13 @@ Proof.
   - rewrite <- sep_comparison_is_dup; exact Hl.
 Qed.
 
-(* And yet apex-only witness produces 同构 between same two
- 对象 — just not canonical one. （已译） *)
+(*
+ And yet the apex-only witness produces an isomorphism between the same two
+ objects — just not the canonical one. 
+
+ --------
+ 然而，仅顶点的证人会在相同的两个对象之间产生一个同构——只是不是那个典型的同构。
+*)
 
 Definition sep_apex_iso (L : Limit SepK) :
   SepF (vertex_obj[L]) ≅ vertex_obj[sep_prod_cone] :=

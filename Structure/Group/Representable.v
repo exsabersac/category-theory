@@ -1,14 +1,261 @@
-(* * * The 函子-of-points criterion 幺半群 group 对象 （已译） *)
+(*
+   * * The functor-of-points criterion for monoid and group objects 
+
+   --------
+   * * 单子对象和群对象的点函子判据
+*)
 
 (*
-   nLab:      https://ncatlab.org/nlab/show/representable+functor
-   Wikipedia: https://en.wikipedia.org/wiki/Group_object
-   Book:      Mac Lane, CWM 2nd ed., Section III.6 ("Groups in
-   Paper:     Eckmann, Hilton, "Group-Like Structures in General
+ nLab:      https://ncatlab.org/nlab/show/group+object
+ nLab:      https://ncatlab.org/nlab/show/representable+functor
+ Wikipedia: https://en.wikipedia.org/wiki/Group_object
+ Book:      Mac Lane, CWM 2nd ed., Section III.6 ("Groups in
+ Categories"), Proposition 1 and remark 2, pp. 75-76
+ Paper:     Eckmann, Hilton, "Group-Like Structures in General
+ Categories I", Mathematische Annalen 145, 1962,
+ Theorem 4.3
 
-   本文件给出可表性相关。
+ Mac Lane's Proposition 1 says that an object [c] of a category with
+ finite products carries a group (monoid) structure exactly when the
+ representable presheaf [C(-,c)] carries one, the transfer running
+ through the comparison [C(-,c) × C(-,c) ≅ C(-, c × c)] and Yoneda.
+ His remark 2 observes that the presheaf side makes sense over a base
+ WITHOUT finite products, and so may be taken as the definition of a
+ group-like object there.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ THREE PRIOR-ART CORRECTIONS, each measured rather than repeated.
+
+ (1) A name search for a group structure on hom-objects returns
+ nothing, but that evidence is MISLEADING rather than informative: by
+ SHAPE the tree is full of group homomorphisms -- [GrpHom]
+ (Instance/Grp.v), [MonHom] (Structure/Groupoid.v), and their uses in
+ Construction/Deloop/Functors.v and a dozen other files.  The genuine
+ gap is narrower and is what this file fills: a group structure on the
+ hom-OBJECT, the group analogue of [Hom_Monoid]
+ (Structure/Monoid.v).
+
+ (2) The reason Awodey's counterexample -- a field K whose ring C(K)
+ of continuous functions is not a field, the pointwise inverse of
+ x ↦ x² being discontinuous at 0 -- is not built here is NOT that the
+ reals, topology and fields are missing.  All three are in tree, and
+ the C(X) functor itself exists: Instance/Top/ContinuousRing.v
+ supplies [CRingOb X : RingObject] and
+ [ContinuousRingFunctor : Top^op ⟶ Rng].  The actual obstruction is
+ narrower: there is no ℝ [FieldObject].  The inhabitants of
+ Instance/FdVect.v's [FieldObject] class are [Q_Field]
+ (Instance/FdVect.v), [F2_Field] (Instance/Field.v) and the
+ PARAMETRIC [FracField] (Instance/Field/Frac.v, the field of
+ quotients of an integral domain); a search for a reals-based
+ [FieldObject] returns nothing.  And [CRingOb X] is a [RingObject],
+ not a field.  So the statement "K is a field but C(K) is not" cannot
+ even be TYPED here, and no impossibility is claimed -- only that the
+ witness object does not exist.
+
+ (3) Structure/Group.v already ASSERTS this file's theorem in
+ prose -- "equivalently, [grp] is a group object iff each hom
+ Hom(X, grp) is a group naturally in X" -- with no formal statement
+ anywhere.  This file is what discharges that sentence.
+
+ WHAT IS DELIVERED, AND AT WHAT STRENGTH.
+
+ The development is factored through ONE record, [HomGroupData e]
+ (and its monoid half [HomMonoidData e]): a family of group
+ operations on each hom-set [x ~> e], with the group laws and with
+ naturality stated as compatibility with precomposition.  This is
+ Eckmann and Hilton's Theorem 4.3 datum, and it is stated over an
+ ARBITRARY category -- no products, no closure, no Yoneda.  Four
+ passages relate it to everything else:
+
+ [monoid_object_hom_data] / [group_object_hom_data]
+ (needs finite products)   GroupObject c  ⟶  HomGroupData c
+ [RepPresheaf_Monoid] / [RepPresheaf_Group]
+ (base-free)               HomGroupData e ⟶  presheaf group
+ [psh_monoid_hom_data] / [psh_group_hom_data]
+ (base-free)               presheaf group ⟶  HomGroupData e
+ [data_MonoidObject] / [data_GroupObject]
+ (needs finite products)   HomGroupData c ⟶  GroupObject c
+
+ (A) The headline is [group_object_iff_representable] and its monoid
+ twin [monoid_object_iff_representable]: for [C] with finite products
+ and any [c], a [GroupObject c] is interderivable with a group object
+ on [C(-,c)] in the presheaf category with its POINTWISE cartesian
+ structure ([Functor_Category_Cartesian] and
+ [Functor_Category_Terminal]).  Both are [Defined], so the two
+ passages are the named constants and can be computed with.  The
+ comparison [C(-,c) × C(-,c) ≅ C(-, c × c)] is never built as a
+ separate isomorphism: an element of the pointwise product IS a pair
+ of morphisms, so the comparison is [fun (f, g) => f △ g] inlined at
+ the two places it is used ([hmul] and [data_mul_eval]).  NOT
+ [rep_mul_nt], as an earlier revision of this header said: that
+ transformation contains no fork at all -- its body is
+ [fun p => hmd_mul D (fst p) (snd p)] -- and it lives in the base-free
+ section, where [c × c] does not exist and the comparison therefore
+ cannot occur.
+
+ The FIVE diagrammatic laws of [GroupObject] convert on the nose to
+ their elementary product forms -- [rg_assoc_law], [rg_unit_left_law],
+ [rg_unit_right_law], [rg_inv_left_law], [rg_inv_right_law] are each
+ proved by [exact] of the corresponding class field, so the statement
+ types are CONVERTIBLE and nothing is transported.  Reading them off
+ is what makes the transfer chases short.
+
+ (B) Remark 2 is [RepresentablyMonoid] / [RepresentablyGroup], stated
+ over an ARBITRARY category (the presheaf category is cartesian and
+ has a terminal object because [Sets] does, whatever [C] is), and the
+ two base-free passages above make it INTERDERIVABLE with the
+ hom-set-family datum there -- interderivable by two named passages,
+ which is weaker than an equivalence: no base-free biconditional is
+ stated, the file's only two [↔]s being the product-requiring headline
+ theorems, and the round trip is not an equivalence of structures (see
+ STRENGTHS below, which says so of the round trips themselves).
+ Where [C] does have finite products, (A)
+ identifies both with [GroupObject c].
+
+ (C) Three further clauses:
+ (a) [exp_GroupObject] is the group analogue of [Hom_Monoid]: under
+ cartesian closure, [y ^ x] is a group object whenever the hom-set
+ data on [y] is given.  Stated precisely because the constant
+ takes a [HomGroupData y], NOT a [GroupObject y]; the composite
+ is immediate through [group_object_hom_data], which is in scope
+ there, but unlike the monoid side's [exp_MonoidObject_of] it is
+ NOT delivered.
+ It is obtained by transporting the hom-set data along
+ curry/uncurry, not by an internal diagram chase.
+ [exp_mappend_is_Hom_Monoid] records by [eq_refl] that the
+ multiplication so obtained IS [Hom_Monoid]'s.
+ (b) The EXTERNAL formulation, with NO cartesian-closure hypothesis
+ and no products either: [HomGrpObject] equips each hom-set with
+ an [Instance/Grp.v] [GrpObject], [HomGrpHom] proves
+ precomposition a homomorphism, and [HomGrpFunctor] packages
+ them as [C^op ⟶ Grp].  RECORDED STRENGTH CHANGE: since the PR
+ "algebraic carriers are sets" (2026-09-17) the three take one
+ further hypothesis, a [Prop]-valued equality on each hom-setoid
+ INTO [e], because an [Instance/Grp.v] group now carries
+ [grp_prop].  The clause about cartesian closure and products is
+ unaffected -- neither is used -- and the section's own comment
+ records why the codomain-only hypothesis is taken rather than
+ [LocallyPropositional C].
+ (c) In [Sets], the operations are pointwise ([sets_mul_pointwise],
+ [sets_unit_pointwise], [sets_inv_pointwise], all [eq_refl]),
+ and for a DISCRETE setoid on a type [A],
+ [sets_hom_iprod_iso : HomGrpA ≅[Grp] iprod_GrpObject A] is the
+ concrete computation Hom(X, G) ≅ ∏_{x ∈ X} G, over
+ Instance/Sets/Products.v's [Sets_iprod_obj].  The discreteness
+ hypothesis is NOT cosmetic: for a general setoid [X] the
+ hom-set consists of ≈-RESPECTING maps while the indexed product
+ consists of all maps out of the carrier, so the construction
+ below is unavailable for a general [X].  Read that at its
+ actual strength: the carrier fact is measured, but "the two
+ carriers differ" does not by itself entail "not isomorphic as
+ groups", and NO counterexample is exhibited here.  The
+ unrestricted statement is EXPECTED to fail and is ARGUED to,
+ not PROVED to.
+
+ STRENGTHS, MEASURED STRICT-FIRST.
+
+ The presheaf round trip returns the DATA on the nose:
+ [data_psh_data_mul], [data_psh_data_unit] and [data_psh_data_inv] are
+ [eq_refl].  The WHOLE record does not ([data_psh_data_whole], pinned
+ as a [Fail]), and the diagnosis is not guesswork: [HomGroupData] has
+ primitive projections WITH eta (checked with [Print]), so record
+ equality is field equality, and the fields that differ are the LAW
+ fields -- [hmd_assoc] of the round trip is the opaque [pmul_assoc],
+ a different constant from the [hmd_assoc] one started with.
+ [data_psh_data_law] pins exactly that.
+
+ The object-level round trip is only [≈], and the residues are named:
+ [rt_mul] must discharge an [exl △ exr] that [fork_exl_exr] collapses
+ to [id] and an [id_right]; [rt_unit] must discharge [one : 1 ~> 1]
+ against [id].  [rt_mul_strict] is the pinned [Fail], with
+ [rt_mul_control] the positive control.  Neither round trip is an
+ equivalence of the two structures and none is claimed.
+
+ NO SEPARATION IS PROVED anywhere in this file.  In particular it is
+ not shown that the presheaf formulation is strictly more general than
+ [GroupObject] over a base without products -- no base-without-
+ products witness carrying a [RepresentablyGroup] is exhibited.
+
+ UNIVERSES, read off BOTH the binder and the constraint block.
+ [HomGroupData@{u u0}] has an EMPTY constraint block, over
+ [C : Category@{u u0 u0}] -- so the hom-and-proof identification is in
+ the BINDER, where reading the block alone would miss it, and it comes
+ from the unannotated [Context {C : Category}] by minimization (the
+ [Build_Quiver_Standard_Eq] family), not from any donor.  RE-MEASURED
+ after the PR "algebraic carriers are sets" (2026-09-17): the record's
+ readback and its EMPTY block are unchanged; what moved is
+ [HomGrpObject], which gained the hypothesis argument and now reads
+ [HomGrpObject@{u u0 u1} : ∀ {C : Category@{u u0 u0}} (e : obj),
+ (∀ x, PropEquiv@{u0 u0} (homset x e)) → HomGroupData@{u u0} e → obj →
+ GrpObject@{u0 u0 u0}] with the one clause [u0 < u1].  It is
+ repairable in principle and is NOT claimed unavoidable.
+ [group_object_iff_representable@{u u0 u1 u2 u3 u4 u5}] likewise has
+ NO equation in its block -- only bounds and the two strict
+ inequalities [u0 < u1] and [u3 < u5] that [Sets] forces -- and its
+ OBJECT universe [u] is BOUNDED FROM ABOVE ONLY and never identified
+ with the hom universe [u0]: the block carries [u <= u2], [u <= u3]
+ and two [projections] bounds, and no equation relating [u] to [u0].
+
+ YONEDA IS NOT USED, and that is deliberate.  [Yoneda_Lemma@{u u0}]
+ (Functor/Hom/Yoneda.v) is stated over [C : Category@{u0 u0 u0}] --
+ object, hom AND proof identified -- which is strictly narrower than
+ what the results here need.  Every passage below is a direct
+ hom-set argument through the naturality field of the structure
+ transformations, so no [Curried_Hom] universe pin is inherited.
+
+ NOT DELIVERED.  No comparison isomorphism [C(-,c) × C(-,c) ≅
+ C(-, c × c)] as a named natural isomorphism; no functoriality of
+ [c ↦ HomGrpFunctor] in [c], hence no [C ⟶ [C^op, Grp]]; no abelian
+ / commutative variant; no ring or module objects; no Awodey
+ counterexample (see (2) above); no equivalence of CATEGORIES between
+ group objects in [C] and group objects in the presheaves on [C]; and
+ no concrete non-degenerate witness -- every result here is stated for
+ an arbitrary [c], and the only concrete category exercised is
+ [Sets].
+
+ AXIOMS.  175/175 constants of this file are closed under the global
+ context -- 173 listed by [Print Module] plus the two [Build_*]
+ constructors of [HomMonoidData] and [HomGroupData], which it does not
+ list.  Counted as: 175/175 of this file are closed under the global
+ context, counted by [Print Module] (which lists the [Program]
+ obligations a [.glob] sweep does not) and queried by fully-qualified
+ name. 
+
+ --------
+ nLab:       https://ncatlab.org/nlab/show/group+object
+ nLab:       https://ncatlab.org/nlab/show/representable+functor
+ Wikipedia:  https://en.wikipedia.org/wiki/Group_object
+ 书籍:       Mac Lane, 《CWM》第二版, 第 III.6 节（“范畴中的群”）, 命题 1 与 备注 2, 第 75-76 页
+ 论文:       Eckmann, Hilton, 《一般范畴中的类似群结构 I》, 《数学年刊》145, 1962, 定理 4.3
+
+ Mac Lane 的命题 1 说，一个具有有限积的范畴中的对象 [c] 当且仅当它的表述前上值([C(-,c)]) 具有群（幺半群）结构时，也携带一个群结构，结构的传递是通过比较 [C(-,c) × C(-,c) ≅ C(-, c × c)] 和 Yoneda 实现的。
+ 他的备注 2 观察到，前上值那一边在没有有限积的基底上也有意义，因此可以作为那里的群似对象的定义。三个先前技术修正，每一个都是测量的而非重复的。
+
+ (1) 对同态对象的群结构进行名称搜索未返回任何结果，但这一证据具有误导性而非提供信息：按照形状，树上充满了群同态——[GrpHom]（Instance/Grp.v）、[MonHom]（Structure/Groupoid.v），以及它们在Construction/Deloop/Functors.v和其他十几个文件中的使用。真正的空白更窄，而这正是该文件所填补的：同态对象上的群结构，即[Hom_Monoid]（Structure/Monoid.v）的群类比。(2) Awodey 的反例——一个域 K，其连续函数环 C(K) 不是域，x ↦ x² 的逐点逆在 0 处不连续——在这里之所以没有构建，并不是因为缺少实数、拓扑和域。三者都在 tree 中，并且 C(X) 函子本身存在：Instance/Top/ContinuousRing.v 提供了 [CRingOb X : RingObject] 和 [ContinuousRingFunctor : Top^op ⟶ Rng]。实际的障碍更狭窄：没有 ℝ [FieldObject]。Instance/FdVect.v 的 [FieldObject] 类的成员是 [Q_Field] (Instance/FdVect.v)、[F2_Field] (Instance/Field.v) 和 PARAMETRIC [FracField] (Instance/Field/Frac.v，即整环的商域)；基于实数的 [FieldObject] 搜索没有返回任何结果。而 [CRingOb X] 是一个 [RingObject]，而不是域。所以声明“K 是一个域，但 C(K) 不是”甚至不能在这里输入，也没有声称不可能——只是说该见证对象不存在。
+
+ (3) Structure/Group.v 已经在文章中断言了这个文件的定理——“等价地，[grp] 是一个群对象，当且仅当每个 Hom(X, grp) 在 X 中自然地是一个群”——在任何地方都没有正式的表述。这个文件就是完成那句话的。
+
+ 交付了什么，以及以什么强度。该发展通过一个记录 [HomGroupData e] （及其幺半群 [HomMonoidData e]）进行分解：在每个同态集合 [x ~> e] 上的一族群运算，满足群律且自然性表示为与前组合的兼容性。这是 Eckmann 和 Hilton 的定理 4.3 的数据，并且它是针对任意范畴提出的——没有乘积，没有闭合，没有 Yoneda。四个步骤将其与其他内容联系起来：
+
+ [monoid_object_hom_data]  /  [group_object_hom_data] 
+ （需要有限乘积）   群对象 c  ⟶  HomGroupData c
+ [RepPresheaf_Monoid]  /  [RepPresheaf_Group] 
+ （无基）               HomGroupData e ⟶  presheaf 群
+ [psh_monoid_hom_data]  /  [psh_group_hom_data] 
+ （无基）               presheaf 群 ⟶  HomGroupData e
+ [data_MonoidObject]  /  [data_GroupObject] 
+ （需要有限乘积）   HomGroupData c ⟶  群对象 c(A) 标题是 [group_object_iff_representable]，其幺半群双胞胎是 [monoid_object_iff_representable]：对于具有有限积的 [C] 和任意 [c]，[GroupObject c] 与 [C(-,c)] 上预层范畴中的群对象是可互导的，并具有其逐点笛卡尔结构（[Functor_Category_Cartesian] 和 [Functor_Category_Terminal]）。两者都是 [Defined]，因此这两个传递是命名常量，并且可以计算。比较 [C(-,c) × C(-,c) ≅ C(-, c × c)] 从未作为单独的同构构建：逐点积的元素就是一对态射，因此比较 [fun (f, g) => f △ g] 在使用的两个地方（[hmul] 和 [data_mul_eval]）被内联。不是[rep_mul_nt]，就像该标题的早期版本所说的那样：该变换根本不包含分叉——它的主体是[fun p => hmd_mul D (fst p) (snd p)]——并且它存在于无基区段中，在那里[c × c]不存在，因此无法进行比较。
+
+ [GroupObject]的五条图示定律可以直接转换为它们的基础乘积形式——[rg_assoc_law]、[rg_unit_left_law]、[rg_unit_right_law]、[rg_inv_left_law]、[rg_inv_right_law]都由相应类域的[exact]证明，因此语句类型是可转换的，没有任何内容被传送。逐个读取它们就是使传递追踪缩短的原因。(B) 注释2是[RepresentablyMonoid] / [RepresentablyGroup]，声明在任意类别上（预层范畴是笛卡尔的，并且有一个终对象，因为[Sets]有，不管[C]是什么），而上面两个无基础的过程使其与那里的同类集族数据可互相推导——通过两个命名的过程可互相推导，这比等价关系弱：并未陈述无基础的双条件，文件中唯一的两个[↔]是需要乘积的标题定理，并且往返并不是结构的等价（见下面的优势［STRENGTHS］，其中说明了往返本身）。当[C]确实具有有限乘积时，（A）将两者都识别为[GroupObject c]。(C) 三个附加条款：
+ (a)  [exp_GroupObject] 是 [Hom_Monoid] 的群类比：在笛卡尔闭包下，每当 [y] 上给出同态集数据时，[y ^ x] 就是一个群对象。精确地说，这是因为该常量接受的是 [HomGroupData y]，而不是 [GroupObject y]；通过 [group_object_hom_data]（它在此处的作用域内）可以立即得到复合，但与幺半群一侧的 [exp_MonoidObject_of] 不同，它**未被提供**。它是通过沿着 curry/uncurry 运输同态集数据获得的，而不是通过内部图示推导获得的。[exp_mappend_is_Hom_Monoid] 通过 [eq_refl] 记录了这样获得的乘法确实属于 [Hom_Monoid]。(b) 外部表述，没有笛卡尔闭性假设，也没有积：[HomGrpObject] 为每个 Hom 集提供 [Instance/Grp.v] [GrpObject]，[HomGrpHom] 证明了前组合是同态，并且 [HomGrpFunctor] 将它们封装为 [C^op ⟶ Grp]。记录的强度变化：自从 PR “代数承载体是集合”（2026-09-17）以来，三者接受进一步假设，即每个 Hom-setoid 上的 [Prop] 值相等性 INTO [e]，因为现在一个 [Instance/Grp.v] 群承载 [grp_prop]。关于笛卡尔闭性和积的条款不受影响——二者都未使用——并且本节的评论记录了为何采用仅对余域的假设而不是 [LocallyPropositional C]。(c) 在 [Sets] 中，运算是逐点的 ([sets_mul_pointwise], [sets_unit_pointwise], [sets_inv_pointwise], 全部 [eq_refl])，对于类型 [A] 上的离散等价类，[sets_hom_iprod_iso : HomGrpA ≅[Grp] iprod_GrpObject A] 是具体的计算 Hom(X, G) ≅ ∏_{x ∈ X} G，基于 Instance/Sets/Products.v 的 [Sets_iprod_obj]。离散性假设并非仅是表面上的：对于一般的等价类 [X]，hom 集由约等价保持的映射组成，而索引积则由载体中的所有映射组成，因此下面的构造对于一般的 [X] 是不可用的。按照其实际意义来理解：载体的事实是被衡量的，但“两个载体不同”本身并不意味着“作为群不是同构”，这里也没有展示反例。不受限制的陈述预计会失败，并且可以论证会失败，而不是被证明会失败。
+
+ 优势，严格优先测量。
+
+ 预层回传会准确返回数据：[data_psh_data_mul]、[data_psh_data_unit] 和 [data_psh_data_inv] 是 [eq_refl]。整个记录不是（[data_psh_data_whole]，被固定为 [Fail]），且诊断不是猜测：[HomGroupData] 拥有带 eta 的原始投影（通过 [Print] 检查），因此记录相等就是字段相等，而不同的字段是法律字段——回传的 [hmd_assoc] 是不透明的 [pmul_assoc]，一个与开始时的 [hmd_assoc] 不同的常量。[data_psh_data_law] 정확固定了这一点。对象级往返仅为 [≈]，并且残基命名如下：
+ [rt_mul] 必须释放一个 [exl △ exr]，使 [fork_exl_exr] 崩塌为 [id] 和一个 [id_right]；[rt_unit] 必须释放 [one : 1 ~> 1] 对抗 [id]。[rt_mul_strict] 是固定的 [Fail]，[rt_mul_control] 是正控制。两个往返都不是两个结构的等价，也没有人声称是等价的。
+
+ 本文件中没有证明任何分离。特别是，没有显示预层构造比 [GroupObject] 在无积基上更一般 —— 没有展示携带 [RepresentablyGroup] 的无积基证据。宇宙，读取装订器和约束块。[HomGroupData@{u u0}] 有一个空的约束块，位于 [C : Category@{u u0 u0}] 上——所以同态和证明的标识在装订器中，如果只读取块会错过它，并且它来自未注释的 [Context {C : Category}] 通过最小化（[Build_Quiver_Standard_Eq] 系列），而不是来自任何供体。经过 PR“代数承载是集合”（2026-09-17）重新测量：记录的回读及其空块没有改变；变化的是 [HomGrpObject]，它获得了假设参数，现在读作 [HomGrpObject@{u u0 u1} : ∀ {C : Category@{u u0 u0}} (e : obj)，(∀ x, PropEquiv@{u0 u0} (homset x e)) → HomGroupData@{u u0} e → obj → GrpObject@{u0 u0 u0}]，只有一个条款 [u0 < u1]。原则上它是可修复的，并且不被认为是不可避免的。[group_object_iff_representable@{u u0 u1 u2 u3 u4 u5}] 同样在其区块中没有方程——只有边界和两个严格的不等式 [u0 < u1] 和 [u3 < u5]，这是 [Sets] 强制的——并且其对象范畴 [u] 只从上方有界，并且从未与同态范畴 [u0] 识别：该区块包含 [u <= u2]、[u <= u3] 和两个 [projections] 边界，并且没有将 [u] 与 [u0] 关联的方程。 
+
+ 没有使用 YONEDA，这是故意的。[Yoneda_Lemma@{u u0}] (Functor/Hom/Yoneda.v) 是在 [C : Category@{u0 u0 u0}] 上陈述的——对象、同态及证明都已确定——这比此处的结果严格狭窄。下面的每一段都是通过结构变换的自然性字段直接进行同态集论证，因此没有继承 [Curried_Hom] 范畴的限制。未交付。没有比较同构 [C(-,c) × C(-,c) ≅ C(-, c × c)] 作为命名自然同构；[c ↦ HomGrpFunctor] 在 [c] 中没有函子性，因此没有 [C ⟶ [C^op, Grp]；没有阿贝尔/交换变体；没有环或模对象；没有 Awodey 反例（见上文第 (2) 点）；在 [C] 中的群对象与 [C] 上的预层的群对象之间没有范畴等价；没有具体的非退化证据——这里的每个结果都是针对任意 [c] 陈述的，唯一使用的具体范畴是 [Sets]。公理。该文件的175/175个常量在全局上下文下是封闭的——173个由[Print Module]列出，加上两个[Build_*]构造函数[HomMonoidData]和[HomGroupData]，它未列出。计数为：该文件的175/175个在全局上下文下封闭，由[Print Module]计数（它列出了[Program]义务，而[.glob]扫描未列出）并通过完全限定名查询。
 *)
 
 Require Import Category.Lib.
@@ -103,9 +350,19 @@ Arguments hgd_inv_natural {C e} _ {x y} _ _.
 #[export] Existing Instance hgd_inv_respects.
 
 (*
-   本节说明hom、幺半群相关定义、性质与动机。
+   * ** From a monoid or group object to the hom-set data
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The engine: a [MonoidObject] on [c] makes every hom-set [x ~> e] a
+   monoid, by [f · g := mappend ∘ (f △ g)] and [e := mempty ∘ one], and
+   a [GroupObject] adds [f⁻¹ := inverse ∘ f].  The five [rg_*_law]
+   lemmas below read the diagrammatic axioms off in their elementary
+   product form; each is [exact] of the corresponding class field, so
+   the two statements are CONVERTIBLE. 
+
+   --------
+   * ** 从幺半群或群对象到同态集数据
+
+   引擎：在  [c] 上的  [MonoidObject] 使得每个同态集  [x ~> e]  成为一个幺半群，通过  [f · g := mappend ∘ (f △ g)] 和  [e := mempty ∘ one] ，并且一个  [GroupObject] 添加了  [f⁻¹ := inverse ∘ f] 。下面的五个  [rg_*_law] 引理以它们的基本积形式读取图示公理；每个都是相应类型域的  [exact] ，因此这两个陈述是可互换的。
 *)
 
 Section HomMonoidEngine.
@@ -258,9 +515,16 @@ Definition group_object_hom_data : HomGroupData c :=
 End HomGroupEngine.
 
 (*
-   本节说明Yoneda、hom、幺半群相关定义、性质与动机。
+   * ** From the hom-set data to a presheaf monoid or group object
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Base-free: no products, no closure, no Yoneda.  The presheaf
+   category is cartesian and has a terminal object because [Sets] does,
+   so [CC_Monoidal] applies there whatever [C] is. 
+
+   --------
+   * ** 从同态集数据到预层单子或群对象
+
+   无基：没有积，没有闭包，没有Yoneda。预层范畴是笛卡尔的并且有一个终对象，因为[Sets]有，所以[CC_Monoidal]在任何[C]的情况下都适用。
 *)
 
 Section ToPresheaf.
@@ -323,9 +587,17 @@ Next Obligation. rewrite !id_right; apply hgd_inv_r. Qed.
 End ToPresheafGroup.
 
 (*
-   本节说明hom、幺半群、来源与用途相关定义、性质与动机。
+   * ** From a presheaf monoid or group object back to the hom-set data
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Also base-free.  Every law is extracted componentwise: the class
+   field is a natural-transformation equation, applied at an object and
+   then at an element, and the [id_right] residues come from the
+   pointwise identity of [Sets]. 
+
+   --------
+   * ** 从预层单子或群对象回到同态集数据
+
+   也是无基的。每条定律都是逐分量提取的：类字段是一个自然变换方程，先在一个对象上应用，然后在一个元素上应用，而 [id_right] 的剩余来自 [Sets] 的逐点恒等式。
 *)
 
 Section FromPresheaf.
@@ -444,9 +716,19 @@ Definition psh_group_hom_data : HomGroupData e :=
 End FromPresheafGroup.
 
 (*
-   本节说明hom、幺半群、始/终对象相关定义、性质与动机。
+   * ** From the hom-set data to a monoid or group object
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   This is the half that needs finite products.  The structure
+   morphisms are the operations evaluated at the generic pair and the
+   generic point -- [data_mul := f · g] at [f := exl], [g := exr];
+   [data_unit] at the terminal object; [data_inv] at [id] -- and
+   [data_mul_eval], [data_unit_eval], [data_inv_eval] recover the whole
+   family from them by naturality. 
+
+   --------
+   * ** 从同态集数据到一个幺半群或群对象
+
+   这是需要有限积的那一半。结构态射是在泛对和泛点上评估的运算——[data_mul := f · g] 在 [f := exl]、[g := exr]；[data_unit] 在终对象上；[data_inv] 在 [id]——以及 [data_mul_eval]、[data_unit_eval]、[data_inv_eval]，通过自然而然性从它们恢复整个族。
 *)
 
 Section ToObject.
@@ -542,7 +824,7 @@ Qed.
 
 End ToObjectGroup.
 
-(* 相关说明。 （已译） *)
+(* * ** Mac Lane Proposition 1 and remark 2 / * ** 马克·莱恩 命题 1 和 备注 2 *)
 
 Definition RepresentablyMonoid {C : Category} (e : C) : Type :=
   @MonoidObject ([C^op, Sets]) CC_Monoidal (RepPresheaf e).
@@ -592,9 +874,16 @@ Defined.
 End Headline.
 
 (*
-   本节说明函子、hom、笛卡尔相关定义、性质与动机。
+   * ** The external formulation: a functor into Grp
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Clause (b): no cartesian closure and no products are used here.  The
+   hom-SET carries an [Instance/Grp.v] group and precomposition is a
+   homomorphism, so the assignment is a functor [C^op ⟶ Grp]. 
+
+   --------
+   * ** 外部表述：进入Grp的函子
+
+   条款(b)：这里没有使用笛卡尔闭包和积。hom-SET携带一个[Instance/Grp.v]群，并且预组合是一个同态，因此该分配是一个函子[C^op ⟶ Grp]。
 *)
 
 Section HomGrpFunctor.
@@ -602,15 +891,41 @@ Section HomGrpFunctor.
 Context {C : Category}.
 Context (e : C).
 (*
-   本节说明hom、（余）强度相关定义、性质与动机。
+ RECORDED STRENGTH CHANGE.  An earlier revision took only
+ [{C : Category} (e : C) (D : HomGroupData e)].  Since the PR "algebraic
+ carriers are sets" (2026-09-17) an [Instance/Grp.v] group carries
+ [grp_prop], and the hom-set this section turns into a group is a hom-set
+ of the ARBITRARY ambient [C], so the section assumes a [Prop]-valued
+ equality on each of the hom-setoids it actually uses.  The theorem below
+ therefore reads "for every [C] whose hom-sets INTO [e] are propositional
+ ...", which is strictly weaker than what was in tree.  What is NOT
+ weakened is clause (b) of the headline, since no cartesian closure and no
+ products are used here either, and the two headline biconditionals earlier
+ in this file build no [GrpObject] and are untouched.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ Why this hypothesis and not [LocallyPropositional C].  The class would be
+ the tidier assumption and any locally propositional [C] discharges [HP] by
+ [fun x => locally_prop x e] -- [Grp] itself
+ ([Grp_LocallyPropositional], Instance/Grp.v), and [Ab], [CMon], [RMod R].
+ But the one in-tree instantiation is at [C := Sets], which is NOT locally
+ propositional and cannot be (Instance/Sets/Propositional.v's header says
+ why); what IS available there is [hom_PropEquiv], which constrains only
+ the CODOMAIN.  The codomain-only hypothesis is therefore both the weaker
+ assumption and the usable one. 
+
+ --------
+ 记录的强度变化。早期的修订只采用了 [{C : Category} (e : C) (D : HomGroupData e)]。自从 PR “代数载体是集合”（2026-09-17）以来，一个 [Instance/Grp.v] 群承载 [grp_prop]，而本节中将同态集变为群的同态集，是任意环境 [C] 的同态集，因此本节假设每个实际使用的同态集对象上都有一个 [Prop] 值的等式。下面的定理因此读作 “对于每一个 [C]，其到 [e] 的同态集是命题性的……”，这严格地比树中所写的要弱。未被削弱的是标题的条款 (b)，因为这里也没有使用笛卡尔闭包和乘积，而本文件中先前的两个标题双向条件不构建任何 [GrpObject] 且未受影响。为什么选择这个假设而不是 [LocallyPropositional C]。这个类会是更整洁的假设，任何局部命题的 [C] 都可以通过 [fun x => locally_prop x e] 来解除 [HP] —— [Grp] 本身（[Grp_LocallyPropositional]，Instance/Grp.v），以及 [Ab]、[CMon]、[RMod R]。但唯一的树内实例化位于 [C := Sets]，它不是局部命题的，也不能是（Instance/Sets/Propositional.v 的头文件说明了原因）；在那里可用的是 [hom_PropEquiv]，它只约束陪域。因此，只约束陪域的假设既是较弱的假设，也是可用的假设。
 *)
 Context (HP : forall x : C, PropEquiv (@homset C x e)).
 Context (D : HomGroupData e).
 
-(* Named rather than inline: a [Program] record literal cannot carry a
-   [PropEquiv] field naming a setoid written inline in the same literal. *)
+(*
+ Named rather than inline: a [Program] record literal cannot carry a
+ [PropEquiv] field naming a setoid written inline in the same literal. 
+
+ --------
+ 使用命名而非内联：[Program] 记录字面量不能携带命名在同一字面量中以内联形式编写的集合类型的 [PropEquiv] 字段。
+*)
 Definition hom_grp_setoid (x : C) : SetoidObject :=
   {| carrier := x ~> e ; is_setoid := @homset C x e |}.
 
@@ -642,7 +957,7 @@ Definition HomGrpFunctor_Forget_agrees (x : C) :
 
 End HomGrpFunctor.
 
-(* 相关说明。 （已译） *)
+(* * ** Round trips, measured strict-first / * ** 往返行程，严格优先测量 *)
 
 Section RoundTrips.
 
@@ -664,9 +979,13 @@ Example data_psh_data_inv {x : C} (f : x ~> e) :
     = hgd_inv D f := eq_refl.
 
 (*
-   本节说明 Representable 相关定义、性质与动机。
+ The data fields above return on the nose; the LAW fields do not, and
+ that is the whole reason the record round trip fails.  [HomGroupData]
+ has primitive projections with eta, so record equality IS field
+ equality. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 上面的数据字段返回精确匹配；LAW 字段则不匹配，这就是记录往返失败的整个原因。[HomGroupData] 有带 eta 的原始投影，所以记录相等性就是字段相等性。
 *)
 Fail Example data_psh_data_law {x : C} (f g h : x ~> e) :
   @hmd_assoc C e (psh_monoid_hom_data e
@@ -681,9 +1000,16 @@ Fail Example data_psh_data_whole :
   psh_group_hom_data e (RepPresheaf_Group e D) = D := eq_refl.
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+ The whole-record control the negative above needs.  Without it that
+ [Fail] is guarded only by [data_psh_data_law_control], which is a
+ control for the LAW FIELD and not for the record, so a change making
+ whole-record equality unstatable would leave the negative succeeding
+ for the wrong reason.  No [≈] repair is available to sit beside it:
+ no setoid on [HomGroupData] exists anywhere in the tree, so an [≈]
+ statement about the record is not even formable. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 对上述负值需求的整个记录控制。如果没有它，[Fail] 仅受 [data_psh_data_law_control] 的保护，而 [data_psh_data_law_control] 是针对 LAW FIELD 的控制，而不是针对记录的，因此做出使整个记录等价不可声明的更改会导致负值成功的原因错误。没有可用的 [≈] 修复来与之并列：树中任何地方都不存在 [HomGroupData] 上的集合体，因此关于记录的 [≈] 声明甚至无法形成。
 *)
 Example data_psh_data_whole_control : D = D := eq_refl.
 
@@ -723,11 +1049,20 @@ Qed.
 
 End RoundTripsObject.
 
-(* * ** Clause (a): exponential group 对象
+(*
+   * ** Clause (a): the exponential of a group object
 
- The group analogue [Hom_Monoid] (Structure/Monoid.v),
- obtained transporting hom-set data along curry/uncurry rather
- than internal diagram chase. （已译） *)
+   The group analogue of [Hom_Monoid] (Structure/Monoid.v),
+   obtained by transporting the hom-set data along curry/uncurry rather
+   than by an internal diagram chase. 
+
+   --------
+   * ** 条款 (a)：群对象的指数
+
+   群的类似物 [Hom_Monoid]（Structure/Monoid.v），
+   是通过沿着 curry/uncurry 传递 hom 集数据获得的，
+   而不是通过内部图表推演获得的。
+*)
 
 Section Exponential.
 
@@ -816,7 +1151,7 @@ End ExpGroup.
 
 End Exponential.
 
-(* 相关说明。 （已译） *)
+(* * ** Clause (c): the computation in Sets / * ** 条款 (c)：集合中的计算 *)
 
 Require Import Category.Instance.Sets.Products.
 
@@ -824,9 +1159,12 @@ Section SetsComputation.
 
 Context (gobj : Sets).
 (*
-   本节说明 Representable 相关定义、性质与动机。
+ [Sets] is NOT declared locally propositional (Instance/Sets/Propositional.v
+ says why), so the witness for THIS object is a section hypothesis.  Since
+ the PR "algebraic carriers are sets" (2026-09-17). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [Sets] 没有在本地声明为命题型（Instance/Sets/Propositional.v 说明了原因），因此该对象的证据是一个区段假设。自从 PR “代数载体是集合”（2026-09-17）以来。
 *)
 Context (Pg : PropEquiv (is_setoid gobj)).
 Context (G : @GroupObject Sets CC_CartesianMonoidal gobj).
@@ -879,7 +1217,7 @@ Program Definition iprod_GrpObject (A : Type) : GrpObject := {|
   grp_unit := fun _ => grp_unit elem_GrpObject;
   grp_mul  := fun s t a => grp_mul elem_GrpObject (s a) (t a);
   grp_inv  := fun s a => grp_inv elem_GrpObject (s a);
-  (* An indexed product of one propositional setoid, pointwise. *)
+  (* An indexed product of one propositional setoid, pointwise. / 一个命题等价类集的索引乘积，逐点地。 *)
   grp_prop := iprod_PropEquiv (fun _ : A => gobj) (fun _ => Pg)
 |}.
 Next Obligation.
@@ -893,9 +1231,14 @@ Next Obligation. intro w; exact (grp_mul_inv_l elem_GrpObject (a w)). Qed.
 
 Context (A : Type).
 
-(* [HomGrpObject] applied at [C := Sets], not locally
- propositional; 假设 discharged section's [Pg]
- through [hom_PropEquiv], constrains CODOMAIN. （已译） *)
+(*
+ [HomGrpObject] is applied at [C := Sets], which is not locally
+ propositional; its hypothesis is discharged from the section's [Pg]
+ through [hom_PropEquiv], which constrains only the CODOMAIN. 
+
+ --------
+ [HomGrpObject] 应用于 [C := Sets]，这不是局部命题；它的假设通过 [hom_PropEquiv] 从该部分的 [Pg] 中释放，该 [hom_PropEquiv] 仅约束陪域。
+*)
 Definition HomGrpA : GrpObject :=
   @HomGrpObject Sets gobj (fun x : Sets => @hom_PropEquiv x gobj Pg)
                 (@group_object_hom_data Sets _ _ gobj G)

@@ -7,18 +7,60 @@ Require Import Equations.Prop.Logic.
 Generalizable All Variables.
 
 (*
-   本文件给出构造。
+   * * Strict equality of functors out of a funny tensor product
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [Instance/StrictCat.v] compares functors with [Functor_StrictEq_Setoid]
+   (Theory/Functor.v): equal object maps, with morphism maps agreeing after
+   transporting along the object equalities.  Every coherence law of the
+   funny tensor product that lives over [StrictCat] therefore ends in the
+   same kind of proof: two functors out of [C □ D] must be shown strictly
+   equal.
+
+   This file proves that master lemma once and for all ([Funny_strict_eq]):
+   since every morphism of [C □ D] is a word in the generating steps
+   [lstep]/[rstep], two functors out of [C □ D] are strictly equal as soon
+   as they agree on objects and, after transport, on the generating steps.
+   The word induction here is the single transport-heavy proof of the
+   development; the seam helpers ([transport_id_hom], [transport_cod_comp],
+   [transport_dom_comp], [transport_seam]) localize the transport
+   bookkeeping so that downstream files never repeat it.
+
+   As corollaries: the eta rule [Funny_eta] (every functor out of [C □ D]
+   is recovered by [FunnyUP] from its restriction [toSep] to the generating
+   steps), and the uniqueness half of the pushout universal property
+   [Funny_UP_unique] (any functor agreeing with a [SepFunctorial] package
+   on the generators is strictly equal to [FunnyUP] of the package).
+
+   Precedent for the transport kit: [Compose_respects_stricteq] and the
+   surrounding lemmas in Theory/Functor.v, and Instance/StrictCat/ToCat.v. 
+
+   --------
+   * * 从一个有趣的张量积出发的函子严格相等性
+
+   [Instance/StrictCat.v] 比较与 [Functor_StrictEq_Setoid] 的函子
+   （Theory/Functor.v）：对象映射相等，态射映射在沿对象相等性传输后也相等。 因此，每一个扎根于 [StrictCat] 的有趣张量积的相干律最终都归结为同一类证明：必须证明两个来自 [C □ D] 的函子严格相等。该文件最终证明了主引理 ([Funny_strict_eq])：
+   由于 [C □ D] 的每个态射都是在生成步骤 [lstep] / [rstep] 中的一个词，一旦两个从 [C □ D] 出发的函子在对象上以及在经过传递后的生成步骤上都一致，它们就严格相等。
+   这里的词归纳是开发过程中的唯一一个以传递为主的证明；缝合辅助工具 ([transport_id_hom], [transport_cod_comp], [transport_dom_comp], [transport_seam]) 将传递的记录本地化，以便下游文件不必重复它。作为推论：eta 规则 [Funny_eta]（从 [C □ D] 出发的每个函子都可以通过 [FunnyUP] 从其对生成步骤 [toSep] 的限制中恢复），以及推挤出普遍性质 [Funny_UP_unique] 的唯一性部分（任何在生成器上与 [SepFunctorial] 包一致的函子都严格等于该包的 [FunnyUP]）。
+
+   传输工具包的先例：[Compose_respects_stricteq] 以及 Theory/Functor.v 和 Instance/StrictCat/ToCat.v 中的相关引理。
 *)
 
-(* * ** Seam helpers
+(*
+   * ** Seam helpers
 
- [transport] moves 态射 along equality codomain and
- [transport_r] along equality domain; note orientation
- [transport_r B (p : = b) : B b → B a], matching
- [Functor_StrictEq_Setoid]. Each helper proved path induction, so
- each holds definitionally once equality [eq_refl]. （已译） *)
+   [transport] moves a morphism along an equality of its codomain and
+   [transport_r] along an equality of its domain; note the orientation
+   [transport_r B (p : a = b) : B b → B a], matching
+   [Functor_StrictEq_Setoid].  Each helper is proved by path induction, so
+   each holds definitionally once the equality is [eq_refl]. 
+
+   --------
+   * ** 接缝辅助工具
+
+   [transport] 在其余域的等式上移动一个态射，
+   [transport_r] 在其定义域的等式上移动一个态射；注意方向
+   [transport_r B (p : a = b) : B b → B a]，与 [Functor_StrictEq_Setoid] 匹配。每个辅助工具都是通过路径归纳证明的，因此一旦等式为 [eq_refl]，每个工具在定义上都成立。
+*)
 
 Lemma transport_id_hom {E : Category} {a b : E} (p : a = b) :
   transport (fun z => a ~{E}~> z) p id
@@ -37,8 +79,13 @@ Lemma transport_dom_comp {E : Category} {x x' m w : E} (p : x = x')
     = u ∘ transport_r (fun z => z ~{E}~> m) p v.
 Proof. destruct p; reflexivity. Qed.
 
-(* Moving transport across 复合 seam: domain-transport the
- left factor equals codomain-transport right factor. （已译） *)
+(*
+ Moving a transport across a composition seam: a domain-transport on the
+ left factor equals a codomain-transport on the right factor. 
+
+ --------
+ 在组合缝上移动传输：左因子的域传输等于右因子的陪域传输。
+*)
 Lemma transport_seam {E : Category} {x m m' w : E} (p : m = m')
   (u : m' ~{E}~> w) (v : x ~{E}~> m) :
   transport_r (fun z => z ~{E}~> w) p u ∘ v
@@ -46,9 +93,12 @@ Lemma transport_seam {E : Category} {x m m' w : E} (p : m = m')
 Proof. destruct p; reflexivity. Qed.
 
 (*
-   本节说明函子、hom相关定义、性质与动机。
+ ≈-congruence of the two transports, stated on hom-setoids directly so
+ that [apply] needs no higher-order unification (cf. the instances
+ [proper_transport_cod] and [proper_transport_dom] in Theory/Functor.v). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 两个传输的≈-相合，直接在同值集合上陈述，因此[apply]不需要高阶统一（参见Theory/Functor.v中的[proper_transport_cod]和[proper_transport_dom]实例）。
 *)
 Lemma transport_cod_respects {E : Category} {x w w' : E} (p : w = w')
   {u v : x ~{E}~> w} :
@@ -63,7 +113,12 @@ Lemma transport_dom_respects {E : Category} {x x' w : E} (p : x = x')
     ≈ transport_r (fun z => z ~{E}~> w) p v.
 Proof. intros; destruct p; assumption. Qed.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** Introduction form for [Functor_StrictEq_Setoid] 
+
+   --------
+   * ** [Functor_StrictEq_Setoid] 的介绍表格
+*)
 
 Definition Functor_StrictEq_intro {A B : Category} (F G : A ⟶ B)
   (eo : ∀ x : A, F x = G x)
@@ -72,7 +127,7 @@ Definition Functor_StrictEq_intro {A B : Category} (F G : A ⟶ B)
         ≈ transport_r (fun z => z ~{B}~> G y) (eo x) (fmap[G] f)) :
   @equiv _ (@Functor_StrictEq_Setoid A B) F G := (eo; em).
 
-(** ** The master lemma *)
+(** ** The master lemma / ** 主条目 *)
 
 Section FunnyStrictEq.
 
@@ -93,9 +148,14 @@ Context (er : ∀ (c : C) (d d' : D) (g : d ~{D}~> d'),
                   (@fmap (C □ D) E K (c, d) (c, d') (rstep g))).
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+ The word induction: agreement on the generating steps extends to every
+ word.  In the cons cases [fconsL f t ≡ t ∘ lstep f] holds definitionally
+ ([fconsL_decomp]), so [fmap_comp] splits the word at the head; the seam
+ helpers then walk both transports to the seam [(cb, da)] (resp.
+ [(ca, db)]), where the induction hypothesis and [el] (resp. [er]) meet. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 归纳一词：对生成步骤的共识扩展到每个单词。在cons情况中，[fconsL f t ≡ t ∘ lstep f]在定义上成立（[fconsL_decomp]），因此[fmap_comp]在开头处分割单词；缝隙辅助然后将两个传输引导到缝隙[(cb, da)]（分别为[(ca, db)]），在那里归纳假设和[el]（分别为[er]）相遇。
 *)
 Lemma Funny_strict_eq_word {c1 : C} {d1 : D} {c2 : C} {d2 : D}
   (t : FunHom c1 d1 c2 d2) :
@@ -114,7 +174,7 @@ Proof using C D E H K el eo er.
     apply transport_dom_respects.
     symmetry.
     exact (@fmap_id (C □ D) E K (c, d)).
-  - (* fconsL f t ≡ t ∘ lstep f *)
+  - (* fconsL f t ≡ t ∘ lstep f / fconsL f t ≡ t ∘ lstep f *)
     etransitivity.
     { apply transport_cod_respects.
       exact (@fmap_comp (C □ D) E H (ca, da) (cb, da) (cc, dc) t (lstep f)). }
@@ -128,7 +188,7 @@ Proof using C D E H K el eo er.
     apply transport_dom_respects.
     symmetry.
     exact (@fmap_comp (C □ D) E K (ca, da) (cb, da) (cc, dc) t (lstep f)).
-  - (* fconsR g t ≡ t ∘ rstep g *)
+  - (* fconsR g t ≡ t ∘ rstep g / fconsR g t ≡ t ∘ rstep g *)
     etransitivity.
     { apply transport_cod_respects.
       exact (@fmap_comp (C □ D) E H (ca, da) (ca, db) (cc, dc) t (rstep g)). }
@@ -144,10 +204,15 @@ Proof using C D E H K el eo er.
     exact (@fmap_comp (C □ D) E K (ca, da) (ca, db) (cc, dc) t (rstep g)).
 Qed.
 
-(* In applications [eo] is typically [fun _ _ => eq_refl] (or pair/单位
- destruct), making transports [el]/[er] vanish definitionally. The
- 对象 component needs pair match because [prod] has no definitional
- eta.（已译） *)
+(*
+ In applications [eo] is typically [fun _ _ => eq_refl] (or a pair/unit
+ destruct), making the transports in [el]/[er] vanish definitionally.  The
+ object component needs the pair match because [prod] has no definitional
+ eta. 
+
+ --------
+ 在应用中，[eo] 通常是 [fun _ _ => eq_refl]（或一对/单位销毁），使得 [el] / [er] 中的传输本质上消失。对象组件需要对匹配，因为 [prod] 没有定义上的 eta。
+*)
 Theorem Funny_strict_eq : @equiv _ (@Functor_StrictEq_Setoid (C □ D) E) H K.
 Proof using C D E H K el eo er.
   refine (Functor_StrictEq_intro H K
@@ -160,7 +225,12 @@ Qed.
 
 End FunnyStrictEq.
 
-(* * ** Eta: 函子 out [C □ D] determined generating steps （已译） *)
+(*
+   * ** Eta: a functor out of [C □ D] is determined by the generating steps 
+
+   --------
+   * ** Eta：从 [C □ D] 到外函子由生成步骤决定
+*)
 
 Corollary Funny_eta {C D E : Category} (H : (C □ D) ⟶ E) :
   @equiv _ (@Functor_StrictEq_Setoid (C □ D) E) H (FunnyUP (toSep H)).
@@ -174,7 +244,7 @@ Proof.
     exact (id_left (@fmap (C □ D) E H (c, d) (c, d') (rstep g))).
 Qed.
 
-(* * ** Uniqueness half pushout 普遍性质 （已译） *)
+(* * ** Uniqueness half of the pushout universal property / * ** 推出通用性质的唯一性一半 *)
 
 Corollary Funny_UP_unique {C D E : Category} {h : C → D → E}
   (S : SepFunctorial h) (H : (C □ D) ⟶ E)

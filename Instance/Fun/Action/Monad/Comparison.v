@@ -21,21 +21,172 @@ Require Import Category.Monad.Comparison.Resolution.
 
 Generalizable All Variables.
 
-(* * * Awodey's uniqueness comparison 函子, without coherence （已译） *)
+(* * * Awodey's uniqueness of the comparison functor, without the coherence / * * Awodey的比较函子唯一性，缺乏一致性 *)
 
 (*
+ Book: Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
+ September 2005), §10.3, the comparison functor, printed p. 277
+ (PDF p. 286) — awodey:10.3:construction-comparison-functor;
+ with his Definition 7.10, printed p. 165 (PDF p. 174).
  Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Springer GTM 5, 1998, §VI.3, Theorem 1, printed p. 142 (PDF
+ p. 151); §VI.7, the definition of a comparison, printed p. 153
+ (PDF p. 162) — maclane:VI.7:def1.
  nLab: https://ncatlab.org/nlab/show/monadic+adjunction
 
-   本文件给出单子相关实例。
+ WHAT THE BOOKS SAY, read from the page images.  Awodey, p. 277: "If we
+ start with an adjunction F ⊣ U and construct C^T for T = U ∘ F, we
+ then get a comparison functor Φ : D → C^T, with U^T ∘ Φ ≅ U,
+ Φ ∘ F = F^T ...  In fact, Φ is unique with this property."  His ≅
+ between functors is an isomorphism in the functor category, the
+ natural isomorphism of his Definition 7.10 (p. 165), and his = is an
+ equality of functors; that mixed property is his reading.  Mac Lane's
+ §VI.3 Theorem 1 (p. 142) has an equality in both places: "there is a
+ unique functor K : A → X^T with G^T K = G and KF = F^T".  Issue #482
+ states the clause at ≈ in both places, "∀ K, EM_Forget ◯ K ≈ U →
+ K ◯ F ≈ EM_Free → K ≈ EM_Comparison".
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ WHAT HOLDS.  With an isomorphism in the first place the uniqueness is
+ false, in both readings, each refuted here at one monad on [Sets]; it
+ is true once a comparison carries Monad/Comparison/Resolution.v's
+ coherence [cmp_monad]:
+ - the issue's reading, ≈ in both places: [bare_awodey_refuted];
+ - Awodey's printed reading, U^T ∘ Φ ≅ U at ≈ and Φ ∘ F = F^T at
+ Theory/Functor.v's [Functor_StrictEq_Setoid] (objects equal by =,
+ arrows by ≈ after transport): [printed_awodey_not_unique];
+ - the coherent reading, every comparison over the identity
+ identification of the two monads ≈ [EM_Comparison]: Resolution.v's
+ [EM_Comparison_unique], with [EM_Comparison_unique_cell] for the
+ uniqueness of the isomorphism.
+ Mac Lane's reading, with an equality in both places, is his Theorem 1,
+ proved in set theory and not formalized here (NOT DELIVERED).  So it
+ is the isomorphism in Awodey's first condition that breaks his
+ uniqueness clause: with an equality there it is Mac Lane's theorem.
+
+ THE MONOID.  [LZ] is {1, a, b} on [option bool], 1 the unit ([None])
+ and a, b ([Some true], [Some false]) left zeros, x y = x unless x = 1;
+ σ ([lz_swap]) swaps a and b.  σ is an automorphism ([lz_swap_op],
+ [lz_swap_swap]) and not inner, 1 being the only unit; what the
+ refutations use is that no c in LZ has c k = σ(k) c for every k, and
+ that σ moves a and is injective.  The
+ monad is Instance/Fun/Action/Monad.v's [ActMonad LZ], LZ × (−) on
+ [Sets], with two of its resolutions: the adjunction [MSet_adj LZ] of
+ LZ-sets, and its Kleisli resolution.
+
+ THE ISSUE'S READING, at the adjunction of LZ-sets.  σ* ([Swap_MSet])
+ restricts an action along σ, and K is [EM_Comparison] after σ*
+ ([K_swap]).  U^T K = U with identity components ([K_forget],
+ [K_forget_components]), and K F ≅ F^T through σ × 1 ([K_free],
+ [KF_iso]): K satisfies both hypotheses.  K is not ≈ [EM_Comparison]
+ ([K_not_EMC]): at the free LZ-set on one point, with the right
+ multiplications by k as arrows (Instance/Fun/Action/Monad.v's
+ [MSet_extend] of [lz_pick] k), a natural isomorphism would give c with
+ c k = σ(k) c for every k.  Hence [bare_awodey_refuted].  The
+ coherence is what rules K out: no comparison over Resolution.v's
+ [EM_Comparison_theta], the identity identification, has a functor ≈ K
+ ([K_no_coherent_comparison], through [EM_Comparison_unique]).  And K
+ with [K_free] and [K_forget] IS a comparison, over the monad
+ automorphism θ_σ ([K_Comparison]), whose components are σ × 1 at
+ [eq_refl] ([theta_sigma], [theta_sigma_component]): the uniqueness is
+ relative to the identification θ, as Resolution.v's [Comparison] is.
+
+ AWODEY'S PRINTED READING, at the Kleisli resolution.  Over the
+ adjunction of LZ-sets, transporting σ* back "at the free algebras"
+ would need a decision of which LZ-sets are free, which an
+ [MSetoidAction] does not offer; in the Kleisli resolution every object
+ is free.  Φ ([Phi]) sends a Kleisli arrow f to the free extension of
+ σ ∘ f, (k, x) ↦ (k σ((f x)₁), (f x)₂): Φ ∘ F = F^T at
+ [Functor_StrictEq_Setoid], with [eq_refl] on objects
+ ([Phi_free_strict]), and U^T ∘ Φ ≅ U through σ × 1 ([Phi_forget]).
+ Φ₀ ([Phi0]), the free extension of f itself, has the same two
+ properties ([Phi0_free_strict], [Phi0_forget]) and is ≈ the
+ comparison functor of the Kleisli resolution ([Phi0_EMC]).  Φ is not
+ ≈ that comparison functor ([Phi_not_EMC]): at the one-point setoid and
+ the Kleisli arrows [lz_pick] k, an isomorphism would make σ(k), for
+ every k, the image of c k under a map fixing a and b, for one c.  So
+ the printed property has two solutions, Φ and Φ₀, that are not even
+ isomorphic ([printed_awodey_not_unique]).  Φ₀ is built, rather than
+ the comparison functor used, because Φ₀ has Φ ∘ F = F^T with
+ [eq_refl] on objects by construction, while the comparison functor's
+ left triangle on objects is refused at [eq_refl] at a variable
+ adjunction (Test/ProbeResolution482.v, R1).
+
+ STRENGTHS.  Every statement is at ≈ except [Phi_free_strict] and
+ [Phi0_free_strict], at [Functor_StrictEq_Setoid] with [eq_refl] on
+ objects, and the two [Example]s, at [eq_refl], each restated in
+ Test/ProbeResolution482.v (C22, C23), which also holds the positive
+ controls: [EM_Comparison] at [MSet_adj LZ] satisfies the two
+ hypotheses of [bare_awodey_refuted] (C18, C19) and is a comparison
+ over the identity identification (C20) to which [EM_Comparison_unique]
+ applies (C21), so that neither refutation is vacuous.  Twenty-two
+ proofs end [Defined] and fourteen [Qed] (counted by token).  The
+ [Defined]s, measured by closing each alone [Qed] in a copy of this
+ file and naming the first command that then stops: [LZ]
+ ([lz_swap_first]), [lz_swap_first] ([lz_swap_first_iso]),
+ [lz_swap_first_iso] ([Phi_forget]), [lz_pick] ([K_not_EMC]),
+ [SwapAct] ([Swap_map]), [Swap_MSet] ([K_forget]), [K_forget]
+ ([K_forget_components]), [KF_to] and [KF_from] (each [KF_iso]),
+ [KF_iso] ([K_free]), [K_free] ([K_Comparison]), [phi_fun]
+ ([phi_hom]), [phi_hom] ([Phi]), [Phi] ([Phi_free_strict]),
+ [phi0_fun] ([phi0_hom]), [phi0_hom] ([Phi0]), [Phi0]
+ ([Phi0_free_strict]), [Phi0_EMC_iso] ([Phi0_EMC]), [theta_sigma_to]
+ and [theta_sigma_from] (each [theta_sigma]), [theta_sigma]
+ ([theta_sigma_component]): twenty-one load-bearing.  [K_Comparison],
+ which no later command reads, is [Defined] by the data convention
+ only.
+
+ UNIVERSES, read off [About] under Set Printing Universes, every one of
+ the forty-two names (the [.glob] heads; no [Program] is used and no
+ obligation or subproof constant exists).  Every name is universe
+ polymorphic, binding zero to six levels; no block mentions [Set] and
+ none carries an equation.  The six names on [option bool] alone,
+ [lz_op] to [lz_swap_swap] but [LZ], bind no level; [LZ] and [SwapAct]
+ bind o, the level of the carrier and of its equality
+ (LZ : MonObject@{o o o}); every other name binds o and so, with
+ o < so, so the level of the objects of [Sets@{o so}], the bound
+ Instance/Sets.v's [Sets] carries.  The Printed section adds the
+ levels u and u0 of the Kleisli and Eilenberg–Moore categories there,
+ with o < u (o < u0 at [phi_hom] and [phi0_hom]);
+ [K_no_coherent_comparison] binds the three further levels that
+ [Comparison] and [EM_Comparison_theta] bring.  The Sigma section
+ declares m1 and m2, the object and hom levels of [Monads Sets], apart,
+ and its five names bind them: θ_σ's type reads Isomorphism@{m1 m2 m2}
+ over Monads@{so o m1 m2}, where, unannotated in a copy of this file,
+ minimization identified them, Isomorphism@{so so so} over
+ Monads@{so o so so} (under Set Printing All; the artifact of issue
+ #1363).  The standard library's caps (compose and ID, Specif's
+ Projections, Datatypes' projections and prod_rect,
+ Logic_lemmas.equality, and eq_ind and eq_rect with their variants)
+ are inherited from the donors, none as a strict bound.  Compiled on
+ Coq 8.19.2 and 8.20.1 in source overlays, each of the forty-two names
+ binds the same number of levels as on Rocq 9.1.1, with no equation and
+ no [Set] (compared by [About], by script).
+
+ NOT DELIVERED.  Mac Lane's reading with an equality in both places, as
+ an equation of functors in Coq: #475's strict uniqueness for the
+ Kleisli comparison needed a coherence hypothesis on its object
+ equations (Monad/Kleisli/Comparison.v's
+ [Kleisli_Comparison_unique_of_strict]), and the same would be needed
+ here.  A counterexample over a group, where σ would have to be an
+ outer automorphism, is not given. 
+
+ --------
+ 书籍：Awodey，《范畴论》，第一版（卡内基梅隆预印本，2005年9月），§10.3，比对函子，第277页（PDF第286页）— awodey:10.3:construction-comparison-functor；以及他的定义7.10，第165页（PDF第174页）。
+ 书籍：Mac Lane，《为工作数学家准备的范畴论》，第二版，Springer GTM 5，1998年，§VI.3，第1定理，第142页（PDF第151页）；§VI.7，比对的定义，第153页（PDF第162页）— maclane:VI.7:def1。
+ nLab: https://ncatlab.org/nlab/show/monadic+adjunction书中所说，从页面图片中阅读。Awodey，第277页：“如果我们从一个伴随 F ⊣ U 开始，并构造 C^T 对于 T = U ∘ F，那么我们就得到一个比较函子 Φ : D → C^T，其中 U^T ∘ Φ ≅ U，Φ ∘ F = F^T……实际上，Φ 是唯一具有此属性的。” 他在函子之间的 ≅ 是函子范畴中的同构，即他第7.10条定义（第165页）中的自然同构，而他的 = 是函子的相等；这种混合性质是他的理解。Mac Lane 的 §VI.3 定理1（第142页）在两处都有相等：“存在唯一的函子 K : A → X^T 使得 G^T K = G 并且 KF = F^T”。问题 #482 在两处使用 ≈ 条款，“∀ K, EM_Forget ◯ K ≈ U → K ◯ F ≈ EM_Free → K ≈ EM_Comparison”。成立的内容。最初有一个同构时，唯一性在两种解读下都是不成立的，每种在 [Sets] 的一个 monad 上都被反驳；一旦进行 Monad/Comparison/Resolution.v 的比较，其一致性 [cmp_monad] 后，它就成立：
+ - 问题中的解读，在两处都为 ≈：[bare_awodey_refuted]；
+ - Awodey 的印刷版解读，在 Theory/Functor.v 的 [Functor_StrictEq_Setoid] 上 U^T ∘ Φ ≅ U 在 ≈ 处，Φ ∘ F = F^T，(对象通过 = 相等，箭头通过 transport 后 ≈)：[printed_awodey_not_unique]；
+ - 一致的解读，每个比较都基于两个 monads 的恒等识别 ≈ [EM_Comparison]：Resolution.v 的 [EM_Comparison_unique]，其中 [EM_Comparison_unique_cell] 用于同构的唯一性。Mac Lane 的解读，在两处都用等号，就是他的定理 1，在集合论中证明，这里尚未形式化（未交付）。所以正是在 Awodey 的第一个条件中的同构破坏了他的唯一性条款：如果那里是一个等式，那就是 Mac Lane 的定理。
+
+ 幺半群。[LZ] 是 [option bool] 上的 {1, a, b}，1 为单位元（[None]），a 和 b（[Some true]，[Some false]）为左零元，x y = x 除非 x = 1；σ（[lz_swap]）交换 a 和 b。σ 是自同构（[lz_swap_op]，[lz_swap_swap]）且非内自同构，1 是唯一的单位元；反驳所用的是 LZ 中没有元素 c 满足对每个 k c k = σ(k) c，且 σ 移动 a 并且是单射。
+
+ 幺半群是 Instance/Fun/Action/Monad.v 的 [ActMonad LZ]，LZ × (−) 在 [Sets] 上，有两个它的解析：LZ-集合的伴随关系 [MSet_adj LZ]，以及它的 Kleisli 解析。问题的解读，在 LZ-集的附加处。σ* ([Swap_MSet]) 沿 σ 限制一个作用，而 K 是 σ* 后的 [EM_Comparison] ([K_swap])。U^T K = U，并带有恒等分量 ([K_forget], [K_forget_components])，并且 K F ≅ F^T 通过 σ × 1 ([K_free], [KF_iso])：K 满足两个假设。K 不等于 ≈ [EM_Comparison] ([K_not_EMC])：在单点的自由 LZ-集上，以 k 的右乘作为箭头（Instance/Fun/Action/Monad.v 的 [MSet_extend] 的 [lz_pick] k），自然同构会给出 c，使得 c k = σ(k) c 对每个 k 都成立。因此 [bare_awodey_refuted]。相容性正是排除 K 的原因：没有关于 Resolution.v 的 [EM_Comparison_theta]、恒等识别的比较，存在一个函子 ≈ K ([K_no_coherent_comparison]，通过 [EM_Comparison_unique]) 。并且 K 与 [K_free] 和 [K_forget] 是一个比较，通过幺范数自同构 θ_σ ([K_Comparison])，其分量在 [eq_refl] ([theta_sigma], [theta_sigma_component]) 上是 σ × 1：唯一性是相对于同一性 θ 的，就像 Resolution.v 的 [Comparison] 一样。AWODEY的印刷阅读，在Kleisli分解下。在LZ-集的伴随上，将σ*传回“在自由代数上”将需要决定哪些LZ-集是自由的，而[MSetoidAction]并未提供这种决定；在Kleisli分解中，每个对象都是自由的。Φ([Phi])将一个Kleisli箭头f发送到σ ∘ f的自由扩展，(k, x) ↦ (k σ((f x)₁), (f x)₂)：Φ ∘ F = F^T在[Functor_StrictEq_Setoid]上，对于对象[eq_refl] ([Phi_free_strict])，并且U^T ∘ Φ ≅ U通过σ × 1 ([Phi_forget])。Φ₀([Phi0])，f自身的自由扩展，具有相同的两个性质([Phi0_free_strict], [Phi0_forget])，并且≈Kleisli分解的比较函子([Phi0_EMC])Φ 不是那个比较函子 ([Phi_not_EMC])：在单点集合等价类和 Kleisli 箭头 [lz_pick] k 上，一个同构会使 σ(k) 对每个 k 都是 c k 在固定 a 和 b 的映射下的像，对于一个 c。因此打印出的性质有两个解，Φ 和 Φ₀，它们甚至不是同构的 ([printed_awodey_not_unique])。Φ₀ 是构建出来的，而不是使用的比较函子，因为 Φ₀ 有 Φ ∘ F = F^T 并且在对象上通过构造满足 [eq_refl]，而比较函子在对象上的左三角在一个变量伴随 (Test/ProbeResolution482.v, R1) 的 [eq_refl] 被拒绝。优势。除了 [Phi_free_strict] 和 [Phi0_free_strict]，每个陈述都在 ≈，在 [Functor_StrictEq_Setoid] 与 [eq_refl] 在对象上，以及两个 [Example]，在 [eq_refl]，每个都在 Test/ProbeResolution482.v (C22, C23) 中重述，该文件还包含阳性对照： [EM_Comparison] 在 [MSet_adj LZ] 满足 [bare_awodey_refuted] 的两个假设 (C18, C19) 并且是在身份识别上的比较 (C20)，ZW66WZZ 适用 (C21)，因此没有反驳是空的。二十二个证明结束于 [Defined]，十四个 [Qed]（按标记计数）。[Defined] s，由关闭此文件副本中的每个单独 [Qed] 来测量，并命名随后停止的第一个命令：[LZ] ([lz_swap_first]), [lz_swap_first] ([lz_swap_first_iso]), [lz_swap_first_iso] ([Phi_forget]), [lz_pick] ([K_not_EMC]), [SwapAct] ([Swap_map]), [Swap_MSet] ([K_forget]), [K_forget] ([K_forget_components]), [KF_to] 和 [KF_from] (每个 [KF_iso]), [KF_iso] ([K_free]), [K_free] ([K_Comparison]), [phi_fun] ([phi_hom]), [phi_hom] ([Phi]), [Phi] ([Phi_free_strict]), [phi0_fun] ([phi0_hom]), [phi0_hom] ([Phi0]), [Phi0] ([Phi0_free_strict]), [Phi0_EMC_iso] ([Phi0_EMC]), [theta_sigma_to] 和 [theta_sigma_from] (每个 [theta_sigma]), [theta_sigma] ([theta_sigma_component])：二十一项承重。[K_Comparison]，随后没有命令读取，根据数据约定仅由 [Defined]。UNIVERSES，在“设置打印宇宙”下读出 [About]，每一个四十二个名称（[.glob] 头；未使用 [Program]，也不存在义务或子证明常量）。每个名称都是宇宙多态的，绑定零到六个层级；没有区块提到 [Set]，也没有携带方程。仅在 [option bool] 上的六个名称，[lz_op] 到 [lz_swap_swap] 但 [LZ]，不绑定层级；[LZ] 和 [SwapAct] 绑定 o，即承载者及其等式的层级 (LZ : MonObject@{o o o})；每个其他名称绑定 o 和 so，o < so，因此 [Sets@{o so}] 的对象的层级，即被绑定的 Instance/Sets.v 中 [Sets] 所承载的层级。打印部分添加了Kleisli和Eilenberg–Moore范畴中的层级u和u0，其中o < u（在[phi_hom]和[phi0_hom]中o < u0）；[K_no_coherent_comparison]绑定了[Comparison]和[EM_Comparison_theta]带来的三个进一步的层级。Sigma部分分别声明了[Monads Sets]的对象层级和态射层级m1和m2，并且它的五个名称绑定了它们：θ_σ的类型在Monads@{so o m1 m2}上读取Isomorphism@{m1 m2 m2}，在该文件的一个未带注解的副本中，最小化识别了它们，为Monads@{so o so so}上的Isomorphism@{so so so}（在Set Printing All模式下；这是问题#1363的结果）。标准库的宏（compose 和 ID，Specif 的投影，Datatypes 的投影和 prod_rect，Logic_lemmas.equality，以及 eq_ind 和 eq_rect 及其变体）是从捐赠者继承的，没有作为严格限制。在源代码覆盖层上通过 Coq 8.19.2 和 8.20.1 编译，每个四十二个名称绑定的层数与 Rocq 9.1.1 上相同，没有方程，也没有 [Set]（通过脚本由 [About] 比较）。未交付。Mac Lane 在两个地方都将其以等式的形式阅读，作为 Coq 中函子方程：#475 对 Kleisli 比较的严格唯一性需要对其对象方程（Monad/Kleisli/Comparison.v 的 [Kleisli_Comparison_unique_of_strict]）假设一致性，在这里同样也需要。在一个群上的反例没有给出，其中 σ 必须是一个外自同构。
 *)
 
 (* ------------------------------------------------------------------------ *)
-(* * ** The 幺半群 {1, a, b} automorphism σ swapping b （已译） *)
+(* * ** The monoid {1, a, b} and the automorphism σ swapping a and b / * ** 幺半群 {1, a, b} 和交换 a 和 b 的自同构 σ *)
 
-(* 相关说明。 （已译） *)
+(* 1 is [None]; a and b are [Some true] and [Some false], each a left zero: x y = x unless x = 1. / 1 是 [None]；a 和 b 分别是 [Some true] 和 [Some false]，每个都是左零：x y = x 除非 x = 1。 *)
 Definition lz_op (x y : option bool) : option bool :=
   match x with None => y | Some c => Some c end.
 
@@ -58,7 +209,7 @@ Proof.
   - exact lz_op_unit_r.
 Defined.
 
-(* σ: an automorphism, not inner, since 1 is the only unit. *)
+(* σ: an automorphism, not inner, since 1 is the only unit. / σ：一个自同构，不是内自同构，因为1是唯一的单位元。 *)
 Definition lz_swap (x : option bool) : option bool :=
   match x with None => None | Some c => Some (negb c) end.
 
@@ -69,7 +220,7 @@ Proof. destruct x as [[]|], y as [[]|]; reflexivity. Qed.
 Lemma lz_swap_swap (x : option bool) : lz_swap (lz_swap x) = x.
 Proof. destruct x as [[]|]; reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(* σ × 1 on the carrier LZ × X of the free LZ-set on X. / σ × 1 在自由 LZ 集 X 上的载体 LZ × X 上。 *)
 Definition lz_swap_first@{o so} (X : SetoidObject@{o o}) :
   act_prod LZ@{o} X ~{Sets@{o so}}~> act_prod LZ@{o} X.
 Proof.
@@ -87,7 +238,7 @@ Proof.
   - intros [g x]; simpl. split; [ apply lz_swap_swap | reflexivity ].
 Defined.
 
-(* 相关说明。 （已译） *)
+(* The element k of LZ × 1, as a map 1 → LZ × 1: a Kleisli arrow 1 → 1 of LZ × (−), and, extended by [MSet_extend], the right multiplication by k of the free LZ-set on 1. / LZ × 1 的元素 k，作为映射 1 → LZ × 1：LZ × (−) 的 Kleisli 箭头 1 → 1，并且，通过 [MSet_extend] 扩展，自由 LZ-集合上对 1 的右乘法 k。 *)
 Definition lz_pick@{o so} (k : option bool) :
   unit_setoid_object@{o o}
     ~{Sets@{o so}}~> act_prod LZ@{o} unit_setoid_object@{o o}.
@@ -97,9 +248,9 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(* * ** The issue's reading, refuted at 伴随 LZ-sets （已译） *)
+(* * ** The issue's reading, refuted at the adjunction of LZ-sets / * ** 问题的读法，在 LZ-集的附加中被驳斥 *)
 
-(* σ*: an action restricted along σ. *)
+(* σ*: an action restricted along σ. / σ*: 沿着σ受限制的动作。 *)
 Definition SwapAct@{o} (A : MSetoidAction@{o o o o o o o o} LZ@{o}) :
   MSetoidAction@{o o o o o o o o} LZ@{o}.
 Proof.
@@ -133,14 +284,14 @@ Proof.
   - intros A B C f g x. reflexivity.
 Defined.
 
-(* K, the comparison functor after σ*. *)
+(* K, the comparison functor after σ*. / K，在 σ* 之后的比较函子。 *)
 Definition K_swap@{o so} :
   MSet@{so so o o o o o o} LZ@{o}
     ⟶ @EilenbergMoore@{so so so o} Sets@{o so} (ActF@{o so} LZ@{o})
           (ActMonad@{o so} LZ@{o}) :=
   EM_Comparison (MSet_adj@{o so} LZ@{o}) ◯ Swap_MSet@{o so}.
 
-(* U^T K = U, with identity components. *)
+(* U^T K = U, with identity components. / U^T K = U，带有单位分量。 *)
 Lemma K_forget@{o so} :
   EM_Forget (ActF@{o so} LZ@{o}) ◯ K_swap@{o so} ≈ MSet_Forget@{o so} LZ@{o}.
 Proof.
@@ -191,7 +342,7 @@ Proof.
     split; [ apply lz_swap_swap | reflexivity ].
 Defined.
 
-(* K F ≅ F^T, through σ × 1. *)
+(* K F ≅ F^T, through σ × 1. / K F ≅ F^T，通过 σ × 1。 *)
 Lemma K_free@{o so} :
   K_swap@{o so} ◯ MSet_Free@{o so} LZ@{o} ≈ EM_Free (ActF@{o so} LZ@{o}).
 Proof.
@@ -201,9 +352,13 @@ Proof.
 Defined.
 
 (*
-   本节说明同构相关定义、性质与动机。
+ No natural isomorphism K ≅ EM_Comparison: with f its leg at the free
+ LZ-set on 1 and c := f (1, ∗), f (k, ∗) is σ(k) c, f being a map of
+ algebras into the twisted action, and c k, f commuting with the right
+ multiplication by k; LZ has no such c. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 没有自然同构 K ≅ EM_Comparison：其腿 f 在 1 上的自由 LZ 集合上，并且 c := f(1, ∗)，f(k, ∗) 是 σ(k) c，f 是进入扭曲作用的代数映射，并且 c k, f 与右乘 k 交换；LZ 没有这样的 c。
 *)
 Lemma K_not_EMC@{o so} :
   K_swap@{o so} ≈ EM_Comparison (MSet_adj@{o so} LZ@{o}) → False.
@@ -237,7 +392,7 @@ Proof.
   intros [[]|]; discriminate.
 Qed.
 
-(* The issue's reading of Awodey's clause, refuted. *)
+(* The issue's reading of Awodey's clause, refuted. / 对阿沃迪条款的解读被驳回。 *)
 Theorem bare_awodey_refuted@{o so} :
   ¬ (∀ K' : MSet@{so so o o o o o o} LZ@{o}
               ⟶ @EilenbergMoore@{so so so o} Sets@{o so}
@@ -250,8 +405,13 @@ Proof.
   exact (K_not_EMC (H K_swap K_forget K_free)).
 Qed.
 
-(* The coherence what excludes K: no comparison over 恒等
- identification two 单子 has 函子 ≈ K. （已译） *)
+(*
+ The coherence is what excludes K: no comparison over the identity
+ identification of the two monads has a functor ≈ K. 
+
+ --------
+ 连贯性是排除 K 的原因：没有关于两个单子的同一性识别的比较有一个函子 ≈ K。
+*)
 Corollary K_no_coherent_comparison@{o so +}
   (P : Comparison (@EM_Adjunction Sets@{o so} (ActF@{o so} LZ@{o})
                      (ActMonad@{o so} LZ@{o}))
@@ -267,7 +427,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* * ** Awodey's printed reading, refuted at the Kleisli resolution / * ** 阿沃迪的印刷读物，在克莱斯利决议中被驳斥 *)
 
 Section Printed.
 
@@ -288,7 +448,7 @@ Local Notation EMK := (@EilenbergMoore SetsU KFF TK).
 Local Notation FT := (@EM_Free SetsU KFF TK).
 Local Notation UT := (@EM_Forget SetsU KFF TK).
 
-(* The free extension of σ ∘ f: (k, x) ↦ (k σ((f x)₁), (f x)₂). *)
+(* The free extension of σ ∘ f: (k, x) ↦ (k σ((f x)₁), (f x)₂). / σ ∘ f 的自由扩展: (k, x) ↦ (k σ((f x)₁), (f x)₂)。 *)
 Definition phi_fun {X Y : SetoidObject@{o o}} (f : X ~{Kl}~> Y) :
   act_prod LZU X ~{SetsU}~> act_prod LZU Y.
 Proof.
@@ -324,7 +484,7 @@ Proof.
            | reflexivity ].
 Defined.
 
-(* Φ ∘ F = F^T at Theory/Functor.v's strict functor equality. *)
+(* Φ ∘ F = F^T at Theory/Functor.v's strict functor equality. / 在 Theory/Functor.v 的严格函子等式中，Φ ∘ F = F^T。 *)
 Lemma Phi_free_strict :
   @equiv _ (@Functor_StrictEq_Setoid _ _) (Phi ◯ KlFree) FT.
 Proof.
@@ -333,7 +493,7 @@ Proof.
   split; reflexivity.
 Qed.
 
-(* U^T ∘ Φ ≅ U, through σ × 1. *)
+(* U^T ∘ Φ ≅ U, through σ × 1. / U^T ∘ Φ ≅ U，通过 σ × 1。 *)
 Lemma Phi_forget : UT ◯ Phi ≈ KlForget.
 Proof.
   exists lz_swap_first_iso.
@@ -343,9 +503,13 @@ Proof.
 Qed.
 
 (*
-   本节说明函子、同构相关定义、性质与动机。
+ No natural isomorphism Φ ≅ the comparison functor: at the one-point
+ setoid, with s its leg into Φ, which fixes a and b, and c the first
+ component of its other leg at (1, ∗), σ(k) would be the first
+ component of s (c k, ∗) for every k. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 没有自然同构 Φ ≅ 比较函子：在单点集合的等价类上，s 是其进入 Φ 的一条支，其固定 a 和 b，而 c 是其在 (1, ∗) 上另一条支的第一分量，对于每个 k，σ(k) 将是 s(c k, ∗) 的第一分量。
 *)
 Lemma Phi_not_EMC : Phi ≈ EM_Comparison KlAdj → False.
 Proof.
@@ -374,8 +538,13 @@ Proof.
   - rewrite Hs in E1. discriminate E1.
 Qed.
 
-(* The free extension Φ₀ f itself has same property ≈ the
- comparison 函子. （已译） *)
+(*
+ The free extension Φ₀ of f itself has the same property and is ≈ the
+ comparison functor. 
+
+ --------
+ 函数 f 的自由扩展 Φ₀ 本身具有相同的性质，并且大约等于比较函子。
+*)
 Definition phi0_fun {X Y : SetoidObject@{o o}} (f : X ~{Kl}~> Y) :
   act_prod LZU X ~{SetsU}~> act_prod LZU Y.
 Proof.
@@ -450,7 +619,7 @@ Proof.
   split; reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Awodey's printed property, U^T Φ ≅ U and Φ F = F^T, has two solutions that are not isomorphic. / Awodey 的印刷属性，U^T Φ ≅ U 且 Φ F = F^T，有两个不相同构的解。 *)
 Theorem printed_awodey_not_unique :
   ∃ Φ1 Φ2 : Kl ⟶ EMK,
     (UT ◯ Φ1 ≈ KlForget) *
@@ -468,11 +637,11 @@ Qed.
 End Printed.
 
 (* ------------------------------------------------------------------------ *)
-(* * ** K comparison, over 单子 automorphism θ_σ （已译） *)
+(* * ** K is a comparison, over the monad automorphism θ_σ / * ** K 是一个比较，关于幺半群自同构 θ_σ *)
 
 Section Sigma.
 
-(* m1 m2, 对象 hom levels [Monads Sets], kept apart. （已译） *)
+(* m1 and m2, the object and hom levels of [Monads Sets], kept apart. / m1 和 m2，即 [Monads Sets] 的对象和同态级别，保持分离。 *)
 Universes o so m1 m2.
 Constraint o < so.
 
@@ -510,7 +679,7 @@ Proof.
     split; [ simpl; apply lz_swap_op | reflexivity ].
 Defined.
 
-(* θ_σ, an isomorphism in [Monads Sets] with components σ × 1. *)
+(* θ_σ, an isomorphism in [Monads Sets] with components σ × 1. / θ_σ，是 [Monads Sets] 中的一个同构，其分量为 σ × 1。 *)
 Definition theta_sigma :
   @Isomorphism (Monads@{_ _ m1 m2} Sets@{o so})
     (MSet_Forget@{o so} LZ@{o} ◯ MSet_Free@{o so} LZ@{o};
@@ -530,8 +699,13 @@ Example theta_sigma_component (X : SetoidObject@{o o}) :
   transform[mh_transform (to theta_sigma)] X = lz_swap_first@{o so} X
   := eq_refl.
 
-(* K, triangles [K_free] [K_forget], comparison over
- θ_σ, where [EM_Comparison] one over 恒等 identification. （已译） *)
+(*
+ K, with the triangles [K_free] and [K_forget], is a comparison over
+ θ_σ, where [EM_Comparison] is one over the identity identification. 
+
+ --------
+ K，带有三角形 [K_free] 和 [K_forget]，是关于 θ_σ 的比较，其中 [EM_Comparison] 是关于恒等识别的一种比较。
+*)
 Definition K_Comparison :
   Comparison (@EM_Adjunction Sets@{o so} (ActF@{o so} LZ@{o})
                 (ActMonad@{o so} LZ@{o}))

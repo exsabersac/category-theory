@@ -8,16 +8,44 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** Cat has binary products, given by the product category. *)
+(** Cat has binary products, given by the product category. / 范畴有二元积，由积范畴给出。 *)
 
 (*
+ nLab:      https://ncatlab.org/nlab/show/Cat
  nLab:      https://ncatlab.org/nlab/show/product+category
  Wikipedia: https://en.wikipedia.org/wiki/Product_category
  Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
 
-   本文件给出笛卡尔结构实例。
+ The categorical product of two categories C and D in Cat is the product
+ category C ∏ D (Construction/Product.v): objects are pairs (c, d), morphisms
+ are pairs (f, g), and composition is componentwise. This file equips Cat
+ with the binary-product half of its [Cartesian] structure, taking
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ product_obj C D := C ∏ D,
+
+ with projection functors exl := Fst (π₁, (c, d) ↦ c) and exr := Snd (π₂,
+ (c, d) ↦ d), and pairing ⟨F, G⟩ := fork F G the functor x ↦ (F x, G x).
+ The class field [ump_products] discharged below is the universal mapping
+ property: exl ∘ ⟨F, G⟩ ≅ F, exr ∘ ⟨F, G⟩ ≅ G, and ⟨F, G⟩ is the unique
+ such functor up to natural isomorphism (the hom-equivalence in Cat is
+ natural isomorphism, not on-the-nose equality, so these are ≅ in [Cat]).
+
+ This supplies only the *binary* products. The nullary product, the terminal
+ object of Cat, is the terminal category 1 (Instance/One.v, [Cat_Terminal]);
+ the two together make Cat a category with finite products. 
+
+ --------
+ nLab:       https://ncatlab.org/nlab/show/Cat 
+ nLab:       https://ncatlab.org/nlab/show/product+category 
+ Wikipedia:  https://en.wikipedia.org/wiki/Product_category 
+ Wikipedia:  https://en.wikipedia.org/wiki/Product_(category_theory) 
+
+ 在 Cat 中，两个范畴 C 和 D 的范畴积是积范畴 C ∏ D（Construction/Product.v）：对象是对 (c, d)，态射是对 (f, g)，且组合是逐分量的。该文件为 Cat 提供了其 [Cartesian] 结构的二元积一半，定义为
+
+ product_obj C D := C ∏ D,使用投影函子 exl := Fst (π₁, (c, d) ↦ c) 和 exr := Snd (π₂, (c, d) ↦ d)，以及配对 ⟨F, G⟩ := fork F G，即函子 x ↦ (F x, G x)。
+ 下方解除的类字段 [ump_products] 是通用映射性质：exl ∘ ⟨F, G⟩ ≅ F，exr ∘ ⟨F, G⟩ ≅ G，且 ⟨F, G⟩ 是唯一的此类函子（至自然同构而言）（在 Cat 中的 Hom 等价是自然同构，而不是严格相等，因此在 [Cat] 中它们是 ≅）。
+
+ 这只提供了*二元*积。零元积，Cat 的终对象，是终范畴 1（Instance/One.v，[Cat_Terminal]）；二者结合使得 Cat 具有有限积的范畴结构。
 *)
 
 Local Set Warnings "-intuition-auto-with-star".

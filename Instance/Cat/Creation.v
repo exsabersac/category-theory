@@ -24,17 +24,94 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(* * * Creation limits stable under fibre product 范畴 （已译） *)
+(* * * Creation of limits is stable under the fibre product of categories / * * 极限的构造在范畴的纤维积下是稳定的 *)
 
 (*
+ nLab: https://ncatlab.org/nlab/show/created+limit
  nLab: https://ncatlab.org/nlab/show/pullback
 
-   本文件给出 Cat 相关实例。
+ Mac Lane §V.6 Exercises 3 and 4 (book p. 125).  Exercise 3 asks that
+ creation of limits be stable under pullback in [Cat]: given a cospan
+ [F : A ⟶ C], [G : B ⟶ C] and the pullback [P] of the two, if [F] creates
+ the limits [G] preserves then the projection [P ⟶ B] creates them.
+ Exercise 4 asks that the comma category be recovered as such a pullback,
+ giving a second proof that its projection creates limits.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ READ THE FIRST WORD OF THAT PRECISELY, because the tree already refutes
+ the naive reading.  Instance/Cat/Pullback.v proves
+ [FibreProduct_not_Cat_pullback]: the fibre product of categories is NOT a
+ pullback in [Cat].  Read THAT narrowly in turn, as its own file insists
+ (Instance/Cat/Pullback.v): it is a refutation AT ONE
+ COSPAN, [1 --true--> Indiscrete bool <--false-- 1], where the apex is
+ object-empty; the same cospan does have a [Cat] pullback, and nothing in
+ the tree refutes [FibreProduct (Coslice_Proj d) U] as a [Cat] pullback of
+ ITS cospan.  (An earlier revision of this header, of the commit message
+ and of the docs/INDEX.md bullet said the coslice apex was "refuted for
+ this object"; measured, the refutation is at the [Indiscrete bool]
+ cospan and says nothing about the coslice one.)  What the fibre product
+ is is a pullback in [StrictCat], and even there only under [ObjUIP C]
+ ([FibreProduct_IsPullback]); whether [Cat] has pullbacks at all is
+ neither proved nor refuted anywhere.  So the honest Exercise 3 is a
+ theorem about [FibreProduct] — the object that IS the pullback where the
+ tree can say so — and that is what is proved here.  Nothing below asserts
+ a pullback square in [Cat].
+
+ Two things are worth naming before the statements.
+
+ First, this proof needs NO [ObjUIP].  It never touches
+ [FibreProduct_IsPullback]; it works with the apex's own data, the stored
+ equality [`2 (K j) : F (KA j) = G (KB j)] and the stored cast condition
+ on arrows, both of which are definitional.  The printed type of
+ [fp_snd_StrictlyCreatesLimit] carries no [uip] argument.
+
+ Second, what it DOES need is that the bottom functor create limits
+ STRICTLY, not merely up to isomorphism.  The created apex pairs the
+ upstairs lift's vertex with the given cone's and stores [slift_eq] as its
+ third component, and that component must be a Leibniz [=] because that is
+ what an object of a fibre product stores; an isomorphism will not go in
+ its place.
+ Test/ProbeCatCreation439.v's negative n3 records the refusal against the
+ accepted control beside it.  In exchange the conclusion is strict too:
+ both [StrictLift] fields come out [eq_refl] and [reflexivity], at every
+ limiting cone downstairs.
+
+ The generic kit — [CreatesLimit_transport] and the [IsLimitCone]
+ transport it rests on — is not about [Cat] at all, and its natural home
+ is Structure/Limit/Creation.v, where appending is line-neutral for all
+ fifteen of that file's citations (the highest of them is the upper
+ endpoint of the range cited at doc/plan/books/qa; an earlier revision of
+ this sentence named the highest single-line citation instead, and both
+ are inside the 518-line file).  It lives here instead, for this change,
+ because that costs no rebuild of that file's large reverse-dependency
+ set and because it is where #428 put the analogous
+ [PreservesLimitCone_transport] (Functor/Hom/Continuous.v).  A later
+ move costs nothing.
+
+ Of the two [IsLimitCone] transports below only [islimitcone_dtransport_inv]
+ is consumed; [islimitcone_dtransport] is its mirror image, shipped for
+ symmetry with NO consumer in this file or anywhere in the tree.  An
+ earlier revision of this sentence said the kit rests on both.
+
+ Two further disclosures of prior art, neither of them reuse.
+ [fp_square_iso] re-derives a fact Instance/Cat/Pullback.v already
+ carries as [FP_commutes_cat : F ∘[Cat] FP_fst ≈[Cat] G ∘[Cat] FP_snd]:
+ whiskering that with this file's own [fun_equiv_whisker_r] typechecks at
+ exactly [fp_square_iso]'s type, though the two terms are not convertible.
+ And [fun_equiv_whisker_r] itself is written as a tactic proof for a
+ version reason recorded at its definition. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/created+limit 
+ nLab：https://ncatlab.org/nlab/show/pullback 
+
+ Mac Lane §V.6 练习 3 和 4（书本第 125 页）。练习 3 要求在 [Cat] 中，极限的构造在拉回下保持稳定：给定一个余叉 [F : A ⟶ C]、[G : B ⟶ C] 及它们的拉回 [P]，如果 [F] 创造了 [G] 的极限并且被保存，那么投影 [P ⟶ B] 也创造它们。练习 4 要求将逗号范畴作为这样的拉回重建，从而提供其投影创造极限的第二种证明。精确地阅读那个第一个词，因为该树已经驳斥了天真的解读。Instance/Cat/Pullback.v 证明了 [FibreProduct_not_Cat_pullback]：范畴的纤维积在 [Cat] 中**不是**一个拉回。依次狭义地阅读它，正如它自己的文件（Instance/Cat/Pullback.v）所坚持的：它是在一个余叉 [1 --true--> Indiscrete bool <--false-- 1] 上的驳斥，其中顶点是对象为空；同一个余叉确实有 [Cat] 拉回，并且树中的内容没有驳斥 [FibreProduct (Coslice_Proj d) U] 作为其余叉的 [Cat] 拉回。(这个标题、提交信息以及 docs/INDEX.md 项目符号的早期版本曾说余片顶点对“这个对象是被驳斥的”；实际上，这种驳斥出现在 [Indiscrete bool] 的余积图上，并没有涉及余片的情况。) 纤维积是什么，是 [StrictCat] 中的拉回，即使在那里也只在 [ObjUIP C]（[FibreProduct_IsPullback]）的条件下存在；是否 [Cat] 中存在拉回，在任何地方都没有被证明或驳斥。所以，诚实的练习 3 是关于 [FibreProduct] 的定理——这是可以称为拉回的对象——这正是在这里被证明的。下面没有任何内容断言 [Cat] 中存在拉回方形。
+
+ 在陈述之前，有两件事情值得说明。首先，这个证明不需要 [ObjUIP]。它从不接触 [FibreProduct_IsPullback]；它使用的是顶点自身的数据、存储的等式 [`2 (K j) : F (KA j) = G (KB j)] 以及箭头上的存储强制条件，这两者都是定义性的。ZWZ25WZZ 的打印类型不包含 [uip] 参数。其次，它确实需要的是底层函子严格地创建极限，而不仅仅是同构意义上的。创建的顶点将上层提升的顶点与给定锥的顶点配对，并将 [slift_eq] 作为其第三个分量存储，而该分量必须是 Leibniz [=]，因为这正是一个纤维积对象所存储的；同构不能取代它。Test/ProbeCatCreation439.v 中的负例 n3 记录了对旁边已接受控制的拒绝。作为交换，结论也是严格的：两个 [StrictLift] 字段在每个底层极限锥处分别输出 [eq_refl] 和 [reflexivity]。通用套件 —— [CreatesLimit_transport] 以及 [IsLimitCone] 所依赖的传输 —— 完全与 [Cat] 无关，其自然归属是 Structure/Limit/Creation.v，对于该文件的所有十五条引用（其中最高的是在 doc/plan/books/qa 中引用范围的上端点；这句话的早期版本则命名了最高单行引用，两者都在 518 行的文件内） 添加操作对行是中性的。这个变化使它放在这里，是因为这样不需要重建该文件的大量反向依赖集，并且因为 #428 将类似的 [PreservesLimitCone_transport]（Functor/Hom/Continuous.v） 放在了这里。之后移动也不会有任何成本。在下面的两个 [IsLimitCone] 传输中，只有 [islimitcone_dtransport_inv] 被消耗；[islimitcone_dtransport] 是它的镜像，为了对称而发送，在此文件或整个树中没有消费者。该句的早期版本说套件依赖于两者。
+
+ 另外披露了两条先前技术，其中都没有重用。[fp_square_iso] 重新推导了一个事实 Instance/Cat/Pullback.v 已经承载的作为 [FP_commutes_cat : F ∘[Cat] FP_fst ≈ [Cat] G ∘ [Cat] FP_snd 的事实：用该文件自身的 [fun_equiv_whisker_r] 处理后类型精确为 [fp_square_iso] 的类型，尽管这两个项不可转换。而 [fun_equiv_whisker_r] 本身则以策略证明的方式书写，用于其定义中记录的版本原因。
 *)
 
-(* 相关说明。 （已译） *)
+(* * ** Cast algebra, with all endpoints variables / * ** 强制类型转换代数，包含所有端点变量 *)
 
 Lemma cast_solve {C : Category} {a b a' b' : C} (ex : a = a') (ey : b = b')
   (u : a ~{C}~> b) (v : a' ~{C}~> b') :
@@ -87,7 +164,7 @@ Proof.
   now rewrite H1, <- H2.
 Qed.
 
-(* * ** A limiting cone stays limiting along 同构 diagrams （已译） *)
+(* * ** A limiting cone stays limiting along an isomorphism of diagrams / * ** 限制圆锥在图的同构下仍然是限制圆锥 *)
 
 Section DiagTransport.
 
@@ -145,18 +222,32 @@ Defined.
 
 End DiagTransport.
 
-(* * ** Creation transports along 同构 函子 （已译） *)
+(* * ** Creation transports along an isomorphism of the functor / * ** 创建沿着函子同构进行传输 *)
 
-(* The creation analogue of Functor/Hom/Continuous.v's
-   [PreservesLimitCone_transport].  It carries CREATION, not strictness:
-   there is still no [StrictlyCreatesLimit_transport] and none is claimed.（标题）（已译） *)
+(*
+ The creation analogue of Functor/Hom/Continuous.v's
+ [PreservesLimitCone_transport].  It carries CREATION, not strictness:
+ there is still no [StrictlyCreatesLimit_transport] and none is claimed. 
+
+ --------
+ Functor/Hom/Continuous.v 的创建类似物 [PreservesLimitCone_transport]。它承载的是 CREATION，而不是严格性：仍然没有 [StrictlyCreatesLimit_transport]，也没有声明存在。
+*)
 
 #[local] Obligation Tactic := idtac.
 
 (*
-   本节说明 Creation 相关定义、性质与动机。
+ Written as a tactic proof rather than as the anonymous-constructor term
+ [(fun j => `1 e (K j); fun x y f => `2 e _ _ (fmap[K] f))], which Rocq 9.1
+ accepts but Coq 8.19 and 8.20 refuse: checking that pair against the
+ expected type, their elaborator compares [fmap[F ◯ K] f] with
+ [fmap[F] (fmap[K] f)] by unification rather than by conversion and
+ reports "cannot unify".  [exact] uses full conversion and is accepted by
+ all three.  The [Defined] is load-bearing: [CreatesLimit_transport]'s
+ proof does a [change] through this definition's first component, and
+ [Qed] here stops the file at that step with "Not convertible". 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 作为战术证明而不是匿名构造项 [(fun j => `1 e (K j); fun x y f => `2 e _ _ (fmap[K]  f))] 编写，Rocq 9.1 接受，但 Coq 8.19 和 8.20 拒绝：在将 pair 与预期类型进行检查时，它们的展开器通过统一而不是通过转换来比较 [fmap[F ◯ K]  f] 和 [fmap[F]  (fmap [K]  f)] 并报告“无法统一”。 [exact] 使用完全转换，并被所有三个版本接受。 [Defined] 是承重的：[CreatesLimit_transport] 的证明通过该定义的第一个分量进行 [change]，而 [Qed] 在此处以“不可转换”停止了文件处理。
 *)
 
 Definition fun_equiv_whisker_r {J C D : Category} {F F' : C ⟶ D}
@@ -231,7 +322,7 @@ Definition CreatesLimit_transport : CreatesLimit K F' :=
 
 End CreatesTransport.
 
-(** ** Mac Lane §V.6 Exercise 3 *)
+(** ** Mac Lane §V.6 Exercise 3 / ** 马克·莱恩 §V.6 练习 3 *)
 
 Section Ex3.
 
@@ -246,7 +337,7 @@ Notation p2 := (FP_snd F G).
 Notation KA := (p1 ◯ K).
 Notation KB := (p2 ◯ K).
 
-(* 相关说明。 （已译） *)
+(* The square commutes definitionally: both components are the fibre product's own stored data, read off the diagram. / 这个方格在定义上是交换的：两个分量都是纤维积自身存储的数据，从图中读取。 *)
 
 Definition fp_square_obj (j : J) : F (KA j) = G (KB j) := `2 (K j).
 
@@ -263,7 +354,7 @@ Next Obligation.
   exact (cast_solve _ _ _ _ Hf).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The [F]-image of the [A]-projection of a cone is limiting as soon as the [G]-image of its [B]-projection is — the square, read as a transport. / 锥体的 [F] 图像在其 [A] 投影是极限时就是极限——其 [G] 图像在 [B] 投影是极限时——该平方，作为一种运输来解读。 *)
 
 Section FImage.
 
@@ -287,7 +378,7 @@ Definition fp_F_image_limiting : IsLimitCone (FCone F (FCone p1 W)) :=
 
 End FImage.
 
-(* 相关说明。 （已译） *)
+(* * ** Pairing the two coordinate mediators / * ** 配对两个协调调解者 *)
 
 Section Pairing.
 
@@ -300,7 +391,7 @@ Section AtCompetitor.
 
 Context (Q : Cone K).
 
-(* 相关说明。 （已译） *)
+(* The fibre product's side condition on the paired mediator is not extra data: it is uniqueness in [C], both sides mediating the same cone. / 纤维积在配对中介上的附加条件不是额外数据：它是在 [C] 中的唯一性，即双方都调解相同的锥。 *)
 
 Lemma fp_med_cast :
   hom_cast (`2 vertex_obj[Q]) (`2 vertex_obj[W])
@@ -353,7 +444,7 @@ Defined.
 
 End Pairing.
 
-(** ** The exercise itself *)
+(** ** The exercise itself / ** 练习本身 *)
 
 Section Create.
 
@@ -373,8 +464,13 @@ Definition fp_image_limiting_at : IsLimitCone fp_image_cone :=
 
 Definition fp_upstairs_lift : StrictLift KA F fp_image_cone := screates fp_image_cone fp_image_limiting_at.
 
-(* Here, here, bottom 函子's strictness spent: third
- component fibre-product 对象 Leibniz equality. （已译） *)
+(*
+ Here, and only here, is the bottom functor's strictness spent: the third
+ component of a fibre-product object is a Leibniz equality. 
+
+ --------
+ 在这里，也只有在这里，底函子的严格性才被消耗：纤维积对象的第三个分量是莱布尼茨等式。
+*)
 
 Definition fp_lift_apex : P :=
   ((vertex_obj[slift_cone fp_upstairs_lift], vertex_obj[N]); slift_eq fp_upstairs_lift).
@@ -426,9 +522,14 @@ End Create.
 End Ex3.
 
 (*
-   本节说明（余）强度相关定义、性质与动机。
+ The all-shapes packaging comes in both strengths, and the strict one is
+ the same term: [fp_snd_StrictlyCreatesLimit] is already strict at every
+ diagram, so quantifying over shapes costs nothing.  An earlier revision
+ shipped only [fp_snd_CreatesAllLimits], silently dropping the strictness
+ the per-diagram theorem has. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 全形状包装有两种强度，而严格版本使用相同的术语：[fp_snd_StrictlyCreatesLimit] 在每个图表上已经是严格的，因此对形状进行量化不花费额外代价。早期版本只发布了 [fp_snd_CreatesAllLimits]，悄悄地放弃了每个图表定理所具有的严格性。
 *)
 
 Definition fp_snd_StrictlyCreatesLimits
@@ -443,7 +544,7 @@ Definition fp_snd_CreatesAllLimits
   CreatesAllLimits (FP_snd F G) :=
   fun J K => fp_snd_CreatesLimit F G K (SF J _) (HG J _).
 
-(* 相关说明。 （已译） *)
+(* The issue's Verification block audits this name. / 该问题的验证模块审核此名称。 *)
 
 Definition creation_pullback_stable {A B C : Category} (F : A ⟶ C)
   (G : B ⟶ C) {J : Category} (K : J ⟶ FibreProduct F G)
@@ -452,7 +553,7 @@ Definition creation_pullback_stable {A B C : Category} (F : A ⟶ C)
   StrictlyCreatesLimit K (FP_snd F G) :=
   fp_snd_StrictlyCreatesLimit F G K SC HG.
 
-(* * ** Mac Lane §V.6 Exercise 4: comma 范畴 fibre product （已译） *)
+(* * ** Mac Lane §V.6 Exercise 4: the comma category as the fibre product / * ** 麦克莱恩 §V.6 练习 4：逗号范畴作为纤维积 *)
 
 #[local] Set Transparent Obligations.
 
@@ -507,7 +608,7 @@ Qed.
 Next Obligation. intros x; simpl; split; simpl; reflexivity. Qed.
 Next Obligation. intros x y z f g; simpl; split; simpl; reflexivity. Qed.
 
-(** ** The two round trips *)
+(** ** The two round trips / ** 两次往返 *)
 
 Program Definition FP_round_to (x : FP) :
   Comma_to_FP (FP_to_Comma x) ~{FP}~> x :=
@@ -590,9 +691,16 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明拉回/推出、同构相关定义、性质与动机。
+ An ISOMORPHISM in [Cat].  Not a pullback in [Cat]: the tree refutes the
+ fibre product as a [Cat] pullback at one cospan (the [Indiscrete bool]
+ one), and nothing here establishes or refutes it at this cospan.  And
+ THIS ROUTE does not yield a pullback in [StrictCat] either, since the
+ round trip carries [id ∘ φ] rather than [φ] and so does not transport
+ [FibreProduct_IsPullback] across — that is this comparison coming up
+ short, not a proof that no comparison works. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在 [Cat] 中的同构。在 [Cat] 中不是一个拉回：该树在一个余锥（[Indiscrete bool]）处否定了纤维积作为 [Cat] 的拉回，并且这里没有任何内容能够在这个余锥上建立或否定它。而且，这条路径在 [StrictCat] 中也不会产生拉回，因为往返会携带 [id ∘ φ] 而不是 [φ]，因此不会跨越 [FibreProduct_IsPullback]——也就是说，这次比较没有成功，而不是证明没有比较可行。
 *)
 
 Program Definition Comma_FP_iso : (=(d) ↓ U) ≅[Cat] FP := {|
@@ -607,12 +715,35 @@ Definition Comma_FP_Equivalence :
 
 End CommaAsFibreProduct.
 
-(* 相关说明。 （已译） *)
+(* * ** Exercise 4: the comma projection creates limits, by that route / * ** 练习 4：逗号投影通过那条路线创建限制 *)
 
 (*
-   本节说明（余）强度相关定义、性质与动机。
+ This reaches the conclusion #438's [comma_CreatesAllLimits] already
+ reaches, by a different argument.  It is a CROSS-CHECK, not a
+ strengthening — but state the comparison against the right constant.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ Against [comma_CreatesAllLimits] (Construction/Comma/Creation.v) the
+ two are of EQUAL strength.  That one takes [PreservesImageLimit], which
+ quantifies over every shape just as [ContinuousFunctor U] does — indeed
+ the two premises are interderivable by identity functions in that very
+ file, [PreservesImageLimit_Continuous] and
+ [Continuous_PreservesImageLimit] — and it concludes
+ [CreatesAllLimits], which is pointwise [CreatesLimit], not
+ [StrictlyCreatesLimit].
+
+ The "weaker in both directions" comparison is true, and is true only, of
+ #438's [comma_StrictlyCreatesLimit], which takes the per-diagram
+ [PreservesLimitCone (Gdiag K) U] and concludes [StrictlyCreatesLimit].
+ An earlier revision of this comment, of the commit message and of the
+ docs/INDEX.md bullet made that comparison against
+ [comma_CreatesAllLimits], which has neither that premise nor that
+ conclusion; measured with [Check], the claim was false in both halves,
+ and it under-sold this route while over-stating that constant. 
+
+ --------
+ 这一结论已经被 #438 的 [comma_CreatesAllLimits] 以不同的论证方式得出。这是一个交叉检查，而不是加强，但要针对正确的常数进行比较。
+
+ 与 [comma_CreatesAllLimits]（Construction/Comma/Creation.v）相比，这两个结论的强度相等。那个结论采用了 [PreservesImageLimit]，它对每种形状都进行了量化，就像 [ContinuousFunctor U] 一样——实际上，这两个前提在同一个文件中通过恒等函数 [PreservesImageLimit_Continuous] 和 [Continuous_PreservesImageLimit] 是可以互相推导的——并且它得出 [CreatesAllLimits]，这在每一点上是 [CreatesLimit]，而不是 [StrictlyCreatesLimit]。“在两个方向上都更弱”的比较是正确的，并且仅对#438的[comma_StrictlyCreatesLimit]正确，它采用每个图表的[PreservesLimitCone (Gdiag K) U]并得出[StrictlyCreatesLimit]的结论。 这条评论、提交信息和docs/INDEX.md中之前版本的闪点对[comma_CreatesAllLimits]进行了比较，而[comma_CreatesAllLimits]既没有那个前提也没有那个结论；用[Check]来衡量时，这个说法在两半部分都是错误的，它低估了这条路径，同时夸大了那个常量。
 *)
 
 Section Ex4.
@@ -665,19 +796,24 @@ Definition comma_Complete_via_pullback
   creates_limits_Complete comma_proj2 HC
     (comma_proj2_CreatesAllLimits_via_pullback U d HU).
 
-(* 相关说明。 （已译） *)
+(* The issue's Verification block audits this name too. / 该问题的验证区块也会审核此名称。 *)
 
 Definition comma_creates_limits_second_proof {C D : Category} (U : C ⟶ D)
   (d : D) (HU : ContinuousFunctor U) {J : Category} (K : J ⟶ (=(d) ↓ U)) :
   CreatesLimit K (@comma_proj2 _1 C D (=(d)) U) :=
   comma_proj2_creates_second U d HU K.
 
-(* 相关说明。 （已译） *)
+(* * ** The premise of Exercise 4 is inhabited, with nothing assumed / * ** 练习4的前提是可居住的，没有任何假设 *)
 
 (*
-   本节说明伴随相关定义、性质与动机。
+ [Id] is its own right adjoint and a right adjoint is continuous, so
+ [ContinuousFunctor Id] holds for EVERY category with no hypothesis —
+ the same shape as Construction/Slice/Creation.v's
+ [Id_PreservesImageLimit].  So the coslice-as-comma reading of Exercise 4
+ is an unconditional theorem, and the results above are not vacuous. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [Id] 本身是它自己的右伴随，而右伴随是连续的，所以 [ContinuousFunctor Id] 对于没有假设的每一个范畴都成立——其形状与 Construction/Slice/Creation.v 的 [Id_PreservesImageLimit] 相同。因此，习题 4 中的余切-作为逗号的解读是无条件的定理，上述结果并非空洞。
 *)
 
 Definition Id_ContinuousFunctor {C : Category} : ContinuousFunctor (@Id C) :=

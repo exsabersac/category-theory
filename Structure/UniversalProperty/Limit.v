@@ -12,22 +12,70 @@ Require Import Category.Structure.Cone.
 Require Import Category.Structure.Limit.
 Require Import Category.Functor.Hom.Yoneda.
 
-(** * Limits as a universal property *)
+(** * Limits as a universal property / * 极限作为一种普遍性质 *)
 
 (*
-   Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
+ nLab:      https://ncatlab.org/nlab/show/limit
+ Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
 
-   本文件给出极限相关。
+ A limit of a diagram [F : J ⟶ C] is a terminal cone: a cone [(z, φ)]
+ with legs [φ_x = vertex_map limit_acone x : z ~> F x] such that every
+ other cone [(a, ψ)] (an [ACone a F]) factors through it by a *unique*
+ mediating morphism.  In library notation the universal property is:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ ∀ (a : C) (ψ : ACone a F), ∃! u : a ~> z,
+ ∀ x : J, vertex_map limit_acone x ∘ u ≈ vertex_map ψ x.
+
+ This is the predicate [IsALimit F z] of [Structure/Limit.v].  Here that
+ universal property is recast in the [IsUniversalProperty] framework of
+ [Structure/UniversalProperty.v]: being a limit of [F] is the same as
+ *representing* the presheaf of cones [ConePresheaf F : C^op ⟶ Sets],
+ which sends [c] to the setoid of cones [ACone c F].  Concretely there
+ is a natural isomorphism
+
+ Hom(c, z) ≅ Cone(c, F),
+
+ the representability formulation of a limit; [LimitIsUniversalProperty]
+ below establishes exactly this equivalence.
+
+ The mediating morphism [u] is built by [ump_limit_construct] (existence),
+ characterised by [ump_limit_construct_recover] (the factorisation
+ equation [φ_x ∘ u ≈ ψ_x]), and pinned down by [cone_equiv_to_morphism_equiv]
+ (uniqueness: two maps into the limit agreeing on every leg are equal).
+
+ The colimit is the dual notion, a limit in [C^op]. 
+
+ --------
+ nLab:       https://ncatlab.org/nlab/show/limit 
+ 维基百科:  https://en.wikipedia.org/wiki/Limit_(category_theory) 
+
+ 一个图 [F : J ⟶ C] 的极限是一个终锥：一个锥 [(z, φ)] 
+ 具有射线 [φ_x = vertex_map limit_acone x : z ~> F x] ，使得每个其他锥 [(a, ψ)] （一个 [ACone a F] ）通过一个*唯一*的中介态射分解它。在库记法中，泛性质为：
+
+ ∀ (a : C) (ψ : ACone a F), ∃! u : a ~> z,
+ ∀ x : J, vertex_map limit_acone x ∘ u ≈ vertex_map ψ x.
+
+ 这是 [IsALimit F z] 的谓词 [Structure/Limit.v] 。这里的泛性质在 [IsUniversalProperty] 框架下重新表述为 [Structure/UniversalProperty.v] ：成为 [F] 的极限等同于 *表示* 锥的函子 [ConePresheaf F : C^op ⟶ Sets]，
+ 它将 [c] 映射到锥的同类集 [ACone c F] 。具体来说，有自然同构
+
+ Hom(c, z) ≅ Cone(c, F),极限的可表示性表述；[LimitIsUniversalProperty] 下面正是建立了这种等价性。
+
+ 中介态射 [u] 由 [ump_limit_construct] 构建（存在性），通过 [ump_limit_construct_recover] 描述（因式分解方程 [φ_x ∘ u ≈ ψ_x]），并由 [cone_equiv_to_morphism_equiv] 固定（唯一性：两个映射到极限，如果在每条边上都相等，则它们相等）。
+
+ 余极限是对偶概念，是在 [C^op] 中的极限。
 *)
 
 Section LimitUniversalProperty.
   Context (J C : Category).
   Context (F : J ⟶ C).
 
-  (* Existence half UMP: competing cone [ACone F] extract
- mediating 态射 [a ~> z] 进入 limit. （已译） *)
+  (*
+ Existence half of the UMP: from a competing cone [ACone a F] extract
+ the mediating morphism [a ~> z] into the limit. 
+
+ --------
+ 存在 UMP 的一半：从竞争的锥 [ACone a F] 中提取调解态射 [a ~> z] 到极限。
+*)
   Definition ump_limit_construct (a z : C) (H : IsALimit F z) :
       ACone a F -> a ~> z.
   Proof.
@@ -37,7 +85,7 @@ Section LimitUniversalProperty.
     exact unique_obj.
   Defined.
 
-  (* The mediating morphism respects [≈] on cones. *)
+  (* The mediating morphism respects [≈] on cones. / 中介态射在圆锥上尊重 [≈]。 *)
   Proposition ump_limit_construct_proper (a z : C) (H : IsALimit F z) :
     Proper (equiv ==> equiv) (ump_limit_construct a z H).
   Proof.
@@ -51,7 +99,7 @@ Section LimitUniversalProperty.
   Qed.
 
   Local Arguments vertex_map {J C c F}.
-  (* 相关说明。 （已译） *)
+  (* Factorisation equation [φ_m ∘ u ≈ ψ_m]: composing the limit leg [m] with the mediator recovers the original cone's leg [m]. / 因式分解方程 [φ_m ∘ u ≈ ψ_m]：将极限支 [m] 与中介组合，恢复原来的圆锥支 [m]。 *)
   Proposition ump_limit_construct_recover (w z : C) (H : IsALimit F z) (m : obj[J])
      (a : ACone w F) : vertex_map limit_acone m ∘ (ump_limit_construct w z _ a) ≈ vertex_map a m.
   Proof.
@@ -59,7 +107,7 @@ Section LimitUniversalProperty.
     exact (unique_property (ump_limit {| vertex_obj := w; coneFrom :=a |} ) _).
   Qed.
 
-  (* 相关说明。 （已译） *)
+  (* The factorisation equation post-composed with an arbitrary [f]. / 因式分解方程与任意 [f] 后组合。 *)
   Proposition ump_limit_construct_recover' (q w z : C) (H : IsALimit F z) (m : obj[J])
     (a : ACone w F) (f : q ~> w) :
     vertex_map limit_acone m ∘ (ump_limit_construct w z _ a ∘ f) ≈ vertex_map a m ∘ f.
@@ -76,8 +124,13 @@ Section LimitUniversalProperty.
   Hint Rewrite -> ump_limit_construct_recover : limit.
   Hint Rewrite -> ump_limit_construct_recover' : limit.
 
-  (* Uniqueness half UMP: two 态射 进入 limit agree
- after composing every limit leg themselves equal. （已译） *)
+  (*
+ Uniqueness half of the UMP: two morphisms into the limit that agree
+ after composing with every limit leg are themselves equal. 
+
+ --------
+ UMP 的唯一性一半：两个映射到极限的态射，在与每个极限射线组合后相等，则它们自身也相等。
+*)
   Proposition cone_equiv_to_morphism_equiv (c z : C) (H : IsALimit F z) (f g : c ~> z) :
     (forall a : J, vertex_map limit_acone a ∘ f ≈ vertex_map limit_acone a ∘ g) ->
     f ≈ g.
@@ -99,7 +152,7 @@ Section LimitUniversalProperty.
     end.
 
   Hint Extern 2 => apply_cone_equiv_to_morphism_equiv : limit.
-  (* Associativity-shifted form of [cone_coherence] for rewriting automation. *)
+  (* Associativity-shifted form of [cone_coherence] for rewriting automation. / 用于重写自动化的 [cone_coherence] 的结合性移位形式。 *)
   Theorem cone_coherence_auto1 (x y : J) (f : x ~> y) (w z : C) (g : w ~> z)
     (A : ACone z F) :
     fmap[F] f ∘ (vertex_map A x ∘ g) ≈ vertex_map A y ∘ g.
@@ -113,9 +166,12 @@ Section LimitUniversalProperty.
   Hint Extern 10 => (autorewrite with limit) : limit.
 
   (*
-   本节说明（余）极限、hom、同构相关定义、性质与动机。
+ Main result: being a limit of [F] is a universal property, namely the
+ representability of the cone presheaf [ConePresheaf F] by the object [c].
+ This realises the natural isomorphism [Hom(c, z) ≅ Cone(c, F)]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 主要结果：作为  [F]  的极限是一种普遍性质，即圆锥预层  [ConePresheaf F]  可以被对象  [c]  表示。这实现了自然同构  [Hom(c, z) ≅ Cone(c, F)] 。
 *)
   Proposition LimitIsUniversalProperty :
     IsUniversalProperty C^op (fun c => IsALimit F c)

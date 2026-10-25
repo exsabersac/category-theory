@@ -18,22 +18,245 @@ Require Import Category.Adjunction.Opposite.
 
 Generalizable All Variables.
 
-(* * * The fixed points 伴随 （已译） *)
+(* * * The fixed points of an adjunction / * * 一个伴随关系的固定点 *)
 
 (*
-   nLab:      https://ncatlab.org/nlab/show/adjoint+functor
-   Wikipedia: https://en.wikipedia.org/wiki/Galois_connection
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-   Book:      Riehl, "Category Theory in Context", Dover 2016, SS 4.2,
+ nLab:      https://ncatlab.org/nlab/show/idempotent+monad
+ nLab:      https://ncatlab.org/nlab/show/adjoint+functor
+ Wikipedia: https://en.wikipedia.org/wiki/Galois_connection
+ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Springer GTM 5, 1998, SS IV.5, printed p. 97, Exercise 2
+ (catalog id maclane:IV.5:ex2)
+ Book:      Riehl, "Category Theory in Context", Dover 2016, SS 4.2,
+ printed pp. 142-143: Corollary 4.2.10 (riehl:4.2:cor10),
+ Lemma 4.2.11 (riehl:4.2:lem11), Exercise 4.2.iv
+ (riehl:4.2:exiv)
 
-   本文件给出构造。
+ Mac Lane's Exercise 2 reads, verbatim from the printed page:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ "In a Galois connection between posets, show that the subset
+ {p | p = RLp} of P equals {p | p = Rq for some q} and give a
+ bijection from this set to the subset {q | q = LRq} of Q.  What are
+ these sets in the case of a group of automorphisms of a field?  Does
+ this generalize to an arbitrary adjunction?"
+
+ The answer to his closing question is YES, and this file is the general
+ half of it.  The poset half -- the two displayed subsets, their
+ elementwise identification with the images, and the bijection between
+ them -- is Instance/Proset/Galois/FixedPoints.v, which instantiates what
+ is proved here at a thin category.
+
+ Riehl states the general form as Lemma 4.2.11:
+
+ "Any pair of adjoint functors F : C <-> D : G restrict to define an
+ equivalence between the full subcategories spanned by those objects
+ c in C and d in D for which the components of the unit eta_c and of
+ the counit epsilon_d, respectively, are isomorphisms."
+
+ and leaves its proof to Exercise 4.2.iv, whose printed text is the
+ self-reference "Prove Exercise 4.2.iv."  Issue #386 reads that as an
+ instruction to prove Lemma 4.2.11, and so does this file; the book's
+ wording is recorded here rather than silently corrected.
+
+ A NOTE ON THE VARIABLE CONVENTION.  Riehl writes F : C -> D for the LEFT
+ adjoint and G : D -> C for the right, with eta indexed by objects of C.
+ Theory/Adjunction.v writes [Adjunction (F : D ⟶ C) (U : C ⟶ D)], so
+ here it is [D] that carries the unit and [C] that carries the counit.
+ The two letters C and D therefore exchange roles between the book and
+ the formalization; nothing else does.
+
+ WHAT IS PROVED, AND UNDER WHAT HYPOTHESES.  Sections (A) and (B) below
+ take an ARBITRARY adjunction: no idempotency of the induced monad, no
+ fullness, no faithfulness, no smallness.  That is verified at the
+ signatures -- the section binds the two categories, the two functors
+ and [A : F ⊣ U], and nothing else -- and it is the point of the
+ exercise's closing question.  Specifically:
+
+ - [UnitFixed] / [CounitFixed]: the two full subcategories, over
+ Construction/Subcategory.v's record, spanned by the objects where
+ the unit (resp. the counit) is invertible.  Their [shom] is the
+ terminal predicate, which is what "spanned by" means; fullness is
+ [UnitFixed_Full] / [CounitFixed_Full].
+ - [counit_iso_of_unit_iso] / [unit_iso_of_counit_iso]: the closure
+ facts that make the restriction well defined -- F carries
+ unit-fixed objects to counit-fixed ones and U conversely.  Riehl's
+ Lemma 4.2.11 needs exactly these two and the issue records them as
+ missing; each is proved with the invertible component's own inverse
+ supplying one law and a triangle identity the other.
+ - [FixedL] / [FixedR] and [fixed_adjunction]: the restricted
+ adjunction, built from the ambient hom-set isomorphism.
+ - [fixed_AdjointEquivalence] and the pinned
+ [adjunction_fixed_point_equivalence]: Lemma 4.2.11 itself.
+
+ WHERE RIEHL'S COROLLARY 4.2.10 IS TRUE, AND WHERE IT IS NOT.  That
+ corollary is about a Galois connection between POSETS, where it reads
+ [F G F = F] and [G F G = G] on the nose.  Its general shadow -- the
+ parenthetical "the canonical natural isomorphisms F eta ≈ (eps F)^{-1}"
+ that issue #386's checkbox appends -- holds AT A UNIT-FIXED OBJECT and
+ is exactly [counit_iso_of_unit_iso], whose two-sided inverse IS
+ [fmap[F] (unit x)].  It does NOT hold for an arbitrary adjunction: the
+ probe exhibits a free-monoid adjunction whose counit at a free object
+ is not invertible, so the CANONICAL comparison is not invertible
+ there and [F eta] is not its inverse.  Whether some OTHER natural
+ isomorphism [F ◯ U ◯ F ≈ F] exists at that adjunction is neither
+ proved nor refuted, here or in the probe.  Nothing below states or
+ proves such an isomorphism, and
+ the thin-category equalities are proved where they belong, in the
+ companion poset file.
+
+ THE ESSENTIAL-IMAGE HALF, AND ITS EXACT STRENGTH.  Section (B) proves
+ Mac Lane's "closed elements = image of R" in its categorified form:
+ [unit_fixed_iff_image] says that the unit is invertible at [x] exactly
+ when [x] is isomorphic to [U c] FOR A COUNIT-FIXED c, and dually.  The
+ qualification is not decoration.  The one-sided reading -- "x is
+ isomorphic to U c for SOME c" -- is weaker, and the probe refutes it
+ over the free-monoid adjunction, where [list bool] is [U (F bool)]
+ ([probe_list_is_U_of_F], [probe_image_of_U_not_unit_fixed]) and yet
+ no unit component of that adjunction is invertible
+ ([free_monoid_unit_never_iso]).  In a thin category the two
+ readings coincide, which is why the exercise can state the unqualified
+ version for posets; that thin case is
+ Instance/Grp/Galois.v's [gal_closed_r_iff], cited by the companion
+ file rather than restated.
+
+ WHAT IDEMPOTENCY BUYS, which is the issue's fifth work item.  The
+ fixed-point EQUIVALENCE needs nothing.  What needs idempotency is
+ REFLECTIVITY of the fixed subcategory: [unit_fixed_reflective_of_
+ idempotent] derives [Reflective (UnitFixed A)] from an
+ [IdempotentMonad] structure on the induced monad, and it does so by
+ [Idempotent_Reflective] transported along [unit_fixed_is_mlocal],
+ which holds by [eq_refl] on the WHOLE [Subcategory] record because the
+ induced monad's [ret] IS the adjunction's unit.
+
+ THE COMONAD SIDE (section C, the issue's first work item).  A search
+ for [IdempotentComonad] returned nothing at the base commit, and it is
+ introduced here as [@IdempotentMonad (C^op) (W^op)], following the
+ Theory/Monad.v definition [Comonad := @Monad (C^op) (W^op)] and the
+ accessor discipline of Comonad/Core.v.  Because
+ [op_subcategory (op_subcategory S) = S] holds by [eq_refl] here (a
+ measurement, recorded as [wlocal_op_involution]), the dual of
+ [Idempotent_Reflective] is a term with no tactic:
+ [Idempotent_Coreflective].  Its converse is delivered in the op form
+ [Coreflective_IdempotentMonad_op] rather than as an
+ [IdempotentComonad], and the reason is a typing fact worth recording:
+ the class demands an endofunctor of the shape [W^op], while the
+ endofunctor a coreflection induces on C^op is
+ [Incl ◯ reflector], which has no such presentation.
+
+ STRENGTHS MEASURED STRICT FIRST.  Nine identifications hold by
+ [eq_refl]: both the carrier and the whole sigma of the restricted unit
+ and of the restricted counit ([fixed_unit_strict],
+ [fixed_counit_strict], [fixed_unit_whole], [fixed_counit_whole]), the
+ double opposite of a subcategory ([wlocal_op_involution]), the monad
+ bridge ([unit_fixed_is_mlocal]) on the whole record, the [WLocal]
+ membership predicate ([wlocal_sobj_strict]), the identification of the
+ opposite adjunction's unit with this adjunction's counit
+ ([fixed_op_unit_is_counit]), and the opposite reading of the
+ counit-fixed predicate ([counit_fixed_op_strict]).  Exactly one
+ identification is delivered as a biconditional rather than an equality:
+ [wlocal_obj_iff], because [IsIsomorphism] read in C^op and read in C
+ are different types whose two inverse laws are exchanged.
+
+ ONE [Defined] IS LOAD-BEARING, and that was measured by flipping each
+ one alone to [Qed]: only [fixed_adjunction] breaks the build that way,
+ and the error names the reason -- with [Qed] its unit no longer
+ reduces, so [fixed_unit_strict] is rejected with "cannot unify
+ projT1 unit and unit".  The other ten compile as [Qed] with every
+ [eq_refl] readback and every downstream file intact; they are kept
+ [Defined] because they produce data, which is this tree's convention,
+ not because anything below needs them transparent.
+
+ TWO SMALL LEMMAS ARE RESTATED RATHER THAN REQUIRED, AND ONE IS NEW.
+ [fixed_IsIso_along] and [fixed_IsIso_comp] duplicate [IsIso_along]
+ and [IsIso_comp] of
+ Theory/Equivalence/Adjoint/Compose.v.  Requiring that module would
+ take this file's transitive in-project closure from 37 to 52
+ (measured), because its witness section drags in
+ Theory/Equivalence/Strict, Instance/One and
+ Instance/Discrete/Reconstruct, none of which anything here needs; the
+ three are sixteen lines in total and are named apart so that both
+ files may be loaded into one scope.  [fixed_IsIso_of_iso] duplicates
+ nothing there: it runs OPPOSITE to Theory/Isomorphism.v's
+ [IsIsoToIso], and [IsIsomorphism (to _)] occurs nowhere else in the
+ tree (measured).  Unlike the originals,
+ whose explicit binders are load-bearing, the three are written
+ unannotated and so read their category at [Category@{u u1 u1}], hom
+ identified with proof; that costs nothing here, every consumer below
+ being over an [Adjunction] that identifies the two anyway.
+
+ UNIVERSES, measured off BOTH the binder and the constraint block.
+ Every section binds [C D : Category] unannotated; the constants read
+ [C : Category@{u u0 u0}] and [D : Category@{u1 u2 u2}] in the BINDER
+ -- hom identified with proof in each, by reusing the level variable --
+ and carry the one block equation [u0 = u2], identifying the two
+ categories' hom levels, with BOTH object universes free.  Every one of
+ those identifications is [Adjunction]'s own: its printed block already
+ carries [h1 = p1], [h1 = h2] and [h1 = p2], so nothing here adds to
+ it, and the probe rejects [F ⊣ U] at hom and proof levels declared
+ apart with the category's homs and identities accepted at those very
+ levels.  [Subcategory] is an independent donor of hom = proof, with no
+ adjunction in the command at all, and the probe pins that separately.
+ The sharpest binder-versus-block trap in this file is
+ [WLocal_Subcategory], whose constraint block is LITERALLY EMPTY while
+ its binder reads [Category@{u1 u u}]: reading the block alone reports
+ no identification and is wrong.  No constant in this file carries a
+ word-bounded [Set].
+
+ NOT DELIVERED, and disclosed rather than implied away: no
+ [Coreflective (CounitFixed A)] (the record would have to be rebuilt
+ against a subcategory whose membership predicate reads [IsIsomorphism]
+ in C where the op route reads it in C^op); no comparison of
+ [WLocal_Subcategory] with the comonad induced by an adjunction
+ (Comonad/Duality.v's [Adjunction_Comonad] is built through the
+ opaque [Adjunction_Monad], so its [extract] does not reduce); no
+ naturality statement for any identification; no Eilenberg-Moore or
+ co-Eilenberg-Moore reading; nothing registered as an [Instance]; and
+ no witness at a named concrete adjunction, which the probe supplies
+ instead.  CORRECTION (#370): the library now has one.
+ Instance/Mod/RingEpi.v's [TMod_Reflective_in_RMod] is
+ [unit_fixed_reflective_of_idempotent] at Instance/Mod/Extension.v's
+ [extend_restrict_adjunction φ Hc], for a ring epimorphism φ whose
+ image is central ([Hc]), and [QMod_Reflective_in_ZMod] is that record
+ at ℤ → ℚ.  CORRECTION (#463): the co-Eilenberg-Moore half of that
+ item is answered at a preorder, objectwise and nowhere else.  For any
+ comonad W on Instance/Proset.v's [Proset P],
+ Instance/Proset/Monad/Interior.v's [wlocal_iff_open] identifies
+ membership of this file's [WLocal_Subcategory] (extract invertible)
+ with the open elements x ≤ W x, and its [wcoalgebra_iff_open]
+ identifies the W-coalgebras with the same elements, so an object is
+ W-local exactly when it carries a W-coalgebra.  These are two
+ biconditionals over preorders; no equivalence with a category of
+ coalgebras is stated, and for every other category the item stands. 
+
+ --------
+ nLab:       https://ncatlab.org/nlab/show/idempotent+monad
+ nLab:       https://ncatlab.org/nlab/show/adjoint+functor
+ Wikipedia:  https://en.wikipedia.org/wiki/Galois_connection
+ 书籍:       Mac Lane，《为在职数学家而写的范畴论》，第2版，
+ Springer GTM 5, 1998, 第IV.5节，印刷页97，练习2
+ （目录ID maclane:IV.5:ex2）
+ 书籍:       Riehl，《上下文中的范畴论》，Dover 2016, 第4.2节，
+ 印刷页142-143: 推论4.2.10 (riehl:4.2:cor10)，
+ 引理4.2.11 (riehl:4.2:lem11)，练习4.2.iv
+ (riehl:4.2:exiv)
+
+ Mac Lane的练习2的原文如下，直接摘自印刷页：在偏序集之间的伽罗瓦连接中，证明 P 的子集 {p | p = RLp} 等于 {p | p = Rq 对某些 q 成立}，并给出从该集合到 Q 的子集 {q | q = LRq} 的双射。在域自同构群的情况下，这些集合是什么？这是否可以推广到任意伴随？
+
+ 他在最后问题的答案是肯定的（YES），这个文件是其中的一般部分。偏序集部分——两个显示的子集、它们与像的逐元素对应，以及它们之间的双射——在 Instance/Proset/Galois/FixedPoints.v 中给出，该文件在薄范畴中实例化了这里所证明的内容。
+
+ Riehl 将一般形式陈述为引理 4.2.11:任何一对伴随函子 F : C <-> D : G 都可以限制为在由那些对象 c ∈ C 和 d ∈ D 生成的满子范畴上定义一个等价，其中单位变换 η_c 的分量和余单位变换 ε_d 的分量分别是同构。并且其证明留给练习 4.2.iv，其印刷文本是自我引用的“证明练习 4.2.iv”。问题 #386 将其理解为证明引理 4.2.11，这个文件也是如此；这里记录了书中的措辞，而没有进行悄悄的更正。关于变量约定的说明。Riehl 将 F : C -> D 写作左伴随，G : D -> C 写作右伴随，η 按 C 的对象索引。Theory/Adjunction.v 写作 [Adjunction (F : D ⟶ C) (U : C ⟶ D)]，因此这里 [D] 表示单元，[C] 表示余单元。因此，这两本书和形式化中 C 和 D 的字母角色是互换的；其他没有变化。
+
+ 证明什么以及在什么假设下。下面 (A) 和 (B) 节使用任意伴随：不要求所诱导的单子是幂等的，不要求完备性，不要求忠实性，不要求小型性。这在签名中已验证——该节绑定了两个范畴、两个函子和 [A : F ⊣ U]，而没有其他绑定——这也是练习中最后问题的重点。具体而言:- [UnitFixed] / [CounitFixed]：两个完整的子范畴，在 Construction/Subcategory.v 的记录上，由其中单位（或余单位）可逆的对象生成。它们的 [shom] 是终谓词，这也是“生成”的含义；完全性是 [UnitFixed_Full] / [CounitFixed_Full]。 - [counit_iso_of_unit_iso] / [unit_iso_of_counit_iso]：使限制良定义的闭包事实——F 将单位固定对象映射到余单位固定对象，U 则反之。Riehl 的引理 4.2.11 正需要这两个，并且问题记录它们为缺失；每一个的证明都是通过可逆分量自身的逆提供一条定律，并用三角恒等式提供另一条。 - [FixedL] / [FixedR] 和 [fixed_adjunction]：受限伴随，由环境 Hom 集同构构建。-  [fixed_AdjointEquivalence] 和固定的 [adjunction_fixed_point_equivalence] ：引理 4.2.11 本身。里尔推论 4.2.10 适用的情况以及不适用的情况。该推论涉及偏序集之间的伽罗瓦连接，其中它精确地读取 [F G F = F] 和 [G F G = G]。它的一般影子——括号内的“典范自然同构 F eta ≈ (eps F)^{-1}”，这是 issue #386 的复选框附加的——在一个固定单位对象上成立，并且恰好是 [counit_iso_of_unit_iso]，其双边逆是 [fmap[F] (unit x)。它不适用于任意伴随：探针展示了一个自由单子伴随，其在自由对象上的余单位不可逆，因此典范比较在此不可逆，且 [F eta] 不是其逆。在该伴随下是否存在其他自然同构 [F ◯ U ◯ F ≈ F] 在此既未被证明也未被反驳，也没有在探针中论证。下面没有任何内容陈述或证明这样的同构，并且薄类等式在它们所属的位置得到证明，即在配套的偏序集合文件中。基本图像的一半及其确切强度。第(B)节证明了Mac Lane的“闭元素 = R的像”在其范畴化形式下：[unit_fixed_iff_image] 表示单位在 [x] 时可逆，当且仅当 [x] 同构于 [U c]（对于固定余单位的 c），反之亦然。这个限定条件不是装饰。单边的解读——“x 同构于某个 c 的 U c”——更弱，而在自由单子伴随的情况下，探测结果否定了它，在那里 [list bool] 是 [U (F bool)] ([probe_list_is_U_of_F], [probe_image_of_U_not_unit_fixed])，然而该伴随的任何单位分量都不可逆 ([free_monoid_unit_never_iso])。在薄范畴中，这两种解读是一致的，这就是为什么练习中可以对偏序集陈述未附限定词的版本；那个薄的情况是 Instance/Grp/Galois.v 的 [gal_closed_r_iff]，由配套文件引用而不是重新陈述。幂等性所带来的好处，这是该问题的第五个工作项。固定点等价不需要任何东西。需要幂等性的是固定子类别的反射性：[unit_fixed_reflective_of_idempotent] 从诱导幺半群的 [IdempotentMonad] 结构导出 [Reflective (UnitFixed A)]，并且它是通过沿 [unit_fixed_is_mlocal] 传递的 [Idempotent_Reflective] 实现的，这在整个 [Subcategory] 记录上通过 [eq_refl] 成立，因为诱导幺半群的 [ret] 就是伴随的单位。COMONAD 方面（C 节，该期刊的第一个工作项）。在基础提交中搜索 [IdempotentComonad] 没有返回结果，而它在此被引入为 [@IdempotentMonad (C^op) (W^op)]，遵循 Theory/Monad.v 的定义 [Comonad := @Monad (C^op) (W^op)] 以及 Comonad/Core.v 的访问器准则。因为 [op_subcategory (op_subcategory S) = S] 在此由 [eq_refl] 成立（一个度量，记录为 [wlocal_op_involution]），[Idempotent_Reflective] 的对偶是一个没有策略的项：[Idempotent_Coreflective]。它的逆在 op 形式下给出为 [Coreflective_IdempotentMonad_op]，而不是作为一个 [IdempotentComonad]，原因是一个值得记录的类型事实：该类要求一个形状为 [W^op] 的自函子，而核心反射在 C^op 上引起的自函子是 [Incl ◯ reflector]，它没有这样的呈现形式。优点严格优先测量。九个识别由 [eq_refl] 保持：载体以及受限单位的整个西格玛和受限余单位（[fixed_unit_strict]、[fixed_counit_strict]、[fixed_unit_whole]、[fixed_counit_whole]）、子范畴的双对偶（[wlocal_op_involution]）、整个记录上的幺半桥（[unit_fixed_is_mlocal]）、[WLocal] 成员谓词（[wlocal_sobj_strict]）、对偶随附单元与该随附余单位的识别（[fixed_op_unit_is_counit]）、以及余单位固定谓词的对偶读法（[counit_fixed_op_strict]）。正好有一个识别作为双条件而非相等交付：[wlocal_obj_iff]，因为在 C^op 中读的 [IsIsomorphism] 与在 C 中读的 [IsIsomorphism] 是不同类型，其两个逆律被交换了。ONE [Defined] 是承重的，这一点是通过将每一个单独翻转到 [Qed] 测量的：只有 [fixed_adjunction] 以这种方式破坏了构建，错误命名了原因 —— 使用 [Qed] 时，它的单元不再缩减，因此 [fixed_unit_strict] 被拒绝，显示“无法统一 projT1 单元和单元”。其他十个编译为 [Qed]，并且每个 [eq_refl] 读回以及每个下游文件都保持完整；它们被保留为 [Defined]，因为它们生成数据，这是该树的惯例，而不是因为下面的任何东西需要它们透明。两个小引理是重述而非必需的，其中一个是新的。[fixed_IsIso_along] 和 [fixed_IsIso_comp] 重复了 Theory/Equivalence/Adjoint/Compose.v 中的 [IsIso_along] 和 [IsIso_comp]。要求该模块将使该文件在项目内的传递闭包从 37 增加到 52（测量值），因为其证人部分会引入 Theory/Equivalence/Strict、Instance/One 和 Instance/Discrete/Reconstruct，而这里没有任何需要它们；这三个总共是十六行，并且被单独命名，以便两个文件可以加载到同一个作用域中。[fixed_IsIso_of_iso] 在那里没有重复任何内容：它与 Theory/Isomorphism.v 的 [IsIsoToIso] 相反运行，而 [IsIsomorphism (to _)] 在树中的其他地方都没有出现（测量值）。与原作不同，其显式绑定器是承重的，这三个是未注释写的，因此在 [Category@{u u1 u1}] 读取它们的类别，同质通过证明识别；这里不花费任何东西，每个下面的使用者都在一个 [Adjunction] 上，无论如何都能识别这两者。宇宙，同时测量了绑定器和约束块。每个部分都绑定 [C D : Category] 未注释；常量在绑定器中读取为 [C : Category@{u u0 u0}] 和 [D : Category@{u1 u2 u2}] -- 通过重用级变量在每个部分中用证明识别同态 -- 并携带一个块方程 [u0 = u2]，识别两个类别的同态级，所有对象宇宙都是自由的。每一个识别都是 [Adjunction] 自己的：其打印的块已经包含 [h1 = p1]、[h1 = h2] 和 [h1 = p2]，所以这里没有任何新增内容，探针在以类别的同态和恒等式在这些级别上接受的情况下，拒绝了在同态和证明级别上声明分离的 [F ⊣ U]。[Subcategory] 是同态 = 证明的独立提供者，在命令中完全没有附加，探针单独固定了它。这个文件中最尖锐的绑定器对块陷阱是 [WLocal_Subcategory]，其约束块实际上是空的，而它的绑定器读取 [Category@{u1 u u}]：单独读取该块不会报告任何识别，并且是错误的。这个文件中没有任何常量包含以单词为界的 [Set]。未交付，并且是公开而非隐含的：没有 [Coreflective (CounitFixed A)]（记录必须针对子类别重建，其成员谓词在 C 中读取 [IsIsomorphism]，而操作路线在 C^op 中读取它）；没有将 [WLocal_Subcategory] 与由伴随产生的余单子进行比较（Comonad/Duality.v 的 [Adjunction_Comonad] 是通过不透明的 [Adjunction_Monad] 构建的，因此它的 [extract] 无法化简）；没有任何识别的自然性声明；没有 Eilenberg-Moore 或共 Eilenberg-Moore 阅读；没有注册为 [Instance] 的内容；也没有在命名的具体伴随中提供的见证，探针代替提供。更正（#370）：库现在有一个。Instance/Mod/RingEpi.v 的 [TMod_Reflective_in_RMod] 在 Instance/Mod/Extension.v 中是 [unit_fixed_reflective_of_idempotent]， 而 [extend_restrict_adjunction φ Hc] 是针对一个其像是中心的环同态 φ（[Hc]）的，而 [QMod_Reflective_in_ZMod] 是 ℤ → ℚ 处的那个记录。更正（#463）：该项的 co-Eilenberg-Moore 半部分在预序、按对象回答，并且其他地方不涉及。对于 Instance/Proset.v 中的 [Proset P] 上的任意 comonad W，Instance/Proset/Monad/Interior.v 的 [wlocal_iff_open] 将此文件的 [WLocal_Subcategory]（提取可逆） 的成员资格与开元素 x ≤ W x 进行识别，而其 [wcoalgebra_iff_open] 将 W-余代数与同样的元素进行识别，因此一个对象恰好当它携带一个 W-余代数时是 W-局部的。这是预序上的两个双条件；没有声明与一个余代数范畴的等价关系，并且对于所有其他范畴，该项仍然成立。
 *)
 
-(* 相关说明。 （已译） *)
+(* * ** Three inverse-calculus lemmas, restated locally / * ** 三个逆微积分引理，本地重述 *)
 
-(* Transport of invertibility along an equation between parallel arrows. *)
+(*
+ Transport of invertibility along an equation between parallel arrows. 
+
+ --------
+ 沿着平行箭头之间的方程传递可逆性。
+*)
 Definition fixed_IsIso_along {X : Category} {x y : X} {f g : x ~> y}
   (Hf : IsIsomorphism f) (E : f ≈ g) : IsIsomorphism g.
 Proof.
@@ -41,21 +264,36 @@ Proof.
   refine {| two_sided_inverse := k |}; now rewrite <- E.
 Defined.
 
-(* The forward leg of a bundled isomorphism is an invertible morphism. *)
+(*
+ The forward leg of a bundled isomorphism is an invertible morphism. 
+
+ --------
+ 捆绑同构的前向腿是可逆的态射。
+*)
 Definition fixed_IsIso_of_iso {X : Category} {x y : X} (f : x ≅ y) :
   IsIsomorphism (to f) :=
   {| two_sided_inverse := from f
    ; is_right_inverse := iso_to_from f
    ; is_left_inverse := iso_from_to f |}.
 
-(* A composite of invertible morphisms is invertible, via [iso_compose]. *)
+(*
+ A composite of invertible morphisms is invertible, via [iso_compose]. 
+
+ --------
+ 可逆态射的复合是可逆的，通过 [iso_compose] 。
+*)
 Definition fixed_IsIso_comp {X : Category} {x y z : X}
   {f : x ~> y} {g : y ~> z}
   (Hf : IsIsomorphism f) (Hg : IsIsomorphism g) : IsIsomorphism (g ∘ f) :=
   fixed_IsIso_of_iso
     (iso_compose (@IsIsoToIso X _ _ g Hg) (@IsIsoToIso X _ _ f Hf)).
 
-(* * ** (A) The two fixed subcategories restricted 等价 （已译） *)
+(*
+   * ** (A) The two fixed subcategories and the restricted equivalence 
+
+   --------
+   * **（A）两个固定子类别和受限等价
+*)
 
 Section FixedPoints.
 
@@ -64,12 +302,18 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(** *** The closure facts *)
+(** *** The closure facts / *** 关闭事实 *)
 
 (*
-   本节说明 FixedPoints 相关定义、性质与动机。
+ If the unit is invertible at [x] then the counit is invertible at
+ [F x], with [fmap[F] (unit x)] as its two-sided inverse.  One law is
+ the triangle identity [counit_fmap_unit] verbatim; the other holds
+ because [fmap[F] (unit x)] is invertible in its own right, so the
+ retraction the triangle supplies is its inverse.  This is the reading
+ under which Riehl's "F eta is inverse to eps F" is true. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 如果该单位在 [x] 可逆，那么余单位在 [F x] 也是可逆的，其双边逆元为 [fmap[F]（单位 x）。一个定律是逐字的三角恒等式 [counit_fmap_unit]；另一个定律成立是因为 [fmap[F]（单位 x）本身就是可逆的，所以三角形提供的截回就是它的逆元。这就是 Riehl 的“F eta 是 eps F 的逆”的正确理解方式。
 *)
 Definition counit_iso_of_unit_iso (x : D)
   (H : IsIsomorphism (@unit C D F U A x)) :
@@ -86,9 +330,14 @@ Proof.
     now rewrite <- Hek.
 Defined.
 
-(* The 镜像: invertible counit at [c] gives invertible unit at
- [U c], [fmap[U] (counit c)] inverse [fmap_counit_unit] as
- free law. （已译） *)
+(*
+ The mirror: an invertible counit at [c] gives an invertible unit at
+ [U c], with [fmap[U] (counit c)] as inverse and [fmap_counit_unit] as
+ the free law. 
+
+ --------
+ 镜像：在 [c] 上的可逆余单位在 [U c] 上给出一个可逆单位，其逆为 [fmap[U]（余单位 c），自由律为 [fmap_counit_unit]。
+*)
 Definition unit_iso_of_counit_iso (c : C)
   (K : IsIsomorphism (@counit C D F U A c)) :
   IsIsomorphism (@unit C D F U A (U c)).
@@ -104,18 +353,23 @@ Proof.
   - exact (@fmap_counit_unit C D F U A c).
 Defined.
 
-(** *** The subcategories *)
+(** *** The subcategories / *** 子类别 *)
 
-(* The full subcategory D spanned 对象 at unit is
- invertible. [shom] terminal predicate, following
- Construction/Reflective/Idempotent.v's [MLocal_Subcategory]. （已译） *)
+(*
+ The full subcategory of D spanned by the objects at which the unit is
+ invertible.  [shom] is the terminal predicate, following
+ Construction/Reflective/Idempotent.v's [MLocal_Subcategory]. 
+
+ --------
+ 由单位可逆的对象生成的 D 的全子范畴。[shom] 是终极谓词，遵循 Construction/Reflective/Idempotent.v 的 [MLocal_Subcategory]。
+*)
 Definition UnitFixed : Subcategory D :=
   {| sobj  := fun x => IsIsomorphism (@unit C D F U A x)
    ; shom  := fun _ _ _ _ _ => True
    ; scomp := fun _ _ _ _ _ _ _ _ _ _ => I
    ; sid   := fun _ _ => I |}.
 
-(* Dually, in C, for the counit. *)
+(* Dually, in C, for the counit. / 同样地，在C中，对于余单位。 *)
 Definition CounitFixed : Subcategory C :=
   {| sobj  := fun c => IsIsomorphism (@counit C D F U A c)
    ; shom  := fun _ _ _ _ _ => True
@@ -128,7 +382,7 @@ Definition UnitFixed_Full : Construction.Subcategory.Full D UnitFixed :=
 Definition CounitFixed_Full : Construction.Subcategory.Full C CounitFixed :=
   fun _ _ _ _ _ => I.
 
-(** *** The restricted functors *)
+(** *** The restricted functors / *** 受限函子 *)
 
 Definition FixedL_fobj (x : Sub D UnitFixed) : Sub C CounitFixed :=
   (F `1 x; counit_iso_of_unit_iso `1 x `2 x).
@@ -185,10 +439,15 @@ Definition FixedR : Sub C CounitFixed ⟶ Sub D UnitFixed :=
     (fun x => FixedR_fmap_id)
     (fun x y z f g => FixedR_fmap_comp f g).
 
-(** *** The restricted adjunction *)
+(** *** The restricted adjunction / *** 限制附加 *)
 
-(* The transposition ambient one carriers; [shom] component
- every 态射 [I], so nothing transported. （已译） *)
+(*
+ The transposition is the ambient one on carriers; the [shom] component
+ of every morphism is [I], so nothing is transported. 
+
+ --------
+ 在载体上的换位是环境性的；每个态射的 [shom] 分量都是 [I]，所以没有什么被传送。
+*)
 Definition fixed_hom_to (x : Sub D UnitFixed) (y : Sub C CounitFixed)
   (f : FixedL x ~{Sub C CounitFixed}~> y) :
   x ~{Sub D UnitFixed}~> FixedR y :=
@@ -239,7 +498,13 @@ Proof.
   - intros x y z f g; simpl; apply to_adj_nat_r.
 Defined.
 
-(* 相关说明。 （已译） *)
+(*
+ The restricted unit and counit ARE the ambient ones, on the carrier and
+ on the whole sigma. 
+
+ --------
+ 受限的单元和余单元就是载体上的以及整个σ上的环境单元和余单元。
+*)
 Example fixed_unit_strict (x : Sub D UnitFixed) :
   `1 (@unit _ _ FixedL FixedR fixed_adjunction x)
     = @unit C D F U A `1 x := eq_refl.
@@ -258,8 +523,13 @@ Example fixed_counit_whole (y : Sub C CounitFixed) :
 
 (** *** Lemma 4.2.11 *)
 
-(* The inverses restricted unit counit ambient 对象'
- own inverses, carried 进入 subcategory terminal [shom]. （已译） *)
+(*
+ The inverses of the restricted unit and counit are the ambient objects'
+ own inverses, carried into the subcategory by the terminal [shom]. 
+
+ --------
+ 受限单位和余单位的逆元是环境对象自身的逆元，通过终端 [shom] 被带入子范畴。
+*)
 Definition fixed_unit_inverse (x : Sub D UnitFixed) :
   FixedR (FixedL x) ~{Sub D UnitFixed}~> x :=
   (@two_sided_inverse D _ _ _ `2 x; I).
@@ -281,7 +551,13 @@ Proof.
     + exact (@is_left_inverse C _ _ _ `2 y).
 Defined.
 
-(* 相关说明。 （已译） *)
+(*
+ Riehl Lemma 4.2.11 / Exercise 4.2.iv, and the general half of Mac
+ Lane's closing question. 
+
+ --------
+ Riehl 引理 4.2.11 / 练习 4.2.iv，以及 Mac Lane 闭合问题的一般部分。
+*)
 Definition adjunction_fixed_point_equivalence :
   EquivalenceOfCategories FixedL :=
   AdjointEquivalence_to_Equivalence fixed_AdjointEquivalence.
@@ -291,12 +567,20 @@ Definition fixed_point_equivalence_swap :
   AdjointEquivalence_to_Equivalence
     (AdjointEquivalence_swap fixed_AdjointEquivalence).
 
-(* * ** (B) The fixed 对象 essential image other adjoint （已译） *)
+(*
+   * ** (B) The fixed objects are the essential image of the other adjoint 
+
+   --------
+   * **（B）固定对象是另一个伴随函子的本质像
+*)
 
 (*
-   本节说明 FixedPoints 相关定义、性质与动机。
+ If [c] is counit-fixed and [x] is isomorphic to [U c], then the unit is
+ invertible at [x]: naturality of the unit at [to phi] rewrites the unit
+ at [x] as a composite of three invertible arrows. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 如果  [c]  是余单位固定的，并且  [x]  与  [U c]  同构，则在  [x]  处单位是可逆的：在  [to phi]  处单位的自然性将  [x]  处的单位重写为三个可逆箭头的复合。
 *)
 Lemma unit_iso_of_image (x : D) (c : C)
   (K : IsIsomorphism (@counit C D F U A c)) (phi : x ≅ U c) :
@@ -317,7 +601,7 @@ Proof.
     now rewrite id_left.
 Defined.
 
-(* The 镜像, through 自然性 counit. （已译） *)
+(* The mirror, through naturality of the counit. / 通过余单位的自然性，镜子。 *)
 Lemma counit_iso_of_image (c : C) (x : D)
   (H : IsIsomorphism (@unit C D F U A x)) (psi : c ≅ F x) :
   IsIsomorphism (@counit C D F U A c).
@@ -339,9 +623,15 @@ Proof.
     now rewrite id_right.
 Defined.
 
-(* Mac Lane's "the closed elements image R", categorified:
- unit invertible at [x] exactly [x] lies essential
- image U RESTRICTED counit-fixed 对象. （已译） *)
+(*
+ Mac Lane's "the closed elements are the image of R", categorified:
+ the unit is invertible at [x] exactly when [x] lies in the essential
+ image of U RESTRICTED to the counit-fixed objects. 
+
+ --------
+ 麦克莱恩的“闭合元素是 R 的像”，范畴化：
+ 当 [x] 在 [x] 位于 U 限制到余单位固定对象的本质像中时，单位在 [x] 是可逆的。
+*)
 Theorem unit_fixed_iff_image (x : D) :
   IsIsomorphism (@unit C D F U A x)
     ↔ ∃ c : C, IsIsomorphism (@counit C D F U A c) ∧ (x ≅ U c).
@@ -366,41 +656,68 @@ Defined.
 
 End FixedPoints.
 
-(* * ** (C) The 余单子 side, bridge 单子-side results （已译） *)
+(*
+   * ** (C) The comonad side, and the bridge to the monad-side results 
+
+   --------
+   * **（C）余单子方面，以及与单子方面结果的桥梁
+*)
 
 (*
-   本节说明单子、余单子相关定义、性质与动机。
+ The dual of Construction/Reflective/Idempotent.v's class.  A comonad
+ IS a monad on the opposite category (Theory/Monad.v), so an
+ idempotent comonad is an idempotent monad there; the [Existing Class]
+ declaration follows the Comonad/Core.v accessor idiom. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Construction/Reflective/Idempotent.v 类的对偶。一个余单子（comonad）是在对偶范畴（Theory/Monad.v）上的单子，所以幂等余单子在那里就是幂等单子；[Existing Class] 声明遵循 Comonad/Core.v 访问器的惯例。
 *)
 Definition IdempotentComonad {C : Category} (W : C ⟶ C)
   (H : @Comonad C W) : Type := @IdempotentMonad (C^op) (W^op) H.
 Existing Class IdempotentComonad.
 
-(* The W-colocal 对象: those at 余单子 counit invertible.
- Read through [op_subcategory], 这是 subcategory C itself. （已译） *)
+(*
+ The W-colocal objects: those at which the comonad counit is invertible.
+ Read through [op_subcategory], this is a subcategory of C itself. 
+
+ --------
+ W-共定位对象：那些上面余单子余单位是可逆的对象。通读 [op_subcategory]，这是 C 本身的一个子范畴。
+*)
 Definition WLocal_Subcategory {C : Category} {W : C ⟶ C}
   (H : @Comonad C W) : Subcategory C :=
   op_subcategory (@MLocal_Subcategory (C^op) (W^op) H).
 
 (*
-   本节说明 FixedPoints 相关定义、性质与动机。
+ The measurement that makes the dual free: [Subcategory] is a record
+ under primitive projections and [op_subcategory] rebuilds its four
+ fields by eta-expansion, so the double opposite returns on the nose. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 使对偶自由的测度：[Subcategory] 是在原始投影下的记录，而 [op_subcategory] 通过 eta 扩展重建其四个字段，所以双重对偶精确返回。
 *)
 Example wlocal_op_involution {C : Category} (S : Subcategory C) :
   op_subcategory (op_subcategory S) = S := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+ The issue's first work item: the dual of [Idempotent_Reflective], with
+ no tactic and no transport. 
+
+ --------
+ 该问题的第一个工作项：[Idempotent_Reflective] 的对偶， 没有策略也没有传输。
+*)
 Definition Idempotent_Coreflective {C : Category} {W : C ⟶ C}
   (H : @Comonad C W) (IH : IdempotentComonad W H) :
   Coreflective (WLocal_Subcategory H) :=
   @Idempotent_Reflective (C^op) (W^op) H IH.
 
 (*
-   本节说明 FixedPoints 相关定义、性质与动机。
+ The converse, in the op form.  It is NOT stated as an
+ [IdempotentComonad]: that class asks for an endofunctor presented as
+ [W^op], and the endofunctor a coreflection induces on C^op is
+ [Incl ◯ reflector], which has no such presentation. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 逆命题，在对偶范畴形式中。它**不是**以以下形式陈述的：[IdempotentComonad]：该类别要求一个呈现为 [W^op] 的端函子，而端函子在 C^op 上诱导的余反射是 [Incl ◯ reflector]，它没有这样的呈现。
 *)
 Definition Coreflective_IdempotentMonad_op {C : Category}
   {S : Subcategory C} (R : Coreflective S) :
@@ -408,17 +725,26 @@ Definition Coreflective_IdempotentMonad_op {C : Category}
     (Reflective_Monad R) :=
   Reflective_IdempotentMonad R.
 
-(* Membership colocal subcategory IS invertibility 单子
- unit read C^op, nose. （已译） *)
+(*
+ Membership in the colocal subcategory IS invertibility of the monad
+ unit read in C^op, on the nose. 
+
+ --------
+ 共定位子范畴中的成员资格就是在 C^op 中严格意义上读取的单子单位的可逆性。
+*)
 Example wlocal_sobj_strict {C : Category} {W : C ⟶ C} (H : @Comonad C W)
   (x : C) :
   sobj C (WLocal_Subcategory H) x
     = @IsIsomorphism (C^op) x (W x) (@extract C W H x) := eq_refl.
 
 (*
-   本节说明单子、余单子相关定义、性质与动机。
+ The covariant reading.  The two records carry the same morphism -- the
+ comonad's [extract] IS the opposite monad's [ret], definitionally --
+ and differ only in that the two inverse laws are exchanged, C^op's
+ composition being C's flipped. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 协变的读法。两个记录承载相同的态射——余单子的 [extract] 本质上就是对偶单子的 [ret]——只是在两个逆律被交换时有所不同，C^op 的组合是 C 的翻转。
 *)
 Definition wlocal_to_extract {C : Category} {W : C ⟶ C} (H : @Comonad C W)
   (x : C) (o : sobj C (WLocal_Subcategory H) x) :
@@ -453,38 +779,60 @@ Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
 (*
-   本节说明伴随、单子、始/终对象相关定义、性质与动机。
+ The unit-fixed subcategory IS the local subcategory of the induced
+ monad, on the WHOLE record: Monad/Comparison.v supplies [ret] as
+ the adjunction's unit, and the three remaining fields agree because
+ both records use the terminal [shom]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 单位固定子范畴就是诱导单子在整个记录上的局部子范畴：Monad/Comparison.v 提供 [ret] 作为伴随的单位，其余三个字段一致，因为两个记录都使用终端 [shom] 。
 *)
 Example unit_fixed_is_mlocal :
   UnitFixed A
     = @MLocal_Subcategory D (U ◯ F) (Adjunction_Induced_Monad A) := eq_refl.
 
-(* The issue's fifth work item, positive half: idempotency the
- fixed subcategory REFLECTIVE. This one statement below that
- needs 假设 beyond bare 伴随. （已译） *)
+(*
+ The issue's fifth work item, positive half: with idempotency the
+ fixed subcategory is REFLECTIVE.  This is the one statement below that
+ needs a hypothesis beyond the bare adjunction. 
+
+ --------
+ 该问题的第五个工作项，正半部分：具有幂等性时，固定的子类别是反射性的。以下的这条陈述是唯一需要超出简单附加的假设的内容。
+*)
 Definition unit_fixed_reflective_of_idempotent
   (IM : @IdempotentMonad D (U ◯ F) (Adjunction_Induced_Monad A)) :
   Reflective (UnitFixed A) :=
   @Idempotent_Reflective D (U ◯ F) (Adjunction_Induced_Monad A) IM.
 
-(* The opposite 伴随's unit IS 伴随's counit -- same
- term, same type, since hom C^op reversed hom C. （已译） *)
+(*
+ The opposite adjunction's unit IS this adjunction's counit -- same
+ term, same type, since a hom of C^op is a reversed hom of C. 
+
+ --------
+ 对偶伴随的单位就是这个伴随的余单位——相同的项，相同的类型，因为 C^op 的态射是 C 的逆态射。
+*)
 Example fixed_op_unit_is_counit (c : C) :
   @unit (D^op) (C^op) (U^op) (F^op) (Opposite_Adjunction F U A) c
     = @counit C D F U A c := eq_refl.
 
-(* Consequently counit-fixed 对象 unit-fixed 对象 the
- opposite 伴随, read C^op. （已译） *)
+(*
+ Consequently the counit-fixed objects are the unit-fixed objects of the
+ opposite adjunction, read in C^op. 
+
+ --------
+ 因此，余单位固定对象是在对偶伴随中，在C^op中读取的单位固定对象。
+*)
 Example counit_fixed_op_strict (c : C) :
   sobj (C^op) (UnitFixed (Opposite_Adjunction F U A)) c
     = @IsIsomorphism (C^op) c (F (U c)) (@counit C D F U A c) := eq_refl.
 
 (*
-   本节说明伴随、余单子、来源与用途相关定义、性质与动机。
+ The dual of the reflectivity corollary, stated where it is a term: the
+ counit-fixed subcategory, read in C^op, is reflective there whenever
+ the comonad the adjunction induces is idempotent. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 反射性推论的对偶，表示它是一个项：在 C^op 中读取时的余单位固定子范畴，只要伴随产生的余单子是幂等的，那里就是反射的。
 *)
 Definition counit_fixed_op_reflective_of_idempotent
   (IM : @IdempotentMonad (C^op) (F^op ◯ U^op)

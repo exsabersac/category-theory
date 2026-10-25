@@ -17,22 +17,373 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- nLab:      https://ncatlab.org/nlab/show/Lie+algebra
- nLab:      https://ncatlab.org/nlab/show/universal+enveloping+algebra
- Wikipedia: https://en.wikipedia.org/wiki/Lie_algebra
+   * * Lie algebras over a commutative ring, and the commutator functor
 
-   本文件给出具体实例。
+   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   GTM 5, §IV.2, printed p. 89 (PDF p. 98), Exercise 3
+   (maclane:IV.2:ex3).  The exercise reads, for K a field: with
+   Lie_K the category of small Lie algebras over K -- morphisms
+   the K-module maps preserving the bracket -- and
+   V : Alg_K ⟶ Lie_K the functor putting on each associative
+   algebra the bracket [a,b] = ab - ba, show, using the
+   Poincaré-Birkhoff-Witt theorem, that the universal enveloping
+   algebra functor E is a left adjoint for V.
+   nLab:      https://ncatlab.org/nlab/show/Lie+algebra
+   nLab:      https://ncatlab.org/nlab/show/universal+enveloping+algebra
+   Wikipedia: https://en.wikipedia.org/wiki/Lie_algebra
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   THIS FILE IS THE Lie_K AND V HALF OF THAT EXERCISE, AND NOTHING
+   MORE.  It builds the category of Lie algebras and the commutator
+   functor -- items 1 (second half) and 2 of the issue's work list.
+   The universal enveloping algebra E, the adjunction E ⊣ V and PBW are
+   items 3 and 4, they belong to the companion module the issue names
+   (Adjunction/Enveloping.v), and NOTHING here is a step towards them
+   beyond supplying their target category: no quotient of a tensor
+   algebra is formed, no unit is constructed, and no statement below is
+   a special case of any of that.  The NOT DELIVERED list at the foot
+   of this essay is the authority on the boundary.
+
+   THE ISSUE'S "Current state" IS STALE IN ONE CLAUSE, AND MEASURABLY
+   SO.  It says "There is no category of associative algebras, no
+   category of Lie algebras, no commutator functor and no
+   enveloping-algebra construction".  Three of those four are still
+   true; the FIRST is not.  [KAlgObject]/[KAlg] (commutative K-algebras)
+   are Instance/Rng/Algebras.v, and [AAlgObject]/[AAlg] (associative
+   unital K-algebras over a commutative base, with a CENTRAL structure
+   map in place of commutativity of the ring) are
+   Instance/Rng/Algebras.v's centre-valued sibling
+   Instance/Rng/Algebras/Associative.v.  So the first half of
+   the issue's work item 1 was already discharged, and this file
+   CONSUMES [AAlgObject], [AAlg], [AAlg_RMod], [AAlg_RModHom],
+   [AAlg_Forget_Mod] and the non-commutative witness [UT2] rather than
+   rebuilding any of them.  Mac Lane's Alg_K is [AAlg K] here, at a
+   commutative RING K rather than at a field -- which is more general
+   on that axis, and nothing below consumes invertibility of scalars;
+   what a field would buy is on the enveloping side, not here.
+
+   A DIFFERENT LIE DEFERRAL IS NOT DISCHARGED, and the two must not be
+   confused.  Instance/Rng/Frac.v's header descopes "THE LIE HALF of
+   Mac Lane's exercise -- the Lie algebra of a Lie GROUP as a functor"
+   (§I.3 Exercise 1), and Instance/Roster.v cites that descope
+   under its Man entry.  That item needs smooth manifolds and is
+   untouched here; this file is about abstract Lie algebras over a
+   ring, which need no differential structure at all.  Neither header
+   is edited.
+
+   ** WHICH AXIOM IS PRIMITIVE, AND WHY IT MATTERS
+
+   [lie_alt] is the ALTERNATING law [x,x] ≈ 0, NOT antisymmetry.  That
+   is Bourbaki's choice and the modern one, and over a general
+   commutative ring it is the only one that gives the intended notion:
+   the two are equivalent exactly when doubling is injective on the
+   underlying module, and in characteristic 2 antisymmetry degenerates
+   into symmetry.  The file does not merely assert this -- it LOCATES
+   the missing hypothesis and machine-checks both directions:
+
+   - [lie_antisym_of_alt] derives antisymmetry from alternating, and
+   SPENDS BOTH additivity laws: the argument expands [x+y,x+y] and
+   needs [lie_br_add_r] to split the second slot before
+   [lie_br_add_l] can split the first.  So neither additivity
+   field can be dropped in favour of the other, even though
+   additivity in the second slot is a consequence of antisymmetry
+   and additivity in the first -- the derivation of antisymmetry is
+   what would become circular.  Neither [lie_br_smul_l] nor
+   [lie_jacobi] is consumed.
+
+   - [lie_alt_of_antisym] goes back, under [TwoRegular M] -- "if
+   m + m ≈ 0 then m ≈ 0".  It consumes NO additivity law and no
+   scalar law: it is stated before the additivity hypotheses enter
+   the section, so its type shows the economy rather than a comment
+   claiming it.
+
+   So the primitive is chosen because the converse passage costs a
+   hypothesis that fails in characteristic 2.  NO COUNTEREXAMPLE IS
+   BUILT: nothing here exhibits a module with an antisymmetric
+   non-alternating bracket satisfying Jacobi, so "the two axioms are
+   inequivalent" is NOT a theorem of this file, only the located
+   hypothesis is.  Recorded in NOT DELIVERED.
+
+   ** WHAT IS BUILT
+
+   [LieObject K] is a K-module with a bracket, carrying respectfulness
+   and SIX laws: additivity in each slot, K-homogeneity in the FIRST
+   slot only, alternating, and Jacobi.  Homogeneity in the second slot
+   is a THEOREM ([lie_br_smul_r]), by antisymmetry plus
+   [rm_smul_neg_r]; the record does not carry it.  [LieHom] is a module
+   homomorphism preserving the bracket, [Lie K] the category, with
+   [Lie_Forget_Mod : Lie K ⟶ RMod (`1 K)] and
+   [Lie_Forget : Lie K ⟶ Sets].
+
+   [CommutatorFunctor K : AAlg K ⟶ Lie K] is Mac Lane's V.  Its object
+   action leaves the underlying K-module ALONE -- not up to
+   isomorphism, on the nose:
+
+   lie_mod (lie_of_aalg A) = fobj[AAlg_Forget_Mod K] A
+
+   holds by [eq_refl] ([lie_comm_underlying]), as does the same
+   statement one step further out through the two forgetful functors to
+   Sets.  The functor is proved FAITHFUL ([CommutatorFunctor_Faithful],
+   two lines -- the two hom-setoids compare the same underlying maps)
+   and proved NOT FULL ([CommutatorFunctor_not_Full]): the ZERO map is
+   a Lie homomorphism but is the image of no algebra map, because an
+   algebra map carries 1 to 1 and [UT2] has 1 ≉ 0.
+
+   ** MEASURED FACTS: WHICH LEMMA SPENDS WHICH HYPOTHESIS
+
+   - [lie_comm_add_l] and [lie_comm_add_r] each spend [lie_sub_plus]
+   and BOTH distributivity laws -- [rig_distr_r] for the slot being
+   split and [rig_distr_l] for the other, in the order the slot
+   dictates -- and nothing else; centrality is NOT consumed by
+   either.
+   - [lie_comm_smul_l] IS where [aalg_central] is spent, and it is
+   spent exactly ONCE, to move the image of the scalar back across
+   y in the term y·(u(r)·x).  This is the only use of centrality in
+   the file, and it is what makes the commutator K-BILINEAR rather
+   than merely additive: over an algebra whose structure map had
+   non-central image the bracket would not be homogeneous, so the
+   [AAlgObject] field that Instance/Rng/Algebras.v declined to
+   build is precisely the field this functor needs.
+   - [lie_comm_alt] is [ring_neg_r] alone -- one line, no
+   distributivity, no associativity, no centrality.
+   - [lie_comm_jacobi] spends associativity of multiplication (twice
+   per term, through [lie_comm_triple]), commutativity of ADDITION
+   (in [lie_add_shuffle4] and [lie_add_rot]), and -- inside
+   [lie_comm_triple] itself -- BOTH distributivity laws
+   ([rig_distr_l] and [rig_distr_r]) together with
+   the negation calculus ([ring_neg_add] twice,
+   [ring_neg_involutive], [lie_mul_neg_l], [lie_mul_neg_r]).  Read
+   the neighbouring bullets' exhaustive phrasing as NOT applying
+   here: this list is the whole of it, and an earlier draft that
+   stopped after the first two laws was wrong.  What it spends
+   NEITHER of is centrality NOR commutativity of multiplication --
+   both verified at the proof term, both zero -- which is the
+   point: Jacobi is a consequence of associativity, and the
+   computation is a twelve-term cancellation carried out as three
+   instances of one expansion lemma plus one purely additive
+   rearrangement, [lie_jacobi_shape], whose six summands are bare
+   variables.  Because that shape lemma is APPLIED rather than
+   rewritten with, no rewrite in the Jacobi proof ever has to
+   traverse a concrete triple product.
+
+   ** REUSED VERSUS BUILT
+
+   REUSED, not rebuilt: [AAlgObject], [AAlg], [AAlgHom], [AAlg_RMod],
+   [AAlg_RModHom], [AAlg_Forget_Mod], [Base_AAlg], [UT2], [UT2_AAlg],
+   [ut2_e11], [ut2_e12], [ut2_eqT] (Associative.v); [RModObject],
+   [RModHom], [RMod], [rmod_hom_id], [rmod_hom_compose],
+   [rm_smul_neg_r], [RMod_Forget] (Mod.v); [ab_neg_unique],
+   [ab_neg_right] (Ab.v); [ab_sub_plus] (Ab/Subtract.v); [ring_neg_r],
+   [ring_neg_add], [ring_neg_involutive], [RigHom_neg], [Int_CRng]
+   (Rng.v, Rig.v).
+
+   [lie_sub_plus] deserves a word, because it looks like a rebuild and
+   is not: its proof is a bare [exact (ab_sub_plus (ring_ab R) a b c d)].
+   Ab/Subtract.v states the shuffle in the abelian group's own
+   vocabulary ([ab_sub], [cmon_plus]), while every ring lemma this file
+   rewrites with is stated in [rig_add]/[ring_neg]; the two are
+   CONVERTIBLE but not syntactically equal, and setoid rewriting is
+   keyed on the head symbol, so a restatement is what makes the donor
+   usable at all.  The restatement carries no proof of its own.
+
+   BUILT here: everything named [Lie*] or [lie_*].  Four of those are
+   general facts about rings and rigs that mention no Lie algebra --
+   [lie_mul_neg_l], [lie_mul_neg_r], [lie_add_shuffle4] and
+   [lie_add_rot] -- and are upstreaming candidates for
+   Theory/Algebra/Rig.v and Instance/Rng.v; they are declared here
+   because moving them would rebuild those files and their large
+   downstream cone, the reason Instance/Ab/Subtract.v gives for the
+   same choice.
+
+   ** STRICT VERSUS SETOID
+
+   THIRTEEN identifications close at [eq_refl] and are shipped as
+   [Example]s -- counted as occurrences of [:= eq_refl] OUTSIDE a
+   [Fail], of which two are probe controls, so eleven belong to the
+   development proper.  They are: the underlying module of an abelian
+   Lie algebra ([lie_abelian_mod]); the underlying module of the
+   commutator algebra ([lie_comm_underlying]); its bracket
+   ([lie_comm_bracket_is_comm]); both data fields of the two forgetful
+   composites ([lie_forget_compose_obj], [lie_forget_compose_map],
+   restated as the two probe controls); the underlying module
+   homomorphism of the functor's arrow action ([lie_comm_fmap_mod]);
+   the same identification read out to [Sets] in each of its two
+   orders ([lie_comm_underlying_set], [lie_comm_forget_set]); and
+   THREE computations in [UT2] -- the carrier ([lie_ut2_carrier]) and
+   the two brackets ([lie_ut2_e11_e12], [lie_ut2_e12_e11]).  What does
+   NOT close at [eq_refl], with the reason in each case:
+
+   - [Lie_Forget_Mod K ◯ CommutatorFunctor K] is NOT [eq_refl]-equal
+   to [AAlg_Forget_Mod K], although BOTH data fields agree on the
+   nose ([lie_forget_compose_obj], [lie_forget_compose_map]).
+   [Compose] rebuilds [fmap_respects], [fmap_id] and [fmap_comp] as
+   its own opaque obligations, and since [Functor] has primitive
+   projections WITH eta -- the measurement Adjunction/Pare.v
+   records, cited rather than retaken here -- record equality IS
+   field equality, so the difference is confined to those three law
+   fields.  Pinned as a probe negative with the two agreeing data
+   fields as its controls, so the localisation is measured and not
+   asserted.
+   - The bracket of a COMMUTATIVE algebra is zero only up to [≈]
+   ([lie_comm_of_commutative]).  For an abstract commutative
+   algebra a·b and b·a are different terms and no reduction
+   relates them; even over ℤ, where the multiplication computes,
+   [a*b + -(b*a)] does not reduce to 0 at variable a and b.  Pinned
+   as a probe negative against the [≈] statement as control.
+   - Antisymmetry, homogeneity in the second slot and every derived
+   law are [≈] statements: they are theorems about an abstract
+   record, so there is nothing for conversion to do.
+
+   ** NON-DEGENERACY
+
+   Proved, not asserted, and in BOTH directions.  [Lie_UT2] is the
+   commutator Lie algebra of the upper-triangular 2x2 integer matrices,
+   and its bracket COMPUTES: [lie_ut2_e11_e12] and [lie_ut2_e12_e11]
+   evaluate [E11,E12] to E12 and [E12,E11] to -E12 by [eq_refl], so
+   [lie_ut2_bracket_nonzero] and [lie_ut2_not_abelian] are settled by
+   [discriminate] on a pair of Z-triples -- no induction and no
+   universal property is involved.  [lie_not_all_abelian] packages the
+   consequence: no theorem of this file can force every bracket to
+   vanish.  In the other direction, [lie_abelian] puts the zero bracket
+   on ANY module, so [Lie K] is inhabited for every K with no
+   witness-hunting, and [lie_comm_of_commutative] shows the commutator
+   of a commutative algebra lands there -- exhibited over ℤ at
+   [Base_AAlg] as [lie_base_int_bracket].  The degenerate case is
+   therefore labelled degenerate and the non-degenerate one is the
+   witness, rather than the reverse.
+
+   THE CHOICE OF [UT2] IS A MEASUREMENT, AND AN EARLIER DRAFT OF THIS
+   ESSAY JUSTIFIED IT WRONGLY.  A commutative algebra has zero bracket
+   by [lie_comm_of_commutative], so the witness must be
+   non-commutative -- but [UT2] is NOT the tree's only non-commutative
+   [RingObject], and claiming so would have repeated a census
+   Instance/Rng/Algebras/Associative.v's header took before its
+   neighbours landed.  AT LEAST TWO MORE are proved non-commutative
+   elsewhere: [TensorRing] (Instance/Vect/TensorAlgebra.v, by that
+   file's [tensor_not_commutative]) and [MonoidRing]
+   (Instance/Rng/MonoidRing.v, by [zmring_not_commutative]).
+   No total is given, and deliberately: a NAME-ANCHORED declaration-head
+   sweep -- one matching `Definition <name> : RingObject` -- undercounts,
+   [Int_Ring] itself (Theory/Algebra/Rig.v) being invisible to it
+   because a universe annotation sits between the name and the colon.
+   Say name-anchored rather than "a sweep for [: RingObject]": the bare
+   literal DOES match that line, so only the anchored form misses it.
+   "At least two" is
+   what was actually checked, and it is all the argument needs.
+
+   What actually distinguishes [UT2] is its HOM-SETOID, not its
+   non-commutativity: [ut2_eqT] is LEIBNIZ equality on Z-triples, so
+   every bracket below REDUCES and both negatives close by
+   [discriminate] on a pair of concrete triples.  The other two are
+   generators-and-relations quotients whose setoids do not compute, so
+   a nonzero bracket over either would have to be proved by mapping OUT
+   into a concrete target -- reachable, but strictly more machinery for
+   a strictly weaker guarantee.  No claim is made that they would fail.
+
+   ** AUDIT
+
+   101/101 CONSTANTS CLOSED UNDER THE GLOBAL CONTEXT, and the count
+   reconciles exactly rather than being asserted.  [Print Module] lists
+   NINETY-NINE names; the two it does not are [Build_LieObject] and
+   [Build_LieHom], which it renders after the record's [:=] where no
+   keyword regex sees them -- the counting hazard this tree records for
+   several other files.  The ninety-nine decompose as 62 source-declared
+   heads + 10 record field accessors (eight of [LieObject], two of
+   [LieHom]) + 27 [Program] obligations, and no source sweep sees either
+   of the last two groups.  All 101 were queried by fully qualified
+   name; none reports an assumption.
+
+   ZERO NAME COLLISIONS.  All 101 names were swept against the
+   declaration heads of the other 819 [.v] files in the tree, with
+   attribute prefixes allowed, and nothing matched.  This matters
+   because [make print-assumptions] loads many modules into ONE scope,
+   where a shared name silently audits the wrong constant.
+
+   ** NOT DELIVERED
+
+   - No universal enveloping algebra, no [Adjunction/Enveloping.v],
+   no adjunction, and no unit or counit.  Work items 3 and 4 of the
+   issue.  Nothing here is claimed to be a step toward them.
+   - No Poincaré-Birkhoff-Witt theorem and no statement whose truth
+   depends on one; nothing below mentions a basis or a filtration.
+   - No counterexample separating alternating from antisymmetric: the
+   hypothesis under which they coincide is exhibited
+   ([TwoRegular]), its failure is not witnessed, and no [LieObject]
+   over a characteristic-2 ring appears in the file.
+   - No free Lie algebra, no left adjoint to [Lie_Forget_Mod], no
+   limits, colimits, products or quotients in [Lie K], no ideals,
+   subalgebras, derived series, solvability, nilpotency, Killing
+   form, or modules over a Lie algebra.
+   - No Lawvere-theory presentation, which the issue names as an
+   alternative route; [Theory/Lawvere/Model.v] is neither required
+   nor mentioned in any statement.
+   - No relation between [Lie K] and [Instance/Vect/TensorAlgebra.v]:
+   that module is not [Require]d and no STATEMENT mentions it.  The
+   non-degeneracy essay above does cite its [TensorRing] and
+   [tensor_not_commutative] in prose, as prior art for
+   non-commutativity; that is a citation, not a dependency, and it
+   is the only mention of the module anywhere in the file.
+   - No claim that [CommutatorFunctor] preserves or reflects anything
+   -- no limits, no monos, no epis; faithfulness and non-fullness
+   are the only two structural facts proved about it.
+   - No universe measurement.  Nothing here declares a universe
+   binder, and no constraint block is inspected or reported. 
+
+   --------
+   * * 交换环上的李代数，以及对易子函子
+
+   书籍：Mac Lane，《从事数学研究的范畴论者》，第二版，GTM 5，第 IV.2 节，第 89 页（PDF 第 98 页），练习 3（maclane:IV.2:ex3）。练习内容如下：设 K 为一个域：令 Lie_K 为 K 上小李代数的范畴——态射为保持括号运算的 K-模映射——并且 V : Alg_K ⟶ Lie_K 是将每个结合代数赋予括号 [a,b] = ab - ba 的函子，使用庞加莱-宾科夫-维特定理证明，泛化包络代数函子 E 是 V 的左伴随函子。
+
+   nLab: https://ncatlab.org/nlab/show/Lie+algebra  
+
+   nLab: https://ncatlab.org/nlab/show/universal+enveloping+algebra  
+
+   维基百科: https://en.wikipedia.org/wiki/Lie_algebra这个文件是该练习的 Lie_K 和 V 的一半，仅此而已。它构建了李代数的范畴和换位子函子——即该期工作清单的第 1 条（后半部分）和第 2 条。泛包络代数 E、伴随关系 E ⊣ V 和 PBW 是第 3 条和第 4 条，它们属于该期命名的配套模块（Adjunction/Enveloping.v），这里没有任何内容是通向它们的一步，除了提供它们的目标范畴：没有形成张量代数的商，也没有构造单位，下文没有任何陈述是上述内容的特例。本篇文章底部的“未交付”清单是边界的权威说明。该问题的“当前状态”在一个条款中已过时，并且可以衡量。它说“没有交换代数的范畴，没有李代数的范畴，没有对易子函子，也没有包络代数构造”。这四点中仍有三点成立；第一个不成立。[KAlgObject] / [KAlg]（交换K-代数）位于 Instance/Rng/Algebras.v，[AAlgObject] / [AAlg]（在交换基下的结合幺K-代数，带有代替环交换性的中心结构映射）是 Instance/Rng/Algebras.v 的中心值变体 Instance/Rng/Algebras/Associative.v。所以问题的工作项1的前半部分已经完成，而这个文件消耗了 [AAlgObject]、[AAlg]、[AAlg_RMod]、[AAlg_RModHom]、[AAlg_Forget_Mod] 和非交换证明 [UT2]，而不是重建它们中的任何一个。这里的 Mac Lane 的 Alg_K 是 [AAlg K]，在一个交换环 K 上，而不是在一个域上——在这一轴上更为通用，并且下面没有任何内容消耗标量的可逆性；域所提供的好处是在包络方面，而不是在这里。不同的李代数推迟未被消除，并且两者不能混淆。Instance/Rng/Frac.v 的标题取消了“麦克莱恩练习的李代数部分——作为函子的李群的李代数”（§I.3 练习 1），Instance/Roster.v 在其 Man 条目下引用了该取消的内容。该条目需要光滑流形，这里未作修改；此文件关于环上的抽象李代数，根本不需要微分结构。两个标题都未被编辑。
+
+   ** 哪个公理是原始的，以及它为何重要[lie_alt] 是交替律 [x,x] ≈ 0，而不是反对称。这是布尔巴基的选择，也是现代的选择，并且在一般交换环上，它是唯一能给出预期概念的定义：当加倍映射在基础模上是单射时，这两者才等价，并且在特征为 2 时，反对称会退化为对称。该文件不仅仅是断言这一点——它定位了缺失的假设并对两个方向进行了机器验证：- [lie_antisym_of_alt] 从交替性推导出反对称性，并使用了两条加法律：该论证展开 [x+y,x+y]，并且在 [lie_br_add_l] 可以分裂第一个位置之前需要 [lie_br_add_r] 来分裂第二个位置。因此，即使第二个位置的加法性是反对称性和第一个位置加法性的结果，也不能舍弃任何一个加法字段，否则反对称性的推导将变成循环。[lie_br_smul_l] 和 [lie_jacobi] 都未被使用。
+
+   - [lie_alt_of_antisym] 在 [TwoRegular M] 下回溯——“如果 m + m ≈ 0，则 m ≈ 0”。它未消耗任何加法律也未消耗任何标量律：它在加法假设进入该部分之前就已陈述，因此它的类型显示了经济性，而不是一个声明性的评论。所以选择原始的原因是相反的推导在特征2下需要一个会失败的假设。没有构建反例：这里没有展示一个带有反对称非交替括号且满足Jacobi的模，所以“两个公理不等价”不是本文件的定理，只有找到的假设是。记录在未传递中。
+
+   ** 已构建内容
+
+   [LieObject K] 是一个带括号的 K-模，具有尊重性和六条规律：每个位置上的加法性、仅在第一个位置上的 K-齐次性、交替性，以及Jacobi。第二个位置上的齐次性是定理（[lie_br_smul_r]），由反对称性加上 [rm_smul_neg_r] 得出；记录中未包括它。[LieHom] 是一个保持括号的模同态，[Lie K] 是对应的范畴，带有 [Lie_Forget_Mod : Lie K ⟶ RMod (`1 K)] 和 [Lie_Forget : Lie K ⟶ Sets] 。[CommutatorFunctor K : AAlg K ⟶ Lie K] 是 Mac Lane 的 V。它的对象作用不会改变底层的 K-模 —— 不是同构意义上的，而是字面上的：
+
+   lie_mod (lie_of_aalg A) = fobj [AAlg_Forget_Mod K]  A
+
+   由 [eq_refl] ([lie_comm_underlying]) 成立，通过两个遗忘函子到 Sets 的同一陈述也成立。该函子被证明是忠实的 ([CommutatorFunctor_Faithful]，两行 —— 两个 Hom 集合对比相同的底层映射) 并且被证明不是满射的 ([CommutatorFunctor_not_Full])：零映射是一个 Lie 同态，但不是任何代数映射的像，因为代数映射将 1 映射到 1，而 [UT2] 的 1 ≉ 0。
+
+   ** 测量事实：哪个引理使用了哪个假设- [lie_comm_add_l] 和 [lie_comm_add_r] 各自消耗 [lie_sub_plus]，并且消耗两个分配律——[rig_distr_r] 对于被拆分的插槽，[rig_distr_l] 对于另一个插槽，顺序由插槽决定——除此之外不消耗其他任何东西；中心性不被任一消耗。- [lie_comm_smul_l] 是 [aalg_central] 被消耗的地方，它正好消耗一次，将标量的像从 y·(u(r)·x) 项中移回 y。 这是文件中中心性的唯一使用，并且正是它使对易子成为 K-双线性的，而不仅仅是可加的：在结构映射具有非中心像的代数上，括号不会是齐次的，因此 Instance/Rng/Algebras.v 拒绝构建的 [AAlgObject] 域正是此函子所需要的域。- [lie_comm_alt] 是孤立的 [ring_neg_r] —— 一行，没有分配性，没有结合性，没有中心性。  
+   - [lie_comm_jacobi] 使用了乘法的结合性（每项两次，通过 [lie_comm_triple]）、加法的交换性（在 [lie_add_shuffle4] 和 [lie_add_rot] 中），以及 —— 在 [lie_comm_triple] 内部 —— 两个分配律（[rig_distr_l] 和 [rig_distr_r]）和否定演算（[ring_neg_add] 两次，[ring_neg_involutive]，[lie_mul_neg_l]，[lie_mul_neg_r]）。  
+   将相邻项目符号的详尽表述理解为不适用于此：此列表即完整内容，早期草稿只停在前两条定律时是错误的。它所花费的
+   既不是乘法的中心性也不是交换性——
+   两者都在证明项中验证，都是零——这就是重点：Jacobi 定理是结合律的结果，而计算是一个十二项的消去过程，通过三次应用一个展开引理加一次纯加法重排完成，[lie_jacobi_shape]，其六个和项都是单纯变量。因为该形状引理是被应用的而不是通过重写，所以在 Jacobi 证明中从未需要遍历具体的三重积。
+
+   ** 重用与构建重用，而不是重建：[AAlgObject]，[AAlg]，[AAlgHom]，[AAlg_RMod]，[AAlg_RModHom]，[AAlg_Forget_Mod]，[Base_AAlg]，[UT2]，[UT2_AAlg]，[ut2_e11]，[ut2_e12]，[ut2_eqT]（Associative.v）；[RModObject]，[RModHom]，[RMod]，[rmod_hom_id]，[rmod_hom_compose]，[rm_smul_neg_r]，[RMod_Forget]（Mod.v）；[ab_neg_unique]，[ab_neg_right]（Ab.v）；[ab_sub_plus]（Ab/Subtract.v）；[ring_neg_r]，[ring_neg_add]，[ring_neg_involutive]，[RigHom_neg]，[Int_CRng]（Rng.v，Rig.v）。[lie_sub_plus] 值得提一下，因为它看起来像是重构，但其实不是：它的证据是一个单独的 [exact (ab_sub_plus (ring_ab R) a b c d)]。Ab/Subtract.v 使用阿贝尔群自身的词汇（[ab_sub]、[cmon_plus]）来说明重排，而本文件重写的每个环引理都是用 [rig_add] / [ring_neg] 来说明的；两者是可转换的但在语法上不相等，并且集合重写是以头符号为关键的，所以重新陈述是使该引理可以使用的前提。重新陈述本身不包含任何证据。在此构建：所有命名为 [Lie*] 或 [lie_*] 的内容。其中四个是关于环和环结构的一般事实，没有提到李代数——[lie_mul_neg_l]、[lie_mul_neg_r]、[lie_add_shuffle4] 和 [lie_add_rot]——并且是 Theory/Algebra/Rig.v 和 Instance/Rng.v 的上游候选内容；它们在此处声明，因为移动它们会重建这些文件及其庞大的下游依赖，这也是 Instance/Ab/Subtract.v 做出相同选择的原因。
+
+   ** 严格与集合等价类十三个识别在 [eq_refl] 关闭，并作为 [Example] 运输——计为 [:= eq_refl] 在 [Fail] 之外的出现，其中两个是探针控制，所以十一属于开发本身。它们是：阿贝尔李代数的基础模 ([lie_abelian_mod])；对易代数的基础模 ([lie_comm_underlying])；其括号 ([lie_comm_bracket_is_comm])；两个遗忘复合的两个数据字段 ([lie_forget_compose_obj], [lie_forget_compose_map], 重新表述为两个探针控制)；函子箭头作用的基础模同态 ([lie_comm_fmap_mod])；同一识别在其两个顺序中读出为 [Sets] ([lie_comm_underlying_set], [lie_comm_forget_set])；以及 [UT2] 中的三个计算——载体 ([lie_ut2_carrier]) 和两个括号 ([lie_ut2_e11_e12], [lie_ut2_e12_e11])。未在 [eq_refl] 关闭的事项，以及每种情况的原因：- [Lie_Forget_Mod K ◯ CommutatorFunctor K] 并不等于 [eq_refl]，也不等于 [AAlg_Forget_Mod K]，尽管两个数据字段在 nose（[lie_forget_compose_obj], [lie_forget_compose_map]）上是相同的。[Compose] 将 [fmap_respects], [fmap_id] 和 [fmap_comp] 重建为其自身的不透明义务，并且由于 [Functor] 具有带 eta 的原始投影——这里引用了测量 Adjunction/Pare.v 记录，而非重录——记录相等性即字段相等性，因此差异仅限于这三个法律字段。作为探针负例固定，并以两个一致的数据字段作为其控制，因此定位是经过测量的，而非被断言。- 交换代数的括号在 [≈]（[lie_comm_of_commutative]） 范围内才为零。对于抽象交换代数，a·b 和 b·a 是不同的项，并且没有约简将它们联系起来；即使在 ℤ 上，其中进行乘法计算，[a*b + -(b*a)] 在变量 a 和 b 上也不会约简为 0。固定为探针，作为对 [≈] 声明的负面对照。- 反对称性、第二个位置的齐次性以及每个导出律都是 [≈] 声明：它们是关于抽象记录的定理，因此转换没有任何操作可做。
+
+   ** 非退化性已被证明，而不是断言，并且在两个方向上。[Lie_UT2] 是上三角 2x2 整数矩阵的换位子李代数，其括号计算如下：[lie_ut2_e11_e12] 和 [lie_ut2_e12_e11] 将 [E11,E12] 计算到 E12，将 [E12,E11] 计算到 -E12，通过 [eq_refl]，因此 [lie_ut2_bracket_nonzero] 和 [lie_ut2_not_abelian] 由一对 Z-三元组上的 [discriminate] 决定——不涉及归纳和通用性质。[lie_not_all_abelian] 打包了这一结果：本文件中的任何定理都无法强制每个括号消失。在另一个方向上，[lie_abelian] 将零括号放在任意模上，因此 [Lie K] 对每个 K 都是可居住的，无需寻找证据，并且 [lie_comm_of_commutative] 显示出交换代数的换位子落在那里——在 ℤ 上通过 [Base_AAlg] 展示为 [lie_base_int_bracket]。因此，退化情况被标记为退化，而非退化情况是证据，而不是相反。选择 [UT2] 是一种测量，而本文的早期草稿对此做出了错误的辩解。根据 [lie_comm_of_commutative]，一个交换代数的括号为零，因此见证必须是非交换的——但 [UT2] 并不是该树中唯一的非交换 [RingObject]，并且声称如此将会重复 Instance/Rng/Algebras/Associative.v 的头部在其邻居到达之前已经采取的情况。至少另外两个在其他地方被证明是非交换的：[TensorRing]（Instance/Vect/TensorAlgebra.v，由该文件的 [tensor_not_commutative]）和 [MonoidRing]（Instance/Rng/MonoidRing.v，由 [zmring_not_commutative]）。没有给出总数，而且是故意的：一个以名称为锚的声明头扫描——一个匹配 `Definition <name> : RingObject` ——计算不足，[Int_Ring] 本身（Theory/Algebra/Rig.v）对它是不可见的，因为在名称和冒号之间有一个宇宙注解。说“名称为锚”，而不是“扫描 [: RingObject] ”：裸字面值确实匹配那一行，因此只有锚定形式会漏掉它。“至少两个”是实际检查的数量，这也是整个论证所需要的。真正区分 [UT2] 的是它的 HOM-SETOD，而不是它的非交换性：[ut2_eqT] 是 Z-三元组上的 LEIBNIZ 相等，因此下面的每个括号都会简化，并且两个负号在一对具体三元组上通过 [discriminate] 闭合。其他两个是生成元和关系的商，其集合体不能计算，因此在其中任何一个上的非零括号必须通过将其映射到具体目标来证明——这是可行的，但对一个严格较弱的保证而言需要更多机制。没有声称它们会失败。
+
+   ** 审计在全局上下文下，101/101 个常量都是封闭的，并且计数完全一致，而不是被断言的。[Print Module] 列出了九十九个名称；它没有列出的两个是 [Build_LieObject] 和 [Build_LieHom]，它将其在记录的 [:=] 之后呈现，而没有任何关键字正则表达式能看到它们——这是该树为其他多个文件记录的计数风险。九十九个分解为 62 个源声明的头 + 10 个记录字段访问器（[LieObject] 的八个，[LieHom] 的两个）+ 27 个 [Program] 义务，并且没有源扫描看到最后两组中的任何一个。所有 101 个均通过完全限定名进行查询；没有一个报告假设。零名称冲突。所有101个名称都与树中其他819个[.v]文件的声明头进行了比对，允许使用属性前缀，结果没有匹配。这很重要，因为[make print-assumptions]会将许多模块加载到一个作用域中，在这种情况下，共享名称会悄无声息地审核错误的常量。
+
+   ** 未交付- 没有普遍包络代数，没有 [Adjunction/Enveloping.v]，没有伴随，也没有单位或余单位。问题的工作项 3 和 4。这里没有任何内容声称是朝这些方向的步骤。 - 没有庞加莱-伯克霍夫-维特定理，也没有其真假依赖的陈述；以下内容未提及基或滤过。 - 没有区分交替与反对称的反例：展示了它们一致的假设（[TwoRegular]），未展示其失败，也没有在该文件中出现特征为 2 的环上的 [LieObject]。 - 没有自由李代数，没有 [Lie_Forget_Mod] 的左伴随，无 [Lie K] 中的极限、余极限、积或商，没有理想、子代数、导出列、可解性、幂零性、基林形式或李代数上的模。- 没有 Lawvere 理论的展示，问题将其称为一种替代途径；[Theory/Lawvere/Model.v] 既不是必需的，也没有在任何声明中提到。- [Lie K] 与 [Instance/Vect/TensorAlgebra.v] 之间没有关系：该模块不是 [Require]，且没有任何声明提到它。上文关于非简并性的论文确实在散文中引用了它的 [TensorRing] 和 [tensor_not_commutative]，作为非交换性的现有技术；那是引用，而不是依赖，这是文件中唯一提到该模块的地方。- 没有声称 [CommutatorFunctor] 保持或反映任何内容——没有极限、没有单射、没有满射；对它证明的唯一两个结构性事实是忠实性和非完备性。- 没有宇宙测度。这里没有声明宇宙绑定器，也没有检查或报告任何约束块。
 *)
 
-(** * The category of Lie algebras *)
+(** * The category of Lie algebras / * 李代数的范畴 *)
 
 (*
-   本节说明 Lie 相关定义、性质与动机。
+   * ** Objects
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   A K-module together with a bracket.  Six laws, and the record is
+   deliberately not minimal in one direction and deliberately minimal
+   in another: additivity is carried in BOTH slots because the
+   derivation of antisymmetry consumes both, while K-homogeneity is
+   carried in the FIRST slot only, the second being the theorem
+   [lie_br_smul_r] below. 
+
+   --------
+   * ** 对象
+
+   一个 K-模，配有一个括号。六条定律，并且记录在一个方向上故意不最小化，而在另一个方向上故意最小化：加法性在两个位置上都保持，因为反对称性的推导消耗了两个位置，而 K-齐次性仅在第一个位置上保持，第二个位置为下面的定理 [lie_br_smul_r]。
 *)
 Record LieObject (K : CRng) := {
   lie_mod : RModObject (`1 K);
@@ -42,7 +393,7 @@ Record LieObject (K : CRng) := {
 
   lie_br_respects : Proper (equiv ==> equiv ==> equiv) lie_br;
 
-  (* Bilinearity: additive in each slot, homogeneous in the first. *)
+  (* Bilinearity: additive in each slot, homogeneous in the first. / 双线性：在每个位置上是加法性的，在第一个位置上是齐次的。 *)
   lie_br_add_l : ∀ x y z,
     lie_br (cmon_plus lie_mod x y) z
       ≈ cmon_plus lie_mod (lie_br x z) (lie_br y z);
@@ -52,10 +403,10 @@ Record LieObject (K : CRng) := {
   lie_br_smul_l : ∀ r x y,
     lie_br (rm_smul lie_mod r x) y ≈ rm_smul lie_mod r (lie_br x y);
 
-  (* Alternating -- NOT antisymmetry; see the header. *)
+  (* Alternating -- NOT antisymmetry; see the header. / 轮换——不是反对称；见标题。 *)
   lie_alt : ∀ x, lie_br x x ≈ cmon_zero lie_mod;
 
-  (* Jacobi, in the cyclic-sum-is-zero form. *)
+  (* Jacobi, in the cyclic-sum-is-zero form. / Jacobi，以循环和为零的形式。 *)
   lie_jacobi : ∀ x y z,
     cmon_plus lie_mod (lie_br x (lie_br y z))
       (cmon_plus lie_mod (lie_br y (lie_br z x)) (lie_br z (lie_br x y)))
@@ -74,9 +425,23 @@ Arguments lie_jacobi {K} _ _ _ _.
 #[export] Existing Instance lie_br_respects.
 
 (*
-   本节说明 Lie 相关定义、性质与动机。
+   * ** Alternating versus antisymmetric
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Stated for a BARE bracket on a module rather than for a
+   [LieObject], so that the two candidate axioms are compared on equal
+   terms and each passage shows in its own type exactly what it costs.
+   [lie_alt_of_antisym] comes first precisely so that the additivity
+   hypotheses are not yet in scope when it is proved: its statement is
+   the evidence that it consumes none. 
+
+   --------
+   * ** 交替与反对称
+
+   针对模块上的一个简单括号而不是针对 [LieObject] 陈述，
+   这样两个候选公理就可以在平等的条件下进行比较，
+   并且每个段落都准确展示了它自身类型的代价。
+   [lie_alt_of_antisym] 之所以排在前面，正是为了在证明它时，
+   可加性假设尚未生效：它的陈述证明它不消耗任何假设。
 *)
 
 Definition TwoRegular {R : RingObject} (M : RModObject R) : Type :=
@@ -89,8 +454,13 @@ Context (M : RModObject (`1 K)).
 Context (br : carrier (cmon_setoid M) →
               carrier (cmon_setoid M) → carrier (cmon_setoid M)).
 
-(* Antisymmetry gives back alternating exactly when doubling is
-   injective.  No additivity law is in scope here, and none is used. *)
+(*
+ Antisymmetry gives back alternating exactly when doubling is
+ injective.  No additivity law is in scope here, and none is used. 
+
+ --------
+ 反对称性仅在加倍是单射时才转化为交替性。这里没有涉及可加性规律，也没有使用任何可加性规律。
+*)
 Lemma lie_alt_of_antisym :
   TwoRegular M →
   (∀ x y, br x y ≈ ab_neg M (br y x)) →
@@ -110,7 +480,7 @@ Context (br_add_r : ∀ x y z,
 
 #[local] Existing Instance br_respects.
 
-(* Expanding [x+y, x+y] is where both additivity laws are spent. *)
+(* Expanding [x+y, x+y] is where both additivity laws are spent. / 展开 [x+y, x+y] 是两种可加性定律都被耗尽的地方。 *)
 Lemma lie_sum_zero_of_alt :
   (∀ x, br x x ≈ cmon_zero M) →
   ∀ x y, cmon_plus M (br x y) (br y x) ≈ cmon_zero M.
@@ -136,7 +506,7 @@ Qed.
 
 End AlternatingVersusAntisymmetric.
 
-(** ** Consequences of the axioms *)
+(** ** Consequences of the axioms / ** 公理的后果 *)
 
 Section LieDerived.
 
@@ -151,7 +521,7 @@ Proof.
            (lie_br_add_l L) (lie_br_add_r L) (lie_alt L)).
 Qed.
 
-(* ANTISYMMETRY IS A THEOREM, not a field. *)
+(* ANTISYMMETRY IS A THEOREM, not a field. / 反对称性是一个定理，而不是一个领域。 *)
 Theorem lie_antisym (x y : carrier (cmon_setoid (lie_mod L))) :
   lie_br L x y ≈ ab_neg (lie_mod L) (lie_br L y x).
 Proof.
@@ -159,7 +529,7 @@ Proof.
            (lie_br_add_l L) (lie_br_add_r L) (lie_alt L)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Homogeneity in the SECOND slot: antisymmetry twice, homogeneity in the first slot once, and [rm_smul_neg_r] to move the scalar past the negation. / 第二位置的同质性：反对称性两次，第一位置的同质性一次，以及 [rm_smul_neg_r] 用于将标量移过否定。 *)
 Theorem lie_br_smul_r r (x y : carrier (cmon_setoid (lie_mod L))) :
   lie_br L x (rm_smul (lie_mod L) r y)
     ≈ rm_smul (lie_mod L) r (lie_br L x y).
@@ -192,9 +562,18 @@ Qed.
 End LieDerived.
 
 (*
-   本节说明hom相关定义、性质与动机。
+   * ** Morphisms
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   A module homomorphism preserving the bracket.  The hom-setoid is
+   [RMod R]'s on the underlying module homomorphism, so the
+   bracket-preservation proof is irrelevant, exactly as [AAlgHom]'s
+   triangle proof is. 
+
+   --------
+   * ** 同态映射
+
+   一种保持括号的模同态映射。同态集是
+   基于底层模同态映射的 [RMod R]，因此保持括号的证明无关紧要，就像 [AAlgHom] 的三角形证明一样。
 *)
 Record LieHom {K : CRng} (L M : LieObject K) := {
   lie_hom : RModHom (lie_mod L) (lie_mod M);
@@ -245,7 +624,7 @@ Proof.
   apply Hf.
 Qed.
 
-(** ** The category *)
+(** ** The category / ** 类别 *)
 
 Program Definition Lie (K : CRng) : Category := {|
   obj     := LieObject K;
@@ -261,7 +640,7 @@ Next Obligation. intros K L M f a; simpl; reflexivity. Qed.
 Next Obligation. intros K L M N P f g h a; simpl; reflexivity. Qed.
 Next Obligation. intros K L M N P f g h a; simpl; reflexivity. Qed.
 
-(** ** The forgetful functors *)
+(** ** The forgetful functors / ** 忘记函子 *)
 
 Program Definition Lie_Forget_Mod (K : CRng) : Lie K ⟶ RMod (`1 K) := {|
   fobj := @lie_mod K;
@@ -280,9 +659,16 @@ Next Obligation. intros K L a; simpl; reflexivity. Qed.
 Next Obligation. intros K L M N f g a; simpl; reflexivity. Qed.
 
 (*
-   本节说明 Lie 相关定义、性质与动机。
+   * ** The abelian Lie algebra on a module
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Every module carries the zero bracket, so [Lie K] is inhabited for
+   every K with no witness-hunting.  This is the DEGENERATE case, and
+   it is labelled as such: the non-degenerate witness is [Lie_UT2]. 
+
+   --------
+   * ** 模上的阿贝尔李代数
+
+   每个模都带有零括号，因此对于每个 K，都存在 [Lie K]，无需寻找证据。这是退化情况，并被标记为退化：非退化证据是 [Lie_UT2] 。
 *)
 Program Definition lie_abelian {K : CRng} (M : RModObject (`1 K))
   : LieObject K := {|
@@ -310,15 +696,26 @@ Example lie_abelian_mod {K : CRng} (M : RModObject (`1 K)) :
   lie_mod (lie_abelian M) = M := eq_refl.
 
 (*
-   本节说明 Lie 相关定义、性质与动机。
+   * * Ring-level lemmas the commutator needs
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Four facts that mention no Lie algebra.  They are upstreaming
+   candidates for Theory/Algebra/Rig.v and Instance/Rng.v; see the
+   header for why they are declared here. 
+
+   --------
+   * * 对换子所需的环级引理
+
+   四个没有提到李代数的事实。它们是 Theory/Algebra/Rig.v 和 Instance/Rng.v 的上游候选；参见头部了解为什么它们在这里声明。
 *)
 
 (*
-   本节说明 Lie 相关定义、性质与动机。
+ Ab/Subtract.v's shuffle, restated in ring vocabulary so that setoid
+ rewriting -- which is keyed on the head symbol -- can use it beside
+ [rig_distr_l] and [rig_distr_r].  The proof is a bare [exact]: the two
+ statements are convertible, and nothing is reproved. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Ab/Subtract.v 的洗牌，用环的词汇重述，以便集合重写——它依赖于头符号——可以在 [rig_distr_l] 和 [rig_distr_r] 旁边使用它。证明是一个空的 [exact]：这两个陈述是可转换的，没有重新证明任何内容。
 *)
 Lemma lie_sub_plus (R : RingObject) (a b c d : carrier (rig_setoid R)) :
   rig_add R (rig_add R a (ring_neg R b)) (rig_add R c (ring_neg R d))
@@ -349,7 +746,7 @@ Proof.
            (rig_mul R (ring_neg R a) b) H).
 Qed.
 
-(* (a+b)+(c+d) ≈ (a+d)+(b+c) -- commutativity of addition, nothing else. *)
+(* (a+b)+(c+d) ≈ (a+d)+(b+c) -- commutativity of addition, nothing else. / (a+b)+(c+d) ≈ (a+d)+(b+c) —— 加法的交换律，仅此而已。 *)
 Lemma lie_add_shuffle4 (R : RigObject) (a b c d : carrier (rig_setoid R)) :
   rig_add R (rig_add R a b) (rig_add R c d)
     ≈ rig_add R (rig_add R a d) (rig_add R b c).
@@ -361,7 +758,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* a+(b+c) ≈ b+(c+a) -- the cyclic rotation the Jacobi cancellation needs. / a+(b+c) ≈ b+(c+a) -- Jacobi 消去所需的循环旋转。 *)
 Lemma lie_add_rot (R : RigObject) (a b c : carrier (rig_setoid R)) :
   rig_add R a (rig_add R b c) ≈ rig_add R b (rig_add R c a).
 Proof.
@@ -373,9 +770,12 @@ Proof.
 Qed.
 
 (*
-   本节说明 Lie 相关定义、性质与动机。
+ The whole Jacobi cancellation, with the six triple products replaced
+ by bare variables.  It is APPLIED, never rewritten with, so no
+ rewrite in [lie_comm_jacobi] has to traverse a concrete product. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 整个雅可比消去，将六个三重积用裸变量替代。它是应用的，从不重写使用，所以在 [lie_comm_jacobi] 中没有重写必须遍历具体乘积。
 *)
 Lemma lie_jacobi_shape (R : RingObject)
   (a b c d e f : carrier (rig_setoid R)) :
@@ -395,7 +795,7 @@ Proof.
   apply ring_neg_r.
 Qed.
 
-(** * The commutator bracket *)
+(** * The commutator bracket / * 换向器支架 *)
 
 Section Commutator.
 
@@ -415,7 +815,7 @@ Proof.
   intros x x' Hx y y' Hy; unfold lie_comm_br; now rewrite Hx, Hy.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Additivity in the first slot: [rig_distr_r] then [rig_distr_l], and nothing else. Centrality is NOT consumed. / 第一个槽位的可加性：[rig_distr_r] 然后 [rig_distr_l]，除此之外没有其他。中心性不会被消耗。 *)
 Lemma lie_comm_add_l (x y z : carrier (rig_setoid RA)) :
   lie_comm_br (rig_add RA x y) z
     ≈ rig_add RA (lie_comm_br x z) (lie_comm_br y z).
@@ -438,7 +838,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* THE ONE PLACE CENTRALITY IS SPENT, and it is spent once: the rewrite with [aalg_central] moves u(r) back across y in y·(u(r)·x). / 单点中心性被使用，而且只使用一次：使用 [aalg_central] 的重写将 u(r) 在 y·(u(r)·x) 中移动回 y。 *)
 Lemma lie_comm_smul_l r (x y : carrier (rig_setoid RA)) :
   lie_comm_br (rig_mul RA (UA r) x) y
     ≈ rig_mul RA (UA r) (lie_comm_br x y).
@@ -454,14 +854,19 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Alternating: one line, and it is the additive inverse law alone. / 交替：一行，并且仅是加法逆元律。 *)
 Lemma lie_comm_alt (x : carrier (rig_setoid RA)) :
   lie_comm_br x x ≈ rig_zero RA.
 Proof. unfold lie_comm_br; apply ring_neg_r. Qed.
 
-(* [x,[y,z]] expanded into two positive and two negative right-
-   associated triple products.  Associativity of multiplication is spent
-   twice; centrality is not spent at all. *)
+(*
+ [x,[y,z]] expanded into two positive and two negative right-
+ associated triple products.  Associativity of multiplication is spent
+ twice; centrality is not spent at all. 
+
+ --------
+ [x,[y,z]] 展开为两个正向和两个负向的右结合三重积。乘法的结合性使用了两次；中心性一点也没有使用。
+*)
 Lemma lie_comm_triple (x y z : carrier (rig_setoid RA)) :
   lie_comm_br x (lie_comm_br y z)
     ≈ rig_add RA
@@ -488,9 +893,14 @@ Proof.
   apply lie_add_shuffle4.
 Qed.
 
-(* Jacobi: three instances [lie_comm_triple] one application of
- [lie_jacobi_shape]. The six triple products line up shape
- 引理's six variables nose. （已译） *)
+(*
+ Jacobi: three instances of [lie_comm_triple] and one application of
+ [lie_jacobi_shape].  The six triple products line up with the shape
+ lemma's six variables on the nose. 
+
+ --------
+ Jacobi：三个 [lie_comm_triple] 的实例和一次 [lie_jacobi_shape] 的应用。六个三重积与形状引理的六个变量完全对应。
+*)
 Lemma lie_comm_jacobi (x y z : carrier (rig_setoid RA)) :
   rig_add RA (lie_comm_br x (lie_comm_br y z))
     (rig_add RA (lie_comm_br y (lie_comm_br z x))
@@ -508,9 +918,18 @@ End Commutator.
 Arguments lie_comm_br {K} _ _ _.
 
 (*
-   本节说明 Lie 相关定义、性质与动机。
+   * ** The commutator Lie algebra
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   A record literal rather than a [Program Definition]: every field is
+   discharged by the matching lemma above, up to conversion between
+   [rig_add]/[ring_neg] of the ring and [cmon_plus]/[ab_neg] of the
+   module [AAlg_RMod] reads off it.  Writing it this way makes the
+   field-to-lemma correspondence visible and raises no obligations. 
+
+   --------
+   * ** 对换子李代数
+
+   一个记录字面量而非 [Program Definition]：每个字段都通过上面的匹配引理被处理，直到在环的 [rig_add] / [ring_neg] 与模 [cmon_plus] / [ab_neg] 的转换之间读取 [AAlg_RMod]。这样写可以使字段与引理的对应关系可见，并且不会产生任何义务。
 *)
 Definition lie_of_aalg {K : CRng} (A : AAlgObject K) : LieObject K := {|
   lie_mod         := AAlg_RMod A;
@@ -523,7 +942,7 @@ Definition lie_of_aalg {K : CRng} (A : AAlgObject K) : LieObject K := {|
   lie_jacobi      := lie_comm_jacobi A
 |}.
 
-(* 相关说明。 （已译） *)
+(* THE UNDERLYING MODULE IS UNTOUCHED, on the nose. / 底层模块未被触碰，正中要害。 *)
 Example lie_comm_underlying {K : CRng} (A : AAlg K) :
   lie_mod (lie_of_aalg A) = fobj[AAlg_Forget_Mod K] A := eq_refl.
 
@@ -531,7 +950,7 @@ Example lie_comm_bracket_is_comm {K : CRng} (A : AAlgObject K)
   (x y : carrier (rig_setoid (aalg_ring A))) :
   lie_br (lie_of_aalg A) x y = lie_comm_br A x y := eq_refl.
 
-(** ** The commutator of a morphism *)
+(** ** The commutator of a morphism / ** 一个态射的交换子 *)
 
 Lemma lie_comm_map {K : CRng} {A B : AAlgObject K} (f : AAlgHom A B)
   (x y : carrier (rig_setoid (aalg_ring A))) :
@@ -550,7 +969,7 @@ Definition lie_hom_of_aalg {K : CRng} {A B : AAlgObject K}
   @Build_LieHom K (lie_of_aalg A) (lie_of_aalg B)
     (AAlg_RModHom f) (lie_comm_map f).
 
-(** ** Mac Lane's V *)
+(** ** Mac Lane's V / ** 麦克莱恩的 V *)
 
 Program Definition CommutatorFunctor (K : CRng) : AAlg K ⟶ Lie K := {|
   fobj := @lie_of_aalg K;
@@ -560,8 +979,13 @@ Next Obligation. intros K A B f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros K A a; simpl; reflexivity. Qed.
 Next Obligation. intros K A B C f g a; simpl; reflexivity. Qed.
 
-(* Both data fields two forgetful composites agree nose;
- whole 函子 records do NOT, probe section pins that. （已译） *)
+(*
+ Both data fields of the two forgetful composites agree on the nose;
+ the whole functor records do NOT, and the probe section pins that. 
+
+ --------
+ 两个健忘复合体的数据字段完全一致；整个函子记录却不一致，而探针部分揭示了这一点。
+*)
 Example lie_forget_compose_obj {K : CRng} (A : AAlg K) :
   fobj[Lie_Forget_Mod K] (fobj[CommutatorFunctor K] A)
     = fobj[AAlg_Forget_Mod K] A := eq_refl.
@@ -582,13 +1006,13 @@ Example lie_comm_forget_set {K : CRng} (L : Lie K) :
   fobj[Lie_Forget K] L = fobj[RMod_Forget (`1 K)] (fobj[Lie_Forget_Mod K] L)
   := eq_refl.
 
-(* * ** The commutator 函子 faithful, not full （已译） *)
+(* * ** The commutator functor is faithful, and is not full / * ** 交换子函子是忠实的，但不是满函子 *)
 
 #[export] Instance CommutatorFunctor_Faithful (K : CRng) :
   Faithful (CommutatorFunctor K).
 Proof. constructor; intros A B f g E; exact E. Qed.
 
-(* 相关说明。 （已译） *)
+(* The zero map is a Lie homomorphism between ANY two Lie algebras: it is a module map, and the bracket clause reads 0 ≈ [0,0], which is [lie_br_zero_l]. / 零映射是任意两个李代数之间的李同态：它是一个模映射，并且括号条款表示 0 ≈ [0,0] ，它是 [lie_br_zero_l] 。 *)
 Program Definition lie_zero_hom {K : CRng} (L M : LieObject K)
   : LieHom L M := {|
   lie_hom := {| rm_hom := {| cmon_map :=
@@ -607,9 +1031,21 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明hom相关定义、性质与动机。
+   * * A Lie algebra with a provably nonzero bracket
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [UT2] (Associative.v) is the ring of upper-triangular 2x2 integer
+   matrices, carried as Z-triples with LEIBNIZ equality for its
+   hom-setoid, so every bracket below COMPUTES and the negatives are
+   settled by [discriminate].  By [lie_comm_of_commutative] a
+   commutative ring could not have served; [UT2] is NOT the only
+   non-commutative one in the tree, and the header says which others
+   there are and why the computing hom-setoid is what selects this
+   one. 
+
+   --------
+   * * 一个具有可证明非零李括号的李代数
+
+   [UT2]（Associative.v）是上三角2x2整数矩阵的环，以Z三元组表示，并对其同态集合使用LEIBNIZ等式，因此下面的每个括号都可以计算，并且负号由[discriminate]解决。根据[lie_comm_of_commutative]，一个交换环无法使用；[UT2]并不是树中唯一的非交换环，标题说明了还有哪些其他的环，以及为什么计算同态集合选择了这个环。
 *)
 
 Definition Lie_UT2 : LieObject Int_CRng := lie_of_aalg UT2_AAlg.
@@ -617,11 +1053,11 @@ Definition Lie_UT2 : LieObject Int_CRng := lie_of_aalg UT2_AAlg.
 Example lie_ut2_carrier : carrier (cmon_setoid (lie_mod Lie_UT2)) = ut2
   := eq_refl.
 
-(* [E11, E12] = E11·E12 - E12·E11 = E12 - 0 = E12. *)
+(* [E11, E12] = E11·E12 - E12·E11 = E12 - 0 = E12. / [E11, E12] = E11·E12 - E12·E11 = E12 - 0 = E12。 *)
 Example lie_ut2_e11_e12 :
   lie_br Lie_UT2 ut2_e11 ut2_e12 = ut2_e12 := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* ...and the other order is its negative, computed. / ...而另一个顺序是其负值，已计算。 *)
 Example lie_ut2_e12_e11 :
   lie_br Lie_UT2 ut2_e12 ut2_e11 = (0, -1, 0)%Z := eq_refl.
 
@@ -629,12 +1065,12 @@ Theorem lie_ut2_bracket_nonzero :
   lie_br Lie_UT2 ut2_e11 ut2_e12 ≈ cmon_zero (lie_mod Lie_UT2) → False.
 Proof. unfold ut2_eqT; simpl; discriminate. Qed.
 
-(* 相关说明。 （已译） *)
+(* Non-degenerate in the sharper sense too: the bracket is not symmetric, so [Lie_UT2] is not the abelian Lie algebra on its own module in disguise. / 在更严格的意义上也非退化：括号不是对称的，因此 [Lie_UT2] 本身并非其模上的阿贝尔李代数的伪装。 *)
 Theorem lie_ut2_not_abelian :
   lie_br Lie_UT2 ut2_e11 ut2_e12 ≈ lie_br Lie_UT2 ut2_e12 ut2_e11 → False.
 Proof. unfold ut2_eqT; simpl; discriminate. Qed.
 
-(* Hence no theorem of this file can force brackets to vanish. *)
+(* Hence no theorem of this file can force brackets to vanish. / 因此，本文件中的任何定理都无法使括号消失。 *)
 Theorem lie_not_all_abelian :
   (∀ (L : LieObject Int_CRng) x y,
      lie_br L x y ≈ cmon_zero (lie_mod L)) → False.
@@ -643,7 +1079,7 @@ Proof.
   exact (lie_ut2_bracket_nonzero (H Lie_UT2 ut2_e11 ut2_e12)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Non-fullness The zero endomorphism of [Lie_UT2] is a Lie map; it is the image of no algebra map, because an algebra map carries 1 to 1 and [UT2] has 1 ≉ 0. / * ** 不饱满 [Lie_UT2]的零自同态是李映射;它是 的像 没有代数映射，因为代数映射是1到1，且[UT2] 1 ≉ 0。 *)
 
 Lemma lie_ut2_one_not_zero : rig_one UT2 ≈ rig_zero UT2 → False.
 Proof. unfold ut2_eqT; simpl; discriminate. Qed.
@@ -659,7 +1095,7 @@ Proof.
   exact (Hs (rig_one UT2)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The commutative case is the degenerate one / * ** 交换情况是退化的情况 *)
 
 Theorem lie_comm_of_commutative {K : CRng} (A : AAlgObject K)
   (Hc : ∀ a b, rig_mul (aalg_ring A) a b ≈ rig_mul (aalg_ring A) b a)
@@ -677,12 +1113,76 @@ Example lie_base_int_bracket (a b : carrier (rig_setoid Int_Ring)) :
 Proof. apply lie_comm_of_commutative; intros p q; apply Z.mul_comm. Qed.
 
 (*
-   本节说明函子相关定义、性质与动机。
+   * * Probes
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Each negative is stated beside an APPLIED positive control, and each
+   was stripped ONE AT A TIME and compiled alone so that its failure is
+   read off its own command rather than inherited from an earlier one.
+   Kinds are kept lexically apart and are classified from the WHOLE
+   error message.
+
+   Negative 1 (CONVERSION).  The two forgetful composites are not the
+   same functor record, although both data fields agree by [eq_refl]
+   ([lie_forget_compose_obj], [lie_forget_compose_map], restated as the
+   controls).  [Compose] rebuilds [fmap_respects], [fmap_id] and
+   [fmap_comp] as its own opaque obligations, so the difference is
+   confined to those three law fields.
+
+   Negative 2 (CONVERSION).  The bracket of a commutative algebra is
+   [≈] zero and not [=] zero, even over ℤ where the multiplication
+   computes: [a*b + -(b*a)] is stuck at variable a and b.  The control
+   is the [≈] statement at the same arguments.
+
+   Negative 3 (TYPING).  A bare module homomorphism is not a [LieHom]:
+   the bracket clause is genuine data, not a property recoverable from
+   the module map.  The control builds the same [LieHom] with the
+   clause supplied.
+
+   Negative 4 (TYPING).  The carrier of a module does not determine the
+   Lie structure on it, so the [LieObject] argument of [lie_br] cannot
+   be recovered from its two element arguments.  READ THE MESSAGE
+   RATHER THAN THE INTENT: this is NOT the "Cannot infer this
+   placeholder" report one might expect, and it was classified
+   RESOLUTION in a first draft on that expectation.  Elaboration fails
+   at the ELEMENT argument, reporting
+
+   The term "ut2_e11" has type "ut2" while it is expected to have
+   type "carrier (lie_mod ?l)"
+
+   -- a plain mismatch with the hole still visible in the expected
+   type, and with no "cannot unify" clause -- so the hole is never
+   reached as a placeholder to be solved.  That is also the content:
+   [ut2] carries no trace of the bracket, and the control succeeds only
+   because supplying [Lie_UT2] lets [carrier (lie_mod Lie_UT2)] reduce
+   to [ut2].
+
+   NO FORMABILITY (universe) AND NO RESOLUTION NEGATIVE IS DELIVERED,
+   and neither absence is an oversight: this file declares no universe
+   binder and inspects no constraint block, and every elaboration below
+   that could fail does so on a type mismatch before any instance or
+   placeholder is left outstanding.  Two of the four negatives are
+   CONVERSION and two are TYPING.
+
+   Instrument check: a name that exists nowhere, so the [Fail]
+   mechanism itself is exercised without reference to any constant
+   declared here. 
+
+   --------
+   * * 探针
+
+   每个负例都列在一个已应用的阳性对照旁边，每个负例都是一次剥离并单独编译的，因此它的失败是根据其自身的命令读取的，而不是继承自之前的命令。类型在词汇上保持分开，并根据整个错误信息进行分类。
+
+   负例 1（转换）。这两个健忘组合并不是同一个函子记录，尽管两个数据字段通过 [eq_refl]（[lie_forget_compose_obj]、[lie_forget_compose_map]，作为对照重述）一致。[Compose] 将 [fmap_respects]、[fmap_id] 和 [fmap_comp] 重建为它自己的不透明义务，因此差异仅限于这三个法域字段。负数 2（转换）。一个交换代数的括号是 [≈] 零，而不是 [=] 零，即使在 ℤ 上，乘法计算为：[a*b + -(b*a)] 固定在变量 a 和 b 上。控制是在相同参数下的 [≈] 语句。
+
+   负数 3（类型）。一个裸模块同态不是 [LieHom]：括号条款是真实的数据，而不是可以从模块映射中恢复的属性。控制使用提供的条款构建相同的 [LieHom]。负 4（正在输入）。模块的承载体并不决定其上的李代数结构，所以 [LieObject] 的 [lie_br] 参数不能从其两个元素参数中恢复。请阅读消息而非意图：这并不是人们可能期望的“无法推断此占位符”报告，并且在第一版草稿中基于这种期望将其归类为 RESOLUTION。元素参数的展开失败，报告如下：
+
+   术语 "ut2_e11" 的类型为 "ut2"，而预期其类型为 "carrier (lie_mod ?l)"-- 一个与期望类型的简单不匹配，而且在“无法统一”子句中仍然可见洞——所以该洞从未作为需要解决的占位符被访问。这也是内容：
+   [ut2] 没有携带括号的痕迹，控制成功只是因为提供 [Lie_UT2] 使 [carrier (lie_mod Lie_UT2)] 能够简化为 [ut2]。
+
+   没有可形成性（宇宙）且没有解决负面被传递，而且它们的缺失都不是疏漏：该文件未声明宇宙绑定器，也未检查约束块，所有在下面可能失败的详细说明都在任何实例或占位符未被留下之前因类型不匹配而失败。四个负面结果中有两个是转换（CONVERSION），两个是类型（TYPING）。仪器检查：一个不存在的名字，因此 [Fail] 机制本身在不参考此处声明的任何常量的情况下进行操作。
 *)
 
-(* Negative 1 -- CONVERSION. *)
+(* Negative 1 -- CONVERSION. / 负一 -- 转换。 *)
 Fail Example lie_probe_forget_strict (K : CRng) :
   Lie_Forget_Mod K ◯ CommutatorFunctor K = AAlg_Forget_Mod K := eq_refl.
 
@@ -694,7 +1194,7 @@ Example lie_probe_forget_map_ctrl (K : CRng) (A B : AAlg K) (f : A ~> B) :
   fmap[Lie_Forget_Mod K ◯ CommutatorFunctor K] f
     = fmap[AAlg_Forget_Mod K] f := eq_refl.
 
-(* Negative 2 -- CONVERSION. *)
+(* Negative 2 -- CONVERSION. / 负 2 -- 转换。 *)
 Fail Example lie_probe_commutative_strict
   (a b : carrier (rig_setoid Int_Ring)) :
   lie_br (lie_of_aalg (Base_AAlg Int_CRng)) a b = rig_zero Int_Ring
@@ -704,7 +1204,7 @@ Example lie_probe_commutative_ctrl (a b : carrier (rig_setoid Int_Ring)) :
   lie_br (lie_of_aalg (Base_AAlg Int_CRng)) a b ≈ rig_zero Int_Ring.
 Proof. apply lie_comm_of_commutative; intros p q; apply Z.mul_comm. Qed.
 
-(* Negative 3 -- TYPING. *)
+(* Negative 3 -- TYPING. / 负三 -- 输入中。 *)
 Fail Definition lie_probe_hom_needs_bracket
   (L M : LieObject Int_CRng) (f : RModHom (lie_mod L) (lie_mod M))
   : LieHom L M := f.
@@ -716,10 +1216,10 @@ Definition lie_probe_hom_ctrl (L M : LieObject Int_CRng)
                             (cmon_map (rm_hom f) y))
   : LieHom L M := @Build_LieHom Int_CRng L M f Hb.
 
-(* Negative 4 -- TYPING. *)
+(* Negative 4 -- TYPING. / 负 4 -- 打字。 *)
 Fail Check (@lie_br Int_CRng _ ut2_e11 ut2_e12).
 
 Check (@lie_br Int_CRng Lie_UT2 ut2_e11 ut2_e12).
 
-(* Instrument check. *)
+(* Instrument check. / 仪器检查。 *)
 Fail Check lie_probe_instrument_absent.

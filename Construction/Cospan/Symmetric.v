@@ -18,17 +18,41 @@ Require Import Category.Construction.Cospan.Hypergraph.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(*
+   * * Braided and symmetric monoidal structure on [CospanCat C] 
+
+   --------
+   * * [CospanCat C]上的编织和对称幺半群结构
+*)
 
 (*
-   nLab: https://ncatlab.org/nlab/show/hypergraph+category
-   nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
-   Wikipedia: https://en.wikipedia.org/wiki/Braided_monoidal_category
-   Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
+ nLab: https://ncatlab.org/nlab/show/cospan
+ nLab: https://ncatlab.org/nlab/show/hypergraph+category
+ nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
+ Wikipedia: https://en.wikipedia.org/wiki/Braided_monoidal_category
+ Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
 
-   本文件给出构造。
+ For a category C with finite colimits (initial object, binary coproducts,
+ pushouts), Cospan(C) is symmetric monoidal with tensor = the C-coproduct
+ (X ⨂ Y := X + Y), unit = the initial object 0, and symmetry inherited from
+ the colimit structure of C.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ Building on [Cospan_Monoidal] (in [Construction/Cospan/Hypergraph.v]), we
+ equip [CospanCat C HP] with a braiding given by the cospan-lift of the
+ C-coproduct swap [paws], and verify the symmetry axiom [braid ∘ braid ≈ id]
+ (Wikipedia: s_{Y,X} ∘ s_{X,Y} = 1_{X ⨂ Y}). The hexagon coherence reduces to
+ a C-level coproduct calculation between [paws] and [coprod_assoc]. 
+
+ --------
+ nLab:  https://ncatlab.org/nlab/show/cospan 
+ nLab:  https://ncatlab.org/nlab/show/hypergraph+category 
+ nLab:  https://ncatlab.org/nlab/show/symmetric+monoidal+category 
+ 维基百科:  https://en.wikipedia.org/wiki/Braided_monoidal_category 
+ 维基百科:  https://en.wikipedia.org/wiki/Symmetric_monoidal_category 
+
+ 对于一个具有有限余积（初始对象、二元余积、推挤）的范畴 C，Cospan(C) 是对称单体的，其张量为 C-余积（X ⨂ Y := X + Y），单位为初始对象 0，对称性继承自 C 的余积结构。
+
+ 在 [Cospan_Monoidal] 的基础上（在 [Construction/Cospan/Hypergraph.v] 中），我们为 [CospanCat C HP] 配置一个由 C-余积交换 [paws] 的余张斜引导的编织，并验证对称性公理 [braid ∘ braid ≈ id] （维基百科: s_{Y,X} ∘ s_{X,Y} = 1_{X ⨂ Y}）。六角形一致性简化为 [paws] 和 [coprod_assoc] 之间的 C-层余积计算。
 *)
 
 Section CospanSymmetric.
@@ -38,14 +62,26 @@ Context `{H_Coc : @Cocartesian C}.
 Context `{H_Ini : @Initial C}.
 Context (HP : HasPushouts C).
 
-(* * ** C-level hexagon ([to] version)
+(*
+   * ** C-level hexagon ([to] version)
 
- The braid-associator hexagon at level coproducts:
+   The braid-associator hexagon at the level of coproducts:
 
- α_{y,z,x} ∘ paws_{x+y,z} ∘ α_{x,y,z}
- ≈ cover id[y] paws_{x,z} ∘ α_{y,x,z} ∘ cover paws_{x,y} id[z]
+   α_{y,z,x} ∘ paws_{x+y,z} ∘ α_{x,y,z}
+   ≈ cover id[y] paws_{x,z} ∘ α_{y,x,z} ∘ cover paws_{x,y} id[z]
 
- Both sides 态射 [(x+y)+z ~> y+(z+x)]. （已译） *)
+   Both sides are morphisms [(x+y)+z ~> y+(z+x)]. 
+
+   --------
+   * ** C级六边形 ([to] 版本)
+
+   协作子拷贝层次的编发关联六边形：
+
+   α_{y,z,x} ∘ paws_{x+y,z} ∘ α_{x,y,z}
+   ≈ cover id [y]  paws_{x,z} ∘ α_{y,x,z} ∘ cover paws_{x,y} id [z] 
+
+   双方都是态射 [(x+y)+z ~> y+(z+x)] 。
+*)
 
 Lemma coprod_hexagon_aux {x y z : C} :
   to (@coprod_assoc C H_Coc y z x) ∘ paws ∘ to (@coprod_assoc C H_Coc x y z)
@@ -53,7 +89,7 @@ Lemma coprod_hexagon_aux {x y z : C} :
 Proof.
   apply coprod_ext.
   - apply coprod_ext.
-    + (* ∘ (inl ∘ inl)  (x-leg) → both reduce to [inr ∘ inr] *)
+    + (* ∘ (inl ∘ inl) (x-leg) → both reduce to [inr ∘ inr] / ∘ (inl ∘ inl) (x-leg) → 两者都简化为 [inr ∘ inr] *)
       rewrite <- !comp_assoc.
       rewrite assoc_to_inl_inl.
       rewrite paws_inl.
@@ -69,7 +105,7 @@ Proof.
       rewrite <- (comp_assoc inr paws inl).
       rewrite paws_inl.
       reflexivity.
-    + (* ∘ (inl ∘ inr)  (y-leg) → both reduce to [inl] *)
+    + (* ∘ (inl ∘ inr) (y-leg) → both reduce to [inl] / ∘ (inl ∘ inr) (y-leg) → 两者都归约为 [inl] *)
       rewrite <- !comp_assoc.
       rewrite assoc_to_inl_inr.
       rewrite (comp_assoc paws inr inl).
@@ -83,7 +119,7 @@ Proof.
       rewrite assoc_to_inl_inl.
       rewrite cover_inl, id_right.
       reflexivity.
-  - (* ∘ inr  (z-leg) → both reduce to [inr ∘ inl] *)
+  - (* ∘ inr (z-leg) → both reduce to [inr ∘ inl] / ∘ inr (z-leg) → 都简化为 [inr ∘ inl] *)
     rewrite <- !comp_assoc.
     rewrite assoc_to_inr.
     rewrite (comp_assoc paws inr inr).
@@ -101,9 +137,24 @@ Proof.
 Qed.
 
 (*
-   本节说明 Symmetric 相关定义、性质与动机。
+   * ** C-level hexagon ([from] version)
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Dual: domain [x+(y+z)], codomain [(z+x)+y]:
+
+   from α_{z,x,y} ∘ paws_{x+y, z} ∘ from α_{x,y,z}
+   ≈ cover paws_{x,z} id[y] ∘ from α_{x,z,y} ∘ cover id[x] paws_{y,z}
+
+   Proved directly via [coprod_ext] on [x+(y+z)]. 
+
+   --------
+   * ** C级六边形 ([from] 版)
+
+   对偶: 域 [x+(y+z)] , 余域 [(z+x)+y] :
+
+   从 α_{z,x,y} ∘ paws_{x+y, z} ∘ from α_{x,y,z}
+   ≈ 盖 paws_{x,z} id [y]  ∘ from α_{x,z,y} ∘ 盖 id [x]  paws_{y,z}
+
+   通过在 [x+(y+z)] 上的 [coprod_ext] 直接证明。
 *)
 
 Lemma coprod_hexagon_aux_from {x y z : C} :
@@ -111,11 +162,7 @@ Lemma coprod_hexagon_aux_from {x y z : C} :
   ≈ cover paws id[y] ∘ from (@coprod_assoc C H_Coc x z y) ∘ cover id[x] paws.
 Proof.
   apply coprod_ext.
-  - (*
-   本节说明 Symmetric 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+  - (* ∘ inl (x-leg) LHS: from α_{z,x,y} ∘ paws ∘ (inl∘inl) [assoc_from_inl] = from α_{z,x,y} ∘ (paws ∘ inl) ∘ inl = from α_{z,x,y} ∘ inr ∘ inl [paws_inl] = inl ∘ inr [assoc_from_inr_inl] RHS: cover paws id ∘ from α_{x,z,y} ∘ (cover id paws ∘ inl) = cover paws id ∘ from α_{x,z,y} ∘ (inl ∘ id) [cover_inl] = cover paws id ∘ (inl ∘ inl) [assoc_from_inl] = (inl ∘ paws) ∘ inl [cover_inl] = inl ∘ inr [paws_inl] / ∘ inl (x-leg) 左边: 来自 α_{z,x,y} ∘ paws ∘ (inl∘inl) [assoc_from_inl] = 来自 α_{z,x,y} ∘ (paws ∘ inl) ∘ inl = 来自 α_{z,x,y} ∘ inr ∘ inl [paws_inl] = inl ∘ inr [assoc_from_inr_inl] 右边: cover paws id ∘ 来自 α_{x,z,y} ∘ (cover id paws ∘ inl) = cover paws id ∘ 来自 α_{x,z,y} ∘ (inl ∘ id) [cover_inl] = cover paws id ∘ (inl ∘ inl) [assoc_from_inl] = (inl ∘ paws) ∘ inl [cover_inl] = inl ∘ inr [paws_inl] *)
     rewrite <- !comp_assoc.
     rewrite assoc_from_inl.
     rewrite (comp_assoc paws inl inl).
@@ -129,13 +176,9 @@ Proof.
     rewrite <- (comp_assoc inl paws inl).
     rewrite paws_inl.
     reflexivity.
-  - (* ∘ inr   need to further decompose y/z *)
+  - (* ∘ inr need to further decompose y/z / ∘ inr 需要进一步分解 y/z *)
     apply coprod_ext.
-    + (*
-   本节说明 Symmetric 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    + (* ∘ (inr ∘ inl) (y-leg) LHS: from α_{z,x,y} ∘ paws ∘ (inl ∘ inr) [assoc_from_inr_inl] = from α_{z,x,y} ∘ (paws ∘ inl) ∘ inr = from α_{z,x,y} ∘ (inr ∘ inr) [paws_inl] = inr [assoc_from_inr_inr] RHS: cover paws id ∘ from α_{x,z,y} ∘ (cover id paws ∘ (inr ∘ inl)) = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ paws ∘ inl) [cover_inr] = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ inr) [paws_inl] = cover paws id ∘ inr [assoc_from_inr_inr] = inr ∘ id [cover_inr] = inr / ∘ (inr ∘ inl) (y-leg) 左边: from α_{z,x,y} ∘ paws ∘ (inl ∘ inr) [assoc_from_inr_inl] = from α_{z,x,y} ∘ (paws ∘ inl) ∘ inr = from α_{z,x,y} ∘ (inr ∘ inr) [paws_inl] = inr [assoc_from_inr_inr] 右边: cover paws id ∘ from α_{x,z,y} ∘ (cover id paws ∘ (inr ∘ inl)) = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ paws ∘ inl) [cover_inr] = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ inr) [paws_inl] = cover paws id ∘ inr [assoc_from_inr_inr] = inr ∘ id [cover_inr] = inr *)
       rewrite <- !comp_assoc.
       rewrite assoc_from_inr_inl.
       rewrite (comp_assoc paws inl inr).
@@ -149,11 +192,7 @@ Proof.
       rewrite assoc_from_inr_inr.
       rewrite cover_inr, id_right.
       reflexivity.
-    + (*
-   本节说明 Symmetric 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    + (* ∘ (inr ∘ inr) (z-leg) LHS: from α_{z,x,y} ∘ paws ∘ (inr) [assoc_from_inr_inr] = from α_{z,x,y} ∘ (paws ∘ inr) = from α_{z,x,y} ∘ inl [paws_inr] = inl ∘ inl [assoc_from_inl] RHS: cover paws id ∘ from α_{x,z,y} ∘ (cover id paws ∘ (inr ∘ inr)) = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ paws ∘ inr) [cover_inr] = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ inl) [paws_inr] = cover paws id ∘ (inl ∘ inr) [assoc_from_inr_inl] = (inl ∘ paws) ∘ inr [cover_inl] = inl ∘ inl [paws_inr] / ∘（inr ∘ inr）（z-leg） 左边：从 α_{z,x,y} ∘ paws ∘ (inr) [assoc_from_inr_inr] = 从 α_{z,x,y} ∘ (paws ∘ inr) = 从 α_{z,x,y} ∘ inl [paws_inr] = inl ∘ inl [assoc_from_inl] 右边：cover paws id ∘ 从 α_{x,z,y} ∘ (cover id paws ∘ (inr ∘ inr)) = cover paws id ∘ 从 α_{x,z,y} ∘ (inr ∘ paws ∘ inr) [cover_inr] = cover paws id ∘ 从 α_{x,z,y} ∘ (inr ∘ inl) [paws_inr] = cover paws id ∘ (inl ∘ inr) [assoc_from_inr_inl] = (inl ∘ paws) ∘ inr [cover_inl] = inl ∘ inl [paws_inr] *)
       rewrite <- !comp_assoc.
       rewrite assoc_from_inr_inr.
       rewrite paws_inr.
@@ -171,7 +210,7 @@ Proof.
       reflexivity.
 Qed.
 
-(** ** Cospan-level braid naturality *)
+(** ** Cospan-level braid naturality / ** Cospan 级编织的自然性 *)
 
 Lemma cospan_braid_natural
       {x y z w : C}
@@ -200,7 +239,7 @@ Proof.
   - apply cover_paws.
 Defined.
 
-(* 相关说明。 （已译） *)
+(* * ** [paws ∘ paws] lifted to cospans / * ** [paws ∘ paws] 提升到余跨度 *)
 
 Lemma cospan_braid_invol_C {x y : C} :
   cospan_equiv
@@ -215,7 +254,7 @@ Proof.
   apply mor_as_cospan_id.
 Defined.
 
-(** ** Braided monoidal instance *)
+(** ** Braided monoidal instance / ** 编织单体实例 *)
 
 #[export] Program Instance Cospan_BraidedMonoidal
   : @BraidedMonoidal (CospanCat C HP) := {|
@@ -225,39 +264,79 @@ Defined.
                                    (@Coprod C H_Coc Y X))
 |}.
 Next Obligation.
-  (* braid_natural at arity 2. Recall:
-     [cospan_compose_respects_aux] applied to [cospan_equiv (compose g f) (compose g' f')]
-     leaves [Hf : f ≈ f'] FIRST then [Hg : g ≈ g'].
+  (*
+ braid_natural at arity 2. Recall:
+ [cospan_compose_respects_aux] applied to [cospan_equiv (compose g f) (compose g' f')]
+ leaves [Hf : f ≈ f'] FIRST then [Hg : g ≈ g'].
 
-     Goal (cospan-equiv):
-       cospan_compose HP (cospan_compose HP (h ⨂ id_y) (id_z ⨂ g)) paws
-       ≈ cospan_compose HP (cospan_compose HP paws (id_y ⨂ h)) (g ⨂ id_z)
+ Goal (cospan-equiv):
+ cospan_compose HP (cospan_compose HP (h ⨂ id_y) (id_z ⨂ g)) paws
+ ≈ cospan_compose HP (cospan_compose HP paws (id_y ⨂ h)) (g ⨂ id_z)
 
-     Outer compose: g_outer = inner-compose, f_outer = paws_or_g_id_z. *)
-  (* 相关说明。 （已译） *)
+ Outer compose: g_outer = inner-compose, f_outer = paws_or_g_id_z. 
+
+ --------
+ braid_natural 在二元性下。回顾：
+ [cospan_compose_respects_aux] 应用于  [cospan_equiv (compose g f) (compose g' f')] 
+ 首先留下  [Hf : f ≈ f']，然后是  [Hg : g ≈ g'] 。
+
+ 目标（余闪等价）：
+ cospan_compose HP (cospan_compose HP (h ⨂ id_y) (id_z ⨂ g)) paws
+ ≈ cospan_compose HP (cospan_compose HP paws (id_y ⨂ h)) (g ⨂ id_z)
+
+ 外层组合：g_outer = 内层组合, f_outer = paws_or_g_id_z。
+*)
+  (*
+ On LHS: outer is [compose (compose ...) paws], so f_outer = paws. We want to
+ rewrite the inner [compose] (which is g_outer). Apply respects_aux with
+ refl on f_outer (paws). 
+
+ --------
+ 在左边：outer 是 [compose (compose ...) paws]，所以 f_outer = paws。我们想要重写 inner [compose]（它是 g_outer）。在 f_outer（paws）上应用 respects_aux 和 refl。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
-    - apply cospan_equiv_refl.   (* f_outer : paws ≈ paws *)
+    - apply cospan_equiv_refl.   (* f_outer : paws ≈ paws / f_outer : 爪子 ≈ 爪子 *)
     - apply cospan_equiv_sym.
       apply (cospan_tensor_compose_compat HP h (cospan_id z) (cospan_id y) g). }
-  (* LHS is now: cospan_compose (cospan_tensor (h ∘ id_z) (id_y ∘ g)) paws. *)
+  (*
+ LHS is now: cospan_compose (cospan_tensor (h ∘ id_z) (id_y ∘ g)) paws. 
+
+ --------
+ 现在左侧是：cospan_compose (cospan_tensor (h ∘ id_z) (id_y ∘ g)) paws。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
-    - apply cospan_equiv_refl.   (* f_outer : paws ≈ paws *)
+    - apply cospan_equiv_refl.   (* f_outer : paws ≈ paws / f_outer : 爪子 ≈ 爪子 *)
     - apply cospan_tensor_respects.
       + apply cospan_id_right.
       + apply cospan_id_left. }
-  (* LHS = cospan_compose (cospan_tensor h g) paws.  Now RHS. *)
+  (*
+ LHS = cospan_compose (cospan_tensor h g) paws.  Now RHS. 
+
+ --------
+ LHS = cospan_compose (cospan_tensor h g) paws。现在 RHS。
+*)
   apply cospan_equiv_sym.
-  (* RHS: outer compose is [compose (compose paws (id_y ⨂ h)) (g ⨂ id_z)].
-     Reassociate to [compose paws (compose (id_y ⨂ h) (g ⨂ id_z))] via sym of
-     cospan_compose_assoc paws (id_y⨂h) (g⨂id_z). *)
+  (*
+ RHS: outer compose is [compose (compose paws (id_y ⨂ h)) (g ⨂ id_z)].
+ Reassociate to [compose paws (compose (id_y ⨂ h) (g ⨂ id_z))] via sym of
+ cospan_compose_assoc paws (id_y⨂h) (g⨂id_z). 
+
+ --------
+ RHS：外部组合是 [compose (compose paws (id_y ⨂ h)) (g ⨂ id_z)]。通过 cospan_compose_assoc paws (id_y⨂h) (g⨂id_z) 的对称，将其重新关联为 [compose paws (compose (id_y ⨂ h) (g ⨂ id_z))]。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_equiv_sym.
     apply (cospan_compose_assoc HP (mor_as_cospan paws)
              (cospan_tensor (cospan_id y) h) (cospan_tensor g (cospan_id z))). }
-  (* Now it's cospan_compose paws (compose (id_y ⨂ h) (g ⨂ id_z)).
-     We want to fuse the inner compose into a tensor of compositions. *)
+  (*
+ Now it's cospan_compose paws (compose (id_y ⨂ h) (g ⨂ id_z)).
+ We want to fuse the inner compose into a tensor of compositions. 
+
+ --------
+ 现在它是 cospan_compose paws (compose (id_y ⨂ h) (g ⨂ id_z))。我们想把内部的组合融合成组合的张量。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
     - apply cospan_equiv_sym.
@@ -269,48 +348,94 @@ Next Obligation.
       + apply cospan_id_left.
       + apply cospan_id_right.
     - apply cospan_equiv_refl. }
-  (* RHS = cospan_compose paws (cospan_tensor g h).  Dispatch. *)
+  (*
+ RHS = cospan_compose paws (cospan_tensor g h).  Dispatch. 
+
+ --------
+ RHS = cospan_compose paws (cospan_tensor g h)。 分发。
+*)
   apply cospan_equiv_sym.
   apply cospan_braid_natural.
 Defined.
 Next Obligation.
-  (* hexagon_identity.
-     Goal: cospan_compose (cospan_compose α paws) α
-           ≈ cospan_compose (cospan_compose (id⨂paws) α) (paws⨂id)
-     (composition is left-associated by Coq's [∘]).
-     LHS: all mor_as_cospan. Outer-g = (compose α paws), outer-f = α.
-     RHS: outer-g = (compose (id⨂paws) α), outer-f = (paws⨂id).        *)
-  (* LHS: fuse the inner compose (mor_as_cospan α ∘ mor_as_cospan paws) → mor_as_cospan (α∘paws). *)
+  (*
+ hexagon_identity.
+ Goal: cospan_compose (cospan_compose α paws) α
+ ≈ cospan_compose (cospan_compose (id⨂paws) α) (paws⨂id)
+ (composition is left-associated by Coq's [∘]).
+ LHS: all mor_as_cospan. Outer-g = (compose α paws), outer-f = α.
+ RHS: outer-g = (compose (id⨂paws) α), outer-f = (paws⨂id).        
+
+ --------
+ 六边形恒等式。
+ 目标：cospan_compose (cospan_compose α paws) α
+ ≈ cospan_compose (cospan_compose (id⨂paws) α) (paws⨂id)
+ （在 Coq 的 [∘] 中组合是左关联的）。
+ 左侧：全部 mor_as_cospan。外层 g = (compose α paws)，外层 f = α。
+ 右侧：外层 g = (compose (id⨂paws) α)，外层 f = (paws⨂id)。
+*)
+  (*
+ LHS: fuse the inner compose (mor_as_cospan α ∘ mor_as_cospan paws) → mor_as_cospan (α∘paws). 
+
+ --------
+ 左侧：融合内部复合（mor_as_cospan α ∘ mor_as_cospan paws）→ mor_as_cospan（α∘paws）。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
     - apply cospan_equiv_refl.           (* Hf : α ≈ α *)
-    - apply mor_as_cospan_compose. }     (* Hg : compose α paws ≈ mor_as_cospan (α ∘ paws) *)
-  (* Now LHS = cospan_compose (mor_as_cospan (α∘paws)) (mor_as_cospan α).  Fuse. *)
+    - apply mor_as_cospan_compose. }     (* Hg : compose α paws ≈ mor_as_cospan (α ∘ paws) / Hg ：组成 α 爪子 ≈ mor_as_cospan (α ∘ 爪子) *)
+  (*
+ Now LHS = cospan_compose (mor_as_cospan (α∘paws)) (mor_as_cospan α).  Fuse. 
+
+ --------
+ 现在 LHS = cospan_compose (mor_as_cospan (α∘paws)) (mor_as_cospan α)。融合。
+*)
   eapply cospan_equiv_trans.
   { apply mor_as_cospan_compose. }
   apply cospan_equiv_sym.
-  (* Now on top: RHS. Reduce (cospan_id _) to (mor_as_cospan id). *)
+  (*
+ Now on top: RHS. Reduce (cospan_id _) to (mor_as_cospan id). 
+
+ --------
+ 现在在顶部：RHS。将 (cospan_id _) 简化为 (mor_as_cospan id)。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
-    (* outer-f = paws⨂id → cover paws id (as mor_as_cospan via tensor_mor_as_cospan) *)
+    (*
+ outer-f = paws⨂id → cover paws id (as mor_as_cospan via tensor_mor_as_cospan) 
+
+ --------
+ outer-f = paws⨂id → 覆盖 paws id（作为 mor_as_cospan 通过 tensor_mor_as_cospan）
+*)
     - apply cospan_tensor_respects.
       + apply cospan_equiv_refl.
       + apply cospan_equiv_sym, mor_as_cospan_id.
-    (* outer-g = compose (id⨂paws) α : nested *)
+    (* outer-g = compose (id⨂paws) α : nested / outer-g = 组合 (id⨂paws) α : 嵌套 *)
     - apply cospan_compose_respects_aux.
       + apply cospan_equiv_refl.         (* inner-f : α *)
-      + apply cospan_tensor_respects.    (* inner-g : id⨂paws *)
+      + apply cospan_tensor_respects.    (* inner-g : id⨂paws / 内-g : id⨂爪子 *)
         * apply cospan_equiv_sym, mor_as_cospan_id.
         * apply cospan_equiv_refl. }
-  (* All tensors are now of mor_as_cospans; fuse via cospan_tensor_mor_as_cospan. *)
+  (*
+ All tensors are now of mor_as_cospans; fuse via cospan_tensor_mor_as_cospan. 
+
+ --------
+ 现在所有张量都是 mor_as_cospans；通过 cospan_tensor_mor_as_cospan 进行融合。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
     - apply cospan_tensor_mor_as_cospan.
     - apply cospan_compose_respects_aux.
       + apply cospan_equiv_refl.
       + apply cospan_tensor_mor_as_cospan. }
-  (* Now: compose (compose (mor_as_cospan (cover id paws)) α) (mor_as_cospan (cover paws id))
-     Fuse the adjacent mor_as_cospan composes. *)
+  (*
+ Now: compose (compose (mor_as_cospan (cover id paws)) α) (mor_as_cospan (cover paws id))
+ Fuse the adjacent mor_as_cospan composes. 
+
+ --------
+ 现在：组合 (组合 (mor_as_cospan (cover id paws)) α) (mor_as_cospan (cover paws id))  
+ 融合相邻的 mor_as_cospan 组合。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
     - apply cospan_equiv_refl.
@@ -318,17 +443,32 @@ Next Obligation.
   eapply cospan_equiv_trans.
   { apply mor_as_cospan_compose. }
   apply mor_as_cospan_proper.
-  (* C-level goal:
-       (α ∘ paws) ∘ α ≈ (cover id paws ∘ α) ∘ cover paws id
-     Matches [coprod_hexagon_aux] up to symmetry. *)
+  (*
+ C-level goal:
+ (α ∘ paws) ∘ α ≈ (cover id paws ∘ α) ∘ cover paws id
+ Matches [coprod_hexagon_aux] up to symmetry. 
+
+ --------
+ C级目标：
+ (α ∘ paws) ∘ α ≈ (cover id paws ∘ α) ∘ cover paws id
+ 与 [coprod_hexagon_aux] 在对称性下匹配。
+*)
   symmetry.
   apply coprod_hexagon_aux.
 Defined.
 Next Obligation.
-  (* hexagon_恒等_sym:
+  (*
+ hexagon_identity_sym:
  Goal: cospan_compose (cospan_compose α⁻¹ paws) α⁻¹
  ≈ cospan_compose (cospan_compose (paws⨂id) α⁻¹) (id⨂paws)
- LHS: all mor_as_cospan (with α⁻¹ = mor_as_cospan (from α)).（已译） *)
+ LHS: all mor_as_cospan (with α⁻¹ = mor_as_cospan (from α)). 
+
+ --------
+ hexagon_identity_sym:
+ 目标: cospan_compose (cospan_compose α⁻¹ paws) α⁻¹
+ ≈ cospan_compose (cospan_compose (paws⨂id) α⁻¹) (id⨂paws)
+ 左侧: 所有 mor_as_cospan (其中 α⁻¹ = mor_as_cospan (从 α))。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
     - apply cospan_equiv_refl.
@@ -338,11 +478,11 @@ Next Obligation.
   apply cospan_equiv_sym.
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
-    (* outer-f = (id⨂paws) *)
+    (* outer-f = (id⨂paws) / outer-f = (id⨂paws) *)
     - apply cospan_tensor_respects.
       + apply cospan_equiv_sym, mor_as_cospan_id.
       + apply cospan_equiv_refl.
-    (* outer-g = compose (paws⨂id) α⁻¹ *)
+    (* outer-g = compose (paws⨂id) α⁻¹ / outer-g = 组合 (paws⨂id) α⁻¹ *)
     - apply cospan_compose_respects_aux.
       + apply cospan_equiv_refl.
       + apply cospan_tensor_respects.
@@ -365,14 +505,19 @@ Next Obligation.
   apply coprod_hexagon_aux_from.
 Defined.
 
-(** ** Symmetric monoidal instance *)
+(** ** Symmetric monoidal instance / ** 对称幺半范畴实例 *)
 
 #[export] Program Instance Cospan_SymmetricMonoidal
   : @SymmetricMonoidal (CospanCat C HP) := {|
   symmetric_is_braided := Cospan_BraidedMonoidal
 |}.
 Next Obligation.
-  (* braid_invol : braid ∘ braid ≈ id  in CospanCat *)
+  (*
+ braid_invol : braid ∘ braid ≈ id  in CospanCat 
+
+ --------
+ braid_invol : braid ∘ braid ≈ id 在 CospanCat 中
+*)
   apply cospan_braid_invol_C.
 Defined.
 

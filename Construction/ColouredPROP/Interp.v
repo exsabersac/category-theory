@@ -19,34 +19,117 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
-
 (*
-   nLab: https://ncatlab.org/nlab/show/free+category
-   Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
+   * * Interpreting free coloured-PROP terms in an arbitrary coloured PROP 
 
-   本文件给出构造。
-
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * * 在任意有色 PROP 中解释自由有色-PROP 项
 *)
 
-(** ** The coloured-PROP-target kit *)
+(*
+ nLab: https://ncatlab.org/nlab/show/PROP
+ nLab: https://ncatlab.org/nlab/show/free+category
+ Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
+
+ Given a coloured signature [S] and a coloured PROP [P], a
+ [CValuation] assigns to every generator [g : S cs ds] a morphism
+ [⟦cs⟧ ~{P}~> ⟦ds⟧].  This file defines the induced interpretation
+ [cinterp : CTerm S cs ds → (⟦cs⟧ ~{P}~> ⟦ds⟧)] and proves it SOUND
+ for the equational theory [CTermEq] of
+ [Construction/ColouredPROP/TermEq.v]: [CTermEq]-equal terms have
+ equivalent interpretations.  This is the morphism-level content of
+ the free coloured PROP's universal property; the functor packaging
+ lives in the successor file [Construction/ColouredPROP/Universal.v].
+
+ This file is the many-sorted mirror of [Construction/PROP/Interp.v]
+ (the one-sorted donor), with [list Colour] replacing [nat], [++]
+ replacing [+], [[]] replacing [0], and the boundary equations
+ [app_nil_r] / [app_assoc] replacing [Nat.add_0_r] / [Nat.add_assoc].
+ The development is organised in three layers:
+
+ 1.  [BraidTransport] — the coherence quarantine — is REUSED BY
+ IMPORT from [Construction/PROP/Interp.v]: its section is
+ generic over an arbitrary [Context {C : Category}], so
+ [braid_family], [transport_braid] and the six
+ [transport_braid_*] law transporters apply verbatim to the
+ category underlying a coloured PROP.  A coloured PROP carries
+ two [Monoidal] structures on the same category — the strict
+ path [strict_is_monoidal cprop_strict] and the symmetric path
+ [braided_is_monoidal (symmetric_is_braided cprop_symmetric)] —
+ related by the propositional equality
+ [cprop_monoidal_coherence]; the braiding and its laws live on
+ the symmetric path, the strictness equalities [cprop_unit_nil]
+ / [cprop_tensor_app] on the strict path.  Every transporter
+ destructs a VARIABLE equality between two [Monoidal] records,
+ so the transport reduces definitionally; the concrete coherence
+ proof of [P] is eliminated here (at [cstrict_braid] and its six
+ law images below) and, independently, in the MP/MB mediation of
+ [Construction/ColouredPROP/Supply.v] ([ctensor_app_b] /
+ [cunit_nil_b]) — the only place in the coloured-PROP
+ development that matches on it directly.
+
+ 2.  The coloured-PROP-target kit — [cstrict_braid] (the transported
+ braiding), cast/bimap interaction lemmas, the strict structural
+ maps as [id_cast]s with their naturality restated as
+ cast-sliding, the [⟦·⟧]-level combinators [chcast], [⊞c]
+ ([ctensor_hom]) and [cbraid_hom], and the K-lemmas K1–K12
+ giving the strict symmetric monoidal laws of [⊞c]/[cbraid_hom]
+ at [list Colour]-indexed objects.  The UIP-flavoured lemmas
+ require decidable object equality ([ObjDecEq P], axiom-free UIP
+ via [Eqdep_dec]); note that NO decidability of [Colour] itself
+ is needed anywhere in this file — where the one-sorted donor
+ invoked UIP on [nat] via [Nat.eq_dec], the coloured kit works
+ with proof irrelevance on the OBJECTS of the target [P]
+ ([obj_uip] / [id_cast_irr] of [Construction/Quotient.v]).
+
+ 3.  [CValuation], [cinterp], and soundness.  [CTermEq] is
+ [Prop]-valued while the hom equivalence [≈] of an abstract
+ target is [Type]-valued, so the induction lands in the
+ [Prop]-reflection [heq] of a [HomEqProp] instance and
+ round-trips through [heq_intro] / [heq_elim] (see
+ [Construction/Quotient.v]).  The induction covers every one of
+ the nineteen [CTermEq] constructors.
+
+ Naming: every definition and lemma here is [c]-prefixed so this
+ file can be imported alongside the one-sorted
+ [Construction/PROP/Interp.v] without collision. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/PROP
+ nLab：https://ncatlab.org/nlab/show/free+category
+ 维基百科：https://en.wikipedia.org/wiki/PROP_(category_theory)
+
+ 给定一个有色签名[S]和一个有色PROP [P]，[CValuation]将每个生成元[g : S cs ds]分配一个态射[⟦cs⟧ ~{P}~> ⟦ds⟧]。此文件定义了诱导的解释[cinterp : CTerm S cs ds → (⟦cs⟧ ~{P}~> ⟦ds⟧)]并证明它在[CTermEq]的方程理论下是正确的：[Construction/ColouredPROP/TermEq.v]：[CTermEq]-相等的项具有等价的解释。这是自由有色PROP的普遍性质在态射层面的内容；函子封装存在于后续文件[Construction/ColouredPROP/Universal.v]中。此文件是 [Construction/PROP/Interp.v]（单排序捐赠者）的多排序镜像，其中 [list Colour] 替换了 [nat]，[++] 替换了 [+]，[[] 替换了 [0]，边界方程 [app_nil_r] / [app_assoc] 替换了 [Nat.add_0_r] / [Nat.add_assoc]。该开发组织为三层：1. [BraidTransport] — 一致性隔离 — 被从 [Construction/PROP/Interp.v] 导入重复使用：它的部分是对任意 [Context {C : Category}] 的通用，因此 [braid_family]、[transport_braid] 和六个 [transport_braid_*] 法律传递器逐字适用于有色 PROP 所基于的范畴。有色 PROP 在同一范畴上携带两个 [Monoidal] 结构——严格路径 [strict_is_monoidal cprop_strict] 和对称路径 [braided_is_monoidal (symmetric_is_braided cprop_symmetric)]——通过命题等式 [cprop_monoidal_coherence] 相关联；交换作用及其定律存在于对称路径上，严格性等式 [cprop_unit_nil] / [cprop_tensor_app] 存在于严格路径上。每个传输器都会破坏两个 [Monoidal] 记录之间的 VARIABLE 相等性，因此传输定义上被简化；[P] 的具体一致性证明在此（在 [cstrict_braid] 及其下面的六个法则映像中）被消除，并且在 [Construction/ColouredPROP/Supply.v] 的 MP/MB 调解中（[ctensor_app_b] / [cunit_nil_b]）也是如此——这是彩色-PROP 开发中唯一直接匹配它的地方。2. 彩色-PROP-目标套件 —— [cstrict_braid]（传输的编织）、投射/二重映射交互引理、严格结构映射作为 [id_cast] 并将其自然性重新表述为投射滑动、[⟦·⟧] 级组合子 [chcast]、[⊞c]（[ctensor_hom]）和 [cbraid_hom]，以及 K 引理 K1–K12，给出了 [⊞c] / [cbraid_hom] 在 [list Colour] 索引对象上的严格对称单子律。UIP 风格的引理
+ 需要可判定的对象相等性（[ObjDecEq P]，通过 [Eqdep_dec] 的无公理 UIP）；请注意，在此文件的任何地方都不需要 [Colour] 本身的可判定性——其中单排序捐赠者通过 [Nat.eq_dec] 在 [nat] 上调用了 UIP，彩色工具包则在目标 [P] 的对象上使用了证明无关性（[obj_uip] / [id_cast_irr] 的 [Construction/Quotient.v]）。3. [CValuation]、[cinterp] 和健全性。[CTermEq] 是 [Prop] 值的，而抽象目标的同伦等价 [≈] 是 [Type] 值的，所以归纳落在 [HomEqProp] 实例的 [Prop] 反射 [heq] 中，并通过 [heq_intro] / [heq_elim] 进行往返（见 [Construction/Quotient.v]）。归纳覆盖了十九个 [CTermEq] 构造器中的每一个。
+
+ 命名：这里的每一个定义和引理都是以 [c] 为前缀，这样该文件就可以与单类型 [Construction/PROP/Interp.v] 一起导入而不会冲突。
+*)
+
+(** ** The coloured-PROP-target kit / ** 彩色-PROP-靶标套件 *)
 
 Section CInterp.
 
 Context {Colour : Type}.
 Context (P : ColouredPROP Colour).
 
-(** The coloured-PROP-对象 [⟦cs⟧], in
- [Construction/ColouredPROP.v] (whose notation section-local
- there must re-declared per file). （已译） *)
+(*
+   * The coloured-PROP-object [⟦cs⟧], as in
+   [Construction/ColouredPROP.v] (whose notation is section-local
+   there and must be re-declared per file). 
+
+   --------
+   * 彩色-PROP-对象 [⟦cs⟧]，如同 [Construction/ColouredPROP.v] （其表示法在该节是局部的，且必须在每个文件中重新声明）。
+*)
 Notation "⟦ cs ⟧" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧").
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * The two [Monoidal] paths through a coloured PROP: the strict one
+   and the braided/symmetric one.  Everything downstream is phrased
+   at [MPc]; the braid is imported from [MBc] by [transport_braid]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 两个经过上色 PROP 的 [Monoidal] 路径：严格路径和编织/对称路径。下游的所有内容都用 [MPc] 表达；编织由 [transport_braid] 从 [MBc] 导入。
 *)
 Definition MPc : @Monoidal P :=
   @strict_is_monoidal P (@cprop_strict Colour P).
@@ -55,17 +138,33 @@ Definition MBc : @Monoidal P :=
     (@symmetric_is_braided P (@cprop_symmetric Colour P)).
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * The braiding of [P], re-indexed to the strict monoidal path.  This
+   definition and the six [cstrict_braid_*] lemmas following it are
+   the only places in this file that mention
+   [cprop_monoidal_coherence], and none of them destructs it: each
+   merely passes the concrete coherence proof to a [BraidTransport]
+   lemma imported from [Construction/PROP/Interp.v], which eliminates
+   only its VARIABLE equality.  The rest of this file never touches
+   the coherence again.  The same discipline governs the rest of the
+   coloured-PROP development, with one deliberate exception: the
+   MP/MB mediation of [Construction/ColouredPROP/Supply.v] destructs
+   the concrete proof directly in [ctensor_app_b] / [cunit_nil_b]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * [P] 的编织，重新索引到严格单体路径。这个定义以及随后的六个 [cstrict_braid_*] 引理是本文件中唯一提到 [cprop_monoidal_coherence] 的地方，并且没有一个破坏它：每个只是将具体的一致性证明传递给从 [Construction/PROP/Interp.v] 导入的 [BraidTransport] 引理，它只消除了其变量（VARIABLE）等式。本文件的其余部分再也没有触碰过该一致性。相同的规则也适用于彩色-PROP 的开发，其间有一个有意的例外：[Construction/ColouredPROP/Supply.v] 的 MP/MB 调解会在 [ctensor_app_b] / [cunit_nil_b] 中直接破坏具体的证明。
 *)
 Definition cstrict_braid : braid_family MPc :=
   transport_braid (@cprop_monoidal_coherence Colour P)
     (fun x y : P =>
        @braid P (@symmetric_is_braided P (@cprop_symmetric Colour P)) x y).
 
-(** Naturality of [cstrict_braid], in the transposed square form of
-    [bimap_braid] ([Structure/Monoidal/Symmetric.v]). *)
+(*
+   * Naturality of [cstrict_braid], in the transposed square form of
+   [bimap_braid] ([Structure/Monoidal/Symmetric.v]). 
+
+   --------
+   * [cstrict_braid] 的自然性，在 [bimap_braid]（[Structure/Monoidal/Symmetric.v]）的转置方形形式中。
+*)
 Lemma cstrict_braid_swap {x y z w : P} (f : x ~> z) (g : y ~> w) :
   (g ⨂[MPc] f) ∘ cstrict_braid x y ≈ cstrict_braid z w ∘ (f ⨂[MPc] g).
 Proof.
@@ -73,7 +172,7 @@ Proof.
            (fun a b c d f' g' => @bimap_braid P _ a b c d f' g')).
 Qed.
 
-(** [cstrict_braid] is an involution. *)
+(** [cstrict_braid] is an involution. / [cstrict_braid] 是一个自反运算。 *)
 Lemma cstrict_braid_invol (x y : P) :
   cstrict_braid y x ∘ cstrict_braid x y ≈ id.
 Proof.
@@ -81,7 +180,7 @@ Proof.
            (fun a b => @braid_invol P _ a b)).
 Qed.
 
-(** The first hexagon at [MPc]. *)
+(** The first hexagon at [MPc]. / 第一个六边形在 [MPc] 。 *)
 Lemma cstrict_braid_hex (x y z : P) :
   to (@tensor_assoc P MPc y z x) ∘ cstrict_braid x ((y ⨂[MPc] z)%object)
      ∘ to (@tensor_assoc P MPc x y z)
@@ -92,7 +191,7 @@ Proof.
            (fun a b c => @hexagon_identity P _ a b c)).
 Qed.
 
-(** The second hexagon at [MPc]. *)
+(** The second hexagon at [MPc]. / 第二个六边形在 [MPc] 。 *)
 Lemma cstrict_braid_hex_sym (x y z : P) :
   from (@tensor_assoc P MPc z x y) ∘ cstrict_braid ((x ⨂[MPc] y)%object) z
      ∘ from (@tensor_assoc P MPc x y z)
@@ -103,8 +202,13 @@ Proof.
            (fun a b c => @hexagon_identity_sym P _ a b c)).
 Qed.
 
-(** 本节：The unitor coherences at [MPc] (Joyal–Street Prop. 2.1, imported
- [Structure/Monoidal/Braided/Proofs.v] transported). （已译） *)
+(*
+   * The unitor coherences at [MPc] (Joyal–Street Prop. 2.1, imported
+   from [Structure/Monoidal/Braided/Proofs.v] and transported). 
+
+   --------
+   * 单位器在 [MPc] 处的一致性（Joyal–Street 命题 2.1，从 [Structure/Monoidal/Braided/Proofs.v] 导入并迁移）。
+*)
 Lemma cstrict_braid_unit_left (x : P) :
   to (@unit_left P MPc x) ∘ cstrict_braid x (@I P MPc)
     ≈ to (@unit_right P MPc x).
@@ -122,14 +226,27 @@ Proof.
 Qed.
 
 (*
-   本节说明 Interp 相关定义、性质与动机。
+   * *** Casts and the tensor bifunctor
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Every strict structural map is an [id_cast], and every boundary
+   cast interacts with [⨂[MPc]] by [f_equal]-images.  Each proof
+   destructs the equality and closes with a bifunctor law. 
+
+   --------
+   * *** 类型转换和张量双函子
+
+   每个严格的结构映射都是一个 [id_cast]，每个边界类型转换通过 [f_equal]-像与 [⨂[MPc] 交互。每个证明都会析构等式并以双函子定律结束。
 *)
 
-(** A transparent pairing 对象 equalities through tensor.
- The stdlib's [f_equal2] opaque, so cast along it would be
- stuck even at [eq_refl]; local 组合子 reduces. （已译） *)
+(*
+   * A transparent pairing of object equalities through the tensor.
+   The stdlib's [f_equal2] is opaque, so a cast along it would be
+   stuck even at [eq_refl]; this local combinator reduces. 
+
+   --------
+   * 通过张量透明地配对对象等式。
+   标准库的 [f_equal2] 是不透明的，因此沿它进行类型转换即使在 [eq_refl] 处也会卡住；这个局部组合子可以简化该过程。
+*)
 Definition ctensor_obj_eq {a a' b b' : P} (e : a = a') (e' : b = b') :
   (a ⨂[MPc] b)%object = (a' ⨂[MPc] b')%object :=
   match e in _ = u return ((a ⨂[MPc] b)%object = (u ⨂[MPc] b')%object) with
@@ -141,7 +258,7 @@ Definition ctensor_obj_eq {a a' b b' : P} (e : a = a') (e' : b = b') :
       end
   end.
 
-(** 本节：A tensor casts cast along paired equality. （已译） *)
+(** A tensor of casts is the cast along the paired equality. / 张量的转换是沿着配对等式的转换。 *)
 Lemma cbimap_cast {a a' b b' : P} (e : a = a') (e' : b = b') :
   (id_cast e ⨂[MPc] id_cast e') ≈ id_cast (ctensor_obj_eq e e').
 Proof.
@@ -149,14 +266,24 @@ Proof.
   exact (@bimap_id_id P P P (@tensor P MPc) a b).
 Qed.
 
-(** A cast in the left tensorand extracts as a whole-tensor cast. *)
+(*
+   * A cast in the left tensorand extracts as a whole-tensor cast. 
+
+   --------
+   * 左张量的转换被提取为整体张量转换。
+*)
 Lemma cbimap_cast_l {a a' x y : P} (e : a = a') (g : x ~> y) :
   (id_cast e ⨂[MPc] g)
     ≈ id_cast (f_equal (fun u : P => (u ⨂[MPc] y)%object) e)
         ∘ (id[a] ⨂[MPc] g).
 Proof. destruct e; cat. Qed.
 
-(** A cast in the right tensorand extracts as a whole-tensor cast. *)
+(*
+   * A cast in the right tensorand extracts as a whole-tensor cast. 
+
+   --------
+   * 在正确的张量项上进行的类型转换会作为整体张量类型转换被提取。
+*)
 Lemma cbimap_cast_r {x y b b' : P} (g : x ~> y) (e : b = b') :
   (g ⨂[MPc] id_cast e)
     ≈ id_cast (f_equal (fun v : P => (y ⨂[MPc] v)%object) e)
@@ -164,9 +291,14 @@ Lemma cbimap_cast_r {x y b b' : P} (g : x ~> y) (e : b = b') :
 Proof. destruct e; cat. Qed.
 
 (*
-   本节说明 Interp 相关定义、性质与动机。
+   * Tensoring an identity with a cast IS a cast.  Like [cbimap_cast]
+   through [cbimap_cast_r] above, these two are exported cast/tensor
+   kit with no in-tree consumer yet; the current proofs reach the
+   same effects through the slide lemmas and the [_general] forms
+   below. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 用张量操作将一个恒等式与一个类型转换结合是一个类型转换。就像上面通过 [cbimap_cast] 到 [cbimap_cast_r] 的情况，这两个是已导出的类型转换/张量工具包，但在树内还没有使用者；当前的证明通过滑动引理和下面的 [_general] 形式达到相同的效果。
 *)
 Lemma cbimap_cast_id_l {a x y : P} (e : x = y) :
   (id[a] ⨂[MPc] id_cast e)
@@ -185,9 +317,13 @@ Proof.
 Qed.
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * A tensor of [hom_cast]s is the [hom_cast] along the paired object
+   equalities ([ctensor_obj_eq]).  This is the monoidal extension of
+   the [hom_cast] kit of [Construction/Quotient.v]; it is consumed by
+   the tens case of the uniqueness proof in [Universal.v]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 一个 [hom_cast] 的张量是沿着成对对象等式 ([ctensor_obj_eq]) 的 [hom_cast]。这是 [Construction/Quotient.v] 的 [hom_cast] 工具包的幺半群扩展；它被 [Universal.v] 中唯一性证明的张量情况所使用。
 *)
 Lemma cbimap_hom_cast {a b c d a' b' c' d' : P}
   (ea : a = a') (eb : b = b') (ec : c = c') (ed : d = d')
@@ -198,9 +334,20 @@ Lemma cbimap_hom_cast {a b c d a' b' c' d' : P}
 Proof. destruct ea, eb, ec, ed; reflexivity. Qed.
 
 (*
-   本节说明 Interp 相关定义、性质与动机。
+   * [cstrict_braid] re-indexes along object equalities by [hom_cast].
+   Consumed by the uniqueness proof of [Universal.v], whose braid
+   case re-indexes a competitor's [cstrict_braid (G cs) (G ds)] to
+   the canonical [cstrict_braid ⟦cs⟧ ⟦ds⟧] along the object
+   agreement.  (The hexagon lemmas K9/K10 below do not need it: they
+   quantify over the strictness equalities in the
+   [cbraid_hex_*_general] forms instead.) 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * [cstrict_braid] 按照对象等式通过 [hom_cast] 重新索引。
+   被 [Universal.v] 的唯一性证明所使用，其编织情况
+   按照对象一致性将竞争者的 [cstrict_braid (G cs) (G ds)]
+   重新索引到规范的 [cstrict_braid ⟦cs⟧ ⟦ds⟧]。（下面的六边形引理 K9/K10 不需要它：它们
+   对 [cbraid_hex_*_general] 形式中的严格等式进行量化。）
 *)
 Lemma cstrict_braid_cast {x x' y y' : P} (e1 : x = x') (e2 : y = y') :
   cstrict_braid x' y'
@@ -208,7 +355,12 @@ Lemma cstrict_braid_cast {x x' y y' : P} (e1 : x = x') (e2 : y = y') :
                (cstrict_braid x y).
 Proof. destruct e1, e2; reflexivity. Qed.
 
-(** Flipping a cast-naturality square across the inverse casts. *)
+(*
+   * Flipping a cast-naturality square across the inverse casts. 
+
+   --------
+   * 在逆向转换上翻转一个类型自然性的转换方块。
+*)
 Lemma cid_cast_flip {a b a' b' : P} (e1 : a = a') (e2 : b = b')
   (p : a ~> b) (q : a' ~> b') :
   q ∘ id_cast e1 ≈ id_cast e2 ∘ p →
@@ -220,7 +372,12 @@ Proof.
   symmetry; exact Hq.
 Qed.
 
-(** Composing two cast-conjugated morphisms cancels the middle casts. *)
+(*
+   * Composing two cast-conjugated morphisms cancels the middle casts. 
+
+   --------
+   * 将两个类型转换后结合的态射组合，会消去中间的类型转换。
+*)
 Lemma cconj_compose {x y z x' y' z' : P}
   (e1 : x = x') (e2 : y = y') (e3 : z = z')
   (f : y ~> z) (g : x ~> y) :
@@ -230,12 +387,24 @@ Lemma cconj_compose {x y z x' y' z' : P}
 Proof. destruct e1, e2, e3; cat. Qed.
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * *** The strict structural maps as casts, with sliding naturality
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   In a strict monoidal category the associator and unitors ARE the
+   transported identities; their naturality squares become "slides"
+   that move a cast past a tensor of morphisms. 
+
+   --------
+   * *** 严格的结构映射如同类型转换，具有滑动的自然性
+
+   在严格的单结类中，结合子和单位子就是传递的恒等映射；它们的自然性方形变成“滑动”，将类型转换移过态射的张量。
 *)
 
-(** The strict comparison fields, restated through [id_cast]. *)
+(*
+   * The strict comparison fields, restated through [id_cast]. 
+
+   --------
+   * 严格的比较字段，通过 [id_cast] 重述。
+*)
 Lemma cstrict_assoc_cast (x y z : P) :
   id_cast (strict_assoc_obj x y z) ≈ to (@tensor_assoc P MPc x y z).
 Proof. symmetry; apply strict_assoc_to. Qed.
@@ -248,7 +417,7 @@ Lemma cstrict_unitr_cast (x : P) :
   id_cast (strict_unit_right_obj x) ≈ to (@unit_right P MPc x).
 Proof. symmetry; apply strict_unit_right_to. Qed.
 
-(** Associator slide. *)
+(** Associator slide. / 联想器幻灯片。 *)
 Lemma cstrict_assoc_slide {x y z x' y' z' : P}
   (f : x ~> x') (g : y ~> y') (h : z ~> z') :
   (f ⨂[MPc] (g ⨂[MPc] h)) ∘ id_cast (strict_assoc_obj x y z)
@@ -258,7 +427,7 @@ Proof.
   apply to_tensor_assoc_natural.
 Qed.
 
-(** Left-unitor slide. *)
+(** Left-unitor slide. / 左幺元滑动。 *)
 Lemma cstrict_unitl_slide {x y : P} (g : x ~> y) :
   g ∘ id_cast (strict_unit_left_obj x)
     ≈ id_cast (strict_unit_left_obj y) ∘ (id[@I P MPc] ⨂[MPc] g).
@@ -267,7 +436,7 @@ Proof.
   apply to_unit_left_natural.
 Qed.
 
-(** Right-unitor slide. *)
+(** Right-unitor slide. / 右单位元滑动。 *)
 Lemma cstrict_unitr_slide {x y : P} (g : x ~> y) :
   g ∘ id_cast (strict_unit_right_obj x)
     ≈ id_cast (strict_unit_right_obj y) ∘ (g ⨂[MPc] id[@I P MPc]).
@@ -276,16 +445,26 @@ Proof.
   apply to_unit_right_natural.
 Qed.
 
-(** *** The [⟦·⟧]-level combinators *)
+(** *** The [⟦·⟧]-level combinators / *** [⟦·⟧] 级组合子 *)
 
-(** A boundary cast: the identity transported along [⟦e⟧]. *)
+(** A boundary cast: the identity transported along [⟦e⟧]. / 边界作用：沿 [⟦e⟧] 传递的身份。 *)
 Definition chcast {cs ds : list Colour} (e : cs = ds) : ⟦cs⟧ ~{P}~> ⟦ds⟧ :=
   @id_cast (cprop_cat P) ⟦cs⟧ ⟦ds⟧ (f_equal (@cprop_of_list Colour P) e).
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+   * [chcast]s compose and cancel — with no proof irrelevance needed:
+   each lemma destructs its boundary equation.  Of these, the
+   soundness induction below consumes [chcast_inv_r]; [chcast_trans]
+   and [chcast_inv_l] complete the algebra as exported kit with no
+   in-tree consumer yet.  Proof IRRELEVANCE of [chcast] ([chcast_irr]
+   / [chcast_loop]) needs decidable object equality on [P] and lives
+   below the [ObjDecEq] hypothesis — where the one-sorted donor used
+   UIP on [nat] outright, an arbitrary [Colour] carries no decider,
+   and the coloured kit routes irrelevance through the TARGET's
+   objects instead. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * [chcast] 进行组合和取消 —— 不需要无关性的证明：每个引理都会破坏其边界方程。在这些中，下面的健全性归纳使用了 [chcast_inv_r]；[chcast_trans] 和 [chcast_inv_l] 作为导出的工具包完成代数，但目前还没有树内使用者。[chcast]（[chcast_irr] / [chcast_loop]）的证明无关性需要在 [P] 上可判定的对象相等性，并存在于 [ObjDecEq] 假设之下 —— 其中单排序的捐赠者直接在 [nat] 上使用了 UIP，任意的 [Colour] 没有携带判定器，而彩色工具包则通过目标对象来传递无关性。
 *)
 Lemma chcast_trans {cs ds es : list Colour} (e1 : cs = ds) (e2 : ds = es) :
   chcast e2 ∘ chcast e1 ≈ chcast (eq_trans e1 e2).
@@ -299,8 +478,13 @@ Lemma chcast_inv_r {cs ds : list Colour} (e : cs = ds) :
   chcast e ∘ chcast (eq_sym e) ≈ id.
 Proof. destruct e; cat. Qed.
 
-(** Parallel composition at [⟦·⟧]-indexed objects: tensor at [MPc],
-    conjugated by the [cprop_tensor_app] strictness casts. *)
+(*
+   * Parallel composition at [⟦·⟧]-indexed objects: tensor at [MPc],
+   conjugated by the [cprop_tensor_app] strictness casts. 
+
+   --------
+   * 在 [⟦·⟧] 索引的对象上的平行组合：在 [MPc] 的张量，由 [cprop_tensor_app] 严格性转换共轭。
+*)
 Definition ctensor_hom {a b c d : list Colour}
   (f : ⟦a⟧ ~{P}~> ⟦b⟧) (g : ⟦c⟧ ~{P}~> ⟦d⟧) : ⟦a ++ c⟧ ~{P}~> ⟦b ++ d⟧ :=
   id_cast (cprop_tensor_app b d) ∘ (f ⨂[MPc] g)
@@ -308,18 +492,25 @@ Definition ctensor_hom {a b c d : list Colour}
 
 Infix "⊞c" := ctensor_hom (at level 30, right associativity).
 
-(** The block braiding at [⟦·⟧]-indexed objects. *)
+(** The block braiding at [⟦·⟧]-indexed objects. / [⟦·⟧] 索引对象的块状编发。 *)
 Definition cbraid_hom (cs ds : list Colour) : ⟦cs ++ ds⟧ ~{P}~> ⟦ds ++ cs⟧ :=
   id_cast (cprop_tensor_app ds cs) ∘ cstrict_braid ⟦cs⟧ ⟦ds⟧
     ∘ id_cast (eq_sym (cprop_tensor_app cs ds)).
 
 (*
-   本节说明 Interp 相关定义、性质与动机。
+   * *** The K-kit, part one: bifunctor and braid laws of [⊞c]
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   K1–K5 need no proof-irrelevance: the [cprop_tensor_app] casts
+   cancel pairwise by [cconj_compose] and the core laws are those of
+   [⨂[MPc]] and [cstrict_braid]. 
+
+   --------
+   * *** K-工具包，第一部分：[⊞c] 的双函子与编织律
+
+   K1–K5 不需要证明无关性：[cprop_tensor_app] 的投射通过 [cconj_compose] 成对抵消，核心定律是 [⨂[MPc] 和 [cstrict_braid] 的定律。
 *)
 
-(** K1: [⊞c] preserves identities. *)
+(** K1: [⊞c] preserves identities. / K1：[⊞c] 保留身份。 *)
 Lemma ctensor_hom_id (cs ds : list Colour) :
   id[⟦cs⟧] ⊞c id[⟦ds⟧] ≈ id[⟦cs ++ ds⟧].
 Proof.
@@ -329,7 +520,12 @@ Proof.
   apply id_cast_inv_r.
 Qed.
 
-(** K2: [⊞c] preserves composition (middle-four interchange). *)
+(*
+   * K2: [⊞c] preserves composition (middle-four interchange). 
+
+   --------
+   * K2：[⊞c] 保持组合（中间四项交换）。
+*)
 Lemma ctensor_hom_comp {a b c d j k : list Colour}
   (f : ⟦b⟧ ~{P}~> ⟦c⟧) (f' : ⟦a⟧ ~{P}~> ⟦b⟧)
   (g : ⟦j⟧ ~{P}~> ⟦k⟧) (g' : ⟦d⟧ ~{P}~> ⟦j⟧) :
@@ -340,7 +536,7 @@ Proof.
   now rewrite bimap_comp.
 Qed.
 
-(** K3: [⊞c] respects the hom equivalence. *)
+(** K3: [⊞c] respects the hom equivalence. / K3: [⊞c] 尊重同调等价。 *)
 #[export] Instance ctensor_hom_respects {a b c d : list Colour} :
   Proper (equiv ==> equiv ==> equiv) (@ctensor_hom a b c d).
 Proof.
@@ -349,7 +545,7 @@ Proof.
   now rewrite X, X0.
 Qed.
 
-(** K4: [cbraid_hom] is an involution. *)
+(** K4: [cbraid_hom] is an involution. / K4: [cbraid_hom] 是一个自反变换。 *)
 Lemma cbraid_hom_invol (cs ds : list Colour) :
   cbraid_hom ds cs ∘ cbraid_hom cs ds ≈ id[⟦cs ++ ds⟧].
 Proof.
@@ -360,7 +556,7 @@ Proof.
   apply id_cast_inv_r.
 Qed.
 
-(** K5: naturality of [cbraid_hom] against [⊞c]. *)
+(** K5: naturality of [cbraid_hom] against [⊞c]. / K5：[cbraid_hom] 相对于 [⊞c] 的自然性。 *)
 Lemma cbraid_hom_swap {m1 n1 m2 n2 : list Colour}
   (f : ⟦m1⟧ ~{P}~> ⟦n1⟧) (g : ⟦m2⟧ ~{P}~> ⟦n2⟧) :
   (g ⊞c f) ∘ cbraid_hom m1 m2 ≈ cbraid_hom n1 n2 ∘ (f ⊞c g).
@@ -371,16 +567,41 @@ Proof.
 Qed.
 
 (*
-   本节说明 Interp 相关定义、性质与动机。
+   * *** The K-kit, part two: strict unit and associativity laws
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   K6–K12 identify casts along DIFFERENT proofs of the same object
+   equality, so they need uniqueness of identity proofs on [obj P] —
+   axiom-free, via decidable object equality ([ObjDecEq], from
+   [Construction/Quotient.v]).
+
+   Each law is first proved in a fully general, object-level form
+   that quantifies over the strictness equalities: destructing the
+   quantified equalities makes the transports definitional, and the
+   single non-destructible residue (a unit- or associativity-shaped
+   loop) is aligned to the canonical strict equality by [obj_uip].
+   The [⟦·⟧]-level K-lemma is then an instantiation.  These
+   [_general] forms never compute on the boundary index type, which
+   is why they transfer from the one-sorted donor with name
+   substitution only. 
+
+   --------
+   * *** K-套件，第二部分：严格单位和结合律  
+
+   K6–K12 识别沿不同证明的相同对象的类型转换，因此它们需要在 [obj P] 上的身份证明的唯一性——无公理，通过可判定的对象相等性（[ObjDecEq]，来自 [Construction/Quotient.v]）。  
+
+   每条定律首先以完全一般的对象级形式证明，该形式对严格相等进行量化：析构量化的相等性使得传输成为定义性的，而单个不可析构的残余（单位或结合形状的循环）通过 [obj_uip] 与规范严格相等对齐。然后 [⟦·⟧] 级别的 K-引理是一种具体实例。这些 [_general] 形式从不在边界索引类型上计算，这就是为什么它们可以只通过名称替换从单一排序的供体转移过来。
 *)
 
 Context {OD : @ObjDecEq P}.
 
-(** [chcast] 证明-irrelevant boundary equation: both casts
- transport along 对象 equalities [P], unique under
- [ObjDecEq]. No decidability [Colour] involved. （已译） *)
+(*
+   * [chcast] is proof-irrelevant in its boundary equation: both casts
+   transport along object equalities of [P], which are unique under
+   [ObjDecEq].  No decidability of [Colour] is involved. 
+
+   --------
+   * [chcast] 在其边界方程中是与证明无关的：两个类型转换沿着 [P] 的对象相等传输，而在 [ObjDecEq] 下它们是唯一的。[Colour] 的可判定性不涉及其中。
+*)
 Lemma chcast_irr {cs ds : list Colour} (e1 e2 : cs = ds) :
   chcast e1 = chcast e2.
 Proof using OD P.
@@ -394,7 +615,7 @@ Proof using OD P.
   apply id_cast_loop.
 Qed.
 
-(** General left-unit absorption at [MPc]. *)
+(** General left-unit absorption at [MPc]. / 在 [MPc] 的一般左单位吸收。 *)
 Lemma ctensor_unit_left_general {u x y : P} (eu : @I P MPc = u)
   (f : x ~> y)
   (e1 : (u ⨂[MPc] x)%object = x) (e2 : (u ⨂[MPc] y)%object = y) :
@@ -410,9 +631,14 @@ Proof using OD P.
   apply id_right.
 Qed.
 
-(** K6: tensoring [id ⟦[]⟧] left 恒等 (the
- boundary equation [[] ++ = a] holds definitionally, exactly as
- [0 + = a] did one-sorted donor). （已译） *)
+(*
+   * K6: tensoring with [id ⟦[]⟧] on the left is the identity (the
+   boundary equation [[] ++ a = a] holds definitionally, exactly as
+   [0 + a = a] did in the one-sorted donor). 
+
+   --------
+   * K6：在左侧与 [id ⟦[] ⟧ 张量化是恒等（边界方程 [[] ++ a = a] 定义上成立，就像 [0 + a = a] 在单排序捐赠者中所做的一样）。
+*)
 Lemma ctensor_hom_idnil_left {a b : list Colour} (f : ⟦a⟧ ~{P}~> ⟦b⟧) :
   id[⟦[]⟧] ⊞c f ≈ f.
 Proof using OD P.
@@ -421,8 +647,13 @@ Proof using OD P.
            (cprop_tensor_app [] a) (cprop_tensor_app [] b)).
 Qed.
 
-(** 本节：General right-unit absorption at [MPc], mediating casts for
- propositional boundary equation [a ++ [] = a]. （已译） *)
+(*
+   * General right-unit absorption at [MPc], with mediating casts for
+   the propositional boundary equation [a ++ [] = a]. 
+
+   --------
+   * 在 [MPc] 处进行一般的右单位吸收，同时为命题边界方程 [a ++ [] = a 提供中介投影。
+*)
 Lemma ctensor_unit_right_general {u x y x' y' : P} (eu : @I P MPc = u)
   (f : x ~> y)
   (e1 : (x ⨂[MPc] u)%object = x') (e2 : (y ⨂[MPc] u)%object = y')
@@ -441,8 +672,13 @@ Proof using OD P.
   cat.
 Qed.
 
-(** K7: tensoring [id ⟦[]⟧] right 恒等 up to
- [chcast]s along [a ++ [] = a]. （已译） *)
+(*
+   * K7: tensoring with [id ⟦[]⟧] on the right is the identity up to
+   the [chcast]s along [a ++ [] = a]. 
+
+   --------
+   * K7：在右侧用  [id ⟦[] ⟧] 做张量运算，相当于恒等式，最高到沿着  [a ++ [] = a 的  [chcast] s。
+*)
 Lemma ctensor_hom_idnil_right {a b : list Colour} (f : ⟦a⟧ ~{P}~> ⟦b⟧) :
   f ⊞c id[⟦[]⟧]
     ≈ chcast (eq_sym (app_nil_r b)) ∘ f ∘ chcast (app_nil_r a).
@@ -457,7 +693,12 @@ Proof using OD P.
            (f_equal (@cprop_of_list Colour P) (app_nil_r b))).
 Qed.
 
-(** General strict associativity of the conjugated tensor at [MPc]. *)
+(*
+   * General strict associativity of the conjugated tensor at [MPc]. 
+
+   --------
+   * 在 [MPc] 处共轭张量的一般严格结合性。
+*)
 Lemma ctensor_assoc_general {x y z x' y' z' u u' v v' w w' s s' : P}
   (f : x ~> x') (g : y ~> y') (h : z ~> z')
   (exy : (x ⨂[MPc] y)%object = u) (exy' : (x' ⨂[MPc] y')%object = u')
@@ -484,7 +725,12 @@ Proof using OD P.
   apply cstrict_assoc_slide.
 Qed.
 
-(** K8: [⊞c] is associative up to the [chcast]s along [app_assoc]. *)
+(*
+   * K8: [⊞c] is associative up to the [chcast]s along [app_assoc]. 
+
+   --------
+   * K8：[⊞c] 在 [app_assoc] 上对 [chcast] 是结合的。
+*)
 Lemma ctensor_hom_assoc {a b c d j k : list Colour}
   (f : ⟦a⟧ ~{P}~> ⟦b⟧) (g : ⟦c⟧ ~{P}~> ⟦d⟧) (h : ⟦j⟧ ~{P}~> ⟦k⟧) :
   chcast (eq_sym (app_assoc b d k)) ∘ ((f ⊞c g) ⊞c h)
@@ -500,15 +746,20 @@ Proof using OD P.
            (f_equal (@cprop_of_list Colour P) (eq_sym (app_assoc b d k)))).
 Qed.
 
-(** 本节：The [eq_sym] cast reversed-match spelling used by
- [strict_assoc_from] ([Structure/Monoidal/Strict.v]). （已译） *)
+(*
+   * The [eq_sym] cast in the reversed-match spelling used by
+   [strict_assoc_from] ([Structure/Monoidal/Strict.v]). 
+
+   --------
+   * [eq_sym] 在 [strict_assoc_from] ([Structure/Monoidal/Strict.v]) 使用的反向匹配拼写中出现。
+*)
 Lemma cid_cast_sym_match {a b : P} (e : a = b) :
   id_cast (eq_sym e) = match e in _ = T return (T ~> a) with
                        | eq_refl => id
                        end.
 Proof using P. destruct e; reflexivity. Qed.
 
-(** The inverse associator as a cast. *)
+(** The inverse associator as a cast. / 作为类型转换的逆结合子。 *)
 Lemma cstrict_assoc_cast_from (x y z : P) :
   id_cast (eq_sym (strict_assoc_obj x y z))
     ≈ from (@tensor_assoc P MPc x y z).
@@ -517,7 +768,12 @@ Proof using P.
   symmetry; apply strict_assoc_from.
 Qed.
 
-(** 本节：The first hexagon, every structural map spelled cast. （已译） *)
+(*
+   * The first hexagon, with every structural map spelled as a cast. 
+
+   --------
+   * 第一个六边形，每个结构图都被拼写成一个铸件。
+*)
 Lemma cstrict_braid_hex_cast (x y z : P) :
   id_cast (strict_assoc_obj y z x)
      ∘ cstrict_braid x ((y ⨂[MPc] z)%object)
@@ -530,7 +786,7 @@ Proof using P.
   apply cstrict_braid_hex.
 Qed.
 
-(** The second hexagon, in cast form. *)
+(** The second hexagon, in cast form. / 第二个六边形，铸造形式。 *)
 Lemma cstrict_braid_hex_sym_cast (x y z : P) :
   id_cast (eq_sym (strict_assoc_obj z x y))
      ∘ cstrict_braid ((x ⨂[MPc] y)%object) z
@@ -543,7 +799,7 @@ Proof using P.
   apply cstrict_braid_hex_sym.
 Qed.
 
-(** General right-hexagon decomposition of the conjugated braid. *)
+(** General right-hexagon decomposition of the conjugated braid. / 共轭辫的一般右六边形分解。 *)
 Lemma cbraid_hex_right_general {x y z v a1 a2 q r b1 b2 t1 t2 c1 c2 : P}
   (eyz : (y ⨂[MPc] z)%object = v)
   (exv : (x ⨂[MPc] v)%object = a1) (evx : (v ⨂[MPc] x)%object = a2)
@@ -582,8 +838,13 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K9: right hexagon at [⟦·⟧]-indexed 对象, transport
- spelling produced interpreting [CTE_braid_hex_right]. （已译） *)
+(*
+   * K9: the right hexagon at [⟦·⟧]-indexed objects, in the transport
+   spelling produced by interpreting [CTE_braid_hex_right]. 
+
+   --------
+   * K9：在传输拼写中通过解释 [CTE_braid_hex_right] 生成的，位于 [⟦·⟧] 索引对象的右六边形。
+*)
 Lemma cbraid_hom_hex_r (m n p : list Colour) :
   chcast (eq_sym (app_assoc n p m)) ∘ cbraid_hom m (n ++ p)
     ≈ ((id[⟦n⟧] ⊞c cbraid_hom m p) ∘ chcast (eq_sym (app_assoc n m p)))
@@ -602,7 +863,7 @@ Proof using OD P.
            (f_equal (@cprop_of_list Colour P) (app_assoc m n p))).
 Qed.
 
-(** General left-hexagon decomposition of the conjugated braid. *)
+(** General left-hexagon decomposition of the conjugated braid. / 共轭辫的一般左六边形分解。 *)
 Lemma cbraid_hex_left_general {x y z v a1 q r b1 t1 c1 c2 w1 w2 s2 : P}
   (exy : (x ⨂[MPc] y)%object = t1)
   (eyz : (y ⨂[MPc] z)%object = v)
@@ -642,8 +903,13 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K10: left hexagon at [⟦·⟧]-indexed 对象, transport
- spelling produced interpreting [CTE_braid_hex_left]. （已译） *)
+(*
+   * K10: the left hexagon at [⟦·⟧]-indexed objects, in the transport
+   spelling produced by interpreting [CTE_braid_hex_left]. 
+
+   --------
+   * K10：在运输拼写中通过解释 [CTE_braid_hex_left] 生成的 [⟦·⟧] 索引对象中的左六边形。
+*)
 Lemma cbraid_hom_hex_l (m n p : list Colour) :
   cbraid_hom (m ++ n) p ∘ chcast (app_assoc m n p)
     ≈ (chcast (eq_sym (app_assoc p m n))
@@ -663,7 +929,7 @@ Proof using OD P.
            (f_equal (@cprop_of_list Colour P) (eq_sym (app_assoc p m n)))).
 Qed.
 
-(** The braids against unit 对象, casts. （已译） *)
+(** The braids against the unit object, as casts. / 辫子围绕单位对象，就像投射一样。 *)
 Lemma cstrict_braid_unit_l_core (x : P) :
   cstrict_braid x (@I P MPc)
     ≈ id_cast (eq_sym (strict_unit_left_obj x))
@@ -694,8 +960,13 @@ Proof using P.
   reflexivity.
 Qed.
 
-(** General unit-braid collapse: braid against unit-equal 对象
- pure cast, so cast-conjugated copy it 恒等. （已译） *)
+(*
+   * General unit-braid collapse: the braid against a unit-equal object
+   is a pure cast, so a cast-conjugated copy of it is the identity. 
+
+   --------
+   * 一般单位编织坍塌：对一个单位等价对象的编织是一个纯铸，因此其铸共轭副本是恒等映射。
+*)
 Lemma cbraid_unit_general_l {u x q r : P} (eu : @I P MPc = u)
   (eux : (u ⨂[MPc] x)%object = q) (exu : (x ⨂[MPc] u)%object = r)
   (d : r = q) :
@@ -732,7 +1003,12 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K11: braid [[]] past [n] collapses 恒等. （已译） *)
+(*
+   * K11: the braid of [[]] past [n] collapses to the identity. 
+
+   --------
+   * K11：[[]] 经过[n] 的辫子坍缩为单位元。
+*)
 Lemma cbraid_hom_unit_l (n : list Colour) :
   chcast (app_nil_r n) ∘ cbraid_hom [] n ≈ id[⟦n⟧].
 Proof using OD P.
@@ -742,7 +1018,12 @@ Proof using OD P.
            (f_equal (@cprop_of_list Colour P) (app_nil_r n))).
 Qed.
 
-(** K12: braid [n] past [[]] collapses 恒等. （已译） *)
+(*
+   * K12: the braid of [n] past [[]] collapses to the identity. 
+
+   --------
+   * K12：[n] 过去的 [[] ] 的辫子坍缩为单位元。
+*)
 Lemma cbraid_hom_unit_r (n : list Colour) :
   cbraid_hom n [] ∘ chcast (eq_sym (app_nil_r n)) ≈ id[⟦n⟧].
 Proof using OD P.
@@ -758,20 +1039,36 @@ Proof using OD P.
   - reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * *** Valuations and the interpretation of terms / * *** 估值与术语的解释 *)
 
 Context (S : CSignature Colour).
 
-(** A valuation assigns a target morphism to every generator. *)
+(*
+   * A valuation assigns a target morphism to every generator. 
+
+   --------
+   * 一个赋值会给每个生成元分配一个目标态射。
+*)
 Definition CValuation : Type :=
   ∀ cs ds : list Colour, S cs ds → (⟦cs⟧ ~{P}~> ⟦ds⟧).
 
 Context (v : CValuation).
 
 (*
-   本节说明函子相关定义、性质与动机。
+   * The interpretation of a raw term, by structural recursion:
+   identity wires to identities, block braids to [cbraid_hom],
+   sequential composition to [∘], parallel composition to [⊞c], and
+   generators through the valuation.  [cinterp] COMPUTES on
+   constructors — e.g. [cinterp (CT_comp g f)] is definitionally
+   [cinterp g ∘ cinterp f] — so the functor laws of the packaging
+   file [Universal.v] hold by reflexivity. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 通过结构递归对原始项的解释：  
+   将 identity 线路映射到 identities，将 block braids 映射到 [cbraid_hom]，  
+   将顺序组合映射到 [∘]，将并行组合映射到 [⊞c]，  
+   将生成元通过赋值映射。[cinterp] 对构造子进行计算——例如，[cinterp (CT_comp g f)] 在定义上是 [cinterp g ∘ cinterp f]——  
+   因此打包文件 [Universal.v] 的函子律通过自反性成立。
 *)
 Fixpoint cinterp {cs ds : list Colour} (t : CTerm S cs ds) :
   ⟦cs⟧ ~{P}~> ⟦ds⟧ :=
@@ -783,12 +1080,29 @@ Fixpoint cinterp {cs ds : list Colour} (t : CTerm S cs ds) :
   | CT_gen g      => v _ _ g
   end.
 
-(** Casts interpret to casts — a Leibniz equality, by [e]-elimination. *)
+(*
+   * Casts interpret to casts — a Leibniz equality, by [e]-elimination. 
+
+   --------
+   * 将解释转换为类型转换——一个莱布尼茨等式，由 [e] 消去。
+*)
 Lemma cinterp_CT_cast {cs ds : list Colour} (e : cs = ds) :
   cinterp (CT_cast e) = chcast e.
 Proof using P. destruct e; reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** Transport bridges
+
+   The strict-PROP axioms of [CTermEq] carry their boundary
+   mismatches as [eq_rect] transports; under [cinterp] a codomain
+   transport becomes a post-composed [chcast] and a domain transport
+   a pre-composed one. 
+
+   --------
+   * ** 传输桥梁
+
+   [CTermEq] 的严格-PROP 公理将它们的边界不匹配作为 [eq_rect] 传输；在 [cinterp] 下，余域传输变为后组合的 [chcast]，而域传输则变为前组合的。
+*)
 
 Lemma cinterp_eq_rect_cod {a b b' : list Colour} (e : b = b')
   (t : CTerm S a b) :
@@ -809,9 +1123,19 @@ Lemma cinterp_eq_rect_r_dom {a a' b : list Colour} (e : a' = a)
 Proof using P. destruct e; cat. Qed.
 
 (*
-   本节说明hom、等价相关定义、性质与动机。
+   * *** Soundness
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [CTermEq] is [Prop]-valued and the hom equivalence of the abstract
+   target is [Type]-valued, so the induction eliminates into the
+   [Prop]-reflection [heq] of a [HomEqProp] instance (the
+   [Quotient.v] kit) and round-trips through [heq_intro] /
+   [heq_elim].  Every one of the nineteen [CTermEq] constructors is
+   covered. 
+
+   --------
+   * *** 健全性
+
+   [CTermEq] 是 [Prop] 值的，并且抽象目标的同伦等价是 [Type] 值的，所以归纳消除进入 [Prop]-反射的 [heq] 的 [HomEqProp] 实例（[Quotient.v] 套件），并通过 [heq_intro] / [heq_elim] 往返。十九个 [CTermEq] 构造函数中的每一个都被覆盖。
 *)
 
 Context {HP : @HomEqProp P}.
@@ -825,33 +1149,33 @@ Proof using HP OD P S v.
     apply heq_intro; reflexivity.
   - (* CTE_sym *)
     apply heq_intro; symmetry; exact (heq_elim IHHT).
-  - (* CTE_trans *)
+  - (* CTE_trans / CTE_转 *)
     apply heq_intro.
     rewrite (heq_elim IHHT1).
     exact (heq_elim IHHT2).
-  - (* CTE_comp_cong *)
+  - (* CTE_comp_cong / CTE_复合_并发 *)
     apply heq_intro; cbn [cinterp].
     now rewrite (heq_elim IHHT1), (heq_elim IHHT2).
-  - (* CTE_tens_cong *)
+  - (* CTE_tens_cong / CTE_张力电容 *)
     apply heq_intro; cbn [cinterp].
     now rewrite (heq_elim IHHT1), (heq_elim IHHT2).
-  - (* CTE_id_left *)
+  - (* CTE_id_left / CTE_id_左 *)
     apply heq_intro; cbn [cinterp]; apply id_left.
-  - (* CTE_id_right *)
+  - (* CTE_id_right / CTE_id_右 *)
     apply heq_intro; cbn [cinterp]; apply id_right.
-  - (* CTE_assoc *)
+  - (* CTE_assoc / CTE_关联 *)
     apply heq_intro; cbn [cinterp]; symmetry; apply comp_assoc.
-  - (* CTE_tens_id *)
+  - (* CTE_tens_id / CTE_张力编号 *)
     apply heq_intro; cbn [cinterp]; apply ctensor_hom_id.
-  - (* CTE_interchange *)
+  - (* CTE_interchange / CTE_互换 *)
     apply heq_intro; cbn [cinterp]; symmetry; apply ctensor_hom_comp.
-  - (* CTE_braid_invol *)
+  - (* CTE_braid_invol / CTE_辫子_参与 *)
     apply heq_intro; cbn [cinterp]; apply cbraid_hom_invol.
-  - (* CTE_braid_natural *)
+  - (* CTE_braid_natural / CTE_自然编织 *)
     apply heq_intro; cbn [cinterp]; apply cbraid_hom_swap.
-  - (* CTE_tens_id0_left *)
+  - (* CTE_tens_id0_left / CTE_张力_id0_左 *)
     apply heq_intro; cbn [cinterp]; apply ctensor_hom_idnil_left.
-  - (* CTE_tens_id0_right *)
+  - (* CTE_tens_id0_right / CTE_张力_id0_右 *)
     apply heq_intro.
     rewrite cinterp_eq_rect_cod, cinterp_eq_rect_r_dom.
     cbn [cinterp].
@@ -859,12 +1183,12 @@ Proof using HP OD P S v.
     rewrite !comp_assoc.
     rewrite chcast_inv_r.
     now rewrite id_left.
-  - (* CTE_tens_assoc *)
+  - (* CTE_tens_assoc / CTE_张量关联 *)
     apply heq_intro.
     rewrite cinterp_eq_rect_cod, cinterp_eq_rect_r_dom.
     cbn [cinterp].
     apply ctensor_hom_assoc.
-  - (* CTE_braid_hex_left *)
+  - (* CTE_braid_hex_left / CTE_左侧六边形编织 *)
     apply heq_intro.
     cbn [cinterp].
     rewrite cinterp_eq_rect_cod.
@@ -875,7 +1199,7 @@ Proof using HP OD P S v.
     rewrite (chcast_irr (eq_sym (eq_sym (app_assoc m p n)))
                         (app_assoc m p n)).
     apply cbraid_hom_hex_l.
-  - (* CTE_braid_hex_right *)
+  - (* CTE_braid_hex_right / CTE_右侧六边形编织 *)
     apply heq_intro.
     cbn [cinterp].
     rewrite cinterp_eq_rect_cod.
@@ -884,19 +1208,19 @@ Proof using HP OD P S v.
     rewrite (chcast_irr (eq_sym (eq_sym (app_assoc m n p)))
                         (app_assoc m n p)).
     apply cbraid_hom_hex_r.
-  - (* CTE_braid_unit_left *)
+  - (* CTE_braid_unit_left / CTE_左侧编织单元 *)
     apply heq_intro.
     rewrite cinterp_eq_rect_cod.
     cbn [cinterp].
     apply cbraid_hom_unit_l.
-  - (* CTE_braid_unit_right *)
+  - (* CTE_braid_unit_right / CTE_右侧编织单元 *)
     apply heq_intro.
     rewrite cinterp_eq_rect_dom.
     cbn [cinterp].
     apply cbraid_hom_unit_r.
 Qed.
 
-(** Soundness, in the target's own hom equivalence. *)
+(** Soundness, in the target's own hom equivalence. / 稳健性，在目标自身的同余等价中。 *)
 Theorem cinterp_sound {cs ds : list Colour} {s t : CTerm S cs ds} :
   CTermEq S s t → cinterp s ≈ cinterp t.
 Proof using HP OD P S v.

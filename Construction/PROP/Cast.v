@@ -10,23 +10,53 @@ From Coq Require Import Eqdep_dec.
 Generalizable All Variables.
 
 (*
-   本文件给出 PROP 相关。
+   * * Transport infrastructure for the FreePROP construction
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The FreePROP needs to talk about morphisms between objects whose
+   arity-naturals are PROPOSITIONALLY but not DEFINITIONALLY equal —
+   e.g. [x + 0] and [x], or [(x + y) + z] and [x + (y + z)].
+   [Nat.add] is left-strict but not right-strict in Coq, so these
+   arity equations do not reduce definitionally and must be
+   transported across.
+
+   [T_cast e] is the identity term, transported across a nat
+   equality.  Together with the associated rewrite lemmas it lets
+   the Monoidal instance for FreeCat package up structural
+   isomorphisms (unitors, associator) for the cases where the arity
+   equality is not [eq_refl]. 
+
+   --------
+   * * FreePROP 构造的运输基础设施
+
+   FreePROP 需要讨论对象之间的态射，其元数自然数在命题上相等但在定义上不相等——
+   例如 [x + 0] 和 [x]，或 [(x + y) + z] 和 [x + (y + z)]。
+   在 Coq 中，[Nat.add] 在左侧是严格的，但在右侧不是严格的，因此这些元数等式在定义上不会化简，必须被传递。
+
+   [T_cast e] 是恒等项，通过自然数等式传递。结合相关的重写引理，它使 FreeCat 的 Monoidal 实例能够打包结构同构（单元子、结合子）用于元数等式不是 [eq_refl] 的情况。
 *)
 
-(** The cast term: identity, transported across [e : m = n]. *)
+(*
+   * The cast term: identity, transported across [e : m = n]. 
+
+   --------
+   * 铸造术语：身份，通过 [e : m = n] 传输。
+*)
 Definition T_cast {S : Signature} {m n : nat} (e : m = n) : Term S m n :=
   match e in _ = k return Term S m k with
   | eq_refl => T_id m
   end.
 
-(** Cast at [eq_refl] is the literal identity. *)
+(** Cast at [eq_refl] is the literal identity. / 在 [eq_refl] 的强制类型转换是字面上的身份。 *)
 Lemma T_cast_refl {S : Signature} (m : nat) :
   @T_cast S m m eq_refl = T_id m.
 Proof. reflexivity. Qed.
 
-(** Composing two casts gives a cast along the transitive equation. *)
+(*
+   * Composing two casts gives a cast along the transitive equation. 
+
+   --------
+   * 组合两个类型转换会得到沿传递等式的类型转换。
+*)
 Lemma T_cast_compose
   {S : Signature} {m n p : nat} (e1 : m = n) (e2 : n = p) :
   TermEq S (T_comp (T_cast e2) (T_cast e1)) (T_cast (eq_trans e1 e2)).
@@ -36,7 +66,12 @@ Proof.
   apply TE_id_left.
 Qed.
 
-(** Casting along [e] then along [eq_sym e] is the identity. *)
+(*
+   * Casting along [e] then along [eq_sym e] is the identity. 
+
+   --------
+   * 沿着 [e] 然后沿着 [eq_sym e] 的投射是恒等映射。
+*)
 Lemma T_cast_inv
   {S : Signature} {m n : nat} (e : m = n) :
   TermEq S (T_comp (T_cast (eq_sym e)) (T_cast e)) (T_id m).
@@ -46,7 +81,12 @@ Proof.
   apply TE_id_left.
 Qed.
 
-(** Casting along [eq_sym e] then along [e] is the identity. *)
+(*
+   * Casting along [eq_sym e] then along [e] is the identity. 
+
+   --------
+   * 沿着 [eq_sym e] 然后沿着 [e] 的投射是恒等变换。
+*)
 Lemma T_cast_inv_sym
   {S : Signature} {m n : nat} (e : m = n) :
   TermEq S (T_comp (T_cast e) (T_cast (eq_sym e))) (T_id n).
@@ -57,9 +97,13 @@ Proof.
 Qed.
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * Naturality of [T_cast]: a cast can be moved past any morphism
+   along the same arity equation.  This is the key lemma used to
+   discharge the naturality obligations of the unitors and the
+   associator in the Monoidal instance on [FreeCat S]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * [T_cast] 的自然性：一个类型转换可以沿着相同的元数等式移动穿过任何态射。这是用于消解 [FreeCat S] 上的 Monoidal 实例中单位子和结合子的自然性义务的关键引理。
 *)
 Lemma T_cast_natural
   {S : Signature} {m n : nat} (e : m = n) (f : Term S m m) (g : Term S n n)
@@ -69,8 +113,13 @@ Lemma T_cast_natural
   TermEq S (T_comp (T_cast e) f) (T_comp g (T_cast e)).
 Proof. apply Hfg. Qed.
 
-(** Degenerate naturality at [eq_refl]: a [T_cast eq_refl] is [T_id],
-    so it commutes with any morphism trivially. *)
+(*
+   * Degenerate naturality at [eq_refl]: a [T_cast eq_refl] is [T_id],
+   so it commutes with any morphism trivially. 
+
+   --------
+   * 在 [eq_refl] 的退化自然性：一个 [T_cast eq_refl] 是 [T_id]，因此它与任何态射平凡地交换。
+*)
 Lemma T_cast_natural_refl
   {S : Signature} {n : nat} (f : Term S n n) :
   TermEq S (T_comp (T_cast eq_refl) f) (T_comp f (T_cast eq_refl)).
@@ -81,13 +130,21 @@ Proof.
   - apply TE_sym, TE_id_right.
 Qed.
 
-(** Proof-irrelevance nat-equation casts: any two proofs [e1 e2]
- [m = n] give equal cast terms.
+(*
+   * Proof-irrelevance for nat-equation casts: any two proofs [e1 e2]
+   of [m = n] give equal cast terms.
 
- [nat] has decidable equality, hence Uniqueness Identity Proofs
- (UIP) holds it without any axioms — proved by
- [Eqdep_dec.UIP_dec Nat.eq_dec]. This lets us replace one 证明
- [nat] equation another inside [T_cast]. （已译） *)
+   [nat] has decidable equality, hence Uniqueness of Identity Proofs
+   (UIP) holds for it without any axioms — proved by
+   [Eqdep_dec.UIP_dec Nat.eq_dec].  This lets us replace one proof
+   of a [nat] equation by another inside [T_cast]. 
+
+   --------
+   * 自然数方程类型转换的证明无关性：任何两个  [e1 e2]  的证明  [m = n]  会生成相等的类型转换项。
+
+   [nat]  具有可判定的等式，因此不需要任何公理就能保证身份证明唯一性
+   (UIP) —— 由  [Eqdep_dec.UIP_dec Nat.eq_dec]  证明。这允许我们在  [T_cast]  内将一个  [nat]  方程的证明替换为另一个。
+*)
 Lemma T_cast_irrelevant
   {S : Signature} {m n : nat} (e1 e2 : m = n) :
   T_cast (S := S) e1 = T_cast (S := S) e2.
@@ -96,9 +153,14 @@ Proof.
   reflexivity.
 Qed.
 
-(** Special case: any cast along equation [m = m] the
- 恒等, because [eq_refl m] canonical 证明 [m = m]
- [T_cast eq_refl = T_id m] reduces definitionally. （已译） *)
+(*
+   * Special case: any cast along an equation of [m = m] is the
+   identity, because [eq_refl m] is the canonical proof of [m = m]
+   and [T_cast eq_refl = T_id m] reduces definitionally. 
+
+   --------
+   * 特殊情况：沿着 [m = m] 的任何类型转换都是恒等的，因为 [eq_refl m] 是 [m = m] 的典型证明，并且 [T_cast eq_refl = T_id m] 可以按定义化简。
+*)
 Lemma T_cast_id
   {S : Signature} {m : nat} (e : m = m) :
   T_cast (S := S) e = T_id m.
@@ -108,15 +170,39 @@ Proof.
 Qed.
 
 (*
-   本节说明 Cast 相关定义、性质与动机。
+   * ** Transport bridges for strict-PROP equations
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The strict-PROP right-unit and associativity axioms in [TermEq]
+   are stated in [eq_rect] transport form (over [Nat.add_0_r] and
+   [Nat.add_assoc] respectively).  Below we expose a small helper
+   for use when downstream proofs need to work with both ends of
+   the transport. 
+
+   --------
+   * ** 严格-PROP 方程的传输桥梁
+
+   [TermEq] 中的严格-PROP 右单位元和结合性公理
+   以 [eq_rect] 传输形式给出（分别在 [Nat.add_0_r] 和
+   [Nat.add_assoc] 上）。下面我们介绍一个小型辅助工具，
+   以便在下游证明中需要同时处理传输的两端时使用。
 *)
 
 (*
-   本节说明 Cast 相关定义、性质与动机。
+   * Transport-spelling bridge: the [eq_rect] transport of a term
+   along [e : m = n] over the codomain index equals the [match]
+   (dependent pattern-match) spelling of the same transport.  Both
+   sides are [T_cast e] applied to [t]; this lemma just lets a proof
+   switch between the [eq_rect] form used in [TermEq]'s strict-PROP
+   axioms and the [match] form used by [T_cast].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   This is the standard "destruct the eq_rect" pattern, but bundled
+   as a helper so the [T_cast]-level naturality proofs don't have
+   to repeat it. 
+
+   --------
+   * 传输拼写桥：在余域索引上沿着  [e : m = n]  的一个项的  [eq_rect]  传输等于相同传输的  [match] （依赖模式匹配）拼写。两边都是将  [T_cast e] 应用于  [t]；这个引理只是让证明在  [TermEq] 的严格-PROP 公理中使用的  [eq_rect]  形式与 [T_cast] 使用的  [match] 形式之间切换。
+
+   这是标准的“析构 eq_rect”模式，但打包成一个辅助工具，这样  [T_cast] 级别的自然性证明就不必重复它。
 *)
 Lemma T_term_eq_rect_destruct
   {S : Signature} {m n : nat} (e : m = n) (t : Term S m m) :
@@ -126,9 +212,14 @@ Lemma T_term_eq_rect_destruct
     end.
 Proof. destruct e; reflexivity. Qed.
 
-(** 本节：Dual: [eq_rect_r] transport domain index reduces at
- [eq_refl] term itself. More general transport shapes
- require [destruct e] context. （已译） *)
+(*
+   * Dual: an [eq_rect_r] transport on the domain index reduces at
+   [eq_refl] to the term itself.  More general transport shapes
+   require a [destruct e] in context. 
+
+   --------
+   * 对偶：在域索引上的 [eq_rect_r] 传输在 [eq_refl] 处简化为该项本身。更一般的传输形状需要在上下文中使用 [destruct e] 。
+*)
 Lemma T_term_eq_rect_r_refl
   {S : Signature} {m : nat} (t : Term S m m) :
   eq_rect_r (fun k => Term S k m) t (eq_refl m) = t.

@@ -15,44 +15,108 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(* * * Constructors indexed 范畴 （已译） *)
+(* * * Constructors for indexed categories / * * 索引类别的构造函数 *)
 
 (*
-   nLab:      https://ncatlab.org/nlab/show/strict+category
-   nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
-   Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_construction
-   Reference: Michael Hedberg, "A coherence theorem for Martin-Löf's type
+ nLab:      https://ncatlab.org/nlab/show/indexed+category
+ nLab:      https://ncatlab.org/nlab/show/strict+category
+ nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
+ Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_construction
+ Reference: Michael Hedberg, "A coherence theorem for Martin-Löf's type
+ theory", Journal of Functional Programming 8(4), 1998
+ (decidable equality implies uniqueness of identity proofs).
 
-   本文件给出严格情形。
+ This file provides two constructors for the coherent "pseudofunctor-lite"
+ [IndexedCat] (Construction/Indexed.v).
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ The first constructor turns a functor [F : B ⟶ StrictCat] into an indexed
+ category.  [StrictCat] (Instance/StrictCat.v) compares functors by strict
+ equality [Functor_StrictEq_Setoid]: equal object maps [F x = G x] together
+ with a coherence forcing the morphism actions to agree after transport.
+ Reading each such object equality through [iso_of_eq]
+ (Instance/StrictCat/ToCat.v) supplies the chosen fibre isomorphisms that
+ [IndexedCat] demands.  The naturality fields fall out of the strict-equality
+ coherence read through the transport/iso dictionary
+ ([transport_cod_to_iso], [transport_r_dom_to_iso]).  The remaining
+ pseudofunctor coherence — proof irrelevance of [idx_resp], the unit laws,
+ the associativity cocycle — asks that competing composites of [iso_of_eq]
+ proofs agree; this needs the propositional object-equality proofs in each
+ fibre to be unique, i.e. uniqueness of identity proofs (UIP) on the objects
+ of every fibre.  UIP is taken as a hypothesis, discharged for fibres with
+ decidable object equality by Hedberg's theorem, taken from the standard
+ library as [UIP_dec] (Coq.Logic.Eqdep_dec).
+
+ The second constructor is the constant indexed category: every fibre is a
+ fixed [D], every reindexing is the identity functor, and every mediating
+ isomorphism is the identity, so all the coherence holds trivially.  Its
+ Grothendieck construction is the product category, witnessed by the
+ [≅[Cat]] isomorphism [Grothendieck_Constant_iso]. 
+
+ --------
+ nLab:       https://ncatlab.org/nlab/show/indexed+category 
+ nLab:       https://ncatlab.org/nlab/show/strict+category 
+ nLab:       https://ncatlab.org/nlab/show/Grothendieck+construction 
+ Wikipedia:  https://en.wikipedia.org/wiki/Grothendieck_construction 
+ 参考文献: Michael Hedberg, “A coherence theorem for Martin-Löf's type theory”, 《函数式编程杂志》 8(4), 1998
+ （可判定的等式意味着身份证明的唯一性）。
+
+ 此文件为连贯的“伪函子简化版” [IndexedCat] 提供了两个构造函数（Construction/Indexed.v）。第一个构造函数将函子 [F : B ⟶ StrictCat] 转换为一个索引范畴。[StrictCat]（Instance/StrictCat.v）通过严格相等性比较函子 [Functor_StrictEq_Setoid]：将对象映射 [F x = G x] 以及一个一致性结合在一起，强制在传递后形态函数的作用一致。通过 [iso_of_eq]（Instance/StrictCat/ToCat.v）读取每个这样的对象相等性，为 [IndexedCat] 提供所需的选定纤维同构。自然性字段源自通过传输/同构字典（[transport_cod_to_iso], [transport_r_dom_to_iso]）读取的严格相等性一致性。剩余的伪函子一致性——[idx_resp] 的证明无关性，单位律，结合性 cocycle——要求 [iso_of_eq] 的竞争复合证明一致；这需要每个纤维中的命题对象相等性证明是唯一的，即每个纤维对象上的身份证明的唯一性 (UIP)。UIP 被作为一个假设，对于具有可判定对象相等性的纤维，通过 Hedberg 定理释放，并从标准库中引用为 [UIP_dec] (Coq.Logic.Eqdep_dec)。
+
+ 第二个构造子是常量索引范畴：每个纤维都是一个固定的 [D]，每个重索引都是恒等函子，每个介导同构都是恒等的，因此所有的相合性自然而然成立。它的 Grothendieck 构造是积范畴，由 [≅[Cat] ] 同构 [Grothendieck_Constant_iso] 证明。
 *)
 
 (*
-   本节说明函子、同构相关定义、性质与动机。
+   * ** Coherence of [iso_of_eq]
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The chosen fibre isomorphisms are all of the form [iso_of_eq p] for a
+   propositional object equality [p].  These lemmas record how [iso_of_eq]
+   interacts with transitivity, symmetry, functor action, and strict-equality
+   coherence; none of them needs UIP. 
+
+   --------
+   * ** [iso_of_eq] 的相干性
+
+   所选择的纤维同构形式都是 [iso_of_eq p]，对于一个命题对象等式 [p]。 这些引理记录了 [iso_of_eq] 与传递性、对称性、函子作用以及严格等式相干性的相互作用；它们都不需要 UIP。
 *)
 
-(* 相关说明。 （已译） *)
+(*
+ Reading [iso_of_eq] through a concatenation of equalities composes the
+ isomorphisms (in the opposite order, as always for [to]). 
+
+ --------
+ 通过一系列等式的连接来阅读 [iso_of_eq] 会组成同构（顺序相反，正如 [to] 一直的情况）。
+*)
 Lemma iso_of_eq_trans {C : Category} {x y z : C} (p : x = y) (q : y = z) :
   to (iso_of_eq (eq_trans p q)) ≈ to (iso_of_eq q) ∘ to (iso_of_eq p).
 Proof. destruct p, q; cat. Qed.
 
-(* [iso_of_eq] of a reversed equality is the inverse isomorphism. *)
+(*
+ [iso_of_eq] of a reversed equality is the inverse isomorphism. 
+
+ --------
+ 反等式的 [iso_of_eq] 是逆同构。
+*)
 Lemma iso_of_eq_sym {C : Category} {x y : C} (p : x = y) :
   to (iso_of_eq (eq_sym p)) ≈ from (iso_of_eq p).
 Proof. destruct p; cat. Qed.
 
-(* A functor carries [iso_of_eq p] to [iso_of_eq] of the image equality. *)
+(*
+ A functor carries [iso_of_eq p] to [iso_of_eq] of the image equality. 
+
+ --------
+ 函子将 [iso_of_eq p] 的像等式带到 [iso_of_eq]。
+*)
 Lemma fmap_iso_of_eq {C D : Category} (G : C ⟶ D) {x y : C} (p : x = y) :
   fmap[G] (to (iso_of_eq p)) ≈ to (iso_of_eq (f_equal (fobj[G]) p)).
 Proof. destruct p; simpl; apply fmap_id. Qed.
 
 (*
-   本节说明函子相关定义、性质与动机。
+ Strict equality of two functors makes the family [iso_of_eq (`1 S -)]
+ natural: this is exactly the strict-equality coherence [`2 S] read through
+ the transport/iso dictionary of Instance/StrictCat/ToCat.v. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 两个函子严格相等使得族 [iso_of_eq (`1 S -)] 自然：这正是通过 Instance/StrictCat/ToCat.v 的传输/同构字典读取的严格相等一致性 [`2 S]。
 *)
 Lemma strict_eq_iso_natural {C D : Category} {F' G' : C ⟶ D}
   (S : @equiv _ Functor_StrictEq_Setoid F' G') {a b : C} (k : a ~> b) :
@@ -64,9 +128,14 @@ Proof.
   symmetry; exact Hc.
 Qed.
 
-(* The inverse-side companion, obtained conjugating 自然性 the
- two inverse laws (the shape [idx_resp_natural_from] in
- Construction/Indexed.v). （已译） *)
+(*
+ The inverse-side companion, obtained by conjugating the naturality with the
+ two inverse laws (the shape of [idx_resp_natural_from] in
+ Construction/Indexed.v). 
+
+ --------
+ 逆侧伴随，通过将自然性与两个逆律结合得到（在 Construction/Indexed.v 中 [idx_resp_natural_from] 的形状）。
+*)
 Lemma strict_eq_iso_natural_from {C D : Category} {F' G' : C ⟶ D}
   (S : @equiv _ Functor_StrictEq_Setoid F' G') {a b : C} (k : a ~> b) :
   fmap[F'] k ∘ from (iso_of_eq (`1 S a)) ≈ from (iso_of_eq (`1 S b)) ∘ fmap[G'] k.
@@ -82,7 +151,7 @@ Proof.
   apply id_right.
 Qed.
 
-(* * ** The indexed 范畴 strict 函子 （已译） *)
+(* * ** The indexed category of a strict functor / * ** 严格函子的索引范畴 *)
 
 Section StrictFunctorToIndexed.
 
@@ -90,23 +159,42 @@ Context {B : Category}.
 Context (F : B ⟶ StrictCat).
 
 (*
-   本节说明 Strict 相关定义、性质与动机。
+ Fibrewise uniqueness of identity proofs on objects: the coherence-collapsing
+ hypothesis.  It is legitimate object-level [=] (sanctioned here by the strict
+ fibre anchoring of the construction) and is discharged from decidable object
+ equality by Hedberg's theorem ([UIP_dec]) below. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 对象上的身份证明的纤维唯一性：一致性塌缩假设。在对象层面上是合法的 [=]（在此由构造的严格纤维锚定批准）并且通过 Hedberg 定理（下面的 [UIP_dec]）从可判定对象相等性中解除。
 *)
 Hypothesis Fuip : ∀ (b : B) (x y : F b) (p q : x = y), p = q.
 
-(* Under UIP, [iso_of_eq] does not depend on its equality proof. *)
+(*
+ Under UIP, [iso_of_eq] does not depend on its equality proof. 
+
+ --------
+ 在UIP下，[iso_of_eq]不依赖于它的相等性证明。
+*)
 Lemma iso_of_eq_irrel {b : B} {X Y : F b} (p q : X = Y) :
   to (iso_of_eq p) ≈ to (iso_of_eq q).
 Proof using B F Fuip. now rewrite (Fuip b X Y p q). Qed.
 
-(* Under UIP, [iso_of_eq] of a self-equality is the identity. *)
+(*
+ Under UIP, [iso_of_eq] of a self-equality is the identity. 
+
+ --------
+ 在 UIP 下，自等式的 [iso_of_eq] 是恒等式。
+*)
 Lemma iso_of_eq_refl_id {b : B} {X : F b} (p : X = X) : to (iso_of_eq p) ≈ id.
 Proof using B F Fuip. now rewrite (Fuip b X X p (@eq_refl _ X)). Qed.
 
-(* The strict-equality witnesses [F] supplies reindexing along
- equivalent, 恒等, 复合 base 态射. （已译） *)
+(*
+ The strict-equality witnesses that [F] supplies for reindexing along
+ equivalent, identity, and composite base morphisms. 
+
+ --------
+ [F] 提供的严格相等性见证，用于沿等价、同一和复合基态态射重新索引。
+*)
 Definition Sresp {x y : B} {f g : x ~> y} (e : f ≈ g) :
   @equiv _ Functor_StrictEq_Setoid (fmap[F] f) (fmap[F] g) :=
   @fmap_respects _ _ F x y f g e.
@@ -119,9 +207,14 @@ Definition Scomp {x y z : B} (f : y ~> z) (g : x ~> y) :
   @equiv _ Functor_StrictEq_Setoid (fmap[F] (f ∘ g)) (fmap[F] f ∘ fmap[F] g) :=
   @fmap_comp _ _ F x y z f g.
 
-(* The indexed-范畴 data: fibres [F]'s values, reindexing [F]'s
- action, mediators [iso_of_eq]s strict-equality
- 对象 components. （已译） *)
+(*
+ The indexed-category data: fibres are [F]'s values, reindexing is [F]'s
+ action, and the mediators are the [iso_of_eq]s of the strict-equality
+ object components. 
+
+ --------
+ 索引类别数据：纤维是 [F] 的值，重新索引是 [F] 的操作，中介者是严格相等对象组件的 [iso_of_eq]。
+*)
 Definition SF_map {x y : B} (f : x ~> y) : F x ⟶ F y := fmap[F] f.
 
 Definition SF_resp {x y : B} {f g : x ~> y} (e : f ≈ g) (a : F x) :
@@ -134,9 +227,14 @@ Definition SF_comp {x y z : B} (f : y ~> z) (g : x ~> y) (a : F x) :
   SF_map f (SF_map g a) ≅ SF_map (f ∘ g) a :=
   iso_of_eq (eq_sym (`1 (Scomp f g) a)).
 
-(* Collapsing to-side coherence equation: expose mediators, absorb any
- 函子 action [iso_of_eq], fuse composites, appeal to
- 证明 irrelevance [iso_of_eq]. （已译） *)
+(*
+ Collapsing a to-side coherence equation: expose the mediators, absorb any
+ functor action into an [iso_of_eq], fuse the composites, and appeal to
+ proof irrelevance of [iso_of_eq]. 
+
+ --------
+ 塌缩一个到侧一致性方程：暴露中介，吸收任何函子作用到  [iso_of_eq] ，融合复合体，并求助于  [iso_of_eq] 的证明不可区分性。
+*)
 Ltac sf_collapse :=
   cbv beta delta [SF_comp SF_resp SF_id];
   rewrite ?fmap_iso_of_eq;
@@ -199,7 +297,12 @@ Lemma SF_cocycle {w x y z : B} (f : y ~> z) (g : x ~> y) (h : w ~> x)
         ∘ to (SF_comp f (g ∘ h) a) ∘ fmap[SF_map f] (to (SF_comp g h a)).
 Proof using B F Fuip. sf_collapse. Qed.
 
-(* The indexed 范畴 built [F] fibrewise UIP 假设. （已译） *)
+(*
+ The indexed category built from [F] and the fibrewise UIP hypothesis. 
+
+ --------
+ 由 [F] 构建的索引类别以及逐纤维 UIP 假设。
+*)
 Definition IndexedCat_of_StrictFunctor : IndexedCat B :=
   {| idx_fib          := fun x => F x
    ; idx_map          := @SF_map
@@ -219,23 +322,38 @@ Definition IndexedCat_of_StrictFunctor : IndexedCat B :=
 
 End StrictFunctorToIndexed.
 
-(* * ** Hedberg 推论: decidable fibres discharge 假设 （已译） *)
+(*
+   * ** Hedberg corollary: decidable fibres discharge the hypothesis 
 
-(* When every fibre of [F] has decidable object equality, Hedberg's theorem
-   supplies the fibrewise UIP hypothesis, so no side condition remains. *)
+   --------
+   * ** 赫德伯格推论：可判定的纤维解除假设
+*)
+
+(*
+ When every fibre of [F] has decidable object equality, Hedberg's theorem
+ supplies the fibrewise UIP hypothesis, so no side condition remains. 
+
+ --------
+ 当 [F] 的每一个纤维都具有可判定的对象相等性时，Hedberg 定理提供了纤维上的 UIP 假设，因此不再有任何附加条件。
+*)
 Definition IndexedCat_of_StrictFunctor_dec {B : Category}
   (F : B ⟶ StrictCat)
   (Fdec : ∀ (b : B) (x y : F b), {x = y} + {x <> y}) : IndexedCat B :=
   IndexedCat_of_StrictFunctor F (fun b => @UIP_dec (F b) (Fdec b)).
 
-(** ** The constant indexed category *)
+(** ** The constant indexed category / ** 常数索引类别 *)
 
 Section Constant.
 
 Context (B D : Category).
 
-(* Every fibre [D], every reindexing 恒等 函子, every
- mediator 恒等 同构; all coherence therefore trivial. （已译） *)
+(*
+ Every fibre is [D], every reindexing is the identity functor, and every
+ mediator is the identity isomorphism; all coherence is therefore trivial. 
+
+ --------
+ 每一根纤维都是 [D]，每一次重新索引都是恒等函子，每一个中介都是恒等同构；因此所有的相干性都是平凡的。
+*)
 #[local] Obligation Tactic :=
   intros; simpl; rewrite ?id_left, ?id_right; reflexivity.
 
@@ -248,10 +366,20 @@ Program Definition Constant_IndexedCat : IndexedCat B :=
 
 End Constant.
 
-(* * ** The Grothendieck construction 常值 family product （已译） *)
+(*
+   * ** The Grothendieck construction of a constant family is a product 
 
-(* Conjugating 恒等 isomorphisms does nothing; generic stripping
- step 等价 cells whose 同构 family [iso_id]. （已译） *)
+   --------
+   * ** 常数族的格罗滕迪克构造是一个积
+*)
+
+(*
+ Conjugating by identity isomorphisms does nothing; the generic stripping
+ step for equivalence cells whose isomorphism family is [iso_id]. 
+
+ --------
+ 通过恒等同构进行共轭不会产生任何效果；对于其同构族是 [iso_id] 的等价单元，执行通用剥离步骤。
+*)
 Lemma conj_id {C : Category} {a b : C} (f : a ~> b) :
   from (@iso_id C b) ∘ f ∘ to (@iso_id C a) ≈ f.
 Proof. simpl; now rewrite id_left, id_right. Qed.
@@ -262,8 +390,13 @@ Context {B D : Category}.
 
 #[local] Obligation Tactic := idtac.
 
-(* The forward 函子: ∫ (常值 D) ⟶ B ∏ D, unpacking dependent pairs into
- plain pairs both 对象 态射. （已译） *)
+(*
+ The forward functor: ∫ (constant D) ⟶ B ∏ D, unpacking dependent pairs into
+ plain pairs on both objects and morphisms. 
+
+ --------
+ 前向函子：∫ (常数 D) ⟶ B ∏ D，将依赖对拆包为对象和态射上的普通对。
+*)
 Program Definition GC_to :
   Grothendieck (Constant_IndexedCat B D) ⟶ (B ∏ D) := {|
   fobj := fun s => (`1 s, `2 s);
@@ -280,8 +413,13 @@ Next Obligation.
   split; simpl; [ reflexivity | now rewrite id_right ].
 Qed.
 
-(* The backward functor: B ∏ D ⟶ ∫ (constant D), packing plain pairs into
-   dependent pairs. *)
+(*
+ The backward functor: B ∏ D ⟶ ∫ (constant D), packing plain pairs into
+ dependent pairs. 
+
+ --------
+ 后向函子：B ∏ D ⟶ ∫ (常量 D)，将普通对打包成依赖对。
+*)
 Program Definition GC_from :
   (B ∏ D) ⟶ Grothendieck (Constant_IndexedCat B D) := {|
   fobj := fun p => (fst p; snd p);
@@ -299,8 +437,13 @@ Next Obligation.
   simpl; now rewrite id_right.
 Qed.
 
-(* Both composites 恒等 up pair/dependent-pair repackaging;
- natural-同构 cells carry 恒等 components. （已译） *)
+(*
+ Both composites are the identity up to the pair/dependent-pair repackaging;
+ their natural-isomorphism cells carry identity components. 
+
+ --------
+ 两个复合体都是恒等的，只是涉及对/依赖对的重新打包；它们的自然同构元件携带恒等分量。
+*)
 Definition GC_tofrom_iso (p : B ∏ D) : (GC_to ◯ GC_from) p ≅ Id p.
 Proof. destruct p as [a b]; exact iso_id. Defined.
 
@@ -328,8 +471,13 @@ Proof.
   reflexivity.
 Defined.
 
-(* The sanity 同构 Cat: Grothendieck construction 常值
- family over [D] product 范畴 [B ∏ D]. （已译） *)
+(*
+ The sanity isomorphism in Cat: the Grothendieck construction of the constant
+ family over [D] is the product category [B ∏ D]. 
+
+ --------
+ Cat 中的理智同构：在 [D] 上的常值族的 Grothendieck 构造是积范畴 [B ∏ D]。
+*)
 Definition Grothendieck_Constant_iso :
   Grothendieck (Constant_IndexedCat B D) ≅[Cat] (B ∏ D) :=
   @Build_Isomorphism Cat _ _ GC_to GC_from GC_iso_to_from GC_iso_from_to.

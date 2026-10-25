@@ -14,15 +14,38 @@ Require Import Coq.Arith.PeanoNat.
 Generalizable All Variables.
 
 (*
-   本文件给出闭结构实例。
+   * * Computable exponentials on skeletal FinSet
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The exponential of the canonical m-element and n-element sets is the
+   canonical (n ^ m)-element set: a function [Fin.t m → Fin.t n] is a
+   string of m digits in base n, and [Nat.pow] recurses as
+   [n ^ S m = n * n ^ m], so tabulating one more argument is exactly one
+   [fin_pair] digit step from [Instance/FinSet/Product.v].  Both codec
+   directions are structural fixpoints in the closed-computation style of
+   [fin_split]/[fin_pair], so evaluation and currying REDUCE on closed
+   inputs by [eq_refl].
+
+   The hom-setoid of [FinSet] is pointwise Leibniz equality, so the
+   POINTWISE round trip [fin_apply_tabulate] is exactly what the Closed
+   laws consume — no function extensionality is needed anywhere; the
+   congruence [fin_tabulate_ext] replaces it at the single place a
+   rewrite must cross the [fin_tabulate] binder. 
+
+   --------
+   * * 骨架 FinSet 上的可计算指数
+
+   规范的 m 元集合和 n 元集合的指数是规范的 (n ^ m) 元集合：函数 [Fin.t m → Fin.t n] 是 n 进制的 m 位数字串，而 [Nat.pow] 递归为 [n ^ S m = n * n ^ m]，因此列举多一个参数正好是从 [Instance/FinSet/Product.v] 到 [fin_pair] 的一位 [fin_pair] 数字步骤。两个编解码方向都是封闭计算风格 [fin_split] / [fin_pair] 的结构性不动点，因此通过 [eq_refl] 对封闭输入进行评估和柯里化 REDUCE。
+
+   [FinSet] 的同态集合是逐点 Leibniz 等式，因此 POINTWISE 往返 [fin_apply_tabulate] 正是闭合定律所消耗的——在任何地方都不需要函数外延性；合同 [fin_tabulate_ext] 在重写必须跨越 [fin_tabulate] 绑定器的唯一位置替代了它。
 *)
 
 (*
-   本节说明 Closed 相关定义、性质与动机。
+   * [fin_tabulate f] encodes the function [f] as its digit string
+   [f F1, f (FS F1), …], by structural recursion on the arity [m]: the
+   head digit is [f F1] and the tail is the tabulation of [f ∘ FS]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * [fin_tabulate f] 将函数 [f] 编码为其数字字符串 [f F1, f (FS F1), …]，方法是对元数 [m] 进行结构递归：头部数字是 [f F1]，尾部是 [f ∘ FS] 的制表。
 *)
 Fixpoint fin_tabulate {m n : nat} {struct m} :
   (Fin.t m → Fin.t n) → Fin.t (n ^ m) :=
@@ -32,9 +55,14 @@ Fixpoint fin_tabulate {m n : nat} {struct m} :
       fin_pair (f Fin.F1) (fin_tabulate (fun i => f (Fin.FS i)))
   end.
 
-(** [fin_apply c] decodes code [c] back function, structural
- recursion arity [m]: [fin_unpair] splits off head digit,
- [Fin.caseS'] dispatches 论元. （已译） *)
+(*
+   * [fin_apply c] decodes the code [c] back into a function, by structural
+   recursion on the arity [m]: [fin_unpair] splits off the head digit,
+   and [Fin.caseS'] dispatches the argument. 
+
+   --------
+   *  [fin_apply c]  通过在元数 [m] 上进行结构递归，将代码 [c] 解码回一个函数；[fin_unpair] 分离出首位数字，[Fin.caseS'] 分发参数。
+*)
 Fixpoint fin_apply {m n : nat} {struct m} :
   Fin.t (n ^ m) → Fin.t m → Fin.t n :=
   match m return Fin.t (n ^ m) → Fin.t m → Fin.t n with
@@ -46,9 +74,12 @@ Fixpoint fin_apply {m n : nat} {struct m} :
   end.
 
 (*
-   本节说明 Closed 相关定义、性质与动机。
+ The computability acceptance test: with m = 2, n = 3 the function
+ sending F1 ↦ 2 and FS F1 ↦ 1 is the digit string "2 then 1", i.e. the
+ code 2·3 + 1 = 7; both directions reduce by [eq_refl]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 可计算性验收测试：当 m = 2, n = 3 时，将函数 F1 ↦ 2 和 FS F1 ↦ 1 映射为数字字符串“2然后1”，即代码 2·3 + 1 = 7；两个方向都通过 [eq_refl] 归约。
 *)
 Example fin_tabulate_computes :
   @fin_tabulate 2 3
@@ -64,18 +95,27 @@ Example fin_apply_computes :
     = Fin.FS Fin.F1 := eq_refl.
 
 (*
-   本节说明hom相关定义、性质与动机。
+   * ** The round trips
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Stated POINTWISE, matching the pointwise-[eq] hom-setoid of [FinSet]:
+   this is precisely the form the Closed laws below consume, which is why
+   no function extensionality ever enters. 
+
+   --------
+   * ** 往返旅行
+
+   以逐点方式陈述，与  [FinSet] 的逐点- [eq] 同值集合相匹配：
+   这正是下面闭合律所使用的形式，这也是为什么
+   从未涉及函数外延性。
 *)
 
 Lemma fin_apply_tabulate {m n : nat} (f : Fin.t m → Fin.t n) (i : Fin.t m) :
   fin_apply (fin_tabulate f) i = f i.
 Proof.
   revert f; induction i as [m' | m' i IH]; intros f; simpl.
-  - (* 相关说明。 （已译） *)
+  - (* The head digit is recovered by the first projection. / 首位数字由第一次投影恢复。 *)
     rewrite fin_unpair_pair; reflexivity.
-  - (* 相关说明。 （已译） *)
+  - (* The tail digits are recovered recursively. / 尾数位是递归恢复的。 *)
     rewrite fin_unpair_pair; simpl.
     apply (IH (fun j => f (Fin.FS j))).
 Qed.
@@ -84,22 +124,23 @@ Lemma fin_tabulate_apply {m n : nat} (c : Fin.t (n ^ m)) :
   fin_tabulate (fin_apply c) = c.
 Proof.
   induction m as [| m' IH]; simpl.
-  - (* n ^ 0 = 1: every code is F1. *)
+  - (* n ^ 0 = 1: every code is F1. / n ^ 0 = 1：每个代码都是 F1。 *)
     symmetry; apply fin1_unique.
-  - (*
-   本节说明 Closed 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+  - (* Re-tabulating head and tail recovers the digit pair, which [fin_pair_unpair] identifies with c. The tail step is the IH at [snd (fin_unpair c)], to which the goal's subterm is definitionally equal ([Fin.caseS'] reduces on [Fin.FS], plus eta). / 重新整理头和尾可以恢复数字对，[fin_pair_unpair] 将其标识为 c。尾步骤是 [snd (fin_unpair c)] 处的 IH，目标的子项在定义上等于它（[Fin.caseS'] 在 [Fin.FS] 上简化，加上 eta）。 *)
     transitivity (fin_pair (fst (fin_unpair c)) (snd (fin_unpair c))).
     + f_equal.
       exact (IH (snd (fin_unpair c))).
     + apply fin_pair_unpair.
 Qed.
 
-(** Tabulation inspects 论元 pointwise, so it respects the
- pointwise hom-等价 [FinSet] — funext-free congruence
- used rewrite under [fin_tabulate] binder. （已译） *)
+(*
+   * Tabulation only inspects its argument pointwise, so it respects the
+   pointwise hom-equivalence of [FinSet] — the funext-free congruence
+   used to rewrite under the [fin_tabulate] binder. 
+
+   --------
+   * 制表仅逐点检查其参数，因此它遵循  [FinSet]  的逐点同构等价 — 这是用于在  [fin_tabulate]  绑定器下重写的无 funext 同余。
+*)
 Lemma fin_tabulate_ext {m n : nat} (f g : Fin.t m → Fin.t n) :
   (∀ i, f i = g i) → fin_tabulate f = fin_tabulate g.
 Proof.
@@ -112,9 +153,23 @@ Proof.
 Qed.
 
 (*
-   本节说明hom、笛卡尔相关定义、性质与动机。
+   * ** The cartesian closed structure
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Per the argument-order note of [Structure/Cartesian/Closed.v]:
+   [exponent_obj x y] is displayed y ^ x, the object of functions FROM x
+   TO y, so on skeletal objects it is the nat power [(y ^ x)%nat].
+   Currying is pointwise tabulation over the [fin_pair] product codec,
+   uncurrying is pointwise application, and [exp_iso] holds by the two
+   round trips — pointwise, which is all the [fun_setoid] hom-equivalence
+   of [FinSet] asks. 
+
+   --------
+   * ** 笛卡尔闭结构
+
+   根据 [Structure/Cartesian/Closed.v] 的论序注释：
+   [exponent_obj x y] 显示为 y ^ x，即从 x 到 y 的函数对象，因此在骨架对象上它是自然幂 [(y ^ x)%nat]。
+   柯里化是通过 [fin_pair] 乘积编解码器的逐点制表，
+   逆柯里化是逐点应用，并且 [exp_iso] 通过两次往返成立——逐点进行，这就是 [fun_setoid] 的同态等价在 [FinSet] 中所要求的一切。
 *)
 
 #[local] Obligation Tactic := idtac.
@@ -132,17 +187,17 @@ Qed.
     |}
 }.
 Next Obligation.
-  (* Currying respects pointwise equality, via [fin_tabulate_ext]. *)
+  (* Currying respects pointwise equality, via [fin_tabulate_ext]. / 通过 [fin_tabulate_ext]，柯里化尊重逐点相等性。 *)
   intros x y z f f' Hf i; simpl in Hf.
   apply fin_tabulate_ext; intro j; apply Hf.
 Qed.
 Next Obligation.
-  (* Uncurrying respects pointwise equality. *)
+  (* Uncurrying respects pointwise equality. / 取消柯里化尊重逐点相等性。 *)
   intros x y z g g' Hg p; simpl in Hg.
   rewrite (Hg (fst (fin_unpair p))); reflexivity.
 Qed.
 Next Obligation.
-  (* 相关说明。 （已译） *)
+  (* curry ∘ uncurry ≈ id: tabulating the application of each digit code recovers the code, after the product round trip under the binder. / curry ∘ uncurry ≈ id：列出每个数字编码的应用后，经过绑定器下的乘积往返操作可以恢复编码。 *)
   intros x y z g i; simpl.
   transitivity (fin_tabulate (fin_apply (g i))).
   - apply fin_tabulate_ext; intro j.
@@ -150,22 +205,32 @@ Next Obligation.
   - apply fin_tabulate_apply.
 Qed.
 Next Obligation.
-  (* uncurry ∘ curry ≈ id: applying tabulation original function,
- then product round trip reassembles 论元. （已译） *)
+  (*
+ uncurry ∘ curry ≈ id: applying a tabulation is the original function,
+ then the product round trip reassembles the argument. 
+
+ --------
+ uncurry ∘ curry ≈ id：应用制表是原始函数，然后乘积的往返重新组装参数。
+*)
   intros x y z f p; simpl.
   rewrite fin_apply_tabulate, fin_pair_unpair; reflexivity.
 Qed.
 Next Obligation.
-  (* The beta law: eval ∘ first (curry f) ≈ f, pointwise. *)
+  (* The beta law: eval ∘ first (curry f) ≈ f, pointwise. / 贝塔法则：eval ∘ first (curry f) ≈ f，逐点地。 *)
   intros x y z f; unfold first; intro p; simpl.
   rewrite fin_unpair_pair; simpl.
   rewrite fin_apply_tabulate, fin_pair_unpair; reflexivity.
 Qed.
 
 (*
-   本节说明笛卡尔相关定义、性质与动机。
+ Closed evaluation at concrete elements, by [eq_refl]: the derived [eval]
+ of Structure/Cartesian/Closed.v computes over this instance.  With
+ x = y = 2 the exponential 2^2 is Fin.t 4, and the code 2 = "digits 1, 0"
+ is the function F1 ↦ FS F1, FS F1 ↦ F1; the two Examples check both
+ argument routings, which return DIFFERENT values. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 由 [eq_refl] 对混凝土元素进行封闭评估：派生的 [eval] 在 Structure/Cartesian/Closed.v 中对该实例进行计算。令 x = y = 2，则指数 2^2 是 Fin.t 4，而代码 2 = “digits 1, 0” 是函数 F1 ↦ FS F1, FS F1 ↦ F1；这两个示例检查了两种参数传递方式，这两种方式返回不同的值。
 *)
 Example eval_computes :
   @eval FinSet FinSet_Cartesian FinSet_Closed 2%nat 2%nat

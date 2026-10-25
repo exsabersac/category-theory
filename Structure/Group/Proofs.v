@@ -10,14 +10,59 @@ Require Import Category.Structure.Group.
 
 Generalizable All Variables.
 
-(* * * Derived identities group 对象 （已译） *)
+(* * * Derived identities for group objects / * * 群对象的派生恒等式 *)
 
 (*
-   Wikipedia: https://en.wikipedia.org/wiki/Group_object
+ nLab:      https://ncatlab.org/nlab/show/group+object
+ Wikipedia: https://en.wikipedia.org/wiki/Group_object
 
-   本文件给出相应结构的证明。
+ A group object on [grp : C] (see [Structure.Group]) is a monoid object
+ [(grp, mappend, mempty)] equipped with an inversion map [inverse : grp ~> grp]
+ satisfying the two-sided inverse laws
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ mappend ∘ inverse ⨂ id ∘ ∆ grp ≈ mempty ∘ eliminate   (left_inverse)
+ mappend ∘ id ⨂ inverse ∘ ∆ grp ≈ mempty ∘ eliminate   (right_inverse)
+
+ where ∆ is the cartesian diagonal and [eliminate] is the unique map to the
+ tensor unit (terminal object). These are exactly the diagrammatic inverse
+ axioms of the nLab/Wikipedia definition, with [mempty ∘ eliminate] playing
+ the role of the constant map e ∘ p sending everything to the identity element.
+
+ This file proves the two standard group facts that follow from those axioms,
+ each carried out diagrammatically in an arbitrary cartesian monoidal category:
+
+ - [left_inverse_unique]: uniqueness of (left) inverses — if
+ [mappend ∘ f_inv ⨂ f ∘ ∆ X ≈ mempty ∘ eliminate], i.e. f_inv is a
+ left inverse of f, then f_inv ≈ inverse[grp] ∘ f. This is the internal
+ form of "yx = I implies y = x⁻¹".
+
+ - [mappend_inverse]: the inversion map is an anti-homomorphism,
+ mappend ∘ inverse ⨂ inverse ≈ inverse ∘ mappend ∘ braid, i.e.
+ a⁻¹·b⁻¹ = (b·a)⁻¹, the internal form of the classical (xy)⁻¹ = y⁻¹x⁻¹.
+ Wikipedia/nLab do not spell these consequences out as separate diagrams;
+ they are the standard derived group identities.
+
+ The [CartesianMonoid] section first records two helper identities about a
+ plain monoid object (collapsing a [mempty ∘ eliminate] half of a diagonal to
+ the identity), which the group proofs reuse. Each lemma below is annotated
+ with the ordinary-algebra calculation it mirrors. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/group+object
+ Wikipedia：https://en.wikipedia.org/wiki/Group_object
+
+ 在[grp : C]上的群对象（参见[Structure.Group]）是一个单子对象[(grp, mappend, mempty)]，配备有一个逆映射[inverse : grp ~> grp]，满足双边逆律：
+
+ mappend ∘ inverse ⨂ id ∘ ∆ grp ≈ mempty ∘ eliminate（左逆）
+ mappend ∘ id ⨂ inverse ∘ ∆ grp ≈ mempty ∘ eliminate（右逆）
+
+ 其中∆是笛卡尔对角映射，[eliminate]是到张量单位（终对象）的唯一映射。这正是nLab/Wikipedia定义中的图示逆公理，其中[mempty ∘ eliminate]起到将所有元素映射到单位元的常映射e ∘ p的作用。
+
+ 此文件证明了从这些公理出发的两个标准群事实，每个事实都在任意笛卡尔单体范畴中通过图示方式进行推导：- [left_inverse_unique]：左逆元的唯一性——如果 [mappend ∘ f_inv ⨂ f ∘ ∆ X ≈ mempty ∘ eliminate]，即 f_inv 是 f 的左逆元，那么 f_inv ≈ inverse [grp] ∘ f。这是“yx = I 蕴含 y = x⁻¹”的内部形式。
+
+ - [mappend_inverse]：逆运算映射是一个反同态，mappend ∘ inverse ⨂ inverse ≈ inverse ∘ mappend ∘ braid，即 a⁻¹·b⁻¹ = (b·a)⁻¹，是经典恒等式 (xy)⁻¹ = y⁻¹x⁻¹ 的内部形式。维基百科/nLab 并未将这些结论单独列为图示；它们是标准的派生群恒等式。
+
+ [CartesianMonoid] 部分首先记录了关于普通幺半群对象的两个辅助恒等式（将 [mempty ∘ eliminate] 对角线的一半折叠为单位元），群证明将其重复使用。下面的每个引理都标注了它所对应的常规代数计算。
 *)
 
 Section CartesianMonoid.
@@ -27,9 +72,13 @@ Context (mon : C).
 Context `{@MonoidObject C _ grp}.
 
 (*
-   本节说明 Proofs 相关定义、性质与动机。
+ Multiplying an element on the right by the identity is the identity:
+ g·I = g. Here the right factor of the diagonal is collapsed to [mempty]
+ via [eliminate], then the right unit law [mempty_right] applies. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 将一个元素在右侧与单位元素相乘就是该元素本身：
+ g·I = g。这里对角线的右因子通过 [eliminate] 折叠为 [mempty]，然后应用右单位律 [mempty_right]。
 *)
 Lemma mempty_right_diagonal : mappend ∘ id ⨂ (mempty ∘ eliminate) ∘ ∆ grp ≈ id.
 Proof.
@@ -39,9 +88,16 @@ Proof.
   apply proj_left_diagonal.
 Qed.
 
-(* Multiplying element left 恒等 恒等:
- I·g = g. Dual [mempty_right_diagonal], using left unit law
- [mempty_left]. （已译） *)
+(*
+ Multiplying an element on the left by the identity is the identity:
+ I·g = g. Dual to [mempty_right_diagonal], using the left unit law
+ [mempty_left]. 
+
+ --------
+ 在左边将一个元素乘以单位元就是该元素本身：
+ I·g = g。与 [mempty_right_diagonal] 对偶，使用左单位律
+ [mempty_left] 。
+*)
 Lemma mempty_left_diagonal : mappend ∘ (mempty ∘ eliminate) ⨂ id ∘ ∆ grp ≈ id.
 Proof.
   rewrite bimap_comp_id_right.
@@ -58,15 +114,26 @@ Context `{@CartesianMonoidal C}.
 Context (grp : C).
 Context `{@GroupObject C _ grp}.
 
-(* This 证明 analogous following
- 证明 y = x⁻¹ an
- element y yx = I:
+(*
+ This proof is analogous to the following
+ proof that y = x⁻¹ for an
+ element y with yx = I:
 
  y = yI
  = y(xx⁻¹)
  = (yx)x⁻¹
  = Ix⁻¹
- = x⁻¹ （已译） *)
+ = x⁻¹ 
+
+ --------
+ 这个证明类似于以下证明：对一个元素 y，若 yx = I，则 y = x⁻¹：
+
+ y = yI
+ = y(xx⁻¹)
+ = (yx)x⁻¹
+ = Ix⁻¹
+ = x⁻¹
+*)
 Lemma left_inverse_unique
   (X : C) (f : X ~> grp) (f_inv : X ~> grp)
   (f_left_inverse : mappend ∘ f_inv ⨂ f ∘ ∆ X ≈ mempty ∘ eliminate) :
@@ -133,8 +200,9 @@ Proof.
   cat.
 Qed.
 
-(* This 证明 analogous following
- 证明 y⁻¹x⁻¹ = (xy)⁻¹: Calculate
+(*
+ This proof is analogous to the following
+ proof y⁻¹x⁻¹ = (xy)⁻¹: Calculate
 
  (y⁻¹x⁻¹)(xy) = y⁻¹(x⁻¹(xy))
  = y⁻¹((x⁻¹x)y)
@@ -142,7 +210,19 @@ Qed.
  = y⁻¹y
  = I
 
- Then use 引理 above. （已译） *)
+ Then use the lemma above. 
+
+ --------
+ 这个证明类似于下列证明 y⁻¹x⁻¹ = (xy)⁻¹：计算
+
+ (y⁻¹x⁻¹)(xy) = y⁻¹(x⁻¹(xy))
+ = y⁻¹((x⁻¹x)y)
+ = y⁻¹(Iy)
+ = y⁻¹y
+ = I
+
+ 然后使用上面的引理。
+*)
 Lemma mappend_inverse : mappend ∘ inverse[grp] ⨂ inverse[grp] ≈ inverse[grp] ∘ mappend ∘ braid.
 Proof.
   rewrite <- (comp_assoc inverse[grp] mappend braid).

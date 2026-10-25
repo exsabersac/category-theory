@@ -22,14 +22,52 @@ Context `{@Terminal C}.
   unfold proj_left, proj_right;
   try split; intros; unfork; cat.
 
-(** Cartesian monoidal structure from products. *)
+(** Cartesian monoidal structure from products. / 来自积的笛卡尔幺半群结构。 *)
 
 (*
-   Wikipedia: https://en.wikipedia.org/wiki/Cartesian_monoidal_category
+ nLab: https://ncatlab.org/nlab/show/cartesian+monoidal+category
+ Wikipedia: https://en.wikipedia.org/wiki/Cartesian_monoidal_category
 
-   本文件给出积（分量）构造。
+ Every cartesian category with a terminal object is a cartesian monoidal
+ category: take the categorical product × for the tensor ⨂ and the terminal
+ object 1 for the unit I. On nLab, "a monoidal category whose monoidal
+ structure is given by the category-theoretic product (and so whose unit is
+ a terminal object)"; on Wikipedia, the case where "the monoidal ('tensor')
+ product is the categorical product" with "the terminal object [as] the
+ monoidal unit".
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ This file equips that data with the full tower of monoidal refinements,
+ each derived from the universal property of products (so the coherence
+ morphisms are all canonical):
+
+ CC_Monoidal             tensor := ×,  I := 1
+ CC_BraidedMonoidal      braid := swap = ⟨exr, exl⟩
+ CC_BalancedMonoidal     twist := id
+ CC_SymmetricMonoidal    braid_invol from swap ∘ swap ≈ id
+ CC_RelevanceMonoidal    diagonal := ⟨id, id⟩
+ CC_SemicartesianMonoidal eliminate := one (the unique map into 1)
+ CC_CartesianMonoidal    relevance + semicartesian (Fox's theorem)
+ CCC_ClosedMonoidal      exponent_obj from the internal hom (when closed)
+
+ The braiding is the product swap rather than an interleaving via braiding of
+ monoid factors; this is the cartesian, not the free, monoidal structure. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/cartesian+monoidal+category
+ Wikipedia：https://en.wikipedia.org/wiki/Cartesian_monoidal_category
+
+ 每一个具有终对象的笛卡尔范畴都是一个笛卡尔幺半群范畴：将范畴积 × 作为张量 ⨂，将终对象 1 作为单位 I。在 nLab 上，“一个幺半群范畴，其幺半群结构由范畴论的积给出（因此其单位是一个终对象）”；在 Wikipedia 上，是指“幺半群（‘张量’）积是范畴积”的情况，并且“终对象 [as] 是幺半群单位”。
+
+ 此文件为该数据配备了完整的幺半群精炼层，每一层都源自积的泛性质（因此一致性态射都是规范的）：CC_单性             张量 := ×,  I := 1
+ CC_编织单性      编织 := 交换 = ⟨exr, exl⟩
+ CC_平衡单性     扭转 := id
+ CC_对称单性    编织_反自同态 来自 交换 ∘ 交换 ≈ id
+ CC_相关单性    对角 := ⟨id, id⟩
+ CC_半笛卡尔单性 消去 := one（唯一映射到 1）
+ CC_笛卡尔单性    相关 + 半笛卡尔 (Fox 定理)
+ CCC_闭单性      指数对象 来自内部同态（当闭合时）
+
+ 编织是乘积交换，而不是通过单子因子的编织交错；这是笛卡尔单性，而非自由单性结构。
 *)
 
 Program Definition CC_Monoidal : @Monoidal C := {|
@@ -59,7 +97,7 @@ Next Obligation.
     apply one_unique.
 Qed.
 Next Obligation.
-  (* Time Succeed solve [solveit]. *)
+  (* Time Succeed solve [solveit]. / 时间 成功 解决 [solveit]。 *)
   intros. simpl.
   rewrite <- fork_comp.
   symmetry.
@@ -83,7 +121,7 @@ Next Obligation.
     apply exr_fork.
 Qed.
 Next Obligation.
-  (* Time Succeed solve [solveit]. *)
+  (* Time Succeed solve [solveit]. / 时间 成功 解决 [solveit]。 *)
   intros. simpl.
   do 5 rewrite <- fork_comp.
   repeat apply Cartesian.fork_respects.
@@ -99,7 +137,7 @@ Next Obligation.
     apply comp_assoc.
 Qed.
 Next Obligation.
-  (* Time Succeed solve [solveit]. *)
+  (* Time Succeed solve [solveit]. / 时间 成功 解决 [solveit]。 *)
   intros. simpl.
   rewrite <- fork_comp.
   apply Cartesian.fork_respects.
@@ -111,7 +149,7 @@ Next Obligation.
     symmetry. apply exr_fork.
 Qed.
 Next Obligation.
-  (* Time Succeed solve [solveit]. *)
+  (* Time Succeed solve [solveit]. / 时间 成功 解决 [solveit]。 *)
   intros. simpl.
   rewrite <- fork_comp.
   rewrite <- fork_comp.
@@ -196,7 +234,7 @@ Next Obligation.
     apply exr_swap.
 Qed.
 Next Obligation.
-  (* Time Succeed solve [solveit]. *)
+  (* Time Succeed solve [solveit]. / 时间 成功 解决 [solveit]。 *)
   rewrite <- fork_comp.
   rewrite <- fork_comp.
   symmetry.
@@ -240,7 +278,7 @@ Next Obligation.
     apply exr_fork.
 Qed.
 Next Obligation.
-  (* Time Succeed solve [solveit]. *)
+  (* Time Succeed solve [solveit]. / 时间 成功 解决 [solveit]。 *)
   intros. simpl.
   rewrite <- fork_comp.
   rewrite <- fork_comp.
@@ -316,7 +354,7 @@ Next Obligation.
   apply one_unique.
 Qed.
 Next Obligation.
-  (* Time Succeed solve [solveit]. *)
+  (* Time Succeed solve [solveit]. / 时间 成功 解决 [solveit]。 *)
   simpl. intros.
   rewrite <- fork_comp.
   symmetry.

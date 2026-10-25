@@ -1,4 +1,4 @@
-(* 相关说明。 （已译） *)
+(* * * Pontryagin duality for finite abelian groups / * * 有限阿贝尔群的庞特里亚金对偶性 *)
 
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.QArith.QArith.
@@ -22,36 +22,152 @@ Import ListNotations.
 #[local] Obligation Tactic := idtac.
 
 (*
+ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ §I.4, printed p. 17 (PDF 27) — maclane:I.4:construction3
  nLab:      https://ncatlab.org/nlab/show/Pontryagin+duality
  Wikipedia: https://en.wikipedia.org/wiki/Pontryagin_duality
 
-   本文件给出有限情形。
+ Mac Lane's §I.4 example ends with the remark that for a FINITE abelian
+ group the evaluation τ_G : G → DD(G) of Instance/Ab/Character.v is an
+ isomorphism, while no isomorphism G ≅ D(G) is natural.  This file
+ proves the first half — [tau_iso_finite] — and the sibling
+ NonNatural.v the second.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ The theorem is the substantial half: naturality of τ is a one-line
+ [qz_eq_refl] (Character.v), whereas invertibility is finite
+ Pontryagin duality, and its usual proof runs through the structure
+ theorem for finite abelian groups.  It is proved here WITHOUT the
+ structure theorem, by the character-extension route. 
+
+ --------
+ 书籍：Mac Lane，《Categories for the Working Mathematician》，第2版，第I.4节，第17页打印版（PDF第27页）— maclane:I.4:construction3
+ nLab：https://ncatlab.org/nlab/show/Pontryagin+duality
+ 维基百科：https://en.wikipedia.org/wiki/Pontryagin_duality
+
+ Mac Lane在第I.4节的例子以这样的备注结束：对于有限阿贝尔群，实例Instance/Ab/Character.v中的评估τ_G : G → DD(G)是一个同构，而没有自然的同构G ≅ D(G)。这个文件证明了前半部分——[tau_iso_finite]——其配套文件NonNatural.v证明后半部分。
+
+ 定理的实质性部分是：τ的自然性只需一行[qz_eq_refl]（Character.v），而可逆性是有限Pontryagin对偶，其通常的证明过程需要通过有限阿贝尔群的结构定理。在这里，不使用结构定理，而是通过特征扩展的方法证明。
 *)
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+   * ** Design
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   1. FINITENESS IS DATA, AND DECIDABILITY IS PART OF IT.  [FiniteCarrier]
+   carries an enumeration, a proof that every element is `≈`-in it, and
+   a DECIDER for `≈`.  The decider is not a convenience: the extension
+   construction below defines a character by a bounded search for the
+   coset index of an element, so the search must actually run, and
+   "finite" without decidable equality does not make a setoid searchable.
+   Instance/Ab/Character.v's [qz_eq_dec] provides the matching decider on
+   the target ℚ/ℤ, and the acceptance witness at the end of this file
+   exhibits both for ℤ/2.
+
+   2. NO STRUCTURE THEOREM, NO COUNTING.  The textbook proof shows
+   |D(G)| = |G| and concludes by pigeonhole.  That route needs an
+   enumeration of the character group — a finite-function
+   enumeration up to pointwise `≈` — which is a large amount of
+   machinery for a side condition.  Instead both halves are
+   obtained from ONE construction, the character-extension lemma
+   [character_extend]: every character of a subgroup of a finite
+   abelian group extends to the whole group.  Injectivity of τ is
+   then separation ([separating_character], the cyclic character
+   1/k extended), and SURJECTIVITY ([tau_surjective_finite]) is an
+   induction over subgroups whose step is one more application of
+   the same extension.  Only one nontrivial induction is paid for,
+   and no cardinality of a set of characters is ever needed.
+
+   2a. THE SURJECTIVITY INDUCTION, SINCE IT IS NOT THE TEXTBOOK ONE.
+   Write H^ann for the characters killing H.  The statement carried
+   through the induction is [Realizes]: every Ξ ∈ DD(G) that
+   vanishes on H^ann ([VanishesOn]) is evaluation at some c ∈ H.
+   At H = {0} this is immediate — H^ann is all of D(G), so Ξ is
+   zero, which is evaluation at zero ([realizes_trivial]).  At
+   H = G it IS the theorem, because G^ann = {0} and every Ξ kills
+   zero, so the hypothesis is vacuous ([vanishes_of_all]).  The step
+   ([realizes_step]) takes φ with φ|H = 0 and φ(a) = 1/k, notes that
+   k·φ kills ⟨H,a⟩ so that Ξ(φ) has denominator k, say n/k, and then
+   shows Ξ − τ(n·a) vanishes on H^ann: any χ ∈ H^ann has χ(a) = m/k,
+   and χ − m·φ kills all of ⟨H,a⟩, which pins Ξ(χ) to m·n/k = χ(n·a).
+   The inductive hypothesis then supplies c ∈ H with
+   Ξ = τ(c + n·a).
+
+   2b. WHAT IS NOT CLAIMED.  |D(G)| = |G| is never proved in general;
+   it is only checked by hand on the ℤ/2 witness
+   ([zmod2_characters]).  Nothing here is stated for infinite
+   abelian groups, where the theorem is false for this dualizing
+   object — ℚ/ℤ replaces the circle ℝ/ℤ precisely because the
+   finite case is all that is at issue (Instance/Ab/Character.v's
+   design note 1).
+
+   3. WHY ℚ/ℤ MAKES THE EXTENSION EASY.  Extending a character across
+   one new generator [a] requires a k-th root of χ(k·a) in the
+   target, where k is the least positive integer with k·a already in
+   the subgroup.  In ℚ/ℤ roots are computed, not chosen: divide a
+   rational representative by k.  The freedom in the choice (adding
+   j/k for any integer j) is exactly what is needed to force the
+   value 1/k at the new generator, which is what separation consumes.
+
+   4. SUBGROUPS AS DECIDABLE PREDICATES, CHARACTERS AS PARTIAL MAPS.  A
+   subgroup is a decidable, `≈`-closed, 0/+/− closed predicate
+   ([Subgroup]); a character of it is a TOTAL function on the carrier
+   whose laws are only required on members ([PartialChar]).  This
+   avoids building sub-objects of [Ab] and transporting characters
+   along inclusions: at the end of the induction the predicate holds
+   everywhere and the partial character IS an [AbHom G QZ].
+
+   5. THE INDUCTION AND ITS MEASURE.  Both inductions are structural
+   recursion on a natural number bounding the count of enumeration
+   entries OUTSIDE the current subgroup ([outside_count]).
+   Adjoining a non-member strictly decreases that count
+   ([outside_count_generated]), and [all_or_witness] decides at each
+   step between "the subgroup is everything" and a named
+   non-member.  No well-founded recursion, and the fuel cannot run
+   out unremarked: the case where it would have is closed by
+   [outside_count_generated] itself, which would put a count of
+   naturals strictly below zero.
+
+   6. TYPE-VALUED LISTS.  The standard library's [In] and [NoDup] land
+   in [Prop] and so cannot be eliminated into the [Type]-valued
+   goals this library works in (Lib/Setoid.v's `≈` is a [crelation]).
+   [TIn]/[LIn]/[HasDup] below are the [Type]-valued replacements, and
+   [pigeon] is the pigeonhole principle over them — needed exactly
+   once, to produce a positive annihilator of an element. 
+
+   --------
+   * ** 设计
+
+   1. 有限性是数据，判定性是其中的一部分。[FiniteCarrier]  
+   包含一个枚举，一个证明每个元素都属于 `≈` 的证据，以及  
+   一个 `≈` 的判定器。判定器并不是方便工具：下面的扩展  
+   构造通过有界搜索元素的陪集索引来定义一个特征，因此搜索必须实际运行，  
+   而没有可判定的等式，“有限”并不能使一个集合可搜索。  
+   Instance/Ab/Character.v 中的 [qz_eq_dec] 在目标 ℚ/ℤ 上提供匹配的判定器，  
+   本文件结尾的接受证据对 ℤ/2 展示了两者。2. 没有结构定理，没有计数。教材中的证明展示了 |D(G)| = |G| 并通过鸽笼原理得出结论。那条路线需要对特征群进行枚举——即对有限函数进行逐点枚举——这对于一个附加条件来说是大量的工具。相反，两部分都是通过一个构造得到的，即特征扩展引理：有限阿贝尔群的子群的每个特征都可以扩展到整个群。τ的单射性则是分离性（循环特征 1/k 的扩展），满射性则是对子群进行归纳，其步骤是再应用一次相同的扩展。只需进行一次非平凡归纳，而且从不需要计算特征集合的基数。2a. 全射归纳，因为它不是教材上的归纳。记 H^ann 为使 H 消失的特征。归纳中保持的陈述是 [Realizes]：每个在 H^ann ([VanishesOn]) 上消失的 Ξ ∈ DD(G) 都是在某个 c ∈ H 上的取值。在 H = {0} 时，这是显而易见的——H^ann 是 D(G) 的全部，因此 Ξ 为零，即在零处取值 ([realizes_trivial])。在 H = G 时，它就是定理，因为 G^ann = {0} 且每个 Ξ 都使零消失，所以假设是空的 ([vanishes_of_all])。步骤 ([realizes_step]) 取 φ，满足 φ|H = 0 且 φ(a) = 1/k，注意到 k·φ 消去 ⟨H,a⟩，因此 Ξ(φ) 的分母为 k，例如 n/k，然后显示 Ξ − τ(n·a) 在 H^ann 上消失：任何 χ ∈ H^ann 都有 χ(a) = m/k，且 χ − m·φ 消去整个 ⟨H,a⟩，从而确定 Ξ(χ) = m·n/k = χ(n·a)。然后归纳假设提供了 c ∈ H，使得 Ξ = τ(c + n·a)。
+
+   2b. 未声明的内容。|D(G)| = |G| 一般情况下从未被证明；它只是通过手工检查 ℤ/2 的例子 ([zmod2_characters])。对于无限阿贝尔群，这里没有任何陈述，其中定理对于这个对偶对象是错误的——ℚ/ℤ 取代了圆 ℝ/ℤ，正是因为关心的只是有限情况（Instance/Ab/Character.v 的设计说明 1）。3. 为什么 ℚ/ℤ 使扩张变得容易。将一个特征扩展到一个新的生成元 [a] 上，需要在目标中计算 χ(k·a) 的 k 次根，其中 k 是使 k·a 已在子群中的最小正整数。在 ℚ/ℤ 中，根是计算出来的，而不是选择的：将有理代表除以 k。选择的自由度（加上任何整数 j 的 j/k）正是强迫新生成元取值为 1/k 所需要的，这正是分离所消耗的。4. 子群作为可判定谓词，字符作为部分映射。子群是一个可判定的、`≈`闭合的、0/+/− 闭合的谓词（[Subgroup]）；它的字符是在载体上的一个全函数，其规律只要求在成员上成立（[PartialChar]）。这避免了构建[Ab]的子对象并沿包含关系传递字符：在归纳结束时，谓词在任何地方都成立，而部分字符是一个[AbHom G QZ]。5. 归纳法及其度量。 两种归纳都是以自然数为界的结构递归，该自然数界定了当前子群之外的枚举条目数 ([outside_count])。 添加一个非成员会严格减少该计数 ([outside_count_generated])，并且 [all_or_witness] 在每一步中决定“子群包括所有元素”还是一个命名的非成员。 没有良基递归，并且燃料不可能在未被注意的情况下耗尽：在它本可能耗尽的情况下，[outside_count_generated] 本身会封闭它，这会使自然数的计数严格小于零。6. 类型值列表。标准库中的 [In] 和 [NoDup] 落在 [Prop] 中，因此不能被转换为该库所使用的 [Type] 值目标（Lib/Setoid.v 的 `≈` 是 [crelation]）。下面的 [TIn] / [LIn] / [HasDup] 是 [Type] 值的替代方案，而 [pigeon] 是它们上的鸽笼原理——恰好需要一次，以产生元素的正消元器。
 *)
 
-(** ** A Type-valued list toolkit *)
+(** ** A Type-valued list toolkit / ** 类型值列表工具包 *)
 
 Section ListToolkit.
 
 Context {A : Type}.
 Context `{SA : Setoid A}.
 
-(* Membership up to `≈`. *)
+(* Membership up to `≈`. / 会员资格最高至 `≈`。 *)
 Fixpoint TIn (x : A) (l : list A) : Type :=
   match l with
   | [] => False
   | y :: l' => ((x ≈ y) + TIn x l')%type
   end.
 
-(* Literal membership.  [In] is [Prop]-valued and its [or] cannot be
-   eliminated into [Type], so it is unusable here. *)
+(*
+ Literal membership.  [In] is [Prop]-valued and its [or] cannot be
+ eliminated into [Type], so it is unusable here. 
+
+ --------
+ 字面成员资格。[In] 是 [Prop] 值的，其 [or] 无法消除到 [Type]，因此在这里不可用。
+*)
 Fixpoint LIn (x : A) (l : list A) : Type :=
   match l with
   | [] => False
@@ -77,7 +193,7 @@ Proof.
     + right; exact (IH H).
 Qed.
 
-(* Membership up to `≈` names an actual list entry. *)
+(* Membership up to `≈` names an actual list entry. / 成员资格最多为 `≈`，指的是实际列表条目。 *)
 Lemma TIn_LIn (x : A) (l : list A) : TIn x l → { y : A & LIn y l ∧ x ≈ y }.
 Proof.
   induction l as [|z l' IH]; simpl; intro H.
@@ -139,7 +255,7 @@ Proof.
       exists z; split; [ right; exact Hz | exact Hzp ].
 Qed.
 
-(* A list has a duplicate when some entry recurs, up to `≈`, later on. *)
+(* A list has a duplicate when some entry recurs, up to `≈`, later on. / 当某个条目重复出现时，列表就有重复，直到 `≈`，以后。 *)
 Fixpoint HasDup (l : list A) : Type :=
   match l with
   | [] => False
@@ -159,9 +275,12 @@ Proof.
 Qed.
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ A decider for `≈`, threaded explicitly rather than as a section
+ variable: the pigeonhole proof mentions it only in the proof term, and
+ this file compiles under inferred [Proof using] annotations. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ `≈` 的一个判定器，明确地作为线程处理，而不是作为一个节的变量：鸽笼引理仅在证明项中提到它，并且这个文件可以在推断的 [Proof using] 注解下编译。
 *)
 Definition Decider := ∀ x y : A, ((x ≈ y) + (x ≈ y → False))%type.
 
@@ -183,7 +302,7 @@ Proof.
   - exact (H Hyx).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Two entries equivalent to the same element are a duplicate. / 两个等同于同一元素的条目是重复的。 *)
 Lemma dup_of_two (dec : Decider) (x : A) (l : list A) :
   (1 < length (filter (eqb_at dec x) l))%nat → HasDup l.
 Proof.
@@ -200,7 +319,7 @@ Proof.
     + simpl; right; exact (IH H).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The pigeonhole principle: a list drawn from a shorter one repeats. / 鸽笼原理：从较短的列表中抽取的列表会重复。 *)
 Lemma pigeon (dec : Decider) (e l : list A) :
   (∀ x, TIn x l → TIn x e) → (length e < length l)%nat → HasDup l.
 Proof.
@@ -236,7 +355,7 @@ Proof.
       exact (HasDup_filter _ l (IHe _ Hsub2 Hlen2)).
 Qed.
 
-(* Duplicates in an indexed family, read back as a pair of indices. *)
+(* Duplicates in an indexed family, read back as a pair of indices. / 在索引族中的重复项，以一对索引的形式读取回来。 *)
 Lemma TIn_map_seq (f : nat → A) (m : nat) :
   ∀ (s : nat) (x : A), TIn x (map f (seq s m)) →
     { j : nat & ((s <= j)%nat ∧ (j < s + m)%nat) ∧ x ≈ f j }.
@@ -269,9 +388,9 @@ Arguments LIn {A} _ _.
 Arguments HasDup {A SA} _.
 Arguments Decider {A SA}.
 
-(** ** Finiteness as data *)
+(** ** Finiteness as data / ** 作为数据的有限性 *)
 
-(* 相关说明。 （已译） *)
+(* An enumeration complete up to `≈`, together with a decider for `≈`. Both are consumed: the enumeration bounds the searches, the decider runs them. / 一个枚举，完整到 `≈`，以及一个 `≈` 的判定器。两者都被使用：枚举限定了搜索范围，判定器执行这些搜索。 *)
 Record FiniteCarrier (G : AbObject) := {
   fc_enum : list (carrier (cmon_setoid G));
   fc_complete : ∀ a : carrier (cmon_setoid G), TIn a fc_enum;
@@ -282,7 +401,7 @@ Arguments fc_enum {G} _.
 Arguments fc_complete {G} _ _.
 Arguments fc_dec {G} _ _ _.
 
-(* 相关说明。 （已译） *)
+(* * ** Natural multiples in an abelian group / * ** 阿贝尔群中的自然倍数 *)
 
 Fixpoint smul (G : AbObject) (n : nat) (a : carrier (cmon_setoid G))
   : carrier (cmon_setoid G) :=
@@ -291,7 +410,7 @@ Fixpoint smul (G : AbObject) (n : nat) (a : carrier (cmon_setoid G))
   | S n' => cmon_plus G a (smul G n' a)
   end.
 
-(* Subtraction, written out once so the coset arithmetic below reads. *)
+(* Subtraction, written out once so the coset arithmetic below reads. / 减法，写出一次，以便下面的陪集运算可以读取。 *)
 Definition asub (G : AbObject) (x y : carrier (cmon_setoid G))
   : carrier (cmon_setoid G) := cmon_plus G x (ab_neg G y).
 
@@ -364,9 +483,13 @@ Proof.
 Qed.
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ Every element of a finite abelian group has a positive annihilator.
+ This is the one place the pigeonhole principle is spent: among the
+ |G|+1 multiples 0·a, …, |G|·a two must agree, and their difference
+ annihilates a. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 有限阿贝尔群的每个元素都有一个正的消去元。这是鸽巢原理唯一发挥作用的地方：在 |G|+1 个倍数 0·a, …, |G|·a 中，必有两个相同，它们的差消去 a。
 *)
 Lemma smul_annihilator (G : AbObject) (F : FiniteCarrier G)
       (a : carrier (cmon_setoid G)) :
@@ -391,10 +514,15 @@ Proof.
   symmetry; exact Hval.
 Qed.
 
-(** ** Arithmetic in ℚ/ℤ *)
+(** ** Arithmetic in ℚ/ℤ / ** ℚ/ℤ 中的算术 *)
 
-(* An element ℚ/ℤ zero exactly it integer; 这是 the
- shape [qz_eq] ever discharged below. （已译） *)
+(*
+ An element of ℚ/ℤ is zero exactly when it is an integer; this is the
+ only shape in which [qz_eq] is ever discharged below. 
+
+ --------
+ 当且仅当一个 ℚ/ℤ 的元素是整数时，它才是零；这是 [qz_eq] 被低于的唯一形式。
+*)
 Lemma qz_diff_int (x y : Q) (z : Z) : (x - y) == inject_Z z → qz_eq x y.
 Proof. intro H; exists z; exact H. Qed.
 
@@ -407,7 +535,7 @@ Proof.
   intros Hk H; unfold Qeq, inject_Z in H; simpl in H; lia.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Natural multiples in ℚ/ℤ ARE rational multiplication. This is the bridge between the group-theoretic side (orders, coset indices) and the arithmetic side (values of characters). / ℚ/ℤ 中的自然倍数是有理数乘法。这是群论方面（阶、陪集指数）与算术方面（特征值）的桥梁。 *)
 Lemma inject_Z_succ_nat (n : nat) :
   inject_Z (Z.of_nat (S n)) == inject_Z (Z.of_nat n) + 1.
 Proof.
@@ -424,7 +552,7 @@ Proof.
     rewrite Hs, IH, inject_Z_succ_nat; ring.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The fraction z/k, the canonical shape of a value of a character on an element of order dividing k. / 分数 z/k，是在阶数可被 k 整除的元素上，字符值的一个典型形式。 *)
 Definition qfrac (z : Z) (k : nat) : Q :=
   inject_Z z / inject_Z (Z.of_nat k).
 
@@ -434,7 +562,7 @@ Proof.
   intro Hk; unfold qfrac; field; exact (inject_Z_of_nat_nz k Hk).
 Qed.
 
-(* k·q ≈ 0 in ℚ/ℤ pins q to a fraction with denominator k. *)
+(* k·q ≈ 0 in ℚ/ℤ pins q to a fraction with denominator k. / k·q ≈ 0 在 ℚ/ℤ 中将 q 固定为分母为 k 的分数。 *)
 Lemma qfrac_of_annihilated (q : Q) (k : nat) :
   (0 < k)%nat → qz_eq (smul QZ k q) 0 → { z : Z & q == qfrac z k }.
 Proof.
@@ -453,7 +581,7 @@ Proof.
     exact (inject_Z_of_nat_nz k Hk).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Fractions with the same denominator agree in ℚ/ℤ when their numerators agree modulo that denominator. / 当分数的分母相同且它们的分子在该分母下同余时，这些分数在 ℚ/ℤ 中相等。 *)
 Lemma qfrac_shift (z c : Z) (k : nat) :
   (0 < k)%nat → qz_eq (qfrac (z + c * Z.of_nat k) k) (qfrac z k).
 Proof.
@@ -463,8 +591,13 @@ Proof.
   field; exact (inject_Z_of_nat_nz k Hk).
 Qed.
 
-(* 1/k is a nonzero element of ℚ/ℤ once k ≥ 2 — the fact separation
-   ultimately rests on. *)
+(*
+ 1/k is a nonzero element of ℚ/ℤ once k ≥ 2 — the fact separation
+ ultimately rests on. 
+
+ --------
+ 当 k ≥ 2 时，1/k 是 ℚ/ℤ 的一个非零元素——这是事实分离最终依赖的。
+*)
 Lemma qfrac_one_nonzero (k : nat) :
   (2 <= k)%nat → qz_eq (qfrac 1 k) 0 → False.
 Proof.
@@ -479,12 +612,15 @@ Proof.
   destruct (Z.le_gt_cases z 0) as [Hz0|Hz0]; nia.
 Qed.
 
-(** ** Bounded minimization *)
+(** ** Bounded minimization / ** 有界最小化 *)
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ The least [i < n] with [p i = true].  Used for coset indices and for
+ the period of an element modulo a subgroup; both searches are bounded
+ in advance, so no well-founded recursion is involved. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 最小的 [i < n] 与 [p i = true]。用于陪集索引以及元素模子群的周期；两种搜索都事先有限制，因此不涉及良基递归。
 *)
 Fixpoint least_below (p : nat → bool) (n : nat) : option nat :=
   match n with
@@ -530,12 +666,16 @@ Proof.
   pose proof (least_below_none p n E i Hi) as H; rewrite Hp in H; discriminate.
 Qed.
 
-(** ** Subgroups *)
+(** ** Subgroups / ** 子组 *)
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ A subgroup is a decidable, `≈`-closed predicate containing zero and
+ closed under addition and negation.  Membership is [Type]-valued, so
+ a membership proof carries the witness data the constructions below
+ read back out. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 子群是一个可判定的、`≈` 闭合的谓词，包含零，并在加法和取反下闭合。成员资格是 [Type] 值，因此成员资格证明携带见证数据，下面的构造可以将其读回。
 *)
 Record Subgroup (G : AbObject) := {
   sg_mem : carrier (cmon_setoid G) → Type;
@@ -592,7 +732,7 @@ Proof.
   intros Hx Hy; unfold asub; exact (sg_add H _ _ Hx (sg_neg H _ Hy)).
 Qed.
 
-(* The trivial subgroup {0}. *)
+(* The trivial subgroup {0}. / 平凡子群 {0}。 *)
 Program Definition TrivialSubgroup (G : AbObject) (F : FiniteCarrier G)
   : Subgroup G := {|
   sg_mem := fun x => x ≈ cmon_zero G
@@ -616,9 +756,9 @@ Next Obligation.
   rewrite Hx; apply ab_neg_zero.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The period of an element modulo a subgroup / * ** 元素模子群的周期 *)
 
-(* 相关说明。 （已译） *)
+(* The least positive [k] with [k·a] already in [H]. Its minimality is what makes coset indices unique, hence what makes the extended character below well defined. / 最小的正数 [k]，其 [k·a] 已经在 [H] 中。它的最小性使得陪集索引是唯一的，因此也使下面的扩展特征是良定义的。 *)
 Record Period (G : AbObject) (H : Subgroup G)
        (a : carrier (cmon_setoid G)) := {
   per_k : nat;
@@ -632,7 +772,7 @@ Arguments per_pos {G H a} _.
 Arguments per_mem {G H a} _.
 Arguments per_least {G H a} _ _ _ _.
 
-(* 相关说明。 （已译） *)
+(* Every element has a period: some positive multiple annihilates it, hence lands in [H], and the search below that bound terminates. / 每个元素都有一个周期：某个正倍数会消去它，因此落在 [H] 中，并且在该界限以下的搜索会终止。 *)
 Definition period_of (G : AbObject) (F : FiniteCarrier G) (H : Subgroup G)
            (a : carrier (cmon_setoid G)) : Period G H a.
 Proof.
@@ -658,7 +798,7 @@ Proof.
     exact (bmem_false H _ Hpe Hem).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* * ** Elementary abelian-group rearrangements / * ** 初等阿贝尔群重排 *)
 
 Lemma asub_of_plus (G : AbObject) (x h y : carrier (cmon_setoid G)) :
   x ≈ cmon_plus G h y → asub G x y ≈ h.
@@ -676,7 +816,7 @@ Proof.
   symmetry; apply cmon_plus_zero_r.
 Qed.
 
-(* The middle-four interchange. *)
+(* The middle-four interchange. / 中间四路互通 *)
 Lemma plus_four (G : AbObject) (h u h' u' : carrier (cmon_setoid G)) :
   cmon_plus G (cmon_plus G h u) (cmon_plus G h' u')
     ≈ cmon_plus G (cmon_plus G h h') (cmon_plus G u u').
@@ -692,7 +832,7 @@ Lemma smul_congr_nat (G : AbObject) (m n : nat) (x : carrier (cmon_setoid G)) :
   m = n → smul G m x ≈ smul G n x.
 Proof. intro E; rewrite E; reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The subgroup generated by a subgroup and one further element / * ** 由一个子群和另外一个元素生成的子群 *)
 
 Section Generated.
 
@@ -701,7 +841,7 @@ Context (H : Subgroup G) (a : carrier (cmon_setoid G)) (P : Period G H a).
 
 Notation k := (per_k P).
 
-(* 相关说明。 （已译） *)
+(* x lies in ⟨H, a⟩ when it is h + i·a for some member h and some natural i. The index is unbounded here; [gen_reduce] brings it below the period, which is what makes membership decidable. / 当 x 可以表示为 h + i·a，其中 h 是某个元素，i 是某个自然数时，x 位于 ⟨H, a⟩ 中。这里指数没有上限；[gen_reduce] 将其降到周期以下，这使得成员资格可判定。 *)
 Definition gen_mem (x : carrier (cmon_setoid G)) : Type :=
   { i : nat & { h : carrier (cmon_setoid G) &
       sg_mem H h ∧ x ≈ cmon_plus G h (smul G i a) } }.
@@ -779,7 +919,7 @@ Proof using All.
       apply ab_neg_left.
 Defined.
 
-(* 相关说明。 （已译） *)
+(* The two inclusions that make ⟨H, a⟩ what it is. / 使 ⟨H, a⟩ 成为它自身的两个包含。 *)
 Lemma gen_incl (x : carrier (cmon_setoid G)) :
   sg_mem H x → sg_mem Generated x.
 Proof.
@@ -793,7 +933,7 @@ Proof.
   simpl; rewrite cmon_plus_zero_r; symmetry; apply cmon_plus_zero_l.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Coset indices below the period are unique — the consequence of minimality that makes the extended character well defined. / 周期下方的陪集指标是唯一的——这是最小性带来的结果，使扩展字符定义良好。 *)
 Lemma gen_index_unique (x : carrier (cmon_setoid G)) (i j : nat)
       (h h' : carrier (cmon_setoid G)) :
   (i < k)%nat → (j < k)%nat →
@@ -803,7 +943,7 @@ Lemma gen_index_unique (x : carrier (cmon_setoid G)) (i j : nat)
   i = j.
 Proof.
   intros Hi Hj Hh Hh' Hx Hx'.
-  (* 相关说明。 （已译） *)
+  (* Symmetric in i and j, so it suffices to rule out i < j. / 在 i 和 j 中是对称的，因此只需要排除 i < j 的情况。 *)
   assert (Hkey : ∀ p q : nat, (p < k)%nat → (q < k)%nat → (p <= q)%nat →
             ∀ u u' : carrier (cmon_setoid G),
             sg_mem H u → sg_mem H u' →
@@ -837,7 +977,7 @@ End Generated.
 Arguments gen_mem {G} _ _ _.
 Arguments Generated {G} _ _ _.
 
-(** ** Congruence helpers for ℚ/ℤ *)
+(** ** Congruence helpers for ℚ/ℤ / ** ℚ/ℤ 的同余辅助工具 *)
 
 Lemma qz_plus_cong (x x' y y' : Q) :
   qz_eq x x' → qz_eq y y' → qz_eq (x + y) (x' + y').
@@ -855,9 +995,9 @@ Lemma inject_nat_add (i j : nat) :
     == inject_Z (Z.of_nat i) + inject_Z (Z.of_nat j).
 Proof. rewrite Nat2Z.inj_add, inject_Z_plus; reflexivity. Qed.
 
-(** ** Characters of a subgroup *)
+(** ** Characters of a subgroup / ** 子群的元素 *)
 
-(* 相关说明。 （已译） *)
+(* A character of [H] is a total map on the carrier whose laws are demanded only on members. Nothing is asserted about its values elsewhere; the extension below overwrites them. / [H] 的一个算子是在载体上定义的全映射，其规律仅在成员上要求。关于它在其他地方的取值没有任何断言；下面的扩展会覆盖它们。 *)
 Record PartialChar (G : AbObject) (H : Subgroup G) := {
   pc_map : carrier (cmon_setoid G) → Q;
   pc_respects : ∀ x y, sg_mem H x → x ≈ y → qz_eq (pc_map x) (pc_map y);
@@ -879,8 +1019,13 @@ Proof.
   - intros x y Hx Hy; apply qz_of_Qeq; ring.
 Defined.
 
-(* Once predicate holds everywhere, partial character IS a
- character: 这是 where induction cashes out. （已译） *)
+(*
+ Once the predicate holds everywhere, a partial character IS a
+ character: this is where the induction cashes out. 
+
+ --------
+ 一旦谓词在所有地方都成立，部分特征就是一个特征：这就是归纳法的收益所在。
+*)
 Definition pc_total (G : AbObject) (H : Subgroup G) (χ : PartialChar G H)
            (Hall : ∀ x, sg_mem H x) : AbHom G QZ.
 Proof.
@@ -892,8 +1037,13 @@ Proof.
   - intros x y; exact (pc_plus χ x y (Hall x) (Hall y)).
 Defined.
 
-(* Conversely a genuine character restricts to a partial one, which is
-   how the surjectivity induction feeds characters back in. *)
+(*
+ Conversely a genuine character restricts to a partial one, which is
+ how the surjectivity induction feeds characters back in. 
+
+ --------
+ 相反，一个真实的特征会限制为一个部分特征，这就是满射归纳如何将特征反馈回来的方式。
+*)
 Definition pc_of_hom (G : AbObject) (H : Subgroup G) (φ : AbHom G QZ)
   : PartialChar G H.
 Proof.
@@ -903,7 +1053,7 @@ Proof.
   - intros x y Hx Hy; exact (cmon_map_plus φ x y).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* * ** Extending a character across one new generator / * ** 将一个字符扩展到一个新的生成器 *)
 
 Section Extend.
 
@@ -914,9 +1064,13 @@ Context (χ : PartialChar G H) (v : Q).
 Notation k := (per_k P).
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ The choice of value at the new generator is constrained exactly by
+ [Hv]: k·v must agree, in ℚ/ℤ, with the value χ already assigns to
+ k·a.  Any k-th root will do, and the freedom among them is used by
+ [separating_character] below. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在新生成元上的数值选择正好受到 [Hv] 的约束：k·v 必须在 ℚ/ℤ 中与 χ 已经指定给 k·a 的数值一致。任何 k 次根都可以，而它们之间的自由度由下面的 [separating_character] 使用。
 *)
 Context (Hv : qz_eq (inject_Z (Z.of_nat k) * v) (pc_map χ (smul G k a))).
 
@@ -928,7 +1082,7 @@ Lemma gen_fold (x : carrier (cmon_setoid G)) :
   gen_mem H a x → sg_mem (Generated H a P) x.
 Proof. intro Hx; exact Hx. Qed.
 
-(* 相关说明。 （已译） *)
+(* Every member of ⟨H, a⟩ decomposes with an index below the period. / ⟨H, a⟩ 的每个元素都可以以低于周期的指数分解。 *)
 Lemma gen_decomp (x : carrier (cmon_setoid G)) :
   sg_mem (Generated H a P) x →
   { i : nat & { h : carrier (cmon_setoid G) &
@@ -942,7 +1096,7 @@ Proof.
   - exact Hh'.
 Qed.
 
-(* The coset index of x, by bounded search. *)
+(* The coset index of x, by bounded search. / 通过有界搜索的 x 的陪集指标。 *)
 Definition gidx (x : carrier (cmon_setoid G)) : nat :=
   match least_below (fun i => bmem H (asub G x (smul G i a))) k with
   | Some i => i
@@ -968,7 +1122,7 @@ Proof using All.
                 (sg_resp H h _ (symmetry (asub_of_plus G x h _ Hx)) Hh)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The characteristic property: on any decomposition with index below the period, the extension is χ on the H-part plus i copies of v. / 特征性质：在任何周期以下索引的分解中，扩展在 H 部分上为 χ，外加 i 个 v 的副本。 *)
 Lemma ext_map_spec (x : carrier (cmon_setoid G)) (i : nat)
       (h : carrier (cmon_setoid G)) :
   (i < k)%nat → sg_mem H h → x ≈ cmon_plus G h (smul G i a) →
@@ -1078,7 +1232,7 @@ Proof using All.
   - exact ext_map_plus.
 Defined.
 
-(* 相关说明。 （已译） *)
+(* The value at the new generator is exactly the chosen root, provided the generator was genuinely new. / 在新的生成元处的值正好是所选的根，前提是生成元确实是新的。 *)
 Lemma ext_map_at_gen : (sg_mem H a → False) → qz_eq (ext_map a) v.
 Proof using All.
   intro Hna.
@@ -1098,7 +1252,7 @@ Qed.
 
 End Extend.
 
-(* 相关说明。 （已译） *)
+(* * ** The measure: enumeration entries outside a subgroup / * ** 该度量：子组外的枚举条目 *)
 
 Lemma LIn_length {A : Type} (x : A) (l : list A) :
   LIn x l → (0 < length l)%nat.
@@ -1137,7 +1291,7 @@ Definition outside (G : AbObject) (F : FiniteCarrier G) (H : Subgroup G)
 Definition outside_count (G : AbObject) (F : FiniteCarrier G)
            (H : Subgroup G) : nat := length (outside G F H).
 
-(* 相关说明。 （已译） *)
+(* Either the subgroup is everything, or the enumeration names an element outside it. This is the case split both inductions run on. / 要么子群就是全部，要么列举的名字指的是其外的一个元素。这是两种归纳运行时的情况分裂。 *)
 Definition all_or_witness (G : AbObject) (F : FiniteCarrier G)
            (H : Subgroup G) :
   ((∀ x, sg_mem H x)
@@ -1161,7 +1315,7 @@ Proof.
     destruct (bmem H z); [ discriminate | reflexivity ].
 Defined.
 
-(* Adjoining a non-member strictly decreases the measure. *)
+(* Adjoining a non-member strictly decreases the measure. / 与非成员相邻会严格减少该度量。 *)
 Lemma outside_count_generated (G : AbObject) (F : FiniteCarrier G)
       (H : Subgroup G) (a : carrier (cmon_setoid G)) (P : Period G H a) :
   (sg_mem H a → False) →
@@ -1188,10 +1342,15 @@ Proof.
   exact (filter_length_lt (fc_enum F) _ _ Hpq y Hy Hp Hq).
 Qed.
 
-(* * ** The character-extension 定理 （已译） *)
+(* * ** The character-extension theorem / * ** 字符扩展定理 *)
 
-(* Division in ℚ is total away from zero, so a k-th root in ℚ/ℤ is
-   computed rather than chosen. *)
+(*
+ Division in ℚ is total away from zero, so a k-th root in ℚ/ℤ is
+ computed rather than chosen. 
+
+ --------
+ 在ℚ中，除法在零之外是全定义的，所以在ℚ/ℤ中的k次根是计算出来的，而不是选择的。
+*)
 Definition root_of (k : nat) (q : Q) : Q := q / inject_Z (Z.of_nat k).
 
 Lemma root_of_spec (k : nat) (q : Q) :
@@ -1233,7 +1392,7 @@ Proof.
   exact (character_extend_aux G F (outside_count G F H) H (le_n _) χ).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The form both consumers use: extend across one prescribed new generator, with a prescribed value there. / 两种消费者使用的形式：扩展到一个规定的新生成器，并在该处具有规定的值。 *)
 Theorem character_extend_at (G : AbObject) (F : FiniteCarrier G)
         (H : Subgroup G) (χ : PartialChar G H)
         (a : carrier (cmon_setoid G)) (P : Period G H a) (v : Q) :
@@ -1254,7 +1413,7 @@ Proof.
     exact (ext_map_at_gen H a P χ v Hv Hna).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Separation: a character that does not kill a given element / * ** 分离：不会杀死给定元素的字符 *)
 
 Lemma period_ge_two (G : AbObject) (H : Subgroup G)
       (a : carrier (cmon_setoid G)) (P : Period G H a) :
@@ -1268,8 +1427,13 @@ Proof.
   rewrite He; simpl; apply cmon_plus_zero_r.
 Qed.
 
-(* The value character decomposed element. Used throughout
- surjectivity 论元. （已译） *)
+(*
+ The value of a character on a decomposed element.  Used throughout
+ the surjectivity argument. 
+
+ --------
+ 在分解元素上的一个字符的值。在整个满射性论证中使用。
+*)
 Lemma hom_decomp (G : AbObject) (φ : AbHom G QZ)
       (x h a : carrier (cmon_setoid G)) (i : nat) :
   x ≈ cmon_plus G h (smul G i a) →
@@ -1284,9 +1448,14 @@ Proof.
   apply qz_of_Qeq; apply smul_QZ.
 Qed.
 
-(* The character forced 1/k new generator zero the
- old subgroup. Both consumers extension 定理 use exactly
- shape. （已译） *)
+(*
+ The character forced to 1/k on a new generator and to zero on the
+ old subgroup.  Both consumers of the extension theorem use exactly
+ this shape. 
+
+ --------
+ 该字符在新生成元上被迫为 1/k，而在旧子群上则为零。扩展定理的两个使用者正是使用的这个形式。
+*)
 Lemma cyclic_character (G : AbObject) (F : FiniteCarrier G)
       (H : Subgroup G) (a : carrier (cmon_setoid G)) (P : Period G H a)
       (Hna : sg_mem H a → False) :
@@ -1319,9 +1488,9 @@ Proof.
   exact (qz_eq_trans _ _ _ (qz_eq_sym _ _ Hφa) Hz).
 Qed.
 
-(** ** Injectivity of the evaluation *)
+(** ** Injectivity of the evaluation / ** 评价的单射性 *)
 
-(* 相关说明。 （已译） *)
+(* [ab_map_neg] with the negation of ℚ/ℤ spelt as [Qopp], so that [ring] recognises it. / [ab_map_neg] 与 ℚ/ℤ 的否定拼写为 [Qopp]，以便 [ring] 可以识别它。 *)
 Lemma hom_neg (G : AbObject) (φ : AbHom G QZ) (y : carrier (cmon_setoid G)) :
   qz_eq (cmon_map φ (ab_neg G y)) (- cmon_map φ y).
 Proof. exact (ab_map_neg φ y). Qed.
@@ -1347,7 +1516,7 @@ Proof.
   apply qz_of_Qeq; cbn; ring.
 Qed.
 
-(** ** Further ℚ/ℤ helpers *)
+(** ** Further ℚ/ℤ helpers / ** 进一步的 ℚ/ℤ 辅助工具 *)
 
 Lemma qz_scale (n : Z) (x y : Q) :
   qz_eq x y → qz_eq (inject_Z n * x) (inject_Z n * y).
@@ -1368,8 +1537,13 @@ Proof. intros [z Hz]; exists z; rewrite <- Hz; ring. Qed.
 Lemma qfrac_congr (z z' : Z) (k : nat) : z = z' → qfrac z k = qfrac z' k.
 Proof. intro E; rewrite E; reflexivity. Qed.
 
-(* An element annihilated by k is a fraction with denominator k whose
-   numerator can be taken in [0, k). *)
+(*
+ An element annihilated by k is a fraction with denominator k whose
+ numerator can be taken in [0, k). 
+
+ --------
+ 被 k 消去的元素是一个分母为 k 的分数，其分子可以取在 [0, k) 范围内。
+*)
 Lemma qfrac_nat_form (q : Q) (k : nat) :
   (0 < k)%nat → qz_eq (smul QZ k q) 0 →
   { m : nat & (m < k)%nat ∧ qz_eq q (qfrac (Z.of_nat m) k) }.
@@ -1388,7 +1562,7 @@ Proof.
   apply qfrac_shift; exact Hk.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Evaluation of the pointwise operations on characters / * ** 对字符的逐点操作的评估 *)
 
 Lemma char_plus_eval (G : AbObject) (χ ψ : AbHom G QZ)
       (x : carrier (cmon_setoid G)) :
@@ -1401,7 +1575,7 @@ Lemma char_neg_eval (G : AbObject) (χ : AbHom G QZ)
   qz_eq (cmon_map (ab_neg (D_ob G) χ) x) (- cmon_map χ x).
 Proof. apply qz_eq_refl. Qed.
 
-(* 相关说明。 （已译） *)
+(* A natural multiple of a character is the rational multiple of its values, since the character group's addition is pointwise. / 一个字符的自然倍数是其值的有理倍数，因为字符群的加法是逐点进行的。 *)
 Lemma smul_char (G : AbObject) (n : nat) (φ : AbHom G QZ)
       (x : carrier (cmon_setoid G)) :
   qz_eq (cmon_map (smul (D_ob G) n φ) x)
@@ -1412,7 +1586,7 @@ Proof.
   apply qz_of_Qeq; apply smul_QZ.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The value of a character that kills H, on an element of ⟨H, a⟩. / 在⟨H, a⟩的元素上，消元H的特征值。 *)
 Lemma ann_char_value (G : AbObject) (H : Subgroup G)
       (a : carrier (cmon_setoid G)) (k : nat) (Hk : (0 < k)%nat)
       (χ : AbHom G QZ) (m : Z)
@@ -1431,12 +1605,15 @@ Proof.
   rewrite (qfrac_scale (Z.of_nat i) m k Hk); ring.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Surjectivity of the evaluation / * ** 评价的满射性 *)
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ [Ann G H χ]: χ kills H.  [VanishesOn G H Ξ]: Ξ kills every character
+ that kills H — the annihilator of the annihilator, at the level of
+ the double dual.  [Realizes] is the conclusion of the induction. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [Ann G H χ]：χ 杀死 H。[VanishesOn G H Ξ]：Ξ 杀死每一个杀死 H 的字符——消灭者的消灭者，在双对偶的层次上。[Realizes] 是归纳法的结论。
 *)
 Definition Ann (G : AbObject) (H : Subgroup G) (χ : AbHom G QZ) : Type :=
   ∀ x, sg_mem H x → qz_eq (cmon_map χ x) 0.
@@ -1450,8 +1627,13 @@ Definition Realizes (G : AbObject) (H : Subgroup G)
   { c : carrier (cmon_setoid G) & sg_mem H c
       ∧ (∀ χ : AbHom G QZ, qz_eq (cmon_map Ξ χ) (cmon_map χ c)) }.
 
-(* When subgroup everything annihilator trivial, so the
- 假设 induction becomes vacuous. （已译） *)
+(*
+ When the subgroup is everything its annihilator is trivial, so the
+ hypothesis of the induction becomes vacuous. 
+
+ --------
+ 当子群是整个群时，它的消灭子是平凡的，因此归纳假设变得无意义。
+*)
 Lemma vanishes_of_all (G : AbObject) (H : Subgroup G) :
   (∀ x, sg_mem H x) → ∀ Ξ : AbHom (D_ob G) QZ, VanishesOn G H Ξ.
 Proof.
@@ -1461,8 +1643,13 @@ Proof.
   intro x; exact (Hχ x (Hall x)).
 Qed.
 
-(* Base case: a functional killing every character is the evaluation at
-   zero. *)
+(*
+ Base case: a functional killing every character is the evaluation at
+ zero. 
+
+ --------
+ 基本情况：一个对每个字符都有效的函子在零点的值就是评估结果。
+*)
 Lemma realizes_trivial (G : AbObject) (F : FiniteCarrier G)
       (Ξ : AbHom (D_ob G) QZ) :
   VanishesOn G (TrivialSubgroup G F) Ξ → Realizes G (TrivialSubgroup G F) Ξ.
@@ -1479,7 +1666,7 @@ Proof.
   - apply qz_eq_sym; exact (cmon_map_zero χ).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The induction step. The correction term is τ(n·a) for the numerator n of Ξ(φ), where φ is the character with φ|H = 0 and φ(a) = 1/k. / 归纳步骤。修正项是 Ξ(φ) 的分子 n 的 τ(n·a)，其中 φ 是满足 φ|H = 0 且 φ(a) = 1/k 的特征。 *)
 Lemma realizes_step (G : AbObject) (F : FiniteCarrier G)
       (H : Subgroup G) (a : carrier (cmon_setoid G)) (P : Period G H a)
       (Hna : sg_mem H a → False) :
@@ -1494,7 +1681,7 @@ Proof.
              qz_eq (cmon_map φ x) (qfrac (Z.of_nat i * 1)%Z (per_k P)))
     by (intros x h i Hh Hxd;
         exact (ann_char_value G H a (per_k P) Hk φ 1%Z Hφ0 Hφa x h i Hh Hxd)).
-  (* k·φ kills ⟨H, a⟩. *)
+  (* k·φ kills ⟨H, a⟩. / k·φ 消灭 ⟨H, a⟩。 *)
   assert (Hkφ : Ann G (Generated H a P) (smul (D_ob G) (per_k P) φ)).
   { intros x Hx.
     destruct (gen_decomp H a P x Hx) as [i [h [[Hi Hh] Hxd]]].
@@ -1503,13 +1690,13 @@ Proof.
       [ exact (qz_scale (Z.of_nat (per_k P)) _ _ (Hφval x h i Hh Hxd)) | ].
     apply (qz_int _ (Z.of_nat i * 1)%Z).
     apply qfrac_mult; exact Hk. }
-  (* Hence Ξ(φ) has denominator k. *)
+  (* Hence Ξ(φ) has denominator k. / 因此 Ξ(φ) 的分母是 k。 *)
   assert (HΞφ : qz_eq (smul QZ (per_k P) (cmon_map Ξ φ)) 0).
   { eapply qz_eq_trans;
       [ apply qz_eq_sym; exact (smul_hom (D_ob G) QZ Ξ (per_k P) φ) | ].
     exact (HΞ _ Hkφ). }
   destruct (qfrac_nat_form (cmon_map Ξ φ) (per_k P) Hk HΞφ) as [n [Hnb Hn]].
-  (* 相关说明。 （已译） *)
+  (* On the annihilator of H, Ξ agrees with evaluation at n·a. / 在 H 的湮灭子上，Ξ 与在 n·a 的评价一致。 *)
   assert (Hcorr : ∀ χ : AbHom G QZ, Ann G H χ →
                     qz_eq (cmon_map Ξ χ) (cmon_map χ (smul G n a))).
   { intros χ Hχ0.
@@ -1518,7 +1705,7 @@ Proof.
         [ apply qz_eq_sym; exact (smul_hom G QZ χ (per_k P) a) | ].
       exact (Hχ0 _ (per_mem P)). }
     destruct (qfrac_nat_form (cmon_map χ a) (per_k P) Hk Hka) as [m [Hmb Hm]].
-    (* χ − m·φ kills ⟨H, a⟩ *)
+    (* χ − m·φ kills ⟨H, a⟩ / χ − m·φ 杀死 ⟨H, a⟩ *)
     assert (Hψ : Ann G (Generated H a P)
                    (cmon_plus (D_ob G) χ
                       (ab_neg (D_ob G) (smul (D_ob G) m φ)))).
@@ -1581,8 +1768,13 @@ Proof.
     rewrite (qfrac_congr (Z.of_nat n * Z.of_nat m)%Z
                (Z.of_nat m * Z.of_nat n)%Z (per_k P) ltac:(lia)).
     apply qz_eq_refl. }
-  (* Ξ − τ(n·a) vanishes annihilator H, so inductive
- 假设 applies it. （已译） *)
+  (*
+ Ξ − τ(n·a) vanishes on the annihilator of H, so the inductive
+ hypothesis applies to it. 
+
+ --------
+ Ξ − τ(n·a) 在 H 的消元子上消失，所以归纳假设适用于它。
+*)
   assert (HVan : VanishesOn G H
             (cmon_plus (D_ob (D_ob G)) Ξ
                (ab_neg (D_ob (D_ob G)) (tau_component (smul G n a))))).
@@ -1646,12 +1838,16 @@ Proof.
   exists c; intro χ; apply qz_eq_sym; exact (Hc χ).
 Qed.
 
-(** ** The theorem *)
+(** ** The theorem / ** 定理 *)
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ A bijective homomorphism of abelian groups is invertible.  The
+ inverse is a genuine construction: [AbSurjective] is [Type]-valued,
+ so the preimage is data, and injectivity makes the choice
+ irrelevant. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 阿贝尔群的双射同态是可逆的。逆映射是一个真正的构造：[AbSurjective] 的取值是 [Type]，因此原像是数据，而单射性使得选择无关紧要。
 *)
 Definition ab_inverse (G K : AbObject) (f : G ~{Ab}~> K)
            (Hinj : AbInjective f) (Hsurj : AbSurjective f) : K ~{Ab}~> G.
@@ -1691,7 +1887,7 @@ Next Obligation.
   exact (projT2 (Hsurj (cmon_map f x))).
 Qed.
 
-(* Both halves at once, the natural waypoint. *)
+(* Both halves at once, the natural waypoint. / 两个部分同时，自然的中途点。 *)
 Theorem tau_bijective_finite (G : AbObject) (F : FiniteCarrier G) :
   AbInjective (tau G) ∧ AbSurjective (tau G).
 Proof.
@@ -1699,9 +1895,13 @@ Proof.
 Qed.
 
 (*
-   本节说明同构相关定义、性质与动机。
+ Mac Lane §I.4: for a finite abelian group the evaluation
+ τ_G : G → DD(G) is an isomorphism.  Naturality is
+ Instance/Ab/Character.v's [tau_natural]; the two together are the
+ statement that τ is a natural isomorphism on finite abelian groups. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Mac Lane §I.4：对于一个有限阿贝尔群，映射 τ_G : G → DD(G) 是同构。自然性在 Instance/Ab/Character.v 的 [tau_natural] 中；两者合起来说明 τ 是有限阿贝尔群上的自然同构。
 *)
 Theorem tau_iso_finite (G : AbObject) (F : FiniteCarrier G) :
   @Isomorphism Ab G (DD G).
@@ -1710,12 +1910,16 @@ Proof.
            (tau_injective_finite G F) (tau_surjective_finite G F)).
 Defined.
 
-(** ** Acceptance: ℤ/2 *)
+(** ** Acceptance: ℤ/2 / ** 接受: ℤ/2 *)
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ The cyclic group of order two, on [bool] with exclusive or.  Every
+ element is its own inverse, so [ab_neg] is the identity.  Built with
+ [unshelve notypeclasses refine] rather than [Program] so that every
+ field is discharged explicitly and in a known order. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在  [bool] 上使用异或的二阶循环群。每个元素都是它自身的逆，所以  [ab_neg] 是单位元。使用 [unshelve notypeclasses refine] 构建，而不是 [Program]，以便每个字段都被明确且按已知顺序释放。
 *)
 Definition ZMod2 : AbObject.
 Proof.
@@ -1724,26 +1928,26 @@ Proof.
                                     is_setoid := eq_Setoid bool |};
                   cmon_zero := false;
                   cmon_plus := xorb;
-                  (* the carrier's `≈` IS [eq], already a [Prop] *)
+                  (* the carrier's `≈` IS [eq], already a [Prop] / 运营商的 `≈` 是 [eq]，已经是 [Prop] *)
                   cmon_prop := eq_PropEquiv bool |};
     ab_neg := fun b : bool => b
   |}.
-  - (* cmon_plus_respects *)
+  - (* cmon_plus_respects / cmon_plus_respects *)
     intros x x' Hx y y' Hy.
     assert (Hx' : x = x') by exact Hx.
     assert (Hy' : y = y') by exact Hy.
     rewrite Hx', Hy'; reflexivity.
-  - (* cmon_plus_assoc *) intros x y z; destruct x, y, z; reflexivity.
-  - (* cmon_plus_comm *) intros x y; destruct x, y; reflexivity.
-  - (* cmon_plus_zero_l *) intros x; destruct x; reflexivity.
-  - (* ab_neg_respects *) intros x y Hxy; exact Hxy.
-  - (* ab_neg_left *) intros x; destruct x; reflexivity.
+  - (* cmon_plus_assoc / cmon_plus_assoc *) intros x y z; destruct x, y, z; reflexivity.
+  - (* cmon_plus_comm / cmon_plus_comm *) intros x y; destruct x, y; reflexivity.
+  - (* cmon_plus_zero_l / cmon_plus_zero_l *) intros x; destruct x; reflexivity.
+  - (* ab_neg_respects / AB 阴性尊重 *) intros x y Hxy; exact Hxy.
+  - (* ab_neg_left / AB阴性左 *) intros x; destruct x; reflexivity.
 Defined.
 
 Definition ZMod2Finite : FiniteCarrier ZMod2.
 Proof.
   unshelve notypeclasses refine (@Build_FiniteCarrier ZMod2 [false; true] _ _).
-  - (* fc_complete *)
+  - (* fc_complete / fc_完成 *)
     intro a; destruct a; simpl;
       [ right; left; reflexivity | left; reflexivity ].
   - (* fc_dec *)
@@ -1751,7 +1955,7 @@ Proof.
       [ left; exact He | right; exact He ].
 Defined.
 
-(* The two characters of ℤ/2, by hand. *)
+(* The two characters of ℤ/2, by hand. / ℤ/2 的两个字符，用手算。 *)
 Definition zmod2_char_zero : AbHom ZMod2 QZ := char_zero ZMod2.
 
 Definition zmod2_char_half : AbHom ZMod2 QZ.
@@ -1761,21 +1965,21 @@ Proof.
        (@Build_SetoidMorphism
           (carrier (cmon_setoid ZMod2)) _ (carrier (cmon_setoid QZ)) _
           (fun b : bool => if b then 1#2 else 0) _) _ _).
-  - (* proper_morphism *)
+  - (* proper_morphism / 适当态射 *)
     intros x y Hxy.
     assert (Hxy' : x = y) by exact Hxy.
     rewrite Hxy'; apply qz_eq_refl.
-  - (* cmon_map_zero *) apply qz_eq_refl.
-  - (* cmon_map_plus *)
+  - (* cmon_map_zero / cmon_map_zero *) apply qz_eq_refl.
+  - (* cmon_map_plus / cmon_map_plus *)
     intros x y; destruct x, y; simpl.
-    + (* 1/2 + 1/2 is the integer 1, hence zero in ℚ/ℤ *)
+    + (* 1/2 + 1/2 is the integer 1, hence zero in ℚ/ℤ / 1/2 + 1/2 是整数 1，因此在 ℚ/ℤ 中为零 *)
       apply qz_eq_sym; apply (qz_int _ 1%Z); reflexivity.
     + apply qz_of_Qeq; ring.
     + apply qz_of_Qeq; ring.
     + apply qz_of_Qeq; ring.
 Defined.
 
-(* 相关说明。 （已译） *)
+(* 1/2 is not 0 in ℚ/ℤ, so the two characters are genuinely distinct. / 1/2 在 ℚ/ℤ 中不等于 0，所以这两个特征是真正不同的。 *)
 Example zmod2_chars_distinct :
   (zmod2_char_half ≈ zmod2_char_zero) → False.
 Proof.
@@ -1785,9 +1989,12 @@ Proof.
 Qed.
 
 (*
-   本节说明 Finite 相关定义、性质与动机。
+ And these are ALL of them: the character group of ℤ/2 has exactly
+ two elements, so |D(ℤ/2)| = |ℤ/2| — the counting fact the general
+ proof deliberately avoids, here checked by hand on the witness. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 这些就是全部：ℤ/2 的字符群恰好有两个元素，所以 |D(ℤ/2)| = |ℤ/2| —— 这是一般证明故意避免的计数事实，这里通过在见证者上手动验证。
 *)
 Example zmod2_characters (χ : AbHom ZMod2 QZ) :
   ((χ ≈ zmod2_char_zero) + (χ ≈ zmod2_char_half))%type.
@@ -1816,6 +2023,6 @@ Proof.
     + eapply qz_eq_trans; [ exact (cmon_map_zero χ) | apply qz_eq_refl ].
 Qed.
 
-(* The 定理 instantiates at witness. （已译） *)
+(* The theorem instantiates at the witness. / 该定理在证人处实例化。 *)
 Definition zmod2_tau_iso : @Isomorphism Ab ZMod2 (DD ZMod2) :=
   tau_iso_finite ZMod2 ZMod2Finite.

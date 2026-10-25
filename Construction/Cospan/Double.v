@@ -8,14 +8,66 @@ Require Import Category.Construction.Cospan.Category.
 
 Generalizable All Variables.
 
-(** * The double category of cospans *)
+(** * The double category of cospans / 双端范畴 *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/double+category+of+cospans
 
-   本文件给出构造。
+ Over a category [C] with chosen pushouts ([HasPushouts C]) the cospans of
+ [C] organise into a pseudo double category [Cospan_Double]:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ - objects and (strict) vertical 1-cells: [C] itself;
+ - horizontal 1-cells [X ⇸ Y]: cospans [X → N ← Y]
+ ([CospanArrow X Y] of Construction/Cospan/Category.v);
+ - squares
+ X --h--> Y
+ |        |
+ u        v
+ v        v
+ Z --k--> W
+ filling a boundary [(h, u, v, k)]: morphisms of cospans, i.e. maps of
+ apexes [φ : apex h ~> apex k] intertwining the legs with the vertical
+ edges ([φ ∘ in1 h ≈ in1 k ∘ u] and [φ ∘ in2 h ≈ in2 k ∘ v]);
+ - horizontal composition: gluing along the shared boundary object by the
+ CHOSEN pushout, exactly as in [cospan_compose];
+ - the associator and both unitors: invertible globular squares whose
+ apex maps are pushout mediators, with the triangle and pentagon
+ coherence discharged by the joint epimorphy of pushout injections.
+
+ Unlike [CospanCat] (which quotients by apex isomorphism to obtain a
+ 1-category), no quotient is taken here: the square setoid compares the
+ apex maps themselves, so [dsq] is genuinely proof-relevant and all the
+ weak structure carries real pushout content.
+
+ Every equation in this file is an equality of morphisms OUT OF a (possibly
+ iterated) pushout apex, so the whole development rides on a single
+ principle: the pushout injections are jointly epic
+ ([pushout_jointly_epic]), the op-dual of the "pullback projections are
+ jointly monic" reasoning of Theory/Morphisms/Stability.v.  Each side of
+ the triangle/pentagon is evaluated on the generator legs of the iterated
+ pushout by the mediator computation rules [pushout_med_in1]/[_in2], and
+ the results are compared leg by leg.
+
+ Monoidal double categories (tensoring cospans alongside the double
+ structure, towards decorated/structured cospans) are NOT attempted here;
+ that development is deferred (ledger entry 9). 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/double+category+of+cospans
+
+ 在具有选定推的范畴[C]上（[HasPushouts C]），[C]的共尖可以组织成一个伪双范畴[Cospan_Double]：- 对象和（严格的）垂直 1-胞：[C] 本身；
+ - 水平 1-胞 [X ⇸ Y]：铺展 [X → N ← Y]（Construction/Cospan/Category.v 中的 [CospanArrow X Y]）；
+ - 方形
+ X --h--> Y
+ |        |
+ u        v
+ v        v
+ Z --k--> W
+ 填充边界 [(h, u, v, k)]：铺展的态射，即使顶点映射 [φ : apex h ~> apex k] 与垂直边相互作用的腿映射（[φ ∘ in1 h ≈ in1 k ∘ u] 和 [φ ∘ in2 h ≈ in2 k ∘ v]）；
+ - 水平复合：沿共享边界对象通过选定的推积进行粘合，完全如 [cospan_compose] 所示；
+ - 结合子和两个单位子：可逆的球面方形，其顶点映射是推积中介，三角形和五边形的相干性由推积注入的联合满射性保证。与 [CospanCat]（通过顶点同构取商以获得一个 1-范畴）不同，这里没有取任何商：方块等价类直接比较顶点映射本身，因此 [dsq] 真正与证明相关，所有弱结构都包含实际的推挤内容。
+
+ 本文件中的每个方程都是从（可能迭代的）推挤顶点出的态射的相等性，因此整个发展依赖于一个原则：推挤注入是联合满射 ([pushout_jointly_epic])，这是 Theory/Morphisms/Stability.v 中“拉回投影是联合单射”推理的对偶。三角形/五边形的每一边都通过中介计算规则 [pushout_med_in1] / [_in2] 在迭代推挤的生成腿上进行求值，并且结果逐腿进行比较。单体双范畴（在双结构之外进行余积张量化，面向装饰/结构化余积）在此没有尝试；这一发展被推迟（账目条目 9）。
 *)
 
 Section CospanDouble.
@@ -23,13 +75,18 @@ Section CospanDouble.
 Context {C : Category}.
 Context (HP : HasPushouts C).
 
-(** The chosen gluing pushout composable pair cospans: [f] then
- [g], glued over shared boundary 对象 [Y]. （已译） *)
+(*
+   * The chosen gluing pushout for a composable pair of cospans: [f] then
+   [g], glued over the shared boundary object [Y]. 
+
+   --------
+   * 对于一对可组合的余范围，选定的粘合推挤：[f] 然后 [g]，通过共享的边界对象 [Y] 粘合。
+*)
 Definition gpo {X Y Z : C} (f : CospanArrow X Y) (g : CospanArrow Y Z) :
   IsPushout (cospan_in2 f) (cospan_in1 g) :=
   pushout (cospan_in2 f) (cospan_in1 g).
 
-(* 相关说明。 （已译） *)
+(* * ** Joint epimorphy of the pushout injections / * ** 推出注入的联合上同态 *)
 
 Lemma pushout_jointly_epic {x y z : C} {f : x ~> y} {g : x ~> z}
       (P : IsPushout f g) {Q : C} (m n : pushout_apex P ~> Q) :
@@ -46,7 +103,12 @@ Proof.
   - now symmetry.
 Qed.
 
-(* * ** Squares: 态射 cospans over vertical boundary （已译） *)
+(*
+   * ** Squares: morphisms of cospans over a vertical boundary 
+
+   --------
+   * ** 方形：垂直边界上的余叉范畴的态射
+*)
 
 Record CospanSq {a b c d : C}
        (h : CospanArrow a b) (u : a ~> c) (v : b ~> d)
@@ -60,16 +122,26 @@ Arguments sq_map {a b c d h u v k} _.
 Arguments sq_in1 {a b c d h u v k} _.
 Arguments sq_in2 {a b c d h u v k} _.
 
-(** The square setoid compares apex maps (real data, not mere
- 命题). （已译） *)
+(*
+   * The square setoid compares the apex maps (real data, not a mere
+   proposition). 
+
+   --------
+   * 方形集合等同类比较顶点映射（真实数据，而不仅仅是命题）。
+*)
 Program Instance CospanSq_Setoid {a b c d : C}
         {h : CospanArrow a b} {u : a ~> c} {v : b ~> d}
         {k : CospanArrow c d} : Setoid (CospanSq h u v k) := {|
   equiv := fun s t => sq_map s ≈ sq_map t
 |}.
 
-(** 本节：Boundary coercion: apex map unchanged, recorded
- boundary proofs rebuilt along [≈]-equal vertical edges. （已译） *)
+(*
+   * Boundary coercion: the apex map is unchanged, only its recorded
+   boundary proofs are rebuilt along [≈]-equal vertical edges. 
+
+   --------
+   * 边界强制：顶点映射保持不变，仅其记录的边界证明沿 [≈] 相等的垂直边重新构建。
+*)
 Program Definition CospanSq_coerce {a b c d : C} {h : CospanArrow a b}
         {u u' : a ~> c} {v v' : b ~> d} {k : CospanArrow c d}
         (eu : u ≈ u') (ev : v ≈ v') (s : CospanSq h u v k) :
@@ -85,11 +157,11 @@ Lemma CospanSq_coerce_respects {a b c d : C} {h : CospanArrow a b}
   Proper (equiv ==> equiv) (@CospanSq_coerce a b c d h u u' v v' k eu ev).
 Proof. proper. Qed.
 
-(** Vertical identity square. *)
+(** Vertical identity square. / 垂直身份正方形。 *)
 Program Definition CospanSq_vid {a b : C} (h : CospanArrow a b) :
   CospanSq h id id h := {| sq_map := id |}.
 
-(** Vertical pasting of squares. *)
+(** Vertical pasting of squares. / 正方形的纵向粘贴。 *)
 Program Definition CospanSq_vcomp {a0 b0 a1 b1 a2 b2 : C}
         {h : CospanArrow a0 b0} {u : a0 ~> a1} {v : b0 ~> b1}
         {k : CospanArrow a1 b1} {u' : a1 ~> a2} {v' : b1 ~> b2}
@@ -118,9 +190,17 @@ Proof.
 Qed.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** Horizontal pasting of squares
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Two squares sharing their middle vertical edge [v] induce, by the
+   universal property of the gluing pushout of their top cospans, a square
+   between the glued cospans.  The mediator's legs land in the gluing
+   pushout of the bottom cospans. 
+
+   --------
+   * ** 方形的水平拼接
+
+   两个共享其中间垂直边 [v] 的方形，通过其上端共尖的粘合推挤的普遍性质，在粘合后的共尖之间产生一个方形。中介者的两条腿落在底端共尖的粘合推挤中。
 *)
 
 Lemma glue_comm {a b c a' b' c' : C}
@@ -198,8 +278,13 @@ Proof.
     now apply compose_respects.
 Qed.
 
-(** 本节：Interchange: both pastings 2x2 grid mediators out same
- gluing pushout same legs. （已译） *)
+(*
+   * Interchange: both pastings of a 2x2 grid are mediators out of the same
+   gluing pushout with the same legs. 
+
+   --------
+   * 交换：2x2 网格的两次粘贴都是来自相同连接推出且具有相同边的中介。
+*)
 Lemma CospanSq_interchange {a b c a' b' c' a'' b'' c'' : C}
       {h1 : CospanArrow a b} {h2 : CospanArrow b c}
       {u1 : a ~> a'} {u2 : b ~> b'} {u3 : c ~> c'}
@@ -226,9 +311,16 @@ Proof.
 Qed.
 
 (*
-   本节说明拉回/推出、同构相关定义、性质与动机。
+   * ** The unit globular squares
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Gluing with the identity cospan is the identity cospan up to the
+   canonical pushout isomorphism; both directions are packaged as squares
+   with identity vertical edges. 
+
+   --------
+   * ** 单位球状方块
+
+   用单位共跨连接粘合，在典范的推挤同构下是单位共跨；两个方向都被包装为垂直边为单位的方块。
 *)
 
 Section Unitors.
@@ -236,7 +328,7 @@ Section Unitors.
 Context {a b : C}.
 Context (h : CospanArrow a b).
 
-(* 相关说明。 （已译） *)
+(* * *** Left unitor: [dhid b ∘h h ≅ h] / * *** 左单位元：[dhid b ∘h h ≅ h] *)
 
 Let PL : IsPushout (cospan_in2 h) (cospan_in1 (cospan_id b)) :=
   gpo h (cospan_id b).
@@ -298,7 +390,7 @@ Proof.
     rewrite (pushout_commutes PL); simpl; cat.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * *** Right unitor: [h ∘h dhid a ≅ h] / * *** 右单位元：[h ∘h dhid a ≅ h] *)
 
 Let PR : IsPushout (cospan_in2 (cospan_id a)) (cospan_in1 h) :=
   gpo (cospan_id a) h.
@@ -363,9 +455,19 @@ Qed.
 End Unitors.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** The associator globular squares
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The two bracketings of a triple gluing are canonically isomorphic: both
+   apexes receive the three cospan apexes through pushout injections, and
+   the mediators in either direction are assembled from the pushout UMP in
+   two steps.  All computation rules on the three "generator" legs are
+   recorded, since the triangle and pentagon coherence proofs evaluate
+   everything on generators. 
+
+   --------
+   * ** 联结子球状方块
+
+   一个三重粘接的两种括号方式在典范上是同构的：两个顶点都通过推积注入接收三个余篱顶点，并且任一方向的中介者都是通过两步从推积唯一映射性质组装的。所有三个“生成”支上的计算规则都被记录下来，因为三角形和五边形相干性证明在生成元上评估了一切。
 *)
 
 Section Associator.
@@ -376,15 +478,15 @@ Context (p : CospanArrow X Y) (q : CospanArrow Y Z) (r : CospanArrow Z W).
 Let Ppq : IsPushout (cospan_in2 p) (cospan_in1 q) := gpo p q.
 Let Pqr : IsPushout (cospan_in2 q) (cospan_in1 r) := gpo q r.
 
-(* Apex of [r ∘h (q ∘h p)]. *)
+(* Apex of [r ∘h (q ∘h p)]. / [r ∘h (q ∘h p)] 的顶点。 *)
 Let PL : IsPushout (pushout_in2 Ppq ∘ cospan_in2 q) (cospan_in1 r) :=
   gpo (cospan_compose HP q p) r.
 
-(* Apex of [(r ∘h q) ∘h p]. *)
+(* Apex of [(r ∘h q) ∘h p]. / [(r ∘h q) ∘h p] 的顶点。 *)
 Let PR : IsPushout (cospan_in2 p) (pushout_in1 Pqr ∘ cospan_in1 q) :=
   gpo p (cospan_compose HP r q).
 
-(** *** The forward mediator *)
+(** *** The forward mediator / *** 前向中介者 *)
 
 Lemma assoc_m1_comm :
   pushout_in1 PR ∘ cospan_in2 p
@@ -420,7 +522,12 @@ Definition assoc_fwd_map : pushout_apex PL ~> pushout_apex PR :=
 Lemma assoc_fwd_in1 : assoc_fwd_map ∘ pushout_in1 PL ≈ assoc_m1.
 Proof. apply pushout_med_in1. Qed.
 
-(* 相关说明。 （已译） *)
+(*
+ Generator computation rules: the [p], [q] and [r] legs. 
+
+ --------
+ 发电机计算规则：[p]、[q] 和 [r] 分支。
+*)
 
 Lemma assoc_fwd_p :
   assoc_fwd_map ∘ (pushout_in1 PL ∘ pushout_in1 Ppq) ≈ pushout_in1 PR.
@@ -441,7 +548,7 @@ Lemma assoc_fwd_r :
   assoc_fwd_map ∘ pushout_in2 PL ≈ pushout_in2 PR ∘ pushout_in2 Pqr.
 Proof. apply pushout_med_in2. Qed.
 
-(** *** The backward mediator *)
+(** *** The backward mediator / *** 落后的调解者 *)
 
 Lemma assoc_m2_comm :
   (pushout_in1 PL ∘ pushout_in2 Ppq) ∘ cospan_in2 q
@@ -497,7 +604,7 @@ Proof.
   apply assoc_m2_in2.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * *** The two mediators are mutually inverse / * *** 这两个介质是相互逆的 *)
 
 Lemma assoc_bwd_fwd : assoc_bwd_map ∘ assoc_fwd_map ≈ id.
 Proof.
@@ -533,7 +640,7 @@ Proof.
       cat.
 Qed.
 
-(** *** The associator squares *)
+(** *** The associator squares / *** 结合器平方 *)
 
 Lemma Cospan_dassoc_fwd_in1 :
   assoc_fwd_map ∘ (pushout_in1 PL ∘ (pushout_in1 Ppq ∘ cospan_in1 p))
@@ -596,9 +703,15 @@ Definition Cospan_dassoc_bwd :
 End Associator.
 
 (*
-   本节说明 Double 相关定义、性质与动机。
+   * ** The strict vertical laws and coercion groupoid laws
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   All of them are φ-level identities: [CospanSq_coerce] preserves the apex
+   map on the nose, and vertical pasting is composition of apex maps. 
+
+   --------
+   * **严格的垂直律和强制群范式律
+
+   它们都是φ级别的恒等式：[CospanSq_coerce]严格保留顶点映射，垂直拼接就是顶点映射的组合。
 *)
 
 Lemma CospanSq_coerce_id {a b c d : C} {h : CospanArrow a b}
@@ -643,9 +756,15 @@ Lemma CospanSq_vassoc {a0 b0 a1 b1 a2 b2 a3 b3 : C}
 Proof. simpl; apply comp_assoc. Qed.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** Reduction bridges for the apex maps of the named squares
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   These let the coherence proofs replace [sq_map (...)] subterms by their
+   underlying pushout mediators without relying on [simpl]'s traversal. 
+
+   --------
+   * ** 已命名方格的顶点映射的约简桥
+
+   这些让相干性证明能够用其基础的推进媒介替换  [sq_map (...)]  子项，而无需依赖  [simpl] 的遍历。
 *)
 
 Lemma CospanSq_vid_map {a b : C} (h : CospanArrow a b) :
@@ -666,9 +785,20 @@ Lemma Cospan_dassoc_fwd_map {X Y Z W : C}
 Proof. reflexivity. Qed.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** Triangle coherence
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Whiskering the left unitor equals the associator followed by whiskering
+   the right unitor, evaluated on the three generator legs of the iterated
+   gluing pushout of [k ∘h (dhid b ∘h f)].  The middle generator is exactly
+   the pushout square of the bottom gluing [gpo f k]. 
+
+   --------
+   * ** 三角形连贯性
+
+   左单位子的胡须等于结合子，接着是胡须
+   右单位子，在迭代的三条生成元腿上进行评估
+   胶合[k ∘h (dhid b ∘h f)]的推出。中间的发电机正好是
+   底部胶合[gpo f k]的推出方形。
 *)
 
 Lemma Cospan_triangle {a b c : C} (f : CospanArrow a b) (k : CospanArrow b c) :
@@ -678,7 +808,7 @@ Lemma Cospan_triangle {a b c : C} (f : CospanArrow a b) (k : CospanArrow b c) :
 Proof.
   apply (pushout_jointly_epic (gpo (cospan_compose HP (cospan_id b) f) k)).
   - apply (pushout_jointly_epic (gpo f (cospan_id b))).
-    + (* generator: apex f *)
+    + (* generator: apex f / 发电机：顶点 f *)
       rewrite <- (comp_assoc
         (CospanSq_hmap (CospanSq_vid f) (Cospan_dunit_right_fwd k))).
       rewrite <- (comp_assoc
@@ -692,7 +822,7 @@ Proof.
       rewrite <- (comp_assoc (pushout_in1 (gpo f k))).
       rewrite (luni_map_in1 f).
       cat.
-    + (* generator: the shared boundary object b *)
+    + (* generator: the shared boundary object b / 生成器：共享边界对象 b *)
       rewrite <- (comp_assoc
         (CospanSq_hmap (CospanSq_vid f) (Cospan_dunit_right_fwd k))).
       rewrite <- (comp_assoc
@@ -711,7 +841,7 @@ Proof.
       rewrite (luni_map_in2 f).
       symmetry.
       apply (pushout_commutes (gpo f k)).
-  - (* generator: apex k *)
+  - (* generator: apex k / 发电机：Apex K *)
     rewrite <- (comp_assoc
       (CospanSq_hmap (CospanSq_vid f) (Cospan_dunit_right_fwd k))).
     rewrite (assoc_fwd_r f (cospan_id b) k).
@@ -727,9 +857,20 @@ Proof.
 Qed.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** Pentagon coherence
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The two globular paths from [k ∘h (h ∘h (g ∘h f))] to
+   [((k ∘h h) ∘h g) ∘h f] agree.  Both sides are morphisms out of a
+   three-fold iterated pushout, so the proof evaluates them on the four
+   generator legs (the apexes of [f], [g], [h] and [k]) via three nested
+   applications of joint epimorphy; on each generator both sides compute,
+   by the mediator rules, to the same composite of injections into the
+   target apex. 
+
+   --------
+   * ** 五边形相干性
+
+   从  [k ∘h (h ∘h (g ∘h f))]  到  [((k ∘h h) ∘h g) ∘h f] 的两个球状路径是一致的。两边都是来自三重迭代推出的态射，因此证明在四个生成元支上对它们进行求值（[f]、[g]、[h] 和 [k] 的顶点），通过三次嵌套的联合满射应用；在每个生成元上，依据中介规则，两边计算结果都是目标顶点注入的相同复合。
 *)
 
 Lemma Cospan_pentagon {a b c d e : C}
@@ -745,7 +886,7 @@ Proof.
            (gpo (cospan_compose HP h (cospan_compose HP g f)) k)).
   - apply (pushout_jointly_epic (gpo (cospan_compose HP g f) h)).
     + apply (pushout_jointly_epic (gpo f g)).
-      * (* generator: apex f *)
+      * (* generator: apex f / 发电机：顶点 f *)
         rewrite <- (comp_assoc
           (CospanSq_hmap (CospanSq_vid f) (Cospan_dassoc_fwd g h k)
            ∘ (assoc_fwd_map f (cospan_compose HP h g) k
@@ -779,7 +920,7 @@ Proof.
         rewrite <- (comp_assoc (assoc_fwd_map f g (cospan_compose HP k h))).
         rewrite (assoc_fwd_p f g (cospan_compose HP k h)).
         reflexivity.
-      * (* generator: apex g *)
+      * (* generator: apex g / 发电机：顶点 g *)
         rewrite <- (comp_assoc
           (CospanSq_hmap (CospanSq_vid f) (Cospan_dassoc_fwd g h k)
            ∘ (assoc_fwd_map f (cospan_compose HP h g) k
@@ -823,7 +964,7 @@ Proof.
         rewrite <- (comp_assoc (assoc_fwd_map f g (cospan_compose HP k h))).
         rewrite (assoc_fwd_q f g (cospan_compose HP k h)).
         reflexivity.
-    + (* generator: apex h *)
+    + (* generator: apex h / 发电机：Apex H *)
       rewrite <- (comp_assoc
         (CospanSq_hmap (CospanSq_vid f) (Cospan_dassoc_fwd g h k)
          ∘ (assoc_fwd_map f (cospan_compose HP h g) k
@@ -861,7 +1002,7 @@ Proof.
       rewrite <- (comp_assoc (pushout_in2
         (gpo f (cospan_compose HP (cospan_compose HP k h) g)))).
       reflexivity.
-  - (* generator: apex k *)
+  - (* generator: apex k / 发电机：Apex K *)
     rewrite <- (comp_assoc
       (CospanSq_hmap (CospanSq_vid f) (Cospan_dassoc_fwd g h k))).
     rewrite <- (comp_assoc (assoc_fwd_map f (cospan_compose HP h g) k)).
@@ -884,7 +1025,7 @@ Proof.
     reflexivity.
 Qed.
 
-(* * ** The double 范畴 cospans （已译） *)
+(* * ** The double category of cospans / * ** 共跨的双重范畴 *)
 
 Definition Cospan_Double : DoubleCategory := {|
   dcat := C;

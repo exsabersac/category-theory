@@ -9,14 +9,30 @@ Require Import Category.Instance.Omega.
 
 Generalizable All Variables.
 
-(* * * The initial-algebra chain 自函子 （已译） *)
+(* * * The initial-algebra chain of an endofunctor / * * 一个自函子初代数链 *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
 
-   本文件给出链相关构造。
+ For an endofunctor [F] on a category [C] with an initial object [0], the
+ initial-algebra chain is the ω-indexed diagram
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ 0 --¡--> F 0 --F¡--> F² 0 --F²¡--> ...
+
+ whose colimit (when [F] preserves it) carries the initial F-algebra
+ (Adámek's theorem, Theory/Adamek.v).  Here it is packaged as a functor
+ [Chain : Omega ⟶ C] out of the ordinal ω (Instance/Omega.v).  The section
+ is closed before any [Colimit (Chain F)] statement so that the diagram is a
+ genuine object of the functor category. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
+
+ 对于一个在类别[C]上具有初始对象[0]的端函子[F]，初始代数链是ω索引的图
+
+ 0 --¡--> F 0 --F¡--> F² 0 --F²¡--> ...
+
+ 其余积（当[F]保留它时）携带初始F-代数（Adámek定理，Theory/Adamek.v）。这里它作为一个从序数ω到[Chain : Omega ⟶ C]的函子进行打包（Instance/Omega.v）。该部分在任何[Colimit (Chain F)]陈述之前已关闭，因此该图是函子范畴中的一个真正对象。
 *)
 
 Section Chain.
@@ -37,17 +53,27 @@ Fixpoint chain_step (n : nat) : chain_obj n ~> chain_obj (S n) :=
   | S k => fmap[F] (chain_step k)
   end.
 
-(* The action order 证明 [m ≤ n]: iterate [chain_step] along the
- derivation. （已译） *)
+(*
+ The action on an order proof [m ≤ n]: iterate [chain_step] along the
+ derivation. 
+
+ --------
+ 在订单证明 [m ≤ n] 上的操作：沿着推导迭代 [chain_step]。
+*)
 Fixpoint chain_hom {m n} (p : le_t m n) : chain_obj m ~> chain_obj n :=
   match p with
   | le_t_n    => id
   | le_t_S p' => chain_step _ ∘ chain_hom p'
   end.
 
-(* Functoriality composites: transporting along fused order 证明 the
- 复合 transports (in direction fixed [Omega]'s
- 复合 [le_t_trans g f]). （已译） *)
+(*
+ Functoriality on composites: transporting along a fused order proof is the
+ composite of the transports (in the direction fixed by [Omega]'s
+ composition [le_t_trans g f]). 
+
+ --------
+ 复合上的函子性：沿着融合顺序证明的运输是沿运输的复合（按照[Omega]的复合[le_t_trans g f]所固定的方向）。
+*)
 Lemma chain_hom_trans {m n k} (a : le_t m n) (b : le_t n k) :
   chain_hom (le_t_trans a b) ≈ chain_hom b ∘ chain_hom a.
 Proof.
@@ -60,15 +86,25 @@ Program Definition Chain : Omega ⟶ C := {|
   fobj := chain_obj;
   fmap := fun _ _ p => chain_hom p
 |}.
-(* fmap_respects: strict-equality hom-setoid; fmap_id: chain_hom the
- reflexivity 证明 [id] definitionally; fmap_comp: chain_hom_trans. （已译） *)
+(*
+ fmap_respects: strict-equality hom-setoid; fmap_id: chain_hom of the
+ reflexivity proof is [id] definitionally; fmap_comp: chain_hom_trans. 
+
+ --------
+ fmap_respects: 严格相等同态集；fmap_id: 链同态的反身性证明在定义上是 [id]；fmap_comp: 链同态传递。
+*)
 Solve All Obligations with
   (simpl; intros; try subst; try reflexivity;
    try (now apply chain_hom_trans); try (now rewrite chain_hom_trans); try cat).
 
 End Chain.
 
-(* The dual chain (a co-chain 进入 codomain), final-coalgebra
- development, duality through [C^op]. （已译） *)
+(*
+ The dual chain (a co-chain into the codomain), for the final-coalgebra
+ development, by duality through [C^op]. 
+
+ --------
+ 双链（一个到余域的共链），用于最终余代数的发展，通过 [C^op] 的对偶性。
+*)
 Definition Cochain {C : Category} `{@Terminal C} (F : C ⟶ C) :
   Omega^op ⟶ C := (@Chain (C^op) _ (F^op))^op.

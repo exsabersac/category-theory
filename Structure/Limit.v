@@ -5,74 +5,64 @@ Require Import Category.Structure.Cone.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
-
 (* nLab:      https://ncatlab.org/nlab/show/limit
    Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
 
-   Wikipedia：「设 F : J ⟶ C 是范畴 C 中形状为 J 的图。到 F 的锥是 C 的对象 N 连同
-   由 J 的对象 X 指标的态射族 ψX : N ⟶ F(X)，使得对 J 中每个态射 f : X ⟶ Y，
-   有 F(f) ∘ ψX = ψY。
-
-   「图 F : J ⟶ C 的极限是到 F 的锥 (L, φ)，使得对到 F 的任意其他锥 (N, ψ) 存在
-   唯一态射 u : N ⟶ L 满足对所有 X ∈ J 有 φX ∘ u = ψX。
-
-   「称锥 (N, ψ) 经锥 (L, φ) 以唯一分解 u 分解。态射 u 有时称为中介态射。」
-
-   等价地，极限是 F 上锥范畴的终对象：每个其他锥经其唯一分解的普遍锥（nLab）。
-   锥 (L, φ) 此处记为 [Cone F]（见 [Structure/Cone.v]）；[Limit] 把此类终锥与其普遍性质
-   捆绑。库记号中普遍性质读作：
-
-       ∀ N : Cone F, ∃! u : vertex_obj[N] ~> vertex_obj[L],
-         ∀ x : J, φ_x ∘ u ≈ ψ_x,
-
-   其中 φ = vertex_map[L] 是极限的腿，ψ = vertex_map[N] 是竞争锥的腿。（同一预层可表性
-   视角见 [Structure/UniversalProperty/Limit.v]，证明表示 [ConePresheaf F] 等价于是极限。） *)
+   图 F : J ⟶ C 的极限 = 「到 F 的锥」范畴里的终对象：普遍锥 (L, φ)，
+   使得任意竞争锥 (N, ψ) 经唯一 u : N ~> L 分解，且 φ_x ∘ u ≈ ψ_x。
+   A limit of F is a terminal cone over F: every other cone factors
+   uniquely through it.
+*)
 
 (*
-   关于极限的来源与用途
+   关于极限 / On limits
 
-   nLab:  https://ncatlab.org/nlab/show/colimit
-   Paper: Kan, "Adjoint functors", Transactions of the American
-
-   本节说明（余）极限、来源与用途相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Haskell 直觉：积、等化子、拉回都是极限的特例——「用一组方程粘合数据」。
+   形状 J 决定粘合方式（空图→终对象；两点无边→积；平行对→等化子）。
+   Haskell intuition: products, equalizers, pullbacks are special limits —
+   "glue data by equations"; shape J picks the pattern.
 *)
-Class Limit `(F : J ⟶ C) := {
-  (* 相关说明。 （已译） *)
-  limit_cone : Cone F;
 
-  (* Universal 性质: every cone N factors through 极限 cone a
- 唯一 mediating 态射 u apexes, satisfying φ_x ∘ u ≈ ψ_x for
- every x J. Here [N ~> limit_cone] is, via [vertex_obj] coercion,
- 态射 vertex_obj[N] ~> vertex_obj[limit_cone] C.（已译） *)
+(*
+   【Class Limit 语法与字段展开】/ Syntax & field walkthrough
+
+   1) Class Limit (F : J ⟶ C)：对固定图 F 打包「极限锥 + UMP」。
+      Packages a limiting cone for a fixed diagram F.
+
+   2) 数据 / Data
+      - limit_cone : Cone F  —— 极限锥（顶点 + 腿族）；见 Cone.v
+        / the limiting cone (apex + legs); see Cone.v
+
+   3) 普遍性质 / UMP
+      - ump_limits : ∀ N : Cone F, ∃! u : N ~> limit_cone,
+          ∀ x, vertex_map[limit_cone] ∘ u ≈ vertex_map[N] x
+        每个竞争锥经唯一中介态射分解。
+        Every competing cone factors via a unique mediator.
+
+   4) 对偶：Colimit F := Limit (F^op)（余极限 = 对偶图的极限）。
+      Dual: Colimit F := Limit (F^op).
+
+   阅读顺序：先 Cone.v（ACone/Cone）→ Limit → 特例 Equalizer/Pullback。
+   Read Cone.v first, then Limit, then special cases.
+*)
+
+Class Limit `(F : J ⟶ C) := {
+  limit_cone : Cone F;  (* 极限锥 / limiting cone *)
+
+  (* UMP：竞争锥经唯一 u 分解 / every cone factors via unique u *)
   ump_limits : ∀ N : Cone F, ∃! u : N ~> limit_cone, ∀ x : J,
     vertex_map[limit_cone] ∘ u ≈ @vertex_map _ _ _ _ (@coneFrom _ _ _ N) x
 }.
 
-(*
-   本节说明（余）极限相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 指定对象 c 为 F 的极限顶点 / Designate c as limit apex of F *)
 Class IsALimit `(F : J ⟶ C) (c : C) := {
-    (* 相关说明。 （已译） *)
-    limit_acone : ACone c F;
-    (*
-   本节说明（余）极限相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    limit_acone  (* 以 c 为顶点的锥 / cone with apex c *) : ACone c F;
+    (* UMP at designated apex c / UMP at c *)
     ump_limit : ∀ N : Cone F, ∃! u : N ~> c, ∀ x : J,
     vertex_map _ ∘ u ≈ vertex_map x
   }.
 
-(*
-   本节说明（余）极限、等价相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* IsALimit 的 Setoid（腿点态 ≈）/ Setoid on IsALimit *)
 Program Definition LimitSetoid `(F : J ⟶ C) (c : C) : Setoid (IsALimit F c) :=
   {| equiv := fun l1 l2 => @limit_acone _ _ _ _ l1 ≈ @limit_acone _ _ _ _ l2 |}.
 Next Obligation.
@@ -85,7 +75,5 @@ Coercion limit_cone : Limit >-> Cone.
 
 Require Import Category.Functor.Opposite.
 
-(* The colimit F dual notion: limit opposite diagram
- F^op, i.e. universal cocone / 始对象 范畴 of
- cocones over F (nLab, Wikipedia). （已译） *)
+(* 余极限 = 对偶图的极限 / Colimit = limit of opposite diagram *)
 Definition Colimit `(F : J ⟶ C) := Limit (F^op).

@@ -4,7 +4,7 @@ Require Import Category.Theory.Isomorphism.
 
 Generalizable All Variables.
 
-(** * 带终对象的范畴 *)
+(** * 带终对象的范畴 / Categories with a terminal object *)
 
 (* nLab: https://ncatlab.org/nlab/show/terminal+object
    Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
@@ -15,10 +15,15 @@ Generalizable All Variables.
    下的单点）。终对象是初始对象的对偶——它是 `C^op` 中的初始对象——并且是空图的极限；
    见 Structure/Initial.v，由对偶从本文件导出初始对象。终对象若存在则在（唯一）同构
    下唯一：下文 [terminal_unique] 构造同构，[terminal_arrow_unique] 表明它是两对象间
-   仅有的箭头，[terminal_unique_up_to_unique_iso] 把两者打包为单个 [Unique]。 *)
+   仅有的箭头，[terminal_unique_up_to_unique_iso] 把两者打包为单个 [Unique]。
+
+   A terminal object `1` in C is an object such that for every `x` there is
+   exactly one morphism `! : x ~> 1`. Existence is [one]; uniqueness up to ≈
+   is [one_unique]. Dual of initial; limit of the empty diagram.
+*)
 
 (*
-   关于terminal objects的来源与用途
+   关于终对象的来源与用途 / On terminal objects
 
    nLab:  https://ncatlab.org/nlab/show/global+element
    nLab:  https://ncatlab.org/nlab/show/unit+type
@@ -26,9 +31,33 @@ Generalizable All Variables.
    Paper: Mac Lane, "Duality for groups", Bulletin of the AMS 56, 1950
    Paper: Lawvere, "An elementary theory of the category of sets",
 
-   本节说明（余）极限、始/终对象、来源与用途相关定义、性质与动机。
+   Haskell 对照：Unit / () ——「只有一个值」；从任意类型到 () 恰有一个函数
+   `const ()`。终对象 = 范畴版的 Unit。
+   Haskell analogy: Unit / () — exactly one value; unique map `x -> ()`.
+*)
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+(*
+   【Class Terminal 语法与字段展开】/ Syntax & field walkthrough
+
+   1) Class Terminal：给「已有范畴 C」加结构（类型类字段），不是新范畴。
+      Instance 填具体的 1 与 !。≈ Haskell 的 class constraint，定律也是字段。
+      [Class Terminal] equips an existing C; Instance fills 1 and !.
+      Like a Haskell class; laws are proof-carrying fields.
+
+   2) 数据字段 / Data fields
+      - terminal_obj : C  —— 对象 1 本身 / the object 1
+      - one {x} : x ~> terminal_obj  —— 唯一箭头 ! : x ~> 1（{x} 隐式）
+        / the unique arrow ! ({x} implicit)
+
+   3) 公理 / Law
+      - one_unique : 任意 f,g : x ~> 1 都有 f ≈ g（唯一性）
+        / any two arrows into 1 are ≈
+
+   4) 记号：Notation "1" := terminal_obj。读代码时 1 就是终对象。
+      Notation "1" names the terminal object.
+
+   阅读顺序：terminal_obj → one → one_unique → terminal_unique（同构唯一性）。
+   Read: terminal_obj → one → one_unique → uniqueness up to iso.
 *)
 
 Section Terminal.
@@ -36,10 +65,11 @@ Section Terminal.
 Context {C : Category}.
 
 Class Terminal := {
-  terminal_obj : C;                     (* the terminal object 1 *)
-  one {x} : x ~> terminal_obj;          (* the morphism ! : x ~> 1 *)
+  terminal_obj : C;  (* 终对象 1 / the terminal object 1 *)
+  one {x} : x ~> terminal_obj;  (* 唯一箭头 ! : x ~> 1 / unique ! *)
 
-  one_unique {x} (f g : x ~> terminal_obj) : f ≈ g  (* ! is unique up to ≈ *)
+  one_unique {x} (f g : x ~> terminal_obj) : f ≈ g
+    (* ! 在 ≈ 下唯一 / ! unique up to ≈ *)
 }.
 
 End Terminal.
@@ -55,15 +85,10 @@ Proof. intros; apply one_unique. Qed.
 Notation "one[ C ]" := (@one _ _ C)
   (at level 9, format "one[ C ]") : morphism_scope.
 
-(* A "常值" map `x ~> y` factoring through `1`: pick `f : 1 ~> y`, then
- precompose `! : x ~> 1`, so result ignores 论元's data. （已译） *)
+(* 常值映射：经 1 分解，f : 1 ~> y 再预复合 ! / Constant map via 1 *)
 Definition const `{@Terminal C} {x y : C} {f : 1 ~> y} := f ∘ one[x].
 
-(*
-   本节说明始/终对象相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 两终对象之间的（唯一）同构 / Unique iso between two terminals *)
 Program Definition terminal_unique {C : Category} (T1 T2 : @Terminal C) :
   @terminal_obj C T1 ≅ @terminal_obj C T2 := {|
   to   := @one C T2 (@terminal_obj C T1);
@@ -72,28 +97,20 @@ Program Definition terminal_unique {C : Category} (T1 T2 : @Terminal C) :
 Next Obligation. apply (@one_unique C T2). Qed.
 Next Obligation. apply (@one_unique C T1). Qed.
 
-(*
-   本节说明同构、始/终对象相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 两终对象间任意两箭头相等 / Any two arrows between terminals agree *)
 Corollary terminal_arrow_unique {C : Category} (T1 T2 : @Terminal C)
       (f g : @terminal_obj C T1 ~> @terminal_obj C T2) : f ≈ g.
 Proof. apply (@one_unique C T2). Qed.
 
-(*
-   本节说明hom、同构、始/终对象相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 谓词形式：「c 是终对象」/ Predicate form: c is terminal *)
 Definition IsTerminalObj {C : Category} (c : C) : Type :=
   ∀ x : C, Unique (fun _ : x ~> c => True).
 
-(* The 唯一箭头 x ~> c supplied predicate. （已译） *)
+(* 谓词给出的唯一箭头 x ~> c / Unique arrow from the predicate *)
 Definition is_terminal_one {C : Category} {c : C} (H : IsTerminalObj c)
   {x : C} : x ~> c := unique_obj (H x).
 
-(* 相关说明。 （已译） *)
+(* 谓词形式的唯一性 / Uniqueness from the predicate *)
 Lemma is_terminal_unique {C : Category} {c : C} (H : IsTerminalObj c)
   {x : C} (f g : x ~> c) : f ≈ g.
 Proof.
@@ -110,18 +127,14 @@ Program Definition Terminal_from_IsTerminalObj {C : Category} {c : C}
 |}.
 Next Obligation. now apply (is_terminal_unique H). Qed.
 
-(* ... conversely, unbundling at chosen 对象. （已译） *)
+(* 反之：从 Terminal 解包为谓词 / Conversely: unbundle Terminal *)
 Program Definition IsTerminalObj_from_Terminal {C : Category}
   (T : @Terminal C) : IsTerminalObj (@terminal_obj C T) := fun x =>
   {| unique_obj := @one C T x
    ; unique_property := I |}.
 Next Obligation. now apply (@one_unique C T). Qed.
 
-(*
-   本节说明同构、始/终对象相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 沿同构搬运 Terminal 结构 / Transport Terminal along an iso *)
 Program Definition Terminal_iso {C : Category} (T : @Terminal C) (y : C)
   (i : @terminal_obj C T ≅ y) : @Terminal C := {|
   terminal_obj := y;
@@ -137,11 +150,7 @@ Next Obligation.
   - now rewrite (@one_unique C T _ (from i ∘ f) (from i ∘ g)).
 Qed.
 
-(*
-   本节说明等价、同构、始/终对象相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 打包：唯一同构下唯一 / Pack uniqueness-up-to-unique-iso *)
 Program Definition terminal_unique_up_to_unique_iso {C : Category}
   (T1 T2 : @Terminal C) :
   Unique (fun _ : @terminal_obj C T1 ≅ @terminal_obj C T2 => True) := {|
@@ -154,11 +163,7 @@ Next Obligation.
   - apply (@one_unique C T1).
 Qed.
 
-(*
-   本节说明hom、同构、始/终对象相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 两终对象间唯一箭头 / Unique arrow between two terminals *)
 Program Definition terminal_hom_unique {C : Category} (T1 T2 : @Terminal C) :
   Unique (fun _ : @terminal_obj C T1 ~> @terminal_obj C T2 => True) := {|
   unique_obj := @one C T2 (@terminal_obj C T1);

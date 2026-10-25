@@ -13,63 +13,68 @@ Context `{C : Category}.
 
 (* nLab: https://ncatlab.org/nlab/show/cartesian+category
    nLab: https://ncatlab.org/nlab/show/product
-   nLab: https://ncatlab.org/nlab/show/universal+property
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
 
-   笛卡尔范畴是配备有限积的范畴。本类公理化二元积；零元积（终对象 1）由
-   [Terminal] 另行提供，下文用于单位同构 [prod_one_l] 与 [prod_one_r]。
-
-   积 x × y 由其普遍映射性质刻画。它带有两个投影，
-
-       exl : x × y ~> x        exr : x × y ~> y,
-
-   且对任意对象 x 与态射 f : x ~> y、g : x ~> z，存在配对 ⟨f, g⟩（写作
-   [fork f g]，记号 f △ g），经投影分解 f 与 g。UMP 把该分解及其唯一性记为
-   双条件 [ump_products]：
-
-       h ≈ ⟨f, g⟩  ↔  exl ∘ h ≈ f  ∧  exr ∘ h ≈ g.
-
-   从左到右，h = ⟨f, g⟩ 满足两条投影方程（存在性）。从右到左，满足两方程的
-   任意 h 等于 ⟨f, g⟩（中介态射的唯一性）。熟知恒等式 exl ∘ ⟨f, g⟩ ≈ f 与
-   exr ∘ ⟨f, g⟩ ≈ g（[exl_fork]、[exr_fork]）以及 eta 律 ⟨exl, exr⟩ ≈ id
-   （[fork_exl_exr]）是下文派生的推论。 *)
+   笛卡尔范畴 = 有有限积的范畴。本 Class 公理化二元积；零元积（终对象 1）
+   由 [Terminal] 另行提供。积 x × y 由普遍性质刻画：投影 exl/exr 与配对 fork。
+   A cartesian category has finite products. This Class axiomatizes binary
+   products; the nullary product (terminal 1) comes from [Terminal].
+*)
 
 (*
-   关于the product的来源与用途
+   关于积 / On products
 
-   nLab: https://ncatlab.org/nlab/show/cartesian+monoidal+category
-   nLab: https://ncatlab.org/nlab/show/Fox%27s+theorem
-   nLab: https://ncatlab.org/nlab/show/Markov+category
+   Haskell 对照：`(,)` / pair —— `fst`/`snd` 是投影，`(f &&& g)` 或 `\x -> (f x, g x)`
+   是配对。范畴版：exl/exr ≈ fst/snd，fork / △ ≈ &&&。
+   Haskell analogy: `(,)` with `fst`/`snd`; `fork` ≈ `&&&`.
+*)
 
-   本节说明来源与用途相关定义、性质与动机。
+(*
+   【Class Cartesian 语法与字段展开】/ Syntax & field walkthrough
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   1) Class Cartesian：给已有范畴 C 加「二元积」结构。
+      Equips C with binary products.
+
+   2) 数据 / Data
+      - product_obj / ×  —— 对象 x × y / the product object
+      - fork / △         —— 配对 ⟨f,g⟩ : x ~> y×z / pairing
+      - exl, exr         —— 左右投影 / left & right projections
+
+   3) 尊重 ≈ / Respect
+      - fork_respects : Proper … fork —— f≈f' 且 g≈g' ⇒ ⟨f,g⟩≈⟨f',g'⟩
+
+   4) 普遍性质 / UMP（双条件）
+      ump_products : h ≈ ⟨f,g⟩  ↔  (exl∘h ≈ f) * (exr∘h ≈ g)
+      左→右：配对满足投影方程；右→左：满足方程的 h 必等于配对（唯一性）。
+      Left→right: pairing satisfies projections; right→left: uniqueness.
+
+   5) 常见推论（下文）：exl_fork、exr_fork、fork_exl_exr（η 律）。
+      Corollaries below: projection laws and η.
+
+   阅读顺序：product_obj → exl/exr → fork → ump_products。
+   Read: product_obj → exl/exr → fork → ump_products.
 *)
 
 Class Cartesian := {
-  product_obj : obj → obj → obj       (* the product object x × y *)
+  product_obj : obj → obj → obj  (* 积对象 x × y / product object *)
     where "x × y" := (product_obj x y);
 
-  fork {x y z} (f : x ~> y) (g : x ~> z) : x ~> y × z;  (* pairing ⟨f, g⟩ *)
+  fork {x y z} (f : x ~> y) (g : x ~> z) : x ~> y × z;
+    (* 配对 ⟨f,g⟩ / pairing *)
 
-  exl {x y} : x × y ~> x;             (* first projection  (left) *)
-  exr {x y} : x × y ~> y;             (* second projection (right) *)
+  exl {x y} : x × y ~> x;  (* 左投影 / left projection *)
+  exr {x y} : x × y ~> y;  (* 右投影 / right projection *)
 
-  fork_respects : ∀ x y z,            (* ⟨-, -⟩ respects ≈ *)
+  fork_respects : ∀ x y z,
+    (* 配对尊重 ≈ / pairing respects ≈ *)
     Proper (equiv ==> equiv ==> equiv) (@fork x y z);
 
-  (* ump_products: 普遍映射性质 product. The
- mediating 态射 ⟨f, g⟩ unique h factoring f g through the
- projections exl exr. （已译） *)
+  (* UMP：h≈⟨f,g⟩ ↔ 投影方程 / UMP: pairing ↔ projection equations *)
   ump_products {x y z} (f : x ~> y) (g : x ~> z) (h : x ~> y × z) :
     h ≈ fork f g ↔ (exl ∘ h ≈ f) * (exr ∘ h ≈ g)
   }.
 
-(*
-   本节说明笛卡尔相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 指定三元组 (x,y,z) 为积 / Designate z as product of x,y *)
 Class IsCartesianProduct (x y z : C) := {
   fork' {a} (f : a ~> x) (g : a ~> y) : a ~> z;  (* pairing into z *)
 
@@ -79,7 +84,7 @@ Class IsCartesianProduct (x y z : C) := {
   fork'_respects : ∀ a,               (* ⟨-, -⟩ respects ≈ *)
     Proper (equiv ==> equiv ==> equiv) (@fork' a);
 
-  (* ump_product: 普遍映射性质 designated product z. （已译） *)
+  (* 指定积 z 的 UMP / UMP for designated product z *)
   ump_product {a} (f : a ~> x) (g : a ~> y) (h : a ~> z) :
     h ≈ fork' f g ↔ (exl' ∘ h ≈ f) * (exr' ∘ h ≈ g)
   }.

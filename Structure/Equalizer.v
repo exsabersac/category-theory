@@ -6,52 +6,42 @@ Require Import Category.Instance.Parallel.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
-
 (* nLab:      https://ncatlab.org/nlab/show/equalizer
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
 
-   给定 C 中平行对 f, g : x ~> y，等化子是对象 e 连同等化映射 i : e ~> x，使该对等化，
-
-       f ∘ i ≈ g ∘ i,
-
-   且对此性质普遍：对每个对象 n 与每个满足 f ∘ m ≈ g ∘ m 的映射 m : n ~> x，存在唯一
-   u : n ~> e 满足 i ∘ u ≈ m（Wikipedia；nLab 称 i 为「等化映射」、e 为普遍此类对象）。
-   等价地，等化子是平行对图
-
-       e ~> x ⇉ y
-
-   的极限，即两对象/两箭头形状 [Parallel] 上的极限（见 [Instance/Parallel.v]）。此处
-   恰如此定义：[Equalizer] 是函子 F : Parallel ⟶ C 的 [Limit]。
-
-   本文件不把等化映射或普遍性质重述为新字段；它们从 [Limit] 继承（见 [Structure/Limit.v]）。
-   在形状 [Parallel] 下，极限锥的两条腿是等化映射 i（在 [ParX] 上、落入 x）及其与该对的
-   复合（在 [ParY] 上、落入 y）；腿连贯定律强制 f ∘ i ≈ g ∘ i，[ump_limits] 为每个竞争锥
-   供给唯一中介 u。用 [Instance/Parallel.v] 的 [APair f g : Parallel ⟶ C] 从实际平行对
-   f, g 得到图 F。 *)
-
-(*
-   关于equalizers的来源与用途
-
-   nLab:  https://ncatlab.org/nlab/show/coequalizer
-   nLab:  https://ncatlab.org/nlab/show/regular+category
-   Paper: Eckmann, Hilton, "Group-like structures in general categories
-
-   本节说明（余）极限、等化子、来源与用途相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   平行对 f,g : x ~> y 的等化子 = 使 f∘i ≈ g∘i 的普遍对象 e（i : e ~> x）。
+   本库定义为图形状 Parallel 上的极限：Equalizer F := Limit F。
+   Equalizer of parallel pair = limit of shape Parallel.
 *)
 
 (*
-   本节说明（余）极限、等化子、始/终对象相关定义、性质与动机。
+   关于等化子 / On equalizers
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Haskell 直觉：`{a | f a == g a}` —— 用方程切出子类型/子集。
+   与积、拉回同属「极限家族」。
+   Haskell intuition: `{a | f a == g a}`; same family as products/pullbacks.
 *)
+
+(*
+   【Equalizer 定义展开】/ Definition walkthrough
+
+   1) 不新开 Class：Equalizer F := Limit F，其中 F : Parallel ⟶ C。
+      No new Class — specialize Limit to the Parallel shape.
+
+   2) 形状 Parallel（Instance/Parallel.v）：两对象 ParX/ParY，两平行箭头。
+      极限锥在 ParX 上的腿 = 等化映射 i；连贯性强制 f∘i ≈ g∘i；
+      ump_limits 给出竞争锥的唯一中介。
+      Leg at ParX is the equalizing map i; coherence forces f∘i ≈ g∘i.
+
+   3) Coequalizer F := Colimit F（对偶）。
+      Dual: coequalizer = colimit of the same shape.
+
+   阅读：Cone → Limit → 本文件；用 APair f g 把具体平行对变成图 F。
+   Read Cone → Limit → here; use APair f g to build F.
+*)
+
 Definition Equalizer {C : Category} (F : Parallel ⟶ C) := Limit F.
+  (* 等化子 = Parallel 形状的极限 / equalizer as limit *)
 
-(*
-   本节说明（余）极限相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 余等化子 = 同形状的余极限 / Coequalizer = colimit of same shape *)
 Definition Coequalizer {C : Category} (F : Parallel ⟶ C) := Colimit F.

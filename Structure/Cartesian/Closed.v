@@ -12,35 +12,63 @@ Section Closed.
 Context {C : Category}.
 Context `{@Cartesian C}.
 
-(*
-   nLab: https://ncatlab.org/nlab/show/exponential+object
+(* nLab: https://ncatlab.org/nlab/show/exponential+object
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
-   Wikipedia: https://en.wikipedia.org/wiki/Exponential_object
 
-   本文件给出闭结构。
+   笛卡尔闭范畴 (CCC)：有积，且有指数对象 y^x（内部 hom），满足
+   Hom(x × y, z) ≅ Hom(x, z^y)。这就是 curry / uncurry。
+   CCC: products + exponentials with Hom(x×y,z) ≅ Hom(x, z^y).
+*)
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+(*
+   关于 CCC / On cartesian closed categories
+
+   Haskell 对照：函数类型 `y -> x`（注意本库记号 y^x ≈ x → y 的指数写法）、
+   `curry` / `uncurry`、求值 `uncurry id` ≈ `($)` / application。
+   Set、Type、Hask（理想化）都是 CCC。
+   Haskell analogy: function types, curry/uncurry, eval ≈ application.
+*)
+
+(*
+   【Class Closed 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 前置条件：Context `{@Cartesian C}` —— 先有积，再谈指数。
+      Requires Cartesian (products) first.
+
+   2) 数据 / Data
+      - exponent_obj / y^x  —— 指数对象（内部函数空间）
+        / exponential object (internal hom)
+      - exp_iso : (x × y ~> z) ≊ (x ~> z^y)  —— curry 同构
+        / the curry isomorphism (≊ = iso of setoids of morphisms)
+
+   3) 派生 / Derived
+      - curry' / uncurry'  —— to/from exp_iso
+      - eval'              —— uncurry id : y^x × x ~> y（求值/余单位）
+      - ump_exponents'     —— β 律：eval ∘ (curry f × id) ≈ f
+
+   4) 记号：y^x = exponent_obj x y（注意参数顺序：底 x、指数结果侧 y）。
+      Notation y^x = exponent_obj x y (base x, result y).
+
+   阅读：Cartesian（积）→ 本 Class → curry/uncurry 推论。
+   Read Cartesian first, then this Class, then curry laws.
 *)
 
 Class Closed := {
-  exponent_obj : obj → obj → obj    (* internal hom; y ^ x = exponent_obj x y *)
+  exponent_obj : obj → obj → obj  (* 指数 y^x / exponential; = exponent_obj x y *)
     where "y ^ x" := (exponent_obj x y);
 
-  (*
-   本节说明伴随、hom、同构相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
   exp_iso {x y z} : x × y ~> z ≊ x ~> z^y;
+    (* curry 同构 Hom(x×y,z) ≅ Hom(x,z^y) / curry iso *)
 
-  curry'   {x y z} : x × y ~> z → x ~> z^y := to (@exp_iso x y z);    (* transpose: x×y~>z to x~>z^y *)
-  uncurry' {x y z} : x ~> z^y → x × y ~> z := from (@exp_iso x y z);  (* inverse transpose *)
+  curry'   {x y z} : x × y ~> z → x ~> z^y := to (@exp_iso x y z);
+    (* 转置 / curry *)
+  uncurry' {x y z} : x ~> z^y → x × y ~> z := from (@exp_iso x y z);
+    (* 逆转置 / uncurry *)
 
-  eval' {x y} : y^x × x ~> y := @uncurry' _ _ _ id;   (* evaluation; counit, = uncurry id *)
+  eval' {x y} : y^x × x ~> y := @uncurry' _ _ _ id;
+    (* 求值 = uncurry id / evaluation counit *)
 
-  (* Beta law / UMP 存在性 equation: eval ∘ (curry f × id) ≈ f, with
- [first (curry' f)] = curry' f × id. Uniqueness transpose is
- supplied [exp_iso] being 同构 (see [uncurry_curry]).（已译） *)
+  (* β 律：eval ∘ (curry f × id) ≈ f / beta / UMP existence *)
   ump_exponents' {x y z} (f : x × y ~> z) :
     eval' ∘ first (@curry' _ _ _ f) ≈ f
 }.

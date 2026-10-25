@@ -7,25 +7,51 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
+(* Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
+   nLab:      https://ncatlab.org/nlab/show/cone+(in+category+theory)
+
+   到图 F : J ⟶ C 的锥 = 顶点（apex）c + 腿族 vertex_map x : c ~> F x，
+   使对 J 的每个箭头 f，有 fmap[F] f ∘ vertex_map x ≈ vertex_map y（连贯性）。
+   A cone over F is an apex with legs commuting with F's actions.
+*)
+
 (*
-   Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
+   关于锥 / On cones
 
-   本文件给出相关范畴论结构的定义与性质。
+   Haskell 直觉：一组「从同一来源发出的、彼此相容的投影」。
+   极限 = 「最好的」这种锥（终锥）；余锥/余极限对偶。
+   Haskell intuition: a compatible family of projections from one source.
+*)
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+(*
+   【Class ACone / Cone 语法与字段展开】/ Syntax & field walkthrough
+
+   1) ACone c F：固定顶点 c 的锥（腿 + 连贯性）。
+      Cone F：打包 vertex_obj + ACone（完整锥）。
+      ACone = cone at fixed apex; Cone packages apex + ACone.
+
+   2) 字段 / Fields
+      - vertex_map x : c ~> F x     —— 腿 / leg at x
+      - cone_coherence              —— 腿与 F(f) 交换 / legs commute with F(f)
+      - vertex_obj（仅 Cone）        —— 顶点对象 / apex
+
+   3) Cocone F := Cone (F^op) —— 余锥。
+      Cocone = cone on the opposite diagram.
+
+   阅读：本文件 → Limit.v（终锥）→ Equalizer/Pullback 特例。
+   Read here → Limit → special cases.
 *)
 
 Class ACone@{u0 u1 u2 u3 u4 u5} {J : Category@{u0 u1 u2}}
   {C : Category@{u3 u4 u5}} (c : obj[C]) (F : J ⟶ C) := {
-    (* The leg (component) at x: 态射 apex c F x. （已译） *)
+    (* 腿：c ~> F x / leg at x *)
     vertex_map (x : J) : c ~{C}~> F x;
-    (* 相关说明。 （已译） *)
+    (* 连贯性：腿与 F(f) 交换 / coherence *)
     cone_coherence {x y : J} (f : x ~{J}~> y) :
     fmap[F] f ∘ vertex_map x ≈ vertex_map y
   }.
 
-(* Two cones same apex identified legs agree
- pointwise (up ≈); coherence 证明 irrelevant 等价. （已译） *)
+(* 同顶点两锥：腿点态 ≈ 即等价 / cones equal iff legs agree pointwise *)
 #[export]
   Program Instance AConeEquiv@{u0 u1 u2 u3 u4 u5 +}
   {J: Category@{u0 u1 u2}} {C: Category@{u3 u4 u5}}
@@ -38,15 +64,13 @@ Next Obligation.
   exact (Equivalence_Transitive _ _ _ X X0).
 Qed.
 
-(* A [Cone] over F packages apex leg family over apex,
- matching nLab/Wikipedia 定义 cone apex 对象
- together commuting legs. （已译） *)
+(* Cone = 顶点 + ACone / Cone = apex + ACone *)
 Class Cone@{u0 u1 u2 u3 u4 u5}
   {J : Category@{u0 u1 u2}}
   {C : Category@{u3 u4 u5}}
   (F : J ⟶ C) := {
   vertex_obj : C;                  (* the apex (vertex) object *)
-  coneFrom : ACone vertex_obj F    (* 相关说明。 （已译） *)
+  coneFrom : ACone vertex_obj F    (* 从顶点发出的锥 / cone from apex *)
 }.
 
 Coercion vertex_obj : Cone >-> obj.
@@ -60,14 +84,10 @@ Notation "vertex_map[ L ]" := (@vertex_map _ _ _ _ (@coneFrom _ _ _ L) _)
 Notation "Cone[ N ] F" := (ACone N F)(* . { ψ : Cone F | vertex_obj[ψ] = N } *)
   (at level 9, format "Cone[ N ] F") : category_scope.
 
-(* 相关说明。 （已译） *)
+(* 余锥 = 对偶图上的锥 / Cocone = Cone on F^op *)
 Definition Cocone `(F : J ⟶ C) := Cone (F^op).
 
-(*
-   本节说明（余）极限相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 锥预层：c ↦ Cone[c] F / Cone presheaf *)
 #[export]
 Instance ConePresheaf@{u0 u1 u2 u3 u4 u5 +}
    {J : Category@{u0 u1 u2}} {C : Category@{u3 u4 u5}} (F : @Functor J C) :

@@ -9,29 +9,37 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/initial+object
    Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
-   初始对象 `0` 是这样的对象：对每个对象 `x` 配备态射 `zero : 0 ~> x`（文献写作 `¡`），
-   服从普遍映射性质：该态射唯一，任意两态射 `0 ~> x` 相等（zero_unique）。这恰是终对象
-   的对偶：C 中的初始对象是 C^op 中的终对象，所有箭头反向。`one : x ~> 1` 的对偶是
-   `zero : 0 ~> x`。既初始又终结的对象是零对象。 *)
-
-(* 初始对象从何而来，以及用途为何
-
-   Wikipedia: https://en.wikipedia.org/wiki/Universal_property
-   nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
-   nLab:      https://ncatlab.org/nlab/show/empty+type
-
-   初始对象是最纯粹的普遍性质种：对象不由任何内部结构刻画，而仅由其与其他一切的关系刻画。
-   此类普遍映射性质由 Pierre Samuel 于 1948 年为拓扑构造提出，随后被 Bourbaki 广泛使用，
-   比 Kan 1958 年独立引入密切相关的伴随函子概念早十年（Wikipedia, "Universal property"）。
-   初始对象是整个余极限理论的空情形——空图的余极限，等价于零元余积——这正是
-   Structure/Cocartesian.v 的单位律 [coprod_zero_l] 与 [coprod_zero_r] 把 0 展示为余积单位的原因。
-   任意两初始对象由唯一同构同构，而每个普遍构造共有的这种唯一同构下的唯一性，使我们可以说
-   「那个」初始对象（Milewski, "Products and Coproducts", 2015）。 *)
+   初始对象 `0`：对每个 `x` 恰有一个态射 `zero : 0 ~> x`（文献常写 `¡`）。
+   这是终对象的对偶：C 的初始对象 = C^op 的终对象（箭头全反向）。
+   An initial object `0` has a unique arrow `0 ~> x` for every `x`.
+   Dual of terminal: Initial C := Terminal (C^op).
+*)
 
 (*
-   本节说明始/终对象相关定义、性质与动机。
+   关于初始对象 / On initial objects
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Wikipedia: https://en.wikipedia.org/wiki/Universal_property
+   nLab:      https://ncatlab.org/nlab/show/empty+type
+
+   Haskell 对照：Void / Data.Void ——「没有值」；从 Void 到任意类型恰有一个函数
+   `absurd`。初始对象 = 范畴版的 Void。
+   Haskell analogy: Void — unique map `Void -> a` (`absurd`).
+*)
+
+(*
+   【Initial 记号与字段展开】/ Notation & field walkthrough
+
+   1) 本文件不重写 Class：Notation "'Initial' C" := (@Terminal (C^op))。
+      在对偶范畴里把终对象当初始对象用——箭头方向自动翻转。
+      No new Class: Initial C is Terminal on C^op (arrows reverse).
+
+   2) 导出名字 / Exported names (dual of Terminal's fields)
+      - initial_obj / 0  —— 对象 0（= C^op 里的 terminal_obj）
+      - zero {x}        —— ¡ : 0 ~> x（= C^op 里的 one）
+      - zero_unique     —— 任意两出射箭头 ≈（= one_unique）
+
+   3) 阅读提示：先懂 Terminal.v，再把「进 1」改成「出 0」即可。
+      Read Terminal first; flip "into 1" to "out of 0".
 *)
 
 Notation "'Initial' C" := (@Terminal (C^op))
@@ -43,13 +51,13 @@ Section Initial_.
 
 Context `{I : @Initial C}.
 
-(* The initial object `0` itself (terminal in C^op).         *)
+(* 初始对象 0（C^op 中的终对象）/ initial object 0 *)
 Definition initial_obj : C := @terminal_obj _ I.
 
-(* The unique 态射 `¡ : 0 ~> x` (`one` C^op). （已译） *)
+(* 唯一箭头 ¡ : 0 ~> x / unique arrow out of 0 *)
 Definition zero {x} : initial_obj ~{C}~> x := @one _ I _.
 
-(* Uniqueness: any two morphisms out of `0` are equivalent.   *)
+(* 出射唯一性 / uniqueness of arrows out of 0 *)
 Definition zero_unique {x} (f g : initial_obj ~{C}~> x) : f ≈ g :=
   @one_unique _ I _ _ _.
 
@@ -66,11 +74,7 @@ Corollary zero_comp `{T : @Initial C} {x y : C} {f : x ~> y} :
   f ∘ zero ≈ zero.
 Proof. apply (@one_comp _ T). Qed.
 
-(*
-   本节说明同构、始/终对象相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 两初始对象间的唯一同构 / Unique iso between initials *)
 Program Definition initial_unique {C : Category} (I1 I2 : @Initial C) :
   @initial_obj C I1 ≅ @initial_obj C I2 := {|
   to   := @zero C I1 (@initial_obj C I2);
@@ -79,18 +83,13 @@ Program Definition initial_unique {C : Category} (I1 I2 : @Initial C) :
 Next Obligation. apply (@zero_unique C I2). Qed.
 Next Obligation. apply (@zero_unique C I1). Qed.
 
-(* And it arrow between them, so 同构 canonical --
- "unique 同构" half Mac Lane's statement, dual to
- [terminal_arrow_unique]. （已译） *)
+(* 两初始对象间任意两箭头相等（对偶 terminal_arrow_unique）
+   / Any two arrows between initials agree *)
 Corollary initial_arrow_unique {C : Category} (I1 I2 : @Initial C)
       (f g : @initial_obj C I1 ~> @initial_obj C I2) : f ≈ g.
 Proof. apply (@zero_unique C I1). Qed.
 
-(*
-   本节说明同构、始/终对象、来源与用途相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 谓词形式：「c 是初始对象」/ Predicate: c is initial *)
 Definition IsInitialObj {C : Category} (c : C) : Type :=
   @IsTerminalObj (C^op) c.
 
@@ -108,16 +107,12 @@ Definition IsInitialObj_from_Initial {C : Category} (I : @Initial C) :
   IsInitialObj (@initial_obj C I) :=
   @IsTerminalObj_from_Terminal (C^op) I.
 
-(* Riehl, CTiC, Exercise 1.6.ii(i), initial half. [Isomorphism_Opposite]
- (Construction/Opposite.v) re-reads C-同构 C^op, and
- [Terminal_iso] at C^op whole 证明. （已译） *)
+(* 沿同构搬运 Initial（对偶 Terminal_iso）/ Transport Initial along iso *)
 Definition Initial_iso {C : Category} (I : @Initial C) (y : C)
   (i : @initial_obj C I ≅ y) : @Initial C :=
   @Terminal_iso (C^op) I y (Isomorphism_Opposite i).
 
-(* The transported structures choose new 对象 definitionally, which
- what makes them usable transports rather than bare existence
- statements. （已译） *)
+(* 搬运后 definitionally 选中新对象 / Transported structure picks new obj *)
 Corollary Terminal_iso_obj {C : Category} (T : @Terminal C) (y : C)
   (i : @terminal_obj C T ≅ y) : @terminal_obj C (Terminal_iso T y i) = y.
 Proof. reflexivity. Qed.
@@ -126,8 +121,7 @@ Corollary Initial_iso_obj {C : Category} (I : @Initial C) (y : C)
   (i : @initial_obj C I ≅ y) : @initial_obj C (Initial_iso I y i) = y.
 Proof. reflexivity. Qed.
 
-(* The dual [terminal_unique_up_to_unique_iso]: two initial 对象 are
- connected exactly one 同构. （已译） *)
+(* 唯一同构下唯一（对偶）/ Unique up to unique iso (dual) *)
 Program Definition initial_unique_up_to_unique_iso {C : Category}
   (I1 I2 : @Initial C) :
   Unique (fun _ : @initial_obj C I1 ≅ @initial_obj C I2 => True) := {|
@@ -147,11 +141,7 @@ Program Definition initial_hom_unique {C : Category} (I1 I2 : @Initial C) :
 |}.
 Next Obligation. apply (@zero_unique C I1). Qed.
 
-(*
-   本节说明同构、始/终对象、来源与用途相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 若 y ≅ 0，则 y ~> z 的任意两箭头相等 / If y ≅ 0, arrows y~>z unique *)
 Lemma iso_initial_arrow_unique {C : Category} `{I : @Initial C} {y z : C}
       (i : y ≅ @initial_obj C I) (p q : y ~> z) : p ≈ q.
 Proof.

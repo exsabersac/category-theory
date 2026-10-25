@@ -11,32 +11,54 @@ Require Import Category.Functor.Hom.Yoneda.Iso.
 Require Import Category.Instance.Sets.
 Require Import Category.Construction.Groupoid.
 
-(* 相关说明。 （已译） *)
+(* nLab: https://ncatlab.org/nlab/show/representable+functor
+   Wikipedia: https://en.wikipedia.org/wiki/Universal_property
+
+   「普遍性质」在此文件的形式化：谓词 P 可表（representable）——
+   存在函子 F 使 P(c) ≅ (Hom(c,─) ≅ F) 的同构见证。
+   终/始对象、积、极限等 UMP 都是这种「可表性」的特例。
+   A universal property here = representability of a predicate P.
+*)
 
 (*
-   nLab: https://ncatlab.org/nlab/show/representable+functor
-   Wikipedia: https://en.wikipedia.org/wiki/Universal_property
-   Wikipedia: https://en.wikipedia.org/wiki/Representable_functor
+   关于普遍性质 / On universal properties
 
-   本文件给出相关范畴论结构的定义与性质。
-
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Haskell 直觉：API 由「与外界的关系」定义，而非内部实现——
+   例如「积」只承诺 fst/snd/&&& 方程，不规定具体表示。
+   本文件偏高级（Yoneda）；初学可先跳过，用 Terminal/Cartesian/Limit 的 UMP。
+   Haskell intuition: define by external equations, not internals.
+   Advanced (Yoneda); beginners may skip and use concrete UMPs first.
 *)
+
+(*
+   【Class IsUniversalProperty 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 参数：C 范畴，P : C → Type（「c 满足某结构」），eqP 使 P c 成 Setoid。
+      Parameters: category C, predicate P, setoid on proofs of P.
+
+   2) 字段 / Fields
+      - repr_functor : C ⟶ Sets  —— 被表示的函子 F
+      - repr_equivalence c       —— P c ≅ (Hom(c,─) ≅ F) 的 Sets-同构
+        / iso between "P holds at c" and "Hom(c,─) ≅ F"
+
+   3) 推论：univ_property_unique —— 满足 P 的对象在唯一同构下唯一。
+      Corollary: objects satisfying P are unique up to unique iso.
+
+   阅读：先 Terminal/Cartesian/Limit 的具体 UMP，再回看本文件。
+   Read concrete UMPs first, then return here.
+*)
+
 Class IsUniversalProperty (C : Category) (P : C → Type) (eqP : forall c, Setoid (P c)) :=
   {
-    repr_functor : C ⟶ Sets ;                  (* the functor F = P being represented *)
-    repr_equivalence : forall c : C,           (* proofs of [P c] ≅ representations of F by c *)
+    repr_functor : C ⟶ Sets ;  (* 被表示的函子 F / functor being represented *)
+    repr_equivalence : forall c : C,
+      (* P c ≅ (Hom(c,─) ≅ F) / proofs of P ≅ representations *)
       @Isomorphism Sets
         (Build_SetoidObject (P c) (eqP c))
         (Build_SetoidObject (Isomorphism [Hom c,─] repr_functor) _)
-                                               (* natural isos [Hom c,─] ≅ repr_functor *)
   }.
 
-(*
-   本节说明Yoneda、hom相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* Yoneda 预引理 / pre-Yoneda *)
 Lemma preyoneda {C : Category} {c d: C} {P : C^op ⟶ Sets} (τ : [Hom ─ , c] ⟹ P) :
   forall f : d ~> c,
     transform τ d f ≈ fmap[P] f (transform τ c id{C}).
@@ -50,11 +72,7 @@ Qed.
   { equiv := fun a b => `1 a ≈ `1 b }.
 Local Arguments morphism {x H y H0} s.
 
-(*
-   本节说明Yoneda、hom、同构相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 可表性 ↔ Yoneda / representability via Yoneda *)
 Proposition representability_by_yoneda (C : Category) (F : C^op ⟶ Sets) (c : C):
   @Isomorphism Sets
     {| carrier := { x : F c & IsIsomorphism (from (Yoneda_Lemma C F c ) x) } |}
@@ -91,11 +109,7 @@ Section UniversalProperty.
   Context (C : Category) (P : obj[C] -> Type) (eqP : forall c, Setoid (P c))
     (H : IsUniversalProperty C P eqP).
 
-  (*
-   本节说明函子、Yoneda、hom相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+  (* 满足 P 的对象唯一 / uniqueness for P *)
   Proposition univ_property_unique (c : C) (t : P c) : @Unique obj[C] (ob_setoid) P.
   Proof using eqP H.
     exists c ; [exact t |].
@@ -104,9 +118,7 @@ Section UniversalProperty.
                          (to (repr_equivalence v) Pv)).
   Defined.
 
-  (* P invariant under 同构: iso c ≅ d transports 证明 P c to
- 证明 P d, conjugating representation c induced
- iso hom-函子 [Hom d,─] ≅ [Hom c,─]. （已译） *)
+  (* P 沿同构搬运 / P respects isomorphism *)
   Proposition univ_property_respects_iso (c d : C) (iso : c ≅ d) : P c -> P d.
   Proof using eqP H.
     intro t.
@@ -116,26 +128,18 @@ Section UniversalProperty.
     - apply (to (repr_equivalence c)). exact t.
   Defined.
 
-  (* Let c, d 对象 C, t : P c, s : P d.
- Then there unique 同构 p : c ≈ d
- such transport p along t equivalent s. （已译） *)
+  (* 满足 P 的两对象间唯一同构 / unique iso between P-objects *)
   Proposition univ_property_unique_up_to_unique_iso
     (c d : C) (t : P c) (s : P d) :
     Unique (fun p : (c ≅ d) => univ_property_respects_iso c d p t ≈ s).
   Proof.
     (* We have already constructed the isomorphism p.*)
-    (*
-   本节说明Yoneda、hom、同构相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+    (* 可表性 ↔ Yoneda / representability via Yoneda *)
     exists (uniqueness (univ_property_unique c t) d s).
-    - (* Why does 同构 respect structure P? （已译） *)
+    - (* 同构为何尊重 P / why iso respects P *)
       abstract(simpl; unfold univ_property_respects_iso; simpl;
-      (* Proofs P d one one correspondence
- natural isomorphisms
- Hom(d, - ) ≅ repr_函子. （已译） *)
-      (* So it suffices show these determine same natural 同构. （已译） *)
+      (* P d ↔ Hom(d,─) ≅ F / proofs of P ↔ natural isos *)
+      (* 只需证自然同构相同 / enough to equate the natural isos *)
       rapply (snd (injectivity_is_monic _) (iso_to_monic (repr_equivalence d)));
       set (M := (iso_to_from (repr_equivalence d)));
         simpl in M; rewrite M; clear M;
@@ -164,11 +168,11 @@ Section UniversalProperty.
          y(v) : Hom(d, -) ≌ Hom(c, -)
          rep_c : Hom(c, -) ≌ repr_functor
          rep_d : Hom(d, -) ≌ repr_functor *)
-      (* and natural 同构 Hom(d, -) ≌ repr_函子 given by （已译） *)
+      (* 以及 Hom(d,─) ≅ F 的自然同构 / and the natural iso *)
       (* rep_c ∘ y(v) : Hom(d, -)  ≌ Hom(c, -) ≌ repr_functor *)
       (* corresonds to s across the bijection. *)
       (* Of couse since by construction, s also corresponds to rep_d, *)
-      (* this means rep_c ∘ y(v) ≈ rep_d isomorphisms Hom(d,-) ≈ repr_函子. （已译） *)
+      (* 故 rep_c ∘ y(v) ≈ rep_d / hence the isos agree *)
       (* Thus y(v) ≈ rep_c^-1 ∘ rep_d : Hom(d,-) ≅ Hom(c,-) and in particular
          they agree at (d, id{C} d).  *)
       abstract(intros v respects_iso;

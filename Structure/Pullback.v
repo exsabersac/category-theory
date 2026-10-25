@@ -4,54 +4,58 @@ Require Import Category.Theory.Isomorphism.
 
 Generalizable All Variables.
 
-(* 拉回 (pullback)（也称纤维积）是共跨 `b → a ← c` 的极限；对偶于推出（C 中的拉回是
-   C^op 中的推出）。
+(* 拉回 / Pullback (fibered product)
 
    nLab:      https://ncatlab.org/nlab/show/pullback
    Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
 
-   本库记号下的普遍性质：f 与 g 的拉回是对象 [Pull]，带投影
-   [pullback_fst : Pull ~> x] 与 [pullback_snd : Pull ~> y]，满足
-   f ∘ pullback_fst ≈ g ∘ pullback_snd，使得对每个满足 f ∘ q1 ≈ g ∘ q2 的 (Q, q1, q2)
-   存在唯一 u : Q ~> Pull 满足 pullback_fst ∘ u ≈ q1 与 pullback_snd ∘ u ≈ q2。 *)
-
-(*
-   Wikipedia: "In fact, the pullback is the universal solution to finding a
-
-   本节说明拉回/推出、笛卡尔、来源与用途相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   共跨 b → a ← c 的极限：对象 Pull，投影 pullback_fst/snd，方块交换，
+   且对每个竞争方块有唯一中介 u。对偶是推出（Pushout）。
+   Limit of a cospan; dual of pushout.
 *)
 
 (*
-   Wikipedia: "A pullback of the morphisms f and g consists of an object P
+   关于拉回 / On pullbacks
 
-   本节说明拉回/推出相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Haskell 直觉：依赖积 / 纤维积 —— 例如
+   `{(x,y) | f x == g y}`，或数据库 join、透镜里的 pullback。
+   「在 z 上对齐」的两路数据。
+   Haskell intuition: fibered product `{(x,y) | f x == g y}` (join).
 *)
 
 (*
-   nLab:  https://ncatlab.org/nlab/show/base+change
-   nLab:  https://ncatlab.org/nlab/show/finite+limit
-   nLab:  https://ncatlab.org/nlab/show/hyperdoctrine
-   nLab:  https://ncatlab.org/nlab/show/span
+   【Record Pullback 语法与字段展开】/ Syntax & field walkthrough
 
-   本节说明（余）极限、拉回/推出、子对象相关定义、性质与动机。
+   1) Record（非 Class）：对固定 f : x ~> z、g : y ~> z 打包一个拉回锥。
+      Record bundles one pullback for a fixed cospan (not a class on C).
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   2) 数据 / Data
+      - Pull              —— 拉回对象 / pullback object
+      - pullback_fst/snd  —— 投影 Pull ~> x / Pull ~> y
+
+   3) 交换 / Commute
+      - pullback_commutes : f ∘ fst ≈ g ∘ snd
+
+   4) UMP
+      - ump_pullbacks : 任意交换方块 (Q,q1,q2) 经唯一 u : Q ~> Pull 分解。
+        Every commuting square factors via unique u.
+
+   5) HasPullbacks：范畴「有全部二元拉回」的类型类。
+      Class saying C has all binary pullbacks.
+
+   阅读：先积（Cartesian）与极限（Limit），再看拉回是「带方程的积」。
+   Read products & limits first; pullback = product with an equation.
 *)
 
 Record Pullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z) := {
-  Pull         : C;            (* the pullback object  b ×_a c (fibered product) *)
-  pullback_fst : Pull ~> x;    (* projection p1 : Pull ~> x *)
-  pullback_snd : Pull ~> y;    (* projection p2 : Pull ~> y *)
+  Pull         : C;            (* 拉回对象 / pullback object *)
+  pullback_fst : Pull ~> x;    (* 投影 p1 / projection p1 *)
+  pullback_snd : Pull ~> y;    (* 投影 p2 / projection p2 *)
 
-  (* the projection square commutes *)
   pullback_commutes : f ∘ pullback_fst ≈ g ∘ pullback_snd;
+    (* 方块交换 / square commutes *)
 
-  (* universal property: the commuting square is terminal among such squares,
-     i.e. every competing cone (Q, q1, q2) factors through a unique mediator u *)
+  (* UMP：竞争方块经唯一 u 分解 / competing square factors via unique u *)
   ump_pullbacks : ∀ Q (q1 : Q ~> x) (q2 : Q ~> y), f ∘ q1 ≈ g ∘ q2
     → ∃! u : Q ~> Pull, pullback_fst ∘ u ≈ q1 ∧ pullback_snd ∘ u ≈ q2
 }.
@@ -59,11 +63,7 @@ Record Pullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z) := {
 Coercion pullback_ob {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z)
          (L : Pullback f g) := @Pull _ _ _ _ _ _ L.
 
-(*
-   本节说明拉回/推出、同构相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* 两拉回对象唯一同构 / Unique iso between pullbacks *)
 Lemma pullback_unique {C : Category} {x y z : C} {f : x ~> z} {g : y ~> z}
       (P Q : Pullback f g) : Pull f g P ≅ Pull f g Q.
 Proof.
@@ -95,16 +95,15 @@ Proof.
     + apply (uniqueness HPP); split; apply id_right.
 Defined.
 
-(** A 范畴 has all binary pullbacks if every cospan has pullback.
- This dual [HasPushouts] [Structure/Pushout.v]. （已译） *)
+(** 范畴有全部二元拉回 / C has all binary pullbacks
+    (dual: HasPushouts). *)
 Class HasPullbacks (C : Category) : Type := {
   pullback : forall {x y z : C} (f : x ~> z) (g : y ~> z), Pullback f g
 }.
 
 Arguments pullback {C _ x y z} f g.
 
-(* A weak pullback differs pullback mediating 态射 is
- merely required exist; uniqueness dropped. （已译） *)
+(* 弱拉回：只要存在中介，不要唯一性 / Weak: existence without uniqueness *)
 Record WeakPullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z) := {
   weak_pull : C;
   weak_pullback_fst : weak_pull ~> x;
@@ -135,29 +134,3 @@ Proof.
   exists (unique_obj U).
   exact (unique_property U).
 Defined.
-
-(*
-   本节说明拉回/推出、笛卡尔、始/终对象相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
-(*
-   Wikipedia: "The pullback is similar to the product, but not the same. One
-
-   本节说明拉回/推出、笛卡尔相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
-
-(*
-   本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
-(*
-   Wikipedia: "... another way of characterizing the pullback: as the
-
-   本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)

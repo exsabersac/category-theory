@@ -147,6 +147,26 @@ A concrete category: a category `C` paired with a chosen faithful functor
 --------
 一个具体范畴：一个范畴 `C` 与一个选定的忠实函子配对到 `Sets`。Mac Lane §I.7 的 `⟨C, U⟩`；Riehl §1.6，第 1.6.18 定义。
 *)
+(*
+   【Class Concrete 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 这是什么 / What this is
+      具体范畴 = C + 到 Sets 的忠实函子 U（「忘却到集合」）。
+      Concrete = C with a chosen faithful U : C ⟶ Sets.
+      箭头因此可当作真正的函数（concrete_fun）；≈ 由 U 反映。
+      Arrows act as actual functions; faithfulness reflects ≈.
+
+   2) 字段 / Fields
+      - underlying : C ⟶ Sets
+      - underlying_faithful : Faithful underlying
+
+   3) 邻近 / Nearby
+      Separator / WellPointed —— 用全局元素分离箭头；Sets 自身是具体且良点的。
+
+   阅读：Faithful → underlying → concrete_fun → Separator。
+   Read: Faithful → underlying → concrete_fun → Separator.
+*)
+
 Class Concrete (C : Category) := {
   underlying : C ⟶ Sets;             (* the chosen underlying-set functor U / 所选择的底层集合函子 U *)
   underlying_faithful : Faithful underlying   (* arrows ARE actual functions / 箭头实际上是函数 *)

@@ -46,6 +46,26 @@ Generalizable All Variables.
 
  对偶是 COEND `∫^c F(c,c)`，即泛（初始）余楔；它在下面通过在相反范畴中取终点来定义。
 *)
+(*
+   【Class End 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 这是什么 / What this is
+      端 ∫_c F(c,c) = 混合方差 F : C^op∏C ⟶ D 的**终楔**（dinatural 版极限）。
+      End = terminal wedge (dinatural analogue of a limit).
+      直觉（Yoneda/Haskell）：像「∀c. …」的多态族 + 楔条件（额外自然性）。
+      Intuition: polymorphic ∀c family + extranaturality; dual coend ≈ ∃.
+
+   2) 字段 / Fields
+      - end_wedge : Wedge F —— 普遍楔 (e, ω)
+      - ump_ends ：任意楔唯一分解到 e（ω ∘ u ≈ 竞争腿）
+
+   3) Coend（下文）= End (F^op) 在对偶中 —— 初余楔。
+      Coend defined by duality as End of F^op.
+
+   阅读：Wedge → end_wedge → ump_ends → Coend；连到 Nat/Yoneda。
+   Read: Wedge → end_wedge → UMP → Coend; ties to Nat/Yoneda.
+*)
+
 Class End `(F : C^op ∏ C ⟶ D) := {
   end_wedge : Wedge F;                     (* the universal wedge `(e, ω)` / 通用楔形 `(e, ω)` *)
 

@@ -57,6 +57,27 @@ Generalizable All Variables.
  x ~> 1 ~> 0 ~> y首先是到 1 的唯一映射，然后是逆读的同构重合映射，然后是从 0 的唯一映射。零态射在两边吸收组合（[zero_mor_left]，[zero_mor_right]），任何以这种方式通过零对象分解的态射都是零态射（[zero_mor_unique]）。
 *)
 
+(*
+   【Class ZeroObject 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 这是什么 / What this is
+      零对象 = 既是初对象又是终对象（在同构下重合）。
+      Zero object = initial ≅ terminal.
+      任意 x,y 得零态射 zero_mor : x ~> y（经 1≅0 穿过）。
+      Yields a zero morphism between any pair via the coincidence iso.
+
+   2) 字段 / Fields
+      - zero_terminal / zero_initial —— 两侧结构
+      - zero_coincide : 0 ≅ 1 —— 同构重合（不用对象 =）
+
+   3) 邻近 / Nearby
+      zero_obj 取终侧为代表；zero_mor_left/right 吸收律。
+      常见于 Ab、Vect、带零的预加性范畴。
+
+   阅读：Initial + Terminal → coincide → zero_obj → zero_mor。
+   Read: Initial+Terminal → coincide → zero_obj → zero_mor.
+*)
+
 Class ZeroObject (C : Category) := {
   zero_terminal : @Terminal C;
   zero_initial  : @Initial C;

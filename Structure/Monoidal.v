@@ -156,6 +156,31 @@ Context {C : Category}.
 
 Reserved Infix "⨂" (at level 30, right associativity).
 
+(*
+   【Class Monoidal 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 这是什么 / What this is
+      给已有范畴 C 加「张量」：单位 I、双函子 ⊗，以及单位子 λ/ρ、结合子 α（皆同构），
+      再加三角/五边形相干。
+      Equips C with I, tensor ⊗, unitors, associator, triangle & pentagon.
+      不是笛卡尔积：一般 ⊗ 无对角/删除（资源/量子）；笛卡尔是特例。
+      Not cartesian product — no copy/delete in general.
+
+   2) 数据 / Data
+      - I : C —— 单位对象 / monoidal unit
+      - tensor : C ∏ C ⟶ C / "x ⨂ y" —— 张量双函子
+      - unit_left / unit_right / tensor_assoc —— λ, ρ, α（同构）
+
+   3) 自然性字段 / Naturality
+      to_/from_ 的 unit_left|right|tensor_assoc_natural —— α,λ,ρ 是自然同构。
+
+   4) 相干 / Coherence（Kelly 精简后仅两条公理）
+      triangle_identity / pentagon_identity
+
+   阅读：I → ⊗ → λ/ρ/α → 自然性 → 三角/五边形 → f ⨂ g 记号。
+   Read: I → ⊗ → unitors/assoc → naturality → triangle/pentagon.
+*)
+
 Class Monoidal := {
   I : C;                        (* unit_obj *)
   tensor : C ∏ C ⟶ C where "x ⨂ y" := (tensor (x, y));

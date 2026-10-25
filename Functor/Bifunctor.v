@@ -59,6 +59,29 @@ A bimap takes two arrows in C and D, and lifts them to an arrow in E over
 双图采用 C 和 D 中的两个箭头，并将它们提升到 E 中的箭头
  一些双函子 F : C ∏ D ⟶ E。 
 *)
+(*
+   【bimap 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 这是什么 / What this is
+      双函子 = 积范畴上的函子 F : C ∏ D ⟶ E（不另开 Class）。
+      Bifunctor = functor out of a product category (no separate Class).
+      Haskell 对照：Data.Bifunctor 的 bimap；此处是 fmap on pairs。
+      Haskell analogy: Data.Bifunctor.bimap ≈ fmap on (f, g).
+
+   2) 中心定义 / Central definition
+      bimap f g := fmap[F] (f, g) : F(x,y) ~> F(w,z)
+      把一对箭头经 F 一次抬升。
+      Lifts a pair of arrows through F in one go.
+
+   3) 邻近律（下文 Corollary）/ Nearby laws
+      bimap_id_id / bimap_comp / bimap_id_left_right …
+      即函子律在「两变元」上的展开 + 中四交换。
+      Functor laws in two variables + middle-four exchange.
+
+   阅读：C∏D → F → bimap → 交换律。张量 ⊗ 是典范双函子（Monoidal）。
+   Read: product cat → F → bimap → interchange. Tensor ⊗ is the prototype.
+*)
+
 Definition bimap {F : C ∏ D ⟶ E} {x w : C} {y z : D}
            (f : x ~{C}~> w) (g : y ~{D}~> z) :
   F (x, y) ~{E}~> F (w, z) := @fmap (C ∏ D) E F (x, y) (w, z) (f, g).

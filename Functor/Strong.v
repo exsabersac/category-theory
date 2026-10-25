@@ -66,6 +66,23 @@ nLab: https://ncatlab.org/nlab/show/tensorial+strength
    从而得到强单子。 
 *)
 
+(*
+   【Class StrongFunctor 语法与字段展开】/ Syntax & field walkthrough（薄）
+
+   1) 这是什么 / What this is
+      张量强度 strength : x ⨂ F y ~> F (x ⨂ y)（「把外面的 x 推入 F」）。
+      Tensorial strength — not “strong = pseudo monoidal”.
+      Haskell：常见于写在 Monad 上的强度；与 Applicative/强单子相关。
+      Used for strong monads / Applicative; distinct from pseudo-monoidal.
+
+   2) 字段（左强度）/ Fields (left)
+      strength + strength_natural + 单位律 + 结合律（相对 λ、α）。
+      对偶 RightStrongFunctor 用右强度 rstrength。
+
+   阅读：Monoidal → strength → 自然性/相干 → Applicative。
+   Read: Monoidal → strength → naturality/coherence → Applicative.
+*)
+
 Class StrongFunctor `{@Monoidal C} (F : C ⟶ C) := {
   strength {x y} : x ⨂ F y ~> F (x ⨂ y);          (* left strength A ⨂ FB ~> F(A ⨂ B)  / 左强度 A ⨂ FB ~> F(A ⨂ B)*)
   strength_natural : natural (@strength);          (* natural in both arguments  / 两个论点都很自然*)

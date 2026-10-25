@@ -170,6 +170,15 @@ An arrow-indexed family: one morphism S c ~> T c' for each f : c ~> c',
 一个关于宇宙的说明，因为源文件对此很谨慎，而一个比较两者的读者会注意到差异。 其中 Theory/Natural/Transformation.v 在开头声明了它的六个宇宙，并保持每个范畴的 hom 和 proof 级别独立，而下面的记录允许它们被推断，并且推断会将两个范畴中的 hom 级别折叠到 proof 级别上。因此 [Transform] 在严格意义上应用于的实例比 [ArrowTransform] 多。这里没有任何内容需要额外的泛化，并且下面的对应定理在共享实例上陈述，但这种不对称是真实存在的，并且被记录下来，而不是掩盖。
 *)
 
+(*
+   【Record ArrowTransform 展开】/ Walkthrough（薄）
+   自然变换入口见 Theory/Natural/Transformation.v（已有完整展开）。
+
+   箭头视角：给每个基态射 f : c ~> c' 一条「对角线」τ_arr f : S c ~> T c'，
+   满足与 S/T 的函子作用相容的正方形（自然性的箭头形式）。
+   Arrow-form of a natural transformation: a family of diagonals for each f.
+*)
+
 Record ArrowTransform := {
   τ_arr {c c' : C} (f : c ~> c') : S c ~> T c';
 

@@ -160,6 +160,24 @@ nLab: https://ncatlab.org/nlab/show/profunctor
 在计算上，profunctor 是一个熟悉的类型类。Haskell 的 Profunctor p，带有 dimap :: (c -> a) -> (b -> d) -> p a b -> p c d，是 Hask^op × Hask ⟶ Set 的 profunctor 的函子作用；Milewski 将 p a b 视为一个与证明相关的关系，是按 a 键索引的 b 类型值的容器，并通过一个存在量化的数据类型实现 coend 组合，该数据类型压缩了共享的中间变量，同时通过 ninja-Yoneda 引理将 hom-函子作为恒等（Milewski，《Ends and Coends》，2017；见 Theory/Coend/Yoneda.v）。在此基础上，optics——镜头、棱镜、遍历器——是多态 profunctor 变换器，通过函数组合进行组合，并被证明与具体的 getter/setter 表示等价（Pickering, Gibbons, Wu，《Profunctor Optics: Modular Data Accessors》，Art, Science, and Engineering of Programming 1(2):7, 2017）。
 *)
 
+(*
+   【Profunctor 定义展开】/ Definition walkthrough
+
+   1) 这是什么 / What this is
+      前函子 C ⇸ D := (C^op ∏ D) ⟶ Sets —— 「混合方差」的 Set 值双函子。
+      Profunctor = Set-valued functor of mixed variance.
+      Haskell：Data.Profunctor 的 dimap；复合用 coend（见 Construction/Profunctor）。
+      Haskell dimap; composition via coend.
+
+   2) 邻近 / Nearby
+      Id_Profunctor = Hom C（单位）
+      Repr_left F / Repr_right U —— 函子诱导的可表前函子；F⊣U ⇔ 二者同构
+      Prof_Setoid —— 前函子相等 = 自然同构
+
+   阅读：Functor/Hom → 本定义 → Repr_* → Adjunction/Hom；optics 是其计算影。
+   Read: Hom → here → Repr_* → adjunction; optics are the FP shadow.
+*)
+
 Definition Profunctor (C D : Category) := (C^op ∏ D) ⟶ Sets.
 
 Notation "C ⇸ D" := (Profunctor C D)

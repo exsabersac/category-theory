@@ -180,6 +180,28 @@ Where comonads come from, and what they are for
 *)
 Existing Class Comonad.
 
+(*
+   【Comonad API 语法与字段展开】/ Syntax & field walkthrough
+   （对照 Theory/Monad.v；Comonad := Monad (C^op) (W^op)，本文件只给共变读法）
+
+   1) 这是什么 / What this is
+      自函子 W + 余单位 extract(ε) + 余乘法 duplicate(δ)；定律 = 单子定律反向读。
+      Endofunctor + counit + comult; laws are monad laws read backwards.
+      Haskell：Control.Comonad 的 extract / duplicate / extend(=cobind)。
+      Haskell: extract, duplicate, extend (cobind).
+
+   2) 访问器（定义性 op-读）/ Accessors (definitional op-reads)
+      - extract   := ret^op     : W x ~> x
+      - duplicate := join^op    : W x ~> W (W x)
+      - extend f  := fmap f ∘ duplicate  （≈ bind^op）
+
+   3) 下文定律 / Laws below
+      余单位自然性、余结合、左右余单位 —— 皆由 Monad 字段 exact/symmetry 运来。
+
+   阅读：Monad → Existing Class Comonad → extract/duplicate → extend → CoKleisli。
+   Read: Monad → Comonad class → extract/duplicate → extend → CoKleisli.
+*)
+
 Section ComonadAPI.
 
 Context {C : Category} {W : C ⟶ C} {H : @Comonad C W}.

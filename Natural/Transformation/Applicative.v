@@ -49,6 +49,15 @@ N (pure x)  ≈ pure x,
 这是无条件的、遵守法律的版本；无法无天的 FP 版本位于 Theory/Coq/Applicative.v。 
 *)
 
+(*
+   【Class Applicative_Transform 展开】/ Walkthrough（薄）
+   入口 Transform 见 Theory/Natural/Transformation.v（已有展开，不重复）。
+
+   保持 Applicative 的自然变换 = 同时 Strong_Transform + LaxMonoidal_Transform。
+   Nat. trans. that preserves Applicative = strong + lax-monoidal on the nose.
+   推导 pure / <*> 的保持；无定律 FP 版在 Theory/Coq/Applicative.v。
+*)
+
 Class Applicative_Transform `{@ClosedMonoidal C}
   `{@Applicative C _ F}
   `{@Applicative C _ G} (N : F ⟹ G) := {

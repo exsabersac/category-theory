@@ -138,6 +138,21 @@ Section CoKleisli.
 
 Context {C : Category} {W : C ⟶ C} {H : @Comonad C W}.
 
+(*
+   【CoKleisli 定义展开】/ Definition walkthrough（薄）
+
+   1) CoKleisli := (Kleisli (C^op) (W^op))^op —— 余单子的 Kleisli 对偶。
+      Co-Kleisli category via duality of Kleisli.
+      态射定义上是 W x ~> y；id = extract；复合经 extend。
+      Homs are W x ~> y; id = extract; compose via extend.
+
+   2) 记号 =>= / =<= ：鱼形算子（库约定，左先于右指 =>=）。
+      Fish operators; library convention (left runs first in =>=).
+
+   阅读：Comonad/Core → Kleisli → 本 Definition → cokleisli_compose。
+   Read: Core → Kleisli → here → fish compose.
+*)
+
 Definition CoKleisli : Category := (@Kleisli (C^op) (W^op) H)^op.
 
 (**

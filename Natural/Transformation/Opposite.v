@@ -42,6 +42,14 @@ nLab：https://ncatlab.org/nlab/show/opposite+functor
  变换`F^op ⟹ G^op`对应于一个`G ⟹ F`，而不是`F ⟹ G`。 
 *)
 
+(*
+   【Opposite_Transform 展开】/ Walkthrough（薄）
+   入口见 Theory/Natural/Transformation.v。
+
+   自然变换的对偶：N : F ⟹ G 给出 N^op : G^op ⟹ F^op（箭头反向）。
+   Opposite of a natural transformation (arrow reversal).
+*)
+
 Definition Opposite_Transform `{F : C ⟶ D} {G : C ⟶ D} `(N : F ⟹ G) :
   G^op ⟹ F^op :=
   @Build_Transform (C^op) (D^op) (G^op) (F^op) N

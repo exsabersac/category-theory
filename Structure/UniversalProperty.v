@@ -51,6 +51,24 @@ Require Import Category.Construction.Groupoid.
 
  [Hom c,─] ≅ repr_functor （Hom(c, ─) ≅ P，对目标自然同构）在函子范畴 [C, Sets] 中。这是标准的等价关系“泛性质 ⟺ 表示性”：根据 nLab，一个函子 F : C ⟶ Sets 的表示是一个自然同构 Hom(c, ─) ≅ F，并且根据 Yoneda 引理，它由一个唯一的泛元素决定（id{C} c 的像）。维基百科将相同的事实表述为：(A, u) 从 X 到 F 是泛的，当且仅当 Hom(A, ─) ≅ Hom(X, F ─)，然后表示对象在唯一同构意义下是唯一的（见下文 [univ_property_unique_up_to_unique_iso]）。这里 [repr_functor] 是协变的，[Hom c,─] = Curried_Hom C c 是协变同态函子 Hom(c, ─)，而 per-c 同构存在于 [Sets]（集类）中，将证明集类 [P c] 与自然同构的集类 [Hom c,─] ≅ [repr_functor] 对应起来。这里的说法并不是指它抓住了*每一个*可想象的泛构造，仅适用于可表示的那些，这些涵盖了标准的例子。
 *)
+(*
+   【Class IsUniversalProperty 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 参数：C 范畴，P : C → Type（「c 满足某结构」），eqP 使 P c 成 Setoid。
+      Parameters: category C, predicate P, setoid on proofs of P.
+
+   2) 字段 / Fields
+      - repr_functor : C ⟶ Sets  —— 被表示的函子 F
+      - repr_equivalence c       —— P c ≅ (Hom(c,─) ≅ F) 的 Sets-同构
+        / iso between "P holds at c" and "Hom(c,─) ≅ F"
+
+   3) 推论：univ_property_unique —— 满足 P 的对象在唯一同构下唯一。
+      Corollary: objects satisfying P are unique up to unique iso.
+
+   阅读：先 Terminal/Cartesian/Limit 的具体 UMP，再回看本文件。
+   Read concrete UMPs first, then return here.
+*)
+
 Class IsUniversalProperty (C : Category) (P : C → Type) (eqP : forall c, Setoid (P c)) :=
   {
     repr_functor : C ⟶ Sets ;                  (* the functor F = P being represented / 函子 F = P 被表示 *)

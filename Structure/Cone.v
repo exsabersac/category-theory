@@ -31,6 +31,25 @@ Generalizable All Variables.
  [ACone] 固定顶点 [c] 并仅记录腿族及其一致性；下方的 [Cone] 将顶点与这样的 [ACone] 一起捆绑。F 的余圆锥对偶地是 F^op 的圆锥（见 [Cocone]）。
 *)
 
+(*
+   【Class ACone / Cone 语法与字段展开】/ Syntax & field walkthrough
+
+   1) ACone c F：固定顶点 c 的锥（腿 + 连贯性）。
+      Cone F：打包 vertex_obj + ACone（完整锥）。
+      ACone = cone at fixed apex; Cone packages apex + ACone.
+
+   2) 字段 / Fields
+      - vertex_map x : c ~> F x     —— 腿 / leg at x
+      - cone_coherence              —— 腿与 F(f) 交换 / legs commute with F(f)
+      - vertex_obj（仅 Cone）        —— 顶点对象 / apex
+
+   3) Cocone F := Cone (F^op) —— 余锥。
+      Cocone = cone on the opposite diagram.
+
+   阅读：本文件 → Limit.v（终锥）→ Equalizer/Pullback 特例。
+   Read here → Limit → special cases.
+*)
+
 Class ACone@{u0 u1 u2 u3 u4 u5} {J : Category@{u0 u1 u2}}
   {C : Category@{u3 u4 u5}} (c : obj[C]) (F : J ⟶ C) := {
     (* The leg (component) at x: a morphism from the apex c into F x. / 在 x 的腿（组件）：从顶点 c 到 F x 的一个态射。 *)

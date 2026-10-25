@@ -138,6 +138,29 @@ Generalizable All Variables.
  论文: Kan, “伴随函子”, 《美国数学会会刊》 87(2), 1958这个概念比它的例子更年轻。针对有向指标集的逆极限和直接极限在上世纪30年代首次以这种形式进行研究，与拓扑学概念如Čech上同调有关（《数学百科全书》，"射影极限"）；p进整数作为环 Z/pⁿZ 在余数映射下的逆极限而出现，而 profinite 群，其中包括无限扩张的伽罗瓦群，是有限群的逆极限（维基百科，"逆极限" 和 "Profinite 群"）。任意图形形式的表述归功于 Daniel Kan，在其1958年的论文第二章中提出，该论文还引入了伴随函子和 Kan 扩张（nLab，"余极限"）；那些早期文章仍然将余极限称为"直接极限"，有向的特殊情况一度为一般概念命名。一般定义的目的是为了经济性：一个通用的性质涵盖了沿某个形状粘合图表的所有构造。仅改变 J 就可以得到终对象（J 为空，Structure/Limit/Terminal.v）、二元和指标积（J 为离散，Structure/Limit/Cartesian.v 和 Structure/Limit/Product.v）、等化器（J 为平行对 — Structure/Equalizer.v 将 [Equalizer] 定义为 [Parallel] 上的 [Limit]）、拉回（J 为共尖，Structure/Pullback/Limit.v）以及上述经典的逆极限（J 为有向偏序集，逆变阅读）。关于 [Limit] 的任何一次证明——唯一性至唯一同构（Limit/Unique.v）、保持性（Limit/Preservation.v）、通过积和等化器的构造（Limit/FromProducts.v）——都可以无代价地专门应用于每一种情况。两个重新表述将该概念融入理论的其余部分。
  Instance/Cones/Limit.v 将标题中的终端锥口号变为一个定理，从类别 [Cones F]（[Limit_Cones]）的终端对象中提取 [Limit F]；Structure/Limit/Kan/Extension.v 将极限展示为沿唯一函子 J ⟶ 1 的 F 的右 Kan 拓展，这是 Kan 1958 年论文的另一条线索。当每种形状的极限存在时，它们会组装成与常值图函子 Δ 右伴随的函子（Riehl，《Category Theory in Context》，Dover 2016，第 4.6.1 命题）。在下游，该文件在两方面起着承重作用。完整性——所有小限制，在 Structure/Complete.v 中量化为 [Complete]——是伴随函子定理的基本假设，而 Construction/Comma/Limit.v 与 Adjunction/GAFT.v 则从它推导出 Freyd 定理（Mac Lane，《工作数学家的范畴论》，Springer GTM 5 1998，第五章）。Structure/Limit/Preservation.v（[PreservesLimit]）中的保持词汇支持 RAPL 和 LAPC——右伴随保留极限，左伴随保留余极限，无大小限制（Riehl，定理 4.6.2）——在树内证明为 Adjunction/Continuity.v 的 [rapl_is_alimit] 及其对偶。连同存在定理——一个具有积和等化子的范畴具有所有极限（Riehl，第3.5.11定理，对偶形式；in-tree [Complete_from_products_equalizers]）——这些支撑了伴随论证。计算阅读是具体的。积是成对类型，终对象是单位（阅读 Instance/Coq.v 实现）；等化器刻画出两个函数一致的子集；拉回计算最一般的统一子，这是 Milewski 描述 Hindley–Milner 类型推断的方式（Milewski，《Limits and Colimits》，2015）。存在性定理实际上就是一个程序：极限是所有 F x 的积中，其分量沿 J 的每条箭头兼容的部分，正好是 Instance/Sets/End.v 中无 funext 的端的形状。开创历史的逆极限技术在语义学中重现——斯科特的无类型 λ-演算 D∞ 模型是求解 D ≅ [D → D] 的函数格的逆极限，康托在 Set 中将该方程限制在单集合上（Scott，“连续格”，Springer LNM 274，1972）——而 Construction/Chain.v 和 Theory/Adamek.v 的 ω-链工具则是树内余极限的对应部分，用于构建初始代数。
 *)
+(*
+   【Class Limit 语法与字段展开】/ Syntax & field walkthrough
+
+   1) Class Limit (F : J ⟶ C)：对固定图 F 打包「极限锥 + UMP」。
+      Packages a limiting cone for a fixed diagram F.
+
+   2) 数据 / Data
+      - limit_cone : Cone F  —— 极限锥（顶点 + 腿族）；见 Cone.v
+        / the limiting cone (apex + legs); see Cone.v
+
+   3) 普遍性质 / UMP
+      - ump_limits : ∀ N : Cone F, ∃! u : N ~> limit_cone,
+          ∀ x, vertex_map[limit_cone] ∘ u ≈ vertex_map[N] x
+        每个竞争锥经唯一中介态射分解。
+        Every competing cone factors via a unique mediator.
+
+   4) 对偶：Colimit F := Limit (F^op)（余极限 = 对偶图的极限）。
+      Dual: Colimit F := Limit (F^op).
+
+   阅读顺序：先 Cone.v（ACone/Cone）→ Limit → 特例 Equalizer/Pullback。
+   Read Cone.v first, then Limit, then special cases.
+*)
+
 Class Limit `(F : J ⟶ C) := {
   (* The limit cone (L, φ): the terminal/universal cone over F. / 极限锥 (L, φ)：F 的终端/泛锥。 *)
   limit_cone : Cone F;

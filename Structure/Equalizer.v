@@ -162,6 +162,24 @@ Generalizable All Variables.
  --------
  平行对图 F 的等化器：一个位于形状 [Parallel] 上的末端锥，其在 [ParX] 上的极限锥支腿是等化映射，其泛性质是等化器的唯一分解。
 *)
+(*
+   【Equalizer 定义展开】/ Definition walkthrough
+
+   1) 不新开 Class：Equalizer F := Limit F，其中 F : Parallel ⟶ C。
+      No new Class — specialize Limit to the Parallel shape.
+
+   2) 形状 Parallel（Instance/Parallel.v）：两对象 ParX/ParY，两平行箭头。
+      极限锥在 ParX 上的腿 = 等化映射 i；连贯性强制 f∘i ≈ g∘i；
+      ump_limits 给出竞争锥的唯一中介。
+      Leg at ParX is the equalizing map i; coherence forces f∘i ≈ g∘i.
+
+   3) Coequalizer F := Colimit F（对偶）。
+      Dual: coequalizer = colimit of the same shape.
+
+   阅读：Cone → Limit → 本文件；用 APair f g 把具体平行对变成图 F。
+   Read Cone → Limit → here; use APair f g to build F.
+*)
+
 Definition Equalizer {C : Category} (F : Parallel ⟶ C) := Limit F.
 
 (*

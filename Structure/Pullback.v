@@ -230,6 +230,30 @@ Generalizable All Variables.
  nLab:   https://ncatlab.org/nlab/show/span拉回是一个方程的范畴语义（nLab，“pullback”），每一次使用它都是以某种方式普遍地解这个方程。一个极限因此包含了许多熟悉的操作。沿着f拉回一个单态计算它所命名的子对象的原像；两个单态的拉回是子对象的交集；f自身的拉回是它的核对（[kernel_pair] 在 Structure/Regular.v 中）；将 z 简化为终对象则恢复二元积，这是本文件结尾备注中记录的归约。反过来，终对象与 [HasPullbacks] 一起生成每一个有限极限（Borceux，《范畴代数手册》I，命题）。2.8.2），这就是为什么 Structure/Regular.v 经济地将有限完备性呈现为恰好这两个结构。这个名称是从拓扑学引入的。Steenrod 的诱导丛（Steenrod，《纤维丛的拓扑》，普林斯顿大学出版社，1951）由 M 上的一个丛和一个映射 N → M 构成，形成 N 的一个点与其像上的丛点的配对丛——这个构造逐字对应——主 G 丛作为一个万能丛的拉回的分类使得该操作在代数拓扑中具有核心地位。代数几何也认识到同样的极限，即 Grothendieck 的 produit fibré（Grothendieck 和 Dieudonné，《代数几何要素》I，Publ. Math.IHÉS 4, 1960, §3.2）；沿着一个态射的基变换是相对观点的引擎，对于仿射模式，Spec A 和 Spec B 在 Spec R 上的纤维积是张量积 A ⊗_R B 的 Spec（维基百科，“拉回（范畴论）”）。形容词“笛卡尔的”源自格罗滕迪克的纤维范畴（Streicher，“Fibered Categories à la Jean Bénabou”，arXiv:1801.02927）：余域纤维化的笛卡尔箭头恰好是拉回平方，这种对应关系在树中由 [codomain_cleaving_pullbacks] 在 Construction/Displayed/Codomain.v 中实现。在范畴逻辑中，替换就是拉回。Lawvere 的超命题（Lawvere, “Adjointness in Foundations”, Dialectica 23, 1969）将沿 f 的重索引看作替换的解释，并将量词 ∃ 和 ∀ 看作它的伴随，Seely 将局部笛卡尔闭范畴识别为依赖类型理论的语义（Seely, “Locally cartesian closed categories and type theory”, Math. Proc. Camb. Phil. Soc. 95, 1984），将伴随三重 Σ_f ⊣ f* ⊣ Π_f 解释为依赖和、替换和依赖积。切片之间的基变换函子及其左伴随在 Construction/Slice/Pullback.v 中构造为 [Bang_Functor] ⊣ [Star_Functor]， 并在那里证明为 [Base_Functor_Adjunction]（左侧的依赖和）； 拓扑学理论也依赖同样的操作，因为 Structure/SubobjectClassifier.v 将每个单射展示为 [truth] 的唯一拉回，而 Theory/Subobject/Functor.v 通过选定的拉回重索引得到 Sub 函子。一个设计说明。下面的 [Pullback] 记录以存在方式封装了顶点——存在 f 和 g 的拉回，而这里就是一个——所以它不能断言某个给定的交换方形是一个拉回。顶点固定谓词 [IsPullback]，双向转换，粘贴律 [pullback_paste]，单态稳定性 [monic_pullback_stable]，以及强化的唯一性 [pullback_transport]——在那里重新推导，因为下面的 [pullback_unique] 是 Qed-不透明的——都在 Theory/Morphisms/Stability.v 中，并且该拆分承载了子对象和分类器的发展。Structure/Pullback/Limit.v 将此记录与 Instance/Roof.v 的行走屋顶上的余叉图 [Limit] 调和；Construction/Span/Category.v 正是通过这种构造（nLab，“span”）来组合跨度；Instance/FinSet/Classifier.v 将 [FinSet_Pullbacks] 计算为计数子集，因此在封闭输入上拉回对象会简化；上面标题中的 INNER JOIN 读法由 Spivak（《科学的范畴论》，MIT 出版社，2014）发展。[WeakPullback] 在余代数中发挥作用。Rutten 的双模拟结构理论（Rutten，《通用余代数：系统理论》，理论计算机科学 249, 2000）依赖于一个终函子是否弱保持拉回——将拉回方格映射到弱拉回方格——而仅存在的中介者，如 [weak_ump_pullbacks]，正是该假设所需要的。
 *)
 
+(*
+   【Record Pullback 语法与字段展开】/ Syntax & field walkthrough
+
+   1) Record（非 Class）：对固定 f : x ~> z、g : y ~> z 打包一个拉回锥。
+      Record bundles one pullback for a fixed cospan (not a class on C).
+
+   2) 数据 / Data
+      - Pull              —— 拉回对象 / pullback object
+      - pullback_fst/snd  —— 投影 Pull ~> x / Pull ~> y
+
+   3) 交换 / Commute
+      - pullback_commutes : f ∘ fst ≈ g ∘ snd
+
+   4) UMP
+      - ump_pullbacks : 任意交换方块 (Q,q1,q2) 经唯一 u : Q ~> Pull 分解。
+        Every commuting square factors via unique u.
+
+   5) HasPullbacks：范畴「有全部二元拉回」的类型类。
+      Class saying C has all binary pullbacks.
+
+   阅读：先积（Cartesian）与极限（Limit），再看拉回是「带方程的积」。
+   Read products & limits first; pullback = product with an equation.
+*)
+
 Record Pullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z) := {
   Pull         : C;            (* the pullback object b ×_a c (fibered product) / 拉回对象 b ×_a c（纤维积） *)
   pullback_fst : Pull ~> x;    (* projection p1 : Pull ~> x / 投影 p1 : 拉 ~> x *)

@@ -134,6 +134,13 @@ Generalizable All Variables.
  Structure/Cartesian/Closed.v（通过 [exp_iso] 的指数，有 curry、uncurry 和 eval）和 Structure/Monoidal/Closed.v（[ClosedMonoidal]，张量-同函子伴随）；Functor/Hom/Internal.v 从笛卡尔闭包派生内部同函子双函子 [InternalHomFunctor]；Structure/Monoidal/StarAutonomous.v 拒绝将此文件作为基础，这是一个占位符，不包含张量-同函子伴随，并在它自己的 [SymMonClosed] 上工作；Construction/Funny/Closed.v 展示了 Cat 上唯一的其他单体双闭结构（Foltz、Lair、Kelly，JPAA 17(2), 1980）。
 *)
 
+(*
+   【阅读提示】/ Reading tip
+
+   Haskell 对照的 curry/eval 在 Cartesian/Closed.v（CCC），不在本草稿。
+   Curry/eval for Haskell programmers live in Cartesian/Closed.v, not here.
+*)
+
 Section Closed.
 
 Context {C : Category}.

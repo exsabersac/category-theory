@@ -123,6 +123,30 @@ Generalizable All Variables.
  美国国家科学院院刊 52, 1964终端对象是最简单的泛性质。泛映射性质通过 Samuel (1948) 引入数学，他对自由拓扑群的处理随后被 Bourbaki 小组扩展到自由群、张量积和极限（历史可追溯见 Dubuc，《Categorías. Los 30 primeros años》，arXiv:1404.6240, 2014）；终端性是零元、退化的情况，是一种没有任何辅助数据的泛性质。因此，每个同态集 `x ~> 1` 的可收缩性是下游每个“唯一性至唯一同构”的论证的原型，而 [one_unique] 则构成其全部内容。麦克·莱恩的对偶计划（1950年），将群论重新表述为同态和组合的形式，以便反转箭头可以交换成对的概念，提供了设计的另一半：初始对象和终结对象是模型对偶对，而 Structure/Initial.v 则将这种配对实现为字面上的 — `Initial C` 是 `Terminal (C^op)` 的符号表示，[zero] 和 [zero_unique] 只是 [one] 和 [one_unique] 的投影，[zero_comp] 则是 [one_comp] 的对偶读法。终结性也是每个极限归约的形态。标题中提到的 `1` 是空图的极限，这在 Structure/Limit/Terminal.v 中以两个方向证明，作为 [Terminal_Limit]；反过来，任何图的极限正是其锥类别中的终端对象（维基百科，“初始对象和终端对象”）；Instance/Cones/Limit.v 中的 [Limit_Cones] 从终端锥构建极限。即使是 GAFT 也在这里触底：Theory/WeaklyInitial.v 在对立类别上将其初始对象构建为 [Build_Terminal]。定义的目的在于在不提及元素的情况下表达“元素”。一个态射 `1 ~> x` 是 `x` 的全局元素——用 nLab 的表述方式，在定义阶段的广义元素：在 Set 中，它选出一个普通元素，在 Cat 中，一个来自终端范畴的函子选出一个对象，而在一个拓扑体中，子对象分类器的全局元素就是一个真值（nLab，“全局元素”）。Lawvere 的集合范畴的初等理论（1964）基于这种解读：它的范畴是良点化的，这意味着 `1` 是一个生成元——两个态射 `a ~> b` 在 `a` 的每个全局元素上都一致，那么它们已经满足 ≈（nLab，“良点化拓扑体”）。在这个库中，读取在 Structure/SubobjectClassifier.v 中显示为 [truth : 1 ~> Ω]，在 Structure/Constant.v 中显示为 [Constant] 类，这是一组嵌入 Coq 类型值的全局元素。在计算上，`1` 是单位类型。nLab 的单位类型文章将命题“真”、单例集合、终对象和单位类型排列在同一行，单位类型正如标题在此处描述的 hom-setoids 一样是可收缩的。在类型和纯函数的范畴中，从任意类型到单位类型只有一个函数；Milewski 的 Bool 反例——存在两个不同的恒定函数映射到 Bool，因此 Bool 不是终对象——展示了定义中唯一性这一半承载了全部重量（Milewski，《乘积与余积》，2015）。可计算的证明者是 Instance/Coq.v 中的 [Coq_Terminal] 和 Instance/Sets.v 中的 [Sets_Terminal]；下面的 [const] 将任何恒定映射通过 `1` 因式分解。在一个单位对象为终结对象的单模范畴中，[one] 变成了丢弃映射，而终结性变成了一个因果原则。Coecke 和 Lal 将因果范畴定义为一个对称的、部分单模的范畴，其单位对象为终结对象，并且表明经典或量子关联会强制该终结性（Coecke, Lal, “Causal categories: relativistically interacting processes”, Foundations of Physics 43, 2013）；Kissinger、Hoban 和 Coecke 将该原则表述为过程终结性——当一个过程的输出被丢弃时，该过程本身也可以被丢弃——并证明其与相对论因果结构等价（Kissinger, Hoban, Coecke, “Equivalence of relativistic causal structure and process terminality”, 2017）。具体来说：概率分布是归一化的，量子通道保持迹，[one_comp] 是该口号的代数核 —— 计算后丢弃就是丢弃。Structure/Monoidal/Semicartesian/Terminal.v 将对应关系打包为一个带有 `one := eliminate` 的 [Terminal] 结构。
 *)
 
+(*
+   【Class Terminal 语法与字段展开】/ Syntax & field walkthrough
+
+   1) Class Terminal：给「已有范畴 C」加结构（类型类字段），不是新范畴。
+      Instance 填具体的 1 与 !。≈ Haskell 的 class constraint，定律也是字段。
+      [Class Terminal] equips an existing C; Instance fills 1 and !.
+      Like a Haskell class; laws are proof-carrying fields.
+
+   2) 数据字段 / Data fields
+      - terminal_obj : C  —— 对象 1 本身 / the object 1
+      - one {x} : x ~> terminal_obj  —— 唯一箭头 ! : x ~> 1（{x} 隐式）
+        / the unique arrow ! ({x} implicit)
+
+   3) 公理 / Law
+      - one_unique : 任意 f,g : x ~> 1 都有 f ≈ g（唯一性）
+        / any two arrows into 1 are ≈
+
+   4) 记号：Notation "1" := terminal_obj。读代码时 1 就是终对象。
+      Notation "1" names the terminal object.
+
+   阅读顺序：terminal_obj → one → one_unique → terminal_unique（同构唯一性）。
+   Read: terminal_obj → one → one_unique → uniqueness up to iso.
+*)
+
 Section Terminal.
 
 Context {C : Category}.

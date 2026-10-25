@@ -119,6 +119,22 @@ Generalizable All Variables.
  成为初始对象只是成为对立范畴中的终端对象；但为了避免混淆，我们希望有一套专门用于具有初始对象的范畴的符号。因此，初始对象的 UMP 在这里不会作为原始类重新表述：`Initial C` 字面上展开为 `Terminal (C^op)`，下面的投影从终端字段恢复了 C 端的名称（initial_obj、zero、zero_unique）。
 *)
 
+(*
+   【Initial 记号与字段展开】/ Notation & field walkthrough
+
+   1) 本文件不重写 Class：Notation "'Initial' C" := (@Terminal (C^op))。
+      在对偶范畴里把终对象当初始对象用——箭头方向自动翻转。
+      No new Class: Initial C is Terminal on C^op (arrows reverse).
+
+   2) 导出名字 / Exported names (dual of Terminal's fields)
+      - initial_obj / 0  —— 对象 0（= C^op 里的 terminal_obj）
+      - zero {x}        —— ¡ : 0 ~> x（= C^op 里的 one）
+      - zero_unique     —— 任意两出射箭头 ≈（= one_unique）
+
+   3) 阅读提示：先懂 Terminal.v，再把「进 1」改成「出 0」即可。
+      Read Terminal first; flip "into 1" to "out of 0".
+*)
+
 Notation "'Initial' C" := (@Terminal (C^op))
   (at level 9) : category_theory_scope.
 Notation "@Initial C" := (@Terminal (C^op))

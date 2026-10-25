@@ -147,6 +147,32 @@ Context `{C : Category}.
  泛映射性质从未提到元素。一般范畴的对象是不可透视的，因此 x × y 不能从坐标组装而成；[ump_products] 反而通过每个对象如何映射到它来刻画积 —— 两个投影和一个唯一配对 —— 并且同样的三条数据在任何范畴中都是有意义的。唯一性随定义而来，而不是之后：每一个具有投影的候选对象都能唯一地通过真积进行分解，所以任何两个证明者都是自然同构的（Milewski, "Products and Coproducts", 2015）——这就是为什么 [IsCartesianProduct] 证明者可以通过等价类 [CartesianProductStructuresEquiv] 进行比较的原因。无元素的表述是来之不易的。Eilenberg 和 Mac Lane 的开创性论文仅将笛卡尔积作为函子示例来处理（Eilenberg, Mac Lane, “自然等价的一般理论”, Trans. AMS 58, 1945）；普遍映射的一般概念则归功于 Samuel —— 用 Mac Lane 自己的话说，“真正提出普遍箭的一般概念的大胆步骤是在 1948 年由 Samuel 采取的”（引自 Porst, “一般伴随函子定理的历史”, 2024）。Mac Lane 的《群的对偶性》（Bull.AMS 56, 1950) 是经典的早期文献，将群的直积完全用同态和组合的语言重新表述，因此反转每一条箭头就将其描述转变为自由积；库在 Structure/Cocartesian.v 中收集了这个收益，其中的余积是在对偶范畴中实例化的该类。继 Kan（“伴随函子”，Trans. AMS 87(2), 1958）之后，标准理解是伴随性：配对与拆对构成对角与积之间伴随的 Hom 集双射，对角映射作为单位，投影作为辅单位——在 Adjunction/Diagonal/Product.v 中树内为 [Diagonal_Product_Adjunction]，其义务由本文件的 [unfork] 和 [fork_comp] 解除。有限积进一步是一种学说。Lawvere 理论是一个具有有限积的范畴，其对象是单一通用对象的幂，其模型是从中导出的保持积的函子（Lawvere，《代数理论的函子语义》，1963 年论文）；Theory/Lawvere.v 将这个类作为其 [law_cartesian] 字段。二元积是两个对象离散图的极限——Structure/Limit/Product.v 处理索引情况——它引入了 Structure/Monoidal/Internal/Product.v 的对称幺半结构 [CC_CartesianMonoidal]，并且它是 Structure/Cartesian/Closed.v 构建指数的基础，在 Structure/BiCCC.v 中通过陪积进行扩展。在计算上，[fork]、[exl] 和 [exr] 形成了一个无点元组演算，而派生的组合子则是函数式编程的箭头词汇：[fork] 是 Hughes 箭头接口的分发，而 [split] 将输入在两个箭头之间路由（Hughes，《将单子推广到箭头》，《计算机程序科学》37, 2000），同时还有 [first]、[second] 和 [swap]。Elliott 将 Haskell 翻译成范畴词汇，将对对偶的模式匹配转换为投影，将对偶构造转为分叉，然后用下面证明的方程进行简化（Elliott，《编译到范畴》，《ACM 程序语言学报》）。1，ICFP 2017）；Tools/Abstraction.v 对 Coq 程序执行相同的具体化，[Coq_Cartesian] 在 Instance/Coq.v 中实现了接口，如 fst、snd 和配对。福克斯定理将笛卡尔情况定位于张量积中：当且仅当每个对象都携带唯一的余交换余单子结构——一个复制和一个丢弃态射——并且每个态射都是其同态时，对称单模范畴才是笛卡尔的（Fox，“Coalgebras and cartesian categories”，Communications in Algebra 4(7)，1976）。通过 [CC_CartesianMonoidal]、[CD_of_Cartesian] 在 Structure/Monoidal/CopyDiscard/Proofs.v 中得出来自此类的 supply，其中复制为 id △ id，丢弃为终态射，并且 Structure/Monoidal/Markov/Fox.v 证明了两个方向（[all_deterministic_cartesian]、[cartesian_all_deterministic]）。复制的放松自然性正是允许概率存在的原因：在 Cho 和 Jacobs（2019）以及 Fritz（2020）的马尔可夫范畴中，每个对象仍然可以复制和丢弃，但一个随机态射不必与复制交换——掷一个硬币并复制其结果与掷两个硬币不同——而笛卡尔范畴正是那些所有态射都是确定性的马尔可夫范畴。
 *)
 
+(*
+   【Class Cartesian 语法与字段展开】/ Syntax & field walkthrough
+
+   1) Class Cartesian：给已有范畴 C 加「二元积」结构。
+      Equips C with binary products.
+
+   2) 数据 / Data
+      - product_obj / ×  —— 对象 x × y / the product object
+      - fork / △         —— 配对 ⟨f,g⟩ : x ~> y×z / pairing
+      - exl, exr         —— 左右投影 / left & right projections
+
+   3) 尊重 ≈ / Respect
+      - fork_respects : Proper … fork —— f≈f' 且 g≈g' ⇒ ⟨f,g⟩≈⟨f',g'⟩
+
+   4) 普遍性质 / UMP（双条件）
+      ump_products : h ≈ ⟨f,g⟩  ↔  (exl∘h ≈ f) * (exr∘h ≈ g)
+      左→右：配对满足投影方程；右→左：满足方程的 h 必等于配对（唯一性）。
+      Left→right: pairing satisfies projections; right→left: uniqueness.
+
+   5) 常见推论（下文）：exl_fork、exr_fork、fork_exl_exr（η 律）。
+      Corollaries below: projection laws and η.
+
+   阅读顺序：product_obj → exl/exr → fork → ump_products。
+   Read: product_obj → exl/exr → fork → ump_products.
+*)
+
 Class Cartesian := {
   product_obj : obj → obj → obj       (* the product object x × y / 乘积对象 x × y *)
     where "x × y" := (product_obj x y);

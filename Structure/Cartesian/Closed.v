@@ -62,6 +62,30 @@ Context `{@Cartesian C}.
  关于参数顺序的注释：[exponent_obj x y] 显示为 y ^ x，因此指数 z^y 是 [exponent_obj y z]，并且 z^y × y ~> z 是作用在 z 上的左伴随的 Hom。
 *)
 
+(*
+   【Class Closed 语法与字段展开】/ Syntax & field walkthrough
+
+   1) 前置条件：Context `{@Cartesian C}` —— 先有积，再谈指数。
+      Requires Cartesian (products) first.
+
+   2) 数据 / Data
+      - exponent_obj / y^x  —— 指数对象（内部函数空间）
+        / exponential object (internal hom)
+      - exp_iso : (x × y ~> z) ≊ (x ~> z^y)  —— curry 同构
+        / the curry isomorphism (≊ = iso of setoids of morphisms)
+
+   3) 派生 / Derived
+      - curry' / uncurry'  —— to/from exp_iso
+      - eval'              —— uncurry id : y^x × x ~> y（求值/余单位）
+      - ump_exponents'     —— β 律：eval ∘ (curry f × id) ≈ f
+
+   4) 记号：y^x = exponent_obj x y（注意参数顺序：底 x、指数结果侧 y）。
+      Notation y^x = exponent_obj x y (base x, result y).
+
+   阅读：Cartesian（积）→ 本 Class → curry/uncurry 推论。
+   Read Cartesian first, then this Class, then curry laws.
+*)
+
 Class Closed := {
   exponent_obj : obj → obj → obj    (* internal hom; y ^ x = exponent_obj x y / 内部同态；y ^ x = exponent_obj x y *)
     where "y ^ x" := (exponent_obj x y);

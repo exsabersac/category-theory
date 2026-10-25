@@ -5,7 +5,128 @@ Generalizable All Variables.
 Reserved Infix "~>" (at level 90, right associativity).
 Reserved Infix "∘" (at level 40, left associativity).
 
-(* 范畴从何而来，以及定义为何
+(*
+nLab: https://ncatlab.org/nlab/show/category
+   Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
+
+   A category C consists of a collection of objects, a hom `x ~> y` of
+   morphisms for each pair of objects, an identity `id : x ~> x` for each
+   object, and a composition `f ∘ g : x ~> z` for `g : x ~> y` and
+   `f : y ~> z`, subject to the unit laws `id ∘ f ≈ f` and `f ∘ id ≈ f` and
+   the associativity law `f ∘ (g ∘ h) ≈ (f ∘ g) ∘ h`. Here the hom is a
+   setoid (a hom-setoid) rather than a bare set, so morphism equality is the
+   chosen equivalence `≈` rather than Coq's `=`.
+
+   The objects of a category are all of some `Type`.
+
+  Morphisms, or arrows, are also of type `Type`, but always in a universe
+  above objects. All of the library has `Universe Polymorphism` enabled,
+  allowing categories whose objects are categories, etc.
+
+  The morphisms identified by `A ~> B` form a hom-set, except that in this
+  library it is a hom-setoid, requiring the meaning of (computationally
+  relevant) equivalence between morphisms to be given. This makes it a
+  quotient category C/R over the equivalence relation R, but since this is
+  almost always needed (since equality is very restrictive in Coq's type
+  theory), we call it a [Category] here, and assume the existence of some
+  other category using only equality, with a functor from that category to
+  this.
+
+  Categories (as distinct from Category/~) are identified by [homset :=
+  Morphism_equality].
+
+--------
+nLab：https://ncatlab.org/nlab/show/category
+维基百科：https://en.wikipedia.org/wiki/Category_(mathematics)
+
+一个范畴 C 由一个对象集合、每对对象的态射 Hom、每个对象的恒等映射以及对于 `g : x ~> y` 和 `f : y ~> z` 的复合构成，且遵循单位律 `id ∘ f ≈ f` 和 `f ∘ id ≈ f` 以及结合律 `f ∘ (g ∘ h) ≈ (f ∘ g) ∘ h`。这里的 Hom 是一个集合等价类（一个 Hom-集合等价类），而不是普通集合，因此态射的相等性是所选的等价关系 `≈`，而不是 Coq 的 `=`。
+
+一个范畴的对象都是某些 `Type`。
+
+态射或箭头也是 `Type` 类型，但总是在对象之上的范畴中。整个库都启用了 `Universe Polymorphism`，允许对象本身是范畴的范畴，等等。
+
+由 `A ~> B` 识别的态射形成一个同态集合，然而在这个库中，它是一个同态集合体（hom-setoid），需要给出态射之间（计算上相关的）等价的含义。这使得它成为一个在等价关系 R 下的商范畴 C/R，但由于这几乎总是需要的（因为在 Coq 的类型理论中，等式非常严格），我们在这里称之为 [Category]，并假设存在某个仅使用等式的其他范畴，以及一个从该范畴到此范畴的函子。
+
+范畴（与 Category/~ 不同）由 [homset := Morphism_equality] 识别。
+*)
+
+(*
+Where categories come from, and what the definition is for
+
+   SEP:   https://plato.stanford.edu/entries/category-theory/
+   nLab:  https://ncatlab.org/nlab/show/E-category
+   nLab:  https://ncatlab.org/nlab/show/Yoneda+lemma
+   Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
+          Transactions of the American Mathematical Society 58, 1945
+
+   Categories, functors, and natural transformations entered mathematics
+   together, in Eilenberg and Mac Lane's "General theory of natural
+   equivalences" (1945) — the abstraction, so the Stanford Encyclopedia
+   recounts, of their "Group Extensions and Homology" (Annals of
+   Mathematics 43, 1942), where particular functors and natural
+   transformations were already at work among groups.  The motivation ran
+   backwards through the definitions: the aim was to make "natural"
+   precise, which required functors, which in turn required categories.
+   In their own words, "the whole concept of a category is essentially an
+   auxiliary one; our basic concepts are essentially those of a functor
+   and of a natural transformation".  Even the names are borrowed — per
+   the same Encyclopedia entry, "functor" from Carnap, "category" from
+   Aristotle, Kant, and Peirce.
+
+   What the auxiliary concept isolates is the least structure in which
+   composition makes sense: objects, morphisms, identities, an
+   associative composition, and nothing else.  Milewski's preface to
+   "Category Theory for Programmers" (2014) places composition "at the
+   very root of category theory".  Yet the definition never asks what an
+   object is; every property must be phrased through the morphisms into
+   and out of it, and the Yoneda lemma shows the discipline loses
+   nothing — per the nLab, probes by the other objects of C suffice to
+   distinguish the objects of C.  The reward is altitude: "Category
+   theory takes a bird's eye view of mathematics.  From high in the sky,
+   details become invisible, but we can spot patterns that were
+   impossible to detect from ground level" (Leinster, "Basic Category
+   Theory", CUP 2014).
+
+   The subsequent history reads as a map of this library.  Grothendieck
+   made categories intrinsic to homological algebra ("Sur quelques
+   points d'algèbre homologique", Tôhoku Math. J. 9, 1957); Kan isolated
+   adjoint functors ("Adjoint Functors", TAMS 87, 1958), the subject of
+   Theory/Adjunction.v; Lawvere turned algebraic theories into
+   categories and their models into functors ("Functorial Semantics of
+   Algebraic Theories", PNAS 50, 1963), realized here in
+   Theory/Lawvere.v, and axiomatized the category of sets (PNAS 52,
+   1964); Lambek read categories as deductive systems and cartesian
+   closed categories as typed lambda calculus, the bridge behind
+   Structure/Closed.v and Instance/Lambda/.  Baez and Stay extend the
+   same dictionary to physics and topology, with closed symmetric
+   monoidal categories as the common language ("Physics, Topology,
+   Logic and Computation: A Rosetta Stone", arXiv:0903.0340, 2009).
+
+   The class below is what the nLab calls an E-category: a category
+   enriched in setoids, taking a specified equivalence relation rather
+   than the identity type as the equality of morphisms — each hom
+   carries a chosen equivalence and composition carries the
+   extensionality witness [compose_respects].  Coq's intensional type
+   theory has no quotient types, so a hom cannot be quotiented after
+   the fact; the relation must travel with the hom.  The choice is what
+   lets the library run on zero axioms: Instance/Sets.v identifies two
+   setoid maps whenever they agree pointwise up to the codomain's ≈, so
+   functions are extensional without the functional extensionality
+   axiom, and a quotient category is merely another choice of [homset]
+   over the same homs (compare the hom-congruence quotients of
+   Construction/Quotient.v).  The price is a standing obligation: every
+   operation on morphisms must be shown Proper, and rewriting proceeds
+   through Coq's generalized setoid rewriting.  One further field is
+   deliberate: [comp_assoc_sym] restates associativity in the mirrored
+   orientation so that Construction/Opposite.v can simply exchange the
+   two fields, making C^op^op = C hold by reflexivity;
+   [Build_Category'] then recovers the redundant field for instance
+   authors.  Nearly every file in the library requires this one,
+   directly or through its immediate consumers Theory/Functor.v and
+   Theory/Isomorphism.v.
+
+--------
+范畴从何而来，以及定义为何
 
    SEP:   https://plato.stanford.edu/entries/category-theory/
    nLab:  https://ncatlab.org/nlab/show/E-category
@@ -51,47 +172,35 @@ Reserved Infix "∘" (at level 40, left associativity).
    以镜像方向重述结合律，使 Construction/Opposite.v 只需交换两字段，从而
    C^op^op = C 由 reflexivity 成立；[Build_Category'] 再为实例作者恢复冗余字段。
    库中几乎每个文件都直接或经其直接消费者 Theory/Functor.v 与
-   Theory/Isomorphism.v  Require 本文件。 *)
-
-(*
-   关于范畴的来源与用途
-
-   SEP:   https://plato.stanford.edu/entries/category-theory/
-   nLab:  https://ncatlab.org/nlab/show/E-category
-   nLab:  https://ncatlab.org/nlab/show/Yoneda+lemma
-   Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
-
-   本节说明自然变换、函子、等价相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Theory/Isomorphism.v  Require 本文件。
 *)
 
 Class Category@{o h p | h <= p} : Type@{max(o+1,h+1,p+1)} := {
-  obj : Type@{o};                       (* collection of objects *)
+  obj : Type@{o};                       (* collection of objects / 对象的集合 *)
 
-  uhom := Type@{h} : Type@{h+1};        (* universe of hom-setoids *)
-  hom : obj → obj → uhom where "a ~> b" := (hom a b);  (* morphisms x ~> y *)
-  homset : ∀ X Y, Setoid@{h p} (X ~> Y);  (* hom is a setoid; equality is ≈ *)
+  uhom := Type@{h} : Type@{h+1};        (* universe of hom-setoids / 同态集合的宇宙 *)
+  hom : obj → obj → uhom where "a ~> b" := (hom a b);  (* morphisms x ~> y / 态射 x ~> y *)
+  homset : ∀ X Y, Setoid@{h p} (X ~> Y);  (* hom is a setoid; equality is ≈ / hom 是一个集合等价结构；相等性是 ≈ *)
 
-  id {x} : x ~> x;                      (* identity morphism on x *)
+  id {x} : x ~> x;                      (* identity morphism on x / x上的恒等态射 *)
   compose {x y z} (f: y ~> z) (g : x ~> y) : x ~> z
-    where "f ∘ g" := (compose f g);     (* composition f ∘ g *)
+    where "f ∘ g" := (compose f g);     (* composition f ∘ g / 组合 f ∘ g *)
 
-  compose_respects {x y z} :            (* compose respects ≈ (bifunctorial Proper) *)
+  compose_respects {x y z} :            (* compose respects ≈ (bifunctorial Proper) / 组成 respects ≈（双函子 Proper） *)
     Proper@{h p} (respectful@{h p h p h p} equiv
                     (respectful@{h p h p h p} equiv equiv))
       (@compose x y z);
 
-  dom {x y} (f : x ~> y) := x;          (* domain (source) of a morphism *)
-  cod {x y} (f : x ~> y) := y;          (* codomain (target) of a morphism *)
+  dom {x y} (f : x ~> y) := x;          (* domain (source) of a morphism / 一个态射的定义域（来源） *)
+  cod {x y} (f : x ~> y) := y;          (* codomain (target) of a morphism / 一个态射的陪域（目标） *)
 
-  id_left  {x y} (f : x ~> y) : id ∘ f ≈ f;  (* left unit law *)
-  id_right {x y} (f : x ~> y) : f ∘ id ≈ f;  (* right unit law *)
+  id_left  {x y} (f : x ~> y) : id ∘ f ≈ f;  (* left unit law / 左单位律 *)
+  id_right {x y} (f : x ~> y) : f ∘ id ≈ f;  (* right unit law / 右单位律 *)
 
   comp_assoc {x y z w} (f : z ~> w) (g : y ~> z) (h : x ~> y) :
-    f ∘ (g ∘ h) ≈ (f ∘ g) ∘ h;         (* associativity *)
+    f ∘ (g ∘ h) ≈ (f ∘ g) ∘ h;         (* associativity / 结合性 *)
   comp_assoc_sym {x y z w} (f : z ~> w) (g : y ~> z) (h : x ~> y) :
-    (f ∘ g) ∘ h ≈ f ∘ (g ∘ h)          (* associativity, dual form (built-in duality) *)
+    (f ∘ g) ∘ h ≈ f ∘ (g ∘ h)          (* associativity, dual form (built-in duality) / 结合性，双重形式（内置二重性） *)
 }.
 #[export] Existing Instance homset.
 #[export] Existing Instance compose_respects.
@@ -158,9 +267,12 @@ Coercion obj : Category >-> Sortclass.
 #[export] Hint Rewrite @id_right : categories.
 
 (*
-   本节说明 Category 相关定义、性质与动机。
+[Build_Category'] is a custom constructor that automatically provides the
+   definition of [comp_assoc_sym] from [comp_assoc] by symmetry. It is intended
+   to be used with the [refine] tactic, such as in the example below.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+[Build_Category'] 是一个自定义构造函数，它通过对称性自动提供 [comp_assoc] 的 [comp_assoc_sym] 定义。它旨在与 [refine] 策略一起使用，例如下例所示。
 *)
 Definition Build_Category'
            {obj} hom {homset} id compose
@@ -197,9 +309,12 @@ Open Scope homset_scope.
 Open Scope morphism_scope.
 
 (*
-   本节说明hom、等价、来源与用途相关定义、性质与动机。
+The hom-setoid whose equivalence is Coq's strict equality `eq`. Equipping a
+   hom with this `Setoid` recovers the classical (non-quotient) notion of a
+   category, where two morphisms are equal only when definitionally equal.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+同态集族，其等价关系是 Coq 的严格相等 `eq`。为一个同态配备这个 `Setoid` 可以恢复经典（非商）范畴的概念，其中两个态射仅在定义上相等时才相等。
 *)
 Program Definition Morphism_equality@{o h p}
   {ob : Type@{o}} {hom : ob → ob → Type@{h}}
@@ -227,9 +342,13 @@ Corollary cod_comp {x y z : C} (g : y ~> z) (f : x ~> y) :
 Proof. split; auto. Qed.
 
 (*
-   本节说明 Category 相关定义、性质与动机。
+Riehl, "Category Theory in Context", §1.1: the identity at an object is
+   unique. An endomorphism that is a two-sided unit is [id] — and either half
+   of that hypothesis already suffices, since testing it against [id] itself
+   collapses it to a unit law.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+Riehl，《语境中的范畴论》，§1.1：一个对象的恒等映射是唯一的。一个作为双边单位的自同态是[id] —— 仅凭假设的一半就足够了，因为将其与[id]本身进行测试会将其归约为单位律。
 *)
 Corollary id_unique_left {x : C} (u : x ~> x) :
   (∀ (y : C) (f : x ~> y), f ∘ u ≈ f) → u ≈ id.
@@ -254,9 +373,14 @@ Arguments comp_assoc {_%_category _%_object _%_object _%_object _%_object}
   _%_morphism _%_morphism _%_morphism.
 
 (*
-   本节说明hom相关定义、性质与动机。
+The hom relation of any category is a preorder on objects: reflexivity is
+   witnessed by `id` and transitivity by composition (note the order: `g ∘ f`
+   for `f : x ~> y` and `g : y ~> z`). This is the standard observation that a
+   category has an underlying preorder of objects (a preorder is exactly a thin
+   category).
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+任意范畴的 Hom 关系是对象上的一个预序关系：自反性由 `id` 体现，传递性由复合体现（注意顺序：`g ∘ f` 对于 `f : x ~> y` 和 `g : y ~> z`）。这是一个标准观察，即一个范畴具有对象的底层预序关系（预序正好是一个稀薄范畴）。
 *)
 #[export]
 Program Instance hom_preorder {C : Category} : PreOrder (@hom C) := {

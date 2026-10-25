@@ -10,16 +10,49 @@ Require Import Category.Theory.Algebra.Monoid.
 
 Generalizable All Variables.
 
-(* * * Commutative monoids symmetric 幺半范畴 （已译） *)
+(** * Commutative monoids in a symmetric monoidal category / * 对称幺半群范畴中的交换幺半群 *)
 
 (*
- nLab:      https://ncatlab.org/nlab/show/commutative+monoid
- nLab:      https://ncatlab.org/nlab/show/braided+monoidal+category
- Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
+A commutative monoid in [(C, ⨂, I, σ)] is a [Monoid X] whose
+   multiplication is invariant under the braiding.  This is the
+   "commutative monoid" / "abelian monoid" of the symmetric-monoidal
+   setting.
 
-   本文件给出交换幺半群对象。
+   In this library's notation, with [braid : X ⨂ X ~> X ⨂ X] the
+   symmetry of the inputs, the commutativity law reads
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+       mu ∘ braid ≈ mu              (commutativity of the multiplication)
+
+   This is the categorical version of [a * b = b * a]: precomposing
+   the multiplication with the swap of its two arguments leaves it
+   unchanged.  Stated for a braiding it makes sense in any braided
+   monoidal category; here we work in the symmetric setting, where the
+   braiding is additionally involutive ([braid ∘ braid ≈ id]).
+
+   nLab:      https://ncatlab.org/nlab/show/commutative+monoid
+   nLab:      https://ncatlab.org/nlab/show/braided+monoidal+category
+   Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
+
+   This class is provided independently of [Frobenius] / [Comonoid] so
+   that an object can carry a commutative monoid structure WITHOUT
+   being forced to also carry a comultiplication.  Downstream callers
+   that want to model element-wise multiplication of tensor values
+   (where there is no natural co-multiplication) use this directly.
+
+--------
+在 [(C, ⨂, I, σ)] 中的交换幺半群是一个 [Monoid X]，其乘法在编织下是不变的。这就是对称单体环境中的“交换幺半群”/“阿贝尔幺半群”。
+
+在这个库的表示法中，使用 [braid : X ⨂ X ~> X ⨂ X] 对输入的对称性，交换律表示为
+
+mu ∘ braid ≈ mu （乘法的交换性）
+
+这是 [a * b = b * a] 的范畴版本：将乘法与其两个参数的交换预组合不会改变它。对于一个编排来说，它在任何编排单范畴中都是有意义的；在这里，我们在对称环境下工作，其中编排额外地是自反的（[braid ∘ braid ≈ id]）。
+
+nLab:      https://ncatlab.org/nlab/show/commutative+monoid
+nLab:      https://ncatlab.org/nlab/show/braided+monoidal+category
+维基百科: https://en.wikipedia.org/wiki/Monoid_(category_theory)
+
+本类独立于 [Frobenius] / [Comonoid] 提供，以便一个对象可以拥有交换幺半群结构，而不被迫同时拥有余乘结构。下游调用者如果想对张量值进行元素逐个乘法建模（在没有自然余乘的情况下），可以直接使用此类。
 *)
 
 Section CommutativeMonoid.
@@ -28,14 +61,19 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
 Class CommutativeMonoid (X : C) : Type := {
-  (* underlying 幺半群 对象, taken 幺半范畴
- underlying symmetric structure [S] （已译） *)
+  (*
+underlying monoid object, taken in the monoidal category
+     underlying the symmetric structure [S]
+
+--------
+底层单子对象，在对称结构 [S] 的单体范畴中采用
+*)
   cmon_monoid : @Monoid C
                   (@braided_is_monoidal C
                      (@symmetric_is_braided C S))
                   X;
 
-  (* multiplication is invariant under the braiding: [mu ∘ braid ≈ mu] *)
+  (* multiplication is invariant under the braiding: [mu ∘ braid ≈ mu] / 乘法在编织下是不变的：[mu ∘ braid ≈ mu] *)
   mu_commutative_of_cmon :
     (@mu _ _ _ cmon_monoid) ∘ braid
       ≈ (@mu _ _ _ cmon_monoid)
@@ -50,9 +88,14 @@ End CommutativeMonoid.
 Arguments cmon_monoid {C S X _}.
 Arguments mu_commutative_of_cmon {C S X _}.
 
-(** Convenience aliases mirroring [scfa_mu] / [scfa_eta] from
+(**
+Convenience aliases mirroring [scfa_mu] / [scfa_eta] from
     [SpecialCommutativeFrobenius.v]: project a [CommutativeMonoid X] to
-    its underlying [mu] / [eta]. *)
+    its underlying [mu] / [eta].
+
+--------
+便利别名镜像 [scfa_mu] / [scfa_eta] 来自 [SpecialCommutativeFrobenius.v]：将 [CommutativeMonoid X] 投影到其底层的 [mu] / [eta]。
+*)
 
 Section CommutativeMonoidProjections.
 

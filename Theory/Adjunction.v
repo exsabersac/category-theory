@@ -7,7 +7,23 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
+(*
+nLab: https://ncatlab.org/nlab/show/adjoint+functor
+   Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
+
+   An adjunction F ⊣ U between F : D ⟶ C (the left adjoint) and U : C ⟶ D
+   (the right adjoint) is given here in hom-set form: a family of isomorphisms
+   adj {x y} : (F x ~{C}~> y) ≊ (x ~{D}~> U y) in the category of setoids,
+   natural in both arguments. Writing ⌊f⌋ := to adj f and ⌈f⌉ := from adj f
+   for the two transposes, naturality is recorded by [to_adj_nat_l],
+   [to_adj_nat_r] (and the inverse-direction [from_adj_nat_l],
+   [from_adj_nat_r]). The unit η := ⌊id⌋ : x ~> U (F x) and counit
+   ε := ⌈id⌉ : F (U x) ~> x are the transposes of the identities, and the
+   triangle (zig-zag) identities ε ∘ fmap[F] η ≈ id[F x] (counit_fmap_unit)
+   and fmap[U] ε ∘ η ≈ id[U x] (fmap_counit_unit) hold as derived corollaries.
+
+--------
+nLab: https://ncatlab.org/nlab/show/adjoint+functor
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
    F : D ⟶ C（左伴随）与 U : C ⟶ D（右伴随）之间的伴随 F ⊣ U 此处以 hom 集形式给出：
@@ -16,9 +32,91 @@ Generalizable All Variables.
    [to_adj_nat_r]（及反向 [from_adj_nat_l]、[from_adj_nat_r]）记录。单位
    η := ⌊id⌋ : x ~> U (F x) 与余单位 ε := ⌈id⌉ : F (U x) ~> x 是恒等的转置，
    三角（之字形）恒等式 ε ∘ fmap[F] η ≈ id[F x]（counit_fmap_unit）与
-   fmap[U] ε ∘ η ≈ id[U x]（fmap_counit_unit）作为派生推论成立。 *)
+   fmap[U] ε ∘ η ≈ id[U x]（fmap_counit_unit）作为派生推论成立。
+*)
 
-(* 伴随的起源、无处不在与用途
+(*
+Origins, ubiquity, and the uses of adjunction
+
+   nLab:  https://ncatlab.org/nlab/show/adjoint+functor
+   Paper: Kan, "Adjoint functors", Transactions of the American
+          Mathematical Society 87(2), 1958
+   Paper: Lawvere, "Adjointness in Foundations", Dialectica 23(3/4), 1969;
+          reprinted as TAC Reprints 16, 2006
+
+   Adjoint functors were introduced by Daniel Kan — a homotopy theorist and
+   doctoral student of Eilenberg — in the 1958 paper cited above.  The
+   concept was suggested by the needs of homological algebra, where natural
+   bijections of the shape Hom(F x, y) ≅ Hom(x, U y) had long been in
+   working use, the paradigm case being the tensor-hom adjunction
+   − ⊗ A ⊣ Hom(A, −) on abelian groups.  The name records an analogy with
+   adjoint linear operators on a Hilbert space, ⟨L x, y⟩ = ⟨x, R y⟩; the
+   nLab describes the categorical notion as a kind of categorification of
+   that older one.  Mac Lane states the standard assessment in the preface
+   of Categories for the Working Mathematician (Springer, 1971): "Adjoint
+   functors arise everywhere", and the middle of that book presents
+   universal constructions, limits, and free objects as so many faces of
+   adjunction.
+
+   Three presentations of the concept are equivalent, and the library
+   formalizes each.  This file takes Kan's hom-set form as primitive: the
+   natural family of setoid isomorphisms [adj].  The unit/counit form —
+   η and ε subject to the two triangle identities, which appear here as the
+   derived corollaries [counit_fmap_unit] and [fmap_counit_unit] — is the
+   class [Adjunction_Transform] of Adjunction/Natural/Transformation.v,
+   with the round trip between the two forms in
+   Adjunction/Natural/Transformation/Universal.v.  The universal-arrow form
+   is Theory/Universal/Arrow.v, whose [AdjunctionFromUniversalArrows]
+   assembles an adjunction from a pointwise family of universal solutions
+   and is the engine behind the adjoint functor theorems of
+   Adjunction/GAFT.v.  An adjunction is weaker than an isomorphism or an
+   equivalence of categories, yet strong enough to transport structure:
+   adjoints are unique up to natural isomorphism ([right_adjoint_iso] and
+   [left_adjoint_iso] below), right adjoints preserve limits and left
+   adjoints colimits (Adjunction/Continuity.v, anticipated by the note
+   ending this file), and every adjunction induces a monad.  The last
+   observation is Huber's ("Homotopy theory in general categories",
+   Mathematische Annalen 144, 1961), realized here as [Adjunction_Monad] in
+   Monad/Adjunction.v; its converse — every monad so arises — was proved
+   twice in 1965, by Kleisli ("Every standard construction is induced by a
+   pair of adjoint functors", Proceedings of the AMS 16(3), 1965) with the
+   initial resolution and by Eilenberg and Moore ("Adjoint functors and
+   triples", 1965) with the terminal one, both in-tree as
+   Monad/Kleisli/Adjunction.v and Monad/Eilenberg/Moore/Adjunction.v.
+
+   Lawvere's "Adjointness in Foundations" argues that adjointness, first
+   isolated and named in category theory, also pervades logic: cartesian
+   closed structure is entirely given by adjunctions — currying is
+   − × a ⊣ (−)^a — and the quantifiers form the adjoint triple
+   ∃ ⊣ substitution ⊣ ∀ over the fibres of a hyperdoctrine, a triple that
+   reappears as dependent sum and product in type theory and as base
+   change in geometry.  Between posets, an adjunction is exactly a Galois
+   connection -- proved both ways at Instance/Proset/Galois.v, where the
+   coherence fields of this class are also shown to be vacuous over a thin
+   target while the hom-set iso is not ([succ_not_self_adjoint]) -- whose
+   antitone variant recovers classical Galois theory;
+   on this special case rests abstract interpretation (Cousot and Cousot,
+   "Abstract interpretation: a unified lattice model for static analysis
+   of programs by construction or approximation of fixpoints", POPL 1977),
+   where a connection α ⊣ γ between concrete and abstract domains —
+   c ⊑ γ(a) ⟺ α(c) ≼ a — is the soundness discipline of static
+   analyzers, and such connections compose, so stages of approximation
+   stack.
+
+   For the functional programmer (Milewski, "Adjunctions", 2016), the
+   transposes ⌊-⌋ and ⌈-⌉ are the leftAdjunct and rightAdjunct of
+   Haskell's Adjunction class, while [unit] and [counit] specialize to
+   return and extract.  The product type is right adjoint to the diagonal
+   functor — concretely [Diagonal_Product_Adjunction] in
+   Adjunction/Diagonal/Product.v — and the function type arises from
+   − × a ⊣ (−)^a with eval as counit.  The free/forgetful reading of the
+   next comment block, witnessed in-tree by [FreeForgetfulAdjunction] in
+   Construction/Free/Quiver.v, is the historically central family of
+   examples, though not the whole story: limits and Kan extensions are
+   themselves adjoints, to the diagonal and restriction functors.
+
+--------
+伴随的起源、无处不在与用途
 
    nLab:  https://ncatlab.org/nlab/show/adjoint+functor
    Paper: Kan, "Adjoint functors", Transactions of the American
@@ -64,12 +162,34 @@ Generalizable All Variables.
    积类型是对角函子的右伴随——具体见 Adjunction/Diagonal/Product.v 的
    [Diagonal_Product_Adjunction]——函数类型来自 − × a ⊣ (−)^a，以 eval 为余单位。
    下一块注释的自由/遗忘读法，树内由 Construction/Free/Quiver.v 的 [FreeForgetfulAdjunction]
-   见证，是历史上中心的例子族，但并非全部：极限与 Kan 扩张本身也是伴随（分别对对角与限制函子）。 *)
+   见证，是历史上中心的例子族，但并非全部：极限与 Kan 扩张本身也是伴随（分别对对角与限制函子）。
+*)
 
 (*
-   本节说明伴随、函子、等价相关定义、性质与动机。
+Adjunctions relate two functors that map between the same two categories
+  (though in opposite directions), in a manner that is weaker than isomorphism
+  or equivalence, but still quite informative. In general, one functor is
+  forgetful, and maps constructions from a more expressive domain into one
+  that captures only the essence of that structure; while the other is free,
+  and maps essential constructions into the fuller setting.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+  As an example: the category of ASTs may be mapped forgetfully to the
+  category of interpretated objects, which themselves map freely to some
+  "canonical" representation of each such object. So, "3", "1 + 2", and "2 +
+  1" all mean 3, while 3 is canonically represented by the constant "3". The
+  forgetful functor is the evaluator, and the free functor a parser, giving
+  rise to the following isomorphism (in the category of Sets, whose objects
+  may be hom-sets):
+
+      AST x ~{category of syntax or ASTs}~> y
+        ≅ x ~{category of semantics or denotations}~> Denote y
+
+--------
+伴随涉及两个函子，它们在相同的两个范畴之间映射（尽管方向相反），这种关系比同构或等价要弱，但仍然非常有信息量。通常，一个函子是遗忘的，将来自更具表达力的领域的构造映射到仅捕捉该结构本质的领域；而另一个函子是自由的，将本质构造映射到更完整的环境中。
+
+例如：AST 的范畴可以通过遗忘映射到解释对象的范畴，而这些解释对象本身又可以自由地映射到每个此类对象的某种“规范”表示。因此，“3”、“1 + 2”和“2 + 1”都表示 3，而 3 的规范表示是常量“3”。遗忘函子是求值器，自由函子是解析器，从而产生以下同构（在集合的范畴中，其对象可以是同态集）：
+
+AST x ~{语法或抽象语法树的范畴}~> y ≅ x ~{语义或表示的范畴}~> 表示 y
 *)
 
 Section Adjunction.
@@ -83,9 +203,9 @@ Context {U : C ⟶ D}.
 Reserved Notation "⌊ f ⌋".
 Reserved Notation "⌈ f ⌉".
 
-(* o3 p3 are universes larger than either C or D. *)
+(* o3 p3 are universes larger than either C or D. / o3 p3 是比 C 或 D 更大的宇宙。 *)
 Class Adjunction@{o3 p3 so sh sp} := {
-  (* adj {x y} : F x ~{C}~> y ≊ x ~{D}~> U y *)
+  (* adj {x y} : F x ~{C}~> y ≊ x ~{D}~> U y / adj {x y} : F x ~{C}~> y ≊ x ~{D}~> U y *)
   adj {x y} :
     @Isomorphism@{so sh p3} Sets@{o3 so}
       {| carrier := @hom C (F x) y; is_setoid := @homset C (F x) y |}
@@ -93,18 +213,26 @@ Class Adjunction@{o3 p3 so sh sp} := {
     where "⌊ f ⌋" := (to   adj f)
       and "⌈ f ⌉" := (from adj f);
 
-  (* Naturality iso both arguments, stated forward transpose
- ⌊-⌋ = adj (自然性 x, via F) ... （已译） *)
+  (*
+Naturality of the iso in both arguments, stated for the forward transpose
+     ⌊-⌋ = to adj (naturality in x, via F) and ...
+
+--------
+在两个论域中同态性的 iso，自前向转置中声明 ⌊-⌋ = 转为 adj（在 x 中的同态性，通过 F）以及 ...
+*)
   to_adj_nat_l {x y z} (f : F y ~> z) (g : x ~> y) :
     ⌊f ∘ fmap[F] g⌋ ≈ ⌊f⌋ ∘ g;
-  (* ... naturality in y, via U. *)
+  (* ... naturality in y, via U. / ... 在 y 中的自然性，通过 U。 *)
   to_adj_nat_r {x y z} (f : y ~> z) (g : F x ~> y) :
     ⌊f ∘ g⌋ ≈ fmap[U] f ∘ ⌊g⌋;
 
   (*
-   本节说明 Adjunction 相关定义、性质与动机。
+The dual (_sym) statements for the inverse transpose ⌈-⌉ = from adj;
+     derivable from the above, but kept as fields so that opposite-side proofs
+     are available by reflexivity-of-duality without re-deriving them.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+逆转置 ⌈-⌉ 的对偶 (_sym) 语句来自伴随；可从上述推导，但保持为字段，以便通过对偶的自反性可以获得对侧证明，而无需重新推导它们。
 *)
   from_adj_nat_l {x y z} (f : y ~> U z) (g : x ~> y) :
     ⌈f ∘ g⌉ ≈ ⌈f⌉ ∘ fmap[F] g;
@@ -266,7 +394,7 @@ Proof.
   rewrite from_adj_comp_law; cat.
 Qed.
 
-(* If F is a faithful functor, and f is monic, then adj f is monic. *)
+(* If F is a faithful functor, and f is monic, then adj f is monic. / 如果 F 是忠实函子，并且 f 是单态的，那么 adj f 也是单态的。 *)
 Theorem adj_monic  {x y} (f : F x ~> y) c (g h : c ~> x) :
   Faithful F → Monic f ->
     ⌊f⌋ ∘ g ≈ ⌊f⌋ ∘ h → g ≈ h.
@@ -317,8 +445,13 @@ Notation "F ⊣ G" := (@Adjunction _ _ F G) (at level 59) : category_scope.
 Notation "adj[ A ]" := (@adj _ _ _ _ A _ _)
   (at level 9, format "adj[ A ]") : morphism_scope.
 
-(* Wikipedia: "If 函子 F : C ← D has two right adjoints G G', then
- G G' naturally isomorphic. The same true left adjoints." （已译） *)
+(*
+Wikipedia: "If the functor F : C ← D has two right adjoints G and G', then
+   G and G' are naturally isomorphic. The same is true for left adjoints."
+
+--------
+维基百科："如果函子 F : C ← D 有两个右伴随 G 和 G'，那么 G 和 G' 在自然意义下是同构的。左伴随也同样成立。"
+*)
 
 Theorem right_adjoint_iso `(F : C ⟶ D) (G G' : D ⟶ C) :
   F ⊣ G → F ⊣ G' → G ≈ G'.
@@ -399,17 +532,58 @@ Proof.
 Qed.
 
 (*
-   本节说明伴随、函子、（余）极限相关定义、性质与动机。
+Future direction (no scaffolding here yet):
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   "The most important property of adjoints is their continuity: every
+    functor that has a left adjoint (and therefore is a right adjoint) is
+    continuous (i.e. commutes with limits in the category theoretical
+    sense); every functor that has a right adjoint (and therefore is a
+    left adjoint) is cocontinuous (i.e. commutes with colimits)."
+                                                              -- Wikipedia
+
+   These theorems are formalized in Adjunction/Continuity.v:
+   [right_adjoint_preserves_limits] (RAPL, proved directly by transposing
+   cones through the hom-setoid isomorphism) and
+   [left_adjoint_preserves_colimits] (LAPC, by duality via
+   Adjunction/Opposite.v), phrased with the preservation vocabulary of
+   Structure/Limit/Preservation.v.
+
+--------
+未来方向（这里还没有脚手架）：
+
+“伴随最重要的性质是它们的连续性：每一个有左伴随的函子（因此是右伴随）是连续的（即在范畴理论的意义下与极限交换）；每一个有右伴随的函子（因此是左伴随）是共连续的（即与余极限交换）。”
+                                                              -- 维基百科
+
+这些定理在 Adjunction/Continuity.v 中形式化：[right_adjoint_preserves_limits]（RAPL，通过通过同值集同构转置锥直接证明）和 [left_adjoint_preserves_colimits]（LAPC，通过 Adjunction/Opposite.v 的对偶性），使用 Structure/Limit/Preservation.v 的保持词汇来表述。
 *)
 
-(* * ** Transporting 伴随 along 同构 left adjoints （已译） *)
+(** ** Transporting an adjunction along an isomorphism of left adjoints / ** 沿着左伴随的同构传输伴随 *)
 
 (*
-   本节说明伴随、函子、等价相关定义、性质与动机。
+A functor naturally isomorphic to a left adjoint is a left adjoint,
+   with the SAME right adjoint.  [right_adjoint_iso] and [left_adjoint_iso]
+   above run the other way (from two adjunctions to an isomorphism),
+   Theory/Equivalence/Adjunction.v transports along an EQUIVALENCE OF
+   CATEGORIES rather than along a 2-cell, and Theory/Functor.v's
+   [transport_adjunction] is a Type-level transport of a relation along
+   an equality of indices, not an adjunction at all.  Built for
+   Instance/Mod/Bimodule.v's part (c) (#401), which declared it there as
+   its first consumer, and moved here verbatim by #431, whose
+   functor-category remark is its second; [adjunction_along_left_iso]
+   stays [Defined] and load-bearing (Bimodule.v's
+   [btba_to_is_transposed], and [aali_to_is_transpose] below, reduce
+   through it).
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+一个函子自然同构于一个左伴随，则它也是一个左伴随，
+   并且具有相同的右伴随。上面的 [right_adjoint_iso] 和 [left_adjoint_iso]
+   运行方向相反（从两个伴随到一个同构），
+   Theory/Equivalence/Adjunction.v 是沿着范畴的等价进行搬运，而不是沿着 2-胞箭，
+   Theory/Functor.v 的 [transport_adjunction] 是沿索引相等的关系在类型层面的搬运，
+   并不是一个伴随。它是为 Instance/Mod/Bimodule.v 的部分 (c) (#401) 构建的，
+   那里声明它为其第一个使用者，并被 #431 原封不动地移动到这里，
+   其函子-范畴的备注是第二个使用者；[adjunction_along_left_iso] 保持 [Defined] 并具有承重作用
+   （Bimodule.v 中的 [btba_to_is_transposed] 和下面的 [aali_to_is_transpose] 通过它进行化简）。
 *)
 
 Section AdjunctionAlongIso.

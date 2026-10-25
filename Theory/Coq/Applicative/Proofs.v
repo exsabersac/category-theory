@@ -16,16 +16,30 @@ Generalizable All Variables.
 
 Import ApplicativeNotations.
 
-(** 本节：Instance characterisations computation rules Coq applicatives （已译） *)
+(** Instance characterisations and computation rules for the Coq applicatives / Coq 函子实例的特性描述和计算规则 *)
 
 (*
- nLab: https://ncatlab.org/nlab/show/applicative+functor
+nLab: https://ncatlab.org/nlab/show/applicative+functor
    nLab: https://ncatlab.org/nlab/show/monoidal+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
-   本文件给出相应结构的证明。
+   This file relates the Haskell-style [Applicative] class of
+   [Theory.Coq.Applicative] (carrying only [pure]/[ap]) to the categorical
+   notion of an applicative functor from [Functor.Applicative], namely a
+   strong lax monoidal endofunctor on Coq (with its cartesian monoidal
+   structure).  [IsApplicative] is the predicate "this [pure]/[ap] arises from
+   such a lax monoidal functor", and [Identity_IsApplicative],
+   [arrow_IsApplicative] and [Compose_IsApplicative] establish lawfulness of
+   the identity, reader and composite instances by exhibiting that structure.
+   The opening corollaries are the definitional computation rules for [pure]
+   and [ap] (in particular for the composite applicative).
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+nLab: https://ncatlab.org/nlab/show/applicative+functor
+nLab: https://ncatlab.org/nlab/show/monoidal+functor
+Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
+
+此文件将 Haskell 风格的 [Applicative] 类的 [Theory.Coq.Applicative]（仅携带 [pure]/[ap]）与来自 [Functor.Applicative] 的函子范畴概念联系起来，即 Coq 上的强弱单体范畴自函子（带有其笛卡尔单体结构）。[IsApplicative] 是谓词“该 [pure]/[ap] 来源于此类弱单体函子”，而 [Identity_IsApplicative]、[arrow_IsApplicative] 和 [Compose_IsApplicative] 通过展示该结构来建立恒等、读取器和复合实例的合法性。开头的推论是 [pure] 和 [ap]（特别是复合应用函子）的定义性计算规则。
 *)
 
 Corollary compose_ap  `{Applicative F} `{Applicative G} {x y} :
@@ -92,9 +106,20 @@ Proof.
 Qed.
 
 (*
-   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+The composition of two applicatives is itself applicative. We establish
+   this by appeal to the general proofs that:
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   1. every Coq functor has strength;
+   2. (also, but not needed: any two strong functors compose to a strong
+      functor; if it is a Coq functor it is known to have strength); and
+   3. any two lax monoidal functors compose to a lax monoidal functor.
+
+--------
+两个应用函子（applicative）的组合本身也是应用函子。我们通过采用一般性证明来建立这一点：
+
+1. 每个 Coq 函子都有强度；
+2. （同样，但不是必需的：任意两个强函子组合为一个强函子；如果它是 Coq 函子，则已知它具有强度）；以及
+3. 任意两个松单态函子（lax monoidal functor）组合为一个松单态函子。
 *)
 
 Theorem Compose_IsApplicative

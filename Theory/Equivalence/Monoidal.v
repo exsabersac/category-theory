@@ -10,32 +10,117 @@ Require Import Category.Theory.Equivalence.
 Generalizable All Variables.
 
 (*
- nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
+nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
    nLab: https://ncatlab.org/nlab/show/monoidal+category
    nLab: https://ncatlab.org/nlab/show/transport+of+structure
 
-   本文件给出幺半相关结构。
+   Transport of monoidal structure along an equivalence of categories.
+   Given an equivalence F : C ⟶ D with quasi-inverse G and a monoidal
+   structure (I, ⨂, λ, ρ, α) on C, the category D acquires a monoidal
+   structure with unit F I and tensor
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+       (d, d') ↦ F (G d ⨂ G d'),
+
+   whose unitors and associator are assembled from the unit and counit
+   isomorphisms of the equivalence together with the images under F of
+   the unitors and associator of C.
+
+   Two design points:
+
+   1. STAGING.  The construction is delivered in two layers.  The record
+      [MonoidalTransportData] packages the data of a monoidal structure
+      *without* the triangle and pentagon coherence laws: unit, tensor,
+      unitors, associator, and the six naturality squares.  The assembler
+      [Monoidal_from_transport_data] upgrades such data to a genuine
+      [Monoidal] once the two coherence laws are supplied.  The transported
+      structure is first built as [Transported_Monoidal_Data]; the laws
+      [Transported_triangle_identity] and [Transported_pentagon_identity]
+      are the final lemmas of the file, and [Transported_Monoidal] puts the
+      pieces together.
+
+   2. THE RECTIFIED COUNIT.  An arbitrary quasi-inverse (G, unit, counit)
+      need not satisfy the zig-zag identities, and the triangle law of the
+      transported structure genuinely needs the zig-zag
+
+          fmap[G] counit'_d ∘ unit_{G d} ≈ id.
+
+      We therefore first correct the counit by the classical adjustment
+          counit'_d := counit_d ∘ fmap[F] (defect_d)⁻¹,
+          defect_d  := fmap[G] counit_d ∘ unit_{G d},
+      which keeps G and the unit and makes the displayed zig-zag hold
+      ([quasi_inverse_transport_counit]).  Consequently
+      [fmap[G]] of the corrected counit *is* the inverse of the unit
+      component, so every coherence computation happens purely in terms of
+      the unit isomorphism and the structure of C.  The pentagon needs no
+      zig-zag at all: the transported associator mentions only the unit.
+
+   Everything here is a Definition, never an Instance (the [Monoidal_op]
+   convention of Construction/Opposite/Monoidal.v): a transported monoidal
+   structure is a choice, made explicitly at use sites.  Nothing in this
+   file is registered for typeclass resolution.
+
+--------
+nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
+nLab: https://ncatlab.org/nlab/show/monoidal+category
+nLab: https://ncatlab.org/nlab/show/transport+of+structure
+
+沿着范畴的等价传输幺半群结构。
+给定一个等价 F : C ⟶ D 及其准逆 G，以及 C 上的幺半群结构 (I, ⨂, λ, ρ, α)，范畴 D 将获得一个幺半群结构，其单位元为 F I，张量为
+
+(d, d') ↦ F (G d ⨂ G d')，
+
+其单位元和结合元是由等价的单位同构和余单位同构以及 C 的单位元和结合元在 F 下的像组装而成的。
+
+两个设计要点：
+
+1. 阶段。该构造以两层交付。记录 [MonoidalTransportData] 封装了一个幺半群结构的数据，*不包含*三角形和五边形的相干律：单位元、张量、单位子、结合子，以及六个自然性方格。汇编器 [Monoidal_from_transport_data] 在提供两条相干律后，将这些数据升级为真正的 [Monoidal]。传输的结构首先作为 [Transported_Monoidal_Data] 构建；定律 [Transported_triangle_identity] 和 [Transported_pentagon_identity] 是文件的最终引理，而 [Transported_Monoidal] 将各部分组合在一起。
+
+2. 校正余单位。任意的准逆 (G, 单位, 余单位) 不必满足之字形恒等式，而传输结构的三角定律确实需要之字形恒等式
+
+fmap[G] counit'_d ∘ unit_{G d} ≈ id.
+
+因此，我们首先通过经典调整修正余单位 
+          counit'_d := counit_d ∘ fmap[F] (defect_d)⁻¹,
+          defect_d  := fmap[G] counit_d ∘ unit_{G d},
+      这样可以保持 G 和单位，并使显示的之字形成立
+      ([quasi_inverse_transport_counit])。因此
+      [fmap[G]] 修正后的余单位 *确实* 是单位分量的逆，因此每个相干性计算完全依赖于单位同构和 C 的结构。五边形根本不需要任何之字形：传输的结合子仅提到单位。
+
+这里的一切都是定义，从来不是实例（Construction/Opposite/Monoidal.v 的 [Monoidal_op] 约定）：一个传递的幺半群结构是在使用时明确选择的。这个文件中的内容没有注册用于类型类解析。
 *)
 
 #[local] Obligation Tactic := intros.
 
 (*
-   本节说明函子、同构相关定义、性质与动机。
+Functorial images of isomorphisms are taken with the library's
+   [fobj_iso] (Theory/Functor.v, the [Proper] instance for [fobj]): its
+   [to] and [from] components are the literal [fmap] terms behind a
+   transparent obligation, so the [*_unfold] equations below remain
+   Leibniz (=) after unfolding.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+同构的函子像是用库的 [fobj_iso]（Theory/Functor.v，[fobj] 的 [Proper] 实例）获取的：它的 [to] 和 [from] 组件是一个透明义务背后的字面 [fmap] 项，所以下面的 [*_unfold] 方程在展开后仍然是 Leibniz (=) 的。
 *)
 
 (*
-   本节说明 Monoidal 相关定义、性质与动机。
+Rewriting toolkit for iso and [bimap] chains along left-nested
+   composition spines, used by every coherence proof of the transported
+   structure: composites are first normalized to the left-nested form
+   (via [rewrite !comp_assoc]) and then advanced by spine lemmas, each
+   keyed to match exactly one intended redex.  The toolkit is
+   transport-agnostic infrastructure, so it is scoped inside a module:
+   [Require Import]ing this file does not spill its generically named
+   lemmas into the top-level namespace.  The transport development
+   [Import]s it right below the module; downstream users opt in with
+   [Import Category.Theory.Equivalence.Monoidal.MonoidalTransportSpine].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+用于沿左嵌套组合主干重写 iso 和 [bimap] 链的工具包，由每个传输结构的一致性证明使用：复合首先通过 [rewrite !comp_assoc] 归一化为左嵌套形式，然后通过主干引理推进，每个引理的键匹配恰好一个预期的可约表达式。该工具包是与传输无关的基础设施，因此它被限定在一个模块内：[Require Import] 本文件不会将其通用命名的引理泄露到顶层命名空间。传输开发 [Import] 就在模块下方；下游用户通过 [Import Category.Theory.Equivalence.Monoidal.MonoidalTransportSpine] 选择性使用。
 *)
 
 Module MonoidalTransportSpine.
 
-(* Folding a pair of [fmap]s across a left-nested composition spine. *)
+(* Folding a pair of [fmap]s across a left-nested composition spine. / 将一对 [fmap] 沿左嵌套组合主轴折叠。 *)
 Lemma fmap_fold_spine {A B : Category} (H : A ⟶ B) {t : B} {x y z : A}
   (X : H z ~> t) (f : y ~> z) (g : x ~> y) :
   (X ∘ fmap[H] f) ∘ fmap[H] g ≈ X ∘ fmap[H] (f ∘ g).
@@ -49,9 +134,13 @@ Section IsoSpine.
 Context {A : Category}.
 
 (*
-   本节说明同构相关定义、性质与动机。
+From a commuting square against the [to] components of two
+   isomorphisms, derive the corresponding square against the [from]
+   components.  This turns each to-naturality lemma below into its
+   from-naturality companion.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+从关于两个同构的 [to] 分量的换位正方形出发，推导出相应的关于 [from] 分量的正方形。这将下面的每个“到自然性”引理转变为它的“从自然性”对应引理。
 *)
 Lemma iso_from_natural {x y x' y' : A}
   (i : x ≅ y) (j : x' ≅ y') (f : x ~> x') (g : y ~> y')
@@ -68,7 +157,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Cancelling a [to]/[from] pair at the tail of a left-nested spine. / 取消位于左嵌套脊尾部的 [to]/[from] 对。 *)
 Lemma iso_cancel_spine_tf {t x y : A} (X : x ~> t) (i : y ≅ x) :
   (X ∘ to i) ∘ from i ≈ X.
 Proof.
@@ -87,7 +176,7 @@ Qed.
 
 End IsoSpine.
 
-(* The [bimap]-chain spine lemmas. *)
+(* The [bimap]-chain spine lemmas. / [bimap] 链脊引理。 *)
 Section BimapSpine.
 
 Context {J K L : Category}.
@@ -135,7 +224,7 @@ Proof.
   now rewrite !id_right.
 Qed.
 
-(* Cancelling an inverse pair of second components along the spine. *)
+(* Cancelling an inverse pair of second components along the spine. / 沿脊柱取消第二组件的逆对。 *)
 Lemma bimap_id_cancel_ft_spine {t : L} {x : J} {v w : K}
   (X : T (x, v) ~> t) (i : v ≅ w) :
   (X ∘ bimap[T] (id[x]) (from i)) ∘ bimap[T] (id[x]) (to i) ≈ X.
@@ -147,7 +236,7 @@ Proof.
   apply id_right.
 Qed.
 
-(* Cancelling an inverse pair of first components along the spine. *)
+(* Cancelling an inverse pair of first components along the spine. / 沿脊柱取消第一分量的反向对。 *)
 Lemma bimap_cancel_ft_spine_l {t : L} {x y : J} {v : K}
   (X : T (x, v) ~> t) (i : x ≅ y) :
   (X ∘ bimap[T] (from i) (id[v])) ∘ bimap[T] (to i) (id[v]) ≈ X.
@@ -161,7 +250,13 @@ Qed.
 
 End BimapSpine.
 
-(* 相关说明。 （已译） *)
+(*
+The nested variant of [bimap_id_cancel_ft_spine]: the cancelling pair
+   sits in the first slot of the second component, one bifunctor down.
+
+--------
+[bimap_id_cancel_ft_spine] 的嵌套变体：取消对位于第二组件的第一个位置，下降一个双函子。
+*)
 Lemma bimap_bimap_id_cancel_ft_spine
   {J K1 K2 K L : Category} {T : J ∏ K ⟶ L} {S : K1 ∏ K2 ⟶ K}
   {t : L} {a : J} {x' y' : K1} {v : K2}
@@ -177,8 +272,13 @@ Proof.
   apply id_right.
 Qed.
 
-(* Spine forms 自然性 associator pentagon
- law 幺半范畴. （已译） *)
+(*
+Spine forms of the naturality of the associator and of the pentagon
+   law of a monoidal category.
+
+--------
+单类范畴中结合子自然性的脊形态及五边形律的脊形态。
+*)
 Section MonoidalSpine.
 
 Context {C : Category}.
@@ -245,16 +345,22 @@ End MonoidalTransportSpine.
 Import MonoidalTransportSpine.
 
 (* ------------------------------------------------------------------ *)
-(* 相关说明。 （已译） *)
+(* The staging record: monoidal data without the coherence laws. / 暂存记录：没有相干律的幺半群数据。       *)
 
 Section TransportData.
 
 Context (X : Category).
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+The data of a monoidal structure on X — unit, tensor, unitors,
+   associator, and the six naturality squares — with the triangle and
+   pentagon laws deliberately left out.  This is the staging vehicle for
+   transported structures: the data and naturality land first, the two
+   coherence proofs are supplied separately to
+   [Monoidal_from_transport_data].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+关于 X 上单模结构的数据——单位、张量、单位变换器、结合子，以及六个自然性方框——三角律和五边形律被故意省略。这是传输结构的预备阶段：首先传递数据和自然性，然后两个相干性证明会单独提供给 [Monoidal_from_transport_data]。
 *)
 Record MonoidalTransportData : Type := {
   transport_unit : X;
@@ -304,7 +410,7 @@ Record MonoidalTransportData : Type := {
       ∘ bimap[transport_tensor] g (bimap[transport_tensor] h i)
 }.
 
-(* The triangle coherence law over a [MonoidalTransportData]. *)
+(* The triangle coherence law over a [MonoidalTransportData]. / [MonoidalTransportData] 上的三角一致性法则。 *)
 Definition transport_triangle (T : MonoidalTransportData) : Type :=
   ∀ x y,
     bimap[transport_tensor T] (to (transport_unit_right T)) id
@@ -313,7 +419,7 @@ Definition transport_triangle (T : MonoidalTransportData) : Type :=
     bimap[transport_tensor T] id (to (transport_unit_left T))
       ∘ to (transport_tensor_assoc T).
 
-(* The pentagon coherence law over a [MonoidalTransportData]. *)
+(* The pentagon coherence law over a [MonoidalTransportData]. / 五边形相干定律在 [MonoidalTransportData] 上。 *)
 Definition transport_pentagon (T : MonoidalTransportData) : Type :=
   ∀ x y z w,
     bimap[transport_tensor T] id (to (transport_tensor_assoc T))
@@ -325,7 +431,13 @@ Definition transport_pentagon (T : MonoidalTransportData) : Type :=
                  (x, transport_tensor T (y, transport_tensor T (z, w))) >>
     to (transport_tensor_assoc T) ∘ to (transport_tensor_assoc T).
 
-(* 相关说明。 （已译） *)
+(*
+Assemble a genuine monoidal structure from staged transport data plus
+   the two coherence proofs.
+
+--------
+从分阶段传输数据加上两个相干性证明组装一个真正的幺半群结构。
+*)
 Definition Monoidal_from_transport_data
   (T : MonoidalTransportData)
   (tri : transport_triangle T)
@@ -363,7 +475,7 @@ Arguments transport_pentagon {X} T.
 Arguments Monoidal_from_transport_data {X} T tri pent.
 
 (* ------------------------------------------------------------------ *)
-(* The transported structure.                                          *)
+(* The transported structure. / 被运输的结构。                                          *)
 
 Section TransportedMonoidal.
 
@@ -377,23 +489,39 @@ Local Notation eta := (@equivalence_unit_at C D F E).
 Local Notation eps := (@equivalence_counit_at C D F E).
 
 (*
-   本节说明等价相关定义、性质与动机。
+Naturality of the unit and counit components — and the conjugation
+   form describing how G ◯ F acts on morphisms — is provided by
+   [equivalence_unit_to_natural]/[equivalence_unit_from_natural],
+   [equivalence_counit_to_natural]/[equivalence_counit_from_natural] and
+   [equivalence_unit_conjugate] of Theory/Equivalence.v, stated there
+   beside the accessors [equivalence_unit_at]/[equivalence_counit_at].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+单位和余单位分量的自然性——以及描述 G ◯ F 如何作用于态射的共轭形式——由 Theory/Equivalence.v 中的 [equivalence_unit_to_natural]/[equivalence_unit_from_natural]、[equivalence_counit_to_natural]/[equivalence_counit_from_natural] 和 [equivalence_unit_conjugate] 提供，它们在那里与访问器 [equivalence_unit_at]/[equivalence_counit_at] 一起陈述。
 *)
 
 (*
-   本节说明伴随、等价相关定义、性质与动机。
+The defect of the chosen unit/counit pair: the composite
+   G d ~> G F G d ~> G d measuring how far the pair is from satisfying
+   the zig-zag identity at G.  For an adjoint equivalence it would be the
+   identity; in general it is merely a natural automorphism of G d.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+所选择的单位/余单位对的缺陷：复合
+   G d ~> G F G d ~> G d，用于测量该对偏离在 G 上满足之锯齿形恒等式的程度。对于伴随等价，它将是恒等映射；一般情况下，它仅是 G d 的自然自同构。
 *)
 Definition transport_defect (d : D) : G d ≅ G d :=
   fobj_iso G _ _ (eps d) ⊙ eta (G d).
 
 (*
-   本节说明函子、同构相关定义、性质与动机。
+The [*_unfold] equations here and below spell out the components of the
+   isomorphisms just defined.  Each is Leibniz (=), not ≈, because the two
+   sides are the very same term after unfolding the definition — the
+   [bimap_fmap] convention of Functor/Bifunctor.v — which lets them be
+   used as rewrite rules with no setoid side conditions.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+下面的 [*_unfold] 方程列出了刚定义的同构的各个组成部分。每个都是 Leibniz (=)，而不是 ≈，因为在展开定义后，两边实际上是相同的项——这是 Functor/Bifunctor.v 的 [bimap_fmap] 约定——这使得它们可以作为重写规则使用，而无需集合条件。
 *)
 Lemma transport_defect_to_unfold (d : D) :
   to (transport_defect d) = fmap[G] (to (eps d)) ∘ to (eta (G d)).
@@ -427,9 +555,14 @@ Proof.
 Qed.
 
 (*
-   本节说明伴随、等价相关定义、性质与动机。
+The rectified counit: correcting the chosen counit by the inverse of
+   the defect yields a counit for the same quasi-inverse and unit that
+   satisfies the zig-zag identity at G (proved below).  This is the
+   classical improvement step in showing that every equivalence refines
+   to an adjoint equivalence, done here only on the counit side.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+修正的余单位：通过缺陷的逆来修正所选的余单位，会得到相同准逆和单位的余单位，并且在 G 上满足之字形恒等式（如下所示证明）。这是展示每个等价可以细化为伴随等价的经典改进步骤，这里仅在余单位方面进行。
 *)
 Definition transport_counit (d : D) : F (G d) ≅ d :=
   eps d ⊙ fobj_iso F _ _ (iso_sym (transport_defect d)).
@@ -467,8 +600,13 @@ Proof.
   apply transport_counit_to_natural.
 Qed.
 
-(* The zig-zag 恒等 at G, most usable form: G takes the
- rectified counit inverse unit component. （已译） *)
+(*
+The zig-zag identity at G, in its most usable form: G takes the
+   rectified counit to the inverse of the unit component.
+
+--------
+G 的之字形恒等式，在其最可用的形式中：G 将整流余单元映射到单元分量的逆。
+*)
 Lemma quasi_inverse_transport_counit (d : D) :
   fmap[G] (to (transport_counit d)) ≈ from (eta (G d)).
 Proof.
@@ -493,7 +631,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* The transported tensor: (d, d') ↦ F (G d ⨂ G d'). *)
+(* The transported tensor: (d, d') ↦ F (G d ⨂ G d'). / 被传输的张量： (d, d') ↦ F (G d ⨂ G d')。 *)
 Program Definition Transported_Tensor : D ∏ D ⟶ D := {|
   fobj := fun p => F ((G (fst p) ⨂[M] G (snd p))%object);
   fmap := fun x y f => fmap[F] (fmap[G] (fst f) ⨂[M] fmap[G] (snd f))
@@ -516,14 +654,26 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明（余）端相关定义、性质与动机。
+The action of the transported tensor on a pair of morphisms, written
+   out.  [bimap[Transported_Tensor] f g] reduces to exactly this term; the
+   D-side lemmas below are stated directly in this form so that every
+   object index in a proof goal is in the same (reduced) representation.
+   The [Build_MonoidalTransportData] at the end of the file converts them
+   back to the [bimap] phrasing of the record fields definitionally.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+传输张量在一对态射上的作用，写出来。[bimap[Transported_Tensor] f g] 减少为完全相同的项；下面的 D 侧引理直接以这种形式陈述，以便证明目标中的每个对象索引都采用相同（简化的）表示。文件末尾的 [Build_MonoidalTransportData] 将它们转换回记录字段定义上的 [bimap] 表述。
 *)
 Local Notation Tbimap f g := (fmap[F] (fmap[G] f ⨂[M] fmap[G] g)).
 
-(* The transported left unitor:
-   F I ⊗' d = F (G (F I) ⨂ G d) ≅ F (I ⨂ G d) ≅ F (G d) ≅ d. *)
+(*
+The transported left unitor:
+   F I ⊗' d = F (G (F I) ⨂ G d) ≅ F (I ⨂ G d) ≅ F (G d) ≅ d.
+
+--------
+传输后的左单位元：
+   F I ⊗' d = F (G (F I) ⨂ G d) ≅ F (I ⨂ G d) ≅ F (G d) ≅ d。
+*)
 Program Definition Transported_unit_left (x : D) :
   F ((G (F (@I C M)) ⨂[M] G x)%object) ≅ x := {|
   to := to (transport_counit x)
@@ -560,7 +710,7 @@ Next Obligation.
   apply fmap_id.
 Qed.
 
-(* The transported right unitor. *)
+(* The transported right unitor. / 被传输的右单位元。 *)
 Program Definition Transported_unit_right (x : D) :
   F ((G x ⨂[M] G (F (@I C M)))%object) ≅ x := {|
   to := to (transport_counit x)
@@ -611,8 +761,13 @@ Lemma transported_unit_right_to_unfold (x : D) :
                      ∘ bimap (id[G x]) (from (eta (@I C M)))).
 Proof. reflexivity. Qed.
 
-(* The transported associator, assembled purely unit
- 同构 associator C. （已译） *)
+(*
+The transported associator, assembled purely from the unit
+   isomorphism and the associator of C.
+
+--------
+这个传输的结合子，完全由单位同构和 C 的结合子组装而成。
+*)
 Program Definition Transported_tensor_assoc (x y z : D) :
   F ((G (F ((G x ⨂[M] G y)%object)) ⨂[M] G z)%object)
     ≅ F ((G x ⨂[M] G (F ((G y ⨂[M] G z)%object)))%object) := {|
@@ -661,9 +816,14 @@ Lemma transported_tensor_assoc_to_unfold (x y z : D) :
                  ∘ bimap (from (eta ((G x ⨂ G y)%object))) (id[G z])).
 Proof. reflexivity. Qed.
 
-(* The image under G transported unitors: zig-zag 恒等
- collapses counit factor, so image corresponding unitor
- C conjugated single unit component. （已译） *)
+(*
+The image under G of the transported unitors: the zig-zag identity
+   collapses the counit factor, so the image is the corresponding unitor
+   of C conjugated by a single unit component.
+
+--------
+在 G 下传送的单位子上的图像：之字形恒等式折叠了余单位因子，因此图像是 C 的相应单位子，通过一个单一的单位分量进行共轭。
+*)
 Lemma G_transported_unit_left (y : D) :
   fmap[G] (to (Transported_unit_left y))
     ≈ to (@unit_left C M (G y)) ∘ bimap (from (eta (@I C M))) (id[G y])
@@ -692,7 +852,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The C-side 自然性 squares transported unitors. （已译） *)
+(* The C-side naturality squares of the transported unitors. / 传输后的幺元的C面自然性平方。 *)
 
 Lemma transported_unit_left_square {x y : D} (g : x ~> y) :
   (to (@unit_left C M (G y)) ∘ bimap (from (eta (@I C M))) (id[G y]))
@@ -723,7 +883,7 @@ Proof.
   now rewrite <- comp_assoc.
 Qed.
 
-(* The six 自然性 fields transported structure. （已译） *)
+(* The six naturality fields of the transported structure. / 被运送结构的六个自然性领域。 *)
 
 Lemma Transported_to_unit_left_natural {x y : D} (g : x ~> y) :
   g ∘ to (Transported_unit_left x)
@@ -802,7 +962,7 @@ Proof.
   apply Transported_to_tensor_assoc_natural.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The staged transport data for the transported structure. / 运输结构的分阶段运输数据。 *)
 Definition Transported_Monoidal_Data : MonoidalTransportData D :=
   @Build_MonoidalTransportData D
     (F (@I C M))
@@ -818,9 +978,12 @@ Definition Transported_Monoidal_Data : MonoidalTransportData D :=
     (@Transported_from_tensor_assoc_natural).
 
 (*
-   本节说明 Monoidal 相关定义、性质与动机。
+The triangle law of the transported structure.  The zig-zag identity
+   collapses the counit factors of the two unitors, after which the law
+   reduces to the triangle of C conjugated by unit components.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+被传递结构的三角定律。之字形恒等式折叠了两个幺元子的余幺因子，之后该定律简化为由幺元组件共轭的C的三角形。
 *)
 Lemma Transported_triangle_identity (x y : D) :
   Tbimap (to (Transported_unit_right x)) (id[y])
@@ -848,9 +1011,13 @@ Proof.
 Qed.
 
 (*
-   本节说明同构相关定义、性质与动机。
+The pentagon law of the transported structure.  No zig-zag is needed:
+   the associator mentions only the unit isomorphism, whose components
+   cancel pairwise, and the residue is the pentagon of C surrounded by
+   naturality moves of the associator.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+被传输结构的五边形法则。不需要之字形：结合子只提到单位同构，其分量成对消去，剩余部分是由结合子的自然性移动包围的 C 的五边形。
 *)
 Lemma Transported_pentagon_identity (x y z w : D) :
   Tbimap (id[x]) (to (Transported_tensor_assoc y z w))
@@ -879,7 +1046,13 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(*
+The transported monoidal structure, assembled from the staged data and
+   the two coherence laws.  A Definition, never an Instance.
+
+--------
+由分阶段数据和两个相干律组装而成的运输单元结构。一个定义，而不是实例。
+*)
 Definition Transported_Monoidal : @Monoidal D :=
   Monoidal_from_transport_data Transported_Monoidal_Data
     (fun x y => Transported_triangle_identity x y)

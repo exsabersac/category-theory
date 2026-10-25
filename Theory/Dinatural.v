@@ -13,28 +13,71 @@ Context {D : Category}.
 Context {F : C^op ∏ C ⟶ D}.
 Context {G : C^op ∏ C ⟶ D}.
 
-(* `prod_split f g` 把反变分量 `f`（`C^op` 的态射）与共变分量 `g`（`C` 的态射）
+(*
+`prod_split f g` packages a contravariant component `f` (a morphism of
+   `C^op`) and a covariant component `g` (a morphism of `C`) into a single
+   morphism of the product category `C^op ∏ C`, on which `F` and `G` act.
+   The notation `f ⋆⋆⋆ g` (section-local) just abbreviates `(f, g)`, making
+   the mixed variance of each functor argument explicit at the use sites in
+   `dinaturality`.
+
+--------
+`prod_split f g` 把反变分量 `f`（`C^op` 的态射）与共变分量 `g`（`C` 的态射）
    打包成积范畴 `C^op ∏ C` 的单个态射，供 `F` 与 `G` 作用。记号 `f ⋆⋆⋆ g`
    （section 局部）只是 `(f, g)` 的缩写，使 `dinaturality` 使用点处每个函子变元的
-   混合变差显式可见。 *)
+   混合变差显式可见。
+*)
 Definition prod_split {x y z w} (f : x ~{C^op}~> z) (g : y ~{C}~> w) :
   (x, y) ~{ (C ^op) ∏ C }~> (z, w) := (f, g).
 Arguments prod_split {_ _ _ _} _ _ /.
 
 Infix "⋆⋆⋆" := prod_split (at level 100) : category_scope.
 
-(* nLab: https://ncatlab.org/nlab/show/dinatural+transformation
+(*
+nLab: https://ncatlab.org/nlab/show/dinatural+transformation
+   Wikipedia: https://en.wikipedia.org/wiki/Dinatural_transformation
+
+   A dinatural transformation `α : F ⇏ G` between functors of mixed variance
+   `F G : C^op ∏ C ⟶ D` is a family of morphisms `α_x : F (x, x) ~> G (x, x)`,
+   one per object `x : C` (its components, the diagonal F(x,x) → G(x,x)). In
+   place of a naturality square it satisfies, for every `f : x ~> y`, the
+   dinaturality hexagon — a six-edge diagram in which both composites run from
+   `F (y, x)` to `G (x, y)`:
+
+     G f x ∘ α_x ∘ F f x  ≈  G x f ∘ α_y ∘ F x f
+
+   In the library's variance-explicit notation this reads:
+
+     fmap[G] (id ⋆⋆⋆ f) ∘ α_x ∘ fmap[F] (op f ⋆⋆⋆ id)
+       ≈ fmap[G] (op f ⋆⋆⋆ id) ∘ α_y ∘ fmap[F] (id ⋆⋆⋆ f)
+
+   The hexagon is weaker than naturality: it only constrains the diagonal
+   components, and applies to functors contravariant in their first argument
+   and covariant in their second. Dinatural transformations do NOT compose in
+   general (the composite of two dinaturals need not be dinatural), which is
+   why no identity/composition structure is provided here — only the data and
+   its setoid of components.
+
+--------
+nLab: https://ncatlab.org/nlab/show/dinatural+transformation
    Wikipedia: https://en.wikipedia.org/wiki/Dinatural_transformation
 
    双自然变换 (dinatural transformation) α : F ⇸ G 介于两函子
    F, G : C^op ∏ C ⟶ D 之间，是一族分量 α_c : F(c,c) ~> G(c,c)，使对每个
    f : c ~> c' 下列六边形交换（混合单变元的反变与共变出现）。它弱于自然变换：
-   当 F 与 G 实际来自忽略一变元的函子时，双自然性退化为普通自然性。 *)
+   当 F 与 G 实际来自忽略一变元的函子时，双自然性退化为普通自然性。
+*)
 Class Dinatural := {
-  ditransform {x} : F (x, x) ~> G (x, x);  (* component α_x on the diagonal *)
+  ditransform {x} : F (x, x) ~> G (x, x);  (* component α_x on the diagonal / 对角线上的分量 α_x *)
 
-  (* dinaturality hexagon, for `f : x ~> y`, both sides `F (y,x) ~> G (x,y)`:
-     `G f x ∘ α_x ∘ F f x ≈ G x f ∘ α_y ∘ F x f` *)
+  (*
+dinaturality hexagon, for `f : x ~> y`, both sides `F (y,x) ~> G (x,y)`:
+     `G f x ∘ α_x ∘ F f x ≈ G x f ∘ α_y ∘ F x f`
+
+--------
+函自然性六边形，适用于 `f : x ~> y`，双方 `F (y,x) ~> G (x,y)`：
+     `G f x ∘ α_x ∘ F f x ≈ G x f ∘ α_y ∘ F x f`
+*)
   dinaturality {x y} (f : x ~{C}~> y) :
     fmap[G] (op f ⋆⋆⋆ id) ∘ @ditransform y ∘ fmap[F] (id ⋆⋆⋆ f)
         ≈ fmap[G] (id ⋆⋆⋆ f) ∘ @ditransform x ∘ fmap[F] (op f ⋆⋆⋆ id)
@@ -53,6 +96,11 @@ End Dinatural.
 Notation "ditransform[ F ]" := (@ditransform _ _ _ _ F)
   (at level 9, format "ditransform[ F ]") : category_scope.
 
-(* Dinatural transformations can be applied directly to functorial values to
-   perform the functor mapping they imply. *)
+(*
+Dinatural transformations can be applied directly to functorial values to
+   perform the functor mapping they imply.
+
+--------
+自然转换可以直接应用于函子值，以执行它们所暗示的函子映射。
+*)
 Coercion ditransform : Dinatural >-> Funclass.

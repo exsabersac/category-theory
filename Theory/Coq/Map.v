@@ -9,24 +9,62 @@ Require Import Category.Lib.
 Generalizable All Variables.
 Set Transparent Obligations.
 
-(** Finite partial maps *)
+(** Finite partial maps / 有限偏函数映射 *)
 
 (*
- nLab: https://ncatlab.org/nlab/show/partial+function
+nLab: https://ncatlab.org/nlab/show/partial+function
    Wikipedia: https://en.wikipedia.org/wiki/Associative_array
 
-   本文件给出 Map 相关结构。
+   This is a utility library, not a categorical construction: [Map k v] is
+   the abstract data type of a finite partial map (associative array,
+   dictionary, "function with finite domain") from keys [k] to values [v].
+   It is represented concretely as a list of key/value bindings, so it is
+   isomorphic to an association list [list (k * v)] (see [toList]/[fromList]).
+   Later bindings of a key are shadowed by earlier ones, exactly as for an
+   association list scanned front-to-back; [compress] computes the canonical
+   shadow-free representative.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The observational notion of equality is extensional: two maps are
+   equivalent iff they agree on every [lookup] (see [Map_Setoid]), matching
+   the associative-array law
+       lookup k (insert j v m) = if k = j then Some v else lookup k m.
+
+   The API mirrors Haskell's [Data.Map] (containers package): [empty],
+   [singleton], [insert], [delete], [adjust], [alter], [member], [size],
+   [findWithDefault], the [*WithKey] variants, the folds, and the functorial
+   [map]/[mapWithKey].  See
+   https://hackage.haskell.org/package/containers/docs/Data-Map-Lazy.html
+
+--------
+nLab：https://ncatlab.org/nlab/show/partial+function
+维基百科：https://en.wikipedia.org/wiki/Associative_array
+
+这是一个工具库，而不是一个范畴构造：[Map k v] 是一个有限部分映射（关联数组，字典，“具有有限定义域的函数”）从键 [k] 到值 [v] 的抽象数据类型。它在具体上表示为一个键/值绑定的列表，因此它与关联列表 [list (k * v)] 同构（参见 [toList]/[fromList]）。一个键的后续绑定会被之前的绑定遮蔽，就像从前到后扫描关联列表一样；[compress] 计算规范的无遮蔽代表。
+
+平等的观察性概念是外延的：当且仅当两张图在每个 [lookup] 上都一致时，它们才是等价的（参见 [Map_Setoid]），符合关联数组法则
+       lookup k (insert j v m) = if k = j then Some v else lookup k m。
+
+该 API 镜像了 Haskell 的 [Data.Map]（containers 包）：[empty]、[singleton]、[insert]、[delete]、[adjust]、[alter]、[member]、[size]、[findWithDefault]、[*WithKey] 变体、folds 以及函子化的 [map]/[mapWithKey]。详见 https://hackage.haskell.org/package/containers/docs/Data-Map-Lazy.html
 *)
 
 (*
-   nLab: https://ncatlab.org/nlab/show/functor
+nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
 
-   本节说明函子、等价相关定义、性质与动机。
+   [map : (v -> b) -> Map k v -> Map k b] is the functorial action (fmap)
+   of the endofunctor [Map k -] on the category of Coq types, fixing the key
+   type [k].  It satisfies the two functor laws up to the extensional [Map]
+   equivalence: [map id ≈ id] and [map (g ∘ f) ≈ map g ∘ map f] (these laws
+   are not proved here, but follow because [map] rewrites values pointwise
+   and preserves every key, hence commutes with [lookup]).  [mapWithKey]
+   is the key-aware variant [k -> v -> b], not a plain functor since the
+   transported function may depend on the key.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+nLab: https://ncatlab.org/nlab/show/functor
+   Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
+
+   [map : (v -> b) -> Map k v -> Map k b] 是在 Coq 类型范畴上端函子 [Map k -] 的函子作用（fmap），固定关键类型 [k]。它满足两个函子律，直到外延的 [Map] 等价：[map id ≈ id] 和 [map (g ∘ f) ≈ map g ∘ map f]（这些定律在此未证明，但由于 [map] 对值进行逐点重写并保留每个键，因此与 [lookup] 交换而得出）。[mapWithKey] 是键感知的变体 [k -> v -> b]，而不是普通函子，因为被传递的函数可能依赖于键。
 *)
 
 Section Map.
@@ -35,12 +73,17 @@ Import ListNotations.
 
 Context {k v : Type}.
 
-(* A 有限 map as list bindings: [Add i x m] prepends binding
- [i ↦ x] [m]. When key occurs more than once earliest (outermost)
- binding wins, since [lookup] scans front-to-back.（已译） *)
+(*
+A finite map as a list of bindings: [Add i x m] prepends the binding
+   [i ↦ x] to [m].  When a key occurs more than once the earliest (outermost)
+   binding wins, since [lookup] scans front-to-back.
+
+--------
+将有限映射表示为绑定列表：[Add i x m] 将绑定 [i ↦ x] 添加到 [m] 之前。当一个键出现多次时，最早（最外层）的绑定优先，因为 [lookup] 从前到后扫描。
+*)
 Inductive Map : Type :=
-  | Add : k → v → Map → Map     (* cons a key/value binding *)
-  | Empty : Map.                (* the empty map *)
+  | Add : k → v → Map → Map     (* cons a key/value binding / 构造一个键/值绑定 *)
+  | Empty : Map.                (* the empty map / 空地图 *)
 
 Derive NoConfusion NoConfusionHom Subterm for Map.
 
@@ -80,10 +123,15 @@ Proof.
     + discriminate.
 Qed.
 
-(* Extensional equality of maps: two maps are equivalent iff they agree on
+(*
+Extensional equality of maps: two maps are equivalent iff they agree on
    every [lookup].  This is the associative-array notion of equality, under
    which structural noise (binding order, shadowed/duplicate bindings) is
-   quotiented away.（标题）（已译） *)
+   quotiented away.
+
+--------
+映射的外延相等性：当且仅当两个映射在每个 [lookup] 上都一致时，它们才是等价的。这是关联数组的相等性概念，在该概念下，结构噪声（绑定顺序、被覆盖/重复的绑定）被约掉。
+*)
 #[export]
 Program Instance Map_Setoid `{EqDec k} : Setoid (Map) := {|
   equiv := λ m1 m2, ∀ k, lookup k m1 = lookup k m2
@@ -389,8 +437,13 @@ End Map.
 
 Arguments Map k v : clear implicits.
 
-(* Functorial action (fmap) 自函子 [Map k -]: transport values
- along [f], leaving keys structure fixed. （已译） *)
+(*
+Functorial action (fmap) of the endofunctor [Map k -]: transport values
+   along [f], leaving keys and structure fixed.
+
+--------
+自函子作用（fmap）对自函子 [Map k -]：沿 [f] 传输值，同时保持键和值的结构不变。
+*)
 Fixpoint map `(f : v → b) `(m : Map k v) : Map k b :=
   match m with
   | Empty => Empty

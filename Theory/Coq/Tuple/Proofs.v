@@ -8,30 +8,59 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(** 本节：Law proofs pair/tuple [A * B] instances （已译） *)
+(** Law proofs for the pair/tuple [A * B] instances / [A * B] 实例的配对/元组的法律证明 *)
 
 (*
- nLab: https://ncatlab.org/nlab/show/product
+nLab: https://ncatlab.org/nlab/show/product
    nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
 
-   本文件给出相应结构的证明。
+   These are the characterisation/law proofs for the tuple instances defined
+   in [Theory.Coq.Tuple].  [uncurry_works] is the computation (β) rule for
+   [uncurry], one direction of the currying iso [(a * b) → c ≅ a → (b → c)].
+   [fst_snd] and [unsplit] are the surjective-pairing (η) law for the binary
+   product, [⟨fst z, snd z⟩ = z] (nLab's uniqueness/reflection rule
+   [⟨π₁ ∘ g, π₂ ∘ g⟩ = g]), the latter lifted pointwise through [map].
+   [Tuple_Functor] witnesses that the second-argument functor [(x * −)] is a
+   lawful endofunctor on [Coq], packaging it as an [IsFunctor].
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Equality here is plain Coq [=] (pairs are inductive with decidable
+   structure), and the proofs are axiom-free.
+
+--------
+nLab: https://ncatlab.org/nlab/show/product
+nLab: https://ncatlab.org/nlab/show/functor
+Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
+Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
+
+这些是 [Theory.Coq.Tuple] 中定义的元组实例的表征/定律证明。[uncurry_works] 是 [uncurry] 的计算 (β) 规则，即挨着柯里化同构 [(a * b) → c ≅ a → (b → c)] 的一个方向。[fst_snd] 和 [unsplit] 是二元积的满射配对 (η) 定律，[⟨fst z, snd z⟩ = z]（nLab 的唯一性/反射规则 [⟨π₁ ∘ g, π₂ ∘ g⟩ = g]），后者通过 [map] 点态提升。[Tuple_Functor] 证明第二参数函子 [(x * −)] 是 [Coq] 上的合法自函子，将其封装为 [IsFunctor]。
+
+这里的等式是普通的 Coq [=]（元组是带有可判定结构的归纳类型），而证明是不依赖公理的。
 *)
 
 Theorem uncurry_works : forall {X Y Z} (x : X) (y : Y) (f : X -> Y -> Z),
   uncurry f (x, y) = f x y.
 Proof. reflexivity. Qed.
 
-(* 相关说明。 （已译） *)
+(*
+Surjective pairing (the product η law): rebuilding a pair from its
+   projections recovers the original.
+
+--------
+满射配对（乘积 η 定律）：从投影重建一个对会恢复原来的对象。
+*)
 Lemma fst_snd : forall a b (z : a * b),
   (let '(x, y) := z in (x, y)) = (fst z, snd z).
 Proof. intros ? ? [?]; auto. Qed.
 
-(* The same η law lifted through [map]: since [fun x => (fst x, snd x)] the
- 恒等 pairs, 映射 it over list 恒等. （已译） *)
+(*
+The same η law lifted through [map]: since [fun x => (fst x, snd x)] is the
+   identity on pairs, mapping it over a list is the identity.
+
+--------
+通过 [map] 提升的相同 η 定律：由于 [fun x => (fst x, snd x)] 在对上是恒等映射，将其映射到列表上也是恒等映射。
+*)
 Lemma unsplit : forall a b (xs : list (a * b)),
   map (fun x => (fst x, snd x)) xs = xs.
 Proof.
@@ -42,9 +71,13 @@ Proof.
 Qed.
 
 (*
-   本节说明函子相关定义、性质与动机。
+The second-argument functor [(x * −)] is a lawful endofunctor on [Coq]; as
+   with [arrow_IsFunctor], the witness reuses the [Functor] instance for
+   [a_fmap], and the only nontrivial obligation is that [prod_map] respects
+   pointwise equality of functions.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+--------
+第二个参数函子 [(x * −)] 是 [Coq] 上的一个合法自函子；与 [arrow_IsFunctor] 一样，该证明重用了用于 [a_fmap] 的 [Functor] 实例，唯一的非平凡义务是 [prod_map] 要尊重函数的逐点相等性。
 *)
 Program Definition Tuple_Functor {x} : IsFunctor (Tuple_Functor x) := {|
   a_fmap := Tuple_Functor x;

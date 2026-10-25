@@ -20,9 +20,38 @@ From Coq Require Import Eqdep_dec.
 Generalizable All Variables.
 
 (*
-   本文件给出泛构造相关。
+   * * Theorem 1: W is the free monoidal category on one generator
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Mac Lane, CWM 2nd ed., §VII.2, Theorem 1 [maclane:VII.2:thm1]: for any
+   monoidal category [B] and object [b : B] there is a unique morphism
+   [W ⟶ B] of monoidal categories carrying the generator to [b] — namely
+   substitution of [b] into all blanks.
+
+   THE MORPHISM NOTION IS STRICT, and that is Mac Lane's own reading, not a
+   weakening: his Moncat (§VII.1, [maclane:VII.1:construction2]) is "the
+   category of all small monoidal categories with STRICT morphisms as
+   arrows", and a strict morphism ([maclane:VII.1:def3]) carries α, λ, ρ to
+   α', λ', ρ' on the nose.  Uniqueness among merely strong monoidal functors
+   is false — any conjugate of [Subst] by a nonidentity natural isomorphism
+   is again strong monoidal and sends the generator to an isomorph of [b] —
+   so the strict reading is the only one under which Theorem 1 can hold.
+   Existence is nevertheless delivered at BOTH strengths below:
+   [Subst_Monoidal] (strong) and [Subst_Strict] (strict, with both object
+   equations [eq_refl] on the nose).
+
+   What is deliberately NOT delivered here, and where it is recorded:
+   uniqueness up to monoidal natural isomorphism among STRONG monoidal
+   functors.  The library has no monoidal-natural-transformation class for
+   strong functors (Theory/Natural/Transformation/Monoidal.v states
+   [LaxMonoidal_Transform] for lax functors only), so that statement has no
+   home; it is ledgered in doc/classical-completion-plan.md rather than
+   approximated. 
+
+   --------
+   * * 定理 1：W 是由一个生成元生成的自由幺半范畴
+
+   Mac Lane，《Categories for the Working Mathematician》第2版，第 VII.2 节，定理 1  [maclane:VII.2:thm1]：对于任意幺半范畴  [B]  和对象  [b : B]，存在一个唯一的幺半范畴态射  [W ⟶ B]，将生成元映射到  [b]——即将  [b]  替换到所有空白处。态射概念是严格的，这是麦克莱恩自己的理解，而不是一种弱化：他的 Moncat (§VII.1, [maclane:VII.1:construction2]) 是“所有小单模范畴的范畴，其态射为严格态射”，而严格态射 ([maclane:VII.1:def3]) 精确地将 α、λ、ρ 映射到 α'、λ'、ρ'。仅在强单模函子之间的唯一性是错误的——[Subst] 的任何非恒等自然同构共轭仍然是强单模函子，并且将生成元映射到 [b] 的一个同构——因此，唯一能使定理 1 成立的理解是严格理解。然而，无论以下两种强度，都能保证存在性：[Subst_Monoidal]（强）和 [Subst_Strict]（严格，同时两个对象方程 [eq_refl] 均精确成立）。这里故意没有提供的是，以及它被记录的位置：
+   在强单体函子之间按单体自然同构唯一性。 该库没有针对强函子的单体自然变换类（Theory/Natural/Transformation/Monoidal.v 仅为松函子声明了 [LaxMonoidal_Transform]），所以该声明没有归属；它被记录在 doc/classical-completion-plan.md 中，而不是被近似处理。
 *)
 
 Section Universal.
@@ -31,10 +60,15 @@ Context {B : Category}.
 Context `{MB : @Monoidal B}.
 Context (b : B).
 
-(** ** The substitution functor *)
+(** ** The substitution functor / ** 替换函子 *)
 
-(* On objects, [subst b]; on the unique arrow [p : wlen v = wlen w],
-   normalise, transport along [p], denormalise. *)
+(*
+ On objects, [subst b]; on the unique arrow [p : wlen v = wlen w],
+ normalise, transport along [p], denormalise. 
+
+ --------
+ 在对象上，[subst b]；在唯一箭头上，[p : wlen v = wlen w]，规范化，沿 [p] 传输，去规范化。
+*)
 Program Definition Subst : W ⟶ B := {|
   fobj := subst b;
   fmap := fun v w (p : v ~{W}~> w) =>
@@ -43,21 +77,36 @@ Program Definition Subst : W ⟶ B := {|
       ∘ to (can b v)
 |}.
 Next Obligation.
-  (* fmap_respects: W's hom-setoid identifies ALL parallel arrows, so the
- cast must not depend 证明 — nat-UIP, place it is
- needed functoriality. （已译） *)
+  (*
+ fmap_respects: W's hom-setoid identifies ALL parallel arrows, so the
+ cast must not depend on the proof — nat-UIP, the only place it is
+ needed for functoriality. 
+
+ --------
+ fmap_respects：W 的同态集合识别所有平行箭头，因此类型转换不能依赖于证明 —— nat-UIP，这是唯一在函子性中需要它的地方。
+*)
   proper.
   apply compose_respects; [| reflexivity ].
   apply compose_respects; [ reflexivity |].
   apply nf_cast_irr.
 Qed.
 Next Obligation.
-  (* fmap_id: cast at eq_refl 恒等 conversion. （已译） *)
+  (*
+ fmap_id: the cast at eq_refl is the identity by conversion. 
+
+ --------
+ fmap_id：在 eq_refl 的转换中，类型转换是恒等映射。
+*)
   rewrite id_right.
   apply iso_from_to.
 Qed.
 Next Obligation.
-  (* fmap_comp: cancel the inner normalise/denormalise pair, fuse casts. *)
+  (*
+ fmap_comp: cancel the inner normalise/denormalise pair, fuse casts. 
+
+ --------
+ fmap_comp：取消内部的归一化/反归一化对，融合类型转换。
+*)
   rewrite <- !comp_assoc.
   rewrite (comp_assoc (to (can b y))).
   rewrite iso_to_from, id_left.
@@ -66,16 +115,22 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** ** The tensor comparison *)
+(** ** The tensor comparison / ** 张量比较 *)
 
-(* Mac Lane's T(f □ g) = Tf □' Tg. *)
+(* Mac Lane's T(f □ g) = Tf □' Tg. / Mac Lane 的 T(f □ g) = Tf □' Tg。 *)
 Theorem Subst_tensor {v v' u u' : Word}
   (p : v ~{W}~> v') (q : u ~{W}~> u') :
   fmap[Subst] (fmap[W_tensor] ((p, q) : (v, u) ~{W ∏ W}~> (v', u')))
     ≈ bimap (fmap[Subst] p) (fmap[Subst] q).
 Proof.
   simpl.
-  (* 相关说明。 （已译） *)
+  (*
+ Peel the join off the cast with [J_cast], then cancel it against its
+ inverse; the residue is the bimap of the two component fmaps. 
+
+ --------
+ 用 [J_cast] 将连接从铸件上剥离，然后将其与其逆相抵消；剩余部分是两个组件 fmap 的双映射。
+*)
   rewrite <- !comp_assoc.
   rewrite (comp_assoc (id_cast _) (to (J b (wlen v) (wlen u) I))).
   rewrite (J_cast b p q).
@@ -88,16 +143,22 @@ Proof.
 Qed.
 
 (*
-   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+ From here on the goals are monoidal-coherence shaped, and the global
+ [cat_simpl] obligation tactic pre-processes them unpredictably; take manual
+ control instead (precedent: Functor/Structure/Monoidal/Id.v). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 从这里开始，目标是以单oidal-一致性形状的，并且全局 [cat_simpl] 义务策略会不可预测地预处理它们；请改为手动控制（先例：Functor/Structure/Monoidal/Id.v）。
 *)
 #[local] Obligation Tactic := idtac.
 
 (*
-   本节说明函子、同构相关定义、性质与动机。
+ The comparison natural isomorphism has identity components: [subst] is
+ strict on objects, so the two composite functors agree definitionally on
+ objects and the comparison square is [Subst_tensor]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 比较自然同构具有恒等分量：[subst] 在对象上是严格的，因此两个复合函子在对象上在定义上是一致的，比较方形是 [Subst_tensor]。
 *)
 Program Definition Subst_ap_to :
   ((⨂) ◯ Subst ∏⟶ Subst) ~{[W ∏ W, B]}~> (Subst ◯ (⨂)) := {|
@@ -159,9 +220,16 @@ Next Obligation.
   split; apply iso_from_to.
 Qed.
 
-(* * ** The three strictness equations
+(*
+   * ** The three strictness equations
 
- Stated standalone so coherence 推论 (#497) can consume them. （已译） *)
+   Stated standalone so the coherence corollary (#497) can consume them. 
+
+   --------
+   * ** 三个严格性方程
+
+   独立陈述，以便一致性推论（#497）可以使用它们。
+*)
 
 Theorem Subst_unit_left (x : Word) :
   fmap[Subst] (to (@unit_left W W_Monoidal x))
@@ -180,7 +248,12 @@ Theorem Subst_unit_right (x : Word) :
     ≈ to (@unit_right B MB (subst b x)).
 Proof.
   simpl.
-  (* 相关说明。 （已译） *)
+  (*
+ Group the cast against the join; that pair is exactly [J_right_unit]. 
+
+ --------
+ 将铸件与接头分组；那对正好是 [J_right_unit]。
+*)
   rewrite comp_assoc.
   rewrite <- (comp_assoc (from (can b x))).
   rewrite (J_right_unit b (wlen x)).
@@ -196,7 +269,13 @@ Theorem Subst_assoc (x y z : Word) :
     ≈ to (@tensor_assoc B MB (subst b x) (subst b y) (subst b z)).
 Proof.
   simpl.
-  (* 相关说明。 （已译） *)
+  (*
+ Read J_assoc across the eq_sym cast first: composing both sides of
+ [J_assoc] with the loop kills its cast. 
+
+ --------
+ 首先在 eq_sym cast 上读取 J_assoc：将 [J_assoc] 的两边与循环组成会消除它的 cast。
+*)
   assert (JA' :
     id_cast (f_equal (fun i => nf b i I)
                (eq_sym (Nat.add_assoc (wlen x) (wlen y) (wlen z))))
@@ -211,7 +290,12 @@ Proof.
     rewrite nf_cast_trans.
     rewrite nf_cast_loop, id_left.
     reflexivity. }
-  (* 相关说明。 （已译） *)
+  (*
+ Assemble the left side into cast-join-components form and fire JA'. 
+
+ --------
+ 将左侧组装成铸件连接组件形式并触发 JA'。
+*)
   rewrite comp_assoc.
   rewrite <- (comp_assoc _ (id_cast _)
                 (to (J b (wlen x + wlen y) (wlen z) I))).
@@ -223,7 +307,13 @@ Proof.
                 (id_cast _ ∘ to (J b (wlen x + wlen y) (wlen z) I))
                 (bimap (to (J b (wlen x) (wlen y) I)) id)).
   rewrite JA'.
-  (* 相关说明。 （已译） *)
+  (*
+ Cancel the outer join pair, carry α across the components, and let the
+ remaining conjugates cancel. 
+
+ --------
+ 取消外连接对，将α传递到各个分量，并让剩余的共轭相互抵消。
+*)
   rewrite <- (comp_assoc _ (from (J b (wlen x) (wlen y + wlen z) I))).
   rewrite (comp_assoc (from (J b (wlen x) (wlen y + wlen z) I))
              (to (J b (wlen x) (wlen y + wlen z) I)
@@ -239,9 +329,14 @@ Proof.
   rewrite <- (to_tensor_assoc_natural
                 (to (can b x)) (to (can b y)) (to (can b z))).
   normal.
-  (* The residue [bimap id CONJ ∘ α ≈ α] CONJ conjugate the
- y/z-join inverse; close congruence so 论元 does not
- depend how [normal] grouped 复合. （已译） *)
+  (*
+ The residue is [bimap id CONJ ∘ α ≈ α] with CONJ a conjugate of the
+ y/z-join by its inverse; close by congruence so the argument does not
+ depend on how [normal] grouped the composite. 
+
+ --------
+ 该残基是 [bimap id CONJ ∘ α ≈ α]，其 CONJ 是 y/z-连接的共轭，通过其逆元得到；通过合同关系关闭，因此论证不依赖于 [normal] 如何组合复合体。
+*)
   etransitivity; [| apply id_left ].
   apply compose_respects; [| reflexivity ].
   etransitivity; [| apply bimap_id_id ].
@@ -257,7 +352,7 @@ Proof.
     reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The strong and strict monoidal packagings / * ** 强大而严格的单体封装 *)
 
 Program Definition Subst_Monoidal :
   @MonoidalFunctor W B W_Monoidal MB Subst := {|
@@ -296,7 +391,13 @@ Next Obligation.
   intros x y z; simpl.
   normal.
   rewrite ?id_left, ?id_right.
-  (* 相关说明。 （已译） *)
+  (*
+ [normal] left-associated one node further than [fmap]'s definitional
+ grouping; put it back and the goal IS [Subst_assoc], by conversion. 
+
+ --------
+ [normal] 比 [fmap] 的定义分组多左关联一个节点；把它放回去，目标就是通过转换得到 [Subst_assoc]。
+*)
   rewrite <- (comp_assoc _ (to (J b (wlen x + wlen y) (wlen z) I))
                 (bimap (to (J b (wlen x) (wlen y) I)
                           ∘ bimap (to (can b x)) (to (can b y)))
@@ -313,19 +414,29 @@ Program Definition Subst_Strict :
 Next Obligation. simpl; reflexivity. Qed.
 Next Obligation. intros x y; simpl; reflexivity. Qed.
 
-(** ** Acceptance tests *)
+(** ** Acceptance tests / ** 验收测试 *)
 
-(* The generator condition, definitionally. *)
+(* The generator condition, definitionally. / 发电机的状态，从定义上讲。 *)
 Example Subst_generator : Subst WI = b := eq_refl.
 
-(* Strictness nose: both 对象 equalities [Subst_Strict] are
- literally [eq_refl], stronger than class demands. （已译） *)
+(*
+ Strictness on the nose: both object equalities of [Subst_Strict] are
+ literally [eq_refl], stronger than the class demands. 
+
+ --------
+ 准确到位的严格性：[Subst_Strict] 的两个对象相等性字面上都是 [eq_refl]，比类要求更强。
+*)
 Example Subst_strict_pure_on_the_nose :
   @strict_pure_obj W B W_Monoidal MB Subst Subst_Strict = eq_refl := eq_refl.
 Example Subst_strict_ap_on_the_nose (x y : Word) :
   @strict_ap_obj W B W_Monoidal MB Subst Subst_Strict x y = eq_refl := eq_refl.
 
-(* 相关说明。 （已译） *)
+(*
+ The associator instance at length 3, and the unitors at length 1. 
+
+ --------
+ 长度为 3 的结合器实例，以及长度为 1 的单位器。
+*)
 Corollary Subst_assoc_words :
   fmap[Subst] (to (@tensor_assoc W W_Monoidal WI WI WI))
     ≈ to (@tensor_assoc B MB b b b).
@@ -342,15 +453,28 @@ Corollary Subst_unit_right_word :
 Proof. apply Subst_unit_right. Qed.
 
 (*
-   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+   * ** Uniqueness
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Any strict monoidal functor sending the generator to [b] agrees with
+   [Subst] — on objects by a derived Leibniz equality [Theta], on morphisms
+   up to conjugation by the [Theta]-transports.  The statements are given in
+   SQUARE form ([id_cast (Theta -)] naturality squares) rather than through
+   [hom_cast], because squares compose; the [hom_cast] reading is recovered
+   by composing with the invertible casts. 
+
+   --------
+   * ** 唯一性
+
+   任何将生成元发送到 [b] 的严格单体函子，与 [Subst] 一致——在对象上通过派生的 Leibniz 等式 [Theta]，在态射上则通过 [Theta] 传输的共轭来一致。这些陈述以 SQUARE 形式（[id_cast (Theta -)] 自然性方格）给出，而不是通过 [hom_cast]，因为方格可以组合；[hom_cast] 的读取可以通过与可逆类型转换组合来恢复。
 *)
 
 (*
-   本节说明 Universal 相关定义、性质与动机。
+ The W-side mirrors of the join and the normaliser.  Their RECURSIVE
+ STRUCTURE is the point (each branch is a structure map of W, which [G]'s
+ strictness translates), not the underlying arrows — W is thin. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 连接和归一化器的 W 侧镜像。它们的递归结构是重点（每个分支都是 W 的结构映射，[G] 的严格性进行转换），而不是底层箭头 —— W 是薄的。
 *)
 Fixpoint JW (m n : nat) : WT (nfword m) (nfword n) ≅[W] nfword (m + n) :=
   match m with
@@ -369,9 +493,14 @@ Fixpoint canW (w : Word) : w ≅[W] nfword (wlen w) :=
                     (canW v) (canW u)
   end.
 
-(* Transparent tensor-congruence 对象 equalities. [f_equal2] is
- opaque (Qed) stdlib, so casts along it can only be discharged by
- UIP — unavailable at arbitrary [B]. This match-defined twin reduces.（已译） *)
+(*
+ Transparent tensor-congruence for object equalities.  [f_equal2] is
+ opaque (Qed) in the stdlib, so casts along it can only be discharged by
+ UIP — unavailable at an arbitrary [B].  This match-defined twin reduces. 
+
+ --------
+ 对象等式的透明张量相合。[f_equal2] 在 stdlib 中是不透明的（Qed），所以沿它的类型转换只能通过 UIP 来解除——在任意 [B] 上不可用。这个基于 match 定义的双胞胎进行了简化。
+*)
 Definition tensor_eq {X X' Y Y' : B} (e1 : X = X') (e2 : Y = Y') :
   (X ⨂ Y)%object = (X' ⨂ Y')%object :=
   match e1 with eq_refl => match e2 with eq_refl => eq_refl end end.
@@ -386,9 +515,14 @@ Context (G : W ⟶ B).
 Context (SG : @StrictMonoidalFunctor W B W_Monoidal MB G).
 Context (Hb : G WI = b).
 
-(* Object agreement, DERIVED strictness plus single generator
- datum — where PROP development takes whole family a
- 假设. （已译） *)
+(*
+ Object agreement, DERIVED from strictness plus the single generator
+ datum — where the PROP development takes the whole family as a
+ hypothesis. 
+
+ --------
+ 宾语一致性，源自严格性加上单一生成元数据——在这种情况下，PROP 发展将整个家族作为假设。
+*)
 Fixpoint Theta (w : Word) : G w = subst b w :=
   match w with
   | WE     => eq_sym (@strict_pure_obj _ _ _ _ G SG)
@@ -398,9 +532,14 @@ Fixpoint Theta (w : Word) : G w = subst b w :=
                 (tensor_eq (Theta v) (Theta u))
   end.
 
-(* Mac Lane's T(f □ g) = Tf □' Tg, extracted strictness once: the
- 自然性 square tensor comparison, both components rewritten
- transported identities. （已译） *)
+(*
+ Mac Lane's T(f □ g) = Tf □' Tg, extracted from strictness once: the
+ naturality square of the tensor comparison, with both components rewritten
+ to transported identities. 
+
+ --------
+ Mac Lane 的 T(f □ g) = Tf □' Tg，曾从严格性中提取：张量比较的自然性方形，其两个分量都重写为平移的恒等式。
+*)
 Lemma strict_fmap_bimap {v v' u u' : Word}
   (f : v ~{W}~> v') (g : u ~{W}~> u') :
   id_cast (@strict_ap_obj _ _ _ _ G SG v' u')
@@ -418,14 +557,24 @@ Proof.
   symmetry in N; exact N.
 Qed.
 
-(* W thin, so G cannot distinguish parallel arrows — license pick
- structurally convenient representative every 证明 below. （已译） *)
+(*
+ W is thin, so G cannot distinguish parallel arrows — the license to pick
+ the structurally convenient representative in every proof below. 
+
+ --------
+ W 很薄，所以 G 无法区分平行箭头 —— 在下面的每一个证明中选择结构上方便的代表的许可。
+*)
 Lemma G_irr {v w : Word} (p q : v ~{W}~> w) : fmap[G] p ≈ fmap[G] q.
 Proof. apply fmap_respects; constructor. Qed.
 
-(* The canonical arrow between normalised words equal length, its
- G-image: transported 恒等. Stated over bare naturals so [destruct]
- applies. （已译） *)
+(*
+ The canonical arrow between normalised words of equal length, and its
+ G-image: a transported identity.  Stated over bare naturals so [destruct]
+ applies. 
+
+ --------
+ 在长度相等的规范化单词之间的标准箭头，以及它的 G-像：一个平移的恒等式。在裸自然数上陈述，因此 [destruct] 适用。
+*)
 Definition nfword_arrow {m n : nat} (e : m = n) :
   nfword m ~{W}~> nfword n :=
   match e in _ = k return nfword m ~{W}~> nfword k with
@@ -441,11 +590,16 @@ Proof.
   apply fmap_id.
 Qed.
 
-(* Shorthand 对象-agreement transport. （已译） *)
+(* Shorthand for the object-agreement transport. / 对象一致传输的简写。 *)
 Notation thc w := (id_cast (Theta w)).
 
-(* [subst (nfword n) = nf n I] holds by induction, NOT by conversion — at an
-   open [n] neither side reduces.  Transparent so its casts destruct. *)
+(*
+ [subst (nfword n) = nf n I] holds by induction, NOT by conversion — at an
+ open [n] neither side reduces.  Transparent so its casts destruct. 
+
+ --------
+ [subst (nfword n) = nf n I] 通过归纳保持，而不是通过转换 —— 在一个开放的 [n] 上，双方都不会归约。透明的，所以它的转换会被破坏。
+*)
 Fixpoint subst_nfword (n : nat) : subst b (nfword n) = nf b n I :=
   match n with
   | O   => eq_refl
@@ -455,21 +609,36 @@ Fixpoint subst_nfword (n : nat) : subst b (nfword n) = nf b n I :=
 Notation sigma n := (id_cast (subst_nfword n)).
 
 (*
-   本节说明 Universal 相关定义、性质与动机。
+ Bridges: Strict.v's transported-identity matches ARE [id_cast] — the
+ to-direction definitionally, the from-direction along the symmetric
+ equality.  Stated as Leibniz equalities so they rewrite match-forms into
+ cast-forms that the kit lemmas can see. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 桥梁：Strict.v 的传输身份匹配是 [id_cast] — 在定义上是朝向的，而从方向沿着对称平等。以莱布尼茨等式表述，因此它们将匹配形式重写为工具引理可以看到的转换形式。
 *)
 Lemma id_cast_match {X Y : B} (e : X = Y) :
   (match e in _ = T return X ~{B}~> T with eq_refl => id end) = id_cast e.
 Proof. reflexivity. Qed.
-(* 相关说明。 （已译） *)
+(*
+ Bridge: the [from]-direction matches of Strict.v are the casts along the
+ symmetric equalities. 
+
+ --------
+ 桥：Strict.v 的 [from] 方向匹配是沿对称等式的类型转换。
+*)
 Lemma id_cast_sym_match {X Y : B} (e : X = Y) :
   (match e in _ = T return T ~{B}~> X with eq_refl => id end)
     = id_cast (eq_sym e).
 Proof. destruct e; reflexivity. Qed.
 
-(* [sigma (S k)] kin display partially-reduced [tensor_eq]
- match; 这是 shape's split 引理. （已译） *)
+(*
+ [sigma (S k)] and its kin display as the partially-reduced [tensor_eq]
+ match; this is that shape's split lemma. 
+
+ --------
+ [sigma (S k)] 及其相关形式显示为部分还原的 [tensor_eq] 匹配；这是该形状的拆分引理。
+*)
 Lemma id_cast_tensor_match {Y Y' : B} (e : Y = Y') :
   id_cast (match e in _ = o
            return ((b ⨂ Y)%object = (b ⨂ o)%object)
@@ -477,8 +646,13 @@ Lemma id_cast_tensor_match {Y Y' : B} (e : Y = Y') :
     ≈ bimap id[b] (id_cast e).
 Proof. destruct e; simpl; now rewrite bimap_id_id. Qed.
 
-(* The tensor two 对象 agreements agreement at tensor,
- across strictness cast. （已译） *)
+(*
+ The tensor of two object agreements is the agreement at the tensor,
+ across the strictness cast. 
+
+ --------
+ 两个对象协定的张量是在张量上的协定，跨越严格度投射。
+*)
 Lemma thc_tensor (v u : Word) :
   bimap (thc v) (thc u)
     ≈ thc (WT v u) ∘ id_cast (@strict_ap_obj _ _ _ _ G SG v u).
@@ -490,9 +664,14 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* The join square: G carries W-side join B-side join, across the
- 对象 agreement. Induction m; base SG's left unitality, the
- step SG's associativity coherence. （已译） *)
+(*
+ The join square: G carries the W-side join to the B-side join, across the
+ object agreement.  Induction on m; the base is SG's left unitality, the
+ step is SG's associativity coherence. 
+
+ --------
+ 连接方块：G 将 W 边的连接传递到 B 边的连接，跨越对象的相合性。对 m 进行归纳；基础是 SG 的左单位性，步骤是 SG 的结合性相合性。
+*)
 Lemma JW_unique (m n : nat) :
   to (J b m n I)
       ∘ bimap (sigma m) (sigma n)
@@ -500,11 +679,7 @@ Lemma JW_unique (m n : nat) :
     ≈ sigma (m + n) ∘ thc (nfword (m + n)) ∘ fmap[G] (to (JW m n)).
 Proof.
   induction m; simpl.
-  - (*
-   本节说明 Universal 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+  - (* SG's left unitality, solved for the G-image of the W-side unitor in ISO form first (pure inverse cancellations), converting the inverses to transported identities only at the interface. / SG的左单位性，首先用ISO形式求解W边单位子的G像（纯逆元消去），仅在接口处将逆元转换为传递的恒等式。 *)
     pose proof (@monoidal_unit_left _ _ _ _ G
                   (@strict_functor_is_monoidal _ _ _ _ G SG) (nfword n)) as UL.
     assert (GL : fmap[G] (to (@unit_left W W_Monoidal (nfword n)))
@@ -530,17 +705,17 @@ Proof.
     rewrite (@strict_ap_iso_from _ _ _ _ G SG WE (nfword n)).
     rewrite (@strict_pure_iso_from _ _ _ _ G SG).
     rewrite !id_cast_sym_match.
-    (* Split the composite object-agreement cast. *)
+    (* Split the composite object-agreement cast. / 拆分复合对象-协议投射。 *)
     rewrite <- id_cast_trans.
     rewrite id_cast_tensor_eq.
-    (* Carry agreement across left unitor 自然性. （已译） *)
+    (* Carry the agreement across the left unitor by naturality. / 通过自然性将该协议作用于左单位子对象上。 *)
     rewrite !comp_assoc.
     rewrite (to_unit_left_natural (id_cast (subst_nfword n) ∘ thc (nfword n))).
     rewrite <- (comp_assoc _
                   (bimap id (id_cast (subst_nfword n) ∘ thc (nfword n)))
                   (bimap (id_cast (eq_sym (@strict_pure_obj _ _ _ _ G SG))) id)).
     rewrite bimap_id_left_right.
-    (* Fuse left side's cast pair 进入 same shape. （已译） *)
+    (* Fuse the left side's cast pair into the same shape. / 将左边的铸件对融合成相同的形状。 *)
     rewrite <- (comp_assoc _
                   (bimap (id_cast (subst_nfword 0)) (id_cast (subst_nfword n)))
                   (bimap (id_cast (eq_sym (@strict_pure_obj _ _ _ _ G SG)))
@@ -550,10 +725,14 @@ Proof.
     change (id_cast (subst_nfword 0)) with (@id B (@I B MB)).
     normal.
     reflexivity.
-  - (* Split G over S-branch 复合, solve SG's associativity law for
- G-image W-side associator, reduce IH. （已译） *)
-    (* simpl dissolved W's composition into eq_trans; thinness lets us swap
-       in the explicit composite representative before splitting G over it. *)
+  - (* Split G over the S-branch composite, solve SG's associativity law for the G-image of the W-side associator, and reduce to the IH. / 将 G 在 S-分支复合上分解，求解 SG 关于 W 侧结合元的 G 映射的结合律，并化简为 IH。 *)
+    (*
+ simpl dissolved W's composition into eq_trans; thinness lets us swap
+ in the explicit composite representative before splitting G over it. 
+
+ --------
+ 简化地将 W 的组成溶解到 eq_trans 中；薄弱性让我们在将 G 拆分之前，将显式复合代表交换进去。
+*)
     rewrite (G_irr _ (bimap (@id W WI) (to (JW m n))
                         ∘ to (@tensor_assoc W W_Monoidal
                                 WI (nfword m) (nfword n)))).
@@ -562,13 +741,18 @@ Proof.
                   (@strict_functor_is_monoidal _ _ _ _ G SG)
                   WI (nfword m) (nfword n)) as MA.
     simpl in MA.
-    (* LHS -> RHS. Split every 复合 cast, push associator across
- components, fold IH back in, then let strictness translate the
- remaining G-images. （已译） *)
+    (*
+ LHS -> RHS.  Split every composite cast, push the associator across
+ the components, fold the IH back in, then let strictness translate the
+ remaining G-images. 
+
+ --------
+ LHS -> RHS。分解每个复合类型转换，将结合子推到各个组件上，再把归纳假设折回去，然后让严格性转换剩余的 G 映射。
+*)
     rewrite <- !id_cast_trans.
     rewrite !id_cast_tensor_eq.
     rewrite !id_cast_tensor_match.
-    (* Split the inner layer of composite casts as well. *)
+    (* Split the inner layer of composite casts as well. / 同样分开复合铸件的内层。 *)
     rewrite <- !id_cast_trans.
     rewrite !id_cast_tensor_eq.
     rewrite <- (id_right (thc (nfword n))).
@@ -593,7 +777,7 @@ Proof.
                (sigma m ⨂ sigma n ∘ thc (WT (nfword m) (nfword n)))).
     rewrite (comp_assoc (to (J b m n I)) (sigma m ⨂ sigma n)).
     rewrite IHm.
-    (* Expand G over the bimap via strictness. *)
+    (* Expand G over the bimap via strictness. / 通过严格性将 G 扩展到双映射上。 *)
     assert (GB : fmap[G] (bimap (@id W WI) (to (JW m n)))
               ≈ id_cast (@strict_ap_obj _ _ _ _ G SG WI (nfword (m + n)))
                   ∘ bimap (fmap[G] (@id W WI)) (fmap[G] (to (JW m n)))
@@ -611,14 +795,19 @@ Proof.
                    (bimap (@id W WI) (to (JW m n)))) in GB.
     rewrite GB.
     rewrite fmap_id.
-    (* Cancel adjacent inverse pair GB 嵌入 created. （已译） *)
+    (* Cancel the adjacent inverse pair the GB insertion created. / 取消GB插入产生的相邻逆序对。 *)
     rewrite !comp_assoc.
     rewrite <- (comp_assoc _
                   (id_cast (eq_sym (@strict_ap_obj _ _ _ _ G SG
                                WI (nfword (m + n)))))
                   (id_cast (@strict_ap_obj _ _ _ _ G SG WI (nfword (m + n))))).
     rewrite id_cast_inv_l, id_right.
-    (* 相关说明。 （已译） *)
+    (*
+ The G-image of the W-associator, in all-cast form, from MA. 
+
+ --------
+ 来自 MA 的全铸型 W-结合子的 G-像。
+*)
     assert (GAc : fmap[G] (to (@tensor_assoc W W_Monoidal
                                  WI (nfword m) (nfword n)))
               ≈ id_cast (@strict_ap_obj _ _ _ _ G SG
@@ -658,8 +847,13 @@ Proof.
       rewrite id_cast_inv_r.
       reflexivity. }
     rewrite GAc.
-    (* Cancel WT-pair GAc 嵌入 created, split leftover inner
- cast left, two sides fuse same normal form. （已译） *)
+    (*
+ Cancel the WT-pair the GAc insertion created, split the leftover inner
+ cast on the left, and the two sides fuse to the same normal form. 
+
+ --------
+ 取消GAc插入产生的WT对，分开左侧剩余的内部铸件，两侧融合成相同的正常形式。
+*)
     rewrite !comp_assoc.
     rewrite <- (comp_assoc _
                   (id_cast (eq_sym (@strict_ap_obj _ _ _ _ G SG
@@ -674,25 +868,27 @@ Proof.
 Qed.
 
 (*
-   本节说明 Universal 相关定义、性质与动机。
+ The normaliser square: G agrees with the canonical normalisation maps,
+ across the object agreement.  Structural induction; the generator case is
+ SG's right unitality read backwards through the iso inverses, the tensor
+ case is [strict_fmap_bimap] + the tensored IHs + [JW_unique]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 归一化方阵：G 与规范化归一化映射一致，跨越对象一致性。结构归纳；生成元情形是通过同构逆映射向后读取的 SG 的右单元性，张量情形是 [strict_fmap_bimap] + 张量化的 IHs + [JW_unique]。
 *)
 Lemma canW_unique (w : Word) :
   to (can b w) ∘ thc w
     ≈ sigma (wlen w) ∘ thc (nfword (wlen w)) ∘ fmap[G] (to (canW w)).
 Proof.
   induction w as [ | | v IHv u IHu ]; simpl.
-  - (* WE: everything is an identity; the fmap argument is W's identity by
-       conversion, but its implicit endpoints resist rewriting — go through
-       change + fmap_id. *)
+  - (* WE: everything is an identity; the fmap argument is W's identity by conversion, but its implicit endpoints resist rewriting — go through change + fmap_id. / 我们：一切都是一个恒等；fmap 参数是 W 的恒等通过转换，但它的隐式端点抗拒重写 — 通过 change + fmap_id 进行处理。 *)
     rewrite !id_left.
     symmetry.
     etransitivity; [| apply id_right ].
     apply compose_respects; [ reflexivity |].
     change (fmap[G] (@id W WE) ≈ @id B (fobj[G] WE)).
     apply fmap_id.
-  - (* WI: SG's right unitality, inverted. *)
+  - (* WI: SG's right unitality, inverted. / WI：SG的右单位性，取反。 *)
     pose proof (@monoidal_unit_right _ _ _ _ G
                   (@strict_functor_is_monoidal _ _ _ _ G SG) WI) as UR.
     assert (GRinv : fmap[G] (from (@unit_right W W_Monoidal WI))
@@ -741,8 +937,7 @@ Proof.
     normal.
     rewrite (from_unit_right_natural (id_cast Hb)).
     reflexivity.
-  - (* WT: expand G over 复合 component bimap, tensor the
- IHs, finish join square. （已译） *)
+  - (* WT: expand G over the composite and the component bimap, tensor the IHs, and finish with the join square. / WT：在复合体和分量双射上展开 G，对 IHs 进行张量，然后完成连接方阵。 *)
     rewrite (@G_irr (WT v u) (nfword (wlen v + wlen u)) _
                (to (JW (wlen v) (wlen u))
                   ∘ bimap[W_tensor] (to (canW v)) (to (canW u)))).
@@ -783,8 +978,13 @@ Proof.
     reflexivity.
 Qed.
 
-(* Two cast-naturality squares along a length equality, both by destruct
-   over bare naturals. *)
+(*
+ Two cast-naturality squares along a length equality, both by destruct
+ over bare naturals. 
+
+ --------
+ 沿着长度相等做两个自然数类型转换方块，都通过对裸自然数进行析构实现。
+*)
 Lemma thc_nfword_cast (m n : nat) (e : m = n) :
   thc (nfword n) ∘ id_cast (f_equal (fun i => G (nfword i)) e)
     ≈ id_cast (f_equal (fun i => subst b (nfword i)) e) ∘ thc (nfword m).
@@ -796,9 +996,12 @@ Lemma sigma_nfword_cast (m n : nat) (e : m = n) :
 Proof. destruct e; simpl; now rewrite id_left, id_right. Qed.
 
 (*
-   本节说明 Universal 相关定义、性质与动机。
+ Mac Lane's uniqueness: on EVERY arrow, G agrees with substitution across
+ the object agreement.  W is thin, so the proof decomposes the arrow
+ through the normalisers — for free — and the three squares compose. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 麦克莱恩的唯一性：在每一个箭头上，G 都同意对象同态的替代。W 是薄的，所以证明通过正规化器将箭头分解——是免费的——三个方格组合在一起。
 *)
 Theorem Subst_unique {v w : Word} (p : v ~{W}~> w) :
   fmap[Subst] p ∘ thc v ≈ thc w ∘ fmap[G] p.
@@ -850,9 +1053,18 @@ Qed.
 End Uniqueness.
 
 (*
-   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+   * ** Theorem 1, packaged
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [maclane:VII.2:thm1]: substitution is a strict monoidal functor sending
+   the generator to [b] — with both object equations [eq_refl] — and it is
+   the ONLY one: any strict monoidal [G] with [G WI = b] agrees with it on
+   objects by a derived Leibniz equality and on every arrow up to transport
+   along that equality. 
+
+   --------
+   * ** 定理 1，封装版
+
+   [maclane:VII.2:thm1]：代换是一个严格的幺半群函子，将生成元映射到 [b] —— 对象的方程都是 [eq_refl] —— 并且它是唯一的：任何严格的幺半群 [G]，满足 [G WI = b]，都在对象上通过推导的莱布尼茨等式与它一致，并且在每个箭头上通过沿该等式的传输也一致。
 *)
 Theorem FreeMonoidal_universal :
   (((@StrictMonoidalFunctor W B W_Monoidal MB Subst) *

@@ -11,9 +11,112 @@ Require Import Coq.ZArith.ZArith.
 Generalizable All Variables.
 
 (*
-   本文件给出具体实例。
+   * * The determinant over a commutative ring
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.4
+   (printed p. 16): the determinant is the archetypal natural
+   transformation — for a commutative ring K, [det] is a map from the
+   n × n matrices over K to K, natural in K, and multiplicative
+   [maclane:I.4:construction1]; the same construction is what §I.4
+   Exercise 6 needs [maclane:I.4:ex6].
+
+   This file develops the determinant over Instance/Matr.v's matrix
+   category, on the base [RingObject] of Theory/Algebra/Rig.v with the
+   commutativity hypothesis stated exactly as Instance/Rng.v's
+   [CRng_Sub] states it.  Everything is setoid-level: entries are
+   compared with [≈], never [=], and no axiom is used anywhere.
+
+   THE DEFINITION is the first-column Laplace expansion,
+   [det A = Σ_i (-1)^i · A i 0 · det (minor A i 0)], by structural
+   recursion on the size.  [fin_delete] is the order-preserving
+   injection [Fin.t n → Fin.t (S n)] missing a given index, so
+   [minor A i j] deletes row i and column j.
+
+   THE ROAD TO MULTIPLICATIVITY.  [det_mul] is the load-bearing
+   theorem, and the route is the classical one, arranged to avoid the
+   two usual formalization sinkholes (a flat sum over the symmetric
+   group, and the fixed-point-free-involution cancellation).
+
+   - Multilinearity in each column ([det_col_add], [det_col_mul]) is
+   immediate from the recursion: column 0 enters linearly, and every
+   other column enters only through the minors.
+
+   - The Laplace expansion along the first ROW ([det_row_expand]) is
+   proved by induction, both sides reducing to the same double sum
+   over a doubly-deleted matrix.  It is what makes alternation
+   tractable: with columns 0 and 1 equal, the row expansion has only
+   two surviving terms and their minors are literally the same
+   matrix, so they cancel ([det_alt01]) — no involution argument.
+
+   - From [det_alt01] the swap of columns 0 and 1 negates the
+   determinant ([det_swap01], by bilinearity), a swap of two later
+   columns negates it by induction through the minors
+   ([det_swap_FS]), and a general transposition is a conjugate of
+   those two ([det_swap]).  General alternation ([det_alt]) then
+   follows by moving the two equal columns to positions 0 and 1 —
+   note that it does NOT follow from [det M ≈ - det M], which says
+   nothing in characteristic 2.
+
+   - [det_perm]: for EVERY [f : Fin.t n → Fin.t n], injective or not,
+   [det (A ∘ f) ≈ det (P f) · det A], where [P f] is the 0/1 matrix
+   of f.  Proved by induction on n; the non-injective case is caught
+   by a decidable finite search and killed by [det_alt].
+
+   - The product expansion is organized as a NESTED sum ([expand])
+   over the columns of B rather than a flat sum over functions, so
+   neither the symmetric group nor the products [Π_j B (f j) j] ever
+   need to be enumerated: [det (A ∘ B)] and [det B] are the same
+   nested sum with different leaves, and [det_perm] relates the
+   leaves by the constant factor [det A].
+
+   THE ADJUGATE.  With both expansions in hand the rest of the
+   classical package follows: [det_transpose] (the column-0 expansion
+   of the transpose IS the row-0 expansion of the original, minor for
+   minor), the expansion along an ARBITRARY column ([det_col_expand],
+   through the cycle [rotf] that moves column j to the front — its
+   permutation matrix has determinant [(-1)^j] by one application of
+   the definition, with no induction, and [det_perm] supplies the
+   rest), the alien-cofactor identity ([det_col_alien], which is the
+   expansion of a matrix with one column overwritten by another), and
+   hence [adj] with [adj_mul_l] and [adj_mul_r]:
+   [adj A ∘ A ≈ A ∘ adj A ≈ det A · I].  A square matrix therefore has
+   a two-sided inverse exactly when its determinant is a unit
+   ([det_unit_of_inverse] and [inverse_of_det_unit], with
+   [det_unit_of_iso] and [iso_of_det_unit] in [Matr]'s composition
+   vocabulary).
+
+   NATURALITY in the ring ([det_map]) is the [Matr]-level content of
+   Mac Lane's §I.4: a rig homomorphism between rings commutes with
+   [det], since the formula is polynomial.  No extra clause is needed
+   for negation — that is Theory/Algebra/Rig.v's theorem [RigHom_neg].
+
+   THREE SECTIONS.  [Determinant] fixes only the ring and carries what
+   does not need commutativity: the ring arithmetic, [fin_delete],
+   [pow_neg1], [minor], [det], [det_respects] and [det_id].
+   [DeterminantComm] adds the commutativity hypothesis and carries
+   everything from multilinearity to [det_mul]; since Lib.v's
+   project-wide [Default Proof Using "Type"] discharges only the
+   section variables occurring in a statement, that section sets
+   ["All"], so its lemmas take the ring and its commutativity proof as
+   their two leading arguments.  [DetMap] takes two rings and a
+   homomorphism.  Everything is axiom-free: [Print Assumptions det_mul]
+   answers "Closed under the global context". 
+
+   --------
+   * * 在交换环上的行列式
+
+   Mac Lane，《为工作数学家而写的范畴》，第2版，第§I.4节
+   （印刷页 16）：行列式是典型的自然变换——对于一个交换环 K，[det] 是从 K 上的 n × n 矩阵到 K 的映射，在 K 下是自然的，并且是乘法的 [maclane:I.4:construction1]；同样的构造正是 §I.4 练习 6 所需要的 [maclane:I.4:ex6]。
+
+   本文件在 Instance/Matr.v 的矩阵范畴上展开行列式，基于 Theory/Algebra/Rig.v 的 [RingObject]，并且交换性假设完全按照 Instance/Rng.v 的 [CRng_Sub] 来陈述。一切均在等价类级别：条目用 [≈] 进行比较，从不使用 [=]，并且任何地方都未使用公理。定义是第一列拉普拉斯展开，通过大小的结构递归。[fin_delete] 是保持顺序的注入 [Fin.t n → Fin.t (S n)]，缺少给定索引，因此 [minor A i j] 删除第 i 行和第 j 列。
+
+   通往乘法性的道路。[det_mul] 是支撑定理，路线是经典的，安排以避免两个通常的形式化陷阱（对称群上的平和求和，以及无固定点的自反消去）。
+
+   - 每列的多线性性（[det_col_add]，[det_col_mul]）从递归中即可得出：第 0 列以线性方式出现，其他每列仅通过小行列式出现。- 沿第一行 ( [det_row_expand] ) 的拉普拉斯展开是通过归纳法证明的，双方都归约为对一个双删矩阵的双重求和。这也是使交替性可处理的原因：当第 0 列和第 1 列相等时，行展开只有两个存活的项，而且它们的余子式实际上是相同的矩阵，因此它们相互抵消 ( [det_alt01] ) — 无需使用对合论证。- 从 [det_alt01] 可以看出，交换第 0 列和第 1 列会使行列式取反（[det_swap01]，通过双线性性），交换之后的两列通过子式归纳也会使行列式取反（[det_swap_FS]），而一般的换位是这两者的共轭（[det_swap]）。然后，一般的交替性（[det_alt]）可以通过将两列相同的列移到位置 0 和 1 来得到——注意，它并不从 [det M ≈ - det M] 推出，因为 [det M ≈ - det M] 在特征 2 下没有意义。
+
+   - [det_perm]：对于每一个 [f : Fin.t n → Fin.t n]，无论是否单射，都有 [det (A ∘ f) ≈ det (P f) · det A]，其中 [P f] 是 f 的 0/1 矩阵。通过对 n 的归纳法证明；非单射的情况可以通过可判定的有限搜索发现，并通过 [det_alt] 消除。- 产品展开是作为 B 的列上的嵌套求和（[expand]）组织的，而不是对函数的平面求和，因此既不需要枚举对称群，也不需要枚举乘积 [Π_j B (f j) j]：[det (A ∘ B)] 和 [det B] 是相同的嵌套求和，只是叶子不同，而 [det_perm] 将通过常数因子 [det A] 关联这些叶子。伴随矩阵。有了这两种展开式，其余的经典内容就可以推导出来：[det_transpose]（转置矩阵的第0列展开就是原矩阵的第0行展开，按代数余子式对应），沿任意列的展开（[det_col_expand]，通过将第j列移到最前面的循环 [rotf] —其置换矩阵的行列式 [(-1)^j] 只需一次定义即可，无需归纳，且 [det_perm] 提供剩下的部分），异元素余子式恒等式（[det_col_alien]，即将矩阵的一列用另一列覆盖后的展开式），因此有 [adj]，其中 [adj_mul_l] 和 [adj_mul_r]：[adj A ∘ A ≈ A ∘ adj A ≈ det A · I]。因此，一个方阵恰好在其行列式是单位元时才有双边逆元（[det_unit_of_inverse] 和 [inverse_of_det_unit]，其中 [det_unit_of_iso] 和 [iso_of_det_unit] 属于 [Matr] 的构成词汇）。
+
+   环（[det_map]）中的自然性是 Mac Lane §I.4 的 [Matr] 级内容：环之间的加法半环同态与 [det] 交换，因为公式是多项式的。对于取反不需要额外条款——即 Theory/Algebra/Rig.v 的定理 [RigHom_neg]。三部分。[Determinant] 仅固定环并包含不需要交换性的内容：环算术、[fin_delete]、[pow_neg1]、[minor]、[det]、[det_respects] 和 [det_id]。[DeterminantComm] 添加交换性假设，并承载从多重线性到 [det_mul] 的所有内容；由于 Lib.v 的项目范围 [Default Proof Using "Type"] 仅释放出现在语句中的节变量，该节设置 ["All"]，因此它的引理将环及其交换性证明作为两个主要参数。[DetMap] 接受两个环和一个同态。所有内容都是无公理的：[Print Assumptions det_mul] 回答“在全局上下文下封闭”。
 *)
 
 Section Determinant.
@@ -29,9 +132,18 @@ Local Notation "0R" := (rig_zero R).
 Local Notation "1R" := (rig_one R).
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** Ring arithmetic
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The consequences of the ring axioms used below that Instance/Rng.v
+   does not already carry ([ring_neg_r], [ring_neg_add] and
+   [ring_neg_involutive] are taken from there). 
+
+   --------
+   * ** 环算术
+
+   下面 Instance/Rng.v 中使用的环公理的结果
+   并非已经包含（[ring_neg_r]、[ring_neg_add] 和
+   [ring_neg_involutive] 是从那里引入的）。
 *)
 
 Lemma ring_neg_unique (a b : K) : a ⊕ b ≈ 0R → b ≈ ⊖ a.
@@ -44,8 +156,13 @@ Proof.
   now rewrite rig_add_zero_r.
 Qed.
 
-(* Instance/Rng.v's [ring_neg_r] ring 论元 fixed, so that
- rewrites below match without explicit instantiation. （已译） *)
+(*
+ Instance/Rng.v's [ring_neg_r] with the ring argument fixed, so that
+ the rewrites below match without an explicit instantiation. 
+
+ --------
+ 将 Instance/Rng.v 的 [ring_neg_r] 与环参数固定，以便下面的重写在不进行显式实例化的情况下匹配。
+*)
 Lemma ring_neg_r' (a : K) : a ⊕ ⊖ a ≈ 0R.
 Proof. apply ring_neg_r. Qed.
 
@@ -71,7 +188,7 @@ Proof.
   apply rig_mul_zero_r.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Deleting an index [fin_delete skip] is the order-preserving injection whose image is everything but [skip]. / * ** 删除索引 [fin_delete skip] 是保持顺序的单射，其映像是除 [skip] 之外的所有内容。 *)
 
 Fixpoint fin_delete {n : nat} : Fin.t (S n) → Fin.t n → Fin.t (S n) :=
   match n with
@@ -97,7 +214,7 @@ Lemma fin_delete_FS_FS {n : nat} (s : Fin.t (S n)) (y : Fin.t n) :
   fin_delete (Fin.FS s) (Fin.FS y) = Fin.FS (fin_delete s y).
 Proof. reflexivity. Qed.
 
-(* The image of [fin_delete skip] misses exactly [skip]. *)
+(* The image of [fin_delete skip] misses exactly [skip]. / [fin_delete skip] 的图像正好缺少 [skip]。 *)
 Lemma fin_delete_neq {n : nat} (skip : Fin.t (S n)) (x : Fin.t n) :
   fin_delete skip x ≠ skip.
 Proof.
@@ -131,7 +248,7 @@ Proof.
       now rewrite (IHn s q p (Fin.FS_inj _ _ Heq)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The index of a finite ordinal, and the alternating sign / * ** 有限序数的指标，以及交替符号 *)
 
 Definition fidx {n : nat} (i : Fin.t n) : nat := proj1_sig (Fin.to_nat i).
 
@@ -159,7 +276,7 @@ Proof.
   - rewrite IHa; now rewrite ring_neg_mul_l.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The determinant, by first-column Laplace expansion / * ** 行列式，通过首列拉普拉斯展开 *)
 
 Definition minor {n : nat} (A : Matrix R (S n) (S n)) (i j : Fin.t (S n)) :
   Matrix R n n :=
@@ -173,7 +290,7 @@ Fixpoint det {n : nat} : Matrix R n n → K :=
         pow_neg1 (fidx i) ⊗ A i Fin.F1 ⊗ det (minor A i Fin.F1))
   end.
 
-(* 相关说明。 （已译） *)
+(* The two unfolding steps, as rewrite rules: [simpl] would unfold the finite sum as well and leave the goal in a shape the [fin_sum] kit no longer matches. / 作为重写规则的两个展开步骤：[simpl] 也会展开有限和，并将目标保持在 [fin_sum] 工具不再匹配的形式。 *)
 Lemma det_S {n : nat} (A : Matrix R (S n) (S n)) :
   det A = fin_sum R (fun i : Fin.t (S n) =>
             pow_neg1 (fidx i) ⊗ A i Fin.F1 ⊗ det (minor A i Fin.F1)).
@@ -194,7 +311,7 @@ Proof.
   - apply IHn; intros r c; apply H.
 Qed.
 
-(* * ** The determinant 恒等 （已译） *)
+(* * ** The determinant of the identity / * ** 恒等矩阵的行列式 *)
 
 Lemma delta_FS {n : nat} (i j : Fin.t n) :
   delta R (Fin.FS i) (Fin.FS j) ≈ delta R i j.
@@ -233,9 +350,19 @@ Qed.
 End Determinant.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * * The commutative development
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Everything from here on spends commutativity of the base ring.  The
+   section sets [Default Proof Using "All"] (Lib.v's project-wide
+   default is ["Type"], which discharges only the section variables
+   occurring in a statement, and [Rcomm] occurs in almost none of
+   them), so every lemma below takes the ring and its commutativity
+   proof as its two leading arguments. 
+
+   --------
+   * * 交换性的发展
+
+   从这里开始的一切都使用底环的交换性。本节设置了 [Default Proof Using "All"]（Lib.v 在整个项目中的默认值是 ["Type"]，它仅对语句中出现的节变量进行处理，而 [Rcomm] 几乎不在任何中使用），因此下面的每个引理都将环及其交换性证明作为前两个主要参数。
 *)
 
 Section DeterminantComm.
@@ -258,9 +385,19 @@ Local Notation minor := (minor R).
 Local Notation pow_neg1 := (pow_neg1 R).
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** Multilinearity in the columns
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Column 0 enters the recursion linearly and every other column enters
+   only through the minors, so both clauses are a direct induction.
+   The hypotheses are stated in "agree away from column j" form rather
+   than through a substitution operator, which keeps them free of
+   decidable-equality noise at the point of use. 
+
+   --------
+   * ** 列中的多重线性
+
+   列 0 以线性方式进入递归，而其他所有列仅通过子式进入，因此两个条款都是直接归纳。
+   假设以“在第 j 列之外一致”的形式陈述，而不是通过替代算子，这使得它们在使用点上不受可判定等式噪声的影响。
 *)
 
 Lemma mul_swap (a b c : K) : a ⊗ (b ⊗ c) ≈ b ⊗ (a ⊗ c).
@@ -344,7 +481,7 @@ Proof.
       apply mul_swap.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* A zero column kills the determinant: the scalar clause at x = 0. / 零列使行列式为零：在 x = 0 的标量子句。 *)
 Lemma det_col_zero {n : nat} (A : Matrix R n n) (j : Fin.t n) :
   (∀ i, A i j ≈ 0R) → det A ≈ 0R.
 Proof.
@@ -356,9 +493,23 @@ Proof.
 Qed.
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+   * ** The Laplace expansion along the first row
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Both the definition (expansion along column 0) and the row expansion
+   reduce, after one further expansion of each minor, to the same
+   double sum over the matrix with row 0 and row i, and column 0 and
+   column j, deleted — the terms MATCH pairwise, so no cancellation or
+   involution argument is needed.  This is the one place where the two
+   orders of deletion have to be reconciled, and [fin_delete] was
+   defined so that both reconciliations
+   ([fin_delete F1 c = FS c] and
+   [fin_delete (FS i) (FS r) = FS (fin_delete i r)]) hold by
+   conversion. 
+
+   --------
+   * ** 沿第一行的拉普拉斯展开
+
+   无论是按定义（沿第0列展开）还是按行展开，在对每个小行列式再展开一次后，都归约为在删除第0行和第i行，以及第0列和第j列的矩阵上进行的相同双重求和——各项成对匹配，因此不需要消去或对应论证。这是两个删除顺序必须协调的唯一地方，而 [fin_delete] 的定义就是为了使两种协调（[fin_delete F1 c = FS c] 和 [fin_delete (FS i) (FS r) = FS (fin_delete i r)]）通过转换成立。
 *)
 
 Lemma row_expand_term (p q x y d : K) :
@@ -380,7 +531,7 @@ Proof.
     rewrite (fin_sum_S R (fun j : Fin.t (S (S m)) =>
       pow_neg1 (fidx j) ⊗ A Fin.F1 j ⊗ det (minor A Fin.F1 j))).
     apply rig_add_respects; [ reflexivity |].
-    (* Expand each minor of the column-0 expansion along ITS first row. *)
+    (* Expand each minor of the column-0 expansion along ITS first row. / 沿着列0展开的每个子式的第一行展开。 *)
     transitivity
       (fin_sum R (fun i : Fin.t (S m) => fin_sum R (fun c : Fin.t (S m) =>
          pow_neg1 (fidx (Fin.FS i)) ⊗ A (Fin.FS i) Fin.F1
@@ -397,7 +548,7 @@ Proof.
         unfold minor; rewrite fin_delete_FS_F1, fin_delete_F1; reflexivity.
       - apply det_respects; intros r' c'; unfold minor.
         rewrite !fin_delete_F1, fin_delete_FS_FS; reflexivity. }
-    (* 相关说明。 （已译） *)
+    (* Exchange the two sums and match the terms. / 交换两个和并匹配项。 *)
     transitivity
       (fin_sum R (fun c : Fin.t (S m) => fin_sum R (fun i : Fin.t (S m) =>
          pow_neg1 (fidx (Fin.FS c)) ⊗ A Fin.F1 (Fin.FS c)
@@ -413,7 +564,7 @@ Proof.
       apply fin_sum_respects; intro i.
       rewrite !fidx_FS, !pow_neg1_S.
       apply row_expand_term. }
-    (* Fold inner sum back 进入 minor row expansion. （已译） *)
+    (* Fold the inner sum back into the minor of the row expansion. / 将内部求和重新折叠回行展开的余子式中。 *)
     apply fin_sum_respects; intro c.
     rewrite <- fin_sum_mul_l.
     apply rig_mul_respects; [ reflexivity |].
@@ -427,9 +578,18 @@ Proof.
 Qed.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** Alternation
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   With columns 0 and 1 equal, the row expansion has exactly two
+   surviving terms: deleting any LATER column leaves columns 0 and 1
+   still equal and still adjacent, so those minors vanish by induction,
+   while deleting column 0 or column 1 leaves literally the same
+   matrix.  The two survivors carry opposite signs and cancel. 
+
+   --------
+   * ** 交替性
+
+   当第 0 列和第 1 列相等时，行展开正好有两个留下来的项：删除任意较后的列，第 0 列和第 1 列仍然相等且相邻，因此根据归纳法，这些余子式为零，而删除第 0 列或第 1 列则留下完全相同的矩阵。 这两个幸存的项符号相反，互相抵消。
 *)
 
 Lemma add_head_zero (a b c : K) : a ⊕ b ≈ 0R → a ⊕ (b ⊕ c) ≈ c.
@@ -446,7 +606,7 @@ Proof using Type.
   apply ring_neg_r'.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The head of the row expansion cancels, leaving only the columns from position 2 on. / 行扩展的开头被取消，只保留从第2个位置开始的列。 *)
 Lemma det_alt01_tail {n : nat} (A : Matrix R (S (S n)) (S (S n))) :
   (∀ i, A i Fin.F1 ≈ A i (Fin.FS Fin.F1)) →
   det A ≈ fin_sum R (fun j : Fin.t n =>
@@ -486,9 +646,18 @@ Proof.
 Qed.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** Transpositions of columns
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [fswap p q] is the transposition of the index set; the determinant
+   of a column-transposed matrix is the negative.  Position (0,1) comes
+   from alternation by bilinearity, a transposition of two LATER
+   columns comes by induction through the minors, and the general case
+   is the conjugate [τ σ τ] of those two. 
+
+   --------
+   * ** 列的换位
+
+   [fswap p q] 是指标集合的换位；列换位矩阵的行列式为负值。位置 (0,1) 来自双线性交替，两列的换位通过代数余子式按归纳法得到，而一般情况是这两列的共轭 [τ σ τ]。
 *)
 
 Definition fswap {n : nat} (p q x : Fin.t n) : Fin.t n :=
@@ -530,7 +699,7 @@ Proof using Type.
   now apply fswap_other.
 Qed.
 
-(* A matrix with its first two columns replaced. *)
+(* A matrix with its first two columns replaced. / 一个其前两列被替换的矩阵。 *)
 Definition put01 {n : nat} (A : Matrix R (S (S n)) (S (S n)))
   (u v : Fin.t (S (S n)) → K) : Matrix R (S (S n)) (S (S n)) :=
   fun i j =>
@@ -588,10 +757,10 @@ Proof.
   pose (c0 := fun i : Fin.t (S (S n)) => A i Fin.F1).
   pose (c1 := fun i : Fin.t (S (S n)) => A i (Fin.FS Fin.F1)).
   pose (s := fun i : Fin.t (S (S n)) => c0 i ⊕ c1 i).
-  (* The doubled matrix has equal first two columns. *)
+  (* The doubled matrix has equal first two columns. / 这个加倍矩阵的前两列相等。 *)
   assert (Hzero : det (put01 A s s) ≈ 0R).
   { apply det_alt01; intro i; rewrite put01_0, put01_1; reflexivity. }
-  (* Split column 0, then column 1 in each half. *)
+  (* Split column 0, then column 1 in each half. / 先分割第0列，然后在每一半中分割第1列。 *)
   assert (H1 : det (put01 A s s)
                  ≈ det (put01 A c0 s) ⊕ det (put01 A c1 s)).
   { apply (det_col_add _ _ _ Fin.F1).
@@ -630,7 +799,7 @@ Proof.
       + rewrite He, put01_1, fswap_r; reflexivity.
       + rewrite (put01_off A c1 c0 i j H0 H1'), (fswap_other _ _ _ H0 H1').
         reflexivity. }
-  (* 0 ≈ (0 ⊕ det A) ⊕ (det (swap) ⊕ 0) *)
+  (* 0 ≈ (0 ⊕ det A) ⊕ (det (swap) ⊕ 0) / 0 ≈ (0 ⊕ det A) ⊕ (det (swap) ⊕ 0) *)
   rewrite H1, H2, H3, H4, H5, H6, H7 in Hzero.
   rewrite rig_add_zero_l, rig_add_zero_r in Hzero.
   apply ring_neg_unique; exact Hzero.
@@ -682,7 +851,7 @@ Proof using Type.
   - intros y _; exists y; reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Transposing two columns other than the first: the first column is untouched and each minor undergoes the corresponding transposition one size down. / 转置除第一列之外的两列：第一列保持不变，每个余子式都进行相应的转置，向下移动一格。 *)
 Lemma det_swap_FS {n : nat} (A : Matrix R (S n) (S n)) (p q : Fin.t n)
   (IH : ∀ (B : Matrix R n n) (u v : Fin.t n), u ≠ v →
           det (fun i j => B i (fswap u v j)) ≈ ⊖ (det B)) :
@@ -705,7 +874,7 @@ Proof.
   apply ring_neg_mul_r.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Transposing the first column with a later one: adjacent by [det_swap01], otherwise the conjugate τ σ τ of an adjacent swap by a swap of two later columns. / 将第一列与后面的一列交换：若相邻则由 [det_swap01] 实现，否则由一个相邻交换的共轭 τ σ τ 转为交换两列后面的列。 *)
 Lemma fswap_conj {n : nat} (q1 : Fin.t n) (x : Fin.t (S (S n))) :
   fswap Fin.F1 (Fin.FS (Fin.FS q1)) x
   = fswap Fin.F1 (Fin.FS Fin.F1)
@@ -807,9 +976,17 @@ Proof.
 Qed.
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+   * ** General alternation
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Two equal columns anywhere kill the determinant.  This does NOT
+   follow from [det M ≈ ⊖ det M] — that is vacuous in characteristic 2
+   — so the two columns are transported to positions 0 and 1 by at most
+   two transpositions and [det_alt01] is applied there. 
+
+   --------
+   * ** 一般交替性
+
+   任意两个相等的列都会使行列式为零。这并不直接来自 [det M ≈ ⊖ det M] —— 在特征为 2 时这是空的 —— 因此这两列通过最多两次换位被移到位置 0 和 1，然后在这里应用 [det_alt01]。
 *)
 
 Lemma neg_eq_zero (x : K) : ⊖ x ≈ 0R → x ≈ 0R.
@@ -872,9 +1049,21 @@ Proof.
 Qed.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** Reindexing the columns by an arbitrary map
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [permat f] is the 0/1 matrix of [f].  For EVERY [f] — injective or
+   not — reindexing the columns of A by f multiplies the determinant by
+   [det (permat f)].  The induction moves [f F1] to position 0 by a
+   transposition; either some later index is then also sent to 0, in
+   which case both sides vanish by [det_alt], or the residual map
+   restricts to the smaller index set and the induction hypothesis
+   applies inside every minor.  Injectivity is never assumed: the
+   dichotomy is settled by a finite search. 
+
+   --------
+   * ** 通过任意映射重新索引列
+
+   [permat f] 是 [f] 的 0/1 矩阵。对于每一个 [f]——无论是否单射——通过 f 重新索引 A 的列会使行列式乘以 [det (permat f)]。归纳法通过一个换位将 [f F1] 移到位置 0；随后要么某些更后的索引也被映射到 0，在这种情况下根据 [det_alt] 双方都为零；要么剩余映射限制在较小的索引集合上，归纳假设在每个子式中适用。永远不假设单射性：这种二分法通过有限搜索解决。
 *)
 
 Definition permat {n : nat} (f : Fin.t n → Fin.t n) : Matrix R n n :=
@@ -895,8 +1084,13 @@ Proof using Type.
           [ exact HnP | exact Hall ].
 Qed.
 
-(* The predecessor non-zero index, default the
- [fpred_FS] 假设 rules out. （已译） *)
+(*
+ The predecessor of a non-zero index, with a default that the
+ [fpred_FS] hypothesis rules out. 
+
+ --------
+ 非零索引的前驱，默认情况下 [fpred_FS] 假设排除了它。
+*)
 Definition fpred {k : nat} (d : Fin.t k) (x : Fin.t (S k)) : Fin.t k :=
   Fin.caseS' x (fun _ => Fin.t k) d (fun y => y).
 
@@ -913,7 +1107,7 @@ Lemma det_perm {n : nat} (A : Matrix R n n) (f : Fin.t n → Fin.t n) :
 Proof.
   revert A f; induction n as [|k IH]; intros A f.
   - simpl; symmetry; apply rig_mul_one_l.
-  - (* Moving [f F1] into position 0 costs exactly [det (permat s)]. *)
+  - (* Moving [f F1] into position 0 costs exactly [det (permat s)]. / 将 [f F1] 移动到位置 0 的准确成本是 [det (permat s)]。 *)
     assert (Hsw : ∀ B : Matrix R (S k) (S k),
       det (fun i j => B i (fswap Fin.F1 (f Fin.F1) j))
         ≈ det (permat (fswap Fin.F1 (f Fin.F1))) ⊗ det B).
@@ -939,7 +1133,7 @@ Proof.
     destruct (fin_search (fun c : Fin.t k =>
                 fswap Fin.F1 (f Fin.F1) (f (Fin.FS c)) = Fin.F1)
                 (fun c => Fin.eq_dec _ _)) as [[c Hc]|Hnone].
-    + (* Two columns of A coincide, and so do two columns of [permat f]. *)
+    + (* Two columns of A coincide, and so do two columns of [permat f]. / A 的两列重合，[permat f] 的两列也重合。 *)
       assert (Hfc : f (Fin.FS c) = f Fin.F1).
       { rewrite <- (fswap_involutive Fin.F1 (f Fin.F1) (f (Fin.FS c))), Hc.
         apply fswap_l. }
@@ -950,7 +1144,7 @@ Proof.
       { apply (det_alt _ Fin.F1 (Fin.FS c)); [ discriminate |].
         intro i; unfold permat; rewrite Hfc; reflexivity. }
       rewrite HA, HP; symmetry; apply rig_mul_zero_l.
-    + (* The residual map restricts one size down. *)
+    + (* The residual map restricts one size down. / 残差图限制向下一个尺寸。 *)
       pose (h' := fun c : Fin.t k =>
                     fpred c (fswap Fin.F1 (f Fin.F1) (f (Fin.FS c)))).
       assert (Hh' : ∀ c, Fin.FS (h' c)
@@ -997,9 +1191,23 @@ Proof.
 Qed.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** Multiplicativity
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Column j of the product [A ∘ B] is the B-weighted combination of the
+   columns of A, so the determinant expands over the columns of B.  The
+   expansion is kept NESTED ([expand], one [fin_sum] per column) rather
+   than flattened into a sum over all maps [Fin.t n → Fin.t n]: the
+   products [Π_j B (f j) j] then never have to be formed, and the whole
+   combinatorial layer — enumerating maps, isolating the injective
+   ones, and reading off their signs — disappears.  [det (A ∘ B)] and
+   [det B] are literally the same nested sum with different leaves, and
+   [det_perm] relates those leaves by the CONSTANT factor [det A], so
+   [expand_scale] pulls it out through every level at once. 
+
+   --------
+   * ** 乘性
+
+   矩阵乘积 [A ∘ B] 的第 j 列是 A 列的 B 加权组合，因此行列式可以在 B 的列上展开。展开形式保持为嵌套（[expand]，每列一个 [fin_sum]）而不是展平成对所有映射 [Fin.t n → Fin.t n] 的求和：这样 [Π_j B (f j) j] 的乘积就不必形成，整个组合层——枚举映射、找出单射映射以及读出它们的符号——便消失。[det (A ∘ B)] 和 [det B] 实际上是同一个嵌套求和，只是叶子不同，[det_perm] 通过常数因子 [det A] 将这些叶子联系起来，因此 [expand_scale] 可以一次性将其从每个层级中提取出来。
 *)
 
 Definition setcol {n : nat} (M : Matrix R n n) (j : Fin.t n)
@@ -1023,8 +1231,13 @@ Proof using Type.
     [ contradiction | reflexivity ].
 Qed.
 
-(* A column finite sum scaled vectors splits the
- determinant 进入 corresponding finite sum. （已译） *)
+(*
+ A column that is a finite sum of scaled vectors splits the
+ determinant into the corresponding finite sum. 
+
+ --------
+ 一个由有限个缩放向量的和组成的列会将行列式分解为相应的有限和。
+*)
 Lemma det_col_sum {n : nat} (M : Matrix R n n) (j : Fin.t n) {m : nat}
   (c : Fin.t m → K) (V : Fin.t m → Fin.t n → K) :
   (∀ i, M i j ≈ fin_sum R (fun l => c l ⊗ V l i)) →
@@ -1059,7 +1272,7 @@ Proof.
       * intro i; rewrite setcol_at; reflexivity.
 Qed.
 
-(** *** The nested expansion *)
+(** *** The nested expansion / *** 嵌套扩展 *)
 
 Definition upd_fn {n : nat} (f : Fin.t n → Fin.t n) (j l : Fin.t n) :
   Fin.t n → Fin.t n :=
@@ -1077,9 +1290,20 @@ Fixpoint expand {n : nat} (B : Matrix R n n) (js : list (Fin.t n))
   end.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+ DISCLOSURE: this is the tree's THIRD copy of the Fin enumeration —
+ Instance/FinSet/Skeleton.v's [fin_enum] (with [fin_enum_full] and
+ [fin_enum_nodup], and its own [nodup_map_FS]) has the identical
+ body, and Instance/FinSet/Pushout.v carries [all_fin]/[In_all_fin].
+ It is re-derived here to keep Instance/Matr free of a
+ cross-hierarchy dependency on the FinSet development for ~15 lines
+ of list code, following the naming-disclosure convention
+ Skeleton.v itself sets; the map-FS NoDup helper is named
+ [map_FS_NoDup] here to avoid colliding with Skeleton.v's. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 披露：这是该树的第三个 Fin 枚举副本——
+ Instance/FinSet/Skeleton.v 的 [fin_enum]（以及 [fin_enum_full] 和 [fin_enum_nodup]，以及它自己的 [nodup_map_FS]）具有相同的主体，Instance/FinSet/Pushout.v 包含 [all_fin] / [In_all_fin]。
+ 这里重新导出它以保持 Instance/Matr 免于对 FinSet 开发的跨层级依赖，仅为约 15 行列表代码，遵循 Skeleton.v 本身设定的命名披露惯例；这里的 map-FS NoDup 辅助命名为 [map_FS_NoDup]，以避免与 Skeleton.v 冲突。
 *)
 Fixpoint all_fins (n : nat) : list (Fin.t n) :=
   match n with
@@ -1124,8 +1348,7 @@ Proof.
   induction js as [|j js' IHjs]; intros Hnd M f Hin Hout; simpl.
   - apply det_respects; intros i k.
     apply Hout; intro Hc; inversion Hc.
-  - (* [NoDup] has two constructors, so it cannot eliminated 进入
- Type-valued [≈]; take it apart Prop-level projections. （已译） *)
+  - (* [NoDup] has two constructors, so it cannot be eliminated into the Type-valued [≈]; take it apart with the Prop-level projections. / [NoDup] 有两个构造函数，所以它不能被消除为类型值 [≈]；使用命题级的投影将其拆开。 *)
     assert (Hnotin := proj1 (proj1 (List.NoDup_cons_iff j js') Hnd)).
     assert (Hnd' := proj2 (proj1 (List.NoDup_cons_iff j js') Hnd)).
     rewrite (det_col_sum M j (fun l => B l j) (fun l i => A i l)).
@@ -1163,7 +1386,7 @@ Proof.
     symmetry; apply rig_mul_assoc.
 Qed.
 
-(* Mac Lane §I.4: the determinant is multiplicative. *)
+(* Mac Lane §I.4: the determinant is multiplicative. / Mac Lane §I.4：行列式是可乘的。 *)
 Theorem det_mul {n : nat} (A B : Matrix R n n) :
   det (fun i j => fin_sum R (fun l => A i l ⊗ B l j)) ≈ det A ⊗ det B.
 Proof.
@@ -1195,18 +1418,29 @@ Proof.
 Qed.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+ The same theorem in the vocabulary of Instance/Matr.v: the
+ determinant of a composite is the product of the determinants.  For
+ square matrices [Matr]'s index flip is invisible — composition at
+ [n ~> n] is the plain matrix product. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 用实例/Matr.v 的词汇表达相同的定理：复合的行列式是行列式的乘积。对于方阵 [Matr] 的指标翻转是不可见的——在 [n ~> n] 的复合就是普通的矩阵乘法。
 *)
 Corollary det_compose {n : nat} (A B : n ~{Matr (ring_rig R)}~> n) :
   det (A ∘ B) ≈ det A ⊗ det B.
 Proof. apply det_mul. Qed.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** Transposition
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Having both expansions makes [det Aᵀ ≈ det A] a three-line
+   induction: the column-0 expansion of the transpose is the row-0
+   expansion of the original, minor for minor. 
+
+   --------
+   * ** 转置
+
+   拥有这两种展开使得 [det Aᵀ ≈ det A] 成为一个三行归纳：转置的第0列展开是原矩阵第0行的展开，逐小矩阵对应。
 *)
 
 Lemma pow_neg1_square (k : nat) : pow_neg1 k ⊗ pow_neg1 k ≈ 1R.
@@ -1242,9 +1476,27 @@ Proof.
 Qed.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** Expansion along an arbitrary column
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [rotf j] moves column j to the front, keeping the others in order;
+   it is exactly the map [F1 ↦ j], [FS c ↦ fin_delete j c], so the
+   minors of the rotated matrix along column 0 ARE the minors of the
+   original along column j, definitionally.  Its permutation matrix has
+   determinant [(-1)^j] by a single application of the first-column
+   expansion — no induction — and [det_perm] does the rest.
+
+   Expanding along column j with the entries of a DIFFERENT column k
+   gives zero (the "alien cofactor" identity): that is the expansion of
+   the matrix whose column j has been overwritten by column k, which
+   has two equal columns. 
+
+   --------
+   * ** 沿任意列展开
+
+   [rotf j] 将第 j 列移动到最前面，保持其他列的顺序；
+   它正好是映射 [F1 ↦ j]、[FS c ↦ fin_delete j c]，因此旋转矩阵沿第 0 列的子式正是原矩阵沿第 j 列的子式，根据定义。它的置换矩阵的行列式是 [(-1)^j]，通过第一次列展开即可——无需归纳——而 [det_perm] 完成其余部分。
+
+   用不同的列 k 的元素沿第 j 列展开得到零（“外来余子式”恒等式）：也就是展开一个矩阵，其中第 j 列被第 k 列覆盖，矩阵有两列相同。
 *)
 
 Definition rotf {m : nat} (j c : Fin.t (S m)) : Fin.t (S m) :=
@@ -1314,9 +1566,27 @@ Proof.
 Qed.
 
 (*
-   本节说明 Determinant 相关定义、性质与动机。
+   * ** The adjugate, and invertibility
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [adj A] is the transposed cofactor matrix.  Both Laplace identities
+   together say [adj A ∘ A ≈ A ∘ adj A ≈ det A · I]: the diagonal
+   entries are the expansion of [det A] along a column (resp. a row),
+   and the off-diagonal entries are the alien-cofactor zero.  The row
+   identity is the column identity at the transpose, which is why
+   [det_transpose] was worth having.
+
+   Consequently a square matrix is invertible exactly when its
+   determinant is a unit — stated elementwise (and in [Matr]'s
+   composition vocabulary) rather than through an [Isomorphism], so
+   that it composes with whatever invertibility interface the GL_n
+   development prefers. 
+
+   --------
+   * ** 伴随矩阵与可逆性
+
+   [adj A] 是转置余子式矩阵。两个拉普拉斯恒等式一起说明 [adj A ∘ A ≈ A ∘ adj A ≈ det A · I]：对角线上的元素是沿某列（或某行）展开 [det A] 的结果，而非对角线上的元素是异余子式为零。行恒等式就是转置下的列恒等式，这就是 [det_transpose] 值得拥有的原因。
+
+   因此，一个方阵可逆当且仅当其行列式是单位元素——以元素级（以及在 [Matr] 的组合词汇中）表示，而不是通过 [Isomorphism] 来表示，从而它可以与 GL_n 开发中偏好的任何可逆性接口组合。
 *)
 
 Definition adj {m : nat} (A : Matrix R (S m) (S m)) : Matrix R (S m) (S m) :=
@@ -1400,14 +1670,19 @@ Proof.
       apply rig_mul_one_l.
 Qed.
 
-(* The same two statements in [Matr]'s vocabulary. *)
+(* The same two statements in [Matr]'s vocabulary. / [Matr] 词汇中的同样两条陈述。 *)
 Corollary det_unit_of_iso {n : nat} (A B : n ~{Matr (ring_rig R)}~> n) :
   A ∘ B ≈ id → det A ⊗ det B ≈ 1R.
 Proof. intro H; apply det_unit_of_inverse; exact H. Qed.
 
-(* The inverse supplied caller, so statement stays in
- [Matr]'s hom type instead anonymous function [∘] cannot
- assign 范畴 to. （已译） *)
+(*
+ The inverse is supplied by the caller, so that the statement stays in
+ [Matr]'s hom type instead of an anonymous function that [∘] cannot
+ assign a category to. 
+
+ --------
+ 逆函数由调用者提供，以便该语句保持在 [Matr] 的同类类型中，而不是 [∘] 无法为其分配类别的匿名函数。
+*)
 Corollary iso_of_det_unit {m : nat}
   (A B : S m ~{Matr (ring_rig R)}~> S m) (u : K) :
   det A ⊗ u ≈ 1R →
@@ -1425,7 +1700,7 @@ Proof.
     + exact (snd (inverse_of_det_unit A u Hu) i j).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* The existential form: a unit determinant yields the two-sided inverse outright, packaged for consumers ([u · adj A] as the inverse matrix). / 存在形式：一个单位行列式直接产生双向逆矩阵，以消费者可用的形式打包（[u · adj A] 作为逆矩阵）。 *)
 Corollary invertible_of_det_unit {m : nat}
   (A : S m ~{Matr (ring_rig R)}~> S m) (u : K) :
   det A ⊗ u ≈ 1R →
@@ -1441,9 +1716,18 @@ Qed.
 End DeterminantComm.
 
 (*
-   本节说明函子相关定义、性质与动机。
+   * ** Naturality in the ring
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Mac Lane's §I.4 point: [det] is a map of functors, natural in the
+   commutative ring.  Only the [RigHom] structure is used — preservation
+   of negation is Theory/Algebra/Rig.v's theorem [RigHom_neg], not an
+   extra hypothesis — so this is the entrywise-image statement at the
+   level of matrices; the naturality square of §I.4 is its packaging. 
+
+   --------
+   * ** 环上的自然性
+
+   Mac Lane 的 §I.4 点：[det] 是函子之间的映射，在交换环中是自然的。只使用 [RigHom] 结构——对取负的保持是 Theory/Algebra/Rig.v 的定理 [RigHom_neg] ，而不是额外的假设——所以这是矩阵层面的逐项像（entrywise-image）陈述；§I.4 的自然性方形是它的封装。
 *)
 
 Section DetMap.
@@ -1484,7 +1768,7 @@ Qed.
 
 End DetMap.
 
-(* 相关说明。 （已译） *)
+(* * ** Orientation, pinned by computation Over the integers everything in sight reduces, so the shape of the expansion is checked by [eq_refl] rather than asserted. / * **方向，由计算固定 在整数范围内，所有可见的东西都会被简化，因此展开的形状是由 [eq_refl] 检查的，而不是断言的。 *)
 
 Definition m11 (a : Z) : Matrix Int_Ring 1 1 := fun _ _ => a.
 
@@ -1499,13 +1783,19 @@ Definition m22 (a b c d : Z) : Matrix Int_Ring 2 2 :=
 
 Example det_11 : det Int_Ring (m11 5) = 5%Z := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* ad - bc, with the sign on the (1,0) entry: the first-column expansion of [[a,b],[c,d]] is a·d - c·b. / ad - bc，带有 (1,0) 项的符号：[[a,b]，[c,d] 的第一列展开是 a·d - c·b。 *)
 Example det_22 : det Int_Ring (m22 1 2 3 4) = (-2)%Z := eq_refl.
 Example det_22_id : det Int_Ring (m22 1 0 0 1) = 1%Z := eq_refl.
 Example det_22_swap : det Int_Ring (m22 0 1 1 0) = (-1)%Z := eq_refl.
 
-(* Matr's 复合 really matrix product orientation:
- product [[1,2],[3,4]] [[0,1],[1,0]] [[2,1],[4,3]]. （已译） *)
+(*
+ Matr's composition really is the matrix product in this orientation:
+ the product of [[1,2],[3,4]] and [[0,1],[1,0]] is [[2,1],[4,3]]. 
+
+ --------
+ Matr 的组合实际上是这种方向上的矩阵乘积：
+ [[[1,2], [3,4]] 和 [[[0,1], [1,0]] 的乘积是 [[[2,1], [4,3]]。
+*)
 Example matr_compose_22 :
   (@compose (Matr Int_Ring) 2%nat 2%nat 2%nat (m22 1 2 3 4) (m22 0 1 1 0))
     Fin.F1 Fin.F1 = 2%Z := eq_refl.
@@ -1535,11 +1825,19 @@ Example det_mul_33 :
   = (det Int_Ring (m33 1 2 3 4 5 6 7 8 10)
      * det Int_Ring (m33 2 0 1 1 3 0 0 1 4))%Z := eq_refl.
 
-(* * ** Mac Lane's own case: integers
+(*
+   * ** Mac Lane's own case: the integers
 
- [Int_Ring] commutative, so whole development instantiates;
- these §I.4 statements over ℤ, no 假设 left
- open. （已译） *)
+   [Int_Ring] is commutative, so the whole development instantiates;
+   these are the §I.4 statements over ℤ, with no hypothesis left
+   open. 
+
+   --------
+   * ** 麦克莱恩自己的例子：整数
+
+   [Int_Ring] 是交换的，因此整个发展都可以实例化；
+   这些是关于 ℤ 的 §I.4 陈述，没有留下任何未解决的假设。
+*)
 
 Definition Int_comm : ∀ a b, rig_mul Int_Ring a b ≈ rig_mul Int_Ring b a :=
   fun a b => Z.mul_comm a b.
@@ -1558,7 +1856,7 @@ Definition det_Z_id {n : nat} :
   det Int_Ring (fun i j : Fin.t n => delta Int_Ring i j) ≈ rig_one Int_Ring
   := det_id Int_Ring.
 
-(* 相关说明。 （已译） *)
+(* The adjugate of [[1,2],[3,4]] is [[4,-2],[-3,1]], and its product with the matrix is det = -2 down the diagonal. / [[1,2] , [3,4]] 的伴随矩阵是 [[4,-2] , [-3,1]]，并且它与该矩阵的乘积是对角线上为 det = -2。 *)
 Example adj_22_00 : adj Int_Ring (m22 1 2 3 4) Fin.F1 Fin.F1 = 4%Z := eq_refl.
 Example adj_22_01 :
   adj Int_Ring (m22 1 2 3 4) Fin.F1 (Fin.FS Fin.F1) = (-2)%Z := eq_refl.

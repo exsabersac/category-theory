@@ -10,12 +10,50 @@ Require Import Category.Instance.Two.Monoidal.
 Generalizable All Variables.
 
 (*
-   本文件给出构造。
+   * * Categories enriched over 2 are exactly preorders.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Regard the walking arrow [_2] as the poset of truth values
+   {TwoX < TwoY} with its cartesian monoidal structure [Two_Monoidal]
+   (tensor := meet, unit := the top TwoY).  A category enriched over
+   this monoidal category assigns to every pair of objects a truth
+   value [ehom x y : TwoObj], read as the proposition "x ≤ y" (true
+   when [ehom x y = TwoY], equivalently when there is an arrow
+   [TwoY ~> ehom x y] in [_2]).
+
+   - [eid : TwoY ~> (x ⟿ x)] forces [ehom x x = TwoY]: REFLEXIVITY.
+   - [ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z)], with the tensor
+   the meet, forces [ehom y z = TwoY → ehom x y = TwoY →
+   ehom x z = TwoY]: TRANSITIVITY.
+   - The three enrichment laws are equations between parallel arrows
+   of the thin category [_2], hence hold automatically.
+
+   Conversely a (decidable) preorder yields an enrichment by letting
+   [ehom x y] be the truth value of "x ≤ y".  Enriched functors
+   between such enrichments are exactly the monotone maps.
+
+   This mirrors [Category_is_Enriched_over_Set] in
+   Construction/Enriched.v, which recovers ordinary categories by
+   enriching over [Sets]. 
+
+   --------
+   * * 以 2 为基础的范畴恰好是预序。  
+
+   将行走箭头  [_2]  看作真值的偏序集 {TwoX < TwoY}，并赋予其笛卡尔单体结构  [Two_Monoidal]  
+   （张量 := 交，单位 := 顶元 TwoY）。在这个单体范畴上丰富的范畴，会为每一对对象分配一个真值  [ehom x y : TwoObj] ，可理解为命题“x ≤ y”（当  [ehom x y = TwoY] 时为真，等价于在  [_2] 中存在箭头  [TwoY ~> ehom x y] ）。  
+
+   -  [eid : TwoY ~> (x ⟿ x)] 强制  [ehom x x = TwoY] ：自反性。  
+   -  [ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z)]，使用交作为张量，强制 [ehom y z = TwoY → ehom x y = TwoY → ehom x z = TwoY]：传递性。  
+   - 三条丰富律是在薄范畴 [_2] 中平行箭头之间的方程，因此自动成立。相反，一个（可判定的）前序通过让 [ehom x y] 成为“x ≤ y”的真值来产生一个增强。此类增强之间的增强函子正好是单调映射。
+
+   这与 Construction/Enriched.v 中的 [Category_is_Enriched_over_Set] 相呼应，该文件通过在 [Sets] 上增强来恢复普通范畴。
 *)
 
-(* In 2, 对象 receiving arrow top itself top. （已译） *)
+(*
+ In 2, an object receiving an arrow from the top is itself the top. 
+
+ --------
+ 在2中，从顶部接收箭头的对象本身就是顶部。
+*)
 Lemma two_from_top {z : TwoObj} : TwoHom TwoY z → z = TwoY.
 Proof.
   destruct z; intro f.
@@ -23,7 +61,7 @@ Proof.
   - reflexivity.
 Qed.
 
-(* The bottom TwoX has an arrow into every object of 2. *)
+(* The bottom TwoX has an arrow into every object of 2. / 底部的 TwoX 对 2 的每个对象都有一个箭头。 *)
 Definition two_bot (z : TwoObj) : TwoHom TwoX z :=
   match z with
   | TwoX => TwoIdX
@@ -31,9 +69,16 @@ Definition two_bot (z : TwoObj) : TwoHom TwoX z :=
   end.
 
 (*
-   本节说明 Two 相关定义、性质与动机。
+   * A small, self-contained notion of (decidable) preorder.  We keep it
+   local and lightweight instead of pulling in stdlib order-theoretic
+   typeclasses.  The relation is [Type]-valued; decidability is part of
+   the data because building the enrichment requires computing, for
+   each pair of carrier elements, an object of [_2] — a truth value —
+   from the relation.  Direction (a) below supplies decidability
+   automatically, since equality of [TwoObj] is decidable. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 一个小型的、自包含的（可判定的）预序概念。我们保持其本地化和轻量化，而不是引入标准库的序理论类型类。该关系的取值为  [Type] ；可判定性是数据的一部分，因为构建此增强结构需要为每一对载体元素从关系中计算一个  [_2]  — 一个真值对象。下面方向 (a) 自动提供可判定性，因为  [TwoObj] 的相等性是可判定的。
 *)
 
 Record TwoPreorder := {
@@ -44,8 +89,14 @@ Record TwoPreorder := {
   tpre_dec x y : tpre_le x y + (tpre_le x y → False)
 }.
 
-(** (a) Every 范畴 enriched over 2 gives preorder 对象:
- x ≤ y iff hom truth value top. （已译） *)
+(*
+   * (a) Every category enriched over 2 gives a preorder on its objects:
+   x ≤ y iff the hom truth value is the top. 
+
+   --------
+   * (a) 每个在 2 上丰富的范畴都在其对象上给出了一个前序关系：
+   当且仅当 Hom 的真值是顶时，x ≤ y。
+*)
 
 Definition TwoPreorder_of_Enriched (E : @Enriched _2 Two_Monoidal) :
   TwoPreorder.
@@ -54,25 +105,30 @@ Proof.
     tpre_carrier := @eobj _ _ E;
     tpre_le x y := @ehom _ _ E x y = TwoY
   |}.
-  - (* reflexivity, from eid : TwoY ~> (x ⟿ x) *)
+  - (* reflexivity, from eid : TwoY ~> (x ⟿ x) / 自反性，来自 eid：TwoY ~> (x ⟿ x) *)
     intro x.
     exact (two_from_top (@eid _ _ E x)).
-  - (* transitivity, from ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z) *)
+  - (* transitivity, from ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z) / 传递性, 来自 ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z) *)
     intros x y z Hyz Hxy.
     apply two_from_top.
     pose proof (@ecompose _ _ E x y z) as f.
     simpl in f.
     rewrite Hyz, Hxy in f.
     exact f.
-  - (* decidability, since TwoObj has decidable equality *)
+  - (* decidability, since TwoObj has decidable equality / 可判定性，因为 TwoObj 具有可判等性 *)
     intros x y.
     destruct (@ehom _ _ E x y).
     + right; intro H; discriminate H.
     + left; reflexivity.
 Defined.
 
-(** (b) Every preorder gives 范畴 enriched over 2, hom
- truth values computed decision procedure. （已译） *)
+(*
+   * (b) Every preorder gives a category enriched over 2, with hom
+   truth values computed by the decision procedure. 
+
+   --------
+   * (b) 每个前序都给出一个在 2 上增强的范畴，其同态真值由判定程序计算。
+*)
 
 Definition ehom_of_le (P : TwoPreorder) (x y : tpre_carrier P) : TwoObj :=
   match tpre_dec P x y with
@@ -113,11 +169,11 @@ Proof.
   unshelve refine
     (@Build_Enriched _2 Two_Monoidal
        (tpre_carrier P) (ehom_of_le P) _ _ _ _ _).
-  - (* eid : TwoY ~> (x ⟿ x), from reflexivity *)
+  - (* eid : TwoY ~> (x ⟿ x), from reflexivity / eid : TwoY ~> (x ⟿ x)，来自自反性 *)
     intro x.
     rewrite (ehom_of_le_complete (tpre_refl P x)).
     exact TwoIdY.
-  - (* 相关说明。 （已译） *)
+  - (* ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z), from transitivity; when either factor is the bottom, so is the meet, and the bottom maps into everything / 分解：(y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z)，来自传递性；当任一因子是底时，交集也是底，并且底映射到所有事物 *)
     intros x y z; simpl.
     destruct (tpre_dec P y z) as [lyz|nyz];
     destruct (tpre_dec P x y) as [lxy|nxy].
@@ -130,14 +186,19 @@ Proof.
       exact (two_bot _).
     + rewrite (ehom_of_le_empty nyz).
       exact (two_bot _).
-  - (* the three coherence laws hold by thinness of 2 *)
+  - (* the three coherence laws hold by thinness of 2 / 三个相干律以2的微小性成立 *)
     intros; apply two_thin.
   - intros; apply two_thin.
   - intros; apply two_thin.
 Defined.
 
-(** 本节：The promised correspondence: enrichments over 2 one side,
- preorders other, maps both directions. （已译） *)
+(*
+   * The promised correspondence: enrichments over 2 on one side,
+   preorders on the other, with maps in both directions. 
+
+   --------
+   * 承诺的对应关系：一边是大于2的增广，另一边是前序关系，并且有双向映射。
+*)
 
 Theorem Enriched_Two_preorder : @Enriched _2 Two_Monoidal ↔ TwoPreorder.
 Proof.
@@ -146,8 +207,13 @@ Proof.
   - exact Enriched_of_TwoPreorder.
 Defined.
 
-(** The 态射 leg: enriched 函子 between enrichments built
- preorders exactly monotone maps. （已译） *)
+(*
+   * The morphism leg: enriched functors between the enrichments built
+   from preorders are exactly the monotone maps. 
+
+   --------
+   * 形态 leg：从前序构造的丰富化之间的丰富化函子正是单调映射。
+*)
 
 Record MonotoneMap (P Q : TwoPreorder) := {
   mono_map : tpre_carrier P → tpre_carrier Q;
@@ -164,8 +230,7 @@ Theorem EnrichedFunctor_Two_monotone (P Q : TwoPreorder) :
     ↔ MonotoneMap P Q.
 Proof.
   split; intro X.
-  - (* an enriched functor is monotone: efmap at (x, y) is an arrow
-       between the corresponding truth values *)
+  - (* an enriched functor is monotone: efmap at (x, y) is an arrow between the corresponding truth values / 一个增强函子是单调的：efmap 在 (x, y) 上是一个在相应真值之间的箭头 *)
     destruct X as [f fm _ _]; simpl in *.
     unshelve refine {| mono_map := f |}.
     intros x y l.
@@ -173,12 +238,12 @@ Proof.
     specialize (fm x y).
     rewrite (ehom_of_le_complete l) in fm.
     exact fm.
-  - (* a monotone map is an enriched functor *)
+  - (* a monotone map is an enriched functor / 一个单调映射是一个增强函子 *)
     unshelve refine
       (@Build_EnrichedFunctor _2 Two_Monoidal
          (Enriched_of_TwoPreorder P) (Enriched_of_TwoPreorder Q)
          (mono_map X) _ _ _).
-    + (* efmap, by cases on whether x ≤ y holds in P *)
+    + (* efmap, by cases on whether x ≤ y holds in P / efmap，按 x ≤ y 在 P 中是否成立分情况 *)
       intros x y; simpl.
       destruct (tpre_dec P x y) as [l|n].
       * rewrite (ehom_of_le_complete l),
@@ -186,7 +251,7 @@ Proof.
         exact TwoIdY.
       * rewrite (ehom_of_le_empty n).
         exact (two_bot _).
-    + (* preservation of eid and ecompose hold by thinness of 2 *)
+    + (* preservation of eid and ecompose hold by thinness of 2 / 通过2的薄度保持eid和ecompose *)
       intros; apply two_thin.
     + intros; apply two_thin.
 Defined.

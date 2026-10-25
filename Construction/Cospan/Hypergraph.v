@@ -19,19 +19,114 @@ Require Import Category.Structure.Monoidal.
 Generalizable All Variables.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/hypergraph+category
-   nLab: https://ncatlab.org/nlab/show/Frobenius+algebra
-   Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra
+ References:
+ nLab: https://ncatlab.org/nlab/show/hypergraph+category
+ nLab: https://ncatlab.org/nlab/show/Frobenius+algebra
+ Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra
+ Fong, "Decorated Cospans" (arXiv:1502.00872), Thm 3.5.
+ Fong-Spivak, "Hypergraph Categories" (arXiv:1806.08304).
 
-   本文件给出构造。
+ A hypergraph category is a symmetric monoidal category in which every
+ object carries a special commutative Frobenius algebra (SCFA), coherently
+ with the monoidal product: hypergraph category = SMC + per-object SCFA.
+ The SCFA on each object [X] consists of multiplication [μ : X⨂X ~> X],
+ unit [η : I ~> X], comultiplication [δ : X ~> X⨂X], counit [ε : X ~> I],
+ subject to the commutative-monoid, cocommutative-comonoid, Frobenius, and
+ special ([μ ∘ δ ≈ id]) laws.  On [CospanCat C] these are the cospans built
+ from the cocartesian (fold/cofold) structure of [C], as set out below. 
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 参考文献：
+ nLab: https://ncatlab.org/nlab/show/hypergraph+category 
+ nLab: https://ncatlab.org/nlab/show/Frobenius+algebra 
+ 维基百科: https://en.wikipedia.org/wiki/Frobenius_algebra 
+ Fong，《装饰余箭》（arXiv:1502.00872），定理 3.5。
+ Fong-Spivak，《超图类别》（arXiv:1806.08304）。
+
+ 超图类别是一个对称单体范畴，其中每个对象都携带一个特殊的交换 Frobenius 代数（SCFA），并且与单体积协同一致：超图类别 = SMC + 每个对象的 SCFA。
+ 每个对象 [X] 上的 SCFA 包含乘法 [μ : X⨂X ~> X]、单位 [η : I ~> X]、余乘法 [δ : X ~> X⨂X]、余单位 [ε : X ~> I]，并遵循交换单子、余交换余子、Frobenius 和特殊（[μ ∘ δ ≈ id]）定律。在 [CospanCat C] 上，这些是由 [C] 的余笛卡尔（fold/cofold）结构构建的余箭，如下所示。
 *)
 
 (*
-   本节说明幺半结构、（余）极限、拉回/推出相关定义、性质与动机。
+   * * Hypergraph structure on [CospanCat C]
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Mathematical content (cf. Carboni–Walters, Fong–Spivak):
+
+   Given a category [C] with finite colimits (an initial object [0],
+   binary coproducts [+], and binary pushouts), the cospan category
+   [CospanCat C] is a symmetric monoidal category with tensor given by
+   the coproduct of [C]:
+
+   X ⨂ Y   :=  X + Y               (in C)
+   I       :=  0                    (initial object of C)
+   f ⨂ g  :=  the cospan with apex [apex f + apex g] and legs
+   [cover (cospan_in1 f) (cospan_in1 g)],
+   [cover (cospan_in2 f) (cospan_in2 g)]
+
+   Each object [X] carries a canonical SCFA built from the cocartesian
+   structure:
+
+   μ_X     : cospan X+X ~> X via apex X, leg1 = [id ▽ id], leg2 = id
+   η_X     : cospan 0 ~> X via apex X, leg1 = zero, leg2 = id
+   δ_X     : cospan X ~> X+X (the opposite of μ as a cospan)
+   ε_X     : cospan X ~> 0 (the opposite of η as a cospan)
+
+   --------------------------------------------------------------------
+
+   Status: V2a delivers the typed *data* of this construction —
+   [Cospan_tensor_obj], [Cospan_unit_obj], [cospan_tensor] (tensor of
+   morphisms), and the SCFA-witness cospans [cospan_scfa_mu],
+   [cospan_scfa_eta], [cospan_scfa_delta], [cospan_scfa_epsilon].
+
+   The full [Monoidal (CospanCat C)] / [SymmetricMonoidal] / [Hypergraph]
+   proof obligations (naturality of associator/unitors, triangle and
+   pentagon, braid coherence, SCFA axioms in the cospan setoid, and
+   tensor/unit coherence on the [Hypergraph] class) decompose into a
+   large body of cospan-equiv pushout diagrams.  These obligations ARE
+   now discharged: the full [Hypergraph (CospanCat C)] instance
+   [Cospan_Hypergraph] is delivered in
+   [Construction/Cospan/HypergraphInstance.v] (which builds on the
+   monoidal/symmetric-monoidal instances and consumes the typed data
+   this file provides).
+
+   Consumers who want to instantiate [Hypergraph] for a different
+   concrete category, or to work below the [Hypergraph] class, have two
+   further options:
+
+   (a) Instantiate [Hypergraph] directly for your concrete category
+   (e.g. [Cospan(Sets)]) using the data definitions below plus
+   your category's specific axioms, OR
+   (b) Work at the level of the algebraic classes [Monoid] /
+   [Comonoid] / [Frobenius] / [SpecialCommutativeFrobenius]
+   directly on your objects — these are fully delivered, plus the
+   [Hypergraph_CompactClosed] derivation and the [Spider] lemmas. 
+
+   --------
+   * * [CospanCat C] 上的超图结构
+
+   数学内容（参见 Carboni–Walters, Fong–Spivak）：
+
+   给定一个具有有限余积的范畴 [C]（一个初始对象 [0]，二元余积 [+]，以及二元推挤），余锥范畴 [CospanCat C] 是一个对称幺半范畴，其张量由 [C] 的余积给出：
+
+   X ⨂ Y   :=  X + Y               （在 C 中）
+   I       :=  0                    （C 的初始对象）
+   f ⨂ g  :=  顶点为 [apex f + apex g]、边为
+   [cover (cospan_in1 f) (cospan_in1 g)],
+   [cover (cospan_in2 f) (cospan_in2 g)] 的余锥
+
+   每个对象 [X] 都携带一个由余笛卡尔结构构建的规范 SCFA：μ_X     ：通过顶点 X 的 X+X ~> X 的余跨，leg1 = [id ▽ id]，leg2 = id
+   η_X     ：通过顶点 X 的 0 ~> X 的余跨，leg1 = zero，leg2 = id
+   d_X     ：X ~> X+X 的余跨（作为余跨的 μ 的相反物）
+   ε_X     ：X ~> 0 的余跨（作为余跨的 η 的相反物）
+
+   --------------------------------------------------------------------
+
+   状态：V2a 提供此构造的类型化*数据*——
+   [Cospan_tensor_obj]，[Cospan_unit_obj]，[cospan_tensor]（态射的张量），以及 SCFA 证人余跨 [cospan_scfa_mu]，
+   [cospan_scfa_eta]，[cospan_scfa_delta]，[cospan_scfa_epsilon]。完整的 [Monoidal (CospanCat C)] / [SymmetricMonoidal] / [Hypergraph] 证明义务（结合子/单位子的自然性、三角形和五边形、编织相容性、共跨集上的 SCFA 公理，以及 [Hypergraph] 类上的张量/单位相容性）分解为大量的共跨等价推出图。这些义务现在已经完成：完整的 [Hypergraph (CospanCat C)] 实例 [Cospan_Hypergraph] 已在 [Construction/Cospan/HypergraphInstance.v] 中交付（它基于单体/对称单体实例，并使用此文件提供的类型化数据）。
+
+   希望在不同具体类别中实例化 [Hypergraph]，或者在 [Hypergraph] 类以下工作的使用者，还有两个进一步的选项：(a) 对你的具体类别直接实例化 [Hypergraph]（例如 [Cospan(Sets)]），使用下面的数据定义以及你类别的特定公理，或者
+   (b) 在代数类 [Monoid] / [Comonoid] / [Frobenius] / [SpecialCommutativeFrobenius] 的层面上直接处理你的对象——这些已经完全提供，包括 [Hypergraph_CompactClosed] 推导和 [Spider] 引理。
 *)
 
 Section CospanHypergraphData.
@@ -41,15 +136,23 @@ Context `{@Cocartesian C}.
 Context `{@Initial C}.
 Context (HP : HasPushouts C).
 
-(** ** Object-level tensor and unit *)
+(** ** Object-level tensor and unit / ** 对象级张量和单位 *)
 
 Definition Cospan_tensor_obj (X Y : C) : C := X + Y.
 Definition Cospan_unit_obj : C := initial_obj.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * ** Cospan-level tensor of morphisms
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Given cospans [f : X ~> Y] (apex [Nf]) and [g : X' ~> Y'] (apex [Ng]),
+   the tensor cospan [f ⨂ g : X+X' ~> Y+Y'] has apex [Nf + Ng] and legs
+   obtained by [cover]-ing the legs of [f] and [g]. 
+
+   --------
+   * ** 态射的余锥张量
+
+   给定余锥  [f : X ~> Y] （顶点为 [Nf]）和 [g : X' ~> Y'] （顶点为 [Ng]），
+   张量余锥 [f ⨂ g : X+X' ~> Y+Y'] 的顶点为 [Nf + Ng]，其边由对 [f] 和 [g] 的边进行 [cover] 操作得到。
 *)
 Definition cospan_tensor
            {X Y X' Y' : C}
@@ -59,26 +162,51 @@ Definition cospan_tensor
                     (cover (cospan_in1 f) (cospan_in1 g))
                     (cover (cospan_in2 f) (cospan_in2 g)).
 
-(* * ** SCFA-witness data each 对象 [X] （已译） *)
+(* * ** SCFA-witness data on each object [X] / * ** 每个对象上的 SCFA 证据数据 [X] *)
 
-(** Multiplication [μ_X] : cospan [X + X] [X] apex [X],
- leg1 = codiagonal [id ▽ id], leg2 = 恒等. （已译） *)
+(*
+   * Multiplication [μ_X] : a cospan from [X + X] to [X] with apex [X],
+   leg1 = codiagonal [id ▽ id], leg2 = identity. 
+
+   --------
+   * 乘法 [μ_X] ：从 [X + X] 到 [X] 的余图，顶点为 [X]，
+   边1 = 对角融合 [id ▽ id]，边2 = 恒等映射。
+*)
 Definition cospan_scfa_mu (X : C) : CospanArrow (X + X) X :=
   Build_CospanArrow X (id[X] ▽ id[X]) id[X].
 
-(** Unit [η_X] : cospan [0] [X] apex [X],
- leg1 = [zero], leg2 = 恒等. （已译） *)
+(*
+   * Unit [η_X] : a cospan from [0] to [X] with apex [X],
+   leg1 = [zero], leg2 = identity. 
+
+   --------
+   * 单元 [η_X] ：从 [0] 到 [X] 的一个余跨，顶点为 [X]，
+   边1 = [zero]，边2 = 恒等映射。
+*)
 Definition cospan_scfa_eta (X : C) : CospanArrow Cospan_unit_obj X :=
   Build_CospanArrow X zero id[X].
 
-(** Comultiplication [δ_X] : cospan [X] [X + X] apex [X],
- leg1 = 恒等, leg2 = codiagonal.
+(*
+   * Comultiplication [δ_X] : a cospan from [X] to [X + X] with apex [X],
+   leg1 = identity, leg2 = codiagonal.
 
- Note: cospan X X+X, leg1 : X ~> apex leg2 : X+X ~> apex. （已译） *)
+   Note: as a cospan from X to X+X, leg1 : X ~> apex and leg2 : X+X ~> apex. 
+
+   --------
+   * 共乘  [δ_X]  ：一个从  [X]  到  [X + X]  的余跨度，其顶点为  [X] ，
+   leg1 = 恒等映射, leg2 = 共对角映射。
+
+   注意：作为一个从 X 到 X+X 的余跨度，leg1 : X ~> 顶点, leg2 : X+X ~> 顶点。
+*)
 Definition cospan_scfa_delta (X : C) : CospanArrow X (X + X) :=
   Build_CospanArrow X id[X] (id[X] ▽ id[X]).
 
-(** 本节：Counit [ε_X] : cospan [X] [0] apex [X], leg1 = id, leg2 = zero. （已译） *)
+(*
+   * Counit [ε_X] : a cospan from [X] to [0] with apex [X], leg1 = id, leg2 = zero. 
+
+   --------
+   * 余积  [ε_X] ：从  [X] 到  [0] 的余跨，顶点为  [X] ，腿1 = id，腿2 = zero。
+*)
 Definition cospan_scfa_epsilon (X : C) : CospanArrow X Cospan_unit_obj :=
   Build_CospanArrow X id[X] zero.
 
@@ -93,9 +221,17 @@ Arguments cospan_scfa_delta   {C _} X.
 Arguments cospan_scfa_epsilon {C _} X.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * ** Basic cospan_tensor properties
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   These are the equations that hold without needing the full bifunctor
+   machinery.  They are stated here as a typed surface for downstream
+   code, and as semantic anchors for the full V2c-applications
+   coherence proofs. 
+
+   --------
+   * ** 基本 cospan_tensor 属性
+
+   这些方程在不需要完整双函子机制的情况下成立。它们在这里作为下游代码的类型表面，以及作为完整 V2c 应用一致性证明的语义锚点。
 *)
 
 Section CospanTensorBasics.
@@ -103,8 +239,13 @@ Section CospanTensorBasics.
 Context {C : Category}.
 Context `{H_Coc : @Cocartesian C}.
 
-(** Tensor 恒等 cospans 恒等 cospan, witnessed the
- codiagonal 恒等 [inl ▽ inr ≈ id]. （已译） *)
+(*
+   * Tensor of identity cospans is the identity cospan, witnessed by the
+   codiagonal identity [inl ▽ inr ≈ id]. 
+
+   --------
+   * 恒等余跨度的张量是恒等余跨度，由余对角恒等 [inl ▽ inr ≈ id] 证明。
+*)
 Lemma cospan_tensor_id (X Y : C) :
   cospan_equiv (cospan_tensor (cospan_id X) (cospan_id Y))
                (cospan_id (X + Y)).
@@ -122,9 +263,16 @@ Proof.
 Defined.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * [cospan_tensor] respects [cospan_equiv] in both arguments.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   With the direct CospanCat, the apex iso is just a C-iso of coproducts,
+   built via [coprod_respects_iso] from the per-component isos. 
+
+   --------
+   * [cospan_tensor] 在两个论点中都尊重 [cospan_equiv]。
+
+   使用直接的 CospanCat，顶点同构只是一个余积的 C-同构，
+   通过 [coprod_respects_iso] 从各个组件的同构构建。
 *)
 Lemma cospan_tensor_respects
       {X Y X' Y' : C}
@@ -136,8 +284,7 @@ Proof.
   intros [phi [Hf1 Hf2]] [psi [Hg1 Hg2]].
   unfold cospan_tensor; simpl.
   exists (@coprod_respects_iso C H_Coc _ _ phi _ _ psi); simpl; split.
-  - (* cover (to phi) (to psi) ∘ cover (cospan_in1 f) (cospan_in1 g)
-       ≈ cover (cospan_in1 f') (cospan_in1 g') *)
+  - (* cover (to phi) (to psi) ∘ cover (cospan_in1 f) (cospan_in1 g) ≈ cover (cospan_in1 f') (cospan_in1 g') / cover (到 phi) (到 psi) ∘ cover (cospan_in1 f) (cospan_in1 g) ≈ cover (cospan_in1 f') (cospan_in1 g') *)
     rewrite cover_comp.
     rewrite Hf1, Hg1.
     reflexivity.
@@ -149,15 +296,65 @@ Defined.
 End CospanTensorBasics.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * ** A note on the remaining Cospan→Hypergraph coherence
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The general respect lemma [cospan_tensor f f' g g' : cospan_equiv f f'
+   -> cospan_equiv g g' -> cospan_equiv (cospan_tensor f g) (cospan_tensor f' g')]
+   requires constructing an iso of cospan apexes [apex f + apex g ≅ apex f' + apex g']
+   in the cospan setoid (which lives in [C^op]).
+
+   Two natural strategies were tried:
+
+   (a) Use [coprod_respects_iso] from [Cocartesian.v] to build the
+   coproduct iso in [C], then transport via [Isomorphism_Opposite]
+   to [C^op].  This requires converting the [C^op]-isos phi and psi
+   back into [C]-isos by swapping [to]/[from], but the swap creates
+   equational obligations of the form [from ∘ to ≈ id] where the
+   [id] is annotated with [C^op] vs [C], blocking type-equality
+   even though the morphism equations agree.
+
+   (b) Build the iso directly in [C^op] by manually filling
+   [Build_Isomorphism] with [cover (to phi) (to psi)] etc.  This
+   requires [Cocartesian (C^op)] (for the [cover] notation to
+   resolve), which we do not assume.
+
+   Both routes hit category-resolution friction that is mechanical but
+   non-trivial to discharge cleanly.  The most natural way to close this
+   is to first prove [@Cocartesian C -> @Cartesian (C^op)] (the
+   library's [Notation 'Cocartesian' C := (@Cartesian (C^op))] does the
+   reverse), giving us coproduct structure usable in either direction.
+   That conversion is straightforward but is a separate piece of
+   infrastructure.
+
+   For V2b we deliver the [cospan_tensor_id] case (above), the SCFA
+   data definitions, and a sharpened catalog of the remaining
+   coherence diagrams.  
+
+   --------
+   * ** 关于剩余的 Cospan→Hypergraph 相干性的说明
+
+   一般的尊重引理 [cospan_tensor f f' g g' : cospan_equiv f f'
+   -> cospan_equiv g g' -> cospan_equiv (cospan_tensor f g) (cospan_tensor f' g')]
+   需要在 cospan 集合（位于 [C^op] 中）中构造一个 cospan 顶点的同构 [apex f + apex g ≅ apex f' + apex g']。
+
+   尝试了两种自然策略：(a) 使用  [coprod_respects_iso]  从  [Cocartesian.v]  构建 [C] 中的余积同构，然后通过 [Isomorphism_Opposite]  转运到 [C^op] 。这需要通过交换 [to] / [from] 将 [C^op] 同构 phi 和 psi 转回 [C] 同构，但这种交换会产生形如 [from ∘ to ≈ id] 的方程义务，其中 [id] 被标注为 [C^op] 对比 [C]，即使态射方程一致，也会阻塞类型等式。
+
+   (b) 通过手动填充 [Build_Isomorphism] 与 [cover (to phi) (to psi)] 等等，直接在 [C^op] 中构建同构。这需要 [Cocartesian (C^op)]（为了 [cover] 表记解析），而我们并未假设该条件。两条路径都遇到了类别解析的摩擦，这种摩擦是机械性的，但要干净地解决并非易事。最自然的方式是首先证明 [@Cocartesian C -> @Cartesian (C^op)]（库中的 [Notation 'Cocartesian' C := (@Cartesian (C^op))] 做的是相反的操作），这为我们提供了可在任一方向使用的余积结构。这个转换很直接，但它是一个独立的基础设施部分。
+
+   对于 V2b，我们提供了 [cospan_tensor_id] 情况（如上所述）、SCFA 数据定义，以及一份经过精炼的剩余相容性图目录。
 *)
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * ** SCFA monoid/comonoid laws on the cocartesian witnesses
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   These don't require the full Monoidal-on-cospans structure; they
+   are equations between specific cospans, expressible directly via
+   the cocartesian structure of [C]. 
+
+   --------
+   * ** 在余笛卡尔见证上的 SCFA 单体/余单体定律
+
+   这些不需要完整的余跨结构上的幺半群结构；它们是特定余跨之间的方程，可以直接通过 [C] 的余笛卡尔结构来表达。
 *)
 
 Section CospanSCFALaws.
@@ -168,23 +365,101 @@ Context `{H_Ini : @Initial C}.
 Context (HP : HasPushouts C).
 
 (*
-   本节说明幺半结构、拉回/推出、幺半群相关定义、性质与动机。
+   * ** μ-unit laws on the witness cospans
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   These hold as cospan-equiv equations between
+   [cospan_compose (cospan_scfa_mu X) (cospan_tensor (cospan_scfa_eta X) (cospan_id X))]
+   and (the canonical "unit_left" cospan).  The proof is a pushout
+   calculation in [C].
+
+   The full SCFA proof requires having the [Monoidal (CospanCat C)]
+   structure available so we can state the laws against [unit_left],
+   [unit_right], [tensor_assoc] etc. on cospans — that infrastructure
+   is the next layer (Cospan_Monoidal etc., deferred to V2c since it
+   requires building all the unitor/associator cospans and proving
+   their naturality through pushouts).
+
+   What V2b CAN deliver: the [cospan_scfa_*] witnesses respect
+   [cospan_equiv] under composition and tensor, and small structural
+   equations between them — which is the building-block layer.
+
+   The witness equation [μ ∘ δ ≈ id] (specialness) requires showing
+   that pushing out the codiagonal against itself collapses to the
+   identity cospan.  This is structurally a pushout calculation, but
+   requires the [cospan_compose_apex] / [cospan_compose_in1] /
+   [cospan_compose_in2] accessors and a careful UMP argument. 
+
+   --------
+   * ** μ-单位定律关于见证余跨度
+
+   它们以余跨度等价方程的形式成立于
+   [cospan_compose (cospan_scfa_mu X) (cospan_tensor (cospan_scfa_eta X) (cospan_id X))] 
+   和（规范的“unit_left”余跨度）之间。 证明是在  [C]  中的推出计算。
+
+   完整的 SCFA 证明需要拥有  [Monoidal (CospanCat C)] 
+   结构，以便我们可以针对 [unit_left] 、 [unit_right] 、 [tensor_assoc] 等余跨度陈述定律——该基础设施是下一层（Cospan_Monoidal 等，推迟到 V2c，因为它需要构建所有单元/结合子余跨度并通过推出证明其自然性）。
+
+   V2b 可以实现的是：  [cospan_scfa_*]  见证在组合和张量下遵循  [cospan_equiv] ，以及它们之间的小结构方程——这就是构建块层。见证方程 [μ ∘ δ ≈ id]（特殊性）要求展示将余对角射推出来对自身时，会塌缩为恒等余对角射。这在结构上是一个推出计算，但需要使用 [cospan_compose_apex] / [cospan_compose_in1] / [cospan_compose_in2] 访问器以及仔细的 UMP 论证。
 *)
 
 End CospanSCFALaws.
 
 (*
-   本节说明幺半结构、函子、拉回/推出相关定义、性质与动机。
+   * ** Status note
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   V2b closes the trivial functoriality lemma
+   [cospan_tensor_id] and [cospan_tensor_respects] (above), which
+   are the [Proper]-instance ingredients for [cospan_tensor].
+
+   The remaining structural obligations (full [Monoidal] instance,
+   associator/unitors/braid as cospans + their naturality, SCFA
+   axioms as cospans, [Hypergraph] tensor/unit coherence) reduce to
+   a large body of pushout-cospan-equiv diagrams in [C].  Each is
+   structurally a [pushout_med_eq]-and-[merge_inl_inr]-style
+   calculation, but the aggregate (5 distinct instances × roughly 100
+   lines each = ~500 lines of mechanical pushout reasoning) is too
+   large for a single PR.
+
+   These remaining obligations are sharpened to V2c-applications: a
+   downstream consumer instantiating [Hypergraph (CospanCat Sets)] or
+   [Hypergraph (CospanCat FinSet)] for a CONCRETE category can
+   discharge them directly using the category's specific finite-
+   colimit structure, which is typically much more tractable than the
+   fully-abstract pushout reasoning required at the [HasPushouts]
+   level.
+
+   The V2b-V2c boundary is therefore drawn at: *abstract* coherence
+   proofs (the rest of the cospan-as-hypergraph derivation) are deferred,
+   but *typed data* for downstream concrete-category instantiation is
+   fully provided.  
+
+   --------
+   * ** 状态说明
+
+   V2b 解决了琐碎函子引理
+   [cospan_tensor_id] 和 [cospan_tensor_respects]（如上），它们是 [Proper] 对 [cospan_tensor] 的实例组成部分。
+
+   剩余的结构性义务（完整的 [Monoidal] 实例、
+   作为余合并的结合子/单位子/编织及其自然性，作为余合并的 SCFA 公理，[Hypergraph] 张量/单位一致性）化简为
+   [C] 中大量的推出-余合并-等价图表。每个在结构上都是 [pushout_med_eq] 与 [merge_inl_inr] 风格的计算，但总体（5 个不同实例 × 每个约 100 行 = 约 500 行机械推导）对于单个 PR 来说过于庞大。这些剩余的义务被具体化为 V2c 应用：下游的消费者在为一个具体范畴实例化 [Hypergraph (CospanCat Sets)] 或 [Hypergraph (CospanCat FinSet)] 时，可以直接使用该范畴特定的有限余极限结构来履行这些义务，这通常比在 [HasPushouts] 级别上所需的完全抽象的推出推理要容易得多。
+
+   因此，V2b-V2c 的边界被划定为：*抽象* 的相干性证明（余三元组作为超图的推导其余部分）被推迟，但下游具体范畴实例化所需的*类型化数据*已经完全提供。
 *)
 
 (*
-   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+   * ** Morphism-as-cospan: lifting C-morphisms into [CospanCat C]
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Any morphism [f : X ~> Y] in [C] induces a cospan from [X] to [Y]:
+   apex = [Y], leg1 = [f], leg2 = [id].  This gives a functor
+   [C → CospanCat C] (the "left embedding") which we use throughout
+   the Monoidal structure: the unitor and associator cospans are the
+   lifts of the corresponding C-coproduct isos. 
+
+   --------
+   * ** 拓扑同态作为联合跨度：将 C-同态提升到 [CospanCat C]
+
+   任何 [C] 中的同态 [f : X ~> Y] 都会引出一个从 [X] 到 [Y] 的联合跨度：
+   顶点 = [Y]，边1 = [f]，边2 = [id]。 这给出了一个函子 [C → CospanCat C]（“左嵌入”），我们在整个单体结构中使用它：单位元和结合子联合跨度是相应 C-余积同构的提升。
 *)
 
 Section MorphismAsCospan.
@@ -194,7 +469,7 @@ Context {C : Category}.
 Definition mor_as_cospan {X Y : C} (f : X ~> Y) : CospanArrow X Y :=
   Build_CospanArrow Y f id[Y].
 
-(** Identity in C lifts to the identity cospan. *)
+(** Identity in C lifts to the identity cospan. / 在 C 中的恒等映射提升为恒等余跨。 *)
 Lemma mor_as_cospan_id (X : C) :
   cospan_equiv (mor_as_cospan id[X]) (cospan_id X).
 Proof.
@@ -203,14 +478,23 @@ Proof.
 Defined.
 
 (*
-   本节说明同构相关定义、性质与动机。
+ Lift a C-iso [phi : X ≅ Y] into [CospanCat C] by taking the cospan of
+ its forward map [to phi].  This is the underlying cospan of the induced
+ CospanCat-iso; the inverse cospan (the lift of [from phi]) is built
+ symmetrically when the full isomorphism is needed. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 通过取其前向映射 [to phi] 的余跨度，将 C-iso [phi : X ≅ Y] 提升到 [CospanCat C]。这是所诱导的 CospanCat-iso 的基础余跨度；当需要完整的同构时，逆余跨度（[from phi] 的提升）以对称方式构建。
 *)
 Definition mor_iso_as_cospan_iso {X Y : C} (phi : X ≅ Y) :
   CospanArrow X Y := mor_as_cospan (to phi).
 
-(** [mor_as_cospan] respects [≈] on the C-morphism. *)
+(*
+   * [mor_as_cospan] respects [≈] on the C-morphism. 
+
+   --------
+   * [mor_as_cospan] 在 C-态射上尊重 [≈]。
+*)
 Lemma mor_as_cospan_proper {X Y : C} (f g : X ~> Y) :
   f ≈ g -> cospan_equiv (mor_as_cospan f) (mor_as_cospan g).
 Proof.
@@ -229,25 +513,54 @@ Next Obligation.
   apply mor_as_cospan_proper, Hfg.
 Defined.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** Unitor cospans on [CospanCat C]
+
+   These are the cospan-lifts of the corresponding coproduct isos in C. 
+
+   --------
+   * ** 在 [CospanCat C] 上的单元余跨 
+
+   这些是 C 中相应余积同构的余跨提升。
+*)
 
 Context `{H_Coc : @Cocartesian C}.
 Context `{H_Ini : @Initial C}.
 
-(** Left unitor cospan:  cospan from [0 + X] to [X]. *)
+(*
+   * Left unitor cospan:  cospan from [0 + X] to [X]. 
+
+   --------
+   * 左单位器余交叉: 从  [0 + X] 到  [X] 的余交叉。
+*)
 Definition cospan_unit_left (X : C) : CospanArrow (0 + X)%object X :=
   mor_as_cospan (to (@coprod_zero_l C H_Coc H_Ini X)).
 
-(** Right unitor cospan:  cospan from [X + 0] to [X]. *)
+(*
+   * Right unitor cospan:  cospan from [X + 0] to [X]. 
+
+   --------
+   * 右单位元余跨度：从  [X + 0] 到  [X] 的余跨度。
+*)
 Definition cospan_unit_right (X : C) : CospanArrow (X + 0)%object X :=
   mor_as_cospan (to (@coprod_zero_r C H_Coc H_Ini X)).
 
-(** Associator cospan:  cospan from [(X + Y) + Z] to [X + (Y + Z)]. *)
+(*
+   * Associator cospan:  cospan from [(X + Y) + Z] to [X + (Y + Z)]. 
+
+   --------
+   * 联合体副跨: 从 [(X + Y) + Z] 到 [X + (Y + Z)] 的副跨。
+*)
 Definition cospan_tensor_assoc (X Y Z : C)
   : CospanArrow ((X + Y) + Z)%object (X + (Y + Z))%object :=
   mor_as_cospan (to (@coprod_assoc C H_Coc X Y Z)).
 
-(** Braid cospan:  cospan from [X + Y] to [Y + X]. *)
+(*
+   * Braid cospan:  cospan from [X + Y] to [Y + X]. 
+
+   --------
+   * 编织余跨度：从 [X + Y] 到 [Y + X] 的余跨度。
+*)
 Definition cospan_braid (X Y : C) : CospanArrow (X + Y)%object (Y + X)%object :=
   mor_as_cospan (to (@coprod_comm C H_Coc X Y)).
 
@@ -260,9 +573,16 @@ Arguments cospan_tensor_assoc {C _} X Y Z.
 Arguments cospan_braid {C _} X Y.
 
 (*
-   本节说明函子、拉回/推出相关定义、性质与动机。
+   * ** Pushout-of-id-with-g collapse
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The pushout of [(id : Y → Y, g : Y → Z)] is canonically isomorphic
+   to [Z].  This is the key calculation behind the morphism-as-cospan
+   functoriality. 
+
+   --------
+   * ** id-with-g 的推出塌缩
+
+   [(id : Y → Y, g : Y → Z)] 的推出在典范意义上同构于 [Z]。这是支撑形态作为合并函子性背后的关键计算。
 *)
 
 Section PushoutIdCollapse.
@@ -270,7 +590,12 @@ Section PushoutIdCollapse.
 Context {C : Category}.
 Context (HP : HasPushouts C).
 
-(** Pushout of [(id_Y, g)] collapses to Z (the codomain of g). *)
+(*
+   * Pushout of [(id_Y, g)] collapses to Z (the codomain of g). 
+
+   --------
+   * [(id_Y, g)] 的推出归约为 Z（g 的余域）。
+*)
 Lemma pushout_id_left_apex {Y Z : C} (g : Y ~> Z) :
   pushout_apex (pushout id[Y] g) ≅ Z.
 Proof.
@@ -284,7 +609,7 @@ Proof.
             iso_to_from := _;
             iso_from_to := _ |}.
   - exact Hm2.
-  - (* pushout_in2 P ∘ m ≈ id at apex P, by uniqueness on identity cocone. *)
+  - (* pushout_in2 P ∘ m ≈ id at apex P, by uniqueness on identity cocone. / 通过对单位余锥的唯一性，推挤图 pushout_in2 P ∘ m 在顶点 P 处近似于恒等映射。 *)
     transitivity (pushout_med P (pushout_commutes P)).
     + symmetry.
       apply pushout_med_unique.
@@ -295,7 +620,12 @@ Proof.
     + apply pushout_med_unique; cat.
 Defined.
 
-(** Pushout of [(g, id_Y)] collapses to Z (codomain of g). *)
+(*
+   * Pushout of [(g, id_Y)] collapses to Z (codomain of g). 
+
+   --------
+   * [(g, id_Y)] 的推出塌缩为 Z（g 的陪域）。
+*)
 Lemma pushout_id_right_apex {Y Z : C} (g : Y ~> Z) :
   pushout_apex (pushout g id[Y]) ≅ Z.
 Proof.
@@ -321,10 +651,17 @@ Defined.
 
 End PushoutIdCollapse.
 
-(* * ** [mor_as_cospan] functorial
+(*
+   * ** [mor_as_cospan] is functorial
 
- Composition two 态射-as-cospans agrees 态射-as-
- cospan 复合. Witnessed via pushout-of-id collapse. （已译） *)
+   Composition of two morphism-as-cospans agrees with the morphism-as-
+   cospan of the composite.  Witnessed via the pushout-of-id collapse. 
+
+   --------
+   * ** [mor_as_cospan] 是函子性的
+
+   两个作为余跨的态射的复合与复合的作为余跨的态射一致。通过恒等映射塌缩的并推证实。
+*)
 
 Section MorAsCospanFunctorial.
 
@@ -332,9 +669,18 @@ Context {C : Category}.
 Context (HP : HasPushouts C).
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * [mor_as_cospan] respects composition.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The composite cospan's apex is the pushout of [(id, g)], which by
+   [pushout_id_left_apex] is isomorphic to [Z] (the codomain of [g]).
+   Under that iso, the composite legs agree with [g ∘ f] and [id_Z]
+   respectively. 
+
+   --------
+   *  [mor_as_cospan] 尊重组合。
+
+   复合余跨度的顶点是 [(id, g)] 的推断，通过 [pushout_id_left_apex]，它同构于 [Z]（ZW4WZZ 的陪域）。
+   在该同构下，复合边分别与 [g ∘ f] 和 [id_Z] 一致。
 *)
 Lemma mor_as_cospan_compose {X Y Z : C} (g : Y ~> Z) (f : X ~> Y) :
   cospan_equiv
@@ -343,18 +689,28 @@ Lemma mor_as_cospan_compose {X Y Z : C} (g : Y ~> Z) (f : X ~> Y) :
 Proof.
   unfold cospan_compose, mor_as_cospan; simpl.
   pose (P := pushout (id[Y] : Y ~{C}~> Y) g).
-  (* Apex of LHS is pushout_apex P; apex of RHS is Z.
-     pushout_id_left_apex gives the iso pushout_apex P ≅ Z. *)
+  (*
+ Apex of LHS is pushout_apex P; apex of RHS is Z.
+ pushout_id_left_apex gives the iso pushout_apex P ≅ Z. 
+
+ --------
+ 左侧的顶点是 pushout_apex P；右侧的顶点是 Z。pushout_id_left_apex 给出了同构 pushout_apex P ≅ Z。
+*)
   exists (pushout_id_left_apex HP g); simpl.
   split.
-  - (* to (collapse) ∘ (pushout_in1 P ∘ f) ≈ g ∘ f *)
+  - (* to (collapse) ∘ (pushout_in1 P ∘ f) ≈ g ∘ f / to (collapse) ∘ (pushout_in1 P ∘ f) ≈ g ∘ f *)
     rewrite comp_assoc.
     apply compose_respects; [|reflexivity].
-    (* to (collapse) ∘ 推出_in1 P ≈ g; 定义 推出_id_left_apex,
- [to] is [pushout_med P (Hcomm: g ∘ id ≈ id ∘ g)], its first
- leg equation is [m ∘ pushout_in1 P ≈ g].（已译） *)
+    (*
+ to (collapse) ∘ pushout_in1 P ≈ g; by definition of pushout_id_left_apex,
+ [to] is the [pushout_med P (Hcomm: g ∘ id ≈ id ∘ g)], and its first
+ leg equation is [m ∘ pushout_in1 P ≈ g]. 
+
+ --------
+ 到 (collapse) ∘ pushout_in1 P ≈ g；根据 pushout_id_left_apex 的定义，[to] 是 [pushout_med P (Hcomm: g ∘ id ≈ id ∘ g)]，并且它的第一条支腿方程是 [m ∘ pushout_in1 P ≈ g]。
+*)
     apply pushout_med_in1.
-  - (* to (collapse) ∘ (pushout_in2 P ∘ id) ≈ id *)
+  - (* to (collapse) ∘ (pushout_in2 P ∘ id) ≈ id / 到 (collapse) ∘ (pushout_in2 P ∘ id) ≈ id *)
     rewrite (id_right (pushout_in2 _)).
     apply pushout_med_in2.
 Defined.
@@ -362,9 +718,16 @@ Defined.
 End MorAsCospanFunctorial.
 
 (*
-   本节说明函子、拉回/推出相关定义、性质与动机。
+   * ** Pushout-coproduct compatibility: the bifunctor key lemma
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The pushout of two [cover]s is canonically isomorphic to the coproduct
+   of the per-component pushouts.  This is the key compatibility behind
+   [cospan_tensor]'s functoriality. 
+
+   --------
+   * ** 推出-余积的兼容性：双函子关键引理
+
+   两个 [cover] 的推出在典范意义上同构于各组件推出的余积。这是 [cospan_tensor] 函子性背后的关键兼容性。
 *)
 
 Section PushoutCoproductCompat.
@@ -374,9 +737,14 @@ Context `{H_Coc : @Cocartesian C}.
 Context (HP : HasPushouts C).
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+ The "split" cocone over [(cover f f', cover g g')]: the two legs
+ [cover (pushout_in1 P) (pushout_in1 P')] and
+ [cover (pushout_in2 P) (pushout_in2 P')] into the coproduct of the
+ per-component pushout apexes agree, so they mediate the forward map
+ from the pushout-of-covers apex to that coproduct. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [(cover f f', cover g g')] 上的“分裂”余圆锥：两条支路 [cover (pushout_in1 P) (pushout_in1 P')] 和 [cover (pushout_in2 P) (pushout_in2 P')] 到各分量推出顶点的余积处是一致的，因此它们介导了从覆盖顶点的推出到该余积的前向映射。
 *)
 Lemma pushout_cover_split_cocone
   {X X' Y Y' Z Z' : C}
@@ -394,7 +762,12 @@ Proof.
   reflexivity.
 Qed.
 
-(** Forward iso direction: pushout of covers ⟶ coproduct of pushouts. *)
+(*
+   * Forward iso direction: pushout of covers ⟶ coproduct of pushouts. 
+
+   --------
+   * 正向iso方向：盖子的推出 ⟶ 推出的余积。
+*)
 Definition pushout_cover_split
   {X X' Y Y' Z Z' : C}
   (f : X ~> Y) (g : X ~> Z)
@@ -405,8 +778,13 @@ Definition pushout_cover_split
   : pushout_apex Pcov ~> (pushout_apex P + pushout_apex P')%object
   := pushout_med Pcov (pushout_cover_split_cocone f g f' g' P P').
 
-(** Sub-cocone: pushout_in1 Pcov composed [inl] leg 进入
- pushout-of-covers apex via X-side coproduct. （已译） *)
+(*
+   * Sub-cocone: pushout_in1 Pcov composed with [inl] is a leg into the
+   pushout-of-covers apex via the X-side of the coproduct. 
+
+   --------
+   * 子余锥：pushout_in1 Pcov 与 [inl] 组合，是通过余积的 X 边进入覆盖的 pushout 顶点的一条边。
+*)
 Lemma pushout_cover_left_cocone
   {X X' Y Y' Z Z' : C}
   (f : X ~> Y) (g : X ~> Z)
@@ -443,9 +821,16 @@ Proof.
   reflexivity.
 Qed.
 
-(** Reverse iso direction: coproduct of pushouts ⟶ pushout of covers.
-    Built via two applications of [pushout_med] (one per component),
-    combined by [merge]. *)
+(*
+   * Reverse iso direction: coproduct of pushouts ⟶ pushout of covers.
+   Built via two applications of [pushout_med] (one per component),
+   combined by [merge]. 
+
+   --------
+   * 反向等距方向：推出积的余积 ⟶ 覆盖的推出积。
+   通过两次应用 [pushout_med]（每个分量一次）构建，
+   由 [merge] 组合。
+*)
 Definition pushout_cover_combine
   {X X' Y Y' Z Z' : C}
   (f : X ~> Y) (g : X ~> Z)
@@ -457,7 +842,17 @@ Definition pushout_cover_combine
   merge (pushout_med P (pushout_cover_left_cocone f g f' g' Pcov))
         (pushout_med P' (pushout_cover_right_cocone f g f' g' Pcov)).
 
-(* 相关说明。 （已译） *)
+(*
+   * ** Pushout-coproduct compatibility iso
+
+   The pushout of covers IS the coproduct of pushouts.  Witnessed by the
+   split/combine maps above being mutual inverses. 
+
+   --------
+   * ** 推出-余积兼容同构
+
+   推出覆盖是推出的余积。由上面的拆分/组合映射作为彼此的逆映射所证明。
+*)
 
 Lemma pushout_cover_split_combine
   {X X' Y Y' Z Z' : C}
@@ -471,24 +866,42 @@ Lemma pushout_cover_split_combine
   ≈ id.
 Proof.
   unfold pushout_cover_combine, pushout_cover_split.
-  (* Use joint-epi via [fork_inv]: 态射 余积 is determined
- its restrictions inl/inr. The plan:
- 1. transitive through 推出_med Pcov (推出_commutes Pcov)
- 2. apply 推出_med_唯一
- 3. each 推出-in, use cover_inl / cover_inr split.（已译） *)
+  (*
+ Use joint-epi via [fork_inv]: a morphism on a coproduct is determined
+ by its restrictions to inl/inr.  The plan:
+ 1. transitive through pushout_med Pcov (pushout_commutes Pcov)
+ 2. apply pushout_med_unique
+ 3. for each pushout-in, use cover_inl / cover_inr to split. 
+
+ --------
+ 通过 [fork_inv] 使用 joint-epi：余积上的态射由其对 inl/inr 的限制决定。计划：
+ 1. 通过 pushout_med Pcov （pushout_commutes Pcov）进行传递
+ 2. 应用 pushout_med_unique
+ 3. 对于每个余积输入，使用 cover_inl / cover_inr 进行拆分。
+*)
   transitivity (pushout_med Pcov (pushout_commutes Pcov)).
   - symmetry.
     apply pushout_med_unique.
-    + (* Goal: (m1 ▽ m2) ∘ pushout_med Pcov (...) ∘ pushout_in1 Pcov ≈ pushout_in1 Pcov. *)
+    + (* Goal: (m1 ▽ m2) ∘ pushout_med Pcov (...) ∘ pushout_in1 Pcov ≈ pushout_in1 Pcov. / 目标: (m1 ▽ m2) ∘ pushout_med Pcov (...) ∘ pushout_in1 Pcov ≈ pushout_in1 Pcov. *)
       rewrite <- comp_assoc, (pushout_med_in1 Pcov).
       pose proof (pushout_med_in1 P (pushout_cover_left_cocone f g f' g' Pcov)) as Hl.
       pose proof (pushout_med_in1 P' (pushout_cover_right_cocone f g f' g' Pcov)) as Hr.
-      (* Goal: (m1 ▽ m2) ∘ cover (in1 P) (in1 P') ≈ pushout_in1 Pcov.
-         Unfold cover, distribute via merge_comp:
-         = (m1 ∘ in1 P) ▽ (m2 ∘ in1 P')
-         By Hl, Hr: = (in1 Pcov ∘ inl) ▽ (in1 Pcov ∘ inr)
-                   = in1 Pcov ∘ (inl ▽ inr)
-                   = in1 Pcov ∘ id = in1 Pcov. *)
+      (*
+ Goal: (m1 ▽ m2) ∘ cover (in1 P) (in1 P') ≈ pushout_in1 Pcov.
+ Unfold cover, distribute via merge_comp:
+ = (m1 ∘ in1 P) ▽ (m2 ∘ in1 P')
+ By Hl, Hr: = (in1 Pcov ∘ inl) ▽ (in1 Pcov ∘ inr)
+ = in1 Pcov ∘ (inl ▽ inr)
+ = in1 Pcov ∘ id = in1 Pcov. 
+
+ --------
+ 目标: (m1 ▽ m2) ∘ cover (in1 P) (in1 P') ≈ pushout_in1 Pcov。
+ 展开 cover，通过 merge_comp 分配:
+ = (m1 ∘ in1 P) ▽ (m2 ∘ in1 P')
+ 根据 Hl, Hr: = (in1 Pcov ∘ inl) ▽ (in1 Pcov ∘ inr)
+ = in1 Pcov ∘ (inl ▽ inr)
+ = in1 Pcov ∘ id = in1 Pcov。
+*)
       unfold cover.
       rewrite <- !merge_comp.
       rewrite (comp_assoc _ inl), (comp_assoc _ inr).
@@ -527,11 +940,7 @@ Proof.
   rewrite <- merge_comp.
   apply (snd (merge_inv _ _ _ _)).
   split.
-  - (*
-   本节说明拉回/推出相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+  - (* Goal: split ∘ m1 ≈ inl Cocone for P that gives `inl` as mediator: legs (inl ∘ pushout_in1 P, inl ∘ pushout_in2 P). But that's just the inl-of-identity cocone. Use pushout_med_unique to derive both [split ∘ m1] and [inl] equal the same cocone-mediator. / 目标：拆分 ∘ m1 ≈ inl 为 P 提供 Cocone，使 `inl` 作为中介：legs (inl ∘ pushout_in1 P, inl ∘ pushout_in2 P)。 但那只是恒等 cocone 的 inl。 使用 pushout_med_unique 推导出 [split ∘ m1] 和 [inl] 都等于相同的 cocone-中介。 *)
     assert (HC : (@inl C _ (pushout_apex P) (pushout_apex P')) ∘ pushout_in1 P ∘ f
                  ≈ (@inl C _ (pushout_apex P) (pushout_apex P')) ∘ pushout_in2 P ∘ g).
     { rewrite <- !comp_assoc.
@@ -579,9 +988,22 @@ Qed.
 End PushoutCoproductCompat.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** Bifunctoriality: [cospan_tensor (g ∘ f) (g' ∘ f')
+   ≈ cospan_tensor g g' ∘ cospan_tensor f f']
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   With the direct CospanCat, the iso of cospan apexes is built directly
+   from [pushout_cover_combine] (going from coproduct-of-pushouts
+   to pushout-of-covers).  The leg conditions reduce to
+   pushout-mediator-of-cover calculations. 
+
+   --------
+   * ** 双功能性：[cospan_tensor （g ∘ f） （g' ∘ f'）
+   ≈ cospan_tensor g g' ∘ cospan_tensor f f']
+
+   通过直接 CospanCat，可以直接构建 cospan 顶点的 iso
+   来自[pushout_cover_combine]（从推送的共产物出发）
+   推开掩护）。腿部状况简化为
+   推出-覆盖中介计算。
 *)
 
 Section CospanTensorBifunctoriality.
@@ -590,7 +1012,7 @@ Context {C : Category}.
 Context `{H_Coc : @Cocartesian C}.
 Context (HP : HasPushouts C).
 
-(** Helper: [merge] distributes through [cover]. *)
+(** Helper: [merge] distributes through [cover]. / 帮助者: [merge] 通过 [cover] 分发。 *)
 Lemma merge_cover_compose {a b c d e : C}
       (m1 : c ~> e) (m2 : d ~> e) (h1 : a ~> c) (h2 : b ~> d) :
   (m1 ▽ m2) ∘ cover h1 h2 ≈ (m1 ∘ h1) ▽ (m2 ∘ h2).
@@ -616,16 +1038,20 @@ Proof.
   pose (P' := pushout (cospan_in2 f') (cospan_in1 g')).
   pose (Pcov := pushout (cover (cospan_in2 f) (cospan_in2 f'))
                         (cover (cospan_in1 g) (cospan_in1 g'))).
-  (* Iso of apexes: pushout_apex P + pushout_apex P' ≅ pushout_apex Pcov,
-     given by pushout_cover_combine / pushout_cover_split. *)
+  (*
+ Iso of apexes: pushout_apex P + pushout_apex P' ≅ pushout_apex Pcov,
+ given by pushout_cover_combine / pushout_cover_split. 
+
+ --------
+ 顶点的同构：pushout_apex P + pushout_apex P' ≅ pushout_apex Pcov， 由 pushout_cover_combine / pushout_cover_split 给出。
+*)
   unshelve refine (existT _ _ _).
   - refine {| to   := pushout_cover_combine _ _ _ _ P P' Pcov;
               from := pushout_cover_split   _ _ _ _ P P' Pcov;
               iso_to_from := pushout_cover_split_combine _ _ _ _ P P' Pcov;
               iso_from_to := pushout_cover_combine_split _ _ _ _ P P' Pcov |}.
   - simpl; split; fold P P' Pcov.
-    + (* pushout_cover_combine ∘ cover (in1 P ∘ in1 f) (in1 P' ∘ in1 f')
-         ≈ in1 Pcov ∘ cover (in1 f) (in1 f') *)
+    + (* pushout_cover_combine ∘ cover (in1 P ∘ in1 f) (in1 P' ∘ in1 f') ≈ in1 Pcov ∘ cover (in1 f) (in1 f') / pushout_cover_combine ∘ cover (in1 P ∘ in1 f) (in1 P' ∘ in1 f') ≈ in1 Pcov ∘ cover (in1 f) (in1 f') *)
       unfold pushout_cover_combine.
       rewrite merge_cover_compose.
       pose proof (pushout_med_in1 P
@@ -634,14 +1060,18 @@ Proof.
                     (pushout_cover_right_cocone _ _ _ _ Pcov)) as Hr.
       rewrite !comp_assoc.
       rewrite Hl, Hr.
-      (* Goal: (in1 Pcov ∘ inl) ∘ in1 f ▽ (in1 Pcov ∘ inr) ∘ in1 f'
-              ≈ in1 Pcov ∘ cover (in1 f) (in1 f') *)
+      (*
+ Goal: (in1 Pcov ∘ inl) ∘ in1 f ▽ (in1 Pcov ∘ inr) ∘ in1 f'
+ ≈ in1 Pcov ∘ cover (in1 f) (in1 f') 
+
+ --------
+ 目标: (in1 Pcov ∘ inl) ∘ in1 f ▽ (in1 Pcov ∘ inr) ∘ in1 f' ≈ in1 Pcov ∘ cover (in1 f) (in1 f')
+*)
       rewrite <- (comp_assoc (pushout_in1 Pcov) inl).
       rewrite <- (comp_assoc (pushout_in1 Pcov) inr).
       rewrite merge_comp.
       reflexivity.
-    + (* pushout_cover_combine ∘ cover (in2 P ∘ in2 g) (in2 P' ∘ in2 g')
-         ≈ in2 Pcov ∘ cover (in2 g) (in2 g') *)
+    + (* pushout_cover_combine ∘ cover (in2 P ∘ in2 g) (in2 P' ∘ in2 g') ≈ in2 Pcov ∘ cover (in2 g) (in2 g') / pushout_cover_combine ∘ cover (in2 P ∘ in2 g) (in2 P' ∘ in2 g') ≈ in2 Pcov ∘ cover (in2 g) (in2 g') *)
       unfold pushout_cover_combine.
       rewrite merge_cover_compose.
       pose proof (pushout_med_in2 P
@@ -659,9 +1089,18 @@ Defined.
 End CospanTensorBifunctoriality.
 
 (*
-   本节说明函子相关定义、性质与动机。
+   * ** Cospan_Bifunctor: [cospan_tensor] as a bifunctor on [CospanCat C]
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Builds the [Functor (CospanCat C ∏ CospanCat C) (CospanCat C)] from
+   the per-component data: object mapping is [Cospan_tensor_obj],
+   morphism mapping is [cospan_tensor], with [fmap_id] and [fmap_comp]
+   discharged by [cospan_tensor_id] and [cospan_tensor_compose_compat]. 
+
+   --------
+   * ** Cospan_Bifunctor：将 [cospan_tensor] 作为 [CospanCat C] 上的双函子
+
+   从每个组件的数据构建 [Functor (CospanCat C ∏ CospanCat C) (CospanCat C)]：对象映射是 [Cospan_tensor_obj]，
+   态射映射是 [cospan_tensor]，且 [fmap_id] 和 [fmap_comp] 由 [cospan_tensor_id] 和 [cospan_tensor_compose_compat] 处理。
 *)
 
 Section CospanBifunctor.
@@ -680,23 +1119,46 @@ Next Obligation.
   apply cospan_tensor_respects; assumption.
 Defined.
 Next Obligation.
-  (* fmap id ≈ id  i.e.  cospan_tensor (cospan_id x) (cospan_id y) ≈ cospan_id (x + y) *)
+  (*
+ fmap id ≈ id  i.e.  cospan_tensor (cospan_id x) (cospan_id y) ≈ cospan_id (x + y) 
+
+ --------
+ fmap id ≈ id 即 cospan_tensor (cospan_id x) (cospan_id y) ≈ cospan_id (x + y)
+*)
   apply cospan_tensor_id.
 Defined.
 Next Obligation.
-  (* fmap (f ∘ g) ≈ fmap f ∘ fmap g
-     i.e.  cospan_tensor (f1 ∘ g1) (f2 ∘ g2)
-         ≈ cospan_tensor f1 f2 ∘ cospan_tensor g1 g2
-     in CospanCat (composition is cospan_compose HP). *)
+  (*
+ fmap (f ∘ g) ≈ fmap f ∘ fmap g
+ i.e.  cospan_tensor (f1 ∘ g1) (f2 ∘ g2)
+ ≈ cospan_tensor f1 f2 ∘ cospan_tensor g1 g2
+ in CospanCat (composition is cospan_compose HP). 
+
+ --------
+ fmap (f ∘ g) ≈ fmap f ∘ fmap g
+ 即 cospan_tensor (f1 ∘ g1) (f2 ∘ g2)
+ ≈ cospan_tensor f1 f2 ∘ cospan_tensor g1 g2
+ 在 CospanCat 中（组合是 cospan_compose HP）。
+*)
   apply cospan_tensor_compose_compat.
 Defined.
 
 End CospanBifunctor.
 
 (*
-   本节说明幺半结构、幺半群、等价相关定义、性质与动机。
+   * ** Cospan_Monoidal: the Monoidal structure on [CospanCat C]
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The unitor, associator, braid are [mor_as_cospan]s of the
+   corresponding C-level coproduct isos.  The Monoidal naturality
+   and coherence conditions lift through the [mor_as_cospan]
+   embedding because [mor_as_cospan] respects composition (via
+   [mor_as_cospan_compose]) and equivalence (via
+   [mor_as_cospan_proper]). 
+
+   --------
+   * ** Cospan_Monoidal：[CospanCat C] 上的 Monoidal 结构
+
+   单位子、结合子、交换子是对应 C 级余积同构的 [mor_as_cospan]。Monoidal 的自然性和相干性条件通过 [mor_as_cospan] 嵌入提升，因为 [mor_as_cospan] 保持复合（通过 [mor_as_cospan_compose]）和等价（通过 [mor_as_cospan_proper]）。
 *)
 
 Section CospanMonoidal.
@@ -706,8 +1168,13 @@ Context `{H_Coc : @Cocartesian C}.
 Context `{H_Ini : @Initial C}.
 Context (HP : HasPushouts C).
 
-(** [cospan_tensor] two [mor_as_cospan]s agrees [mor_as_cospan]
- [cover] underlying C-态射. （已译） *)
+(*
+   * [cospan_tensor] of two [mor_as_cospan]s agrees with [mor_as_cospan]
+   of the [cover] of the underlying C-morphisms. 
+
+   --------
+   * 两个 [mor_as_cospan] 的 [cospan_tensor] 与底层 C-态射的 [cover] 的 [mor_as_cospan] 一致。
+*)
 Lemma cospan_tensor_mor_as_cospan
       {X Y X' Y' : C} (f : X ~> Y) (g : X' ~> Y') :
   cospan_equiv (cospan_tensor (mor_as_cospan f) (mor_as_cospan g))
@@ -722,7 +1189,12 @@ Proof.
     apply merge_inl_inr.
 Defined.
 
-(** Lift a C-iso [phi : X ≅ Y] to a [CospanCat]-iso via [mor_as_cospan]. *)
+(*
+   * Lift a C-iso [phi : X ≅ Y] to a [CospanCat]-iso via [mor_as_cospan]. 
+
+   --------
+   * 通过 [mor_as_cospan] 将 C-iso  [phi : X ≅ Y] 提升到 [CospanCat] -iso。
+*)
 Definition mor_iso_lift {X Y : C} (phi : X ≅ Y)
   : @Isomorphism (CospanCat C HP) X Y.
 Proof.
@@ -731,7 +1203,7 @@ Proof.
        from := (mor_as_cospan (from phi) : Y ~{CospanCat C HP}~> X);
        iso_to_from := _;
        iso_from_to := _ |}.
-  - (* mor_as_cospan (to phi) ∘ mor_as_cospan (from phi) ≈ id in CospanCat *)
+  - (* mor_as_cospan (to phi) ∘ mor_as_cospan (from phi) ≈ id in CospanCat / mor_as_cospan（到 phi）∘ mor_as_cospan（从 phi）≈在 CospanCat 中的 id *)
     eapply cospan_equiv_trans.
     + apply mor_as_cospan_compose.
     + eapply cospan_equiv_trans.
@@ -745,9 +1217,33 @@ Proof.
 Defined.
 
 (*
-   本节说明拉回/推出、来源与用途相关定义、性质与动机。
+   * ** Unitor naturality (left): a pushout-UMP calculation
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   For a generic cospan [g : x → y] with apex [N], legs [g1 : x → N]
+   and [g2 : y → N], the left-unitor naturality in [CospanCat] requires
+
+   cospan_compose HP g unit_left ≈ cospan_compose HP unit_left (bimap id g)
+
+   where [unit_left = mor_as_cospan (zero ▽ id : 0+x → x)] and
+   [bimap id g = cospan_tensor (cospan_id 0) g].
+
+   The LHS apex is [pushout id g1], which collapses to [N] by
+   [pushout_id_left_apex].  The RHS apex is the pushout of
+   [(cover id g2, zero ▽ id)], which also collapses to [N] by a
+   direct UMP calculation, exhibited below. 
+
+   --------
+   * ** 左单位元自然性：一个推余通（pushout-UMP）计算
+
+   对于一个一般的共尖形 cospan  [g : x → y]，其顶点为  [N]，边为  [g1 : x → N] 
+   和  [g2 : y → N]，左单位元在  [CospanCat] 的自然性要求
+
+   cospan_compose HP g unit_left ≈ cospan_compose HP unit_left (bimap id g)
+
+   其中  [unit_left = mor_as_cospan (zero ▽ id : 0+x → x)] 和 [bimap id g = cospan_tensor (cospan_id 0) g]。
+
+   左边的顶点是  [pushout id g1]，通过 [pushout_id_left_apex] 收敛到  [N]。右边的顶点是 
+   [(cover id g2, zero ▽ id)] 的推余通，也通过一个直接的 UMP 计算收敛到  [N]，如下所示。
 *)
 
 Lemma pushout_cover_id_unit_left_apex {y N : C} (g2 : y ~> N) :
@@ -756,7 +1252,12 @@ Lemma pushout_cover_id_unit_left_apex {y N : C} (g2 : y ~> N) :
 Proof.
   set (P := pushout (cover id[0] g2 : (0 + y)%object ~> (0 + N)%object)
                     (zero ▽ id[y])).
-  (* Mediator P -> N via cocone (zero ▽ id : 0+N → N, g2 : y → N). *)
+  (*
+ Mediator P -> N via cocone (zero ▽ id : 0+N → N, g2 : y → N). 
+
+ --------
+ 通过余锥的中介 P -> N（零 ▽ id : 0+N → N, g2 : y → N）。
+*)
   assert (HC : (zero ▽ id[N]) ∘ cover id[0] g2 ≈ g2 ∘ (zero ▽ id[y])).
   { unfold cover.
     rewrite <- merge_comp.
@@ -775,17 +1276,22 @@ Proof.
        from := pushout_in1 P ∘ inr;
        iso_to_from := _;
        iso_from_to := _ |}.
-  - (* m ∘ (pushout_in1 P ∘ inr) ≈ id at N *)
+  - (* m ∘ (pushout_in1 P ∘ inr) ≈ id at N / m ∘ (pushout_in1 P ∘ inr) ≈ id 在 N *)
     rewrite comp_assoc.
     rewrite Hm1.
     apply inr_merge.
-  - (* (pushout_in1 P ∘ inr) ∘ m ≈ id at apex P. UMP against identity. *)
+  - (* (pushout_in1 P ∘ inr) ∘ m ≈ id at apex P. UMP against identity. / (pushout_in1 P ∘ inr) ∘ m ≈ P 顶点的恒等映射。与恒等映射的 UMP。 *)
     apply (pushout_med_eq P (pushout_commutes P)
             ((pushout_in1 P ∘ inr) ∘ m) id).
-    + (* ((pushout_in1 P ∘ inr) ∘ m) ∘ pushout_in1 P ≈ pushout_in1 P *)
+    + (* ((pushout_in1 P ∘ inr) ∘ m) ∘ pushout_in1 P ≈ pushout_in1 P / ((pushout_in1 P ∘ inr) ∘ m) ∘ pushout_in1 P ≈ pushout_in1 P *)
       rewrite <- !comp_assoc.
       rewrite Hm1.
-      (* Goal: pushout_in1 P ∘ (inr ∘ (zero ▽ id[N])) ≈ pushout_in1 P *)
+      (*
+ Goal: pushout_in1 P ∘ (inr ∘ (zero ▽ id[N])) ≈ pushout_in1 P 
+
+ --------
+ 目标：pushout_in1 P ∘ (inr ∘ (zero ▽ id [N] )) ≈ pushout_in1 P
+*)
       assert (Hinr : (@inr C _ 0 N) ∘ (zero[N] ▽ id[N]) ≈ id[0 + N]).
       { rewrite <- merge_comp.
         rewrite id_right.
@@ -796,12 +1302,22 @@ Proof.
         - reflexivity. }
       rewrite Hinr.
       apply id_right.
-    + (* ((pushout_in1 P ∘ inr) ∘ m) ∘ pushout_in2 P ≈ pushout_in2 P *)
+    + (* ((pushout_in1 P ∘ inr) ∘ m) ∘ pushout_in2 P ≈ pushout_in2 P / ((pushout_in1 P ∘ inr) ∘ m) ∘ pushout_in2 P ≈ pushout_in2 P *)
       rewrite <- !comp_assoc.
       rewrite Hm2.
-      (* Goal: pushout_in1 P ∘ (inr ∘ g2) ≈ pushout_in2 P *)
+      (*
+ Goal: pushout_in1 P ∘ (inr ∘ g2) ≈ pushout_in2 P 
+
+ --------
+ 目标：pushout_in1 P ∘ (inr ∘ g2) ≈ pushout_in2 P
+*)
       pose proof (pushout_commutes P) as PC.
-      (* PC : pushout_in1 P ∘ cover id g2 ≈ pushout_in2 P ∘ (zero ▽ id) *)
+      (*
+ PC : pushout_in1 P ∘ cover id g2 ≈ pushout_in2 P ∘ (zero ▽ id) 
+
+ --------
+ PC : pushout_in1 P ∘ cover id g2 ≈ pushout_in2 P ∘ (zero ▽ id)
+*)
       rewrite <- (cover_inr id[0] g2).
       rewrite comp_assoc.
       rewrite PC.
@@ -812,9 +1328,19 @@ Proof.
     + cat.
 Defined.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** Cover-associator interaction
 
-(** 本节：Helpers associator-cover proofs. （已译） *)
+   The C-iso [coprod_assoc] intertwines [cover (cover f g) h] with
+   [cover f (cover g h)]. 
+
+   --------
+   * ** 覆盖-结合子相互作用
+
+   C-iso [coprod_assoc] 将 [cover (cover f g) h] 与 [cover f (cover g h)] 交织在一起。
+*)
+
+(** Helpers for the associator-cover proofs. / 用于关联覆盖证明的辅助工具。 *)
 
 Lemma assoc_to_inl_inl {x y z : C} :
   to (@coprod_assoc C H_Coc x y z) ∘ (inl ∘ inl) ≈ inl.
@@ -867,9 +1393,17 @@ Proof.
 Qed.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * Goal: [to coprod_assoc ∘ cover (cover f g) h ≈ cover f (cover g h) ∘ to coprod_assoc].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The proof is "computational" — both sides equal the canonical morphism
+   [(inl ∘ f) ▽ ((inr ∘ inl) ∘ g) ▽ ((inr ∘ inr) ∘ h)] (with appropriate
+   associativity).  We split it via joint-epi and reduce each leg by
+   explicit composition. 
+
+   --------
+   * 目标：[to coprod_assoc ∘ cover (cover f g) h ≈ cover f (cover g h) ∘ to coprod_assoc]。
+
+   证明是“计算式的”——双方都等于典范态射 [(inl ∘ f) ▽ ((inr ∘ inl) ∘ g) ▽ ((inr ∘ inr) ∘ h)]（具有适当的结合性）。我们通过联合满射将其拆分，并通过显式组合简化每一条腿。
 *)
 
 Lemma cover_assoc_from {a a' b b' c c' : C}
@@ -878,7 +1412,7 @@ Lemma cover_assoc_from {a a' b b' c c' : C}
   ≈ cover (cover f g) h ∘ from coprod_assoc.
 Proof.
   apply coprod_ext.
-  - (* ∘ inl: reduces to inl ∘ inl ∘ f *)
+  - (* ∘ inl: reduces to inl ∘ inl ∘ f / ∘ inl：化简为 inl ∘ inl ∘ f *)
     rewrite <- !comp_assoc.
     rewrite cover_inl.
     rewrite (comp_assoc (from coprod_assoc) inl f).
@@ -893,7 +1427,7 @@ Proof.
     rewrite comp_assoc.
     reflexivity.
   - apply coprod_ext.
-    + (* ∘ (inr ∘ inl) on (b+c) side → b → inl ∘ inr ∘ g *)
+    + (* ∘ (inr ∘ inl) on (b+c) side → b → inl ∘ inr ∘ g / ∘（inr ∘ inl）在 (b+c) 侧 → b → inl ∘ inr ∘ g *)
       rewrite <- !comp_assoc.
       rewrite (comp_assoc (cover f (cover g h)) inr inl).
       rewrite cover_inr.
@@ -911,7 +1445,7 @@ Proof.
       rewrite cover_inr.
       rewrite !comp_assoc.
       reflexivity.
-    + (* ∘ (inr ∘ inr) on (b+c) side → c → inr ∘ h *)
+    + (* ∘ (inr ∘ inr) on (b+c) side → c → inr ∘ h / ∘ (inr ∘ inr) 在 (b+c) 侧 → c → inr ∘ h *)
       rewrite <- !comp_assoc.
       rewrite (comp_assoc (cover f (cover g h)) inr inr).
       rewrite cover_inr.
@@ -932,7 +1466,7 @@ Lemma cover_assoc_to {a a' b b' c c' : C}
 Proof.
   apply coprod_ext.
   - apply coprod_ext.
-    + (* ∘ (inl ∘ inl): both reduce to inl ∘ f *)
+    + (* ∘ (inl ∘ inl): both reduce to inl ∘ f / ∘ (inl ∘ inl)：两者都化简为 inl ∘ f *)
       rewrite <- !comp_assoc.
       rewrite (comp_assoc (cover (cover f g) h) inl inl).
       rewrite cover_inl.
@@ -941,11 +1475,16 @@ Proof.
       rewrite (comp_assoc inl inl f).
       rewrite (comp_assoc (to coprod_assoc) (inl ∘ inl) f).
       rewrite assoc_to_inl_inl.
-      (* Goal: inl ∘ f ≈ cover f (cover g h) ∘ (to coprod_assoc ∘ (inl ∘ inl)) *)
+      (*
+ Goal: inl ∘ f ≈ cover f (cover g h) ∘ (to coprod_assoc ∘ (inl ∘ inl)) 
+
+ --------
+ 目标：inl ∘ f ≈ cover f (cover g h) ∘ (to coprod_assoc ∘ (inl ∘ inl))
+*)
       rewrite assoc_to_inl_inl.
       symmetry.
       apply cover_inl.
-    + (* ∘ (inl ∘ inr): both reduce to inr ∘ inl ∘ g *)
+    + (* ∘ (inl ∘ inr): both reduce to inr ∘ inl ∘ g / ∘ (inl ∘ inr)：都化简为 inr ∘ inl ∘ g *)
       rewrite <- !comp_assoc.
       rewrite (comp_assoc (cover (cover f g) h) inl inr).
       rewrite cover_inl.
@@ -954,9 +1493,19 @@ Proof.
       rewrite (comp_assoc inl inr g).
       rewrite (comp_assoc (to coprod_assoc) (inl ∘ inr) g).
       rewrite assoc_to_inl_inr.
-      (* Goal now: inr ∘ inl ∘ g ≈ cover f (cover g h) ∘ (to coprod_assoc ∘ (inl ∘ inr)) *)
+      (*
+ Goal now: inr ∘ inl ∘ g ≈ cover f (cover g h) ∘ (to coprod_assoc ∘ (inl ∘ inr)) 
+
+ --------
+ 现在的目标：inr ∘ inl ∘ g ≈ cover f (cover g h) ∘ (to coprod_assoc ∘ (inl ∘ inr))
+*)
       rewrite assoc_to_inl_inr.
-      (* Goal: inr ∘ inl ∘ g ≈ cover f (cover g h) ∘ (inr ∘ inl) *)
+      (*
+ Goal: inr ∘ inl ∘ g ≈ cover f (cover g h) ∘ (inr ∘ inl) 
+
+ --------
+ 目标：inr ∘ inl ∘ g ≈ cover f (cover g h) ∘ (inr ∘ inl)
+*)
       symmetry.
       rewrite <- comp_assoc.
       rewrite (comp_assoc (cover f (cover g h)) inr inl).
@@ -965,14 +1514,19 @@ Proof.
       rewrite cover_inl.
       rewrite comp_assoc.
       reflexivity.
-  - (* ∘ inr: both reduce to inr ∘ inr ∘ h *)
+  - (* ∘ inr: both reduce to inr ∘ inr ∘ h / ∘ inr：都化简为 inr ∘ inr ∘ h *)
     rewrite <- !comp_assoc.
     rewrite cover_inr.
     rewrite (comp_assoc (to coprod_assoc) inr h).
     rewrite assoc_to_inr.
     (* RHS *)
     rewrite assoc_to_inr.
-    (* Goal: inr ∘ inr ∘ h ≈ cover f (cover g h) ∘ (inr ∘ inr) *)
+    (*
+ Goal: inr ∘ inr ∘ h ≈ cover f (cover g h) ∘ (inr ∘ inr) 
+
+ --------
+ 目标：inr ∘ inr ∘ h ≈ cover f (cover g h) ∘ (inr ∘ inr)
+*)
     symmetry.
     rewrite <- comp_assoc.
     rewrite (comp_assoc (cover f (cover g h)) inr inr).
@@ -984,9 +1538,18 @@ Proof.
 Qed.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * ** Cover-paws (braid) interaction at C level
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The C-iso [paws ≈ to coprod_comm] intertwines [cover g h] and
+   [cover h g].  Both directions are pure cocartesian calculations
+   via [cover_inl] / [cover_inr] and the [paws ∘ inl ≈ inr] /
+   [paws ∘ inr ≈ inl] base facts ([paws_inl], [paws_inr]). 
+
+   --------
+   * ** C 级别的 cover-paws（编辫子）交互
+
+   C-iso  [paws ≈ to coprod_comm]  交织 [cover g h] 和
+   [cover h g] 。 两个方向都是通过 [cover_inl] / [cover_inr] 和 [paws ∘ inl ≈ inr] / [paws ∘ inr ≈ inl] 基础事实（[paws_inl]，[paws_inr]）进行的纯余积计算。
 *)
 
 Lemma paws_inl {x y : C} :
@@ -1003,13 +1566,17 @@ Proof.
   apply (@exr_fork _ H_Coc).
 Qed.
 
-(** Braid-naturality at C level: [paws ∘ cover g h ≈ cover h g ∘ paws]. *)
+(*
+   * Braid-naturality at C level: [paws ∘ cover g h ≈ cover h g ∘ paws]. 
+
+   --------
+   * C 级上的编织自然性：[paws ∘ cover g h ≈ cover h g ∘ paws]。
+*)
 Lemma cover_paws {a a' b b' : C} (g : a ~> a') (h : b ~> b') :
   paws ∘ cover g h ≈ cover h g ∘ paws.
 Proof.
   apply coprod_ext.
-  - (* ∘ inl: LHS = paws ∘ (cover g h ∘ inl) = paws ∘ (inl ∘ g) = (paws ∘ inl) ∘ g = inr ∘ g
-       RHS = (cover h g ∘ paws) ∘ inl = cover h g ∘ (paws ∘ inl) = cover h g ∘ inr = inr ∘ g  *)
+  - (* ∘ inl: LHS = paws ∘ (cover g h ∘ inl) = paws ∘ (inl ∘ g) = (paws ∘ inl) ∘ g = inr ∘ g RHS = (cover h g ∘ paws) ∘ inl = cover h g ∘ (paws ∘ inl) = cover h g ∘ inr = inr ∘ g / ∘ inl：左边 = paws ∘ (cover g h ∘ inl) = paws ∘ (inl ∘ g) = (paws ∘ inl) ∘ g = inr ∘ g 右边 = (cover h g ∘ paws) ∘ inl = cover h g ∘ (paws ∘ inl) = cover h g ∘ inr = inr ∘ g *)
     rewrite <- comp_assoc.
     rewrite cover_inl.
     rewrite comp_assoc.
@@ -1018,8 +1585,7 @@ Proof.
     rewrite paws_inl.
     rewrite cover_inr.
     reflexivity.
-  - (* ∘ inr: LHS = paws ∘ (cover g h ∘ inr) = paws ∘ (inr ∘ h) = (paws ∘ inr) ∘ h = inl ∘ h
-       RHS = (cover h g ∘ paws) ∘ inr = cover h g ∘ (paws ∘ inr) = cover h g ∘ inl = inl ∘ h *)
+  - (* ∘ inr: LHS = paws ∘ (cover g h ∘ inr) = paws ∘ (inr ∘ h) = (paws ∘ inr) ∘ h = inl ∘ h RHS = (cover h g ∘ paws) ∘ inr = cover h g ∘ (paws ∘ inr) = cover h g ∘ inl = inl ∘ h / ∘ inr：LHS = paws ∘ (cover g h ∘ inr) = paws ∘ (inr ∘ h) = (paws ∘ inr) ∘ h = inl ∘ h RHS = (cover h g ∘ paws) ∘ inr = cover h g ∘ (paws ∘ inr) = cover h g ∘ inl = inl ∘ h *)
     rewrite <- comp_assoc.
     rewrite cover_inr.
     rewrite comp_assoc.
@@ -1031,9 +1597,18 @@ Proof.
 Qed.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** Pushout-along-iso: the apex collapses
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   For [m : Y → N] and a C-iso [phi : Y ≅ Z], the pushout of [(m, to phi)]
+   is canonically [N], with [pushout_in1 ≈ id[N]] and
+   [pushout_in2 ≈ m ∘ from phi]. 
+
+   --------
+   * ** 沿同构推挤：极点塌缩
+
+   对于  [m : Y → N] 和一个 C-同构  [phi : Y ≅ Z] ， [(m, to phi)] 的推挤
+   在概形上是 [N] ，并带有 [pushout_in1 ≈ id[N] ] 和
+   [pushout_in2 ≈ m ∘ from phi] 。
 *)
 
 Lemma pushout_along_iso_apex {Y Z N : C} (m : Y ~> N) (phi : Y ≅ Z) :
@@ -1063,10 +1638,18 @@ Proof.
       rewrite Hk2.
       pose proof (pushout_commutes P) as PC.
       rewrite comp_assoc.
-      (* Need: 推出_in1 P ∘ m ∘ from phi ≈ 推出_in2 P.
- By PC: 推出_in1 P ∘ m ≈ 推出_in2 P ∘ phi.
- Hence 推出_in1 P ∘ m ∘ from phi ≈ 推出_in2 P ∘ phi ∘ from phi
- ≈ 推出_in2 P ∘ id ≈ 推出_in2 P.（已译） *)
+      (*
+ Need: pushout_in1 P ∘ m ∘ from phi ≈ pushout_in2 P.
+ By PC: pushout_in1 P ∘ m ≈ pushout_in2 P ∘ to phi.
+ Hence pushout_in1 P ∘ m ∘ from phi ≈ pushout_in2 P ∘ to phi ∘ from phi
+ ≈ pushout_in2 P ∘ id ≈ pushout_in2 P. 
+
+ --------
+ 需求：pushout_in1 P ∘ m ∘ from phi ≈ pushout_in2 P。
+ 根据 PC：pushout_in1 P ∘ m ≈ pushout_in2 P ∘ to phi。
+ 因此 pushout_in1 P ∘ m ∘ from phi ≈ pushout_in2 P ∘ to phi ∘ from phi
+ ≈ pushout_in2 P ∘ id ≈ pushout_in2 P。
+*)
       rewrite PC.
       rewrite <- comp_assoc.
       rewrite iso_to_from.
@@ -1076,9 +1659,18 @@ Proof.
 Defined.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** Bridging lemma: composing a cospan with a [mor_as_cospan] on the right
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   For [f : Y ~{CospanCat}~> Z] (a generic cospan) and [h : X ~> Y] a
+   C-morphism, [cospan_compose f (mor_as_cospan h)] simplifies under
+   the pushout-id-collapse: the pushout of [(id[Y], cospan_in1 f)] is
+   canonically the apex of [f], and the composite cospan becomes
+   [Build_CospanArrow (apex f) (cospan_in1 f ∘ h) (cospan_in2 f)]. 
+
+   --------
+   * ** 桥接引理：在右侧将余锥与 [mor_as_cospan] 组合
+
+   对于 [f : Y ~{CospanCat}~> Z]（一个通用余锥）和 [h : X ~> Y] 一个 C-态射，[cospan_compose f (mor_as_cospan h)] 在推挤-恒等塌缩下简化：[(id[Y] 的推挤 [cospan_in1 f)] 在范式上是 [f] 的顶点，且复合余锥变为 [Build_CospanArrow (apex f) (cospan_in1 f ∘ h) (cospan_in2 f)] 。
 *)
 
 Lemma cospan_compose_mor_as_cospan_right
@@ -1099,9 +1691,14 @@ Proof.
     apply id_left.
 Defined.
 
-(** 本节：Dual bridging: composing cospan [mor_as_cospan (to phi)] on
- LEFT where [phi] C-iso. By [pushout_along_iso_apex], the
- apex collapses apex(f), adjusted in2. （已译） *)
+(*
+   * Dual bridging: composing a cospan with [mor_as_cospan (to phi)] on
+   the LEFT where [phi] is a C-iso. By [pushout_along_iso_apex], the
+   apex collapses to apex(f), with adjusted in2. 
+
+   --------
+   * 双重桥接：在左侧用 [mor_as_cospan (to phi)] 组成一个共跨度，其中 [phi] 是一个 C-同构。通过 [pushout_along_iso_apex]，顶点收缩到 apex(f)，并调整 in2。
+*)
 
 Lemma cospan_compose_mor_iso_left
       {X Y Z : C} (f : CospanArrow X Y) (phi : Y ≅ Z) :
@@ -1152,9 +1749,27 @@ Proof.
 Defined.
 
 (*
-   本节说明拉回/推出、来源与用途相关定义、性质与动机。
+   * ** Left-unitor naturality
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   For any cospan [g : x → y]:
+   [g ∘ unit_left ≈ unit_left ∘ bimap id g]
+   in [CospanCat C HP], where [unit_left = mor_as_cospan (zero ▽ id)]
+   and [bimap id g = cospan_tensor (cospan_id 0) g].
+
+   The iso of apexes is [pushout_cover_id_unit_left_apex (cospan_in2 g)],
+   whose [to] is exactly the [pushout_med] making the legs match the
+   bridging-lemma-simplified LHS. 
+
+   --------
+   * ** 左单位子自然性
+
+   对于任何余跨度  [g : x → y] :
+   [g ∘ unit_left ≈ unit_left ∘ bimap id g] 
+   在  [CospanCat C HP] 中，其中  [unit_left = mor_as_cospan (zero ▽ id)] 
+   和  [bimap id g = cospan_tensor (cospan_id 0) g] 。
+
+   顶点的同构是  [pushout_cover_id_unit_left_apex (cospan_in2 g)] ，
+   其  [to] 恰好是  [pushout_med] ，使得两条腿与桥接引理简化的左边匹配。
 *)
 
 Lemma cospan_unit_left_natural
@@ -1164,12 +1779,17 @@ Lemma cospan_unit_left_natural
     (cospan_compose HP (mor_as_cospan (zero ▽ id[y]))
        (cospan_tensor (cospan_id 0%object) g)).
 Proof.
-  (* LHS simplifies via bridging. *)
+  (* LHS simplifies via bridging. / LHS 通过桥接简化。 *)
   eapply cospan_equiv_trans;
     [apply cospan_compose_mor_as_cospan_right|].
   apply cospan_equiv_sym.
   unfold cospan_compose, mor_as_cospan, cospan_tensor; simpl.
-  (* Inline the apex iso construction so [to] reduces by [pushout_med_in1/2]. *)
+  (*
+ Inline the apex iso construction so [to] reduces by [pushout_med_in1/2]. 
+
+ --------
+ 将顶点等高线构造内联，以便 [to] 减少为 [pushout_med_in1/2]。
+*)
   pose (Pcov := pushout (cover id[0] (cospan_in2 g) : (0 + y)%object ~> (0 + cospan_apex g)%object)
                         (zero ▽ id[y] : (0 + y)%object ~> y)).
   assert (HC : (zero ▽ id[cospan_apex g]) ∘ cover id[0] (cospan_in2 g)
@@ -1193,11 +1813,11 @@ Proof.
                  from := pushout_in1 Pcov ∘ inr;
                  iso_to_from := _;
                  iso_from_to := _ |} _).
-  - (* m ∘ (pushout_in1 Pcov ∘ inr) ≈ id at apex g *)
+  - (* m ∘ (pushout_in1 Pcov ∘ inr) ≈ id at apex g / m ∘ (pushout_in1 Pcov ∘ inr) 在顶点 g 处 ≈ id *)
     rewrite comp_assoc.
     rewrite Hm1.
     apply inr_merge.
-  - (* (pushout_in1 Pcov ∘ inr) ∘ m ≈ id at apex Pcov *)
+  - (* (pushout_in1 Pcov ∘ inr) ∘ m ≈ id at apex Pcov / (pushout_in1 Pcov ∘ inr) ∘ m ≈ 在 Pcov 顶点处的 id *)
     apply (pushout_med_eq Pcov (pushout_commutes Pcov)
             ((pushout_in1 Pcov ∘ inr) ∘ m) id).
     + rewrite <- !comp_assoc.
@@ -1241,10 +1861,18 @@ Proof.
       exact Hm2.
 Defined.
 
-(* * ** Right-unitor 自然性, dual left.
+(*
+   * ** Right-unitor naturality, dual of left.
 
- [unit_right = mor_as_cospan (id ▽ zero : x + 0 → x)] and
- [bimap g id = cospan_tensor g (cospan_id 0)]. （已译） *)
+   [unit_right = mor_as_cospan (id ▽ zero : x + 0 → x)] and
+   [bimap g id = cospan_tensor g (cospan_id 0)]. 
+
+   --------
+   * ** 右单位元的自然性，左单位元的对偶。
+
+   [unit_right = mor_as_cospan (id ▽ zero : x + 0 → x)]  和
+   [bimap g id = cospan_tensor g (cospan_id 0)] 。
+*)
 
 Lemma cospan_unit_right_natural
       {x y : C} (g : CospanArrow x y) :
@@ -1326,13 +1954,23 @@ Proof.
       exact Hm2.
 Defined.
 
-(* * ** Tensor-associator 自然性
+(*
+   * ** Tensor-associator naturality
 
- For arbitrary cospans [f : x → x'], [g : y → y'], [h : z → z']:
- [bimap f (bimap g h) ∘ tensor_assoc
- ≈ tensor_assoc ∘ bimap (bimap f g) h]
- [CospanCat C HP], where [tensor_assoc = mor_as_cospan (to coprod_assoc)]
- [bimap = cospan_tensor]. （已译） *)
+   For arbitrary cospans [f : x → x'], [g : y → y'], [h : z → z']:
+   [bimap f (bimap g h) ∘ tensor_assoc
+   ≈ tensor_assoc ∘ bimap (bimap f g) h]
+   in [CospanCat C HP], where [tensor_assoc = mor_as_cospan (to coprod_assoc)]
+   and [bimap = cospan_tensor]. 
+
+   --------
+   * ** 张量结合子自然性
+
+   对于任意余跨 [f : x → x']、[g : y → y']、[h : z → z']：
+   [bimap f (bimap g h) ∘ tensor_assoc
+   ≈ tensor_assoc ∘ bimap (bimap f g) h]
+   在 [CospanCat C HP] 中，其中 [tensor_assoc = mor_as_cospan (to coprod_assoc)] 和 [bimap = cospan_tensor] 。
+*)
 
 Lemma cospan_tensor_assoc_natural
       {x x' y y' z z' : C}
@@ -1352,21 +1990,29 @@ Proof.
   unfold cospan_tensor; simpl.
   exists (iso_sym (@coprod_assoc C H_Coc (cospan_apex f) (cospan_apex g) (cospan_apex h))).
   simpl; split.
-  - (* from coprod_assoc ∘ (cover (in1 f) (cover (in1 g) (in1 h)) ∘ to coprod_assoc)
-       ≈ cover (cover (in1 f) (in1 g)) (in1 h) *)
+  - (* from coprod_assoc ∘ (cover (in1 f) (cover (in1 g) (in1 h)) ∘ to coprod_assoc) ≈ cover (cover (in1 f) (in1 g)) (in1 h) / 从 coprod_assoc ∘ (cover (in1 f) (cover (in1 g) (in1 h)) ∘ 到 coprod_assoc) ≈ cover (cover (in1 f) (in1 g)) (in1 h) *)
     rewrite comp_assoc.
     rewrite cover_assoc_from.
     rewrite <- comp_assoc.
     rewrite iso_from_to.
     apply id_right.
-  - (* 相关说明。 （已译） *)
+  - (* from coprod_assoc ∘ cover (in2 f) (cover (in2 g) (in2 h)) ≈ cover (cover (in2 f) (in2 g)) (in2 h) ∘ from coprod_assoc / 从 coprod_assoc ∘ cover (in2 f) (cover (in2 g) (in2 h)) ≈ cover (cover (in2 f) (in2 g)) (in2 h) ∘ 从 coprod_assoc *)
     apply cover_assoc_from.
 Defined.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * ** From [to] to [from] naturality
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   General principle: for any iso [phi : X ≅ Y] in a category [D],
+   if [g ∘ to phi ≈ to phi ∘ h] (the "to" naturality) then
+   [h ∘ from phi ≈ from phi ∘ g] (the "from" naturality). 
+
+   --------
+   * ** 从  [to] 到  [from] 的自然性
+
+   一般原则：对于类别  [D] 中的任意同构  [phi : X ≅ Y]，
+   如果  [g ∘ to phi ≈ to phi ∘ h]（"到"的自然性）成立，则
+   [h ∘ from phi ≈ from phi ∘ g]（"从"的自然性）也成立。
 *)
 
 Lemma from_naturality_of_to {D : Category} {X Y W : D}
@@ -1396,9 +2042,16 @@ Proof.
   apply id_left.
 Qed.
 
-(** Variant matching Monoidal 自然性 shape:
- to-自然性 [g ∘ phi_X ≈ phi_Y ∘ h]
- derive from-自然性 [h ∘ phi_X ≈ phi_Y ∘ g]. （已译） *)
+(*
+   * Variant matching the Monoidal naturality shape:
+   from to-naturality [g ∘ to phi_X ≈ to phi_Y ∘ h]
+   derive from-naturality [h ∘ from phi_X ≈ from phi_Y ∘ g]. 
+
+   --------
+   * 匹配单体自然性的变体形状：
+   从 to-naturality  [g ∘ to phi_X ≈ to phi_Y ∘ h] 
+   推导 from-naturality  [h ∘ from phi_X ≈ from phi_Y ∘ g] 。
+*)
 Lemma from_naturality_of_to_M {D : Category} {X Y A B : D}
       (phi_X : @Isomorphism D X A) (phi_Y : @Isomorphism D Y B)
       (g : A ~{D}~> B) (h : X ~{D}~> Y)
@@ -1417,10 +2070,18 @@ Proof.
   apply id_right.
 Qed.
 
-(* * ** Triangle 恒等 at C level (for coproducts).
+(*
+   * ** Triangle identity at C level (for coproducts).
 
- [cover (to coprod_zero_r) id ≈ cover id (to coprod_zero_l) ∘ coprod_assoc]
- i.e., (X+0)+Y → X+Y two paths agree. （已译） *)
+   [cover (to coprod_zero_r) id ≈ cover id (to coprod_zero_l) ∘ to coprod_assoc]
+   i.e., (X+0)+Y → X+Y the two paths agree. 
+
+   --------
+   * ** C层的三角恒等式（用于余积）。
+
+   [cover (to coprod_zero_r) id ≈ cover id (to coprod_zero_l) ∘ to coprod_assoc] 
+   即，(X+0)+Y → X+Y 两条路径一致。
+*)
 
 Lemma coprod_triangle_aux {x y : C} :
   cover (to (@coprod_zero_r C H_Coc H_Ini x)) id[y]
@@ -1429,15 +2090,26 @@ Lemma coprod_triangle_aux {x y : C} :
 Proof.
   apply coprod_ext.
   - apply coprod_ext.
-    + (* ∘ (inl ∘ inl), i.e., x part *)
+    + (* ∘ (inl ∘ inl), i.e., x part / ∘ (inl ∘ inl)，即 x 部分 *)
       rewrite <- !comp_assoc.
       rewrite (comp_assoc (cover _ id[y]) inl inl).
       rewrite cover_inl.
       rewrite <- (comp_assoc inl (to coprod_zero_r) inl).
-      (* RHS: cover id coprod_zero_l ∘ (coprod_assoc ∘ (inl ∘ inl)) = inl *)
+      (*
+ RHS: cover id coprod_zero_l ∘ (coprod_assoc ∘ (inl ∘ inl)) = inl 
+
+ --------
+ 右边：cover id coprod_zero_l ∘ (coprod_assoc ∘ (inl ∘ inl)) = inl
+*)
       rewrite assoc_to_inl_inl.
-      (* LHS: inl ∘ (to coprod_zero_r ∘ inl)
-         to coprod_zero_r = id ▽ zero, so (id ▽ zero) ∘ inl = id *)
+      (*
+ LHS: inl ∘ (to coprod_zero_r ∘ inl)
+ to coprod_zero_r = id ▽ zero, so (id ▽ zero) ∘ inl = id 
+
+ --------
+ 左侧: inl ∘ (to coprod_zero_r ∘ inl)
+ to coprod_zero_r = id ▽ zero, 所以 (id ▽ zero) ∘ inl = id
+*)
       assert (Hzr : to (@coprod_zero_r C H_Coc H_Ini x) ∘ (@inl C _ x 0) ≈ id[x]).
       { unfold to, coprod_zero_r; simpl. apply inl_merge. }
       rewrite Hzr.
@@ -1445,7 +2117,7 @@ Proof.
       symmetry.
       rewrite cover_inl.
       apply id_right.
-    + (* ∘ (inl ∘ inr), i.e., 0 part - both go to zero *)
+    + (* ∘ (inl ∘ inr), i.e., 0 part - both go to zero / ∘ (inl ∘ inr)，即 0 部分——两者都归零 *)
       rewrite <- !comp_assoc.
       rewrite (comp_assoc (cover _ id[y]) inl inr).
       rewrite cover_inl.
@@ -1453,9 +2125,19 @@ Proof.
       assert (Hzr_inr : to (@coprod_zero_r C H_Coc H_Ini x) ∘ (@inr C _ x 0) ≈ zero).
       { unfold to, coprod_zero_r; simpl. apply inr_merge. }
       rewrite Hzr_inr.
-      (* RHS: cover id coprod_zero_l ∘ (coprod_assoc ∘ (inl ∘ inr)) *)
+      (*
+ RHS: cover id coprod_zero_l ∘ (coprod_assoc ∘ (inl ∘ inr)) 
+
+ --------
+ 右侧：cover id coprod_zero_l ∘ (coprod_assoc ∘ (inl ∘ inr))
+*)
       rewrite assoc_to_inl_inr.
-      (* Goal: inl ∘ zero[x] ≈ cover id coprod_zero_l ∘ (inr ∘ inl) *)
+      (*
+ Goal: inl ∘ zero[x] ≈ cover id coprod_zero_l ∘ (inr ∘ inl) 
+
+ --------
+ 目标：inl ∘ zero [x] ≈ cover id coprod_zero_l ∘ (inr ∘ inl)
+*)
       rewrite (comp_assoc (cover id[x] _) inr inl).
       rewrite cover_inr.
       rewrite <- comp_assoc.
@@ -1463,7 +2145,7 @@ Proof.
       { unfold to, coprod_zero_l; simpl. apply inl_merge. }
       rewrite Hzl.
       apply (@zero_unique C H_Ini _ _ _).
-  - (* ∘ inr, i.e., y part *)
+  - (* ∘ inr, i.e., y part / ∘ inr，即 y 部分 *)
     rewrite cover_inr.
     rewrite id_right.
     rewrite <- (comp_assoc (cover id[x] _) (to coprod_assoc) inr).
@@ -1477,22 +2159,47 @@ Proof.
     symmetry. apply id_right.
 Qed.
 
-(* * ** C-level pentagon 恒等 [coprod_assoc].
-
- [cover id (to coprod_assoc) ∘ coprod_assoc ∘ cover (to coprod_assoc) id
- ≈ coprod_assoc ∘ coprod_assoc]
- at types [(((X+Y)+Z)+W) → (X+(Y+(Z+W)))]. （已译） *)
-
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * ** C-level pentagon identity for [coprod_assoc].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [cover id (to coprod_assoc) ∘ to coprod_assoc ∘ cover (to coprod_assoc) id
+   ≈ to coprod_assoc ∘ to coprod_assoc]
+   at types [(((X+Y)+Z)+W) → (X+(Y+(Z+W)))]. 
+
+   --------
+   * ** 五角大楼高层身份，适用于[coprod_assoc]。
+
+   [cover id（对coprod_assoc）∘ 对coprod_assoc ∘ cover（到coprod_assoc）id]
+   ≈到coprod_assoc∘到coprod_assoc]
+   在类型[(((X+Y)+Z)+W) → (X+(Y+(Z+W)))]。
 *)
 
-(** Reduce one composite alpha against `inl ∘ inl ∘ inl` to inl.
-    Key fact: alpha ∘ (inl ∘ inl) = inl by [assoc_to_inl_inl].  So
-    alpha ∘ (inl ∘ inl) ∘ inl = inl ∘ inl, and then cover α id ∘ (inl ∘ inl)
-    = inl ∘ α ∘ inl = inl ∘ inl... etc. *)
+(*
+   * Auxiliary computations used in the C-level pentagon below.
+
+   Strategy: each goal has shape [(EXPR) ∘ COMPOSITE_INJECTION ≈ TARGET].
+   We use the [coprod_ext_eq] tactic-like trick: assert the helper equation
+   and apply it. 
+
+   --------
+   * 下方 C 级五边形中使用的辅助计算。
+
+   策略：每个目标的形状为 [(EXPR) ∘ COMPOSITE_INJECTION ≈ TARGET]。  
+   我们使用 [coprod_ext_eq] 类似策略的技巧：断言辅助方程并应用它。
+*)
+
+(*
+   * Reduce one composite alpha against `inl ∘ inl ∘ inl` to inl.
+   Key fact: alpha ∘ (inl ∘ inl) = inl by [assoc_to_inl_inl].  So
+   alpha ∘ (inl ∘ inl) ∘ inl = inl ∘ inl, and then cover α id ∘ (inl ∘ inl)
+   = inl ∘ α ∘ inl = inl ∘ inl... etc. 
+
+   --------
+   * 将一个复合 alpha 针对 `inl ∘ inl ∘ inl` 化简为 inl。
+   关键事实：alpha ∘ (inl ∘ inl) = inl 由 [assoc_to_inl_inl] 得出。所以
+   alpha ∘ (inl ∘ inl) ∘ inl = inl ∘ inl，然后覆盖 α id ∘ (inl ∘ inl)
+   = inl ∘ α ∘ inl = inl ∘ inl……等等。
+*)
 
 Lemma pentagon_lhs_iii {X Y Z W : C} :
   (cover (id[X]) (to (@coprod_assoc C H_Coc Y Z W))
@@ -1504,13 +2211,23 @@ Proof.
   rewrite <- !comp_assoc.
   rewrite (comp_assoc (cover (to coprod_assoc) id[W]) inl (inl ∘ inl)).
   rewrite cover_inl.
-  (* Goal: cover id α ∘ (α ∘ ((inl ∘ α) ∘ (inl ∘ inl))) *)
+  (*
+ Goal: cover id α ∘ (α ∘ ((inl ∘ α) ∘ (inl ∘ inl))) 
+
+ --------
+ 目标：覆盖 id α ∘ (α ∘ ((inl ∘ α) ∘ (inl ∘ inl)))
+*)
   rewrite <- (comp_assoc inl (to coprod_assoc) (inl ∘ inl)).
-  (* Goal: cover id α ∘ (α ∘ (inl ∘ (α ∘ (inl ∘ inl)))) *)
+  (*
+ Goal: cover id α ∘ (α ∘ (inl ∘ (α ∘ (inl ∘ inl)))) 
+
+ --------
+ 目标：覆盖 id α ∘ (α ∘ (inl ∘ (α ∘ (inl ∘ inl))))
+*)
   rewrite assoc_to_inl_inl.
-  (* Goal: cover id α ∘ (α ∘ (inl ∘ inl)) *)
+  (* Goal: cover id α ∘ (α ∘ (inl ∘ inl)) / 目标：覆盖 id α ∘ (α ∘ (inl ∘ inl)) *)
   rewrite assoc_to_inl_inl.
-  (* Goal: cover id α ∘ inl *)
+  (* Goal: cover id α ∘ inl / 目标：覆盖 id α ∘ inl *)
   rewrite cover_inl.
   apply id_right.
 Qed.
@@ -1522,7 +2239,12 @@ Lemma pentagon_rhs_iii {X Y Z W : C} :
   ≈ inl.
 Proof.
   rewrite <- !comp_assoc.
-  (* Goal: α ∘ (α' ∘ (inl ∘ (inl ∘ inl))) where α, α' are at different types *)
+  (*
+ Goal: α ∘ (α' ∘ (inl ∘ (inl ∘ inl))) where α, α' are at different types 
+
+ --------
+ 目标：α ∘ (α' ∘ (inl ∘ (inl ∘ inl)))，其中 α、α' 类型不同
+*)
   rewrite (comp_assoc inl inl inl).
   rewrite (comp_assoc (to coprod_assoc) (inl ∘ inl) inl).
   rewrite assoc_to_inl_inl.
@@ -1542,11 +2264,21 @@ Proof.
   rewrite cover_inl.
   rewrite <- (comp_assoc inl (to coprod_assoc) (inl ∘ inr)).
   rewrite assoc_to_inl_inr.
-  (* Goal: cover id α ∘ (α ∘ (inl ∘ (inr ∘ inl))) ≈ inr ∘ inl *)
+  (*
+ Goal: cover id α ∘ (α ∘ (inl ∘ (inr ∘ inl))) ≈ inr ∘ inl 
+
+ --------
+ 目标：覆盖 id α ∘ (α ∘ (inl ∘ (inr ∘ inl))) ≈ inr ∘ inl
+*)
   rewrite (comp_assoc inl inr inl).
   rewrite (comp_assoc (to coprod_assoc) (inl ∘ inr) inl).
   rewrite assoc_to_inl_inr.
-  (* Goal: cover id α ∘ ((inr ∘ inl) ∘ inl) ≈ inr ∘ inl *)
+  (*
+ Goal: cover id α ∘ ((inr ∘ inl) ∘ inl) ≈ inr ∘ inl 
+
+ --------
+ 目标：覆盖 id α ∘ ((inr ∘ inl) ∘ inl) ≈ inr ∘ inl
+*)
   rewrite <- (comp_assoc inr inl inl).
   rewrite (comp_assoc (cover id[X] _) inr (inl ∘ inl)).
   rewrite cover_inr.
@@ -1581,11 +2313,16 @@ Proof.
   rewrite cover_inl.
   rewrite <- (comp_assoc inl (to coprod_assoc) inr).
   rewrite assoc_to_inr.
-  (* Goal: cover id α ∘ (α ∘ (inl ∘ (inr ∘ inr))) *)
+  (*
+ Goal: cover id α ∘ (α ∘ (inl ∘ (inr ∘ inr))) 
+
+ --------
+ 目标：覆盖 id α ∘ (α ∘ (inl ∘ (inr ∘ inr)))
+*)
   rewrite (comp_assoc inl inr inr).
   rewrite (comp_assoc (to coprod_assoc) (inl ∘ inr) inr).
   rewrite assoc_to_inl_inr.
-  (* Goal: cover id α ∘ ((inr ∘ inl) ∘ inr) *)
+  (* Goal: cover id α ∘ ((inr ∘ inl) ∘ inr) / 目标：覆盖 id α ∘ ((inr ∘ inl) ∘ inr) *)
   rewrite <- (comp_assoc inr inl inr).
   rewrite (comp_assoc (cover id[X] _) inr (inl ∘ inr)).
   rewrite cover_inr.
@@ -1602,7 +2339,7 @@ Lemma pentagon_rhs_ir {X Y Z W : C} :
 Proof.
   rewrite <- !comp_assoc.
   rewrite assoc_to_inl_inr.
-  (* Goal: α[X,Y,Z+W] ∘ (inr ∘ inl) *)
+  (* Goal: α[X,Y,Z+W] ∘ (inr ∘ inl) / 目标：α [X,Y,Z+W] ∘ (inr ∘ inl) *)
   rewrite (comp_assoc (to coprod_assoc) inr inl).
   rewrite assoc_to_inr.
   rewrite <- (comp_assoc inr inr inl).
@@ -1619,7 +2356,7 @@ Proof.
   rewrite <- !comp_assoc.
   rewrite cover_inr.
   rewrite id_right.
-  (* Goal: cover id α ∘ (α ∘ inr) *)
+  (* Goal: cover id α ∘ (α ∘ inr) / 目标：覆盖 id α ∘ (α ∘ inr) *)
   rewrite assoc_to_inr.
   rewrite (comp_assoc (cover id[X] _) inr inr).
   rewrite cover_inr.
@@ -1643,9 +2380,17 @@ Proof.
 Qed.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * C-level pentagon for [coprod_assoc].
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Two coproduct iso composites out of [((X+Y)+Z)+W] are equal iff they
+   agree on the four basis injections [(inl∘inl)∘inl], [(inl∘inl)∘inr],
+   [inl∘inr], and [inr].  Each of those is closed by the corresponding
+   [pentagon_lhs_*] / [pentagon_rhs_*] helper above. 
+
+   --------
+   * [coprod_assoc] 的 C 级五角形。
+
+   两个来自 [((X+Y)+Z)+W] 的余积同构复合如果且仅如果它们在四个基注射 [(inl∘inl)∘inl]、[(inl∘inl)∘inr]、[inl∘inr] 和 [inr] 上一致。每一个都由上面的相应 [pentagon_lhs_*] / [pentagon_rhs_*] 辅助闭合。
 *)
 Lemma coprod_pentagon_aux {X Y Z W : C} :
   cover (id[X]) (to (@coprod_assoc C H_Coc Y Z W))
@@ -1655,42 +2400,47 @@ Lemma coprod_pentagon_aux {X Y Z W : C} :
     ∘ to (@coprod_assoc C H_Coc (X + Y) Z W).
 Proof.
   apply coprod_ext.
-  - (* outer inl case: domain (X+Y)+Z *)
+  - (* outer inl case: domain (X+Y)+Z / 外部内部情况：域 (X+Y)+Z *)
     apply coprod_ext.
-    + (* (inl ∘ inl) on (X+Y)+Z side: domain X+Y *)
+    + (* (inl ∘ inl) on (X+Y)+Z side: domain X+Y / (inl ∘ inl) 在 (X+Y)+Z 侧：定义域 X+Y *)
       apply coprod_ext.
-      * (* ((inl ∘ inl) ∘ inl): X-injection.
-           Goal is left-associated, helpers use right-associated form.
-           Bridge by an explicit assertion. *)
+      * (* ((inl ∘ inl) ∘ inl): X-injection. Goal is left-associated, helpers use right-associated form. Bridge by an explicit assertion. / ((inl ∘ inl) ∘ inl)：X-注入。 目标是左结合的，辅助使用右结合形式。 通过明确断言进行桥接。 *)
         assert (Hl : forall (u : (X + Y + Z + W) ~> X + (Y + (Z + W))),
                    (u ∘ inl) ∘ inl ∘ inl ≈ u ∘ ((inl ∘ inl) ∘ inl)).
         { intros u; rewrite !comp_assoc; reflexivity. }
         rewrite !Hl.
         rewrite pentagon_lhs_iii.
         symmetry; rewrite pentagon_rhs_iii; reflexivity.
-      * (* ((inl ∘ inl) ∘ inr): Y-injection. *)
+      * (* ((inl ∘ inl) ∘ inr): Y-injection. / ((inl ∘ inl) ∘ inr)：Y-注入。 *)
         assert (Hl : forall (u : (X + Y + Z + W) ~> X + (Y + (Z + W))),
                    (u ∘ inl) ∘ inl ∘ inr ≈ u ∘ ((inl ∘ inl) ∘ inr)).
         { intros u; rewrite !comp_assoc; reflexivity. }
         rewrite !Hl.
         rewrite pentagon_lhs_iir.
         symmetry; rewrite pentagon_rhs_iir; reflexivity.
-    + (* (inl ∘ inr): Z-injection. *)
+    + (* (inl ∘ inr): Z-injection. / (inl ∘ inr)：Z-注入。 *)
       assert (Hl : forall (u : (X + Y + Z + W) ~> X + (Y + (Z + W))),
                  (u ∘ inl) ∘ inr ≈ u ∘ (inl ∘ inr)).
       { intros u; rewrite !comp_assoc; reflexivity. }
       rewrite !Hl.
       rewrite pentagon_lhs_ir.
       symmetry; rewrite pentagon_rhs_ir; reflexivity.
-  - (* outer inr: W-injection. *)
+  - (* outer inr: W-injection. / 外部 INR：W 注射。 *)
     rewrite pentagon_lhs_r.
     symmetry; rewrite pentagon_rhs_r; reflexivity.
 Qed.
 
 (*
-   本节说明 Hypergraph 相关定义、性质与动机。
+   * ** Triangle and Pentagon at cospan level
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   These lift the C-level [coprod_triangle_aux] and [coprod_pentagon_aux]
+   through [cospan_tensor_mor_as_cospan], [mor_as_cospan_compose], and
+   [mor_as_cospan_proper]. 
+
+   --------
+   * ** 三角形和五边形在共跨度层级
+
+   它们通过  [cospan_tensor_mor_as_cospan]、[mor_as_cospan_compose] 和 [mor_as_cospan_proper] 提升 C 级别的 [coprod_triangle_aux] 和 [coprod_pentagon_aux]。
 *)
 
 Lemma cospan_triangle_identity {x y : C} :
@@ -1700,14 +2450,24 @@ Lemma cospan_triangle_identity {x y : C} :
        (cospan_tensor (cospan_id x) (mor_as_cospan (to (@coprod_zero_l C H_Coc H_Ini y))))
        (mor_as_cospan (to (@coprod_assoc C H_Coc x 0 y)))).
 Proof.
-  (* LHS = cospan_tensor (mor_as_cospan _) (mor_as_cospan id[y]) (since cospan_id = mor_as_cospan id)
-        ≈ mor_as_cospan (cover (to coprod_zero_r) id[y])  [by cospan_tensor_mor_as_cospan]
-     RHS = cospan_compose (cospan_tensor (mor_as_cospan id[x]) (mor_as_cospan _)) (mor_as_cospan _)
-        ≈ cospan_compose (mor_as_cospan (cover id[x] (to coprod_zero_l))) (mor_as_cospan _)
-        ≈ mor_as_cospan ((cover id[x] (to coprod_zero_l)) ∘ (to coprod_assoc))  [by mor_as_cospan_compose]
-     Use coprod_triangle_aux to equate the C-level morphisms. *)
+  (*
+ LHS = cospan_tensor (mor_as_cospan _) (mor_as_cospan id[y]) (since cospan_id = mor_as_cospan id)
+ ≈ mor_as_cospan (cover (to coprod_zero_r) id[y])  [by cospan_tensor_mor_as_cospan]
+ RHS = cospan_compose (cospan_tensor (mor_as_cospan id[x]) (mor_as_cospan _)) (mor_as_cospan _)
+ ≈ cospan_compose (mor_as_cospan (cover id[x] (to coprod_zero_l))) (mor_as_cospan _)
+ ≈ mor_as_cospan ((cover id[x] (to coprod_zero_l)) ∘ (to coprod_assoc))  [by mor_as_cospan_compose]
+ Use coprod_triangle_aux to equate the C-level morphisms. 
+
+ --------
+ LHS = cospan_tensor (mor_as_cospan _) (mor_as_cospan id [y]) (因为 cospan_id = mor_as_cospan id)
+ ≈ mor_as_cospan (cover (to coprod_zero_r) id [y])   [by cospan_tensor_mor_as_cospan]
+ RHS = cospan_compose (cospan_tensor (mor_as_cospan id [x]) (mor_as_cospan _)) (mor_as_cospan _)
+ ≈ cospan_compose (mor_as_cospan (cover id [x]  (to coprod_zero_l))) (mor_as_cospan _)
+ ≈ mor_as_cospan ((cover id [x]  (to coprod_zero_l)) ∘ (to coprod_assoc))   [by mor_as_cospan_compose]
+ 使用 coprod_triangle_aux 来使 C 级态射相等。
+*)
   eapply cospan_equiv_trans.
-  { (* cospan_id x = mor_as_cospan id[x] up to cospan_equiv via mor_as_cospan_id (reversed) *)
+  { (* cospan_id x = mor_as_cospan id[x] up to cospan_equiv via mor_as_cospan_id (reversed) / cospan_id x = 经过 mor_as_cospan_id（反向）通过 cospan_equiv 的 mor_as_cospan id [x] *)
     apply cospan_tensor_respects.
     - apply cospan_equiv_refl.
     - apply cospan_equiv_sym, mor_as_cospan_id. }
@@ -1732,12 +2492,44 @@ Proof.
 Defined.
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * ** Toward [Monoidal (CospanCat C HP)]
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   All six naturality lemmas ([to/from] x [unit_left/unit_right/tensor_assoc])
+   are now derivable from the proved [cospan_unit_left_natural],
+   [cospan_unit_right_natural], [cospan_tensor_assoc_natural], and the
+   [from_naturality_of_to_M] helper.
+
+   The remaining obligations for the full [Monoidal] instance:
+
+   - [triangle_identity]: at cospan level, this reduces to the C-level
+   [coprod_triangle_aux] (proved above) lifted via
+   [cospan_tensor_mor_as_cospan] and [mor_as_cospan_compose].
+
+   - [pentagon_identity]: derived from [coprod_pentagon_aux] (C-level)
+   via [mor_as_cospan_proper], [cospan_tensor_mor_as_cospan], and
+   [mor_as_cospan_compose].  See [cospan_pentagon_identity] below. 
+
+   --------
+   * ** 向 [Monoidal (CospanCat C HP)]  
+
+   所有六个自然性引理（[to/from] x [unit_left/unit_right/tensor_assoc]）  
+   现在都可以从已证明的 [cospan_unit_left_natural]、[cospan_unit_right_natural]、[cospan_tensor_assoc_natural] 以及 [from_naturality_of_to_M] 辅助引理中推导出来。  
+
+   完整 [Monoidal] 实例的剩余任务：  
+
+   - [triangle_identity]：在共跨层级上，这归约为 C 层级的  
+   [coprod_triangle_aux]（上面已证明）通过 [cospan_tensor_mor_as_cospan] 和 [mor_as_cospan_compose] 提升。  
+
+   - [pentagon_identity]：通过 [mor_as_cospan_proper]、[cospan_tensor_mor_as_cospan] 以及 [mor_as_cospan_compose] 从 C 层级的 [coprod_pentagon_aux] 推导而来。  
+   见下面的 [cospan_pentagon_identity]。
 *)
 
-(** Cospan-level pentagon, parallel to [cospan_triangle_identity]. *)
+(*
+   * Cospan-level pentagon, parallel to [cospan_triangle_identity]. 
+
+   --------
+   * Cospan级五边形，与[cospan_triangle_identity]平行。
+*)
 Lemma cospan_pentagon_identity {x y z w : C} :
   cospan_equiv
     (cospan_compose HP
@@ -1751,22 +2543,28 @@ Lemma cospan_pentagon_identity {x y z w : C} :
        (mor_as_cospan (to (@coprod_assoc C H_Coc x y (z + w))))
        (mor_as_cospan (to (@coprod_assoc C H_Coc (x + y) z w)))).
 Proof.
-  (* LHS lifts via cospan_tensor_mor_as_cospan + mor_as_cospan_compose to
-     mor_as_cospan (cover id α ∘ α ∘ cover α id).
-     RHS lifts via mor_as_cospan_compose to mor_as_cospan (α ∘ α).
-     Equate via mor_as_cospan_proper from coprod_pentagon_aux. *)
+  (*
+ LHS lifts via cospan_tensor_mor_as_cospan + mor_as_cospan_compose to
+ mor_as_cospan (cover id α ∘ α ∘ cover α id).
+ RHS lifts via mor_as_cospan_compose to mor_as_cospan (α ∘ α).
+ Equate via mor_as_cospan_proper from coprod_pentagon_aux. 
+
+ --------
+ LHS 通过 cospan_tensor_mor_as_cospan + mor_as_cospan_compose 提升到 mor_as_cospan (cover id α ∘ α ∘ cover α id)。
+ RHS 通过 mor_as_cospan_compose 提升到 mor_as_cospan (α ∘ α)。
+ 通过 coprod_pentagon_aux 中的 mor_as_cospan_proper 进行等式处理。
+*)
   eapply cospan_equiv_trans.
-  { (* Outer compose: g = cospan_tensor (cospan_id x) ..., f = compose ... *)
+  { (* Outer compose: g = cospan_tensor (cospan_id x) ..., f = compose ... / 外部组合：g = cospan_tensor (cospan_id x) ...，f = compose ... *)
     apply cospan_compose_respects_aux.
-    - (* f' = compose (mor_as_cospan α) (cospan_tensor (cospan_id w) ...)
-         Want Hf : f ≈ f'. *)
+    - (* f' = compose (mor_as_cospan α) (cospan_tensor (cospan_id w) ...) Want Hf : f ≈ f'. / f' = compose (mor_as_cospan α) (cospan_tensor (cospan_id w) ...) 想要 Hf : f ≈ f'。 *)
       apply cospan_compose_respects_aux.
-      + (* Inner f': cospan_tensor (mor_as_cospan id[w]) ... after subst *)
+      + (* Inner f': cospan_tensor (mor_as_cospan id[w]) ... after subst / 内部 f'：cospan_tensor（mor_as_cospan id [w]）... 在替换之后 *)
         apply cospan_tensor_respects.
         * apply cospan_equiv_refl.
         * apply cospan_equiv_sym, mor_as_cospan_id.
       + apply cospan_equiv_refl.
-    - (* g': cospan_tensor (mor_as_cospan id[x]) ... *)
+    - (* g': cospan_tensor (mor_as_cospan id[x]) ... / g': cospan_tensor (mor_as_cospan id [x] ) ... *)
       apply cospan_tensor_respects.
       + apply cospan_equiv_sym, mor_as_cospan_id.
       + apply cospan_equiv_refl. }
@@ -1792,9 +2590,26 @@ Proof.
 Defined.
 
 (*
-   本节说明幺半结构、幺半群、始/终对象相关定义、性质与动机。
+   * ** Full Cospan_Monoidal instance
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The Monoidal structure on [CospanCat C HP], with:
+   - unit object [I = 0] (initial object of C)
+   - tensor = coproduct of apexes via [Cospan_Bifunctor]
+   - unitors / associator = [mor_iso_lift] of the C-level coproduct isos
+   - naturality conditions discharged by [cospan_unit_*_natural] and
+   [cospan_tensor_assoc_natural]
+   - triangle / pentagon discharged by [cospan_triangle_identity] /
+   [cospan_pentagon_identity]. 
+
+   --------
+   * ** 完整的 Cospan_Monoidal 实例
+
+   在 [CospanCat C HP] 上的 Monoidal 结构，包括：
+   - 单位对象 [I = 0]（C 的初始对象）
+   - 张量 = 通过 [Cospan_Bifunctor] 的顶点余积
+   - 单位同构 / 结合子 = C 级余积同构的 [mor_iso_lift]
+   - 自然性条件由 [cospan_unit_*_natural] 和 [cospan_tensor_assoc_natural] 解决
+   - 三角形 / 五边形由 [cospan_triangle_identity] / [cospan_pentagon_identity] 解决。
 *)
 
 #[export] Program Instance Cospan_Monoidal : @Monoidal (CospanCat C HP) := {|
@@ -1832,11 +2647,16 @@ Next Obligation.
            (cospan_tensor (cospan_tensor g h) i)).
   apply cospan_tensor_assoc_natural.
 Defined.
-Next Obligation. (* triangle_identity *)
+Next Obligation. (* triangle_identity / 三角恒等式 *)
   apply cospan_triangle_identity.
 Defined.
-Next Obligation. (* pentagon_identity *)
-  (* Reassociate via cospan_compose_assoc, then apply the proved identity. *)
+Next Obligation. (* pentagon_identity / 五边形恒等式 *)
+  (*
+ Reassociate via cospan_compose_assoc, then apply the proved identity. 
+
+ --------
+ 通过 cospan_compose_assoc 重新关联，然后应用已证明的恒等式。
+*)
   eapply cospan_equiv_trans.
   { apply cospan_equiv_sym. apply cospan_compose_assoc. }
   apply cospan_pentagon_identity.
@@ -1845,26 +2665,154 @@ Defined.
 End CospanMonoidal.
 
 (*
-   本节说明幺半结构、幺半群、（余）端相关定义、性质与动机。
+ Historical note: the two status blocks below predate the completed
+ [Cospan_Monoidal] instance above and are retained only as design
+ rationale.  Their line-count estimates and "what remains" language are
+ superseded — the full Monoidal coherence (naturality, triangle,
+ pentagon) is discharged by the lemmas in this file and closes under the
+ global context, as recorded by the CLOSED markers at the end. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 历史说明：下面的两个状态块早于上面完成的 [Cospan_Monoidal] 实例，仅保留作为设计原理。它们的行数估计和“剩余内容”表述已被取代 —— 完整的单同态一致性（自然性、三角形、公设五边形）由本文件中的引理处理，并在全局上下文下闭合，如在末尾的 CLOSED 标记所记录。
 *)
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * ** Status of the full Cospan-Hypergraph derivation
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   With the above [mor_as_cospan] embedding and the unitor / associator
+   / braid cospans defined as data, the Monoidal coherence proofs at
+   the CospanCat level reduce to:
+
+   (i)  the corresponding C-level coproduct facts (provided by
+   [Structure/Cocartesian.v]) — for triangle, pentagon,
+   naturality of unitors;
+   (ii)  the [cospan_compose] of two morphism-as-cospans agreeing
+   with the morphism-as-cospan of the composite in C, which
+   reduces to the pushout-of-id-with-anything collapse — i.e.,
+   [pushout id g] is canonically [Y] (the codomain of g) and
+   similarly for [pushout f id], a single pushout-UMP
+   calculation per unitor / associator / braid;
+   (iii)  the bifunctor [fmap_comp] for [cospan_tensor], requiring
+   the pushout-of-covers compatibility lemma.
+
+   These are still ~300-500 lines of pushout reasoning, but the
+   [mor_as_cospan] embedding makes them mechanically tractable.
+
+   The downstream consumer instantiation path is now: provide
+   [Cocartesian C], [Initial C], [HasPushouts C], and (for SCFA axioms)
+   a witness that pushouts of identity-style maps collapse — the
+   latter is automatic in [Sets] and in any category with explicit
+   finite colimits. 
+
+   --------
+   * ** 完整 Cospan-超图推导的状态
+
+   有了上面的  [mor_as_cospan]  嵌入以及定义为数据的单位器 / 结合子 / 编织 Cospan，CospanCat 层级的单体一致性证明简化为：(i) 相应的 C 级余积事实（由 [Structure/Cocartesian.v] 提供）——针对三角形、五边形、单位元的自然性；
+   (ii) 两个作为余跨度的态射在 C 中与复合集合作为余跨度的态射一致的 [cospan_compose]，这归约为恒等态射与任意对象的推出坍缩——即，[pushout id g] 自然同构于 [Y]（g 的余域），[pushout f id] 亦然，每个单位元／结合子／交错对应一次推出-泛小结计算；
+   (iii) 针对 [cospan_tensor] 的双函子 [fmap_comp]，需要使用覆盖推出的兼容引理。
+
+   这些仍然大约需要 300-500 行推出推理，但 [mor_as_cospan] 的嵌入使它们在机械上可处理。下游消费者实例化路径现在是：提供 [Cocartesian C]、[Initial C]、[HasPushouts C]，以及（对于 SCFA 公理）一个证明身份样映射的推挤图会塌缩的见证——在 [Sets] 中以及在任何具有显式有限余积的范畴中，这一点是自动的。
 *)
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * ** Progress on V2 Final Push (this branch)
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   After refactoring [CospanCat] to a direct construction (no [C^op]
+   shim), the following V2d-coherence machinery is now available:
+
+   - [cospan_tensor_id], [cospan_tensor_respects],
+   [cospan_tensor_compose_compat] — the three [Proper] + bifunctor
+   ingredients for [cospan_tensor].
+
+   - [Cospan_Bifunctor : (CospanCat C HP) ∏ (CospanCat C HP) ⟶ CospanCat C HP]
+   — the bifunctor underlying the Monoidal tensor.
+
+   - [mor_as_cospan_compose], [mor_as_cospan_id], [mor_as_cospan_proper]
+   — functoriality of the embedding [C ⟶ CospanCat C].
+
+   - [mor_iso_lift] — lift any [C]-iso to a [CospanCat C HP]-iso, used
+   for the unitor / associator / braid as cospan-level isos.
+
+   - [cospan_tensor_mor_as_cospan] — the bridge
+   [cospan_tensor (mor_as_cospan f) (mor_as_cospan g) ≈ mor_as_cospan (cover f g)]
+   that lets [mor_as_cospan]-lifted morphisms interact with [bimap]
+   in the upcoming Monoidal naturality proofs.
+
+   What remains for the full Monoidal instance:
+
+   (a) The six naturality conditions ([to/from_unit_left_natural],
+   [to/from_unit_right_natural], [to/from_tensor_assoc_natural]).
+   Each requires showing
+   [g ∘ unit_left ≈ unit_left ∘ bimap id g]
+   for an *arbitrary* cospan [g], where [unit_left] is a lifted
+   C-iso but [g] is a generic cospan with non-trivial apex.  The
+   apex of the LHS composite collapses by [pushout_id_left_apex],
+   but the apex of the RHS composite is a pushout of [cover id g_2]
+   against [zero ▽ id], which is a non-trivial UMP calculation
+   (~50-100 lines each, ~400-600 total).
+
+   (b) Triangle + pentagon coherence identities, each a UMP
+   calculation against the unitor/associator cospans (~100-200
+   lines).
+
+   Estimated total: ~600-1000 lines of mechanical-but-detailed pushout
+   UMP reasoning.  Tractable but beyond a single dispatch session. 
+
+   --------
+   * ** V2 最终冲刺的进展（此分支）
+
+   在将 [CospanCat] 重构为直接构造（无 [C^op] 垫片）之后，以下 V2d-连贯性机制现在可用：
+
+   - [cospan_tensor_id]、[cospan_tensor_respects]、
+   [cospan_tensor_compose_compat] —— [Proper] + 双函子用于 [cospan_tensor] 的三个组成部分。
+
+   - [Cospan_Bifunctor : (CospanCat C HP) ∏ (CospanCat C HP) ⟶ CospanCat C HP]
+   —— 支撑单体张量的双函子。
+
+   - [mor_as_cospan_compose]、[mor_as_cospan_id]、[mor_as_cospan_proper]
+   —— 嵌入 [C ⟶ CospanCat C] 的函子性。
+
+   - [mor_iso_lift] —— 将任何 [C]-同构提升为 [CospanCat C HP]-同构，用于作为共跨同构的单元器/结合器/编织器。
+
+   - [cospan_tensor_mor_as_cospan] —— 桥梁 [cospan_tensor (mor_as_cospan f) (mor_as_cospan g) ≈ mor_as_cospan (cover f g)]，
+   允许 [mor_as_cospan] 提升的态射与 [bimap] 在即将到来的单体自然性证明中相互作用。
+
+   完成完整单体实例还剩下:(a) 六个自然性条件（[to/from_unit_left_natural]、[to/from_unit_right_natural]、[to/from_tensor_assoc_natural]）。每一个都需要展示  
+   [g ∘ unit_left ≈ unit_left ∘ bimap id g]  
+   对于一个*任意的*余锥 [g]，其中 [unit_left] 是一个提升的 C-同构，但 [g] 是一个具有非平凡顶点的通用余锥。左边复合的顶点通过 [pushout_id_left_apex] 收缩，但右边复合的顶点是 [cover id g_2] 与 [zero ▽ id] 的推伴，这是一个非平凡的 UMP 计算（每个大约50-100行，总计约400-600行）。
+
+   (b) 三角形 + 五边形相干恒等式，每一个都是针对单位元/结合子余锥的 UMP 计算（大约100-200行）。
+
+   估计总量：大约600-1000行机械但详细的推伴 UMP 推理。可处理，但超出了单次会话范围。
 *)
-(* CLOSED(V2d-coherence): the full Monoidal (CospanCat C HP) instance is
-   built as [Cospan_Monoidal] above. *)
 (*
-   本节说明幺半群相关定义、性质与动机。
+ CLOSED(V2d-coherence): the full Monoidal (CospanCat C HP) instance is
+ built as [Cospan_Monoidal] above. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ CLOSED(V2d-coherence)：完整的 Monoidal (CospanCat C HP) 实例构建如上面的 [Cospan_Monoidal] 所示。
+*)
+(*
+ CLOSED(V2d-coherence): The [Cospan_BraidedMonoidal] /
+ [Cospan_SymmetricMonoidal] instances are built in
+ [Construction/Cospan/Symmetric.v].  The SCFA-on-every-X instance
+ [cospan_scfa] (and the underlying monoid / comonoid / Frobenius /
+ commutative Frobenius pieces) is built in
+ [Construction/Cospan/SCFA.v].  The full
+ [Hypergraph (CospanCat C HP) Cospan_SymmetricMonoidal] instance is
+ built as [Cospan_Hypergraph] in
+ [Construction/Cospan/HypergraphInstance.v]:
+ - 4 unit axioms ([scfa_unit_{mu,eta,delta,epsilon}]) — closed via
+ initiality of [0];
+ - 4 tensor axioms ([scfa_tensor_{mu,eta,delta,epsilon}]) — closed via
+ the C-level identity [codiag_through_mid_swap] lifted through
+ [cospan_mid_swap_as_mor] / [cospan_mid_swap_inv_as_mor] and the
+ standard [mor_as_cospan_compose] /
+ [cospan_tensor_mor_as_cospan] / [cospan_tensor_id_left_as_cospan]
+ bridges over the 5-fold [mid_swap] composite. 
+
+ --------
+ CLOSED(V2d-相干性)：[Cospan_BraidedMonoidal] / [Cospan_SymmetricMonoidal] 实例是在 [Construction/Cospan/Symmetric.v] 中构建的。每个 X 上的 SCFA 实例 [cospan_scfa]（以及基础的幺半群 / 余半群 / Frobenius / 交换 Frobenius 结构）是在 [Construction/Cospan/SCFA.v] 中构建的。完整的 [Hypergraph (CospanCat C HP) Cospan_SymmetricMonoidal] 实例作为 [Cospan_Hypergraph] 在 [Construction/Cospan/HypergraphInstance.v] 中构建：
+ - 4 条单位公理 ([scfa_unit_{mu,eta,delta,epsilon}]) — 通过 [0] 的初始性封闭；
+ - 4 条张量公理 ([scfa_tensor_{mu,eta,delta,epsilon}]) — 通过 C 级恒等式 [codiag_through_mid_swap] 通过 [cospan_mid_swap_as_mor] / [cospan_mid_swap_inv_as_mor] 提升，并通过标准的 [mor_as_cospan_compose] / [cospan_tensor_mor_as_cospan] / [cospan_tensor_id_left_as_cospan] 桥接到 5 重 [mid_swap] 复合上封闭。
 *)

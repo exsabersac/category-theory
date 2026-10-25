@@ -13,34 +13,83 @@ Context {C : Category}.
 Context `{@Cartesian C}.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/exponential+object
-   Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
-   Wikipedia: https://en.wikipedia.org/wiki/Exponential_object
+ nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
+ nLab: https://ncatlab.org/nlab/show/exponential+object
+ Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
+ Wikipedia: https://en.wikipedia.org/wiki/Exponential_object
 
-   本文件给出闭结构。
+ A cartesian closed category (CCC) is a cartesian category in which every
+ functor - × y has a right adjoint - ^ y, the exponential (internal hom).
+ Equivalently, for all objects y, z there is an exponential object z^y
+ equipped with an evaluation map
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ eval : z^y × y ~> z
+
+ that is universal: for every f : x × y ~> z there is a unique transpose
+ (the curry) curry f : x ~> z^y with eval ∘ (curry f × id) ≈ f.
+
+ Packaged as an adjunction, the universal property is the bijection
+
+ Hom(x × y, z) ≅ Hom(x, z^y)         ([exp_iso])
+
+ natural in x, y and z, expressing (- × y) ⊣ (- ^ y). Currying is the
+ left-to-right direction, uncurrying its inverse, and eval is the image of
+ the identity on z^y (the counit of the adjunction). CCCs are the
+ categorical semantics of the simply-typed lambda calculus.
+
+ Note on argument order: [exponent_obj x y] is displayed as y ^ x, so the
+ exponential z^y is [exponent_obj y z] and z^y × y ~> z is the hom of the
+ left adjoint applied to z. 
+
+ --------
+ nLab:  https://ncatlab.org/nlab/show/cartesian+closed+category 
+ nLab:  https://ncatlab.org/nlab/show/exponential+object 
+ Wikipedia:  https://en.wikipedia.org/wiki/Cartesian_closed_category 
+ Wikipedia:  https://en.wikipedia.org/wiki/Exponential_object 
+
+ 笛卡尔闭范畴（CCC）是一个笛卡尔范畴，其中每个函子 - × y 都有一个右伴随 - ^ y，即指数对象（内部同态）。
+ 等价地，对于所有对象 y, z，存在一个指数对象 z^y，配备有一个评估映射
+
+ eval : z^y × y ~> z
+
+ 它是普遍的：对于每个 f : x × y ~> z，存在一个唯一的转置
+ （柯里化）curry f : x ~> z^y，使得 eval ∘ (curry f × id) ≈ f。
+
+ 作为伴随的封装，普遍性质就是双射
+
+ Hom(x × y, z) ≅ Hom(x, z^y)         ( [exp_iso] )在 x、y 和 z 中是自然的，表示 (- × y) ⊣ (- ^ y)。Currying 是从左到右的方向，uncurrying 是其逆操作，eval 是 z^y 上恒等映射的象（伴随的余单位）。CCC 是简单类型 lambda 演算的范畴语义。
+
+ 关于参数顺序的注释：[exponent_obj x y] 显示为 y ^ x，因此指数 z^y 是 [exponent_obj y z]，并且 z^y × y ~> z 是作用在 z 上的左伴随的 Hom。
 *)
 
 Class Closed := {
-  exponent_obj : obj → obj → obj    (* internal hom; y ^ x = exponent_obj x y *)
+  exponent_obj : obj → obj → obj    (* internal hom; y ^ x = exponent_obj x y / 内部同态；y ^ x = exponent_obj x y *)
     where "y ^ x" := (exponent_obj x y);
 
   (*
-   本节说明伴随、hom、同构相关定义、性质与动机。
+ The product-exponential adjunction (- × y) ⊣ (- ^ y), as the natural
+ isomorphism Hom(x × y, z) ≅ Hom(x, z^y).  This is the exponential UMP
+ in packaged form: the iso bundles existence and uniqueness of the
+ transpose, and naturality recovers the substitution laws below. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 积-指数伴随 (- × y) ⊣ (- ^ y)，表示自然同构 Hom(x × y, z) ≅ Hom(x, z^y)。这就是封装形式的指数 UMP：该同构捆绑了转置的存在性和唯一性，自然性则恢复了下面的替换律。
 *)
   exp_iso {x y z} : x × y ~> z ≊ x ~> z^y;
 
-  curry'   {x y z} : x × y ~> z → x ~> z^y := to (@exp_iso x y z);    (* transpose: x×y~>z to x~>z^y *)
-  uncurry' {x y z} : x ~> z^y → x × y ~> z := from (@exp_iso x y z);  (* inverse transpose *)
+  curry'   {x y z} : x × y ~> z → x ~> z^y := to (@exp_iso x y z);    (* transpose: x×y~>z to x~>z^y / 转置：x×y~>z 到 x~>z^y *)
+  uncurry' {x y z} : x ~> z^y → x × y ~> z := from (@exp_iso x y z);  (* inverse transpose / 逆转置 *)
 
-  eval' {x y} : y^x × x ~> y := @uncurry' _ _ _ id;   (* evaluation; counit, = uncurry id *)
+  eval' {x y} : y^x × x ~> y := @uncurry' _ _ _ id;   (* evaluation; counit, = uncurry id / 求值；余单位 = uncurry id *)
 
-  (* Beta law / UMP 存在性 equation: eval ∘ (curry f × id) ≈ f, with
- [first (curry' f)] = curry' f × id. Uniqueness transpose is
- supplied [exp_iso] being 同构 (see [uncurry_curry]).（已译） *)
+  (*
+ Beta law / UMP existence equation: eval ∘ (curry f × id) ≈ f, with
+ [first (curry' f)] = curry' f × id.  Uniqueness of the transpose is
+ supplied by [exp_iso] being an isomorphism (see [uncurry_curry]). 
+
+ --------
+ 贝塔律 / UMP 存在方程：eval ∘ (curry f × id) ≈ f，其中 [first (curry' f)] = curry' f × id。转置的唯一性由 [exp_iso] 是同构提供（见 [uncurry_curry]）。
+*)
   ump_exponents' {x y z} (f : x × y ~> z) :
     eval' ∘ first (@curry' _ _ _ f) ≈ f
 }.

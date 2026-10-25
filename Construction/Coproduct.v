@@ -3,14 +3,34 @@ Require Import Category.Theory.Category.
 
 Generalizable All Variables.
 
-(** The coproduct (disjoint union) of two categories. *)
+(** The coproduct (disjoint union) of two categories. / 两个范畴的余积（不相交并集）。 *)
 
 (*
-   Wikipedia: https://en.wikipedia.org/wiki/Coproduct
+ nLab: https://ncatlab.org/nlab/show/coproduct
+ Wikipedia: https://en.wikipedia.org/wiki/Coproduct
 
-   本文件给出余积实例。
+ The coproduct category C ∐ D has as objects the tagged disjoint union of the
+ objects of C and D, an object being either inl c with c : C or inr d with
+ d : D. Morphisms exist only within a single summand: a hom inl c ~> inl c'
+ is a morphism c ~> c' in C, a hom inr d ~> inr d' is a morphism d ~> d' in
+ D, and the hom-set between objects of different summands is empty (encoded
+ here as False). Identity and composition are inherited from whichever
+ summand the objects live in, and equivalence of morphisms is the ≈ of that
+ summand. The unit and associativity laws hold because they hold in each
+ summand.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ This is the coproduct in Cat, the category of categories: the inclusion
+ functors C ⟶ C ∐ D and D ⟶ C ∐ D exhibit C ∐ D as the categorical coproduct
+ of C and D, so a functor C ∐ D ⟶ E is the same as a pair of functors C ⟶ E
+ and D ⟶ E. This is the coproduct *of categories*, and is distinct from a
+ coproduct *object* inside a single category, formed via a universal cocone
+ in Structure/Cocartesian.v. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/coproduct
+ Wikipedia：https://en.wikipedia.org/wiki/Coproduct
+
+ 余积范畴 C ∐ D 的对象是 C 和 D 对象的带标签的离散并集，一个对象要么是 inl c，其中 c ：C，要么是 inr d，其中 d ：D。态射只存在于单个子集内：inl c ~> inl c' 是 C 中的态射 c ~> c'，inr d ~> inr d' 是 D 中的态射 d ~> d'，而来自不同子集对象之间的态射集为空（这里编码为 False）。恒等态射和复合从对象所在的子集中继承，并且态射的等价性是该子集的 ≈。单位律和结合律成立，因为它们在每个子集中都成立。这是 Cat 中的余积，即范畴的范畴：包含函子 C ⟶ C ∐ D 和 D ⟶ C ∐ D 将 C ∐ D 显示为 C 和 D 的范畴余积，因此函子 C ∐ D ⟶ E 与一对函子 C ⟶ E 和 D ⟶ E 是相同的。这是 *范畴* 的余积，与单个范畴内部通过 Structure/Cocartesian.v 中的通用余锥形成的 *对象* 余积不同。
 *)
 
 Section Coproduct.
@@ -21,8 +41,8 @@ Context {D : Category}.
 Local Set Warnings "-intuition-auto-with-star".
 
 Program Definition Coproduct : Category := {|
-  obj     := C + D;            (* tagged disjoint union of objects *)
-  hom     := fun x y =>        (* within a summand; False across summands *)
+  obj     := C + D;            (* tagged disjoint union of objects / 带标签的对象不相交并集 *)
+  hom     := fun x y =>        (* within a summand; False across summands / 在同一项内；在各项之间为假 *)
                match x return Type with
                | Datatypes.inl x =>
                  match y with

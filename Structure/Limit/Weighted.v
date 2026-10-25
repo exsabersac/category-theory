@@ -17,21 +17,50 @@ Generalizable All Variables.
 (*
  nLab: https://ncatlab.org/nlab/show/weighted+limit
 
-   本文件给出极限相关。
+ * Honest scope of this file.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ A weight for a limit of shape J is a functor W : J ⟶ V into some base V; the
+ W-weighted limit of a diagram F : J ⟶ C is the object representing the
+ V-object of "W-cones", i.e. the presheaf
+
+ c ↦ V-natural-transformations W ⟹ C(c, F -).
+
+ Here we treat exclusively the case V = Sets, i.e. *Sets-valued (ordinary)
+ weights*. A general V-weight valued in an arbitrary (closed) monoidal V needs
+ the end calculus (the V-object ∫_j [W j, C(c, F j)]) together with the
+ enriched hom of V, neither of which is committed to here; that genuine
+ V-enriched form is deferred (ledger entry 11). This scoping does not weaken
+ the payload of the file: [conical_weighted] below is proved at full strength
+ in *both* directions, exhibiting the ordinary (conical) limit as the
+ Sets-weighted limit weighted by the constant-singleton weight. 
+
+ --------
+ nLab:  https://ncatlab.org/nlab/show/weighted+limit
+
+ * 本文件的真实范围。
+
+ 形状 J 的极限的权重是一个函子 W : J ⟶ V，进入某个基础 V；
+ 图 F : J ⟶ C 的 W 加权极限是表示“W-锥”的 V 对象的对象，即该预层
+
+ c ↦ V-自然变换 W ⟹ C(c, F -).这里我们专门处理 V = Sets 的情况，即 *Sets 值（普通）权重*。一个一般的 V 权重，如果值在任意（闭合的）幺半群 V 中，则需要使用 end 演算（V 对象 ∫_j  [W j, C(c, F j)]）以及 V 的丰富同态，而这些在这里没有涉及；真正的 V-丰富形式将推迟讨论（账目条目 11）。这种范围划分并不削弱文件的核心内容：下面的 [conical_weighted] 在 *两个* 方向上都被完全证明，展示了普通（锥形）极限作为由恒定单例权重加权的 Sets 权重极限。
 *)
 
-(* 相关说明。 （已译） *)
+(* * The covariant hom-diagram and its reindexing. / * 协变同态图及其重索引。 *)
 
 Section Weighted.
 
 #[local] Obligation Tactic := idtac.
 
 (*
-   本节说明自然变换、函子、（余）极限相关定义、性质与动机。
+ The covariant hom-diagram of a fixed apex [c] over the diagram [F]: the
+ functor J ⟶ Sets sending each [j] to the hom-setoid [c ~> F j] and each
+ [g : j ~> j'] to postcomposition with [fmap[F] g]. A Sets-natural
+ transformation [W ⟹ HomDiagram c F] is precisely a "W-shaped cone" from [c]
+ to [F], so representing this presheaf-of-cones (naturally in [c]) is what it
+ means for a W-weighted limit to exist. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 固定顶点 [c] 在图 [F] 上的协变 Hom 图：函子 J ⟶ Sets 将每个 [j] 发送到 Hom-集合 [c ~> F j]，并将每个 [g : j ~> j'] 发送到与 [fmap[F] 的后合成。一个 Sets-自然变换 [W ⟹ HomDiagram c F] 恰好是从 [c] 到 [F] 的“W 形锥”，因此表示这个锥预层（在 [c] 中自然）就是 W 权重极限存在的含义。
 *)
 
 Program Definition HomDiagram {J C : Category} (c : C) (F : J ⟶ C) : J ⟶ Sets := {|
@@ -53,9 +82,14 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明自然变换、（余）极限、hom相关定义、性质与动机。
+ Reindexing the covariant hom-diagram along a morphism of apexes: for
+ [h : c' ~> c], precomposition with [h] is a natural transformation
+ [HomDiagram c F ⟹ HomDiagram c' F], component-wise [k ↦ k ∘ h]. This is the
+ action-on-morphisms of the "presheaf of cones" viewed in the apex, and is
+ exactly what the naturality square of a weighted limit compares against. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 沿着顶点的态射对协变 hom 图进行重新索引：对于 [h : c' ~> c]，将 [h] 进行前组合是一个自然变换 [HomDiagram c F ⟹ HomDiagram c' F]，其分量为 [k ↦ k ∘ h]。这是在顶点中观察的“锥形预层”对态射的作用，正是加权极限自然性方形所比较的内容。
 *)
 
 Program Definition HomDiagram_precompose {J C : Category} {c c' : C}
@@ -75,11 +109,26 @@ Qed.
 End Weighted.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/weighted+limit
+ nLab: https://ncatlab.org/nlab/show/weighted+limit
 
-   本节说明（余）极限、同构相关定义、性质与动机。
+ A W-weighted limit of [F : J ⟶ C] (with a Sets-valued weight [W : J ⟶ Sets])
+ is an object [wlim_obj] together with an isomorphism, natural in [c],
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ [J,Sets](W, HomDiagram c F)  ≅  C(c, wlim_obj)
+
+ in [Sets]. The left side is the setoid of W-shaped cones from [c] to [F]; the
+ isomorphism [wlim_iso] states that maps into [wlim_obj] classify such cones,
+ and [wlim_natural] is the precomposition/naturality square that makes the
+ family [wlim_iso] a natural isomorphism of presheaves on [C]. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/weighted+limit 
+
+ [F : J ⟶ C] 的 W-加权极限（具有集合值的权重 [W : J ⟶ Sets]）是一个对象 [wlim_obj]，并附带一个在 [c] 中自然的同构：
+
+ [J,Sets] (W, HomDiagram c F) ≅ C(c, wlim_obj)
+
+ 在 [Sets] 中。左边是从 [c] 到 [F] 的 W 形锥集合；同构 [wlim_iso] 陈述了映射到 [wlim_obj] 的函数可以分类这样的锥，而 [wlim_natural] 是前组合/自然性方格，使得族 [wlim_iso] 成为 [C] 上预层的自然同构。
 *)
 
 Class WeightedLimit {J C : Category} (W : J ⟶ Sets) (F : J ⟶ C) := {
@@ -91,9 +140,14 @@ Class WeightedLimit {J C : Category} (W : J ⟶ Sets) (F : J ⟶ C) := {
       {| carrier := c ~{C}~> wlim_obj ; is_setoid := @homset C c wlim_obj |};
 
   (*
-   本节说明 Weighted 相关定义、性质与动机。
+ Naturality of [wlim_iso] in the apex [c]: for [h : c' ~> c] the square
+ relating the two presheaves commutes. Reindexing a cone [α] at [c] to a
+ cone at [c'] (by precomposing every leg with [h]) and then classifying it
+ is the same as classifying [α] and then precomposing the resulting map with
+ [h]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 在顶点 [c] 中 [wlim_iso] 的自然性：对于 [h : c' ~> c]，相关两个预层的平方图是交换的。将锥 [α] 在 [c] 处重新索引到锥 [c']（通过将每条边通过 [h] 预复合）然后进行分类，与先对 [α] 进行分类然后将得到的映射与 [h] 预复合是相同的。
 *)
   wlim_natural (c c' : C) (h : c' ~{C}~> c)
     (α : W ⟹ HomDiagram c F) :
@@ -106,9 +160,20 @@ Arguments wlim_iso {J C W F} _ _.
 Arguments wlim_natural {J C W F} _ _ _ _ _.
 
 (*
-   本节说明自然变换、（余）极限、始/终对象相关定义、性质与动机。
+ * The conical dictionary.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ Weighting by the constant weight at the terminal setoid recovers the ordinary
+ (conical) limit. The constant weight [Δ[J](1)] sends every object of [J] to
+ the singleton setoid and every morphism to the identity, so a Sets-natural
+ transformation [Δ[J](1) ⟹ HomDiagram c F] is exactly a choice, for each [j],
+ of a leg [c ~> F j] compatible with the diagram — i.e. a cone from [c] to
+ [F]. The two conversions below make this cone/nat-transformation dictionary
+ explicit. 
+
+ --------
+ * 圆锥字典。
+
+ 通过在终端集合上按常数权重加权，可以恢复普通的（圆锥）极限。常数权重  [Δ[J] (1)] 将  [J] 的每个对象映射到单例集合，并将每个态射映射到恒等态射，因此一个 Sets-自然变换  [Δ[J] (1) ⟹ HomDiagram c F] 恰好是对每个  [j] 的一个选择，使得选择的腿 [c ~> F j] 与图兼容——即从  [c] 到  [F] 的一个圆锥。下面的两个转换明确了这个圆锥/自然变换字典。
 *)
 
 Section Conical.
@@ -119,8 +184,13 @@ Context {J : Category}.
 Context {C : Category}.
 Context {F : J ⟶ C}.
 
-(* A Sets-自然变换 out 常值-singleton weight cone:
- read off leg at [j] evaluating [j]-component at unique point. （已译） *)
+(*
+ A Sets-natural transformation out of the constant-singleton weight is a cone:
+ read off the leg at [j] by evaluating the [j]-component at the unique point. 
+
+ --------
+ 从常量单元素权重出的 Sets-自然变换是一个圆锥：通过在唯一点处评估 [j] 分量来读取 [j] 的分支。
+*)
 
 Program Definition cone_of_nat (c : C)
   (α : Δ[J]( @terminal_obj Sets Sets_Terminal ) ⟹ HomDiagram c F) : ACone c F := {|
@@ -131,8 +201,13 @@ Next Obligation.
   exact (@naturality _ _ _ _ α x y f ttt).
 Qed.
 
-(* Conversely cone yields Sets-自然变换 out the
- 常值-singleton weight: each component 常值 map at leg. （已译） *)
+(*
+ Conversely a cone yields a Sets-natural transformation out of the
+ constant-singleton weight: each component is the constant map at that leg. 
+
+ --------
+ 相反，一个圆锥会从常数单元素权重生成一个 Sets-自然变换：每个分量都是该腿的常数映射。
+*)
 
 Program Definition nat_of_cone (c : C) (κ : ACone c F) :
   Δ[J]( @terminal_obj Sets Sets_Terminal ) ⟹ HomDiagram c F := {|
@@ -152,14 +227,14 @@ Qed.
 
 End Conical.
 
-(* * WeightedLimit ⇒ Limit at the constant weight. *)
+(* * WeightedLimit ⇒ Limit at the constant weight. / * 加权限制 ⇒ 在恒定权重下的限制。 *)
 
 Lemma limit_of_conical `(F : J ⟶ C) :
   WeightedLimit (Δ[J]( @terminal_obj Sets Sets_Terminal )) F → Limit F.
 Proof.
   intro WL.
   destruct WL as [L Φ Φnat].
-  (* 相关说明。 （已译） *)
+  (* The universal cone at apex [L]: the legs classified by [id[L]]. / 顶点 [L] 的通用圆锥：由 [id[L] 分类的边。 *)
   pose (β := from (Φ L) id[L]).
   unshelve refine {| limit_cone :=
     {| vertex_obj := L ; coneFrom := cone_of_nat (F:=F) L β |} |}.
@@ -167,17 +242,17 @@ Proof.
   pose (n := @vertex_obj _ _ _ N).
   pose (αN := nat_of_cone (F:=F) n (@coneFrom _ _ _ N)).
   unshelve refine {| unique_obj := to (Φ n) αN |}.
-  - (* The classified map mediates: φ x ∘ (to (Φ n) αN) ≈ ψ x. *)
+  - (* The classified map mediates: φ x ∘ (to (Φ n) αN) ≈ ψ x. / 分类地图中介：φ x ∘ (到 (Φ n) αN) ≈ ψ x。 *)
     intro x.
     pose (u := to (Φ n) αN).
-    (* Classifying the [u]-reindexed universal cone reproduces [u]. *)
+    (* Classifying the [u]-reindexed universal cone reproduces [u]. / 对[u]重新索引的通用圆锥进行分类会重现[u]。 *)
     assert (Hu : to (Φ n) (nat_compose (HomDiagram_precompose u F) β) ≈ u).
     { transitivity (to (Φ L) β ∘ u).
       - exact (Φnat L n u β).
       - assert (Htb : to (Φ L) β ≈ id[L]).
         { exact (iso_to_from (Φ L) id[L]). }
         rewrite Htb; apply id_left. }
-    (* Hence the reindexed cone equals [αN], read off leg by leg. *)
+    (* Hence the reindexed cone equals [αN], read off leg by leg. / 因此，重新索引的锥等于 [αN]，逐条读取。 *)
     assert (Hpre : nat_compose (HomDiagram_precompose u F) β ≈ αN).
     { transitivity
         (from (Φ n) (to (Φ n) (nat_compose (HomDiagram_precompose u F) β))).
@@ -187,7 +262,7 @@ Proof.
         + apply (proper_morphism (from (Φ n))); exact Hu.
         + exact (iso_from_to (Φ n) αN). }
     exact (Hpre x ttt).
-  - (* Uniqueness of the mediator. *)
+  - (* Uniqueness of the mediator. / 调解人的独特性。 *)
     intros v Hv.
     assert (Hv2 : to (Φ n) (nat_compose (HomDiagram_precompose v F) β) ≈ v).
     { transitivity (to (Φ L) β ∘ v).
@@ -202,7 +277,7 @@ Proof.
     + exact Hv2.
 Defined.
 
-(* * Limit ⇒ WeightedLimit at the constant weight. *)
+(* * Limit ⇒ WeightedLimit at the constant weight. / * 限制 ⇒ 在恒定权重下的加权限制。 *)
 
 Section Reverse.
 
@@ -240,7 +315,7 @@ Lemma Lmed_unique (N : Cone F) (v : @vertex_obj _ _ _ N ~{C}~> Lobj) :
   Lmed N ≈ v.
 Proof. intro H. exact (uniqueness (@ump_limits _ _ _ Lim N) v H). Qed.
 
-(* The classifying map: cone [c] sent mediating 态射. （已译） *)
+(* The classifying map: a cone from [c] is sent to its mediating morphism. / 分类映射：来自 [c] 的锥体被发送到其中介态射。 *)
 
 Definition wl_to_fn (c : C)
   (α : Δ[J]( @terminal_obj Sets Sets_Terminal ) ⟹ HomDiagram c F) :
@@ -260,7 +335,7 @@ Next Obligation.
   - symmetry; exact (Heq x ttt).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Its inverse: a map [u : c ~> Lobj] is sent to the cone obtained by postcomposing every limit leg with [u]. / 它的逆：一个映射 [u : c ~> Lobj] 被发送到通过将每个极限杆与 [u] 后组合得到的圆锥。 *)
 
 Program Definition wl_from_acone (c : C) (u : c ~{C}~> Lobj) : ACone c F := {|
   vertex_map := fun j => Lleg j ∘ u
@@ -290,14 +365,14 @@ Program Definition wl_iso (c : C) :
     {| carrier := c ~{C}~> Lobj ; is_setoid := @homset C c Lobj |} :=
   {| to := wl_to c ; from := wl_from c |}.
 Next Obligation.
-  (* 相关说明。 （已译） *)
+  (* to ∘ from ≈ id : classifying the [u]-cone recovers [u]. / 到 ∘ 从 ≈ 身份：对 [u]-锥体的分类恢复 [u]。 *)
   intros c u; unfold wl_to_fn, wl_from_fn.
   apply (Lmed_unique (mkCone (cone_of_nat c (nat_of_cone c (wl_from_acone c u)))));
     intro x; simpl.
   reflexivity.
 Qed.
 Next Obligation.
-  (* 相关说明。 （已译） *)
+  (* from ∘ to ≈ id : the classified map carries [α]'s legs. / 从 ∘ 到 ≈ id：分类地图携带 [α] 的腿。 *)
   intros c α j w; destruct w; unfold wl_from_fn, wl_to_fn; simpl.
   exact (Lmed_commutes (mkCone (cone_of_nat c α)) j).
 Qed.
@@ -308,7 +383,7 @@ Program Definition conical_of_limit_inst :
   wlim_iso := wl_iso
 |}.
 Next Obligation.
-  (* Naturality: both sides mediate the [h]-reindexed cone. *)
+  (* Naturality: both sides mediate the [h]-reindexed cone. / 自然性：双方调解 [h] 重索引的锥体。 *)
   intros c c' h α.
   apply (Lmed_unique
            (mkCone (cone_of_nat c' (nat_compose (HomDiagram_precompose h F) α))));
@@ -325,11 +400,16 @@ Lemma conical_of_limit `(F : J ⟶ C) :
 Proof. intro Lim. exact (conical_of_limit_inst Lim). Qed.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/weighted+limit
+ nLab: https://ncatlab.org/nlab/show/weighted+limit#conical_limits
 
-   本节说明（余）极限、同构相关定义、性质与动机。
+ The named payload: the [Sets]-weighted limit weighted by the constant weight
+ at the terminal setoid is exactly the ordinary limit. Both directions are
+ proved at full strength. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ nLab: https://ncatlab.org/nlab/show/weighted+limit#conical_limits
+
+ 命名的幂载荷：在终端集合论中由常数权重加权的 [Sets] 加权极限正是普通极限。两个方向都在完全强度下得到证明。
 *)
 
 Theorem conical_weighted `(F : J ⟶ C) :
@@ -341,11 +421,18 @@ Proof.
 Defined.
 
 (*
-   nLab: https://ncatlab.org/nlab/show/weighted+colimit
+ nLab: https://ncatlab.org/nlab/show/weighted+colimit
 
-   本节说明函子、（余）极限相关定义、性质与动机。
+ A Sets-weighted colimit is the dual notion: a weighted limit in the opposite
+ category. The honest colimit weight is contravariant on [J], i.e. a functor
+ [W : J^op ⟶ Sets]; reading it as an (ordinary) weight for the opposite
+ diagram [F^op : J^op ⟶ C^op] fixes the variance so that this is the genuine
+ [W]-weighted colimit of [F]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ nLab:  https://ncatlab.org/nlab/show/weighted+colimit
+
+ 集合加权余极限是对偶概念：在对偶范畴中的加权极限。真正的余极限权重在 [J] 上是逆变的，即一个函子 [W : J^op ⟶ Sets]；将其作为对偶图 [F^op : J^op ⟶ C^op] 的（普通）权重来读取，就固定了变异性，从而这是 [W] 加权的 [F] 的真正余极限。
 *)
 
 Definition WeightedColimit {J C : Category} (W : (J^op) ⟶ Sets) (F : J ⟶ C) :=

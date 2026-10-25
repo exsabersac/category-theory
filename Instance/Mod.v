@@ -1,10 +1,104 @@
 (*
- nLab: https://ncatlab.org/nlab/show/Mod
- Wikipedia: https://en.wikipedia.org/wiki/Category_of_modules
+   * * R-Mod, the category of modules over a ring
 
-   本文件给出具体实例。
+   Mac Lane's §I.7 roll-call of large categories includes, alongside
+   [Set], [Ab] and [Rng], the categories of modules: "all small
+   R-modules and R-module homomorphisms, for a fixed ring R"
+   (Categories for the Working Mathematician, 2nd ed., §I.7, printed
+   p. 25 (PDF p. 35), [maclane:I.7:construction3]; the locations follow
+   issue jwiegley/category-theory#256's convention, and as there the
+   printed text was not consulted while writing this file).
+   nLab: https://ncatlab.org/nlab/show/Mod
+   Wikipedia: https://en.wikipedia.org/wiki/Category_of_modules
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   WHAT IS BUILT ON.  A module is an abelian group with a scalar action,
+   so the objects EXTEND Instance/Ab.v's [AbObject] by [rm_smul] rather
+   than restating the carrier, the four monoid laws and the negation.
+   The coercion [rm_ab :> AbObject] makes [carrier], [cmon_zero],
+   [cmon_plus], [ab_neg] and every derived group fact available
+   unchanged: [ab_cancel_l], [ab_neg_unique], [ab_neg_zero],
+   [ab_neg_plus] and — the one that matters most for the homomorphisms —
+   [ab_map_neg], the theorem that a monoid map between groups preserves
+   negation.  So [RModHom] does not carry negation preservation as a
+   field either; it is [ab_map_neg] applied to the underlying [AbHom]
+   ([rmod_map_neg] below is that one-line citation, not a second proof).
+
+   Only the four module laws are new, and only four lemmas are derived
+   from them: [rm_smul_zero_l] (0·m ≈ 0), [rm_smul_zero_r] (r·0 ≈ 0),
+   [rm_smul_neg_l] ((−r)·m ≈ −(r·m)) and [rm_smul_neg_r]
+   (r·(−m) ≈ −(r·m)), each by the cancellation lemma [ab_cancel_l] or by
+   [ab_neg_unique].  They are lemmas, not fields, for the same reason
+   [ab_neg_right] is a corollary in Instance/Ab.v.
+
+   THE PROPOSITION.  Mac Lane's §I.7 proposition for [Ab] — monic
+   exactly when injective, epic exactly when surjective — holds verbatim
+   in R-Mod, and both halves are proved below constructively.  An earlier
+   revision stopped there; since the PR "algebraic carriers are sets"
+   (2026-09-17) the epic half concludes PROPOSITIONAL surjectivity
+   ([RModPropSurjective]), the split notion [RModSurjective] surviving as the
+   hypothesis the direct constructions supply.  [rmod_epic_surjective]
+   records why.  The
+   TECHNIQUE IS INHERITED FROM Instance/Ab.v, quite literally: the probe
+   objects here are Instance/Ab.v's [AbKernel] and [AbQuotient] with a
+   scalar action bolted on, so every group-level obligation
+   (associativity, commutativity, the unit law, [ab_neg_respects],
+   [ab_neg_left], and the coset relation's three equivalence laws) is
+   discharged there and reused here rather than reproved.  What this file
+   adds is exactly the module content:
+
+   - the kernel is a SUBMODULE — closed under the action because
+   f(r·k) ≈ r·f k ≈ r·0 ≈ 0, which is [rm_smul_zero_r];
+   - the image is a SUBMODULE, so the quotient N/fM carries a
+   well-defined action — from x ≈ y + f a one gets
+   r·x ≈ r·y + f (r·a), the witness being r·a.  This is the
+   module-level counterpart of the observation Instance/Ab.v records
+   about commutativity: there, commutativity is what makes the coset
+   relation a congruence and hence the quotient an object of the
+   category at all; here, the image being closed under the action is
+   what keeps it an object of R-Mod once it is one of [Ab].
+
+   RIGHT MODULES.  A right R-module is a left module over the opposite
+   ring, and that is taken as the DEFINITION here: [ModR R := RMod
+   (Ring_op R)], the right action m ⊲ r being the left action
+   r ·[Ring_op R] m.  No
+   opposite-ring construction existed in the tree (neither
+   Theory/Algebra/Rig.v nor Instance/Rng.v has one), so [Rig_op] and
+   [Ring_op] are built below — multiplication flipped, everything else
+   identical, so that [rig_setoid], [rig_zero], [rig_add], [rig_one] and
+   [ring_neg] of the opposite are the originals definitionally and the
+   additive laws transfer with no work.  [Bimodule] then packages a left
+   R-action and a right S-action with Mac Lane's compatibility law
+   (rm)s ≈ r(ms), i.e. r(ms) up to symmetry, and [bimodule_right_RMod] exhibits the right action as
+   a genuine left [Ring_op S]-module, which is what justifies the
+   definition of [ModR].
+
+   ALSO BUILT.  The forgetful functors [RMod_Forget_Ab : RMod R ⟶ Ab]
+   and [RMod_Forget : RMod R ⟶ Sets]; the [Preadditive] instance
+   [RMod_Preadditive], mirroring Structure/AbCategory.v's
+   [Ab_Preadditive] and reusing its [ab_hom_add]/[ab_hom_zero] for the
+   group part; and the concrete witness [Ring_RMod], every ring as a
+   module over itself with multiplication as the action — each of whose
+   four module laws IS the corresponding rig law — specialized to
+   [Int_RMod] over Theory/Algebra/Rig.v's ℤ, where the action computes.
+
+   SCOPE.  Deliberately NOT built here, per the issue's QA correction:
+   no [Field] class and no [Vct_F] notation for vector spaces — those
+   belong to issue #244, which owns them — and no category of bimodules
+   and no tensor product.  [Bimodule] stays definition-level.  The
+   Ab-enrichment and the monoidal structure are not attempted. 
+
+   --------
+   * * R-Mod，环上模的范畴
+
+   Mac Lane 的 §I.7 的大型范畴点名中，包括
+   [Set]、[Ab] 和 [Rng]，以及模的范畴：“所有小 R-模及 R-模同态，对于一个固定环 R”（《为工作数学家而作的范畴论》，第二版，§I.7，印刷页 25（PDF 页 35），[maclane:I.7:construction3]；位置遵循问题 jwiegley/category-theory#256 的约定，并且在编写此文件时未查阅印刷文本）。
+   nLab：https://ncatlab.org/nlab/show/Mod
+   维基百科：https://en.wikipedia.org/wiki/Category_of_modules建立的基础是什么。一个模是一个具有标量作用的阿贝尔群，因此对象通过 [rm_smul] 扩展了 Instance/Ab.v 的 [AbObject]，而不是重新陈述承载集合、四个幺半群定律和取反操作。强制转换 [rm_ab :> AbObject] 使 [carrier]、[cmon_zero]、[cmon_plus]、[ab_neg] 以及每个派生的群定理都可以不变使用：[ab_cancel_l]、[ab_neg_unique]、[ab_neg_zero]、[ab_neg_plus] 以及——对同态最重要的——[ab_map_neg]，它是一个关于群之间幺半群映射保持取反操作的定理。因此 [RModHom] 作为一个域也不携带取反保持属性；它是将 [ab_map_neg] 应用于底层的 [AbHom]（下文的 [rmod_map_neg] 是那条一行引用，而非第二个证明）。只有四条模数律是新的，并且只有四个引理是从它们中推导出来的：[rm_smul_zero_l] (0·m ≈ 0)、[rm_smul_zero_r] (r·0 ≈ 0)、[rm_smul_neg_l] ((−r)·m ≈ −(r·m)) 和 [rm_smul_neg_r] (r·(−m) ≈ −(r·m))，每个都是通过消去引理 [ab_cancel_l] 或 [ab_neg_unique] 得到的。它们是引理，而不是域，原因与 [ab_neg_right] 在 Instance/Ab.v 中是一个推论的原因相同。命题。Mac Lane 的 §I.7 命题对于 [Ab] —— 单射当且仅当单射，满射当且仅当满射 —— 在 R-Mod 中逐字成立，并且下文将以构造性的方式证明两个部分。之前的修订停在此处；自从 PR “代数载体是集合” (2026-09-17) 以来，满射部分得出命题性满射（[RModPropSurjective]），分裂的概念 [RModSurjective] 仍作为直接构造提供的假设存在。[rmod_epic_surjective] 记录了原因。这个技术是直接继承自 Instance/Ab.v 的：这里的探针对象是 Instance/Ab.v 的 [AbKernel] 和 [AbQuotient]，并附加了一个标量操作，因此每一个群级别的义务（结合律、交换律、单位元律、[ab_neg_respects]、[ab_neg_left] 以及陪集关系的三条等价律）都在那里完成并在这里重复使用，而不需要重新证明。这个文件添加的正是模块内容：- 核是一个子模——在作用下封闭，因为  
+   f(r·k) ≈ r·f k ≈ r·0 ≈ 0，这是 [rm_smul_zero_r]；  
+   - 像是一个子模，因此商 N/fM 承载一个良定义的作用——从 x ≈ y + f a 可以得到  
+   r·x ≈ r·y + f (r·a)，证明是 r·a。这是关于交换性的 Instance/Ab.v 记录的模块级对应：在那里，交换性使陪集关系成为合同，从而商成为该范畴的对象；在这里，像在作用下封闭保证了一旦它是 [Ab] 的对象，它也保持是 R-Mod 的对象。右模。右 R-模是对逆环的左模，这里作为定义采用：[ModR R := RMod (Ring_op R)]，右作用 m ⊲ r 被视为左作用 r · [Ring_op R]  m。在树中不存在逆环构造（Theory/Algebra/Rig.v 和 Instance/Rng.v 都没有），所以在下文构建了 [Rig_op] 和 [Ring_op] —— 乘法翻转，其它完全相同，因此逆环的 [rig_setoid]、[rig_zero]、[rig_add]、[rig_one] 和 [ring_neg] 在定义上就是原来的，并且加法律自动传递。[Bimodule] 然后将一个左 R-作用和一个右 S-作用与 Mac Lane 的兼容律 (rm)s ≈ r(ms) 打包，即。r(ms) 直到对称性，并且 [bimodule_right_RMod] 表现出正确的作用，作为真正的左 [Ring_op S]-模，这正是定义 [ModR] 的依据。
+
+   同时构建。忘记函子 [RMod_Forget_Ab : RMod R ⟶ Ab] 和 [RMod_Forget : RMod R ⟶ Sets]；ZWZ53WZZ 的实例 [RMod_Preadditive]，镜像 Structure/AbCategory.v 的 [Ab_Preadditive] 并重用其 [ab_hom_add] / [ab_hom_zero] 来处理群的部分；以及具体的见证 [Ring_RMod]，每个环作为自身的模，以乘法作为作用——其四条模律中的每一条就是对应的环律——针对 Theory/Algebra/Rig.v 中的 ℤ 的 [Int_RMod] 专门化，其中作用会被计算。范围。根据该问题的 QA 修正，这里故意未构建：没有 [Field] 类，也没有向量空间的 [Vct_F] 表示——它们属于问题 #244，该问题拥有它们——也没有双模范畴，也没有张量积。[Bimodule] 保持在定义级别。Ab-增强和单体结构未尝试。
 *)
 
 Require Import Category.Lib.
@@ -34,9 +128,13 @@ Generalizable All Variables.
 (** ** Objects *)
 
 (*
-   本节说明分配律相关定义、性质与动机。
+   * A left R-module: an abelian group together with a scalar action of the
+   ring R that respects ≈, distributes on both sides, is associative
+   against ring multiplication, and is unital.  Nothing about the
+   underlying group is restated — [rm_ab] is a coercion. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 左 R-模：一个阿贝尔群，外加一个环 R 的标量作用，该作用尊重 ≈，在两边分配，与环乘法结合，并具有单位元。关于基础群的内容没有被重新表述 — [rm_ab] 是一种强制转换。
 *)
 Record RModObject (R : RingObject) := {
   rm_ab :> AbObject;
@@ -72,12 +170,15 @@ Arguments rm_smul_one {R} _ _.
 #[export] Existing Instance rm_smul_respects.
 
 (*
-   本节说明 Mod 相关定义、性质与动机。
+   * The three facts that are usually listed as axioms and are not: each
+   follows from the four laws above together with Instance/Ab.v's group
+   lemmas.  They are stated here once and used throughout. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 通常被列为公理但实际上不是的三个事实：每一个都可以从上面的四条定律以及实例/Ab.v的群引理中推导出来。它们在这里陈述一次，并在整个过程中使用。
 *)
 
-(** 0·m ≈ 0, by cancelling [0·m] against itself. *)
+(** 0·m ≈ 0, by cancelling [0·m] against itself. / 0·m ≈ 0，通过将 [0·m] 自身抵消。 *)
 Lemma rm_smul_zero_l {R : RingObject} (M : RModObject R)
   (m : carrier (cmon_setoid M)) :
   rm_smul M (rig_zero (ring_rig R)) m ≈ cmon_zero M.
@@ -102,8 +203,14 @@ Proof.
   apply (cmon_plus_zero_r M (rm_smul M r (cmon_zero M))).
 Qed.
 
-(** 本节：(−r)·m ≈ −(r·m): scalar negation IS left inverse r·m, and
- Instance/Ab.v's [ab_neg_unique] says enough. （已译） *)
+(*
+   * (−r)·m ≈ −(r·m): the scalar negation IS a left inverse of r·m, and
+   Instance/Ab.v's [ab_neg_unique] says that is enough. 
+
+   --------
+   * (−r)·m ≈ −(r·m)：标量取负是 r·m 的左逆，且
+   Instance/Ab.v 的 [ab_neg_unique] 表明这已经足够。
+*)
 Lemma rm_smul_neg_l {R : RingObject} (M : RModObject R)
   (r : carrier (rig_setoid (ring_rig R))) (m : carrier (cmon_setoid M)) :
   rm_smul M (ring_neg R r) m ≈ ab_neg M (rm_smul M r m).
@@ -114,7 +221,7 @@ Proof.
   apply rm_smul_zero_l.
 Qed.
 
-(** r·(−m) ≈ −(r·m), same 论元 other side. （已译） *)
+(** r·(−m) ≈ −(r·m), by the same argument on the other side. / r·(−m) ≈ −(r·m)，根据另一边的相同论证。 *)
 Lemma rm_smul_neg_r {R : RingObject} (M : RModObject R)
   (r : carrier (rig_setoid (ring_rig R))) (m : carrier (cmon_setoid M)) :
   rm_smul M r (ab_neg M m) ≈ ab_neg M (rm_smul M r m).
@@ -125,12 +232,16 @@ Proof.
   apply rm_smul_zero_r.
 Qed.
 
-(** ** Morphisms *)
+(** ** Morphisms / **态射 *)
 
 (*
-   本节说明 Mod 相关定义、性质与动机。
+   * An R-module homomorphism is a homomorphism of the underlying abelian
+   groups that additionally commutes with the action.  Preservation of
+   negation is NOT a field: it is Instance/Ab.v's [ab_map_neg] applied to
+   [rm_hom], recorded as [rmod_map_neg] below. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 一个 R-模同态是底层阿贝尔群的同态，并且还与作用交换。保持取负运算不是域：它是 Instance/Ab.v 的 [ab_map_neg] 应用于 [rm_hom] ，如下记录为 [rmod_map_neg]。
 *)
 Record RModHom {R : RingObject} (M N : RModObject R) := {
   rm_hom :> AbHom M N;
@@ -142,16 +253,21 @@ Record RModHom {R : RingObject} (M N : RModObject R) := {
 Arguments rm_hom {R M N} _.
 Arguments rm_map_smul {R M N} _ _ _.
 
-(** Citation, not a second proof. *)
+(** Citation, not a second proof. / 引用，不是第二个证据。 *)
 Lemma rmod_map_neg {R : RingObject} {M N : RModObject R} (f : RModHom M N)
   (m : carrier (cmon_setoid M)) :
   cmon_map (rm_hom f) (ab_neg M m) ≈ ab_neg N (cmon_map (rm_hom f) m).
 Proof. apply (ab_map_neg (rm_hom f)). Qed.
 
 (*
-   本节说明hom、等价相关定义、性质与动机。
+   * The hom-setoid is Instance/CMon.v's [CMonHom_Setoid] on the underlying
+   homomorphisms, written out: two module maps are equivalent when their
+   underlying setoid maps agree pointwise.  The action plays no part, so
+   the equivalence proof is the one from [CMon] with the extra field
+   ignored. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 同态集合（hom-setoid）是 Instance/CMon.v 中底层同态的 [CMonHom_Setoid]，写出来就是：当两个模映射的底层集合族映射在每一点上都相同时，它们被认为是等价的。作用没有任何影响，因此等价性证明采用 [CMon] 中的那个证明，只是忽略了额外的字段。
 *)
 #[export]
 Program Instance RModHom_Setoid {R : RingObject} {M N : RModObject R} :
@@ -173,9 +289,37 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明hom相关定义、性质与动机。
+   * L2: the hom-setoid is propositional, pointwise into the CODOMAIN's
+   [cmon_prop] (reached through [rm_ab] and [ab_cmon]).  Same shape as
+   Instance/CMon.v's [CMonHom_PropEquiv]; restated because [RModHom_Setoid]
+   is a setoid on [RModHom M N], a different record.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Measured (About under Set Printing Universes):
+
+   RModHom_PropEquiv@{u u0 u1 u2 u3 u4} :
+   ∀ {R : RingObject@{u1 u2 u3}}
+   {M N : RModObject@{u u0 u4 u4 u4 u1 u2 u3} R},
+   PropEquiv@{u u4} RModHom_Setoid@{u u0 u1 u2 u3 u4}
+   ( * u2 <= u, u2 <= u0, and the bounds [RModObject] already carries * )
+
+   -- the transport adds no constraint of its own; the six universes are
+   [RModObject]'s and the ring's. 
+
+   --------
+   * L2: 同态集合是命题性的，对值域逐点映射  
+   [cmon_prop]（通过 [rm_ab] 和 [ab_cmon] 达到）。与  
+   Instance/CMon.v 的 [CMonHom_PropEquiv] 形状相同；重新陈述是因为 [RModHom_Setoid]  
+   是 [RModHom M N] 上的集合化，同为不同的记录。
+
+   测量（关于集合打印宇宙）：
+
+   RModHom_PropEquiv@{u u0 u1 u2 u3 u4} :
+   ∀ {R : RingObject@{u1 u2 u3}}
+   {M N : RModObject@{u u0 u4 u4 u4 u1 u2 u3} R},
+   PropEquiv@{u u4} RModHom_Setoid@{u u0 u1 u2 u3 u4}
+   ( * u2 <= u, u2 <= u0，并且 [RModObject] 的界限已经存在 * )
+
+   -- 传输本身不增加任何约束；这六个宇宙是 [RModObject] 的，以及环的。
 *)
 #[export] Instance RModHom_PropEquiv {R : RingObject} {M N : RModObject R} :
   PropEquiv (@RModHom_Setoid R M N).
@@ -189,8 +333,13 @@ Proof.
   - intros f g H a; exact (pequiv_from _ _ (H a)).
 Defined.
 
-(** The 恒等: 恒等 group homomorphism, commutes the
- action nose. （已译） *)
+(*
+   * The identity: the identity group homomorphism, which commutes with the
+   action on the nose. 
+
+   --------
+   * 恒等映射：恒等群同态，它与作用精确交换。
+*)
 Program Definition rmod_hom_id {R : RingObject} {M : RModObject R} :
   RModHom M M := {|
   rm_hom := @cmon_hom_id M
@@ -200,8 +349,13 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** Composition: 复合 group homomorphisms; commuting with
- action composes. （已译） *)
+(*
+   * Composition: the composite of the group homomorphisms; commuting with
+   the action composes. 
+
+   --------
+   * 组合：群同态的复合；与作用交换则可以组合。
+*)
 Program Definition rmod_hom_compose {R : RingObject} {M N P : RModObject R}
         (f : RModHom N P) (g : RModHom M N) : RModHom M P := {|
   rm_hom := cmon_hom_compose (rm_hom f) (rm_hom g)
@@ -222,12 +376,15 @@ Proof.
   apply Hf.
 Qed.
 
-(** ** The category *)
+(** ** The category / ** 类别 *)
 
 (*
-   本节说明hom相关定义、性质与动机。
+   * [RMod R] has the same shape as [Ab]: objects with more structure,
+   homomorphisms respecting it, and identities, composition and the
+   hom-setoid inherited unchanged from the underlying groups. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * [RMod R] 与 [Ab] 具有相同的形状：具有更多结构的对象、尊重该结构的同态，以及从底层群继承的不变的恒等式、复合和同态集。
 *)
 Program Definition RMod (R : RingObject) : Category := {|
   obj     := RModObject R;
@@ -244,9 +401,17 @@ Next Obligation. intros R x y z w f g h a; simpl; reflexivity. Qed.
 Next Obligation. intros R x y z w f g h a; simpl; reflexivity. Qed.
 
 (*
-   本节说明伴随、hom、来源与用途相关定义、性质与动机。
+   * L8: [RMod R]'s hom-setoid IS [RModHom_Setoid], so [RModHom_PropEquiv]
+   supplies the whole family.  With Instance/Ab.v's [Ab_LocallyPropositional]
+   this is what lets Adjunction/Additive.v's [hom_ab] and
+   Construction/Enriched/Ab.v's [ehom_ab] -- which since the PR "algebraic
+   carriers are sets" (2026-09-17) ask their ambient category for a [Prop]
+   equality on homs -- be used at the two ambients the module and bimodule
+   objects of Instance/Mod/Bimodule.v and Instance/Mod/Coextension.v actually
+   take. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * L8: [RMod R] 的 Hom-集合是 [RModHom_Setoid]，所以 [RModHom_PropEquiv] 提供了整个族。使用 Instance/Ab.v 的 [Ab_LocallyPropositional]，这就是使 Adjunction/Additive.v 的 [hom_ab] 和 Construction/Enriched/Ab.v 的 [ehom_ab] —— 由于 PR“代数承载体是集合”（2026-09-17）要求它们的环境范畴在 Hom 上提供 [Prop] 等式 —— 能够在两个环境中使用，它们是 Instance/Mod/Bimodule.v 和 Instance/Mod/Coextension.v 的模块和双模对象实际所处的环境。
 *)
 #[export] Instance RMod_LocallyPropositional (R : RingObject) :
   LocallyPropositional (RMod R).
@@ -257,9 +422,14 @@ Proof.
 Defined.
 
 (*
-   本节说明函子相关定义、性质与动机。
+   * The forgetful functor to [Ab], dropping the action, and the one to
+   [Sets], taken directly through the underlying setoid rather than as a
+   composite (the object and morphism parts agree with the composite; the
+   functor-law proofs are opaque, so the two records are not the same
+   term). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 忘记函子到 [Ab]，丢弃作用，以及到 [Sets] 的函子，直接通过底层集论进行，而不是作为复合（对象和态射部分与复合一致；函子定律证明是不可见的，因此这两个记录不是同一项）。
 *)
 Program Definition RMod_Forget_Ab (R : RingObject) : RMod R ⟶ Ab := {|
   fobj := fun M => rm_ab M;
@@ -277,29 +447,34 @@ Next Obligation. intros R M N f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros R M a; simpl; reflexivity. Qed.
 Next Obligation. intros R M N P f g a; simpl; reflexivity. Qed.
 
-(* * ** The zero module zero 对象 （已译） *)
+(* * ** The zero module as a zero object / * ** 零模作为零对象 *)
 
-(** 本节：The one-element module: Instance/Ab.v's [Ab_trivial] only
- action available. Every law holds computation. （已译） *)
+(*
+   * The one-element module: Instance/Ab.v's [Ab_trivial] with the only
+   action available.  Every law holds by computation. 
+
+   --------
+   * 单元素模块：Instance/Ab.v 的 [Ab_trivial]，唯一可用的操作。每条定律都可以通过计算成立。
+*)
 Definition RMod_trivial (R : RingObject) : RModObject R.
 Proof.
   unshelve notypeclasses refine {|
     rm_ab    := Ab_trivial;
     rm_smul  := fun _ _ => ttt
   |}.
-  - (* rm_smul_respects *)
+  - (* rm_smul_respects / rm_smul_respects *)
     intros r s Hrs x y Hxy; reflexivity.
-  - (* rm_smul_distr_l *)
+  - (* rm_smul_distr_l / rm_smul_distr_l *)
     intros r m n; reflexivity.
-  - (* rm_smul_distr_r *)
+  - (* rm_smul_distr_r / rm_smul_distr_r *)
     intros r s m; reflexivity.
-  - (* rm_smul_assoc *)
+  - (* rm_smul_assoc / rm_乘法_结合律 *)
     intros r s m; reflexivity.
-  - (* rm_smul_one *)
+  - (* rm_smul_one / rm_乘_一 *)
     intros m; destruct m; reflexivity.
 Defined.
 
-(** 本节：Everything maps point, one map does. （已译） *)
+(** Everything maps to the point, and only one map does. / 一切都对应于该点，而且只有一张映射是这样的。 *)
 Program Definition RMod_one {R : RingObject} (M : RModObject R) :
   M ~{RMod R}~> RMod_trivial R := {|
   rm_hom := Ab_one M
@@ -319,8 +494,13 @@ Next Obligation.
   now rewrite (RMod_one_unique _ f), (RMod_one_unique _ g).
 Qed.
 
-(** 本节：Dually, unique map out point sends it zero — the
- action has nothing say, since r·0 ≈ 0 ([rm_smul_zero_r]). （已译） *)
+(*
+   * Dually, the unique map out of the point sends it to zero — and the
+   action has nothing to say, since r·0 ≈ 0 ([rm_smul_zero_r]). 
+
+   --------
+   * 对偶地，从点出发的唯一映射将其映射为零——并且作用没有任何影响，因为 r·0 ≈ 0（[rm_smul_zero_r]）。
+*)
 Program Definition RMod_zero_hom {R : RingObject} (M : RModObject R) :
   RMod_trivial R ~{RMod R}~> M := {|
   rm_hom := Ab_zero_hom M
@@ -342,18 +522,23 @@ Program Definition RMod_Initial (R : RingObject) : @Initial (RMod R) := {|
   one          := @RMod_zero_hom R
 |}.
 Next Obligation.
-  (* As at Instance/Ab.v, routed through transitivity at the
-     hom-setoid level rather than by [rewrite]. *)
+  (*
+ As at Instance/Ab.v, routed through transitivity at the
+ hom-setoid level rather than by [rewrite]. 
+
+ --------
+ 截至实例/Ab.v，通过传递性在同态集合级别路由，而不是通过 [rewrite]。
+*)
   intros R M f g.
   etransitivity;
     [ apply RMod_zero_hom_unique | symmetry; apply RMod_zero_hom_unique ].
 Qed.
 
-(** The same 对象 both, so coincidence iso 恒等. （已译） *)
+(** The same object is both, so the coincidence iso is the identity. / 同一个对象是两者，所以同构的重合就是恒等映射。 *)
 #[export] Instance RMod_Zero (R : RingObject) : ZeroObject (RMod R) :=
   @Build_ZeroObject (RMod R) (RMod_Terminal R) (RMod_Initial R) iso_id.
 
-(* * ** Mac Lane's §I.7 命题: monic = injective, epic = surjective （已译） *)
+(* * ** Mac Lane's §I.7 proposition: monic = injective, epic = surjective / * ** 麦克·莱恩 §I.7 命题：单射 = 一一映射，满射 = 到射 *)
 
 Definition RModInjective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Type :=
@@ -364,10 +549,15 @@ Definition RModSurjective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Type :=
   ∀ b : carrier (cmon_setoid N), { a & cmon_map (rm_hom f) a ≈ b }.
 
-(* * *** The kernel submodule, probe 对象 monic half （已译） *)
+(* * *** The kernel submodule, the probe object for the monic half / * *** 内核子模块，单调半的探针对象 *)
 
-(** 本节：Instance/Ab.v's [AbKernel] carries group; all added that
- kernel closed under action, [rm_smul_zero_r]. （已译） *)
+(*
+   * Instance/Ab.v's [AbKernel] carries the group; all that is added is that
+   the kernel is closed under the action, which is [rm_smul_zero_r]. 
+
+   --------
+   * 实例/Ab.v 的 [AbKernel] 承载了群；所添加的只是核在作用下是封闭的，这个核是 [rm_smul_zero_r]。
+*)
 
 Section Kernel.
 
@@ -391,20 +581,20 @@ Proof using R M N f.
     rm_smul := fun r p =>
       existT _ (rm_smul M r (projT1 p)) (rmod_ker_smul_pf r p)
   |}.
-  - (* rm_smul_respects *)
+  - (* rm_smul_respects / rm_smul_respects *)
     intros r s Hrs p q Hpq; simpl in *.
     now rewrite Hrs, Hpq.
-  - (* rm_smul_distr_l *)
+  - (* rm_smul_distr_l / rm_smul_distr_l *)
     intros r p q; simpl; apply rm_smul_distr_l.
-  - (* rm_smul_distr_r *)
+  - (* rm_smul_distr_r / rm_smul_distr_r *)
     intros r s p; simpl; apply rm_smul_distr_r.
-  - (* rm_smul_assoc *)
+  - (* rm_smul_assoc / rm_乘法_结合律 *)
     intros r s p; simpl; apply rm_smul_assoc.
-  - (* rm_smul_one *)
+  - (* rm_smul_one / rm_乘_一 *)
     intros p; simpl; apply rm_smul_one.
 Defined.
 
-(** The 含入 zero map, [f] equalizes. （已译） *)
+(** The inclusion and the zero map, which [f] equalizes. / 包含映射和零映射，它们被 [f] 等化。 *)
 Program Definition rmod_kernel_incl : RModKernel ~{RMod R}~> M := {|
   rm_hom := ab_kernel_incl (rm_hom f)
 |}.
@@ -427,15 +617,21 @@ Arguments rmod_kernel_zero {R M N} f.
 (** *** Monic *)
 
 (*
-   本节说明核/余核相关定义、性质与动机。
+   * Monic implies injective, by probing with the kernel submodule: [f]
+   equalizes the inclusion and the zero map, so a monic collapses them,
+   so every kernel element is zero — and [f x ≈ f y] puts [x − y] in the
+   kernel.  The argument is Instance/Ab.v's [ab_monic_injective] with the
+   kernel replaced by the kernel SUBMODULE; the note there applies here
+   too, that the probe is convenient rather than necessary. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 单射意味着单映，通过对核子模进行探测：[f] 使包含映射和零映射相等，所以单射会将它们合并，因此每个核元素都是零 —— 而 [f x ≈ f y] 将 [x − y] 放入核中。该论证是 Instance/Ab.v 的 [ab_monic_injective] 的变体，只是将核改为核子模；这里的说明也适用，即探针是方便而非必要的。
 *)
 Lemma rmod_monic_injective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Monic f → RModInjective f.
 Proof.
   intros Hm x y Hxy.
-  (* 相关说明。 （已译） *)
+  (* Step 1: monic collapses the two maps out of the kernel. / 步骤 1：monic 将两个映射从核中折叠出来。 *)
   assert (Hk : ∀ p : carrier (cmon_setoid (RModKernel f)),
                  projT1 p ≈ cmon_zero M).
   { apply (@monic _ _ _ f Hm (RModKernel f)
@@ -443,12 +639,12 @@ Proof.
     intro p; simpl.
     rewrite (projT2 p).
     symmetry; apply cmon_map_zero. }
-  (* Step 2: x − y lies in the kernel. *)
+  (* Step 2: x − y lies in the kernel. / 步骤 2：x − y 位于核中。 *)
   assert (Hd : cmon_map (rm_hom f) (cmon_plus M x (ab_neg M y))
                  ≈ cmon_zero N).
   { rewrite cmon_map_plus, ab_map_neg, Hxy.
     apply ab_neg_right. }
-  (* Step 3: so x − y is zero, hence x ≈ y. *)
+  (* Step 3: so x − y is zero, hence x ≈ y. / 第3步：所以 x − y 为零，因此 x ≈ y。 *)
   pose proof (Hk (existT _ (cmon_plus M x (ab_neg M y)) Hd)) as Hz.
   simpl in Hz.
   apply (ab_cancel_l M (ab_neg M y)).
@@ -466,19 +662,25 @@ Proof.
   exact (Hgh z).
 Qed.
 
-(** Mac Lane §I.7's proposition, first half. *)
+(** Mac Lane §I.7's proposition, first half. / Mac Lane §I.7的命题，前半部分。 *)
 Theorem rmod_monic_iff_injective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Monic f ↔ RModInjective f.
 Proof.
   split; [ apply rmod_monic_injective | apply rmod_injective_monic ].
 Qed.
 
-(* * *** The quotient module N/fM, probe 对象 epic half （已译） *)
+(* * *** The quotient module N/fM, the probe object for the epic half / * *** 商模 N/fM，史诗半部分的探测对象 *)
 
 (*
-   本节说明等价、来源与用途相关定义、性质与动机。
+   * Instance/Ab.v's [AbQuotient] carries the group — the carrier is [N]
+   itself, only the equality coarsening to "differ by something in the
+   image" — and all three equivalence laws of that coarser equality are
+   proved there.  What is added here is that the action DESCENDS: from
+   x ≈ y + f a one gets r·x ≈ r·y + f (r·a), so the image is closed under
+   the action and the coset relation is a congruence for it as well. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * Instance/Ab.v 的 [AbQuotient] 携带该群——载体本身是 [N]，只是等价关系粗化为“相差一个在像中的元素”——而该粗化等价关系的所有三条等价律在其中已被证明。这里新增的是作用会下传：从 x ≈ y + f a 可以得到 r·x ≈ r·y + f (r·a)，因此像在该作用下是封闭的，并且陪集关系对它也是一个同余关系。
 *)
 
 Section Quotient.
@@ -487,7 +689,7 @@ Context {R : RingObject}.
 Context {M N : RModObject R}.
 Context (f : M ~{RMod R}~> N).
 
-(** Fine equality implies coarse: the witness is 0. *)
+(** Fine equality implies coarse: the witness is 0. / 精细相等意味着粗略相等：见证为0。 *)
 Lemma rmod_coset_of_equiv (x y : carrier (cmon_setoid N)) :
   x ≈ y → ab_coset_eq (rm_hom f) x y.
 Proof.
@@ -504,11 +706,7 @@ Proof using R M N f.
     rm_ab   := AbQuotient (rm_hom f);
     rm_smul := rm_smul N
   |}.
-  - (*
-   本节说明 Mod 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+  - (* rm_smul_respects: THE module content of this construction. The witness r·a is what says the image is a submodule. [simpl] before the elimination: the goal is an application of the [equiv] projection, whose ascribed sort is [Type], and since the PR "algebraic carriers are sets" (2026-09-17) [ab_coset_eq] is a [Prop] and may not be destructed into it. Instance/Ab.v's [AbQuotient] records the same step. / rm_smul_respects：这个构造的模块内容。证据 r·a 表示图像是一个子模块。 消去之前的 [simpl]：目标是应用 [equiv] 投影，其分配的类型为 [Type]，并且由于 PR“代数承载体是集合”（2026-09-17），[ab_coset_eq] 是一个 [Prop]，因此不能将其拆解成它。实例/Ab.v 的 [AbQuotient] 记录了相同的步骤。 *)
     intros r s Hrs x y Hxy; simpl in Hxy |- *.
     destruct Hxy as [a Ha].
     apply pequiv_to in Ha.
@@ -518,22 +716,27 @@ Proof using R M N f.
     rewrite <- Hrs.
     rewrite <- (rm_smul_distr_l N r y (cmon_map (rm_hom f) a)).
     now rewrite <- Ha.
-  - (* rm_smul_distr_l *)
+  - (* rm_smul_distr_l / rm_smul_distr_l *)
     intros r x y.
     apply rmod_coset_of_equiv, (rm_smul_distr_l N r x y).
-  - (* rm_smul_distr_r *)
+  - (* rm_smul_distr_r / rm_smul_distr_r *)
     intros r s x.
     apply rmod_coset_of_equiv, (rm_smul_distr_r N r s x).
-  - (* rm_smul_assoc *)
+  - (* rm_smul_assoc / rm_乘法_结合律 *)
     intros r s x.
     apply rmod_coset_of_equiv, (rm_smul_assoc N r s x).
-  - (* rm_smul_one *)
+  - (* rm_smul_one / rm_乘_一 *)
     intros x.
     apply rmod_coset_of_equiv, (rm_smul_one N x).
 Defined.
 
-(** The projection (恒等 carriers, coarser equality) zero
- map, [f] equalizes. （已译） *)
+(*
+   * The projection (identity on carriers, coarser equality) and the zero
+   map, which [f] equalizes. 
+
+   --------
+   * 投影（在载体上是恒等映射，更粗的等式）和零映射，它们使 [f] 相等。
+*)
 Program Definition rmod_quot_proj : N ~{RMod R}~> RModQuotient := {|
   rm_hom := ab_quot_proj (rm_hom f)
 |}.
@@ -557,9 +760,24 @@ Arguments rmod_quot_zero {R M N} f.
 (** *** Epic *)
 
 (*
-   本节说明 Mod 相关定义、性质与动机。
+   * Epic implies PROPOSITIONAL surjectivity: [f] equalizes the projection
+   and the zero map into N/fM, so an epi collapses them, and
+   [rmod_quot_proj ≈ rmod_quot_zero] says precisely that every [b] is
+   congruent to zero modulo the image — which is to say that a preimage
+   EXISTS.  Instance/Ab.v's [ab_epic_surjective], with the quotient group
+   replaced by the quotient MODULE.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   AN EARLIER REVISION concluded the split [RModSurjective] and said the
+   witness "IS the preimage, read straight back out".  Since the PR
+   "algebraic carriers are sets" (2026-09-17) the coset relation is a [Prop]
+   (Instance/Ab.v's [ab_coset_eq]), so the witness may not be read back out
+   into a [Type]-valued goal.  Nothing is chosen and nothing is doubly
+   negated; the preimage is simply no longer data.  The split notion survives
+   as the hypothesis of [rmod_surjective_epic] and of every construction that
+   builds a preimage directly. 
+
+   --------
+   * 史诗（Epic）意味着命题上的满射性：[f] 将投影映射和到 N/fM 的零映射相等化，所以一个史诗映射会将它们合并，而 [rmod_quot_proj ≈ rmod_quot_zero] 正是说明每个 [b] 在模像下同余于零——也就是说，存在一个原像。Ab.v 实例/的 [ab_epic_surjective]，其中商群被商模替代。早期的修订版得出结论说分裂 [RModSurjective] 并指出见证“就是原像，直接读出来”。由于 PR“代数载体是集合”（2026-09-17），陪集关系是一个 [Prop]（实例/Ab.v 的 [ab_coset_eq]），因此见证可能无法读回到一个 [Type] 值的目标中。没有东西被选择，也没有东西被双重否定；原像只是再也不是数据。分裂的概念作为 [rmod_surjective_epic] 的假设，以及每一个直接构建原像的构造，都得以保留。
 *)
 Definition RModPropSurjective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Type :=
@@ -607,8 +825,13 @@ Proof.
   exact (Hgh a).
 Qed.
 
-(** 本节：The same implication propositional notion: drop [pequiv]
- [pequiv_to], destruct there, come back [pequiv_from]. （已译） *)
+(*
+   * The same implication from the propositional notion: drop into [pequiv]
+   with [pequiv_to], destruct there, and come back with [pequiv_from]. 
+
+   --------
+   * 来自命题概念的相同含义：进入 [pequiv]，使用 [pequiv_to] 在那里解构，然后带着 [pequiv_from] 返回。
+*)
 Lemma rmod_prop_surjective_epic {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : RModPropSurjective f → Epic f.
 Proof.
@@ -622,15 +845,20 @@ Proof.
   exact (Hgh a).
 Qed.
 
-(** Mac Lane §I.7's proposition, second half.  An earlier revision put
-    [RModSurjective] on the right; see [rmod_epic_surjective]. *)
+(*
+   * Mac Lane §I.7's proposition, second half.  An earlier revision put
+   [RModSurjective] on the right; see [rmod_epic_surjective]. 
+
+   --------
+   * Mac Lane §I.7 的命题，后半部分。较早的修订将 [RModSurjective] 放在右边；参见 [rmod_epic_surjective] 。
+*)
 Theorem rmod_epic_iff_surjective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Epic f ↔ RModPropSurjective f.
 Proof.
   split; [ apply rmod_epic_surjective | apply rmod_prop_surjective_epic ].
 Qed.
 
-(** 本节：The spellings issue's verification snippet uses. （已译） *)
+(** The spellings the issue's verification snippet uses. / 该问题验证片段使用的拼写。 *)
 Definition rmod_monic_iff {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Monic f ↔ RModInjective f :=
   rmod_monic_iff_injective f.
@@ -639,12 +867,18 @@ Definition rmod_epic_iff {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Epic f ↔ RModPropSurjective f :=
   rmod_epic_iff_surjective f.
 
-(* 相关说明。 （已译） *)
+(* * ** The opposite ring, right modules, and bimodules / * ** 对边环、右模和双模 *)
 
 (*
-   本节说明 Mod 相关定义、性质与动机。
+   * No opposite-ring construction existed in the tree, so here is the
+   minimal one: multiplication flipped, EVERYTHING ELSE THE SAME TERM.
+   Keeping [rig_setoid], [rig_zero], [rig_add] and [rig_one] literally
+   the originals is what makes the additive laws transfer as themselves
+   rather than as transported copies, and it is what
+   [Ring_op_additive_agrees] below records. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 树中不存在对立环构造，因此这里给出的是最小的构造：乘法翻转，其它一切保持相同的项。将 [rig_setoid]、[rig_zero]、[rig_add] 和 [rig_one] 字面上保持为原始形式，这使得加法律能够以自身的形式传递，而不是作为搬运的副本，这也是下面 [Ring_op_additive_agrees] 所记录的。
 *)
 
 Lemma rig_op_mul_respects (R : RigObject) :
@@ -677,7 +911,7 @@ Definition Rig_op (R : RigObject) : RigObject := {|
   rig_add_zero_l   := rig_add_zero_l R;
 
   rig_mul_assoc    := rig_op_mul_assoc R;
-  (* 相关说明。 （已译） *)
+  (* The two unit laws and the two distributive laws swap sides. / 两个单位律和两个分配律互换位置。 *)
   rig_mul_one_l    := fun a => rig_mul_one_r R a;
   rig_mul_one_r    := fun a => rig_mul_one_l R a;
   rig_distr_l      := fun a b c => rig_distr_r R b c a;
@@ -693,8 +927,13 @@ Definition Ring_op (R : RingObject) : RingObject := {|
   ring_neg_l        := ring_neg_l R
 |}.
 
-(** 本节：The additive structure opposite ring original one the
- nose, not merely isomorphic it. （已译） *)
+(*
+   * The additive structure of the opposite ring is the original one on the
+   nose, not merely isomorphic to it. 
+
+   --------
+   * 对立环的加法结构就是原来的加法结构，本身就是如此，而不仅仅是与其同构。
+*)
 Example Ring_op_additive_agrees (R : RingObject) :
   rig_setoid (ring_rig (Ring_op R)) = rig_setoid (ring_rig R) := eq_refl.
 Example Ring_op_zero_agrees (R : RingObject) :
@@ -707,16 +946,26 @@ Example Ring_op_neg_agrees (R : RingObject) :
   ring_neg (Ring_op R) = ring_neg R := eq_refl.
 
 (*
-   本节说明 Mod 相关定义、性质与动机。
+   * A RIGHT R-module is a left module over the opposite ring; that is
+   taken as the definition, m ⊲ r being r ·[Ring_op R] m.  The
+   definition is justified by [bimodule_right_RMod] below, which turns a
+   right action written in the usual order into an object of this
+   category. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 一个右 R-模是对立环上的左模；即作为定义，m ⊲ r 被定义为 r · m。以下的定义通过将通常顺序下书写的右作用转化为该范畴的对象予以证明。
 *)
 Definition ModR (R : RingObject) : Category := RMod (Ring_op R).
 
 (*
-   本节说明 Mod 相关定义、性质与动机。
+   * A bimodule: a left R-module carrying a compatible right S-action.
+   The compatibility law is Mac Lane's (rm)s ≈ r(ms), i.e. r(ms) up to symmetry.  This stays
+   definition-level; no category of bimodules and no tensor product are
+   built here. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 双模：一个左 R-模，携带兼容的右 S-作用。
+   兼容律是 Mac Lane 的 (rm)s ≈ r(ms)，即 r(ms) 在对称性下。 这仍然停留在定义层面；这里没有构建双模的范畴，也没有构建张量积。
 *)
 Record Bimodule (R S : RingObject) := {
   bm_left :> RModObject R;
@@ -741,7 +990,7 @@ Record Bimodule (R S : RingObject) := {
   (* m·1 ≈ m *)
   bm_rsmul_one : ∀ m, bm_rsmul m (rig_one (ring_rig S)) ≈ m;
 
-  (* The compatibility law: (rm)s ≈ r(ms), i.e. r(ms) up to symmetry. *)
+  (* The compatibility law: (rm)s ≈ r(ms), i.e. r(ms) up to symmetry. / 兼容性定律： (rm)s ≈ r(ms)，即 r(ms) 对称下相等。 *)
   bm_compat : ∀ r m s,
     bm_rsmul (rm_smul bm_left r m) s ≈ rm_smul bm_left r (bm_rsmul m s)
 }.
@@ -758,40 +1007,52 @@ Arguments bm_compat {R S} _ _ _ _.
 #[export] Existing Instance bm_rsmul_respects.
 
 (*
-   本节说明 Mod 相关定义、性质与动机。
+   * The right action of a bimodule IS a left [Ring_op S]-action: the
+   associativity law reverses exactly as the opposite multiplication
+   does.  This is what makes [ModR] the right definition. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 一个双模的右作用是左  [Ring_op S] -作用：结合律的顺序正好像对立乘法那样反转。这就是使得  [ModR] 成为正确定义的原因。
 *)
 Definition bimodule_right_RMod {R S : RingObject} (B : Bimodule R S) :
   RModObject (Ring_op S).
 Proof.
   (*
-   本节说明 Mod 相关定义、性质与动机。
+ The constructor is named explicitly: a record literal here elaborates
+ the scalar argument's type against [S] and infers the parameter to be
+ [S] rather than [Ring_op S], the two being convertible. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 构造函数被明确命名：这里的记录字面量详细说明了标量参数的类型与 [S] 的关系，并推断该参数为 [S] 而不是 [Ring_op S]，这两者是可以互相转换的。
 *)
   unshelve notypeclasses refine
     (@Build_RModObject (Ring_op S) (rm_ab (bm_left B))
        (fun s m => bm_rsmul B m s) _ _ _ _ _).
-  - (* rm_smul_respects *)
+  - (* rm_smul_respects / rm_smul_respects *)
     intros s t Hst m n Hmn; simpl.
     now rewrite Hst, Hmn.
-  - (* rm_smul_distr_l *)
+  - (* rm_smul_distr_l / rm_smul_distr_l *)
     intros s m n; simpl; apply bm_rsmul_distr_l.
-  - (* rm_smul_distr_r *)
+  - (* rm_smul_distr_r / rm_smul_distr_r *)
     intros s t m; simpl; apply bm_rsmul_distr_r.
-  - (* rm_smul_assoc: (s ·op t) acts as t then s *)
+  - (* rm_smul_assoc: (s ·op t) acts as t then s / rm_smul_assoc: (s ·op t) 先作用于 t，然后再作用于 s *)
     intros s t m; simpl; apply bm_rsmul_assoc.
-  - (* rm_smul_one *)
+  - (* rm_smul_one / rm_乘_一 *)
     intros m; simpl; apply bm_rsmul_one.
 Defined.
 
-(** ** [RMod R] is preadditive *)
+(** ** [RMod R] is preadditive / ** [RMod R] 是前加性 *)
 
 (*
-   本节说明分配律相关定义、性质与动机。
+   * Pointwise addition and zero, mirroring Structure/AbCategory.v's
+   [Ab_Preadditive] and reusing its [ab_hom_add]/[ab_hom_zero] for the
+   group part.  The one new obligation each time is linearity: the sum of
+   two linear maps is linear because the action distributes over
+   addition, (f+g)(r·m) ≈ r·f m + r·g m ≈ r·((f+g) m); and the zero map
+   is linear because r·0 ≈ 0. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 点对点加法和零，镜像 Structure/AbCategory.v 中的 [Ab_Preadditive]，并重复使用它的 [ab_hom_add] / [ab_hom_zero] 作为群部分。每次新增的一个要求是线性：两个线性映射的和是线性的，因为作用在加法上是分配的，(f+g)(r·m) ≈ r·f m + r·g m ≈ r·((f+g) m)；而零映射是线性的，因为 r·0 ≈ 0。
 *)
 Program Definition rmod_hom_add {R : RingObject} {M N : RModObject R}
         (f g : RModHom M N) : RModHom M N := {|
@@ -845,12 +1106,17 @@ Next Obligation.
   apply cmon_map_zero.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** A concrete witness: a ring as a module over itself / * ** 一个具体的例子：作为自身模的环 *)
 
 (*
-   本节说明 Mod 相关定义、性质与动机。
+   * Every ring is a left module over itself, with multiplication as the
+   action.  Nothing is proved here: each of the four module laws IS the
+   corresponding rig law, and the underlying abelian group is
+   Instance/Rng.v's [ring_ab].  This is the cheapest non-vacuous witness
+   available, and it is uniform in R. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 每个环都是它自身的左模，乘法作为作用。这里没有证明：四条模律中的每一条就是对应的环律，并且底层的阿贝尔群是 Instance/Rng.v 中的 [ring_ab] 。这是可用的最廉价的非空见证，并且在 R 中是统一的。
 *)
 Definition Ring_RMod (R : RingObject) : RModObject R := {|
   rm_ab            := ring_ab R;
@@ -863,10 +1129,10 @@ Definition Ring_RMod (R : RingObject) : RModObject R := {|
   rm_smul_one      := rig_mul_one_l (ring_rig R)
 |}.
 
-(** 本节：The integers ℤ-module. The action computes. （已译） *)
+(** The integers as a ℤ-module. The action computes. / 作为 ℤ-模的整数。这个作用能被计算。 *)
 Definition Int_RMod : RModObject Int_Ring := Ring_RMod Int_Ring.
 
-(* 相关说明。 （已译） *)
+(* The compatibility law is inhabited: every ring is an (R,R)-bimodule over itself — both actions the multiplication, [bm_compat] being exactly associativity (an audit-supplied witness). / 兼容性定律是固有的：每个环都是它自身的一个 (R,R)-双模 — 双重作用都是乘法，[bm_compat] 恰好是结合性（一个审计提供的证据）。 *)
 Definition Ring_Bimodule (R : RingObject) : Bimodule R R.
 Proof.
   unshelve notypeclasses refine
@@ -895,8 +1161,13 @@ Example int_rmod_distr :
 Example int_rmod_neg :
   rm_smul Int_RMod (ring_neg Int_Ring 3%Z) 4%Z = (-12)%Z := eq_refl.
 
-(** The zero 对象's carrier really trivial group: both the
- terminal 始对象 [RMod_trivial], [eq_refl]. （已译） *)
+(*
+   * The zero object's carrier really is the trivial group: both the
+   terminal and the initial object are [RMod_trivial], by [eq_refl]. 
+
+   --------
+   * 零对象的承载体确实是平凡群：终端对象和初始对象都是  [RMod_trivial] ，由  [eq_refl] 表示。
+*)
 Example rmod_zero_terminal_is_trivial (R : RingObject) :
   @terminal_obj (RMod R) (RMod_Terminal R) = RMod_trivial R := eq_refl.
 

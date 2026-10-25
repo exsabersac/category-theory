@@ -10,23 +10,69 @@ Require Import Category.Instance.Sets.Pointed.
 
 Generalizable All Variables.
 
-(** * Partial maps and pointed sets *)
+(** * Partial maps and pointed sets / * 部分映射和有标记的集合 *)
 
 (*
+ nLab:      https://ncatlab.org/nlab/show/partial+function
  nLab:      https://ncatlab.org/nlab/show/pointed+set
  Wikipedia: https://en.wikipedia.org/wiki/Partial_function
 
-   本文件给出集合范畴相关实例。
+ The header of Instance/Coq/Par.v states, in prose, that the category of
+ partial maps is "equivalent (not isomorphic) to the category of pointed
+ sets": the object A realizes the pointed set A ⊔ {*}, with the adjoined
+ point standing for divergence.  This file proves that sentence for the
+ setoid variant, comparing Instance/Sets/Par.v's [Part] with
+ Instance/Sets/Pointed.v's [PointedSets].
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ The comparison functor [Part_to_Pointed] sends A to (option A, None) and a
+ partial map — which in [Part] IS a total map A → option B — to the pointed
+ map fixing [None].  It is FULL and FAITHFUL with no hypotheses: the
+ restriction g ↦ (a ↦ g (Some a)) inverts its action on homs, and
+ pointedness, i.e. g None ≈ None, is exactly the statement that nothing is
+ lost by restricting.
+
+ Essential surjectivity is another matter.  To exhibit an arbitrary pointed
+ set (B, b0) as B' ⊔ {*} one must produce B' — the points of B other than
+ the basepoint — and that requires deciding `b ≈ b0`.  The equivalence is
+ therefore stated over an explicit hypothesis [PointedDecidablePt], with the
+ quasi-inverse sending (B, b0) to the apartness sub-setoid { b : B | b ≉ b0 }
+ ([Apart]).  Classically that hypothesis always holds, so what is proved
+ here IS the textbook statement; constructively, the decidable objects are
+ precisely where the classical picture survives.  Objects satisfying it are
+ exhibited in the companion file Finite.v of this directory.
+
+ Why the equivalence is not an isomorphism is visible in the round trip:
+ [Apart] of (option A, None) is A only up to isomorphism, since its elements
+ are points of [option A] paired with a proof of apartness from [None].  The
+ conclusion is packaged as [EquivalenceOfCategories] through the full +
+ faithful + essentially surjective assembly of
+ Theory/Equivalence/FullFaithful.v, which consumes no choice principle
+ because all three classes are choice-carrying in this library (the chosen
+ section [prefmap], the chosen preimage object [eso_obj]). 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/partial+function
+ nLab：https://ncatlab.org/nlab/show/pointed+set
+ Wikipedia：https://en.wikipedia.org/wiki/Partial_function
+
+ Instance/Coq/Par.v 的头部以散文方式说明，偏映射类别“等价（不是同构）于有基集合的类别”：对象 A 实现有基集合 A ⊔ {*}，其中附加的点表示发散。该文件为集合等价变体证明了这一句子，将 Instance/Sets/Par.v 的 [Part] 与 Instance/Sets/Pointed.v 的 [PointedSets] 进行比较。比较函子 [Part_to_Pointed] 将 A 映射为 (option A, None)，并将部分映射——在 [Part] 中是从 A → option B 的全映射——映射为固定 [None] 的指向映射。它是完全且忠实的，没有任何假设：限制 g ↦ (a ↦ g (Some a)) 可以反转它在 Hom 上的作用，而指向性，即 g None ≈ None，正是通过限制没有损失任何信息的陈述。本质满射是另一回事。要将一个任意标点集 (B, b0) 表示为 B' ⊔ {*}，必须生成 B'——即 B 中除基点之外的点——而这需要判定 `b ≈ b0`。因此该等价是在明确假设 [PointedDecidablePt] 下陈述的，准逆映射将 (B, b0) 发送到离散子集合 { b : B | b ≉ b0 } ([Apart])。从经典观点看，该假设总是成立，所以这里证明的就是教材中的陈述；从构造观点看，可判定的对象正是经典情形得以保留的地方。满足该条件的对象在本目录的辅文件 Finite.v 中有展示。为什么这个等价不是同构在往返过程中可以看出：
+ [Apart] (选项A, None) 的结果只是同构意义上的 A，因为它的元素
+ 是 [option A] 的点，并配有与 [None] 不相交的证明。
+ 结论通过 Theory/Equivalence/FullFaithful.v 中的完全 + 可信 + 本质上满射的组合封装为 [EquivalenceOfCategories]，它不依赖选择公理，
+ 因为在这个库中所有三个类都是带选择的（选出的截面 [prefmap]，选出的原像对象 [eso_obj]）。
 *)
 
 #[local] Obligation Tactic := idtac.
 
 (*
-   本节说明函子相关定义、性质与动机。
+ The comparison functor.  A setoid [A] is sent to [A] with a fresh point
+ adjoined, that fresh point being the basepoint; a partial map A ⇀ B, which
+ is a total map A → option B, is sent to the pointed map that fixes the
+ fresh point.  This is the functor behind the remark in Instance/Coq/Par.v's
+ header that PAR is equivalent — not isomorphic — to pointed sets. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 比较函子。一个集合等价类 [A] 被映射到 [A]，并附加一个新的点，该新点作为基点；一个部分映射 A ⇀ B（即从 A 到 option B 的全映射）被映射到固定该新点的有基点映射。这就是 Instance/Coq/Par.v 文件头中提到 PAR 与有基点集合等价（而非同构）背后的函子。
 *)
 Definition Part_Pointed_obj (A : SetoidObject) : PointedSetoid := {|
   pointed_setoid := {| carrier   := option (carrier A)
@@ -35,9 +81,14 @@ Definition Part_Pointed_obj (A : SetoidObject) : PointedSetoid := {|
 |}.
 
 (*
-   本节说明函子相关定义、性质与动机。
+ The underlying function is given as a plain [Definition] rather than inside
+ the [Program] record: [Program] compiles a match into the equality-carrying
+ form, whose normal form on a stuck scrutinee differs syntactically from the
+ plain match [Part]'s own composition reduces to, and the functor law below
+ is then no longer available by conversion. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 底层函数被作为一个普通的 [Definition] 给出，而不是在 [Program] 记录中：[Program] 将匹配编译为携带等式的形式，其在卡住的检视对象上的标准形式在语法上与普通匹配 [Part] 自身的组合减少结果不同，因此下面的函子律就无法通过转换获得。
 *)
 Definition part_pointed_fun {A B : SetoidObject} (f : A ~{Part}~> B)
   (o : option (carrier A)) : option (carrier B) :=
@@ -85,15 +136,20 @@ Next Obligation.
   destruct o as [a|]; reflexivity.
 Qed.
 
-(* Faithfulness: two partial maps inducing the same pointed map already agree
-   at every [Some a]. *)
+(*
+ Faithfulness: two partial maps inducing the same pointed map already agree
+ at every [Some a]. 
+
+ --------
+ 忠实性：两个诱导同一指向映射的部分映射在每个 [Some a] 上已经一致。
+*)
 Theorem Part_to_Pointed_Faithful : Faithful Part_to_Pointed.
 Proof.
   constructor; intros A B f g Hfg a.
   exact (Hfg (Datatypes.Some a)).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Fullness: a pointed map g : option A ~> option B restricts to the partial map [a ↦ g (Some a)], and pointedness — [g None ≈ None] — is exactly what makes the restriction lose nothing. / 充满性：一个指向映射 g ：option A ~> option B 限制到偏映射 [a ↦ g (Some a)]，而指向性 — [g None ≈ None] — 恰恰是使得这种限制不会丢失任何东西的原因。 *)
 Program Definition Part_prefmap {A B : SetoidObject}
   (g : Part_Pointed_obj A ~{PointedSets}~> Part_Pointed_obj B) :
   A ~{Part}~> B := {|
@@ -116,19 +172,28 @@ Next Obligation.
     exact (preserves_pt g).
 Qed.
 
-(* * ** Essential surjectivity, 等价 （已译） *)
+(* * ** Essential surjectivity, and the equivalence / * ** 本质上的满射性，以及等价性 *)
 
 (*
-   本节说明来源与用途相关定义、性质与动机。
+ Essential surjectivity is where decidability enters, and it is unavoidable:
+ to exhibit a pointed set (B, b0) as [option] of something one must know
+ which points of B are the basepoint, i.e. decide `b ≈ b0`.  Classically
+ this always holds, so what follows IS the textbook statement; the
+ constructive reading is that the classical picture survives exactly on the
+ decidable objects. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 本质上的满射性是可判定性出现的地方，这是不可避免的：要将一个有基点集合 (B, b0) 展示为某物的 [option]，必须知道 B 中哪些点是基点，即判定 `b ≈ b0`。在经典情况下，这总是成立，所以以下内容是教材中的陈述；构造性解读是，经典图景恰恰在可判定对象上得以保留。
 *)
 Definition PointedDecidablePt : Type := ∀ Z : PointedSetoid, DecidablePt Z.
 
 (*
-   本节说明函子相关定义、性质与动机。
+ The apartness sub-setoid: the points provably distinct from the basepoint,
+ compared by their underlying points.  This is the candidate preimage of
+ (Z, pt Z) under the comparison functor — "Z with the basepoint removed". 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 不可接近子等价集合：可以证明与基点不同的点，通过它们的基础点进行比较。这是比较函子下 (Z, pt Z) 的候选原像——“去掉基点的 Z”.
 *)
 Program Definition Apart (Z : PointedSetoid) : SetoidObject := {|
   carrier   := ∃ z : carrier Z, ¬ (z ≈ pt Z);
@@ -247,9 +312,14 @@ Definition Part_to_Pointed_ESO (dec : PointedDecidablePt) :
     Apart (apart_iso dec).
 
 (*
-   本节说明函子相关定义、性质与动机。
+ PAR is equivalent to Set_*, on the decidable objects.  This upgrades the
+ remark in the header of Instance/Coq/Par.v — "equivalent (not isomorphic)
+ to the category of pointed sets" — from prose to a theorem, in the setoid
+ setting.  The comparison functor is fully faithful with no hypotheses at
+ all; only the essential surjectivity consumes [dec]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ PAR 在可判定对象上等价于 Set_*。这将 Instance/Coq/Par.v 头部注释中的说明——“等价（非同构）于带基集合的范畴”——从散文升级为在集合范畴环境下的定理。比较函子在没有任何假设的情况下是全忠的；只有本质上的满射性需要消耗 [dec]。
 *)
 Definition pointed_part_equivalence (dec : PointedDecidablePt) :
   EquivalenceOfCategories Part_to_Pointed :=

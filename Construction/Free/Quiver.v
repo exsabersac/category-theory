@@ -13,22 +13,61 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* * * Quivers free 范畴 quiver （已译） *)
+(* * * Quivers and the free category on a quiver / * * 箭袋与箭袋上的自由范畴 *)
 
 (*
-   Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
+ nLab:      https://ncatlab.org/nlab/show/quiver
+ Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
 
-   本文件给出构造。
+ A quiver (directed multigraph) is a set of nodes (vertices) together with,
+ for each ordered pair of nodes, a set of edges (arrows) between them.  In
+ the classical presentation this is two sets V, E with source/target maps
+ s, t : E → V; here the edges are indexed directly by their endpoints, so
+ [edges X Y] is the set of arrows from X to Y and source/target are implicit
+ in the indexing.  Parallel edges and loops are allowed.  Each [edges X Y]
+ carries a setoid so arrows are compared up to [≈] rather than [=].
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ A quiver homomorphism (QuiverHomomorphism) maps nodes to nodes and edges to
+ edges respecting source and target (here automatic from the indexing) and
+ the edge setoids.  Quivers and their homomorphisms form the category
+ [QuiverCategory] (the Quiv of the literature); morphism equivalence is
+ pointwise equality on nodes together with transported [≈] on edges.
+
+ The free category on a quiver G, [FreeOnQuiver G], has the nodes of G as
+ objects and finite composable paths of edges as morphisms ([tlist edges],
+ the type-aligned lists of Lib/TList.v): the empty path [tnil] is the
+ identity and path concatenation [+++] (with composition order flipped,
+ [g +++ f]) is composition; associativity and unit laws are the [tlist_app]
+ laws.  [QuiverOfCat] underlies a category as a quiver, giving the forgetful
+ functor [Forgetful : StrictCat ⟶ QuiverCategory].
+
+ [UniversalArrowQuiverCat] establishes the universal property: every quiver
+ homomorphism G ⇨ U(C) factors uniquely through the unit
+ [UnitQuiverCatAdjunction] as a functor [InducedFunctor], i.e. Free ⊣
+ Forgetful.  [FreeForgetfulAdjunction] packages this adjunction.
+
+ [FreeSyntax] (Section FreeQuiverSyntax) gives an alternative syntactic free
+ category whose morphisms are the free term algebra [Mor] (Ident/Morph/Comp)
+ quotiented by [≈] under the normalising map [morDA] into paths; it is
+ equivalent to [FreeOnQuiver]. 
+
+ --------
+ nLab:       https://ncatlab.org/nlab/show/quiver 
+ 维基百科:  https://en.wikipedia.org/wiki/Quiver_(mathematics) 
+
+ 一个箭图（有向多重图）是一组节点（顶点），对于每一对有序节点，存在它们之间的一组边（箭头）。在经典表示中，这是两组 V 和 E 以及源/目标映射 s, t : E → V；在这里，边直接由其端点索引，因此 [edges X Y] 是从 X 到 Y 的箭头集合，并且源/目标在索引中是隐含的。允许并行边和环。每个 [edges X Y] 都携带一个集合对象，因此箭头是根据 [≈] 而非 [=] 进行比较。箭袋同态（QuiverHomomorphism）将节点映射到节点，将边映射到边，同时保持源和目标（此处从索引自动处理）以及边的集合同构。箭袋及其同态形成范畴 [QuiverCategory]（文献中的 Quiv）；态射等价是节点上的逐点相等以及边上经过传输的 [≈]。
+
+ 在箭袋 G 上的自由范畴 [FreeOnQuiver G] 以 G 的节点为对象，以可组合的有限边路径作为态射（[tlist edges]，即 Lib/TList.v 的类型对齐列表）：空路径 [tnil] 是恒等态射，路径连接 [+++]（组合顺序翻转，[g +++ f]）为组合；结合律和单位律是 [tlist_app] 定律。[QuiverOfCat] 作为箭袋构成一个范畴，给出了遗忘函子 [Forgetful : StrictCat ⟶ QuiverCategory]。[UniversalArrowQuiverCat] 建立了普遍性质：每个 quiver 同态 G ⇨ U(C) 都可以唯一地通过单位 [UnitQuiverCatAdjunction] 分解为一个函子 [InducedFunctor]，即 Free ⊣ Forgetful。[FreeForgetfulAdjunction] 打包了这个伴随关系。
+
+ [FreeSyntax]（章节 FreeQuiverSyntax）给出了一个替代的语法自由范畴，其态射是自由项代数 [Mor]（Ident/Morph/Comp），通过归一化映射 [morDA] 对 [≈] 进行等价化到路径；它与 [FreeOnQuiver] 等价。
 *)
 
 Section Quiver.
   Class Quiver@{o h p} := {
-      nodes : Type@{o};                          (* vertices / objects *)
-      uedges := Type@{h} : Type@{h+1};           (* universe of edge sets *)
-      edges : nodes → nodes → uedges;            (* arrows, indexed by source and target *)
-      edgeset : ∀ X Y, Setoid@{h p} (edges X Y)  (* each edge set is a setoid (≈) *)
+      nodes : Type@{o};                          (* vertices / objects / 顶点 / 对象 *)
+      uedges := Type@{h} : Type@{h+1};           (* universe of edge sets / 边集的宇宙 *)
+      edges : nodes → nodes → uedges;            (* arrows, indexed by source and target / 箭头，按源和目标索引 *)
+      edgeset : ∀ X Y, Setoid@{h p} (edges X Y)  (* each edge set is a setoid (≈) / 每个边集合都是一个集合类 (≈) *)
     }.
   Coercion nodes : Quiver >-> Sortclass.
   Context (G : Quiver).
@@ -115,7 +154,12 @@ Section Quiver.
         destruct p, q;
         simpl in *; destruct equiv1; now simpl in equiv2 |].
 
-      (* [ intros; destruct g; [ easy | now apply False_rect ] |]. *)
+      (*
+ [ intros; destruct g; [ easy | now apply False_rect ] |]. 
+
+ --------
+ [ intros; destruct g; [ easy | now apply False_rect ]  |].
+*)
     intros i2 i3 g h p q equiv1 equiv2.
     destruct g as [ | j0 j1 ghead gtail ]; [ now apply False_rect |].
     simpl in equiv1. destruct equiv1 as [j_eq_j0 fhead_eq_ghead].
@@ -165,9 +209,18 @@ Section Quiver.
 End Quiver.
 
 (*
-   本节说明函子、hom相关定义、性质与动机。
+ The universe annotations are load-bearing, not decoration.  Left to
+ inference the edge setoid's PROOF universe minimizes to [Set], which pins
+ it in the resulting [Quiver@{o h Set}]; and since [InducedFunctor] below
+ identifies the target category's hom and proof universes with the quiver's,
+ that pin propagates to every functor out of a free or presented category
+ built this way, restricting its target to [Category@{o Set Set}].  Naming
+ [p] keeps it a parameter.  ([eq_equivalence] of Lib/Setoid.v is already
+ polymorphic for exactly this reason; what was missing was spending its
+ polymorphism here.) 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 宇宙注释是承重的，而不是装饰。留给推理时，边缘集扎伊多的 PROOF 宇宙最小化为 [Set]，这将其固定在结果 [Quiver@{o h Set}] 中；并且由于下面的 [InducedFunctor] 将目标范畴的 hom 和 proof 宇宙与箭图的宇宙识别，这一固定会传播到从以这种方式构建的自由或呈现范畴出的每一个函子，将其目标限制为 [Category@{o Set Set}]。命名 [p] 可以使其保持为一个参数。（Lib/Setoid.v 的 [eq_equivalence] 正是出于这个原因已经是多态的；缺少的是在此处利用它的多态性。）
 *)
 Definition Build_Quiver_Standard_Eq@{o h p} ( node_type : Type@{o} )
   ( edge_type : node_type -> node_type -> Type@{h} ) : Quiver@{o h p} :=
@@ -180,15 +233,18 @@ Definition Build_Quiver_Standard_Eq@{o h p} ( node_type : Type@{o} )
   |}.
 
 (*
-   本节说明 Quiver 相关定义、性质与动机。
+ A quiver homomorphism G ⇨ G': a map on nodes together with, for each pair
+ of nodes, a map on edges into the image pair (source and target are thus
+ preserved by construction) that respects the edge setoids. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 一个箭图同态 G ⇨ G'：一个节点上的映射，此外对于每对节点，有一个映射将边映射到像节点对（因此源和目标通过构造被保留），并且该映射遵守边集合的等价关系。
 *)
 Class QuiverHomomorphism@{o1 h1 p1 o2 h2 p2}
   (G : Quiver@{o1 h1 p1}) (G' : Quiver@{o2 h2 p2}) := {
-    fnodes : @nodes G -> @nodes G';                                    (* action on nodes *)
-    fedgemap : ∀ x y : @nodes G, edges x y -> edges (fnodes x) (fnodes y); (* action on edges *)
-    fedgemap_respects : ∀ x y,                                         (* edge map respects ≈ *)
+    fnodes : @nodes G -> @nodes G';                                    (* action on nodes / 节点上的操作 *)
+    fedgemap : ∀ x y : @nodes G, edges x y -> edges (fnodes x) (fnodes y); (* action on edges / 边缘上的动作 *)
+    fedgemap_respects : ∀ x y,                                         (* edge map respects ≈ / 边缘图符合 ≈ *)
     Proper@{h2 p2} (respectful@{h1 p1 h2 p2 h2 p2}
                       (@equiv@{h1 p1} _ (edgeset _ _))
                       (@equiv@{h2 p2} _ (edgeset _ _))) (@fedgemap x y)
@@ -536,14 +592,17 @@ Section FreeQuiverSyntax.
 Context {G : Quiver}.
 
 (*
-   本节说明 Quiver 相关定义、性质与动机。
+ Syntactic free morphisms: the free term algebra on the edges of G, with
+ formal identities and composites.  [morDA] normalises a term to a path,
+ and [Mor_Setoid] quotients terms by equality of their normal forms. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 句法自由态射：在图 G 的边上的自由项代数，具有形式恒等和复合。[morDA] 将一个项归一化为路径，[Mor_Setoid] 根据其归一形式的相等性对项进行商化。
 *)
 Inductive Mor : nodes → nodes → Type :=
-  | Ident {x} : Mor x x                                   (* formal identity *)
-  | Morph {x y} (f : edges x y) : Mor x y                 (* generating edge *)
-  | Comp  {x y z} (f : Mor y z) (g : Mor x y) : Mor x z.  (* formal composite *)
+  | Ident {x} : Mor x x                                   (* formal identity / 正式身份 *)
+  | Morph {x y} (f : edges x y) : Mor x y                 (* generating edge / 生成边缘 *)
+  | Comp  {x y z} (f : Mor y z) (g : Mor x y) : Mor x z.  (* formal composite / 正式复合 *)
 
 Fixpoint morDA `(t : Mor x y) : tlist edges x y :=
   match t with
@@ -571,8 +630,13 @@ Proof.
   now rewrite IHf.
 Qed.
 
-(* While 这是 merely 等价. Such essence adjointness
- between pseudocategories. （已译） *)
+(*
+ While this is merely an equivalence. Such is the essence of adjointness
+ between pseudocategories. 
+
+ --------
+ 虽然这仅仅是一种等价。这就是伪范畴之间伴随性的本质。
+*)
 Lemma tlistDA_morDA `{f : Mor x y} :
   tlistDA (morDA f) ≈ f.
 Proof.

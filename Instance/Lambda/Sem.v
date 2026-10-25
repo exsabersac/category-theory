@@ -10,34 +10,67 @@ Set Equations With UIP.
 
 Generalizable All Variables.
 
-(** Denotational semantics of the simply-typed lambda calculus in a CCC *)
+(** Denotational semantics of the simply-typed lambda calculus in a CCC / 简单类型λ演算在笛卡尔闭范畴中的指称语义 *)
 
 (*
+ nLab: https://ncatlab.org/nlab/show/relation+between+type+theory+and+category+theory
  Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
  Wikipedia: https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence
 
-   本文件给出 λ 演算相关实例。
+ This file gives the categorical (denotational) semantics of the de Bruijn
+ STLC of Exp.v, realizing the Curry-Howard-Lambek correspondence: a
+ cartesian closed category interprets the calculus, with the product type
+ denoting the categorical product, the function type denoting the internal
+ hom (exponential), and a context denoting the iterated product of its
+ types.  Here the interpreting CCC is taken to be Coq's own universe [Type]
+ (with [unit] terminal, [*] product, [→] exponential), so the interpretation
+ is the standard one read off into that concrete model:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ ⟦TyUnit⟧      := unit                   (terminal object)
+ ⟦t1 × t2⟧     := ⟦t1⟧ * ⟦t2⟧            (categorical product)
+ ⟦dom ⟶ cod⟧  := ⟦dom⟧ → ⟦cod⟧          (exponential / internal hom)
+ ⟦Γ⟧           := ilist ⟦·⟧ Γ            (right-nested product of types)
+ ⟦Γ ⊢ t : τ⟧   : ⟦Γ⟧ → ⟦τ⟧              (a morphism in the CCC)
+
+ On terms (SemExp) the standard CCC interpretation is used: a variable is a
+ product projection (var = proj), application is evaluation composed with
+ pairing (app = eval ∘ ⟨_,_⟩), and lambda abstraction is currying
+ (lam = curry).  The remaining results are the semantic compatibility lemmas
+ between interpretation and the renaming/substitution machinery of Ren.v and
+ Sub.v; they are what make βη-equality sound, witnessed downstream by
+ [soundness] in Sound.v ([e ---> v] implies [SemExp e = SemExp v]).  By
+ Lambek's theorem the syntax presented here is the free CCC, so this
+ interpretation factors uniquely through every model. 
+
+ --------
+ nLab:  https://ncatlab.org/nlab/show/relation+between+type+theory+and+category+theory
+ 维基百科:  https://en.wikipedia.org/wiki/Cartesian_closed_category
+ 维基百科:  https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence
+
+ 此文件提供了 Exp.v 中 de Bruijn STLC 的范畴（指称）语义，实现了 Curry-Howard-Lambek 对应关系：一个笛卡尔闭范畴解释该演算，产品类型表示范畴积，函数类型表示内部 Hom（指数），上下文表示其类型的迭代积。这里解释的 CCC 取为 Coq 自身的宇宙 [Type]（其中 [unit] 为终对象，[*] 为积，[→] 为指数），因此该解释是读入该具体模型的标准解释:⟦TyUnit⟧      := unit                   （终对象）
+ ⟦t1 × t2⟧     := ⟦t1⟧ * ⟦t2⟧            （范畴积）
+ ⟦dom ⟶ cod⟧  := ⟦dom⟧ → ⟦cod⟧          （指数对象 / 内部 Hom）
+ ⟦Γ⟧           := ilist ⟦·⟧ Γ            （类型的右嵌套积）
+ ⟦Γ ⊢ t : τ⟧   : ⟦Γ⟧ → ⟦τ⟧              （CCC 中的一个态射）在项 (SemExp) 上使用标准的 CCC 解释：变量是一个积的投影（var = proj），应用是评估与配对的组合（app = eval ∘ ⟨_,_⟩），λ 抽象是柯里化（lam = curry）。其余的结果是解释与 Ren.v 和 Sub.v 的重命名/替换机制之间的语义兼容引理；它们使得 βη 等式是正确的，下游在 Sound.v 中由 [soundness] 证明（[e ---> v] 推出 [SemExp e = SemExp v]）。根据 Lambek 定理，此处呈现的语法是自由 CCC，因此该解释在每个模型中都是唯一可分解的。
 *)
 
 Section Sem.
 
 Fixpoint SemTy (τ : Ty) : Type :=
   match τ with
-  | TyUnit          => unit                  (* terminal object             *)
-  | TyPair t1 t2    => SemTy t1 * SemTy t2   (* categorical product         *)
-  | TyArrow dom cod => SemTy dom → SemTy cod (* exponential / internal hom  *)
+  | TyUnit          => unit                  (* terminal object / 终端对象 *)
+  | TyPair t1 t2    => SemTy t1 * SemTy t2   (* categorical product / 笛卡尔积 *)
+  | TyArrow dom cod => SemTy dom → SemTy cod (* exponential / internal hom / 指数 / 内部 Hom *)
   end.
 
-(* A context denotes the iterated (right-nested) product of its types. *)
+(* A context denotes the iterated (right-nested) product of its types. / 一个上下文表示其类型的迭代（右嵌套）乘积。 *)
 Definition SemEnv Γ : Type := ilist (B:=SemTy) Γ.
 
-(* A variable denotes a product projection (var = proj). *)
+(* A variable denotes a product projection (var = proj). / 一个变量表示一个乘积投影（var = proj）。 *)
 Fixpoint SemVar `(v : Var Γ τ) : SemEnv Γ → SemTy τ :=
   match v with
-  | ZV   => λ se, fst se              (* first projection            *)
-  | SV v => λ se, SemVar v (snd se)   (* projection through the tail *)
+  | ZV   => λ se, fst se              (* first projection / 第一次投影 *)
+  | SV v => λ se, SemVar v (snd se)   (* projection through the tail / 通过尾部的投影 *)
   end.
 
 Equations RenSem {Γ Γ'} (r : Ren Γ Γ') (se : SemEnv Γ) : SemEnv Γ' :=
@@ -90,18 +123,22 @@ Proof.
 Qed.
 
 (*
-   本节说明 Sem 相关定义、性质与动机。
+ The term interpretation ⟦Γ ⊢ e : τ⟧ : ⟦Γ⟧ → ⟦τ⟧, the standard CCC
+ semantics read into Coq's [Type]: pairing into the product, the product
+ projections, a variable as a projection, λ as currying, and application
+ as evaluation composed with pairing. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 术语解释 ⟦Γ ⊢ e : τ⟧ : ⟦Γ⟧ → ⟦τ⟧，标准的 CCC 语义被引入 Coq 的 [Type] 中：配对进入积，积的投影，变量作为投影，λ 表示柯里化，应用作为与配对组合的求值。
 *)
 Fixpoint SemExp `(e : Exp Γ τ) : SemEnv Γ → SemTy τ :=
   match e with
-  | EUnit     => λ _, tt                              (* unique map to terminal *)
+  | EUnit     => λ _, tt                              (* unique map to terminal / 到终端的唯一映射 *)
   | Pair x y  => λ se, (SemExp x se, SemExp y se)     (* pairing ⟨_,_⟩           *)
-  | Fst p     => λ se, fst (SemExp p se)              (* first projection        *)
-  | Snd p     => λ se, snd (SemExp p se)              (* second projection       *)
+  | Fst p     => λ se, fst (SemExp p se)              (* first projection / 第一次投影 *)
+  | Snd p     => λ se, snd (SemExp p se)              (* second projection / 第二投影 *)
   | VAR v     => SemVar v                             (* var = proj              *)
-  | LAM e     => λ se x, SemExp e (x, se)             (* lam = curry             *)
+  | LAM e     => λ se x, SemExp e (x, se)             (* lam = curry / 羊腿 = 咖喱 *)
   | APP e1 e2 => λ se, SemExp e1 se (SemExp e2 se)    (* app = eval ∘ ⟨_,_⟩      *)
   end.
 

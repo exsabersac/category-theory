@@ -14,14 +14,47 @@ Require Import Category.Structure.Cone.Const.
 
 Generalizable All Variables.
 
-(* * * Limits right Kan extensions along terminal 函子 （已译） *)
+(* * * Limits as right Kan extensions along the terminal functor / * * 作为沿终端函子右康延伸的极限 *)
 
 (*
-   Wikipedia: https://en.wikipedia.org/wiki/Kan_extension
+ nLab: https://ncatlab.org/nlab/show/Kan+extension
+ Wikipedia: https://en.wikipedia.org/wiki/Kan_extension
 
-   本文件给出 Kan 扩张：沿函子 F 的左/右 Kan 扩张分别为预复合诱导函子的左/右伴随（当存在时）。
+ The limit of a functor F : J ⟶ C is the right Kan extension of F along the
+ unique functor to the terminal category 1.  Dually the colimit is the left
+ Kan extension along that functor.  Writing E := Erase J : J ⟶ 1 for the
+ terminal functor (Wikipedia/nLab call it the unique functor to 1), the
+ restriction Induced = (− ◯ E) sends an object d of 1 to the constant functor
+ Δ_d, so the adjunction Induced ⊣ Ran makes Ran E F corepresent the cones
+ over F; that universal property is exactly the limit of F.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ Since the global right Kan extension Ran E F is a functor 1 ⟶ C, evaluating
+ it at the unique object ttt of 1 yields the limit object in C.  This is the
+ slogan "lim F = Ran_E F" (Wikipedia) / "the right Kan extension operation
+ forms the limit of a functor" (nLab) made into a concrete isomorphism.
+
+ Theorem (Kan_Limit): for F : J ⟶ C with a limit and a right Kan extension
+ along Erase J, the limit object is isomorphic in C to (Ran (Erase J) F) ttt.
+
+ Notation:
+ Erase J        the terminal functor J ⟶ 1
+ 1              the terminal category (single object ttt, Instance/One)
+ ttt            the unique object of 1 (poly_unit)
+ Ran K F        the right Kan extension functor (Theory/Kan/Extension)
+ Δ(c)           the constant/diagonal functor at c
+ ≅              isomorphism of objects (Theory/Isomorphism) 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/Kan+extension
+ Wikipedia：https://en.wikipedia.org/wiki/Kan_extension
+
+ 函子 F : J ⟶ C 的极限是沿唯一函子到终结范畴 1 的 F 的右 Kan 拓展。对偶地，共极限是沿该函子的左 Kan 拓展。记 E := Erase J : J ⟶ 1 为终结函子（Wikipedia/nLab 称其为到 1 的唯一函子），限制诱导 Induced = (− ◯ E) 将 1 的对象 d 发送为常函子 Δ_d，因此伴随关系 Induced ⊣ Ran 使得 Ran E F 核心表征 F 上的锥；该泛性质正是 F 的极限。由于全局右 Kan 扩展 Ran E F 是一个函子 1 ⟶ C，将其在 1 的唯一对象 ttt 处求值会得到 C 中的极限对象。这就是口号“lim F = Ran_E F”（维基百科）/ “右 Kan 扩展操作形成函子的极限”（nLab）并将其转化为具体同构。\n\n定理（Kan_Limit）：对于 F : J ⟶ C，假设存在极限并且沿着 Erase J 的右 Kan 扩展，极限对象在 C 中与 (Ran (Erase J) F) ttt 同构。符号说明：
+ Erase J        终结函子 J ⟶ 1
+ 1              终结范畴（单对象 ttt, Instance/One）
+ ttt            1 的唯一对象（poly_unit）
+ Ran K F        右 Kan 扩展函子（Theory/Kan/Extension）
+ Δ(c)           以 c 为常数/对角线的函子
+ ≅              对象的同构（Theory/Isomorphism）
 *)
 
 Theorem Kan_Limit `(F : J ⟶ C) `{Lim : @Limit _ _ F} `{@RightKan _ _ (Erase J) C} :
@@ -88,9 +121,17 @@ Proof.
   - apply to_from.
   - simpl in *.
     (*
-   本节说明（余）极限、同构相关定义、性质与动机。
+ Since half of the isomorphism has already been proven in [to_from], it
+ is sufficient to show that either [(adj nat) ttt] is monic, or
+ [unique_obj (ump_limits cone)] is epic. I've chosen the latter due
+ to Emily Riehl's statement in "Category Theory in Context" (p. 76):
+ "... Proposition 3.1.7 implies that the only automorphism of [a limit
+ object] l that commutes with the specified limit cone λ is the
+ identity." 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 由于同构的一半已经在 [to_from] 中被证明，因此只需证明 [(adj nat) ttt] 是单态，或者 [unique_obj (ump_limits cone)] 是满态。我选择了后者，这是因为 Emily Riehl 在《Category Theory in Context》（第 76 页）中的声明：
+ “……命题 3.1.7 意味着与指定的极限锥 λ 交换的 [一个极限对象] l 的唯一自同构是恒等映射。”
 *)
 
     assert (∀ (f g : Lim ~{ C }~> Lim),
@@ -105,9 +146,14 @@ Proof.
     }
 
     (*
-   本节说明伴随、（余）极限、等价相关定义、性质与动机。
+ Apply the consequence that [unique_obj (ump_limits cone)] is epic
+ on morphisms commuting with the limit cone, leaving us with the burden
+ of showing that the two sides of our equivalence do in fact commute for
+ [Lim F]. The right side is trivial (id), while the left side relies on
+ the naturality of the Kan adjunction. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 将结果应用于 [unique_obj (ump_limits cone)] 是史诗级的，对与极限锥交换的态射，剩下的任务是证明我们等价的两边实际上对 [Lim F] 交换。右边是平凡的（id），而左边依赖于 Kan 对偶的自然性。
 *)
     apply HA; simpl; intros; cat; swap 1 2.
     + rewrite <- comp_assoc.

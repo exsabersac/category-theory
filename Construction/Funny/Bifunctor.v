@@ -8,12 +8,45 @@ Require Import Equations.Prop.Logic.
 Generalizable All Variables.
 
 (*
-   本文件给出构造。
+   * * The funny tensor product of functors
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [FunnyBimap F G : C □ D ⟶ C' □ D'] acts on the funny tensor product of
+   categories (Construction/Funny.v) one generating step at a time:
+
+   lstep f ↦ lstep (fmap[F] f)        rstep g ↦ rstep (fmap[G] g)
+
+   packaged through the separately-functorial eliminator [FunnyUP], so
+   functoriality is inherited from the universal property rather than
+   re-proved by word induction.
+
+   The bifunctor laws ([FunnyBimap_id], [FunnyBimap_comp]) and properness
+   ([FunnyBimap_respects]) are stated in [Functor_StrictEq_Setoid]
+   (Theory/Functor.v).  This is essential and not a stylistic choice: the
+   funny tensor product is NOT invariant under equivalence of categories
+   (see the header of Construction/Funny.v for the [I □ I ≃ ℤ]
+   counterexample), so [FunnyBimap] does NOT respect the
+   natural-isomorphism setoid [Functor_Setoid] used by the weak [Cat]
+   (Instance/Cat.v) — the corresponding [fmap_respects] is false.  Its
+   properness is real only over strict functor equality, which is the
+   hom-setoid of [StrictCat] (Instance/StrictCat.v); the symmetric monoidal
+   structure downstream (Instance/StrictCat/Funny.v) lives there. 
+
+   --------
+   * * 函子有趣的张量积
+
+   [FunnyBimap F G : C □ D ⟶ C' □ D'] 作用于范畴的有趣张量积（Construction/Funny.v），一次生成一步：
+
+   lstep f ↦ lstep (fmap [F] f)        rstep g ↦ rstep (fmap [G] g)
+
+   通过单独函子化的消去子 [FunnyUP] 打包，因此函子性从普遍性质继承，而不是通过文字归纳重新证明。双函子定律（[FunnyBimap_id]，[FunnyBimap_comp]）和正确性（[FunnyBimap_respects]）在[Functor_StrictEq_Setoid]（Theory/Functor.v）中陈述。这是必要的，而不是风格上的选择：有趣的张量积在范畴等价下不可不变（参见Construction/Funny.v的头部[I □ I ≃ ℤ]反例），因此[FunnyBimap]不尊重弱[Cat]（Instance/Cat.v）使用的自然同构集合等效[Functor_Setoid]——对应的[fmap_respects]是错误的。它的正确性仅在严格函子相等下成立，这是[StrictCat]（Instance/StrictCat.v）的同态集合等效；下游的对称单体结构（Instance/StrictCat/Funny.v）就存在于那里。
 *)
 
-(* 相关说明。 （已译） *)
+(*
+   * ** The action of [F □ G], as separately functorial data 
+
+   --------
+   * ** [F □ G] 的作用，作为独立的函子化数据
+*)
 
 Program Definition FunnyBimap_sep {C C' D D' : Category}
   (F : C ⟶ C') (G : D ⟶ D') :
@@ -55,7 +88,17 @@ Qed.
 Definition FunnyBimap {C C' D D' : Category} (F : C ⟶ C') (G : D ⟶ D') :
   (C □ D) ⟶ (C' □ D') := FunnyUP (FunnyBimap_sep F G).
 
-(* 相关说明。 （已译） *)
+(*
+   * ** Computation lemmas
+
+   [ffold] and [fapp] compute, so the action of [FunnyBimap] on words is
+   definitional, constructor by constructor. 
+
+   --------
+   * ** 计算引理
+
+   [ffold] 和 [fapp] 可以计算，所以 [FunnyBimap] 在词上的作用是定义性的，逐构造器进行的。
+*)
 
 Lemma FunnyBimap_fnil {C C' D D' : Category} (F : C ⟶ C') (G : D ⟶ D')
   {c : C} {d : D} :
@@ -90,7 +133,7 @@ Lemma FunnyBimap_rstep {C C' D D' : Category} (F : C ⟶ C') (G : D ⟶ D')
     = rstep (fmap[G] g).
 Proof. reflexivity. Qed.
 
-(** ** Strict bifunctor laws *)
+(** ** Strict bifunctor laws / **严格双函子定律 *)
 
 Lemma FunnyBimap_id {C D : Category} :
   @equiv _ (@Functor_StrictEq_Setoid (C □ D) (C □ D))
@@ -113,9 +156,21 @@ Proof.
 Qed.
 
 (*
-   本节说明 Bifunctor 相关定义、性质与动机。
+   * ** Transport helpers
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Properness of [FunnyBimap] transports morphisms of [C' □ D'] along
+   object equalities that are [f_equal] images of SCALAR equalities in one
+   coordinate ([eF c], resp. [eG d]).  Each helper destructs the scalar
+   equalities — after which every transport vanishes definitionally — so
+   downstream proofs never manipulate transports over pair types.  The
+   left/right suffix [_l]/[_r] names the argument being varied (the
+   [C]-side functor, resp. the [D]-side one); [lstep]/[rstep] names the
+   generating step being transported. 
+
+   --------
+   * ** 传输助手
+
+   [FunnyBimap] 的恰当性沿着对象等价传输 [C' □ D'] 的态射，这些对象等价是 [f_equal] 的 SCALAR 等价在一个坐标（分别是 [eF c] 和 [eG d]）的映像。每个助手会析构标量等价——在此之后，每个传输在定义上都会消失——因此下游证明中永远不会操作成对类型上的传输。左右后缀 [_l] / [_r] 指定正在变化的参数（分别是 [C] 侧函子和 [D] 侧函子）；[lstep] / [rstep] 指定被传输的生成步骤。
 *)
 
 Lemma funny_transport_lstep_l {C D : Category} {a a' b b' : C} {y : D}
@@ -167,9 +222,17 @@ Proof.
 Qed.
 
 (*
-   本节说明函子相关定义、性质与动机。
+   * ** Properness with respect to strict functor equality
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Split per argument: each half varies one functor while the other is
+   fixed, so all object equalities are [f_equal] images of one scalar
+   family and the helpers above apply verbatim on the generating steps;
+   [Funny_strict_eq] then extends the agreement to all words. 
+
+   --------
+   * ** 关于严格函子相等的适当性
+
+   按参数拆分：每一半只改变一个函子，而另一个保持固定，因此所有对象相等性都是一个标量族的 [f_equal] 映射，并且上述辅助方法可以在生成步骤上逐字应用；然后 [Funny_strict_eq] 将一致性扩展到所有单词。
 *)
 
 Lemma FunnyBimap_respects_l {C C' D D' : Category}

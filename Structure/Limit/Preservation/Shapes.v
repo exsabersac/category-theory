@@ -13,12 +13,30 @@ Require Import Coq.Lists.List.
 Generalizable All Variables.
 
 (*
-   本文件给出形状/往返相关引理（对象上的 [=] 往返等）。
+   * * Preservation over a class of diagram shapes (Riehl §3.4)
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Riehl's Definition 3.4.1 speaks of functors preserving the limits of all
+   diagrams "of a given shape, or of a given size" — a quantification the
+   tree has had no vocabulary for: the per-diagram classes and the
+   all-shapes ContinuousFunctor existed, with nothing between.  This file
+   supplies the intermediate forms.  For products the shape class is the
+   discrete categories; for FINITE limits the tree has had no finiteness
+   predicate on shapes at all (Structure/Limit/Creation.v records the gap,
+   and Structure/Topos.v spells "finite limits" as terminal + products +
+   pullbacks instead).  [FiniteShape] is that predicate, in the enumeration
+   form the setoid setting supports: finitely many objects, and finitely
+   many arrows in each hom UP TO ≈.  The lists are data, so the record is a
+   [Type] and its inhabitants compute; the three witnesses at the bottom —
+   the empty shape, the discrete pair, and the walking span — are exactly
+   the shapes whose limits are the terminal object, binary products and
+   pullbacks, tying the new predicate to the topos-layer reading of
+   "finitely complete". 
+
+   --------
+   * * 对一类图形形状的保持 (Riehl §3.4)Riehl的定义3.4.1提到函子保留所有“给定形状或给定大小”的图的极限——这是树状结构从未有过的量化表达：存在按图分类的类和所有形状的连续函子，但两者之间什么都没有。这个文件提供了中间形式。对于积，形状类是离散范畴；对于有限极限，树状结构根本没有关于形状的有限性断言（Structure/Limit/Creation.v记录了这一空白，而Structure/Topos.v将“有限极限”表述为终对象 + 积 + 拉回）。[FiniteShape]就是这个断言，在集合道具环境下的枚举形式：有限个对象，以及每个Hom中至多≈个箭头。这些列表是数据，所以记录是一个 [Type]，其居民进行计算；底部的三个见证——空形、离散对和行走跨度——正是其极限是终对象、二元积和拉回的形状，将新的谓词与“有限完备”的拓扑层阅读联系起来。
 *)
 
-(* 相关说明。 （已译） *)
+(* * ** Products: the discrete-shape case / * ** 产品：离散形状的外壳 *)
 
 Definition PreservesProductCones {C D : Category} (F : C ⟶ D) : Type :=
   ∀ (A : Type) (K : DiscreteCat A ⟶ C), PreservesLimitCone K F.
@@ -27,12 +45,21 @@ Definition Continuous_PreservesProductCones {C D : Category} {F : C ⟶ D}
   (H : ContinuousFunctor F) : PreservesProductCones F :=
   fun A K => H (DiscreteCat A) K.
 
-(** ** Finite shapes *)
+(** ** Finite shapes / ** 有限形状 *)
 
 (*
-   本节说明（余）极限、拉回/推出、topos相关定义、性质与动机。
+ Structure/Limit/Finite.v's [FiniteCategory] is now the tree's finiteness
+ predicate on shapes (Structure/Limit/Creation.v points at it;
+ Structure/Topos.v and Structure/Regular.v once spelled "finite limits" as
+ terminal, products, pullbacks).  A second, in the enumeration form of
+ Construction/Subcategory/Finite.v and Construction/Free/Quiver/
+ Presented.v: finitely many objects, and finitely many arrows in each
+ hom UP TO [≈], which is the only reading the setoid setting supports.
+ The lists are data, so the record is a [Type] and its inhabitants
+ compute. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Structure/Limit/Finite.v 的 [FiniteCategory] 现在是树形的形状上的有限性谓词（Structure/Limit/Creation.v 指向它；Structure/Topos.v 和 Structure/Regular.v 曾将“有限极限”表示为终结对象、积、拉回）。第二种，在 Construction/Subcategory/Finite.v 和 Construction/Free/Quiver/Presented.v 的枚举形式中：有限多个对象，以及在每个 Hom 中有限多条箭头，直至 [≈]，这是集合化环境支持的唯一解释。这些列表是数据，所以记录是一个 [Type]，并且其元素可以计算。
 *)
 
 Record FiniteShape (J : Category) : Type := {
@@ -59,10 +86,16 @@ Definition PreservesFiniteLimitCones_OfShape {C D : Category} {F : C ⟶ D}
   (H : PreservesFiniteLimitCones F) {J : Category} (HJ : FiniteShape J) :
   PreservesLimitConesOfShape J F := H J HJ.
 
-(** ** The predicate is inhabited *)
+(** ** The predicate is inhabited / ** 谓词是有含义的 *)
 
-(* The global obligation tactic preprocesses these goals unpredictably;
-   take manual control (precedent: Functor/Structure/Monoidal/Id.v). *)
+(*
+ The global obligation tactic preprocesses these goals unpredictably;
+ take manual control (precedent: Functor/Structure/Monoidal/Id.v). 
+
+ --------
+ 全球义务策略会不可预测地预处理这些目标；
+ 手动控制（先例：Functor/Structure/Monoidal/Id.v）。
+*)
 #[local] Obligation Tactic := idtac.
 
 Program Definition FiniteShape_0 : FiniteShape _0 := {|

@@ -11,31 +11,63 @@ Require Import Category.Functor.Hom.Yoneda.Iso.
 Require Import Category.Instance.Sets.
 Require Import Category.Construction.Groupoid.
 
-(* 相关说明。 （已译） *)
+(* * * Universal properties as representability / * * 作为可表示性的泛性质 *)
 
 (*
-   nLab: https://ncatlab.org/nlab/show/representable+functor
-   Wikipedia: https://en.wikipedia.org/wiki/Universal_property
-   Wikipedia: https://en.wikipedia.org/wiki/Representable_functor
+ nLab: https://ncatlab.org/nlab/show/universal+property
+ nLab: https://ncatlab.org/nlab/show/representable+functor
+ Wikipedia: https://en.wikipedia.org/wiki/Universal_property
+ Wikipedia: https://en.wikipedia.org/wiki/Representable_functor
 
-   本文件给出相关范畴论结构的定义与性质。
+ A predicate P on the objects of C is a "universal property" when satisfying
+ the predicate is equivalent to representing a fixed functor.  Concretely, an
+ object c "has the property P" exactly when c represents [repr_functor], i.e.
+ there is a natural isomorphism of copresheaves
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ [Hom c,─] ≅ repr_functor    (Hom(c, ─) ≅ P, naturally in the target)
+
+ in the functor category [C, Sets].  This is the standard equivalence
+ "universal property ⟺ representability": following nLab, a representation of
+ a functor F : C ⟶ Sets is a natural isomorphism Hom(c, ─) ≅ F, and by the
+ Yoneda lemma it is determined by a single universal element (the image of
+ id{C} c).  Wikipedia phrases the same fact as: (A, u) is universal from X to
+ F iff Hom(A, ─) ≅ Hom(X, F ─), and the representing object is then unique up
+ to unique isomorphism (see [univ_property_unique_up_to_unique_iso] below).
+
+ Here [repr_functor] is covariant, [Hom c,─] = Curried_Hom C c is the
+ covariant hom-functor Hom(c, ─), and the per-c isomorphism lives in [Sets]
+ (setoids), identifying the setoid of proofs [P c] with the setoid of natural
+ isomorphisms [Hom c,─] ≅ [repr_functor].  The claim is not that this captures
+ *every* conceivable universal construction, only the representable ones,
+ which cover the standard examples. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/universal+property
+ nLab：https://ncatlab.org/nlab/show/representable+functor
+ Wikipedia：https://en.wikipedia.org/wiki/Universal_property
+ Wikipedia：https://en.wikipedia.org/wiki/Representable_functor
+
+ 当满足谓词等价于表示固定函子时，对C的对象的谓词P称为“普遍性质”。具体来说，当且仅当对象c表示[repr_functor]时，c“具有性质P”，即存在余预层的自然同构
+
+ [Hom c,─] ≅ repr_functor （Hom(c, ─) ≅ P，对目标自然同构）在函子范畴 [C, Sets] 中。这是标准的等价关系“泛性质 ⟺ 表示性”：根据 nLab，一个函子 F : C ⟶ Sets 的表示是一个自然同构 Hom(c, ─) ≅ F，并且根据 Yoneda 引理，它由一个唯一的泛元素决定（id{C} c 的像）。维基百科将相同的事实表述为：(A, u) 从 X 到 F 是泛的，当且仅当 Hom(A, ─) ≅ Hom(X, F ─)，然后表示对象在唯一同构意义下是唯一的（见下文 [univ_property_unique_up_to_unique_iso]）。这里 [repr_functor] 是协变的，[Hom c,─] = Curried_Hom C c 是协变同态函子 Hom(c, ─)，而 per-c 同构存在于 [Sets]（集类）中，将证明集类 [P c] 与自然同构的集类 [Hom c,─] ≅ [repr_functor] 对应起来。这里的说法并不是指它抓住了*每一个*可想象的泛构造，仅适用于可表示的那些，这些涵盖了标准的例子。
 *)
 Class IsUniversalProperty (C : Category) (P : C → Type) (eqP : forall c, Setoid (P c)) :=
   {
-    repr_functor : C ⟶ Sets ;                  (* the functor F = P being represented *)
-    repr_equivalence : forall c : C,           (* proofs of [P c] ≅ representations of F by c *)
+    repr_functor : C ⟶ Sets ;                  (* the functor F = P being represented / 函子 F = P 被表示 *)
+    repr_equivalence : forall c : C,           (* proofs of [P c] ≅ representations of F by c / [P c] 的证明 ≅ F 的表示通过 c *)
       @Isomorphism Sets
         (Build_SetoidObject (P c) (eqP c))
         (Build_SetoidObject (Isomorphism [Hom c,─] repr_functor) _)
-                                               (* natural isos [Hom c,─] ≅ repr_functor *)
+                                               (* natural isos [Hom c,─] ≅ repr_functor / 自然同态 [Hom c,─] ≅ 代表函子 *)
   }.
 
 (*
-   本节说明Yoneda、hom相关定义、性质与动机。
+ A transformation out of a representable presheaf [Hom ─,c] ⟹ P is fixed by
+ its value at id{C} c, the universal element: τ_d(f) ≈ P(f)(τ_c id).  This is
+ the computational half of the Yoneda lemma used throughout below. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 一个从可表示的预层 [Hom ─,c] ⟹ P 的变换是由其在 id{C} c 上的值固定的，即通用元素：τ_d(f) ≈ P(f)(τ_c id)。这是下面使用的约内达引理的计算部分。
 *)
 Lemma preyoneda {C : Category} {c d: C} {P : C^op ⟶ Sets} (τ : [Hom ─ , c] ⟹ P) :
   forall f : d ~> c,
@@ -51,9 +83,14 @@ Qed.
 Local Arguments morphism {x H y H0} s.
 
 (*
-   本节说明Yoneda、hom、同构相关定义、性质与动机。
+ The universal-element form of representability: the set of universal elements
+ { x : F c & the Yoneda image of x is an isomorphism } is itself isomorphic to
+ the set of natural isomorphisms [Hom ─,c] ≅ F.  This is the contravariant
+ (presheaf) counterpart of the representation packaged in [IsUniversalProperty]
+ and witnesses that a representation is the same data as a universal element. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 可表示性的泛元素形式：泛元素集合 { x : F c 且 x 的 Yoneda 像是同构 } 本身同构于自然同构集合 [Hom ─,c] ≅ F。这是表示在 [IsUniversalProperty] 中打包的表示的对变（预层）对应物，并证明一个表示与一个泛元素是相同的数据。
 *)
 Proposition representability_by_yoneda (C : Category) (F : C^op ⟶ Sets) (c : C):
   @Isomorphism Sets
@@ -92,9 +129,15 @@ Section UniversalProperty.
     (H : IsUniversalProperty C P eqP).
 
   (*
-   本节说明函子、Yoneda、hom相关定义、性质与动机。
+ A representing object is unique up to isomorphism: given t : P c, every
+ other v with a proof Pv is isomorphic to c.  The mediating iso is the
+ explicit inverse pair of the two representations — evaluation at the
+ identity through the Yoneda embedding — packaged once and for all as
+ Functor/Hom/Yoneda/Iso.v's [repr_pair_iso], which this proof consumes
+ where it previously inlined the construction. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 表示对象在同构意义下是唯一的：给定 t : P c，每一个带有证明 Pv 的其他 v 都与 c 同构。中介同构是两个表示的显式逆元对——通过 Yoneda 嵌入在恒等上进行求值——一次性打包为 Functor/Hom/Yoneda/Iso.v 的 [repr_pair_iso]，此证明在先前内联构造的位置使用了它。
 *)
   Proposition univ_property_unique (c : C) (t : P c) : @Unique obj[C] (ob_setoid) P.
   Proof using eqP H.
@@ -104,9 +147,14 @@ Section UniversalProperty.
                          (to (repr_equivalence v) Pv)).
   Defined.
 
-  (* P invariant under 同构: iso c ≅ d transports 证明 P c to
- 证明 P d, conjugating representation c induced
- iso hom-函子 [Hom d,─] ≅ [Hom c,─]. （已译） *)
+  (*
+ P is invariant under isomorphism: an iso c ≅ d transports a proof of P c to
+ a proof of P d, by conjugating the representation of c with the induced
+ iso of hom-functors [Hom d,─] ≅ [Hom c,─]. 
+
+ --------
+ P 在同构下是不变的：一个同构 c ≅ d 会将 P c 的证明转移为 P d 的证明，通过对 c 的表示与诱导的同构同调函子 [Hom d,─] ≅ [Hom c,─] 进行共轭。
+*)
   Proposition univ_property_respects_iso (c d : C) (iso : c ≅ d) : P c -> P d.
   Proof using eqP H.
     intro t.
@@ -116,26 +164,42 @@ Section UniversalProperty.
     - apply (to (repr_equivalence c)). exact t.
   Defined.
 
-  (* Let c, d 对象 C, t : P c, s : P d.
- Then there unique 同构 p : c ≈ d
- such transport p along t equivalent s. （已译） *)
+  (*
+ Let c, d be objects in C, and t : P c, s : P d.
+ Then there is a unique isomorphism p : c ≈ d
+ such that the transport of p along t is equivalent to s. 
+
+ --------
+ 设 c, d 是 C 中的对象，且 t : P c, s : P d。  
+ 则存在唯一的同构 p : c ≈ d，  
+ 使得沿着 t 的 p 的迁移与 s 等价。
+*)
   Proposition univ_property_unique_up_to_unique_iso
     (c d : C) (t : P c) (s : P d) :
     Unique (fun p : (c ≅ d) => univ_property_respects_iso c d p t ≈ s).
   Proof.
-    (* We have already constructed the isomorphism p.*)
+    (* We have already constructed the isomorphism p. / 我们已经构造了同构 p。 *)
     (*
-   本节说明Yoneda、hom、同构相关定义、性质与动机。
+ We have isomorphisms Hom(c, -) ≅ repr_functor ≅ Hom(d,-)
+ corresponding to the choice of t and s, and we
+ pull back this isomorphism Hom(c,-) ≅ Hom(d,-) along the
+ Yoneda embedding. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 我们有同构 Hom(c, -) ≅ repr_functor ≅ Hom(d,-)，对应于 t 和 s 的选择，并且我们沿着 Yoneda 嵌入将这个同构 Hom(c,-) ≅ Hom(d,-) 拉回。
 *)
     exists (uniqueness (univ_property_unique c t) d s).
-    - (* Why does 同构 respect structure P? （已译） *)
+    - (* Why does this isomorphism respect the structure of P? / 为什么这个同构尊重 P 的结构？ *)
       abstract(simpl; unfold univ_property_respects_iso; simpl;
-      (* Proofs P d one one correspondence
- natural isomorphisms
- Hom(d, - ) ≅ repr_函子. （已译） *)
-      (* So it suffices show these determine same natural 同构. （已译） *)
+      (*
+ Proofs of P d are in one to one correspondence
+ with natural isomorphisms
+ Hom(d, - ) ≅ repr_functor. 
+
+ --------
+ P d 的证明与自然同构 Hom(d, -) ≅ repr_functor 存在一一对应关系。
+*)
+      (* So it suffices to show that these determine the same natural isomorphism. / 因此，足以证明这些确定了相同的自然同构。 *)
       rapply (snd (injectivity_is_monic _) (iso_to_monic (repr_equivalence d)));
       set (M := (iso_to_from (repr_equivalence d)));
         simpl in M; rewrite M; clear M;
@@ -153,24 +217,37 @@ Section UniversalProperty.
       change (@id C d) with (@id (C^op) d);
       rewrite <- 2 (@preyoneda (C^op) _ _ repr_functor aj');
                reflexivity).
-    - (* The isomorphism is unique. *)
-      (* The canonical isomorphism c ≌ d "carrying" t to s is defined as follows: *)
-      (* rep_c : Hom(c, -) ≌ repr_functor *)
-      (* rep_d : Hom(d, -) ≌ repr_functor *)
-      (* rep_c ^-1 ∘ rep_d : Hom(d,-) -> repr_functor -> Hom(c, -) *)
-      (* " ... " d id_d : Hom(c, d) *)
-      (* p := rep_c^-1 ∘ rep_d d id_d. *)
-      (* OTOH, by assumption, we have -
-         y(v) : Hom(d, -) ≌ Hom(c, -)
-         rep_c : Hom(c, -) ≌ repr_functor
-         rep_d : Hom(d, -) ≌ repr_functor *)
-      (* and natural 同构 Hom(d, -) ≌ repr_函子 given by （已译） *)
-      (* rep_c ∘ y(v) : Hom(d, -)  ≌ Hom(c, -) ≌ repr_functor *)
-      (* corresonds to s across the bijection. *)
-      (* Of couse since by construction, s also corresponds to rep_d, *)
-      (* this means rep_c ∘ y(v) ≈ rep_d isomorphisms Hom(d,-) ≈ repr_函子. （已译） *)
-      (* Thus y(v) ≈ rep_c^-1 ∘ rep_d : Hom(d,-) ≅ Hom(c,-) and in particular
-         they agree at (d, id{C} d).  *)
+    - (* The isomorphism is unique. / 同构是唯一的。 *)
+      (* The canonical isomorphism c ≌ d "carrying" t to s is defined as follows: / 将 t “携带”到 s 的典范同构 c ≌ d 定义如下： *)
+      (* rep_c : Hom(c, -) ≌ repr_functor / rep_c : Hom(c, -) ≌ repr_functor *)
+      (* rep_d : Hom(d, -) ≌ repr_functor / rep_d : Hom(d, -) ≌ 表示函子 *)
+      (* rep_c ^-1 ∘ rep_d : Hom(d,-) -> repr_functor -> Hom(c, -) / rep_c ^-1 ∘ rep_d : Hom(d,-) -> repr_functor -> Hom(c, -) *)
+      (* " ... " d id_d : Hom(c, d) / d id_d : Hom(c, d) *)
+      (* p := rep_c^-1 ∘ rep_d d id_d. / p := rep_c^-1 ∘ rep_d d id_d. *)
+      (*
+ OTOH, by assumption, we have -
+ y(v) : Hom(d, -) ≌ Hom(c, -)
+ rep_c : Hom(c, -) ≌ repr_functor
+ rep_d : Hom(d, -) ≌ repr_functor 
+
+ --------
+ 另一方面，根据假设，我们有 -
+ y(v) : Hom(d, -) ≌ Hom(c, -)
+ rep_c : Hom(c, -) ≌ 表示函子
+ rep_d : Hom(d, -) ≌ 表示函子
+*)
+      (* and the natural isomorphism Hom(d, -) ≌ repr_functor given by / 以及由下式给出的自然同构 Hom(d, -) ≌ repr_functor *)
+      (* rep_c ∘ y(v) : Hom(d, -) ≌ Hom(c, -) ≌ repr_functor / rep_c ∘ y(v) : Hom(d, -) ≌ Hom(c, -) ≌ 代表函子 *)
+      (* corresonds to s across the bijection. / 对应到双射上的 s。 *)
+      (* Of couse since by construction, s also corresponds to rep_d, / 当然，由于通过构造，s 也对应于 rep_d， *)
+      (* this means that rep_c ∘ y(v) ≈ rep_d as isomorphisms Hom(d,-) ≈ repr_functor. / 这意味着 rep_c ∘ y(v) ≈ rep_d 作为同构 Hom(d,-) ≈ repr_functor。 *)
+      (*
+ Thus y(v) ≈ rep_c^-1 ∘ rep_d : Hom(d,-) ≅ Hom(c,-) and in particular
+ they agree at (d, id{C} d).  
+
+ --------
+ 因此 y(v) ≈ rep_c^-1 ∘ rep_d : Hom(d,-) ≅ Hom(c,-)，特别是它们在 (d, id{C} d) 上是一致的。
+*)
       abstract(intros v respects_iso;
       simpl uniqueness;
       apply to_equiv_implies_iso_equiv; simpl;

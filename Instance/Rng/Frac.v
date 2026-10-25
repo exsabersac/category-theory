@@ -13,18 +13,91 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- nLab: https://ncatlab.org/nlab/show/field+of+fractions
+   * * The field of quotients, as a functor
 
-   本文件给出具体实例。
+   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
+   (printed p. 15), Exercise 1 [maclane:I.3:ex1]: exhibit the field of
+   quotients of an integral domain as a functor, choosing the right
+   domain category.
+   nLab: https://ncatlab.org/nlab/show/field+of+fractions
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   THE CHOICE OF MORPHISMS is the exercise's actual content.  A ring
+   homomorphism f that sends some nonzero d to zero supports no
+   induced map on fractions — n/d would need image f n / 0 — so the fraction
+   construction is functorial only on homomorphisms that reflect zero,
+   i.e. the INJECTIVE ones, and the standard fix is to take the
+   category of integral domains with MONOMORPHISMS.  Here that
+   category is [IntDom]: objects are [DomObject]s, morphisms are ring
+   homomorphisms carrying an injectivity field ([DomHom]).  In-tree
+   the identification "monomorphism = injection" is available in the
+   direction that matters — [rng_injective_monic] (Instance/Rng.v)
+   shows every [DomHom]'s underlying map is monic in [Rng].  The
+   converse (monic ⇒ injective) was deferred when this was written,
+   pending the free ring ℤ[x]; it is now proved, as
+   [rng_monic_injective] in Instance/Rng/Polynomial.v.  Injectivity
+   remains carried as DATA in [DomHom] rather than reconstructed from
+   the categorical property, and that is now a choice rather than a
+   necessity: the construction below consumes the injectivity witness
+   directly at several sites here and downstream in
+   Instance/Field/Frac.v, so recovering it from a [Monic] hypothesis at
+   each use would buy nothing.
+
+   CONSTRUCTIVE CHOICE, disclosed.  An integral domain is presented
+   with CANCELLATION as the defining field ([dom_cancel]: c ≉ 0 and
+   a·c ≈ b·c give a ≈ b), together with commutativity and 1 ≉ 0.
+   Cancellation is the only INTEGRALITY property the construction
+   consumes — the transitivity of the fraction relation and the ring
+   laws below use it and the plain ring laws, nothing more — and it
+   follows constructively from the no-zero-divisors disjunction in
+   its Type-valued form ([DomObject_of_no_zero_divisors]; the
+   Type-valued sum is constructively stronger than the classical
+   Prop-valued statement), while the converse direction — recovering
+   a chosen disjunct from cancellation — would need a classical,
+   indeed Type-valued, case split on the setoid equality.  No
+   decidability and no choice principle appears anywhere.
+
+   THE CONSTRUCTION.  [FracObj D] is the setoid of pairs (n, d) with
+   d ≉ 0, compared by cross-multiplication: (n₁, d₁) ≈ (n₂, d₂) iff
+   n₁·d₂ ≈ n₂·d₁.  Fraction arithmetic makes it a commutative ring
+   ([FracRing], [FracRing_comm]), the functor [Frac : IntDom ⟶ CRng]
+   acts componentwise on morphisms, and the FIELD property is the
+   lemma [frac_recip]: every fraction whose numerator is apart from
+   zero has a reciprocal ([frac_nonzero_recip] packages it against
+   apartness from the zero fraction).  The embedding n ↦ n/1 is
+   [frac_embed], itself injective ([frac_embed_inj]) — the unit of
+   the universal-arrow reading of the construction
+   (Theory/Universal/Arrow.v's essay lists this very example); the
+   full universal property needs a category of fields to land in and
+   is left to the future fields development.
+
+   THE LIE HALF of Mac Lane's exercise — the Lie algebra of a Lie
+   group as a functor — needs smooth manifolds and is out of scope
+   for this library for the foreseeable future; the catalog item is
+   covered with that descope made explicit here.
+
+   Witness: ℤ ([Int_Dom], cancellation from [Z.mul_cancel_r]), where
+   1/2 + 1/3 ≈ 5/6 computes by [eq_refl]. 
+
+   --------
+   * * 商域作为函子  
+
+   Mac Lane，《为在职数学家而作的范畴论》，第2版，第I.3节  
+   （印刷第15页），练习1  [maclane:I.3:ex1]：将整环的商域展示为一个函子，选择合适的环范畴。  
+   nLab：https://ncatlab.org/nlab/show/field+of+fractions选择态射实际上就是该练习的内容。一个将某个非零元素 d 映射为零的环同态 f 并不支持分数上的诱导映射——n/d 将需要映射为 f n / 0——因此分数构造仅在反映零的同态上是函子性的，也就是说，仅在单射同态上是函子性的，而标准的解决方法是取整环的范畴，并且态射为单态射。在这里，该范畴是 [IntDom]：对象是 [DomObject]，态射是携带单射性字段的环同态 ([DomHom])。在语法树中，‘单态射 = 注射’ 的识别在重要方向上是可用的——[rng_injective_monic] (Instance/Rng.v) 表明每个 [DomHom] 的底层映射在 [Rng] 中是单态的。当本文撰写时，其逆命题（monic ⇒ injective）被推迟，等待自由环 ℤ [x]；现在已被证明，如 Instance/Rng/Polynomial.v 中的 [rng_monic_injective] 所示。注入性仍然作为数据保存在 [DomHom] 中，而不是从范畴性质重构，现在这是一个选择，而非必要：下面的构造在此处及下游的 Instance/Field/Frac.v 的多个位置直接使用了注入性证明，因此在每次使用时从 [Monic] 假设中恢复它并无益处。建设性选择，已公开。给出了一个具有消去性作为定义域的整环（[dom_cancel]：c ≉ 0 且 a·c ≈ b·c 则 a ≈ b），并且满足交换性且 1 ≉ 0。消去性是该构造使用的唯一完整性性质——分数关系的传递性和下面的环定律仅使用它和普通环定律，没有更多——并且它可以从无零因子析取在类型值形式下（[DomObject_of_no_zero_divisors]；类型值和在构造上比经典的命题值陈述更强）构造性地推导出来，而逆方向——从消去性恢复所选的析取——则需要经典的、确切地说是类型值的，在集合等价上的情形拆分。没有任何可判定性，也没有任何选择原则出现。构造。[FracObj D] 是由对 (n, d) 组成的集合，且 d ≉ 0，通过交叉相乘比较：(n₁, d₁) ≈ (n₂, d₂) 当且仅当 n₁·d₂ ≈ n₂·d₁。分数运算使其成为一个交换环 ([FracRing], [FracRing_comm])，函子 [Frac : IntDom ⟶ CRng] 对态射逐分量作用，并且 FIELD 性质是引理 [frac_recip]：每个分子非零的分数都有倒数（[frac_nonzero_recip] 对其与零分数的不相等性进行了封装）。嵌入 n ↦ n/1 是 [frac_embed]，且自身是单射 ([frac_embed_inj]) — 这是构造的泛箭头读法的单位（Theory/Universal/Arrow.v 的文章中列出了这一具体例子）；完整的泛性质需要一个域的范畴作为落点，将留待未来域的开发中实现。李代数 麦克莱恩练习的一半——作为一个函子来看李群的李代数——需要光滑流形，并且在可预见的未来超出本库的范围；在此明确说明的范围缩减下，该目录项已被覆盖。
+
+   例证：ℤ（[Int_Dom]，从[Z.mul_cancel_r]取消），其中1/2 + 1/3 ≈ 5/6 由[eq_refl]计算。
 *)
 
-(* 相关说明。 （已译） *)
+(* * ** Negation moves through products / * ** 否定可以通过乘积移动 *)
 
-(* (−a)·b ≈ −(a·b), [rig_mul_neg_one] reassociation; needed
- fraction ring's negation respect cross-multiplication
- 等价. （已译） *)
+(*
+ (−a)·b ≈ −(a·b), from [rig_mul_neg_one] by reassociation; needed
+ for the fraction ring's negation to respect the cross-multiplication
+ equivalence. 
+
+ --------
+ (−a)·b ≈ −(a·b)，来自 [rig_mul_neg_one] 通过重新结合；这是分数环的取反需要遵守交叉相乘等价性。
+*)
 Lemma mul_neg_l (R : RingObject) (a b : carrier (rig_setoid R)) :
   rig_mul R (ring_neg R a) b ≈ ring_neg R (rig_mul R a b).
 Proof.
@@ -34,7 +107,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Integral domains, constructively / * ** 整环，构造性地 *)
 
 Record DomObject := {
   dom_ring :> RingObject;
@@ -47,9 +120,13 @@ Record DomObject := {
 }.
 
 (*
-   本节说明 Frac 相关定义、性质与动机。
+ The classical presentation implies this one: a commutative nontrivial
+ ring whose zero products split as a (Type-valued) disjunction
+ cancels.  The two branches: c ≈ 0 contradicts the hypothesis, and
+ a − b ≈ 0 gives a ≈ b by the group laws. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 经典的表述意味着如下内容：一个交换的非平凡环，其零乘积作为（类型值）析取拆分时可以抵消。两个分支：c ≈ 0 与假设矛盾，而 a − b ≈ 0 根据群律得出 a ≈ b。
 *)
 Program Definition DomObject_of_no_zero_divisors
   (R : RingObject)
@@ -77,7 +154,7 @@ Next Obligation.
   - destruct (Hc H0).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Products of elements apart from zero stay apart from zero — the contrapositive form of "no zero divisors", derived from cancellation alone. / 除了零之外的元素的乘积仍然不为零——“没有零因子”的逆否命题，仅从消去法得出。 *)
 Lemma dom_mul_nonzero (D : DomObject) (a b : carrier (rig_setoid D)) :
   (a ≈ rig_zero D → False) → (b ≈ rig_zero D → False) →
   rig_mul D a b ≈ rig_zero D → False.
@@ -90,7 +167,7 @@ Proof.
   apply rig_mul_zero_l.
 Qed.
 
-(* * ** The 范畴 integral domains monomorphisms （已译） *)
+(* * ** The category of integral domains with monomorphisms / * ** 具有单射的整环范畴 *)
 
 Record DomHom (D E : DomObject) := {
   dom_map :> RigHom D E;
@@ -114,8 +191,13 @@ Next Obligation.
   exact (dom_map_inj g a b (dom_map_inj f _ _ H)).
 Qed.
 
-(* The design justification, machine-checked: every [DomHom]'s
-   underlying map is a monomorphism of [Rng]. *)
+(*
+ The design justification, machine-checked: every [DomHom]'s
+ underlying map is a monomorphism of [Rng]. 
+
+ --------
+ 设计证明，机器检查：每个 [DomHom] 的底层映射都是 [Rng] 的单射。
+*)
 Lemma DomHom_monic {D E : DomObject} (f : DomHom D E) :
   Monic (dom_map f : dom_ring D ~{Rng}~> dom_ring E).
 Proof. exact (rng_injective_monic (dom_map f) (dom_map_inj f)). Qed.
@@ -146,9 +228,29 @@ Next Obligation. intros D E F G f g h x; simpl; reflexivity. Qed.
 Next Obligation. intros D E F G f g h x; simpl; reflexivity. Qed.
 
 (*
-   本节说明hom相关定义、性质与动机。
+ The inclusion into commutative rings: on objects, forget the domain
+ fields; on morphisms, forget injectivity.  Faithfulness is proved
+ below ([IntDom_Incl_Faithful]): both hom-setoids compare underlying
+ maps pointwise.  Fullness is expected to be REFUTABLE — a
+ non-injective homomorphism between domains, such as ℤ → ℤ/2ℤ, has
+ no preimage — but the tree has no quotient rings yet, so no
+ counterexample object is available and non-fullness is left
+ unstated rather than asserted.
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ ERRATUM, appended rather than rewritten so that
+ Instance/Field/Frac.v's QUOTATION of the sentence above stays an
+ accurate quotation.  Both clauses have since been overtaken.  (1) The
+ deferral itself was DISCHARGED in Instance/Field/Frac.v by
+ [IntDom_Incl_not_Full], which needed no quotient ring at all: F₂ is a
+ field, hence a domain, and [ZtoF2] is a homomorphism into it with no
+ [IntDom] preimage.  (2) The tree DOES now have quotient rings —
+ Instance/Rng/Quotient.v builds R/I for a two-sided ideal I with its
+ universal property, and ℤ/2ℤ is its worked witness — so the
+ counterexample object the sentence above wished for is available too,
+ though it is no longer needed. 
+
+ --------
+ 包含到交换环中：在对象上，忽略域；在态射上，忽略单射性。下面证明了忠实性（[IntDom_Incl_Faithful]）：两个同态集在点上比较底层映射。预计满性是可反驳的——在域之间的非单射同态，例如 ℤ → ℤ/2ℤ，没有原像——但树中还没有商环，因此没有反例对象，因此未声明非满性，而不是断言它。勘误表，附在后面而不是重写，以便 Instance/Field/Frac.v 对上述句子的引用仍然是准确的引用。两个条款自那时起已经被超越。(1) 在 Instance/Field/Frac.v 中，延期本身由 [IntDom_Incl_not_Full] 解决，它根本不需要商环：F₂ 是一个域，因此是一个整环，而 [ZtoF2] 是一个进入它的同态，没有 [IntDom] 的原像。(2) 该树现在确实有商环——Instance/Rng/Quotient.v 为一个双边理想 I 构建 R/I 及其泛性性质，而 ℤ/2ℤ 是其具体例子——因此上述句子所需的反例对象也可用，尽管现在不再需要它。
 *)
 Program Definition IntDom_Incl : IntDom ⟶ CRng := {|
   fobj := fun D => (dom_ring D; dom_comm D);
@@ -164,7 +266,7 @@ Next Obligation. intros D E F f g x; simpl; reflexivity. Qed.
 #[export] Program Instance IntDom_Incl_Faithful : Faithful IntDom_Incl.
 Next Obligation. intros D E f g H x; exact (H x). Qed.
 
-(** ** The fraction construction *)
+(** ** The fraction construction / ** 分数结构 *)
 
 Section FracConstruction.
 
@@ -175,8 +277,13 @@ Local Notation e1 := (rig_one D).
 Local Infix "+" := (rig_add D).
 Local Infix "*" := (rig_mul D).
 
-(* A small shuffle kit commutative multiplication; every
- cross-multiplication 恒等 below chain these. （已译） *)
+(*
+ A small shuffle kit for the commutative multiplication; every
+ cross-multiplication identity below is a chain of these. 
+
+ --------
+ 用于交换乘法的小型洗牌工具；下面的每一个交叉乘法恒等式都是这些的链条。
+*)
 Lemma mulC (a b : carrier (rig_setoid D)) : a * b ≈ b * a.
 Proof. apply dom_comm. Qed.
 
@@ -213,7 +320,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Congruence in a form [apply] accepts without unfolding [Proper]. *)
+(* Congruence in a form [apply] accepts without unfolding [Proper]. / 形式 [apply] 中的同余在不展开 [Proper] 的情况下被接受。 *)
 Lemma addf (a a' b b' : carrier (rig_setoid D)) :
   a ≈ a' → b ≈ b' → a + b ≈ a' + b'.
 Proof. intros Ha Hb; now rewrite Ha, Hb. Qed.
@@ -222,7 +329,7 @@ Lemma mulf (a a' b b' : carrier (rig_setoid D)) :
   a ≈ a' → b ≈ b' → a * b ≈ a' * b'.
 Proof. intros Ha Hb; now rewrite Ha, Hb. Qed.
 
-(* 相关说明。 （已译） *)
+(* Pairs with denominator apart from zero. The family of the sigma is explicit throughout ([mk_frac]), the 8.19/8.20-safe form. / 分母不为零的分对。 sigma 的族在整个过程中显式（[mk_frac]），这是 8.19/8.20 安全形式。 *)
 Definition frac_carrier : Type :=
   { nd : carrier (rig_setoid D) * carrier (rig_setoid D)
        & snd nd ≈ z0 → False }.
@@ -237,7 +344,7 @@ Definition num (x : frac_carrier) : carrier (rig_setoid D) := fst (`1 x).
 Definition den (x : frac_carrier) : carrier (rig_setoid D) := snd (`1 x).
 Definition den_nonzero (x : frac_carrier) : den x ≈ z0 → False := `2 x.
 
-(* Cross-multiplication comparison. *)
+(* Cross-multiplication comparison. / 交叉相乘比较。 *)
 Definition frac_eq (x y : frac_carrier) : Type :=
   num x * den y ≈ num y * den x.
 
@@ -247,7 +354,7 @@ Proof. unfold frac_eq; reflexivity. Qed.
 Lemma frac_eq_sym (x y : frac_carrier) : frac_eq x y → frac_eq y x.
 Proof. unfold frac_eq; intros H; symmetry; exact H. Qed.
 
-(* 相关说明。 （已译） *)
+(* Transitivity is where the domain earns its keep: cancel the shared denominator. / 及物性是领域谋生之道：消去公分母。 *)
 Lemma frac_eq_trans (x y z : frac_carrier) :
   frac_eq x y → frac_eq y z → frac_eq x z.
 Proof.
@@ -272,8 +379,13 @@ Next Obligation.
   - eapply frac_eq_trans; eassumption.
 Qed.
 
-(* Equal parts give equal fractions; most ring laws below reduce to
-   this. *)
+(*
+ Equal parts give equal fractions; most ring laws below reduce to
+ this. 
+
+ --------
+ 相等的部分给出相等的分数；下面的大多数环律都归结为此。
+*)
 Lemma frac_eq_of_parts (x y : frac_carrier) :
   num x ≈ num y → den x ≈ den y → frac_eq x y.
 Proof.
@@ -281,7 +393,7 @@ Proof.
   now rewrite Hn, <- Hd.
 Qed.
 
-(** *** Fraction arithmetic *)
+(** *** Fraction arithmetic / *** 分数运算 *)
 
 Definition frac_zero : frac_carrier := mk_frac z0 e1 (dom_nontrivial D).
 Definition frac_one : frac_carrier := mk_frac e1 e1 (dom_nontrivial D).
@@ -339,7 +451,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** *** The ring laws *)
+(** *** The ring laws / *** 戒指法 *)
 
 Lemma frac_add_assoc (x y z : frac_carrier) :
   frac_eq (frac_add (frac_add x y) z) (frac_add x (frac_add y z)).
@@ -413,9 +525,12 @@ Proof.
 Qed.
 
 (*
-   本节说明分配律相关定义、性质与动机。
+ Distribution is the one law that does not split into equal parts:
+ the two sides carry different (but associate) denominators, and the
+ cross-multiplication identity is a genuine six-factor shuffle. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 分配律是唯一不分成相等部分的定律：两边具有不同（但相关）的分母，交叉相乘恒等式是真正的六因子交换。
 *)
 Lemma frac_distr_l (x y z : frac_carrier) :
   frac_eq (frac_mul x (frac_add y z))
@@ -446,12 +561,18 @@ Proof.
     apply mulA.
 Qed.
 
-(** *** The fraction ring *)
+(** *** The fraction ring / *** 分数圈 *)
 
 (*
-   本节说明 Frac 相关定义、性质与动机。
+ Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
+ owes a [Prop]-valued mirror of its equality.  [frac_eq] is a single `≈`
+ on D's OWN carrier -- the cross-multiplication equation -- so the mirror
+ is D's own [pequiv] at that equation and the two implications are D's own
+ [pequiv_to] and [pequiv_from].  Nothing is truncated: the fraction
+ setoid is propositional exactly because the base domain's is. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 自从 PR “代数载体是集合”（2026-09-17）以来，[RigObject] 拥有一个 [Prop] 值的其等式的镜像。[frac_eq] 是 D 自身载体上的单一 `≈` ——交叉相乘方程——因此镜像是在该方程上的 D 自身 [pequiv]，并且这两个蕴含是 D 自身的 [pequiv_to] 和 [pequiv_from]。没有任何被截断：分数集合是命题性的，正因为其基域是命题性的。
 *)
 Program Definition FracRig : RigObject := {|
   rig_setoid := FracObj;
@@ -513,9 +634,9 @@ Lemma FracRing_comm : ∀ a b,
   rig_mul FracRing a b ≈ rig_mul FracRing b a.
 Proof. intros x y; apply frac_mul_comm. Qed.
 
-(* 相关说明。 （已译） *)
+(* * *** Field of quotients: reciprocals and the embedding / * *** 商域：倒数与嵌入 *)
 
-(* 相关说明。 （已译） *)
+(* The FIELD property, constructively scoped: a fraction whose numerator is apart from zero has a reciprocal — the flipped pair. / FIELD 属性，构造性地作用域：分子不为零的分数有一个倒数——翻转的配对。 *)
 Lemma frac_recip (x : frac_carrier) (Hn : num x ≈ z0 → False) :
   frac_eq (frac_mul x (mk_frac (den x) (num x) Hn)) frac_one.
 Proof.
@@ -525,7 +646,7 @@ Proof.
   apply mulC.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* Apartness from the zero fraction is exactly apartness of the numerator, so reciprocals exist for every fraction apart from 0. / 与零分数的不同正好是分子与零的不同，所以除了 0 以外，每个分数都有倒数。 *)
 Lemma frac_nonzero_num (x : frac_carrier)
   (Hx : frac_eq x frac_zero → False) : num x ≈ z0 → False.
 Proof.
@@ -543,7 +664,7 @@ Definition frac_nonzero_recip (x : frac_carrier)
     (mk_frac (den x) (num x) (frac_nonzero_num x Hx))
     (frac_recip x (frac_nonzero_num x Hx)).
 
-(* 相关说明。 （已译） *)
+(* The embedding n ↦ n/1: a homomorphism of rings, injective — the universal-arrow unit of the construction. / 嵌入 n ↦ n/1：一个环的同态，单射 —— 该构造的通用箭头单位。 *)
 Program Definition frac_embed : RigHom (dom_ring D) FracRing := {|
   rig_map := {| morphism := fun n : carrier (rig_setoid D) =>
                   mk_frac n e1 (dom_nontrivial D) |}
@@ -576,7 +697,7 @@ Qed.
 
 End FracConstruction.
 
-(* 相关说明。 （已译） *)
+(* * ** Functoriality on monomorphisms / * ** 单射上的函子性 *)
 
 Program Definition Frac_map {D E : DomObject} (f : DomHom D E) :
   RigHom (FracRing D) (FracRing E) := {|
@@ -640,7 +761,7 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** The integers are an integral domain; 1/2 + 1/3 computes / * ** 整数是一个整环；1/2 + 1/3 运算 *)
 
 Program Definition Int_Dom : DomObject := {|
   dom_ring := Int_Ring;
@@ -661,7 +782,7 @@ Proof. simpl; intros H; discriminate H. Qed.
 Lemma six_nonzero : (6%Z : carrier (rig_setoid Int_Dom)) ≈ rig_zero Int_Dom → False.
 Proof. simpl; intros H; discriminate H. Qed.
 
-(* 相关说明。 （已译） *)
+(* The arithmetic of fractions of integers computes: 1/2 + 1/3 ≈ 5/6, the cross-multiplication (1·3 + 1·2)·6 = 5·(2·3) reducing to 30 = 30. / 整数分数的算术计算：1/2 + 1/3 ≈ 5/6，交叉相乘 (1·3 + 1·2)·6 = 5·(2·3) 简化为 30 = 30。 *)
 Example frac_int_half_plus_third :
   frac_eq Int_Dom
     (frac_add Int_Dom
@@ -669,6 +790,6 @@ Example frac_int_half_plus_third :
        (mk_frac Int_Dom 1%Z 3%Z three_nonzero))
     (mk_frac Int_Dom 5%Z 6%Z six_nonzero) := eq_refl.
 
-(* 相关说明。 （已译） *)
+(* The embedding of ℤ into its fraction field, with 3 ↦ 3/1. / ℤ嵌入其分数域，3 ↦ 3/1。 *)
 Example frac_embed_Z_3 :
   num Int_Dom (frac_embed Int_Dom 3%Z) = 3%Z := eq_refl.

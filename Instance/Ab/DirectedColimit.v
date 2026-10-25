@@ -1,7 +1,275 @@
 (*
-   本文件给出阿贝尔群相关实例。
+   * * An abelian group is the colimit of its finitely generated subgroups
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Mac Lane, "Categories for the Working Mathematician" 2nd ed., Springer
+   GTM 5 1998, §III.3 Exercise 7, printed p. 68 (`maclane:III.3:ex7`): "An
+   abelian group A is the colimit of the (directed) diagram of its finitely
+   generated subgroups, ordered by inclusion."  Cited by location.  The
+   sentence in quotation marks is the issue catalog's paraphrase of the
+   exercise, NOT a transcription: the printed text was not consulted while
+   writing this file.
+
+   WHAT IS DELIVERED.  For every [A : AbObject] there is an index category
+   [FGSub A] of finitely generated subgroups of [A] ordered by inclusion, a
+   diagram [FGDiagram A : FGSub A ⟶ Ab] carrying each to the corresponding
+   object of [Ab], a cocone [FGCocone A] with apex [A] whose legs are the
+   inclusions, and the theorem
+
+   ab_fg_colimit A : IsColimitCocone (FGCocone A)
+
+   saying that THAT cocone is universal.  [ab_fg_isacolimit] and
+   [ab_fg_Colimit] repackage it at the apex-pinned and bundled levels.
+   Directedness -- the parenthesis in Mac Lane's sentence -- is
+   [FGSub_directed], and it is not decoration: it is exactly what
+   [med_coherent] spends, and [med_coherent] is what every clause of the
+   mediator's construction reduces to.
+
+   THE HEADLINE IS CONE-LEVEL.  [IsColimitCocone] (Structure/Limit/
+   Preservation.v) says every competing cocone factors through THIS
+   cocone by a unique morphism compatible with THESE legs.  The apex-only
+   [IsAColimit] pins the object [A] but takes its legs from
+   whatever witness inhabits it, so on its own it does not say that the
+   inclusions are the universal family; it is the weaker reading, and here
+   it is DERIVED from the cone-level statement through
+   [colimitcocone_isacolimit], never the other way round.  No separation
+   between the two is proved in this file.
+
+   [AbSubgroup] IS NEW, AND THE SURVEY BEHIND THAT HAS BEEN CORRECTED.
+   Instance/Grp/Quotient.v's [Subgroup] is over [GrpObject], a flat
+   record with [grp_unit]/[grp_mul]/[grp_inv] -- a different type from
+   [AbObject], which layers [ab_neg] over Instance/CMon.v's [CMonObject]
+   and so speaks [cmon_zero]/[cmon_plus].  Instance/Mod/Quotient.v's
+   [Submodule] is over [RModObject] and carries a fifth field, [smod_smul],
+   closure under a scalar action, which an abelian group has nothing to
+   supply.  Those two have DIFFERENT shapes from each other -- membership
+   plus four laws in both cases, but [Submodule]'s fourth is scalar-closure
+   and it has NO negation field at all (Instance/Mod/Quotient.v captions
+   its negation lemma "THE FIFTH FIELD THAT IS NOT A FIELD").
+
+   A THIRD RECORD EXISTS AND AN EARLIER DRAFT OF THIS HEADER MISSED IT.
+   Instance/Ab/Character/Finite.v declares [Record Subgroup (G :
+   AbObject)] with [sg_mem]/[sg_resp]/[sg_zero]/[sg_add]/[sg_neg] -- over
+   the RIGHT base type, in this same directory, with exactly the five
+   fields [AbSubgroup] has -- plus a sixth, [sg_dec], demanding DECIDABLE
+   membership; and it carries generated-subgroup machinery of its own
+   ([Generated]).  So the ground an earlier draft gave, that no
+   in-tree record is over [AbObject], was simply FALSE, and the survey it
+   supported ("neither existing subobject record transfers") was wrong as
+   stated.  The real ground for not reusing it is [sg_dec]: membership here
+   is the inductively generated [InGen], which no constructive procedure
+   decides, so that record cannot be instantiated by this development at
+   all.  That is a good reason and it is the one that applies; the earlier
+   draft made a different, false one.  The miss was avoidable -- the donor
+   header quoted in the next paragraph names that very record TWICE, four
+   lines above the line this file cites.  Read the relation to the existing
+   tree precisely.  Instance/Mod/Quotient.v already records that "the
+   honest unifier is an [AbSubgroup] interface in Instance/Ab.v itself, of
+   which [Submodule] would then be the module-level extension"; THIS FILE
+   DOES NEITHER of those things.  The record is declared here rather than
+   in Instance/Ab.v, and [Submodule] is untouched and is not exhibited as
+   an extension of it.  That refactor stays open; what is settled is only
+   that this development needed a subgroup notion and that the one in-tree
+   record over [AbObject] demands a decidability field this one cannot
+   supply.
+
+   Membership is [Type]-valued for the reason Instance/Grp/Quotient.v's own
+   header gives for [Subgroup]: the library's `≈` is [Type]-valued, so a
+   [Prop]-valued membership could not be eliminated into a hom-setoid
+   equation.  Here it is needed for something more basic still -- see the
+   next paragraph.
+
+   [Proset] CANNOT HOST *THIS* INDEX, WHICH IS WEAKER THAN IT SOUNDS AND
+   IS NOT WHAT AN EARLIER DRAFT CLAIMED.  Instance/Proset.v takes
+   [{R : relation A}], and stdlib [relation A] is [A → A → Prop].  The
+   inclusion used here is
+   [FGHom A X Y := ∀ a, absub_mem (fg_sub X) a → absub_mem (fg_sub Y) a],
+   which is [Type]-valued because [absub_mem] is; ascribing it as a
+   [relation] is rejected with a universe inconsistency, "Cannot enforce
+   ... <= Prop" (measured, against a positive control at the
+   [inhabited]-squashed variant, which IS a [relation]).  That measurement
+   is real and is pinned in Test/ProbeDirectedColimit330.v.
+
+   WHAT IT DOES NOT SHOW.  An earlier draft of this header, and of the
+   issue's own suggested route, concluded from it that "[Proset] is
+   UNUSABLE for the index" and that the route is "IMPOSSIBLE, and that is
+   MEASURED".  That is FALSE, and the refutation compiles.  The argument
+   given covered only SQUASHING a [Type]-valued hom -- [inhabited (FGHom
+   X Y)] -- which does need large elimination to get the witness back.  It
+   never considered the obvious alternative: making MEMBERSHIP ITSELF
+   [Prop]-valued.  Do that and [FGHom] is natively a [relation], nothing is
+   squashed, and [fmap] never eliminates a [Prop] into a [Type] -- it only
+   APPLIES a [Prop → Prop] function and packages the result in a [sigT],
+   which is legal.  An audit ported this whole development that way and
+   obtained [IsColimitCocone] for it, closed under the global context, with
+   an [fmap] character-for-character the one below; the transport and the
+   [Proset] application were then re-checked independently here.
+
+   So the honest statement is: [Proset] cannot host the index GIVEN THIS
+   FILE'S [Type]-VALUED MEMBERSHIP, which is a DESIGN CHOICE following
+   Instance/Grp/Quotient.v (see the previous paragraph), not a necessity of
+   the mathematics.  A [Prop]-valued variant is viable and is simply not
+   what is built here.  Structure/Thin.v records the [relation]-is-Prop
+   fact from the other side -- "Coq's [relation] is Prop-valued while a hom
+   lives in [Type]" -- and squashes with [inhabited] for its own reasons.
+
+   [FGSub] is therefore built directly, COPYING (not reusing -- this file
+   does not [Require] Instance/Proset.v at all) the one device that file
+   supplies: the trivially-true hom-setoid
+   [{| Setoid.equiv := fun _ _ => True |}] of Instance/Proset.v, which
+   makes every categorical law free and makes [FGSub_Thin : Thin (FGSub A)]
+   (Structure/Thin.v) a one-liner.  [FGSub_Thin] is PROVED but is
+   consumed nowhere below -- including by the SCOPE paragraph's remark that
+   duplicate presentations are harmless, which appeals to thinness in prose
+   rather than through that lemma.
+
+   SCOPE: OBJECTS CARRY A PRESENTATION, NOT JUST A SUBGROUP.  An object of
+   [FGSub A] is a pair [{ S : AbSubgroup A & FinGen A S }], where [FinGen]
+   supplies a LIST of generators together with mutual inclusion between
+   [absub_mem S] and the generated [InGen].  Two different lists presenting
+   the same subgroup therefore give two objects, and nothing in this file
+   identifies them.  That is a deviation from Mac Lane's literal "poset of
+   subgroups ordered by inclusion", and it is stated rather than hidden.
+   What repairs it is that [FGSub A] is THIN: any two parallel inclusions
+   are identified, so duplicate presentations are canonically isomorphic
+   ([Ztwo_dup_iso] exhibits one such pair) and the colimit is unaffected:
+   the universal property quantifies over cocones, and no competing cocone
+   can tell duplicates apart, since [med_coherent] shows its legs agree on
+   any two memberships of any two objects at ≈-equal elements.  That last
+   clause is a theorem; "the colimit is unaffected" is the reading of it,
+   and no comparison with a poset-indexed diagram is formalized -- there is
+   no such diagram in this file.  The literal poset would need either a
+   truncation of the presentation -- which would block extracting the
+   generators, and the generators are exactly what directedness ([++] on
+   lists) and the mediator (the cyclic subgroup on one element) use -- or
+   proof irrelevance for [FinGen].  Neither is taken.  Note the file does
+   NOT prove that two presentations of one subgroup are unequal; it proves
+   they are isomorphic.
+
+   THE CONSTRUCTION, AND WHERE THE WORK IS.  [mem_list a l] is [Type]-
+   valued membership in a list up to `≈`.  [InGen A l] is the generated
+   subgroup as an inductive family with five constructors -- a generator,
+   zero, sum, negation, and ≈-saturation -- following the shape of
+   Instance/Grp/Abelianization.v's [InCommutator], whose [inc_resp] is what
+   makes the generated set ≈-saturated and is mirrored here as [ig_resp].
+   [gen_sub A l] packages it as an [AbSubgroup] with all five fields
+   literally the five constructors, so [fingen_gen]'s two legs are the
+   identity function and [absub_mem (gen_sub A l) = InGen A l] holds by
+   [eq_refl].
+
+   The whole development rests on ONE induction over [InGen]: [gen_least],
+   the least-subgroup property.  [gen_mono], the join inclusions, the
+   presentation-duplication isomorphism, and the divisibility invariant
+   used for the non-vacuity negatives are all instances of it, and the file
+   contains exactly three [induction] TACTICS in total -- that one, and two
+   on lists ([mem_list_app_l], [mem_list_app_r]).  Read that as the tactic
+   count it is: [mem_list] is a [Fixpoint], so it is a fourth structural
+   recursion that no [induction] appears in.
+
+   Directedness is [++]: [fg_join X Y] is presented by the concatenation of
+   the two generator lists, and [fg_join_left]/[fg_join_right] are the two
+   inclusions.  [med_coherent] is the master lemma -- for any two objects,
+   any two memberships and any two ≈-equal elements the cocone's legs
+   agree -- proved by pushing both sides into the join and using the leg's
+   own respectfulness.  The mediator [fg_med] is then the cocone's leg at
+   the CYCLIC object [cyc a] (presented by the one-element list [a :: nil])
+   applied to [a]; respectfulness, preservation of zero and preservation of
+   addition are all applications of [med_coherent] (through [med_fun_at]),
+   the last of them routed through the object presented by [a :: b :: nil].
+   Uniqueness is immediate: any competitor commuting with the leg at
+   [cyc a] already agrees with [fg_med] at [a].
+
+   STRENGTHS, MEASURED RATHER THAN GUESSED.  These hold at [eq_refl]:
+   [fg_cocone_apex] (the apex IS [A]), [fg_cocone_leg] (the leg IS the
+   inclusion), [fg_med_value], [gen_sub_mem], [fg_sub_of_list],
+   [fg_diagram_fmap_elem] (the diagram moves no element), and
+   [Zjoin_gens].  [nu_transport] -- the cocone's coherence read pointwise
+   -- is the donor lemma applied to a point, by conversion: its proof is a
+   single [exact], with no rewriting.  The factorization triangle
+   [fg_med_commutes] is `≈` and NOT Leibniz, and the cause is exactly the
+   design above: the mediator evaluates the competing cocone at [cyc a]
+   while the triangle's right-hand side evaluates it at [X], and those are
+   different objects of the index, so the two values are related only
+   through the cocone's coherence.  That rejection was measured, and the
+   failure kind confirmed by stripping the [Fail] -- a genuine "cannot
+   unify", not a name-resolution error.  No [Fail] probe is shipped in
+   this file.
+
+   NON-VACUITY, over ℤ.  Instance/Ab/Coproduct.v's [ab_Z] is
+   [ring_ab Int_Ring], the additive group of Theory/Algebra/Rig.v's
+   axiom-free integers; it is REUSED, no new group is built.  [Zmultiples
+   d] is the subgroup of multiples of [d], and feeding it to [gen_least]
+   gives [Zsingle_divides].  So the negatives come from an INVARIANT: they
+   are not read off the generation, they are obtained by mapping the
+   generated subgroup INTO [Zmultiples d] and contradicting divisibility.
+   With it: [Ztwo_proper] and [Zthree_proper] show 2ℤ and 3ℤ are
+   PROPER (1 lies in neither), [Zsub_incomparable] shows neither includes
+   into the other -- so the join is not one of them in disguise -- and
+   [Zjoin_one] shows 1 = 3 + (-2) does lie in the join, packaged with the
+   two properness facts as [Zjoin_strictly_larger].  [Ztwo_dup_iso]
+   exhibits the SCOPE paragraph's duplicate presentations.
+
+   WHAT IS NOT DELIVERED, scoped to this file.
+
+   * No general filtered- or directed-colimit theory.  There is none in
+   tree (Instance/Sets/Chain.v records the same absence), and
+   nothing here is stated for a general filtered shape: [FGSub A] is
+   one concrete index and [FGSub_directed] is a lemma about it, not an
+   instance of a [Filtered] class, which does not exist.
+
+   * No [Cocomplete Ab], and no other colimit in [Ab].  This is a single
+   colimit identification, and no [Cocomplete]-typed constant anywhere
+   in the tree mentions [Ab] (measured).
+
+   * No analogue for non-abelian groups or for modules.  No argument
+   below commutes two elements: commutativity enters exactly once, and
+   only as a transported field ([AbSubgroupAb]'s [cmon_plus_comm] is
+   [A]'s own, applied).  But the records and the category are [Ab]'s,
+   and nothing is restated over [GrpObject] or [RModObject].
+
+   * No [AbSubgroup] refactor: the record is not moved into
+   Instance/Ab.v, [Submodule] is not made an extension of it, and
+   Instance/Ab.v's [AbKernel] and [AbQuotient] are not rerouted
+   through it.
+
+   * No lattice of subgroups: no intersection, no sum of subgroups, no
+   correspondence theorem, and no proof that [fg_join] is a JOIN in
+   any order-theoretic sense (only that it receives both inclusions).
+
+   * Nothing about which subgroups are finitely generated: [FinGen] is
+   carried as data, and no group is shown to have, or to lack, a
+   finite generating set.  In particular ℤ is not exhibited as an
+   object of its own index.
+
+   * No functoriality of [FGSub] or [FGDiagram] in [A], and no
+   uniqueness-up-to-iso statement for the colimit beyond the one the
+   universal property already gives. 
+
+   --------
+   * * 阿贝尔群是其有限生成子群的余极限
+
+   Mac Lane，《为工作数学家而作的范畴论》第二版，Springer
+   GTM 5 1998，§III.3 练习 7，印刷页 68（`maclane:III.3:ex7`）：“阿贝尔群 A 是其有限生成子群（有向）图的余极限，按包含关系排序。” 引用自该位置。引号中的句子是问题目录对该练习的意译，而非转录：撰写此文件时未参阅印刷文本。交付的内容是什么。对于每个 [A : AbObject]，都有一个按包含顺序排列的 [FGSub A] 的有限生成子群索引类型 [A]，一个将每个子群对应到 [Ab] 中相应对象的图 [FGDiagram A : FGSub A ⟶ Ab]，一个顶点为 [A] 的余锥 [FGCocone A]，其各腿为包含映射，以及定理
+
+   ab_fg_colimit A : IsColimitCocone (FGCocone A)
+
+   说明该余锥是普遍的。[ab_fg_isacolimit] 和 [ab_fg_Colimit] 在顶点锁定和捆绑级别上重新打包它。定向性——即 Mac Lane 句子中的括号——是 [FGSub_directed]，这不是装饰：正是 [med_coherent] 所花费的，而 [med_coherent] 是调解者构造中的每个条款归约到的内容。标题是锥级的。[IsColimitCocone]（结构/限制/保持.v）表示每一个竞争余锥都通过一个与这些支腿兼容的唯一态射经过此余锥。仅顶点的[IsAColimit]固定对象[A]，但它的支腿取自居住在其中的任意见证，因此单凭它本身并不能说明这些包含是通用族；它是较弱的理解，并且在这里它是通过[colimitcocone_isacolimit]从锥级声明推导出来的，绝不是反过来。在此文件中没有证明两者之间的分离。[AbSubgroup] 是新的，背后的调查已经被纠正。
+   Instance/Grp/Quotient.v 的 [Subgroup] 位于 [GrpObject] 之上，这是一个平坦的记录，包含 [grp_unit] / [grp_mul] / [grp_inv] —— 与 [AbObject] 不同类型，后者将 [ab_neg] 层叠在 Instance/CMon.v 的 [CMonObject] 上，因此表示 [cmon_zero] / [cmon_plus]。Instance/Mod/Quotient.v 的 [Submodule] 位于 [RModObject] 之上，并携带第五个字段 [smod_smul]，在标量作用下闭合，而阿贝尔群无法提供此字段。这两个在形状上彼此不同——两种情况都包含成员和四条律，但 [Submodule] 的第四条是标量闭合，而且它完全没有取反字段（Instance/Mod/Quotient.v 将其取反引理标注为“不是字段的第五个字段”）。存在第三个记录，并且此标题的早期草稿遗漏了它。Instance/Ab/Character/Finite.v 声明了 [Record Subgroup (G : AbObject)]，具有 [sg_mem] / [sg_resp] / [sg_zero] / [sg_add] / [sg_neg] ——在同一目录下的 RIGHT 基类型上，具有与 [AbSubgroup] 完全相同的五个字段——外加第六个字段 [sg_dec]，要求可判定的成员资格；并且它自身携带生成子群机制（[Generated]）。因此，早期草稿所提供的基础，即没有树内记录在 [AbObject] 上，是完全错误的，并且由此支持的调查（“现有子对象记录都没有转移”）表述也是错误的。不重新使用它的真正原因是 [sg_dec]：这里的成员是归纳生成的 [InGen]，没有任何构造过程能够决定，因此这个记录根本无法通过此开发进行实例化。这是一个充分的理由，也是适用的理由；之前的草稿提出了一个不同且错误的理由。这个错误是可以避免的——下一段引用的捐赠者头文件就在本文件引用的那行上方四行处两次提到该记录。请准确阅读其与现有树的关系。Instance/Mod/Quotient.v 已经记录了“真正的统一器是 Instance/Ab.v 本身的 [AbSubgroup] 接口，而 [Submodule] 则是模块级扩展”；而本文件两者都没有做到。此处声明了记录，而不是在 Instance/Ab.v 中声明，并且 [Submodule] 未被修改，也未作为其扩展展示。该重构仍未完成；目前确定的只是这个开发需要一个子群的概念，而树内记录中关于 [AbObject] 的那个需要一个该记录无法提供的可判定字段。
+
+   其成员资格为 [Type] 值，这是因为 Instance/Grp/Quotient.v 的自身头文件对 [Subgroup] 的说明：库中的 `≈` 是 [Type] 值，因此一个 [Prop] 值的成员资格无法被消解为同态集合方程。在这里，它被用于更基本的目的——见下一段。[Proset] 无法承载 *该* 指数，这个指数比听起来要弱，并且不是早期草稿所声称的那样。Instance/Proset.v 接受 [{R : relation A}]，stdlib [relation A] 是 [A → A → Prop]。这里使用的包含是 [FGHom A X Y := ∀ a, absub_mem (fg_sub X) a → absub_mem (fg_sub Y) a]，它是 [Type] 值，因为 [absub_mem] 是；将其归为 [relation] 会因为宇宙不一致而被拒绝，“无法强制执行 ... <= Prop”（与 [inhabited] 压缩变体的正控制相比进行测量，该变体确实是 [relation]）。该测量是真实的，并在 Test/ProbeDirectedColimit330.v 中被固定。它没有显示的内容。这个标题的早期草稿，以及该问题自身建议的路径，从中得出结论认为“[Proset] 对索引不可用”，并且该路径“不可行，并且已经测量”。这是错误的，反驳是成立的。给出的论证仅涵盖了压缩一个 [Type] 值的同态 -- [inhabited (FGHom X Y)] -- 这确实需要使用大消去来取回见证。它从未考虑过显而易见的替代方案：让 MEMBERSHIP 本身成为 [Prop] 值。这样做后，[FGHom] 本质上就是一个 [relation]，没有什么被压缩，并且 [fmap] 从未将一个 [Prop] 消去为一个 [Type] -- 它只是应用一个 [Prop → Prop] 函数并将结果封装在一个 [sigT] 中，这是合法的。一次审计以这种方式移植了整个开发，并为其获得了 [IsColimitCocone]，在全局上下文下关闭，并且有一个 [fmap] 字符逐字符与下面相同；然后在这里独立重新检查了传输和 [Proset] 应用程序。
+
+   所以坦诚的说法是：[Proset] 无法在 GIVEN THIS FILE'S [Type] -值成员下托管索引，这是遵循 Instance/Grp/Quotient.v 的设计选择（见上一段），而不是数学上的必要性。一个 [Prop] 值的变体是可行的，只是这里没有构建。Structure/Thin.v 从另一侧记录了 [relation] -是Prop 的事实 —— “Coq 的 [relation] 是 Prop 值的，而一个 hom 存在于 [Type]” —— 并且出于自身原因与 [inhabited] 冲突。因此，[FGSub] 是直接构建的，复制（而不是重用——这个文件完全没有 [Require] Instance/Proset.v）该文件提供的唯一设备：Instance/Proset.v 的平凡成立的同构集 [{| Setoid.equiv := fun _ _ => True |}]，它使每个范畴定律都是免费的，并使 [FGSub_Thin : Thin (FGSub A)] (Structure/Thin.v) 成为一行。[FGSub_Thin] 已被证明，但在下文没有被使用——包括 SCOPE 段落中提到的重复呈现是无害的，这个论述依靠文章中的稀薄性，而不是通过该引理。范围：对象承载的是一个表示，而不仅仅是一个子群。[FGSub A] 的一个对象是一个对 [{ S : AbSubgroup A & FinGen A S }]，其中 [FinGen] 提供了一份生成元列表，以及 [absub_mem S] 与生成的 [InGen] 之间的相互包含关系。因此，两个不同的列表展示同一个子群会产生两个对象，而本文件中没有任何内容能够识别它们。这偏离了 Mac Lane 字面意义上的“按包含关系排序的子群偏序集”，并且这是明确说明而不是隐藏的。它的修复之处在于 [FGSub A] 很薄：任何两个平行的包含都被识别，因此重复的呈现是典范同构的（[Ztwo_dup_iso] 展示了这样的一对），并且余极限不受影响：普遍性质在余圆锥上量化，没有竞争的余圆锥能够区分重复，因为 [med_coherent] 显示其各腿在任何两个对象的≈相等元素的任意两个成员上都一致。最后一条是一个定理；“余极限不受影响”是对它的解读，并且没有与 poset 索引图进行形式化比较——此文件中没有这样的图。字面上的偏序集要么需要对表示进行截断——这将阻止提取生成元，而生成元正是定向性（[++]在列表上）和中介者（一个元素上的循环子群）所使用的——要么需要对[FinGen]进行证明无关性。两者都没有采用。请注意，该文件并未证明某个子群的两个表示不相等；它证明的是它们是同构的。结构，以及工作的所在。[mem_list a l] 是 [Type] —— 在列表中到 `≈` 的有价值的成员。[InGen A l] 是作为带有五个构造子的归纳族生成的子群——一个生成元、零、和、取反，以及 ≈-饱和——遵循 Instance/Grp/Abelianization.v 中 [InCommutator] 的形式，其 [inc_resp] 是使生成集 ≈-饱和的内容，并在这里被作为 [ig_resp] 镜像。[gen_sub A l] 将其打包为一个 [AbSubgroup]，所有五个字段字面上就是五个构造子，因此 [fingen_gen] 的两条支线是恒等函数，并且 [absub_mem (gen_sub A l) = InGen A l] 通过 [eq_refl] 成立。整个发展依赖于对 [InGen] : [gen_least] 的一次归纳，即最小子群性质。[gen_mono]、并集包含、表示重复同构，以及用于非空性否定的可整除性不变量都是它的实例，并且该文件总共包含三个 [induction] 策略——那一个，以及两个关于列表的（[mem_list_app_l], [mem_list_app_r]）。将其作为策略数量来理解：[mem_list] 是一个 [Fixpoint]，所以这是第四个结构递归，其中没有 [induction] 出现。定向性是 [++] ：[fg_join X Y] 通过连接两个生成器列表来呈现，而 [fg_join_left] / [fg_join_right] 是两个包含映射。[med_coherent] 是主引理——对于任意两个对象、任意两个成员关系和任意两个 ≈-相等的元素，余锥的腿是一致的——通过将双方推入并集并使用腿自身的守恒性来证明。然后中介 [fg_med] 是余锥在循环对象 [cyc a]（由单元素列表 [a :: nil] 呈现）上的一条腿，应用到 [a] 上；守恒性、零的保持和加法的保持都是 [med_coherent] 的应用（通过 [med_fun_at]），最后一个通过 [a :: b :: nil] 呈现的对象进行。唯一性是立即的：任何与 [cyc a] 的支腿通勤的竞争者，已经在 [a] 上与 [fg_med] 一致。优势，以测量而非猜测。 这些在 [eq_refl] 处保持： [fg_cocone_apex]（顶点是 [A]）、[fg_cocone_leg]（边是包含）、[fg_med_value]、[gen_sub_mem]、[fg_sub_of_list]、[fg_diagram_fmap_elem]（图表没有移动任何元素）和 [Zjoin_gens]。[nu_transport] —— 柱锥的一致性逐点读取 —— 是应用于一点的供体引理，通过转换：它的证明是一个单独的 [exact]，无需重写。分解三角形 [fg_med_commutes] 是 `≈` 而不是莱布尼茨，原因正是上面的设计：调解器在 [cyc a] 评估竞争柱锥，而三角形的右边在 [X] 评估它，并且这些是指标的不同对象，因此这两个值仅通过柱锥的一致性相关。该拒绝是经过测量的，并且通过剥离 [Fail] 确认了失败类型——一个真正的“无法统一”，而不是名称解析错误。此文件中未包含 [Fail] 探针。非空性，在 ℤ 上。Instance/Ab/Coproduct.v 的 [ab_Z] 是 [ring_ab Int_Ring]，即 Theory/Algebra/Rig.v 的无公理整数的加法群；它被重用，没有构建新的群。[Zmultiples d] 是 [d] 倍数的子群，将其传入 [gen_least] 得到 [Zsingle_divides]。因此负数来自一个不变量：它们不是从生成中直接读取的，而是通过将生成的子群映射到 [Zmultiples d] 并矛盾除法性得到的。利用它：[Ztwo_proper] 和 [Zthree_proper] 显示 2ℤ 和 3ℤ 是真子群（1 不属于任意一个），[Zsub_incomparable] 显示其中一个不包含于另一个——因此它们的并不是伪装的其中之一——而 [Zjoin_one] 显示 1 = 3 + (-2) 确实属于这个并，与两个真子群性质一同表示为 [Zjoin_strictly_larger]。[Ztwo_dup_iso] 展示了 SCOPE 段落的重复呈现。
+
+   未交付的内容，范围限定到此文件。
+
+   * 没有一般的滤过或定向余极限理论。树中没有这类理论（Instance/Sets/Chain.v 记录了相同的缺失），此处也未对一般滤过形状作任何说明：[FGSub A] 是一个具体的索引，[FGSub_directed] 是关于它的引理，而不是 [Filtered] 类的一个实例，该类并不存在。
+
+   * 没有 [Cocomplete Ab]，也没有 [Ab] 中的其他余极限。这只是一个单一的余极限识别，而且树中没有任何 [Cocomplete] 类型的常数提及 [Ab]（经测量）。* 对非阿贝尔群或模没有类似物。下面没有论证交换两个元素：交换性仅出现一次，并且只是作为一个传递的字段（[AbSubgroupAb] 的 [cmon_plus_comm] 是 [A] 自身应用的）。但记录和范畴是 [Ab] 的，并且没有在 [GrpObject] 或 [RModObject] 上重新陈述。
+
+   * 没有 [AbSubgroup] 重构：记录没有被移动到 Instance/Ab.v，[Submodule] 没有被作为它的扩展，Instance/Ab.v 的 [AbKernel] 和 [AbQuotient] 也没有通过它重新路由。
+
+   * 没有子群格：没有交集，没有子群和，没有对应定理，也没有证明 [fg_join] 在任何序理论意义上是 JOIN（只知道它接收了两个包含）。* 没有关于哪些子群是有限生成的内容：[FinGen] 作为数据被提供，但没有展示哪个群有或没有有限生成集合。特别是 ℤ 没有作为其自身指标的对象被展示。
+
+   * [FGSub] 或 [FGDiagram] 在 [A] 中没有函子性，也没有关于余极限的唯一性（至同构）的声明，除了普遍性质已经给出的那一点。
 *)
 
 Require Import Category.Lib.
@@ -25,12 +293,17 @@ Require Import Coq.micromega.Lia.
 
 Generalizable All Variables.
 
-(** * Subgroups of an abelian group *)
+(** * Subgroups of an abelian group / * 阿贝尔群的子群 *)
 
 (*
-   本节说明 DirectedColimit 相关定义、性质与动机。
+ Membership plus four laws, in the shape Instance/Grp/Quotient.v's
+ [Subgroup] and Instance/Mod/Quotient.v's [Submodule] share.  It is
+ [Type]-valued because the library's `≈` is, and because the diagram's
+ [fmap] below must APPLY an inclusion to a membership witness -- see the
+ header's paragraph on why [Proset] cannot host the index. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ Membership 加上四条定律，在 Instance/Grp/Quotient.v 的 [Subgroup] 和 Instance/Mod/Quotient.v 的 [Submodule] 中共享。它是 [Type] 值的，因为库的 `≈` 是如此，而且因为下面的图表 [fmap] 必须将包含应用于一个 membership 证据 —— 参见标题段落关于为什么 [Proset] 不能承载索引的说明。
 *)
 Record AbSubgroup (A : AbObject) := {
   absub_mem : carrier (cmon_setoid A) → Type;
@@ -50,12 +323,16 @@ Arguments absub_zero {A} _.
 Arguments absub_plus {A} _ _ _ _ _.
 Arguments absub_neg {A} _ _ _.
 
-(** ** A subgroup as an object of Ab *)
+(** ** A subgroup as an object of Ab / ** 作为 Ab 对象的子群 *)
 
 (*
-   本节说明 DirectedColimit 相关定义、性质与动机。
+ The sigma carrier over membership, compared on elements only -- the shape
+ Instance/Ab.v's [ab_ker_carrier] and Instance/Grp/Quotient.v's
+ [sub_carrier] use, so a membership witness carries no equational weight
+ and two witnesses of one element are already identified. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ σ承载于成员关系上，仅在元素上比较 —— 形状 Instance/Ab.v 的 [ab_ker_carrier] 和 Instance/Grp/Quotient.v 的 [sub_carrier] 使用，因此成员关系证明不携带方程权重，并且一个元素的两个证明已经被识别。
 *)
 Section Subgroup.
 
@@ -79,7 +356,7 @@ Proof using A S.
        ; cmon_plus := fun p q =>
            existT _ (cmon_plus A (projT1 p) (projT1 q))
                     (absub_plus S _ _ (projT2 p) (projT2 q))
-       (* 相关说明。 （已译） *)
+       (* Only the first projection is compared, so the [Type]-valued membership rides along untouched. / 只比较第一个投影，因此 [Type] 值的成员资格保持不变。 *)
        ; cmon_prop :=
            sigma_first_PropEquiv absub_setoid
              (fun _ _ h => h) (fun _ _ h => h) (cmon_prop A) |};
@@ -95,9 +372,12 @@ Proof using A S.
 Defined.
 
 (*
-   本节说明 DirectedColimit 相关定义、性质与动机。
+ The inclusion: the first projection.  Respectfulness is the identity
+ implication and both homomorphism laws hold on the nose; all three
+ obligations are discharged by the ambient obligation tactic. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 包含：第一个投影。尊重性是身份蕴涵，并且两个同态定律都严格成立；所有三项义务都由环境义务策略履行。
 *)
 Program Definition absub_incl : AbSubgroupAb ~{Ab}~> A :=
   {| cmon_map := {| morphism := fun p : absub_carrier => projT1 p |} |}.
@@ -108,10 +388,15 @@ Arguments absub_carrier {A} _.
 Arguments AbSubgroupAb {A} _.
 Arguments absub_incl {A} _.
 
-(* 相关说明。 （已译） *)
+(* * * The subgroup generated by a finite list / * * 由有限列表生成的子群 *)
 
-(* [Type]-valued membership in a list, up to `≈'.  [Empty_set] is [Set], so
-   it sits below every [Type@{i}] and needs no polymorphic empty type. *)
+(*
+ [Type]-valued membership in a list, up to `≈'.  [Empty_set] is [Set], so
+ it sits below every [Type@{i}] and needs no polymorphic empty type. 
+
+ --------
+ [Type]——在列表中的有值成员，最多为 `≈'。[Empty_set] 是 [Set]，所以它位于每个 [Type@{i}] 之下，不需要多态空类型。
+*)
 Fixpoint mem_list {A : AbObject} (a : carrier (cmon_setoid A))
   (l : list (carrier (cmon_setoid A))) : Type :=
   match l with
@@ -144,9 +429,13 @@ Proof.
 Defined.
 
 (*
-   本节说明 DirectedColimit 相关定义、性质与动机。
+ The generated subgroup, as an inductive family with five constructors:
+ a generator, zero, sums, negations, and ≈-saturation.  The last is what
+ Instance/Grp/Abelianization.v's [InCommutator] calls [inc_resp], and it
+ is why [gen_sub] below needs no separate saturation argument. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 生成的子群，作为一个具有五个构造子的归纳族：生成元、零、和、取反，以及≈-饱和。最后一个就是 Instance/Grp/Abelianization.v 中的 [InCommutator] 称为 [inc_resp] 的东西，这就是为什么下面的 [gen_sub] 不需要单独的饱和论证。
 *)
 Inductive InGen (A : AbObject) (l : list (carrier (cmon_setoid A)))
   : carrier (cmon_setoid A) → Type :=
@@ -165,7 +454,7 @@ Arguments ig_plus {A l} _ _ _ _.
 Arguments ig_neg {A l} _ _.
 Arguments ig_resp {A l} _ _ _ _.
 
-(* 相关说明。 （已译） *)
+(* All five fields ARE the five constructors, so [absub_mem (gen_sub A l)] is [InGen A l] on the nose (recorded below as [gen_sub_mem]). / 所有五个字段都是五个构造函数，所以 [absub_mem (gen_sub A l)] 恰好是 [InGen A l]（如下记录为 [gen_sub_mem]）。 *)
 Definition gen_sub (A : AbObject) (l : list (carrier (cmon_setoid A)))
   : AbSubgroup A := {|
   absub_mem := @InGen A l;
@@ -176,9 +465,14 @@ Definition gen_sub (A : AbObject) (l : list (carrier (cmon_setoid A)))
 |}.
 
 (*
-   本节说明 DirectedColimit 相关定义、性质与动机。
+ THE ONLY INDUCTION OVER [InGen] IN THIS FILE: the generated subgroup is
+ the least one containing the generators.  Everything downstream that
+ needs to say something about every member of a generated subgroup --
+ [gen_mono], the join inclusions, the divisibility invariant used for the
+ non-vacuity negatives -- is an instance of this. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 本文件中对 [InGen] 的唯一归纳：生成的子群是包含这些生成元的最小子群。所有下游需要对生成子群的每个成员说些什么的内容——[gen_mono]、并入包含、用于非空负例的可除性不变量——都是这一情况的一个实例。
 *)
 Lemma gen_least (A : AbObject) (l : list (carrier (cmon_setoid A)))
   (S : AbSubgroup A) (H : ∀ x, mem_list x l → absub_mem S x) :
@@ -199,12 +493,18 @@ Definition gen_mono (A : AbObject)
   ∀ a, InGen A l a → InGen A m a :=
   gen_least A l (gen_sub A m) H.
 
-(* * * Finitely generated subgroups, index 范畴 （已译） *)
+(* * * Finitely generated subgroups, and the index category / * * 有限生成子群，以及指数范畴 *)
 
 (*
-   本节说明 DirectedColimit 相关定义、性质与动机。
+ A PRESENTATION of [S]: a finite list of generators, plus mutual
+ inclusion between membership in [S] and membership in the subgroup that
+ list generates.  Carrying the list (rather than truncating it) is what
+ the header's SCOPE paragraph is about: it is what directedness and the
+ mediator consume, and it is why two presentations of one subgroup give
+ two objects of the index. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [S] 的一个表示：一个有限的生成元列表，以及 [S] 成员资格与该列表生成的子群成员资格之间的相互包含关系。携带列表（而不是截断它）正是标题的 SCOPE 段所述的内容：这是有向性和中介所使用的，并且这也是为什么一个子群的两个表示会给出索引的两个对象的原因。
 *)
 Record FinGen (A : AbObject) (S : AbSubgroup A) := {
   fg_list : list (carrier (cmon_setoid A));
@@ -230,9 +530,14 @@ Definition fg_gens {A : AbObject} (X : FGObj A)
 Definition FGHom (A : AbObject) (X Y : FGObj A) : Type :=
   ∀ a, absub_mem (fg_sub X) a → absub_mem (fg_sub Y) a.
 
-(* The index 范畴. The hom-setoid is trivially-true one of
- Instance/Proset.v, so every categorical law is 自由; [Proset] itself
- is unusable here because its homs must be [Prop]-valued (header).（已译） *)
+(*
+ The index category.  The hom-setoid is the trivially-true one of
+ Instance/Proset.v, so every categorical law is free; [Proset] itself
+ is unusable here because its homs must be [Prop]-valued (header). 
+
+ --------
+ 索引范畴。Hom-集的集合是 Instance/Proset.v 中显然为真的那个，所以每个范畴定律都是免费的；[Proset] 本身在这里不可用，因为它的 hom 必须是 [Prop] 值（头文件）。
+*)
 Program Definition FGSub (A : AbObject) : Category := {|
   obj     := FGObj A;
   hom     := FGHom A;
@@ -241,10 +546,15 @@ Program Definition FGSub (A : AbObject) : Category := {|
   compose := fun _ _ _ f g a p => f a (g a p)
 |}.
 
-(* * ** Presented 对象, directedness list concatenation （已译） *)
+(* * ** Presented objects, and directedness by list concatenation / * ** 通过列表连接呈现的对象和定向性 *)
 
-(* A list presents subgroup it generates, both legs 恒等
- function -- payoff [gen_sub]'s fields being constructors. （已译） *)
+(*
+ A list presents the subgroup it generates, with both legs the identity
+ function -- the payoff of [gen_sub]'s fields being the constructors. 
+
+ --------
+ 一个列表展示了它生成的子群，两个分支都是恒等函数——[gen_sub] 字段的收益是构造函数。
+*)
 Definition fingen_gen (A : AbObject) (l : list (carrier (cmon_setoid A)))
   : FinGen A (gen_sub A l) :=
   Build_FinGen A (gen_sub A l) l (fun _ p => p) (fun _ p => p).
@@ -252,7 +562,7 @@ Definition fingen_gen (A : AbObject) (l : list (carrier (cmon_setoid A)))
 Definition fg_of_list (A : AbObject) (l : list (carrier (cmon_setoid A)))
   : FGObj A := existT _ (gen_sub A l) (fingen_gen A l).
 
-(* Directedness is list concatenation. *)
+(* Directedness is list concatenation. / 定向性是列表连接。 *)
 Definition fg_join {A : AbObject} (X Y : FGObj A) : FGObj A :=
   fg_of_list A (fg_gens X ++ fg_gens Y).
 
@@ -270,9 +580,14 @@ Definition fg_join_right {A : AbObject} (X Y : FGObj A)
       (fun x h => ig_gen x (mem_list_app_r x _ _ h))
       a (fg_into (fg_pres Y) a p).
 
-(** The exercise's word "directed": any two 对象 index jointly
- dominated third, namely subgroup presented concatenation
- two lists generators. （已译） *)
+(*
+   * The exercise's word "directed": any two objects of the index are jointly
+   dominated by a third, namely the subgroup presented by the concatenation
+   of their two lists of generators. 
+
+   --------
+   * 练习中的单词“directed”：指标的任意两个对象共同被第三个对象支配，即由它们两个生成元列表的连接所表示的子群。
+*)
 Lemma FGSub_directed {A : AbObject} (X Y : FGObj A) :
   { Z : FGSub A & ((X ~{FGSub A}~> Z) * (Y ~{FGSub A}~> Z))%type }.
 Proof.
@@ -280,12 +595,19 @@ Proof.
   exact (fg_join_left X Y, fg_join_right X Y).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* * * The diagram of finitely generated subgroups, and its cocone / * * 有限生成子群的图及其余锥 *)
 
 (*
-   本节说明函子相关定义、性质与动机。
+ The diagram.  Its arrow action retags a membership witness and leaves
+ the underlying element alone ([fg_diagram_fmap_elem] below records that
+ by [eq_refl]); since the subgroup carriers compare first projections,
+ all six obligations -- the three of the [CMonHom] and the three functor
+ laws -- are discharged by the ambient obligation tactic.  Still six
+ after the PR "algebraic carriers are sets" (2026-09-17), re-counted
+ from [Print Module]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 图表。它的箭头操作会重新标记成员证明，并保持底层元素不变（下面的 [fg_diagram_fmap_elem] 通过 [eq_refl] 记录了这一点）；由于子群承载者首先比较投影，所有六个义务——[CMonHom] 的三个和函子定律的三个——都由环境义务策略消除。在 PR“代数承载者是集合”（2026-09-17）之后仍然是六个，从 [Print Module] 重新计算。
 *)
 Program Definition FGDiagram (A : AbObject) : FGSub A ⟶ Ab := {|
   fobj := fun X => AbSubgroupAb (fg_sub X);
@@ -295,21 +617,26 @@ Program Definition FGDiagram (A : AbObject) : FGSub A ⟶ Ab := {|
           |} |}
 |}.
 
-(* The cocone whose universality 定理: apex [A], legs the
- inclusions. （已译） *)
+(*
+ The cocone whose universality is the theorem: apex [A], legs the
+ inclusions. 
+
+ --------
+ 其普遍性是定理的余锥：顶点 [A]，边为包含映射。
+*)
 Program Definition FGCocone (A : AbObject) : Cocone (FGDiagram A) := {|
   vertex_obj := A;
   coneFrom   := {| vertex_map := fun X => absub_incl (fg_sub X) |}
 |}.
 
-(* 相关说明。 （已译） *)
+(* * * The mediating homomorphism out of A / * * 从 A 出发的中介同态 *)
 
 Section Mediator.
 
 Context {A : AbObject}.
 Context (N : Cocone (FGDiagram A)).
 
-(* 相关说明。 （已译） *)
+(* The competing cocone's leg at [X], evaluated at an element of [A] together with a witness that it lies in [X]'s subgroup. / 竞争余锥在 [X] 的腿，在 [A] 的一个元素上评估，同时有一个证据表明它位于 [X] 的子群中。 *)
 Definition nu_val (X : FGObj A) (a : carrier (cmon_setoid A))
   (p : absub_mem (fg_sub X) a) : carrier (cmon_setoid vertex_obj[N]) :=
   cmon_map (cocone_inj N X) (existT _ a p).
@@ -319,9 +646,14 @@ Lemma nu_transport (X Y : FGObj A) (f : X ~{FGSub A}~> Y)
   nu_val Y a (f a p) ≈ nu_val X a p.
 Proof using A N. exact (cocone_inj_coherence N f (existT _ a p)). Qed.
 
-(* * The master 融贯性 引理: cocone's legs agree any two
- memberships any two 对象, at ≈-equal elements. Everything below is
- application it, it is exactly where directedness is spent.（已译） *)
+(*
+   * The master coherence lemma: the cocone's legs agree on any two
+   memberships of any two objects, at ≈-equal elements.  Everything below is
+   an application of it, and it is exactly where directedness is spent. 
+
+   --------
+   * 主一致引理：余锥的各条腿在任意两个对象的任意两个成员上的值在≈-相等的元素处是一致的。下面的所有内容都是它的应用，并且正是在这里使用了定向性。
+*)
 Lemma med_coherent (X Y : FGObj A) (a b : carrier (cmon_setoid A))
   (p : absub_mem (fg_sub X) a) (q : absub_mem (fg_sub Y) b) (Hab : a ≈ b) :
   nu_val X a p ≈ nu_val Y b q.
@@ -332,7 +664,7 @@ Proof using A N.
   apply proper_morphism; exact Hab.
 Qed.
 
-(** 本节：The cyclic subgroup one element, distinguished member. （已译） *)
+(** The cyclic subgroup on one element, and its distinguished member. / 由一个元素生成的循环子群及其特殊成员。 *)
 
 Definition cyc (a : carrier (cmon_setoid A)) : FGObj A :=
   fg_of_list A (a :: nil).
@@ -376,9 +708,14 @@ Proof using A N.
   exact (cmon_map_plus (cocone_inj N Z) (existT _ a pa) (existT _ b pb)).
 Qed.
 
-(* The mediator: evaluate competing cocone at cyclic 对象 the
- element itself. All three [CMonHom] fields supplied name, so no
- obligation generated. （已译） *)
+(*
+ The mediator: evaluate the competing cocone at the cyclic object on the
+ element itself.  All three [CMonHom] fields are supplied by name, so no
+ obligation is generated. 
+
+ --------
+ 调解者：在元素本身的循环对象上评估竞争的余锥。所有三个 [CMonHom] 字段都是按名称提供的，因此不会产生任何义务。
+*)
 Program Definition fg_med : A ~{Ab}~> vertex_obj[N] := {|
   cmon_map := {| morphism := med_fun ; proper_morphism := med_fun_respects |};
   cmon_map_zero := med_fun_zero;
@@ -387,12 +724,15 @@ Program Definition fg_med : A ~{Ab}~> vertex_obj[N] := {|
 
 End Mediator.
 
-(* * * The 定理: A colimit finitely generated subgroups （已译） *)
+(* * * The theorem: A is the colimit of its finitely generated subgroups / * * 定理：A 是其有限生成子群的余极限 *)
 
 (*
-   本节说明（余）强度相关定义、性质与动机。
+ The factorization triangle.  This is `≈' and not Leibniz: the left side
+ evaluates [N] at [cyc a] and the right side at [X], and those are
+ different objects of the index (header, STRENGTHS). 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 因式分解三角形。这是 `≈' 而不是莱布尼茨：左侧在 [cyc a] 处计算 [N]，右侧在 [X] 处计算，而这些是索引（标题，STRENGTHS）中的不同对象。
 *)
 Lemma fg_med_commutes {A : AbObject} (N : Cocone (FGDiagram A))
   (X : FGSub A) :
@@ -412,7 +752,7 @@ Proof.
   exact (Hv (cyc a) (existT _ a (cyc_mem a))).
 Qed.
 
-(* Mac Lane §III.3 Exercise 7: the inclusion cocone is universal. *)
+(* Mac Lane §III.3 Exercise 7: the inclusion cocone is universal. / Mac Lane §III.3 练习 7：包含余锥是普遍的。 *)
 Definition ab_fg_colimit (A : AbObject) : IsColimitCocone (FGCocone A).
 Proof.
   intro M.
@@ -421,14 +761,14 @@ Proof.
   - exact (fg_med_unique M).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* The apex-pinned and bundled readings, both derived from the cone-level statement rather than proved separately. / 顶点固定和捆绑的读数都是从锥体级别的陈述得出的，而不是单独证明的。 *)
 Definition ab_fg_isacolimit (A : AbObject) : IsAColimit (FGDiagram A) A :=
   colimitcocone_isacolimit (ab_fg_colimit A).
 
 Definition ab_fg_Colimit (A : AbObject) : Colimit (FGDiagram A) :=
   limitcone_limit (FGCocone A) (ab_fg_colimit A).
 
-(* 相关说明。 （已译） *)
+(* * ** Acceptance tests: what the pieces are, on the nose / * ** 验收测试：各部分是什么，正中要点 *)
 
 Example fg_cocone_apex (A : AbObject) : vertex_obj[FGCocone A] = A := eq_refl.
 
@@ -439,32 +779,47 @@ Example fg_med_value (A : AbObject) (N : Cocone (FGDiagram A))
   (a : carrier (cmon_setoid A)) :
   cmon_map (fg_med N) a = nu_val N (cyc a) a (cyc_mem a) := eq_refl.
 
-(** Membership generated subgroup IS inductive family, is
- what makes both legs [fingen_gen] 恒等 function. （已译） *)
+(*
+   * Membership in the generated subgroup IS the inductive family, which is
+   what makes both legs of [fingen_gen] the identity function. 
+
+   --------
+   * 生成子群的成员是归纳族，这正是使 [fingen_gen] 的两条支腿都是恒等函数的原因。
+*)
 Example gen_sub_mem (A : AbObject) (l : list (carrier (cmon_setoid A))) :
   absub_mem (gen_sub A l) = InGen A l := eq_refl.
 
 Example fg_sub_of_list (A : AbObject) (l : list (carrier (cmon_setoid A))) :
   fg_sub (fg_of_list A l) = gen_sub A l := eq_refl.
 
-(** 本节：The diagram's arrow action moves no element: it retags membership
- witness leaves underlying element alone. （已译） *)
+(*
+   * The diagram's arrow action moves no element: it retags a membership
+   witness and leaves the underlying element alone. 
+
+   --------
+   * 图表中的箭头动作不移动任何元素：它只是重新标记成员资格见证，而不改变底层元素。
+*)
 Example fg_diagram_fmap_elem (A : AbObject) (X Y : FGSub A)
   (f : X ~{FGSub A}~> Y) (p : carrier (cmon_setoid (FGDiagram A X))) :
   projT1 (cmon_map (@fmap _ _ (FGDiagram A) X Y f) p) = projT1 p := eq_refl.
 
-(** 本节：The index thin, so any two parallel inclusions identified. （已译） *)
+(** The index is thin, so any two parallel inclusions are identified. / 指数很低，所以任何两个平行的包裹体都会被识别。 *)
 Lemma FGSub_Thin (A : AbObject) : Thin (FGSub A).
 Proof. intros X Y f g; exact I. Qed.
 
-(** * Non-vacuity over the integers *)
+(** * Non-vacuity over the integers / * 整数上的非空性 *)
 
-(* [Instance/Ab/Coproduct.v]'s [ab_Z] is [ring_ab Int_Ring], additive
- group Theory/Algebra/Rig.v's axiom-自由 integers. It is reused here;
- no new group is built, [ab_Z]'s `≈` is Leibniz equality [Z]
- ([Z_eqT]), which is what makes computations below close [eq_refl].（已译） *)
+(*
+ [Instance/Ab/Coproduct.v]'s [ab_Z] is [ring_ab Int_Ring], the additive
+ group of Theory/Algebra/Rig.v's axiom-free integers.  It is reused here;
+ no new group is built, and [ab_Z]'s `≈` is Leibniz equality of [Z]
+ ([Z_eqT]), which is what makes the computations below close by [eq_refl]. 
 
-(* 相关说明。 （已译） *)
+ --------
+ [Instance/Ab/Coproduct.v] 的 [ab_Z] 是 [ring_ab Int_Ring]，是 Theory/Algebra/Rig.v 的无公理整数的加法群。这里重用了它；没有建立新的群，而且 [ab_Z] 的 `≈` 是 [Z]（[Z_eqT]）的莱布尼兹相等性，这正是使下面的计算通过 [eq_refl] 封闭的原因。
+*)
+
+(* * ** The multiples of d, as a subgroup: the invariant that yields negatives / * ** d 的倍数，作为子群：产生负数的不变量 *)
 
 Lemma Zmult_resp (d : Z) : ∀ a b : carrier (cmon_setoid ab_Z),
   a ≈ b → Z.divide d a → Z.divide d b.
@@ -489,7 +844,7 @@ Definition Zmultiples (d : Z) : AbSubgroup ab_Z :=
   Build_AbSubgroup ab_Z (fun a => Z.divide d a)
     (Zmult_resp d) (Zmult_zero d) (Zmult_plus d) (Zmult_neg d).
 
-(* 相关说明。 （已译） *)
+(* * ** Two proper finitely generated subgroups, 2ℤ and 3ℤ / * ** 两个适当的有限生成子群，2ℤ 和 3ℤ *)
 
 Definition Ztwo : FGObj ab_Z := fg_of_list ab_Z (2%Z :: nil).
 Definition Zthree : FGObj ab_Z := fg_of_list ab_Z (3%Z :: nil).
@@ -519,7 +874,7 @@ Proof.
   lia.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Their join, which is strictly larger than either / * ** 它们的并集，严格大于任意一个 *)
 
 Definition Zjoin : FGObj ab_Z := fg_join Ztwo Zthree.
 
@@ -534,9 +889,14 @@ Proof.
     + apply ig_neg; apply ig_gen; simpl; left; reflexivity.
 Defined.
 
-(** The two 对象 INCOMPARABLE: neither includes 进入 other, so
- join not just one them disguise. This what makes
- directedness say something here. （已译） *)
+(*
+   * The two objects are INCOMPARABLE: neither includes into the other, so
+   the join is not just one of them in disguise.  This is what makes
+   directedness say something here. 
+
+   --------
+   * 这两个对象是不可比较的：彼此都不包含对方，因此它们的合并并不是其中某一个的伪装。这正是使得有向性在这里有所表述的原因。
+*)
 
 Lemma Ztwo_two : absub_mem (fg_sub Ztwo) 2%Z.
 Proof. apply ig_gen; simpl; left; reflexivity. Defined.
@@ -555,15 +915,20 @@ Proof.
     destruct (Zsingle_divides 2%Z 3%Z (f 3%Z Zthree_three)) as [z Hz]; lia.
 Qed.
 
-(** 本节：So index really directed non-degenerate way: join
- contains element lies neither. （已译） *)
+(*
+   * So the index really is directed in a non-degenerate way: their join
+   contains an element that lies in neither. 
+
+   --------
+   * 因此，该指数确实以非退化的方式指向：它们的连接包含一个不属于任何一方的元素。
+*)
 Lemma Zjoin_strictly_larger :
   (((absub_mem (fg_sub Ztwo) 1%Z → False)
       * (absub_mem (fg_sub Zthree) 1%Z → False))
      * absub_mem (fg_sub Zjoin) 1%Z)%type.
 Proof. exact ((Ztwo_proper, Zthree_proper), Zjoin_one). Defined.
 
-(* 相关说明。 （已译） *)
+(* * ** Two presentations of one subgroup are isomorphic in the index / * ** 一个子群的两个表达在指标上是同构的 *)
 
 Definition Ztwo_dup : FGObj ab_Z := fg_of_list ab_Z (2%Z :: 2%Z :: nil).
 

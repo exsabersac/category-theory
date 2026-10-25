@@ -12,15 +12,47 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** Cat 笛卡尔闭: exponential 函子 范畴. （已译） *)
+(** Cat is cartesian closed: the exponential is the functor category. / 类是笛卡尔闭的：指数就是函子范畴。 *)
 
 (*
+ nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
  nLab: https://ncatlab.org/nlab/show/functor+category
  Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
 
-   本文件给出闭结构实例。
+ Cat is cartesian closed. Its product is the product category C × D
+ ([Cat_Cartesian], via [Construction.Product]), and the exponential C^B is
+ the functor category [B, C] = Fun B C, with functors as objects and natural
+ transformations as morphisms. Equivalently, in [Closed]'s argument order
+ ([exponent_obj x y] is displayed y ^ x), the exponential z^y is
+ [exponent_obj y z = @Fun y z = [y, z]].
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ The closed structure is the natural bijection
+
+ Hom_Cat(A × B, C) ≅ Hom_Cat(A, [B, C])
+
+ carried by [exp_iso]. Its [to] direction is currying: a functor
+ F : A × B ⟶ C transposes to A ⟶ [B, C] sending x ↦ (y ↦ F (x, y)). Its
+ [from] direction is uncurrying, and the evaluation functor
+ eval : [B, C] × B ⟶ C (the bifunctor (G, b) ↦ G b, counit of the adjunction)
+ is recovered as [uncurry id]. The obligations below build the inner and
+ outer functors, prove their functoriality and naturality, and discharge the
+ round-trip laws and the exponential universal property; all are proven (the
+ instance is closed under the global context, no axioms). 
+
+ --------
+ nLab:  https://ncatlab.org/nlab/show/cartesian+closed+category 
+ nLab:  https://ncatlab.org/nlab/show/functor+category 
+ Wikipedia:  https://en.wikipedia.org/wiki/Cartesian_closed_category 
+
+ Cat 是笛卡尔闭类。它的积是积范畴 C × D
+ ( [Cat_Cartesian] , 通过 [Construction.Product] ), 指数 C^B 是
+ 函子范畴  [B, C]  = Fun B C，其中函子为对象，自然变换为态射。等价地，在  [Closed] 的参数顺序中
+ ( [exponent_obj x y] 显示为 y ^ x), 指数 z^y 是
+ [exponent_obj y z = @Fun y z = [y, z] ]。
+
+ 闭结构是自然双射
+
+ Hom_Cat(A × B, C) ≅ Hom_Cat(A,  [B, C] )由 [exp_iso] 提供。它的 [to] 方向是曲化：函子 F : A × B ⟶ C 转置为 A ⟶ [B, C]，发送 x ↦ (y ↦ F(x, y))。它的 [from] 方向是去曲化，而评估函子 eval : [B, C] × B ⟶ C（双函子 (G, b) ↦ G b，是伴随的余单位）可作为 [uncurry id] 获得。下面的义务构建内部和外部函子，证明它们的函子性和自然性，并完成往返律和指数的普遍性质；所有这些都已被证明（该实例在全局上下文中闭合，无公理）。
 *)
 
 #[local] Set Transparent Obligations.
@@ -30,7 +62,7 @@ Definition pairing {A B : Type} (p : A * B) : p = (fst p, snd p) :=
 
 #[export]
 Program Instance Cat_Closed : @Closed Cat Cat_Cartesian := {
-  exponent_obj := @Fun;         (* the internal hom is a functor category *)
+  exponent_obj := @Fun;         (* the internal hom is a functor category / 内部 Hom 是一个函子范畴 *)
   exp_iso := fun A B C =>
     {| to :=
        {| morphism := fun F : A × B ⟶ C =>

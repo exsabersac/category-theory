@@ -16,12 +16,37 @@ Require Import Coq.Arith.PeanoNat.
 Generalizable All Variables.
 
 (*
-   本文件给出具体实例。
+   * * The subobject classifier of skeletal FinSet
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   This file equips [FinSet] with computed pullbacks and the subobject
+   classifier Ω = 2.
+
+   The pullback of f : m ~> k and g : n ~> k is the subset of the
+   canonical (m · n)-element set consisting of the (encoded) pairs (a, b)
+   with f a = g b.  "Subset" is realized by a COUNT codec: [fin_countP P]
+   counts the elements of [Fin.t N] satisfying a boolean predicate [P],
+   [fin_select] tabulates the satisfying elements in order (unrank), and
+   [fin_rank] sends a satisfying element to its index.  All three are
+   structural fixpoints in the closed-computation style of [fin_split] /
+   [fin_pair], so pullback objects and projections REDUCE on closed
+   inputs by [eq_refl].
+
+   Truth-value convention: Ω is the object [2]; the element [Fin.F1]
+   represents TRUE and [Fin.FS Fin.F1] represents FALSE ([fin_true] and
+   [fin_false] below).  [truth : 1 ~> Ω] is the constant [fin_true] map,
+   and the characteristic morphism of a mono m sends b to [fin_true]
+   exactly when b lies in the image of m — decided by the finite search
+   [fin_existsb] over the decidable equality [fin_eqb]. 
+
+   --------
+   * * 骨架 FinSet 的子对象分类器
+
+   该文件为 [FinSet] 提供了已计算的拉回和子对象分类器 Ω = 2。
+
+   f : m ~> k 和 g : n ~> k 的拉回是由满足 f a = g b 的（编码的）对 (a, b) 组成的规范 (m · n) 元集合的子集。“子集”是通过 COUNT 编解码器实现的：[fin_countP P] 统计满足布尔谓词 [P] 的 [Fin.t N] 元素，[fin_select] 按顺序列出满足条件的元素（解排位），而 [fin_rank] 将满足条件的元素映射到其索引。这三个都是 [fin_split] / [fin_pair] 封闭计算风格中的结构性不动点，因此拉回对象和投影在闭合输入上由 [eq_refl] 归约。真值约定：Ω 是对象 [2]；元素 [Fin.F1] 表示 TRUE，[Fin.FS Fin.F1] 表示 FALSE（如下的 [fin_true] 和 [fin_false]）。[truth : 1 ~> Ω] 是常量 [fin_true] 映射，单态 m 的特征态射在且仅在 b 位于 m 的像中时将 b 发送到 [fin_true]——通过对可判等的 [fin_eqb] 进行有限搜索 [fin_existsb] 来决定。
 *)
 
-(* 相关说明。 （已译） *)
+(* * ** Decidable equality on the canonical finite sets [fin_eqb] is heterogeneous — comparing positions of possibly different canonical sets — so that it recurses structurally with no dependent typing; soundness is then stated at a common index. / * ** 对标准有限集的可判等性 [fin_eqb] 是异质的——比较可能不同标准集的位置——因此它以结构递归的方式进行，无需依赖类型；其正确性随后在共同索引处陈述。 *)
 
 Fixpoint fin_eqb {m n : nat} (i : Fin.t m) (j : Fin.t n) : bool :=
   match i, j with
@@ -46,12 +71,19 @@ Proof.
       now rewrite (IH j' H).
 Qed.
 
-(* * ** Bounded existential search
+(*
+   * ** Bounded existential search
 
- [fin_existsb P] decides whether some element canonical n-element
- set satisfies [P], structural recursion [n]. Soundness returns
- least witness DATA (a [sigT]), so it can build mediating
- 态射 below; hence it ends [Defined]. （已译） *)
+   [fin_existsb P] decides whether some element of the canonical n-element
+   set satisfies [P], by structural recursion on [n].  Soundness returns
+   the least witness as DATA (a [sigT]), so it can build mediating
+   morphisms below; hence it ends in [Defined]. 
+
+   --------
+   * ** 有界存在搜索
+
+   [fin_existsb P] 通过对 [n] 进行结构递归决定规范 n 元集合中的某个元素是否满足 [P]。Soundness 返回最小的证明作为 DATA（一个 [sigT]），因此它可以在下面构建中介态射；因此它以 [Defined] 结束。
+*)
 
 Fixpoint fin_existsb {n : nat} : (Fin.t n → bool) → bool :=
   match n return (Fin.t n → bool) → bool with
@@ -81,9 +113,21 @@ Proof.
 Qed.
 
 (*
-   本节说明 Classifier 相关定义、性质与动机。
+   * ** The count codec
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   [fin_countP P] is the number of elements satisfying [P]; the canonical
+   set of that size is the "subset cut out by P".  [fin_select] is the
+   order-preserving tabulation (unrank) of the satisfying elements, and
+   [fin_rank] is its inverse on satisfying elements.  Both dispatch on
+   [P Fin.F1] by a convoy so that goals mentioning them can abstract that
+   boolean cleanly; the impossible branch of [fin_rank] (the element is
+   satisfying, but the head test came out [false]) is eliminated by
+   transporting along the resulting [false = true]. 
+
+   --------
+   * ** 计数编解码器
+
+   [fin_countP P] 是满足 [P] 的元素数量；该大小的规范集合是“由 P 切出的子集”。[fin_select] 是满足元素的保持顺序的列表示（反顺序排列），而 [fin_rank] 是其在满足元素上的逆。两者都通过一个队列在 [P Fin.F1] 上分发，以便提到它们的目标可以干净地抽象该布尔值；[fin_rank] 的不可能分支（元素是满足的，但头部测试结果为 [false]）通过沿生成的 [false = true] 传输被消除。
 *)
 
 Fixpoint fin_countP {n : nat} : (Fin.t n → bool) → nat :=
@@ -144,9 +188,12 @@ Fixpoint fin_rank {n : nat} :
   end.
 
 (*
-   本节说明 Classifier 相关定义、性质与动机。
+ The computability acceptance test: with P selecting the odd positions of
+ the canonical 4-element set, the count is 2 and the codec tabulates the
+ second satisfying element — position 3 — by [eq_refl]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 可计算性接受测试：当 P 选择标准 4 元集合的奇数位置时，计数为 2，编解码器通过 [eq_refl] 对第二个满足条件的元素——位置 3——进行制表。
 *)
 Example fin_select_computes :
   @fin_select 4 (fun i => fin_eqb i (Fin.FS Fin.F1 : Fin.t 4)
@@ -156,9 +203,17 @@ Example fin_select_computes :
     = Fin.FS (Fin.FS (Fin.FS Fin.F1)) := eq_refl.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** The codec laws
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Selection lands in the subset ([fin_select_sat]); ranking a satisfying
+   element and selecting recovers it ([fin_select_rank]); and selection is
+   injective ([fin_select_inj], via the [Fin.FS] projection
+   [fin_FS_inj]).  Together these give the pullback UMP below. 
+
+   --------
+   * ** 编解码器定律
+
+   选择落在子集 ([fin_select_sat]) 中；对一个满足条件的元素进行排序并选择可以恢复它 ([fin_select_rank])；并且选择是单射的 ([fin_select_inj]，通过 [Fin.FS] 投影 [fin_FS_inj])。这些结合起来给出了下面的拉回通用性质 (UMP)。
 *)
 
 Lemma fin_select_sat {n : nat} (P : Fin.t n → bool)
@@ -194,9 +249,12 @@ Proof.
 Qed.
 
 (*
-   本节说明 Classifier 相关定义、性质与动机。
+ [Fin.FS] is injective, by applying the evident retraction (with default
+ [d] at [Fin.F1]) to the equation — built from [Fin.caseS'] only, so it
+ stays within the primitives available on every supported version. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ [Fin.FS] 是单射，通过对方程应用显而易见的收缩（在 [Fin.F1] 上默认 [d]）——该方程仅由 [Fin.caseS'] 构建，因此它保持在每个支持的版本可用的基本元素内。
 *)
 Definition fin_pred {n : nat} (d : Fin.t n) (i : Fin.t (S n)) : Fin.t n :=
   Fin.caseS' i (fun _ => Fin.t n) d (fun j => j).
@@ -211,7 +269,7 @@ Proof.
   revert P a b; induction n as [| n' IH]; intros P a b.
   - exact (Fin.case0 (fun a : Fin.t 0 => _) a).
   - revert a b; simpl; destruct (P Fin.F1) eqn:E; intros a b.
-    + (* head satisfied: analyse both indices as F1 / FS *)
+    + (* head satisfied: analyse both indices as F1 / FS / 头部满意：将两个指标都分析为 F1 / FS *)
       pattern a; apply (Fin.caseS' a); [| intro a'];
         (pattern b; apply (Fin.caseS' b); [| intro b']); simpl;
         intro Heq.
@@ -225,9 +283,18 @@ Proof.
 Qed.
 
 (*
-   本节说明拉回/推出相关定义、性质与动机。
+   * ** Computed pullbacks
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The pullback of f : m ~> k and g : n ~> k is the subset of the encoded
+   pairs — [Fin.t (m * n)] under the positional codec of
+   [Instance/FinSet/Product.v] — on which f and g agree, realized through
+   the count codec.  The projections decode-then-project; the mediator
+   ranks the encoded pair, which is satisfying by the cone equation. 
+
+   --------
+   * ** 计算拉回
+
+   f : m ~> k 和 g : n ~> k 的拉回是在编码对的子集——[Fin.t (m * n)]，在 [Instance/FinSet/Product.v] 的位置编解码下——上 f 和 g 一致，通过计数编解码实现。投影操作是先解码再投影；中介对编码对进行排序，这通过锥方程得到满足。
 *)
 
 Definition finset_pb_pred {m n k : nat}
@@ -247,13 +314,13 @@ Local Obligation Tactic := idtac.
     |}
 }.
 Next Obligation.
-  (* 相关说明。 （已译） *)
+  (* the square commutes: selection satisfies the agreement predicate / 方形交换：选择满足一致性谓词 *)
   intros m n k f g q.
   apply fin_eqb_eq.
   exact (fin_select_sat (finset_pb_pred f g) q).
 Qed.
 Next Obligation.
-  (* the universal property, via rank/select *)
+  (* the universal property, via rank/select / 通过秩/选择的通用属性 *)
   intros m n k f g Q q1 q2 Hq.
   assert (prf : ∀ i : Fin.t Q,
              finset_pb_pred f g (fin_pair (q1 i) (q2 i)) = true). {
@@ -278,7 +345,7 @@ Next Obligation.
     now rewrite H1, H2.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * ** Truth values Ω is the two-element set; [Fin.F1] is TRUE and [Fin.FS Fin.F1] is FALSE, mediated from [bool] by [fin_of_bool]. / * ** 真值 Ω 是一个二元素集合；[Fin.F1] 是 真，[Fin.FS Fin.F1] 是 假，由 [fin_of_bool] 调解 [bool] 。 *)
 
 Definition fin_true  : Fin.t 2 := Fin.F1.
 Definition fin_false : Fin.t 2 := Fin.FS Fin.F1.
@@ -300,9 +367,16 @@ Proof.
 Defined.
 
 (*
-   本节说明 Classifier 相关定义、性质与动机。
+   * ** Monomorphisms in FinSet are exactly the injections
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Mirrors [injectivity_is_monic] of [Instance/Sets.v]: the non-trivial
+   direction probes the mono with the two constant maps out of the
+   one-element set [1]. 
+
+   --------
+   * ** 在 FinSet 中，单态正好是注入映射
+
+   镜像  [injectivity_is_monic]  与  [Instance/Sets.v] ：非平凡的方向用来自一元素集合  [1] 的两个常数映射检查单态。
 *)
 
 Lemma finset_monic_iff_injective {m n : nat} (f : m ~{FinSet}~> n) :
@@ -318,9 +392,18 @@ Proof.
 Qed.
 
 (*
-   本节说明子对象相关定义、性质与动机。
+   * ** The subobject classifier
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Ω = 2 with [truth = fin_true]; the characteristic morphism of a mono
+   m : u ~> x sends b to [fin_true] exactly when b lies in the image of
+   m, decided by [fin_existsb]. 
+
+   --------
+   * ** 子对象分类器
+
+   Ω = 2，带有 [truth = fin_true]；单态射的特征态射
+   m : u ~> x 当且仅当 b 位于
+   m 的像中时，将 b 发送到 [fin_true]，由 [fin_existsb] 决定。
 *)
 
 #[export] Program Instance FinSet_Classifier :
@@ -331,14 +414,14 @@ Qed.
     fin_of_bool (fin_existsb (fun a => fin_eqb (m a) b))
 |}.
 Next Obligation.
-  (* char_pullback: u is the preimage of fin_true under char m *)
+  (* char_pullback: u is the preimage of fin_true under char m / char_pullback：u 是在 char m 下 fin_true 的原像 *)
   intros u x m M.
   unshelve econstructor.
-  - (* the classifying square commutes *)
+  - (* the classifying square commutes / 分类方阵可交换 *)
     intro a; simpl.
     now rewrite (fin_existsb_complete (fun a' => fin_eqb (m a') (m a)) a
                    (fin_eqb_refl (m a))).
-  - (* the universal property *)
+  - (* the universal property / 通用属性 *)
     intros Q q1 q2 Hq.
     assert (Hb : ∀ i : Fin.t Q,
                fin_existsb (fun a => fin_eqb (m a) (q1 i)) = true). {
@@ -352,7 +435,7 @@ Next Obligation.
     + split; intro i; simpl.
       * apply fin_eqb_eq.
         exact (`2 (fin_existsb_sound _ (Hb i))).
-      * (* both sides live in the one-element set *)
+      * (* both sides live in the one-element set / 双方都生活在单元素集合中 *)
         exact (eq_trans (fin1_unique _) (eq_sym (fin1_unique _))).
     + intros v [Hv1 _] i.
       apply (snd (finset_monic_iff_injective m) M).
@@ -362,16 +445,16 @@ Next Obligation.
       exact (`2 (fin_existsb_sound _ (Hb i))).
 Qed.
 Next Obligation.
-  (* char_unique: any classifying square determines char m on both cases *)
+  (* char_unique: any classifying square determines char m on both cases / char_unique：任何分类的方格在两种情况下都确定字符 m *)
   intros u x m M h HP b; simpl.
   destruct (fin_existsb (fun a => fin_eqb (m a) b)) eqn:E.
-  - (* b image: 交换方块 forces fin_true （已译） *)
+  - (* b in the image: the commuting square forces fin_true / 图中的 b：对易方形强制 fin_true *)
     destruct (fin_existsb_sound _ E) as [a Ha].
     apply fin_eqb_eq in Ha.
     assert (Hc := is_pullback_commutes HP a); simpl in Hc.
     rewrite <- Ha.
     exact Hc.
-  - (* 相关说明。 （已译） *)
+  - (* b not in the image: fin_true would lift b through the square / b不在图像中：fin_true会通过正方形提升b *)
     destruct (fin2_cases (h b)) as [Ht | Hf]; [| exact Hf].
     pose proof (is_pullback_ump HP 1%nat (fun _ => b) (fun _ => Fin.F1)
                   (fun _ => Ht)) as U.
@@ -384,9 +467,33 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明 Classifier 相关定义、性质与动机。
+   * ** Epimorphisms in FinSet are exactly the surjections
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The dual of [finset_monic_iff_injective], and the reason the skeleton
+   is worth having: the hard direction probes the epi with two maps INTO
+   Ω = 2 — the characteristic map of the image of f (the very [char] of
+   [FinSet_Classifier] below, with the mono hypothesis dropped) against
+   the constant [fin_true].  They agree after precomposition with f
+   because every f a is in the image of f, so epicness forces the
+   characteristic map to be constantly [fin_true]; [fin_existsb_sound]
+   then returns the preimage as DATA.
+
+   Compare [surjectivity_is_epic] in [Instance/Sets.v].  It reaches the
+   same biconditional, but it cannot use this probe: the truth-value
+   object it would need has carrier [Type] with `≈` taken to be `↔`,
+   which does not fit as an [obj[Sets]] at the universe of the given
+   objects — Set's classifier lives one universe up (the cross-universe
+   theorems are in Instance/Sets/Classifier.v).  It substitutes a
+   cokernel pair, which stays at the universe of the carriers.  Here no
+   substitution is needed: Ω = 2 is an honest object of the category
+   itself and the search over it is decidable, so the probe below IS the
+   classifier's own [char], constructively and with no choice principle:
+   [∃] is [sigT] and [fin_existsb_sound] ends in [Defined]. 
+
+   --------
+   * ** 在 FinSet 中的上射正好是满射
+
+   双对偶的 [finset_monic_iff_injective]，以及骨架值得拥有的原因：困难的一面用两个映射探测到 Ω = 2 的上射——f 的像的特征映射（下面 [FinSet_Classifier] 的真正 [char]，单射假设被去掉）与常量 [fin_true] 作对比。它们在与 f 预组合后是一致的，因为每个 f(a) 都在 f 的像中，所以上射性迫使特征映射恒为 [fin_true]；[fin_existsb_sound] 然后返回作为数据的原像。比较 [surjectivity_is_epic] 在 [Instance/Sets.v] 中。它到达相同的双条件，但它不能使用这个探针：它所需要的真值对象的承载体是 [Type]，其中 `≈` 被视为 `↔`，这在给定对象的宇宙中不适合作为 [obj[Sets] ——集合的分类器存在于高一个宇宙（跨宇宙定理在 Instance/Sets/Classifier.v 中）。它替代了一个余核对，这个余核对保持在承载体的宇宙中。在这里不需要任何替代：Ω = 2 是该范畴本身的一个真实对象，并且在其上的搜索是可判定的，因此下面的探针确实是分类器自身的 [char]，从构造上讲，并且不需要选择公理：[∃] 是 [sigT]，[fin_existsb_sound] 最终是 [Defined]。
 *)
 
 Lemma finset_epic_iff_surjective {m n : nat} (f : m ~{FinSet}~> n) :
@@ -399,13 +506,18 @@ Proof.
     rewrite <- Ha.
     exact (Hg a).
   - intros E b.
-    (* the characteristic map image f, probed against the
- 常值 [fin_true] （已译） *)
+    (*
+ the characteristic map of the image of f, probed against the
+ constant [fin_true] 
+
+ --------
+ 函数 f 的像的特征映射，相对于常数 [fin_true] 探测
+*)
     pose (chi := fun b' : Fin.t n =>
                    fin_of_bool (fin_existsb (fun a => fin_eqb (f a) b'))).
     assert (Heq : chi b = fin_true). {
       refine (epic (Epic:=E) 2%nat chi (fun _ => fin_true) _ b).
-      (* 相关说明。 （已译） *)
+      (* the two probes agree on the image: f a witnesses its own test / 这两个探针对图像一致：f a 目睹了自己的测试 *)
       intro a; simpl; unfold chi.
       now rewrite (fin_existsb_complete (fun a' => fin_eqb (f a') (f a)) a
                      (fin_eqb_refl (f a))).
@@ -416,7 +528,7 @@ Proof.
     exact (a; fin_eqb_eq _ _ Ha).
 Defined.
 
-(* 相关说明。 （已译） *)
+(* Acceptance tests. The image test computes: the map 1 ~> 2 constantly [fin_true] never hits [fin_false], by [eq_refl] — so it is not epic. / 验收测试。图像测试计算：映射 1 ~> 2 始终 [fin_true] 从未命中 [fin_false]，由 [eq_refl]——所以它不是史诗。 *)
 Example finset_const_true_misses_false :
   fin_existsb (fun a : Fin.t 1 => fin_eqb ((fun _ => fin_true) a) fin_false)
   = false := eq_refl.
@@ -431,7 +543,7 @@ Proof.
   discriminate Ha.
 Qed.
 
-(* 相关说明。 （已译） *)
+(* And an epi that is not an iso: the test "is this position the first?" collapses 3 onto 2, hitting both truth values. / 以及一个不是等距映射的上极限：测试“这个位置是第一个吗？”将3折叠到2上，击中了两个真值。 *)
 Example finset_collapse_epic :
   Epic ((fun i => fin_of_bool (fin_eqb i (Fin.F1 : Fin.t 3)))
           : 3%nat ~{FinSet}~> 2%nat).
@@ -443,9 +555,13 @@ Proof.
 Qed.
 
 (*
-   本节说明 Classifier 相关定义、性质与动机。
+ And the preimage is not merely asserted to exist -- it reduces.  The
+ collapse map above sends position 2 to [fin_false]; recovering that witness
+ from the epi hypothesis is a closed computation, which is why
+ [finset_epic_iff_surjective] ends in [Defined] rather than [Qed]. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ --------
+ 而原像不仅仅是被断言存在——它是可化简的。上述塌缩映射将位置 2 发送到 [fin_false]；从满射假设中恢复该见证是一个封闭计算，这就是为什么 [finset_epic_iff_surjective] 以 [Defined] 结尾而不是 [Qed]。
 *)
 Example finset_collapse_preimage_computes :
   projT1 (snd (finset_epic_iff_surjective

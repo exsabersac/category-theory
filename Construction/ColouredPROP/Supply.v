@@ -27,16 +27,79 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(* 相关说明。 （已译） *)
+(* * * Selective comonoid supplies on coloured PROPs / * * 彩色PROP上的选择性余单子供给 *)
 
 (*
-   nLab:      https://ncatlab.org/nlab/show/copy-discard+category
-   Reference: Fong & Spivak, "Supplying bells and whistles in symmetric
-   Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
+ nLab:      https://ncatlab.org/nlab/show/comonoid
+ nLab:      https://ncatlab.org/nlab/show/copy-discard+category
+ Reference: Fong & Spivak, "Supplying bells and whistles in symmetric
+ monoidal categories" (arXiv:1908.02633)
+ Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
+ string diagrams", MSCS 29(7):938-971, 2019 (arXiv:1709.00322)
 
-   本文件给出构造。
+ A SUPPLY of commutative comonoids in a symmetric monoidal category
+ (Fong-Spivak) equips every object with a comonoid structure,
+ coherently with the tensor.  In a coloured PROP objects are colour
+ words, so the natural datum is PER-COLOUR: a SELECTIVE supply
+ assigns a commutative comonoid to the single-colour wire [wire c]
+ of every colour [c] that a boolean predicate [copyable] marks as
+ duplicable.  All other colours are LINEAR: their wires need not
+ (and in the free/presented instances provably do not — see
+ Construction/ColouredPROP/Linear.v and Supply/Instance.v) support
+ any copy or delete operation.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ Design decisions, recorded:
+
+ - The class carries the SINGLE per-colour primitive [supply_wire];
+ the supply on a composite boundary [cs] is DERIVED by tensoring
+ wire comonoids ([supply_list] below), using the packaged tensor
+ and unit comonoids of Theory/Algebra/Comonoid/Tensor.v.  No
+ boundary-level comonoid axiom is ever assumed.
+
+ - Copyability is a [bool] predicate, not a [Type]-valued class:
+ boolean equations enjoy UNCONDITIONAL proof irrelevance
+ ([UIP_dec Bool.bool_dec]), so the derived-evidence bookkeeping of
+ [supply_list] never depends on the choice of copyability proof
+ ([all_copyable_irrelevant]).
+
+ - As with [cd_comonoid] in Structure/Monoidal/CopyDiscard.v, the
+ class is deliberately NOT declared an [Existing Instance]-style
+ supplier of comonoids: which objects are copyable is semantic
+ information, and instance resolution must not silently pick a
+ supply.
+
+ ** The MP/MB mediation
+
+ A [ColouredPROP] carries two [Monoidal] structures on the same
+ category — the strict path [MPc P] and the braided/symmetric path
+ [MBc P] (Construction/ColouredPROP/Interp.v) — equal by the
+ propositional field [cprop_monoidal_coherence].  Comonoids live on
+ the symmetric side (their cocommutativity needs the braid), while
+ the object correspondence [cprop_tensor_app]/[cprop_unit_nil] is
+ stated on the strict side.  [ctensor_app_b] and [cunit_nil_b]
+ below transport the correspondence across the coherence equality —
+ the one new coherence-elimination site of this file, extending the
+ doctrine of Interp.v.  At the free and presented instances the
+ coherence field is [eq_refl], so both definitions REDUCE to the
+ strict-side fields; Supply/Instance.v pins this with [eq_refl]
+ [Example]s. 
+
+ --------
+ nLab:       https://ncatlab.org/nlab/show/comonoid 
+ nLab:       https://ncatlab.org/nlab/show/copy-discard+category 
+ 参考文献: Fong & Spivak, "在对称幺半范畴中提供铃铛和口哨" (arXiv:1908.02633)
+ 参考文献: Cho & Jacobs, "通过字符串图解的解离和贝叶斯逆转", MSCS 29(7):938-971, 2019 (arXiv:1709.00322)对称单体范畴中的可换余单体的供应（Fong-Spivak）为每个对象配备了余单体结构，并与张量一致。在有色 PROP 中，对象是颜色词，因此自然的数据是按颜色的：选择性供应为每个布尔谓词标记为可复制的颜色的单色线分配一个可交换余单体。所有其他颜色都是线性的：它们的线不需要（并且在自由/展示实例中可证明不需要——参见 Construction/ColouredPROP/Linear.v 和 Supply/Instance.v）支持任何复制或删除操作。 
+
+ 设计决策，记录如下：- 该类携带单色原语  [supply_wire]；
+ 在复合边界上的供应  [cs]  是通过张量化导线余单子（下文的  [supply_list]）得出的，
+ 使用 Theory/Algebra/Comonoid/Tensor.v 中打包的张量和单位余单子。
+ 永远不会假设边界级别的余单子公理。
+
+ - 可复制性是一个  [bool] 谓词，而不是一个  [Type] 值类：
+ 布尔方程具有无条件的证明无关性（[UIP_dec Bool.bool_dec]），
+ 因此 [supply_list] 的派生证据记录从不依赖于可复制性证明的选择（[all_copyable_irrelevant]）。- 与 Structure/Monoidal/CopyDiscard.v 中的 [cd_comonoid] 类似，该类故意未被声明为 [Existing Instance] 风格的 comonoid 提供者：哪些对象可复制是语义信息，实例解析不得悄悄地选择一个提供者。
+
+ ** MP/MB 调解A [ColouredPROP] 在同一范畴上承载两种 [Monoidal] 结构——严格路径 [MPc P] 和编织/对称路径 [MBc P]（Construction/ColouredPROP/Interp.v）——通过命题范畴 [cprop_monoidal_coherence] 相等。余单子存在于对称侧（它们的余交换性需要编织），而对象对应 [cprop_tensor_app] / [cprop_unit_nil] 在严格侧陈述。以下的 [ctensor_app_b] 和 [cunit_nil_b] 将对应关系通过相合等式传输——这是该文件中的一个新的相合消去位置，扩展了 Interp.v 的理论。在自由和呈现的实例中，相合域是 [eq_refl]，因此两个定义都化简为严格侧的域；Supply/Instance.v 用 [eq_refl] [Example] 固定了这一点。
 *)
 
 Section Supply.
@@ -44,32 +107,52 @@ Section Supply.
 Context {Colour : Type}.
 Context (P : ColouredPROP Colour).
 
-(** The coloured-PROP-对象 [⟦cs⟧c], in
- [Construction/ColouredPROP.v] (whose notation section-local
- there must re-declared per file). （已译） *)
+(*
+   * The coloured-PROP-object [⟦cs⟧c], as in
+   [Construction/ColouredPROP.v] (whose notation is section-local
+   there and must be re-declared per file). 
+
+   --------
+   * 彩色-PROP-对象 [⟦cs⟧c]，如同 [Construction/ColouredPROP.v] （其符号在该节是局部的，必须在每个文件中重新声明）。
+*)
 Notation "⟦ cs ⟧c" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧c").
 
-(** ** MP/MB mediation *)
+(** ** MP/MB mediation / ** MP/MB 调解 *)
 
-(** Tensor-on-对象 concatenation, transported the
- braided/symmetric monoidal path where comonoids live. （已译） *)
+(*
+   * Tensor-on-objects is concatenation, transported to the
+   braided/symmetric monoidal path where the comonoids live. 
+
+   --------
+   * 张量作用于对象是连接，被传递到共模体所在的编织/对称单体路径上。
+*)
 Definition ctensor_app_b (cs ds : list Colour) :
   ((⟦cs⟧c ⨂[MBc P] ⟦ds⟧c)%object = ⟦cs ++ ds⟧c) :=
   match cprop_monoidal_coherence P in _ = M
         return ((⟦cs⟧c ⨂[M] ⟦ds⟧c)%object = ⟦cs ++ ds⟧c)
   with eq_refl => cprop_tensor_app cs ds end.
 
-(** The unit 对象 empty word, braided/symmetric
- monoidal path. （已译） *)
+(*
+   * The unit object is the empty word, on the braided/symmetric
+   monoidal path. 
+
+   --------
+   * 单位对象是在有编织/对称单体路径上的空词。
+*)
 Definition cunit_nil_b : @I P (MBc P) = ⟦[]⟧c :=
   match cprop_monoidal_coherence P in _ = M
         return (@I P M = ⟦[]⟧c)
   with eq_refl => cprop_unit_nil end.
 
-(* * Transparent congruence [⨂[MBc P]] 对象 equalities (the
- [MBc]-side sibling Interp.v's [ctensor_obj_eq]; kept as nested
- [match]es so that it computes [eq_refl] [eq_refl]s).（已译） *)
+(*
+   * Transparent congruence of [⨂[MBc P]] on object equalities (the
+   [MBc]-side sibling of Interp.v's [ctensor_obj_eq]; kept as nested
+   [match]es so that it computes to [eq_refl] on [eq_refl]s). 
+
+   --------
+   * 在对象等式上的 [⨂[MBc P] 的透明一致性（Interp.v 的 [ctensor_obj_eq] 的 [MBc] 侧兄弟；保持为嵌套的 [match] 以便在 [eq_refl] 上计算为 [eq_refl]）。
+*)
 Definition ctensor2_b {x x' y y' : P} (e : x = x') (e' : y = y') :
   ((x ⨂[MBc P] y)%object = (x' ⨂[MBc P] y')%object) :=
   match e in _ = u return ((x ⨂[MBc P] y)%object = (u ⨂[MBc P] y')%object) with
@@ -80,12 +163,17 @@ Definition ctensor2_b {x x' y y' : P} (e : x = x') (e' : y = y') :
       end
   end.
 
-(** ** Copyability evidence *)
+(** ** Copyability evidence / ** 可复制性证据 *)
 
 Context (copyable : Colour -> bool).
 
-(** Every colour word copyable. A boolean equation, so the
- evidence 证明-irrelevant without any axioms. （已译） *)
+(*
+   * Every colour of the word is copyable.  A boolean equation, so the
+   evidence is proof-irrelevant without any axioms. 
+
+   --------
+   * 词语的每一种颜色都是可复制的。一个布尔方程，因此在没有任何公理的情况下，证据与证明无关。
+*)
 Definition all_copyable (cs : list Colour) : Prop :=
   forallb copyable cs = true.
 
@@ -121,17 +209,35 @@ Proof.
   exact (proj2 (andb_prop _ _ H)).
 Qed.
 
-(** Unconditional 证明 irrelevance copyability evidence — the
- payoff [bool]-valued copyability (no colour decidability
- needed). （已译） *)
+(*
+   * Unconditional proof irrelevance of copyability evidence — the
+   payoff of [bool]-valued copyability (no colour decidability
+   needed). 
+
+   --------
+   * 复制性证据的无条件证明无关性——[bool] 值复制性的收益（无需颜色可判定性）。
+*)
 Lemma all_copyable_irrelevant (cs : list Colour)
   (H1 H2 : all_copyable cs) : H1 = H2.
 Proof. exact (UIP_dec Bool.bool_dec H1 H2). Qed.
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * ** The class: a per-colour selective supply
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The single primitive: every copyable colour's wire carries a
+   commutative comonoid.  Everything else — the boundary supply, its
+   copy/discard accessors — is derived below.
+
+   Deliberately NOT wired into instance resolution (the [cd_comonoid]
+   doctrine of Structure/Monoidal/CopyDiscard.v): a supply is chosen,
+   not inferred. 
+
+   --------
+   * ** 类：按颜色选择的供应
+
+   单一原语：每个可复制颜色的导线都承载一个可交换的余单元。其他所有内容——边界供应及其复制/丢弃访问器——如下推导。
+
+   故意不接入实例解析（Structure/Monoidal/CopyDiscard.v 的 [cd_comonoid] 教义）：供应是被选择的，而不是被推断的。
 *)
 Class SelectiveSupply : Type := {
   supply_wire (c : Colour) :
@@ -140,11 +246,16 @@ Class SelectiveSupply : Type := {
       (wire c)
 }.
 
-(** ** The derived boundary supply *)
+(** ** The derived boundary supply / ** 派生边界供应 *)
 
-(** Leibniz transport commutative-comonoid structure along an
- 对象 equality. Transparent, so at instances where the
- equality computes [eq_refl] transport vanishes. （已译） *)
+(*
+   * Leibniz transport of a commutative-comonoid structure along an
+   object equality.  Transparent, so that at instances where the
+   equality computes to [eq_refl] the transport vanishes. 
+
+   --------
+   * 沿着对象等式传输一个交换余单体结构的莱布尼茨方法。透明的，因此在等式计算为 [eq_refl] 的实例中，传输消失。
+*)
 Definition ccomonoid_transport {X Y : P} (e : X = Y) :
   @CommutativeComonoid P (@cprop_symmetric Colour P) X ->
   @CommutativeComonoid P (@cprop_symmetric Colour P) Y :=
@@ -154,9 +265,16 @@ Definition ccomonoid_transport {X Y : P} (e : X = Y) :
   with eq_refl => fun M => M end.
 
 (*
-   本节说明 Supply 相关定义、性质与动机。
+   * The supply on a boundary word, derived from the wire supplies:
+   the empty word carries the (transported) unit comonoid, and a
+   cons peels one wire comonoid off and tensors it onto the supply
+   of the tail via the packaged tensor comonoid of
+   Theory/Algebra/Comonoid/Tensor.v.  Note [wire c ≡ ⟦[c]⟧c] and
+   [[c] ++ cs' ≡ c :: cs'] definitionally, so the only transports
+   are the two mediation equalities. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 在边界词上的供应，由电线供应导出：空词携带（传输的）单位余单体，而 cons 会剥离一个电线余单体，并通过 Theory/Algebra/Comonoid/Tensor.v 中的封装张量余单体将其与尾部的供应进行张量化。注意 [wire c ≡ ⟦[c] ⟧c] 和 [[c] ++ cs' ≡ c :: cs'] 在定义上成立，因此唯一的传输是这两个调解恒等式。
 *)
 Fixpoint supply_list `{SS : SelectiveSupply} (cs : list Colour) :
   all_copyable cs ->
@@ -174,7 +292,7 @@ Fixpoint supply_list `{SS : SelectiveSupply} (cs : list Colour) :
            (supply_list cs' (proj2 (andb_prop _ _ H))))
   end.
 
-(** Copy and discard on a fully copyable boundary. *)
+(** Copy and discard on a fully copyable boundary. / 在完全可复制的边界上复制并丢弃。 *)
 Definition scopy `{SS : SelectiveSupply} (cs : list Colour)
   (H : all_copyable cs) :
   ⟦cs⟧c ~{P}~> (⟦cs⟧c ⨂[MBc P] ⟦cs⟧c)%object :=
@@ -185,8 +303,13 @@ Definition sdiscard `{SS : SelectiveSupply} (cs : list Colour)
   ⟦cs⟧c ~{P}~> @I P (MBc P) :=
   ccomon_epsilon (supply_list cs H).
 
-(** 本节：The derived supply does not depend copyability evidence —
- Leibniz equality, not merely [≈]. （已译） *)
+(*
+   * The derived supply does not depend on the copyability evidence —
+   Leibniz equality, not merely [≈]. 
+
+   --------
+   * 派生供应不依赖于可复制性的证据——莱布尼茨等式，而不仅仅是 [≈]。
+*)
 Lemma supply_list_irr `{SS : SelectiveSupply} (cs : list Colour)
   (H1 H2 : all_copyable cs) :
   supply_list cs H1 = supply_list cs H2.
@@ -233,9 +356,21 @@ Arguments sdiscard_irr {Colour P copyable SS} cs H1 H2 : assert.
 (* ------------------------------------------------------------------ *)
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * ** Machine-checked sanity: the mediation is definitional at both
+   delivered instances
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   At the free ([FreeColouredPROP]) and the presented
+   ([CPresentedColouredPROP]) coloured PROPs the coherence field is
+   [eq_refl] over ONE shared [Monoidal] record, so both mediating
+   equalities compute to [eq_refl].  Each [Example] holds by a closed
+   [eq_refl] proof term; any regression in the shared-record wiring
+   of Instance.v/Presentation.v is caught here (and again, at the
+   supplied instance, by the [Example]s of Supply/Instance.v). 
+
+   --------
+   * ** 机器检查的健全性：在两个提供的实例中，调解都是定义性的
+
+   在自由的（[FreeColouredPROP]）和展示的（[CPresentedColouredPROP]）有色PROP上，相干场为[eq_refl]，基于一个共享的[Monoidal]记录，因此两个调解的等式都计算为[eq_refl]。每个[Example]都由闭合的[eq_refl]证明项保持；Instance.v/Presentation.v共享记录布线中的任何回归都会在这里被捕获（并且在提供的实例中，通过Supply/Instance.v的[Example]再次捕获）。
 *)
 
 Example ctensor_app_b_free_is_refl {Colour : Type} (S : CSignature Colour)
@@ -257,13 +392,58 @@ Example cunit_nil_b_presented_is_refl {Colour : Type} (E : CSMT Colour)
 (* ------------------------------------------------------------------ *)
 
 (*
-   本节说明 Supply 相关定义、性质与动机。
+   * ** Toward the Fong–Spivak coherence theorems
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The remainder of the file proves that the DERIVED boundary supply
+   satisfies the supply-coherence squares of Fong–Spivak (the
+   [scfa_tensor_*] shapes of Hypergraph.v, the [cd_tensor_*] fields
+   of CopyDiscard.v): the comultiplication/counit of [supply_list
+   (cs ++ ds)] is the canonical tensor delta/epsilon of the parts'
+   supplies, mediated by the [ctensor_app_b] cast.  Because the
+   boundary supply is derived rather than axiomatized, these are
+   THEOREMS ([supply_app_delta]/[supply_app_epsilon] below).
+
+   The proof layers:
+
+   1.  variable-equality transporters between [Monoidal] records
+   ([tmon_unitl_cast]/[tmon_assoc_cast]), which carry the
+   morphism-level strictness of [MPc P] (Interp.v's
+   [cstrict_*_cast]) over to [MBc P] exactly the way Interp.v's
+   [BraidTransport] kit carries the braid the other way: the
+   lemma eliminates a VARIABLE equality and the instantiation
+   merely passes [cprop_monoidal_coherence];
+
+   2.  raw coherences of the canonical tensor-comonoid morphisms in
+   an arbitrary symmetric monoidal category (no comonoid laws —
+   pure naturality and interchange, so the induction can
+   substitute an inductive hypothesis for an inner
+   comultiplication);
+
+   3.  cast-aligned [_general] forms at [P] (the Interp.v K-kit
+   style): every boundary equality is quantified, destructible
+   ones are destructed, and the unitor-/associator-shaped
+   residues are aligned by [obj_uip] — hence the [ObjDecEq]
+   hypothesis — and discharged through layers 1–2. 
+
+   --------
+   * ** 向 Fong–Spivak 相干定理发展
+
+   文件的其余部分证明了 DERIVED 边界供应
+   满足 Fong–Spivak 的供应相干方格（Hypergraph.v 中的 [scfa_tensor_*] 形状，CopyDiscard.v 中的 [cd_tensor_*] 场）：[supply_list
+   (cs ++ ds)] 的余积/余单位是各部分供应的典型张量 delta/epsilon，通过 [ctensor_app_b] 类型转换进行中介。由于边界供应是推导得到的而非公理化的，这些都是定理（下文的 [supply_app_delta] / [supply_app_epsilon]）。
+
+   证明层次：1. 在  [Monoidal]  记录之间的变量相等搬运器（[tmon_unitl_cast] / [tmon_assoc_cast]），它们将  [MPc P]  的态射级严格性（Interp.v 的 [cstrict_*_cast]）完全以 Interp.v 的 [BraidTransport] 套件传递编排的相反方式传递到  [MBc P]：引理消除了变量相等，而实例化仅仅传递了 [cprop_monoidal_coherence]；
+
+   2. 任意对称单体范畴中规范张量-余单体态射的原始相干性（没有余单体定律——纯自然性和交换律，因此归纳可以用归纳假设替代内部余乘法）；3. 铸造对齐的 [_general] 在 [P] 处形成（Interp.v K-kit 风格）：每个边界等式都被量化，可析构的边界被析构，单位子/结合子形状的残余通过 [obj_uip] 对齐——因此有 [ObjDecEq] 假说——并通过第 1–2 层释放。
 *)
 
-(** Transport a left-unitor-shaped object equality along an equality
-    of [Monoidal] records. *)
+(*
+   * Transport a left-unitor-shaped object equality along an equality
+   of [Monoidal] records. 
+
+   --------
+   * 沿着 [Monoidal] 记录的等式传输一个左单位器形状的对象等式。
+*)
 Definition tmon_unitl_obj {C : Category} {M1 M2 : @Monoidal C}
   (E : M1 = M2) (x : C)
   (e : ((@I C M1) ⨂[M1] x)%object = x) :
@@ -283,7 +463,7 @@ Proof.
   exact He.
 Qed.
 
-(** Transport an associator-shaped object equality. *)
+(** Transport an associator-shaped object equality. / 传输一个类似联想器形状的对象相等性。 *)
 Definition tmon_assoc_obj {C : Category} {M1 M2 : @Monoidal C}
   (E : M1 = M2) (x y z : C)
   (e : ((x ⨂[M1] y) ⨂[M1] z)%object = (x ⨂[M1] (y ⨂[M1] z))%object) :
@@ -305,8 +485,13 @@ Proof.
   exact He.
 Qed.
 
-(** If [to] direction 同构 cast, [from]
- direction cast along symmetric equality. （已译） *)
+(*
+   * If the [to] direction of an isomorphism is a cast, its [from]
+   direction is the cast along the symmetric equality. 
+
+   --------
+   * 如果同构的 [to] 方向是一个转换，那么它的 [from] 方向就是沿对称等式的转换。
+*)
 Lemma iso_from_id_cast {C : Category} {x y : C} (i : x ≅ y) (e : x = y) :
   to i ≈ id_cast e → from i ≈ id_cast (eq_sym e).
 Proof.
@@ -322,9 +507,31 @@ Qed.
 (* ------------------------------------------------------------------ *)
 
 (*
-   本节说明幺半结构、幺半群相关定义、性质与动机。
+   * ** Raw coherences of the canonical tensor-comonoid morphisms
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Three general symmetric-monoidal facts about the canonical
+   morphisms of Structure/Monoidal/Hypergraph.v, for RAW
+   comultiplications and counits:
+
+   - [tensor_delta_unit_l_raw]: the canonical tensor delta of the
+   unit comonoid's [λ⁻¹] with [dy] is [dy] conjugated by unitors
+   ([swap_inner_unit_left] plus naturality of [λ]);
+   - [tensor_delta_assoc_raw]: the two iterations of the canonical
+   tensor delta agree across the associator — [swap_inner_assoc]
+   (the associativity hexagon of the squaring functor,
+   Braided/Proofs.v) at diagonal arguments, plus naturality of the
+   associator;
+   - [tensor_epsilon_assoc_raw]: the same for the canonical epsilon
+   (triangle coherence plus Kelly's [unit_identity]). 
+
+   --------
+   * ** 典型张量-余单体态射的原始相干性
+
+   三条关于 Structure/Monoidal/Hypergraph.v 中典型态射的一般对称单体事实，适用于原始的余乘法和余单位：
+
+   - [tensor_delta_unit_l_raw]：单位余单体的 [λ⁻¹] 张量余 Δ 与 [dy] 的张量余 Δ 在单元子作用下是 [dy]（[swap_inner_unit_left] 加上 [λ] 的自然性）；
+   - [tensor_delta_assoc_raw]：典型张量余 Δ 的两次迭代在结合子作用下是一致的 — [swap_inner_assoc]（平方函子结合六边形，Braided/Proofs.v 中），在对角参数下，加上结合子的自然性；
+   - [tensor_epsilon_assoc_raw]：对典型的 ε 也是同样的结论（三角相干性加上 Kelly 的 [unit_identity]）。
 *)
 
 Section TensorComonoidCoherence.
@@ -411,15 +618,20 @@ End TensorComonoidCoherence.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** The cast kit at [MBc P] *)
+(** ** The cast kit at [MBc P] / ** [MBc P] 的铸造套件 *)
 
 Section SupplyCastKit.
 
 Context {Colour : Type}.
 Context (P : ColouredPROP Colour).
 
-(** 本节：A tensor casts at [MBc P] cast along paired
- equality [ctensor2_b]. （已译） *)
+(*
+   * A tensor of casts at [MBc P] is the cast along the paired
+   equality [ctensor2_b]. 
+
+   --------
+   * 在 [MBc P] 处的一个投射张量是沿配对等式 [ctensor2_b] 的投射。
+*)
 Lemma cbimap_cast_b {x x' y y' : P} (e : x = x') (e' : y = y') :
   (id_cast e ⨂[MBc P] id_cast e') ≈ id_cast (ctensor2_b P e e').
 Proof.
@@ -428,9 +640,17 @@ Proof.
 Qed.
 
 (*
-   本节说明 Supply 相关定义、性质与动机。
+   * *** Strictness of [MBc P], through the transporters
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The strict path's comparison facts (Interp.v's [cstrict_*_cast]
+   at [MPc P]) transported to the symmetric path along
+   [cprop_monoidal_coherence].  Only the left unitor and the
+   associator are needed by the supply theorems. 
+
+   --------
+   * *** [MBc P] 的严格性，通过运输器
+
+   严格路径的比较事实（Interp.v 的 [cstrict_*_cast] 在 [MPc P]）被传送到沿 [cprop_monoidal_coherence] 的对称路径。只需要左单位子和结合子即可由供应定理提供。
 *)
 
 Definition cunitl_obj_b (x : P) :
@@ -478,9 +698,16 @@ Proof.
 Qed.
 
 (*
-   本节说明 Supply 相关定义、性质与动机。
+   * *** Projections of transported comonoids
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The delta of a transported comonoid is the [hom_cast] of the
+   delta (along the equality and its [ctensor2_b] pairing); the
+   epsilon likewise, with the codomain [I] untouched. 
+
+   --------
+   * *** 运输余结合子的投影
+
+   运输余结合子的 delta 是沿等式及其配对的 delta 的 [hom_cast]；同样，epsilon 也是如此，但余域 [I] 不受影响。
 *)
 
 Lemma ccomonoid_transport_delta {X Y : P} (e : X = Y)
@@ -501,10 +728,18 @@ Proof.
   reflexivity.
 Qed.
 
-(* * *** The canonical 态射, respelled through [ccomon_*]
+(*
+   * *** The canonical morphisms, respelled through [ccomon_*]
 
- Definitional unfoldings [canonical_tensor_delta]/[epsilon]
- (Hypergraph.v) 进入 raw shapes supply theorems chase. （已译） *)
+   Definitional unfoldings of [canonical_tensor_delta]/[epsilon]
+   (Hypergraph.v) into the raw shapes the supply theorems chase. 
+
+   --------
+   * *** 规范态态射，通过 [ccomon_*] 重新拼写  
+
+   [canonical_tensor_delta] / [epsilon] 的定义展开  
+   (Hypergraph.v) 成为原始形状，以供定理追逐。
+*)
 
 Lemma canonical_tensor_delta_ccomon {X Y : P}
   (MX : @CommutativeComonoid P (@cprop_symmetric Colour P) X)
@@ -542,7 +777,7 @@ Arguments canonical_tensor_epsilon_ccomon {Colour} P {X Y} MX MY : assert.
 
 (* ------------------------------------------------------------------ *)
 
-(* 相关说明。 （已译） *)
+(* * ** The Fong–Spivak coherence theorems / * ** 方–斯皮瓦克相干性定理 *)
 
 Section SupplyCoherence.
 
@@ -554,14 +789,27 @@ Notation "⟦ cs ⟧c" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧c").
 
 (*
-   本节说明 Supply 相关定义、性质与动机。
+   * *** The cast-aligned [_general] forms
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   Interp.v K-kit style: quantify every boundary equality, destruct
+   the destructible ones, align the unitor-/associator-shaped
+   residues by [obj_uip], and discharge through the [MBc]-strictness
+   bridges and the raw coherences. 
+
+   --------
+   * *** 与类型对齐的 [_general] 形式
+
+   Interp.v K-kit 风格：量化每个边界等式，拆解可拆解的部分，通过 [obj_uip] 对单元/结合器形状的残差进行对齐，并通过 [MBc] 严格性桥和原始相干性进行释放。
 *)
 
-(** 本节：Unit absorption canonical delta: casting canonical
- tensor delta (the transported unit comonoid's delta) [dy]
- along unitor-shaped equality [dy] itself. （已译） *)
+(*
+   * Unit absorption for the canonical delta: casting the canonical
+   tensor delta of (the transported unit comonoid's delta) with [dy]
+   along a unitor-shaped equality is [dy] itself. 
+
+   --------
+   * 典范 delta 的单位吸收：沿着单位体形等式，将（运输的单位余幺半群的 delta）的典范张量 delta 与 [dy] 铸造，是 [dy] 本身。
+*)
 Lemma supply_delta_unit_general {n y : P}
   (u : @I P (MBc P) = n)
   (U2 : ((@I P (MBc P)) ⨂[MBc P] (@I P (MBc P)))%object
@@ -591,7 +839,7 @@ Proof using OD P.
   apply id_right.
 Qed.
 
-(** 本节：Unit absorption canonical epsilon. （已译） *)
+(** Unit absorption for the canonical epsilon. / 规范ε的单位吸收。 *)
 Lemma supply_epsilon_unit_general {n y : P}
   (u : @I P (MBc P) = n)
   (ey : y ~{P}~> @I P (MBc P))
@@ -613,8 +861,13 @@ Proof using OD P.
   apply id_right.
 Qed.
 
-(** 本节：Associativity canonical delta: two cast-mediated
- iterations canonical tensor delta agree. （已译） *)
+(*
+   * Associativity for the canonical delta: the two cast-mediated
+   iterations of the canonical tensor delta agree. 
+
+   --------
+   * 规范Δ的结合性：规范张量Δ的两次通过类型转换介导的迭代是相同的。
+*)
 Lemma supply_delta_assoc_general {x y z v w s : P}
   (dx : x ~{P}~> (x ⨂[MBc P] x)%object)
   (dy : y ~{P}~> (y ⨂[MBc P] y)%object)
@@ -676,7 +929,7 @@ Proof using OD P.
   apply id_left.
 Qed.
 
-(** 本节：Associativity canonical epsilon. （已译） *)
+(** Associativity for the canonical epsilon. / 典型ε的结合性。 *)
 Lemma supply_epsilon_assoc_general {x y z v w s : P}
   (ex : x ~{P}~> @I P (MBc P))
   (ey : y ~{P}~> @I P (MBc P))
@@ -715,21 +968,31 @@ Proof using OD P.
            ex ey ez).
 Qed.
 
-(* 相关说明。 （已译） *)
+(* * *** Computed projections of the derived supply / * *** 派生供应的计算预测 *)
 
 Context (copyable : Colour -> bool).
 Context {SS : SelectiveSupply P copyable}.
 
-(** Per-colour copyability evidence is unique, like [all_copyable]'s. *)
+(*
+   * Per-colour copyability evidence is unique, like [all_copyable]'s. 
+
+   --------
+   * 每种颜色的可复制性证据是独一无二的，就像 [all_copyable] 的一样。
+*)
 Lemma copyable_irrelevant (c : Colour) (p q : copyable c = true) : p = q.
 Proof.
   apply (UIP_dec Bool.bool_dec).
 Qed.
 
-(** 本节：Each equation unfolds one [supply_list] constructor case and
- computes transported projection through
- [ccomonoid_transport_delta]/[epsilon]; residue is
- definitional. （已译） *)
+(*
+   * Each equation unfolds one [supply_list] constructor case and
+   computes the transported projection through
+   [ccomonoid_transport_delta]/[epsilon]; the residue is
+   definitional. 
+
+   --------
+   * 每个方程展开一个 [supply_list] 构造函数的情况，并计算通过 [ccomonoid_transport_delta] / [epsilon] 的传递投影；剩余部分是定义性的。
+*)
 
 Lemma supply_list_delta_nil (H : all_copyable copyable []) :
   ccomon_delta (supply_list [] H)
@@ -781,9 +1044,15 @@ Proof.
 Qed.
 
 (*
-   本节说明 Supply 相关定义、性质与动机。
+   * The same projections at ARBITRARY split evidence: since
+   copyability evidence is unique ([copyable_irrelevant] /
+   [all_copyable_irrelevant]), the head-wire and tail evidence in the
+   unfolding may be chosen freely.  These are the forms the coherence
+   theorems consume — they let the induction thread ONE uniform
+   evidence spelling through both sides of the square. 
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   --------
+   * 在任意拆分证据处的相同投影：由于可复制性证据是唯一的（[copyable_irrelevant] / [all_copyable_irrelevant]），展开中的头部-线索和尾部证据可以自由选择。这些是连贯性定理所使用的形式 —— 它们允许归纳线程在方形的两边以一种统一的证据拼写方式进行。
 *)
 
 Lemma supply_list_delta_cons_any (c : Colour) (l : list Colour)
@@ -816,9 +1085,20 @@ Proof.
 Qed.
 
 (*
-   本节说明 Supply 相关定义、性质与动机。
+   * *** The coherence theorems
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The comultiplication (resp. counit) of the derived supply on a
+   concatenated boundary [cs ++ ds] is the canonical tensor delta
+   (resp. epsilon) of the supplies of the parts, mediated by the
+   [ctensor_app_b] cast — the Fong–Spivak supply-coherence squares
+   (the [scfa_tensor_*] shapes of Hypergraph.v, the [cd_tensor_*]
+   fields of CopyDiscard.v), PROVED for the derived boundary supply
+   rather than assumed. 
+
+   --------
+   * *** 一致性定理
+
+   衍生供应在连接边界 [cs ++ ds] 上的余乘（或余单位）是各部分供应的规范张量 δ（或 ε），通过 [ctensor_app_b] 类型的映射来调解——Fong–Spivak 供应一致性方格（Hypergraph.v 的 [scfa_tensor_*] 形状，CopyDiscard.v 的 [cd_tensor_*] 字段），已对衍生边界供应进行证明，而非假设。
 *)
 
 Theorem supply_app_delta (cs ds : list Colour)
@@ -831,17 +1111,13 @@ Theorem supply_app_delta (cs ds : list Colour)
 Proof using OD P SS copyable.
   revert Hc Hcd.
   induction cs as [| c cs' IH]; intros Hc Hcd.
-  - (* 相关说明。 （已译） *)
+  - (* [[] ++ ds ≡ ds]: align the evidence, expose the transported unit comonoid, and absorb it. / [[] ++ ds ≡ ds]: 对齐证据，暴露被传输的单元余幺半群，并吸收它。 *)
     rewrite (all_copyable_irrelevant copyable _ Hcd Hd).
     rewrite (canonical_tensor_delta_ccomon P).
     rewrite supply_list_delta_nil.
     symmetry.
     apply supply_delta_unit_general.
-  - (*
-   本节说明 Supply 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+  - (* [(c :: cs') ++ ds ≡ c :: (cs' ++ ds)]: unfold one cons on each side at a UNIFORM choice of evidence (the [_any] projections), substitute the inductive hypothesis for the tail, and close by cast-aligned associativity. / [(c :: cs') ++ ds ≡ c :: (cs' ++ ds)]：在每一侧展开一个 cons，选择一个统一的证据（[_any] 投影），将尾部代入归纳假设，并通过类型对齐的结合性收束。 *)
     change ((c :: cs') ++ ds) with (c :: cs' ++ ds).
     rewrite (supply_list_delta_cons_any c (cs' ++ ds) Hcd
                (proj1 (andb_prop _ _ Hc)) (proj2 (andb_prop _ _ Hcd))).

@@ -18,36 +18,84 @@ Require Import Category.Construction.Profunctor.Compose.
 
 Generalizable All Variables.
 
-(* * * Coherence laws profunctor 复合 （已译） *)
+(* * * Coherence laws of profunctor composition / * * 拓扑乘子组合的相干律 *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/profunctor
-        https://ncatlab.org/nlab/show/bicategory+of+profunctors
+ https://ncatlab.org/nlab/show/bicategory+of+profunctors
 
-   本文件给出 profunctor 相关。
+ Profunctor composition [prof_compose] (Construction/Profunctor/Compose.v),
+ with [prof_id := Hom C] as identity, satisfies the unit and associativity
+ laws of a bicategory up to natural isomorphism of profunctors, i.e. up to
+ iso in the functor category [C^op ∏ D ⟶ Sets].  This file supplies the three
+ structural isomorphisms:
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+ - the left unitor    [prof_unit_left_iso  : prof_id ∘ P ≅ P],
+ - the right unitor    [prof_unit_right_iso : P ∘ prof_id ≅ P],
+ - the associator     [prof_assoc_iso      : (P ∘ Q) ∘ R ≅ P ∘ (Q ∘ R)].
+
+ The unitors are the co-Yoneda reduction: gluing along the identity leg of a
+ representable collapses the mediating coend onto a single functor value.  The
+ associator is a Fubini-style rebracketing of the triple coend
+ [∫^d ∫^e P(c,d) × Q(d,e) × R(e,f)]; its forward and backward mediators send
+ generators to generators, so both round trips close by reflexivity, giving an
+ axiom-free isomorphism.
+
+ Assembling these into a [Bicategory] instance for the bicategory of
+ profunctors is deferred; here we deliver the laws themselves. 
+
+ --------
+ nLab：https://ncatlab.org/nlab/show/profunctor
+ https://ncatlab.org/nlab/show/bicategory+of+profunctors
+
+ Profunctor 组合 [prof_compose]（Construction/Profunctor/Compose.v），以 [prof_id := Hom C] 作为单位，满足双范畴的单位律和结合律，直到 profunctor 的自然同构，即在函子范畴 [C^op ∏ D ⟶ Sets] 中的同构。该文件提供三个结构同构：
+
+ - 左单位元 [prof_unit_left_iso  : prof_id ∘ P ≅ P]，
+ - 右单位元 [prof_unit_right_iso : P ∘ prof_id ≅ P]，
+ - 结合子 [prof_assoc_iso      : (P ∘ Q) ∘ R ≅ P ∘ (Q ∘ R)]。单元子是 co-Yoneda 约化：沿着可表示的同一性腿进行粘合，将中介的 coend 折叠到单一的函子值上。结合子是三重 coend 的 Fubini 风格重新括号化；它的前向和后向中介将生成元映射到生成元，因此两次往返通过自反性闭合，从而产生一个无公理的同构。
+
+ 将这些组装到双范畴的 profunctor 的 [Bicategory] 实例中被推迟；这里我们提供的是这些定律本身。
 *)
 
-(* Discharge every [Program] obligation hand, Compose.v: default
- tactic would destructure product-范畴 对象 rename the
- variables proofs below refer to. （已译） *)
+(*
+ Discharge every [Program] obligation by hand, as in Compose.v: the default
+ tactic would destructure the product-category objects and rename the
+ variables the proofs below refer to. 
 
-(* * ** Pointwise [fmap] lemmas [Sets]-valued 函子 （已译） *)
+ --------
+ 手动完成每一个 [Program] 的义务，就像在 Compose.v 中一样：默认策略会解构乘积类别对象，并重命名下面证明所引用的变量。
+*)
 
-(* Respectfulness of [fmap] read pointwise at an element. *)
+(*
+   * ** Pointwise [fmap] lemmas on [Sets]-valued functors 
+
+   --------
+   * ** 关于 [Sets] 值函子 的逐点 [fmap] 引理
+*)
+
+(* Respectfulness of [fmap] read pointwise at an element. / 在一个元素上逐点读取 [fmap] 的尊重性。 *)
 Lemma fmap_pt {A : Category} (G : A ⟶ Sets) {x y : A}
   (m m' : x ~{A}~> y) (Hm : m ≈ m') (a : G x) :
   fmap[G] m a ≈ fmap[G] m' a.
 Proof. exact (@fmap_respects _ _ G x y m m' Hm a). Qed.
 
-(* The interchange law [fmap_comp] read pointwise at an element. *)
+(*
+ The interchange law [fmap_comp] read pointwise at an element. 
+
+ --------
+ 逐点在一个元素上读取的交换律 [fmap_comp]。
+*)
 Lemma fmap_comp_pt {A : Category} (G : A ⟶ Sets) {x y z : A}
   (m2 : y ~{A}~> z) (m1 : x ~{A}~> y) (a : G x) :
   fmap[G] (m2 ∘ m1) a ≈ fmap[G] m2 (fmap[G] m1 a).
 Proof. exact (@fmap_comp _ _ G x y z m2 m1 a). Qed.
 
-(* Collapse two successive [fmap]s whose morphisms compose to a known [m3]. *)
+(*
+ Collapse two successive [fmap]s whose morphisms compose to a known [m3]. 
+
+ --------
+ 将两个连续的 [fmap] 折叠，它们的态射组合成一个已知的 [m3]。
+*)
 Lemma fmap_two {A : Category} (G : A ⟶ Sets) {x y z : A}
   (m1 : y ~{A}~> z) (m2 : x ~{A}~> y) (m3 : x ~{A}~> z)
   (Hm : m1 ∘ m2 ≈ m3) (w : G x) :
@@ -58,8 +106,13 @@ Proof.
   - exact (@fmap_respects _ _ G _ _ (m1 ∘ m2) m3 Hm w).
 Qed.
 
-(* Post-composing coend's injections fixed 态射 keeps cowedge
- condition, coend's own cowedge law. （已译） *)
+(*
+ Post-composing a coend's injections with a fixed morphism keeps the cowedge
+ condition, by the coend's own cowedge law. 
+
+ --------
+ 将协端的注射与固定态射后合成，会保持协楔条件，这是由协端自身的协楔定律决定的。
+*)
 Lemma postcomp_cowedge {K : Category} (G : K^op ∏ K ⟶ Sets)
   (Ecw : Coend G) (Q : SetoidObject) (mm : coend_obj Ecw ~{Sets}~> Q) :
   Cowedge_cond G Q (fun x => mm ∘ @coend_inj K Sets G Ecw x).
@@ -71,7 +124,7 @@ Qed.
 
 #[local] Obligation Tactic := idtac.
 
-(* 相关说明。 （已译） *)
+(* * ** The left unitor: [prof_id ∘ P ≅ P] / * ** 左单位元：[prof_id ∘ P ≅ P] *)
 
 Section LeftUnit.
 Context {C D : Category}.
@@ -79,8 +132,13 @@ Context (P : C ⇸ D).
 
 Notation II c d := (prof_integrand prof_id P c d).
 
-(* The leg at [m]: an element [(g, a) ∈ Hom C (m, c) × P(m, d)] maps to
-   [P(g, id) a ∈ P(c, d)], reindexing [P] along [g]. *)
+(*
+ The leg at [m]: an element [(g, a) ∈ Hom C (m, c) × P(m, d)] maps to
+ [P(g, id) a ∈ P(c, d)], reindexing [P] along [g]. 
+
+ --------
+ 在 [m] 的腿：元素 [(g, a) ∈ Hom C (m, c) × P(m, d)] 映射到 [P(g, id) a ∈ P(c, d)]，沿着 [g] 对 [P] 重新索引。
+*)
 Program Definition lu_leg (c : C) (d : D) (m : C) :
   SetoidMorphism (II c d (m, m)) (P (c, d)) :=
   {| morphism := fun ga =>
@@ -120,7 +178,12 @@ Lemma lu_to_inj (c : C) (d : D) (m : C) :
   lu_to c d ∘ @coend_inj C Sets (II c d) (SetsCoend (II c d)) m ≈ lu_leg c d m.
 Proof. intro w; reflexivity. Qed.
 
-(* The reverse map: embed [b ∈ P(c, d)] at 恒等 leg [ci c (id, b)]. （已译） *)
+(*
+ The reverse map: embed [b ∈ P(c, d)] at the identity leg [ci c (id, b)]. 
+
+ --------
+ 逆映射：将 [b ∈ P(c, d)] 嵌入到恒等腿 [ci c (id, b)]。
+*)
 Program Definition lu_from (c : C) (d : D) :
   SetoidMorphism (P (c, d)) (coend_apex_setoid (II c d)) :=
   {| morphism := fun b => ci (II c d) c (id[c], b) |}.
@@ -151,7 +214,12 @@ Next Obligation.
     + apply ce_point; split; simpl; [ cat | exact (@fmap_id _ _ P (x0, d) a) ].
 Qed.
 
-(* Naturality of [lu_to]: pure [fmap] algebra, no coend gluing. *)
+(*
+ Naturality of [lu_to]: pure [fmap] algebra, no coend gluing. 
+
+ --------
+ [lu_to] 的自然性：纯 [fmap] 代数，无 coend 拼接。
+*)
 Lemma lu_to_square (c1 c2 : C) (d1 d2 : D)
   (φc : c1 ~{C^op}~> c2) (φd : d1 ~{D}~> d2) :
   lu_to c2 d2 ∘ fmap[prof_compose prof_id P]
@@ -229,7 +297,7 @@ Defined.
 
 End LeftUnit.
 
-(* 相关说明。 （已译） *)
+(* * ** The right unitor: [P ∘ prof_id ≅ P] / * ** 右幺元：[P ∘ prof_id ≅ P] *)
 
 Section RightUnit.
 Context {C D : Category}.
@@ -237,8 +305,13 @@ Context (P : C ⇸ D).
 
 Notation JJ c d := (prof_integrand P prof_id c d).
 
-(* The leg at [m]: an element [(a, h) ∈ P(c, m) × Hom D (m, d)] maps to
-   [P(id, h) a ∈ P(c, d)], reindexing [P] along [h]. *)
+(*
+ The leg at [m]: an element [(a, h) ∈ P(c, m) × Hom D (m, d)] maps to
+ [P(id, h) a ∈ P(c, d)], reindexing [P] along [h]. 
+
+ --------
+ 在 [m] 的腿：一个元素 [(a, h) ∈ P(c, m) × Hom D (m, d)] 映射到 [P(id, h) a ∈ P(c, d)]，沿着 [h] 重新索引 [P]。
+*)
 Program Definition ru_leg (c : C) (d : D) (m : D) :
   SetoidMorphism (JJ c d (m, m)) (P (c, d)) :=
   {| morphism := fun ah =>
@@ -278,7 +351,12 @@ Lemma ru_to_inj (c : C) (d : D) (m : D) :
   ru_to c d ∘ @coend_inj D Sets (JJ c d) (SetsCoend (JJ c d)) m ≈ ru_leg c d m.
 Proof. intro w; reflexivity. Qed.
 
-(* The reverse map: embed [b ∈ P(c, d)] at 恒等 leg [ci d (b, id)]. （已译） *)
+(*
+ The reverse map: embed [b ∈ P(c, d)] at the identity leg [ci d (b, id)]. 
+
+ --------
+ 反向映射：在单位支 [ci d (b, id)] 上嵌入 [b ∈ P(c, d)] 。
+*)
 Program Definition ru_from (c : C) (d : D) :
   SetoidMorphism (P (c, d)) (coend_apex_setoid (JJ c d)) :=
   {| morphism := fun b => ci (JJ c d) d (b, id[d]) |}.
@@ -310,7 +388,12 @@ Next Obligation.
     + apply ce_point; split; simpl; [ reflexivity | cat ].
 Qed.
 
-(* Naturality of [ru_to]: pure [fmap] algebra, no coend gluing. *)
+(*
+ Naturality of [ru_to]: pure [fmap] algebra, no coend gluing. 
+
+ --------
+ [ru_to] 的自然性：纯 [fmap] 代数，无 coend 拼接。
+*)
 Lemma ru_to_square (c1 c2 : C) (d1 d2 : D)
   (φc : c1 ~{C^op}~> c2) (φd : d1 ~{D}~> d2) :
   ru_to c2 d2 ∘ fmap[prof_compose P prof_id]
@@ -388,7 +471,12 @@ Defined.
 
 End RightUnit.
 
-(* 相关说明。 （已译） *)
+(*
+   * ** The associator: [(P ∘ Q) ∘ R ≅ P ∘ (Q ∘ R)] 
+
+   --------
+   * ** 关联者：[(P ∘ Q) ∘ R ≅ P ∘ (Q ∘ R)]
+*)
 
 Section Associator.
 Context {C D E FF : Category}.
@@ -399,9 +487,14 @@ Notation QRi d f := (prof_integrand Q R d f).
 Notation LOI c f := (prof_integrand (prof_compose P Q) R c f).
 Notation ROI c f := (prof_integrand P (prof_compose Q R) c f).
 
-(* Forward inner leg at a fixed [(e, r)]: send [(p, q) ∈ P(c,d) × Q(d,e)] to
-   [ci d (p, ci e (q, r))] in the right-bracketed coend
-   [∫^d P(c,d) × (∫^e Q(d,e) × R(e,f))]. *)
+(*
+ Forward inner leg at a fixed [(e, r)]: send [(p, q) ∈ P(c,d) × Q(d,e)] to
+ [ci d (p, ci e (q, r))] in the right-bracketed coend
+ [∫^d P(c,d) × (∫^e Q(d,e) × R(e,f))]. 
+
+ --------
+ 在固定位置 [(e, r)] 向前伸内腿：将 [(p, q) ∈ P(c,d) × Q(d,e)] 发送到右括号的共端 [ci d (p, ci e (q, r))] 中 [∫^d P(c,d) × (∫^e Q(d,e) × R(e,f))] 。
+*)
 Program Definition Ato_inner_leg (c : C) (f : FF) (e : E) (r : R (e, f)) (d : D) :
   SetoidMorphism (PQi c e (d, d)) (coend_apex_setoid (ROI c f)) :=
   {| morphism := fun pq =>
@@ -503,9 +596,14 @@ Definition A_to (c : C) (f : FF) :
   coend_apex_setoid (LOI c f) ~{Sets}~> coend_apex_setoid (ROI c f) :=
   coend_mediator (LOI c f) (Ato_outer_leg c f) (Ato_outer_cond c f).
 
-(* Backward inner leg at a fixed [(d, p)]: send [(q, r) ∈ Q(d,e) × R(e,f)] to
-   [ci e (ci d (p, q), r)] in the left-bracketed coend
-   [∫^e (∫^d P(c,d) × Q(d,e)) × R(e,f)]. *)
+(*
+ Backward inner leg at a fixed [(d, p)]: send [(q, r) ∈ Q(d,e) × R(e,f)] to
+ [ci e (ci d (p, q), r)] in the left-bracketed coend
+ [∫^e (∫^d P(c,d) × Q(d,e)) × R(e,f)]. 
+
+ --------
+ 固定的[(d, p)]上的后内腿：将[(q, r) ∈ Q(d,e) × R(e,f)]发送到左括号的共端[∫^e (∫^d P(c,d) × Q(d,e)) × R(e,f)]中的[ci e (ci d (p, q), r)]。
+*)
 Program Definition Afrom_inner_leg (c : C) (f : FF) (d : D) (p : P (c, d)) (e : E) :
   SetoidMorphism (QRi d f (e, e)) (coend_apex_setoid (LOI c f)) :=
   {| morphism := fun qr =>
@@ -607,8 +705,13 @@ Definition A_from (c : C) (f : FF) :
   coend_apex_setoid (ROI c f) ~{Sets}~> coend_apex_setoid (LOI c f) :=
   coend_mediator (ROI c f) (Afrom_outer_leg c f) (Afrom_outer_cond c f).
 
-(* Both composites send a nested generator to itself, so the round trips close
-   by reflexivity. *)
+(*
+ Both composites send a nested generator to itself, so the round trips close
+ by reflexivity. 
+
+ --------
+ 两个复合体都将嵌套生成器发送给自身，因此往返通过自反性闭合。
+*)
 Lemma A_to_from_id (c : C) (f : FF) :
   A_to c f ∘[Sets] A_from c f ≈ id.
 Proof.
@@ -629,8 +732,13 @@ Program Definition assoc_iso (c : C) (f : FF) :
 Next Obligation. apply A_to_from_id. Qed.
 Next Obligation. apply A_from_to_id. Qed.
 
-(* Naturality of [A_to]: on a nested generator both sides rebracket to the same
-   triple [ci zd (P φc p, ci m (Q q, R φf r))]. *)
+(*
+ Naturality of [A_to]: on a nested generator both sides rebracket to the same
+ triple [ci zd (P φc p, ci m (Q q, R φf r))]. 
+
+ --------
+ [A_to] 的自然性：在一个嵌套生成器上，两边重新加括号得到相同的三重 [ci zd (P φc p, ci m (Q q, R φf r))]。
+*)
 Lemma A_to_square (c1 c2 : C) (f1 f2 : FF)
   (φc : c1 ~{C^op}~> c2) (φf : f1 ~{FF}~> f2) :
   A_to c2 f2 ∘ fmap[prof_compose (prof_compose P Q) R]

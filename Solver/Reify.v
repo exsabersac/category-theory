@@ -10,13 +10,62 @@ Import ListNotations.
 
 Open Scope nat_scope.
 
-(*
-   本文件给出 Reify 相关定义与性质。
+(**
+* Reification: from a concrete goal to syntactic [Expr]/[Term]
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+    This file is the metaprogramming bridge of the [Solver/] reflective tower
+    (Expr → Denote → Normal → Reify → Decide).  The decision procedure works by
+    reflection — it computes on a syntactic mirror of the goal rather than
+    reasoning about the goal directly
+    (https://en.wikipedia.org/wiki/Computational_reflection) — so something has
+    to build that mirror.  That is reification: the Ltac below inspects a goal
+    about real morphisms [f ≈ g] and constructs the corresponding [Expr] (and
+    its [Term] leaves) together with the [Arrows] environment that interprets
+    them, so that [exprD env (reify G)] is definitionally the original goal [G].
+    Reification carries no proof of its own — it is tactic code — but a faithful
+    translation is what makes the whole tactic sound in practice; an unfaithful
+    one would be caught only by the final [Denote]-based [change].
+
+    Faithfulness here means matching the conventions fixed by the (verified)
+    syntax and denotation:
+      - [id] reifies to [Ident], and [f ∘ g] (i.e. [compose f g]) reifies to
+        [Comp ft gt] — the same argument order [termD_work] reads back as
+        [f ∘ g] (Solver/Denote.v), so composition order is preserved;
+      - a morphism atom reifies to [Morph n], where [n] is a de Bruijn-style
+        index into the ambient [arrs] list, and the goal's objects reify to
+        their indices into [objs];
+      - the propositional connectives [True]/[False]/[∧]/[∨]/[→]/[≈] reify to
+        [Top]/[Bottom]/[And]/[Or]/[Impl]/[Equiv].
+    The [Term] leaves are paths in the free category on the reified arrows
+    (https://ncatlab.org/nlab/show/free+category).
+
+    The pipeline runs in two passes.  First [allVars] walks the goal collecting
+    every category, object, and arrow it mentions into Ltac-level association
+    lists (the helpers below build and query those lists).  Then [reifyExpr]
+    walks the goal again, this time emitting [Expr]/[Term] syntax whose indices
+    point into those lists, and [build_objs]/[build_arrs] reflect the lists into
+    the runtime [Objects]/[Arrows] record.  The user-facing entry points are
+    [reify] (which just [pose]s the reified environment and goal) and
+    [reify_and_change] (which [change]s the goal into [exprD env g], handing it
+    to Decide.v).  Each tactic is paired with an [Example] that pins down its
+    output by reflexive [assert]ions, so this file's round-trip claims are
+    re-checked on every build.
+
+--------
+* 物化：从具体目标到句法 [Expr]/[Term]
+
+这个文件是 [Solver/] 反射塔的元编程桥（Expr → Denote → Normal → Reify → Decide）。决策过程通过反射工作——它在目标的句法镜像上进行计算，而不是直接推理目标（https://en.wikipedia.org/wiki/Computational_reflection)——所以必须有人构建那个镜像。这就是重构：下面的 Ltac 检查一个关于真实态射 [f ≈ g] 的目标，并构建相应的 [Expr]（及其 [Term] 叶子）以及解释它们的 [Arrows] 环境，从而 [exprD env (reify G)] 在定义上就是原始目标 [G]。重构自身不携带证明——它是战术代码——但是忠实的翻译使得整个战术在实践中是可靠的；不忠实的翻译只会在最终基于 [Denote] 的 [change] 中被发现。
+
+这里的忠实性意味着匹配由（已验证的）语法和指称固定下来的约定：
+  - [id] 具体化为 [Ident]，而 [f ∘ g]（即 [compose f g]）具体化为 [Comp ft gt] —— 相同的参数顺序 [termD_work] 读回为 [f ∘ g]（Solver/Denote.v），因此组合顺序得以保留；
+  - 一个同态原子具体化为 [Morph n]，其中 [n] 是进入环境 [arrs] 列表的 de Bruijn 风格索引，目标的对象具体化为它们在 [objs] 中的索引；
+  - 命题连接词 [True]/[False]/[∧]/[∨]/[→]/[≈] 具体化为 [Top]/[Bottom]/[And]/[Or]/[Impl]/[Equiv]。
+[Term] 叶子是在具体化箭头（https://ncatlab.org/nlab/show/free+category).）上的自由范畴中的路径
+
+该流水线运行两个阶段。首先，[allVars] 遍历目标，将它提到的每个类别、对象和箭头收集到 Ltac 级别的关联列表中（下面的辅助工具用于构建和查询这些列表）。然后 [reifyExpr] 再次遍历目标，这一次发出 [Expr]/[Term] 语法，其索引指向这些列表，而 [build_objs]/[build_arrs] 将列表反映到运行时的 [Objects]/[Arrows] 记录中。面向用户的入口点是 [reify]（它只是 [pose] 了具象化的环境和目标）和 [reify_and_change]（它将目标 [change] 到 [exprD env g]，然后交给 Decide.v）。每个策略都配有一个 [Example]，通过反射的 [assert] 固定其输出，因此该文件的往返声明在每次构建时都会被重新检查。
 *)
 
-(** Lists in Ltac *)
+(** Lists in Ltac / Ltac 中的列表 *)
 
 Ltac addToList x xs :=
   let rec go ys :=
@@ -107,7 +156,7 @@ Proof.
   exact I.
 Qed.
 
-(** Lists of lists in Ltac *)
+(** Lists of lists in Ltac / Ltac 中的列表列表 *)
 
 Ltac addToCatList c cs :=
   let rec go xs :=

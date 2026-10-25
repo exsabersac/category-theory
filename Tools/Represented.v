@@ -8,14 +8,33 @@ Require Import Category.Instance.AST.
 Generalizable All Variables.
 Set Transparent Obligations.
 
-(* * * Representing Coq 数据类型 自由双笛卡尔闭范畴 （已译） *)
+(** * Representing Coq data types in the free bicartesian closed category / * 在自由双笛卡尔闭类别中表示 Coq 数据类型 *)
 
 (*
- Wikipedia: https://en.wikipedia.org/wiki/Global_element
+nLab: https://ncatlab.org/nlab/show/global+element
+   Wikipedia: https://en.wikipedia.org/wiki/Global_element
 
-   本文件给出 Represented 相关定义与性质。
+   A [Repr A] equips a Coq type [A] with an object [repr : Obj] of the free
+   bicartesian closed category [AST] and a [convert] map sending each value of
+   [A] to a *global element* (point) of [repr] — a morphism [1 ~> repr] out of
+   the terminal object. In [Set] a morphism [1 ~> x] is exactly a choice of one
+   element of [x], so [convert] realises each inhabitant of [A] as the
+   categorical point picking it out.
 
-   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+   The instances below follow the type formers: a [prod] is represented by a
+   product object, with [convert] pairing the two component points ([△]); [unit]
+   by the terminal object [1], whose unique point is [one]; [False] by the
+   initial object [0], where [convert] is vacuous (there are no values, so the
+   degenerate point [1 ~> 0] is never produced); and [bool] by the coproduct
+   [1 + 1], whose two canonical points [inl]/[inr] name [true]/[false].
+
+--------
+nLab：https://ncatlab.org/nlab/show/global+element
+维基百科：https://en.wikipedia.org/wiki/Global_element
+
+一个 [Repr A] 为 Coq 类型 [A] 配备了一个自由双笛卡尔闭类 [AST] 的对象 [repr : Obj] 和一个 [convert] 映射，将 [A] 的每个值发送到 [repr] 的*全局元素*（点）——一个从终对象出发的态射 [1 ~> repr]。在 [Set] 中，态射 [1 ~> x] 恰好是 [x] 的一个元素的选择，因此 [convert] 将 [A] 的每个住民实现为将其挑选出来的范畴点。
+
+以下实例遵循类型构造器：[prod] 由一个积对象表示，[convert] 将两个组成点配对（[△]）；[unit] 由终对象 [1] 表示，其唯一点是 [one]；[False] 由初对象 [0] 表示，其中 [convert] 是空的（没有值，因此退化点 [1 ~> 0] 永不产生）；[bool] 由余积 [1 + 1] 表示，其两个规范点 [inl]/[inr] 分别命名 [true]/[false]。
 *)
 Class Repr (A : Type) := {
   repr : Obj;

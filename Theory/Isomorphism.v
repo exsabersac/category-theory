@@ -165,6 +165,40 @@ Sameness up to isomorphism: history, principle, and reach
    （transport）因定义计算相关而可在构造中使用。
 *)
 
+
+(*
+   【Class Isomorphism 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Category/Functor 示范；受众：会 Haskell、范畴论小白）
+
+   1) 这是什么 / What this is
+      x ≅ y = 一对互逆态射（to / from）+ 两条逆律（均对 ≈）。
+      An isomorphism is a two-sided inverse pair, laws up to ≈.
+      Haskell 对照（一次）：类似 lens 的 Iso / 一对互逆函数；这里落在 Type，
+      是数据而非纯存在命题，故可在定义里做 transport。
+      Haskell analogy (once): like lens Iso — data you can transport along.
+
+   2) 参数 / Parameters
+      Section Context {C : Category}；Class Isomorphism (x y : C) : Type。
+      宇宙来自外层 Universes o h p。
+
+   3) 数据字段 / Data fields
+      - to   : x ~> y
+      - from : y ~> x
+
+   4) 定律（均对 ≈）/ Laws (up to ≈)
+      - iso_to_from : to ∘ from ≈ id
+      - iso_from_to : from ∘ to ≈ id
+      注意：不是 Coq 的 =；改写靠 Setoid。
+
+   5) 邻近概念 / Nearby
+      IsIsomorphism f：针对「这个态射可逆」的谓词形；可经 IsIsoToIso 回到 ≅。
+      Predicate form about one morphism; recovers object-level ≅.
+      ≅ 是对象上的等价关系（iso_id / iso_sym / iso_compose），见后文。
+
+   阅读顺序：to/from → 两条逆律 → IsIsomorphism → iso_id/sym/compose。
+   Reading order: to/from → inverse laws → IsIsomorphism → iso_id/sym/compose.
+*)
+
 Class Isomorphism (x y : C) : Type := {
   to   : x ~> y;            (* the forward morphism x ~> y / 正向态射 x ~> y *)
   from : y ~> x;            (* its two-sided inverse y ~> x / 它的双向逆 y ~> x *)

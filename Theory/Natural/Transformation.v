@@ -154,6 +154,39 @@ The `naturality_sym` field records the symmetric orientation of the
 `naturality_sym` 字段记录了自然性方格的对称方向。它在逻辑上可以从 `naturality` 推导出来（见下面的 `Build_Transform'`，它仅从 `naturality` 证明了这一点），但它仍被保留为一个基本字段，以便对偶性在定义上成立：[Transform] 的相反项会交换 `naturality` 和 `naturality_sym` 而无需任何重写，在 [Category] 中镜像 `comp_assoc`/`comp_assoc_sym`。
 *)
 
+
+(*
+   【Class Transform 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Category/Functor；自然变换 = 范畴论发明来要陈述的概念）
+
+   1) 这是什么 / What this is
+      F ⟹ G：每个对象一个分量 transform : F x ~> G x，且自然性方块交换。
+      A natural transformation: components + commuting naturality square.
+      Haskell 对照（一次）：多态函数 ∀x. F x → G x 在 parametricity 下自动自然；
+      此处无 free theorem，naturality 是真证明义务。
+      Haskell analogy (once): polymorphic maps are “auto-natural”; here you prove it.
+
+   2) 头与上下文 / Header & context
+      Section 已固定 C D 与 F G : C ⟶ D；Class Transform 无额外参数。
+      Universes o1 h1 p1 / o2 h2 p2 分属 C / D。
+
+   3) 数据字段 / Data
+      - transform {x} : F x ~> G x — {x} 隐式；分量族。
+
+   4) 定律（均对 ≈）/ Laws (up to ≈)
+      - naturality     : fmap[G] f ∘ transform ≈ transform ∘ fmap[F] f
+      - naturality_sym : 对称方向（可由前者推出，留下以便对偶定义性成立，
+        对标 Category 的 comp_assoc_sym）。
+        / kept for definitional duality, like comp_assoc_sym.
+
+   5) 邻近 / Nearby
+      Build_Transform'：只交 naturality，自动证 sym。
+      垂直复合、whiskering、Functor_Setoid 见同文件后文 / Instance/Fun。
+
+   阅读顺序：transform 分量 → naturality → naturality_sym → Build_Transform'。
+   Reading order: components → naturality → sym → smart constructor.
+*)
+
 Class Transform := {
   transform {x} : F x ~> G x;             (* the component at each object x / 每个对象 x 的组件 *)
 

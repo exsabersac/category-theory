@@ -204,6 +204,41 @@ Reserved Notation "⌊ f ⌋".
 Reserved Notation "⌈ f ⌉".
 
 (* o3 p3 are universes larger than either C or D. / o3 p3 是比 C 或 D 更大的宇宙。 *)
+
+(*
+   【Class Adjunction 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Category/Functor；本文件取 Kan 的 hom-集形式）
+
+   1) 这是什么 / What this is
+      F ⊣ U：自然的 Hom 同构 (F x ~> y) ≊ (x ~> U y)，比范畴同构/等价更弱。
+      Hom-set adjunction: a natural iso of homs, weaker than equivalence.
+      Haskell 对照（一次）：Adjunction 的 leftAdjunct/rightAdjunct ≈ ⌊-⌋/⌈-⌉；
+      unit/counit 特殊化常作 return/extract（单位/余单位在本 Class 外导出）。
+      Haskell analogy (once): leftAdjunct/rightAdjunct ≈ ⌊-⌋/⌈-⌉.
+
+   2) 头与宇宙 / Header & universes
+      Context：F : D ⟶ C（左），U : C ⟶ D（右）。
+      Class Adjunction@{o3 p3 so sh sp} — 额外宇宙给 Sets 里的 Hom-同构。
+      Extra universes host the Sets-level isomorphism of hom-setoids.
+
+   3) 数据字段 / Data
+      - adj {x y} : Isomorphism (在 Sets) 之间的两个 Hom-setoid
+        where ⌊f⌋ := to adj f，⌈f⌉ := from adj f（转置）。
+        / the two transposes via where-notation.
+
+   4) 自然性定律（均对 ≈）/ Naturality laws (up to ≈)
+      to_adj_nat_l / to_adj_nat_r：⌊-⌋ 对两变元自然；
+      from_adj_nat_l / from_adj_nat_r：⌈-⌉ 的对偶形（可推但留下便于对偶）。
+      这些是证明义务；单位 η=⌊id⌋、余单位 ε=⌈id⌉ 与三角恒等式见后文推论。
+
+   5) 邻近 / Nearby
+      单位/余单位形见 Adjunction/Natural/Transformation.v；
+      普遍箭头形见 Theory/Universal/Arrow.v。
+
+   阅读顺序：谁是 F/U → adj 同构 → ⌊⌋/⌈⌉ → 四条 nat → 后文 unit/counit。
+   Reading order: F/U roles → adj → transposes → four nat laws → unit/counit.
+*)
+
 Class Adjunction@{o3 p3 so sh sp} := {
   (* adj {x y} : F x ~{C}~> y ≊ x ~{D}~> U y / adj {x y} : F x ~{C}~> y ≊ x ~{D}~> U y *)
   adj {x y} :

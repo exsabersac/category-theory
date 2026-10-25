@@ -211,6 +211,39 @@ F is essentially surjective (on objects) when every object of the target
 --------
 当目标范畴的每个对象都同构于某个源对象的像时，F 在对象上本质上是满射的。证明是分裂的：[eso_obj] 选择一个前像对象，[eso_iso] 展示该同构。
 *)
+
+(*
+   【Class EquivalenceOfCategories 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Category/Functor；「范畴相同」的正确弱化）
+
+   1) 这是什么 / What this is
+      F 是范畴等价 ⇔ 有拟逆 G，使 F◯G ≈ Id、Id ≈ G◯F（≈ = Functor_Setoid = 自然同构）。
+      Equivalence = quasi-inverse up to natural isomorphism (not Leibniz =).
+      Haskell 无直接对应；想成「可逆字典，允许同构误差」。
+      No close Haskell class; think “invertible dictionary up to iso”.
+
+   2) 重要约定 / Important convention
+      本文件**不**把这些 Class 注册进类型类搜索：拟逆是选择，不可自动凭空产生。
+      Not registered for instance search: a quasi-inverse is a choice.
+
+   3) EssentiallySurjective（先读这个小 Class）
+      - eso_obj : D → C — 选定原像
+      - eso_iso d : F (eso_obj d) ≅ d — 见证同构（分裂/计算相关）
+
+   4) EquivalenceOfCategories 字段 / Fields
+      - quasi_inverse : D ⟶ C
+      - equivalence_counit : F ◯ quasi_inverse ≈ Id[D]
+      - equivalence_unit   : Id[C] ≈ quasi_inverse ◯ F
+      方向对齐伴随的 counit/unit（见 Theory/Equivalence/Adjoint.v）。
+
+   5) 邻近 / Nearby
+      Cat 中同构 ⟺ 范畴等价（桥 Definition，非 Instance）。
+      Full+Faithful+ESO 刻画见 Equivalence/FullFaithful.v。
+
+   阅读顺序：Functor 的 ≈ → ESO → quasi_inverse → unit/counit 两胞。
+   Reading order: functor ≈ → ESO → quasi_inverse → two cells.
+*)
+
 Class EssentiallySurjective {C D : Category} (F : C ⟶ D) := {
   eso_obj : D → C;                     (* chosen preimage object / 已选择的原像对象 *)
   eso_iso (d : D) : F (eso_obj d) ≅ d  (* its image is isomorphic to d / 它的像与 d 同构 *)

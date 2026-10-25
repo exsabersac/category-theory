@@ -159,6 +159,39 @@ Section Monad.
 
 Context `{M : C ⟶ C}.
 
+
+(*
+   【Class Monad 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Category/Functor；join/return 呈现）
+
+   1) 这是什么 / What this is
+      自函子 M : C ⟶ C + 单位 ret(η) + 乘法 join(μ)，服从结合与单位律（均 ≈）。
+      Endofunctor + unit + multiply; laws up to ≈.
+      Haskell 对照（一次）：return ≈ ret，join 或 (>>=) ≈ bind（下文定义）；
+      这里 η/μ 的自然性也写成字段，不靠「它们是自然变换」一句话带过。
+      Haskell analogy (once): return ≈ ret; join/(>>=) nearby; naturality is explicit.
+
+   2) 头与上下文 / Header
+      Section Context `{M : C ⟶ C}` — M 已是 Functor 实例。
+      Class Monad 无额外宇宙参数。
+
+   3) 数据字段 / Data
+      - ret  {x} : x ~> M x
+      - join {x} : M (M x) ~> M x
+
+   4) 定律（均对 ≈）/ Laws (up to ≈)
+      - fmap_ret       : η 的自然性
+      - join_fmap_join : 结合律 μ ∘ Mμ ≈ μ ∘ μM
+      - join_fmap_ret / join_ret : 左右单位
+      - join_fmap_fmap : μ 的自然性
+
+   5) 邻近 / Nearby
+      bind / >>= 在本 Class 后由 join+fmap 导出；伴随诱导单子见 Monad/Adjunction.v。
+
+   阅读顺序：ret/join → 自然性 → 结合 → 单位律 → bind。
+   Reading order: ret/join → naturality → assoc → units → bind.
+*)
+
 Class Monad := {
   ret {x}  : x ~> M x;          (* unit η : Id    ⟹ M / 单位 η : Id ⟹ M *)
   join {x} : M (M x) ~> M x;    (* mult μ : M ○ M ⟹ M / 乘 μ : M ○ M ⟹ M *)

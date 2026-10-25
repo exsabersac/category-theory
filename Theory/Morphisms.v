@@ -33,6 +33,38 @@ Wikipedia：https://en.wikipedia.org/wiki/Idempotence
 当 `f ∘ f ≈ f`（幂等）时，内同态 `f : x ~> x` 是幂等的。
 *)
 
+
+(*
+   【Morphisms 各 Class 语法与字段展开】/ Syntax & field walkthrough
+   （口吻对齐 Category @ b81c379、Functor @ c826572；本文件是「态射上的性质」合集）
+
+   1) 这是什么 / What this is
+      不定义新运算，只给已有态射贴标签：幂等、对合、分裂 mono/epi、满/单…
+      Tags on existing morphisms: idempotent, involution, split mono/epi, epi/mono…
+      Class ≈ Haskell class（一次对照）：这里 Instance 常是证明义务，不是实现代码。
+      Class ≈ Haskell class (said once): Instances here are mostly proof obligations.
+
+   2) 共同前提 / Shared preamble
+      Section 里 Context {C : Category}；定律一律用 ≈，不用 =。
+      All laws use ≈, never definitional =.
+
+   3) 几组字段怎么读 / How to read the field groups
+      - Idempotent / Involutive：只一条律（f∘f ≈ f 或 f∘f ≈ id）。
+      - Section f / Retraction f：分裂单/满；字段 section/retract 是另一侧逆，
+        *_comp 是证明义务。注意命名：Section f 说的是「f 本身可裂」。
+        / split mono/epi; the other inverse is data, *_comp is the law.
+      - SplitIdempotent：幂等经 y 分解；sr 与 rs 两条律缺一不可。
+      - Epic / Monic：右/左消去；Epic f 恰是 C^op 里的 Monic f。
+      - Bimorphic ≈ Epic + Monic（见后文）。
+
+   4) 与教科书差在哪 / Differs from textbooks
+      分裂版本携带具体逆（计算相关）；纯 Epic/Monic 只给消去性质。
+      Split forms carry a concrete inverse (computational); Epic/Monic are properties.
+
+   阅读顺序：Idempotent → Section/Retraction → Epic/Monic → 后文蕴含引理。
+   Reading order: Idempotent → Section/Retraction → Epic/Monic → implication lemmas.
+*)
+
 Class Idempotent `(f : x ~> x) := {
   idem : f ∘ f ≈ f             (* idempotency law: f ∘ f ≈ f / 幂等律：f ∘ f ≈ f *)
 }.

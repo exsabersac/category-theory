@@ -15,7 +15,7 @@ Generalizable All Variables.
 
 (*
 nLab: https://ncatlab.org/nlab/show/category+of+elements
-   Text: Riehl, "Category Theory in Context", Dover 2016, §2.4,
+   Text: Riehl, “Category Theory in Context”, Dover 2016, §2.4,
          Proposition 2.4.8
 
    Riehl's Proposition 2.4.8 is the sharpest form of the universal-element
@@ -34,8 +34,8 @@ nLab: https://ncatlab.org/nlab/show/category+of+elements
 
    A DOCUMENTATION ERRATUM, found here and REPAIRED IN THE SAME COMMIT at the
    file that carried it.  Instance/Coq/Nat.v used to say its concrete argument
-   presents "the category of elements ... concretely as [FAlg NatF] rather
-   than built as a general construction, WHICH THE TREE DOES NOT CARRY".  The
+   presents “the category of elements ... concretely as [FAlg NatF] rather
+   than built as a general construction, WHICH THE TREE DOES NOT CARRY”.  The
    tree does carry it.  The sentence was true when written (30c01af0,
    5 August 2026) and went stale four days later, when
    [Construction/Elements.v] landed (f2177328, 9 August 2026).  Nat.v now

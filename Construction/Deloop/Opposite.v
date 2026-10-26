@@ -123,7 +123,7 @@ Definition GrpObject_op (G : GrpObject) : GrpObject := {|
  The strict form.  Both comparison functors are the identity on objects
  and on morphisms, so the object component of StrictCat's hom-setoid is
  [eq_refl], the transports vanish, and what remains is reflexivity of the
- morphism.  This is the genuine "isomorphism of categories" that the
+ morphism.  This is the genuine “isomorphism of categories” that the
  comment above previously — and wrongly — attached to the [Cat] form. 
 
  --------

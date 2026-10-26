@@ -99,20 +99,20 @@ Definition Δ {C J : Category} := @Diagonal C J.
 (*
 Wikipedia: https://en.wikipedia.org/wiki/Diagonal_functor
 
-   Wikipedia: "In category theory, a branch of mathematics, the diagonal
+   Wikipedia: “In category theory, a branch of mathematics, the diagonal
    functor C → C × C is given by Δ(a) = ⟨a, a⟩, which maps objects as well as
    morphisms. This functor can be employed to give a succinct alternate
    description of the product of objects within the category C: a product a ×
    b is a universal arrow from Δ to ⟨a, b⟩. The arrow comprises the projection
-   maps."
+   maps.”
 
-  "More generally, in any functor category Cᴶ (here J should be thought of as
+  “More generally, in any functor category Cᴶ (here J should be thought of as
   a small index category), for each object a in C, there is a constant functor
   with fixed object a : Δ(a) ∈ Cᴶ. The diagonal functor Δ : C → Cᴶ assigns to
   each object of C the functor Δ(a), and to each morphism f : a → b in C the
   obvious natural transformation η in Cᴶ (given by ηⱼ = f). In the case that J
   is a discrete category with two objects, the diagonal functor C → C × C is
-  recovered." 
+  recovered.” 
 
 --------
 维基百科：https://en.wikipedia.org/wiki/Diagonal_functor

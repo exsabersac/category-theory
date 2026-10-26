@@ -24,27 +24,27 @@ Generalizable All Variables.
 (* * * Awodey's uniqueness of the comparison functor, without the coherence / * * Awodey的比较函子唯一性，缺乏一致性 *)
 
 (*
- Book: Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
+ Book: Awodey, “Category Theory”, 1st ed. (Carnegie Mellon pre-print,
  September 2005), §10.3, the comparison functor, printed p. 277
  (PDF p. 286) — awodey:10.3:construction-comparison-functor;
  with his Definition 7.10, printed p. 165 (PDF p. 174).
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.3, Theorem 1, printed p. 142 (PDF
  p. 151); §VI.7, the definition of a comparison, printed p. 153
  (PDF p. 162) — maclane:VI.7:def1.
  nLab: https://ncatlab.org/nlab/show/monadic+adjunction
 
- WHAT THE BOOKS SAY, read from the page images.  Awodey, p. 277: "If we
+ WHAT THE BOOKS SAY, read from the page images.  Awodey, p. 277: “If we
  start with an adjunction F ⊣ U and construct C^T for T = U ∘ F, we
  then get a comparison functor Φ : D → C^T, with U^T ∘ Φ ≅ U,
- Φ ∘ F = F^T ...  In fact, Φ is unique with this property."  His ≅
+ Φ ∘ F = F^T ...  In fact, Φ is unique with this property.”  His ≅
  between functors is an isomorphism in the functor category, the
  natural isomorphism of his Definition 7.10 (p. 165), and his = is an
  equality of functors; that mixed property is his reading.  Mac Lane's
- §VI.3 Theorem 1 (p. 142) has an equality in both places: "there is a
- unique functor K : A → X^T with G^T K = G and KF = F^T".  Issue #482
- states the clause at ≈ in both places, "∀ K, EM_Forget ◯ K ≈ U →
- K ◯ F ≈ EM_Free → K ≈ EM_Comparison".
+ §VI.3 Theorem 1 (p. 142) has an equality in both places: “there is a
+ unique functor K : A → X^T with G^T K = G and KF = F^T”.  Issue #482
+ states the clause at ≈ in both places, “∀ K, EM_Forget ◯ K ≈ U →
+ K ◯ F ≈ EM_Free → K ≈ EM_Comparison”.
 
  WHAT HOLDS.  With an isomorphism in the first place the uniqueness is
  false, in both readings, each refuted here at one monad on [Sets]; it
@@ -91,7 +91,7 @@ Generalizable All Variables.
  relative to the identification θ, as Resolution.v's [Comparison] is.
 
  AWODEY'S PRINTED READING, at the Kleisli resolution.  Over the
- adjunction of LZ-sets, transporting σ* back "at the free algebras"
+ adjunction of LZ-sets, transporting σ* back “at the free algebras”
  would need a decision of which LZ-sets are free, which an
  [MSetoidAction] does not offer; in the Kleisli resolution every object
  is free.  Φ ([Phi]) sends a Kleisli arrow f to the free extension of

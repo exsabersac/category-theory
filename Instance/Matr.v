@@ -16,7 +16,7 @@ Generalizable All Variables.
 (*
    * * Matr: the matrix category over a rig
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.2
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.2
    (printed p. 11): for a commutative ring K, [Matr_K] has the positive
    integers as objects — here all of [nat], the issue's specification;
    0 is the empty matrix and costs nothing — and an arrow n → m is an
@@ -24,10 +24,10 @@ Generalizable All Variables.
    composed by matrix product [maclane:I.2:construction5]; §II.3
    Exercise 4 (printed p. 40): the opposite of the matrix category is
    the matrix category again, via transposition [maclane:II.3:ex4].
-   Awodey, "Category Theory", §1.4 (printed p. 8): the same category
+   Awodey, “Category Theory”, §1.4 (printed p. 8): the same category
    with NATURAL-number entries — matrices over the rig ℕ
    [awodey:1.4:construction-mat].
-   Riehl, "Category Theory in Context", §1.1 Example 1.1.4(i) and §1.3
+   Riehl, “Category Theory in Context”, §1.1 Example 1.1.4(i) and §1.3
    Example 1.3.14(v): the category and its transpose self-duality
    [riehl:1.1:example4, riehl:1.3:example14].
    Wikipedia: https://en.wikipedia.org/wiki/Category_of_matrices
@@ -41,7 +41,7 @@ Generalizable All Variables.
    [RingObject]'s underlying rig with commutative multiplication.
 
    ORIENTATION, as the issue asks to fix and document: following Mac
-   Lane's "an arrow A : n → m is an m × n matrix", the hom [n ~> m] is
+   Lane's “an arrow A : n → m is an m × n matrix”, the hom [n ~> m] is
    [Matrix R m n] — m rows, n columns, a function
    [Fin.t m → Fin.t n → carrier R] — so composition
    [A ∘ B := fun i j => Σ_l A i l · B l j] is the usual matrix product

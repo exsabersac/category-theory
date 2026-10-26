@@ -34,9 +34,9 @@ nLab: https://ncatlab.org/nlab/show/universal+element
    takes as primitive ([aue_universal] / [ue_universal] below).  The library
    already carried the same content twice over in less elementary encodings:
    [Functor/Representable.v]'s [Representable] packages a natural isomorphism
-   [Hom r,─] ≅ H and its header records, without proving it, that "by the
+   [Hom r,─] ≅ H and its header records, without proving it, that “by the
    Yoneda lemma such a Φ is determined by a single universal element of F(A),
-   namely Φ_A(id A)"; and [Structure/UniversalProperty.v]'s
+   namely Φ_A(id A)”; and [Structure/UniversalProperty.v]'s
    [representability_by_yoneda] proves exactly that determination, but states
    the universal elements as the ANONYMOUS sigma setoid
 
@@ -51,13 +51,13 @@ nLab: https://ncatlab.org/nlab/show/universal+element
    subsumption between universal elements and universal arrows, and it is the
    substance of this file:
 
-     (a) "Since an element x ∈ H d may be described as a function x : * → H d
+     (a) “Since an element x ∈ H d may be described as a function x : * → H d
          from a one-point set *, this definition is a special case of that of
-         a universal arrow: ⟨r, e⟩ is universal from * to H."
+         a universal arrow: ⟨r, e⟩ is universal from * to H.”
 
-     (b) "Conversely, the definition of a universal arrow ⟨r, u⟩ from c to
+     (b) “Conversely, the definition of a universal arrow ⟨r, u⟩ from c to
          S : D ⟶ C can be phrased as: ⟨r, u⟩ is a universal element of the
-         functor D(c, S−) : D ⟶ Set."
+         functor D(c, S−) : D ⟶ Set.”
 
    Both halves are proved below, and then STATED TOGETHER as the single
    biconditional [universal_element_arrow_subsumption], which is the thing the
@@ -89,17 +89,17 @@ Wikipedia: https://en.wikipedia.org/wiki/Universal_property
 (*
 Where the notion sits, and why it is the elementary one
 
-   Text:  Mac Lane, "Categories for the Working Mathematician", Springer 1998,
+   Text:  Mac Lane, “Categories for the Working Mathematician”, Springer 1998,
           §III.1 (pp. 55-59) and §III.2
-   Text:  Riehl, "Category Theory in Context", Dover 2016, §2.4
-   Paper: Kan, "Adjoint functors", Trans. Amer. Math. Soc. 87, 1958
+   Text:  Riehl, “Category Theory in Context”, Dover 2016, §2.4
+   Paper: Kan, “Adjoint functors”, Trans. Amer. Math. Soc. 87, 1958
 
    The universal element is the smallest of the universal notions: it
    mentions no comma category, no adjunction, and no natural
    transformation, only an element and a factorization.  Its interest is
    that it is nevertheless EQUIVALENT to the largest of them.  Riehl
    organises §2.4 around this observation, calling a representation of a
-   functor and a universal element "the same data", and her Proposition
+   functor and a universal element “the same data”, and her Proposition
    2.4.8 makes the sharpest form of the statement: a universal element of
    H is precisely an INITIAL object of the category of elements of H.
    In-tree that reading is already worked out concretely, one functor at
@@ -121,7 +121,7 @@ Where the notion sits, and why it is the elementary one
    seriously enough to prove it.
 
    The setoid discipline changes one word of the definition.  Mac Lane
-   writes "(H k) e = x" with equality of elements of a set; here H lands
+   writes “(H k) e = x” with equality of elements of a set; here H lands
    in [Sets], whose objects are setoids, so the clause is
    [fmap[H] k e ≈ x] and uniqueness of k is uniqueness up to `≈` -- the
    [Unique] record of Lib/Setoid.v, exactly as [AUniversalArrow] uses it.
@@ -227,8 +227,8 @@ WHAT IS DELIVERED
      kept by [eq_refl] and the universal element identified as Mac Lane's
      Φ_r(id r) ([ue_of_repr_elem]).  [Functor/Representable.v] is
      therefore the SAME notion, not a competing one; its header's
-     sentence "by the Yoneda lemma such a Φ is determined by a single
-     universal element of F(A), namely Φ_A(id A)" is these two
+     sentence “by the Yoneda lemma such a Φ is determined by a single
+     universal element of F(A), namely Φ_A(id A)” is these two
      definitions.
 
    * DELIVERABLE 3(a): [AUniversalElement_of_AUniversalArrow] and
@@ -347,8 +347,8 @@ WHAT IS DELIVERED
 (** ** Global elements of a setoid / ** 集合族的全局元素 *)
 
 (*
-Mac Lane's "an element x ∈ H d may be described as a function x : * → H d
-   from a one-point set".  [SetsOne] (Construction/Elements.v) is the
+Mac Lane's “an element x ∈ H d may be described as a function x : * → H d
+   from a one-point set”.  [SetsOne] (Construction/Elements.v) is the
    singleton of [Sets_Terminal], the same object the elements-comma category
    =(SetsOne) ↓ K is built over there.
 
@@ -372,8 +372,8 @@ Mac Lane's "an element x ∈ H d may be described as a function x : * → H d
    instead of [SetsOne] stays polymorphic under [Program]
    ([∀ {X Y : obj[Sets@{u0 u}]}], measured), and a plain [Definition] with no
    [Program] anywhere is pinned identically once its [proper_morphism] is
-   [reflexive_proper _].  And it is NOT that "supplying [proper_morphism]
-   explicitly as a term" suffices -- that claim is FALSE, since
+   [reflexive_proper _].  And it is NOT that “supplying [proper_morphism]
+   explicitly as a term” suffices -- that claim is FALSE, since
    [reflexive_proper (fun _ => x)] is such a term and is pinned; what matters
    is supplying THAT PARTICULAR pointwise term.  Nor is it [Universe
    Minimization ToSet], which changes nothing in either position: the pin
@@ -850,12 +850,12 @@ Proof. reflexivity. Qed.
 (*
 Composing with [representability_by_yoneda]: a universal element of H at r
    is the same data as a representation of H by r.  This is the theorem
-   [Functor/Representable.v]'s header states in prose ("by the Yoneda lemma
-   such a Φ is determined by a single universal element") and that
+   [Functor/Representable.v]'s header states in prose (“by the Yoneda lemma
+   such a Φ is determined by a single universal element”) and that
    [Structure/UniversalProperty.v] proved only for the anonymous encoding.
 
 --------
-使用 [representability_by_yoneda] 进行作曲：H 在 r 处的一个通用元素与 H 由 r 的表示是相同的数据。这是 [Functor/Representable.v] 的标题在文字中陈述的定理（"根据 Yoneda 引理，这样的 Φ 由一个单一的通用元素决定"），而 [Structure/UniversalProperty.v] 只对匿名编码证明了该定理。
+使用 [representability_by_yoneda] 进行作曲：H 在 r 处的一个通用元素与 H 由 r 的表示是相同的数据。这是 [Functor/Representable.v] 的标题在文字中陈述的定理（“根据 Yoneda 引理，这样的 Φ 由一个单一的通用元素决定”），而 [Structure/UniversalProperty.v] 只对匿名编码证明了该定理。
 *)
 Definition universal_element_representation
   : @Isomorphism Sets
@@ -927,8 +927,8 @@ End MateIso.
    the natural isomorphism, so it is the SAME notion as [UniversalElement],
    not a competing one -- and the two pass into one another through
    [universal_element_representation] with the representing object kept on the
-   nose.  That file's header says "by the Yoneda lemma such a Φ is determined
-   by a single universal element of F(A), namely Φ_A(id A)" and cites
+   nose.  That file's header says “by the Yoneda lemma such a Φ is determined
+   by a single universal element of F(A), namely Φ_A(id A)” and cites
    Structure/UniversalProperty.v for it; the citation was to the anonymous
    encoding, and these two definitions are the statement in the form the
    sentence promises.
@@ -1288,7 +1288,7 @@ Riehl, _Category Theory in Context_, 2nd ed., SS3.2, printed pp. 93-94:
    isomorphism is [global_elements_iso] above -- the OBJECT-LEVEL statement
    pre-existed this addition, was declared at the [global_elements_iso]
    above, and is already described by this file's own header.  What was
-   missing, and is added here, is only Riehl's "natural in X": nothing in
+   missing, and is added here, is only Riehl's “natural in X”: nothing in
    the tree exhibited [GlobalElements] as a FUNCTOR, so the isomorphism was
    a FAMILY and not a natural one.
 

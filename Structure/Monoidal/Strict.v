@@ -18,7 +18,7 @@ Generalizable All Variables.
    equivalently, where the tensor is strictly associative and strictly
    unital on objects, not merely up to coherent isomorphism.
 
-   In this library's setoid-based setting, "strict" requires BOTH:
+   In this library's setoid-based setting, “strict” requires BOTH:
 
    (a) object-level Leibniz equalities
    [(X ⨂ Y) ⨂ Z = X ⨂ (Y ⨂ Z)],
@@ -36,7 +36,7 @@ Generalizable All Variables.
    to give [id].  We use the explicit [match … in _ = T return …]
    form (Coq's primitive dependent elimination on equality), rather
    than the [rew]/[eq_rect] notation, which the library's [_CoqProject]
-   does not pull in.  See the "Formulation note" at the end of the file
+   does not pull in.  See the “Formulation note” at the end of the file
    for the rationale; both the [strict_*_to] fields and the derived
    [strict_*_from] corollaries use the [match] form consistently.
 
@@ -187,9 +187,9 @@ Proof. apply iso_to_from. Qed.
    [from phi] equals the transported identity along [e] in the other
    direction.
 
-   This is purely group-theoretic — once you know [to phi] is "id along
-   e", uniqueness of inverses in [Isomorphism] forces [from phi] to be
-   "id along the symmetric e". 
+   This is purely group-theoretic — once you know [to phi] is “id along
+   e”, uniqueness of inverses in [Isomorphism] forces [from phi] to be
+   “id along the symmetric e”. 
 
    --------
    * 一个通用引理：给定一个同构  [phi : a ≅ b]  和一个等式  [e : a = b] ，

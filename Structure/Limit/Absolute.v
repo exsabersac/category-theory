@@ -18,28 +18,28 @@ Generalizable All Variables.
 (* * * Absolute limits and colimits, at cone level / * * 在锥体层面的绝对极限与余极限 *)
 
 (*
- Book:   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §VI.6, book p. 149 (PDF p. 158), item maclane:VI.6:def2
- Book:   Riehl, "Category Theory in Context", 2nd ed., §3.4, Exercise
+ Book:   Riehl, “Category Theory in Context”, 2nd ed., §3.4, Exercise
  3.4.vi(iii), printed p. 109 (PDF p. 129), item
  riehl:3.4:def-absolute (the issue's appended box)
- Paper:  Paré, "On absolute colimits", J. Algebra 19 (1971) 80-95
+ Paper:  Paré, “On absolute colimits”, J. Algebra 19 (1971) 80-95
  nLab:   https://ncatlab.org/nlab/show/absolute+colimit
  nLab:   https://ncatlab.org/nlab/show/preserved+limit
 
  WHAT THE BOOKS SAY.  Mac Lane, after defining the absolute coequalizer
- (Structure/Coequalizer/Absolute.v): "In the same way one can define
+ (Structure/Coequalizer/Absolute.v): “In the same way one can define
  absolute colimits (or absolute limits) of any other type (Paré
- [1971a])."  Riehl, of the equalizer and the coequalizer of a split
+ [1971a]).”  Riehl, of the equalizer and the coequalizer of a split
  idempotent (her (i)) and of B as both the limit and the colimit of
- the diagram the idempotent defines (her (ii)): "Prove that the
+ the diagram the idempotent defines (her (ii)): “Prove that the
  aforementioned limits and colimits are preserved by any functor.
- Co/limits with this property are called absolute co/limits."
+ Co/limits with this property are called absolute co/limits.”
 
  THE DEFINITION IS AT CONE LEVEL.  [AbsoluteLimitCone N] says that the
  image [FCone F N] of the cone [N] is a limiting cone for EVERY functor
  [F : C ⟶ D]; [AbsoluteColimitCocone N] is the same for cocones.  The
- image legs are fmap[F] of N's legs, so "preserved" is Mac Lane's §V.4
+ image legs are fmap[F] of N's legs, so “preserved” is Mac Lane's §V.4
  sense, [PreservesLimitCone] of Structure/Limit/Preservation.v, and
  not the apex-only [PreservesLimit], whose legs are unconstrained
  (Construction/Comma/Limit.v's note; Structure/Limit/Preservation/
@@ -64,7 +64,7 @@ Generalizable All Variables.
 
  THE CLOSURE THEORY.
  - An absolute limit is a limit: [AbsoluteLimitCone_IsLimitCone],
- the instance F := Id, as Mac Lane reads "automatically".  The
+ the instance F := Id, as Mac Lane reads “automatically”.  The
  image of N under [Id] has N's apex and legs at [eq_refl]
  ([FCone_Id_apex], [FCone_Id_leg]); only [Id ◯ K] is not [K]
  (refused at [eq_refl] in the probe), so the competing cone is
@@ -127,7 +127,7 @@ Generalizable All Variables.
  [C : Category@{co ch ch}] and quantifies over [D : Category@{do ch
  ch}]: every target at any object level [do], a universe OF THE
  PREDICATE, with C's hom-and-proof level.  Its sort [u] lies strictly
- above [do] and [ch] ("do < u", "ch < u"), so the predicate lives
+ above [do] and [ch] (“do < u”, “ch < u”), so the predicate lives
  above the categories it quantifies over, no instance quantifies over
  every category, and the instances form the ordered family above.
  The hom level is shared, and three carriers impose it, each first
@@ -154,7 +154,7 @@ Generalizable All Variables.
  was measured in a scratch file and is not pinned here.  Lifting the
  cap is therefore a matter of annotating those binders tree-wide,
  which #477 does not attempt.  The cap does exclude part of Riehl's
- "any functor": the probe accepts the Yoneda embedding of C as a
+ “any functor”: the probe accepts the Yoneda embedding of C as a
  target when C's objects lie strictly below its hom-sets (C46) and
  refuses it when they lie strictly above (R11).
  The binders are written out on every constant of the predicates and
@@ -164,14 +164,14 @@ Generalizable All Variables.
  identifying the hom levels of [_0] and its target and [_0]'s being
  [Set].  [AbsoluteLimitCone_IsLimitCone] consumes the instance whose
  target is C's own levels, [AbsoluteLimitCone@{jo co ch co …}], which
- is what "take F := Id" means; the probe refuses it from a target
+ is what “take F := Id” means; the probe refuses it from a target
  object level above C's (R4), a pin of that lemma's signature and not
  of what the predicate yields: R4's statement is accepted through
  [AbsoluteLimitCone_IsLimitCone_up] (C22) and through
  [AbsoluteLimitCone_down] (C23), and their colimit twins likewise
  (C24, C25).  [AbsoluteLimitCone_IsLimitCone_up@{jo co ch do …}]
- carries "co <= do", and [AbsoluteLimitCone_down@{jo co ch do eo …}]
- "do <= eo", with no equation; their statements, and their colimit
+ carries “co <= do”, and [AbsoluteLimitCone_down@{jo co ch do eo …}]
+ “do <= eo”, with no equation; their statements, and their colimit
  twins', name the instances of the predicate they consume and produce
  (six explicit universe instances in four constants), since a level
  bounded below by C's alone would otherwise be minimized to C's.  The
@@ -203,7 +203,7 @@ Generalizable All Variables.
  nLab：    https://ncatlab.org/nlab/show/absolute+colimit 
  nLab：    https://ncatlab.org/nlab/show/preserved+limit书中所说。Mac Lane 在定义绝对共等化子 (Structure/Coequalizer/Absolute.v) 后写道：“以同样的方式，可以定义任何其他类型的绝对余极限（或绝对极限）（Paré [1971a]）。” Riehl 关于分裂幂等子的等化子和共等化子（她的 (i)）以及将 B 作为幂等子定义的图的极限和余极限（她的 (ii)）写道：“证明上述极限和余极限会被任何函子保持。具有这种性质的极限/余极限称为绝对极限/余极限。”该定义适用于圆锥层级。[AbsoluteLimitCone N] 表示圆锥 [N] 的像 [FCone F N] 是每个函子 [F : C ⟶ D] 的极限圆锥；[AbsoluteColimitCocone N] 对余圆锥也是相同的。像的腿是 N 的腿的 fmap [F]，因此“保持”是 Mac Lane 第 V.4 节的含义，[PreservesLimitCone] 来自 Structure/Limit/Preservation.v，而不是仅仅是顶点的 [PreservesLimit]，其腿不受约束（Construction/Comma/Limit.v 的注释；Structure/Limit/Preservation/Separation.v 对单个函子区分了两者）。这些谓词可通过强制 [limit_cone] 适用于绑定的 [L : Limit K] 或 [L : Colimit K]，因此绝对性是以给定的（余）极限为前提的（在 Test/ProbeAbsolute477.v 中控制）。仅顶点的谓词，这并未替代这些。Structure/Limit/Constant.v（#356）已经声明了[AbsoluteLimit G c]和[AbsoluteColimit G c]：对于每个F，顶点F c承载某种F ◯ G的（共）极限结构。由于这些名称已被使用，锥层级的谓词被命名为[IsLimitCone]和[PreservesLimitCone]。从锥层级读取到仅顶点读取的映射，[AbsoluteLimitCone_apex]和[AbsoluteColimitCocone_apex]，位于Constant.v中，由[AbsoluteLimit]和[AbsoluteColimit]以名称形式在其中类型化；Constant.v需要此文件，其在加载[Require]的Constant.v时增加了六个[Category]模块（之前103，之后109，按[Print Libraries]计算）。未证明反向，也未尝试分离，因此未显示仅顶点读取严格较弱。闭合理论。——绝对极限就是极限：[AbsoluteLimitCone_IsLimitCone]，实例 F := Id，如 Mac Lane 所说“自动”。N 在 [Id] 下的像在 [eq_refl] 处有 N 的顶点和边 ([FCone_Id_apex], [FCone_Id_leg])；只有 [Id ◯ K] 不是 [K]（在探针 [eq_refl] 处被拒绝），所以竞争锥被重新打包（Preservation.v 的 [cone_id_comp]）。——绝对性是指被每一个函子保持：[AbsoluteLimitCone_preserves] 对每个 F 都给出 [PreservesLimitCone K F]，通过 Structure/Limit/Comparison.v 的 [PreservesLimitCone_of_cone]（一个限制锥即可），而 [AbsoluteLimitCone_of_preserves] 是其逆。余极限一边需要该引理的余锥孪生，但树中没有；#477 将它添加在它的孪生旁边，作为 Comparison.v 的 [PreservesColimitCocone_of_cocone]，位于 Preservation.v 的 [FCocone_iso] 之上，自身添加在 [FCone_iso] 旁。- 它是不变的：沿着一个圆锥同构 ([AbsoluteLimitCone_transport]) 并因此在同一图的极限圆锥上 ([AbsoluteLimitCone_limitcone])，所以它属于极限而不属于用于表示它的圆锥。- 它在函子下闭合：在任何 G 下绝对极限的像都是绝对的 ([AbsoluteLimitCone_image]，带有 Preservation.v 的 [cocone_assoc_inv]，添加在 [cone_assoc_inv] 旁边，用于余极限对应项)。- 每个都有其余极限对应项。实例是有序的。每个谓词是一族实例，每个目标对象层次（宇宙）有一个实例，且这些实例不是独立的：通过 Construction/Lift.v 中的 [LiftCat]，它会在更高的宇宙层次重新读取一个范畴，某个目标层次的实例意味着每个更低层次的实例（[AbsoluteLimitCone_down]），且任何在 C 自身层次或以上的实例都是限制性的（[AbsoluteLimitCone_IsLimitCone_up]）；每个实例都有其余极的对应实例，通过对偶映射实现。二重性是两个单线映射。[AbsoluteColimitCocone_op] 和 [AbsoluteColimitCocone_of_op] 将绝对余极限传递到相反方向的绝对极限，再返回，通过 Preservation.v 的 [cone_op_comp] 和 [cone_op_comp_inv]，并在 [eq_refl]（[AbsoluteColimitCocone_of_op_op]、[AbsoluteColimitCocone_op_of_op]）处互为逆。两个谓词不是同一个项（在探针的 [eq_refl] 处被拒绝）：一个对 C 出来的函子进行量化，另一个对 C^op 出来的函子进行量化。余极限侧的 [AbsoluteColimitCocone_IsColimitCocone]、[AbsoluteColimitCocone_transport] 以及提升读数的余极限双胞通过映射导出；保留和像子条款则直接构建，因为 [FCocone F N] 和 [FCone F^op N] 是不同函子上的锥体。非空性。绝对性严格上比极限更强：在行进箭头 [_2] 中，[TwoY] 处的空圆锥是一个极限（[two_terminal_IsLimitCone]），但不是绝对的（[two_terminal_not_absolute]）；[TwoX] 处的常函子将其映射到 [TwoX]，它没有接收来自 [TwoY] 的箭头。对偶地，[two_initial_IsColimitCocone] 和 [two_initial_not_absolute]。
 
- 强度。四个 [Example] 在 [eq_refl] 处成立，并在探针中重述。每一个其他陈述都是谓词之间的映射；没有一个是态射之间的方程。多元宇宙，由 [About] 在每个常量上。[AbsoluteLimitCone@{jo co ch do u u0 u1 u2}] 位于 [J : Category@{jo ch ch}] 和 [C : Category@{co ch ch}] 之上，并且对 [D : Category@{do ch ch}] 进行量化：在任何对象层次上的每个目标 [do]，一个谓词的宇宙，具有 C 的同态与证明层次。它的类型 [u] 严格位于 [do] 和 [ch] 之上（"do < u"，"ch < u"），因此谓词位于它量化的类别之上，没有实例对每个类别进行量化，并且这些实例形成上述的有序族群。其同态层次是共享的，并且三个承载者施加了它，每个承载者在各自的位置上首先出现。(1) Preservation.v 的 [cone_leg] 和 [IsLimitCone] 是在裸绑定器上声明的，并将形状及其环境的同态级别最小化到一个同态级别：探针拒绝在其形状的同态集严格小于目标的图表上使用 [IsLimitCone N] (R7)，同时接受锥体本身 (C43)。由于 [Cone] 和 [Functor] 将一个形状的同态级别绑定到其环境的同态级别，并且 [F : C ⟶ D] 将 D 的同态级别约束在 C 之下，只有 [IsLimitCone (FCone F N)] 将 D 的同态级别固定到 C 上。(2) [Compose] (Theory/Functor.v) 给它的三个范畴赋予一个同态和证明级别，而 [FCone] 是在 [F ◯ K] 上：探针拒绝在 C 的同态严格低于 D 的情况下使用 [F ◯ K]，同时接受 [C ⟶ D] 本身 (R3, C10) 。(3) 对于余锥，
+ 强度。四个 [Example] 在 [eq_refl] 处成立，并在探针中重述。每一个其他陈述都是谓词之间的映射；没有一个是态射之间的方程。多元宇宙，由 [About] 在每个常量上。[AbsoluteLimitCone@{jo co ch do u u0 u1 u2}] 位于 [J : Category@{jo ch ch}] 和 [C : Category@{co ch ch}] 之上，并且对 [D : Category@{do ch ch}] 进行量化：在任何对象层次上的每个目标 [do]，一个谓词的宇宙，具有 C 的同态与证明层次。它的类型 [u] 严格位于 [do] 和 [ch] 之上（“do < u”，“ch < u”），因此谓词位于它量化的类别之上，没有实例对每个类别进行量化，并且这些实例形成上述的有序族群。其同态层次是共享的，并且三个承载者施加了它，每个承载者在各自的位置上首先出现。(1) Preservation.v 的 [cone_leg] 和 [IsLimitCone] 是在裸绑定器上声明的，并将形状及其环境的同态级别最小化到一个同态级别：探针拒绝在其形状的同态集严格小于目标的图表上使用 [IsLimitCone N] (R7)，同时接受锥体本身 (C43)。由于 [Cone] 和 [Functor] 将一个形状的同态级别绑定到其环境的同态级别，并且 [F : C ⟶ D] 将 D 的同态级别约束在 C 之下，只有 [IsLimitCone (FCone F N)] 将 D 的同态级别固定到 C 上。(2) [Compose] (Theory/Functor.v) 给它的三个范畴赋予一个同态和证明级别，而 [FCone] 是在 [F ◯ K] 上：探针拒绝在 C 的同态严格低于 D 的情况下使用 [F ◯ K]，同时接受 [C ⟶ D] 本身 (R3, C10) 。(3) 对于余锥，
  [Opposite_Functor]（Functor/Opposite.v）给出了它的源和目标的一个同态层级，而 [Cocone F] 是 [Cone (F^op)]（Structure/Cone.v）：
  对于源的同态集严格小于目标的函子，探针拒绝 [F^op]（R8）。这三者都不是结构性的。将相同的定义与它们的绑定器展开后编译时，其形状的或源的同态层级在另一个之下或相等：[cone_leg] 和 [IsLimitCone]（C41，在 R7 被拒绝时接受，C44），以及 [Opposite_Functor]（C42，在其上有锥，C45）；[Compose]，在三个同态层级上使用相同的两个义务证明，在一个草稿文件中测量过，未在这里固定。因此，提高上限是一个对这些绑定器进行全树注解的问题，而 #477 并未尝试。这个上限确实排除了Riehl的“任何函子”的一部分：当C的对象严格低于其同态集（C46）时，探针接受C的Yoneda嵌入作为目标；当它们严格高于时（R11），则拒绝。绑定器在谓词的每个常量及其闭包理论上都被写出，并且没有块携带方程；非空常量将其留给Rocq，而[empty_shape_cocone]仅出现在同态水平为[Set]的范畴上，载体（3）标识[_0]及其目标的同态水平，以及[_0]的同态水平为[Set]。[AbsoluteLimitCone_IsLimitCone] 消耗目标为 C 自身层级的实例 [AbsoluteLimitCone@{jo co ch co …}]，这就是“take F := Id”的意思；探针会拒绝来自高于 C 层级的目标对象（R4）的实例，这是该引理签名中的一个固定值，而不是谓词产生的内容：R4 的声明通过 [AbsoluteLimitCone_IsLimitCone_up]（C22）和 [AbsoluteLimitCone_down]（C23）被接受，它们的余极限双子也同样被接受（C24, C25）。[AbsoluteLimitCone_IsLimitCone_up@{jo co ch do …}] 承载“co <= do”，[AbsoluteLimitCone_down@{jo co ch do eo …}] 承载“do <= eo”，没有等式；它们的声明及其余极限双子命名了它们所消耗和产生的谓词实例（在四个常量中有六个显式的宇宙实例），因为仅由 C 限定的下界层级否则将被最小化为 C 的层级。保存、传输和图像条款保持 [do] 空闲，保存条款通过将极限属性作为单独的假设（在此消耗 [Id] 实例，该实例被识别为 [do] 与 [co]，已测量）来实现。非空结果处于同伦层级 [Set]，即 [_0] 和 [_2] 的层级。
 
@@ -234,7 +234,7 @@ Example FCone_Id_leg@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
   (N : Cone K) (x : J) : cone_leg (FCone Id N) x = cone_leg N x := eq_refl.
 
-(* "Take F := Id": the instance whose target is C's own levels, with the competing cone repackaged by Preservation.v's [cone_id_comp]. / “取 F := Id”：该实例的目标是 C 自身的层次，竞争圆锥通过 Preservation.v 的 [cone_id_comp] 重新打包。 *)
+(* “Take F := Id”: the instance whose target is C's own levels, with the competing cone repackaged by Preservation.v's [cone_id_comp]. / “取 F := Id”：该实例的目标是 C 自身的层次，竞争圆锥通过 Preservation.v 的 [cone_id_comp] 重新打包。 *)
 
 Definition AbsoluteLimitCone_IsLimitCone@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}

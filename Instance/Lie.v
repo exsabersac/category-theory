@@ -19,7 +19,7 @@ Generalizable All Variables.
 (*
    * * Lie algebras over a commutative ring, and the commutator functor
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, §IV.2, printed p. 89 (PDF p. 98), Exercise 3
    (maclane:IV.2:ex3).  The exercise reads, for K a field: with
    Lie_K the category of small Lie algebras over K -- morphisms
@@ -43,10 +43,10 @@ Generalizable All Variables.
    a special case of any of that.  The NOT DELIVERED list at the foot
    of this essay is the authority on the boundary.
 
-   THE ISSUE'S "Current state" IS STALE IN ONE CLAUSE, AND MEASURABLY
-   SO.  It says "There is no category of associative algebras, no
+   THE ISSUE'S “Current state” IS STALE IN ONE CLAUSE, AND MEASURABLY
+   SO.  It says “There is no category of associative algebras, no
    category of Lie algebras, no commutator functor and no
-   enveloping-algebra construction".  Three of those four are still
+   enveloping-algebra construction”.  Three of those four are still
    true; the FIRST is not.  [KAlgObject]/[KAlg] (commutative K-algebras)
    are Instance/Rng/Algebras.v, and [AAlgObject]/[AAlg] (associative
    unital K-algebras over a commutative base, with a CENTRAL structure
@@ -62,8 +62,8 @@ Generalizable All Variables.
    what a field would buy is on the enveloping side, not here.
 
    A DIFFERENT LIE DEFERRAL IS NOT DISCHARGED, and the two must not be
-   confused.  Instance/Rng/Frac.v's header descopes "THE LIE HALF of
-   Mac Lane's exercise -- the Lie algebra of a Lie GROUP as a functor"
+   confused.  Instance/Rng/Frac.v's header descopes “THE LIE HALF of
+   Mac Lane's exercise -- the Lie algebra of a Lie GROUP as a functor”
    (§I.3 Exercise 1), and Instance/Roster.v cites that descope
    under its Man entry.  That item needs smooth manifolds and is
    untouched here; this file is about abstract Lie algebras over a
@@ -90,8 +90,8 @@ Generalizable All Variables.
    what would become circular.  Neither [lie_br_smul_l] nor
    [lie_jacobi] is consumed.
 
-   - [lie_alt_of_antisym] goes back, under [TwoRegular M] -- "if
-   m + m ≈ 0 then m ≈ 0".  It consumes NO additivity law and no
+   - [lie_alt_of_antisym] goes back, under [TwoRegular M] -- “if
+   m + m ≈ 0 then m ≈ 0”.  It consumes NO additivity law and no
    scalar law: it is stated before the additivity hypotheses enter
    the section, so its type shows the economy rather than a comment
    claiming it.
@@ -99,8 +99,8 @@ Generalizable All Variables.
    So the primitive is chosen because the converse passage costs a
    hypothesis that fails in characteristic 2.  NO COUNTEREXAMPLE IS
    BUILT: nothing here exhibits a module with an antisymmetric
-   non-alternating bracket satisfying Jacobi, so "the two axioms are
-   inequivalent" is NOT a theorem of this file, only the located
+   non-alternating bracket satisfying Jacobi, so “the two axioms are
+   inequivalent” is NOT a theorem of this file, only the located
    hypothesis is.  Recorded in NOT DELIVERED.
 
    ** WHAT IS BUILT
@@ -265,9 +265,9 @@ Generalizable All Variables.
    sweep -- one matching `Definition <name> : RingObject` -- undercounts,
    [Int_Ring] itself (Theory/Algebra/Rig.v) being invisible to it
    because a universe annotation sits between the name and the colon.
-   Say name-anchored rather than "a sweep for [: RingObject]": the bare
+   Say name-anchored rather than “a sweep for [: RingObject]”: the bare
    literal DOES match that line, so only the anchored form misses it.
-   "At least two" is
+   “At least two” is
    what was actually checked, and it is all the argument needs.
 
    What actually distinguishes [UT2] is its HOM-SETOID, not its
@@ -1141,16 +1141,16 @@ Proof. apply lie_comm_of_commutative; intros p q; apply Z.mul_comm. Qed.
    Negative 4 (TYPING).  The carrier of a module does not determine the
    Lie structure on it, so the [LieObject] argument of [lie_br] cannot
    be recovered from its two element arguments.  READ THE MESSAGE
-   RATHER THAN THE INTENT: this is NOT the "Cannot infer this
-   placeholder" report one might expect, and it was classified
+   RATHER THAN THE INTENT: this is NOT the “Cannot infer this
+   placeholder” report one might expect, and it was classified
    RESOLUTION in a first draft on that expectation.  Elaboration fails
    at the ELEMENT argument, reporting
 
-   The term "ut2_e11" has type "ut2" while it is expected to have
-   type "carrier (lie_mod ?l)"
+   The term “ut2_e11” has type “ut2” while it is expected to have
+   type “carrier (lie_mod ?l)”
 
    -- a plain mismatch with the hole still visible in the expected
-   type, and with no "cannot unify" clause -- so the hole is never
+   type, and with no “cannot unify” clause -- so the hole is never
    reached as a placeholder to be solved.  That is also the content:
    [ut2] carries no trace of the bracket, and the control succeeds only
    because supplying [Lie_UT2] lets [carrier (lie_mod Lie_UT2)] reduce
@@ -1176,7 +1176,7 @@ Proof. apply lie_comm_of_commutative; intros p q; apply Z.mul_comm. Qed.
 
    负数 3（类型）。一个裸模块同态不是 [LieHom]：括号条款是真实的数据，而不是可以从模块映射中恢复的属性。控制使用提供的条款构建相同的 [LieHom]。负 4（正在输入）。模块的承载体并不决定其上的李代数结构，所以 [LieObject] 的 [lie_br] 参数不能从其两个元素参数中恢复。请阅读消息而非意图：这并不是人们可能期望的“无法推断此占位符”报告，并且在第一版草稿中基于这种期望将其归类为 RESOLUTION。元素参数的展开失败，报告如下：
 
-   术语 "ut2_e11" 的类型为 "ut2"，而预期其类型为 "carrier (lie_mod ?l)"-- 一个与期望类型的简单不匹配，而且在“无法统一”子句中仍然可见洞——所以该洞从未作为需要解决的占位符被访问。这也是内容：
+   术语 “ut2_e11” 的类型为 “ut2”，而预期其类型为 “carrier (lie_mod ?l)”-- 一个与期望类型的简单不匹配，而且在“无法统一”子句中仍然可见洞——所以该洞从未作为需要解决的占位符被访问。这也是内容：
    [ut2] 没有携带括号的痕迹，控制成功只是因为提供 [Lie_UT2] 使 [carrier (lie_mod Lie_UT2)] 能够简化为 [ut2]。
 
    没有可形成性（宇宙）且没有解决负面被传递，而且它们的缺失都不是疏漏：该文件未声明宇宙绑定器，也未检查约束块，所有在下面可能失败的详细说明都在任何实例或占位符未被留下之前因类型不匹配而失败。四个负面结果中有两个是转换（CONVERSION），两个是类型（TYPING）。仪器检查：一个不存在的名字，因此 [Fail] 机制本身在不参考此处声明的任何常量的情况下进行操作。

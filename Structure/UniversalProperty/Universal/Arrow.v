@@ -22,7 +22,7 @@ Require Import Category.Theory.Universal.Arrow.
  through a unique g : a ~> d (see Theory/Universal/Arrow.v, where the same
  data is packaged as [AUniversalArrow] and, equivalently, as an initial
  object of the comma category =(c) ↓ U).  Equivalently — this is the
- "universal property ⟺ representability" equivalence — the object a together
+ “universal property ⟺ representability” equivalence — the object a together
  with the assignment g ↦ fmap[U] g ∘ u exhibits a natural isomorphism of
  copresheaves
 
@@ -103,7 +103,7 @@ Section UniversalArrowUniversalProperty.
       simpl in M; rewrite <- M; clear M;
       assert (K := (@iso_to_from _ _ _ X)); simpl in K; rewrite K;
                now autorewrite with categories).
-    - (* This obligation is discharged directly by the tactic sequence below. It relies on setoid rewriting that handles universe polymorphism well enough to close the goal, available on every supported version (Coq >= 8.19, Rocq 9.0 and 9.1). The development stays axiom-free: [Print Assumptions UniversalArrowIsUniversalProperty] reports "Closed under the global context" on Rocq 9.1. / 这一义务直接通过下面的策略序列来完成。它依赖于集合重写（setoid rewriting），能够很好地处理宇宙多态性，从而完成目标，在所有支持的版本（Coq >= 8.19, Rocq 9.0 和 9.1）中都可用。开发保持无公理状态：[Print Assumptions UniversalArrowIsUniversalProperty] 在 Rocq 9.1 上报告“在全局上下文中关闭”。 *)
+    - (* This obligation is discharged directly by the tactic sequence below. It relies on setoid rewriting that handles universe polymorphism well enough to close the goal, available on every supported version (Coq >= 8.19, Rocq 9.0 and 9.1). The development stays axiom-free: [Print Assumptions UniversalArrowIsUniversalProperty] reports “Closed under the global context” on Rocq 9.1. / 这一义务直接通过下面的策略序列来完成。它依赖于集合重写（setoid rewriting），能够很好地处理宇宙多态性，从而完成目标，在所有支持的版本（Coq >= 8.19, Rocq 9.0 和 9.1）中都可用。开发保持无公理状态：[Print Assumptions UniversalArrowIsUniversalProperty] 在 Rocq 9.1 上报告“在全局上下文中关闭”。 *)
       simpl; assert (M := @preyoneda D^op _ d _ (to X));
       simpl in M; intro A; rewrite <- M in A; clear M;
       apply (proper_morphism (from X d)) in A;

@@ -16,9 +16,9 @@ Generalizable All Variables.
 (*
    * * Normal subgroups, the quotient group, and its universal property
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.1
    (printed pp. 57-59) [maclane:III.1:construction5, maclane:III.1:ex4];
-   Awodey, "Category Theory", 2nd ed., §4.2 (printed pp. 83-85)
+   Awodey, “Category Theory”, 2nd ed., §4.2 (printed pp. 83-85)
    [awodey:4.2:construction-factor-group, awodey:4.2:thm4].
    nLab: https://ncatlab.org/nlab/show/quotient+group
    Wikipedia: https://en.wikipedia.org/wiki/Quotient_group
@@ -31,9 +31,9 @@ Generalizable All Variables.
    consequences from it.
 
    ERRATUM, recorded here rather than only in a commit message.  Issue
-   #313's "Current state in the library" section says the area is
-   "Absent", that a search for quotient/normal/coset vocabulary "returns
-   zero formal hits", and that "no category Grp exists".  All three were
+   #313's “Current state in the library” section says the area is
+   “Absent”, that a search for quotient/normal/coset vocabulary “returns
+   zero formal hits”, and that “no category Grp exists”.  All three were
    stale when this file was written: #255 landed Instance/Grp.v with
    [GrpObject], [GrpHom], [Grp], [Grp_Forget], [Grp_Zero],
    [Grp_Cartesian] and [Grp_injectivity_is_monic], and the tree also
@@ -51,12 +51,12 @@ Generalizable All Variables.
    carries a DECIDABILITY field [sg_dec]; it is therefore not a donor
    here, since nothing below decides membership.
 
-   THE FIVE FACTS.  Instance/Grp/Abelianization.v's "SCOPE OF THE
-   QUOTIENT" paragraph (at the parent commit) disclosed that its
+   THE FIVE FACTS.  Instance/Grp/Abelianization.v's “SCOPE OF THE
+   QUOTIENT” paragraph (at the parent commit) disclosed that its
    quotient by the commutator subgroup consumes only five properties of
-   that subgroup -- "≈-saturation, unit, closure under product and
-   inverse, normality" -- and that a generic quotient "is extractable by
-   abstraction over exactly those five facts", left as future work.  That
+   that subgroup -- “≈-saturation, unit, closure under product and
+   inverse, normality” -- and that a generic quotient “is extractable by
+   abstraction over exactly those five facts”, left as future work.  That
    is what [Subgroup] and [NormalSubgroup] below are: four laws and one
    more, no membership decision, no smallness, no choice.  The extraction
    is carried out rather than merely announced -- Abelianization.v is
@@ -66,9 +66,9 @@ Generalizable All Variables.
    five fields with the five facts it had already proved.
 
    WHAT THE UNIFICATION DOES AND DOES NOT COVER, measured.  The same
-   disclosure counts "three unshared quotient constructions
+   disclosure counts “three unshared quotient constructions
    (Instance/Ab.v's [ab_coset_eq], Instance/Grp/Epi.v's [Grp_Coset], and
-   this one)".  Reading the two other constructions' actual record types
+   this one)”.  Reading the two other constructions' actual record types
    corrects the count:
 
    - Instance/Grp/Epi.v's [Grp_Coset] is a [SetoidObject], NOT a
@@ -84,7 +84,7 @@ Generalizable All Variables.
    - Instance/Ab.v's [ab_coset_eq] IS a quotient group, of an
    abelian group by the image of a homomorphism.  (An earlier revision
    of this sentence cited where that definition stood
-   before the PR "algebraic carriers are sets" (2026-09-17); the same
+   before the PR “algebraic carriers are sets” (2026-09-17); the same
    PR also turned the relation into a [Prop] -- it is now Coq's [ex],
    spelled [(exists a, …)%type] -- so it is no longer a [Type]-valued
    sigma either.)  It is not routed
@@ -104,8 +104,8 @@ Generalizable All Variables.
 
    THE SETOID QUOTIENT.  As in Abelianization.v, G/N needs no new
    carrier: it is G's carrier under the coarser relation
-   [quot_rel N a b := N (a * b⁻¹)] -- or rather, since the PR "algebraic
-   carriers are sets" (2026-09-17), under its PROPOSITIONAL TRUNCATION
+   [quot_rel N a b := N (a * b⁻¹)] -- or rather, since the PR “algebraic
+   carriers are sets” (2026-09-17), under its PROPOSITIONAL TRUNCATION
    [inhabited (quot_rel N a b)], the relation itself staying [Type]-valued
    because [sub_mem] does.  The equivalence laws are the group
    laws; multiplication and inversion respect the relation by NORMALITY,
@@ -168,7 +168,7 @@ Generalizable All Variables.
    本文件证明了这种泛性，而 Instance/Grp/Quotient/Isomorphism.v 则从中
    推导出了已命名的结果。勘误，记录在这里，而不仅仅是在提交信息中。Issue #313 的“库中的当前状态”部分说该区域是“缺失的”，搜索 quotient/normal/coset 词汇“没有返回正式匹配”，并且“没有 Grp 类别存在”。当此文件编写时，这三点信息都是过时的：#255 已经引入了 Instance/Grp.v，其中包含 [GrpObject]、[GrpHom]、[Grp]、[Grp_Forget]、[Grp_Zero]、[Grp_Cartesian] 和 [Grp_injectivity_is_monic]，并且代码树还包含 Instance/Grp/Abelianization.v、Instance/Grp/Epi.v、Instance/Grp/Center.v、Instance/Grp/Free.v 和 Instance/Ab.v，其中几个进行了某些对象的商操作。缺失的部分，并且是以父提交为衡量标准，而不是根据问题本身的说法，是一个 [NormalSubgroup] 接口：在父提交时，该标记在树中恰好出现过一次，位于 Instance/Grp/Abelianization.v 中，并且它出现在一个说明该类不存在的文字说明中。（该段落被同一次更改重写，因此行号是关于父提交的说明，而不是关于当前树的状态。）树中唯一的 [Subgroup] 记录是 Instance/Ab/Character/Finite.v，它位于 [AbObject] 之上，并携带一个 DECIDABILITY 字段 [sg_dec]；因此，它在此处不是捐赠者，因为下面没有任何东西决定成员资格。五个事实。Instance/Grp/Abelianization.v 中“商的范围”（SCOPE OF THE QUOTIENT）段落（在父提交处）披露，其通过交换子子群的商仅消耗了该子群的五个属性——“≈-饱和性、单位元、在乘积和逆元下的封闭性、正规性”——并且一个一般性商“可以通过对正好这五个事实的抽象来提取”，留作未来工作。这正是下面的 [Subgroup] 和 [NormalSubgroup]：四条定律和另外一条，没有成员决定、没有小性、没有选择。提取是被执行的，而不仅仅是宣布——Abelianization.v 在同一次更改中被重构，以从泛型引理中获得其五个同余引理，其陈述完全相同（Theory/EckmannHilton.v 的先例），其 [CommutatorNS] 为这五个字段提供了它已经证明的五个事实。
 
-   统一所覆盖和不覆盖的内容，经测量。同样的披露计算 "三个未共享的商构造（Instance/Ab.v 的 [ab_coset_eq]、Instance/Grp/Epi.v 的 [Grp_Coset]，以及这个构造）"。阅读另外两个构造的实际记录类型修正了计数：- Instance/Grp/Epi.v 的 [Grp_Coset] 是一个 [SetoidObject]，不是 [GrpObject]，并且它是任意同态映射的像的陪集空间。Epi.v 的整个论证都基于该像可能是非正规子群（它自己的标题、之后的两段以及见证 [grp_two_sym3] 都明确说明了非正规情况是该文件存在的原因）。因此它不是一个商群，也不是下面任何东西的实例，并且也不可能是：一个正规子群的商群正是它拒绝假定的内容。它保持不变。- 实例/Ab.v 的 [ab_coset_eq] 是一个商群，由一个阿贝尔群通过同态的像得到的。（这句话的早期修订版引用了该定义在 PR “代数承载是集合” 之前的位置（2026-09-17）；相同的 PR 也将该关系变为 [Prop] —— 它现在是 Coq 的 [ex]，拼写为 [(exists a, …)%type] —— 所以它也不再是 [Type] 值的西格玛。）它也没有通过这个文件路由，其原因是依赖方向而非数学障碍：[AbObject] 扩展 [CMonObject]，实例/Ab.v 既不需要实例/Grp.v，也不需要它下面的任何东西，而树中的唯一桥梁 [Ab_to_GrpOb] 位于 Abelianization.v 的下游。路由
+   统一所覆盖和不覆盖的内容，经测量。同样的披露计算 “三个未共享的商构造（Instance/Ab.v 的 [ab_coset_eq]、Instance/Grp/Epi.v 的 [Grp_Coset]，以及这个构造）”。阅读另外两个构造的实际记录类型修正了计数：- Instance/Grp/Epi.v 的 [Grp_Coset] 是一个 [SetoidObject]，不是 [GrpObject]，并且它是任意同态映射的像的陪集空间。Epi.v 的整个论证都基于该像可能是非正规子群（它自己的标题、之后的两段以及见证 [grp_two_sym3] 都明确说明了非正规情况是该文件存在的原因）。因此它不是一个商群，也不是下面任何东西的实例，并且也不可能是：一个正规子群的商群正是它拒绝假定的内容。它保持不变。- 实例/Ab.v 的 [ab_coset_eq] 是一个商群，由一个阿贝尔群通过同态的像得到的。（这句话的早期修订版引用了该定义在 PR “代数承载是集合” 之前的位置（2026-09-17）；相同的 PR 也将该关系变为 [Prop] —— 它现在是 Coq 的 [ex]，拼写为 [(exists a, …)%type] —— 所以它也不再是 [Type] 值的西格玛。）它也没有通过这个文件路由，其原因是依赖方向而非数学障碍：[AbObject] 扩展 [CMonObject]，实例/Ab.v 既不需要实例/Grp.v，也不需要它下面的任何东西，而树中的唯一桥梁 [Ab_to_GrpOb] 位于 Abelianization.v 的下游。路由
    将 Ab.v 的商通过 [GrpObject] 级别的构造，会将该桥移动到上游，并使 Ab.v 对 Grp 产生依赖。这是一个可辩护的更改，但在此处故意没有执行。
 
    因此，在三者中，一个是统一的，一个被证明根本不是该概念的实例，另一个已被拒绝并说明了原因。没有引入第四个商构造：下方的所有内容，以及两个兄弟文件中的所有内容，都是通过 [quot_rel] 来进行商运算的。集合商。与 Abelianization.v 中一样，G/N 不需要新的载体：它是在较粗关系 [quot_rel N a b := N (a * b⁻¹)] 下的 G 的载体——或者更确切地说，由于公理“代数载体是集合”（2026-09-17），是在其命题截断 [inhabited (quot_rel N a b)] 下，关系本身保持 [Type] 值，因为 [sub_mem] 也是如此。等价律就是群律；乘法和取逆通过正规性遵守该关系，这就是 [ns_conj] 的作用所在。因此，G/N 的元素是 G 的元素，并且从不形成陪集对象 —— 这很方便，但这并不是使下面推导普遍化的原因：同级文件中的论证是通过 [quot_universal_element] 和调解者的唯一性进行的，而不是通过元素代表，并且当确实发生元素级步骤时，会被明确指出。这里交付的是什么。[Subgroup] 和 [NormalSubgroup]；子群作为 [Grp] 的一个对象及其包含；ZW43WZZ 与投影 [quot_proj]；同态函子 [KillsFunctor N : Grp ⟶ Sets] 用于消去 N，以及 [quot_universal_element]，声明 ⟨G/N, p⟩ 是它的一个普遍元素，基于 #303 的 [AUniversalElement] —— CLASS 被直接使用，并且 Theory/Universal/Element.v 的 Yoneda 封装（[universal_element_yoneda]、[universal_element_representation]）未被触碰，因此该封装携带的宇宙限制（对象、同态及证明宇宙认同）未被继承；同级文件同样到达 [universal_element_iso]，它位于该文件的 Yoneda-free 部分；Awodey 的定理 4.4 作双条件 [hom_theorem]；同态的核作为正规子群（[KernelNS]，从 #301 移植）；以及被命名和分割的退化情况由证据证明（[TrivialNS]、[TotalNS] 以及 S3 证人）。这里没有提供的内容。没有子群格，没有指标，没有拉格朗日定理，没有对应定理，没有可解性；没有 [HasCokernels] 对 [Grp] 的实例（单个映射的余核在 Colimit 的对应部分中已经构建，但并没有为每个映射提供余核的选择）；没有超出第二同构定理所涵盖的 [Subgroup] 对 [Subgroup] 的演算；也没有与 Instance/Ab/Character/Finite.v 中可判定的 [Subgroup] 的比较。没有通用箭头打包，原因是结构性的，而不是努力不足。Theory/Universal/Element.v 的 [universal_element_arrow_subsumption] 将函子 H 的通用元素与通用箭头联系起来，只有当 H 的形状为 d ↦ Hom(c, S d) 且 S 是一个函子时才成立。[KillsFunctor N] 不符合：它是 Hom(G, −) 的子函子，被杀死条件限定，而该条件提到了 N，这是附加到 G 的数据，而不是 [Grp] 提供的函子输出的数据。因此，通用元素的解读是 Mac Lane §III.1 所陈述的，也是此处采用的唯一解读；没有声称存在 [AUniversalArrow]。
@@ -182,10 +182,10 @@ Generalizable All Variables.
  Instance/Grp/Epi.v's [GrpImage] and Instance/Ab/Character/Finite.v's
  [sg_mem].
 
- CORRECTION.  An earlier revision gave the REASON as "the library's `≈` is
+ CORRECTION.  An earlier revision gave the REASON as “the library's `≈` is
  itself [Type]-valued, so a [Prop]-valued membership could not be
- eliminated into a hom-setoid equation".  That reason is gone: since the PR
- "algebraic carriers are sets" (2026-09-17) a [GrpObject] carries
+ eliminated into a hom-setoid equation”.  That reason is gone: since the PR
+ “algebraic carriers are sets” (2026-09-17) a [GrpObject] carries
  [grp_prop], and a [Prop] hypothesis reaches an `≈` goal through
  [pequiv_to] (Lib/Setoid/Propositional.v).  The CONCLUSION stands, for a
  different reason: consumers READ THE WITNESS.  Instance/Grp/Quotient/
@@ -251,15 +251,15 @@ Definition sub_carrier {G : GrpObject} (S : Subgroup G) : Type :=
   { a : carrier G & sub_mem S a }.
 
 (*
- The carrier setoid is written INLINE, as it was before the PR "algebraic
- carriers are sets" (2026-09-17), and [grp_prop] is supplied as a trailing
+ The carrier setoid is written INLINE, as it was before the PR “algebraic
+ carriers are sets” (2026-09-17), and [grp_prop] is supplied as a trailing
  obligation instead of as a field.  An intermediate revision named the setoid
  -- a [Program] record literal cannot carry a [PropEquiv] FIELD naming a
  setoid written inline in the same literal -- but naming it puts one more
  unfolding step between the expected type of each [existT] below and the
  sigma it builds, and Coq 8.19/8.20 then infer a CONSTANT predicate and
- refuse the term ("has type ∃ _ : …, … while it is expected to have type
- carrier …"; Instance/Rng/Zp.v's header records the trap, and
+ refuse the term (“has type ∃ _ : …, … while it is expected to have type
+ carrier …”; Instance/Rng/Zp.v's header records the trap, and
  Instance/Grp/Center.v records the same one for [mk_central]).  Rocq 9.1
  accepts either.  The obligation route keeps every term below exactly as the
  released toolchains already compiled it, which is why it is taken here and
@@ -458,7 +458,7 @@ End QuotientRelation.
  The quotient's `≈` is the PROPOSITIONAL TRUNCATION of [quot_rel].
 
  An earlier revision wrote [equiv := quot_rel N] directly.  Since the PR
- "algebraic carriers are sets" (2026-09-17) a [GrpObject] carries
+ “algebraic carriers are sets” (2026-09-17) a [GrpObject] carries
  [grp_prop], and [quot_rel N a b] is [sub_mem N (a * b⁻¹)], a [Type]: the
  membership witness stays [Type]-valued (its consumers read it -- see the
  correction at the [Subgroup] record above), so the quotient's own equality
@@ -1071,12 +1071,12 @@ Proof. simpl; discriminate. Qed.
 (* Nor does the quotient projection identify the two generators, so S3/A3 has at least two elements. / 商投影也不将这两个生成元识别为相同，因此 S3/A3 至少有两个元素。 *)
 (*
  The quotient's `≈` is the truncation of [quot_rel] since the PR
- "algebraic carriers are sets" (2026-09-17), so the hypothesis is unwrapped
+ “algebraic carriers are sets” (2026-09-17), so the hypothesis is unwrapped
  before the computation; the goal [False] is a [Prop], which is what makes
  the elimination legal. 
 
  --------
- 商  `≈`  是  [quot_rel]  的截断，因为 PR "代数承载是集合"（2026-09-17），所以假设在计算之前被展开；目标  [False]  是一个  [Prop] ，这使得消去合法。
+ 商  `≈`  是  [quot_rel]  的截断，因为 PR “代数承载是集合”（2026-09-17），所以假设在计算之前被展开；目标  [False]  是一个  [Prop] ，这使得消去合法。
 *)
 Theorem S3_mod_A3_two_elements :
   grp_map (quot_proj A3) S3_s ≈ grp_map (quot_proj A3) s3_unit → False.

@@ -19,7 +19,7 @@ Reserved Infix "⊗" (at level 30, right associativity).
 
 (*
  nLab: https://ncatlab.org/nlab/show/binoidal+category
- Wikipedia: none (no "binoidal category" article; the notion is covered
+ Wikipedia: none (no “binoidal category” article; the notion is covered
  under https://en.wikipedia.org/wiki/Premonoidal_category)
 
  A binoidal category is a category C with an object x ⊗ y for each pair of
@@ -33,7 +33,7 @@ Reserved Infix "⊗" (at level 30, right associativity).
 
  These need not assemble into a bifunctor: tensoring f : a ~> b on the left
  and f' : a' ~> b' on the right may be applied in two orders, giving in
- general distinct composites a ⊗ a' ~> b ⊗ b'. This is the "premagmoidal"
+ general distinct composites a ⊗ a' ~> b ⊗ b'. This is the “premagmoidal”
  precursor to a premonoidal category, which adds a unit and central
  coherence isomorphisms. The premonoidal successor is
  Structure/Premonoidal.v; the funny-tensor characterization of

@@ -35,21 +35,21 @@ Generalizable All Variables.
  比较函子 
 *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.5 "Free Algebras for a Monad",
+(* Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+         Springer GTM 5, 1998, §VI.5 “Free Algebras for a Monad”,
          printed pp. 147-148 (PDF pp. 156-157): the construction opening
          the section, p. 147 — maclane:VI.5:construction1; Theorem 2,
          p. 148 — maclane:VI.5:thm2; Exercises 1 and 2, p. 148 —
          maclane:VI.5:ex1, maclane:VI.5:ex2.  Exercise 3
          (maclane:VI.5:ex3) is Monad/Kleisli/Comparison/Examples.v.
-   Book: Riehl, "Category Theory in Context", Lemma 5.2.14 and the
+   Book: Riehl, “Category Theory in Context”, Lemma 5.2.14 and the
          paragraph after it, printed p. 194 (PDF p. 214) —
          riehl:5.2:lem14
    nLab: https://ncatlab.org/nlab/show/Kleisli+category
    nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
 
    WHAT THE BOOKS SAY, read from the page images and the PDF.  Mac Lane,
-   p. 147: "Given an adjunction ⟨F, G, φ⟩ : X ⇀ A, any full subcategory
+   p. 147: “Given an adjunction ⟨F, G, φ⟩ : X ⇀ A, any full subcategory
    B ⊂ A which contains all the objects Fx for x ∈ X leads to another
    adjunction ⟨F_B, G_B, φ_B⟩ : X ⇀ B where the functor F_B is just F
    with its codomain restricted from A to B, G_B is G with domain
@@ -57,25 +57,25 @@ Generalizable All Variables.
    to a bijection φ_B hom_B(F_B x, b) = hom_A(Fx, b) ≅ hom_X(x, Gb) =
    hom_X(x, G_B b), which is manifestly natural in x and b.  Moreover,
    this second adjunction φ_B defines in X the same monad as did the
-   first. ... The "smallest" such adjunction will be the one where B is
-   FX, the full subcategory of A with objects all the "free" objects
-   Fx ∈ A."  Theorem 2 (The comparison theorem for the Kleisli
-   construction), p. 148: "Let ⟨F, G, η, ε⟩ : X ⇀ A be an adjunction and
+   first. ... The ”smallest“ such adjunction will be the one where B is
+   FX, the full subcategory of A with objects all the ”free“ objects
+   Fx ∈ A.”  Theorem 2 (The comparison theorem for the Kleisli
+   construction), p. 148: “Let ⟨F, G, η, ε⟩ : X ⇀ A be an adjunction and
    T = ⟨GF, η, GεF⟩ the monad it defines in X.  Then there is a unique
    functor L : X_T → A with GL = G_T and LF_T = F.  We leave the proof to
    the reader, noting that the uniqueness of L requires another (and
    somewhat different) application of Proposition IV.7.1 on maps of
-   adjunctions."  Exercise 1: "Construct the Kleisli comparison functor
+   adjunctions.”  Exercise 1: “Construct the Kleisli comparison functor
    L, prove its uniqueness, and show that the image of X_T under L is the
-   full subcategory FX of A with objects all Fx, x ∈ X."  Exercise 2:
-   "Show that the restriction of L gives an equivalence of categories
-   X_T → FX."  Riehl, Lemma 5.2.14: "Let (T, η, µ) be a monad on C.  The
+   full subcategory FX of A with objects all Fx, x ∈ X.”  Exercise 2:
+   “Show that the restriction of L gives an equivalence of categories
+   X_T → FX.”  Riehl, Lemma 5.2.14: “Let (T, η, µ) be a monad on C.  The
    canonical functor K : C_T → C^T from the Kleisli category to the
    Eilenberg–Moore category is full and faithful and its image consists
-   of the free T-algebras", its proof setting Kc := (Tc, µ_c); and after
-   it: "Lemma 5.2.14 also tells us precisely when the Kleisli and
+   of the free T-algebras”, its proof setting Kc := (Tc, µ_c); and after
+   it: “Lemma 5.2.14 also tells us precisely when the Kleisli and
    Eilenberg–Moore categories are equivalent: this is the case when all
-   algebras are free."
+   algebras are free.”
 
    CONSTRUCTION 1.  Over F ⊣ G, a [Subcategory] S of A (Construction/
    Subcategory.v), its fullness [full : Full A S] and the membership
@@ -83,7 +83,7 @@ Generalizable All Variables.
    [Restricted_Right G S] is G_B, G after the inclusion; and
    [Restricted_adj_iso] is φ_B, the given transposition on the first
    components, from which [Build_Adjunction'] makes
-   [Restricted_Adjunction : F_B ⊣ G_B].  "The same monad": with the two
+   [Restricted_Adjunction : F_B ⊣ G_B].  “The same monad”: with the two
    monads Monad/Comparison.v's [Adjunction_Induced_Monad] of the two
    adjunctions, G_B F_B and G F agree on objects and on arrows
    ([Restricted_monad_obj], [Restricted_monad_map]), and so do η and
@@ -146,8 +146,8 @@ Generalizable All Variables.
    concludes that L0 and L are equal there.  At L0 := L the delivered
    [Kleisli_Comparison_Free_strict] and [Kleisli_Comparison_Forget_strict]
    satisfy it, the coherence at [eq_refl] (control C42).  Mac Lane's
-   route, "another (and somewhat different) application of Proposition
-   IV.7.1", is [Kleisli_Comparison_unique_via_map], placed beside
+   route, “another (and somewhat different) application of Proposition
+   IV.7.1”, is [Kleisli_Comparison_unique_via_map], placed beside
    [Kleisli_Comparison_Map]: the two squares of L0 make the
    [AdjSquares] [Kleisli_Comparison_Squares_of], whose unit condition
    [Kleisli_Comparison_Squares_of_unit] is immediate, the unit of the
@@ -246,9 +246,9 @@ Generalizable All Variables.
    C33, C34).
 
    RIEHL'S OWN CONSTRUCTION OF K.  Her proof takes K from her
-   Proposition 5.2.13 at the Kleisli adjunction: "Kc := (Tc, µ_c), Tc
+   Proposition 5.2.13 at the Kleisli adjunction: “Kc := (Tc, µ_c), Tc
    being the object U_T c and µ_c being U_T of the component of the
-   counit of the Kleisli adjunction at the object c".  In the tree that
+   counit of the Kleisli adjunction at the object c”.  In the tree that
    is Monad/Comparison.v's [EM_Comparison] at Monad/Kleisli/Adjunction.v's
    [Kleisli_Adjunction], constructible since PR #201 (merged 2026-07-19)
    brought [EM_Comparison].  It forgets to the functor of [Kleisli_EM]
@@ -268,8 +268,8 @@ Generalizable All Variables.
    algebra is isomorphic in C^T to a free algebra EM_Free c, the c and
    the isomorphism chosen; [Kleisli_EM_equivalence_iff] proves
    [EquivalenceOfCategories Kleisli_EM ↔ EveryAlgebraFree], both
-   directions constructive.  "Equivalent" is read as "K is an
-   equivalence"; an equivalence of C_T with C^T through some other
+   directions constructive.  “Equivalent” is read as “K is an
+   equivalence”; an equivalence of C_T with C^T through some other
    functor is not what is proved, and is not claimed.  The premise is
    witnessed in the tree: at the one-point monad of Exercise 3 every
    algebra is free (Examples.v's [kleisli_point_every_algebra_free]), so
@@ -280,11 +280,11 @@ Generalizable All Variables.
 
    THE ISSUE'S PREMISES, dated.  Issue #475 was filed on 2026-07-23, and
    its appended section was added on 2026-07-31 (the body's edit
-   history).  Its "the comparison functor L is absent", "no functor
-   Kleisli → A for an arbitrary resolution", "no image-is-FX
-   characterization" and "no X_T ≃ FX equivalence" were accurate when
-   filed and held until this change.  "The tree's sole comparison
-   functor is EM_Comparison", the opposite direction, was accurate when
+   history).  Its “the comparison functor L is absent”, “no functor
+   Kleisli → A for an arbitrary resolution”, “no image-is-FX
+   characterization” and “no X_T ≃ FX equivalence” were accurate when
+   filed and held until this change.  “The tree's sole comparison
+   functor is EM_Comparison”, the opposite direction, was accurate when
    filed for comparison functors of monads (Theory/Lawvere/Monad.v's
    [Lawvere_EM_Comparison], of 2026-07-15, is [EM_Comparison] at one
    adjunction; Construction/Grothendieck/RoundTrip.v's [RT_Comparison]
@@ -293,8 +293,8 @@ Generalizable All Variables.
    category of a fibration) and has been stale since PR #1343 (merged
    2026-09-30), whose Instance/SupLat.v builds [SupLat_to_EM] into an
    Eilenberg–Moore category by hand; every such functor of monads points
-   into C^T.  "No restriction-of-an-adjunction-to-a-full-subcategory
-   construction" was accurate when filed.  For Mac Lane's form, the left
+   into C^T.  “No restriction-of-an-adjunction-to-a-full-subcategory
+   construction” was accurate when filed.  For Mac Lane's form, the left
    adjoint's codomain restricted, it held until this change
    (LeftInverse.v's [ImageTo], 2026-09-02, is F_B at B = FX on both
    actions, with no adjunction stated); under the issue's words it has
@@ -303,24 +303,24 @@ Generalizable All Variables.
    sides to its fixed points ([fixed_adjunction]), and PR #1334 (merged
    2026-09-27), whose Instance/Top/Separation.v restricts a reflection
    to a full subcategory containing the reflective one ([restrict_adj]),
-   the dual of construction 1 for reflections.  "'X_T is the full
+   the dual of construction 1 for reflections.  “'X_T is the full
    subcategory of free algebras' occurs only as header prose in
-   Monad/Kleisli.v" was inaccurate when filed: Monad/Eilenberg/Moore.v
+   Monad/Kleisli.v” was inaccurate when filed: Monad/Eilenberg/Moore.v
    (2026-06-17) and Monad/Eilenberg/Moore/Adjunction.v (2026-07-08) said
    the same, and Comonad/Duality.v (2026-07-15) asserted the comparison
    functor out of the Kleisli category; the four carry CORRECTION (#475)
-   notes.  Monad/Adjunction.v's "the Kleisli (initial) and
-   Eilenberg–Moore (terminal) resolutions" (2026-06-17) asserts only
+   notes.  Monad/Adjunction.v's “the Kleisli (initial) and
+   Eilenberg–Moore (terminal) resolutions” (2026-06-17) asserts only
    Theorem VI.5.3's initiality and terminality, and is left to #476
-   without a note.  The appended box's "no functor C_T ⟶ C^T exists
-   anywhere in the tree" was accurate when appended only with C^T the
+   without a note.  The appended box's “no functor C_T ⟶ C^T exists
+   anywhere in the tree” was accurate when appended only with C^T the
    algebras of T itself: [EM_Comparison] at [Kleisli_Adjunction] had
    been constructible since PR #201 (merged 2026-07-19), into the
    algebras of the monad the Kleisli adjunction induces (above).  No
    commit that wrote one of the four corrected sentences has
    Monad/Comparison.v in its tree (checked by ancestry): that functor
    was not constructible when any of them was written.  The issue's
-   "CLAUDE.md Key Files index" was accurate when filed and has been stale
+   “CLAUDE.md Key Files index” was accurate when filed and has been stale
    since PR #1284 (merged 2026-09-09), which moved the index to
    docs/INDEX.md.
 
@@ -399,8 +399,8 @@ Generalizable All Variables.
    C_T, and L is refused the type C_T ⟶ C_T by typing (R13; its type is
    control C41), so #476 needs L transported along an isomorphism of
    monads, or the Kleisli functor of a morphism of monads, which
-   Monad/Morphism.v records as not built.  Riehl's two witnesses of "all
-   algebras free", the free vector space monad and the maybe monad: each
+   Monad/Morphism.v records as not built.  Riehl's two witnesses of “all
+   algebras free”, the free vector space monad and the maybe monad: each
    is conditional by the arguments issue #1359 records, which are not
    compiled here (Blass, Contemporary Mathematics 31, 1984, derives the
    axiom of choice in ZF from every vector space having a basis, over a
@@ -470,7 +470,7 @@ Proof using Adj full mem.
 Defined.
 
 (*
-"This second adjunction defines in X the same monad as did the first":
+“This second adjunction defines in X the same monad as did the first”:
    the endofunctors agree on both actions, and so do η and μ = G ε F. 
 
 --------
@@ -1176,8 +1176,8 @@ Definition Kleisli_EM_Image_Equivalence :
     Kleisli_EM_Image_surjective.
 
 (*
-"Free" is "isomorphic in C^T to a free algebra", with the free algebra
-   chosen; "equivalent" is "K is an equivalence". 
+“Free” is “isomorphic in C^T to a free algebra”, with the free algebra
+   chosen; “equivalent” is “K is an equivalence”. 
 
 --------
 “自由”是“在 C^T 中与自由代数同构”，具有自由代数

@@ -14,7 +14,7 @@ Generalizable All Variables.
  morphisms; equivalently |hom(x, y)| is 1 when x = y and 0 when x ≠ y.  Here
  the object set is the two-element {TwoDX, TwoDY}, so the only arrows are the
  identities TwoDIdX, TwoDIdY.  Unlike the interval category 2 of
- [Instance/Two.v] (the "walking arrow", which carries one non-identity arrow
+ [Instance/Two.v] (the “walking arrow”, which carries one non-identity arrow
  TwoX ~> TwoY), there is NO arrow between the two distinct objects in either
  direction (hence both TwoDHom_X_Y_absurd and TwoDHom_Y_X_absurd below).
 

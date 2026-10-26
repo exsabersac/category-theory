@@ -49,10 +49,10 @@ Generalizable All Variables.
    an object-level equality, together with the unit statement
    [free_ring_composites_agree_unit].
 
-   THE ISSUE'S "CURRENT STATE" IS BADLY STALE, AND THIS FILE SAYS SO
-   RATHER THAN REPEATING IT.  #400 says "none of the three categories
-   exists" and "not one of the six functors the exercise needs is
-   defined".  That is false: [Grp] (Instance/Grp.v), [Ab]
+   THE ISSUE'S “CURRENT STATE” IS BADLY STALE, AND THIS FILE SAYS SO
+   RATHER THAN REPEATING IT.  #400 says “none of the three categories
+   exists” and “not one of the six functors the exercise needs is
+   defined”.  That is false: [Grp] (Instance/Grp.v), [Ab]
    (Instance/Ab.v) and [Rng] (Instance/Rng.v, a [Definition]
    aliasing [Ring]) all exist, with [Ab_Forget] (Instance/Ab.v),
    [Rng_Forget_Ab] (Instance/Rng.v), [Mon_Forget]
@@ -60,8 +60,8 @@ Generalizable All Variables.
    (Instance/Rng/MonoidRing.v) among them, and the monoid ring
    exists WITH its adjunction ([MonoidRingFunctor],
    [zmring_adjunction], Instance/Rng/MonoidRing.v).  The
-   issue's own QA correction supersedes its work items 1-2 ("consume the
-   free monoid, do not rebuild"), and that instruction was blocked by a
+   issue's own QA correction supersedes its work items 1-2 (“consume the
+   free monoid, do not rebuild”), and that instruction was blocked by a
    CATEGORY MISMATCH: the in-tree free monoid of Instance/Coq/Monoid/Free.v
    is at [MonCoq := @Mon Coq Coq_Monoidal] while the monoid
    ring's right adjoint lands in [@Mon Sets Sets_Product_Monoidal], and
@@ -113,7 +113,7 @@ Generalizable All Variables.
    additive inverses through the one-line [fr_idem_zero].  So the record
    is not a zero-obligation literal, unlike Instance/Ab/Free.v's; two
    fields are paid for, deliberately, to keep the generating set
-   irredundant.  Since the PR "algebraic carriers are sets" (2026-09-17)
+   irredundant.  Since the PR “algebraic carriers are sets” (2026-09-17)
    the record carries a THIRTEENTH field, [rig_prop], which is neither a
    law nor a constructor: it is [fr_eq] read as its own [Prop] mirror,
    both implications being the identity, and it costs no obligation
@@ -252,7 +252,7 @@ Generalizable All Variables.
    the negatives fire on the donor's literal [Set] meeting a RIGID
    declared level -- deleting the [Constraint] leaves them failing with
    the identical message, so it is INERT for them -- and what it buys is
-   the positive controls' "strictly above [Set]".  The attribution is
+   the positive controls' “strictly above [Set]”.  The attribution is
    guarded
    and not merely asserted.  CONSEQUENCE, stated plainly: since the
    comparison needs both routes at ONE [Rng],
@@ -274,7 +274,7 @@ Generalizable All Variables.
    non-commuting matrix units of [UT2]
    (Instance/Rng/Algebras/Associative.v, the FIRST closed
    non-commutative [RingObject] in tree; [Lam2],
-   Instance/Vect/TensorAlgebra.v, is a second, so "only" would be
+   Instance/Vect/TensorAlgebra.v, is a second, so “only” would be
    false); both products COMPUTE, so the
    separation is [discriminate] on closed data.  That witness is not
    beside the exercise: [rng_two_gens_is_via_ab] records by [eq_refl]
@@ -312,7 +312,7 @@ Generalizable All Variables.
    §VI.4 Exercise 4 (Instance/Rng/FreeMonad.v), whose multiplication
    U ε F and comparison functor then compute, and it is not only a way
    around that opacity: it is the literal reading of the exercise's
-   "adjunction ⟨F, G, φ⟩", Mac Lane's adjunctions being given by
+   “adjunction ⟨F, G, φ⟩”, Mac Lane's adjunctions being given by
    their natural bijection φ (§IV.1), and [free_rng_ab_hom_iso] is that
    φ.  It is not a second free ring and not a second free functor: the
    action on arrows is still [FreeRngAb]'s, the relabelling of
@@ -337,18 +337,18 @@ Generalizable All Variables.
    name).
 
    AN EARLIER REVISION of this sentence read 118/118.  Since the PR
-   "algebraic carriers are sets" (2026-09-17) [fr_eq] is a [Prop]
+   “algebraic carriers are sets” (2026-09-17) [fr_eq] is a [Prop]
    inductive, and Coq generates only [fr_eq_ind] and [fr_eq_sind] for it,
    not [_rec] and [_rect]: measured by grepping the output of
    [Print Module Free] for [fr_eq_*], which returns exactly those two.
-   Those two vanished names are the whole of the difference.  The "closed
-   under the global context" reading was NOT re-run for all 116 at this
+   Those two vanished names are the whole of the difference.  The “closed
+   under the global context” reading was NOT re-run for all 116 at this
    revision; what was re-measured is the eliminator count.
 
    CORRECTION (#474): #474 adds six constants, [fr_eval_pointwise],
    [free_rng_ab_hom_iso], [free_rng_ab_adjunction_hom] and the three
    [eq_refl] readbacks [free_rng_ab_hom_counit], [free_rng_ab_hom_unit]
-   and [free_rng_ab_hom_to], each "Closed under the global context"
+   and [free_rng_ab_hom_to], each “Closed under the global context”
    and named in #474's print-assumptions block; the 116 above are
    unchanged.  The refusals about the hom-set form are pinned in
    Test/ProbeFreeRing474.v, which restates the three readbacks (C1 to
@@ -448,7 +448,7 @@ Inductive FRTerm : Type :=
 
 (*
  AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
- "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
+ “algebraic carriers are sets” (2026-09-17) it lands in [Prop], because
  [RigObject] carries a [rig_prop : PropEquiv (is_setoid rig_setoid)] field
  and the `≈` of [FreeRngAbObject] IS [fr_eq]: the relation must BE a [Prop]
  for that field to be the identity pair of implications.  The cost is one
@@ -684,7 +684,7 @@ Fixpoint fr_eval (t : FRTerm) : carrier (rig_setoid R) :=
  setoid's symmetry and transitivity.
 
  AN EARLIER REVISION of this proof inducted on [fr_eq] straight into the
- [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
+ [Type]-valued goal `≈`.  Since the PR “algebraic carriers are sets”
  (2026-09-17) [fr_eq] is a [Prop] inductive and eliminates only into
  [Prop], so the script opens with [apply pequiv_to] at the TARGET ring's
  own [rig_prop] and each branch returns to `≈` with [pequiv_from].  The
@@ -976,7 +976,7 @@ Qed.
    where the counit of [free_rng_ab_adjunction] is that evaluation up to
    `≈` here ([free_rng_ab_counit_evaluates]; at [eq_refl] once both
    [Qed] layers of the header's STRENGTHS are transparent, #1353).  The
-   bijection is Mac Lane's φ of the exercise's "adjunction ⟨F, G, φ⟩"
+   bijection is Mac Lane's φ of the exercise's “adjunction ⟨F, G, φ⟩”
    (§IV.1), so this is also the literal reading of the book.
    Instance/Rng/FreeMonad.v builds the tensor-algebra monad T of Mac
    Lane's §VI.4 Exercise 4 on it.  No second free ring and no second free
@@ -1583,10 +1583,10 @@ Example free_ring_via_ab_transpose (X : Sets) (R : Rng)
  The two underlying-set functors agree on objects and on arrows -- both
  recorded above by [eq_refl] -- but they are NOT the same functor: the
  law fields are [Compose]'s obligations at different arguments.  Error:
- "cannot unify RngUnderlyingAb and RngUnderlyingMon". 
+ “cannot unify RngUnderlyingAb and RngUnderlyingMon”. 
 
  --------
- 这两个基础集合函子在对象和箭头上是一致的——上面都由 [eq_refl] 记录——但它们不是同一个函子：律场是 [Compose] 在不同参数下的义务。错误："无法统一 RngUnderlyingAb 和 RngUnderlyingMon"。
+ 这两个基础集合函子在对象和箭头上是一致的——上面都由 [eq_refl] 记录——但它们不是同一个函子：律场是 [Compose] 在不同参数下的义务。错误：“无法统一 RngUnderlyingAb 和 RngUnderlyingMon”。
 *)
 Fail Example rng_underlying_records_agree :
   RngUnderlyingAb = RngUnderlyingMon := eq_refl.
@@ -1660,7 +1660,7 @@ Fail Example rng_fmap_generator_computes {A B : Ab} (u : A ~{Ab}~> B)
    ONE [Rng] -- is confined to rings whose carriers live in [Set].  The
    abelian route is not: [RngUnderlyingAb@{u u0}] leaves [u0] free.  The
    pin is the DONOR's and is not repaired here; it is not claimed
-   unavoidable.  Error in both cases: "Cannot enforce Set = uh". 
+   unavoidable.  Error in both cases: “Cannot enforce Set = uh”. 
 
    --------
    * ** 可形成性缺点：幺半群路径固定在 [Set] 

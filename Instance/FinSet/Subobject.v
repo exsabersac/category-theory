@@ -28,9 +28,9 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/subobject
  nLab:      https://ncatlab.org/nlab/show/image
  Wikipedia: https://en.wikipedia.org/wiki/Image_(category_theory)
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.
  (GTM 5), §V.7 Definition 2, printed p. 126 (PDF p. 135)
- Book:      Fong and Spivak, "Seven Sketches in Compositionality",
+ Book:      Fong and Spivak, “Seven Sketches in Compositionality”,
  §1.2.1 including Exercise 1.11, printed p. 8 (PDF p. 20)
 
  Theory/Subobject/Lattice.v's [sub_meet] and [sub_join] are conditional
@@ -49,7 +49,7 @@ Generalizable All Variables.
  ** THE IMAGE, AND WHY THE DECISION PROCEDURE MUST RETURN A WITNESS
 
  For f : m ~> n the image is cut out by the HIT PREDICATE [finset_hit],
- "some a of the domain is carried to k", decided by
+ “some a of the domain is carried to k”, decided by
  Instance/FinSet/Classifier.v's [fin_existsb].  The image object is
  [fin_countP] of it, the mono is [fin_select] of it with
  monicity read straight off [fin_select_inj], and the factoring
@@ -102,8 +102,8 @@ Generalizable All Variables.
  ** THE ELEMENTS OF Pow 2, AND A CORRECTION TO THE ISSUE'S PRIOR-ART CLAIM
 
  The catalog issue says the [fin_tabulate]/[fin_apply] codec elements
- "are never listed".  MEASURED, that is too strong.  Running
- [grep -c "^Example .*_at_"] over Instance/FinSet/Subsets.v and
+ “are never listed”.  MEASURED, that is too strong.  Running
+ [grep -c “^Example .*_at_”] over Instance/FinSet/Subsets.v and
  Instance/FinSet/Powerset.v and reading the [finpow_mem] ones out finds
  NINE membership bits already recorded: six in Subsets.v and three in Powerset.v.
 
@@ -124,8 +124,8 @@ Generalizable All Variables.
  ** BOUNDARIES, measured
 
  Both computed numbers are pinned by their neighbours being refused.
- [sub_dom (sub_join ex11_u ex11_v) = 5%nat] is refused with "cannot
- unify sub_dom (sub_join ex11_u ex11_v) and 5%nat", and [sub_dom
+ [sub_dom (sub_join ex11_u ex11_v) = 5%nat] is refused with “cannot
+ unify sub_dom (sub_join ex11_u ex11_v) and 5%nat”, and [sub_dom
  (sub_meet ex11_u ex11_v) = 2%nat] likewise against 2 -- conversion
  refusals, not typing or universe ones, which is what makes the
  positive [eq_refl]s evidence that the codecs reduced rather than that
@@ -188,7 +188,7 @@ Generalizable All Variables.
 
  同一练习的算术条款，在这些实例中树没有在任何地方断言，是 [finset_pow_three]（3 的幂 = 8）和 [finset_product_two_three]（2 × 3 = 6），风格类似 Instance/FinSet/Topos.v 的 [FinSet_Pow_two]；第三个，2 + 3 = 5，是上面的 [ex11_coproduct_five]，并未重述。总共有十七个 [eq_refl] 示例——[grep -c ':= eq_refl'] 在此文件中。** Pow 2 的元素，以及对该期刊先前专利主张的更正
 
- 该目录条目称 [fin_tabulate] / [fin_apply] 编解码器元素“从未列出”。测量来看，这说法太绝对了。在 Instance/FinSet/Subsets.v 和 Instance/FinSet/Powerset.v 上运行 [grep -c "^Example .*_at_"] 并读取 [finpow_mem] 的结果，发现已经记录了九个成员位：Subsets.v 中有六个，Powerset.v 中有三个。真正缺失的是更狭义的东西，它正是下面区块提供的。首先，这九个名字中的每一个都通过特征函数（[empty1]、[full1]、[sub2_10]、[sub2_01]、[finpow_sub02]——在它们的定义行已检查）来命名其代码；没有一个是通过在[Fin.t (finpow n)]中的位置来命名代码的。其次，当 n = 2 时，四个代码都已定义（Subsets.v），但只有两个被读出，因此八个比特中的四个被列出，四个没有。[powcode2_0] 到 [powcode2_3] 是四个位置，而八个 [powcode2_i_at_j] 示例是完整的比特表，这是该问题所要求的枚举。[finpow_two_is_Pow] 钉住 [finpow 2] 到 Structure/Topos.v 的 [Pow] 在 [FinSet_Topos] 由 [eq_refl] ，因此这些位置确实是在拓扑内部幂对象中的位置，而不仅仅是在一个同样大小的集合中。
+ 该目录条目称 [fin_tabulate] / [fin_apply] 编解码器元素“从未列出”。测量来看，这说法太绝对了。在 Instance/FinSet/Subsets.v 和 Instance/FinSet/Powerset.v 上运行 [grep -c “^Example .*_at_”] 并读取 [finpow_mem] 的结果，发现已经记录了九个成员位：Subsets.v 中有六个，Powerset.v 中有三个。真正缺失的是更狭义的东西，它正是下面区块提供的。首先，这九个名字中的每一个都通过特征函数（[empty1]、[full1]、[sub2_10]、[sub2_01]、[finpow_sub02]——在它们的定义行已检查）来命名其代码；没有一个是通过在[Fin.t (finpow n)]中的位置来命名代码的。其次，当 n = 2 时，四个代码都已定义（Subsets.v），但只有两个被读出，因此八个比特中的四个被列出，四个没有。[powcode2_0] 到 [powcode2_3] 是四个位置，而八个 [powcode2_i_at_j] 示例是完整的比特表，这是该问题所要求的枚举。[finpow_two_is_Pow] 钉住 [finpow 2] 到 Structure/Topos.v 的 [Pow] 在 [FinSet_Topos] 由 [eq_refl] ，因此这些位置确实是在拓扑内部幂对象中的位置，而不仅仅是在一个同样大小的集合中。
 
  ** 边界，已测量
 

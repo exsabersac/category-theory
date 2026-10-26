@@ -12,11 +12,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/monoid
  nLab:      https://ncatlab.org/nlab/show/groupoid
  Wikipedia: https://en.wikipedia.org/wiki/Monoid
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §I.2, printed p. 11 (constructions 3 and 4)
- Book:      Awodey, "Category Theory", 2nd ed., §1.4, pp. 12-13
- Book:      Riehl, "Category Theory in Context", Example 1.1.4(ii), pp. 5-6
- Book:      Fong, Spivak, "Seven Sketches in Compositionality", CUP 2019,
+ Book:      Awodey, “Category Theory”, 2nd ed., §1.4, pp. 12-13
+ Book:      Riehl, “Category Theory in Context”, Example 1.1.4(ii), pp. 5-6
+ Book:      Fong, Spivak, “Seven Sketches in Compositionality”, CUP 2019,
  §3.2.1 Example 3.13, printed p. 83
 
  A monoid is exactly a category with one object.  Mac Lane's third
@@ -72,7 +72,7 @@ Generalizable All Variables.
 *)
 
 (*
- Why "delooping", and what the one-object reading buys
+ Why “delooping”, and what the one-object reading buys
 
  The name is topological.  Per the nLab (delooping), a delooping of an
  object X is an object B X whose loop space object is X again, so that
@@ -231,7 +231,7 @@ Qed.
  [Deloop], which keeps the single letter B free as an ordinary variable
  throughout the development.
 
- COMPOSITION ORDER.  `f ∘ g` in this library means "g first, then f"
+ COMPOSITION ORDER.  `f ∘ g` in this library means “g first, then f”
  (Theory/Category.v: `compose : (y ~> z) → (x ~> y) → (x ~> z)`), and the
  delooping takes `compose f g := mon_op f g`, i.e. the monoid product in the
  same argument order.  So an element of M read as an arrow multiplies on the

@@ -29,30 +29,30 @@ Require Import Category.Instance.Grp.Free.
 Generalizable All Variables.
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, §VI.2, "Group actions", printed p. 141
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, §VI.2, “Group actions”, printed p. 141
  (PDF p. 150) — maclane:VI.2:remark2
- Book: Riehl, "Category Theory in Context", 2nd ed., Exercise
+ Book: Riehl, “Category Theory in Context”, 2nd ed., Exercise
  5.5.iv, printed p. 208 (PDF p. 228) — riehl:5.5:exiv; with her
  Theorem 5.5.1, printed p. 202, and Definition 5.3.1, printed
  p. 196
  nLab: https://ncatlab.org/nlab/show/action
  nLab: https://ncatlab.org/nlab/show/monadicity+theorem
 
- Mac Lane ends §VI.2 with "several examples which show that the
- T-algebras for familiar monads are the familiar algebras".  The second
+ Mac Lane ends §VI.2 with “several examples which show that the
+ T-algebras for familiar monads are the familiar algebras”.  The second
  is the group action: for a group G, TX = G × X with η x = ⟨u, x⟩ and
- μ ⟨g₁, ⟨g₂, x⟩⟩ = ⟨g₁g₂, x⟩ "define a monad ⟨T, η, μ⟩ on Set", and a
- T-algebra is a structure map h : G × X → X "such that always
+ μ ⟨g₁, ⟨g₂, x⟩⟩ = ⟨g₁g₂, x⟩ “define a monad ⟨T, η, μ⟩ on Set”, and a
+ T-algebra is a structure map h : G × X → X “such that always
  h(g₁g₂, x) = h(g₁, h(g₂, x)), h(u, x) = x.  If we write g · x for
  h(g, x), these are just the usual conditions that ⟨g, x⟩ ↦ g · x
- defines an action of the group G on the set X."  Riehl's Exercise
+ defines an action of the group G on the set X.”  Riehl's Exercise
  5.5.iv supplies the adjunction behind the monad: the forgetful functor
- U : Set^BG → Set has a left adjoint sending a set X to "the G-set
- G × X, with G acting on the left", and the exercise is to "Prove that
- this adjunction is monadic by appealing to the monadicity theorem" —
- her Theorem 5.5.1, "A right adjoint functor U : D → C is monadic if and
- only if it creates coequalizers of U-split pairs".  This file does
+ U : Set^BG → Set has a left adjoint sending a set X to “the G-set
+ G × X, with G acting on the left”, and the exercise is to “Prove that
+ this adjunction is monadic by appealing to the monadicity theorem” —
+ her Theorem 5.5.1, “A right adjoint functor U : D → C is monadic if and
+ only if it creates coequalizers of U-split pairs”.  This file does
  both, and proves the monadicity a second time by an explicit
  quasi-inverse.
 
@@ -120,14 +120,14 @@ Generalizable All Variables.
  carrier and acts through η, g · z = h (g u, z) ([beck_carrier],
  [beck_act]), and it is ≈ to [EM_to_MSet] ([beck_vs_direct]).
 
- WHICH "MONADIC".  Riehl's Definition 5.3.1 calls an adjunction monadic
- when the comparison functor "defines an equivalence of categories"; that
- is Monad/Comparison.v's [Monadic], and the "if" half of her Theorem 5.5.1
+ WHICH “MONADIC”.  Riehl's Definition 5.3.1 calls an adjunction monadic
+ when the comparison functor “defines an equivalence of categories”; that
+ is Monad/Comparison.v's [Monadic], and the “if” half of her Theorem 5.5.1
  is Beck.v's [beck_monadicity], both in the equivalence form.  Mac Lane
  (§VI.3, printed p. 143) says instead that G is monadic when the
- comparison functor K "will be an isomorphism", and his Beck theorem
+ comparison functor K “will be an isomorphism”, and his Beck theorem
  (§VI.7, Theorem 1, printed p. 151) is stated for that strict form, with
- "creates" meaning a unique lift on the nose.  This file implements
+ “creates” meaning a unique lift on the nose.  This file implements
  Riehl's reading.  The [≅[Cat]] above is the tree's isomorphism in Cat,
  inverse up to natural isomorphism, hence an equivalence.
 

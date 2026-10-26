@@ -50,7 +50,7 @@ Generalizable All Variables.
     keeping index, objects and elements on the nose (four [eq_refl]
     readbacks).  The passage rests on elements being global points, which
     is Theory/Universal/Element.v's [global_elements_iso] — the issue
-    asks for that bridge to be proved as a "reusable lemma"; it has existed
+    asks for that bridge to be proved as a “reusable lemma”; it has existed
     since #318 and nothing here re-proves it.  The two records are NOT
     convertible, only inter-derivable (probe N1).
 
@@ -103,8 +103,8 @@ Generalizable All Variables.
     converse is delivered as an axiom-free CONDITIONAL over
     [HasSetsCopowers], stated exactly as #348's
     [adjunction_iff_pointwise_representable] consumes it — which makes the
-    hypothesis, by that same biconditional, "the represented functor has a
-    left adjoint".  That is disclosed rather than hidden: the conditional
+    hypothesis, by that same biconditional, “the represented functor has a
+    left adjoint”.  That is disclosed rather than hidden: the conditional
     is honest, not deep.  Two further disclosures: the hypothesis is
     STRONGER than what is used ([cop] is applied only at the representing
     object), and no inhabitant of it is built by any route — none is shown
@@ -122,23 +122,23 @@ Generalizable All Variables.
     's adjunction, whose representing object reads back at [eq_refl] as
     that adjoint at the singleton.
 
-    STALE PREMISES — the issue's "Current state" is wrong in five
-    substantive claims and six line numbers.  FALSE: "no
-    [(1 ~{Sets}~> X) ≅ carrier X] lemma" (it is [global_elements_iso],
+    STALE PREMISES — the issue's “Current state” is wrong in five
+    substantive claims and six line numbers.  FALSE: “no
+    [(1 ~{Sets}~> X) ≅ carrier X] lemma” (it is [global_elements_iso],
     Theory/Universal/Element.v, with the natural form);
-    "the library never performs that instantiation" (Element.v does
+    “the library never performs that instantiation” (Element.v does
     relate [AUniversalArrow SetsOne H r] and [AUniversalElement H r] with
-    [eq_refl] and [≈] round trips); "nothing produces a [Representable]
+    [eq_refl] and [≈] round trips); “nothing produces a [Representable]
     from anything, and in particular not from an adjunction; no file even
-    imports it" (at the parent commit 26 constants across 19 files conclude
+    imports it” (at the parent commit 26 constants across 19 files conclude
     [Representable] — counted by taking each [Definition]/[Theorem]/[Lemma]/
     [Corollary]/[Instance] head with comments stripped and testing whether
     the conclusion begins with [Representable] — and 33 files [Require] it;
     one of the 26 is Adjunction/Representability.v's [adj_representable],
-    an adjunction-sourced instance); "no category
-    of elements for a [Sets]-valued functor" (Construction/Elements.v has
+    an adjunction-sourced instance); “no category
+    of elements for a [Sets]-valued functor” (Construction/Elements.v has
     [Elements], [ElementsComma] and the proved comparison
-    [Elements_Comma]); and "#366 is the filed obligation" for copowers
+    [Elements_Comma]); and “#366 is the filed obligation” for copowers
     (#366 landed).  STALE LINE NUMBERS: the issue's citation for
     [Representable] misses its declaration in Functor/Representable.v,
     and that same miss is repeated five times;
@@ -162,15 +162,15 @@ Generalizable All Variables.
     [C : Category@{u u0 u0}] with one strict constraint ([u0 < u1], the
     functor's) and no [Set].
 
-    RECORDED CORRECTION.  An earlier revision continued: "Everything
+    RECORDED CORRECTION.  An earlier revision continued: “Everything
     downstream of the comma-initial step inherits GAFT's pin instead —
     [representability_theorem] and [representability_iff] are over
     [C : Category@{_ Set Set}], hom AND proof at [Set], with [Set < u] —
     which is why the theorem is stated at TOP LEVEL … The witnesses land
     at [Sets@{Set u}], the same place Adjunction/GAFT/Sets.v's header
-    records for [GAFT_at_Sets_Id]."  GAFT has no such pin any more:
+    records for [GAFT_at_Sets_Id].”  GAFT has no such pin any more:
     Instance/Discrete.v's [DiscreteCat_Functor] was annotated in place at
-    its declaration in the PR "algebraic carriers are sets" (2026-09-17), and
+    its declaration in the PR “algebraic carriers are sets” (2026-09-17), and
     measured after it
 
       representability_theorem@{cobj h su +} :
@@ -186,8 +186,8 @@ Generalizable All Variables.
     the theorem at TOP LEVEL, because that was never the [Set]: both
     constants identify [C]'s hom and proof universes, so inside a section
     that has already elaborated a category with those levels APART the
-    ascription is refused, and probe N4 pins exactly that ("universe
-    inconsistency: Cannot enforce sp = sh because sh < sp") -- an
+    ascription is refused, and probe N4 pins exactly that (“universe
+    inconsistency: Cannot enforce sp = sh because sh < sp”) -- an
     identification, with no [Set] in the message.  Stdlib
     caps ([JMeq], [eq], [Logic_lemmas.equality], [Projections],
     [projections], [Basics.compose], [ID]) all arrive with the GAFT and
@@ -196,8 +196,8 @@ Generalizable All Variables.
     MEASURED.  38 `.glob` heads (32 `def`, 1 `prf`, 4 `proj`, 1 `rec`) and
     14 [Program] obligations (6 of [homafter_one_iso], discharged by its
     local tactic; 8 of [homafter_whisker], closed by hand under [idtac]),
-    plus Adjunction/GAFT.v's 2 new heads — 54 constants, all "Closed under
-    the global context", zero `Axioms:` lines; the `make print-assumptions`
+    plus Adjunction/GAFT.v's 2 new heads — 54 constants, all “Closed under
+    the global context”, zero `Axioms:` lines; the `make print-assumptions`
     gate carries the 38 and the 2.  Four `Defined` in this file, each
     LOAD-BEARING (flipped to `Qed` one at a time in a copy of the whole
     file, compilation halting at the first readback that reads the flipped
@@ -229,8 +229,8 @@ Generalizable All Variables.
     [HomAfter K 1] is not [K]) + N3, N5 TYPING (the apex-only
     [PreservesAllLimits] does not ascribe where the cone-level
     [PreservesImageLimit] is asked; a [Type]-indexed copower family is not
-    a [HasSetsCopowers] — "The term "X" has type "Type" while it is
-    expected to have type "obj[Sets]"") + N4 UNIVERSE, each stripped one at
+    a [HasSetsCopowers] — “The term ”X“ has type ”Type“ while it is
+    expected to have type ”obj[Sets]“”) + N4 UNIVERSE, each stripped one at
     a time in a copy of the whole file beside its accepted control; seven
     `eq_refl` readbacks; guard coverage 34/24 with ten exhaustive
     exceptions (identifier tokens inside the six refutation commands /
@@ -242,8 +242,8 @@ Generalizable All Variables.
     [PreservesAllLimits], [PreservesImageLimit], [Complete],
     [HasSetsCopowers], [Representable], [eq_refl], [Category] — every
     first break on a positive line.  `make todo` grows by the 6 refutation
-    lines only (2283 → 2289 over #435's tip), so the issue's "adds no new
-    hits" box is not met as written (disclosed, as in #430-#435); Coq 8.19
+    lines only (2283 → 2289 over #435's tip), so the issue's “adds no new
+    hits” box is not met as written (disclosed, as in #430-#435); Coq 8.19
     and 8.20 are checked by nix source builds of the committed revision,
     which the PR records.
 
@@ -253,8 +253,8 @@ Generalizable All Variables.
     not move); GAFT as a biconditional; the [Sets_global_points] of the
     issue's Verification block, which names nothing that exists;
     representability at any target but [Sets]; a witness at any category
-    but [Sets] in this file (an earlier revision said "a witness at any
-    category but [Sets]" without the qualifier; since #449
+    but [Sets] in this file (an earlier revision said “a witness at any
+    category but [Sets]” without the qualifier; since #449
     Instance/Mod/TensorAFT.v's [tensor_via_AFT_of_esols] and
     [bal_tensor_via_AFT_of_esols] apply the theorem at [RMod R] and at
     [Ab], and since #454 Instance/Mod/Watts/Unconditional.v's
@@ -347,7 +347,7 @@ Record ElementSolutionSet@{i} := {
      (* u u0 u1 i u2 u3 u4 u5 |= u0 < u1 / u5 <= i *)
 
    -- a BOUND, [u5 <= i], in the other, since the record is built rather
-   than projected.  Stated because "the same index" is true of the types
+   than projected.  Stated because “the same index” is true of the types
    and only up to [<=] of the levels. *)
 Definition sols_of_esols@{i +} (E : ElementSolutionSet@{i})
   : SolutionSet K SetsOne.
@@ -418,11 +418,11 @@ Arguments esol_elem {C K} _ _.
            shape whose objects are a hom-set.
 
     RECORDED CORRECTION.  An earlier revision of this comment read
-    "[comma_initial_of_sols] pins the hom AND proof universes of both
+    “[comma_initial_of_sols] pins the hom AND proof universes of both
     categories to [Set] (GAFT's own pin), and inside a section that has
-    already elaborated [Sets] the ascription is refused."  That [Set] was
+    already elaborated [Sets] the ascription is refused.”  That [Set] was
     a universe-minimization artifact of Instance/Discrete.v's unannotated
-    [DiscreteCat_Functor] and is gone (PR "algebraic carriers are sets",
+    [DiscreteCat_Functor] and is gone (PR “algebraic carriers are sets”,
     2026-09-17); the theorem is still stated at top level, and (i)+(ii)
     are why.  The refusals that Instance/Mod/TensorAFT.v records against
     this theorem survive the repair, re-measured there: they are (i)
@@ -563,7 +563,7 @@ Example representability_iff_fst {C : Category} (K : C ⟶ Sets)
 (** ** Riehl 4.7.14: SAFT's hypotheses give representability  / ** Riehl 4.7.14：SAFT 的假设具有代表性*)
 
 (*
-CORRECTION, #453: "SAFT's hypotheses" here are Adjunction/SAFT.v's,
+CORRECTION, #453: “SAFT's hypotheses” here are Adjunction/SAFT.v's,
    whose covering datum [cover] is refutable (the header).  The passage
    over the book's hypotheses is Adjunction/SAFT/Characterization/
    Corollaries.v's [continuous_Set_functor_representable]; this
@@ -593,8 +593,8 @@ Definition saft_representable {C : Category} (K : C ⟶ Sets)
     setoid-indexed copower is not in the tree.  [HasSetsCopowers] is that
     missing structure, stated exactly as the representability #348's
     biconditional consumes it — so the converse lands as an axiom-free
-    CONDITIONAL, and the condition is, by that same biconditional, "the
-    represented functor has a left adjoint". 
+    CONDITIONAL, and the condition is, by that same biconditional, “the
+    represented functor has a left adjoint”. 
 
 --------
 ** §V.8 练习 1，逆向：协幂给出左伴随

@@ -58,7 +58,7 @@ Generalizable All Variables.
  SAME term — the witness is [eq_refl].  It records Mac Lane's [F σ = τ] at
  full strength, which is strictly stronger than the [≈] the class asks
  for; every proof below uses [≈].  (An earlier revision said
- [comma_strict_legs] was "the one statement here" of that shape; measured
+ [comma_strict_legs] was “the one statement here” of that shape; measured
  at this revision there are FOUR in this file — the later three being
  [comma_limit_at_legs], [comma_prod_leg_strict] and
  [comma_equalizer_leg_strict] — and a fifth, [coslice_lift_legs], in
@@ -127,19 +127,19 @@ Generalizable All Variables.
  arbitrary FAMILY directly.
 
  RECORDED CORRECTION TO THE REASON GIVEN HERE.  An earlier revision said
- the elementary form was needed "because that is the form that can be
+ the elementary form was needed “because that is the form that can be
  instantiated at an arbitrary FAMILY: a functor out of [DiscreteCat A]
  that eliminates the shape's [x = y] into a hom pins both categories to
  [Category@{_ Set Set}], and is refused over a generic [C] with
- "universe inconsistency: Cannot enforce Set = ..." (probe negative n2) —
+ ”universe inconsistency: Cannot enforce Set = ...“ (probe negative n2) —
  the tree's own [DiscreteCat_Functor] (Instance/Discrete.v) prints as
  [DiscreteCat@{u Set Set} A ⟶ C] for that reason, and a hand-rolled
  eliminator is refused identically, so the pin belongs to the ELIMINATION
- and not to any one constant."  The diagnosis named the wrong culprit.
+ and not to any one constant.”  The diagnosis named the wrong culprit.
  The pin was a universe-MINIMIZATION artifact of the unannotated
  declaration, not of the elimination: the annotated
  [DiscreteCat_Functor@{o h p uo uh up +}] (Instance/Discrete.v, PR
- "algebraic carriers are sets", 2026-09-17) eliminates [x = y] into a hom
+ “algebraic carriers are sets”, 2026-09-17) eliminates [x = y] into a hom
  exactly as before and IS formable over a generic [C].  Probe negative n2
  accordingly turned over and is kept as a positive control.  The
  elementary clause is still what the file ships, because it takes the
@@ -159,13 +159,13 @@ Generalizable All Variables.
  outlive the commit.  Read them TREE-WIDE: two of the three are written
  in the issue as statements about Construction/Comma/Limit.v, and of THAT
  file they are still true — what falsifies them is this file, which
- landed after the issue was written.  "Creation proper is not stated" —
- [comma_CreatesLimit] above states it.  "The uniqueness/reflection clause
- is absent" — [comma_creates_reflect] is the reflection clause, and
+ landed after the issue was written.  “Creation proper is not stated” —
+ [comma_CreatesLimit] above states it.  “The uniqueness/reflection clause
+ is absent” — [comma_creates_reflect] is the reflection clause, and
  uniqueness is Structure/Limit/Creation.v's [creates_lift_unique] applied
  to it, though only up to cone isomorphism (see the NOT DELIVERED list).
- "No lemma asserts that the projection of the constructed limit is the
- given one" — [comma_strict_apex] and [comma_strict_legs] assert exactly
+ “No lemma asserts that the projection of the constructed limit is the
+ given one” — [comma_strict_apex] and [comma_strict_legs] assert exactly
  that, by [eq_refl], for an arbitrary downstairs limit.  A fourth is half
  true:
  comma limits sit under an all-shapes [Complete C] oracle only for
@@ -186,8 +186,8 @@ Generalizable All Variables.
  Measured.  This file's [.glob] declares 42 heads (38 [def], 4 [prf]) and
  no [Program] obligation, nine of them from the first commit; with
  Construction/Slice/Creation.v's 30 that is 72 constants, all carried by
- [make print-assumptions] and all reporting "Closed under the global
- context".  Closure goes from 35 modules excluding self to 38, and the
+ [make print-assumptions] and all reporting “Closed under the global
+ context”.  Closure goes from 35 modules excluding self to 38, and the
  three added are EXACTLY the three new [Require]s
  (Structure/Limit/Product, Structure/Equalizer, Instance/Parallel) — none
  brings anything else with it, and neither creation class needed a
@@ -233,7 +233,7 @@ Generalizable All Variables.
  generic [C], for the elimination reason above — the class is shipped and
  the probe applies it to a constant discrete diagram, but a diagram built
  from a family is refused; no ON-THE-NOSE
- uniqueness of the lift, Mac Lane's "exactly one pair" — what is
+ uniqueness of the lift, Mac Lane's “exactly one pair” — what is
  available is [creates_lift_unique]'s [ConeIso], and
  Structure/Limit/Creation.v says in terms why uniqueness cannot be a
  field of the class in a setoid setting; no finiteness anywhere, the
@@ -366,8 +366,8 @@ Context (K : J ⟶ (=(d) ↓ U)).
 (*
  An ARBITRARY limit of the base diagram downstairs.  This used to be the
  chosen [Ldiag HC K] coming from a [Complete C]; making it a parameter is
- what upgrades the strictness statements below from "at the chosen limit"
- to "at every limit". 
+ what upgrades the strictness statements below from “at the chosen limit”
+ to “at every limit”. 
 
  --------
  楼下基图的一个任意极限。这曾经是从 [Complete C] 得到的选定 [Ldiag HC K]；将其作为参数正是将下述严格性声明从“在选定极限时”升级为“在每个极限时”的原因。
@@ -678,7 +678,7 @@ End CommaStrictCreate.
  [DiscreteCat A]'s hom is an equality in [Prop] which minimizes to [Set],
  so [Gdiag (DiscreteCat_Functor F)] pins BOTH categories to
  [Category@{_ Set Set}].  Test/ProbeCommaCreation438.v's negative n2
- records the refusal ("Cannot enforce Set = ...").  The elementary form
+ records the refusal (“Cannot enforce Set = ...”).  The elementary form
  below is universe-clean over a generic [C] and [D], and it is the form
  Mac Lane's proof actually uses. 
 
@@ -808,22 +808,22 @@ End CommaEqualizers.
  [J := DiscreteCat A], and [comma_CreatesProducts] is exactly that.
 
  An earlier revision of this header said reaching the products clause
- through [CreatesProducts] "would import that pin", and that was wrong.
+ through [CreatesProducts] “would import that pin”, and that was wrong.
  [Gdiag K] is formable for an abstract [K : DiscreteCat A ⟶ (=(d) ↓ U)],
  because [Compose] unifies the shape's hom universe with [C]'s before
  minimization, and neither class carries [Set] in its block.
 
  A SECOND CORRECTION, to the sentence that followed.  An earlier revision
- continued: "What IS refused is a functor OUT OF [DiscreteCat A] that
+ continued: “What IS refused is a functor OUT OF [DiscreteCat A] that
  eliminates the shape's [x = y] into a hom: [DiscreteCat_Functor]
  (Instance/Discrete.v) prints as [DiscreteCat@{u Set Set} A ⟶ C], and a
- hand-rolled eliminator is refused with the same "Cannot enforce
- Set = ..." (probe negative n2), even at a concrete base such as
+ hand-rolled eliminator is refused with the same ”Cannot enforce
+ Set = ...“ (probe negative n2), even at a concrete base such as
  [C = D = Sets] with [U = Id].  So the pin belongs to the elimination, not
- to [DiscreteCat]."  NOTHING is refused there any more, and the pin
+ to [DiscreteCat].”  NOTHING is refused there any more, and the pin
  belonged to neither: it was a universe-minimization artifact of the
  unannotated declaration, removed by annotating it at
- Instance/Discrete.v in the PR "algebraic carriers are sets"
+ Instance/Discrete.v in the PR “algebraic carriers are sets”
  (2026-09-17).  Probe negative n2 turned over and is now a positive
  control in Test/ProbeCommaCreation438.v, which records the same
  correction beside it.  [DiscreteCat]'s hom and proof universes were

@@ -14,7 +14,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/split+epimorphism
  Wikipedia: https://en.wikipedia.org/wiki/Section_(category_theory)
 
- Fong and Spivak, "Seven Sketches in Compositionality" (CUP, 2019), §3.2.5
+ Fong and Spivak, “Seven Sketches in Compositionality” (CUP, 2019), §3.2.5
  Example 3.34, printed p. 89.  CITED BY LOCATION; the printed text was not
  consulted and no sentence of it is reproduced here.  The library's book
  catalog describes the example as exhibiting a one-sided inverse pair in

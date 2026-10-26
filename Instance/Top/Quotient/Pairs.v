@@ -25,20 +25,20 @@ Generalizable All Variables.
 (* * * The category of pairs, and X/A as a left adjoint / * * 对偶范畴，以及 X/A 作为左伴随 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, book pp. 134-135 (PDF pp. 143-144), read from the page images:
- "If we consider the category Top^(2) whose objects are pairs ⟨X, A⟩
+ “If we consider the category Top^(2) whose objects are pairs ⟨X, A⟩
  (a space X with a subset A) and whose arrows ⟨X, A⟩ → ⟨X', A'⟩ are
  continuous maps X → X' sending A to A', then the definition of X/A,
  for Y a pointed topological space, reads:
  Top_*(X/A, Y) = Top^(2)(⟨X, A⟩, ⟨Y, *⟩).
  Thus ⟨X, A⟩ ↦ X/A is left adjoint to the functor Y ↦ ⟨Y, *⟩ which
- sends each pointed space to the pair ⟨Y, *⟩." (catalog id
+ sends each pointed space to the pair ⟨Y, *⟩.” (catalog id
  maclane:V.9:construction6; the book numbers it not)
  nLab:      https://ncatlab.org/nlab/show/Top
  nLab:      https://ncatlab.org/nlab/show/pointed+object
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_space_(topology)
- Book:      A. Hatcher, "Algebraic Topology", Cambridge University Press
+ Book:      A. Hatcher, “Algebraic Topology”, Cambridge University Press
  (2002), Proposition 2.22 (good pairs)
 
  BACKGROUND.  Pairs of spaces are where relative homology lives, and
@@ -58,9 +58,9 @@ Generalizable All Variables.
  CONSTRUCTIONS AGREE.  Mac Lane defines the coequalizer of a pair
  elementarily (book p. 64, PDF p. 73, display (6): an arrow u : b → e
  with uf = ug, universal), reads it as a universal arrow to Δ (p. 65,
- PDF p. 74: "just a universal arrow from ⟨f, g⟩ to the functor Δ"),
- and says coequalizers of any set of maps "are defined in the same
- way", all read from the page images.  The two forms agree on every
+ PDF p. 74: “just a universal arrow from ⟨f, g⟩ to the functor Δ”),
+ and says coequalizers of any set of maps “are defined in the same
+ way”, all read from the page images.  The two forms agree on every
  nonempty set; at the empty set the universal arrow is a ⊔ b and the
  elementary form b.  Read as the universal arrow, the reading p. 135
  needs since Top_*(X/A, Y) takes X/A pointed, his X/∅ is X ⊔ * and
@@ -165,17 +165,17 @@ Generalizable All Variables.
  - Type, not Prop, is forced by ⟨Y, *⟩.  The book's ⟨Y, *⟩ is the
  predicate y ≈ y0, whose values are the Type-valued equality of a
  space's points; read as a Prop-valued predicate it is refused,
- "The term "y ≈ ptop_pt Y" has type "Type" while it is expected to
- have type "Prop"" (the probe's N10).  As a Prop it must be
+ “The term ”y ≈ ptop_pt Y“ has type ”Type“ while it is expected to
+ have type ”Prop“” (the probe's N10).  As a Prop it must be
  squashed, [inhabited (y ≈ y0)], and the transpose needs it
  unsquashed ([pquot_from_map]'s case [Some x] ∼ [None]); unsquashing
- is refused, "Incorrect elimination of "H" in the inductive type
- "inhabited": the return type has sort "Type" while it should be
- SProp or Prop" (N11).  Control: the elimination into
+ is refused, “Incorrect elimination of ”H“ in the inductive type
+ ”inhabited“: the return type has sort ”Type“ while it should be
+ SProp or Prop” (N11).  Control: the elimination into
  [inhabited (y ≈ y0)] is accepted.
  - The respect field is a design choice, not a necessity.  A subset
  of a setoid is taken closed under the points' equality, the setoid
- reading of Mac Lane's "subset": points equal in the space are one
+ reading of Mac Lane's “subset”: points equal in the space are one
  point of it.  The alternative is to drop the field and saturate A
  inside the identification, as Instance/Top/Quotient.v's
  [collapse_image] does: the same four-case relation over [option X]
@@ -191,7 +191,7 @@ Generalizable All Variables.
  THE ADJUNCTION.  [PointPair] sends Y to ⟨Y, *⟩; [PairQuotient] sends
  ⟨X, A⟩ to X/A pointed at [None], and a map f to [Some x] ↦ [Some (f x)],
  [None] ↦ [None].  [pairs_quotient_iso X Y] is the book's display as an
- [Isomorphism] in [Sets]; its "=" is refused at [eq_refl] as an
+ [Isomorphism] in [Sets]; its “=” is refused at [eq_refl] as an
  equation of hom types (Test/ProbeCollapse459.v's N12).  [pquot_to]
  restricts along [Some], [pquot_from] extends by sending [None] to the
  basepoint, its continuity from [TQuot]'s universal property.
@@ -207,7 +207,7 @@ Generalizable All Variables.
  THE REALS.  [Top_pointed] lives in Instance/Top/Homotopy.v, which
  requires the stdlib reals and opens [R_scope]; this file reaches them
  through that import, as Instance/Top/Wedge.v does, and every constant
- here still prints "Closed under the global context".  The relation
+ here still prints “Closed under the global context”.  The relation
  [pquot_rel] is written under [%type] for that reason.  Moving
  [PointedTop] and [Top_pointed] to a file free of the reals is left to
  the maintainer.
@@ -229,7 +229,7 @@ Generalizable All Variables.
  obligation), [pquot_fmap_map] ([pquot_fmap_cont]), [pquot_to]
  ([pairs_quotient_iso]'s first obligation), [pquot_from_map]
  ([pquot_from]), [pairs_quotient_adjunction]
- ([pairs_quotient_unit_eval], "cannot unify "unit x" and "Some x""),
+ ([pairs_quotient_unit_eval], “cannot unify ”unit x“ and ”Some x“”),
  [pquot_po_map] ([pquot_po_med]), [pquot_pushout]
  ([pquot_pushout_apex]), [pquot_coequalizer]
  ([pquot_collapse_iso_from_some]), [pquot_empty_sum_to] and
@@ -284,7 +284,7 @@ Generalizable All Variables.
  statement is written [Adjunction@{h h h h h h h h u h v}]: the same
  [Build_Adjunction'] term stated through the notation [⊣] under the
  closed binder, [v] named in it, is refused at the statement,
- "Universe <1> (...) is unbound" (Test/ProbeCollapse459.v's N13),
+ “Universe <1> (...) is unbound” (Test/ProbeCollapse459.v's N13),
  while the finished constant reads through [⊣] once the binder
  names [v] and is refused when it does not (N14 and its control).
  - [pquot_coequalizer], [pquot_empty_not_coequalizer],
@@ -295,8 +295,8 @@ Generalizable All Variables.
  (its W-c).  [pquot_collapse_iso@{o h u}] and
  [pquot_collapse_iso_pointed@{o h u}]: [u] is
  [wide_coequalizer_unique]'s own binder, as in that file; with [u]
- dropped the body of [pquot_collapse_iso] is refused, "Universe <1>
- (...) is unbound" (N15).
+ dropped the body of [pquot_collapse_iso] is refused, “Universe <1>
+ (...) is unbound” (N15).
  - The five refutations [pquot_empty_not_coequalizer],
  [pquot_coequalizer_needs_point], [no_pointed_coequalizer_at_empty],
  [no_pointed_elementary_coequalizers] and

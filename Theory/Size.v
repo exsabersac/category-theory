@@ -6,7 +6,7 @@
     Mathematician, 2nd ed., §I.6, printed pp. 22-24).  Awodey Definition 1.11
     says a category is small when its objects [C0] and its arrows [C1] are both
     sets, and Definition 1.12 calls it LOCALLY SMALL when each [Hom(X,Y)] is a
-    set.  Riehl Definition 1.1.6 says the same with "a set's worth of arrows",
+    set.  Riehl Definition 1.1.6 says the same with “a set's worth of arrows”,
     and Definition 1.1.7 the same for local smallness.
 
     This library takes a different foundational route, and docs/SIZE.md sets
@@ -23,8 +23,8 @@
     `LocallySmall` had no declaration anywhere in the tree, so smallness could
     be neither a hypothesis nor a conclusion -- it could only be chosen at a
     definition site by instantiating universes.  Theory/Lawvere/Sets.v
-    records the consequence in passing ("the library has no smallness
-    machinery").  The predicates below are that missing vocabulary.
+    records the consequence in passing (“the library has no smallness
+    machinery”).  The predicates below are that missing vocabulary.
 
     THE DESIGN, AND THE ONE THING THAT MAKES IT WORK.  A category is small
     RELATIVE TO A PAIR OF LEVELS when its objects and each of its hom-setoids
@@ -115,7 +115,7 @@ Objects carry no setoid in this library, so an object bijection has to be
     reason is a genuine portability constraint rather than a preference: on
     Coq 8.19 and 8.20 [eq] is pinned to a global universe, so mentioning it
     inside a definition that DECLARES its own universe binder yields
-    "Universe constraints are not implied by the ones declared: o <= eq.u0",
+    “Universe constraints are not implied by the ones declared: o <= eq.u0”,
     which a binder has no syntax to discharge.  Rocq 9.1 made [eq] polymorphic
     and accepts the same text, so this breaks only on the older toolchains --
     exactly the kind of divergence the three-version build exists to catch.
@@ -148,7 +148,7 @@ Arguments obj_refl {A} a.
 
 (**
 Awodey Definition 1.12 / Riehl Definition 1.1.7: only a set's worth of
-    morphisms between any two objects.  "A set's worth" is read as: matched by
+    morphisms between any two objects.  “A set's worth” is read as: matched by
     a setoid at level [uh].
 
     [uh <= h] is deliberately NON-STRICT, so that [locally_small_ambient] below
@@ -200,13 +200,13 @@ Respectfulness is stated directly rather than through [Proper]: the
 
 (**
 EVERY category is locally small at its own hom level, by the identity
-    resizing.  This is Riehl's "each of these is locally small" (Definition
+    resizing.  This is Riehl's “each of these is locally small” (Definition
     1.1.7 and the discussion after Example 1.1.3) turned into a lemma.
 
     Note precisely what it does and does not say.  It is not that local
     smallness is a theorem of category theory -- it is that [Class Category]
     BUILDS IT IN, by giving [homset] at a fixed level.  So in this library the
-    book's distinction between "small" and "merely locally small" collapses on
+    book's distinction between “small” and “merely locally small” collapses on
     the locally-small side: the predicate is universally satisfiable at the
     ambient level, and only acquires content strictly below it.
 
@@ -249,7 +249,7 @@ Class Small@{o h p uo uh up | h <= p, uh <= up, uo < o, uh < h}
 }.
 
 (**
-"Every small category is locally small" (Awodey, the note after Definition
+“Every small category is locally small” (Awodey, the note after Definition
     1.12; Riehl, likewise).  Here it is a projection -- which is the honest
     form, since smallness was DEFINED to include the hom condition.
 
@@ -281,7 +281,7 @@ A TYPE is small at level [w] when it is in bijection, up to [ObjEq], with
     Measured, [About] under [Set Printing Universes]:
 
       SmallType@{w u} : Type@{u} → Type@{max(w+1,u)}
-      (* w u |=
+      (* w u |= *)
 
 --------
 当某个类型在与该级别的类型之间存在双射（到 [ObjEq] 为止）时，它在 [w] 级别上是小的。这是 [Small] 的对象部分，去掉了范畴：相同的四个字段 [small_ob]、[small_ob_to]、[small_ob_from]，以及两个往返操作，都是针对一个裸 [Type@{u}] 来描述的。
@@ -291,8 +291,7 @@ A TYPE is small at level [w] when it is in bijection, up to [ObjEq], with
 这两个绑定器是关键。[w] 是小型载体的级别，而 [u] 是正在调整大小的类型的级别；它们彼此无关，这就是使使用此记录成为调整大小而不是恒等的原因。测量时，[About] 位于 [Set Printing Universes] 之下：
 
 SmallType@{w u} : Type@{u} → Type@{max(w+1,u)}
-      (* w u |=
-*)                               <-- empty constraint block
+      (* w u |= *)                               <-- empty constraint block
 
     [ObjEq] (above) rather than [eq] for the round trips, for the reason the
     [ObjEq] header gives and [Small] already relies on: object equality in
@@ -300,7 +299,7 @@ SmallType@{w u} : Type@{u} → Type@{max(w+1,u)}
     polymorphism, and [eq] at [Type@{u}] would pin the level.
 
     PRIOR ART.  This is the shape the HoTT literature writes [IsSmall] or
-    "essentially small" (Coq-HoTT's [IsSmall@{i j} X := { Y : Type@{i} & Y
+    “essentially small” (Coq-HoTT's [IsSmall@{i j} X := { Y : Type@{i} & Y
     <~> X }], Basics/Equivalences and Universes/Smallness), with the
     equivalence replaced by an [ObjEq] round trip because this library is
     axiom-free and has no univalence.  The consequence is that [SmallType] is
@@ -346,8 +345,8 @@ The terminal category is small: one object and one arrow, so [poly_unit] at
     Every proof term is given EXPLICITLY rather than by [destruct] or [Program].
     That is not fastidiousness: the [destruct] route elaborates through
     [eq_ind], whose global universe ([eq_ind.u0]) a declared universe binder
-    cannot mention, so the definition is rejected with "Universe constraints are
-    not implied by the ones declared".
+    cannot mention, so the definition is rejected with “Universe constraints are
+    not implied by the ones declared”.
 
     The hom half is split out with an explicit type ascription because a nested
     record literal leaves the class parameter [C] unresolved.
@@ -413,7 +412,7 @@ Riehl Remark 1.1.2 (used again at Definition 1.1.6) packages a category as
     presentation -- [edges : nodes → nodes → Type] -- in which [dom] and [cod]
     are carried by the indexing rather than by functions, and it has no
     identity selection at all, so it supplies neither half of Riehl's
-    retraction.  A "reflexive quiver" appears nowhere in the tree.
+    retraction.  A “reflexive quiver” appears nowhere in the tree.
 
     Both presentations are given below, because the difference is exactly where
     the retraction laws live.  In the UNINDEXED form they are genuine equations
@@ -446,8 +445,8 @@ Record ArrowQuiver@{u} := {
 }.
 
 (**
-The total arrow collection of a category: Awodey's [C1], Riehl's "a set's
-    worth of arrows".  Note it bundles the endpoints, so its level is at least
+The total arrow collection of a category: Awodey's [C1], Riehl's “a set's
+    worth of arrows”.  Note it bundles the endpoints, so its level is at least
     that of the objects -- which is why Awodey's Definition 1.11 needs BOTH
     halves and not just the hom condition.
 
@@ -455,8 +454,8 @@ The total arrow collection of a category: Awodey's [C1], Riehl's "a set's
 一个范畴的箭头总集合：Awodey 的 [C1]，Riehl 的“一个集合所对应的箭头”。注意它把端点捆绑在一起，所以它的层次至少与对象的层次相同——这就是为什么 Awodey 的定义 1.11 需要两部分，而不仅仅是同态条件。
 *)
 (**
-The total arrow collection of a category: Awodey's [C1], Riehl's "a set's
-    worth of arrows".  Note it BUNDLES the endpoints, so its level is at least
+The total arrow collection of a category: Awodey's [C1], Riehl's “a set's
+    worth of arrows”.  Note it BUNDLES the endpoints, so its level is at least
     that of the objects -- which is exactly why Awodey's Definition 1.11 needs
     both halves rather than the hom condition alone.  An [ArrowQuiver] keeps
     objects and arrows in ONE universe, the way a set-theoretic presentation

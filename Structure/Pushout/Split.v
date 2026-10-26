@@ -25,8 +25,8 @@ Generalizable All Variables.
  section, hence monic by Theory/Morphisms.v's [sections_are_monic].
 
  WHY THIS IS WORTH NAMING.  It is the constructively cheap fragment of
- the classical refinement "if both legs of the span are monic then both
- pushout injections are monic".  That refinement in full is, for groups,
+ the classical refinement “if both legs of the span are monic then both
+ pushout injections are monic”.  That refinement in full is, for groups,
  the Schreier normal-form theorem for amalgamated free products, whose
  usual proof (van der Waerden's trick) chooses coset transversals; the
  split fragment below needs no normal form, no transversal and no choice
@@ -142,7 +142,7 @@ End PushoutSplit.
    If [g] is a split monomorphism, with retraction [t : z ~> x], then [f]
    factors through [g] as [f ∘ t], because [(f ∘ t) ∘ g ≈ f ∘ (t ∘ g) ≈ f].
    So the OPPOSITE injection splits.  This is the constructively available
-   fragment of "monic legs give monic injections". 
+   fragment of “monic legs give monic injections”. 
 
    --------
    * ** 经典的特例：分裂的箭腿
@@ -195,7 +195,7 @@ Qed.
 (*
    * ** Both injections at once
 
-   "Split-monic legs give split-monic injections" — the strength at which
+   “Split-monic legs give split-monic injections” — the strength at which
    Mac Lane's monic-legs refinement is available with no normal-form
    theorem.  Note the CROSSING: a splitting of [g] is what splits the
    injection out of [y], and vice versa. 

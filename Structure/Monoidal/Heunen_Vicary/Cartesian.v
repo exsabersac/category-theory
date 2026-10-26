@@ -22,12 +22,12 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/cartesian+monoidal+category
  Wikipedia: https://en.wikipedia.org/wiki/Cartesian_monoidal_category
 
- This is the "Fox's theorem" direction made concrete: a symmetric monoidal
+ This is the “Fox's theorem” direction made concrete: a symmetric monoidal
  category equipped with a natural diagonal ∆ (RelevanceMonoidal, copying)
  and a terminal unit / augmentation `eliminate` (SemicartesianMonoidal,
  discarding), subject to the counit laws proj_*_diagonal, has its tensor
- x ⨂ y serve as the categorical product x × y.  Fox 1976, "Coalgebras and
- cartesian categories", Comm. Algebra 4(7):665-667.
+ x ⨂ y serve as the categorical product x × y.  Fox 1976, “Coalgebras and
+ cartesian categories”, Comm. Algebra 4(7):665-667.
 
  The construction reads off a [Cartesian] structure on C from the
  CartesianMonoidal data, transporting along

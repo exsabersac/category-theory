@@ -55,7 +55,7 @@ Generalizable All Variables.
  here for the SETOID VARIETY [SVariety E] of Instance/Variety/Free.v:
  coequalizers in a variety by the adjoint functor theorem (§V.7
  Exercise 4); every variety cocomplete by the same theorem, with its
- initial object described and the question "when is it empty" answered
+ initial object described and the question “when is it empty” answered
  (§IX.1 Exercise 2).  §V.7's Exercises 1 and 2 (groups and rings) are
  not here.
 
@@ -74,7 +74,7 @@ Generalizable All Variables.
  type, the quotient and both eliminator targets all at the variety's
  carrier universe [u11].  Forward, the coequalizer of
  the two projections out of the relation's graph is the quotient;
- backward, the quotient by "is the image of a common element" is the
+ backward, the quotient by “is the image of a common element” is the
  coequalizer.  This tree has no such former (Instance/Variety/
  GroupComparison.v's header records that no quotient of a setoid by its
  own equivalence returns a TYPE), so the Leibniz variety has no
@@ -118,8 +118,8 @@ Generalizable All Variables.
  the mediator and the covering equation [reflexivity] per element.
 
  The kernel is a [Prop] only because [c] carries [soa_prop]
- (Instance/Variety/Free.v's header, "The carrier's `≈` is a
- proposition"): read through [pequiv], it is a relation on a type at
+ (Instance/Variety/Free.v's header, “The carrier's `≈` is a
+ proposition”): read through [pequiv], it is a relation on a type at
  the carrier universe that lives in the carrier universe, which is what
  Structure/Complete.v's size note says a solution-set index must do.
  A family indexed by a Σ over the OBJECTS of [SVariety E] would sit one
@@ -162,7 +162,7 @@ Generalizable All Variables.
  it with the adjoint functor theorem's initial object up to
  isomorphism.
 
- Mac Lane's "when is Alg_τ empty" cannot be about the CATEGORY, which
+ Mac Lane's “when is Alg_τ empty” cannot be about the CATEGORY, which
  is never empty: [SVariety_Terminal] is the limit of the empty diagram
  (Structure/Limit/Finite.v's [FinitelyComplete_Terminal] at its
  [EmptyShape]), whose carrier is the compatible families over no
@@ -182,14 +182,14 @@ Generalizable All Variables.
  ⟨Ω,E⟩ -- independent of [E], since equations change `≈` and not
  the carrier.
 
- The converse direction "inhabited ⇒ some constant" needs more.
+ The converse direction “inhabited ⇒ some constant” needs more.
  [dec_closed_term_constant] proves it under decidable emptiness of each
  arity, which holds in the book's finitary case (a finite arity is
  decidably empty).  [closed_term_constant_implies_WLEM]
  shows the hypothesis cannot simply be dropped: stated uniformly in the
  signature, the converse implies weak excluded middle, ¬P ∨ ¬¬P for
  every proposition P, which intuitionistic logic does not prove (nLab,
- "weak excluded middle").  The witness signature [WLEM_sig P] has two
+ “weak excluded middle”).  The witness signature [WLEM_sig P] has two
  operations of arities [P] and [¬P]; it always has the closed term
  [WLEM_term P], and a constant of it is exactly a proof of ¬P or of
  ¬¬P.
@@ -238,8 +238,8 @@ Generalizable All Variables.
  cumulative.  Instance/Two/Discrete.v's
  [Two_Discrete] is [Category@{u Set Set}], its homs at [Set], and is
  refused as a shape: [SVariety_colim_via_GAFT E Two_Discrete] stops
- with "universe inconsistency: Cannot enforce Set = TD.57 because Set <
- TD.57" (a scratch file's name for the carrier universe), while
+ with “universe inconsistency: Cannot enforce Set = TD.57 because Set <
+ TD.57” (a scratch file's name for the carrier universe), while
  [SVariety_colim_via_GAFT E (DiscreteCat bool)] is accepted by the same
  file.  The binary coproduct above comes through
  Structure/Limit/Finite.v, whose finite shapes fit the discipline.  The
@@ -279,7 +279,7 @@ Generalizable All Variables.
  [Print Assumptions] on every constant of the module, enumerated by
  [Print Module] (heads, the two records [IsVCong] and [IsFCong] with
  their constructors and projections, and [Program] obligations, which
- [.glob] heads omit) returns "Closed under the global context" for
+ [.glob] heads omit) returns “Closed under the global context” for
  each, [CommMagma_Cocartesian] and [CommMagma_coequalizers] among them.
  Instantiating any of this at Instance/Comp.v's [UA.GroupEq] inherits
  [functional_extensionality_dep] from the building of that
@@ -294,7 +294,7 @@ Generalizable All Variables.
  [GAFT]'s.  No colimits at shapes outside the discipline above.  No
  coequalizers for #440's Leibniz variety, for the reason proved above,
  and the boundary lemma is stated for the empty signature only.  No
- "inhabited ⇒ some constant" without the decidability hypothesis.  No
+ “inhabited ⇒ some constant” without the decidability hypothesis.  No
  comparison of the coproduct with any explicit construction (Free.v's
  [soa_prod] is a product, not a coproduct).  No preservation or
  creation of colimits by any functor, and nothing on filtered colimits,

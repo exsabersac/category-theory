@@ -23,7 +23,7 @@ Quotient objects, and their lattice, by transport through C^op
    nLab:  https://ncatlab.org/nlab/show/subobject
    nLab:  https://ncatlab.org/nlab/show/coimage
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
    §V.7, book p. 126 (PDF pp. 135-136), Definition 3, is the source.
    Having defined a subobject of x as an equivalence class of monos into
    x ordered by factorization (Definition 2, the previous file), Mac Lane
@@ -67,8 +67,8 @@ Quotient objects, and their lattice, by transport through C^op
    covariant factorization order, with no rewriting.
 
    MONIC IN C^op IS EPIC IN C, AND CONVERSELY.  The issue that prompted
-   this file (#446) recorded, as one of its gaps, that there is "no lemma
-   identifying Monic in C^op with the Epic class of Theory/Morphisms.v".
+   this file (#446) recorded, as one of its gaps, that there is “no lemma
+   identifying Monic in C^op with the Epic class of Theory/Morphisms.v”.
    That was STALE when written and is cited here as such:
    Theory/Morphisms/Duality.v carries all four bridges --
    [Monic_of_op_Epic], [op_Epic_of_Monic],
@@ -104,9 +104,9 @@ Quotient objects, and their lattice, by transport through C^op
         (q ≈ r) = { i : quot_cod q ≅ quot_cod r
                   & to i ∘ quot_epi q ≈ quot_epi r } := eq_refl.]
    is rejected as
-     "The term "eq_refl" has type "(q ≈ r) = (q ≈ r)" while it is
-      expected to have type "(q ≈ r) = ∃ i : quot_cod q ≅ quot_cod r,
-      i ∘ quot_epi q ≈ quot_epi r" (cannot unify ...)" --
+     “The term ”eq_refl“ has type ”(q ≈ r) = (q ≈ r)“ while it is
+      expected to have type ”(q ≈ r) = ∃ i : quot_cod q ≅ quot_cod r,
+      i ∘ quot_epi q ≈ quot_epi r“ (cannot unify ...)” --
    a CONVERSION refusal.  The covariant characterization is therefore a
    LEMMA and is stated at ≈, never at [eq_refl]: [quot_equiv_iff_iso]
    says [q ≈ r] iff there is an isomorphism [i : quot_cod q ≅[C]
@@ -134,8 +134,8 @@ Quotient objects, and their lattice, by transport through C^op
    which is the PUSHOUT in C of the two epis -- is the GREATEST LOWER
    BOUND for [quot_le]: the finest quotient that FACTORS THROUGH both q
    and r, i.e. the finest one below both (an earlier revision of this
-   sentence had the direction of "factors through" backwards, saying
-   "that both q and r factor through"; an audit caught it against the
+   sentence had the direction of “factors through” backwards, saying
+   “that both q and r factor through”; an audit caught it against the
    definition two paragraphs up), which for groups is G/(NM).  A reader
    who orders quotients
    by the size of the codomain, or who identifies a quotient with its
@@ -244,7 +244,7 @@ Quotient objects, and their lattice, by transport through C^op
    antisymmetry at Leibniz equality: [quot_le] is Type-valued, its
    induced equivalence is the setoid, and every law below holds at ≈
    only -- [quot_le_antisym] is [sub_equiv_iff_mutual] read at C^op, and
-   the two "q ≤ r iff" pairs are four separate lemmas for the same
+   the two “q ≤ r iff” pairs are four separate lemmas for the same
    reason as in the subobject file.  No respectfulness for the
    accessors: [mk_quot_respects] is proved, a [quot_epi_respects] is
    not, since the epis of two equivalent quotients live over different
@@ -344,7 +344,7 @@ C^op 中的 MONIC 是 C 中的史诗，反之亦然。 提示的问题
  被拒绝为
  “术语“eq_refl”的类型为“(q ≈ r) = (q ≈ r)”，而它是
  预计具有类型“(q ≈ r) = ∃ i : quot_cod q ≅ quot_cod r,
- i ∘ quot_epi q ≈ quot_epi r" （无法统一...）" --
+ i ∘ quot_epi q ≈ quot_epi r“ （无法统一...）” --
  转换拒绝。 因此，协变特征是
  LEMMA 并在 ≈ 处说明，从不在 [eq_refl] 处说明：[quot_equiv_iff_iso]
  说 [q ≈ r] 当且仅当存在同构 [i : quot_cod q ≅[C]
@@ -794,7 +794,7 @@ Context {x : C}.
 The pushout of two epis, read as a quotient object: the meet for
    [quot_le] -- the greatest lower bound, the finest quotient that
    factors through both (the interface stub's gloss had the direction of
-   "factors through" backwards; corrected at integration).
+   “factors through” backwards; corrected at integration).
 
 --------
 两个射满的推挤，读作商对象：[quot_le] 的交 -- 最大下界，通过两个都因子的最细商（接口存根的注释中“通过因子”的方向反了；在集成时已更正）。
@@ -863,11 +863,11 @@ Definition quot_meet_top (q : QuotObj x) : quot_meet q quot_top ≈ q :=
   @sub_meet_top (C^op) (HasPullbacks_op_of_HasPushouts HP) x q.
 
 (*
-"q ≤ r iff q ∧ r ≈ q", in two lemmas: [quot_le] is Type-valued data
+“q ≤ r iff q ∧ r ≈ q”, in two lemmas: [quot_le] is Type-valued data
    and the two directions carry different data.
 
 --------
-"q ≤ r 当且仅当 q ∧ r ≈ q"，在两个引理中：[quot_le] 是类型值数据，并且两个方向携带不同的数据。
+“q ≤ r 当且仅当 q ∧ r ≈ q”，在两个引理中：[quot_le] 是类型值数据，并且两个方向携带不同的数据。
 *)
 Definition quot_meet_of_le (q r : QuotObj x) :
   quot_le q r → quot_meet q r ≈ q :=
@@ -900,10 +900,10 @@ Context {x : C}.
    [Sets_quot_bot] at every inhabited setoid, and the refutation
    [Sets_one_not_epic_empty].  The same inhabited/empty split governs
    [Grp], [Ab] and [Top], while in a thin category every arrow is epic.
-   An earlier revision of this paragraph said "in most categories the
-   arrow to the terminal object is not epic", which an audit refuted by
+   An earlier revision of this paragraph said “in most categories the
+   arrow to the terminal object is not epic”, which an audit refuted by
    discharging the hypothesis at [Sets] on [bool]; a second revision
-   said the discharge "lives with the witnesses" before any had been
+   said the discharge “lives with the witnesses” before any had been
    landed, which a second audit caught.
 
 --------

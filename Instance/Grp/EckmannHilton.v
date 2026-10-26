@@ -19,23 +19,23 @@ Generalizable All Variables.
  Every statement below mentions the group [G] and, in the first half,
  the group-object structure [GO]; but several of them -- [AbelianGrp G] in
  particular -- do not mention [GO] in their STATEMENT while consuming it
- in the PROOF.  Lib.v sets [Default Proof Using "Type"], which keeps only
+ in the PROOF.  Lib.v sets [Default Proof Using “Type”], which keeps only
  the section variables occurring in the statement, so the section
  hypotheses must be requested explicitly.  This is exactly the discipline
  Theory/EckmannHilton.v adopts, and for the same reason. 
 
  --------
- 下面的每个陈述都提到了群体 [G]，并且在前半部分提到了群体-对象结构 [GO]；但是其中几个——特别是 [AbelianGrp G]——在其陈述中并未提到 [GO]，却在证明中使用了它。Lib.v 设置了 [Default Proof Using "Type"]，该设置仅保留出现在陈述中的部分变量，因此必须显式请求部分假设。这正是 Theory/EckmannHilton.v 采用的规范，原因也是相同的。
+ 下面的每个陈述都提到了群体 [G]，并且在前半部分提到了群体-对象结构 [GO]；但是其中几个——特别是 [AbelianGrp G]——在其陈述中并未提到 [GO]，却在证明中使用了它。Lib.v 设置了 [Default Proof Using “Type”]，该设置仅保留出现在陈述中的部分变量，因此必须显式请求部分假设。这正是 Theory/EckmannHilton.v 采用的规范，原因也是相同的。
 *)
 Local Set Default Proof Using "All".
 
 (* * * Group objects in Grp are abelian groups / * * Grp中的对象是阿贝尔群 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, Section III.6 ("Groups in Categories"),
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, Section III.6 (“Groups in Categories”),
  Exercise 4, printed p. 76
- Paper: Eckmann, Hilton, "Structure maps in group theory", Fundamenta
+ Paper: Eckmann, Hilton, “Structure maps in group theory”, Fundamenta
  Mathematicae 50, 1961, Theorem 1.12
  nLab:  https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
  nLab:  https://ncatlab.org/nlab/show/group+object
@@ -81,24 +81,24 @@ Local Set Default Proof Using "All".
  The statement proved here is asserted in prose, unproved, in three
  places in the tree:
 
- - Structure/Group.v, the [GroupObject] background essay: "A group
+ - Structure/Group.v, the [GroupObject] background essay: “A group
  object in Grp itself is an abelian group: the two multiplications
  satisfy an interchange law, and the Eckmann-Hilton argument ... forces
- them to coincide and to commute".  (Theory/EckmannHilton.v cites
+ them to coincide and to commute”.  (Theory/EckmannHilton.v cites
  that passage in Structure/Group.v one line below the sentence's key
  line, so that existing cross-reference is off by one.  It is left
  alone -- this file modifies nothing outside itself.  An audit caught
  an off-by-one in THIS sentence too: it had named the line carrying
  only the parenthetical gloss rather than the citing token itself.)
  - Theory/EckmannHilton.v, in the list of facts the principle
- explains: "a group object in Grp is an abelian group.  The ambient
+ explains: “a group object in Grp is an abelian group.  The ambient
  multiplication and the internal one interchange because the internal
- one is a homomorphism for the ambient one."
+ one is a homomorphism for the ambient one.”
  - Theory/EckmannHilton.v again, in the roster of in-tree prose
  appeals to the principle.
 
  No formal statement of the exercise existed anywhere: a search for the
- phrases "group object in Grp" and "objects in Grp" over the tree's [.v]
+ phrases “group object in Grp” and “objects in Grp” over the tree's [.v]
  files returns exactly those three prose lines and nothing else. 
 
  --------
@@ -112,8 +112,8 @@ Local Set Default Proof Using "All".
 *)
 
 (*
- A PRIOR-ART CORRECTION.  The issue's "Current state" section says that
- "no category Grp and no category of group objects exists".  BOTH halves
+ A PRIOR-ART CORRECTION.  The issue's “Current state” section says that
+ “no category Grp and no category of group objects exists”.  BOTH halves
  are stale.  [Grp] is Instance/Grp.v and [GrpCat], the category of
  group objects in a cartesian monoidal category, is
  Theory/Algebra/Group/Hom.v.  An object of [GrpCat GrpS] is precisely a
@@ -150,7 +150,7 @@ Local Set Default Proof Using "All".
  f (g a b) (g c d) ≈ g (f a c) (f b d)
 
  which is Theory/EckmannHilton.v's [interchange] verbatim.  The
- "middle-two swap" that the middle-four interchange law is usually
+ “middle-two swap” that the middle-four interchange law is usually
  described by is entirely absorbed into WHICH pairs are fed to
  [grp_map_mul]: the proof term of [gob_interchange] is literally
  [grp_map_mul mappend (a, c) (b, d)], with no tactic and no reassociation.
@@ -203,7 +203,7 @@ Local Set Default Proof Using "All".
  finishes the identification by uniqueness of inverses.
  (4) [group_object_mul_unique], [group_object_unit_unique],
  [group_object_inverse_unique] -- the group-object structure on a
- group is unique when it exists, which is what "arises this way"
+ group is unique when it exists, which is what “arises this way”
  means.
  (5) Half (a): [ab_mappend], [grp_ab_inverse], [ab_MonoidObject] and the
  headline [abelian_GroupObject].
@@ -273,14 +273,14 @@ Local Set Default Proof Using "All".
  Going the other way -- from an arbitrary group object, through half (b),
  and back through half (a) -- reaches only [≈]:
  [group_object_roundtrip_mul], [_unit], [_inv].  The diagnosis is not
- "rebuilt law fields": it is that [gmul2 G GO] is a projection of a
+ “rebuilt law fields”: it is that [gmul2 G GO] is a projection of a
  VARIABLE [GO], so there is nothing to reduce at all, and no amount of
  transparency downstream would change that.  The whole-record round trip
  [abelian_GroupObject G (group_object_abelian G GO) = GO] is refuted for
  the same reason and pinned as a probe.
 
  Also refuted, and pinned as [probe_other_roundtrip] -- an audit found
- this paragraph claiming "pinned" while NO negative in the file mentioned
+ this paragraph claiming “pinned” while NO negative in the file mentioned
  [HA] at all, so the guard is now real rather than asserted:
  [AbelianGrp G ↔ GroupObject G] is a biconditional
  and NOT an isomorphism of types.  The composite
@@ -308,7 +308,7 @@ Local Set Default Proof Using "All".
  (Instance/Grp.v), which is declared with a single universe binder
  where the record wants more, so [Grp_trivial@{u} : GrpObject@{u u Set}]
  and [Grp_Terminal@{u} : Terminal@{u Set}]: the HOM universe is pinned
- at [Set].  (CORRECTION, the PR "algebraic carriers are sets"
+ at [Set].  (CORRECTION, the PR “algebraic carriers are sets”
  (2026-09-17): an earlier revision wrote [Grp_trivial]'s readback as
  [GrpObject@{u Set u}] and cited [Grp_Terminal] and [Grp_trivial] at
  lines of Instance/Grp.v they have since left.  That PR permuted
@@ -326,7 +326,7 @@ Local Set Default Proof Using "All".
  makes explicit rather than leaving to elaboration.  The pin is
  MEASURED, not guessed: the probe section declares [Constraint Set < ph],
  accepts [Grp@{pu ph}] as a category AND [Grp_Cartesian] at those very
- levels, and rejects [Grp_Terminal] with "Cannot enforce Set = ph" -- so
+ levels, and rejects [Grp_Terminal] with “Cannot enforce Set = ph” -- so
  the cause is [Grp_Terminal] specifically, not [Grp] and not the
  cartesian structure.  The same rejection propagates to
  [CC_CartesianMonoidal], with the error still reported AT
@@ -376,14 +376,14 @@ Local Set Default Proof Using "All".
  something else: [fobj] lives in Category.Theory.Functor and its
  notation lives in [object_scope].  Requiring only
  Category.Instance.Grp loads that module without importing its names,
- so [fobj] is then "not found in the current environment" -- a NAME
+ so [fobj] is then “not found in the current environment” -- a NAME
  RESOLUTION error, not a parse error.  This file requires
  Category.Theory.Functor explicitly for exactly that reason.
  - The third hazard is REAL but is an elaboration error, not a parse
  error: bare [G ⨂[GrpCM] G] picks the MORPHISM notation
  (Structure/Monoidal.v) over the object one, and reports
- that [G] "has type obj[GrpS] while it is expected to have type
- ?x ~{GrpS}~> ?w".  Either a [%object] delimiter or a result-type
+ that [G] “has type obj[GrpS] while it is expected to have type
+ ?x ~{GrpS}~> ?w”.  Either a [%object] delimiter or a result-type
  ascription selects the object reading.  Below, the object is written
  [@fobj _ _ GrpTensor (G, H)] so that no scope discipline is needed.
 
@@ -497,7 +497,7 @@ Local Set Default Proof Using "All".
  [PbBoolSet]), and a second collision on a name as central as
  [Abelian] is not worth the aesthetics.  [grp_ab_inverse] and
  [eh_probe_instrument] carry suffixes for a WEAKER reason, and an audit
- corrected an earlier draft that said "for the same reason": they collided
+ corrected an earlier draft that said “for the same reason”: they collided
  with Instance/Ab/Character/Finite.v and Test/ProbePolynomial.v,
  but NEITHER of those files is required into the print-assumptions scope
  ([Locate ab_inverse] there returns nothing), so those two renames are
@@ -525,8 +525,8 @@ Local Set Default Proof Using "All".
  OBJECTS are classified.
  - No bridge to Instance/Ab.v's [AbObject], for the reason above.
  - No morphism-level statement: nothing is proved about [GroupHom]s
- between two group objects in Grp, so "the identification is
- functorial" is neither stated nor proved.
+ between two group objects in Grp, so “the identification is
+ functorial” is neither stated nor proved.
  - No iterated collapse: the monoid analogue (a monoid object in the
  category of monoids is a commutative monoid) is not stated, and
  neither is the observation that the tower stops here.
@@ -739,7 +739,7 @@ Proof.
 Qed.
 
 (*
- "Every group object in Grp arises this way", packaged: all three
+ “Every group object in Grp arises this way”, packaged: all three
  structure morphisms are the group's own. 
 
  --------
@@ -757,7 +757,7 @@ End GroupObjectInGrp.
 
 (*
  Because every group-object structure on [G] is [G]'s own structure,
- any two of them agree.  This is the content of "arises this way" that a
+ any two of them agree.  This is the content of “arises this way” that a
  bare biconditional does not carry. 
 
  --------
@@ -900,7 +900,7 @@ Definition abelian_iff_group_object (G : GrpS) :
   AbelianGrp G ↔ @GroupObject GrpS GrpCM G :=
   (abelian_GroupObject G, group_object_abelian G).
 
-(* The exercise, packaged: the biconditional together with the clause that makes the backward direction say "arises this way" rather than merely "exists". / 练习，打包：双条件连同使反向表达说“这样产生”而不仅仅是“存在”的从句。 *)
+(* The exercise, packaged: the biconditional together with the clause that makes the backward direction say “arises this way” rather than merely “exists”. / 练习，打包：双条件连同使反向表达说“这样产生”而不仅仅是“存在”的从句。 *)
 Definition maclane_III_6_ex4 (G : GrpS) :
   (AbelianGrp G ↔ @GroupObject GrpS GrpCM G)
     ∧ (∀ GO : @GroupObject GrpS GrpCM G,
@@ -1077,7 +1077,7 @@ Qed.
  Each [Fail] below was stripped once and its error read: the kinds are
  genuinely distinct, and the two universe negatives report their failure
  AT [Grp_Terminal] in both cases.  (CORRECTION, #450: this line said
- "Five negatives" before #450, one short already: at the parent commit
+ “Five negatives” before #450, one short already: at the parent commit
  e139ecfb the file had six guarded negatives, two universe, one typing
  and three conversion.  And the two universe negatives are controls
  since #450 lifted the donor pin, so what remains is FOUR negatives of
@@ -1121,10 +1121,10 @@ Definition ctrl_probe_terminal : @Terminal GrpS := Grp_Terminal.
 
 (*
  FORMABILITY (universe), 1 of 2, a CONTROL since #450.  Until then this
- was a guarded negative named [probe_terminal_pinned], refused with "The term
+ was a guarded negative named [probe_terminal_pinned], refused with “The term
  Grp_Terminal has type Terminal@{_ Set} while it is expected to have
  type Terminal@{pu ph} (universe inconsistency: Cannot enforce Set =
- ph)."  #450 annotated [Grp_Terminal] in place, the build reported the
+ ph).”  #450 annotated [Grp_Terminal] in place, the build reported the
  guarded command accepted, and the command is kept as a [Check] so that
  no constant is added to the file's count. 
 
@@ -1148,8 +1148,8 @@ End ProbeUniversePin.
 
 (*
  TYPING.  [GroupObject] wants a [CartesianMonoidal]; [GrpMon] is only a
- [Monoidal].  "The term GrpMon has type Monoidal while it is expected to
- have type CartesianMonoidal." 
+ [Monoidal].  “The term GrpMon has type Monoidal while it is expected to
+ have type CartesianMonoidal.” 
 
  --------
  输入。[GroupObject] 想要一个 [CartesianMonoidal]；[GrpMon] 仅仅是一个 [Monoidal]。“术语 GrpMon 的类型是 Monoidal，但预期类型是 CartesianMonoidal。”
@@ -1160,10 +1160,10 @@ Fail Definition probe_needs_cartesian : Type :=
   @GroupObject GrpS GrpMon Z2.
 
 (*
- CONVERSION, 1 of 3 (labelled "1 of 2" before #450, although the third
+ CONVERSION, 1 of 3 (labelled “1 of 2” before #450, although the third
  was already below).  The two multiplications agree at [≈] and NOT on
  the nose: [gmul2 G GO] projects a variable [GO], so nothing reduces.
- "cannot unify gmul2 G GO a b and grp_mul G a b". 
+ “cannot unify gmul2 G GO a b and grp_mul G a b”. 
 
  --------
  转换，3 中的 1（在 #450 之前标记为“2 中的 1”，尽管第三个已经在下面）。两个乘法在 [≈] 上一致，而不是完全一致：[gmul2 G GO] 投影了一个变量 [GO]，因此没有任何简化。
@@ -1178,10 +1178,10 @@ Fail Example probe_mul_strict (G : GrpS)
   gmul2 G GO a b = grp_mul G a b := eq_refl.
 
 (*
- CONVERSION, 2 of 3 (labelled "2 of 2" before #450, likewise).  The
+ CONVERSION, 2 of 3 (labelled “2 of 2” before #450, likewise).  The
  whole-record round trip through both halves is
- refuted for the same reason: "cannot unify
- abelian_GroupObject G (group_object_abelian G GO) and GO".  What DOES
+ refuted for the same reason: “cannot unify
+ abelian_GroupObject G (group_object_abelian G GO) and GO”.  What DOES
  hold is [group_object_roundtrip_mul] and its two siblings, at [≈].
  This is also why [abelian_iff_group_object] is a biconditional and not
  an isomorphism of types. 
@@ -1195,7 +1195,7 @@ Fail Example probe_record_roundtrip (G : GrpS)
 
 (*
  CONVERSION, 3 of 3.  The OTHER composite is refuted too, and this probe
- exists because an audit found the header claiming it was "pinned" when
+ exists because an audit found the header claiming it was “pinned” when
  no negative mentioned [HA] at all: the round trip that starts from an
  [AbelianGrp] proof is likewise not the identity, so the biconditional is
  a biconditional in both directions and not an isomorphism of types.

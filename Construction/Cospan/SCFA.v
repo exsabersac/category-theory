@@ -56,8 +56,8 @@ Generalizable All Variables.
 *)
 
 (*
- SCFA = special commutative Frobenius algebra, i.e. the "classical
- structure" of categorical quantum mechanics: a commutative comonoid
+ SCFA = special commutative Frobenius algebra, i.e. the “classical
+ structure” of categorical quantum mechanics: a commutative comonoid
  plus cocommutative monoid satisfying the Frobenius law
  [(id ⨂ mu) ∘ (delta ⨂ id) ≈ delta ∘ mu ≈ (mu ⨂ id) ∘ (id ⨂ delta)]
  and the special law [mu ∘ delta ≈ id].  In [CospanCat C HP] each object
@@ -113,7 +113,7 @@ Proof. reflexivity. Qed.
 
 (*
    * A cospan from [X] to [Y] with apex [X], leg1 = id, leg2 = f : Y → X.
-   This is the "backward" direction: a C-morphism [Y → X] reinterpreted
+   This is the “backward” direction: a C-morphism [Y → X] reinterpreted
    as a cospan from [X] to [Y]. 
 
    --------
@@ -1501,7 +1501,7 @@ Proof.
   (*
  Now: compose (back (cover id (id▽id) ∘ to coprod_assoc))
  (mor_as_cospan (cover (id▽id) id))
- The outer is "back", inner is "forward".  This is a genuine pushout
+ The outer is “back”, inner is “forward”.  This is a genuine pushout
  (the Frobenius pushout). 
 
  --------

@@ -15,9 +15,9 @@ Generalizable All Variables.
 (*
 nLab:      https://ncatlab.org/nlab/show/center+of+a+category
    nLab:      https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
               §II.5 Exercise 8 (printed p. 45)          [maclane:II.5:ex8]
-   Book:      Riehl, "Category Theory in Context", §1.7 Exercise 1.7.iv
+   Book:      Riehl, “Category Theory in Context”, §1.7 Exercise 1.7.iv
               (printed p. 51)                           [riehl:1.7:exiv]
 
    The CENTRE of a category C is the collection of natural transformations
@@ -73,7 +73,7 @@ Why this is the arity-zero shadow of Eckmann–Hilton
 
    nLab:  https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
    nLab:  https://ncatlab.org/nlab/show/center+of+a+category
-   Paper: Eckmann, Hilton, "Group-like structures in general categories I",
+   Paper: Eckmann, Hilton, “Group-like structures in general categories I”,
           Mathematische Annalen 145, 1962
 
    Read one level up.  A category C is a one-object bicategory's worth of
@@ -121,7 +121,7 @@ Why this is the arity-zero shadow of Eckmann–Hilton
        `transform[nat_hcompose α β] x = transform[nat_compose α β] x` by
        [eq_refl], and both whiskerings against Id are the identity on
        components ([centre_whisker_left], [centre_whisker_right]).  So the
-       "two operations" the argument wants are one operation and that same
+       “two operations” the argument wants are one operation and that same
        operation with its arguments swapped.
 
    (2) The interchange hypothesis already contains the conclusion.
@@ -137,9 +137,9 @@ Why this is the arity-zero shadow of Eckmann–Hilton
    genuinely is an Eckmann–Hilton situation and that the abstract engine
    applies to it, which is the mathematical content of putting the two
    exercises next to each other.  It is not a second, independent proof.
-   Theory/EckmannHilton.v's own header anticipates exactly this ("there they
+   Theory/EckmannHilton.v's own header anticipates exactly this (“there they
    genuinely share a unit, which is precisely the special position that
-   makes the collapse bite"); this file is that engine's third consumer,
+   makes the collapse bite”); this file is that engine's third consumer,
    after Structure/Semiadditive.v (which uses [eh_ops], [eh_comm] and
    [eh_assoc] for its two convolutions) and Instance/Top/LoopSpace.v (which
    uses the packaged [eckmann_hilton]).  Instance/Cat/TwoCategory.v does NOT

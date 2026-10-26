@@ -11,7 +11,7 @@ Generalizable All Variables.
 (*
 nLab: https://ncatlab.org/nlab/show/monomorphism
    nLab: https://ncatlab.org/nlab/show/epimorphism
-   Book: Riehl, "Category Theory in Context", §1.2 (Lemma 1.2.11)
+   Book: Riehl, “Category Theory in Context”, §1.2 (Lemma 1.2.11)
 
    Riehl's §1.2 states four facts about monos and epis -- closure under
    composition and cancellation, each in two variances -- and the point of the

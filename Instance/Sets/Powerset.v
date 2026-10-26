@@ -12,7 +12,7 @@ Require Import Category.Instance.Sets.Classifier.
  [Powerset_Prop_FAlg] — can be entered into the environment.  Neither
  module depends on anything under Instance/, and nothing in the tree
  imports this file, so no cycle is introduced.  CORRECTION (#466): the
- clause "nothing in the tree imports this file" does not hold.  Before
+ clause “nothing in the tree imports this file” does not hold.  Before
  #466, forty-three files of _CoqProject required this module, and with
  #466's six files (its five and Test/ProbeSupLat466.v) forty-nine do (a
  script over their [Require] lines, comments stripped).  No cycle arises
@@ -46,11 +46,11 @@ Generalizable All Variables.
  proof-relevant, one truncated — for reasons set out below.
 
  ATTRIBUTION, and what was and was not consulted.  The construction is
- the first worked example of a functor in Mac Lane, "Categories for the
- Working Mathematician", 2nd ed. (GTM 5), §I.3, printed p. 13, with the
+ the first worked example of a functor in Mac Lane, “Categories for the
+ Working Mathematician”, 2nd ed. (GTM 5), §I.3, printed p. 13, with the
  contravariant companion at §II.2, printed p. 33; it is also Awodey,
- "Category Theory", §5.6, printed p. 120, and Riehl, "Category Theory in
- Context", §1.3 Example 1.3.2(i), with the singleton transformation at
+ “Category Theory”, §5.6, printed p. 120, and Riehl, “Category Theory in
+ Context”, §1.3 Example 1.3.2(i), with the singleton transformation at
  §1.4 Example 1.4.4(iii).  Both the section-and-page coordinates AND the
  one-line descriptions of what those passages contain are reproduced from
  the catalogue entry of the issue this file answers
@@ -156,7 +156,7 @@ Generalizable All Variables.
  [carrier X → Type@{o}] sits at [Type@{so}], one level above the carriers.
 
  The word CHOSEN is doing real work there, and an earlier version of this
- header wrote "therefore" instead — see the retraction below.  Nothing
+ header wrote “therefore” instead — see the retraction below.  Nothing
  about a [Type@{o}]-valued [≈] forces subsets to be valued where [≈] is; a
  subset only has to RESPECT [≈].
 
@@ -184,7 +184,7 @@ Generalizable All Variables.
  [Transform] requires its two functors to share both domain and codomain,
  and here it is the codomains that differ, so [@Id Sets ⟹ Powerset] is
  rejected by the universe checker, with an inconsistency of the shape
- "Cannot enforce u = v because v < u".  That rejection was checked while
+ “Cannot enforce u = v because v < u”.  That rejection was checked while
  writing this file; it is not reproduced here as a command, since a
  deliberately ill-typed command in the source would trip the repository's
  hygiene grep.  For this carrier the honest form is
@@ -196,12 +196,12 @@ Generalizable All Variables.
  function is [λ a, f a], Classifier.v).
 
  A RETRACTION, BECAUSE AN EARLIER VERSION OF THIS HEADER OVERSTATED THAT
- SCOPE.  It said that Riehl's [Id ⟹ P] "is not statable" in this library,
+ SCOPE.  It said that Riehl's [Id ⟹ P] “is not statable” in this library,
  full stop, and offered the universe checker as the reason for it.  That
  is withdrawn.  What the universe checker rejects is [@Id Sets ⟹ Powerset]
  for the specific [Type@{o}]-valued carrier; the general claim does not
  follow from it, and is false.  The step that does not follow is the one
- above: from "[≈] is [Type@{o}]-valued" it was inferred that a subset must
+ above: from “[≈] is [Type@{o}]-valued” it was inferred that a subset must
  be valued in [Type@{o}].  A [Prop]-valued predicate respects a
  [Type@{o}]-valued [≈] perfectly well, because [Type@{o} → Prop] is itself
  a [Prop] by the impredicativity of [Prop].  Taking that route — subsets
@@ -214,12 +214,12 @@ Generalizable All Variables.
  [Prop : Type@{Set+1}].
 
  The inherited justification does not carry over either.  This header
- claimed that Instance/Sets/Classifier.v "works through the same
- obstruction".  It does not, and that file says so in its own words:
- [Prop] (with [iff]) "would fit at level o size-wise, but could
+ claimed that Instance/Sets/Classifier.v “works through the same
+ obstruction”.  It does not, and that file says so in its own words:
+ [Prop] (with [iff]) “would fit at level o size-wise, but could
  not receive the [Type@{o}]-valued characteristic predicate
  [λ b, ∃ a, m a ≈ b] without truncating away the witness that
- [sets_char_pullback] and [sets_char_unique] must recover".  The
+ [sets_char_pullback] and [sets_char_unique] must recover”.  The
  classifier's obstruction is WITNESS RECOVERY, forced on it by a pullback
  universal property; a power set carries no such obligation, so truncation
  costs it nothing it is required to have.  In-tree precedent for
@@ -698,7 +698,7 @@ Qed.
 (*
  THE DEGENERACY THEOREM.  Along an injective map the direct image reflects
  equivalence of subsets: nothing is merged.  This is the precise sense in
- which an injective witness is "just relabelling", and the reason the
+ which an injective witness is “just relabelling”, and the reason the
  concrete witnesses below use a non-injective map. 
 
  --------
@@ -757,7 +757,7 @@ Qed.
  The corollary that makes the merging theorem bite, machine-checked rather
  than left as prose: if [f] identifies two DISTINCT points, then
  [fmap[Powerset] f] identifies two distinct subsets — so it is not
- injective on subsets.  ("Not injective" is taken in the positive sense,
+ injective on subsets.  (“Not injective” is taken in the positive sense,
  [∃ a b, a ≉ b ∧ f a ≈ f b], which is the sense a witness supplies; the
  negative reading offers no constructive way to extract the pair.) 
 
@@ -1202,7 +1202,7 @@ Definition Powerset_Prop_obj@{o} (X : SetoidObject@{o o}) : SetoidObject@{o o} :
   {| carrier   := SetoidMorphism@{o o o} X Powerset_Prop_truth@{o}
    ; is_setoid := @SetoidMorphism_Setoid@{o o o} X Powerset_Prop_truth@{o} |}.
 
-(* The direct image, truncated: [y] belongs to [f S] when SOME [x ∈ S] has [f x ≈ y], with the "some" squashed. / 直接图像，截断：[y] 属于 [f S] 当某些 [x ∈ S] 拥有 [f x ≈ y]，‘某些’被压缩。 *)
+(* The direct image, truncated: [y] belongs to [f S] when SOME [x ∈ S] has [f x ≈ y], with the “some” squashed. / 直接图像，截断：[y] 属于 [f S] 当某些 [x ∈ S] 拥有 [f x ≈ y]，‘某些’被压缩。 *)
 Definition Powerset_Prop_image@{o} {X Y : SetoidObject@{o o}}
   (f : SetoidMorphism@{o o o} X Y) (S : carrier (Powerset_Prop_obj@{o} X)) :
   carrier (Powerset_Prop_obj@{o} Y).
@@ -1376,9 +1376,9 @@ Defined.
  [Theory/Monad.v] ([Context `{M : C ⟶ C}]) and
  [Construction/FAlg.v] ([Program Definition FAlg `(F : C ⟶ C)]) each
  require an endofunctor, so over [Powerset] neither of the two types below
- can be formed: substituting it reports "The term "Powerset" has type
- "Sets@{a b} ⟶ Sets@{b c}" while it is expected to have type
- "Sets@{d e} ⟶ Sets@{d e}"", with the same universe inconsistency as
+ can be formed: substituting it reports “The term ”Powerset“ has type
+ ”Sets@{a b} ⟶ Sets@{b c}“ while it is expected to have type
+ ”Sets@{d e} ⟶ Sets@{d e}“”, with the same universe inconsistency as
  before.  Over [Powerset_Prop] both types elaborate, and naming them here
  puts that claim in the environment where the type checker settles it,
  instead of leaving it as a sentence in a comment.

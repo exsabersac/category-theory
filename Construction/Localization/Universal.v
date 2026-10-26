@@ -19,10 +19,10 @@ Generalizable All Variables.
  The section proofs below draw on context variables (the reflective structure,
  the W-inverting functor G, and the two hypotheses on it) that need not occur
  in every stated type, so capture every section variable rather than the
- [Default Proof Using "Type"] subset inherited from Lib.v. 
+ [Default Proof Using “Type”] subset inherited from Lib.v. 
 
  --------
- 下面的节证明依赖于上下文变量（反射结构、W-反转函子 G 以及关于它的两个假设），这些变量不必出现在每一个已声明的类型中，因此应捕获每个节变量，而不是从 Lib.v 继承的 [Default Proof Using "Type"] 子集。
+ 下面的节证明依赖于上下文变量（反射结构、W-反转函子 G 以及关于它的两个假设），这些变量不必出现在每一个已声明的类型中，因此应捕获每个节变量，而不是从 Lib.v 继承的 [Default Proof Using “Type”] 子集。
 *)
 Set Default Proof Using "All".
 

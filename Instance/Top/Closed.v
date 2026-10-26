@@ -14,7 +14,7 @@ Generalizable All Variables.
 (* * * Closed sets, and the complementation duality / * * 闭集与补集对偶性 *)
 
 (*
- Book:      Riehl, "Category Theory in Context", Example 1.3.14(iv) and
+ Book:      Riehl, “Category Theory in Context”, Example 1.3.14(iv) and
  Example 1.4.4(v)
  nLab:      https://ncatlab.org/nlab/show/closed+subset
  nLab:      https://ncatlab.org/nlab/show/frame
@@ -58,14 +58,14 @@ Generalizable All Variables.
  classical formulation would silently import excluded middle.
 
  1. A CLOSED SET CARRIES ITS COMPLEMENTING OPEN AS DATA.  Classically one
- says "C is closed when its complement is open", and extracts the open
+ says “C is closed when its complement is open”, and extracts the open
  from the existential when needed.  Constructively that extraction is
  an appeal to choice (from `∃ U, IsOpen U ∧ ...` one cannot in general
  produce `U`), so [ClosedSet] below bundles the complementing open as
  a field, with [closed_agree] recording that the closed predicate IS
- the negation of that open.  The record is therefore not "a predicate
- that happens to be closed" but "a predicate together with a witness
- of its closedness" — the same move the library makes wherever a
+ the negation of that open.  The record is therefore not “a predicate
+ that happens to be closed” but “a predicate together with a witness
+ of its closedness” — the same move the library makes wherever a
  classical existential would otherwise need choice, as with the chosen
  pullbacks of Theory/Subobject/Functor.v or the chosen lifts of
  Theory/Fibration.v's [Cleaving].
@@ -85,8 +85,8 @@ Generalizable All Variables.
  when their complementing OPENS agree pointwise.  That implies their
  closed predicates agree ([closed_equiv_implies_pred_equiv]) but is
  not implied by it, for the same `¬¬` reason.  Comparing the closed
- predicates instead would make [closed_interior] — "read off the
- complementing open" — not respect `≈`, and the natural isomorphism
+ predicates instead would make [closed_interior] — “read off the
+ complementing open” — not respect `≈`, and the natural isomorphism
  at the end of this file would have no inverse.  Riehl's statement is
  classical; what is proved below is its constructive rendering, and
  this paragraph is the disclosure of the difference.

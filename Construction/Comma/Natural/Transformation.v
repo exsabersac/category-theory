@@ -23,7 +23,7 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/comma+category
  Wikipedia: https://en.wikipedia.org/wiki/Comma_category
 
- Wikipedia: "If the domains of S, T are equal, then the diagram which
+ Wikipedia: “If the domains of S, T are equal, then the diagram which
  defines morphisms in S↓T with α=β, α′=β′, g=h is identical to the diagram
  which defines a natural transformation S ⟹ T. The difference between the
  two notions is that a natural transformation is a particular collection of
@@ -34,12 +34,12 @@ Generalizable All Variables.
  η : S → T, with S, T : A → C, corresponds to a functor A → (S↓T) which maps
  each object α to (α, α, η α) and maps each morphism g to (g, g). This is a
  bijective correspondence between natural transformations S ⟹ T and functors
- A ⟶ (S↓T) which are sections of both forgetful functors from S↓T."
+ A ⟶ (S↓T) which are sections of both forgetful functors from S↓T.”
 
  This is also given in Mac Lane, page 47, exercise 4.
 
  The two definitions below realize the two directions of Huq's bijection for
- functors S T : D ⟶ C sharing the domain D (the "domains equal" case above).
+ functors S T : D ⟶ C sharing the domain D (the “domains equal” case above).
  Comma_Functor sends a natural transformation F : S ⟹ T to the functor
  D ⟶ (S ↓ T) of the observation, X ↦ (X, X; F X) and f ↦ (f, f); it is a
  common section of comma_proj1 and comma_proj2 by construction. Comma_Transform
@@ -60,8 +60,8 @@ Generalizable All Variables.
 (*
  WHAT IS PROVED HERE, AND AT WHAT STRENGTH
 
- Mac Lane's exercise (catalog maclane:II.6:ex4, "natural transformations as
- sections of the comma projections (S. A. Huq)") asks, for functors
+ Mac Lane's exercise (catalog maclane:II.6:ex4, “natural transformations as
+ sections of the comma projections (S. A. Huq)”) asks, for functors
  T, S : D ⟶ C, that a natural transformation τ : T ⟹ S be the same thing
  as a functor τ : D ⟶ (T ↓ S) with P τ = Q τ = id_D, where P and Q are the
  comma projections (phrasing per the catalog's statement_summary paraphrase,
@@ -72,7 +72,7 @@ Generalizable All Variables.
 
  THE SECTION EQUATIONS, AT TWO STRENGTHS.
 
- Mac Lane's "P τ = id_D" is an equality of functors, on the nose.
+ Mac Lane's “P τ = id_D” is an equality of functors, on the nose.
  [Comma_Functor_proj1_strict] and [Comma_Functor_proj2_strict] deliver
  exactly that, at [Functor_StrictEq_Setoid] — the hom-setoid of StrictCat,
  in which two functors are identified when their object maps are equal
@@ -81,12 +81,12 @@ Generalizable All Variables.
  [comma_proj1 ◯ Comma_Functor τ] has object map [fun X => fst (X, X)], which
  is [fun X => X] by iota, and likewise on morphisms; every transport in the
  coherence condition therefore vanishes and the condition is [f ≈ f].  This
- is the strongest sense in which this library can say "on the nose": Coq's
+ is the strongest sense in which this library can say “on the nose”: Coq's
  own equality of the two functor RECORDS is not available, since they carry
  proof fields that nothing identifies.
 
  [Comma_Functor_proj1] and [Comma_Functor_proj2] are the same two facts at
- [Functor_Setoid], the hom-setoid of Cat, in which "equal" means naturally
+ [Functor_Setoid], the hom-setoid of Cat, in which “equal” means naturally
  isomorphic — so ≈[Cat] and ≅[Cat] read as EQUIVALENCE, not isomorphism, of
  categories.  Those are the witnesses [Comma_Transform] consumes, which is
  why the backward direction proved here GENERALIZES the book's: it accepts a
@@ -141,8 +141,8 @@ Generalizable All Variables.
 
  to (`1 (huq_sec1 X) d) ≈ to (`1 (huq_sec1 Y) d) ∘ fst `1 (to (`1 θ d))
 
- and likewise for the second witness.  This is the geometric condition, "X
- and Y are isomorphic AS SECTIONS"; it is deliberately NOT defined as the
+ and likewise for the second witness.  This is the geometric condition, “X
+ and Y are isomorphic AS SECTIONS”; it is deliberately NOT defined as the
  kernel of the recovery map.  That it coincides with that kernel is the
  theorem [huq_compatible_iff]: X and Y are compatible if and only if
  [huq_transform X ≈ huq_transform Y].  The forward half is well-definedness
@@ -158,7 +158,7 @@ Generalizable All Variables.
  So the equivalence is not a convenience chosen to make a round trip close:
  it is the coarsest relation for which the recovery map is injective, and it
  is exhibited independently as the relation of being isomorphic as sections.
- Nor is it so coarse as to collapse to "same underlying functor":
+ Nor is it so coarse as to collapse to “same underlying functor”:
  [huq_witness_sections_incompatible] separates two packaged sections whose
  functors are literally the same.
 
@@ -285,7 +285,7 @@ Context {S T : D ⟶ C}.
  [fun X => fst (X, X)], which is [fun X => X] by iota, and likewise for its
  morphism map, so the object witness required by [Functor_StrictEq_Setoid] is
  [eq_refl] and both transports vanish. This is the strict (on-the-nose)
- reading of the book's "sections of both forgetful functors". 
+ reading of the book's “sections of both forgetful functors”. 
 
  --------
  [Comma_Functor tau] 是鼻子上两个投影的常见截面：

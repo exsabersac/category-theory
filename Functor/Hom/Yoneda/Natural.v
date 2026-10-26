@@ -19,9 +19,9 @@ Generalizable All Variables.
 
 (** * Naturality of the Yoneda isomorphism in both variables
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.2,
-    Lemma 2 (printed p. 61) [maclane:III.2:lem2]; Awodey, "Category Theory",
-    §8.3 Lemma 8.2 [awodey:8.3:lem2]; Riehl, "Category Theory in Context",
+    Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.2,
+    Lemma 2 (printed p. 61) [maclane:III.2:lem2]; Awodey, “Category Theory”,
+    §8.3 Lemma 8.2 [awodey:8.3:lem2]; Riehl, “Category Theory in Context”,
     2nd ed., §2.2 Theorem 2.2.4 [riehl:2.2:thm4], the unnumbered two-variable
     construction on printed p. 63 [riehl:2.2:construction-yoneda-bifunctor],
     Remark 2.2.7 [riehl:2.2:remark7], Exercise 2.2.i [riehl:2.2:exi], and the
@@ -31,7 +31,7 @@ Generalizable All Variables.
     Functor/Hom/Yoneda.v proves the Yoneda bijection one pair at a time:
     for each copresheaf F and each object A it exhibits an isomorphism of
     setoids Nat([Hom A,─], F) ≅ F A.  Mac Lane's addendum to the lemma —
-    his Lemma 2, and the clause "natural in both c and F" that Riehl builds
+    his Lemma 2, and the clause “natural in both c and F” that Riehl builds
     into the statement of the theorem itself — says that the family is a
     natural isomorphism between two functors of two variables:
 
@@ -49,7 +49,7 @@ Generalizable All Variables.
     [fd_dual_pointwise_iso]) and Instance/FdVect/NonNatural.v then refutes
     naturality of any such family, at a single square; the character-group
     analogue for finite abelian groups is Instance/Ab/Character/NonNatural.v.
-    So "the Yoneda bijection is natural" is a theorem about the family and
+    So “the Yoneda bijection is natural” is a theorem about the family and
     not a restatement of the bijection.
 
     The tree's own downstream consumers do not need it, which is why the

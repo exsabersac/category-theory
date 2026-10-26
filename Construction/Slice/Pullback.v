@@ -21,31 +21,31 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/dependent+sum
  nLab: https://ncatlab.org/nlab/show/over+category
  Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
- Book:      Mac Lane, "Categories for the Working Mathematician",
+ Book:      Mac Lane, “Categories for the Working Mathematician”,
  2nd ed., Springer GTM 5, 1998, SS IV.5, printed p. 97,
  Exercise 3 (catalog id maclane:IV.5:ex3)
 
  Mac Lane's Exercise 3 reads, verbatim from the printed page:
 
- "For C a category with pullbacks, each arrow f : a→a' defines a
+ “For C a category with pullbacks, each arrow f : a→a' defines a
  functor (C↓f) = f_*: (C↓a)→(C↓a') which carries each object
  x→a of (C↓a) to the composite x→a→a'.  Show that f_* has a
  right adjoint f* with f*(x'→a') = y→a, where y is the vertex
- of the pullback of a→a'←x'."
+ of the pullback of a→a'←x'.”
 
  A NOTE ON HIS NOTATION, since it collides with this file's.  He
  writes f_* for POST-COMPOSITION, where this file and the nLab
  write f_! or Σ_f -- that is [Bang_Functor] below -- while his f*
  is this file's [Star_Functor].  So his displayed conclusion, that
  f_* has a right adjoint f*, IS [Base_Functor_Adjunction] with the
- names translated, and his "y is the vertex of the pullback" is
+ names translated, and his “y is the vertex of the pullback” is
  [Pull].
 
  A morphism f : a ~> b in C induces two functors between the slice
  categories C ̸ a and C ̸ b:
 
  - Bang_Functor f : C ̸ a ⟶ C ̸ b is the dependent sum Σ_f (also
- written f_!, "lower shriek"), defined by post-composition with f:
+ written f_!, “lower shriek”), defined by post-composition with f:
  it sends an object (o; h) with h : o ~> a to (o; f ∘ h), an object
  over b.  This needs no extra structure on C.
 
@@ -177,7 +177,7 @@ Next Obligation.
 Qed.
 
 (*
- Postfix notation for Σ_f, mirroring the standard f_! ("lower shriek"). 
+ Postfix notation for Σ_f, mirroring the standard f_! (“lower shriek”). 
 
  --------
  Σ_f 的后缀表示法，类似于标准的 f_!（“下惊叹号”）。

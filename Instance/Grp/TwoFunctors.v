@@ -14,8 +14,8 @@ Generalizable All Variables.
 (* * * Two functors with the same object function, over groups / * * 两个具有相同对象函数的函子，作用于群 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, Section I.3 ("Functors"), printed p. 15
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, Section I.3 (“Functors”), printed p. 15
  nLab: https://ncatlab.org/nlab/show/functor
  nLab: https://ncatlab.org/nlab/show/inner+automorphism
 
@@ -38,7 +38,7 @@ Generalizable All Variables.
  propositional equality -- literally, not merely extensionally: the
  two relations are CONVERTIBLE, so [S3_equiv_is_eq] and
  [S3_eq_is_equiv] below are each the identity coercion, and calling
- them a record "in both directions" inflates them (an audit said so
+ them a record “in both directions” inflates them (an audit said so
  and was right; the underlying fact is stronger than the pair of
  lemmas suggests).  So a computation refuting an equation of carrier
  elements is a statement about the hom-setoid of [Grp], not about
@@ -105,10 +105,10 @@ Generalizable All Variables.
 
  AND THE OBSTRUCTION CANNOT BE UPGRADED TO A THEOREM, which is worth
  saying because the reflex elsewhere in this development is to convert
- "we could not" into "it cannot" by counterexample.  Here that move is
+ “we could not” into “it cannot” by counterexample.  Here that move is
  unavailable: since the separating endofunctor exists in every model of
- Rocq extended by classical epsilon, the statement "every endofunctor of
- [Grp] with the identity object function is strictly [Id]" is NOT
+ Rocq extended by classical epsilon, the statement “every endofunctor of
+ [Grp] with the identity object function is strictly [Id]” is NOT
  provable in Rocq, modulo the relative consistency of that extension.
  So nothing is claimed to exist or not to exist here, and nothing can be.
 
@@ -135,7 +135,7 @@ Generalizable All Variables.
  under which Mac Lane's question has content in this library. 
 
  --------
- 书籍：Mac Lane，《Categories for the Working Mathematician》，第2版，Springer GTM 5, 1998，第I.3节（"函子"），印刷页15
+ 书籍：Mac Lane，《Categories for the Working Mathematician》，第2版，Springer GTM 5, 1998，第I.3节（“函子”），印刷页15
  nLab: https://ncatlab.org/nlab/show/functor
  nLab: https://ncatlab.org/nlab/show/inner+automorphism
 
@@ -410,7 +410,7 @@ Qed.
  type of [GrpAt G] is [poly_unit], so any two objects are equal and the
  injectivity hypothesis is discarded outright; fullness and faithfulness
  are definitional too, the hom-type being [Grp]'s own on the nose.  All
- three are worth stating -- they are what "full subcategory" means, and
+ three are worth stating -- they are what “full subcategory” means, and
  this development has been strict about the word -- but none of the
  three has content.  What follows;
  with fullness and faithfulness above, it is the full subcategory on G. 

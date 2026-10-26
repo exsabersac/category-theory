@@ -52,8 +52,8 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/PROP
  nLab:      https://ncatlab.org/nlab/show/comonoid
  nLab:      https://ncatlab.org/nlab/show/generators+and+relations
- Reference: Fong & Spivak, "Supplying bells and whistles in symmetric
- monoidal categories" (arXiv:1908.02633)
+ Reference: Fong & Spivak, “Supplying bells and whistles in symmetric
+ monoidal categories” (arXiv:1908.02633)
 
  This file builds the free SUPPLIED coloured PROP on a signature: a
  base signature [S] is extended with WIRE-LEVEL generators — one

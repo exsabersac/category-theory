@@ -28,11 +28,11 @@ Open Scope R_scope.
  genuinely use but that do not occur in their statements -- the Lipschitz and
  endpoint constraints of [Straight], the two given homotopies of
  [HomotopyConcat], the equality decider of [IntervalConnected].  Lib.v's
- [Default Proof Using "Type"] would discard them; this is the same setting,
+ [Default Proof Using “Type”] would discard them; this is the same setting,
  for the same reason, as Instance/Top/Interval.v. 
 
  --------
- 以下五个部分中的每一个都对其证明中实际使用但未出现在其陈述中的假设进行了量化——[Straight] 的 Lipschitz 和端点约束，[HomotopyConcat] 的两个给定的同伦，[IntervalConnected] 的等式判定器。Lib.v 的 [Default Proof Using "Type"] 会舍弃它们；这是相同的设置，原因与 Instance/Top/Interval.v 相同。
+ 以下五个部分中的每一个都对其证明中实际使用但未出现在其陈述中的假设进行了量化——[Straight] 的 Lipschitz 和端点约束，[HomotopyConcat] 的两个给定的同伦，[IntervalConnected] 的等式判定器。Lib.v 的 [Default Proof Using “Type”] 会舍弃它们；这是相同的设置，原因与 Instance/Top/Interval.v 相同。
 *)
 Set Default Proof Using "All".
 
@@ -42,13 +42,13 @@ Set Default Proof Using "All".
  nLab:      https://ncatlab.org/nlab/show/fundamental+groupoid
  nLab:      https://ncatlab.org/nlab/show/fundamental+group
  Wikipedia: https://en.wikipedia.org/wiki/Fundamental_groupoid
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §I.5, printed p. 20 (PDF p. 30) — the construction of
  the fundamental groupoid, immediately after Definition 9
- Book:      Riehl, "Category Theory in Context", Example 1.1.13(ii),
+ Book:      Riehl, “Category Theory in Context”, Example 1.1.13(ii),
  printed p. 8 (PDF p. 28); Corollary 1.5.14 and Remark 1.5.15,
  printed p. 36 (PDF p. 56)
- Paper:     Brown, "From groups to groupoids: a brief survey", Bulletin of
+ Paper:     Brown, “From groups to groupoids: a brief survey”, Bulletin of
  the London Mathematical Society 19, 1987
 
  The fundamental groupoid π(X) of a space: its objects are the points of X,
@@ -136,12 +136,12 @@ Set Default Proof Using "All".
  further axiom, and no constant of Instance/Top/Interval.v carries the third
  at all.  These figures are measured per constant, not sampled and not
  inferred from a headline, and they are enumerated in docs/AXIOMS.md under
- "Stdlib axioms".  (An earlier revision said every remaining constant
+ “Stdlib axioms”.  (An earlier revision said every remaining constant
  carried the first two; [const_arrow_eval] does not, and the direction of
  that error was to over-report the cost.)  No axiom is declared in either
  file, and the core theory is untouched: these two files are the only ones
  in the tree that import the reals.  CORRECTION (#410): not so;
- docs/AXIOMS.md, under "Stdlib axioms", names the development files that
+ docs/AXIOMS.md, under “Stdlib axioms”, names the development files that
  import the classical reals, and Instance/Top/Circle.v,
  Instance/Top/Solenoid.v and Instance/Top/Solenoid/Presentations.v
  import the standard library's constructive Cauchy reals
@@ -1228,7 +1228,7 @@ Definition fundamental_group (X : TopSpace) (a : X) : GrpObject :=
   vertex_group (fundamental_groupoid_is_groupoid X) a.
 
 (*
- Riehl, "Category Theory in Context", §1.5 Corollary 1.5.14, printed p. 36
+ Riehl, “Category Theory in Context”, §1.5 Corollary 1.5.14, printed p. 36
  (PDF p. 56).  The derivation is the one Riehl gives: the fundamental
  groupoid of a path-connected space is a CONNECTED groupoid, the structure
  theorem [connected_deloop_equiv] makes the delooping of the vertex group at
@@ -1532,7 +1532,7 @@ Qed.
 (* * ** The vertex-group inclusion is an equivalence / * ** 顶点群包含是一个等价关系 *)
 
 (*
- Riehl, "Category Theory in Context", §1.5 Remark 1.5.15, printed p. 36
+ Riehl, “Category Theory in Context”, §1.5 Remark 1.5.15, printed p. 36
  (PDF p. 56), COMPONENTWISE ONLY.  Riehl's remark compares two functors on
  based path-connected spaces -- the fundamental group and the fundamental
  groupoid -- and observes that the inclusion of the former into the latter is

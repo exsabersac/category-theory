@@ -25,13 +25,13 @@ Generalizable All Variables.
 (*
  Every lemma below sits in a section whose hypotheses ([inj]/[proj],
  [HQ]/[HP], [dec]) frequently do not appear in the statement, so the file
- opts into the [Default Proof Using "All"] discipline of
+ opts into the [Default Proof Using “All”] discipline of
  Theory/EckmannHilton.v rather than annotating each proof.  Definitions are
  unaffected: they abstract only the section variables they actually use, so
  e.g. [matrix_row] takes [HP] alone while [matrix_mor] takes both. 
 
  --------
- 下面的每个引理都位于一个其假设（[inj] / [proj], [HQ] / [HP], [dec]）经常在陈述中未出现的部分中，因此该文件选择了Theory/EckmannHilton.v中的[Default Proof Using "All"]规范，而不是为每个证明做注解。定义不受影响：它们只抽象实际使用的节变量，例如[matrix_row]只使用[HP]，而[matrix_mor]则使用两者。
+ 下面的每个引理都位于一个其假设（[inj] / [proj], [HQ] / [HP], [dec]）经常在陈述中未出现的部分中，因此该文件选择了Theory/EckmannHilton.v中的[Default Proof Using “All”]规范，而不是为每个证明做注解。定义不受影响：它们只抽象实际使用的节变量，例如[matrix_row]只使用[HP]，而[matrix_mor]则使用两者。
 *)
 #[local] Set Default Proof Using "All".
 
@@ -53,8 +53,8 @@ Generalizable All Variables.
  UMP splits each row into n entries, and nothing else about it is free.
  With a zero object in play the identity matrix -- identities down the
  diagonal, zero morphisms elsewhere -- names a canonical comparison from
- the coproduct to the product, whose invertibility is what "the finite
- coproduct and the finite product coincide" means.  Riehl, CTiC 2nd ed.
+ the coproduct to the product, whose invertibility is what “the finite
+ coproduct and the finite product coincide” means.  Riehl, CTiC 2nd ed.
  §3.1, states the same correspondence (Remark 3.1.27 clause (iii)) and uses
  it to define direct sums; her Exercise 3.1.ix is the small consequence
  that in the presence of a zero object the coproduct injections split.
@@ -118,9 +118,9 @@ Generalizable All Variables.
 
  ** Prior art for (3), scoped
 
- The census is a search over the whole tree for the SHAPE "an equation
+ The census is a search over the whole tree for the SHAPE “an equation
  whose left side composes something with [inl] and whose right side is
- [id]", plus a search for [Section]/[SplitMono]/[Monic] applied to a
+ [id]”, plus a search for [Section]/[SplitMono]/[Monic] applied to a
  coproduct injection.  It returns three things, none of them this
  statement.  (i) Structure/Semiadditive.v's [exl_can_inl] is the only
  in-tree DERIVED retraction for a [Cocartesian] [inl]; it additionally
@@ -135,7 +135,7 @@ Generalizable All Variables.
  [pushout_both_Monic] derives monic injections from split legs of a
  pushout, and a binary coproduct is a pushout over the initial object --
  but that identification is issue #862's and is not in tree, so the
- generic "zero object + binary coproducts ⟹ the injections split" is
+ generic “zero object + binary coproducts ⟹ the injections split” is
  stated here for the first time.
 
  ** Without a zero object the injections need not be monic
@@ -184,7 +184,7 @@ Generalizable All Variables.
 
  What is REFUTED at [eq_refl] (measured during development; pinned in the
  companion probe), each a genuine conversion failure reported as
- "cannot unify":
+ “cannot unify”:
 
  - [kron fam Fin.eq_dec Fin.F1 Fin.F1 = id].  The failure is located
  precisely: the branch selection DOES reduce -- [Fin.eq_dec] applied to
@@ -244,7 +244,7 @@ Generalizable All Variables.
 
  ** Axioms
 
- 62/62 constants report "Closed under the global context".  The count is
+ 62/62 constants report “Closed under the global context”.  The count is
  the file's [def] plus [prf] glob entries, and it is exact rather than a
  floor: the file contains no [Program], no [Record]/[Class]/[Inductive]
  and no [Instance], so there are no obligation constants, constructors or
@@ -258,7 +258,7 @@ Generalizable All Variables.
  Structure/Limit/Indexed/Hom.v delivers Riehl 3.1.27 clauses (i) and
  (ii) over the SAME arbitrary-index API, as NATURAL ISOMORPHISMS
  ([iprod_hom_iso], [icoprod_hom_iso]); its header points forward
- twice, saying clause (iii) "is issue #336 and is NOT here".  This
+ twice, saying clause (iii) “is issue #336 and is NOT here”.  This
  file supplies clause (iii), so the back pointer belongs here and an
  earlier draft omitted it entirely.  Two honest notes rather than one
  convenient one.  First, clause (iii) is NOT derived from (i) and (ii)
@@ -266,8 +266,8 @@ Generalizable All Variables.
  Second, it lands one strength LOWER than its siblings: they are
  isomorphisms in a functor category, whereas this is [∃!] plus mutually
  inverse maps at [≈], with no [≅[Sets]] object anywhere.  #336's own
- body says an implementer "should read #320 before starting the
- arbitrary-index box"; that was done, and the two are related by
+ body says an implementer “should read #320 before starting the
+ arbitrary-index box”; that was done, and the two are related by
  citation only.
 
  ** Citations corrected against the issue
@@ -286,19 +286,19 @@ Generalizable All Variables.
  The general matrix composition formula -- that composing two matrices
  multiplies them, entry (j,l) of [v ∘ u] being the sum over k of
  (entry (k,l) of v) ∘ (entry (j,k) of u) -- is NOT proved here.  It is
- OWNED by issue #536, whose QA correction on #336 says to "cite it
- rather than re-proving", so it is cross-referenced and nothing below
+ OWNED by issue #536, whose QA correction on #336 says to “cite it
+ rather than re-proving”, so it is cross-referenced and nothing below
  depends on it.
 
  THE SECOND DEFERRAL IS NOT THE SAME KIND, and an earlier draft of this
- header wrongly said "both are owned by issue #536".  #336's remaining
+ header wrongly said “both are owned by issue #536”.  #336's remaining
  Riehl box asks that the identity-matrix comparison BE AN ISOMORPHISM
  for finite index, with the direct sum [⊕] as the common value.  Only
- the OBJECT is #536's -- its QA correction says the object "is #536's
- first Work item; consume it" -- while the box's own text says "the
- n-ary case is genuine new work".  So that box is #336's OWN work,
+ the OBJECT is #536's -- its QA correction says the object “is #536's
+ first Work item; consume it” -- while the box's own text says “the
+ n-ary case is genuine new work”.  So that box is #336's OWN work,
  BLOCKED on #536's [⊕], and DEFERRED here; it is not owned elsewhere.
- #336 states that it "cannot close while [these boxes] are unproved",
+ #336 states that it “cannot close while [these boxes] are unproved”,
  so this commit ADVANCES #336 rather than closing it: the other box of
  that pair, the arbitrary-index matrix determination, IS delivered
  above, and both of its halves are.  Also absent: no invertibility criterion

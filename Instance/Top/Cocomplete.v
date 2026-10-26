@@ -26,31 +26,31 @@ Generalizable All Variables.
 (* * * Colimits of spaces: the final topology, and [PTopCat] cocomplete / * * 空间的余极限：最终拓扑，以及 [PTopCat] 余完备 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, read from the page images: the quotient construction, book
  pp. 133-134 (PDF pp. 142-143), and the paragraph that closes it on
- book p. 134 (PDF p. 143), "Now Proposition 1 was proved just from the
+ book p. 134 (PDF p. 143), “Now Proposition 1 was proved just from the
  axioms for a category, so its dual is also true.  This dual
  proposition and the above adjunction prove that Top has
  coequalizers.  Similar constructions yield coproducts (= disjoint
- unions) and general colimits in Top" (catalog id
+ unions) and general colimits in Top” (catalog id
  maclane:V.9:remark2, #458's); and Exercise 2, book p. 135 (PDF
- p. 144), which names the indiscrete functor "the right adjoint
- D' : Set → Top to the forgetful functor" (the exercise itself is not
+ p. 144), which names the indiscrete functor “the right adjoint
+ D' : Set → Top to the forgetful functor” (the exercise itself is not
  delivered)
- Riehl, "Category Theory in Context", Dover 2016, §3.6, printed p. 116
- (PDF p. 136), read from the PDF's text: Proposition 3.6.2, "the
- underlying set functor U : Top → Set is continuous and cocontinuous"
+ Riehl, “Category Theory in Context”, Dover 2016, §3.6, printed p. 116
+ (PDF p. 136), read from the PDF's text: Proposition 3.6.2, “the
+ underlying set functor U : Top → Set is continuous and cocontinuous”
  (riehl:3.6:prop2, whose cocontinuity half is here), with, in its
- proof, "the coproduct is formed by assigning the disjoint union ...
+ proof, “the coproduct is formed by assigning the disjoint union ...
  the finest topology so that each of the coproduct-inclusions ... is
- continuous" and "Theorem 4.6.2 implies that the colimit must be
- constructed in this manner"; and Example 3.6.3, "Any limit or colimit
+ continuous” and “Theorem 4.6.2 implies that the colimit must be
+ constructed in this manner”; and Example 3.6.3, “Any limit or colimit
  in Top can be constructed ... by forming the limit or colimit of the
  diagram of underlying sets and then topologizing the resulting space
  with the coarsest (in the case of limits) or finest (in the case of
  colimits) topologies so that the legs of the limit or colimit cones
- are continuous" (riehl:3.6:example3, whose colimit half is here)
+ are continuous” (riehl:3.6:example3, whose colimit half is here)
  nLab: https://ncatlab.org/nlab/show/Top
  nLab: https://ncatlab.org/nlab/show/initial+topology
  nLab: https://ncatlab.org/nlab/show/quotient+space
@@ -76,8 +76,8 @@ Generalizable All Variables.
  which the recipe is a theorem about the functor rather than about
  spaces.  Mac Lane takes the other classical route.  Proposition 1
  (Instance/Top/Subspace.v) builds equalizers from a sliced adjunction,
- its dual builds coequalizers from the quotient topology, and "similar
- constructions yield coproducts"; a category with coproducts and
+ its dual builds coequalizers from the quotient topology, and “similar
+ constructions yield coproducts”; a category with coproducts and
  coequalizers is cocomplete by the dual of his Theorem V.2.1, which the
  tree has as Structure/Limit/FromProducts.v's
  [Cocomplete_from_coproducts_coequalizers] (#416).  Both routes are
@@ -125,7 +125,7 @@ Generalizable All Variables.
  cocontinuity of [PForget] below, so [N] is colimiting exactly when
  its lift is.  [PTop_Colimit_lift] is the recipe for a [Colimit]
  record of the points.  [PTop_colimit_open_iff_final] is the recipe
- in Riehl's "must be constructed in this manner" form: the opens of
+ in Riehl's “must be constructed in this manner” form: the opens of
  EVERY colimit of spaces, however it was built, are exactly those of
  the final topology on its points for its legs.  The recipe is
  stated once, for every shape; the coproducts below reuse its
@@ -204,7 +204,7 @@ Generalizable All Variables.
  generates from a parallel pair indexed by the arrows.  The equation
  of the two point setoids at [eq_refl] is refused in the same
  scratch file, and so is that of the two spaces (Coq: the term
- "eq_refl" has type ... while it is expected to have type ...).
+ “eq_refl” has type ... while it is expected to have type ...).
  - Up to [≈]: the universal properties ([psigma_desc], and the
  uniqueness halves of [pfinal_cocone_colimiting] and of the two
  [Cocomplete] inhabitants) and [PTop_Cocomplete_routes_iso_injs].
@@ -261,8 +261,8 @@ Generalizable All Variables.
  after the union of their import lists, universes named as here):
  [PTop_Cocomplete] read at [Cocomplete@{r o o so}] under a declared
  [o < r] is accepted, at a shape universe [s < o] is accepted, at
- [o := Set] is accepted, and at [o < s] is refused ("universe
- inconsistency: Cannot enforce o = <1> because o < s <= <1>", the
+ [o := Set] is accepted, and at [o < s] is refused (“universe
+ inconsistency: Cannot enforce o = <1> because o < s <= <1>”, the
  generated universe written <1>).
  - [PTop_colimit_open_iff_final@{o so s r u}] carries two strict
  stdlib caps, [o < projections.u0] and [o < projections.u1].  Their
@@ -280,8 +280,8 @@ Generalizable All Variables.
  colimit record both at the points' universe, the type of
  [Cocomplete_from_coproducts_coequalizers@{u u0 u1 u2}] itself
  ([Cocomplete@{u0 u0 u0 u2}]).  [Cocomplete] is invariant in those
- slots: read at [r > o] it is refused ("Cannot enforce o = r because
- o < r"), at [s < o] refused ("Cannot enforce o = s because s < o"),
+ slots: read at [r > o] it is refused (“Cannot enforce o = r because
+ o < r”), at [s < o] refused (“Cannot enforce o = s because s < o”),
  both in the same scratch file; the order of the two universes in
  such a message varies with the environment that prints it.  So
  the direct route is the wider statement, every [s <= o] against
@@ -340,7 +340,7 @@ Generalizable All Variables.
  [Category@{o o o}]. 
 
  --------
- Mac Lane，《数学工作者的范畴论》，第2版（GTM 5），§V.9，从页面图像阅读：商构造，书本第133-134页（PDF第142-143页），以及结束此部分的段落在书本第134页（PDF第143页），"现在命题1仅从范畴的公理中证明，因此其对偶命题也成立。这个对偶命题和上述伴随定理证明了Top具有余等化子。类似的构造会产生Top中的余积（= 不相交并集）和一般余极限"（目录ID maclane:V.9:remark2，#458的）；以及练习2，书本第135页（PDF第144页），它将不可分离函子命名为“对应忘记函子的右伴随 D' : Set → Top”（练习本身未提供） Riehl，《语境中的范畴论》，Dover 2016，§3.6，印刷第116页（PDF第136)，从 PDF 文本中读取：命题 3.6.2，“基础集合函子 U : Top → Set 是连续且协连续的”（riehl:3.6:prop2，其协连续部分在此），在其证明中，“余积是通过赋予不相交并集…以最细拓扑，使得每个余积-包含…都是连续的”以及“定理 4.6.2 表明余极限必须以这种方式构造”；以及例 3.6.3，“Top 中的任意极限或余极限都可以构造…通过形成底层集合图的极限或余极限，然后用最粗（在极限情况下）或最细（在余极限情况下）的拓扑对所得空间进行拓扑化，使得极限或余极锥的各个腿是连续的（riehl:3.6:example3，其余极限部分在这里）
+ Mac Lane，《数学工作者的范畴论》，第2版（GTM 5），§V.9，从页面图像阅读：商构造，书本第133-134页（PDF第142-143页），以及结束此部分的段落在书本第134页（PDF第143页），“现在命题1仅从范畴的公理中证明，因此其对偶命题也成立。这个对偶命题和上述伴随定理证明了Top具有余等化子。类似的构造会产生Top中的余积（= 不相交并集）和一般余极限”（目录ID maclane:V.9:remark2，#458的）；以及练习2，书本第135页（PDF第144页），它将不可分离函子命名为“对应忘记函子的右伴随 D' : Set → Top”（练习本身未提供） Riehl，《语境中的范畴论》，Dover 2016，§3.6，印刷第116页（PDF第136)，从 PDF 文本中读取：命题 3.6.2，“基础集合函子 U : Top → Set 是连续且协连续的”（riehl:3.6:prop2，其协连续部分在此），在其证明中，“余积是通过赋予不相交并集…以最细拓扑，使得每个余积-包含…都是连续的”以及“定理 4.6.2 表明余极限必须以这种方式构造”；以及例 3.6.3，“Top 中的任意极限或余极限都可以构造…通过形成底层集合图的极限或余极限，然后用最粗（在极限情况下）或最细（在余极限情况下）的拓扑对所得空间进行拓扑化，使得极限或余极锥的各个腿是连续的（riehl:3.6:example3，其余极限部分在这里）
  nLab:  https://ncatlab.org/nlab/show/Top 
  nLab:  https://ncatlab.org/nlab/show/initial+topology 
  nLab:  https://ncatlab.org/nlab/show/quotient+space 
@@ -358,7 +358,7 @@ Generalizable All Variables.
  IsColimitCocone@{x x r s o so} (PFinalCocone F N)]: 该形状的对象宇宙 [s] 仅受 [s <= r] 和 [s <= r'] 的限制，因此该公式在每个形状宇宙中都成立，超过所包含的点（在那里，在信息排中律下，并非每个图都有一个 [Sets] 上极限可使用：
  Instance/Top/Cocomplete/Refutations.v 文件中的 [Sets_not_cocomplete_IEM] 通过这个引理否定了在信息排中律下 [Sets] 在其承载对象上的余完备性）。除了 [o < so] 外，唯一的严格界限是 [o < u]，Theory/Functor.v 文件中 [Compose@{u u0 u1 u2 u3}] 在 [PForget ◯ F] 上自身的 [u3 < u2]。这两个通用性质位于独立的层次 [r'] 和 [r]，因为陈述命名了它们。如果依赖推理测量，在移除注释的草稿副本中，这两个 [IsColimitCocone] 实例被展开为一个（双方的 [IsColimitCocone@{u0 u0 u1 s o so}]），然后 [PTop_Colimit_lift] 携带 [r = r']，而 [PColimit] 携带 [r = o]，这是 Instance/Sets/Cocomplete.v 的 [Sets_Colimit@{u u0 u1}] 构建其记录 ([Colimit@{u0 u u0 u1}]) 的层次。带注释的情况下，[PTop_Colimit_lift@{r r' s o so u u0 u1}] 将 [Colimit@{r' s o so}] 映射到 [Colimit@{r s o so}]，且没有等式。-  [PColimit@{r s o so u u0}] 以及
  [PTop_Cocomplete@{r s o so u u0} : Cocomplete@{r s o so}
- PTopCat@{o so}]：该块具有 [s <= o]，它是 [Sets_Colimit] 自身的 [u <= u0]（形状对象上的 sigma 在承载者层面必须是一个集合），[s <= r] 和 [o <= r]（[Cocomplete] 自身的），[r <= u] 和 [so <= u] 对 [PTop_Colimit_lift] 的一个辅助进行界定，以及 [o < u0]，再次是 [Compose] 自身的界限；[r] 否则是自由的。在 Instance/Top/Complete.v 的边界段的临时文件中测量（在合并导入列表之后的 #458 的六个文件，宇宙命名如这里所示）：[PTop_Cocomplete] 在 [Cocomplete@{r o o so}] 中读取，在声明的 [o < r] 下被接受，在形状宇宙 [s < o] 下被接受，在 [o := Set] 下被接受，而在 [o < s] 下被拒绝（"宇宙不一致：无法强制 o = <1> 因为 o < s <= <1>"，生成的宇宙写为 <1>）。- [PTop_colimit_open_iff_final@{o so s r u}] 拥有两个严格的 stdlib 上限，[o < projections.u0] 和 [o < projections.u1]。它们的第一个承载者是 [PForget_PreservesColimitCocone]，其块具有 [o < u1]（[Compose] 在 [PForget ◯ K] 的自身边界）以及 [u1 <= projections.u0] 和 [u1 <= projections.u1]。-  [PSigma@{o i u}] :  [i <= o] （sigma载体位于点的宇宙）以及  [o < u] ，它是 Instance/Sets/Products.v 中 [Sets_icoprod_inj@{u u0}] 自身的 [u < u0] （它的箭头位于 [Sets@{u u0}]）。[PTop_HasIndexedCoproducts@{o so u u0 u1} : HasIndexedCoproducts@{u u0 o so o} PTopCat@{o so}]，索引宇宙 [u0] 伴随 [u0 <= o] 以及该类自身的 [u0 < u]。- [PTop_Cocomplete_via_coproducts@{o so u u0 u1 u2 u3 u4} : Cocomplete@{o o o so} PTopCat@{o so}]：图形的对象和余极限记录都位于点的宇宙，[Cocomplete_from_coproducts_coequalizers@{u u0 u1 u2}] 本身的类型（[Cocomplete@{u0 u0 u0 u2}]）。[Cocomplete] 在那些槽中是不变的：在 [r > o] 处读取时被拒绝（“无法强制 o = r 因为 o < r”），在 [s < o] 处被拒绝（“无法强制 o = s 因为 s < o”），两者都在同一个临时文件中；这种消息中两个宇宙的顺序因打印它的环境而异。因此，直接途径是更宽泛的陈述，每个 [s <= o] 对应 [s = o]，并且比较 [PTop_Cocomplete_routes_iso] 在形状 [Category@{o o o}] 上说明。 - [PIndisc@{o so}]：[PTopCat] 的界限和标准库上限。[PForget_PIndisc@{o so u u0}] 添加了 [o < u]：[u] 是 [Sets] 的对象宇宙，其中同态集合同构存在（[pforget_indisc_iso@{o so u}] 是一个 [Isomorphism@{u o o}]），并且 [o < u] 是 [Sets] 自身的界限。[PForget_PreservesColimitCocone@{s o so u u0 u1 u2 u3}] 在 [J : Category@{s o o}] ：[s] 仅被 [s <= u]、[u] 所限制，为余极限性质的层级；在同一临时文件中的 [o < s] 被接受。[PForget_Cocontinuous] 是 [CocontinuousFunctor@{u u1 u1 u0 u1 u2 o so so u3} PForget@{o so}]，形状在内部量化。- [Set] ：此文件中的任何宇宙在 [Set] 均未固定，并且没有区块携带方程，超过它的所有78个常数的 [About] 输出（其 [Print Module] 列表，包括七个 [Program] 义务；它未声明记录或归纳）。[Set < so] 出现在41个区块中，由 [PTopCat] 继承，其区块记录了 [PTop] 的类型；[o < so] 意味着它。[Set < Projections.u0] 出现在书籍路线的 4 个区块中（[PTop_Cocomplete_via_coproducts]，其顶点回读，该路线的同构及其注入），继承自 Instance/Top/Subspace.v 的 [PTop_HasCoequalizers]，其区块在 [so <= Projections.u0] 旁携带它，[so <= Projections.u0] 表明了它的含义。路由和成本。关闭：93 个 [Category.*] 模块（不包括此文件）（[Print Libraries] 在需要的文件上），相比于 Instance/Top/Subspace.v 的 81 个；在 Subspace.v 本身之外增加的 11 个是 [Sets] 的余极限和余积（Instance/Sets/Cocomplete.v、Instance/Sets/Products.v，以及通过它们的 Instance/Sets/Cocartesian.v、Instance/Sets/Cartesian/Closed.v 和 Structure/Cartesian/Closed.v）、Structure/Complete.v、Structure/Limit/Coproduct.v、Structure/Limit/Product.v、Structure/Limit/FromProducts.v、Structure/Limit/Unique.v 和 Adjunction/Continuity.v。未交付。类型值 [Top] 在其点及以下的形状上的共完备性（每种形状的余极限）（其等化器和小指标余积是 Instance/Top/Cocomplete/TypeValued.v 的记录，其记录壁；这个问题尚未解决，未被反驳）；与 Instance/Top/Coproduct.v 和 Instance/Top/Pushout.v 的类型值二元余积和推出的任何比较；Mac Lane 的练习 2（[PIndisc] 没有右伴随函数）以及他书中两条已处理的余极限 p.134（开覆盖和塌陷 X/A；
+ PTopCat@{o so}]：该块具有 [s <= o]，它是 [Sets_Colimit] 自身的 [u <= u0]（形状对象上的 sigma 在承载者层面必须是一个集合），[s <= r] 和 [o <= r]（[Cocomplete] 自身的），[r <= u] 和 [so <= u] 对 [PTop_Colimit_lift] 的一个辅助进行界定，以及 [o < u0]，再次是 [Compose] 自身的界限；[r] 否则是自由的。在 Instance/Top/Complete.v 的边界段的临时文件中测量（在合并导入列表之后的 #458 的六个文件，宇宙命名如这里所示）：[PTop_Cocomplete] 在 [Cocomplete@{r o o so}] 中读取，在声明的 [o < r] 下被接受，在形状宇宙 [s < o] 下被接受，在 [o := Set] 下被接受，而在 [o < s] 下被拒绝（“宇宙不一致：无法强制 o = <1> 因为 o < s <= <1>”，生成的宇宙写为 <1>）。- [PTop_colimit_open_iff_final@{o so s r u}] 拥有两个严格的 stdlib 上限，[o < projections.u0] 和 [o < projections.u1]。它们的第一个承载者是 [PForget_PreservesColimitCocone]，其块具有 [o < u1]（[Compose] 在 [PForget ◯ K] 的自身边界）以及 [u1 <= projections.u0] 和 [u1 <= projections.u1]。-  [PSigma@{o i u}] :  [i <= o] （sigma载体位于点的宇宙）以及  [o < u] ，它是 Instance/Sets/Products.v 中 [Sets_icoprod_inj@{u u0}] 自身的 [u < u0] （它的箭头位于 [Sets@{u u0}]）。[PTop_HasIndexedCoproducts@{o so u u0 u1} : HasIndexedCoproducts@{u u0 o so o} PTopCat@{o so}]，索引宇宙 [u0] 伴随 [u0 <= o] 以及该类自身的 [u0 < u]。- [PTop_Cocomplete_via_coproducts@{o so u u0 u1 u2 u3 u4} : Cocomplete@{o o o so} PTopCat@{o so}]：图形的对象和余极限记录都位于点的宇宙，[Cocomplete_from_coproducts_coequalizers@{u u0 u1 u2}] 本身的类型（[Cocomplete@{u0 u0 u0 u2}]）。[Cocomplete] 在那些槽中是不变的：在 [r > o] 处读取时被拒绝（“无法强制 o = r 因为 o < r”），在 [s < o] 处被拒绝（“无法强制 o = s 因为 s < o”），两者都在同一个临时文件中；这种消息中两个宇宙的顺序因打印它的环境而异。因此，直接途径是更宽泛的陈述，每个 [s <= o] 对应 [s = o]，并且比较 [PTop_Cocomplete_routes_iso] 在形状 [Category@{o o o}] 上说明。 - [PIndisc@{o so}]：[PTopCat] 的界限和标准库上限。[PForget_PIndisc@{o so u u0}] 添加了 [o < u]：[u] 是 [Sets] 的对象宇宙，其中同态集合同构存在（[pforget_indisc_iso@{o so u}] 是一个 [Isomorphism@{u o o}]），并且 [o < u] 是 [Sets] 自身的界限。[PForget_PreservesColimitCocone@{s o so u u0 u1 u2 u3}] 在 [J : Category@{s o o}] ：[s] 仅被 [s <= u]、[u] 所限制，为余极限性质的层级；在同一临时文件中的 [o < s] 被接受。[PForget_Cocontinuous] 是 [CocontinuousFunctor@{u u1 u1 u0 u1 u2 o so so u3} PForget@{o so}]，形状在内部量化。- [Set] ：此文件中的任何宇宙在 [Set] 均未固定，并且没有区块携带方程，超过它的所有78个常数的 [About] 输出（其 [Print Module] 列表，包括七个 [Program] 义务；它未声明记录或归纳）。[Set < so] 出现在41个区块中，由 [PTopCat] 继承，其区块记录了 [PTop] 的类型；[o < so] 意味着它。[Set < Projections.u0] 出现在书籍路线的 4 个区块中（[PTop_Cocomplete_via_coproducts]，其顶点回读，该路线的同构及其注入），继承自 Instance/Top/Subspace.v 的 [PTop_HasCoequalizers]，其区块在 [so <= Projections.u0] 旁携带它，[so <= Projections.u0] 表明了它的含义。路由和成本。关闭：93 个 [Category.*] 模块（不包括此文件）（[Print Libraries] 在需要的文件上），相比于 Instance/Top/Subspace.v 的 81 个；在 Subspace.v 本身之外增加的 11 个是 [Sets] 的余极限和余积（Instance/Sets/Cocomplete.v、Instance/Sets/Products.v，以及通过它们的 Instance/Sets/Cocartesian.v、Instance/Sets/Cartesian/Closed.v 和 Structure/Cartesian/Closed.v）、Structure/Complete.v、Structure/Limit/Coproduct.v、Structure/Limit/Product.v、Structure/Limit/FromProducts.v、Structure/Limit/Unique.v 和 Adjunction/Continuity.v。未交付。类型值 [Top] 在其点及以下的形状上的共完备性（每种形状的余极限）（其等化器和小指标余积是 Instance/Top/Cocomplete/TypeValued.v 的记录，其记录壁；这个问题尚未解决，未被反驳）；与 Instance/Top/Coproduct.v 和 Instance/Top/Pushout.v 的类型值二元余积和推出的任何比较；Mac Lane 的练习 2（[PIndisc] 没有右伴随函数）以及他书中两条已处理的余极限 p.134（开覆盖和塌陷 X/A；
  修正（#459）：对于塌陷，此条目仅适用于此文件 —— Instance/Top/Quotient.v 构建它，在类型值 [Top] 上）；Riehl 的评论是底的析取并集是一个基；图中的余极限的函子性；一个严格的创建声明（余极限的提升在空间相等的情况下唯一）：ZWZ277WZZ 修正了到 [<->] 的开集；以及书本路径在 [Category@{o o o}] 以外的形状上。
 *)
 
@@ -921,7 +921,7 @@ Proof.
   exact (PForget_PreservesColimitCocone D F (PFinalCocone F N) H).
 Qed.
 
-(* Riehl's recipe in its "any colimit" form: the topology of EVERY colimit of spaces is the final topology on its points for its legs. / Riehl 的配方在其“任何余极限”形式中：空间的每一个余极限的拓扑都是其各支上点的最终拓扑。 *)
+(* Riehl's recipe in its “any colimit” form: the topology of EVERY colimit of spaces is the final topology on its points for its legs. / Riehl 的配方在其“任何余极限”形式中：空间的每一个余极限的拓扑都是其各支上点的最终拓扑。 *)
 Lemma PTop_colimit_open_iff_final@{o so s r +| o < so +}
   {D : Category@{s o o}} {F : D ⟶ PTopCat@{o so}}
   (L : Colimit@{r s o so} F) (V : pt_carrier (colimit_apex L) → Prop) :

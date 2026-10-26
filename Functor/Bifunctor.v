@@ -16,12 +16,12 @@ nLab: https://ncatlab.org/nlab/show/bifunctor
    do not formalize it as a separate structure; we only provide helpers for the
    action of such an F on pairs of arrows.  The central helper is [bimap f g],
    the lift of (f, g) through F.  A functor on C ∏ D is equivalent to giving two
-   "partial" actions, one in each variable, that are separately functorial and
+   “partial” actions, one in each variable, that are separately functorial and
    compatible via the interchange (middle-four exchange) law
 
      bimap (f ∘ h) (g ∘ i) ≈ bimap f g ∘ bimap h i    ([bimap_comp]),
 
-   together with bimap id id ≈ id ([bimap_id_id]).  The two "swap" forms of
+   together with bimap id id ≈ id ([bimap_id_id]).  The two “swap” forms of
    interchange, bimap f id ∘ bimap id g ≈ bimap f g and its mirror, are recorded
    as [bimap_id_right_left] / [bimap_id_left_right].  Currying a bifunctor
    C ∏ D ⟶ E into C ⟶ [D, E] is exhibited concretely for the hom-bifunctor by

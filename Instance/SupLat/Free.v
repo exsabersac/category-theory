@@ -18,23 +18,23 @@ Require Import Category.Instance.SupLat.
 Generalizable All Variables.
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.2, Exercise 1(d), printed p. 142
  (PDF p. 151) — maclane:VI.2:ex1
- Book: Awodey, "Category Theory", Carnegie Mellon pre-print, September
+ Book: Awodey, “Category Theory”, Carnegie Mellon pre-print, September
  2005, §10.2, Example 10.5, printed p. 271 (PDF p. 280) —
  awodey:10.2:example5
- Book: Riehl, "Category Theory in Context", 2nd ed., §5.1, Example
+ Book: Riehl, “Category Theory in Context”, 2nd ed., §5.1, Example
  5.1.5(i), printed p. 185 (PDF p. 205) — riehl:5.1:example5
  nLab: https://ncatlab.org/nlab/show/suplattice
  nLab: https://ncatlab.org/nlab/show/monadic+functor
 
  Awodey introduces the covariant power set monad in Example 10.5 and
- goes on, from the page image: "As we see in these examples, monads can,
- and often do, arise without coming from evident adjunctions", adding
- that "the question, when does an endofunctor T arise from an
- adjunction, has the answer: just if it's the functor part of a monad."
- Riehl lists the same monad under "Monads also arise in nature", after
+ goes on, from the page image: “As we see in these examples, monads can,
+ and often do, arise without coming from evident adjunctions”, adding
+ that “the question, when does an endofunctor T arise from an
+ adjunction, has the answer: just if it's the functor part of a monad.”
+ Riehl lists the same monad under “Monads also arise in nature”, after
  the monads she has drawn from adjunctions.  The adjunction behind this
  one is the free complete semilattice.  A subset of X is the formal
  supremum of its elements, so P X ordered by inclusion, with union as
@@ -42,8 +42,8 @@ Generalizable All Variables.
  into a complete semilattice extends along the singletons to exactly one
  sup-preserving map out of P X.  nLab's suplattice page records the
  consequence that suplattices are monadic over Set through this monad.
- Mac Lane's Exercise VI.2.1(d), that "the category of 𝒫-algebras is the
- category of all (small) complete semi-lattices", is Instance/SupLat.v.
+ Mac Lane's Exercise VI.2.1(d), that “the category of 𝒫-algebras is the
+ category of all (small) complete semi-lattices”, is Instance/SupLat.v.
  The exercise does not ask for the adjunction or for monadicity, and
  none of this file is one of #466's boxes: it is built to measure how
  far the monad of the adjunction is the monad of

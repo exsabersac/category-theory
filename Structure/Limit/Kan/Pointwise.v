@@ -19,12 +19,12 @@ Generalizable All Variables.
 (*
    * * The pointwise (co)limit formula for Kan extensions
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §X.3
-   "The Kan Extension" (book pp. 237-240): Theorem 1 [maclane:X.3:thm1] —
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §X.3
+   “The Kan Extension” (book pp. 237-240): Theorem 1 [maclane:X.3:thm1] —
    the right Kan extension computed pointwise as a limit over the comma
    category — and the dual pointwise colimit formula for the left
    extension [maclane:X.3:def2].
-   Riehl, "Category Theory in Context", §6.2, Theorem 6.2.1 with displays
+   Riehl, “Category Theory in Context”, §6.2, Theorem 6.2.1 with displays
    (6.2.2)/(6.2.3) [riehl:6.2:thm1]: the same theorem in both
    handednesses, with the unit/counit read off the (co)limit-cone leg at
    the identity and the action on morphisms induced by reindexing.
@@ -39,7 +39,7 @@ Generalizable All Variables.
    through Structure/Coend.v remains open.  The construction is in the
    LOCAL form: the pointwise formula needs exactly one (co)limit per
    object of the target, and Mac Lane's global packaging (Theorem 1's
-   "A small, C complete" reading, assembling every local extension into
+   “A small, C complete” reading, assembling every local extension into
    the adjoint [RightKan]) is deliberately not attempted here:
 
    - given F : A ⟶ B, X : A ⟶ C, and a limit of
@@ -71,7 +71,7 @@ Generalizable All Variables.
    f' ≈ F id ∘ f, so ≈-equal components are connected by a genuine comma
    morphism even though they are distinct objects, and cone coherence
    along it moves a leg from one to the other.  Every functor law and
-   every naturality below is "compose with the legs and compute" through
+   every naturality below is “compose with the legs and compute” through
    these two.  The colimit side has the dual pair
    ([lan_jointly_epic], [lan_inj_transport]), phrased through the
    covariant cocone accessors of Structure/Limit/Preservation.v
@@ -81,7 +81,7 @@ Generalizable All Variables.
    cone over the opposite diagram, and the tree has no covariant cocone
    constructor; the op stays confined to those [Build_Cone] wrappers.)
 
-   WHAT "the counit is the leg at the identity" MEANS FORMALLY: the
+   WHAT “the counit is the leg at the identity” MEANS FORMALLY: the
    [ran_transform] of [Pointwise_LocalRightKan] is BY CONSTRUCTION the
    family of legs at (a, id[F a]) — recorded as definitional equalities
    in the acceptance tests — and dually for [lan_transform].  This is

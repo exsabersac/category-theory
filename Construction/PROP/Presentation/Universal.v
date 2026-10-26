@@ -105,7 +105,7 @@ Generalizable All Variables.
  [strict_ap_obj] against [prop_tensor_plus] peeling one wire at a
  time).
 
- As in [Universal.v], "strict symmetric monoidal functor" is one
+ As in [Universal.v], “strict symmetric monoidal functor” is one
  [StrictMonoidalFunctor] over the strict-path monoidals plus the
  braid-compatibility square [SymmetricStrictW] over that SAME tensor
  comparison, with the target braiding re-indexed to the strict path

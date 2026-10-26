@@ -28,15 +28,15 @@ nLab:      https://ncatlab.org/nlab/show/connected+category
    nLab:      https://ncatlab.org/nlab/show/connected+component
    nLab:      https://ncatlab.org/nlab/show/full+subcategory
    Wikipedia: https://en.wikipedia.org/wiki/Connected_category
-   Book:      Riehl, "Category Theory in Context", Dover 2016, §1.5,
+   Book:      Riehl, “Category Theory in Context”, Dover 2016, §1.5,
               printed p. 35 (the running definition of a connected
               category) and Proposition 1.5.13, printed pp. 35-36
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
               GTM 5, §I.5, printed p. 20 (the remark following Definition 9)
 
    A category is CONNECTED when any two of its objects are joined by a
-   finite zig-zag of morphisms.  The relation "there is a zig-zag from x to
-   y" is an equivalence relation on the objects, and the quotient by it is
+   finite zig-zag of morphisms.  The relation “there is a zig-zag from x to
+   y” is an equivalence relation on the objects, and the quotient by it is
    the SET OF CONNECTED COMPONENTS, written π₀.  Classically every category
    is the disjoint union of its components, each of which is connected;
    that is the sense in which connectedness is not a restriction but a
@@ -92,10 +92,10 @@ nLab：      https://ncatlab.org/nlab/show/connected+category
    Instance/Top/FundamentalGroupoid.v, which declares [PathConnected]
    and [pathconnected_Connected].
 
-   THE SOURCE ISSUE'S "Current state" IS STALE, AND IN THE STRONGEST WAY:
+   THE SOURCE ISSUE'S “Current state” IS STALE, AND IN THE STRONGEST WAY:
    it reports that a whole-tree search for the identifier [Connected]
-   returns no hits and that "there is no π₀, no zig-zag relation on
-   objects", and proposes building the relation together with its
+   returns no hits and that “there is no π₀, no zig-zag relation on
+   objects”, and proposes building the relation together with its
    reflexivity, symmetry and transitivity from scratch.  Searching the `.v`
    files: [ZigZag] occurs in exactly ONE, the file that declares it; the
    word [Connected] occurs in FIVE, of which one declares it, three use it
@@ -107,8 +107,8 @@ nLab：      https://ncatlab.org/nlab/show/connected+category
    issue's item 1, and the reflexivity/symmetry/transitivity HALF of its
    item 2, were already discharged before this file was written, and
    re-declaring them here would have produced a second, incompatible
-   zig-zag type.  Item 2's OTHER half — "and that it is preserved by every
-   functor" — was NOT discharged, and is [zigzag_fmap] below; the next
+   zig-zag type.  Item 2's OTHER half — “and that it is preserved by every
+   functor” — was NOT discharged, and is [zigzag_fmap] below; the next
    paragraph says exactly that, and an earlier draft of this one claimed
    the whole of item 2 was already done, contradicting it.
 
@@ -117,8 +117,8 @@ nLab：      https://ncatlab.org/nlab/show/connected+category
 
      - no action of a functor on zig-zags: [ZigZag] is named nowhere
        outside its own file, so no such action can exist under any name
-       that mentions it, and no statement of the shape "F carries a chain
-       to a chain" occurs;
+       that mentions it, and no statement of the shape “F carries a chain
+       to a chain” occurs;
      - no π₀ OF A CATEGORY, and no components construction on a category.
        The nearest prior art is Instance/FinSet/Pushout.v's
        [components], a union-find fold over a LIST OF EDGES on [Fin.t N]
@@ -218,7 +218,7 @@ Universes, measured in the constraint blocks
    (2) [pi0_proj].  Unannotated the same body elaborates at
    [∀ C : Category@{u u u}] — ALL THREE of C's universes identified — and
    is then rejected at a category declared with its homs strictly below its
-   objects, with "Cannot enforce vh = vo".  Annotated, [h <= o] is the only
+   objects, with “Cannot enforce vh = vo”.  Annotated, [h <= o] is the only
    constraint relating C's own two levels that
    survives, and [pi0_proj Sets] is formable: [Sets@{o so}] IS
    [Category@{so o o}] and so has exactly the shape the unannotated form
@@ -269,8 +269,8 @@ Universes, measured in the constraint blocks
    C's hom universe where D's arrows live.  By contrast
    [connected_image@{k oc od hc hd}] IDENTIFIES neither object universe with
    anything — its whole block is [oc <= k], [hc <= k], [hc <= hd], so one
-   object universe is BOUNDED and the other unconstrained; "free of any
-   identification" is the accurate reading, not "bounds the homs only" —
+   object universe is BOUNDED and the other unconstrained; “free of any
+   identification” is the accurate reading, not “bounds the homs only” —
    and neither [zigzag_fmap], [ConnectedComponent]
    nor [ConnectedNonempty] contains a universe equation.
 
@@ -366,8 +366,8 @@ HELD — 这里有九个，另外两个在文件末尾的连线图部分（[conn
 STATUS: axiom-free.  105 constants — 90 named, 12 [Program] obligations,
    the two projections [cn_obj] and [cn_zigzag], and the constructor
    [Build_ConnectedNonempty] — each measured separately by [Print
-   Assumptions] at its fully qualified name, all 105 reporting "Closed under
-   the global context".  READ THE GRADE: that is a ONE-TIME measurement of
+   Assumptions] at its fully qualified name, all 105 reporting “Closed under
+   the global context”.  READ THE GRADE: that is a ONE-TIME measurement of
    all 105; the [make print-assumptions] gate carries FIFTY of them
    permanently, the other 55 being measured once here.  [Print Module] lists
    104 of them, omitting only the constructor, and renders the [Qed] results
@@ -432,8 +432,8 @@ What is NOT delivered
        states [C ≃ D → pi0 C ≅ pi0 D], which is the first thing a reader
        handed [Pi0 : Cat ⟶ Sets] will look for.  Nor is [pi0 C] compared
        with [pi0 (C^op)], and the [DiscreteCat bool] witness gets only
-       [pi0_bool_separates] (two points are distinct) rather than "exactly
-       two components".
+       [pi0_bool_separates] (two points are distinct) rather than “exactly
+       two components”.
 
      - NO [Fence] ANALOGUE.  Everything below is stated with [ZigZag]; the
        alternating form is never used, though the donor's conversions make
@@ -654,7 +654,7 @@ Definition ObjSetoid@{o h p q} (C : Category@{o h p}) : SetoidObject@{o q} :=
                    ; setoid_equiv := @eq_equivalence@{o q} obj[C] |} |}.
 
 (*
-π₀ of C: the objects of C with "joined by a zig-zag" as the equality.
+π₀ of C: the objects of C with “joined by a zig-zag” as the equality.
 
    This is Instance/Sets/Quotient.v's [SetsQuotient] applied directly —
    [ZigZag] is already a [crelation] on [obj[C]], so no encoding step
@@ -704,7 +704,7 @@ The projection sending an object to its component, as a morphism of
    Written without them the same body elaborates at
    [∀ C : Category@{u u u}, ...] — all three of C's universes identified —
    and is then REJECTED at a category declared with its homs strictly below
-   its objects, with "Cannot enforce vh = vo".  With the binders written
+   its objects, with “Cannot enforce vh = vo”.  With the binders written
    out only [h <= o] survives, and [pi0_proj Sets] is formable, [Sets@{o so}]
    being [Category@{so o o}].  The identification was therefore
    MINIMIZATION and not content.  What does NOT go away is [h <= o]: the
@@ -772,8 +772,8 @@ Proof. intro x; exact (hom_zigzag (to (`1 H x))). Qed.
 Connectedness read off π₀.  Both directions are NEAR-DEFINITIONAL —
    [equiv] on [pi0 C] IS [ZigZag] by [pi0_equiv] above — and they are
    recorded because the π₀ phrasing is the one a consumer will reach for,
-   not because either carries an argument.  Read [pi0_subsingleton] as "π₀
-   has at most one point"; the "exactly one" reading needs the
+   not because either carries an argument.  Read [pi0_subsingleton] as “π₀
+   has at most one point”; the “exactly one” reading needs the
    inhabitedness clause, and is [connected_nonempty_iff_pi0_singleton] in
    the section on the two readings below.
 
@@ -932,8 +932,8 @@ Fixpoint component_lift {C : Category} {x : C} {y z : C}
   end sy.
 
 (*
-Each component is connected — the half of "C is the disjoint union of
-   its connected components" that is a theorem here.  The chain from a to b
+Each component is connected — the half of “C is the disjoint union of
+   its connected components” that is a theorem here.  The chain from a to b
    is built in C by going back to x and out again, then lifted.
 
 --------
@@ -1037,16 +1037,16 @@ Definition Component_reindex_equiv (C : Category) (x x' : C)
     (Component_reindex_Full C x x' z) (Component_reindex_Faithful C x x' z)
     (Component_reindex_ESO C x x' z).
 
-(** ** Two readings of "connected", separated / ** “connected”的两个含义，被分开 *)
+(** ** Two readings of “connected”, separated / ** “connected”的两个含义，被分开 *)
 
 (*
 THE SOURCE ISSUE AND THE DONOR FILE DO NOT DEFINE THE SAME PREDICATE,
    AND THE DIFFERENCE IS EXACTLY THE EMPTY CATEGORY.  The issue asks for
-   "INHABITED, and any two objects are joined by a zig-zag"; the in-tree
+   “INHABITED, and any two objects are joined by a zig-zag”; the in-tree
    [Connected] (Structure/Groupoid/Connected.v) is the second clause
    alone.  The usual convention — the nLab entry cited at the head of this
-   file states it — includes inhabitedness, precisely so that "a category
-   is the disjoint union of its connected components" has no empty
+   file states it — includes inhabitedness, precisely so that “a category
+   is the disjoint union of its connected components” has no empty
    summand — so this is a genuine discrepancy and not a matter of taste.
 
    [ConnectedNonempty] below is the stronger reading, with the extra datum
@@ -1289,8 +1289,8 @@ Definition pi0_Parallel_subsingleton : pi0_subsingleton Parallel :=
    Structure/Groupoid/Connected.v's [Roof_Connected] already exhibits
    the walking span as connected, and its [Roof_no_arrow_neg_pos] shows
    it is not arrow-connected.  So π₀ of it is a SUBSINGLETON — which is
-   what the constant below says; [Roof] is inhabited, so "exactly one
-   point" is also true there, but it needs the inhabitedness clause and is
+   what the constant below says; [Roof] is inhabited, so “exactly one
+   point” is also true there, but it needs the inhabitedness clause and is
    not what is delivered — even though two
    of its three objects have an empty hom-set between them in BOTH
    directions — Instance/Roof.v supplies the two emptiness
@@ -1347,8 +1347,8 @@ Qed.
 A functor from a connected category to a disconnected one.  This is what
    makes [connected_image] the honest statement of the first section: its
    conclusion holds here, while [Connected (DiscreteCat bool)] is
-   refutable.  So the implication "C is connected and there is a functor
-   C ⟶ D, therefore D is connected" is FALSE, and the surjectivity
+   refutable.  So the implication “C is connected and there is a functor
+   C ⟶ D, therefore D is connected” is FALSE, and the surjectivity
    hypothesis of [eso_connected] cannot simply be dropped.  The witness is
    sharp in the sense that matters: that hypothesis genuinely FAILS here
    ([One_to_bool_not_ESO] below).  It is not sharp in any finer sense —
@@ -1392,7 +1392,7 @@ Qed.
    Riehl's running definition derives a notion for DIAGRAMS from the one
    for categories: a diagram is connected when its INDEXING category is.
    That is the form her Propositions 3.4.8 and 3.6.5 quantify over, and it
-   is what makes "a connected limit is computed from any one component" a
+   is what makes “a connected limit is computed from any one component” a
    statement one can even write down.
 
    It is a property of the SHAPE alone.  Nothing here looks at the target,
@@ -1405,9 +1405,9 @@ Qed.
    categories — see [connected_readings_differ] above — so both are named,
    and the passage between them is the categorical one applied at the
    index.  READ THE NAMES CAREFULLY, BECAUSE THE UNQUALIFIED ONE IS NOT
-   HERS: Riehl's own definition is the INHABITED one ("a category is
+   HERS: Riehl's own definition is the INHABITED one (“a category is
    connected if it is NON-EMPTY and any two objects are joined by a finite
-   zigzag"), so the notion this section is named after is
+   zigzag”), so the notion this section is named after is
    [ConnectedNonemptyDiagram].  [ConnectedDiagram] is the BARE in-tree
    reading, which holds vacuously at the empty shape.  The nomenclature is
    inherited from Structure/Groupoid/Connected.v rather than chosen here,

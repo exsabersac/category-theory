@@ -1,13 +1,13 @@
 (*
    * * Ord, the category of all preorders (Mac Lane's Preord)
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    Springer GTM 5, §IV.3, printed p. 92, Exercise 4.  Read from
-   the page image rather than from memory: "4. Show the following
+   the page image rather than from memory: “4. Show the following
    subcategories to be reflective: (a) The full subcategory of all
    partial orders in the category Preord of all preorders, with
    arrows all monotone functions.  (b) The full subcategory of
-   T_0-spaces in Top."  Catalog id: maclane:IV.3:ex4.
+   T_0-spaces in Top.”  Catalog id: maclane:IV.3:ex4.
 
    This file and Instance/Ord/Poset.v are half (a).  Half (b) is
    Instance/Top/Kolmogorov.v, written in parallel against the same
@@ -31,8 +31,8 @@
    Mac Lane writes Preord.  This file writes [Ord], because issue #372
    pins the verification name [Poset_Reflective_in_Ord] and a category
    named [Preord] would make that name read wrongly.  The header of
-   Instance/Proset.v anticipated exactly this object and called it "an
-   Ord category", so the spelling is the tree's own.
+   Instance/Proset.v anticipated exactly this object and called it “an
+   Ord category”, so the spelling is the tree's own.
 
    ** Reused, and what that saves
 
@@ -62,24 +62,24 @@
    subcategory of partial orders inside it, the two passages to and from
    [PosetObject] and the functors they induce, and [ord_le_of_equiv].
 
-   ** Prior art, measured at d658518e (the issue's "Current state" is
+   ** Prior art, measured at d658518e (the issue's “Current state” is
    stale in one direction and right in another)
 
-   Issue #372 says "both ambient categories are missing" and "there is no
-   Instance/Top.v".  Both are false: Instance/Top.v declares [Top],
+   Issue #372 says “both ambient categories are missing” and “there is no
+   Instance/Top.v”.  Both are false: Instance/Top.v declares [Top],
    and Instance/Pos.v declares [Pos], the category whose OBJECTS are
    posets.  What IS absent, and is supplied here, is a category of ALL
    preorders: [rg -i 'PreorderObject|ProsetObject|OrdObject|OrdHom'] over
    the .v files returns ZERO hits at d658518e, and the only in-tree
-   reading of "preorder as a category" is Instance/Proset.v's
+   reading of “preorder as a category” is Instance/Proset.v's
    [Proset P], which turns ONE preorder into a thin category.  A
    case-sensitive [rg -n '\bPreord\b'] returns three lines, all in
    Instance/Roster.v and all prose.
 
    Two pieces of that prose are made false by this file and are NOT
    edited here (they belong to their own files): Instance/Proset.v
-   says the preorder analogue "does not exist yet", and
-   Instance/Roster.v says Mac Lane's "Preord" is [Proset] -- which
+   says the preorder analogue “does not exist yet”, and
+   Instance/Roster.v says Mac Lane's “Preord” is [Proset] -- which
    was never right, [Proset] being one preorder rather than the category
    of all of them.
 
@@ -146,7 +146,7 @@
    [Category@{u0 u u}] and [Pos_Sub] is
    [Subcategory@{u u0 u0 u1} Ord@{...}].  This is the one guarded
    rejection: the probe declares [uh < up] and finds [Subcategory C]
-   refused with "Cannot enforce up = uh" while [x ~> y] and [id{C}] at
+   refused with “Cannot enforce up = uh” while [x ~> y] and [id{C}] at
    those very levels are accepted.  [Reflective] cannot be tested apart
    from it -- [Reflective@{u u0 u1 u2 u3 u4 u5}] takes a
    [Subcategory@{u3 u5 u4 u5} C] over [Category@{u3 u5 u5}] -- so no

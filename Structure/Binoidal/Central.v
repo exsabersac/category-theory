@@ -36,8 +36,8 @@ Set Transparent Obligations.
    together with the interaction of [composite_ff'] with identities
    ([composite_id_left] / [composite_id_right]) and with composition
    under a single centrality hypothesis ([composite_ff'_comp_l] /
-   [composite_ff'_comp_r]).  The last two isolate the exact "middle
-   interchange" that one-sided functoriality of the tensor needs; both
+   [composite_ff'_comp_r]).  The last two isolate the exact “middle
+   interchange” that one-sided functoriality of the tensor needs; both
    reduce to the same square, read off one conjunct of the centrality of
    [f] or of [g'].
 
@@ -274,8 +274,8 @@ Proof. intro cg'; exact (composite_ff'_comp_swap (snd (cg' y z f))). Qed.
    [central_id] and [central_comp] are exactly the closure conditions
    Construction/Subcategory.v asks of a subcollection of morphisms, so
    the central morphisms over ALL objects form a wide subcategory, the
-   centre of the binoidal category (Power–Robinson, "Premonoidal
-   categories and notions of computation", 1997).  The packaging
+   centre of the binoidal category (Power–Robinson, “Premonoidal
+   categories and notions of computation”, 1997).  The packaging
    mirrors [DeterministicSub]/[Det] of
    Structure/Monoidal/CopyDiscard/Deterministic.v. 
 

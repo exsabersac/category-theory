@@ -5,7 +5,7 @@
    Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-   Mac Lane, "Categories for the Working Mathematician", Springer GTM 5,
+   Mac Lane, “Categories for the Working Mathematician”, Springer GTM 5,
    2nd ed., §IV.2 (p. 87) tabulates the adjoints of the diagonal functor:
    for a fixed index category J the constant-diagram functor
    Δ = Diagonal J : C ⟶ [J, C] has a right adjoint exactly when C has all
@@ -14,11 +14,11 @@
 
        colim ⊣ Δ ⊣ lim.
 
-   Riehl, "Category Theory in Context", Dover 2016, states the same as
+   Riehl, “Category Theory in Context”, Dover 2016, states the same as
    Proposition 4.6.1, with exercises 4.6.i and 4.6.ii asking respectively
    for the degenerate rows of the table (the unique functor to the point)
    and for the identification of the unit and counit with the universal
-   cocone and cone.  Awodey, "Category Theory", Oxford 2nd ed. 2010, §9.3
+   cocone and cone.  Awodey, “Category Theory”, Oxford 2nd ed. 2010, §9.3
    runs the same argument for the special shapes, and Mac Lane's §V.2
    Exercise 3 asks for the arrow part: a natural transformation β : F ⟹ F'
    induces lim β : lim F ~> lim F', the unique arrow commuting with the two
@@ -26,7 +26,7 @@
 
    The content is entirely the observation that a cone over F with apex x
    IS a natural transformation Δ(x) ⟹ F -- the equivalence Wikipedia
-   records under "Cone (category theory)" and which this library already
+   records under “Cone (category theory)” and which this library already
    proves as [Cone_Natural_Transform] in Structure/Cone/Const.v.  Given
    that identification, the hom-set form of the adjunction
 
@@ -39,7 +39,7 @@
    Riehl's proposition into a genuine biconditional.
 
    Why this presentation earns its keep.  The elementary statement
-   "every diagram of shape J has a limit" is a family of unrelated
+   “every diagram of shape J has a limit” is a family of unrelated
    universal properties; the adjoint statement packages them into a single
    functor with a single universal property, after which every general
    theorem about adjunctions applies at once -- uniqueness of adjoints,
@@ -79,8 +79,8 @@
        [Colim_map], [colim_unit], [colimits_iff_diagonal_left_adjoint],
        [colim_unit_is_colimit_inj] and [cocone_apex] carry no [^op] in
        their types, but [Cocone_Natural_Transform] DOES -- its right-hand
-       side is an [ACone] over the opposites -- so "no [^op] anywhere a
-       consumer can see" would be false, and an audit caught an earlier
+       side is an [ACone] over the opposites -- so “no [^op] anywhere a
+       consumer can see” would be false, and an audit caught an earlier
        draft saying it.
      - Theory/Adjunction.v: [Adjunction], [unit], [counit],
        [adj_univ_impl], [to_adj_unit], [to_adj_comp_law],
@@ -165,7 +165,7 @@ Strengths, measured strict-first
        [Terminal] IS [R ttt].
 
    FOUR strict attempts were made and REJECTED; each is a CONVERSION
-   failure ("cannot unify"), verified by stripping the guard and reading
+   failure (“cannot unify”), verified by stripping the guard and reading
    the error, and each is stated here so it can be pinned as a probe:
 
      R1. [transform[lim_counit L F] j = lim_leg L F j] -- the counit
@@ -253,8 +253,8 @@ Universes, measured off BOTH the binder and the constraint block
        ONLY, with no equation anywhere -- yet its BINDER reads
        [Category@{u1 u2 u2} -> Category@{u3 u2 u2} -> Type@{u}], reusing
        the single level [u2] for J's homs, J's proofs, C's homs and C's
-       proofs.  A reader who checks only the block concludes "nothing is
-       identified" and is wrong.
+       proofs.  A reader who checks only the block concludes “nothing is
+       identified” and is wrong.
      - [LimitFunctor], [Diagonal_Limit_Adjunction], [ColimitFunctor],
        [Colimit_Diagonal_Adjunction], [lim_obj], [Lim_map],
        [Cocone_Natural_Transform], [radj_Limit] and
@@ -395,8 +395,8 @@ What is NOT delivered
        free.  And [Sets] DOES meet [Category@{o Set Set}] --
        [Check (@One_Fun_iso Sets)] SUCCEEDS, universe polymorphism
        instantiating it at [Sets@{Set _}], the same trap Theory/Size.v's
-       erratum records for [Check (Cat : obj[Cat])] -- so "which [Sets]
-       does not meet" was false.  What stands: the transport needs the
+       erratum records for [Check (Cat : obj[Cat])] -- so “which [Sets]
+       does not meet” was false.  What stands: the transport needs the
        OTHER variance, [C ⟶ [1, C]], since
        [Induced (Erase J) : [1,C] ⟶ [J,C]], and both in-tree candidates
        for that direction ([One_Const], [One_Fun_iso]) ARE pinned at
@@ -431,7 +431,7 @@ What is NOT delivered
        [LimitFunctor] is THE right adjoint up to natural isomorphism.
      - No reflection or creation results, and no instantiation of
        RAPL/LAPC at this sandwich.  An earlier revision of this bullet also
-       said "no preservation results"; since #450 the file proves that the
+       said “no preservation results”; since #450 the file proves that the
        diagonal preserves limits ([Diagonal_continuous]).  Preservation of
        COLIMITS by the diagonal, its dual, is not stated.
      - [LimitFunctor] and [ColimitFunctor] are plain [Definition]s, not
@@ -512,7 +512,7 @@ What is NOT delivered
 (*
 Axiom status and counts
 
-   177/177 constants report "Closed under the global context".  Method:
+   177/177 constants report “Closed under the global context”.  Method:
    [Print Module Category.Adjunction.Diagonal.Limit] enumerates 177 names
    (90 printed as [Definition], 87 as [Parameter], the latter being the
    display convention for [Qed] constants, not axioms); the file declares
@@ -531,8 +531,8 @@ Axiom status and counts
    eight more ([diag_eval_cone], [diag_med], [diag_med_commutes],
    [diag_med_unique], [Diagonal_continuous] and three [Program]
    obligations), so [Print Module] now enumerates 185 names; each of the
-   eight was queried by its fully qualified name and reports "Closed under
-   the global context". 
+   eight was queried by its fully qualified name and reports “Closed under
+   the global context”. 
 
 --------
 Axiom 状态和计数

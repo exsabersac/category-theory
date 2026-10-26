@@ -315,7 +315,7 @@ Qed.
 (*
  Through the bridge of Theory/Fibration.v, the chosen opcartesian lifts
  make the projection out of the op-total category a cloven fibration —
- the functor-level reading of "∫ A ⟶ B is a (cloven) opfibration". 
+ the functor-level reading of “∫ A ⟶ B is a (cloven) opfibration”. 
 
  --------
  通过 Theory/Fibration.v 的桥接，所选择的上笛卡尔提升使得从上总类出的投射成为一个带裂的纤维——“∫ A ⟶ B 是一个（带裂的）上纤维”的函子层面的解读。

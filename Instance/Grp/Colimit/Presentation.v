@@ -28,7 +28,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/coequalizer
  Wikipedia: https://en.wikipedia.org/wiki/Free_product
 
- Riehl, "Category Theory in Context", 2nd ed., §5.6, the unnumbered
+ Riehl, “Category Theory in Context”, 2nd ed., §5.6, the unnumbered
  construction of the free product of groups (printed pp. 212–213, PDF
  pp. 232–233).  The forgetful functor U : Group → Set does not preserve
  coproducts, so the free product G * H cannot be computed on underlying
@@ -127,7 +127,7 @@ Generalizable All Variables.
  Instance/Sets/Cocartesian.v's [Sets_Cocartesian] are both [#[export]],
  and both are imported here.  Every [Coprod], [inl], [inr], [merge] and
  [cover] below names its [Cocartesian] argument explicitly, so no
- statement that says "via the adjoint functor theorem" can resolve to the
+ statement that says “via the adjoint functor theorem” can resolve to the
  words-based instance.  Nothing here is registered as an [Instance].
 
  ** A TRANSPARENT TWIN OF [coequalizer_unique]
@@ -202,7 +202,7 @@ Generalizable All Variables.
 
  ** AXIOMS
 
- Every constant of this file reports "Closed under the global context"
+ Every constant of this file reports “Closed under the global context”
  when queried by its fully qualified name.  The file uses no [Program],
  so it has no obligations.
 
@@ -226,7 +226,7 @@ Generalizable All Variables.
  over the [.v] files, keeping the hits that mention groups).
  Instance/Grp/Quotient/Colimit.v coequalizes pairs of the form (f, 0)
  only ([normal_closure_IsCoequalizer]), and it is not applied to Riehl's
- pair here.  So "without the adjoint functor theorem" holds only for
+ pair here.  So “without the adjoint functor theorem” holds only for
  [Grp_free_product_words_is_coequalizer], which starts from Pushout.v's
  words.  There is no element-level description of the coequalizer: no
  reduced words and no normal form. 
@@ -387,7 +387,7 @@ Local Notation inlS :=
 Local Notation inrS :=
   (@inr Sets Sets_Cocartesian (Grp_Forget G) (Grp_Forget H)).
 
-(* Riehl's "canonical comparison" [UF inl, UF inr] : UFUG + UFUH → UF(UG + UH) between the coproduct of the images and the image of the coproduct. / Riehl 的“典型比较” [UF inl, UF inr] ：UFUG + UFUH → UF(UG + UH) 在像的余积与余积的像之间。 *)
+(* Riehl's “canonical comparison” [UF inl, UF inr] : UFUG + UFUH → UF(UG + UH) between the coproduct of the images and the image of the coproduct. / Riehl 的“典型比较” [UF inl, UF inr] ：UFUG + UFUH → UF(UG + UH) 在像的余积与余积的像之间。 *)
 Definition Grp_riehl_comparison :
   UFUGH ~{Sets}~> Grp_Forget (FreeGrp UGH) :=
   @merge Sets Sets_Cocartesian _ _ _
@@ -1075,8 +1075,8 @@ Qed.
 
 (*
  The pair is not trivial: at Z/2 the letter [inl w], for w the word
- "1 then 1", is sent by l to the letter [inl 0] and by r to the word
- "[inl 1] then [inl 1]", and the homomorphism to Z/2 sending every letter
+ “1 then 1”, is sent by l to the letter [inl 0] and by r to the word
+ “[inl 1] then [inl 1]”, and the homomorphism to Z/2 sending every letter
  to 1 separates the two. 
 
  --------

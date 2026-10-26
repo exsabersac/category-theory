@@ -33,33 +33,33 @@ Require Import Coq.Relations.Relation_Definitions.
 Generalizable All Variables.
 
 (*
-   * Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.5,
+   * Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.5,
    book p. 97 (PDF p. 106), Exercise 1.  Item covered:
    [maclane:IV.5:ex1].  Read from the page image, verbatim:
 
-   "1. Let H be a space with an inner product (e.g., Hilbert space).
+   “1. Let H be a space with an inner product (e.g., Hilbert space).
    If P = Q is the set of all subsets S of H, ordered by inclusion,
    show that LS = RS = the orthogonal complement of S gives a Galois
-   connection."
+   connection.”
 
-   ** WHICH ABSTRACTION OF "INNER PRODUCT", AND WHY
+   ** WHICH ABSTRACTION OF “INNER PRODUCT”, AND WHY
 
    None.  The exercise's content is the Galois connection, not the
    analysis, and the ONLY property of an inner product that the
-   connection consumes is that the derived relation "x is orthogonal to
-   y" is SYMMETRIC.  So the ambient structure taken here is a
+   connection consumes is that the derived relation “x is orthogonal to
+   y” is SYMMETRIC.  So the ambient structure taken here is a
    [PerpRel X]: a [Prop]-valued binary relation on the carrier of a
    setoid, symmetric, and respecting the setoid's own [≈].  Nothing
    else -- no addition, no scalars, no positivity, no completeness, no
    bilinearity -- appears anywhere below, and the issue's own Work item 1
-   names this as the recommended scope ("an abstract 'orthogonality
+   names this as the recommended scope (“an abstract 'orthogonality
    relation' satisfying the two properties actually used ... much
-   cheaper").
+   cheaper”).
 
    Two remarks on the fidelity of that abstraction.  First, symmetry is
    the right demand even in the complex case: a Hermitian form is
    conjugate-symmetric rather than symmetric, but the RELATION
-   "⟨x,y⟩ = 0" is symmetric all the same, since a complex number
+   “⟨x,y⟩ = 0” is symmetric all the same, since a complex number
    vanishes exactly when its conjugate does.  Second, nothing here
    demands that the relation be irreflexive, or that only the zero
    vector be orthogonal to itself: over a field of characteristic two
@@ -78,11 +78,11 @@ Generalizable All Variables.
    [Orthogonal], [orthogonal] or [⫫]; everything is spelled [perp].  At
    the base commit the tokens [perp], [Perp], [PerpRel], [perp_set],
    [ClosedPerp], [perp_galois], [PerpOp] and [InnerProduct] each occur in
-   ZERO [.v] files, and the tokens "inner product", "orthogonal
-   complement" and "sesquilinear" occur in none; the only "Hilbert" hits
+   ZERO [.v] files, and the tokens “inner product”, “orthogonal
+   complement” and “sesquilinear” occur in none; the only “Hilbert” hits
    are four lines of prose (Theory/Algebra/Frobenius.v,
    Structure/Dagger.v, Theory/Adjunction.v,
-   Structure/Monoidal/Symmetric.v).  So the issue's "Current state" is
+   Structure/Monoidal/Symmetric.v).  So the issue's “Current state” is
    accurate on the ambient structure, and its two named dependencies have
    since landed and are CONSUMED here rather than rebuilt.
 
@@ -187,9 +187,9 @@ Generalizable All Variables.
    picture of an orthogonal complement.  Read [zz_e1_not_self_perp] at
    its strength: it is a statement about ONE point, and over ℤ the
    origin does lie in the complement of [{(0,0)}], so no universal
-   "no point lies in its own complement" is claimed on either base.
-   An earlier draft of this paragraph said the F₂ statement "would be
-   refuted", contradicting the remark on isotropic vectors above; an
+   “no point lies in its own complement” is claimed on either base.
+   An earlier draft of this paragraph said the F₂ statement “would be
+   refuted”, contradicting the remark on isotropic vectors above; an
    audit measured it, and it was false.
 
    Every negative in section (G) is obtained by COMPUTATION on [Z]
@@ -226,7 +226,7 @@ Generalizable All Variables.
    --------
    * Mac Lane，《为工作数学家准备的范畴论》，第2版，第IV.5节，书本第97页（PDF第106页），练习1。涵盖内容：[maclane:IV.5:ex1]。逐字阅读页面图片内容：
 
-   "1. 设 H 是一个带内积的空间（例如，希尔伯特空间）。如果 P = Q 是 H 的所有子集 S 构成的集合，并按包含关系排序，证明 LS = RS = S 的正交补给出了一个 Galois 连接。"
+   “1. 设 H 是一个带内积的空间（例如，希尔伯特空间）。如果 P = Q 是 H 的所有子集 S 构成的集合，并按包含关系排序，证明 LS = RS = S 的正交补给出了一个 Galois 连接。”
 
    ** “内积”的哪种抽象，以及为什么无。这个练习的内容是伽罗瓦联系，而不是分析，并且这个联系所依赖的内积的唯一性质是派生关系“x 与 y 正交”是对称的。因此，这里考虑的环境结构是 [PerpRel X]：定义在集合的载体上的 [Prop] 值二元关系，对称，并且尊重集合自身的 [≈]。除此之外没有其他——没有加法、没有标量、没有正性、没有完备性、没有双线性——这些在下面都不会出现，并且该问题的工作项 1 自身将其命名为推荐的范围（“一个满足实际使用的两个性质的抽象‘正交关系’……更便宜”）。关于该抽象的忠实性有两点说明。首先，即使在复数情况下，对称性也是正确的要求：厄米形式是共轭对称的而非对称的，但关系“⟨x,y⟩ = 0”仍然是对称的，因为一个复数在其共轭为零时恰好为零。其次，这里没有要求该关系是无反身的，或者只有零向量与自身正交：在特征为二的域上，标准形式存在各向同性向量，而且这种发展方式对此无关紧要。第(G)节中的ℤ²示例正是为了能够展示非退化的读法而选择的。
 
@@ -404,7 +404,7 @@ Example perp_galois_l_is_r :
 Example perp_galois_l_is_perp_set :
   gal_l perp_galois = perp_set := eq_refl.
 
-(* The two halves of the biconditional are the same function at swapped arguments -- so "if and only if" costs one term, not two. / 双条件句的两个部分在交换参数时是相同的函数——所以“当且仅当”只需一个项，而不是两个。 *)
+(* The two halves of the biconditional are the same function at swapped arguments -- so “if and only if” costs one term, not two. / 双条件句的两个部分在交换参数时是相同的函数——所以“当且仅当”只需一个项，而不是两个。 *)
 Example perp_to_is_from_swapped (S T : carrier (Powerset_Prop_obj@{o} X))
   (H : subset_le@{o} T (perp_set S)) :
   gal_to perp_galois S T H = gal_from perp_galois T S H := eq_refl.
@@ -542,7 +542,7 @@ Example PerpFunctor_r_obj (S : carrier (Powerset_Prop_obj@{o} X)) :
  -- for [S : A^op ⟶ X] and [T : X^op ⟶ A], with the hom-set isomorphism
  [A(a, T x) ≅ X(x, S a)] -- is exactly that shape.  With [P = Q] and
  [L = R] both slots are filled by ONE functor, so the pair is adjoint to
- itself on the right, which is the categorical reading of "LS = RS".
+ itself on the right, which is the categorical reading of “LS = RS”.
 
  Prior art, measured, and the tree-wide list is complete: this is NOT the
  class's first inhabitant with the two slots equal.  Adjunction/Right.v

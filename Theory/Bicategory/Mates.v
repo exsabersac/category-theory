@@ -16,8 +16,8 @@ Notation "f ∘∘∘ g" := (hcompose (f, g)) : category_scope.
 
 (*
 nLab: https://ncatlab.org/nlab/show/mate
-   Kelly & Street, "Review of the elements of 2-categories", LNM 420 (1974).
-   Johnson & Yau, "2-Dimensional Categories" (2021), §6.
+   Kelly & Street, “Review of the elements of 2-categories”, LNM 420 (1974).
+   Johnson & Yau, “2-Dimensional Categories” (2021), §6.
 
    Fix a bicategory `B` and two internal adjunctions `f ⊣ u` (between 0-cells
    `x, y`) and `f' ⊣ u'` (between `x', y'`), together with 1-cells `a : x ~~> x'`

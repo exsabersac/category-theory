@@ -23,8 +23,8 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/hypergraph+category
  nLab: https://ncatlab.org/nlab/show/Frobenius+algebra
  Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra
- Fong, "Decorated Cospans" (arXiv:1502.00872), Thm 3.5.
- Fong-Spivak, "Hypergraph Categories" (arXiv:1806.08304).
+ Fong, “Decorated Cospans” (arXiv:1502.00872), Thm 3.5.
+ Fong-Spivak, “Hypergraph Categories” (arXiv:1806.08304).
 
  A hypergraph category is a symmetric monoidal category in which every
  object carries a special commutative Frobenius algebra (SCFA), coherently
@@ -369,7 +369,7 @@ Context (HP : HasPushouts C).
 
    These hold as cospan-equiv equations between
    [cospan_compose (cospan_scfa_mu X) (cospan_tensor (cospan_scfa_eta X) (cospan_id X))]
-   and (the canonical "unit_left" cospan).  The proof is a pushout
+   and (the canonical “unit_left” cospan).  The proof is a pushout
    calculation in [C].
 
    The full SCFA proof requires having the [Monoidal (CospanCat C)]
@@ -451,7 +451,7 @@ End CospanSCFALaws.
 
    Any morphism [f : X ~> Y] in [C] induces a cospan from [X] to [Y]:
    apex = [Y], leg1 = [f], leg2 = [id].  This gives a functor
-   [C → CospanCat C] (the "left embedding") which we use throughout
+   [C → CospanCat C] (the “left embedding”) which we use throughout
    the Monoidal structure: the unitor and associator cospans are the
    lifts of the corresponding C-coproduct isos. 
 
@@ -737,7 +737,7 @@ Context `{H_Coc : @Cocartesian C}.
 Context (HP : HasPushouts C).
 
 (*
- The "split" cocone over [(cover f f', cover g g')]: the two legs
+ The “split” cocone over [(cover f f', cover g g')]: the two legs
  [cover (pushout_in1 P) (pushout_in1 P')] and
  [cover (pushout_in2 P) (pushout_in2 P')] into the coproduct of the
  per-component pushout apexes agree, so they mediate the forward map
@@ -1395,7 +1395,7 @@ Qed.
 (*
    * Goal: [to coprod_assoc ∘ cover (cover f g) h ≈ cover f (cover g h) ∘ to coprod_assoc].
 
-   The proof is "computational" — both sides equal the canonical morphism
+   The proof is “computational” — both sides equal the canonical morphism
    [(inl ∘ f) ▽ ((inr ∘ inl) ∘ g) ▽ ((inr ∘ inr) ∘ h)] (with appropriate
    associativity).  We split it via joint-epi and reduce each leg by
    explicit composition. 
@@ -2004,15 +2004,15 @@ Defined.
    * ** From [to] to [from] naturality
 
    General principle: for any iso [phi : X ≅ Y] in a category [D],
-   if [g ∘ to phi ≈ to phi ∘ h] (the "to" naturality) then
-   [h ∘ from phi ≈ from phi ∘ g] (the "from" naturality). 
+   if [g ∘ to phi ≈ to phi ∘ h] (the “to” naturality) then
+   [h ∘ from phi ≈ from phi ∘ g] (the “from” naturality). 
 
    --------
    * ** 从  [to] 到  [from] 的自然性
 
    一般原则：对于类别  [D] 中的任意同构  [phi : X ≅ Y]，
-   如果  [g ∘ to phi ≈ to phi ∘ h]（"到"的自然性）成立，则
-   [h ∘ from phi ≈ from phi ∘ g]（"从"的自然性）也成立。
+   如果  [g ∘ to phi ≈ to phi ∘ h]（“到”的自然性）成立，则
+   [h ∘ from phi ≈ from phi ∘ g]（“从”的自然性）也成立。
 *)
 
 Lemma from_naturality_of_to {D : Category} {X Y W : D}
@@ -2667,7 +2667,7 @@ End CospanMonoidal.
 (*
  Historical note: the two status blocks below predate the completed
  [Cospan_Monoidal] instance above and are retained only as design
- rationale.  Their line-count estimates and "what remains" language are
+ rationale.  Their line-count estimates and “what remains” language are
  superseded — the full Monoidal coherence (naturality, triangle,
  pentagon) is discharged by the lemmas in this file and closes under the
  global context, as recorded by the CLOSED markers at the end. 

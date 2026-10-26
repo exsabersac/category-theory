@@ -16,12 +16,12 @@
    stops, and names the stopping points precisely.
 
    THREE PREMISES OF THE ISSUE ARE STALE, each re-measured.  The issue's
-   "Current state" says there is no category of spaces, no compactness,
+   “Current state” says there is no category of spaces, no compactness,
    no Hausdorff property and no creation notion.  All four exist:
    [Top] is Instance/Top.v (#259); [IsCompact], [IsHausdorff],
    [CompactHausdorff_Subcategory], [CompactHausdorffSpaces] and
-   [CompactHausdorff_Full] are Instance/Top.v, whose own header scopes out exactly the theory asked for here as "out of
-   scope for this file"; and [CreatesLimit] is Structure/Limit/Creation.v
+   [CompactHausdorff_Full] are Instance/Top.v, whose own header scopes out exactly the theory asked for here as “out of
+   scope for this file”; and [CreatesLimit] is Structure/Limit/Creation.v
    (#406).  So the issue's pinned name [CompHaus] is an ALIAS of an
    existing category, not a construction, and the substance of the
    exercise is the three parts above.
@@ -72,9 +72,9 @@
    level (Test/ProbeCoproduct.v N9, Instance/Top/Homotopy.v).
    Instance/Top/Coproduct.v names one escape hatch it did not
    try, the impredicative truncation [Powerset_squash] of
-   Instance/Sets/Powerset.v.  It is tried here: [sq_open W] is "[W]
+   Instance/Sets/Powerset.v.  It is tried here: [sq_open W] is “[W]
    respects [≈], and every point of [W] has a SQUASHED box datum
-   ([sq_boxdata], a [Type@{o1}] with [o < o1]) inside [W]"; the squash
+   ([sq_boxdata], a [Type@{o1}] with [o < o1]) inside [W]”; the squash
    is a [Prop], so [sq_open : (sq_carrier → Type@{o}) → Type@{o}] fits,
    and [Top_sq_product X Y : TopSpace@{o}] closes all five topology
    fields (unions and intersections of squashed boxes by [sq_squash_map]
@@ -83,7 +83,7 @@
    probe: the pairing [sq_fork_map f g] exists on points, but its
    continuity would eliminate the squash into the [Type]-valued
    [IsOpen Z] — refused, the eliminator's motive must be a [Prop]
-   ("Cannot enforce o <= Prop"), while eliminating into [True] is
+   (“Cannot enforce o <= Prop”), while eliminating into [True] is
    accepted; and the other route, a union over ALL boxes inside [W],
    is refused because [sq_boxdata] sits at [o1] and [open_union]
    indexes at [o].  So [Top_sq_product] has projections but no
@@ -246,12 +246,12 @@
 
    Test/ProbeCompHaus413.v mirrors this file's [Require] list and carries
    5 refutation commands = 1 instrument check + 4 negatives of THREE kinds
-   told apart by their messages — N1 and N2 both say "universe
-   inconsistency", and are told apart by "expected to have type Prop"
-   against "because o < …": N1 SORT/TYPING (the fork's continuity by
-   eliminating the squash into [IsOpen Z]: "has type Type while it is
-   expected to have type Prop", with the clause "Cannot enforce o <=
-   Prop"; control: elimination into [True] accepted), N2 UNIVERSE (the
+   told apart by their messages — N1 and N2 both say “universe
+   inconsistency”, and are told apart by “expected to have type Prop”
+   against “because o < …”: N1 SORT/TYPING (the fork's continuity by
+   eliminating the squash into [IsOpen Z]: “has type Type while it is
+   expected to have type Prop”, with the clause “Cannot enforce o <=
+   Prop”; control: elimination into [True] accepted), N2 UNIVERSE (the
    union over all boxes: the index's level strictly above [o]; control: a
    union indexed by the points accepted), N3 TYPING ([CompHaus_Forget]
    ascribed at [CompHaus ⟶ Top], a plain has-type mismatch) and N4 TYPING
@@ -277,7 +277,7 @@
    练习 2（书第112页，`maclane:V.1:ex2`）：紧致豪斯多夫空间上的基础集合函子会产生极限。nLab：https://ncatlab.org/nlab/show/compact+Hausdorff+space 和 https://ncatlab.org/nlab/show/created+limit. 传统论证有三部分：紧致豪斯多夫空间积的积拓扑是紧致的（Tychonoff定理）且是豪斯多夫的；从紧致空间到豪斯多夫空间的连续双射是同胚，因此任何使投影连续的其他紧致豪斯多夫拓扑与积拓扑一致；这两点共同保证极限的提升是唯一的并且是极限。本文件提供了图书馆拓扑理论能够承载的该论证内容，涵盖 MEASURES 到其余部分停止的地方，并精确命名了停止点。该问题的三个前提已经过时，每个都重新测量过。该问题的“当前状态”显示不存在空间类别、紧性、豪斯多夫性质和创造概念。但这四者都是存在的：[Top] 是 Instance/Top.v (#259)；[IsCompact]、[IsHausdorff]、[CompactHausdorff_Subcategory]、[CompactHausdorffSpaces] 和 [CompactHausdorff_Full] 都是 Instance/Top.v，它们各自的头部确切地概述了这里所要求的理论，标记为“超出此文件范围”；[CreatesLimit] 是 Structure/Limit/Creation.v (#406)。因此，该问题固定的名称 [CompHaus] 是现有类别的别名，而非一个构造，并且练习的实质是上述三个部分。交付内容。(A) [CompHaus : Category := CompactHausdorffSpaces]，在 [eq_refl] 回读；其包含 [CompHaus_Incl := 包含顶层紧致豪斯多夫子范畴] 与 [CompHaus_Incl_Full] 和 [CompHaus_Incl_Faithful]；基础集合函子 [CompHaus_Forget := Top_Forget ◯ CompHaus_Incl : CompHaus ⟶ Sets] 与 [CompHaus_Forget_Faithful]。(B) 双射定理，构造性且诚实地。对于 [f : X ~{Top}~> Y] 具有一集合同构逆 [g]（[f ∘ g] 和 [g ∘ f] 在点上是恒等映射），[X] 紧且 [Y] 豪斯多夫：[inverse_open_of_decidable U HU dU : IsOpen Y (fun y => U (g y))] 对于 [X] 的每个可判定开集 [U]（[dU : ∀ x, U x + ¬U x]）；当 [X] 的每个开集都是时 [inverse_continuous_of_decidable dec : Continuous Y X g]；并且 [compact_hausdorff_bijection_iso dec : X ≅ [Top] Y]。可判定性恰好在经典论证决定成员资格的地方：它通过  [U]  覆盖  [X] ，并结合围绕  [f c]  的 Hausdorff 分离开集的  [f]-原像，针对  [U] 外的点  [c]  （[sep_cover_covers]，其中 [dU] 决定成员资格；[nbhd_inside] 第二次使用它，以决定 [U (gy')] ，然后推导出矛盾），取有限子覆盖  [IsCompact]  作为列表交给，并交叉匹配目标点（[nbhd]）周围的分离开集；该有限交集就是所需的邻域，并且在原像的各个点上这些邻域的并集就是原像（[inverse_open_of_decidable]）。[List.In] ，一个 [Prop]，只被消除到 [False] （[finite_inter_In_False]）。[IsHausdorff] 通过 [sep_nonequal] 进入，其中 [f c ≈ y0] 对于 [c] 在 [U] 外部会将 [c ≈ g y0] 放入其中 —— 与 Instance/Top/Kolmogorov.v 中记录的关于 Hausdorff ⟹ T0 方向的担忧相反，不需要进行双重否定消除。警告，已披露但未声明必要：[dec] 对所有开集成立，
    不适用于树中的任何有人空间——[Discrete_Top] 的开集
    都是所有 [≈] 相关的谓词（[discrete_open]，Instance/Top.v），因此在 [dec] 中每个此类谓词都是可判定的——而空空间 [Empty_Top]（Instance/Top.v）
-   则以空方式满足它并实例化这两个定理（通过审计衡量）；因此每个开集引理是具有非空内容的形式，探针在单点空间中对其应用，使用恒等映射和整个开集。(C) 截断积拓扑，Tychonoff 半的最远可形成点。[Top] 没有产品：自然积开放谓词——对两个因子的开集的存在量词——比点所在的宇宙高一层，并且在该空间层级上被拒绝（Test/ProbeCoproduct.v N9, Instance/Top/Homotopy.v）。Instance/Top/Coproduct.v 命名了一个它没有尝试的逃生路径，即 Instance/Sets/Powerset.v 的自我限制截断 [Powerset_squash]。这里尝试了它：[sq_open W] 是 "[W] 尊重 [≈]，并且 [W] 的每个点在 [W] 内都有一个压缩盒子数据（[sq_boxdata]，一个带 [o < o1] 的 [Type@{o1}]）"；这个压缩是一个 [Prop]，所以 [sq_open : (sq_carrier → Type@{o}) → Type@{o}] 适用，并且 [Top_sq_product X Y : TopSpace@{o}] 关闭所有五个拓扑字段（通过 [sq_squash_map] 和 [sq_squash_pair] 的压缩盒子的并集和交集）。它的投影 [Top_sq_fst]、[Top_sq_snd] 是连续的（一个盒子 [U × whole]）。在探针中编译的 WHAT STOPS：配对 [sq_fork_map f g] 存在于点上，但它的连续性会消除对 [Type] 值的 [IsOpen Z] 的压缩——被拒绝，消除器的动机必须是 [Prop]（“无法强制执行 o <= Prop”），而消除到 [True] 是被接受的；另一条路线，对 [W] 内所有盒子的并集，被拒绝，因为 [sq_boxdata] 位于 [o1]，[open_union] 在 [o] 索引。因此，[Top_sq_product] 有投影，但这里没有确立普遍性质：尝试的两种途径都被拒绝，并且没有显示每个编码都被拒绝（Instance/Top/Coproduct.v 在其早期版本的标题中记录了相同的过度读取）——并且其紧致性（Tychonoff 定理）没有尝试：其有限子覆盖将是从压扁盒子中提取的 [Type] 级数据，因此预期会被同样的论证挡在同一堵墙后面，是被断言而非编译的。这是对 Coproduct.v 注释的一种有度量的改进：截断的编码既展开又产生一个空间，并且墙移到了分叉处。(D) 创建。两个事实，一个是积极的，一个是有条件的：
+   则以空方式满足它并实例化这两个定理（通过审计衡量）；因此每个开集引理是具有非空内容的形式，探针在单点空间中对其应用，使用恒等映射和整个开集。(C) 截断积拓扑，Tychonoff 半的最远可形成点。[Top] 没有产品：自然积开放谓词——对两个因子的开集的存在量词——比点所在的宇宙高一层，并且在该空间层级上被拒绝（Test/ProbeCoproduct.v N9, Instance/Top/Homotopy.v）。Instance/Top/Coproduct.v 命名了一个它没有尝试的逃生路径，即 Instance/Sets/Powerset.v 的自我限制截断 [Powerset_squash]。这里尝试了它：[sq_open W] 是 “[W] 尊重 [≈]，并且 [W] 的每个点在 [W] 内都有一个压缩盒子数据（[sq_boxdata]，一个带 [o < o1] 的 [Type@{o1}]）”；这个压缩是一个 [Prop]，所以 [sq_open : (sq_carrier → Type@{o}) → Type@{o}] 适用，并且 [Top_sq_product X Y : TopSpace@{o}] 关闭所有五个拓扑字段（通过 [sq_squash_map] 和 [sq_squash_pair] 的压缩盒子的并集和交集）。它的投影 [Top_sq_fst]、[Top_sq_snd] 是连续的（一个盒子 [U × whole]）。在探针中编译的 WHAT STOPS：配对 [sq_fork_map f g] 存在于点上，但它的连续性会消除对 [Type] 值的 [IsOpen Z] 的压缩——被拒绝，消除器的动机必须是 [Prop]（“无法强制执行 o <= Prop”），而消除到 [True] 是被接受的；另一条路线，对 [W] 内所有盒子的并集，被拒绝，因为 [sq_boxdata] 位于 [o1]，[open_union] 在 [o] 索引。因此，[Top_sq_product] 有投影，但这里没有确立普遍性质：尝试的两种途径都被拒绝，并且没有显示每个编码都被拒绝（Instance/Top/Coproduct.v 在其早期版本的标题中记录了相同的过度读取）——并且其紧致性（Tychonoff 定理）没有尝试：其有限子覆盖将是从压扁盒子中提取的 [Type] 级数据，因此预期会被同样的论证挡在同一堵墙后面，是被断言而非编译的。这是对 Coproduct.v 注释的一种有度量的改进：截断的编码既展开又产生一个空间，并且墙移到了分叉处。(D) 创建。两个事实，一个是积极的，一个是有条件的：
    - 该问题的置顶声明 [CreatesLimit K CompHaus_Forget] 可以形成（FORMABLE），对于任何形状 [J] 的图表 [K]（探针会检查它，[J : Category] 留给推理）。一项调查读取 Instance/Top/Forgetful.v 时称它是不可以的，并且该注释的最后一句话确实将其分层主张概括到 [Top_Forget] 的名称——这是错误的，因为 [Top_Forget] 落入 [Sets@{h so}]，其同伦层级与 [Top] 自身相同，因此极限锥谓词在两边都适用；该句在此提交中已行内修正，行中保持中性。未交付的是其证明：
    [creates_lift] 必须在任意集合体的极限圆锥上生成一个紧豪斯多夫顶点，该顶点是 Tychonoff 且提升的空间具有豪斯多夫性质，并且 [creates_reflect] 必须使中介连续映射到提升的拓扑中，这是 (C) 的分叉墙。- 泛型引理 Construction/Subcategory/Creation.v 添加了——一个对象在环境极限下封闭的完整子范畴，通过其包含 ([sub_CreatesLimit], [sub_Complete]) 被创建——在 [CompactHausdorff_Subcategory] 上应用为 [CompHaus_Incl_CreatesLimit closed K] 和 [CompHaus_Complete_of closed HT]，条件是 [closed : ClosedUnderLimits CompactHausdorff_Subcategory] 以及 [HT : Complete Top]。两个假设在树中都没有被证明：[Top] 在 [Top_Terminal] 之外没有极限可以闭合，而且 [Top_Complete] 不存在。它们是练习结论将从中得出的陈述，在包含处说明，而不是在遗忘函子处。更正 (#410)：[Top] 现在在 [Top_Terminal] 之外有一个极限，Instance/Top/Solenoid.v 的 [solenoid_limit] 在一系列圆上；[closed] 和 [HT] 仍然没有被证明。更正 (#455)：在伴随函子定理使用的形状中，[HT] 被反驳，而不仅仅是未被证实：在每一个在 [Top] 的同构宇宙之上或及其之下的形状宇宙中，[Complete Top] 在信息排中律下被反驳（Instance/Top/StoneCech/Refutations.v 中的 [Top_not_complete_IEM]），同样在每一个在其同构宇宙之上或及其之下的形状宇宙中，[Complete CompHaus] 亦被反驳，在那份文件的 COVERAGE 记录的实例中（同构宇宙中的 [Top] 插槽，对象宇宙中的证明插槽，点宇宙中的 Hausdorff 证明的开集）：[CompHaus_not_complete_IEM] 在其对象及其之上的形状中也如此，而 [CompHaus_not_complete_IEM_below] 在每一个在同构宇宙之上或及其之下的形状中，对象所包含的以下形状中亦是如此。在同类宇宙以下的形状中，根据信息排中原则都不被否定；在给定索引的情况下，那里适用的索引形式（[Top_not_complete]，[CompHaus_not_complete]）。#455 的评审测量了本次修正草稿所否认的内容，即在其对象宇宙以下的形状 [Complete CompHaus] 被否定：[CompHaus_not_complete_IEM_below] 通过 [Top] 的箭头索引否定了它。更正 (#458)：在 hom 宇宙下方的形状中，在信息排除中间下，两者都被驳斥；在严格高于点的每个形状宇宙中：Instance/Top/Complete/Refutations.v 的 [Top_not_complete_below_IEM] 在那里驳斥了 [Complete Top]，并且 [CompHaus_not_complete_below_IEM] 在那里驳斥了 [Complete CompHaus]，在 Instance/Top/StoneCech/Refutations.v 的 COVERAGE 记录中涉及 [CompHaus_not_complete_IEM_below] 的实例。两者都通过了第一个文件的 [Top_ArrowIndex_transport]，该文件在 hom 宇宙之间移动了 [Top] 的箭头索引；Test/ProbeTopComplete458.v 将两者固定在点与 homs 之间的严格形状上，其中 #455 的 [IEM] 形式被拒绝。在点或以下的形状中，[HT] 和 [Complete CompHaus] 都未被驳斥。未交付，按照问题本身的术语。(a) Tychonoff 在任意指标下的一般性——甚至二元乘积也没有它的普遍性（见 (C)）；(c) [CreatesLimit K CompHaus_Forget] 的证明（见 (D)）；(d) 无条件的 [CompHaus_Complete]（条件的 [CompHaus_Complete_of] 是存在的）；a [Cartesian Top]；子集的紧性（[IsCompact] 是全空间）；(B) 的闭映射形式；对 [dec] 的任何必要性结果；[ClosedUnderLimits] 的任何证明人（更正 (#461)：仍没有 [Top] 的；树的第一个证明人是在 [PTopCat]、Instance/Top/Hausdorff.v 的 [PSep_closed] 和 [PT3_closed] 上），或者所有开集的 [dec] 的一个有元素的证明人；并且没有登记为 [Instance] 的（[CompHaus_Forget_Faithful] 和 [CompHaus_Incl_Faithful] 是引理，遵循 Structure/Limit/Creation.v 对创建证明人的规范）。Stone–Čech 对偶与超滤子幺半群、名册列出此类别的原因（Instance/Roster.v），依然保留在该注释中。更正 (#455)：第一个在 Instance/Top/StoneCech/Refutations.v 的 COVERAGE 记录的实例中被否定解决（同伦宇宙的 [Top] 插槽、对象宇宙中的证明插槽、点宇宙中 Hausdorff 证明的 opens）。在信息性排中律下，当 [CompHaus] 的对象位于其同伦宇宙（Instance/Top/StoneCech.v 生成的实例 [GAFT_CompHaus_only_complete]）或其上位时，[CompHaus_Forget] 在那里没有左对偶（Refutations.v 的 [StoneCech_adjunction_refuted_IEM] 和 [StoneCech_adjunction_refuted_IEM_above]）；在同伦宇宙之下，该陈述不可形成，而在其它实例中，它保持经典的假，属于元论证。#455 的评论测量了这个修正草稿所否认的内容，即该陈述在一个对象宇宙高于同宇宙的实例中被驳斥：第二个常量在那里驳斥了它。包含 [CompHaus_Incl] 的 Stone–Čech 左伴随根本未被驳斥，并且在经典意义上成立；#1329 载有它。Instance/Top/StoneCech.v 构建了有限可枚举集合上的全域箭头，以及 §V.8 练习 4 在全域箭头层次上的情况。宇宙，通过绑定器和模块对本文件的所有48个常数（以及Construction/Subcategory/Creation.v中的9个）进行了测量。在任何57个模块中，均未出现以词为界的[Set]。截断乘积常数是较小的那些：[Top_sq_product@{o o1} : TopSpace@{o} → TopSpace@{o} → TopSpace@{o}]，具有单个命名绑定[o < o1]（框数据的级别）以及stdlib上限；[Top_sq_fst@{o o1 u}]增加了[Top]的同伦级别[o < u]。双射常数包含两个模块方程：[u3 = u1]（两个列表宇宙，[finite_inter]的和子覆盖的，在[sep_subcover_covers]、[nbhd_inside] — 在此打印为[u1 = u3] —、[inverse_open_of_decidable]、[inverse_continuous_of_decidable]、[compact_hausdorff_bijection_iso]）以及[u9 = u8]（开放的级别是载体的，在最后两个上）；其他43个没有任何方程。在 Creation.v 中，[sub_lift]、[sub_lift_apex]、[sub_lift_leg]、[sub_cone_iso] 和 [sub_CreatesLimit] 包含五个方程——[u0 = u11] 将环境 hom 宇宙与形状的（Structure/Limit/Preservation.v 的 [IsLimitCone] 引脚，继承的）识别，并将 [u0 = u13] 与 [Sub] 的（[Compose] 在一个 hom 宇宙中给其三类类型，因此 [Incl C S ◯ K] 强加它——审核隔离了两个原因）联系起来，而 [u5 = u12]、[u6 = u14]、[u9 = u10] 识别闭包假设的量化形状和 [Sub] 水平与图的对应：假设在图自己的宇宙实例中被使用——[sub_ReflectsLimitCone] 仅承载前两个，而 [ClosedUnderLimits]、[sub_CreatesAllLimits]、[sub_Complete] 均不承载。计数。57/57 常量（这里 48 个：24 个 [Definition]，20 个 [Lemma]，2 个 [Theorem]，1 个 [Example]，1 个 [Fixpoint]；那里 9 个：7 个 [Definition]，2 个 [Example]）在全局上下文中关闭，零 [Axioms:] 行，全部在 [make print-assumptions] 门中完全限定；没有任何 [Program]。七个 [Defined] 终止证明，其中五个通过单独将每个翻转为 [Qed] 并重新编译两个文件和探针来承重：[Top_sq_product]（此文件在 [sq_fst_continuous] 的语句处停止，需要产品的载体展开），[sq_fst_map] 和 [sq_snd_map]（投影的连续性证明展开态射场），[compact_hausdorff_bijection_iso]（探针对其前向映射的回读），以及 Creation.v 的 [sub_lift]（它自己的 [eq_refl] 回读 [sub_lift_apex] / [sub_lift_leg]）；[sq_fork_map] 和 [sub_cone_iso] 在一切绿色状态下翻转，并由数据约定保持为 [Defined]。闭包 52 个模块（不包括自身）——Construction/Subcategory/Creation.v  
    边际成本为 10（它带来了 Theory/Equivalence/Limit.v），  

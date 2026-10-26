@@ -17,7 +17,7 @@ Generalizable All Variables.
 (* * * Initiality and terminality as universal properties / * * 初始性与终端性作为普遍性质 *)
 
 (*
- Seven Sketches, Remark 6.9: the "unique up to unique isomorphism" slogan is
+ Seven Sketches, Remark 6.9: the “unique up to unique isomorphism” slogan is
  not a family of ad-hoc arguments but one theorem about representable
  functors, applied to whatever universal property is at hand.  This block
  makes terminality and initiality instances of the library's generic

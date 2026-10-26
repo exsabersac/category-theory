@@ -18,14 +18,14 @@ Generalizable All Variables.
  antisymmetry condition: x ≤ y ≤ x implies x = y. Antisymmetry adds nothing
  to the underlying [Category] construction (the hom-sets are unchanged); it
  only makes the resulting thin category skeletal, so that isomorphic objects
- are equal. nLab characterizes a poset as exactly "a skeletal thin category",
- equivalently "a skeletal (0,1)-category".  Both directions are proved as
+ are equal. nLab characterizes a poset as exactly “a skeletal thin category”,
+ equivalently “a skeletal (0,1)-category”.  Both directions are proved as
  [Proset_Skeletal_iff_Antisymmetric] in Instance/Proset/Skeletal.v. (See Instance/Pos.v for [Pos], the
  category whose OBJECTS are posets and whose morphisms are monotone maps --
  a different construction from this one, which turns a single poset into a
  thin category.)
 
- Wikipedia: "Every poset (and every preorder) may be considered as a category
+ Wikipedia: “Every poset (and every preorder) may be considered as a category
  in which every hom-set has at most one element. More explicitly, let
  hom(x, y) = {(x, y)} if x ≤ y (and otherwise the empty set) and
  (y, z) ∘ (x, y) = (x, z). Such categories are sometimes called thin.
@@ -34,24 +34,24 @@ Generalizable All Variables.
  a poset, the smallest element, if it exists, is an initial object, and the
  largest element, if it exists, is a terminal object. Also, every preordered
  set is equivalent to a poset. Finally, every subcategory of a poset is
- isomorphism-closed." 
+ isomorphism-closed.” 
 
  --------
  nLab：https://ncatlab.org/nlab/show/poset
  Wikipedia：https://en.wikipedia.org/wiki/Partially_ordered_set
 
- 一个偏序集合直接从其预序形成一个范畴，因为偏序集恰好是一个满足额外反对称条件的预序（[Proset]）：x ≤ y ≤ x 蕴含 x = y。反对称性对底层的 [Category] 构造没有任何新增（同态集合保持不变）；它只是使结果薄范畴成为骨架范畴，从而同构对象相等。nLab 将偏序集恰好描述为“一个骨架薄范畴”，等价于“一个骨架 (0,1)-范畴”。两个方向的证明在 Instance/Proset/Skeletal.v 中作为 [Proset_Skeletal_iff_Antisymmetric] 给出。（参见 Instance/Pos.v 获取 [Pos]，即对象为偏序集、态射为单调映射的范畴——与此构造不同，此构造将单个偏序集转换为薄范畴。）维基百科："每个偏序集（以及每个预序集）都可以被视为一个范畴，其中每个同态集最多包含一个元素。更明确地说，如果 x ≤ y，则设 hom(x, y) = {(x, y)}（否则为空集），并且定义 (y, z) ∘ (x, y) = (x, z)。这样的范畴有时称为薄范畴。
+ 一个偏序集合直接从其预序形成一个范畴，因为偏序集恰好是一个满足额外反对称条件的预序（[Proset]）：x ≤ y ≤ x 蕴含 x = y。反对称性对底层的 [Category] 构造没有任何新增（同态集合保持不变）；它只是使结果薄范畴成为骨架范畴，从而同构对象相等。nLab 将偏序集恰好描述为“一个骨架薄范畴”，等价于“一个骨架 (0,1)-范畴”。两个方向的证明在 Instance/Proset/Skeletal.v 中作为 [Proset_Skeletal_iff_Antisymmetric] 给出。（参见 Instance/Pos.v 获取 [Pos]，即对象为偏序集、态射为单调映射的范畴——与此构造不同，此构造将单个偏序集转换为薄范畴。）维基百科：“每个偏序集（以及每个预序集）都可以被视为一个范畴，其中每个同态集最多包含一个元素。更明确地说，如果 x ≤ y，则设 hom(x, y) = {(x, y)}（否则为空集），并且定义 (y, z) ∘ (x, y) = (x, z)。这样的范畴有时称为薄范畴。
 
- 偏序集相互等价的条件是它们同构。在一个偏序集中，如果存在最小元素，则该元素是初始对象；如果存在最大元素，则该元素是终对象。此外，每个预序集都与某个偏序集等价。最后，偏序集的每个子范畴都是同构闭合的。"
+ 偏序集相互等价的条件是它们同构。在一个偏序集中，如果存在最小元素，则该元素是初始对象；如果存在最大元素，则该元素是终对象。此外，每个预序集都与某个偏序集等价。最后，偏序集的每个子范畴都是同构闭合的。”
 *)
 
 (*
  Order theory as category theory: the collapse dictionary
 
  nLab:  https://ncatlab.org/nlab/show/Galois+connection
- Paper: Ore, "Galois connexions", Transactions of the AMS 55, 1944
- Paper: Lawvere, "Metric spaces, generalized logic, and closed
- categories", Rendiconti del Seminario Matematico e Fisico di
+ Paper: Ore, “Galois connexions”, Transactions of the AMS 55, 1944
+ Paper: Lawvere, “Metric spaces, generalized logic, and closed
+ categories”, Rendiconti del Seminario Matematico e Fisico di
  Milano 43, 1973; Reprints in TAC 1, 2002
 
  In a thin category all parallel morphisms are equal, so every diagram
@@ -63,7 +63,7 @@ Generalizable All Variables.
  [GaloisOfAdjunction]), rather than only asserted here; a monad is a closure operator, the unit giving
  extensivity and the multiplication idempotency (Theory/Monad.v); a
  product is a meet, and more generally the limit of a diagram is the
- greatest lower bound of its objects (nLab, "meet"), while a coproduct
+ greatest lower bound of its objects (nLab, “meet”), while a coproduct
  is a join (Structure/Cocartesian.v).  The meet/join entries are no
  longer remarks: Instance/Proset/Limit.v proves both readings —
  [proset_limit_iff_glb] for limits/meets and [proset_colimit_iff_lub]
@@ -73,9 +73,9 @@ Generalizable All Variables.
  specialize to classical order theory, and intuitions trained on
  orders lift to categories with proof relevance switched on.
 
- CORRECTION (#463).  The dictionary entry "a monad is a closure
+ CORRECTION (#463).  The dictionary entry “a monad is a closure
  operator, the unit giving extensivity and the multiplication
- idempotency (Theory/Monad.v)" was asserted, and the file it cited
+ idempotency (Theory/Monad.v)” was asserted, and the file it cited
  only asserted it too.  It is now proved over [Proset], and so over
  [Poset], which is [Proset] with antisymmetry discarded:
  Instance/Proset/Monad.v's [closure_of_monad] and [closure_monad] are
@@ -97,14 +97,14 @@ Generalizable All Variables.
  abstract notion, in its antitone form, is due to Ore (1944), after
  Birkhoff's Lattice Theory (AMS Colloquium Publications 25, 1940) had
  treated the power-set polarities induced by a binary relation; the
- modern survey is Erné, Koslowski, Melton, Strecker, "A primer on
- Galois connections", Annals of the New York Academy of Sciences 704,
+ modern survey is Erné, Koslowski, Melton, Strecker, “A primer on
+ Galois connections”, Annals of the New York Academy of Sciences 704,
  1993.  Closure operators go back to E. H. Moore's Introduction to a
  Form of General Analysis (1910), and around 1930 Tarski abstracted
  logical deduction to a finitary closure operator on sets of sentences
  — the consequence operator, in this dictionary a monad on the poset
- of theories (Wikipedia, "Closure operator").  Lawvere then made the
- dictionary itself the object of study: "Adjointness in Foundations"
+ of theories (Wikipedia, “Closure operator”).  Lawvere then made the
+ dictionary itself the object of study: “Adjointness in Foundations”
  (Dialectica 23, 1969) exhibits the quantifiers as the adjoint triple
  ∃ ⊣ substitution ⊣ ∀, and the 1973 paper cited above reads a poset as
  a skeletal category enriched over the truth values — realized in-tree
@@ -112,28 +112,28 @@ Generalizable All Variables.
  Construction/Enriched/Two.v, over the walking arrow of Instance/Two.v
  — while the same recipe over ([0, ∞], ≥, +) makes a metric space a
  category whose composition law is the triangle inequality (nLab,
- "Lawvere metric space").
+ “Lawvere metric space”).
 
  Thinness also marks a size boundary in the adjoint functor theorems.
  Between small preorders, a functor that preserves all small meets
  from a complete domain has a left adjoint outright, the candidate
- value being a meet over everything (nLab, "adjoint functor theorem").
+ value being a meet over everything (nLab, “adjoint functor theorem”).
  For genuine categories that computation is out of reach: by Freyd's
  observation, any complete small category is a preorder, which is
  exactly why the general theorem in Adjunction/GAFT.v must carry a
  [SolutionSet] hypothesis.
 
  The working uses run through the same corner.  Abstract
- interpretation (Cousot and Cousot, "Abstract Interpretation: A
+ interpretation (Cousot and Cousot, “Abstract Interpretation: A
  Unified Lattice Model for Static Analysis of Programs by Construction
- or Approximation of Fixpoints", POPL 1977) takes an abstraction to be
+ or Approximation of Fixpoints”, POPL 1977) takes an abstraction to be
  a Galois connection between concrete and abstract domains and reads a
  loop as a Knaster–Tarski least fixed point in a complete lattice;
  formal concept analysis organizes object–attribute data by the
  concept lattice of a power-set Galois connection (Ganter and Wille,
  1999); and the opening chapter of Fong and Spivak's Seven Sketches
- in Compositionality (2018) — "Generative Effects: Orders and Galois
- Connections" in its 2019 Cambridge edition — takes a generative
+ in Compositionality (2018) — “Generative Effects: Orders and Galois
+ Connections” in its 2019 Cambridge edition — takes a generative
  effect to be an observation that does not preserve joins, detected
  by a Galois connection.  The computational reading beneath all of
  these is proof irrelevance: under the [Proset] construction a

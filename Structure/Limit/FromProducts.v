@@ -70,7 +70,7 @@ Open Scope category_scope.
  competing cone, the tupling equalizes by [pe_iprod_ext] at Q
  through cone coherence, and uniqueness is the product's uniqueness
  clause followed by the equalizer's.  The section runs under
- [Set Default Proof Using "All"], so every constant of it takes the
+ [Set Default Proof Using “All”], so every constant of it takes the
  whole context in the order it is declared.
 
  (D) Section [FromClasses], over [HasIndexedProducts C] and
@@ -88,7 +88,7 @@ Open Scope category_scope.
  (Structure/Pullback/Reduction.v) and [Opposite_Functor], a [:=]
  with no tactic — [HasIndexedCoproducts C] IS [HasIndexedProducts
  (C^op)] (Structure/Limit/Coproduct.v, #254, which is why the
- issue's "add HasIndexedCoproducts" checkbox needs no work here) and
+ issue's “add HasIndexedCoproducts” checkbox needs no work here) and
  [Colimit F] IS [Limit (F^op)].  The colimit-first ORIENTATION is
  therefore delivered as an instantiation, not as a second
  construction: nothing here builds a coequalizer of two coproducts
@@ -131,16 +131,16 @@ Open Scope category_scope.
 
  WHY THE CLASS AND NOT [iprod] — the issue's work item 4, DECLINED ON A
  MEASUREMENT.  It asks that the indexed products be routed through
- Instance/Discrete.v's discrete-diagram encoding "so the result composes
+ Instance/Discrete.v's discrete-diagram encoding “so the result composes
  with Structure/Limit/Product.v's existing API rather than introducing a
- rival one".  The API consumed IS that file's: the class
+ rival one”.  The API consumed IS that file's: the class
  [HasIndexedProducts] with [indexed_product]/[indexed_product_proj]/
  [indexed_product_ump], and the elementary [IsIndexedProduct] with
  [iprod_desc]; nothing rival is declared.  What is NOT consumed is that
  file's [iprod]/[iprod_proj]/[iprod_ump].
 
  RECORDED CORRECTION TO THE REASON.  An earlier revision gave it as:
- "because [iprod@{u u0 u1}] binds [C : Category@{u1 Set Set}] — the
+ “because [iprod@{u u0 u1}] binds [C : Category@{u1 Set Set}] — the
  ambient hom AND proof universes pinned to the literal [Set], through
  [DiscreteCat_Functor] and [Limit] (the #331/#339 measurement) — so a
  theorem routed through it would hold only for Set-homed categories,
@@ -148,9 +148,9 @@ Open Scope category_scope.
  Pinned as the probe's N8: at a hom level declared strictly above
  [Set], the class, its product and
  [Complete_from_products_equalizers] are accepted while [iprod] is
- refused with [Cannot enforce Set = ch]."  That [Set] floor is GONE:
+ refused with [Cannot enforce Set = ch].”  That [Set] floor is GONE:
  [DiscreteCat_Functor] was annotated in place at Instance/Discrete.v
- in the PR "algebraic carriers are sets" (2026-09-17), and measured
+ in the PR “algebraic carriers are sets” (2026-09-17), and measured
  after it [iprod@{u u0 u1 u2 u3}] binds [C : Category@{u1 u2 u2}] with
  no literal [Set].  Probe N8 accordingly turned over and is now a
  positive CONTROL in Test/ProbeFromProducts416.v.  What remains true,
@@ -211,8 +211,8 @@ Open Scope category_scope.
  [arrow_of] is Theory/Shapes.v's, [sub_dom] is Theory/Subobject.v's
  field, and [two_fam] is Structure/Pullback/Wide.v's.  [make todo]
  grows by 19, ALL in the probe (16 refutation commands + 3 prose
- lines), this file contributing ZERO — so the issue's "adds no new
- hits" box is NOT met as written and is disclosed here.
+ lines), this file contributing ZERO — so the issue's “adds no new
+ hits” box is NOT met as written and is disclosed here.
 
  Test/ProbeFromProducts416.v carries 16 refutation commands = 1
  instrument + 15 commands pinning EIGHT negatives of THREE kinds told
@@ -240,11 +240,11 @@ Open Scope category_scope.
 
  PROSE REPOINTED in the same commit: Structure/Complete.v (the edit
  is line neutral, parts of that passage being cited elsewhere), whose
- closing sentence had called [iprod] "the products half of the
- reduction"; Structure/Equalizer.v, whose "Both arguments run in this
- library" was FALSE for the reduction until this file; and two
- passages of Structure/Limit.v (the E.1 LIBRARY-DEFECT: "uniqueness up
- to unique isomorphism" is Structure/Limit/Unique.v's, landed since
+ closing sentence had called [iprod] “the products half of the
+ reduction”; Structure/Equalizer.v, whose “Both arguments run in this
+ library” was FALSE for the reduction until this file; and two
+ passages of Structure/Limit.v (the E.1 LIBRARY-DEFECT: “uniqueness up
+ to unique isomorphism” is Structure/Limit/Unique.v's, landed since
  the issue was filed, and the construction is this file's), both line
  neutral.  Structure/Topos.v, which the issue also names, cites the
  PULLBACK reduction (Structure/Pullback/Reduction.v) and not this one,
@@ -277,7 +277,7 @@ Open Scope category_scope.
 
  构建的内容，以及其强度。
 
- (A) [pe_iprod_ext]：两个映射到一个索引积，如果在每个投影下相等，则它们相等——作为外延性原则的 [iprod_desc] 的唯一性条款。Structure/Bicartesian/Matrix.v 中的 [iprod_ext] 陈述了相同的事实，但从其分段中引入了一个 [IsIndexedCoproduct]；四行重述中有所揭示。(B)  [ArrowIx J := {p : obj J * obj J & fst p ~> snd p}]，Mac Lane 的索引 ∏_{f ∈ mor J}，具有 [aix_dom] / [aix_cod] / [aix_arr] 和 [mk_arrow]（在 [eq_refl] 的回读）。[Gen idx_arr f] 是一个任意箭头族在恒等、组合和 [≈] 下的归纳闭包；[Generates idx_arr] 表示该族覆盖每一个箭头，而 [ArrowIx_Generates] 在一个构造子中在完整索引上释放它。(C) [Core] 节，基础：在任意两个 [IsIndexedProduct] 上，任意满足生成族两个分量方程的 [s t]，以及任意 [IsEqualizer s t E e]，锥体 [pe_cone]（顶点 E，边 [projP x ∘ e]）是极限：[pe_limiting] 是定理 1。锥体一致性是对 [Gen] 的一次归纳，其唯一有内容的情况是带索引的箭头，由两个分量方程和 [fork_eq] 闭合；中介者是竞争锥的组合 [eq_desc]，通过锥体一致性在 Q 由 [pe_iprod_ext] 实现等值化，唯一性则是先是积的唯一性条款，然后是等值化器的条款。该节在 [Set Default Proof Using "All"] 下运行，因此其每个常量都按声明顺序取整个上下文。(D) [FromClasses]节，位于[HasIndexedProducts C]和[HasEqualizers C]之上：[pe_obj_product]、[pe_arrow_product]、[pe_s]、[pe_t]（由[iprod_desc]，备注3.2.13）、[pe_equalizer]、[pe_apex]、[pe_incl]、[pe_limit_cone]、[pe_limit_limiting]，以及固定的[limit_of_products_equalizer F : Limit F]。定理2的明确描述在[eq_refl]处回顾：极限的顶点是[pe_apex]，其在x处的边为[pe_obj_proj x ∘ pe_incl]。(E) 推论 2：[Complete_from_products_equalizers]（已固定），及其对偶 [Cocomplete_from_coproducts_coequalizers]（由 Riehl 的 §3.5 复选框固定）作为 C^op 上的原始定理通过 [HasEqualizers_op_of_HasCoequalizers]（Structure/Pullback/Reduction.v）和 [Opposite_Functor]，一个没有策略的 [:=] — [HasIndexedCoproducts C] 是 [HasIndexedProducts (C^op)]（Structure/Limit/Coproduct.v，#254，这也是为什么该问题的“添加 HasIndexedCoproducts”复选框在这里无需操作的原因）及 [Colimit F] 是 [Limit (F^op)]。因此，先取余极限的方向（colimit-first ORIENTATION）作为实例实现，而不是第二种构造：这里没有任何内容协变地构建两个直和的共等化。(F) §V.4 练习 2：[PreservesIndexedProducts G] 和 [PreservesEqualizers G] 是新的谓词（一个积及其投影的像是一个积，一个等化器的像是一个等化器；在基本提交处树范围内测量缺失），而 [continuous_from_products_equalizers]（固定）落入 Structure/Limit/Preservation.v 中的锥级 [ContinuousFunctor] — §V.4 的概念，因为仅顶点类无法承载结论。路线：在 D 中的核心 [G ◯ K] 与 G-像（[pe_image_s] / [pe_image_t] 通过 [fmap_comp]）沿 [pe_image_ConeIso] 运输到 [FCone G (pe_limit_cone …)] — 一个同一顶点，边沿由 ONE [fmap_comp] 区分 — 然后沿 [limitcone_iso] 的 [FCone_iso] 到一个任意的限制锥。(G) Riehl 的练习 3.2.ii，一般来说：章节 [Refinement] 通过任意生成族索引箭头积，[pe_gen_limiting] 使该等化器有限制，并且 [pe_gen_restrict_iso] 表明限制不会改变极限 —— một [ConeIso] 对完整构造的说明，由 [limitcone_iso] 给出。在完整索引下，细化构造就是 apex 中的构造，以及每条腿（在 [eq_refl] 的探针控制下），但不是作为记录，两个锥体引用不同的 [Qed] 组成引理。[Families] 节 ：
+ (A) [pe_iprod_ext]：两个映射到一个索引积，如果在每个投影下相等，则它们相等——作为外延性原则的 [iprod_desc] 的唯一性条款。Structure/Bicartesian/Matrix.v 中的 [iprod_ext] 陈述了相同的事实，但从其分段中引入了一个 [IsIndexedCoproduct]；四行重述中有所揭示。(B)  [ArrowIx J := {p : obj J * obj J & fst p ~> snd p}]，Mac Lane 的索引 ∏_{f ∈ mor J}，具有 [aix_dom] / [aix_cod] / [aix_arr] 和 [mk_arrow]（在 [eq_refl] 的回读）。[Gen idx_arr f] 是一个任意箭头族在恒等、组合和 [≈] 下的归纳闭包；[Generates idx_arr] 表示该族覆盖每一个箭头，而 [ArrowIx_Generates] 在一个构造子中在完整索引上释放它。(C) [Core] 节，基础：在任意两个 [IsIndexedProduct] 上，任意满足生成族两个分量方程的 [s t]，以及任意 [IsEqualizer s t E e]，锥体 [pe_cone]（顶点 E，边 [projP x ∘ e]）是极限：[pe_limiting] 是定理 1。锥体一致性是对 [Gen] 的一次归纳，其唯一有内容的情况是带索引的箭头，由两个分量方程和 [fork_eq] 闭合；中介者是竞争锥的组合 [eq_desc]，通过锥体一致性在 Q 由 [pe_iprod_ext] 实现等值化，唯一性则是先是积的唯一性条款，然后是等值化器的条款。该节在 [Set Default Proof Using “All”] 下运行，因此其每个常量都按声明顺序取整个上下文。(D) [FromClasses]节，位于[HasIndexedProducts C]和[HasEqualizers C]之上：[pe_obj_product]、[pe_arrow_product]、[pe_s]、[pe_t]（由[iprod_desc]，备注3.2.13）、[pe_equalizer]、[pe_apex]、[pe_incl]、[pe_limit_cone]、[pe_limit_limiting]，以及固定的[limit_of_products_equalizer F : Limit F]。定理2的明确描述在[eq_refl]处回顾：极限的顶点是[pe_apex]，其在x处的边为[pe_obj_proj x ∘ pe_incl]。(E) 推论 2：[Complete_from_products_equalizers]（已固定），及其对偶 [Cocomplete_from_coproducts_coequalizers]（由 Riehl 的 §3.5 复选框固定）作为 C^op 上的原始定理通过 [HasEqualizers_op_of_HasCoequalizers]（Structure/Pullback/Reduction.v）和 [Opposite_Functor]，一个没有策略的 [:=] — [HasIndexedCoproducts C] 是 [HasIndexedProducts (C^op)]（Structure/Limit/Coproduct.v，#254，这也是为什么该问题的“添加 HasIndexedCoproducts”复选框在这里无需操作的原因）及 [Colimit F] 是 [Limit (F^op)]。因此，先取余极限的方向（colimit-first ORIENTATION）作为实例实现，而不是第二种构造：这里没有任何内容协变地构建两个直和的共等化。(F) §V.4 练习 2：[PreservesIndexedProducts G] 和 [PreservesEqualizers G] 是新的谓词（一个积及其投影的像是一个积，一个等化器的像是一个等化器；在基本提交处树范围内测量缺失），而 [continuous_from_products_equalizers]（固定）落入 Structure/Limit/Preservation.v 中的锥级 [ContinuousFunctor] — §V.4 的概念，因为仅顶点类无法承载结论。路线：在 D 中的核心 [G ◯ K] 与 G-像（[pe_image_s] / [pe_image_t] 通过 [fmap_comp]）沿 [pe_image_ConeIso] 运输到 [FCone G (pe_limit_cone …)] — 一个同一顶点，边沿由 ONE [fmap_comp] 区分 — 然后沿 [limitcone_iso] 的 [FCone_iso] 到一个任意的限制锥。(G) Riehl 的练习 3.2.ii，一般来说：章节 [Refinement] 通过任意生成族索引箭头积，[pe_gen_limiting] 使该等化器有限制，并且 [pe_gen_restrict_iso] 表明限制不会改变极限 —— một [ConeIso] 对完整构造的说明，由 [limitcone_iso] 给出。在完整索引下，细化构造就是 apex 中的构造，以及每条腿（在 [eq_refl] 的探针控制下），但不是作为记录，两个锥体引用不同的 [Qed] 组成引理。[Families] 节 ：
  [IsIdArrow]，[fam_dom] / [fam_cod] / [fam_arr]（由 [ArrowIx] 上的谓词切割的一个族），[sub_Generates_of_dec]（一个谓词，包含每个非恒等箭头生成的，在给定一个 DECIDER [S (mk_arrow f) + IsIdArrow f] 的情况下），[NonIdArrow] 与 [nonid_Generates]（非恒等族只要恒等性可判定就会生成），以及 [AtomicArrow]（非恒等，每个通过两个箭头的分解都具有一个恒等因子）。
  [Refined] 节：在一个判断器下的 [pe_nonid_limiting]，以及在假设 [Generates (fam_arr AtomicArrow)] 下的 [pe_atomic_limiting] —— 这就是 Riehl 的分解假设，作为假设而在此没有形状下被解除。关于文件中任何形状是否为同一性的可判定性，并未提出声明（Test/ProbeFromProducts416.v 在行走箭头上进行了处理）。
 
@@ -820,7 +820,7 @@ Definition fam_arr (S : @ArrowIx J → Type) (a : { a : ArrowIx & S a }) :
 
 (*
  A predicate that contains every arrow that is not an identity generates:
- the decider is the hypothesis, and it is exactly what "non-identity"
+ the decider is the hypothesis, and it is exactly what “non-identity”
  costs constructively. 
 
  --------

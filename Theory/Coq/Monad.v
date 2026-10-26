@@ -241,7 +241,7 @@ Open Scope monad_scope.
 The composite [M ∘ N] is a monad given a distributive law [Monad_Distributes]:
    [ret] is [ret[M] ∘ pure[N]] (both units stacked) and [bind] uses [mprod] to
    commute the inner [N] past the outer [M].  This is the standard
-   "monad-on-monad via a distributive law" construction.
+   “monad-on-monad via a distributive law” construction.
    nLab: https://ncatlab.org/nlab/show/distributive+law
 
 --------

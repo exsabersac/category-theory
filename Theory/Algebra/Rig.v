@@ -21,7 +21,7 @@ Generalizable All Variables.
 (**
 * Rigs: rings without negatives
 
-    Fong and Spivak, "Seven Sketches in Compositionality", §5.3.1:
+    Fong and Spivak, “Seven Sketches in Compositionality”, §5.3.1:
     Definition 5.36 with its footnotes [7sketches:5.3.1:def5.36], the
     naturals (Example 5.37 [7sketches:5.3.1:example5.37]), the booleans
     (Example 5.38 [7sketches:5.3.1:example5.38]), and rings as rigs with
@@ -31,7 +31,7 @@ Generalizable All Variables.
     nLab: https://ncatlab.org/nlab/show/rig
     Wikipedia: https://en.wikipedia.org/wiki/Semiring
 
-    A rig (or semiring) is a "ring without negatives": a commutative
+    A rig (or semiring) is a “ring without negatives”: a commutative
     monoid (0, +), a monoid (1, ·) — multiplication deliberately NOT
     assumed commutative, per Definition 5.36 — with · distributing over +
     on both sides and 0 annihilating on both sides.  The mnemonic of
@@ -56,7 +56,7 @@ Generalizable All Variables.
     multiplication) with a [Preadditive] instance, and [EndRig] reads a
     rig off the endomorphism hom of ANY object of any LOCALLY
     PROPOSITIONAL preadditive category — an earlier revision of this
-    sentence said "ANY preadditive category", and the strength-change
+    sentence said “ANY preadditive category”, and the strength-change
     paragraph below records why it no longer can.  The rig-side round
     trip is definitional on every DATA
     field (zero, add, one, mul — the four [eq_refl] acceptance tests) and
@@ -73,9 +73,9 @@ Generalizable All Variables.
 
     A RECORDED STRENGTH CHANGE, ON THE CONVERSE HALF OF THAT BRIDGE.
     An earlier revision of this file stated the one-object reading
-    unconditionally: "rigs are one-object preadditive categories",
+    unconditionally: “rigs are one-object preadditive categories”,
     with [EndRig] applicable to any [Preadditive C].  Since the PR
-    "algebraic carriers are sets" (2026-09-17) a [RigObject] carries
+    “algebraic carriers are sets” (2026-09-17) a [RigObject] carries
     [rig_prop], a [PropEquiv] for its carrier setoid, and [EndRig]'s
     carrier IS the ambient's hom-setoid [c ~> c]; an arbitrary category
     supplies no [Prop] mirror of its `≈` — in [Cat] an [F ≈ G] IS a
@@ -532,7 +532,7 @@ Qed.
 (*
 [DeloopRig R]'s hom-setoid IS the rig's own carrier setoid, so the
    delooping is locally propositional as soon as the rig is -- which, since
-   the PR "algebraic carriers are sets" (2026-09-17), every rig is.  This is
+   the PR “algebraic carriers are sets” (2026-09-17), every rig is.  This is
    what lets [EndRig] below be applied back to a delooping in the round-trip
    examples.
 
@@ -574,8 +574,8 @@ Conversely, the endomorphism hom of ANY object of ANY preadditive
    composition.  This is the honest converse — it does not need the
    category to have one object.
 
-   It DOES need one thing it did not need before the PR "algebraic carriers
-   are sets" (2026-09-17): the ambient category must be LOCALLY PROPOSITIONAL
+   It DOES need one thing it did not need before the PR “algebraic carriers
+   are sets” (2026-09-17): the ambient category must be LOCALLY PROPOSITIONAL
    (Instance/Sets/Propositional.v), since the rig's carrier setoid IS
    [C]'s hom-setoid and [rig_prop] has to be supplied from it.  The hypothesis
    is a class, so it is discharged by instance resolution wherever an instance
@@ -662,8 +662,8 @@ The bridge, packaged: a rig deloops to a one-object preadditive
    identity-carrier isomorphism, definitional on the data.  (The
    category-side composite has no equational form — see the header.)
 
-   AN EARLIER REVISION read the middle clause as "any object of a
-   preadditive category".  Since the PR "algebraic carriers are sets"
+   AN EARLIER REVISION read the middle clause as “any object of a
+   preadditive category”.  Since the PR “algebraic carriers are sets”
    (2026-09-17) this triple's measured type carries the hypothesis on
    its second and third components,
 
@@ -890,7 +890,7 @@ Plain definitions with explicit proof terms: the stdlib equalities land
 *)
 (*
 The universe instance is written [RigObject@{q o p}], not [@{o p q}]:
-   since the PR "algebraic carriers are sets" (2026-09-17) the record's
+   since the PR “algebraic carriers are sets” (2026-09-17) the record's
    AUXILIARY level -- the one bounding the [PropEquiv] field's own sort, which
    carries the [Set+1] -- is the FIRST argument rather than the third, so the
    named universes keep their roles by being permuted rather than renamed.

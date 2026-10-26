@@ -18,15 +18,15 @@ Generalizable All Variables.
     nLab:      https://ncatlab.org/nlab/show/universal+morphism
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+    Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
           GTM 5, Springer 1998, §IV.1 Theorem 2 -- maclane:IV.1:thm2.
-    Book: Awodey, "Category Theory", 2nd ed., §9.2 Corollary 9.5,
+    Book: Awodey, “Category Theory”, 2nd ed., §9.2 Corollary 9.5,
           printed pp. 222-223 -- awodey:9.2:cor5.
 
     WHAT WAS ALREADY THERE, AND THE ISSUE'S OWN ACCOUNT OF IT IS STALE.
-    #347's "Current state" says a whole-tree search for couniversal
-    arrows "returns nothing" and that Theory/Universal/Arrow.v "has no
-    dual".  Both are false: Theory/Universal/Arrow/Dual.v supplies
+    #347's “Current state” says a whole-tree search for couniversal
+    arrows “returns nothing” and that Theory/Universal/Arrow.v “has no
+    dual”.  Both are false: Theory/Universal/Arrow/Dual.v supplies
     [CouniversalArrow], [coarrow],
     [ump_couniversal_arrows],
     [RightAdjointFunctorFromCouniversalArrows] and
@@ -43,7 +43,7 @@ Generalizable All Variables.
     delivered here, is the CONVERSE: from an ARBITRARY [F ⊣ U],
     [adj_counit_couniversal] exhibits each counit component as a
     [CouniversalArrow] PACKAGED AS THE CLASS, which is the bar the issue
-    sets ("not merely that the equational form [adj_univ_impl] holds").
+    sets (“not merely that the equational form [adj_univ_impl] holds”).
     Neither Theory/Universal/Arrow.v nor its dual contains any passage
     from an adjunction to a (co)universal arrow.
 
@@ -64,7 +64,7 @@ Generalizable All Variables.
     readback is definitional.
 
     THE ONE [≈]-ONLY STEP IS THE MEDIATOR, and the honest statement of
-    its cause is narrower than "donor opacity" alone.  What the contrast
+    its cause is narrower than “donor opacity” alone.  What the contrast
     below establishes is that the failure is not a property of the
     couniversal arrow in general: [coarrow] and [coarrow_obj] of the SAME
     arrow do reduce.  That does NOT by itself isolate the [Qed] on

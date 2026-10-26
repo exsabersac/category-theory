@@ -12,14 +12,14 @@ Generalizable All Variables.
 (*
 nLab:      https://ncatlab.org/nlab/show/concrete+category
    Wikipedia: https://en.wikipedia.org/wiki/Concrete_category
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, Springer 1998, §I.7 ("Large Categories"), printed p. 26
-   Book:      Riehl, "Category Theory in Context", Dover 2016, §1.6,
+   Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+              GTM 5, Springer 1998, §I.7 (“Large Categories”), printed p. 26
+   Book:      Riehl, “Category Theory in Context”, Dover 2016, §1.6,
               Definition 1.6.18 and Example 1.6.19, printed pp. 45-46
-   Book:      Awodey, "Category Theory", 2nd ed., OUP 2010, §1.5, Remark 1.7,
+   Book:      Awodey, “Category Theory”, 2nd ed., OUP 2010, §1.5, Remark 1.7,
               printed p. 15
-   Paper:     Freyd, "Homotopy is not concrete", in "The Steenrod Algebra and
-              Its Applications", Lecture Notes in Mathematics 168, Springer
+   Paper:     Freyd, “Homotopy is not concrete”, in “The Steenrod Algebra and
+              Its Applications”, Lecture Notes in Mathematics 168, Springer
               1970, pp. 25-34
 
    A concrete category, in Mac Lane's §I.7 sense, is a PAIR `⟨C, U⟩`: a
@@ -50,8 +50,8 @@ nLab:      https://ncatlab.org/nlab/show/concrete+category
    on the underlying sets.
 
    Note the setoid discipline of this library.  `Sets` (Instance/Sets.v) is
-   the category of setoids, so "the underlying set" is a carrier type plus an
-   equivalence relation, and "actual function" means a setoid map.  Equality
+   the category of setoids, so “the underlying set” is a carrier type plus an
+   equivalence relation, and “actual function” means a setoid map.  Equality
    of arrows in THIS FILE and its two companions is `≈` throughout, never
    `=` — a claim about these three files only, not about the library, which
    does state a few deliberate arrow equalities elsewhere (for instance
@@ -87,18 +87,18 @@ nLab:      https://ncatlab.org/nlab/show/concrete+category
        1.6.18.
 
    (2) Rel, the category of sets and relations (Instance/Rel.v), is often
-       quoted alongside Toph as "not concrete".  That quotation is too
+       quoted alongside Toph as “not concrete”.  That quotation is too
        strong, and this development does not repeat it.  What is true, and
        what Instance/Concrete.v proves, is a statement about the EVIDENT
        candidate functor: no functor `U : Rel ⟶ Sets` whose value at the
        one-element set is a subsingleton can be faithful, because Rel already
        has two distinct endorelations of the one-element set.  The evident
-       "underlying set" candidate has exactly that property, so it is not
+       “underlying set” candidate has exactly that property, so it is not
        faithful.  Rel is nevertheless concretizable — Instance/Concrete.v
        exhibits `Rel_Concrete` via the direct-image (powerset) functor, whose
        value at the one-element set is a two-element setoid, precisely
        escaping the obstruction.  So the honest reading of Mac Lane's remark
-       is "not concrete via its evident forgetful functor", and that is what
+       is “not concrete via its evident forgetful functor”, and that is what
        is proved.  Non-concretizability of Rel is not claimed and would in
        fact be false.
 
@@ -204,7 +204,7 @@ Proof.
 Qed.
 
 (*
-The function determines the arrow: "arrows ARE actual functions", as the
+The function determines the arrow: “arrows ARE actual functions”, as the
    definitional unfolding of [underlying_faithful] at the level of elements.
    Note that the conclusion is `≈` in `C`'s hom-setoid and the hypothesis is
    `≈` in the codomain setoid — no `=` occurs on either side.

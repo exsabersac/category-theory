@@ -27,9 +27,9 @@ Generalizable All Variables.
 *)
 
 (*
- Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §V.2 Exercise 2, printed p. 114 (PDF p. 123) — maclane:V.2:ex2
- Book:  Riehl, "Category Theory in Context", 2nd ed., §3.4 Exercise
+ Book:  Riehl, “Category Theory in Context”, 2nd ed., §3.4 Exercise
  3.4.v, printed p. 108 (PDF p. 128) — riehl:3.4:exv
  nLab:  https://ncatlab.org/nlab/show/product+category
  nLab:  https://ncatlab.org/nlab/show/complete+category
@@ -77,7 +77,7 @@ Generalizable All Variables.
  [C^op] and [D^op] applied to [K^op], with [Complete_op_of_Cocomplete]
  the one-line passage that [Cocomplete C] IS [Complete (C^op)] up to
  the definitional [(G^op)^op = G].
- - Riehl's clause (iii), the "only if" direction, under an EXPLICIT
+ - Riehl's clause (iii), the “only if” direction, under an EXPLICIT
  POINT of the other factor: [Product_Limit_Fst : Limit (pair_const d G)
  → Limit G] and [Product_Complete_Fst : Complete (C ∏ D) → D →
  Complete C], with the [Snd] mirrors.  The point is needed to form a
@@ -131,7 +131,7 @@ Generalizable All Variables.
  direct cocone development, or a transport of [Complete] along the
  identity-on-everything equivalence, would supply it; neither is
  attempted here.
- - Clause (iii)'s "only if" at arbitrary index, for the same
+ - Clause (iii)'s “only if” at arbitrary index, for the same
  point-of-the-other-factors reason as the binary case plus the
  splicing above.
  - Any comparison of [Product_Limit] at a discrete shape with
@@ -483,7 +483,7 @@ Definition Product_Cocomplete {C D : Category}
       (Opposite J) (Opposite_Functor K).
 
 (*
-   * ** The "only if" direction, at an explicit point of the other factor 
+   * ** The “only if” direction, at an explicit point of the other factor 
 
    --------
    * ** “只有在”方向，在另一个因子的明确点上
@@ -529,7 +529,7 @@ Example pair_const_obj (d : D) {J : Category} (G : J ⟶ C) (x : J) :
 (*
  A cone over [Fst ◯ pair_const d G] IS a cone over [G]: the two functors
  agree on objects and arrows by conversion, so the repackaging carries
- the same apex and the same legs, and the two readings of "limiting"
+ the same apex and the same legs, and the two readings of “limiting”
  are convertible. 
 
  --------

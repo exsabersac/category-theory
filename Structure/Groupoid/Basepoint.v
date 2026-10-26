@@ -18,10 +18,10 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/delooping
  nLab:      https://ncatlab.org/nlab/show/fully+faithful+functor
  nLab:      https://ncatlab.org/nlab/show/equivalence+of+categories
- Book:      Riehl, "Category Theory in Context", Corollary 1.5.14, printed
+ Book:      Riehl, “Category Theory in Context”, Corollary 1.5.14, printed
  p. 36 (PDF p. 56), the corollary drawn there from Proposition
  1.5.13 (printed pp. 35-36)
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §I.5, printed p. 20 (the remark following Definition 9)
 
  In a connected groupoid the vertex groups at any two objects are isomorphic
@@ -125,7 +125,7 @@ Generalizable All Variables.
  Two honest caveats.  First, nothing here claims the isomorphism produced
  below agrees with the conjugation isomorphism; both are constructed from
  choices (a zig-zag, a quasi-inverse), and no comparison between them is
- proved.  Second, "isomorphic as groups" is justified because
+ proved.  Second, “isomorphic as groups” is justified because
  Structure/Groupoid.v's [MonHom_grp_inv] shows a monoid homomorphism
  between groups automatically preserves inverses — the reason that file
  defines no separate class of group homomorphisms, as its own note at lines
@@ -139,9 +139,9 @@ Generalizable All Variables.
  as a CONSEQUENCE of the category-level one rather than as a parallel fact
  proved twice.  The intermediate step, [deloop_ff_moniso], is the missing
  half of the group/one-object-groupoid dictionary that Construction/Deloop.v
- deliberately left out: its header defers "the functor-level
+ deliberately left out: its header defers “the functor-level
  half of the dictionary — that functors between deloopings are exactly
- monoid homomorphisms" to later work.  This is the isomorphism-level part of
+ monoid homomorphisms” to later work.  This is the isomorphism-level part of
  that half. 
 
  --------
@@ -243,7 +243,7 @@ Defined.
  The [Proof using F FF Ffaith] annotation appears on FOUR lemmas below, not
  three: those three, and [deloop_bwd_fwd], which settles the other round
  trip by the same appeal to faithfulness.  The annotation is forced by the
- [Default Proof Using "Type"] setting of Lib.v: [Ffaith] is used in each
+ [Default Proof Using “Type”] setting of Lib.v: [Ffaith] is used in each
  of those four proofs but does not occur in any of their statements, so it
  would otherwise not be retained when the section closes.  The section's
  other four lemmas — [deloop_fwd_bwd], [deloop_fwd_respects],
@@ -252,12 +252,12 @@ Defined.
  [Full]'s section law verbatim, so none of them mentions [Ffaith] at all.
  This is the same per-lemma idiom as Adjunction/Continuity.v rather than
  Construction/Localization/Universal.v's file-wide
- [Set Default Proof Using "All"]. 
+ [Set Default Proof Using “All”]. 
 
  --------
  Construction/Deloop.v 将 [Deloop M] 构造成一个只有单个对象 [ttt] 的范畴（其对象类型是 [poly_unit]，正如 Structure/Groupoid.v 的 [Deloop_one_object] 通过 [eq_refl] 记录的那样），该对象处的同态集合是 M 的承载集合，其恒等元是单位元，组合是运算。每一个都是定义上的等式，而非需要传递的巧合；它们属于让 Construction/Deloop.v 的 [hom_monoid_Deloop] 通过 [eq_refl] 闭合的协议（那里注释里增加了律字段和记录 η）。
 
- 因此，一个函子 F : B M ⟶ B N 在唯一对象上携带一个映射 [carrier M → carrier N]，它自然就是一个幺半群同态——两个函子律就是两个同态律，[fmap_respects] 就是 [Proper] 字段。这个方向就是下面的 [deloop_fwd]，且不需要额外代价。内容是相反方向的。[Full]（Theory/Functor.v）仅提供了同态映射的一个 SECTION [prefmap]，并没有要求它具有函子性——那个文件的头部以术语的形式说明了这一点，记录了先前定义的 [prefmap_respects]、[prefmap_id] 和 [prefmap_comp] 字段是多余的。因此 [prefmap] 是一个幺半群同态必须被证明，而忠实性就是证明它的方法：在应用单射 [fmap[F] 后检查每条定律，其中段法则 [fmap_sur] 将一切折叠。下面的 [deloop_bwd_respects]、[deloop_bwd_unit] 和 [deloop_bwd_op] 是这三个参数的完整写法。[Proof using F FF Ffaith] 注释出现在下面的四个引理中，而不是三个：那三个，以及 [deloop_bwd_fwd]，它通过同样依赖忠实性的方式解决了另一次往返。这个注释是由 Lib.v 的 [Default Proof Using "Type"] 设置强制的：[Ffaith] 在这四个证明中每一个都被使用，但在它们的陈述中并未出现，因此在章节关闭时否则不会被保留。该章节的其他四个引理——[deloop_fwd_bwd]、[deloop_fwd_respects]、[deloop_fwd_unit] 和 [deloop_fwd_op]——不需要它：后三个是通过 delooping 字典读取的函子律，第一个是 [Full] 的章节律逐字引用，因此它们都没有提到 [Ffaith]。这与 Adjunction/Continuity.v 的每个引理习惯相同，而不是 Construction/Localization/Universal.v 的整个文件范围的 [Set Default Proof Using "All"]。
+ 因此，一个函子 F : B M ⟶ B N 在唯一对象上携带一个映射 [carrier M → carrier N]，它自然就是一个幺半群同态——两个函子律就是两个同态律，[fmap_respects] 就是 [Proper] 字段。这个方向就是下面的 [deloop_fwd]，且不需要额外代价。内容是相反方向的。[Full]（Theory/Functor.v）仅提供了同态映射的一个 SECTION [prefmap]，并没有要求它具有函子性——那个文件的头部以术语的形式说明了这一点，记录了先前定义的 [prefmap_respects]、[prefmap_id] 和 [prefmap_comp] 字段是多余的。因此 [prefmap] 是一个幺半群同态必须被证明，而忠实性就是证明它的方法：在应用单射 [fmap[F] 后检查每条定律，其中段法则 [fmap_sur] 将一切折叠。下面的 [deloop_bwd_respects]、[deloop_bwd_unit] 和 [deloop_bwd_op] 是这三个参数的完整写法。[Proof using F FF Ffaith] 注释出现在下面的四个引理中，而不是三个：那三个，以及 [deloop_bwd_fwd]，它通过同样依赖忠实性的方式解决了另一次往返。这个注释是由 Lib.v 的 [Default Proof Using “Type”] 设置强制的：[Ffaith] 在这四个证明中每一个都被使用，但在它们的陈述中并未出现，因此在章节关闭时否则不会被保留。该章节的其他四个引理——[deloop_fwd_bwd]、[deloop_fwd_respects]、[deloop_fwd_unit] 和 [deloop_fwd_op]——不需要它：后三个是通过 delooping 字典读取的函子律，第一个是 [Full] 的章节律逐字引用，因此它们都没有提到 [Ffaith]。这与 Adjunction/Continuity.v 的每个引理习惯相同，而不是 Construction/Localization/Universal.v 的整个文件范围的 [Set Default Proof Using “All”]。
 *)
 
 Section DeloopFullyFaithful.

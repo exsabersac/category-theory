@@ -14,8 +14,8 @@ Generalizable All Variables.
 (*
  nLab:      https://ncatlab.org/nlab/show/simplex+category
  Wikipedia: https://en.wikipedia.org/wiki/Simplicial_category
- Book:      Mac Lane, "Categories for the Working Mathematician",
- 2nd ed., §I.2 (p. 12) and §VII.5, "The Simplicial Category"
+ Book:      Mac Lane, “Categories for the Working Mathematician”,
+ 2nd ed., §I.2 (p. 12) and §VII.5, “The Simplicial Category”
 
  The simplicial category: objects are the natural numbers, with [n]
  standing for the canonical n-element ordinal [Fin.t n] carried by its
@@ -27,7 +27,7 @@ Generalizable All Variables.
  compared — two morphisms with the same underlying function are equal in
  this category whatever their monotonicity proofs.
 
- WHICH Δ.  This is the "algebraist's Δ", which includes the empty
+ WHICH Δ.  This is the “algebraist's Δ”, which includes the empty
  ordinal [0]: the objects are ALL the finite ordinals, so what is built
  here is also called the AUGMENTED simplex category.  This is Mac Lane's
  Δ — §I.2 (p. 12) puts the finite ordinals and their monotone maps among
@@ -35,7 +35,7 @@ Generalizable All Variables.
  the finite ordinals indexed by n ∈ ℕ, the empty one among them.  It is
  the variant for which Δ is the free monoidal category containing a
  monoid, with [0] the tensor unit, which is what makes including [0]
- worth the trouble.  The "topologist's Δ" drops [0], keeping only the
+ worth the trouble.  The “topologist's Δ” drops [0], keeping only the
  nonempty ordinals, because a simplex has at least one vertex; that is
  the shape category of simplicial sets proper, it is the full
  subcategory of this one on the positive naturals, and it is not
@@ -80,12 +80,12 @@ Generalizable All Variables.
  and topological spaces, geometric realization on the left and the
  singular complex on the right, is the adjunction that makes them a
  combinatorial model for spaces.  That adjunction is the reason Kan
- wrote "Adjoint functors" (1958) in the first place: as
- Theory/Kan/Extension.v records, Kan introduced adjoints "to
+ wrote “Adjoint functors” (1958) in the first place: as
+ Theory/Kan/Extension.v records, Kan introduced adjoints “to
  codify the formal properties of the passage between spaces and
- simplicial sets", and Theory/Kan/Extension.v adds that geometric
- realization is "the left Kan extension of a cosimplicial space along
- the Yoneda embedding, the nerve its restricted-Yoneda right adjoint".
+ simplicial sets”, and Theory/Kan/Extension.v adds that geometric
+ realization is “the left Kan extension of a cosimplicial space along
+ the Yoneda embedding, the nerve its restricted-Yoneda right adjoint”.
  Structure/Coend.v records the same realization as a single coend.
  Each of those three passages is prose about a category that, until now,
  the library did not have; this file supplies it.
@@ -94,21 +94,21 @@ Generalizable All Variables.
  category containing a monoid: ordinal addition is the tensor, [0] is
  the unit, and [1] carries the universal monoid, whose multiplication is
  the unique map [2 ~> 1] and whose unit is the unique map [0 ~> 1]
- (nLab, "simplex category").  Consequently a monoid in any monoidal
+ (nLab, “simplex category”).  Consequently a monoid in any monoidal
  category is a strict monoidal functor out of Δ, which is why Mac Lane
  places §VII.5 inside the chapter on monoids rather than in a chapter on
  topology.  Dually Δ^op is the walking comonoid, and the bar resolution
  of a monad — the simplicial object whose face maps are built from the
  multiplication and whose degeneracies are built from the unit — is
  exactly a functor out of it; Comonad/Core.v cites that
- "simplicial bar resolution of a comonad" as founding cotriple
+ “simplicial bar resolution of a comonad” as founding cotriple
  cohomology (Barr–Beck, Springer LNM 80, 1969).
 
  Within this library Δ arrives as a subcategory of the skeletal finite
  sets already in tree.  Instance/FinSet.v anticipates precisely
- this, noting "the simplex category Δ embedding into FinSet" in its
- discussion of Grandis's symmetric simplicial sets ("Finite sets and
- symmetric simplicial sets", Theory and Applications of Categories 8,
+ this, noting “the simplex category Δ embedding into FinSet” in its
+ discussion of Grandis's symmetric simplicial sets (“Finite sets and
+ symmetric simplicial sets”, Theory and Applications of Categories 8,
  2001); the inclusion [Simplex_FinSet] below realizes that remark, and the
  accompanying non-fullness result measures the gap — FinSet has all
  functions between finite ordinals, Δ keeps only the monotone ones, and
@@ -490,7 +490,7 @@ Example sdegen_repeats_at_2 :
 (*
    * ** The five simplicial identities
 
-   The nLab ("simplex category") states them, in the cosimplicial form
+   The nLab (“simplex category”) states them, in the cosimplicial form
    appropriate to Δ itself, as
 
    (1)  δ_j ∘ δ_i = δ_i ∘ δ_{j-1}        for i < j

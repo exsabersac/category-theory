@@ -11,10 +11,10 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/complete+category
  Wikipedia: https://en.wikipedia.org/wiki/Complete_category
 
- Wikipedia: "a category C is complete if every diagram F : J → C (where J is
- small) has a limit in C." Dually, C is cocomplete if every such diagram has
- a colimit. nLab: a category "has all small limits" when "every small diagram
- F : D → C where D is a small category has a limit in C." In library notation
+ Wikipedia: “a category C is complete if every diagram F : J → C (where J is
+ small) has a limit in C.” Dually, C is cocomplete if every such diagram has
+ a colimit. nLab: a category “has all small limits” when “every small diagram
+ F : D → C where D is a small category has a limit in C.” In library notation
  the completeness condition reads:
 
  ∀ (D : Category) (F : D ⟶ C), Limit F,
@@ -26,14 +26,14 @@ Generalizable All Variables.
  sources.
 
  On the index class: both sources restrict J (here D) to be *small*. Wikipedia
- notes that demanding limits for *all* (proper-class-sized) diagrams "is too
- strong to be practically relevant" — such a C would be forced to be thin. The
+ notes that demanding limits for *all* (proper-class-sized) diagrams “is too
+ strong to be practically relevant” — such a C would be forced to be thin. The
  definitions below quantify over [∀ (D : Category)] without an explicit
  smallness hypothesis; the size discipline is instead carried implicitly by
  the library's universe polymorphism. When [Complete]/[Cocomplete] are
  instantiated, the universe levels of D become constrained relative to those
- of C, which is the universe-polymorphic stand-in for "D small relative to C".
- So these state "has a limit for every (suitably small) diagram" rather than
+ of C, which is the universe-polymorphic stand-in for “D small relative to C”.
+ So these state “has a limit for every (suitably small) diagram” rather than
  the inconsistent all-diagrams reading. The morphism-level equality is the
  setoid [≈] of C, supplied inside [Limit]/[Cone]; it does not appear here. 
 
@@ -53,7 +53,7 @@ Generalizable All Variables.
 
  nLab:  https://ncatlab.org/nlab/show/complete+small+category
  nLab:  https://ncatlab.org/nlab/show/adjoint+functor+theorem
- Paper: Hyland, "A small complete category", Annals of Pure and Applied
+ Paper: Hyland, “A small complete category”, Annals of Pure and Applied
  Logic 40, 1988
 
  [Complete] is the blanket limit hypothesis: rather than checking, per
@@ -68,9 +68,9 @@ Generalizable All Variables.
  is how Set, Top, Grp, Ab, and module categories are shown complete,
  and the property propagates: presheaf categories inherit all small
  limits (Instance/Fun/Limit.v's [Presheaf_Complete]) and colimits (nLab,
- "category of presheaves") from Sets, and monadic functors create limits, so
+ “category of presheaves”) from Sets, and monadic functors create limits, so
  algebras for a monad on a complete category are again complete (nLab,
- "complete category").  The reduction is Structure/Limit/FromProducts.v's
+ “complete category”).  The reduction is Structure/Limit/FromProducts.v's
  [Complete_from_products_equalizers] over [HasIndexedProducts] and
  [HasEqualizers], each limit the equalizer [limit_of_products_equalizer].
 
@@ -90,7 +90,7 @@ Generalizable All Variables.
 
  Completeness is one of the engine hypotheses of the adjoint functor
  theorems, which originate in the same exercise section of Freyd's book
- (nLab, "adjoint functor theorem"; the solution-set condition is called
+ (nLab, “adjoint functor theorem”; the solution-set condition is called
  pre-adjointness in Freyd–Scedrov, Categories, Allegories, 1990).  GAFT
  concludes a left adjoint from a limit-preserving functor out of a
  complete, locally small category with a solution set; SAFT trades
@@ -115,7 +115,7 @@ Generalizable All Variables.
  ([adamek_cocomplete]).  Finally, Freyd's collapse is essentially
  classical.  Hyland exhibited, inside the effective topos, a complete
  small category that is not a preorder, built from partial equivalence
- relations (Hyland, "A small complete category", 1988), so the thinness
+ relations (Hyland, “A small complete category”, 1988), so the thinness
  theorem cannot be proved constructively — which is why Freyd.v takes
  the decider [DecHom] as an explicit hypothesis and stays axiom-free;
  its [freyd_no_separated_pair] is the constructive kernel.  The stake is
@@ -160,8 +160,8 @@ Generalizable All Variables.
  A [Prop]-valued relation on a carrier in [Type@{u}] is itself a type
  in [Type@{u}].  A [Type]-valued one is NOT: ascribing the same space
  at the carrier's own level ([CRelSpace_small], Test/ProbePropEquiv.v:
- 310) is refused, "The term "A → A → Type" has type "Type@{u+1}" while
- it is expected to have type "Type@{u}"".
+ 310) is refused, “The term ”A → A → Type“ has type ”Type@{u+1}“ while
+ it is expected to have type ”Type@{u}“”.
 
  This library's `≈` is [Type]-valued -- [equiv : crelation A],
  Lib/Setoid.v -- and stays so, because in [Cat] an [F ≈ G] IS a
@@ -215,13 +215,13 @@ Generalizable All Variables.
  [Type]-sorted goal (refused even when `≈` is [eq], because the sort
  of [equiv x y] is judged from the declared type of [equiv] --
  Test/ProbePropEquiv.v); propositional resizing (the index is not
- an hProp, and the core is axiom-free); and an index-free "large
- completeness" ([RMod@{u}] has no object-indexed products at its own
+ an hProp, and the core is axiom-free); and an index-free “large
+ completeness” ([RMod@{u}] has no object-indexed products at its own
  universe).  The surviving in-tree refusal is recorded verbatim in
  Instance/Mod/TensorAFT.v and pinned in Test/ProbeModTensorAFT449.v.
 
- SEPARATELY, and now HISTORY: until the PR "algebraic carriers are
- sets" (2026-09-17) a literal [Set] appeared in these signatures as
+ SEPARATELY, and now HISTORY: until the PR “algebraic carriers are
+ sets” (2026-09-17) a literal [Set] appeared in these signatures as
  well.  It was a universe-minimization artifact of the unannotated
  [DiscreteCat_Functor] (Instance/Discrete.v), not part of the size
  condition; annotating that donor removed every such [Set] and, as
@@ -241,17 +241,17 @@ Generalizable All Variables.
  Instance/Rng/AFT.v (the free ring over Sets and over Ab) and
  Instance/Grp/FreeAFT.v (the free group), which obtain their objects
  from [representability_theorem] / [GAFT] with no hypothesis beyond
- the ring or the setoid.  Mac Lane's Lemma V.7.2 -- "the spanning
- codomains are quotients of the term module, hence a set" -- becomes
+ the ring or the setoid.  Mac Lane's Lemma V.7.2 -- “the spanning
+ codomains are quotients of the term module, hence a set” -- becomes
  [SmallUpToIso] of the spanning family (Adjunction/GAFT/Resize.v, with
  [SmallType] in Theory/Size.v), proved through the congruence index.
 
  WHAT IS IN TREE: all of it.  An earlier revision of this paragraph
- was headed "WHAT IS ALREADY IN TREE AS THIS BLOCK IS WRITTEN" and
+ was headed “WHAT IS ALREADY IN TREE AS THIS BLOCK IS WRITTEN” and
  listed the [PropEquiv] class, its transports, Test/ProbePropEquiv.v
- and the universe hygiene of item 2, saying that "the object records
+ and the universe hygiene of item 2, saying that “the object records
  of the algebraic categories, the unconditional tensor and free group,
- and [SmallUpToIso] land in later commits of the same PR" and that a
+ and [SmallUpToIso] land in later commits of the same PR” and that a
  reader who found one of those missing should read this item as the
  plan it was.  Those commits landed, and the item is now measured
  throughout rather than planned.  Concretely: the class and its
@@ -268,8 +268,8 @@ Generalizable All Variables.
  Theory/Size.v; and the applications named above are
  unconditional, with Mac Lane's own spanning family proved small up
  to isomorphism at Instance/Mod/TensorAFT.v and fed to the
- theorem.  Every constant of that work is reported "Closed
- under the global context" and gated.
+ theorem.  Every constant of that work is reported “Closed
+ under the global context” and gated.
 
  WHAT IS STILL NOT IN TREE, so that this item is not read as more
  than it is: a solution set indexed by a Sigma over the OBJECTS of a
@@ -326,7 +326,7 @@ Generalizable All Variables.
  condition is again [Set] < carrier and again [GAFT]'s: in a copy of
  that file, at a ring whose carrier universe is [Set],
  [Diagonal_RMod_solution_set] elaborates and [RMod_colim_via_GAFT] is
- refused, "Cannot enforce Set = … because Set < …" (that file's
+ refused, “Cannot enforce Set = … because Set < …” (that file's
  UNIVERSES section, where the same refusal is quoted).
 
  SCOPE, because the property is deliberately narrow: [PropEquiv] is a
@@ -346,7 +346,7 @@ Generalizable All Variables.
  CRelSpace@{u v}    : Type@{u} → Type@{v}     u < v
  Setoid@{u u} A     : Type@{u+1}，比承载类型高一级
 
- 一个 [Prop] 值的关系在 [Type@{u}] 中的承载上本身就是 [Type@{u}] 中的一个类型。一个 [Type] 值的则不是：在承载自身的层级（[CRelSpace_small]，Test/ProbePropEquiv.v: 310）上指定相同的空间会被拒绝，"项 'A → A → Type' 的类型为 'Type@{u+1}'，而期望类型为 'Type@{u}'".该库的 `≈` 是 [Type] 值类型 -- [equiv : crelation A]，
+ 一个 [Prop] 值的关系在 [Type@{u}] 中的承载上本身就是 [Type@{u}] 中的一个类型。一个 [Type] 值的则不是：在承载自身的层级（[CRelSpace_small]，Test/ProbePropEquiv.v: 310）上指定相同的空间会被拒绝，“项 'A → A → Type' 的类型为 'Type@{u+1}'，而期望类型为 'Type@{u}'”.该库的 `≈` 是 [Type] 值类型 -- [equiv : crelation A]，
  Lib/Setoid.v -- 并保持如此，因为在 [Cat] 中，[F ≈ G] 是一个同构族（Theory/Functor.v, [Functor_Setoid]）：
  数据，其截断将被丢弃。结果：对于一个其 `≈` 为 [Type] 值类型的集合对象，其载体上的同余关系 -- 以及术语模型的商表示族，也就是 Mac Lane §V.7 的解集论证所产生的内容 -- 形成一个位于该载体之上的类型一宇宙。
 
@@ -387,7 +387,7 @@ Generalizable All Variables.
  ( * r so h o |= so <= r / h <= r * )
 
  -- and, since Instance/Discrete.v's [DiscreteCat_Functor] was
- annotated in the PR "algebraic carriers are sets" (2026-09-17), with no
+ annotated in the PR “algebraic carriers are sets” (2026-09-17), with no
  literal [Set] in it.  An earlier revision of this file's consumers
  quoted [Complete@{Set Set Set u}] and [Complete@{u0 u0 Set u2}]; those
  [Set]s were a universe-minimization artifact of that donor and are

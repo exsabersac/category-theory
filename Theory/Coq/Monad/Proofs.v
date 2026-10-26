@@ -31,7 +31,7 @@ nLab: https://ncatlab.org/nlab/show/monad
    [EndoMonad_Monad] builds the bind/return [Monad F] from a categorical monad
    on the endofunctor [F], using the standard [bind m f = μ (fmap f m)]
    (Wikipedia: [ma >>= f ↔ (join ∘ map f) ma]).  [IsMonad H A m] is the
-   predicate "this [ret]/[bind] arises from such a lawful categorical monad",
+   predicate “this [ret]/[bind] arises from such a lawful categorical monad”,
    and [Identity_IsMonad], [arrow_IsMonad] and [Compose_IsMonad] establish
    lawfulness of the identity, reader and composite monad instances by
    exhibiting that structure.  As in the rest of the applied layer, these
@@ -98,7 +98,7 @@ Context `(AG : @Functor.Applicative.Applicative _ _ (FromAFunctor HG)).
 
 (*
 This is the essential condition, as explained by Mark P. Jones and Luc
-   Duponcheel in their article "Composing monads", Research Report
+   Duponcheel in their article “Composing monads”, Research Report
    YALEU/DCS/RR-1004, December 1993.
 
 --------

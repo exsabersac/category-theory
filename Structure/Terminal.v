@@ -11,7 +11,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
  A terminal object `1` in a category C is an object such that for every
- object `x` there is exactly one morphism `! : x ~> 1`. "Exactly one" splits
+ object `x` there is exactly one morphism `! : x ~> 1`. “Exactly one” splits
  into existence (the morphism [one]) and uniqueness (any two morphisms into
  `1` agree under `≈`, the law [one_unique]). Equivalently, every hom-setoid
  `x ~> 1` is contractible (a singleton up to `≈`). A terminal object is the
@@ -33,17 +33,17 @@ Generalizable All Variables.
 
  nLab:  https://ncatlab.org/nlab/show/global+element
  nLab:  https://ncatlab.org/nlab/show/unit+type
- Paper: Samuel, "On universal mappings and free topological groups",
+ Paper: Samuel, “On universal mappings and free topological groups”,
  Bulletin of the AMS 54(6), 1948
- Paper: Mac Lane, "Duality for groups", Bulletin of the AMS 56, 1950
- Paper: Lawvere, "An elementary theory of the category of sets",
+ Paper: Mac Lane, “Duality for groups”, Bulletin of the AMS 56, 1950
+ Paper: Lawvere, “An elementary theory of the category of sets”,
  PNAS 52, 1964
 
  The terminal object is the simplest universal property.  Universal
  mapping properties enter mathematics with Samuel (1948), whose
  treatment of free topological groups the Bourbaki group then extended
  to free groups, tensor products and limits (the history is traced in
- Dubuc, "Categorías. Los 30 primeros años", arXiv:1404.6240, 2014);
+ Dubuc, “Categorías. Los 30 primeros años”, arXiv:1404.6240, 2014);
  terminality is the nullary, degenerate case, a universal property with
  no auxiliary data whatsoever.  It follows that the contractibility of
  each hom-setoid `x ~> 1` is the prototype for every
@@ -61,36 +61,36 @@ Generalizable All Variables.
  header's remark that `1` is the limit of the empty diagram is proved
  in both directions as [Terminal_Limit] in Structure/Limit/Terminal.v;
  conversely, a limit of any diagram is precisely a terminal object in
- its category of cones (Wikipedia, "Initial and terminal objects");
+ its category of cones (Wikipedia, “Initial and terminal objects”);
  [Limit_Cones] in Instance/Cones/Limit.v builds the limit from the
  terminal cone.  Even GAFT bottoms out here: Theory/WeaklyInitial.v
  builds its initial object as a [Build_Terminal] on the opposite
  category.
 
- The purpose the definition serves is to say "element" without
+ The purpose the definition serves is to say “element” without
  mentioning elements.  A morphism `1 ~> x` is a global element of `x`
  — in the nLab's phrasing, a generalized element at stage of definition
  `1`: in Set it picks out an ordinary element, in Cat a functor from
  the terminal category singles out an object, and in a topos a global
- element of the subobject classifier is a truth value (nLab, "global
- element").  Lawvere's elementary theory of the category of sets
+ element of the subobject classifier is a truth value (nLab, “global
+ element”).  Lawvere's elementary theory of the category of sets
  (1964) rests on this reading: its categories are well-pointed,
  meaning `1` is a generator — two morphisms `a ~> b` agreeing on every
- global element of `a` already satisfy ≈ (nLab, "well-pointed topos").
+ global element of `a` already satisfy ≈ (nLab, “well-pointed topos”).
  In this library the reading surfaces as [truth : 1 ~> Ω] in
  Structure/SubobjectClassifier.v and as the [Constant] class of
  Structure/Constant.v, a family of global elements embedding the
  values of a Coq type.
 
  Computationally, `1` is the unit type.  The nLab's unit-type article
- aligns the proposition "true", the singleton set, the terminal object
+ aligns the proposition “true”, the singleton set, the terminal object
  and the unit type in a single row, the unit type being contractible
  exactly as the header describes the hom-setoids here.  In a category
  of types and pure functions there is one and only one function from
  any type to the unit type; Milewski's Bool counterexample — two
  distinct constant functions into Bool exist, so Bool is not terminal —
  shows the uniqueness half of the definition carrying all the weight
- (Milewski, "Products and Coproducts", 2015).  The computable witnesses
+ (Milewski, “Products and Coproducts”, 2015).  The computable witnesses
  are [Coq_Terminal] in Instance/Coq.v and [Sets_Terminal] in
  Instance/Sets.v; [const] below factors any constant map through `1`.
 
@@ -98,13 +98,13 @@ Generalizable All Variables.
  discard map and terminality becomes a causality principle.  Coecke
  and Lal define a causal category as a symmetric, partially monoidal
  category whose unit is terminal, and show that classical or quantum
- correlations force that terminality (Coecke, Lal, "Causal categories:
- relativistically interacting processes", Foundations of Physics 43,
+ correlations force that terminality (Coecke, Lal, “Causal categories:
+ relativistically interacting processes”, Foundations of Physics 43,
  2013); Kissinger, Hoban and Coecke state the principle as process
  terminality — when the output of a process is discarded, the process
  itself may as well be discarded — and prove it equivalent to
- relativistic causal structure (Kissinger, Hoban, Coecke, "Equivalence
- of relativistic causal structure and process terminality", 2017).
+ relativistic causal structure (Kissinger, Hoban, Coecke, “Equivalence
+ of relativistic causal structure and process terminality”, 2017).
  Concretely: probability distributions are normalized, quantum
  channels preserve trace, and [one_comp] is the slogan's algebraic
  kernel — discarding after computing is just discarding.
@@ -140,8 +140,8 @@ Generalizable All Variables.
       - one_unique : 任意 f,g : x ~> 1 都有 f ≈ g（唯一性）
         / any two arrows into 1 are ≈
 
-   4) 记号：Notation "1" := terminal_obj。读代码时 1 就是终对象。
-      Notation "1" names the terminal object.
+   4) 记号：Notation “1” := terminal_obj。读代码时 1 就是终对象。
+      Notation “1” names the terminal object.
 
    阅读顺序：terminal_obj → one → one_unique → terminal_unique（同构唯一性）。
    Read: terminal_obj → one → one_unique → uniqueness up to iso.
@@ -172,7 +172,7 @@ Notation "one[ C ]" := (@one _ _ C)
   (at level 9, format "one[ C ]") : morphism_scope.
 
 (*
- A "constant" map `x ~> y` factoring through `1`: pick `f : 1 ~> y`, then
+ A “constant” map `x ~> y` factoring through `1`: pick `f : 1 ~> y`, then
  precompose with `! : x ~> 1`, so the result ignores its argument's data. 
 
  --------
@@ -188,7 +188,7 @@ Definition const `{@Terminal C} {x y : C} {f : 1 ~> y} := f ∘ one[x].
  canonically isomorphic. Each supplies the unique arrow into the other's
  object, and both round trips are arrows into a terminal object, so
  [one_unique] identifies them with the identity. This is the sense in which
- "the" terminal object is well defined, and it is what licenses the informal
+ “the” terminal object is well defined, and it is what licenses the informal
  practice of speaking of *the* object `1`. 
 
  --------
@@ -208,7 +208,7 @@ Next Obligation. apply (@one_unique C T1). Qed.
  The isomorphism above is moreover the ONLY one, and indeed the only arrow
  at all between the two objects: every arrow into a terminal object is
  already pinned down by [one_unique]. Mac Lane states uniqueness of the
- object "up to a unique isomorphism"; this corollary is the "unique" half,
+ object “up to a unique isomorphism”; this corollary is the “unique” half,
  and it makes [terminal_unique] canonical rather than merely one choice. 
 
  --------
@@ -224,8 +224,8 @@ Proof. apply (@one_unique C T2). Qed.
  universal property; when the object is already fixed -- as it is when
  terminality is used as a PREDICATE, e.g. to span a subcategory or to
  transport along an isomorphism -- the choice gets in the way.  Stated
- with [Unique] (Lib/Setoid.v), "there is exactly one arrow x ~> c" is
- literally "the hom-setoid x ~> c is contractible", the phrasing of the
+ with [Unique] (Lib/Setoid.v), “there is exactly one arrow x ~> c” is
+ literally “the hom-setoid x ~> c is contractible”, the phrasing of the
  header of this file.  [Terminal_from_IsTerminalObj] and
  [IsTerminalObj_from_Terminal] convert in both directions, the latter
  landing on [terminal_obj] definitionally. 
@@ -292,7 +292,7 @@ Next Obligation.
 Qed.
 
 (*
- Seven Sketches, Remark 3.85 ("unique up to unique isomorphism"), packaged as
+ Seven Sketches, Remark 3.85 (“unique up to unique isomorphism”), packaged as
  a single result rather than an existence lemma plus a separate appeal to
  [terminal_arrow_unique].
 
@@ -301,7 +301,7 @@ Qed.
  `from` component.  So the three fields say, in order: such an isomorphism
  exists; the trivial predicate holds of it; and every isomorphism between
  the two objects is equal to it, in both directions.  Together that is
- exactly "there is exactly one isomorphism 1₁ ≅ 1₂" -- the predicate is
+ exactly “there is exactly one isomorphism 1₁ ≅ 1₂” -- the predicate is
  [True] precisely so that the uniqueness clause quantifies over ALL
  isomorphisms and not merely over those satisfying some side condition. 
 

@@ -34,15 +34,15 @@ Generalizable All Variables.
  _CoqProject requires Category.Lib.  So grading on [Fin.t n] and
  substituting along an ARBITRARY [Fin.t m → Fin.t n] adds no [Require].
  Instance/FinSet.v is built on exactly this shape, which is to say
- the tree's own [FinSet] already IS "arbitrary maps between finite
- arities".
+ the tree's own [FinSet] already IS “arbitrary maps between finite
+ arities”.
 
  ** Substitution is the free-algebra universal property, not a new
  recursion
 
  [clone_subst] is [induced_map] at the free algebra on the target
- arity.  That makes HALF of the issue's phrase "recovering
- [induced_hom] / [from_free_unique] as the free-algebra instance"
+ arity.  That makes HALF of the issue's phrase “recovering
+ [induced_hom] / [from_free_unique] as the free-algebra instance”
  literally true rather than a remark: substitution IS the induced
  homomorphism's underlying map, and renaming is substitution by
  variables.  The other half is NOT delivered and an audit was right to
@@ -83,7 +83,7 @@ Generalizable All Variables.
  No setoid on [Tree] itself — the cure Instance/Comp.v proposes.
  AN EARLIER REVISION OF THIS PARAGRAPH GAVE A REASON THAT IS WRONG, and
  it is corrected here rather than quietly dropped.  It said such a
- congruence "risks pulling in [Eqdep]/[JMeq_eq]", because transitivity
+ congruence “risks pulling in [Eqdep]/[JMeq_eq]”, because transitivity
  would have to invert [tree_equiv (node o k) (node o' k')] and so want
  injectivity of [existT] on an [operation S] with no decidable
  equality.  Measured: there is no such risk.  Making symmetry and
@@ -96,7 +96,7 @@ Generalizable All Variables.
  congruence of exactly the kind described, is [Prop]-valued since #450
  ([About tree_equiv] ends in [→ Prop]), and a [crelation] field accepts a
  [Prop]-valued relation by cumulativity; Free.v's CORRECTION (#450)
- under "The congruence on terms is axiom-free" gives the account.
+ under “The congruence on terms is axiom-free” gives the account.
 
  The honest reason it is absent is simply that this file does not need
  it: what the clone's unique-extension theorem needs is a setoid on the
@@ -153,7 +153,7 @@ Definition clone_op {n} (o : UA.operation S)
   (args : UA.arity o → DerivedOperators n) : DerivedOperators n :=
   UA.node S (Fin.t n) o args.
 
-(* * ** Closure under substitution, along an ARBITRARY map of arities [clone_subst] is Instance/Comp.v's [induced_map] at the free algebra on [Fin.t n]; [clone_rename] is substitution by variables, and it is where "arbitrary function between finite arities" — duplication and deletion included, not merely a braid — enters. / * ** 在替换下的封闭性，沿着任意的元数映射 [clone_subst] 是 Instance/Comp.v 中的 [induced_map] 在 [Fin.t n] 自由代数上的实例；[clone_rename] 是变量的替换，并且它是“有限元数之间的任意函数” — 包括复制和删除，而不仅仅是编排 — 的应用场所。 *)
+(* * ** Closure under substitution, along an ARBITRARY map of arities [clone_subst] is Instance/Comp.v's [induced_map] at the free algebra on [Fin.t n]; [clone_rename] is substitution by variables, and it is where “arbitrary function between finite arities” — duplication and deletion included, not merely a braid — enters. / * ** 在替换下的封闭性，沿着任意的元数映射 [clone_subst] 是 Instance/Comp.v 中的 [induced_map] 在 [Fin.t n] 自由代数上的实例；[clone_rename] 是变量的替换，并且它是“有限元数之间的任意函数” — 包括复制和删除，而不仅仅是编排 — 的应用场所。 *)
 
 Definition clone_subst {m n} (s : Fin.t m → DerivedOperators n)
   : DerivedOperators m → DerivedOperators n :=

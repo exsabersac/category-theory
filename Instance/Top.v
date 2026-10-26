@@ -13,13 +13,13 @@ Generalizable All Variables.
 (* * * The category of topological spaces / * * 拓扑空间的范畴 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.7,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.7,
  printed p. 25
  nLab:      https://ncatlab.org/nlab/show/Top
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_topological_spaces
- Book:      Fong and Spivak, "Seven Sketches in Compositionality",
+ Book:      Fong and Spivak, “Seven Sketches in Compositionality”,
  §7.3.2, Definition 7.25 (open covers)
- Book:      Riehl, "Category Theory in Context", Examples 1.3.14(iv)
+ Book:      Riehl, “Category Theory in Context”, Examples 1.3.14(iv)
  and 1.4.4(v)
 
  This is the category [Top]. Mac Lane's roll-call of the standard large
@@ -30,7 +30,7 @@ Generalizable All Variables.
  the subspace and quotient topologies are limits and colimits, the
  product topology is the categorical product, and the initial and final
  topologies are those (co)limit constructions read as universal
- properties.  CORRECTION (#457): "none of it formalized here" holds of
+ properties.  CORRECTION (#457): “none of it formalized here” holds of
  this file only, and was already untrue of the library before #457
  (the quotient topologies inside Instance/Top/Pushout.v's pushouts and
  Instance/Top/Wedge.v's wedges, Instance/Top/Coproduct.v's coproducts,
@@ -88,9 +88,9 @@ Generalizable All Variables.
 
  nLab:      https://ncatlab.org/nlab/show/locale
  nLab:      https://ncatlab.org/nlab/show/constructive+mathematics
- Book:      Johnstone, "Stone Spaces", CUP 1982 (the locale/space
+ Book:      Johnstone, “Stone Spaces”, CUP 1982 (the locale/space
  adjunction and the pointfree tradition)
- Book:      Bishop, "Foundations of Constructive Analysis", McGraw-Hill
+ Book:      Bishop, “Foundations of Constructive Analysis”, McGraw-Hill
  1967 (the setoid discipline this file inherits)
 
  Four decisions govern the encoding below, and each is forced by the
@@ -124,7 +124,7 @@ Generalizable All Variables.
  hom-sets of [Top] live at `o+1`, which is the declared constraint
  `o < h` on [ContinuousMorphism_equiv] below.  Because all of this is
  universe-polymorphic, [Top] exists at every level rather than needing
- a chosen "universe of small sets".
+ a chosen “universe of small sets”.
 
  3. THE AXIOMS ARE STATED IN THEIR TYPE-VALUED FORM.  The union axiom
  quantifies over an arbitrary index TYPE and forms the dependent sum
@@ -142,7 +142,7 @@ Generalizable All Variables.
  lemma that does the most work downstream — the union over the index
  type `P` of copies of the whole space gives [open_const]: EVERY
  constant predicate is open, in every space.  Its corollary
- [open_uniform] says every "uniform" predicate (one that holds at a
+ [open_uniform] says every “uniform” predicate (one that holds at a
  point as soon as it holds anywhere) is open.  This is the
  constructive replacement for the classical remark that `∅` and `X`
  are open in every topology: constructively there are many more
@@ -153,7 +153,7 @@ Generalizable All Variables.
 
  What is deliberately NOT attempted here: the pointfree turn.  A
  constructive analyst usually prefers locales (frames of opens with no
- points at all — Johnstone, "Stone Spaces"), precisely because the
+ points at all — Johnstone, “Stone Spaces”), precisely because the
  point-set axioms above behave badly without excluded middle.  This
  file stays point-set because the work order is Mac Lane's `Top`, and
  because the point-set encoding is what supports the mono/epi
@@ -169,7 +169,7 @@ Generalizable All Variables.
 
  以下编码由四个决定支配，每一个都是由周围库迫使的，而不是出于个人喜好选择的。1. 点是一个集合类。对象携带一个点的 [SetoidObject]，而不是一个裸类型：这与 Bishop 集合规范相同，使得 Instance/Sets.v 成为库中 Set 的替代品。一个结果是，一个开集必须是一个尊重 `≈` 的谓词；字段 [open_proper] 正好要求这一点，因此拓扑不能区分载体自身的等式已经识别的两个点。2. 开集是谓词上的谓词，因此属于比一个宇宙更高一级的类型。一个拓扑是幂集的子集，因此 [IsOpen] 的类型是 `(carrier → Type) → Type`：它对载体上的谓词进行量化，因此严格地位于点的宇宙之上。这与 Theory/Subobject/Functor.v 对其 Set 值预层 `Sub : C^op ⟶ Sets` 的放置相同——一个子对象格是基于 Hom 的对象上的幂集大小对象——以及同样的尺寸现象，使得 Instance/Sets.v 的 [surjectivity_is_epic] 真值值对象无法归入 Sets，并将分类器定理限制在 Instance/Sets/Classifier.v 中。具体来说，该记录被声明为 [TopSpace@{o}]：点，它们的等式，一个开放谓词的值，一个联合的索引类型以及开放性证明，都位于 `Type@{o}`，遵循 Instance/Sets.v 的 `SetoidObject@{o o}` 规范——因此 [TopSpace@{o}] 本身位于 `Type@{o+1}`，[IsOpen] 字段对承载（carrier）上的谓词 `Type@{o+1}` 进行了量化（记录位于其最大字段类型的层级，而不是其上方）。这个上升在之后的一步再次显现：[Continuous] 对陪域的开集进行了量化，因此 [Top] 的同态集合位于 `o+1`，这正是下面对 [ContinuousMorphism_equiv] 声明的约束 `o < h`。因为这一切都是宇宙多态的，[Top] 存在于每一个层级，而不需要选择一个“小集合的宇宙”。3. 公理以其类型值形式陈述。并集公理对任意索引类型进行量化，并形成依赖和 `{ i : I & U i x }` —— `⋃ᵢ Uᵢ` 的构造性表述，其中并集的一个元素携带证明成员资格的索引。二元交集是积 `U x ∧ V x`，而整个空间是常量谓词 [poly_unit]。由于谓词的 `≈`-等式是逐点 `↔`（库的 [iffT]）而不是 Rocq 的 `=`，所以仅闭合于并集是不够的：[open_respects] 记录了开集在逐点等价下保持不变，这使得并集公理可以应用于重新索引。4. 空开集和常量是定理，而不是公理。对空索引类型的并集给出了空开集，而 —— 下游工作量最大的引理 —— 对索引类型 `P` 的整个空间副本的并集给出了 [open_const]：每个常量谓词在每个空间中都是开集。其推论 [open_uniform] 表明每个“均匀”谓词（也就是说，只要在某处成立，它在该点就成立）也是开集的。这是对经典命题的构造性替代：经典命题指出 `∅` 和 `X` 在每个拓扑中都是开集；在构造性观点下，有许多谓词无法与 `∅` 或 `X` 区分开来，并且它们全部必须是开集。正是这种特性使得单点空间成为终空间 (§  [Top_Terminal])，并且每个映射到不分离空间的映射都是连续的 (§  [into_indiscrete_continuous])。
 
- 这里故意没有尝试的：无点（pointfree）方法。构造分析学家通常更喜欢使用局域（完全开集的框架，完全没有点——Johnstone, "Stone Spaces"），正因为在没有排中律的情况下，上述点集公理会表现不良。该文件保持点集方法，因为工作顺序是 Mac Lane 的 `Top`，并且因为点集编码支持下面的单/满同态特征描述。
+ 这里故意没有尝试的：无点（pointfree）方法。构造分析学家通常更喜欢使用局域（完全开集的框架，完全没有点——Johnstone, “Stone Spaces”），正因为在没有排中律的情况下，上述点集公理会表现不良。该文件保持点集方法，因为工作顺序是 Mac Lane 的 `Top`，并且因为点集编码支持下面的单/满同态特征描述。
 *)
 
 (** ** Spaces *)
@@ -217,7 +217,7 @@ Record TopSpace@{o} := {
  Every constant predicate is open.  Proof: the union, indexed by the type
  [P] itself, of `P`-many copies of the whole space is pointwise equivalent
  to the constant predicate `P` — the witness of membership IS an element
- of `P`.  Classically this says no more than "∅ and X are open"; here it
+ of `P`.  Classically this says no more than “∅ and X are open”; here it
  is the engine behind terminality of the point and the continuity of every
  map into an indiscrete space. 
 
@@ -239,10 +239,10 @@ Corollary open_empty (X : TopSpace) : IsOpen X (fun _ => False).
 Proof. exact (open_const X False). Qed.
 
 (*
- A predicate is "uniform" when it holds at every point as soon as it holds
+ A predicate is “uniform” when it holds at every point as soon as it holds
  at some point.  Every uniform predicate is open, being pointwise
- equivalent to the constant predicate "this predicate is inhabited
- somewhere".  Classically the uniform predicates are just ∅ and X;
+ equivalent to the constant predicate “this predicate is inhabited
+ somewhere”.  Classically the uniform predicates are just ∅ and X;
  constructively they are the whole of the coarsest topology, and this
  lemma says that topology is contained in every other one. 
 
@@ -722,7 +722,7 @@ Qed.
  Given f : X ~> Y, glue two copies of Y along the image of f: the carrier
  is `Y + Y`, and the two copies are identified EXACTLY over the image.
  No inductive closure of a generating relation is needed — the relation
- below is already transitive, because "lies in the image" transports
+ below is already transitive, because “lies in the image” transports
  along `≈` ([InImage_respects]).  A predicate is open when it respects
  the gluing and both of its restrictions along the two legs are open in
  Y.  The two legs then agree after f, so an epi f forces the legs to be
@@ -1048,7 +1048,7 @@ End IndiscreteProbe.
 (** ** Open covers / ** 打开盖子 *)
 
 (*
- Fong and Spivak, "Seven Sketches in Compositionality", §7.3.2,
+ Fong and Spivak, “Seven Sketches in Compositionality”, §7.3.2,
  Definition 7.25: a family of opens covers a set when the set is the union
  of the family.  Stated here at the level of predicates: the covered
  predicate is pointwise equivalent to the union of the family, and every
@@ -1094,7 +1094,7 @@ Defined.
 
 (*
  Hausdorff (T2): distinct points are separated by disjoint opens.  This is
- the literal classical separation axiom, with "distinct" rendered as
+ the literal classical separation axiom, with “distinct” rendered as
  `¬ (x ≈ y)` (apartness in the carrier's own equality) and the existential
  as a Σ-type carrying the two chosen opens.  A constructive topologist
  would usually prefer a positive apartness relation; that refinement is

@@ -10,36 +10,36 @@ Generalizable All Variables.
 (** * Morphisms of monads, and the category of monads on C  / * 单子的态射以及 C 上单子的范畴*)
 
 (*
-Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
          Springer GTM 5, 1998, §VI.2 Exercise 3(a), printed p. 142
          (PDF p. 151) — maclane:VI.2:ex3; with §VI.1, printed pp. 138-139
          (PDF pp. 147-148), and §VII.3, printed p. 171 (PDF p. 179)
-   nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
-         monads")
-   Paper: Eilenberg, Moore, "Adjoint functors and triples", Illinois
+   nLab: https://ncatlab.org/nlab/show/monad (section “The 2-category of
+         monads”)
+   Paper: Eilenberg, Moore, “Adjoint functors and triples”, Illinois
           Journal of Mathematics 9(3), 1965
-   Paper: Street, "The formal theory of monads", Journal of Pure and
+   Paper: Street, “The formal theory of monads”, Journal of Pure and
           Applied Algebra 2(2), 1972, pp. 149-168
 
-   WHAT THE BOOK ASKS.  Exercise 3(a), read from the page image: "For
+   WHAT THE BOOK ASKS.  Exercise 3(a), read from the page image: “For
    monads ⟨T, η, μ⟩ and ⟨T', η', μ'⟩ on X, define a morphism θ of monads
    as a suitable natural transformation θ : T ⇝ T', and construct the
-   category of all monads in X."  Part (b), the functor θ* between the
+   category of all monads in X.”  Part (b), the functor θ* between the
    categories of algebras, is Monad/Morphism/Algebra.v.  The exercise
-   repeats a request of §VI.1, which ends on p. 139 with "We leave the
+   repeats a request of §VI.1, which ends on p. 139 with “We leave the
    reader to describe a morphism ⟨T, μ, η⟩ → ⟨T', μ', η'⟩ of monads (a
    suitable natural transformation T ⇝ T') and the category of all
-   monads in a given category X."
+   monads in a given category X.”
 
-   MAC LANE'S OWN ANSWER.  Two other pages settle what "suitable" and
-   "the category of all monads" mean for him.  On p. 138: "All told, a
+   MAC LANE'S OWN ANSWER.  Two other pages settle what “suitable” and
+   “the category of all monads” mean for him.  On p. 138: “All told, a
    monad in X is just a monoid in the category of endofunctors of X, with
    product × replaced by composition of endofunctors and unit set by the
-   identity endofunctor."  In §VII.3, p. 171: "A morphism f : ⟨c, μ, η⟩ →
+   identity endofunctor.”  In §VII.3, p. 171: “A morphism f : ⟨c, μ, η⟩ →
    ⟨c', μ', η'⟩ of monoids is an arrow f : c → c' such that fμ = μ'(f □ f)
    : c □ c → c', fη = η' : e → c'.  With these arrows, the monoids in B
-   constitute a category Mon_B", and the table below it pairs the
-   monoidal category ⟨C^C, ∘, Id⟩ with "Monads (cf. Chapter VI!)".  So
+   constitute a category Mon_B”, and the table below it pairs the
+   monoidal category ⟨C^C, ∘, Id⟩ with “Monads (cf. Chapter VI!)”.  So
    Mac Lane's category of all monads in X is Mon_{X^X}, and a morphism is
    a transformation θ with θ ∘ μ = μ' ∘ (θ □ θ) and θ ∘ η = η', where
    θ □ θ is the horizontal composite of θ with itself.
@@ -47,8 +47,8 @@ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    THIS FILE'S READING.  [MonadHom M M'] is a class over two monads on
    one category C, whose fields are Mac Lane's data and his two
    equations, with ≈ for his =: [mh_transform], a [Transform] T ⟹ T' of
-   Theory/Natural/Transformation.v (the book's "suitable natural
-   transformation"); [mh_ret], θ_x ∘ η_x ≈ η'_x (fη = η'); and
+   Theory/Natural/Transformation.v (the book's “suitable natural
+   transformation”); [mh_ret], θ_x ∘ η_x ≈ η'_x (fη = η'); and
    [mh_join], θ_x ∘ μ_x ≈ μ'_x ∘ (θ_{T'x} ∘ T(θ_x)) (fμ = μ'(f □ f)).
    The factor θ_{T'x} ∘ T(θ_x) is the library's horizontal composite:
    [mh_join_hcompose] shows that it IS the component at x of
@@ -83,15 +83,15 @@ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    Lane's §VI.2 follows them; his book leaves the morphisms to the reader,
    as quoted above.  Street (op. cit.) made monads, and their morphisms,
    2-categorical: a monad in any 2-category K, and a 2-category of monads
-   in K.  nLab's section "The 2-category of monads" gives that
+   in K.  nLab's section “The 2-category of monads” gives that
    definition, cites Street, remarks that the orientation of the
    transformation in a morphism of monads is a convention that authors
-   choose differently, and specializes it, in its example "transformation
-   of monads on a fixed category", to the notion of this file: a natural
+   choose differently, and specializes it, in its example “transformation
+   of monads on a fixed category”, to the notion of this file: a natural
    transformation between the underlying functors of two monads on one
    category, compatible with the units and the multiplications, a special
-   case the page calls "of relevance notably for monads in computer
-   science" (citing Moggi 1989, Def. 4.0.11).  The 2-category itself,
+   case the page calls “of relevance notably for monads in computer
+   science” (citing Moggi 1989, Def. 4.0.11).  The 2-category itself,
    with monads on different categories and 2-cells between morphisms, is
    not built here.
 
@@ -130,8 +130,8 @@ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    [Qed] turned into [Defined] and [Transparent Obligations] set
    (Instance/Sets.v keeping its [Qed]s, where that change is itself
    refused with a universe error), where Theory/Natural/Transformation.v's
-   [nat_compose_obligation_1] reports "is transparent" and in the tree
-   "is opaque": they are not opacity.
+   [nat_compose_obligation_1] reports “is transparent” and in the tree
+   “is opaque”: they are not opacity.
 
    UNIVERSES, read off [About].  [MonadHom@{o h}] over [Category@{o h h}],
    with [Monad@{o h}] at both ends and no constraint; [mh_join_nat],

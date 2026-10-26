@@ -1,12 +1,12 @@
 (*
    * * Partial orders are a full reflective subcategory of all preorders
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    Springer GTM 5, §IV.3, printed p. 92, Exercise 4.  Read from the
-   page image: "4. Show the following subcategories to be
+   page image: “4. Show the following subcategories to be
    reflective: (a) The full subcategory of all partial orders in
    the category Preord of all preorders, with arrows all monotone
-   functions.  (b) The full subcategory of T_0-spaces in Top."
+   functions.  (b) The full subcategory of T_0-spaces in Top.”
    Catalog id: maclane:IV.3:ex4.  This file is half (a); half (b)
    is Instance/Top/Kolmogorov.v, written in parallel.
 

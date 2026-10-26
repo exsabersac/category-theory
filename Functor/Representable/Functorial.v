@@ -20,7 +20,7 @@ Generalizable All Variables.
 (**
 * Taking the representing object, as a functor
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+    Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
           Springer 1998, §III.2, Exercise 1, printed p. 62.
     nLab: https://ncatlab.org/nlab/show/representable+functor
 
@@ -46,14 +46,14 @@ Generalizable All Variables.
     passage in either direction between [IsUniversalProperty] and
     [Representable] anywhere in the tree — before this one the two names
     occurred together in only two files, Structure/UniversalProperty.v (where
-    "representable" is a URL and a paragraph of prose) and
+    “representable” is a URL and a paragraph of prose) and
     Structure/Cartesian/Closed/Adjunction.v
     (a comment, now that it has been amended to point here) — so the
     cross-link is a construction and not a citation, and the absence claim is
     scoped to what was searched: the two class NAMES, over every [.v] file in
     the tree.  It is a short one: [Representable_of_UnivProperty] is a record
     literal, and [UnivProperty_of_Representable] takes the predicate
-    "c represents F" and the identity isomorphism.  With it,
+    “c represents F” and the identity isomorphism.  With it,
     [univ_property_iso_from_is_induced] identifies the backward leg of that
     proposition's isomorphism with [repr_induced] at the identity
     transformation.  The identification factors through [repr_pair_iso]
@@ -99,7 +99,7 @@ Generalizable All Variables.
     - No claim that the passages of (2) are mutually inverse.  They are not
       even composable in general: [Representable_of_UnivProperty] needs a
       point of the predicate, and going the other way replaces the predicate
-      by "c represents F", which is not the predicate one started with.  What
+      by “c represents F”, which is not the predicate one started with.  What
       is proved is that each passage exists and that the τ = id isomorphisms
       agree.
     - No essential-surjectivity or equivalence claim for [ReprObjFunctor].
@@ -115,10 +115,10 @@ Generalizable All Variables.
       instances, so a consumer wanting [FullyFaithful] must supply them by
       name; that follows the header's reason for [Hom_Representable] being a
       [Definition] and keeps resolution unperturbed.
-    - The witness's category is one-object, so "the induced arrow is not an
-      identity" is a statement about an ENDOmorphism.  No witness with two
+    - The witness's category is one-object, so “the induced arrow is not an
+      identity” is a statement about an ENDOmorphism.  No witness with two
       DISTINCT representing objects and a non-identity induced arrow is given
-      here; at distinct objects "is not an identity" is not a well-typed
+      here; at distinct objects “is not an identity” is not a well-typed
       claim, and what would replace it — that the correspondence separates
       transformations — is [ReprObj_Faithful], proved in general.
 
@@ -370,7 +370,7 @@ Context (F : C ⟶ Sets).
 
 (*
 ...and conversely, representability of a FIXED functor is itself a
-   universal property, of the predicate "c represents F".  The equivalence
+   universal property, of the predicate “c represents F”.  The equivalence
    between proofs of the predicate and representations is the identity, which
    is the honest content of the direction: the class [IsUniversalProperty] is
    representability with the predicate left free, so instantiating the

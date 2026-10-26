@@ -19,7 +19,7 @@ Generalizable All Variables.
 (*
    * * A one-sided ideal does not give a quotient ring
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.1
    Exercise 6 (printed p. 59) [maclane:III.1:ex6]: the quotient of a
    ring is taken by a TWO-SIDED ideal.  Instance/Rng/Quotient.v carries
    the construction and explains why both absorption laws are consumed;
@@ -38,7 +38,7 @@ Generalizable All Variables.
 
    READ THE COMPARISON PRECISELY.  An earlier draft of this header said
    the ring statement was stronger in shape because the group side left
-   "and therefore the quotient would not be well defined" to the
+   “and therefore the quotient would not be well defined” to the
    reader.  That was wrong, and an audit caught it: the group side
    ALREADY carries a congruence-level refutation, namely
    Instance/Grp/Congruence.v's [S3_refl_sub_no_congruence] -- at
@@ -160,7 +160,7 @@ Qed.
 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) [lquot_rel] is the
+ Since the PR “algebraic carriers are sets” (2026-09-17) [lquot_rel] is the
  propositional truncation of membership -- truncated in lockstep with
  [rquot_rel], so that [lquot_rel_is_rquot_rel] stays a convertibility -- so
  each witness is wrapped by [constructor] going in and unwrapped by an
@@ -272,7 +272,7 @@ Proof. intros [[b Hb]]; discriminate Hb. Qed.
 
 (*
  It IS commutative, though UT2 is not -- the quotient of a
- non-commutative ring can be commutative, which is why "quotient" here
+ non-commutative ring can be commutative, which is why “quotient” here
  is a genuine construction and not a relabelling.  On the nose: the
  two products differ only in the middle entry, which the ideal
  kills. 

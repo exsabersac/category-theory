@@ -471,7 +471,7 @@ Proof. destruct e1, e2, e3; cat. Qed.
    * *** The strict structural maps as casts, with sliding naturality
 
    In a strict monoidal category the associator and unitors ARE the
-   transported identities; their naturality squares become "slides"
+   transported identities; their naturality squares become “slides”
    that move a cast past a tensor of morphisms. 
 
    --------

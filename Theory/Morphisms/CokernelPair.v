@@ -71,15 +71,15 @@ nLab:      https://ncatlab.org/nlab/show/cokernel+pair
        the tree marks the pinned form.
 
    So the name [IsPushout] was already taken, by the form that CANNOT
-   state "this square is a pushout".  Read the consequence precisely, and
+   state “this square is a pushout”.  Read the consequence precisely, and
    NOT as an expressibility claim: the theorem's STATEMENT was already
    writable with what existed, as [@IsPullback (C^op) y z x f g P i1 i2] —
    which is exactly what [IsPushoutSquare] abbreviates, by [eq_refl] — and
    a file importing only pre-commit modules elaborates it.  What did not
    exist is a NAMED, C-facing apex-pinned pushout predicate with accessors
    and a smart constructor, and the natural name for one was taken.  An
-   earlier draft of this header said the statement was "not expressible
-   with what existed"; that was false and an audit refuted it by compiling
+   earlier draft of this header said the statement was “not expressible
+   with what existed”; that was false and an audit refuted it by compiling
    the pre-existing spelling.  The predicate is called [IsPushoutSquare]
    here; renaming the existing constant was out of scope.
 
@@ -110,7 +110,7 @@ nLab:      https://ncatlab.org/nlab/show/cokernel+pair
    [id_left] and [id_right] exchange roles and — worse — the identity
    written in the STATEMENT elaborates as [@id C y] while the goal's head
    is [@compose (C^op) …], which makes [apply id_left] and
-   [exact (id_right _)] both fail with "Unable to unify C with C^op" even
+   [exact (id_right _)] both fail with “Unable to unify C with C^op” even
    though the terms are convertible: [apply] fixes the category from the
    [id] argument before it reaches the composite.
 
@@ -123,7 +123,7 @@ nLab:      https://ncatlab.org/nlab/show/cokernel+pair
    elaborated against fresh metavariables rather than against the expected
    type, and unification then reads [i1 ∘ f ≈ i2 ∘ g] as a pullback square
    in C with apex [x] — a silently wrong instantiation that surfaces as a
-   confusing "cannot unify" against a goal nobody wrote.  The constructor
+   confusing “cannot unify” against a goal nobody wrote.  The constructor
    must be applied explicitly, [@Build_IsPullback (C^op) y z x f g P i1 i2
    Hcomm Hump].  The same applies to [IsIsomorphism] at C^op, which is why
    [IsIsomorphism_of_op] spells [@Build_IsIsomorphism] out.
@@ -150,8 +150,8 @@ nLab:      https://ncatlab.org/nlab/show/cokernel+pair
    [Constraint uh < up], each of [Epic] (Theory/Morphisms.v),
    [Pullback] (Structure/Pullback.v), [IsPullback]
    (Theory/Morphisms/Stability.v) and [IsPushout] (Structure/Pushout.v) is
-   INDEPENDENTLY rejected, each reporting "universe inconsistency: Cannot
-   enforce vp = vh because vh < vp", while the ambient category and its
+   INDEPENDENTLY rejected, each reporting “universe inconsistency: Cannot
+   enforce vp = vh because vh < vp”, while the ambient category and its
    hom-sets are perfectly formable at that setting.  So [Epic] alone and
    [IsPullback] alone each suffice to force it and nothing in this file
    adds to it; negatives 5-9 and their control pin this, one per donor.
@@ -186,7 +186,7 @@ nLab:      https://ncatlab.org/nlab/show/cokernel+pair
      Epic f ↔ IsIsomorphism (ckp_left P) — with the two-sided inverse
      named ([epic_ckp_left_iso] exhibits it as the mediator of the pair
      (id, id)).  The forward direction is the useful one; the converse
-     holds too and is proved, so "the cokernel pair is trivial" is a
+     holds too and is proved, so “the cokernel pair is trivial” is a
      characterization and not merely a consequence.
 
      [epic_iff_chosen_ckp_trivial] and [epic_iff_chosen_ckp_left_iso] are
@@ -221,7 +221,7 @@ nLab:      https://ncatlab.org/nlab/show/cokernel+pair
    CONVERSION and six FORMABILITY, kept lexically apart — against twelve
    positive controls.  The sharpest is negative 4: it is the structural
    claim above, made machine-checkable by showing that
-   [IsPushout f f y id id] is an "Illegal application" — a TYPING error,
+   [IsPushout f f y id id] is an “Illegal application” — a TYPING error,
    not a universe inconsistency — so the bundled form provably cannot
    state the epimorphism square.
 
@@ -235,7 +235,7 @@ nLab:      https://ncatlab.org/nlab/show/cokernel+pair
    Issue #323 states that `rg 'cokernel.?pair|CokernelPair'` returns 0
    hits.  THAT IS FALSE, and it was false when the issue was written.
    Three genuine cokernel-pair constructions exist, each built to prove
-   "epi ⟹ surjective" in its own category:
+   “epi ⟹ surjective” in its own category:
 
      - Instance/Sets.v, [Section CokernelPair]: [CKSetoid],
        [ck_left], [ck_right], [ck_agree];
@@ -247,7 +247,7 @@ nLab:      https://ncatlab.org/nlab/show/cokernel+pair
    closes — is that NONE of the three is ever related to a pushout.  Each
    supplies an apex, two legs and the equation [u ∘ f ≈ v ∘ f], and stops
    there: no universal property of any of them is proved, the string
-   "pushout" does not occur in Instance/Top.v or Instance/Sets/Pointed.v
+   “pushout” does not occur in Instance/Top.v or Instance/Sets/Pointed.v
    at all, and in Instance/Sets.v it occurs only in an unrelated
    header line.  So three concrete cokernel pairs existed and none of them
    knew it was a pushout.  Instance/Sets/CokernelPair.v repairs that for
@@ -421,7 +421,7 @@ x ---f---> y
  [Pullback]（结构/拉回.v）、[IsPullback]
  (Theory/Morphisms/Stability.v) 和 [IsPushout] (Structure/Pushout.v) 是
  独立拒绝，每个报告“宇宙不一致：不能
- 强制 vp = vh 因为 vh < vp"，而环境范畴及其
+ 强制 vp = vh 因为 vh < vp“，而环境范畴及其
  hom-sets 在该设置下可以完美成型。 所以 [Epic] 单独和
  仅 [IsPullback] 就足以强制执行此操作，此文件中没有任何内容
  添加到它； 底片 5-9 及其对照引脚，每个供体一个。 
@@ -505,7 +505,7 @@ Test/ProbeCokernelPair.v 中总共固定了 9 个负数 - 三个
 问题 #323 指出 `rg 'cokernel.?pair|CokernelPair'` 返回 0
  命中。 这是错误的，在撰写该问题时也是错误的。 
 存在三个真正的 cokernel 对结构，每个结构都是为了证明
- "epi ⟹ 满射" 在其自己的范畴中：
+ ”epi ⟹ 满射“ 在其自己的范畴中：
 
 - 实例/Sets.v，[Section CokernelPair]：[CKSetoid]，
  [ck_left]、[ck_right]、[ck_agree]；

@@ -36,9 +36,9 @@ Generalizable All Variables.
  Kill_f(d)  =  { h : d ~> x  |  f ∘ h ≈ 0 }
 
  of maps into x that f kills, contravariant in d by precomposition
- (nLab, "kernel": "the kernel of f is the representing object of the
+ (nLab, “kernel”: “the kernel of f is the representing object of the
  functor sending d to the set of morphisms h : d → x such that
- f ∘ h = 0").  [kernel_desc] then says exactly that the pair ⟨k, i⟩ --
+ f ∘ h = 0”).  [kernel_desc] then says exactly that the pair ⟨k, i⟩ --
  the kernel object together with its inclusion, which is an ELEMENT of
  Kill_f(k) because f ∘ i ≈ 0 -- is a universal element of that presheaf
  in the sense of Mac Lane's Definition 2 of §III.1 (CWM 2nd ed., p. 57):
@@ -47,7 +47,7 @@ Generalizable All Variables.
 
  This file proves the two readings equivalent, using the class
  [AUniversalElement] of Theory/Universal/Element.v (issue #303) rather
- than a bespoke unique-factorization clause.  "Equivalent" is delivered
+ than a bespoke unique-factorization clause.  “Equivalent” is delivered
  at three different strengths, which are three different claims and are
  kept apart below: the two passages with their round trips (no universe
  restriction), the representability statement Hom(─, k) ≅ Kill_f in
@@ -63,20 +63,20 @@ Generalizable All Variables.
 
  Where the notion sits, and why the presheaf packaging is the durable one
 
- Text:  Mac Lane, "Categories for the Working Mathematician", Springer
+ Text:  Mac Lane, “Categories for the Working Mathematician”, Springer
  1998, §III.1 (pp. 55-59), §VIII.1
- Text:  Riehl, "Category Theory in Context", Dover 2016, §2.4
- Text:  Awodey, "Category Theory", Oxford 2010, §2.9
- Paper: Kan, "Adjoint functors", Trans. Amer. Math. Soc. 87, 1958
+ Text:  Riehl, “Category Theory in Context”, Dover 2016, §2.4
+ Text:  Awodey, “Category Theory”, Oxford 2010, §2.9
+ Paper: Kan, “Adjoint functors”, Trans. Amer. Math. Soc. 87, 1958
 
  The kernel is the oldest universal construction in algebra and the one
  whose element-free rendering cost the most.  In group theory a kernel
  is a SUBSET -- the preimage of the identity -- and the categorical
  definition has to say the same thing without mentioning elements or
- the identity.  Two moves accomplish it.  The first is to replace "the
- identity of the target" by the zero morphism, which requires the
- ambient category to have one; the second is to replace "the subset of
- things sent to zero" by the universal property of the equalizer.  The
+ the identity.  Two moves accomplish it.  The first is to replace “the
+ identity of the target” by the zero morphism, which requires the
+ ambient category to have one; the second is to replace “the subset of
+ things sent to zero” by the universal property of the equalizer.  The
  present file performs a third: it puts the quantifier over the probing
  object back in front, which turns the universal property into the
  assertion that ONE presheaf is representable.
@@ -85,8 +85,8 @@ Generalizable All Variables.
  factorization clause is a statement about the chosen object k; stated
  as representability it is a statement about the functor Kill_f, which
  exists whether or not k does.  So the presheaf is defined for every f
- in every category with zero morphisms, and "f has a kernel" becomes
- "Kill_f is representable" -- a property of an object of the presheaf
+ in every category with zero morphisms, and “f has a kernel” becomes
+ “Kill_f is representable” -- a property of an object of the presheaf
  category rather than a piece of data attached to f.  This is the form
  in which kernels generalize: the kernel presheaf of a map of sheaves is
  already a sheaf (a kernel is a limit, and limits of sheaves are
@@ -201,8 +201,8 @@ Generalizable All Variables.
  (Yoneda-free) constructions, for the reason that file's header
  gives: [Yoneda_Lemma] identifies the object, hom and proof universes
  of its category, and nothing here should inherit that.
- [kernel_iff_representable] is the biconditional "f has a kernel iff
- Kill_f is representable".
+ [kernel_iff_representable] is the biconditional “f has a kernel iff
+ Kill_f is representable”.
 
  * DELIVERABLE 2, in two grades.  [KillPresheaf] itself already needs
  only [ZeroMorphisms], hence no zero OBJECT.  Below that,
@@ -329,8 +329,8 @@ Generalizable All Variables.
  ([Construction/Deloop.v]'s [Deloop M] at a two-element monoid with an
  absorbing element has zero morphisms, and its single object has two
  endomorphisms so it is not a zero object); it is not built here, and
- until it is, "weaker" should be read as "not known here to be
- equivalent" rather than as a proved separation.
+ until it is, “weaker” should be read as “not known here to be
+ equivalent” rather than as a proved separation.
 
  The class is declared HERE rather than in a file of its own because
  nothing else in the tree consumes it yet; promoting it to
@@ -727,7 +727,7 @@ Corollary kernel_representation_at {k : C} {i : k ~> x} (K : IsKernelOf i)
 Proof. reflexivity. Qed.
 
 (*
- "f has a kernel" iff "the kill-f presheaf is representable".  The
+ “f has a kernel” iff “the kill-f presheaf is representable”.  The
  backward leg reads the universal element off the representation by
  Mac Lane's Φ_r(id r) computation ([AUniversalElement_of_repr]) and then
  applies [aue_kernel]. 

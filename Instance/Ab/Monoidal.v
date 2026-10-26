@@ -1,7 +1,7 @@
 (* * * The symmetric monoidal category (Ab, ⊗, ℤ) / * * 对称单体范畴 (Ab, ⊗, ℤ) *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §VII.1, printed pp. 163–164 (PDF pp. 171–172) —
  maclane:VII.1:remark1
  nLab:      https://ncatlab.org/nlab/show/tensor+product+of+abelian+groups
@@ -89,12 +89,12 @@
  one in CONSTRAINT position: the bodies incur constraints beyond
  [s < o] (the auxiliary universes of [AbTensor], nine of them,
  and [AbTensor_Functor], EIGHT, relate to [s] and [o]), and
- without it elaboration stops with "Universe constraints are not
- implied by the ones declared".  The [+] after the universe list
+ without it elaboration stops with “Universe constraints are not
+ implied by the ones declared”.  The [+] after the universe list
  is inert here — dropping it still compiles — and is kept only
  for uniformity with the constraint one.
  (RE-MEASURED by [About] under [Set Printing Universes] after the
- PR "algebraic carriers are sets" (2026-09-17): [AbTensor] still
+ PR “algebraic carriers are sets” (2026-09-17): [AbTensor] still
  binds nine universes, [AbTensor_Functor] now binds eight where
  an earlier revision of this sentence wrote seven.  Nothing else
  in the paragraph moved; the declarations it describes are
@@ -660,8 +660,8 @@ End TensorCalculus.
    [tensor_hom_ext] reduces an equation between homomorphisms out of
    [AbTensor G H] to the generators [ts_gen x h] — but [x] ranges over all
    of [G], and when [G] is itself a tensor its elements are arbitrary
-   formal sums.  The predicate "the two homomorphisms agree on generators
-   with left component [x]" is closed under zero, sum and negation, which
+   formal sums.  The predicate “the two homomorphisms agree on generators
+   with left component [x]” is closed under zero, sum and negation, which
    is exactly what lets an induction descend one level.  Recording those
    three steps once makes the depth-two and depth-three extensionality
    principles short. 

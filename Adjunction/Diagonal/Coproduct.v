@@ -1,8 +1,8 @@
 (**
 * Coproducts as the left adjoint of the diagonal functor
 
-    Mac Lane, "Categories for the Working Mathematician", §IV.1, p. 84, and
-    Awodey, "Category Theory", §9.3, p. 225, are cited BY LOCATION ONLY: the
+    Mac Lane, “Categories for the Working Mathematician”, §IV.1, p. 84, and
+    Awodey, “Category Theory”, §9.3, p. 225, are cited BY LOCATION ONLY: the
     printed text at those two locations was not consulted while this file was
     written, and both locations are the ones recorded in issue
     jwiegley/category-theory#351, which this file answers.

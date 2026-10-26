@@ -23,7 +23,7 @@ Generalizable All Variables.
 
    The pullback of f : m ~> k and g : n ~> k is the subset of the
    canonical (m · n)-element set consisting of the (encoded) pairs (a, b)
-   with f a = g b.  "Subset" is realized by a COUNT codec: [fin_countP P]
+   with f a = g b.  “Subset” is realized by a COUNT codec: [fin_countP P]
    counts the elements of [Fin.t N] satisfying a boolean predicate [P],
    [fin_select] tabulates the satisfying elements in order (unrank), and
    [fin_rank] sends a satisfying element to its index.  All three are
@@ -116,7 +116,7 @@ Qed.
    * ** The count codec
 
    [fin_countP P] is the number of elements satisfying [P]; the canonical
-   set of that size is the "subset cut out by P".  [fin_select] is the
+   set of that size is the “subset cut out by P”.  [fin_select] is the
    order-preserving tabulation (unrank) of the satisfying elements, and
    [fin_rank] is its inverse on satisfying elements.  Both dispatch on
    [P Fin.F1] by a convoy so that goals mentioning them can abstract that
@@ -543,7 +543,7 @@ Proof.
   discriminate Ha.
 Qed.
 
-(* And an epi that is not an iso: the test "is this position the first?" collapses 3 onto 2, hitting both truth values. / 以及一个不是等距映射的上极限：测试“这个位置是第一个吗？”将3折叠到2上，击中了两个真值。 *)
+(* And an epi that is not an iso: the test “is this position the first?” collapses 3 onto 2, hitting both truth values. / 以及一个不是等距映射的上极限：测试“这个位置是第一个吗？”将3折叠到2上，击中了两个真值。 *)
 Example finset_collapse_epic :
   Epic ((fun i => fin_of_bool (fin_eqb i (Fin.F1 : Fin.t 3)))
           : 3%nat ~{FinSet}~> 2%nat).

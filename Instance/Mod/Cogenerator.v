@@ -1,20 +1,20 @@
 (* * * Mac Lane V.8 Exercise 2(b): hom_Z(R, ℚ/ℤ) as an injective cogenerator of R-Mod, GIVEN that ℚ/ℤ is one of Ab / * * Mac Lane 第八版 练习 2(b)：作为 R-Mod 的一个单射余生成元的 hom_Z(R, ℚ/ℤ)，已知 ℚ/ℤ 是 Ab 的一个对象 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., §V.8 Exercise 2(b), printed p. 131, PDF p. 140 (ledger
  item `maclane:V.8:ex2`, issue #454), read from the printed
- page: "The additive group Q/Z of rational numbers modulo 1
+ page: “The additive group Q/Z of rational numbers modulo 1
  is known to be an injective cogenerator of Ab.  Use (a) to
  prove that hom_Z(R, Q/Z) is an injective cogenerator of
- R-Mod ("injective" object as defined in § 4)."  The book
+ R-Mod (”injective“ object as defined in § 4).”  The book
  states the fact about Q/Z as known; taking it as a
  HYPOTHESIS is this formalisation's choice, and sections 6–8
  below show why it cannot be discharged in the axiom-free
  core.  (The in-repo catalogue, doc/plan/books/maclane/
- inventory/V.json, paraphrases the sentence as "Given that
+ inventory/V.json, paraphrases the sentence as “Given that
  the additive group Q/Z ... is an injective cogenerator of
- Ab, use (a) to prove"; the quotation above is the printed
+ Ab, use (a) to prove”; the quotation above is the printed
  page's.)
  Book:      Mac Lane, ibid., §V.8 Theorem 2 — SAFT, whose cogenerator
  hypothesis this file is written to feed (Adjunction/SAFT.v).
@@ -22,7 +22,7 @@
  nLab:      https://ncatlab.org/nlab/show/injective+object
  nLab:      https://ncatlab.org/nlab/show/divisible+group
  nLab:      https://ncatlab.org/nlab/show/Eilenberg-Watts+theorem
- The nLab page "injective cogenerator" does not exist (an
+ The nLab page “injective cogenerator” does not exist (an
  HTTP 404, measured with curl on 2026-09-24), as the issue
  recorded.
 
@@ -48,7 +48,7 @@
  procedure is used in either.
  2. [forget_ab_monic] and [forget_ab_faithful] for [RMod_Forget_Ab R].
  3. Exercise 2(b) on the book's premise.  [QZ_family_cogenerates] is
- "the one-member family {ℚ/ℤ} separates arrows of Ab" in
+ “the one-member family {ℚ/ℤ} separates arrows of Ab” in
  [Cogenerator]'s positive form, [QZ_Cogenerator] packages it, and
  **[QZ_injective_cogenerator R HI HC]** — the name the issue's
  Verification block prints — takes [HI : Injective Ab QZ] and that
@@ -69,8 +69,8 @@
  module, tested by the identity), and it is REFUSED by
  [cogen_prod] at [RMod_Complete R], exactly as
  Instance/Sets/Cogenerator.v's [Sets_Cogenerator_large] is at
- [Sets]; with the probe written out, the error ends "(universe
- inconsistency: Cannot enforce <c> = <o> because <c> < <o>)", its
+ [Sets]; with the probe written out, the error ends “(universe
+ inconsistency: Cannot enforce <c> = <o> because <c> < <o>)”, its
  index universe being the object universe o of [RMod R] where
  [cogen_prod] demands the carrier universe c.
  4. What IS constructive about ℚ/ℤ.  [QZ_divisible] (every element is
@@ -122,8 +122,8 @@
  principles are independent of the core.  So
  [QZ_injective_cogenerator] is the faithful statement of the
  exercise, and no in-tree term inhabits its hypotheses.  Mac Lane's
- own ≠ form ([ML_cogenerates], "h ≠ h' implies some g with
- g h ≠ g h'") is not the shape [cog_separates] and [cogen_prod]
+ own ≠ form ([ML_cogenerates], “h ≠ h' implies some g with
+ g h ≠ g h'”) is not the shape [cog_separates] and [cogen_prod]
  consume; the [YP] argument does not apply to it; and no in-tree
  implication relates the two forms (positive to ≠ needs a step
  from ¬∀ to ∃¬, ≠ to positive needs ¬¬-stable hom equality).  Its
@@ -337,7 +337,7 @@ Example QZ_injective_cogenerator_via_2a_member@{r a c +}
 (*
  Mac Lane's own definition (§V.7, p. 127): q is a cogenerator when to
  every parallel pair h ≠ h' : a → b there is g : b → q with
- g h ≠ g h'.  "There is" is read as data, a Σ. 
+ g h ≠ g h'.  “There is” is read as data, a Σ. 
 
  --------
  麦克莱恩自己的定义（§V.7，第127页）：当 到

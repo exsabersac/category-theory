@@ -29,12 +29,12 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
    §V.8, Theorem 2, the unnumbered Lemma inside its proof and the
    Corollary after it, book pp. 129-130 (PDF pp. 138-139; catalogue ids
    [maclane:V.8:thm2], [maclane:V.8:lem1], [maclane:V.8:cor1]).  Awodey,
-   "Category Theory", §9.8, Remark 9.35, printed pp. 255-256
-   ([awodey:9.8:remark35]).  Riehl, "Category Theory in Context",
+   “Category Theory”, §9.8, Remark 9.35, printed pp. 255-256
+   ([awodey:9.8:remark35]).  Riehl, “Category Theory in Context”,
    Theorem 4.7.10 and Corollary 4.7.13, printed pp. 177-178
    ([riehl:4.7:thm10], [riehl:4.7:cor13]), and the Epilogue's two
    restatements, printed p. 252 ([riehl:E.1:thm-gaft] clause (iii),
@@ -46,24 +46,24 @@ Generalizable All Variables.
    and doc/plan/books/riehl/inventory/inventory-4.json and
    inventory-E.json.  Mac Lane's three items read there:
 
-     thm2 -- "Let A be small-complete with small hom-sets and a small
+     thm2 -- “Let A be small-complete with small hom-sets and a small
      cogenerating set Q, and suppose every set of subobjects of an
      object of A has a pullback (hence an intersection).  Let X have
      small hom-sets.  Then a functor G : A -> X has a left adjoint if
      and only if G preserves all small limits and all pullbacks of
-     families of monics."
+     families of monics.”
 
      lem1 -- an arrow of the comma category (x ↓ G) is monic if and only
-     if its underlying arrow in A is; for the harder half "the comma
+     if its underlying arrow in A is; for the harder half “the comma
      projection ... creates all limits (by the lemma of section 6), in
      particular kernel pairs, and A has all kernel pairs, so the
-     projection preserves kernel pairs".
+     projection preserves kernel pairs”.
 
-     cor1 -- "If A is small-complete, well-powered, with small hom-sets
+     cor1 -- “If A is small-complete, well-powered, with small hom-sets
      and a small cogenerating set, and X has small hom-sets, then a
      functor G : A -> X has a left adjoint if and only if it is
      continuous (preserves all small limits).  In particular, every
-     continuous functor K : A -> Set is representable."
+     continuous functor K : A -> Set is representable.”
 
    Awodey's Remark 9.35 is cor1's sufficiency (a complete, locally small,
    well-powered category with a cogenerating set; a functor out of it
@@ -138,16 +138,16 @@ Generalizable All Variables.
    shape universe ([wp_class_family]), built from the comma's products
    and equalizers, which [Comma_Complete] creates from C's through
    [cont].  Mac Lane's second preservation clause is spent inside
-   continuity there, and the Corollary's "continuous" is all it asks.
+   continuity there, and the Corollary's “continuous” is all it asks.
 
    THEOREM 2.  [HasSubobjectWidePullbacks C]: every family of subobjects
    of an object of C, indexed by a type at a universe [q], has a wide
-   pullback.  That is the book's "every set of subobjects of an object of
-   A has a pullback", read as a LIMIT (Structure/Pullback/Wide.v's
+   pullback.  That is the book's “every set of subobjects of an object of
+   A has a pullback”, read as a LIMIT (Structure/Pullback/Wide.v's
    [WidePullback]) and with the index a universe parameter (the class
    reading, for the reason Structure/WellPowered.v's header gives: a set
    of subobjects is a set of equivalence classes, carried by a large
-   family).  "Preserves all pullbacks of families of monics" is
+   family).  “Preserves all pullbacks of families of monics” is
    Adjunction/SpanningArrow.v's [PreservesWidePullbacks] (#448), reused
    unchanged.  [SAFT_thm2 U comp cont G HW HU] builds at each [d] the
    least subobject of the comma's cogenerator product [X]: [least_index U
@@ -184,10 +184,10 @@ Generalizable All Variables.
    [Bilin_PreservesWidePullbacks].  The proof transposes along [adj] with
    [from_adj_nat_r], [to_adj_nat_r] and [from_adj_comp_law], since a wide
    pullback has no shape category for Adjunction/Continuity.v's
-   [rapl_ump] (Adjunction/SpanningArrow.v's "WHY [PreservesWidePullbacks]
-   IS BESPOKE"); with the [Require] of Instance/Sets.v dropped, its [from
-   (adj ...) (q i)] is refused ("Illegal application (Non-functional
-   construction)", measured).  [SAFT_iff] is Theorem 2 as the book states
+   [rapl_ump] (Adjunction/SpanningArrow.v's “WHY [PreservesWidePullbacks]
+   IS BESPOKE”); with the [Require] of Instance/Sets.v dropped, its [from
+   (adj ...) (q i)] is refused (“Illegal application (Non-functional
+   construction)”, measured).  [SAFT_iff] is Theorem 2 as the book states
    it: left adjoint ↔ [PreservesImageLimit U * PreservesWidePullbacks U].
 
    WHY #452's [HasClassIntersections] CANNOT BE THEOREM 2's HYPOTHESIS.
@@ -217,9 +217,9 @@ Generalizable All Variables.
    i => Subobject.sub_mono (S i)) : HasSubobjectWidePullbacks@{o h o o k}
    C] from [comp : Complete@{so so h o} C], is accepted at [o <= so, h <=
    so], closed under the global context, and refused at [so < o], at the
-   index: "The term "i" has type "?J" while it is expected to have type
-   "I" (unable to find a well-typed instantiation for "?J": cannot ensure
-   that "Type@{o}" is a subtype of "Type@{…}")".  Test/ProbeSAFT453.v
+   index: “The term ”i“ has type ”?J“ while it is expected to have type
+   ”I“ (unable to find a well-typed instantiation for ”?J“: cannot ensure
+   that ”Type@{o}“ is a subtype of ”Type@{…}“)”.  Test/ProbeSAFT453.v
    pins it as N22 ([p453_n22_hw_large], beside the control
    [p453_hw_at_objects] at [o <= so]) and peels it as N23
    ([p453_n23_hw_large_index]); its [p453_hw_is_library] reads
@@ -254,8 +254,8 @@ Generalizable All Variables.
    k}], the index at the homs, in a scratch file carrying this file's
    import list and Instance/Sets/Complete.v; in the same file the term
    above at [Sets_Complete] is refused as [HasSubobjectWidePullbacks@{so
-   o so so k}], the index at the objects: "(universe inconsistency:
-   Cannot enforce o = <1> because o < so <= <2> <= <1>)" (<1>, <2> the
+   o so so k}], the index at the objects: “(universe inconsistency:
+   Cannot enforce o = <1> because o < so <= <2> <= <1>)” (<1>, <2> the
    scratch file's generated universes).  Test/ProbeSAFT453.v pins the
    pair: the refusal as N24 ([p453_n24_sets_hw_large]), the acceptance as
    [p453_sets_hw_library] (the constant) and [p453_sets_hw_small] (its
@@ -269,7 +269,7 @@ Generalizable All Variables.
    small categories, out of a COMPLETE A with a small coseparating set in
    which every collection of subobjects of a fixed object has an
    INTERSECTION, has a left adjoint; the proof says that intersections of
-   subobjects are "created" in s ↓ U.  Creating an intersection of a
+   subobjects are “created” in s ↓ U.  Creating an intersection of a
    large collection in s ↓ U needs U to preserve it, and continuity,
    preservation of small limits, does not reach it here:
    [PreservesImageLimit] quantifies over shapes at [so] (the binder
@@ -281,11 +281,11 @@ Generalizable All Variables.
    hypothesis her catalogue summary does not list: the Corollary adds
    well-poweredness and asks no intersections, and Theorem 2 adds
    [PreservesWidePullbacks]; neither is her statement.  So the Riehl
-   4.7.10 checkbox of #453, "the in-tree statement's hypothesis list
-   matches the book's", is NOT met as worded, and neither is the
+   4.7.10 checkbox of #453, “the in-tree statement's hypothesis list
+   matches the book's”, is NOT met as worded, and neither is the
    Epilogue's clause (iii) ([riehl:E.1:thm-gaft]), whose summary glosses
-   the intersection as "a wide pullback": both are stated deviations of
-   #453.  Whether Riehl's "collection" is meant small, or her proof
+   the intersection as “a wide pullback”: both are stated deviations of
+   #453.  Whether Riehl's “collection” is meant small, or her proof
    supplies the preservation some other way, stays open until the printed
    page is read.
 
@@ -303,7 +303,7 @@ Generalizable All Variables.
    [sets_id_old_cover_refuted Un] applies [SubobjectCover_Id_Sets_absurd]
    to the same three witnesses (the well-powering through
    Adjunction/SAFT/WellPowered.v's [WellPowered_SubobjectIndex]).  So
-   Awodey's checkbox "[SubobjectCover] becomes a theorem" cannot be met
+   Awodey's checkbox “[SubobjectCover] becomes a theorem” cannot be met
    as worded -- the datum is refuted at [Id[Sets]], where under
    [Untruncate] the book's hypotheses hold -- and is met by supersession:
    [SAFT], [SubobjectCover] and their satellites stay, unchanged.  The
@@ -328,10 +328,10 @@ Generalizable All Variables.
    alone [GAFT_from_initials] is not in scope), [GAFT_from_initials U
    (SAFT_comma_initial U comp cont G WP)] and [GAFT_from_initials U
    (SAFT_thm2_initial U comp cont G HW HU)] are accepted, and the same
-   [eq_refl] against each is refused by conversion, "(cannot unify
-   "fobj[projT1 (…)] d" and "snd (projT1 (Subobject.sub_dom
-   (complete_intersection …" and "(cannot unify "fobj[projT1 (…)] d" and
-   "WPull (HW …" respectively, beside the two readbacks above restated
+   [eq_refl] against each is refused by conversion, “(cannot unify
+   ”fobj[projT1 (…)] d“ and ”snd (projT1 (Subobject.sub_dom
+   (complete_intersection …“ and ”(cannot unify “fobj[projT1 (…)] d” and
+   “WPull (HW …” respectively, beside the two readbacks above restated
    there as controls.  Test/ProbeSAFT453.v pins both refusals, as N4 and
    N5 ([p453_n4_gaft_route_obj], [p453_n5_thm2_gaft_route_obj]), beside
    the formed routes [p453_gaft_route] and [p453_thm2_gaft_route] and the
@@ -385,7 +385,7 @@ Generalizable All Variables.
    [SAFT_wellpowered_iff] and [SAFT_iff] carry the blocks of
    [SAFT_wellpowered] and [SAFT_thm2].  No constant here carries an
    equation between two universes it names (the About of all forty-seven,
-   searched for " = ", finds none).
+   searched for “ = ”, finds none).
 
    - [h < so] holds.  In a scratch file carrying this file's import list,
      [SAFT_wellpowered] and [SAFT_wellpowered_iff] are accepted at [h <
@@ -394,7 +394,7 @@ Generalizable All Variables.
      Adjunction/SAFT.v's own regime ([Complete@{h h h o}],
      [Cogenerator@{h o h}]); all closed.  The instrument, the same
      application of [SAFT_wellpowered] at [so < h], is refused there:
-     "Universe inconsistency. Cannot enforce h <= so because so < h".
+     “Universe inconsistency. Cannot enforce h <= so because so < h”.
      Test/ProbeSAFT453.v pins the acceptances ([p453_small],
      [p453_small_iff], [p453_thm2_small], [p453_thm2_small_iff]; the
      Corollary at Adjunction/SAFT.v's regime inside [p453_cover_iso]) and
@@ -402,7 +402,7 @@ Generalizable All Variables.
      command's binder alone refuses (the probe's paragraph KINDS).
      Nothing relates [o] to [so].  The [so = h] that one unannotated
      comma instantiation printed for #452
-     (Adjunction/SAFT/InitialObject.v's "What #453 needs from here") was
+     (Adjunction/SAFT/InitialObject.v's “What #453 needs from here”) was
      minimization.
    - C's homs may sit below D's ([hc <= h]) in the monos lemma and the
      comma constructions; the theorems share [h], as
@@ -421,8 +421,8 @@ Generalizable All Variables.
      to [HU] at one universe ([About]: from [WidePullback@{u u0 u1 u2}]
      to [IsWidePullback@{u u0 u1 u2}]), and in a scratch file carrying
      this file's import list, the body of [SAFT_thm2_initial] restated
-     with [HU]'s slot named [r2] apart from [HW]'s [r] reads back "r =
-     r2".  Test/ProbeSAFT453.v pins that as a refusal at [r < r2], N27
+     with [HU]'s slot named [r2] apart from [HW]'s [r] reads back “r =
+     r2”.  Test/ProbeSAFT453.v pins that as a refusal at [r < r2], N27
      ([p453_n27_initial_r_apart], at [wide_pullback_is_pullback]), beside
      the readback's control [p453_thm2_initial_r_le]; its N10 records the
      same identification in [SAFT_thm2]'s own binder, which gives [HW]
@@ -441,19 +441,19 @@ Generalizable All Variables.
      (a) a top-level [comma_WellPoweredAt] identified the comma's
      internal universe strictly above C's homs with [WellPowered]'s [t],
      and [Comma_Complete] identifies the same comma universe with [pa]
-     (the previous item), so [SAFT_wellpowered] read "t = pa"; stated in
+     (the previous item), so [SAFT_wellpowered] read “t = pa”; stated in
      the section [CommaWellPowered], where the comma's universes are
      fixed when [X] is declared, the equation is gone.  Naming
      [PreservesImageLimit]'s slots alone does not remove it: with [pa]
      named and [comma_WellPoweredAt] top-level, the readback was that
      equation between two named universes.
-     (b) Assembling the Σ-type by the tactic [exists] brought "t = pa"
+     (b) Assembling the Σ-type by the tactic [exists] brought “t = pa”
      back, where the term [existT _ (SAFT_left …) (SAFT_adjunction …)]
      does not, so [SAFT_wellpowered] and [SAFT_thm2] are terms.  (c)
-     [least_index] at an unnamed sort made [SAFT_thm2] read "q = r" and
-     "q = rd"; its sort [lq] and the wide-pullback universes [r] and
+     [least_index] at an unnamed sort made [SAFT_thm2] read “q = r” and
+     “q = rd”; its sort [lq] and the wide-pullback universes [r] and
      [rd] of the [least_*] binders are named.  (d) A top-level
-     [comma_WellPowered] read "oc = sc", from [comma_wp_to_from]'s
+     [comma_WellPowered] read “oc = sc”, from [comma_wp_to_from]'s
      setoid universe collapsing onto the comma's objects, and put the
      comma's [Diagonal] universe at [tc]; [comma_wp_to_from] names its
      setoid universes, and [comma_WellPowered] is stated over a [Let] of
@@ -502,10 +502,10 @@ Generalizable All Variables.
    (a whole-word grep for the name over the .v files outside Test/ finds
    this file only), nor [PreservesWidePullbacks] from continuity over a
    well-powered [C].  That is Mac Lane's route from Theorem 2 to the
-   Corollary (the catalogue's [def1]: "if A is well-powered and
+   Corollary (the catalogue's [def1]: “if A is well-powered and
    small-complete, then every set of subobjects of an object has an
    intersection, formed by the usual pullback, so the extra hypothesis of
-   Theorems 1 and 2 is automatic"), and the first clause of #453's Work
+   Theorems 1 and 2 is automatic”), and the first clause of #453's Work
    item 3; here the Corollary is proved directly, by
    [comma_WellPoweredAt], and [SAFT_wellpowered] is not derived from
    [SAFT_thm2].  This is a stated deviation of #453.  What a derivation
@@ -540,8 +540,8 @@ Generalizable All Variables.
    open.  The scratch measurements quoted name their environments.
    Test/ProbeSAFT453.v pins, where each is cited above, the refusals
    quoted here and the body-level refusals behind two of its readbacks
-   (N4, N5, N8, N22-N24, N26, N27); it does not pin the "Illegal
-   application" refusal with Instance/Sets.v's [Require] dropped (a
+   (N4, N5, N8, N22-N24, N26, N27); it does not pin the “Illegal
+   application” refusal with Instance/Sets.v's [Require] dropped (a
    shorter import list than a probe may carry) nor the [About] readbacks
    of the Universes section, and of the collapses there it pins (a)-(c)
    as staying removed and not (d).  The file compiles with Coq 8.19.2 and
@@ -550,7 +550,7 @@ Generalizable All Variables.
    report closed there too.
 
    MEASUREMENTS.  Forty-seven constants ([Print Module]), no [Program]
-   obligation; each reports "Closed under the global context" by its
+   obligation; each reports “Closed under the global context” by its
    fully qualified name.  Closure 112 files excluding itself, counted
    over .Makefile.coq.d (Adjunction/SAFT/InitialObject.v's is 110). *)
 
@@ -908,7 +908,7 @@ Definition SAFT_adjunction@{o dobj h so c w s t pk pa +|
 
 (*
 The pair is a term, not an [exists]: the tactic form re-introduces
-   the equation "t = pa" (collapse (b) of the header). 
+   the equation “t = pa” (collapse (b) of the header). 
 
 --------
 该对是一个术语，而不是 [exists]：策略形式重新引入
@@ -971,7 +971,7 @@ Definition SAFT_wellpowered_iff@{o dobj h so c w s t pk pa +|
 (** ** Theorem 2: every set of subobjects has a pullback  / ** 定理 2：每组子对象都有一个回调*)
 
 (*
-Mac Lane's "every set of subobjects of an object has a pullback": a
+Mac Lane's “every set of subobjects of an object has a pullback”: a
    LIMIT, over an index at the universe [q] (the class reading). 
 
 --------

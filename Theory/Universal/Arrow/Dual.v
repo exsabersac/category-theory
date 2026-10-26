@@ -58,15 +58,15 @@ nLab: https://ncatlab.org/nlab/show/universal+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
 
    A couniversal arrow from a functor F : D ⟶ C to an object c : C -- Mac
-   Lane's "universal arrow from F to c" (CWM 2nd ed., §III.1, p. 58) -- is a
+   Lane's “universal arrow from F to c” (CWM 2nd ed., §III.1, p. 58) -- is a
    pair (a, ε) consisting of an object a : D and a morphism ε : F a ~> c, such
    that for every object d : D and every morphism h : F d ~> c there exists a
    unique g : d ~> a satisfying h ≈ ε ∘ fmap[F] g.  Equivalently, (a, ε) is a
    TERMINAL object of the comma category F ↓ =(c).
 
    That last sentence is not new here: it is the one Theory/Universal/Arrow.v
-   already writes down in its own header -- "The dual notion, a universal
-   arrow from F to c, is a terminal object of F ↓ =(c)" -- as a remark, with
+   already writes down in its own header -- “The dual notion, a universal
+   arrow from F to c, is a terminal object of F ↓ =(c)” -- as a remark, with
    nothing in the tree carrying it.  This file carries it.
 
    Where a universal arrow is the pointwise form of a LEFT adjoint, with the
@@ -92,7 +92,7 @@ nLab：https://ncatlab.org/nlab/show/universal+morphism
 Why the dual is cheap here, and what it costs
 
    nLab:  https://ncatlab.org/nlab/show/opposite+category
-   Paper: Mac Lane, "Duality for groups", Bull. Amer. Math. Soc. 56, 1950
+   Paper: Mac Lane, “Duality for groups”, Bull. Amer. Math. Soc. 56, 1950
 
    The couniversal notion is introduced as the formal dual and its theory
    left to the duality principle, and this file honours that: the
@@ -142,7 +142,7 @@ Why the dual is cheap here, and what it costs
    destructs its argument, so on a variable [T] the object component of
    [couniversal_arrow_terminal (couniversal_arrow_of_terminal T)] is
    stuck.  Neither statement is packaged as an isomorphism, and the
-   "not a bijection" note in the WHAT IS NOT DELIVERED block below is
+   “not a bijection” note in the WHAT IS NOT DELIVERED block below is
    about the ENCODING passage, not about this bridge.
 
    The mismatch is located precisely, and it is NOT the terminal/initial

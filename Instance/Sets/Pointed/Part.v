@@ -18,8 +18,8 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Partial_function
 
  The header of Instance/Coq/Par.v states, in prose, that the category of
- partial maps is "equivalent (not isomorphic) to the category of pointed
- sets": the object A realizes the pointed set A ⊔ {*}, with the adjoined
+ partial maps is “equivalent (not isomorphic) to the category of pointed
+ sets”: the object A realizes the pointed set A ⊔ {*}, with the adjoined
  point standing for divergence.  This file proves that sentence for the
  setoid variant, comparing Instance/Sets/Par.v's [Part] with
  Instance/Sets/Pointed.v's [PointedSets].
@@ -190,7 +190,7 @@ Definition PointedDecidablePt : Type := ∀ Z : PointedSetoid, DecidablePt Z.
 (*
  The apartness sub-setoid: the points provably distinct from the basepoint,
  compared by their underlying points.  This is the candidate preimage of
- (Z, pt Z) under the comparison functor — "Z with the basepoint removed". 
+ (Z, pt Z) under the comparison functor — “Z with the basepoint removed”. 
 
  --------
  不可接近子等价集合：可以证明与基点不同的点，通过它们的基础点进行比较。这是比较函子下 (Z, pt Z) 的候选原像——“去掉基点的 Z”.
@@ -313,8 +313,8 @@ Definition Part_to_Pointed_ESO (dec : PointedDecidablePt) :
 
 (*
  PAR is equivalent to Set_*, on the decidable objects.  This upgrades the
- remark in the header of Instance/Coq/Par.v — "equivalent (not isomorphic)
- to the category of pointed sets" — from prose to a theorem, in the setoid
+ remark in the header of Instance/Coq/Par.v — “equivalent (not isomorphic)
+ to the category of pointed sets” — from prose to a theorem, in the setoid
  setting.  The comparison functor is fully faithful with no hypotheses at
  all; only the essential surjectivity consumes [dec]. 
 

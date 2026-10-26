@@ -75,7 +75,7 @@ Fixpoint fin_apply {m n : nat} {struct m} :
 
 (*
  The computability acceptance test: with m = 2, n = 3 the function
- sending F1 ↦ 2 and FS F1 ↦ 1 is the digit string "2 then 1", i.e. the
+ sending F1 ↦ 2 and FS F1 ↦ 1 is the digit string “2 then 1”, i.e. the
  code 2·3 + 1 = 7; both directions reduce by [eq_refl]. 
 
  --------
@@ -225,7 +225,7 @@ Qed.
 (*
  Closed evaluation at concrete elements, by [eq_refl]: the derived [eval]
  of Structure/Cartesian/Closed.v computes over this instance.  With
- x = y = 2 the exponential 2^2 is Fin.t 4, and the code 2 = "digits 1, 0"
+ x = y = 2 the exponential 2^2 is Fin.t 4, and the code 2 = “digits 1, 0”
  is the function F1 ↦ FS F1, FS F1 ↦ F1; the two Examples check both
  argument routings, which return DIFFERENT values. 
 

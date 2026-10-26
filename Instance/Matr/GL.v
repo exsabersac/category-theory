@@ -20,7 +20,7 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §I.3, printed p. 14 (PDF 24), and §I.4, printed p. 16
  (PDF 26) — maclane:I.3:construction2 (with
  maclane:I.4:construction1 completed by
@@ -42,8 +42,8 @@ Generalizable All Variables.
  is propositional — carrier the two-sided-invertible elements
  compared by their underlying element, inverse by swapping the
  witness — with [UnitsOf_map]: monoid homomorphisms restrict to unit
- groups.  (An earlier revision said "of any [MonObject]".  Since the
- PR "algebraic carriers are sets" (2026-09-17) an [Instance/Grp.v]
+ groups.  (An earlier revision said “of any [MonObject]”.  Since the
+ PR “algebraic carriers are sets” (2026-09-17) an [Instance/Grp.v]
  group carries [grp_prop] and a [MonObject] does not, so the witness
  is a hypothesis; see the note at [UnitsOf] below, and note that all
  three consumer families in tree discharge it.)
@@ -72,8 +72,8 @@ Generalizable All Variables.
  over K form exactly [hom_monoid (Matr (ring_rig K)) n], so
  invertible matrices are [UnitsOf] of it, and functoriality in K
  is [UnitsOf_map] applied to the entrywise homomorphism — whose
- monoid laws are precisely "ring maps commute with the matrix
- product", [fin_sum] naturality plus preservation of the
+ monoid laws are precisely “ring maps commute with the matrix
+ product”, [fin_sum] naturality plus preservation of the
  Kronecker delta.
 
  3. COMMUTATIVITY IS NOT USED HERE.  Both functors below are
@@ -105,7 +105,7 @@ Definition unit_carrier (M : MonObject) : Type :=
     & (mon_op u v ≈ mon_unit) * (mon_op v u ≈ mon_unit) } }.
 
 (*
- RECORDED STRENGTH CHANGE.  Before the PR "algebraic carriers are sets"
+ RECORDED STRENGTH CHANGE.  Before the PR “algebraic carriers are sets”
  (2026-09-17) this read [UnitsOf (M : MonObject) : GrpObject].  An
  [Instance/Grp.v] group now carries [grp_prop] and a [MonObject] does not
  (internal algebra keeps the ambient category's equality and carries no
@@ -122,8 +122,8 @@ Definition unit_carrier (M : MonObject) : Type :=
  naming a setoid written inline in the same literal -- but naming it puts
  one more unfolding step between the expected type of each sigma below and
  the sigma it builds, and Coq 8.19/8.20 then infer a CONSTANT predicate and
- refuse the term ("has type ∃ _ : …, … while it is expected to have type
- carrier …"; Instance/Rng/Zp.v's header records the trap, and
+ refuse the term (“has type ∃ _ : …, … while it is expected to have type
+ carrier …”; Instance/Rng/Zp.v's header records the trap, and
  Instance/Grp/Center.v records the same one for [mk_central]).  Rocq 9.1
  accepts either.  The obligation route keeps every term below exactly as the
  released toolchains already compiled it. 

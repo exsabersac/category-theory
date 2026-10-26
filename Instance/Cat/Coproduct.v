@@ -17,10 +17,10 @@ Generalizable All Variables.
 #[local] Obligation Tactic := program_simpl.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §III.5 Exercise 4, printed p. 74 (PDF p. 84) —
  maclane:III.5:ex4
- Book:      Riehl, "Category Theory in Context", 2nd ed., §3.6 —
+ Book:      Riehl, “Category Theory in Context”, 2nd ed., §3.6 —
  riehl:3.6:construction-cat-coproducts
 
  The [Cat]-level packaging of Construction/Coproduct/Indexed.v: the
@@ -44,16 +44,16 @@ Generalizable All Variables.
  worth keeping apart.
 
  (i) RECORDED CORRECTION, AND THIS REASON NO LONGER HOLDS.  An
- earlier revision of this paragraph read: "[DiscreteCat_Functor]
+ earlier revision of this paragraph read: “[DiscreteCat_Functor]
  (Instance/Discrete.v) is declared with NO universe binders, so
  minimization instantiates [DiscreteCat@{u Set Set}] and routing
  through it pins the ambient category's hom and proof universes to
  [Set].  At [C := Cat], whose objects are categories, that would
  confine the result to categories-of-categories with [Set]-sized
  homs — a measured defect of the FUNCTOR, not of [DiscreteCat],
- which is properly annotated [@{o h p}]."  The diagnosis was right,
+ which is properly annotated [@{o h p}].”  The diagnosis was right,
  and the defect was repaired: the functor was annotated in place at
- Instance/Discrete.v in the PR "algebraic carriers are sets"
+ Instance/Discrete.v in the PR “algebraic carriers are sets”
  (2026-09-17), so it now leaves the ambient hom and proof universes
  free and confines nothing at [C := Cat].  Reason (ii) below is
  untouched by that repair and is on its own sufficient, which is why
@@ -74,7 +74,7 @@ Generalizable All Variables.
  CARRIES THE MATHEMATICS is that the index type sits at or below
  [Cat]'s OBJECT universe — the universe at which the summand
  categories' own objects live — which is exactly Mac Lane's
- "small" index set.  Read that as the load-bearing one and not as
+ “small” index set.  Read that as the load-bearing one and not as
  the whole block: the block also carries [Projections.*] bounds on
  the index and on the summands' hom universe, inherited from the
  monomorphic stdlib [projT1]/[projT2], which are nothing to do
@@ -493,7 +493,7 @@ Fail Example SigmaBool_cat_strict (C D : Category) :
  lands one universe up, at [Category@{a e e}] where the summands are
  [Category@{d e e}] with [d < a] — so it is not an object of that
  [Cat], and the elementary indexed-coproduct statement about it is a
- universe inconsistency ("Cannot enforce d = _ because d < a <= _").
+ universe inconsistency (“Cannot enforce d = _ because d < a <= _”).
  The [Check] immediately below is the positive control that the
  rejection is about the SIZE and not about the expression. 
 

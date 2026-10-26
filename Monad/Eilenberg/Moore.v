@@ -35,7 +35,7 @@ nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
    whose own resolution lives in Monad/Kleisli/Adjunction.v) is the initial
    one, sitting inside C^T as the full subcategory of free algebras.
 
-   CORRECTION (#475).  "Sitting inside C^T" was asserted with no functor
+   CORRECTION (#475).  “Sitting inside C^T” was asserted with no functor
    C_T ⟶ C^T in the tree; it is Monad/Kleisli/Comparison.v's [Kleisli_EM],
    full and faithful onto the free algebras.  The terminality and the
    initiality asserted here are Mac Lane's Theorem VI.5.3, which issue #476

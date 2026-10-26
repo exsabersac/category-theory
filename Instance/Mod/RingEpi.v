@@ -41,23 +41,23 @@ Open Scope category_scope.
  nLab:  https://ncatlab.org/nlab/show/restriction+of+scalars
  nLab:  https://ncatlab.org/nlab/show/epimorphism
  nLab:  https://ncatlab.org/nlab/show/localization+of+a+commutative+ring
- Book:  Riehl, "Category Theory in Context", Dover 2016, §4.6,
+ Book:  Riehl, “Category Theory in Context”, Dover 2016, §4.6,
  Example 4.6.13 (iv), printed p. 170 (PDF p. 190) — catalog
  item riehl:4.6:example13, appended to issue #370
- Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §IV.3, printed p. 92 (PDF p. 101) — the section whose
  examples issue #370 collects
- Docs:  The Stacks Project, Tag 04VM (§10.107, "Epimorphisms of
- rings") — the commutative-algebra account
+ Docs:  The Stacks Project, Tag 04VM (§10.107, “Epimorphisms of
+ rings”) — the commutative-algebra account
 
- WHERE THIS COMES FROM.  Mac Lane's examples on p. 92 open "Here are
- some examples.  Ab is reflective in Grp." and go on to metric spaces,
+ WHERE THIS COMES FROM.  Mac Lane's examples on p. 92 open “Here are
+ some examples.  Ab is reflective in Grp.” and go on to metric spaces,
  topological spaces and torsion groups; no module category is among
  them.  Issue #370
  also collects Riehl's roster of reflective subcategories, whose
  clause (iv) reads, quoted from the page image of p. 170:
 
- "As described in Example 4.1.10(xii), for any ring homomorphism
+ “As described in Example 4.1.10(xii), for any ring homomorphism
  φ: R → T, there exist adjoint functors [displayed: T ⊗_R − ⊣ φ*]
  the right adjoint being restriction of scalars and the left
  adjoint being extension of scalars.  The restriction of scalars
@@ -69,7 +69,7 @@ Open Scope category_scope.
  class of epimorphisms. ... The localization R → R[S⁻¹] is an
  initial object in the category whose objects are ring
  homomorphisms R → T that carry all of the elements of S to units
- in T."
+ in T.”
 
  (The elided clause gives the reason for faithfulness: both module
  categories are faithful over Ab.)  This file is that clause.
@@ -104,8 +104,8 @@ Open Scope category_scope.
  WHAT IS DELIVERED.
 
  - [Restrict_Faithful], [Restrict_Full_Epic], [Epic_Restrict_Full] and
- [Restrict_Full_iff_Epic]: Riehl's "always faithful, and full if and
- only if φ is an epimorphism", for ARBITRARY rings R and T and any
+ [Restrict_Full_iff_Epic]: Riehl's “always faithful, and full if and
+ only if φ is an epimorphism”, for ARBITRARY rings R and T and any
  ring map φ.  No commutativity is assumed anywhere.
  - [TMod_Reflective_in_RMod], with its adjunction as its own constant
  [TMod_adj]: for φ epi WITH [CentralImage φ], T-Mod is reflective in
@@ -121,7 +121,7 @@ Open Scope category_scope.
  in that subcategory and is an equivalence onto it — full, faithful
  and essentially surjective, through Theory/Equivalence/
  FullFaithful.v's [FF_ESO_Equivalence] — which is what Riehl's
- "identifies T Mod as a reflective subcategory" means here.
+ “identifies T Mod as a reflective subcategory” means here.
  - [QMod_Reflective_in_ZMod], [QMod_equiv_UnitFixed] and
  [Restrict_ZtoQ_Full]: the instance at ℤ → ℚ, with no hypothesis
  left: Instance/Rng.v's [ZtoQ_epic] and Instance/Mod/Extension.v's
@@ -160,13 +160,13 @@ Open Scope category_scope.
  ([Restrict_UnitFixed_incl]).  Refused at [eq_refl], pinned in
  Test/ProbeReflective370.v rather than here (a negative probe line in
  this file would add to [make todo]): the unit as a whole record
- against Instance/Mod/Extension.v's [extend_adj_unit] ("cannot unify
- "unit" and "extend_adj_unit phi Hc M""), the two being different
+ against Instance/Mod/Extension.v's [extend_adj_unit] (“cannot unify
+ ”unit“ and ”extend_adj_unit phi Hc M“”), the two being different
  terms that agree pointwise.  [TMod_equiv_UnitFixed] is an equivalence of
  categories, natural isomorphisms both ways, not an isomorphism.
 
  AXIOMS.  [Print Assumptions] on all 58 constants [Print Module]
- lists reports "Closed under the global context" for each.
+ lists reports “Closed under the global context” for each.
 
  UNIVERSES, read by [About] under [Set Printing Universes] on every
  constant.  Each section declares [Universes u p] and takes its rings
@@ -203,14 +203,14 @@ Open Scope category_scope.
  [ZMod_not_UnitFixed] are about [RMod Int_Ring@{Set Set Set}], and the
  W of [ZtoQ_IsLocalization] ranges over [obj[Rng@{u Set}]], rings at
  carrier level [Set]: at a W above [Set] its universal property is
- refused with "universe inconsistency: Cannot enforce Set = p"
+ refused with “universe inconsistency: Cannot enforce Set = p”
  (pinned in Test/ProbeReflective370.v).  [loc_hom] is generic in the
  target: [Q_Ring@{p p p} ~{Rng}~> W] for W at any level; it is
  [ZtoQ] that is not.  [PosZ@{s}] has one universe and
  [inject_pos_nonzero] none.  [TMod_adj] carries the ten universes of
  [TMod_Reflective_in_RMod] and its bounds, and adds none.
  [loc_images_commute] and [loc_split] close with [Proof using W psi]:
- under the section's [Default Proof Using "All"] they would otherwise
+ under the section's [Default Proof Using “All”] they would otherwise
  take the unused hypothesis [Hpsi], and [About] reads each as a
  statement about W and ψ alone.
 
@@ -255,7 +255,7 @@ Open Scope category_scope.
  一个方向很短。如果限制是完备的，取环映射 g1, g2 : T → S 且 g1 φ ≈ g2 φ，使S成为两次T模（沿g1和g2），并观察S的恒等映射在两者之间是R线性的；完备性使其成为T线性，在t · 1处的T线性表明 g1 t ≈ g2 t ([Restrict_Full_Epic])。另一方向，Riehl 没有证明，但有一个标准证明，这是一个值得记录的技巧。给定 T-模 M 和 N 以及一个 R-线性加法映射 f : M → N，在直接和的加法自同构环 End(M ⊕ N) 中工作（[AbEndRing]）。T 在 M ⊕ N 上对角作用，一个环映射 ρ : T → End(M ⊕ N)（[module_rep]）。剪切映射 σ(m, n) = (m, n + f m) 是一个自同构（[shear_iso]），通过 σ 对 ρ 共轭得到第二个环映射 ρ' = σ ρ σ⁻¹（[twisted_rep]，通过 [EndRig_conj]），其计算为 t ↦ ((m, n) ↦ (t m, t (n - f m) + f (t m)))。两者在 t 上一致当且仅当 f 与 t 交换（[twist_fixed_of_linear]，[linear_of_twist_fixed]）。R-线性使它们在 φ 之后一致；φ 的满射性使它们一致；因此 f 是 T-线性的（[Epic_Restrict_Full]）。
 
  已交付内容。-  [Restrict_Faithful], [Restrict_Full_Epic], [Epic_Restrict_Full] 和 [Restrict_Full_iff_Epic]：Riehl 的“始终忠实，并且当且仅当 φ 是满射时才全”，适用于任意环 R 和 T 以及任何环映射 φ。这里不假设任何交换性。-  [TMod_Reflective_in_RMod]，及其作为自身常量的伴随 [TMod_adj]：对于 φ 为满射且有 [CentralImage φ]，T-Mod 在 R-Mod 中是反射子范畴，扩张标量作为反射函子。该子范畴是 Instance/Mod/Extension.v 中伴随（Construction/Reflective/FixedPoints.v）所对应的 [UnitFixed]：那些使单位 M → Restrict(T ⊗ M) 可逆的 R-模。该记录来自 [unit_fixed_reflective_of_idempotent]，诱导的 monad 是幂等的，因为余单位可逆（ZW24WZZ，来自 Adjunction/FullFaithful.v 的 [right_adjoint_fully_faithful_iff_counit_iso]）。- [Restrict_UnitFixed] 和 [TMod_equiv_UnitFixed]：在该子类别中的限制，并且是到该子类别的等价——通过 Theory/Equivalence/FullFaithful.v 的 [FF_ESO_Equivalence] 是满的、忠实的并且本质上是满射的——这就是 Riehl 所说的“将 T Mod 识别为反射子类别”在这里的意思。- [QMod_Reflective_in_ZMod]、[QMod_equiv_UnitFixed] 和 [Restrict_ZtoQ_Full]：在 ℤ → ℚ 的实例，没有剩余假设：Instance/Rng.v 的 [ZtoQ_epic] 和 Instance/Mod/Extension.v 的 [Q_central] 都完成了。它的模是 [RMod Int_Ring@{Set Set Set}] 的那些模：Instance/Rng.v 的 [ZtoQ] 在载体层级 [Set]（UNIVERSES，见下文）上被固定。- [ZMod_not_UnitFixed]：该反射是适当的。ℤ，作为自身的模，不属于该子范畴：在 ℤ 处单位 η 的逆元 g 将是 ℤ 线性的，η 1 = 1 ⊗ 1 是 ℚ 模 ℚ ⊗ ℤ 中元素 (1/2) · (1 ⊗ 1) 的两倍，因此 1 = g(η 1) 将是偶数（[lia] 封闭了奇偶性）。- [InvertsSet]、[IsLocalization] 和 [localization_epic]：在反转一个族 S 的那些映射中初始的环映射是一个满射，对于任意 S 都成立（不需要 Riehl 的乘法闭包）。只使用了泛性质的唯一性部分。- [ZtoQ_IsLocalization]：ℤ → ℚ 是在正整数处的局部化，映射到任意载体层面的环 W，无论是否交换。该级别是 [ZtoQ] 的，其 Instance/Rng.v 在 [Set] 定位
- （[About ZtoQ_IsLocalization] 读取 [IsLocalization@{u0 Set u1 u u1} ZtoQ@{u0} PosZ@{u1}]，第二个宇宙是环的级别）；中介 [loc_hom] 本身是级别通用的。[loc_hom] 将 a/b 发送到 ψ a · (ψ b)⁻¹，这是定义良好的，因为 ℤ 的像是交换的（[loc_images_commute]）。唯一性通过直接证明，方法是消去 ψ b（[loc_hom_unique]），而不是通过 [ZtoQ_epic]，因此 [ZtoQ_epic_of_localization] 是 Instance/Rng.v 的 [ZtoQ_epic] 的一个独立的第二个证明。优势，严格首先衡量。在 [eq_refl]：返回的满射前像就是给定的加法映射（[Epic_Restrict_Full_prefmap]：没有重建）；扭曲作用在对上计算（[twisted_rep_value]）；反射器在 M 处的模是 [RestrictObj φ (ExtendObj φ Hc M)]（[TMod_reflector_obj]）；在 m 处的单位是 Riehl 的 1 ⊗ m，即 [ext_gen φ M 1 m]（[TMod_unit_pointwise]）；在 [Restrict_UnitFixed] 之后的包含是对对象的限制（[Restrict_UnitFixed_incl]）。在 [eq_refl] 被拒绝，在 Test/ProbeReflective370.v 中固定，而不是在这里（该文件中的负探针行将增加到 [make todo]）：作为整体记录的单位针对 Instance/Mod/Extension.v 的 [extend_adj_unit]（"无法统一‘unit’和‘extend_adj_unit phi Hc M’"），这两个是不同的项，但按点一致。[TMod_equiv_UnitFixed] 是范畴的等价，两方向的自然同构，不是同构。公理。[Print Assumptions] 在所有 58 个常量上 [Print Module] 列出报告“在全局上下文下封闭”。
+ （[About ZtoQ_IsLocalization] 读取 [IsLocalization@{u0 Set u1 u u1} ZtoQ@{u0} PosZ@{u1}]，第二个宇宙是环的级别）；中介 [loc_hom] 本身是级别通用的。[loc_hom] 将 a/b 发送到 ψ a · (ψ b)⁻¹，这是定义良好的，因为 ℤ 的像是交换的（[loc_images_commute]）。唯一性通过直接证明，方法是消去 ψ b（[loc_hom_unique]），而不是通过 [ZtoQ_epic]，因此 [ZtoQ_epic_of_localization] 是 Instance/Rng.v 的 [ZtoQ_epic] 的一个独立的第二个证明。优势，严格首先衡量。在 [eq_refl]：返回的满射前像就是给定的加法映射（[Epic_Restrict_Full_prefmap]：没有重建）；扭曲作用在对上计算（[twisted_rep_value]）；反射器在 M 处的模是 [RestrictObj φ (ExtendObj φ Hc M)]（[TMod_reflector_obj]）；在 m 处的单位是 Riehl 的 1 ⊗ m，即 [ext_gen φ M 1 m]（[TMod_unit_pointwise]）；在 [Restrict_UnitFixed] 之后的包含是对对象的限制（[Restrict_UnitFixed_incl]）。在 [eq_refl] 被拒绝，在 Test/ProbeReflective370.v 中固定，而不是在这里（该文件中的负探针行将增加到 [make todo]）：作为整体记录的单位针对 Instance/Mod/Extension.v 的 [extend_adj_unit]（“无法统一‘unit’和‘extend_adj_unit phi Hc M’”），这两个是不同的项，但按点一致。[TMod_equiv_UnitFixed] 是范畴的等价，两方向的自然同构，不是同构。公理。[Print Assumptions] 在所有 58 个常量上 [Print Module] 列出报告“在全局上下文下封闭”。
 
  宇宙，由 [About] 在 [Set Printing Universes] 下读取每个常量。每个部分声明 [Universes u p] 并在 [obj[Rng@{u p}] 中取其环，因此一个环是 [RingObject@{p p p}]，每个部分常量携带 [Rng] 自己的 [Set < u] 和 [p < u]。上半部分标题：
 
@@ -268,7 +268,7 @@ Open Scope category_scope.
  将 [Int_Ring@{Set Set Set}] 映射到 [Q_Ring@{Set Set Set}]；每个提及 [Q_Ring] 的常数（这些，[ZtoQ_inverts] ，
  [loc_morphism] 及其后续项）也携带 [Set < flip.u0] ，
  [Set < flip.u1] 和 [Set < flip.u2]，标准库界限由 [About Q_Ring] 打印在 [Q_Ring] 本身上，而 [Q_Rig] 和
- [q_rig_setoid] 不携带。所以 [QMod_Reflective_in_ZMod] 和 [ZMod_not_UnitFixed] 是关于 [RMod Int_Ring@{Set Set Set}] 的，而 [ZtoQ_IsLocalization] 的 W 范围在 [obj[Rng@{u Set}] 之间，载体层的环为 [Set]：在 [Set] 之上的 W 上，它的通用性质被拒绝，显示“宇宙不一致：无法强制执行 Set = p”（固定在 Test/ProbeReflective370.v 中）。[loc_hom] 在目标中是通用的：对于任意级别的 W，[Q_Ring@{p p p} ~{Rng}~> W] 是通用的；而 [ZtoQ] 不是。[PosZ@{s}] 具有一个宇宙，而 [inject_pos_nonzero] 没有。[TMod_adj] 承载 [TMod_Reflective_in_RMod] 及其界的十个宇宙，并且没有新增。[loc_images_commute] 和 [loc_split] 以 [Proof using W psi] 结束：在该部分的 [Default Proof Using "All"] 下，否则它们将采用未使用的假设 [Hpsi]，而 [About] 将每个都作为关于 W 和 ψ 的独立陈述来读取。
+ [q_rig_setoid] 不携带。所以 [QMod_Reflective_in_ZMod] 和 [ZMod_not_UnitFixed] 是关于 [RMod Int_Ring@{Set Set Set}] 的，而 [ZtoQ_IsLocalization] 的 W 范围在 [obj[Rng@{u Set}] 之间，载体层的环为 [Set]：在 [Set] 之上的 W 上，它的通用性质被拒绝，显示“宇宙不一致：无法强制执行 Set = p”（固定在 Test/ProbeReflective370.v 中）。[loc_hom] 在目标中是通用的：对于任意级别的 W，[Q_Ring@{p p p} ~{Rng}~> W] 是通用的；而 [ZtoQ] 不是。[PosZ@{s}] 具有一个宇宙，而 [inject_pos_nonzero] 没有。[TMod_adj] 承载 [TMod_Reflective_in_RMod] 及其界的十个宇宙，并且没有新增。[loc_images_commute] 和 [loc_split] 以 [Proof using W psi] 结束：在该部分的 [Default Proof Using “All”] 下，否则它们将采用未使用的假设 [Hpsi]，而 [About] 将每个都作为关于 W 和 ψ 的独立陈述来读取。
 
  未交付。- 没有 [CentralImage] 的反射。实例/模块/扩展.v  
  从一个环上的两个左模的张量构建标量扩张，这需要 φ 的像是中心的；它的头文件将一个真正的双模张量积命名为解决方法，但没有构建。对于每个满射 φ（如上所述），限制是完全忠实的，且这一半是自由的。假设由左陪伴函子承载，因此也由子范畴和记录承载：子范畴是 [UnitFixed (extend_restrict_adjunction φ Hc)]，由该陪伴单位切出，所以 [TMod_Reflective_in_RMod]、[TMod_adj]、[Restrict_UnitFixed] 和 [TMod_equiv_UnitFixed] 都取 [Hc]。如果每个从交换环出的满射都有交换目标（一个经典结果，这里未验证），[CentralImage] 对交换 R 是自动的；此处没有陈述或使用该事实。- 一般化的局部化 R [S⁻¹]：仅说明了通用性质，并且 ℤ → ℚ 是它的一个例子。Instance/Rng/Frac.v 中的 [frac_embed] 在这里未显示为满射。 - 通过 T ⊗_R T 对环同态的表征（Stacks, Lemma 10.107.1, Tag 04VN）。 - Riehl 条款 (v)，纤维化（sheafification），留待问题 #370 的后续处理：Theory/Sheaf/Category.v 中的 sheaf 谓词在问题 #890 中正在修复。
@@ -496,7 +496,7 @@ Proof.
 Defined.
 
 (*
- Riehl's "only if": fullness lifts [two_actions_id] to a T-linear map,
+ Riehl's “only if”: fullness lifts [two_actions_id] to a T-linear map,
  and T-linearity evaluated at t · 1 is g1 t ≈ g2 t. 
 
  --------
@@ -522,7 +522,7 @@ Proof.
 Qed.
 
 (*
- Riehl's "if": an R-linear f between T-modules has twisted and plain
+ Riehl's “if”: an R-linear f between T-modules has twisted and plain
  actions agreeing after phi, hence everywhere, hence is T-linear. 
 
  --------
@@ -702,8 +702,8 @@ Definition InvertsSet {W : obj[Rng@{u p}]} (psi : R ~{Rng@{u p}}~> W) : Type :=
     (rig_mul (ring_rig W) v (rig_map psi s) ≈ rig_one (ring_rig W)).
 
 (*
- Riehl's "initial object in the category whose objects are ring
- homomorphisms R → T that carry all of the elements of S to units". 
+ Riehl's “initial object in the category whose objects are ring
+ homomorphisms R → T that carry all of the elements of S to units”. 
 
  --------
  Riehl 的“在其对象是将 S 的所有元素映射为单位元的环同态 R → T 的范畴中的初始对象”。

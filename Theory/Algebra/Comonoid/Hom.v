@@ -125,8 +125,8 @@ Qed.
 
 (*
 Transport of a comonoid structure across an isomorphism i : x ≅ y, by
-   conjugation: copy on y is "carry back along i⁻¹, copy on x, carry both
-   halves forward along i", and discard on y is "carry back, discard".  The
+   conjugation: copy on y is “carry back along i⁻¹, copy on x, carry both
+   halves forward along i”, and discard on y is “carry back, discard”.  The
    laws are those of Cx conjugated by i; each proof cancels the inner
    [from i ∘ to i], applies the corresponding law of Cx, and transports the
    result across the naturality square of the relevant structural map.

@@ -18,7 +18,7 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.4, printed pp. 41–42 (PDF 51–52) —
  maclane:II.4:construction2, maclane:II.4:ex5
  nLab:      https://ncatlab.org/nlab/show/action
@@ -100,7 +100,7 @@ Generalizable All Variables.
  target), and no finiteness hypothesis on the GROUP is
  rendered — [GrpObject] carries none, so every statement here
  holds for all groups, strictly more than the exercise's
- "finite group" asks.
+ “finite group” asks.
 
  4. THE GROUP-WITH-OPERATORS ASIDE.  Mac Lane's remark that
  functors [Deloop M ⟶ Grp] are groups with operator monoid M
@@ -374,7 +374,7 @@ Qed.
 (* * ** The transformation setoid IS the equivariant-map setoid / * ** 转换宿主是等变映射宿主 *)
 
 (*
- Issue item 2's "unwind", stated literally as a hom-setoid
+ Issue item 2's “unwind”, stated literally as a hom-setoid
  isomorphism in Sets, following the same-directory precedents
  [One_hom_iso] and [Discrete_hom_iso]: a natural transformation
  between functors on the delooping is exactly one equivariant

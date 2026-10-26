@@ -25,10 +25,10 @@ Set Transparent Obligations.
  free category / path category on the quiver [B], with [tnil] the identity
  and [tlist_app] (+++) the composition (associativity is [tlist_app_assoc]);
  see Construction/Free.v.  The same data structure is known in the Haskell
- community as a "type-aligned sequence" (Atze van der Ploeg,
+ community as a “type-aligned sequence” (Atze van der Ploeg,
  https://github.com/atzeus/type-aligned).
 
- Note on indexing: the underlying inductive [tlist'] is defined "snoc-first"
+ Note on indexing: the underlying inductive [tlist'] is defined “snoc-first”
  with the source index fixed in the parameter [k] and the target varying, so
  that [tcons] can prepend an edge while recursing on the tail.  The exposed
  [tlist B i j] flips these into the conventional source-then-target order

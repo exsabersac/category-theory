@@ -47,16 +47,16 @@ Generalizable All Variables.
    VctDual359] ([dual359_no_right_adjoint], [dual359_not_left_adjoint_of_op]).
    The file sits beside [Dual], where the issue's placement clause puts it.
 
-   STALE PREMISES.  The issue's "Current state" says the tree has no
+   STALE PREMISES.  The issue's “Current state” says the tree has no
    category of vector spaces and no dual functor: FALSE twice — [Vct_F] and
    [Dual] above, with [DualMod], [eta] and [double_dual_natural]
-   beside them.  It calls the dual-object functor "#359's": [dual] is
+   beside them.  It calls the dual-object functor “#359's”: [dual] is
    StarAutonomous.v's (2026-07-10), and #359 added the self-adjunction.
    The two readings are different [Program] records, naturally isomorphic
    but NOT convertible (probe N1), not even objectwise (N5: the carriers of
    [VctDual359 x] and [Dual F x] coincide at [eq_refl], the packed modules
    do not — [HomMod]'s and [DualMod]'s proof fields are different opaque
-   constants).  DoubleDual.v said [Vct_F F] "lacked" a monoidal
+   constants).  DoubleDual.v said [Vct_F F] “lacked” a monoidal
    structure — stale since Instance/Mod/Monoidal.v and Instance/Mod/
    Closed.v (2026-08-31); repaired in place, line-neutrally.  And the
    exercise is FALSE over [FdVect F]: DoubleDual.v's [DualFd] is
@@ -71,7 +71,7 @@ Generalizable All Variables.
    D's source is Vct^op, so a colimit there is a PRODUCT in Vct: Mac
    Lane's is the countable power F^ℕ, whose dual (F^ℕ)* would have to be
    the direct sum ⊕_ℕ F of the coordinate functionals if D preserved it.
-   (The issue's own sentence, "the dual of a direct sum is a product",
+   (The issue's own sentence, “the dual of a direct sum is a product”,
    describes the OTHER direction: D does carry the direct sum ⊕_ℕ F, a
    colimit of Vct, to a product — that is the positive half below, not
    the obstruction.)  The tree has no indexed coproducts in [RMod R], and
@@ -108,7 +108,7 @@ Generalizable All Variables.
    combination of coordinates.  For F = ℚ the premise is therefore
    independent of ZF + DC, and no axiom-free witness can be built in this
    tree; docs/INHABITATION.md records the row as one that will never get a
-   constructive inhabitant, unlike the "awaiting a model" rows.  Finite
+   constructive inhabitant, unlike the “awaiting a model” rows.  Finite
    shapes give no obstruction (finite products of modules are biproducts,
    which D carries to biproducts — analysis again), so the countability is
    load-bearing here, where in Instance/Ab/FreeNotContinuous.v (#430) it
@@ -149,8 +149,8 @@ Generalizable All Variables.
    [Set] anywhere: the shape is Structure/Limit/Comparison.v's
    annotated [DiscreteCat_Functor'], because Instance/Discrete.v's
    unannotated [DiscreteCat_Functor] pins the shape's hom level to [Set]
-   and no cocone in Vct^op can share it (probe N4, "Cannot enforce Set =
-   …").  Every head but [vct_zero_hom] carries the two equations `u0 = u`,
+   and no cocone in Vct^op can share it (probe N4, “Cannot enforce Set =
+   …”).  Every head but [vct_zero_hom] carries the two equations `u0 = u`,
    `u1 = u` identifying the three [FieldObject] levels — they arrive with
    [VctLine := Ring_RMod (field_ring F)] and with [Dual@{u u u _}] alike,
    and [vct_zero_hom], stated over bare objects of Vct, carries none.
@@ -173,7 +173,7 @@ Generalizable All Variables.
    obligations (8 closed by hand under [Obligation Tactic := idtac] for
    [vct_zero_hom] and [SpanCoords], 9 by [cat_simpl] for the four records
    [vct_transpose_morphism], [vct_aor], [dual_vct_AdjointOnTheRight] and
-   [iso359]), all 58 "Closed under the global context", zero `Axioms:`
+   [iso359]), all 58 “Closed under the global context”, zero `Axioms:`
    lines; the `make print-assumptions` gate carries the 41 heads.  Six
    `Defined`, each LOAD-BEARING (flipped to `Qed` one at a time in a copy
    of the whole file: [op_discrete_cone] stops [PowCocone_IsColimitCocone],
@@ -195,8 +195,8 @@ Generalizable All Variables.
    `Require` list plus Structure/Monoidal/Dual.v (the #359 control) and
    Structure/Limit/Product.v (the indexed-product readback) and carries 6
    refutation commands = 1 instrument + N1, N5 CONVERSION ([VctDual359 F =
-   Dual F] at [eq_refl]: "has type VctDual359 F = VctDual359 F while it is
-   expected to have type VctDual359 F = Dual F"; objectwise the same, with
+   Dual F] at [eq_refl]: “has type VctDual359 F = VctDual359 F while it is
+   expected to have type VctDual359 F = Dual F”; objectwise the same, with
    the carriers accepted beside it) + N2-N3 TYPING (the unconditional
    [∀ Rt, Dual F ⊣ Rt → False] does not ascribe; the exercise's direction
    of the self-adjunction is refused) + N4 UNIVERSE, each stripped one at
@@ -212,7 +212,7 @@ Generalizable All Variables.
    [LineDiagram], [CoordSpanProper], [eq_refl], [False], [nat], [Vct_F],
    [carrier], [cmon_setoid] — every first break on a positive line.
    `make todo` grows by the 6 refutation lines only (2266 → 2272 over
-   64b94901), so the issue's "adds no new hits" box is not met as written
+   64b94901), so the issue's “adds no new hits” box is not met as written
    (disclosed, as in #430); the Coq 8.19 and 8.20 boxes are checked by nix
    source builds of the committed revision, which the PR records.
 
@@ -235,7 +235,7 @@ Generalizable All Variables.
    [Functor_Setoid]，一个捆绑的自然同构），并且
    Theory/Adjunction.v 的 [adjunction_along_left_iso] （#431）将任何
    [VctDual359 ⊣ Rt] 转换为 [Dual F ⊣ Rt]，因此 [dual359_no_right_adjoint]
-   和 [dual359_not_left_adjoint_of_op] 从上述反驳中得出。UNIVERSES（[About] 在 `Set Printing Universes` 下，全部 41 个头）。没有 [Set] 出现：形状是 Structure/Limit/Comparison.v 的标注 [DiscreteCat_Functor']，因为 Instance/Discrete.v 的未标注 [DiscreteCat_Functor] 将形状的同类型级别固定为 [Set]，并且 Vct^op 中没有余圆锥可以共享它（探针 N4，“无法强制 Set = …”）。每个头除了 [vct_zero_hom] 都携带两个方程 `u0 = u`, `u1 = u` 来识别三个 [FieldObject] 级别——它们随着 [VctLine := Ring_RMod (field_ring F)] 和 [Dual@{u u u _}] 一同到达，并且 [vct_zero_hom]，在 Vct 的裸对象上陈述，不携带任何方程。严格约束有一种，即类别对象级别以下的字段级别（`u < u2`及其重命名；四个列表形状的头[span_sum]、[span_sum_app]、[span_sum_scale]和[dual_coord_in_span]对所有三个已识别级别都进行了说明），此外还有[dual_vct_Continuous]的形状级别（`u5 < u2`）和[vct_zero_hom]的第二对象级别（`u < u3`）。Stdlib 按文件中的第一个承运人限制顺序：`Basics.compose` 和 `ID` 在 [VctLine]（继承自 Instance/FdVect.v），`prod_rect` 在 [vct_zero_hom]，`list_rect` 和 `app` 在 [span_sum_app]，`ListDef.Map` 和 `projections` 在 [span_sum_scale]，`JMeq`、`eq`、`eq_ind`、`eq_ind_r`、`eq_rect_r`、`EqdepFacts.eq_sigT_sig_eq` 和 `Logic_lemmas.equality` 在 [LineDiagram]（继承自 [DiscreteCat_Functor']；该形状的 hom 是 [eq]），以及 Specif 的 `Projections` 在 [CoordSpanProper]（一个 sigma 类型）。测量。41 个 `.glob` 头（34 个 `def`，7 个 `prf`）和 17 个 [Program] 义务（8 个通过 [Obligation Tactic := idtac] 在 [vct_zero_hom] 和 [SpanCoords] 下手动关闭，9 个通过 [cat_simpl] 对四条记录 [vct_transpose_morphism]、[vct_aor]、[dual_vct_AdjointOnTheRight] 和 [iso359]），总共 58 个“在全局上下文中关闭”，零个 `Axioms:` 行；`make print-assumptions` 门承载 41 个头。六个 `Defined`，每个都是承重的（在整个文件的副本中一次翻转到 `Qed`：[op_discrete_cone] 停止 [PowCocone_IsColimitCocone]，[ZeroCocone] 停止 [dual_not_PreservesColimitCocone]，[PowCocone_IsColimitCocone] 停止读回 [pow_cocone_mediator_component]，[to359] 和 [from359] 停止 [dual_iso359] 的证明，[dual_iso359] 停止读回 [iso359_to_component]——这两个读回的存在就是这个原因）；十四个 `Qed`。关闭 103 个文件，不包括自身 (Adjunction/Right.v 18 在边缘，Structure/Limit/Comparison.v 5，Instance/Mod/Closed.v 2，Instance/Mod/Quotient.v 2，DoubleDual.v 1，Instance/Mod/Product.v 1，其余十九个 `Require` 为 0；25 个中没有可以删除的——每个文件在复制时都被删除，且复制停止编译)。41 个名称没有冲突 (`grep -rlw --include='*.v'`；DoubleDual.v 的头部设计上提到 [dual_iso359]；[SpanQuot]、[span_quot] 和 Product.v 的 [modprod_*] 是因为 Construction/PROP/Presentation.v 拥有 [quot]，而 Lib/Datatypes.v 拥有 [prod_setoid])。Test/ProbeDualNoRightAdjoint433.v 镜像了 `Require` 列表，加上 Structure/Monoidal/Dual.v（#359 控制）和 Structure/Limit/Product.v（索引积回读），并包含 6 条驳斥命令 = 1 个工具 + N1, N5 转换（[VctDual359 F = Dual F] 在 [eq_refl]："类型是 VctDual359 F = VctDual359 F，但期望类型是 VctDual359 F = Dual F"；对象上相同，并在其旁接受载体） + N2-N3 类型（无条件 [∀ Rt, Dual F ⊣ Rt → False] 不赋予类型；练习的自伴随方向被拒绝） + N4 宇宙，每次都在整个文件的副本中逐一去掉，与其接受的控制文件并排；七个 `eq_refl` 回读；守卫覆盖 25/19，有六个详尽的例外（六条驳斥命令中的标识符标记/在它们之外命名，注释已被删除；例外情况包括反驳关键字本身、`fun`、`obj`、两个被反驳示例的名称以及工具的缺失名称；模拟重命名了16个库名称——[VctDual359]、[Dual]、[dual_functor_no_right_adjoint]、[dual_vct_Adjunction]、[Opposite_Functor]、[Cocone]、[DiscreteCat_Functor]、[VctLine]、[LineDiagram]、[CoordSpanProper]、[eq_refl]、[False]、[nat]、[Vct_F]、[carrier]、[cmon_setoid]——每条正面行的首次断行。`make todo` 仅通过 6 条反证行增长（2266 → 2272，提交版本 64b94901），所以问题的“没有新增命中”选项框未按原文满足（已披露，如 #430 所示）；Coq 8.19 和 8.20 选项框通过 Nix 对已提交修订版本的源码构建进行了检查，PR 中有记录。未交付：无条件反驳（没有选择公理是不可能的，上文）；[HasIndexedProducts (RMod R)] 实例和索引余积 ⊕_I（Product.v 的头部）；两个对偶的同构形式，除了 [Functor_Setoid] 的形式（没有 [⟹] 对，没有 [≅] 在函子范畴中——捆绑形式是 [adjunction_along_left_iso] 使用的）；本文件自身 [VctDual359] 的自伴随（#359 的是探针控制的）；任何关于 [FdVect F] 的内容，其中练习是错误的；不修改 Instance/FdVect.v、Instance/Mod.v、Instance/Mod/Quotient.v、Instance/Mod/Closed.v、Structure/Monoidal/StarAutonomous.v、Structure/Monoidal/Dual.v、Structure/Limit/Comparison.v 或 Adjunction/Continuity.v。
+   和 [dual359_not_left_adjoint_of_op] 从上述反驳中得出。UNIVERSES（[About] 在 `Set Printing Universes` 下，全部 41 个头）。没有 [Set] 出现：形状是 Structure/Limit/Comparison.v 的标注 [DiscreteCat_Functor']，因为 Instance/Discrete.v 的未标注 [DiscreteCat_Functor] 将形状的同类型级别固定为 [Set]，并且 Vct^op 中没有余圆锥可以共享它（探针 N4，“无法强制 Set = …”）。每个头除了 [vct_zero_hom] 都携带两个方程 `u0 = u`, `u1 = u` 来识别三个 [FieldObject] 级别——它们随着 [VctLine := Ring_RMod (field_ring F)] 和 [Dual@{u u u _}] 一同到达，并且 [vct_zero_hom]，在 Vct 的裸对象上陈述，不携带任何方程。严格约束有一种，即类别对象级别以下的字段级别（`u < u2`及其重命名；四个列表形状的头[span_sum]、[span_sum_app]、[span_sum_scale]和[dual_coord_in_span]对所有三个已识别级别都进行了说明），此外还有[dual_vct_Continuous]的形状级别（`u5 < u2`）和[vct_zero_hom]的第二对象级别（`u < u3`）。Stdlib 按文件中的第一个承运人限制顺序：`Basics.compose` 和 `ID` 在 [VctLine]（继承自 Instance/FdVect.v），`prod_rect` 在 [vct_zero_hom]，`list_rect` 和 `app` 在 [span_sum_app]，`ListDef.Map` 和 `projections` 在 [span_sum_scale]，`JMeq`、`eq`、`eq_ind`、`eq_ind_r`、`eq_rect_r`、`EqdepFacts.eq_sigT_sig_eq` 和 `Logic_lemmas.equality` 在 [LineDiagram]（继承自 [DiscreteCat_Functor']；该形状的 hom 是 [eq]），以及 Specif 的 `Projections` 在 [CoordSpanProper]（一个 sigma 类型）。测量。41 个 `.glob` 头（34 个 `def`，7 个 `prf`）和 17 个 [Program] 义务（8 个通过 [Obligation Tactic := idtac] 在 [vct_zero_hom] 和 [SpanCoords] 下手动关闭，9 个通过 [cat_simpl] 对四条记录 [vct_transpose_morphism]、[vct_aor]、[dual_vct_AdjointOnTheRight] 和 [iso359]），总共 58 个“在全局上下文中关闭”，零个 `Axioms:` 行；`make print-assumptions` 门承载 41 个头。六个 `Defined`，每个都是承重的（在整个文件的副本中一次翻转到 `Qed`：[op_discrete_cone] 停止 [PowCocone_IsColimitCocone]，[ZeroCocone] 停止 [dual_not_PreservesColimitCocone]，[PowCocone_IsColimitCocone] 停止读回 [pow_cocone_mediator_component]，[to359] 和 [from359] 停止 [dual_iso359] 的证明，[dual_iso359] 停止读回 [iso359_to_component]——这两个读回的存在就是这个原因）；十四个 `Qed`。关闭 103 个文件，不包括自身 (Adjunction/Right.v 18 在边缘，Structure/Limit/Comparison.v 5，Instance/Mod/Closed.v 2，Instance/Mod/Quotient.v 2，DoubleDual.v 1，Instance/Mod/Product.v 1，其余十九个 `Require` 为 0；25 个中没有可以删除的——每个文件在复制时都被删除，且复制停止编译)。41 个名称没有冲突 (`grep -rlw --include='*.v'`；DoubleDual.v 的头部设计上提到 [dual_iso359]；[SpanQuot]、[span_quot] 和 Product.v 的 [modprod_*] 是因为 Construction/PROP/Presentation.v 拥有 [quot]，而 Lib/Datatypes.v 拥有 [prod_setoid])。Test/ProbeDualNoRightAdjoint433.v 镜像了 `Require` 列表，加上 Structure/Monoidal/Dual.v（#359 控制）和 Structure/Limit/Product.v（索引积回读），并包含 6 条驳斥命令 = 1 个工具 + N1, N5 转换（[VctDual359 F = Dual F] 在 [eq_refl]：“类型是 VctDual359 F = VctDual359 F，但期望类型是 VctDual359 F = Dual F”；对象上相同，并在其旁接受载体） + N2-N3 类型（无条件 [∀ Rt, Dual F ⊣ Rt → False] 不赋予类型；练习的自伴随方向被拒绝） + N4 宇宙，每次都在整个文件的副本中逐一去掉，与其接受的控制文件并排；七个 `eq_refl` 回读；守卫覆盖 25/19，有六个详尽的例外（六条驳斥命令中的标识符标记/在它们之外命名，注释已被删除；例外情况包括反驳关键字本身、`fun`、`obj`、两个被反驳示例的名称以及工具的缺失名称；模拟重命名了16个库名称——[VctDual359]、[Dual]、[dual_functor_no_right_adjoint]、[dual_vct_Adjunction]、[Opposite_Functor]、[Cocone]、[DiscreteCat_Functor]、[VctLine]、[LineDiagram]、[CoordSpanProper]、[eq_refl]、[False]、[nat]、[Vct_F]、[carrier]、[cmon_setoid]——每条正面行的首次断行。`make todo` 仅通过 6 条反证行增长（2266 → 2272，提交版本 64b94901），所以问题的“没有新增命中”选项框未按原文满足（已披露，如 #430 所示）；Coq 8.19 和 8.20 选项框通过 Nix 对已提交修订版本的源码构建进行了检查，PR 中有记录。未交付：无条件反驳（没有选择公理是不可能的，上文）；[HasIndexedProducts (RMod R)] 实例和索引余积 ⊕_I（Product.v 的头部）；两个对偶的同构形式，除了 [Functor_Setoid] 的形式（没有 [⟹] 对，没有 [≅] 在函子范畴中——捆绑形式是 [adjunction_along_left_iso] 使用的）；本文件自身 [VctDual359] 的自伴随（#359 的是探针控制的）；任何关于 [FdVect F] 的内容，其中练习是错误的；不修改 Instance/FdVect.v、Instance/Mod.v、Instance/Mod/Quotient.v、Instance/Mod/Closed.v、Structure/Monoidal/StarAutonomous.v、Structure/Monoidal/Dual.v、Structure/Limit/Comparison.v 或 Adjunction/Continuity.v。
 *)
 
 #[local] Obligation Tactic := idtac.
@@ -444,7 +444,7 @@ Proof.
     exact (mquot_proj_kills SpanCoords _ (dual_coord_in_span n psi)). }
   (*
  [mquot_proj_kernel]'s right-hand side is the [inhabited] truncation of
- membership since the PR "algebraic carriers are sets" (2026-09-17), so
+ membership since the PR “algebraic carriers are sets” (2026-09-17), so
  the witness is opened here rather than applied directly.  The goal is
  [False], a [Prop], so the elimination is allowed and nothing is lost. 
 

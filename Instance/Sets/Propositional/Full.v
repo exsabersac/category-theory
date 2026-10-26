@@ -18,14 +18,14 @@ Generalizable All Variables.
  nLab:    https://ncatlab.org/nlab/show/reflective+subcategory
  nLab:    https://ncatlab.org/nlab/show/Bishop+set
  nLab:    https://ncatlab.org/nlab/show/propositional+truncation
- Book:    The Univalent Foundations Program, "Homotopy Type Theory", IAS
+ Book:    The Univalent Foundations Program, “Homotopy Type Theory”, IAS
  2013, Definition 3.1.1 (a SET) and Definition 3.3.1 (a MERE
  PROPOSITION), as cited in Lib/Setoid/Propositional.v
- Book:    Awodey, "Category Theory", Carnegie Mellon pre-print of the 1st
+ Book:    Awodey, “Category Theory”, Carnegie Mellon pre-print of the 1st
  ed. (September 2005), §10.3, printed p. 278 (PDF p. 287), read
- from the page image: "Its left adjoint F is the discrete poset
+ from the page image: “Its left adjoint F is the discrete poset
  functor.  For any set X, therefore, one has as the unit the
- identity function X = UF(X)."
+ identity function X = UF(X).”
 
  BACKGROUND.  The sets of the textbooks have a propositional equality:
  two elements are equal or they are not, and a proof that they are equal
@@ -35,7 +35,7 @@ Generalizable All Variables.
  property [PropEquiv] that a particular setoid's `≈` is logically a
  proposition.  Instance/Sets/Propositional.v carries the property along
  the constructions of [Sets], and its header records that no instance
- of the shape "every object of [Sets] is propositional" is available.
+ of the shape “every object of [Sets] is propositional” is available.
  This file takes the other route: it cuts out the full subcategory
  [PropSets] of [Sets] on the setoids that CARRY a [PropEquiv], so that
  inside it every object is propositional by construction.  It is the
@@ -86,14 +86,14 @@ Generalizable All Variables.
  discrete poset on a propositional setoid needs no truncation, and
  the monad it induces on [PropSets] is isomorphic to the identity
  monad with identity components, which is Awodey's p. 278 unit
- "the identity function X = UF(X)" read over [PropSets].  Over the
+ “the identity function X = UF(X)” read over [PropSets].  Over the
  whole of [Sets] the discrete poset is the reflector [PropSets_trunc]
  followed by that one, on objects and on arrows at [eq_refl] (as
  functors the equation is refused, structurally past the standard
  library: R19 of Test/ProbeMonadicity469.v), and its monad is the
  truncation.
  - The concrete algebraic object records carry a [PropEquiv] field
- since PR #1320 ("Algebraic carriers are sets", merged 2026-09-17),
+ since PR #1320 (“Algebraic carriers are sets”, merged 2026-09-17),
  so their forgetful functors factor through [PropSets] by
  [PropSets_lift] as well; none of those factorizations is built
  here.
@@ -104,7 +104,7 @@ Generalizable All Variables.
  reusable home under Instance/Sets/, with a [Require] closure of 39
  modules against Components.v's 118 (by [Print Libraries]);
  unifying the two is left to the maintainer.  CORRECTION (#1349):
- the maintainer decided "Unify them" (on PR #1346).  Components.v
+ the maintainer decided “Unify them” (on PR #1346).  Components.v
  now requires this file and defines [PSetsSub] and [PSets] as
  [PropSets_sub] and [PropSets], so that control holds by
  unfolding; its closure is 119 modules with this one, and this
@@ -166,8 +166,8 @@ Generalizable All Variables.
  CORRECTION (#1349): nine proofs end [Defined] now, by token,
  [SquashSetoid] having moved here, and it is load-bearing.  In a
  scratch file, a copy of it closed [Qed] makes Instance/Top/
- Components.v's [squash_id] script refused at its [refine] ("cannot
- unify "bool" and "carrier (SquashSetoidQ Q)""), and Instance/Pos/
+ Components.v's [squash_id] script refused at its [refine] (“cannot
+ unify ”bool“ and ”carrier (SquashSetoidQ Q)“”), and Instance/Pos/
  Monadicity.v's [trunc_choice] script at [true], whose type is not
  that copy's carrier; a copy closed [Defined] is accepted by both.
 

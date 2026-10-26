@@ -8,8 +8,8 @@ Generalizable All Variables.
 Wikipedia: https://en.wikipedia.org/wiki/Fold_(higher-order_function)
    nLab: https://ncatlab.org/nlab/show/monoid
 
-   No dedicated nLab or Wikipedia page exists for "Foldable": the Wikipedia
-   "fold" page above covers the underlying right fold, and the monoid page is
+   No dedicated nLab or Wikipedia page exists for “Foldable”: the Wikipedia
+   “fold” page above covers the underlying right fold, and the monoid page is
    the closest categorical reference (see the categorical reading below).  The
    Haskell-level account of the class lives on the HaskellWiki / Wikibooks
    rather than in the Wikipedia main namespace

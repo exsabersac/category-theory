@@ -27,11 +27,11 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/representable+functor
    nLab:      https://ncatlab.org/nlab/show/complete+category
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
    Corollary, book p. 130 ([maclane:V.8:cor1]): in particular every
    continuous functor K : A → Set is representable, A small-complete,
    well-powered, with small hom-sets and a small cogenerating set.
-   Riehl, "Category Theory in Context", Epilogue §E.1, printed p. 252
+   Riehl, “Category Theory in Context”, Epilogue §E.1, printed p. 252
    ([riehl:E.1:thm-representability-criteria]), clause (i), gives the
    same criterion for a limit-preserving [F : C → Set], with
    intersections of subobjects in place of well-poweredness.  Riehl,
@@ -90,18 +90,18 @@ Generalizable All Variables.
    beside an instrument and a control at [jo <= h] that are accepted: at
    [h < jo], [@Diagonal C J] alone is accepted, and [SAFT_wellpowered
    (@Diagonal C J) comp (Continuous_PreservesImageLimit
-   Diagonal_continuous) G WP] is refused at the functor, "(universe
-   inconsistency: Cannot enforce <1> = h because h < <2> <= <1>)", <1>
+   Diagonal_continuous) G WP] is refused at the functor, “(universe
+   inconsistency: Cannot enforce <1> = h because h < <2> <= <1>)”, <1>
    being the hom universe of the [Fun] the diagonal lands in (the
    placeholders number universes the scratch compile generated, by first
    appearance).  Test/ProbeSAFT453.v pins it as N19
    ([p453_n19_diag_large]), beside [p453_diag_small] and
    [p453_diag_alone]; it quotes the whole message, whose numbering reads
-   the same chain as "<2> = h because h < <7> <= <2>".  That refusal is
+   the same chain as “<2> = h because h < <7> <= <2>”.  That refusal is
    the substantive one.  [saft_colim] itself is refused at its argument
-   [J], "The term "J" has type "Category@{jo h h}" while it is expected
-   to have type "Category@{<3> h h}" (universe inconsistency: Cannot
-   enforce jo = <3> because <3> <= <4> < jo)", but that second refusal
+   [J], “The term ”J“ has type ”Category@{jo h h}“ while it is expected
+   to have type ”Category@{<3> h h}“ (universe inconsistency: Cannot
+   enforce jo = <3> because <3> <= <4> < jo)”, but that second refusal
    only restates [saft_colim]'s own binder [jo <= h], is quoted as such
    and is not pinned.  So completeness is assumed at shapes [so >= h] and
    cocompleteness is delivered at shapes [jo <= h]; they meet at [so =
@@ -128,8 +128,8 @@ Generalizable All Variables.
    Cover.v's [saft_index U G d] by [eq_refl].  The PRODUCTS are not
    convertible: in a scratch file with this file's import list, [snd (`1
    (cogen_prod (Comma_Complete cont comp) (comma_cogenerator U d G))) =
-   saft_prod U comp G d] at [eq_refl] is refused by conversion ("cannot
-   unify …"), beside an accepted control ([comma_cogenerator_index]'s
+   saft_prod U comp G d] at [eq_refl] is refused by conversion (“cannot
+   unify …”), beside an accepted control ([comma_cogenerator_index]'s
    statement): they are limits of two different diagram terms.
    Test/ProbeSAFT453.v pins it as N7 ([p453_n7_same_product]), beside
    [p453_same_index].
@@ -160,7 +160,7 @@ Generalizable All Variables.
    alone, reads back with no equation between named universes.  Against
    the landed Adjunction/SAFT/Characterization.v, whose
    [SAFT_wellpowered] carries none, [About] of the eight constants
-   searched for " = " finds [su = pa] in
+   searched for “ = ” finds [su = pa] in
    [continuous_Set_functor_representable_iff] and nothing else (the one
    other hit is the equality stated by
    [continuous_Set_functor_representable_obj]).  Stdlib bounds are
@@ -181,7 +181,7 @@ Generalizable All Variables.
    comparison of the two products beyond the index.
 
    MEASUREMENTS.  Eight constants ([Print Module]), no [Program]
-   obligation, all transparent, each "Closed under the global context" by
+   obligation, all transparent, each “Closed under the global context” by
    its fully qualified name.  A satellite because
    Adjunction/Representability/Sets.v, Adjunction/Diagonal/Limit.v and
    Construction/Comma/Creation.v are needed here and are not in

@@ -8,7 +8,7 @@
    over a diagram of subcategory objects lifts, uniquely up to the
    canonical isomorphism, to a limiting cone in the subcategory.  This is
    the elementary half of the folklore that a limit-closed full
-   subcategory is "as complete as its ambient category" (nLab:
+   subcategory is “as complete as its ambient category” (nLab:
    https://ncatlab.org/nlab/show/created+limit, and Mac Lane §V.4
    Theorem 2 for the passage from creation to completeness).  Until
    this file the tree's only route from a subcategory to [CreatesLimit]

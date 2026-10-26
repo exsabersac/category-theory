@@ -19,7 +19,7 @@ Generalizable All Variables.
    * * Core spider lemmas for hypergraph categories
 
    In a hypergraph category, each object [X] carries a special commutative
-   Frobenius algebra (SCFA).  "Spider" diagrams — vertices with arbitrarily
+   Frobenius algebra (SCFA).  “Spider” diagrams — vertices with arbitrarily
    many input and output legs built from [scfa_mu] / [scfa_eta] /
    [scfa_delta] / [scfa_epsilon] — collapse to canonical normal forms that
    depend only on the leg count, not on how the spider was assembled.
@@ -41,7 +41,7 @@ Generalizable All Variables.
    their fusion rule; this file works in a plain symmetric monoidal category,
    without the dagger or phases.)
 
-   The full "spider theorem" (Lack's normal form for SCFA expressions) is
+   The full “spider theorem” (Lack's normal form for SCFA expressions) is
    a non-trivial induction and is deferred to a later milestone.  This file
    provides the workhorse lemmas that downstream proofs typically reach for:
 
@@ -232,7 +232,7 @@ End Spider.
    repeated [μ].  Dually, [unfold_delta n : X ~> X^⨂(S n)] unfolds via
    repeated [δ].
 
-   The "canonical spider" [canonical_spider m n] then has signature
+   The “canonical spider” [canonical_spider m n] then has signature
    [X^⨂m ~> X^⨂n] obtained by folding all m inputs down to a single
    [X] (or to [I] via [ε] if m=0) and then unfolding to n outputs (or
    to [I] via [ε] if n=0). 
@@ -401,8 +401,8 @@ Proof. reflexivity. Qed.
 (*
    * ** Functorial spider equalities (m+n compositions collapse)
 
-   These are the "structural" spider equalities: any two ways of
-   composing canonical spiders that share an "internal X" reduce to
+   These are the “structural” spider equalities: any two ways of
+   composing canonical spiders that share an “internal X” reduce to
    a single canonical spider via specialness.
 
    Concretely: composing the m→1 spider with the 1→n spider gives the
@@ -513,7 +513,7 @@ Arguments canonical_spider {C Sym H} X m n.
 (*
    * ** Note on the full spider theorem
 
-   Lack's theorem ("Composing PROPs", arXiv:0411065) states that any
+   Lack's theorem (“Composing PROPs”, arXiv:0411065) states that any
    string diagram built from [scfa_mu] / [scfa_eta] / [scfa_delta] /
    [scfa_epsilon] on a single object [X], with [m] input legs and [n]
    output legs, reduces to the canonical spider [canonical_spider X m n].

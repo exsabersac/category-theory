@@ -30,7 +30,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/subobject
  Wikipedia: https://en.wikipedia.org/wiki/Subobject
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
  book p. 130 (PDF p. 139): a category is WELL-POWERED when the subobjects
  of each object form a small set, and CO-WELL-POWERED when the quotient
  objects of each object do.  The notion is the size hypothesis of the
@@ -45,8 +45,8 @@ Generalizable All Variables.
 
  A subobject of x is Theory/Subobject.v's [SubObj x], a mono into x, and
  two subobjects are the same when the setoid [SubObj_Setoid] relates
- them (an isomorphism of domains over x).  "The subobjects of x form a
- small set" is read here as a small INDEX together with maps both ways
+ them (an isomorphism of domains over x).  “The subobjects of x form a
+ small set” is read here as a small INDEX together with maps both ways
  that EXHAUST the subobjects: [WellPoweredAt x] carries [wp_index],
  [wp_to : wp_index → SubObj x], [wp_from : SubObj x → wp_index] and the
  exhaustiveness clause [wp_to_from : wp_to (wp_from u) ≈ u].  That is a
@@ -66,7 +66,7 @@ Generalizable All Variables.
 
  The content of the definition is its UNIVERSE.  Left free, the index can
  be [SubObj x] itself with [wp_to] and [wp_from] the identity
- ([wp_trivial] below), and every category is "well-powered".
+ ([wp_trivial] below), and every category is “well-powered”.
  [WellPowered] therefore pins the index at or below the hom universe,
  [w <= h]: the book's small sets are the size of its hom-sets,
  mathlib's common case is the same, and Adjunction/SAFT.v's statement
@@ -76,7 +76,7 @@ Generalizable All Variables.
  one universe up can still be STATED, and compared with the pinned
  notion.
 
- "Small" is therefore relative to the category's OWN hom universe, as in
+ “Small” is therefore relative to the category's OWN hom universe, as in
  mathlib's [WellPowered.{v}].  A category whose hom universe is a free
  parameter, as a thin category's is, can be instantiated with its homs
  raised, and then passes the pin: Structure/WellPowered/
@@ -114,7 +114,7 @@ Generalizable All Variables.
  no nonemptiness hypothesis.  A statement about families indexed at
  [Complete]'s own shape universe is therefore NOT the §V.8 consequence.
 
- CLASSES OF SUBOBJECTS NEED IT.  A "collection of subobjects" is a
+ CLASSES OF SUBOBJECTS NEED IT.  A “collection of subobjects” is a
  collection of equivalence classes; in setoid discipline it is a
  predicate [P] on the large type [SubObj x] closed under ≈ ([HP]).  Its
  members form a
@@ -132,13 +132,13 @@ Generalizable All Variables.
  Necessity is measured, in scratch files at the regime the adjoint
  functor theorems use ([C : Category@{o h h}], [h < o],
  [comp : Complete@{h h h o}]): [complete_intersection_IsIntersection
- comp (fun k : { m : SubObj x & P m } => `1 k)] is refused with "cannot
- ensure that Type@{max(o,h)} is a subtype of Type@{...}", and so is the
+ comp (fun k : { m : SubObj x & P m } => `1 k)] is refused with “cannot
+ ensure that Type@{max(o,h)} is a subtype of Type@{...}”, and so is the
  identity family on [SubObj x], while [wellpowered_complete_has_
  intersections] and [wellpowered_complete_intersection_all] are
  accepted at the same regime given [WellPowered C]; at [Sets@{o so}]
  with [Sets_Complete], the identity family on [SubObj X] is refused
- with "Cannot enforce o = ... because o < so <= ..." (the chain as
+ with “Cannot enforce o = ... because o < so <= ...” (the chain as
  printed with [X : Sets@{o so}] a [Section] [Context]; with [X] a
  binder of the definition, Rocq 9.1.1 prints an unnamed universe in
  the place of [so], as Test/ProbeWellPowered451.v's N7 records), and
@@ -148,15 +148,15 @@ Generalizable All Variables.
  WHY CLASSES AND NOT ARBITRARY LARGE FAMILIES.  For [S : J → SubObj x]
  with [J : Type@{o}], two readings suggest themselves, and both are
  refused (measured at the same regime).  The typed image [fun m => { j
- : J & S j ≈ m }] is as large as [J]: "Cannot enforce o <= ... because
- ... < o".  The [Prop]-truncated image [fun m => ex (fun j => inhabited
+ : J & S j ≈ m }] is as large as [J]: “Cannot enforce o <= ... because
+ ... < o”.  The [Prop]-truncated image [fun m => ex (fun j => inhabited
  (S j ≈ m))] is ≈-closed and IS accepted, and its intersection is a
  lower bound of every [S j]; but showing a lower bound of [S] to be below
  it needs a member of [S] out of the truncated witness, and that step is
- refused with "Incorrect elimination ... in the inductive type ex ...
- the return type has sort Type@{h} while it should be SProp or Prop"
+ refused with “Incorrect elimination ... in the inductive type ex ...
+ the return type has sort Type@{h} while it should be SProp or Prop”
  (as printed under [Set Printing Universes] with [h] a named universe;
- the default printing gives "Type" in place of "Type@{h}").
+ the default printing gives “Type” in place of “Type@{h}”).
  That route needs unique choice to eliminate the truncated witness into
  the [Type]-valued [sub_le]; no other route was measured, and nothing
  here shows that every route needs it.  The class form is both the
@@ -187,8 +187,8 @@ Generalizable All Variables.
  - the greatest-lower-bound half does not.  The wide pullback's
  mediator [unique_obj (ump_wide_pullbacks (complete_wide_pullback
  comp f) q Hq)], from which every [inter_greatest] factorization is
- built, is refused at [eq_refl] by conversion ("cannot unify ...
- and ()"), and [Eval cbv] stops at [unique_obj (eq_desc
+ built, is refused at [eq_refl] by conversion (“cannot unify ...
+ and ()”), and [Eval cbv] stops at [unique_obj (eq_desc
  (equalizer_of_pullback_awodey ...))].  Structure/Pullback/
  Reduction.v's [equalizer_of_pullback_awodey] is [Qed] and returns
  an [IsEqualizer], whose [eq_desc] is the equalizer's mediator: the
@@ -277,8 +277,8 @@ Generalizable All Variables.
  in a form the theorem accepts, as written.  [Sets] and [Grp] are
  shown well-powered constructively only one universe up (Instance/Sets/
  WellPowered.v's [Sets_WellPoweredAt_up], Instance/Grp/WellPowered.v's
- [Grp_WellPoweredAt_up]; this parenthesis said "the other algebraic
- categories were not measured", which is corrected here: since #454
+ [Grp_WellPoweredAt_up]; this parenthesis said “the other algebraic
+ categories were not measured”, which is corrected here: since #454
  Instance/Mod/WellPowered.v shows [RMod R] well-powered one universe up
  unconditionally ([RMod_WellPoweredAt_up]) and at the pin under
  [Untruncate] ([RMod_WellPowered_untruncate]), and co-well-powered the
@@ -293,8 +293,8 @@ Generalizable All Variables.
  (Instance/Ordinal/Large.v) is thin and [trivial_small] applies to it
  with the homs raised to the objects, but its shape-object universe
  lies strictly below its objects, and feeding that witness to
- [wellpowered_complete_intersection_all] is refused with "Cannot
- enforce ... = ... because ... < ..." (measured).  [Subsets_Complete]
+ [wellpowered_complete_intersection_all] is refused with “Cannot
+ enforce ... = ... because ... < ...” (measured).  [Subsets_Complete]
  (Instance/Powerset.v) is written with its homs at [Set] and its
  objects above; restated at a free hom level it is Instance/Powerset/
  WellPowered.v's [Subsets_Complete_free], and that satellite applies
@@ -340,7 +340,7 @@ Generalizable All Variables.
 
  ** 结论：交集
 
- 本文开头提到的结论——一个良幂小完备范畴对于一个对象的任意子对象集合都有交集——将在下面以两种形式证明，它们之间的差异就是良幂性的内容。小型族不需要良好幂。[complete_intersection] 和 [complete_intersection_IsIntersection] 与每一个族 [S : J → SubObj x] 相交，其索引位于或低于 [Complete] 的形状对象宇宙，仅凭完整性即可：单射的宽拉回来自 Structure/Pullback/Wide/Complete.v 的 [complete_wide_pullback]，而 Theory/Subobject/Lattice.v 的 [sub_wide_intersection] 将其读取为子对象。该读取需要索引的一个点，因此该族首先通过 [sub_top] 在 [option J]（[sub_opt_top]）上扩展；添加顶端不会改变下界（[IsIntersection_drop_top]），因此空族也被覆盖，无需非空假设。因此，对于索引在 [Complete] 自身形状宇宙的族的陈述并非 §V.8 的结论。子对象的类需要它。“子对象的集合”是等价类的集合；在集合体（setoid）学科中，它是在大类型  [SubObj x] 上的谓词 [P]，并且在 ≈ (ZWZ61WZZ) 下封闭。它的成员形成一个由 [{ m : SubObj x & P m }] 索引的族，它位于对象（OBJECT）宇宙之中，每当对象位于霍姆（homs）之上时，高于形状（shape）宇宙。[wellpowered_complete_has_intersections] 通过对小型 [wp_class_index] = [{ i : wp_index W & P (wp_to W i) }] 重新索引与其相交：[IsIntersection_reindex] 在 [wp_to (wp_from m) ≈ m] 下沿 [HP] 传递成员关系，并通过 [sub_le_of_equiv] 绑定回传。只有 [WellPoweredAt] 的四个字段被使用；派生出的双射不需要。[Prop] -值形式 ([_prop]) 对 [P] 没有大小条件；[wellpowered_complete_intersection_all] 是所有子对象的类，由 [SubObj x] 本身索引，并且 [wellpowered_complete_least_subobject] 将其读取为最小子对象。在附属函子定理使用的体制（[C : Category@{o h h}]、[h < o]、[comp : Complete@{h h h o}]）下，通过临时文件来衡量必要性：[complete_intersection_IsIntersection comp (fun k : { m : SubObj x & P m } => `1 k)] 被拒绝，并提示“无法确保 Type@{max(o,h)} 是 Type@{...} 的子类型”，[SubObj x] 上的恒等族也是如此，而 [wellpowered_complete_has_intersections] 和 [wellpowered_complete_intersection_all] 在给定 [WellPowered C] 的相同体制下被接受；在 [Sets@{o so}] 及 [Sets_Complete] 下，[SubObj X] 上的恒等族被拒绝，提示“无法强制 o = ..."因为 o < so <= ...（如链条所示，使用 [X : Sets@{o so}] 到 [Section] [Context]；在 [X] 作为定义的绑定器时，Rocq 9.1.1 在 [so] 的位置打印了一个未命名的宇宙，正如 Test/ProbeWellPowered451.v 的 N7 记录所示），并且通过 [wellpowered_complete_intersection_all] 给出的 [WellPowered Sets] 被接受。为什么使用类，而不是任意大的族。对于 [S : J → SubObj x] 和 [J : Type@{o}]，有两种读法，并且两者都被拒绝（在相同的规则下测量）。类型化的映像 [fun m => { j : J & S j ≈ m }] 与 [J] 一样大：“无法强制执行 o <= ... 因为 ... < o”。[Prop] 截断的映像 [fun m => ex (fun j => inhabited (S j ≈ m))] 是 ≈-封闭的，并被接受，它的交集是每个 [S j] 的下界；但要显示 [S] 的下界在它之下，需要一个来自截断证人的 [S] 成员，而这一步被拒绝，提示“在归纳类型 ex 中消元不正确...”返回类型为 Type@{h}，而它本应是 SProp 或 Prop（如在 [Set Printing Universes] 下使用 [h] 命名宇宙时打印；默认打印会将 Type@{h} 显示为“Type”）。该路径需要唯一选择以消除截断的证据进入 [Type] 值的 [sub_le]；没有测量其他路径，并且这里没有显示每条路径都需要它。该类形式既是对书籍的忠实解读，也是此处证明的最强形式。双重。[cowellpowered_cocomplete_has_cointersections] 是在 [C^op] 通过 Construction/Product/Limit.v 的 [Complete_op_of_Cocomplete] 读取的定理，一行完成；[cointersection_quot_le] 在 Theory/Subobject/Quotient.v 的 [quot_le] 中读取其下界，无需转换步骤。结果在此称为共交；Quotient.v 在 [quot_le] 的 [quot_wide_meet] 中称同一最大下界。
+ 本文开头提到的结论——一个良幂小完备范畴对于一个对象的任意子对象集合都有交集——将在下面以两种形式证明，它们之间的差异就是良幂性的内容。小型族不需要良好幂。[complete_intersection] 和 [complete_intersection_IsIntersection] 与每一个族 [S : J → SubObj x] 相交，其索引位于或低于 [Complete] 的形状对象宇宙，仅凭完整性即可：单射的宽拉回来自 Structure/Pullback/Wide/Complete.v 的 [complete_wide_pullback]，而 Theory/Subobject/Lattice.v 的 [sub_wide_intersection] 将其读取为子对象。该读取需要索引的一个点，因此该族首先通过 [sub_top] 在 [option J]（[sub_opt_top]）上扩展；添加顶端不会改变下界（[IsIntersection_drop_top]），因此空族也被覆盖，无需非空假设。因此，对于索引在 [Complete] 自身形状宇宙的族的陈述并非 §V.8 的结论。子对象的类需要它。“子对象的集合”是等价类的集合；在集合体（setoid）学科中，它是在大类型  [SubObj x] 上的谓词 [P]，并且在 ≈ (ZWZ61WZZ) 下封闭。它的成员形成一个由 [{ m : SubObj x & P m }] 索引的族，它位于对象（OBJECT）宇宙之中，每当对象位于霍姆（homs）之上时，高于形状（shape）宇宙。[wellpowered_complete_has_intersections] 通过对小型 [wp_class_index] = [{ i : wp_index W & P (wp_to W i) }] 重新索引与其相交：[IsIntersection_reindex] 在 [wp_to (wp_from m) ≈ m] 下沿 [HP] 传递成员关系，并通过 [sub_le_of_equiv] 绑定回传。只有 [WellPoweredAt] 的四个字段被使用；派生出的双射不需要。[Prop] -值形式 ([_prop]) 对 [P] 没有大小条件；[wellpowered_complete_intersection_all] 是所有子对象的类，由 [SubObj x] 本身索引，并且 [wellpowered_complete_least_subobject] 将其读取为最小子对象。在附属函子定理使用的体制（[C : Category@{o h h}]、[h < o]、[comp : Complete@{h h h o}]）下，通过临时文件来衡量必要性：[complete_intersection_IsIntersection comp (fun k : { m : SubObj x & P m } => `1 k)] 被拒绝，并提示“无法确保 Type@{max(o,h)} 是 Type@{...} 的子类型”，[SubObj x] 上的恒等族也是如此，而 [wellpowered_complete_has_intersections] 和 [wellpowered_complete_intersection_all] 在给定 [WellPowered C] 的相同体制下被接受；在 [Sets@{o so}] 及 [Sets_Complete] 下，[SubObj X] 上的恒等族被拒绝，提示“无法强制 o = ...“因为 o < so <= ...（如链条所示，使用 [X : Sets@{o so}] 到 [Section] [Context]；在 [X] 作为定义的绑定器时，Rocq 9.1.1 在 [so] 的位置打印了一个未命名的宇宙，正如 Test/ProbeWellPowered451.v 的 N7 记录所示），并且通过 [wellpowered_complete_intersection_all] 给出的 [WellPowered Sets] 被接受。为什么使用类，而不是任意大的族。对于 [S : J → SubObj x] 和 [J : Type@{o}]，有两种读法，并且两者都被拒绝（在相同的规则下测量）。类型化的映像 [fun m => { j : J & S j ≈ m }] 与 [J] 一样大：“无法强制执行 o <= ... 因为 ... < o”。[Prop] 截断的映像 [fun m => ex (fun j => inhabited (S j ≈ m))] 是 ≈-封闭的，并被接受，它的交集是每个 [S j] 的下界；但要显示 [S] 的下界在它之下，需要一个来自截断证人的 [S] 成员，而这一步被拒绝，提示“在归纳类型 ex 中消元不正确...”返回类型为 Type@{h}，而它本应是 SProp 或 Prop（如在 [Set Printing Universes] 下使用 [h] 命名宇宙时打印；默认打印会将 Type@{h} 显示为“Type”）。该路径需要唯一选择以消除截断的证据进入 [Type] 值的 [sub_le]；没有测量其他路径，并且这里没有显示每条路径都需要它。该类形式既是对书籍的忠实解读，也是此处证明的最强形式。双重。[cowellpowered_cocomplete_has_cointersections] 是在 [C^op] 通过 Construction/Product/Limit.v 的 [Complete_op_of_Cocomplete] 读取的定理，一行完成；[cointersection_quot_le] 在 Theory/Subobject/Quotient.v 的 [quot_le] 中读取其下界，无需转换步骤。结果在此称为共交；Quotient.v 在 [quot_le] 的 [quot_wide_meet] 中称同一最大下界。
 
  优势，已测量。交集是数据：[IsIntersection] 携带 [sub_le] 的分解，并且构建它们的本文件的每个常量都是 [Defined]。并非所有内容都可计算。标准是 [eq_refl]，在答案已知的范畴中，由 [Indiscrete bool] 完成 [Indiscrete_Complete true]，每个同态为 [unit]。- 下界部分进行计算。Structure/Pullback/Wide/Complete.v ([unique_obj (iprod_ump ...)]) 的积中介和边 [wide_pullback_proj (complete_wide_pullback comp f) j] 通过 [eq_refl] 约化为 [tt]。[complete_intersection] 的每个 [inter_le] 都是这样的一个边，并且类形式将其与 [wp_to_from] 的同构组合，计算直到证人的完全性证明为止；
  - 上界部分则不进行计算。宽拉回的中介 [unique_obj (ump_wide_pullbacks (complete_wide_pullback comp f) q Hq)]，每个 [inter_greatest] 的分解都是从此构建的，在 [eq_refl] 被转换拒绝（“cannot unify ... and ()”），并且 [Eval cbv] 停止于 [unique_obj (eq_desc (equalizer_of_pullback_awodey ...))]。Structure/Pullback/Reduction.v 的 [equalizer_of_pullback_awodey] 是 [Qed]，并返回一个 [IsEqualizer]，其 [eq_desc] 是均衡器的中介：因式分解是只归约到那个不透明常数的数据。Adjunction/GAFT.v 的 [Complete_HasEqualizers] 无济于事：在同一范畴中，它的中介停止在 Structure/Equalizer/Fork.v 的 [limit_equalizer_desc]，也包括 [Qed]。[Print Opaque Dependencies wellpowered_complete_has_intersections] 列出了 63 个常量。除了 [equalizer_of_pullback_awodey] 之外，还有两个携带数据：Theory/Subobject.v 的 [SubObj_Setoid_obligation_1]，即子对象上的等价关系，其成员是同构，以及 Structure/Pullback/Limit.v 的 [Pullback_to_Universal_obligation_2]，一个 [∃!] 调解器；阅读其余部分的声明，它们是 ≈-等式、单性、形状的 [Program] 义务，以及集合重写引理。使因子化可计算将从将 [equalizer_of_pullback_awodey] 翻转为 [Defined] 开始；这里没有尝试这样做。[wellpowered_complete_has_intersections] 返回的子对象是通过 [eq_refl] 得到的 [complete_intersection] 的小重索引族 ([wellpowered_intersection_is_small])。唯一性是 Lattice.v 的 [IsIntersection_unique]，仅限于 ≈，这里没有重新证明。宇宙，用 [Set Printing Universes. About ...] 测量，stdlib 边界省略。在第一个未注释的展开最小化中，坍缩的宇宙保持语句分开：索引 [w] 对应到 hom 宇宙，[r] 对应到 [so] 在 [wellpowered_complete_has_intersections] 和 [cointersection_quot_le] 中，族索引 [q] 对应到 [s] 在 [wellpowered_complete_intersection_all] 中，以及索引 [j] 对应到 [so] 在 [complete_intersection_IsIntersection] 中。因此绑定器是承重的：wellpowered_complete_has_intersections@{o h w s t r so p q u u0 u1 u2} ：
@@ -428,8 +428,8 @@ End Bijection.
  [s] and [t] are the two universes of [SubObj_Setoid].  The trailing
  [+] in both constraint lists is load-bearing on Coq 8.19 and 8.20,
  where [sigT] and [eq] carry global universes: without it both
- toolchains refuse the declaration with "Universe constraints are not
- implied by the ones declared: h <= sigT.u0, h <= sigT.u1, h <= eq.u0"
+ toolchains refuse the declaration with “Universe constraints are not
+ implied by the ones declared: h <= sigT.u0, h <= sigT.u1, h <= eq.u0”
  (measured).  On Rocq 9.1 the block read back is the same four
  constraints with or without it. 
 

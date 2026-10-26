@@ -20,7 +20,7 @@ Generalizable All Variables.
 (*
    * * Rng: the category of unital rings
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.7
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.7
    (printed p. 25): the roll-call of large categories includes Rng, all
    small (unital) rings with the ring homomorphisms preserving the
    multiplicative unit [maclane:I.7:def1, maclane:I.7:construction2];
@@ -69,8 +69,8 @@ Generalizable All Variables.
    two-sided inverses are unique; no fraction ever needs to be chosen,
    only cancelled.  The non-surjectivity half exhibits 1/2.
 
-   SCOPE NOTE, disclosed, and a DEFERRAL SINCE DISCHARGED.  "Monics are
-   exactly the injections" ships here in the direction that needs no new
+   SCOPE NOTE, disclosed, and a DEFERRAL SINCE DISCHARGED.  “Monics are
+   exactly the injections” ships here in the direction that needs no new
    machinery: injective ⇒ monic ([rng_injective_monic]), plus
    surjective ⇒ epi ([rng_surjective_epic], whose converse is REFUTED by
    the headline theorem).  The converse monic ⇒ injective requires
@@ -84,7 +84,7 @@ Generalizable All Variables.
    stating rather than leaving for a reader to notice.  First, it is a
    BICONDITIONAL: [rng_monic_iff_injective] pairs the new
    [rng_monic_injective] with this file's [rng_injective_monic], so
-   "monics are exactly the injections" is now the whole sentence and not
+   “monics are exactly the injections” is now the whole sentence and not
    half of it.  Second, it holds over ALL of [Rng] and not merely over
    [CRng].  The evaluation homomorphism out of ℤ[x] needs its target
    element to commute with the image of the coefficients, which over an
@@ -108,7 +108,7 @@ Generalizable All Variables.
    nLab： https://ncatlab.org/nlab/show/Ring
    维基百科： https://en.wikipedia.org/wiki/Category_of_rings命名（根据该问题的质量审核）。该类别保留了 Mac Lane 的名称 [Rng]——他对单元环类别的缩写——它是 Theory/Algebra/Rig.v 的类别 [Ring]，从定义上讲：那里的一 个 [RingObject] 是一个具有加法逆元的 rig，也就是说，它恰好是一个在集合体承载上的单元（不一定可交换）环，并且它的同态是 [RigHom]，它们保持 0、+、1 和 ·——单位保持是一个 FIELD，正如 Mac Lane 所要求的——而保持取负则是定理 [RigHom_neg]。集合级别的 CLASS 保留名称 [Ring] / [RingObject]（在 Seventeen Seven Sketches 的问题中以该名称使用）；CATEGORY 对两者都有响应，其中 [Rng] 是 Mac Lane 侧的入口点。非幺环的范畴是 Instance/Rg.v 中的 [Rg]，其处有遗忘函子 [Rng_Forget_Rg : Rng ⟶ Rg]，因此方向是明确的。该文件还证明了这两个范畴不能互换：[Rg] 具有零对象（零环既是初对象又是终对象，并且环同态不要求保持 1），而 [Rng] 以 ℤ 为初对象，零环为终对象，它们不重合。内容。超越类别本身：到 [Ab]（加性阿贝尔群，Instance/Ab.v）和 [Sets] 的遗忘函子；零环是终对象（[Rng_Terminal_zero]）；整数是初对象（[Rng_Initial_Z] —— 对应于 Rig.v 中 ℕ 的初性，在环的一侧，通过符号分情况分析构建唯一同态 z ↦ z·1，并通过下面自制的类型值递归器 [Z_peano_rect] 验证 —— 标准库仅提供命题值的 [Z.peano_ind]）；交换环的完全子类别 [CRng]（后续矩阵类别和 GL_n 问题需要）；单射是单态，满射是余单态；以及重点分离，Mac Lane 的练习 I.5.4：
 
-   [ZtoQ_epi_not_surjective] —— 包含映射 ℤ → ℚ 是 [Rng] 的一个余单态，尽管它不是满射。上同态部分是构造性地提出的标准论证：来自 ℚ 的环同态由其在 ℤ 的像上的取值确定，因为 g(1/b) 是 g b 的双边乘法逆元，而双边逆元是唯一的；从不需要选择分数，只需约掉即可。非满射部分展示了 1/2。范围说明，已披露，并且在出院后延期。 "Monics 就是注射" 在这里的方向不需要新机械：单射 ⇒ monic（[rng_injective_monic]），再加上满射 ⇒ epi（[rng_surjective_epic]，其逆命题已被标题定理驳斥）。逆命题 monic ⇒ 单射需要使用单生成元的自由环进行探测——多项式环 ℤ [x]——正如 Instance/Sets.v 使用单元集合进行探测，Instance/Top.v 使用点空间进行探测一样。在编写此文件时，该探测尚不存在，因此结果在此处被延期；现在它已经存在，结果已在 Instance/Rng/Polynomial.v 中被证明。已经实现的比被推迟的在两个值得说明的方面更强，而不是留给读者去注意。首先，它是一个双向条件：[rng_monic_iff_injective] 将新的 [rng_monic_injective] 与这个文件的 [rng_injective_monic] 配对，因此“单子完全是注入”现在是整个句子，而不是其一半。第二，它适用于整个 [Rng]，而不仅仅是 [CRng]。从 ℤ [x] 出发的评价同态需要其目标元素与系数的像交换，这在任意非交换环上并非自动成立；Polynomial.v 的 [zring_central] 提供了它，因为整数在每个含单位环中都是中心元素，所以 ℤ [x] 在所有含单位环的范畴中是单生成自由对象，并且在 [Rng] 的每个对象上探针都是可用的。该语句不能存在于此文件中：ℤ [x] 是在 [Rng_Initial_Z] 和 [CRng] 之后构建的，它会使用这两个，所以它存在于其探针所在的位置。（该问题自身的验证列表将 [Rng]、[CRng]、[Rng_Initial_Z]、[Rng_Terminal_zero] 和 [ZtoQ_epi_not_surjective] 列为审计工件。）
+   [ZtoQ_epi_not_surjective] —— 包含映射 ℤ → ℚ 是 [Rng] 的一个余单态，尽管它不是满射。上同态部分是构造性地提出的标准论证：来自 ℚ 的环同态由其在 ℤ 的像上的取值确定，因为 g(1/b) 是 g b 的双边乘法逆元，而双边逆元是唯一的；从不需要选择分数，只需约掉即可。非满射部分展示了 1/2。范围说明，已披露，并且在出院后延期。 “Monics 就是注射” 在这里的方向不需要新机械：单射 ⇒ monic（[rng_injective_monic]），再加上满射 ⇒ epi（[rng_surjective_epic]，其逆命题已被标题定理驳斥）。逆命题 monic ⇒ 单射需要使用单生成元的自由环进行探测——多项式环 ℤ [x]——正如 Instance/Sets.v 使用单元集合进行探测，Instance/Top.v 使用点空间进行探测一样。在编写此文件时，该探测尚不存在，因此结果在此处被延期；现在它已经存在，结果已在 Instance/Rng/Polynomial.v 中被证明。已经实现的比被推迟的在两个值得说明的方面更强，而不是留给读者去注意。首先，它是一个双向条件：[rng_monic_iff_injective] 将新的 [rng_monic_injective] 与这个文件的 [rng_injective_monic] 配对，因此“单子完全是注入”现在是整个句子，而不是其一半。第二，它适用于整个 [Rng]，而不仅仅是 [CRng]。从 ℤ [x] 出发的评价同态需要其目标元素与系数的像交换，这在任意非交换环上并非自动成立；Polynomial.v 的 [zring_central] 提供了它，因为整数在每个含单位环中都是中心元素，所以 ℤ [x] 在所有含单位环的范畴中是单生成自由对象，并且在 [Rng] 的每个对象上探针都是可用的。该语句不能存在于此文件中：ℤ [x] 是在 [Rng_Initial_Z] 和 [CRng] 之后构建的，它会使用这两个，所以它存在于其探针所在的位置。（该问题自身的验证列表将 [Rng]、[CRng]、[Rng_Initial_Z]、[Rng_Terminal_zero] 和 [ZtoQ_epi_not_surjective] 列为审计工件。）
 *)
 
 (* * ** The category, under Mac Lane's name / * ** 这个范畴，以麦克莱恩的名字命名 *)

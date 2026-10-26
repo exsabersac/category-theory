@@ -11,8 +11,8 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/displayed+category
  nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
  Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
- Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, "Displayed
- Categories", Logical Methods in Computer Science 15(1), 2019.
+ Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, “Displayed
+ Categories”, Logical Methods in Computer Science 15(1), 2019.
  https://arxiv.org/abs/1705.04296
 
  The total category ∫ D of a displayed category D over C: objects are

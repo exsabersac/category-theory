@@ -15,7 +15,7 @@ Generalizable All Variables.
    The product of the canonical m-element and n-element sets is the
    canonical (m * n)-element set, mediated by the standard base-n
    positional codec: the pair (a, b) is encoded as the digit string
-   "a then b", i.e. the number a·n + b.  Both directions are structural
+   “a then b”, i.e. the number a·n + b.  Both directions are structural
    fixpoints in the closed-computation style of [fin_split]/[fin_join]
    from [Instance/FinSet.v] — built only from [Fin.L], [Fin.R] and
    [fin_split], primitives available on every supported Coq/Rocq

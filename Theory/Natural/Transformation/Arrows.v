@@ -11,7 +11,7 @@ Generalizable All Variables.
 
 (*
 nLab: https://ncatlab.org/nlab/show/natural+transformation
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
          Springer 1998, §I.4 (printed p. 19), exercise 5
 
    A natural transformation τ : S ⟹ T between functors S T : C ⟶ D is
@@ -390,7 +390,7 @@ Uniqueness, in the four forms one wants of it.
    transformation it induces, i.e. by its diagonal.
    [Arrows_unique_transform]: the transformation inducing a given family is
    unique — with [Arrows_to_Transform_to_Arrows] for existence, this is
-   Mac Lane's "arises from a unique natural transformation".
+   Mac Lane's “arises from a unique natural transformation”.
    [Transform_unique_arrows]: and the family induced by a transformation is
    unique.
 

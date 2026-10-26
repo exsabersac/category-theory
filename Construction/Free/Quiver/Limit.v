@@ -14,11 +14,11 @@ Generalizable All Variables.
 (* * * Cones and limits over a diagram of graph shape / * * 图形形状图的锥和极限 *)
 
 (*
- Book:    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:    Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, Section III.4, printed p. 71
- Catalog: maclane:III.4:def8  ("diagram of graph shape and its limit")
- maclane:III.4:remark6 ("graph-shaped limits reduce to functor
- limits via the free category"), both in
+ Catalog: maclane:III.4:def8  (“diagram of graph shape and its limit”)
+ maclane:III.4:remark6 (“graph-shaped limits reduce to functor
+ limits via the free category”), both in
  doc/plan/books/maclane/inventory/III.json
  nLab:    https://ncatlab.org/nlab/show/cone
  nLab:    https://ncatlab.org/nlab/show/free+category
@@ -39,7 +39,7 @@ Generalizable All Variables.
  between them -- all cited, none restated.  What was missing is the rest
  of def 8: the CONE over a graph diagram and its LIMIT, and then remark
  6's clause that limits and limiting cones for the two presentations
- "correspond exactly".
+ “correspond exactly”.
 
  THE ABSENCE, SCOPED TO WHAT WAS SEARCHED, AND MEASURED BEFORE THIS FILE
  EXISTED.  [grep -icE 'cone|limit'] returned 0 on
@@ -54,9 +54,9 @@ Generalizable All Variables.
  NO FUNCTORIALITY IS NEEDED, AND THIS FILE SHOWS EXACTLY WHERE THAT SHOWS
  UP.  Mac Lane's cone assigns to each NODE i of G an arrow mu_i : c -> D i,
  subject to one equation per graph EDGE h : i -> j, namely
- D h ∘ mu_i = mu_j; the catalog's own summary calls it "a natural
+ D h ∘ mu_i = mu_j; the catalog's own summary calls it “a natural
  transformation from the constant, using composition in C but not in the
- domain".  A graph has no composition and no identities, so there is
+ domain”.  A graph has no composition and no identities, so there is
  nothing further for the cone to respect.  In [AGraphCone] below that is
  the single field [gcone_coherence], quantified over [edges x y] -- ONE
  TRIANGLE PER EDGE.  Contrast [ACone] (Structure/Cone.v), whose
@@ -84,7 +84,7 @@ Generalizable All Variables.
 
  (2) THE WHOLE-RECORD ROUND TRIPS ARE REFUTED AT [eq_refl].  All FOUR
  records involved ([AGraphCone], [GraphCone], [ACone], [Cone]) --
- an earlier draft wrote "both" -- have primitive projections with
+ an earlier draft wrote “both” -- have primitive projections with
  eta, so record equality reduces to
  field equality -- and the coherence fields do not converge, [≈] being
  [crelation]-valued here, so those fields are DATA and the rebuilt
@@ -144,7 +144,7 @@ Generalizable All Variables.
  modulo the one [id_left] that [dpath] leaves on a one-edge path --
  which is exactly what paragraph (a) above spends at the X->Z edge,
  and what the limit proof spends.  The earlier draft said a graph
- cone "states a triangle for NEITHER of them", which contradicts
+ cone “states a triangle for NEITHER of them”, which contradicts
  paragraph (a) and is false of [tri_direct].  Both
  [tri_gcone_at_via_Y] and [tri_gcone_at_direct] are nonetheless
  routed uniformly through [gcone_leg_dpath], hence [gcone_dpath];
@@ -169,14 +169,14 @@ Generalizable All Variables.
  * No category of graph cones, hence no rendering of the limit as a
  terminal object, and no setoid on [AGraphCone] mirroring
  Structure/Cone.v's [AConeEquiv].  Consequently there is no
- essential-uniqueness statement for graph limits: no "any two limiting
- graph cones are canonically isomorphic", with or without legs.
+ essential-uniqueness statement for graph limits: no “any two limiting
+ graph cones are canonically isomorphic”, with or without legs.
  * No preservation, reflection or creation of graph limits, and no
  analogue of Structure/Limit/Preservation.v's [PreservesLimit].
  * [graph_limit_IsALimit] is offered only as the apex-only READING of the
  cone-level statement.  It is the weaker of the two -- its legs are
  unconstrained -- and NO separation between them is proved here, so
- "strictly weaker" is not claimed.
+ “strictly weaker” is not claimed.
  * Nothing connects to Theory/Diagram.v's [Commutative], which is
  never invoked below, and no commutativity theorem of that file is
  consumed.  The triangle witness does draw a commuting triangle -- its
@@ -194,8 +194,8 @@ Generalizable All Variables.
  the precedent for splitting on exactly this ground is the
  Structure/Limit/Power.v / Power/Hom.v division.
  * No [GraphLimit] instance is produced for any category from a
- completeness hypothesis; there is no "C complete implies every graph
- diagram over C has a graph limit".
+ completeness hypothesis; there is no “C complete implies every graph
+ diagram over C has a graph limit”.
  * No universe measurement is offered IN THIS FILE.  Nothing below
  claims which levels these constants identify or leave free.  Scope
  that precisely: the companion Test/ProbeQuiverLimit332.v DOES make
@@ -426,7 +426,7 @@ Example dpath_singleton_is_fmap {x y : G} (e : edges x y) :
 (** ** Limits of a graph diagram / ** 图表的限制 *)
 
 (*
- Def 8's "a limit for the diagram D is a universal such cone", at CONE
+ Def 8's “a limit for the diagram D is a universal such cone”, at CONE
  level: the factorization is required to commute with the legs OF N, which
  is what the apex-only reading cannot say.  This is the graph-shaped mirror
  of Structure/Limit/Preservation.v's [IsLimitCone]. 
@@ -439,7 +439,7 @@ Definition IsLimitGraphCone (N : GraphCone D) : Type :=
     ∀ x : G, gcone_leg N x ∘ u ≈ gcone_leg M x.
 
 (*
- Remark 6's "limits and limiting cones correspond exactly", both
+ Remark 6's “limits and limiting cones correspond exactly”, both
  directions, each a term with no tactic: the two statements are
  convertible. 
 

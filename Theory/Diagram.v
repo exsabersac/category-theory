@@ -42,7 +42,7 @@ nLab: https://ncatlab.org/nlab/show/commutative+diagram
    category to a single morphism ([commutative_iff_shape],
    [shape_iff_commutative]).
 
-   SCOPE of "correspondence": both directions are maps of the underlying
+   SCOPE of “correspondence”: both directions are maps of the underlying
    types, and both round trips are proved pointwise.  Respectfulness of the
    two maps for the two equivalences, and naturality in [G] and [C], are NOT
    established here, so nothing below asserts an isomorphism of hom-setoids.
@@ -81,12 +81,12 @@ nLab: https://ncatlab.org/nlab/show/commutative+diagram
 (*
 Diagrams and commutation: sources and in-tree connections
 
-   Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          Springer GTM 5, 1998, §I.1 "Axioms for Categories", printed p. 8
+   Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+          Springer GTM 5, 1998, §I.1 “Axioms for Categories”, printed p. 8
           (PDF p. 18), the third numbered definition of that section.
-   Book:  Fong and Spivak, "Seven Sketches in Compositionality", CUP 2019,
+   Book:  Fong and Spivak, “Seven Sketches in Compositionality”, CUP 2019,
           §3.3.4 Definition 3.51, printed p. 95 (PDF p. 107).
-   Book:  Riehl, "Category Theory in Context", 2nd ed., §1.1, printed
+   Book:  Riehl, “Category Theory in Context”, 2nd ed., §1.1, printed
           pp. 3-4 (PDF pp. 23-24); §1.6, printed p. 39 (PDF p. 59);
           Lemma 1.6.20, printed p. 46 (PDF p. 66).
    nLab:  https://ncatlab.org/nlab/show/commutative+diagram
@@ -116,12 +116,12 @@ Diagrams and commutation: sources and in-tree connections
    Relation to the solver.  [Solver/Expr.v] reifies composite morphisms as
    an untyped term grammar [Term ::= Ident | Morph nat | Comp Term Term],
    and its own header comment (Solver/Expr.v) records that this grammar
-   "is exactly a term of the free category on the quiver whose edges are the
-   variables [arrs]".  The typed in-tree counterpart of that grammar is
+   “is exactly a term of the free category on the quiver whose edges are the
+   variables [arrs]”.  The typed in-tree counterpart of that grammar is
    [Mor ::= Ident | Morph edge | Comp] of Construction/Free/Quiver.v,
    normalised to a path by [morDA].  [dterm] below interprets [Mor] in
    [C] with the same reading of [Comp] that Solver/Denote.v uses (there,
-   "[Comp f g] denotes [f ∘ g]"), and [dterm_dpath] proves that interpreting a
+   “[Comp f g] denotes [f ∘ g]”), and [dterm_dpath] proves that interpreting a
    term agrees with denoting its normal-form path.  [commutative_dterm] is the
    consequence a solver would want: over a commutative diagram, ALL parallel
    terms are interchangeable, not merely the ones a normaliser can identify.
@@ -961,7 +961,7 @@ One vertex, one loop edge.
 
    Both shapes above are ACYCLIC, so in each of them the endo-path clause of
    [Commutative] is instantiated only at [tnil] and says nothing; this shape is
-   the one that exercises it.  Note that "every [edges i i] is [Empty_set]"
+   the one that exercises it.  Note that “every [edges i i] is [Empty_set]”
    would NOT by itself establish that -- a directed cycle of length two or more
    produces an endo-path with no self-edge anywhere in it.  What actually
    rules cycles out is that the edges strictly increase a rank, which is proved
@@ -1246,7 +1246,7 @@ Qed.
 
 (*
 The two directions above are usually quoted as a single biconditional, so
-   state it.  "Factors through the reflection" is packaged as the data of a
+   state it.  “Factors through the reflection” is packaged as the data of a
    functor out of [PreorderReflect J] agreeing with [F], in exactly the form
    Construction/Quotient.v uses for its own uniqueness statement: object
    maps equal on the nose, morphism maps agreeing up to [≈] after conjugating

@@ -12,9 +12,9 @@ Generalizable All Variables.
 (*
 nLab: https://ncatlab.org/nlab/show/metacategory
    nLab: https://ncatlab.org/nlab/show/category
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer 1998, I.1 (the "arrows-only" description) and I.8
-   Book: Riehl, "Category Theory in Context", Dover 2016, §1.1
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+         Springer 1998, I.1 (the “arrows-only” description) and I.8
+   Book: Riehl, “Category Theory in Context”, Dover 2016, §1.1
 
    Mac Lane's single-sorted axiomatization of a category, stated here over an
    ARBITRARY type of arrows, where Theory/Metacategory.v works over [nat] and
@@ -27,11 +27,11 @@ nLab: https://ncatlab.org/nlab/show/metacategory
    in the precise senses recorded below — the content of Mac Lane's I.1 and of
    his remark in I.8.
 
-   THE DATA. Composition is kept as its GRAPH: [mcomp g f h] reads "g∙f is
-   defined, and equals h", so that the composable pairs and the composite
+   THE DATA. Composition is kept as its GRAPH: [mcomp g f h] reads “g∙f is
+   defined, and equals h”, so that the composable pairs and the composite
    operation are a single datum. This follows Mac Lane's own phrasing
-   ("certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
-   an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f"), and
+   (“certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
+   an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f”), and
    both sibling files already encode composition this way, as an entry of a
    finite map ([M.MapsTo (f, g) h pairs], resp. [M.find (f, g) pairs = Some
    h]). A partial FUNCTION [arrow → arrow → option arrow] was rejected: it
@@ -57,8 +57,8 @@ nLab: https://ncatlab.org/nlab/show/metacategory
            and u'∙g are defined.
 
    Axiom (i) is stated here as the two fields [mcomp_assoc_l] and
-   [mcomp_assoc_r], at full strength: "(k∙g)∙f is defined" is read as "k∙g is
-   defined AND (k∙g)∙f is defined", so that each half also ASSERTS the
+   [mcomp_assoc_r], at full strength: “(k∙g)∙f is defined” is read as “k∙g is
+   defined AND (k∙g)∙f is defined”, so that each half also ASSERTS the
    definedness of the other association. Both sibling files instead state the
    biconditional under the hypothesis that k∙g and g∙f are BOTH already
    defined (Theory/Metacategory.v,
@@ -151,10 +151,10 @@ nLab：https://ncatlab.org/nlab/show/metacategory
  他在 I.8 中的评论。
 
 数据。 成分保持其图形：[mcomp g f h] 读取“g∙f 是
- 定义，并且等于 h"，因此可组合对和复合
+ 定义，并且等于 h“，因此可组合对和复合
  操作是单个数据。 这遵循 Mac Lane 自己的措辞
  （“某些有序对 ⟨g, f⟩，称为可组合箭头对，并且
- 为每个可组合对 ⟨g, f⟩ 分配箭头 g∙f" 的操作，以及
+ 为每个可组合对 ⟨g, f⟩ 分配箭头 g∙f” 的操作，以及
  两个同级文件已经以这种方式编码组合，作为 a 的条目
  有限映射（[M.MapsTo (f, g) h pairs]，分别 [M.find (f, g) 对 = Some
  h]）。 部分 FUNCTION [arrow → arrow → option arrow] 被拒绝：它
@@ -256,16 +256,16 @@ Axiom (i) 在此表示为两个字段 [mcomp_assoc_l] 和
 *)
 
 Record Metacategory : Type := {
-  (* "The data for an arrows-only metacategory C consist of arrows," / 只包含箭头的元范畴 C 的数据包括箭头， *)
+  (* “The data for an arrows-only metacategory C consist of arrows,” / 只包含箭头的元范畴 C 的数据包括箭头， *)
   marr : Type;
 
   (* Arrows carry a chosen equivalence. / 箭头传递一种选择的等价性。 *)
   marr_setoid : Setoid marr;
 
   (*
-"certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
-     an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f".
-     [mcomp g f h] reads "g∙f is defined, and equals h".
+“certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
+     an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f”.
+     [mcomp g f h] reads “g∙f is defined, and equals h”.
 
 --------
 某些有序对 ⟨g, f⟩，称为可组合箭头对，以及一个操作，将每个可组合的有序对 ⟨g, f⟩ 分配给一个箭头 g∙f。[mcomp g f h] 表示“g∙f 已定义，并且等于 h”。

@@ -25,7 +25,7 @@ Generalizable All Variables.
 
    Two library interfaces CANNOT express this closed structure.  Both
    no-gos are load-bearing; the statements in this file are deliberately
-   phrased outside both interfaces, so do not "upgrade" them to either
+   phrased outside both interfaces, so do not “upgrade” them to either
    interface later:
 
    1. [Structure/Monoidal/Closed.v]'s [ClosedMonoidal] hard-requires

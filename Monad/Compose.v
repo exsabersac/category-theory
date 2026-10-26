@@ -35,7 +35,7 @@ nLab: https://ncatlab.org/nlab/show/distributive+law
    one of the mprod coherence laws.
 
    This is the lax-monoidal-functor formulation of Mark P. Jones and Luc
-   Duponcheel, "Composing monads", Research Report YALEU/DCS/RR-1004, Yale
+   Duponcheel, “Composing monads”, Research Report YALEU/DCS/RR-1004, Yale
    University, December 1993. There M is a full monad while N is required only
    to be a strong lax monoidal functor (it need not itself be a monad), and
    mprod plays the role of their distributivity operation prod. 

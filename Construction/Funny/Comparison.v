@@ -24,7 +24,7 @@ Generalizable All Variables.
 
    κ is bijective on objects ([FunnyToProduct_obj]) and full
    ([FunnyToProduct_Full]): every (f, g) in C ∏ D is the image of the word
-   "g then f" — indeed of either diagonal of the fundamental square, since
+   “g then f” — indeed of either diagonal of the fundamental square, since
    (f, g) ≈ (f, id) ∘ (id, g) ≈ (id, g) ∘ (f, id) there.  It is NOT faithful
    ([FunnyToProduct_not_faithful]): the two diagonals are identified by κ
    but remain distinct in C □ D ([funny_diagonals_distinct]).  Finally κ is
@@ -80,7 +80,7 @@ Lemma FunnyToProduct_obj {C D : Category} (c : C) (d : D) :
 Proof. reflexivity. Qed.
 
 (*
- κ is full: (f, g) is the image of the word "g then f" (the R-then-L
+ κ is full: (f, g) is the image of the word “g then f” (the R-then-L
  diagonal; the L-then-R one would do just as well). 
 
  --------

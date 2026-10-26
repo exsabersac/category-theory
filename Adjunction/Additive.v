@@ -17,16 +17,16 @@ Require Import Category.Instance.Ab.
 Generalizable All Variables.
 
 (*
-Lib.v sets [Default Proof Using "Type"], which keeps only the section
+Lib.v sets [Default Proof Using “Type”], which keeps only the section
    variables occurring in a statement.  The additivity hypotheses here
    ([AU], [AF]) occur only in the PROOFS of the lemmas that consume
    them, those statements being equations between morphisms that
-   mention no functor class, so they would be discarded.  "All"
+   mention no functor class, so they would be discarded.  “All”
    retains them, the Theory/EckmannHilton.v and
    Theory/Category/Monoid.v precedent. 
 
 --------
-Lib.v 设置 [Default Proof Using "Type"]，仅保留该部分
+Lib.v 设置 [Default Proof Using “Type”]，仅保留该部分
  语句中出现的变量。 这里的可加性假设
  （[AU]、[AF]）仅出现在消耗的引理的 PROOFS 中
  它们，这些陈述是态射之间的方程
@@ -38,7 +38,7 @@ Local Set Default Proof Using "All".
 
 (** * Adjunctions between Ab-categories are additive
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+    Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
     §IV.1 Theorem 3 (printed p. 85) [maclane:IV.1:thm3]: if C and D
     are Ab-categories, U : C ⟶ D is an additive functor, and F ⊣ U,
     then the left adjoint F is itself additive and the adjunction
@@ -57,7 +57,7 @@ Local Set Default Proof Using "All".
     [AdditiveFunctor] is declared at Structure/AbCategory.v with
     preservation of [padd] as its ONLY field, and that file already
     proves the two clauses a reader would expect to owe here —
-    [fmap_pzero] ("whence T0 = 0", by the idempotency
+    [fmap_pzero] (“whence T0 = 0”, by the idempotency
     cancellation [padd_idem_zero]) and [fmap_abneg] (by
     uniqueness of additive inverses) — as well as the closure
     instances [Id_AdditiveFunctor] and
@@ -158,7 +158,7 @@ Local Set Default Proof Using "All".
     identifies the two categories' hom-and-proof universes with each
     other, [to_adj_padd] and [left_adjoint_fmap_padd] both carrying
     [u0 = u2].  That identification has AT LEAST THREE INDEPENDENT
-    DONORS and no single one of them is "the" cause.  Measured in a
+    DONORS and no single one of them is “the” cause.  Measured in a
     section declaring [Constraint bh < ah] — which satisfies the bound
     [bh <= ah] while violating the equation — with C and D at those
     levels: (i) [AdditiveFunctor] ALONE is rejected, with ONE functor
@@ -181,8 +181,8 @@ Local Set Default Proof Using "All".
     those levels, but it does NOT discriminate: it removes all three
     donors at once (one functor rather than two, [Preadditive] in
     place of [AbEnriched], and no [AdditiveFunctor]), so it is a
-    control for "one functor", not for "adjunction versus no
-    adjunction".  The claim is withdrawn.  Test/ProbeAdditive349.v now
+    control for “one functor”, not for “adjunction versus no
+    adjunction”.  The claim is withdrawn.  Test/ProbeAdditive349.v now
     pins all three donors as FORMABILITY negatives beside that
     accepted control, so the measurement is guarded rather than merely
     recorded.
@@ -193,7 +193,7 @@ Local Set Default Proof Using "All".
     [Isomorphism]'s own universe.  [hom_ab] itself is this file's
     sharpest instance of the binder/block trap: its constraint block
     is LITERALLY EMPTY while its binder reads [Category@{u0 u u}], so
-    a reader who checks only the block concludes "no identification"
+    a reader who checks only the block concludes “no identification”
     and is wrong.  None of this is claimed unavoidable; no
     re-annotation of any donor was attempted.
 
@@ -228,10 +228,10 @@ Local Set Default Proof Using "All".
 
     A RECORDED STRENGTH CHANGE: TEN STATEMENTS HERE CARRY A
     HYPOTHESIS THEY DID NOT CARRY BEFORE.  An earlier revision of
-    this header stated clause (3) unconditionally — "an adjunction
+    this header stated clause (3) unconditionally — “an adjunction
     between Ab-enriched categories induces an isomorphism of
-    hom-groups", with [hom_ab] read off any [AbEnriched C].  Since
-    the PR "algebraic carriers are sets" (2026-09-17) an [AbObject]
+    hom-groups”, with [hom_ab] read off any [AbEnriched C].  Since
+    the PR “algebraic carriers are sets” (2026-09-17) an [AbObject]
     carries [cmon_prop], a [PropEquiv] for its carrier setoid, and
     [hom_ab]'s carrier IS [C]'s hom-setoid; an arbitrary category
     supplies no [Prop] mirror of its `≈`, [Cat] being the standing
@@ -555,7 +555,7 @@ Mac Lane's Theorem 3, as an inhabitant of the class rather than as
 There is nothing to read back here, and an earlier revision of this
    file shipped an [Example] pretending otherwise.  [AdditiveFunctor]
    is a structure ON a given functor rather than a bundled functor, so
-   "the produced witness leaves F unperturbed" has no content to state.
+   “the produced witness leaves F unperturbed” has no content to state.
    The [Example] asserting [@fmap D C F x y f = fmap[F] f] was a
    SYNTACTIC TAUTOLOGY — [fmap[F]] IS notation for [@fmap _ _ F _ _]
    (Theory/Functor.v) — so it never mentioned
@@ -620,7 +620,7 @@ End LeftAdjointAdditive.
     supplies exactly that on each hom-setoid.
 
     AN EARLIER REVISION stopped that sentence there.  Since the PR
-    "algebraic carriers are sets" (2026-09-17) an [AbObject] carries
+    “algebraic carriers are sets” (2026-09-17) an [AbObject] carries
     one further field, [cmon_prop], and an [AbEnriched] category does
     NOT supply it: it is a property of the ambient hom-setoids, not of
     the enrichment.  Both categories of this section are therefore
@@ -682,7 +682,7 @@ Section HomGroups.
    reading of a hom-setoid, not something typeclass resolution should
    ever be searching for.
 
-   [LP] is new since the PR "algebraic carriers are sets" (2026-09-17).  An
+   [LP] is new since the PR “algebraic carriers are sets” (2026-09-17).  An
    [AbObject] carries [cmon_prop], the property that its carrier's `≈` is
    logically equivalent to a [Prop]-valued relation, and here the carrier IS
    [C]'s hom-setoid; an arbitrary category supplies no such relation
@@ -1013,7 +1013,7 @@ End RightAdjointAdditive.
 ** Riehl §4.6 Corollary 4.6.9: additivity with NO additivity
        hypothesis
 
-    Riehl, "Category Theory in Context", §4.6 Corollary 4.6.9: between
+    Riehl, “Category Theory in Context”, §4.6 Corollary 4.6.9: between
     categories in which finite direct sums are simultaneously finite
     products and finite coproducts, BOTH adjoints of an adjunction are
     additive, with no additivity assumed of either.  The reason is that
@@ -1150,7 +1150,7 @@ Require Import Category.Structure.Semiadditive.
     product plus preadditivity yields the coproduct half; here a
     coproduct plus preadditivity yields the product half.  The pivot is
     the same in both, the decomposition of the identity as the sum of
-    the two "project then reinject" idempotents — which on this side is
+    the two “project then reinject” idempotents — which on this side is
     proved by the coproduct's own uniqueness clause. 
 
 --------

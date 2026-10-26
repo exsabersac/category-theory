@@ -22,7 +22,7 @@ Import ListNotations.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §I.4, printed p. 17 (PDF 27) — maclane:I.4:construction3
  nLab:      https://ncatlab.org/nlab/show/Pontryagin+duality
  Wikipedia: https://en.wikipedia.org/wiki/Pontryagin_duality
@@ -57,7 +57,7 @@ Import ListNotations.
    a DECIDER for `≈`.  The decider is not a convenience: the extension
    construction below defines a character by a bounded search for the
    coset index of an element, so the search must actually run, and
-   "finite" without decidable equality does not make a setoid searchable.
+   “finite” without decidable equality does not make a setoid searchable.
    Instance/Ab/Character.v's [qz_eq_dec] provides the matching decider on
    the target ℚ/ℤ, and the acceptance witness at the end of this file
    exhibits both for ℤ/2.
@@ -120,7 +120,7 @@ Import ListNotations.
    entries OUTSIDE the current subgroup ([outside_count]).
    Adjoining a non-member strictly decreases that count
    ([outside_count_generated]), and [all_or_witness] decides at each
-   step between "the subgroup is everything" and a named
+   step between “the subgroup is everything” and a named
    non-member.  No well-founded recursion, and the fuel cannot run
    out unremarked: the case where it would have is closed by
    [outside_count_generated] itself, which would put a count of

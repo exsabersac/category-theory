@@ -77,8 +77,8 @@ Lemma terminal_sub_hom_unique (a b : TSub) (f g : a ~{TSub}~> b) : f ≈ g.
 Proof. exact (is_terminal_unique (`2 b) (`1 f) (`1 g)). Qed.
 
 (*
- The two facts packaged as Lemma 1.6.16's "exactly one morphism in each
- hom-set", in the library's own [Unique] idiom. 
+ The two facts packaged as Lemma 1.6.16's “exactly one morphism in each
+ hom-set”, in the library's own [Unique] idiom. 
 
  --------
  这两个事实被打包为引理 1.6.16 的“在每个 Hom-集合中恰好存在一个态射”，使用了库自身的 [Unique] 习惯用法。

@@ -14,8 +14,8 @@ Generalizable All Variables.
  A cone over a diagram F : J ⟶ C with apex d is the same data as a natural
  transformation Δ[J](d) ⟹ F out of the constant (diagonal) functor at d:
  the components of the transformation are the legs of the cone, and the
- naturality squares are the cone's commuting triangles (Wikipedia: "ψ is a
- cone from N to F" iff "ψ is a natural transformation from Δ(N) to F"). This
+ naturality squares are the cone's commuting triangles (Wikipedia: “ψ is a
+ cone from N to F” iff “ψ is a natural transformation from Δ(N) to F”). This
  is the equivalence (a) ↔ (b) of that article; (c), the comma-category form
  (Δ ↓ F), is treated separately.
 

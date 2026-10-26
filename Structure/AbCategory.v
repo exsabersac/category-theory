@@ -18,7 +18,7 @@ Open Scope addition_scope.
 (*
    * * Ab-categories and additive functors
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.8
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.8
    (printed pp. 28–29) [maclane:I.8:def4, maclane:I.8:def6,
    maclane:I.8:construction1], restated verbatim in §VIII.2 (printed
    pp. 194, 197) [maclane:VIII.2:def1, maclane:VIII.2:def4]: an
@@ -43,12 +43,12 @@ Open Scope addition_scope.
    ([Additive_AbEnriched]); the standalone concrete witness is [Ab]
    itself ([Ab_Preadditive], [Ab_AbEnriched] — pointwise addition and
    negation of homomorphisms, closing the gap Instance/Ab.v's header
-   records as "available and ... not attempted").
+   records as “available and ... not attempted”).
 
    ADDITIVE FUNCTORS ([AdditiveFunctor]): preservation of [padd] is
    the only field; preservation of [pzero] and [abneg] are THEOREMS
    ([fmap_pzero], [fmap_abneg] — cancel by the inverse, respectively
-   uniqueness of inverses), exactly Mac Lane's "whence T0 = 0".
+   uniqueness of inverses), exactly Mac Lane's “whence T0 = 0”.
    Identity and composition closure are instances
    ([Id_AdditiveFunctor], [Compose_AdditiveFunctor]).
 
@@ -61,7 +61,7 @@ Open Scope addition_scope.
    as [Cat], and the same deliberate deviation: Mac Lane's Ab-cat,
    like his Cat, is strict, and this is its
    natural-isomorphism-quotiented reading (a strict variant would
-   mirror [StrictCat]).  Universe-polymorphic like [Cat]: "small" is
+   mirror [StrictCat]).  Universe-polymorphic like [Cat]: “small” is
    whatever the instantiated universe says.
 
    NAMING.  The negation field is [abneg]/[padd_abneg] rather than
@@ -205,7 +205,7 @@ Context (F : C ⟶ D).
 Context `{AF : @AdditiveFunctor C D AC AD F}.
 
 (*
- "Whence T0 = 0": cancel by the inverse of the image of zero. 
+ “Whence T0 = 0”: cancel by the inverse of the image of zero. 
 
  --------
  “由此 T0 = 0”：通过零的像的逆来取消。

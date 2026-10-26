@@ -15,7 +15,7 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/well-powered+category
    nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
    book p. 130, states the special adjoint functor theorem for a complete,
    well-powered category with a small cogenerating set.  Adjunction/SAFT.v
    takes the well-poweredness half as its [SubobjectIndex] record, a small
@@ -80,13 +80,13 @@ Generalizable All Variables.
    and [SAFT]'s [PreservesImageLimit]/[SubobjectCover] slot [u], and that
    is load-bearing: with only [cobj dobj h] named, minimization
    identified [t] with [u], and in a scratch section declaring [t < u]
-   the wrapper was refused ("Cannot enforce t = u because t < u") where
+   the wrapper was refused (“Cannot enforce t = u because t < u”) where
    [SAFT] applied to [WellPowered_SubobjectIndex] was accepted; with the
    present binder both are accepted there.
 
    MEASUREMENTS.  Three constants ([.glob] heads), no [Program]
-   obligation, all three transparent [Definition]s; each reports "Closed
-   under the global context" by its fully qualified name. *)
+   obligation, all three transparent [Definition]s; each reports “Closed
+   under the global context” by its fully qualified name. *)
 
 Definition SubobjectIndex_of_WellPoweredAt {C : Category} {x : C}
   (W : WellPoweredAt x) : SubobjectIndex x :=

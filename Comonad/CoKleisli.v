@@ -73,10 +73,10 @@ nLab:      https://ncatlab.org/nlab/show/co-Kleisli+category
 Context-dependent maps, dataflow, and linear logic
 
    nLab:  https://ncatlab.org/nlab/show/exponential+modality
-   Paper: Uustalu, Vene, "The Essence of Dataflow Programming", APLAS
+   Paper: Uustalu, Vene, “The Essence of Dataflow Programming”, APLAS
           2005, LNCS 3780, pp. 2-18
-   Paper: Petricek, Orchard, Mycroft, "Coeffects: a calculus of
-          context-dependent computation", ICFP 2014
+   Paper: Petricek, Orchard, Mycroft, “Coeffects: a calculus of
+          context-dependent computation”, ICFP 2014
 
    The co-Kleisli category is where the computational reading of a
    comonad becomes a category of programs.  A co-Kleisli morphism

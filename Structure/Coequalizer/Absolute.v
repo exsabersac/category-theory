@@ -19,20 +19,20 @@ Generalizable All Variables.
 (** * Absolute coequalizers / * 绝对共等化器 *)
 
 (*
- Book:   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- §VI.6 "Split Coequalizers", book p. 149 (PDF p. 158), item
+ Book:   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ §VI.6 “Split Coequalizers”, book p. 149 (PDF p. 158), item
  maclane:VI.6:def2, read from the page image
- Paper:  Paré, "On absolute colimits", J. Algebra 19 (1971) 80-95
+ Paper:  Paré, “On absolute colimits”, J. Algebra 19 (1971) 80-95
  nLab:   https://ncatlab.org/nlab/show/absolute+colimit
  nLab:   https://ncatlab.org/nlab/show/split+coequalizer
 
- WHAT THE BOOK SAYS.  "An arrow e is called an absolute coequalizer of
+ WHAT THE BOOK SAYS.  “An arrow e is called an absolute coequalizer of
  ∂₀ and ∂₁ in C if for any functor T: C → X (to any category X
  whatever) the resulting fork Ta ⇉ Tb → Tc still has Te a coequalizer
  (of T∂₀ and T∂₁).  In particular, an absolute coequalizer is
- automatically a coequalizer."  A split fork adds s : c → b and
+ automatically a coequalizer.”  A split fork adds s : c → b and
  t : b → a with e∂₀ = e∂₁, es = 1, ∂₀t = 1 and ∂₁t = se, and the
- Lemma: "In every split fork, e is the coequalizer of ∂₀ and ∂₁", by
+ Lemma: “In every split fork, e is the coequalizer of ∂₀ and ∂₁”, by
  f' = fs, unique since f = ke gives fs = kes = k.
 
  WHAT IS HERE.
@@ -46,8 +46,8 @@ Generalizable All Variables.
  [Coequalizer (APair f g)].  Like the
  issue's statement it quantifies only; Mac Lane's presupposed fork
  is the [cofork] field of the T := Id instance.
- - [AbsoluteCoequalizer_IsCoequalizer]: "automatically a
- coequalizer", the instance T := Id, whose type is
+ - [AbsoluteCoequalizer_IsCoequalizer]: “automatically a
+ coequalizer”, the instance T := Id, whose type is
  [IsCoequalizer f g q e] by conversion.
  - The instances are ordered: through Construction/Lift.v's
  [LiftCat], which re-reads a category at higher universe levels,
@@ -55,7 +55,7 @@ Generalizable All Variables.
  every (xo, xh) below them ([AbsoluteCoequalizer_down]), and an
  instance at any levels at or above C's own is a coequalizer in C,
  its cofork included ([AbsoluteCoequalizer_IsCoequalizer_up]), so
- "automatically a coequalizer" holds from every such instance.
+ “automatically a coequalizer” holds from every such instance.
  - Mac Lane's Lemma is Structure/Coequalizer/Split.v's
  [split_coequalizer_is_coequalizer], whose proof is the book's:
  the descent is h ∘ s, and e ∘ s ≈ id makes it unique (Split.v's
@@ -109,7 +109,7 @@ Generalizable All Variables.
 
  UNIVERSES, by [About] on every constant.  [AbsoluteCoequalizer@{co ch
  xo xh u}] is over [C : Category@{co ch ch}] and quantifies over
- [X : Category@{xo xh xh}] with "ch <= xh" and no equation: every
+ [X : Category@{xo xh xh}] with “ch <= xh” and no equation: every
  target whose hom level is at or above C's, a universe-polymorphic
  family with the predicate's sort [u] strictly above [xo] and [xh].
  That is as general as [Functor] allows in the hom level; the target's
@@ -125,23 +125,23 @@ Generalizable All Variables.
  [D : Category@{u u2 u2}], one hom level for both, so absoluteness of
  a split fork reached only targets at C's hom level; the same proofs
  compile with the target's hom level strictly above, and #477 writes
- their binders out ([@{co ch do dh u}], "ch <= dh").  Second, with
+ their binders out ([@{co ch do dh u}], “ch <= dh”).  Second, with
  that done, [split_coequalizer_absolute] still came out at
  [AbsoluteCoequalizer@{co ch u0 ch u}]: minimization set the target
  hom level, bounded below by [ch] alone, to [ch].  So its statement
  names the instance, [AbsoluteCoequalizer@{co ch xo xh _}]; it now
- reads "ch <= xh", and the probe accepts it with "ch < xh" strict.
+ reads “ch <= xh”, and the probe accepts it with “ch < xh” strict.
  [AbsoluteCoequalizer_IsCoequalizer_up@{co ch xo xh u}] carries
- "co <= xo" and "ch <= xh", and
- [AbsoluteCoequalizer_down@{co ch xo xh yo yh …}] "xo <= yo" and
- "xh <= yh", with no equation, and their statements name the instances
+ “co <= xo” and “ch <= xh”, and
+ [AbsoluteCoequalizer_down@{co ch xo xh yo yh …}] “xo <= yo” and
+ “xh <= yh”, with no equation, and their statements name the instances
  they consume and produce for the same reason: four explicit universe
  instances of a new constant in this file, in three constants.
  (CORRECTION (#480): five, in four constants, since #480's
  [contractible_coequalizer_absolute] names its instance for the same
  reason.)
  [AbsoluteCoequalizer_IsCoequalizer] consumes the instance
- [@{co ch co ch u}], X at C's own levels: "take T := Id".  The probe
+ [@{co ch co ch u}], X at C's own levels: “take T := Id”.  The probe
  refuses it from a target hom level above C's at C's own object level
  (R6), a pin of that lemma's signature and not of what the predicate
  yields: R6's statement is accepted through
@@ -163,8 +163,8 @@ Generalizable All Variables.
  whose Structure/Limit/Constant.v declares the apex-only
  [AbsoluteLimit] and [AbsoluteColimit].  Its optional [AbsoluteColimit]
  is delivered at cone level as [AbsoluteColimitCocone], those names
- being taken.  Its line citations are replaced by names here.  "Beck's
- condition (ii) cannot be phrased" was accurate until this change; it
+ being taken.  Its line citations are replaced by names here.  “Beck's
+ condition (ii) cannot be phrased” was accurate until this change; it
  can now be phrased, and issue #484 (open) is to phrase it.
 
  NOT DELIVERED.  An elementary [AbsoluteEqualizer]: the limit side is

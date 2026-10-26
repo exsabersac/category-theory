@@ -19,9 +19,9 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
  Wikipedia: https://en.wikipedia.org/wiki/Direct_limit
 
- Riehl, "Category Theory in Context", Dover 2016, §3.1 Example 3.1.26 --
+ Riehl, “Category Theory in Context”, Dover 2016, §3.1 Example 3.1.26 --
  the colimit of an increasing chain of sets is their union.  Mac Lane,
- "Categories for the Working Mathematician" 2nd ed., Springer GTM 5
+ “Categories for the Working Mathematician” 2nd ed., Springer GTM 5
  1998, §V.1 Exercise 8 asks for the general statement, all small
  colimits; that is Instance/Sets/Cocomplete.v's [Sets_Cocomplete], and
  this file only READS it at the ω-shape.  Riehl's phrasing is honoured
@@ -50,7 +50,7 @@ Generalizable All Variables.
 
  THE UNION READING, AND EXACTLY HOW FAR IT GOES
 
- "The colimit is the union" is two statements about the generated
+ “The colimit is the union” is two statements about the generated
  relation, and only ONE of them is proved here.
 
  SUFFICIENCY, proved: [omega_colim_of_stage] -- if [x : G m] and
@@ -79,9 +79,9 @@ Generalizable All Variables.
  Instance/Omega.v and reuses that very [le_t].  So the deferral is a
  SCOPE choice about how much of the ω-reading to build here, NOT a
  missing lemma, and a later attempt should start from that constant.
- An earlier draft said instead that "Instance/Omega.v declares [le_t]
+ An earlier draft said instead that “Instance/Omega.v declares [le_t]
  with no uniqueness lemma, so that would have to be proved first, by
- dependent elimination.  That was judged substantial".  The file-local
+ dependent elimination.  That was judged substantial”.  The file-local
  absence is real; the inference drawn from it was wrong, and it would
  have sent a later reader to re-derive a lemma the tree already has.
 
@@ -129,13 +129,13 @@ Generalizable All Variables.
 
  Taken with the other file, what the two witnesses JOINTLY establish is
  that NEITHER endpoint describes [colim_rel] uniformly: this pair
- refutes "always the coproduct's relation", the discrete pair refutes
- "always total".  That is a statement about the FAMILY, not about any
+ refutes “always the coproduct's relation”, the discrete pair refutes
+ “always total”.  That is a statement about the FAMILY, not about any
  one diagram.  It is NOT the claim that the relation lies strictly
  inside that interval at some shape -- here it does not, [colim_rel]
  being TOTAL at [OmegaPoints], the fibres being singletons and any two
- stages ordered.  An earlier draft wrote "placed strictly between ...
- EACH FACT AT ITS OWN SHAPE"; the hedge does not rescue the claim.
+ stages ordered.  An earlier draft wrote “placed strictly between ...
+ EACH FACT AT ITS OWN SHAPE”; the hedge does not rescue the claim.
 
  WHAT IS NOT DELIVERED, SCOPED TO THIS FILE
 
@@ -153,7 +153,7 @@ Generalizable All Variables.
 
  STATUS: axiom-free.  All 14 constants -- 12 named and the 2 [Program]
  obligations of [OmegaPoints], which the ambient obligation tactic
- discharges -- report "Closed under the global context". 
+ discharges -- report “Closed under the global context”. 
 
  --------
  nLab:       https://ncatlab.org/nlab/show/sequential+colimit 
@@ -235,7 +235,7 @@ Proof.
     + exact (@cr_sym _ G _ _ (@cr_glue _ G n k q y)).
 Qed.
 
-(* The one-sided special case a reader of "the colimit is the union" wants first: an element and its image one step along are already identified. / 读者想要的“余极限就是并集”的单边特殊情况是：首先，一个元素及其跨一步的像已经被识别出来。 *)
+(* The one-sided special case a reader of “the colimit is the union” wants first: an element and its image one step along are already identified. / 读者想要的“余极限就是并集”的单边特殊情况是：首先，一个元素及其跨一步的像已经被识别出来。 *)
 Corollary omega_colim_step (n : nat) (x : G n) :
   @equiv _ (Sets_colim_obj G) (existT _ n x)
     (existT _ (S n) (fmap[G] (omega_step n) x)).

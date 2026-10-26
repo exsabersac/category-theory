@@ -16,11 +16,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/pointed+set
  nLab:      https://ncatlab.org/nlab/show/pointed+object
  Wikipedia: https://en.wikipedia.org/wiki/Pointed_set
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer 1998, §I.7 (printed p. 26)
- Book:      Awodey, "Category Theory", 2nd ed., OUP 2010, §1.6 Example 1.8
+ Book:      Awodey, “Category Theory”, 2nd ed., OUP 2010, §1.6 Example 1.8
  (printed p. 19)
- Book:      Awodey, "Category Theory", 1st ed., OUP 2006, §7.9 Example 7.26
+ Book:      Awodey, “Category Theory”, 1st ed., OUP 2006, §7.9 Example 7.26
 
  This is Set_*, Mac Lane's category of pointed sets, built over the setoids
  of Instance/Sets.v.  An object is a Bishop set with a distinguished element
@@ -44,7 +44,7 @@ Generalizable All Variables.
  to zero morphisms — and Set_* supplies one with no addition on the homsets
  whatsoever, in contrast with the commutative monoids of Instance/CMon.v.
  More generally a pointed object in a category with a terminal object is an
- object under 1 (nLab, "pointed object"), and Set_* is the case C = Set.
+ object under 1 (nLab, “pointed object”), and Set_* is the case C = Set.
  Awodey uses the same category as a first example of a category of
  structured sets and structure-preserving maps (Awodey 2010, §1.6 Example
  1.8), and returns to it for the coslice reading recorded in
@@ -64,8 +64,8 @@ Generalizable All Variables.
  identification of that concrete functor with the Eilenberg–Moore comparison
  of Monad/Comparison.v is not formalized here.)  And, in the classical
  setting, pointed sets carry the smash product, making Set_* the prototype
- of a monoidal-but-not-cartesian category of "sets with a zero" (nLab,
- "pointed set"); the smash product is not developed here. 
+ of a monoidal-but-not-cartesian category of “sets with a zero” (nLab,
+ “pointed set”); the smash product is not developed here. 
 
  --------
  nLab：       https://ncatlab.org/nlab/show/pointed+set
@@ -118,14 +118,14 @@ Generalizable All Variables.
  hypothesis [ImageDecidable] that membership in the image is decidable.
  The retraction sends a point of the image to its preimage — unique, by
  injectivity — and everything else to the basepoint.  Note that Mac Lane's
- side condition "non-empty domain" is automatic in Set_*: every object has
+ side condition “non-empty domain” is automatic in Set_*: every object has
  a basepoint.
 
  - [pointed_epic_split] : epic ⟹ split epi, under an enumeration of the
  domain together with decidable `≈` on the codomain.  This is the honest
- price.  In Set the unrestricted statement "every epimorphism splits" IS
- the axiom of choice (nLab, "axiom of choice"; Wikipedia, "Axiom of
- choice"), so no hypothesis-free proof can exist.  The obstruction is
+ price.  In Set the unrestricted statement “every epimorphism splits” IS
+ the axiom of choice (nLab, “axiom of choice”; Wikipedia, “Axiom of
+ choice”), so no hypothesis-free proof can exist.  The obstruction is
  visible at exactly one point: a section must be RESPECTFUL, and when [f]
  is not injective two `≈`-related points of the codomain can have entirely
  unrelated preimages.  The closing section of this file makes the price
@@ -702,7 +702,7 @@ Definition ImageDecidable {X Y : PointedSetoid}
 (*
  The retraction: send a point of the image to its (unique, by injectivity)
  preimage, and everything else to the basepoint.  The basepoint of Y is
- never in the "everything else" branch — [InImage_pt] — so the retraction is
+ never in the “everything else” branch — [InImage_pt] — so the retraction is
  automatically pointed. 
 
  --------
@@ -850,7 +850,7 @@ Definition DecidableEquiv (Y : PointedSetoid) : Type :=
   ∀ y y' : carrier Y, (y ≈ y') + ¬ (y ≈ y').
 
 (*
- Decidability of "is this the basepoint?", the weaker hypothesis needed by
+ Decidability of “is this the basepoint?”, the weaker hypothesis needed by
  the essential-surjectivity argument of Instance/Sets/Pointed/Part.v. 
 
  --------
@@ -889,8 +889,8 @@ Arguments enum_covers {X} _ _.
  Leibniz equality, not merely up to `≈`.  That is what makes the section
  below respectful — a bare choice of preimages need not be, since
  `≈`-related points can have wholly unrelated preimages when [f] is not
- injective, and this is precisely the obstruction that makes "every epi
- splits" a choice principle in general. 
+ injective, and this is precisely the obstruction that makes “every epi
+ splits” a choice principle in general. 
 
  --------
  第一原像搜索。关键属性是 [pointed_search_respects]：结果仅通过 `≈` 类依赖于 [b]，并且这种依赖是到莱布尼茨等价，而不仅仅是到 `≈`。正因为如此，下面的部分是尊重的——单纯选择原像不一定是，因为当 [f] 不是单射时，`≈` 相关的点可能有完全无关的原像，而这正是导致“一切满射可拆分”通常只是一个选择原理的障碍。
@@ -1007,7 +1007,7 @@ Defined.
 (*
  Mac Lane's Proposition, second half: an epic pointed map splits, PROVIDED
  the domain is enumerated and `≈` on the codomain is decidable.  In Set the
- unrestricted statement "every epi splits" IS the axiom of choice, so the
+ unrestricted statement “every epi splits” IS the axiom of choice, so the
  hypothesis pack is the honest constructive content of the proposition, not
  an artefact of the formalization: what a section must supply is a COHERENT
  choice of preimages, and an enumeration plus a decidable codomain is the
@@ -1042,7 +1042,7 @@ Defined.
 
 (*
  The header above prices the two splitting converses by CITATION: in Set,
- "every epimorphism splits" is the axiom of choice.  That is a fact about
+ “every epimorphism splits” is the axiom of choice.  That is a fact about
  Set, quoted from outside; an audit of the first commit observed that the
  file asserted it without in-tree evidence, and supplied the evidence.
  It is integrated here.

@@ -9,8 +9,8 @@ Generalizable All Variables.
 (* * * Ens_V, the category of sets belonging to a set V / * * Ens_V，属于集合 V 的集合的类别 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
- §I.2 "Categories", printed p. 11 (PDF p. 21)
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
+ §I.2 “Categories”, printed p. 11 (PDF p. 21)
  nLab: https://ncatlab.org/nlab/show/category+of+sets
  nLab: https://ncatlab.org/nlab/show/full+subcategory
  nLab: https://ncatlab.org/nlab/show/type+universe
@@ -18,19 +18,19 @@ Generalizable All Variables.
  Mac Lane's construction, as this repo's catalog summarizes it: for any set
  V of sets, Ens_V is
  the category with objects all sets X in V and arrows all functions
- f : X → Y with the usual composition; "Ens" then denotes any one of these
+ f : X → Y with the usual composition; “Ens” then denotes any one of these
  categories. The point is the word ALL — the arrows carry no side condition
  whatever, so Ens_V is the FULL subcategory of the category of sets spanned by
  the members of V. What V buys is size: by choosing V one gets a category
  whose objects form a set rather than a proper class.
 
- Rendered type-theoretically, "a set V of sets" is a type of codes together
+ Rendered type-theoretically, “a set V of sets” is a type of codes together
  with a decoding of each code into a type — a universe à la Tarski in the
  nLab's terminology, as opposed to a universe à la Russell where the codes
  *are* the types. So this file is parameterized by
 
  V  : Type          the codes, i.e. the members of Mac Lane's V
- El : V → Type      the decoding, i.e. "the set named by this code"
+ El : V → Type      the decoding, i.e. “the set named by this code”
 
  and builds the category
 
@@ -67,7 +67,7 @@ Generalizable All Variables.
 *)
 
 (*
- How this file sits in the library, and what "recovers Coq" is measured to mean
+ How this file sits in the library, and what “recovers Coq” is measured to mean
 
  nLab: https://ncatlab.org/nlab/show/Grothendieck+universe
  Book: Mac Lane, CWM 2nd ed., §I.2, printed p. 11 (PDF p. 21)
@@ -78,7 +78,7 @@ Generalizable All Variables.
  objects the dependent pairs [∃ T : Type, Ensemble T] and for arrows the
  whole-carrier functions f : TA → TB satisfying ∀ x, x ∈ A ↔ f x ∈ B — that
  is, A = f⁻¹(B), membership preservation AND reflection. Its own header says
- so outright: "This file does NOT build that classical category directly."
+ so outright: “This file does NOT build that classical category directly.”
  [EnsT], in the same file, is that idea with one carrier type fixed. (Those
  two are cited by name rather than by line, since the pointer comment this
  file's arrival adds to Instance/Ens.v moves them.) They are subobject-flavoured
@@ -86,7 +86,7 @@ Generalizable All Variables.
  Both files are kept, and neither construction subsumes the other.
 
  Instance/Coq.v ([Coq]) and Instance/Sets.v ([Sets]) are the
- "everything at one universe level" categories: objects are all of [Type@{o}],
+ “everything at one universe level” categories: objects are all of [Type@{o}],
  respectively all setoids at level o, and arrows are all functions,
  respectively all setoid maps. They are Ens_V with the bound fixed at a
  universe rather than at an arbitrary family — which is the set-theorist's
@@ -129,8 +129,8 @@ Generalizable All Variables.
  [Type@{o}] — and [EnsV_two] below is a two-object witness that the small case
  is genuinely inhabited rather than vacuous. This is a remark about the shape
  of the definition, not a theorem: the library carries no internal notion of
- smallness or size, so "small" here means only "the codes are a type the
- caller picked", and nothing about cardinality is being claimed. 
+ smallness or size, so “small” here means only “the codes are a type the
+ caller picked”, and nothing about cardinality is being claimed. 
 
  --------
  这个文件在图书馆中的位置，以及“恢复 Coq”被理解的含义
@@ -201,7 +201,7 @@ Program Definition Spanned_Incl : Spanned ⟶ C := {|
 
 (*
  It is full — the chosen preimage of a C-morphism is that morphism — which is
- the formal content of "spanned by El" being a FULL subcategory. 
+ the formal content of “spanned by El” being a FULL subcategory. 
 
  --------
  它是满的——C-态射的选定前像就是该态射——这就是“由 El 张成”是满子范畴的形式内容。
@@ -259,7 +259,7 @@ Definition EnsV_equiv_is_pointwise {V : Type} (El : V → Type) (x y : V)
            (f g : @hom (EnsV El) x y) :
   (f ≈ g) = (∀ a : El x, f a = g a) := eq_refl.
 
-(* Identity and composition are "the usual" ones, in Mac Lane's phrase. / 用麦克莱恩的话说，恒等式和组合是“通常的”那些。 *)
+(* Identity and composition are “the usual” ones, in Mac Lane's phrase. / 用麦克莱恩的话说，恒等式和组合是“通常的”那些。 *)
 Definition EnsV_id_is_identity {V : Type} (El : V → Type) (x : V) (a : El x) :
   @id (EnsV El) x a = a := eq_refl.
 

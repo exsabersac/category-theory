@@ -13,7 +13,7 @@ Generalizable All Variables.
 (*
    * * The determinant over a commutative ring
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.4
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.4
    (printed p. 16): the determinant is the archetypal natural
    transformation — for a commutative ring K, [det] is a map from the
    n × n matrices over K to K, natural in K, and multiplicative
@@ -95,12 +95,12 @@ Generalizable All Variables.
    [pow_neg1], [minor], [det], [det_respects] and [det_id].
    [DeterminantComm] adds the commutativity hypothesis and carries
    everything from multilinearity to [det_mul]; since Lib.v's
-   project-wide [Default Proof Using "Type"] discharges only the
+   project-wide [Default Proof Using “Type”] discharges only the
    section variables occurring in a statement, that section sets
-   ["All"], so its lemmas take the ring and its commutativity proof as
+   [“All”], so its lemmas take the ring and its commutativity proof as
    their two leading arguments.  [DetMap] takes two rings and a
    homomorphism.  Everything is axiom-free: [Print Assumptions det_mul]
-   answers "Closed under the global context". 
+   answers “Closed under the global context”. 
 
    --------
    * * 在交换环上的行列式
@@ -116,7 +116,7 @@ Generalizable All Variables.
 
    - [det_perm]：对于每一个 [f : Fin.t n → Fin.t n]，无论是否单射，都有 [det (A ∘ f) ≈ det (P f) · det A]，其中 [P f] 是 f 的 0/1 矩阵。通过对 n 的归纳法证明；非单射的情况可以通过可判定的有限搜索发现，并通过 [det_alt] 消除。- 产品展开是作为 B 的列上的嵌套求和（[expand]）组织的，而不是对函数的平面求和，因此既不需要枚举对称群，也不需要枚举乘积 [Π_j B (f j) j]：[det (A ∘ B)] 和 [det B] 是相同的嵌套求和，只是叶子不同，而 [det_perm] 将通过常数因子 [det A] 关联这些叶子。伴随矩阵。有了这两种展开式，其余的经典内容就可以推导出来：[det_transpose]（转置矩阵的第0列展开就是原矩阵的第0行展开，按代数余子式对应），沿任意列的展开（[det_col_expand]，通过将第j列移到最前面的循环 [rotf] —其置换矩阵的行列式 [(-1)^j] 只需一次定义即可，无需归纳，且 [det_perm] 提供剩下的部分），异元素余子式恒等式（[det_col_alien]，即将矩阵的一列用另一列覆盖后的展开式），因此有 [adj]，其中 [adj_mul_l] 和 [adj_mul_r]：[adj A ∘ A ≈ A ∘ adj A ≈ det A · I]。因此，一个方阵恰好在其行列式是单位元时才有双边逆元（[det_unit_of_inverse] 和 [inverse_of_det_unit]，其中 [det_unit_of_iso] 和 [iso_of_det_unit] 属于 [Matr] 的构成词汇）。
 
-   环（[det_map]）中的自然性是 Mac Lane §I.4 的 [Matr] 级内容：环之间的加法半环同态与 [det] 交换，因为公式是多项式的。对于取反不需要额外条款——即 Theory/Algebra/Rig.v 的定理 [RigHom_neg]。三部分。[Determinant] 仅固定环并包含不需要交换性的内容：环算术、[fin_delete]、[pow_neg1]、[minor]、[det]、[det_respects] 和 [det_id]。[DeterminantComm] 添加交换性假设，并承载从多重线性到 [det_mul] 的所有内容；由于 Lib.v 的项目范围 [Default Proof Using "Type"] 仅释放出现在语句中的节变量，该节设置 ["All"]，因此它的引理将环及其交换性证明作为两个主要参数。[DetMap] 接受两个环和一个同态。所有内容都是无公理的：[Print Assumptions det_mul] 回答“在全局上下文下封闭”。
+   环（[det_map]）中的自然性是 Mac Lane §I.4 的 [Matr] 级内容：环之间的加法半环同态与 [det] 交换，因为公式是多项式的。对于取反不需要额外条款——即 Theory/Algebra/Rig.v 的定理 [RigHom_neg]。三部分。[Determinant] 仅固定环并包含不需要交换性的内容：环算术、[fin_delete]、[pow_neg1]、[minor]、[det]、[det_respects] 和 [det_id]。[DeterminantComm] 添加交换性假设，并承载从多重线性到 [det_mul] 的所有内容；由于 Lib.v 的项目范围 [Default Proof Using “Type”] 仅释放出现在语句中的节变量，该节设置 [“All”]，因此它的引理将环及其交换性证明作为两个主要参数。[DetMap] 接受两个环和一个同态。所有内容都是无公理的：[Print Assumptions det_mul] 回答“在全局上下文下封闭”。
 *)
 
 Section Determinant.
@@ -353,8 +353,8 @@ End Determinant.
    * * The commutative development
 
    Everything from here on spends commutativity of the base ring.  The
-   section sets [Default Proof Using "All"] (Lib.v's project-wide
-   default is ["Type"], which discharges only the section variables
+   section sets [Default Proof Using “All”] (Lib.v's project-wide
+   default is [“Type”], which discharges only the section variables
    occurring in a statement, and [Rcomm] occurs in almost none of
    them), so every lemma below takes the ring and its commutativity
    proof as its two leading arguments. 
@@ -362,7 +362,7 @@ End Determinant.
    --------
    * * 交换性的发展
 
-   从这里开始的一切都使用底环的交换性。本节设置了 [Default Proof Using "All"]（Lib.v 在整个项目中的默认值是 ["Type"]，它仅对语句中出现的节变量进行处理，而 [Rcomm] 几乎不在任何中使用），因此下面的每个引理都将环及其交换性证明作为前两个主要参数。
+   从这里开始的一切都使用底环的交换性。本节设置了 [Default Proof Using “All”]（Lib.v 在整个项目中的默认值是 [“Type”]，它仅对语句中出现的节变量进行处理，而 [Rcomm] 几乎不在任何中使用），因此下面的每个引理都将环及其交换性证明作为前两个主要参数。
 *)
 
 Section DeterminantComm.
@@ -389,7 +389,7 @@ Local Notation pow_neg1 := (pow_neg1 R).
 
    Column 0 enters the recursion linearly and every other column enters
    only through the minors, so both clauses are a direct induction.
-   The hypotheses are stated in "agree away from column j" form rather
+   The hypotheses are stated in “agree away from column j” form rather
    than through a substitution operator, which keeps them free of
    decidable-equality noise at the point of use. 
 
@@ -1486,7 +1486,7 @@ Qed.
    expansion — no induction — and [det_perm] does the rest.
 
    Expanding along column j with the entries of a DIFFERENT column k
-   gives zero (the "alien cofactor" identity): that is the expansion of
+   gives zero (the “alien cofactor” identity): that is the expansion of
    the matrix whose column j has been overwritten by column k, which
    has two equal columns. 
 

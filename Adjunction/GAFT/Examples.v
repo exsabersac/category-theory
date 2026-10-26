@@ -40,7 +40,7 @@ This file exercises [GAFT_from_initials] (Adjunction/GAFT.v) end to end on a
    and the produced left adjoint [F : C ⟶ C ∏ C] is the diagonal.  The initial
    object of the comma [=(d) ↓ ×(C)] is [((d, d), δ)] with the diagonal
    [δ := id △ id : d ~> d × d] as its universal arrow (this is the classical
-   "a product is a universal arrow out of the diagonal", read for the binary
+   “a product is a universal arrow out of the diagonal”, read for the binary
    diagonal).  Taking [U := ×(C)] rather than the literal symbol [Δ] is forced by
    the *direction* GAFT produces; feeding [Δ] itself to GAFT would instead
    reconstruct the coproduct adjunction [(+) ⊣ Δ], a different, equally genuine

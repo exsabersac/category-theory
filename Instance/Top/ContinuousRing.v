@@ -44,9 +44,9 @@ Ltac RcasesH :=
 Ltac RlinH := RcasesH; lra.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.3 Exercise 5, printed p. 40 (PDF p. 50) — maclane:II.3:ex5
- Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.2,
+ Book:      Awodey, “Category Theory” (1st ed., 2005 pre-print), §7.2,
  printed p. 156 (PDF p. 165) —
  awodey:7.2:construction-continuous-real-functions-ring
  nLab:      https://ncatlab.org/nlab/show/Top
@@ -109,7 +109,7 @@ Ltac RlinH := RcasesH; lra.
  3. WHAT IT COSTS.  This is the FOURTH file importing Coq.Reals
  (after Interval.v, FundamentalGroupoid.v, Presheaf.v), and it
  inherits the standard library's axioms for R exactly as
- docs/AXIOMS.md's "Stdlib axioms" section documents; the section
+ docs/AXIOMS.md's “Stdlib axioms” section documents; the section
  enumerates this file alongside the other three, with the same
  measured per-constant discipline: 36 of the 38 constants carry
  the two axioms ([ClassicalDedekindReals.sig_forall_dec] and
@@ -431,7 +431,7 @@ End Pointwise.
 (** ** C(X), as a ring / ** C(X)，作为一个环 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject] owes
+ Since the PR “algebraic carriers are sets” (2026-09-17) a [RigObject] owes
  a [Prop]-valued mirror of its equality.  Two continuous maps into ℝ are
  identified POINTWISE (Instance/Top.v's [ContinuousMorphism_equiv]), and
  the real line's own `≈` is Instance/Top/Presheaf.v's [R_equiv], which is

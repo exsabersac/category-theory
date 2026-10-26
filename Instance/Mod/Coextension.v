@@ -1,7 +1,7 @@
 (* * * Coextension of scalars: the right adjoint of R-Mod → Ab / * * 标量上的共延伸：R-Mod → Ab 的右伴随 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., §IV.2 Exercise 2, printed p. 90 (ledger item
  `maclane:IV.2:ex2`, issue #360) — the forgetful functor
  from R-modules to abelian groups has BOTH adjoints.  This
@@ -12,7 +12,7 @@
  [Adjunction] record of Theory/Adjunction.v is a natural
  bijection of hom-setoids, and the unit and counit are its
  derived ⌊id⌋ and ⌈id⌉.
- Book:      Riehl, "Category Theory in Context", Dover 2016, §4.1
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, §4.1
  Example 4.1.10 — restriction of scalars has a left adjoint
  (extension) and a right adjoint (coextension, also called
  coinduction).  READ THE RELATION PRECISELY: hers runs
@@ -124,7 +124,7 @@
  returns none.  Nothing here is a quotient, so there is no elimination
  to perform: every obligation is an equation between two values of a
  hom-setoid, checked at an argument.  Correspondingly the file has no
- analogue of a universal-property "agreement on generators" step —
+ analogue of a universal-property “agreement on generators” step —
  the hard direction of the bijection is carried by the module laws of
  the source module instead.
 
@@ -248,8 +248,8 @@
  is exactly what `maclane:IV.2:ex2` asks for.  **The two files
  share no construction**: that one's carrier is [AbTensor] and
  this one's is [hom_ab], their declared name sets are disjoint,
- and neither defines an [Ltac].  Read that as "no OWN artifact in
- common" — the ordinary tactics are of course shared, and so are
+ and neither defines an [Ltac].  Read that as “no OWN artifact in
+ common” — the ordinary tactics are of course shared, and so are
  at least ten DONORS, not the two an earlier draft of this
  paragraph listed: [ring_ab], [RMod_Forget_Ab], [Build_Adjunction],
  [cmon_hom_compose], [Int_RMod], [Ring_RMod], [ab_hom_add],
@@ -269,20 +269,20 @@
  neither there nor here.  This file is not an instance of it: at
  phi : ℤ → R that file's restriction runs [RMod R ⟶ RMod Int_Ring]
  while this one's left adjoint runs [RMod R ⟶ Ab].  State the
- obstruction precisely: "the tree carries no functor relating
- [Ab] and [RMod Int_Ring]" would be FALSE — [RMod_Forget_Ab
+ obstruction precisely: “the tree carries no functor relating
+ [Ab] and [RMod Int_Ring]” would be FALSE — [RMod_Forget_Ab
  Int_Ring] is one, and this file uses it at that very ring in its
- own ℤ witness.  An earlier revision went on: "What is absent is
+ own ℤ witness.  An earlier revision went on: “What is absent is
  an [Ab ⟶ RMod Int_Ring] carrying each abelian group ITS OWN
  ℤ-action, which is what Instance/Ab/Free.v, Instance/Mod/Quotient.v
- and Instance/Mod/Tensor.v each record."  Since #454 that functor
+ and Instance/Mod/Tensor.v each record.”  Since #454 that functor
  exists, Instance/Mod/Cogenerator.v's [Ab_to_ZMod] (each group with
  its own [zsmul] action), and those three files carry the same
  correction; what is still absent is an equivalence
  [Ab ≃ RMod Int_Ring].  Nothing is shared and that
  file is not [Require]d either.
 
- AXIOMS.  73/73 constants report "Closed under the global context"
+ AXIOMS.  73/73 constants report “Closed under the global context”
  (49 source-declared plus 24 [Program] obligations that no source
  sweep sees, queried by fully qualified name).  Zero of the 73 names
  occur anywhere else in the tree, checked name by name.
@@ -313,9 +313,9 @@
  Adjunction/Additive.v's [adj_hom_ab_iso] is one Require away, and
  the bijection is NOT exhibited as an isomorphism in [Ab], nor is
  any additivity of either adjoint claimed.  An earlier revision
- gave as the reason that [adj_hom_ab_iso] "needs [AbEnriched (RMod
+ gave as the reason that [adj_hom_ab_iso] “needs [AbEnriched (RMod
  R)], which the tree does not have (Instance/Mod.v supplies only
- [RMod_Preadditive])"; Instance/Mod/Bimodule.v's [RMod_AbEnriched]
+ [RMod_Preadditive])”; Instance/Mod/Bimodule.v's [RMod_AbEnriched]
  supplies it, so the hypothesis is available and [adj_hom_ab_iso]
  is simply not applied here.
  - No isomorphism Hom_ℤ(ℤ, A) ≅ A, hence nothing says
@@ -391,7 +391,7 @@
  - 函子的两个作用（[coex_fobj_is_CoextObj], [coex_fmap_is_CoextMap]）以及左伴随的对象作用（[coex_forget_is_rm_ab]）；- 在 ℤ 上，某一点上的 n 乘法，余单位计算为 3 和 0，以及作用计算 2 · (·3) 为 6；
  - 以及两个探针控制，分别是手性和左分配律的逐点读取。恰好有三种识别回退到≈，并且其原因不同。两种是双射的往返旅行：[coex_from (coex_to g)] 计算为 g (1 · m)，而 [coex_to (coex_from h)] 在 1 · s 处计算内部同态；[rm_smul_one] 和 [rig_mul_one_l] 是用来去除剩余项的，它们都是一个类的抽象字段，因此两边都不会被简化，后续的透明化也无济于事。第三种在性质上不同，并且按此进行测量：在 [eq_refl]（控制在负4旁边）处左分配性逐点成立，然而两个 RECORDS 不可转换，因为 [coex_act] 是一个 [Program Definition]，其 [cmon_map_zero] 和 [cmon_map_plus] 义务是不可见的，并且在两边的参数上构建不同。因此，DATA 在表面上是完全一致的，只有法规字段不同。宇宙，被测量和归属。将其范围限定为五个已命名的常数，因为作为对文件的声明，三条条款都是错误的：四个 [coex_ctrl_*] 探针控制器每个都包含十个方程 [u = u0] .. [u = u9]；十六个常数除 [u < u2] 外都有严格约束；五个已命名的常数每个都带有 [u <= u1] 和 [u0 <= u1]，这些界限在该文件自身声明的级别之间，而不是针对任何捐赠者。在 [coex_act]、[coex_group]、[CoextObj]、[Coextension] 和 [coex_adjunction] 中：它们唯一的宇宙方程是 [u = u0] 和 [u = u1]——环的三个宇宙坍缩为一个——所有五个都完全相同地携带；它们之间唯一的严格约束是 [u < u2]，而 [coex_act] 完全不携带；它们其余的区块是对 [Basics.compose]、[prod_rect]、[ID]、[projections] 和 [Logic_lemmas.equality] 的束缚。识别的进入是测量得出的，而不是猜测的，并且这不是该文件的。随着环的第一个和第三个宇宙被明确区分开来，[RMod Ru]、[ring_ab Ru]、[RMod_Forget_Ab Ru]、[hom_ab Ab_AbEnriched Au Bu]、[Ab ⟶ RMod Ru] 和 [Ring_RMod Ru] 均被详细说明，而 [AbHom (ring_ab Ru) Au] 被拒绝——因此墙壁已经在环的加法群被读取为阿贝尔群同态来源的点上遇到，在达到该文件的任何构造之前，并且在提到 [Ab] 类别之前。一个第二且独立的提供者被固定在旁边：Instance/Mod.v 自身的 [Ring_RMod Ru : obj[RMod Ru] 在完全相同的层级以完全相同的信息被拒绝，并且它既未提及 [Ab]，也未提及此处的任何内容，因此即使阿贝尔侧被修复，标识仍将被满足。两者都未被认为是不可避免的；未尝试重新标注。现有技术，以及它与本文件共享和不共享的内容。- Instance/Mod/BaseChange.v，在同一个分支中为问题 #360 的另一部分编写，提供了 [ZExt R ⊣ RMod_Forget_Ab R]：通过 ℤ → R 延拓标量，作为 A ↦ R ⊗ A，在 Instance/Ab/Tensor.v 的 ℤ-张量之上。结合下面的伴随，这构成了在单个函子上的伴随三重 [ZExt R ⊣ RMod_Forget_Ab R ⊣ Coextension R]，这正是 `maclane:IV.2:ex2` 所需要的。**这两个文件没有共享任何构造**：前者的承载类型是 [AbTensor]，后者的承载类型是 [hom_ab]，它们声明的名称集合是互不相交的，且都没有定义 [Ltac]。将其解读为“没有共同的 OWN 工件”——普通策略当然是共享的，至少有十个捐赠者，而不是这一段早期草稿中列出的两个：[ring_ab]、[RMod_Forget_Ab]、[Build_Adjunction]、[cmon_hom_compose]、[Int_RMod]、[Ring_RMod]、[ab_hom_add]、[rm_smul_zero_r]、[AbHom]、[RModObject]，加上 [unit] / [counit]。该文件不包含 [Require]，因此这两个独立编译，三重项在此未被声明为单一工件——该声明需要两者在同一个范围内，并被列为未交付。（上面的描述来自于读取该文件，而不是在此文件中执行的检查。）
  - Instance/Mod/Extension.v（预先存在的，_CoqProject，问题 #312）是在不同的类别对上的一对不同的对象：
- [ExtendScalars phi Hc ⊣ Restrict phi] 位于 [RMod R] 和 [RMod S] 之间，沿着任意环同态，在 Instance/Mod/Tensor.v 的 R-张量下并在 [CentralImage] 假设下。它自身右侧的邻居——沿 phi 的余拓展 Hom_R(S, −)，是 [Restrict phi] 的右伴随——既不在那里构建，也不在这里构建。此文件不是它的实例：在 phi : ℤ → R 时，该文件的限制运行 [RMod R ⟶ RMod Int_Ring]，而此文件的左伴随运行 [RMod R ⟶ Ab]。准确说明阻碍："树没有关联 [Ab] 和 [RMod Int_Ring] 的函子" 是错误的——[RMod_Forget_Ab Int_Ring] 就是一个，而该文件在其自身的 ℤ 证据中使用了它。早期的修订版本继续写道："缺少的是一个 [Ab ⟶ RMod Int_Ring]，为每个阿贝尔群提供它自身的 ℤ-作用，这正是 Instance/Ab/Free.v、Instance/Mod/Quotient.v 和 Instance/Mod/Tensor.v 各自记录的内容。" 自 #454 起，该函子已存在，Instance/Mod/Cogenerator.v 的 [Ab_to_ZMod]（每个群都有自己的 [zsmul] 作用）以及这三个文件也都进行了相同的修正；仍然缺少的是真值 [Ab ≃ RMod Int_Ring]。当中没有共享内容，并且该文件也不是 [Require] d。公理。73/73 个常量报告“在全局上下文下关闭”（49 个源声明的加上 24 个 [Program] 义务，源扫描无法看到，通过完全限定的名称查询）。在树的其他任何地方都没有出现这 73 个名称，一一核对名称。
+ [ExtendScalars phi Hc ⊣ Restrict phi] 位于 [RMod R] 和 [RMod S] 之间，沿着任意环同态，在 Instance/Mod/Tensor.v 的 R-张量下并在 [CentralImage] 假设下。它自身右侧的邻居——沿 phi 的余拓展 Hom_R(S, −)，是 [Restrict phi] 的右伴随——既不在那里构建，也不在这里构建。此文件不是它的实例：在 phi : ℤ → R 时，该文件的限制运行 [RMod R ⟶ RMod Int_Ring]，而此文件的左伴随运行 [RMod R ⟶ Ab]。准确说明阻碍：“树没有关联 [Ab] 和 [RMod Int_Ring] 的函子” 是错误的——[RMod_Forget_Ab Int_Ring] 就是一个，而该文件在其自身的 ℤ 证据中使用了它。早期的修订版本继续写道：“缺少的是一个 [Ab ⟶ RMod Int_Ring]，为每个阿贝尔群提供它自身的 ℤ-作用，这正是 Instance/Ab/Free.v、Instance/Mod/Quotient.v 和 Instance/Mod/Tensor.v 各自记录的内容。” 自 #454 起，该函子已存在，Instance/Mod/Cogenerator.v 的 [Ab_to_ZMod]（每个群都有自己的 [zsmul] 作用）以及这三个文件也都进行了相同的修正；仍然缺少的是真值 [Ab ≃ RMod Int_Ring]。当中没有共享内容，并且该文件也不是 [Require] d。公理。73/73 个常量报告“在全局上下文下关闭”（49 个源声明的加上 24 个 [Program] 义务，源扫描无法看到，通过完全限定的名称查询）。在树的其他任何地方都没有出现这 73 个名称，一一核对名称。
 
  否定。十五个 [Fail] 命令：十四个受保护的否定——五个转换，两个类型检查，七个形式可构造性——每个旁边都有一个已应用的正控制，加上一个无作用域的工具检查。每一个都被去掉 [Fail] 并单独编译，读取其全部错误；分类记录在探测部分。每个在否定中命名的常量也在否定外被命名，因此重命名无法使保护自动变为绿色。
 

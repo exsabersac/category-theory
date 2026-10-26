@@ -303,7 +303,7 @@ Proof. exact (free_module_triangle_right (field_ring F) W). Qed.
    * ** Riehl's k[S]: every vector is a finite linear combination of basis
    vectors
 
-   The half of the classical "finitely supported k-valued functions"
+   The half of the classical “finitely supported k-valued functions”
    description that does not need a decider on the generating setoid.
    Instance/Mod/Free.v's closing note says what the other half costs. 
 

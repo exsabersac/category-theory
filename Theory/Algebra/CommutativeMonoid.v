@@ -15,7 +15,7 @@ Generalizable All Variables.
 (*
 A commutative monoid in [(C, ⨂, I, σ)] is a [Monoid X] whose
    multiplication is invariant under the braiding.  This is the
-   "commutative monoid" / "abelian monoid" of the symmetric-monoidal
+   “commutative monoid” / “abelian monoid” of the symmetric-monoidal
    setting.
 
    In this library's notation, with [braid : X ⨂ X ~> X ⨂ X] the

@@ -15,13 +15,13 @@ Generalizable All Variables.
  nLab:  https://ncatlab.org/nlab/show/separator
  nLab:  https://ncatlab.org/nlab/show/generator
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
- §V.7 ("Subobjects and Generators"), book p. 127 (PDF p. 136),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
+ §V.7 (“Subobjects and Generators”), book p. 127 (PDF p. 136),
  Definition 4, is the source: a set of objects GENERATES C when two
  parallel arrows that agree after every arrow out of a member of the
- set are equal.  Mac Lane remarks that "separates" would be the better
+ set are equal.  Mac Lane remarks that “separates” would be the better
  word -- the set separates the arrows of C, it does not build them --
- and this file follows him, keeping "generator" only in the names the
+ and this file follows him, keeping “generator” only in the names the
  literature has fixed.  His two illustrations are the one-point set
  for Set and the additive group of integers for Ab; neither is
  discharged IN THIS FILE -- the witnesses are Instance/Sets/Generator.v
@@ -31,7 +31,7 @@ Generalizable All Variables.
  isomorphism that is not in tree), and the NOT DELIVERED paragraph
  below says what each leaves open.
 
- Awodey, "Category Theory" (1st ed., Carnegie Mellon pre-print,
+ Awodey, “Category Theory” (1st ed., Carnegie Mellon pre-print,
  September 2005), §7.2, printed p. 154 (PDF p. 163), states the
  single-object case and the characterization this file proves: an
  object c of a locally small category is a generator (separator)
@@ -39,7 +39,7 @@ Generalizable All Variables.
  is, when arrows out of x are determined by their effect on the
  generalized elements of x based at c.
 
- Riehl, "Category Theory in Context", 2nd ed., Definition 4.7.7,
+ Riehl, “Category Theory in Context”, 2nd ed., Definition 4.7.7,
  printed p. 177 (PDF p. 197), calls the family a SEPARATING SET and
  defines a COSEPARATING set to be a separating set in the opposite
  category -- the duality that Structure/Generator/Dual.v carries out
@@ -110,8 +110,8 @@ Generalizable All Variables.
 
  The dual side is as the issue described it.  Adjunction/SAFT.v's
  [Cogenerator] is the only cogenerating vocabulary, its header says
- "Equivalently the representables [C(-, cog_obj j)] are jointly
- faithful" as PROSE and proves it nowhere, and exactly one site
+ “Equivalently the representables [C(-, cog_obj j)] are jointly
+ faithful” as PROSE and proves it nowhere, and exactly one site
  really consumes the field (apply (cog_separates G g1 g2) inside
  [cogenerator_canonical_monic]).  Structure/Generator/Dual.v proves
  that prose, both ways.
@@ -132,8 +132,8 @@ Generalizable All Variables.
  measured, with the same requirement list:
  Example f2_eq (H : IsSeparator c) : Faithful [Hom c,─] := H.
  is rejected with
- "The term "H" has type "IsSeparator c" while it is expected to have
- type "Faithful (fobj[C] c)"" --
+ “The term ”H“ has type ”IsSeparator c“ while it is expected to have
+ type ”Faithful (fobj[C] c)“” --
  a class record is not a function.  Hence [Build_Faithful] one way and
  [fmap_inj] the other, and the same for the family form through
  [JointlyFaithful].
@@ -147,9 +147,9 @@ Generalizable All Variables.
  the family COseparates.  It is a different statement, not a
  malformed one.  What is refused is deriving it from [Generator C]:
  with the identical proof term, Rocq reports
- "The term "k" has type "gen_obj G j ~{ C }~> y" while it is
+ “The term ”k“ has type ”gen_obj G j ~{ C }~> y“ while it is
  expected to have type
- "carrier (fobj[fobj[Curried_CoHom C] (gen_obj G j)] x)"" --
+ ”carrier (fobj[fobj[Curried_CoHom C] (gen_obj G j)] x)“” --
  the probe object sits at the wrong end of the arrow.  So the reading
  proved below, [generator_jointly_faithful], is the covariant one and
  only that, and the contravariant one is Dual.v's
@@ -166,9 +166,9 @@ Generalizable All Variables.
  is ACCEPTED, while
  Example f3_term :
  @terminal_obj Sets Sets_Terminal = unit_setoid_object := eq_refl.
- is rejected with (cannot unify "1" and "unit_setoid_object") -- so
- "the terminal object separates Sets" and "the singleton separates
- Sets" are two statements, and whichever is proved reaches the other
+ is rejected with (cannot unify “1” and “unit_setoid_object”) -- so
+ “the terminal object separates Sets” and “the singleton separates
+ Sets” are two statements, and whichever is proved reaches the other
  only along an isomorphism.  [hom_test_iso] is the shared step: it
  carries a family of tests out of d to a family of tests out of c, and
  [separator_iso], [gen_iso] and [gen_family_mono] are its three
@@ -199,7 +199,7 @@ Generalizable All Variables.
  [u0 <= compose.u1], [u0 <= compose.u2], [u0 <= ID.u0] -- together
  with the ≤-bounds [IsSeparator] and [Faithful] contribute themselves
  ([u <= u1], [u0 <= u1], [u <= u3], [u2 <= u3]; an earlier revision of
- this sentence said "exactly the Sets block", which an audit measured
+ this sentence said “exactly the Sets block”, which an audit measured
  as four bounds short).  Inherited, and attributed by [About] on
  [Sets], [IsSeparator] and [Faithful] rather than guessed.
  [hom_test_iso] and its three consumers
@@ -245,7 +245,7 @@ Generalizable All Variables.
  cited as the source of the vocabulary only, and no part of Giraud's
  theorem is stated.  No smallness: [gen_index] is a bare [Type] with
  no smallness condition attached, exactly as [cog_index] is in SAFT.v,
- so "set of objects" is read as "family indexed by a Type" throughout.
+ so “set of objects” is read as “family indexed by a Type” throughout.
  No setoid structure on generators: [Generator C] carries no
  equivalence and nothing below respects one; [gen_iso] builds a new
  generator from an old one, it does not identify them.  No adjunction,
@@ -257,14 +257,14 @@ Generalizable All Variables.
 
  nLab:   https://ncatlab.org/nlab/show/separator 
  nLab:   https://ncatlab.org/nlab/show/generatorMac Lane，《为工作中的数学家准备的范畴》，第2版（GTM 5），§V.7（“子对象与生成元”），书本第127页（PDF第136页），定义4，是来源：一个对象集合GENERATES C，当且仅当两个平行箭头在集合中每个对象出的箭头作用下都相等时，相等。Mac Lane 评论说“separates”会是更好的词——这个集合分离C的箭头，它并不构造箭头——这个文件遵循他的做法，仅在文献固定的名称中保留“generator”。他的两个例子分别是 Set 的单点集合和 Ab 的整数加法群；在本文件中都没有展开——相关证明见 Instance/Sets/Generator.v（单元素集合和终对象）、Instance/Grp/Generator.v（Awodey 的单生成元自由群）以及 Instance/Ab/Generator.v（单生成元自由阿贝尔群，Mac Lane 的 ℤ，直到一个不在树中的同构），下面的未交付段落说明了每个例子留下的空白。Awodey，《范畴论》（第一版，卡内基梅隆预印本，2005年9月），§7.2，纸质书第154页（PDF第163页）指出了单对象情况以及本文件所证明的表征：局部小范畴中的一个对象c正好在其协变可表示函子Hom(c, -)是忠实函子时成为生成元（分离子），也就是说，当从x出的箭头可以通过它们在以c为基的x的广义元素上的作用来确定时。Riehl，《语境中的范畴论》，第2版，第4.7.7条定义，印刷版第177页（PDF第197页），将该族称为分离集，并将余分离集定义为对偶范畴中的分离集——这是《结构/生成元/对偶.v》直接实现的对偶性。Riehl的尾声 §E.4，印刷版第257页（PDF第277页），将相同的概念回忆为Giraud定理的条款(vi)，并同时陈述了联合忠实性的解释。两种形式。[Generator C] 是族形式：一个小的 [Type] 指数集合，每个指数对应一个对象，以及分离子句。它是根据 Adjunction/SAFT.v 的 [Cogenerator] 逐字段形成的，其对偶形式，使得它们之间的桥不会移动任何数据（该桥是 Structure/Generator/Dual.v，保存在单独的文件中，因为 SAFT.v 的需求闭包不能被引入 Structure/ 中）。[IsSeparator c] 是 Awodey 的单对象形式，而 [Generator_of_separator] 将分离器作为 [unit] 上的族进行打包。[separator_of_generator] 则是相反的形式，适用于所有元素都属于同一个命名指数的任意指数类型。建设性解读。两个条款都是以肯定的方式陈述的，作为消去律：如果所有测试都一致，则箭头也一致。Riehl 的定义 4.7.7 和 §E.4 的回顾是相反写的——对于平行的 f ≠ g，存在一个成员 G 和一个箭头 h : G ~> B，使得 f ∘ h ≠ g ∘ h——这就是逆否命题。在这个库中，这两种解读不能相互推导，原因不是努力不足。≈ 是一个 [crelation] 型值（Lib/Setoid.v），没有判定过程，也不能进行双重否定消去：从 ≠ 形式只能得到 ¬¬(f ≈ g) 并停下，而从正形式只能得到 ¬(∀ 测试一致) 并停下，一个显式的见证对 (j, k) 恰恰是建设性逻辑不从否定的全称断言中返回的东西。免费的就是最后一步， 它是实现而不是描述的：下面的 [gen_separates_contra] 和 [separator_contra] 将 f ≉ g 转化为测试不能全部一致的陈述。想要 Riehl 原文形式的读者必须提供一个判定器 —— Structure/Complete/Freyd.v 的 [DecHom] 是该树的词汇 —— 这里没有假设有判定器。弱化的 ≠ 形式并不是以它是定义的方式陈述的。树内情况、测量，以及该问题的错误之处。问题 #447 记录为其已验证的当前状态，即搜索 Generator / Separator / SeparatingFamily / Generates 只能找到一个 [Cogenerator] 记录，别无其他。这是过时的，修正记录在此而不是悄悄进行：在此工作树上使用 grep -rn 'Separator' --include='*.v'，Theory/Concrete.v 已经包含了完整的单对象开发。[Class Separator (t : C)] 与 [IsSeparator] 的条件相同，两者对象为隐含；[Separator_of_Faithful] 是 Awodey 描述的一半，已被证明；[Concrete_of_Separator] 包含另一半，不以命名引理的形式出现，而是作为它构造的具体化的 [underlying_faithful] 义务；而问题所要求的集合见证是 [Sets_Separator]，旁边是 [Sets_WellPointed] 和非空反驳 [Sets_empty_not_Separator]。因此，这里真正新的部分是 FAMILY 概念、双向联合忠实性描述、传输引理以及对偶文件——而不是单对象条件。[IsSeparator] 无论如何都会保留，并且不是竞争者：它是该问题并行构建时的冻结接口，它是类型值而不是类（因此它可以作为函数组合，这正是下面每个表征所使用的），并且 Structure/Generator/Concrete.v 在两个方向上携带了 [Separator_of_IsSeparator] / [IsSeparator_of_Separator] 两座桥，因此树不会以两个不相关的概念结束。那座桥是第三个文件，有其考量的原因：Theory/Concrete.v 定义了 [bool_setoid_object]，而 Instance/Sets.v 定义了不同的 [bool_setoid_object]，因此在此处要求 Concrete 会遮蔽 Sets 中的定义，对后续的每个文件都会有影响，并且针对该接口构建的证人使用的是 Sets。双侧与问题描述一致。Adjunction/SAFT.v 的 [Cogenerator] 是唯一的共生成词汇，其标题写着“等价地，可表示的 [C(-, cog_obj j)] 是联合忠实的”，以散文形式出现，但没有任何证明，并且实际上只有一个站点真正使用了该字段（在 [cogenerator_canonical_monic] 内部应用 (cog_separates G g1 g2)）。Structure/Generator/Dual.v 从两个方向证明了这一散文内容。特征化的代价：展开，而非证明。下面的每个等式都是一个项，从不使用战术脚本，因为一旦展开两个定义，等式两边的假设完全相同。[Hom c,─] 是 Functor/Hom.v 中的 [Curried_Hom C] 应用于 c，其在 f : x ~> y 处的 [fmap] 是集合同构映射 k ↦ f ∘ k（后组合）；Sets 的同态集合是 Instance/Sets.v 中的 [SetoidMorphism_equiv]，它是逐点的——f ≈ g 意味着 ∀ a, f a ≈ g a，其中 ≈ 在值域中取得。因此，忠诚性假设 [fmap[[Hom c,─] ] f ≈ fmap [[Hom c,─] ] g] 展开为 [∀ k : c ~> x, f ∘ k ≈ g ∘ k]，这就是分离假设，而两边的证明项在 eta 意义下是相同的。不免费的部分是包装：[Faithful] 是一个单字段类，因此 [Faithful [Hom c,─] := H]，其中 H 是一个 [IsSeparator]，被拒绝 -- 使用相同的需求列表测量：
- 示例 f2_eq (H : IsSeparator c) : Faithful [Hom c,─] := H 被拒绝，提示 "术语 'H' 的类型是 'IsSeparator c'，而期望类型是 'Faithful (fobj [C] c)'" --
+ 示例 f2_eq (H : IsSeparator c) : Faithful [Hom c,─] := H 被拒绝，提示 “术语 'H' 的类型是 'IsSeparator c'，而期望类型是 'Faithful (fobj [C] c)'” --
  类记录不是函数。因此 [Build_Faithful] 一种方式，[fmap_inj] 另一种方式，同样对于通过 [JointlyFaithful] 的族形式也是如此。方差是全部内容，仅凭类型无法驳斥错误的内容。对于一个族 [F : J -> C] ，语句 [JointlyFaithful (fun j => [Hom ─, F j] )] -- 逆变可表示项 -- 是完全符合形式的：[Hom ─, A] 是 Functor/Hom.v 中的 [Curried_CoHom C] 在 A 处的值，一个函子 C^op ⟶ Sets，因此联合忠实性声明是关于 C^op 的箭头，并且表示该族 COseparates。它是一个不同的声明，而不是格式错误的声明。被拒绝的是从 [Generator C] 推导它：使用相同的证明项，Rocq 报告说
- "项 'k' 的类型是 'gen_obj G j ~{ C }~> y'，而预期类型是 'carrier (fobj [fobj[Curried_CoHom C]  (gen_obj G j)] x)'" -- 探针对象位于箭头的错误端。所以读数证明下面的 [generator_jointly_faithful] 是协变的，只有它，而逆变的是 Dual.v 的 [cogenerator_jointly_faithful] 在一个 [Cogenerator] 上。为什么同构传输在这里。[separator_iso] 移动 [IsSeparator] 沿着 c ≅ d。它不是装饰：集合见证需要它。单元素 [unit_setoid_object] (Instance/Sets.v) 从 Lib/Setoid.v 的 [unit_setoid] 获取它的集合体字段，而 [Sets_Terminal] (Instance/Sets.v) 的终对象从 [Unit_Setoid] 获取 -- 是测量的，不是从源读取的：
+ “项 'k' 的类型是 'gen_obj G j ~{ C }~> y'，而预期类型是 'carrier (fobj [fobj[Curried_CoHom C]  (gen_obj G j)] x)'” -- 探针对象位于箭头的错误端。所以读数证明下面的 [generator_jointly_faithful] 是协变的，只有它，而逆变的是 Dual.v 的 [cogenerator_jointly_faithful] 在一个 [Cogenerator] 上。为什么同构传输在这里。[separator_iso] 移动 [IsSeparator] 沿着 c ≅ d。它不是装饰：集合见证需要它。单元素 [unit_setoid_object] (Instance/Sets.v) 从 Lib/Setoid.v 的 [unit_setoid] 获取它的集合体字段，而 [Sets_Terminal] (Instance/Sets.v) 的终对象从 [Unit_Setoid] 获取 -- 是测量的，不是从源读取的：
  示例 t1 : @terminal_obj Sets Sets_Terminal
  = {| carrier := poly_unit ; is_setoid := Unit_Setoid |} := eq_refl. 被接受，而
  示例 f3_term :
- @terminal_obj Sets Sets_Terminal = unit_setoid_object := eq_refl. 被拒绝，报错 (不能统一 "1" 和 "unit_setoid_object") -- 所以
- "终对象区分集合" 和 "单元素区分集合" 是两个说法，无论哪一个被证明，只能沿着同构到达另一个。[hom_test_iso] 是共享步骤：它将 d 的一系列测试传递到 c 的一系列测试，并且 [separator_iso]、[gen_iso] 和 [gen_family_mono] 是它的三个使用者。宇宙，用 [Set Printing Universes. About ...] 测量，而不是从源读取，因为源没有注释。[Generator] 打印为
+ @terminal_obj Sets Sets_Terminal = unit_setoid_object := eq_refl. 被拒绝，报错 (不能统一 “1” 和 “unit_setoid_object”) -- 所以
+ “终对象区分集合” 和 “单元素区分集合” 是两个说法，无论哪一个被证明，只能沿着同构到达另一个。[hom_test_iso] 是共享步骤：它将 d 的一系列测试传递到 c 的一系列测试，并且 [separator_iso]、[gen_iso] 和 [gen_family_mono] 是它的三个使用者。宇宙，用 [Set Printing Universes. About ...] 测量，而不是从源读取，因为源没有注释。[Generator] 打印为
  Generator@{u u0 u1} : Category@{u0 u1 u1} → Type@{max(u+1,u0,u1)}
  带有一个空约束块，[u] 是索引 [Type] 的层级；[IsSeparator@{u u0 u1} : ∀ {C : Category@{u0 u1 u1}},
  obj [C] → Type@{u}] 只包含 [u0 <= u] 和 [u1 <= u]。文件中的每个常量都将其范畴绑定为 [Category@{_ u0 u0}]，同态层次与证明层次相同。[JointlyFaithful] 进一步，将两个类别的 hom 和证明级别彼此关联——它打印 [∀ {C : Category@{u1 u2 u2}} {D : Category@{u3 u2 u2}} ...] ——这是 Theory/Functor.v 的 [Faithful] 已经打印的，并且不是由 [Functor] 记录强制的（Theory/Functor.v 仅在它们之间有 ≤ 约束的情况下打印六个独立级别），因此这个合并属于忠实性层，而不是在此引入的。提到 [Sets]（[separator_faithful]、[faithful_separator]、[generator_jointly_faithful]、[jointly_faithful_generator]、[generator_iff_jointly_faithful]）的常量还包含 Instance/Sets.v 的块 [Sets@{o so} : Category@{so o o}] ——严格的 [u0 < u2]，以及高于载体级别的集合体对象级别，以及 [u0 <= compose.u0]、[u0 <= compose.u1]、[u0 <= compose.u2]、[u0 <= ID.u0] ——连同 ≤-界 [IsSeparator] 和 [Faithful] 本身也作出贡献（[u <= u1]、[u0 <= u1]、[u <= u3]、[u2 <= u3]；该句的早期版本说的是“正是 Sets 块”，审计发现少了四个界限）。由 [About] 继承，并归因于 [Sets]、[IsSeparator] 和 [Faithful]，而不是猜测获得的。[hom_test_iso] 及其三个使用者
@@ -420,7 +420,7 @@ Example separator_generator_roundtrip (c : C) (H : IsSeparator c) :
  The issue's pinned name, as the biconditional it names, for an
  UNBUNDLED family [F : J -> C]: [Separates F] is the separation clause
  of [Generator] with the family held fixed, and the two directions are
- the two terms above read at that family.  Type-valued, so the "iff" is
+ the two terms above read at that family.  Type-valued, so the “iff” is
  a pair. 
 
  --------

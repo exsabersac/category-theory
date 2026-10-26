@@ -17,7 +17,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/well-powered+category
  Wikipedia: https://en.wikipedia.org/wiki/Subgroup
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.8, book p. 130 (PDF p. 139): a category is well-powered when the
  subobjects of each object form a small set.  In [Grp] a subobject is a
  subgroup up to isomorphism, so the classical index is the set of
@@ -53,10 +53,10 @@ Generalizable All Variables.
  ([WellPoweredAt]'s first slot is the index universe, its fourth the hom
  universe.)  At Structure/WellPowered.v's pin the witness is refused, in
  a copy of this whole file with the one command appended:
- [WellPowered@{o h h o o} Grp@{o h}] with [h < o] gives "The term
- "Grp_WellPoweredAt_up G" has type "WellPoweredAt@{R5.4103 o o h
- R5.4103} G" while it is expected to have type "WellPoweredAt@{h o o h o}
- G" (universe inconsistency: Cannot enforce o = h because h < o)", and
+ [WellPowered@{o h h o o} Grp@{o h}] with [h < o] gives “The term
+ ”Grp_WellPoweredAt_up G“ has type ”WellPoweredAt@{R5.4103 o o h
+ R5.4103} G“ while it is expected to have type ”WellPoweredAt@{h o o h o}
+ G“ (universe inconsistency: Cannot enforce o = h because h < o)”, and
  the control [Grp_WellPoweredAt_up@{o o h} G] is accepted.  [Set < u0]
  and [u1 < u0] are inherited, not introduced here: [About Grp] reads
  [Grp@{u p} : Category@{u p p}] with [Set < u] and [p < u], the [Set+1]
@@ -66,7 +66,7 @@ Generalizable All Variables.
  MEASUREMENTS.  7 [.glob] heads ('^(def|prf|thm|ind|constr|proj|rec) ')
  and 6 [Program] obligations ([grp_image_fwd_obligation_1] to [_3] and
  [grp_image_bwd_obligation_1] to [_3], found by [strings] on the .vo):
- all 13 report "Closed under the global context" by their fully
+ all 13 report “Closed under the global context” by their fully
  qualified names.  [grp_image_iso] and [grp_image_to_from] are
  [Defined] (an isomorphism and a ≈ of subobjects, both data); the six
  obligations are [Qed].
@@ -78,7 +78,7 @@ Generalizable All Variables.
  Grp/QuotObj.v's header records that its surjectivity leg takes the
  double-negation stability of image membership as a hypothesis, and no
  index of quotients is built.  No [Ab] analogue.  An earlier revision
- said "No [Ab] or [RMod R] analogue"; since #454 Instance/Mod/
+ said “No [Ab] or [RMod R] analogue”; since #454 Instance/Mod/
  WellPowered.v is the [RMod R] one: [RMod_WellPoweredAt_up] and
  [RMod_CoWellPoweredAt_up] one universe up, and
  [RMod_WellPowered_untruncate] and [RMod_CoWellPowered_untruncate] at
@@ -95,12 +95,12 @@ Generalizable All Variables.
  Grp_WellPoweredAt_up@{u u0 u1} ：
  ∀ G : obj [Grp@{u0 u1}] ， WellPoweredAt@{u u0 u0 u1 u} G
  ( * Set < u0, u1 < u, u1 < u0 * )([WellPoweredAt] 的第一个插槽是索引宇宙，第四个是 homo 宇宙。) 在 Structure/WellPowered.v 的引脚处，见证被拒绝，在附加了一个命令的整个文件副本中：
- [WellPowered@{o h h o o} Grp@{o h}] 与 [h < o] 给出 "术语 'Grp_WellPoweredAt_up G' 的类型是 'WellPoweredAt@{R5.4103 o o h R5.4103} G'，而期望类型是 'WellPoweredAt@{h o o h o} G'（宇宙不一致：无法强制 o = h，因为 h < o）"，并且控制 [Grp_WellPoweredAt_up@{o o h} G] 被接受。[Set < u0] 和 [u1 < u0] 是继承的，而不是这里引入的：[About Grp] 读取 [Grp@{u p} : Category@{u p p}] 与 [Set < u] 和 [p < u]，[Set+1] 即 [PropEquiv] 字段在 [GrpObject] 的类型中放入（CLAUDE.md 的宇宙部分）。测量。7 个 [.glob] 头 ('^(def|prf|thm|ind|constr|proj|rec)') 和 6 个 [Program] 义务（[grp_image_fwd_obligation_1] 到 [_3] 和 [grp_image_bwd_obligation_1] 到 [_3]，由 [strings] 在 .vo 中发现）：所有 13 个通过它们的完全限定名称报告“在全局上下文下关闭”。[grp_image_iso] 和 [grp_image_to_from] 是 [Defined]（一个同构和子对象的 ≈，两者都是数据）；六个义务是 [Qed]。未交付。[Grp] 在针脚处是良好强大的，无条件或在任何假设下：[Prop] 值的成员将位于承载宇宙中，但符合 Instance/Sets/WellPowered.v 对 [Sets] 的拒绝引用，这里没有尝试。[Grp] 共良好强大：Instance/Grp/QuotObj.v 的头部记录其满射性腿将图像成员的双重否定稳定性作为假设，并且没有构建商的索引。没有 [Ab] 的对应物。早期版本曾说“没有 [Ab] 或 [RMod R] 的对应物”；由于 #454 Instance/Mod/WellPowered.v 是 [RMod R] 的一个：[RMod_WellPoweredAt_up] 和 [RMod_CoWellPoweredAt_up] 上一个宇宙，以及 [RMod_WellPowered_untruncate] 和 [RMod_CoWellPowered_untruncate] 在针脚下的 [Untruncate] 。
+ [WellPowered@{o h h o o} Grp@{o h}] 与 [h < o] 给出 “术语 'Grp_WellPoweredAt_up G' 的类型是 'WellPoweredAt@{R5.4103 o o h R5.4103} G'，而期望类型是 'WellPoweredAt@{h o o h o} G'（宇宙不一致：无法强制 o = h，因为 h < o）”，并且控制 [Grp_WellPoweredAt_up@{o o h} G] 被接受。[Set < u0] 和 [u1 < u0] 是继承的，而不是这里引入的：[About Grp] 读取 [Grp@{u p} : Category@{u p p}] 与 [Set < u] 和 [p < u]，[Set+1] 即 [PropEquiv] 字段在 [GrpObject] 的类型中放入（CLAUDE.md 的宇宙部分）。测量。7 个 [.glob] 头 ('^(def|prf|thm|ind|constr|proj|rec)') 和 6 个 [Program] 义务（[grp_image_fwd_obligation_1] 到 [_3] 和 [grp_image_bwd_obligation_1] 到 [_3]，由 [strings] 在 .vo 中发现）：所有 13 个通过它们的完全限定名称报告“在全局上下文下关闭”。[grp_image_iso] 和 [grp_image_to_from] 是 [Defined]（一个同构和子对象的 ≈，两者都是数据）；六个义务是 [Qed]。未交付。[Grp] 在针脚处是良好强大的，无条件或在任何假设下：[Prop] 值的成员将位于承载宇宙中，但符合 Instance/Sets/WellPowered.v 对 [Sets] 的拒绝引用，这里没有尝试。[Grp] 共良好强大：Instance/Grp/QuotObj.v 的头部记录其满射性腿将图像成员的双重否定稳定性作为假设，并且没有构建商的索引。没有 [Ab] 的对应物。早期版本曾说“没有 [Ab] 或 [RMod R] 的对应物”；由于 #454 Instance/Mod/WellPowered.v 是 [RMod R] 的一个：[RMod_WellPoweredAt_up] 和 [RMod_CoWellPoweredAt_up] 上一个宇宙，以及 [RMod_WellPowered_untruncate] 和 [RMod_CoWellPowered_untruncate] 在针脚下的 [Untruncate] 。
 *)
 
 (*
  The image of a homomorphism as a [Subgroup]; its membership is
- Instance/Grp/Epi.v's [GrpImage], a [Type]-valued "has a preimage". 
+ Instance/Grp/Epi.v's [GrpImage], a [Type]-valued “has a preimage”. 
 
  --------
  同态的像作为 [Subgroup]；它的成员是 Instance/Grp/Epi.v 的 [GrpImage] ，一个取值为 [Type] 的“有原像”的元素。

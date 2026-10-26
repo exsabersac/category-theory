@@ -41,7 +41,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_modules
  Wikipedia: https://en.wikipedia.org/wiki/Direct_sum_of_modules
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.8, book p. 131 (PDF p. 140): Watt's theorem applies the special
  adjoint functor theorem to a functor out of (R-Mod)^op, and that
  theorem asks first of all that its source be small-complete -- that
@@ -65,8 +65,8 @@ Generalizable All Variables.
  nothing (instrument check: the first pattern with [Grp|Rng] in place of
  the module names finds Instance/Rng/Colimit.v's
  [Rng_Cocomplete_via_GAFT] and Test/ProbeAlgColimit450.v's checks).
- Instance/Mod/Limit.v's NOT DELIVERED said "No colimits and no
- cocompleteness for [RMod R]" and is corrected in place.  What did exist
+ Instance/Mod/Limit.v's NOT DELIVERED said “No colimits and no
+ cocompleteness for [RMod R]” and is corrected in place.  What did exist
  is the zero module (Instance/Mod.v's [RMod_Initial] and [RMod_Zero]) and
  the binary direct sum (Instance/Mod/Coproduct.v's [RMod_Biproducts],
  [RMod_Cocartesian]) -- both only at [Set] carriers (NON-VACUITY,
@@ -143,10 +143,10 @@ Generalizable All Variables.
  R)] and Theory/Adjunction.v's [left_adjoint_iso] over the two
  [Diagonal_Coproduct_Adjunction]s (Adjunction/Diagonal/Coproduct.v, with
  Instance/Mod/Coproduct.v imported), each at an unannotated
- [R : RingObject], are refused alike: "The term "R" has type
- "RingObject@{… …23423 …}" while it is expected to have type
- "RingObject@{… Set …}" (universe inconsistency: Cannot enforce Set =
- …23423 because Set < …23423)" (the second with its own universe
+ [R : RingObject], are refused alike: “The term ”R“ has type
+ ”RingObject@{… …23423 …}“ while it is expected to have type
+ ”RingObject@{… Set …}“ (universe inconsistency: Cannot enforce Set =
+ …23423 because Set < …23423)” (the second with its own universe
  numbers).  So non-vacuity is shown without them:
  [RMod_initial_via_GAFT_trivial] (every element of the AFT initial
  module is ≈ 0: the identity and the zero homomorphism are two arrows
@@ -198,10 +198,10 @@ Generalizable All Variables.
  under [Monomorphic Constraint Set < go, Set < gx, gp <= ga, ga <= go]:
  at R : RingObject@{ga Set gp}, J : Category@{Set Set Set} and
  D : J ⟶ RMod@{go gx ga gp Set} R, [@Diagonal_RMod_solution_set R J D]
- is accepted, and [RMod_colim_via_GAFT R J] is refused with "The term "R"
- has type "RingObject@{ga Set gp}" while it is expected to have type
- "RingObject@{… … …}" (universe inconsistency: Cannot enforce Set = …
- because Set < …)".  Removing [Set < c] from [RMod_colim_via_GAFT]'s
+ is accepted, and [RMod_colim_via_GAFT R J] is refused with “The term ”R“
+ has type ”RingObject@{ga Set gp}“ while it is expected to have type
+ ”RingObject@{… … …}“ (universe inconsistency: Cannot enforce Set = …
+ because Set < …)”.  Removing [Set < c] from [RMod_colim_via_GAFT]'s
  binder, in a copy, re-infers it ([About] prints [Set < c] again).  As in
  #450, [RMod_Cocartesian_via_GAFT] and [RMod_HasCoequalizers_via_GAFT]
  add the strict stdlib bound [c < eq_rect_r.u0], inherited from
@@ -212,8 +212,8 @@ Generalizable All Variables.
 
  [Print Module] lists 41 names (37 constants, field projections
  included, the two records [IsModCongruence] and [IsModCoconeCong] and
- their constructors); every one reports "Closed under the global
- context" under [Print Assumptions] by its fully qualified name.  No
+ their constructors); every one reports “Closed under the global
+ context” under [Print Assumptions] by its fully qualified name.  No
  [Program] obligation belongs to this module: [Print Module] lists none,
  and [strings] on the .vo finds no [_obligation_] name of this module.
 
@@ -266,10 +266,10 @@ Generalizable All Variables.
  在 [Monomorphic Constraint Set < go, Set < gx, gp <= ga, ga <= go] 下：
  于 R : RingObject@{ga Set gp}, J : Category@{Set Set Set} 和
  D : J ⟶ RMod@{go gx ga gp Set} R,  [@Diagonal_RMod_solution_set R J D] 
- 被接受，而 [RMod_colim_via_GAFT R J] 被拒绝，显示 “The term "R"
- has type "RingObject@{ga Set gp}" while it is expected to have type
- "RingObject@{… … …}" (universe inconsistency: Cannot enforce Set = …
- because Set < …)"。从 [RMod_colim_via_GAFT] 的绑定器中移除 [Set < c]，
+ 被接受，而 [RMod_colim_via_GAFT R J] 被拒绝，显示 “The term “R”
+ has type “RingObject@{ga Set gp}” while it is expected to have type
+ “RingObject@{… … …}” (universe inconsistency: Cannot enforce Set = …
+ because Set < …)“。从 [RMod_colim_via_GAFT] 的绑定器中移除 [Set < c]，
  在副本中重新推断它（[About] 再次打印 [Set < c]）。如同在
  #450 中，[RMod_Cocartesian_via_GAFT] 和 [RMod_HasCoequalizers_via_GAFT] 
  添加了严格的 stdlib 绑定 [c < eq_rect_r.u0]，继承自

@@ -24,9 +24,9 @@ nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    product, and a supply of BINARY equalizers together yield a genuine
    initial object (Freyd; Mac Lane, Categories for the Working
    Mathematician, 2nd ed., §V.6).  The power is there for one reason,
-   which that file states in terms: it is the device by which "the wide
+   which that file states in terms: it is the device by which “the wide
    equalizer of the endomorphism family reduces to one *binary*
-   equalizer".  With wide equalizers available the device is unnecessary,
+   equalizer”.  With wide equalizers available the device is unnecessary,
    and this file says so — [initial_from_weakly_initial_wide] equalizes
    ALL endomorphisms of the product directly, which is the form Freyd's
    argument is usually presented in.
@@ -55,8 +55,8 @@ nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    endomorphisms ([endo_absorb]) is four rewrites through the two tuplings
    [m] and [d] and their defining families.  Here it is one instance of the
    wide fork condition at [u] and [id], followed by [id_left]: the wide
-   equalizer's defining equation IS "every endomorphism agrees with the
-   identity after [e]".  Monicity of the equalizing map, which supplies the
+   equalizer's defining equation IS “every endomorphism agrees with the
+   identity after [e]”.  Monicity of the equalizing map, which supplies the
    uniqueness half, comes from [wide_equalizer_monic] exactly as it came
    from [equalizer_monic].  The endgame — a weakly initial map into the
    equalizer of a competing pair, exhibited as a section, then cancellation
@@ -64,22 +64,22 @@ nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
 
    UNIVERSES, measured (reproduce with [Set Printing Universes. About
    initial_from_weakly_initial. About initial_from_weakly_initial_wide.]).
-   RECORDED CORRECTION.  An earlier revision read: "Both theorems are over
+   RECORDED CORRECTION.  An earlier revision read: “Both theorems are over
    [C : Category@{u2 Set Set}] — the pin at [Set] is the DONOR's, from
    [iprod] and not from [Terminal] or the equalizers (both unpinned;
    measured in #435).  The binder COUNT is the same — both are
    [@{u u0 u1 u2}], so there is no extra binder: the wide form replaces the
    power's binder with the class's index binder, which is itself
-   unconstrained, appearing free in [HasWideEqualizers@{u1 u2 Set} C]."
+   unconstrained, appearing free in [HasWideEqualizers@{u1 u2 Set} C].”
    The attribution to the donor was right, and the donor has been
    repaired: [iprod] inherited its [Set] from Instance/Discrete.v's
    unannotated [DiscreteCat_Functor], annotated in place there in the
-   PR "algebraic carriers are sets" (2026-09-17).  Measured after it,
+   PR “algebraic carriers are sets” (2026-09-17).  Measured after it,
 
      initial_from_weakly_initial_wide@{u u0 u1 u2 u3} :
        ∀ {C : Category@{u2 u3 u3}} (W : WeaklyInitialFamily@{u1 u2 u3} C),
        Limit@{u0 u1 u3 u2} (DiscreteCat_Functor@{u1 u3 u3 u2 u3 u3 u} …)
-       → HasWideEqualizers@{u3 u2 u3} C → Terminal@{u2 u3}   (* u3 < u
+       → HasWideEqualizers@{u3 u2 u3} C → Terminal@{u2 u3}   (* u3 < u *)
 
 --------
 nLab：https://ncatlab.org/nlab/show/adjoint+functor+theorem
@@ -98,8 +98,7 @@ nLab：https://ncatlab.org/nlab/show/adjoint+functor+theorem
 initial_from_weakly_initial_wide@{u u0 u1 u2 u3} :
        ∀ {C : Category@{u2 u3 u3}} (W : WeaklyInitialFamily@{u1 u2 u3} C),
        Limit@{u0 u1 u3 u2} (DiscreteCat_Functor@{u1 u3 u3 u2 u3 u3 u} …)
-       → HasWideEqualizers@{u3 u2 u3} C → Terminal@{u2 u3}   (* u3 < u
-*)
+       → HasWideEqualizers@{u3 u2 u3} C → Terminal@{u2 u3}   (* u3 < u *)
 
    -- no literal [Set], the ambient hom universe [u3] free, and FIVE
    binders where the old reading counted four (the annotated donor's
@@ -162,7 +161,7 @@ Proof.
   (*
 The wide equalizer of the family of ALL endomorphisms of [P0].  The
      index type is the hom-type [P0 ~> P0] and the family is the identity
-     assignment, so "the i-th member" IS the endomorphism [i].
+     assignment, so “the i-th member” IS the endomorphism [i].
 
 --------
 [P0] 的所有自同态族的广义等化器。索引类型是同态类型 [P0 ~> P0]，族是恒等映射，所以“第 i 个成员”就是自同态 [i]。

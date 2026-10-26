@@ -25,44 +25,44 @@ Generalizable All Variables.
 
 (** * Comparisons of two resolutions of one monad  / * 一个单子的两种分辨率的比较*)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.7 "Beck's Theorem", printed pp. 153-154
+(* Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+         Springer GTM 5, 1998, §VI.7 “Beck's Theorem”, printed pp. 153-154
          (PDF pp. 162-163): the definition of a comparison, p. 153 —
          maclane:VI.7:def1; the Lemma, pp. 153-154 — maclane:VI.7:lem1.
-   Book: Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
+   Book: Awodey, “Category Theory”, 1st ed. (Carnegie Mellon pre-print,
          September 2005), §10.3, the comparison functor, printed p. 277
          (PDF p. 286) — awodey:10.3:construction-comparison-functor.
-   Book: Riehl, "Category Theory in Context", §5.2, the category Adj_T,
+   Book: Riehl, “Category Theory in Context”, §5.2, the category Adj_T,
          printed pp. 192-193 (PDF pp. 212-213) — riehl:5.2:construction-adjT.
    nLab: https://ncatlab.org/nlab/show/monadic+adjunction
 
-   WHAT THE BOOKS SAY, read from the page images.  Mac Lane, p. 153: "Now
+   WHAT THE BOOKS SAY, read from the page images.  Mac Lane, p. 153: “Now
    consider any other adjunction ⟨F', G', η', ε'⟩ : X ⇀ A' which defines
    the same monad in X.  By a comparison (of F' to F) we mean a functor
    M : A' → A with MF' = F and GM = G'; as already noted, such a
    comparison is a morphism of adjunctions and hence satisfies Mε' = εM.
    Lemma.  If G satisfies hypothesis (iii) of the theorem on the creation
-   of coequalizers, then there is a unique comparison M : A' → A."  The
-   proof: "If M exists, then FGM = MF'G' and Mε' = εM, so M must carry
+   of coequalizers, then there is a unique comparison M : A' → A.”  The
+   proof: “If M exists, then FGM = MF'G' and Mε' = εM, so M must carry
    the canonical presentation of a' to the canonical presentation of
-   Ma'", a fork FGFG'a' ⇉ FG'a' → Ma' whose arrow k "must be
-   Mε'_{a'} = ε_{Ma'}"; its G-image is split, G creates its coequalizer,
-   so "the comparison M is unique if it exists"; M f is the factorization
-   of k_b ∘ FG'f through k.  Of G^T: "this lemma will incidentally
-   provide a new proof of the comparison theorem (§3)."  Awodey, p. 277:
-   from F ⊣ U, "we then get a comparison functor Φ : D → C^T, with
+   Ma'”, a fork FGFG'a' ⇉ FG'a' → Ma' whose arrow k “must be
+   Mε'_{a'} = ε_{Ma'}”; its G-image is split, G creates its coequalizer,
+   so “the comparison M is unique if it exists”; M f is the factorization
+   of k_b ∘ FG'f through k.  Of G^T: “this lemma will incidentally
+   provide a new proof of the comparison theorem (§3).”  Awodey, p. 277:
+   from F ⊣ U, “we then get a comparison functor Φ : D → C^T, with
    U^T ∘ Φ ≅ U, Φ ∘ F = F^T ...  In fact, Φ is unique with this
-   property."  Riehl, p. 192: a morphism of Adj_T "is a functor
+   property.”  Riehl, p. 192: a morphism of Adj_T “is a functor
    K : D → D' commuting with both the left and right adjoints, i.e., so
-   that KF = F' and U'K = U"; it is a strict morphism of adjunctions,
-   so "(i) the whiskered composites Kε = ε'K ... coincide, and (ii)
+   that KF = F' and U'K = U”; it is a strict morphism of adjunctions,
+   so “(i) the whiskered composites Kε = ε'K ... coincide, and (ii)
    application of the functor K commutes with adjoint transposition:
-   for all c ∈ C and d ∈ D", the square C(c, Ud) → D(Fc, d) →
+   for all c ∈ C and d ∈ D”, the square C(c, Ud) → D(Fc, d) →
    D'(KFc, Kd) = D'(F'c, Kd) against C(c, U'Kd) → D'(F'c, Kd) commutes
    (p. 193).
 
    THE READING.  Over adjunctions Adj : F ⊣ G (A over X) and
-   Adj' : F' ⊣ G' (A' over X), "defines the same monad" is data, θ, an
+   Adj' : F' ⊣ G' (A' over X), “defines the same monad” is data, θ, an
    isomorphism in Monad/Morphism.v's [Monads X] from the monad
    Monad/Comparison.v's [Adjunction_Induced_Monad Adj'] to that of Adj;
    its components are θ_x : G'F'x → GFx and φ_x : GFx → G'F'x.  A
@@ -130,8 +130,8 @@ Generalizable All Variables.
    is [cmp_monad], by the triangle identity.
 
    THE LEMMA, UNIQUENESS.  For any comparison P over θ, [cmp_e] is
-   Mac Lane's k = Mε'_a read through α, and [cmp_e_counit] his "k must be
-   Mε'_{a'} = ε_{Ma'}", read through β.  It coforks the presentation
+   Mac Lane's k = Mε'_a read through α, and [cmp_e_counit] his “k must be
+   Mε'_{a'} = ε_{Ma'}”, read through β.  It coforks the presentation
    ([cmp_e_cofork]) and lies over the split coequalizer
    ([cmp_e_iso], by [cmp_e_G]), so the reflection clause of creation
    makes it a coequalizer ([cmp_e_coeq]), and [create_coeq_unique]
@@ -166,7 +166,7 @@ Generalizable All Variables.
    over that θ is ≈ [EM_Comparison], and [EM_Comparison_unique_cell]:
    up to a unique compatible isomorphism.  Without the coherence the
    clause is false, in the issue's reading and in Awodey's printed one
-   (NOT DELIVERED).  Mac Lane's "new proof of the comparison theorem" is
+   (NOT DELIVERED).  Mac Lane's “new proof of the comparison theorem” is
    the Lemma at that resolution.  Its existence half is not new:
    [Comparison_exists] there, whose functor is [EM_Comparison_via_Lemma],
    is built from [EM_Comparison] itself, through [Comparison_alg].  Its
@@ -197,7 +197,7 @@ Generalizable All Variables.
    [EM_Monad_from] (each [EM_Monad_iso]), [EM_Monad_iso]
    ([EM_Monad_iso_to]).  With Monad/Comparison.v's two triangles closed
    [Qed] again, [EM_Comparison_Forget_components] stops, refused with
-   cannot unify "projT1 (EM_Comparison_Forget Adj) a" and "iso_id", and
+   cannot unify “projT1 (EM_Comparison_Forget Adj) a” and “iso_id”, and
    without the readbacks [EM_Comparison_coherence] stops.
 
    UNIVERSES, read off [About] under Set Printing Universes, every one of
@@ -252,25 +252,25 @@ Generalizable All Variables.
 
    THE ISSUE'S PREMISES, dated.  Issue #482 was filed on 2026-07-23; its
    Awodey section was appended on 2026-07-29 and its Riehl section on
-   2026-07-31 (the body's edit history).  "No general comparison of two
-   adjunctions defining the same monad" was accurate when filed and held
-   until this change; but its ground, that "searches for
+   2026-07-31 (the body's edit history).  “No general comparison of two
+   adjunctions defining the same monad” was accurate when filed and held
+   until this change; but its ground, that “searches for
    morphism/map/comparison of adjunctions ... turn up only concrete
-   resolutions", has been stale since PR #1260 (merged 2026-09-04) as to
+   resolutions”, has been stale since PR #1260 (merged 2026-09-04) as to
    maps of adjunctions: Adjunction/Map.v's [WeakMapOfAdjunctions] is the
    general notion of which a comparison is the case L = Id[X], and this
-   file builds on it.  "EM_Comparison ... only for A' = X^T, and not the
-   compatibility M ∘ ε' = ε ∘ M" and "the
-   uniqueness content is realized only via Beck_Inverse" were accurate
-   when filed and held until this change.  The Awodey section's "nothing
-   of the form ∀ K, ... K ≈ EM_Comparison exists" was accurate when
+   file builds on it.  “EM_Comparison ... only for A' = X^T, and not the
+   compatibility M ∘ ε' = ε ∘ M” and “the
+   uniqueness content is realized only via Beck_Inverse” were accurate
+   when filed and held until this change.  The Awodey section's “nothing
+   of the form ∀ K, ... K ≈ EM_Comparison exists” was accurate when
    appended and held until this change; its list of the uniqueness
    lemmas of Monad/ omitted Beck.v's [create_coeq_unique], on master since
    PR #201 (merged 2026-07-19), which this file uses, and since then
    [em_alg_unique] (PR #1083, merged 2026-08-13) and
    [Kleisli_Comparison_unique] (PR #1362, merged 2026-10-08) joined it,
    none of them about the Eilenberg–Moore comparison functor.  The
-   Definition of Done's "CLAUDE.md Key Files index" was accurate when
+   Definition of Done's “CLAUDE.md Key Files index” was accurate when
    filed and has been stale since PR #1284 (merged 2026-09-09), which
    moved the index to docs/INDEX.md. *)
 
@@ -381,7 +381,7 @@ Proof.
   exact (@mh_ret _ _ _ _ _ (to θ) x).
 Qed.
 
-(* "Such a comparison is a morphism of adjunctions".  / “这样的比较是附加词的态射”。*)
+(* “Such a comparison is a morphism of adjunctions”.  / “这样的比较是附加词的态射”。*)
 Definition Comparison_map : WeakMapOfAdjunctions Adj' Adj :=
   {| wmap_squares := Comparison_squares;
      wmap_hom := snd (weak_hom_iff_unit Adj' Adj Comparison_squares)
@@ -393,7 +393,7 @@ Example Comparison_map_K :
 Example Comparison_map_L :
   wsq_L (wmap_squares Adj' Adj Comparison_map) = Id[X] := eq_refl.
 
-(* "... and hence satisfies M ε' = ε M": Map.v's counit condition.  / “...因此满足 M ε' = ε M”：Map.v 的单位条件。*)
+(* “... and hence satisfies M ε' = ε M”: Map.v's counit condition.  / “...因此满足 M ε' = ε M”：Map.v 的单位条件。*)
 Theorem Comparison_counit : WeakSquaresCounit Adj' Adj Comparison_squares.
 Proof.
   exact (fst (weak_hom_iff_counit Adj' Adj Comparison_squares)
@@ -640,7 +640,7 @@ Local Notation ph x := (transform[mh_transform (from θ)] x).
 Definition cmp_e (a : A') : F (G' a) ~> M0 a :=
   fmap[M0] (@counit _ _ _ _ Adj' a) ∘ from (al (G' a)).
 
-(* "... k must be M ε'_a = ε_{M a}", read through β.  / “... k 必须是 M ε'_a = ε_{M a}”，通读 β。*)
+(* “... k must be M ε'_a = ε_{M a}”, read through β.  / “... k 必须是 M ε'_a = ε_{M a}”，通读 β。*)
 Lemma cmp_e_counit (a : A') :
   cmp_e a ≈ @counit _ _ _ _ Adj (M0 a) ∘ fmap[F] (from (be a)).
 Proof.
@@ -1184,8 +1184,8 @@ Proof.
 Qed.
 
 (*
-Mac Lane: the Lemma at the Eilenberg–Moore resolution "will incidentally
-   provide a new proof of the comparison theorem". 
+Mac Lane: the Lemma at the Eilenberg–Moore resolution “will incidentally
+   provide a new proof of the comparison theorem”. 
 
 --------
 麦克莱恩：艾伦伯格-摩尔决议中的引理“将顺便

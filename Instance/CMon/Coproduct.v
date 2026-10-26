@@ -17,7 +17,7 @@ Generalizable All Variables.
 (* * * The direct sum is the coproduct in CMon / * * 直和是 CMon 中的余积 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
+ Book: Mac Lane, “Categories for the Working Mathematician” (2nd ed.),
  §III.3, book p. 63 (maclane:III.3:remark1)
  Wikipedia: https://en.wikipedia.org/wiki/Biproduct
 
@@ -40,7 +40,7 @@ Generalizable All Variables.
  Instance/Ab/Coproduct.v and Instance/Mod/Coproduct.v are the same
  statement one and two layers up, where the donor's biproduct does NOT
  already exist and must be built; the three files together are Mac
- Lane's "direct sum" roster entry.
+ Lane's “direct sum” roster entry.
 
  WHAT IS NOT DELIVERED.  Nothing beyond the repackaging: no indexed
  coproducts, no [Additive CMon] (there are no inverses — that is what

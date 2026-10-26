@@ -23,10 +23,10 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/connected+category
  nLab:      https://ncatlab.org/nlab/show/groupoid
  Wikipedia: https://en.wikipedia.org/wiki/Groupoid
- Book:      Riehl, "Category Theory in Context", §1.5, printed p. 35 (the
+ Book:      Riehl, “Category Theory in Context”, §1.5, printed p. 35 (the
  running definition of a connected category) and Proposition
  1.5.13, printed pp. 35-36
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §I.5, printed p. 20 (the remark following Definition 9)
 
  A category is CONNECTED when any two objects are joined by a finite
@@ -39,7 +39,7 @@ Generalizable All Variables.
  exists between every pair of objects.
 
  COLLAPSE TO THE ONE-ARROW FORM.  In a groupoid the zig-zag form and the
- much simpler "there is an arrow x ~> y" agree, because a backward step can
+ much simpler “there is an arrow x ~> y” agree, because a backward step can
  be inverted and the chain composed: [zigzag_hom] does exactly that, and
  [hom_zigzag] is the trivial converse.  Outside groupoids the two forms come
  apart, and the difference is not a technicality — [Roof] (the walking span
@@ -111,7 +111,7 @@ Generalizable All Variables.
  What the structure theorem says, and what it does not
 
  nLab:  https://ncatlab.org/nlab/show/fundamental+groupoid
- Paper: Brown, "From groups to groupoids: a brief survey", Bulletin of the
+ Paper: Brown, “From groups to groupoids: a brief survey”, Bulletin of the
  London Mathematical Society 19, 1987
 
  Mac Lane's remark after §I.5 Definition 9, and Riehl's Proposition 1.5.13,
@@ -124,7 +124,7 @@ Generalizable All Variables.
  [FF_ESO_Equivalence], and the whole of [connected_deloop_equiv] is the
  assembly of three small records.
 
- The content is in what "up to equivalence" does and does not mean.  The
+ The content is in what “up to equivalence” does and does not mean.  The
  delooping has ONE object; a connected groupoid may have a proper class of
  them, all isomorphic.  So the theorem cannot be an isomorphism of
  categories, and the statement is not that a connected groupoid IS a group,
@@ -150,7 +150,7 @@ Generalizable All Variables.
  结构定理的内容，以及它不包括的内容
 
  nLab:   https://ncatlab.org/nlab/show/fundamental+groupoid 
- 论文: Brown, "From groups to groupoids: a brief survey", Bulletin of the
+ 论文: Brown, “From groups to groupoids: a brief survey”, Bulletin of the
  London Mathematical Society 19, 1987
 
  Mac Lane 在 §I.5 定义 9 之后的评论，以及 Riehl 的命题 1.5.13，
@@ -169,8 +169,8 @@ Generalizable All Variables.
  assertion that one exists, which is what lets [zigzag_hom] compute the
  composite arrow in a groupoid.  It therefore lands in [Type] rather than
  [Prop], in the same split, choice-carrying style as
- [EssentiallySurjective] (Theory/Equivalence.v: "there exists a preimage"
- becomes "here is one"). 
+ [EssentiallySurjective] (Theory/Equivalence.v: “there exists a preimage”
+ becomes “here is one”). 
 
  --------
  在 x 和 y 之间的有限箭头链，每一步要么指向前方（[zz_fwd]），要么指向后方（[zz_bwd]）。这是 Riehl §1.5 的定义变成数据：一个元素是一个实际的链，而不仅仅是存在的断言，这使得 [zigzag_hom] 可以计算群组中的复合箭头。因此它落在 [Type] 中而不是 [Prop] 中，以与 [EssentiallySurjective] 相同的分裂、携带选择的方式（Theory/Equivalence.v：“存在一个前像”变为“这里有一个”）。
@@ -207,7 +207,7 @@ Definition arrow_connected {C : Category} (H : ∀ x y : C, x ~> y) :
   Connected C := fun x y => hom_zigzag (H x y).
 
 (*
- Zig-zags compose end to end, which is what makes "joined by a zig-zag" a
+ Zig-zags compose end to end, which is what makes “joined by a zig-zag” a
  transitive relation (with [zz_nil] for reflexivity).  It is not symmetric
  by this operation alone; symmetry needs the chain reversed, which is
  [zigzag_sym] below. 
@@ -242,7 +242,7 @@ Fixpoint zigzag_sym {C : Category} {x y : C} (s : ZigZag x y) : ZigZag y x :=
 
 (*
  A fence: a chain of spans x --> m <-- y, each step alternating forwards
- then backwards by construction.  This is Riehl's "alternating directions"
+ then backwards by construction.  This is Riehl's “alternating directions”
  read literally. 
 
  --------
@@ -290,8 +290,8 @@ Fixpoint zigzag_fence {C : Category} {x y : C} (s : ZigZag x y) : Fence x y :=
 (*
  In a groupoid a zig-zag composes to a single arrow: forward steps compose
  as they stand and backward steps are inverted first.  Together with
- [hom_zigzag] this is the promised collapse — for a groupoid, "joined by a
- zig-zag" and "joined by an arrow" are inhabited together. 
+ [hom_zigzag] this is the promised collapse — for a groupoid, “joined by a
+ zig-zag” and “joined by an arrow” are inhabited together. 
 
  --------
  在一个群oid中，之字形路径可以组合成一条箭头：前进的步骤按原样组合，后退的步骤先取逆。 与 [hom_zigzag] 一起，这就是承诺的塌缩——对于一个群oid，“通过之字形路径连接”和“通过箭头连接”是可以共存的。
@@ -348,8 +348,8 @@ Program Definition vertex_incl {C : Category} (G : IsGroupoid C) (x : C) :
 (*
  Fullness and faithfulness hold with NO hypothesis on C beyond the groupoid
  structure used to form the vertex group: the hom-map is the identity
- function on hom(x, x).  This is Riehl's "fully faithful by definition of
- the vertex group", and both records are correspondingly NEAR-TRIVIAL —
+ function on hom(x, x).  This is Riehl's “fully faithful by definition of
+ the vertex group”, and both records are correspondingly NEAR-TRIVIAL —
  the chosen preimage is the arrow itself and injectivity is the identity
  implication.  The mathematical work of the structure theorem is entirely
  in [vertex_incl_ESO] below; these two are recorded because
@@ -599,8 +599,8 @@ Definition Bool_Wide_structure :
   connected_deloop_equiv Bool_Wide_IsGroupoid Bool_Wide_Connected true.
 
 (*
- The same statement at the other object, to exhibit the "any one vertex
- group" clause with a second choice actually made. 
+ The same statement at the other object, to exhibit the “any one vertex
+ group” clause with a second choice actually made. 
 
  --------
  在另一个对象上的相同声明，用第二个实际作出的选择来展示“任意一个顶点组”条款。
@@ -622,7 +622,7 @@ Definition Bool_Wide_conjugation :
   conjugation_iso Bool_Wide_IsGroupoid
     (connected_arrow Bool_Wide_IsGroupoid Bool_Wide_Connected true false).
 
-(* * ** Connected does not mean "joined by an arrow" / * ** 连接并不意味着“被箭头连接” *)
+(* * ** Connected does not mean “joined by an arrow” / * ** 连接并不意味着“被箭头连接” *)
 
 (*
  [Roof] (Instance/Roof.v) is the walking span RNeg <-- RZero --> RPos.  It

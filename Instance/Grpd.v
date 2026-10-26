@@ -16,9 +16,9 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/groupoid
  Wikipedia: https://en.wikipedia.org/wiki/Groupoid
 
- Book: Riehl, "Category Theory in Context", Dover 2016, §4.1,
+ Book: Riehl, “Category Theory in Context”, Dover 2016, §4.1,
  Example 4.1.15, printed p. 137 (PDF pp. 157-158)
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §I.5, printed p. 19
 
  [Grpd] is the full subcategory of [Cat] whose objects are the categories
@@ -65,10 +65,10 @@ Generalizable All Variables.
  Why a category of groupoids, and why it sits inside Cat
 
  nLab:  https://ncatlab.org/nlab/show/core
- Paper: Brown, "From groups to groupoids: a brief survey", Bulletin of
+ Paper: Brown, “From groups to groupoids: a brief survey”, Bulletin of
  the London Mathematical Society 19, 1987
- Paper: Hofmann and Streicher, "The groupoid model refutes uniqueness of
- identity proofs", LICS 1994
+ Paper: Hofmann and Streicher, “The groupoid model refutes uniqueness of
+ identity proofs”, LICS 1994
 
  A single groupoid generalises a group by letting the symmetries move
  between objects rather than fixing one; the CATEGORY of groupoids
@@ -88,7 +88,7 @@ Generalizable All Variables.
  coreflective in [Cat] (Riehl §4.1, Example 4.1.15; nLab: core).  This
  file and Construction/Groupoid/Core.v deliver the right-hand half of that
  adjoint triple as a theorem.  An earlier revision of this sentence added
- that the left-hand half "remains prose"; that is a correction to make,
+ that the left-hand half “remains prose”; that is a correction to make,
  because Construction/Fractions/Adjunction.v now proves it, and
  [riehl_4_1_15] there assembles the whole triple over THIS [Grpd] and
  THIS inclusion.
@@ -189,8 +189,8 @@ Definition Grpd_Incl_Full : Functor.Full Grpd_Incl :=
 (*
  [shom] ignores its morphism argument, so it is closed under `≈` for the
  trivial reason; this is the hypothesis Construction/Subcategory.v's
- [Full_Functor_Implies_Full] needs, and with it the "full subcategory iff
- full inclusion" biconditional holds for [Grpd] in both directions. 
+ [Full_Functor_Implies_Full] needs, and with it the “full subcategory iff
+ full inclusion” biconditional holds for [Grpd] in both directions. 
 
  --------
  [shom] 忽略其态射参数，所以它在 `≈` 下是封闭的，这是一个平凡的原因；这是 Construction/Subcategory.v 的假设 [Full_Functor_Implies_Full] 所需要的，有了它，对于 [Grpd]，“完全子范畴当且仅当完全包含”的双条件在两个方向上都成立。
@@ -264,7 +264,7 @@ Definition Grpd_Replete : Replete Cat Grpd_sub :=
    category whose arrow 1 has no inverse, so it is not an object of [Grpd].
    The witness is Structure/Groupoid.v's [deloop_nat_not_groupoid], whose
    own content is the specific non-invertible arrow rather than an appeal
-   to "ℕ is not a group".  Without this the whole development would be
+   to “ℕ is not a group”.  Without this the whole development would be
    consistent with [Grpd_sub] selecting every object of [Cat], in which
    case Construction/Groupoid/Core.v's [Core] would be the identity and its
    adjunction trivial. 

@@ -11,8 +11,8 @@
  are three identities, two generating steps, and their composite.
 
  A CORRECTION TO THE CATALOGUE ENTRY.  Its current-state note says that
- the category 3 "is not presented by generators and relations, and its
- freeness is not addressed".  BOTH halves were already false at the
+ the category 3 “is not presented by generators and relations, and its
+ freeness is not addressed”.  BOTH halves were already false at the
  commit this file was written against, and both are measured here rather
  than restated:
 
@@ -30,8 +30,8 @@
  [ordinal_free m : FreeOnQuiver (LinQuiver m) ≅[StrictCat] Ordinal m]
  (with [ordinal_free_S] and [ordinal_free_0] beneath it, the
  weaker [ordinal_free_Cat] beside it, and the m = 3 instance
- [chain_free]).  So "is 3 free?  yes, on the linear two-edge
- graph" is [ordinal_free 3], ALREADY PROVED.  It is CONSUMED here as
+ [chain_free]).  So “is 3 free?  yes, on the linear two-edge
+ graph” is [ordinal_free 3], ALREADY PROVED.  It is CONSUMED here as
  [three_is_free]; no freeness statement is reproved.
 
  - [Theory/Shapes.v] already names all three non-identity
@@ -75,8 +75,8 @@
  is [ord3_path_ab] ([ord3_lhs_is_c], [ord3_rev_lhs_is_ab], both
  [eq_refl]), and those two paths are NOT the same arrow of the free
  category -- that is Presented.v's own [ord3_free_distinct], consumed as
- [ord3_presentations_differ].  No single constant states "the four
- records are pairwise distinct"; what is shipped is those numbers and
+ [ord3_presentations_differ].  No single constant states “the four
+ records are pairwise distinct”; what is shipped is those numbers and
  that separation, from which a reader reads it off.
 
  THE ENGINE for the comparisons is one general lemma, [pq_same_iso]:
@@ -221,8 +221,8 @@ Generalizable All Variables.
 (*
  [Construction/Quotient.v]'s [cc_least] is exactly this, applied at
  the congruence [CongClosure S].  That file's own comment on the sibling
- [cc_kernel] says such a passage is "a one-line corollary of
- leastness ... not a second induction", so this is a term and not an
+ [cc_kernel] says such a passage is “a one-line corollary of
+ leastness ... not a second induction”, so this is a term and not an
  induction. 
 
  --------
@@ -867,7 +867,7 @@ Example ord3_merge_arithmetic :
 (* ---------- (E) presentation (ii): two generators, no relations -------- / ---------- (E) 呈现 (ii)：两个生成元，无关系 -------- *)
 
 (*
- THE FREENESS VERDICT.  Awodey's question "is 3 free?" is answered YES,
+ THE FREENESS VERDICT.  Awodey's question “is 3 free?” is answered YES,
  by CONSUMING [Construction/Free/Quiver/Examples.v]'s [ordinal_free]
  at m = 3.  The category 3 is the free category on the linear two-edge
  graph 0 -> 1 -> 2: the arrow 0 -> 2 is the two-edge PATH, forced by

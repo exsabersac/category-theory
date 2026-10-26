@@ -4,7 +4,7 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(** The interval category 2 (the "walking arrow"). / 二度音程类别（“行进箭头”）。 *)
+(** The interval category 2 (the “walking arrow”). / 二度音程类别（“行进箭头”）。 *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/interval+category
@@ -16,7 +16,7 @@ Generalizable All Variables.
  There is NO arrow 1 → 0.  Here the objects are named TwoX (= 0) and
  TwoY (= 1), and the non-identity arrow is TwoXY : TwoX ~> TwoY.
 
- 2 is the "walking arrow": a functor 2 ⟶ C is exactly a choice of one
+ 2 is the “walking arrow”: a functor 2 ⟶ C is exactly a choice of one
  morphism of C (the image of TwoXY), so functors out of 2 classify the
  morphisms of C, and the functor category [2, C] is the arrow category of
  C (objects = arrows of C, morphisms = commutative squares).  Both halves
@@ -40,11 +40,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/diagram
  nLab:      https://ncatlab.org/nlab/show/walking+morphism
  nLab:      https://ncatlab.org/nlab/show/walking+structure
- Paper:     Lawvere, "Metric spaces, generalized logic, and closed
- categories", Rendiconti del Seminario Matematico e Fisico
+ Paper:     Lawvere, “Metric spaces, generalized logic, and closed
+ categories”, Rendiconti del Seminario Matematico e Fisico
  di Milano XLIII, 1973
- Paper:     Foltz, Lair, Kelly, "Algebraic categories with few
- monoidal biclosed structures or none", J. Pure Appl.
+ Paper:     Foltz, Lair, Kelly, “Algebraic categories with few
+ monoidal biclosed structures or none”, J. Pure Appl.
  Algebra 17(2), 1980
 
  Two readings of [_2] run through the library, and the header above
@@ -58,7 +58,7 @@ Generalizable All Variables.
  diagram of shape J in a category C is a functor from J to C; the
  category J is its shape, index, or scheme, and a limit or colimit is a
  universal cone over such a functor, presented through the diagonal
- functor of Functor/Diagonal.v (nLab, "diagram"; Mac Lane, Categories
+ functor of Functor/Diagonal.v (nLab, “diagram”; Mac Lane, Categories
  for the Working Mathematician, 2nd ed., 1998).  The shape isolates the
  combinatorial pattern of a construction from the category in which it is
  instantiated, and the small shapes together account for the finite
@@ -70,9 +70,9 @@ Generalizable All Variables.
  initial objects, with the point [_1] (Instance/One.v) the trivial
  one-object shape.
 
- The name "walking arrow" belongs to a settled family of synonyms.  The
+ The name “walking arrow” belongs to a settled family of synonyms.  The
  nLab records walking, free-standing, and free-living for the one idea,
- attributes "walking" to James Dolan, and traces "free-living" to Foltz,
+ attributes “walking” to James Dolan, and traces “free-living” to Foltz,
  Lair and Kelly (1980); the governing principle is that the walking X
  coclassifies X, so that functors OUT OF it are exactly the X-structures
  of the target.  The arrow-category reading above is that principle taken
@@ -96,12 +96,12 @@ Generalizable All Variables.
  canonical interval object of Cat, the 1-simplex, the 1-globe, and the
  first oriental, so that a natural transformation between two functors
  from C to D is a functor from C ∏ [_2] to D, a directed homotopy (nLab,
- "walking morphism").  And it underlies a decategorified logic: thin
+ “walking morphism”).  And it underlies a decategorified logic: thin
  categories are exactly those enriched over the Boolean algebra [_2] as a
  cartesian monoidal category, a Heyting algebra is a skeletal thin
  finitely-cocomplete cartesian-closed category, and a Boolean algebra a
  skeletal thin finitely-cocomplete star-autonomous one (Wikipedia,
- "Posetal category").  That [_2] itself is skeletal is [Two_Skeletal]
+ “Posetal category”).  That [_2] itself is skeletal is [Two_Skeletal]
  (Theory/Skeleton/Separation.v).
 
  Computationally, thinness means the hom is proof-irrelevant, a mere
@@ -123,10 +123,10 @@ Generalizable All Variables.
  nLab:       https://ncatlab.org/nlab/show/diagram 
  nLab:       https://ncatlab.org/nlab/show/walking+morphism 
  nLab:       https://ncatlab.org/nlab/show/walking+structure 
- 论文:     Lawvere, "度量空间、广义逻辑和闭范畴", 米兰数学与物理研讨会报告 XLIII, 1973
- 论文:     Foltz, Lair, Kelly, "具有少量或无单体双闭结构的代数范畴", 纯应用代数杂志 17(2), 1980
+ 论文:     Lawvere, “度量空间、广义逻辑和闭范畴”, 米兰数学与物理研讨会报告 XLIII, 1973
+ 论文:     Foltz, Lair, Kelly, “具有少量或无单体双闭结构的代数范畴”, 纯应用代数杂志 17(2), 1980
 
- [_2] 的两种读法贯穿整个文库，上面的标题陈述了其中第一种读法。在一种读法中，它是一个形状（SHAPE），在其上进行构造；在另一种读法中，它是一个真值对象（TRUTH VALUES），通过该基础进行丰富化以生成预序。两种读法都依赖于同一性质，即 [_2] 是薄的。作为一种形状，[_2] 是最小的非平凡形状，上面记录的箭头分类识别是一个更长列表中的第一个条目。在范畴 C 中的形状 J 的图是从 J 到 C 的函子；范畴 J 是其形状、索引或方案，而极限或余极限是该函子上的一个普遍锥，通过 Functor/Diagonal.v 的对角函子表示（nLab，“diagram”；Mac Lane，《Categories for the Working Mathematician》，第 2 版，1998 年）。这个形状将一个结构的组合模式与其被实例化的范畴隔离开来，而这些小形状一起解释了有限极限和余极限：用于等化器和共同等化器的步行平行对 [Parallel] (Instance/Parallel.v)，用于推出和拉回的步行跨度 [Roof] (Instance/Roof.v)，用于二元积和二元余积的离散对 [Two_Discrete] (Instance/Two/Discrete.v)，用于终对象和始对象的空形状 [_0] (Instance/Zero.v)，以及作为简单的单对象形状的点 [_1] (Instance/One.v)。“walking arrow”这个名称属于一组固定的同义词。nLab 为同一个概念记录了 walking、free-standing 和 free-living，将“walking”归因于 James Dolan，并将“free-living”追溯到 Foltz、Lair 和 Kelly（1980）；支配原则是 walking X 对 X 进行同类分类，因此由其导出的函子正好是目标的 X-结构。上述箭头范畴的理解就是将该原则应用于单一的态射。第二种理解将 [_2] 看作二元素的秩序 {TwoX < TwoY}，其会合为张量，顶部 [TwoY] 作为单位。Lawvere 将这一观察追溯到 Richard Swan 1967 年的一次讲座，他将同对象的组合与三角不等式进行了类比，并通过改变基类推导其结果：在 [_2] 上，丰富结构生成了预序，在区间 [0, ∞] 上，它生成了度量空间（Lawvere, 1973）。库完整包含了第一种情况。Instance/Two/Monoidal.v 将笛卡尔单元结构 [Two_Monoidal] 放置于 [_2] 上（张量为会合 [two_meet]，单位为顶部 [TwoY]），然后 Construction/Enriched/Two.v 证明了在其上丰富的范畴是预序，丰富函子是单调映射（[Enriched_Two_preorder]，[EnrichedFunctor_Two_monotone]）。这个转变是从询问是否存在箭头 x ⟶ y，变为询问 x ≤ y 是否成立。[_2] 拥有另外两个身份。它是有向区间：Cat 的典范区间对象、1-单形、1-球体，以及第一个东方，因此从 C 到 D 的两个函子之间的自然变换是一个从 C ∏ [_2] 到 D 的函子，一个有向同伦（nLab，"walking morphism"）。它还构成了去范畴化逻辑：薄范畴恰好是那些在笛卡尔单体范畴下以布尔代数 [_2] 富化的范畴，Heyting 代数是骨架薄、有限完备、闭笛卡尔范畴，而布尔代数则是骨架薄、有限完备、星自主范畴（Wikipedia，"Posetal category"）。[_2] 本身是骨架的这一点是 [Two_Skeletal] （Theory/Skeleton/Separation.v）。在计算上，薄性意味着 hom 是与证明无关的，仅仅是一个命题，因此 [_2] 是一个 (0,1)-范畴。Instance/Two/Monoidal.v 将其具体化：下面的 [Two_thin] 表示任何两个平行箭头都相同（Instance/Two/Monoidal.v 的 [two_thin] 现在是那个重新导出的引理），这统一地释放了每个相干性义务，这也是上述严格 [Morphism_equality] 集合体足够的原因。由此产生两个结果。一个来自 [_2] 的函子体现了一个态射及其端点，正如 [_2_as_Set] 通过将 [TwoXY] 携带到从 False 到 True 的空函数所做的那样。并且 [_2] 上的一个增强必须为每一对对象计算一个真值——[_2] 的对象，这就是为什么 Construction/Enriched/Two.v 包含一个可判定的、类型值的顺序：即 x ≤ y 是否成立的构造性解读。
+ [_2] 的两种读法贯穿整个文库，上面的标题陈述了其中第一种读法。在一种读法中，它是一个形状（SHAPE），在其上进行构造；在另一种读法中，它是一个真值对象（TRUTH VALUES），通过该基础进行丰富化以生成预序。两种读法都依赖于同一性质，即 [_2] 是薄的。作为一种形状，[_2] 是最小的非平凡形状，上面记录的箭头分类识别是一个更长列表中的第一个条目。在范畴 C 中的形状 J 的图是从 J 到 C 的函子；范畴 J 是其形状、索引或方案，而极限或余极限是该函子上的一个普遍锥，通过 Functor/Diagonal.v 的对角函子表示（nLab，“diagram”；Mac Lane，《Categories for the Working Mathematician》，第 2 版，1998 年）。这个形状将一个结构的组合模式与其被实例化的范畴隔离开来，而这些小形状一起解释了有限极限和余极限：用于等化器和共同等化器的步行平行对 [Parallel] (Instance/Parallel.v)，用于推出和拉回的步行跨度 [Roof] (Instance/Roof.v)，用于二元积和二元余积的离散对 [Two_Discrete] (Instance/Two/Discrete.v)，用于终对象和始对象的空形状 [_0] (Instance/Zero.v)，以及作为简单的单对象形状的点 [_1] (Instance/One.v)。“walking arrow”这个名称属于一组固定的同义词。nLab 为同一个概念记录了 walking、free-standing 和 free-living，将“walking”归因于 James Dolan，并将“free-living”追溯到 Foltz、Lair 和 Kelly（1980）；支配原则是 walking X 对 X 进行同类分类，因此由其导出的函子正好是目标的 X-结构。上述箭头范畴的理解就是将该原则应用于单一的态射。第二种理解将 [_2] 看作二元素的秩序 {TwoX < TwoY}，其会合为张量，顶部 [TwoY] 作为单位。Lawvere 将这一观察追溯到 Richard Swan 1967 年的一次讲座，他将同对象的组合与三角不等式进行了类比，并通过改变基类推导其结果：在 [_2] 上，丰富结构生成了预序，在区间 [0, ∞] 上，它生成了度量空间（Lawvere, 1973）。库完整包含了第一种情况。Instance/Two/Monoidal.v 将笛卡尔单元结构 [Two_Monoidal] 放置于 [_2] 上（张量为会合 [two_meet]，单位为顶部 [TwoY]），然后 Construction/Enriched/Two.v 证明了在其上丰富的范畴是预序，丰富函子是单调映射（[Enriched_Two_preorder]，[EnrichedFunctor_Two_monotone]）。这个转变是从询问是否存在箭头 x ⟶ y，变为询问 x ≤ y 是否成立。[_2] 拥有另外两个身份。它是有向区间：Cat 的典范区间对象、1-单形、1-球体，以及第一个东方，因此从 C 到 D 的两个函子之间的自然变换是一个从 C ∏ [_2] 到 D 的函子，一个有向同伦（nLab，“walking morphism”）。它还构成了去范畴化逻辑：薄范畴恰好是那些在笛卡尔单体范畴下以布尔代数 [_2] 富化的范畴，Heyting 代数是骨架薄、有限完备、闭笛卡尔范畴，而布尔代数则是骨架薄、有限完备、星自主范畴（Wikipedia，“Posetal category”）。[_2] 本身是骨架的这一点是 [Two_Skeletal] （Theory/Skeleton/Separation.v）。在计算上，薄性意味着 hom 是与证明无关的，仅仅是一个命题，因此 [_2] 是一个 (0,1)-范畴。Instance/Two/Monoidal.v 将其具体化：下面的 [Two_thin] 表示任何两个平行箭头都相同（Instance/Two/Monoidal.v 的 [two_thin] 现在是那个重新导出的引理），这统一地释放了每个相干性义务，这也是上述严格 [Morphism_equality] 集合体足够的原因。由此产生两个结果。一个来自 [_2] 的函子体现了一个态射及其端点，正如 [_2_as_Set] 通过将 [TwoXY] 携带到从 False 到 True 的空函数所做的那样。并且 [_2] 上的一个增强必须为每一对对象计算一个真值——[_2] 的对象，这就是为什么 Construction/Enriched/Two.v 包含一个可判定的、类型值的顺序：即 x ≤ y 是否成立的构造性解读。
 *)
 
 Inductive TwoObj : Set := TwoX | TwoY.
@@ -225,7 +225,7 @@ Next Obligation. destruct x, y, z, w; auto with two_laws; intuition. Qed.
 
 (*
  Mac Lane, CWM 2nd ed., §I.5 Exercise 3: there are categories carrying an
- arrow that is both monic and epic yet has no inverse, so "bimorphic ⇒ iso"
+ arrow that is both monic and epic yet has no inverse, so “bimorphic ⇒ iso”
  -- the property called BALANCEDness (nLab: balanced category) -- is not a
  theorem of category theory.  [Bimorphic] is defined in Theory/Morphisms.v
  and, before this, was never instantiated anywhere in the tree, so the
@@ -243,7 +243,7 @@ Next Obligation. destruct x, y, z, w; auto with two_laws; intuition. Qed.
  (Instance/Sets.v) assembles [Monic f -> Epic f -> IsIsomorphism f] from
  [injectivity_is_monic] and [epic_implies_surjective] via [bijective_is_iso].
  An earlier revision of this comment said the second half was unavailable --
- "the direction abandoned at Instance/Sets.v" -- and that was true when
+ “the direction abandoned at Instance/Sets.v” -- and that was true when
  written; it was proved subsequently.  So the contrast is genuine and
  sharper than first stated: [2] is not balanced while [Sets] is. 
 

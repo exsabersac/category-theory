@@ -17,14 +17,14 @@ Generalizable All Variables.
 (* * * Adjoints of the slice and coslice projections / * * 切片和余切片投影的伴随 *)
 
 (*
- Reference: Saunders Mac Lane, "Categories for the Working
- Mathematician", 2nd ed., §IV.2, book p. 90, Exercise 11
+ Reference: Saunders Mac Lane, “Categories for the Working
+ Mathematician”, 2nd ed., §IV.2, book p. 90, Exercise 11
  [maclane:IV.2:ex11]: if C has finite coproducts, the
  projection out of the coslice under an object a has a LEFT
  adjoint, sending c to the coproduct injection a ~> a + c,
  with the copairing as the transposition and the right
  injection as the unit.
- Reference: Steve Awodey, "Category Theory", 2nd ed., §9.9, Exercise 6
+ Reference: Steve Awodey, “Category Theory”, 2nd ed., §9.9, Exercise 6
  (starred), printed p. 262 [awodey:9:ex6]: the slice-side
  dual.  The domain functor out of C/a has a RIGHT adjoint,
  sending y to the projection y × a ~> a; the starred half
@@ -49,12 +49,12 @@ Generalizable All Variables.
 
  ** File placement: a departure from the issue's suggestion
 
- The issue suggests [Construction/Slice/Coslice.v] "(or an extension of
- Construction/Slice.v)".  This file is [Construction/Slice/Adjunction.v]
+ The issue suggests [Construction/Slice/Coslice.v] “(or an extension of
+ Construction/Slice.v)”.  This file is [Construction/Slice/Adjunction.v]
  instead, because it carries BOTH the coslice adjunction (Block A) and
  its slice dual (Block B) -- built directly, not transported -- plus the
  two settle results of Block C and the [Sets] witnesses of Block D.
- "Coslice.v" would misname more than half its content.  Extending
+ “Coslice.v” would misname more than half its content.  Extending
  Construction/Slice.v in place was also declined: that file is required
  by Construction/Comma/Special.v, Construction/Slice/Pullback.v,
  Construction/Slice/Terminal.v, Instance/Cat/Pullback.v and others, and
@@ -76,7 +76,7 @@ Generalizable All Variables.
  coslice structure map of the value is [inl : a ~> a + c] -- the
  injection Mac Lane's own sentence names -- while the UNIT below is
  [inr : c ~> a + c], the right injection.  The exercise's arrow
- reading "id + f" is [cover id f], and [coslice_fmap_is_cover]
+ reading “id + f” is [cover id f], and [coslice_fmap_is_cover]
  records that the delivered [right f] is that morphism with the
  redundant [∘ id] removed.
  - **[Coslice_Projection_Adjunction a : Coslice_Coprod a ⊣
@@ -98,7 +98,7 @@ Generalizable All Variables.
 
  - [Slice_Proj a : Slice C a ⟶ C], the domain functor.
  - [Slice_Prod a : C ⟶ Slice C a], sending x to [(x × a; exr)] and f
- to [first f]; [slice_fmap_is_split] is the "f × id" reading.
+ to [first f]; [slice_fmap_is_split] is the “f × id” reading.
  - **[Slice_Projection_Adjunction a : Slice_Proj a ⊣ Slice_Prod a]**,
  transposition [Hom_C(x, y) ≊ Hom_{C/a}((x; g), (y × a; exr))],
  forward [k ↦ (k △ g; _)], backward [(h; _) ↦ exl ∘ h].
@@ -176,11 +176,11 @@ Generalizable All Variables.
  BACKWARD one, and in each block exactly one of the two transposes
  touches its argument by composition.
 
- ** The slice side is built directly, and the "one Opposite transport
- away" claim is measured
+ ** The slice side is built directly, and the “one Opposite transport
+ away” claim is measured
 
- The issue's work item 4 says the slice statement "is one [Opposite]
- transport away".  That is true up to isomorphism and NOT on the nose,
+ The issue's work item 4 says the slice statement “is one [Opposite]
+ transport away”.  That is true up to isomorphism and NOT on the nose,
  and the reviewer check -- no residual [^op] in any delivered type -- is
  what makes the distinction bite.  Unfolding, the opposite of the slice
  over C^op has homs [∃ f, f ∘ `2 x ≈ `2 y] where Construction/Slice.v's
@@ -201,7 +201,7 @@ Generalizable All Variables.
  ** Prior art: three claims in the issue are stale, and one is its own
 
  (1) The issue's Awodey section says of the slice domain functor that
- "the functor itself does not exist".  It does, twice over.
+ “the functor itself does not exist”.  It does, twice over.
  Instance/Cat/Pullback.v's [Slice_proj] and [Coslice_proj] are
  this very three-line record, with the same signature [{C} (c)];
  Construction/Slice/Terminal.v's [Slice_Forget] and
@@ -214,15 +214,15 @@ Generalizable All Variables.
  Instance/Cat/Pullback.v's module closure is 39 and requiring it would
  add 14 modules to this file's 31.
 
- (2) The same section says "The whole slice development is
+ (2) The same section says “The whole slice development is
  Construction/Slice.v's four definitions plus the two base-change
- functors in Construction/Slice/Pullback.v".  It omits
+ functors in Construction/Slice/Pullback.v”.  It omits
  Construction/Slice/Terminal.v, twelve declared results including the
  two forgetful functors just named.
 
- (3) The issue's Mac Lane section says "A search over slice, coslice and
+ (3) The issue's Mac Lane section says “A search over slice, coslice and
  comma files for [⊣] finds only the commented-out slice base-change
- stub".  The stub was real when that was written; it has since been
+ stub”.  The stub was real when that was written; it has since been
  deleted and the theorem proved, as Construction/Slice/Pullback.v's
  [Base_Functor_Adjunction].  Even then,
  Construction/Comma/Adjunction.v carries live [⊣] results throughout,
@@ -252,7 +252,7 @@ Generalizable All Variables.
  the two biconditionals -- is over [C : Category@{u u0 u0}], hom
  IDENTIFIED with proof by reuse of one level variable in the BINDER,
  while its constraint block contains NO equation at all: only [<] and
- [<=].  Reading the block alone reports "no identification" and is
+ [<=].  Reading the block alone reports “no identification” and is
  wrong; both must be read.  Measured, flattening whitespace first,
  since [Print] wraps universe instances:
 
@@ -277,8 +277,8 @@ Generalizable All Variables.
  the category, its hom-sets and its identities all accepted as controls,
  each of [Slice], [Coslice], [Cartesian] (hence [Cocartesian], which is
  that class at the opposite category), [IsTerminalObj] and
- [IsInitialObj] is rejected, every one with "Cannot enforce up = uh
- because uh < up"; so is this file's own [Coslice_Proj], which inherits
+ [IsInitialObj] is rejected, every one with “Cannot enforce up = uh
+ because uh < up”; so is this file's own [Coslice_Proj], which inherits
  it from [Coslice] and adds nothing.  All six are FORMABILITY negatives
  1-6 in the probe.  Nothing here introduces the identification and none
  of the five donors is claimed unavoidable.
@@ -333,7 +333,7 @@ Generalizable All Variables.
  No comparison of either adjunction with the [Comma_Coslice]/
  [Comma_Slice] readings beyond the object-action measurement above; no
  monad or comonad from either adjunction, and in particular no
- identification of the coslice one with the "writer"/coreader pair that
+ identification of the coslice one with the “writer”/coreader pair that
  Construction/Slice.v's header points at; no naturality of anything in
  [a], hence no statement that [C/(-)] or [(-)/C] is functorial here
  (Construction/Slice/Pullback.v's [Bang_Functor] is the relevant
@@ -354,15 +354,15 @@ Generalizable All Variables.
  [(a; id)] does not elaborate to the intended sigma from context alone:
  with [id : a ~> a] the pair fits both [∃ x, x ~> a] and [∃ y, a ~> y],
  and Coq picks the coslice shape even where a slice object is expected,
- reporting "has type ∃ y, a ~> y while it is expected to have type
- obj[C ̸ a]".  [slice_id_obj] and [coslice_id_obj] therefore give the
+ reporting “has type ∃ y, a ~> y while it is expected to have type
+ obj[C ̸ a]”.  [slice_id_obj] and [coslice_id_obj] therefore give the
  predicate explicitly with [existT], which is also what lets every use
  site below read as a name.
 
  A [Program Definition] whose body is a sigma with a hole -- the shape
  [{| morphism := fun k => (t k; _) |}] -- routes the [Proper] obligation
- through a goal whose [rewrite] is rejected with "build_signature: no
- constraint can apply on a dependent argument".  Elaborating the sigma
+ through a goal whose [rewrite] is rejected with “build_signature: no
+ constraint can apply on a dependent argument”.  Elaborating the sigma
  as its own named [Program Definition] first ([coslice_transpose],
  [slice_transpose]) removes the dependency and leaves an ordinary
  two-argument respectfulness goal.  Note also which obligation the
@@ -488,7 +488,7 @@ Program Definition coslice_adj_to (c : C) (y : @Coslice C a) :
 |}.
 
 (*
- The exercise words the arrow action as "id + f"; the tree spells that
+ The exercise words the arrow action as “id + f”; the tree spells that
  [cover id f], and [right f] is the same morphism with the redundant
  [∘ id] removed. 
 
@@ -589,11 +589,11 @@ Next Obligation. apply first_id. Qed.
 Next Obligation. apply first_comp. Qed.
 
 (*
- Dually, the slice arrow action is "f × id", spelled [split f id]; the
+ Dually, the slice arrow action is “f × id”, spelled [split f id]; the
  [id ∘] on the second component is what [first f] omits. 
 
  --------
- 同样，切片箭头操作是 "f × id"，拼写为 [split f id]；第二个分量上的 [id ∘] 是 [first f] 所省略的。
+ 同样，切片箭头操作是 “f × id”，拼写为 [split f id]；第二个分量上的 [id ∘] 是 [first f] 所省略的。
 *)
 Lemma slice_fmap_is_split (x y : C) (f : x ~> y) :
   `1 (fmap[Slice_Prod] f) ≈ split f id.

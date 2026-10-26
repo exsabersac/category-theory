@@ -16,11 +16,11 @@ Generalizable All Variables.
 
 (* nLab: https://ncatlab.org/nlab/show/adjoint+functor
    nLab: https://ncatlab.org/nlab/show/mate
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.7,
      p. 99: the definition of a map of adjunctions, which the page gives as
      unnumbered prose (catalog id `maclane:IV.7:def1`), and Proposition 1,
      which the page does number in bold.
-   Riehl, "Category Theory in Context", §4.2, printed p. 143,
+   Riehl, “Category Theory in Context”, §4.2, printed p. 143,
      Exercise 4.2.v (strict morphism of adjunctions).
 
    Given two adjunctions A : F ⊣ U over (C, D) and A' : F' ⊣ U' over
@@ -63,14 +63,14 @@ Generalizable All Variables.
 
    THE MODELLING DECISION, AND WHAT WAS MEASURED.
 
-   "The squares commute" is an equality of functors, and this library has
+   “The squares commute” is an equality of functors, and this library has
    two of those.  BOTH readings are delivered here, and the choice of which
    is primary is settled by the sources rather than by convenience.
 
    (a) The STRICT reading, taken as primary.  Mac Lane's display (3) joins
    C'(K F x, K a) to C'(F' L x, K a) with a double bar, and Riehl's version
    of the same square joins D'(K F c, K d) to D'(F' H c, K d) with an equals
-   sign; her exercise is titled "strict morphism of adjunctions" and writes
+   sign; her exercise is titled “strict morphism of adjunctions” and writes
    KF = F'H.  So both sources identify the two hom-sets by an EQUALITY of
    objects.  [AdjSquares] therefore carries [sq_left : ∀ x, K (F x) =
    F' (L x)] as data, at Leibniz equality of objects, together with the

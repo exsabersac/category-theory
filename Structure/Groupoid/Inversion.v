@@ -18,7 +18,7 @@ Generalizable All Variables.
 (*
  nLab:      https://ncatlab.org/nlab/show/groupoid
  nLab:      https://ncatlab.org/nlab/show/opposite+category
- Book:      Riehl, "Category Theory in Context", Example 1.3.14, clauses
+ Book:      Riehl, “Category Theory in Context”, Example 1.3.14, clauses
  (i) and (ii), printed pp. 21-22
 
  Riehl records that any groupoid is isomorphic to its opposite, by the
@@ -41,7 +41,7 @@ Generalizable All Variables.
  - the two composites are the identity on objects on the nose, and
  - each composite sends every morphism to one equivalent to itself,
 
- which is what "isomorphism of categories" can mean in a setoid library
+ which is what “isomorphism of categories” can mean in a setoid library
  without function extensionality (Leibniz equality of the two functors is
  not available, and is not claimed).  It implies the [Cat]-level statement,
  through [Inversion_Cat_iso] below; the converse implication does not hold
@@ -82,7 +82,7 @@ Generalizable All Variables.
  Why inversion is a functor at all, and what it is used for
 
  nLab:  https://ncatlab.org/nlab/show/opposite+category
- Book:  Riehl, "Category Theory in Context", Example 1.2.2(iii)
+ Book:  Riehl, “Category Theory in Context”, Example 1.2.2(iii)
 
  Inversion reverses composition: (f ∘ g)⁻¹ ≈ g⁻¹ ∘ f⁻¹, which is
  [ginv_comp] in Structure/Groupoid.v.  Taking the codomain to be C^op is
@@ -101,7 +101,7 @@ Generalizable All Variables.
  precomposition with the inversion isomorphism.  Group theory states the
  same fact elementwise: x · g becomes g⁻¹ · x.  Because the composite of
  inversion with itself is the identity up to `≈`, the translation is
- reversible, which is what makes "right action" and "left action" two
+ reversible, which is what makes “right action” and “left action” two
  presentations of one notion rather than two notions.
 
  Construction/Deloop/Opposite.v handles a neighbouring statement that

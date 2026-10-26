@@ -101,8 +101,8 @@ Generalizable All Variables.
  to get [@Complete], not the first: Instance/Grp/Limit.v is the precedent
  ([Grp_Forget_creates_limits], [Grp_Complete]) and this
  file is its clause-for-clause transposition.  Sweeping declaration heads
- of the form "Definition/Program Definition/Theorem/Lemma/Example <name> :
- @?Complete|Cocomplete" over all [.v] files, the roster before this file
+ of the form “Definition/Program Definition/Theorem/Lemma/Example <name> :
+ @?Complete|Cocomplete” over all [.v] files, the roster before this file
  was [Sets_Complete] and [ConeSet_Complete] (Instance/Sets/Complete.v),
  [Sets_Complete_via_Manes] (Structure/Equalizer/Coreflexive.v),
  [Subsets_Complete]/[Subsets_Cocomplete] (Instance/Powerset.v),
@@ -110,17 +110,17 @@ Generalizable All Variables.
  (Instance/Proset/Limit.v) and two probe files -- nothing for [Rng],
  [Ab], [CMon], [RMod], [Mon] or [Top].
 
- AND THE CLAIM "NO LIMIT OF RINGS EXISTED IN TREE" WOULD BE FALSE, SO IT
+ AND THE CLAIM “NO LIMIT OF RINGS EXISTED IN TREE” WOULD BE FALSE, SO IT
  IS NOT MADE.  Instance/Rng/Zp.v already builds THREE: [Zp_limit :
  IsALimit (ResTower Rcomm d) Zp], [Zp_int_limit] and
  [PowerSeries_limit], each at an [Omega^op]-shaped tower with a
  hand-built carrier.  It also already has the ELEMENTWISE uniqueness at
  that one diagram -- [zp_zero_forced], [zp_one_forced],
  [zp_add_forced], [zp_mul_forced], [zp_neg_forced] --
- and its header states in terms what it does not prove: "Riehl
+ and its header states in terms what it does not prove: “Riehl
  §5.6 Example 5.6.8 observes that the underlying-set functor of [Rng] is
  MONADIC and therefore CREATES the limit cone ... Monadicity is NOT proved
- here and is not used".  THIS FILE SUPPLIES THE CREATION, at an arbitrary
+ here and is not used”.  THIS FILE SUPPLIES THE CREATION, at an arbitrary
  shape and an arbitrary diagram, and it too does NOT go through
  monadicity: no file in the tree exhibits [Rng] as an Eilenberg-Moore
  category, so the argument is rerun one level down exactly as the group
@@ -129,9 +129,9 @@ Generalizable All Variables.
 
  THE CONTINUITY COROLLARY IS NOT NEW, AND AN EARLIER REVISION OF THIS
  HEADER OVERSTATED HOW NOT-NEW IT IS IN THE WRONG DIRECTION.  That
- revision said continuity of [Rng_Forget] was available "in PRINCIPLE"
- but not as an instantiation, because "transporting [ContinuousFunctor]
- along a natural isomorphism of functors is nowhere in tree".  That is
+ revision said continuity of [Rng_Forget] was available “in PRINCIPLE”
+ but not as an instantiation, because “transporting [ContinuousFunctor]
+ along a natural isomorphism of functors is nowhere in tree”.  That is
  false, and the audit of this file refuted it by building the alternative
  in twelve lines out of constants that already existed:
  Functor/Hom/Continuous.v's [Section Transport] and its
@@ -144,8 +144,8 @@ Generalizable All Variables.
  transported.
 
  RAPL is not the route, and here too the earlier revision's PREMISE was
- wrong while its conclusion held.  It said "the only ring adjunction in
- tree is [free_rng_ab_adjunction]"; there are at least four
+ wrong while its conclusion held.  It said “the only ring adjunction in
+ tree is [free_rng_ab_adjunction]”; there are at least four
  ([free_rng_ab_adjunction], Instance/Rng/Free.v;
  [zmring_adjunction], Instance/Rng/MonoidRing.v;
  [grp_ring_adjunction], Instance/Rng/GroupRing.v;
@@ -176,11 +176,11 @@ Generalizable All Variables.
  (104 [.glob] declaration heads plus the 18 [Program] obligations, which
  no source-level reading sees): ZERO word-bounded [Set] occurrences
  anywhere, and TWELVE carry a block equation at all.  (An earlier
- revision of this paragraph said ELEVEN and added "the 18 obligations
- carry no block equation"; both were wrong, and the cause is worth
+ revision of this paragraph said ELEVEN and added “the 18 obligations
+ carry no block equation”; both were wrong, and the cause is worth
  recording -- after [Require Import Category.Instance.Rng.Limit] the BARE
  obligation names are not bound, so [About rng_sets_const_obligation_1]
- answers "not found" and an unqualified sweep silently reports nothing.
+ answers “not found” and an unqualified sweep silently reports nothing.
  Re-measured with fully qualified names,
  [Category.Instance.Rng.Limit.<name>], over all 122 constants.)  Four are
  the generic [Sets] section -- [rng_sets_pre], [rng_sets_med_eq],
@@ -201,7 +201,7 @@ Generalizable All Variables.
  group case's reading exactly, at the same count of equation-carrying
  generic constants.
 
- [Print Assumptions] reports "Closed under the global context" for all
+ [Print Assumptions] reports “Closed under the global context” for all
  six headline constants -- [Rng_Complete], [Rng_Forget_continuous],
  [Rng_Forget_creates_limits], [Rng_Forget_PreservesAllLimits],
  [Rng_Forget_StrictlyCreatesLimits] and [Rng_Forget_reflects_limits].
@@ -599,7 +599,7 @@ Qed.
 (* * ** The vertex's equality is propositional / * ** 顶点的相等性是命题性的 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
+ Since the PR “algebraic carriers are sets” (2026-09-17) a [RigObject]
  carries [rig_prop], so the lifted ring owes a [Prop]-valued relation on
  [vertex_obj[L]] -- and [L] is an ARBITRARY limit of the underlying sets,
  not the one [Sets_Complete] chooses, so Instance/Sets/Propositional.v's
@@ -794,8 +794,8 @@ Proof.
 Qed.
 
 (*
- The five clauses together: Mac Lane's "there is exactly one ring
- structure on the limit making every projection a homomorphism".  No law
+ The five clauses together: Mac Lane's “there is exactly one ring
+ structure on the limit making every projection a homomorphism”.  No law
  of the candidate structure is consumed -- only that the legs preserve
  it. 
 
@@ -1012,7 +1012,7 @@ Definition Rng_Forget_PreservesAllLimits : PreservesAllLimits Rng_Forget :=
   creates_limits_PreservesAllLimits Rng_Forget Sets_Complete
     Rng_Forget_creates_limits.
 
-(* * * "Limits of rings are computed on underlying sets", literally / * * “环的极限是在底层集合上计算的”，字面意思 *)
+(* * * “Limits of rings are computed on underlying sets”, literally / * * “环的极限是在底层集合上计算的”，字面意思 *)
 
 Section RngComputed.
 

@@ -64,7 +64,7 @@ Generalizable All Variables.
 
  where `η'` is the unit of `F' ⊣ U'` and `ε` the counit of `F ⊣ U`.
 
- The engine behind every proof here is the "standing trap" made harmless: in
+ The engine behind every proof here is the “standing trap” made harmless: in
  `Cat` the identity 2-cell `bi2id`, the unitor and associator components are
  all `fmap[_] id`, so after `simpl` a single `rewrite !fmap_id` followed by
  `id_left`/`id_right` clears every coherence factor, leaving precisely the

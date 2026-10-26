@@ -15,7 +15,7 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.3 Exercise 1, printed p. 39 (PDF p. 49) — maclane:II.3:ex1
  nLab:      https://ncatlab.org/nlab/show/product+category
 
@@ -69,7 +69,7 @@ Generalizable All Variables.
  3. THE GROUP CASE IS A RESTRICTION, NOT A SECOND PROOF.  [Deloop]
  consumes only the monoid part, and [GrpObject_prod] is built so
  its [grp_monoid] projection is [MonObject_prod] of the parts by
- [eq_refl]; Mac Lane's "the same statement restricted to groups"
+ [eq_refl]; Mac Lane's “the same statement restricted to groups”
  is therefore delivered by applying [Deloop_prod_iso] at the
  underlying monoids, with the componentwise inverse supplied only
  to close the group structure itself.
@@ -225,7 +225,7 @@ Next Obligation.
 Qed.
 
 (*
- Mac Lane's "the group case is the same statement restricted to groups":
+ Mac Lane's “the group case is the same statement restricted to groups”:
  the isomorphism at product groups is the monoid isomorphism verbatim,
  because [Deloop] consumes only the monoid part (design note 3). 
 

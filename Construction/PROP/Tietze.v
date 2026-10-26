@@ -46,7 +46,7 @@ Open Scope nat_scope.
  relation, and adding/removing a definable generator.  The same
  calculus applies to presentations of PROPs by symmetric monoidal
  theories ([SMT], from [Construction/PROP/Presentation.v]), and this
- file develops its two "adding" moves together with the theorems
+ file develops its two “adding” moves together with the theorems
  that make them presentation-preserving: for move 1 the congruences
  coincide at every arity; for move 2 the embedding is conservative
  AND a section up to derivable equality, which pins the presented
@@ -192,8 +192,8 @@ Qed.
    on morphisms — and the functor is STRICT SYMMETRIC monoidal: both
    comparison maps are identities on the nose, the object equalities
    are [eq_refl], and the braid square commutes because [T_map] fixes
-   [T_braid].  This is the "signature morphisms induce strict
-   symmetric maps of free PROPs" half of the Tietze calculus; the
+   [T_braid].  This is the “signature morphisms induce strict
+   symmetric maps of free PROPs” half of the Tietze calculus; the
    packaging mirrors the projection functor of [Presentation.v], and
    both discharge their coherence squares with the shared
    identity-bookkeeping lemmas [tm_id_swap] / [tm_comp_id_tens] /
@@ -863,7 +863,7 @@ Proof.
 Qed.
 
 (*
-   * The fullness ("section") leg: EVERY term of the extended
+   * The fullness (“section”) leg: EVERY term of the extended
    signature is [TermEqW ext_smt]-equal to the embedding of its own
    retraction — the embedded base theory is not merely conservative
    but exhaustive.  Together with [ext_conservative]/[ext_reflects]

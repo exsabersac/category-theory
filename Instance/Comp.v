@@ -15,7 +15,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
 
  This file develops finitary (single-sorted) universal algebra in the style
- of nLab's "variety of algebras": an [OpSignature] lists operation symbols,
+ of nLab's “variety of algebras”: an [OpSignature] lists operation symbols,
  each tagged with an arity *type* (so an o-ary operation takes its arguments
  as a function [arity o → carrier]); an [OpAlgebra] interprets those symbols
  on a carrier; and [AlgHom] is a homomorphism (a carrier map commuting with
@@ -23,8 +23,8 @@ Generalizable All Variables.
  [Algs] which is shown to have a terminal object (the one-element algebra),
  binary products (carrierwise), and an initial object (the free algebra on
  no generators).  Adding an [EqSignature] of laws yields varieties [Algebra
- S E] (e.g. groups), and the eponymous [Comp] is the category of "software
- components" — maps between such algebraic interfaces that need not be
+ S E] (e.g. groups), and the eponymous [Comp] is the category of “software
+ components” — maps between such algebraic interfaces that need not be
  homomorphic.
 
  Most of what follows in this file was written by Andrej Bauer:
@@ -71,7 +71,7 @@ Arguments arity {_} _.
 
 (*
    * We shall consider algebras with given operations, but without equations.
-   We call these "operation algebras". 
+   We call these “operation algebras”. 
 
    --------
    * 我们将考虑具有给定运算但没有方程的代数。

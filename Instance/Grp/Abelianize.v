@@ -26,12 +26,12 @@ Generalizable All Variables.
 (*
    * * Abelianization as a universal arrow, and the adjunction twice over
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    §III.1 Exercise 3 [maclane:III.1:ex3]: the factor-commutator group
    G/[G, G] is the value at G of a left adjoint to the inclusion of
    abelian groups in groups, and the projection p_G : G → G/[G, G] is
-   the universal arrow from G to that inclusion.  Riehl, "Category
-   Theory in Context", Dover 2016, §4.2 Exercise ii asks for the same
+   the universal arrow from G to that inclusion.  Riehl, “Category
+   Theory in Context”, Dover 2016, §4.2 Exercise ii asks for the same
    adjunction built the OTHER way, from a unit, a counit, and the two
    triangle identities proved by hand.  Both are delivered here, and
    then related.
@@ -56,18 +56,18 @@ Generalizable All Variables.
    below; it is used verbatim, not re-derived;
    - [hom_to_abelian_kills] — a homomorphism into an abelian
    group kills every commutator element.  That donor file's header
-   calls it "the descent germ", and this file is what spends it:
+   calls it “the descent germ”, and this file is what spends it:
    [abel_kills] is the single place where it is used, and every
    mediating morphism below factors through that one lemma.
 
-   THE ISSUE'S "Current state" PARAGRAPH IS STALE.  It asserts that
+   THE ISSUE'S “Current state” PARAGRAPH IS STALE.  It asserts that
    the tree has no categories of groups or abelian groups.  It has
    both: [Grp] (Instance/Grp.v) and [Ab] (Instance/Ab.v), each
    with a forgetful functor to [Sets] ([Grp_Forget], Instance/Grp.v;
    [Ab_Forget], Instance/Ab.v).  The abelianization functor and the
    inclusion have existed since Instance/Grp/Abelianization.v landed,
-   and that file's own header records the adjunction as "close at hand"
-   and "not built here".  This file builds it.
+   and that file's own header records the adjunction as “close at hand”
+   and “not built here”.  This file builds it.
 
    THE TWO ROUTES, AND EXACTLY HOW THEY RELATE.  This has to be stated
    carefully, because the two routes do not even produce adjunctions of
@@ -261,7 +261,7 @@ Generalizable All Variables.
    Test/Probe module, because this change is confined to one file;
    they are not wired into any make target.  There are SEVEN
    negatives, all of ONE KIND (conversion — each stripped once and
-   confirmed to report a genuine "cannot unify"), against 23
+   confirmed to report a genuine “cannot unify”), against 23
    positive controls and one instrument check.  Every constant the
    negatives name is rename-simulated 19/19.  The fourteen donors
    ([Abelianization_Functor], [Ab_to_GrpOb], [GrpTwo], [Ab_to_Grp],
@@ -308,8 +308,8 @@ Generalizable All Variables.
 
    Everything below factors through this one step.  [Ab_to_GrpOb A] is
    abelian by construction, so [hom_to_abelian_kills] applies to any
-   homomorphism into it; cancelling the inverse turns "kills
-   commutators" into "respects the quotient relation". 
+   homomorphism into it; cancelling the inverse turns “kills
+   commutators” into “respects the quotient relation”. 
 
    --------
    * ** 降阶引理
@@ -323,7 +323,7 @@ Proof. apply cmon_plus_comm. Qed.
 
 (*
  [abel_eq] is the propositional truncation of [InCommutator] since the PR
- "algebraic carriers are sets" (2026-09-17), so the witness may not be
+ “algebraic carriers are sets” (2026-09-17), so the witness may not be
  destructed into the [Type]-valued conclusion directly.  The target is an
  [AbObject], which carries [cmon_prop], so [pequiv_to] puts a [Prop] goal in
  front of the elimination and [pequiv_from] returns.  This is the one place
@@ -779,8 +779,8 @@ Next Obligation. intros A B h a; simpl; reflexivity. Qed.
  [GrpObject] field is needed here, and this instance does not wait for
  phase P3.
 
- REMOVAL CANDIDATE, surfaced and not acted on (the PR "algebraic
- carriers are sets", 2026-09-17).  The sentence above was written while
+ REMOVAL CANDIDATE, surfaced and not acted on (the PR “algebraic
+ carriers are sets”, 2026-09-17).  The sentence above was written while
  [GrpObject] still had no [grp_prop] field.  It has one now, so
  [grp_prop GrpTwo] inhabits exactly what [grp_two_PropEquiv] inhabits,
  and [AbTwo]'s [cmon_prop] below takes the field rather than this hand

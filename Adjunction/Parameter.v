@@ -50,9 +50,9 @@ Module PAT := Category.Adjunction.Natural.Transformation.
 
 (* nLab: https://ncatlab.org/nlab/show/parametrized+adjoint
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.7,
      book pp. 101-102: Theorem 3 and its proof.
-   Riehl, "Category Theory in Context", 2nd ed., §4.3, p. 148, and §4.4
+   Riehl, “Category Theory in Context”, 2nd ed., §4.3, p. 148, and §4.4
      Proposition 4.4.6: the same construction in the language of mates.
 
    Mac Lane's Theorem 3, quoted from the printed page (book p. 102):
@@ -78,12 +78,12 @@ Module PAT := Category.Adjunction.Natural.Transformation.
              ↑ F(x,h)*          ↑ G(h,a)_*
        hom(F(x,p'), a) ≅  hom(x, G(p',a))
 
-   and he then says in terms: "This commutativity (for all a) states
+   and he then says in terms: “This commutativity (for all a) states
    precisely that G(h,−) must be chosen as the conjugate to F(−,h).  By the
    previous theorem there exists a unique choice ...  For a second arrow
    h' : p' → p'', the uniqueness of the choice of conjugates shows for h'h
    that G(h'h, −) = G(h,−) ∘ G(h',−), so that G(−,a) is a functor and G a
-   bifunctor, as required."
+   bifunctor, as required.”
 
    WHAT IS DELIVERED HERE.  The hypothesis of the theorem is the record
    [ParametrizedAdjunction F], a family of right adjoints to the partial
@@ -93,8 +93,8 @@ Module PAT := Category.Adjunction.Natural.Transformation.
    partial functor's action, fmap[Partial_r F x] h, and the interchange law
    of a bifunctor is exactly its naturality.  [pa_param_mate] is Mac Lane's
    G(h,−), defined as the CONJUGATE of F(−,h) and nothing else, so that the
-   theorem's closing sentence ("may also be described as the unique way to
-   make G(h,−) a natural transformation conjugate to F(−,h)") holds by
+   theorem's closing sentence (“may also be described as the unique way to
+   make G(h,−) a natural transformation conjugate to F(−,h)”) holds by
    construction rather than as a further comparison.
 
    [parametrized_right_adjoint_bifunctor] is Mac Lane's G : P^op × A → X.
@@ -119,16 +119,16 @@ Module PAT := Category.Adjunction.Natural.Transformation.
 
    UNIQUENESS is the theorem's actual content, and it is stated over the
    ASSIGNMENT rather than over a type of bifunctors, which is what Mac Lane
-   states ("There is then a unique way to assign to each arrow h ... and each
-   object a ... an arrow G(h,a)").  [pa_assignment_unique] takes an arbitrary
+   states (“There is then a unique way to assign to each arrow h ... and each
+   object a ... an arrow G(h,a)”).  [pa_assignment_unique] takes an arbitrary
    family G' of arrows, natural in a, whose square commutes, and concludes
    that every one of its values agrees with [pa_param_mate].  Its proof is
    [conj_mate_uniq] and nothing else.
 
    THE DUAL (§D) is Mac Lane's own next sentence, and it is NOT Theorem 3
-   read backwards.  He writes: "Dually, given a bifunctor G : P^op × A → X
+   read backwards.  He writes: “Dually, given a bifunctor G : P^op × A → X
    where each G(p, −) has a right adjoint F(−, p), there is a unique way to
-   make F a bifunctor X × P → A."  The hypothesis there is G(p,−) ⊣ F(−,p),
+   make F a bifunctor X × P → A.”  The hypothesis there is G(p,−) ⊣ F(−,p),
    so the PARTIAL FUNCTORS OF G ARE THE LEFT ADJOINTS, where in Theorem 3
    they were the right adjoints' partners, and the conclusion is COVARIANT in
    the parameter where Theorem 3's was contravariant.  The direction was
@@ -242,14 +242,14 @@ Module PAT := Category.Adjunction.Natural.Transformation.
        .Makefile.coq.d.  An Adjunction/-level file should not pay 26 modules
        for one witness; the instance belongs beside the module categories.
 
-   PRIOR ART, NARROWED — the catalogue issue's claim that "searches for
-   parametrised, parameterised or two-variable adjunctions return nothing" is
+   PRIOR ART, NARROWED — the catalogue issue's claim that “searches for
+   parametrised, parameterised or two-variable adjunctions return nothing” is
    true of DECLARED CONSTANTS and false of the bare words, and the criterion
    is what settles it.  A case-insensitive sweep for
    parametri[sz]ed|parameteri[sz]ed|two.variable over *.v returns 39 files,
-   every hit prose (e.g. Theory/DoubleCategory.v "parametrized spectra",
-   Theory/Coq/Traversable.v "a parameterised comonad",
-   Instance/EnsV.v "this file is parameterized by"); the same sweep
+   every hit prose (e.g. Theory/DoubleCategory.v “parametrized spectra”,
+   Theory/Coq/Traversable.v “a parameterised comonad”,
+   Instance/EnsV.v “this file is parameterized by”); the same sweep
    restricted to declaration heads returns zero.  So no CONSTANT of this
    shape existed, which is the claim this file makes new.
 
@@ -507,9 +507,9 @@ Definition pa_param_mate {p p' : P} (h : p' ~> p) : G p ⟹ G p' :=
   conj_mate (pa_adj PA p) (pa_adj PA p') (param_transform F h).
 
 (*
-Mac Lane's closing sentence — "this assignment ... may also be described
+Mac Lane's closing sentence — “this assignment ... may also be described
    as the unique way to make G(h,−) a natural transformation conjugate to
-   F(−,h)" — holds here by construction, not as a comparison. 
+   F(−,h)” — holds here by construction, not as a comparison. 
 
 --------
 麦克莱恩的结束语——“这个作业……也可以描述
@@ -609,8 +609,8 @@ Defined.
 (* --- the two functor laws of G(−,a), by uniqueness of conjugates ---  / --- G(−,a) 的两个函子定律，通过共轭的唯一性 ---*)
 
 (*
-Mac Lane: "the uniqueness of the choice of conjugates shows for h'h that
-   G(h'h,−) = G(h,−) ∘ G(h',−)".  That argument is Adjunction/Conjugate.v's
+Mac Lane: “the uniqueness of the choice of conjugates shows for h'h that
+   G(h'h,−) = G(h,−) ∘ G(h',−)”.  That argument is Adjunction/Conjugate.v's
    [conj_mate_id] and [conj_mate_compose], both proved there by
    [conj_mate_uniq]; nothing is recomputed here. 
 
@@ -722,7 +722,7 @@ In the parameter alone the action is the mate, up to the residue
    equation with the residue cleared.  Dropping the residue is NOT a
    conversion: [fmap_id] is a law field, so the strict form
      fmap[...] (h, id) = pa_param_mate (unop h) a
-   is measured and REFUTED (a CONVERSION rejection, "cannot unify"), and
+   is measured and REFUTED (a CONVERSION rejection, “cannot unify”), and
    only the ≈ form below holds.  That refutation is pinned in
    Test/ProbeParameter396.v as [p396_fmap_param_strict], with this file's
    own ≈ form beside it as the passing control. 
@@ -852,9 +852,9 @@ Arguments parametrized_right_adjoint_bifunctor {X P A F} PA.
 
 (** ** D. The dual: a bifunctor whose partial functors are LEFT adjoints  / ** D. 对偶：一个双函子，其部分函子是 LEFT 伴随物*)
 
-(* Mac Lane's dual sentence, quoted from the same page: "Dually, given a
+(* Mac Lane's dual sentence, quoted from the same page: “Dually, given a
    bifunctor G : P^op × A → X where each G(p, −) has a right adjoint F(−, p),
-   there is a unique way to make F a bifunctor X × P → A."
+   there is a unique way to make F a bifunctor X × P → A.”
 
    Read that sentence exactly.  The hypothesis is G(p,−) ⊣ F(−,p), so the
    PARTIAL FUNCTORS OF G ARE THE LEFT ADJOINTS here, where in Theorem 3 they
@@ -1194,7 +1194,7 @@ Example copa_bifunctor_fmap {x x' : X} {p p' : P}
 In the parameter alone the action is the mate, up to the residue
    fmap[L p'] id that [fmap] leaves behind.  As in §C the strict form
      fmap[...] (id, h) = copa_param_mate h x
-   is measured and REFUTED — a CONVERSION rejection ("cannot unify"),
+   is measured and REFUTED — a CONVERSION rejection (“cannot unify”),
    since [fmap_id] is a law field — so only the ≈ form below holds.  That
    refutation is pinned in Test/ProbeParameter396.v as
    [p396_copa_fmap_param_strict]. 
@@ -1298,8 +1298,8 @@ Qed.
    [Partial_l] and [Partial_r] rebuild their three law fields as separate
    Program obligations.  Consequently [pa_coadj CA p] does not ascribe at
    Partial_l (G ◯ Swap) p ⊣ pa_left CA p either — that rejection is measured
-   too, and is a TYPING one, a plain "has type ... while it is expected to
-   have type" with no "cannot unify" and no universe clause, where the
+   too, and is a TYPING one, a plain “has type ... while it is expected to
+   have type” with no “cannot unify” and no universe clause, where the
    functor comparison above is a CONVERSION one — so a field-copy transport
    is needed ([copa_swap_transport]); it works only because every
    [Adjunction] field mentions its left adjoint solely through F x and
@@ -1396,7 +1396,7 @@ Mac Lane's motivating remark (book p. 101) is the currying bijection
    bimap f id = (f ∘ exl) △ (id ∘ exr).  The two agree on OBJECTS on the nose
    ([curry_prod_functor_obj]) and differ on ARROWS by exactly one [id_left]
    ([curry_prod_functor_fmap]); the strict form is measured and REFUTED (a
-   CONVERSION rejection, "cannot unify"), and pinned in
+   CONVERSION rejection, “cannot unify”), and pinned in
    Test/ProbeParameter396.v as [p396_prod_functor_fmap_strict].  A field-copy
    transport is therefore unavailable, and that too is MEASURED rather than
    argued: feeding Curry_Adjunction's five projections to @Build_Adjunction
@@ -1555,7 +1555,7 @@ The forced action, identified.  Strict equality is measured and REFUTED
      curry (eval ∘ ((id ∘ exl) △ (h ∘ exr)))
    ([curry_param_mate_residue], eq_refl), while [second h] is
    exl △ (h ∘ exr), so clearing the [id ∘ exl] needs [id_left], a law field.
-   Both refutations are CONVERSION rejections ("cannot unify", no universe
+   Both refutations are CONVERSION rejections (“cannot unify”, no universe
    clause), pinned in Test/ProbeParameter396.v as
    [p396_curry_mate_closed_strict] and [p396_curry_mate_ihom_strict]. 
 
@@ -1600,8 +1600,8 @@ Qed.
 (*
 [ihom] IS the arrow action of [InternalHomFunctor] at Leibniz equality
    (Structure/Cartesian/Closed/Natural.v's [ihom_is_InternalHomFunctor_fmap]),
-   so the identification the catalogue issue asks for — "postcomposition with
-   a map of the parameter and the induced map of internal homs are conjugate"
+   so the identification the catalogue issue asks for — “postcomposition with
+   a map of the parameter and the induced map of internal homs are conjugate”
    — comes out of the previous lemma with no further work.  Note [op] is the
    identity (Construction/Opposite.v), so no re-reading occurs. 
 
@@ -1609,7 +1609,7 @@ Qed.
 [ihom] 是 [InternalHomFunctor] 在莱布尼茨等式上的箭头动作
  （结构/笛卡尔/闭合/自然.v 的 [ihom_is_InternalHomFunctor_fmap]），
  所以目录问题所要求的识别——“后期合成
- 参数图与内部homs诱导图共轭"
+ 参数图与内部homs诱导图共轭“
  - 从之前的引理中得出，无需进一步的工作。 注意 [op] 是
  身份（Construction/Opposite.v），因此不会发生重读。 
 *)
@@ -1818,7 +1818,7 @@ Mac Lane's Exercise 2, quoted from the same page (book p. 102):
    hexagon is NOT the wedge condition definitionally: it carries two
    [fmap[Const] _] residues, each an [∘ id], and its two sides are swapped.
    The identification of the two conditions was measured and REFUTED at
-   [eq_refl] with a CONVERSION error ("cannot unify", no universe clause),
+   [eq_refl] with a CONVERSION error (“cannot unify”, no universe clause),
    and the two are interderivable, each direction by [rewrite !id_right]
    followed by [symmetry].  So [Theory/Dinatural.v] is NOT required by this
    file and the wedge is the shape delivered.
@@ -2050,7 +2050,7 @@ Mac Lane §IX.4 Exercise 2's scope increment, and the one thing to be clear
    COMPONENTS ([pat_unit_is_pa_unit], [pat_counit_is_pa_counit]) — the
    transform reading's unit at (p, x) IS [pa_unit PA p x] on the nose.  The
    WHOLE RECORD does not: [pa_of_pat (pat_of_pa PA) = PA] is refuted at
-   [eq_refl] with a CONVERSION error ("cannot unify"), because
+   [eq_refl] with a CONVERSION error (“cannot unify”), because
    [Adjunction_from_Transform] rebuilds the hom-set isomorphism out of the
    transposes rather than returning the one it was given.  Nor does the
    TRANSPOSE: the strict form is refuted the same way, and what holds is
@@ -2213,7 +2213,7 @@ End PATransformPassages.
 (** ** H. Riehl §4.4 Proposition 4.4.6(iii): mutual right adjointness  / ** H. Riehl §4.4 命题 4.4.6(iii)：互右伴随性*)
 
 (*
-Riehl, "Category Theory in Context", 2nd ed., §4.4 Proposition 4.4.6.
+Riehl, “Category Theory in Context”, 2nd ed., §4.4 Proposition 4.4.6.
    Given a bifunctor F : X ∏ P ⟶ A with BOTH pointwise families of right
    adjoints — §A's (right adjoints to F(−,p), assembling G : P^op ∏ A ⟶ X)
    and the mirror one (right adjoints to F(x,−), assembling

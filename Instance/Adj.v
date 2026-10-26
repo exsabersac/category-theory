@@ -14,15 +14,15 @@ Generalizable All Variables.
 (*
  nLab: https://ncatlab.org/nlab/show/2-category+of+adjunctions
  Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7
- "Transformations of Adjoints", book p. 101: display (8) and the
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.7
+ “Transformations of Adjoints”, book p. 101: display (8) and the
  paragraph that names the category.
 
- Mac Lane's own sentence, from that page: "For the two given categories
+ Mac Lane's own sentence, from that page: “For the two given categories
  X and A we thus have a new category A^(adj)X, the CATEGORY OF ADJUNCTIONS
  from X to A; its objects are the adjunctions <F, G; eta, eps>; its arrows
  are the transformations (conjugate pairs) <sigma, tau>, with the
- composition just noted."
+ composition just noted.”
 
  LETTERS.  Mac Lane's adjunction <F, G, phi, eta, eps> : X ⇀ A has
  F : X ⟶ A on the left and G : A ⟶ X on the right, so his X is this
@@ -95,7 +95,7 @@ Generalizable All Variables.
  <sigma', tau'> ∘ <sigma, tau> = <sigma' · sigma, tau · tau'>: the SECOND
  component composes in the OPPOSITE order.  Read the label precisely: on
  the page (8) sits on the two-arrow CHAIN, and this equation is the
- unnumbered running text just below it; "display (8)" below is shorthand
+ unnumbered running text just below it; “display (8)” below is shorthand
  for the equation.  Both of the two proof
  obligations that the category's [id] and [compose] fields now generate
  are discharged by naming a theorem that was ALREADY IN TREE before this

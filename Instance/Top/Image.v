@@ -14,7 +14,7 @@ Generalizable All Variables.
 (*
    * * Awodey's topological caveat: the inverse image on OPENS
 
-   Awodey, "Category Theory", §9.4 Example 9.12.  There is no page image
+   Awodey, “Category Theory”, §9.4 Example 9.12.  There is no page image
    for that book here, so the clause is quoted from the catalog issue's
    own transcription: after the direct-image / inverse-image adjunction
    on power sets, Awodey observes that for a continuous map the inverse

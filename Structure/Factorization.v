@@ -67,7 +67,7 @@ Generalizable All Variables.
 
  nLab:      https://ncatlab.org/nlab/show/weak+factorization+system
  Wikipedia: https://en.wikipedia.org/wiki/Lifting_property
- Blog:      Bartosz Milewski, "(Weak) Factorization Systems", 2025
+ Blog:      Bartosz Milewski, “(Weak) Factorization Systems”, 2025
 
  A factorization system equips an arbitrary category with a canonical
  notion of image along its arrows.  The guiding template is elementary
@@ -75,9 +75,9 @@ Generalizable All Variables.
  surjective, and inserting its image between source and target
  separates the two defects, for the map onto the image is surjective
  and carries all the non-injectivity, while the inclusion of the image
- is injective and carries all the non-surjectivity (Milewski, "(Weak)
- Factorization Systems", 2025).  Abstracting "surjection" to a left
- class E and "injection" to a right class M, and asking that every
+ is injective and carries all the non-surjectivity (Milewski, “(Weak)
+ Factorization Systems”, 2025).  Abstracting “surjection” to a left
+ class E and “injection” to a right class M, and asking that every
  morphism factor as an M-morphism after an E-morphism ([ofs_factor]),
  with every E-morphism orthogonal to every M-morphism ([ofs_orth]),
  yields the (E, M) system of [OFS].  The uniqueness of the diagonal
@@ -90,18 +90,18 @@ Generalizable All Variables.
  morphisms left-orthogonal to M and M the class right-orthogonal to E,
  a Galois connection on arrow classes whose closed pairs are the
  prefactorization systems, and the intersection E ∩ M consists of
- exactly the isomorphisms (nLab, "orthogonal factorization system").
+ exactly the isomorphisms (nLab, “orthogonal factorization system”).
  In one phrase, an OFS is a weak factorization system whose lifts
- happen to be unique (nLab, "weak factorization system").
+ happen to be unique (nLab, “weak factorization system”).
 
  The structure has been rediscovered under several names.  Mac Lane
- gave the earliest study, under the now-clashing name "bicategory" and
- with side conditions since dropped (Mac Lane, "Duality for groups",
+ gave the earliest study, under the now-clashing name “bicategory” and
+ with side conditions since dropped (Mac Lane, “Duality for groups”,
  Bull. Amer. Math. Soc. 56, 1950).  The orthogonal notion in its
- modern form is due to Freyd and Kelly ("Categories of continuous
- functors, I", J. Pure Appl. Algebra 2, 1972); the name "factorization
- system" and the reflective constructions to Bousfield
- ("Constructions of factorization systems in categories", J. Pure
+ modern form is due to Freyd and Kelly (“Categories of continuous
+ functors, I”, J. Pure Appl. Algebra 2, 1972); the name “factorization
+ system” and the reflective constructions to Bousfield
+ (“Constructions of factorization systems in categories”, J. Pure
  Appl. Algebra 9, 1977); and the tie to reflective subcategories and
  localization to Cassidy, Hébert and Kelly (J. Austral. Math. Soc. Ser.
  A 38, 1985).  A later reading presents an OFS as an Eilenberg-Moore
@@ -123,7 +123,7 @@ Generalizable All Variables.
  Hébert, Kelly, 1985; see Construction/Localization/Universal.v).  In
  homotopy theory the weak variant is load-bearing: a Quillen model
  structure is two interlocking weak factorization systems with a class
- of weak equivalences (Quillen, "Homotopical Algebra", LNM 43, 1967).
+ of weak equivalences (Quillen, “Homotopical Algebra”, LNM 43, 1967).
 
  Computationally, the image factorization splits a function into its
  surjective and injective parts and names the canonical range that

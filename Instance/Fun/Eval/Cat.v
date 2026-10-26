@@ -37,8 +37,8 @@ Generalizable All Variables.
  the partial application of [Cat]'s own evaluation (the [≈] is
  [eval_partial_map]'s: [Partial_l] carries an [fmap id]).
  - [eval_transpose J P X : [J ∏ P, X] ≅[Cat] [J, [P, X]] :=
- Cat_exp_prod_l J P X] — the issue's "record the parameter/adjunct
- passage" is Instance/Cat/Exponential.v's existing isomorphism,
+ Cat_exp_prod_l J P X] — the issue's “record the parameter/adjunct
+ passage” is Instance/Cat/Exponential.v's existing isomorphism,
  cited, not rebuilt.
 
  UNIVERSES (measured by [About] under [Set Printing Universes]).  The

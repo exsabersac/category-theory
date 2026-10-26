@@ -20,7 +20,7 @@ Generalizable All Variables.
 *)
 
 (*
- Reference: Saunders Mac Lane, "Categories for the Working Mathematician",
+ Reference: Saunders Mac Lane, “Categories for the Working Mathematician”,
  2nd ed., §II.6, pp. 47-48: the projections and the diagram of
  displays (5) and (6) [maclane:II.6:construction1], their
  arrow-level definitions [maclane:II.6:ex3], and the universal
@@ -43,7 +43,7 @@ Generalizable All Variables.
  to its domain and to its codomain.  Exercise 3 asks for the three functors
  on arrows; Exercise 5 asks that any category X with functors making the
  same diagram commute factor uniquely through the comma category, which is
- what exhibits it as a "pullback"-style limit.
+ what exhibits it as a “pullback”-style limit.
 
  ** Dictionary
 
@@ -119,7 +119,7 @@ Generalizable All Variables.
  RELATIVE to the first two: the mediating arrow of L x, transported to
  S (P' x) ~> T (Q' x) along the object equalities the first two equations
  supply, agrees up to [≈] with the one R' supplies.  That is the [≈]-level
- content of "R' = R ◯ L'" with only one family of object proofs in play; it
+ content of “R' = R ◯ L'” with only one family of object proofs in play; it
  is satisfied on the nose by the mediator built here
  ([comma_mediator_mediates], whose third clause is [reflexivity]); and from
  it uniqueness follows at [≈[Cat]] ([comma_mediator_unique]), the natural
@@ -127,15 +127,15 @@ Generalizable All Variables.
  halves are packaged as [comma_diagram_ump].
 
  Three things are therefore NOT delivered, and are named rather than left
- to inference.  First, strict uniqueness -- "L' x = L x as objects of
- S ↓ T" -- which beyond the proof reconciliation above would demand Leibniz
+ to inference.  First, strict uniqueness -- “L' x = L x as objects of
+ S ↓ T” -- which beyond the proof reconciliation above would demand Leibniz
  equality of two mediating MORPHISMS, since a comma object carries its
  morphism as data and a setoid library supplies only [≈] between morphisms.
  Second, the PSEUDO version, in which the hypotheses commute only up to
  natural isomorphism: that is the comma OBJECT in the 2-categorical sense,
  which Construction/Comma.v already records as documentation-level
  only -- comma objects are PIE-limits, constructible from pullbacks and the
- power C^2 (nLab, "comma object") -- and Mac Lane's Exercise 5 is the
+ power C^2 (nLab, “comma object”) -- and Mac Lane's Exercise 5 is the
  strict statement, which is what is proven here.  Third, and a consequence
  of the first: the uniqueness clause quantifies over [MediatesDiagram]
  competitors, a class INCOMPARABLE with Mac Lane's literal one -- weaker on

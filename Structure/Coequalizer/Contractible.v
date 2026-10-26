@@ -10,24 +10,24 @@ Generalizable All Variables.
 (* * * Contractible pairs, and the coequalizers that are split / * * 可缩对，以及被分裂的等同化子 *)
 
 (*
- Book:   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, §VI.6 "Split Coequalizers", Exercise 2,
+ Book:   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, §VI.6 “Split Coequalizers”, Exercise 2,
  printed p. 150 (PDF p. 159) — maclane:VI.6:ex2; the definitions
  of fork and split fork, printed p. 149 (PDF p. 158)
  nLab:   https://ncatlab.org/nlab/show/split+coequalizer, the section
- "Contractible pairs"
+ “Contractible pairs”
 
  WHAT THE BOOK SAYS, read from the page images.  On p. 149 a split fork
- is a fork a ⇉ b → c, the pair ∂₀, ∂₁ and the arrow e, "with two more
- arrows" t : b → a and s : c → b satisfying "e∂₀ = e∂₁, es = 1, ∂₀t = 1,
- ∂₁t = se. (3)".  On p. 150: "By a split coequalizer of ∂₀ and ∂₁ we
+ is a fork a ⇉ b → c, the pair ∂₀, ∂₁ and the arrow e, “with two more
+ arrows” t : b → a and s : c → b satisfying “e∂₀ = e∂₁, es = 1, ∂₀t = 1,
+ ∂₁t = se. (3)”.  On p. 150: “By a split coequalizer of ∂₀ and ∂₁ we
  shall mean the arrow e of such a split fork on ∂₀ and ∂₁.  It is
  possible to characterize those parallel pairs ∂₀, ∂₁ for which any
- (and hence every) coequalizer is split (Exercise 2)."  Exercise 2: "A
+ (and hence every) coequalizer is split (Exercise 2).”  Exercise 2: “A
  parallel pair ∂₀, ∂₁ : a ⇉ b is said to be contractible (Beck) if
  there is an arrow t : b → a with ∂₀t = 1 and ∂₁t∂₀ = ∂₁t∂₁.  (a) In
  any split fork (1), prove ∂₀, ∂₁ contractible; (b) If a contractible
- pair has a coequalizer, prove that this coequalizer is split."
+ pair has a coequalizer, prove that this coequalizer is split.”
 
  WHAT IS HERE.  ∂₀ and ∂₁ are f and g, as in Structure/Coequalizer/
  Split.v, whose [SplitCoequalizer] carries Mac Lane's (3) as its laws 1
@@ -52,7 +52,7 @@ Generalizable All Variables.
  nLab gives.  [contractible_coequalizer_split_s_unique]: given e and
  the contraction, s is the only arrow up to ≈ satisfying law 4, by
  the uniqueness clause of the descent.
- - "Any (and hence every)": [every_coequalizer_split] reads a
+ - “Any (and hence every)”: [every_coequalizer_split] reads a
  contraction off one split coequalizer by (a) and feeds it to (b),
  so if a pair has one split coequalizer then EVERY coequalizer of it
  is split, on its own object and arrow and by the given fork's t
@@ -83,7 +83,7 @@ Generalizable All Variables.
  this file, so that this file does not load Absolute.v's closure
  (CLOSURE, below).
  The issue asks for the definition, (a) and (b).  The rest is beyond
- it: "any (and hence every)" and the characterization read the book's
+ it: “any (and hence every)” and the characterization read the book's
  sentence of p. 150; the idempotent pair and the two corollaries are
  not asked for.
 
@@ -141,7 +141,7 @@ Generalizable All Variables.
  [split_coequalizer_iff_contractible] binds one more level, the sort of
  the biconditional, at or above both of C's: its right side quantifies
  over C's objects and arrows.  [functor_preserves_contractible] and its
- readback bind [@{co ch do dh}] with "ch <= dh" alone, [Functor]'s own
+ readback bind [@{co ch do dh}] with “ch <= dh” alone, [Functor]'s own
  bound (its block carries h1 <= h2); Split.v's [functor_preserves_split],
  proved by [rewrite], binds one more level, above D's hom level.
  Without the binders D's hom level was identified with C's (measured),
@@ -182,7 +182,7 @@ Generalizable All Variables.
  NOT DELIVERED, loads every module this file loads but this one.
 
  STALE PREMISES, dated from gh.  Issue #480 (filed 2026-07-23) says
- that no contractible-pair definition exists, that "contractible"
+ that no contractible-pair definition exists, that “contractible”
  occurs only for terminal-hom and [poly_unit] contractibility and never
  for a parallel pair, and that part (b) has no counterpart.  The
  definition and part (b) were absent until this file: at #479's
@@ -369,7 +369,7 @@ Proof.
            (symmetry Hs)).
 Qed.
 
-(* * ** "Any (and hence every) coequalizer is split" / * ** “任何（因此每一个）等同化都是可分的” *)
+(* * ** “Any (and hence every) coequalizer is split” / * ** “任何（因此每一个）等同化都是可分的” *)
 
 Definition every_coequalizer_split {C : Category} {x y : C}
   {f g : x ~> y} (S : SplitCoequalizer f g) {q : C} {e : y ~> q}

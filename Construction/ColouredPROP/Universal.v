@@ -87,7 +87,7 @@ Generalizable All Variables.
  [Example]s below), so the universal property really is stated
  against the strict object equalities every coloured PROP carries.
 
- ** Design note: how "strict symmetric monoidal functor" is phrased
+ ** Design note: how “strict symmetric monoidal functor” is phrased
 
  A coloured PROP carries two [Monoidal] structures on the same
  category — the strict path [MPc P] and the braided/symmetric path

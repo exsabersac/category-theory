@@ -23,29 +23,29 @@ Require Import Category.Instance.Two.
     nLab: https://ncatlab.org/nlab/show/full+subcategory
     nLab: https://ncatlab.org/nlab/show/fully+faithful+functor
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+    Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
           GTM 5, Springer 1998, SS IV.4, printed p. 94 (the definition)
           and p. 95 (Exercise 4).
 
     Transliterated to ASCII from the page images, p. 94:
 
-      "A functor F : X -> A is said to be a left-adjoint-left-inverse of
+      “A functor F : X -> A is said to be a left-adjoint-left-inverse of
        G : A -> X when there is an adjunction <F, G; eta, 1> : X -> A
        with counit the identity.  This means (Exercise 4) that G is an
        isomorphism of A to a reflective subcategory of X.  In the case of
        the Proposition 2 just above, we have shown that the insertion
-       A -> C has a left-adjoint-left-inverse."
+       A -> C has a left-adjoint-left-inverse.”
 
     and p. 95, Exercise 4:
 
-      "Given a functor G : A -> X, prove the three following conditions
+      “Given a functor G : A -> X, prove the three following conditions
        logically equivalent:
         (a) G has a left-adjoint-left-inverse.
         (b) G has a left adjoint, and is full, faithful, and injective on
             objects.
         (c) There is a full reflective subcategory Y of X and an
             isomorphism H : A ~= Y such that G = KH, where K : Y -> X is
-            the insertion."
+            the insertion.”
 
     Exercise 3 on the same page (S : A -> C full, faithful and SURJECTIVE
     on objects gives an adjoint equivalence with UNIT the identity, and a
@@ -53,15 +53,15 @@ Require Import Category.Instance.Two.
     connected shape can be chosen to be a left-adjoint-left-inverse) are
     different catalog items; they are cited here and not delivered.
 
-    ** The design crux: "counit the identity" is not an equation
+    ** The design crux: “counit the identity” is not an equation
 
     In this library the counit of [F ⊣ G] at [a] runs [F (G a) ~> a]
     (Theory/Adjunction.v) while [id[a]] runs [a ~> a], so the two
     live in one hom-set only when [F (G a)] and [a] are the same object at
-    LEIBNIZ equality.  The equation "counit ~ id", and with it the reading
-    "counit ~ nat_id" that suggests itself, is therefore not merely
+    LEIBNIZ equality.  The equation “counit ~ id”, and with it the reading
+    “counit ~ nat_id” that suggests itself, is therefore not merely
     unproved: it does not typecheck.  That rejection is a TYPING error
-    with no "cannot unify" and no universe clause, pinned in
+    with no “cannot unify” and no universe clause, pinned in
     Test/ProbeLeftInverse376.v against the [id_cast] form as its control.
 
     [LeftAdjointLeftInverse G] consequently carries the object equation as
@@ -97,7 +97,7 @@ Require Import Category.Instance.Two.
     whose [reflective_full] field is the fullness clause), an isomorphism
     [ri_iso : A ≅[StrictCat] Sub X ri_sub], and the factorization
     [ri_factor] stating [G] strictly equal to [Incl ◯ to ri_iso] -- Mac
-    Lane's "G = KH", at the strongest equality the library supports for
+    Lane's “G = KH”, at the strongest equality the library supports for
     functors.  [StrictCat] is forced: an isomorphism in [Cat] is an
     EQUIVALENCE (Instance/Cat.v), which would not pin the object
     assignment that clause (a) is about.
@@ -120,9 +120,9 @@ Require Import Category.Instance.Two.
     [LeftAdjointLeftInverse (Incl X (ri_sub Pres))]: the insertion's own
     reflector must fix the subcategory ON THE NOSE.  That is clause (a)
     restated for the insertion, and the file says so rather than dressing
-    it up.  It is the step Mac Lane performs by hand on p. 94 -- "For
+    it up.  It is the step Mac Lane performs by hand on p. 94 -- “For
     objects a in A subset of C we can then choose a_0 = a = Ka and
-    eta_{Ka} the identity" -- and it is STRONGER than his step: a
+    eta_{Ka} the identity” -- and it is STRONGER than his step: a
     left-adjoint-left-inverse [L] of [Incl X S] forces, for any two
     membership proofs [p q : sobj S x] over one ambient object,
     [(x; p) = (x; q)] as objects of [Sub X S] (the term is
@@ -247,8 +247,8 @@ Require Import Category.Instance.Two.
       - [PointAt], the functor [1 ⟶ C] picking an object, duplicates
         Theory/Shapes.v's [Point], whose source is pinned at
         [_1@{_ Set Set}]: over a category whose homs are declared strictly
-        above [Set], [Point x : _1@{o h h} ⟶ C] is rejected with "Cannot
-        enforce Set = h" while [PointAt] is accepted (both pinned in the
+        above [Set], [Point x : _1@{o h h} ⟶ C] is rejected with “Cannot
+        enforce Set = h” while [PointAt] is accepted (both pinned in the
         probe).  Consuming [Point] would have confined the terminal example
         to [Set]-homed categories.  The pin is the donor's minimization,
         not a property of [_1] (whose three levels are free), and is not
@@ -957,8 +957,8 @@ Local Notation t := (@terminal_obj C T).
 (*
 The functor 1 ⟶ C picking out an object.  [Theory/Shapes.v]'s
    [Point] is this functor, but its source is pinned at [_1@{_ Set Set}]
-   (measured: [Point x : _1@{o h h} ⟶ C] is rejected with "Cannot enforce
-   Set = h"), which would confine the example below to categories whose
+   (measured: [Point x : _1@{o h h} ⟶ C] is rejected with “Cannot enforce
+   Set = h”), which would confine the example below to categories whose
    homs live in [Set]; the six lines are rebuilt here with the universe
    binders that keep C arbitrary. 
 
@@ -966,7 +966,7 @@ The functor 1 ⟶ C picking out an object.  [Theory/Shapes.v]'s
 函子 1 ⟶ C 挑选出一个对象。 [Theory/Shapes.v] 的
  [Point] 就是这个函子，但其源固定在 [_1@{_ Set Set}]
  （测量：[Point x : _1@{o h h} ⟶ C] 被拒绝，并显示“无法强制执行
- Set = h")，这会将下面的示例限制为以下类别：
+ Set = h“)，这会将下面的示例限制为以下类别：
  霍姆斯住在 [Set]； 六行与宇宙在此重建
  保持 C 任意性的绑定器。 
 *)

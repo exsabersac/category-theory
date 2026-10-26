@@ -23,7 +23,7 @@ nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
    closure-under-composition results for a NEIGHBOURING notion --
    Structure/Limit/Preservation.v's [PreservesLimitCone_compose] and
    [continuous_compose] -- and they are cited here so the sentence above
-   is not read as "nothing in the tree composes preservation".  They
+   is not read as “nothing in the tree composes preservation”.  They
    concern a different class and do not supply either lemma built below.
    A name search over the whole tree for a
    composition of [CartesianFunctor] returns nothing.  The two
@@ -85,7 +85,7 @@ nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
             {E : Category@{u u3 u3}}], one shared hom-and-proof level
    across all three.  Nothing here adds to the identification and it is
    NOT claimed unavoidable; no re-annotated [Compose] was attempted, so
-   "inherited rather than inherent" is an attribution, not a proof.  No
+   “inherited rather than inherent” is an attribution, not a proof.  No
    [Set] appears in any block of this file.
 
    AXIOMS.  9/9 constants of this file are closed under the global

@@ -10,7 +10,7 @@ Generalizable All Variables.
 nLab: https://ncatlab.org/nlab/show/distributive+law
    nLab: https://ncatlab.org/nlab/show/applicative+functor
 
-   No dedicated nLab or Wikipedia page exists for "traversable functor": the
+   No dedicated nLab or Wikipedia page exists for “traversable functor”: the
    nLab pages above are the closest (a traversable functor is precisely a
    functor carrying a distributive law over every applicative functor), and
    the Haskell-level account lives on the HaskellWiki / Wikibooks rather than
@@ -22,7 +22,7 @@ nLab: https://ncatlab.org/nlab/show/distributive+law
    running an effect on each element, commuting [T] past any applicative
    functor [F].  The defining operation is
      [traverse : (x → F y) → T x → F (T y)],
-   and the equivalent "no-op visitor" form recorded here is
+   and the equivalent “no-op visitor” form recorded here is
      [sequence : T (F x) → F (T x)]   (Haskell's [sequenceA]).
    The two are interdefinable: [traverse f = sequence ∘ fmap f] and
    [sequence = traverse id].  Lawful instances satisfy three laws (with [η] the
@@ -116,7 +116,7 @@ Arguments Traversable : clear implicits.
    pairing (writer-style) shape [x * -]: it sequences [T] past the tuple
    functor without requiring the carrier [x] to be [Applicative], by simply
    threading the seed value [a : x] through.  There is no standard name for
-   this class; it is the traversal whose "applicative" is the (non-applicative)
+   this class; it is the traversal whose “applicative” is the (non-applicative)
    writer-shaped functor [λ y, x * y].  Like the other classes here it is
    lawless, recording only the [sequenceT] operation.
 

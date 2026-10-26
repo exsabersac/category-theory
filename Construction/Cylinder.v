@@ -19,14 +19,14 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.3, printed p. 39 (PDF 49), display (6), and §II.4
  Exercise 8, printed p. 42 (PDF 52) —
  maclane:II.3:construction5, maclane:II.4:ex8
- Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.7,
+ Book:      Awodey, “Category Theory” (1st ed., 2005 pre-print), §7.7,
  Example 7.16, printed p. 171 (PDF pp. 180–181) —
  awodey:7.7:example16
- Book:      Riehl, "Category Theory in Context" (Dover, 2016), §1.5,
+ Book:      Riehl, “Category Theory in Context” (Dover, 2016), §1.5,
  Lemma 1.5.1 (printed p. 31) and Exercise 1.5.i (printed
  p. 38) — riehl:1.5:lem1, riehl:1.5:exi
  nLab:      https://ncatlab.org/nlab/show/natural+transformation
@@ -42,14 +42,14 @@ Generalizable All Variables.
  the arrows between them).  This is Mac Lane's construction 5
  (display (6) of §II.3), Riehl's Lemma 1.5.1 with Exercise 1.5.i
  its deferred proof, and — under the exponential transpose of Cat —
- Awodey's "transcendental deduction" of the arrows of a functor
+ Awodey's “transcendental deduction” of the arrows of a functor
  category, connecting to the arrow-category encoding of Exercise
  II.4.8.
 
  - [Cyl_incl0]/[Cyl_incl1]: the two inclusions C ⟶ C ∏ 2, as
  named functors, with [Cyl_restrict0]/[Cyl_restrict1] the
  restriction-along-them operations (so the bijection reads
- "restricts to S and T", per Riehl's phrasing)
+ “restricts to S and T”, per Riehl's phrasing)
  - [Cyl_mu]: the universal transformation μ : Cyl_incl0 ⟹
  Cyl_incl1, component (id[c], the walking arrow)
  - [Cyl_functor τ]: the classifying functor of τ on the cylinder,

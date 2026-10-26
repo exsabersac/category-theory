@@ -382,12 +382,12 @@ Defined.
  Refactoring note (deferred).
 
  The proof below is 175 lines.  It builds both mediator maps
- [PR -> PL] and [PL -> PR] inline by the HP-style "construct cocone,
- apply UMP, prove round-trips by [pushout_med_eq]" technique.
+ [PR -> PL] and [PL -> PR] inline by the HP-style “construct cocone,
+ apply UMP, prove round-trips by [pushout_med_eq]” technique.
  The two mediator constructions are structurally identical modulo
  a swap of inner / outer pushouts.
 
- Extracting the "mediator-by-pasting" sub-lemma — call it
+ Extracting the “mediator-by-pasting” sub-lemma — call it
  [pushout_pasting_med] — should shrink this proof to roughly
  50 lines, by replacing the two ad-hoc inline mediator
  constructions with a single shared lemma application.  The

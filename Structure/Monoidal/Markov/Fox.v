@@ -36,8 +36,8 @@ Generalizable All Variables.
    Both directions together say that the copy-discard structure of a
    Markov category carries genuine probabilistic content exactly when
    copy-naturality breaks down somewhere; demanding it globally collapses the
-   tensor to a categorical product.  This grounds the "cartesianization
-   obstruction": no interesting Markov category factors through a
+   tensor to a categorical product.  This grounds the “cartesianization
+   obstruction”: no interesting Markov category factors through a
    cartesian one without killing its nondeterminism.
 
    The forward direction assembles a [RelevanceMonoidal] from the copy
@@ -66,12 +66,12 @@ Generalizable All Variables.
    the original ones.
 
    nLab:      https://ncatlab.org/nlab/show/Markov+category
-   Reference: Fox, "Coalgebras and cartesian categories",
+   Reference: Fox, “Coalgebras and cartesian categories”,
    Comm. Algebra 4(7):665–667, 1976
-   Reference: Heunen & Vicary, "Categories for Quantum Theory",
+   Reference: Heunen & Vicary, “Categories for Quantum Theory”,
    Oxford UP, 2019, §4.3 (Fox's theorem, p. 84 of the 2012
    lecture notes)
-   Reference: Fritz, "A synthetic approach to Markov kernels ..."
+   Reference: Fritz, “A synthetic approach to Markov kernels ...”
    (arXiv:1908.07021), §10 
 
    --------
@@ -253,7 +253,7 @@ Context `{H : @CartesianMonoidal C}.
  Every morphism of a cartesian monoidal category is a comonoid
  homomorphism for the canonical diagonal/discard supply: the δ-square
  is naturality of the diagonal, and the ε-triangle is terminality of
- the unit.  "All kernels are deterministic": the degenerate,
+ the unit.  “All kernels are deterministic”: the degenerate,
  probability-free reading of a cartesian category as a Markov one. 
 
  --------

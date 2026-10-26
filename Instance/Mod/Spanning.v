@@ -36,7 +36,7 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/subobject
    Wikipedia: https://en.wikipedia.org/wiki/Tensor_product_of_modules
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
    §V.7, book p. 128 (PDF p. 137), is the source of everything below: the
    unnumbered construction of the tensor product from the adjoint functor
    theorem (catalog id `maclane:V.7:construction1`) and Exercise 3 (catalog
@@ -45,7 +45,7 @@ Generalizable All Variables.
    here.  The catalog summaries this file works from live in
    doc/plan/books/maclane/inventory/V.json, and they read:
 
-   construction1 -- "For modules A and B over a commutative ring K, a
+   construction1 -- “For modules A and B over a commutative ring K, a
    tensor product is a universal element of the set Bilin(A,B;C) of
    bilinear functions beta : A x B -> C into a third K-module C;
    Bilin(A,B;-) is (the object part of) a functor of C.  To get a
@@ -55,17 +55,17 @@ Generalizable All Variables.
    bounds its cardinality and gives the solution set condition.  Since
    K-Mod is small-complete and Bilin(A,B;-) : K-Mod -> Set is
    continuous, the adjoint functor theorem yields a universal bilinear
-   map A x B -> A tensor B."
+   map A x B -> A tensor B.”
 
-   ex3 -- "For R a ring, A a right R-module and B a left R-module, use
+   ex3 -- “For R a ring, A a right R-module and B a left R-module, use
    the adjoint functor theorem to construct A tensor_R B ... Prove that
    A tensor_R B is spanned, as an abelian group, by the elements a
    tensor b.  If S -> R is a morphism of rings, examine the relation
-   between A tensor_S B and A tensor_R B."
+   between A tensor_S B and A tensor_R B.”
 
    THIS FILE IS THE SPANNING HALF of that programme.  It delivers Mac
    Lane's solution set -- the bilinear maps that span their target -- and
-   his "spanned by the elementary tensors", together with the module-side
+   his “spanned by the elementary tensors”, together with the module-side
    vocabulary they need.  It does NOT build the tensor product from the
    adjoint functor theorem: the two remaining premises of
    `representability_theorem` (Adjunction/Representability/Sets.v),
@@ -77,8 +77,8 @@ Generalizable All Variables.
    WHAT IS DELIVERED, IN NINE STEPS, AND AT WHAT STRENGTH.
 
    (1) THE SUBMODULE/SUBOBJECT BRIDGE.  Mac Lane's §V.7 Definition 1
-   records that "these categorical subobjects agree with the
-   element-defined ones in Rng, Grp, Ab and R-Mod"; before this PR
+   records that “these categorical subobjects agree with the
+   element-defined ones in Rng, Grp, Ab and R-Mod”; before this PR
    nothing in tree connected the two at [RMod R] -- `git grep -l 'SubObj'
    5f681ba4 -- Instance/Mod.v Instance/Mod/` returns nothing, and that
    command still reproduces from the merged tree.  [smod_subobj] carries
@@ -134,7 +134,7 @@ Generalizable All Variables.
    two are available to a reader but are not consumed here.
 
    (4) THE ELEMENTARY TENSORS SPAN.  [tensor_gen_spanning] is Mac Lane's
-   "spanned by the elements a ⊗ b" for [TensorMod], by induction on
+   “spanned by the elements a ⊗ b” for [TensorMod], by induction on
    [MTerm] in five cases -- the same five [tensor_hom_ext]
    (Instance/Mod/Tensor.v) runs one level up -- and
    [tensor_gen_spanning_categorical] is the same fact in the [Spanning]
@@ -152,8 +152,8 @@ Generalizable All Variables.
 
    About RMod_HasWidePullbacks.
 
-   reports, RE-MEASURED 2026-09-17 in the PR "algebraic carriers are
-   sets" (an earlier revision of this comment printed the ring's three
+   reports, RE-MEASURED 2026-09-17 in the PR “algebraic carriers are
+   sets” (an earlier revision of this comment printed the ring's three
    universe slots in the wrong order, as [RingObject@{u u2 u3}], and did
    not carry the [Set < u0] line; nothing else in the readback changed,
    and neither correction touches the argument below),
@@ -173,10 +173,10 @@ Generalizable All Variables.
 
    is refused with
 
-   The term "RMod_HasWidePullbacks R" has type
-   "HasWidePullbacks@{u_car u_car u_obj u_car} (RMod@{u_obj ...} R)"
+   The term “RMod_HasWidePullbacks R” has type
+   “HasWidePullbacks@{u_car u_car u_obj u_car} (RMod@{u_obj ...} R)”
    while it is expected to have type
-   "HasWidePullbacks@{u_idx u_idx' u_obj' u_car} (RMod@{u_obj' ...} R)"
+   “HasWidePullbacks@{u_idx u_idx' u_obj' u_car} (RMod@{u_obj' ...} R)”
    (universe inconsistency: Cannot enforce u_car = u_idx because
    u_car < u1 <= u2 <= u_idx)
 
@@ -192,10 +192,10 @@ Generalizable All Variables.
    Check (fun (W : obj[RMod R]) (A : @SubObj (RMod R) W -> obj[RMod R])
    => (@ProdMod R (@SubObj (RMod R) W) A : obj[RMod R])).
 
-   is refused with "The term \"ProdMod A\" has type \"RModObject R\"
-   while it is expected to have type \"obj[RMod R]\" (universe
+   is refused with “The term \”ProdMod A\“ has type \”RModObject R\“
+   while it is expected to have type \”obj[RMod R]\“ (universe
    inconsistency: Cannot enforce u_prod = u_car because u_car < u1 <= u2
-   <= u3 <= u_prod)" -- a four-step chain from the module carrier level
+   <= u3 <= u_prod)” -- a four-step chain from the module carrier level
    up to the product's, re-run as NEGATIVE 3 of the probe with a
    [ProdMod] over a bare [Type] beside it.  ANNOTATION WAS TRIED AND
    CANNOT HELP: the two constraints are [index ≤ carrier] (from the
@@ -238,7 +238,7 @@ Generalizable All Variables.
    [SpanningArrowsOutOf (Bilin V V') SetsOne], [esol_obj] is the first
    projection and [esol_elem] is the spanning bilinear map evaluated at
    [ttt].  NO SMALLNESS: [sol_index] and [esol_index] are bare [Type]s, so
-   Mac Lane's cardinality bound ("all finite sums") is not part of what
+   Mac Lane's cardinality bound (“all finite sums”) is not part of what
    the records ask for and nothing below supplies it.
 
    THE OTHER ROUTE TO THE SAME INDEX.  Instance/Mod/TensorAFT.v carries
@@ -272,7 +272,7 @@ Generalizable All Variables.
    here; [abgen_least] is stated against a bare closed predicate instead.
 
    (9) EXERCISE 3, THE BASE-CHANGE CLAUSE.  For `phi : T ~{Rng}~> R` --
-   Mac Lane's "morphism of rings S → R", with T for his S -- restriction
+   Mac Lane's “morphism of rings S → R”, with T for his S -- restriction
    of scalars (Instance/Rng/Mod.v) gives [bal_right_T] and
    [bal_left_T], and [bal_change] is the comparison group homomorphism
    A ⊗_T B → A ⊗_R B.  It carries generators to generators at [eq_refl]
@@ -315,8 +315,8 @@ Generalizable All Variables.
    [bal_change] IS NOT DESCRIBED.  Surjectivity is proved; nothing below
    identifies the kernel, exhibits it as generated by the elements
    (a·r) ⊗ b − a ⊗ (r·b) for r outside the image of phi, or shows the
-   comparison is an isomorphism in any case.  Mac Lane's "examine the
-   relation" is answered with a surjection and its universal
+   comparison is an isomorphism in any case.  Mac Lane's “examine the
+   relation” is answered with a surjection and its universal
    characterisation, and no more.  (6) NO NON-DEGENERACY WITNESS.  No
    concrete ring map is instantiated, so nothing below shows [bal_change]
    is ever NOT injective; the tree has no non-commutative ring at all
@@ -359,7 +359,7 @@ Generalizable All Variables.
    [rmod_split] and [wpull_mod_tuple], five each for [rbl_gen_corestrict]
    and [wpull_bilin_med]. (The census also reports three
    [ImageSubmod_obligation_*]; those are Instance/Mod/Quotient.v's and
-   are not counted here.) All 106 are "Closed under the global context",
+   are not counted here.) All 106 are “Closed under the global context”,
    zero `Axioms:` lines, run through a scratch file of `Print Assumptions
    Category.Instance.Mod.Spanning.<name>.` -- the obligations need the
    QUALIFIED name, the short one is not in scope after `Require Import` --
@@ -381,7 +381,7 @@ Generalizable All Variables.
    construction -- `grep -cw Set` over the 106 [About] blocks returns 2
    and both are those.  Nothing here is pinned, and
    [GAFT_from_spanning]'s [Set] pin was never reached because no constant
-   below feeds [GAFT].  (CORRECTION, PR "algebraic carriers are sets",
+   below feeds [GAFT].  (CORRECTION, PR “algebraic carriers are sets”,
    2026-09-17: that pin no longer exists -- [Section GAFTFromSpanning] was
    widened off [Set] and the theorem now reads
    [Category@{u u0 u0}] / [Category@{u1 u2 u2}] with [u <= u0].  The
@@ -456,7 +456,7 @@ Generalizable All Variables.
 
    它不会解除 [spanning_solution_set] 的假设，原因是一个宇宙，用度量衡量。在集合打印宇宙下，
 
-   关于 RMod_HasWidePullbacks。报告，于 2026-09-17 在 PR "algebraic carriers are sets" 中重新测量（此评论的早期版本将环的三个宇宙槽顺序打印错误，为 [RingObject@{u u2 u3}]，并且没有包含 [Set < u0] 行；回读中没有其他更改，且这些修正都不影响下面的论证），
+   关于 RMod_HasWidePullbacks。报告，于 2026-09-17 在 PR “algebraic carriers are sets” 中重新测量（此评论的早期版本将环的三个宇宙槽顺序打印错误，为 [RingObject@{u u2 u3}]，并且没有包含 [Set < u0] 行；回读中没有其他更改，且这些修正都不影响下面的论证），
 
    RMod_HasWidePullbacks@{u u0 u1 u2 u3} ：
    对任意 R : RingObject@{u3 u u2},
@@ -468,15 +468,15 @@ Generalizable All Variables.
 
    被拒绝，提示
 
-   术语 "RMod_HasWidePullbacks R" 的类型为
-   "HasWidePullbacks@{u_car u_car u_obj u_car} (RMod@{u_obj ...} R)"
+   术语 “RMod_HasWidePullbacks R” 的类型为
+   “HasWidePullbacks@{u_car u_car u_obj u_car} (RMod@{u_obj ...} R)”
    而期望的类型为
-   "HasWidePullbacks@{u_idx u_idx' u_obj' u_car} (RMod@{u_obj' ...} R)"
+   “HasWidePullbacks@{u_idx u_idx' u_obj' u_car} (RMod@{u_obj' ...} R)”
    （宇宙不一致：无法强制 u_car = u_idx，因为
    u_car < u1 <= u2 <= u_idx）(生成的宇宙名称被替换为可读的名称，位置保持不变；其他所有内容逐字保留，并且 Test/ProbeModSpanning449.v 的 NEGATIVE 2 再次运行它)。引脚是被归属的，而不是猜测的：它不是 [Submodule] 的，也不是类的，而是 [ProdMod] 的，其承载器是依赖函数空间 [∀ i : I, carrier (cmon_setoid (V i))]，因此索引宇宙在承载器宇宙之上或者之下，而 [RMod R] 的对象的承载器则严格低于对象宇宙。一个控制使其精确：
 
    Check (fun (W : obj [RMod R] ) (A : @SubObj (RMod R) W -> obj [RMod R] )
-   => (@ProdMod R (@SubObj (RMod R) W) A : obj [RMod R] ))。被拒绝，提示“术语 "ProdMod A" 的类型为 "RModObject R"，而期望类型为 "obj [RMod R] "（宇宙不一致：无法强制 u_prod = u_car 因为 u_car < u1 <= u2 <= u3 <= u_prod）”——这是从模块承载层到产品的四步链，重新运行为探针的负三步，旁边有一个裸 [Type] 上的 [ProdMod]。尝试过注释但无效：两个约束分别为 [index ≤ carrier]（来自产品）和 [carrier < object]（来自作为 [SetoidObject] 的记录的 [RModObject]），而 [SubObj W] 在对象宇宙，因此实例的任何注释都无法同时满足这两个约束。这与 Adjunction/SpanningArrow.v 对 [Sets_HasWidePullbacks] 的记录阻碍相同，在模块端重现，现在捐赠者已命名。两次拒绝都被固定：它们是 Test/ProbeModSpanning449.v 的否定项 2 和 3，每个都是单独剥离后在整个探针的副本中重新运行，以便可以读取拒绝类型而不是猜测，并且使用抽象 [HWP] 应用和裸 [Type] 上的 [ProdMod] 作为配对的阳性对照。无论如何，该实例已经落地，作为 [RMod R] 中值得获取的一个大幅回撤；它没有做的事情在这里说明，而不是留给读者去猜测。(6) [Bilin V V'] 无条件地保持广泛的拉回。[Bilin_PreservesWidePullbacks] 是 [PreservesWidePullbacks]（Adjunction/SpanningArrow.v）在树中对任意函子的第一个见证。它是针对任意 [IsWidePullback] 而非针对（5）的顶点——这正是保持其索引宇宙自由的原因，因此可以在 [FactoringFamily] 上应用——通过一个小元素演算证明的：[wpull_elem_unique]（顶点的元素通过投影分开）、[wpull_elem]（由兼容族确定的元素）以及 [wpull_elem_proj]。三者都经过 [rmod_by_element]（Instance/Mod/Representable.v），r ↦ r·m，在 R 的单位处求值，并经过 [wide_pullback_jointly_monic]（Structure/Pullback/Wide.v）。家庭的单一性没有消耗：[Hm] 的假设 [PreservesWidePullbacks] 被接受并忽略，所以证明的陈述比接口要求的更强。(7) 解集合。在 `Context \` {HWP : @HasWidePullbacks (RMod R)}` 的一个部分中——这个文件为其保留的唯一前提，出于 (5) 中的谨慎理由——[tensor_solution_set] 是 [Bilin V V'] 的 Mac Lane 覆盖族——按记录意义上的解集合，没有小性——以及 [tensor_esols] 其按元素形式。三个 [eq_refl] 回读固定了在两次重新包装后存留下来的内容：[esol_index tensor_esols] 是 [SpanningArrowsOutOf (Bilin V V') SetsOne]，[esol_obj] 是第一投影，[esol_elem] 是在 [ttt] 上评估的生成双线性映射。没有小性：[sol_index] 和 [esol_index] 是简单的 [Type]，因此 Mac Lane 的基数界（“所有有限和”）不是记录要求的一部分，下面也没有提供它。通向相同索引的另一条路径。Instance/Mod/TensorAFT.v 包含 [tensor_esols_direct]，Mac Lane 第128页的论证被无条件地写出：它将任意双线性映射限制到其像生成的子模（下面步骤(3) 的 [rbl_gen_corestrict]），证明了核心限制生成了整个空间，并通过包含来覆盖——没有广义拉回，所以本节留下的假设在那里并不需要。这两个解集的索引完全相同［字面意义上的］：该文件中的 [tensor_esols_same_index] 为 [esol_index (@tensor_esols R V V' HWP) = esol_index (tensor_esols_direct V V') := eq_refl]，并且 [HWP] 被显式传递，因为 [RMod_HasWidePullbacks] 会通过解析发现，但在应用中由于步骤(5) 的原因被拒绝。Mac Lane 的引理2路线（在这里）以及他第128 路由（那里）因此在解决方案集是按什么索引上达成一致，只是在他们假设什么上有所不同。(8) 练习 3，生成子句。[ABGen P] 是由谓词生成的阿贝尔群的子群，而 [bal_gen_spanning] 表示 Instance/Mod/Bimodule.v 的 [BalTensor] ——一个右模和左模在可能非交换环上的真正平衡张量，它属于 [Ab]——作为阿贝尔群由元素 [bs_gen n m] 张成，通过 [bsum] 的归纳分为四种情况。[ABGen] 有一个 [abgen_neg] 构造器，其中 [MGen] 拥有 [mgen_smul]，因为在 [Ab] 中没有标量可用来导出负值；这两个归纳量各有五个构造器。Instance/Ab/DirectedColimit.v 有一个 [AbSubgroup] 记录，但它生成的概念 [InGen] 是由一个有限 LIST 生成的，而不是由一个谓词生成的，因此那里没有任何内容被重用，并且该文件在此刻故意不需要；[abgen_least] 是针对一个纯闭合谓词声明的。(9) 练习 3，底变换子句。对于 `phi : T ~{Rng}~> R`——  
+   => (@ProdMod R (@SubObj (RMod R) W) A : obj [RMod R] ))。被拒绝，提示“术语 “ProdMod A” 的类型为 “RModObject R”，而期望类型为 “obj [RMod R] ”（宇宙不一致：无法强制 u_prod = u_car 因为 u_car < u1 <= u2 <= u3 <= u_prod）”——这是从模块承载层到产品的四步链，重新运行为探针的负三步，旁边有一个裸 [Type] 上的 [ProdMod]。尝试过注释但无效：两个约束分别为 [index ≤ carrier]（来自产品）和 [carrier < object]（来自作为 [SetoidObject] 的记录的 [RModObject]），而 [SubObj W] 在对象宇宙，因此实例的任何注释都无法同时满足这两个约束。这与 Adjunction/SpanningArrow.v 对 [Sets_HasWidePullbacks] 的记录阻碍相同，在模块端重现，现在捐赠者已命名。两次拒绝都被固定：它们是 Test/ProbeModSpanning449.v 的否定项 2 和 3，每个都是单独剥离后在整个探针的副本中重新运行，以便可以读取拒绝类型而不是猜测，并且使用抽象 [HWP] 应用和裸 [Type] 上的 [ProdMod] 作为配对的阳性对照。无论如何，该实例已经落地，作为 [RMod R] 中值得获取的一个大幅回撤；它没有做的事情在这里说明，而不是留给读者去猜测。(6) [Bilin V V'] 无条件地保持广泛的拉回。[Bilin_PreservesWidePullbacks] 是 [PreservesWidePullbacks]（Adjunction/SpanningArrow.v）在树中对任意函子的第一个见证。它是针对任意 [IsWidePullback] 而非针对（5）的顶点——这正是保持其索引宇宙自由的原因，因此可以在 [FactoringFamily] 上应用——通过一个小元素演算证明的：[wpull_elem_unique]（顶点的元素通过投影分开）、[wpull_elem]（由兼容族确定的元素）以及 [wpull_elem_proj]。三者都经过 [rmod_by_element]（Instance/Mod/Representable.v），r ↦ r·m，在 R 的单位处求值，并经过 [wide_pullback_jointly_monic]（Structure/Pullback/Wide.v）。家庭的单一性没有消耗：[Hm] 的假设 [PreservesWidePullbacks] 被接受并忽略，所以证明的陈述比接口要求的更强。(7) 解集合。在 `Context \` {HWP : @HasWidePullbacks (RMod R)}` 的一个部分中——这个文件为其保留的唯一前提，出于 (5) 中的谨慎理由——[tensor_solution_set] 是 [Bilin V V'] 的 Mac Lane 覆盖族——按记录意义上的解集合，没有小性——以及 [tensor_esols] 其按元素形式。三个 [eq_refl] 回读固定了在两次重新包装后存留下来的内容：[esol_index tensor_esols] 是 [SpanningArrowsOutOf (Bilin V V') SetsOne]，[esol_obj] 是第一投影，[esol_elem] 是在 [ttt] 上评估的生成双线性映射。没有小性：[sol_index] 和 [esol_index] 是简单的 [Type]，因此 Mac Lane 的基数界（“所有有限和”）不是记录要求的一部分，下面也没有提供它。通向相同索引的另一条路径。Instance/Mod/TensorAFT.v 包含 [tensor_esols_direct]，Mac Lane 第128页的论证被无条件地写出：它将任意双线性映射限制到其像生成的子模（下面步骤(3) 的 [rbl_gen_corestrict]），证明了核心限制生成了整个空间，并通过包含来覆盖——没有广义拉回，所以本节留下的假设在那里并不需要。这两个解集的索引完全相同［字面意义上的］：该文件中的 [tensor_esols_same_index] 为 [esol_index (@tensor_esols R V V' HWP) = esol_index (tensor_esols_direct V V') := eq_refl]，并且 [HWP] 被显式传递，因为 [RMod_HasWidePullbacks] 会通过解析发现，但在应用中由于步骤(5) 的原因被拒绝。Mac Lane 的引理2路线（在这里）以及他第128 路由（那里）因此在解决方案集是按什么索引上达成一致，只是在他们假设什么上有所不同。(8) 练习 3，生成子句。[ABGen P] 是由谓词生成的阿贝尔群的子群，而 [bal_gen_spanning] 表示 Instance/Mod/Bimodule.v 的 [BalTensor] ——一个右模和左模在可能非交换环上的真正平衡张量，它属于 [Ab]——作为阿贝尔群由元素 [bs_gen n m] 张成，通过 [bsum] 的归纳分为四种情况。[ABGen] 有一个 [abgen_neg] 构造器，其中 [MGen] 拥有 [mgen_smul]，因为在 [Ab] 中没有标量可用来导出负值；这两个归纳量各有五个构造器。Instance/Ab/DirectedColimit.v 有一个 [AbSubgroup] 记录，但它生成的概念 [InGen] 是由一个有限 LIST 生成的，而不是由一个谓词生成的，因此那里没有任何内容被重用，并且该文件在此刻故意不需要；[abgen_least] 是针对一个纯闭合谓词声明的。(9) 练习 3，底变换子句。对于 `phi : T ~{Rng}~> R`——  
    Mac Lane 的“环 S → R 的态射”，将 T 代替他的 S——标量限制（Instance/Rng/Mod.v）给出 [bal_right_T] 和 [bal_left_T]，而 [bal_change] 是比较群同态  
    A ⊗_T B → A ⊗_R B。它将生成元在 [eq_refl]（[bal_change_gen]）处映射到生成元；它是满射（[bal_change_surjective]，通过对目标的形式和进行归纳），所以 A ⊗_R B 是 A ⊗_T B 的一个商；并且它被描述为 R-平衡生成元作为 T-平衡映射（[bal_change_is_med]，通过 [bal_med_unique]，Bimodule.v）。  
    它的核未被描述——见未提供内容。未交付，并且每个声明的范围是此文件而不是树。（1）这里没有构建来自伴随函子定理的张量积。[representability_theorem] 需要 `Complete (RMod R)` 和 `PreservesImageLimit (Bilin V V')`；两者都没有在此构建，并且下面的常量也没有提到任何一个。这两个都由这个 PR 的兄弟提交——[RMod_Complete] 在 Instance/Mod/Limit.v 中，[Bilin_PreservesImageLimit] 在 Instance/Mod/TensorAFT.v 中——而 `maclane:V.7:construction1` 的标题也是如此，`maclane:V.7:construction1` 是 AFT 产生的通用双线性映射：该文件中的 [tensor_via_AFT] 在这两个处是 [representability_theorem]，有条件地依赖于一个 [ElementSolutionSet]，其索引定在环的 CARRIER 宇宙上定理固定的，这个文件的 [tensor_esols] 和那个文件的 [tensor_esols_direct] 都无法提供，因为它们都由 [RMod R] 对象上的 sigma 索引（拒绝是该文件探针 Test/ProbeModTensorAFT449.v 的负 1）。这里提交的是解集的一半，其条件是出于（4）不同的原因。(2) 不与 [TensorMod] 比较。下面的内容
@@ -583,8 +583,8 @@ Proof.
 Defined.
 
 (*
- Mac Lane V.7 Definition 1's "these categorical subobjects agree with
- the element-defined ones in R-Mod", one half: every subobject of a
+ Mac Lane V.7 Definition 1's “these categorical subobjects agree with
+ the element-defined ones in R-Mod”, one half: every subobject of a
  module IS its image submodule, at `≈` on [SubObj W]. 
 
  --------
@@ -714,7 +714,7 @@ Definition rbl_image {R : RingObject} {V V' W : RModObject R}
   { v : carrier (cmon_setoid V) &
     { w : carrier (cmon_setoid V') & rbl_map β v w ≈ x } }.
 
-(* Mac Lane's "β spans C", elementwise: the submodule generated by the image of β is all of W. / Mac Lane 的“β 跨度 C”，逐元地：由 β 的像生成的子模是 W 的全部。 *)
+(* Mac Lane's “β spans C”, elementwise: the submodule generated by the image of β is all of W. / Mac Lane 的“β 跨度 C”，逐元地：由 β 的像生成的子模是 W 的全部。 *)
 Definition RBilinearSpanning {R : RingObject} {V V' W : RModObject R}
   (β : RBilinear V V' W) : Type :=
   ∀ x : carrier (cmon_setoid W), MGen (rbl_image β) x.
@@ -847,7 +847,7 @@ End SpanningEquivalence.
 (* * ** 4. The elementary tensors span / * ** 4. 基本张量的张成 *)
 
 (*
- Mac Lane's "A ⊗ B is spanned by the elements a ⊗ b", by induction on
+ Mac Lane's “A ⊗ B is spanned by the elements a ⊗ b”, by induction on
  [MTerm] in five cases -- the same five [tensor_hom_ext]
  (Instance/Mod/Tensor.v) runs one level up.  The [mt_neg] case
  costs nothing new: [smod_neg] already derives closure under negation
@@ -1128,7 +1128,7 @@ Context (V V' : RModObject R).
 Context `{HWP : @HasWidePullbacks (RMod R)}.
 
 (*
- Mac Lane's "it suffices to consider the bilinear β which span C":
+ Mac Lane's “it suffices to consider the bilinear β which span C”:
  the solution set indexed by the spanning bilinear maps out of V × V'.
  The second hypothesis is discharged by [Bilin_PreservesWidePullbacks]
  above; the first is the open one -- see the header. 
@@ -1234,8 +1234,8 @@ Definition BalSpanning {A : AbObject} (β : BalBiadditive N M A) : Type :=
   ∀ x : carrier (cmon_setoid A), ABGen (bal_image β) x.
 
 (*
- Mac Lane's Exercise 3, second clause: "A ⊗_R B is spanned, as an
- abelian group, by the elements a ⊗ b."  Four cases, by induction on
+ Mac Lane's Exercise 3, second clause: “A ⊗_R B is spanned, as an
+ abelian group, by the elements a ⊗ b.”  Four cases, by induction on
  [bsum]; the [bs_neg] case needs [abgen_neg] because an abelian group
  carries no scalar to derive it from. 
 
@@ -1301,7 +1301,7 @@ Example bal_change_gen (n : carrier (cmon_setoid (rm_ab N)))
     = @bs_gen R N M n m := eq_refl.
 
 (*
- Mac Lane's "examine the relation": the comparison is SURJECTIVE --
+ Mac Lane's “examine the relation”: the comparison is SURJECTIVE --
  A ⊗_R B is a quotient of A ⊗_T B -- by induction on the formal sums
  of the target. 
 

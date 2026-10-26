@@ -17,11 +17,11 @@ Require Import Category.Construction.Comma.Special.
 Generalizable All Variables.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician",
+ Book:      Mac Lane, “Categories for the Working Mathematician”,
  Springer GTM 5, 2nd ed., §IV.2 Exercise 9, printed p. 90
  (maclane:IV.2:ex9), where the result is attributed to
  N. Smythe.
- Book:      Riehl, "Category Theory in Context", Dover 2016, §1.5,
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, §1.5,
  printed p. 35 (connected categories) and §4.1
  nLab:      https://ncatlab.org/nlab/show/connected+component
  nLab:      https://ncatlab.org/nlab/show/discrete+category
@@ -56,8 +56,8 @@ Generalizable All Variables.
  record [Components_Disc_Adjunction : Pi0 ⊣ Cat_Disc].
 
  (c) [Cat_Disc_Full], [Cat_Disc_Faithful], and [pi0_counit_iso] --
- the counit is an isomorphism, which is Mac Lane's "the
- components of a discrete category are its objects" and which
+ the counit is an isomorphism, which is Mac Lane's “the
+ components of a discrete category are its objects” and which
  exhibits [Sets] as a REFLECTIVE subcategory of [Cat] with
  reflector π₀.
 
@@ -82,9 +82,9 @@ Generalizable All Variables.
  declare them, and this file declares no zig-zag machinery of its
  own.  What was missing is the ADJUNCTION, and that absence is
  recorded in the donor's own NOT-delivered list, at
- Theory/Connected/Components.v: "NO LEFT ADJOINT.
+ Theory/Connected/Components.v: “NO LEFT ADJOINT.
  [Pi0 : Cat ⟶ Sets] is built, but the discrete functor
- [Sets ⟶ Cat] and the adjunction π₀ ⊣ discrete are not."  That
+ [Sets ⟶ Cat] and the adjunction π₀ ⊣ discrete are not.”  That
  standing deferral is what this file discharges.
 
  SECOND, the discrete category on a SETOID already exists too:
@@ -256,7 +256,7 @@ Generalizable All Variables.
  [ch < co] declared, three controls succeed -- [C : obj[Cat]],
  [pi0 C], and [pi0_fmap] at that C -- and two commands are
  rejected: [pi0_fmap_respects] and, with it, [fobj[Pi0] C], both
- reporting "Cannot enforce ch = co because ch < co".  So the cause
+ reporting “Cannot enforce ch = co because ch < co”.  So the cause
  is neither [Cat], nor [pi0], nor the arrow action, but the single
  lemma [pi0_fmap_respects] (Theory/Connected/Components.v),
  which is declared over [Category@{u0 u0 u0}].
@@ -321,9 +321,9 @@ Generalizable All Variables.
  (Instance/Indiscrete.v).
 
  Six [Fail] probes of TWO KINDS kept lexically apart -- four
- CONVERSION in §4 and §7, reporting "cannot unify" with no universe
- clause, and two FORMABILITY in §8, reporting "universe
- inconsistency: Cannot enforce ch = co because ch < co" -- each
+ CONVERSION in §4 and §7, reporting “cannot unify” with no universe
+ clause, and two FORMABILITY in §8, reporting “universe
+ inconsistency: Cannot enforce ch = co because ch < co” -- each
  stripped once and its kind read off the whole error message,
  beside an instrument check, six [Check] controls in §8, five
  [Example] controls beside the §4 negatives, and the two §2
@@ -406,7 +406,7 @@ Generalizable All Variables.
 
  (e)  关于 [Roof] 的非空性：[Pi0_not_Faithful] 和 [unit_not_Full]，因此 π₀ 真正丢弃了信息，伴随不是等价的。
 
- I. 三方面的先前技术修正，每方面都被衡量。首先，目录问题的工作项4要求定义连通分量函子。那是错误的。Theory/Connected/Components.v 声明了 [Pi0 : Cat ⟶ Sets]，具有 [fobj := pi0] 和 [fmap := pi0_fmap]，并证明了它的三个函子法则。它在这里被使用，而没有任何东西重新构建它：名字 [pi0]、[pi0_fmap]、[ZigZag]、[hom_zigzag] 和 [zigzag_fmap] 的使用方式完全与该文件和 Structure/Groupoid/Connected.v 声明的方式相同，并且此文件没有声明自己的之字形机制。缺失的是伴随关系，这种缺失在提供者自己的未交付清单中有记录，在 Theory/Connected/Components.v: "没有左伴随。"[Pi0 : Cat ⟶ Sets] 已经构建，但离散函子 [Sets ⟶ Cat] 和伴随 π₀ ⊣ 离散尚未构建。这个待定的延迟就是这个文件要处理的。
+ I. 三方面的先前技术修正，每方面都被衡量。首先，目录问题的工作项4要求定义连通分量函子。那是错误的。Theory/Connected/Components.v 声明了 [Pi0 : Cat ⟶ Sets]，具有 [fobj := pi0] 和 [fmap := pi0_fmap]，并证明了它的三个函子法则。它在这里被使用，而没有任何东西重新构建它：名字 [pi0]、[pi0_fmap]、[ZigZag]、[hom_zigzag] 和 [zigzag_fmap] 的使用方式完全与该文件和 Structure/Groupoid/Connected.v 声明的方式相同，并且此文件没有声明自己的之字形机制。缺失的是伴随关系，这种缺失在提供者自己的未交付清单中有记录，在 Theory/Connected/Components.v: “没有左伴随。”[Pi0 : Cat ⟶ Sets] 已经构建，但离散函子 [Sets ⟶ Cat] 和伴随 π₀ ⊣ 离散尚未构建。这个待定的延迟就是这个文件要处理的。
 
  其次，集合同构上的离散范畴已经存在：Construction/Comma/Special.v 中的 [DiscreteSetoidCat] 已经构建，以便可以识别两个常量函子的逗号。它在这里被使用，并且在其自身文件之外首次被使用（衡量：在此提交之前，标记 [DiscreteSetoidCat] 只出现在一个 `.v` 文件中）。缺失的是其箭头作用和基于它构建的任何函子；两者在这里都是新的，并且箭头作用只有三行，因为 [DiscreteSetoidCat S] 的态射就是 [≈] 的证明，而 [proper_morphism] 就是其上所需的作用。第三，适用于兄弟模块记录的相同修正：
  Instance/Discrete/Reconstruct.v 的 [Indiscrete] 存在。它
@@ -734,7 +734,7 @@ Proof.
 Defined.
 
 (*
- Mac Lane's "the components of a discrete category are its objects",
+ Mac Lane's “the components of a discrete category are its objects”,
  in the form that carries the most: the COUNIT is an isomorphism.  With
  [Cat_Disc_Full] and [Cat_Disc_Faithful] this exhibits [Sets] as a reflective
  subcategory of [Cat] with reflector π₀ -- the inclusion is the right
@@ -967,8 +967,8 @@ Fail Example disc_is_DiscreteCat (A : Sets) :
  Instrument check: [Fail] is live in this file.  Every negative above
  and below was additionally stripped once and its failure kind read off
  the whole error message -- four CONVERSION failures in §4 and §7,
- reporting "cannot unify" with no universe clause, and two FORMABILITY
- failures here, reporting "universe inconsistency: Cannot enforce ...".
+ reporting “cannot unify” with no universe clause, and two FORMABILITY
+ failures here, reporting “universe inconsistency: Cannot enforce ...”.
  The two kinds are kept lexically apart. 
 
  --------

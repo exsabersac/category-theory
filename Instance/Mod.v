@@ -2,8 +2,8 @@
    * * R-Mod, the category of modules over a ring
 
    Mac Lane's §I.7 roll-call of large categories includes, alongside
-   [Set], [Ab] and [Rng], the categories of modules: "all small
-   R-modules and R-module homomorphisms, for a fixed ring R"
+   [Set], [Ab] and [Rng], the categories of modules: “all small
+   R-modules and R-module homomorphisms, for a fixed ring R”
    (Categories for the Working Mathematician, 2nd ed., §I.7, printed
    p. 25 (PDF p. 35), [maclane:I.7:construction3]; the locations follow
    issue jwiegley/category-theory#256's convention, and as there the
@@ -33,7 +33,7 @@
    THE PROPOSITION.  Mac Lane's §I.7 proposition for [Ab] — monic
    exactly when injective, epic exactly when surjective — holds verbatim
    in R-Mod, and both halves are proved below constructively.  An earlier
-   revision stopped there; since the PR "algebraic carriers are sets"
+   revision stopped there; since the PR “algebraic carriers are sets”
    (2026-09-17) the epic half concludes PROPOSITIONAL surjectivity
    ([RModPropSurjective]), the split notion [RModSurjective] surviving as the
    hypothesis the direct constructions supply.  [rmod_epic_surjective]
@@ -404,8 +404,8 @@ Next Obligation. intros R x y z w f g h a; simpl; reflexivity. Qed.
    * L8: [RMod R]'s hom-setoid IS [RModHom_Setoid], so [RModHom_PropEquiv]
    supplies the whole family.  With Instance/Ab.v's [Ab_LocallyPropositional]
    this is what lets Adjunction/Additive.v's [hom_ab] and
-   Construction/Enriched/Ab.v's [ehom_ab] -- which since the PR "algebraic
-   carriers are sets" (2026-09-17) ask their ambient category for a [Prop]
+   Construction/Enriched/Ab.v's [ehom_ab] -- which since the PR “algebraic
+   carriers are sets” (2026-09-17) ask their ambient category for a [Prop]
    equality on homs -- be used at the two ambients the module and bimodule
    objects of Instance/Mod/Bimodule.v and Instance/Mod/Coextension.v actually
    take. 
@@ -673,8 +673,8 @@ Qed.
 
 (*
    * Instance/Ab.v's [AbQuotient] carries the group — the carrier is [N]
-   itself, only the equality coarsening to "differ by something in the
-   image" — and all three equivalence laws of that coarser equality are
+   itself, only the equality coarsening to “differ by something in the
+   image” — and all three equivalence laws of that coarser equality are
    proved there.  What is added here is that the action DESCENDS: from
    x ≈ y + f a one gets r·x ≈ r·y + f (r·a), so the image is closed under
    the action and the coset relation is a congruence for it as well. 
@@ -706,7 +706,7 @@ Proof using R M N f.
     rm_ab   := AbQuotient (rm_hom f);
     rm_smul := rm_smul N
   |}.
-  - (* rm_smul_respects: THE module content of this construction. The witness r·a is what says the image is a submodule. [simpl] before the elimination: the goal is an application of the [equiv] projection, whose ascribed sort is [Type], and since the PR "algebraic carriers are sets" (2026-09-17) [ab_coset_eq] is a [Prop] and may not be destructed into it. Instance/Ab.v's [AbQuotient] records the same step. / rm_smul_respects：这个构造的模块内容。证据 r·a 表示图像是一个子模块。 消去之前的 [simpl]：目标是应用 [equiv] 投影，其分配的类型为 [Type]，并且由于 PR“代数承载体是集合”（2026-09-17），[ab_coset_eq] 是一个 [Prop]，因此不能将其拆解成它。实例/Ab.v 的 [AbQuotient] 记录了相同的步骤。 *)
+  - (* rm_smul_respects: THE module content of this construction. The witness r·a is what says the image is a submodule. [simpl] before the elimination: the goal is an application of the [equiv] projection, whose ascribed sort is [Type], and since the PR “algebraic carriers are sets” (2026-09-17) [ab_coset_eq] is a [Prop] and may not be destructed into it. Instance/Ab.v's [AbQuotient] records the same step. / rm_smul_respects：这个构造的模块内容。证据 r·a 表示图像是一个子模块。 消去之前的 [simpl]：目标是应用 [equiv] 投影，其分配的类型为 [Type]，并且由于 PR“代数承载体是集合”（2026-09-17），[ab_coset_eq] 是一个 [Prop]，因此不能将其拆解成它。实例/Ab.v 的 [AbQuotient] 记录了相同的步骤。 *)
     intros r s Hrs x y Hxy; simpl in Hxy |- *.
     destruct Hxy as [a Ha].
     apply pequiv_to in Ha.
@@ -768,8 +768,8 @@ Arguments rmod_quot_zero {R M N} f.
    replaced by the quotient MODULE.
 
    AN EARLIER REVISION concluded the split [RModSurjective] and said the
-   witness "IS the preimage, read straight back out".  Since the PR
-   "algebraic carriers are sets" (2026-09-17) the coset relation is a [Prop]
+   witness “IS the preimage, read straight back out”.  Since the PR
+   “algebraic carriers are sets” (2026-09-17) the coset relation is a [Prop]
    (Instance/Ab.v's [ab_coset_eq]), so the witness may not be read back out
    into a [Type]-valued goal.  Nothing is chosen and nothing is doubly
    negated; the preimage is simply no longer data.  The split notion survives

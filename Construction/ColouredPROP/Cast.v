@@ -215,7 +215,7 @@ Qed.
    proof switch between the [eq_rect] form used in [CTermEq]'s
    strict-PROP axioms and the [match] form used by [CT_cast].
 
-   This is the standard "destruct the eq_rect" pattern.  This lemma
+   This is the standard “destruct the eq_rect” pattern.  This lemma
    and [CT_term_eq_rect_r_refl] below are exported kit with no
    in-tree consumer yet: the naturality proofs in Monoidal.v
    destruct their quantified boundary equations via the
@@ -425,7 +425,7 @@ Qed.
  unitor, right unitor, associator — as isomorphisms in [CFreeCat S]
  using [CT_cast].
 
- "Structural" here is the monoidal-coherence sense (the unitors and
+ “Structural” here is the monoidal-coherence sense (the unitors and
  associator of nLab/Mac Lane), not the permutation sense: a
  coloured PROP also has the symmetric structural maps built from
  braids and identities (see [CT_braid] in Signature.v), which are a

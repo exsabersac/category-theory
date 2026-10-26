@@ -23,26 +23,26 @@ Generalizable All Variables.
 (* * * W₀-algebras as strings of operations ν₀, ν₁, … / * * W₀-代数作为操作序列 ν₀, ν₁, … *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.4, Exercise 1, printed p. 146 (PDF
  p. 155) — maclane:VI.4:ex1
- Book: Riehl, "Category Theory in Context", Example 5.2.6(iii),
+ Book: Riehl, “Category Theory in Context”, Example 5.2.6(iii),
  printed pp. 189-190 (PDF pp. 209-210) — riehl:5.2:example6
  nLab: https://ncatlab.org/nlab/show/free+monoid
  nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
 
  WHAT THE BOOKS SAY, read from the page image and the PDF.  Mac Lane:
- "Show that a W₀-algebra is a set M with a string ν₀, ν₁, … of n-ary
+ “Show that a W₀-algebra is a set M with a string ν₀, ν₁, … of n-ary
  operations νₙ, where ν₀ : * → M is the unit of the monoid M and νₙ is
- the n-fold product."  His Proposition 2 (p. 145) gives the W-algebras
+ the n-fold product.”  His Proposition 2 (p. 145) gives the W-algebras
  as systems ⟨S, ν1, ν2, …⟩ with ν1 = 1 and νk(νn1 × ⋯ × νnk) =
  ν_{n1+⋯+nk} (2), which #470's Instance/Smgrp/Word.v delivers; this
  file is its W₀ analogue, with ν₀ added.  Riehl reads the square
- (5.2.7) on "a list ((a11, …, a1m1), …, (an1, …, anmn)) of n
- varying-length lists": "the result of applying the (m1 + ⋯ + mn)-ary
+ (5.2.7) on “a list ((a11, …, a1m1), …, (an1, …, anmn)) of n
+ varying-length lists”: “the result of applying the (m1 + ⋯ + mn)-ary
  operation to the concatenated list is the same as applying the n-ary
  operation to the results of applying the mi-ary operations to each
- sublist".
+ sublist”.
 
  THE FAMILIES.  [NAry0 X] is ν₀ ([nu_zero]) with #470's [NAry X] for
  ν_{n+1} : X^(n+1) → X ([nu_pos]); [nu0 ν n] : Xⁿ → X on Instance/Mon/
@@ -76,7 +76,7 @@ Generalizable All Variables.
  ν'ₙ fⁿ for every n ≥ 0 ([NAry0_hom]), both ways: [alg_hom_NAry0_hom],
  [NAry0_hom_alg_hom].
 
- "ν₀ IS THE UNIT OF THE MONOID M AND νₙ THE n-FOLD PRODUCT".  For an
+ “ν₀ IS THE UNIT OF THE MONOID M AND νₙ THE n-FOLD PRODUCT”.  For an
  algebra α, ν₀ IS the unit of its monoid (Word.v's [alg_monoid]) and
  ν₂ its multiplication at [eq_refl] ([alg_nu0_is_unit],
  [alg_nu2_is_mul]), and νₙ is the n-fold product at ≈
@@ -318,7 +318,7 @@ Proof.
   symmetry. apply alg_nu0_list.
 Qed.
 
-(* "νₙ is the n-fold product" in the monoid of the algebra. / νₙ 是代数幺半群中的 n 次乘积。 *)
+(* “νₙ is the n-fold product” in the monoid of the algebra. / νₙ 是代数幺半群中的 n 次乘积。 *)
 Lemma alg_nu_is_fold@{+} {X : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 X) (n : nat) (t : Tup0@{o} X n) :
   nu0 (alg_NAry0 α) n t

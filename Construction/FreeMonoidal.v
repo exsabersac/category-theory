@@ -13,7 +13,7 @@ Generalizable All Variables.
 (*
    * * The free monoidal category on one generator
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §VII.2
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §VII.2
    (book pp. 165-168): binary words [maclane:VII.2:def1], the category [W]
    [maclane:VII.2:construction1], and the freeness theorem
    [maclane:VII.2:thm1].
@@ -57,8 +57,8 @@ Generalizable All Variables.
    an object [b], a unique structure-preserving functor [W ⟶ B] sending the
    generator to [b] — is developed on top of this and is stated against STRICT
    monoidal functors, which is what Mac Lane's own statement means: his Moncat
-   (§VII.1, [maclane:VII.1:construction2]) is "the category of all small
-   monoidal categories with strict morphisms as arrows", and his strict
+   (§VII.1, [maclane:VII.1:construction2]) is “the category of all small
+   monoidal categories with strict morphisms as arrows”, and his strict
    morphism ([maclane:VII.1:def3]) is required to carry alpha, lambda and rho
    to alpha', lambda' and rho' on the nose.  Uniqueness among merely STRONG
    monoidal functors is false, so the strict reading is not a weakening but

@@ -48,9 +48,9 @@ Generalizable All Variables.
  two-element discrete and the empty shape, so the functor-structure
  hierarchy and the limit-preservation hierarchy meet.
 
- STALE PREMISES, RE-MEASURED (the issue's "Current state" predates #427,
+ STALE PREMISES, RE-MEASURED (the issue's “Current state” predates #427,
  986c7b35):
- - "the comparison is never named; there is no biconditional": since
+ - “the comparison is never named; there is no biconditional”: since
  #427, Structure/Limit/Preservation.v carries [cone_comparison],
  its leg equations and uniqueness, the biconditional in both
  directions ([LimitCone_comparison_iso], [comparison_iso_LimitCone],
@@ -58,15 +58,15 @@ Generalizable All Variables.
  [comparison_iso_of_PreservesLimitCone]), [limit_comparison] —
  the issue's pinned name lives THERE, not here — and
  [cocone_comparison], the colimit MORPHISM without its biconditional.
- - "[fmap_cone] at Theory/Equivalence/Limit.v": no longer exists; it
+ - “[fmap_cone] at Theory/Equivalence/Limit.v”: no longer exists; it
  merged into [FCone] (Structure/Limit/Creation.v records the
  merge).  Construction/Comma/Limit.v ([image_leg],
  [image_acone]) still exist as measured.
- - "F ∘ Δc = Δ (F c) is not stated": stated componentwise in
+ - “F ∘ Δc = Δ (F c) is not stated”: stated componentwise in
  Structure/Limit/Constant.v — [const_image_fobj] at [eq_refl],
  the strict arrow form refused there, and [const_image_fmap_equiv]
  at ≈.
- - "no colimit comparison morphism": [cocone_comparison] exists; the
+ - “no colimit comparison morphism”: [cocone_comparison] exists; the
  colimit BICONDITIONAL did not, and is delivered here.
  - True gaps, all delivered here: reindexing along W; the W-general
  comparison; the converse of Structure/Limit/Product.v's
@@ -113,7 +113,7 @@ Generalizable All Variables.
  vocabulary line for line after Preservation.v, NOT by
  instantiating the limit block at [F^op]: [FCocone F N] is a cone
  over [(F ◯ K)^op] and [FCone F^op N] one over [F^op ◯ K^op], two
- distinct record types (probe N5 reads the clause "cannot unify");
+ distinct record types (probe N5 reads the clause “cannot unify”);
  the op route exists after Preservation.v's [cone_op_comp]
  repackaging (probe control) but would speak of a repackaged cone,
  not of [FCocone].  CORRECTION (#477): the colimit side now also
@@ -194,7 +194,7 @@ Generalizable All Variables.
  and [False] below the shape's object level; it does not — they sit at
  [Set] with no printed constraint.
  - WHY A LOCAL ANNOTATED FUNCTOR -- AND WHY IT IS NOW ONLY AN ALIAS.
- An earlier revision of this item read: "The unannotated
+ An earlier revision of this item read: “The unannotated
  [DiscreteCat_Functor] instantiates [DiscreteCat@{u Set Set}]
  (Functor/Hom/Limit.v; Test/ProbeHomLimit331.v pins
  [IsLimitCone] over its cones), so [cone_comparison] at it is refused
@@ -204,9 +204,9 @@ Generalizable All Variables.
  annotating the donor upstream is the lift
  Functor/Hom/Limit.v already names, but it flips
  Test/ProbeHomLimit331.v's pin and reworks that essay, and whether to
- do it is put to John in the PR rather than settled by this file."
+ do it is put to John in the PR rather than settled by this file.”
  The question was settled: the donor WAS annotated upstream, in the
- PR "algebraic carriers are sets" (2026-09-17), at
+ PR “algebraic carriers are sets” (2026-09-17), at
  Instance/Discrete.v and with the same binder list.  Probes N2 and
  N3 turned over and are positive controls; Test/ProbeHomLimit331.v's
  pin flipped as predicted and that file's essay was reworked.  The
@@ -215,8 +215,8 @@ Generalizable All Variables.
  difference in signature.
 
  COUNTS AND CONVENTIONS.
- - 57 constants — 45 [def] and 12 [prf] in the [.glob] — all "Closed
- under the global context", zero [Axioms:] lines, all gated fully
+ - 57 constants — 45 [def] and 12 [prf] in the [.glob] — all “Closed
+ under the global context”, zero [Axioms:] lines, all gated fully
  qualified in the Makefile's print-assumptions target.
  CORRECTION (#477): 58 since #477 added
  [PreservesColimitCocone_of_cocone], a term with no proof script,
@@ -258,7 +258,7 @@ Generalizable All Variables.
  guard coverage 35 tokens inside / 31 outside with four exhaustive
  exceptions; rename-simulated 5/5 with every first break on a positive
  line.  [make todo] grows by those 6 lines only (2196 → 2202), so the
- issue's "adds no new hits" box is not met as written; it is disclosed
+ issue's “adds no new hits” box is not met as written; it is disclosed
  rather than met by moving the negatives out of the build.
 
  NOT DELIVERED.
@@ -622,7 +622,7 @@ End RAPLRestated.
  [DiscreteCat_Functor], because that one was declared with bare binders and
  so minimized to [DiscreteCat@{u Set Set}], pinning any [IsLimitCone] over
  its cones to hom level [Set] (Functor/Hom/Limit.v; the probe pins
- the comparison's refusal).  In the PR "algebraic carriers are sets"
+ the comparison's refusal).  In the PR “algebraic carriers are sets”
  (2026-09-17) the SAME binders were put on [DiscreteCat_Functor] itself, so
  the two now have identical measured signatures:
 
@@ -640,7 +640,7 @@ End RAPLRestated.
 
  --------
  一个带注释的离散图函子。
- 已记录更正。早期的修订将其声明为一个第二个 [Program Definition]，其操作与 Instance/Discrete.v 的 [DiscreteCat_Functor] 相同，因为那个被声明为裸绑定器，因此被最小化为 [DiscreteCat@{u Set Set}]，将其圆锥上的任何 [IsLimitCone] 固定为同态层级 [Set]（Functor/Hom/Limit.v；探针固定了比较的拒绝）。在 PR "代数载体是集合"（2026-09-17）中，相同的绑定器被放在 [DiscreteCat_Functor] 本身上，因此现在这两个具有相同的测量签名：
+ 已记录更正。早期的修订将其声明为一个第二个 [Program Definition]，其操作与 Instance/Discrete.v 的 [DiscreteCat_Functor] 相同，因为那个被声明为裸绑定器，因此被最小化为 [DiscreteCat@{u Set Set}]，将其圆锥上的任何 [IsLimitCone] 固定为同态层级 [Set]（Functor/Hom/Limit.v；探针固定了比较的拒绝）。在 PR “代数载体是集合”（2026-09-17）中，相同的绑定器被放在 [DiscreteCat_Functor] 本身上，因此现在这两个具有相同的测量签名：
 
  DiscreteCat_Functor@{o h p uo uh up u} :
  ∀ {A : Type@{o}} {C : Category@{uo uh up}},
@@ -677,7 +677,7 @@ Example discrete_cone_leg (c : C) (pi : ∀ a : A, c ~> G a) (a : A) :
   cone_leg (discrete_cone c pi) a = pi a := eq_refl.
 
 (*
- The two readings of "product" coincide, for ANY functor out of a discrete
+ The two readings of “product” coincide, for ANY functor out of a discrete
  shape — in particular for image diagrams [F ◯ G]. 
 
  --------

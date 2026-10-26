@@ -39,7 +39,7 @@ Generalizable All Variables.
     [j := i] makes the antecedent force [x_i ≈ x_j] for every
     [x_j : X u_i], so the hypothesis is satisfiable only when [X u_i]
     is a subsingleton, and the condition is vacuous at any covered
-    object with two inequivalent sections.  "Sheaf" throughout this
+    object with two inequivalent sections.  “Sheaf” throughout this
     file therefore means: EXACTLY Theory/Sheaf.v's predicate, no more.
     Everything below (the category, the fully faithful inclusion,
     closure under isomorphism) is a genuine theorem about that

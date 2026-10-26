@@ -20,7 +20,7 @@ Generalizable All Variables.
 (*
    * * The commutator subgroup and the abelianization functor
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.3
    (printed p. 14) and §I.4 (printed pp. 16–17)
    [maclane:I.3:construction3, maclane:I.4:construction2]: the
    commutator subgroup [G, G] is functorial in G — homomorphisms carry
@@ -88,8 +88,8 @@ Generalizable All Variables.
    [CommutatorNS] below packages [InCommutator] as one, using the
    five facts this file already proved and adding nothing; and
    [abel_eq] is [quot_rel] at that normal subgroup ([abel_eq_is_quot_rel]).
-   An earlier revision added "by convertibility": since the PR "algebraic
-   carriers are sets" (2026-09-17) the two are separated by one [inhabited],
+   An earlier revision added “by convertibility”: since the PR “algebraic
+   carriers are sets” (2026-09-17) the two are separated by one [inhabited],
    so the identification is up to the propositional truncation and is stated
    so at [eq_refl] there.  The six lemmas that follow keep their statements
    unchanged and are one-line citations of the generic ones, each gaining a
@@ -97,8 +97,8 @@ Generalizable All Variables.
    construction of its own.
 
    THE OTHER TWO CONSTRUCTIONS the paragraph named are NOT unified,
-   and re-reading their record types shows why the count of "three
-   unshared quotient constructions" was itself imprecise.
+   and re-reading their record types shows why the count of “three
+   unshared quotient constructions” was itself imprecise.
    Instance/Grp/Epi.v's [Grp_Coset] is a [SetoidObject] and not a
    [GrpObject] at all: it is the coset space of the image of an
    arbitrary homomorphism, and that file's argument exists precisely
@@ -112,7 +112,7 @@ Generalizable All Variables.
    Instance/Grp/Quotient.v would move that bridge upstream and give
    Ab.v a dependency on Grp.  That is left undone deliberately.  (An
    earlier revision of that sentence cited Instance/Ab.v, where the
-   definition stood before the PR "algebraic carriers are sets"
+   definition stood before the PR “algebraic carriers are sets”
    (2026-09-17); the same PR also made [ab_coset_eq] a [Prop] -- it is
    Coq's [ex] now, not a [Type]-valued sigma -- which is the shape
    [abel_eq] here has too.)
@@ -242,7 +242,7 @@ Definition CommutatorNS (G : GrpObject) : NormalSubgroup G :=
 (** ** The quotient relation / ** 商关系 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) the abelianization
+ Since the PR “algebraic carriers are sets” (2026-09-17) the abelianization
  is an [AbObject] and so owes [cmon_prop], which forces its equality to be a
  [Prop].  [InCommutator] STAYS [Type]-valued -- it is the membership
  predicate of the commutator subgroup, [sub_mem] of [CommutatorNS] above,
@@ -400,7 +400,7 @@ Definition mk_comm (G : GrpObject) (x : carrier G)
 
 (*
  The carrier setoid is named rather than written inline in the record
- below: since the PR "algebraic carriers are sets" (2026-09-17) the record
+ below: since the PR “algebraic carriers are sets” (2026-09-17) the record
  also carries [grp_prop], and a [Program] record literal cannot carry a
  [PropEquiv] field naming a setoid written inline in the same literal. 
 

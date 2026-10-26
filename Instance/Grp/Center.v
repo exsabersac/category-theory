@@ -17,7 +17,7 @@ Generalizable All Variables.
 (*
    * * The center of a group is not functorial
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.3
    (printed pp. 14–15): the remark that the center Z(G) supports no
    extension to a functor, and Exercise 4's sharpening
    [maclane:I.3:remark1, maclane:I.3:ex4]: there is NO functor
@@ -69,8 +69,8 @@ Generalizable All Variables.
 
    THE NO-FUNCTOR THEOREM ([no_center_functor]): suppose T : Grp ⟶ Ab
    with fobj T G = CenterAb G for every G (strict equality of
-   objects, the honest reading of "has G ↦ Z(G) as its object
-   function").  Functoriality sends the retract
+   objects, the honest reading of “has G ↦ Z(G) as its object
+   function”).  Functoriality sends the retract
    sgn ∘ inc ≈ id : S₂ → S₃ → S₂ to a factorization of the identity
    of Z(S₂) through Z(S₃).  Every element of Z(S₃) is the unit
    ([S3_center_trivial]), homomorphisms preserve units, so every
@@ -78,7 +78,7 @@ Generalizable All Variables.
    element of ℤ/2, and in ℤ/2's setoid the two elements are distinct
    constructors.  Contradiction, for an ARBITRARY arrow function.
    The hypothesis is STRICT equality of objects — the literal reading
-   of "has G ↦ Z(G) as its object function"; a functor agreeing with
+   of “has G ↦ Z(G) as its object function”; a functor agreeing with
    the center only up to isomorphism escapes this statement, and the
    up-to-iso variant is left unstated rather than claimed. 
 
@@ -198,7 +198,7 @@ Proof. exact (`2 a (`1 b)). Qed.
  ...and therefore an object of Ab: G ↦ Z(G) really is an object
  function Grp → Ab.
 
- Since the PR "algebraic carriers are sets" (2026-09-17) an [AbObject]
+ Since the PR “algebraic carriers are sets” (2026-09-17) an [AbObject]
  carries [cmon_prop], and the centre's carrier setoid compares first
  projections in [G] -- so it is propositional exactly when [G]'s own `≈`
  is.  An intermediate revision of this file (phase P2 of that PR) took the
@@ -336,8 +336,8 @@ Qed.
 (** ** The no-functor theorem / ** 无函子定理 *)
 
 (*
- An intermediate revision of this theorem (phase P2 of the PR "algebraic
- carriers are sets", 2026-09-17) carried an extra hypothesis
+ An intermediate revision of this theorem (phase P2 of the PR “algebraic
+ carriers are sets”, 2026-09-17) carried an extra hypothesis
  [PG : ∀ G : GrpObject, PropEquiv (is_setoid (grp_setoid G))], because
  [CenterAb] then needed the witness and [GrpObject] did not yet supply it.
  Phase P3 added the field [grp_prop], so the hypothesis is gone and the

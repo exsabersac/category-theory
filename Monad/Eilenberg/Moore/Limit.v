@@ -22,12 +22,12 @@ nLab: https://ncatlab.org/nlab/show/created+limit
    Mac Lane: Categories for the Working Mathematician, 2nd ed. (GTM 5),
              §VI.2 Theorem 1 and the §V.1 creation vocabulary (p. 112)
    Mac Lane: ibid., §VI.2 Exercise 2 (book p. 142, PDF p. 151;
-             catalog item maclane:VI.2:ex2), "Show that G^T : X^T → X
-             creates limits"
+             catalog item maclane:VI.2:ex2), “Show that G^T : X^T → X
+             creates limits”
 
    CORRECTION (#467): the citation above names Theorem 1 as its only
-   §VI.2 source.  That theorem (book p. 140, "Every monad is defined by
-   its T-algebras") builds X^T, G^T and the adjunction F^T ⊣ G^T; the
+   §VI.2 source.  That theorem (book p. 140, “Every monad is defined by
+   its T-algebras”) builds X^T, G^T and the adjunction F^T ⊣ G^T; the
    statement this file proves is Exercise 2 of the same section, cited
    on the line added after it.  Mac Lane's §V.1 Definition (p. 112) is
    unnumbered and numbers its clauses (i) and (ii); the clause-by-clause
@@ -51,11 +51,11 @@ nLab: https://ncatlab.org/nlab/show/created+limit
    [StrictLift] leg clause consumed by [em_strict_lift] use [≈].
 
    MAC LANE'S DEFINITION, CLAUSE BY CLAUSE (#467).  The Definition on
-   p. 112 (PDF p. 121), read from the page image: "A functor V: A → X
+   p. 112 (PDF p. 121), read from the page image: “A functor V: A → X
    creates limits for a functor F: J → A if (i) To every limiting cone
    τ: x →· VF in X there is exactly one pair ⟨a, σ⟩ consisting of an
    object a ∈ A with Va = x and a cone σ: a →· F with Vσ = τ, and if,
-   moreover, (ii) This cone σ: a →· F is a limiting cone in A."  Here V
+   moreover, (ii) This cone σ: a →· F is a limiting cone in A.”  Here V
    is [EM_Forget T], F is [K] and τ is the given limiting cone [N] (or
    the cone of [L]).  Test/ProbeEMCreates467.v restates each [eq_refl]
    strength below as a control, pins R1 as a refusal, and restates the
@@ -75,7 +75,7 @@ nLab: https://ncatlab.org/nlab/show/created+limit
      a stuck projection of the variable N.  The cause is structural,
      argued so: made transparent, the chain would still not convert to
      that projection.  It is not measured by a full flip.
-   - (i), "exactly one pair": at [≈] only.  [em_alg_unique] at the
+   - (i), “exactly one pair”: at [≈] only.  [em_alg_unique] at the
      pinned carrier [vertex_obj[L]], and [em_lift_alg_unique] below at
      the carrier of an arbitrary [StrictLift]: that lift is isomorphic in
      [EilenbergMoore T] to the created apex, by an isomorphism whose
@@ -104,17 +104,17 @@ nLab: https://ncatlab.org/nlab/show/created+limit
      T-algebra is a pair ⟨x, h⟩ with h an arrow of X (p. 140), arrows
      are compared by equality, and the universal property determines h,
      while here the structure map is a setoid morphism that the
-     universal property determines only up to the carrier's [≈].  "The
-     only one" in the summary above is this [≈]-form.
+     universal property determines only up to the carrier's [≈].  “The
+     only one” in the summary above is this [≈]-form.
    - (ii), σ limiting: [em_created], and the field [screates_limiting]
      of [em_forget_StrictlyCreatesLimit].
    - Not in Mac Lane's Definition: reflection, [em_reflects] (the field
      [screates_reflect]), which Structure/Limit/Creation.v's classes
      carry in place of the uniqueness clause.
-   - "G^T creates limits" for every shape J:
+   - “G^T creates limits” for every shape J:
      [em_forget_StrictlyCreatesLimits] and [em_forget_CreatesAllLimits].
 
-   #467's "Current state" (no theorem that [EM_Forget] creates or even
+   #467's “Current state” (no theorem that [EM_Forget] creates or even
    preserves limits) was accurate when the issue was filed (2026-07-23)
    and has been stale since PR #1083 (#406, commit bdce5ebe), on which
    #467 was filed as depending, merged on 2026-08-13 (the issue's
@@ -163,7 +163,7 @@ nLab：https://ncatlab.org/nlab/show/created+limit
  Mac Lane：工作数学家的类别，第二版。 （GTM 5），
  §VI.2 定理 1 和 §V.1 创造词汇（第 112 页）
  Mac Lane：同上，§VI.2 练习 2（书籍第 142 页，PDF 第 151 页；
- 目录项 malane:VI.2:ex2), "显示 G^T : X^T → X
+ 目录项 malane:VI.2:ex2), “显示 G^T : X^T → X
  创造限制”
 
 更正 (#467)：上面的引文将定理 1 命名为其唯一的

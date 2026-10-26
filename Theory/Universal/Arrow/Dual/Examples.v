@@ -47,9 +47,9 @@ This file is the mirror image of Adjunction/GAFT/Examples.v, and is meant to
    rather than merely typechecking it.
 
    The example is the classical one, and Functor/Diagonal.v already quotes it
-   verbatim (from Wikipedia, "Diagonal functor"): "a product a × b is a
+   verbatim (from Wikipedia, “Diagonal functor”): “a product a × b is a
    universal arrow from Δ to ⟨a, b⟩.  The arrow comprises the projection
-   maps."  An arrow FROM a functor TO an object is Mac Lane's couniversal one,
+   maps.”  An arrow FROM a functor TO an object is Mac Lane's couniversal one,
    so that sentence is exactly [product_CUA] below.  The couniversal morphism
    is the PROJECTION PAIR (exl, exr), and the mediating factorization is
    [fork], so the entire universal-property content of
@@ -141,8 +141,8 @@ Next Obligation.
 Qed.
 
 (*
-Packaged as a [CouniversalArrow]: Mac Lane's "a product is a couniversal
-   arrow from the diagonal".
+Packaged as a [CouniversalArrow]: Mac Lane's “a product is a couniversal
+   arrow from the diagonal”.
 
 --------
 作为 [CouniversalArrow] 打包：Mac Lane 的“一个积是从对角线的一个通用箭头”.

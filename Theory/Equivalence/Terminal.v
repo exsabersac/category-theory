@@ -153,9 +153,9 @@ Riehl, CTiC, Lemma 1.6.16, strongest packaging: as soon as C HAS a
    [terminal_sub_hom_unique] -- in a category whose hom-sets are
    singletons, EVERY diagram commutes.
 
-   CONSTRUCTIVE SCOPE.  Riehl's "empty or contractible" cannot be stated
+   CONSTRUCTIVE SCOPE.  Riehl's “empty or contractible” cannot be stated
    as a decidable disjunction here: `Sub C TerminalObjects` inhabited-or-
-   not is exactly excluded middle for "C has a terminal object", and this
+   not is exactly excluded middle for “C has a terminal object”, and this
    library is axiom-free.  What is delivered is the two halves that the
    disjunction packages: the contractibility below, conditioned on an
    inhabitant, and -- holding unconditionally, hence vacuously in the

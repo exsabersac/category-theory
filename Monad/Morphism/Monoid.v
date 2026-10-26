@@ -20,29 +20,29 @@ Generalizable All Variables.
 
 (** * The category of monads is Mac Lane's Mon_{C^C}  / * monad 的类别是 Mac Lane 的 Mon_{C^C}*)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+(* Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
          Springer GTM 5, 1998, §VI.2 Exercise 3(a), printed p. 142
          (PDF p. 151) — maclane:VI.2:ex3; with §VI.1, printed
          pp. 138-139 (PDF pp. 147-148), and §VII.3, printed p. 171
          (PDF p. 179)
    nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
-   nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
-         monads")
+   nLab: https://ncatlab.org/nlab/show/monad (section “The 2-category of
+         monads”)
 
    WHAT THE BOOK ASKS, AND WHAT IT MEANS BY IT.  Exercise 3(a), read from
-   the page image, ends "and construct the category of all monads in X".
-   The request repeats §VI.1, which on p. 139 leaves "the reader to
+   the page image, ends “and construct the category of all monads in X”.
+   The request repeats §VI.1, which on p. 139 leaves “the reader to
    describe a morphism ⟨T, μ, η⟩ → ⟨T', μ', η'⟩ of monads (a suitable
    natural transformation T ⇝ T') and the category of all monads in a
-   given category X".  Two other pages give Mac Lane's own answer.  On
-   p. 138: "All told, a monad in X is just a monoid in the category of
+   given category X”.  Two other pages give Mac Lane's own answer.  On
+   p. 138: “All told, a monad in X is just a monoid in the category of
    endofunctors of X, with product × replaced by composition of
-   endofunctors and unit set by the identity endofunctor."  In §VII.3,
-   p. 171: "A morphism f : ⟨c, μ, η⟩ → ⟨c', μ', η'⟩ of monoids is an
+   endofunctors and unit set by the identity endofunctor.”  In §VII.3,
+   p. 171: “A morphism f : ⟨c, μ, η⟩ → ⟨c', μ', η'⟩ of monoids is an
    arrow f : c → c' such that fμ = μ'(f □ f) : c □ c → c', fη = η' :
    e → c'.  With these arrows, the monoids in B constitute a category
-   Mon_B", and the table below it pairs the monoidal category
-   ⟨C^C, ∘, Id⟩ with "Monads (cf. Chapter VI!)".  So, on the book's own
+   Mon_B”, and the table below it pairs the monoidal category
+   ⟨C^C, ∘, Id⟩ with “Monads (cf. Chapter VI!)”.  So, on the book's own
    terms, the category of all monads in X is Mon_{X^X}.
    Monad/Morphism.v builds a category [Monads C] directly, with objects
    the pairs of an endofunctor and a [Monad] on it and arrows its

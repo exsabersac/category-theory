@@ -35,8 +35,8 @@ Generalizable All Variables.
        η″ ≈ fmap[U] η′ ∘ η          (unit of the composite)
        ε″ ≈ ε′ ∘ fmap[F'] ε         (counit of the composite)
 
-   Both nLab (adjoint functor, "basic properties") and Wikipedia
-   ("composition" under properties of adjoints) state this composition law.
+   Both nLab (adjoint functor, “basic properties”) and Wikipedia
+   (“composition” under properties of adjoints) state this composition law.
 
    Relation to Instance/Adjoints.v: that pre-existing module already
    carries both witnesses — [adj_id], an exported instance, and

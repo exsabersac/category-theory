@@ -27,8 +27,8 @@ nLab: https://ncatlab.org/nlab/show/applicative+functor
    [Theory.Coq.Applicative] (carrying only [pure]/[ap]) to the categorical
    notion of an applicative functor from [Functor.Applicative], namely a
    strong lax monoidal endofunctor on Coq (with its cartesian monoidal
-   structure).  [IsApplicative] is the predicate "this [pure]/[ap] arises from
-   such a lax monoidal functor", and [Identity_IsApplicative],
+   structure).  [IsApplicative] is the predicate “this [pure]/[ap] arises from
+   such a lax monoidal functor”, and [Identity_IsApplicative],
    [arrow_IsApplicative] and [Compose_IsApplicative] establish lawfulness of
    the identity, reader and composite instances by exhibiting that structure.
    The opening corollaries are the definitional computation rules for [pure]

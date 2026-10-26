@@ -99,7 +99,7 @@ Why costrength matters
 
    nLab:  https://ncatlab.org/nlab/show/tensorial+costrength
    Paper: Blute, Cockett, Seely, J. Pure Appl. Algebra 116(1-3), 1997,
-          pp. 49-98 (where the term "costrength" is introduced)
+          pp. 49-98 (where the term “costrength” is introduced)
    Paper: Kock, Arch. Math. 23, 1972, pp. 113-120 (tensorial strength)
 
    Strength is what lets a functor travel through paired data.  In
@@ -120,7 +120,7 @@ Why costrength matters
    x ⨂ F y ~> F (x ⨂ y), a left-costrength is F (x ⨂ y) ~> x ⨂ F y —
    the form of this file — and a right-costrength is
    F (x ⨂ y) ~> F x ⨂ y.  On a symmetric base either determines the
-   other through the braiding, and one says simply "costrength"; on a
+   other through the braiding, and one says simply “costrength”; on a
    non-symmetric base a full costrength further requires the two induced
    maps F (x ⨂ (y ⨂ z)) ~> (x ⨂ F y) ⨂ z to agree.  The term is due to
    Blute, Cockett and Seely (1997); nLab cautions that Power and
@@ -137,7 +137,7 @@ Why costrength matters
    A final distinction separates strength from monoidality.  The
    programming face of comonads with monoidal structure is Haskell's
    ComonadApply, characterized in Kmett's Control.Comonad documentation
-   as "a strong lax symmetric semi-monoidal comonad", under which
+   as “a strong lax symmetric semi-monoidal comonad”, under which
    extract and duplicate become symmetric monoidal natural
    transformations; it is the interface on which Foner's comonadic
    fixed point for spreadsheet-like recurrences is built (Haskell

@@ -16,19 +16,19 @@ Require Import Category.Construction.DecoratedCospan.Category.
 (*
    * * Black-boxing functor for decorated cospans
 
-   Reference: Baez–Fong, "A compositional framework for passive linear
-   networks", arXiv:1504.05625 §4 (the black-box functor ♭ : Circ →
-   LagRel); Fong, "The Algebra of Open and Interconnected Systems",
+   Reference: Baez–Fong, “A compositional framework for passive linear
+   networks”, arXiv:1504.05625 §4 (the black-box functor ♭ : Circ →
+   LagRel); Fong, “The Algebra of Open and Interconnected Systems”,
    arXiv:1609.05382 (PhD thesis), where black-boxing is developed across
-   Ch. 3 ("Corelations: a tool for black boxing") and Ch. 4 ("Decorated
-   corelations: black-boxed open systems").
+   Ch. 3 (“Corelations: a tool for black boxing”) and Ch. 4 (“Decorated
+   corelations: black-boxed open systems”).
 
-   nLab has no dedicated "black boxing" page; the concept is documented
+   nLab has no dedicated “black boxing” page; the concept is documented
    under https://ncatlab.org/nlab/show/decorated+cospan and
    https://ncatlab.org/nlab/show/hypergraph+category.  Wikipedia has no
    article on this (applied-category-theory) sense of black-boxing.
 
-   The black-boxing concept: a "decorated cospan" represents an open
+   The black-boxing concept: a “decorated cospan” represents an open
    system with an internal mechanism (the decoration) and an external
    interface (the cospan).  Black-boxing forgets the internal mechanism,
    retaining only the observable input/output behaviour — typically a
@@ -46,7 +46,7 @@ Require Import Category.Construction.DecoratedCospan.Category.
 
    ** What this file lands
 
-   1. The "underlying cospan" forgetful black-box
+   1. The “underlying cospan” forgetful black-box
 
    [forget_decoration : DecoratedCospanCat F → CospanCat C]
 
@@ -308,8 +308,8 @@ End ForgetDecorationFunctor.
    ** Packaging as a [HypergraphFunctor] record
 
    [Structure/Monoidal/HypergraphFunctor.v] defines the literature
-   notion of a hypergraph functor (Fong–Spivak, "Hypergraph
-   Categories", arXiv:1806.08304, Def. 4.1.3): a strong symmetric
+   notion of a hypergraph functor (Fong–Spivak, “Hypergraph
+   Categories”, arXiv:1806.08304, Def. 4.1.3): a strong symmetric
    monoidal functor between hypergraph categories preserving the SCFA
    structure on every object.
 
@@ -345,7 +345,7 @@ End ForgetDecorationFunctor.
 
    This file provides the forgetful functor [forget_decoration] and
    the recipe above for packaging it as the canonical Fong-style
-   "black-box is a hypergraph functor" (Theorem 6.1 in his thesis,
+   “black-box is a hypergraph functor” (Theorem 6.1 in his thesis,
    arXiv:1609.05382).  The [HypergraphFunctor] instance itself is NOT
    yet constructed here: it awaits the [DecCospan_*_Coherent]
    instances of steps (1)-(3) above (the [HypergraphFunctor]

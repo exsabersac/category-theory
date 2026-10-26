@@ -15,8 +15,8 @@ Generalizable All Variables.
 nLab:      https://ncatlab.org/nlab/show/Grothendieck+fibration
    nLab:      https://ncatlab.org/nlab/show/cartesian+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
-   Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, "Displayed
-              Categories", Logical Methods in Computer Science 15(1), 2019.
+   Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, “Displayed
+              Categories”, Logical Methods in Computer Science 15(1), 2019.
               https://arxiv.org/abs/1705.04296
 
    Fibrations in both presentations, with the bridge between them.
@@ -72,8 +72,8 @@ nLab:      https://ncatlab.org/nlab/show/Grothendieck+fibration
 nLab:      https://ncatlab.org/nlab/show/Grothendieck+fibration
    nLab:      https://ncatlab.org/nlab/show/cartesian+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
-   Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, "Displayed
-              Categories", Logical Methods in Computer Science 15(1), 2019.
+   Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, “Displayed
+              Categories”, Logical Methods in Computer Science 15(1), 2019.
               https://arxiv.org/abs/1705.04296
 
    两种呈现下的纤维化，以及其间的桥。

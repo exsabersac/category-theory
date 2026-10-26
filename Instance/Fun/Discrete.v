@@ -22,10 +22,10 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.4, printed pp. 40–42 (PDF 50–52) — maclane:II.4:remark1,
  maclane:II.4:ex2, maclane:II.4:remark2
- Book:      Fong & Spivak, "Seven Sketches in Compositionality" (CUP,
+ Book:      Fong & Spivak, “Seven Sketches in Compositionality” (CUP,
  2019), §3.3.4 Examples 3.53 and 3.56, printed p. 96 (PDF
  p. 108) — 7sketches:3.3.4:example3.53,
  7sketches:3.3.4:example3.56
@@ -48,7 +48,7 @@ Generalizable All Variables.
  isomorphism in Sets, the discrete-shape analogue of
  [One_hom_iso] below
  - [Fun_Discrete_PiCat]: [DiscreteCat A, B] ≅ the indexed product
- [PiCat (fun _ : A => B)] in Cat — "B^A is an A-fold power of B",
+ [PiCat (fun _ : A => B)] in Cat — “B^A is an A-fold power of B”,
  for ANY index type A
  - [Fun_Discrete_power]: for finite shapes,
  [DiscreteCat (Fin.t n), B] ≅ [Pow B n], the n-fold iterated
@@ -88,10 +88,10 @@ Generalizable All Variables.
  calculus) transports the induction hypothesis across [B ∏ −].
  The n-fold power [Pow B n] takes the nullary case to be the
  terminal category [_1], the standard empty product, so Exercise
- II.4.2's "finite power" reads uniformly for all n.  The
+ II.4.2's “finite power” reads uniformly for all n.  The
  trailing terminal factor can be collapsed with the right
  unitor [prod_one_r]; [Fun_Discrete_power_two_flat] exhibits
- the collapse at n = 2, giving the book's literal "B ∏ B" — at
+ the collapse at n = 2, giving the book's literal “B ∏ B” — at
  general n the collapse would iterate [second_iso] down the
  spine (the [_1] sits innermost), and that general flat form is
  not stated here.
@@ -123,7 +123,7 @@ Generalizable All Variables.
  form through the characteristic-function correspondence: no
  X-indexed family of functors exhausts
  [DiscreteCat X, DiscreteCat bool] up to natural isomorphism —
- "B^X is strictly bigger than X" at the smallest interesting B. 
+ “B^X is strictly bigger than X” at the smallest interesting B. 
 
  --------
  书籍：      Mac Lane，《为工作数学家准备的范畴论》，第2版，
@@ -142,7 +142,7 @@ Generalizable All Variables.
  -  [cantor_predicates] / [cantor_bool] / [Fun_Discrete_no_surjection]：对角论证，以及 wi它是 Mac Lane 评论大小的一半：没有一个由该域对象索引的函子族可以穷尽 [DiscreteCat X, DiscreteCat bool]
  - [One_hom_iso]：作为 Sets 中同集体同构的 [1, B] 的态射的一半 ≅ B（《七个草图》示例 3.53，对任意 B 说明，并在 B := Sets 时实例化）设计：
 
- 1. [1, B] ≅ B 的对象部分已经在树中。Theory/Shapes.v 证明了 [One_Fun_iso : [_1, C] ≅ [Cat] C]，并且 Instance/One.v 和 Instance/One/Diagonal.v 已经引用了它；这个文件没有重新构建它。七个示例 3.53 添加的是在 hom-setoid 级别声明的同态部分 [One_hom_iso]。示例 3.56 将对象部分表示为类别的等价；树中的声明是在 [Cat] 中的同构，根据 Instance/Cat.v 的约定（hom-setoid = 函子自然同构）就是等价强度，因此更强的封装不增加任何成本，并且就是报告的内容。2. 一切通过索引积进行因式分解。有限次幂的陈述在族层面上（[Fun_Discrete_PiCat]，对于任意索引类型）被证明成立，然后在 [PiCat] 中完全通过关于 n 的归纳进行证明，在这里态射是逐分量的，并且不会出现任何自然性义务：[PiCat_Fin_zero] 将空情况剥离到终端范畴，[PiCat_Fin_succ] 通过 [Fin.caseS'] 从 [Fin.t (S n)] 剥离一个分量，本地合同同构 [second_iso]（来源于 [Cartesian] 的 [second] 演算）将归纳假设沿 [B ∏ −] 传递。n 重幂 [Pow B n] 将零元情况视为终端范畴 [_1]，即标准空积，因此练习 II.4.2 的“有限次幂”对所有 n 的读法都是一致的。尾端末端因子可以与右结合子 [prod_one_r] 合并；[Fun_Discrete_power_two_flat] 在 n = 2 时表现出合并，给出书中的字面 "B ∏ B" —— 在一般 n 下，合并会沿着书脊重复 [second_iso] （[_1] 位于最内侧），这里没有说明这种一般的平展形式。3. 幂集计算是构造性的，因此它落在可判定子集上。函子 [DiscreteCat X ⟶ DiscreteCat bool]，在总体自然同构下，恰好是一个特征函数 X → bool（[Fun_Discrete_bool_subsets] — [DiscreteCat bool] 中的同构是相等性证明，所以 Functor_Setoid 等价退化为逐点相等）。从经典角度来看，X → bool 是 X 的幂集；从构造性角度来看，它是可判定子集，与 Instance/FinSet/Classifier.v 中 Ω := 2 的解读相同，而经典的幂集则会取值于一 [Prop] 值的目标单一宇宙上（Instance/Sets/Classifier.v 的 [PropSetoid]）。Mac Lane 的双对象情况是针对 bool 陈述的，他关于计数的备注是精确的。4. 关于大小的评论是一个定理，而不是宇宙事件。Mac Lane 的第二条评论——对于一个宇宙大小的离散域，函子范畴会超出该宇宙——通过库的宇宙规范被结构化地体现出来（[Category@{o h p}] 与 [Cat] 的对象降低一级；Instance/Cat.v 的大小注释）。在单一宇宙内可以说的是其背后的对角论证：[cantor_predicates]（没有以 A 为索引的谓词族在外延上是 A → Prop 的满射）以及 [cantor_bool]（对 A → bool 同样适用），都是无公理的基本归纳；然后 [Fun_Discrete_no_surjection] 通过特征函数对应将布尔形式联系起来：没有以 X 为索引的函子族能够穷尽 [DiscreteCat X, DiscreteCat bool]，直到自然同构——在最小有趣的 B 上，“B^X 比 X 严格更大”。
+ 1. [1, B] ≅ B 的对象部分已经在树中。Theory/Shapes.v 证明了 [One_Fun_iso : [_1, C] ≅ [Cat] C]，并且 Instance/One.v 和 Instance/One/Diagonal.v 已经引用了它；这个文件没有重新构建它。七个示例 3.53 添加的是在 hom-setoid 级别声明的同态部分 [One_hom_iso]。示例 3.56 将对象部分表示为类别的等价；树中的声明是在 [Cat] 中的同构，根据 Instance/Cat.v 的约定（hom-setoid = 函子自然同构）就是等价强度，因此更强的封装不增加任何成本，并且就是报告的内容。2. 一切通过索引积进行因式分解。有限次幂的陈述在族层面上（[Fun_Discrete_PiCat]，对于任意索引类型）被证明成立，然后在 [PiCat] 中完全通过关于 n 的归纳进行证明，在这里态射是逐分量的，并且不会出现任何自然性义务：[PiCat_Fin_zero] 将空情况剥离到终端范畴，[PiCat_Fin_succ] 通过 [Fin.caseS'] 从 [Fin.t (S n)] 剥离一个分量，本地合同同构 [second_iso]（来源于 [Cartesian] 的 [second] 演算）将归纳假设沿 [B ∏ −] 传递。n 重幂 [Pow B n] 将零元情况视为终端范畴 [_1]，即标准空积，因此练习 II.4.2 的“有限次幂”对所有 n 的读法都是一致的。尾端末端因子可以与右结合子 [prod_one_r] 合并；[Fun_Discrete_power_two_flat] 在 n = 2 时表现出合并，给出书中的字面 “B ∏ B” —— 在一般 n 下，合并会沿着书脊重复 [second_iso] （[_1] 位于最内侧），这里没有说明这种一般的平展形式。3. 幂集计算是构造性的，因此它落在可判定子集上。函子 [DiscreteCat X ⟶ DiscreteCat bool]，在总体自然同构下，恰好是一个特征函数 X → bool（[Fun_Discrete_bool_subsets] — [DiscreteCat bool] 中的同构是相等性证明，所以 Functor_Setoid 等价退化为逐点相等）。从经典角度来看，X → bool 是 X 的幂集；从构造性角度来看，它是可判定子集，与 Instance/FinSet/Classifier.v 中 Ω := 2 的解读相同，而经典的幂集则会取值于一 [Prop] 值的目标单一宇宙上（Instance/Sets/Classifier.v 的 [PropSetoid]）。Mac Lane 的双对象情况是针对 bool 陈述的，他关于计数的备注是精确的。4. 关于大小的评论是一个定理，而不是宇宙事件。Mac Lane 的第二条评论——对于一个宇宙大小的离散域，函子范畴会超出该宇宙——通过库的宇宙规范被结构化地体现出来（[Category@{o h p}] 与 [Cat] 的对象降低一级；Instance/Cat.v 的大小注释）。在单一宇宙内可以说的是其背后的对角论证：[cantor_predicates]（没有以 A 为索引的谓词族在外延上是 A → Prop 的满射）以及 [cantor_bool]（对 A → bool 同样适用），都是无公理的基本归纳；然后 [Fun_Discrete_no_surjection] 通过特征函数对应将布尔形式联系起来：没有以 X 为索引的函子族能够穷尽 [DiscreteCat X, DiscreteCat bool]，直到自然同构——在最小有趣的 B 上，“B^X 比 X 严格更大”。
 *)
 
 (* * ** Natural transformations over a discrete shape are bare families / * ** 在离散形状上的自然变换是裸族 *)
@@ -504,7 +504,7 @@ Example Fun_Discrete_power_two (B : Category) :
   [DiscreteCat (Fin.t 2), B] ≅[Cat] B ∏ (B ∏ _1) :=
   Fun_Discrete_power B 2.
 
-(* Collapsing the trailing terminal factor by the right unitor recovers the book's literal n-fold shape: at n = 2, "B ∏ B". / 通过右单位元塌缩尾端终端因子，可以恢复书中的字面 n 重形状：当 n = 2 时，"B ∏ B"。 *)
+(* Collapsing the trailing terminal factor by the right unitor recovers the book's literal n-fold shape: at n = 2, “B ∏ B”. / 通过右单位元塌缩尾端终端因子，可以恢复书中的字面 n 重形状：当 n = 2 时，“B ∏ B”。 *)
 Example Fun_Discrete_power_two_flat (B : Category) :
   [DiscreteCat (Fin.t 2), B] ≅[Cat] B ∏ B :=
   iso_compose (second_iso prod_one_r) (Fun_Discrete_power B 2).

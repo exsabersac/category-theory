@@ -52,7 +52,7 @@ Awodey §9.6 (awodey:9.6:remark-adjoint-existence-tests): the corollaries
    it already), not this file's; no [Set]; the stdlib caps [EqdepFacts],
    [JMeq], [eq_ind], [eq_ind_r], [eq_rect_r] and [Logic_lemmas.equality]
    are [DiscreteCat_Functor']'s (Comparison.v).  Four [.glob] heads,
-   all "Closed under the global context"; no [Qed], no [Defined] — [:=]
+   all “Closed under the global context”; no [Qed], no [Defined] — [:=]
    terms.
 
    NOTATION TRAP.  [InitialFunctor F] and [CocartesianFunctor F] are

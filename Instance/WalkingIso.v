@@ -77,8 +77,8 @@ Generalizable All Variables.
    collapse in [WalkingIso] ([wi_AA_collapse]), whence
    [WalkingIsoProj_not_faithful], so [WalkingIso] is not free on its own
    quiver; and [free_iso_lengths], the general fact that a free category
-   has no non-identity isomorphism, which is where an argument for "free
-   on NO quiver" would start and which this file does not finish;
+   has no non-identity isomorphism, which is where an argument for “free
+   on NO quiver” would start and which this file does not finish;
    (7) the universal property: a functor out of [WalkingIso] is exactly
    an isomorphism in the target, with both round trips and uniqueness at
    strict strength.
@@ -139,8 +139,8 @@ Generalizable All Variables.
    branches — [Instance/Square.v]'s [wsq_classify] idiom, which is
    forced here for the same reason it is forced there.  Measured: on a
    path whose endpoints are given as CONSTRUCTORS, a direct
-   [induction p] is refused with "Abstracting over the terms \"WI_A\"
-   and \"p\" leads to a term ... which is ill-typed", since the
+   [induction p] is refused with “Abstracting over the terms \”WI_A\“
+   and \”p\“ leads to a term ... which is ill-typed”, since the
    eliminator would have to generalize the endpoint the statement
    names.  Routing the induction through [wi_spec], which matches on
    the target and takes the source as an argument, is what makes the
@@ -167,8 +167,8 @@ Generalizable All Variables.
 
    THE SECOND IS THAT [simpl] UNFOLDS PAST THE PATTERN.  In
    [wi_AA_step] the generators are [tlist_singleton] applications, and
-   after [simpl] a [rewrite <- wi_cons_g] reports "Found no subterm
-   matching \"?M ∘ wi_g\"" — the composite it wants has been unfolded
+   after [simpl] a [rewrite <- wi_cons_g] reports “Found no subterm
+   matching \”?M ∘ wi_g\“” — the composite it wants has been unfolded
    to its [tlist] normal form.  Both step lemmas are therefore supplied
    as TERMS, built from [eq_trans] and [f_equal] over [tlist_app_cons],
    with no tactic at all.
@@ -627,7 +627,7 @@ Definition wiso_arrow (x y : WIsoNode) : x ~{WalkingIso}~> y :=
   end.
 
 (*
-   * "Singleton" in full: inhabited, and any two members agree.  Both
+   * “Singleton” in full: inhabited, and any two members agree.  Both
    halves are needed — thinness alone would be satisfied by an empty
    hom-set, and this is what makes the arrow count below a count of
    arrows and not an upper bound. 
@@ -802,8 +802,8 @@ Qed.
 (*
    * So the projection is not faithful.  Read this at exactly its
    strength: it says that THIS free category maps onto [WalkingIso]
-   non-injectively on hom-sets, which is what "the relations do
-   something" means.  It does NOT say that [WalkingIso] is not free on
+   non-injectively on hom-sets, which is what “the relations do
+   something” means.  It does NOT say that [WalkingIso] is not free on
    some other quiver, and no such claim is made anywhere in this
    file. 
 
@@ -915,7 +915,7 @@ Proof. reflexivity. Qed.
    * ** The universal property: a functor out of [WalkingIso] is an
    isomorphism
 
-   This is what the word "walking" means, and it is the converse
+   This is what the word “walking” means, and it is the converse
    direction that makes the presentation worth having. 
 
    --------

@@ -30,7 +30,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/subobject
  Wikipedia: https://en.wikipedia.org/wiki/Subobject
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.8, book p. 130 (PDF p. 139), calls a category well-powered when the
  subobjects of each object form a small set and co-well-powered when the
  quotient objects do.  Classically [Sets] is both: the subobjects of a
@@ -51,7 +51,7 @@ Generalizable All Variables.
  [sets_pred_index X], the ≈-respecting [Type@{o}]-valued predicates on the
  carrier.  [wp_to] sends a predicate to the sub-setoid of the elements
  satisfying it, included by the first projection; [wp_from] sends a
- subobject to "has a preimage", [fun b => { a & sub_mono u a ≈ b }], with
+ subobject to “has a preimage”, [fun b => { a & sub_mono u a ≈ b }], with
  the preimage carried as DATA.  The domain isomorphism of [wp_to_from]
  projects that preimage, and it respects ≈ because the mono is injective
  (Instance/Sets.v's [injectivity_is_monic]).  Readback, by [eq_refl]:
@@ -111,21 +111,21 @@ Generalizable All Variables.
 
  - The index of (1) sits at [o+1] and the pin asks for [o].  Offering
  [Sets_WellPoweredAt_up X] where [WellPowered@{so o o so so}
- Sets@{o so}] is expected is refused: "The term
- "Sets_WellPoweredAt_up X" has type "WellPoweredAt@{R1.2118 R1.2117
- R1.2117 o R1.2118} X" while it is expected to have type
- "WellPoweredAt@{o so so o so} X" (universe inconsistency: Cannot
- enforce o = so because o < so)".  Control: the same witness at
+ Sets@{o so}] is expected is refused: “The term
+ ”Sets_WellPoweredAt_up X“ has type ”WellPoweredAt@{R1.2118 R1.2117
+ R1.2117 o R1.2118} X“ while it is expected to have type
+ ”WellPoweredAt@{o so so o so} X“ (universe inconsistency: Cannot
+ enforce o = so because o < so)”.  Control: the same witness at
  [Sets_WellPoweredAt_up@{o so so}] is accepted.
  - A [Prop]-valued index sits at [o], but it cannot rebuild the domain
  of the subobject it names: the backward map needs an ELEMENT out of
- a truncated preimage.  With [inhabited]: "Incorrect elimination of
- "proj2_sig p" in the inductive type "inhabited": the return type
- has sort "Type" while it should be SProp or Prop."  With the
- impredicative [Powerset_squash] the classifier uses: "The term "q"
- has type "∃ a : A, m a ≈ b" while it is expected to have type "?Q"
- (unable to find a well-typed instantiation for "?Q": cannot ensure
- that "Type" is a subtype of "Prop")".  Inverting exactly that
+ a truncated preimage.  With [inhabited]: “Incorrect elimination of
+ ”proj2_sig p“ in the inductive type ”inhabited“: the return type
+ has sort ”Type“ while it should be SProp or Prop.”  With the
+ impredicative [Powerset_squash] the classifier uses: “The term ”q“
+ has type ”∃ a : A, m a ≈ b“ while it is expected to have type ”?Q“
+ (unable to find a well-typed instantiation for ”?Q“: cannot ensure
+ that ”Type“ is a subtype of ”Prop“)”.  Inverting exactly that
  truncation is what [Untruncate] does, and it is spent once, in
  OneLevel.v's [sce_elim].  [PropEquiv] (Lib/Setoid/Propositional.v)
  does not help: it recovers a Type-valued ≈ from a Prop one, not an
@@ -134,8 +134,8 @@ Generalizable All Variables.
  pinned index is accepted: [sub_intersection] at
  [Sets_HasWidePullbacks] with the family indexed by
  [option { i : wp_index (Sets_WellPoweredAt_up X) & … }] gives
- "unable to find a well-typed instantiation for "?A": cannot ensure
- that "Type@{max(o,R3.2141)}" is a subtype of "Type@{R3.2125}"",
+ “unable to find a well-typed instantiation for ”?A“: cannot ensure
+ that ”Type@{max(o,R3.2141)}“ is a subtype of ”Type@{R3.2125}“”,
  and the same term over [Sets_WellPoweredAt_untruncate U X] compiles.
  The wide-pullback index of [Sets] is the carrier universe; the
  well-powered index has to fit under it, which is the pin.
@@ -170,13 +170,13 @@ Generalizable All Variables.
  [Powerset_Omega]'s [Prop]-valued carrier; (1) and (2) carry no [Set]
  bound.  The first setoid slot [s] of the pinned witness is [so], where
  minimization put it inside the section: a top-level binder that names
- it apart gets "so = s" added back under [+].  The second, [t], is free
+ it apart gets “so = s” added back under [+].  The second, [t], is free
  above the homs, and [Sets_WellPowered_untruncate] names it.
 
  MEASUREMENTS.  27 constants ([.glob] heads matched by
  '^(def|prf|thm|ind|constr|proj|rec) ') and no [Program] obligation
  ([strings] on the .vo finds no [_obligation_] name); every one reports
- "Closed under the global context" under [Print Assumptions] by its
+ “Closed under the global context” under [Print Assumptions] by its
  fully qualified name.  13 [Defined] and 2 [Qed].  Flipping each
  [Defined] to [Qed] in a copy of the whole file, ten are load-bearing
  -- a later proof or readback reads their components back -- and three
@@ -218,7 +218,7 @@ Generalizable All Variables.
  [wp_to] 将真子对象沿谓词拉回，[wp_from] 是 [char]，[wp_to_from] 是 Structure/SubobjectClassifier.v 的 [classifier_pullback_roundtrip]，而 OneLevel.v 的
  [sets_pullback_roundtrip] 在 [Sets] 重新表述。[untruncate_of_IEM] (OneLevel.v) 在信息化排中律下也使其成立。[Untruncate@{o} := ∀ P : Type@{o}, Powerset_squash P → P] 是一个假设，而不是公理：没有任何被声明，并且 Instance/Fun/Topos.v 的头部记录了它在树中没有成员，并且没有证明它的不可能性。(4) 在相同假设下，[Sets] 的 §V.8 后果：[Sets_wellpowered_intersection U X P HP] 是大型族 [{ m : SubObj X & P m }] 的一个 [IsIntersection]（Theory/Subobject/Lattice.v），对于任何 ≈-封闭的 [Type@{o}] 值性质 [P] 的子对象。它直接与 Instance/Sets/SubobjectLattice.v 的 [Sets_HasWidePullbacks] 以及 Lattice.v 的 [sub_intersection] 相反：宽拉回是对小指标 [{ i : X ~> Ω & P (wp_to i) }] 进行的，并用 [sub_top] 填充，以便 [sub_intersection] 的选定点 [None] 总是存在；下界沿 [wp_to_from] 传递 [P]，并且最大性成立，因为小族是大族的子族。[Sets_intersection_all_empty] 在 [P := unit] 读取它，所有子对象的类别：交集有一个空载体，因为空子对象 [sets_sub_bot]（Instance/Sets/SubobjectLattice.v 的 [Sets_zero_monic]）是其中一个成员。
 
- 为什么固定见证使用 [Untruncate] ：没有它的路径被拒绝。下面的每个拒绝都是通过将这一条命令附加到整个文件的副本并编译来实现的；每个都有一个旁边的已接受控制。它们拒绝特定的构造；没有证明不可能性（见未交付部分）。- (1) 的索引位于 [o+1]，而引脚要求 [o]。提供 [Sets_WellPoweredAt_up X]，其中 [WellPowered@{so o o so so} Sets@{o so}] 被期望，却被拒绝：“术语 'Sets_WellPoweredAt_up X' 的类型为 'WellPoweredAt@{R1.2118 R1.2117 R1.2117 o R1.2118} X'，而它被期望的类型为 'WellPoweredAt@{o so so o so} X'（宇宙不一致：无法强制 o = so，因为 o < so）”。控制：相同的证明在 [Sets_WellPoweredAt_up@{o so so}] 被接受。- 一个 [Prop] 值的索引位于 [o]，但它无法重建它所命名的子对象的域：反向映射需要从截断的原像中取出一个元素。使用 [inhabited] ：在归纳类型 "inhabited" 中错误地去掉了 "proj2_sig p"：返回类型的 sort 是 "Type"，而它应该是 SProp 或 Prop。使用不可判定的 [Powerset_squash] 时，分类器使用："项 "q" 的类型是 "∃ a : A, m a ≈ b"，而预期的类型是 "?Q"（无法找到 "?Q" 的正确类型实例：不能确保 "Type" 是 "Prop" 的子类型）"。精确地反转该截断是 [Untruncate] 的功能，并且在 OneLevel.v 的 [sce_elim] 中使用过一次。[PropEquiv]（Lib/Setoid/Propositional.v）无济于事：它只能从 Prop 恢复出一个 Type 值的 ≈，而不是从存在量词中恢复一个元素。- 当固定的索引被接受时，(1) 的索引上的结果 (4) 被拒绝：[sub_intersection] 在 [Sets_HasWidePullbacks] 上，并由 [option { i : wp_index (Sets_WellPoweredAt_up X) & … }] 索引的族给出“无法找到 '?A' 的良型实例化：无法确保 'Type@{max(o,R3.2141)}' 是 'Type@{R3.2125}' 的子类型”，而在 [Sets_WellPoweredAt_untruncate U X] 上的同一项可以编译。[Sets] 的广拉回索引是承载宇宙；良基索引必须适配其下，这就是固定索引。
+ 为什么固定见证使用 [Untruncate] ：没有它的路径被拒绝。下面的每个拒绝都是通过将这一条命令附加到整个文件的副本并编译来实现的；每个都有一个旁边的已接受控制。它们拒绝特定的构造；没有证明不可能性（见未交付部分）。- (1) 的索引位于 [o+1]，而引脚要求 [o]。提供 [Sets_WellPoweredAt_up X]，其中 [WellPowered@{so o o so so} Sets@{o so}] 被期望，却被拒绝：“术语 'Sets_WellPoweredAt_up X' 的类型为 'WellPoweredAt@{R1.2118 R1.2117 R1.2117 o R1.2118} X'，而它被期望的类型为 'WellPoweredAt@{o so so o so} X'（宇宙不一致：无法强制 o = so，因为 o < so）”。控制：相同的证明在 [Sets_WellPoweredAt_up@{o so so}] 被接受。- 一个 [Prop] 值的索引位于 [o]，但它无法重建它所命名的子对象的域：反向映射需要从截断的原像中取出一个元素。使用 [inhabited] ：在归纳类型 “inhabited” 中错误地去掉了 “proj2_sig p”：返回类型的 sort 是 “Type”，而它应该是 SProp 或 Prop。使用不可判定的 [Powerset_squash] 时，分类器使用：“项 ”q“ 的类型是 ”∃ a : A, m a ≈ b“，而预期的类型是 ”?Q“（无法找到 ”?Q“ 的正确类型实例：不能确保 ”Type“ 是 ”Prop“ 的子类型）”。精确地反转该截断是 [Untruncate] 的功能，并且在 OneLevel.v 的 [sce_elim] 中使用过一次。[PropEquiv]（Lib/Setoid/Propositional.v）无济于事：它只能从 Prop 恢复出一个 Type 值的 ≈，而不是从存在量词中恢复一个元素。- 当固定的索引被接受时，(1) 的索引上的结果 (4) 被拒绝：[sub_intersection] 在 [Sets_HasWidePullbacks] 上，并由 [option { i : wp_index (Sets_WellPoweredAt_up X) & … }] 索引的族给出“无法找到 '?A' 的良型实例化：无法确保 'Type@{max(o,R3.2141)}' 是 'Type@{R3.2125}' 的子类型”，而在 [Sets_WellPoweredAt_untruncate U X] 上的同一项可以编译。[Sets] 的广拉回索引是承载宇宙；良基索引必须适配其下，这就是固定索引。
 
  优点。每个子对象和商对象的比较都大致相等 ≈（在 [X] 上域或余域的同构）；没有任何地方存在 Leibniz 唯一性。两个 [eq_refl] 的回读是谓词子对象的承载和固定证人的索引。宇宙，用 [Set Printing Universes. About …] 测量（标准库边界如 [Projections.u0] 被省略）：sets_pred_index@{o so}  : 集合等价对象@{o o} → 类型@{o+1}
  sets_rel_index@{o so}   : 集合等价对象@{o o} → 类型@{o+1}
@@ -233,8 +233,8 @@ Generalizable All Variables.
  非截断@{o} → 在@{so o o so t} 上完备上确界 集合@{o so}
  ( * 集合 < o, o < so, o < t * )
  Sets_wellpowered_intersection@{o so u u0} : 非截断@{o} → …
- 是交集@{so"}o so} (λ k : ∃ m : SubObj@{so o} X, P m, `1 k) w
- ( * 集合 < o, o < so, o < u, o < u0 * )[WellPoweredAt] 的第一个槽是索引宇宙，它的第四个槽是同宇宙，因此 (1) 和 (2) 的索引严格高于同宇宙，而 (3) 的索引与它们相等。[Set < o] 在 (3) 和 (4) 中来自 [Powerset_Omega] 的 [Prop] 值承载器；(1) 和 (2) 没有携带 [Set] 绑定。固定证人的第一个集合位槽 [s] 是 [so]，其中最小化将其放入截面中：为其单独命名的顶级绑定器在 [+] 下会重新加上 "so = s"。第二个 [t] 在同宇宙之上是自由的，ZW114WZZ 对其命名。测量。27 个常量（[.glob] 头部匹配 '^(def|prf|thm|ind|constr|proj|rec)'）且没有 [Program] 义务（[strings] 在 .vo 上未找到 [_obligation_] 名称）；每一个都通过其完全限定名在 [Print Assumptions] 下报告“在全局上下文下封闭”。13 个 [Defined] 和 2 个 [Qed]。将每个 [Defined] 翻转为 [Qed] 在整个文件副本中，十个是承重的——后来的证明或回读会读取它们的组件——三者重新编译为绿色：[sets_pred_to_from]、[sets_rel_to_from] 和 [Sets_wellpowered_intersection]，由于≈在子对象上是同构且交集是对象，所以保持透明，两者都是数据。[sets_rel_of_quot] 是以策略形式构建的，而不是作为匿名对构建的，并且两个 [eq_refl] 读回位于没有宇宙绑定器的部分之外：两者都是 Coq 8.19/8.20 的预防措施（匿名对陷阱记录在 Instance/Grp/Quotient.v 对 [SubgroupGrp] 的注释中，以及 Theory/Size.v 对 [ObjEq] 的说明中），在运行这些工具链之前采取；是否真的需要放在那里尚未测量。未交付。[Sets] 在该节点上是良好幂的，无条件：未给出构造，也未证明不可能。[Sets] 在该节点上共同良好幂，即使在 [Untruncate] 情况下：未尝试。没有在 [Sets@{Set _}] 上对 (3) 或 (4) 的见证（如上 [Set < o]）。在任意完备范畴上的一般结论是 Structure/WellPowered.v 的工作，而不是这个文件的；(4) 是其 [Sets] 实例，直接陈述在 [Sets] 已经具有的广拉回上。没有注册 [Instance]。[Ab]、[RMod R] 以及其他代数范畴在这里未尝试。
+ 是交集@{so“}o so} (λ k : ∃ m : SubObj@{so o} X, P m, `1 k) w
+ ( * 集合 < o, o < so, o < u, o < u0 * )[WellPoweredAt] 的第一个槽是索引宇宙，它的第四个槽是同宇宙，因此 (1) 和 (2) 的索引严格高于同宇宙，而 (3) 的索引与它们相等。[Set < o] 在 (3) 和 (4) 中来自 [Powerset_Omega] 的 [Prop] 值承载器；(1) 和 (2) 没有携带 [Set] 绑定。固定证人的第一个集合位槽 [s] 是 [so]，其中最小化将其放入截面中：为其单独命名的顶级绑定器在 [+] 下会重新加上 ”so = s“。第二个 [t] 在同宇宙之上是自由的，ZW114WZZ 对其命名。测量。27 个常量（[.glob] 头部匹配 '^(def|prf|thm|ind|constr|proj|rec)'）且没有 [Program] 义务（[strings] 在 .vo 上未找到 [_obligation_] 名称）；每一个都通过其完全限定名在 [Print Assumptions] 下报告“在全局上下文下封闭”。13 个 [Defined] 和 2 个 [Qed]。将每个 [Defined] 翻转为 [Qed] 在整个文件副本中，十个是承重的——后来的证明或回读会读取它们的组件——三者重新编译为绿色：[sets_pred_to_from]、[sets_rel_to_from] 和 [Sets_wellpowered_intersection]，由于≈在子对象上是同构且交集是对象，所以保持透明，两者都是数据。[sets_rel_of_quot] 是以策略形式构建的，而不是作为匿名对构建的，并且两个 [eq_refl] 读回位于没有宇宙绑定器的部分之外：两者都是 Coq 8.19/8.20 的预防措施（匿名对陷阱记录在 Instance/Grp/Quotient.v 对 [SubgroupGrp] 的注释中，以及 Theory/Size.v 对 [ObjEq] 的说明中），在运行这些工具链之前采取；是否真的需要放在那里尚未测量。未交付。[Sets] 在该节点上是良好幂的，无条件：未给出构造，也未证明不可能。[Sets] 在该节点上共同良好幂，即使在 [Untruncate] 情况下：未尝试。没有在 [Sets@{Set _}] 上对 (3) 或 (4) 的见证（如上 [Set < o]）。在任意完备范畴上的一般结论是 Structure/WellPowered.v 的工作，而不是这个文件的；(4) 是其 [Sets] 实例，直接陈述在 [Sets] 已经具有的广拉回上。没有注册 [Instance]。[Ab]、[RMod R] 以及其他代数范畴在这里未尝试。
 *)
 
 Section SetsWellPoweredUp.
@@ -281,7 +281,7 @@ Definition sets_sub_of_pred (X : SetoidObject@{o o}) (P : sets_pred_index X) :
   @Build_SubObj Sets@{o so} X (sets_pred_setoid X P) (sets_pred_incl X P)
     (sets_pred_incl_monic X P).
 
-(* The predicate a subobject names: "is in the image", as DATA -- the preimage is carried, not truncated. / 谓词一个子对象命名：“在图像中”，作为数据——原像被携带，而不是截断。 *)
+(* The predicate a subobject names: “is in the image”, as DATA -- the preimage is carried, not truncated. / 谓词一个子对象命名：“在图像中”，作为数据——原像被携带，而不是截断。 *)
 Definition sets_pred_of_sub (X : SetoidObject@{o o})
   (u : @SubObj Sets@{o so} X) : sets_pred_index X.
 Proof.
@@ -486,7 +486,7 @@ Definition Sets_WellPowered_untruncate@{o so t | o < so, Set < o, o < t +}
 (* * ** The intersection of a class of subobjects, at [Sets] / * ** 在 [Sets]，子对象类的交集 *)
 
 (*
- Mac Lane's "any set of subobjects", read as a ≈-closed property [P] of
+ Mac Lane's “any set of subobjects”, read as a ≈-closed property [P] of
  subobjects of [X]: the family [{ m : SubObj X & P m }] is LARGE (it sits
  at [so]), so [Sets_HasWidePullbacks], whose index lives at the carrier
  universe [o], cannot take it directly.  The pinned witness reindexes it

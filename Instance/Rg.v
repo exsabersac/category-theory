@@ -20,10 +20,10 @@ Generalizable All Variables.
 (*
    * * Rg: the category of rings without an assumed identity
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.2
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.2
    Exercise 4 (printed p. 89) [maclane:IV.2:ex4]: rings without unit,
    and the adjoint of the forgetful functor from rings with unit.
-   Riehl, "Category Theory in Context", §4.7, for the free/forgetful
+   Riehl, “Category Theory in Context”, §4.7, for the free/forgetful
    pattern the adjunction instantiates.
 
    CITED BY LOCATION ONLY: the printed text of neither book was
@@ -45,7 +45,7 @@ Generalizable All Variables.
    nLab: https://ncatlab.org/nlab/show/nonunital+ring
    Wikipedia: https://en.wikipedia.org/wiki/Rng_(algebra)
 
-   A rng is "a riNg without the I": an abelian group (0, +, −) with an
+   A rng is “a riNg without the I”: an abelian group (0, +, −) with an
    associative multiplication distributing over addition on both sides,
    and no multiplicative identity demanded.  Its morphisms preserve 0,
    + and ·, and nothing else — dropping the unit from the OBJECTS and
@@ -60,7 +60,7 @@ Generalizable All Variables.
    - [Rng] is Instance/Rng.v's category of UNITAL rings, keeping
    Mac Lane's own abbreviation from his §I.7 roll-call; its
    morphisms preserve 1, since [RigHom] carries [rig_map_one] as a
-   FIELD.  So in this tree "Rng" means WITH unit.
+   FIELD.  So in this tree “Rng” means WITH unit.
    - [Ring] is Theory/Algebra/Rig.v's [RingObject] with the
    category over it, definitionally the same category as [Rng].
    - [Rg] — this file — is rings WITHOUT an assumed identity, with
@@ -122,8 +122,8 @@ Generalizable All Variables.
    inverses and the pair genuinely does not follow: Structure/Ring.v
    records that disjunction on the booleans, used as both halves
    of a semiring, satisfies commutativity and BOTH distributivity laws
-   while REFUTING annihilation ([bool_or_not_annihilating]), "so
-   the annihilation PAIR is not implied by the rest".  A rng does have
+   while REFUTING annihilation ([bool_or_not_annihilating]), “so
+   the annihilation PAIR is not implied by the rest”.  A rng does have
    inverses, so [rg_mul_zero_l] and [rg_mul_zero_r] are proved below
    from distributivity plus cancellation — 0·a is idempotent under
    addition, hence zero.  The engine is [rg_cancel_idem], the elementary
@@ -156,8 +156,8 @@ Generalizable All Variables.
    differ: ℤ is initial (Instance/Rng.v) and the zero ring terminal,
    and they cannot coincide, since a unital homomorphism out of
    the zero ring would force 0 ≈ 1 in ℤ.  Instance/Roster.v
-   HAD RECORDED that this contrast "is NOT checkable here: the tree has
-   no category of non-unital rings, which is future #362's [Rg]".  This
+   HAD RECORDED that this contrast “is NOT checkable here: the tree has
+   no category of non-unital rings, which is future #362's [Rg]”.  This
    file supplies the missing half, and the commit that lands it repairs
    that Roster.v passage accordingly -- so the sentence quoted above is
    the SUPERSEDED text, and the only occurrence of it left in the tree
@@ -166,7 +166,7 @@ Generalizable All Variables.
 
    PRIOR ART FOR THE OTHER HALF, DISCLOSED RATHER THAN REDISCOVERED.
    A brief that guided this file asked for [Rng_no_zero_object] to be
-   proved "if you can do it cleanly".  It is already proved:
+   proved “if you can do it cleanly”.  It is already proved:
    Structure/Kernel/Universal/Examples.v has exactly that theorem,
    via its [Rng_no_zero_morphisms] and its
    [Rng_no_hom_zero_to_Z].  Nothing here duplicates those names.  What
@@ -703,9 +703,9 @@ Qed.
 (*
  The discriminating pair Instance/Roster.v defers.  Dropping
  unit-preservation from the morphisms changes the answer.  Read the
- TYPE precisely: the second component is "no unital homomorphism from
- the zero ring to Z", which is what forces terminal and initial apart
- in [Rng]; the packaged statement "[Rng] has no zero object" is
+ TYPE precisely: the second component is “no unital homomorphism from
+ the zero ring to Z”, which is what forces terminal and initial apart
+ in [Rng]; the packaged statement “[Rng] has no zero object” is
  Structure/Kernel/Universal/Examples.v's [Rng_no_zero_object],
  proved there and not repackaged here. 
 
@@ -897,7 +897,7 @@ Theorem TwoZ_incl_image_even : ∀ a,
   { k : Z & cmon_map (rg_hom_ab TwoZ_incl) a = Z.mul 2 k }.
 Proof. intro a; exists a; exact (@eq_refl Z (TwoZ_double a)). Qed.
 
-(* The converse half, without which the word "exactly" would be unearned: every even integer IS hit. The two together say the image is the even integers and not merely a subset of them. / 另一半，如果没有它，“确切”这个词就无法成立：每一个偶数整数都被击中。这两者合起来说明图像是偶数整数，而不仅仅是它们的一个子集。 *)
+(* The converse half, without which the word “exactly” would be unearned: every even integer IS hit. The two together say the image is the even integers and not merely a subset of them. / 另一半，如果没有它，“确切”这个词就无法成立：每一个偶数整数都被击中。这两者合起来说明图像是偶数整数，而不仅仅是它们的一个子集。 *)
 Theorem TwoZ_incl_image_onto_even : ∀ k : Z,
   { a & cmon_map (rg_hom_ab TwoZ_incl) a = Z.mul 2 k }.
 Proof. intro k; exists k; exact (@eq_refl Z (TwoZ_double k)). Qed.

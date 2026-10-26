@@ -23,7 +23,7 @@ Context `{@SymmetricMonoidal C}.
  unitors AND braidings are all identity natural transformations, so that the
  braiding β_{x,y} ≈ id for every pair of objects and consequently x ⨂ y =
  y ⨂ x holds on the nose. That is the maximally strict notion of a
- "commutative" tensor product.
+ “commutative” tensor product.
 
  This class does NOT impose that full strictness. It captures the weaker,
  purely self-referential condition that the braiding restricted to the
@@ -41,15 +41,15 @@ Context `{@SymmetricMonoidal C}.
  The two conditions are linked by a theorem of Kim (2016): a symmetric
  monoidal category is symmetric-monoidally EQUIVALENT to a commutative
  monoidal category iff all its self-braidings β_{x,x} are identities (proved
- assuming the objects can be totally ordered, e.g. under choice). The "only
- if" direction is immediate, since the property is equivalence-invariant.
+ assuming the objects can be totally ordered, e.g. under choice). The “only
+ if” direction is immediate, since the property is equivalence-invariant.
  Hence this class names exactly the equivalence-invariant shadow of nLab's
  strict definition, without demanding strict equality of objects.
 
- Note the distinct meaning of "commutative" in
+ Note the distinct meaning of “commutative” in
  Theory/Algebra/CommutativeMonoid.v: there it is a property of a MONOID
  OBJECT X in a symmetric monoidal category (mu ∘ braid ≈ mu), constraining a
- chosen multiplication. Here "commutative" is a property of the ambient
+ chosen multiplication. Here “commutative” is a property of the ambient
  MONOIDAL STRUCTURE itself (braid ≈ id on the diagonal), constraining no
  algebra. The two are independent. 
 

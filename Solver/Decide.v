@@ -16,8 +16,8 @@ Require Import Category.Solver.Normal.
     Normal → Reify → Decide).  It assembles a decision procedure for morphism
     equalities and proves the one fact that makes the reflective tactic sound:
     if the procedure reports that two reified terms are equal, then their
-    denotations are equal under [≈].  The technique is the standard "proof by
-    reflection" (https://en.wikipedia.org/wiki/Computational_reflection):
+    denotations are equal under [≈].  The technique is the standard “proof by
+    reflection” (https://en.wikipedia.org/wiki/Computational_reflection):
     compute a verdict on the syntax, then transport that verdict to the
     original goal.
 
@@ -30,7 +30,7 @@ Require Import Category.Solver.Normal.
 
     The verdict type [partial], its [Yes]/[No] constructors and the
     [Reduce]/[||]/[&&] notation are the decidability monad of Adam Chlipala's
-    "Certified Programming with Dependent Types" (CPDT): a [partial P] is either
+    “Certified Programming with Dependent Types” (CPDT): a [partial P] is either
     a proof of [P] ([Proved]) or [Uncertain].  Note the asymmetry — an
     [Uncertain] result carries no refutation, it merely records that the
     procedure could not establish the goal.  Consequently only soundness is

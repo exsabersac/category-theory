@@ -23,18 +23,18 @@ Generalizable All Variables.
 (* * * Quotient rings as coequalizers, split under the forgetful functor / * * 商环作为共同化子，在遗忘函子下分裂 *)
 
 (*
- Book:   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- §VI.6 "Split Coequalizers", Exercise 1, book p. 150 (PDF
+ Book:   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ §VI.6 “Split Coequalizers”, Exercise 1, book p. 150 (PDF
  p. 159), item maclane:VI.6:ex1, read from the page image; the
  group example it refers to is Instance/Grp/Coequalizer.v
  nLab:   https://ncatlab.org/nlab/show/split+coequalizer
  nLab:   https://ncatlab.org/nlab/show/quotient+ring
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_ring
 
- WHAT THE BOOK SAYS.  "In Rng give a similar construction to show that
+ WHAT THE BOOK SAYS.  “In Rng give a similar construction to show that
  every quotient R/A of a ring R by an ideal A can be represented as a
  coequalizer, and show that the resulting fork is split after the
- application of the forgetful functors to sets."  Mac Lane's Rng is the
+ application of the forgetful functors to sets.”  Mac Lane's Rng is the
  category of rings with identity, as is the tree's [Rng]
  (Instance/Rng.v).
 
@@ -97,8 +97,8 @@ Generalizable All Variables.
  for the coset, and its two taboos are proved here at A_P ◁ Z ([AP]:
  all of Z when P holds and zero when it does not, its membership the
  Prop [or P (a = 0)]).  A transversal of A_P decides P
- ([AP_rtransversal_decides]), so Exercise 1's "split after the
- application of the forgetful functors", asked of every ideal,
+ ([AP_rtransversal_decides]), so Exercise 1's “split after the
+ application of the forgetful functors”, asked of every ideal,
  decides every proposition ([Rng_U_split_taboo]); and the class
  relation untruncates at A_P outright ([AP_untruncates]), so
  untruncation does not give a transversal constructively
@@ -138,7 +138,7 @@ Generalizable All Variables.
  the bound, @{p u + | u <= p +} (bare, their binders had u put at p
  by minimization, measured); no block carries an equation; every name
  generic in A that mentions the pair, a splitting of it, t or the
- untruncated quotient carries "u <= p", first at [rsemidirect_d0]
+ untruncated quotient carries “u <= p”, first at [rsemidirect_d0]
  (R6 refuses it at a membership level above the carrier, C15 and C16
  accept [rtransversal_untruncates] and [SemidirectRing] there, C18
  accepts [rtransversal_split_e] below it).  The witnesses
@@ -146,13 +146,13 @@ Generalizable All Variables.
  A_P, take those ideals' membership level at the carrier level.
  [rquot_mem_object] is annotated at [SetoidObject@{p p}], and its
  equivalence is built from three lemmas in place, since a separate
- [Equivalence] lemma read "p = u" (measured).  [Rng_ForgetP] keeps the
+ [Equivalence] lemma read “p = u” (measured).  [Rng_ForgetP] keeps the
  object levels of [Rng] and [PropSets] apart and
  [PropSets_rquot_IsCoequalizer] names them (go, so), through
  [Rng_ForgetP@{go p so}], the one explicit universe instance this file
  writes of a constant of its own, closed at three levels (three on
  Coq 8.19.2 and 8.20.1 as well).  No block mentions [Set] except as a
- bound "Set < _".  [rtransversal_U_AbsoluteCoequalizer] names its
+ bound “Set < _”.  [rtransversal_U_AbsoluteCoequalizer] names its
  target levels.  On Coq 8.19.2 and 8.20.1 ([About] in a build of the
  files' closure and the probe under each) every one of the 84 names
  binds the same levels except [SemidirectRing], fifteen against Rocq
@@ -991,7 +991,7 @@ Proof.
 Defined.
 
 (*
- Exercise 1's "split after the application of the forgetful functors",
+ Exercise 1's “split after the application of the forgetful functors”,
  asked of every ideal, decides every proposition. 
 
  --------

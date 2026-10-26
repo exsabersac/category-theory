@@ -20,7 +20,7 @@ nLab: https://ncatlab.org/nlab/show/functor
    sense, preserving identities [F id = id] and composition [F (g ∘ f) = F g ∘
    F f] (nLab).
 
-   This file packages "lawful" as [EndoFunctor F := AFunctor Coq Coq F] and
+   This file packages “lawful” as [EndoFunctor F := AFunctor Coq Coq F] and
    [IsFunctor], and exhibits witnesses that the identity, reader/arrow, and
    composite [Functor] instances are lawful, plus the [compose_fmap]
    characterisation of [fmap] for a composite.  The proofs that rely on

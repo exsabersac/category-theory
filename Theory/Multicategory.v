@@ -15,7 +15,7 @@ nLab: https://ncatlab.org/nlab/show/multicategory
 
    A multicategory (coloured operad) has objects and MULTImorphisms
    [mhom Γ c] whose source is a finite LIST of objects rather than a single
-   object.  Composition is the single-slot (partial, "circle-i") operation:
+   object.  Composition is the single-slot (partial, “circle-i”) operation:
    given [f : mhom (Γ1 ++ b :: Γ2) c] and [g : mhom Δ b], splicing [g] into
    the distinguished slot [b] yields [mcomp f g : mhom (Γ1 ++ Δ ++ Γ2) c].
 
@@ -67,8 +67,8 @@ nLab: https://ncatlab.org/nlab/show/multicategory
    carries its own [tperm], with [tperm_Permutation] recovering the
    stdlib proposition for interop.  The action is functorial in the
    WITNESS: identity on [tperm_refl] and composition along the
-   [tperm_trans] constructor.  There is deliberately NO "[msym p ≈ id]
-   for any loop [p : tperm Γ Γ]" law: a nontrivial self-permutation need
+   [tperm_trans] constructor.  There is deliberately NO “[msym p ≈ id]
+   for any loop [p : tperm Γ Γ]” law: a nontrivial self-permutation need
    not act trivially (that is the whole content of the symmetry).
    Compatibility with composition is the tractable block form
    [mcomp_equivariant]: permuting the three blocks [Γ1], [Δ], [Γ2]
@@ -81,7 +81,7 @@ nLab: https://ncatlab.org/nlab/show/multicategory
    same underlying permutation are not required to act identically — in
    particular the swap involution [msym (tperm_trans (tperm_swap ..)
    (tperm_swap ..)) f ≈ f] of the textbook notion (Leinster; nLab
-   "symmetric multicategory") is not derivable from the class.  Likewise
+   “symmetric multicategory”) is not derivable from the class.  Likewise
    [mcomp_equivariant] is required only in the independent-block form,
    not the slot-crossing exchange.  The in-tree instances
    (Theory/Multicategory/Representable.v, Endomorphism.v, and the Comm
@@ -183,10 +183,10 @@ Where multicategories come from, and what they are for
 
    nLab:  https://ncatlab.org/nlab/show/multicategory
    nLab:  https://ncatlab.org/nlab/show/operad
-   Paper: Lambek, "Deductive systems and categories II. Standard
-          constructions and closed categories", Lecture Notes in
+   Paper: Lambek, “Deductive systems and categories II. Standard
+          constructions and closed categories”, Lecture Notes in
           Mathematics 86, Springer 1969
-   Book:  Leinster, "Higher Operads, Higher Categories", Cambridge
+   Book:  Leinster, “Higher Operads, Higher Categories”, Cambridge
           University Press 2004
 
    A category composes UNARY operations, one source and one target.
@@ -197,8 +197,8 @@ Where multicategories come from, and what they are for
    finite LIST of objects, composed by substituting multimorphisms into
    the input slots of another.  The notion is due to Lambek, who coined
    the word while formalizing deductive systems and closed categories
-   (Lambek, "Deductive systems and categories II", LNM 86, 1969;
-   revisited in "Multicategories revisited", Contemporary Mathematics 92,
+   (Lambek, “Deductive systems and categories II”, LNM 86, 1969;
+   revisited in “Multicategories revisited”, Contemporary Mathematics 92,
    1989); he read a deduction of a formula c from an ordered context
    c₁, …, cₙ as a multimorphism into c, so the motivation was logical
    before it was higher-categorical.
@@ -208,7 +208,7 @@ Where multicategories come from, and what they are for
    tensor is extra structure, and a base need not carry one.  A
    multicategory needs no monoidal product, and when one is present the
    multimorphisms it represents recover it.  This is representability
-   (Hermida, "Representable multicategories", Advances in Mathematics
+   (Hermida, “Representable multicategories”, Advances in Mathematics
    151(2), 2000): every monoidal category yields the multicategory whose
    [mhom] from A₁, …, Aₙ to B is the ordinary homset C(A₁ ⊗ ⋯ ⊗ Aₙ, B).
    The construction, carried once over an object realization, is
@@ -219,10 +219,10 @@ Where multicategories come from, and what they are for
    (Theory/Multicategory/Operad.v).  The geometry predates the word:
    Boardman and Vogt described the little n-cubes operads and a
    recognition principle for iterated loop spaces (ideas circa 1968,
-   published as "Homotopy Invariant Algebraic Structures on Topological
-   Spaces", LNM 347, 1973), on the PROPs and PACTs of Adams and Mac Lane;
-   the name and the definition are due to May ("The Geometry of Iterated
-   Loop Spaces", LNM 271, 1972), whose recognition theorem relates
+   published as “Homotopy Invariant Algebraic Structures on Topological
+   Spaces”, LNM 347, 1973), on the PROPs and PACTs of Adams and Mac Lane;
+   the name and the definition are due to May (“The Geometry of Iterated
+   Loop Spaces”, LNM 271, 1972), whose recognition theorem relates
    connected algebras over the little n-cubes operad to n-fold loop
    spaces.  An algebra for an operad O on X is a map into the
    endomorphism operad, whose n-ary part is X^n → X; the library builds
@@ -235,13 +235,13 @@ Where multicategories come from, and what they are for
    The reach beyond topology is broad.  Multicategories stand to operads
    as multi-sorted Lawvere theories stand to single-sorted ones, and a
    finite-product (Lawvere) theory, presented without forcing its product
-   objects, is exactly a Cartesian multicategory (nLab, "Lawvere theory"):
+   objects, is exactly a Cartesian multicategory (nLab, “Lawvere theory”):
    the source list tracks arities and its copy/discard structure realizes
    the structural rules of weakening and contraction, joining the
    Theory/Lawvere.v and Construction/PROP/ spine.
    Symmetric multicategories also organize algebraic K-theory (Elmendorf,
-   Mandell, "Permutative categories, multicategories, and algebraic
-   K-theory", Algebraic & Geometric Topology 9(4), 2009), and Leinster's
+   Mandell, “Permutative categories, multicategories, and algebraic
+   K-theory”, Algebraic & Geometric Topology 9(4), 2009), and Leinster's
    generalized operads recast the language of higher category theory
    (Leinster 2004), Batanin's globular operads describing weak
    ∞-categories within it.
@@ -582,7 +582,7 @@ Proof-irrelevance of the boundary: casting along any loop is the
   mid (a : mobj) : mhom [a] a;
 
   (*
-Single-slot ("circle-i") composition, slot addressed by the zipper
+Single-slot (“circle-i”) composition, slot addressed by the zipper
      [(Γ1, b, Γ2)]: splice [g] into the [b]-slot of [f].
 
 --------

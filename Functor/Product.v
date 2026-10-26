@@ -28,8 +28,8 @@ nLab: https://ncatlab.org/nlab/show/monoidal+category
    domain and codomain. It is distinct from:
      - Functor/Construction/Product.v, the componentwise product F ∏⟶ G of
        functors on product categories, C ∏ J ⟶ D ∏ K; and
-     - the coend tensor of functors ∫^c F c ⨂ G c (nLab "tensor product of
-       functors"), which is not this pointwise construction. 
+     - the coend tensor of functors ∫^c F c ⨂ G c (nLab “tensor product of
+       functors”), which is not this pointwise construction. 
 
 --------
 nLab：https://ncatlab.org/nlab/show/monoidal+category

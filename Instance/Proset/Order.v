@@ -29,10 +29,10 @@ Generalizable All Variables.
 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician",
+ Book: Mac Lane, “Categories for the Working Mathematician”,
  Springer GTM 5, 2nd ed. 1998, §I.2 (construction 7, definition 4)
- Book: Riehl, "Category Theory in Context", Dover 2016, §1.2
- Book: Fong and Spivak, "Seven Sketches in Compositionality",
+ Book: Riehl, “Category Theory in Context”, Dover 2016, §1.2
+ Book: Fong and Spivak, “Seven Sketches in Compositionality”,
  CUP 2019, §§1.2.2 and 1.3.1
  nLab: https://ncatlab.org/nlab/show/thin+category
  nLab: https://ncatlab.org/nlab/show/preorder
@@ -47,8 +47,8 @@ Generalizable All Variables.
  in the citation above — construction 7, definition 4 — is as given by the
  issue this file answers, and has not been checked against the book here;
  the section reference is the reliable part.)  Read in reverse,
- a category determines a preorder on its objects — "x ≤ y when there is an
- arrow x ~> y" — and the two passages are meant to be mutually inverse on
+ a category determines a preorder on its objects — “x ≤ y when there is an
+ arrow x ~> y” — and the two passages are meant to be mutually inverse on
  thin categories.  Both legs are proved below, and both are MEASURED rather
  than asserted:
 
@@ -113,8 +113,8 @@ Generalizable All Variables.
  two-object discrete diagram: [infimum_iff_limit] and
  [supremum_iff_colimit], stated over Structure/Limit.v's [IsALimit] and
  Instance/Discrete.v's [DiscreteCat] on [bool].  Instance/Poset.v
- announces the dictionary entry as prose ("a product is a meet, and more
- generally the limit over a subset is its greatest lower bound"); these two
+ announces the dictionary entry as prose (“a product is a meet, and more
+ generally the limit over a subset is its greatest lower bound”); these two
  theorems prove it at the two-object shape, for an ARBITRARY preorder.  The
  tree does already contain one instance of the identification — the
  cartesian structure on the walking arrow, whose product object is
@@ -123,9 +123,9 @@ Generalizable All Variables.
  instance rather than as a limit over a discrete diagram.
 
  SCOPE NOTE on the general identification lemma.  The library contains no
- thin-category-wide "a limit is a meet" lemma: a case-insensitive search of
- every .v file for [infimum], [supremum], "greatest lower" and "least
- upper" returns exactly one hit, the prose comment at Instance/Poset.v.
+ thin-category-wide “a limit is a meet” lemma: a case-insensitive search of
+ every .v file for [infimum], [supremum], “greatest lower” and “least
+ upper” returns exactly one hit, the prose comment at Instance/Poset.v.
  The general identification lemma belongs to issue #422 (MacLane V.2:
  products in a preorder are greatest lower bounds), whose suggested module
  is Instance/Proset/Limit.v -- this same directory.  The two theorems below
@@ -511,7 +511,7 @@ Definition codiscrete_PreOrder (A : Type) : PreOrder (codiscrete_rel A).
 Proof. constructor; [ intro x; exact I | intros x y z _ _; exact I ]. Defined.
 
 (*
- "Terminal", made precise.  Preorder structures on a FIXED carrier are
+ “Terminal”, made precise.  Preorder structures on a FIXED carrier are
  compared by refinement: R refines S when the identity map on the carrier
  is monotone from R to S, i.e. when every R-instance is an S-instance.
  [codiscrete_rel] is a top for this comparison, and any other top agrees
@@ -694,7 +694,7 @@ Lemma TotalOrder_Category_thin {A : Type} {R : relation A} (T : TotalOrder R) :
   Thin (TotalOrder_Category T).
 Proof. exact (proset_thin (@total_preorder A R T)). Qed.
 
-(* The characterization asked for in §1.2.2: over a fixed antisymmetric preorder, being a total order IS "every two elements are comparable". / §1.2.2 中要求的表征：在固定的反对称前序上，作为全序就是“任意两个元素都是可比较的” *)
+(* The characterization asked for in §1.2.2: over a fixed antisymmetric preorder, being a total order IS “every two elements are comparable”. / §1.2.2 中要求的表征：在固定的反对称前序上，作为全序就是“任意两个元素都是可比较的” *)
 Theorem TotalOrder_iff_all_comparable {A : Type} (R : relation A)
         (P : PreOrder R) (anti : ∀ x y : A, R x y → R y x → x = y) :
   TotalOrder R ↔ (∀ x y : A, comparable R x y).
@@ -1168,7 +1168,7 @@ Corollary supremum_iff_IsAColimit {A : Type} {R : relation A} (P : PreOrder R)
 Proof. exact (supremum_iff_colimit P x y m). Qed.
 
 (*
- The "no third name" claim above, pinned rather than asserted: the
+ The “no third name” claim above, pinned rather than asserted: the
  TotalOrder route lands on the SAME category both existing files define. 
 
  --------

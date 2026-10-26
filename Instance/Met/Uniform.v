@@ -31,33 +31,33 @@ Open Scope R_scope.
  nLab:  https://ncatlab.org/nlab/show/reflective+subcategory
  nLab:  https://ncatlab.org/nlab/show/complete+metric+space
  nLab:  https://ncatlab.org/nlab/show/uniformly+continuous+map
- Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §IV.3, printed p. 92 (PDF p. 101) — the example this
  file proves (catalog item maclane:IV.3:construction1)
  Book:  Mac Lane, same, §IV.3, printed p. 91 (PDF p. 100) — the
  universal-arrow reading of a reflection, which
  Construction/Reflective/Universal.v states
- Book:  Bishop, "Foundations of Constructive Analysis", McGraw-Hill
+ Book:  Bishop, “Foundations of Constructive Analysis”, McGraw-Hill
  1967 — the modulus discipline, as in Instance/Met.v
 
  MAC LANE'S SENTENCE, quoted from the page image of p. 92:
 
- "Or consider the category of all metric spaces X, with arrows
+ “Or consider the category of all metric spaces X, with arrows
  uniformly continuous functions.  The (full) subcategory of complete
  metric spaces is reflective; the reflector sends each metric space
- to its completion."
+ to its completion.”
 
  One chapter earlier, in §III.1, printed pp. 56-57 (PDF pp. 65-66),
  the same construction appears over a DIFFERENT category.  Quoted from
  the page image:
 
- "Complete Metric Spaces.  Let Met be the category of all metric
+ “Complete Metric Spaces.  Let Met be the category of all metric
  spaces X, Y, ..., with arrows X → Y those functions which preserve
  the metric (and which therefore are necessarily injections).  The
  complete metric spaces form (the objects of) a full subcategory.
  The familiar completion X̄ of a metric space X provides an arrow
  X → X̄ which is universal for the evident forgetful functor (from
- complete metric spaces to metric spaces)."
+ complete metric spaces to metric spaces).”
 
  That is Instance/Met.v's [Met] and Instance/Met/Completion.v's
  [Completion_UniversalArrow].  Before issue #370 neither file built
@@ -129,7 +129,7 @@ Open Scope R_scope.
  Test/ProbeReflective370.v rather than here (a negative probe line in
  this file would add to [make todo]): the unit as a whole record
  against [etaU X]
- ("cannot unify "unit" and "etaU X"", and likewise against [eta X] in
+ (“cannot unify ”unit“ and ”etaU X“”, and likewise against [eta X] in
  [Met]), because the unit is the transpose [fmap[Incl] id ∘ etaU X];
  and the counit and the reflector's arrow action even pointwise at an
  embedded point.  Both are [unique_obj] of Theory/Universal/Arrow.v's
@@ -194,7 +194,7 @@ Open Scope R_scope.
  [MComplete] and of [Completion] ([uext@{o u u0 u1 u2 u3}]).
  [uext_MCauchy] does not take the section's completeness hypothesis:
  its [Proof using X Y f] keeps the section's [Default Proof Using
- "All"] from attaching it, and [About] reads [∀ X Y (f : UMap X Y) x,
+ “All”] from attaching it, and [About] reads [∀ X Y (f : UMap X Y) x,
  MCauchy Y (uext_seq X Y f x)].
 
  NOT DELIVERED.

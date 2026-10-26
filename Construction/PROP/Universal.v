@@ -64,7 +64,7 @@ Generalizable All Variables.
  universal property really is stated against the strict object
  equalities every PROP carries.
 
- ** Design note: how "strict symmetric monoidal functor" is phrased
+ ** Design note: how “strict symmetric monoidal functor” is phrased
 
  A PROP carries two [Monoidal] structures on the same category — the
  strict path [MP P] and the braided/symmetric path [MB P] — related

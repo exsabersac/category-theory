@@ -14,13 +14,13 @@ Generalizable All Variables.
 (*
 nLab: https://ncatlab.org/nlab/show/semigroup
    nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
          Springer GTM 5, 1998, §VI.4, printed p. 144 (PDF p. 153) —
          maclane:VI.4:construction1
 
-   Mac Lane opens §VI.4, from the page image: "A semigroup is a set S
-   equipped with an associative binary operation ν: S × S → S", and he
-   writes Smgrp for "the category of all small semigroups", with the
+   Mac Lane opens §VI.4, from the page image: “A semigroup is a set S
+   equipped with an associative binary operation ν: S × S → S”, and he
+   writes Smgrp for “the category of all small semigroups”, with the
    forgetful functor G : Smgrp → Set.  This file states the definition
    internally, as Theory/Algebra/Monoid.v states monoids: a semigroup on
    an object X of a monoidal category (C, ⨂, I) is a multiplication

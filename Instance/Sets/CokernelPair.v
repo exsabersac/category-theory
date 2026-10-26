@@ -25,7 +25,7 @@ Generalizable All Variables.
  f — with two inclusions [ck_left]/[ck_right] and the equation
  [ck_agree : ck_left ∘ f ≈ ck_right ∘ f].  It was built to probe an
  epimorphism, and it stops there: NO universal property of it is proved
- in that file, the word "pushout" occurs there only in an
+ in that file, the word “pushout” occurs there only in an
  unrelated header line, and it is nowhere related to
  Instance/Sets/Pushout.v's [Sets_HasPushouts], which sits in a different
  file and glues by a five-constructor inductive closure instead.
@@ -84,7 +84,7 @@ Generalizable All Variables.
  only bounds INHERITED verbatim — [p <= compose.u0], [p <= compose.u1],
  [p <= compose.u2], [p <= ID.u0], each of which [Sets], [CKSetoid],
  [ck_left] and [ck_agree] display identically.  (An earlier draft called
- [p < h] "the single constraint"; there are five lines.  The substance is
+ [p < h] “the single constraint”; there are five lines.  The substance is
  unaffected: nothing here narrows the shape, and the identification is
  polymorphic in the carrier universe [p].)
 
@@ -101,8 +101,8 @@ Generalizable All Variables.
  - [CKSetoid f] is NOT identified with the chosen pushout of
  [Sets_HasPushouts] (Instance/Sets/Pushout.v).  The two are different
  objects — a closed-form relation against an inductive closure — and
- the comparison would need a general "any two pushouts of one span are
- uniquely isomorphic" statement, which Theory/Morphisms/CokernelPair.v
+ the comparison would need a general “any two pushouts of one span are
+ uniquely isomorphic” statement, which Theory/Morphisms/CokernelPair.v
  deliberately does not provide.  No claim is made here about whether
  they are isomorphic; the question is simply not addressed.
 

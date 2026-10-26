@@ -9,7 +9,7 @@ nLab:      https://ncatlab.org/nlab/show/equalizer
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
    Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
 
-   Mac Lane, "Categories for the Working Mathematician", Springer GTM 5,
+   Mac Lane, “Categories for the Working Mathematician”, Springer GTM 5,
    2nd ed., §IV.2 (p. 90) tabulates a long list of adjunctions together
    with their units and counits, and Exercise 6 of that section asks for
    the entries of four of its rows: the equalizer, the coequalizer, the
@@ -24,11 +24,11 @@ nLab:      https://ncatlab.org/nlab/show/equalizer
 
    -- so the FUNCTORS come by instantiation.  The content of the exercise
    is the other column of the table: what the unit and the counit ARE,
-   read as the elementary data those four words name.  Riehl, "Category
-   Theory in Context", Dover 2016, states the general form as Proposition
+   read as the elementary data those four words name.  Riehl, “Category
+   Theory in Context”, Dover 2016, states the general form as Proposition
    4.6.1 with Exercise 4.6.ii asking for exactly this identification (the
    counit is the universal cone, the unit the universal cocone); Awodey,
-   "Category Theory", Oxford 2nd ed. 2010, runs the same argument for the
+   “Category Theory”, Oxford 2nd ed. 2010, runs the same argument for the
    special shapes in §9.3, and treats the four elementary universal
    properties themselves in §5.2 and §3.4.
 
@@ -43,7 +43,7 @@ nLab:      https://ncatlab.org/nlab/show/equalizer
      Po ⊣ Δ[Roof]          unit   = the two injections (at RNeg, RPos)
                            counit = an isomorphism
 
-   THE "IDENTITY" ENTRIES ARE NOT IDENTITIES, AND THIS FILE DOES NOT
+   THE “IDENTITY” ENTRIES ARE NOT IDENTITIES, AND THIS FILE DOES NOT
    CLAIM THEY ARE.  For Δ ⊣ lim the unit at x is a morphism
    x ~> lim(Δ[J](x)) -- an arrow between two DIFFERENT objects -- so
    [dia_unit L x = id[x]] is not merely false but ill-typed, which is
@@ -128,8 +128,8 @@ What is consumed here, and what is built
        [Sets_HasColimitsOfShape], and its witness object [DiagBoolSet].
        Not one general limit or colimit result is re-proved; every row
        below is that file applied at a fixed shape.  The issue's
-       Current-state section says "Adjunction/Diagonal/Product.v only
-       covers the binary-product shape"; that is STALE, since
+       Current-state section says “Adjunction/Diagonal/Product.v only
+       covers the binary-product shape”; that is STALE, since
        Adjunction/Diagonal/Limit.v covers every shape.  A second entry of
        that section is stale differently: it lists Structure/Cocone.v
        among the in-tree donors, and NO SUCH FILE EXISTS -- [Cocone] and
@@ -179,7 +179,7 @@ What is consumed here, and what is built
        one of these shapes gets the elementary class whose chosen arrow IS
        the counit (dually the unit) component.
      - [ShapeLinked] with [dia_unit_iso] and [dia_counit_iso]: the
-       "identity" entries of the table, at their true strength.  Those
+       “identity” entries of the table, at their true strength.  Those
        three head a general constant-diagram development of ELEVEN
        constants over an arbitrary [J] and [C], the other eight being
        [lim_const_legs], [colim_const_injs], [dia_unit],
@@ -391,7 +391,7 @@ Strengths, measured strict-first
    message is INVISIBLE under this repository's [coqc] invocation (a
    [Fail] command that succeeds prints nothing at all), so reading the
    stripped error is the only way to learn the failure kind here.  Six are
-   CONVERSION failures ("cannot unify") and one is a TYPING failure; each
+   CONVERSION failures (“cannot unify”) and one is a TYPING failure; each
    is stated so it can be pinned as a probe.
 
      R1. [eq_arrow L F = lim_leg L F ParX] -- the counit component carries
@@ -404,7 +404,7 @@ Strengths, measured strict-first
      R4. [pushout_inj1 Q F = colim_inj Q F RNeg] -- as R2 at [Roof].
      R5. [dia_unit L x = id[x]] -- a TYPING failure, and the sharpest
          measurement in the file: the two sides have codomains
-         [lim_obj L (Δ[J](x))] and [x], so the table's "unit = identity"
+         [lim_obj L (Δ[J](x))] and [x], so the table's “unit = identity”
          entry is not a proposition one can even state at [eq].  What
          replaces it is [dia_unit_iso].
      R6. [Opposite Roof = Roof] -- the walking span is not its own
@@ -417,8 +417,8 @@ Strengths, measured strict-first
          dualizes, not the shape.
 
    A NOTATION HAZARD BIT WHILE MEASURING R6 AND R7, AND IT PRODUCED A
-   FALSE PASS.  Written [Roof^op = Roof], the negative fails with "The
-   term Roof has type Category while it is expected to have type ?C ⟶ ?D"
+   FALSE PASS.  Written [Roof^op = Roof], the negative fails with “The
+   term Roof has type Category while it is expected to have type ?C ⟶ ?D”
    -- Functor/Opposite.v opens [functor_scope], and in the argument of an
    [eq] there is no expected type for [Bind Scope category_scope with
    Category] to rescue, so [^op] parses as the FUNCTOR opposite and the
@@ -493,7 +493,7 @@ R7。 [Opposite Parallel = Parallel]——同样适合步行
 
 测量 R6 和 R7 时的符号危险位，它产生了
  错误通过。 写 [Roof^op = Roof]，否定失败，并显示“The
- 术语 Roof 具有类别类型，而预期具有类型 ?C ⟶ ?D"
+ 术语 Roof 具有类别类型，而预期具有类型 ?C ⟶ ?D“
  -- Functor/Opposite.v 打开 [functor_scope]，并在一个参数中
  [eq] [Bind Scope Category_scope with 没有预期的类型
  Category] 来救援，因此 [^op] 解析为相反的 FUNCTOR 和
@@ -512,7 +512,7 @@ Universes, measured off BOTH the binder and the constraint block
    universe with the proof universe.  That is entirely the donors' doing,
    and the attribution is probed rather than assumed: in a section
    declaring [Universes uo uh up] with [Constraint uh < up], NINE donors
-   are each rejected ALONE with "Cannot enforce up = uh" --
+   are each rejected ALONE with “Cannot enforce up = uh” --
    [HasLimitsOfShape], [Limit], [Diagonal], [Fun] (as [[Parallel, D]]),
    [Opposite], [IsEqualizer], [IsCoequalizer], [IsPullback] and
    [IsPushoutSquare].  At most EIGHT of the nine are independent:
@@ -521,7 +521,7 @@ Universes, measured off BOTH the binder and the constraint block
    [x ~{D}~> y], the identity
    [id[x]] AND [Cone] are all ACCEPTED at those very levels.  The [Cone]
    control is what makes the attribution discriminate: the cone RECORD is
-   innocent, so "the cone vocabulary" would be the wrong cause.  Nothing
+   innocent, so “the cone vocabulary” would be the wrong cause.  Nothing
    in this file adds to the identification, and none of it is claimed
    unavoidable.
 
@@ -889,7 +889,7 @@ What is NOT delivered
 (*
 Axiom status and counts
 
-   140/140 constants report "Closed under the global context".  Method:
+   140/140 constants report “Closed under the global context”.  Method:
    [Print Module Category.Adjunction.Diagonal.Finite] with whitespace
    FLATTENED before matching (it wraps long entries onto their own lines)
    enumerates 140 names; the file declares no [Record], [Class] or
@@ -1106,7 +1106,7 @@ Qed.
 (*
 Over a linked shape the unit is invertible, its inverse being the
    limiting leg at the linking object.  This is the precise sense in
-   which the unit of the equalizer and pullback rows "is the identity". 
+   which the unit of the equalizer and pullback rows “is the identity”. 
 
 --------
 在链接形状上，单位是可逆的，其倒数是
@@ -1940,8 +1940,8 @@ Definition pushouts_iff_diagonal_left_adjoint :
 
 (*
 The objects of the two Roof-indexed functor categories ARE the tree's
-   spans and cospans, and the two shape hypotheses ARE "every cospan has
-   a pullback-limit" and "every span has a pushout-colimit", in the
+   spans and cospans, and the two shape hypotheses ARE “every cospan has
+   a pullback-limit” and “every span has a pushout-colimit”, in the
    vocabulary of Structure/Span.v and Structure/Pullback/Limit.v. 
 
 --------

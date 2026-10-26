@@ -12,7 +12,7 @@ Generalizable All Variables.
 (* * * The slice over a terminal object is the ambient category / * * 终端对象上的切片是环境范畴 *)
 
 (*
- Reference: Saunders Mac Lane, "Categories for the Working Mathematician",
+ Reference: Saunders Mac Lane, “Categories for the Working Mathematician”,
  2nd ed., §II.6, p. 47, Exercise 2 [maclane:II.6:ex2] — in the
  catalog's paraphrase (doc/plan/books/maclane/inventory/II.json,
  not the book's wording): if t is a terminal object of C, the
@@ -28,7 +28,7 @@ Generalizable All Variables.
  The content is one sentence of mathematics.  An object of the slice C/t is
  an object a of C equipped with a structure morphism a ~> t; when t is
  terminal that morphism carries no information, since [one_unique] says any
- two arrows into t agree.  So "an object over t" is just "an object", and a
+ two arrows into t agree.  So “an object over t” is just “an object”, and a
  commuting triangle over t is just an arrow: the triangle condition
  `g' ∘ f ≈ g` is automatic.  The forgetful functor (a, g) ↦ a and the section
  a ↦ (a, !) implement the correspondence.
@@ -38,7 +38,7 @@ Generalizable All Variables.
 
  ** Strength: this is an EQUIVALENCE, and the gap is real
 
- Mac Lane says "isomorphic", meaning an isomorphism of categories.  What is
+ Mac Lane says “isomorphic”, meaning an isomorphism of categories.  What is
  delivered here is [≅[Cat]], and in this library that is *equivalence* of
  categories, not isomorphism: Cat's hom-setoid is [Functor_Setoid]
  (Instance/Cat.v), which identifies functors that are naturally isomorphic.
@@ -50,7 +50,7 @@ Generalizable All Variables.
  `Slice Blur ttt ≅[StrictCat] Blur` is refutable outright.
 
  In a set-based development the object *set* of C/t is in bijection with the
- object set of C, because "there is exactly one arrow a ~> t" is a statement
+ object set of C, because “there is exactly one arrow a ~> t” is a statement
  about elements.  In this library terminality is stated up to `≈`
  ([one_unique] : f ≈ g), which is weaker than `f = g`.  The objects of
  [Slice] are the dependent pairs `∃ a : C, a ~> t`, so two `≈`-equal but
@@ -147,7 +147,7 @@ Program Definition Slice_Section :
 Next Obligation. apply one_unique. Qed.
 
 (*
- Every slice object is canonically isomorphic to its "renormalised" form
+ Every slice object is canonically isomorphic to its “renormalised” form
  (a; !).  The carrier of the isomorphism is the identity of C in both
  directions; only the triangle proofs differ, and [one_unique] supplies both.
  This is the natural-isomorphism component of the round trip below, isolated

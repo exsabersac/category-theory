@@ -23,7 +23,7 @@ Generalizable All Variables.
  unitor, right unitor, associator — as isomorphisms in [FreeCat S]
  using [T_cast].
 
- "Structural" here is the monoidal-coherence sense (the unitors and
+ “Structural” here is the monoidal-coherence sense (the unitors and
  associator of nLab/Mac Lane), not the permutation sense: a PROP also
  has the symmetric structural maps [S_n ⊆ PROP(n,n)] built from braids
  and identities (see [T_swap] in Term.v), which are a separate family.

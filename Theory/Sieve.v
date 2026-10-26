@@ -14,11 +14,11 @@ Awodey, *Category Theory* (1st ed., Carnegie Mellon pre-print, September
    Proposition 8.17 ([awodey:8.8:def-sieve],
    [awodey:8.8:construction-omega-sieves]).  Verbatim:
 
-     "To that end, for any category C we define a sieve on an object C to
+     “To that end, for any category C we define a sieve on an object C to
       be any set S of arrows f : · → C (with arbitrary domain) that is
       closed under precomposition, i.e. if f : D → C is in S then so is
       f ∘ g : E → D → C for every g : E → D (think of a sieve as a
-      generalization of a "lower set" in a poset).  Then let:
+      generalization of a ”lower set“ in a poset).  Then let:
 
           Ω(C) = {S ⊆ C_1 | S is a sieve on C}
 
@@ -35,9 +35,9 @@ Awodey, *Category Theory* (1st ed., Carnegie Mellon pre-print, September
 
           t : 1 → Ω,
 
-      namely, at each C, the "total sieve":
+      namely, at each C, the ”total sieve“:
 
-          t_C = {f : · → C}."
+          t_C = {f : · → C}.”
 
    This file delivers every display of that passage except the
    distinguished point t : 1 → Ω itself: the sieve, the object of sieves,
@@ -49,15 +49,15 @@ Awodey, *Category Theory* (1st ed., Carnegie Mellon pre-print, September
    of Mac Lane §IV.9 construction 2 and remark 1 (book pp. 105-106,
    [maclane:IV.9:construction2], [maclane:IV.9:remark1]) that consumes it.
 
-   WHAT A SIEVE IS HERE.  Awodey's "set S of arrows" becomes a
+   WHAT A SIEVE IS HERE.  Awodey's “set S of arrows” becomes a
    [Prop]-valued membership predicate on each hom-set, carrying two
    fields beside it: respectfulness for the hom-setoid's [≈] (a set of
    arrows in a setoid-enriched category must not distinguish equivalent
    arrows) and Awodey's closure under precomposition.  Membership is
    [Prop]-valued and not [Type]-valued, and that is FORCED rather than
    chosen: a [Type@{o}]-valued sieve type sits at [o+1], so it is not the
-   carrier of an object of [Sets@{o so}] — the refusal is "Cannot enforce
-   o < o", a universe inconsistency, pinned in Test/ProbeFunClassifier403.v
+   carrier of an object of [Sets@{o so}] — the refusal is “Cannot enforce
+   o < o”, a universe inconsistency, pinned in Test/ProbeFunClassifier403.v
    with the [Prop]-valued [Sieve] as the accepted control.  The price
    of [Prop] is paid in Instance/Fun/Classifier.v, where the
    characteristic sieve must truncate a [Type]-valued existential with
@@ -65,16 +65,16 @@ Awodey, *Category Theory* (1st ed., Carnegie Mellon pre-print, September
    truncation with #402's [Untruncate] hypothesis, spent exactly once.
 
    THE TRUTH-VALUE CONVENTION, stated here because the record fixes it.  The
-   distinguished point of [Sieve_Presheaf] is the TOTAL sieve, so "truth"
+   distinguished point of [Sieve_Presheaf] is the TOTAL sieve, so “truth”
    is [total_sieve], and Ω(c) is a set of sieves carrying no numeral —
-   there is nothing here to agree or disagree with Mac Lane's "0 on the
-   subset" (§IV.9 construction 1, book p. 105) or Seven Sketches' "true on
-   the subset", which name one and the same thing, the value every
+   there is nothing here to agree or disagree with Mac Lane's “0 on the
+   subset” (§IV.9 construction 1, book p. 105) or Seven Sketches' “true on
+   the subset”, which name one and the same thing, the value every
    classifier puts on its subobjects.  The numeral enters only at the arrow
    shape, in Instance/Fun/Classifier.v's codes, which send the total sieve
    to [Fin.F1] — the page's 0, and also Instance/FinSet/Classifier.v's
    [fin_true]; Instance/Fun/Classifier.v's truth-value paragraph says
-   exactly how much of a "convention" that is.
+   exactly how much of a “convention” that is.
 
    WHY THIS FILE IS LEAN.  Its transitive in-project closure is 16
    modules, a SUBSET of both Theory/Sheaf.v's (18) and
@@ -88,7 +88,7 @@ Awodey, *Category Theory* (1st ed., Carnegie Mellon pre-print, September
    Structure/Terminal, Instance/Fun and Instance/Fun/Terminal, whose own
    closure is 60, which is why [sieve_truth] lives downstream.
    For the same reason the reading of a sieve as a SUBOBJECT OF THE
-   REPRESENTABLE PRESHEAF — Awodey's "lower set" made categorical — is NOT here
+   REPRESENTABLE PRESHEAF — Awodey's “lower set” made categorical — is NOT here
    either: it needs Functor/Hom.v's [Curried_CoHom] and
    Instance/Fun/Morphisms.v's pointwise mono characterisation, neither of which
    is in this closure.  It is Instance/Fun/Classifier.v's [sieve_subpresheaf] /
@@ -104,8 +104,8 @@ Awodey, *Category Theory* (1st ed., Carnegie Mellon pre-print, September
    with a LITERALLY EMPTY block — because [sieve_respects] mentions [≈]
    on homs.  [SieveObj@{u u0 u1 u2}] carries [Set < u] (from [Prop :
    Type@{Set+1}], a strict lower bound and never a pin), [u1 <= u] and
-   [u2 <= u]: the first of those two is Awodey's "for any SMALL category
-   C" — C's objects at or below the carrier universe — and it is a BOUND,
+   [u2 <= u]: the first of those two is Awodey's “for any SMALL category
+   C” — C's objects at or below the carrier universe — and it is a BOUND,
    not an equation.  [Sieve_Presheaf] adds [Sets]' own [o < so] and one
    strict bound of the [Functor] record's, and no equation; ELEVEN of
    this file's 22 constants carry a word-bounded [Set], always as that
@@ -166,7 +166,7 @@ t：1→Ω，
 
 即，在每个 C 处，“总筛分”：
 
-t_C = {f : · → C}。"
+t_C = {f : · → C}。“
 
 该文件提供该段落的所有显示，除了
  区分点 t : 1 → Ω 本身：筛子，筛子的对象，
@@ -186,7 +186,7 @@ t_C = {f : · → C}。"
  [Prop] 值而不是 [Type] 值，这是强制而不是
  选择：[Type@{o}] 值的筛子类型位于 [o+1]，因此它不是
  [Sets@{o so}] 对象的载体 — 拒绝是“无法强制执行
- o < o"，宇宙不一致，固定在 Test/ProbeFunClassifier403.v 中
+ o < o”，宇宙不一致，固定在 Test/ProbeFunClassifier403.v 中
  将 [Prop] 值 [Sieve] 作为可接受的对照。 价格
  [Prop] 在 Instance/Fun/Classifier.v 中支付，其中
  特征筛必须截断 [Type] 值的存在式

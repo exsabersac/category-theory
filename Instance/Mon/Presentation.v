@@ -25,7 +25,7 @@ Generalizable All Variables.
 (* * * Every monoid is a coequalizer of free monoids / * * 每个幺半群都是自由幺半群的余等化器 *)
 
 (*
- Book:   Awodey, "Category Theory", 1st ed., Carnegie Mellon pre-print,
+ Book:   Awodey, “Category Theory”, 1st ed., Carnegie Mellon pre-print,
  September 2005, §3.4, Proposition 3.22 and its proof, printed
  pp. 74-75 (PDF pp. 83-84), item awodey:3.4:prop22; §3.5,
  Exercise 3, printed p. 76 (PDF p. 85), item awodey:3:ex3;
@@ -34,16 +34,16 @@ Generalizable All Variables.
  nLab:   https://ncatlab.org/nlab/show/split+coequalizer
  Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
 
- WHAT THE BOOK SAYS.  Proposition 3.22: "For every monoid M there are
+ WHAT THE BOOK SAYS.  Proposition 3.22: “For every monoid M there are
  sets G and R and a coequalizer diagram, F(R) ⇉ F(G) → M, with F(G)
- and F(R) free, thus M ≅ F(G)/(r₁ = r₂)."  The proof writes
+ and F(R) free, thus M ≅ F(G)/(r₁ = r₂).”  The proof writes
  TN = M(|N|) and π : TN → N, π(x₁, …, xₙ) = x₁ · … · xₙ, and takes
- T²M ⇉ TM → M with the arrows ε and μ = Tπ: "ε uses the multiplication
- in TM and μ uses that in M"; for h : TM → N with hε = hμ it defines
- h̄ = h ∘ i, i : |M| → |TM| the insertion of generators, and leaves "an
- easy exercise for the reader to show that h̄ is a homomorphism".
- Exercise 3: "Show that coequalizers of this particular form are
- preserved by the forgetful functor Mon → Sets."
+ T²M ⇉ TM → M with the arrows ε and μ = Tπ: “ε uses the multiplication
+ in TM and μ uses that in M”; for h : TM → N with hε = hμ it defines
+ h̄ = h ∘ i, i : |M| → |TM| the insertion of generators, and leaves “an
+ easy exercise for the reader to show that h̄ is a homomorphism”.
+ Exercise 3: “Show that coequalizers of this particular form are
+ preserved by the forgetful functor Mon → Sets.”
 
  NAMES.  T is F U for Instance/Mon/Free.v's free monoid [FreeMonSets]
  and [Mon_Forget] at Theory/Algebra/Monoid/Hom.v's [Mon] at
@@ -62,7 +62,7 @@ Generalizable All Variables.
  [crude_unit_cofork]; the descent is h ∘ i, [Mon_canonical_desc],
  whose homomorphism laws are the cofork read at the words of words
  [[x, y]] and [[]] (the book's exercise); uniqueness on elements.
- - [Mon_presented_iso]: "thus M ≅ F(G)/(r₁ = r₂)": any coequalizer
+ - [Mon_presented_iso]: “thus M ≅ F(G)/(r₁ = r₂)”: any coequalizer
  of the pair is isomorphic to M (Structure/Coequalizer.v's
  [coequalizer_unique]).
  - [Mon_canonical_split]: the U-image of the fork is split by the
@@ -102,7 +102,7 @@ Generalizable All Variables.
  The section binds Sets@{o so} as Word.v's [W0Monad] does; every name
  declares an extensible binder, the free functor's levels being
  unbound in a closed one (Word.v's measurement), and binds o and so
- first, with "o < so".  [Mon_flatten], [Mon_free_evaluate] and
+ first, with “o < so”.  [Mon_flatten], [Mon_free_evaluate] and
  [Mon_flatten_fun] bind two copies of the free functor's three levels,
  unidentified; [Mon_canonical_presentation] identifies them.  On Coq
  8.19.2 and 8.20.1 ([About] in a build of the files' closure under
@@ -115,16 +115,16 @@ Generalizable All Variables.
  differing by version.
 
  STALE PREMISES, dated from gh.  The Prop. 3.22 block (appended
- 2026-07-23; its checkbox 2026-08-01) says "(no category Mon, no
- free-monoid monad)": the first half was stale when appended,
+ 2026-07-23; its checkbox 2026-08-01) says “(no category Mon, no
+ free-monoid monad)”: the first half was stale when appended,
  Theory/Algebra/Monoid/Hom.v's [Mon] and [Mon_Forget] having come with
  PR #191 (merged 2026-07-07), as the factual correction added with the
  checkbox says; the second was accurate when appended and is stale
  since PR #1355 (merged 2026-10-08, #471, Word.v's W₀).  The dates
  are the issue's edit history's: the block 2026-07-23T19:04Z, the
  checkbox with the correction 2026-08-01T12:37Z.  The Exercise 3
- block (appended 2026-07-23) says "Missing only the concrete
- forgetful functor Mon → Sets": stale when appended, by the same
+ block (appended 2026-07-23) says “Missing only the concrete
+ forgetful functor Mon → Sets”: stale when appended, by the same
  PR #191.  That block credits the preservation to Split.v's
  [functor_preserves_split]; the fork is split only after U, and what
  makes U's image a coequalizer is Mac Lane's Lemma,
@@ -132,8 +132,8 @@ Generalizable All Variables.
  carries the split image on to functors out of Sets.  Both blocks
  cite files by line; this one cites names.
 
- NOT DELIVERED.  The group case ("an analogous version ... also holds
- for groups") with its splitting: Instance/Grp/Colimit/Presentation.v
+ NOT DELIVERED.  The group case (“an analogous version ... also holds
+ for groups”) with its splitting: Instance/Grp/Colimit/Presentation.v
  proves the coequalizer in Grp ([Grp_canonical_presentation]) and not
  the splitting.  Presentations other than the canonical one (Awodey's
  Example 3.20 and Warning 3.21), which #663 tracks.  The
@@ -165,7 +165,7 @@ Local Notation UMonOS :=
   (@Mon_Forget@{so o so so} Sets@{o so} Sets_Product_Monoidal@{so o}).
 
 (*
- Awodey's ε : T²M → TM, "using the multiplication in TM": the counit at
+ Awodey's ε : T²M → TM, “using the multiplication in TM”: the counit at
  the free monoid TM, which concatenates a word of words. 
 
  --------
@@ -176,7 +176,7 @@ Definition Mon_flatten@{+} (M : MonOS) :
     ~{MonOS}~> FreeMonSets (UMonOS M) :=
   @counit _ _ _ _ free_mon_sets_adjunction_hom (FreeMonSets (UMonOS M)).
 
-(* Awodey's μ = Tπ, "using the multiplication in M": the free map of the evaluation, which evaluates each inner word. / Awodey 的 μ = Tπ，“使用 M 中的乘法”：评估的自由映射，它评估每个内部词。 *)
+(* Awodey's μ = Tπ, “using the multiplication in M”: the free map of the evaluation, which evaluates each inner word. / Awodey 的 μ = Tπ，“使用 M 中的乘法”：评估的自由映射，它评估每个内部词。 *)
 Definition Mon_free_evaluate@{+} (M : MonOS) :
   FreeMonSets (UMonOS (FreeMonSets (UMonOS M)))
     ~{MonOS}~> FreeMonSets (UMonOS M) :=
@@ -295,7 +295,7 @@ Proof.
              uniqueness      := Mon_canonical_desc_unique M k Hk |}.
 Defined.
 
-(* "Thus M ≅ F(G)/(r₁ = r₂)": any coequalizer of the pair is M. / “因此 M ≅ F(G)/(r₁ = r₂)”：这一对的任何共同余核都是 M。 *)
+(* “Thus M ≅ F(G)/(r₁ = r₂)”: any coequalizer of the pair is M. / “因此 M ≅ F(G)/(r₁ = r₂)”：这一对的任何共同余核都是 M。 *)
 Definition Mon_presented_iso@{+} (M : MonOS) {q : MonOS}
   {e : FreeMonSets (UMonOS M) ~{MonOS}~> q}
   (E : IsCoequalizer (Mon_flatten M) (Mon_free_evaluate M) q e) :

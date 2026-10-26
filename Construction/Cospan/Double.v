@@ -42,8 +42,8 @@ Generalizable All Variables.
  Every equation in this file is an equality of morphisms OUT OF a (possibly
  iterated) pushout apex, so the whole development rides on a single
  principle: the pushout injections are jointly epic
- ([pushout_jointly_epic]), the op-dual of the "pullback projections are
- jointly monic" reasoning of Theory/Morphisms/Stability.v.  Each side of
+ ([pushout_jointly_epic]), the op-dual of the “pullback projections are
+ jointly monic” reasoning of Theory/Morphisms/Stability.v.  Each side of
  the triangle/pentagon is evaluated on the generator legs of the iterated
  pushout by the mediator computation rules [pushout_med_in1]/[_in2], and
  the results are compared leg by leg.
@@ -460,7 +460,7 @@ End Unitors.
    The two bracketings of a triple gluing are canonically isomorphic: both
    apexes receive the three cospan apexes through pushout injections, and
    the mediators in either direction are assembled from the pushout UMP in
-   two steps.  All computation rules on the three "generator" legs are
+   two steps.  All computation rules on the three “generator” legs are
    recorded, since the triangle and pentagon coherence proofs evaluate
    everything on generators. 
 

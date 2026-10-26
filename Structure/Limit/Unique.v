@@ -13,7 +13,7 @@ Generalizable All Variables.
 (*
    * * Essential uniqueness of limits and colimits
 
-   Riehl, "Category Theory in Context", 2nd ed., §3.1, Proposition
+   Riehl, “Category Theory in Context”, 2nd ed., §3.1, Proposition
    3.1.7 (printed p. 84) [riehl:3.1:prop7]: any two limit cones over a
    common diagram are related by a UNIQUE isomorphism of apexes
    commuting with the legs.  Both cones are terminal objects of the
@@ -133,7 +133,7 @@ Definition limit_unique_iso : c ≅ d := {|
 
 (*
  ...carrying the leg-commutation equations in both directions — the
- isomorphism "commutes with the legs of the two limit cones", not a
+ isomorphism “commutes with the legs of the two limit cones”, not a
  bare ≅. 
 
  --------

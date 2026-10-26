@@ -21,7 +21,7 @@ Generalizable All Variables.
  underlying maps agree pointwise.
 
  An earlier revision of this paragraph named only the operation, the unit and
- the laws.  Since the PR "algebraic carriers are sets" (2026-09-17) the record
+ the laws.  Since the PR “algebraic carriers are sets” (2026-09-17) the record
  carries a fourth kind of datum, the field [cmon_prop] of
  Lib/Setoid/Propositional.v's class [PropEquiv]: a [Prop]-valued relation on
  the carrier that holds exactly when `≈` does.  A commutative monoid in this
@@ -288,7 +288,7 @@ Qed.
  [CMon] is therefore locally propositional: its hom-setoid IS
  [CMonHom_Setoid].  This is what lets Theory/Algebra/Rig.v's [EndRig] -- the
  endomorphism rig of an object of a preadditive category, which since the PR
- "algebraic carriers are sets" (2026-09-17) asks its ambient category for a
+ “algebraic carriers are sets” (2026-09-17) asks its ambient category for a
  [Prop] equality on homs -- be applied at [CMon] itself
  (Theory/Algebra/Rig/Connections.v). 
 

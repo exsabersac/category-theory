@@ -71,24 +71,24 @@ Context `{C : Category}.
  the same three pieces of data make sense in any category whatsoever.
  Uniqueness comes with the definition rather than after it: every
  candidate with projections factors uniquely through the true product,
- so any two witnesses are canonically isomorphic (Milewski, "Products
- and Coproducts", 2015) — which is why [IsCartesianProduct] witnesses
+ so any two witnesses are canonically isomorphic (Milewski, “Products
+ and Coproducts”, 2015) — which is why [IsCartesianProduct] witnesses
  can be compared by the setoid [CartesianProductStructuresEquiv].
 
  The element-free formulation was hard won.  Eilenberg and Mac Lane's
  founding paper treats cartesian products only as examples of functors
- (Eilenberg, Mac Lane, "General theory of natural equivalences", Trans.
+ (Eilenberg, Mac Lane, “General theory of natural equivalences”, Trans.
  AMS 58, 1945); the general notion of a universal mapping is due to
- Samuel — "the bold step of really formulating the general notion of a
- universal arrow was taken by Samuel in 1948", in Mac Lane's own words
- (quoted in Porst, "The history of the General Adjoint Functor
- Theorem", 2024).  Mac Lane's "Duality for groups" (Bull. AMS 56, 1950)
+ Samuel — “the bold step of really formulating the general notion of a
+ universal arrow was taken by Samuel in 1948”, in Mac Lane's own words
+ (quoted in Porst, “The history of the General Adjoint Functor
+ Theorem”, 2024).  Mac Lane's “Duality for groups” (Bull. AMS 56, 1950)
  is the classic early source recasting the direct product of groups
  purely in the language of homomorphisms and composition, so that
  reversing every arrow turns its description into the free product; the
  library collects that dividend in Structure/Cocartesian.v, where the
  coproduct is this class instantiated in the opposite category.  After
- Kan ("Adjoint functors", Trans. AMS 87(2), 1958), the standard reading
+ Kan (“Adjoint functors”, Trans. AMS 87(2), 1958), the standard reading
  is adjointness: pairing and unpairing form the hom-set bijection of an
  adjunction between the diagonal and the product, with the diagonal
  morphism as unit and the projections as counit — in-tree as
@@ -98,7 +98,7 @@ Context `{C : Category}.
  Finite products are moreover a doctrine.  A Lawvere theory is a
  category with finite products whose objects are the powers of a single
  generic object, and its models are the product-preserving functors out
- of it (Lawvere, "Functorial Semantics of Algebraic Theories",
+ of it (Lawvere, “Functorial Semantics of Algebraic Theories”,
  dissertation 1963); Theory/Lawvere.v carries this class as its
  [law_cartesian] field.  The binary product is the limit of a two-object
  discrete diagram — Structure/Limit/Product.v treats the indexed case —
@@ -110,12 +110,12 @@ Context `{C : Category}.
  Computationally, [fork], [exl] and [exr] form a point-free calculus of
  tuples, and the derived combinators are the arrow vocabulary of
  functional programming: [fork] is the fanout of Hughes' arrow interface
- and [split] routes the input between two arrows (Hughes, "Generalising
- Monads to Arrows", Science of Computer Programming 37, 2000), with
+ and [split] routes the input between two arrows (Hughes, “Generalising
+ Monads to Arrows”, Science of Computer Programming 37, 2000), with
  [first], [second] and [swap] alongside.  Elliott's translation of
  Haskell into categorical vocabulary turns pattern matching on pairs
  into projections and pair construction into forks, then simplifies
- with the equations proved below (Elliott, "Compiling to Categories",
+ with the equations proved below (Elliott, “Compiling to Categories”,
  Proc. ACM Program. Lang. 1, ICFP 2017); Tools/Abstraction.v performs
  the same reification for Coq programs, and [Coq_Cartesian] in
  Instance/Coq.v realizes the interface as fst, snd and pairing.
@@ -124,7 +124,7 @@ Context `{C : Category}.
  symmetric monoidal category is cartesian precisely when every object
  carries a unique cocommutative comonoid structure — a copy and a
  discard morphism — with every morphism a homomorphism for it (Fox,
- "Coalgebras and cartesian categories", Communications in Algebra 4(7),
+ “Coalgebras and cartesian categories”, Communications in Algebra 4(7),
  1976).  Through [CC_CartesianMonoidal], [CD_of_Cartesian] in
  Structure/Monoidal/CopyDiscard/Proofs.v derives that supply from this
  class, copy being id △ id and discard the terminal map, and
@@ -144,7 +144,7 @@ Context `{C : Category}.
  nLab: https://ncatlab.org/nlab/show/Fox%27s+theorem
  nLab: https://ncatlab.org/nlab/show/Markov+category
 
- 泛映射性质从未提到元素。一般范畴的对象是不可透视的，因此 x × y 不能从坐标组装而成；[ump_products] 反而通过每个对象如何映射到它来刻画积 —— 两个投影和一个唯一配对 —— 并且同样的三条数据在任何范畴中都是有意义的。唯一性随定义而来，而不是之后：每一个具有投影的候选对象都能唯一地通过真积进行分解，所以任何两个证明者都是自然同构的（Milewski, "Products and Coproducts", 2015）——这就是为什么 [IsCartesianProduct] 证明者可以通过等价类 [CartesianProductStructuresEquiv] 进行比较的原因。无元素的表述是来之不易的。Eilenberg 和 Mac Lane 的开创性论文仅将笛卡尔积作为函子示例来处理（Eilenberg, Mac Lane, “自然等价的一般理论”, Trans. AMS 58, 1945）；普遍映射的一般概念则归功于 Samuel —— 用 Mac Lane 自己的话说，“真正提出普遍箭的一般概念的大胆步骤是在 1948 年由 Samuel 采取的”（引自 Porst, “一般伴随函子定理的历史”, 2024）。Mac Lane 的《群的对偶性》（Bull.AMS 56, 1950) 是经典的早期文献，将群的直积完全用同态和组合的语言重新表述，因此反转每一条箭头就将其描述转变为自由积；库在 Structure/Cocartesian.v 中收集了这个收益，其中的余积是在对偶范畴中实例化的该类。继 Kan（“伴随函子”，Trans. AMS 87(2), 1958）之后，标准理解是伴随性：配对与拆对构成对角与积之间伴随的 Hom 集双射，对角映射作为单位，投影作为辅单位——在 Adjunction/Diagonal/Product.v 中树内为 [Diagonal_Product_Adjunction]，其义务由本文件的 [unfork] 和 [fork_comp] 解除。有限积进一步是一种学说。Lawvere 理论是一个具有有限积的范畴，其对象是单一通用对象的幂，其模型是从中导出的保持积的函子（Lawvere，《代数理论的函子语义》，1963 年论文）；Theory/Lawvere.v 将这个类作为其 [law_cartesian] 字段。二元积是两个对象离散图的极限——Structure/Limit/Product.v 处理索引情况——它引入了 Structure/Monoidal/Internal/Product.v 的对称幺半结构 [CC_CartesianMonoidal]，并且它是 Structure/Cartesian/Closed.v 构建指数的基础，在 Structure/BiCCC.v 中通过陪积进行扩展。在计算上，[fork]、[exl] 和 [exr] 形成了一个无点元组演算，而派生的组合子则是函数式编程的箭头词汇：[fork] 是 Hughes 箭头接口的分发，而 [split] 将输入在两个箭头之间路由（Hughes，《将单子推广到箭头》，《计算机程序科学》37, 2000），同时还有 [first]、[second] 和 [swap]。Elliott 将 Haskell 翻译成范畴词汇，将对对偶的模式匹配转换为投影，将对偶构造转为分叉，然后用下面证明的方程进行简化（Elliott，《编译到范畴》，《ACM 程序语言学报》）。1，ICFP 2017）；Tools/Abstraction.v 对 Coq 程序执行相同的具体化，[Coq_Cartesian] 在 Instance/Coq.v 中实现了接口，如 fst、snd 和配对。福克斯定理将笛卡尔情况定位于张量积中：当且仅当每个对象都携带唯一的余交换余单子结构——一个复制和一个丢弃态射——并且每个态射都是其同态时，对称单模范畴才是笛卡尔的（Fox，“Coalgebras and cartesian categories”，Communications in Algebra 4(7)，1976）。通过 [CC_CartesianMonoidal]、[CD_of_Cartesian] 在 Structure/Monoidal/CopyDiscard/Proofs.v 中得出来自此类的 supply，其中复制为 id △ id，丢弃为终态射，并且 Structure/Monoidal/Markov/Fox.v 证明了两个方向（[all_deterministic_cartesian]、[cartesian_all_deterministic]）。复制的放松自然性正是允许概率存在的原因：在 Cho 和 Jacobs（2019）以及 Fritz（2020）的马尔可夫范畴中，每个对象仍然可以复制和丢弃，但一个随机态射不必与复制交换——掷一个硬币并复制其结果与掷两个硬币不同——而笛卡尔范畴正是那些所有态射都是确定性的马尔可夫范畴。
+ 泛映射性质从未提到元素。一般范畴的对象是不可透视的，因此 x × y 不能从坐标组装而成；[ump_products] 反而通过每个对象如何映射到它来刻画积 —— 两个投影和一个唯一配对 —— 并且同样的三条数据在任何范畴中都是有意义的。唯一性随定义而来，而不是之后：每一个具有投影的候选对象都能唯一地通过真积进行分解，所以任何两个证明者都是自然同构的（Milewski, “Products and Coproducts”, 2015）——这就是为什么 [IsCartesianProduct] 证明者可以通过等价类 [CartesianProductStructuresEquiv] 进行比较的原因。无元素的表述是来之不易的。Eilenberg 和 Mac Lane 的开创性论文仅将笛卡尔积作为函子示例来处理（Eilenberg, Mac Lane, “自然等价的一般理论”, Trans. AMS 58, 1945）；普遍映射的一般概念则归功于 Samuel —— 用 Mac Lane 自己的话说，“真正提出普遍箭的一般概念的大胆步骤是在 1948 年由 Samuel 采取的”（引自 Porst, “一般伴随函子定理的历史”, 2024）。Mac Lane 的《群的对偶性》（Bull.AMS 56, 1950) 是经典的早期文献，将群的直积完全用同态和组合的语言重新表述，因此反转每一条箭头就将其描述转变为自由积；库在 Structure/Cocartesian.v 中收集了这个收益，其中的余积是在对偶范畴中实例化的该类。继 Kan（“伴随函子”，Trans. AMS 87(2), 1958）之后，标准理解是伴随性：配对与拆对构成对角与积之间伴随的 Hom 集双射，对角映射作为单位，投影作为辅单位——在 Adjunction/Diagonal/Product.v 中树内为 [Diagonal_Product_Adjunction]，其义务由本文件的 [unfork] 和 [fork_comp] 解除。有限积进一步是一种学说。Lawvere 理论是一个具有有限积的范畴，其对象是单一通用对象的幂，其模型是从中导出的保持积的函子（Lawvere，《代数理论的函子语义》，1963 年论文）；Theory/Lawvere.v 将这个类作为其 [law_cartesian] 字段。二元积是两个对象离散图的极限——Structure/Limit/Product.v 处理索引情况——它引入了 Structure/Monoidal/Internal/Product.v 的对称幺半结构 [CC_CartesianMonoidal]，并且它是 Structure/Cartesian/Closed.v 构建指数的基础，在 Structure/BiCCC.v 中通过陪积进行扩展。在计算上，[fork]、[exl] 和 [exr] 形成了一个无点元组演算，而派生的组合子则是函数式编程的箭头词汇：[fork] 是 Hughes 箭头接口的分发，而 [split] 将输入在两个箭头之间路由（Hughes，《将单子推广到箭头》，《计算机程序科学》37, 2000），同时还有 [first]、[second] 和 [swap]。Elliott 将 Haskell 翻译成范畴词汇，将对对偶的模式匹配转换为投影，将对偶构造转为分叉，然后用下面证明的方程进行简化（Elliott，《编译到范畴》，《ACM 程序语言学报》）。1，ICFP 2017）；Tools/Abstraction.v 对 Coq 程序执行相同的具体化，[Coq_Cartesian] 在 Instance/Coq.v 中实现了接口，如 fst、snd 和配对。福克斯定理将笛卡尔情况定位于张量积中：当且仅当每个对象都携带唯一的余交换余单子结构——一个复制和一个丢弃态射——并且每个态射都是其同态时，对称单模范畴才是笛卡尔的（Fox，“Coalgebras and cartesian categories”，Communications in Algebra 4(7)，1976）。通过 [CC_CartesianMonoidal]、[CD_of_Cartesian] 在 Structure/Monoidal/CopyDiscard/Proofs.v 中得出来自此类的 supply，其中复制为 id △ id，丢弃为终态射，并且 Structure/Monoidal/Markov/Fox.v 证明了两个方向（[all_deterministic_cartesian]、[cartesian_all_deterministic]）。复制的放松自然性正是允许概率存在的原因：在 Cho 和 Jacobs（2019）以及 Fritz（2020）的马尔可夫范畴中，每个对象仍然可以复制和丢弃，但一个随机态射不必与复制交换——掷一个硬币并复制其结果与掷两个硬币不同——而笛卡尔范畴正是那些所有态射都是确定性的马尔可夫范畴。
 *)
 
 (*
@@ -200,8 +200,8 @@ Class Cartesian := {
 (*
  IsCartesianProduct x y z witnesses that the object z is a product of x and
  y, i.e. z plays the role of x × y. It packages the same universal mapping
- property as [Cartesian] but for one designated triple, so that "being a
- product" can be asserted of a specific object rather than a chosen
+ property as [Cartesian] but for one designated triple, so that “being a
+ product” can be asserted of a specific object rather than a chosen
  operation. 
 
  --------

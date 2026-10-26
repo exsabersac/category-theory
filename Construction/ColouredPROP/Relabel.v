@@ -7,13 +7,13 @@ Require Import Category.Construction.Product.
 Require Import Category.Functor.Construction.Product.
 (*
  [Instance.Fun] is Required but NOT Imported: its functor-category
- notation "[ C , D ]" (level 90) and ListNotations' "[]" have
+ notation “[ C , D ]” (level 90) and ListNotations' “[]” have
  incompatible parsing prefixes, and this file needs the latter for
  colour words.  The one use of the functor category below names
  [Category.Instance.Fun.Fun] qualified. 
 
  --------
- [Instance.Fun] 是必需的但未导入：其函子范畴符号 "[ C , D ]"（级别 90）与 ListNotations 的 "[]" 具有不兼容的解析前缀，而此文件需要后者来表示颜色词。下面对函子范畴的唯一使用命名了合格的 [Category.Instance.Fun.Fun]。
+ [Instance.Fun] 是必需的但未导入：其函子范畴符号 “[ C , D ]”（级别 90）与 ListNotations 的 “[]” 具有不兼容的解析前缀，而此文件需要后者来表示颜色词。下面对函子范畴的唯一使用命名了合格的 [Category.Instance.Fun.Fun]。
 *)
 Require Category.Instance.Fun.
 Require Import Category.Structure.Monoidal.

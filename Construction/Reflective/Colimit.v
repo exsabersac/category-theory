@@ -88,16 +88,16 @@ Generalizable All Variables.
    [reflective_Cocomplete] applied to each pair elaborates (measured
    by a [Definition] in a scratch file) but is not made a constant.
 
-   STALE PREMISES (the issue's "Current state", six).  [Cocomplete]
-   (Structure/Complete.v) is said to have "no concrete instance and
-   only a hypothesis use in Theory/Adamek/Corollaries.v": it has three
+   STALE PREMISES (the issue's “Current state”, six).  [Cocomplete]
+   (Structure/Complete.v) is said to have “no concrete instance and
+   only a hypothesis use in Theory/Adamek/Corollaries.v”: it has three
    inhabitants — [Sets_Cocomplete] (Instance/Sets/Cocomplete.v),
    [Subsets_Cocomplete] (Instance/Powerset.v),
    [Proset_Cocomplete_of_all_joins] (Instance/Proset/Limit.v) — and
    ten files binding a [Cocomplete] hypothesis (grep for [Cocomplete] in
    binder position: `(… : Cocomplete`, `Cocomplete →`, `Context …
    Cocomplete`), none in Adjunction/GAFT.v or its satellites
-   ("consumed only as a hypothesis in GAFT" has zero hits).  Both "0 hits"
+   (“consumed only as a hypothesis in GAFT” has zero hits).  Both “0 hits”
    greps (`colimits.*subcategory`, `reflective.*colimit`) return one hit
    each, Limit.v's own scope-out paragraph.  [equivalence_creates_colimits]
    is in Theory/Equivalence/Limit.v, but not where the issue cites it.
@@ -129,7 +129,7 @@ Generalizable All Variables.
    arriving with [radj] from [Reflective] and [Sub].
 
    MEASURED.  20 `.glob` heads (16 `def`, 4 `prf`), no [Program]
-   obligations, all 20 "Closed under the global context", zero `Axioms:`
+   obligations, all 20 “Closed under the global context”, zero `Axioms:`
    lines; the `make print-assumptions` gate carries the 20.  Two
    `Defined`, both LOAD-BEARING (flipped to `Qed` one at a time in a copy
    of the whole file: [rc_unit_hom] stops [rc_iso_to_from],
@@ -151,8 +151,8 @@ Generalizable All Variables.
    Test/ProbeReflectiveColimit434.v mirrors the `Require` list plus
    Structure/Limit/Creation.v and the witness's three modules and carries
    5 refutation commands = 1 instrument + N1 TYPING (the reflected apex is
-   an object of [Sub C S], not the ambient apex: "has type obj[C] while it
-   is expected to have type obj[Sub C S]") + N2 CONVERSION
+   an object of [Sub C S], not the ambient apex: “has type obj[C] while it
+   is expected to have type obj[Sub C S]”) + N2 CONVERSION
    ([Cocomplete (Sub C S) = Cocomplete C] at [eq_refl]) + N3-N4 TYPING
    (the cocone-level result does not ascribe to
    [PreservesColimitCocone K (Incl C S)], nor the colimit to
@@ -167,11 +167,11 @@ Generalizable All Variables.
    [reflective_colimit_cocone], [PreservesColimitCocone], [Incl],
    [CreatesColimit] — every first break on a positive line.  `make todo`
    grows by the 5 refutation lines only (2272 → 2277 over #433's tip
-   10fdfda4), so the issue's "adds no new hits" box is not met as written
+   10fdfda4), so the issue's “adds no new hits” box is not met as written
    (disclosed, as in #430 and #433); Coq 8.19 and 8.20 are checked by nix
    source builds of the committed revision, which the PR records.
    Limit.v's header paragraph on the colimit half and its
-   docs/INDEX.md bullet's "OPEN" clause are corrected in place, the former
+   docs/INDEX.md bullet's “OPEN” clause are corrected in place, the former
    line-neutrally.
 
    NOT DELIVERED: creation of colimits by the inclusion, or Riehl §4.6 ex

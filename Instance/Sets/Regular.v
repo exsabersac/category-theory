@@ -36,8 +36,8 @@ Generalizable All Variables.
  EVERY PROPOSITION.  [blanket_regularity_entails_LEM] below derives,
  axiom-free, the Type-valued excluded middle ∀ P : Prop, P + (P → False)
  from [BlanketRegularity]; and [blanket_splitting_entails_LEM] derives the
- very same conclusion from the weaker principle [BlanketSplitting], "every
- epimorphism with inhabited domain splits", which is the internal axiom of
+ very same conclusion from the weaker principle [BlanketSplitting], “every
+ epimorphism with inhabited domain splits”, which is the internal axiom of
  choice the nLab page on split epimorphisms records as the categorical
  phrasing of choice.  Coq's ambient logic is intuitionistic and proves
  neither conclusion, so neither principle is available in this development,
@@ -67,14 +67,14 @@ Generalizable All Variables.
  instead the SETOID phrasing: choice over setoids is the extensional axiom
  of choice, and Stdlib.Logic.SetoidChoice records its decomposition into
  classical logic, relational choice, unique choice, and a limited
- functional extensionality, citing Carlström, "EM + Ext_ + AC_int is
- equivalent to AC_ext" (Mathematical Logic Quarterly 50(3), 2004,
+ functional extensionality, citing Carlström, “EM + Ext_ + AC_int is
+ equivalent to AC_ext” (Mathematical Logic Quarterly 50(3), 2004,
  pp. 236-240).  The classical logic in that decomposition is exactly what
  the theorems below recover, and the argument that recovers it has the
  shape of Diaconescu's: a two-element object coarsened by a proposition,
  over which choosing a representative decides the proposition (Diaconescu,
- "Axiom of choice and complementation", Proc. Amer. Math. Soc. 51, 1975,
- pp. 176-178; nLab, "Diaconescu's theorem", retrieved 2026-08).  A setoid
+ “Axiom of choice and complementation”, Proc. Amer. Math. Soc. 51, 1975,
+ pp. 176-178; nLab, “Diaconescu's theorem”, retrieved 2026-08).  A setoid
  library supplies the quotient-like objects that argument needs at no extra
  cost, which is why the price is paid HERE and is not paid by the
  intensional choice axioms of the standard library.
@@ -291,7 +291,7 @@ End Coarsening.
 (*
  The statement Mac Lane's exercise makes about Set, transcribed for [Sets]:
  every arrow whose domain is inhabited -- inhabitation taken as DATA, an
- actual element, which is what "nonempty" means constructively -- is
+ actual element, which is what “nonempty” means constructively -- is
  regular. 
 
  --------
@@ -305,8 +305,8 @@ Definition BlanketRegularity : Type :=
  The internal axiom of choice in the same restricted form: every
  epimorphism whose domain is inhabited splits.  The nLab page on split
  epimorphisms records that the axiom of choice internal to a category may
- be phrased as "all epimorphisms are split" and that "In Set this is
- equivalent to the usual axiom of choice" (retrieved 2026-08). 
+ be phrased as “all epimorphisms are split” and that “In Set this is
+ equivalent to the usual axiom of choice” (retrieved 2026-08). 
 
  --------
  相同受限形式下的内部选择公理：每一个定义域非空的满射都是可分的。nLab 关于可分满射的页面记录了内部于范畴的选择公理可以表述为“所有满射都是可分的”，并且“在集合范畴中，这等价于通常的选择公理”（检索于 2026-08）。

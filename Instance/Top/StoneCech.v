@@ -21,7 +21,7 @@ Generalizable All Variables.
 (*
  The Stone–Čech compactification over the tree's [Top]
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5):
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5):
  §V.6, book p. 125 (PDF p. 134), the compactification of a discrete set by
  the general adjoint functor theorem
  (maclane:V.6:construction-stone-cech-discrete); §V.8, Construction 1,
@@ -29,13 +29,13 @@ Generalizable All Variables.
  space by the special adjoint functor theorem with the unit interval as
  cogenerator (maclane:V.8:construction1); and §V.8 Exercise 4, the
  injectivity of the unit on completely regular spaces (maclane:V.8:ex4).
- Riehl, "Category Theory in Context", 2nd ed., Example 4.7.12, printed
+ Riehl, “Category Theory in Context”, 2nd ed., Example 4.7.12, printed
  p. 178 (PDF p. 198; riehl:4.7:example12).
  nLab:  https://ncatlab.org/nlab/show/Stone-Cech+compactification
  nLab:  https://ncatlab.org/nlab/show/Tychonoff+theorem
- Paper: M. H. Stone, "Applications of the theory of Boolean rings to
- general topology", Trans. Amer. Math. Soc. 41 (1937), 375–481
- Paper: E. Čech, "On bicompact spaces", Ann. of Math. 38 (1937), 823–844
+ Paper: M. H. Stone, “Applications of the theory of Boolean rings to
+ general topology”, Trans. Amer. Math. Soc. 41 (1937), 375–481
+ Paper: E. Čech, “On bicompact spaces”, Ann. of Math. 38 (1937), 823–844
 
  BACKGROUND.  Stone and Čech found, independently and in the same year,
  that a space X sits inside a compact Hausdorff space βX through which
@@ -53,10 +53,10 @@ Generalizable All Variables.
  Riehl names what the SAFT construction produces, the closure of the
  image of X in a power of the interval.  The classical direct
  construction is the space of ultrafilters on X; Tychonoff's theorem
- for Hausdorff spaces needs the ultrafilter theorem, "and possibly
- excluded middle", while for locales "no choice whatsoever is needed"
+ for Hausdorff spaces needs the ultrafilter theorem, “and possibly
+ excluded middle”, while for locales “no choice whatsoever is needed”
  (nLab, Tychonoff theorem), which is why the constructive home of these
- constructions is locale theory (Johnstone, "Stone Spaces", CUP 1982).
+ constructions is locale theory (Johnstone, “Stone Spaces”, CUP 1982).
 
  THE ISSUE'S TWO HEADLINE NAMES ARE NOT CONSTANTS HERE, FOR TWO
  DIFFERENT REASONS.  Stated as the issue pins them, [StoneCech_discrete]
@@ -137,8 +137,8 @@ Generalizable All Variables.
  Prop-valued preservation of Prop-valued opens, is accepted under a
  closed binder [@{o}], so with an empty constraint block, while
  [ContinuousMorphism X Y] ascribed at [Type@{o}] for [X Y : TopSpace@{o}]
- is refused: "universe inconsistency: Cannot enforce <1> <= o because o <
- <1>" (the generated universe written <1>).  That probe pins both (its
+ is refused: “universe inconsistency: Cannot enforce <1> <= o because o <
+ <1>” (the generated universe written <1>).  That probe pins both (its
  N6).  With homs at the points' universe the objects sit one level above
  them, as in [Sets].  The expectation, which nothing in this file tests,
  is that Freyd's argument then no longer reaches the universes the
@@ -262,11 +262,11 @@ Generalizable All Variables.
  to conversion ([Bool_Discrete] is [Discrete_Top bool_setoid_object]), so
  a control written that way would pass vacuously.  The wrong-value control
  is the equation with the one-point space [Point_CH] on the right: it is
- refused at the carrier ("cannot unify" [arrow_obj] and [Point_CH]), and
+ refused at the carrier (“cannot unify” [arrow_obj] and [Point_CH]), and
  its value is wrong as a theorem (Test/ProbeStoneCech455.v's N1, whose
  [p455_n1_wrong_value] derives [False] from it).  The same equation
  against [Discrete_CH] at a second enumeration of bool, listing [false]
- first, is refused as well ("cannot unify" [arrow_obj] and [Discrete_CH]
+ first, is refused as well (“cannot unify” [arrow_obj] and [Discrete_CH]
  at that enumeration), but it pins only that the universal object carries
  the enumeration it was built from: the two objects have one space and
  differ in their [Qed] compactness proofs, so that their values differ is
@@ -332,16 +332,16 @@ Generalizable All Variables.
  kept as the measured reduction, not as a result.
 
  STALE PREMISES OF THE ISSUE, RE-MEASURED.
- - "No topological categories exist — no [Top], no [CompHaus]": both
+ - “No topological categories exist — no [Top], no [CompHaus]”: both
  exist, Instance/Top.v (#259) and Instance/Top/CompHaus.v (#413).
- - "SAFT itself is never applied to any concrete category"
+ - “SAFT itself is never applied to any concrete category”
  (docs/INHABITATION.md): its [SAFT_wellpowered] row records
  applications at the powerset lattice [Subsets Y] and at
  [Indiscrete], conditionally on [Untruncate] at [Sets], and at
  [(RMod R)^op] (#454).
- - "#413 supplies [CompHaus] and the creation of limits by its
+ - “#413 supplies [CompHaus] and the creation of limits by its
  underlying-set functor, which creates limits, so [CompHaus] is
- complete": #413 formed [CreatesLimit K CompHaus_Forget] but did not
+ complete”: #413 formed [CreatesLimit K CompHaus_Forget] but did not
  prove it (Instance/Top/CompHaus.v, NOT DELIVERED (c)), and
  completeness at the universes the theorems use here is refuted
  under [IEM], with the objects of [CompHaus] at its hom universe and
@@ -351,9 +351,9 @@ Generalizable All Variables.
  comment prose outside this development.  Method: grep -E, case-sensitive,
  over the files of _CoqProject other than this development's own
  (these two and Test/ProbeStoneCech455.v), with the pattern
- "Čech|Stone-Cech|[Cc]ompactif|Tychonoff|Urysohn|[Cc]ompletely regular"
+ “Čech|Stone-Cech|[Cc]ompactif|Tychonoff|Urysohn|[Cc]ompletely regular”
  (the issue's case-insensitive pattern also matches words such as
- "ConstOne" and "milestone").  It finds four files:
+ “ConstOne” and “milestone”).  It finds four files:
  Theory/Universal/Arrow.v, Structure/Limit.v (Čech cohomology),
  Instance/Roster.v and Instance/Top/CompHaus.v, every hit inside a
  comment.
@@ -425,7 +425,7 @@ Generalizable All Variables.
  单射，仅从完全性即可将 [obj[CompHaus] → bool 注入一个空间的点中；以及
  任何具有 ¬¬-稳定成员的 [CompHaus] 的共生家族的代价（双重否定消除），以及任何单个 ¬¬-稳定的 [K] 的代价，该 [K] 可分离每个紧豪斯多夫空间的点。
 
- 优势，严格先行。- [eq_refl]：[StoneCech_finite_obj]（通用对象是[Discrete_CH X FX]），[StoneCech_finite_unit]（单位是[sc_fin_unit X FX]，根据定义是[Sets]在[Setoid_Lift X]的恒等式），以及[CompHaus_Incl_universal_obj]（紧豪斯多夫空间上的通用对象就是该空间本身）。[StoneCech_finite_obj]的错误值控制必须命名一个真正不同的对象。在[X] := [bool_setoid_object]时，方程右边为[Bool_CH]的情况是允许的，[Bool_CH]在[bool_FinEnum]处与[Discrete_CH]相同，转换后（[Bool_Discrete]是[Discrete_Top bool_setoid_object]），因此以这种方式编写的控制会自动通过。错误值控制是右侧具有单点空间 [Point_CH] 的方程：它在载体处被拒绝（"无法统一" [arrow_obj] 和 [Point_CH]），并且其作为定理的值是错误的（Test/ProbeStoneCech455.v 的 N1，其 [p455_n1_wrong_value] 从中推导出 [False]）。同样的方程在布尔的第二次枚举中针对 [Discrete_CH]，并且先列出 [false]，也被拒绝（"无法统一" [arrow_obj] 和 [Discrete_CH] 在该枚举中），但它只确定那一普遍对象承载了它被创建时的枚举：两个对象有一个空间，但在其 [Qed] 紧致性证明上有所不同，因此它们的值在元层面上有所不同（探针的 N2）。- [UniversalArrow] 记录：[StoneCech_finite] 和 [CompHaus_Incl_universal]，每个由 Theory/Universal/Arrow.v 的 [universal_arrow_from_UMP] 从唯一存在构建，其唯一性是 [≈] 的连续映射，逐点。- [∃!] 到 [≈]：[CompHaus_Forget_PreservesImageLimit]。- [≈] 作用于点，从不 [=]，在整个练习 4 中；紧性表征中的数据是双向的（[FinEnum] 和 [IsCompact] 是 [Type] 值的）。- [False]：[nat_not_FinEnum]，[Discrete_nat_not_compact]。
+ 优势，严格先行。- [eq_refl]：[StoneCech_finite_obj]（通用对象是[Discrete_CH X FX]），[StoneCech_finite_unit]（单位是[sc_fin_unit X FX]，根据定义是[Sets]在[Setoid_Lift X]的恒等式），以及[CompHaus_Incl_universal_obj]（紧豪斯多夫空间上的通用对象就是该空间本身）。[StoneCech_finite_obj]的错误值控制必须命名一个真正不同的对象。在[X] := [bool_setoid_object]时，方程右边为[Bool_CH]的情况是允许的，[Bool_CH]在[bool_FinEnum]处与[Discrete_CH]相同，转换后（[Bool_Discrete]是[Discrete_Top bool_setoid_object]），因此以这种方式编写的控制会自动通过。错误值控制是右侧具有单点空间 [Point_CH] 的方程：它在载体处被拒绝（“无法统一” [arrow_obj] 和 [Point_CH]），并且其作为定理的值是错误的（Test/ProbeStoneCech455.v 的 N1，其 [p455_n1_wrong_value] 从中推导出 [False]）。同样的方程在布尔的第二次枚举中针对 [Discrete_CH]，并且先列出 [false]，也被拒绝（“无法统一” [arrow_obj] 和 [Discrete_CH] 在该枚举中），但它只确定那一普遍对象承载了它被创建时的枚举：两个对象有一个空间，但在其 [Qed] 紧致性证明上有所不同，因此它们的值在元层面上有所不同（探针的 N2）。- [UniversalArrow] 记录：[StoneCech_finite] 和 [CompHaus_Incl_universal]，每个由 Theory/Universal/Arrow.v 的 [universal_arrow_from_UMP] 从唯一存在构建，其唯一性是 [≈] 的连续映射，逐点。- [∃!] 到 [≈]：[CompHaus_Forget_PreservesImageLimit]。- [≈] 作用于点，从不 [=]，在整个练习 4 中；紧性表征中的数据是双向的（[FinEnum] 和 [IsCompact] 是 [Type] 值的）。- [False]：[nat_not_FinEnum]，[Discrete_nat_not_compact]。
 
  宇宙，用 [Set Printing Universes. About …] 测量，stdlib 的界限省略。每个绑定器都是显式的：[o] 是点，[h] 是 [Top] 的同伦宇宙（以及 [CompHaus] 的，当两者重合时），[s] 是 [Sets] 的对象，[CompHaus_Forget] 落入其中，[j] 是一个形状。Discrete_Hausdorff@{h o} : ∀ A : SetoidObject@{o o},
  IsHausdorff@{h o o o} (Discrete_Top@{o o} A)      ( * o < h * )
@@ -441,9 +441,9 @@ Generalizable All Variables.
  [KSeparated_of_unit_injective] 没有证据：树中的任何 [K] 都没有显示满足其前提，而一个具有 ¬¬-稳定点等式的 [K] 只能以双重否定消除为代价满足它（见 (4)）。在 [IEM] 下，[GAFT_CompHaus_only_complete] 的假设 IS 被驳斥：那个常数是一个具有经典上为假的前提的条件，仅作为测量的还原保留，并非作为结果。问题的陈旧前提，重新测量。- “不存在拓扑范畴 — 没有 [Top]，没有 [CompHaus]”：两者都存在，Instance/Top.v (#259) 和 Instance/Top/CompHaus.v (#413)。- “SAFT 本身从未应用于任何具体范畴”（docs/INHABITATION.md）：其 [SAFT_wellpowered] 行记录了在幂集合格 [Subsets Y] 以及在 [Indiscrete] 上的应用，有条件地在 [Sets] 的 [Untruncate] 上，以及在 [(RMod R)^op] 上 (#454)。- “#413 供应了 [CompHaus] 以及其基础集合函子所创建的极限，该函子会创建极限，因此 [CompHaus] 是完整的”：#413 形成了 [CreatesLimit K CompHaus_Forget]，但并未证明它（Instance/Top/CompHaus.v，未交付 (c)），并且在定理在这里使用的宇宙下完整性在 [IEM] 下被驳斥，其对象为 [CompHaus] 于其同构宇宙及其之上（Refutations.v，覆盖范围）。- 关于 Stone、Čech、Tychonoff、Urysohn 以及完全规整性的搜索问题，缩小到这些术语本身，除了本开发之外的评论性文章外没有找到任何内容。方法：使用 grep -E，区分大小写，
  搜索 _CoqProject 中除本开发自身的文件之外的文件
  （除了这两个文件和 Test/ProbeStoneCech455.v），匹配模式
- "Čech|Stone-Cech| [Cc] ompactif|Tychonoff|Urysohn| [Cc] ompletely regular"
+ “Čech|Stone-Cech| [Cc] ompactif|Tychonoff|Urysohn| [Cc] ompletely regular”
  （该问题的大小写不敏感模式也会匹配诸如
- "ConstOne" 和 "milestone" 之类的词）。它找到了四个文件：
+ “ConstOne” 和 “milestone” 之类的词）。它找到了四个文件：
  Theory/Universal/Arrow.v、Structure/Limit.v（Čech 上同调）、
  Instance/Roster.v 和 Instance/Top/CompHaus.v，每个命中都在注释中。未交付。- 一个名为 [StoneCech_discrete] 的常量。其陈述，即在 [CompHaus_Forget] 处的 §V.6 附加，在 [IEM] 下被驳斥，在 GAFT 生成的实例及其上方的每个对象宇宙中，在 Refutations.v 的覆盖记录（如上）处亦是如此。- 一个名为 [StoneCech] 的常量。其陈述，即在 [CompHaus_Incl] 处的 §V.8 附加，没有被驳斥，并且在经典逻辑下成立，但在这里既没有构建直接的构造，也没有建立非空的途径。- #1329 包含了两种构造，基于 #1328 的编码，或者在陈述未被驳斥的情况下，通过此处的直接构造。- 在无限集合或非离散空间上的 Stone–Čech，βX 的超滤器构造，任意元下的 Tychonoff 定理以及 Urysohn 引理；Mac Lane 的双幂集解集（在这些宇宙中不需要，见 (3)）；Riehl 的像闭包描述。 - 区间作为 [CompHaus] 的对象，因此即使作为条件，也采用带区间余生成元的 SAFT 方法（这是期刊的审稿人关注点），以及练习 4 的区间形式。Instance/Top/Interval.v 的 [I_Top] 在那里既未显示为紧致也未显示为 Hausdorff，每个为其命名的常量都继承了 stdlib 公理 [ClassicalDedekindReals.sig_forall_dec] 和 [functional_extensionality_dep]（打印假设 [I_Top]；该文件在 docs/AXIOMS.md 的实数导入文件中），因此这里没有。该路线在任何情况下从经典上都是空洞的：它的完备性假设是被驳斥的，Refutations.v 的 [CompHaus_cogenerator_stable_DNE] 显示任何具有 ¬¬-稳定成员的 [CompHaus] 的共同生成族，其中包含区间，都会消耗双重否定消除。- 离散情况作为在 [Top] 上封装的 [Discrete ⊣ Forget] 的复合：Instance/Top/Forgetful.v 显示伴随不能封装为一个 [Adjunction] 记录，它的两个函子存在于不同的 [Sets] 上。- 没有任何东西被注册为 [Instance] 。计数。这里有41个常量（22个[Definition]，8个[Lemma]，8个[Theorem]，3个[Example]），它们通过其完全限定名在全局上下文中都是封闭的，[Print Module] 正好列出了这41个，因此没有生成辅助常量。七个证明以 [Defined] 结束（按标记）；其中四个是承重的，每个通过单独翻转为 [Qed] 并重新编译此文件及其附属文件来测量：[sc_pt_cone]（其顶点必须展开到 [sc_pres_pt] 的点），[sc_pres_map]（由 [CompHaus_Forget_PreservesImageLimit] 展开），[sc_chi]（由 [unit_injective_of_dec] 中的 [discriminate] 计算）和 [CompHaus_Incl_universal]（其回读 [CompHaus_Incl_universal_obj]）；其他三个，[sc_fin_ump]、[taut_sols] 和 [sc_bool_dec]，与所有绿色一起翻转，并作为数据保留 [Defined]。关闭除自身外的 67 个模块：
  Instance/Top/CompHaus.v 在边际上的成本为 11，Adjunction/GAFT.v 为 8，

@@ -21,7 +21,7 @@
    jwiegley/category-theory#803 words it; the object-identifying construction
    is a separate obligation that remains open.
 
-   WHY "REFLECTION" IS EARNED HERE.  Not by citation, but by the universal
+   WHY “REFLECTION” IS EARNED HERE.  Not by citation, but by the universal
    property proved below: [ThinLift] shows every functor into a thin category
    factors through [Reflect] uniquely ([ThinLift_proj], [ThinLift_unique]).
    That makes [PreorderReflect C] THE universal thin quotient of [C], rather
@@ -34,7 +34,7 @@
    Fong and Spivak give for commutativity in Seven Sketches in
    Compositionality §3.3.4, the footnote to Definition 3.51; it is the
    reading that makes
-   "commutes" a statement about the SHAPE rather than about any one figure:
+   “commutes” a statement about the SHAPE rather than about any one figure:
    once parallel morphisms of the shape are identified, a functor out of the
    quotient cannot distinguish two parallel paths, so it cannot help but
    commute.  Theory/Diagram.v proves both directions.
@@ -59,7 +59,7 @@
    not the reflection: being a [CRelationClasses.PreOrder] on [hom] it is
    [Type]-valued, so it REMEMBERS which morphism witnesses the relation --
    exactly the information the reflection is meant to discard.  Its header
-   does not use the phrase "Type-valued"; what it records is that reflexivity
+   does not use the phrase “Type-valued”; what it records is that reflexivity
    is witnessed by [id] and transitivity by composition, which is the same
    fact stated constructively.
 
@@ -127,8 +127,8 @@ Definition PreorderReflect (C : Category) : Category :=
   Quotient C (TotalRel C).
 
 (*
-   * The defining property: the result is thin.  Thin is exactly "is a
-   preorder" (Theory/Category.v), so this is the sense in which
+   * The defining property: the result is thin.  Thin is exactly “is a
+   preorder” (Theory/Category.v), so this is the sense in which
    [PreorderReflect C] is a preorder rather than merely a category. 
 
    --------
@@ -162,7 +162,7 @@ Definition Reflect (C : Category) : C ⟶ PreorderReflect C :=
 
 (*
    * A category is THIN when any two parallel morphisms agree.  By
-   Theory/Category.v that is exactly "is a preorder". 
+   Theory/Category.v that is exactly “is a preorder”. 
 
    --------
    * 当任意两个平行态射相等时，一个范畴是稀薄的。根据 Theory/Category.v，这正是“是一个预序”的定义。
@@ -226,7 +226,7 @@ End Universal.
 (*
    * So [PreorderReflect C] is THE universal thin quotient of [C], not merely a
    quotient that happens to be thin.  This is what earns the word
-   "reflection" here; the full reflective adjunction with the inclusion of
+   “reflection” here; the full reflective adjunction with the inclusion of
    preorders into [Cat] is stronger and is item 4 of #803. 
 
    --------

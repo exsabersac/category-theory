@@ -20,7 +20,7 @@ Generalizable All Variables.
  natural numbers and whose tensor on objects is addition, [m ⊗ n = m + n].
  The free PROP on a signature [S] has as its [m ~> n] arrows the [S]-terms
  [Term S m n] quotiented by the laws of a symmetric monoidal category; this
- is the standard "free = syntactic" construction, the symmetric-monoidal
+ is the standard “free = syntactic” construction, the symmetric-monoidal
  analogue of the path/quotient construction of a free category.
 
  This file assembles only the underlying [Category] layer of that quotient:

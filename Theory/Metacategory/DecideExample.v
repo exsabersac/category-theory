@@ -18,7 +18,7 @@ nLab: https://ncatlab.org/nlab/show/metacategory
    together two pieces of machinery:
 
      - [Category.Theory.Metacategory.ArrowsOnly], which presents a category in
-       Mac Lane's single-sorted ("arrows-only") form, with partial composition
+       Mac Lane's single-sorted (“arrows-only”) form, with partial composition
        encoded as a finite map [pairs : M.t N] and a family of concrete finite
        metacategories built by [composable_pairs n] (the standard composable
        pairs of the n-object finite category, indexed via [triangular_number]);
@@ -29,7 +29,7 @@ nLab: https://ncatlab.org/nlab/show/metacategory
 
    The point of the examples is to exercise the decider on the very goals that
    arise when verifying that a [composable_pairs n] table really is a category:
-   the associativity ("composition law") coherence between left- and
+   the associativity (“composition law”) coherence between left- and
    right-associated composites. The interleaved timing comments contrast
    [map_decide] (reflective, fast) against the earlier brute-force tactic
    [destruct_maps; nomega], which blows up combinatorially as n grows. The
@@ -92,8 +92,8 @@ Proof. solve_map. Qed.
 
 (*
 The real content: the associativity coherence of [composable_pairs n].
-   Following [ArrowsOnly]'s convention, [M.find (f, g) = Some fg] reads "g and
-   f compose to fg" (i.e. [f ∘ g = fg]). So the hypotheses say [f ∘ g = fg],
+   Following [ArrowsOnly]'s convention, [M.find (f, g) = Some fg] reads “g and
+   f compose to fg” (i.e. [f ∘ g = fg]). So the hypotheses say [f ∘ g = fg],
    [g ∘ h = gh] and [fg ∘ h = fgh]; the conclusion says [f ∘ gh = fgh], i.e.
    the left- and right-associated composites of the triple agree. This is
    exactly the [composition_law] obligation discharged for [Three] in
@@ -115,7 +115,7 @@ Example problem3 : ∀ f g h fg gh fgh : N,
 Proof.
   simpl; vm_compute triangular_number; intros.
 (*
-  destruct_maps; try nomega. (* takes 1.68s / destruct_maps；尝试 nomega。(* 花费 1.68 秒 *)
+  destruct_maps; try nomega. (* takes 1.68s / destruct_maps；尝试 nomega。(* 花费 1.68 秒 *) *)
   Undo.
 *)
   map_decide.                (* takes 0.016s / 耗时0.016秒 *)
@@ -139,7 +139,7 @@ Example problem4 : ∀ f g h fg gh fgh : N,
   M.find (elt:=N) (f,  gh) big = Some fgh.
 Proof.
   simpl; vm_compute triangular_number; intros.
-  (* destruct_maps; try nomega. (* takes 30.15s / destruct_maps；尝试 nomega。(* 花费 30.15 秒 *) *)
+  (* destruct_maps; try nomega. (* takes 30.15s / destruct_maps；尝试 nomega。(* 花费 30.15 秒 *) *) *)
   (* Undo. / 撤销。 *)
   map_decide.                (* takes 0.035s / 耗时0.035秒 *)
 Qed.

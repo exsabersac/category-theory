@@ -22,7 +22,7 @@ Generalizable All Variables.
 (*
    * * Collapse theorems for over-structured tensors
 
-   Two classical "no-go" results delimiting how much algebraic structure a
+   Two classical “no-go” results delimiting how much algebraic structure a
    monoidal category can carry before it degenerates.  Both are theorems
    about *seam discipline*: they are the mathematical reason copying
    (comonoid/Frobenius) structure must be withheld from a tensor that is
@@ -182,7 +182,7 @@ End FrobeniusCollapse.
 (*
  The cartesian instance: in a cartesian monoidal category — where the
  tensor is the categorical product — every Frobenius object collapses to
- the terminal unit (cf. Heunen & Vicary, "Categories for Quantum Theory",
+ the terminal unit (cf. Heunen & Vicary, “Categories for Quantum Theory”,
  Oxford UP, 2019, Ch. 5 on Frobenius structures).  This is the
  load-bearing form for seam discipline: no special commutative Frobenius
  structure can live on a colour whose ambient tensor is cartesian. 
@@ -199,7 +199,7 @@ Qed.
 (*
    * ** Abramsky's no-cloning theorem
 
-   Abramsky, "No-Cloning in categorical quantum mechanics" (arXiv:0910.2401),
+   Abramsky, “No-Cloning in categorical quantum mechanics” (arXiv:0910.2401),
    §4.  Uniform copying in a symmetric monoidal category is a monoidal
    natural diagonal that is coassociative and cocommutative — precisely the
    [RelevanceMonoidal] structure.  The proofs below consume only
@@ -210,8 +210,8 @@ Qed.
    copying operation.
 
    The theorem: if such a category is moreover compact closed, the braiding
-   σ_{x,x} on every diagonal square is the identity ("the twist map is the
-   identity", the boxed Second Step of op. cit.), from which Abramsky's
+   σ_{x,x} on every diagonal square is the identity (“the twist map is the
+   identity”, the boxed Second Step of op. cit.), from which Abramsky's
    Theorem 11 (every endomorphism is a scalar multiple of the identity)
    follows.  The proof formalized here reorganizes the paper's Lemma 13:
 
@@ -220,8 +220,8 @@ Qed.
    (∆x* ⨂ ∆x) ∘ η          ([cups_mid_diagonal]);
 
    2. cocommutativity of ∆x therefore lets the two x-wires of the two-cup
-   state be swapped silently  ([cups_mid_braid]) — the "confusion of
-   entanglements";
+   state be swapped silently  ([cups_mid_braid]) — the “confusion of
+   entanglements”;
 
    3. capping each input x-wire against one of the two duals turns that
    silent swap into σ ∘ - on the outputs ([close_braid]), while a double
@@ -345,7 +345,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Cocommutativity of ∆x, tensored on the right: the two x-wires of the regrouped two-cup state can be swapped silently. This is the state-level "confusion of entanglements". / ∆x 的余交换性，右侧张量：可以悄无声息地交换重新分组的双杯状态的两个 x 线。这是状态层面的“纠缠混淆”。 *)
+(* Cocommutativity of ∆x, tensored on the right: the two x-wires of the regrouped two-cup state can be swapped silently. This is the state-level “confusion of entanglements”. / ∆x 的余交换性，右侧张量：可以悄无声息地交换重新分组的双杯状态的两个 x 线。这是状态层面的“纠缠混淆”。 *)
 Lemma cups_mid_braid :
   id[(d ⨂ d)%object] ⨂ braid ∘ cups_mid ≈ cups_mid.
 Proof.
@@ -438,7 +438,7 @@ Qed.
 (*
  Passing a wire over a freshly inserted cup from the right equals passing
  it under from the left: the hexagon absorbs the crossing.  (In Abramsky's
- diagrams this is how the crossing of the "confused" cups is normalized.) 
+ diagrams this is how the crossing of the “confused” cups is normalized.) 
 
  --------
  将一根线从右侧穿过新插入的杯子，相当于从左侧从下方穿过：六角形吸收了交叉。（在Abramsky的图中，这就是“混乱”杯子的交叉如何被规范化的方式。）

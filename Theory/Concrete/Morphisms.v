@@ -14,10 +14,10 @@ Generalizable All Variables.
 (*
 nLab:      https://ncatlab.org/nlab/show/concrete+category
    Wikipedia: https://en.wikipedia.org/wiki/Concrete_category
-   Book:      Riehl, "Category Theory in Context", Dover 2016, §1.6,
+   Book:      Riehl, “Category Theory in Context”, Dover 2016, §1.6,
               Exercise 1.6.iv, printed p. 47, and Definition 1.6.18,
               printed p. 45
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
               GTM 5, Springer 1998, §I.5, Exercise 9, printed p. 21
 
    Riehl's Exercise 1.6.iv is that a faithful functor reflects monomorphisms
@@ -81,7 +81,7 @@ Injective underlying function implies monic.  This IS a corollary of
    NOTE THE ASYMMETRY with the epic direction below, which CANNOT take this
    route: Instance/Sets.v's [surjectivity_is_epic] terminates in an
    incomplete sketch and does not enter the environment, so there is no
-   independent "surjective implies epic" in [Sets] to reflect through.  That
+   independent “surjective implies epic” in [Sets] to reflect through.  That
    direction is therefore proved directly here, and [Sets_surjective_epic]
    below is obtained FROM it rather than the other way round.
 
@@ -218,7 +218,7 @@ Definition Coq_bool_to_nat_Monic_reflected :
 For epis the `Sets`-side ingredient comes from this file's own
    [concrete_surjective_epic] at [Sets_Concrete] (Theory/Concrete.v),
    whose underlying-set functor is the identity: there `concrete_fun h` IS `h`,
-   so the lemma reads "a surjective setoid map is epic in `Sets`".
+   so the lemma reads “a surjective setoid map is epic in `Sets`”.
    Instance/Sets.v states the corresponding biconditional as
    `surjectivity_is_epic`, but that proof is a sketch stopped before
    completion, so the name never enters the environment and cannot be used

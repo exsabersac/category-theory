@@ -1,13 +1,13 @@
 (*
    * * T0-spaces are a full reflective subcategory of Top
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd
    ed., Springer GTM 5, §IV.3, printed p. 92, Exercise 4.
-   Verbatim from the page image: "4. Show the following
+   Verbatim from the page image: “4. Show the following
    subcategories to be reflective: (a) The full subcategory of
    all partial orders in the category Preord of all preorders,
    with arrows all monotone functions. (b) The full subcategory
-   of T₀-spaces in Top."  Catalog id: maclane:IV.3:ex4.  This
+   of T₀-spaces in Top.”  Catalog id: maclane:IV.3:ex4.  This
    file is clause (b) ONLY; clause (a) -- posets inside the
    category of all preorders -- is the sibling development in
    Instance/Ord.v and Instance/Ord/Poset.v, whose pinned name is
@@ -52,8 +52,8 @@
    This is the substance of the file, and it is a measurement rather
    than a preference.
 
-   The obvious rendering of indistinguishability is "x and y lie in
-   exactly the same opens", quantified over EVERY open of X.  In this
+   The obvious rendering of indistinguishability is “x and y lie in
+   exactly the same opens”, quantified over EVERY open of X.  In this
    library that relation does not fit, and the rejection is a genuine
    universe inconsistency rather than a bookkeeping annoyance.
    [TopSpace@{o}] (Instance/Top.v) has [top_carrier :>
@@ -64,8 +64,8 @@
    Measured: the
    unrestricted relation elaborates as [∀ X : TopSpace@{o}, X → X →
    Type@{h}] with [o < h], and building a [SetoidObject@{o o}] on it
-   is refused with "Cannot enforce ... = o because o < h <= ...".  So
-   the "same carrier, coarser `≈`" design that
+   is refused with “Cannot enforce ... = o because o < h <= ...”.  So
+   the “same carrier, coarser `≈`” design that
    Instance/Ab/TorsionFree.v uses, and that the sibling clause (a)
    uses, is NOT available for [Top] at one and the same universe.
    [SameOpensAll] is kept in the file as that unrestricted relation --
@@ -100,8 +100,8 @@
    [Prop]-valued and small, [kq_open] IS the topology of X and this is
    the ordinary Kolmogorov quotient.
 
-   Read [IsT0] with that in mind: it is "points that agree on all
-   level-[s] opens are equal", a STRONGER requirement than agreement
+   Read [IsT0] with that in mind: it is “points that agree on all
+   level-[s] opens are equal”, a STRONGER requirement than agreement
    on all opens would give, since [SameOpensAll] implies [SameOpens]
    and not conversely by anything proved here.  The restriction is
    visible in the statement rather than hidden inside it.
@@ -123,11 +123,11 @@
    files, so the standard library's real-number axioms are nowhere in
    its closure.
 
-   ** Prior art, measured at d658518e (the issue's "Current state" is
+   ** Prior art, measured at d658518e (the issue's “Current state” is
    stale and is corrected rather than repeated)
 
-   Issue #372 says "both ambient categories are missing" and that
-   "there is no Instance/Top.v".  Both are false at d658518e:
+   Issue #372 says “both ambient categories are missing” and that
+   “there is no Instance/Top.v”.  Both are false at d658518e:
    [Top : Category] is Instance/Top.v, with [TopSpace],
    [Continuous], [ContinuousMorphism], the discrete and
    indiscrete constructors, and the Hausdorff and
@@ -143,7 +143,7 @@
    specializing a theorem), and a search for the token 'T0' returns
    three lines --
    Adjunction/Additive.v and Structure/AbCategory.v --
-   every one of them Mac Lane's phrase "whence T0 = 0" about an
+   every one of them Mac Lane's phrase “whence T0 = 0” about an
    additive functor, which is unrelated.  There was no T0 predicate,
    no indistinguishability relation, no Kolmogorov quotient and no
    reflection.
@@ -166,8 +166,8 @@
    argument is a Category.
    - Construction/Reflective.v: [Reflective] and
    [reflective_counit_iso].
-   - Theory/Universal/Arrow.v: the three constants named under "The
-   route" above.
+   - Theory/Universal/Arrow.v: the three constants named under “The
+   route” above.
 
    The quotient-topology precedents in tree -- Instance/Top.v's
    [CP_open], Instance/Top/Wedge.v's [wedge_open],
@@ -236,7 +236,7 @@
    - [Hausdorff_T0_nn] yields only [¬ ¬ (x ≈ y)], and it is stated
    against [SameOpensAll], not against [SameOpens].  TWO independent
    reasons, both measured rather than guessed.  First, logic: from
-   "x and y lie in the same opens" and "x is apart from y" one gets
+   “x and y lie in the same opens” and “x is apart from y” one gets
    the separating pair and a contradiction, which refutes the
    apartness and gives a double negation; turning that into [x ≈ y]
    is double-negation elimination for the carrier's own `≈`, which
@@ -258,7 +258,7 @@
    the level of the space -- declared with the trailing [+] of
    Instance/Top.v's idiom, and that [+] is load-bearing across
    versions: without it Coq 8.19 and 8.20 reject the declaration with
-   "Universe constraints are not implied by the ones declared" (six
+   “Universe constraints are not implied by the ones declared” (six
    inferred bounds against [prod] and [sigT]) while Rocq 9.1 accepts
    it, which the three-version nix build found and which is why the
    declaration is not closed.  It propagates: [IsT0@{u u0 u1}]
@@ -359,9 +359,9 @@
 
    Each is a measurement, not an opinion.  (1) The brief's plan
    proposed [SameOpens] quantified over ALL opens and the quotient
-   with "[IsOpen := IsOpen X] verbatim", noting that "coarsening the
+   with “[IsOpen := IsOpen X] verbatim”, noting that “coarsening the
    carrier's `≈` to 'agree on every open' keeps every open predicate
-   open on the nose".  That is true of the mathematics and false of
+   open on the nose”.  That is true of the mathematics and false of
    the universes: the relation is a level too big to be a space's `≈`,
    as measured above and pinned in the probe, so the level-restricted
    relation and the respecting-opens topology are used instead.  (2)
@@ -374,7 +374,7 @@
    obstruction (the level of the separating opens) that the brief does
    not anticipate, so the lemma is stated against [SameOpensAll].  (4)
    The brief offered [Sum_Top] from Instance/Top/Coproduct.v for the
-   mixed witness "if it is cheap"; [Tri_Top] is built directly in
+   mixed witness “if it is cheap”; [Tri_Top] is built directly in
    fifty lines instead, which adds nothing to the closure.  Every
    donor line number the brief gave was re-grepped here and is
    correct. 

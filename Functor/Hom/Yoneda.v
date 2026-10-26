@@ -39,7 +39,7 @@ nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
    library carries counterexamples separating the two
    (Instance/Ab/Character/NonNatural.v, Instance/FdVect/NonNatural.v). The
    naturality clause of Mac Lane §III.2 Lemma 2, Awodey §8.3 Lemma 8.2 and
-   Riehl §2.2 Theorem 2.2.4 — "natural in both A and F" — is
+   Riehl §2.2 Theorem 2.2.4 — “natural in both A and F” — is
    Functor/Hom/Yoneda/Natural.v's [yoneda_natural], an isomorphism of
    bifunctors [C, Sets] ∏ C ⟶ Sets whose components are literally
    [Covariant_Yoneda_Lemma] below; the presheaf orientation is
@@ -130,7 +130,7 @@ Nat([Hom ─,A], F) ≅ F A。
 
    Memoir: Yoshiki Kinoshita, categories mailing list, 23 April 1996,
            https://mta.ca/~cat-dist/catlist/1999/yoneda
-   Text:   Emily Riehl, "Category Theory in Context", Dover 2016, §2.2
+   Text:   Emily Riehl, “Category Theory in Context”, Dover 2016, §2.2
 
    The lemma entered mathematics by conversation rather than by
    publication.  Kinoshita's memorial post records the circumstances:
@@ -138,18 +138,18 @@ Nat([Hom ─,A], F) ≅ F A。
    Paris — dated to 1954 by Mac Lane's later account — interviewed him in
    a café at the Gare du Nord, and the interview continued on Yoneda's
    train until its departure.  Mac Lane learned the result there and later
-   baptized it, publishing his own brief telling (Mac Lane, "The Yoneda
-   lemma", Mathematica Japonica 47, 1998) beside Kinoshita's obituary; the
-   French nickname "le lemme de la Gare du Nord" survives (Wikipedia).
+   baptized it, publishing his own brief telling (Mac Lane, “The Yoneda
+   lemma”, Mathematica Japonica 47, 1998) beside Kinoshita's obituary; the
+   French nickname “le lemme de la Gare du Nord” survives (Wikipedia).
    Its first appearance in print is in Grothendieck's descent seminar
-   (Grothendieck, "Technique de descente et théorèmes d'existence en
-   géométrie algébriques", Séminaire Bourbaki 1960; Riehl, §2.2, footnote
+   (Grothendieck, “Technique de descente et théorèmes d'existence en
+   géométrie algébriques”, Séminaire Bourbaki 1960; Riehl, §2.2, footnote
    9) — the same functor-of-points program that studies a scheme through
    the presheaf it represents, and that rests on this lemma for its
    faithfulness.
 
-   Riehl calls the result "arguably the most important result in category
-   theory", and its weight is carried by a chain of corollaries.  Full
+   Riehl calls the result “arguably the most important result in category
+   theory”, and its weight is carried by a chain of corollaries.  Full
    faithfulness of the embedding ([Yoneda_Full] and [Yoneda_Faithful] in
    Functor/Hom.v) yields that [Hom ─,A] ≅ [Hom ─,B] exactly when A ≅ B —
    stated and proved, with the data-level bijection, as
@@ -160,7 +160,7 @@ Nat([Hom ─,A], F) ≅ F A。
    perspective as slogans: mathematical objects are completely determined
    by their relationships to other objects, so the properties of an
    object matter more than any particular presentation of it (Bradley,
-   "The Yoneda Perspective", 2017).  Two classical specializations.  At a
+   “The Yoneda Perspective”, 2017).  Two classical specializations.  At a
    one-object category, full faithfulness of the covariant embedding is
    Cayley's theorem — every group embeds into a permutation group (Riehl,
    Corollary 2.2.11) — and Construction/Cayley.v builds the Cayley
@@ -191,17 +191,17 @@ Nat([Hom ─,A], F) ≅ F A。
    any functor f: a machine that accepts a handler a → r and uniformly
    produces an f r can only operate by holding an f a and mapping the
    handler over it, since it has no other means of manufacturing results
-   (Piponi, "Reverse Engineering Machines with the Yoneda Lemma", 2006,
-   which calls the lemma "the hardest trivial thing in mathematics").  At
+   (Piponi, “Reverse Engineering Machines with the Yoneda Lemma”, 2006,
+   which calls the lemma “the hardest trivial thing in mathematics”).  At
    the identity functor this reads ∀ r, (a → r) → r ≅ a: a value is
-   interchangeable with its continuation-passing form (Milewski, "The
-   Yoneda Lemma", 2015).  Because the handler is an accumulating
+   interchangeable with its continuation-passing form (Milewski, “The
+   Yoneda Lemma”, 2015).  Because the handler is an accumulating
    parameter, the encoding fuses successive uses of fmap into one — the
    optimization shipped as Data.Functor.Yoneda in the kan-extensions
-   package (Kmett, "Free Monads for Less, Part 2: Yoneda", 2011) — and
+   package (Kmett, “Free Monads for Less, Part 2: Yoneda”, 2011) — and
    difference lists are the same idea one categorical level down, the
    Cayley representation of the list monoid (Rivas and Jaskelioff,
-   "Notions of Computation as Monoids", 2014).  Theory/Coq/Functor.v
+   “Notions of Computation as Monoids”, 2014).  Theory/Coq/Functor.v
    realizes the encoding as [Yoneda] with [Yoneda_Functor], a functor in
    its argument whether or not F is one, and Theory/Coq/Applicative.v and
    Theory/Coq/Monad.v transport the Applicative and Monad structures

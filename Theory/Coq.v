@@ -22,8 +22,8 @@ Require Import Category.Lib.
 
 (*
 This module re-exports the [Theory/Coq/] cluster, which develops the
-   familiar Haskell-style type classes directly over Coq types (the "category
-   of types") and connects each one to its categorical counterpart.  Importing
+   familiar Haskell-style type classes directly over Coq types (the “category
+   of types”) and connects each one to its categorical counterpart.  Importing
    this single module brings the whole applied-FP layer into scope.
 
    The exported modules fall into two groups.  The functor/applicative/monad
@@ -71,12 +71,12 @@ Why the tower exists, and what a categorical footing buys
 
    nLab:  https://ncatlab.org/nlab/show/monad+(in+computer+science)
    nLab:  https://ncatlab.org/nlab/show/applicative+functor
-   Paper: Moggi, "Notions of Computation and Monads", Information and
+   Paper: Moggi, “Notions of Computation and Monads”, Information and
           Computation 93(1):55-92, 1991
-   Paper: McBride, Paterson, "Applicative programming with effects",
+   Paper: McBride, Paterson, “Applicative programming with effects”,
           Journal of Functional Programming 18(1):1-13, 2008
-   Paper: Jaskelioff, Rypáček, "An Investigation of the Laws of
-          Traversals", MSFP 2012, EPTCS 76 (arXiv 1202.2919)
+   Paper: Jaskelioff, Rypáček, “An Investigation of the Laws of
+          Traversals”, MSFP 2012, EPTCS 76 (arXiv 1202.2919)
 
    Each class re-exported here was discovered as the programming shadow of
    a categorical structure that predates it.  The aggregator deliberately
@@ -89,16 +89,16 @@ Why the tower exists, and what a categorical footing buys
    continuations, reader and writer — are modelled uniformly by a strong
    monad on a cartesian closed category: T x is the type of computations
    returning x, the unit is the effect-free computation, and the
-   multiplication is sequential composition (Moggi, "Computational
-   Lambda-Calculus and Monads", LICS 1989; "Notions of Computation and
-   Monads", 1991).  Wadler carried this into program structure and made
+   multiplication is sequential composition (Moggi, “Computational
+   Lambda-Calculus and Monads”, LICS 1989; “Notions of Computation and
+   Monads”, 1991).  Wadler carried this into program structure and made
    the Kleisli-triple presentation familiar, whence the return and bind
-   that [Monad] presents as [ret] and [bind] (Wadler, "The Essence of
-   Functional Programming", POPL 1992; "Monads for Functional
-   Programming", Marktoberdorf 1992).
+   that [Monad] presents as [ret] and [bind] (Wadler, “The Essence of
+   Functional Programming”, POPL 1992; “Monads for Functional
+   Programming”, Marktoberdorf 1992).
 
    Applicative functors arrived later and from the other direction.
-   McBride and Paterson coined the "idiom" — an abstraction weaker than a
+   McBride and Paterson coined the “idiom” — an abstraction weaker than a
    monad, and for that reason more widely applicable — gave it [pure] and
    [ap], and closed their paper by naming the structure: an applicative is
    a lax monoidal functor equipped with a tensorial strength (McBride,
@@ -112,8 +112,8 @@ Why the tower exists, and what a categorical footing buys
    distributes over every applicative — but stated no laws.  Gibbons and
    Oliveira read [traverse] as the Iterator pattern, one combinator that
    maps and accumulates at once, gave the first axioms, and exposed bad
-   traversals that skip or duplicate elements (Gibbons, Oliveira, "The
-   Essence of the Iterator Pattern", JFP 2009).  Jaskelioff and Rypáček
+   traversals that skip or duplicate elements (Gibbons, Oliveira, “The
+   Essence of the Iterator Pattern”, JFP 2009).  Jaskelioff and Rypáček
    then settled the account with three laws — naturality in the
    applicative, unitarity, linearity — that hold for the finitary
    containers, the largest known class of traversable functors, and that
@@ -127,7 +127,7 @@ Why the tower exists, and what a categorical footing buys
    2015; before it the identities relating the layers — [fmap] with liftM,
    [pure] with return, [ap] with the monad's own ap — went unstated, and
    this cluster is organized along that same settled chain (HaskellWiki,
-   "Functor-Applicative-Monad Proposal").
+   “Functor-Applicative-Monad Proposal”).
 
    The categorical footing is what makes the correspondences carry weight.
    Because the language can neither state nor enforce the laws, a lawless

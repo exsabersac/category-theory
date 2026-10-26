@@ -58,8 +58,8 @@ Generalizable All Variables.
  That file answers the same exercise over [Sets], where a subset of A
  is a [Prop]-valued predicate on A and is therefore, by construction,
  already a map A ⟶ Ω; the correspondence there is genuine but its
- content is thin, being the single equivalence "membership in {⊤}
- detects truth".  Here nothing is definitional: the power set of the
+ content is thin, being the single equivalence “membership in {⊤}
+ detects truth”.  Here nothing is definitional: the power set of the
  n-element set is the 2^n-element set, subsets are ELEMENTS of it, and
  the passage between a subset and its characteristic map is the digit
  codec of Instance/FinSet/Closed.v.  Both round trips of that codec hold
@@ -119,8 +119,8 @@ Generalizable All Variables.
  is a fifth, but it is COVARIANT and out of [Rel], so it bears on
  neither), and no universal
  element was stated for any of them.  Instance/Sets/Powerset/Universal.v
- carries the fuller correction, including why the issue's "no power-set
- functor" reading of the prior art would be wrong.
+ carries the fuller correction, including why the issue's “no power-set
+ functor” reading of the prior art would be wrong.
 
  (7) [finpow_is_topos_Pow] — the object action AGREES with
  Structure/Topos.v's internal power object [Pow a := Ω ^ a] at

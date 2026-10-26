@@ -49,8 +49,8 @@ Generalizable All Variables.
 
  A CORRECTION TO THAT ISSUE'S ACCOUNT OF THE PRIOR ART, measured
  against the parent commit rather than restated from the issue.  Its
- "Current state" says the library has "no power-set functor on a
- set-like category with a III.1-style universal-element statement",
+ “Current state” says the library has “no power-set functor on a
+ set-like category with a III.1-style universal-element statement”,
  which read as a claim about power-set functors would be wrong:
  Instance/Sets/Powerset.v (issue #227) already contains FOUR of them —
  [Powerset], [Powerset_op], [Powerset_Prop] and [Powerset_Prop_Lift] —
@@ -75,7 +75,7 @@ Generalizable All Variables.
  ARBITRARY [SubobjectClassifier] rather than only here.
 
  THE LEAD THE ISSUE DID NOT TAKE, AND WHY IT WORKS.  The issue proposes
- building this over [FinSet] "where it exists at one universe level",
+ building this over [FinSet] “where it exists at one universe level”,
  taking for granted that [Sets] does not.  [Sets] does.  The donor
  needed the impredicative truncation [Powerset_squash] because the
  DIRECT image has an existential ([λ y, ∃ x, S x ∧ f x ≈ y]) that must
@@ -109,7 +109,7 @@ Generalizable All Variables.
  is exactly such a category: its objects live at [so] and its homs at
  [o], with [o < so] forced.  The Yoneda route is therefore unavailable
  here, and the refusal is a genuine universe inconsistency, of the form
- "Cannot enforce _ = _ because _ < _" naming the two anonymous levels;
+ “Cannot enforce _ = _ because _ < _” naming the two anonymous levels;
  it is pinned in Test/ProbePowersetUniversal.v against a positive
  control that uses the direct route at the same arguments.  Everything
  below accordingly goes through the Yoneda-FREE constructions
@@ -149,7 +149,7 @@ Generalizable All Variables.
  subset of A IS a map A ~> Ω — the two types are equal by [eq_refl]
  ([powerset_subsets_are_maps]) — so the correspondence is not a
  bijection between two different things.  Its entire content is the
- single equivalence "membership in {⊤} detects truth"
+ single equivalence “membership in {⊤} detects truth”
  ([Powerset_truth_subset_intro] / [Powerset_truth_subset_elim]), and
  everything else is bookkeeping around those two lines.  The companion
  file Instance/FinSet/Powerset.v answers the same exercise where
@@ -163,7 +163,7 @@ Generalizable All Variables.
  [Powerset_Prop_obj A] and [SubObj A] are isomorphic.  The last section
  proves the half that is true — every [Prop]-valued subset is recovered
  from the subobject it names — and says exactly what blocks the other
- half.  See "The classifier obstruction is a different obstruction"
+ half.  See “The classifier obstruction is a different obstruction”
  below. 
 
  --------
@@ -340,7 +340,7 @@ Example powerset_truth_subset_is_singleton@{o} :
  Powerset_Omega)].  Putting the point where the element belongs is a
  type error, and Test/ProbePowersetUniversal.v pins it as such against
  a positive control.  This lemma is the affirmative half: the two
- readings of "{⊤}" — the singleton subset, and the predicate "holds" —
+ readings of “{⊤}” — the singleton subset, and the predicate “holds” —
  agree up to [≈] (and only up to [≈]; the strict form is refuted, and
  is pinned in the same probe file). 
 
@@ -348,7 +348,7 @@ Example powerset_truth_subset_is_singleton@{o} :
  在类型层面上的元素与点的区分。两者属于不同的类型，这种差异不是强调的问题：[Powerset_truth_point] 是一个 [carrier Powerset_Omega]，而 [Powerset_truth_subset] 是一个 [承载器 (Powerset_Prop_obj Powerset_Omega)]。把点放到元素所属的位置是一个类型错误，Test/ProbePowersetUniversal.v 对其进行正控制验证。这个引理是肯定的一半：“{⊤}”的两种解释——单元素子集和谓词“成立”——在 [≈] 之前是一致的（且仅在 [≈] 之前一致；严格形式被驳斥，并在同一个测试文件中进行了固定）。
 *)
 
-(* The predicate "P holds", as a subset of Ω. / 作为 Ω 的一个子集的谓词“P 成立”。 *)
+(* The predicate “P holds”, as a subset of Ω. / 作为 Ω 的一个子集的谓词“P 成立”。 *)
 Definition Powerset_holds@{o} :
   carrier (Powerset_Prop_obj@{o} Powerset_Omega@{o}).
 Proof.
@@ -559,8 +559,8 @@ Example powerset_repr_source@{o so} :
     = @Curried_CoHom Sets@{o so} Powerset_Omega@{o} := eq_refl.
 
 (*
- RIEHL'S SENTENCE, MACHINE-CHECKED AT LEIBNIZ EQUALITY.  "The
- isomorphism sends f : A ⟶ Ω to the preimage f⁻¹(⊤) ⊆ A" is not a
+ RIEHL'S SENTENCE, MACHINE-CHECKED AT LEIBNIZ EQUALITY.  “The
+ isomorphism sends f : A ⟶ Ω to the preimage f⁻¹(⊤) ⊆ A” is not a
  description of the forward leg up to [≈]; it IS the forward leg, term
  for term. 
 
@@ -833,7 +833,7 @@ Qed.
  out.  It is answered CONDITIONALLY in Instance/Sets/Classifier/OneLevel.v:
  the instance whose Ω is [Powerset_Omega] exists under [Untruncate], i.e.
  exactly when the impredicative truncation used here can be inverted, and what
- that hypothesis buys is precisely the composite "in the other direction" left
+ that hypothesis buys is precisely the composite “in the other direction” left
  unproven in the next paragraph.  NO IMPOSSIBILITY IS PROVED there either.
  The issue asked for a note on why [Sets] may support only the cross-universe
  reading for the CLASSIFIER even where the power-set universal element works

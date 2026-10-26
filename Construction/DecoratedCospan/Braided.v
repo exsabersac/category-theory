@@ -55,7 +55,7 @@ Generalizable All Variables.
 *)
 
 (*
-    Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
+    Reference: Brendan Fong, “Decorated Cospans”, arXiv:1502.00872,
     Theorem 3.5 (the symmetric-monoidal / hypergraph structure; in the
     arXiv numbering 3.1 is the Definition, 3.2 the Proposition, 3.4 a
     Remark, and 3.5 the Theorem).  This module assembles the [BraidedMonoidal] and

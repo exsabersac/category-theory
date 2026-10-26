@@ -19,14 +19,14 @@ Generalizable All Variables.
 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, §VI.4 "Words and Free Semigroups", printed
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, §VI.4 “Words and Free Semigroups”, printed
  p. 144 (PDF p. 153), the construction before Proposition 1 —
  maclane:VI.4:construction1
  nLab: https://ncatlab.org/nlab/show/semigroup
  nLab: https://ncatlab.org/nlab/show/free+monoid
 
- WHAT THE BOOK SAYS, read from the page image.  "The free semigroup WX
+ WHAT THE BOOK SAYS, read from the page image.  “The free semigroup WX
  on a set X is like the free monoid on X (§ II.7).  It consists of all
  words ⟨x1⟩ … ⟨xn⟩ of positive length n spelled in letters xi ∈ X,
  where we write ⟨x⟩ to distinguish the word ⟨x⟩ in WX from the element
@@ -37,10 +37,10 @@ Generalizable All Variables.
  multiplication), then the arrow η_X : X → GFX defined by x ↦ ⟨x⟩ (send
  each x to the one-letter word in x) is universal from X to G.
  Therefore F is a functor, left adjoint to G, and η defines an
- adjunction ⟨F, G, η, ε⟩ : Set ⇀ Smgrp."  The counit "is the unique
+ adjunction ⟨F, G, η, ε⟩ : Set ⇀ Smgrp.”  The counit “is the unique
  morphism of semi-groups which sends each generator ⟨s⟩ to s.  This
  means that ε_S(⟨s1⟩ … ⟨sn⟩) = s1 … sn (product in S) (1) for all
- si ∈ S: The counit ε removes the 'pointy bracket' ⟨ ⟩."
+ si ∈ S: The counit ε removes the 'pointy bracket' ⟨ ⟩.”
 
  THE ENCODING.  [SmgrpSets] is Theory/Algebra/Semigroup.v's [Smgrp] at
  (Sets, ×), Mac Lane's Smgrp of semigroups on setoids, and [Sg_Forget]
@@ -84,30 +84,30 @@ Generalizable All Variables.
  [PWord_Setoid], [PWordObj], [tfold1].
 
  WHAT IS HERE, statement by statement.
- - "words … multiplied by juxtaposition": [pwapp], the juxtaposition
+ - “words … multiplied by juxtaposition”: [pwapp], the juxtaposition
  of tuples [tapp]; [FreeSg_mul] and [FreeSg_mul_literal] at
- [eq_refl].  "This multiplication ν is associative": [pwapp_assoc],
+ [eq_refl].  “This multiplication ν is associative”: [pwapp_assoc],
  at ≈; on literal words it holds at [eq_refl] (Test/ProbeWord470.v,
  C6) and at variable words it is refused there (R1), the lengths
  S (S (n + m) + p) and S (n + S (m + p)) being stuck on n.
- - "FX = ⟨WX, ν⟩ a semigroup": [FreeSg X], whose carrier IS the setoid
+ - “FX = ⟨WX, ν⟩ a semigroup”: [FreeSg X], whose carrier IS the setoid
  of words ([FreeSg_carrier], at [eq_refl]); F on arrows is the
  letterwise map [pwmap] ([FreeSg_map], [Sg_Free]).
- - "η_X … defined by x ↦ ⟨x⟩ … is universal from X to G":
+ - “η_X … defined by x ↦ ⟨x⟩ … is universal from X to G”:
  [sg_insert], and [sg_insert_universal], the unique factorization
  of every h : X → G A as G g ∘ η_X, its factor the fold [sg_extend h]
  at [eq_refl] ([sg_insert_universal_obj]); the fold, w ↦ h(x1) ⋯
  h(xn) bracketed to the left, is [pwfold] over [tfoldl] and
  [tfold1], and a semigroup map out of F X is that fold of its values
  on the letters ([sg_extend_unique], at ≈; at a one-letter word at
- [eq_refl], C17, and at a variable word refused, R5).  "Universal
- from X to G" is Theory/Universal/Arrow.v's notion, and η_X is
+ [eq_refl], C17, and at a variable word refused, R5).  “Universal
+ from X to G” is Theory/Universal/Arrow.v's notion, and η_X is
  [sg_insert_UA X : UniversalArrow X G], built from
  [sg_insert_universal] by [universal_arrow_from_UMP]; its universal
  object is F X and its arrow η_X as a setoid map, at [eq_refl]
  ([sg_insert_UA_obj], [sg_insert_UA_arrow]).  [Sg_adj] does not go
  through it, so its counit computes (below).
- - "F is a functor, left adjoint to G, and η defines an adjunction":
+ - “F is a functor, left adjoint to G, and η defines an adjunction”:
  [Sg_adj], through Theory/Adjunction.v's hom-set constructor
  [Build_Adjunction'] from the natural bijection [Sg_adj_iso], as
  Instance/SupLat/Free.v builds [SL_adj] (#466), so that the counit
@@ -115,9 +115,9 @@ Generalizable All Variables.
  ([Sg_adj_unit], at [eq_refl]).  That readback needs #1347, which
  gave Instance/Sets.v's identity and composite their properness
  fields as terms: compiled against a built tree of master 687ac356,
- before #1347, it is refused ("cannot unify"), and it is the only
+ before #1347, it is refused (“cannot unify”), and it is the only
  command of this file that is.
- - The counit "sends each generator ⟨s⟩ to s" ([Sg_adj_counit_letter])
+ - The counit “sends each generator ⟨s⟩ to s” ([Sg_adj_counit_letter])
  and is (1): ε_S is the fold of the identity, w ↦ s1 ⋯ sn bracketed
  to the left ([Sg_adj_counit]), on a literal word (s1 s2) s3
  ([Sg_adj_counit_literal]), all at [eq_refl]; the right bracketing
@@ -172,7 +172,7 @@ Generalizable All Variables.
  annotation is extensible, @{o so +}, for Coq 8.19.2 and 8.20.1, where
  Theory/Universal/Arrow.v's [universal_arrow_from_UMP] binds fifteen
  levels to Rocq 9.1.1's eleven (an eleven-level instance of it is
- refused there, "Universe instance length is 11 but should be 15"):
+ refused there, “Universe instance length is 11 but should be 15”):
  there the three bind one level more, u, in the body only, with o < u
  and Set < u, a bound and not an equation.  Otherwise no [Set] and no
  equation, on Rocq 9.1.1, Coq 8.19.2 and 8.20.1 alike (compared by
@@ -656,7 +656,7 @@ Example sg_insert_universal_obj@{o so} (X : SetoidObject@{o o})
   := eq_refl.
 
 (*
- Mac Lane's "η_X ... is universal from X to G" in the tree's own terms:
+ Mac Lane's “η_X ... is universal from X to G” in the tree's own terms:
  Theory/Universal/Arrow.v's [UniversalArrow] from X to G, an initial
  object of the comma category =(X) ↓ G, built from the factorization
  above by [universal_arrow_from_UMP], as Instance/Mon/Free.v and the

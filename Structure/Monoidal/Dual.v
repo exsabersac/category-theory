@@ -60,11 +60,11 @@ Open Scope category_scope.
 Generalizable All Variables.
 
 (*
- Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §IV.2 Construction 3, printed p. 88 (maclane:IV.2:construction3)
  Book:  Mac Lane, op. cit., §IV.2 Definition 2, printed p. 89, where
- "adjoint on the right" is defined and attributed to Freyd
- Book:  Riehl, "Category Theory in Context", §4.4
+ “adjoint on the right” is defined and attributed to Freyd
+ Book:  Riehl, “Category Theory in Context”, §4.4
  nLab:  https://ncatlab.org/nlab/show/star-autonomous+category
  nLab:  https://ncatlab.org/nlab/show/dualizing+object
  nLab:  https://ncatlab.org/nlab/show/mutually+left+adjoint+functors
@@ -103,7 +103,7 @@ Generalizable All Variables.
  no transport, and its field [aor {a x}] unfolds to precisely
  `C(a, dual d x) ≅ C(x, dual d a)`, which is Mac Lane's bijection.  The
  Adjunction/Right.v's own NOT-DELIVERED list records that it builds
- "No self-adjoint-on-the-right PREDICATE"; none is introduced here
+ “No self-adjoint-on-the-right PREDICATE”; none is introduced here
  either — this file supplies an INSTANCE at a coinciding pair, not a
  predicate saying when one exists.
 
@@ -157,8 +157,8 @@ Generalizable All Variables.
  dual_uncur f := eval' ∘ (f ⨂ id) ,
 
  which is inverse to [dcur] by the UMP ([dual_uncur_dcur],
- [dcur_dual_uncur]).  The transposition is then literally "uncurry,
- braid, re-curry",
+ [dcur_dual_uncur]).  The transposition is then literally “uncurry,
+ braid, re-curry”,
 
  dual_transpose f := dcur (dual_uncur f ∘ braid) ,
 
@@ -220,7 +220,7 @@ Generalizable All Variables.
 
  EXACTLY ONE identification falls back to `≈`, and the residue is
  exhibited rather than described.  StarAutonomous.v's header calls the
- canonical map "the transpose of `eval'` through the symmetric braid",
+ canonical map “the transpose of `eval'` through the symmetric braid”,
  i.e. `dcur (eval' ∘ braid)`; [dd_unit] is `dual_transpose id`, which
  unfolds to `dcur (eval' ∘ (id ⨂ id) ∘ braid)`.  The two differ by the
  insertion of `id ⨂ id`, and `bimap` is `fmap[tensor]` whose
@@ -283,7 +283,7 @@ Generalizable All Variables.
  [SymMonClosed], further strict bounds (`u0 < u3`, `u0 < u4`,
  `u2 < u0`) and `≤`-bounds both against [compose], [projections],
  [prod_rect] and [ID] and between this file's own declared levels.
- A reader who checks only the block concludes "no identification" and
+ A reader who checks only the block concludes “no identification” and
  is wrong.  The identification is INHERITED, and FOUR donors are each
  sufficient ON THEIR OWN: under a section declaring `Constraint
  ch < cp`, each of [Opposite], [Monoidal], [SymmetricMonoidal] and
@@ -292,7 +292,7 @@ Generalizable All Variables.
  naming a hom `a ~{Cu}~> b` and an identity `@id Cu a` at those very
  levels is ACCEPTED — and all four are ACCEPTED once the two levels
  are declared equal, so each negative fires on the constraint and not
- on the application.  READ "four" AS FOUR DONORS AND NOT AS FOUR
+ on the application.  READ “four” AS FOUR DONORS AND NOT AS FOUR
  INDEPENDENT CAUSES: [SymMonClosed] contains [SymmetricMonoidal]
  (field [smc_is_symmetric]) contains [BraidedMonoidal] (field
  [symmetric_is_braided]) contains [Monoidal] (field
@@ -800,7 +800,7 @@ Proof. intros f g Hfg; unfold dual_transpose; now rewrite Hfg. Qed.
    OUTSIDE this file.  The definition-site
    method is what makes this test say anything — a whole-file rename is
    a no-op by construction, since the definition is renamed in lockstep
-   with its uses, and reports a FALSE "vacuous guard" verdict for every
+   with its uses, and reports a FALSE “vacuous guard” verdict for every
    constant.  The four DONOR names the formability negatives mention
    ([Opposite], [Monoidal], [SymmetricMonoidal], [SymMonClosed]) cannot
    be renamed from here; they are guarded instead by the applied control
@@ -908,7 +908,7 @@ Proof. apply dd_unit_is_braid_transpose. Qed.
  CONVERSION negative 2: for an ARBITRARY [StarAutonomous] instance,
  conversion does not establish that the posited double-dual
  isomorphism is the canonical map.  This is the sharpest available
- form of "the class does not pin its iso"; it does NOT say the
+ form of “the class does not pin its iso”; it does NOT say the
  equation is false. 
 
  --------
@@ -935,7 +935,7 @@ Context (d : C).
 Notation "'DSA'" :=
   (dual_self_adjoint_on_the_right d) (only parsing).
 
-(* TYPING negative: off the diagonal the two legs of the bijection do not even have the same type, so "to = from" is not statable there. This is the honest form of Mac Lane's symmetry claim. / TYPING 否定：在对角线之外，双射的两条腿甚至没有相同的类型，所以在那里的“to = from”是无法表述的。这是 Mac Lane 对称性声明的真实形式。 *)
+(* TYPING negative: off the diagonal the two legs of the bijection do not even have the same type, so “to = from” is not statable there. This is the honest form of Mac Lane's symmetry claim. / TYPING 否定：在对角线之外，双射的两条腿甚至没有相同的类型，所以在那里的“to = from”是无法表述的。这是 Mac Lane 对称性声明的真实形式。 *)
 Fail Example dual_neg_offdiagonal (a x : C) :
   to (@aor C C (dual d) (dual d) DSA a x)
     = from (@aor C C (dual d) (dual d) DSA a x) := eq_refl.

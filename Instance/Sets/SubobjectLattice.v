@@ -25,11 +25,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/image
  nLab:      https://ncatlab.org/nlab/show/wide+pullback
  Wikipedia: https://en.wikipedia.org/wiki/Image_(category_theory)
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.
  (GTM 5), §V.7 Definition 2, printed p. 126 (PDF p. 135)
- Book:      Riehl, "Category Theory in Context", 2nd ed., §4.7
+ Book:      Riehl, “Category Theory in Context”, 2nd ed., §4.7
  Definition 4.7.9, printed p. 177 (PDF p. 197)
- Book:      Fong and Spivak, "Seven Sketches in Compositionality",
+ Book:      Fong and Spivak, “Seven Sketches in Compositionality”,
  §1.2.1, printed p. 8 (PDF p. 20)
 
  Theory/Subobject/Lattice.v states the order theory of subobjects
@@ -74,7 +74,7 @@ Generalizable All Variables.
  TIME.  Structure/Pullback/Wide.v declares [HasWidePullbacks]
  and its own header records under NOT DELIVERED that it builds no
  instance for any concrete category; docs/INDEX.md's
- Structure/Pullback/Wide.v clause said "declared but UNINHABITED".
+ Structure/Pullback/Wide.v clause said “declared but UNINHABITED”.
  Both statements were true at the parent commit; both are corrected
  in place, as corrections, in the commit that lands this file, and
  both are superseded by [Sets_HasWidePullbacks] below.  The apex is the
@@ -157,9 +157,9 @@ Generalizable All Variables.
  universe inconsistency -- the stable content is that [so <= o] cannot
  be enforced because [o < so]; the exact wording depends on how the
  statement is posed (a scratch [Definition] over [Sets_WidePullback]
- prints "Cannot enforce so <= o because o < so", an instantiation of
- the class reads "cannot ensure that Type@{so} is a subtype of
- Type@{o}"), so neither sentence is quoted as THE text.  The same
+ prints “Cannot enforce so <= o because o < so”, an instantiation of
+ the class reads “cannot ensure that Type@{so} is a subtype of
+ Type@{o}”), so neither sentence is quoted as THE text.  The same
  definition with its universes left free elaborates at a DIFFERENT
  instance (the index category one level below the family's), which is
  the careful form Instance/Sets/Products.v records for its own
@@ -187,7 +187,7 @@ Generalizable All Variables.
  ** BOUNDARIES, measured
 
  The union is ≈ the positive naturals and NOT equal to them on the
- nose: [sub_dom fs_union = pos_obj] is refused, "cannot unify", the
+ nose: [sub_dom fs_union = pos_obj] is refused, “cannot unify”, the
  image carrier being a sigma of a point with a chosen preimage rather
  than a sig of a proof.  The empty-index wide pullback is likewise
  terminal only up to ≅ -- Structure/Pullback/Wide.v's
@@ -264,7 +264,7 @@ Generalizable All Variables.
  [∀ {C : Category@{u u0 u0}}, obj[C] → Type@{max(u,u0)}])
  并且 [sub_le] 的块承载 [h = p] ；Theory/Subobject/Lattice.v 的头部也以相同方式归属它。 该文件或此文件都没有引入它。
 
- ** 边界，已测量该并集大约等于正自然数，但并不完全等于它们：[sub_dom fs_union = pos_obj] 被拒绝，"无法统一"，其映像承载体是一个点的 sigma 与选定的原像，而不是一个证明的 sigma。 空索引广拉回同样仅在 ≅ 之下终结 -- Structure/Pullback/Wide.v 的 [wide_pullback_empty_terminal] -- 并且与选定的终端集合类 [Sets_wpull_obj] 在 [I := False] 对比下 [terminal_obj] 不可转换，因其承载体是空族的集合类，带有空的相干性证明，而非 [poly_unit]。 两次拒绝都是由于转换失败，而非宇宙问题。
+ ** 边界，已测量该并集大约等于正自然数，但并不完全等于它们：[sub_dom fs_union = pos_obj] 被拒绝，“无法统一”，其映像承载体是一个点的 sigma 与选定的原像，而不是一个证明的 sigma。 空索引广拉回同样仅在 ≅ 之下终结 -- Structure/Pullback/Wide.v 的 [wide_pullback_empty_terminal] -- 并且与选定的终端集合类 [Sets_wpull_obj] 在 [I := False] 对比下 [terminal_obj] 不可转换，因其承载体是空族的集合类，带有空的相干性证明，而非 [poly_unit]。 两次拒绝都是由于转换失败，而非宇宙问题。
 
  ** 透明度，通过翻转来衡量[Sets_image_least_map]、[Sets_ImageOf] 和 [Sets_WidePullback] 必须是 [Defined]：每个依次被翻转为 [Qed]，然后文件在 [ImageOf] 记录的 [im_least] 字段、在 [fs_pos_to_union] 和在 [fs_inter_to_bot] 分别停止——消费者读取底层函数、图像载体和宽回拉载体。[fs_inter_le_bot] 编译为 [Qed]，并为一致性写为 [Defined]，是 [sub_le] 数据。
 

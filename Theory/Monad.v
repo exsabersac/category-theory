@@ -20,7 +20,7 @@ nLab: https://ncatlab.org/nlab/show/monad
    recorded below as [bind], with the usual Haskell notations m >>= f and
    f >> g. The naturality squares for η and μ are kept explicit as the laws
    [fmap_ret] and [join_fmap_fmap] (in many treatments these are folded into
-   "η and μ are natural transformations").
+   “η and μ are natural transformations”).
 
 --------
 nLab: https://ncatlab.org/nlab/show/monad
@@ -42,38 +42,38 @@ Where monads come from, and what they are for
 
    nLab:  https://ncatlab.org/nlab/show/monad
    nLab:  https://ncatlab.org/nlab/show/monad+(in+computer+science)
-   Paper: Eilenberg, Moore, "Adjoint functors and triples", Illinois
+   Paper: Eilenberg, Moore, “Adjoint functors and triples”, Illinois
           Journal of Mathematics 9(3), 1965
-   Paper: Moggi, "Notions of computation and monads", Information and
+   Paper: Moggi, “Notions of computation and monads”, Information and
           Computation 93(1), 1991
 
    The concept predates its name by a decade.  Godement introduced it in
-   the appendix of "Topologie algébrique et théorie des faisceaux"
+   the appendix of “Topologie algébrique et théorie des faisceaux”
    (Hermann, 1958) as the device behind the canonical flabby resolution
-   of a sheaf; the abstract notion, known in that era as the "standard
-   construction", was studied by Huber ("Homotopy theory in general
-   categories", Mathematische Annalen 144, 1961), who is credited with
+   of a sheaf; the abstract notion, known in that era as the “standard
+   construction”, was studied by Huber (“Homotopy theory in general
+   categories”, Mathematische Annalen 144, 1961), who is credited with
    the observation that every adjunction F ⊣ U endows the composite
    U ◯ F with monad structure — realized in this library as
    [Adjunction_Monad] in Monad/Adjunction.v.  Whether every monad so
    arises was answered affirmatively twice in the same year: Kleisli
-   ("Every standard construction is induced by a pair of adjoint
-   functors", Proceedings of the AMS 16(3), 1965) rebuilt the adjunction
+   (“Every standard construction is induced by a pair of adjoint
+   functors”, Proceedings of the AMS 16(3), 1965) rebuilt the adjunction
    from the free algebras, and Eilenberg and Moore (op. cit.) from all
-   algebras, coining "triple" along the way.  Both resolutions are
+   algebras, coining “triple” along the way.  Both resolutions are
    present here — Monad/Kleisli.v with Monad/Kleisli/Adjunction.v, and
    [TAlgebra] of Monad/Algebra.v with Monad/Eilenberg/Moore/Adjunction.v
    — and among the adjunctions inducing a given monad the first is
    initial, the second terminal.  Beck's monadicity theorem then
    characterizes which functors are, up to equivalence, forgetful
-   functors from algebras (Monad/Monadicity/Beck.v).  The name "monad"
-   itself is Bénabou's ("Introduction to bicategories", Springer LNM 47,
+   functors from algebras (Monad/Monadicity/Beck.v).  The name “monad”
+   itself is Bénabou's (“Introduction to bicategories”, Springer LNM 47,
    1967), and the monoid-object remark of the header above — Mac Lane's
    slogan that a monad is just a monoid in the category of endofunctors
-   ("Categories for the Working Mathematician", 1971) — is proved as a
+   (“Categories for the Working Mathematician”, 1971) — is proved as a
    genuine equivalence by [Monoid_Monad] in Monad/Monoid.v.
 
-   CORRECTION (#468).  The "genuine equivalence" above is a logical
+   CORRECTION (#468).  The “genuine equivalence” above is a logical
    equivalence (↔) of the two structures on one endofunctor, with no
    morphisms on either side.  The statement about categories is
    Monad/Morphism/Monoid.v's [Monads_Mon_Equivalence]: Monad/Morphism.v's
@@ -83,13 +83,13 @@ Where monads come from, and what they are for
 
    Two further readings organize the mathematics.  As an algebraic
    theory in packaged form, a monad carries its variety of algebras
-   with it: Linton ("Some aspects of equational categories", La Jolla
+   with it: Linton (“Some aspects of equational categories”, La Jolla
    1965 conference proceedings, Springer 1966) proved finitary monads
    on Set equivalent to Lawvere theories, the thread taken up in
    Theory/Lawvere/Monad.v, while non-finitary monads reach further —
    the algebras of the ultrafilter monad are exactly the compact
-   Hausdorff spaces (Manes, "A triple theoretic construction of compact
-   algebras", Springer LNM 80, 1969).  As a generalized closure
+   Hausdorff spaces (Manes, “A triple theoretic construction of compact
+   algebras”, Springer LNM 80, 1969).  As a generalized closure
    operator — on a poset category a monad is precisely one, the unit
    giving extensivity and [join] idempotency — the concept categorifies
    to the idempotent monads of reflective subcategories in
@@ -113,13 +113,13 @@ Where monads come from, and what they are for
    1991) interpreted the effects of programming languages — state,
    exceptions, nondeterminism, continuations — as strong monads on a
    cartesian closed category, the strength hypothesis being the reason
-   Monad/Strong.v exists; Wadler ("The essence of functional
-   programming", POPL 1992) carried the discipline into Haskell, where
+   Monad/Strong.v exists; Wadler (“The essence of functional
+   programming”, POPL 1992) carried the discipline into Haskell, where
    effects coexist with purity.  Under this reading [ret] embeds a pure
    value, [bind] sequences two effectful steps, and programs x ~> M y
    compose as morphisms of the Kleisli category.  The bind presentation
    is equivalent to the join/return one used in this file (Manes,
-   "Algebraic Theories", Springer 1976; Moggi 1991, Def. 1.2), and is
+   “Algebraic Theories”, Springer 1976; Moggi 1991, Def. 1.2), and is
    the surface syntax elaborated Haskell-style in
    Instance/Coq/Monad.v.
 
@@ -128,26 +128,26 @@ Where monads come from, and what they are for
 
    nLab:  https://ncatlab.org/nlab/show/monad
    nLab:  https://ncatlab.org/nlab/show/monad+(in+computer+science)
-   Paper: Eilenberg, Moore, "Adjoint functors and triples", Illinois
+   Paper: Eilenberg, Moore, “Adjoint functors and triples”, Illinois
           Journal of Mathematics 9(3), 1965
-   Paper: Moggi, "Notions of computation and monads", Information and
+   Paper: Moggi, “Notions of computation and monads”, Information and
           Computation 93(1), 1991
 
-   概念比名称早十年。Godement 在 "Topologie algébrique et théorie des faisceaux"
+   概念比名称早十年。Godement 在 “Topologie algébrique et théorie des faisceaux”
    （Hermann, 1958）附录中引入它，作为层典范松弛分解背后的装置；该时代称为
-   「标准构造」的抽象概念由 Huber（"Homotopy theory in general categories",
+   「标准构造」的抽象概念由 Huber（“Homotopy theory in general categories”,
    Mathematische Annalen 144, 1961）研究，他因观察「每个伴随 F ⊣ U 赋予复合
    U ◯ F 以单子结构」而受赞誉——本库实现为 Monad/Adjunction.v 的 [Adjunction_Monad]。
-   每个单子是否如此产生，同年被肯定回答两次：Kleisli（"Every standard construction
-   is induced by a pair of adjoint functors", Proceedings of the AMS 16(3), 1965）
+   每个单子是否如此产生，同年被肯定回答两次：Kleisli（“Every standard construction
+   is induced by a pair of adjoint functors”, Proceedings of the AMS 16(3), 1965）
    从自由代数重建伴随，Eilenberg 与 Moore（同上）从全部代数重建，并顺带创造「triple」
    一词。两种分解此处都有——Monad/Kleisli.v 与 Monad/Kleisli/Adjunction.v，以及
    Monad/Algebra.v 的 [TAlgebra] 与 Monad/Eilenberg/Moore/Adjunction.v——在诱导给定
    单子的伴随中，前者初始、后者终结。Beck 单子性定理随后刻画哪些函子在等价下是
    来自代数的遗忘函子（Monad/Monadicity/Beck.v）。名称「monad」本身是 Bénabou 的
-   （"Introduction to bicategories", Springer LNM 47, 1967），文首幺半对象注记——
-   Mac Lane 的口号「单子只是自函子范畴中的幺半群」（"Categories for the Working
-   Mathematician", 1971）——由 Monad/Monoid.v 的 [Monoid_Monad] 证明为真正等价。
+   （“Introduction to bicategories”, Springer LNM 47, 1967），文首幺半对象注记——
+   Mac Lane 的口号「单子只是自函子范畴中的幺半群」（“Categories for the Working
+   Mathematician”, 1971）——由 Monad/Monoid.v 的 [Monoid_Monad] 证明为真正等价。
 
    更正 (#468)。上文「真正等价」是同一自函子上两种结构的逻辑等价（↔），无宇宙层级变化；
    它不是范畴等价。计算侧读法经 Moggi（1991）进入编程：计算的「概念」是单子，

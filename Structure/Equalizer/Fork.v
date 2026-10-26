@@ -18,7 +18,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
 
  Given a parallel pair f, g : x ~> y in C, an equalizer is an object q
- together with an equalizing map e : q ~> x forming a "fork" under the
+ together with an equalizing map e : q ~> x forming a “fork” under the
  pair,
 
  f ∘ e ≈ g ∘ e,
@@ -42,8 +42,8 @@ Generalizable All Variables.
 
  Uniqueness of the equalizer object up to isomorphism
  ([equalizer_unique]) and the classical fact that equalizing maps are
- monomorphisms ([equalizer_monic]; Wikipedia: "every equaliser is a
- monomorphism") complete the API.  [HasEqualizers] packages a choice of
+ monomorphisms ([equalizer_monic]; Wikipedia: “every equaliser is a
+ monomorphism”) complete the API.  [HasEqualizers] packages a choice of
  elementary equalizer for every parallel pair.  This file is the
  limit-side sibling of [Structure/Coequalizer.v], with no opposite
  categories anywhere: everything is phrased directly in C. 
@@ -116,7 +116,7 @@ Context (f g : x ~> y).
 (* * ** Equalizing maps are monomorphisms / * ** 平衡映射是单射 *)
 
 (*
- Wikipedia: "every equaliser is a monomorphism"; both factorizations of
+ Wikipedia: “every equaliser is a monomorphism”; both factorizations of
  e ∘ g1 agree with the canonical one, so descent uniqueness cancels e on
  the left. 
 

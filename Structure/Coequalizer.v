@@ -20,7 +20,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Coequaliser
 
  Given a parallel pair f, g : x ~> y in C, a coequalizer is an object q
- together with a coequalizing map e : y ~> q forming a "cofork" over the
+ together with a coequalizing map e : y ~> q forming a “cofork” over the
  pair,
 
  e ∘ f ≈ e ∘ g,
@@ -44,8 +44,8 @@ Generalizable All Variables.
 
  Uniqueness of the coequalizer object up to isomorphism
  ([coequalizer_unique]) and the classical fact that coequalizing maps
- are epimorphisms ([coequalizer_epic]; Wikipedia: "every coequalizer is
- an epimorphism") complete the API.  [HasCoequalizers] packages a choice
+ are epimorphisms ([coequalizer_epic]; Wikipedia: “every coequalizer is
+ an epimorphism”) complete the API.  [HasCoequalizers] packages a choice
  of elementary coequalizer for every parallel pair.
 
  Since #477 both conversions also hold for an arbitrary diagram
@@ -141,7 +141,7 @@ Context (f g : x ~> y).
 (* * ** Coequalizing maps are epimorphisms / * ** 共等化映射是满射 *)
 
 (*
- Wikipedia: "every coequalizer is an epimorphism"; both descents of
+ Wikipedia: “every coequalizer is an epimorphism”; both descents of
  g1 ∘ e agree with the canonical one, so descent uniqueness cancels e on
  the right. 
 

@@ -17,10 +17,10 @@ Generalizable All Variables.
 nLab: https://ncatlab.org/nlab/show/mate
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.7,
    book p. 103, Exercises 4 and 5, verbatim:
 
-     "4. (Kelly.) An adjoint square is an array of categories, functors,
+     “4. (Kelly.) An adjoint square is an array of categories, functors,
       adjunctions, and natural transformations ⟨F,G,φ⟩ : X ⇀ A,
       ⟨F',G',φ'⟩ : X' ⇀ A', H : X → X', K : A → A', σ : F'H ⇒ KF,
       τ : HG ⇒ G'K, such that the following diagram of hom-sets always
@@ -35,7 +35,7 @@ nLab: https://ncatlab.org/nlab/show/mate
 
       5. (Palmquist.) Given H, K, and the two adjunctions as in Exercise 4,
       establish a bijection between natural transformations α : F'HG ⇒ K
-      and natural transformations β : H ⇒ G'KF."
+      and natural transformations β : H ⇒ G'KF.”
 
    (The book sets the first hom-set arrow as a superscript star,
    precomposition with σx, and the second as a subscript star,
@@ -43,7 +43,7 @@ nLab: https://ncatlab.org/nlab/show/mate
    The code has them the same way round: in [AdjointSquare] σ enters as
    [fmap[K] k ∘ sigma x] and τ as [tau a ∘ fmap[L] ⌊ k ⌋].)
 
-   Riehl, "Category Theory in Context", 2nd ed., §4.3, Exercise 4.3.v asks
+   Riehl, “Category Theory in Context”, 2nd ed., §4.3, Exercise 4.3.v asks
    in addition that the mates correspondence commute with horizontal
    composition of the bounding functors and with vertical composition of
    the adjunctions.
@@ -65,7 +65,7 @@ nLab: https://ncatlab.org/nlab/show/mate
    and the ledger of passages between the four forms, in which EVERY
    hypothesis is an explicit argument so that each type records what it
    consumes.  [adjoint_square_iff_mate] and [adjoint_square_iff_mate_inv]
-   are "each of σ, τ determines the other".
+   are “each of σ, τ determines the other”.
 
    (B) Five [eq_refl] identifications with Adjunction/Conjugate.v at
    K = L = Id and five with Adjunction/Map.v at invertible comparison
@@ -124,7 +124,7 @@ nLab: https://ncatlab.org/nlab/show/mate
    strictly apart, the whole body of the condition is formable — the two
    component families, [AdjointSquare] itself, [sq_mate] and
    [adjoint_square_iff_mate] are all accepted — while [F' ◯ L], [K ◯ F],
-   [L ◯ U] and [U' ◯ K] are each refused with "universe inconsistency".
+   [L ◯ U] and [U' ◯ K] are each refused with “universe inconsistency”.
 
    Adjunction/Map.v's four passages are NOT reusable by instantiation, and
    the obstruction is in the TYPE rather than in the proof terms:
@@ -274,17 +274,17 @@ nLab: https://ncatlab.org/nlab/show/mate
 
    ** Three sentences of the issue that are stale
 
-   Its "Missing for Exercise 4: the adjoint-square condition itself,
-   quantified over all transposable arrows" is stale since #393:
+   Its “Missing for Exercise 4: the adjoint-square condition itself,
+   quantified over all transposable arrows” is stale since #393:
    Adjunction/Map.v's [MapAdjHom] IS that square over every
    transposable arrow.  What was genuinely absent is only the BARE-FAMILY
    generality, and [square_is_map_adj_hom] measures exactly that gap by
-   closing it at [eq_refl].  Its "the exercise's first ask … has exactly
-   one in-tree expression" is stale twice over: Map.v states the
+   closing it at [eq_refl].  Its “the exercise's first ask … has exactly
+   one in-tree expression” is stale twice over: Map.v states the
    unit and counit forms, with six passages between them, and at H = K = Id
    Adjunction/Conjugate.v's [conjugate_characterizations] gives four
-   equivalent forms.  And its "nor the packaging as an isomorphism of
-   setoids" overlooks the precedent this file copies,
+   equivalent forms.  And its “nor the packaging as an isomorphism of
+   setoids” overlooks the precedent this file copies,
    Adjunction/Conjugate.v's [conjugate_bijection].  Two further notes.
    The Riehl checkbox's command
    [rg 'mate_compose|mate_functorial|mate_hcomp|mate_vcomp'] is claimed to
@@ -294,7 +294,7 @@ nLab: https://ncatlab.org/nlab/show/mate
    Adjunction/Conjugate.v, Instance/Adj.v and Test/ProbeChoice397.v — and
    all 18 match [conj_mate_compose] as a substring.  The claim survives
    only under [rg -w], which returns none.  And the
-   "associator bookkeeping lining up the two factors" turns out to be
+   “associator bookkeeping lining up the two factors” turns out to be
    AVOIDABLE rather than merely unwritten: the mate route needs none, and
    where one is wanted the tree already supplies it as
    Theory/Natural/Transformation.v's [fun_comp_assoc]. 
@@ -321,7 +321,7 @@ Mac Lane，“工作数学家的类别”，第二版，§IV.7，
 
 5.（Palmquist。）给定 H、K 以及练习 4 中的两个附加词，
  在自然变换 α : F'HG ⇒ K 之间建立双射
- 和自然变换 β : H ⇒ G'KF。"
+ 和自然变换 β : H ⇒ G'KF。“
 
 （本书将第一个本集箭头设置为上标星，
  与 σx 预合成，第二个作为下标星，

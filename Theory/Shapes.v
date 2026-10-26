@@ -26,7 +26,7 @@ nLab:      https://ncatlab.org/nlab/show/terminal+category
    nLab:      https://ncatlab.org/nlab/show/walking+structure
    nLab:      https://ncatlab.org/nlab/show/arrow+category
    Book:      Mac Lane, Categories for the Working Mathematician, 2nd ed.
-              (GTM 5), §I.3 "Functors", printed p. 15 -- the exercise
+              (GTM 5), §I.3 “Functors”, printed p. 15 -- the exercise
               (catalogued as maclane:I.3:ex2) that functors out of the
               ordinal categories 1, 2 and 3 are, respectively, the objects,
               the arrows and the composable pairs of arrows of the target.
@@ -36,8 +36,8 @@ nLab:      https://ncatlab.org/nlab/show/terminal+category
 
    A diagram shape coCLASSIFIES a structure when functors OUT of it are
    exactly the instances of that structure in the target: the walking X is
-   the category for which a functor to C is an X of C (nLab, "walking
-   structure").  The first three cases of the principle are the smallest
+   the category for which a functor to C is an X of C (nLab, “walking
+   structure”).  The first three cases of the principle are the smallest
    ones, and they are what this file proves.  A functor out of the point
    [_1] is an object of C; a functor out of the walking arrow [_2] is a
    morphism of C; a functor out of [_3], the ordinal on three objects, is a
@@ -54,7 +54,7 @@ nLab:      https://ncatlab.org/nlab/show/terminal+category
 
    THE FORM OF THE STATEMENTS.  The library has no carrier for a bijection
    between classes of objects, and objects of a category carry no setoid,
-   so a "correspondence" here is an explicit pair of constructions together
+   so a “correspondence” here is an explicit pair of constructions together
    with both round-trip laws -- the two-map presentation.  For each shape:
 
      shape   forward           backward     round trips
@@ -135,7 +135,7 @@ nLab:      https://ncatlab.org/nlab/show/terminal+category
    setoid discipline.  This remark is scoped to this file and says nothing
    about the rest of the tree.
 
-   UNIVERSES.  This paragraph was headed "measured, not asserted" in the
+   UNIVERSES.  This paragraph was headed “measured, not asserted” in the
    first commit and an audit then refuted two of its measurements, which is
    a fair reminder that a claim of rigour is not rigour.  What follows is
    the corrected account.
@@ -162,8 +162,8 @@ nLab:      https://ncatlab.org/nlab/show/terminal+category
    Instance/Fun.v's [Fun] carries the constraint [u0 = u2], identifying the
    hom universes of source and target, and Instance/Two.v's [_2] is
    [Category@{u Set Set}] because [TwoHom] lands in [Set], so writing
-   [[_2, C]] with [C : Category@{o h p}] is rejected with "Cannot enforce
-   Set = h".
+   [[_2, C]] with [C : Category@{o h p}] is rejected with “Cannot enforce
+   Set = h”.
 
    FOR THE [_1] SIDE IT IS NOT FORCED, contrary to what the first commit
    claimed.  That commit said an annotated variant had been tried and was
@@ -262,7 +262,7 @@ Proof. apply strict_equiv_implies_fun_equiv, Point_point_of_strict. Qed.
 (*
 The correspondence is faithful in the strongest available sense: two
    objects give equivalent functors exactly when they are isomorphic.  This
-   is what turns "objects of C" into "functors out of [_1]" as a statement
+   is what turns “objects of C” into “functors out of [_1]” as a statement
    about identifications, and it is the lemma the [Sets] instantiation
    below uses to separate two functors.
 

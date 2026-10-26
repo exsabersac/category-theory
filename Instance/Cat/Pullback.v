@@ -31,11 +31,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/pseudopullback
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
 
- Catalogued as Mac Lane, "Categories for the Working Mathematician", 2nd
+ Catalogued as Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., section III.5 exercise 3 (book p. 74).  The construction is the
  evident one: given F : A ⟶ C and G : B ⟶ C, take the pairs of objects
  that AGREE under F and G, and the pairs of arrows whose images agree.
- Everything interesting here is about the word "agree", and about which
+ Everything interesting here is about the word “agree”, and about which
  category of categories the resulting square is a pullback IN.
 
  ** Which ambient category
@@ -44,8 +44,8 @@ Generalizable All Variables.
  question differently.  [Cat] (Instance/Cat.v) has [Functor_Setoid]
  as its hom-setoid, which identifies functors that are merely NATURALLY
  ISOMORPHIC; its own header says so in terms -- it is the homotopy
- category Ho(Cat), "NOT the strict 1-category of categories of the
- textbooks", and an isomorphism in it is an EQUIVALENCE of categories.
+ category Ho(Cat), “NOT the strict 1-category of categories of the
+ textbooks”, and an isomorphism in it is an EQUIVALENCE of categories.
  [StrictCat] (Instance/StrictCat.v) has [Functor_StrictEq_Setoid],
  under which two functors are identified by a Leibniz equality of their
  object maps together with a transported agreement of their arrow maps.
@@ -131,8 +131,8 @@ Generalizable All Variables.
  ALREADY has a comma universal property over these same two
  arrow-category projections, and in a module this file Requires --
  [comma_diagram_ump] (Construction/Comma/Diagram.v), Mac Lane §II.6
- Exercise 5, whose own header calls it "what exhibits it as a
- 'pullback'-style limit" and re-records the same PIE-limit
+ Exercise 5, whose own header calls it “what exhibits it as a
+ 'pullback'-style limit” and re-records the same PIE-limit
  framing cited above.  Nothing here is a restatement of it and nothing it
  proves is falsified: it mediates into the GENERAL comma [(S ↓ T)] over
  the [MediatesDiagram] competitor class with uniqueness at [≈[Cat]],
@@ -191,16 +191,16 @@ Generalizable All Variables.
  ** Prior art, measured by shape
 
  Nothing in the tree states an [IsPullback] or a [Pullback] in [Cat] or in
- [StrictCat] (measured: [rg "IsPullback StrictCat|Pullback StrictCat"] and
+ [StrictCat] (measured: [rg “IsPullback StrictCat|Pullback StrictCat”] and
  the [Cat] analogue return only this file), and no fibre product of
- categories is constructed anywhere -- the two "fibre/fiber product"
+ categories is constructed anywhere -- the two “fibre/fiber product”
  occurrences elsewhere are prose, about schemes (Structure/Pullback.v)
  and about base change along a slice (Construction/Slice/Pullback.v).
  BEFORE this commit the concrete [HasPullbacks] inhabitants were
  [Sets_HasPullbacks] (Instance/Sets/Pullback.v) and [FinSet_Pullbacks]
  (Instance/FinSet/Classifier.v), with three generic conditionals
- besides; that roster, and the correction of the older "exactly one
- inhabitant" reading, are Instance/Sets/Pullback.v's own (its header),
+ besides; that roster, and the correction of the older “exactly one
+ inhabitant” reading, are Instance/Sets/Pullback.v's own (its header),
  cited here rather than re-derived.  This commit adds a
  FOURTH conditional, [StrictCat_HasPullbacks] -- not a generic one, being
  for one named category under a blanket hypothesis.
@@ -224,7 +224,7 @@ Generalizable All Variables.
  108/108 constants (37 transparent, 71 opaque; 46 of them [Program]
  obligations, which the [.glob] sweep does not record and which take the
  62 the glob does count up to the 108 [Print Module] lists) report
- "Closed under the global context". 
+ “Closed under the global context”. 
 
  --------
  nLab:       https://ncatlab.org/nlab/show/pullback 
@@ -255,7 +255,7 @@ Generalizable All Variables.
 
  测量在 [eq_refl] 处成立：严格平方的对象分量是每个对象所携带的等式，其态射分量是每个态射所携带的方程（[FP_commutes_strict] 是一个没有策略的 [:=]）；两个三角形都有 [eq_refl] 对象分量，箭头的一半是 [reflexivity] （[FP_med_fst]，[FP_med_snd]）；中介者的对象动作是 [((q1 x, q2 x); `1 Hsq x)]；以及 [fobj[FP_fst ◯ FP_med] ] 和 [fmap[FP_fst ◯ FP_med] f] 在 LEIBNIZ 等式下分别是 [fobj[q1] ] 和 [fmap[q1] f]。 在逗号一侧，[Slice_commutes] 和 [Coslice_commutes] 同样具有 [eq_refl] 对象分量，并且 [fobj[Slice_Arrow] x] 在 Leibniz 等式下是 [((`1 x, c); `2 x)]。测量并反驳，两个转换都是失败的：[FP_fst ◯ FP_med = q1] 作为 [Functor] 记录的莱布尼茨等式 —— 对象和箭头操作完全一致，如刚记录的，但三个律域是重建的证明；而 [Slice C c = FibreProduct Arrow_cod (Diagonal 1 c)] ，两者属于不同的范畴（slice 存储一个箭头，纤维积存储一个带证明的对）。所证明的是它们都是同一个共尖的拉回；由本质唯一性得出的它们之间的同构没有被构建。这些在这里被测量；它们在伴随探针中被固定。  ** 宇宙，从约束块中读取[FibreProduct] 本身是自由常量：它的块仅包含界限（比如 [u <= u5]、[u0 <= u4]、[u2 <= u4] 等），而不涉及 A 和 B 对象宇宙之间的任何识别。[FibreProduct_IsPullback] 显示了三个独立的类别绑定器，但其约束块包含 [u = u1]、[u = u3]、[u0 = u2] 和 [u0 = u4]：三者的对象宇宙相互识别，三者的同态与证明宇宙也相互识别。这就是在 [StrictCat] 中声明 [IsPullback] 的代价——余联的三个角是属于同一个 [Category@{o h p}] 实例的对象——而且这是继承下来的而非在此引入；并未声称这是不可避免的，也未尝试重新安排。[Slice_IsPullback] 和 [Coslice_IsPullback] 超过 [C : Category@{u u0 u0}]，其块中没有任何 [Set]。[FP_uniqueness_forces_UIP@{u u0 u1 u2}] 的假设通过 [Category@{u0 Set Set}] 进行量化——同构和证明固定在 [Set] 上，这削弱了假设，从而加强了定理——结论为 [∀ X : Type@{u}]，[u <= u0]；固定由见证者执行（[Indiscrete] 拥有 [hom := unit]，且 [_1] 被实例化以匹配）。[FibreProduct_not_Cat_pullback] 承载 [Set < u] 和 [Set < u3]，这是具体见证者的一般代价。上面每个类别绑定器在一个层次上显示同构和证明；未探讨该识别的原因，也未对此提出任何声明。  
 
- ** 先前艺术，以形状衡量在树中没有任何内容注明 [IsPullback] 或 [Pullback] 在 [Cat] 或 [StrictCat] 中（测量：[rg "IsPullback StrictCat|Pullback StrictCat"] 和 [Cat] 类比仅返回此文件），并且没有任何类别的纤维积被构造——其他地方的两个“纤维/ fiber 积”出现都是散文，关于方案（Structure/Pullback.v）以及关于沿切片的基变换（Construction/Slice/Pullback.v）。在此提交之前，具体的 [HasPullbacks] 成员是 [Sets_HasPullbacks]（Instance/Sets/Pullback.v）和 [FinSet_Pullbacks]（Instance/FinSet/Classifier.v），除此之外还有三个通用条件；该目录，以及对旧的“恰有一个成员”读法的修正，都是 Instance/Sets/Pullback.v 自身的内容（其头部），在此引用而非重新推导。此提交添加了第四个条件，[StrictCat_HasPullbacks]——不是通用的，而是针对在一个统一假设下的特定类别。
+ ** 先前艺术，以形状衡量在树中没有任何内容注明 [IsPullback] 或 [Pullback] 在 [Cat] 或 [StrictCat] 中（测量：[rg “IsPullback StrictCat|Pullback StrictCat”] 和 [Cat] 类比仅返回此文件），并且没有任何类别的纤维积被构造——其他地方的两个“纤维/ fiber 积”出现都是散文，关于方案（Structure/Pullback.v）以及关于沿切片的基变换（Construction/Slice/Pullback.v）。在此提交之前，具体的 [HasPullbacks] 成员是 [Sets_HasPullbacks]（Instance/Sets/Pullback.v）和 [FinSet_Pullbacks]（Instance/FinSet/Classifier.v），除此之外还有三个通用条件；该目录，以及对旧的“恰有一个成员”读法的修正，都是 Instance/Sets/Pullback.v 自身的内容（其头部），在此引用而非重新推导。此提交添加了第四个条件，[StrictCat_HasPullbacks]——不是通用的，而是针对在一个统一假设下的特定类别。
 
  ** 未提供的内容没有 [HasPullbacks Cat]，也没有对它的反驳；只有这个顶点被反驳，且仅在一个余范畴上。没有同构逗号、伪拉回、双极限或二范畴的普遍性质，也没有它们与纤维积之间的比较。没有无条件的 [HasPullbacks StrictCat]。[Slice C c] 与其余范畴的纤维积之间没有同构，并且在 [StrictCat] 中对拉回也没有本质唯一性声明。作为 [⟨dom, cod⟩ : C^2 ⟶ C ∏ C] 沿 [S ∏⟶ T] 的拉回的一般逗号 [(S ↓ T)] 没有构建——只有两个单对象的余范畴。关于粘贴、稳定性或与 [Cat_Cartesian] 的交互没有任何说明；没有均衡器，没有其他有限限制，也没有针对任何类别的完整性声明；与 Structure/Pullback/Reduction.v 的约简没有任何联系；并且对于箭头类别作为幂 [C^2]，除了用作两个分支的源之外，没有做出任何声称。
 
@@ -793,7 +793,7 @@ Context (uip : ObjUIP C).
 #[local] Obligation Tactic := idtac.
 
 (*
- [Default Proof Using "All"] reaches the section's [Qed]/[Defined] proofs,
+ [Default Proof Using “All”] reaches the section's [Qed]/[Defined] proofs,
  so those take [uip] positionally even where it does not appear in the
  statement (the Theory/Category/Monoid.v idiom).  It does NOT reach a
  [Program Definition]: [Slice_proj], [Slice_Arrow] and [Slice_med] -- and
@@ -801,7 +801,7 @@ Context (uip : ObjUIP C).
  so a consumer reusing them drags in no hypothesis. 
 
  --------
- [Default Proof Using "All"] 到达了该部分的 [Qed] / [Defined] 证明，因此即使在陈述中未出现，它们在位置上仍占据 [uip] 的位置（Theory/Category/Monoid.v 习惯用法）。它没有达到 [Program Definition] : [Slice_proj] , [Slice_Arrow] 和 [Slice_med] ——以及它们的余切双胞胎——它们确实不含 [ObjUIP] ，正如 [Check] 所示，因此复用它们的使用者不会引入任何假设。
+ [Default Proof Using “All”] 到达了该部分的 [Qed] / [Defined] 证明，因此即使在陈述中未出现，它们在位置上仍占据 [uip] 的位置（Theory/Category/Monoid.v 习惯用法）。它没有达到 [Program Definition] : [Slice_proj] , [Slice_Arrow] 和 [Slice_med] ——以及它们的余切双胞胎——它们确实不含 [ObjUIP] ，正如 [Check] 所示，因此复用它们的使用者不会引入任何假设。
 *)
 Local Set Default Proof Using "All".
 
@@ -857,12 +857,12 @@ Qed.
  transported morphism equality is a loop at c, and it must be [eq_refl].
  It is NOT the only place the hypothesis is consumed on the slice side --
  [Slice_med_arrow] and [Slice_med_unique] each spend it too, through
- [fp_hom_cast_irr] -- and the section's [Default Proof Using "All"] makes
+ [fp_hom_cast_irr] -- and the section's [Default Proof Using “All”] makes
  every [Qed]/[Defined] result here take it positionally in any case; the
  [Program Definition]s it does not reach are listed at the section head. 
 
  --------
- [Slice_Arrow] 在对象上是单射的。这正是 [ObjUIP C] 所做的工作，而其他方法无法做到：被传输的态射等式的余域坐标是 c 上的一个环，它必须是 [eq_refl]。它并不是在切片端唯一消耗该假设的地方——[Slice_med_arrow] 和 [Slice_med_unique] 每个也都通过 [fp_hom_cast_irr] 使用了它——并且截面的 [Default Proof Using "All"] 使这里每个 [Qed] / [Defined] 结果无论如何都以位置形式接受它；那些它未能触及的 [Program Definition] 已在截面开头列出。
+ [Slice_Arrow] 在对象上是单射的。这正是 [ObjUIP C] 所做的工作，而其他方法无法做到：被传输的态射等式的余域坐标是 c 上的一个环，它必须是 [eq_refl]。它并不是在切片端唯一消耗该假设的地方——[Slice_med_arrow] 和 [Slice_med_unique] 每个也都通过 [fp_hom_cast_irr] 使用了它——并且截面的 [Default Proof Using “All”] 使这里每个 [Qed] / [Defined] 结果无论如何都以位置形式接受它；那些它未能触及的 [Program Definition] 已在截面开头列出。
 *)
 Lemma slice_arrow_reflect (x y : Slice C c)
       (E : Slice_Arrow x = Slice_Arrow y) : x = y.

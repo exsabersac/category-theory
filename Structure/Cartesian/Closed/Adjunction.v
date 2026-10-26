@@ -27,10 +27,10 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/exponential+object
  nLab: https://ncatlab.org/nlab/show/adjoint+functor
  nLab: https://ncatlab.org/nlab/show/representable+functor
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer 1998; §I.4 (Natural Transformations) and Chapter IV
  (Adjoints), §6 (Cartesian Closed Categories)
- Book: Riehl, "Category Theory in Context", Dover 2016; §2.1
+ Book: Riehl, “Category Theory in Context”, Dover 2016; §2.1
  (Representable functors), Example 2.1.6(iv)
 
  Structure/Cartesian/Closed.v already carries the currying bijection: the
@@ -73,8 +73,8 @@ Generalizable All Variables.
  [fun x => exponent_obj S x], and [eval] at x is the arrow x^S × S ~> x.
 
  The header of Theory/Adjunction.v (in the paragraph beginning
- "For the functional programmer") says in prose that "the function type
- arises from − × a ⊣ (−)^a with eval as counit". [Curry_Adjunction] and
+ “For the functional programmer”) says in prose that “the function type
+ arises from − × a ⊣ (−)^a with eval as counit”. [Curry_Adjunction] and
  [curry_adj_counit] are that sentence as a theorem. The Sets model — where
  the counit computes to e(h, s) = h s — is
  Instance/Sets/Cartesian/Closed/Adjunction.v. 
@@ -105,45 +105,45 @@ Generalizable All Variables.
 
  nLab: https://ncatlab.org/nlab/show/exponential+object
  nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer 1998
- Book: Riehl, "Category Theory in Context", Dover 2016
- Paper: Lawvere, "Adjointness in Foundations", Dialectica 23(3/4), 1969;
+ Book: Riehl, “Category Theory in Context”, Dover 2016
+ Paper: Lawvere, “Adjointness in Foundations”, Dialectica 23(3/4), 1969;
  reprinted as TAC Reprints 16, 2006
 
  Mac Lane's Chapter I fixes the vocabulary this file is written in: §I.4
  defines a natural transformation as a family of arrows whose square
  commutes for every morphism of the source category, and the entire content
  of [eval_natural] is that [eval] is such a family once the two sides are
- read as functors of the base object. His Chapter IV, "Adjoints", is where
- the exponential becomes one: its §6 is titled "Cartesian Closed
- Categories", and the adjunction − × S ⊣ (−)^S with evaluation as counit is
+ read as functors of the base object. His Chapter IV, “Adjoints”, is where
+ the exponential becomes one: its §6 is titled “Cartesian Closed
+ Categories”, and the adjunction − × S ⊣ (−)^S with evaluation as counit is
  the shape this file instantiates.
 
  The nLab's page on exponential objects states the same content in two
- registers and both are realized here. Universally: the exponential is "an
- object X^Y equipped with an evaluation map ev : X^Y × Y → X" through which
+ registers and both are realized here. Universally: the exponential is “an
+ object X^Y equipped with an evaluation map ev : X^Y × Y → X” through which
  every e : Z × Y → X factors uniquely — this is [ump_exponents] in
- Structure/Cartesian/Closed.v. Representably: X^Y is "a representing object
- for the functor hom(− × Y, X)", the currying isomorphism
- hom(Z, X^Y) ≅ hom(Z × Y, X) being "a natural isomorphism of sets". The
+ Structure/Cartesian/Closed.v. Representably: X^Y is “a representing object
+ for the functor hom(− × Y, X)”, the currying isomorphism
+ hom(Z, X^Y) ≅ hom(Z × Y, X) being “a natural isomorphism of sets”. The
  second reading is the one [Curry_Representable] formalizes.
 
- Riehl's Example 2.1.6(iv) is that reading verbatim: "The functor
+ Riehl's Example 2.1.6(iv) is that reading verbatim: “The functor
  Hom(− × A, B) : Set^op → Set that sends a set X to the set of functions
  X × A → B is represented by the set B^A of functions from A to B. That is,
  there is a natural bijection between functions X × A → B and functions
  X → B^A. This natural isomorphism is referred to as currying in computer
- science". Two adjustments are made in passing to that example here. First,
+ science”. Two adjustments are made in passing to that example here. First,
  the ambient category is a general cartesian closed C rather than Set, so
  the presheaf is the hom-functor C(− × S, B) : C^op ⟶ Sets and the
  representing object is B^S; Riehl's own statement is recovered by taking C
  to be [Sets], which Instance/Sets/Cartesian/Closed/Adjunction.v does.
- Second, "natural bijection" is here a genuine isomorphism in the functor
+ Second, “natural bijection” is here a genuine isomorphism in the functor
  category [C^op, Sets] of setoid-valued functors, since hom-sets in this
  library are setoids and equality of their elements is ≈, never =.
 
- Lawvere's "Adjointness in Foundations" is the source of the slogan that
+ Lawvere's “Adjointness in Foundations” is the source of the slogan that
  cartesian closed structure IS an adjunction — currying is − × a ⊣ (−)^a —
  quoted already in the essay that heads Theory/Adjunction.v; the [Adjunction]
  packaging below is what lets the general theory of that file apply, so

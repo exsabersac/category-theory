@@ -38,9 +38,9 @@ Generalizable All Variables.
  object [x × 0 ≅ 0], and read in Sets that says [x + 1 ≅ 1].
 
  STALE PREMISES, RE-MEASURED.
- - "The library records only positive adjunction constructions … no
+ - “The library records only positive adjunction constructions … no
  impossibility result … no idiom for stating that a given functor
- lacks an adjoint": FALSE.  Twelve no-adjoint theorems in four
+ lacks an adjoint”: FALSE.  Twelve no-adjoint theorems in four
  shapes predate this file (the twelve declarations whose names match
  [(no|not)_…adjoint], plus Adjunction/Choice.v's
  [two_left_adjoint_proper : HasRightAdjoint … → False]; an earlier
@@ -58,14 +58,14 @@ Generalizable All Variables.
  hypothesis-shaped — Instance/Top/Forgetful.v
  [indiscrete_no_right_adjoint].  Construction/Slice/Adjunction.v's
  [slice_proj_left_adjoint_iff_terminal : (∃ L, L ⊣ Slice_Proj a) ↔
- IsTerminalObj a] is moreover an "a left adjoint exists iff the
- object is terminal" biconditional of exactly this file's shape, so
- neither "the first no-adjoint result at Sets" nor "the first stated
- as an iff" is claimed (an earlier revision claimed both).  The
+ IsTerminalObj a] is moreover an “a left adjoint exists iff the
+ object is terminal” biconditional of exactly this file's shape, so
+ neither “the first no-adjoint result at Sets” nor “the first stated
+ as an iff” is claimed (an earlier revision claimed both).  The
  issue's own grep is off too: 'no left adjoint|no right adjoint' has
  12 hits in the [.v] files, not one (15 over every tracked file
  outside doc/plan), and [⊣] 786 hits in 177 [.v] files, not 261.
- - "'not cartesian closed' finds only prose": FALSE.  Instance/Fun/
+ - “'not cartesian closed' finds only prose”: FALSE.  Instance/Fun/
  Closed.v [fun_not_cartesian_closed (CC : @Cartesian ([Omega,
  FinSet])) : @Closed _ CC → False] is a theorem, in the strong form
  quantified over every cartesian structure (with a pointwise
@@ -73,15 +73,15 @@ Generalizable All Variables.
  closedness result and the first for [Sets^op], at that strength.
  (Instance/Coq/Par.v and ParE.v are prose,
  as the issue says.)
- - "The general tool (Adjunction/Continuity.v) is never used
- in the negative direction": TRUE of the two constants it means,
+ - “The general tool (Adjunction/Continuity.v) is never used
+ in the negative direction”: TRUE of the two constants it means,
  [right_adjoint_PreservesLimitCone] and
  [left_adjoint_preserves_colimit] -- the places the issue points
  at are comment lines, not those declarations.  RAPL/LAPC
  have twelve term-level consumers in seven files, every one positive
  (an earlier revision said eleven); this file is the FIRST negative
- use of them — the one novelty claimed.  (The Awodey clause's "no
- category of posets" is stale too: Instance/Pos.v.)
+ use of them — the one novelty claimed.  (The Awodey clause's “no
+ category of posets” is stale too: Instance/Pos.v.)
  - Structure/BiCCC.v's [prod_zero_r] needs [Cartesian], [Closed]
  and [Initial] only — not the
  [Cocartesian] its section also opens — so no dual cocartesian
@@ -177,8 +177,8 @@ Generalizable All Variables.
  COUNTS AND CONVENTIONS.
  - 15 [.glob] declaration heads here (11 [def], 4 [prf]) plus the 4
  [Program] obligations of [fp_adj_iso] (two discharged by
- [cat_simpl], two by hand), and 4 heads in Finite.v — all "Closed
- under the global context", zero [Axioms:] lines; the gate carries
+ [cat_simpl], two by hand), and 4 heads in Finite.v — all “Closed
+ under the global context”, zero [Axioms:] lines; the gate carries
  the 19 heads, fully qualified, the issue's
  [times_X_has_left_adjoint_iff_terminal] and
  [Sets_op_not_cartesian_closed] among them.
@@ -199,10 +199,10 @@ Generalizable All Variables.
  - Test/ProbeNoAdjoint432.v mirrors the [Require] list and carries 5
  refutation commands (1 instrument + N1 CONVERSION + N2-N3 TYPING +
  N4 UNIVERSE), each stripped one at a time in a copy of the whole
- file beside its accepted controls (N4's message: "Cannot enforce ch
- = _ because ch < dh <= _"; the two TYPING negatives are told apart
+ file beside its accepted controls (N4's message: “Cannot enforce ch
+ = _ because ch < dh <= _”; the two TYPING negatives are told apart
  from N1 by WHAT is refused — a type ascription against an [eq_refl]
- — not by the error text, N3's also saying "cannot unify"); four
+ — not by the error text, N3's also saying “cannot unify”); four
  [eq_refl] readbacks; guard coverage 20 identifier tokens inside the
  refutations / 17 also named outside, comments stripped, with three
  exhaustive exceptions (the keyword, the refuted declaration's name,
@@ -213,7 +213,7 @@ Generalizable All Variables.
  [iso_id] excluded — an earlier revision listed those two), every
  first break on a positive line.  [make todo] grows by those 5
  lines only (2261 → 2266 over 39aa0ea5, master 1be50678 with #431),
- so the issue's "adds no new hits" box is not met as written;
+ so the issue's “adds no new hits” box is not met as written;
  disclosed.
 
  NOT DELIVERED.

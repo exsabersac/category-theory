@@ -22,11 +22,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/Cat
  nLab:      https://ncatlab.org/nlab/show/Godement+product
  Wikipedia: https://en.wikipedia.org/wiki/Strict_2-category
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §II.5, printed pp. 42-45 (Theorem 1, and the
  definitions of a double category and of a 2-category)
  Book:      Mac Lane, ibid., §XII.3, printed p. 273
- Book:      Riehl, "Category Theory in Context", Definition 1.7.8
+ Book:      Riehl, “Category Theory in Context”, Definition 1.7.8
 
  Mac Lane's §II.5 Theorem 1 says that the natural transformations form
  two interlocking categories — one whose objects are functors, one whose

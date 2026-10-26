@@ -21,11 +21,11 @@ Generalizable All Variables.
 (* * * The direct sum is the coproduct in Ab / * * 直和是在Ab中的余积 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
+ Book: Mac Lane, “Categories for the Working Mathematician” (2nd ed.),
  §III.3, book p. 63 (maclane:III.3:remark1)
- Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ Book: Awodey, “Category Theory” (1st ed., CMU pre-print, Sept 2005),
  §3.2, Example 3.10, printed p. 64 (awodey:3.2:example10)
- Book: Riehl, "Category Theory in Context" (2nd ed.), §3.1,
+ Book: Riehl, “Category Theory in Context” (2nd ed.), §3.1,
  printed p. 93 (riehl:3.1:exxi)
  Wikipedia: https://en.wikipedia.org/wiki/Coproduct
 
@@ -56,7 +56,7 @@ Generalizable All Variables.
 
  AN EARLIER DRAFT OF THIS HEADER GOT THAT WRONG AND IS CORRECTED HERE.
  It claimed that the two interaction laws comparing against [zero_mor]
- "do not transfer" and are "not even well-typed here", on the ground
+ “do not transfer” and are “not even well-typed here”, on the ground
  that Ab's zero object is [Ab_Zero] while CMon's is [CMon_Zero].  That
  is FALSE, and the falsity is now machine-checked:
  [ab_zero_mor_is_cmon_zero_mor] shows the two zero morphisms are the
@@ -66,8 +66,8 @@ Generalizable All Variables.
  [CMon_one] and [CMon_zero_hom] (Instance/Ab.v).  So
  [Ab_exl_inr] and [Ab_exr_inl] are [CMon_exl_inr] and [CMon_exr_inl],
  supplied by [:=] like the rest.  The general lesson is the one the
- correction cost: at this depth of inheritance, "different record at a
- different category" is not by itself a reason for anything, and the
+ correction cost: at this depth of inheritance, “different record at a
+ different category” is not by itself a reason for anything, and the
  convertibility has to be TESTED rather than reasoned about.
 
  WHAT IS PROVED, AND AT WHAT STRENGTH.  [Ab_Biproducts] inhabits

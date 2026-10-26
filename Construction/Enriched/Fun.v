@@ -49,7 +49,7 @@ Generalizable All Variables.
    * * A small splitting/cons toolkit in K
 
    Interchange specializations that peel a composite out of one tensor
-   slot, plus right-nested ("cons") forms of the enriched associativity
+   slot, plus right-nested (“cons”) forms of the enriched associativity
    law and of the solved triangle identities from
    Structure/Monoidal/Braided/Proofs.v.  All are pure monoidal-category
    facts except [ecompose_assoc_cons], which is the associativity law of

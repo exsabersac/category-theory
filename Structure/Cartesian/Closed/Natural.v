@@ -21,14 +21,14 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/exponential+object
  nLab: https://ncatlab.org/nlab/show/natural+transformation
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.5
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §II.5
  Exercise 2 (printed p. 44), asks that the familiar exponential laws
 
  z^(x × y) ≅ (z^y)^x,      (y × z)^x ≅ y^x × z^x,
  x × (y + z) ≅ x × y + x × z,   x^(y + z) ≅ x^y × x^z
 
- be shown NATURAL in each of their variables.  Riehl, "Category Theory in
- Context", §1.4 Example 1.4.11 (printed p. 29) reads the same four laws in
+ be shown NATURAL in each of their variables.  Riehl, “Category Theory in
+ Context”, §1.4 Example 1.4.11 (printed p. 29) reads the same four laws in
  the groupoid of finite sets and observes that applying the cardinality
  functor decategorifies them into the arithmetic identities
  z^(xy) = (z^y)^x, (yz)^x = y^x z^x, x(y+z) = xy + xz and x^(y+z) = x^y x^z;

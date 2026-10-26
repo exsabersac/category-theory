@@ -34,7 +34,7 @@ Context {C : Category}.
  proj_left = unit_right ∘ id ⨂ eliminate and proj_right = unit_left ∘
  eliminate ⨂ id (see Semicartesian.v).
 
- Wikipedia: "Cartesian monoidal categories have a number of special and
+ Wikipedia: “Cartesian monoidal categories have a number of special and
  important properties, such as the existence of diagonal maps (Δ) x : x → x
  ⨂ x and augmentations (e) x : x → I for any object x. In applications to
  computer science we can think of (Δ) as 'duplicating data' and (e) as
@@ -43,7 +43,7 @@ Context {C : Category}.
 
  Moreover, one can show (e.g. Heunen-Vicary 12, p. 84) that any symmetric
  monoidal category equipped with suitably well-behaved diagonals and
- augmentations must in fact be cartesian monoidal." 
+ augmentations must in fact be cartesian monoidal.” 
 
  --------
  nLab：https://ncatlab.org/nlab/show/cartesian+monoidal+category
@@ -52,9 +52,9 @@ Context {C : Category}.
  笛卡尔幺半范畴是一个幺半范畴，其张量为范畴积，单位对象为终对象。在这个库的表示法中，这意味着
 
  x ⨂ y 是积 x × y，
- I 是终对象 1，通过结合子、单位子和交错性，它们都由乘积的普遍性质引出。我们并不直接假设存在乘积；相反，我们从两部分来刻画相同的结构，这两部分结合起来，会强制张量成为乘积：一个相容的对角线（RelevanceMonoidal，复制）和一个终单位（SemicartesianMonoidal，丢弃）。下面的两个 proj_*_diagonal 法则正是使结果成为笛卡尔的缺失兼容性——这是 Fox 的定理（Fox 1976），在 nLab 上陈述为：具有自然对角线 ∆ 和增强 e 的对称单体范畴，当且仅当 proj_left ∘ ∆ ≈ id 且 proj_right ∘ ∆ ≈ id 时是笛卡尔的，其中 proj_left = unit_right ∘ id ⨂ eliminate，proj_right = unit_left ∘ eliminate ⨂ id（参见 Semicartesian.v）。维基百科："笛卡尔幺半群范畴具有许多特殊且重要的性质，例如存在对角映射 (Δ)_x: x → x ⨂ x 和增广映射 (e)_x: x → I 对于任意对象 x。在计算机科学的应用中，我们可以将 (Δ) 看作“复制数据”，将 (e) 看作“删除数据”。这些映射使得任何对象成为余半群。事实上，笛卡尔幺半群范畴中的任何对象都以唯一的方式成为余半群。
+ I 是终对象 1，通过结合子、单位子和交错性，它们都由乘积的普遍性质引出。我们并不直接假设存在乘积；相反，我们从两部分来刻画相同的结构，这两部分结合起来，会强制张量成为乘积：一个相容的对角线（RelevanceMonoidal，复制）和一个终单位（SemicartesianMonoidal，丢弃）。下面的两个 proj_*_diagonal 法则正是使结果成为笛卡尔的缺失兼容性——这是 Fox 的定理（Fox 1976），在 nLab 上陈述为：具有自然对角线 ∆ 和增强 e 的对称单体范畴，当且仅当 proj_left ∘ ∆ ≈ id 且 proj_right ∘ ∆ ≈ id 时是笛卡尔的，其中 proj_left = unit_right ∘ id ⨂ eliminate，proj_right = unit_left ∘ eliminate ⨂ id（参见 Semicartesian.v）。维基百科：“笛卡尔幺半群范畴具有许多特殊且重要的性质，例如存在对角映射 (Δ)_x: x → x ⨂ x 和增广映射 (e)_x: x → I 对于任意对象 x。在计算机科学的应用中，我们可以将 (Δ) 看作“复制数据”，将 (e) 看作“删除数据”。这些映射使得任何对象成为余半群。事实上，笛卡尔幺半群范畴中的任何对象都以唯一的方式成为余半群。
 
- 此外，可以证明（例如 Heunen-Vicary 12, 第 84 页）任何具有适当良好行为的对角映射和增广映射的对称幺半群范畴实际上必须是笛卡尔幺半群范畴。"
+ 此外，可以证明（例如 Heunen-Vicary 12, 第 84 页）任何具有适当良好行为的对角映射和增广映射的对称幺半群范畴实际上必须是笛卡尔幺半群范畴。”
 *)
 
 Class CartesianMonoidal := {

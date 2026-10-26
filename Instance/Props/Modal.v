@@ -30,29 +30,29 @@ Generalizable All Variables.
 (*
  nLab: https://ncatlab.org/nlab/show/modal+operator
  nLab: https://ncatlab.org/nlab/show/closure+operator
- Book: Fong and Spivak, "Seven Sketches in Compositionality", arXiv v3,
+ Book: Fong and Spivak, “Seven Sketches in Compositionality”, arXiv v3,
  SS 1.4.4, Example 1.123, printed pp. 34-35, and footnote 8,
  printed p. 33
- Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ Book: Awodey, “Category Theory” (1st ed., CMU pre-print, Sept 2005),
  SS 10.2, Example 10.4, printed p. 270
 
  WHAT THE BOOK SAYS.  Seven Sketches Example 1.123 orders propositions
- by entailment ("p ≤ q iff p implies q") and says: "A closure operator
+ by entailment (“p ≤ q iff p implies q”) and says: “A closure operator
  on it is often called a modal operator.  It is a function j from
  propositions to propositions, for which p ⇒ j(p) and j(j(p)) = j(p).
  An example of a j is 'assuming Bob is in San Diego....'  Think of this
  as a proposition B; so 'assuming Bob is in San Diego, p' means B ⇒ p.
- Let's see why B ⇒ − is a closure operator."  The argument that
+ Let's see why B ⇒ − is a closure operator.”  The argument that
  follows is informal.  Awodey's Example 10.4 (p. 270) names a different
- modality, "The 'possibility operator' ⋄p in modal logic is another
- example", which is not stated here.
+ modality, “The 'possibility operator' ⋄p in modal logic is another
+ example”, which is not stated here.
 
  WHICH READING IS IMPLEMENTED.  The entailment preorder is
  Instance/Props.v's [Props]: objects [Prop], arrows [Basics.impl], and
  the hom-setoid [True], so [Props] is thin.  [modal_functor B] is
  p ↦ (B → p), [modal_ext] is the first axiom, and the second is
  [modal_idem] as mutual entailment (stdlib [<->]; the library's [↔] is
- [iffT]), which is the isomorphism of [Props].  The book's "=" between
+ [iffT]), which is the isomorphism of [Props].  The book's “=” between
  propositions is [modal_idem_ext], under propositional extensionality
  supplied as a hypothesis; no axiom is assumed.  [modal_monad] is the
  monad: its unit is [modal_ext], its multiplication [modal_mult], the

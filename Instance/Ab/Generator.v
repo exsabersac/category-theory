@@ -15,22 +15,22 @@ Generalizable All Variables.
  nLab:  https://ncatlab.org/nlab/show/separator
  nLab:  https://ncatlab.org/nlab/show/free+abelian+group
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.7, book p. 127 (PDF p. 136), Definition 4, gives two examples of a
  generating set: the one-point set for sets, and THE INTEGERS for
- abelian groups.  The second is this file's subject.  Awodey, "Category
- Theory" (1st ed., Carnegie Mellon pre-print, September 2005), §7.2,
- printed p. 154 (PDF p. 163), and Riehl, "Category Theory in Context",
+ abelian groups.  The second is this file's subject.  Awodey, “Category
+ Theory” (1st ed., Carnegie Mellon pre-print, September 2005), §7.2,
+ printed p. 154 (PDF p. 163), and Riehl, “Category Theory in Context”,
  2nd ed., Definition 4.7.7, printed p. 177 (PDF p. 197), are the
  single-object and family forms of the same definition.  The [Sets]
  witness is Instance/Sets/Generator.v and the [Grp] one
  Instance/Grp/Generator.v.
 
- WHAT IS PROVED, AND WHAT MAC LANE SAID.  Mac Lane's "the integers
- generate Ab" is, up to the standard isomorphism ℤ ≅ F_ab(1), the
+ WHAT IS PROVED, AND WHAT MAC LANE SAID.  Mac Lane's “the integers
+ generate Ab” is, up to the standard isomorphism ℤ ≅ F_ab(1), the
  statement proved here: the free abelian group on a ONE-ELEMENT
  generating setoid separates [Ab].  The isomorphism itself is NOT in
- this tree and is not proved here, so the sentence "ℤ separates Ab" is
+ this tree and is not proved here, so the sentence “ℤ separates Ab” is
  not a theorem of this file.  The in-tree integers are
  [ab_int : AbObject] at Instance/Ab/Free.v (one of five names for
  [ring_ab Int_Ring]; Instance/Grp/Generator.v's header lists them with
@@ -90,9 +90,9 @@ Generalizable All Variables.
  [grp_point]: under the universe annotation the [Program] form does not
  register the constant before the obligation is met.  It must stay
  TRANSPARENT: closed with [Qed] the separation proof is refused with
- "The term "Hk (free_ab_extend (ab_point x)) (fa_gen ttt)" has type
- "(f ∘ free_ab_extend (ab_point x)) (fa_gen ttt) ≈ …" while it is
- expected to have type "f x ≈ g x"", a CONVERSION refusal. 
+ “The term ”Hk (free_ab_extend (ab_point x)) (fa_gen ttt)“ has type
+ ”(f ∘ free_ab_extend (ab_point x)) (fa_gen ttt) ≈ …“ while it is
+ expected to have type ”f x ≈ g x“”, a CONVERSION refusal. 
 
  --------
  在 [x] 的常量映射，通过 [Ab_Forget] 读入 [Sets]。由 [refine] 构建，原因与 Instance/Grp/Generator.v 的 [grp_point] 相同：在宇宙注解下，[Program] 形式在义务满足之前不会注册该常量。它必须保持 TRANSPARENT：使用 [Qed] 关闭，分离证明被拒绝，提示“项 'Hk (free_ab_extend (ab_point x)) (fa_gen ttt)' 的类型为 '(f ∘ free_ab_extend (ab_point x)) (fa_gen ttt) ≈ …'，而期望类型为 'f x ≈ g x'”，属于 CONVERSION 拒绝。

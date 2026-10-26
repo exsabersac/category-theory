@@ -56,9 +56,9 @@ Generalizable All Variables.
  permutation of its input boundary ([structural_permutation]).
  This is a one-directional, Prop-level necessary condition on
  boundaries — it assigns no permutation to a term and proves no
- converse realizability — a necessary-condition shadow of "the
+ converse realizability — a necessary-condition shadow of “the
  free coloured PROP on no generators is the coloured permutation
- groupoid" (cf. [Empty_CSig] in
+ groupoid” (cf. [Empty_CSig] in
  [Construction/ColouredPROP/Signature.v]), which is not itself
  formalized here.
 
@@ -95,14 +95,14 @@ Generalizable All Variables.
  [Construction/ColouredPROP/LNL.v].
 
  References:
- - Cho & Jacobs, "Disintegration and Bayesian inversion via string
- diagrams", MSCS 29(7):938-971, 2019 (arXiv:1709.00322) —
+ - Cho & Jacobs, “Disintegration and Bayesian inversion via string
+ diagrams”, MSCS 29(7):938-971, 2019 (arXiv:1709.00322) —
  determinism as comonoid homomorphy.
- - Fong & Spivak, "Supplying bells and whistles in symmetric
- monoidal categories" (arXiv:1908.02633) — supplies of commutative
+ - Fong & Spivak, “Supplying bells and whistles in symmetric
+ monoidal categories” (arXiv:1908.02633) — supplies of commutative
  comonoids.
- - Bonchi, Sobocinski & Zanasi, "A categorical semantics of signal
- flow graphs" — coloured PROPs as typed diagram languages. 
+ - Bonchi, Sobocinski & Zanasi, “A categorical semantics of signal
+ flow graphs” — coloured PROPs as typed diagram languages. 
 
  --------
  nLab:       https://ncatlab.org/nlab/show/PROP 

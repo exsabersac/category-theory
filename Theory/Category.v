@@ -56,51 +56,51 @@ Where categories come from, and what the definition is for
    SEP:   https://plato.stanford.edu/entries/category-theory/
    nLab:  https://ncatlab.org/nlab/show/E-category
    nLab:  https://ncatlab.org/nlab/show/Yoneda+lemma
-   Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
+   Paper: Eilenberg, Mac Lane, “General theory of natural equivalences”,
           Transactions of the American Mathematical Society 58, 1945
 
    Categories, functors, and natural transformations entered mathematics
-   together, in Eilenberg and Mac Lane's "General theory of natural
-   equivalences" (1945) — the abstraction, so the Stanford Encyclopedia
-   recounts, of their "Group Extensions and Homology" (Annals of
+   together, in Eilenberg and Mac Lane's “General theory of natural
+   equivalences” (1945) — the abstraction, so the Stanford Encyclopedia
+   recounts, of their “Group Extensions and Homology” (Annals of
    Mathematics 43, 1942), where particular functors and natural
    transformations were already at work among groups.  The motivation ran
-   backwards through the definitions: the aim was to make "natural"
+   backwards through the definitions: the aim was to make “natural”
    precise, which required functors, which in turn required categories.
-   In their own words, "the whole concept of a category is essentially an
+   In their own words, “the whole concept of a category is essentially an
    auxiliary one; our basic concepts are essentially those of a functor
-   and of a natural transformation".  Even the names are borrowed — per
-   the same Encyclopedia entry, "functor" from Carnap, "category" from
+   and of a natural transformation”.  Even the names are borrowed — per
+   the same Encyclopedia entry, “functor” from Carnap, “category” from
    Aristotle, Kant, and Peirce.
 
    What the auxiliary concept isolates is the least structure in which
    composition makes sense: objects, morphisms, identities, an
    associative composition, and nothing else.  Milewski's preface to
-   "Category Theory for Programmers" (2014) places composition "at the
-   very root of category theory".  Yet the definition never asks what an
+   “Category Theory for Programmers” (2014) places composition “at the
+   very root of category theory”.  Yet the definition never asks what an
    object is; every property must be phrased through the morphisms into
    and out of it, and the Yoneda lemma shows the discipline loses
    nothing — per the nLab, probes by the other objects of C suffice to
-   distinguish the objects of C.  The reward is altitude: "Category
+   distinguish the objects of C.  The reward is altitude: “Category
    theory takes a bird's eye view of mathematics.  From high in the sky,
    details become invisible, but we can spot patterns that were
-   impossible to detect from ground level" (Leinster, "Basic Category
-   Theory", CUP 2014).
+   impossible to detect from ground level” (Leinster, “Basic Category
+   Theory”, CUP 2014).
 
    The subsequent history reads as a map of this library.  Grothendieck
-   made categories intrinsic to homological algebra ("Sur quelques
-   points d'algèbre homologique", Tôhoku Math. J. 9, 1957); Kan isolated
-   adjoint functors ("Adjoint Functors", TAMS 87, 1958), the subject of
+   made categories intrinsic to homological algebra (“Sur quelques
+   points d'algèbre homologique”, Tôhoku Math. J. 9, 1957); Kan isolated
+   adjoint functors (“Adjoint Functors”, TAMS 87, 1958), the subject of
    Theory/Adjunction.v; Lawvere turned algebraic theories into
-   categories and their models into functors ("Functorial Semantics of
-   Algebraic Theories", PNAS 50, 1963), realized here in
+   categories and their models into functors (“Functorial Semantics of
+   Algebraic Theories”, PNAS 50, 1963), realized here in
    Theory/Lawvere.v, and axiomatized the category of sets (PNAS 52,
    1964); Lambek read categories as deductive systems and cartesian
    closed categories as typed lambda calculus, the bridge behind
    Structure/Closed.v and Instance/Lambda/.  Baez and Stay extend the
    same dictionary to physics and topology, with closed symmetric
-   monoidal categories as the common language ("Physics, Topology,
-   Logic and Computation: A Rosetta Stone", arXiv:0903.0340, 2009).
+   monoidal categories as the common language (“Physics, Topology,
+   Logic and Computation: A Rosetta Stone”, arXiv:0903.0340, 2009).
 
    The class below is what the nLab calls an E-category: a category
    enriched in setoids, taking a specified equivalence relation rather
@@ -131,12 +131,12 @@ Where categories come from, and what the definition is for
    SEP:   https://plato.stanford.edu/entries/category-theory/
    nLab:  https://ncatlab.org/nlab/show/E-category
    nLab:  https://ncatlab.org/nlab/show/Yoneda+lemma
-   Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
+   Paper: Eilenberg, Mac Lane, “General theory of natural equivalences”,
           Transactions of the American Mathematical Society 58, 1945
 
    范畴、函子与自然变换一同进入数学，见于 Eilenberg 与 Mac Lane 的
-   "General theory of natural equivalences"（1945）——据 Stanford Encyclopedia，
-   这是他们 "Group Extensions and Homology"（Annals of Mathematics 43, 1942）
+   “General theory of natural equivalences”（1945）——据 Stanford Encyclopedia，
+   这是他们 “Group Extensions and Homology”（Annals of Mathematics 43, 1942）
    的抽象，彼处特定函子与自然变换已在群之间运作。动机沿定义反向推进：
    目标是使「自然」精确，这需要函子，进而需要范畴。用他们自己的话说，
    「范畴的整个概念本质上是辅助性的；我们的基本概念本质上是函子与自然变换」。
@@ -149,17 +149,17 @@ Where categories come from, and what the definition is for
    都必须通过出入它的态射表述，而 Yoneda 引理表明这套纪律毫无损失——
    据 nLab，用 C 的其他对象探测足以区分 C 的对象。回报是高度：「范畴论
    对数学取鸟瞰视角。从高空细节不可见，但我们能发现地面上不可能察觉的
-   模式」（Leinster, "Basic Category Theory", CUP 2014）。
+   模式」（Leinster, “Basic Category Theory”, CUP 2014）。
 
    其后历史可读作本库的地图。Grothendieck 使范畴成为同调代数的内在部分
-   （"Sur quelques points d'algèbre homologique", Tôhoku Math. J. 9, 1957）；
-   Kan 分离出伴随函子（"Adjoint Functors", TAMS 87, 1958），即 Theory/Adjunction.v
-   的主题；Lawvere 把代数理论变成范畴、把模型变成函子（"Functorial Semantics
-   of Algebraic Theories", PNAS 50, 1963），此处实现于 Theory/Lawvere.v，并公理化
+   （“Sur quelques points d'algèbre homologique”, Tôhoku Math. J. 9, 1957）；
+   Kan 分离出伴随函子（“Adjoint Functors”, TAMS 87, 1958），即 Theory/Adjunction.v
+   的主题；Lawvere 把代数理论变成范畴、把模型变成函子（“Functorial Semantics
+   of Algebraic Theories”, PNAS 50, 1963），此处实现于 Theory/Lawvere.v，并公理化
    集合范畴（PNAS 52, 1964）；Lambek 把范畴读作演绎系统、把笛卡尔闭范畴读作
    带类型 λ 演算，即 Structure/Closed.v 与 Instance/Lambda/ 背后的桥梁。Baez 与
    Stay 把同一词典扩展到物理与拓扑，以闭对称幺半范畴为共同语言
-   （"Physics, Topology, Logic and Computation: A Rosetta Stone", arXiv:0903.0340, 2009）。
+   （“Physics, Topology, Logic and Computation: A Rosetta Stone”, arXiv:0903.0340, 2009）。
 
    下方的类即 nLab 所称 E-category：在 setoid 中充实的范畴，以指定等价关系
    而非恒等类型作为态射相等——每个 hom 携带选定等价，复合携带外延性见证
@@ -205,14 +205,14 @@ Where categories come from, and what the definition is for
    4) 数据字段 / Data fields
       - obj : 对象集合 / collection of objects
       - uhom : Hom setoid 的宇宙别名 / universe alias for hom-setoids
-      - hom / where "a ~> b" : 态射类型与局部记法
+      - hom / where “a ~> b” : 态射类型与局部记法
         / morphism type and local notation
       - homset : 每个 Hom 是 Setoid@{h p}，相等是 ≈ 而非定义相等 =
         / each Hom is a Setoid; equality is ≈, not definitional =
 
    5) 运算 / Operations
       - id {x} : 恒等；{x} 为隐式参数 / identity; {x} implicit
-      - compose {x y z} f g / "f ∘ g" : 先 g 后 f（数学常见顺序）
+      - compose {x y z} f g / “f ∘ g” : 先 g 后 f（数学常见顺序）
         / apply g then f (usual mathematical order)
 
    6) 尊重等价 / Respect for equivalence
@@ -399,7 +399,7 @@ Corollary cod_comp {x y z : C} (g : y ~> z) (f : x ~> y) :
 Proof. split; auto. Qed.
 
 (*
-Riehl, "Category Theory in Context", §1.1: the identity at an object is
+Riehl, “Category Theory in Context”, §1.1: the identity at an object is
    unique. An endomorphism that is a two-sided unit is [id] — and either half
    of that hypothesis already suffices, since testing it against [id] itself
    collapses it to a unit law.

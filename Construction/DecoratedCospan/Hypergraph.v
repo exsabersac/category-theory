@@ -35,9 +35,9 @@ Generalizable All Variables.
 (*
    * * Hypergraph structure on [DecoratedCospanCat]
 
-   Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
+   Reference: Brendan Fong, “Decorated Cospans”, arXiv:1502.00872,
    Theorem 3.5 (the decorated-cospan category is symmetric monoidal and
-   a hypergraph category); Fong–Spivak, "Hypergraph categories",
+   a hypergraph category); Fong–Spivak, “Hypergraph categories”,
    JPAA 223 (2019) = arXiv:1806.08304, Definition 4.1.1 (hypergraph
    category) and Definition 4.1.3 (hypergraph functor).
 
@@ -60,7 +60,7 @@ Generalizable All Variables.
    is the trivial one.
 
    The literature-correct packaging (Fong–Spivak, Definition 4.1.1 of
-   the "Hypergraph categories" paper) bundles all of this — the
+   the “Hypergraph categories” paper) bundles all of this — the
    decoration-coherent SCFA per object plus the 8 coherence equations
    — as a single hypergraph-decoration coherence class.  Concrete
    decoration choices (Fong's circuits, Baez–Fong Markov processes)
@@ -101,7 +101,7 @@ Generalizable All Variables.
    [Instance]/[Build_] witnesses.  This construction is therefore a
    CONDITIONAL result — given the coherence witnesses it would yield the
    [Hypergraph] instance, but it is not a finished, inhabited result.
-   Even the "trivial decoration" ([F = Δ I_D]) witness is NOT supplied
+   Even the “trivial decoration” ([F = Δ I_D]) witness is NOT supplied
    here; the discussion of how each field would be discharged (below) is
    a sketch of intended work, not a delivered instance. 
 
@@ -158,7 +158,7 @@ Notation DCSMC :=
 (*
    * ** Coherence class for the Hypergraph structure on [DC]
 
-   Fong's "decorated SCFA" data: a decoration-coherent choice of
+   Fong's “decorated SCFA” data: a decoration-coherent choice of
    SCFA generator for every object, satisfying the 8 standard
    coherence equations of the [Hypergraph] class.
 
@@ -171,8 +171,8 @@ Notation DCSMC :=
    [Cospan_Hypergraph]-SCFA with [id_decoration] decorations on each
    apex; in genuine decorated-cospan examples it is the SCFA carrying
    the application-specific data on each apex (Fong circuits use the
-   "no-resistors" decoration, Baez–Fong Markov processes use the
-   "no-transitions" decoration, etc.). 
+   “no-resistors” decoration, Baez–Fong Markov processes use the
+   “no-transitions” decoration, etc.). 
 
    --------
    * ** [DC] 上超图结构的相干性类
@@ -271,7 +271,7 @@ End DecoratedCospanHypergraph.
    see the status note in the header above).
 
    The [DecCospan_Hypergraph_Coherent] class packages exactly the
-   structure Fong identifies in Theorem 3.5 of "Decorated Cospans":
+   structure Fong identifies in Theorem 3.5 of “Decorated Cospans”:
    a per-object decoration-coherent SCFA plus the 8 standard
    hypergraph coherences.
 
@@ -288,13 +288,13 @@ End DecoratedCospanHypergraph.
    actually built here.
 
    For Fong's electrical circuits, [dec_cospan_scfa X] is the SCFA
-   carrying the "empty resistor network" decoration (the additive
+   carrying the “empty resistor network” decoration (the additive
    unit of the resistor-network monoid on [X]); the tensor and unit
    coherences follow from the algebra of resistor networks on
    coproducts.
 
    For Baez–Fong Markov processes, [dec_cospan_scfa X] is the SCFA
-   carrying the "no transitions" decoration; the coherences follow
+   carrying the “no transitions” decoration; the coherences follow
    from the monoid structure on transition graphs.
 
    In every case the witness would be a short calculation in the chosen

@@ -68,13 +68,13 @@ Generalizable All Variables.
  https://en.wikipedia.org/wiki/Grothendieck%27s_relative_point_of_view
 
  The slice category is the formal home of the relative point of view:
- it makes "an object over a base" a first-class object, turning
+ it makes “an object over a base” a first-class object, turning
  morphisms into c into objects and commuting triangles into morphisms.
  Comma categories, and with them the slice as their leading special
  case, enter the literature in Lawvere's doctoral dissertation
- (Lawvere, "Functorial Semantics of Algebraic Theories", Columbia
- 1963); Wikipedia records that the technique "did not become generally
- known until many years later", and that the name — after the comma in
+ (Lawvere, “Functorial Semantics of Algebraic Theories”, Columbia
+ 1963); Wikipedia records that the technique “did not become generally
+ known until many years later”, and that the name — after the comma in
  Lawvere's original notation — displeased even its author.  Yet the
  viewpoint is older.  Grothendieck's relative point of view, dating
  from the Grothendieck–Riemann–Roch period around 1956, replaces the
@@ -82,41 +82,41 @@ Generalizable All Variables.
  over a base S: a property of the map becomes a property of an object
  of C/S, a whole family is handled as one thing, and since C/1 is
  isomorphic to C, a theorem proved over an arbitrary base specializes
- to the absolute theorem over the terminal object (nLab, "over
- category").
+ to the absolute theorem over the terminal object (nLab, “over
+ category”).
 
  The construction is a dictionary of familiar mathematics.  In Set, an
  object of Set/I is the same data as an I-indexed family of sets: a
  map p : F ~> I carries its fibres, and a family reassembles as the
  disjoint union with its projection — an equivalence Set/I ≃ Set^I
- (Leinster, "Higher Operads, Higher Categories", CUP 2004; nLab,
- "family of sets").  A bundle over a base B in any category is simply
+ (Leinster, “Higher Operads, Higher Categories”, CUP 2004; nLab,
+ “family of sets”).  A bundle over a base B in any category is simply
  an object equipped with a morphism to B, so bundles over B form the
- slice C/B (nLab, "bundle"), and covering spaces of X form a full
+ slice C/B (nLab, “bundle”), and covering spaces of X form a full
  subcategory of Top/X.  For a poset P, the slice P/p is the principal
- down-set of p (nLab, "over category").  The dual [Coslice] captures
+ down-set of p (nLab, “over category”).  The dual [Coslice] captures
  pointed structures: pointed sets are the coslice of Set under the
- one-point set (Wikipedia, "Comma category").
+ one-point set (Wikipedia, “Comma category”).
 
  The slice is the fibre-level piece of a larger apparatus.  A morphism
  f : a ~> b induces the post-composition functor Σ_f : C/a ⟶ C/b —
  here [Bang_Functor] in Construction/Slice/Pullback.v — and, when C
  has pullbacks, the base change functor f^* in the other direction
  ([Star_Functor], same file), with the adjunction Σ_f ⊣ f^* PROVED
- there as [Base_Functor_Adjunction] (nLab, "dependent sum").  When
+ there as [Base_Functor_Adjunction] (nLab, “dependent sum”).  When
  every f^* has a further right adjoint Π_f, C is locally cartesian
  closed.  The triple
  Σ_f ⊣ f^* ⊣ Π_f descends from Lawvere's identification of the
- quantifiers as adjoints to substitution (Lawvere, "Adjointness in
- Foundations", Dialectica 1969), and it interprets dependent type
+ quantifiers as adjoints to substitution (Lawvere, “Adjointness in
+ Foundations”, Dialectica 1969), and it interprets dependent type
  theory: slice objects are dependent types over their base, base
  change is substitution, and Σ and Π are the dependent sum and product
- (Seely, "Locally cartesian closed categories and type theory", Math.
+ (Seely, “Locally cartesian closed categories and type theory”, Math.
  Proc. Camb. Phil. Soc. 1984).  Assembling every slice at once yields
  the self-indexing C/(-), whose Grothendieck construction is the
  codomain functor on the arrow category — always an opfibration, and a
  fibration precisely when C has pullbacks, the cartesian lifts being
- the pullback squares (nLab, "codomain fibration").  In-tree,
+ the pullback squares (nLab, “codomain fibration”).  In-tree,
  Construction/Displayed/Codomain.v presents that fibration
  displayed-style: its fibre over x uses literally this file's object
  encoding, and [codomain_cleaving] / [codomain_cleaving_pullbacks]
@@ -124,16 +124,16 @@ Generalizable All Variables.
 
  Two further readings mark where the theory continues.  The
  fundamental theorem of topos theory states that every slice of a
- topos is again a topos; the construction appears as the "topos
- induit" of SGA4 (Artin, Grothendieck, Verdier, SGA4 1972, exposés
+ topos is again a topos; the construction appears as the “topos
+ induit” of SGA4 (Artin, Grothendieck, Verdier, SGA4 1972, exposés
  III.5 and IV.5), while the name is due to McLarty (McLarty,
- "Elementary Categories, Elementary Toposes", OUP 1992).  Relative to
+ “Elementary Categories, Elementary Toposes”, OUP 1992).  Relative to
  Structure/Topos.v's [ElementaryTopos], it remains the headline
  theorem about this construction not yet formalized here.  And
  comonadically, a coalgebra of the environment comonad e × − is the
  same thing as a single morphism into e, so the category of its
- coalgebras is isomorphic to the slice over e (nLab, "coreader
- comonad"); Instance/Coq/Comonad/Env.v and Comonad/Coalgebra.v supply
+ coalgebras is isomorphic to the slice over e (nLab, “coreader
+ comonad”); Instance/Coq/Comonad/Env.v and Comonad/Coalgebra.v supply
  the comonad and its coalgebra categories, the identification with
  [Slice] being a natural corollary still to be stated. 
 
@@ -145,7 +145,7 @@ Generalizable All Variables.
  nLab:  https://ncatlab.org/nlab/show/fundamental+theorem+of+topos+theory 
  nLab:  https://ncatlab.org/nlab/show/coreader+comonad 
  维基百科:
- https://en.wikipedia.org/wiki/Grothendieck%27s_relative_point_of_view切片范畴是相对视角的正式归宿：它使“基上的一个对象”成为一等对象，将态射变为对象，将交换三角形变为态射。逗号范畴，以及以切片范畴为其主要特例的情形，出现在劳维尔的博士论文中（Lawvere，《代数理论的函子语义》，哥伦比亚大学，1963）；维基百科记录到，这一技术“直到多年后才为人所知”，而这个名称——取自劳维尔原始符号中的逗号——甚至让其作者本人也感到不悦。然而，这种观点本身更为古老。格罗滕迪克的相对观点可以追溯到约1956年的格罗滕迪克–黎曼–罗赫时期，它将对单一对象X的研究替换为对一个基空间S上的态射f : X → S的研究：映射的一个性质变成了C/S中一个对象的性质，整个族被作为一个整体处理，并且由于C/1同构于C，在任意基上证明的定理会专门化为终对象上的绝对定理（nLab，“上范畴”） 。这个构造是熟悉数学的字典。在集合论中，Set/I 的一个对象与一个 I 索引的集合族具有相同的数据：映射 p : F ~> I 携带它的纤维，而一个集合族通过与其投影的离散并集重新组合——一个等价关系 Set/I ≃ Set^I（Leinster, "Higher Operads, Higher Categories", CUP 2004; nLab, "family of sets"）。在任意范畴中，基 B 上的丛只是一个带有指向 B 的态射的对象，因此基 B 上的丛构成了切片 C/B（nLab, "bundle"），而 X 的覆盖空间构成了 Top/X 的一个完全子范畴。对于偏序集 P，切片 P/p 是 p 的主要下集（nLab, "over category"）。对偶 [Coslice] 捕捉了有基结构：有基集合是 Set 在单点集合下的余切片（Wikipedia, "Comma category"）。切片是更大装置的纤维级部分。一个态射 f : a ~> b 会引出后组合函子 Σ_f : C/a ⟶ C/b — 在 Construction/Slice/Pullback.v 中为 [Bang_Functor] — 当 C 有拉回时，在另一个方向上有基变函子 f^*（[Star_Functor]，相同文件），其中 Σ_f ⊣ f^* 的对偶在该处被证明为 [Base_Functor_Adjunction]（nLab，“依赖和”）。当每个 f^* 有进一步的右伴随 Π_f 时，C 是局部笛卡尔闭的。这个三重算子 Σ_f ⊣ f^* ⊣ Π_f 源自劳韦尔（Lawvere）将量词识别为替换的伴随函子（Lawvere，《Foundations中的Adjointness》，Dialectica 1969），并且它解释了依赖类型理论：slice 对象是其基下的依赖类型，基变换是替换，而 Σ 和 Π 分别是依赖和与积（Seely，《局部笛卡尔闭范畴与类型理论》，Math. Proc. Camb. Phil. Soc. 1984）。一次性组装每个slice会产生自我索引 C/(-)，其Grothendieck构造是箭头范畴上的余伴函子——总是一个上纤维函子，并且当且仅当C有拉回时是纤维函子，笛卡尔提升即是拉回图形（nLab，“codomain fibration”）。在树中，
+ https://en.wikipedia.org/wiki/Grothendieck%27s_relative_point_of_view切片范畴是相对视角的正式归宿：它使“基上的一个对象”成为一等对象，将态射变为对象，将交换三角形变为态射。逗号范畴，以及以切片范畴为其主要特例的情形，出现在劳维尔的博士论文中（Lawvere，《代数理论的函子语义》，哥伦比亚大学，1963）；维基百科记录到，这一技术“直到多年后才为人所知”，而这个名称——取自劳维尔原始符号中的逗号——甚至让其作者本人也感到不悦。然而，这种观点本身更为古老。格罗滕迪克的相对观点可以追溯到约1956年的格罗滕迪克–黎曼–罗赫时期，它将对单一对象X的研究替换为对一个基空间S上的态射f : X → S的研究：映射的一个性质变成了C/S中一个对象的性质，整个族被作为一个整体处理，并且由于C/1同构于C，在任意基上证明的定理会专门化为终对象上的绝对定理（nLab，“上范畴”） 。这个构造是熟悉数学的字典。在集合论中，Set/I 的一个对象与一个 I 索引的集合族具有相同的数据：映射 p : F ~> I 携带它的纤维，而一个集合族通过与其投影的离散并集重新组合——一个等价关系 Set/I ≃ Set^I（Leinster, “Higher Operads, Higher Categories”, CUP 2004; nLab, “family of sets”）。在任意范畴中，基 B 上的丛只是一个带有指向 B 的态射的对象，因此基 B 上的丛构成了切片 C/B（nLab, “bundle”），而 X 的覆盖空间构成了 Top/X 的一个完全子范畴。对于偏序集 P，切片 P/p 是 p 的主要下集（nLab, “over category”）。对偶 [Coslice] 捕捉了有基结构：有基集合是 Set 在单点集合下的余切片（Wikipedia, “Comma category”）。切片是更大装置的纤维级部分。一个态射 f : a ~> b 会引出后组合函子 Σ_f : C/a ⟶ C/b — 在 Construction/Slice/Pullback.v 中为 [Bang_Functor] — 当 C 有拉回时，在另一个方向上有基变函子 f^*（[Star_Functor]，相同文件），其中 Σ_f ⊣ f^* 的对偶在该处被证明为 [Base_Functor_Adjunction]（nLab，“依赖和”）。当每个 f^* 有进一步的右伴随 Π_f 时，C 是局部笛卡尔闭的。这个三重算子 Σ_f ⊣ f^* ⊣ Π_f 源自劳韦尔（Lawvere）将量词识别为替换的伴随函子（Lawvere，《Foundations中的Adjointness》，Dialectica 1969），并且它解释了依赖类型理论：slice 对象是其基下的依赖类型，基变换是替换，而 Σ 和 Π 分别是依赖和与积（Seely，《局部笛卡尔闭范畴与类型理论》，Math. Proc. Camb. Phil. Soc. 1984）。一次性组装每个slice会产生自我索引 C/(-)，其Grothendieck构造是箭头范畴上的余伴函子——总是一个上纤维函子，并且当且仅当C有拉回时是纤维函子，笛卡尔提升即是拉回图形（nLab，“codomain fibration”）。在树中，
  Construction/Displayed/Codomain.v 展示了该纤维化
  显示风格：它在 x 上的纤维字面上使用了该文件的对象编码，且 [codomain_cleaving] / [codomain_cleaving_pullbacks]
  用笛卡尔提升交换拉回。另外两篇阅读材料标志着该理论的延续。拓扑理论的基本定理指出，每一个拓扑的切片仍然是一个拓扑；该构造在 SGA4（Artin、Grothendieck、Verdier，SGA4 1972，第三和第四卷的 exposés III.5 和 IV.5）中出现为“topos induit”，而这个名称归功于 McLarty（McLarty，《Elementary Categories, Elementary Toposes》，牛津大学出版社 1992）。相对于 Structure/Topos.v 中的 [ElementaryTopos]，它仍然是关于此构造的主要定理，而该定理尚未在此处形式化。而在余模范畴的意义下，环境余代数 e × − 与一个指向 e 的单一态射是相同的，因此它的余代数范畴同构于 e 上的切片范畴（nLab，“coreader comonad”）；Instance/Coq/Comonad/Env.v 和 Comonad/Coalgebra.v 提供了余模范畴及其余代数范畴，与 [Slice] 的对应关系仍然是一个待陈述的自然推论。

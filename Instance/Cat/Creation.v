@@ -46,8 +46,8 @@ Generalizable All Variables.
  object-empty; the same cospan does have a [Cat] pullback, and nothing in
  the tree refutes [FibreProduct (Coslice_Proj d) U] as a [Cat] pullback of
  ITS cospan.  (An earlier revision of this header, of the commit message
- and of the docs/INDEX.md bullet said the coslice apex was "refuted for
- this object"; measured, the refutation is at the [Indiscrete bool]
+ and of the docs/INDEX.md bullet said the coslice apex was “refuted for
+ this object”; measured, the refutation is at the [Indiscrete bool]
  cospan and says nothing about the coslice one.)  What the fibre product
  is is a pullback in [StrictCat], and even there only under [ObjUIP C]
  ([FibreProduct_IsPullback]); whether [Cat] has pullbacks at all is
@@ -241,10 +241,10 @@ End DiagTransport.
  accepts but Coq 8.19 and 8.20 refuse: checking that pair against the
  expected type, their elaborator compares [fmap[F ◯ K] f] with
  [fmap[F] (fmap[K] f)] by unification rather than by conversion and
- reports "cannot unify".  [exact] uses full conversion and is accepted by
+ reports “cannot unify”.  [exact] uses full conversion and is accepted by
  all three.  The [Defined] is load-bearing: [CreatesLimit_transport]'s
  proof does a [change] through this definition's first component, and
- [Qed] here stops the file at that step with "Not convertible". 
+ [Qed] here stops the file at that step with “Not convertible”. 
 
  --------
  作为战术证明而不是匿名构造项 [(fun j => `1 e (K j); fun x y f => `2 e _ _ (fmap[K]  f))] 编写，Rocq 9.1 接受，但 Coq 8.19 和 8.20 拒绝：在将 pair 与预期类型进行检查时，它们的展开器通过统一而不是通过转换来比较 [fmap[F ◯ K]  f] 和 [fmap[F]  (fmap [K]  f)] 并报告“无法统一”。 [exact] 使用完全转换，并被所有三个版本接受。 [Defined] 是承重的：[CreatesLimit_transport] 的证明通过该定义的第一个分量进行 [change]，而 [Qed] 在此处以“不可转换”停止了文件处理。
@@ -731,7 +731,7 @@ End CommaAsFibreProduct.
  [CreatesAllLimits], which is pointwise [CreatesLimit], not
  [StrictlyCreatesLimit].
 
- The "weaker in both directions" comparison is true, and is true only, of
+ The “weaker in both directions” comparison is true, and is true only, of
  #438's [comma_StrictlyCreatesLimit], which takes the per-diagram
  [PreservesLimitCone (Gdiag K) U] and concludes [StrictlyCreatesLimit].
  An earlier revision of this comment, of the commit message and of the

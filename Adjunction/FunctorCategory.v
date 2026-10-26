@@ -37,30 +37,30 @@ Generalizable All Variables.
    [Δ ⊣ Lim] into a square of adjoint pairs whose left adjoints commute,
    [F^J ∘ Δ = Δ ∘ F], so that by uniqueness of adjoints the right adjoints
    agree up to natural isomorphism, [Lim ◯ G^J ≅ G ◯ Lim] — a
-   "sophisticated" restatement of the theorem that right adjoints preserve
+   “sophisticated” restatement of the theorem that right adjoints preserve
    limits.
 
    STALE PREMISES, RE-MEASURED.
-     - "The postcomposition functors [F ◯ −] are not defined anywhere; the
-       only functor between functor categories is precomposition": FALSE.
+     - “The postcomposition functors [F ◯ −] are not defined anywhere; the
+       only functor between functor categories is precomposition”: FALSE.
        Functor/Construction/Postcompose.v's [Postcompose : [D, E] ⟶
        [D, E']] (#318) is [J ◯ −] on objects and left whiskering on arrows,
        with its three laws; docs/INDEX.md's Adjunction/Diagonal/Limit.v
        bullet lists eleven constants typed [[X, Y] ⟶ _].  Work item 1 was
        done by #318; [postcompose] below is that functor at a fixed shape.
-     - "[Cat_Hcompose] is a bifunctor never partially applied": FALSE
+     - “[Cat_Hcompose] is a bifunctor never partially applied”: FALSE
        (Postcompose.v's [PostcomposeViaHcompose]; and it sits at
        Instance/Cat/Bicategory.v, [Induced] at Theory/Kan/
        Extension.v).
-     - "[Lim] is never a functor [[J, C] ⟶ C]; the general [Δ ⊣ Lim] exists
-       only in the binary-product case": STALE since #353.
+     - “[Lim] is never a functor [[J, C] ⟶ C]; the general [Δ ⊣ Lim] exists
+       only in the binary-product case”: STALE since #353.
        Adjunction/Diagonal/Limit.v has [HasLimitsOfShape],
        [LimitFunctor : [J, C] ⟶ C], [Diagonal_Limit_Adjunction : Δ ⊣
        LimitFunctor] and [lim_counit], whose components ARE
        the limit legs, one identification at [eq_refl] and the other at
-       [≈] — the "cone being
-       the value of the [Δ ⊣ Lim] counit" of work item 3.
-     - "[right_adjoint_iso] at Theory/Adjunction.v": the cited site is a
+       [≈] — the “cone being
+       the value of the [Δ ⊣ Lim] counit” of work item 3.
+     - “[right_adjoint_iso] at Theory/Adjunction.v”: the cited site is a
        [Qed] line, and [left_adjoint_iso] is likewise miscited.  The
        Riehl clauses' citations are off by a few lines each
        ([left_adjoint_impl], the Kan class fields
@@ -132,16 +132,16 @@ Generalizable All Variables.
          the tree's DIRECT proof of RAPL, and NOT a consequence drawn from
          (5): [right_adjoint_iso] is [Qed], so the components of the
          remark's isomorphism cannot be identified with the canonical
-         comparison, and the passage from "the right adjoints are
-         isomorphic" to "the image cone is limiting" is not formalized.
+         comparison, and the passage from “the right adjoints are
+         isomorphic” to “the image cone is limiting” is not formalized.
          Mac Lane's remark is delivered as the isomorphism it states; the
          limit-preservation it restates is supplied by the existing
          theorem beside it.
 
    RELOCATION.  The transport [adjunction_along_left_iso : F ≈ F' → F' ⊣ G
    → F ⊣ G] existed only in Instance/Mod/Bimodule.v (#401), whose header
-   declared it there "because part (c) is its first consumer" and said it
-   "belongs beside Theory/Adjunction.v"; requiring Bimodule.v from this
+   declared it there “because part (c) is its first consumer” and said it
+   “belongs beside Theory/Adjunction.v”; requiring Bimodule.v from this
    file would have added 44 files to the closure (an earlier revision said
    48; measured 74 → 118 by coqdep and by [Print Libraries]).  The section
    [AdjunctionAlongIso] is moved verbatim to the end of Theory/Adjunction.v
@@ -175,7 +175,7 @@ Generalizable All Variables.
 
    COUNTS AND CONVENTIONS.
      - 39 [.glob] declaration heads (32 [def], 7 [prf]) plus 32 [Program]
-       obligations, all "Closed under the global context", zero [Axioms:]
+       obligations, all “Closed under the global context”, zero [Axioms:]
        lines; the gate carries the 39 heads, fully qualified, the issue's
        [postcompose_adjunction] and [Lim_commutes_right_adjoint] among them.
      - No [Defined]: every construction is a [:=] term or a [Program]
@@ -196,10 +196,10 @@ Generalizable All Variables.
      - Test/ProbeFunctorCategory431.v mirrors the [Require] list and carries
        6 refutation commands (1 instrument + N1 and N5 CONVERSION + N2-N3
        TYPING + N4 UNIVERSE), each stripped one at a time in a copy of the
-       whole file beside its accepted controls; N4's message reads "The
+       whole file beside its accepted controls; N4's message reads “The
        term Xw has type Category@{xo xh xh} while it is expected to have
        type Category@{_ jh jh} (universe inconsistency: Cannot enforce xh =
-       jh because jh < xh)", and the pin is [Fun]'s, not this file's; six
+       jh because jh < xh)”, and the pin is [Fun]'s, not this file's; six
        [eq_refl] readbacks; guard coverage 29 identifier tokens
        inside the refutations / 25 also named outside, comments
        stripped, with four exhaustive exceptions (the keyword, the two
@@ -207,10 +207,10 @@ Generalizable All Variables.
        the seven library names the refutations use — [postcompose],
        [precompose], [postcompose_adjunction], [precompose_adjunction],
        [Diagonal], [eq_refl], [transform]; module-path components and the
-       section binders excluded — every first break on a positive line (an earlier revision said "11/11"
+       section binders excluded — every first break on a positive line (an earlier revision said “11/11”
        over a set it did not name).  [make todo] grows by those 6 lines
        only (2255 → 2261 over master 1be50678; the relocation adds none),
-       so the issue's "adds no new hits" box is not met as written;
+       so the issue's “adds no new hits” box is not met as written;
        disclosed.
 
    NOT DELIVERED.
@@ -672,8 +672,8 @@ Context (Adj : F ⊣ G).
 Context (LA : HasLimitsOfShape J A).
 
 (*
-"A right adjoint carries a limiting cone to a limiting cone, the cone
-   being the value of the [Δ ⊣ Lim] counit": the limiting cone of [T] is
+“A right adjoint carries a limiting cone to a limiting cone, the cone
+   being the value of the [Δ ⊣ Lim] counit”: the limiting cone of [T] is
    [limit_cone (LA T)], whose legs are the components of [lim_counit LA T]
    ([lim_counit_is_limit_leg]), and [G] carries it to a limiting cone over
    [G ◯ T].  The proof is Adjunction/Continuity.v's direct RAPL

@@ -30,7 +30,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Equivalence_class
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_set
 
- Mac Lane, "Categories for the Working Mathematician" 2nd ed., §III.1
+ Mac Lane, “Categories for the Working Mathematician” 2nd ed., §III.1
  construction 4 (p. 57): for an equivalence relation E on a set S, the
  projection p : S -> S/E is universal among functions out of S that
  respect E.  Every h : S -> X with h x = h y whenever x E y factors
@@ -38,8 +38,8 @@ Generalizable All Variables.
 
  In a setoid library that construction is not a construction at all: a
  quotient IS another choice of `≈` on the same carrier.  The design is
- stated as such at Instance/Sets.v ("a quotient is just another
- choice of `≈` on the same carrier") and at Theory/Category.v, and
+ stated as such at Instance/Sets.v (“a quotient is just another
+ choice of `≈` on the same carrier”) and at Theory/Category.v, and
  it is what Construction/Quotient.v does one dimension up (a quotient
  of a CATEGORY by a hom-congruence, identity on objects).  This file
  supplies the missing element-level operator: given a [SetoidObject] A
@@ -52,7 +52,7 @@ Generalizable All Variables.
  defect.  The mediator IS the given function; its respectfulness for
  the coarser relation IS the hypothesis that it respects E; and the
  defining triangle holds pointwise by [reflexivity].  What has to be
- built is only the ENVIRONMENT in which "universal" can be stated: the
+ built is only the ENVIRONMENT in which “universal” can be stated: the
  functor X |-> {E-respecting maps A -> X}, which is covariant by
  postcomposition, and against which ⟨A/R, p⟩ is a universal element in
  the sense of Theory/Universal/Element.v (Mac Lane's §III.1
@@ -71,13 +71,13 @@ Generalizable All Variables.
 (*
  Where this sits, and why the carrier does not move
 
- Text:  Bishop, "Foundations of Constructive Analysis", McGraw-Hill 1967
- Text:  Mac Lane, "Categories for the Working Mathematician", Springer
+ Text:  Bishop, “Foundations of Constructive Analysis”, McGraw-Hill 1967
+ Text:  Mac Lane, “Categories for the Working Mathematician”, Springer
  1998, §III.1 (pp. 55-59) and §III.3 (pp. 64-68)
- Text:  Fong and Spivak, "Seven Sketches in Compositionality", CUP 2019,
+ Text:  Fong and Spivak, “Seven Sketches in Compositionality”, CUP 2019,
  §1.2.1 (printed p. 10)
- Paper: Barthe, Capretta, Pons, "Setoids in type theory", JFP 13(2) 2003
- Thesis: Hofmann, "Extensional Concepts in Intensional Type Theory",
+ Paper: Barthe, Capretta, Pons, “Setoids in type theory”, JFP 13(2) 2003
+ Thesis: Hofmann, “Extensional Concepts in Intensional Type Theory”,
  LFCS report ECS-LFCS-95-327, University of Edinburgh, 1995
 
  Two presentations of a quotient have been current since Bishop.  The
@@ -102,7 +102,7 @@ Generalizable All Variables.
  (Instance/Sets/Powerset.v establishes exactly that, and the sequel file
  pins the consequence).
 
- The one thing the choice costs is that "quotient" no longer has a
+ The one thing the choice costs is that “quotient” no longer has a
  canonical meaning independent of the relation's proof content.  R is
  [crelation]-valued, so R x y is a TYPE, and two different derivations
  of R x y are two different elements.  That does not affect anything in
@@ -128,8 +128,8 @@ Generalizable All Variables.
  literature states, and [coarser_iff_respects] proving them EQUIVALENT
  for an equivalence relation.  This settles a question the source
  issue raises twice in different words: Mac Lane's §III.1 asks for a
- "setoid-respecting" E and Seven Sketches §1.2.1 for an R "coarser
- than `≈`", and these are the same hypothesis, not two.  Each
+ “setoid-respecting” E and Seven Sketches §1.2.1 for an R “coarser
+ than `≈`”, and these are the same hypothesis, not two.  Each
  direction consumes exactly one law of R -- transitivity forward,
  reflexivity back -- and both are recorded.
 
@@ -194,7 +194,7 @@ Generalizable All Variables.
  STATUS: axiom-free.  45 named constants plus 6 [Program] obligations
  ([RespMap_Setoid_obligation_1], [RespFunctor_obligation_1] through
  [_4], [sets_quot_universal_element_obligation_1]), each measured
- separately, all reporting "Closed under the global context"; the
+ separately, all reporting “Closed under the global context”; the
  Makefile's [print-assumptions] target audits thirteen of them. 
 
  --------
@@ -273,8 +273,8 @@ Qed.
 
 (*
  ... hence for an equivalence relation the two hypotheses are one.  The
- source issue asks for a quotient by a "setoid-respecting" relation in
- its main body and for one by a relation "coarser than `≈`" in a
+ source issue asks for a quotient by a “setoid-respecting” relation in
+ its main body and for one by a relation “coarser than `≈`” in a
  trailing block harvested from a different book; this says that those
  two requests are the same request. 
 
@@ -465,8 +465,8 @@ Context (HC : SetoidCoarser R).
 
 (*
  The projection, packaged as an element of (RespFunctor R)(A/R).  Its
- respectfulness witness is the IDENTITY implication -- "R x y implies
- R x y" -- since the target's `≈` is R.
+ respectfulness witness is the IDENTITY implication -- “R x y implies
+ R x y” -- since the target's `≈` is R.
 
  The sigma's predicate is spelled out rather than left to inference,
  and that is a PORTABILITY fix, not decoration: on Coq 8.19/8.20 the

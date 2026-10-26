@@ -50,7 +50,7 @@ nLab: https://ncatlab.org/nlab/show/representable+functor
 *)
 
 (*
-Wikipedia: "Let C be a locally small category and let Set be the category
+Wikipedia: “Let C be a locally small category and let Set be the category
    of sets. For each object A of C let Hom(A,–) be the hom functor that maps
    object X to the set Hom(A,X).
 
@@ -65,7 +65,7 @@ Wikipedia: "Let C be a locally small category and let Set be the category
    A contravariant functor G from C to Set is the same thing as a functor G :
    Cop → Set and is commonly called a presheaf. A presheaf is representable
    when it is naturally isomorphic to the contravariant hom-functor Hom(–,A)
-   for some object A of C." 
+   for some object A of C.” 
 
 --------
 维基百科：“设 C 为局部小范畴，设 Set 为范畴
@@ -119,7 +119,7 @@ Coercion Representable_to_obj `(F : C ⟶ Sets) (R : Representable F) : C :=
 (**
 * Representations are functorial in natural transformations
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+    Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
           Springer 1998, §III.2, Exercise 1, printed p. 62.
     nLab: https://ncatlab.org/nlab/show/representable+functor
     nLab: https://ncatlab.org/nlab/show/Yoneda+embedding
@@ -151,7 +151,7 @@ Coercion Representable_to_obj `(F : C ⟶ Sets) (R : Representable F) : C :=
 
     This is the step at which representability stops being a property of one
     functor and becomes a construction on the category of functors.  The
-    correspondence is what makes "the representing object" well defined up
+    correspondence is what makes “the representing object” well defined up
     to a canonical isomorphism (the τ = id case, [repr_unique_iso]), and it
     is why a universal construction is functorial with no extra hypothesis:
     the assignment K ↦ r is the fully faithful functor built in

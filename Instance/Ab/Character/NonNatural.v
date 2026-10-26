@@ -21,7 +21,7 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §I.4, printed p. 17 (PDF 27) — maclane:I.4:remark1
  nLab:      https://ncatlab.org/nlab/show/natural+isomorphism
 
@@ -48,8 +48,8 @@ Generalizable All Variables.
 
  Design:
 
- 1. ONE AUTOMORPHISM SUFFICES.  The issue allows "a concrete
- two-object violation"; the violation here is at the two equal
+ 1. ONE AUTOMORPHISM SUFFICES.  The issue allows “a concrete
+ two-object violation”; the violation here is at the two equal
  endpoints of one automorphism, which is stronger and simpler.
  The arithmetic: naturality of σ at α : x ↦ 2x demands
  σ ∘ α ≈ D(α⁻¹) ∘ σ.  Writing q := σ(1)(1) ∈ ℚ/ℤ, the left side
@@ -139,7 +139,7 @@ Definition z5_eq (x y : Z) : Type := { k : Z & (x - y = 5 * k)%Z }.
 (*
  [z5_eq] KEEPS its [sigT] -- the witness [k] is computed, and the results
  below read it back out.  The [Prop] mirror it needs since the PR
- "algebraic carriers are sets" (2026-09-17) recovers the witness through a
+ “algebraic carriers are sets” (2026-09-17) recovers the witness through a
  DECISION PROCEDURE rather than through the [Prop] proof: divisibility by 5
  is decidable on ℤ, so the left branch supplies the witness outright and the
  right branch contradicts the hypothesis.  No choice principle. 

@@ -1,7 +1,7 @@
 (* * * The tensor product of abelian groups / * * 阿贝尔群的张量积 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §I.8, printed pp. 28–29 (PDF pp. 38–39) — maclane:I.8:def5
  Book:      Mac Lane, ibid., §VII.1, printed pp. 163–164 (PDF pp.
  171–172) — maclane:VII.1:remark1 (the monoidal reading,
@@ -48,9 +48,9 @@
  formal sums directly keeps the development self-contained and the
  mediator's respectfulness a single induction over [ts_eq], each
  rule discharged by the corresponding law of the target — which is
- precisely Mac Lane's "bilinear maps out of G × H are homomorphisms
- out of G ⊗ H".  This trades away the issue sketch's "free-abelian-
- group-on-a-setoid machinery, kept reusable": the carrier here is
+ precisely Mac Lane's “bilinear maps out of G × H are homomorphisms
+ out of G ⊗ H”.  This trades away the issue sketch's “free-abelian-
+ group-on-a-setoid machinery, kept reusable”: the carrier here is
  bespoke to the pair (G, H).  What IS reusable is the interface —
  [Bilinear], [tensor_ump] and [tensor_hom_ext] are stated over
  arbitrary [AbObject]s, and they are all any consumer downstream
@@ -169,7 +169,7 @@ Definition ts_Setoid : Setoid tsum := {|
 
 (*
  The tensor product, as an abelian group: the laws are constructors of
- the relation -- and so, since the PR "algebraic carriers are sets"
+ the relation -- and so, since the PR “algebraic carriers are sets”
  (2026-09-17), is its [cmon_prop]: [ts_eq] IS a [Prop], hence its own
  [Prop] mirror, and both implications are the identity. 
 
@@ -257,7 +257,7 @@ Fixpoint tensor_med_fun {K : AbObject} (β : Bilinear K) (s : tsum) :
  the corresponding law of K (design note 2) -- but the induction now runs
  in [Prop].
 
- Since the PR "algebraic carriers are sets" (2026-09-17) [ts_eq] is a [Prop]
+ Since the PR “algebraic carriers are sets” (2026-09-17) [ts_eq] is a [Prop]
  inductive, so it eliminates only into [Prop] goals, while the conclusion
  `≈` is [Type]-valued.  [apply pequiv_to] first, using the target's own
  [cmon_prop]: that puts the [Prop] goal [pequiv …] in front of the
@@ -269,7 +269,7 @@ Fixpoint tensor_med_fun {K : AbObject} (β : Bilinear K) (s : tsum) :
  the elimination changes the automatic names. 
 
  --------
- 尊重是一个关于关系的归纳，每条规则都由 K 的相应定律满足（设计说明 2）——但归纳现在在 [Prop] 中运行。自从 PR "代数载体是集合"（2026-09-17）  [ts_eq] 是一个 [Prop] 归纳类型，因此它只能消解到 [Prop] 目标，而结论 `≈` 是 [Type] 值的。首先使用目标自身的 [cmon_prop] ：这将 [Prop] 目标 [pequiv …] 放在消解前面，并且每个分支都返回到 `≈` 并带有 [pequiv_from] 。关于参数没有任何变化——每条规则仍然由 [K] 的对应定律满足——并且没有添加任何假设，因为每个 [AbObject] 现在都携带了域。Test/ProbeTermModelProp.v 钉住了旧脚本的拒绝。引入模式是 NAMED，因为 [apply pequiv_to] 放在消解前面会改变自动命名。
+ 尊重是一个关于关系的归纳，每条规则都由 K 的相应定律满足（设计说明 2）——但归纳现在在 [Prop] 中运行。自从 PR “代数载体是集合”（2026-09-17）  [ts_eq] 是一个 [Prop] 归纳类型，因此它只能消解到 [Prop] 目标，而结论 `≈` 是 [Type] 值的。首先使用目标自身的 [cmon_prop] ：这将 [Prop] 目标 [pequiv …] 放在消解前面，并且每个分支都返回到 `≈` 并带有 [pequiv_from] 。关于参数没有任何变化——每条规则仍然由 [K] 的对应定律满足——并且没有添加任何假设，因为每个 [AbObject] 现在都携带了域。Test/ProbeTermModelProp.v 钉住了旧脚本的拒绝。引入模式是 NAMED，因为 [apply pequiv_to] 放在消解前面会改变自动命名。
 *)
 Lemma tensor_med_respects {K : AbObject} (β : Bilinear K) (s t : tsum) :
   ts_eq s t → tensor_med_fun β s ≈ tensor_med_fun β t.
@@ -378,14 +378,14 @@ Arguments te_sym {G H s t} _.
 Arguments te_trans {G H s t u} _ _.
 
 (*
- [ts_eq] is a [Prop] since the PR "algebraic carriers are sets"
+ [ts_eq] is a [Prop] since the PR “algebraic carriers are sets”
  (2026-09-17), and Coq's [reflexivity], [symmetry] and [transitivity]
  dispatch a [Prop]-valued relation to the [Prop] class hierarchy of
  Corelib.Classes.RelationClasses rather than to the [Type]-valued
  CRelationClasses that [ts_eq_Equivalence] inhabits.  The same three laws,
  registered there, keep every existing tactic call working; without it the
- [reflexivity] of [tensor_map_gen] below is refused with "the relation
- ts_eq is not a declared reflexive relation". 
+ [reflexivity] of [tensor_map_gen] below is refused with “the relation
+ ts_eq is not a declared reflexive relation”. 
 
  --------
  [ts_eq] 是一个 [Prop] 自从 PR “代数载体是集合” (2026-09-17) 以来，Coq 的 [reflexivity]、[symmetry] 和 [transitivity] 将一个 [Prop] 值的关系分派到 Corelib.Classes.RelationClasses 的 [Prop] 类层次，而不是 [ts_eq_Equivalence] 所在的 [Type] 值的 CRelationClasses。相同的三条定律在此注册，保持每个现有的策略调用可用；如果没有它，下面 [tensor_map_gen] 的 [reflexivity] 会因为“关系 ts_eq 不是声明的自反关系”而被拒绝。

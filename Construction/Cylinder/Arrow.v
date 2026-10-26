@@ -25,13 +25,13 @@ Require Import Category.Theory.Shapes.
 Generalizable All Variables.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.4 Exercise 8, printed p. 42 (PDF 52) — maclane:II.4:ex8
- Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.7,
+ Book:      Awodey, “Category Theory” (1st ed., 2005 pre-print), §7.7,
  Example 7.16, printed p. 171 (PDF pp. 180–181) —
  awodey:7.7:example16
 
- Exercise II.4.8, and Awodey's "transcendental deduction": under the
+ Exercise II.4.8, and Awodey's “transcendental deduction”: under the
  exponential transpose of Cat, the cylinder encoding of a natural
  transformation — a functor C ∏ 2 ⟶ B restricting to its boundary
  functors — corresponds to the arrow-category encoding — a functor

@@ -47,7 +47,7 @@ Generalizable All Variables.
 
    NOT DELIVERED.  The [HasIndexedProducts (RMod R)] instance itself — not
    attempted: #433 needs only the one product, and Instance/Sets/Products.v
-   (its header, "the class quantifies its index by a bare [Type]") records
+   (its header, “the class quantifies its index by a bare [Type]”) records
    the universe negotiation the class demands, which is left for the issue
    that needs the class; indexed COPRODUCTS ⊕_I (finite support needs a
    decidable index or a free construction; none is built); the
@@ -55,7 +55,7 @@ Generalizable All Variables.
    [RMod_Biproduct].
 
    MEASURED.  11 `.glob` heads (9 `def`, 2 `prf`) and 20 [Program]
-   obligations, all 31 "Closed under the global context", zero `Axioms:`
+   obligations, all 31 “Closed under the global context”, zero `Axioms:`
    lines; the 20 obligations are the respectfulness and law proofs of the
    six [Program Definition]s, every one closed by hand under
    [Obligation Tactic := idtac] with `Qed` — twenty-two `Qed` in all, and

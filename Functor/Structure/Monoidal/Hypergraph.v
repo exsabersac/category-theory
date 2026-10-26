@@ -38,7 +38,7 @@ Generalizable All Variables.
 Structure/Monoidal/HypergraphFunctor.v formalizes a deliberately weakened
    version of Fong–Spivak's hypergraph functors: raw comparison isomorphisms
    plus the four SCFA-preservation equations, WITHOUT the monoidal, unitor or
-   braid coherences (see the "Known scoping limitation" caveat there — the
+   braid coherences (see the “Known scoping limitation” caveat there — the
    weakened record is NOT in general a symmetric monoidal functor).  The
    coherence-complete literature notion is exactly: a strong symmetric
    monoidal functor — [SymmetricMonoidalFunctor] of

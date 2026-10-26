@@ -25,8 +25,8 @@ Generalizable All Variables.
 
 (* nLab: https://ncatlab.org/nlab/show/adjoint+functor
    nLab: https://ncatlab.org/nlab/show/mate
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7
-     "Transformations of Adjoints", book p. 102 (PDF p. 111), Exercise 3.
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.7
+     “Transformations of Adjoints”, book p. 102 (PDF p. 111), Exercise 3.
      Item id [maclane:IV.7:ex3].
 
    THE EXERCISE, VERBATIM:
@@ -40,7 +40,7 @@ Generalizable All Variables.
    file's D and his A is this file's C -- the convention Instance/Adj.v
    and Instance/Adj/Forgetful.v already fixed, where A^X is [D, C] (where
    left adjoints live) and X^A is [C, D] (where right adjoints live).  So
-   S is a subcategory of [D, C] and R runs S^op ⟶ [C, D].  "Conjugate" is
+   S is a subcategory of [D, C] and R runs S^op ⟶ [C, D].  “Conjugate” is
    his §IV.7 Definition 2, formalized in Adjunction/Conjugate.v.
 
    WHAT IS DELIVERED.
@@ -49,11 +49,11 @@ Generalizable All Variables.
        library is [sigT], so a membership proof IS a chosen right adjoint
        together with a chosen adjunction: DATA, not a bare existential.
        That is the whole reason no choice principle is consumed anywhere
-       below -- "choosing one RF for each F" is not a choice function
+       below -- “choosing one RF for each F” is not a choice function
        applied to a proposition, it is the projection [adjobj_right] out
        of data the object already carries -- and it is what makes every
-       [Print Assumptions] in this file report "Closed under the global
-       context".  [LeftAdjSub C D : Subcategory ([D, C])] cuts [D, C] by
+       [Print Assumptions] in this file report “Closed under the global
+       context”.  [LeftAdjSub C D : Subcategory ([D, C])] cuts [D, C] by
        that predicate with [shom := fun _ _ _ _ _ => True], the tree's
        full-subcategory idiom (Instance/Rng.v's [CRng_Sub],
        Instance/Ab/TorsionFree.v's [TorsionFree_Sub], and the two prior
@@ -104,30 +104,30 @@ Generalizable All Variables.
    WHY S AND NOT [Adj C D].  The two are isomorphic categories (C), so
    one might state the exercise over #395's [Adj C D] instead.  That
    would lose the exercise's sentence.  An arrow of S is a BARE σ (the
-   [Sub] hom is {σ & True}), so "with Rσ the conjugate of σ" is a genuine
+   [Sub] hom is {σ & True}), so “with Rσ the conjugate of σ” is a genuine
    CHOICE, made by [conj_mate] and justified by [conjugate_conj_mate];
    over [Adj C D] the conjugate is carried as a field of the arrow and
    there is nothing left to choose.  S is what the book asks for.
 
-   THE ISSUE'S "Current state" IS STALE, SENTENCE BY SENTENCE.
+   THE ISSUE'S “Current state” IS STALE, SENTENCE BY SENTENCE.
 
-   • "Absent." -- true of the FILE and of the subcategory only.  A
+   • “Absent.” -- true of the FILE and of the subcategory only.  A
      whole-word sweep for [RightAdjointFunctor] over every `*.v` outside
      this one and its probe finds none, and no subcategory of a functor category
-     cut by "has a right adjoint" exists.  But the arrow part, the
+     cut by “has a right adjoint” exists.  But the arrow part, the
      object part and both functor laws were all in tree before this
      file.
 
-   • "The closest in-tree analogue of the arrow part is the mate operator
-     (Theory/Bicategory/Mates.v ...)" -- both cited lines are
+   • “The closest in-tree analogue of the arrow part is the mate operator
+     (Theory/Bicategory/Mates.v ...)” -- both cited lines are
      accurate but the conclusion is not.  The closest analogue is not
      bicategorical at all: Adjunction/Conjugate.v's
      [conj_mate (A : F ⊣ U) (A' : F' ⊣ U') (σ : F' ⟹ F) : U ⟹ U'] IS the
      arrow part, over arbitrary C and D and with no bicategorical
      machinery.  Every [fmap] below is that constant.
 
-   • "What is entirely missing is ... the choice of a right adjoint on
-     objects, and the two functor laws." -- the first clause (the
+   • “What is entirely missing is ... the choice of a right adjoint on
+     objects, and the two functor laws.” -- the first clause (the
      subcategory) is right; these two are not.
      Instance/Adj/Forgetful.v's [AdjForgetRight C D] already has
      [fobj := adjobj_right] -- the chosen right adjoint, objects of
@@ -143,23 +143,23 @@ Generalizable All Variables.
      [parametrized_right_adjoint_bifunctor] is the packaging.
      The only difference from this file is the source category.
 
-   • "Theory/Bicategory/Mates.v explicitly descopes mate
+   • “Theory/Bicategory/Mates.v explicitly descopes mate
      functoriality (descope ledger entry 10), which is exactly the
-     identity and composition laws this exercise needs." -- the citation
+     identity and composition laws this exercise needs.” -- the citation
      is accurate, the conclusion is not, and the DoD box that hangs on it
      is answered NOT DISCHARGED below.
 
    THE MATES DESCOPE IS NOT DISCHARGED HERE, AND Theory/Bicategory/Mates.v
    WAS NOT EDITED BY THIS FILE.  Descope ledger entry 10
-   (doc/plan/00-CONVENTIONS.md, "Mates beyond the bijection")
+   (doc/plan/00-CONVENTIONS.md, “Mates beyond the bijection”)
    descopes the double category of
    adjunctions and PASTING functoriality of mates in an ARBITRARY
    BICATEGORY.  What this exercise needs is VERTICAL composition at
    IDENTITY bounding cells in ordinary category theory, which #394
    already supplied; Adjunction/Conjugate.v states in terms that
-   [conjugate_id]/[conjugate_compose] "are the identity-bounding-cell
+   [conjugate_id]/[conjugate_compose] “are the identity-bounding-cell
    shadow of the pasting functoriality that Mates.v deliberately leaves
-   out of scope" and that "they do not discharge that entry".  So there
+   out of scope” and that “they do not discharge that entry”.  So there
    was nothing for this file to update, and it updated nothing.
    (Instance/Adj/Bicategory.v (#399) later narrows Mates.v's note, on the
    strength of its own Cat-level bifunctoriality result, again without
@@ -167,8 +167,8 @@ Generalizable All Variables.
 
    THE REVIEWER CHECKS.
 
-   • No choice axiom.  Every constant of this file reports "Closed under
-     the global context"; the [make print-assumptions] gate carries them
+   • No choice axiom.  Every constant of this file reports “Closed under
+     the global context”; the [make print-assumptions] gate carries them
      all, fully qualified.  The mechanism is (A) above: membership is
      [sigT] data.
 
@@ -181,9 +181,9 @@ Generalizable All Variables.
      MEASURED on this very definition rather than assumed: recompiled in
      a scratch copy with the library's default obligation tactic
      (Lib/Tactics.v) in force and no obligation written,
-     [Obligations.] reports "3 obligation(s) remaining", listing the
+     [Obligations.] reports “3 obligation(s) remaining”, listing the
      [Proper] of [fmap], the identity law and the composition law, and
-     the section close then breaks with "Unsolved obligations".  So
+     the section close then breaks with “Unsolved obligations”.  So
      automation closes NONE of the three.  Hence the [#[local]
      Obligation Tactic := intros] at the top of this file, which makes
      all three visible.
@@ -205,7 +205,7 @@ Generalizable All Variables.
    renames in lockstep with the constant it guards, and every negative
    here would additionally be a [make todo] hit, which the DoD box
    forbids.  All seven are CONVERSION (each error ends in an explicit
-   "cannot unify" between two inhabitants of one type; none carries a
+   “cannot unify” between two inhabitants of one type; none carries a
    universe clause and none is a bare has-type mismatch), and each was
    stripped and compiled ALONE with its whole error read:
 
@@ -239,7 +239,7 @@ Generalizable All Variables.
 
    The probe pins two further KINDS beside those seven: the covariant
    ascription [LeftAdjCat C D ⟶ [C, D] := RightAdjointFunctor C D] as a
-   TYPING negative (a plain has-type mismatch, no "cannot unify", no
+   TYPING negative (a plain has-type mismatch, no “cannot unify”, no
    universe clause, with the contravariant ascription accepted beside
    it), and the eight FORMABILITY rejections of the universe paragraph
    below -- seventeen pinned commands in all, one instrument check and
@@ -270,8 +270,8 @@ Generalizable All Variables.
    counting the [Definition] and [Parameter] heads (44 + 35).  The
    [.glob] records 56 declaration heads (41 [def], 3 [inst], 12 [prf]);
    the difference, 23, is exactly the [Program] obligations, which no
-   source sweep and no [.glob] sweep sees.  All 79 report "Closed under
-   the global context" with zero [Axioms:] lines, each queried FULLY
+   source sweep and no [.glob] sweep sees.  All 79 report “Closed under
+   the global context” with zero [Axioms:] lines, each queried FULLY
    QUALIFIED, and all 79 are in the [make print-assumptions] gate, so
    the closure is permanent rather than a one-time measurement.  The
    file declares no [Record], [Class] or [Inductive], so there is no
@@ -322,7 +322,7 @@ Generalizable All Variables.
    [Theory/Equivalence/FullFaithful] 1, and every other [Require] 0 --
    including [Instance/Sets], whose marginal is 0 and which is
    nevertheless REQUIRED: without that line the file stops at (E)'s
-   [two_const_hom_iso] with "The reference Sets was not found", the
+   [two_const_hom_iso] with “The reference Sets was not found”, the
    category being named there by its bare identifier.  Consuming #395 costs
    exactly +2 modules (27 without it).  The concrete witness in (E) was
    chosen on that measurement: against the same base of 28,
@@ -347,8 +347,8 @@ Generalizable All Variables.
    THE [make todo] BOX IS MET BY THIS FILE.  That target greps every
    `*.v` case-insensitively for a handful of tokens, and two of them
    are relevant here: the vernacular that pins a rejected command, and
-   the verb the issue's own prose uses where Mac Lane writes "which
-   have a right adjoint".  A negative written here would therefore be a
+   the verb the issue's own prose uses where Mac Lane writes “which
+   have a right adjoint”.  A negative written here would therefore be a
    hit, which is the second reason (after renaming) the seven
    refutations are pinned from the probe instead; and the book's phrase
    is used throughout in place of the issue's.  This file contributes
@@ -386,9 +386,9 @@ Generalizable All Variables.
 (** ** (A) The full subcategory of the functors that have a right adjoint  / ** (A) 具有右伴随的完整子类*)
 
 (*
-"Has a right adjoint", as DATA: a chosen U together with a chosen
-   adjunction.  `∃` is [sigT] here, so this is Mac Lane's "choosing one
-   RF for each F" already made constructive -- there is nothing left for
+“Has a right adjoint”, as DATA: a chosen U together with a chosen
+   adjunction.  `∃` is [sigT] here, so this is Mac Lane's “choosing one
+   RF for each F” already made constructive -- there is nothing left for
    a choice principle to do. 
 
 --------
@@ -750,7 +750,7 @@ Lemma cm_id_fun {C D : Category} {F1 U1} (A1 : @Adjunction C D F1 U1) :
 Proof. now apply conj_mate_id. Qed.
 
 (*
-Mac Lane's "choosing one RF for each F", quantified: a function
+Mac Lane's “choosing one RF for each F”, quantified: a function
    re-choosing a right adjoint for every member of S.  The name avoids
    the taken [Choice]. 
 

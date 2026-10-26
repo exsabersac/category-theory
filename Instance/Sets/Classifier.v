@@ -226,7 +226,7 @@ Definition sets_to_unit@{so} {X : SetoidObject@{so so}} :
 
 (*
  The characteristic map of m : A ~> B sends b to the truth value
- "b is in the image of m", i.e. the Type@{o}-valued ∃ a, m a ≈ b.  It is
+ “b is in the image of m”, i.e. the Type@{o}-valued ∃ a, m a ≈ b.  It is
  a morphism of Sets ONE UNIVERSE UP: its domain is the lift of B and its
  codomain is [PropSetoid].  Note that no monicity is needed for the map
  itself to be well-defined — [Monic] enters only in the classification
@@ -294,14 +294,14 @@ Theorem sets_char_pullback@{o so sso} {A B : SetoidObject@{o o}}
 Proof.
   pose proof (snd (injectivity_is_monic m) Hm) as inj.
   constructor.
-  - (* the square commutes: for a : A, "m a is in the image of m" iff ⊤ / 这个方形是交换的：对于 a : A，“m a 在 m 的像中”当且仅当 ⊤ *)
+  - (* the square commutes: for a : A, “m a is in the image of m” iff ⊤ / 这个方形是交换的：对于 a : A，“m a 在 m 的像中”当且仅当 ⊤ *)
     intro a; split.
     + intros _; exact ttt.
     + intros _; exists a; reflexivity.
   - (* the universal property / 通用属性 *)
     intros Q q1 q2 Hq.
     simpl in Hq.
-    (* Each x : Q comes with the truth of "q1 x is in the image of m"; extracting its witness defines the mediator. Monicity makes the extraction respect ≈. / 每个 x : Q 都伴随着 “q1 x 属于 m 的像” 的真实性；提取其见证物定义了中介。单射性使得提取尊重 ≈。 *)
+    (* Each x : Q comes with the truth of “q1 x is in the image of m”; extracting its witness defines the mediator. Monicity makes the extraction respect ≈. / 每个 x : Q 都伴随着 “q1 x 属于 m 的像” 的真实性；提取其见证物定义了中介。单射性使得提取尊重 ≈。 *)
     given (u : SetoidMorphism@{so so so} Q (Setoid_Lift@{o so} A)). {
       unshelve refine
         (@Build_SetoidMorphism@{so so so}

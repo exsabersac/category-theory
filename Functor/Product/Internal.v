@@ -14,13 +14,13 @@ nLab: https://ncatlab.org/nlab/show/product
 
    In a cartesian category C, the binary product is functorial: it assembles
    into a bifunctor ×(C) : C ∏ C ⟶ C from the product category C ∏ C (the
-   "product of categories", Construction/Product.v) back into C. This is the
+   “product of categories”, Construction/Product.v) back into C. This is the
    product *bifunctor*, distinct from a product *of two functors*.
 
    On objects it sends a pair (x, y) to the product object x × y. On a
    morphism (f, g) : (x, y) ~> (x', y') of C ∏ C — that is, a pair of a
    morphism f : x ~> x' and a morphism g : y ~> y' in C — it yields the
-   "cartesian product of morphisms" f × g : x × y ~> x' × y', the unique arrow
+   “cartesian product of morphisms” f × g : x × y ~> x' × y', the unique arrow
    characterized by exl ∘ (f × g) ≈ f ∘ exl and exr ∘ (f × g) ≈ g ∘ exr. By
    the universal property of the product this is the pairing
 

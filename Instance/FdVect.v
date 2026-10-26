@@ -1,10 +1,10 @@
 (*
    * * FdVect: finite-dimensional vector spaces, and the matrix equivalence
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.4
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.4
    Exercise 6: the category of finite-dimensional vector spaces over a
    field K is equivalent — not isomorphic — to the matrix category
-   [Matr_K] [maclane:I.4:ex6].  Riehl, "Category Theory in Context",
+   [Matr_K] [maclane:I.4:ex6].  Riehl, “Category Theory in Context”,
    §1.5 Example 1.5.12: the same statement, presented as the motivating
    illustration of why equivalence, and not isomorphism, is the right
    notion of sameness for categories [riehl:1.5:example12].  (The
@@ -23,10 +23,10 @@
    proved is the equivalence, which says the multiplicity carries no
    categorical information.
 
-   WHY THE PROOF IS THE POINT.  "Every finite-dimensional vector space
-   is isomorphic to K^n for n its dimension" is the linear algebra
-   behind essential surjectivity; "every linear map K^n → K^m is
-   multiplication by a unique m × n matrix" is fullness and
+   WHY THE PROOF IS THE POINT.  “Every finite-dimensional vector space
+   is isomorphic to K^n for n its dimension” is the linear algebra
+   behind essential surjectivity; “every linear map K^n → K^m is
+   multiplication by a unique m × n matrix” is fullness and
    faithfulness.  Riehl's discussion turns on the observation that
    choosing the isomorphism V ≅ K^n is choosing a BASIS, and that no
    natural such choice exists — which is why the quasi-inverse is not
@@ -63,7 +63,7 @@
    Riehl's factorization has a SECOND leg — based spaces down to bare
    finite-dimensional spaces, forgetting the choice — and here that
    leg is VACUOUS rather than omitted: the library's ∃ being
-   Type-valued, "has a basis" and "carries a chosen basis" are the
+   Type-valued, “has a basis” and “carries a chosen basis” are the
    same data, so the unbased finite-dimensional category IS [FdVect F]
    over again.  The functor [FdVect_Forget : FdVect F ⟶ Vct_F F] is
    NOT that leg — its target is ALL F-modules, infinite-dimensional
@@ -643,7 +643,7 @@ Example mat_apply_2x2_row1 :
  The TRANSPOSED reading, Σ_j A j i · v j, machine-checked: on the
  same probe it yields (23, 34), and its first component differs from
  the true 17 — so the two readings are discriminated by computation,
- which is what "checked rather than argued for" owes. 
+ which is what “checked rather than argued for” owes. 
 
  --------
  转置的读数，Σ_j A j i · v j，经机器检查：在同一个探针上它产生 (23, 34)，并且它的第一个分量与真实的 17 不同——所以通过计算区分了两个读数，这就是“被检查而不是被论证”的意义所在。
@@ -1068,8 +1068,8 @@ End FullFaithfulEso.
    The comparison functor is full, faithful and essentially surjective,
    so Theory/Equivalence/FullFaithful.v's [FF_ESO_Equivalence] hands
    back the equivalence — including the quasi-inverse, which is the
-   construction "read off the matrix of a linear map in the chosen
-   bases".  No choice principle is consumed: the quasi-inverse is
+   construction “read off the matrix of a linear map in the chosen
+   bases”.  No choice principle is consumed: the quasi-inverse is
    assembled from [prefmap] and [eso_iso], both of which are data here
    ([matrix_of] and [StdVect_iso]).  The essential-surjectivity
    witness is passed EXPLICITLY — it carries the choice of preimage

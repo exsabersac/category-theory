@@ -34,20 +34,20 @@ Generalizable All Variables.
    construction 2 (printed p. 96).  Transcribed from the page image, in
    ASCII:
 
-   "If U and V are sets, the set P(U) of all subsets of U is a preorder
+   “If U and V are sets, the set P(U) of all subsets of U is a preorder
    under inclusion.  For each function f : U -> V the direct image f_*,
    defined by f_*(X) = {f(x) | x in X} is an order-preserving function
    and hence a functor f_* : P(U) -> P(V).  The inverse image
    f^*(Y) = {x | fx = y for some y in Y} defines a functor
    f^* : P(V) -> P(U) in the opposite direction.  Since f_* X subset Y
    if and only if X subset f^* Y, the direct image functor f_* is left
-   adjoint to the inverse image functor f^*."
+   adjoint to the inverse image functor f^*.”
 
    and, two paragraphs earlier on the same page, the sentence this file
    reads at the Type level rather than at [equiv]:
 
-   "The unit of the adjunction is the inequality p <= RLp for all p,
-   while the counit is LRq >= q for all q."
+   “The unit of the adjunction is the inequality p <= RLp for all p,
+   while the counit is LRq >= q for all q.”
 
    nLab: https://ncatlab.org/nlab/show/power+set
    nLab: https://ncatlab.org/nlab/show/Galois+connection
@@ -58,13 +58,13 @@ Generalizable All Variables.
    Awodey, *Category Theory*, §9.4 Example 9.12 names the same adjunction
    (its topological caveat is Instance/Top/Image.v); §9.9 Exercise 4 asks
    for it as a pair of monotone maps of posets, which is section (G)
-   below.  Riehl, *Category Theory in Context*, §4.6.3's "left adjoints
-   preserve colimits, right adjoints preserve limits" is section (F).
+   below.  Riehl, *Category Theory in Context*, §4.6.3's “left adjoints
+   preserve colimits, right adjoints preserve limits” is section (F).
 
-   ** THE ISSUE'S "Current state" IS STALE, MEASURED AT THE BASE COMMIT
+   ** THE ISSUE'S “Current state” IS STALE, MEASURED AT THE BASE COMMIT
 
    The catalog entry says the carrier is missing and that searches for
-   "direct image" and "inverse image" return nothing.  Neither holds.
+   “direct image” and “inverse image” return nothing.  Neither holds.
    Instance/Sets/Powerset.v declares [Powerset_Prop_obj], the power
    set of a setoid AT ONE UNIVERSE -- the [equiv]-respecting Prop-valued
    predicates, that is [SetoidMorphism X Powerset_Prop_truth] -- and BOTH
@@ -90,7 +90,7 @@ Generalizable All Variables.
    respectfulness condition, and decidable membership, which is what lets
    complementation be an involution there.  The category here is over
    Prop-valued [equiv]-respecting predicates on a SETOID, which is what
-   the issue's "respects setoid equality" clause asks for, and its
+   the issue's “respects setoid equality” clause asks for, and its
    membership is not decidable.  A comparison functor from that one to
    this one at a discrete setoid is measured but NOT built: requiring
    Instance/Rel/Dagger.v raises this file's transitive closure from 87
@@ -144,7 +144,7 @@ Generalizable All Variables.
    [counit T = counit_incl T] at [eq_refl].  The four stay [Qed]
    here, no consumer reading through them, so the Leibniz
    identification is NOT shipped; an earlier draft called the
-   ascription "the strongest available statement", which was false.
+   ascription “the strongest available statement”, which was false.
 
    (E) Meets and joins: [subset_inter]/[subset_union] at an ARBITRARY
    index [Type] with [subset_inter_IsGLB]/[subset_union_IsLUB], the
@@ -198,7 +198,7 @@ Generalizable All Variables.
    inclusion `∀ x, S x → T x` is [Type@{o}]-valued and hence not a
    [relation] at all -- so neither [Proset] nor [GaloisConnection] can
    host it.  That rejection is pinned as the probe's formability
-   negative 2 -- a SORT rejection, "Cannot enforce ... <= Prop", not a
+   negative 2 -- a SORT rejection, “Cannot enforce ... <= Prop”, not a
    typing error; the probe's header records the reclassification.
 
    ** WHAT IS NOT DELIVERED
@@ -222,7 +222,7 @@ Generalizable All Variables.
    hence isomorphic ([subsets_iso_of_equiv]).  This is exactly
    Instance/Proset.v's design -- a proset is not a poset -- and matches
    Instance/Rel/Dagger.v's [Powerset], whose objects are likewise bare
-   predicates.  Mac Lane says "preorder", not "poset", and the file keeps
+   predicates.  Mac Lane says “preorder”, not “poset”, and the file keeps
    his word.
 
    ** UNIVERSES
@@ -233,13 +233,13 @@ Generalizable All Variables.
    [o] and hom level [u] with NO relation between them (the hom is
    Prop-valued, so it fits at any [u]); the only entries in its block are
    [Set < o] and two bounds against stdlib's [relation]/[PreOrder] global
-   levels.  RECORDED CORRECTION: an earlier revision continued "The RAPL
+   levels.  RECORDED CORRECTION: an earlier revision continued “The RAPL
    route additionally pins the hom level to [Set], inherited from
    Instance/Discrete.v's unannotated [DiscreteCat_Functor], which fixes
    the shape at [DiscreteCat@{u Set Set}] while [IsALimit] identifies the
-   shape's hom-and-proof universe with the ambient's".  The diagnosis was
+   shape's hom-and-proof universe with the ambient's”.  The diagnosis was
    right and the donor has since been repaired: it was annotated in place
-   at Instance/Discrete.v in the PR "algebraic carriers are sets"
+   at Instance/Discrete.v in the PR “algebraic carriers are sets”
    (2026-09-17), so the pin no longer arrives from there.  The RAPL
    constants of section (F) are still WRITTEN at hom level [Set] --
    [Subsets@{o Set} X] appears literally in their statements -- and
@@ -345,7 +345,7 @@ Generalizable All Variables.
 
    ** 集合等价点，已披露[Subsets X] 的对象是 [Powerset_Prop_obj X] 的载体类型，而不是它的集合商。因此，两个 [equiv] 相等的子集在该范畴中是不同的对象，它们相互包含，因此同构（[subsets_iso_of_equiv]）。这正是 Instance/Proset.v 的设计——一个前序集不是偏序集——并且与 Instance/Rel/Dagger.v 的 [Powerset] 相符，其对象同样是基本谓词。Mac Lane 使用“preorder”，而不是“poset”，该文件也保持了他的用词。
 
-   ** 宇宙每个常量都位于一个级别 [o]，与 [Set < o] 一致，继承自 [Powerset_Prop_truth] 的承载者 [Prop : Type@{Set+1}] —— 捐赠者的约束，而不是在此引入的。[Subsets@{o u}] 具有对象级别 [o] 和同态级别 [u]，它们之间没有关系（同态是 Prop 值，因此适合于任何 [u]）；它的块中唯一的条目是 [Set < o] 和针对 stdlib 的 [relation] / [PreOrder] 全局级别的两个界限。记录的更正：早期版本继续写道“RAPL 路径额外将同态级别固定为 [Set]，继承自 Instance/Discrete.v 中未注释的 [DiscreteCat_Functor]，这在 [DiscreteCat@{u Set Set}] 处固定了形状，而 [IsALimit] 确定了形状的同态和证明宇宙与环境的关系。”诊断是正确的，捐赠者自那以后已经被修复：它在 PR "代数载体是集合"（2026-09-17）的 Instance/Discrete.v 中被注释在原处，因此引脚不再从那里到达。（F）节的 RAPL 常量仍然在同伦级别 [Set] 上被写入——[Subsets@{o Set} X] 在他们的陈述中是字面出现的——而且它们是否现在可以在自由同伦级别上重新陈述尚未重新测量；该 PR 的文字修订中没有更改任何代码。不变的是顺序及其原因：[IsALimit] 仍然将形状的同伦-证明宇宙与环境的宇宙识别，因此（F）的直接陈述首先给出，RAPL 推导其次。报告中对每个常量进行测量；在此文件中没有任何定义引入 [Set]。
+   ** 宇宙每个常量都位于一个级别 [o]，与 [Set < o] 一致，继承自 [Powerset_Prop_truth] 的承载者 [Prop : Type@{Set+1}] —— 捐赠者的约束，而不是在此引入的。[Subsets@{o u}] 具有对象级别 [o] 和同态级别 [u]，它们之间没有关系（同态是 Prop 值，因此适合于任何 [u]）；它的块中唯一的条目是 [Set < o] 和针对 stdlib 的 [relation] / [PreOrder] 全局级别的两个界限。记录的更正：早期版本继续写道“RAPL 路径额外将同态级别固定为 [Set]，继承自 Instance/Discrete.v 中未注释的 [DiscreteCat_Functor]，这在 [DiscreteCat@{u Set Set}] 处固定了形状，而 [IsALimit] 确定了形状的同态和证明宇宙与环境的关系。”诊断是正确的，捐赠者自那以后已经被修复：它在 PR “代数载体是集合”（2026-09-17）的 Instance/Discrete.v 中被注释在原处，因此引脚不再从那里到达。（F）节的 RAPL 常量仍然在同伦级别 [Set] 上被写入——[Subsets@{o Set} X] 在他们的陈述中是字面出现的——而且它们是否现在可以在自由同伦级别上重新陈述尚未重新测量；该 PR 的文字修订中没有更改任何代码。不变的是顺序及其原因：[IsALimit] 仍然将形状的同伦-证明宇宙与环境的宇宙识别，因此（F）的直接陈述首先给出，RAPL 推导其次。报告中对每个常量进行测量；在此文件中没有任何定义引入 [Set]。
 
    ** 关闭，以及原因87 个及物的项目内依赖（不包括此文件），通过向 coqdep 提供每个新文件进行测量。仅移除对 Instance/Proset/Limit.v 的 Require 会得到 65（它的成本是 22）；仅移除 Adjunction/Continuity.v 会再次得到 87（当 Limit 存在时无需额外成本，其所有模块都位于 Limit 内）；同时移除两者会得到 63。早期草稿中写的是 56 和 31，这两个数字相互一致，但与实际测量无关。为了可选桥接而 Require Instance/Rel/Dagger.v 会得到 98。因为 (E) 和 (F) 用 ITS [IsGLB] / [IsLUB] / [HasAllMeets] / [Proset_Cartesian] / [proset_Complete_iff_all_meets] 陈述，所以必须需要该模块而非避免；在这里重述这些将会是已存在的 donor 的仿制品。
 
@@ -374,7 +374,7 @@ Definition subset_le_preorder@{o} (X : SetoidObject@{o o}) :
    ; PreOrder_Transitive :=
        fun S T U HST HTU x Hx => HTU x (HST x Hx) |}.
 
-(* Mac Lane's "P(U) ... is a preorder under inclusion", as a category. / Mac Lane 的“P(U) ... 在包含关系下是一个预序”，作为一个范畴。 *)
+(* Mac Lane's “P(U) ... is a preorder under inclusion”, as a category. / Mac Lane 的“P(U) ... 在包含关系下是一个预序”，作为一个范畴。 *)
 Definition Subsets@{o u} (X : SetoidObject@{o o}) : Category@{o u u} :=
   Proset@{o u} (subset_le_preorder@{o} X).
 
@@ -567,8 +567,8 @@ Qed.
  unit inhabits the type of [unit_incl]; a Leibniz [unit S = unit_incl S]
  holds at [eq_refl] once the two transposes and the two inclusions above
  are closed [Defined] (measured by audit, out of tree) and is blocked
- here by their [Qed]s, which is why the names say "has the type of" and
- not "is". 
+ here by their [Qed]s, which is why the names say “has the type of” and
+ not “is”. 
 
  --------
  在那些类型上归属于伴随的自身单元和余单元。归属仅通过转换类型检查，并且只说明单元属于 [unit_incl] 的类型；一旦上述两个转置和两个包含被闭合 [Defined]（通过审核测量，树外），则在 [eq_refl] 上持有 Leibniz [unit S = unit_incl S]，并且在此被它们的 [Qed] 阻塞，这就是为什么名称写作“具有…的类型”而不是“是”。
@@ -741,12 +741,12 @@ Definition Subsets_HasAllJoins : HasAllJoins (@subset_le@{o} X) :=
  [Set], and the instance is written out rather than inferred.
 
  RECORDED CORRECTION TO THE REASON.  An earlier revision said the
- [Set] was a PIN: "Both biconditionals route through
+ [Set] was a PIN: “Both biconditionals route through
  [Proset_Limit]/[DiscreteCat_Functor], and Instance/Discrete.v's
  unannotated declaration of the latter fixes the shape at
  [DiscreteCat@{u Set Set}] while [IsALimit] identifies the shape's
- hom-and-proof universe with the ambient's."  The donor was annotated in
- place at Instance/Discrete.v in the PR "algebraic carriers are sets"
+ hom-and-proof universe with the ambient's.”  The donor was annotated in
+ place at Instance/Discrete.v in the PR “algebraic carriers are sets”
  (2026-09-17), so no [Set] is forced from there any more.  The literal
  [Set] below is therefore now a CHOICE rather than a pin, and has been
  left as it stands: restating these two at a free hom level was not
@@ -855,7 +855,7 @@ End Preservation.
  earlier revision called that a PIN and attributed it to
  Instance/Discrete.v's unannotated [DiscreteCat_Functor] fixing the shape
  at [DiscreteCat@{u Set Set}]; that donor was annotated in place at its
- in the PR "algebraic carriers are sets" (2026-09-17), so the [Set]
+ in the PR “algebraic carriers are sets” (2026-09-17), so the [Set]
  here is now a choice carried over rather than a pin, and restating it
  was not attempted.  [IsALimit] still identifies the shape's
  hom-and-proof universe with the ambient's; the DIRECT statements above

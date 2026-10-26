@@ -21,7 +21,7 @@ Generalizable All Variables.
 (* * * Subspace and quotient topologies as sliced adjoint inverses / * * 子空间拓扑与商空间拓扑作为切片伴随逆 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, read from the page images: the subspace construction, book
  pp. 132-133 (PDF pp. 141-142), the subspace topology as a
  right-adjoint-right-inverse of the sliced underlying-set functor
@@ -30,12 +30,12 @@ Generalizable All Variables.
  construction, book pp. 133-134 (PDF pp. 142-143), the quotient
  topology as a left-adjoint-right-inverse of the cosliced one
  (maclane:V.9:construction3); and the sentence stating the dual of
- Proposition 1, book p. 134 (PDF p. 143), after which "This dual
+ Proposition 1, book p. 134 (PDF p. 143), after which “This dual
  proposition and the above adjunction prove that Top has
- coequalizers" (the first clause of maclane:V.9:remark2, #458's
+ coequalizers” (the first clause of maclane:V.9:remark2, #458's
  catalog item).  The book numbers Proposition 1 and none of the
  constructions; the catalog ids are names, not book numbering.
- Fong and Spivak, "Seven Sketches in Compositionality", §7.3.2,
+ Fong and Spivak, “Seven Sketches in Compositionality”, §7.3.2,
  Exercise 7.32, printed p. 236 (PDF p. 248): the subspace topology on
  a subset (7sketches:7.3.2:ex7.32), as the catalogue under
  doc/plan/books summarizes it (that book was not consulted)
@@ -53,8 +53,8 @@ Generalizable All Variables.
  the case of one injection; dually the finest topology making maps into
  S continuous, with the quotient topology the case of one surjection.
  nLab's topological concrete categories are the concrete categories
- with "nice features matching the ability to form weak and strong
- topologies in Top" (that page's Idea).  Mac Lane's §V.9 reads the
+ with “nice features matching the ability to form weak and strong
+ topologies in Top” (that page's Idea).  Mac Lane's §V.9 reads the
  one-map case, without the injection or the surjection, as an
  adjunction.  For a space X the underlying-set functor G induces a
  functor on slices,
@@ -62,15 +62,15 @@ Generalizable All Variables.
  its right adjoint L gives a set t : S → GX the topology whose opens
  are the preimages along t of the opens of X.  Mac Lane observes that
  G ↓ X after L is the identity and calls L a
- "right-adjoint-right-inverse" of G ↓ X; its counit is the identity,
+ “right-adjoint-right-inverse” of G ↓ X; its counit is the identity,
  which is how Structure/SlicedInverse.v's record reads the name.  The
  book stresses that the universal property is about arbitrary spaces Y
  with arbitrary continuous maps into X, not only about subspaces.
  Dually,
  X ↓ G : (X ↓ Top) → (GX ↓ Set)
  has a left adjoint M giving t : GX → S the topology of the sets with
- open preimage, "with unit the identity map, so M is
- left-adjoint-right-inverse to X↓G".  Proposition 1 turns the first
+ open preimage, “with unit the identity map, so M is
+ left-adjoint-right-inverse to X↓G”.  Proposition 1 turns the first
  into equalizers (an element-free version of the equalizer as the set
  where two maps agree, with the subspace topology), and its dual turns
  the second into coequalizers.
@@ -128,7 +128,7 @@ Generalizable All Variables.
  adjunction of the generic sliced functors.  An independent
  [Program] functor with the same actions would not do: in a scratch
  file its object action agrees with [Sliced PForget X] at
- [eq_refl], but the functor equation is refused ("cannot unify"),
+ [eq_refl], but the functor equation is refused (“cannot unify”),
  its obligations being [Qed] constants of its own.  [PSub_Functor
  X] (L) and [PQuot_Functor X] (M), and the adjunctions
  [psub_adjunction : PForget_over X ⊣ PSub_Functor X] and
@@ -140,8 +140,8 @@ Generalizable All Variables.
  the triangle facts [psub_counit] (the counit is [id_cast] of
  [psub_obj]) and [pquot_unit] (the unit is [id_cast] of the inverse
  of [pquot_obj]) are the convention of Adjunction/LeftInverse.v and
- Theory/Equivalence/Strict.v for "the counit (unit) is the
- identity".
+ Theory/Equivalence/Strict.v for “the counit (unit) is the
+ identity”.
  - The packaged constructions.  [subspace_RARI X :
  RightAdjointRightInverse (Sliced PForget X)] is the subspace
  construction in Structure/SlicedInverse.v's record, and
@@ -161,8 +161,8 @@ Generalizable All Variables.
  [f g : x ~> y] back at [eq_refl] as [PSub x S s], [s : S → x] the
  chosen [Sets] equalizer of the underlying maps, and
  [PTop_equalizer_arrow] reads its arrow as [psub_incl x S s]: the
- element-free form of the book's "take the set S of points x of X
- with fx = f'x and impose the subspace topology", with whatever
+ element-free form of the book's “take the set S of points x of X
+ with fx = f'x and impose the subspace topology”, with whatever
  equalizer the [Sets] donor chooses in place of that set.
  - [PTop_HasCoequalizers], the dual at [PForget]:
  Structure/SlicedInverse/Strict.v's [coequalizers_from_sliced_LARI]
@@ -211,24 +211,24 @@ Generalizable All Variables.
  - Leibniz, not [eq_refl] at a variable: [psub_obj] and [pquot_obj].
  Slice objects are stdlib [sigT] pairs, which have no eta, so at a
  variable [c] the equation takes a [destruct]; measured in a scratch
- file, the [eq_refl] at a variable is refused with "cannot unify" of
+ file, the [eq_refl] at a variable is refused with “cannot unify” of
  the round trip and [c], while its first component is [eq_refl].
  - Four [Defined], each load-bearing, measured by closing it [Qed]
  alone in a scratch copy of this file.  [psub_obj] and [pquot_obj]:
  the triangle facts need the transport to reduce, and with either
  closed [Qed] the matching triangle fact is refused (Coq: Unable to
- unify "projT1 (id_cast (psub_obj (x; h))) t" with "t", and the
+ unify “projT1 (id_cast (psub_obj (x; h))) t” with “t”, and the
  [pquot_obj] twin).  [psub_adjunction] and [pquot_adjunction]: the
  counit and unit are computed through [Build_Adjunction'] from the
  hom-set bijection, and with either closed [Qed] the matching
- triangle fact is refused (Coq: Unable to unify "t" with "projT1
- counit t", and "projT1 unit t" for the quotient).
+ triangle fact is refused (Coq: Unable to unify “t” with “projT1
+ counit t”, and “projT1 unit t” for the quotient).
  - Up to [≈]: [psub_counit], [pquot_unit] (the record's convention),
  [psub_lift_comm], [pquot_desc_comm], and [PBool_coequalizer_points]
  in the coequalizer's setoid.
  - Propositional equivalences: [psub_universal], [pquot_universal],
- and [PBool_equalizer_points], whose "only if" is the fork equation
- and whose "if" is the equalizer's universal property at the point
+ and [PBool_equalizer_points], whose “only if” is the fork equation
+ and whose “if” is the equalizer's universal property at the point
  of [PPoint] picking [true].
 
  UNIVERSES, read by [About] under [Set Printing Universes].
@@ -340,7 +340,7 @@ Generalizable All Variables.
  有一个左伴随 M，它给出 t : GX → S 的拓扑，其开集是原像为开集的集合，“其单位映射为恒等映射，因此 M 是 X↓G 的左伴随-左逆”。命题 1 将第一个变为等化器（等化器的无元素版本，作为两个映射相等的集合，并配以子空间拓扑），其对偶将第二个变为余等化器。为什么这个文件在 [PTopCat] 上。 在树的类型值 [Top] 上，
  没有一个陪集是 [Adjunction] 记录。这在一个宇宙赋值下测量（[o < h]，[h < so]；Instance/Top/Subspace/TypeValued.v 的头部引用了拒绝）并进行论证，而不是在其他每个情况测量：[Top@{h o}] 将其同态严格置于其点之上，[o < h]，因为连续性在余域的开集上量化；
  一个在给定点集上构建空间的函子必须从具有同态在 [o] 的 [Sets] 的切片开始，而切片的底层集合函子落在具有同态在 [h] 的对象切片中；
- 并且 Theory/Adjunction.v 的 [Adjunction] 识别其两个范畴的同态级别。此外，子空间谓词对 X 的开集进行量化，并位于点的上方一层。Instance/Top/Prop.v 的 Prop 值编码消除了这两个障碍，而下面的所有内容都是基于它陈述的。可以在 [Top] 上形成的读法是 Instance/Top/Subspace/TypeValued.v。这里是什么。——沿任意集值映射 [h : S → X] 的子空间构造，不仅仅是包含。[PSub X S h] 有点 [S]，书中逐字打开：[PSub_open] 读作 [POpen (PSub X S h) V]，回到 [ex (fun U => POpen X U /\ ∀ s, V s <-> U (h s))] 在 [eq_refl]。[psub_universal] 是任意空间上的泛性质 [Z] 映入，两个方向：一个集值映射 [g : Z → S] 连续到 [PSub X S h] 当且仅当 [h ∘ g] 连续。[psub_lift] 是书中的形式，一个连续的 [f : Z → X] 与 [f ≈ h ∘ g] 使 [g] 成为子空间的连续映射。——《七幅素描》第 7.32 练习，在一个由谓词 [P] 给定的子集 [Y ⊆ X]（[ex732_Y]，子集值子集合，和 [ex732_incl]）。[ex732_def]：[A] 是开集当且仅当对 [X] 的开集 [B]，[eq_refl] 成立。[ex732_part1] : [Y] 是开集，[B] 是 [X] 的全部。[ex732_part2] : 定义7.25的三个公理，对任意宇宙中的指数类型的并集。[ex732_part3] : 包含映射是连续的。- 沿任意集合等价映射的商构造 [q : X → T]。[PQuot] 的开集是 [V]，并且 [POpen X (fun x => V (q x))]，且尊重 [T] 的相等性（[PQuot_open]，在 [eq_refl]）。第二个合取是集合等价纪律对书中谓词的补充：书中的集合每个谓词都尊重其相等性，没有它 [popen_proper] 就无法在 [T] 上成立。树已经将这样的尊重关系子句与原像条件配对，在 Instance/Top.v 的 [CP_open] 和 Instance/Top/Wedge.v 的 [wedge_open] 中。[pquot_universal] 是任意空间上的通用性质 [Z] 映射出; [pquot_desc] 是该书的形式。- 切片函子。[PForget_over X]（Mac Lane 的 G ↓ X）和 [PForget_under X]（X ↓ G）是 Structure/SlicedInverse.v 中的 [Sliced PForget X] 和 [Cosliced PForget X]，在本地名称下：别名，通过 [PForget_over_Sliced] 在 [eq_refl] 被读回，以及 [PForget_under_Cosliced]，因此下面的每个伴随都是通用切片函子的伴随。一个具有相同行为的独立 [Program] 函子是不可行的：在一个草稿文件中，它的对象作用在 [eq_refl] 上与 [Sliced PForget X] 一致，但函子方程被拒绝（“无法统一”），其义务为它自己的 [Qed] 常量。[PSub_Functor X]（L）和 [PQuot_Functor X]（M），以及伴随关系 [psub_adjunction : PForget_over X ⊣ PSub_Functor X] 和 [pquot_adjunction : PQuot_Functor X ⊣ PForget_under X]，每个都是由 Theory/Adjunction.v 的 [Build_Adjunction'] 从一个同态集双射（[psub_adj_iso], [pquot_adj_iso]）构建的，该双射在底层映射上是恒等的。对象方程 [psub_obj] 和 [pquot_obj]（G ↓ X 在 L 之后，以及 X ↓ G 在 M 之后，在对象上是恒等的）以及三角事实 [psub_counit]（余单位是 [psub_obj] 的 [id_cast]）和 [pquot_unit]（单位是 [pquot_obj] 的逆映射的 [id_cast]）是 Adjunction/LeftInverse.v 和 Theory/Equivalence/Strict.v 关于“余单位（单位）是恒等”的惯例。- 打包构造。[subspace_RARI X ：RightAdjointRightInverse（Sliced PForget X）] 是 Structure/SlicedInverse.v 的记录中的子空间构造，[quotient_LARI X : LeftAdjointRightInverse (Cosliced PForget X)] 是 Theory/Equivalence/Strict.v 的记录中的商构造，每个都是上述四个事实的组合（[subspace_RARI_right] 和 [quotient_LARI_left] 在 [eq_refl] 处读回伴随）。- [PTop_HasEqualizers]，命题 1 在 [PForget]：Structure/SlicedInverse.v 的 [equalizers_from_sliced_RARI] 输入 [PForget_Faithful]、[subspace_RARI] 以及 [Sets] 的等化器，Structure/Pullback/Reduction.v 的 [HasEqualizers_of_HasPullbacks_Terminal] 从 Instance/Sets/Pullback.v 的 [Sets_HasPullbacks] 和 Instance/Sets.v 的 [Sets_Terminal] 构建——Adjunction/CokernelPair.v 的 [SetsEqualizers] 的项，重新表述以不需要该文件（参见 ROUTE AND COST）。[PTop_equalizer_obj] 读取 [f g : x ~> y] 的等化子 回到 [eq_refl] 作为 [PSub x S s] ，[s : S → x] 作为基础映射的选定 [Sets] 等化子，并且 [PTop_equalizer_arrow] 将其箭头读取为 [psub_incl x S s] ：书中“取集合 X 的点 x 的集合 S 使得 fx = f'x 并施加子空间拓扑”的无元素形式，同时用 [Sets] 捐赠者选择的任何等化子代替该集合。- [PTop_HasCoequalizers] ，在 [PForget] 的对偶：Structure/SlicedInverse/Strict.v 的 [coequalizers_from_sliced_LARI] 喂入 [PForget_Faithful] ，[quotient_LARI] 和 Instance/Sets/Coequalizer.v 的 [Sets_HasCoequalizers] 。[PTop_coequalizer_obj] 将在 [eq_refl] 的余等化器读取为 [PQuot y (SetsCoeq Gf Gg) (sets_coeq_proj Gf Gg)]、[Gf] 和 [Gg] 的基本映射：在 [y] 的点的商上由等价对生成的商拓扑；并且 [PTop_coequalizer_arrow] 将其箭头读取为 [pquot_proj]。- 在具体空间上的两个见证者，在 Instance/Top/Prop.v 的离散 [PPoint] 和 [PBool] 上：[PBool_subspace_RARI] 和 [PBool_quotient_LARI] 是在 [PBool] 的两个构造。[PBool_equalizer] 是 [PBool] 上恒等映射和常值映射 [pbool_true] 的等化器，两个不同的映射（[pbool_maps_differ]）；[PBool_equalizer_obj] 在 [eq_refl] 上将其读回为 [Sets] 上基础映射的等化器上的 [PSub PBool]，以及 [PBool_equalizer_rari] 作为 [rari_right PBool_subspace_RARI] 在那里取的值，并且 [PBool_equalizer_points] 计算 [PBool] 的哪些点位于其中：恰好是 [true]，因此等化器是一个适当的、非空的子空间。[PBool_coequalizer] 是 [PBool] 中两点 [ppoint_false] 和 [ppoint_true] 的余等化器，从 [PPoint] 出来的映射如果有差异（[ppoint_maps_differ]）；[PBool_coequalizer_obj] 在 [eq_refl] 以 [PQuot PBool] 读取它，在 [Sets] 余等化器上，并将其作为 [lari_left PBool_quotient_LARI] 在那里的值，且 [PBool_coequalizer_points] 将其中的每个点与 [true] 认同，而 Instance/Top/Prop.v 的 [PBool_points_distinct] 将 [false] 与 [true] 在 [PBool] 中分开：一个适当的商。优势，严格测量优先。- 在 [eq_refl]：[PSub_carrier]，[PSub_open]，[PQuot_carrier]，[PQuot_open]，[ex732_def]，[psub_lift_map]，[pquot_desc_map]，[PForget_over_Sliced]，[PForget_under_Cosliced]，[PSub_Functor_obj]，[PQuot_Functor_obj]，四个转置回读 [psub_adj_to_map]，[psub_adj_from_map]，[pquot_adj_to_map]，[pquot_adj_from_map]，在一个显式对上的对象方程 [psub_obj_pair] 和 [pquot_obj_pair]，[subspace_RARI_right]，[quotient_LARI_left]，以及四个（共）等化器回读 [PTop_equalizer_obj]，[PTop_equalizer_arrow]，[PTop_coequalizer_obj] 和 [PTop_coequalizer_arrow]，以及在具体空间 [PBool_equalizer_obj]，[PBool_equalizer_rari]，[PBool_coequalizer_obj] 和 [PBool_coequalizer_lari]。- 莱布尼茨，不在变量上的 [eq_refl]：[psub_obj] 和 [pquot_obj]。切片对象是标准库 [sigT] 对，其没有 eta，因此在变量 [c] 处，方程会出现 [destruct]；在一个临时文件中测量，变量处的 [eq_refl] 会被“无法统一”拒绝，往返 [c] 时，而它的第一个组件是 [eq_refl]。- 四个 [Defined]，每个承重，通过在该文件的临时副本中单独闭合 [Qed] 进行测量。[psub_obj] 和 [pquot_obj]：三角形事实需要传输进行简化，并且无论关闭 [Qed]，匹配的三角形事实都会被拒绝（Coq: 无法统一 "projT1 (id_cast (psub_obj (x; h))) t" 与 "t"，以及 [pquot_obj] 双胞）。[psub_adjunction] 和 [pquot_adjunction]：通过 [Build_Adjunction'] 从同态集双射计算余单位和单位，并且无论关闭 [Qed]，匹配三角形事实都会被拒绝（Coq：无法将“t”与“projT1 counit t”以及“projT1 unit t”用于商集统一）。- 直到 [≈]：[psub_counit]，[pquot_unit]（记录约定），[psub_lift_comm]，[pquot_desc_comm]，以及 [PBool_coequalizer_points] 在共等化器的集合同构中。- 命题等价：[psub_universal]，[pquot_universal]，以及 [PBool_equalizer_points]，其“只有当”是叉方程，其“如果”是等化器在 [PPoint] 点选择 [true] 时的泛性质。宇宙，由 [About] 在 [Set Printing Universes] 下读取。- [psub_open@{o}]、[PSub@{o}]、[psub_incl@{o}]、[PQuot@{o}]：空块。[psub_universal]、[psub_lift]、[pquot_universal] 和 [pquot_desc] 仅包含 Instance/Sets.v 的 [setoid_morphism_compose] 的三个 [o <= compose.u*] 上限。[PSub] 和 [PQuot] 在 [PTop@{Set}] 被接受（临时）。- [ex732_Y@{o}] 及其上构建的常量携带 [o <= Subset_projections.u0]，[proj1_sig] 的标准库上限。- 切片常量采用 [@{o so u}]（以及一个用于附加和三角事实的额外宇宙），其中 [o < so] 已声明，并且 [o < u] Construction/Slice.v 的自身严格同构层次下界为 [Program] 辅助宇宙。[Set < so] 继承自 [PTopCat]，并由 [o < so] 推导；[Set < Projections.u0] 由 [so <= Projections.u0] 推导，帽 Construction/Slice.v 的 [Slice] 承载对象宇宙（[projT1] 的）。联接添加了 [Build_Adjunction'] 的 stdlib 帽（[Logic_lemmas.equality]、[prod_rect]、[projections]），而 [pquot_unit] 和 [quotient_LARI] 添加了 [so <= Logic_lemmas.equality.u0]：stdlib [eq_sym] 在该宇宙中获取其类型参数，并在此应用于 [so] 上对象之间的等式，这也是 [LeftAdjointRightInverse] 自身模块在其第二类别的对象宇宙上承载该帽的原因。- [subspace_RARI@{o so u u0}] 的类型是 [∀ X, RightAdjointRightInverse@{so so o u0 u} (Sliced@{so o so o u0 u0 so so} PForget@{o so} X)]，而 [quotient_LARI@{o so u u0}] 的类型是 [∀ X, LeftAdjointRightInverse@{so u0 u so o} (Cosliced@{so o so o u0 u0 so so} PForget@{o so} X)]：两个切片在点的宇宙 [o] 上的同态层，以及两个切片辅助宇宙在一个 [u0] 上，《Structure/SlicedInverse.v》的头部透露了这些信息。- [PTop_HasEqualizers@{o so u u0 u1 u2 u3} : HasEqualizers@{so o} PTopCat@{o so}] 和 [PTop_HasCoequalizers@{o so u u0 u1 u2 u3 u4} : HasCoequalizers@{so o} PTopCat@{o so}]：这些结构存在于类别自身的层次上，它们的模块只在辅助宇宙以下的边界上添加 [<=] 上限和 [o] 严格下界到边界上方。- 在具体空间的见证人保持 [o] 和 [so] 整个过程中：
+ 并且 Theory/Adjunction.v 的 [Adjunction] 识别其两个范畴的同态级别。此外，子空间谓词对 X 的开集进行量化，并位于点的上方一层。Instance/Top/Prop.v 的 Prop 值编码消除了这两个障碍，而下面的所有内容都是基于它陈述的。可以在 [Top] 上形成的读法是 Instance/Top/Subspace/TypeValued.v。这里是什么。——沿任意集值映射 [h : S → X] 的子空间构造，不仅仅是包含。[PSub X S h] 有点 [S]，书中逐字打开：[PSub_open] 读作 [POpen (PSub X S h) V]，回到 [ex (fun U => POpen X U /\ ∀ s, V s <-> U (h s))] 在 [eq_refl]。[psub_universal] 是任意空间上的泛性质 [Z] 映入，两个方向：一个集值映射 [g : Z → S] 连续到 [PSub X S h] 当且仅当 [h ∘ g] 连续。[psub_lift] 是书中的形式，一个连续的 [f : Z → X] 与 [f ≈ h ∘ g] 使 [g] 成为子空间的连续映射。——《七幅素描》第 7.32 练习，在一个由谓词 [P] 给定的子集 [Y ⊆ X]（[ex732_Y]，子集值子集合，和 [ex732_incl]）。[ex732_def]：[A] 是开集当且仅当对 [X] 的开集 [B]，[eq_refl] 成立。[ex732_part1] : [Y] 是开集，[B] 是 [X] 的全部。[ex732_part2] : 定义7.25的三个公理，对任意宇宙中的指数类型的并集。[ex732_part3] : 包含映射是连续的。- 沿任意集合等价映射的商构造 [q : X → T]。[PQuot] 的开集是 [V]，并且 [POpen X (fun x => V (q x))]，且尊重 [T] 的相等性（[PQuot_open]，在 [eq_refl]）。第二个合取是集合等价纪律对书中谓词的补充：书中的集合每个谓词都尊重其相等性，没有它 [popen_proper] 就无法在 [T] 上成立。树已经将这样的尊重关系子句与原像条件配对，在 Instance/Top.v 的 [CP_open] 和 Instance/Top/Wedge.v 的 [wedge_open] 中。[pquot_universal] 是任意空间上的通用性质 [Z] 映射出; [pquot_desc] 是该书的形式。- 切片函子。[PForget_over X]（Mac Lane 的 G ↓ X）和 [PForget_under X]（X ↓ G）是 Structure/SlicedInverse.v 中的 [Sliced PForget X] 和 [Cosliced PForget X]，在本地名称下：别名，通过 [PForget_over_Sliced] 在 [eq_refl] 被读回，以及 [PForget_under_Cosliced]，因此下面的每个伴随都是通用切片函子的伴随。一个具有相同行为的独立 [Program] 函子是不可行的：在一个草稿文件中，它的对象作用在 [eq_refl] 上与 [Sliced PForget X] 一致，但函子方程被拒绝（“无法统一”），其义务为它自己的 [Qed] 常量。[PSub_Functor X]（L）和 [PQuot_Functor X]（M），以及伴随关系 [psub_adjunction : PForget_over X ⊣ PSub_Functor X] 和 [pquot_adjunction : PQuot_Functor X ⊣ PForget_under X]，每个都是由 Theory/Adjunction.v 的 [Build_Adjunction'] 从一个同态集双射（[psub_adj_iso], [pquot_adj_iso]）构建的，该双射在底层映射上是恒等的。对象方程 [psub_obj] 和 [pquot_obj]（G ↓ X 在 L 之后，以及 X ↓ G 在 M 之后，在对象上是恒等的）以及三角事实 [psub_counit]（余单位是 [psub_obj] 的 [id_cast]）和 [pquot_unit]（单位是 [pquot_obj] 的逆映射的 [id_cast]）是 Adjunction/LeftInverse.v 和 Theory/Equivalence/Strict.v 关于“余单位（单位）是恒等”的惯例。- 打包构造。[subspace_RARI X ：RightAdjointRightInverse（Sliced PForget X）] 是 Structure/SlicedInverse.v 的记录中的子空间构造，[quotient_LARI X : LeftAdjointRightInverse (Cosliced PForget X)] 是 Theory/Equivalence/Strict.v 的记录中的商构造，每个都是上述四个事实的组合（[subspace_RARI_right] 和 [quotient_LARI_left] 在 [eq_refl] 处读回伴随）。- [PTop_HasEqualizers]，命题 1 在 [PForget]：Structure/SlicedInverse.v 的 [equalizers_from_sliced_RARI] 输入 [PForget_Faithful]、[subspace_RARI] 以及 [Sets] 的等化器，Structure/Pullback/Reduction.v 的 [HasEqualizers_of_HasPullbacks_Terminal] 从 Instance/Sets/Pullback.v 的 [Sets_HasPullbacks] 和 Instance/Sets.v 的 [Sets_Terminal] 构建——Adjunction/CokernelPair.v 的 [SetsEqualizers] 的项，重新表述以不需要该文件（参见 ROUTE AND COST）。[PTop_equalizer_obj] 读取 [f g : x ~> y] 的等化子 回到 [eq_refl] 作为 [PSub x S s] ，[s : S → x] 作为基础映射的选定 [Sets] 等化子，并且 [PTop_equalizer_arrow] 将其箭头读取为 [psub_incl x S s] ：书中“取集合 X 的点 x 的集合 S 使得 fx = f'x 并施加子空间拓扑”的无元素形式，同时用 [Sets] 捐赠者选择的任何等化子代替该集合。- [PTop_HasCoequalizers] ，在 [PForget] 的对偶：Structure/SlicedInverse/Strict.v 的 [coequalizers_from_sliced_LARI] 喂入 [PForget_Faithful] ，[quotient_LARI] 和 Instance/Sets/Coequalizer.v 的 [Sets_HasCoequalizers] 。[PTop_coequalizer_obj] 将在 [eq_refl] 的余等化器读取为 [PQuot y (SetsCoeq Gf Gg) (sets_coeq_proj Gf Gg)]、[Gf] 和 [Gg] 的基本映射：在 [y] 的点的商上由等价对生成的商拓扑；并且 [PTop_coequalizer_arrow] 将其箭头读取为 [pquot_proj]。- 在具体空间上的两个见证者，在 Instance/Top/Prop.v 的离散 [PPoint] 和 [PBool] 上：[PBool_subspace_RARI] 和 [PBool_quotient_LARI] 是在 [PBool] 的两个构造。[PBool_equalizer] 是 [PBool] 上恒等映射和常值映射 [pbool_true] 的等化器，两个不同的映射（[pbool_maps_differ]）；[PBool_equalizer_obj] 在 [eq_refl] 上将其读回为 [Sets] 上基础映射的等化器上的 [PSub PBool]，以及 [PBool_equalizer_rari] 作为 [rari_right PBool_subspace_RARI] 在那里取的值，并且 [PBool_equalizer_points] 计算 [PBool] 的哪些点位于其中：恰好是 [true]，因此等化器是一个适当的、非空的子空间。[PBool_coequalizer] 是 [PBool] 中两点 [ppoint_false] 和 [ppoint_true] 的余等化器，从 [PPoint] 出来的映射如果有差异（[ppoint_maps_differ]）；[PBool_coequalizer_obj] 在 [eq_refl] 以 [PQuot PBool] 读取它，在 [Sets] 余等化器上，并将其作为 [lari_left PBool_quotient_LARI] 在那里的值，且 [PBool_coequalizer_points] 将其中的每个点与 [true] 认同，而 Instance/Top/Prop.v 的 [PBool_points_distinct] 将 [false] 与 [true] 在 [PBool] 中分开：一个适当的商。优势，严格测量优先。- 在 [eq_refl]：[PSub_carrier]，[PSub_open]，[PQuot_carrier]，[PQuot_open]，[ex732_def]，[psub_lift_map]，[pquot_desc_map]，[PForget_over_Sliced]，[PForget_under_Cosliced]，[PSub_Functor_obj]，[PQuot_Functor_obj]，四个转置回读 [psub_adj_to_map]，[psub_adj_from_map]，[pquot_adj_to_map]，[pquot_adj_from_map]，在一个显式对上的对象方程 [psub_obj_pair] 和 [pquot_obj_pair]，[subspace_RARI_right]，[quotient_LARI_left]，以及四个（共）等化器回读 [PTop_equalizer_obj]，[PTop_equalizer_arrow]，[PTop_coequalizer_obj] 和 [PTop_coequalizer_arrow]，以及在具体空间 [PBool_equalizer_obj]，[PBool_equalizer_rari]，[PBool_coequalizer_obj] 和 [PBool_coequalizer_lari]。- 莱布尼茨，不在变量上的 [eq_refl]：[psub_obj] 和 [pquot_obj]。切片对象是标准库 [sigT] 对，其没有 eta，因此在变量 [c] 处，方程会出现 [destruct]；在一个临时文件中测量，变量处的 [eq_refl] 会被“无法统一”拒绝，往返 [c] 时，而它的第一个组件是 [eq_refl]。- 四个 [Defined]，每个承重，通过在该文件的临时副本中单独闭合 [Qed] 进行测量。[psub_obj] 和 [pquot_obj]：三角形事实需要传输进行简化，并且无论关闭 [Qed]，匹配的三角形事实都会被拒绝（Coq: 无法统一 “projT1 (id_cast (psub_obj (x; h))) t” 与 “t”，以及 [pquot_obj] 双胞）。[psub_adjunction] 和 [pquot_adjunction]：通过 [Build_Adjunction'] 从同态集双射计算余单位和单位，并且无论关闭 [Qed]，匹配三角形事实都会被拒绝（Coq：无法将“t”与“projT1 counit t”以及“projT1 unit t”用于商集统一）。- 直到 [≈]：[psub_counit]，[pquot_unit]（记录约定），[psub_lift_comm]，[pquot_desc_comm]，以及 [PBool_coequalizer_points] 在共等化器的集合同构中。- 命题等价：[psub_universal]，[pquot_universal]，以及 [PBool_equalizer_points]，其“只有当”是叉方程，其“如果”是等化器在 [PPoint] 点选择 [true] 时的泛性质。宇宙，由 [About] 在 [Set Printing Universes] 下读取。- [psub_open@{o}]、[PSub@{o}]、[psub_incl@{o}]、[PQuot@{o}]：空块。[psub_universal]、[psub_lift]、[pquot_universal] 和 [pquot_desc] 仅包含 Instance/Sets.v 的 [setoid_morphism_compose] 的三个 [o <= compose.u*] 上限。[PSub] 和 [PQuot] 在 [PTop@{Set}] 被接受（临时）。- [ex732_Y@{o}] 及其上构建的常量携带 [o <= Subset_projections.u0]，[proj1_sig] 的标准库上限。- 切片常量采用 [@{o so u}]（以及一个用于附加和三角事实的额外宇宙），其中 [o < so] 已声明，并且 [o < u] Construction/Slice.v 的自身严格同构层次下界为 [Program] 辅助宇宙。[Set < so] 继承自 [PTopCat]，并由 [o < so] 推导；[Set < Projections.u0] 由 [so <= Projections.u0] 推导，帽 Construction/Slice.v 的 [Slice] 承载对象宇宙（[projT1] 的）。联接添加了 [Build_Adjunction'] 的 stdlib 帽（[Logic_lemmas.equality]、[prod_rect]、[projections]），而 [pquot_unit] 和 [quotient_LARI] 添加了 [so <= Logic_lemmas.equality.u0]：stdlib [eq_sym] 在该宇宙中获取其类型参数，并在此应用于 [so] 上对象之间的等式，这也是 [LeftAdjointRightInverse] 自身模块在其第二类别的对象宇宙上承载该帽的原因。- [subspace_RARI@{o so u u0}] 的类型是 [∀ X, RightAdjointRightInverse@{so so o u0 u} (Sliced@{so o so o u0 u0 so so} PForget@{o so} X)]，而 [quotient_LARI@{o so u u0}] 的类型是 [∀ X, LeftAdjointRightInverse@{so u0 u so o} (Cosliced@{so o so o u0 u0 so so} PForget@{o so} X)]：两个切片在点的宇宙 [o] 上的同态层，以及两个切片辅助宇宙在一个 [u0] 上，《Structure/SlicedInverse.v》的头部透露了这些信息。- [PTop_HasEqualizers@{o so u u0 u1 u2 u3} : HasEqualizers@{so o} PTopCat@{o so}] 和 [PTop_HasCoequalizers@{o so u u0 u1 u2 u3 u4} : HasCoequalizers@{so o} PTopCat@{o so}]：这些结构存在于类别自身的层次上，它们的模块只在辅助宇宙以下的边界上添加 [<=] 上限和 [o] 严格下界到边界上方。- 在具体空间的见证人保持 [o] 和 [so] 整个过程中：
  [PBool_subspace_RARI@{o so u u0}] 的类型是
  [RightAdjointRightInverse@{so so o u0 u} (Sliced@{so o so o u0 u0
  so so} PForget@{o so} PBool@{o})], [PBool_quotient_LARI@{o so u
@@ -1055,8 +1055,8 @@ Example PBool_equalizer_rari@{o so +| o < so +} :
 
 (*
  Which points of [PBool] lie in the equalizer: exactly [true], so the
- equalizer is a proper, nonempty subspace.  The "only if" is the fork
- equation, the "if" the universal property at the point picking
+ equalizer is a proper, nonempty subspace.  The “only if” is the fork
+ equation, the “if” the universal property at the point picking
  [true]. 
 
  --------

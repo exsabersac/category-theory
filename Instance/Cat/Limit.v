@@ -20,7 +20,7 @@
    Indexed.v), consumed and not rebuilt; [PiCat_IsIndexedProduct] is
    the apex-pinned record beneath it.  The probe reads the class's
    object and projections back at [eq_refl].  This is Riehl's indexed
-   clause and Awodey's "all small products", in the tree's [Cat].
+   clause and Awodey's “all small products”, in the tree's [Cat].
 
    (B) The equalizer of [F G : C ⟶ D] as a SUBCATEGORY, Awodey's and
    Riehl's construction verbatim: [EqSub F G : Subcategory C] has
@@ -33,7 +33,7 @@
    Structure/Equalizer/Fork.v's apex-pinned record, and
    [StrictCat_HasEqualizers : (∀ C, ObjUIP C) → HasEqualizers
    StrictCat] its packaging in that file's class (the issue's
-   "[HasEqualizers] form").  [Eq_commutes] is a [:=] with no tactic —
+   “[HasEqualizers] form”).  [Eq_commutes] is a [:=] with no tactic —
    the fork equation's object component IS the equation each object
    carries and its arrow component IS the equation each arrow carries.
 
@@ -41,8 +41,8 @@
    HasIndexedProducts StrictCat], on the SAME [PiCat]/[PiCat_Proj]/
    [PiCat_Pair], and [StrictCat_Complete := Complete_from_products_
    equalizers (StrictCat_HasIndexedProducts uip fe)
-   (StrictCat_HasEqualizers uip)] — Mac Lane's "the general limit
-   follows by the products-and-equalizers construction" is exactly one
+   (StrictCat_HasEqualizers uip)] — Mac Lane's “the general limit
+   follows by the products-and-equalizers construction” is exactly one
    application of Structure/Limit/FromProducts.v's theorem (#416),
    consumed and not re-derived.
 
@@ -61,9 +61,9 @@
    competing fork in [Cat]; a mediator would be a functor out of [1] into
    the empty category.  Read it at its width: it refutes THIS apex at THIS
    pair.  Whether Ho(Cat) has equalizers, or is complete, is NEITHER
-   PROVED NOR REFUTED here, and the iso-comma ("inserter") replacement is
-   UNATTEMPTED.  The issue's sharpening offers two ways out — "build it in
-   Instance/StrictCat, or adopt the inserter and disclose" — and (B)-(C)
+   PROVED NOR REFUTED here, and the iso-comma (“inserter”) replacement is
+   UNATTEMPTED.  The issue's sharpening offers two ways out — “build it in
+   Instance/StrictCat, or adopt the inserter and disclose” — and (B)-(C)
    take the first.  Instance/StrictCat.v's hom-setoid
    [Functor_StrictEq_Setoid] is Leibniz equality of the object actions
    together with transported agreement of the arrow actions, which is what
@@ -203,8 +203,8 @@
    [Defined] tokens, exactly THREE load-bearing by flipping each alone to
    [Qed] with both this file and the probe recompiled: [Chaotic], whose
    flip stops [ChaoticPt]'s [fobj] field in this file (an opaque
-   [Chaotic X] no longer unfolds to [X]: "x has type X while it is
-   expected to have type obj[Chaotic X]"); [Eq_IsEqualizer],
+   [Chaotic X] no longer unfolds to [X]: “x has type X while it is
+   expected to have type obj[Chaotic X]”); [Eq_IsEqualizer],
    whose flip stops the probe's readback of the mediator; and
    [StrictCat_HasEqualizers], whose flip stops the probe's readbacks of
    the chosen equalizer and its inclusion — the other seven flip with both
@@ -232,7 +232,7 @@
    universe strictly below the hom universe, and their donor
    [Complete_from_products_equalizers] at the same levels), 1 TYPING
    ([Eq_IsEqualizer] ascribed at [@IsEqualizer Cat …], a plain has-type
-   mismatch with no "cannot unify" and no universe clause) and 2
+   mismatch with no “cannot unify” and no universe clause) and 2
    CONVERSION (the equalizer and product triangles as WHOLE functor
    records, each beside its two [eq_refl] data controls) — each stripped
    ONE AT A TIME in a copy of the whole file and compiled alone with its
@@ -289,7 +289,7 @@
    [Defined]  令牌，正好有三个通过单独翻转到
    [Qed]  承重，同时重新编译该文件和探针：  [Chaotic] ，其
    翻转会阻止  [ChaoticPt] 的  [fobj] 字段在该文件中（一个不透明的
-   [Chaotic X] 不再展开为  [X] ："x 的类型是 X，而期望类型是 obj [Chaotic X]"）；  [Eq_IsEqualizer] ，
+   [Chaotic X] 不再展开为  [X] ：“x 的类型是 X，而期望类型是 obj [Chaotic X]”）；  [Eq_IsEqualizer] ，
    其翻转会阻止探针读取中介者的读回；以及
    [StrictCat_HasEqualizers] ，其翻转会阻止探针读取所选均衡器及其包含 — 其他七个在两个文件中翻转都是绿色，并根据数据约定保留  [Defined]。闭包 52
    个模块，不包括自身。在三个重命名前的 58 个名称中没有发生冲突：[punit_eq] 是 Instance/Cat/Pullback.v 的（相同的语句，一个故意不需要的模块），而 [CB] 与两个文件的段变量以及一个段内局部的 [Notation CB]（Structure/Limit/Power/Adjunction.v）匹配——不是全局冲突，但是在将多个模块加载到一个作用域的门中使用两个字母的全局名称是一个隐患，因此 [ChaoticBool]；[CBtrue] / [CBfalse] 没有匹配任何内容，并与它（[ChaoticBool_true] / [ChaoticBool_false]）一起被重命名。必要性部分的 [Program] 义务由本地义务策略关闭，该策略必须使用 [repeat intro] 打开 [Proper] —— 在 [intros] 的情况下，[fmap_respects] 义务保持折叠状态，[ChaoticPt] 从未进入环境（已测量，并且是一次编译失败的原因）。Test/ProbeCatLimit414.v 反映了此文件的 [Require] 列表，并包含 10 个反驳命令 = 1 个仪器检查 + 9 个三种类型的否定，它们通过错误文本区分：6 个可形成性（[PiCat_Proj] 捐赠者及其五个已接受的控制，两个继承的常数 [StrictCat_HasIndexedProducts] 和 [StrictCat_Complete] 位于严格低于同种宇宙的索引宇宙，以及它们的捐赠者 [Complete_from_products_equalizers] 在相同级别），1 个类型（[Eq_IsEqualizer] 在 [@IsEqualizer Cat …] 上指定，一个普通的类型不匹配，没有“无法统一”和没有宇宙条款）和 2 个转换（作为整体函子记录的等化器和乘积三角形，每个旁边有两个 [eq_refl] 数据控制）— 每个在整个文件的副本中一次剥离，并单独编译其错误读取；守卫覆盖率机械测量（48 个相同在反驳命令内部的限定符，41 也在外部，七个例外详尽地穷尽了反驳关键字本身，三个绑定变量 [Cu] / [HP] / [HE]，两个被反驳的 [Example] 所声明的名称以及工具缺失的名称）；在目标常量上进行 9/9 的重命名模拟，否定的名称，每个重命名仅在此文件中应用，并且每一次中断都落在 [Check] 或探针的控制行上，没有在反驳命令内部。[make todo] 增加了 16 行，全部在探针中——它的 10 条反驳命令和 6 行头部用来命名反驳关键字——而这个文件没有贡献任何内容。

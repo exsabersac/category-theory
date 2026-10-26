@@ -15,7 +15,7 @@ Generalizable All Variables.
 (*
    * * The field of quotients, as a functor
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.3
    (printed p. 15), Exercise 1 [maclane:I.3:ex1]: exhibit the field of
    quotients of an integral domain as a functor, choosing the right
    domain category.
@@ -29,7 +29,7 @@ Generalizable All Variables.
    category of integral domains with MONOMORPHISMS.  Here that
    category is [IntDom]: objects are [DomObject]s, morphisms are ring
    homomorphisms carrying an injectivity field ([DomHom]).  In-tree
-   the identification "monomorphism = injection" is available in the
+   the identification “monomorphism = injection” is available in the
    direction that matters — [rng_injective_monic] (Instance/Rng.v)
    shows every [DomHom]'s underlying map is monic in [Rng].  The
    converse (monic ⇒ injective) was deferred when this was written,
@@ -154,7 +154,7 @@ Next Obligation.
   - destruct (Hc H0).
 Qed.
 
-(* Products of elements apart from zero stay apart from zero — the contrapositive form of "no zero divisors", derived from cancellation alone. / 除了零之外的元素的乘积仍然不为零——“没有零因子”的逆否命题，仅从消去法得出。 *)
+(* Products of elements apart from zero stay apart from zero — the contrapositive form of “no zero divisors”, derived from cancellation alone. / 除了零之外的元素的乘积仍然不为零——“没有零因子”的逆否命题，仅从消去法得出。 *)
 Lemma dom_mul_nonzero (D : DomObject) (a b : carrier (rig_setoid D)) :
   (a ≈ rig_zero D → False) → (b ≈ rig_zero D → False) →
   rig_mul D a b ≈ rig_zero D → False.
@@ -564,7 +564,7 @@ Qed.
 (** *** The fraction ring / *** 分数圈 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
+ Since the PR “algebraic carriers are sets” (2026-09-17) a [RigObject]
  owes a [Prop]-valued mirror of its equality.  [frac_eq] is a single `≈`
  on D's OWN carrier -- the cross-multiplication equation -- so the mirror
  is D's own [pequiv] at that equation and the two implications are D's own

@@ -73,16 +73,16 @@ Context {C : Category}.
 
  nLab:  https://ncatlab.org/nlab/show/Yang-Baxter+equation
  nLab:  https://ncatlab.org/nlab/show/periodic+table
- Paper: Joyal, Street, "Braided tensor categories", Advances in
+ Paper: Joyal, Street, “Braided tensor categories”, Advances in
  Mathematics 102, 1993
 
  Braided monoidal categories were introduced by Joyal and Street in a
  pair of Macquarie Mathematics Reports (85-0067, 1985; 86-0081, 1986),
  revised as the paper above, and were arrived at independently by
- Lawrence Breen ("Une lettre à P. Deligne au sujet des 2-catégories
- tressées", 1988).  The name points to Artin's braid groups (Artin,
- "Theorie der Zöpfe", Abh. Math. Sem. Univ. Hamburg 4, 1925; "Theory of
- Braids", Annals of Mathematics 48, 1947): on n-fold tensor powers the
+ Lawrence Breen (“Une lettre à P. Deligne au sujet des 2-catégories
+ tressées”, 1988).  The name points to Artin's braid groups (Artin,
+ “Theorie der Zöpfe”, Abh. Math. Sem. Univ. Hamburg 4, 1925; “Theory of
+ Braids”, Annals of Mathematics 48, 1947): on n-fold tensor powers the
  coherence isomorphisms of a braided category act through the braid
  group B_n rather than the symmetric group S_n, and this is precisely
  what separates the notion from symmetry.  Coherence is accordingly
@@ -107,8 +107,8 @@ Context {C : Category}.
  and as the star-triangle relation of Baxter's eight-vertex model
  (Annals of Physics 70, 1972); the joint name is due to Faddeev in the
  late 1970s.  In the periodic table of k-tuply monoidal n-categories
- (Baez, Dolan, "Higher-dimensional algebra and topological quantum
- field theory", 1995), braided monoidal sits at k = 2, n = 1: two
+ (Baez, Dolan, “Higher-dimensional algebra and topological quantum
+ field theory”, 1995), braided monoidal sits at k = 2, n = 1: two
  compatible monoidal structures on one category, merged by the
  Eckmann-Hilton argument into a single tensor carrying a braiding,
  while a third structure already stabilizes at symmetric.  Braided
@@ -117,20 +117,20 @@ Context {C : Category}.
 
  The utility runs through algebra, topology and physics.  Modules over
  a quasitriangular Hopf algebra — Drinfeld's quantum groups (Drinfeld,
- "Quantum Groups", Proceedings of the ICM, Berkeley 1986) — form a
+ “Quantum Groups”, Proceedings of the ICM, Berkeley 1986) — form a
  braided category whose braiding is induced by the universal R-matrix;
  ribbon categories built on braidings yield the functorial
  Reshetikhin-Turaev invariants of links and 3-manifolds, the Jones
- polynomial among them (Shum, "Tortile tensor categories", J. Pure
- Appl. Algebra 93, 1994; Reshetikhin, Turaev, "Invariants of
- 3-manifolds via link polynomials and quantum groups", Inventiones
+ polynomial among them (Shum, “Tortile tensor categories”, J. Pure
+ Appl. Algebra 93, 1994; Reshetikhin, Turaev, “Invariants of
+ 3-manifolds via link polynomials and quantum groups”, Inventiones
  Mathematicae 103, 1991).  In topological quantum computation the
  exchange statistics of anyons are braid-group representations, so a
  braided fusion category models the physics — tensor as fusion, [braid]
  as particle exchange — and quantum gates are braids (Kitaev,
- "Fault-tolerant quantum computation by anyons", Annals of Physics 303,
- 2003; Freedman, Kitaev, Larsen, Wang, "Topological quantum
- computation", Bulletin of the AMS 40, 2003).
+ “Fault-tolerant quantum computation by anyons”, Annals of Physics 303,
+ 2003; Freedman, Kitaev, Larsen, Wang, “Topological quantum
+ computation”, Bulletin of the AMS 40, 2003).
 
  Within the library the reading is concrete.  The free PROP realizes
  the braiding as the literal block crossing [T_braid] of one wire
@@ -153,7 +153,7 @@ Context {C : Category}.
 
  nLab:   https://ncatlab.org/nlab/show/Yang-Baxter+equation 
  nLab:   https://ncatlab.org/nlab/show/periodic+table 
- 论文: Joyal, Street, 《编织张量范畴》，《数学进展》102, 1993编织单体范畴由 Joyal 和 Street 在麦考瑞数学报告的一对文献中引入（85-0067, 1985；86-0081, 1986），后来修订为上述论文，并由 Lawrence Breen 独立提出（"Une lettre à P. Deligne au sujet des 2-catégories tressées", 1988）。其名称指向 Artin 的编织群（Artin, "Zöpfe 理论", Abh. Math. Sem. Univ. Hamburg 4, 1925; "编织理论", Annals of Mathematics 48, 1947）：在 n 次张量幂上，编织范畴的相干同构通过编织群 B_n 而非对称群 S_n 起作用，这正是它与对称性的概念区别所在。因此，连贯性是有条件的，不像麦克莱恩在普通单体范畴中的情况：由结合子、单位元子和编织子构建的图表，在双方具有相同的基础编织时才是可交换的，而在自由编织单体范畴中，只有这种情况下才是可交换的（Joyal-Street 1993）。因此，不同的编织可以表示真正不同的态射——双编织 [braid] ∘ [braid] 不一定是恒等映射，而要求它是恒等映射会将 B_n 重回压缩到 S_n。该定义回答了一个精确的问题：当交换是一个保持交换方式的同构时，还剩下什么可交换性？六边形方程正好对应于与结合子的兼容性——将一个对象在一个整体张量积中缠绕，与将它按相邻步骤穿过两个因子是相同的——从它们以及 [braid_natural] 本身，可以得出 [Yang_Baxter_equation]，即 Artin 关于相邻生成元的编织关系以及第三条 Reidemeister 变换的范畴形式。该方程早于范畴概念，在物理学中出现过两次：在杨的［一维多体问题］（Physical Review Letters 19, 1967）中，以及巴克斯特八顶点模型的星-三角关系中（Annals of Physics 70, 1972）；联合命名归功于 1970 年代末的 Faddeev。在 k-重单体 n-范畴的元素周期表中（Baez, Dolan, "高维代数与拓扑量子场论"，1995），编织单体位于 k = 2, n = 1：在一个范畴上有两个兼容的单体结构，通过 Eckmann-Hilton 论证合并为一个带编织的张量，而第三个结构已经在对称性上稳定。因此，编织单体是最大限度的非交换交换性——在稳定之前的最后一站。该工具涉及代数、拓扑学和物理学。准三角霍普夫代数上的模 — Drinfeld 的量子群（Drinfeld, “量子群”，ICM Berkeley 1986 论文集）— 构成一个编织范畴，其编织由普遍 R 矩阵引出；在编织基础上建立的缎带范畴产生链和三维流形的函子 Reshetikhin-Turaev 不变量，其中包括 Jones 多项式（Shum, “缠结张量范畴”, J. Pure Appl. Algebra 93, 1994；Reshetikhin, Turaev, “通过链多项式和量子群得到三维流形的不变量”, Inventiones Mathematicae 103, 1991）。在拓扑量子计算中，任意子的交换统计是编结群的表示，因此编结融合范畴可以模拟物理——将张量表示为融合，将[braid]表示为粒子交换——量子门则是编结（Kitaev，"任意子容错量子计算"，《物理年刊》303, 2003；Freedman, Kitaev, Larsen, Wang, "拓扑量子计算"，《美国数学学会公报》40, 2003）。在图书馆里，阅读是具体的。自由PROP实现了编织作为一个导线束越过另一个的字面块交叉 [T_braid]（Construction/PROP/Braided.v）；Drinfeld中心从任何单体范畴生成编织结构（ [Drinfeld_Braided] 在 Structure/Monoidal/Drinfeld.v）；笛卡尔交换给出了退化情况（ [CC_BraidedMonoidal] 在 Structure/Monoidal/Internal/Product.v）；Structure/Monoidal/Symmetric.v 添加了反演 [braid_invol]，在其下任意六边形定律都能得到另一条；Structure/Monoidal/Balanced.v 添加了与二重编织兼容的扭转——给定遵循扭转的对偶，体现了 Shum 定理背后的丝带概念；对于单体函子，成为编织是一个性质而非结构（ [BraidedMonoidalFunctor] 在 Functor/Structure/Monoidal/Braided.v）；Structure/Monoidal/Closed.v 对 inte 推导了 [flip]。仅来自 [BraidedMonoidal] 的 rnal 同源物，不需要对称性。
+ 论文: Joyal, Street, 《编织张量范畴》，《数学进展》102, 1993编织单体范畴由 Joyal 和 Street 在麦考瑞数学报告的一对文献中引入（85-0067, 1985；86-0081, 1986），后来修订为上述论文，并由 Lawrence Breen 独立提出（“Une lettre à P. Deligne au sujet des 2-catégories tressées”, 1988）。其名称指向 Artin 的编织群（Artin, “Zöpfe 理论”, Abh. Math. Sem. Univ. Hamburg 4, 1925; “编织理论”, Annals of Mathematics 48, 1947）：在 n 次张量幂上，编织范畴的相干同构通过编织群 B_n 而非对称群 S_n 起作用，这正是它与对称性的概念区别所在。因此，连贯性是有条件的，不像麦克莱恩在普通单体范畴中的情况：由结合子、单位元子和编织子构建的图表，在双方具有相同的基础编织时才是可交换的，而在自由编织单体范畴中，只有这种情况下才是可交换的（Joyal-Street 1993）。因此，不同的编织可以表示真正不同的态射——双编织 [braid] ∘ [braid] 不一定是恒等映射，而要求它是恒等映射会将 B_n 重回压缩到 S_n。该定义回答了一个精确的问题：当交换是一个保持交换方式的同构时，还剩下什么可交换性？六边形方程正好对应于与结合子的兼容性——将一个对象在一个整体张量积中缠绕，与将它按相邻步骤穿过两个因子是相同的——从它们以及 [braid_natural] 本身，可以得出 [Yang_Baxter_equation]，即 Artin 关于相邻生成元的编织关系以及第三条 Reidemeister 变换的范畴形式。该方程早于范畴概念，在物理学中出现过两次：在杨的［一维多体问题］（Physical Review Letters 19, 1967）中，以及巴克斯特八顶点模型的星-三角关系中（Annals of Physics 70, 1972）；联合命名归功于 1970 年代末的 Faddeev。在 k-重单体 n-范畴的元素周期表中（Baez, Dolan, “高维代数与拓扑量子场论”，1995），编织单体位于 k = 2, n = 1：在一个范畴上有两个兼容的单体结构，通过 Eckmann-Hilton 论证合并为一个带编织的张量，而第三个结构已经在对称性上稳定。因此，编织单体是最大限度的非交换交换性——在稳定之前的最后一站。该工具涉及代数、拓扑学和物理学。准三角霍普夫代数上的模 — Drinfeld 的量子群（Drinfeld, “量子群”，ICM Berkeley 1986 论文集）— 构成一个编织范畴，其编织由普遍 R 矩阵引出；在编织基础上建立的缎带范畴产生链和三维流形的函子 Reshetikhin-Turaev 不变量，其中包括 Jones 多项式（Shum, “缠结张量范畴”, J. Pure Appl. Algebra 93, 1994；Reshetikhin, Turaev, “通过链多项式和量子群得到三维流形的不变量”, Inventiones Mathematicae 103, 1991）。在拓扑量子计算中，任意子的交换统计是编结群的表示，因此编结融合范畴可以模拟物理——将张量表示为融合，将[braid]表示为粒子交换——量子门则是编结（Kitaev，“任意子容错量子计算”，《物理年刊》303, 2003；Freedman, Kitaev, Larsen, Wang, “拓扑量子计算”，《美国数学学会公报》40, 2003）。在图书馆里，阅读是具体的。自由PROP实现了编织作为一个导线束越过另一个的字面块交叉 [T_braid]（Construction/PROP/Braided.v）；Drinfeld中心从任何单体范畴生成编织结构（ [Drinfeld_Braided] 在 Structure/Monoidal/Drinfeld.v）；笛卡尔交换给出了退化情况（ [CC_BraidedMonoidal] 在 Structure/Monoidal/Internal/Product.v）；Structure/Monoidal/Symmetric.v 添加了反演 [braid_invol]，在其下任意六边形定律都能得到另一条；Structure/Monoidal/Balanced.v 添加了与二重编织兼容的扭转——给定遵循扭转的对偶，体现了 Shum 定理背后的丝带概念；对于单体函子，成为编织是一个性质而非结构（ [BraidedMonoidalFunctor] 在 Functor/Structure/Monoidal/Braided.v）；Structure/Monoidal/Closed.v 对 inte 推导了 [flip]。仅来自 [BraidedMonoidal] 的 rnal 同源物，不需要对称性。
 *)
 
 Class BraidedMonoidal := {

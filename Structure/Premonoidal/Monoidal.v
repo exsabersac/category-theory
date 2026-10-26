@@ -22,7 +22,7 @@ Set Transparent Obligations.
    nLab: https://ncatlab.org/nlab/show/premonoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Premonoidal_category
 
-   Power–Robinson ("Premonoidal categories and notions of computation",
+   Power–Robinson (“Premonoidal categories and notions of computation”,
    Math. Structures Comput. Sci. 7(5), 1997) observe that a monoidal
    category is precisely a premonoidal category in which every morphism
    is central.  This file delivers both directions of that comparison.

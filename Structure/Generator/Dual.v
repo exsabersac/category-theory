@@ -16,7 +16,7 @@ Generalizable All Variables.
  nLab:  https://ncatlab.org/nlab/show/separator
  nLab:  https://ncatlab.org/nlab/show/cogenerator
 
- Riehl, "Category Theory in Context", 2nd ed., Definition 4.7.7
+ Riehl, “Category Theory in Context”, 2nd ed., Definition 4.7.7
  (printed p. 177, PDF p. 197), defines a COSEPARATING set to be a
  separating set in the opposite category, and Mac Lane's §V.7 (book
  p. 127) pairs the two the same way.  This file is that sentence,
@@ -52,7 +52,7 @@ Generalizable All Variables.
  := @Build_Generator C (cog_index G) (cog_obj G)
  (@cog_separates (C^op) G).
  is rejected with
- "(cannot unify "x ~{ C }~> y" and "x ~{ C^op }~> y")",
+ “(cannot unify ”x ~{ C }~> y“ and ”x ~{ C^op }~> y“)”,
  a CONVERSION refusal: the field is applied at the objects in the
  order the record declares them, and that order is the opposite one.
  (2) The record-builder syntax without an explicit category:
@@ -62,8 +62,8 @@ Generalizable All Variables.
  and so builds a [Generator (C^op)], after which every remaining
  field is checked in the wrong category and the separation field is
  rejected with
- "The term "f" has type "x ~{ C^op }~> y" while it is expected to
- have type "y ~{ C^op }~> x"".
+ “The term ”f“ has type ”x ~{ C^op }~> y“ while it is expected to
+ have type ”y ~{ C^op }~> x“”.
  Hence [@Build_Generator C] and [@Build_Cogenerator (C^op)] are
  written out explicitly below.  (This is the same builder trap the
  tree has met before, and the fix is the same: name the record's
@@ -73,9 +73,9 @@ Generalizable All Variables.
  [Generator C] and [Cogenerator (C^op)] are two distinct inductives
  carrying the same data; [Generator C = Cogenerator (C^op)] at
  [eq_refl] is REFUSED --
- "The term "eq_refl" has type "Generator C = Generator C" while it
- is expected to have type "Generator C = Cogenerator C^op"
- (cannot unify "Generator C" and "Cogenerator C^op")" --
+ “The term ”eq_refl“ has type ”Generator C = Generator C“ while it
+ is expected to have type ”Generator C = Cogenerator C^op“
+ (cannot unify ”Generator C“ and ”Cogenerator C^op“)” --
  which is why this file carries a pair of maps and the two [eq_refl]
  round trips rather than one equation of types.  That is the strongest
  statement available here, and it is stronger than an isomorphism: the
@@ -83,8 +83,8 @@ Generalizable All Variables.
 
  THE DUAL CHARACTERIZATION.  [cogenerator_jointly_faithful] and
  [jointly_faithful_cogenerator] discharge the SAFT header's prose,
- "equivalently the representables C(-, cog_obj j) are jointly
- faithful", in both directions.  The functors are Functor/Hom.v's
+ “equivalently the representables C(-, cog_obj j) are jointly
+ faithful”, in both directions.  The functors are Functor/Hom.v's
  [Curried_CoHom C], written [Hom ─, A]; each is a functor C^op ⟶ Sets,
  so [JointlyFaithful] is instantiated at C^op and its two arrow
  variables are C^op arrows -- which is exactly why the proof term
@@ -106,7 +106,7 @@ Generalizable All Variables.
  [u0 <= ID.u0] -- inherited through the hom-functor, plus the ≤-bounds
  [JointlyFaithful] and [Cogenerator] contribute themselves, the same
  shape as their covariant counterparts in Structure/Generator.v (an
- earlier revision of this sentence said "exactly the Sets block", which
+ earlier revision of this sentence said “exactly the Sets block”, which
  an audit measured as short by those inherited bounds).  Every
  constant here binds its category as [Category@{_ u0 u0}], the hom
  level identified with the proof level, and none is pinned to [Set].
@@ -144,7 +144,7 @@ Generalizable All Variables.
  定义 gen_of_cog_naive (G : Cogenerator (C^op)) : Generator C
  := @Build_Generator C (cog_index G) (cog_obj G)
  (@cog_separates (C^op) G)。被拒绝，提示
- "(无法统一 'x ~{ C }~> y' 和 'x ~{ C^op }~> y')"，
+ “(无法统一 'x ~{ C }~> y' 和 'x ~{ C^op }~> y')”，
  一种转换拒绝：字段按记录声明的对象顺序应用，而该顺序是相反的。(2) 没有显式类别的记录构建语法：
  {| gen_index := cog_index G; gen_obj := cog_obj G; ... |}|}
  从第一个固定它的字段推断 [Generator] 的隐式类别 —— [gen_obj := cog_obj G] 的类型是 [cog_index G -> C^op] ——

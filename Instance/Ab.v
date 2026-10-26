@@ -2,16 +2,16 @@
    * * Ab, the category of abelian groups
 
    Mac Lane treats [Ab] as the running example of a category that is
-   "concrete" in the same way [Set] is but carries strictly more algebraic
+   “concrete” in the same way [Set] is but carries strictly more algebraic
    structure (Categories for the Working Mathematician, 2nd ed., §I.7,
    printed pp. 24-25 (PDF pp. 34-35), following issue #256's locations).  It
    is the base of homological algebra.  Be careful about the relationship to
    Structure/Abelian.v, in two steps that are easy to run together.  Hom-sets
    carrying abelian-group structure is [Additive] (Structure/Additive.v,
-   "each hom-setoid UPGRADES from a commutative monoid to an abelian group"),
+   “each hom-setoid UPGRADES from a commutative monoid to an abelian group”),
    NOT [Preadditive] -- Structure/Preadditive.v is explicit that
-   "additive inverses are deliberately not demanded, so the class is precisely
-   enrichment in commutative monoids".  And [Class Abelian]
+   “additive inverses are deliberately not demanded, so the class is precisely
+   enrichment in commutative monoids”.  And [Class Abelian]
    (Structure/Abelian.v) is not that either: hom-group structure is
    one of its five fields, reached transitively through [abelian_additive],
    alongside kernels, cokernels and normality of monos and epis.  This file
@@ -28,8 +28,8 @@
    negation rather than restating the carrier and the four monoid laws.  The
    coercion [ab_cmon :> CMonObject] makes [carrier], [cmon_zero],
    [cmon_plus], [cmon_prop], associativity, commutativity and the unit laws
-   available unchanged.  ([cmon_prop] joined that list in the PR "algebraic
-   carriers are sets" (2026-09-17), which gave [CMonObject] the field; an
+   available unchanged.  ([cmon_prop] joined that list in the PR “algebraic
+   carriers are sets” (2026-09-17), which gave [CMonObject] the field; an
    earlier revision of this sentence enumerated the other six and stopped.)
    The homomorphisms are literally [CMonHom]s: preservation of
    negation is a THEOREM ([ab_map_neg] below), not a field, which is the
@@ -50,7 +50,7 @@
    THE PROPOSITION.  Mac Lane's §I.7 proposition is that a homomorphism of
    abelian groups is monic exactly when it is injective and epic exactly when
    it is surjective.  Both halves are proved below, constructively.  An
-   earlier revision stopped there; since the PR "algebraic carriers are sets"
+   earlier revision stopped there; since the PR “algebraic carriers are sets”
    (2026-09-17) the epic half concludes PROPOSITIONAL surjectivity
    ([AbPropSurjective]), the split notion [AbSurjective] surviving as the
    hypothesis the direct constructions supply.  [ab_epic_surjective] records
@@ -75,7 +75,7 @@
    exactly the kind of quotient probe used here.
 
    So there is NO contrast to draw, and none is claimed: [Sets] and [Ab] both
-   have "epi iff surjective", and both get it by probing with a quotient.  The
+   have “epi iff surjective”, and both get it by probing with a quotient.  The
    interest of the construction below is the one thing stated above -- that
    commutativity is what makes [B/fA] an object of the category at all -- not
    any comparative strength.
@@ -558,13 +558,13 @@ Qed.
 
 (*
    * Mac Lane's construction.  The carrier is [B] itself; only the equality
-   coarsens, to "differ by something in the image of [f]".
+   coarsens, to “differ by something in the image of [f]”.
 
    THE RELATION IS [Prop]-VALUED.  An earlier revision of this paragraph said
-   the opposite -- "Note the relation is TYPE-valued -- [{ a & ... }], not
+   the opposite -- “Note the relation is TYPE-valued -- [{ a & ... }], not
    [∃] -- which is what lets the witness be read back out at the end without
-   any choice principle" -- and that is no longer so.  Since the PR "algebraic
-   carriers are sets" (2026-09-17) every [AbObject] carries [cmon_prop], the
+   any choice principle” -- and that is no longer so.  Since the PR “algebraic
+   carriers are sets” (2026-09-17) every [AbObject] carries [cmon_prop], the
    property that its `≈` is logically equivalent to a [Prop]-valued relation,
    and a quotient's equality has to be a [Prop] too or the field could not be
    supplied.  So [ab_coset_eq] is Coq's [ex], spelled [(exists a, …)%type]
@@ -748,8 +748,8 @@ Arguments ab_quot_zero {A B} f.
    preimage EXISTS.
 
    AN EARLIER REVISION concluded the split [AbSurjective] and said the witness
-   "IS the preimage -- read straight back out, with nothing chosen and nothing
-   doubly negated".  Since the PR "algebraic carriers are sets" (2026-09-17)
+   “IS the preimage -- read straight back out, with nothing chosen and nothing
+   doubly negated”.  Since the PR “algebraic carriers are sets” (2026-09-17)
    the coset relation is a [Prop] (see [ab_coset_eq] above), so the witness may
    not be read back out into a [Type]-valued goal and the conclusion is
    [AbPropSurjective].  Nothing is doubly negated and nothing is chosen -- the

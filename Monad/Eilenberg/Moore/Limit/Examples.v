@@ -99,7 +99,7 @@ Definition created_terminal :
     {| limit_cone := em_cone IdC Kempty Lbelow
      ; ump_limits := @ump_limit _ _ _ _ (em_created IdC Kempty Lbelow) |}.
 
-(** ** Mac Lane's "exactly one pair", on the nose: refuted  / ** 麦克莱恩的“恰好一对”，在鼻子上：被驳斥*)
+(** ** Mac Lane's “exactly one pair”, on the nose: refuted  / ** 麦克莱恩的“恰好一对”，在鼻子上：被驳斥*)
 
 (* Issue #467.  Mac Lane's Definition of creation (§V.1, p. 112) asks in
    clause (i) that to every limiting cone τ: x →· VF there be EXACTLY ONE
@@ -117,7 +117,7 @@ Definition created_terminal :
    [A_id] and [A_true] are [Bool2] with the structure maps [fun b => b]
    and [fun _ => true], and [A_id_ne_A_true] shows that they are
    different objects of the Eilenberg-Moore category; its proof carries
-   the property "the structure map is pointwise the identity" along the
+   the property “the structure map is pointwise the identity” along the
    equation by a [match], with no Eqdep and no UIP.  Over the one-object
    shape [1], [K1] is the diagram at [A_id] and [N1] the cone downstairs
    with apex [Bool2] and leg [id]; [N1_limiting] shows it limiting.  Each
@@ -148,7 +148,7 @@ Definition created_terminal :
    Universes, read off [About]: every constant binds [o] and [so], the
    arrows and the objects of [Sets@{o so}] ([o] is also the carriers'
    level; [Bool2] binds its two setoid levels); those that mention the
-   shape [1] add [j], its objects; and those that say "limiting" add [l]
+   shape [1] add [j], its objects; and those that say “limiting” add [l]
    and [l0], the levels of [IsLimitCone].  The only strict bound is
    [o < so], from [Sets]; the stdlib caps are inherited, [compose] and
    [ID] from Instance/Sets.v, [eq_ind], [eq_ind_r] and
@@ -163,7 +163,7 @@ Definition created_terminal :
    them bounded only from below), five on Coq 8.20.1 and seventeen on
    8.19.2, so that no explicit instance of it compiles on all three,
    and, left implicit under these binders, Coq 8.20.1 reports one of its
-   levels unbound ("Universe … is unbound" at [EMS]); [IdSM] also
+   levels unbound (“Universe … is unbound” at [EMS]); [IdSM] also
    carries none of [Id_Monad]'s [prod_rect] and [projections] caps.  The
    functor [K1] is built with every field given, because [refine] with
    its respectfulness field left open resolves that field by an instance

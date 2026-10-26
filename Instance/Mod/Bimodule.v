@@ -1,18 +1,18 @@
 (* * * The bimodule tensor-hom adjunction, and its parameter / * * 双模张量-同构配对及其参数 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., §IV.8 Exercise 3, printed p. 104 (PDF p. 113), ledger
  item `maclane:IV.8:ex3`, issue #401.  Quoted verbatim from
  the rendered scan:
 
- "3. Let R, S, and T be rings.
+ “3. Let R, S, and T be rings.
  (a) For a bimodule _R E _S, show that − ⊗_R E : Mod_R →
  Mod_S has a right adjoint hom_S(E, −).
  (b) Show that this is an adjunction with parameter
  E ∈ R-Mod-S.
  (c) Describe the composite of this adjunction with a
- similar adjunction Mod_S → Mod_T."
+ similar adjunction Mod_S → Mod_T.”
 
  Book:      Mac Lane, ibid., §IV.7 Theorem 3, printed pp. 101–102 —
  the right adjoints of a bifunctor's partial functors
@@ -25,12 +25,12 @@
  Theory/Adjunction.v's [Adjunction] record is a natural
  bijection of hom-setoids and its unit and counit are the
  derived ⌊id⌋ and ⌈id⌉.
- Book:      Riehl, "Category Theory in Context", Dover 2016, §4.4
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, §4.4
  Example 4.4.8, printed p. 152 — the tensor over S read as
  a BICLOSED bifunctor _R Mod_S × _S Mod_T → _R Mod_T, with
  a left closure Hom_R and a right closure Hom_T.  READ HER
- PROSE WITH CARE: the sentence "making Hom_R(M,N) into an
- R-T bimodule" is at odds with her own display, which lands
+ PROSE WITH CARE: the sentence “making Hom_R(M,N) into an
+ R-T bimodule” is at odds with her own display, which lands
  that hom in _S Mod_T; S-T is what the display says.  The
  general three-ring form is NOT built here (see WHAT IS NOT
  DELIVERED).
@@ -126,7 +126,7 @@
  Theory/Adjunction.v's uniqueness of right adjoints,
  **[bimodule_hom_composite_iso : HomS E ◯ HomS E1 ≈
  HomS (BimodTensorBimod E E1)]**.  That pair IS Mac Lane's
- "describe the composite": the composite adjunction is the
+ “describe the composite”: the composite adjunction is the
  adjunction of the tensor of the two bimodules, up to natural
  isomorphism on both sides and no further.
 
@@ -190,7 +190,7 @@
 
  NO COMMUTATIVITY, NO CENTRALITY, AND THAT IS A MEASUREMENT.  Below
  this header the tokens [Rcomm] and [rig_mul_comm] occur nowhere at
- all, and the string "commutativ" occurs exactly once, in a comment
+ all, and the string “commutativ” occurs exactly once, in a comment
  recording that commutativity is not spent.  The [Context]s are
  rings, bimodules and modules and nothing else — §D and §F add a
  third ring and two module variables, §E none, and no hypothesis
@@ -318,12 +318,12 @@
  E] against [TensorWith (BimodTensorBimod E E1)] and the two hom
  composites — which are different [Functor] records; they are pinned
  as the probe's N10 and N11, and what holds in their place is the
- natural isomorphism, which is what Mac Lane's "describe" asks for.
+ natural isomorphism, which is what Mac Lane's “describe” asks for.
 
  AN Ab-ENRICHMENT THAT WAS ONE NEGATION AWAY.
  Instance/Mod/Coextension.v records that the tree has no
  [AbEnriched (RMod R)] and only Instance/Mod.v's [Preadditive];
- a whole-tree search for the string "AbEnriched (RMod" returns that
+ a whole-tree search for the string “AbEnriched (RMod” returns that
  one line of prose and nothing else.  [RMod_AbEnriched] supplies it
  here in thirteen lines, over [rmod_hom_negate] (the obvious name
  [rmod_hom_neg] is taken by Instance/FdVect/DoubleDual.v, a
@@ -364,7 +364,7 @@
  before its first use.
  (iii) A [Program Definition] with NO section variables in scope
  leaves its [Proper] obligation as a goal [intros] cannot enter
- ("No product even after head-reduction"), where the same shape
+ (“No product even after head-reduction”), where the same shape
  inside a [Section] can be entered after the section binders; §G's
  [int_mult_bal] is a record literal instead, which is better anyway —
  every field is a rig law applied and it raises no obligation at all.
@@ -386,7 +386,7 @@
  for.  A reader reaching for [bimodule_right_RMod] to make the types
  fit gets a silently different object.
 
- THE ISSUE'S "Current state" IS STALE ON EVERY COUNT IT MAKES, and
+ THE ISSUE'S “Current state” IS STALE ON EVERY COUNT IT MAKES, and
  the corrections are greps: module categories exist
  (Instance/Mod.v's [RMod] and [ModR]), the [Bimodule] record
  exists with [bimodule_right_RMod] and two witnesses, tensor products
@@ -427,7 +427,7 @@
  sorts of the two eliminators [bsum_rec] and [bs_eq_rec].
 
  AN EARLIER REVISION of the preceding sentence, and of the arithmetic
- below, was taken before the PR "algebraic carriers are sets"
+ below, was taken before the PR “algebraic carriers are sets”
  (2026-09-17).  Since that PR [bs_eq] is a [Prop] inductive, so [bs_eq_rec]
  CEASES TO EXIST (a [Prop] inductive gets [_ind] and [_sind], not [_rec] or
  [_rect]) and the count of generated eliminators drops.
@@ -447,7 +447,7 @@
  [Record] heads that wrap onto their own line + 16 constructors +
  2 [Build_*].
  - axioms: one [Print Assumptions] per name over all 403, giving 403
- "Closed under the global context" and zero [Axioms:] blocks.
+ “Closed under the global context” and zero [Axioms:] blocks.
  - [Qed] and [Defined] tokens OUTSIDE comments: 213 and 5, both
  unchanged (a bare [grep] reads 216 and 8, the difference being
  this header's own mentions of the two words).
@@ -480,7 +480,7 @@
  the [hom_ab] negative there fires at its [AbEnriched] ARGUMENT, so
  [hom_ab]'s own contribution is UNKNOWN, not measured.
 
- AXIOMS.  427/427 constants report "Closed under the global context", with
+ AXIOMS.  427/427 constants report “Closed under the global context”, with
  zero [Axioms:] lines.  The criterion: entries of [Print Module] sit at
  exactly five-space indent, giving 192 [Definition] + 213 [Parameter] — the
  printer's rendering of an opaque constant, a display convention and not an
@@ -597,10 +597,10 @@
  --------
  书籍：Mac Lane，《工作数学家的范畴》，第2版，§IV.8 练习题3，印刷页104（PDF页113），账目编号`maclane:IV.8:ex3`，问题#401。原扫描件逐字引用：
 
- "3. 设R、S和T为环。
+ “3. 设R、S和T为环。
  (a) 对于一个双模_R E _S，证明 − ⊗_R E : Mod_R → Mod_S 有一个右伴随 hom_S(E, −)。
  (b) 证明这是一个参数为 E ∈ R-Mod-S 的伴随关系。
- (c) 描述此伴随关系与一个类似的伴随关系 Mod_S → Mod_T 的复合形式。"书籍：Mac Lane，同上，第IV.7节 定理3，第101–102页印刷版——一个双函子的部分函子的右伴随函子可以唯一地扩展为在该参数下是逆变的双函子。该定理在Adjunction/Parameter.v中，并且在此处已被使用，不再重述：下文的(b)部分将传递假设并从其结论读取Mac Lane的G。书籍：Mac Lane，同上，第IV.1节，第79–80页印刷版——以Hom-Set形式的伴随，这是贯穿全文使用的表示法：Theory/Adjunction.v的[Adjunction]记录是Hom-Setoid的自然双射，其单位和余单位是派生的⌊id⌋与⌈id⌉。书籍：Riehl，《Category Theory in Context》，Dover 2016，第4.4节 示例4.4.8，第页印刷版。152 — 张量作用于 S，可读作一个 BICLOSED 双函子 _R Mod_S × _S Mod_T → _R Mod_T，具有左闭包 Hom_R 和右闭包 Hom_T。仔细阅读她的文字：句子“将 Hom_R(M,N) 变为一个 R-T 双模”与她自己的展示不符，该展示将该 Hom 放在 _S Mod_T 中；展示显示的是 S-T。通用的三环形式此处未建立（见未提供内容）。书籍：Riehl，同上，第 4.6 节，推论 4.6.10，印刷页 169 — 对于一个 R-S 双模 M，函子 M ⊗_S − 是右正的，因为它是一个左伴随。下面有范围和延迟说明。nLab: https://ncatlab.org/nlab/show/tensor-hom+adjunction nLab: https://ncatlab.org/nlab/show/bimodule Wikipedia: https://en.wikipedia.org/wiki/Tensor-hom_adjunction手性，这是本页固定的，并决定下面的每种类型。
+ (c) 描述此伴随关系与一个类似的伴随关系 Mod_S → Mod_T 的复合形式。”书籍：Mac Lane，同上，第IV.7节 定理3，第101–102页印刷版——一个双函子的部分函子的右伴随函子可以唯一地扩展为在该参数下是逆变的双函子。该定理在Adjunction/Parameter.v中，并且在此处已被使用，不再重述：下文的(b)部分将传递假设并从其结论读取Mac Lane的G。书籍：Mac Lane，同上，第IV.1节，第79–80页印刷版——以Hom-Set形式的伴随，这是贯穿全文使用的表示法：Theory/Adjunction.v的[Adjunction]记录是Hom-Setoid的自然双射，其单位和余单位是派生的⌊id⌋与⌈id⌉。书籍：Riehl，《Category Theory in Context》，Dover 2016，第4.4节 示例4.4.8，第页印刷版。152 — 张量作用于 S，可读作一个 BICLOSED 双函子 _R Mod_S × _S Mod_T → _R Mod_T，具有左闭包 Hom_R 和右闭包 Hom_T。仔细阅读她的文字：句子“将 Hom_R(M,N) 变为一个 R-T 双模”与她自己的展示不符，该展示将该 Hom 放在 _S Mod_T 中；展示显示的是 S-T。通用的三环形式此处未建立（见未提供内容）。书籍：Riehl，同上，第 4.6 节，推论 4.6.10，印刷页 169 — 对于一个 R-S 双模 M，函子 M ⊗_S − 是右正的，因为它是一个左伴随。下面有范围和延迟说明。nLab: https://ncatlab.org/nlab/show/tensor-hom+adjunction nLab: https://ncatlab.org/nlab/show/bimodule Wikipedia: https://en.wikipedia.org/wiki/Tensor-hom_adjunction手性，这是本页固定的，并决定下面的每种类型。
  Mod_R 是右 R-模的类别；双模在右侧张量；N ⊗_R E 通过 E 的右侧 S-作用携带一个右侧 S-作用；hom_S(E, M) 是从 E 到 M 的右 S-模映射集合，通过 E 的左 R-作用定义为 (f ⊲ r)(e) = f(r · e) 而成为右 R-模。
  在这棵树中，右 R-模是 [ModR R := RMod (Ring_op R)] (Instance/Mod.v) 的一个对象，所以它是 [RModObject (Ring_op R)] 并且它的 Hom 是 [RModHom]。不要写 [ModR (Ring_op R) = RMod R]：[Ring_op] 并不是严格的自反。
 
@@ -728,7 +728,7 @@ Require Import Category.Theory.Algebra.Rig.
 (*
  The integer witness of §G needs the [Z] scope; Theory/Algebra/Rig.v
  takes the same import, this is the spelling the tree uses, and on Rocq
- 9.1 it emits the tree-wide "From Coq" deprecation warning, as that
+ 9.1 it emits the tree-wide “From Coq” deprecation warning, as that
  file does. 
 
  --------
@@ -910,7 +910,7 @@ Lemma bal_med_respects {A : AbObject} (β : BalBiadditive A) (s t : bsum) :
 Proof.
   intro He.
   (*
- Since the PR "algebraic carriers are sets" (2026-09-17) [bs_eq] is a
+ Since the PR “algebraic carriers are sets” (2026-09-17) [bs_eq] is a
  [Prop] inductive and eliminates only into [Prop] goals, while `≈` is
  [Type]-valued.  [pequiv_to] puts a [Prop] goal in front of the
  elimination; each branch returns to `≈` with [pequiv_from].  The twelve
@@ -2779,7 +2779,7 @@ Arguments tensor_assoc_iso {R S T} E E1.
  [adjunction_along_left_iso] — 一个函子自然同构于一个左伴随函子，即具有相同右伴随函子的左伴随函子 — 在这里为部分 (c) 构建了它的第一个使用者，并逐字移动到 Theory/Adjunction.v 的末尾（仍为 [Defined]，加上一个部分局部 [Obligation Tactic := idtac]，即本文件的设置），通过 #431，作为它的第二个使用者；[aali_cell]、[aali_iso]、[aali_to_is_transpose] 也进行了移动。
 *)
 
-(* * *** Mac Lane's "describe the composite" / * *** 马克·莱恩的“描述复合” *)
+(* * *** Mac Lane's “describe the composite” / * *** 马克·莱恩的“描述复合” *)
 
 Section BimoduleCompositeConclusion.
 
@@ -2834,7 +2834,7 @@ Arguments bimodule_hom_composite_iso {R S T} E E1.
 (* * ** E. The left-module mirror, and Riehl's Corollary 4.6.10 / * ** E. 左模镜像，以及Riehl的推论4.6.10 *)
 
 (*
- Riehl, "Category Theory in Context", §4.6 Corollary 4.6.10, printed
+ Riehl, “Category Theory in Context”, §4.6 Corollary 4.6.10, printed
  p. 169: for an R-S bimodule M the functor M ⊗_S − is right exact,
  because Corollary 4.6.9 makes a left adjoint between abelian
  categories right exact.  The adjunction it needs is the LEFT-module
@@ -3344,7 +3344,7 @@ Arguments bh_right {R S E E'} b m s.
 (* * ** F. The second closure, and the two-variable adjunction / * ** F. 第二闭包，以及两变量伴随 *)
 
 (*
- Riehl, "Category Theory in Context", §4.4 Definition 4.4.7: a
+ Riehl, “Category Theory in Context”, §4.4 Definition 4.4.7: a
  two-variable adjunction is a triple F : A × B → C, G : A^op × C → B,
  H : B^op × C → A with C(F(a,b),c) ≅ B(b,G(a,c)) ≅ A(a,H(b,c)).  For
  [BimodTensor] the first leg is §C's [bimodule_parametrized_adjunction]

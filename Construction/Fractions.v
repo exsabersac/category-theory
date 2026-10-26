@@ -126,7 +126,7 @@ Generalizable All Variables.
    WHAT IS NOT DELIVERED, AND WHY — MEASURED, NOT ESTIMATED.  The
    adjunction is exhibited as its universal property, not as an
    [Adjunction] record.  An earlier revision of this paragraph gave the
-   reason as "there is no category [Grpd] of groupoids in tree"; that was
+   reason as “there is no category [Grpd] of groupoids in tree”; that was
    true when this file was written and is now FALSE — Instance/Grpd.v
    landed alongside it, defining [Grpd] as the full subcategory of [Cat]
    cut out by [IsGroupoid], with [Grpd_Incl] its full and faithful
@@ -140,10 +140,10 @@ Generalizable All Variables.
    [Fractions_UMP_groupoid] supplies it at [Functor_StrictEq_Setoid].
    Feeding the one to the other is refused with
 
-   The term "Fractions_UMP_groupoid `2 (d') f" has type
-   "∃! L : Fractions C ⟶ `1 (d'), f ≈ L ◯ FractionsProj C"
+   The term “Fractions_UMP_groupoid `2 (d') f” has type
+   “∃! L : Fractions C ⟶ `1 (d'), f ≈ L ◯ FractionsProj C”
    while it is expected to have type
-   "∃! g : frac_obj C ~{ Grpd }~> d', f ≈ fmap[Grpd_Incl] g ∘ FractionsProj C".
+   “∃! g : frac_obj C ~{ Grpd }~> d', f ≈ fmap[Grpd_Incl] g ∘ FractionsProj C”.
 
    EXISTENCE transfers: Instance/StrictCat/ToCat.v's
    [strict_equiv_implies_fun_equiv] takes a [Functor_StrictEq_Setoid]

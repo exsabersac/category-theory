@@ -31,7 +31,7 @@ Generalizable All Variables.
 
  BACKGROUND.  Beyond its functoriality in the diagram at a fixed shape
  (Adjunction/Diagonal/Limit.v [LimitFunctor], issue #353), the limit
- is functorial in the SHAPE as well.  Mac Lane's "super-comma" category
+ is functorial in the SHAPE as well.  Mac Lane's “super-comma” category
  has as objects all diagrams (J, F : J ⟶ C) in a fixed target and as
  arrows (J', F') → (J, F) a functor W : J' ⟶ J together with a natural
  transformation F ◯ W ⟹ F'; over a complete target, lim is a functor from
@@ -50,31 +50,31 @@ Generalizable All Variables.
  audit compiled it), but limits are not functorial on it: with it both
  lim F' and lim F map INTO lim (F ◯ W), so there is no mediator in either
  variance.  An earlier revision of this paragraph said that direction
- "does not compose" and attributed it to the issue; both statements were
+ “does not compose” and attributed it to the issue; both statements were
  wrong.
 
  STALE PREMISES, RE-MEASURED.
- - "the limit functor at a fixed shape is #353's obligation": #353
+ - “the limit functor at a fixed shape is #353's obligation”: #353
  landed — Adjunction/Diagonal/Limit.v has [HasLimitsOfShape],
  [lim_obj], [Lim_map], [LimitFunctor], the adjunction
  with the diagonal and [ColimitFunctor]; the docs/INDEX.md bullet
- for that file already lists "no functoriality in J" as the
+ for that file already lists “no functoriality in J” as the
  remaining gap — this file.
- - "no category of diagrams, no super-comma, no Cat ↓": true as
+ - “no category of diagrams, no super-comma, no Cat ↓”: true as
  measured (0 hits for `Cat ↓` and `↓ Cat`; no category whose objects
  pair an index category with a diagram — Structure/AbCategory.v's
  [AbCatObj] is a sigma over [Category] of another kind), but of the
  issue's four prose citations only
  Instance/Fun/Topos.v and Structure/Cone/Const.v still carry
- the phrase "category of diagrams"; Theory/Adamek.v and
+ the phrase “category of diagrams”; Theory/Adamek.v and
  Structure/Complete.v no longer do.
  - The mediator half the issue does not name already exists:
  Theory/Equivalence/Colimit.v has [isalimit_cone], [cone_along]
  (needing only naturality), [limit_induced] with its laws, and
  the colimit duals — the object-level shadows of this
  functor.
- - "the comma-category form over Cat is the sub-case where the
- transformation is the identity": false on both halves — see (5).
+ - “the comma-category form over Cat is the sub-case where the
+ transformation is the identity”: false on both halves — see (5).
 
  WHAT IS DELIVERED (39 constants, every one closed under the global
  context).
@@ -123,8 +123,8 @@ Generalizable All Variables.
  [eq_refl].
  (5) THE COMMA FORM.  [CommaDiagrams C := Id[Cat] ↓ Δ(C)]
  (Construction/Comma.v; Functor/Diagonal.v's [Diagonal])
- elaborates, also at [Sets] and [Coq] (measured): "Comma is never
- instantiated with Cat" was a fact about the tree, not an
+ elaborates, also at [Sets] and [Coq] (measured): “Comma is never
+ instantiated with Cat” was a fact about the tree, not an
  obstruction.  Its square is a natural ISOMORPHISM (Cat's hom
  setoid), not required to be an identity — the comma form is the
  INVERTIBLE sub-case, not the identity one — and its hom setoid compares
@@ -163,7 +163,7 @@ Generalizable All Variables.
 
  COUNTS AND CONVENTIONS.
  - 39 constants (28 [def], 4 [prf], 1 [inst], 4 [proj], 2 [rec] in the
- [.glob]), all "Closed under the global context", zero [Axioms:]
+ [.glob]), all “Closed under the global context”, zero [Axioms:]
  lines, all gated fully qualified.  Two [Defined]
  ([comma_diagrams_arrow], for its [dW] readback; [fixed_hom], for
  [dlim_map_fixed]); thirteen [Qed].
@@ -184,7 +184,7 @@ Generalizable All Variables.
  ([Compose], [nat_id], [nat_compose], [Cocomplete] and
  [Complete_op_of_Cocomplete], each renamed throughout a copy) with
  every first break on a guard line.  [make todo] grows by
- those 7 lines only (2202 → 2209), so the issue's "adds no new hits"
+ those 7 lines only (2202 → 2209), so the issue's “adds no new hits”
  box is not met as written; disclosed.
 
  NOT DELIVERED.
@@ -217,7 +217,7 @@ Generalizable All Variables.
  Mac Lane 的箭头 (J', F') → (J, F) 携带 W : J' ⟶ J，并带有一个变换 F ◯ W ⟹ F'，下面的 [DHom] 是在该方向上陈述的：对于 X → Y，[dtau : ddiag Y ◯ dW ⟹ ddiag X]。同样，这也是 Construction/Comma.v 为 Id [Cat] ↓ Δ(C)（在 Cat 的同构集合 [F ◯ W ≈ Id ◯ F'] 中）生成的方向。反方向 F' ⟹ F ◯ W 也在相同的集合配方下形成一个范畴（汇编审计确认了），但是极限在其上不是函子化的：在它上面，lim F' 和 lim F 都映射到 lim (F ◯ W)，因此在任意变异下都没有中介。这个段落的早期修改版本说这个方向“不能组合”，并将其归因于该问题；这两个陈述都是错误的。陈旧的前提，重新测量。——“在固定形状下的极限函子是 #353 的义务”：#353 已经落地 — Adjunction/Diagonal/Limit.v 有 [HasLimitsOfShape]、[lim_obj]、[Lim_map]、[LimitFunctor]，与对角线的伴随以及 [ColimitFunctor]；该文件的 docs/INDEX.md 列表中已经列出“J 中没有函子性”作为剩余的空白 — 就是这个文件。- “没有图的类别，没有超级逗号，没有 Cat ↓”：根据测量为真（`Cat ↓` 和 `↓ Cat` 都未命中；没有类别，其对象将一个指数类别与一个图配对——Structure/AbCategory.v 的 [AbCatObj] 是另一个类型在 [Category] 上的 sigma），但该问题的四个文字引用中，仅 Instance/Fun/Topos.v 和 Structure/Cone/Const.v 仍然包含“diagram 类别”这一短语；Theory/Adamek.v 和 Structure/Complete.v 不再包含。- 本期中提到的一半中介者已经存在：Theory/Equivalence/Colimit.v 具有 [isalimit_cone]、[cone_along]（仅需要自然性）、[limit_induced] 及其定律，以及余极限的对偶——该函子在对象层面的影子。- “逗号类别形式在 Cat 上是变换为恒等的子情况”：两部分都是假的——见（5）。交付的内容是什么（39 个常量，每个在全局上下文下都是封闭的）。（1）图的范畴。[DObj C]（带有图的索引范畴），[DHom X Y]（一个形状函子 [dW] 与 [dtau : ddiag Y ◯ dW ⟹ ddiag X]），[DHom_equiv]：形状函子的一个逐点同构，满足 Cat 自身的 [Functor_Setoid] 子句（Theory/Functor.v；Instance/Cat.v），并且通过同构的像的一致性完成变换——依赖集等价的问题（τ 的类型随 W 移动）通过在像上声明 τ 子句而不是通过传输来解决。[Did] 和 [Dcomp] 是按组件构建的，因为 [◯] 既不是严格单位的，也不是严格结合的（探测 N1-N4）；[Dcomp_respects] 是 [naturality] 的一次使用；[图表 C：范畴]，所有四条定律都由 [iso_id] 证明。回读 [Diagrams_obj]、[Diagrams_hom] 于 [eq_refl]。（2）极限函子。在 [L : Complete C] 下：[dlim]，[dlim_is]，[dlim_cone f := cone_along (dtau f) (cone_reindex (dW f) (isalimit_cone (dlim_is Y)))], [dlim_map f := limit_med (dlim_is X) (dlim_cone f)] 与 [dlim_map_commutes] 和 [dlim_map_unique]，并且 [LimDiagrams : (Diagrams C)^op ⟶ C]。尊重性由以下关闭
  [limit_leg_coherence]：极限锥自身的相干性吸收了同构集的同构性，这就是为什么 Cat 风格的集是正确的，并且不需要任何 [StrictCat] 偏差（Instance/Cat/Limit.v）。Comparison.v 的 [reindex_comparison] 不是箭头部分：它针对重新索引图表单独提供的极限，并且需要第二个中介。(3) 在固定形状下，这是 #353。[fixed_hom b] 将一个变换 [b : F ⟹ G] 读取为箭头 (J, G) → (J, F) 与身份形状函子；[lim_obj_is_dlim] 在 [eq_refl] 和 [dlim_map_fixed : dlim_map L (fixed_hom b) ≈ Lim_map b]（Adjunction/Diagonal/Limit.v，在 [Complete_HasLimitsOfShape L J] 处）。(4) 余极限对偶。[Cocomplete C] 和 [Complete (C^op)] 不能相互转换（探针 N5），但可以相互推导，因为 [(F^op)^op] 通过转换是 [F]：Construction/Product/Limit.v 的 [Complete_op_of_Cocomplete] — 重用的，没有重新定义；该文件的早期版本以另一个名字重新定义过它，审计时被发现 — 以及新的 [cocomplete_of_complete_op]，在 [eq_refl] 处完成往返。然后 [ColimDiagrams (L : Cocomplete C) : Diagrams (C^op) ⟶ C := Opposite_Functor (LimDiagrams …)]，通读 [Opposite (Opposite C) = C]。[Diagrams (C^op)] 是协变余极限范畴：对象是 [F^op] 对于 [F : K^op ⟶ C]，而箭头 X → Y 是 [dW : didx X ⟶ didx Y] 且 [F_X ⟹ F_Y ◯ dW^op] 属于 C。回读 [ColimDiagrams_fobj]，[dcolim_is_colimit_apex] 在 [eq_refl] 处。（5）逗号形式。[CommaDiagrams C := Id[Cat]  ↓ Δ(C)]
  （Construction/Comma.v；Functor/Diagonal.v 的  [Diagonal] ）
- 还在  [Sets] 和  [Coq]（测量过）："Comma 从不以 Cat 实例化" 是关于树的事实，而不是障碍。它的平方是一个自然同构（Cat 的同态集合），不要求是恒等——逗号形式是可逆子情况，而不是恒等情况——并且它的同态集合只比较函子分量（ [CommaDiagrams_equiv] 在  [eq_refl]；Comma.v），所以这个平方被忽略。[comma_diagrams_obj] 和 [comma_diagrams_arrow] 将每个逗号箭头读作 [Diagrams] 箭头（[dW] 在 [eq_refl]）——仅作为函数：探针在 [CommaDiagrams Sets] 的反模型（[p420_f_id ≈ p420_f_negb]，方块 [id] 和 [negb]，以及 [p420_no_respectful_arrow_part]）显示，没有任何 [Proper] 箭头分配能够同时返回方块的组成部分，因此规范箭头部分——方块确定的中介——不被尊重，并且逗号形式无法承载它；具有某些其他箭头部分的函子也不被排除。宇宙（由 [About] 在 [Set Printing Universes] 下测量，应用于所有 39 个常数）。- 在任何区块中没有词边界的 [Set]；在任何地方没有 [JMeq]、[EqdepFacts] 或 [eq_rect_r] 大写（来自逗号的产品类别的 [prod_rect] 大写出现）。- [Diagrams@{u u0 u1 u2 u3 u4} : Category@{u2 u4 u4} → Category@{u u0 u0}] 与 [u3 < u]、[u4 < u]、[u3 <= u0]、[u4 <= u0]：对象宇宙严格位于索引类别的对象层次 [u3] 和同态层次 [u4] 之上，正好是 [Cat] 的形状，并且目标的同态层次就是索引类别的同态层次（[Category@{u2 u4 u4}]）。没有进行注释。- [LimDiagrams@{u u0 u1 u2 u3 u4}] 在 [C : Category@{u u0 u0}] 上方承载 [u2 <= u0]：索引类别的对象层次位于目标的同态层次之下或相等——这个小性条件，从 [Complete] 的量化（Structure/Complete.v）中自行得出。- [dlim_map_fixed] 和 [lim_obj_is_dlim] 携带 [u0 = u3] 和 [u1 = u4]：[Complete] 的索引级别与固定形状的索引相对应，[HasLimitsOfShape] 进行识别；[fixed_hom]，其类型未提及 [Complete]，仅携带 [u1 = u4]。- [DHom] 携带 [u2 < u0]；[DObj] 不携带任何约束。计数与约定。- 39 个常量（28 个 [def]，4 个 [prf]，1 个 [inst]，4 个 [proj]，2 个 [rec] 在 [.glob] 中），全部“在全局上下文下封闭”，零条 [Axioms:] 行，全部为完全限定的门控。两个 [Defined]（[comma_diagrams_arrow]，用于其 [dW] 回读；[fixed_hom]，用于 [dlim_map_fixed]）；十三个 [Qed]。- 封闭 78 个文件（不包括自身）：Adjunction/Diagonal/Limit.v 在边缘成本为 26（(3) 的 #353 桥），Theory/Equivalence/Colimit.v 6，Structure/Limit/Comparison.v 5，Construction/Product/Limit.v 4（重复使用的桥），其他十五个 [Require] 为 0。- Test/ProbeDiagrams420.v 对应 [Require] 列表（加上计数模型的 Instance/Sets.v），并包含 7 条反驳命令（1 条仪器命令 + 6 条两种类型的负命令：三条转换命令，三条类型命令），每次在整个文件的副本中逐一去掉一条；已编译的计数模型；在 [eq_refl] 处的回读；反驳命令中有 37 个标识符标记被保护/其中 27 个在外部也被命名，注释已去掉，并有十个详尽的例外（关键字、两个束缚名、被反驳声明将引入的六个名字、缺失的名字）；重命名模拟 5/5（[Compose]、[nat_id]、[nat_compose]、[Cocomplete] 和 [Complete_op_of_Cocomplete]，每个副本中全部进行重命名）并在每个保护行上首次断开。[make todo] 只增长这 7 行（2202 → 2209），所以问题的“没有新增命中”框按原文未满足；已披露。未交付。- §IX.7 练习 3 增量——通过将极限表示为端 (end) 的极限的函子性以及端的函子性：一般形式中该树两者都没有。Structure/End.v 只包含 [Class End] 和 [Coend]；没有极限作为端的声明，并且树中 (co)end 的唯一函子性是 Theory/Coend/Fubini.v 的 [Inner]，这是一个具体的 coend 函子到 Sets，而不是命题 IX.7.1（可在 Structure/End.v、Structure/Wedge.v 和 Theory/Coend 目录中 grep）。- 逗号形式上的极限函子：其规范箭头部分被反例模型推翻；未尝试其他箭头部分。在 [CommaDiagrams C] 和 [Diagrams C] 之间没有任何函子（方向任意）（[comma_diagrams_arrow] 是箭头上的函数，而不是集合态态射）。- 对偶余极限在 [Diagrams (C^op)] 上陈述，而不是在单独构建的具有 [F' ⟹ F ◯ W] 箭头的 C-图协变范畴上；两者在 [K ↦ K^op] 形状上是一致的，但未建立它们之间的等价性。- 在固定的 [W] 上，更明确的自然变换形式 [LimitFunctor_J ⟹ LimitFunctor_J' ◯ Induced W]（Theory/Kan/Extension.v）未被陈述。- 在目标上的 [Diagrams] 的函子性，以及 [dlim_map_fixed] 针对 [Colim_map] 的任意余极限侧对应项。
+ 还在  [Sets] 和  [Coq]（测量过）：“Comma 从不以 Cat 实例化” 是关于树的事实，而不是障碍。它的平方是一个自然同构（Cat 的同态集合），不要求是恒等——逗号形式是可逆子情况，而不是恒等情况——并且它的同态集合只比较函子分量（ [CommaDiagrams_equiv] 在  [eq_refl]；Comma.v），所以这个平方被忽略。[comma_diagrams_obj] 和 [comma_diagrams_arrow] 将每个逗号箭头读作 [Diagrams] 箭头（[dW] 在 [eq_refl]）——仅作为函数：探针在 [CommaDiagrams Sets] 的反模型（[p420_f_id ≈ p420_f_negb]，方块 [id] 和 [negb]，以及 [p420_no_respectful_arrow_part]）显示，没有任何 [Proper] 箭头分配能够同时返回方块的组成部分，因此规范箭头部分——方块确定的中介——不被尊重，并且逗号形式无法承载它；具有某些其他箭头部分的函子也不被排除。宇宙（由 [About] 在 [Set Printing Universes] 下测量，应用于所有 39 个常数）。- 在任何区块中没有词边界的 [Set]；在任何地方没有 [JMeq]、[EqdepFacts] 或 [eq_rect_r] 大写（来自逗号的产品类别的 [prod_rect] 大写出现）。- [Diagrams@{u u0 u1 u2 u3 u4} : Category@{u2 u4 u4} → Category@{u u0 u0}] 与 [u3 < u]、[u4 < u]、[u3 <= u0]、[u4 <= u0]：对象宇宙严格位于索引类别的对象层次 [u3] 和同态层次 [u4] 之上，正好是 [Cat] 的形状，并且目标的同态层次就是索引类别的同态层次（[Category@{u2 u4 u4}]）。没有进行注释。- [LimDiagrams@{u u0 u1 u2 u3 u4}] 在 [C : Category@{u u0 u0}] 上方承载 [u2 <= u0]：索引类别的对象层次位于目标的同态层次之下或相等——这个小性条件，从 [Complete] 的量化（Structure/Complete.v）中自行得出。- [dlim_map_fixed] 和 [lim_obj_is_dlim] 携带 [u0 = u3] 和 [u1 = u4]：[Complete] 的索引级别与固定形状的索引相对应，[HasLimitsOfShape] 进行识别；[fixed_hom]，其类型未提及 [Complete]，仅携带 [u1 = u4]。- [DHom] 携带 [u2 < u0]；[DObj] 不携带任何约束。计数与约定。- 39 个常量（28 个 [def]，4 个 [prf]，1 个 [inst]，4 个 [proj]，2 个 [rec] 在 [.glob] 中），全部“在全局上下文下封闭”，零条 [Axioms:] 行，全部为完全限定的门控。两个 [Defined]（[comma_diagrams_arrow]，用于其 [dW] 回读；[fixed_hom]，用于 [dlim_map_fixed]）；十三个 [Qed]。- 封闭 78 个文件（不包括自身）：Adjunction/Diagonal/Limit.v 在边缘成本为 26（(3) 的 #353 桥），Theory/Equivalence/Colimit.v 6，Structure/Limit/Comparison.v 5，Construction/Product/Limit.v 4（重复使用的桥），其他十五个 [Require] 为 0。- Test/ProbeDiagrams420.v 对应 [Require] 列表（加上计数模型的 Instance/Sets.v），并包含 7 条反驳命令（1 条仪器命令 + 6 条两种类型的负命令：三条转换命令，三条类型命令），每次在整个文件的副本中逐一去掉一条；已编译的计数模型；在 [eq_refl] 处的回读；反驳命令中有 37 个标识符标记被保护/其中 27 个在外部也被命名，注释已去掉，并有十个详尽的例外（关键字、两个束缚名、被反驳声明将引入的六个名字、缺失的名字）；重命名模拟 5/5（[Compose]、[nat_id]、[nat_compose]、[Cocomplete] 和 [Complete_op_of_Cocomplete]，每个副本中全部进行重命名）并在每个保护行上首次断开。[make todo] 只增长这 7 行（2202 → 2209），所以问题的“没有新增命中”框按原文未满足；已披露。未交付。- §IX.7 练习 3 增量——通过将极限表示为端 (end) 的极限的函子性以及端的函子性：一般形式中该树两者都没有。Structure/End.v 只包含 [Class End] 和 [Coend]；没有极限作为端的声明，并且树中 (co)end 的唯一函子性是 Theory/Coend/Fubini.v 的 [Inner]，这是一个具体的 coend 函子到 Sets，而不是命题 IX.7.1（可在 Structure/End.v、Structure/Wedge.v 和 Theory/Coend 目录中 grep）。- 逗号形式上的极限函子：其规范箭头部分被反例模型推翻；未尝试其他箭头部分。在 [CommaDiagrams C] 和 [Diagrams C] 之间没有任何函子（方向任意）（[comma_diagrams_arrow] 是箭头上的函数，而不是集合态态射）。- 对偶余极限在 [Diagrams (C^op)] 上陈述，而不是在单独构建的具有 [F' ⟹ F ◯ W] 箭头的 C-图协变范畴上；两者在 [K ↦ K^op] 形状上是一致的，但未建立它们之间的等价性。- 在固定的 [W] 上，更明确的自然变换形式 [LimitFunctor_J ⟹ LimitFunctor_J' ◯ Induced W]（Theory/Kan/Extension.v）未被陈述。- 在目标上的 [Diagrams] 的函子性，以及 [dlim_map_fixed] 针对 [Colim_map] 的任意余极限侧对应项。
 *)
 
 (* * ** The category of all diagrams in a fixed target / * ** 在固定目标中的所有图的范畴 *)
@@ -563,8 +563,8 @@ Example dcolim_is_colimit_apex {C : Category} (L : @Cocomplete C)
 (* * ** The comma form over Cat, and why it cannot carry the arrow part / * ** 关于逗号形式在猫上的表现，以及为什么它不能承载箭头部分 *)
 
 (*
- The issue names the comma category [Id[Cat] ↓ Δ(C)] as "the sub-case where
- the transformation is the identity".  Its objects are the same pairs; its
+ The issue names the comma category [Id[Cat] ↓ Δ(C)] as “the sub-case where
+ the transformation is the identity”.  Its objects are the same pairs; its
  arrows pair a shape functor with a commuting square, which in Cat's hom
  setoid is a natural ISOMORPHISM [F' ◯ W ≅ F], never an identity; and its
  hom setoid compares the functor components only (Construction/Comma.v's

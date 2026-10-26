@@ -117,14 +117,14 @@ Arguments sum_setoid A B {_ _}.
 
 (*
  The categorical product in PAR is NOT the set product [x * y] but the
- "classical product" A & B := A + B + (A × B): a partial pair records that
+ “classical product” A & B := A + B + (A × B): a partial pair records that
  only the left component is defined, only the right is, both are, or neither
  (the latter being [None]). This is forced because a partial map into a
  product must be allowed to converge on one projection while diverging on
  the other. PAR, being the Kleisli category of the maybe monad on Set, is a
  classical distributive restriction category, and there A + B + (A × B) is a
- genuine categorical product (Cockett & Lemay, "Classical Distributive
- Restriction Categories", TAC 42 (2024) No. 6,
+ genuine categorical product (Cockett & Lemay, “Classical Distributive
+ Restriction Categories”, TAC 42 (2024) No. 6,
  https://arxiv.org/abs/2305.16524). 
 
  --------

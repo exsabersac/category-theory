@@ -8,7 +8,7 @@ Generalizable All Variables.
 
 (*
  A span in C is a diagram of shape `x ← s → y`: two morphisms sharing a
- common domain (the apex, or "roof") s. Equivalently, it is a functor from
+ common domain (the apex, or “roof”) s. Equivalently, it is a functor from
  the shape category Roof = (RNeg ← RZero → RPos) into C, so that a span is
  just an element of [Roof ⟶ C]. A span generalizes a morphism: there is no
  longer any asymmetry between source and target.

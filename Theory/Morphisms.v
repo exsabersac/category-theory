@@ -386,18 +386,18 @@ Qed.
 (** ** Split pairs and the idempotents they produce / ** 分裂对及它们产生的幂等元 *)
 
 (*
-Mac Lane, CWM 2nd ed., §I.5 ("Monics, Epis, and Zeros"), printed p. 19.
+Mac Lane, CWM 2nd ed., §I.5 (“Monics, Epis, and Zeros”), printed p. 19.
    CITED BY LOCATION; the printed text was not consulted and no sentence of
    it is reproduced here.  The in-tree catalog entry indexes the item as
-   [maclane:I.5:def5] and summarizes it as: "When g h = 1_a, g is called a
-   split epi, h a split monic, and the composite f = h g is an idempotent"
+   [maclane:I.5:def5] and summarizes it as: “When g h = 1_a, g is called a
+   split epi, h a split monic, and the composite f = h g is an idempotent”
    (doc/plan/books/maclane/inventory/I.json, id maclane:I.5:def5) -- the
    letter names of the lemma below are that summary's.
    nLab: https://ncatlab.org/nlab/show/split+epimorphism
    nLab: https://ncatlab.org/nlab/show/idempotent
 
    The nLab page on split epimorphisms records the same fact in the form
-   "the pair (e,s) is a splitting of the idempotent s∘e : A→A" (retrieved
+   “the pair (e,s) is a splitting of the idempotent s∘e : A→A” (retrieved
    2026-08).
 
    Half of a one-sided inverse pair is an idempotent.  If g ∘ h ≈ id then the
@@ -482,10 +482,10 @@ Qed.
 (*
 Mac Lane, CWM 2nd ed., §I.5 Exercise 7, printed p. 21 -- again CITED BY
    LOCATION, not quoted; the printed text was not consulted.  The in-tree
-   catalog summarizes the exercise as: "Call an arrow f : a -> b in a
+   catalog summarizes the exercise as: “Call an arrow f : a -> b in a
    category C regular when there exists g : b -> a with f g f = f.  Show f is
    regular whenever it has either a left or a right inverse, and prove that
-   in Set every arrow f : a -> b with a nonempty is regular"
+   in Set every arrow f : a -> b with a nonempty is regular”
    (doc/plan/books/maclane/inventory/I.json, id maclane:I.5:ex7).
    Wikipedia: https://en.wikipedia.org/wiki/Regular_semigroup
    Wikipedia: https://en.wikipedia.org/wiki/Von_Neumann_regular_ring
@@ -493,15 +493,15 @@ Mac Lane, CWM 2nd ed., §I.5 Exercise 7, printed p. 21 -- again CITED BY
    An arrow f is REGULAR when some g runs backwards along it well enough to
    reproduce f, i.e. f ∘ g ∘ f ≈ f.  The equation is von Neumann's, from
    ring theory: a ring is regular when for every a there is an x with
-   a = a x a (von Neumann, "On Regular Rings", Proc. Natl. Acad. Sci. USA
+   a = a x a (von Neumann, “On Regular Rings”, Proc. Natl. Acad. Sci. USA
    22(12), 1936, pp. 707-713), and modern usage says VON NEUMANN REGULAR to
    keep the notion apart from the unrelated regular rings of commutative
-   algebra (Wikipedia, "Von Neumann regular ring", retrieved 2026-08).  The
+   algebra (Wikipedia, “Von Neumann regular ring”, retrieved 2026-08).  The
    semigroup version -- an element a with a x a = a -- was adapted from that
-   ring condition and introduced by J. A. Green, "On the structure of
-   semigroups" (1951), at David Rees's suggestion (Wikipedia, "Regular
-   semigroup", retrieved 2026-08).  The two articles name the witness x
-   differently: "weak inverse" for rings, "pseudoinverse" for semigroups.
+   ring condition and introduced by J. A. Green, “On the structure of
+   semigroups” (1951), at David Rees's suggestion (Wikipedia, “Regular
+   semigroup”, retrieved 2026-08).  The two articles name the witness x
+   differently: “weak inverse” for rings, “pseudoinverse” for semigroups.
    Neither calls it a quasi-inverse, so PSEUDOINVERSE is the word used
    throughout this development.
 
@@ -578,8 +578,8 @@ Defined.
 Both composites built from a pseudoinverse are idempotent:
      (f ∘ g) ∘ (f ∘ g) ≈ ((f ∘ g) ∘ f) ∘ g ≈ f ∘ g,
      (g ∘ f) ∘ (g ∘ f) ≈ g ∘ ((f ∘ g) ∘ f) ≈ g ∘ f.
-   Proved here from the regularity law alone.  (The Wikipedia "Regular
-   semigroup" article states the corresponding semigroup fact for a PROPER
+   Proved here from the regularity law alone.  (The Wikipedia “Regular
+   semigroup” article states the corresponding semigroup fact for a PROPER
    inverse b -- one satisfying both a b a = a and b a b = b -- rather than
    for an arbitrary pseudoinverse; the computation above shows the weaker
    hypothesis already suffices, so no claim is being borrowed here.)
@@ -607,8 +607,8 @@ Under a cancellation hypothesis the converses hold.  These two lemmas are
    Instance/Sets/Regular.v precise rather than hand-waved:
    [regular_epic_retraction], quantified over the arrows of [Sets], IS the
    implication [blanket_regularity_entails_splitting] from the blanket
-   principle "every arrow with inhabited domain is regular" to "every such
-   epimorphism splits", and over [Sets] the latter already decides every
+   principle “every arrow with inhabited domain is regular” to “every such
+   epimorphism splits”, and over [Sets] the latter already decides every
    proposition ([blanket_splitting_entails_LEM]).  A regular EPI splits:
    cancel f on the right of (f ∘ g) ∘ f ≈ id ∘ f.
 

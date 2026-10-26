@@ -81,24 +81,24 @@ Generalizable All Variables.
  ([cone_apex_iso_leg_cone], [cone_apex_iso_leg_family]).
 
  THE APEXES THEMSELVES ARE NOT EQUAL, and the two strict attempts are
- refused: at the object level with "cannot unify" (a CONVERSION refusal),
+ refused: at the object level with “cannot unify” (a CONVERSION refusal),
  because one is a sigma of a dependent function with a compatibility
  witness and the other an [ACone] record.  There is no [≈] grade to fall
  back to either -- objects of [Sets] carry no setoid, so the attempt is a
- RESOLUTION refusal ("Cannot infer the implicit parameter Setoid").  Both
+ RESOLUTION refusal (“Cannot infer the implicit parameter Setoid”).  Both
  are pinned in Test/ProbeConeSets407.v; note that a bare [Check] of the
  second is ACCEPTED, printing an open evar, so the refutation command must
  be a [Definition].
 
  THE REMARK, DISPLAY (3)
 
- "The crux of this proof is the (natural) bijection
+ “The crux of this proof is the (natural) bijection
 
  Cone (X, F) ~= Set (X, Cone ( *, F))                       (3)
 
- given by tau |--> h, as above."
+ given by tau |--> h, as above.”
 
- The parenthesis around "natural" is the book's, and the book does NOT
+ The parenthesis around “natural” is the book's, and the book does NOT
  prove it -- that is this issue's work item 4, first half, and it is
  proved here.  [ConeSet_Natural_Iso] is a genuine isomorphism in the
  functor category [[Sets^op, Sets]] between [ConePresheaf F] -- the left
@@ -112,8 +112,8 @@ Generalizable All Variables.
  THE ADJUNCTION, AND WHICH ORACLE YOU FEED IT
 
  Mac Lane rewrites (3) as [Nat (Delta X, F) ~= Set (X, Cone ( *, F))] and
- says "By the very definition of limit, this proves that Lim F ~= Cone
- ( *, F)".  In tree the adjunction is #353's [Diagonal_Limit_Adjunction],
+ says “By the very definition of limit, this proves that Lim F ~= Cone
+ ( *, F)”.  In tree the adjunction is #353's [Diagonal_Limit_Adjunction],
  which takes a [HasLimitsOfShape] as a parameter -- a CHOICE of limits --
  and the identification depends on WHICH choice.
 
@@ -131,7 +131,7 @@ Generalizable All Variables.
  [Sets_Complete], the compatible-family oracle -- it is not, and not even
  at the same TYPE: ascribing that adjunction's transposition at the
  cone-set codomain is a plain has-type mismatch (a TYPING refusal, no
- "cannot unify" and no universe clause).  That refusal is pinned in the
+ “cannot unify” and no universe clause).  That refusal is pinned in the
  probe with the cone-set form beside it as the discriminating control.
  The bridge between the two readings is [cone_apex_iso].
 
@@ -166,7 +166,7 @@ Generalizable All Variables.
  [Sets_HasEqualizers] (Adjunction/GAFT/Sets.v), [SetsEqualizers]
  (Adjunction/CokernelPair.v) and [DiagSets_HasEqualizers]
  (Adjunction/Diagonal/Finite.v) -- so no fourth is added here, and
- the issue's checkbox asking for the class "delivered by name" is already
+ the issue's checkbox asking for the class “delivered by name” is already
  met by the first of those.  What is delivered instead is what was
  missing: the CONCRETE presentation and the measured relation to it.
 
@@ -219,8 +219,8 @@ Generalizable All Variables.
  flagged at its site as needing a workaround, so neither is an evident
  map.  An earlier revision called this the only new proof content.
 
- STRONGER THAN THE BOOK, AND THE FILE SAYS SO: the book says "finite
- graph"; [G] here is an ARBITRARY [Quiver], with no finiteness, no
+ STRONGER THAN THE BOOK, AND THE FILE SAYS SO: the book says “finite
+ graph”; [G] here is an ARBITRARY [Quiver], with no finiteness, no
  decidable equality on nodes or edges, and no node-UIP anywhere.  Read the
  [About] of [tuple_iso] for the absence of any such hypothesis.
 
@@ -251,8 +251,8 @@ Generalizable All Variables.
  field -- [pres_fobj_strict], [pres_compat_strict], [pres_carrier_strict]
  -- are in THIS file, at the end of the section, not in the probe.
 
- WHAT THIS SECTION DOES *NOT* SAY: it is "the limit of a diagram over the
- quotient is the limit of its restriction", which is the checkbox's own
+ WHAT THIS SECTION DOES *NOT* SAY: it is “the limit of a diagram over the
+ quotient is the limit of its restriction”, which is the checkbox's own
  phrasing.  It does not by itself say the limit is computed from the
  generating edges -- that is the tuple form above.  The two are not
  composed here; composing them would need
@@ -265,8 +265,8 @@ Generalizable All Variables.
  [Adjunction/GAFT/Sets] 2, [Structure/Limit/Unique] 1, every other
  [Require] 0.  Nothing depends on this file, so that cost lands on no one.
 
- STATUS: axiom-free.  [Print Assumptions] reports "Closed under the global
- context" for every constant below; the Makefile's [print-assumptions]
+ STATUS: axiom-free.  [Print Assumptions] reports “Closed under the global
+ context” for every constant below; the Makefile's [print-assumptions]
  target audits them by fully qualified name. 
 
  --------
@@ -354,9 +354,9 @@ Example cone_apex_iso_to_is_med :
 End Compare.
 
 (*
- MAC LANE'S DISCRETE SENTENCE, AT THE CONE SET ITSELF.  "If J is
+ MAC LANE'S DISCRETE SENTENCE, AT THE CONE SET ITSELF.  “If J is
  discrete, the set Cone( *, F) of J-cones is just the cartesian product
- Pi_j F_j" -- the object the sentence NAMES is the cone set, and
+ Pi_j F_j” -- the object the sentence NAMES is the cone set, and
  Instance/Sets/Complete.v's [discrete_iprod_iso] states it of the
  compatible-family apex.  One [iso_compose] carries it across, which is
  what makes the quoted sentence a theorem about its own subject rather
@@ -364,7 +364,7 @@ End Compare.
  [discrete_iprod_iso]; see that file's universe note. 
 
  --------
- 麦克莱恩的离散句子位于圆锥集合本身。"如果 J 是离散的，J-圆锥的集合 Cone( *, F) 就是笛卡尔积 Pi_j F_j"——句子所命名的对象是圆锥集合，Instance/Sets/Complete.v 中的 [discrete_iprod_iso] 将其应用于兼容族的顶点。一个 [iso_compose] 将其传递，这正是使引用的句子成为关于其自身主题的定理，而不是关于另一个神谕。[{A : Set}] 是从 [discrete_iprod_iso] 继承的；参见该文件的宇宙注释。
+ 麦克莱恩的离散句子位于圆锥集合本身。“如果 J 是离散的，J-圆锥的集合 Cone( *, F) 就是笛卡尔积 Pi_j F_j”——句子所命名的对象是圆锥集合，Instance/Sets/Complete.v 中的 [discrete_iprod_iso] 将其应用于兼容族的顶点。一个 [iso_compose] 将其传递，这正是使引用的句子成为关于其自身主题的定理，而不是关于另一个神谕。[{A : Set}] 是从 [discrete_iprod_iso] 继承的；参见该文件的宇宙注释。
 *)
 Definition cone_apex_discrete_iprod_iso {A : Set} (f : A -> obj[Sets]) :
   cone_apex (DiscreteCat_Functor f) ≅[Sets] Sets_iprod_obj f :=
@@ -434,7 +434,7 @@ Program Definition cone_hom_iso (X : obj[Sets]) :
 Next Obligation. intros X; exact (cone_untranspose_round X). Qed.
 Next Obligation. intros X; exact (cone_transpose_round X). Qed.
 
-(* The book's parenthetical "(natural)", proved. Both directions. / 这本书的括号“（自然）”，被证明了。两种方向。 *)
+(* The book's parenthetical “(natural)”, proved. Both directions. / 这本书的括号“（自然）”，被证明了。两种方向。 *)
 Lemma cone_transpose_natural (X Y : obj[Sets]) (g : X ~{Sets^op}~> Y) :
   fmap[Curried_CoHom Sets (cone_apex F)] g ∘ cone_transpose X
     ≈ cone_transpose Y ∘ fmap[ConePresheaf F] g.
@@ -578,7 +578,7 @@ Program Definition sets_eq_desc {Z : SetoidObject} (h : Z ~{Sets}~> X)
 |}.
 Next Obligation. intros Z h Hh z z' Hz; simpl; now rewrite Hz. Qed.
 
-(* "with unique factorization because the inclusion is monic". / 因为包含是首一的，所以具有唯一分解性。 *)
+(* “with unique factorization because the inclusion is monic”. / 因为包含是首一的，所以具有唯一分解性。 *)
 Program Definition sets_IsEqualizer :
   IsEqualizer f g sets_eq_obj sets_eq_incl := {|
   fork_eq := _;
@@ -714,7 +714,7 @@ Program Definition tuple_iso :
 Next Obligation. intros p i; reflexivity. Qed.
 Next Obligation. intros p i; reflexivity. Qed.
 
-(* "with the coordinate projections as the legs". / “以坐标投影作为边” *)
+(* “with the coordinate projections as the legs”. / “以坐标投影作为边” *)
 Program Definition tuple_proj (i : G) : tuple_obj ~{Sets}~> D i := {|
   morphism := fun p => `1 p i
 |}.

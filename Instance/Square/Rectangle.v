@@ -44,7 +44,7 @@ Generalizable All Variables.
    [Instance/Ordinal.v]'s [_3], with its thinness; (2) the named
    generating arrows and, from any [F : Rect ⟶ C], the six objects and
    seven arrows of the rectangle together with the LEFT square, the
-   RIGHT square, the OUTER rectangle and the two "short diagonals" —
+   RIGHT square, the OUTER rectangle and the two “short diagonals” —
    every one of them an equation [F] satisfies, not a hypothesis;
    (3) the pasting principle as a free-standing categorical lemma
    ([paste_squares]) and the observation that in a diagram of this
@@ -68,8 +68,8 @@ Generalizable All Variables.
    [Construction/Cylinder.v]'s [Cyl_functor] turns a natural
    transformation between two such into a functor on the cylinder
    [_3 ∏ _2], and [Construction/Product.v]'s [Swap] reorders the
-   factors.  So the rectangle is assembled as "a natural
-   transformation between two composable pairs", which is what Riehl's
+   factors.  So the rectangle is assembled as “a natural
+   transformation between two composable pairs”, which is what Riehl's
    example says it is.  The one piece the tree lacked is the
    naturality criterion for a PLAIN family of components (as against
    [Instance/Ordinal.v]'s [ord_naturality_from_steps], which is stated
@@ -142,7 +142,7 @@ Definition rect_vert (j : Ord_obj 3) : (TwoX, j) ~{Rect}~> (TwoY, j) :=
 (*
    * ** Pasting, as a free-standing principle
 
-   Riehl's "two commuting squares paste to one", with no shape
+   Riehl's “two commuting squares paste to one”, with no shape
    category in sight: it is three rewrites. 
 
    --------
@@ -197,7 +197,7 @@ Definition rect_q : rect_X1 ~> rect_Y1 := fmap[F] (rect_vert ord3_1).
 Definition rect_r : rect_X2 ~> rect_Y2 := fmap[F] (rect_vert ord3_2).
 
 (*
-   * The three "diagonal" arrows: the long one across the whole
+   * The three “diagonal” arrows: the long one across the whole
    rectangle, and the two short ones, one per square.  Each is the
    image of a genuine arrow of the shape — which is why their
    well-definedness IS the rectangle's commutativity. 
@@ -328,7 +328,7 @@ End Diagram.
    conclusion for an arbitrary family of morphisms; that is what a
    natural transformation out of an ordinal needs, and it is what the
    rectangle's converse consumes.  The donor is recovered as an
-   instance below, so the claim "the same induction" is checked rather
+   instance below, so the claim “the same induction” is checked rather
    than asserted. 
 
    --------

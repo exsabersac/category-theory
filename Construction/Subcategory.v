@@ -120,7 +120,7 @@ Program Instance Incl : Sub ⟶ C := {
 (*
  The inclusion is faithful, for every [S] whatsoever.
 
- Book: Riehl, "Category Theory in Context", Dover 2016, §1.5, Remark 1.5.8,
+ Book: Riehl, “Category Theory in Context”, Dover 2016, §1.5, Remark 1.5.8,
  printed p. 33
 
  This lemma is as shallow as it looks, and it is worth saying so plainly
@@ -262,7 +262,7 @@ Definition ShomRespects : Type :=
 
 (*
  The converse of [Full_Implies_Full_Functor] under that hypothesis, which
- with it completes the "full subcategory iff full inclusion" biconditional.
+ with it completes the “full subcategory iff full inclusion” biconditional.
  Only the hypothesis's transport along ≈ is used; the two directions are
  otherwise independent.
 

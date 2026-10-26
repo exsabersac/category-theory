@@ -31,29 +31,29 @@ Generalizable All Variables.
 (** * The p-adic solenoid / * p进数螺旋体 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.1, book p. 111 (PDF p. 120), read from the page image (catalog id
  maclane:V.1:construction3):
- "Again, in Top, take each object F_n to be a circle S^1, and each
+ “Again, in Top, take each object F_n to be a circle S^1, and each
  arrow f_n : S^1 → S^1 to be the continuous map wrapping the domain
  circle S^1 uniformly p times around the codomain circle.  The
  inverse limit set L then becomes a topological space when we
  introduce just those open sets in L necessary to make all the
  functions μ_n : L → S^1 continuous.  This L is the limit space in
- Top; it is known as the p-adic solenoid."
- Riehl, "Category Theory in Context", §3.6, Example 3.6.3, printed
+ Top; it is known as the p-adic solenoid.”
+ Riehl, “Category Theory in Context”, §3.6, Example 3.6.3, printed
  p. 116 (PDF p. 136), read from the page image (catalog id
  riehl:3.6:example3):
- "Any limit or colimit in Top can be constructed in the way
+ “Any limit or colimit in Top can be constructed in the way
  prescribed in the proof of Proposition 3.6.2: by forming the limit
  or colimit of the diagram of underlying sets and then topologizing
  the resulting space with the coarsest (in the case of limits) or
  finest (in the case of colimits) topologies so that the legs of the
  limit or colimit cones are continuous.  For instance, consider the
  diagram ω^op → Top whose objects are circles S^1 and in which each
- generating map is the "pth power map," the covering map that wraps
+ generating map is the ”pth power map,“ the covering map that wraps
  the domain circle uniformly p times around the codomain circle:
- ... The inverse limit defines the p-adic solenoid."
+ ... The inverse limit defines the p-adic solenoid.”
  nLab: https://ncatlab.org/nlab/show/solenoid
  nLab: https://ncatlab.org/nlab/show/initial+topology
  Wikipedia: https://en.wikipedia.org/wiki/Solenoid_(mathematics)
@@ -68,9 +68,9 @@ Generalizable All Variables.
  systems (Wikipedia); in shape theory nLab records the solenoids as
  examples of non-stable spaces.  For both books the solenoid is an
  example of another kind: a limit of spaces whose topology is not
- given but forced, Mac Lane's "just those open sets in L necessary",
- Riehl's "coarsest ... topologies so that the legs ... are
- continuous", the initial topology of nLab's page.  In the tree its
+ given but forced, Mac Lane's “just those open sets in L necessary”,
+ Riehl's “coarsest ... topologies so that the legs ... are
+ continuous”, the initial topology of nLab's page.  In the tree its
  points are #408's matching strings (Instance/Sets/InverseLimit.v's
  [inverse_limit]), the recipe is #458's (Instance/Top/Complete.v's
  [PTop_Limit_lift]), the circle and its p-fold map are
@@ -78,15 +78,15 @@ Generalizable All Variables.
  Lane's page, the p-adic integers as the limit of the rings Z/p^nZ, is
  Instance/Rng/Zp.v's [Zp_limit].
 
- THE ISSUE'S SURVEY IS STALE, re-measured on this tree.  "There is no
- category of topological spaces in the tree" is false:
+ THE ISSUE'S SURVEY IS STALE, re-measured on this tree.  “There is no
+ category of topological spaces in the tree” is false:
  Instance/Top.v's [Top] (#259) and Instance/Top/Prop.v's [PTopCat].
- "rg -i 'coarsest|initial topology' ... return nothing usable" is
+ “rg -i 'coarsest|initial topology' ... return nothing usable” is
  false: Instance/Top/Complete.v's [PInit], [pinit_universal] and
  [pinit_weakest] are the initial topology and its universal property.
  The dependencies #408 and #458 have landed.  The appended Riehl item
- describes Riehl's presentation as "a diagram of covering maps rather
- than as a limit of the p-adic groups"; the page quoted above presents
+ describes Riehl's presentation as “a diagram of covering maps rather
+ than as a limit of the p-adic groups”; the page quoted above presents
  Mac Lane's solenoid as a limit of circles, the p-adic integers being
  the separate example that precedes it.  That phrase is the issue
  text's own: both books give the one diagram built here.
@@ -111,7 +111,7 @@ Generalizable All Variables.
  [Context (F : Omega^op ⟶ Sets)] ([u0 < u1] and [Sets]' caps), and a
  statement with a closed universe list cannot bind them: the readback
  of [CircleTower_step] through [tower_step] under the closed list
- [@{s h o | o < h}] is refused, "Universes ... are unbound"
+ [@{s h o | o < h}] is refused, “Universes ... are unbound”
  (Test/ProbeSolenoid410.v's N6), and accepted with an extensible list
  (its [p410_tower_step]).
 
@@ -130,8 +130,8 @@ Generalizable All Variables.
  [Type@{max(o+1,...)}], and o+1 is the universe of T's type).  The
  second says every point of V has a factor, an open of that factor
  around its image, and the whole preimage of that open inside V; it
- quantifies over the opens of the factors.  Both are refused, "Cannot
- enforce o < o" (Test/ProbeSolenoid410.v's N2 and N3), and both are
+ quantifies over the opens of the factors.  Both are refused, “Cannot
+ enforce o < o” (Test/ProbeSolenoid410.v's N2 and N3), and both are
  accepted one universe up (its [p410_init_family_up] and
  [p410_init_union_up]).
  The solenoid's own topology avoids the refusal: [sopen] quantifies
@@ -148,7 +148,7 @@ Generalizable All Variables.
  open of [Solenoid p].  With [sol_leg_cont], by which the preimage of
  every open of the circle along a projection is in [sopen], it is
  exactly the coarsest topology making the legs continuous, Mac Lane's
- "just those open sets ... necessary".
+ “just those open sets ... necessary”.
  The content is [sol_lift_cont]: the preimage of an open [W] along a
  map [g] is the union, over the points of [W ∘ g], of finite
  intersections ([open_bounded_inter]) of preimages of the open
@@ -158,8 +158,8 @@ Generalizable All Variables.
  [solenoid_forget_preserves]: [Top_Forget] preserves the limit cone.
  [Top_Forget] lands in the lifted [Sets@{h hs}], and
  Instance/Top/Forgetful.v's header records that cone-level
- preservation for that lifted functor is "neither claimed nor
- concluded" there, its competitors having big vertices; at this tower
+ preservation for that lifted functor is “neither claimed nor
+ concluded” there, its competitors having big vertices; at this tower
  it holds directly, the mediator being the tuple of legs into the
  lifted points.
 
@@ -187,7 +187,7 @@ Generalizable All Variables.
  equal at [eq_refl]: Instance/Sets/InverseLimit.v's [tower_obj] builds
  its setoid by a [Qed] [Program] obligation applied to the functor,
  and the two underlying towers are different terms; the equation is
- refused ("cannot unify", Test/ProbeSolenoid410.v's N4).  That is the
+ refused (“cannot unify”, Test/ProbeSolenoid410.v's N4).  That is the
  donor's opacity and nothing more: the probe's [p410_tower_obj], the
  donor's definition closed [Defined], accepts [eq_refl] for the two
  towers ([p410_flip_ptop]).
@@ -222,7 +222,7 @@ Generalizable All Variables.
  [PTop_solenoid_open_forced].  [PTop_solenoid_two_points] is closed
  [Defined], so its two witnesses read back: its first projection IS
  [zero_string p] (the probe's [p410_two_points_first]).  [Print
- Assumptions] prints "Closed under the global context" for all 78
+ Assumptions] prints “Closed under the global context” for all 78
  constants of the [Print Module] listing, six [Program] obligations
  included, and for all 94 of Instance/Top/Circle.v.
 
@@ -268,7 +268,7 @@ Generalizable All Variables.
  ([PForget_PreservesLimitCone]'s own block).
  - [open_bounded_inter] and [sol_lift_cont] have extensible universe
  lists: Coq 8.19.2 and 8.20.1 refuse their closed lists
- ("unbound"), while [About] under 8.19.2 reads back the same
+ (“unbound”), while [About] under 8.19.2 reads back the same
  universe lists after minimization ([@{o}], [@{s o so h}]).
 
  DELIVERED ELSEWHERE.  Instance/Top/Solenoid/Presentations.v relates
@@ -307,7 +307,7 @@ Generalizable All Variables.
  实例/顶/圈.v的 [circ_mul p] ;[CircleTower p]
  类型值[Top]，[wrap p]，麦克莱恩塔楼;以及
  [PCircleTower p] [PTopCat] ，[pwrap p] 。[PCircleTower_points] 识别了最后一个塔楼的底层
- 和第一个。语句写入 [omega_step n]，其中 Instance/Sets/InverseLimit.v 写入 [tower_step n]；两者是一个术语（[tower_step_is_omega_step]）。[About] 显示 [tower_step@{u u0 u1 u2 u3}] 仅以 [u2] 和 [u3] 命名类型：其他三个携带该文件部分 [Context (F : Omega^op ⟶ Sets)]（[u0 < u1] 和 [Sets] 的大写形式）的区块，并且带有封闭宇宙列表的语句无法绑定它们：在封闭列表 [@{s h o | o < h}] 下，通过 [tower_step] 读取 [CircleTower_step] 被拒绝，“宇宙……未绑定”（Test/ProbeSolenoid410.v 的 N6），并且在使用可扩展列表（其 [p410_tower_step]）时被接受。类型值 [Top] 中的电磁阀，问题的类别及其固定名称：[solenoid_limit p : Limit (CircleTower p)]。通用方案无法达到此类别。映射到空间的自然索引族的初始拓扑在两种尝试的类型值形式中都在点宇宙处被拒绝。第一种形式表示，当 V 位于包含因子开集的原像的每个谓词族 T 中时，V 是开的。它没有要求 T 的闭合性质，因此它本身不是包含那些原像的所有拓扑的交集；交集所需的是对 T 类型为 (S → Type@{o}) → Type@{o} 的量化，并且在 T 的假设中添加闭合性质不会降低其宇宙（论证：拒绝打印形式的类型为 [Type@{max(o+1,...)}]，而 o+1 是 T 类型的宇宙）。第二条说每个 V 的点都有一个因子，一个围绕其像的该因子的开集，以及该开集在 V 内的整个原像；它对因子的开集进行量化。两者都被拒绝，“无法强制 o < o”（Test/ProbeSolenoid410.v 的 N2 和 N3），但两者在一层宇宙上都被接受（其 [p410_init_family_up] 和 [p410_init_union_up]）。螺线管自身的拓扑避免了拒绝：[sopen] 对一个阶段 [n : nat] 和一个有理半径 [e] 进行量化，从不对开集进行量化，因此它位于 [Type@{o}]。匹配字符串 [SolPoints p] 上的谓词 [V] 是开集，当且仅当 [V] 的每个点 [s] 都有一个阶段 [n] 和一个半径 [e > 0]，使得在 [s] 的 [e] 内的每个字符串，在圆的球 [cball] 上，在每个阶段 [j <= n]，位于 [V] 中。拓扑不是被假定的，而是被描述的。[solenoid_universal]：一个从任意空间到点的集合映射是连续的，当且仅当它与每个投影的复合映射都是连续的。[solenoid_coarsest]：每个拓扑在点上的拓扑（由 Instance/Top.v 的闭包性质 [TopSpace] 给出）中，如果每个投影都是连续的，则包含 [Solenoid p] 的每一个开集。利用 [sol_leg_cont]，即沿投影的圆上每个开集的原像都在 [sopen] 中，它正好是使各条“腿”连续的最粗拓扑，正如 Mac Lane 所说，“仅那些开集……是必要的”。内容是 [sol_lift_cont]：沿着映射 [g] 的开集 [W] 的原像是对 [W ∘ g] 中的点进行有限交集（[open_bounded_inter]）的一种并，它由圆的球开集内部的原像形成（Instance/Top/Circle.v 的 [cint_open]）。极限的中介 [sol_med] 是一个竞争锥的各条边的元组，由 [sol_lift_cont] 保持连续；唯一性是逐点的。[solenoid_forget_preserves]：[Top_Forget] 保持极限锥。[Top_Forget] 落入升起的 [Sets@{h hs}]，并且 Instance/Top/Forgetful.v 的头部记录了这个升起函子在锥层面的保持在那里“既未声明也未推导”，其竞争者有大的顶点；在这个塔层上，它直接成立，中介就是指向升起点的各条边的元组。[PTopCat] 中的电磁阀，根据 #458 的配方，即 Riehl 的句子：[PTop_solenoid_limit p] 是 [PTop_Limit_lift] 的匹配字符串极限 [Sets_tower_Limit] 的一部分底层塔。它的表征是 #458 关于此塔的一般定理：[PTop_solenoid_universal]（[pinit_universal]）、[PTop_solenoid_coarsest]（[pinit_weakest]）、[PTop_solenoid_open_forced]（塔上的每个极限锥都携带其腿的初始拓扑，[PTop_limit_open_iff_initial]）以及 [PTop_solenoid_forget_preserves]（[PForget_PreservesLimitCone]，通过伴随关系 [PDisc_PForget]）。该名称遵循 #458 的约定，即为 [PTopCat] 上的读数命名 [PTop_*]，旁边附有固定类型值名称。在 [eq_refl]、[solenoid_points] 和 [PTop_solenoid_points] 的点：每个极限的点都是其基塔 [inverse_limit] 的 #408 匹配字符串；[solenoid_leg_map] 和 [PTop_solenoid_leg_map]：其腿是它的投影 [tower_proj]；[sol_compat]：匹配条件是 (∀ n, circ_eq (p · x (S n)) (x n))，按圆读取的 Mac Lane 字符串条件；[solenoid_points_agree]：这两个极限具有相同类型的点。作为集合等价物，这两个点集在 [eq_refl] 上不相等：Instance/Sets/InverseLimit.v 的 [tower_obj] 通过 [Qed]  [Program] 对函子应用义务来构建其集合等价物，而两个基塔是不同的项；该方程被拒绝（"无法统一"，Test/ProbeSolenoid410.v 的 N4）。那只是供体的不透明性，仅此而已：探针的 [p410_tower_obj]，供体的定义已关闭 [Defined]，接受 [eq_refl] 对于两个塔 ([p410_flip_ptop])。p，以及当 p = 1 时的结果。[p : positive]；Mac Lane 的 p 是一个素数（书第 110 页），Riehl 的未作限定，并且这里没有使用素数性。以上的任何构造和特征化都没有使用关于 p 的假设。非空性在每个 p 上都成立：[solenoid_two_points] 否定了零字符串 ≈ 字符串 (1/(2p^n))_n，其阶段 0 的项 0 和 1/2 在圆上不同，而 [PTop_solenoid_two_points] 给出了 [PSolenoid p] 的同样两个点。文件中的唯一假设，[1 < p]，仅使用了一次：[unit_string_not_zero] 否定了字符串 (1/p^n)_n ≈ 零字符串，而 [unit_string_over_zero] 在阶段 0 将两者放在同一点上，因此对于 1 < p，腿 μ_0 将两个不同的点识别为同一个点。在 p = 1 时，这个塔在  [≈]（Instance/Top/Circle.v 的 [wrap_one]） 上是恒等的，而螺线管与圆同构：[solenoid_one_iso] 和 [PTop_solenoid_one_iso] 是 [Top] 和 [PTopCat] 中的同构映射，其前向箭头是腿 μ_0，逆向箭头将一个点映射到它的常量字符串。优势。在 [eq_refl]：[endo_step]、[CircleTower_step]、[PCircleTower_step]、[sol_compat]、[solenoid_points]、[solenoid_leg_map]、[PTop_solenoid_points]、[PTop_solenoid_leg_map]、[solenoid_points_agree] 和 [half_string_coord]。到 [≈]：[endo_step_equiv]、[EndoTower_map] 和 [PCircleTower_points]（在 [Functor_Setoid] 中），[solenoid_one_iso] 和 [PTop_solenoid_one_iso] 的同类定律。[endo_step] 是 [id ∘ w]，而不是 [w]：在任意类别（Test/ProbeSolenoid410.v 的 N5）中，带有 [w] 的方程被拒绝。与 [iffT] 和 [iff] 相关：[solenoid_universal]、[PTop_solenoid_universal]、[PTop_solenoid_open_forced]。[PTop_solenoid_two_points] 已经关闭 [Defined]，因此它的两个见证返回：其第一投影是 [zero_string p]（探针的 [p410_two_points_first]）。[打印假设] 对 [Print Module] 列表的所有 78 个常量、包括六个 [Program] 义务，以及 Instance/Top/Circle.v 的所有 94 个，都打印“在全局上下文下已关闭”。UNIVERSES，由[About]在[Set Printing Universes]下读取，位于78常数上。[EndoTower@{s o h}]接受[C : Category@{o h h}]并返回[Omega@{s h h}^op ⟶ C]；电磁常数为[@{s o so}]用于点及其拓扑，[@{s o so h}]用于提到[Top@{h o}]的内容，[solenoid_limit@{s o so h r}]及其[Limit@{r s h h}]，以及[PTop_solenoid_limit@{s o so r}]及[Limit@{r s o so}]；仅语句的引理还携带[Compose]、[iffT]和[IsLimitCone]的辅助内容。- 没有块携带方程，且没有宇宙固定在[Set]：两个电磁均存在于每个点宇宙[o]。- 本文件的宇宙之间的严格界限：[o < h]（23个块，[Top]自身的），[o < so]（60个，[Sets]和[PTopCat]的），[h < hs]（3个，[Top_Forget]的），以及[o < u*]或[h < u1]在六个常量中，其中五个的语句组成函数子（[EndoTower_map]，[PCircleTower_points]，[PTop_solenoid_points]，[PTop_solenoid_open_forced]，[PTop_solenoid_forget_preserves]）和[PTop_solenoid_two_points]，其[Defined]主体通过两个辅助引入界限（在一个临时副本中相同的语句闭合为[Qed]，读作[@{s o so u}]而没有它）：[Compose]自身在辅助下的同类宇宙界限（[About Compose]：u3 < u2）。- [PTop_solenoid_limit] 用其输入和输出限制宇宙都是 [r] 来实例化 [PTop_Limit_lift]，其两个辅助变量下界为 [so] 和 [r]，也为 [r]，以及其 [Compose] 辅助 [so]；第二个选择将 [so <= r] 添加到块中。- 词 [Set] 在输出中出现 317 次：18 块中的 [Set < so]，[PTopCat] 自身的界限，以及除此之外仅标准库的界限 [Set < Basics.flip.u*]（66 块，最初由 [UCircleTower] 携带，通过 Instance/Top/Circle.v 的 [circ_mul]），[Set < Morphisms.Proper.u0] 和 [.Relations.u0]（45，最初 [CircleTower]）以及 [Set < Morphisms.GenericInstances.u0]（11，最初 [sol_lift_cont]），[Set] 与全局宇宙之间的关系在 Instance/Top/Circle.v 的头文件中解释。- [<=] 在全局宇宙的上限：[eq_ind]、[eq_ind_r] 和 [Logic_lemmas.equality]（[Omega] 自己的区块）以及 [eq_rect_r]，首次由 [endo_hom_respects] 携带；[compose] 和 [ID]（[Sets]）；[projections]（[TQuot]，通过 [Circle]）；[Projections]（[tower_obj]，通过 [SolPoints]）；[False_rect] 和 [nat_rect]，首次由 [open_bounded_inter] 携带；[prod_rect]（[PForget_PreservesLimitCone] 自己的区块）。- [open_bounded_inter] 和 [sol_lift_cont] 有可扩展的宇宙列表：Coq 8.19.2 和 8.20.1 拒绝它们的闭合列表（“未绑定”），而 [About] 在 8.19.2 下经过最小化后读取回相同的宇宙列表（[@{o}]、[@{s o so h}]）。在其他地方交付。Instance/Top/Solenoid/Presentations.v 关联了群演示和空间演示，如附加的 Riehl 项所要求：[Ab] 中的圆群及其塔，其底层塔与这里的两个塔相同（[towers_agree]），在相同匹配序列上的群螺线体，μ_0 在基点上的纤维为 p-adic 整数（[Zp_fibre_iso]，在 [Ab] 中），以及环绕映射在两个范畴上的覆盖性质（[pwrap_evenly_covered]、[wrap_evenly_covered]）。未交付。纤维作为一个与 Z_p 同胚的子空间，具有其有限生成拓扑；螺旋体的紧性、连通性以及拓扑群结构；类型值 [Top] 上的典型初始拓扑以及 [Top] 的完备性（螺旋体在此由其自身的拓扑而成为极限，而不是由一般定理得出）；[PTop_solenoid_open_forced] 的类型值类比；[Top] 与 [PTopCat] 之间的任何比较函子。
+ 和第一个。语句写入 [omega_step n]，其中 Instance/Sets/InverseLimit.v 写入 [tower_step n]；两者是一个术语（[tower_step_is_omega_step]）。[About] 显示 [tower_step@{u u0 u1 u2 u3}] 仅以 [u2] 和 [u3] 命名类型：其他三个携带该文件部分 [Context (F : Omega^op ⟶ Sets)]（[u0 < u1] 和 [Sets] 的大写形式）的区块，并且带有封闭宇宙列表的语句无法绑定它们：在封闭列表 [@{s h o | o < h}] 下，通过 [tower_step] 读取 [CircleTower_step] 被拒绝，“宇宙……未绑定”（Test/ProbeSolenoid410.v 的 N6），并且在使用可扩展列表（其 [p410_tower_step]）时被接受。类型值 [Top] 中的电磁阀，问题的类别及其固定名称：[solenoid_limit p : Limit (CircleTower p)]。通用方案无法达到此类别。映射到空间的自然索引族的初始拓扑在两种尝试的类型值形式中都在点宇宙处被拒绝。第一种形式表示，当 V 位于包含因子开集的原像的每个谓词族 T 中时，V 是开的。它没有要求 T 的闭合性质，因此它本身不是包含那些原像的所有拓扑的交集；交集所需的是对 T 类型为 (S → Type@{o}) → Type@{o} 的量化，并且在 T 的假设中添加闭合性质不会降低其宇宙（论证：拒绝打印形式的类型为 [Type@{max(o+1,...)}]，而 o+1 是 T 类型的宇宙）。第二条说每个 V 的点都有一个因子，一个围绕其像的该因子的开集，以及该开集在 V 内的整个原像；它对因子的开集进行量化。两者都被拒绝，“无法强制 o < o”（Test/ProbeSolenoid410.v 的 N2 和 N3），但两者在一层宇宙上都被接受（其 [p410_init_family_up] 和 [p410_init_union_up]）。螺线管自身的拓扑避免了拒绝：[sopen] 对一个阶段 [n : nat] 和一个有理半径 [e] 进行量化，从不对开集进行量化，因此它位于 [Type@{o}]。匹配字符串 [SolPoints p] 上的谓词 [V] 是开集，当且仅当 [V] 的每个点 [s] 都有一个阶段 [n] 和一个半径 [e > 0]，使得在 [s] 的 [e] 内的每个字符串，在圆的球 [cball] 上，在每个阶段 [j <= n]，位于 [V] 中。拓扑不是被假定的，而是被描述的。[solenoid_universal]：一个从任意空间到点的集合映射是连续的，当且仅当它与每个投影的复合映射都是连续的。[solenoid_coarsest]：每个拓扑在点上的拓扑（由 Instance/Top.v 的闭包性质 [TopSpace] 给出）中，如果每个投影都是连续的，则包含 [Solenoid p] 的每一个开集。利用 [sol_leg_cont]，即沿投影的圆上每个开集的原像都在 [sopen] 中，它正好是使各条“腿”连续的最粗拓扑，正如 Mac Lane 所说，“仅那些开集……是必要的”。内容是 [sol_lift_cont]：沿着映射 [g] 的开集 [W] 的原像是对 [W ∘ g] 中的点进行有限交集（[open_bounded_inter]）的一种并，它由圆的球开集内部的原像形成（Instance/Top/Circle.v 的 [cint_open]）。极限的中介 [sol_med] 是一个竞争锥的各条边的元组，由 [sol_lift_cont] 保持连续；唯一性是逐点的。[solenoid_forget_preserves]：[Top_Forget] 保持极限锥。[Top_Forget] 落入升起的 [Sets@{h hs}]，并且 Instance/Top/Forgetful.v 的头部记录了这个升起函子在锥层面的保持在那里“既未声明也未推导”，其竞争者有大的顶点；在这个塔层上，它直接成立，中介就是指向升起点的各条边的元组。[PTopCat] 中的电磁阀，根据 #458 的配方，即 Riehl 的句子：[PTop_solenoid_limit p] 是 [PTop_Limit_lift] 的匹配字符串极限 [Sets_tower_Limit] 的一部分底层塔。它的表征是 #458 关于此塔的一般定理：[PTop_solenoid_universal]（[pinit_universal]）、[PTop_solenoid_coarsest]（[pinit_weakest]）、[PTop_solenoid_open_forced]（塔上的每个极限锥都携带其腿的初始拓扑，[PTop_limit_open_iff_initial]）以及 [PTop_solenoid_forget_preserves]（[PForget_PreservesLimitCone]，通过伴随关系 [PDisc_PForget]）。该名称遵循 #458 的约定，即为 [PTopCat] 上的读数命名 [PTop_*]，旁边附有固定类型值名称。在 [eq_refl]、[solenoid_points] 和 [PTop_solenoid_points] 的点：每个极限的点都是其基塔 [inverse_limit] 的 #408 匹配字符串；[solenoid_leg_map] 和 [PTop_solenoid_leg_map]：其腿是它的投影 [tower_proj]；[sol_compat]：匹配条件是 (∀ n, circ_eq (p · x (S n)) (x n))，按圆读取的 Mac Lane 字符串条件；[solenoid_points_agree]：这两个极限具有相同类型的点。作为集合等价物，这两个点集在 [eq_refl] 上不相等：Instance/Sets/InverseLimit.v 的 [tower_obj] 通过 [Qed]  [Program] 对函子应用义务来构建其集合等价物，而两个基塔是不同的项；该方程被拒绝（“无法统一”，Test/ProbeSolenoid410.v 的 N4）。那只是供体的不透明性，仅此而已：探针的 [p410_tower_obj]，供体的定义已关闭 [Defined]，接受 [eq_refl] 对于两个塔 ([p410_flip_ptop])。p，以及当 p = 1 时的结果。[p : positive]；Mac Lane 的 p 是一个素数（书第 110 页），Riehl 的未作限定，并且这里没有使用素数性。以上的任何构造和特征化都没有使用关于 p 的假设。非空性在每个 p 上都成立：[solenoid_two_points] 否定了零字符串 ≈ 字符串 (1/(2p^n))_n，其阶段 0 的项 0 和 1/2 在圆上不同，而 [PTop_solenoid_two_points] 给出了 [PSolenoid p] 的同样两个点。文件中的唯一假设，[1 < p]，仅使用了一次：[unit_string_not_zero] 否定了字符串 (1/p^n)_n ≈ 零字符串，而 [unit_string_over_zero] 在阶段 0 将两者放在同一点上，因此对于 1 < p，腿 μ_0 将两个不同的点识别为同一个点。在 p = 1 时，这个塔在  [≈]（Instance/Top/Circle.v 的 [wrap_one]） 上是恒等的，而螺线管与圆同构：[solenoid_one_iso] 和 [PTop_solenoid_one_iso] 是 [Top] 和 [PTopCat] 中的同构映射，其前向箭头是腿 μ_0，逆向箭头将一个点映射到它的常量字符串。优势。在 [eq_refl]：[endo_step]、[CircleTower_step]、[PCircleTower_step]、[sol_compat]、[solenoid_points]、[solenoid_leg_map]、[PTop_solenoid_points]、[PTop_solenoid_leg_map]、[solenoid_points_agree] 和 [half_string_coord]。到 [≈]：[endo_step_equiv]、[EndoTower_map] 和 [PCircleTower_points]（在 [Functor_Setoid] 中），[solenoid_one_iso] 和 [PTop_solenoid_one_iso] 的同类定律。[endo_step] 是 [id ∘ w]，而不是 [w]：在任意类别（Test/ProbeSolenoid410.v 的 N5）中，带有 [w] 的方程被拒绝。与 [iffT] 和 [iff] 相关：[solenoid_universal]、[PTop_solenoid_universal]、[PTop_solenoid_open_forced]。[PTop_solenoid_two_points] 已经关闭 [Defined]，因此它的两个见证返回：其第一投影是 [zero_string p]（探针的 [p410_two_points_first]）。[打印假设] 对 [Print Module] 列表的所有 78 个常量、包括六个 [Program] 义务，以及 Instance/Top/Circle.v 的所有 94 个，都打印“在全局上下文下已关闭”。UNIVERSES，由[About]在[Set Printing Universes]下读取，位于78常数上。[EndoTower@{s o h}]接受[C : Category@{o h h}]并返回[Omega@{s h h}^op ⟶ C]；电磁常数为[@{s o so}]用于点及其拓扑，[@{s o so h}]用于提到[Top@{h o}]的内容，[solenoid_limit@{s o so h r}]及其[Limit@{r s h h}]，以及[PTop_solenoid_limit@{s o so r}]及[Limit@{r s o so}]；仅语句的引理还携带[Compose]、[iffT]和[IsLimitCone]的辅助内容。- 没有块携带方程，且没有宇宙固定在[Set]：两个电磁均存在于每个点宇宙[o]。- 本文件的宇宙之间的严格界限：[o < h]（23个块，[Top]自身的），[o < so]（60个，[Sets]和[PTopCat]的），[h < hs]（3个，[Top_Forget]的），以及[o < u*]或[h < u1]在六个常量中，其中五个的语句组成函数子（[EndoTower_map]，[PCircleTower_points]，[PTop_solenoid_points]，[PTop_solenoid_open_forced]，[PTop_solenoid_forget_preserves]）和[PTop_solenoid_two_points]，其[Defined]主体通过两个辅助引入界限（在一个临时副本中相同的语句闭合为[Qed]，读作[@{s o so u}]而没有它）：[Compose]自身在辅助下的同类宇宙界限（[About Compose]：u3 < u2）。- [PTop_solenoid_limit] 用其输入和输出限制宇宙都是 [r] 来实例化 [PTop_Limit_lift]，其两个辅助变量下界为 [so] 和 [r]，也为 [r]，以及其 [Compose] 辅助 [so]；第二个选择将 [so <= r] 添加到块中。- 词 [Set] 在输出中出现 317 次：18 块中的 [Set < so]，[PTopCat] 自身的界限，以及除此之外仅标准库的界限 [Set < Basics.flip.u*]（66 块，最初由 [UCircleTower] 携带，通过 Instance/Top/Circle.v 的 [circ_mul]），[Set < Morphisms.Proper.u0] 和 [.Relations.u0]（45，最初 [CircleTower]）以及 [Set < Morphisms.GenericInstances.u0]（11，最初 [sol_lift_cont]），[Set] 与全局宇宙之间的关系在 Instance/Top/Circle.v 的头文件中解释。- [<=] 在全局宇宙的上限：[eq_ind]、[eq_ind_r] 和 [Logic_lemmas.equality]（[Omega] 自己的区块）以及 [eq_rect_r]，首次由 [endo_hom_respects] 携带；[compose] 和 [ID]（[Sets]）；[projections]（[TQuot]，通过 [Circle]）；[Projections]（[tower_obj]，通过 [SolPoints]）；[False_rect] 和 [nat_rect]，首次由 [open_bounded_inter] 携带；[prod_rect]（[PForget_PreservesLimitCone] 自己的区块）。- [open_bounded_inter] 和 [sol_lift_cont] 有可扩展的宇宙列表：Coq 8.19.2 和 8.20.1 拒绝它们的闭合列表（“未绑定”），而 [About] 在 8.19.2 下经过最小化后读取回相同的宇宙列表（[@{o}]、[@{s o so h}]）。在其他地方交付。Instance/Top/Solenoid/Presentations.v 关联了群演示和空间演示，如附加的 Riehl 项所要求：[Ab] 中的圆群及其塔，其底层塔与这里的两个塔相同（[towers_agree]），在相同匹配序列上的群螺线体，μ_0 在基点上的纤维为 p-adic 整数（[Zp_fibre_iso]，在 [Ab] 中），以及环绕映射在两个范畴上的覆盖性质（[pwrap_evenly_covered]、[wrap_evenly_covered]）。未交付。纤维作为一个与 Z_p 同胚的子空间，具有其有限生成拓扑；螺旋体的紧性、连通性以及拓扑群结构；类型值 [Top] 上的典型初始拓扑以及 [Top] 的完备性（螺旋体在此由其自身的拓扑而成为极限，而不是由一般定理得出）；[PTop_solenoid_open_forced] 的类型值类比；[Top] 与 [PTopCat] 之间的任何比较函子。
 *)
 
 Open Scope category_scope.

@@ -67,9 +67,9 @@ What a coalgebra is for
 
    nLab:  https://ncatlab.org/nlab/show/comonadic+functor
    nLab:  https://ncatlab.org/nlab/show/store+comonad
-   Paper: O'Connor, "Functor is to Lens as Applicative is to Biplate:
-          Introducing Multiplate", arXiv:1103.2841, 2011
-   Paper: Bénabou, Roubaud, "Monades et descente", C. R. Acad. Sc. Paris,
+   Paper: O'Connor, “Functor is to Lens as Applicative is to Biplate:
+          Introducing Multiplate”, arXiv:1103.2841, 2011
+   Paper: Bénabou, Roubaud, “Monades et descente”, C. R. Acad. Sc. Paris,
           Sér. A 270, 1970, pp. 96-98
 
    A W-coalgebra is an object equipped with coherent access to its own
@@ -86,7 +86,7 @@ What a coalgebra is for
    and the counit and coaction laws are together equivalent to the three
    lens laws: put (get a, a) = a; get (put (σ, a)) = σ; and
    put (τ, put (σ, a)) = put (τ, a).  Coalgebras of the store comonad
-   are therefore exactly the lawful ("very well-behaved") lenses of
+   are therefore exactly the lawful (“very well-behaved”) lenses of
    functional programming, a correspondence due to O'Connor (2010;
    arXiv:1103.2841).  For the environment comonad e × −
    (Instance/Coq/Comonad/Env.v) the classification is simpler still: a

@@ -23,23 +23,23 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/continuous+functor
    Wikipedia: https://en.wikipedia.org/wiki/Hom_functor
    Mac Lane:  Categories for the Working Mathematician, 2nd ed. (GTM 5),
-              §III.4 "Products and coproducts", the remark at book p. 70
+              §III.4 “Products and coproducts”, the remark at book p. 70
               [maclane:III.4:remark3]: the covariant hom-functor
               C(c, −) carries a product existing in C to a product in
               Set.  That remark states the continuity of representables
               for the special case of products; Mac Lane proves
               preservation of limits in general only later, in §V.4
-              "Preservation of limits", and it is the §V.4 statement --
+              “Preservation of limits”, and it is the §V.4 statement --
               every limit of every shape, not only products -- that this
               file leads with.
 
    WHAT IS DELIVERED, AND AT WHICH LEVEL.  The headline is
    [hom_ContinuousFunctor c : ContinuousFunctor [Hom c,─]], for an
    arbitrary category C and an arbitrary object c of it.  The word
-   "continuous" is used in the sense Structure/Limit/Preservation.v
+   “continuous” is used in the sense Structure/Limit/Preservation.v
    fixes: its header states in terms that [ContinuousFunctor] --
-   preservation of limits of all shapes IN THE CONE SENSE -- "is what
-   the word means in Mac Lane §V.4", and that the apex-only
+   preservation of limits of all shapes IN THE CONE SENSE -- “is what
+   the word means in Mac Lane §V.4”, and that the apex-only
    [PreservesAllLimits] is a CONSEQUENCE ([Continuous_PreservesAllLimits])
    and not the definition.  Both readings are exposed here:
    [hom_PreservesLimitCone] and [hom_ContinuousFunctor] at cone level,
@@ -77,8 +77,8 @@ Generalizable All Variables.
    [≈]-equal elements of S give fibre cones with [≈]-equal legs.
 
    THE ISSUE'S THIRD BULLET IS DISCHARGED, AND AN EARLIER REVISION FAILED
-   TO SAY SO.  #331 asks to "derive [PreservesImageLimit] for hom-functors
-   where applicable".  Structure/Limit/Preservation.v records that
+   TO SAY SO.  #331 asks to “derive [PreservesImageLimit] for hom-functors
+   where applicable”.  Structure/Limit/Preservation.v records that
    [ContinuousFunctor] IS [PreservesImageLimit] definitionally -- the very
    hypothesis Construction/Comma/Limit.v introduced and Adjunction/GAFT.v
    and Adjunction/SAFT.v consume -- so [hom_ContinuousFunctor] already
@@ -134,22 +134,22 @@ Generalizable All Variables.
    revision of this paragraph quoted
    [DiscreteCat_Functor@{u u0 u1 u2} : … → DiscreteCat@{u Set Set} A ⟶ C]
    and [family_cone : … → Cone@{u Set Set u1 u2 u2}], and concluded that
-   the discrete route "pins C's hom and proof universes to [Set]".  The
+   the discrete route “pins C's hom and proof universes to [Set]”.  The
    diagnosis was right and is now HISTORY: the cause was
    [DiscreteCat_Functor]'s UNANNOTATED declaration (Instance/Discrete.v,
    [{A : Type} {C : Category}]), whose minimized type instantiated
    [DiscreteCat@{u Set Set}] -- never [DiscreteCat] itself, which is
    declared [DiscreteCat@{o h p} (A : Type@{o}) : Category@{o h p}]
    (Instance/Discrete.v) with hom and proof FREE.  That donor was
-   annotated in place at Instance/Discrete.v in the PR "algebraic
-   carriers are sets" (2026-09-17).  Measured after it, with
+   annotated in place at Instance/Discrete.v in the PR “algebraic
+   carriers are sets” (2026-09-17).  Measured after it, with
    [Set Printing Universes]: [family_cone@{u u0 u1 u2}] returns
    [Cone@{u u2 u2 u1 u2 u2}], [iprod@{u u0 u1 u2 u3}] and
    [limit_is_indexed_product@{u u0 u1 u2 u3}] are stated over
    [C : Category@{u1 u2 u2}], and no literal [Set] appears in any of the
-   three.  An earlier revision also attributed the pin to "a donor
+   three.  An earlier revision also attributed the pin to “a donor
    ANNOTATION defect of the [Build_Quiver_Standard_Eq] family
-   (Construction/Free/Quiver/Examples.v, issue #300's erratum)"; that
+   (Construction/Free/Quiver/Examples.v, issue #300's erratum)”; that
    attribution named the wrong donor and is withdrawn -- [About] puts it
    on [DiscreteCat_Functor] alone.  What is still NOT established is that
    the WHOLE derivation closes: the tree has [limit_is_indexed_product]
@@ -210,7 +210,7 @@ Generalizable All Variables.
    not compute -- [Cartesian_Limit] is [Qed] -- and it carries the
    [Set] pin analysed above; witness (1) computes and does not.
 
-   ENGINEERING NOTES.  (a) Lib.v sets [Default Proof Using "Type"], so
+   ENGINEERING NOTES.  (a) Lib.v sets [Default Proof Using “Type”], so
    the two tactic proofs whose section witness [H] appears only in the
    proof and not in the statement carry an explicit [Proof using H]
    (the Structure/Equalizer/Wide.v idiom).  (b) Structure/Cartesian.v
@@ -221,8 +221,8 @@ Generalizable All Variables.
    only terms of that type CONSTRUCTED anywhere are [product_of_pullback]
    (Structure/Pullback/Reduction.v) and [pb_prod_IsCartesianProduct]
    (itself an application of the former), both from a pullback over
-   the terminal object.  An earlier revision counted "four other files"
-   and then "the other two"; the count was stale and the two figures were
+   the terminal object.  An earlier revision counted “four other files”
+   and then “the other two”; the count was stale and the two figures were
    inconsistent, and Structure/Pullback.v mentions the name only inside a
    comment.  The ABSENCE claim -- no [Cartesian → IsCartesianProduct]
    passage -- is unchanged and holds.
@@ -237,8 +237,8 @@ Generalizable All Variables.
    [FCone (HomFrom (unit : obj[Coq])) (…)] and
    [fun u : Coq => FCone (HomFrom u) (…)] elaborate, and
    [coq_hom_limit_cone] below writes them implicitly.  An earlier revision
-   of this note said the three category arguments "must be spelled
-   explicitly" and were "not repaired by an ascription"; both were wrong,
+   of this note said the three category arguments “must be spelled
+   explicitly” and were “not repaired by an ascription”; both were wrong,
    and the second is refuted by the first form above.
 
    WHAT IS NOT DELIVERED (scoped to this file).  No converse and no

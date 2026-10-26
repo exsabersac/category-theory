@@ -19,7 +19,7 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/universal+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Forgetful_functor
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, Springer 1998, §III.1, Exercise 3, printed p. 59 --
    maclane:III.1:ex3
    Book: Mac Lane, ibid., §III.1, Definition 1 (universal arrow),
@@ -28,7 +28,7 @@ Generalizable All Variables.
    determinations of an adjunction), printed p. 83 --
    maclane:IV.1:thm2.  The local-to-global route taken below is
    that theorem's universal-arrow clause.
-   Book: Riehl, "Category Theory in Context", Dover 2016, §4.1,
+   Book: Riehl, “Category Theory in Context”, Dover 2016, §4.1,
    Example 4.1.10, printed p. 135, CLAUSE (i) -- riehl:4.1:
    example10 is a fourteen-clause example listing fourteen
    forgetful functors with left adjoints, and this file delivers
@@ -64,7 +64,7 @@ Generalizable All Variables.
 
    THE FORGETFUL FUNCTOR DID NOT EXIST, AND IS BUILT HERE.  That was
    re-verified rather than taken on trust, and the measurement is
-   sharper than a bare absence claim.  The word "Forget" occurs ZERO
+   sharper than a bare absence claim.  The word “Forget” occurs ZERO
    times in all four pre-existing pointed-set files
    (Instance/Sets/Pointed.v and its satellites Coslice.v, Finite.v,
    Part.v).  Tree-wide, before this file there was exactly ONE functor
@@ -74,7 +74,7 @@ Generalizable All Variables.
    [PointedSets] were [Coslice_to_Pointed] (ibid.) and
    [Part_to_Pointed] (Instance/Sets/Pointed/Part.v).
 
-   But the honest statement is weaker than "unreachable", and the
+   But the honest statement is weaker than “unreachable”, and the
    difference is worth stating because a reviewer will find it:
    [Coslice_proj : Coslice C c ⟶ C] DOES exist
    (Instance/Cat/Pullback.v), so the composite
@@ -134,7 +134,7 @@ Generalizable All Variables.
    [induction] and no [Fixpoint].
 
    So this row is the cheapest of the four, which is what one should
-   expect: "free" here adjoins a single element rather than closing
+   expect: “free” here adjoins a single element rather than closing
    under operations.
 
    THE SETOID DISCIPLINE COSTS NOTHING HERE, AND THAT IS THE
@@ -193,7 +193,7 @@ Generalizable All Variables.
    [free_pointed_counit] and [FreePointed] respectively (a fourth
    [Fail] sits beside them, the scope-free instrument check, which
    refutes nothing about this development).  Each was stripped once and
-   confirmed to report a genuine "cannot unify" rather than a scope,
+   confirmed to report a genuine “cannot unify” rather than a scope,
    notation or reference error.  They cannot go vacuously green under a
    rename: every identifier occurring in a [Fail] block, other than the
    four probe names themselves, also occurs in at least one command of
@@ -230,8 +230,8 @@ Generalizable All Variables.
    verified rather than assumed ([fpt_one@{u}] and [fpt_two@{u}] are
    [SetoidObject@{u u}]).
 
-   ASSUMPTIONS.  All 66 constants of this module report "Closed under
-   the global context".  The count is [Print Module]'s, which is 60
+   ASSUMPTIONS.  All 66 constants of this module report “Closed under
+   the global context”.  The count is [Print Module]'s, which is 60
    source declarations plus the six [Program] obligations; note that
    the [.glob] OVERCOUNTS here, since a [Fail Definition foo] registers
    [foo] in the glob without adding a constant, and this file has four
@@ -918,7 +918,7 @@ Proof. reflexivity. Qed.
    * ** Guards
 
    Each [Fail] below was stripped once and confirmed to report a
-   genuine "cannot unify", not a scope, notation or reference error,
+   genuine “cannot unify”, not a scope, notation or reference error,
    and each names the constant whose strictness is being refuted.  The
    instrument check is scope-free. 
 

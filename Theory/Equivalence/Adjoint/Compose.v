@@ -25,10 +25,10 @@ nLab: https://ncatlab.org/nlab/show/adjoint+equivalence
    p. 95, Exercise 2, quoted from the page (ASCII transliteration of the
    arrows):
 
-     "2. (a) Prove: the composite of two equivalences D -> C, C -> A is
+     “2. (a) Prove: the composite of two equivalences D -> C, C -> A is
              an equivalence.
          (b) State and prove the corresponding fact for adjoint
-             equivalences."
+             equivalences.”
 
    Clause (a) is already in the tree: Theory/Equivalence/Bundled.v
    carries [EquivalenceOfCategories_Compose], with the two comparison
@@ -170,7 +170,7 @@ nLab: https://ncatlab.org/nlab/show/adjoint+equivalence
        from [Adjunction_Id_unit] / [_counit].
 
    (E) THE GROUPOID LAWS, MEASURED RATHER THAN ASSUMED, and the outcome
-       is finer than "not statable".  At the level of the CLASS the
+       is finer than “not statable”.  At the level of the CLASS the
        associativity and identity equations are not even well typed:
        [Compose] of functors is not associative on the nose and [Id] is
        not a strict unit for it (the Adjunction/Pare.v measurement), so
@@ -203,8 +203,8 @@ nLab: https://ncatlab.org/nlab/show/adjoint+equivalence
        Instance/Discrete/Reconstruct.v declares
        [hom := fun _ _ => unit], the stdlib [unit : Set], which is also
        where the witness block's [Set] comes from -- so every hom-set
-       there is a singleton, and the morphism-level statement "the unit
-       at [false] IS the identity" is well typed and TRUE, at [eq_refl]
+       there is a singleton, and the morphism-level statement “the unit
+       at [false] IS the identity” is well typed and TRUE, at [eq_refl]
        and not merely at [~]; a morphism-level non-degeneracy statement
        is therefore unavailable.  This is the trap
        Theory/Equivalence/Strict.v records for its own counit; the

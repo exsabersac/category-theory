@@ -1,9 +1,9 @@
 (* * * (R-Mod, ⊗, R): the symmetric monoidal structure of a module category / * * (R-模, ⊗, R)：模范畴的对称幺半群结构 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §VII.1, printed p. 163 — the roster of tensor-product monoidal
- categories, of which "K-modules over a commutative ring K" is
+ categories, of which “K-modules over a commutative ring K” is
  the row Instance/Ab/Monoidal.v's own SCOPE note defers.
  Book:      Mac Lane, ibid., §IV.1 printed p. 80 and §IV.6 printed p. 98 —
  the tensor-hom adjunction, whose ⊗ half is what this file
@@ -16,11 +16,11 @@
  together with its universal property, and then said in terms what it did
  NOT build (Instance/Mod/Tensor.v):
 
- "NO BIFUNCTORIALITY.  Instance/Ab/Tensor.v's [AbTensor_Functor] has no
+ “NO BIFUNCTORIALITY.  Instance/Ab/Tensor.v's [AbTensor_Functor] has no
  counterpart here: nothing below makes ⊗ a functor
  [RMod R ∏ RMod R ⟶ RMod R], and no monoidal structure on [RMod R] is
  attempted.  (Both would be [tensor_hom_ext] plus computations on
- generators, exactly as there.)"
+ generators, exactly as there.)”
 
  This file discharges that, and the parenthetical forecast is accurate.
  Delivered:
@@ -70,8 +70,8 @@
  [TensorMod] is [mt_eq], whose reflexivity is a DERIVED lemma rather than a
  constructor, so after [simpl] the tactic [reflexivity] does not close the
  goal and names no useful culprit; [apply mt_refl] does.  An earlier
- revision called [mt_eq] "[Type]-valued"; since the PR "algebraic carriers
- are sets" (2026-09-17) it is a [Prop], which is what lets [TensorMod]
+ revision called [mt_eq] “[Type]-valued”; since the PR “algebraic carriers
+ are sets” (2026-09-17) it is a [Prop], which is what lets [TensorMod]
  supply its own [cmon_prop].  The register point is unaffected -- the issue
  is that reflexivity is derived, not the relation's sort.
 
@@ -188,7 +188,7 @@
  [ModUnitLeft], [ModUnitRight], [ModAssoc] and [rmod_hom_smul] — including
  the [Monoidal] class itself and the unit object, the two obvious suspects
  — while [ModMonoidal] is rejected with
- "Cannot enforce rp = ru because rp < ru".
+ “Cannot enforce rp = ru because rp < ru”.
  The equation is therefore introduced by the PACKAGING and not by any
  field it packages.  No mechanism beyond that is claimed, no annotation was
  attempted, and the identification is NOT claimed unavoidable:
@@ -214,7 +214,7 @@
  `∀ a : TensorMod V W, f a ≈ g a`, so the hom-setoid is not the
  obstacle.  What [apply] reports (measured, with the statement below
  restated in a scratch file) is
- `Unable to unify "?M ?t ≈ ?M' ?t" with "∀ a, f a ≈ g a"` — a
+ `Unable to unify “?M ?t ≈ ?M' ?t” with “∀ a, f a ≈ g a”` — a
  HIGHER-ORDER unification failure, the lemma's `cmon_map (rm_hom ?f)`
  presenting as an applied metavariable while `f` and `g` are still
  unknown.  Supplying them makes the head rigid, so the [Ltac]s below
@@ -228,8 +228,8 @@
  (c) [mt_gen] and [mte_gen] at a NESTED tensor need explicit `@`
  annotation.  Measured: writing `mt_gen (mt_gen v w) x` with the
  module arguments implicit is rejected with
- `The term "mt_gen v w" has type "MTerm V W" while it is expected to
- have type "carrier ?V"` — the inner generator is elaborated before
+ `The term “mt_gen v w” has type “MTerm V W” while it is expected to
+ have type “carrier ?V”` — the inner generator is elaborated before
  the outer tensor is known, and a bare [MTerm] does not unify with a
  projection out of an unknown module.  This is the same trap
  Instance/Ab/Monoidal.v records at its [tensor_hom_ext2], and it is
@@ -296,7 +296,7 @@
  one's; nothing here mentions an exponent.
  - NO PROOF THAT ⊗ IS NOT THE CATEGORICAL PRODUCT.  It is not, but no
  separation is machine-checked here, so this file does NOT establish
- "the tree's first non-cartesian monoidal witness" — that phrase would
+ “the tree's first non-cartesian monoidal witness” — that phrase would
  need a refutation nobody has written.  What is claimed instead is
  narrower and is evidence of two weaker kinds: a sweep for the
  SPELLINGS `@Monoidal … RMod` and `Monoidal (RMod` returns nothing, and
@@ -311,9 +311,9 @@
  restriction of scalars is attempted.
  - NO COMPARISON WITH Instance/Ab/Monoidal.v.  Over R = ℤ the two
  monoidal structures ought to agree, and no comparison functor is
- built.  An earlier revision gave the reason as "the ℤ-module
+ built.  An earlier revision gave the reason as “the ℤ-module
  structure of an [AbObject] is not in tree (Instance/Mod/Tensor.v
- records the same gap for the underlying tensors)"; since #454 that
+ records the same gap for the underlying tensors)”; since #454 that
  structure is Instance/Mod/Cogenerator.v's [Ab_to_ZMod], so what is
  missing is the comparison itself, not its ingredients.
  - NO UNIVERSE REPAIR.  The identification recorded above is measured and
@@ -333,7 +333,7 @@
  nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
  维基百科: https://en.wikipedia.org/wiki/Tensor_product_of_modules
 
- Instance/Mod/Tensor.v 通过生成元与关系构建了对象 V ⊗ V' 及其泛性质，然后用术语说明它没有构建的内容（Instance/Mod/Tensor.v）:"没有双函子性。Instance/Ab/Tensor.v 中的 [AbTensor_Functor] 在这里没有对应项：下面没有任何东西使 ⊗ 成为函子 [RMod R ∏ RMod R ⟶ RMod R]，也没有尝试在 [RMod R] 上建立单体结构。（两者都将是 [tensor_hom_ext] 加上生成元上的计算，完全如那里一样。）
+ Instance/Mod/Tensor.v 通过生成元与关系构建了对象 V ⊗ V' 及其泛性质，然后用术语说明它没有构建的内容（Instance/Mod/Tensor.v）:“没有双函子性。Instance/Ab/Tensor.v 中的 [AbTensor_Functor] 在这里没有对应项：下面没有任何东西使 ⊗ 成为函子 [RMod R ∏ RMod R ⟶ RMod R]，也没有尝试在 [RMod R] 上建立单体结构。（两者都将是 [tensor_hom_ext] 加上生成元上的计算，完全如那里一样。）
 
  此文件解决了这一点，并且括号中的预测是准确的。提供：
 
@@ -356,7 +356,7 @@
 
  放置位置。这个小工具层可以说属于 Instance/Mod/Tensor.v——它未提及本文件引入的任何内容，并且 [tensor_hom_ext] 已经存在于那里。它存在于这里只是为了不修改 Tensor.v。稍后的编辑器如果将 [mval]、[gen_r]、[gen_l] 以及三个拓展性引理上移，只会改变下面的导入列表，其他都不会改变。四个 [Ltac]（[tens_ext] 和其兄弟）在顶层被声明，因为策略符号在 [Section] 中不会保留。它们以此文件的习惯用法命名，而不是通用名称，因为 [Ltac] 名称是全局的；下面记录的检查没有发现它们在树中的其他使用。
 
- 工程说明，每个都消耗一个编译周期。(a) `apply tensor_hom_ext` 失败，而且原因并非人们最初猜测的那样。目标 `f ≈ g` 在 [RMod R] 中确实展开为 `∀ a : TensorMod V W, f a ≈ g a`，因此同类集不是障碍。[apply] 报告的内容（用下面的陈述在草稿文件中重新测量）是 `Unable to unify "?M ?t ≈ ?M' ?t" with "∀ a, f a ≈ g a"`——一个高阶统一失败，该引理的 `cmon_map (rm_hom ?f)` 表现为一个已应用的元变量，而 `f` 和 `g` 仍然未知。提供它们会使头部变得僵硬，因此下面的 [Ltac] 使用 `match goal with |- ?f ≈ ?g => refine (tensor_hom_ext f g _) end`。 (b) [mt_eq_Equivalence]（Instance/Mod/Tensor.v）是一个 [Lemma]，而不是 [Instance]，因此同类 [rewrite] 和 [transitivity] 无法看到它，导致的错误命名了错误的原因。下面没有任何需要它；需要的消费者应该在嵌套张量上添加 `# [local]ZZ  Existing Instance mt_eq_Equivalence.` (c) [mt_gen] 和 [mte_gen] 以进行显式 `@` 注解。测量时：在模块参数隐式情况下写入 `mt_gen (mt_gen v w) x` 会被拒绝，提示 `The term "mt_gen v w" has type "MTerm V W" while it is expected to have type "carrier ?V"` ——内层生成器在外层张量已知之前被展开，而裸露的 [MTerm] 无法与未知模块的投影统一。这与 Instance/Ab/Monoidal.v 在其 [tensor_hom_ext2] 中记录的陷阱相同，并且在下面被标记为 TYPING 负例。(d) [Program] 通过实例解析悄悄地释放了 [rbl_respects]，当映射字面上是 [rm_smul] 时，因为 Tensor.v 将该字段以实例导出。义务编号随后发生偏移，其余证明落在错误的目标上。因此 [act_bilin] 明确提供了 [rbl_respects]；[act_bilin_r] 的映射是 [rm_smul] 并且其参数交换，并未被解析捕获，也不需要被捕获。 (e) 接受 [Rcomm] 的记录是 [Program Definition]，而不是 [Instance]。在每次使用抽象环时，注册 [ModMonoidal] 会使类型类解析留下一个无法解决的交换性子目标。(Instance/Ab/Monoidal.v 的设计说明第 4 条登记了其结构，因为 [@Monoidal Ab] 没有其他实例，也不需要假设；这两个理由在这里都不适用。) 消费者会显式地传递该结构，就像下面的验收测试所做的那样。(f) 已发现并避免了名称冲突。Construction/Day.v 已占用 `assoc_to`，因此使用 [mod_assoc_to] / [mod_assoc_fr]；Instance/FdVect/DoubleDual.v 已占用 `rmod_hom_neg`，因此缩放映射使用 [rmod_hom_smul]，且未声明取负映射；而用于探针部分仪器检查的显而易见名称 `probe_instrument` 已被 Test/ProbePolynomial.v 占用，因此使用 [mod_monoidal_instrument]。即使名字位于 [Fail] 内并且不会创建常量，最后一个也很重要：`print-assumptions` 门将许多文件加载到一个作用域内，而共享名称会悄悄审核错误的常量。对该文件声明的所有 62 个名字进行扫查——使用其自身 `.glob` 的常量而不是猜测，并且四个 [Ltac] 从源文件读取，因为 `.glob` 根本没有记录任何 [Ltac] 条目——没有在树的其他任何地方找到剩余名字的任何其他出现。已记录测量。123/123 常量在全局上下文下封闭 —— 计数为 [Print Module] 个，其中列出了 51 个源声明的名称，以及 72 个 [Program] 义务，源扫描无法看到，并且该文件未声明 [Record]、[Class] 或 [Inductive]，因此不存在未列出的 [Build_*]。（它将不透明常量呈现为 [Parameter]；这是一种显示约定，而非公理。）读取等级：这是一次性测量，而不是固定门控。提交该文件的提交将在 `_CoqProject` 中注册它，并将其八个常量放入 `print-assumptions` 目标，因此构建会在每次运行时编译该文件并重新审核这八个常量；其余 115 个常量只测量过一次，由人工完成。探测器部分携带四种类型的八个负例（3 个类型错误，2 个转换错误，1 个解析错误，2 个可成型性错误），以及一个无作用域的仪器检查——总共九个 [Fail] 命令，其中仪器是一个守护而非负例。八个中的每一个都被去除了 [Fail]，单独编译，并从完整的错误信息中读取其失败类型。在常量上进行的重命名模拟 9/9 一个负例名称，这个文件声明了——[ModUnitLeft]、[mod_assoc_to]、[ZMod]、[zz2]、[zz3]、[zz5]、[mval]、[ModMonoidal]、[ModSymmetric]——每个在其定义位置被重命名，因为整个文件的重命名本身是无操作的，并且会报告错误地“清洁”；所有九个都在一个非 [Fail] 行打断了文件，所以没有守护是无效的。[UniverseProbe] 节的本地 [Universes] 和 [Constraint] 声明被测量为不会泄漏：下游文件重用相同的层级名称且具有相反约束时仍然可以展开。
+ 工程说明，每个都消耗一个编译周期。(a) `apply tensor_hom_ext` 失败，而且原因并非人们最初猜测的那样。目标 `f ≈ g` 在 [RMod R] 中确实展开为 `∀ a : TensorMod V W, f a ≈ g a`，因此同类集不是障碍。[apply] 报告的内容（用下面的陈述在草稿文件中重新测量）是 `Unable to unify ”?M ?t ≈ ?M' ?t“ with ”∀ a, f a ≈ g a“`——一个高阶统一失败，该引理的 `cmon_map (rm_hom ?f)` 表现为一个已应用的元变量，而 `f` 和 `g` 仍然未知。提供它们会使头部变得僵硬，因此下面的 [Ltac] 使用 `match goal with |- ?f ≈ ?g => refine (tensor_hom_ext f g _) end`。 (b) [mt_eq_Equivalence]（Instance/Mod/Tensor.v）是一个 [Lemma]，而不是 [Instance]，因此同类 [rewrite] 和 [transitivity] 无法看到它，导致的错误命名了错误的原因。下面没有任何需要它；需要的消费者应该在嵌套张量上添加 `# [local]ZZ  Existing Instance mt_eq_Equivalence.` (c) [mt_gen] 和 [mte_gen] 以进行显式 `@` 注解。测量时：在模块参数隐式情况下写入 `mt_gen (mt_gen v w) x` 会被拒绝，提示 `The term ”mt_gen v w“ has type ”MTerm V W“ while it is expected to have type ”carrier ?V“` ——内层生成器在外层张量已知之前被展开，而裸露的 [MTerm] 无法与未知模块的投影统一。这与 Instance/Ab/Monoidal.v 在其 [tensor_hom_ext2] 中记录的陷阱相同，并且在下面被标记为 TYPING 负例。(d) [Program] 通过实例解析悄悄地释放了 [rbl_respects]，当映射字面上是 [rm_smul] 时，因为 Tensor.v 将该字段以实例导出。义务编号随后发生偏移，其余证明落在错误的目标上。因此 [act_bilin] 明确提供了 [rbl_respects]；[act_bilin_r] 的映射是 [rm_smul] 并且其参数交换，并未被解析捕获，也不需要被捕获。 (e) 接受 [Rcomm] 的记录是 [Program Definition]，而不是 [Instance]。在每次使用抽象环时，注册 [ModMonoidal] 会使类型类解析留下一个无法解决的交换性子目标。(Instance/Ab/Monoidal.v 的设计说明第 4 条登记了其结构，因为 [@Monoidal Ab] 没有其他实例，也不需要假设；这两个理由在这里都不适用。) 消费者会显式地传递该结构，就像下面的验收测试所做的那样。(f) 已发现并避免了名称冲突。Construction/Day.v 已占用 `assoc_to`，因此使用 [mod_assoc_to] / [mod_assoc_fr]；Instance/FdVect/DoubleDual.v 已占用 `rmod_hom_neg`，因此缩放映射使用 [rmod_hom_smul]，且未声明取负映射；而用于探针部分仪器检查的显而易见名称 `probe_instrument` 已被 Test/ProbePolynomial.v 占用，因此使用 [mod_monoidal_instrument]。即使名字位于 [Fail] 内并且不会创建常量，最后一个也很重要：`print-assumptions` 门将许多文件加载到一个作用域内，而共享名称会悄悄审核错误的常量。对该文件声明的所有 62 个名字进行扫查——使用其自身 `.glob` 的常量而不是猜测，并且四个 [Ltac] 从源文件读取，因为 `.glob` 根本没有记录任何 [Ltac] 条目——没有在树的其他任何地方找到剩余名字的任何其他出现。已记录测量。123/123 常量在全局上下文下封闭 —— 计数为 [Print Module] 个，其中列出了 51 个源声明的名称，以及 72 个 [Program] 义务，源扫描无法看到，并且该文件未声明 [Record]、[Class] 或 [Inductive]，因此不存在未列出的 [Build_*]。（它将不透明常量呈现为 [Parameter]；这是一种显示约定，而非公理。）读取等级：这是一次性测量，而不是固定门控。提交该文件的提交将在 `_CoqProject` 中注册它，并将其八个常量放入 `print-assumptions` 目标，因此构建会在每次运行时编译该文件并重新审核这八个常量；其余 115 个常量只测量过一次，由人工完成。探测器部分携带四种类型的八个负例（3 个类型错误，2 个转换错误，1 个解析错误，2 个可成型性错误），以及一个无作用域的仪器检查——总共九个 [Fail] 命令，其中仪器是一个守护而非负例。八个中的每一个都被去除了 [Fail]，单独编译，并从完整的错误信息中读取其失败类型。在常量上进行的重命名模拟 9/9 一个负例名称，这个文件声明了——[ModUnitLeft]、[mod_assoc_to]、[ZMod]、[zz2]、[zz3]、[zz5]、[mval]、[ModMonoidal]、[ModSymmetric]——每个在其定义位置被重命名，因为整个文件的重命名本身是无操作的，并且会报告错误地“清洁”；所有九个都在一个非 [Fail] 行打断了文件，所以没有守护是无效的。[UniverseProbe] 节的本地 [Universes] 和 [Constraint] 声明被测量为不会泄漏：下游文件重用相同的层级名称且具有相反约束时仍然可以展开。
 
  未交付的内容是什么。- 没有闭合结构。内部 Hom、张量-Hom 拓扑相伴以及任何 [SymMonClosed] 实例都是伴随文件的事，而不是这个文件的事；这里没有提到指数。- 没有证明 ⊗ 不是范畴乘积。它确实不是，但这里没有机器校验的区分，所以这个文件并没有建立“树的第一个非笛卡尔范畴单元证据”——那句话需要一个没有人写过的反驳。相反声称的是更狭窄的内容，并且是两种较弱的证据：对拼写 `@Monoidal … RMod` 和 `Monoidal (RMod` 的一次扫描没有返回任何结果，并且 Instance/Mod/Tensor.v 在其自述中否认了该结构。两者都不排除在另一个名字下存在位于 [@Monoidal (RMod R)] 中的某种通用构造。- 没有 [Instance] 注册，原因见上文(e)；[ModMonoidal]、[ModBraided] 和 [ModSymmetric] 只是普通的 [Program Definition]，并不参与分解。- 在 R 中没有自然性。没有说明结构如何沿环同态变化，也没有尝试与 Instance/Rng/Mod.v 的标量限制进行比较。- 没有与 Instance/Ab/Monoidal.v 的比较。在 R = ℤ 时，这两种单体结构应该是一致的，但没有构建比较函子。早期的修订将原因说明为“[AbObject] 的 ℤ-模结构不在树中（Instance/Mod/Tensor.v 为基础张量记录了相同的缺口）”；自 #454 起，该结构为 Instance/Mod/Cogenerator.v 的 [Ab_to_ZMod]，因此缺少的是比较本身，而不是其组成部分。- 不进行宇宙修复。上述记录的标识是经过测量和固定的，而非提升的。本文件中的任何常量都没有宇宙注解，是否像 Instance/Ab/Monoidal.v 的设计说明第 5 条那样声明会释放 [ModMonoidal] 尚未测试；同样也不清楚该限制是否会影响消费者想要的任何范畴。
  - 不允许在该结构上使用幺半群、代数或双模，以及不允许使用分等级或微分分等级的变体——参见 Mac Lane §VII.1 花名册中的兄弟行。
@@ -1280,12 +1280,12 @@ Example mod_pentagon_value :
    Four kinds occur and they are genuinely distinguishable by the error
    text, not merely by label:
 
-   TYPING       — "has type … while it is expected to have type …",
+   TYPING       — “has type … while it is expected to have type …”,
    with no further clause
-   CONVERSION   — the same, closing with "(cannot unify … and …)"
-   RESOLUTION   — "contains unresolved implicit arguments … Cannot infer
-   this placeholder"
-   FORMABILITY  — "(universe inconsistency: Cannot enforce … because …)"
+   CONVERSION   — the same, closing with “(cannot unify … and …)”
+   RESOLUTION   — “contains unresolved implicit arguments … Cannot infer
+   this placeholder”
+   FORMABILITY  — “(universe inconsistency: Cannot enforce … because …)”
 
    They are kept lexically apart below.  Every negative sits beside an
    APPLIED control that must succeed — never a bare [Check] of an
@@ -1461,8 +1461,8 @@ Example probe_map_smul_concrete
    [Instance]s, so nothing supplies the commutativity hypothesis
    automatically.  This pins that leaving it to be inferred fails at an
    abstract ring, where no commutativity is in scope.  Its error text names
-   an unresolved placeholder and contains neither "cannot unify" nor
-   "universe inconsistency", which is what separates it from the two
+   an unresolved placeholder and contains neither “cannot unify” nor
+   “universe inconsistency”, which is what separates it from the two
    groups above and the one below. 
 
    --------

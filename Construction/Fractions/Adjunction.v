@@ -40,9 +40,9 @@ Generalizable All Variables.
    The right-hand half is [Construction/Groupoid/Core.v]'s, unchanged and
    unmoved; only the left-hand half is new, and the ambient is [Cat] for
    both, so no strictification and no comparison functor stands between
-   them.  [Instance/Grpd.v]'s header said the left half "remains prose",
-   and [Construction/Fractions.v]'s said the triple "is NOT assembled over
-   one ambient here".  Both are superseded by this file, and both have been
+   them.  [Instance/Grpd.v]'s header said the left half “remains prose”,
+   and [Construction/Fractions.v]'s said the triple “is NOT assembled over
+   one ambient here”.  Both are superseded by this file, and both have been
    corrected in place in those headers — Instance/Grpd.v's sentence now
    points here, and Construction/Fractions.v keeps its account of the gap
    as the record of what closing it cost, since its strict statements
@@ -226,7 +226,7 @@ Qed.
 
 (*
  The two functor laws, transported onto [FractionsMap].  These are the
- "functoriality of [Fractions] in [C]" that [Construction/Fractions.v]
+ “functoriality of [Fractions] in [C]” that [Construction/Fractions.v]
  listed as not delivered. 
 
  --------

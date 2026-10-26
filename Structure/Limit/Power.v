@@ -20,21 +20,21 @@ Generalizable All Variables.
  Sources, cited BY LOCATION; the one-line descriptions are transcribed from
  the catalog entries of issue #321 rather than from the printed books:
 
- - Mac Lane, "Categories for the Working Mathematician", 2nd ed.
+ - Mac Lane, “Categories for the Working Mathematician”, 2nd ed.
  (Springer GTM 5), section III.3, printed p. 64 (PDF p. 73), item
  [maclane:III.3:def3], and section III.4, printed p. 70 (PDF p. 79),
  item [maclane:III.4:def4].  The POWER [b^J] is the product of the
  constant J-indexed family at [b], characterized by
  [C(c, b^J) ≅ C(c, b)^J]; dually the COPOWER [J · b] is the
  constant-family coproduct, characterized by [C(J · b, c) ≅ C(b, c)^J].
- - Riehl, "Category Theory in Context", 2nd ed., section 3.5, printed
+ - Riehl, “Category Theory in Context”, 2nd ed., section 3.5, printed
  p. 110 (PDF p. 130), item [riehl:3.5:example4]: iterated products of a
  single object are POWERS (cotensors), written [A^I], with the
  representable universal property [C(X, A^I) ≅ C(X, A)^I] given by
  composing with the projections [ev_i].  Printed p. 111 (PDF p. 131),
  item [riehl:3.5:example8]: iterated coproducts of a single object are
  COPOWERS (tensors), written [I · A], with [C(∐_I A, X) ≅ C(A, X)^I].
- - Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
+ - Awodey, “Category Theory”, 1st ed. (Carnegie Mellon pre-print,
  September 2005), chapter 3, section 3.2, unnumbered remark, printed
  p. 61 (PDF p. 70), item [awodey:3.2:remark-finite-copower]: in Sets a
  finite set [A] is a coproduct of copies of the terminal object,
@@ -72,8 +72,8 @@ Generalizable All Variables.
  function type while the exponential's is setoid MORPHISMS out of the
  discrete setoid.
 
- Read "free" as scoped to top-level constant DECLARATIONS matching that
- pattern; the token "power" occurs widely in comments and inside longer
+ Read “free” as scoped to top-level constant DECLARATIONS matching that
+ pattern; the token “power” occurs widely in comments and inside longer
  names ([Powerset], [GrpCosetPower], [cogen_power], [law_pow], [mat_pow],
  [tpower]), none of which this file touches.
 
@@ -146,15 +146,15 @@ Generalizable All Variables.
  the two smallness negatives print DIFFERENT messages for the two
  operators, and that is why, not an accident of phrasing.
 
- RECORDED CORRECTION.  An earlier revision read: "[power_of_limit@{u
+ RECORDED CORRECTION.  An earlier revision read: “[power_of_limit@{u
  u0 u1}] and [copower_of_colimit@{u u0 u1}] take
  [C : Category@{u1 Set Set}] -- [C]'s hom AND proof universes pinned to
  [Set] -- with the INDEX [Type@{u}] left FREE.  That pin is
- Structure/Limit/Product.v's, not this file's".  The attribution was
+ Structure/Limit/Product.v's, not this file's”.  The attribution was
  one step short and the pin is now gone: it came from
  Instance/Discrete.v's then-unannotated [DiscreteCat_Functor], which
- was annotated in place there in the PR "algebraic carriers are
- sets" (2026-09-17).  Measured after it, [iprod] and its limit-shaped
+ was annotated in place there in the PR “algebraic carriers are
+ sets” (2026-09-17).  Measured after it, [iprod] and its limit-shaped
  siblings are stated over [C : Category@{u1 u2 u2}] with no literal
  [Set], so these two constants no longer pin [C]'s hom and proof
  universes either.  What was said about the INDEX is unchanged and is
@@ -179,7 +179,7 @@ Generalizable All Variables.
  ITSELF is already in this file's dependency closure, one hop away:
  Structure/Cone.v Requires it, and this file Requires Structure/Cone.
  It is likewise already in Adjunction/GAFT.v's closure, through
- Structure/Limit.  So "kept free of Instance/Sets" would be wrong, and a
+ Structure/Limit.  So “kept free of Instance/Sets” would be wrong, and a
  textual grep of GAFT.v for [Instance.Sets] -- which returns zero -- measures
  that file's own text, not what it Requires.
 
@@ -203,8 +203,8 @@ Generalizable All Variables.
  [{ j : cog_index G & c ~> cog_obj G j }] (Adjunction/SAFT.v),
  which varies with [projT1 p]; there is no single object [b] for which it
  is [fun _ => b].  It is a product of a genuinely indexed family, and the
- word "power" in that file names the classical phrase "the unit into the
- cogenerator power is monic" rather than the constant-family construction.
+ word “power” in that file names the classical phrase “the unit into the
+ cogenerator power is monic” rather than the constant-family construction.
 
  WHAT IS NOT DELIVERED
 
@@ -221,8 +221,8 @@ Generalizable All Variables.
  STATUS: axiom-free, no [Program], no tactic.  Every constant is a
  [Definition] supplied by [:=]; the two [Example]s close by [eq_refl].  All
  22 constants -- the whole of [Print Module Category.Structure.Limit.Power],
- which lists 22 [Definition]s and no opaque constants -- report "Closed
- under the global context"; the Makefile's [print-assumptions] target audits
+ which lists 22 [Definition]s and no opaque constants -- report “Closed
+ under the global context”; the Makefile's [print-assumptions] target audits
  the headline ones. 
 
  --------

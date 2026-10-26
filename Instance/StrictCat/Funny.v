@@ -37,13 +37,13 @@ Generalizable All Variables.
    A load-bearing caveat: there is NO such tensor on the weak [Cat]
    (Instance/Cat.v), whose hom-setoid [Functor_Setoid] identifies functors
    up to natural isomorphism.  The funny tensor product is not invariant
-   under equivalence of categories: with I the "walking isomorphism"
+   under equivalence of categories: with I the “walking isomorphism”
    chaotic groupoid on two objects, [Functor_Setoid] identifies [Id[I]]
    with the constant functor at a point (they are naturally isomorphic by
    chaotic naturality), yet [1 □ 1 ≅ 1] while [I □ I] is equivalent to the
    group ℤ — the interchange loop
    [(fapp (rstep u) (lstep u))⁻¹ ∘ (fapp (lstep u) (rstep u))]
-   at (a, a) is free ([fapp t u] is "t then u", Construction/Funny.v).
+   at (a, a) is free ([fapp t u] is “t then u”, Construction/Funny.v).
    Hence [fmap_respects] of a would-be
    [tensor : Cat ∏ Cat ⟶ Cat] is FALSE, and the obstruction persists with one
    argument fixed ([− □ I] is already non-Proper).  The tensor therefore
@@ -51,8 +51,8 @@ Generalizable All Variables.
    [Functor_StrictEq_Setoid] compares functors strictly — the same shape of
    problem as the issue #138 discussion recorded in Instance/StrictCat.v.
 
-   Per Foltz–Lair–Kelly ("Algebraic categories with few monoidal biclosed
-   structures or none", JPAA 17(2) (1980) 171-177), up to isomorphism there
+   Per Foltz–Lair–Kelly (“Algebraic categories with few monoidal biclosed
+   structures or none”, JPAA 17(2) (1980) 171-177), up to isomorphism there
    are exactly two monoidal biclosed structures on Cat, and both are
    symmetric: the cartesian one and this funny one.  The braiding is
    [FunnySwap] (Construction/Funny/Swap.v), and the unit [1] is terminal in

@@ -23,7 +23,7 @@ Generalizable All Variables.
 (*
    * * Two functor categories over Matr: equivalence and similarity
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.4
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §II.4
    Exercise 6 (printed p. 42) [maclane:II.4:ex6]: describe the objects
    and the isomorphisms of the functor categories [Matr_K]^2 and
    [Matr_K]^(B N), where 2 is the walking arrow and B N the delooping of
@@ -123,8 +123,8 @@ Generalizable All Variables.
    equivalence_is_weaker_than_similarity   ...and strictly so
 
    [matrix_similarity_iso] is the constant pinned for the axiom audit.
-   All 62 top-level constants of the file report "Closed under the
-   global context", which covers the [Program] obligations too, those
+   All 62 top-level constants of the file report “Closed under the
+   global context”, which covers the [Program] obligations too, those
    being reachable from the definitions that generate them.
 
    THE WITNESSES are over the integers, and they are chosen so that the
@@ -488,7 +488,7 @@ Qed.
  An endomorphism conjugate to an identity is an identity: the
  similarity class of [id] is a singleton.  This is what makes the
  negative witnesses below cheap, and it is the categorical content of
- "only the identity matrix is similar to the identity matrix". 
+ “only the identity matrix is similar to the identity matrix”. 
 
  --------
  与恒等映射共轭的内射映射是恒等映射：[id] 的相似类是单例。这正是下面负见证便宜的原因，也是“只有恒等矩阵与恒等矩阵相似”这一命题的范畴内容。
@@ -775,7 +775,7 @@ Universe q.
 
 (*
  The instance is written [@{q Set Set}], not [@{Set Set q}]: since the PR
- "algebraic carriers are sets" (2026-09-17) the record's AUXILIARY universe
+ “algebraic carriers are sets” (2026-09-17) the record's AUXILIARY universe
  -- the one bounding the [rig_prop] field's own sort, which carries the
  [Set+1] -- is the FIRST argument rather than the third.  The roles are
  unchanged: the carrier and proof levels are still pinned at [Set] and the
@@ -1007,8 +1007,8 @@ Qed.
 
 (*
  The object action of the functor named by a square matrix is the
- dimension, definitionally -- Mac Lane's "an object of [Matr_K]^(B N)
- is a square matrix" read as an equation.  (Objects, so [=] rather than
+ dimension, definitionally -- Mac Lane's “an object of [Matr_K]^(B N)
+ is a square matrix” read as an equation.  (Objects, so [=] rather than
  [≈]: this is the convertibility exception.) 
 
  --------

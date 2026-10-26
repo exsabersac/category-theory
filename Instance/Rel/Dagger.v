@@ -24,12 +24,12 @@ Generalizable All Variables.
 (*
    * * Rel: converse, self-duality, and the graph embedding's faithfulness
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.7
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.7
    (printed p. 26) [maclane:I.7:construction8]: Rel carries the
    CONVERSE relation R† = { (b, a) | (a, b) ∈ R }, an involution that
    is an anti-homomorphism for the relative product; and Set sits
    inside Rel by taking graphs of functions.
-   Awodey, "Category Theory", 2nd ed., §1.9 Exercise 2 (printed
+   Awodey, “Category Theory”, 2nd ed., §1.9 Exercise 2 (printed
    p. 29) [awodey:1:ex2]: which of these hold?  (a) Rel ≅ Rel^op;
    (b) Sets ≅ Sets^op; (c) P(X) ≅ P(X)^op for a fixed set X.
    nLab: https://ncatlab.org/nlab/show/Rel

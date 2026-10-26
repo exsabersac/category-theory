@@ -26,7 +26,7 @@ Generalizable All Variables.
  naming rings and lattices as the next examples.  This file carries out
  the ring half; Structure/Lattice.v carries out the lattice half.
 
- What "internalization" buys is that one definition, read in different
+ What “internalization” buys is that one definition, read in different
  ambient categories, is many classical theories at once: a ring object
  in Set is an ordinary ring, in Top a topological ring, in the category
  of schemes a ring scheme, in sheaves a sheaf of rings.  The ambient
@@ -43,12 +43,12 @@ Generalizable All Variables.
  setoid carrier), and Theory/Algebra/Rig.v likewise takes
  [RigObject].  Both are in scope here, since the [Sets] section below
  compares against them, so the names could not be reused.  The tree
- already carries four distinct "monoid" notions under four names --
+ already carries four distinct “monoid” notions under four names --
  [MonoidObject] (Structure/Monoid.v, internal), [MonObject]
  (Construction/Deloop.v, a bare setoid monoid), [Monoid]
  (Theory/Algebra/Monoid.v, internal in a monoidal category) and
  [Monoid] (Theory/Coq/Monoid.v, over [Coq]) -- and the disambiguation
- there runs "full spelling = internal, abbreviation = set-level"
+ there runs “full spelling = internal, abbreviation = set-level”
  ([GroupObject] vs [GrpObject]).  Rig.v inverts that convention, so it
  cannot be followed; the classes here are therefore [InternalSemiring]
  and [InternalRing], with the [Internal] prefix stating exactly what
@@ -57,8 +57,8 @@ Generalizable All Variables.
 
  PRIOR ART.  No in-tree class carries two monoid structures on one
  object AS [Monoid]-TYPED FIELDS -- and that qualifier is the whole
- claim, an earlier revision having billed this as a search "by shape
- rather than by name" when it is a sweep by the field type's NAME.  By
+ claim, an earlier revision having billed this as a search “by shape
+ rather than by name” when it is a sweep by the field type's NAME.  By
  SHAPE the pattern DOES occur, and in the very file named below: sweeping
  for record bodies with two [_assoc] axioms returns
  Theory/Algebra/Rig.v's [RigObject], which carries [(rig_zero,
@@ -149,7 +149,7 @@ Generalizable All Variables.
  [Monoid] record does not, also pinned -- the [SetoidMorphism]s are
  rebuilt with different [proper_morphism] certificates.  Both
  [Fail]s were stripped and confirmed to be genuine CONVERSION
- failures ("cannot unify"), not typing or universe errors.
+ failures (“cannot unify”), not typing or universe errors.
 
  ENGINEERING FINDING, and it shapes every statement below.  At
  [CC_Monoidal] the tensor IS the product: [bimap f g = split f g],
@@ -179,7 +179,7 @@ Generalizable All Variables.
  [Constraint uh < up], a control naming a hom at those levels is
  accepted while each of [@Cartesian C], [@Terminal C] and
  [@Monoidal C] is rejected, each with a genuine
- "Cannot enforce up = uh".  [MonoidObject] is NOT a fourth donor: its
+ “Cannot enforce up = uh”.  [MonoidObject] is NOT a fourth donor: its
  signature takes a [Monoidal@{u u0}] argument over
  [C : Category@{u u0 u0}], so [@Monoidal C] is rejected before any
  field of it is consulted and it cannot be probed apart -- whether it
@@ -194,7 +194,7 @@ Generalizable All Variables.
  as their only STRICT constraint, and no [Set] anywhere -- the rest of
  each block is some fifteen [<=] bounds against donor universes
  ([projections], [prod_rect], [Basics.compose], [eq_ind]), among them
- [o <= q], which relates two DECLARED binders, so "nothing else" would
+ [o <= q], which relates two DECLARED binders, so “nothing else” would
  be wrong even read charitably.  The [Set]-freedom holds only because
  their
  universe binders are written out: unannotated, [Sets_Monoid] minimizes
@@ -237,7 +237,7 @@ Generalizable All Variables.
  lifted here).
  - No instance in any ambient category other than [Sets].  In
  particular no internal ring in [Top], [Coq] or a presheaf category,
- so "a ring object in Top is a topological ring" stays prose.
+ so “a ring object in Top is a topological ring” stays prose.
  - The [Sets] round trips are measured but NOT packaged as an
  equivalence or an isomorphism of categories; there is no category on
  either side to state one in.
@@ -520,13 +520,13 @@ Proof.
 Qed.
 
 (*
- [Structure/Group.v] declares [Notation "'inverse' [ G ]"], which makes
+ [Structure/Group.v] declares [Notation “'inverse' [ G ]”], which makes
  [inverse] a notation keyword: neither [@inverse] nor a record-literal
  field assignment [inverse := _] parses.  The group object is therefore
  built with the constructor applied positionally. 
 
  --------
- [Structure/Group.v] 声明 [Notation "'inverse' [ G ]，这使得 [inverse] 成为一个记号关键字：既不是 [@inverse]，也不是记录字面值字段赋值 [inverse := _] 能被解析。因此，该组对象是通过按位置应用构造函数来构建的。
+ [Structure/Group.v] 声明 [Notation “'inverse' [ G ]，这使得 [inverse] 成为一个记号关键字：既不是 [@inverse]，也不是记录字面值字段赋值 [inverse := _] 能被解析。因此，该组对象是通过按位置应用构造函数来构建的。
 *)
 Definition InternalRing_GroupObject :
   @GroupObject C CC_CartesianMonoidal r :=
@@ -596,7 +596,7 @@ Next Obligation. now rewrite rig_distr_l. Qed.
 Next Obligation. now rewrite rig_distr_r. Qed.
 
 (*
- [PA] is new since the PR "algebraic carriers are sets" (2026-09-17): a
+ [PA] is new since the PR “algebraic carriers are sets” (2026-09-17): a
  [RigObject] carries [rig_prop], and an arbitrary [SetoidObject] of [Sets]
  supplies no [Prop] mirror for its `≈` (Instance/Sets/Propositional.v's
  header says why there is no such instance in general).  It is a class

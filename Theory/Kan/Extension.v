@@ -28,7 +28,7 @@ nLab: https://ncatlab.org/nlab/show/Kan+extension
    adjoint does not; it is the universal pair given by a unit X ⟹ LocalLan ◯ F
    (left, initial) or a counit LocalRan ◯ F ⟹ X (right, terminal). When C' = 1
    the left/right Kan extensions specialise to colimits/limits of X. The
-   slogan "all concepts are Kan extensions" (Mac Lane) records that limits,
+   slogan “all concepts are Kan extensions” (Mac Lane) records that limits,
    colimits, adjoints, ends, and coends are all instances.
 
 --------
@@ -45,33 +45,33 @@ Where Kan extensions come from, and what they are for
 
    nLab:  https://ncatlab.org/nlab/show/codensity+monad
    nLab:  https://ncatlab.org/nlab/show/nerve+and+realization
-   Paper: Kan, "Adjoint functors", Transactions of the American
+   Paper: Kan, “Adjoint functors”, Transactions of the American
           Mathematical Society 87, 1958
-   Paper: Leinster, "Codensity and the ultrafilter monad", Theory and
+   Paper: Leinster, “Codensity and the ultrafilter monad”, Theory and
           Applications of Categories 28, 2013
-   Paper: Hinze, "Kan Extensions for Program Optimisation — Or: Art and
-          Dan Explain an Old Trick", MPC 2012
+   Paper: Hinze, “Kan Extensions for Program Optimisation — Or: Art and
+          Dan Explain an Old Trick”, MPC 2012
 
    Adjoint functors and Kan extensions entered mathematics in the same
    paper.  Daniel Kan, after whom Kan complexes and Kan fibrations are
-   named, wrote "Adjoint functors" (1958) to codify the formal
+   named, wrote “Adjoint functors” (1958) to codify the formal
    properties of the passage between spaces and simplicial sets; the
-   memorial note of Barwick, Hopkins, Miller and Moerdijk ("Daniel M.
-   Kan (1927–2013)") records that Eilenberg insisted on the name
-   "adjoint", that the same paper defines limits, colimits, and what
-   are now called Kan extensions, and that Mac Lane's dictum is "only a
-   mild exaggeration".  The word "extension" is homotopical in origin:
+   memorial note of Barwick, Hopkins, Miller and Moerdijk (“Daniel M.
+   Kan (1927–2013)”) records that Eilenberg insisted on the name
+   “adjoint”, that the same paper defines limits, colimits, and what
+   are now called Kan extensions, and that Mac Lane's dictum is “only a
+   mild exaggeration”.  The word “extension” is homotopical in origin:
    Kan had defined homotopy groups of cubical sets by extending maps
    from the boundary of a cube minus one face, the extension condition
    now named after him.  Mac Lane devotes Chapter X of Categories for
-   the Working Mathematician to the concept, with §X.7 titled "All
-   Concepts Are Kan Extensions"; Riehl titles Chapter 6 of Category
+   the Working Mathematician to the concept, with §X.7 titled “All
+   Concepts Are Kan Extensions”; Riehl titles Chapter 6 of Category
    Theory in Context (2016) the same way; the Lehner thesis quoted
    later in this file works that program out in detail.
 
    The problem the definitions answer is extension along a change of
    index: given X : A ⟶ C and F : A ⟶ B, produce the functor B ⟶ C
-   that best extends X through F, "best" splitting into a free (left,
+   that best extends X through F, “best” splitting into a free (left,
    initial) and a cofree (right, terminal) answer.  Because the global
    forms are the two adjoints of [Induced], a Kan extension is an
    adjunction one level up, and the slogan becomes a theorem schedule.
@@ -79,13 +79,13 @@ Where Kan extensions come from, and what they are for
    [Kan_Limit] in Structure/Limit/Kan/Extension.v — a limit is a right
    Kan extension along the functor erasing the diagram shape — and a
    functor has a left adjoint precisely when the right Kan extension of
-   the identity along it exists and is preserved by it (Wikipedia, "Kan
-   extension"), the adjoint functor theorem of Lehner's thesis and the
+   the identity along it exists and is preserved by it (Wikipedia, “Kan
+   extension”), the adjoint functor theorem of Lehner's thesis and the
    reason [preserves_left_Kan], [preserves_right_Kan] and
    [left_adjoint_impl] appear below.  Pointwise, the left extension at
    b is a colimit over the comma category F ↓ b and the right a limit
-   over b ↓ F, equivalently Kelly's coend and end formulas (nLab, "Kan
-   extension").  The comma-category formulas are formalized in
+   over b ↓ F, equivalently Kelly's coend and end formulas (nLab, “Kan
+   extension”).  The comma-category formulas are formalized in
    Structure/Limit/Kan/Pointwise.v ([Pointwise_LocalRightKan] and
    [Pointwise_LocalLeftKan], inhabiting the local classes below from
    per-object comma (co)limits); the coend calculus of Structure/Coend.v
@@ -97,16 +97,16 @@ Where Kan extensions come from, and what they are for
    extension of a functor G along itself is always a monad — the
    codensity monad, Mac Lane's Exercise X.7.3 — the monad G induces
    even in the absence of a left adjoint, measuring how far G is from
-   being codense (nLab, "codensity monad").  For the inclusion of
+   being codense (nLab, “codensity monad”).  For the inclusion of
    finite sets into sets it is the ultrafilter monad (Kennison,
-   Gildenhuys, "Equational completion, model induced triples and
-   pro-objects", JPAA 1, 1971), a result Leinster revived, adding that
+   Gildenhuys, “Equational completion, model induced triples and
+   pro-objects”, JPAA 1, 1971), a result Leinster revived, adding that
    for finite-dimensional vector spaces in all vector spaces it is
    double dualization.  Geometric realization is the left Kan extension
    of a cosimplicial space along the Yoneda embedding, the nerve its
    restricted-Yoneda right adjoint — already §3 of Kan's companion
-   paper "Functors involving c.s.s. complexes" (1958; nLab, "nerve and
-   realization") — and total derived functors are Kan extensions along
+   paper “Functors involving c.s.s. complexes” (1958; nLab, “nerve and
+   realization”) — and total derived functors are Kan extensions along
    localization at the weak equivalences (Riehl, Category Theory in
    Context, §6.4).  In-tree, Construction/Day.v exhibits Day
    convolution as the left Kan extension of the external tensor of two
@@ -118,8 +118,8 @@ Where Kan extensions come from, and what they are for
    and the codensity monad the case where answer types live under the
    extended functor itself.  Re-representing a free-monad program in
    its codensity monad right-associates its binds and can improve
-   quadratic running time to linear (Voigtländer, "Asymptotic
-   Improvement of Computations over Free Monads", MPC 2008); Kmett's
+   quadratic running time to linear (Voigtländer, “Asymptotic
+   Improvement of Computations over Free Monads”, MPC 2008); Kmett's
    kan-extensions Haskell package ships Ran, Lan, Yoneda and Codensity
    in this rank-2 form.  This file proves against what Hinze calls the
    specification — the adjunctions [ran_adjoint] and [lan_adjoint] —
@@ -169,7 +169,7 @@ nLab：https://ncatlab.org/nlab/show/codensity+monad
  [left_adjoint_impl] 如下所示。
 逐点地，左延伸位于
  b 是逗号范畴 F ↓ b 和右侧 a 极限上的上界
- b ↓ F 上，等价于 Kelly 的 coend 和 end 公式 (nLab, "Kan
+ b ↓ F 上，等价于 Kelly 的 coend 和 end 公式 (nLab, “Kan
  扩展”）。 逗号范畴公式形式化为
  Structure/Limit/Kan/Pointwise.v（[Pointwise_LocalRightKan] 和
  [Pointwise_LocalLeftKan]，居住在下面的本地类中
@@ -292,7 +292,7 @@ terminality / universal property: μ factors uniquely through the counit
 }.
 
 (*
-Wikipedia: "There is also a local definition of 'the Kan extension of a
+Wikipedia: “There is also a local definition of 'the Kan extension of a
    given functor F along p' which can exist even if the entire functor defined
    above [global Kan extension] does not. This is a generalization of the fact
    that a particular diagram of shape C can have a limit even if not every
@@ -301,7 +301,7 @@ Wikipedia: "There is also a local definition of 'the Kan extension of a
    may still be partially defined. If the local Kan extension of every single
    functor exists for some given p : C → C' and D, then these local Kan
    extensions fit together to define a functor which is the global Kan
-   extension."
+   extension.”
 
 --------
 维基百科：“还有一个‘沿着 p 的给定函子 F 的 Kan 延拓’的局部定义，即使上面定义在 [global Kan extension] 的整个函子不存在，它也可以存在。这是一个推广事实：一个特定形状为 C 的图可以有极限，即使并非每个该类图都有极限。它也是在伴随中讨论的一个特殊情况，即伴随可能完全不存在，但仍可以部分定义。如果对于某个给定的 p : C → C' 和 D，每一个单独的函子的局部 Kan 延拓都存在，那么这些局部 Kan 延拓可以组合在一起定义一个函子，这个函子就是全局 Kan 延拓。”
@@ -456,10 +456,10 @@ Arguments LocalLeftKan {_ _} F {_} _.
 Arguments LocalLan {_ _} F {_} _ {_}.
 
 (*
-From "All Concepts are Kan Extensions", by Marina Christina Lehner:
+From “All Concepts are Kan Extensions”, by Marina Christina Lehner:
 
-   "A functor preserves a Kan extension when composing then extending is
-   equivalent to extending then composing."
+   “A functor preserves a Kan extension when composing then extending is
+   equivalent to extending then composing.”
 
 --------
 摘自 Marina Christina Lehner 的《所有概念都是 Kan 扩展》：
@@ -487,11 +487,11 @@ Definition preserves_right_Kan `(R : E ⟶ F) :=
     `(!RightKan K E) `(!RightKan K F), R ◯ Ran K G ≈ Ran K (R ◯ G).
 
 (*
-"We show that left adjoints preserve left Kan extensions, while right
+“We show that left adjoints preserve left Kan extensions, while right
    adjoints will preserve right adjoints [sic]. These connections with
    adjoints run deeper. We will show an adjoint functor theorem which says
    the existence of an adjoint is conditional on a functor having and
-   preserving certain Kan extensions."
+   preserving certain Kan extensions.”
 
 --------
 我们展示了左伴随会保持左 Kan 扩展，而右伴随会保持右伴随 [sic]。这些与伴随的联系更加深刻。我们将展示一个伴随定理，该定理说明伴随的存在取决于一个函子是否具有并保持某些 Kan 扩展。
@@ -557,8 +557,8 @@ Proof.
 Qed.
 
 (*
-Work in progress: left adjoints preserve left Kan extensions (Lehner, "All
-   Concepts are Kan Extensions").  The proof is incomplete — three obligations
+Work in progress: left adjoints preserve left Kan extensions (Lehner, “All
+   Concepts are Kan Extensions”).  The proof is incomplete — three obligations
    are left open and the proof script is abandoned before `Qed`, so the theorem
    is NOT added to the environment and introduces no axioms.  Retained as a
    proof sketch.  jww: complete the remaining isomorphism/identity obligations.

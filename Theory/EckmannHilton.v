@@ -7,12 +7,12 @@ Generalizable All Variables.
 (*
 nLab:      https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
    Wikipedia: https://en.wikipedia.org/wiki/Eckmann%E2%80%93Hilton_argument
-   Paper:     Eckmann, Hilton, "Group-like structures in general categories
-              I. Multiplications and comultiplications", Mathematische
+   Paper:     Eckmann, Hilton, “Group-like structures in general categories
+              I. Multiplications and comultiplications”, Mathematische
               Annalen 145, 1962
-   Paper:     Eckmann, Hilton, "Structure maps in group theory", Fundamenta
+   Paper:     Eckmann, Hilton, “Structure maps in group theory”, Fundamenta
               Mathematicae 50, 1961 (Theorem 1.12)
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
               §II.5 Exercise 5 (printed p. 45)
 
    Suppose one carrier bears two binary operations, each with a two-sided
@@ -36,12 +36,12 @@ nLab:      https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
 --------
 nLab:      https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
    Wikipedia: https://en.wikipedia.org/wiki/Eckmann%E2%80%93Hilton_argument
-   Paper:     Eckmann, Hilton, "Group-like structures in general categories
-              I. Multiplications and comultiplications", Mathematische
+   Paper:     Eckmann, Hilton, “Group-like structures in general categories
+              I. Multiplications and comultiplications”, Mathematische
               Annalen 145, 1962
-   Paper:     Eckmann, Hilton, "Structure maps in group theory", Fundamenta
+   Paper:     Eckmann, Hilton, “Structure maps in group theory”, Fundamenta
               Mathematicae 50, 1961 (Theorem 1.12)
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
               §II.5 Exercise 5 (printed p. 45)
 
    设一载体带有两个二元运算，各有双侧单位，且两运算*交换* (interchange)：对 2×2 数组
@@ -61,7 +61,7 @@ nLab:      https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
 Where the argument comes from, and what it is used for
 
    Eckmann and Hilton isolated the principle while studying H-spaces and
-   the dual "H-cospaces": a space with a multiplication and a
+   the dual “H-cospaces”: a space with a multiplication and a
    comultiplication that are compatible in the above sense has an abelian
    fundamental structure.  The 1961 paper in Fundamenta Mathematicae proves
    it for group-like structure maps (Theorem 1.12); the 1962 Mathematische
@@ -78,14 +78,14 @@ Where the argument comes from, and what it is used for
      a group object in Grp is an abelian group.  The ambient
      multiplication and the internal one interchange because the internal
      one is a homomorphism for the ambient one.  This is the reason the
-     tower of "monoids in monoids in ..." collapses at the second rung, so
+     tower of “monoids in monoids in ...” collapses at the second rung, so
      that further categorification must add BRAIDING rather than a further
      multiplication.
 
    - The endomorphisms of an identity — 2-cells on an identity 1-cell in a
      2-category, the endomorphism monoid of the unit object of a monoidal
-     category — form a COMMUTATIVE monoid.  (In this tree "the centre of a
-     monoidal category" names the Drinfeld or premonoidal centres,
+     category — form a COMMUTATIVE monoid.  (In this tree “the centre of a
+     monoidal category” names the Drinfeld or premonoidal centres,
      Structure/Monoidal/Drinfeld.v — categories, not monoids — so that
      phrase is deliberately avoided here.)  Vertical and
      horizontal composition of such cells interchange (that is the middle
@@ -197,11 +197,11 @@ Eckmann 和 Hilton 在研究 H 空间时分离出了该原理
 *)
 
 (*
-Lib.v sets [Default Proof Using "Type"], which keeps only the Section
+Lib.v sets [Default Proof Using “Type”], which keeps only the Section
    variables occurring in a lemma's STATEMENT.  Every statement here
    mentions only [f], [g], [uf] and [ug]; the respectfulness, unit and
    interchange hypotheses are consumed in the PROOFS alone, so they must be
-   requested explicitly.  Declaring "All" once is clearer than repeating a
+   requested explicitly.  Declaring “All” once is clearer than repeating a
    variable list on each lemma, and it makes the discharged interface
    uniform: every lemma below takes the same seven hypotheses.
 
@@ -210,7 +210,7 @@ Lib.v sets [Default Proof Using "Type"], which keeps only the Section
 可以是在 让我看看 lemma 语句中的变量吟可以是每个 让我看看
 军民合作要在《公约》第10为一个缔约方的 你很了解《公约》第 October 条。
 该死 页 
-明确要求。 Tess. 一次宣布" Tess"比一次更清晰
+明确要求。 Tess. 一次宣布“ Tess”比一次更清晰
 的变量的内容充电接口 你是
 统一: 下方研究成果所面对的 你有什么她在做下方的人民?
 *)

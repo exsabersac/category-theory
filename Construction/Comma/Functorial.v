@@ -188,7 +188,7 @@ Generalizable All Variables.
  precursor discussed above; Construction/Comma/Limit.v and
  Construction/Comma/Creation.v supply the limit theory that GAFT consumes.
  Viewed 2-categorically the comma category is the comma OBJECT of a cospan
- in Cat (nLab, "comma object"), and part (b) is the shadow at the level of
+ in Cat (nLab, “comma object”), and part (b) is the shadow at the level of
  1-categories of that object's universal property being natural in the
  cospan; the 2-categorical development is not attempted here. 
 
@@ -264,7 +264,7 @@ End CommaToolkit.
    It is a tactic rather than a lemma for a typing reason worth recording:
    for arbitrary functors F and G into a comma category, the objects
    `1 (F x)` and `1 (G x)` of A ∏ B are rigid and distinct, so a hypothesis
-   "the carrier of the isomorphism's leg is `id`" cannot even be STATED
+   “the carrier of the isomorphism's leg is `id`” cannot even be STATED
    without a transport.  At each application below the two are convertible
    and the identities typecheck, which is exactly what the tactic exploits. 
 

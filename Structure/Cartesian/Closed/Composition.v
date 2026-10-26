@@ -24,13 +24,13 @@ Generalizable All Variables.
 (* * * Internal composition in a cartesian closed category / * * 在笛卡尔闭范畴中的内部复合 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., Springer
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., Springer
  GTM 5, 1998, §IV.6, printed p. 98, Exercise 4 (`maclane:IV.6:ex4`),
  verbatim from the printed page:
 
- "4. In any cartesian closed category obtain a natural transformation
+ “4. In any cartesian closed category obtain a natural transformation
  c^b × b^a → c^a which agrees in Set with composition of functions.
- Prove it (like composition) associative."
+ Prove it (like composition) associative.”
 
  nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
  nLab: https://ncatlab.org/nlab/show/closed+monoidal+category
@@ -68,14 +68,14 @@ Generalizable All Variables.
  laws take the shorter route through [uncurry_internal_compose], the
  transpose read at a pair of generalized elements.
 
- WHAT "NATURAL" CAN AND CANNOT MEAN HERE, which is the one place where
+ WHAT “NATURAL” CAN AND CANNOT MEAN HERE, which is the one place where
  the exercise's own wording has to be read with care.  In [c^b × b^a]
  the object [b] occurs CONTRAVARIANTLY in [c^b] and COVARIANTLY in
  [b^a].  An arrow [f : b1 ~> b2] therefore acts on the two factors in
  OPPOSITE directions and the resulting morphism runs between the MIXED
  objects [c^b2 × b1^a] and [c^b1 × b2^a]; there is no functor of [b]
- alone for a natural transformation in [b] to run BETWEEN, and "natural
- in all three objects" is not a well-typed demand.  Genuine naturality
+ alone for a natural transformation in [b] to run BETWEEN, and “natural
+ in all three objects” is not a well-typed demand.  Genuine naturality
  is available in [a] and in [c], and both are delivered as squares AND
  as transformations:
 
@@ -100,8 +100,8 @@ Generalizable All Variables.
  (the mixed-object mismatch above), with the dinaturality equation
  beside it as the passing control.
 
- ASSOCIATIVITY is Mac Lane's own closing demand, "prove it (like
- composition) associative".  It is stated in exactly the shape
+ ASSOCIATIVITY is Mac Lane's own closing demand, “prove it (like
+ composition) associative”.  It is stated in exactly the shape
  Construction/Enriched.v's [ecompose_assoc] field needs, that is
  through the associator, so that the enrichment below discharges that
  field by [exact] rather than by a restatement:
@@ -136,7 +136,7 @@ Generalizable All Variables.
  arbitrary preorder carrier rather than the objects of [_2].
 
  THE [Set] CLAUSE, at its measured grade.  Mac Lane asks that the
- transformation "agree in Set with composition of functions".  [Sets]
+ transformation “agree in Set with composition of functions”.  [Sets]
  is this library's category of setoids, whose exponential [c^b] is the
  setoid of ≈-respecting maps, so the statement is pointwise on setoid
  morphisms, and [sets_internal_compose] holds at [eq_refl]: the value
@@ -156,7 +156,7 @@ Generalizable All Variables.
  Transparent Obligations] makes opaque, after which [fobj] converts
  with nothing.  The five functors here therefore give their object and
  arrow actions as ordinary definitions first.  The boundary is narrower
- than "any inline object action": an inline [exponent_obj] alone DOES
+ than “any inline object action”: an inline [exponent_obj] alone DOES
  reduce, and it is [product_obj] -- the [Cartesian] instance -- that is
  deferred, which is the donor's attribution rather than a fact
  re-derived here.  What the probe machine-checks is the SEPARATION, the
@@ -177,8 +177,8 @@ Generalizable All Variables.
 
  AXIOMS.  All 71 constants of this file -- the 53 named declarations
  plus the 18 [Program] obligations of the five functors and the
- enrichment, which no source sweep sees -- report "Closed under the
- global context".  [Sets_Closed] obtains its exponentials with no axiom
+ enrichment, which no source sweep sees -- report “Closed under the
+ global context”.  [Sets_Closed] obtains its exponentials with no axiom
  (Instance/Coq.v records the contrast), so the [Set] clause costs
  nothing; the axiom-carrying [Coq_Closed] (Instance/Coq.v) is
  deliberately NOT instantiated here and Instance/Coq.v is not required.
@@ -287,8 +287,8 @@ Proof. rewrite eval_first; apply uncurry_internal_compose_raw. Qed.
 
 (*
  The workhorse.  For any pair of generalized elements [h] and [k] of the
- two exponentials, the transpose of the composite is "apply [h] to the
- result of applying [k]".  Every law below is an instance. 
+ two exponentials, the transpose of the composite is “apply [h] to the
+ result of applying [k]”.  Every law below is an instance. 
 
  --------
  干活的主力。对于两个指数的任意一对广义元素 [h] 和 [k]，复合的转置是“将 [h] 应用于应用 [k] 的结果”。下面的每条定律都是一个实例。
@@ -416,7 +416,7 @@ Proof.
 Qed.
 
 (*
- Mac Lane's "prove it (like composition) associative", in exactly the
+ Mac Lane's “prove it (like composition) associative”, in exactly the
  shape [ecompose_assoc] demands: the associator on the right. 
 
  --------
@@ -665,7 +665,7 @@ Example expExp_fobj (c : C) (a : C^op) :
 Example composeSrcA_fobj (b c : C) (a : C^op) :
   fobj[ComposeSrcA b c] a = c^b × b^(opobj a) := eq_refl.
 
-(* Mac Lane's "natural transformation", in [c]. / Mac Lane 的“自然变换”，在 [c] 中。 *)
+(* Mac Lane's “natural transformation”, in [c]. / Mac Lane 的“自然变换”，在 [c] 中。 *)
 Definition compose_Transform_c (a b : C) :
   ComposeSrcC a b ⟹ ExpBase a :=
   @Build_Transform' C C (ComposeSrcC a b) (ExpBase a)
@@ -831,8 +831,8 @@ End Composition.
 (* * * Agreement with composition of functions in [Set] / * * 与 [Set] 中函数组合的一致性 *)
 
 (*
- Mac Lane's remaining clause: the transformation "agrees in Set with
- composition of functions".  [Sets] is this library's category of
+ Mac Lane's remaining clause: the transformation “agrees in Set with
+ composition of functions”.  [Sets] is this library's category of
  setoids, whose exponential [c^b] is the setoid of ≈-respecting maps, so
  the statement is pointwise on setoid morphisms. 
 

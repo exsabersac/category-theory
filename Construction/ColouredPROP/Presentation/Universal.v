@@ -120,7 +120,7 @@ Generalizable All Variables.
  [cprop_unit_nil] at the empty word, [strict_ap_obj] against
  [cprop_tensor_app] peeling one typed wire at a time).
 
- As in [Universal.v], "strict symmetric monoidal functor" is one
+ As in [Universal.v], “strict symmetric monoidal functor” is one
  [StrictMonoidalFunctor] over the strict-path monoidals plus the
  braid-compatibility square [CSymmetricStrictW] over that SAME
  tensor comparison, with the target braiding re-indexed to the

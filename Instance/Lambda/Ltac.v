@@ -84,7 +84,7 @@ Ltac reduce :=
           end; subst).
 
 (*
- [inv H] is the usual "invert and clean up" idiom: derive the constructor
+ [inv H] is the usual “invert and clean up” idiom: derive the constructor
  constraints of [H] by [inversion], [subst] the resulting equations, discard
  the now-redundant [H], and finish with [reduce] to dispatch the dependent
  equalities (often [existT] equalities) that inversion of an indexed

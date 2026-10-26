@@ -19,17 +19,17 @@ Generalizable All Variables.
 (* * * T_R X as the finitely supported functions X → R / * * T_R X 作为有限支持的函数 X → R *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.4, Exercise 2(a), printed p. 146 (PDF
  p. 155) — maclane:VI.4:ex2
- Book: Riehl, "Category Theory in Context", Example 5.1.4(iii),
+ Book: Riehl, “Category Theory in Context”, Example 5.1.4(iii),
  printed p. 184 (PDF p. 204) — riehl:5.1:example4
  nLab: https://ncatlab.org/nlab/show/free+module
 
- Mac Lane's part (a) opens "For each set X, T_R X is the set of all
+ Mac Lane's part (a) opens “For each set X, T_R X is the set of all
  those functions f: X → R with only a finite number of non-zero
- values"; Riehl: "Formally, a finite R-linear combination is a finitely
- supported function χ : A → R".  Instance/Mod/FreeMonad.v reads T_R
+ values”; Riehl: “Formally, a finite R-linear combination is a finitely
+ supported function χ : A → R”.  Instance/Mod/FreeMonad.v reads T_R
  X on formal combinations, unconditionally, and their coefficients
  under a decider; this satellite is the third reading.
 
@@ -49,8 +49,8 @@ Generalizable All Variables.
  coefficients ([fv_lc_unique]; the coefficient of z in Σ rᵢ·⟨xᵢ⟩ is the
  sum of the rᵢ with xᵢ ≈ z, [fv_coef_lc]), which is the respectfulness
  of [fv_coef] and the coefficient uniqueness Instance/Mod/Free.v's WHAT
- IS NOT DELIVERED records ("nothing here says two lists denoting the
- same element are related"), proved here under the decider (Free.v's
+ IS NOT DELIVERED records (“nothing here says two lists denoting the
+ same element are related”), proved here under the decider (Free.v's
  CORRECTION (#472)); [to_finsupp] respects ≈ by it.  INJECTIVITY, its
  converse: a combination is determined by its coefficients
  ([fv_coef_injective]), from [fv_collect] (every combination is [fv_eq]
@@ -536,7 +536,7 @@ Proof.
                    (fun x m => fs_dedup_mem x _ m))).
 Qed.
 
-(* Mac Lane's T_R X, "the set of all those functions f : X → R with only a finite number of non-zero values". / Mac Lane 的 T_R X，“所有那些从 X 到 R 的函数 f 的集合，其中只有有限个非零值。” *)
+(* Mac Lane's T_R X, “the set of all those functions f : X → R with only a finite number of non-zero values”. / Mac Lane 的 T_R X，“所有那些从 X 到 R 的函数 f 的集合，其中只有有限个非零值。” *)
 Definition TR_FinSupp_iso@{+} :
   @Isomorphism Sets@{c so} (fobj[FreeModF R] X) FinSuppObj.
 Proof using R X Xdec.

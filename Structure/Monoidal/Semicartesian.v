@@ -74,14 +74,14 @@ End SemicartesianMonoidal.
 Require Import Category.Structure.Terminal.
 
 (*
- The two directions below witness that "semicartesian monoidal" and "the
- unit I is terminal" are the same condition, packaged as a Terminal
+ The two directions below witness that “semicartesian monoidal” and “the
+ unit I is terminal” are the same condition, packaged as a Terminal
  structure on I and as a SemicartesianMonoidal structure respectively. Cf.
  Wikipedia, https://en.wikipedia.org/wiki/Cartesian_monoidal_category :
- "in any such category, the terminal object is the monoidal unit." 
+ “in any such category, the terminal object is the monoidal unit.” 
 
  --------
- 以下两个方向证明了“半笛卡尔幺半群”和“单位对象 I 是终对象”是相同的条件，分别作为 I 上的终结构和作为半笛卡尔幺半群结构。参见维基百科，https://en.wikipedia.org/wiki/Cartesian_monoidal_category："在任何这样的范畴中，终对象都是幺半群单位对象。"
+ 以下两个方向证明了“半笛卡尔幺半群”和“单位对象 I 是终对象”是相同的条件，分别作为 I 上的终结构和作为半笛卡尔幺半群结构。参见维基百科，https://en.wikipedia.org/wiki/Cartesian_monoidal_category：“在任何这样的范畴中，终对象都是幺半群单位对象。”
 *)
 
 (*

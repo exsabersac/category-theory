@@ -16,12 +16,12 @@ Generalizable All Variables.
 
 (*
  nLab: https://ncatlab.org/nlab/show/2-category+of+adjunctions
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7
- "Transformations of Adjoints", book p. 101, the display immediately
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.7
+ “Transformations of Adjoints”, book p. 101, the display immediately
  after the paragraph naming A^(adj)X.
 
- Mac Lane: "Also there are two evident 'forgetful' functors to the
- ordinary functor categories, as follows:"
+ Mac Lane: “Also there are two evident 'forgetful' functors to the
+ ordinary functor categories, as follows:”
 
  A^X  ←  A^(adj)X ,     [A^(adj)X]^op  →  X^A
 
@@ -61,7 +61,7 @@ Generalizable All Variables.
 
  BEYOND THE DISPLAY: BOTH FUNCTORS ARE FULL AND FAITHFUL.  Mac Lane does
  not say this on that page, and it is not needed for the display, but it
- is what makes the word "forgetful" precise here: neither functor loses
+ is what makes the word “forgetful” precise here: neither functor loses
  information, because a conjugate pair is determined by either of its
  legs.  Faithfulness is Instance/Adj.v's [conj_pair_right_unique] and
  [conj_pair_left_unique]; fullness is Conjugate.v's
@@ -78,8 +78,8 @@ Generalizable All Variables.
 
  NOT DELIVERED.  Nothing here says either functor is essentially
  surjective, nor identifies the image of [AdjForgetLeft] with the left
- adjoints inside [D, C]; that would need "a functor with a right adjoint
- is in the image", which is not stated anywhere below.  No equivalence
+ adjoints inside [D, C]; that would need “a functor with a right adjoint
+ is in the image”, which is not stated anywhere below.  No equivalence
  of [Adj C D] with any subcategory is claimed.  Nothing relates these to
  Instance/Adjoints.v, whose objects are categories rather than
  adjunctions between two fixed ones.  The 2-categorical structure on

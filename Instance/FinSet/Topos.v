@@ -107,7 +107,7 @@ Example FinSet_char_at_false :
 
 (*
    * Membership at the power object: [eval : Pow 2 × 2 ~> Ω] applied to
-   the code 2 of the "negation" subset-of-truth-values (the digit
+   the code 2 of the “negation” subset-of-truth-values (the digit
    string [fin_false, fin_true]) at the element [fin_true] yields
    [fin_false], by [eq_refl] — the computability claim is real all the
    way through the derived combinators. 

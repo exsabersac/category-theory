@@ -21,7 +21,7 @@ nLab: https://ncatlab.org/nlab/show/product
    [A * B].  Holding the first component fixed, [Tuple x = (x * −)] is a
    Functor whose [fmap] acts on the second component ([prod_map]); when the
    fixed component [x] carries a Monoid it becomes the writer monad, which
-   threads (accumulates) a monoidal "log" alongside a value, with [ret]/[pure]
+   threads (accumulates) a monoidal “log” alongside a value, with [ret]/[pure]
    seeding the empty log [mempty] and [bind]/[ap] combining logs with [⊗]
    (mappend).  [first]/[second] give the action of [prod] as a bifunctor on,
    respectively, the first and second components.

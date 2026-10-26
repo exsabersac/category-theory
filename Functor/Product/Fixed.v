@@ -21,7 +21,7 @@ Generalizable All Variables.
 
 (**
 The fixed-factor product functor H × − and Mac Lane's induced
-    transformation "f × id". 
+    transformation “f × id”. 
 
 --------
 固定因子乘积函子 H × − 和 Mac Lane 的诱导
@@ -41,22 +41,22 @@ nLab: https://ncatlab.org/nlab/show/natural+transformation
    of [first] and [second].
 
    A word on the spelling of that component.  Mac Lane writes it
-   "f × id".  This tree has no morphism-level × notation; the product of
+   “f × id”.  This tree has no morphism-level × notation; the product of
    two morphisms is [split] (Structure/Cartesian.v), which is
    definitionally the action of the product bifunctor,
    [bimap[×(C)] f g] (Functor/Product/Internal.v).  So the literal
-   in-tree reading of "f × id" is [split f id], and [first f] is that
+   in-tree reading of “f × id” is [split f id], and [first f] is that
    only up to ≈ — the identity survives inside the fork until [id_left]
    removes it, which is what [fixed_product_transform_bimap] below
    records.  The components below are [first f] because that is what
-   issue #240's "Work to be done" prescribes verbatim ("components
-   `first f` and naturality by `first_second`"); [alt_transform] carries
+   issue #240's “Work to be done” prescribes verbatim (“components
+   `first f` and naturality by `first_second`”); [alt_transform] carries
    the [split f id] spelling beside it, and [alt_transform_agrees]
    proves the two equal up to ≈.
 
    Provenance.  This is the exercise catalogued in this library's issue
-   tracker as `maclane:I.4:ex2`, located there at Mac Lane, "Categories
-   for the Working Mathematician", 2nd ed. (GTM 5), §I.4, printed p. 18,
+   tracker as `maclane:I.4:ex2`, located there at Mac Lane, “Categories
+   for the Working Mathematician”, 2nd ed. (GTM 5), §I.4, printed p. 18,
    exercise 2, and reported there as posing the case C = Grp.  Both the
    location and the wording of the exercise are taken from that catalogue
    entry; the printed text was NOT consulted while writing this file, and
@@ -87,7 +87,7 @@ nLab：https://ncatlab.org/nlab/show/natural+transformation
  删除它，这就是下面的[fixed_product_transform_bimap]
  记录。 下面的组件是 [first f]，因为这就是
  问题 #240 的“待完成的工作”逐字规定（“组件
- `first f` 和 `first_second` 的自然性"); [alt_transform] 携带
+ `first f` 和 `first_second` 的自然性“); [alt_transform] 携带
  旁边的 [split f id] 拼写，以及 [alt_transform_agrees]
  证明两者在 ≈ 之间相等。
 
@@ -244,7 +244,7 @@ On [inj_left] / [inj_right] (Structure/Binoidal.v)
      binoidal.
 
    So this file does NOT claim [inj_right] was unavailable, and it does
-   not claim to improve on it as a spelling of "f × id".  On that point
+   not claim to improve on it as a spelling of “f × id”.  On that point
    the existing composite is the better match, and the difference runs
    the opposite way to what one might guess.  Since the product of two
    morphisms in this tree is [split] = [bimap[×(C)]] (see the header
@@ -344,8 +344,8 @@ A note on layering.  This file ends in a Grp section and therefore
    usually needs.  The exercise is stated for groups and issue #240 asks
    for the instantiation alongside the general result, so the import is
    deliberate — but it is a genuinely new dependency, and the precedent
-   for it is thinner than a bare appeal to "Functor/ files already
-   import instances" would suggest.  Those precedents (Functor/Hom.v
+   for it is thinner than a bare appeal to “Functor/ files already
+   import instances” would suggest.  Those precedents (Functor/Hom.v
    imports Instance/Fun.v and Instance/Sets.v; Functor/Diagonal.v
    imports Instance/Fun.v, Instance/One.v and Instance/Two/Discrete.v)
    are all foundational category instances that much of the tree already
@@ -502,7 +502,7 @@ Qed.
 (** ** The same transformation with its component spelled [split f id]  / ** 相同的转换，其组件拼写为 [split f id]*)
 
 (*
-The literal in-tree reading of Mac Lane's "f × id" (see the header):
+The literal in-tree reading of Mac Lane's “f × id” (see the header):
    [split f id], which is [bimap[×(C)] f id] definitionally.  Both
    naturality obligations fall to [unfork] with nothing else.  This is
    here so that the comparison against the binoidal composite the tree
@@ -747,7 +747,7 @@ Proof.
 Qed.
 
 (*
-The direction the header insists on: on the "f × id" spelling the
+The direction the header insists on: on the “f × id” spelling the
    pre-existing composite is exact, not approximate.  The component of
    [alt_transform] at G IS the composite's action on f, by
    [reflexivity]; [alt_transform_agrees] then relates that to this

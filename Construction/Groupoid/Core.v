@@ -24,7 +24,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/Grpd
  Wikipedia: https://en.wikipedia.org/wiki/Core_(group_theory)
 
- Book: Riehl, "Category Theory in Context", Dover 2016, §4.1,
+ Book: Riehl, “Category Theory in Context”, Dover 2016, §4.1,
  Example 4.1.15, printed p. 137 (PDF pp. 157-158)
 
  Construction/Groupoid.v builds the core of ONE category:
@@ -88,8 +88,8 @@ Generalizable All Variables.
 (*
    * ** Functors between groupoids preserve the chosen inverse
 
-   [IsGroupoid] carries a CHOSEN inverse for each arrow, so "F preserves
-   inverses" is not a tautology: it says the choice made in B at [fmap[F] f]
+   [IsGroupoid] carries a CHOSEN inverse for each arrow, so “F preserves
+   inverses” is not a tautology: it says the choice made in B at [fmap[F] f]
    agrees, up to `≈`, with the image of the choice made in A at f.  It does,
    because both are inverses of the same arrow and inverses are unique
    (Structure/Groupoid.v's [ginv_unique_r], which is Eilenberg and
@@ -390,9 +390,9 @@ Defined.
 (*
    * ** The universal property, spelled out
 
-   Riehl's phrasing of the same fact: "because functors preserve
+   Riehl's phrasing of the same fact: “because functors preserve
    isomorphisms, any functor out of a groupoid factors uniquely through the
-   core".  This is the adjunction read at one object, and it is derived FROM
+   core”.  This is the adjunction read at one object, and it is derived FROM
    the adjunction's two round trips rather than proved again -- the
    adjunction is the theorem, this is its restatement.  Uniqueness is up to
    `≈`, which for functors into [Groupoid C] is natural isomorphism, not

@@ -76,8 +76,8 @@ Defined.
  literally a pair (object, natural transformation Δ(c) ⟹ F) on the other, and
  a cone morphism is the same single arrow either way (the second comma
  component lives in the terminal category 1, hence is ttt). Both Wikipedia and
- nLab record this identification: "morphisms of cones are then just morphisms
- in this [comma] category," the diagonal acting trivially on arrows. 
+ nLab record this identification: “morphisms of cones are then just morphisms
+ in this [comma] category,” the diagonal acting trivially on arrows. 
 
  --------
  nLab：https://ncatlab.org/nlab/show/comma+category

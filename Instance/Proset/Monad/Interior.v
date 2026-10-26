@@ -36,32 +36,32 @@ Generalizable All Variables.
 (*
  nLab: https://ncatlab.org/nlab/show/interior+operator
  nLab: https://ncatlab.org/nlab/show/comonad
- Book: Riehl, "Category Theory in Context", 2nd ed., SS 5.1,
+ Book: Riehl, “Category Theory in Context”, 2nd ed., SS 5.1,
  Example 5.1.7, printed p. 186, and SS 5.2, Example 5.2.6
  (begins p. 189), clause (iv) and footnotes 10–11, printed p. 190
- Book: Fong and Spivak, "Seven Sketches in Compositionality", arXiv v3,
+ Book: Fong and Spivak, “Seven Sketches in Compositionality”, arXiv v3,
  SS 1.4.4, footnote 8, printed p. 33
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, SS VI.1, printed p. 139, and SS VI.2,
  printed p. 141
 
  WHAT THE BOOKS SAY.  Mac Lane's p. 139 defines a comonad in a category
  (display (1^op)) and the comonad ⟨FG, ε, FηG⟩ of an adjunction, and
- then asks "What is a monad in a preorder P?"; his preorder remarks
+ then asks “What is a monad in a preorder P?”; his preorder remarks
  there and on p. 141 (algebras) are about monads only.  Riehl's
- Example 5.1.7 (p. 186) adds the dual for a poset: "Dually, a comonad
+ Example 5.1.7 (p. 186) adds the dual for a poset: “Dually, a comonad
  on a poset category (P, ≤) defines a kernel operator: an
- order-preserving function K so that Kp ≤ p and Kp = K²p", and names
+ order-preserving function K so that Kp ≤ p and Kp = K²p”, and names
  the interior of a subset of a space as the instance.  Example 5.2.6
  (begins p. 189), clause (iv) and footnotes 10–11, printed p. 190, says
- that "a coalgebra for the interior kernel operator is exactly an open
- subset", and its footnote 11 reads coalgebras as
- the algebras "for a monad (T, η, µ) on C^op".  Seven Sketches'
+ that “a coalgebra for the interior kernel operator is exactly an open
+ subset”, and its footnote 11 reads coalgebras as
+ the algebras “for a monad (T, η, µ) on C^op”.  Seven Sketches'
  footnote 8 (p. 33) says that for a Galois connection f ⊣ g the other
- composite g ⨟ f (that is, f after g) "satisfies the dual properties:
+ composite g ⨟ f (that is, f after g) “satisfies the dual properties:
  (g ⨟ f)(q) ≤ q and (g ⨟ f ⨟ g ⨟ f)(q) ≅ (g ⨟ f)(q) ... This is called
  an interior operator, though we will not discuss this concept
- further".
+ further”.
 
  WHICH READING IS IMPLEMENTED.  An interior operator on P IS a closure
  operator on the reversed order: [InteriorOperator P] is
@@ -71,9 +71,9 @@ Generalizable All Variables.
  inequality [int_comult], by conversion; monotonicity [int_mono] is the
  field [mono_pres] with its two points swapped.  Seven Sketches' ≅ is
  [int_idem], the [cl_idem] of the reversed order read backwards, and
- Riehl's "Kp = K²p" is [int_idem_eq] under an explicit
+ Riehl's “Kp = K²p” is [int_idem_eq] under an explicit
  [Antisymmetric] hypothesis, since the tree's [Poset] is [Proset] with
- antisymmetry discarded.  Riehl states one direction ("defines") for a
+ antisymmetry discarded.  Riehl states one direction (“defines”) for a
  poset; both directions are proved here, over a preorder.
 
  BY DUALITY, WITH NO LAW PROVED AGAIN.  The dual is obtained in three
@@ -103,7 +103,7 @@ Generalizable All Variables.
  [talgebra_iff_closed] at the reversed order.  A second route is
  [wcoalgebra_iff_open_via_thin], Structure/Thin/Monad.v's
  [thin_wcoalgebra_iff], which is the monad statement at C^op.
- [open_iff_fixed] is "x ≤ Kx ≤ x" as Kx ≅ x, and under [Antisymmetric]
+ [open_iff_fixed] is “x ≤ Kx ≤ x” as Kx ≅ x, and under [Antisymmetric]
  [open_eq] makes a coalgebra a fixed point, Kx = x (the dual of
  Monad.v's [closed_eq]); [wlocal_iff_open] reads
  Construction/Reflective/FixedPoints.v's [WLocal_Subcategory] (extract
@@ -299,7 +299,7 @@ Definition int_mono@{u} {A : Type@{u}} {R : relation A} {P : PreOrder R}
   mono_pres (cl_fun j) y x h.
 
 (*
- Riehl's "K p = K² p", up to ≅ over a preorder: the isomorphism
+ Riehl's “K p = K² p”, up to ≅ over a preorder: the isomorphism
  [cl_idem] of the reversed order, read backwards. 
 
  --------
@@ -542,7 +542,7 @@ Lemma wcoalgebra_iff_open_via_thin@{u h +} {A : Type@{u}}
 Proof. exact (@thin_wcoalgebra_iff (Proset@{u h} P) (fun _ _ _ _ => I) W H x).
 Qed.
 
-(* "x ≤ Kx ≤ x": open means Kx ≅ x. / "x ≤ Kx ≤ x": 开放意味着 Kx ≅ x。 *)
+(* “x ≤ Kx ≤ x”: open means Kx ≅ x. / “x ≤ Kx ≤ x”: 开放意味着 Kx ≅ x。 *)
 Definition open_iff_fixed@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} (x : A) :

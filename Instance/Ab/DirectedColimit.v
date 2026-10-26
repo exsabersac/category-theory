@@ -1,10 +1,10 @@
 (*
    * * An abelian group is the colimit of its finitely generated subgroups
 
-   Mac Lane, "Categories for the Working Mathematician" 2nd ed., Springer
-   GTM 5 1998, §III.3 Exercise 7, printed p. 68 (`maclane:III.3:ex7`): "An
+   Mac Lane, “Categories for the Working Mathematician” 2nd ed., Springer
+   GTM 5 1998, §III.3 Exercise 7, printed p. 68 (`maclane:III.3:ex7`): “An
    abelian group A is the colimit of the (directed) diagram of its finitely
-   generated subgroups, ordered by inclusion."  Cited by location.  The
+   generated subgroups, ordered by inclusion.”  Cited by location.  The
    sentence in quotation marks is the issue catalog's paraphrase of the
    exercise, NOT a transcription: the printed text was not consulted while
    writing this file.
@@ -44,7 +44,7 @@
    supply.  Those two have DIFFERENT shapes from each other -- membership
    plus four laws in both cases, but [Submodule]'s fourth is scalar-closure
    and it has NO negation field at all (Instance/Mod/Quotient.v captions
-   its negation lemma "THE FIFTH FIELD THAT IS NOT A FIELD").
+   its negation lemma “THE FIFTH FIELD THAT IS NOT A FIELD”).
 
    A THIRD RECORD EXISTS AND AN EARLIER DRAFT OF THIS HEADER MISSED IT.
    Instance/Ab/Character/Finite.v declares [Record Subgroup (G :
@@ -54,7 +54,7 @@
    membership; and it carries generated-subgroup machinery of its own
    ([Generated]).  So the ground an earlier draft gave, that no
    in-tree record is over [AbObject], was simply FALSE, and the survey it
-   supported ("neither existing subobject record transfers") was wrong as
+   supported (“neither existing subobject record transfers”) was wrong as
    stated.  The real ground for not reusing it is [sg_dec]: membership here
    is the inductively generated [InGen], which no constructive procedure
    decides, so that record cannot be instantiated by this development at
@@ -62,9 +62,9 @@
    draft made a different, false one.  The miss was avoidable -- the donor
    header quoted in the next paragraph names that very record TWICE, four
    lines above the line this file cites.  Read the relation to the existing
-   tree precisely.  Instance/Mod/Quotient.v already records that "the
+   tree precisely.  Instance/Mod/Quotient.v already records that “the
    honest unifier is an [AbSubgroup] interface in Instance/Ab.v itself, of
-   which [Submodule] would then be the module-level extension"; THIS FILE
+   which [Submodule] would then be the module-level extension”; THIS FILE
    DOES NEITHER of those things.  The record is declared here rather than
    in Instance/Ab.v, and [Submodule] is untouched and is not exhibited as
    an extension of it.  That refactor stays open; what is settled is only
@@ -84,15 +84,15 @@
    inclusion used here is
    [FGHom A X Y := ∀ a, absub_mem (fg_sub X) a → absub_mem (fg_sub Y) a],
    which is [Type]-valued because [absub_mem] is; ascribing it as a
-   [relation] is rejected with a universe inconsistency, "Cannot enforce
-   ... <= Prop" (measured, against a positive control at the
+   [relation] is rejected with a universe inconsistency, “Cannot enforce
+   ... <= Prop” (measured, against a positive control at the
    [inhabited]-squashed variant, which IS a [relation]).  That measurement
    is real and is pinned in Test/ProbeDirectedColimit330.v.
 
    WHAT IT DOES NOT SHOW.  An earlier draft of this header, and of the
-   issue's own suggested route, concluded from it that "[Proset] is
-   UNUSABLE for the index" and that the route is "IMPOSSIBLE, and that is
-   MEASURED".  That is FALSE, and the refutation compiles.  The argument
+   issue's own suggested route, concluded from it that “[Proset] is
+   UNUSABLE for the index” and that the route is “IMPOSSIBLE, and that is
+   MEASURED”.  That is FALSE, and the refutation compiles.  The argument
    given covered only SQUASHING a [Type]-valued hom -- [inhabited (FGHom
    X Y)] -- which does need large elimination to get the witness back.  It
    never considered the obvious alternative: making MEMBERSHIP ITSELF
@@ -109,8 +109,8 @@
    Instance/Grp/Quotient.v (see the previous paragraph), not a necessity of
    the mathematics.  A [Prop]-valued variant is viable and is simply not
    what is built here.  Structure/Thin.v records the [relation]-is-Prop
-   fact from the other side -- "Coq's [relation] is Prop-valued while a hom
-   lives in [Type]" -- and squashes with [inhabited] for its own reasons.
+   fact from the other side -- “Coq's [relation] is Prop-valued while a hom
+   lives in [Type]” -- and squashes with [inhabited] for its own reasons.
 
    [FGSub] is therefore built directly, COPYING (not reusing -- this file
    does not [Require] Instance/Proset.v at all) the one device that file
@@ -127,15 +127,15 @@
    supplies a LIST of generators together with mutual inclusion between
    [absub_mem S] and the generated [InGen].  Two different lists presenting
    the same subgroup therefore give two objects, and nothing in this file
-   identifies them.  That is a deviation from Mac Lane's literal "poset of
-   subgroups ordered by inclusion", and it is stated rather than hidden.
+   identifies them.  That is a deviation from Mac Lane's literal “poset of
+   subgroups ordered by inclusion”, and it is stated rather than hidden.
    What repairs it is that [FGSub A] is THIN: any two parallel inclusions
    are identified, so duplicate presentations are canonically isomorphic
    ([Ztwo_dup_iso] exhibits one such pair) and the colimit is unaffected:
    the universal property quantifies over cocones, and no competing cocone
    can tell duplicates apart, since [med_coherent] shows its legs agree on
    any two memberships of any two objects at ≈-equal elements.  That last
-   clause is a theorem; "the colimit is unaffected" is the reading of it,
+   clause is a theorem; “the colimit is unaffected” is the reading of it,
    and no comparison with a poset-indexed diagram is formalized -- there is
    no such diagram in this file.  The literal poset would need either a
    truncation of the presentation -- which would block extracting the
@@ -190,8 +190,8 @@
    while the triangle's right-hand side evaluates it at [X], and those are
    different objects of the index, so the two values are related only
    through the cocone's coherence.  That rejection was measured, and the
-   failure kind confirmed by stripping the [Fail] -- a genuine "cannot
-   unify", not a name-resolution error.  No [Fail] probe is shipped in
+   failure kind confirmed by stripping the [Fail] -- a genuine “cannot
+   unify”, not a name-resolution error.  No [Fail] probe is shipped in
    this file.
 
    NON-VACUITY, over ℤ.  Instance/Ab/Coproduct.v's [ab_Z] is
@@ -581,7 +581,7 @@ Definition fg_join_right {A : AbObject} (X Y : FGObj A)
       a (fg_into (fg_pres Y) a p).
 
 (*
-   * The exercise's word "directed": any two objects of the index are jointly
+   * The exercise's word “directed”: any two objects of the index are jointly
    dominated by a third, namely the subgroup presented by the concatenation
    of their two lists of generators. 
 
@@ -603,7 +603,7 @@ Defined.
  by [eq_refl]); since the subgroup carriers compare first projections,
  all six obligations -- the three of the [CMonHom] and the three functor
  laws -- are discharged by the ambient obligation tactic.  Still six
- after the PR "algebraic carriers are sets" (2026-09-17), re-counted
+ after the PR “algebraic carriers are sets” (2026-09-17), re-counted
  from [Print Module]. 
 
  --------

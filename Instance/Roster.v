@@ -79,15 +79,15 @@ Generalizable All Variables.
 (*
    * * Roster: the standard large categories, in one place
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.1
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.1
    (printed pp. 8-9), the metacategory examples, and §I.2 (printed
    pp. 10-12), the roll-call of large categories that the rest of the
    book quotes without further comment
    [maclane:I.1:construction2, maclane:I.2:construction12]; Awodey,
-   "Category Theory", 2nd ed., §1.4, the category of structured sets
+   “Category Theory”, 2nd ed., §1.4, the category of structured sets
    and structure-preserving functions
-   [awodey:1.4:construction-structured-sets]; Riehl, "Category Theory
-   in Context", §1.1, Example 1.1.3's clause-by-clause list of large
+   [awodey:1.4:construction-structured-sets]; Riehl, “Category Theory
+   in Context”, §1.1, Example 1.1.3's clause-by-clause list of large
    concrete categories and Example 1.1.4's list of categories whose
    objects are not sets [riehl:1.1:example3, riehl:1.1:example4].
    nLab: https://ncatlab.org/nlab/show/concrete+category
@@ -104,8 +104,8 @@ Generalizable All Variables.
    is no third case: an entry that appears in none of the sections
    below is an omission, not a silent judgement.  The value is the
    single point of reference — a reader who wants to know whether this
-   library has "the category of rings", or what it calls it, or
-   whether "the category of measurable spaces" exists, should need to
+   library has “the category of rings”, or what it calls it, or
+   whether “the category of measurable spaces” exists, should need to
    open one file.  Nothing is re-proved here.  Two things are
    genuinely new: [Mon_Sets], the residual instantiation named in the
    section below, and — in the companion Instance/Field.v — the
@@ -124,7 +124,7 @@ Generalizable All Variables.
    of an index.
 
    THE MAC LANE ROSTER (§I.2), entry by entry.  Set is [Sets] (setoids
-   — see Instance/Sets.v on why the library's "sets" carry an
+   — see Instance/Sets.v on why the library's “sets” carry an
    equivalence rather than Leibniz equality) with [Coq] the strict
    variant and [Ens]/[EnsV] Mac Lane's own set-within-a-universe
    readings; Set_* is [PointedSets]; Ens_V is [EnsV]; Mon is
@@ -147,8 +147,8 @@ Generalizable All Variables.
    ONE preorder into a thin category, the antisymmetry contributes
    nothing to the category produced, and it is not the category of
    posets under another name.  The category whose OBJECTS are posets
-   is Instance/Pos.v's [Pos].  Riehl 1.1.3's "Poset" clause is [Pos];
-   Mac Lane's "Preord" is Instance/Ord.v's [Ord] (#372), NOT [Proset],
+   is Instance/Pos.v's [Pos].  Riehl 1.1.3's “Poset” clause is [Pos];
+   Mac Lane's “Preord” is Instance/Ord.v's [Ord] (#372), NOT [Proset],
    which is ONE preorder.  [Pos] and [Proset] are exhibited below, side
    by side; [Ord] is NOT exhibited here (it would add Instance/Ord.v to
    this file's closure and move its measured counts), which is disclosed.
@@ -234,7 +234,7 @@ Generalizable All Variables.
    refinement (see the segregated section below), and
    Theory/Lawvere/Model.v's [Models T C] for a Lawvere theory.
    Relation symbols, quantifiers and non-equational axioms are
-   absent, so "the category of models of T" is delivered only for
+   absent, so “the category of models of T” is delivered only for
    algebraic T.
 
    - SIMPLE GRAPHS (Riehl 1.1.3's graph clause, in the symmetric
@@ -284,7 +284,7 @@ Generalizable All Variables.
    for this file is 96 constants — 94 [Example]s, the two
    [Definition]s of the [Mon_Sets] section, and no [Program]
    obligations, since no declaration here generates any.  Of those 96,
-   90 are "Closed under the global context".  The other six are these,
+   90 are “Closed under the global context”.  The other six are these,
    and only these:
 
    - [roster_Toph], [roster_TophProj], [roster_Toph_pointed],
@@ -352,7 +352,7 @@ Example roster_Coq : Category := Coq.
 (*
  Mac Lane's Ens and Ens_V: sets carrying membership, and the sets
  within a universe V presented as codes with a decoding.  [EnsV] is
- Mac Lane's own device for making "the category of all sets" a
+ Mac Lane's own device for making “the category of all sets” a
  legitimate object; [Spanned] is its general form. 
 
  --------
@@ -572,7 +572,7 @@ Example roster_Category_from_Metacategory (M : Metacategory) : Category :=
 (*
    * ** Initial and terminal objects across the roster
 
-   Riehl, "Category Theory in Context", §1.6 Example 1.6.15 (printed
+   Riehl, “Category Theory in Context”, §1.6 Example 1.6.15 (printed
    p. 38) [riehl:1.6:example15]: the standard categories surveyed for
    their initial and terminal objects.  The entries are cited, not
    rebuilt — each is an instance already registered in the file that
@@ -776,7 +776,7 @@ Example roster_GroupOp : UA.OpSignature := UA.GroupOp.
  category of [Group]s there — [Algs] is taken over an operation
  signature alone, with the equations imposed objectwise — so the
  variety is recorded here as the type it is, and the roster's
- "category of groups" entry is Instance/Grp.v's [Grp] above.  The
+ “category of groups” entry is Instance/Grp.v's [Grp] above.  The
  witness is that file's ℤ/2 under exclusive or.
 
  SUPERSEDED IN PART by #440: Instance/Variety.v now forms the variety
@@ -786,8 +786,8 @@ Example roster_GroupOp : UA.OpSignature := UA.GroupOp.
  comparison with [Grp] (not an isomorphism — the carriers are Leibniz
  types where [Grp]'s are setoids).  The entry below is left at the TYPE
  it always named, and no [Require] is added here, so that this file's
- closure is unchanged; what is no longer true is the sentence "there is
- no category of [Group]s there", read as a claim about the tree rather
+ closure is unchanged; what is no longer true is the sentence “there is
+ no category of [Group]s there”, read as a claim about the tree rather
  than about Instance/Comp.v. 
 
  --------

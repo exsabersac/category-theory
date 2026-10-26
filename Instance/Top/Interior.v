@@ -28,22 +28,22 @@ Generalizable All Variables.
 (*
  nLab: https://ncatlab.org/nlab/show/interior
  nLab: https://ncatlab.org/nlab/show/closure
- Book: Riehl, "Category Theory in Context", 2nd ed., SS 5.1,
+ Book: Riehl, “Category Theory in Context”, 2nd ed., SS 5.1,
  Example 5.1.7 with footnote 5, printed p. 186, and SS 5.2,
  Example 5.2.6 (begins p. 189), clause (iv) and footnotes 10–11,
  printed p. 190
 
  WHAT THE BOOK SAYS.  Example 5.1.7 (p. 186) equips the poset PX of
- subsets of a topological space X with "a closure operator TA = Ā ...
- and a kernel operator KA = A°, where A° is the interior of A ⊂ X",
- and footnote 5 reads: "The closure of A is the smallest closed set
+ subsets of a topological space X with “a closure operator TA = Ā ...
+ and a kernel operator KA = A°, where A° is the interior of A ⊂ X”,
+ and footnote 5 reads: “The closure of A is the smallest closed set
  containing A, equally the intersection of all closed sets containing
- A; the interior is defined dually."  Example 5.2.6 (begins p. 189),
- clause (iv) and footnotes 10–11, printed p. 190: "An algebra for the
+ A; the interior is defined dually.”  Example 5.2.6 (begins p. 189),
+ clause (iv) and footnotes 10–11, printed p. 190: “An algebra for the
  closure closure operator on the poset of subsets of a
  topological space X is exactly a closed subset of X.  Dually, a
  coalgebra for the interior kernel operator is exactly an open
- subset."  Riehl works classically; the constructive content of each
+ subset.”  Riehl works classically; the constructive content of each
  half is measured below.
 
  WHERE.  The spaces are Instance/Top/Prop.v's [PTop]: Prop-valued
@@ -57,7 +57,7 @@ Generalizable All Variables.
  [Subsets].
 
  THE INTERIOR, CONSTRUCTIVE THROUGHOUT.  [pinterior X S] is the union
- of the opens contained in S ("defined dually" to footnote 5), written
+ of the opens contained in S (“defined dually” to footnote 5), written
  in exactly the shape of [popen_union], so it is open ([pint_open]).
  It is monotone, deflationary and comultiplicative ([pint_mono],
  [pint_defl], [pint_comult]), hence an
@@ -77,7 +77,7 @@ Generalizable All Variables.
  ([pcl_talgebra_of_closed]).  The converse, an algebra is closed
  ([pcl_closed_of_talgebra]), takes excluded middle as an EXPLICIT
  hypothesis [lem]; no axiom is assumed.  It is used twice: to pass
- from "not every closed C above S contains z" to a closed C above S
+ from “not every closed C above S contains z” to a closed C above S
  that misses z, and to get C z from ¬¬ C z.  Some classical principle
  is needed: the converse without [lem] implies ¬¬(∀ q, ¬¬q → q)
  ([pcl_converse_nndne]), which intuitionistic higher-order logic does
@@ -93,12 +93,12 @@ Generalizable All Variables.
  THE UNCONDITIONAL ROUTE, measured.  Both halves are constructive for
  the closure written as the complement of the interior of the
  complement, ¬ int (¬ S) ([ncl], [nclosure_op], [nclosure_monad]), with
- "closed" read as "the complement of an open" ([PCoOpen]):
+ “closed” read as “the complement of an open” ([PCoOpen]):
  [ncl_talgebra_iff_coopen] is the algebra half with no hypothesis, and
  {true} in [PTwoIndisc] is not such an algebra, constructively
  ([true_sub_not_nclosed]).  Classically this is Riehl's statement:
  under [lem], [pclosure] and [ncl] agree pointwise
- ([pclosure_ncl_lem]) and the two readings of "closed" coincide
+ ([pclosure_ncl_lem]) and the two readings of “closed” coincide
  ([closed_of_coopen_lem]; conversely [coopen_of_closed_stable] needs
  only that S be ¬¬-stable).  A complement of an open is ¬¬-stable
  ([coopen_stable]), and no route from [PClosedSub] to [PCoOpen]
@@ -287,7 +287,7 @@ Qed.
 Definition PClosedSub@{o} (X : PTop@{o}) (C : PSub X) : Prop :=
   POpen X (fun z => ~ C z).
 
-(* "the intersection of all closed sets containing A" / 包含 A 的所有闭集的交集 *)
+(* “the intersection of all closed sets containing A” / 包含 A 的所有闭集的交集 *)
 Definition pcl_fun@{o} (X : PTop@{o}) (S : PSub X) (x : pt_carrier X) :
   Prop :=
   ∀ C : PSub X, PClosedSub X C → subset_le S C → C x.
@@ -336,7 +336,7 @@ Definition pcl_sub_of_closed@{o} (X : PTop@{o}) (S : PSub X)
 
 (*
  The converse, under excluded middle supplied as a hypothesis: used
- once to pass from "not every closed C above S contains z" to a closed
+ once to pass from “not every closed C above S contains z” to a closed
  C above S that misses z, and once for C z from ¬¬ C z. 
 
  --------

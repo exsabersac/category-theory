@@ -16,7 +16,7 @@ Generalizable All Variables.
 
  The Grothendieck construction assembles an indexed category
  [A : IndexedCat B] (Construction/Indexed.v, the coherent
- "pseudofunctor-lite") into a category over [B], presented as a displayed
+ “pseudofunctor-lite”) into a category over [B], presented as a displayed
  category (Theory/Displayed.v) whose total category
  (Construction/Displayed/Total.v) is the classical ∫ A:
 
@@ -69,11 +69,11 @@ Generalizable All Variables.
  Where the construction comes from, and what it is for
 
  nLab:  https://ncatlab.org/nlab/show/Grothendieck+construction
- Text:  Grothendieck, "Catégories fibrées et descente", SGA 1,
+ Text:  Grothendieck, “Catégories fibrées et descente”, SGA 1,
  Exposé VI, Séminaire de Géométrie Algébrique du Bois Marie
  1960–61, Lecture Notes in Mathematics 224, Springer 1971
- Notes: Vistoli, "Grothendieck topologies, fibered categories and
- descent theory", in FGA Explained, AMS Surveys and
+ Notes: Vistoli, “Grothendieck topologies, fibered categories and
+ descent theory”, in FGA Explained, AMS Surveys and
  Monographs 123, 2005 (arXiv:math/0412512)
 
  The construction flattens an indexed family of categories into a
@@ -110,7 +110,7 @@ Generalizable All Variables.
  [Grothendieck_Proj] is the first projection, exactly as a Σ-type
  projects onto its index.  This reading is why the file routes
  through the displayed primitive of Theory/Displayed.v (Ahrens,
- Lumsdaine, "Displayed Categories", Logical Methods in Computer
+ Lumsdaine, “Displayed Categories”, Logical Methods in Computer
  Science 15(1), 2019): a displayed category records a family in
  dependent, fibered style, so the total category is assembled without
  ever comparing base objects for equality.  When the family does not

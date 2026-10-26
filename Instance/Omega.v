@@ -59,7 +59,7 @@ Fixpoint le_t_trans@{u} {m n k} (f : le_t@{u} m n) (g : le_t@{u} n k) :
  These three unit/associativity lemmas are left with inferred universe
  binders (no explicit [@{u}]): stating an [eq] between [le_t]-terms draws in
  the equality's own universe alongside [le_t]'s, which a single [@{u}] binder
- cannot name on Coq 8.19/8.20 ("unbound universes"); auto-polymorphism binds
+ cannot name on Coq 8.19/8.20 (“unbound universes”); auto-polymorphism binds
  them correctly on every supported version.  The load-bearing annotations are
  the ones inside [Omega] below. 
 

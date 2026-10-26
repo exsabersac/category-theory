@@ -17,13 +17,13 @@ Generalizable All Variables.
 (*
    * * The underlying-set functor of Top and its adjoint triple
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.9
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.9
    (book pp. 132-135): the underlying-set functor of spaces
    [maclane:V.9:construction1] and Exercise 2 [maclane:V.9:ex2].
-   Riehl, "Category Theory in Context", §4.1, Example 4.1.6: the adjoint
+   Riehl, “Category Theory in Context”, §4.1, Example 4.1.6: the adjoint
    triple D ⊣ U ⊣ I for spaces, each adjunction a transposition bijection
    on continuous maps.
-   Fong and Spivak, "Seven Sketches in Compositionality", §7.3.2,
+   Fong and Spivak, “Seven Sketches in Compositionality”, §7.3.2,
    Example 7.28 and Exercise 7.29: the two extreme topologies on a set,
    and the fact that every function out of a discrete space is continuous.
    nLab: https://ncatlab.org/nlab/show/Top
@@ -77,9 +77,9 @@ Generalizable All Variables.
    triple is unformable at every universe assignment.  This is the
    library's familiar classifier phenomenon (Instance/Sets/Classifier.v
    keeps the Sets classifier as cross-universe theorems for the same
-   reason), not a defect of the mathematics: with invariant records, "the
-   category of sets containing the points" and "the category of sets
-   large enough to receive the homs of Top" are different instantiations
+   reason), not a defect of the mathematics: with invariant records, “the
+   category of sets containing the points” and “the category of sets
+   large enough to receive the homs of Top” are different instantiations
    of [Sets].
 
    WHAT IS DELIVERED INSTEAD — the strongest formable readings, in the
@@ -125,7 +125,7 @@ Generalizable All Variables.
    bijection natural in the Sets variable — exactly the data any
    right adjoint would restrict to, and strictly less than
    functoriality — still yields False.  The classical statement
-   "there is no functor R : Top ⟶ Sets with Indiscrete ⊣ R" is
+   “there is no functor R : Top ⟶ Sets with Indiscrete ⊣ R” is
    subsumed: here the TYPE of such an R is itself unformable
    (first bullet above), and the theorem refutes even the data a
    candidate at any level would provide.
@@ -192,7 +192,7 @@ Next Obligation. intros; intro p; reflexivity. Qed.
 Next Obligation. intros; intro p; reflexivity. Qed.
 
 (*
- Faithfulness, Mac Lane's "concrete category" clause for Top: the
+ Faithfulness, Mac Lane's “concrete category” clause for Top: the
  hom-setoid of [Top] compares exactly what the image compares — the
  action on points — so injectivity of fmap is the identity. 
 
@@ -383,8 +383,8 @@ Definition discrete_forget_indiscrete_triple :=
    the competing cone's record unfolded — while the [Top] side keeps the
    record vocabulary.  (An earlier revision of this note said the packaged
    image-cone machinery — [FCocone], [PreservesColimitCocone], the
-   Continuous/CocontinuousFunctor classes — "cannot be instantiated across
-   the o < h gap at all"; that generalized too far: at [Top_Forget], which
+   Continuous/CocontinuousFunctor classes — “cannot be instantiated across
+   the o < h gap at all”; that generalized too far: at [Top_Forget], which
    lands in [Sets@{h so}] at [Top]'s own hom level, they DO elaborate, as
    Instance/Top/CompHaus.v measures.  Preservation here stays raw, and the
    breakdown for [Top_Indiscrete] is the concrete refutation of Exercise 2. 
@@ -609,7 +609,7 @@ Definition disc_cocone : Cocone indiscrete_pair_diagram :=
  competitor would send true to true and false to false, and the
  preimage of [singleton_true_open] under it would be a non-uniform open
  of an indiscrete space.  With [bool_cocone_colimit] this is exactly
- "the indiscrete functor does not preserve the coproduct 1 + 1". 
+ “the indiscrete functor does not preserve the coproduct 1 + 1”. 
 
  --------
  像卷锥不是余极限：到离散竞争者的中介映射会将真映射为真，将假映射为假，而其下的 \([singleton_true_open]\) 的原像将是一个非均匀开集的不可分空间。对于 \([bool_cocone_colimit]\)，这正是“不可分函子不保余积 1 + 1”。

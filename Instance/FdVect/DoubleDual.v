@@ -5,21 +5,21 @@
    paper opens by contrasting two isomorphisms of a finite-dimensional
    vector space: the one with its dual, which exists but requires a
    basis, and the one with its double dual, which is given
-   "simultaneously" for all spaces and mentions no basis.  The word
-   they coined for the second phenomenon is "natural", and the square
+   “simultaneously” for all spaces and mentions no basis.  The word
+   they coined for the second phenomenon is “natural”, and the square
    they drew to define it is the naturality square of
    Theory/Natural/Transformation.v (whose header essay tells this
    story).  This file supplies the positive half of that contrast, in
    the vocabulary the library already has.
 
-   SOURCES.  Mac Lane, "Categories for the Working Mathematician", 2nd
+   SOURCES.  Mac Lane, “Categories for the Working Mathematician”, 2nd
    ed., §I.4 remark 2 (printed p. 17): the double-dual map is natural,
    the map to the dual is not.  §II.2 construction 3 (printed
    pp. 33-34): the dual as a CONTRAVARIANT functor on the category of
-   ALL vector spaces over a field.  Awodey, "Category Theory", 2nd ed.,
+   ALL vector spaces over a field.  Awodey, “Category Theory”, 2nd ed.,
    §7.5 Example 7.12: the double-dual natural transformation, presented
-   as the double transpose of the evaluation map.  Riehl, "Category
-   Theory in Context", §1.4 Example 1.4.4(i)-(ii): the dual functor and
+   as the double transpose of the evaluation map.  Riehl, “Category
+   Theory in Context”, §1.4 Example 1.4.4(i)-(ii): the dual functor and
    the evaluation transformation, with the remark that the family is
    natural for vector spaces of ANY dimension, and that only its
    INVERTIBILITY needs finite-dimensionality.  (The locations follow
@@ -33,7 +33,7 @@
    name for [RMod (field_ring F)] and contains the
    infinite-dimensional spaces along with the rest.  So Mac Lane's
    §II.2 construction 3 is delivered at the generality he states it,
-   and Riehl's "natural for vector spaces of any dimension" is a
+   and Riehl's “natural for vector spaces of any dimension” is a
    THEOREM here rather than an out-of-scope remark: [Dual],
    [DoubleDual], [eta] and [double_dual_natural] carry no
    finite-dimensionality hypothesis anywhere.  Finite dimension enters
@@ -62,7 +62,7 @@
    first triangle of [double_dual_iso], and there are no others.)
 
    EVALUATION.  [eta V] sends a vector v to the functional
-   "evaluate at v", φ ↦ φ(v).  Awodey presents this as the double
+   “evaluate at v”, φ ↦ φ(v).  Awodey presents this as the double
    transpose of the evaluation map V* × V → F; that reading is prose
    here and not a definition, because the library carries no cartesian
    closed structure on [Vct_F F] to transpose along (no tensor product
@@ -112,7 +112,7 @@
    One packaging note in the same spirit: the headline is delivered
    as a PAIR — [double_dual_natural] (a transformation at [Vct_F],
    any dimension) and [double_dual_iso] (per finite-dimensional
-   object) — and no single [FdVect]-level "natural isomorphism"
+   object) — and no single [FdVect]-level “natural isomorphism”
    artifact bundles them.  There is no obstruction: [DualFd ◯
    (DualFd)^op] typechecks with its object action computing to
    [DualFdObj (DualFdObj −)] by [eq_refl], and its evaluation
@@ -384,7 +384,7 @@ Next Obligation. intros V W X f g h v; simpl; reflexivity. Qed.
 *)
 Definition DoubleDual : Vct_F F ⟶ Vct_F F := Dual ◯ Dual^op.
 
-(* * ** Evaluation [eta V] sends a vector to "evaluate at it". Each law is the corresponding law of the functional being evaluated, so the family is defined without reference to any basis — which is what will make it natural. / * ** 评估 [eta V] 发送一个向量去“在其上评估”。每条律都是被评估的函数对应的律，所以这个族的定义不依赖于任何基——这正是使其自然的原因。 *)
+(* * ** Evaluation [eta V] sends a vector to “evaluate at it”. Each law is the corresponding law of the functional being evaluated, so the family is defined without reference to any basis — which is what will make it natural. / * ** 评估 [eta V] 发送一个向量去“在其上评估”。每条律都是被评估的函数对应的律，所以这个族的定义不依赖于任何基——这正是使其自然的原因。 *)
 
 Program Definition dual_ev (V : RModObject (field_ring F))
         (v : carrier (cmon_setoid V)) :

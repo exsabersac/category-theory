@@ -26,8 +26,8 @@ nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
    associator, and λ : I ⨂ X ≅ X, ρ : X ⨂ I ≅ X are the left/right unitors;
    the [to] direction of each isomorphism is the one used above.
 
-   This is the standard nLab/Wikipedia definition of "monoid in a monoidal
-   category". The existing [Structure.Monoid] file gives an equivalent
+   This is the standard nLab/Wikipedia definition of “monoid in a monoidal
+   category”. The existing [Structure.Monoid] file gives an equivalent
    presentation, but its [MonoidObject] is developed alongside the cartesian
    case using the cartesian unit/associator. Here we factor out the abstract
    monoid-in-a-monoidal-category form so it can be reused as the building
@@ -35,7 +35,7 @@ nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
 
    The laws are stated as setoid equalities ([≈]), so that morphisms which
    are merely equivalent up to the homset equivalence are considered to be
-   "the same" structural map.
+   “the same” structural map.
 
 --------
 nLab：https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category

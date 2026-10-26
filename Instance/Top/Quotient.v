@@ -14,17 +14,17 @@ Generalizable All Variables.
 (* * * Collapsing a subset to a point: X/A as a wide coequalizer in [Top] / * * 将一个子集塌缩为一点：X/A 作为 [Top] 中的宽共同等化子 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
- §V.9, book p. 134 (PDF p. 143), read from the page image: "Another
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
+ §V.9, book p. 134 (PDF p. 143), read from the page image: “Another
  coequalizer is the space X/A obtained from the space X by collapsing
  the subset A to a point.  It is the coequalizer [...] of the set of
  all the arrows sending the one point space * to one of the points
- a ∈ A.  It is used in homotopy theory." (catalog id
+ a ∈ A.  It is used in homotopy theory.” (catalog id
  maclane:V.9:construction5; the book numbers it not)
  nLab:      https://ncatlab.org/nlab/show/Top
  nLab:      https://ncatlab.org/nlab/show/quotient+space
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_space_(topology)
- Book:      A. Hatcher, "Algebraic Topology", Cambridge University Press
+ Book:      A. Hatcher, “Algebraic Topology”, Cambridge University Press
  (2002), Chapter 0 (quotient spaces X/A, cones, suspensions,
  wedge and smash products)
 
@@ -44,10 +44,10 @@ Generalizable All Variables.
  pp. 73-74), read from the page images.  He DEFINES the coequalizer of
  a pair elementarily, in display (6) of p. 64: an arrow u : b → e with
  uf = ug, through which every h : b → c with hf = hg factors uniquely.
- He then says that a coequalizer "can be interpreted as a universal
- arrow", and p. 65 reads it as one, "just a universal arrow from
- ⟨f, g⟩ to the functor Δ"; then "Coequalizers of any set of maps from
- a to b are defined in the same way."  For a set of maps a → b the two
+ He then says that a coequalizer “can be interpreted as a universal
+ arrow”, and p. 65 reads it as one, “just a universal arrow from
+ ⟨f, g⟩ to the functor Δ”; then “Coequalizers of any set of maps from
+ a to b are defined in the same way.”  For a set of maps a → b the two
  readings are Structure/Coequalizer/Wide.v's elementary record
  [IsWideCoequalizer], an arrow out of b alone, which is (6) extended
  and the reading that file's header adopts, and its colimit form
@@ -82,8 +82,8 @@ Generalizable All Variables.
  - Mac Lane's subset form.  A subset is a Type-valued predicate
  [A : X → Type], indexed by its points [collapse_sub_points X A];
  [Top_collapse_sub X A] is X/A, [collapse_sub_family X A] the
- book's "set of all the arrows sending * to one of the points
- a ∈ A", and [collapse_coequalizer], the issue's pinned name,
+ book's “set of all the arrows sending * to one of the points
+ a ∈ A”, and [collapse_coequalizer], the issue's pinned name,
  Construction 5 in the elementary form, for every subset.  The
  saturated image makes a properness hypothesis on [A] unnecessary
  here.  Pairs.v's pairs carry one by a design choice, a subset of a
@@ -140,8 +140,8 @@ Generalizable All Variables.
  positive control that is accepted; a universe the message generates is
  written <1>, <2>, numbered in order of first appearance.
  W-b.  [wcoeq_rel] over an index at [Type@{h}], read as a relation at
- [Type@{o}], is refused, "universe inconsistency: Cannot enforce
- o = <1> because o < h <= <2> <= <1>": the relation's index
+ [Type@{o}], is refused, “universe inconsistency: Cannot enforce
+ o = <1> because o < h <= <2> <= <1>”: the relation's index
  universe <2> sits at or below its points' universe <1>, so an index
  at [h] drags the relation above the points.  Control: the index at
  [o].  The mechanism is of the family that the header of
@@ -152,18 +152,18 @@ Generalizable All Variables.
  [Top_HasWideCoequalizers_small] is W-b's, forced by the relation
  and inferred when a binder omits it.  The glue constructor
  [wcq_glue] quantifies over the index, so under the closed
- constraint list [@{i o|}] the relation is refused, "Universe
- constraints are not implied by the ones declared: i <= o", and so
+ constraint list [@{i o|}] the relation is refused, “Universe
+ constraints are not implied by the ones declared: i <= o”, and so
  is the inductive itself declared there, while the same inductive
  without [wcq_glue] is accepted.  Read with its index at the hom
- universe the instance is refused accordingly, "Universe
- inconsistency. Cannot enforce h <= o because o < h".  Control: the
+ universe the instance is refused accordingly, “Universe
+ inconsistency. Cannot enforce h <= o because o < h”.  Control: the
  reading at an index [i <= o].
  W-c.  [IsWideCoequalizer] is not cumulative, and the round trip
  [is_wide_coequalizer_colimit] needs the index at the hom universe
  (Structure/Coequalizer/Wide.v's header: [u0 = u1]).  Handing it the
- record read at index [o] is refused, "universe inconsistency:
- Cannot enforce o = h because o < h".  So the index universe of
+ record read at index [o] is refused, “universe inconsistency:
+ Cannot enforce o = h because o < h”.  So the index universe of
  [collapse_family_coequalizer] and [collapse_coequalizer] is a
  binder of its own, [i] with [o <= i]: read at [@{o h h}] it feeds
  the round trip (the control, and [collapse_family_colimit]), read
@@ -178,8 +178,8 @@ Generalizable All Variables.
  everything built from them.  Two [Defined], counted by token
  ([collapse_desc], [twcoeq_desc]), and both load-bearing: each closed
  [Qed] alone in a scratch copy of this file leaves an [eq_refl]
- readback refused, [collapse_iso_generic_to] ("cannot unify
- "collapse_iso_generic X I p x" and "x"") and [collapse_iso_generic_from]
+ readback refused, [collapse_iso_generic_to] (“cannot unify
+ ”collapse_iso_generic X I p x“ and ”x“”) and [collapse_iso_generic_from]
  respectively.  Of the nine [Qed], counted by token in the code, seven
  are the equivalence, respect and cofork lemmas, one is the readback
  [collapse_empty_pointless] and one the refutation
@@ -207,8 +207,8 @@ Generalizable All Variables.
  [o < h] and [h < u], where [u] is not in the statement: it is
  [wide_coequalizer_unique]'s own binder [u2], bounded in that
  lemma's block by [u0 < u2] with [u0] the hom universe.  With [u]
- dropped from the binder each body is refused ("Universe <1> ... is
- unbound"; Test/ProbeCollapse459.v's N7 and N8).
+ dropped from the binder each body is refused (“Universe <1> ... is
+ unbound”; Test/ProbeCollapse459.v's N7 and N8).
  - [wcoeq_rel], its constructors and the setoid constants over it:
  [@{i o}] with [i <= o] (the generated schemes name their own
  binders: [wcoeq_rel_rect@{u u0 u1}], [wcoeq_rel_ind@{u u0}] and
@@ -240,11 +240,11 @@ Generalizable All Variables.
  suspensions, smash products, relative homology). 
 
  --------
- Mac Lane，《为工作中的数学家准备的范畴论》，第二版（GTM 5），§V.9，第134页（PDF第143页），从页面图像阅读："另一个余等化是通过将子集A塌缩为一点而从空间X得到的空间X/A。它是集合中所有将一个点空间*映射到A中某个点a的箭头的余等化[...]。它在同伦论中有应用。"（目录ID maclane:V.9:construction5；书中未编号）
+ Mac Lane，《为工作中的数学家准备的范畴论》，第二版（GTM 5），§V.9，第134页（PDF第143页），从页面图像阅读：“另一个余等化是通过将子集A塌缩为一点而从空间X得到的空间X/A。它是集合中所有将一个点空间*映射到A中某个点a的箭头的余等化[...]。它在同伦论中有应用。”（目录ID maclane:V.9:construction5；书中未编号）
  nLab: https://ncatlab.org/nlab/show/Top
  nLab: https://ncatlab.org/nlab/show/quotient+space
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_space_(topology)
- 书籍：A. Hatcher，《代数拓扑》，剑桥大学出版社（2002），第0章（商空间X/A、锥、悬吊、楔积和 smash 积）背景。将一个子空间塌缩为一个点是同伦论的基本粘合操作：Hatcher 的第 0 章用它构建了锥、悬挂和 smash 积 X ∧ Y = (X × Y)/(X ∨ Y)。维基百科的商空间页面将 X/A 列为例子之一，其中 2-球被视为将边界塌缩后的圆盘 D²/∂D²；nLab 关于商空间的页面将商拓扑给出为投影所诱导的最终拓扑。Mac Lane 将该构造放在 §V.9，列于 Top 的余等化器和一般余极限之后，并在该段的开覆盖例子中提出了一个范畴论上的观察：X/A 是一个余等化器，不是一个平行对，而是一个由每个 A 中的点对应的箭头 * → X 构成的整个平行族的余等化器。他的§III.3条款规定在书本第64-65页（PDF第73-74页）上，从页面图像中阅读。他在第64页的（6）式中对一对元素的共轭化器进行了基本定义：一个箭头 u : b → e，满足 uf = ug，通过它，每个 h : b → c（满足 hf = hg）都能唯一分解。然后他说，共轭化器“可以被解释为一个通用箭头”，第65页上也将其解读为通用箭头，“只是从⟨f, g⟩到函子Δ的一个通用箭头”；接着“从 a 到 b 的任意映射集的共轭化器也以相同方式定义。”对于从 a → b 的映射集，两个解读是 Structure/Coequalizer/Wide.v 的基本记录 [IsWideCoequalizer]，一个仅从 b 指出的箭头，这是（6）的扩展以及该文件头部采用的解读，其余极形式为 [WideCoequalizer]，是一个在 a 为顶点的形状上的余极。它们在每个非空映射集上一致。在空集处，余极限是 a 和 b 的余积，而基本记录固定了 b 本身（该文件的头部，它声明了余积但没有形式化，以及它的 [wide_coround_trip_needs_point]）；书中没有处理这种情况。这里 a 是 *，b 是 X：读作通用箭头，X/∅ 是 X ⊔ *（在 [Top]，Pairs.v 的 [pquot_wide_coequalizer_colimit_empty]）；从基本角度读，它是 X。Instance/Top/Cocomplete.v 的头部列出了书第 134 页中未构建的已处理余极限之间的塌缩；该文件构建了它，而 Instance/Top/Quotient/Pairs.v 构建了书中段落的另一半，即对的范畴及其伴随关系。这里是什么。- 沿着一个 FAMILIY [p : I → X] 的点的塌陷，我在点宇宙中的点。[Top_collapse X I p] 拥有 X 的点，其中两个在它们相等时或者当它们都位于 [p] 的像中时被识别，直到点的相等（[collapse_image]，饱和像，所以 [p] 没有要求），具有 Instance/Top/Subspace/TypeValued.v 的商拓扑 [TQuot]。[Top_collapse_equiv] 将点的相等读取回来作为 [collapse_rel] 在 [eq_refl]。[collapse_family X I p i] 是点包含 [top_point X (p i) : Point_Top ~> X]，并且 [collapse_family_coequalizer] 证明 [X ~> X/A] 是该族的一个基本 [IsWideCoequalizer]，映射出任意空间，对于每个族，包括空族；中介者是在点上的竞争映射本身（[collapse_desc_map_points]，在 [eq_refl]）。- Mac Lane 的子集形式。一个子集是一个类型值谓词 [A : X → Type]，由其点 [collapse_sub_points X A] 索引；[Top_collapse_sub X A] 是 X/A，[collapse_sub_family X A] 是书中“将 * 发送到点 a ∈ A 的所有箭头的集合”，而 [collapse_coequalizer] 是该问题的固定名称，构造 5 在初等形式下，对每个子集都适用。饱和像使得这里对 [A] 的适当性假设变得不必要。Pairs.v 中的对通过设计选择携带一个，一个 setoid 的子集在点的等价性下取闭包；该文件的头部将这种饱和命名为替代方案。- 在这个文件的顶点处，余极限形式，即通用箭头读法，[collapse_family_colimit] 和 [collapse_colimit] 接受一个族的成员：它是 Structure/Coequalizer/Wide.v 的循环回程 [is_wide_coequalizer_colimit]，从基本记录出发，它只接受一个，并且该文件的 [wide_coround_trip_needs_point] 证明该成员在一般情况下不能从循环回程中删除。在这个顶点处也不能删除它：在 ⟨∅, ∅⟩ 处，没有任何余极限的顶点携带该族的基本宽共等化子，而这个文件的 X/∅ 做到了（Pairs.v 的 [empty_colimit_not_elementary]）。余极限本身不需要成员：对于每一个在点的相等性下封闭的子集，包括空集，它就是 Pairs.v 的 [pquot_wide_coequalizer_colimit]，在顶点 (X ⊔ {∗})/(A ∼ ∗) 处。- 在空子集上，基本的 X/∅ 是 X（[collapse_empty_iso]，X/∅ ≅ X，通过 [wide_empty_id_IsWideCoequalizer]），是一个同构，在 [eq_refl] 处被拒绝作为空间的等式（Test/ProbeCollapse459.v 的 N9）。因此，在 X = ∅ 时，一个空族的基本广义余等化器根本没有点，无论它如何构造（[empty_wide_coequalizer_pointless]：空空间的恒等映射沿每个映射下降，并会将其中的一个点映射到 ∅）。[collapse_empty_pointless] 只是本文件中 X/∅ 的 [Empty_Top] 携带者的一个回读；一个证明对 ∅ 的每个子集都成立。这就是 Mac Lane 的余等化器部分的两种解读之所在。作为通用箭头来读，他的 X/∅ 是 X ⊔ *，它有一个点，而 Pairs.v 证明了 coequalizer 和构造 6 的 X/A 为每个在点的等式下封闭的子集提供了一个空间，因此构造 5 和 6 在每个 A 上都一致。从基本上理解，X/∅ 是 X，而且这两种构造在 A = ∅ 时分开。— [Top] 的小宽 coequalizer。[wcoeq_rel] 是一族集合等价映射生成的关系（所有的对 (f_i a, f_j a)），是 Instance/Sets/Coequalizer.v 中 [coeq_rel] 的广义类比；[WSetsCoeq] 是其商集合等价；[twcoeq_obj] 是它上的 [TQuot]，直接构建方式如 Instance/Top/Cocomplete/TypeValued.v 构建 [Top_HasCoequalizers]；而 [Top_HasWideCoequalizers_small] 是 [HasWideCoequalizers] 对于 [Top] 在每个指数宇宙（小于或等于这些点）处的值，并且其对象在 [eq_refl]（[Top_wide_coequalizer_obj]）中读取。在此文件之前，这棵树没有 [HasWideCoequalizers] 的元素（在树的 .v 文件中进行单词搜索发现该类只出现在其声明文件中）；该文件的头部包含一个更正（#459）。[collapse_iso_generic] 比较了直接塌缩与其族的通用宽协同化子通过 [wide_coequalizer_unique]：这个同构在两个方向上对点都是恒等的（[collapse_iso_generic_to]，[collapse_iso_generic_from]，在 [eq_refl]）。- [collapse_proj_epic]，来自 [wide_coequalizer_epic]。这些墙体，在 Test/ProbeCollapse459.v 文件中固定（其 N1-N6），承载了此文件的导入列表；每个拒绝都在该整个文件的副本中读取，其中一个受保护的命令被取消保护，每个都在一个被接受的阳性对照旁边；消息生成的宇宙被记录为 <1>、<2>，按首次出现顺序编号。W-b. [wcoeq_rel] 在 [Type@{h}] 的索引上读取，作为 [Type@{o}] 的关系被拒绝，“宇宙不一致：无法强制执行 o = <1> 因为 o < h <= <2> <= <1>”：该关系的索引宇宙 <2> 位于其点的宇宙 <1> 处或以下，因此 [h] 的索引会将关系提升到点之上。控制：[o] 的索引。该机制属于这样一个家族：Instance/Top/Cocomplete/TypeValued.v 的头部将其记录为 W2（一个在 [h] 上量化数据的粘合构造器）；两者并未声称是同一堵墙。W-a。不是它自己的墙：绑定器 [Top_HasWideCoequalizers_small] 中的绑定 [i <= o] 属于 W-b，由此关系强制，并在绑定器省略它时推断出来。粘合构造器 [wcq_glue] 对索引进行量化，因此在闭合约束列表 [@{i o|}] 下，该关系被拒绝，“宇宙约束不会由已声明的约束推出：i <= o”，因此在那里声明的归纳类型本身也被拒绝，而相同的归纳类型在没有 [wcq_glue] 时则被接受。在同伦宇宙中以其索引读取时，该实例相应地被拒绝，“宇宙不一致。”无法强制执行 h <= o 因为 o < h。索引 [i <= o] 的读取 W-c.[IsWideCoequalizer] 不是累积的，而往返 [is_wide_coequalizer_colimit] 需要同一 universe 的索引（Structure/Coequalizer/Wide.v 的头部：[u0 = u1]）。将索引 [o] 处读取的记录交给它会被拒绝，提示“universe 不一致：无法强制执行 o = h 因为 o < h”。因此 [collapse_family_coequalizer] 和 [collapse_coequalizer] 的索引 universe 是其自身的一个绑定器 [i]，带 [o <= i]：在 [@{o h h}] 处读取它为往返提供输入（控制及 [collapse_family_colimit]），在 [@{o h o}] 处读取它是 Mac Lane 的索引，即 A 的点。没有任何屏障阻止 Construction 5，其索引是 A 的点，在 [o]。优势。在 [eq_refl]：[Top_collapse_equiv]，[collapse_desc_map_points]，[Top_wide_coequalizer_obj]，[collapse_iso_generic_to]，[collapse_iso_generic_from]。最多到 [≈]：通用性质 [collapse_desc] 和 [twcoeq_desc] 以及由它们构建的一切。两个 [Defined]，按标记计数（[collapse_desc]，[twcoeq_desc]），并且都能承重：每个闭合的 [Qed] 单独在此文件的一个草稿副本中会导致 [eq_refl] 读回被拒绝，[collapse_iso_generic_to]（"无法统一 'collapse_iso_generic X I p x' 和 'x'"）和 [collapse_iso_generic_from] 分别如此。在代码中按标记计数的九个 [Qed] 中，有七个是等价性、尊重性和共分叉引理，一个是读回 [collapse_empty_pointless]，一个是反证 [empty_wide_coequalizer_pointless]。UNIVERSES，由 [About] 在 [Set Printing Universes] 下读取，涵盖此文件 [Print Module] 列表中的所有 54 个常量（包括归纳类型、其四个构造函数和四个生成的方案）。- [collapse_image]、[collapse_rel]、[collapse_setoid]、[collapse_carrier]、[collapse_q]、[Top_collapse]、[collapse_sub_points]、[collapse_sub_incl]、[Top_collapse_sub]：[@{o}]，仅受 stdlib 限制（[TQuot] 承载的对投影限制）；X/A 是 [TopSpace@{o}]，是与 X 相同 [Top@{h o}] 的对象。- 映射及其泛性质（[collapse_proj]、[collapse_family]、[collapse_wcofork]、[collapse_med]、[collapse_desc]、[collapse_family_colimit]、[collapse_proj_epic]、[collapse_sub_proj]、[collapse_sub_family]、[collapse_colimit]）：[@{o h}] 具有 [o < h]、[Top] 自身的界限，以及 stdlib 限制。[collapse_family_coequalizer] 和 [collapse_coequalizer]：[@{o h i}] 与 [o < h] 和 [o <= i]，在 [IsWideCoequalizer@{i h h}]；[empty_wide_coequalizer_pointless] 也是如此。- [collapse_iso_generic] 和 [collapse_empty_iso]：[@{o h u}] 与 [o < h] 和 [h < u]，其中 [u] 不在该语句中：它是 [wide_coequalizer_unique] 自己的绑定器 [u2]，在该引理的块中由 [u0 < u2] 与 [u0]（同类宇宙）绑定。移除绑定器中的 [u] 后，每个主体都被拒绝（“宇宙 <1> ... 未绑定”；Test/ProbeCollapse459.v 的 N7 和 N8）。- [wcoeq_rel]，它的构造函数以及在其上的等价类常量：[@{i o}] 以及 [i <= o]（生成的方案命名了它们自己 的绑定器：[wcoeq_rel_rect@{u u0 u1}]、[wcoeq_rel_ind@{u u0}] 和 [wcoeq_rel_sind@{u u0}] 携带 [u <= u0]，并且 [wcoeq_rel_rec@{u u0}] 有一个空块，其语句位于 [wcoeq_rel@{u u}]）；[twcoeq_obj] 到 [Top_HasWideCoequalizers_small]：[@{i o h}] 以及 [i <= o] 和 [o < h] 的实例位于 [HasWideCoequalizers@{i h h} Top@{h o}]。- [collapse_empty_pointless@{o}] 和 [empty_wide_coequalizer_pointless] 携带文件中唯一的 STRICT 标准库 cap，[o < False_rect.u0]，它是 [Empty_Top] 自己的（关于：[u < False_rect.u0]）。- 没有块携带方程。在 54 个常量的 [About] 输出上进行 [Set] 的字数统计为 1：生成的方案 [wcoeq_rel_rec] 的动机的类型，而不是一个宇宙绑定。未交付。上述点的宇宙中索引的 [Top] 的广义共同等化器（由 W-b 围住，未被反驳）；[Sets] 的 [HasWideCoequalizers] 实例，虽然 [WSetsCoeq] 是它所需要的集合等价类；没有家族成员的余极限形式，对于除了闭合于点相等的子集的点包含的家族以外的家族（对于那些是 Pairs.v 的 [pquot_wide_coequalizer_colimit]）；具有两元素索引的广义共同等化器与 Instance/Top/Cocomplete/TypeValued.v 的二元 [Top_HasCoequalizers] 的比较；作为一个带点空间的 X/A，这是 Instance/Top/Quotient/Pairs.v 的；以及它所服务的任何同伦理论构造（锥体、悬挂、锤积、相对同调）。
+ 书籍：A. Hatcher，《代数拓扑》，剑桥大学出版社（2002），第0章（商空间X/A、锥、悬吊、楔积和 smash 积）背景。将一个子空间塌缩为一个点是同伦论的基本粘合操作：Hatcher 的第 0 章用它构建了锥、悬挂和 smash 积 X ∧ Y = (X × Y)/(X ∨ Y)。维基百科的商空间页面将 X/A 列为例子之一，其中 2-球被视为将边界塌缩后的圆盘 D²/∂D²；nLab 关于商空间的页面将商拓扑给出为投影所诱导的最终拓扑。Mac Lane 将该构造放在 §V.9，列于 Top 的余等化器和一般余极限之后，并在该段的开覆盖例子中提出了一个范畴论上的观察：X/A 是一个余等化器，不是一个平行对，而是一个由每个 A 中的点对应的箭头 * → X 构成的整个平行族的余等化器。他的§III.3条款规定在书本第64-65页（PDF第73-74页）上，从页面图像中阅读。他在第64页的（6）式中对一对元素的共轭化器进行了基本定义：一个箭头 u : b → e，满足 uf = ug，通过它，每个 h : b → c（满足 hf = hg）都能唯一分解。然后他说，共轭化器“可以被解释为一个通用箭头”，第65页上也将其解读为通用箭头，“只是从⟨f, g⟩到函子Δ的一个通用箭头”；接着“从 a 到 b 的任意映射集的共轭化器也以相同方式定义。”对于从 a → b 的映射集，两个解读是 Structure/Coequalizer/Wide.v 的基本记录 [IsWideCoequalizer]，一个仅从 b 指出的箭头，这是（6）的扩展以及该文件头部采用的解读，其余极形式为 [WideCoequalizer]，是一个在 a 为顶点的形状上的余极。它们在每个非空映射集上一致。在空集处，余极限是 a 和 b 的余积，而基本记录固定了 b 本身（该文件的头部，它声明了余积但没有形式化，以及它的 [wide_coround_trip_needs_point]）；书中没有处理这种情况。这里 a 是 *，b 是 X：读作通用箭头，X/∅ 是 X ⊔ *（在 [Top]，Pairs.v 的 [pquot_wide_coequalizer_colimit_empty]）；从基本角度读，它是 X。Instance/Top/Cocomplete.v 的头部列出了书第 134 页中未构建的已处理余极限之间的塌缩；该文件构建了它，而 Instance/Top/Quotient/Pairs.v 构建了书中段落的另一半，即对的范畴及其伴随关系。这里是什么。- 沿着一个 FAMILIY [p : I → X] 的点的塌陷，我在点宇宙中的点。[Top_collapse X I p] 拥有 X 的点，其中两个在它们相等时或者当它们都位于 [p] 的像中时被识别，直到点的相等（[collapse_image]，饱和像，所以 [p] 没有要求），具有 Instance/Top/Subspace/TypeValued.v 的商拓扑 [TQuot]。[Top_collapse_equiv] 将点的相等读取回来作为 [collapse_rel] 在 [eq_refl]。[collapse_family X I p i] 是点包含 [top_point X (p i) : Point_Top ~> X]，并且 [collapse_family_coequalizer] 证明 [X ~> X/A] 是该族的一个基本 [IsWideCoequalizer]，映射出任意空间，对于每个族，包括空族；中介者是在点上的竞争映射本身（[collapse_desc_map_points]，在 [eq_refl]）。- Mac Lane 的子集形式。一个子集是一个类型值谓词 [A : X → Type]，由其点 [collapse_sub_points X A] 索引；[Top_collapse_sub X A] 是 X/A，[collapse_sub_family X A] 是书中“将 * 发送到点 a ∈ A 的所有箭头的集合”，而 [collapse_coequalizer] 是该问题的固定名称，构造 5 在初等形式下，对每个子集都适用。饱和像使得这里对 [A] 的适当性假设变得不必要。Pairs.v 中的对通过设计选择携带一个，一个 setoid 的子集在点的等价性下取闭包；该文件的头部将这种饱和命名为替代方案。- 在这个文件的顶点处，余极限形式，即通用箭头读法，[collapse_family_colimit] 和 [collapse_colimit] 接受一个族的成员：它是 Structure/Coequalizer/Wide.v 的循环回程 [is_wide_coequalizer_colimit]，从基本记录出发，它只接受一个，并且该文件的 [wide_coround_trip_needs_point] 证明该成员在一般情况下不能从循环回程中删除。在这个顶点处也不能删除它：在 ⟨∅, ∅⟩ 处，没有任何余极限的顶点携带该族的基本宽共等化子，而这个文件的 X/∅ 做到了（Pairs.v 的 [empty_colimit_not_elementary]）。余极限本身不需要成员：对于每一个在点的相等性下封闭的子集，包括空集，它就是 Pairs.v 的 [pquot_wide_coequalizer_colimit]，在顶点 (X ⊔ {∗})/(A ∼ ∗) 处。- 在空子集上，基本的 X/∅ 是 X（[collapse_empty_iso]，X/∅ ≅ X，通过 [wide_empty_id_IsWideCoequalizer]），是一个同构，在 [eq_refl] 处被拒绝作为空间的等式（Test/ProbeCollapse459.v 的 N9）。因此，在 X = ∅ 时，一个空族的基本广义余等化器根本没有点，无论它如何构造（[empty_wide_coequalizer_pointless]：空空间的恒等映射沿每个映射下降，并会将其中的一个点映射到 ∅）。[collapse_empty_pointless] 只是本文件中 X/∅ 的 [Empty_Top] 携带者的一个回读；一个证明对 ∅ 的每个子集都成立。这就是 Mac Lane 的余等化器部分的两种解读之所在。作为通用箭头来读，他的 X/∅ 是 X ⊔ *，它有一个点，而 Pairs.v 证明了 coequalizer 和构造 6 的 X/A 为每个在点的等式下封闭的子集提供了一个空间，因此构造 5 和 6 在每个 A 上都一致。从基本上理解，X/∅ 是 X，而且这两种构造在 A = ∅ 时分开。— [Top] 的小宽 coequalizer。[wcoeq_rel] 是一族集合等价映射生成的关系（所有的对 (f_i a, f_j a)），是 Instance/Sets/Coequalizer.v 中 [coeq_rel] 的广义类比；[WSetsCoeq] 是其商集合等价；[twcoeq_obj] 是它上的 [TQuot]，直接构建方式如 Instance/Top/Cocomplete/TypeValued.v 构建 [Top_HasCoequalizers]；而 [Top_HasWideCoequalizers_small] 是 [HasWideCoequalizers] 对于 [Top] 在每个指数宇宙（小于或等于这些点）处的值，并且其对象在 [eq_refl]（[Top_wide_coequalizer_obj]）中读取。在此文件之前，这棵树没有 [HasWideCoequalizers] 的元素（在树的 .v 文件中进行单词搜索发现该类只出现在其声明文件中）；该文件的头部包含一个更正（#459）。[collapse_iso_generic] 比较了直接塌缩与其族的通用宽协同化子通过 [wide_coequalizer_unique]：这个同构在两个方向上对点都是恒等的（[collapse_iso_generic_to]，[collapse_iso_generic_from]，在 [eq_refl]）。- [collapse_proj_epic]，来自 [wide_coequalizer_epic]。这些墙体，在 Test/ProbeCollapse459.v 文件中固定（其 N1-N6），承载了此文件的导入列表；每个拒绝都在该整个文件的副本中读取，其中一个受保护的命令被取消保护，每个都在一个被接受的阳性对照旁边；消息生成的宇宙被记录为 <1>、<2>，按首次出现顺序编号。W-b. [wcoeq_rel] 在 [Type@{h}] 的索引上读取，作为 [Type@{o}] 的关系被拒绝，“宇宙不一致：无法强制执行 o = <1> 因为 o < h <= <2> <= <1>”：该关系的索引宇宙 <2> 位于其点的宇宙 <1> 处或以下，因此 [h] 的索引会将关系提升到点之上。控制：[o] 的索引。该机制属于这样一个家族：Instance/Top/Cocomplete/TypeValued.v 的头部将其记录为 W2（一个在 [h] 上量化数据的粘合构造器）；两者并未声称是同一堵墙。W-a。不是它自己的墙：绑定器 [Top_HasWideCoequalizers_small] 中的绑定 [i <= o] 属于 W-b，由此关系强制，并在绑定器省略它时推断出来。粘合构造器 [wcq_glue] 对索引进行量化，因此在闭合约束列表 [@{i o|}] 下，该关系被拒绝，“宇宙约束不会由已声明的约束推出：i <= o”，因此在那里声明的归纳类型本身也被拒绝，而相同的归纳类型在没有 [wcq_glue] 时则被接受。在同伦宇宙中以其索引读取时，该实例相应地被拒绝，“宇宙不一致。”无法强制执行 h <= o 因为 o < h。索引 [i <= o] 的读取 W-c.[IsWideCoequalizer] 不是累积的，而往返 [is_wide_coequalizer_colimit] 需要同一 universe 的索引（Structure/Coequalizer/Wide.v 的头部：[u0 = u1]）。将索引 [o] 处读取的记录交给它会被拒绝，提示“universe 不一致：无法强制执行 o = h 因为 o < h”。因此 [collapse_family_coequalizer] 和 [collapse_coequalizer] 的索引 universe 是其自身的一个绑定器 [i]，带 [o <= i]：在 [@{o h h}] 处读取它为往返提供输入（控制及 [collapse_family_colimit]），在 [@{o h o}] 处读取它是 Mac Lane 的索引，即 A 的点。没有任何屏障阻止 Construction 5，其索引是 A 的点，在 [o]。优势。在 [eq_refl]：[Top_collapse_equiv]，[collapse_desc_map_points]，[Top_wide_coequalizer_obj]，[collapse_iso_generic_to]，[collapse_iso_generic_from]。最多到 [≈]：通用性质 [collapse_desc] 和 [twcoeq_desc] 以及由它们构建的一切。两个 [Defined]，按标记计数（[collapse_desc]，[twcoeq_desc]），并且都能承重：每个闭合的 [Qed] 单独在此文件的一个草稿副本中会导致 [eq_refl] 读回被拒绝，[collapse_iso_generic_to]（“无法统一 'collapse_iso_generic X I p x' 和 'x'”）和 [collapse_iso_generic_from] 分别如此。在代码中按标记计数的九个 [Qed] 中，有七个是等价性、尊重性和共分叉引理，一个是读回 [collapse_empty_pointless]，一个是反证 [empty_wide_coequalizer_pointless]。UNIVERSES，由 [About] 在 [Set Printing Universes] 下读取，涵盖此文件 [Print Module] 列表中的所有 54 个常量（包括归纳类型、其四个构造函数和四个生成的方案）。- [collapse_image]、[collapse_rel]、[collapse_setoid]、[collapse_carrier]、[collapse_q]、[Top_collapse]、[collapse_sub_points]、[collapse_sub_incl]、[Top_collapse_sub]：[@{o}]，仅受 stdlib 限制（[TQuot] 承载的对投影限制）；X/A 是 [TopSpace@{o}]，是与 X 相同 [Top@{h o}] 的对象。- 映射及其泛性质（[collapse_proj]、[collapse_family]、[collapse_wcofork]、[collapse_med]、[collapse_desc]、[collapse_family_colimit]、[collapse_proj_epic]、[collapse_sub_proj]、[collapse_sub_family]、[collapse_colimit]）：[@{o h}] 具有 [o < h]、[Top] 自身的界限，以及 stdlib 限制。[collapse_family_coequalizer] 和 [collapse_coequalizer]：[@{o h i}] 与 [o < h] 和 [o <= i]，在 [IsWideCoequalizer@{i h h}]；[empty_wide_coequalizer_pointless] 也是如此。- [collapse_iso_generic] 和 [collapse_empty_iso]：[@{o h u}] 与 [o < h] 和 [h < u]，其中 [u] 不在该语句中：它是 [wide_coequalizer_unique] 自己的绑定器 [u2]，在该引理的块中由 [u0 < u2] 与 [u0]（同类宇宙）绑定。移除绑定器中的 [u] 后，每个主体都被拒绝（“宇宙 <1> ... 未绑定”；Test/ProbeCollapse459.v 的 N7 和 N8）。- [wcoeq_rel]，它的构造函数以及在其上的等价类常量：[@{i o}] 以及 [i <= o]（生成的方案命名了它们自己 的绑定器：[wcoeq_rel_rect@{u u0 u1}]、[wcoeq_rel_ind@{u u0}] 和 [wcoeq_rel_sind@{u u0}] 携带 [u <= u0]，并且 [wcoeq_rel_rec@{u u0}] 有一个空块，其语句位于 [wcoeq_rel@{u u}]）；[twcoeq_obj] 到 [Top_HasWideCoequalizers_small]：[@{i o h}] 以及 [i <= o] 和 [o < h] 的实例位于 [HasWideCoequalizers@{i h h} Top@{h o}]。- [collapse_empty_pointless@{o}] 和 [empty_wide_coequalizer_pointless] 携带文件中唯一的 STRICT 标准库 cap，[o < False_rect.u0]，它是 [Empty_Top] 自己的（关于：[u < False_rect.u0]）。- 没有块携带方程。在 54 个常量的 [About] 输出上进行 [Set] 的字数统计为 1：生成的方案 [wcoeq_rel_rec] 的动机的类型，而不是一个宇宙绑定。未交付。上述点的宇宙中索引的 [Top] 的广义共同等化器（由 W-b 围住，未被反驳）；[Sets] 的 [HasWideCoequalizers] 实例，虽然 [WSetsCoeq] 是它所需要的集合等价类；没有家族成员的余极限形式，对于除了闭合于点相等的子集的点包含的家族以外的家族（对于那些是 Pairs.v 的 [pquot_wide_coequalizer_colimit]）；具有两元素索引的广义共同等化器与 Instance/Top/Cocomplete/TypeValued.v 的二元 [Top_HasCoequalizers] 的比较；作为一个带点空间的 X/A，这是 Instance/Top/Quotient/Pairs.v 的；以及它所服务的任何同伦理论构造（锥体、悬挂、锤积、相对同调）。
 *)
 
 #[local] Obligation Tactic := idtac.
@@ -564,7 +564,7 @@ Definition collapse_sub_proj@{o h | o < h +} (X : TopSpace@{o})
   (A : X → Type@{o}) : X ~{Top@{h o}}~> Top_collapse_sub X A :=
   collapse_proj X (collapse_sub_points X A) (collapse_sub_incl X A).
 
-(* "the set of all the arrows sending the one point space * to one of the points a ∈ A" / 从单点空间 * 到 A 中某个点 a ∈ A 的所有箭头的集合 *)
+(* “the set of all the arrows sending the one point space * to one of the points a ∈ A” / 从单点空间 * 到 A 中某个点 a ∈ A 的所有箭头的集合 *)
 Definition collapse_sub_family@{o h | o < h +} (X : TopSpace@{o})
   (A : X → Type@{o}) (a : collapse_sub_points X A) :
   Point_Top@{o} ~{Top@{h o}}~> X :=

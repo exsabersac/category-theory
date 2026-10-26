@@ -29,11 +29,11 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
    Theorem 2 and its Corollary, book pp. 129-130 (catalogue ids
-   [maclane:V.8:thm2], [maclane:V.8:cor1]); Awodey, "Category Theory",
-   Remark 9.35, printed p. 255 ([awodey:9.8:remark35]); Riehl, "Category
-   Theory in Context", Theorem 4.7.10, printed p. 177
+   [maclane:V.8:thm2], [maclane:V.8:cor1]); Awodey, “Category Theory”,
+   Remark 9.35, printed p. 255 ([awodey:9.8:remark35]); Riehl, “Category
+   Theory in Context”, Theorem 4.7.10, printed p. 177
    ([riehl:4.7:thm10]).  The statements are read from the catalogue's
    summaries under doc/plan/books; the printed books were not consulted.
    The Corollary: a small-complete, well-powered category [C] with small
@@ -56,8 +56,8 @@ Generalizable All Variables.
    product does not depend on [d], and Adjunction/SAFT/Sets.v's
    [SubobjectCover_Id_Sets_absurd] refutes the datum at the identity of
    [Sets].  The classical argument takes its product over the arrows OUT
-   OF [d] (nLab: the cogenerating set of d↓R is "the set of all objects
-   of the form d→Rc_α").  Here that product is [saft_prod U comp G d],
+   OF [d] (nLab: the cogenerating set of d↓R is “the set of all objects
+   of the form d→Rc_α”).  Here that product is [saft_prod U comp G d],
    the product of [cog_obj G j] over the index [saft_index U G d := { j &
    d ~> U (cog_obj G j) }], and the datum [SubobjectCoverAt U comp G d W]
    indexes subobjects of it by a well-powering [W] of that one object.
@@ -119,21 +119,21 @@ Generalizable All Variables.
 
    NOT CONSUMED: no image factorization, no intersection and no monos
    lemma.  A case-insensitive grep of this file's code, with its comments
-   stripped, for "factori", "intersection", "sub_le", "HasImages",
-   "comma_monic", "StrongEpi" and "Regular" finds nothing (instrument:
-   "cogen_canonical" is found on five lines of the same stripped text).
+   stripped, for “factori”, “intersection”, “sub_le”, “HasImages”,
+   “comma_monic”, “StrongEpi” and “Regular” finds nothing (instrument:
+   “cogen_canonical” is found on five lines of the same stripped text).
    Structure/Factorization.v, Structure/Regular/Factorization.v and
    Theory/Subobject/Lattice.v are in this file's closure, through
-   Structure/WellPowered.v, so the claim is "not used", not "not
-   imported".  The reshaped datum is derived with a pullback and its
+   Structure/WellPowered.v, so the claim is “not used”, not “not
+   imported”.  The reshaped datum is derived with a pullback and its
    preservation and no factorization; the old datum is refuted, so the
    route of the Awodey checkbox of #453 (derive [SubobjectCover] through
-   "an epi-mono factorization in a complete well-powered category") does
+   “an epi-mono factorization in a complete well-powered category”) does
    not arise.
 
    ** The Awodey and Riehl checkboxes
 
-   "SubobjectCover becomes a theorem" is met by SUPERSESSION in the
+   “SubobjectCover becomes a theorem” is met by SUPERSESSION in the
    reshaped form, not by deriving the old datum.  The old datum is
    refuted where, under [Untruncate], the book's hypotheses hold:
    Adjunction/SAFT/Characterization/Examples.v's
@@ -143,8 +143,8 @@ Generalizable All Variables.
    Instance/Sets/WellPowered.v's [Sets_WellPowered_untruncate Un], both
    that this file's datum is inhabited at every [d] and that
    [SubobjectCover], fed [WellPowered_SubobjectIndex] of the SAME
-   well-powering, implies [False].  So a statement "the book's hypotheses
-   give [SubobjectCover]", at the separation's universes ([Set < o], [o <
+   well-powering, implies [False].  So a statement “the book's hypotheses
+   give [SubobjectCover]”, at the separation's universes ([Set < o], [o <
    so], [o < t]), would with [sets_id_cover_separation] prove
    [Untruncate@{o} → False]; it can be stated in tree only if
    [Untruncate] is refutable there (a meta-argument, not a constant).
@@ -176,7 +176,7 @@ Generalizable All Variables.
    by [saft_cover_at].  [SAFT_cover_wp_at] feeds it to [GAFT] with a
    well-powering at each [saft_prod U comp G d] only; [SAFT_cover_wp]
    takes #451's [WellPowered].  [GAFT] is [Theorem … Qed] ([About GAFT]:
-   "GAFT is opaque"), so the left adjoint of this route does not read
+   “GAFT is opaque”), so the left adjoint of this route does not read
    back at any [d]; [SAFT_cover_wp_is_GAFT] records by [eq_refl] that the
    constant IS [GAFT] at these solution sets.  The transparent left
    adjoint is Adjunction/SAFT/Characterization.v's [SAFT_wellpowered],
@@ -184,8 +184,8 @@ Generalizable All Variables.
    [SAFT_cover_wp_iso] compares the two by Theory/Adjunction.v's
    [left_adjoint_iso].  They are not convertible: in a scratch file with
    Corollaries.v's import list, [projT1 (SAFT_cover_wp …) = projT1
-   (SAFT_wellpowered …)] at [eq_refl] is refused by conversion ("cannot
-   unify …").  Test/ProbeSAFT453.v pins it as N6
+   (SAFT_wellpowered …)] at [eq_refl] is refused by conversion (“cannot
+   unify …”).  Test/ProbeSAFT453.v pins it as N6
    ([p453_n6_routes_convertible]), beside [p453_cover_is_gaft] and
    [p453_cover_iso].
 
@@ -242,9 +242,9 @@ Generalizable All Variables.
      so [saft_point] writes [image_family_cone@{o dobj h so pa dp}] and
      [saft_lift] writes [saft_pb_cone@{… so pa _}].  Measured in a
      scratch file with this file's import list: the lift with a named
-     [pc], [pa < pc], in [pa]'s place is refused with "cannot unify
-     "Functor.Compose_obligation_1@{dobj so o pc h} …" and
-     "Functor.Compose_obligation_1@{dobj so o pa h} …"", while the same
+     [pc], [pa < pc], in [pa]'s place is refused with “cannot unify
+     ”Functor.Compose_obligation_1@{dobj so o pc h} …“ and
+     ”Functor.Compose_obligation_1@{dobj so o pa h} …“”, while the same
      definition with [pa] (the control) is accepted.  Test/ProbeSAFT453.v
      pins it as N18 ([p453_n18_lift_at_pc], beside [p453_lift_at_pa]).
    - [pa] in the conclusion's [Adjunction@{… pa …}] is [GAFT]'s own:
@@ -289,12 +289,12 @@ Generalizable All Variables.
    and [cogen_power] are not annotated.  The refusals quoted here are
    measured in scratch files whose environments are named, and
    Test/ProbeSAFT453.v pins each where it is cited (N6, N14, N18, N28,
-   and N11, N12, N25 and N29 from Examples.v's header); the collapse "t =
-   pa" of the Universes section is pinned as staying removed by that
+   and N11, N12, N25 and N29 from Examples.v's header); the collapse “t =
+   pa” of the Universes section is pinned as staying removed by that
    file's [p453_cover_t_below_pa] and [p453_cover_pa_below_t].
 
    MEASUREMENTS.  Twenty-two constants ([Print Module]), no [Program]
-   obligation, each "Closed under the global context" by its fully
+   obligation, each “Closed under the global context” by its fully
    qualified name.  Closure 111 files excluding itself, counted over
    .Makefile.coq.d: Adjunction/SAFT/InitialObject.v's 110 and that file
    (the same count reproduces InitialObject.v's own 110). *)

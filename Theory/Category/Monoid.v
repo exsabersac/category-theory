@@ -32,10 +32,10 @@ nLab:  https://ncatlab.org/nlab/show/internal+category
                                  cod (m (g, f)) = cod g
 
    that is associative and unital.  That is the germ of two later notions: a
-   category internal to a category with pullbacks (replace "set" by "object of
-   E" and the fibred product by a pullback), and a monad in the bicategory of
-   spans, whose composition IS the fibred product above (nLab, "internal
-   category").
+   category internal to a category with pullbacks (replace “set” by “object of
+   E” and the fibred product by a pullback), and a monad in the bicategory of
+   spans, whose composition IS the fibred product above (nLab, “internal
+   category”).
 
 --------
 nLab: https://ncatlab.org/nlab/show/internal+category
@@ -92,19 +92,19 @@ What this file is, and what it is not
    - Structure/Monoid.v defines [MonoidObject]: a monoid in a MONOIDAL
      category, in the sense of Benabou.  That is a different theorem shape.
      There the tensor is a global bifunctor on one category; here the
-     "tensor" is the fibred product A x_O A, which is the hom-composition of
+     “tensor” is the fibred product A x_O A, which is the hom-composition of
      the bicategory of spans over O and is not a monoidal structure on any
      single category in the tree.  The two only coincide after one builds
      Span(Set), which this file does not.
 
    - Structure/Span.v defines [Span C := Roof ⟶ C]: the diagram SHAPE of a
      span, with no composition and no bicategory structure.  So the
-     "monoid in spans" reading of Mac Lane's remark is not available there,
+     “monoid in spans” reading of Mac Lane's remark is not available there,
      and this file does not use it either -- it works with the fibred product
      directly.
 
    - Theory/Metacategory.v and Theory/Metacategory/ArrowsOnly.v formalize
-     Mac Lane's OTHER re-presentation, the single-sorted "arrows-only"
+     Mac Lane's OTHER re-presentation, the single-sorted “arrows-only”
      metacategory of CWM I.1, where objects are recovered as identity arrows
      and composition is partial.  This file is the two-sorted remark of I.2:
      objects are a primitive sort and composition is total on the fibred
@@ -368,7 +368,7 @@ Mac Lane's unit and multiplication, with their boundary conditions and
 
    All laws are stated up to the arrow setoid's `≈`, and universally over the
    composability proofs.  Quantifying over the proofs is not a weakening: it
-   is the content of "m is a function on A ×_O A", since two composable pairs
+   is the content of “m is a function on A ×_O A”, since two composable pairs
    with the same components are the same element of the pullback whatever
    proof witnesses their composability.
 

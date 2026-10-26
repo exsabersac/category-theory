@@ -346,7 +346,7 @@ Definition CFreeCat_ObjDecEq : ObjDecEq (CFreeCat S) := list_eq_dec Cdec.
 
 (*
    * The coherence between the strict and symmetric [Monoidal] paths
-   is the reflexivity proof itself — the "known limitation"
+   is the reflexivity proof itself — the “known limitation”
    discussed in [Construction/PROP.v] does not bite on the free
    coloured PROP. 
 

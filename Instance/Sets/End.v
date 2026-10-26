@@ -18,8 +18,8 @@ Generalizable All Variables.
 
  For a functor of mixed variance [F : C^op ∏ C ⟶ Sets] the end [∫_x F(x,x)]
  is realised here as a concrete setoid, with no recourse to
- function-extensionality.  The carrier is the setoid of "compatible
- families": a choice [s x : F(x,x)] for every object [x : C], subject to the
+ function-extensionality.  The carrier is the setoid of “compatible
+ families”: a choice [s x : F(x,x)] for every object [x : C], subject to the
  wedge (dinaturality) constraint
 
  fmap[F] (id, f) (s x)  ≈  fmap[F] (op f, id) (s y)      for f : x ~> y.

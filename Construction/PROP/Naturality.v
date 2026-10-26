@@ -19,7 +19,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Braided_monoidal_category
 
  Restated in library notation (writing [g ⊙ f] for [T_comp g f], the
- diagrammatic "g after f", and [f ⊕ g] for [T_tens f g]):
+ diagrammatic “g after f”, and [f ⊕ g] for [T_tens f g]):
 
  - braid naturality: σ slides past a tensor of two morphisms,
  (g ⊕ f) ⊙ σ_{m1,m2} ≈ σ_{n1,n2} ⊙ (f ⊕ g)

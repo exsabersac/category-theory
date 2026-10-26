@@ -55,7 +55,7 @@ Generalizable All Variables.
        and T ∘ T both preserve the given split fork — and its algebra
        laws follow by cancelling the split epimorphisms T e and T (T e).
        The whole package is the record [CreatedSplitCoequalizer].  The
-       predicate the word "absolute" names is Structure/Coequalizer/
+       predicate the word “absolute” names is Structure/Coequalizer/
        Absolute.v's [AbsoluteCoequalizer] (#477); the proof here uses the
        stronger [functor_preserves_split], whose image fork is again
        split. 

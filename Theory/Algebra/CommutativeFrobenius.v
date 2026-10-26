@@ -33,7 +33,7 @@ A Frobenius algebra is commutative when its multiplication is symmetric
    of commutative Frobenius algebras over a field [K] is equivalent to the
    category of symmetric strong monoidal functors from the 2-cobordism
    category [2Cob] to [Vect_K]: the circle is sent to the algebra, the
-   "pair of pants" cobordism to [mu] (resp. [delta] read backwards), and
+   “pair of pants” cobordism to [mu] (resp. [delta] read backwards), and
    the cap/cup disks to [eta] / [epsilon].
 
    nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra

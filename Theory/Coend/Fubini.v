@@ -76,7 +76,7 @@ The inner integrand at fixed [c1 c2 : C]: the [D]-profunctor
 在固定 [c1 c2 : C] 时的内部被积函数：[D]-仿函子 [(d1, d2) ↦ H ((c1, d1), (c2, d2))]，对 [d1] 是逆变的，对 [d2] 是协变的，通过将 [C] 坐标固定在 [c1]、[c2] 得到。
 *)
 (**
-The action of [H] on a "rectangle" of moves: a contravariant [C]-move [u],
+The action of [H] on a “rectangle” of moves: a contravariant [C]-move [u],
     a covariant [C]-move [v], a contravariant [D]-move [g1] and a covariant
     [D]-move [g2], with every object explicit so that no projection sits inside
     the morphism literal (which is what makes Coq insert [eq_rect] transports).

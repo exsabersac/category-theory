@@ -19,8 +19,8 @@ Generalizable All Variables.
 (* * * Quotient groups as coequalizers, split under the forgetful functor / * * 商群作为共同化子，在遗忘函子下分裂 *)
 
 (*
- Book:   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- §VI.6 "Split Coequalizers", book p. 150 (PDF p. 159), the
+ Book:   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ §VI.6 “Split Coequalizers”, book p. 150 (PDF p. 159), the
  example after the Corollary, item maclane:VI.6:remark2, read
  from the page image
  nLab:   https://ncatlab.org/nlab/show/split+coequalizer
@@ -28,7 +28,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_group
  Wikipedia: https://en.wikipedia.org/wiki/Semidirect_product
 
- WHAT THE BOOK SAYS.  "Let N ◁ G be any normal subgroup of G and form
+ WHAT THE BOOK SAYS.  “Let N ◁ G be any normal subgroup of G and form
  the semidirect product G ×₀ N, which has elements the pairs ⟨x, n⟩ for
  x ∈ G, n ∈ N with the (evidently associative) multiplication
  ⟨x, n⟩⟨y, m⟩ = ⟨xy, (y⁻¹ny)m⟩.  Then G ×₀ N ⇉ G → G/N is a fork, where
@@ -37,7 +37,7 @@ Generalizable All Variables.
  coequalizer of ∂₀ and ∂₁.  This fork is not in general split, but if
  we apply the standard forgetful functor U: Grp→Set, the resulting fork
  in Set is split.  Take s to be a function sending each coset (element
- of G/N) to a representative element in G, while tx = ⟨x, x⁻¹(spx)⟩."
+ of G/N) to a representative element in G, while tx = ⟨x, x⁻¹(spx)⟩.”
 
  WHAT IS HERE.
  - [SemidirectGrp N] is G ×₀ N: pairs ⟨x, n⟩ whose n carries its
@@ -101,7 +101,7 @@ Generalizable All Variables.
  at A₃ ◁ S₃ ([A3_transversal], (i, b) ↦ (rot0, b), over
  Instance/Grp/TwoFunctors.v's decidable S₃); the last is a
  homomorphism, so S₃/A₃ splits in Grp ([S3_A3_Grp_split]).  The
- book's "not in general split", at a witness:
+ book's “not in general split”, at a witness:
  [Z4_two_not_split_in_Grp], for Z/4 over {0, 2} ([Z4], [Z4_two],
  built here): a homomorphic section sends 1 to an odd u (its coset
  witness), hence 2 = 1 + 1 to u + u = 2, while 2 ≡ 0 sends it to
@@ -126,7 +126,7 @@ Generalizable All Variables.
  when P holds and trivial when it does not, its membership the Prop
  [or P (a = false)]), a transversal is a decision of P
  ([NP_transversal_decides], [NP_decides_transversal]), so Mac Lane's
- unconditional "the resulting fork in Set is split" decides every
+ unconditional “the resulting fork in Set is split” decides every
  proposition, P + (P → False) ([U_split_taboo]), and the mere
  existence of a transversal gives the Prop [or P (P → False)]
  ([NP_inhabited_transversal_lem]).  Instance/Sets/Regular.v runs this
@@ -209,7 +209,7 @@ Generalizable All Variables.
  of [Grp@{u p}]'s objects, and N : NormalSubgroup@{u p p p} G: the two
  sections declare [p] and write the binder out because a section's
  free G put the identification in the constraint blocks as two
- equations ("u = u0", "u = u1", measured on a draft's [semidirect_d0]
+ equations (“u = u0”, “u = u1”, measured on a draft's [semidirect_d0]
  and [semidirect_d1]), and the eleven readbacks of the pair and its
  splittings outside them write it with the bound,
  @{p u + | u <= p +}: with bare binders, minimization identified u
@@ -217,7 +217,7 @@ Generalizable All Variables.
  where the probe's C17 now accepts [transversal_split_e] below the
  carrier.  No block carries an equation.  Every name generic in N
  that mentions the pair, a splitting of it, t or the untruncated
- quotient carries "u <= p", N's membership level at or below the
+ quotient carries “u <= p”, N's membership level at or below the
  carrier level, first at [semidirect_d0]: an element of G ×₀ N
  carries a membership witness, and the pair lives in [Grp@{_ p}].
  [Transversal], [CosetUntruncates], [transversal_untruncates],
@@ -229,9 +229,9 @@ Generalizable All Variables.
  [U_preserves_untruncates] put the membership level of N_P or N_S at
  Z/2's carrier level, which ∂₀ allows.  [quot_rel_object] is annotated
  at [SetoidObject@{p p}], whose relation level it reaches by
- "u <= p"; unannotated it was a [SetoidObject@{p u}], and
+ “u <= p”; unannotated it was a [SetoidObject@{p u}], and
  [quot_rel_proj], which reads it as an object of [Sets], carried
- "p = u" (measured); built on [SetsQuotient] and [sets_quot_proj] at
+ “p = u” (measured); built on [SetsQuotient] and [sets_quot_proj] at
  [grp_setoid G], both keep their signatures.  [Grp_ForgetP] keeps the
  object levels of [Grp] and [PropSets] apart, as [Grp_Forget] keeps
  those of [Grp] and [Sets], [PropSets_quot_IsCoequalizer] names them
@@ -250,7 +250,7 @@ Generalizable All Variables.
  [Z4@{p} : GrpObject@{p p p}] lifts z4 to every level, and its
  refutation is accepted above [Set] (C6).
  [transversal_U_AbsoluteCoequalizer] names its target levels xo xh
- ("p <= xh"): left to Rocq, minimization set the target's hom level
+ (“p <= xh”): left to Rocq, minimization set the target's hom level
  to p, as Absolute.v records for [split_coequalizer_absolute], whose
  further level above xh it inherits.  On Coq 8.19.2 and 8.20.1
  ([About] in a build of the files' closure and the probe under each)
@@ -268,7 +268,7 @@ Generalizable All Variables.
  #313, Instance/Grp/Quotient.v).  No semidirect product of
  groups was built before this file: [git grep -i semidirect] over the
  other .v files finds eleven lines, each in a comment, and S₃'s
- "semidirect presentation" in TwoFunctors.v is a multiplication on
+ “semidirect presentation” in TwoFunctors.v is a multiplication on
  rot × bool, not a construction.
 
  NOT DELIVERED.  A transversal, or the untruncation of the coset
@@ -290,7 +290,7 @@ Generalizable All Variables.
  维基百科：https://en.wikipedia.org/wiki/Semidirect_product书中所说。“设 N ◁ G 为 G 的任意正规子群，并构成半直积 G ×₀ N，其元素为对 ⟨x, n⟩，其中 x ∈ G，n ∈ N，乘法为 ⟨x, n⟩⟨y, m⟩ = ⟨xy, (y⁻¹ny)m⟩（显然是结合的）。则 G ×₀ N ⇉ G → G/N 构成一个叉，其中 p 是到商群 G/N 的通常投影，而 ∂₀⟨x, n⟩ = x，∂₁⟨x, n⟩ = xn。此外，在这个叉中，p 显然是 ∂₀ 和 ∂₁ 的等化子。这个叉通常不是分裂的，但如果我们应用标准的遗忘函子 U: Grp→Set，得到的 Set 中的叉是分裂的。取 s 为一个函数，将每个陪集（G/N 的元素）映射到 G 中的一个代表元素，而 tx = ⟨x, x⁻¹(spx)⟩。”这里是什么。- [SemidirectGrp N] 是 G ×₀ N：由⟨x, n⟩组成的对，其中 n 携带它的成员证明，通过集合等价比较，以及 Instance/Grp.v 的直积 [PropEquiv] [Grp_product G (SubgroupGrp N)]（[SemidirectGrp_setoid]，在 [eq_refl] 处），并乘以书中的公式（[sdp_mul]）。它的单位元为⟨e, e⟩，逆元为⟨x⁻¹, x n⁻¹ x⁻¹⟩，书中未打印，它们分别是 [sdp_unit] 和 [sdp_inv]。∂₀ 和 ∂₁ 是 [semidirect_d0] 和 [semidirect_d1]。- 在没有假设的情况下：p 共叉这对 ([semidirect_cofork])；一个同态恰好在它消去 N 时共叉它 ([semidirect_cofork_iff_kills])；p 是它的共等化器 ([quot_proj_IsCoequalizer])，降结构是 Instance/Grp/Quotient.v 的中介 [quot_med]，即 #313 的泛性质；U-像是一个叉 ([semidirect_U_cofork])；并且该对是自反的，x ↦ ⟨x, e⟩ 是 Grp 中的一个共同截面 ([semidirect_refl], [semidirect_reflexive])。- U 后的分裂作为双条件。一个 [Transversal N] 是在每个陪集里选择一个代表：一个从 U(G/N) 出发的集合同构映射，带有未截断的证据 [quot_rel N (s a) a]。[Grp_U_split_iff_transversal]：当且仅当 N 有横截子时，U-像对具有分裂共等化器。一种方法是书的分裂，[transversal_split]，其中 e = U p，s 是横截面，t x = ⟨x, x⁻¹(s p x)⟩ ([transversal_t])；另一种方法，[split_transversal]，从 U-像对的任何分裂余等化器中读取横截面 s ∘ e，其 t 证明了陪集。因此，给定一个横截面，U 将 p 带到一个余等化器 ([transversal_U_IsCoequalizer])，事实上是一个绝对余等化器 ([transversal_U_AbsoluteCoequalizer]，Structure/Coequalizer/Absolute.v)。- 作为一个双条件，U 是否在所有情况下保持 p:  
  [Grp_U_IsCoequalizer_iff_untruncates]，U p 在集合中是一个共等化子，当且仅当陪集关系未被截断（[CosetUntruncates]：inhabited (quot_rel N a b) → quot_rel N a b），测试对象是未截断的商（[quot_rel_object]）；一个横截面未被截断（[transversal_untruncates]），截断原理也同样成立 ∀ S, inhabited S → S 在 N 的成员层次上（[choice_untruncates]）。  
  - 无条件的替代方案，已尝试并实现: 将 U 核限制到 PropSets 时，p 被映射为共等化子（不是分裂共等化子）。每个群都携带 [grp_prop]，因此 [Grp_Forget] 通过 Instance/Sets/Propositional/Full.v 的 [PropSets] 以及它的 [PropSets_lift]（[Grp_ForgetP]）进行分解，Full.v 列出的这个分解尚未构建。在 [PropSets] 中，每个测试对象的 `≈` 是命题性的，截断的陪集证人将其消去到其中（Lib/Setoid/Propositional.v 的 [pequiv_elim_inhabited]），并且 U p 在那里是一个没有假设的等值化子（[PropSets_quot_IsCoequalizer]）。在 [Sets] 中，U-像对的等值化子是没有假设的非截断商（[quot_rel_IsCoequalizer]），其中 U(G/N) 是该截断：U p 在 [Sets] 中正好是一个等值化子，当且仅当该截断可逆，这就是上面的双条件。——在 Grp 本身中分解，作为一个双条件：[Grp_split_iff_hom_transversal]，该对在 Grp 中有一个分裂等值化子，当且仅当 p 有一个带非截断陪集证人的同态节（[HomTransversal]），此时 t 是一个同态（[hom_transversal_t]）。——证人。在 N = G（[TotalNS_transversal]，单位元）、在 N 平凡（[TrivialNS_transversal]，恒等元）以及在 A₃ ◁ S₃（[A3_transversal]，（i, b）↦（rot0, b），通过 Instance/Grp/TwoFunctors.v 的可判定 S₃）处的横截面；最后一个是同态，因此 S₃/A₃ 在 Grp 中拆分（[S3_A3_Grp_split]）。书中所说的“通常不拆分”，在一个见证上：[Z4_two_not_split_in_Grp]，对于 Z/4 上的 {0, 2}（[Z4]，[Z4_two]，这里构造）：一个同态截面将 1 发送到奇数 u（它的陪集见证），因此 2 = 1 + 1 映射为 u + u = 2，而 2 ≡ 0 将其发送到 0 的像，即 0。[Z4] 是新的，因为该树没有 Z/4（对 .v 文件进行 z4 或 Z/4 的 grep 可以找到此文件及其探针）；Z/2，它有三个副本（Instance/Grp.v 的 [Z2]，Instance/Grp/Epi.v 的 [GrpTwo]，Instance/Grp/Galois.v 的 [GalZ2]），通过其平凡子群和整体子群的同态截面投射到它的商上，分别为恒等映射和单位映射；而 [Int_Plus_Grp]（Construction/Deloop/Functors.v）和 [Z3_Grp]（Structure/Groupoid.v）是 Construction/Deloop.v 的 [GrpObject] 记录的对象，而不是 Instance/Grp.v 的对象。——下面的禁忌，在 N_P 和 N_S ◁ Z/2（[NP]，[NS]）。建设性问题。书中 s 在每个陪集里选择一个代表。U(G/N) 是在商关系截断下 G 的载体（Instance/Grp/Quotient.v 的 [quot_setoid]），所以 U p 的截面是一个在陪集上常数的映射，直到 G 的 `≈`，而 t 的第二个分量是 N 的一个元素，需要它的陪集见证未截断：那个对是一个 [Transversal]。对每个 N 而言，分裂是一个建设性的禁忌。在 N_P ◁ Z/2 上，关于 Instance/Grp.v 的 [Z2]（当 P 成立时为整个 Z/2，当 P 不成立时为平凡，它的成员是命题 [or P (a = false)]），一个横截面是 P 的一个判定（[NP_transversal_decides], [NP_decides_transversal]），因此 Mac Lane 的无条件“在 Set 中产生的分叉是可分的”判定每一个命题，P + (P → False)（[U_split_taboo]），且仅凭横截面存在就可以得到命题 [or P (P → False)]（[NP_inhabited_transversal_lem]）。Instance/Sets/Regular.v 对 [Sets] 的分裂原则运行了这个论证：[sets_coarse] 是由一个命题粗化的布尔值，[sets_coarsen] 的一个分裂可以判定它（[sets_coarsen_retraction_dec]），[blanket_splitting_entails_LEM] 得出结论；它的标题记录了 Coq 的直觉逻辑不证明任一结论。非截断并不意味着横截构造性成立：它在 N_P 上直接成立（[NP_untruncates]，因此 U p 在那里是集合中的一个共等化器，[NP_U_IsCoequalizer]），而横截决定 P（[untruncation_transversal_taboo]）。对每个 N 的非截断原则是非截断原则 ∀ S, 存在 S → S 在成员层面：该原则给予它（[choice_untruncates]），在 N_S ◁ Z/2（[NS]，类型 S 的成员(a = 0) + S）上，非截断是从 [inhabited S] 选择的（[NS_untruncates_chooses]），因此 U 在每个 N_S 上保持 p 就给出了该原则（[U_preserves_untruncates]）。Instance/Sets/Propositional/Full.v 的 [untr_of_choice] 和 [choice_of_untr] 使该原则在各层上与 Instance/Sets/Classifier/OneLevel.v 的 [Untruncate] 相互可推（Test/ProbeQuotient479.v 的 C19 和 C20 在低于承载层的成员层上组合它们）。单子性。任何关于集合上的群的粗略单子性路径都需要去截断：该对是自反的，U保持自反余等值器，Monad/Monadicity/Crude.v 的假设 2 意味着在 Grp 的载体层次上有去截断原理（[Grp_Forget_crude_untruncates]）。通过 [PropSets] 对代数遗忘函子进行分解，其中 U 保持这些余等值器且无需假设，是后续问题（#1369）。Crude.v 使该文件增加了十一模块的闭包成本（[Print Libraries]：不加它为 95，加上它为 106），这些都已经在 Instance/Mon/Presentation.v 的闭包中，而该文件本身需要 Crude.v。更正 (#480)：根据一个标准，在本文件的十五行 [Require] 与未使用 Crude.v 的相同行进行比较后，[Print Libraries] 的成本是十个模块，#480 之前为 105 对 95，之后为 106 对 96，Structure/Coequalizer/Absolute.v 现在加载 Structure/Coequalizer/Contractible.v；上面的数字在一个中计算了此文件，而在另一个中没有计算。环双胞。Instance/Rng/Coequalizer.v 重复了该文件针对理想的集合级部分：横截面及其分裂、非截断的双条件以及两个无条件的余等化器。这些双胞是故意的。它们的共享内容仅依赖于一个集合类，其具有 [PropEquiv]，一个 [Type] 值的等价关系，比其 `≈` 更粗糙，以及该关系的核对呈现，而在这些之上的一个层将重新进行两个文件的宇宙注释；它尚未构建，因此其大小未测量。Instance/Variety 的集合代数不是路线，构建一个 [EqSignature] 携带 [functional_extensionality_dep]（docs/AXIOMS.md）。通用部分一次性声明，在 tree 中：[quot_rel_object] 和 [quot_rel_proj] 是 Instance/Sets/Quotient.v 中 [SetsQuotient] 和 [sets_quot_proj] 在 G 的集合体上的实例，[quot_rel_IsCoequalizer] 的下降是它的 [sets_quot_med] 与 [sets_quot_med_commutes] 和 [sets_quot_med_unique]，并且 [PropSets] 的下降是 [pequiv_elim_inhabited]。Instance/Sets/Coequalizer.v 的 [sets_rel_IsCoequalizer]（Mac Lane §III.3 练习 5）使 [SetsRelObj] 的两个投射相等，而不是这一对，所以它不能通过实例化得到 [quot_rel_IsCoequalizer]。优势。在 [eq_refl]：乘法是书中的公式 ([sdp_mul_fst], [sdp_mul_snd])；∂₀ 和 ∂₁ ([semidirect_d0_fun], [semidirect_d1_fun])；下降是 [quot_med] ([quot_proj_IsCoequalizer_desc])；拆分的对象 e, s 以及 t 的两个分量，第二个 x⁻¹(s p x) ([transversal_split_obj], [transversal_split_e], [transversal_split_s], [transversal_split_t_fst], [transversal_split_t_snd])；每个拆分的定律3，∂₀(t x) = x，逐点 ([transversal_split_law3], [hom_transversal_Grp_split_law3])；往返横截 → 拆分 → 横截 ([transversal_round_trip])；S₃ 值 ([A3_transversal_fun], [S3_A3_Grp_split_s])。仅在 ≈：G ×₀ N 的群定律以及每个拆分的定律1、2 和 4。定律4，∂₁(t x) = x(x⁻¹(s p x)) 对抗 s p x，在 [eq_refl] 被拒绝（Test/ProbeQuotient479.v, R1），消去是变量 G 的定律。G/N 中的共叉是通过构造的截断。UNIVERSES，由 [About] 在每个 93 个有门控的名称上执行（一个脚本）。该构造将 G : GrpObject@{u u0 u1} 与其三个自由级别绑定。其余的在绑定器中绑定 G : GrpObject@{p p p}，[Grp@{u p}] 对象的形状，以及 N : NormalSubgroup@{u p p p} G：这两个部分声明 [p] 并写出绑定器，因为部分的自由 G 将识别放入约束块中作为两个方程（“u = u0”，“u = u1”，在草稿的 [semidirect_d0] 和 [semidirect_d1] 上测量），并且该对及其分裂的十一次回读在它们之外使用绑定来写入，@{p u + | u <= p +}：使用裸绑定器，在每个绑定器中将 u 与 p 匹配最小化（在 [semidirect_d0_fun] 和其他八个上测量），其中探针 C17 现在在承载体下接受 [transversal_split_e]。没有任何块携带方程。N 中的每个通用名称提及该对、它的拆分、t 或未截断的商都带有“u <= p”，N 的成员级别在承载级别或以下，第一次出现在 [semidirect_d0]：G ×₀ N 的一个元素带有成员证明，该对存在于 [Grp@{_ p}]。[Transversal]、[CosetUntruncates]、[transversal_untruncates]、[choice_untruncates] 和 [HomTransversal] 没有这样的界限，[SemidirectGrp] 也没有（探针的 R2 拒绝在高于承载级别的成员级别下 ∂₀；C5 和 C14 接受那里另外两个）。特定子群的名称采用其级别：[NP_U_IsCoequalizer]、[U_split_taboo] 和 [U_preserves_untruncates] 将 N_P 或 N_S 的成员级别放在 Z/2 的承载级别，这是 ∂₀ 允许的。[quot_rel_object] 在 [SetoidObject@{p p}] 被注释，其关系级别通过 “u <= p” 达到；未注释时，它是一个 [SetoidObject@{p u}]，而 [quot_rel_proj] 将其作为 [Sets] 的对象读取，携带 “p = u”（测量）；在 [SetsQuotient] 和 [sets_quot_proj] 上建立于 [grp_setoid G]，两者都保持各自的签名。[Grp_ForgetP] 保持 [Grp] 和 [PropSets] 的对象级别分开，就像 [Grp_Forget] 保持 [Grp] 和 [Sets] 的级别一样，[PropSets_quot_IsCoequalizer] 给它们命名（go, so），而 [NP_decides_transversal] 给 Z/2 的级别命名：留给 Rocq 的，最小化在前两个中识别了两个对象级别，并将第三个放在 [Set]。[Grp_ForgetP@{go p so}] 是该文件所写的一个唯一显式宇宙实例，它自身的常量，其绑定器在三个级别上被关闭（在 Coq 8.19.2 和 8.20.1 上均为三个）；其他所有实例都是来自该开发之外的常量。[Set] 仅以 [Grp] 的对象级别自身的 [Set < u] 以及 [PropSets] 的 [Set < so] 出现，作为 z4 自身的类型（[z4 : Set]，以及 [z4_rec] 在 z4 → Set 上），以及五个 S₃ 名称中，它们继承了 Instance/Grp/TwoFunctors.v 的 [S3@{u} : GrpObject@{u Set Set}]（R3 拒绝了上述 [Set] 上的 [Grp@{u p}] 中 S₃/A₃ 的分裂）；[Z4@{p} : GrpObject@{p p p}] 将 z4 提升到每个级别，并且其反驳在 [Set]（C6）上方被接受。[transversal_U_AbsoluteCoequalizer] 将其目标级别命名为 xo xh
- （"p <= xh"）：由 Rocq 决定，最小化将目标的 hom 级别设置为 p，正如 Absolute.v 为 [split_coequalizer_absolute] 记录的那样，其高于 xh 的进一步级别被继承。在 Coq 8.19.2 和 8.20.1 上（在文件闭包的构建中以及每个探针下的 [About]），这 93 个名称中的每一个绑定的级别数量与 Rocq 9.1.1 上相同，没有区块携带等式，且 [Set] 出现在相同的七种类型中，五个 S₃ 名称，[z4] 和 [z4_rec]。过时的前提，来源于 gh。该问题（提交于 2026-07-23）指出树没有 Grp 或 Rng 类别，也没有正规子群、半直积或商群结构，CMon 是 Instance/ 中唯一的代数类别：在提交时准确（Theory/Algebra/Monoid/Hom.v 的 [Mon]，来自 PR #191，合并于 2026-07-07，不在 Instance/ 下），自 PR #1053（合并于 2026-08-12，#255，Instance/Grp.v）、PR #1091（合并于 2026-08-14，#257，Instance/Rng.v）和 PR #1166（合并于 2026-08-19，#313，Instance/Grp/Quotient.v）以来已经过时。在此文件之前没有构建过群的半直积：[git grep -i semidirect] 检索其他 .v 文件时发现有十一行，每行都是注释，而 TwoFunctors.v 中 S₃ 的“半直积表示”是 rot × bool 上的乘法，并不是一个构造。未交付。对每个 N 的横截面，或者说陪集关系的非截断：上面的禁忌。将 G ×₀ N 与 p 的核对偶 ⟨x, n⟩ ↦ (x, xn) 进行识别。本节的练习 2（可收缩对）。从该构造中在 Grp 中选择并等化器：这里只等化了对 (∂₀, ∂₁)，因为 Instance/Grp/Quotient/Colimit.v 等化了对 (f, 0)。环双胞胎（上文）的共享 Sets 层。更正（#480）：上述本节的练习 2 已交付，因为根据 Structure/Coequalizer/Contractible.v 的探针显示，该文件在 Z/4 上的对 {0, 2} 是自反的而不可收缩。
+ （“p <= xh”）：由 Rocq 决定，最小化将目标的 hom 级别设置为 p，正如 Absolute.v 为 [split_coequalizer_absolute] 记录的那样，其高于 xh 的进一步级别被继承。在 Coq 8.19.2 和 8.20.1 上（在文件闭包的构建中以及每个探针下的 [About]），这 93 个名称中的每一个绑定的级别数量与 Rocq 9.1.1 上相同，没有区块携带等式，且 [Set] 出现在相同的七种类型中，五个 S₃ 名称，[z4] 和 [z4_rec]。过时的前提，来源于 gh。该问题（提交于 2026-07-23）指出树没有 Grp 或 Rng 类别，也没有正规子群、半直积或商群结构，CMon 是 Instance/ 中唯一的代数类别：在提交时准确（Theory/Algebra/Monoid/Hom.v 的 [Mon]，来自 PR #191，合并于 2026-07-07，不在 Instance/ 下），自 PR #1053（合并于 2026-08-12，#255，Instance/Grp.v）、PR #1091（合并于 2026-08-14，#257，Instance/Rng.v）和 PR #1166（合并于 2026-08-19，#313，Instance/Grp/Quotient.v）以来已经过时。在此文件之前没有构建过群的半直积：[git grep -i semidirect] 检索其他 .v 文件时发现有十一行，每行都是注释，而 TwoFunctors.v 中 S₃ 的“半直积表示”是 rot × bool 上的乘法，并不是一个构造。未交付。对每个 N 的横截面，或者说陪集关系的非截断：上面的禁忌。将 G ×₀ N 与 p 的核对偶 ⟨x, n⟩ ↦ (x, xn) 进行识别。本节的练习 2（可收缩对）。从该构造中在 Grp 中选择并等化器：这里只等化了对 (∂₀, ∂₁)，因为 Instance/Grp/Quotient/Colimit.v 等化了对 (f, 0)。环双胞胎（上文）的共享 Sets 层。更正（#480）：上述本节的练习 2 已交付，因为根据 Structure/Coequalizer/Contractible.v 的探针显示，该文件在 Z/4 上的对 {0, 2} 是自反的而不可收缩。
 *)
 
 (* * ** Two cancellations, right-associated / * ** 两次取消，右关联 *)
@@ -1248,7 +1248,7 @@ Proof.
 Defined.
 
 (*
- Mac Lane's unconditional "the resulting fork in Set is split" decides
+ Mac Lane's unconditional “the resulting fork in Set is split” decides
  every proposition, as Instance/Sets/Regular.v's
  [blanket_splitting_entails_LEM] does for its splitting principle. 
 

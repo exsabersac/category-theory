@@ -24,17 +24,17 @@ Generalizable All Variables.
 (* * * The tensor-algebra monad T, directly: T A ≅ ⨁ₙ A^{⊗n} / * * 张量代数单子 T，直接：T A ≅ ⨁ₙ A^{⊗n} *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.4, Exercise 4(a), printed p. 146 (PDF
  p. 155) — maclane:VI.4:ex4
- Book: Riehl, "Category Theory in Context", Example 5.5.7(ii), printed
+ Book: Riehl, “Category Theory in Context”, Example 5.5.7(ii), printed
  p. 205 (PDF p. 225) — riehl:5.5:example7
  nLab: https://ncatlab.org/nlab/show/tensor+algebra
 
- WHAT THE BOOK ASKS, read from the page image: "(a) Give a direct
+ WHAT THE BOOK ASKS, read from the page image: “(a) Give a direct
  description of this monad, like that in the text for W, with Xⁿ
  replaced by the n-fold tensor power and coproduct ∐ by the (infinite)
- direct sum of abelian groups."  The text's description of W
+ direct sum of abelian groups.”  The text's description of W
  (Proposition 1, p. 145) is WX = ∐ Xⁿ, η x = ⟨x⟩ and μ the
  juxtaposition of words of words.  Here, with T the monad of
  Instance/Rng/FreeMonad.v: T A ≅ ⨁ₙ A^{⊗n}, η a = the one-letter word
@@ -87,8 +87,8 @@ Generalizable All Variables.
  [TW_is_tensor_coproduct] this is the direct description: T A is the
  (infinite) direct sum of the n-fold tensor powers of A.
 
- THE MONAD ⨁ₙ (−)^{⊗n}, DIRECTLY.  Mac Lane's "direct description of
- this monad, like that in the text for W" is [TWMonad : Monad TWF],
+ THE MONAD ⨁ₙ (−)^{⊗n}, DIRECTLY.  Mac Lane's “direct description of
+ this monad, like that in the text for W” is [TWMonad : Monad TWF],
  Theory/Monad.v's [Build_Monad] on the functor above with η the
  one-letter word ([tw_insert]) and μ the juxtaposition [tw_join] of a
  word of words, shown to respect ≈ ([tw_join_respects], so that μ is
@@ -172,7 +172,7 @@ Generalizable All Variables.
  packaged).  A grading on the free ring itself. 
 
  --------
- 书籍：Mac Lane，《Categories for the Working Mathematician》，第2版，Springer GTM 5，1998年，第VI.4节，练习4(a)，印刷版第146页（PDF第155页）—— maclane:VI.4:ex4 书籍：Riehl，《Category Theory in Context》，示例5.5.7(ii)，印刷版第205页（PDF第225页）—— riehl:5.5:example7 nLab: https://ncatlab.org/nlab/show/tensor+algebra书中要求什么，从页面图片中阅读："(a) 给出这个幺半群的直接描述，就像文本中对 W 的描述一样，将 Xⁿ 替换为 n 次张量幂，将余积 ∐ 替换为阿贝尔群的（无限）直和。" 文本中对 W 的描述（命题 1，第 145 页）是 WX = ∐ Xⁿ，η x = ⟨x⟩，μ 是字的字的并列。这里，对于 Instance/Rng/FreeMonad.v 中的幺半群 T：T A ≅ ⨁ₙ A^{⊗n}，η a = 一字单词 ⟨a⟩ 位于一次级，μ 是字的字的并列，且 T f 在每个单词上等于 f^{⊗n}。环 ⨁ₙ A^{⊗n}。[TWRing A] 是 Instance/Ab/TensorPower.v 中的 [TWAb A]，空字作为 1，连写 [tw_mul] 作为乘法。结合律和两个单位律是 LEIBNIZ 方程（[tw_mul_assoc]，[tw_mul_one_l]，[tw_mul_one_r]：列表连接），右分配律和 0·t = 0 通过转换成立，并且 ⟨u⟩·⟨v⟩ = ⟨uv⟩ 在 [eq_refl]（[tw_mul_words]）。它的阿贝尔群是 [TWAb A]（[TWRing_ab]，[eq_refl]）。为什么需要一个新的载体。T A 的载体是 Instance/Rng/Free.v 的形式环表达式，并且声明 T A 是直和，并且只有多线性关系，需要一个从 T A 到能够区分直和所区分内容的映射；这样的映射是到某个环 R 的环映射 T A → R，该环 R 承载直和，因此必须首先将直和构建为一个环。它只能通过共享扩展来实现：前向映射 [tw_to_rng] 是 Free.v 的 [free_rng_ab_extend] 对单字母单词插入 [tw_insert] 的映射，而不是第二个自由环或自由函子。逆映射 [tw_from] 将一个单词映射为其字母的乘积 [fr_word]（⟨⟩ ↦ 1, ⟨a⟩ ↦ ⟨a⟩, ⟨a w⟩ ↦ ⟨a⟩·⟨w⟩：在非空单词上不引入因子 1，因此 ν⟨a⟩ 和 ν⟨a b⟩ 在 Instance/Rng/FreeMonad/System.v 中可以直接读取）。MAC LANE 的 (a). [T_TW_iso : T A ≅ TWAb A] 在 Ab. 到 ∘ 从是 LEIBNIZ ([tw_to_from]，通过归纳) 上的恒等；在变量处 [eq_refl] 被拒绝；从 ∘ 到是 ≈ ([tw_from_to]) 上的恒等，并且在生成元和两个元素的积 ([T_TW_from_to_gen], [T_TW_from_to_pair]) 上是精确的，在变量处 [eq_refl] (R22) 和在 (⟨a⟩·⟨b⟩)·⟨c⟩ (R23) 处被拒绝，并且在 Leibniz = 那里是错误的 (C105: 它向右重新分组)。η a 映射到 ⟨a⟩ ([T_TW_ret])；到 IS 是通过 [tw_insert] 的求值，而从字词积到 ([T_TW_to_fun], [T_TW_from_word]) 的映射。μ，通过同构阅读， 是一个词的内词的并置 [tw_join]（[T_TW_join]，在 ≈；在生成元和 T T A 的两个元素的乘积上恰好如此，[T_TW_join_gen]，[T_TW_join_pair]；两个词的并置是它们的连接，[tw_join_two]）；[T_TW_join] 在变量 (R25) 处被拒绝，在 Leibniz = (C106：在 ⟨⟨x⟩+⟨y⟩⟩·0 一边是 0+0，另一边是 0) 上为假。T f，通过同构阅读，是逐字映射 [tw_map f]，在每个词上是 f^{⊗n} ([T_TW_map]，在 ≈)，在生成元 (R26) 处被拒绝，T f 在普遍箭头上被卡住。⨁ₙ (−)^{⊗n} 是 Ab 的一个自函子 [TWF]，其在态射上的作用是逐字计算 ([TWF_obj], [TWF_map_word])，而 [T_TW_natural : TF ≈ TWF] 是一个自然同构，其分量为 [T_TW_iso] ([T_TW_natural_component], [eq_refl])。在 Instance/Ab/TensorPower.v 的 [TW_is_tensor_coproduct] 中，这是直接描述：T A 是 A 的 n 次张量幂的（无限）直和。单子 ⨁ₙ (−)^{⊗n}，直接方式。Mac Lane 对这个单子的“直接描述，就像文本中对 W 的描述”是 [TWMonad : Monad TWF]，Theory/Monad.v 中的 [Build_Monad] 关于上面的函子，其中 η 是单字（[tw_insert]），μ 是字的字并置 [tw_join]，被证明尊重 ≈（[tw_join_respects]），因此 μ 是 Ab 的箭头 [tw_join_hom]，其律通过对不涉及陪集的项进行归纳证明，就像 #470 的 [WordMonad_direct]（Instance/Smgrp/Word.v）和 #472 的 [FreeModMonad_direct]（Instance/Mod/FreeMonad.v）对于 W 和 T_R 一样。不像他们的，η 和 μ 是 [eq_refl] 上伴随单子（adjunction monad）的，它存在于另一个载体——单词上，所以它作为单子与 T 进行比较：[T_TW_monad_hom : MonadHom TM TWMonad] (Monad/Morphism.v) 有组件 [to (T_TW_iso A)] ([T_TW_monad_hom_component])，[TW_T_monad_hom] 的逆组件 [from (T_TW_iso A)] ([TW_T_monad_hom_component])，并且 [T_TW_monad_iso] 使得两者在 Monad/Morphism.v 的 Ab 上单子类别 [Monads Ab] ([T_TW_monad_iso_to], [T_TW_monad_iso_from]) 中互为逆：T ≅ ⨁ₙ (−)^{⊗n} 作为单子。逐点读取时，η 是作为整个记录的插入 ([TWMonad_ret], 其中 T 的 η 被拒绝为记录，R4) 并且 μ 是 [tw_join] ([TWMonad_join])，作用在一组单词的单词上是内层单词的乘积 ([TWMonad_join_word])。关于其定律，η 的自然性以及 μ ∘ η T = 1 通过变换成立 ([TWMonad_join_ret])，μ ∘ T η = 1 以及 μ 在 LEIBNIZ 处的自然性 ([tw_join_letters], [tw_join_natural])，并且只有在 ≈ 下结合律成立，在 Leibniz 下为假 = (C112: 在 ⟨⟨⟨x⟩ + ⟨y⟩⟩, 0⟩ 时，一边是 0 + 0，另一边是 0)。每个态射的单位律通过变换成立，其乘法律在 ≈ 下成立 ([T_TW_join]; [tw_to_fr_prod])。优势。每个 [Example] 在 [eq_refl] 成立，并且 Test/ProbeFreeRing474.v 重述了每一个（C62 到 C68，C71 到 C73，C76 到 C78，C108 到 C111 和 C113 到 C116）。在 ≈: [tw_from_to] 和 [T_TW_join] 中陈述，在 Leibniz 上都为假 = (C105, C106)，[tw_join_prod] 和 [TWMonad] 的结合律（在 Leibniz 上为假 =, C112），以及 [T_TW_map]，其 Leibniz 形式可从 [tw_to_relabel] 得出，一旦 T f 在 [eq_refl] 上重标记，当 [Qed] 在通用箭头之后的两层均为 [Defined]（FreeMonad.v 的 ROUTE A）时，它就是如此 ≈。[T_TW_monad_iso] 的逆律是 [T_TW_iso] 的逆律：在 Leibniz 上为 to ∘ from，从 ∘ 到 ≈。莱布尼茨等式，比 ≈ 更强：
+ 书籍：Mac Lane，《Categories for the Working Mathematician》，第2版，Springer GTM 5，1998年，第VI.4节，练习4(a)，印刷版第146页（PDF第155页）—— maclane:VI.4:ex4 书籍：Riehl，《Category Theory in Context》，示例5.5.7(ii)，印刷版第205页（PDF第225页）—— riehl:5.5:example7 nLab: https://ncatlab.org/nlab/show/tensor+algebra书中要求什么，从页面图片中阅读：“(a) 给出这个幺半群的直接描述，就像文本中对 W 的描述一样，将 Xⁿ 替换为 n 次张量幂，将余积 ∐ 替换为阿贝尔群的（无限）直和。” 文本中对 W 的描述（命题 1，第 145 页）是 WX = ∐ Xⁿ，η x = ⟨x⟩，μ 是字的字的并列。这里，对于 Instance/Rng/FreeMonad.v 中的幺半群 T：T A ≅ ⨁ₙ A^{⊗n}，η a = 一字单词 ⟨a⟩ 位于一次级，μ 是字的字的并列，且 T f 在每个单词上等于 f^{⊗n}。环 ⨁ₙ A^{⊗n}。[TWRing A] 是 Instance/Ab/TensorPower.v 中的 [TWAb A]，空字作为 1，连写 [tw_mul] 作为乘法。结合律和两个单位律是 LEIBNIZ 方程（[tw_mul_assoc]，[tw_mul_one_l]，[tw_mul_one_r]：列表连接），右分配律和 0·t = 0 通过转换成立，并且 ⟨u⟩·⟨v⟩ = ⟨uv⟩ 在 [eq_refl]（[tw_mul_words]）。它的阿贝尔群是 [TWAb A]（[TWRing_ab]，[eq_refl]）。为什么需要一个新的载体。T A 的载体是 Instance/Rng/Free.v 的形式环表达式，并且声明 T A 是直和，并且只有多线性关系，需要一个从 T A 到能够区分直和所区分内容的映射；这样的映射是到某个环 R 的环映射 T A → R，该环 R 承载直和，因此必须首先将直和构建为一个环。它只能通过共享扩展来实现：前向映射 [tw_to_rng] 是 Free.v 的 [free_rng_ab_extend] 对单字母单词插入 [tw_insert] 的映射，而不是第二个自由环或自由函子。逆映射 [tw_from] 将一个单词映射为其字母的乘积 [fr_word]（⟨⟩ ↦ 1, ⟨a⟩ ↦ ⟨a⟩, ⟨a w⟩ ↦ ⟨a⟩·⟨w⟩：在非空单词上不引入因子 1，因此 ν⟨a⟩ 和 ν⟨a b⟩ 在 Instance/Rng/FreeMonad/System.v 中可以直接读取）。MAC LANE 的 (a). [T_TW_iso : T A ≅ TWAb A] 在 Ab. 到 ∘ 从是 LEIBNIZ ([tw_to_from]，通过归纳) 上的恒等；在变量处 [eq_refl] 被拒绝；从 ∘ 到是 ≈ ([tw_from_to]) 上的恒等，并且在生成元和两个元素的积 ([T_TW_from_to_gen], [T_TW_from_to_pair]) 上是精确的，在变量处 [eq_refl] (R22) 和在 (⟨a⟩·⟨b⟩)·⟨c⟩ (R23) 处被拒绝，并且在 Leibniz = 那里是错误的 (C105: 它向右重新分组)。η a 映射到 ⟨a⟩ ([T_TW_ret])；到 IS 是通过 [tw_insert] 的求值，而从字词积到 ([T_TW_to_fun], [T_TW_from_word]) 的映射。μ，通过同构阅读， 是一个词的内词的并置 [tw_join]（[T_TW_join]，在 ≈；在生成元和 T T A 的两个元素的乘积上恰好如此，[T_TW_join_gen]，[T_TW_join_pair]；两个词的并置是它们的连接，[tw_join_two]）；[T_TW_join] 在变量 (R25) 处被拒绝，在 Leibniz = (C106：在 ⟨⟨x⟩+⟨y⟩⟩·0 一边是 0+0，另一边是 0) 上为假。T f，通过同构阅读，是逐字映射 [tw_map f]，在每个词上是 f^{⊗n} ([T_TW_map]，在 ≈)，在生成元 (R26) 处被拒绝，T f 在普遍箭头上被卡住。⨁ₙ (−)^{⊗n} 是 Ab 的一个自函子 [TWF]，其在态射上的作用是逐字计算 ([TWF_obj], [TWF_map_word])，而 [T_TW_natural : TF ≈ TWF] 是一个自然同构，其分量为 [T_TW_iso] ([T_TW_natural_component], [eq_refl])。在 Instance/Ab/TensorPower.v 的 [TW_is_tensor_coproduct] 中，这是直接描述：T A 是 A 的 n 次张量幂的（无限）直和。单子 ⨁ₙ (−)^{⊗n}，直接方式。Mac Lane 对这个单子的“直接描述，就像文本中对 W 的描述”是 [TWMonad : Monad TWF]，Theory/Monad.v 中的 [Build_Monad] 关于上面的函子，其中 η 是单字（[tw_insert]），μ 是字的字并置 [tw_join]，被证明尊重 ≈（[tw_join_respects]），因此 μ 是 Ab 的箭头 [tw_join_hom]，其律通过对不涉及陪集的项进行归纳证明，就像 #470 的 [WordMonad_direct]（Instance/Smgrp/Word.v）和 #472 的 [FreeModMonad_direct]（Instance/Mod/FreeMonad.v）对于 W 和 T_R 一样。不像他们的，η 和 μ 是 [eq_refl] 上伴随单子（adjunction monad）的，它存在于另一个载体——单词上，所以它作为单子与 T 进行比较：[T_TW_monad_hom : MonadHom TM TWMonad] (Monad/Morphism.v) 有组件 [to (T_TW_iso A)] ([T_TW_monad_hom_component])，[TW_T_monad_hom] 的逆组件 [from (T_TW_iso A)] ([TW_T_monad_hom_component])，并且 [T_TW_monad_iso] 使得两者在 Monad/Morphism.v 的 Ab 上单子类别 [Monads Ab] ([T_TW_monad_iso_to], [T_TW_monad_iso_from]) 中互为逆：T ≅ ⨁ₙ (−)^{⊗n} 作为单子。逐点读取时，η 是作为整个记录的插入 ([TWMonad_ret], 其中 T 的 η 被拒绝为记录，R4) 并且 μ 是 [tw_join] ([TWMonad_join])，作用在一组单词的单词上是内层单词的乘积 ([TWMonad_join_word])。关于其定律，η 的自然性以及 μ ∘ η T = 1 通过变换成立 ([TWMonad_join_ret])，μ ∘ T η = 1 以及 μ 在 LEIBNIZ 处的自然性 ([tw_join_letters], [tw_join_natural])，并且只有在 ≈ 下结合律成立，在 Leibniz 下为假 = (C112: 在 ⟨⟨⟨x⟩ + ⟨y⟩⟩, 0⟩ 时，一边是 0 + 0，另一边是 0)。每个态射的单位律通过变换成立，其乘法律在 ≈ 下成立 ([T_TW_join]; [tw_to_fr_prod])。优势。每个 [Example] 在 [eq_refl] 成立，并且 Test/ProbeFreeRing474.v 重述了每一个（C62 到 C68，C71 到 C73，C76 到 C78，C108 到 C111 和 C113 到 C116）。在 ≈: [tw_from_to] 和 [T_TW_join] 中陈述，在 Leibniz 上都为假 = (C105, C106)，[tw_join_prod] 和 [TWMonad] 的结合律（在 Leibniz 上为假 =, C112），以及 [T_TW_map]，其 Leibniz 形式可从 [tw_to_relabel] 得出，一旦 T f 在 [eq_refl] 上重标记，当 [Qed] 在通用箭头之后的两层均为 [Defined]（FreeMonad.v 的 ROUTE A）时，它就是如此 ≈。[T_TW_monad_iso] 的逆律是 [T_TW_iso] 的逆律：在 Leibniz 上为 to ∘ from，从 ∘ 到 ≈。莱布尼茨等式，比 ≈ 更强：
  [tw_mul_lmul] ， [tw_mul_assoc] ， [tw_mul_one_l] ， [tw_mul_one_r] ，
  [fr_eval_word] ， [tw_to_from] ， [T_TW_to_word] ， [tw_map_lmul] ，
  [tw_map_mul] ， [tw_to_relabel] ， [tw_prod_cons] ， [tw_prod_app] ，
@@ -962,7 +962,7 @@ Proof.
 Qed.
 
 (*
- Mac Lane's direct description, "like that in the text for W": η the
+ Mac Lane's direct description, “like that in the text for W”: η the
  one-letter word, μ the juxtaposition of a word of words, the laws
  proved by induction on terms without the adjunction. 
 

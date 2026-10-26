@@ -44,7 +44,7 @@ Generalizable All Variables.
  WHY THE RESULT IS NOT A CURIOSITY.  It is the nullary case of the theory
  of final (cofinal) functors: a functor K : A ⟶ J is FINAL when colimits
  over J may be computed by restricting along K, and INITIAL when limits
- may be (nLab, "final functor").  The inclusion of an initial object of J
+ may be (nLab, “final functor”).  The inclusion of an initial object of J
  is an initial functor, and the inclusion of a terminal object is a final
  one; restricting to a single object leaves nothing to glue, so the
  (co)limit is the value there.  No cofinality vocabulary exists in this
@@ -67,8 +67,8 @@ Generalizable All Variables.
  `rg 'Initial J\b|@Initial J\b' -g '*.v' .` returns nothing.  Second, the
  word-bounded survey `rg -o -N '\b@?Initial [A-Za-z_0-9]+' -g '*.v' .`
  returns twenty-nine distinct two-word matches tree-wide.  Five are prose
- inside comments ("Initial object", "Initial and", "Initial in", "Initial
- structure", and "Initial Algebra" in the paper title at
+ inside comments (“Initial object”, “Initial and”, “Initial in”, “Initial
+ structure”, and “Initial Algebra” in the paper title at
  Structure/Initial.v).  Of the remaining twenty-four, twenty-one name
  a category outright (`AST`, `Ab`, `Algs`, `CMon`, `Cat`, `Coq`, `Field`,
  `FinSet`, `Grp`, `MonS`, `Nat_Proset`, `Par`, `ParE`, `PointedSets`,
@@ -113,7 +113,7 @@ Generalizable All Variables.
  object) — it needs both [zero_unique] and [fmap_id], neither of which is
  a conversion.  That rejection at `eq_refl` was MEASURED, by stripping
  the statement to `Definition … := eq_refl` and reading a genuine
- `cannot unify "initial_leg I F 0" and "id{C}"`, and it is PINNED as
+ `cannot unify “initial_leg I F 0” and “id{C}”`, and it is PINNED as
  negative 1 of Test/ProbeLimitInitial334.v.  The same holds of the second
  measured rejection: [Limit_Cones] at [initial_Cones_Terminal] and
  [initial_Limit] agree on their cone components by `eq_refl`
@@ -185,9 +185,9 @@ Generalizable All Variables.
  data in a different field order — so no second argument is given.
 
  NAMING HAZARD, DISCLOSED AND NOT ACTED ON.  Functor/Structure/Terminal.v
- declares `Notation "'InitialFunctor' F" := (@TerminalFunctor _ _
- (F^op) _ _)`, so in this tree "initial functor" means "preserves the
- initial object".  The standard meaning of "initial functor" is the
+ declares `Notation “'InitialFunctor' F” := (@TerminalFunctor _ _
+ (F^op) _ _)`, so in this tree “initial functor” means “preserves the
+ initial object”.  The standard meaning of “initial functor” is the
  cofinality notion recalled above — the one under which the inclusion of
  an initial object into J is the reason this file's theorem is true.  The
  two senses are unrelated.  NOTHING IS RENAMED HERE; the collision is
@@ -210,7 +210,7 @@ Generalizable All Variables.
  object, and no `Limit F ↔ Initial J` is claimed.
  - No shape-indexed completeness statement.  Structure/Complete.v's
  [Complete] quantifies over ALL shapes, so it is not inhabited by a
- result about one shape, and no "has all limits of shape J" class
+ result about one shape, and no “has all limits of shape J” class
  exists in tree to inhabit; none is introduced.
  - No preservation, reflection or creation results: nothing here says
  that an arbitrary functor carries these limits to limits.
@@ -249,9 +249,9 @@ Generalizable All Variables.
  nLab：         https://ncatlab.org/nlab/show/final+functor
  nLab：         https://ncatlab.org/nlab/show/limit该陈述。 如果索引范畴 J 具有初始对象 0，那么每个图 F : J ⟶ C 都有极限，并且在 C 中无需任何构造即可得到它：极限就是 F 0 的值，其在 x 处的箭头是唯一箭头 ¡ : 0 ~> x 的像 fmap [F] ¡。锥的一致性是显而易见的，因为 fmap [F] f ∘ fmap [F] ¡ ≈ fmap [F] (f ∘ ¡) ≈ fmap [F] ¡，这来源于从 0 出发的箭头的唯一性；而来自一个竞争锥 N 的中介箭头只是 N 在 0 处的自身箭头，这是被迫如此，因为极限在 0 处的箭头是 fmap [F] ¡₀，其中 ¡₀ ≈ id，同样由唯一性决定。对偶地，J 的终对象通过在其上的取值来计算余极限。为什么这个结果并不是一个奇怪的现象。它是终极（余终极）函子理论的零元情况：当可以通过沿 K 限制来计算 J 上的余极限时，函子 K : A ⟶ J 被称为终极函子；当可以计算极限时，被称为初始函子（nLab，“final functor”）。J 的初始对象的包含是一个初始函子，而终对象的包含是一个终极函子；限制到单个对象时没有什么需要粘合，因此（余）极限就是该处的值。在这棵树中不存在余终极性相关的词汇，这里也没有引入——参见“未提供内容”。与 Structure/Limit/Terminal.v 的关系。那个文件是另一种极端退化的形状：J 为空，其中一个圆锥没有腿，并且极限是 C 的终对象。空范畴没有对象，因此也没有初对象，所以 [Terminal_Limit] 在这里不是任何东西的实例，这里的任何东西也不是它的实例。这两个文件是兄弟关系，而不是彼此的细化。还要注意每个文件中哪个范畴提供了通用对象：在那里，是目标 C 的终对象；这里，是形状 J 的初对象。缺失的内容，以及精确是什么搜索能够确定它。该树没有约束索引类别自身初始对象的语句。两个搜索是证据，且该主张以它们为范围；两者都是在排除此文件（`-g '!Structure/Limit/Initial.v'`）的情况下运行的，因为该文件现在提供了涉及的匹配。首先，`rg 'Initial J\b|@Initial J\b' -g '*.v' .` 没有返回任何结果。其次，词界调查 `rg -o -N '\b@?Initial  [A-Za-z_0-9]ZZ +' -g '*.v' .` 返回了树中 29 个不同的两词匹配。其中五个是注释中的散文（“Initial object”、“Initial and”、“Initial in”、“Initial structure”，以及论文标题 Structure/Initial.v 中的“Initial Algebra”）。在剩下的二十四个中，二十一项直接命名了一个类别 (`AST`, `Ab`, `Algs`, `CMon`, `Cat`, `Coq`, `Field`, `FinSet`, `Grp`, `MonS`, `Nat_Proset`, `Par`, `ParE`, `PointedSets`, `Props`, `QuiverCategory`, `Rel`, `Rig`, `Rng`, `Sets`, `Top`)，三项是变量：`C`，周围构造的环境类别；`D`，在 Theory/Equivalence/Terminal.v 中作为等价的目标；以及 `K`，仅在 Theory/Universal/Arrow/Dual.v 和 Test/ProbeCouniversal.v 中的注释内出现。这是对假设拼写的搜索，而不是对其含义的搜索：它确定在树中没有任何内容在图的索引位置上写初始对象假设。它并不排除以其他方式表达的等效陈述。下面引用的两个辅助搜索也是以相同的方式运行的。另外两个缺失，每一个都通过各自的搜索进行检查，每一个的原因是在下面的复选框必须被构建而不是实例化。`Instance/One.v` 的 [Cat_Terminal] 使得 `_1` 成为 Cat 的终对象；这并不是 `_1` 在自身内部具有初始对象，这是点图推论所需要的，而 `rg 'Terminal _1|Initial _1'` 没有找到这样的实例。同样地，`rg 'Terminal.*Ordinal|ord_top'` 也没有返回任何内容，所以一个后继序数的最高阶段必须被命名，并证明其终性。强度，已测量。下列所有标记 `eq_refl` 的标识都作为 [Example] 发送，并附有该证明术语，因此该主张是机器检查的，而非主张。准确地说：极限的腿是 `fmap [F]ZZ  zero`（[initial_leg_strict]）；顶点是 `F 0`（[initial_apex_strict]）；竞争锥的中介器是该锥在 0 处的腿（[initial_med_strict]）；捆绑的 [Limit] 的锥是评估锥（[initial_Limit_strict]）；从 [Cones F] 的终对象恢复的 [Limit] 具有相同的锥（[initial_Cones_strict]）；在对偶方面，四个协变访存器 [cocone_inj]、[colimit_inj]、[colimit_med] 和 [colimit_apex] 都简化为评估数据（[terminal_cocone_strict]、[terminal_inj_strict]、[terminal_med_strict]、[terminal_apex_strict]）。五个见证标识也是 `eq_refl`：[point_Cones_strict]、[point_Sets_apex]、[point_Sets_med]、[ordinal_omega_apex] 和 [ordinal_omega_bot]。
 
- 仅限于 `≈` ： [initial_leg_id] （初始对象为 `fmap [F]ZZ  zero ≈ id`）——它需要同时具备 [zero_unique] 和 [fmap_id]，它们都不是转换。`eq_refl` 的拒绝是通过剥离到 `Definition … := eq_refl` 并读取真实的 `cannot unify "initial_leg I F 0" and "id{C}"` 来测量的，并且它被固定为 Test/ProbeLimitInitial334.v 的负 1。同样适用于第二次测量的拒绝：[Limit_Cones] 在 [initial_Cones_Terminal] 和 [initial_Limit] 上通过 `eq_refl` （[initial_Cones_strict]，已发货）在其锥形组件上达成一致，但作为完整 [Limit] 记录并不可转换；这种不可转换性是用相同方式测量的，并被固定为同一探针文件的负 2。中介-换位和唯一性引理是 `≈` 陈述，因为它们是 C 的态射之间的方程，而 C 是库的等价类学科，而不是一个弱点。宇宙，以约束块进行测量。[initial_IsALimit] 和 [initial_Limit] 显示为 `@{u u0 u1 u2 u3 u4}` 在 `J : Category@{u u0 u0}` 和 `C : Category@{u1 u2 u2}` 上，并且在块中有 `u0 = u2`，因此 J 的同态层级与其证明层级以及 C 的同态和证明层级相对应；两个对象宇宙 `u` 和 `u1` 保持自由（它们仅携带边界 `u <= u3` 和 `u1 <= u4`）。这种对应关系是捐赠者的，并没有在此引入——但它并非 [IsALimit] 单独的，早期该标题的草稿曾说它是。在声明层级分开的部分（`Constraint jh < jp`）中测量：`ACone c F` 和 `Cone F` 都展开，而 `cone_leg N x` 和 `IsLimitCone N`（Structure/Limit/Preservation.v）以及 `IsALimit F c`（Structure/Limit.v）都被拒绝，每个都有相同的 `Cannot enforce jp = jh because jh < jp`。所以至少有三个同等贡献者，其中两个是 CONE 词汇，而 `ACone` / `Cone` 控件并未显示原因是 [IsALimit] 而非锥体——它仅排除了那两个常量而已。[IsALimit] 并不是此文件首先遇到的捐赠者：[initial_med] 已经显示 `u0 = u2`，而其类型根本未提及 [IsALimit]（其主体是 `cone_leg N initial_obj`），而 [initial_IsALimit] 继承了该标识而非引入它；相比之下，[initial_leg] 仅携带绑定的 `u0 <= u2`。所有三个拒绝和两个控件都被固定，作为 Test/ProbeLimitInitial334.v 的负面 3-5。三位捐赠者都不携带宇宙注释，所以这仍然是可修复的注释缺陷；并不声称该标识是不可避免的。在一个约束块中有七个常数携带 `Set`——而不是早期草稿中所说的一个：[bool_set]、[elt_acone]、[elt_acone_obligation_1]、[elt_cone]、[point_Sets_apex]、[point_Sets_med] 和 [point_Sets_separates]，它们每一个都可以追溯到 [bool_set] 的载体 `bool : Set`。那个草稿将 [bool_set] 命名为原因（CAUSE），但却从单一列表中省略了它，这既自相矛盾又数量不足。这是具体证据的普通代价，并且它保留在 [Sets] 块的本地。第八个常数 [ordinal_omega_apex] 在一个宇宙实例（`colimit_apex@{Set u Set Set}`）中提到 `Set`，但没有获得自己的约束——实例不是约束，这两者在这里被单独计数。正的推论确实不包含 `Set` ：
+ 仅限于 `≈` ： [initial_leg_id] （初始对象为 `fmap [F]ZZ  zero ≈ id`）——它需要同时具备 [zero_unique] 和 [fmap_id]，它们都不是转换。`eq_refl` 的拒绝是通过剥离到 `Definition … := eq_refl` 并读取真实的 `cannot unify “initial_leg I F 0” and “id{C}”` 来测量的，并且它被固定为 Test/ProbeLimitInitial334.v 的负 1。同样适用于第二次测量的拒绝：[Limit_Cones] 在 [initial_Cones_Terminal] 和 [initial_Limit] 上通过 `eq_refl` （[initial_Cones_strict]，已发货）在其锥形组件上达成一致，但作为完整 [Limit] 记录并不可转换；这种不可转换性是用相同方式测量的，并被固定为同一探针文件的负 2。中介-换位和唯一性引理是 `≈` 陈述，因为它们是 C 的态射之间的方程，而 C 是库的等价类学科，而不是一个弱点。宇宙，以约束块进行测量。[initial_IsALimit] 和 [initial_Limit] 显示为 `@{u u0 u1 u2 u3 u4}` 在 `J : Category@{u u0 u0}` 和 `C : Category@{u1 u2 u2}` 上，并且在块中有 `u0 = u2`，因此 J 的同态层级与其证明层级以及 C 的同态和证明层级相对应；两个对象宇宙 `u` 和 `u1` 保持自由（它们仅携带边界 `u <= u3` 和 `u1 <= u4`）。这种对应关系是捐赠者的，并没有在此引入——但它并非 [IsALimit] 单独的，早期该标题的草稿曾说它是。在声明层级分开的部分（`Constraint jh < jp`）中测量：`ACone c F` 和 `Cone F` 都展开，而 `cone_leg N x` 和 `IsLimitCone N`（Structure/Limit/Preservation.v）以及 `IsALimit F c`（Structure/Limit.v）都被拒绝，每个都有相同的 `Cannot enforce jp = jh because jh < jp`。所以至少有三个同等贡献者，其中两个是 CONE 词汇，而 `ACone` / `Cone` 控件并未显示原因是 [IsALimit] 而非锥体——它仅排除了那两个常量而已。[IsALimit] 并不是此文件首先遇到的捐赠者：[initial_med] 已经显示 `u0 = u2`，而其类型根本未提及 [IsALimit]（其主体是 `cone_leg N initial_obj`），而 [initial_IsALimit] 继承了该标识而非引入它；相比之下，[initial_leg] 仅携带绑定的 `u0 <= u2`。所有三个拒绝和两个控件都被固定，作为 Test/ProbeLimitInitial334.v 的负面 3-5。三位捐赠者都不携带宇宙注释，所以这仍然是可修复的注释缺陷；并不声称该标识是不可避免的。在一个约束块中有七个常数携带 `Set`——而不是早期草稿中所说的一个：[bool_set]、[elt_acone]、[elt_acone_obligation_1]、[elt_cone]、[point_Sets_apex]、[point_Sets_med] 和 [point_Sets_separates]，它们每一个都可以追溯到 [bool_set] 的载体 `bool : Set`。那个草稿将 [bool_set] 命名为原因（CAUSE），但却从单一列表中省略了它，这既自相矛盾又数量不足。这是具体证据的普通代价，并且它保留在 [Sets] 块的本地。第八个常数 [ordinal_omega_apex] 在一个宇宙实例（`colimit_apex@{Set u Set Set}`）中提到 `Set`，但没有获得自己的约束——实例不是约束，这两者在这里被单独计数。正的推论确实不包含 `Set` ：
  [point_IsALimit] 、 [ordinal_succ_IsAColimit] 、 [One_Initial] 、
- [Omega_Initial] 、 [Ordinal_Succ_Terminal] 和 [Omega_no_Terminal] 在任何约束块中都没有 `Set` 。诚实的双条件。Structure/Limit/Terminal.v 将其结果表述为一个 iff，并且该模式值得在可以匹配的地方进行匹配。在显而易见的地方无法匹配：在逆方向上没有任何事成立，因为一个图可能因与其形状无关的原因而具有极限，并且下面没有陈述或证明形如 `Limit F ↔ Initial J` 的任何双条件。确实作为 iff 给出的为 [limiting_iff_initial_leg_iso]：一个 F 上的圆锥 N 恰好当其在初始对象的腿可逆时为极限。两个方向都已证明，正向的证明来自两个中介的循环往返，反向的则是通过沿结果圆锥同构（[limitcone_transport]）进行传递。双重的 [colimiting_iff_terminal_inj_iso] 是将该语句在相反范畴上实例化，然后与 [iso_of_op] / [iso_to_op] 的域置换进行组合——在 C^op 和 C 上的可逆性是相同的数据，只是域顺序不同——因此没有给出第二个参数。命名风险，已披露但未采取措施。Functor/Structure/Terminal.v 声明 `Notation "'InitialFunctor' F" := (@TerminalFunctor _ _ (F^op) _ _)`，所以在这棵树中“初始函子”意味着“保持初始对象”。“初始函子”的标准含义是上文提到的上界性概念——在该概念下，将初始对象包含到 J 是本文件定理成立的原因。两种含义无关。这里没有任何重命名；冲突被记录下来，以便谁使用上界性词汇就可以在那里解决，这也是问题要求修复的地方。没有为实例解析注册任何内容。[One_Initial]、[Omega_Initial]、[Ordinal_Succ_Terminal] 和 [initial_Cones_Terminal] 都是普通的 [Program Definition]，而不是 [Instance]：一个全局可见的 `Terminal (Cones F)` 或 `Initial Omega` 会改变其他地方的解析结果，而且下面的每次使用都会明确传递其见证。未实现的内容。- 没有余终理论：没有最终或初始函子的余终概念，没有限制定理，也没有证明初始对象的包含是一个初始函子。上述文章通过该理论解释了结果；该文件没有对其进行形式化。- 没有逆定理，无论以何种形式。没有展示一个所有图的极限都可以通过求值计算的形状必须有一个初始对象，也没有声称 `Limit F ↔ Initial J`。- 没有形状索引的完备性声明。Structure/Complete.v 中的 [Complete] 对所有形状进行量化，因此不能由关于一个形状的结果填充，也没有“具有形状 J 的所有极限”的类存在于树中以填充；没有引入任何此类。- 没有保存、反映或创造的结果：这里没有说明任意函子会将这些极限映射为极限。- 没有唯一性（至同构唯一）的重述：Structure/Limit/Unique.v 既没有被实例化，也没有被重新推导，这里也没有关于它如何作用于这些极限的声明。- 没有加权或增强版本，也没有与 Structure/Limit/Kan/Pointwise.v 的关系。- Riehl 的 ω+1 没有被实例化，并且在树中不存在 ω+1 范畴。交付物4交付的是 (a) 有限后继序数 `Ordinal (S n)`，其最高阶段已被证明是终端的，以及 (b) [Omega_no_Terminal]，Riehl 的注释的一半，即 ω 本身提供的内容：ω 有一个初始对象 ([Omega_Initial]，因此对 ω 的极限确实是在阶段 0 进行评估) 并且可证明没有终端对象，这正是为什么由 ω 指数的序列余积在任何地方都不是其值的原因。下面没有任何内容声称 `Ordinal (S n)` 是 ω+1。- Theory/Shapes.v 中的 [point_of F := F ttt] 与下方点图推论的顶点命名为同一个对象，但该文件在这里不是必需的（它涉及 Equations、StrictCat、Two、Comma 和 Arrow），所以这只是一个交叉引用，而不是重用。五个在树中的 [bool_setoid_object] 定义（Instance/Sets.v、Theory/Concrete.v、Theory/Algebra/Rig.v、Instance/Top.v、Instance/Met/Extended.v）是另一回事——参见下面的 [bool_set] 注释，它纠正了之前关于它们的说法。[iso_of_op] / [iso_to_op] 也是如此：Theory/Morphisms/CokernelPair.v 已经包含了该域排列，并且这里也不需要该模块。
+ [Omega_Initial] 、 [Ordinal_Succ_Terminal] 和 [Omega_no_Terminal] 在任何约束块中都没有 `Set` 。诚实的双条件。Structure/Limit/Terminal.v 将其结果表述为一个 iff，并且该模式值得在可以匹配的地方进行匹配。在显而易见的地方无法匹配：在逆方向上没有任何事成立，因为一个图可能因与其形状无关的原因而具有极限，并且下面没有陈述或证明形如 `Limit F ↔ Initial J` 的任何双条件。确实作为 iff 给出的为 [limiting_iff_initial_leg_iso]：一个 F 上的圆锥 N 恰好当其在初始对象的腿可逆时为极限。两个方向都已证明，正向的证明来自两个中介的循环往返，反向的则是通过沿结果圆锥同构（[limitcone_transport]）进行传递。双重的 [colimiting_iff_terminal_inj_iso] 是将该语句在相反范畴上实例化，然后与 [iso_of_op] / [iso_to_op] 的域置换进行组合——在 C^op 和 C 上的可逆性是相同的数据，只是域顺序不同——因此没有给出第二个参数。命名风险，已披露但未采取措施。Functor/Structure/Terminal.v 声明 `Notation “'InitialFunctor' F” := (@TerminalFunctor _ _ (F^op) _ _)`，所以在这棵树中“初始函子”意味着“保持初始对象”。“初始函子”的标准含义是上文提到的上界性概念——在该概念下，将初始对象包含到 J 是本文件定理成立的原因。两种含义无关。这里没有任何重命名；冲突被记录下来，以便谁使用上界性词汇就可以在那里解决，这也是问题要求修复的地方。没有为实例解析注册任何内容。[One_Initial]、[Omega_Initial]、[Ordinal_Succ_Terminal] 和 [initial_Cones_Terminal] 都是普通的 [Program Definition]，而不是 [Instance]：一个全局可见的 `Terminal (Cones F)` 或 `Initial Omega` 会改变其他地方的解析结果，而且下面的每次使用都会明确传递其见证。未实现的内容。- 没有余终理论：没有最终或初始函子的余终概念，没有限制定理，也没有证明初始对象的包含是一个初始函子。上述文章通过该理论解释了结果；该文件没有对其进行形式化。- 没有逆定理，无论以何种形式。没有展示一个所有图的极限都可以通过求值计算的形状必须有一个初始对象，也没有声称 `Limit F ↔ Initial J`。- 没有形状索引的完备性声明。Structure/Complete.v 中的 [Complete] 对所有形状进行量化，因此不能由关于一个形状的结果填充，也没有“具有形状 J 的所有极限”的类存在于树中以填充；没有引入任何此类。- 没有保存、反映或创造的结果：这里没有说明任意函子会将这些极限映射为极限。- 没有唯一性（至同构唯一）的重述：Structure/Limit/Unique.v 既没有被实例化，也没有被重新推导，这里也没有关于它如何作用于这些极限的声明。- 没有加权或增强版本，也没有与 Structure/Limit/Kan/Pointwise.v 的关系。- Riehl 的 ω+1 没有被实例化，并且在树中不存在 ω+1 范畴。交付物4交付的是 (a) 有限后继序数 `Ordinal (S n)`，其最高阶段已被证明是终端的，以及 (b) [Omega_no_Terminal]，Riehl 的注释的一半，即 ω 本身提供的内容：ω 有一个初始对象 ([Omega_Initial]，因此对 ω 的极限确实是在阶段 0 进行评估) 并且可证明没有终端对象，这正是为什么由 ω 指数的序列余积在任何地方都不是其值的原因。下面没有任何内容声称 `Ordinal (S n)` 是 ω+1。- Theory/Shapes.v 中的 [point_of F := F ttt] 与下方点图推论的顶点命名为同一个对象，但该文件在这里不是必需的（它涉及 Equations、StrictCat、Two、Comma 和 Arrow），所以这只是一个交叉引用，而不是重用。五个在树中的 [bool_setoid_object] 定义（Instance/Sets.v、Theory/Concrete.v、Theory/Algebra/Rig.v、Instance/Top.v、Instance/Met/Extended.v）是另一回事——参见下面的 [bool_set] 注释，它纠正了之前关于它们的说法。[iso_of_op] / [iso_to_op] 也是如此：Theory/Morphisms/CokernelPair.v 已经包含了该域排列，并且这里也不需要该模块。
 *)
 
 (* * ** The limit of a diagram over a shape with an initial object / * ** 具有初始对象的形状上的图的极限 *)
@@ -635,8 +635,8 @@ Example point_Cones_strict {C : Category} (F : _1 ⟶ C) :
  [bool_set] is a REDUNDANT REDECLARATION, and an earlier draft of this
  note gave a reason for it that is false.  That draft said the tree had
  TWO [bool_setoid_object] definitions, in Theory/Concrete.v and
- Theory/Algebra/Rig.v, "neither of which this file has any other reason
- to require".  There are FIVE, and one of them — Instance/Sets.v,
+ Theory/Algebra/Rig.v, “neither of which this file has any other reason
+ to require”.  There are FIVE, and one of them — Instance/Sets.v,
  `bool_setoid_object@{t u}` — is byte-identical in content to [bool_set]
  and lives in a module this file ALREADY requires.  It is
  convertible on the nose (`bool_setoid_object = bool_set := eq_refl`
@@ -737,8 +737,8 @@ Definition ordinal_succ_Colimit {n : nat} {C : Category}
  `colimit_apex … = G (ord_top n)` holds at ARBITRARY G
  ([terminal_apex_strict]), so the apex computation alone shows nothing.
  What is specific here is [ordinal_omega_nonconstant] — the diagram takes
- different values at the bottom and top stages, so "the colimit is the
- value at the top stage" is not a statement about a constant diagram. 
+ different values at the bottom and top stages, so “the colimit is the
+ value at the top stage” is not a statement about a constant diagram. 
 
  --------
  一个从阶段到阶段确实变化的图的见证者：

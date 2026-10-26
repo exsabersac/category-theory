@@ -83,16 +83,16 @@ Generalizable All Variables.
  Where the statement comes from, and what it is used for
 
  nLab:      https://ncatlab.org/nlab/show/natural+numbers+object
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §I.5, Exercise 8, p. 21
- Book:      Awodey, "Category Theory" (1st ed., Carnegie Mellon
+ Book:      Awodey, “Category Theory” (1st ed., Carnegie Mellon
  pre-print, September 2005), §10.5 and Exercise 10.6.1(c)
- Book:      Riehl, "Category Theory in Context" (2nd ed. numbering,
+ Book:      Riehl, “Category Theory in Context” (2nd ed. numbering,
  per issue #252),
  Example 2.1.1 and Example 2.4.11
- Paper:     Lawvere, "An elementary theory of the category of sets",
+ Paper:     Lawvere, “An elementary theory of the category of sets”,
  PNAS 52, 1964
- Paper:     Lambek, "A Fixpoint Theorem for Complete Categories",
+ Paper:     Lambek, “A Fixpoint Theorem for Complete Categories”,
  Mathematische Zeitschrift 103, 1968
 
  Mac Lane poses the result as an exercise in the chapter on monics, epis
@@ -103,7 +103,7 @@ Generalizable All Variables.
  Lawvere introduced in the setting of an elementary theory of the
  category of sets: arithmetic is fixed by a mapping property and not by
  any particular set-theoretic implementation (Lawvere 1964; nLab,
- "natural numbers object").  Awodey draws the consequence that the
+ “natural numbers object”).  Awodey draws the consequence that the
  classical recursion theorem IS this initiality (§10.5), and asks in
  Exercise 10.6.1(c) for the same statement in its uniqueness form, that
  the property determines ℕ up to isomorphism.
@@ -534,8 +534,8 @@ Proof. reflexivity. Qed.
  category of elements — with the category of elements presented concretely as
  [FAlg NatF] rather than built as a general construction.
 
- ERRATUM (#303).  The clause that used to close that sentence, "which the
- tree does not carry", was true when written (commit 30c01af0, 2026-08-05)
+ ERRATUM (#303).  The clause that used to close that sentence, “which the
+ tree does not carry”, was true when written (commit 30c01af0, 2026-08-05)
  and went stale four days later: [Construction/Elements.v] landed the general
  category of elements on 2026-08-09 (f2177328), and
  Theory/Universal/Element/Elements.v now states Riehl 2.4.8 — a universal

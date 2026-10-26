@@ -30,41 +30,41 @@ Generalizable All Variables.
 (* * * Hausdorff spaces: Mac Lane §V.9 Proposition 2, Exercises 4 and 5 / * * 豪斯多夫空间：Mac Lane §V.9 命题 2，练习 4 和 5 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, book pp. 135-136 (PDF pp. 144-145), read from the page images:
- - Proposition 2 (catalog id maclane:V.9:prop2): "Haus, the full
+ - Proposition 2 (catalog id maclane:V.9:prop2): “Haus, the full
  subcategory of all Hausdorff spaces in Top, is complete and
  cocomplete.  The inclusion functor Haus → Top has a left adjoint
- H, as does the forgetful functor Haus → Set."  Its proof obtains H
- "by the adjoint functor theorem": products and subspaces of
+ H, as does the forgetful functor Haus → Set.”  Its proof obtains H
+ “by the adjoint functor theorem”: products and subspaces of
  Hausdorff spaces are Hausdorff, and a continuous map of X to a
- Hausdorff Y factors through its image, "a quotient set of X with
+ Hausdorff Y factors through its image, “a quotient set of X with
  some topology, so there is at most a small set of
  (non-isomorphic) surjections X → Y to a Hausdorff Y.  This is the
- solution set condition."  "Now η universal implies that η is a
- surjection, so HX may be described as the "largest Hausdorff
- quotient" of X."  "If X is already Hausdorff, we may take HX = X
- and η = 1"; "since H is a left adjoint, it preserves colimits.  It
- follows that Haus has all small colimits"; "the coproduct in Haus
+ solution set condition.”  “Now η universal implies that η is a
+ surjection, so HX may be described as the ”largest Hausdorff
+ quotient“ of X.”  “If X is already Hausdorff, we may take HX = X
+ and η = 1”; “since H is a left adjoint, it preserves colimits.  It
+ follows that Haus has all small colimits”; “the coproduct in Haus
  is the coproduct in Top (because a coproduct of Hausdorff spaces
  is Hausdorff), while a coequalizer in Haus is the largest Hausdorff
- quotient of the coequalizer in Top."
+ quotient of the coequalizer in Top.”
  - Exercise 4 (maclane:V.9:ex4), quoted in Instance/Top/
  Separation.v's header: left adjoints to Top_{n+1} → Top_n for
- n = 0, 1, 2, 3, "with T_4 = Normal, T_3 = Regular, T_2 = Hausdorff,
- etc."
- - Exercise 5 (maclane:V.9:ex5): "Show that the inclusion Haus → Top
+ n = 0, 1, 2, 3, “with T_4 = Normal, T_3 = Regular, T_2 = Hausdorff,
+ etc.”
+ - Exercise 5 (maclane:V.9:ex5): “Show that the inclusion Haus → Top
  has no right adjoint, by showing that a coequalizer in Top of
  Hausdorff spaces need not be Hausdorff.  Conclude that the
- forgetful functor Haus → Set has no right adjoint."
- Riehl, "Category Theory in Context", §4.7, printed p. 180 (PDF p. 200),
- read from the page image, Exercise 4.7.ii (riehl:4.7:exii): "Use
+ forgetful functor Haus → Set has no right adjoint.”
+ Riehl, “Category Theory in Context”, §4.7, printed p. 180 (PDF p. 200),
+ read from the page image, Exercise 4.7.ii (riehl:4.7:exii): “Use
  Theorem 4.7.3 [the general adjoint functor theorem] to prove that
  the inclusion Haus ↪ Top [...] has a left adjoint.  The left adjoint
- carries a space to its "largest Hausdorff quotient."  Conclude, by
+ carries a space to its ”largest Hausdorff quotient.“  Conclude, by
  applying Proposition 4.6.14, that the category of Hausdorff spaces,
  as a reflective subcategory of a complete and cocomplete category,
- is cocomplete as well as complete."
+ is cocomplete as well as complete.”
  nLab:      https://ncatlab.org/nlab/show/Hausdorff+space
  nLab:      https://ncatlab.org/nlab/show/separation+axioms
  nLab:      https://ncatlab.org/nlab/show/normal+space
@@ -74,8 +74,8 @@ Generalizable All Variables.
  filter has at most one limit, which nLab's Hausdorff-space page gives
  as a constructively equivalent definition.  nLab's separation-axioms
  page constructs the T_n-reflection for n ∈ {0, 1, 2} and, in its
- table, reads T_3 as regular Hausdorff: "every neighbourhood of a
- point contains the closure of an open neighbourhood".  Wikipedia's
+ table, reads T_3 as regular Hausdorff: “every neighbourhood of a
+ point contains the closure of an open neighbourhood”.  Wikipedia's
  separation-axiom page takes T3 to be regular and T0, and T4 normal
  and T1.  Mac Lane proves Proposition 2 by the general adjoint functor
  theorem, the solution set being the Hausdorff images of a space;
@@ -106,8 +106,8 @@ Generalizable All Variables.
  inclusion preserves limiting cones.
  - The reflector BY the general adjoint functor theorem,
  [Haus_reflective], the issue's pinned name, Riehl's route as well.
- The solution set is Mac Lane's "quotient set of X with some
- topology": a [TopPresentation] is an equivalence [R] on X's points
+ The solution set is Mac Lane's “quotient set of X with some
+ topology”: a [TopPresentation] is an equivalence [R] on X's points
  coarser than their equality with a topology [T] on (X, R) coarser
  than X's, and [pres_space] is the space it presents.  [PSolIdx] is
  the presentations satisfying the property; [img_space] presents
@@ -124,19 +124,19 @@ Generalizable All Variables.
  [PT2_Reflective], the largest Hausdorff quotient.
  [Haus_reflectors_iso] identifies the two up to natural isomorphism
  (Theory/Adjunction.v's [left_adjoint_iso]).
- - "HX = X when X is Hausdorff": [Haus_counit_iso], the counit an
+ - “HX = X when X is Hausdorff”: [Haus_counit_iso], the counit an
  isomorphism, which is what a full reflective subcategory gives.
  On the nose it is refused: [`1 (fobj[reflector PT2_Reflective]
  (Incl X)) = `1 X] at [eq_refl] is Test/ProbeHausdorff461.v's N8
- ("cannot unify"), the reflection coarsening the points' equality
+ (“cannot unify”), the reflection coarsening the points' equality
  to [sepeq]; the points themselves are kept at [eq_refl] (that
  file's [p461_lali_points]), and at a Hausdorff space the unit of
  the reflection by [GAFT] is an isomorphism of spaces, the counit
- its inverse ([p461_unit_iso]), Mac Lane's "η = 1" up to
+ its inverse ([p461_unit_iso]), Mac Lane's “η = 1” up to
  isomorphism.  So Adjunction/LeftInverse.v's
  [LeftAdjointLeftInverse], whose [lali_obj] asks [F (G a) = a], is
  not delivered.
- - "η universal implies that η is a surjection":
+ - “η universal implies that η is a surjection”:
  [Haus_unit_surjective] gives, for the reflector by [GAFT] and each
  point y of the reflection of X, a point of X at which the unit is
  y: [psi y], where [psi] and [phi] are the comparison maps of the
@@ -156,8 +156,8 @@ Generalizable All Variables.
  [GlueQ_reflection_glues] checks it on Exercise 5's coequalizer:
  the reflection identifies the two points the [PTopCat]
  coequalizer keeps apart.
- - "the coproduct in Haus is the coproduct in Top (because a
- coproduct of Hausdorff spaces is Hausdorff)": [PHaus_coproduct],
+ - “the coproduct in Haus is the coproduct in Top (because a
+ coproduct of Hausdorff spaces is Hausdorff)”: [PHaus_coproduct],
  for Instance/Top/Cocomplete.v's coproduct [PSigma], given that
  every loop [k = k] of the index is [eq_refl].  The summands are
  open ([psigma_summand_open]), so two points no two opens separate
@@ -170,7 +170,7 @@ Generalizable All Variables.
  [PHaus_coproduct_dec]: over an index with decidable equality,
  [bool] among them, the hypothesis holds by Hedberg's theorem
  ([sep_dec_uip]).
- - "as does the forgetful functor Haus → Set":
+ - “as does the forgetful functor Haus → Set”:
  [Haus_Forget_left_adjoint], the reflector after the discrete space
  (Adjunction/Compose.v's [Adjunction_Compose] of
  Instance/Top/Complete.v's [PDisc_PForget] with the reflection), and
@@ -204,17 +204,17 @@ Generalizable All Variables.
  regular ([PComb_not_PReg]), a countable analogue of the K-topology
  built on the inductive [comb_pt].
  - n = 3 is not delivered, and under the standard reading it is
- false.  Mac Lane writes only "T_4 = Normal, T_3 = Regular"; the
+ false.  Mac Lane writes only “T_4 = Normal, T_3 = Regular”; the
  book defines no T_n.  In the PDF's text layer T4 and T3 occur only
- in Exercise 4, "regular" in the topological sense elsewhere only
- as "completely regular" (the Stone-Čech compactification), and
- "normal" in the topological sense elsewhere only on book p. 158
- (§VI.9), "every compact Hausdorff space is normal".
+ in Exercise 4, “regular” in the topological sense elsewhere only
+ as “completely regular” (the Stone-Čech compactification), and
+ “normal” in the topological sense elsewhere only on book p. 158
+ (§VI.9), “every compact Hausdorff space is normal”.
  A full replete reflective subcategory contains every limit, taken
  in the ambient category, of its objects, and nLab's normal-space
  page gives a product of two normal spaces that is not normal,
- ω_1 × ω̄_1, concluding that normal spaces are "not a reflective
- subcategory of Top, as Haus is".  That product is regular
+ ω_1 × ω̄_1, concluding that normal spaces are “not a reflective
+ subcategory of Top, as Haus is”.  That product is regular
  Hausdorff, a product of regular Hausdorff spaces ([plimit_PReg] is
  the argument), so it lies in Top_3, and Top_4 → Top_3 has no left
  adjoint, whether T_4 means normal and T1 or normal Hausdorff.
@@ -222,8 +222,8 @@ Generalizable All Variables.
  Sierpiński space is vacuously normal and is not regular), so there
  is no inclusion Top_4 → Top_3 to reflect along, and the same
  argument refutes a reflection of Top_4 ∩ Top_3 in Top_3.  This is
- a classical argument, not formalized; the issue's own scope, "at
- least T0 through T2/Hausdorff", stops short of it.
+ a classical argument, not formalized; the issue's own scope, “at
+ least T0 through T2/Hausdorff”, stops short of it.
 
  EXERCISE 5, ON A CONCRETE COEQUALIZER.  [PNat] (the discrete
  naturals) and Instance/Top/Complete.v's convergent sequence [PConv]
@@ -245,7 +245,7 @@ Generalizable All Variables.
  The argument uses only [glue_IsCoequalizer], not the existence of
  coequalizers in Haus.  [Haus_forget_no_right_adjoint] is proved
  directly on the coequalizer of the same pair in [Sets], not derived
- from the first as the book's "conclude" suggests.  The book names no
+ from the first as the book's “conclude” suggests.  The book names no
  witness; this one needs no real numbers.
 
  STRENGTHS.  At [eq_refl]: [Haus_colimit_apex] only; Test/
@@ -253,8 +253,8 @@ Generalizable All Variables.
  as y itself ([p461_surjective_direct_point]).  The reflector by
  [GAFT] reads back nothing on the nose: [GAFT] ends in [Qed], and
  [`1 (fobj[reflector Haus_reflective] X) = SepQuot prem_T2 X] at
- [eq_refl] is refused, that file's N7 (cannot unify "projT1
- (fobj[reflector Haus_reflective] X)" and "SepQuot prem_T2 X"), where
+ [eq_refl] is refused, that file's N7 (cannot unify “projT1
+ (fobj[reflector Haus_reflective] X)” and “SepQuot prem_T2 X”), where
  the same readback of [PT2_Reflective] is accepted
  (Instance/Top/Separation.v's [PSep_reflector_obj]; the probe's
  [p461_direct_obj]).  [Haus_reflectors_iso] comes from a [Qed] lemma
@@ -286,14 +286,14 @@ Generalizable All Variables.
  Its cause is the index: [{ R : X → X → Prop & True }] and
  [{ T : (X → Prop) → Prop & True }] ascribed [Type@{o}] under a
  closed binder [@{o|}] are refused, Test/ProbeHausdorff461.v's N2
- and N3 ("Universe constraints are not implied by the ones
- declared: Set < o"), and accepted when [Set < o] is declared (its
+ and N3 (“Universe constraints are not implied by the ones
+ declared: Set < o”), and accepted when [Set < o] is declared (its
  [p461_rel_part], [p461_top_part]).  With the points in [Set],
- [PSolIdx@{Set}] is refused, N1 ("Universe inconsistency.  Cannot
- enforce Set < Set because Set = Set"), and [Haus_reflective],
+ [PSolIdx@{Set}] is refused, N1 (“Universe inconsistency.  Cannot
+ enforce Set < Set because Set = Set”), and [Haus_reflective],
  [Haus_Cocomplete] and [separation_axiom_reflections] are refused,
  N4 to N6 (each a type mismatch whose universe clause reads
- "Cannot enforce Set = <1> because Set < <1>", <1> the constant's
+ “Cannot enforce Set = <1> because Set < <1>”, <1> the constant's
  own [o]), while [Haus_Complete], [PT2_Reflective],
  [Haus_Cocomplete_direct], [Haus_unit_surjective_direct],
  [PT1_in_PT0_Reflective], [Haus_inclusion_no_right_adjoint] and
@@ -346,11 +346,11 @@ Generalizable All Variables.
  NOT DELIVERED.  Exercise 4 at n = 3 (false under the standard reading,
  above; not formalized, neither the refutation nor a model of ω_1 or
  of the Sorgenfrey line); a direct construction of the T3 reflection;
- "HX = X" as an equation of objects or a [LeftAdjointLeftInverse];
+ “HX = X” as an equation of objects or a [LeftAdjointLeftInverse];
  the reflector's action on maps at [eq_refl]; [PHaus_coproduct]
  without its hypothesis on the loops of the index, neither proved nor
  refuted here, and the coproduct in Haus as a constant, an indexed
- coproduct of Haus with [PSigma] as its object; the "conclude" of
+ coproduct of Haus with [PSigma] as its object; the “conclude” of
  Exercise 5 as a derivation; the book's closing remark on compactly
  generated Hausdorff spaces; a refutation of Haus's completeness above
  the points' universe under informative excluded middle, the analogue
@@ -362,7 +362,7 @@ Generalizable All Variables.
  --------
  Mac Lane，《为工作中的数学家而写的范畴论》，第2版（GTM 5），
  §V.9，书本第135-136页（PDF第144-145页），从页面图像阅读：
- - 命题2（目录ID maclane:V.9:prop2）："Haus，即Top中所有Hausdorff空间的完备子范畴，是完备和余完备的。包含函子 Haus → Top 存在一个左伴随函子 H，Haus → Set 的遗忘函子也存在左伴随。" 其证明通过“伴随函子定理”得到 H：Hausdorff空间的积空间和子空间仍是Hausdorff空间，并且从 X 到某个Hausdorff空间 Y 的连续映射可以通过其像来分解，像是 "带有某些拓扑结构的 X 的商集，所以至多存在一个小集合的（非同构）从 X 到某个 Hausdorff Y 的满射。"这是解集条件。现在 η 是全体的意味着 η 是满射，因此 HX 可以被描述为 X 的“最大豪斯多夫商”。如果 X 已经是豪斯多夫空间，我们可以取 HX = X 并且 η = 1；由于 H 是左伴随，它保持余极限。由此可得，Haus 拥有所有小余积；Haus 中的余积是 Top 中的余积（因为 Hausdorff 空间的余积仍然是 Hausdorff），而 Haus 中的等化器是 Top 中等化器的最大 Hausdorff 商。
+ - 命题2（目录ID maclane:V.9:prop2）：“Haus，即Top中所有Hausdorff空间的完备子范畴，是完备和余完备的。包含函子 Haus → Top 存在一个左伴随函子 H，Haus → Set 的遗忘函子也存在左伴随。” 其证明通过“伴随函子定理”得到 H：Hausdorff空间的积空间和子空间仍是Hausdorff空间，并且从 X 到某个Hausdorff空间 Y 的连续映射可以通过其像来分解，像是 “带有某些拓扑结构的 X 的商集，所以至多存在一个小集合的（非同构）从 X 到某个 Hausdorff Y 的满射。”这是解集条件。现在 η 是全体的意味着 η 是满射，因此 HX 可以被描述为 X 的“最大豪斯多夫商”。如果 X 已经是豪斯多夫空间，我们可以取 HX = X 并且 η = 1；由于 H 是左伴随，它保持余极限。由此可得，Haus 拥有所有小余积；Haus 中的余积是 Top 中的余积（因为 Hausdorff 空间的余积仍然是 Hausdorff），而 Haus 中的等化器是 Top 中等化器的最大 Hausdorff 商。
  - 练习 4（maclane:V.9:ex4），引用自 Instance/Top/Separation.v 的头部：左伴随函子对于 Top_{n+1} → Top_n，n = 0, 1, 2, 3，“其中 T_4 = 正则空间, T_3 = 正规空间, T_2 = Hausdorff 等。”
  - 练习 5（maclane:V.9:ex5）：“证明包含函子 Haus → Top 没有右伴随，通过证明 Hausdorff 空间在 Top 中的等化器不一定是 Hausdorff。由此得出忘记函子 Haus → Set 没有右伴随。”
  Riehl, 《范畴论语境》, 第 4.7 节, 印刷页 180 (PDF 页码)200)，
@@ -371,14 +371,14 @@ Generalizable All Variables.
  nLab:       https://ncatlab.org/nlab/show/separation+axioms 
  nLab:       https://ncatlab.org/nlab/show/normal+space 
  Wikipedia:  https://en.wikipedia.org/wiki/Separation_axiom背景。豪斯多夫空间是指在其中收敛滤子最多有一个极限的空间，nLab 的豪斯多夫空间页面给出了一个构造上等价的定义。nLab 的分离公理页面构造了 n ∈ {0, 1, 2} 的 T_n-反射，并在其表格中将 T_3 读作正则豪斯多夫：“每个点的每个邻域包含一个开邻域的闭包”。维基百科的分离公理页面认为 T3 是正则且 T0，而 T4 是正规且 T1。Mac Lane 通过一般伴随函子定理证明了命题 2，解集是空间的豪斯多夫像；Riehl 在她的定理 4.7.3（一般伴随函子定理，印刷页 175，PDF 页 195，从文本层读取）上将相同的反射器作为一个练习，并由此推导出余完备性。编码。这里的所有内容都在 Instance/Top/Prop.v 的 [PTopCat] 上，其 opens 是 Prop 值的，其 homs 位于点的 universe，由维护者根据 §V.9 问题的决定：在 Instance/Top.v 的 Type 值 [Top] 上，Haus ⟶ Top 的伴随函子定理是可形成的，但在信息排中律下是空的，在其假设的每个 universe 实例 (Instance/Top/Hausdorff/TypeValued.v) 中。Hausdorff 是 [PHaus]，Instance/Top/Separation.v 的正形式（nLab 的构造性定义）；经典的负形式，Mac Lane 未定义就使用（书第 158 页，§VI.9），是 [PIsHausdorff]，通过该文件的桥梁相关。[Haus_Sub] 是 [PSepSub prem_T2]，[Haus] 是其 [PTopCat] 的完全子范畴。命题 2.- 完整: [Haus_Complete]，在每个形状宇宙的点及以下，作为 Instance/Top/Complete.v 的 [PTop_Complete]，通过沿包含（Construction/Subcategory/Creation.v 的 [sub_Complete]）的创建，从极限封闭性生成，[PSep_closed]: [plimit_PSep] 沿任意极限锥的边携带前提，其点被分开。[Haus_Incl_continuous]: 包含保持极限锥。- 反射由一般伴随函子定理，[Haus_reflective]，问题的固定名称，Riehl 的路线也一样。解集是 Mac Lane 的“具有某些拓扑的 X 的商集”：一个 [TopPresentation] 是 X 的点上的等价关系 [R]，比它们在 (X, R) 上的拓扑 [T] 的相等关系更粗，而 [pres_space] 是它所呈现的空间。[PSolIdx] 是满足该性质的表示形式；[img_space] 表示映射到空间的像，它的核通过与目标相等等价的命题关系来读取（对于 Hausdorff 目标为 [PNotSep]），其拓扑结构沿映射为初始拓扑；[PFull_sols] 通过其像覆盖每个映射。[PFull_left_adjoint_GAFT] 为附随/GAFT.v 的 [GAFT] 提供输入，针对任何在极限下封闭且其像表示满足该性质的性质；[PSep_reflective_GAFT] 是一个分离前提的情况，[Haus_reflective]、[PT0_reflective_GAFT]、[PT1_reflective_GAFT] 是其三个实例，每个实例对应 Mac Lane 的论证。- 相同的反射器直接：Instance/Top/Separation.v 的 [PT2_Reflective]，最大的 Hausdorff 商。[Haus_reflectors_iso] 将两者在自然同构下识别（Theory/Adjunction.v 的 [left_adjoint_iso]）。- “当 X 是豪斯多夫空间时，HX = X”：[Haus_counit_iso]，余单位同构，这是完整反射子范畴所提供的。实际上，它被拒绝了：[`1 (fobj[reflector PT2_Reflective] (Incl X)) = `1 X] 在 [eq_refl] 是 Test/ProbeHausdorff461.v 的 N8（“无法统一”），反射将点的相等性粗化为 [sepeq]；点本身在 [eq_refl]（该文件的 [p461_lali_points]）保持不变，并且在豪斯多夫空间中，通过 [GAFT] 的反射单位是空间的同构，余单位是它的逆（[p461_unit_iso]），这是 Mac Lane 所说的“η = 1”，直到同构。所以 Adjunction/LeftInverse.v 的 [LeftAdjointLeftInverse]，其 [lali_obj] 请求 [F (G a) = a]，是未提供的。- “η 通用意味着 η 是一个满射”：[Haus_unit_surjective] 给出了，对于由 [GAFT] 的反射器以及 X 的反射中的每一个点 y，X 中的一个点，其单位为 y：[psi y]，其中 [psi] 和 [phi] 是两个通用性质的比较映射（[Haus_reflectors_iso] 以 [Qed] 引理结束，因此其组成部分不被读取）。[phi ∘ psi] 是恒等映射，单位是直接单位之后的 [phi]，它在点上的映射是恒等映射。[Haus_unit_surjective_direct] 对于直接反射器也是一样，其点是 y 本身。两者都给出了该点，而不仅仅是其存在性。- 完备余积（Cocomplete）：[Haus_Cocomplete] 是 Riehl 的结论，Construction/Reflective/Colimit.v 的 [reflective_Cocomplete] (#434) 应用于 [Haus_reflective] 和 Instance/Top/Cocomplete.v 的 [PTop_Cocomplete]；沿直接反射器 [Haus_Cocomplete_direct] 相同，[Haus_colimit_apex] 将其余积视为 [PTopCat] 中余积的最大豪斯多夫商，即 Mac Lane 关于共等化子的一般形式句子，在 [eq_refl] 处。[GlueQ_reflection_glues] 在练习 5 的共等化子上进行了检查：反射将 [PTopCat] 共等化子保持分开的两个点识别为同一点。- “豪斯多夫空间中的余积是拓扑空间中的余积（因为豪斯多夫空间的余积依然是豪斯多夫空间）”：[PHaus_coproduct]，对于 Instance/Top/Cocomplete.v 的余积 [PSigma]，给定索引的每个回路 [k = k] 都是 [eq_refl]。这些加数是开集（[psigma_summand_open]），因此两个点没有两个开集能将其分开，它们位于同一个加数中；因为它们在和中的像满足条件，所以围绕它们的两个开集相交（[psigma_img], [psigma_img_open]）。和的等式沿着指数的任意闭环将加数中的两点关联起来，而两像相交的点仅在闭环的意义下位于每一个加数中；假设使用了一次，用来消除第二个闭环。[PHaus_coproduct_dec]：在具有可判等性的指数上，[bool] 在它们之间，假设通过 Hedberg 定理成立（[sep_dec_uip]）。——“就像忘记函子 Haus → Set 一样”：[Haus_Forget_left_adjoint]，离散空间之后的反射子（Adjunction/Compose.v 的 [Adjunction_Compose] 与 Instance/Top/Complete.v 的 [PDisc_PForget] 的组合反射），以及 [Haus_Forget_left_adjoint_direct]。离散空间本身并不被认为是豪斯多夫空间：它的相等性不必是命题性的，而 Instance/Top/Separation.v 的 [PHaus_PropEquiv] 表明每个豪斯多夫空间的相等性都是命题性的。练习 4. 书的索引：n = 0 是 Top_1 → Top_0，T1 空间中的 T0 空间；n = 1 是 T2 空间中的 T1；n = 2 是 T3 空间中的 T2；n = 3 是 T4 空间中的 T3。[separation_axiom_reflections]，即该问题的固定名称，是 n = 0, 1, 2 的反射三重集，每个都由 [GAFT] 生成：[PT1_reflective_GAFT]、[Haus_reflective] 和 [PT3_reflective_GAFT]，并通过 Instance/Top/Separation.v 的 [restrict_Reflective] 限制到下一层（[PT1_in_PT0_reflective_GAFT]、[Haus_in_PT1_reflective_GAFT]、[PT3_in_Haus_reflective_GAFT]）。n = 0 和 n = 1 也直接在该文件中成立。- n = 2，由 [GAFT] 尝试，闭合。[PRegOpens] 是 nLab 关于正规性的闭合形式，正向表述为：每个点的开邻域包含一个更小邻域的闭包（[PClosureIn]）。[PT3] 是 [PHaus] 和 [PReg]；[PReg_PT0_PHaus]（一个正规 T0 空间是豪斯多夫空间）使其也成为维基百科的 T3 空间。[plimit_PReg]：正则空间的极限是正则的，因为极限锥的开集是其腿的初始拓扑的开集（Instance/Top/Complete.v 中的 [PTop_limit_open_iff_initial]），并且在每个点上正则的开集形成一个拓扑，该拓扑沿着腿保持原像。[img_PReg]：映像呈现到一个正则空间是正则的。可居性：[PBool_PT3]。严格性：[PComb]，一个豪斯多夫（[PComb_PHaus]）空间不是正则的（[PComb_not_PReg]），是建立在归纳 [comb_pt] 上的 K 拓扑的可数类比。- n = 3 未给出，并且在标准解读下它是错误的。Mac Lane 只写了 “T_4 = 正则，T_3 = 正则”；书中没有定义 T_n。在 PDF 的文本层中，T4 和 T3 只出现在练习 4 中，'regular' 在拓扑意义上在其他地方只作为 '完全正则'（Stone-Čech 紧化），而 'normal' 在拓扑意义上在其他地方仅出现在书本第 158 页（§VI.9），“每个紧致 Hausdorff 空间都是正常的”。一个完全充实的反射子范畴包含其对象在环境范畴中取的每个极限，而 nLab 的正常空间页面给出了两个正常空间的积不是正常的例子，ω_1 × ω̄_1，结论是正常空间“不是 Top 的反射子范畴，因为 Haus 是”。该产品是正规豪斯多夫空间，是正规豪斯多夫空间的积（[plimit_PReg] 是论证），所以它属于 Top_3，且 Top_4 → Top_3 没有左伴随，无论 T_4 是指正规且 T1 还是正规豪斯多夫。若仅作为普通正规性来看，Top_4 不包含在 Top_3 中（Sierpiński 空间在空洞意义上是正规空间但不是正规豪斯多夫空间），因此不存在 Top_4 → Top_3 的包含映射可用来反射，同样的论证也反驳了 Top_4 ∩ Top_3 在 Top_3 中的反射。这是一个经典论证，未被形式化；该问题自身的范围，“至少从 T0 到 T2/豪斯多夫”，并未涉及它。练习 5，在一个具体的余等化器上。[PNat]（离散自然数）和 Instance/Top/Complete.v 的收敛序列 [PConv] 是豪斯多夫空间（[PNat_PHaus]、[PConv_PHaus] 以及经典形式 [PConv_PIsHausdorff]）。[glue_f] 和 [glue_g]，n ↦ 2n 和 n ↦ 2n + 2，作为 [GlueQ] 的余等化器由 Instance/Top/Subspace.v 的 [PTop_HasCoequalizers] 选择，它将序列中的偶数点粘合成一个点。[glue_none_inv]：Instance/Sets/Coequalizer.v 的关系 [coeq_rel] 所生成的关系从不将序列中的点与极限点关联，因此 [GlueQ_points_apart]；然而极限点的每个邻域都包含一个偶数点（[GlueQ_notsep]）。因此 [GlueQ_not_PHaus] 和 [GlueQ_not_PIsHausdorff]：在 Top 中的豪斯多夫空间的余等化器不是豪斯多夫空间，这两种形式都是如此。[Haus_inclusion_no_right_adjoint]，问题已固定
- 名称：一个右伴随 R 会使 [GlueQ] 成为豪斯多夫空间 R GlueQ 的重traction（[glue_q] 的共叉置换，沿着共同商下降，余单位分裂下降的映射），而 Instance/Top/Separation.v 的 [PSep_retract] 会使其成为豪斯多夫空间。该论证仅使用 [glue_IsCoequalizer]，而不依赖豪斯多夫空间中共同商的存在。[Haus_forget_no_right_adjoint] 是直接在 [Sets] 中同一对的共同商上证明的，而不是书中所说的从第一步“结论”导出的。书中没有给出任何实例；这个也不需要实数。优势。在 [eq_refl] : [Haus_colimit_apex] 仅; Test/ProbeHausdorff461.v 将 [Haus_unit_surjective_direct] 的点读回为 y 本身 ([p461_surjective_direct_point])。由 [GAFT] 的反射器读回时没有任何结果：[GAFT] 以 [Qed] 结束，并且 [`1 (fobj[reflector Haus_reflective] X) = SepQuot prem_T2 X] 在 [eq_refl] 被拒绝，该文件的 N7（无法统一 "projT1 (fobj [reflector Haus_reflective] X)" 和 "SepQuot prem_T2 X"），而对 [PT2_Reflective] 的相同读回是被接受的（Instance/Top/Separation.v 中的 [PSep_reflector_obj] ; 探针的 [p461_direct_obj]）。[Haus_reflectors_iso] 来自 [Qed] 引理，其组成部分是不可见的。三  [Defined] ，按标记计数
+ 名称：一个右伴随 R 会使 [GlueQ] 成为豪斯多夫空间 R GlueQ 的重traction（[glue_q] 的共叉置换，沿着共同商下降，余单位分裂下降的映射），而 Instance/Top/Separation.v 的 [PSep_retract] 会使其成为豪斯多夫空间。该论证仅使用 [glue_IsCoequalizer]，而不依赖豪斯多夫空间中共同商的存在。[Haus_forget_no_right_adjoint] 是直接在 [Sets] 中同一对的共同商上证明的，而不是书中所说的从第一步“结论”导出的。书中没有给出任何实例；这个也不需要实数。优势。在 [eq_refl] : [Haus_colimit_apex] 仅; Test/ProbeHausdorff461.v 将 [Haus_unit_surjective_direct] 的点读回为 y 本身 ([p461_surjective_direct_point])。由 [GAFT] 的反射器读回时没有任何结果：[GAFT] 以 [Qed] 结束，并且 [`1 (fobj[reflector Haus_reflective] X) = SepQuot prem_T2 X] 在 [eq_refl] 被拒绝，该文件的 N7（无法统一 “projT1 (fobj [reflector Haus_reflective] X)” 和 “SepQuot prem_T2 X”），而对 [PT2_Reflective] 的相同读回是被接受的（Instance/Top/Separation.v 中的 [PSep_reflector_obj] ; 探针的 [p461_direct_obj]）。[Haus_reflectors_iso] 来自 [Qed] 引理，其组成部分是不可见的。三  [Defined] ，按标记计数
  ( [PFull_sols] ， [Haus_unit_surjective_direct] ，
  [Haus_unit_surjective] )，根据数据约定：每个单独翻转
  到 [Qed] ，在三个文件和探针的临时副本中，
  每个文件的所有回读都被接受；
  翻转 [Haus_unit_surjective_direct] 会在 [p461_surjective_direct_point] 停止探针，
  其他两个则不停止任何东西。35  [Qed] ，按标记计数。没有使用经典前提；
- 文件的每个常量在全局上下文下闭合（每个都打开 [打印假设]）。UNIVERSES，由 [About] 在 [Set Printing Universes] 下阅读，涉及本文件 [Print Module] 列表中的全部 112 个常量（包括记录构造函数 [Build_TopPresentation]、归纳 [comb_pt] 及其四个生成方案；没有 [Program] 义务）。- [Set < o] 由恰好 20 个模块承载：[PSolIdx]，其模块仅为该约束，以及基于它构建的 19 个常量，[psol_obj]、[psol_arr]、[PFull_sols]、[PFull_left_adjoint_GAFT]、[PFull_Reflective_GAFT]、[PSep_reflective_GAFT]、[Haus_reflective]、[Haus_reflectors_iso]、[Haus_counit_iso]、[Haus_unit_surjective]、[Haus_Cocomplete]、[Haus_Forget_left_adjoint]、[PT0_reflective_GAFT]、[PT1_reflective_GAFT]、[PT3_reflective_GAFT]、[PT1_in_PT0_reflective_GAFT]、[Haus_in_PT1_reflective_GAFT]、[PT3_in_Haus_reflective_GAFT] 和 [separation_axiom_reflections]。其原因是索引：[{ R : X → X → Prop & True }] 和 [{ T : (X → Prop) → Prop & True }] 被归入 [Type@{o}]，在封闭的装订本 [@{o|}] 下被拒绝，Test/ProbeHausdorff461.v 的 N2 和 N3（“宇宙约束不由声明的约束推导：集合 < o”），并在声明 [Set < o] 时被接受（其 [p461_rel_part]，[p461_top_part]）。在 [Set] 的这些点中，[PSolIdx@{Set}] 被拒绝，N1（“宇宙不一致。”）无法强制执行 Set < Set，因为 Set = Set"），并且 [Haus_reflective]、[Haus_Cocomplete] 和 [separation_axiom_reflections] 被拒绝，N4 至 N6（每个都是类型不匹配，其 universe 子句如下所示："无法强制执行 Set = <1> 因为 Set < <1>"，<1> 是常量自身的 [o]），而 [Haus_Complete]、[PT2_Reflective]、[Haus_Cocomplete_direct]、[Haus_unit_surjective_direct]、[PT1_in_PT0_Reflective]、[Haus_inclusion_no_right_adjoint] 和 [Haus_forget_no_right_adjoint] 被接受，探针的控制。于是直接路径到达 [PTopCat@{Set so}]，而 [GAFT] 路径只到 [o] 之上 [Set]。——[Set < so]、[PTopCat] 自身，在48个块中。——严格的 stdlib 上限 [Set < Projections.u0] 由33个块承载，来自依赖顺序中的前三个承载者。[GAFT] 路线在 [PSolIdx] 之后的 19 个常量来自 [psol_obj]，它投射了索引的嵌套依赖对（测量：在 [PTop@{o}] 上投射这种对的裸投影携带它和 [Set < Projections.u1]）。直接路线的 4 个携带它的常量 [Haus_unit_surjective_direct]、[Haus_Cocomplete_direct]、[Haus_colimit_apex] 和 [Haus_Forget_left_adjoint_direct] 来自 Instance/Top/Separation.v 的 [sep_universal]，通过 [PT2_Reflective]。练习 5 的 10 个常量 [glue_coeq]、[GlueQ]、[glue_q]、[glue_IsCoequalizer]、[GlueQ_points_apart]、[GlueQ_notsep]、[GlueQ_not_PHaus]、[GlueQ_not_PIsHausdorff]、[GlueQ_reflection_glues] 和 [Haus_inclusion_no_right_adjoint] 来自 Instance/Top/Subspace.v 的 [PTop_HasCoequalizers]，其自身的模块携带它。[Set < Projections.u1] 被 19 个模块携带，[GAFT] 路线在 [PSolIdx] 之后，首先由 [psol_obj] 携带。- 表示和图像常数，[PSep_img]，规律性谓词，[PReg_PT0_PHaus]，[img_PReg]，命名空间及其引理：[@{o}]，至多为 stdlib 上限（[PT3_img] 的 [o <= projections.u0]；这些空间的 [o <= Logic_lemmas.equality.u0]，[eq_Setoid] 自身；一些证明的 [eq_ind] 和 [eq_ind_r] 上限）。[comb_pt]，[double_succ]：[@{}]；[comb_pt_rect] 和 [comb_pt_rec]：[@{u}]，动机。- [plimit_PSep]，[plimit_PReg]：[@{j o so u u0}]，Instance/Top/Complete.v 的部分 [J : Category@{j o o}] 形状 [Recipe]。[Haus_Complete@{r s o so u u0 u1 u2}]：[s <= o]，[o <= r]，[o < so]，[PTop_Complete] 的绑定器，以及四个辅助。[glue_none_inv@{o u}]：[o < u]，[coeq_rel] 自身的 [u < u3]。练习 5 的 [PTopCat] 级别常数：[@{o so}] 及以上。- [psigma_summand_open]、[psigma_img]、[psigma_img_open]、[PHaus_coproduct]、[PHaus_coproduct_dec]：[@{o i u}]，与[i <= o]和[o < u]，Instance/Top/Cocomplete.v的[PSigma]自身，以及stdlib caps。[sep_dec_uip@{i}]：一个stdlib cap。 - 没有块包含方程。112个常数输出的[About]的[Set]字数为122：[comb_pt]的类型和[comb_pt_rec]的动机各一次，[Set < so] 48次，[Set < Projections.u0] 33次，[Set < o] 20次，[Set < Projections.u1] 19次。未送达。练习4 在 n = 3 时（在上文的标准理解下为假；未形式化，既没有反驳也没有 ω_1 或 Sorgenfrey 线的模型）；T3 反射的直接构造；“HX = X” 作为对象的等式或 [LeftAdjointLeftInverse]；反射器在映射上的作用在 [eq_refl]；[PHaus_coproduct] 在没有关于指标环的假设下，这里既未证明也未反驳，以及 Haus 中的余积作为常数，一个以 [PSigma] 为对象的 Haus 的指标余积；练习5 的“结论”作为推导；书中关于紧生成豪斯多夫空间的结语；在有信息排中律下对豪斯完备性的反驳，高于点的宇宙，与 Instance/Top/Complete/Refutations.v 的类比，未测量；一个在 [PTopCat] 上的紧豪斯多夫范畴(#1328 的 [PCompHaus]，应当重用 [PHaus] ); Haus 超过 Type-valued [Top]，位于 Instance/Top/Hausdorff/TypeValued.v 之外。
+ 文件的每个常量在全局上下文下闭合（每个都打开 [打印假设]）。UNIVERSES，由 [About] 在 [Set Printing Universes] 下阅读，涉及本文件 [Print Module] 列表中的全部 112 个常量（包括记录构造函数 [Build_TopPresentation]、归纳 [comb_pt] 及其四个生成方案；没有 [Program] 义务）。- [Set < o] 由恰好 20 个模块承载：[PSolIdx]，其模块仅为该约束，以及基于它构建的 19 个常量，[psol_obj]、[psol_arr]、[PFull_sols]、[PFull_left_adjoint_GAFT]、[PFull_Reflective_GAFT]、[PSep_reflective_GAFT]、[Haus_reflective]、[Haus_reflectors_iso]、[Haus_counit_iso]、[Haus_unit_surjective]、[Haus_Cocomplete]、[Haus_Forget_left_adjoint]、[PT0_reflective_GAFT]、[PT1_reflective_GAFT]、[PT3_reflective_GAFT]、[PT1_in_PT0_reflective_GAFT]、[Haus_in_PT1_reflective_GAFT]、[PT3_in_Haus_reflective_GAFT] 和 [separation_axiom_reflections]。其原因是索引：[{ R : X → X → Prop & True }] 和 [{ T : (X → Prop) → Prop & True }] 被归入 [Type@{o}]，在封闭的装订本 [@{o|}] 下被拒绝，Test/ProbeHausdorff461.v 的 N2 和 N3（“宇宙约束不由声明的约束推导：集合 < o”），并在声明 [Set < o] 时被接受（其 [p461_rel_part]，[p461_top_part]）。在 [Set] 的这些点中，[PSolIdx@{Set}] 被拒绝，N1（“宇宙不一致。”）无法强制执行 Set < Set，因为 Set = Set“），并且 [Haus_reflective]、[Haus_Cocomplete] 和 [separation_axiom_reflections] 被拒绝，N4 至 N6（每个都是类型不匹配，其 universe 子句如下所示：”无法强制执行 Set = <1> 因为 Set < <1>“，<1> 是常量自身的 [o]），而 [Haus_Complete]、[PT2_Reflective]、[Haus_Cocomplete_direct]、[Haus_unit_surjective_direct]、[PT1_in_PT0_Reflective]、[Haus_inclusion_no_right_adjoint] 和 [Haus_forget_no_right_adjoint] 被接受，探针的控制。于是直接路径到达 [PTopCat@{Set so}]，而 [GAFT] 路径只到 [o] 之上 [Set]。——[Set < so]、[PTopCat] 自身，在48个块中。——严格的 stdlib 上限 [Set < Projections.u0] 由33个块承载，来自依赖顺序中的前三个承载者。[GAFT] 路线在 [PSolIdx] 之后的 19 个常量来自 [psol_obj]，它投射了索引的嵌套依赖对（测量：在 [PTop@{o}] 上投射这种对的裸投影携带它和 [Set < Projections.u1]）。直接路线的 4 个携带它的常量 [Haus_unit_surjective_direct]、[Haus_Cocomplete_direct]、[Haus_colimit_apex] 和 [Haus_Forget_left_adjoint_direct] 来自 Instance/Top/Separation.v 的 [sep_universal]，通过 [PT2_Reflective]。练习 5 的 10 个常量 [glue_coeq]、[GlueQ]、[glue_q]、[glue_IsCoequalizer]、[GlueQ_points_apart]、[GlueQ_notsep]、[GlueQ_not_PHaus]、[GlueQ_not_PIsHausdorff]、[GlueQ_reflection_glues] 和 [Haus_inclusion_no_right_adjoint] 来自 Instance/Top/Subspace.v 的 [PTop_HasCoequalizers]，其自身的模块携带它。[Set < Projections.u1] 被 19 个模块携带，[GAFT] 路线在 [PSolIdx] 之后，首先由 [psol_obj] 携带。- 表示和图像常数，[PSep_img]，规律性谓词，[PReg_PT0_PHaus]，[img_PReg]，命名空间及其引理：[@{o}]，至多为 stdlib 上限（[PT3_img] 的 [o <= projections.u0]；这些空间的 [o <= Logic_lemmas.equality.u0]，[eq_Setoid] 自身；一些证明的 [eq_ind] 和 [eq_ind_r] 上限）。[comb_pt]，[double_succ]：[@{}]；[comb_pt_rect] 和 [comb_pt_rec]：[@{u}]，动机。- [plimit_PSep]，[plimit_PReg]：[@{j o so u u0}]，Instance/Top/Complete.v 的部分 [J : Category@{j o o}] 形状 [Recipe]。[Haus_Complete@{r s o so u u0 u1 u2}]：[s <= o]，[o <= r]，[o < so]，[PTop_Complete] 的绑定器，以及四个辅助。[glue_none_inv@{o u}]：[o < u]，[coeq_rel] 自身的 [u < u3]。练习 5 的 [PTopCat] 级别常数：[@{o so}] 及以上。- [psigma_summand_open]、[psigma_img]、[psigma_img_open]、[PHaus_coproduct]、[PHaus_coproduct_dec]：[@{o i u}]，与[i <= o]和[o < u]，Instance/Top/Cocomplete.v的[PSigma]自身，以及stdlib caps。[sep_dec_uip@{i}]：一个stdlib cap。 - 没有块包含方程。112个常数输出的[About]的[Set]字数为122：[comb_pt]的类型和[comb_pt_rec]的动机各一次，[Set < so] 48次，[Set < Projections.u0] 33次，[Set < o] 20次，[Set < Projections.u1] 19次。未送达。练习4 在 n = 3 时（在上文的标准理解下为假；未形式化，既没有反驳也没有 ω_1 或 Sorgenfrey 线的模型）；T3 反射的直接构造；“HX = X” 作为对象的等式或 [LeftAdjointLeftInverse]；反射器在映射上的作用在 [eq_refl]；[PHaus_coproduct] 在没有关于指标环的假设下，这里既未证明也未反驳，以及 Haus 中的余积作为常数，一个以 [PSigma] 为对象的 Haus 的指标余积；练习5 的“结论”作为推导；书中关于紧生成豪斯多夫空间的结语；在有信息排中律下对豪斯完备性的反驳，高于点的宇宙，与 Instance/Top/Complete/Refutations.v 的类比，未测量；一个在 [PTopCat] 上的紧豪斯多夫范畴(#1328 的 [PCompHaus]，应当重用 [PHaus] ); Haus 超过 Type-valued [Top]，位于 Instance/Top/Hausdorff/TypeValued.v 之外。
 *)
 
 (** ** Closure under limits / ** 在极限下的封闭性 *)
@@ -406,7 +406,7 @@ Definition PSep_closed@{o so +| o < so +} (prem : SepPremise@{o})
 (*
  A presentation of a quotient of X on X's own points: an equivalence
  [R] coarser than X's equality, and a topology [T] on (X, R) coarser
- than X's.  Mac Lane's "quotient set of X with some topology". 
+ than X's.  Mac Lane's “quotient set of X with some topology”. 
 
  --------
  在 X 自身的点上展示 X 的一个商：一种比 X 的等价关系更粗的等价关系 [R]，以及在 (X, R) 上比 X 的拓扑更粗的拓扑 [T]。麦克·莱恩的“带某种拓扑的 X 的商集”.
@@ -704,7 +704,7 @@ Definition Haus_reflectors_iso@{o so +| Set < o, o < so +} :
     (reflective_adj Haus_reflective) (reflective_adj PT2_Reflective).
 
 (*
- "If X is already Hausdorff, we may take HX = X": up to isomorphism, the
+ “If X is already Hausdorff, we may take HX = X”: up to isomorphism, the
  counit at a Hausdorff space. 
 
  --------
@@ -715,7 +715,7 @@ Definition Haus_counit_iso@{o so +| Set < o, o < so +} (X : Haus@{o so}) :
   reflective_counit_iso Haus_reflective X.
 
 (*
- "η universal implies that η is a surjection": every point of the
+ “η universal implies that η is a surjection”: every point of the
  reflection is, up to its equality, the unit's value at a point.  For
  the direct reflector the unit is the identity on points, so the point
  is the point itself. 
@@ -777,7 +777,7 @@ Proof.
   - exact (H3 y).
 Defined.
 
-(* Riehl §4.7 Exercise ii, and Mac Lane's "it follows that Haus has all small colimits": cocompleteness by transfer along the reflection. / Riehl §4.7 练习 ii，以及 Mac Lane 的“由此可得 Haus 拥有所有小余积”：通过反射的传递获得的余完备性。 *)
+(* Riehl §4.7 Exercise ii, and Mac Lane's “it follows that Haus has all small colimits”: cocompleteness by transfer along the reflection. / Riehl §4.7 练习 ii，以及 Mac Lane 的“由此可得 Haus 拥有所有小余积”：通过反射的传递获得的余完备性。 *)
 Definition Haus_Cocomplete@{o so +| Set < o, o < so +} :
   @Cocomplete Haus@{o so} :=
   reflective_Cocomplete Haus_reflective PTop_Cocomplete.
@@ -795,11 +795,11 @@ Example Haus_colimit_apex@{o so +| o < so +} (J : Category@{o o o})
   := eq_refl.
 
 (*
- "as does the forgetful functor Haus → Set": the reflection of the
+ “as does the forgetful functor Haus → Set”: the reflection of the
  discrete space. 
 
  --------
- "正如遗忘函子 Haus → Set 所做的那样": 离散空间的反射。
+ “正如遗忘函子 Haus → Set 所做的那样”: 离散空间的反射。
 *)
 Definition Haus_Forget_left_adjoint@{o so +| Set < o, o < so +} :
   (reflector (Haus_reflective : Reflective Haus_Sub@{o so}) ◯ PDisc@{o so})
@@ -814,7 +814,7 @@ Definition Haus_Forget_left_adjoint_direct@{o so +| o < so +} :
 (* * ** A coproduct of Hausdorff spaces is Hausdorff / * ** 豪斯多夫空间的余积是豪斯多夫空间 *)
 
 (*
- Mac Lane's reason why "the coproduct in Haus is the coproduct in Top",
+ Mac Lane's reason why “the coproduct in Haus is the coproduct in Top”,
  for Instance/Top/Cocomplete.v's coproduct [PSigma]: the summands are
  open, so two points no two opens separate lie in one summand, and
  there two opens about them meet because their images in the sum do.
@@ -966,7 +966,7 @@ Definition PReg@{o} (X : PTop@{o}) : Prop := PRegOpens _ (POpen X).
 (* T3: regular and Hausdorff. / T3：正规且豪斯多夫。 *)
 Definition PT3@{o} (X : PTop@{o}) : Type@{o} := (PHaus X * PReg X)%type.
 
-(* A regular T0 space is Hausdorff, so T3 is also "regular and T0". / 一个常规的 T0 空间是豪斯多夫空间，所以 T3 也“常规且 T0”。 *)
+(* A regular T0 space is Hausdorff, so T3 is also “regular and T0”. / 一个常规的 T0 空间是豪斯多夫空间，所以 T3 也“常规且 T0”。 *)
 Lemma PReg_PT0_PHaus@{o} (X : PTop@{o}) : PReg X → PT0 X → PHaus X.
 Proof.
   intros HR H0 x y Hp. apply H0. intros U HU. split; intro u.
@@ -1462,8 +1462,8 @@ Proof.
 Qed.
 
 (*
- The book's "a coequalizer in Top of Hausdorff spaces need not be
- Hausdorff", in both forms. 
+ The book's “a coequalizer in Top of Hausdorff spaces need not be
+ Hausdorff”, in both forms. 
 
  --------
  这本书中的“拓扑空间中豪斯多夫空间的共等化子不一定是豪斯多夫空间”，有两种形式。
@@ -1480,7 +1480,7 @@ Proof.
   exact (Hd z a b).
 Qed.
 
-(* Mac Lane: "a coequalizer in Haus is the largest Hausdorff quotient of the coequalizer in Top". The direct reflection glues exactly the pair that [GlueQ] keeps apart. / Mac Lane：“Haus 中的一个共同化器是 Top 中共同化器的最大豪斯多夫商”。直接反射正好将 [GlueQ] 保持分开的那对粘合起来。 *)
+(* Mac Lane: “a coequalizer in Haus is the largest Hausdorff quotient of the coequalizer in Top”. The direct reflection glues exactly the pair that [GlueQ] keeps apart. / Mac Lane：“Haus 中的一个共同化器是 Top 中共同化器的最大豪斯多夫商”。直接反射正好将 [GlueQ] 保持分开的那对粘合起来。 *)
 Lemma GlueQ_reflection_glues : sepeq prem_T2 GlueQ (Some 0) None.
 Proof.
   intros R HR.
@@ -1540,7 +1540,7 @@ Proof.
 Qed.
 
 (*
- "Conclude that the forgetful functor Haus → Set has no right adjoint",
+ “Conclude that the forgetful functor Haus → Set has no right adjoint”,
  proved directly on the coequalizer of the same pair in [Sets]: the
  transpose of its projection identifies the even points of the sequence
  in a Hausdorff space, hence the limit point with them. 

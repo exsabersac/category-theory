@@ -21,7 +21,7 @@ Generalizable All Variables.
 
  A weight for a limit of shape J is a functor W : J ⟶ V into some base V; the
  W-weighted limit of a diagram F : J ⟶ C is the object representing the
- V-object of "W-cones", i.e. the presheaf
+ V-object of “W-cones”, i.e. the presheaf
 
  c ↦ V-natural-transformations W ⟹ C(c, F -).
 
@@ -55,7 +55,7 @@ Section Weighted.
  The covariant hom-diagram of a fixed apex [c] over the diagram [F]: the
  functor J ⟶ Sets sending each [j] to the hom-setoid [c ~> F j] and each
  [g : j ~> j'] to postcomposition with [fmap[F] g]. A Sets-natural
- transformation [W ⟹ HomDiagram c F] is precisely a "W-shaped cone" from [c]
+ transformation [W ⟹ HomDiagram c F] is precisely a “W-shaped cone” from [c]
  to [F], so representing this presheaf-of-cones (naturally in [c]) is what it
  means for a W-weighted limit to exist. 
 
@@ -85,7 +85,7 @@ Qed.
  Reindexing the covariant hom-diagram along a morphism of apexes: for
  [h : c' ~> c], precomposition with [h] is a natural transformation
  [HomDiagram c F ⟹ HomDiagram c' F], component-wise [k ↦ k ∘ h]. This is the
- action-on-morphisms of the "presheaf of cones" viewed in the apex, and is
+ action-on-morphisms of the “presheaf of cones” viewed in the apex, and is
  exactly what the naturality square of a weighted limit compares against. 
 
  --------

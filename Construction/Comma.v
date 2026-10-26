@@ -82,7 +82,7 @@ Context {T : B ⟶ C}.
  nLab: https://ncatlab.org/nlab/show/scone
 
  The construction first appeared as an unnamed auxiliary device in
- Lawvere's thesis (Lawvere, "Functorial Semantics of Algebraic Theories",
+ Lawvere's thesis (Lawvere, “Functorial Semantics of Algebraic Theories”,
  Columbia University PhD thesis 1963; summarized in Proc. Nat. Acad. Sci.
  50 (1963), 869-872; republished with an author's commentary as Reprints
  in Theory and Applications of Categories 5, 2004), where it serves to
@@ -90,7 +90,7 @@ Context {T : B ⟶ C}.
  the hom-set notation C(x, y), and the nLab records that the name is a
  holdover from that punctuation.  Wikipedia notes that the device became
  generally known only many years later; its textbook treatment is
- section II.6 of Mac Lane, "Categories for the Working Mathematician"
+ section II.6 of Mac Lane, “Categories for the Working Mathematician”
  (Springer GTM 5; 2nd ed. 1998).
 
  What the definition provides is reification.  A morphism between an
@@ -115,7 +115,7 @@ Context {T : B ⟶ C}.
  compatibly with the projections, which Wikipedia reports as the original
  motivation for the construction — is packaged as [lawvere_equiv] in
  Construction/Comma/Adjunction.v.  Freyd's General Adjoint Functor
- Theorem (Freyd, "Abelian Categories", Harper & Row 1964, exercises of
+ Theorem (Freyd, “Abelian Categories”, Harper & Row 1964, exercises of
  chapter 3; reprinted as TAC Reprints 3, 2003) reduces the existence of a
  left adjoint to U to an initial object in each =(d) ↓ U; the library
  executes exactly this route in Adjunction/GAFT.v ([GAFT_from_initials],
@@ -129,17 +129,17 @@ Context {T : B ⟶ C}.
  Viewed 2-categorically, [Comma] is the strict comma object of the
  cospan A ⟶ C ⟵ B in Cat — the instance that gives the general notion
  its name — and comma objects are PIE-limits, constructible from
- pullbacks and the power C^2 (nLab, "comma object").  Viewed logically,
+ pullbacks and the power C^2 (nLab, “comma object”).  Viewed logically,
  the Freyd cover, or scone, of a category T is the comma Set ↓ Γ over
  the global-sections functor Γ := T(1, −); gluing arguments through it
  prove the disjunction and existence properties of intuitionistic
  higher-order logic (Lambek and Scott 1980; Freyd and Scedrov,
- "Categories, Allegories", North-Holland 1990; Johnstone, "Sketches of
- an Elephant", C3.6), and Artin gluing generalizes this: when a functor
+ “Categories, Allegories”, North-Holland 1990; Johnstone, “Sketches of
+ an Elephant”, C3.6), and Artin gluing generalizes this: when a functor
  f between topoi preserves pullbacks, the comma category Id ↓ f is
- again a topos (nLab, "comma category").  In programming-language
+ again a topos (nLab, “comma category”).  In programming-language
  theory the same gluing underlies logical-relations proofs.  Finally,
- Rydeheard and Burstall ("Computational Category Theory", Prentice Hall
+ Rydeheard and Burstall (“Computational Category Theory”, Prentice Hall
  1988, section 5.2) read the comma category as a program-construction
  device: given code once for [Comma], colimit algorithms for derived
  categories such as graphs are inherited from colimit algorithms for
@@ -319,7 +319,7 @@ Require Import Category.Construction.Opposite.
 Require Import Category.Functor.Opposite.
 
 (*
- The "cocomma" defined here is the comma category formed in the opposite
+ The “cocomma” defined here is the comma category formed in the opposite
  categories, @Comma (B^op) (A^op) (C^op) (T^op) (S^op). Since the comma of
  opposite functors is the opposite of the comma, this is (S ↓ T)^op up to
  isomorphism: it dualizes S ↓ T by reversing every arrow. Note this is the

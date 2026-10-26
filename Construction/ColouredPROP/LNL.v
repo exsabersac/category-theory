@@ -75,7 +75,7 @@ Generalizable All Variables.
  add coherence obligations without adding theorems.
 
  The conceptual neighbour of this bridge elsewhere in the library is
- the "cartesian colour" discussion of Structure/Monoidal/Collapse.v:
+ the “cartesian colour” discussion of Structure/Monoidal/Collapse.v:
  there, semicartesian collapse shows what happens when copy/discard
  become NATURAL for every morphism (Fox's theorem territory, where
  the tensor is forced cartesian); here, the per-colour supply keeps
@@ -141,13 +141,13 @@ Generalizable All Variables.
  the fan-out linearity check: fan-out at a linear wire is not
  disallowed by convention — it is UNINHABITED.
 
- Reference: Benton, "A mixed linear and non-linear logic: proofs,
- terms and models", CSL 1994, LNCS 933
- Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
- string diagrams", MSCS 29(7):938–971, 2019
+ Reference: Benton, “A mixed linear and non-linear logic: proofs,
+ terms and models”, CSL 1994, LNCS 933
+ Reference: Cho & Jacobs, “Disintegration and Bayesian inversion via
+ string diagrams”, MSCS 29(7):938–971, 2019
  (arXiv:1709.00322), §2
- Reference: Fong & Spivak, "Supplying bells and whistles in
- symmetric monoidal categories" (arXiv:1908.02633),
+ Reference: Fong & Spivak, “Supplying bells and whistles in
+ symmetric monoidal categories” (arXiv:1908.02633),
  §§1–2 
 
  --------

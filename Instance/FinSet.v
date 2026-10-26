@@ -66,7 +66,7 @@ Generalizable All Variables.
 
  The skeletal category of finite sets is the founding object of
  categorical universal algebra.  Lawvere's doctoral dissertation
- (F. W. Lawvere, "Functorial Semantics of Algebraic Theories", 1963)
+ (F. W. Lawvere, “Functorial Semantics of Algebraic Theories”, 1963)
  built algebraic theories on exactly this category: in the modern
  formulation recorded by nLab, a Lawvere theory is a category equipped
  with an identity-on-objects, strictly power-preserving functor out of
@@ -83,27 +83,27 @@ Generalizable All Variables.
  category with finite coproducts on a single object, and dually
  FinSet^op is the free category with finite products on one; the
  commutative-monoid PROP statement of the header traces to Lafont
- (Y. Lafont, "Towards an algebraic theory of Boolean circuits", Journal
+ (Y. Lafont, “Towards an algebraic theory of Boolean circuits”, Journal
  of Pure and Applied Algebra 184, 2003).  By generators and relations,
  FinSet is presented by one multiplication 2 → 1 and one unit 0 → 1
  under the commutative-monoid equations, and it anchors the
  network-theory chain in which cospans of finite sets form the prop for
  special commutative Frobenius monoids and spans the prop for
  bicommutative bimonoids (results of Lack and of Rosebrugh, Sabadini
- and Walters, assembled in Baez, Coya, Rebro, "Props in Network
- Theory", Theory and Applications of Categories 33, 2018) — the
+ and Walters, assembled in Baez, Coya, Rebro, “Props in Network
+ Theory”, Theory and Applications of Categories 33, 2018) — the
  interconnection algebra discussed in Theory/Algebra/Frobenius.v.
 
  The footprint extends well beyond algebra.  FinSet is an elementary
  topos whose inclusion into Set is a logical morphism, and the functor
  category from FinSet to Set is the classifying topos for the theory of
  objects (nLab).  Presheaves on FinSet are the augmented symmetric
- simplicial sets of Grandis ("Finite sets and symmetric simplicial
- sets", Theory and Applications of Categories 8, 2001), with the
+ simplicial sets of Grandis (“Finite sets and symmetric simplicial
+ sets”, Theory and Applications of Categories 8, 2001), with the
  simplex category Δ embedding into FinSet.  Covariant presheaves over
  this skeleton are likewise the mathematical universe of abstract
- syntax with variable binding (Fiore, Plotkin, Turi, "Abstract Syntax
- and Variable Binding", LICS 1999): an object n is a context of n free
+ syntax with variable binding (Fiore, Plotkin, Turi, “Abstract Syntax
+ and Variable Binding”, LICS 1999): an object n is a context of n free
  variables, morphisms are renamings, and binding signatures acquire
  initial-algebra semantics with a provably correct substitution
  structure — the underpinning of well-scoped De Bruijn
@@ -131,7 +131,7 @@ Generalizable All Variables.
  为什么是骷髅，以及它通向何方
 
  nLab:  https://ncatlab.org/nlab/show/FinSet 
- nLab:  https://ncatlab.org/nlab/show/Lawvere+theory有限集的骨架范畴是范畴通用代数的基础对象。Lawvere 的博士论文（F. W. Lawvere, "代数理论的函子语义"，1963）正是在这个范畴上构建了代数理论：在 nLab 所记录的现代表述中，Lawvere 理论是一个范畴，配备有从自然数及其间函数组成的范畴的对偶出发的对对象恒等、严格保持幂的函子——即本文定义的范畴的对偶——并且以这种方式呈现的 Lawvere 理论对应于 Set 上的有限元单子。由此可得 [FinSet] ^op 是初始的劳韦尔理论，即没有运算的理论，每个其他理论都扩展自它；Instance/FinSet/Lawvere.v 在树中将其具体化为 [FinSetOp_Lawvere]，并且基础可达性假设由 Theory/Lawvere/Sets.v 中的 [eq_refl] （[FinSetOp_reach]）解除。通用性质是并行运行的。根据 nLab，FinSet 是在单个对象上具有有限余积的自由范畴，而对偶地，FinSet^op 是在单个对象上具有有限积的自由范畴；标题中的交换单子 PROP 陈述可追溯到 Lafont（Y. Lafont，《Towards an algebraic theory of Boolean circuits》，《纯与应用代数杂志》184, 2003）。通过生成元和关系，
+ nLab:  https://ncatlab.org/nlab/show/Lawvere+theory有限集的骨架范畴是范畴通用代数的基础对象。Lawvere 的博士论文（F. W. Lawvere, “代数理论的函子语义”，1963）正是在这个范畴上构建了代数理论：在 nLab 所记录的现代表述中，Lawvere 理论是一个范畴，配备有从自然数及其间函数组成的范畴的对偶出发的对对象恒等、严格保持幂的函子——即本文定义的范畴的对偶——并且以这种方式呈现的 Lawvere 理论对应于 Set 上的有限元单子。由此可得 [FinSet] ^op 是初始的劳韦尔理论，即没有运算的理论，每个其他理论都扩展自它；Instance/FinSet/Lawvere.v 在树中将其具体化为 [FinSetOp_Lawvere]，并且基础可达性假设由 Theory/Lawvere/Sets.v 中的 [eq_refl] （[FinSetOp_reach]）解除。通用性质是并行运行的。根据 nLab，FinSet 是在单个对象上具有有限余积的自由范畴，而对偶地，FinSet^op 是在单个对象上具有有限积的自由范畴；标题中的交换单子 PROP 陈述可追溯到 Lafont（Y. Lafont，《Towards an algebraic theory of Boolean circuits》，《纯与应用代数杂志》184, 2003）。通过生成元和关系，
  FinSet 由一个乘法 2 → 1 和一个单位 0 → 1 在交换单元方程下表示，并且它锚定了网络理论链，其中有限集合的余跨度构成特殊交换 Frobenius 单元的道具，并跨越双交换双单元的道具（Lack 以及 Rosebrugh、Sabadini 和 Walters 的结果，汇编在 Baez、Coya、Rebro 的《网络理论中的道具》，类别理论与应用 33, 2018）——在 Theory/Algebra/Frobenius.v 中讨论的互连代数。这一影响远远超出了代数。FinSet 是一个初等拓扑，其包含到 Set 中是一个逻辑态射，而从 FinSet 到 Set 的函子范畴是对象理论的分类拓扑（nLab）。FinSet 上的预层是 Grandis 的增强对称单纯集合（“有限集合与对称单纯集合”，《范畴理论的理论与应用》8, 2001），单纯形范畴 Δ 嵌入到 FinSet 中。该骨架上的协变预层同样是带变量绑定的抽象语法的数学宇宙（Fiore, Plotkin, Turi，《抽象语法与变量绑定》，LICS 1999）：一个对象 n 是 n 个自由变量的上下文，态射是重命名，绑定签名通过带有可证明正确的替换结构获得初代数语义——这是作用良好范围的 De Bruijn 表示的基础。在这个库中，骨架还有另一个具体的理由来证明其存在价值：它会进行计算。对象是字面上的自然数，因此对象的相等性是可判定的——[FinSet_ObjDecEq] 的内容——并且根据 Hedberg 的论证，对对象的 UIP（唯一身份证明）则无需公理即可成立，而态射是标准库 [Fin.t] 上的诚实 Coq 函数，这个类型是依赖类型传统中规范的 n 元类型。因此，可以使范畴结构进行评估，并且由 [fin_split] 和 [fin_join] 在此建立的闭合计算规范会传播到每个卫星：Instance/FinSet/Product.v 中的位置乘积编解码器 [fin_pair] 和 [fin_unpair]，Instance/FinSet/Closed.v 中的枚举指数编解码器 [fin_tabulate] 和 [fin_apply]，计数拉回（[FinSet_Pullbacks]）以及 Instance/FinSet/Classifier.v 中可判定的子对象分类器 Ω := 2，最终在 Instance/FinSet/Topos.v 中形成 [FinSet_Topos]，其合理性示例 — 其中 [FinSet_Pow_two] 计算 2 的幂对象为 4 — 通过 [eq_refl] 得到验证。
 *)
 

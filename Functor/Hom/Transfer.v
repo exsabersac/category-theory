@@ -20,30 +20,30 @@ SOURCES.
    Mac Lane, CWM 2nd ed., §IV.3, printed p. 91 (read from the page image
    p367-100.png):
 
-     "Lemma.  Let f* : A(a, −) ⇸ A(b, −) be the natural transformation
+     “Lemma.  Let f* : A(a, −) ⇸ A(b, −) be the natural transformation
       induced by an arrow f : b → a of A.  Then f* is monic if and only
       if f is epi, while f* is epi if and only if f is a split monic
-      (i.e., if and only if f has a left inverse)."
+      (i.e., if and only if f has a left inverse).”
 
    and, immediately below it on the same page (same image):
 
-     "Note that f* ↦ f is the bijection Nat(A(a, −), A(b, −)) ≅ A(b, a)
-      given by the Yoneda lemma."
+     “Note that f* ↦ f is the bijection Nat(A(a, −), A(b, −)) ≅ A(b, a)
+      given by the Yoneda lemma.”
 
    and
 
-     "Observe, also, that for functors S, T : C → B, a natural
+     “Observe, also, that for functors S, T : C → B, a natural
       transformation τ : S ⇸ T is epi (respectively, monic) in B^C if and
       only if every component τ_c : S_c → T_c is epi (respectively, monic)
       in B for B = Set; this follows by Exercise III.4.4, computing the
-      pushout pointwise as in Exercise III.5.5."
+      pushout pointwise as in Exercise III.5.5.”
 
    and the proof itself (same image):
 
-     "Proof.  For h ∈ A(a, c), f*h = hf.  Hence the first result is just
+     “Proof.  For h ∈ A(a, c), f*h = hf.  Hence the first result is just
       the definition of an epi f.  If f* is epi, there is an h_0 : a → b
       with f*h_0 = h_0 f = 1 : b → b, so f has a left inverse.  The
-      converse is immediate."
+      converse is immediate.”
 
    Catalog id: maclane:IV.3:lem1.  The theorem the lemma serves is
    maclane:IV.3:thm1, in Adjunction/FullFaithful.v.
@@ -75,7 +75,7 @@ SOURCES.
    ROUTE.  Mac Lane's, in three steps, exactly as his proof runs:
 
    (1) The pointwise characterisation of monos and epis in a functor
-       category valued in Set.  This is Mac Lane's "Observe, also"
+       category valued in Set.  This is Mac Lane's “Observe, also”
        paragraph above, which is the catalog item maclane:IV.3:remark1
        and is IN TREE as Instance/Fun/Morphisms.v.  The scripts below
        consume its four one-directional halves by name — the two
@@ -115,7 +115,7 @@ SOURCES.
      Leibniz [=], by [eq_refl].  Deliberate strictness, labelled.
    - The comparison with [fmap[Curried_Hom A] f] was measured on a
      three-rung ladder and the answer is NOT uniform, so the header does
-     not say "it is [fmap]" without qualification.  VALUES agree at
+     not say “it is [fmap]” without qualification.  VALUES agree at
      Leibniz [=] ([hom_transfer_is_fmap_value], [eq_refl]): both sides
      compute h ∘ f, because [Curried_Hom]'s arrow action is
      `fun g => g ∘ op f` and [op] moves no data
@@ -398,8 +398,8 @@ Proof. exact (id_left f). Qed.
 (* ** Mac Lane's lemma, first half: monic ⟺ epi  / ** Mac Lane 引理，前半部分：monic ⟺ epi*)
 
 (*
-"For h ∈ A(a, c), f*h = hf.  Hence the first result is just the
-   definition of an epi f."  In this setoid setting the sentence becomes
+“For h ∈ A(a, c), f*h = hf.  Hence the first result is just the
+   definition of an epi f.”  In this setoid setting the sentence becomes
    three steps: monic in the functor category is componentwise monic
    (Instance/Fun/Morphisms.v), componentwise monic in Sets is
    componentwise injective (Instance/Sets.v), and componentwise
@@ -433,8 +433,8 @@ Defined.
 (* ** Mac Lane's lemma, second half: epi ⟺ split monic  / ** Mac Lane 引理，后半部分：epi ⟺ 分裂 monic*)
 
 (*
-"If f* is epi, there is an h_0 : a → b with f*h_0 = h_0 f = 1 : b → b,
-   so f has a left inverse.  The converse is immediate."  The witness
+“If f* is epi, there is an h_0 : a → b with f*h_0 = h_0 f = 1 : b → b,
+   so f has a left inverse.  The converse is immediate.”  The witness
    h_0 is obtained by evaluating surjectivity of the component at c := b
    on id[b]; it is DATA, [∃] being [sigT] here, which is why the
    biconditional is [Defined]. 

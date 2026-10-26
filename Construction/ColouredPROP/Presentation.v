@@ -8,7 +8,7 @@ Require Import Category.Construction.Product.
 Require Import Category.Functor.Construction.Product.
 (*
  [Instance.Fun] is Required but NOT Imported: its functor-category
- notation "[ C , D ]" (level 90) and ListNotations' "[]" have
+ notation “[ C , D ]” (level 90) and ListNotations' “[]” have
  grammatically incompatible bracket prefixes.  The one use site (the
  projection's tensor-comparison isomorphism below) writes the
  qualified [@Category.Instance.Fun.Fun] instead — the same
@@ -16,7 +16,7 @@ Require Import Category.Functor.Construction.Product.
  [Presentation/Universal.v]. 
 
  --------
- [Instance.Fun] 是必需的但未导入：其函子范畴符号 "[ C , D ]"（级别 90）与 ListNotations 的 "[]" 在语法上使用了不兼容的括号前缀。唯一的使用位置（下面的投影的张量比较同构）改为写了限定的 [@Category.Instance.Fun.Fun] —— 与 [Universal.v]、[Relabel.v] 和 [Presentation/Universal.v] 相同的规范。
+ [Instance.Fun] 是必需的但未导入：其函子范畴符号 “[ C , D ]”（级别 90）与 ListNotations 的 “[]” 在语法上使用了不兼容的括号前缀。唯一的使用位置（下面的投影的张量比较同构）改为写了限定的 [@Category.Instance.Fun.Fun] —— 与 [Universal.v]、[Relabel.v] 和 [Presentation/Universal.v] 相同的规范。
 *)
 Require Category.Instance.Fun.
 Require Import Category.Structure.Monoidal.
@@ -62,7 +62,7 @@ Generalizable All Variables.
  by those equations — exactly as a monoid presented by generators and
  relations is the free monoid quotiented by the relation-congruence.
  Classical examples: the theory of per-colour commutative comonoids
- presents the coloured PROP whose morphisms are "copy-and-delete"
+ presents the coloured PROP whose morphisms are “copy-and-delete”
  wirings; a typed circuit theory adds gate generators and their
  local rewrite equations.
 
@@ -190,7 +190,7 @@ Notation Σ := (csmt_sig E).
 (*
    * ** The theory congruence
 
-   [CTermEqW] ("W" for "with axioms") is the smallest congruence on
+   [CTermEqW] (“W” for “with axioms”) is the smallest congruence on
    [CTerm Σ] containing both the free equations [CTermEq Σ] and the
    theory axioms [csmt_eqs E].  Reflexivity is derivable —
    [CTEW_termeq _ _ (CTE_refl _)] — so it is not a constructor.

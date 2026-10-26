@@ -34,7 +34,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/coimage
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_object
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.7, book p. 126 (PDF p. 135), Definition 3, is the source.  Dually to
  the subobjects of Definition 2, a quotient object of x is an
  equivalence class of epimorphisms OUT of x, ordered by factorization,
@@ -42,7 +42,7 @@ Generalizable All Variables.
  the onto maps these are the familiar quotients.  Theory/Subobject/
  Quotient.v carries the definition -- [QuotObj x] is [@SubObj (C^op) x]
  and nothing more -- and this file is the first half of the answer to
- "and where epis ARE onto?", at [Sets].  The [FinSet] and [Grp] halves
+ “and where epis ARE onto?”, at [Sets].  The [FinSet] and [Grp] halves
  are Instance/FinSet/QuotObj.v and Instance/Grp/QuotObj.v.
 
  WHAT IS DELIVERED.
@@ -124,8 +124,8 @@ Generalizable All Variables.
  here is stated at ≈, never at Leibniz equality: [QuotObj x] inherits
  [SubObj]'s setoid (Theory/Subobject.v) and has no antisymmetry, so
  [Sets_quot_meet_parity_mod3] is an equivalence of quotient objects and
- the same statement at `=` is REFUSED (measured: CONVERSION, "cannot
- unify quot_meet Sets_Q_parity Sets_Q_mod3 and Sets_Q_total").  Nothing
+ the same statement at `=` is REFUSED (measured: CONVERSION, “cannot
+ unify quot_meet Sets_Q_parity Sets_Q_mod3 and Sets_Q_total”).  Nothing
  in this file computes by [eq_refl]; the computing readbacks of this
  development are in Instance/FinSet/QuotObj.v, where the objects are
  natural numbers.
@@ -134,7 +134,7 @@ Generalizable All Variables.
  (grep -E '^(def|prf|thm|ind|constr|proj|class|inst|meth|rec|corec|ax|
  defax) ' on the .glob), no [Program] anywhere so
  [strings … .vo | grep obligation] returns nothing, and all 33 report
- "Closed under the global context" under [Print Assumptions] -- the
+ “Closed under the global context” under [Print Assumptions] -- the
  [Sets] layer is often a place where stdlib axioms enter (docs/
  AXIOMS.md), and here none does.  5 [Defined] and 7 [Qed] (grep -c on
  '^Defined\.' / '^Qed\.'; a first draft of this paragraph said 28
@@ -142,9 +142,9 @@ Generalizable All Variables.
  committed and corrected here); flipping each [Defined] to [Qed] in
  turn, exactly TWO are required to be transparent: [sets_coimage_med],
  whose underlying function the [change] in [sets_coimage_least] must
- see ("Error: Not convertible"), and [Sets_pick], whose morphism the
- [cbn]/[discriminate] in [Sets_one_not_epic_empty] must reduce ("Not a
- discriminable equality"); the other three recompile green as [Qed]
+ see (“Error: Not convertible”), and [Sets_pick], whose morphism the
+ [cbn]/[discriminate] in [Sets_one_not_epic_empty] must reduce (“Not a
+ discriminable equality”); the other three recompile green as [Qed]
  and are kept [Defined] because [sub_le], `≈` on [QuotObj] and an
  [Epic] proof consumed by [quot_bot] are data.  The requirement
  closure is 75 files COUNTING THIS FILE (iterated over .Makefile.coq.d;
@@ -168,7 +168,7 @@ Generalizable All Variables.
  NOT DELIVERED.  No WORKED join: [Sets_quot_join] is delivered as the
  one-line transport of [quot_join] at [Sets_Cartesian] and
  [Sets_HasCoimages] (an earlier revision of this paragraph said the
- join needed "a product instance not assembled here", which an audit
+ join needed “a product instance not assembled here”, which an audit
  refuted -- the instance was Instance/Sets/Cartesian.v all along),
  but no pair of quotients has its join computed, unlike the meet.
  No lattice laws: commutativity, associativity,
@@ -207,7 +207,7 @@ Generalizable All Variables.
  中这正是承载体的具有人性：[Sets_one_epic_of_inhabited]  
  从三条线中的一点将其释放出来，无需假设任何东西，所以  
  [Sets_quot_bot] 是每个具有人性等价类的最粗商对象 X ↠ 1，并且 [Sets_one_not_epic_empty] 在空等价类中反驳它（来自单元素的两个常量映射 [Sets_pick true] / [Sets_pick false] 在 ∅ → 1 后自动一致，并在 [ttt] 不同）。  
- 这正是使假设依赖于对象而非稀有的原因，Theory/Subobject/Quotient.v 文件头部所提出的主张，并在此引用。优势，以及它们不是的东西。关于商对象的所有内容在这里都是在 ≈ 下陈述的，从不在 Leibniz 等式下陈述：[QuotObj x] 继承了 [SubObj] 的集合等价体（Theory/Subobject.v），并且没有反对称性，因此 [Sets_quot_meet_parity_mod3] 是商对象的一个等价，而在 `=` 处的相同陈述被拒绝（测量：转换，"无法统一 quot_meet Sets_Q_parity Sets_Q_mod3 和 Sets_Q_total"）。本文件中没有任何内容通过 [eq_refl] 进行计算；该开发的计算回显在 Instance/FinSet/QuotObj.v 中，其中对象是自然数。测量，每个都可以重新运行。33 个常量（在 .glob 上使用 grep -E '^(def|prf|thm|ind|constr|proj|class|inst|meth|rec|corec|ax|defax) '），没有任何 [Program]，所以 [strings … .vo | grep obligation] 返回空，并且所有 33 个在 [Print Assumptions] 下都报告“在全局上下文下封闭”——[Sets] 层通常是 stdlib 公理进入的地方（docs/AXIOMS.md），而这里没有任何进入。5 [Defined] 和 7 [Qed]（在 '^Defined\.' / '^Qed\.' 上使用 grep -c；本段的初稿说 28 个常量，3 [Defined] 和 8 [Qed]，数字在提交时已经过时并在此处更正）；依次将每个 [Defined] 翻转为 [Qed]，恰需两个是透明的：[sets_coimage_med]，其底层函数 [change] 在 [sets_coimage_least] 中必须看到（"错误：不可转换"），以及 [Sets_pick]，其同态映射 [cbn] / [discriminate] 在 [Sets_one_not_epic_empty] 中必须规约（"不是可区分的等式"）；其他三个作为 [Qed] 重新编译为绿色，并保持 [Defined]，因为 [sub_le]、`≈` 在 [QuotObj] 上以及 [Epic] 的证明被 [quot_bot] 消耗是数据。需求关闭包含75个文件，包括此文件（在 .Makefile.coq.d 上迭代；在 Structure/Initial.v 加入它之前有74个文件）。这里引入的任何名称在树的其他地方都不存在（在所有 .glob 文件上清扫过，使用 '^ [a-z] +  [0-9:] +  [^ ] * NAME$'，在 [sub_le] 上进行了工具检查；一个最初的草稿将内核关系称为 [sets_ker]，清扫发现了 Instance/Sets/Pullback.v，因此 [sets_coimage_rel]）。宇宙，用 [Set Printing Universes. About …] 测量。这里的每个常量都是 [@{o so}]，带有 [o < so]，Instance/Powerset/Subobject.v 的习语，并将其类别绑定为 [Sets@{o so}]，而 Instance/Sets.v 将其声明为 [Category@{so o o}] —— 同态级别和证明级别是相同的宇宙，这正是 [SubObj] 所要求的。这个识别是继承的，并不是在这里引入的：Theory/Subobject.v 的记录本身显示为 [∀ {C : Category@{u u0 u0}}, …]，作为 Theory/Subobject/Lattice.v 记录的标题，并且 [Sets] 恰好完全符合它。这里没有常量将任何宇宙固定为 [Set]。未交付。没有工作的连接：[Sets_quot_join] 作为 [quot_join] 在 [Sets_Cartesian] 和 [Sets_HasCoimages] 的单行传输交付（该段落的早期版本说该连接需要“一个未在此组装的产品实例”，但审计否定了——该实例一直是 Instance/Sets/Cartesian.v），但没有任何商的配对计算其连接，与交不同。没有格律：[quot_meet] 的交换律、结合律、幂等律和吸收律在 [Sets] 未重新陈述，它们是 Theory/Subobject/Lattice.v 的传输，而非关于集代数的事实。没有顶商对象。最下面的那个已经在每个有元素的集合（[Sets_quot_bot]，通过[Sets_one_epic_of_inhabited]；[Sets_one_not_epic_empty]显示假设正是其可居性）上实现，并且[NatDiscrete]的总商在其每个商（[Sets_Q_total_below]）之下直接显示——这是针对同一有元素承载体的特定论证，原因相同，它构建的常数映射必须命名一个元素。没有索引交集。没有声称余像与Instance/Sets/Image.v的像一致：两者通过[Sets]的反向-单态分解相关联，这里没有说明。没有对任何构造的[eq_refl]回读。没有余像居中映射的唯一性（[sub_le_unique]对偶化），这需要右侧竞争商的满射被抵消，但这里没有说明。
+ 这正是使假设依赖于对象而非稀有的原因，Theory/Subobject/Quotient.v 文件头部所提出的主张，并在此引用。优势，以及它们不是的东西。关于商对象的所有内容在这里都是在 ≈ 下陈述的，从不在 Leibniz 等式下陈述：[QuotObj x] 继承了 [SubObj] 的集合等价体（Theory/Subobject.v），并且没有反对称性，因此 [Sets_quot_meet_parity_mod3] 是商对象的一个等价，而在 `=` 处的相同陈述被拒绝（测量：转换，“无法统一 quot_meet Sets_Q_parity Sets_Q_mod3 和 Sets_Q_total”）。本文件中没有任何内容通过 [eq_refl] 进行计算；该开发的计算回显在 Instance/FinSet/QuotObj.v 中，其中对象是自然数。测量，每个都可以重新运行。33 个常量（在 .glob 上使用 grep -E '^(def|prf|thm|ind|constr|proj|class|inst|meth|rec|corec|ax|defax) '），没有任何 [Program]，所以 [strings … .vo | grep obligation] 返回空，并且所有 33 个在 [Print Assumptions] 下都报告“在全局上下文下封闭”——[Sets] 层通常是 stdlib 公理进入的地方（docs/AXIOMS.md），而这里没有任何进入。5 [Defined] 和 7 [Qed]（在 '^Defined\.' / '^Qed\.' 上使用 grep -c；本段的初稿说 28 个常量，3 [Defined] 和 8 [Qed]，数字在提交时已经过时并在此处更正）；依次将每个 [Defined] 翻转为 [Qed]，恰需两个是透明的：[sets_coimage_med]，其底层函数 [change] 在 [sets_coimage_least] 中必须看到（“错误：不可转换”），以及 [Sets_pick]，其同态映射 [cbn] / [discriminate] 在 [Sets_one_not_epic_empty] 中必须规约（“不是可区分的等式”）；其他三个作为 [Qed] 重新编译为绿色，并保持 [Defined]，因为 [sub_le]、`≈` 在 [QuotObj] 上以及 [Epic] 的证明被 [quot_bot] 消耗是数据。需求关闭包含75个文件，包括此文件（在 .Makefile.coq.d 上迭代；在 Structure/Initial.v 加入它之前有74个文件）。这里引入的任何名称在树的其他地方都不存在（在所有 .glob 文件上清扫过，使用 '^ [a-z] +  [0-9:] +  [^ ] * NAME$'，在 [sub_le] 上进行了工具检查；一个最初的草稿将内核关系称为 [sets_ker]，清扫发现了 Instance/Sets/Pullback.v，因此 [sets_coimage_rel]）。宇宙，用 [Set Printing Universes. About …] 测量。这里的每个常量都是 [@{o so}]，带有 [o < so]，Instance/Powerset/Subobject.v 的习语，并将其类别绑定为 [Sets@{o so}]，而 Instance/Sets.v 将其声明为 [Category@{so o o}] —— 同态级别和证明级别是相同的宇宙，这正是 [SubObj] 所要求的。这个识别是继承的，并不是在这里引入的：Theory/Subobject.v 的记录本身显示为 [∀ {C : Category@{u u0 u0}}, …]，作为 Theory/Subobject/Lattice.v 记录的标题，并且 [Sets] 恰好完全符合它。这里没有常量将任何宇宙固定为 [Set]。未交付。没有工作的连接：[Sets_quot_join] 作为 [quot_join] 在 [Sets_Cartesian] 和 [Sets_HasCoimages] 的单行传输交付（该段落的早期版本说该连接需要“一个未在此组装的产品实例”，但审计否定了——该实例一直是 Instance/Sets/Cartesian.v），但没有任何商的配对计算其连接，与交不同。没有格律：[quot_meet] 的交换律、结合律、幂等律和吸收律在 [Sets] 未重新陈述，它们是 Theory/Subobject/Lattice.v 的传输，而非关于集代数的事实。没有顶商对象。最下面的那个已经在每个有元素的集合（[Sets_quot_bot]，通过[Sets_one_epic_of_inhabited]；[Sets_one_not_epic_empty]显示假设正是其可居性）上实现，并且[NatDiscrete]的总商在其每个商（[Sets_Q_total_below]）之下直接显示——这是针对同一有元素承载体的特定论证，原因相同，它构建的常数映射必须命名一个元素。没有索引交集。没有声称余像与Instance/Sets/Image.v的像一致：两者通过[Sets]的反向-单态分解相关联，这里没有说明。没有对任何构造的[eq_refl]回读。没有余像居中映射的唯一性（[sub_le_unique]对偶化），这需要右侧竞争商的满射被抵消，但这里没有说明。
 *)
 
 Section SetsQuotObj.
@@ -215,7 +215,7 @@ Section SetsQuotObj.
 Universe o so.
 Constraint o < so.
 
-(* * ** Mac Lane's "where epis are onto" clause, both ways / * ** 马克·莱恩的“当epis是满射时”的条款，双向 *)
+(* * ** Mac Lane's “where epis are onto” clause, both ways / * ** 马克·莱恩的“当epis是满射时”的条款，双向 *)
 
 (*
  The epimorphism of a quotient object of [Sets] is a surjection.  This
@@ -413,8 +413,8 @@ End Coimage.
 (*
  The class form.  The anonymous record literal [{| image_of := … |}] is
  REFUSED here -- it elaborates the field against [C := Sets] and reports
- "has type @ImageOf Sets^op X Y f while it is expected to have type
- @ImageOf Sets Y X f" -- so the constructor is named and its category
+ “has type @ImageOf Sets^op X Y f while it is expected to have type
+ @ImageOf Sets Y X f” -- so the constructor is named and its category
  argument given explicitly. 
 
  --------
@@ -432,8 +432,8 @@ End Coimage.
  [@Cartesian (C^op)], and [Sets^op^op] is [Sets] by reflexivity) -- and
  the coimages just registered.  The join is the coimage of the pairing
  of the two epis into the product of their codomains.  An earlier
- revision of this file said the join "needs a product instance not
- assembled here"; an audit refuted that by compiling this one line, so
+ revision of this file said the join “needs a product instance not
+ assembled here”; an audit refuted that by compiling this one line, so
  it is landed rather than left as a false obstruction.  Its least-
  upper-bound property and the lattice laws are [quot_join_is_lub],
  [quot_join_comm] and their siblings, read at [Sets]; none is restated
@@ -506,7 +506,7 @@ Definition Sets_Q_total : @QuotObj Sets@{o so} NatDiscrete@{o} :=
  quotient objects of [NatDiscrete]: it factors through every quotient
  (every quotient has it below), by the constant map out of that
  quotient's codomain, whose respectfulness is [ttt].  An earlier
- revision of this comment said "every quotient factors through it",
+ revision of this comment said “every quotient factors through it”,
  the reverse direction; the statement below was always the right one. 
 
  --------

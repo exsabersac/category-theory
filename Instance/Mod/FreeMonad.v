@@ -24,10 +24,10 @@ Generalizable All Variables.
 (* * * The free R-module monad T_R on Set and its algebras, the R-modules / * * 集合上的自由 R-模幺半群 T_R 及其代数，即 R-模 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.4, Exercise 2, printed p. 146 (PDF
  p. 155) — maclane:VI.4:ex2
- Book: Riehl, "Category Theory in Context", Example 5.1.4(iii),
+ Book: Riehl, “Category Theory in Context”, Example 5.1.4(iii),
  printed p. 184 (PDF p. 204; the example opens on p. 183, PDF
  p. 203) — riehl:5.1:example4.  Her §5.3 opening construction,
  the case R = ℤ (riehl:5.3:construction-ab-monadic), is
@@ -37,7 +37,7 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/monadic+functor
 
  WHAT THE BOOKS SAY, read from the page image and the PDF.  Mac Lane:
- "For any ring R with identity, the forgetful functor G: R-Mod→Set
+ “For any ring R with identity, the forgetful functor G: R-Mod→Set
  … has a left adjoint and so defines a monad ⟨T_R, η, μ⟩ in Set.
  (a) Prove that this monad may be described as follows: For each set
  X, T_R X is the set of all those functions f: X → R with only a
@@ -50,13 +50,13 @@ Generalizable All Variables.
  ⟨T_R, η, μ⟩ is a monad.  (c) Show that the ⟨T_R, η, μ⟩-algebras are
  the usual R-modules, described not via addition and scalar multiple,
  but via all operations of linear combination (The structure map h
- assigns to each f the "linear combination with coefficients f_x for
- each x ∈ X".)"  Riehl: R[A] is "the set of finite formal R-linear
+ assigns to each f the ”linear combination with coefficients f_x for
+ each x ∈ X“.)”  Riehl: R[A] is “the set of finite formal R-linear
  combinations of elements of A.  Formally, … a finitely supported
- function χ : A → R"; η_A sends a to "the function χ_a : A → R that
- sends a to the multiplicative unit and every other element to zero";
- μ_A is "defined by distributing the coefficients and consolidating
- terms in a formal sum of formal sums".
+ function χ : A → R”; η_A sends a to “the function χ_a : A → R that
+ sends a to the multiplicative unit and every other element to zero”;
+ μ_A is “defined by distributing the coefficients and consolidating
+ terms in a formal sum of formal sums”.
 
  THE MONAD.  The free module and its adjunction are
  Instance/Mod/Free.v's (PR #1147), the shared route: no second free
@@ -78,7 +78,7 @@ Generalizable All Variables.
  one, Free.v's [fv_normal_form]): T_R u relabels each pair
  ([TR_map_lc]), η x ≈ 1·⟨x⟩ ([TR_ret_lc]), and μ scales each inner
  combination by its coefficient and concatenates ([TR_join_lc_flat]):
- Riehl's "distributing the coefficients".  (ii) Under a decider for
+ Riehl's “distributing the coefficients”.  (ii) Under a decider for
  X's ≈, the coefficient f_y is [fv_coef]: the linear extension, into R
  as a module over itself, of Free.v's indicator [fv_probe_at] (no new
  indicator).  Mac Lane's formulas: (η x)_x = 1 and (η x)_{x′} = 0 for
@@ -123,7 +123,7 @@ Generalizable All Variables.
 
  PART (c).  [TRAlg] is Set^{T_R}; [RMod_K] is Monad/Comparison.v's
  [EM_Comparison] of the hom-set form: K M = ⟨M, U ε_M⟩, its structure map
- the fold of the identity, i.e. "the linear combination" ([RMod_K_alg_fun],
+ the fold of the identity, i.e. “the linear combination” ([RMod_K_alg_fun],
  [RMod_K_alg_lc]), with ⟨x⟩ ↦ x, 0 ↦ 0, ⟨x⟩ + ⟨y⟩ ↦ x + y, −⟨x⟩ ↦ −x and
  r·⟨x⟩ ↦ r·x ([RMod_K_alg_*]) and K f = f ([RMod_K_map]), all at [eq_refl].
  K commutes with the right adjoints and with the left ones, each up to a
@@ -171,18 +171,18 @@ Generalizable All Variables.
  her free abelian group monad Instance/Ab/FreeMonad.v.
 
  THE ISSUE'S PREMISES, dated.  Issue #472 was filed on 2026-07-23.  Its
- "no R-Mod category" was accurate when filed and has been stale since
- PR #1117 (merged 2026-08-15, Instance/Mod.v, closing #258); "no ring
- category" since PRs #1090 and #1091 (both merged 2026-08-14,
- Theory/Algebra/Rig.v's rings and Instance/Rng.v).  "No free-R-module
- monad" held until #472, the free module and its adjunction dating from
- PR #1147 (merged 2026-08-18); "no finitely-supported-function functor"
+ “no R-Mod category” was accurate when filed and has been stale since
+ PR #1117 (merged 2026-08-15, Instance/Mod.v, closing #258); “no ring
+ category” since PRs #1090 and #1091 (both merged 2026-08-14,
+ Theory/Algebra/Rig.v's rings and Instance/Rng.v).  “No free-R-module
+ monad” held until #472, the free module and its adjunction dating from
+ PR #1147 (merged 2026-08-18); “no finitely-supported-function functor”
  still holds, FinSupp being a setoid for each X and not a functor.  What
  it says of Instance/CMon.v and Structure/Abelian.v is still accurate.
  Its dependencies #258 and #360 were closed on 2026-08-15 and
  2026-08-31.  Monad/Instance/ does not exist; the files are this one,
- its satellite and Instance/Ab/FreeMonad.v.  Its "CLAUDE.md Key Files
- index" was accurate when filed and has been stale since PR #1284
+ its satellite and Instance/Ab/FreeMonad.v.  Its “CLAUDE.md Key Files
+ index” was accurate when filed and has been stale since PR #1284
  (merged 2026-09-09), which moved the index to docs/INDEX.md.
 
  STRENGTHS.  Every [Example] holds at [eq_refl], and
@@ -1135,7 +1135,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* [(T_R t) f]_y is the linear functional "f evaluated on the indicator of the fibre t⁻¹(y)" ... / [(T_R t) f] _y 是作用在纤维 t⁻¹(y) 的指示函数上的线性泛函 f *)
+(* [(T_R t) f]_y is the linear functional “f evaluated on the indicator of the fibre t⁻¹(y)” ... / [(T_R t) f] _y 是作用在纤维 t⁻¹(y) 的指示函数上的线性泛函 f *)
 Lemma fv_coef_map@{+} {X Y : Sets@{c so}} (Ydec : decider_on Y)
   (t : X ~{Sets@{c so}}~> Y) (f : @FVTerm R X) (y : carrier Y) :
   fv_coef Ydec y (fmap[FreeModF R] t f)

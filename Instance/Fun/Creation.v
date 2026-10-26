@@ -26,7 +26,7 @@ Generalizable All Variables.
  (riehl:3.4:prop9): the evaluation functors jointly create limits — the
  analogue for [P, X] of her Exercise 3.4.v, which is about the projections
  of a PRODUCT of categories and is Construction/Product/Limit.v's
- [PiCat_JointlyCreateLimit]; for the "strictly" of her statement see NOT
+ [PiCat_JointlyCreateLimit]; for the “strictly” of her statement see NOT
  DELIVERED.
  nLab: https://ncatlab.org/nlab/show/created+limit
  https://ncatlab.org/nlab/show/discrete+category
@@ -46,7 +46,7 @@ Generalizable All Variables.
  components, and every lift IS #425's pointwise cone.
 
  STALE PREMISES, RE-MEASURED.
- - "The creation vocabulary is itself absent": false since #406.
+ - “The creation vocabulary is itself absent”: false since #406.
  Structure/Limit/Creation.v has [CreatesLimit] (with its fields
  [creates_lift], [creates_lift_over] and [creates_reflect], and with
  Mac Lane's limiting clause [creates_limiting] and uniqueness
@@ -59,32 +59,32 @@ Generalizable All Variables.
  [creates_limit_lift], [CreatesAllLimits], [self_lift] or
  [JointlyCreateLimit] — the last is recorded in Construction/Product/
  Limit.v's bullet instead.
- - "No discrete subcategory on the objects of a category and no
- inclusion functor": TRUE as stated ('discrete subcategory' has 0 hits
+ - “No discrete subcategory on the objects of a category and no
+ inclusion functor”: TRUE as stated ('discrete subcategory' has 0 hits
  in the tree's [.v] files; 'discrete inclusion' 2, both forward
  references in Instance/Fun/Limit.v), but the ingredient is richer than the issue
  says: Structure/Limit/Comparison.v has the ANNOTATED
  discrete-diagram functor [DiscreteCat_Functor'@{o h p uo uh up +}],
  and Instance/Fun/Discrete.v has [Fun_Discrete_PiCat : [DiscreteCat
- A, B] ≅[Cat] PiCat (fun _ => B)], the "C^{ob A} ≅ ∏_{ob A} C" of the
+ A, B] ≅[Cat] PiCat (fun _ => B)], the “C^{ob A} ≅ ∏_{ob A} C” of the
  Riehl note.  RECORDED CORRECTION: an earlier revision continued
- "That bridge is Set-PINNED in the target (it uses
+ “That bridge is Set-PINNED in the target (it uses
  Instance/Discrete.v's unannotated [DiscreteCat_Functor]; at a
- general X the application is refused with "Cannot enforce
- Set = …"), so Riehl's route through Construction/Product/
- Limit.v's [PiCat_JointlyCreateLimit] is NOT usable here".
+ general X the application is refused with ”Cannot enforce
+ Set = …“), so Riehl's route through Construction/Product/
+ Limit.v's [PiCat_JointlyCreateLimit] is NOT usable here”.
  The donor was annotated in place at Instance/Discrete.v in the
- PR "algebraic carriers are sets" (2026-09-17), so that [Set] pin
+ PR “algebraic carriers are sets” (2026-09-17), so that [Set] pin
  no longer exists and the quoted refusal no longer occurs.
  Whether Riehl's route thereby becomes usable has NOT been
  re-measured; the reflection is proved directly here either way,
  and that direct proof is unaffected.
- - "Theory/Kan/Extension.v ([Induced])": the line cited is a comment,
+ - “Theory/Kan/Extension.v ([Induced])”: the line cited is a comment,
  the definition being a few lines below it; that no limit property
  of it existed is true
  (Functor/Construction/Postcompose.v says so in terms).
- - The Riehl note's "no evaluation functor out of a functor category at
- all" and "ls Instance/Fun/ contains exactly one file" are false:
+ - The Riehl note's “no evaluation functor out of a functor category at
+ all” and “ls Instance/Fun/ contains exactly one file” are false:
  #424's [Eval] (Instance/Fun/Eval.v) and Adjunction/Diagonal/
  Connected.v's [EvalAt] exist; fourteen files besides this one.
 
@@ -94,12 +94,12 @@ Generalizable All Variables.
  DiscreteCat (obj[P])] at P's own object and hom levels; [DiscInc :
  ObjCat ⟶ P] through [DiscreteCat_Functor']
  (RECORDED CORRECTION: an earlier revision explained that choice
- by "Instance/Discrete.v's unannotated [DiscreteCat_Functor]
+ by “Instance/Discrete.v's unannotated [DiscreteCat_Functor]
  instantiates [DiscreteCat@{u Set Set}] and would pin P's hom and
  proof levels to [Set] — Structure/Limit/Comparison.v's note above
- its own annotated copy says so — and is left as it is"; since
- the PR "algebraic
- carriers are sets" (2026-09-17) [DiscreteCat_Functor] is itself
+ its own annotated copy says so — and is left as it is”; since
+ the PR “algebraic
+ carriers are sets” (2026-09-17) [DiscreteCat_Functor] is itself
  annotated and [DiscreteCat_Functor'] is a transparent ALIAS of
  it, so the two are interchangeable here and the primed name is
  retained only to avoid a rename); [Res : [P, X] ⟶ [ObjCat, X] :=
@@ -164,12 +164,12 @@ Generalizable All Variables.
  shape) — and [Res_continuous : PreservesLimitCone D Res] through
  [creates_limits_continuous] (Mac Lane §V.4 Theorem 2's SECOND half,
  Structure/Limit/Creation.v's own heading; an earlier revision
- said "first").
+ said “first”).
  (6) STRICTNESS.  [strict_self : StrictLift D Res (FCone Res M) :=
  self_lift M]: every cone upstairs TAUTOLOGICALLY strictly lifts its
  own image (the donor's own word; it holds for every functor and
  says nothing specific to [Res]).
- Riehl's "strictly creates" (Definition 3.4.7; [StrictlyCreatesLimit],
+ Riehl's “strictly creates” (Definition 3.4.7; [StrictlyCreatesLimit],
  whose [slift_eq] is an [eq] of apexes) would need the canonical
  lift's image EQUAL to an arbitrary given cone's apex, an [eq]
  between functor records [DiscreteCat (obj P) ⟶ X] (probe N3 pins
@@ -191,8 +191,8 @@ Generalizable All Variables.
  natural transformation quantifies over P's objects) sits above jo,
  and [Functor] identifies source and target hom universes, so a
  functor [P, X] ⟶ X forces jo ≤ ch = jh.  Probe N5 refuses the bare
- type [[Pw, Xw] ⟶ Xw] with "Cannot enforce smallh = … because smallh <
- bigo"; N6 refuses [@Eval Pw Xw]; N4 refuses #425's
+ type [[Pw, Xw] ⟶ Xw] with “Cannot enforce smallh = … because smallh <
+ bigo”; N6 refuses [@Eval Pw Xw]; N4 refuses #425's
  [Functor_Category_Complete Pw Xw].  [Res] is more universe-general
  than the theorem it serves.
  - The 20 section constants with J in context (PointwiseReflect,
@@ -237,7 +237,7 @@ Generalizable All Variables.
  COUNTS AND CONVENTIONS.
  - 34 [.glob] declaration heads (33 [def], 1 [prf]) plus 9 [Program]
  obligations the [.glob] cannot see ([ptw_apex_iso] 6, [res_comp_cone]
- 1, [res_ump_nat] 2), all "Closed under the global context", zero
+ 1, [res_ump_nat] 2), all “Closed under the global context”, zero
  [Axioms:] lines; the gate carries the 34 heads, fully qualified.
  - Six [Defined] ([ptw_cone_iso], [ev_lift_over],
  [Fun_Eval_JointlyCreateLimit], [Res_preserves], [res_coneiso_at],
@@ -268,7 +268,7 @@ Generalizable All Variables.
  [DiscreteCat_Functor'], [Eval], [strict_self], [self_lift],
  [plim_obj], [Complete]; module paths excluded), every first break on
  a positive line.  [make todo] grows by those 7 lines only (2226 →
- 2233), so the issue's "adds no new hits" box is not met as written;
+ 2233), so the issue's “adds no new hits” box is not met as written;
  disclosed.
  - [(Eval p)] is parenthesised or applied inside a larger term
  throughout (Instance/Fun/Eval.v's header: bare at a definition-body
@@ -297,8 +297,8 @@ Generalizable All Variables.
  Mac Lane §V.3 定理 2（书第 116 页；maclane:V.3:thm2）：与离散范畴 |P| 在 P 对象上的包含的预复合，[P, X] ⟶ [|P|, X]，会产生极限。Riehl §3.4 命题 3.4.9（riehl:3.4:prop9）：评价函子联合地产生极限——这是 [P, X] 对应她练习 3.4.v 的类比，该练习关于范畴乘积的投影，并且是 Construction/Product/Limit.v 的 [PiCat_JointlyCreateLimit]；关于她表述的“严格”性，请参见 NOT DELIVERED。nLab: https://ncatlab.org/nlab/show/created+limit https://ncatlab.org/nlab/show/discrete+category背景。定理 1（Instance/Fun/Limit.v，#425）计算了一个图 D : J ⟶ [P, X] 的逐点极限，其基于已求值图 Eval p ◯ D 的极限。定理 2 将其重新表述为创建性质：将函子 P ⟶ X 限制在其对象组成的离散范畴 |P| 上，会忽略箭头部分并保留对象索引的族，当且仅当函子图的族图存在极限时，函子图也存在极限——逐点极限会组装成唯一的提升，并且一个在上层的圆锥，其像为极限，则该圆锥也是极限。Riehl 从评价函子族读出相同的内容：它们联合地创建极限。这两个陈述都是定理1的变换，而不是平行证明（工作项3）：反射子句是#425的[PointwiseIsLimitCone]沿着具有恒等分量的锥同构的[limitcone_transport]，并且每个提升都是#425的逐点锥。陈旧的前提，重新测量。- “创造的词汇本身缺失”：自 #406 起为假。Structure/Limit/Creation.v 包含 [CreatesLimit]（及其字段 [creates_lift]、[creates_lift_over] 和 [creates_reflect]，以及 Mac Lane 的限制条款 [creates_limiting] 和派生的唯一性 [creates_lift_unique]），[creates_limit_lift]，[CreatesAllLimits]，[creates_limits_Complete]，[creates_limits_continuous]，Riehl 的 [StrictLift] / [StrictlyCreatesLimit] 及 [self_lift] 和 [JointlyCreateLimit]（她的练习 3.4.v）。Structure/Limit.v 的 INDEX 项目记录了其中七项，而不是 [creates_limit_lift]、[CreatesAllLimits]、[self_lift] 或 [JointlyCreateLimit]——最后一项记录在 Construction/Product/Limit.v 的项目中。- “一个范畴的对象上没有离散子范畴，也没有包含函子”：如所述为真（‘discrete subcategory’ 在树的 [.v] 文件中有 0 个命中；‘discrete inclusion’ 有 2 个，都是 Instance/Fun/Limit.v 中的前向引用），但组成部分比问题所述的要丰富：Structure/Limit/Comparison.v 中有标注的离散图函子 [DiscreteCat_Functor'@{o h p uo uh up +}]，Instance/Fun/Discrete.v 中有 [Fun_Discrete_PiCat : [DiscreteCat A, B] ≅ [Cat] PiCat (fun _ => B)]，即 Riehl 笔记中的 “C^{ob A} ≅ ∏_{ob A} C”.记录的更正：早期修订继续：“那座桥在目标中已固定（它使用 Instance/Discrete.v 中未标注的 [DiscreteCat_Functor]；在一般 X 上应用会被拒绝，提示‘无法执行 Set = …’），因此 Riehl 通过 Construction/Product/Limit.v 的 [PiCat_JointlyCreateLimit] 的路径在这里不可用。”在 PR “代数承载是集合”（2026-09-17）中，捐赠者已在 Instance/Discrete.v 中替换为带标注版本，因此该 [Set] 引脚不再存在，也不再发生引述的拒绝。不论 Riehl 的路径是否因此变得可用，都尚未重新测量；在这里反射定理无论如何都是直接证明的，并且该直接证明不受影响。- “Theory/Kan/Extension.v ([Induced])”：引用的这一行是注释，定义在它的下面几行；说它不存在限制性质是正确的（Functor/Construction/Postcompose.v 术语中是这么说的）。- Riehl 笔记中“没有从函子范畴到外部的评估函子”和“ls Instance/Fun/ 正好包含一个文件”是错误的：#424 的 [Eval]（Instance/Fun/Eval.v）和 Adjunction/Diagonal/Connected.v 的 [EvalAt] 存在；除了这个之外还有十四个文件。交付的内容是什么（34 个命名常量加上 9 个 [Program] 义务，每一个都在全局上下文中闭合）。(1) 包含和限制。[ObjCat : Category@{jo jh jh} :=
  DiscreteCat (obj [P] )] 在 P 自身的对象和同态层面；[DiscInc :
  ObjCat ⟶ P] 通过 [DiscreteCat_Functor'] 
- （已记录更正：早期版本解释了该选择是因为 "Instance/Discrete.v 未注释的 [DiscreteCat_Functor] 
- 实例化了 [DiscreteCat@{u Set Set}]，并会将 P 的同态和证明层级固定到 [Set] — Structure/Limit/Comparison.v 上方的已注释副本也说明了这一点 — 并保持不变"；自从 PR “代数承载是集合”（2026-09-17） 以来 [DiscreteCat_Functor] 本身被注释，[DiscreteCat_Functor'] 是它的透明别名，因此这里两者可互换，带撇号的名称仅保留下来以避免重命名）；[Res : [P, X] ⟶ [ObjCat, X] :=
+ （已记录更正：早期版本解释了该选择是因为 “Instance/Discrete.v 未注释的 [DiscreteCat_Functor] 
+ 实例化了 [DiscreteCat@{u Set Set}]，并会将 P 的同态和证明层级固定到 [Set] — Structure/Limit/Comparison.v 上方的已注释副本也说明了这一点 — 并保持不变”；自从 PR “代数承载是集合”（2026-09-17） 以来 [DiscreteCat_Functor] 本身被注释，[DiscreteCat_Functor'] 是它的透明别名，因此这里两者可互换，带撇号的名称仅保留下来以避免重命名）；[Res : [P, X] ⟶ [ObjCat, X] :=
  诱导的 DiscInc], 定理的 X^i。[eq_refl] 的回读：
  [res_obj]、[res_obj_at]、[res_map] 和 [eval_res_obj] /
  [eval_res_map] — 在限制后进行评估就是在两个函子字段中进行评估。(2) 反思（新内容；#425 仅有相反的 [Eval_PreservesLimitCone]，它取 [L]）。对于 [M : Cone D]，具有每个 [FCone (Eval p) M] 的极限：[ptw_of_cone]（点态极限 M 的评估提供的），[ptw_apex_readback] 和 [ptw_leg_readback]（组装的点态锥的顶点为 M，M 的各条腿在对象上精确匹配），[ptw_map_is_fmap]（相邻点态极限之间的中介是 M 自身的箭头作用，通过 [plim_map_unique]），[ptw_apex_iso]（[P, X] 中的一个同构，其组件是恒等映射）、[ptw_cone_iso : ConeIso M (PointwiseLimitCone D _)]，以及 [Fun_pointwise_reflect : IsLimitCone M] := [limitcone_transport] 沿着它的 [PointwiseIsLimitCone]。（3）由评估的联合创建（Riehl 练习 3.4.v 的类似物）。[ev_family p := Eval p]，[ev_lift]（#425 的点态圆锥由给定的极限圆锥族组装而成），[ev_lift_apex] 和 [ev_lift_leg] 在 [eq_refl]，[ev_lift_over]（一个带有 [iso_id] 的 [ConeIso]），以及 [Fun_Eval_JointlyCreateLimit : JointlyCreateLimit Dev_family]。在 [Eval p] 下提升的像是在顶点和边上与给定圆锥完全一致；圆锥的 RECORDS 不会转换，其一致性字段为重建的证明（探针 N1）。（4）沿限制创生（定理 2），在假设 [L : ∀ p, Limit (Eval p ◯ D)] 下。[res_comp_cone]（在 p 处评估的 [Res ◯ D] 的锥），[res_ump_nat]（下层锥的中介，按分量为按点中介；离散形状上的自然性由 obligation 策略处理），[Res_preserves : IsLimitCone (FCone Res M)] 对于具有极限评估的 M，[res_coneiso_at]（下层锥的同构在每个对象上限制为一个同构），[Res_CreatesLimit L: CreatesLimit D Res] — [creates_lift] 点状锥，[creates_lift_over] 由 [limitcone_iso]，[creates_reflect] 由 [Fun_pointwise_reflect] 在沿 [res_coneiso_at] 传输后 — 它在问题名称下的别名 [discrete_inclusion_creates_limits]（带注释；参见 UNIVERSES），[res_limit L : Limit (Res ◯ D)]，以及 [creation_apex] / [creation_leg] 在 [eq_refl]: 极限 [creates_limit_lift] 推导 apex 和 legs 中 IS #425 的 [Functor_Category_pointwise_limit]。为什么假设成立。[creates_lift] 必须将楼下的一个限制锥变为楼上的锥，即将 [|P|, X] 中限制锥的组成部分作为 X 中的限制锥来读取。Mac Lane 默默地这样做（在一个类别的积中计算极限是在每个因子中进行的）；构造性证明在一个索引——[fun q => if q = p then c else N q]——上修补顶点族，因此需要 [obj P] 上可判定的相等性。树之前做了相同的调用：Construction/Product/Limit.v 提供了 BINARY 积（索引 [bool]）的 [Fst_PreservesLimitCone] / [Snd_PreservesLimitCone]，并且对于通用索引类型的 [PiCat]，只提供 [pi_reflect] 和 [PiCat_JointlyCreateLimit]——没有单投影保持——#425 的 [Eval_PreservesLimitCone] 出于相同原因采用 [L]。一个无假设的 [CreatesLimit D Res] 关于 Construction/Quotient.v 的 [ObjDecEq P] 是后续内容，这里没有写出。(5) 推论。[Res_CreatesAllLimits (HX : Complete X)], [Res_Complete : Complete [P, X]] — [P, X] 的完备性再次出现，现在作为 Structure/Limit/Creation.v 的一般 [creates_limits_Complete]（创建加上 [|P|, X] 的完备性，后者是 #425 的 [Functor_Category_Complete] 在离散形状下）— 以及 [Res_continuous : PreservesLimitCone D Res] 通过 [creates_limits_continuous]（Mac Lane §V.4 定理 2 的后半部分，Structure/Limit/Creation.v 自身的标题；早先的修订版写的是“前半部分”）。(6) 严格性。[strict_self : StrictLift D Res (FCone Res M) := self_lift M]：每一个楼上圆锥在演绎上严格提升它自己的图像（捐赠者自己的词；对每一个函子都成立，并且不针对 [Res] 说任何特定内容）。Riehl 的“严格创造”（定义 3.4.7；[StrictlyCreatesLimit]，其 [slift_eq] 是顶点的 [eq]）需要规范提升的图像等于任意给定圆锥的顶点，一个 [eq] 在函子记录 [DiscreteCat (obj P) ⟶ X] 之间（探针 N3 固定了拒绝；N2 固定了受限函子甚至不是其自身对象映射上的离散函子——箭头域不同）。宇宙（由 [About] 在 [Set Printing Universes] 下的所有 34 个常量中测量）。- [Res@{jo jh co ch u u0 u1}] 精确地包含一个方程，[jh = ch]（[Fun] 的），并且保留 P 的 OBJECT 级别自由：在一个其对象严格位于其 homs 之上的形状中（[Constraint smallh < bigo] 在探针的 Wide 部分）[ObjCat Pw]、[Res Pw Xw] 和类型 [[Pw, Xw] ⟶ [Pw, Xw]] 都被接受。有七个常量共享这种自由：[ObjCat]、[DiscInc]、[Res]、[res_obj]、[res_obj_at]、[res_map]、[strict_self]。- 其他 27 个常量——每一个通过其定义达到 [Eval] 的常量；其中 21 个在其陈述中命名它——继承 [jo <= jh]（P 的对象 ≤ P 的 homs；在它们的块中为 [u1 <= u2] 或 [u <= u0]）。第一个载体是类型 [[P, X] ⟶ X] 本身，
@@ -325,8 +325,8 @@ Definition ObjCat : Category@{jo jh jh} := DiscreteCat@{jo jh jh} (obj[P]).
 (*
  The inclusion |P| ⟶ P, through Structure/Limit/Comparison.v's
  discrete-diagram functor.  An earlier revision of this comment explained
- the choice by "Instance/Discrete.v's unannotated one pins the target's hom
- and proof levels to [Set]"; since the PR "algebraic carriers are sets"
+ the choice by “Instance/Discrete.v's unannotated one pins the target's hom
+ and proof levels to [Set]”; since the PR “algebraic carriers are sets”
  (2026-09-17) that donor is annotated and [DiscreteCat_Functor'] is a
  transparent alias of it, so either name works here. 
 
@@ -653,7 +653,7 @@ Context {P X : Category}.
 (*
  The object action of the restriction is the identity ([res_obj_at]
  above). Every cone upstairs strictly lifts its own image (Structure/Limit/
- Creation.v's [self_lift]); Riehl's "strictly creates" would need every
+ Creation.v's [self_lift]); Riehl's “strictly creates” would need every
  cone DOWNSTAIRS to be such an image on the nose, an [eq] between functor
  records that does not hold (probe). 
 

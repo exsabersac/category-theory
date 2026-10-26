@@ -29,8 +29,8 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/group+object
  nLab:      https://ncatlab.org/nlab/show/functor+category
  Wikipedia: https://en.wikipedia.org/wiki/Group_object
- Book:      Mac Lane, CWM 2nd ed., Section III.6 ("Groups in
- Categories"), Exercise 3, p. 76
+ Book:      Mac Lane, CWM 2nd ed., Section III.6 (“Groups in
+ Categories”), Exercise 3, p. 76
 
  Mac Lane's exercise: a functor [T : B ⟶ Sets] is a group object in
  the functor category [[B, Sets]] exactly when every value [T b] is an
@@ -43,8 +43,8 @@ Generalizable All Variables.
  NATURALITY of the structure maps IS the statement that each [T f] is
  a homomorphism.
 
- A PRIOR-ART CORRECTION, WITH ITS DATE.  The issue states that "no
- monoid or group object is ever instantiated at a functor category".
+ A PRIOR-ART CORRECTION, WITH ITS DATE.  The issue states that “no
+ monoid or group object is ever instantiated at a functor category”.
  READ THAT IN TWO HALVES, because only one of them is newly false.
  THE MONOID HALF WAS NEVER TRUE: Monad/Monoid.v has carried
  [Monoid_Monad : @MonoidObject (Endofunctors C) Compose_Monoidal M
@@ -172,7 +172,7 @@ Generalizable All Variables.
  ([Und], [Z2_triv], [Und_GroupObject]) bind no [B] at all and are
  outside that description.
 
- RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17).
+ RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17).
  [PointwiseMonoid]'s and [PointwiseGroup]'s own readbacks and their
  eight-entry blocks are UNCHANGED -- neither record carries a
  [PropEquiv] and neither gained an equation.  What changed is the
@@ -228,9 +228,9 @@ Generalizable All Variables.
  115/115 constants are Closed under the global context: [Print Module]
  lists 113, and the two unlisted names are [Build_PointwiseMonoid] and
  [Build_PointwiseGroup].  The file declares no [Axiom] and no
- [Parameter].  An earlier revision of this paragraph said "81" and
- gave as its reason that the [Program] obligations "leave no
- separately named constants behind"; BOTH were wrong -- there are 34
+ [Parameter].  An earlier revision of this paragraph said “81” and
+ gave as its reason that the [Program] obligations “leave no
+ separately named constants behind”; BOTH were wrong -- there are 34
  such obligations and they are ordinary constants.  They are invisible
  to [Print Assumptions] under a BARE name (which is what produced the
  81) and resolve only fully qualified, e.g.
@@ -701,7 +701,7 @@ Example pointwise_MonObject_carrier (P : PointwiseMonoid T) (b : B) :
   mon_setoid (pointwise_MonObject P b) = T b := eq_refl.
 
 (*
- RECORDED STRENGTH CHANGE.  Since the PR "algebraic carriers are sets"
+ RECORDED STRENGTH CHANGE.  Since the PR “algebraic carriers are sets”
  (2026-09-17) an [Instance/Grp.v] group carries [grp_prop], so turning a
  PRESHEAF of pointwise groups into a functor into [Grp] asks that the
  presheaf take its values among the propositional setoids.  [PT] is that
@@ -873,7 +873,7 @@ Check Tu.
 Check (PointwiseGroup Tu).
 
 (*
- THE DISCRIMINATING CONTROL for the "two independent causes" claim:
+ THE DISCRIMINATING CONTROL for the “two independent causes” claim:
  a functor INTO [Grp] is formable at these separated levels, so the
  identification carried by [PointwiseGrpFunctor] and its siblings --
  which mention no functor category -- cannot be [Fun]'s doing.  An

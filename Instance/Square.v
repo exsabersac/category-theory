@@ -572,7 +572,7 @@ Qed.
 
 (*
    * Every endomorphism is the identity: there are no nontrivial loops.
-   This is what makes "four of the nine arrows are identities" a
+   This is what makes “four of the nine arrows are identities” a
    statement about arrows and not merely about endpoint pairs. 
 
    --------
@@ -1066,7 +1066,7 @@ Proof.
 Qed.
 
 (*
-   * The other half of "not a generator", from the presentation rather
+   * The other half of “not a generator”, from the presentation rather
    than from the grading: the quiver has no edge A → D at all. 
 
    --------

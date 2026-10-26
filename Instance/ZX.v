@@ -12,9 +12,9 @@ Generalizable All Variables.
 (*
    * * The ZX-calculus as a hypergraph PROP
 
-   Reference: Coecke–Duncan, "Interacting Quantum Observables: Categorical
-   Algebra and Diagrammatics" (New J. Phys. 13:043016, 2011); van de Wetering,
-   "ZX-calculus for the working quantum computer scientist" (arXiv:2012.13966).
+   Reference: Coecke–Duncan, “Interacting Quantum Observables: Categorical
+   Algebra and Diagrammatics” (New J. Phys. 13:043016, 2011); van de Wetering,
+   “ZX-calculus for the working quantum computer scientist” (arXiv:2012.13966).
 
    The ZX-calculus is a graphical language for reasoning about quantum
    computations.  It is presented as the strict symmetric monoidal category
@@ -87,7 +87,7 @@ Generalizable All Variables.
    Consequently [zx_eq] is a SOUND but INCOMPLETE axiomatisation of
    the standard ZX-calculus: every [zx_eq]-equation holds of the
    represented linear map, but not every such equation is derivable.
-   Calling this file "the ZX-calculus" without these qualifications
+   Calling this file “the ZX-calculus” without these qualifications
    overpromises; it is best understood as a strict-symmetric-monoidal
    base layer over which the full ZX equational theory can be built
    in successor files. 
@@ -132,20 +132,20 @@ Generalizable All Variables.
  Where the ZX-calculus comes from, and what it is for
 
  Wikipedia: https://en.wikipedia.org/wiki/ZX-calculus
- Paper:     Abramsky, Coecke, "A categorical semantics of quantum
- protocols", LICS 2004
- Paper:     Coecke, Duncan, "Interacting Quantum Observables",
+ Paper:     Abramsky, Coecke, “A categorical semantics of quantum
+ protocols”, LICS 2004
+ Paper:     Coecke, Duncan, “Interacting Quantum Observables”,
  ICALP 2008 (LNCS 5126, pp. 298-310); journal version
- "Interacting Quantum Observables: Categorical Algebra
- and Diagrammatics", New J. Phys. 13:043016, 2011
- Survey:    van de Wetering, "ZX-calculus for the working quantum
- computer scientist", arXiv:2012.13966, 2020
+ “Interacting Quantum Observables: Categorical Algebra
+ and Diagrammatics”, New J. Phys. 13:043016, 2011
+ Survey:    van de Wetering, “ZX-calculus for the working quantum
+ computer scientist”, arXiv:2012.13966, 2020
 
  The ZX-calculus descends from categorical quantum mechanics, the
  programme that recast finite-dimensional quantum theory inside
  dagger-compact closed categories and traded matrix bookkeeping for
- string diagrams (Abramsky, Coecke, "A categorical semantics of
- quantum protocols", LICS 2004).  That ambient setting sits in the
+ string diagrams (Abramsky, Coecke, “A categorical semantics of
+ quantum protocols”, LICS 2004).  That ambient setting sits in the
  library at Structure/Monoidal/CompactClosed.v, whose header cites the
  same paper and names the dagger-compact category the calculus
  inhabits.  Against it Coecke and Duncan singled out a complementary,
@@ -161,8 +161,8 @@ Generalizable All Variables.
  map — a Z-spider [zx_z] carrying a [Phase] α to the map on the
  all-zeros and all-ones basis strings that weights the latter by
  e^{iα}.  Because the spiders form special commutative Frobenius
- algebras, a spider depends only on its leg count, the "only
- connectivity matters" principle that makes rewriting mechanisable (van
+ algebras, a spider depends only on its leg count, the “only
+ connectivity matters” principle that makes rewriting mechanisable (van
  de Wetering, 2020).  That algebra is the abstract counterpart at
  Theory/Algebra/SpecialCommutativeFrobenius.v and, phase-free, at
  Structure/Monoidal/Hypergraph/Spider.v, whose fusion theorem
@@ -172,17 +172,17 @@ Generalizable All Variables.
 
  Completeness accrued in stages rather than at once.  Backens
  established it for the stabiliser fragment, angles multiples of π/2
- (Backens, "The ZX-calculus is complete for stabilizer quantum
- mechanics", New J. Phys. 16:093021, 2014), the first such result.
+ (Backens, “The ZX-calculus is complete for stabilizer quantum
+ mechanics”, New J. Phys. 16:093021, 2014), the first such result.
  Jeandel, Perdrix and Vilmart then settled the Clifford+T fragment,
  angles multiples of π/4, by adding two axioms routed through the
- ZW-calculus (Jeandel, Perdrix, Vilmart, "A Complete Axiomatisation of
- the ZX-Calculus for Clifford+T Quantum Mechanics", LICS 2018).
+ ZW-calculus (Jeandel, Perdrix, Vilmart, “A Complete Axiomatisation of
+ the ZX-Calculus for Clifford+T Quantum Mechanics”, LICS 2018).
  Completeness for the universal fragment came the same year by two
- independent routes — the second JPV paper "Diagrammatic Reasoning
- beyond Clifford+T Quantum Mechanics" and Hadzihasanovic, Ng, Wang,
- "Two complete axiomatisations of pure-state qubit quantum
- computing" (both LICS 2018).  The book-length account is Coecke
+ independent routes — the second JPV paper “Diagrammatic Reasoning
+ beyond Clifford+T Quantum Mechanics” and Hadzihasanovic, Ng, Wang,
+ “Two complete axiomatisations of pure-state qubit quantum
+ computing” (both LICS 2018).  The book-length account is Coecke
  and Kissinger, Picturing Quantum Processes (Cambridge University
  Press, 2017).
 
@@ -190,10 +190,10 @@ Generalizable All Variables.
  optimisation: a circuit is compiled to a diagram, simplified by
  rewriting, and re-extracted more cheaply.  Kissinger and van de
  Wetering reduce T-count — the dominant cost of fault-tolerant
- computation — by "phase teleportation", matching or improving on prior
+ computation — by “phase teleportation”, matching or improving on prior
  methods across most benchmarks, by as much as half in the ancilla-free
  case, in the open-source PyZX library (Kissinger, van de Wetering,
- "Reducing T-count with the ZX-calculus", Phys. Rev. A 102:022406,
+ “Reducing T-count with the ZX-calculus”, Phys. Rev. A 102:022406,
  2020).  The same machinery describes measurement-based quantum
  computing and graph states (Duncan, Perdrix), models surface-code
  lattice surgery (de Beaudrap, Horsman, 2017), and beyond physics
@@ -216,7 +216,7 @@ Generalizable All Variables.
  维基百科:  https://en.wikipedia.org/wiki/ZX-calculus
  论文:     Abramsky, Coecke, 《量子协议的范畴语义》，LICS 2004
  论文:     Coecke, Duncan, 《相互作用的量子观测》，ICALP 2008 (LNCS 5126, 页 298-310); 期刊版《相互作用的量子观测：范畴代数与图示法》，New J. Phys. 13:043016, 2011
- 调查:     van de Wetering, 《面向实际量子计算科学家的ZX演算》，arXiv:2012.13966, 2020ZX演算源自范畴量子力学，这一方案将有限维量子理论重新构建在带有匕首结构的紧闭范畴中，并用弦图取代了矩阵记账（Abramsky, Coecke, "A categorical semantics of quantum protocols", LICS 2004）。这一基础环境位于库中的 Structure/Monoidal/CompactClosed.v 文件，其头部引用了同一篇论文，并命名了该演算所在的匕首紧闭范畴。基于此，Coecke 和 Duncan 单独挑出了一个互补且互不偏倚的观测对——绿色 Z 基和红色 X 基——并用图示法公理化了它们的相互作用；代表这些原语的点状结构分别是 [zx_z] 和 [zx_x]，以及用于交换它们的 Hadamard 变换 [zx_h]。它所解决的困难在于量子计算通常以电路的形式编写，而电路恒等式本质上是矩阵恒等式：不透明、依赖基底，并且在优化时难以搜索。相反，ZX 提供了一个基于图示的重写系统，每个图示表示一个线性映射——一个 Z-蜘蛛 [zx_z] 携带一个 [Phase] α 到映射，对全零和全一基态字符串进行映射，并将全一基态加权为 e^{iα}。由于这些蜘蛛组成了特殊的交换 Frobenius 代数，一个蜘蛛只依赖于其腿的数量，即“只关心连接”的原则，这使得重写能够机械化（van de Wetering, 2020）。那个代数是在 Theory/Algebra/SpecialCommutativeFrobenius.v 中的抽象对应物，并且在 Structure/Monoidal/Hypergraph/Spider.v 中是无相位的，其融合定理 [zx_eq_z_fusion] 和 [zx_eq_x_fusion] 在语法上互为镜像；Structure/Monoidal/Hypergraph/Tactics.v 的提示在 Structure/Monoidal/Hypergraph.v 的超图类上处理此类恒等式。完整性是分阶段而不是一次性实现的。Backens 为稳态器片段建立了它，角度为 π/2 的倍数（Backens，《ZX 演算对于稳态量子力学是完整的》，New J. Phys. 16:093021, 2014），这是第一个这样的结果。Jeandel、Perdrix 和 Vilmart 随后通过增加两个通过 ZW 演算引入的公理，解决了 Clifford+T 片段，角度为 π/4 的倍数（Jeandel, Perdrix, Vilmart，《ZX 演算在 Clifford+T 量子力学中的完整公理化》，LICS 2018）。同年，通过两条独立途径实现了普适片段的完整性——第二篇 JPV 论文《超越 Clifford+T 量子力学的图示推理》和 Hadzihasanovic, Ng, Wang，《纯态量子比特计算的两种完整公理化》（均为 LICS 2018）。成书篇幅的论述是 Coecke 和 Kissinger 的《描绘量子过程》（剑桥大学出版社，2017 年）。这些用途主要是计算方面的。其旗舰应用是电路优化：将电路编译成图表，通过重写进行简化，然后以更低的成本重新提取。Kissinger 和 van de Wetering 通过“相位传送”降低了 T 计数——容错计算的主要成本——在大多数基准测试中匹配或优于先前的方法，对于无辅助量子比特的情况，降幅可达一半，在开源的 PyZX 库中（Kissinger, van de Wetering, “Reducing T-count with the ZX-calculus”, Phys. Rev. A 102:022406, 2020）。相同的机制描述了基于测量的量子计算和图状态（Duncan, Perdrix），模型化了表面码格点手术（de Beaudrap, Horsman, 2017），在物理学之外，它是自然语言的DisCoCat组合语义的基础（Coecke, Sadrzadeh, Clark, 2010），同样记录在 Structure/Monoidal/CompactClosed.v 中。从形式上讲，这个微积分是基于 Construction/PROP.v 的  [PROP]  机械的一个自由 PROP：  [ZX]  归纳是它的语法，其指称是到线性映射的对称单体函子，而推理是通过重写  [zx_eq]  而不是通过矩阵计算进行的。其收益是程序转换——将图表规范化并重新提取出更便宜的电路——特殊 Frobenius 性质表明，蜘蛛仅取决于其腿的数量，从而提供了运行该搜索的带标签图（Kissinger, van de Wetering, 2020）。
+ 调查:     van de Wetering, 《面向实际量子计算科学家的ZX演算》，arXiv:2012.13966, 2020ZX演算源自范畴量子力学，这一方案将有限维量子理论重新构建在带有匕首结构的紧闭范畴中，并用弦图取代了矩阵记账（Abramsky, Coecke, “A categorical semantics of quantum protocols”, LICS 2004）。这一基础环境位于库中的 Structure/Monoidal/CompactClosed.v 文件，其头部引用了同一篇论文，并命名了该演算所在的匕首紧闭范畴。基于此，Coecke 和 Duncan 单独挑出了一个互补且互不偏倚的观测对——绿色 Z 基和红色 X 基——并用图示法公理化了它们的相互作用；代表这些原语的点状结构分别是 [zx_z] 和 [zx_x]，以及用于交换它们的 Hadamard 变换 [zx_h]。它所解决的困难在于量子计算通常以电路的形式编写，而电路恒等式本质上是矩阵恒等式：不透明、依赖基底，并且在优化时难以搜索。相反，ZX 提供了一个基于图示的重写系统，每个图示表示一个线性映射——一个 Z-蜘蛛 [zx_z] 携带一个 [Phase] α 到映射，对全零和全一基态字符串进行映射，并将全一基态加权为 e^{iα}。由于这些蜘蛛组成了特殊的交换 Frobenius 代数，一个蜘蛛只依赖于其腿的数量，即“只关心连接”的原则，这使得重写能够机械化（van de Wetering, 2020）。那个代数是在 Theory/Algebra/SpecialCommutativeFrobenius.v 中的抽象对应物，并且在 Structure/Monoidal/Hypergraph/Spider.v 中是无相位的，其融合定理 [zx_eq_z_fusion] 和 [zx_eq_x_fusion] 在语法上互为镜像；Structure/Monoidal/Hypergraph/Tactics.v 的提示在 Structure/Monoidal/Hypergraph.v 的超图类上处理此类恒等式。完整性是分阶段而不是一次性实现的。Backens 为稳态器片段建立了它，角度为 π/2 的倍数（Backens，《ZX 演算对于稳态量子力学是完整的》，New J. Phys. 16:093021, 2014），这是第一个这样的结果。Jeandel、Perdrix 和 Vilmart 随后通过增加两个通过 ZW 演算引入的公理，解决了 Clifford+T 片段，角度为 π/4 的倍数（Jeandel, Perdrix, Vilmart，《ZX 演算在 Clifford+T 量子力学中的完整公理化》，LICS 2018）。同年，通过两条独立途径实现了普适片段的完整性——第二篇 JPV 论文《超越 Clifford+T 量子力学的图示推理》和 Hadzihasanovic, Ng, Wang，《纯态量子比特计算的两种完整公理化》（均为 LICS 2018）。成书篇幅的论述是 Coecke 和 Kissinger 的《描绘量子过程》（剑桥大学出版社，2017 年）。这些用途主要是计算方面的。其旗舰应用是电路优化：将电路编译成图表，通过重写进行简化，然后以更低的成本重新提取。Kissinger 和 van de Wetering 通过“相位传送”降低了 T 计数——容错计算的主要成本——在大多数基准测试中匹配或优于先前的方法，对于无辅助量子比特的情况，降幅可达一半，在开源的 PyZX 库中（Kissinger, van de Wetering, “Reducing T-count with the ZX-calculus”, Phys. Rev. A 102:022406, 2020）。相同的机制描述了基于测量的量子计算和图状态（Duncan, Perdrix），模型化了表面码格点手术（de Beaudrap, Horsman, 2017），在物理学之外，它是自然语言的DisCoCat组合语义的基础（Coecke, Sadrzadeh, Clark, 2010），同样记录在 Structure/Monoidal/CompactClosed.v 中。从形式上讲，这个微积分是基于 Construction/PROP.v 的  [PROP]  机械的一个自由 PROP：  [ZX]  归纳是它的语法，其指称是到线性映射的对称单体函子，而推理是通过重写  [zx_eq]  而不是通过矩阵计算进行的。其收益是程序转换——将图表规范化并重新提取出更便宜的电路——特殊 Frobenius 性质表明，蜘蛛仅取决于其腿的数量，从而提供了运行该搜索的带标签图（Kissinger, van de Wetering, 2020）。
 *)
 
 (*
@@ -390,7 +390,7 @@ Inductive zx_eq : forall {m n}, ZX m n -> ZX m n -> Prop :=
    leg becomes an X-spider of the same arity and phase.  Stated only
    for the 1→1 case; the general [m → n] case is NOT derivable from
    the present rules (it needs general spider fusion, also out of
-   scope — see the header's "Out of scope" list). 
+   scope — see the header's “Out of scope” list). 
 
    --------
    * 颜色变化  [CC]：一个通过对每条腿施加Hadamard门而结合的Z-蜘蛛，会变成相同度数和相位的X-蜘蛛。仅针对1→1情况说明；一般的[m → n]情况不能从现有规则推导（它需要一般的蜘蛛融合，也不在讨论范围内——参见标题中的“超出范围”列表）。

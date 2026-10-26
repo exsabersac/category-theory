@@ -44,19 +44,19 @@ Generalizable All Variables.
  Issue #442's survey of the tree is false in SEVEN places, each checked
  here against a green build on 2026-09-12:
 
- 1. "The category of groups is not in-tree" — [Grp], Instance/Grp.v.
- 2. "neither the forgetful functor ... exists" — [Grp_Forget], same file.
- 3. "...nor its free object exists" — [FreeGrp], Instance/Grp/Free.v.
+ 1. “The category of groups is not in-tree” — [Grp], Instance/Grp.v.
+ 2. “neither the forgetful functor ... exists” — [Grp_Forget], same file.
+ 3. “...nor its free object exists” — [FreeGrp], Instance/Grp/Free.v.
  4. The adjunction the issue asks to produce — [free_group_adjunction],
  Instance/Grp/Free.v, delivered by #298.
  5. GAFT's first hypothesis — [Grp_Complete], Instance/Grp/Limit.v.
  6. GAFT's second — [Grp_Forget_continuous], Instance/Grp/Limit.v.
- 7. The Riehl §4.7 section's "NO concrete solution set is exhibited
+ 7. The Riehl §4.7 section's “NO concrete solution set is exhibited
  anywhere in the tree, so the whole GAFT development is currently
- uninhabited at its distinctive premise" — [Sets_Id_SolutionSet],
+ uninhabited at its distinctive premise” — [Sets_Id_SolutionSet],
  Adjunction/GAFT/Sets.v, hand-built with all four parameters
  written out and fed to GAFT.  That same application also
- refutes the "Current state" line that the only worked GAFT
+ refutes the “Current state” line that the only worked GAFT
  application is `Δ ⊣ (×)`.
 
  None of the seven is established here — each was already in tree when
@@ -71,11 +71,11 @@ Generalizable All Variables.
 
  ** THE SOLUTION SET IS NO LONGER CIRCULAR, AND THE OLD ONE IS KEPT
 
- RECORDED CORRECTION, PR "algebraic carriers are sets" (2026-09-17).
- This section used to be headed "THE SOLUTION SET USED HERE IS
- CIRCULAR, AND SAYING SO IS THE POINT" and read:
+ RECORDED CORRECTION, PR “algebraic carriers are sets” (2026-09-17).
+ This section used to be headed “THE SOLUTION SET USED HERE IS
+ CIRCULAR, AND SAYING SO IS THE POINT” and read:
 
- "GAFT's third hypothesis is a solution set for each set [X].  The
+ “GAFT's third hypothesis is a solution set for each set [X].  The
  one fed to it below, [Grp_Forget_solution_set_from_adjunction], is
  [solution_set_of_adjunction] applied to [free_group_adjunction] —
  the singleton family at the unit of THE VERY ADJUNCTION THE THEOREM
@@ -83,7 +83,7 @@ Generalizable All Variables.
  application of a genuine theorem, and it is worthless as an
  existence proof: strip [Instance/Grp/Free.v] and nothing here
  survives.  The same disclosure, for the same reason, is what
- Adjunction/GAFT/Sets.v's header makes about its own instance."
+ Adjunction/GAFT/Sets.v's header makes about its own instance.”
 
  Every sentence of that paragraph is STILL TRUE of
  [Grp_Forget_solution_set_from_adjunction] and of the application built
@@ -96,7 +96,7 @@ Generalizable All Variables.
  the answer and one not — and removing working code is John's call.
 
  WHAT THE NEW READING DOES AND DOES NOT ESCAPE, stated precisely,
- because "non-circular" is a claim and not a slogan.  What
+ because “non-circular” is a claim and not a slogan.  What
  [Grp_Forget_solution_set_prop] no longer uses is the ADJUNCTION: strip
  [free_group_adjunction], [free_group_universal] and [FreeGrp] from
  Instance/Grp/Free.v and the solution set still builds and GAFT still
@@ -132,7 +132,7 @@ Generalizable All Variables.
  Second, a universe artifact — WHICH HAS SINCE BEEN REPAIRED, so this
  half of the paragraph is now history.
 
- RECORDED CORRECTION, PR "algebraic carriers are sets" (2026-09-17).
+ RECORDED CORRECTION, PR “algebraic carriers are sets” (2026-09-17).
  What stood here was a prediction, and it held.  The prediction was that
  Mac Lane's literal index was refused only because of a universe-
  MINIMIZATION artifact of Instance/Discrete.v's then-unannotated
@@ -178,8 +178,8 @@ Generalizable All Variables.
  ** What is therefore delivered
 
  Five things, NONE of which is compromised by the circularity section
- above.  CORRECTION, PR "algebraic carriers are sets" (2026-09-17): an
- earlier revision read "of which only the first is compromised", and
+ above.  CORRECTION, PR “algebraic carriers are sets” (2026-09-17): an
+ earlier revision read “of which only the first is compromised”, and
  that was true while item 1 consumed the circular family.  It does not
  any more.
 
@@ -495,7 +495,7 @@ Defined.
  rather than buried in a term: the family is the singleton at the unit of
  the adjunction the theorem is being asked to produce.
 
- CORRECTION, PR "algebraic carriers are sets" (2026-09-17): it is no
+ CORRECTION, PR “algebraic carriers are sets” (2026-09-17): it is no
  longer what [free_group_via_GAFT] consumes.  It is kept because
  Test/ProbeGrpFreeAFT442.v's section A is a block of statements ABOUT it,
  because the naming convention it establishes is what makes the
@@ -505,7 +505,7 @@ Defined.
  --------
  循环放电，保留以便比较；约翰的一个移除候选项。它之所以这样命名，是为了让循环性在每个使用场所都可见，而不是隐藏在某个术语中：该族是在附加的单位上，被要求产生定理的单例。
 
- 更正，PR "代数载体是集合"（2026-09-17）：它不再是 [free_group_via_GAFT] 使用的对象。保留它是因为 Test/ProbeGrpFreeAFT442.v 的 A 部分是一段关于它的语句块，因为它确立的命名约定让循环性可读，并且因为移除可工作的代码是约翰的决定。
+ 更正，PR “代数载体是集合”（2026-09-17）：它不再是 [free_group_via_GAFT] 使用的对象。保留它是因为 Test/ProbeGrpFreeAFT442.v 的 A 部分是一段关于它的语句块，因为它确立的命名约定让循环性可读，并且因为移除可工作的代码是约翰的决定。
 *)
 Definition Grp_Forget_solution_set_from_adjunction (X : Sets) :
   SolutionSet Grp_Forget X :=
@@ -647,7 +647,7 @@ Definition free_group_monad : @Monad Sets (Grp_Forget ◯ FreeGrp) :=
  both are available at [eq_refl] because [Adjunction_Induced_Monad] is a
  [Build_Monad] applied to them (Monad/Comparison.v): the unit is
  the free-group unit and the multiplication is [U] applied to the counit
- at [F X], i.e. "evaluate a word of words". 
+ at [F X], i.e. “evaluate a word of words”. 
 
  --------
  Riehl 的条款要求将单位和乘法记录下来，并且两者都可以在 [eq_refl] 获得，因为 [Adjunction_Induced_Monad] 是应用于它们的 [Build_Monad]（Monad/Comparison.v）：单位是自由群单位，乘法是应用于 [F X] 处余单位的 [U]，即“评估一个词的词”。
@@ -674,8 +674,8 @@ Example free_group_monad_carrier (X : Sets) :
   carrier ((Grp_Forget ◯ FreeGrp) X) = FGWord X := eq_refl.
 
 (*
- THE MONAD ON THE GAFT-PRODUCED ADJUNCTION, added by the PR "algebraic
- carriers are sets" (2026-09-17).
+ THE MONAD ON THE GAFT-PRODUCED ADJUNCTION, added by the PR “algebraic
+ carriers are sets” (2026-09-17).
 
  This is an ADDITION and not a restatement of [free_group_monad], and the
  reason is worth recording rather than hiding behind a name.  The three
@@ -799,8 +799,8 @@ Qed.
    * ** Mac Lane §V.6's injectivity clause, and where its argument stops
 
    The issue's Verification block asks for [Free_Grp_unit_injective]: the
-   universal arrow [X → U (F X)] is injective, "by the two-element-group
-   separation argument".  Both halves of that are delivered below, and the
+   universal arrow [X → U (F X)] is injective, “by the two-element-group
+   separation argument”.  Both halves of that are delivered below, and the
    argument's constructive limit is disclosed rather than papered over.
 
    The general form is one transpose.  If [X] embeds in the underlying set
@@ -827,7 +827,7 @@ Qed.
    negative statement there is proved by mapping into a concrete groupoid
    — which is exactly the route taken here.
 
-   CONFIRMED AND SHARPENED by the PR "algebraic carriers are sets"
+   CONFIRMED AND SHARPENED by the PR “algebraic carriers are sets”
    (2026-09-17).  That PR had to give the free group a [Prop]-valued
    equality, and measured that the free groupoid's hom-equality — Construction/
    Quotient.v's [CongClosure] — has no [Prop] mirror out of which the
@@ -845,7 +845,7 @@ Qed.
 
    问题的验证模块要求 [Free_Grp_unit_injective] ：普遍箭头 [X → U (F X)] 是单射的，“通过二元群分离论证”。下面给出了该论证的两个部分，并且揭示了该论证的构造性限制，而不是掩盖它。
 
-   一般形式是一个转置。如果 [X] 嵌入到任意群的底集合中，单位映射是单射的，因为嵌入的转置会通过单位映射进行分解。也就是说 [free_group_unit_injective_of_embedding]，并且它不需要对 [X] 设定假设，也不需要引用词模型。Mac Lane 的分离论证是从无中创造这样一个嵌入的实例——对于 [a] 除了 [b] 外，将 [X] 映射到 Z/2，通过 [a] 的特征函数。使用的 Z/2 是 Instance/Grp.v 的 [Z2]，具有其非平凡性；没有为它构建新的东西，而 Construction/Deloop.v 的 [Bool_Xor_Grp] 是不同的，它存在于该文件自己的记录中，也命名为 [GrpObject]，这种冲突导致 Instance/Grp/Free.v 最后导入 Instance/Grp.v。在 SETOIDS 上，如果没有 [≈] 的判定程序，则特征函数不存在，因此 [free_group_unit_injective_dec] 携带了一个判定程序，而一致性的陈述在这里没有被证明。它也没有被反驳：障碍在于这个论证，而不是结论。统一地证明它意味着分析 [FreeGroupoidRel]（Construction/Free/Groupoid.v），即生成的词同余关系，而该文件用术语表明它不提供正规形式，也没有判定程序，因此那里的每个否定性陈述都是通过映射到具体的群半范畴来证明的——这正是这里采取的路线。由 PR "代数承载者是集合"（2026-09-17）确认并强化。该 PR 必须为自由群赋予一个 [Prop] 值的等式，并且测量自由群族的 hom-等式——Construction/Quotient.v 的 [CongClosure]——没有 [Prop] 镜像，从中无法恢复 [Type] 值的方程：它的截断不能被消除为 [Type]，并且手工 [Prop] 镜像归纳也没有 [_rect]。唯一可能起作用的形状是一个正规形，也就是本段所说的不存在的决策过程。因此，自由群的 `≈` 是群族的命题截断（Instance/Grp/Free.v 的 [fg_equiv]），并且在 [Sets] 上的所有下面的整体性不受影响：此文件中的任何常量都没有获得假设。
+   一般形式是一个转置。如果 [X] 嵌入到任意群的底集合中，单位映射是单射的，因为嵌入的转置会通过单位映射进行分解。也就是说 [free_group_unit_injective_of_embedding]，并且它不需要对 [X] 设定假设，也不需要引用词模型。Mac Lane 的分离论证是从无中创造这样一个嵌入的实例——对于 [a] 除了 [b] 外，将 [X] 映射到 Z/2，通过 [a] 的特征函数。使用的 Z/2 是 Instance/Grp.v 的 [Z2]，具有其非平凡性；没有为它构建新的东西，而 Construction/Deloop.v 的 [Bool_Xor_Grp] 是不同的，它存在于该文件自己的记录中，也命名为 [GrpObject]，这种冲突导致 Instance/Grp/Free.v 最后导入 Instance/Grp.v。在 SETOIDS 上，如果没有 [≈] 的判定程序，则特征函数不存在，因此 [free_group_unit_injective_dec] 携带了一个判定程序，而一致性的陈述在这里没有被证明。它也没有被反驳：障碍在于这个论证，而不是结论。统一地证明它意味着分析 [FreeGroupoidRel]（Construction/Free/Groupoid.v），即生成的词同余关系，而该文件用术语表明它不提供正规形式，也没有判定程序，因此那里的每个否定性陈述都是通过映射到具体的群半范畴来证明的——这正是这里采取的路线。由 PR “代数承载者是集合”（2026-09-17）确认并强化。该 PR 必须为自由群赋予一个 [Prop] 值的等式，并且测量自由群族的 hom-等式——Construction/Quotient.v 的 [CongClosure]——没有 [Prop] 镜像，从中无法恢复 [Type] 值的方程：它的截断不能被消除为 [Type]，并且手工 [Prop] 镜像归纳也没有 [_rect]。唯一可能起作用的形状是一个正规形，也就是本段所说的不存在的决策过程。因此，自由群的 `≈` 是群族的命题截断（Instance/Grp/Free.v 的 [fg_equiv]），并且在 [Sets] 上的所有下面的整体性不受影响：此文件中的任何常量都没有获得假设。
 *)
 
 Notation grp_adj_at X H :=

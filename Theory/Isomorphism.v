@@ -35,7 +35,7 @@ nLab: https://ncatlab.org/nlab/show/isomorphism
 
 (*
 This defines what it means for two objects in a category to be
-   "isomorphic". This requires both witnesses to the isomoprhism, and proof
+   “isomorphic”. This requires both witnesses to the isomoprhism, and proof
    their compositions are equivalent to identity in both directions. Since
    this is a computationally relevant definition, having an isomorphism allows
    for conversion of objects within definitions.
@@ -59,18 +59,18 @@ Sameness up to isomorphism: history, principle, and reach
    nLab:  https://ncatlab.org/nlab/show/principle+of+equivalence
    nLab:  https://ncatlab.org/nlab/show/core
    Words: https://mathshistory.st-andrews.ac.uk/Miller/mathword/i/
-   Paper: Eilenberg, Mac Lane, "General Theory of Natural Equivalences",
+   Paper: Eilenberg, Mac Lane, “General Theory of Natural Equivalences”,
           Trans. Amer. Math. Soc. 58, 1945
-   Essay: Mazur, "When is one thing equal to some other thing?", 2007
+   Essay: Mazur, “When is one thing equal to some other thing?”, 2007
 
    The word predates the theory.  Built from the Greek isos (equal) and
    morphe (form), it reached mathematics from crystallography: per Jeff
    Miller's Earliest Known Uses survey, geology texts before 1864 already
    spoke of the geometrical isomorphism of crystals, Camille Jordan's
-   Traité des substitutions (1870) called one group "isomorphe" to
+   Traité des substitutions (1870) called one group “isomorphe” to
    another, and Walther von Dyck used it in his Gruppentheoretische
    Studien (1882).  The founding paper of category theory then renamed the
-   concept: Eilenberg and Mac Lane (1945) say "equivalence" for an
+   concept: Eilenberg and Mac Lane (1945) say “equivalence” for an
    invertible morphism, prove as their Lemma 1.4 that its left and right
    inverses coincide and are unique, and remark that the resulting
    relation between objects is reflexive, symmetric and transitive.  This
@@ -79,11 +79,11 @@ Sameness up to isomorphism: history, principle, and reach
    equivalence-relation remark, recorded on objects as [ob_setoid].
 
    The concept decides when two objects are the same for categorical
-   purposes.  "The major concept that replaces equality in the context of
-   categories is isomorphism", and it is "usually either quixotic, or
-   irrelevant" to ask whether two objects are equal; the pertinent request
-   is "a specific isomorphism from X to Y" (Mazur, "When is one thing equal
-   to some other thing?", 2007).  Makkai's Principle of Isomorphism asks
+   purposes.  “The major concept that replaces equality in the context of
+   categories is isomorphism”, and it is “usually either quixotic, or
+   irrelevant” to ask whether two objects are equal; the pertinent request
+   is “a specific isomorphism from X to Y” (Mazur, “When is one thing equal
+   to some other thing?”, 2007).  Makkai's Principle of Isomorphism asks
    that every grammatically correct property of objects be invariant under
    isomorphism, Aczel's Structure Identity Principle states the same for
    structures, and Voevodsky's univalence axiom makes the invariance
@@ -97,10 +97,10 @@ Sameness up to isomorphism: history, principle, and reach
    predicate reading available when only invertibility of a given morphism
    is at issue.
 
-   The payoff theorem is uniqueness of universal objects: "representing
+   The payoff theorem is uniqueness of universal objects: “representing
    objects qua representations are unique up to unique isomorphism.
-   Hence, limits qua limits are unique up to unique isomorphism" (Riehl,
-   "A survey of categorical concepts").  In this library the statement is
+   Hence, limits qua limits are unique up to unique isomorphism” (Riehl,
+   “A survey of categorical concepts”).  In this library the statement is
    [univ_property_unique_up_to_unique_iso] in Structure/UniversalProperty.v,
    and its simplest instance is terminality: the file
    Structure/UniversalProperty/Terminal.v supplies
@@ -122,17 +122,17 @@ Sameness up to isomorphism: history, principle, and reach
    Brandt introduced and named them in a 1926/27 paper on the composition
    of quadratic forms in four variables, and they have since unified
    internal and external symmetry, from group actions to Grothendieck's
-   moduli problems (Weinstein, "Groupoids: unifying internal and external
-   symmetry", Notices Amer. Math. Soc. 1996).
+   moduli problems (Weinstein, “Groupoids: unifying internal and external
+   symmetry”, Notices Amer. Math. Soc. 1996).
 
    The computational reading extends the remark in the header above.  A
    term of type x ≅ y is a transport device, the same data as the Iso
-   optic of Haskell's lens library, built "from a pair of inverse
-   functions" (Kmett, Control.Lens.Iso); type isomorphisms — those holding
+   optic of Haskell's lens library, built “from a pair of inverse
+   functions” (Kmett, Control.Lens.Iso); type isomorphisms — those holding
    in every cartesian closed category — likewise let function libraries be
-   searched by type modulo isomorphism (Rittri, "Using types as search
-   keys in function libraries", JFP 1991; Di Cosmo, "Isomorphisms of
-   Types", Birkhäuser 1995).  Transport along an isomorphism is well
+   searched by type modulo isomorphism (Rittri, “Using types as search
+   keys in function libraries”, JFP 1991; Di Cosmo, “Isomorphisms of
+   Types”, Birkhäuser 1995).  Transport along an isomorphism is well
    defined because inverses are unique: [to_equiv_implies_iso_equiv] shows
    an isomorphism is determined up to [iso_equiv] by its [to] component
    alone, the setoid-local shadow of the homotopy-type-theoretic fact that
@@ -144,9 +144,9 @@ Sameness up to isomorphism: history, principle, and reach
    nLab:  https://ncatlab.org/nlab/show/principle+of+equivalence
    nLab:  https://ncatlab.org/nlab/show/core
    Words: https://mathshistory.st-andrews.ac.uk/Miller/mathword/i/
-   Paper: Eilenberg, Mac Lane, "General Theory of Natural Equivalences",
+   Paper: Eilenberg, Mac Lane, “General Theory of Natural Equivalences”,
           Trans. Amer. Math. Soc. 58, 1945
-   Essay: Mazur, "When is one thing equal to some other thing?", 2007
+   Essay: Mazur, “When is one thing equal to some other thing?”, 2007
 
    该词早于理论。由希腊语 isos（相等）与 morphe（形式）构成，从晶体学进入数学：
    据 Jeff Miller 的 Earliest Known Uses 调查，1864 年前地质文本已谈晶体的几何同构，
@@ -216,7 +216,7 @@ Infix "≅" := Isomorphism (at level 91) : category_scope.
 
 (*
 The predicate form: `f` is an isomorphism iff it has a two-sided inverse.
-   This is the nLab definition "an invertible morphism", phrased about a
+   This is the nLab definition “an invertible morphism”, phrased about a
    single morphism `f` rather than about a pair of objects; [IsIsoToIso]
    below recovers the object-level [Isomorphism] from it.
 
@@ -514,7 +514,7 @@ Next Obligation.
 Qed.
 
 (*
-Partial converses to "isos are monic and epic": a morphism that is both
+Partial converses to “isos are monic and epic”: a morphism that is both
    monic and a retraction (split epi) is an isomorphism, and dually a morphism
    that is both epic and a section (split mono) is an isomorphism. In each case
    the one-sided inverse supplied by the split, together with cancellability,

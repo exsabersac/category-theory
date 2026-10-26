@@ -39,14 +39,14 @@ Generalizable All Variables.
  (Theorem 2) is Instance/Fun/Creation.v's (#426).
 
  STALE PREMISES, RE-MEASURED.
- - "There is no [Terminal] structure on [C, D]": Instance/Fun/Terminal.v's
+ - “There is no [Terminal] structure on [C, D]”: Instance/Fun/Terminal.v's
  [Functor_Category_Terminal] (an [#[export] Instance], #339) and
  [Fun_HasIndexedProducts] exist; Instance/Fun/Cartesian.v
  [Functor_Category_Cartesian] and Instance/Fun/Pullback.v
  [Fun_HasPullbacks] too.  What was absent is the GENERAL shape and any
  preservation statement for an evaluation functor (Instance/Fun/
  Terminal.v named that gap; corrected in place here).
- - "no [Complete] inhabitant anywhere": a declaration sweep of the
+ - “no [Complete] inhabitant anywhere”: a declaration sweep of the
  non-Test/ tree for constants concluding [@Complete] finds at least
  thirteen, unconditional witnesses and premise-carrying transformers
  together — Instance/Sets/Complete.v's [Sets_Complete] and
@@ -56,7 +56,7 @@ Generalizable All Variables.
  Construction/Product/Limit.v [PiCat_Complete], [EM_Complete],
  [reflective_Complete] and more; #254 is closed, so Work item 3's
  blocker is discharged and [Presheaf_Complete] is built below.
- - "the evaluation functors do not exist": Adjunction/Diagonal/
+ - “the evaluation functors do not exist”: Adjunction/Diagonal/
  Connected.v [EvalAt], and #424's Instance/Fun/Eval.v [Eval], which
  this file consumes — the dependency on #424 is real: routing through
  [EvalAt] would add 103 files to this file's closure against 2 for
@@ -71,11 +71,11 @@ Generalizable All Variables.
  [Functor_Category_Terminal]), one in Structure/
  Complete.v (the issue's range starts a line early; the monadic
  clause's own words are untouched — it is [EM_Complete]'s — though
- one of them gained "from Sets"), the fourth site the issue misses,
+ one of them gained “from Sets”), the fourth site the issue misses,
  Structure/Cartesian/Product.v, and two in Instance/Fun/Terminal.v
  (that file's NOT DELIVERED list denied both the general
  theorem and any preservation statement, both corrected in place;
- and its "stated in PROSE in three places" framing, now that
+ and its “stated in PROSE in three places” framing, now that
  those places point here).  Instance/Fun.v's sentence keeps its
  colimit half, attributed to the nLab and #715.
  - Construction/Product/Limit.v's [PiCat_Complete] has term for term
@@ -165,7 +165,7 @@ Generalizable All Variables.
  obligations the [.glob] cannot see ([plim_probe_cone] 1,
  [plim_cone_at] 1, [PointwiseLimit] 3, [plim_nat] 2,
  [PointwiseLimitCone] 1, [plim_comp_cone] 1, [plim_ump_nat] 2), all
- "Closed under the global context", zero [Axioms:] lines; the gate
+ “Closed under the global context”, zero [Axioms:] lines; the gate
  carries the 29 heads, fully qualified.  One [Defined]
  ([PointwiseIsLimitCone]), LOAD-BEARING: flipped to [Qed] the file
  compiles but the probe's mediator readback [p425_mediator] is
@@ -191,7 +191,7 @@ Generalizable All Variables.
  [PointwiseLimitCone], [limit_cone], [Limit], [Eval],
  [Functor_Category_pointwise_limit], module paths excluded) with every
  first break on a positive line.  [make todo] grows by those 4 lines
- only (2222 → 2226), so the issue's "adds no new hits" box is not met
+ only (2222 → 2226), so the issue's “adds no new hits” box is not met
  as written; disclosed.
  - [Eval p] is parenthesised or applied inside a larger term throughout:
  bare at a definition-body head it parses as the [Eval … in]
@@ -308,7 +308,7 @@ Lemma plim_map_commutes {p q : P} (f : p ~{P}~> q) (j : J) :
   plim_leg q j ∘ plim_map f ≈ fmap[D j] f ∘ plim_leg p j.
 Proof. exact (limit_med_commutes (plim_alimit q) (plim_cone_at f) j). Qed.
 
-(* Mac Lane's "unique": the arrow part is determined by its legs. / Mac Lane 的“唯一性”：箭头部分由它的腿决定。 *)
+(* Mac Lane's “unique”: the arrow part is determined by its legs. / Mac Lane 的“唯一性”：箭头部分由它的腿决定。 *)
 Lemma plim_map_unique {p q : P} (f : p ~{P}~> q)
   (u : plim_obj p ~{X}~> plim_obj q) :
   (∀ j : J, plim_leg q j ∘ u ≈ fmap[D j] f ∘ plim_leg p j) → plim_map f ≈ u.

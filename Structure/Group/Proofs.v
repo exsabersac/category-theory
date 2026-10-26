@@ -34,7 +34,7 @@ Generalizable All Variables.
  - [left_inverse_unique]: uniqueness of (left) inverses — if
  [mappend ∘ f_inv ⨂ f ∘ ∆ X ≈ mempty ∘ eliminate], i.e. f_inv is a
  left inverse of f, then f_inv ≈ inverse[grp] ∘ f. This is the internal
- form of "yx = I implies y = x⁻¹".
+ form of “yx = I implies y = x⁻¹”.
 
  - [mappend_inverse]: the inversion map is an anti-homomorphism,
  mappend ∘ inverse ⨂ inverse ≈ inverse ∘ mappend ∘ braid, i.e.

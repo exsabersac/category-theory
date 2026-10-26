@@ -18,21 +18,21 @@ Import EqNotations.
 
 (*
  nLab:      https://ncatlab.org/nlab/show/discrete+category
- Reference: Saunders Mac Lane, "Categories for the Working Mathematician",
- 2nd ed., §I.2, p. 11, construction 2: "A category is discrete
+ Reference: Saunders Mac Lane, “Categories for the Working Mathematician”,
+ 2nd ed., §I.2, p. 11, construction 2: “A category is discrete
  when every arrow is an identity ... every set X may be regarded
  as a discrete category, and every discrete category is so
- determined by its set of objects."
- Reference: Michael Hedberg, "A coherence theorem for Martin-Löf's type
- theory", Journal of Functional Programming 8(4), 1998
+ determined by its set of objects.”
+ Reference: Michael Hedberg, “A coherence theorem for Martin-Löf's type
+ theory”, Journal of Functional Programming 8(4), 1998
  (decidable equality implies uniqueness of identity proofs).
 
  Both halves of Mac Lane's vocabulary are already in the library: the
  *construction* [DiscreteCat A] (Instance/Discrete.v) turns a type into a
  category, and the *predicate* [Discrete C] (Structure/Discrete.v) asserts
  that a category has only identity morphisms.  What was missing is the
- sentence that joins them — "every discrete category is so determined by its
- set of objects", i.e. the reconstruction of [C] from [obj C].  This file
+ sentence that joins them — “every discrete category is so determined by its
+ set of objects”, i.e. the reconstruction of [C] from [obj C].  This file
  supplies it.
 
  ** The comparison functor
@@ -360,7 +360,7 @@ Proof using C Dis rigid.
 Defined.
 
 (*
- Mac Lane's "determined by its set of objects", on the nose: reconstruction
+ Mac Lane's “determined by its set of objects”, on the nose: reconstruction
  and comparison are mutually inverse in [StrictCat].  Both object maps are
  the identity, so both strict-equality witnesses are [eq_refl] and only the
  morphism coherence has content.  The [from ∘ to] coherence is exactly the
@@ -537,8 +537,8 @@ Qed.
  while only one of the two donors was annotated.  (Both are annotated
  now, so both of those lines are plain [Check]s and both are accepted;
  an earlier revision of this sentence cited them,
- where they stood as [Fail Check]s before the PR "algebraic carriers
- are sets" (2026-09-17).)  The measured signature is
+ where they stood as [Fail Check]s before the PR “algebraic carriers
+ are sets” (2026-09-17).)  The measured signature is
 
  Indiscrete@{o h p} : Type@{o} → Category@{o h p}
  ( * o h p |= h <= eq_ind.u0 / h <= Logic_lemmas.equality.u0
@@ -549,7 +549,7 @@ Qed.
  constraint block records no lower bound on [h] at all. 
 
  --------
- 这些绑定器是承重的，原因与 [DiscreteCat_Functor] (Instance/Discrete.v) 相同：声明为裸的，这被最小化为 [Indiscrete@{u} : Type@{u} → Category@{u Set Set}]，将非离散范畴的 hom 和证明级固定为 [Set]，因此固定了在其上取的每个极限。这个固定是独立于 [DiscreteCat_Functor] 的——注明一个不影响另一个，这就是为什么 Instance/Cat/Objects.v 的行为不同，而当时只有两个捐赠者中的一个被注解。（现在两者都已注解，所以这两行都是普通的 [Check] 并且都被接受；该句的早期版本引用了它们，在 PR "代数载体是集合" (2026-09-17) 之前，它们作为 [Fail Check] 出现。）测得的签名是Indiscrete@{o h p} : 类型@{o} → 范畴@{o h p}
+ 这些绑定器是承重的，原因与 [DiscreteCat_Functor] (Instance/Discrete.v) 相同：声明为裸的，这被最小化为 [Indiscrete@{u} : Type@{u} → Category@{u Set Set}]，将非离散范畴的 hom 和证明级固定为 [Set]，因此固定了在其上取的每个极限。这个固定是独立于 [DiscreteCat_Functor] 的——注明一个不影响另一个，这就是为什么 Instance/Cat/Objects.v 的行为不同，而当时只有两个捐赠者中的一个被注解。（现在两者都已注解，所以这两行都是普通的 [Check] 并且都被接受；该句的早期版本引用了它们，在 PR “代数载体是集合” (2026-09-17) 之前，它们作为 [Fail Check] 出现。）测得的签名是Indiscrete@{o h p} : 类型@{o} → 范畴@{o h p}
  ( * o h p |= h <= eq_ind.u0 / h <= Logic_lemmas.equality.u0
  / h <= eq_ind_r.u0 / h <= p * )
 

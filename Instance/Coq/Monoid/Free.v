@@ -75,12 +75,12 @@ Generalizable All Variables.
 
  The free monoid is the oldest surviving example of a universal mapping
  problem and, by some distance, the most heavily used.  Under the name
- "Kleene star" it is the closure operation of formal language theory:
+ “Kleene star” it is the closure operation of formal language theory:
  Kleene introduced A* while analysing the events representable in nerve
  nets, and the star of an alphabet is precisely the underlying set of the
- free monoid on that alphabet (Kleene, "Representation of events in nerve
- nets and finite automata", in Shannon and McCarthy, Automata Studies,
- Princeton 1956; Wikipedia, "Kleene star").  Every statement about strings
+ free monoid on that alphabet (Kleene, “Representation of events in nerve
+ nets and finite automata”, in Shannon and McCarthy, Automata Studies,
+ Princeton 1956; Wikipedia, “Kleene star”).  Every statement about strings
  — concatenation is associative, the empty string is neutral, a
  substitution is determined by its action on single letters — is a
  statement about this monoid, and the last of those is exactly the
@@ -90,16 +90,16 @@ Generalizable All Variables.
  category on a graph is built in CWM §II.7, and the free monoid falls out
  by reading a monoid as a one-object category: a graph with one vertex is a
  set of loops, and the free category on it has the words in those loops as
- arrows (Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ arrows (Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer 1998, §II.7 Corollary 2, pp. 50–51).  Awodey goes the other way,
  constructing A* directly in §1.7 and using it as the first non-trivial
  universal property in the book, then returning to it in §9.1 as the
- motivating adjunction (Awodey, "Category Theory", 1st ed., Carnegie Mellon
+ motivating adjunction (Awodey, “Category Theory”, 1st ed., Carnegie Mellon
  pre-print, September 2005, §1.7 pp. 19–22, §9.1 pp. 213–214).  Fong and
  Spivak reach the same object through the free category on the one-vertex
  loop graph and ask for its elements at a two-letter alphabet (Fong and
- Spivak, "An Invitation to Applied Category Theory: Seven Sketches in
- Compositionality", CUP 2019, §5.2.3 Exercise 5.24).  In-tree both routes
+ Spivak, “An Invitation to Applied Category Theory: Seven Sketches in
+ Compositionality”, CUP 2019, §5.2.3 Exercise 5.24).  In-tree both routes
  exist: Construction/Free/Quiver.v carries the free category on a quiver
  with its universal arrow, and this file carries the monoid case directly.
  The identification of the two — free monoid as the delooping of the free
@@ -116,7 +116,7 @@ Generalizable All Variables.
  the same fold.  The bridge between the two universal properties — the
  monoid-homomorphism extension IS the [ListF]-algebra fold — is proved
  below ([free_ext_is_fold], [free_ext_is_the_unique_algebra_map]), which is
- the sense in which "structural recursion over lists" and "the free monoid"
+ the sense in which “structural recursion over lists” and “the free monoid”
  are one fact seen twice.
 
  Finally, the adjunction.  Free-forgetful adjunctions are the paradigm case
@@ -126,8 +126,8 @@ Generalizable All Variables.
  monoid is determined by its action on generators (Awodey §7.5 Example
  7.7); its counit at a monoid L is the evaluation of words in L, and the
  fact that the counit's underlying map splits — every element is the value
- of its own one-letter word — is the categorical form of "every monoid is a
- quotient of a free one" (Awodey §9.9 Exercise 2).  The pattern generalises
+ of its own one-letter word — is the categorical form of “every monoid is a
+ quotient of a free one” (Awodey §9.9 Exercise 2).  The pattern generalises
  verbatim to groups, rings, modules and algebras, which is why Samuel could
  already see one problem behind all of them (Theory/Universal/Arrow.v's
  header tells that story). 
@@ -471,8 +471,8 @@ Qed.
 (*
    * ** The insertion of generators as a natural transformation
 
-   Awodey §7.5 Example 7.7: [η_X : X → U M(X)] is natural in X, "because the
-   induced homomorphism M(f) is determined by its action on generators".
+   Awodey §7.5 Example 7.7: [η_X : X → U M(X)] is natural in X, “because the
+   induced homomorphism M(f) is determined by its action on generators”.
    That sentence is [free_fmap_generators], and it is the whole naturality
    square. 
 
@@ -510,7 +510,7 @@ Example insert_Transform_is_adjunction_unit (X : Coq) (a : X) :
    the free monoid and functions into the underlying set.  That bijection is
    [adj] of [free_monoid_adjunction]; the formula for its forward direction
    is the generic [to_adj_unit] read at this adjunction, and unwinds to
-   "restrict the homomorphism to the one-letter words". 
+   “restrict the homomorphism to the one-letter words”. 
 
    --------
    * ** 换位公式
@@ -544,7 +544,7 @@ Proof.
 Qed.
 
 (*
-   * ** The counit, and "every monoid is a quotient of a free one"
+   * ** The counit, and “every monoid is a quotient of a free one”
 
    Awodey §9.9 Exercise 2.  Two statements have to be kept apart, and the
    library had neither: [Theory/Adjunction.v]'s [adj_monic] is the mono-side
@@ -562,7 +562,7 @@ Qed.
    evident candidate [m ↦ [m]] is not one (it sends a product to a
    one-letter word, not to a two-letter one).  Whether some other section
    exists depends on L, so no general statement of that shape is available,
-   and none is needed: the exercise's "quotient" is the surjection of
+   and none is needed: the exercise's “quotient” is the surjection of
    underlying sets, which is (a). 
 
    --------
@@ -696,7 +696,7 @@ Definition free_monoid_unique_iso {X : Coq} {N : MonCoq}
    That category IS the comma category [=(X) ↓ Mon_Forget] — its objects are
    triples (ttt, L, h : X ~> U L), and a morphism to (ttt, N, k) is a pair
    consisting of the unique arrow of the one-object category and a monoid
-   homomorphism g with k ∘ id ≈ U g ∘ h.  The "same thing" is then not a
+   homomorphism g with k ∘ id ≈ U g ∘ h.  The “same thing” is then not a
    theorem to prove but the DEFINITION of [UniversalArrow] in
    Theory/Universal/Arrow.v, whose only field is an initial object of that
    comma category; both directions are recorded below as named constants so
@@ -762,7 +762,7 @@ Example AMon_initial_round (X : Coq) :
    is one: its hom-set IS the underlying type of [FreeMon bool], its
    identity IS the unit, and its composition IS the multiplication with the
    arguments in diagrammatic order — the file's own header notes that
-   "words read source-to-target while composition reads right-to-left", and
+   “words read source-to-target while composition reads right-to-left”, and
    the equations below pin that down. 
 
    --------
@@ -866,8 +866,8 @@ Example fold_into_xor_hom :
    [h : X → U L] induces such an algebra — [None ↦ unit], [Some (a, m) ↦
    h a * m] — and the free-monoid extension of h IS the fold determined by
    it.  So the two universal properties of [list X] produce the same
-   function, and "structural recursion over lists" and "the free monoid on
-   X" are the same fact seen twice. 
+   function, and “structural recursion over lists” and “the free monoid on
+   X” are the same fact seen twice. 
 
    --------
    * ** 初始 [ListF] 代数的桥接

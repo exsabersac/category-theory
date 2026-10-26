@@ -18,10 +18,10 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/thin+category
  nLab:      https://ncatlab.org/nlab/show/preorder
  Wikipedia: https://en.wikipedia.org/wiki/Preorder
- Book:      Mac Lane, "Categories for the Working Mathematician",
+ Book:      Mac Lane, “Categories for the Working Mathematician”,
  Springer GTM 5, 2nd ed. 1998, §I.2 (construction 7, def. 4)
- Book:      Riehl, "Category Theory in Context", Dover 2016, §1.2
- Book:      Fong and Spivak, "Seven Sketches in Compositionality",
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, §1.2
+ Book:      Fong and Spivak, “Seven Sketches in Compositionality”,
  CUP 2019, §§1.2.2, 1.3.1
 
  A category is THIN when any two parallel morphisms agree: the hom-setoid
@@ -53,7 +53,7 @@ Generalizable All Variables.
  and Instance/Proset/Order.v puts it to work.
 
  The second half of the file goes back the other way.  Every category C
- carries a preorder on its objects, "x ≤ y when there is an arrow x ~> y".
+ carries a preorder on its objects, “x ≤ y when there is an arrow x ~> y”.
  Since Coq's [relation] is Prop-valued while a hom lives in [Type], the
  passage squashes: [thin_preorder] uses [inhabited].  That squash is the
  whole content of the round trip measured in Instance/Proset/Order.v — it
@@ -126,7 +126,7 @@ Proof. constructor; intros z g1 g2 _; apply T. Qed.
 (*
  A pair of opposing morphisms in a thin category is automatically an
  isomorphism: the two composites are endomorphisms, hence equal to the
- identity.  This is the categorical reading of "x ≤ y and y ≤ x", and it is
+ identity.  This is the categorical reading of “x ≤ y and y ≤ x”, and it is
  exactly what antisymmetry rules out in Instance/Poset.v — a poset is a
  SKELETAL thin category (Instance/Poset.v), the isomorphic objects being
  forced equal.
@@ -155,7 +155,7 @@ Definition thin_iso {C : Category} (T : Thin C) {x y : C}
 
  The library ALREADY carries a preorder of this shape at the Type level:
  Theory/Category.v's exported instance [hom_preorder : PreOrder hom[C]]
- over CRelationClasses, whose "proofs" are the morphisms themselves.  That
+ over CRelationClasses, whose “proofs” are the morphisms themselves.  That
  instance is deliberately NOT reused here, and the reason is the honest
  version of this file's choice story: fed to a Type-valued preorder, the
  reconstruction below would need no [HomChoice] at all -- the witness IS the

@@ -23,7 +23,7 @@ Generalizable All Variables.
  parallel pair and then remarks that coequalizers of an ARBITRARY SET of
  parallel maps a → b are defined in the same way (Categories for the
  Working Mathematician, 2nd ed., §III.3, pp. 64-65).  This file and its
- dual [Structure/Coequalizer/Wide.v] carry out "the same way" on the
+ dual [Structure/Coequalizer/Wide.v] carry out “the same way” on the
  limit side.  Given a family f : I → (x ~> y), a wide equalizer is an
  object q with a map e : q ~> x on which all the f i agree,
 
@@ -31,7 +31,7 @@ Generalizable All Variables.
 
  universal with that property: every h : z ~> x on which they agree
  factors uniquely through e.  Eckmann and Hilton defined equalizers for
- arbitrary families from the start, under the name "left equalizers"
+ arbitrary families from the start, under the name “left equalizers”
  (Mathematische Annalen 151, 1963); the binary case of
  [Structure/Equalizer/Fork.v] is I = 2.
 
@@ -335,13 +335,13 @@ Lemma wide_limit_equalizer_desc (L : WideEqualizer WFam)
   {z : C} (h : z ~> x) (Hh : ∀ i j : I, fs i ∘ h ≈ fs j ∘ h) :
   ∃! u : z ~> L, limit_leg (limit_is_alimit L) ParX ∘ u ≈ h.
 (*
- Lib.v sets [Default Proof Using "Type"], which keeps only the section
+ Lib.v sets [Default Proof Using “Type”], which keeps only the section
  variables occurring in the STATEMENT.  This is the ONE proof in the
  section that reaches for [i0] without its statement mentioning it — the
  others go through [wfork_legs], whose body carries the dependency. 
 
  --------
- Lib.v 设置了 [Default Proof Using "Type"]，它只保留出现在 STATEMENT 中的节变量。这是该节中唯一一个在其语句未提及的情况下使用 [i0] 的证明——其他的证明则通过 [wfork_legs]，其中的主体携带依赖性。
+ Lib.v 设置了 [Default Proof Using “Type”]，它只保留出现在 STATEMENT 中的节变量。这是该节中唯一一个在其语句未提及的情况下使用 [i0] 的证明——其他的证明则通过 [wfork_legs]，其中的主体携带依赖性。
 *)
 Proof using All.
   unshelve eapply Build_Unique.

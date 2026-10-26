@@ -17,9 +17,9 @@ Generalizable All Variables.
 (*
    * * Field: the category of fields, and the determination of its monos
 
-   Riehl, "Category Theory in Context", §1.2 Exercise 1.2.iii (printed
-   p. 15): "show that every morphism in the category of fields is a
-   monomorphism" [riehl:1.2:exiii], and §1.6 Example 1.6.15 (printed
+   Riehl, “Category Theory in Context”, §1.2 Exercise 1.2.iii (printed
+   p. 15): “show that every morphism in the category of fields is a
+   monomorphism” [riehl:1.2:exiii], and §1.6 Example 1.6.15 (printed
    p. 38), the field half: the category of fields has NEITHER an
    initial NOR a terminal object [riehl:1.6:example15].  These are the
    one entry of the standard roster (Mac Lane §I.7, Awodey §1.4, Riehl
@@ -62,8 +62,8 @@ Generalizable All Variables.
    cancellation form [f a ≈ f b → a ≈ b].  Running it under the
    hypothesis [f a ≈ f b] yields ¬¬(a ≈ b), and no field axiom carries
    that back to a ≈ b: the record supplies [finv] together with a law
-   holding away from zero, not a decision between "zero" and
-   "invertible".  This is exactly the shape of Instance/Grp/Epi.v,
+   holding away from zero, not a decision between “zero” and
+   “invertible”.  This is exactly the shape of Instance/Grp/Epi.v,
    where surjectivity of a group epimorphism is delivered as the
    unconditional density theorem [grp_epic_image_dense] and the
    classical biconditional is its double-negation elimination; the
@@ -96,13 +96,13 @@ Generalizable All Variables.
    against [F2_Field], the two-element field built here on [bool]:
    characteristic 0 against characteristic 2.  Both proofs are
    CONSTRUCTIVE and consult no decision procedure — the guard on
-   [finv_l] is a negation, so the negative fact "1 + 1 is not zero
-   here" is itself the licence to invert, and neither [FieldStable]
+   [finv_l] is a negation, so the negative fact “1 + 1 is not zero
+   here” is itself the licence to invert, and neither [FieldStable]
    nor decidability appears in either proof.  The same pair also gives
    [no_hom_Q_F2] and [no_hom_F2_Q]: there is no homomorphism in either
    direction, so [Field] is not even connected.
 
-   THE CONVERSE IS NOT CLAIMED.  "Monic ⟺ injective" would need the
+   THE CONVERSE IS NOT CLAIMED.  “Monic ⟺ injective” would need the
    monic ⇒ injective direction, and that needs a probe object — the
    free field on one generator, which does not exist in this tree.  The
    analogous probes elsewhere show what is missing rather than that the
@@ -125,7 +125,7 @@ Generalizable All Variables.
    docs/AXIOMS.md counts: all 76 constants the module declares — the
    50 source-level definitions and theorems, the 2 [Faithful]
    instances, and the 24 [Program] obligations, which no [.glob] sweep
-   sees — report "Closed under the global context".  The arithmetic is
+   sees — report “Closed under the global context”.  The arithmetic is
    Theory/Algebra/Rig.v's, the concrete carriers are [bool] and stdlib
    [QArith], and neither needs an axiom.  In particular nothing in
    this file touches the reals. 
@@ -375,12 +375,12 @@ Qed.
 (*
  [FieldStable] quantifies over pairs, but every use below reduces the
  pair (a, b) to the single element a − b through [ring_sub_zero].  So
- the weaker-looking hypothesis "≈ is ¬¬-stable AT ZERO" already
+ the weaker-looking hypothesis “≈ is ¬¬-stable AT ZERO” already
  suffices — and it is not in fact weaker, the two being
  inter-derivable ([field_stable_stable_at_zero] and
  [field_stable_at_zero_stable]).  This turns what the header would
  otherwise have to assert into a proved statement, and it locates the
- obstruction exactly: it is about deciding "is this element zero?",
+ obstruction exactly: it is about deciding “is this element zero?”,
  which is the guard on [finv_l], and about nothing else. 
 
  --------
@@ -653,7 +653,7 @@ Proof.
   now rewrite (rig_map_one f).
 Qed.
 
-(* In ℚ, 2 ≉ 0 — the whole content of "characteristic zero" that is needed here. / 在ℚ中，2 ≉ 0 —— 这就是此处所需的“零特征”的全部内容。 *)
+(* In ℚ, 2 ≉ 0 — the whole content of “characteristic zero” that is needed here. / 在ℚ中，2 ≉ 0 —— 这就是此处所需的“零特征”的全部内容。 *)
 Lemma Q_ftwo_nonzero : ftwo Q_Field ≈ rig_zero Q_Field → False.
 Proof.
   intro H.
@@ -699,8 +699,8 @@ Qed.
 (*
  Both proofs are constructive and case-split-free.  They are the
  standard characteristic argument, and the only subtlety is that the
- guard on [finv_l] is a NEGATION, so the negative fact "2 is not zero
- here" is exactly what licenses inverting it — no decision procedure
+ guard on [finv_l] is a NEGATION, so the negative fact “2 is not zero
+ here” is exactly what licenses inverting it — no decision procedure
  is consulted, and neither [FieldStable] nor decidability is used.
 
  An initial field I would map to both ℚ and F₂.  The ℚ-map shows
@@ -751,8 +751,8 @@ Proof.
 Qed.
 
 (*
- The object-level readings, which are what "the category has no
- initial object" says without choosing one: NO object of [Field] is
+ The object-level readings, which are what “the category has no
+ initial object” says without choosing one: NO object of [Field] is
  initial, and none is terminal. 
 
  --------

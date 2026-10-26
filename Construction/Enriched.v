@@ -47,14 +47,14 @@ Reserved Infix "⟿" (at level 90, right associativity).
 
  nLab:      https://ncatlab.org/nlab/show/enriched+category
  Wikipedia: https://en.wikipedia.org/wiki/Enriched_category
- Paper: Eilenberg, Kelly, "Closed Categories", in Proceedings of the
+ Paper: Eilenberg, Kelly, “Closed Categories”, in Proceedings of the
  Conference on Categorical Algebra (La Jolla 1965), Springer
  1966, pp. 421-562
- Book:  Kelly, "Basic Concepts of Enriched Category Theory", London
+ Book:  Kelly, “Basic Concepts of Enriched Category Theory”, London
  Mathematical Society Lecture Note Series 64, Cambridge University
  Press 1982; reprinted Repr. Theory Appl. Categ. No. 10 (2005)
- Paper: Lawvere, "Metric spaces, generalized logic, and closed
- categories", Rend. Sem. Mat. Fis. Milano 43 (1973), 135-166
+ Paper: Lawvere, “Metric spaces, generalized logic, and closed
+ categories”, Rend. Sem. Mat. Fis. Milano 43 (1973), 135-166
 
  Ordinary category theory records between two objects only a SET of
  morphisms, and thereby discards whatever structure that collection
@@ -69,11 +69,11 @@ Reserved Infix "⟿" (at level 90, right associativity).
  composing hom-objects and its unit naming identities, and a theorem
  proved over K then respects that structure by construction (nLab).
 
- The definition descends from Eilenberg and Kelly, "Closed Categories"
+ The definition descends from Eilenberg and Kelly, “Closed Categories”
  (La Jolla 1965, Springer 1966), which introduced the closed and monoidal
  machinery from which the coherence axioms are drawn, and was consolidated
- into the standard reference by Kelly's "Basic Concepts of Enriched
- Category Theory" (1982), the source for the enriched Yoneda lemma and
+ into the standard reference by Kelly's “Basic Concepts of Enriched
+ Category Theory” (1982), the source for the enriched Yoneda lemma and
  weighted limits.  A complete, cocomplete, closed symmetric monoidal base,
  the setting over which the theory is usually developed, is often called a
  cosmos (nLab).
@@ -90,8 +90,8 @@ Reserved Infix "⟿" (at level 90, right associativity).
  that a category enriched over the non-negative extended reals ordered by
  ≥ under addition is exactly a generalized metric space: the hom-object is
  a distance, [ecompose] is the triangle inequality, and [eid] records that
- the self-distance is zero (Lawvere 1973).  This is the "generalized
- logic" reading, under which preorder- and quantale-enriched categories
+ the self-distance is zero (Lawvere 1973).  This is the “generalized
+ logic” reading, under which preorder- and quantale-enriched categories
  become systems of generalized truth values.  Any closed monoidal base is
  moreover enriched in itself through its internal hom, as
  Structure/Closed.v records.

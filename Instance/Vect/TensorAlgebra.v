@@ -29,7 +29,7 @@ Generalizable All Variables.
 (*
    * * The tensor algebra and the exterior algebra as universal arrows
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, §III.1, printed p. 59, Exercise 1 — the tensor algebra of
    a vector space and the exterior algebra, each to be exhibited as
    a universal arrow (maclane:III.1:ex1)
@@ -69,8 +69,8 @@ Generalizable All Variables.
    ([ext_anticomm_nontrivial], where v ∧ w and w ∧ v are provably
    distinct).  There is in-tree precedent for taking this care, with a
    DIFFERENT degeneracy: Instance/Matr/Determinant.v derives its general
-   alternation [det_alt] and records that it does "NOT follow from
-   [det M ≈ ⊖ det M] — that is vacuous in characteristic 2", the
+   alternation [det_alt] and records that it does “NOT follow from
+   [det M ≈ ⊖ det M] — that is vacuous in characteristic 2”, the
    self-equation x ≈ −x being vacuous there in a way that the two-element
    equation above is not.  Note also that v ∧ v ≈ 0 is demanded of
    GENERATORS only — of elements of V, that is, of the image of [tt_gen] —
@@ -87,12 +87,12 @@ Generalizable All Variables.
    builds.
 
    A CORRECTION TO THE ISSUE'S PRIOR ART, recorded here because a header
-   is where a reader looks.  Issue #310's "Current state in the library"
-   section says the material is "Absent" and that "No categories of
+   is where a reader looks.  Issue #310's “Current state in the library”
+   section says the material is “Absent” and that “No categories of
    rings, K-algebras, or vector spaces exist in Instance/ to host the
-   constructions".  Every clause of that but its closing rider was already
-   false when this was written — and the rider, "to host the
-   constructions", was substantively RIGHT about the algebra half, which
+   constructions”.  Every clause of that but its closing rider was already
+   false when this was written — and the rider, “to host the
+   constructions”, was substantively RIGHT about the algebra half, which
    is the whole reason [AAlg K] exists: Instance/Rng.v is the category of unital rings,
    Instance/Rng/Algebras.v the category [KAlg] of COMMUTATIVE K-algebras,
    Instance/Mod.v the category of R-modules with Instance/Vect/Free.v and
@@ -101,8 +101,8 @@ Generalizable All Variables.
    genuinely absent is narrower, and is what this pair of files supplies:
    a category of algebras that does NOT demand commutativity, and the two
    constructions themselves.  The issue's own scope note — that a bundled
-   PR is acceptable "only if the algebra-category substrate from the
-   dependencies is already in place" — was therefore NOT met as written:
+   PR is acceptable “only if the algebra-category substrate from the
+   dependencies is already in place” — was therefore NOT met as written:
    the COMMUTATIVE substrate was in place, the associative one had to be
    built first, and building it is part of this work rather than a
    precondition of it.
@@ -391,7 +391,7 @@ Inductive TTerm : Type :=
 
 (*
  AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
- "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
+ “algebraic carriers are sets” (2026-09-17) it lands in [Prop], because
  [RigObject] carries a [rig_prop : PropEquiv (is_setoid rig_setoid)] field
  and the `≈` of [TensorRing] IS [tt_eq].  [et_eq] below moves IN LOCKSTEP:
  its first constructor [ee_base] embeds a whole [tt_eq], so a [Type]-valued
@@ -672,7 +672,7 @@ Fixpoint teval (t : TTerm) : carrier (rig_setoid AR) :=
    target setoid's symmetry and transitivity.
 
    AN EARLIER REVISION of this proof inducted on [tt_eq] straight into the
-   [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
+   [Type]-valued goal `≈`.  Since the PR “algebraic carriers are sets”
    (2026-09-17) [tt_eq] is a [Prop] inductive, so the script opens with
    [apply pequiv_to] at the TARGET algebra's own [rig_prop] and each branch
    returns to `≈` with [pequiv_from].  The twenty cases are unchanged; the
@@ -843,7 +843,7 @@ Proof. symmetry; exact (`2 g a). Qed.
    Λ(V) 是 T(V) ，并在生成元 v 上额外添加一个生成方程 v·v ≈ 0。 因此关系 [et_eq] 有七个构造子，而不是二十个：第一个嵌入了整个 [tt_eq]，因此每个环定律和每个线性条款都被继承而不是重述，其余六个是新的方程、它可以出现的三个前者下的一致关系，以及两个闭包规则。
 *)
 
-(* In [Prop] since the PR "algebraic carriers are sets" (2026-09-17), in lockstep with [tt_eq], which [ee_base] embeds. / 自从 [Prop] 的 PR "代数载体是集合"（2026-09-17）以来，与 [tt_eq] 保持同步，[ee_base] 已经嵌入其中。 *)
+(* In [Prop] since the PR “algebraic carriers are sets” (2026-09-17), in lockstep with [tt_eq], which [ee_base] embeds. / 自从 [Prop] 的 PR “代数载体是集合”（2026-09-17）以来，与 [tt_eq] 保持同步，[ee_base] 已经嵌入其中。 *)
 Inductive et_eq : TTerm → TTerm → Prop :=
   | ee_base {s t} : tt_eq s t → et_eq s t
 
@@ -878,8 +878,8 @@ Definition et_Setoid : Setoid TTerm := {|
 
 (*
    * Every law is [ee_base] of the corresponding law of T(V): the ring
-   structure is inherited wholesale, which is the formal content of "Λ(V)
-   is a quotient of T(V)". 
+   structure is inherited wholesale, which is the formal content of “Λ(V)
+   is a quotient of T(V)”. 
 
    --------
    * 每一条定律都是 T(V) 对应定律的 [ee_base]：环的结构被整体继承，这就是“Λ(V) 是 T(V) 的一个商环”的形式内容。
@@ -1031,7 +1031,7 @@ Proof.
   intro He.
   (*
  Same change as in [teval_respects], and for the same reason: [et_eq] is
- a [Prop] inductive since the PR "algebraic carriers are sets"
+ a [Prop] inductive since the PR “algebraic carriers are sets”
  (2026-09-17).  The seven cases and the argument in each are unchanged. 
 
  --------
@@ -1512,7 +1512,7 @@ Program Definition Lam2_Rig : RigObject := {|
   rig_add_respects := lam2_add_respects;
   rig_mul_respects := lam2_mul_respects;
   (*
- Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
+ Since the PR “algebraic carriers are sets” (2026-09-17) a [RigObject]
  carries a [PropEquiv] for its carrier.  [lam2_eqT] is Coq's [eq] under a
  [Type] ascription, hence already a [Prop]-valued relation, so it is its
  own mirror and both implications are the identity. 

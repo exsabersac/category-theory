@@ -17,9 +17,9 @@ Generalizable All Variables.
 (*
    * * The isomorphism theorems, from the universal property
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
-   Exercise 4 (printed p. 59) [maclane:III.1:ex4]; Awodey, "Category
-   Theory", 2nd ed., §4.2 Corollary 4.5 (printed p. 85)
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.1
+   Exercise 4 (printed p. 59) [maclane:III.1:ex4]; Awodey, “Category
+   Theory”, 2nd ed., §4.2 Corollary 4.5 (printed p. 85)
    [awodey:4.2:cor5].
    nLab: https://ncatlab.org/nlab/show/isomorphism+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Isomorphism_theorems
@@ -27,8 +27,8 @@ Generalizable All Variables.
    Mac Lane's point at §III.1 is that the isomorphism theorems follow
    from the universality of the projection ALONE, without a second look
    at cosets.  This file takes that seriously, and the honest accounting
-   of how far it goes is the first thing below, because "derived from
-   universality" is a claim about the SHAPE of a proof and is easy to
+   of how far it goes is the first thing below, because “derived from
+   universality” is a claim about the SHAPE of a proof and is easy to
    assert falsely.
 
    HOW EACH THEOREM IS ACTUALLY OBTAINED, stated before the theorems so
@@ -59,9 +59,9 @@ Generalizable All Variables.
    no element of any group.  Elementwise steps, exhaustively: the
    `≈`-saturation obligation of [NmodM], which is a prerequisite to
    STATING the theorem rather than a step in proving it, and
-   [third_precompose_kills], which transfers the hypothesis "k kills
-   N/M" to "k ∘ p_M kills N" and is unavoidable in any formulation,
-   since "kills" is an elementwise predicate by definition.  No coset
+   [third_precompose_kills], which transfers the hypothesis “k kills
+   N/M” to “k ∘ p_M kills N” and is unavoidable in any formulation,
+   since “kills” is an elementwise predicate by definition.  No coset
    is manipulated and no representative is chosen.
 
    - FIRST ([first_isomorphism_theorem], G/ker h ≅ im h).  The second
@@ -118,7 +118,7 @@ Generalizable All Variables.
    theorem has no such clause, being a composite of three isomorphisms
    rather than a single comparison.
 
-   WHAT IS NOT DELIVERED.  No fourth ("correspondence"/lattice) theorem;
+   WHAT IS NOT DELIVERED.  No fourth (“correspondence”/lattice) theorem;
    no Zassenhaus, Schreier or Jordan-Hölder; no butterfly lemma; and no
    naturality of the isomorphisms in h, S or N.  The second theorem is
    stated as S/(S ∩ N) ≅ SN/N ([second_isomorphism_theorem_literal]),
@@ -486,7 +486,7 @@ Context (Hsub : ∀ a : carrier G, sub_mem M a → sub_mem N a).
 (*
  RECORDED STRENGTH CHANGE.  An earlier revision read
  [sub_mem := fun a : carrier (QuotientGrp M) => sub_mem N a].
- Since the PR "algebraic carriers are sets" (2026-09-17) the quotient's `≈`
+ Since the PR “algebraic carriers are sets” (2026-09-17) the quotient's `≈`
  is the propositional truncation of [quot_rel], and the SATURATION law of a
  [Subgroup] demands that a member's `≈`-partner be a member: from
  [inhabited (quot_rel M a b)] and [sub_mem N a] one must produce membership
@@ -573,8 +573,8 @@ Context (x : Kills NmodM K).
  THE ONE ELEMENTWISE STEP of this theorem: transferring the killing
  hypothesis across the projection.  A member of N is projected by p_M to
  a member of N/M -- p_M being the identity function -- so k ∘ p_M kills N.
- An earlier revision said "the membership predicates being the same"; since
- the PR "algebraic carriers are sets" (2026-09-17) N/M's membership is the
+ An earlier revision said “the membership predicates being the same”; since
+ the PR “algebraic carriers are sets” (2026-09-17) N/M's membership is the
  TRUNCATION of N's (see [NmodM]), so the step is that projection followed
  by one [inhabits]. 
 
@@ -822,7 +822,7 @@ Definition psi : SubgroupGrp S ~{Grp}~> QuotientGrp NinSN :=
 *)
 (*
  AN EARLIER REVISION stated the right-hand side as the bare
- [sub_mem N (`1 p)].  Since the PR "algebraic carriers are sets"
+ [sub_mem N (`1 p)].  Since the PR “algebraic carriers are sets”
  (2026-09-17) the left-hand side is congruence to the unit in a quotient,
  which is the [inhabited] truncation of membership, so the biconditional
  holds up to that truncation and is stated so.  Both directions are
@@ -899,7 +899,7 @@ Definition second_isomorphism_theorem :
 *)
 (*
  AN EARLIER REVISION wrote the predicate as the bare [sub_mem N (`1 p)].
- Since the PR "algebraic carriers are sets" (2026-09-17) it is the
+ Since the PR “algebraic carriers are sets” (2026-09-17) it is the
  [inhabited] truncation of that, and the reason is the identification
  [second_isomorphism_theorem_literal] makes: this subgroup has to be
  coextensive with [KernelNS psi], whose membership is congruence to the
@@ -975,7 +975,7 @@ Arguments second_isomorphism_theorem_literal {G} S N.
 *)
 (*
  Restated up to the truncation, in lockstep with [quot_proj_kernel]: since
- the PR "algebraic carriers are sets" (2026-09-17) the kernel's membership
+ the PR “algebraic carriers are sets” (2026-09-17) the kernel's membership
  is congruence to the unit in a quotient, hence [inhabited].  The direction
  that keeps its witness whole is [quot_proj_kills]. 
 
@@ -993,8 +993,8 @@ Definition S3_first_iso :
 
 (* And it is nondegenerate: the image of the projection has two elements apart in its own setoid. / 并且它是非退化的：投影的像在其自身的集合等价类中有两个元素是分开的。 *)
 (*
- The hypothesis is the quotient's truncated `≈` since the PR "algebraic
- carriers are sets" (2026-09-17); the goal is [False], so it is unwrapped
+ The hypothesis is the quotient's truncated `≈` since the PR “algebraic
+ carriers are sets” (2026-09-17); the goal is [False], so it is unwrapped
  at no cost.  Likewise for the three theorems below over [quot_rel] at a
  truncated membership. 
 

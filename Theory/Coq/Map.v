@@ -17,7 +17,7 @@ nLab: https://ncatlab.org/nlab/show/partial+function
 
    This is a utility library, not a categorical construction: [Map k v] is
    the abstract data type of a finite partial map (associative array,
-   dictionary, "function with finite domain") from keys [k] to values [v].
+   dictionary, “function with finite domain”) from keys [k] to values [v].
    It is represented concretely as a list of key/value bindings, so it is
    isomorphic to an association list [list (k * v)] (see [toList]/[fromList]).
    Later bindings of a key are shadowed by earlier ones, exactly as for an

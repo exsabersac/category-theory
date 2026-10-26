@@ -51,9 +51,9 @@ nLab:      https://ncatlab.org/nlab/show/comonad
 Where comonads come from, and what they are for
 
    nLab:  https://ncatlab.org/nlab/show/comonad
-   Paper: Eilenberg, Moore, "Adjoint functors and triples", Illinois
+   Paper: Eilenberg, Moore, “Adjoint functors and triples”, Illinois
           Journal of Mathematics 9(3), 1965
-   Paper: Uustalu, Vene, "Comonadic Notions of Computation", ENTCS 203(5),
+   Paper: Uustalu, Vene, “Comonadic Notions of Computation”, ENTCS 203(5),
           2008
 
    Three views of the same structure organize everything below: the
@@ -66,10 +66,10 @@ Where comonads come from, and what they are for
    generalizes to any 2-category E — a comonad on an object X is a
    comonoid in the hom-category E(X, X) — and this file is the case
    E = Cat.  The terminology has accumulated in layers: Godement
-   introduced the monad-side notion in 1958 as the "standard
-   construction"; Eilenberg and Moore wrote "triple" in 1965, whence the
-   older synonym "cotriple" for comonads; and the now-standard name
-   "monad" is due to Bénabou (1967).
+   introduced the monad-side notion in 1958 as the “standard
+   construction”; Eilenberg and Moore wrote “triple” in 1965, whence the
+   older synonym “cotriple” for comonads; and the now-standard name
+   “monad” is due to Bénabou (1967).
 
    Categorically, comonads are the residue that an adjunction leaves on
    the codomain of its left adjoint.  Every adjunction F ⊣ U induces a
@@ -129,9 +129,9 @@ Where comonads come from, and what they are for
 余单子从何而来，以及用途为何
 
    nLab:  https://ncatlab.org/nlab/show/comonad
-   Paper: Eilenberg, Moore, "Adjoint functors and triples", Illinois
+   Paper: Eilenberg, Moore, “Adjoint functors and triples”, Illinois
           Journal of Mathematics 9(3), 1965
-   Paper: Uustalu, Vene, "Comonadic Notions of Computation", ENTCS 203(5),
+   Paper: Uustalu, Vene, “Comonadic Notions of Computation”, ENTCS 203(5),
           2008
 
    同一结构的三种视角组织下文一切：代数的、范畴的与计算的。

@@ -51,8 +51,8 @@ Generalizable All Variables.
    universal property from scratch.
 
    STALE PREMISES, RE-MEASURED.
-     - "There is no preservation witness for the hom-functor — no
-       [PreservesLimit G (Curried_Hom C c)]": FALSE since #331.
+     - “There is no preservation witness for the hom-functor — no
+       [PreservesLimit G (Curried_Hom C c)]”: FALSE since #331.
        Functor/Hom/Limit.v has [HomFrom c := [Hom c,─]],
        [hom_PreservesLimitCone], [hom_ContinuousFunctor],
        [hom_PreservesLimit], [hom_PreservesAllLimits],
@@ -63,15 +63,15 @@ Generalizable All Variables.
        (Remark 3) were therefore done before this issue was opened; the
        issue's pinned names are supplied here as aliases,
        [hom_preserves_limits] and [cohom_carries_colimits_to_limits].
-     - "[Curried_CoHom] has no consumer beyond Yoneda": FALSE
-       (Functor/Hom/Limit.v consumes it as [HomTo]).  "There is no
-       [Cocartesian] companion file" to Adjunction/Diagonal/Product.v: FALSE
+     - “[Curried_CoHom] has no consumer beyond Yoneda”: FALSE
+       (Functor/Hom/Limit.v consumes it as [HomTo]).  “There is no
+       [Cocartesian] companion file” to Adjunction/Diagonal/Product.v: FALSE
        (Adjunction/Diagonal/Coproduct.v [Diagonal_Coproduct_Adjunction]).
-       Awodey's ingredients "missing" — equalizers in Sets and the general
+       Awodey's ingredients “missing” — equalizers in Sets and the general
        Sets limit — exist: [Sets_HasEqualizers], and [Sets_Limit] /
        [Sets_Complete] at Instance/Sets/Complete.v.
-     - "The cone-level statement that h ↦ (limit_leg L x ∘ h) is a limiting
-       cone over [HomDiagram c F] in Sets is absent": PARTIAL.  It is present
+     - “The cone-level statement that h ↦ (limit_leg L x ∘ h) is a limiting
+       cone over [HomDiagram c F] in Sets is absent”: PARTIAL.  It is present
        over [HomFrom c ◯ F], and that functor is NOT definitionally
        [HomDiagram c F] (Structure/Limit/Weighted.v): the two agree on
        objects and on the ACTION of [fmap], both at [eq_refl], and differ at
@@ -88,9 +88,9 @@ Generalizable All Variables.
        [wl_iso]'s obligations, which presuppose a limit; nothing
        related [Sets_End] to [Limit]; [wlim_natural] is naturality of the
        composite through C(X, lim F), not of (3.5.1) itself.
-     - Work item 4's "discharge the Instance/Ens.v header caveat": that
+     - Work item 4's “discharge the Instance/Ens.v header caveat”: that
        header carries no universe caveat (a search of the file finds
-       "caveat" nowhere and "universe" only, describing [EnsV] as Mac
+       “caveat” nowhere and “universe” only, describing [EnsV] as Mac
        Lane's set-sized sub-universe); it explains that [Ens] is not the
        classical category of sets.  Nothing to discharge; not edited.
 
@@ -163,7 +163,7 @@ Generalizable All Variables.
          [HomFrom_at@{o h s +} : C ⟶ Sets@{h s}] with [hom_continuous_at :
          ContinuousFunctor HomFrom_at] for every level [s > h] of the
          universe HOLDING Sets' objects — see UNIVERSES for exactly how
-         little of "any universe of sets" that is.
+         little of “any universe of sets” that is.
 
    UNIVERSES (measured by [About] under [Set Printing Universes] on all 50
    constants).
@@ -178,13 +178,13 @@ Generalizable All Variables.
        alone, which says nothing about the size of the sets.  The
        hom-functor of a FIXED C cannot be read into a strictly larger
        universe of sets (probe N2: [HomFrom cw : Cw ⟶ Sets@{hbig sbig}]
-       under [Constraint h1 < hbig] is refused, "Cannot enforce h1 = hbig
-       because h1 < hbig", beside the accepted [Sets@{h1 sbig}] control).
+       under [Constraint h1 < hbig] is refused, “Cannot enforce h1 = hbig
+       because h1 < hbig”, beside the accepted [Sets@{h1 sbig}] control).
        What survives of Mac Lane's Remark 1 is that the theorem is ONE
        universe-polymorphic constant, instantiable at any C and hence at any
        hom level; a lift would need a Sets-to-Sets lift functor, which the
        tree does not have.  (An earlier revision of this paragraph called
-       [s] "the relation level" and the remark "half true"; measured, [s] is
+       [s] “the relation level” and the remark “half true”; measured, [s] is
        the object level and the remark holds only as polymorphism over C.)
      - SHAPES.  40 of the first 50 blocks carry [u0 = u2]: the 39
        shape-indexed constants other than [cohom_carries_colimits_to_limits]
@@ -198,8 +198,8 @@ Generalizable All Variables.
        add [u0 = u3], the limit's own level ([homimg_islimit] and
        [remark2_comparison] carry [u0 = u2] alone).  Every object level
        stays free of equations; the 51st block, [representable_iso_ContinuousFunctor]'s,
-       carries no equation.  (An earlier revision said "all 40 constants
-       with a shape J" and "the eight … stated against L"; both descriptors
+       carries no equation.  (An earlier revision said “all 40 constants
+       with a shape J” and “the eight … stated against L”; both descriptors
        are corrected above to the sets the criteria pick out.)
      - SMALLNESS, THE FOOTNOTE RIEHL SIDESTEPS.  23 constants carry the
        bound J's OBJECT level ≤ C's hom level, which is Sets' carrier level
@@ -217,7 +217,7 @@ Generalizable All Variables.
        (A) among them, carry no such bound, and neither does #331's theorem:
        probe N3 pins it — under [Constraint h < jo], [HomFrom cw ◯ F] and
        [hom_PreservesLimitCone cw F] are accepted and [Sets_Limit (HomFrom
-       cw ◯ F)] is refused, "Cannot enforce h = … because h < jo <= …".
+       cw ◯ F)] is refused, “Cannot enforce h = … because h < jo <= …”.
        Riehl's footnote extending (3.5.1) to large diagrams is exactly what
        this bound excludes; removing it is a change to Instance/Sets/
        Complete.v's construction, not a deliverable here.
@@ -246,8 +246,8 @@ Generalizable All Variables.
        [cone_of_nat_mor] 1, [cone_to_limtuple] 1, [end_cone] 1,
        [end_limtuple_iso] 2, [end_to_limtuple] 2, [homlim_reindex] 2,
        [limtuple_cone_iso] 2, [limtuple_to_cone] 2, [limtuple_to_end] 2,
-       [nat_of_cone_mor] 1, [remark2_reindexed_cone] 1), all "Closed under
-       the global context", zero [Axioms:] lines; the gate carries the 51
+       [nat_of_cone_mor] 1, [remark2_reindexed_cone] 1), all “Closed under
+       the global context”, zero [Axioms:] lines; the gate carries the 51
        heads, fully qualified, the issue's two names among them.
        [Obligation Tactic := idtac] locally, so every obligation is written
        out (189 files in the tree do the same).
@@ -284,7 +284,7 @@ Generalizable All Variables.
        [hom_PreservesLimitCone], [hom_continuous_at], [HomFrom_at], [Sets],
        [ContinuousFunctor]; module paths excluded), every first break on a
        positive line.  [make todo] grows by those 4 lines only (2233 → 2237
-       over master 1de68608), so the issue's "adds no new hits" box is not
+       over master 1de68608), so the issue's “adds no new hits” box is not
        met as written; disclosed.
      - Two sentences of Functor/Hom/Limit.v's NOT DELIVERED block (the
        comparison instantiation, naturality in c) now point here;

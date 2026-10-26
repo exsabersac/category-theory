@@ -24,7 +24,7 @@ Generalizable All Variables.
 (*
    * * Symmetric monoidal structure on [DecoratedCospanCat]
 
-   Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
+   Reference: Brendan Fong, “Decorated Cospans”, arXiv:1502.00872,
    Theorem 3.5 (the decorated-cospan category is a symmetric monoidal
    hypergraph category whenever the decorating functor is a lax braided
    (symmetric) monoidal functor).
@@ -365,7 +365,7 @@ Qed.
 
    Given [f : X ~> Y] in [C], the natural decorated-cospan lift is
    [mor_as_cospan f] (apex = Y) carrying [id_decoration Y].  This is
-   the canonical "structural" decoration, used to lift the
+   the canonical “structural” decoration, used to lift the
    unitor/associator/braid of [CospanCat] to [DecoratedCospanCat]. 
 
    --------

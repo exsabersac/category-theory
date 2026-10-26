@@ -23,15 +23,15 @@ Sources.
    against in doc/plan/books/maclane/pagemap.md).  The two exercises are
    quoted here as PRINTED, read off the page image rather than the OCR
    layer, because the order of the letters in Exercise 3's triple decides
-   which adjoint its hypothesis is about (see "The two readings of
-   Exercise 3" below).
+   which adjoint its hypothesis is about (see “The two readings of
+   Exercise 3” below).
 
-     Exercise 3.  "If ⟨G, F, φ⟩ : X ⇀ A is an adjunction with G full and
-     every unit η_x a monic, then every η_x is also epi."
+     Exercise 3.  “If ⟨G, F, φ⟩ : X ⇀ A is an adjunction with G full and
+     every unit η_x a monic, then every η_x is also epi.”
 
-     Exercise 6.  "Given an adjunction ⟨F, G, η, ε⟩ with either F or G
+     Exercise 6.  “Given an adjunction ⟨F, G, η, ε⟩ with either F or G
      full, prove that Gε : GFG → G is invertible with inverse ηG :
-     G → GFG."
+     G → GFG.”
 
    Note the triple: Exercise 3 writes ⟨G, F, φ⟩ where the table's left
    column and Exercise 5 write ⟨F, G, φ⟩, and Theorem 1 and Exercise 6
@@ -44,8 +44,8 @@ Sources.
        Mac Lane's G  =  this file's U,      Mac Lane's F  =  this file's F,
        Mac Lane's X  =  this file's D,      Mac Lane's A  =  this file's C.
 
-   Throughout, "the right adjoint is full" means [Full U] and "the left
-   adjoint is full" means [Full F].  Every name below carries the suffix
+   Throughout, “the right adjoint is full” means [Full U] and “the left
+   adjoint is full” means [Full F].  Every name below carries the suffix
    [_right] or [_left] accordingly; the suffix names WHICH ADJOINT IS
    ASSUMED FULL, never a handedness of the conclusion.  nLab background:
    https://ncatlab.org/nlab/show/adjoint+functor and
@@ -60,7 +60,7 @@ Mac Lane，*工作数学家的类别*，第二版，第 IV.3 节，
  此处引用为打印，读取页面图像而不是 OCR
  层，因为练习3的三元组中字母的顺序决定
  它的假设是关于它的（参见“这两个读物
- 练习 3"（见下文）。
+ 练习 3“（见下文）。
 
 练习 3.“如果 ⟨G, F, φ⟩ : X ⇀ A 是一个附词，其中 G full 并且
  每个单位 η_x 都是 monic，那么每个 η_x 也是 epi。”
@@ -105,7 +105,7 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
    chosen preimage, together with one triangle identity.  This is shorter
    than the transpose-comparison route (compute ⌊s ∘ ε⌋ and ⌊id⌋, then use
    injectivity of the transpose), and it needs no injectivity lemma at
-   all; see "Corrections to the commissioning brief" below.
+   all; see “Corrections to the commissioning brief” below.
 
    (B) Exercise 6.  The law the library did not have is
    [unit_fmap_counit], `η_{Ua} ∘ Uε_a ≈ id`; the other law is the
@@ -127,7 +127,7 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
 
    with forward leg [whiskered_counit] (component `fmap[U] (counit a)`)
    and backward leg [whiskered_unit] (component `unit (U a)`).  The sum
-   type is the faithful rendering of Mac Lane's "either F or G full"; the
+   type is the faithful rendering of Mac Lane's “either F or G full”; the
    two one-hypothesis readings [whiskered_counit_iso_of_full_left] and
    [_right] are `:=` at [inl] and [inr], so both directions are reachable
    by conversion.
@@ -157,12 +157,12 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
    Construction/Reflective.v and [equiv_fmap_counit_IsIsomorphism] over
    Theory/Equivalence/Adjoint.v.  In both the inverse this file produces
    is read back at [eq_refl] as the unit component; the comparison with
-   the DONORS' own inverses is graded in the "Strengths" note below (one
+   the DONORS' own inverses is graded in the “Strengths” note below (one
    is `≈`, the other is refuted, and the cause of the refutation is donor
    opacity).
 
    (E) Non-vacuity: a generic witness separating this file's hypothesis
-   from the stronger "full and faithful" under which the reflective case
+   from the stronger “full and faithful” under which the reflective case
    was already known, together with its instantiation at [PointedSets].
    Labelled degenerate where it is degenerate.
 
@@ -171,7 +171,7 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
    here they disagree.  Every headline is over [C : Category@{u u0 u0}]
    and [D : Category@{u1 u2 u2}] -- hom identified with proof in each, and
    expressed by REUSING THE LEVEL VARIABLE IN THE BINDER, so a reader who
-   checks only the block concludes "no identification" and is wrong.  The
+   checks only the block concludes “no identification” and is wrong.  The
    blocks carry one equation, [u0 = u2], collapsing the two categories'
    hom-and-proof levels, plus bounds.  No [Set] occurs in any binder or
    block of sections (A)-(D).  In (E), [Full_Erase_of_ZeroObject] carries
@@ -311,7 +311,7 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
 ** The two readings of Exercise 3
 
    The page prints ⟨G, F, φ⟩ : X ⇀ A, and issue #368 paraphrases the
-   hypothesis faithfully as "the left-listed functor is full".  Read by
+   hypothesis faithfully as “the left-listed functor is full”.  Read by
    the §IV.1 convention that the first-listed functor of a triple X ⇀ A
    is the left adjoint X ⟶ A, that is fullness of the LEFT adjoint, and
    then the monic hypothesis is idle: [Full F] already makes every η_x a
@@ -319,7 +319,7 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
    assumption ([unit_epic_of_full_left]), and what the monic hypothesis
    adds is invertibility ([unit_iso_of_full_monic]).  Read with G the
    RIGHT adjoint -- its role in Theorem 1 and Exercises 5 and 6, though
-   not "everywhere" on the page, the dual column of the table listing G
+   not “everywhere” on the page, the dual column of the table listing G
    FIRST as the left adjoint of the opposite adjunction A ⇀ X -- and
    under which the printed hypothesis is not idle, it is
    [unit_epic_of_full_monic]: the monic hypothesis is consumed
@@ -386,8 +386,8 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
       (D) and (E) are appended to this file behind mid-file [Require]s
       rather than placed in a satellite.
 
-   4. The brief calls the whiskering mismatch a "PACKAGING HAZARD ...
-      measure before choosing".  Measured, it is real and it is a TYPING
+   4. The brief calls the whiskering mismatch a “PACKAGING HAZARD ...
+      measure before choosing”.  Measured, it is real and it is a TYPING
       rejection, not a universe one: [Transform] is a class applied to two
       FUNCTOR RECORDS, and `U ◯ (F ◯ U)` and `(U ◯ F) ◯ U`, while they
       agree on [fobj] and on [fmap], differ in their three law fields
@@ -407,8 +407,8 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
 
    5. The brief asks whether [Adjunction/Opposite.v]'s
       [Opposite_Adjunction] makes (A.2) a [:=] instance of (A.1) at the
-      opposite categories.  Measured, and the answer is "available but
-      not cheaper".  The component identification IS definitional: with
+      opposite categories.  Measured, and the answer is “available but
+      not cheaper”.  The component identification IS definitional: with
       [Aop := Opposite_Adjunction A], the term
       `@unit (Opposite D) (Opposite C) U^op F^op Aop x` and
       `@counit C D F U A x` are equal by [eq_refl].  But the passage is
@@ -436,7 +436,7 @@ Mac Lane 的 G = 此文件的 U，Mac Lane 的 F = 此文件的 F，
       for [fmap_counit_unit]; both are right at the revision this
       file was built on, and the issue's own citation lands on a line of
       the first corollary's proof script.  An earlier draft of this note
-      "corrected" the brief to two `Qed.` lines.
+      “corrected” the brief to two `Qed.` lines.
       Line numbers are not relied on below. 
 
 --------
@@ -835,7 +835,7 @@ Next Obligation. now rewrite (adj_unit_naturality A (fmap[U] f)). Qed.
 
 (*
 The headline of Exercise 6.  The hypothesis is a sum, which is the
-   faithful rendering of "either F or G full"; the two single-hypothesis
+   faithful rendering of “either F or G full”; the two single-hypothesis
    readings below are [inl]/[inr] applications, hence reachable by
    conversion. 
 

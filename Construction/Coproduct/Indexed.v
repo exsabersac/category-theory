@@ -9,9 +9,9 @@ Require Import Category.Theory.Functor.
  PORTABILITY, learned the hard way: this MUST be the [Coq.Logic.]
  spelling, not [From Stdlib Require Import EqdepFacts].  The tree
  builds on Coq 8.19/8.20 as well as Rocq 9.1, and the [Stdlib] prefix
- does not exist on the 8.x line -- Docker CI rejects it with "Cannot
+ does not exist on the 8.x line -- Docker CI rejects it with “Cannot
  find a physical path bound to logical path EqdepFacts with prefix
- Stdlib".  An earlier revision of this file shipped the [Stdlib]
+ Stdlib”.  An earlier revision of this file shipped the [Stdlib]
  spelling and was the only file in the tree to use it.  Note that the
  nix [category-theory_8_19] target ACCEPTS both spellings, so a green
  nix build is not evidence here; the tree's own convention is
@@ -28,10 +28,10 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §III.5 Exercise 4, printed p. 74 (PDF p. 84) —
  maclane:III.5:ex4
- Book:      Riehl, "Category Theory in Context", 2nd ed., §3.6 —
+ Book:      Riehl, “Category Theory in Context”, 2nd ed., §3.6 —
  riehl:3.6:construction-cat-coproducts
  nLab:      https://ncatlab.org/nlab/show/coproduct
 
@@ -44,7 +44,7 @@ Generalizable All Variables.
  it carries, and the two coincide EXACTLY under [IdxUIP] — see point
  3, where that is what [sigma_inj_Full_forces_UIP] proves and what
  [SigmaCat_inj_Full] therefore has to assume.  (An earlier revision of
- this sentence said "up to the transport that typing forces", which
+ this sentence said “up to the transport that typing forces”, which
  asserts the identification point 3 shows costs a hypothesis.)
  Functors out of the coproduct are given by case analysis
  ([SigmaCat_case]), and that correspondence is the universal property
@@ -64,8 +64,8 @@ Generalizable All Variables.
  Construction/Coproduct.v and the concrete witnesses.
 
  1. THE INDEX-EQUALITY ENCODING, WHICH IS THIS FILE'S REAL CONTENT.
- To say "the hom is empty across summands and the summand's hom
- within one summand" one must say when two INDICES agree, and [I]
+ To say “the hom is empty across summands and the summand's hom
+ within one summand” one must say when two INDICES agree, and [I]
  is an arbitrary [Type] with no decider.  Three encodings present
  themselves and they are not equivalent:
 
@@ -158,7 +158,7 @@ Generalizable All Variables.
  and proof universes — the definitions below then read
  [(I → Category@{u2 u0 u0}) → Category@{u1 u0 u0}] — and a family
  at [Category@{uo uh up}] declared under [Constraint uh < up] is
- rejected with "Cannot enforce up = uh".  Measured for BOTH
+ rejected with “Cannot enforce up = uh”.  Measured for BOTH
  shapes: the single [Program Definition] this file started from,
  and the pieces below with their annotations stripped.  With the
  binders written out the block is all BOUNDS and no
@@ -245,8 +245,8 @@ Generalizable All Variables.
  THE COMPANION PROBE is Test/ProbeCatCoproduct338.v, which pins the
  universe measurements of point 4 as [Fail] commands and compiles the
  inhabitedness half of point 1's encoding-(c) refutation as
- [probe_forall_encoding_inhabited].  So "refuted by argument, not by
- a compiled [Fail]" below is exact as written — that half is compiled
+ [probe_forall_encoding_inhabited].  So “refuted by argument, not by
+ a compiled [Fail]” below is exact as written — that half is compiled
  there as a POSITIVE, not as a [Fail] — and a reader looking for what
  IS machine-checked should look in that file.
 
@@ -336,13 +336,13 @@ Proof. destruct p; reflexivity. Qed.
  Objects, homs and the hom-relation are named separately so that each
  carries its own universe annotation.  A NOTE ON WHAT THAT DOES AND
  DOES NOT BUY, corrected before landing: an earlier revision of this
- comment claimed that "an explicitly annotated [Program Definition] of
- this record does not elaborate at all".  That is FALSE, and was
+ comment claimed that “an explicitly annotated [Program Definition] of
+ this record does not elaborate at all”.  That is FALSE, and was
  refuted by compiling one — with obj, hom and the hom-relation fully
  inlined and the law fields supplied BY NAME, an annotated
  [Program Definition] elaborates and prints a constraint block
  character-for-character identical to [SigmaCat]'s.  What actually
- provokes "Universe … is unbound" is proving the obligations by
+ provokes “Universe … is unbound” is proving the obligations by
  TACTIC in place, which generates constants carrying universes the
  declared binder list cannot mention.  So what is load-bearing is
  naming the obligation PROOFS, not naming the data. 
@@ -720,8 +720,8 @@ Proof. destruct p; symmetry; apply U. Qed.
 (*
  Faithfulness for a GENERAL family spends [IdxUIP] one level up: the
  hypothesis hands over an equality [p] between two proofs of [i = i],
- and only [UIP_shift] — the axiom-free "a type with unique identity
- proofs has unique identity-proof-proofs" of the stdlib's
+ and only [UIP_shift] — the axiom-free “a type with unique identity
+ proofs has unique identity-proof-proofs” of the stdlib's
  EqdepFacts — makes [p] itself [eq_refl], which is what erases the
  transport. 
 

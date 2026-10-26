@@ -62,7 +62,7 @@ Generalizable All Variables.
  through.  Test/ProbeCommaCreation438.v's negatives n3 and n4 pin both
  halves: the object action is refused against [`1 x], and the coslice is
  not the comma category on the nose.  Both close the [eq_refl] route to
- [slift_eq], which is what "there is no [StrictlyCreatesLimit_compose]"
+ [slift_eq], which is what “there is no [StrictlyCreatesLimit_compose]”
  leaves without an alternative; neither REFUTES the existence of a
  [StrictlyCreatesLimit K (comma_proj2 ◯ Coslice_to_Comma)], whose
  [slift_eq] is a Leibniz [=] that need not be [eq_refl], and no such lift
@@ -142,7 +142,7 @@ Definition coslice_comma_Complete (HC : @Complete C) : @Complete (=(c) ↓ Id) :
 (*
  The same completeness by the route the issue names, kept as a
  cross-check: [Comma_Complete_right_adjoint] at [Adjunction_Id] does
- type-check, exactly as the issue's "Also covered by" section claims.  It
+ type-check, exactly as the issue's “Also covered by” section claims.  It
  is a different term from the one above — that one goes through creation,
  this one through Construction/Comma/Limit.v's [Comma_Complete]. 
 
@@ -201,9 +201,9 @@ End CosliceComma.
  not discharged into it, because its body does not use it — and both its
  data fields reduce, [fobj] to [`1 x] and [fmap] to [`1 f] by [eq_refl].
  So the [StrictLift] apex clause is definitional for it.  Riehl's §4.7
- exercise asks for the direct argument for the COMMA projection "along the
+ exercise asks for the direct argument for the COMMA projection “along the
  lines of the argument for the analogous statement about slice/coslice
- projections": the exercise proper is
+ projections”: the exercise proper is
  Construction/Comma/Creation.v's [comma_StrictlyCreatesLimit], and what is
  built below is the slice/coslice statement the exercise names as its
  model, which the tree did not have either.

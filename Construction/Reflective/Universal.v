@@ -15,23 +15,23 @@ Generalizable All Variables.
 (*
  nLab:  https://ncatlab.org/nlab/show/reflective+subcategory
  nLab:  https://ncatlab.org/nlab/show/universal+morphism
- Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §IV.3, printed p. 91 (PDF p. 100), and the examples of
  printed p. 92 (PDF p. 101) that issue #370 collects
- Book:  Riehl, "Category Theory in Context", Dover 2016, §4.6,
+ Book:  Riehl, “Category Theory in Context”, Dover 2016, §4.6,
  Definition 4.6.12, printed p. 169 (PDF p. 189)
 
  Mac Lane defines the notion on p. 91 and, in the same paragraph,
  reads it through universal arrows.  Quoted from the page image:
 
- "A subcategory A of B is called reflective in B when the inclusion
+ “A subcategory A of B is called reflective in B when the inclusion
  functor K: A → B has a left adjoint F: B → A. ... A reflection may
  be described in terms of universal arrows: A ⊂ B is reflective if
  and only if to each b ∈ B there is an object Rb of the subcategory
  A and an arrow η_b: b → Rb such that every arrow g: b → a ∈ A has
  the form g = f ∘ η_b for a unique arrow f: Rb → a of A.  As usual,
  R is then (the object function of) a functor B → B (with values in
- A)."
+ A).”
 
  Riehl's Definition 4.6.12 is the same notion, a full subcategory
  whose inclusion has a left adjoint, which she calls the reflector or
@@ -55,7 +55,7 @@ Generalizable All Variables.
 
  WHAT IS DELIVERED.
 
- - [Reflective_of_UniversalArrows]: Mac Lane's "if" direction.  A full
+ - [Reflective_of_UniversalArrows]: Mac Lane's “if” direction.  A full
  subcategory with a universal arrow to its inclusion at every object
  is reflective; the reflector and the adjunction are the two
  constructions of Theory/Universal/Arrow.v, unchanged.
@@ -64,7 +64,7 @@ Generalizable All Variables.
  - [Reflective_of_UniversalArrows_unit]: the unit at x is the
  universal arrow, up to [≈].
  - [Coreflective_of_CouniversalArrows]: the dual, Mac Lane's
- "dually" of the same page.  A full subcategory with a couniversal
+ “dually” of the same page.  A full subcategory with a couniversal
  arrow from its inclusion at every object is coreflective; Theory/
  Universal/Arrow/Dual.v's [RightAdjointFunctorFromCouniversalArrows]
  and [AdjunctionFromCouniversalArrows] are fed, unchanged, to
@@ -79,8 +79,8 @@ Generalizable All Variables.
  The unit is not: the adjunction's unit at x is its transpose of the
  identity, [fmap[Incl C S] id ∘ arrow], and over an abstract category
  the composite with an identity does not reduce.  An [Example] stating
- the unit [=] the arrow by [eq_refl] is refused with "cannot unify
- "unit" and "arrow"", pinned in Test/ProbeReflective370.v rather than
+ the unit [=] the arrow by [eq_refl] is refused with “cannot unify
+ ”unit“ and ”arrow“”, pinned in Test/ProbeReflective370.v rather than
  here, where a negative probe line would add to [make todo].  Over a
  concrete category the composite does reduce POINTWISE, and
  Instance/Met/Uniform.v's [completionU_unit_pointwise] records that
@@ -115,7 +115,7 @@ Generalizable All Variables.
 
  NOT DELIVERED.
 
- - Mac Lane's "only if".  It holds, and it is one line over
+ - Mac Lane's “only if”.  It holds, and it is one line over
  Adjunction/Representability.v's [adj_unit_universal]:
  [fun x => adj_unit_universal (reflective_adj R) x] is a universal
  arrow at every x, and feeding it back to
@@ -124,7 +124,7 @@ Generalizable All Variables.
  context).  It is not stated here because that import adds 12
  modules to this file's closure (by the same [coqdep] count), among
  them the Yoneda development.
- - The "only if" of the coreflective dual: not stated either.
+ - The “only if” of the coreflective dual: not stated either.
  - A couniversal readback of the arrow part of the coreflector: like
  the reflector's, it is [unique_obj] of Theory/Universal/Arrow.v's
  [Qed]-closed [ump_universal_arrows], read in the opposite

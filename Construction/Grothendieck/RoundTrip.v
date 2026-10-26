@@ -85,7 +85,7 @@ Generalizable All Variables.
  reindexing strictly functorial, i.e. for a STRICT indexed category;
  the round trip and its equivalence hold for any cloven structure.
  The public interface still takes a [SplitCleaving] argument, so the
- stated theorem is exactly "from a split cleaving of [P]". 
+ stated theorem is exactly “from a split cleaving of [P]”. 
 
  --------
  nLab:       https://ncatlab.org/nlab/show/Grothendieck+construction 

@@ -16,7 +16,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/continuous+functor
  nLab:      https://ncatlab.org/nlab/show/conservative+functor
  Mac Lane:  Categories for the Working Mathematician, 2nd ed. (GTM 5),
- §V.4 "Preservation of limits" (book p. 117), with Exercise 1
+ §V.4 “Preservation of limits” (book p. 117), with Exercise 1
  Awodey:    Category Theory, 2nd ed., §5.5 (the canonical comparison map)
  and §5.6 Definition 5.31 (p. 119)
  Riehl:     Category Theory in Context, 2nd ed., §3.3 and §3.4
@@ -50,7 +50,7 @@ Generalizable All Variables.
  apex-only quantification [PreservesAllLimits] is kept, because
  Adjunction/Continuity.v and Theory/Equivalence/Limit.v export it, but it
  is a CONSEQUENCE — [Continuous_PreservesAllLimits] — and not the
- definition.  An earlier version of this header called it "continuous";
+ definition.  An earlier version of this header called it “continuous”;
  that presentation was wrong and this paragraph is the correction.  The
  name [ContinuousFunctor] rather than [Continuous] avoids the clash with
  Instance/Top.v, exactly as [obj_eq_iso] avoids [iso_of_eq]
@@ -550,7 +550,7 @@ End ConeAssoc.
 (*
  A cone over [K] read as a cone over [Id ◯ K]: the same apex and legs,
  [Id ◯ K] not being [K] on the nose.  Added by #477 for
- Structure/Limit/Absolute.v's "an absolute limit is a limit", with that
+ Structure/Limit/Absolute.v's “an absolute limit is a limit”, with that
  file's binders: one hom level for the shape and the ambient. 
 
  --------

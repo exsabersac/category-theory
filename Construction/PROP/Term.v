@@ -18,7 +18,7 @@ Generalizable All Variables.
  expression with [m] input wires and [n] output wires, built up from:
 
  - identity wires [T_id n]
- - braids [T_braid m n] (the canonical "block braiding" that
+ - braids [T_braid m n] (the canonical “block braiding” that
  crosses an [m]-wide bundle past an [n]-wide bundle)
  - sequential composition [T_comp]
  - parallel composition (tensor) [T_tens]
@@ -29,8 +29,8 @@ Generalizable All Variables.
  interchange) lives in a successor file [Construction/PROP/TermEq.v]
  and the full [FreePROP] category in [Construction/PROP/Free.v].
 
- The arity-indexing means [Term S] is naturally a "many-sorted on
- naturals" data structure: arities propagate up through sequential
+ The arity-indexing means [Term S] is naturally a “many-sorted on
+ naturals” data structure: arities propagate up through sequential
  and parallel composition by the corresponding [Nat] operation. 
 
  --------
@@ -80,7 +80,7 @@ Notation "f ⊕t g" := (T_tens f g) (at level 30, right associativity) : term_sc
 
 (** ** Smart constructors / ** 智能构造函数 *)
 
-(** The "swap" braid on two single wires. / 两条单根导线上的“交换”编织。 *)
+(** The “swap” braid on two single wires. / 两条单根导线上的“交换”编织。 *)
 Definition T_swap {S : Signature} : Term S 2 2 :=
   T_braid 1 1.
 

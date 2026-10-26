@@ -17,13 +17,13 @@ Open Scope R_scope.
 (*
  The sections below quantify over the real formula being certified, so every
  proof inside them genuinely depends on its section variables.  Lib.v sets
- [Default Proof Using "Type"], which would discard them; the wider setting is
+ [Default Proof Using “Type”], which would discard them; the wider setting is
  the one already used for the same reason by
  Construction/Reflective/Idempotent.v and
  Construction/Localization/Universal.v. 
 
  --------
- 下面的部分对被认证的实际公式进行量化，因此其中的每个证明都确实依赖于其部分变量。Lib.v 设置了 [Default Proof Using "Type"]，这会舍弃它们；更广泛的设置是 Construction/Reflective/Idempotent.v 和 Construction/Localization/Universal.v 已经出于相同原因使用的设置。
+ 下面的部分对被认证的实际公式进行量化，因此其中的每个证明都确实依赖于其部分变量。Lib.v 设置了 [Default Proof Using “Type”]，这会舍弃它们；更广泛的设置是 Construction/Reflective/Idempotent.v 和 Construction/Localization/Universal.v 已经出于相同原因使用的设置。
 *)
 Set Default Proof Using "All".
 
@@ -32,10 +32,10 @@ Set Default Proof Using "All".
 (*
  nLab:      https://ncatlab.org/nlab/show/interval+object
  nLab:      https://ncatlab.org/nlab/show/metric+space
- Book:      Riehl, "Category Theory in Context", Epilogue §E.3 ("Freyd's
- characterization of the unit interval"), printed p. 255
+ Book:      Riehl, “Category Theory in Context”, Epilogue §E.3 (“Freyd's
+ characterization of the unit interval”), printed p. 255
  (PDF p. 275) — the ROAD NOT TAKEN here; see below
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §I.5, printed p. 20 (the construction this file serves)
  Docs:      Rocq standard library, Reals (Rdefinitions, Raxioms, RIneq,
  Rbasic_fun) and the micromega decision procedures (Lra, Psatz)
@@ -91,12 +91,12 @@ Set Default Proof Using "All".
  125           carry exactly the two above
  0           carry [sig_not_dec]
 
- All 34 are named in docs/AXIOMS.md under "Stdlib axioms", which
+ All 34 are named in docs/AXIOMS.md under “Stdlib axioms”, which
  is where the library's own policy puts stdlib axioms used by a concrete
  instance layer.  NO axiom is declared here, and none of the core theory
  acquires one: this file and its companion are the only two in the tree that
  import the reals at all.  CORRECTION (#410): not so, here or in the note
- on [Rcases] and [Rlin] below.  docs/AXIOMS.md, under "Stdlib axioms",
+ on [Rcases] and [Rlin] below.  docs/AXIOMS.md, under “Stdlib axioms”,
  names the development files that import the classical reals, and
  Instance/Top/Circle.v, Instance/Top/Solenoid.v and
  Instance/Top/Solenoid/Presentations.v import the standard library's

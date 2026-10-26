@@ -53,7 +53,7 @@ Generalizable All Variables.
  strictly associative/right-unital only up to propositional [=]
  (exactly the asymmetry of [Nat.add] in the one-sorted donor:
  [[] ++ l] is definitional but [l ++ []] and re-association are
- not), several of those "on the nose" equations are nonetheless
+ not), several of those “on the nose” equations are nonetheless
  stated below in [eq_rect] transport form. 
 
  --------
@@ -249,8 +249,8 @@ Inductive CTermEq : forall {cs ds}, CTerm S cs ds -> CTerm S cs ds -> Prop :=
 
    In a strict symmetric monoidal category the braid decomposes
    additively in either argument (Mac Lane CWM Ch.VII §7;
-   Joyal–Street §2; Selinger, "A survey of graphical languages for
-   monoidal categories" (arXiv:0908.3347), §3.3/§3.5 — braided
+   Joyal–Street §2; Selinger, “A survey of graphical languages for
+   monoidal categories” (arXiv:0908.3347), §3.3/§3.5 — braided
    resp. symmetric):
 
    σ_{m++n,p} ≈ (σ_{m,p} ⊕c id_n) ⊙c (id_m ⊕c σ_{n,p})     (hex-left)

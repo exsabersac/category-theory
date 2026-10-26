@@ -7,17 +7,17 @@
 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed. (GTM 5), §V.8, printed p. 131 (PDF p. 140; ledger item
  `maclane:V.8:thm-watt`, issue #454), read from the printed
- page: "any contravariant additive functor T on R-Mod to Ab
+ page: “any contravariant additive functor T on R-Mod to Ab
  which takes small colimits to limits is representable by a
- group isomorphism T ≅ hom_R(−, C) for some R-module C".  (The
+ group isomorphism T ≅ hom_R(−, C) for some R-module C”.  (The
  in-repo catalog, doc/plan/books/maclane/inventory/V.json,
- summarises it in its own words, "every contravariant
+ summarises it in its own words, “every contravariant
  additive functor T on R-Mod to Ab which carries small
  colimits to limits is representable: T is naturally
- isomorphic to hom_R(-, C) for some R-module C".)
+ isomorphic to hom_R(-, C) for some R-module C”.)
  Book:      Mac Lane, ibid., §V.6 Theorem 3 and Definition 3 — the
  representability theorem with its element-wise solution set
  condition, Adjunction/Representability/Sets.v, which is the
@@ -27,8 +27,8 @@
  nLab:      https://ncatlab.org/nlab/show/representable+functor
 
  A DEVIATION, STATED PLAINLY.  The issue asks for Watt's theorem
- "derived from SAFT", and its Reviewer line reads "the representability
- must be derived from SAFT plus additivity".  This file does NOT use the
+ “derived from SAFT”, and its Reviewer line reads “the representability
+ must be derived from SAFT plus additivity”.  This file does NOT use the
  special adjoint functor theorem.  It applies the GENERAL one, in the
  form of Mac Lane's §V.6 Theorem 3 ([representability_theorem], whose
  proof is Adjunction/GAFT.v's comma-initial step), to an explicit
@@ -41,7 +41,7 @@
  without it), and its cogenerator [RModop_Cogenerator] exists only at
  [RingObject@{c c c}].  The route here needs neither, so it delivers the
  book's contravariant statement with NO hypothesis beyond the book's
- own two.  "Plus additivity" is kept verbatim: the Ab-level conclusion
+ own two.  “Plus additivity” is kept verbatim: the Ab-level conclusion
  is Functor/Representable/Additive.v's [watt_ab_iso].  #454's
  SAFT-derived conditional form is not replaced by this file.
 
@@ -246,11 +246,11 @@
  the shapes whose objects sit at the carrier universe.  The shape
  discipline is the one [Complete] and [representability_theorem]
  impose, so every colimit of modules over such a shape goes to a limit
- of groups; that is the book's "takes small colimits to limits".
+ of groups; that is the book's “takes small colimits to limits”.
  Finally, [Set < c].  No
  [Untruncate], no cogenerator, no co-well-poweredness, no choice and no
- axiom: every constant of this module is "Closed under the global
- context".
+ axiom: every constant of this module is “Closed under the global
+ context”.
 
  SIZE.  374 non-blank lines of code once comments are stripped,
  including the 33 [Require]s.
@@ -301,7 +301,7 @@
  书籍：Mac Lane，同上，第 §V.6 定理 3 和定义 3——带有逐元素解集条件的可表示性定理，Adjunction/Representability/Sets.v，这是实际在此处应用的定理。
  nLab：https://ncatlab.org/nlab/show/Eilenberg-Watts+theorem
  nLab：https://ncatlab.org/nlab/show/adjoint+functor+theorem
- nLab：https://ncatlab.org/nlab/show/representable+functor一个偏离，直白地说。问题要求瓦特定理“源自 SAFT”，其审稿人备注中写道“可表示性必须从 SAFT 加上可加性推导”。该文件没有使用特殊伴随函子定理。它应用了一般的伴随函子定理，以 Mac Lane §V.6 定理 3 的形式（[representability_theorem]，其证明在 Adjunction/GAFT.v 的逗号初始步骤中），对一个显式的元素级解集进行操作，并且对该解集的覆盖步骤是以解集形式阅读的 Eilenberg–Watts 构造。原因是可测量的，而非偏好的：在 (R-Mod)^op 上的 SAFT 需要 R-Mod 的余良幂性，而树只有在假设 [Untruncate]（Instance/Mod/WellPowered.v 的 [RMod_CoWellPowered_untruncate]；该标题引用了在没有它时的拒绝）下才具有这种性质，并且它的余生成元 [RModop_Cogenerator] 仅在 [RingObject@{c c c}] 时存在。这里的路径不需要其中任何一个，因此它给出了书中的逆变陈述，而没有超出书本自身的两个假设。"加法性"按原文保留：Ab 级结论是 Functor/Representable/Additive.v 的 [watt_ab_iso]。#454 的 SAFT 推导条件形式并没有被此文件替代。标题，以及 SAFT 路线。对于本书的对变陈述，本文件是 #454 的标题。Instance/Mod/Watts.v 保留了 Mac Lane 自己的路线，即 Reviewer 行所命名的路线，作为 [watts_theorem] : SAFT 在 (RMod R)^op 下，在假设 [Untruncate] 并且在 [RingObject@{c c c}] 处具有环。这一陈述是 [watts_theorem_unconditional] 的特例，而 Watts.v 导入此文件，并在其第 6 节中从该定理导出它（[watts_theorem_via_unconditional]，并携带 [Untruncate] 而不消耗）；SAFT 路线被保留是为了忠实于 Reviewer 的路线，而不是为了其强度。在 Watts.v 的常量中，该定理包含了三个。第一个是 [watts_theorem]，如前述树中所示。第二个是 [watts_theorem_coext]：其陈述逐字 elaborates 自 [watts_theorem_unconditional] 在 [HomAbForget R A]，闭合且无宇宙方程。第三个是 [watts_theorem_sets]，但仅在其第二个 [Representable] 宇宙是 RMod 的对象宇宙的实例中，因为 [RModop_continuous_representable] 返回一个 [Representable@{u o s o c}]；同样的展开会读回 [o = rt]。（都在导入 Watts.v 的临时文件中测量，每个语句都从 Watts.v 复制而来，并且 [U] 未使用。）ZWZ25WZZ 和 [watts_theorem_coext_obj_2a] 有无条件对应物，即 Watts.v 的 [watts_unconditional_coext] 和 [watts_unconditional_coext_2a]，它们识别该模块 THIS 定理返回的内容。未被包含：[watts_theorem_adjoint]，即书中 T 的左伴随，仅在此由 SAFT 构建，以及 [watts_theorem_Fz]，即与之比较；读回 [watts_theorem_obj] 和 [watts_theorem_to_at]，涉及 SAFT 对象；以及共变练习 3 系列（[watts_ex3]、[watts_ex3_sets]、[watts_ex3_QZ]、[watts_ex3_QZ_cogenerator]、[watts_ex3_forget]、[watts_ex3_forget_obj]）。Watts.v 的其他常数
+ nLab：https://ncatlab.org/nlab/show/representable+functor一个偏离，直白地说。问题要求瓦特定理“源自 SAFT”，其审稿人备注中写道“可表示性必须从 SAFT 加上可加性推导”。该文件没有使用特殊伴随函子定理。它应用了一般的伴随函子定理，以 Mac Lane §V.6 定理 3 的形式（[representability_theorem]，其证明在 Adjunction/GAFT.v 的逗号初始步骤中），对一个显式的元素级解集进行操作，并且对该解集的覆盖步骤是以解集形式阅读的 Eilenberg–Watts 构造。原因是可测量的，而非偏好的：在 (R-Mod)^op 上的 SAFT 需要 R-Mod 的余良幂性，而树只有在假设 [Untruncate]（Instance/Mod/WellPowered.v 的 [RMod_CoWellPowered_untruncate]；该标题引用了在没有它时的拒绝）下才具有这种性质，并且它的余生成元 [RModop_Cogenerator] 仅在 [RingObject@{c c c}] 时存在。这里的路径不需要其中任何一个，因此它给出了书中的逆变陈述，而没有超出书本自身的两个假设。“加法性”按原文保留：Ab 级结论是 Functor/Representable/Additive.v 的 [watt_ab_iso]。#454 的 SAFT 推导条件形式并没有被此文件替代。标题，以及 SAFT 路线。对于本书的对变陈述，本文件是 #454 的标题。Instance/Mod/Watts.v 保留了 Mac Lane 自己的路线，即 Reviewer 行所命名的路线，作为 [watts_theorem] : SAFT 在 (RMod R)^op 下，在假设 [Untruncate] 并且在 [RingObject@{c c c}] 处具有环。这一陈述是 [watts_theorem_unconditional] 的特例，而 Watts.v 导入此文件，并在其第 6 节中从该定理导出它（[watts_theorem_via_unconditional]，并携带 [Untruncate] 而不消耗）；SAFT 路线被保留是为了忠实于 Reviewer 的路线，而不是为了其强度。在 Watts.v 的常量中，该定理包含了三个。第一个是 [watts_theorem]，如前述树中所示。第二个是 [watts_theorem_coext]：其陈述逐字 elaborates 自 [watts_theorem_unconditional] 在 [HomAbForget R A]，闭合且无宇宙方程。第三个是 [watts_theorem_sets]，但仅在其第二个 [Representable] 宇宙是 RMod 的对象宇宙的实例中，因为 [RModop_continuous_representable] 返回一个 [Representable@{u o s o c}]；同样的展开会读回 [o = rt]。（都在导入 Watts.v 的临时文件中测量，每个语句都从 Watts.v 复制而来，并且 [U] 未使用。）ZWZ25WZZ 和 [watts_theorem_coext_obj_2a] 有无条件对应物，即 Watts.v 的 [watts_unconditional_coext] 和 [watts_unconditional_coext_2a]，它们识别该模块 THIS 定理返回的内容。未被包含：[watts_theorem_adjoint]，即书中 T 的左伴随，仅在此由 SAFT 构建，以及 [watts_theorem_Fz]，即与之比较；读回 [watts_theorem_obj] 和 [watts_theorem_to_at]，涉及 SAFT 对象；以及共变练习 3 系列（[watts_ex3]、[watts_ex3_sets]、[watts_ex3_QZ]、[watts_ex3_QZ_cogenerator]、[watts_ex3_forget]、[watts_ex3_forget_obj]）。Watts.v 的其他常数
  ([RMod_Forget_Ab_additive], [RMod_Forget_equiv], [watt_at_forget],
  [HomAbForget], [HomAbForget_additive], [HomAbForget_continuous],
  [coext_representable], [Ab_Forget_Id_equiv], [ab_hom_Z_iso]) 没有需要移除的假设。消耗的内容。Adjunction/Representability/Sets.v 的 [representability_theorem] 和 [ElementSolutionSet]；

@@ -24,8 +24,8 @@ Generalizable All Variables.
    [SemicartesianMonoidal] structure — a morphism [eliminate : x ~> I] for
    every [x], any two such morphisms agreeing ([unit_terminal]).
 
-   Reading: a morphism [x ~> y] is a synthetic Markov kernel (a "channel")
-   from [x] to [y]; a morphism [I ~> x] is a state (a "distribution") on
+   Reading: a morphism [x ~> y] is a synthetic Markov kernel (a “channel”)
+   from [x] to [y]; a morphism [I ~> x] is a state (a “distribution”) on
    [x]; [copy] duplicates and [discard] deletes an input.
 
    The class is redundancy-free, following Fritz's formulation: it carries
@@ -40,15 +40,15 @@ Generalizable All Variables.
    theorem demanding this of every morphism collapses the category to a
    cartesian monoidal one (see Markov/Fox.v).  Conversely every cartesian
    monoidal category is a Markov category — [Markov_of_Cartesian] below —
-   in which "all kernels are deterministic": the degenerate, probability-
+   in which “all kernels are deterministic”: the degenerate, probability-
    free case.
 
    nLab:      https://ncatlab.org/nlab/show/Markov+category
-   Reference: Fritz, "A synthetic approach to Markov kernels, conditional
-   independence and theorems on sufficient statistics",
+   Reference: Fritz, “A synthetic approach to Markov kernels, conditional
+   independence and theorems on sufficient statistics”,
    Adv. Math. 370:107239, 2020 (arXiv:1908.07021), §2
-   Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-   string diagrams", MSCS 29(7):938–971, 2019
+   Reference: Cho & Jacobs, “Disintegration and Bayesian inversion via
+   string diagrams”, MSCS 29(7):938–971, 2019
    (arXiv:1709.00322) 
 
    --------
@@ -72,10 +72,10 @@ Generalizable All Variables.
  The category that gives the subject its name is Stoch: objects are
  measurable spaces, morphisms are Markov kernels, identities are Dirac
  kernels, and composition is Chapman–Kolmogorov integration.  It precedes
- the axiomatics by decades: Lawvere circulated "The category of
- probabilistic mappings" as a manuscript in 1962, and Chentsov built the
- same category independently for statistics (Chentsov, "The categories of
- mathematical statistics", Dokl. Akad. Nauk SSSR 164, 1965).  Stoch is
+ the axiomatics by decades: Lawvere circulated “The category of
+ probabilistic mappings” as a manuscript in 1962, and Chentsov built the
+ same category independently for statistics (Chentsov, “The categories of
+ mathematical statistics”, Dokl. Akad. Nauk SSSR 164, 1965).  Stoch is
  the Kleisli category of the Giry monad (Giry, 1982, following Lawvere),
  and Kleisli categories of probability monads remain the standard source
  of models, alongside FinStoch for discrete probability and Gauss for
@@ -84,11 +84,11 @@ Generalizable All Variables.
  the intended model rather than a constructed one.
 
  The axiomatics was discovered twice before it was named, for unrelated
- ends.  Golubtsov axiomatized "categories of information transformers" —
+ ends.  Golubtsov axiomatized “categories of information transformers” —
  monoidal categories containing a deterministic subcategory with finite
  products — for informativeness comparison and decision problems
- (Golubtsov, "Axiomatic description of categories of information
- transformers", Problemy Peredachi Informatsii 35(3):80–98, 1999), while
+ (Golubtsov, “Axiomatic description of categories of information
+ transformers”, Problemy Peredachi Informatsii 35(3):80–98, 1999), while
  Corradini and Gadducci reached the same copy/discard structure from
  term-graph rewriting, with no probabilistic intent (the gs-monoidal
  citation in Structure/Monoidal/CopyDiscard.v).  Cho and Jacobs then made
@@ -98,7 +98,7 @@ Generalizable All Variables.
  abstract presents the framework as following work of Golubtsov as well
  as Cho and Jacobs.  The boundary theorem predates the field: Fox proved
  in 1976 that natural coherent copying forces cartesianness (Fox,
- "Coalgebras and cartesian categories", Comm. Algebra 4(7):665–667, 1976;
+ “Coalgebras and cartesian categories”, Comm. Algebra 4(7):665–667, 1976;
  Structure/Monoidal/Markov/Fox.v), which is why the absent naturality of
  [copy] noted above is the load-bearing design decision.
 
@@ -108,24 +108,24 @@ Generalizable All Variables.
  the model construction.  Fritz's founding paper derives the
  Fisher–Neyman factorization theorem and the theorems of Basu and Bahadur
  on sufficient statistics; later work recovers the Kolmogorov and
- Hewitt–Savage zero-one laws (Fritz & Rischel, "Infinite products and
- zero-one laws in categorical probability", Compositionality 2:3, 2020),
+ Hewitt–Savage zero-one laws (Fritz & Rischel, “Infinite products and
+ zero-one laws in categorical probability”, Compositionality 2:3, 2020),
  de Finetti's theorem on exchangeable sequences (Fritz, Gonda & Perrone,
- "De Finetti's theorem in categorical probability", J. Stochastic
+ “De Finetti's theorem in categorical probability”, J. Stochastic
  Analysis 2(4):6, 2021), and the ergodic decomposition theorem (Moss &
- Perrone, "A category-theoretic proof of the ergodic decomposition
- theorem", Ergodic Theory Dynam. Systems 2023).  Beyond probability
+ Perrone, “A category-theoretic proof of the ergodic decomposition
+ theorem”, Ergodic Theory Dynam. Systems 2023).  Beyond probability
  itself, an abstract form of the d-separation criterion of graphical
  causal models is proved at this generality, for possibilistic and
  deterministic networks alongside probabilistic ones (Fritz & Klingler,
- "The d-separation criterion in categorical probability", JMLR
+ “The d-separation criterion in categorical probability”, JMLR
  24(46):1–49, 2023); a probabilistic language with exact conditioning
  takes its denotational semantics in categories built from the Markov
- categories Gauss and FinStoch (Stein & Staton, "Compositional semantics
- for probabilistic programs with exact conditioning", LICS 2021); and
+ categories Gauss and FinStoch (Stein & Staton, “Compositional semantics
+ for probabilistic programs with exact conditioning”, LICS 2021); and
  Shannon and Rényi entropy are characterized as measures of how far a
- morphism is from being deterministic (Perrone, "Markov categories and
- entropy", IEEE Trans. Inf. Theory 70(3), 2024).
+ morphism is from being deterministic (Perrone, “Markov categories and
+ entropy”, IEEE Trans. Inf. Theory 70(3), 2024).
 
  Computationally, a morphism is a call to a randomized procedure, and
  the two halves of the structure say what may be reordered around the
@@ -167,7 +167,7 @@ Class MarkovCategory : Type := {
 
   (*
  The unit [I] is terminal (the category is semicartesian / affine):
- synthetically, "probability distributions are normalized". 
+ synthetically, “probability distributions are normalized”. 
 
  --------
  单元 [I] 是终端的（类别是半笛卡尔/仿射的）：综合来看，“概率分布是归一化的”。
@@ -198,7 +198,7 @@ Corollary markov_discard_eliminate {x : C} :
 Proof. apply (@unit_terminal C _ markov_semicartesian). Qed.
 
 (*
- Naturality of discard — "delete after doing anything is delete" — is
+ Naturality of discard — “delete after doing anything is delete” — is
  likewise a corollary of terminality, never an axiom. 
 
  --------

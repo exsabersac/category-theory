@@ -25,7 +25,7 @@ Generalizable All Variables.
 (*
    * * The integral group ring, and the unit-group functor
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, §III.1, printed p. 59, Exercise 1 — the integral group
    ring ℤ[G] as a universal arrow to the unit-group functor
    (maclane:III.1:ex1)

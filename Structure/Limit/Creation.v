@@ -26,9 +26,9 @@ Generalizable All Variables.
  Awodey:    Category Theory, 2nd ed., §5.6 Definition 5.31 (p. 119)
 
  CORRECTION (#467): Mac Lane's Definition on p. 112 is unnumbered (the
- page reads "Definition.", between Theorems 2 and 3 of §V.1, read from
- the page image), and it numbers its two clauses (i) and (ii); "§V.1
- Definition 3" in this header and at [CreatesLimit], and "clause (b)"
+ page reads “Definition.”, between Theorems 2 and 3 of §V.1, read from
+ the page image), and it numbers its two clauses (i) and (ii); “§V.1
+ Definition 3” in this header and at [CreatesLimit], and “clause (b)”
  at [creates_limiting], name that Definition and its clause (ii).  The
  on-the-nose uniqueness that UNIQUENESS OF THE LIFT below declines as a
  field is refuted for [EM_Forget] at the identity monad on [Sets], over
@@ -43,8 +43,8 @@ Generalizable All Variables.
  [F a = x] and [F σ = τ], and that [σ] is a limiting cone.
 
  The interest of the notion is practical rather than taxonomic.  It is
- what makes "limits in an algebraic category are computed on underlying
- sets" a theorem rather than a slogan: the forgetful functor of a
+ what makes “limits in an algebraic category are computed on underlying
+ sets” a theorem rather than a slogan: the forgetful functor of a
  category of algebras creates limits, so the limit upstairs is the limit
  of the carriers, equipped with the one structure map that makes every
  projection a homomorphism.  That is exactly the witness shipped with
@@ -103,7 +103,7 @@ Generalizable All Variables.
  Instance/Discrete.v, Construction/Grothendieck/Strict.v and
  Theory/Category/Monoid.v all use it), so [StrictLift] states the apex
  clause with [=] and the leg clause with [≈] through [hom_rew]; that is
- Riehl's Definition 3.4.7, which she flags as an "evil" strictification
+ Riehl's Definition 3.4.7, which she flags as an “evil” strictification
  not generally satisfied by equivalences — and indeed the apex of
  [equivalence_creates_limits] is the quasi-inverse of the given apex, in
  general only isomorphic to it.  The iso-invariant reading is the usable default and
@@ -112,7 +112,7 @@ Generalizable All Variables.
  ship, and [StrictlyCreatesLimit_CreatesLimit] relates them in the
  derivable direction.
 
- UNIQUENESS OF THE LIFT.  Mac Lane's "exactly one pair" cannot be a
+ UNIQUENESS OF THE LIFT.  Mac Lane's “exactly one pair” cannot be a
  FIELD here, because a field must hold at every intended instance and the
  obstruction at the two that matter is not a matter of effort: for [EM_Forget] two lifts of one
  limiting cone carry algebra structures whose actions agree only up to
@@ -144,8 +144,8 @@ Generalizable All Variables.
  [creates_limits_Complete] additionally shares one shape universe
  between its two [Complete] occurrences; the library's [Complete] carries
  no explicit smallness hypothesis (Structure/Complete.v), so
- "creates all small limits" here reads as "creates limits of every shape
- the use site's universes allow".  Creation of finite limits is out of
+ “creates all small limits” here reads as “creates limits of every shape
+ the use site's universes allow”.  Creation of finite limits is out of
  scope here: the finiteness predicate on shapes is now
  [Structure/Limit/Finite.v]'s [FiniteCategory] (it postdates this file,
  which quantifies over no shape class), and [CreatesLimitsOfShape] at a
@@ -273,7 +273,7 @@ Definition CreatesAllLimits {C D : Category} (F : C ⟶ D) : Type :=
   ∀ (J : Category) (K : J ⟶ C), CreatesLimit K F.
 
 (*
- "Creates products" is the discrete-shape case, over
+ “Creates products” is the discrete-shape case, over
  Instance/Discrete.v's [DiscreteCat], mirroring how
  Structure/Limit/Product.v reaches indexed products. 
 
@@ -519,8 +519,8 @@ Definition creates_colimits_Cocomplete {C D : Category} (F : C ⟶ D)
  functor replaced by a family; the two bridges below record that
  [CreatesLimit K F] is exactly the case of a one-member family.  Its
  motivating instance is the family of projections out of a product of
- categories (Construction/Product/Limit.v), which is what makes "limits
- in a product category are computed componentwise" a creation statement
+ categories (Construction/Product/Limit.v), which is what makes “limits
+ in a product category are computed componentwise” a creation statement
  rather than a construction.  Mac Lane's remaining clauses — the lift
  is limiting, and any cone over the given family is canonically
  isomorphic to it — are derived exactly as for [CreatesLimit]. 

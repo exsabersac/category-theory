@@ -26,7 +26,7 @@ Generalizable All Variables.
  identification.
 
  The argument is Tait's reducibility / logical-relations method (Tait 1967,
- Girard's "reducibility candidates"):
+ Girard's “reducibility candidates”):
  https://softwarefoundations.cis.upenn.edu/plf-current/Norm.html
 
  The reducibility predicate is [SN := ExpP halts], where [ExpP] (from [Log])

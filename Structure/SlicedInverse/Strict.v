@@ -22,7 +22,7 @@ Require Import Category.Structure.SlicedInverse.
    nLab: https://ncatlab.org/nlab/show/quotient+space
    nLab: https://ncatlab.org/nlab/show/topological+concrete+category
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, Springer 1998, SS IV.4 (printed p. 94, the
    left-adjoint-left-inverse; p. 95, Exercise 3, the
    left-adjoint-right-inverse) and SS V.9, read from the page
@@ -44,14 +44,14 @@ Require Import Category.Structure.SlicedInverse.
    RIGHT-ADJOINT-RIGHT-INVERSE: the subspace topology is one for the
    sliced forgetful functor, and Proposition 1 builds equalizers from
    them (Structure/SlicedInverse.v, whose header carries the background
-   essay).  Its dual -- one sentence of the book, "Now Proposition 1 was
+   essay).  Its dual -- one sentence of the book, “Now Proposition 1 was
    proved just from the axioms for a category, so its dual is also
-   true" -- builds coequalizers from sliced left-adjoint-right-inverses,
+   true” -- builds coequalizers from sliced left-adjoint-right-inverses,
    of which the quotient, or final, topology is the example (nLab,
-   "quotient space"; Instance/Top/Subspace.v's [quotient_LARI]).
+   “quotient space”; Instance/Top/Subspace.v's [quotient_LARI]).
 
-   Two of those names are one notion seen from its two ends.  "[S ⊣ R]
-   with counit the identity" says that [R] is a
+   Two of those names are one notion seen from its two ends.  “[S ⊣ R]
+   with counit the identity” says that [R] is a
    right-adjoint-right-inverse of [S] AND that [S] is a
    left-adjoint-left-inverse of [R]; the library's two records differ
    only in which functor is the parameter.  This file makes that exact,
@@ -154,9 +154,9 @@ Require Import Category.Structure.SlicedInverse.
 
    ** Prior art, measured
 
-   Theory/Equivalence/Strict.v's own NOT DELIVERED list includes "no
+   Theory/Equivalence/Strict.v's own NOT DELIVERED list includes “no
    comparison of [LeftAdjointRightInverse] with Adjunction/LeftInverse.v's
-   [LeftAdjointLeftInverse] beyond naming the pair"; that remains true --
+   [LeftAdjointLeftInverse] beyond naming the pair”; that remains true --
    the comparison made here is between the new
    [RightAdjointRightInverse] and [LeftAdjointLeftInverse], the two
    records that are one notion.  Collisions: see the main file.

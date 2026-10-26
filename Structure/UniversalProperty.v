@@ -19,15 +19,15 @@ Require Import Category.Construction.Groupoid.
  Wikipedia: https://en.wikipedia.org/wiki/Universal_property
  Wikipedia: https://en.wikipedia.org/wiki/Representable_functor
 
- A predicate P on the objects of C is a "universal property" when satisfying
+ A predicate P on the objects of C is a “universal property” when satisfying
  the predicate is equivalent to representing a fixed functor.  Concretely, an
- object c "has the property P" exactly when c represents [repr_functor], i.e.
+ object c “has the property P” exactly when c represents [repr_functor], i.e.
  there is a natural isomorphism of copresheaves
 
  [Hom c,─] ≅ repr_functor    (Hom(c, ─) ≅ P, naturally in the target)
 
  in the functor category [C, Sets].  This is the standard equivalence
- "universal property ⟺ representability": following nLab, a representation of
+ “universal property ⟺ representability”: following nLab, a representation of
  a functor F : C ⟶ Sets is a natural isomorphism Hom(c, ─) ≅ F, and by the
  Yoneda lemma it is determined by a single universal element (the image of
  id{C} c).  Wikipedia phrases the same fact as: (A, u) is universal from X to
@@ -60,7 +60,7 @@ Require Import Category.Construction.Groupoid.
    2) 字段 / Fields
       - repr_functor : C ⟶ Sets  —— 被表示的函子 F
       - repr_equivalence c       —— P c ≅ (Hom(c,─) ≅ F) 的 Sets-同构
-        / iso between "P holds at c" and "Hom(c,─) ≅ F"
+        / iso between “P holds at c” and “Hom(c,─) ≅ F”
 
    3) 推论：univ_property_unique —— 满足 P 的对象在唯一同构下唯一。
       Corollary: objects satisfying P are unique up to unique iso.
@@ -236,11 +236,11 @@ Section UniversalProperty.
       rewrite <- 2 (@preyoneda (C^op) _ _ repr_functor aj');
                reflexivity).
     - (* The isomorphism is unique. / 同构是唯一的。 *)
-      (* The canonical isomorphism c ≌ d "carrying" t to s is defined as follows: / 将 t “携带”到 s 的典范同构 c ≌ d 定义如下： *)
+      (* The canonical isomorphism c ≌ d “carrying” t to s is defined as follows: / 将 t “携带”到 s 的典范同构 c ≌ d 定义如下： *)
       (* rep_c : Hom(c, -) ≌ repr_functor / rep_c : Hom(c, -) ≌ repr_functor *)
       (* rep_d : Hom(d, -) ≌ repr_functor / rep_d : Hom(d, -) ≌ 表示函子 *)
       (* rep_c ^-1 ∘ rep_d : Hom(d,-) -> repr_functor -> Hom(c, -) / rep_c ^-1 ∘ rep_d : Hom(d,-) -> repr_functor -> Hom(c, -) *)
-      (* " ... " d id_d : Hom(c, d) / d id_d : Hom(c, d) *)
+      (* “ ... ” d id_d : Hom(c, d) / d id_d : Hom(c, d) *)
       (* p := rep_c^-1 ∘ rep_d d id_d. / p := rep_c^-1 ∘ rep_d d id_d. *)
       (*
  OTOH, by assumption, we have -

@@ -34,28 +34,28 @@ Generalizable All Variables.
 (* * * Cartesian closure is NOT inherited by functor categories / * * 笛卡尔闭包并不继承于函子范畴 *)
 
 (*
- Book:      Mac Lane, CWM 2nd ed., §IV.6 "Cartesian Closed Categories",
+ Book:      Mac Lane, CWM 2nd ed., §IV.6 “Cartesian Closed Categories”,
  Exercise 5, printed p. 98 ([maclane:IV.6:ex5]).  Verbatim:
 
- "5. Show that A cartesian closed need not imply A^J
- cartesian closed."
+ “5. Show that A cartesian closed need not imply A^J
+ cartesian closed.”
 
- Book:      Awodey, Category Theory, §8.7 "Exponentials in categories
- of diagrams", printed pp. 207-208
+ Book:      Awodey, Category Theory, §8.7 “Exponentials in categories
+ of diagrams”, printed pp. 207-208
  (Awodey's unnumbered remark there that the pointwise
  formula does not define an exponential of presheaves;
  the catalog identifier for it is quoted verbatim in
  Test/ProbeFunClosed392.v, which carries it in full).
  Verbatim, with the question-mark-over-equals rendered as
- "=?":
+ “=?”:
 
- "Now suppose we have functors P, Q and we want Q^P.
+ “Now suppose we have functors P, Q and we want Q^P.
  The reader should try to construct the exponential
  'pointwise',
 
  Q^P(C) =? Q(C)^{P(C)}
 
- to see that it does not work (it's not functorial)."
+ to see that it does not work (it's not functorial).”
 
  nLab:      https://ncatlab.org/nlab/show/functor+category
  nLab:      https://ncatlab.org/nlab/show/cartesian+closed+category
@@ -138,7 +138,7 @@ Generalizable All Variables.
 
  THE STRENGTHENING LANDED.  [fun_not_cartesian_closed] quantifies over
  an ARBITRARY [@Cartesian ([Omega, FinSet])], not merely the pointwise
- one, so it is the strict reading of "not cartesian closed".  It costs
+ one, so it is the strict reading of “not cartesian closed”.  It costs
  nothing: the engine takes the cartesian structure as a parameter, and
  the only structure it pins is the TERMINAL object, which it supplies
  itself as [Functor_Category_Terminal FinSet_Terminal] rather than
@@ -165,15 +165,15 @@ Generalizable All Variables.
  equivalent.  Hence [awodey_pointwise_not_exponential].
 
  BE PRECISE ABOUT WHAT THAT DOES AND DOES NOT SAY.  Awodey's stated
- reason is that the objectwise assignment "is not functorial".  Read
- literally, "there is no contravariant action on this family of sets"
+ reason is that the objectwise assignment “is not functorial”.  Read
+ literally, “there is no contravariant action on this family of sets”
  would be FALSE for the family at hand, which does carry an action --
  though NOT because every family does: over [_2] the family that is a
  singleton at [TwoX] and empty at [TwoY] carries none.  What is proved
  here is different in kind, and stronger in the way that matters: the
  objectwise VALUES are already the wrong objects, so NO action
  whatsoever on them can produce the exponential.  This file does not
- formalize the sentence "it is not functorial"; it formalizes a
+ formalize the sentence “it is not functorial”; it formalizes a
  statement that makes the sentence moot.
 
  THAT SECOND THEOREM IS STATED CONDITIONALLY, AND ITS HYPOTHESIS IS

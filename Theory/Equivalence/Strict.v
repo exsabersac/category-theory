@@ -24,16 +24,16 @@ Require Import Category.Instance.Discrete.Reconstruct.
     nLab: https://ncatlab.org/nlab/show/essentially+surjective+functor
     nLab: https://ncatlab.org/nlab/show/coreflective+subcategory
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+    Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
           GTM 5, Springer 1998, SS IV.4, printed p. 95, Exercise 3.
 
     Transliterated to ASCII from the page image:
 
-      "3.  If S : A -> C is full, faithful, and surjective on objects
+      “3.  If S : A -> C is full, faithful, and surjective on objects
        (each c in C is c = Sa for some a in A), prove that there is an
        adjoint equivalence <T, S; 1, epsilon> : C -> A with unit the
        identity (and thence that T is a left-adjoint-right-inverse
-       of S)."
+       of S).”
 
     Under the SS IV.1 convention the first-listed functor of a triple
     C -> A is the LEFT adjoint, so T : C ⟶ A is left adjoint to S, the
@@ -44,13 +44,13 @@ Require Import Category.Instance.Discrete.Reconstruct.
     and not rebuilt; Exercises 1, 2 and 5 are separate catalog items and
     are cited rather than delivered.
 
-    ** The design crux: "unit the identity" is not an equation
+    ** The design crux: “unit the identity” is not an equation
 
     In this library the unit of [T ⊣ S] at [c] runs [c ~> S (T c)]
     (Theory/Adjunction.v) while [id[c]] runs [c ~> c], so the two live
     in one hom-set only when [S (T c)] and [c] are the same object at
     LEIBNIZ equality.  So surjectivity on objects must carry that equation
-    as DATA, and "the unit is the identity" must be stated against the
+    as DATA, and “the unit is the identity” must be stated against the
     identity TRANSPORTED along it.  This is Adjunction/LeftInverse.v's
     situation one variance over, and the same [id_cast] transport kit
     (Construction/Quotient.v) does the work.
@@ -174,7 +174,7 @@ Require Import Category.Instance.Discrete.Reconstruct.
 
     So the honest statement of the equivalence is one-directional: full +
     faithful + surjective-on-objects gives a left-adjoint-right-inverse
-    ([ff_surjective_LARI]), and the hypothesis "S has a left adjoint" that
+    ([ff_surjective_LARI]), and the hypothesis “S has a left adjoint” that
     the naive converse would add is REDUNDANT -- the left adjoint is
     constructed, not assumed.
 

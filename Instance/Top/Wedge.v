@@ -16,11 +16,11 @@ Generalizable All Variables.
 (* * * The wedge sum is the coproduct in Top∗ / * * 楔和是 Top∗ 中的余积 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
+ Book: Mac Lane, “Categories for the Working Mathematician” (2nd ed.),
  §III.3, book p. 63 (maclane:III.3:remark1)
- Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ Book: Awodey, “Category Theory” (1st ed., CMU pre-print, Sept 2005),
  §3.2, Example 3.6, printed p. 62 (awodey:3.2:example6) — the
- "rooted posets by basepoint identification" clause, here for
+ “rooted posets by basepoint identification” clause, here for
  pointed spaces
  Wikipedia: https://en.wikipedia.org/wiki/Wedge_sum
 

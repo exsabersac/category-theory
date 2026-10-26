@@ -9,9 +9,9 @@ Require Import Category.Theory.Category.
     first-order syntax of categorical expressions that goals are reified into
     (see Solver/Reify.v), interpreted back to real morphisms (Solver/Denote.v),
     normalized (Solver/Normal.v), and decided (Solver/Decide.v).  The technique
-    is the standard "proof by reflection": represent the term as data, compute
+    is the standard “proof by reflection”: represent the term as data, compute
     on that data, and relate the computation back to the original goal — see
-    Adam Chlipala's "Certified Programming with Dependent Types" (CPDT), from
+    Adam Chlipala's “Certified Programming with Dependent Types” (CPDT), from
     which much of this solver is adapted.
 
     Objects and morphism variables are referred to by de Bruijn-style indices

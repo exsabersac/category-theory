@@ -18,12 +18,12 @@ Generalizable All Variables.
 (** * Transport of colimits, and the induced map between (co)limits / * 余极限的传递，以及由此引起的 (共)极限之间的映射 *)
 
 (*
-Riehl, "Category Theory in Context", Dover 2016, §3.3 Corollary 3.3.3
+Riehl, “Category Theory in Context”, Dover 2016, §3.3 Corollary 3.3.3
    and the surrounding prose (printed p. 100).  CITED BY LOCATION; the
    printed text was not consulted for this file.
    nLab: https://ncatlab.org/nlab/show/colimit
    nLab: https://ncatlab.org/nlab/show/opposite+functor
-   Mac Lane, "Categories for the Working Mathematician", Springer GTM 5,
+   Mac Lane, “Categories for the Working Mathematician”, Springer GTM 5,
    2nd ed., §III.4 and §V.
 
    Two statements live here, and they are DIFFERENT statements — the
@@ -226,8 +226,8 @@ Riehl, "Category Theory in Context", Dover 2016, §3.3 Corollary 3.3.3
    (Functor/Opposite.v, and that file OPENS it) and [transform_scope]
    (Natural/Transformation/Opposite.v, likewise opened).  A
    bare [C^op] on a CATEGORY parses here as the opposite FUNCTOR and
-   fails with a message naming neither culprit ("The term C has type
-   Category while it is expected to have type ?C ⟶ ?D").  Every
+   fails with a message naming neither culprit (“The term C has type
+   Category while it is expected to have type ?C ⟶ ?D”).  Every
    opposite in this file is therefore written by constant name:
    [Opposite], [Opposite_Functor], [Opposite_Transform].
 

@@ -18,7 +18,7 @@ Generalizable All Variables.
 (*
  nLab:      https://ncatlab.org/nlab/show/biproduct
  Wikipedia: https://en.wikipedia.org/wiki/Coproduct
- Book:      Mac Lane, "Categories for the Working Mathematician"
+ Book:      Mac Lane, “Categories for the Working Mathematician”
  (2nd ed.), §III.3, book p. 63 (maclane:III.3:remark1)
 
  Mac Lane's §III.3 roster of concrete coproducts opens with the direct
@@ -28,8 +28,8 @@ Generalizable All Variables.
  the piece of vocabulary that observation needs and that the tree did
  not have.
 
- [Structure/Biproduct.v] already packages "x ⊕ y is at once a product
- and a coproduct" as a record, with both universal properties stated in
+ [Structure/Biproduct.v] already packages “x ⊕ y is at once a product
+ and a coproduct” as a record, with both universal properties stated in
  the ∃!-form: [bi_is_product] and [bi_is_coproduct].  What it does not
  do is hand the result back in the vocabulary the rest of the library
  speaks.  Products and coproducts are consumed through
@@ -57,8 +57,8 @@ Generalizable All Variables.
  [biproduct_coprod_obj]    : x + y IS the same object
  [biproduct_prod_is_coprod]: x × y IS x + y
 
- The last is the sentence "in a category with biproducts the binary
- product and the binary coproduct are the same object" as a machine
+ The last is the sentence “in a category with biproducts the binary
+ product and the binary coproduct are the same object” as a machine
  checked conversion rather than as prose or as a constructed
  isomorphism.  The mediators and the injections likewise return on the
  nose ([biproduct_fork_is_pair], [biproduct_merge_is_copair],
@@ -96,8 +96,8 @@ Generalizable All Variables.
  That is INHERITED from [Cartesian], not introduced here:
  [Cartesian@{u u0}] itself takes a [Category@{u u0 u0}], and that link
  is real.  But read the CAUSE precisely, because an earlier draft of
- this header got it wrong: it said the identification "is already
- present at Structure/Terminal.v's [Terminal]", implying [Terminal] is
+ this header got it wrong: it said the identification “is already
+ present at Structure/Terminal.v's [Terminal]”, implying [Terminal] is
  the source.  An audit REFUTED that as causal — a one-field class
  [{ t1 : obj }] declared over an unannotated [Context `{C : Category}]
  with no [Terminal] and no [Cartesian] anywhere in scope comes out at

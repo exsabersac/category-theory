@@ -19,17 +19,17 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/kernel+pair
  Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
 
- Mac Lane, "Categories for the Working Mathematician" 2nd ed., Springer
+ Mac Lane, “Categories for the Working Mathematician” 2nd ed., Springer
  GTM 5 1998, §III.4 Exercise 1 (p. 72) -- the pullback in Set is the set
  of pairs on which the two legs agree, with the evident projections --
  and §III.4 Exercise 6 (p. 72), the kernel pair: the pullback of f along
- itself, which is the equivalence relation "f x = f x'"
- ([maclane:III.4:ex1], [maclane:III.4:ex6]).  Awodey, "Category Theory"
+ itself, which is the equivalence relation “f x = f x'”
+ ([maclane:III.4:ex1], [maclane:III.4:ex6]).  Awodey, “Category Theory”
  2nd ed., Oxford Logic Guides 52 2010, §5.2 gives the same construction
  and, in Example 5.9, the case that makes it useful: pulling a subset
  inclusion V ↪ B back along f : A ⟶ B is taking the preimage
- {a | f a ∈ V} ([awodey:5.2:example9]).  Riehl, "Category Theory in
- Context", Dover 2016, §3.2 Example 3.2.9 records that a pullback IS the
+ {a | f a ∈ V} ([awodey:5.2:example9]).  Riehl, “Category Theory in
+ Context”, Dover 2016, §3.2 Example 3.2.9 records that a pullback IS the
  equalizer of the two composites out of the binary product
  ([riehl:3.2:example9]).
 
@@ -37,7 +37,7 @@ Generalizable All Variables.
 
  [HasPullbacks] (Structure/Pullback.v) had exactly ONE inhabitant
  for a concrete category, [FinSet_Pullbacks] (Instance/FinSet/
- Classifier.v) -- measured by [rg -n "HasPullbacks" -g '*.v' .]
+ Classifier.v) -- measured by [rg -n “HasPullbacks” -g '*.v' .]
  over the whole tree, whose other hits are the class itself, prose, the
  generic conditionals [HasPullbacks_of_Cartesian_HasEqualizers]
  (Structure/Pullback/Reduction.v), [HasPullbacks_op_of_HasPushouts]
@@ -93,7 +93,7 @@ Generalizable All Variables.
  ( * rejected: * )
  Definition strict_obj : DerObj = sets_pb_obj f g := eq_refl.
 
- the second with "cannot unify "DerObj" and "sets_pb_obj f g"".  So the
+ the second with “cannot unify ”DerObj“ and ”sets_pb_obj f g“”.  So the
  derived apex IS, on the nose, the setoid of COMPATIBLE FAMILIES over
  the walking parallel pair: a dependent function on [ParObj] paired with
  a constraint quantified over every arrow of [Parallel].  An element of
@@ -118,13 +118,13 @@ Generalizable All Variables.
 
  A STALE NOTE CORRECTED
 
- The issue text behind this file says Riehl's "the pullback is the
- equalizer" is stated nowhere in the tree and is recorded as a known gap
+ The issue text behind this file says Riehl's “the pullback is the
+ equalizer” is stated nowhere in the tree and is recorded as a known gap
  at Structure/Topos.v.  That is not what that file says now, and the
  correction runs in both directions.  Structure/Topos.v says only
- that the topos class "deliberately do[es] not add equalizers", and
- its header says in terms that the reduction and its converse "ARE
- formalized", naming [equalizer_of_pullback]
+ that the topos class “deliberately do[es] not add equalizers”, and
+ its header says in terms that the reduction and its converse “ARE
+ formalized”, naming [equalizer_of_pullback]
  (Structure/Pullback/Reduction.v).  So the GENERIC theorem exists
  and this file does not supply it.  What did not exist is any
  INSTANTIATION at a concrete category: searching [IsEqualizer] tree-wide
@@ -266,8 +266,8 @@ Generalizable All Variables.
  [eq_Setoid] (Lib/Setoid.v), which is universe-polymorphic, rather
  than by resolving [eq_equivalence] at an unannotated binder.
 
- ZERO AXIOMS.  All 103 constants of this file report "Closed under the
- global context".  Enumerated as the 95 names the [.glob] records under
+ ZERO AXIOMS.  All 103 constants of this file report “Closed under the
+ global context”.  Enumerated as the 95 names the [.glob] records under
  [def], [prf], [inst], [proj] and [rec], plus the 7 [_obligation_]
  constants that [Print Module] lists and the [.glob] does not, plus
  [Build_SubsetOf], which appears in neither.
@@ -312,7 +312,7 @@ Generalizable All Variables.
  nLab：       https://ncatlab.org/nlab/show/kernel+pair
  维基百科：  https://en.wikipedia.org/wiki/Pullback_(category_theory)Mac Lane，《为工作中的数学家论范畴》第二版，Springer GTM 5 1998，第III.4节 习题1（第72页）——在Set中的拉回是那些两个分支一致的对的集合，并具有显而易见的投影——以及第III.4节 习题6（第72页），核对：沿自身的f的拉回，即等价关系“f x = f x'”（[maclane:III.4:ex1], [maclane:III.4:ex6]）。Awodey，《范畴论》第二版，Oxford Logic Guides 52 2010，第5.2节给出了相同的构造，并在例5.9中说明了其用途：将子集包含V ↪ B沿f : A ⟶ B拉回即取原像 {a | f a ∈ V}（[awodey:5.2:example9]）。Riehl，《语境中的范畴论》，Dover 2016，第3.2节例3.2.9记录了拉回就是二元积的两个复合的等化子（[riehl:3.2:example9]）。
 
- 缺失的是什么[HasPullbacks]（Structure/Pullback.v）在一个具体范畴中恰好有一个元素，[FinSet_Pullbacks]（Instance/FinSet/Classifier.v）——由[rg -n "HasPullbacks" -g '*.v' .]在整个树上测量，其它命中的是类本身、散文、一般条件[HasPullbacks_of_Cartesian_HasEqualizers]（Structure/Pullback/Reduction.v）、[HasPullbacks_op_of_HasPushouts]（Structure/Pushout.v）和[codomain_cleaving_pullbacks]（Construction/Displayed/Codomain.v）——三个，早期修订提到两个——两个以其命名的[*_of_HasPullbacks_Terminal]常量，类FIELDS [regular_pullbacks]（Structure/Regular.v）和[topos_pullbacks]（Structure/Topos.v），以及假设绑定。没有一个是具体元素，因此标题不受影响；枚举已修正，因为它曾被作为详尽列举。[Sets] 完全没有拉回。它确实有的是 [sets_char_pullback] (Instance/Sets/Classifier.v)，那是一个不同的陈述：它证明了一个特定的平方——给定单态的分类平方——是一个拉回图，它并没有涉及任意的余锥，而且它是在 [Sets@{so sso}] 之上陈述的，比它所涉及的对象所在的 [Sets@{o so}] 高一个宇宙。没有任何具体类别包含核对。[kernel_pair]（Structure/Regular.v）是[pullback f f]；在固定类别中由它构建的唯一树内常量是[image_kernel_pair]（Structure/Regular/Factorization.v），它位于[Context (R : Regular C)]之下，一个在任何地方都没有实例的类：在整个[Regular]树中搜索，然后丢弃[RegularEpi]、[regular_*]字段名称和冯·诺伊曼正则性词汇表，只剩下Structure/Regular.v的[Require]以及那个绑定器。[Instance/*/Regular.v]文件涉及箭头(Theory/Morphisms.v)的冯·诺伊曼正则性，这是一个不同的概念但使用了相同的词语。
+ 缺失的是什么[HasPullbacks]（Structure/Pullback.v）在一个具体范畴中恰好有一个元素，[FinSet_Pullbacks]（Instance/FinSet/Classifier.v）——由[rg -n “HasPullbacks” -g '*.v' .]在整个树上测量，其它命中的是类本身、散文、一般条件[HasPullbacks_of_Cartesian_HasEqualizers]（Structure/Pullback/Reduction.v）、[HasPullbacks_op_of_HasPushouts]（Structure/Pushout.v）和[codomain_cleaving_pullbacks]（Construction/Displayed/Codomain.v）——三个，早期修订提到两个——两个以其命名的[*_of_HasPullbacks_Terminal]常量，类FIELDS [regular_pullbacks]（Structure/Regular.v）和[topos_pullbacks]（Structure/Topos.v），以及假设绑定。没有一个是具体元素，因此标题不受影响；枚举已修正，因为它曾被作为详尽列举。[Sets] 完全没有拉回。它确实有的是 [sets_char_pullback] (Instance/Sets/Classifier.v)，那是一个不同的陈述：它证明了一个特定的平方——给定单态的分类平方——是一个拉回图，它并没有涉及任意的余锥，而且它是在 [Sets@{so sso}] 之上陈述的，比它所涉及的对象所在的 [Sets@{o so}] 高一个宇宙。没有任何具体类别包含核对。[kernel_pair]（Structure/Regular.v）是[pullback f f]；在固定类别中由它构建的唯一树内常量是[image_kernel_pair]（Structure/Regular/Factorization.v），它位于[Context (R : Regular C)]之下，一个在任何地方都没有实例的类：在整个[Regular]树中搜索，然后丢弃[RegularEpi]、[regular_*]字段名称和冯·诺伊曼正则性词汇表，只剩下Structure/Regular.v的[Require]以及那个绑定器。[Instance/*/Regular.v]文件涉及箭头(Theory/Morphisms.v)的冯·诺伊曼正则性，这是一个不同的概念但使用了相同的词语。
 
  推导路线：已测量，但未采用自从 jwiegley/category-theory#326 合并以来，[Sets] 已经具备了从归约中读取回拉所需的所有要素：[Sets_Cartesian]（Instance/Sets/Cartesian.v）、[Sets_HasEqualizers]（Adjunction/GAFT/Sets.v），以及 [HasPullbacks_of_Cartesian_HasEqualizers]。这个路径在编写此文件之前就已经尝试过，并且它会在错误的描述下生成顶点——不是不透明的，而是可以展开为其他东西的透明顶点。[Sets_HasEqualizers] 是 [Complete_HasEqualizers Sets_Complete]，所以它的等化器是步行平行对的极限，由 Instance/Sets/Complete.v 构建，并且有
 
@@ -656,10 +656,10 @@ Definition sub_obj : Sets :=
 
 (*
  CORRECTED, and the correction matters because the original named the
- wrong mechanism.  An earlier revision said "[Program] raises no
+ wrong mechanism.  An earlier revision said “[Program] raises no
  obligation here -- instance resolution closes [proper_morphism] during
  elaboration -- which is the shape Instance/Sets/Products.v
- records as a universe-pinning hazard".  That is FALSE: the [Program]
+ records as a universe-pinning hazard”.  That is FALSE: the [Program]
  form DOES raise one, [sub_incl_obligation_1] (measured by elaborating
  it and reading [Print]).  Products.v defines its hazard as the
  definition raising NO obligation AT ALL, so this site is not an

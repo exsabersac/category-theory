@@ -191,7 +191,7 @@ Definition FreePROP : PROP := {|
 
 (*
    * The coherence between the strict and symmetric [Monoidal] paths is
-   the reflexivity proof itself — the "known limitation" discussed in
+   the reflexivity proof itself — the “known limitation” discussed in
    [Construction/PROP.v] does not bite on the free PROP. 
 
    --------

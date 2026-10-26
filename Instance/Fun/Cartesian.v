@@ -16,15 +16,15 @@ Require Import Category.Lib.Tactics2.
 
  When D is cartesian, the functor category [C, D] is cartesian, with all of
  the structure computed pointwise (objectwise) in D. The nLab records the
- general fact that "if D has limits or colimits of a certain shape, then so
- does [C, D] and they are computed pointwise"; finite products are the
+ general fact that “if D has limits or colimits of a certain shape, then so
+ does [C, D] and they are computed pointwise”; finite products are the
  special case used here; Instance/Fun/Limit.v proves the general limit half.
 
  Concretely, the product of two functors F, G : C ⟶ D is the functor
 
  (F × G) c := F c × G c
 
- acting on a morphism f : c ~> c' by the "Cartesian product of morphisms"
+ acting on a morphism f : c ~> c' by the “Cartesian product of morphisms”
  (Wikipedia), here the library's [split]:
 
  (F × G) f := split (fmap[F] f) (fmap[G] f)

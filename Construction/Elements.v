@@ -25,9 +25,9 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_elements
 
  BOOK LOCATIONS. Recorded from the statement of issue #345: Mac Lane,
- "Categories for the Working Mathematician", III.7; Riehl, "Category
- Theory in Context", 2.4 (Definitions 2.4.1 and 2.4.2, Exercise
- 2.4.ii); Awodey, "Category Theory", 8.6. Those texts were not
+ “Categories for the Working Mathematician”, III.7; Riehl, “Category
+ Theory in Context”, 2.4 (Definitions 2.4.1 and 2.4.2, Exercise
+ 2.4.ii); Awodey, “Category Theory”, 8.6. Those texts were not
  consulted while writing this file. The locations are given so a
  reader can look the construction up; nothing beyond the locations is
  reproduced here, and no claim is made about the wording or numbering

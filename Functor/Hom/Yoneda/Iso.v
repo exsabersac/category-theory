@@ -16,7 +16,7 @@ Generalizable All Variables.
 (**
 * Representably isomorphic objects
 
-    Riehl, "Category Theory in Context", 2nd ed., §2.3 (printed p. 67):
+    Riehl, “Category Theory in Context”, 2nd ed., §2.3 (printed p. 67):
     the opening definition — two objects are REPRESENTABLY ISOMORPHIC
     when their represented functors are naturally isomorphic, in either
     variance — and Proposition 2.3.1
@@ -49,7 +49,7 @@ Generalizable All Variables.
     The file also exports [repr_pair_iso] — the explicit-inverse-pair
     construction that Structure/UniversalProperty.v had inlined at its
     [univ_property_unique] since that file's beginning (the issue's
-    "library defect"): given isomorphisms of both [Hom c,─] and
+    “library defect”): given isomorphisms of both [Hom c,─] and
     [Hom v,─] with one and the same F, the objects c and v are
     isomorphic, by evaluating the composite transformations at the
     identity.  Structure/UniversalProperty.v now consumes it. 

@@ -14,14 +14,14 @@ Generalizable All Variables.
 (*
    * * Hypergraph functors
 
-   Reference: Fong, "The Algebra of Open and Interconnected Systems"
-   (arXiv:1609.05382), Definition 1.4; Fong–Spivak, "Hypergraph
-   categories" (Journal of Pure and Applied Algebra 223, 2019;
+   Reference: Fong, “The Algebra of Open and Interconnected Systems”
+   (arXiv:1609.05382), Definition 1.4; Fong–Spivak, “Hypergraph
+   categories” (Journal of Pure and Applied Algebra 223, 2019;
    arXiv:1806.08304), Definition 2.12.
 
    nLab:      https://ncatlab.org/nlab/show/hypergraph+category
    (defines hypergraph categories; the page does NOT define
-   "hypergraph functor" — see the arXiv references above)
+   “hypergraph functor” — see the arXiv references above)
    nLab:      https://ncatlab.org/nlab/show/monoidal+functor
    (the underlying strong symmetric monoidal functor notion)
    Wikipedia: no dedicated article for hypergraph categories or
@@ -29,7 +29,7 @@ Generalizable All Variables.
 
    A HYPERGRAPH FUNCTOR between hypergraph categories [(C, ⨂_C, I_C, …)]
    and [(D, ⨂_D, I_D, …)] is a STRONG symmetric monoidal functor (per
-   Fong–Spivak, "Hypergraph categories", Definition 2.12; Seven Sketches
+   Fong–Spivak, “Hypergraph categories”, Definition 2.12; Seven Sketches
    Def. 6.60 defines hypergraph categories themselves) preserving the
    SCFA structure on each object.  Concretely, the functor carries comparison
    *isomorphisms* [F X ⨂_D F Y ≅ F (X ⨂_C Y)] and [I_D ≅ F I_C]
@@ -50,7 +50,7 @@ Generalizable All Variables.
    the strong-monoidal coherence equations (associator/unitor squares,
    naturality, braid-compatibility) and only records the comparison
    isomorphisms together with the four SCFA-preservation equations; see
-   the "Known scoping limitation: missing monoidal coherences" section
+   the “Known scoping limitation: missing monoidal coherences” section
    below.  As a consequence the record is NOT in general a symmetric
    monoidal functor.  The inhabitants currently provided are the trivial
    [Id_HypergraphFunctor] below and the images of the forgetful bridge
@@ -94,8 +94,8 @@ Generalizable All Variables.
    Consequence: two distinct choices of [hf_tensor_iso] / [hf_unit_iso]
    could each satisfy the four SCFA-preservation equations without
    [F] actually being a symmetric monoidal functor.  Downstream code
-   that assumes "a [HypergraphFunctor] is in particular a symmetric
-   monoidal functor" does NOT get that property from this record.
+   that assumes “a [HypergraphFunctor] is in particular a symmetric
+   monoidal functor” does NOT get that property from this record.
 
    The trivial [Id_HypergraphFunctor] instance below is fine
    ([hf_tensor_iso := iso_id], [hf_unit_iso := iso_id] discharge all
@@ -281,7 +281,7 @@ End IdHypergraphFunctor.
 (*
    * ** Discussion: the BlackBox / forget-decoration use case
 
-   The forgetful "drop the decoration" functor from [DecoratedCospanCat F]
+   The forgetful “drop the decoration” functor from [DecoratedCospanCat F]
    to [CospanCat C] is a hypergraph functor: it acts as the identity on
    objects, projects out the cospan part of every morphism, and the SCFA
    on a cospan-category object is given by the [Cospan_Hypergraph]

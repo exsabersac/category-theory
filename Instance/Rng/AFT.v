@@ -53,10 +53,10 @@ Generalizable All Variables.
  strict creation of limits of abelian groups.  Nothing in its term
  mentions [FreeRngAb], [FreeAb] or any free object.
 
- CORRECTION, PR "algebraic carriers are sets" (2026-09-17).  This block
- used to read "ONE RESULT HERE IS NEW, TWO ARE CIRCULAR" and continued:
+ CORRECTION, PR “algebraic carriers are sets” (2026-09-17).  This block
+ used to read “ONE RESULT HERE IS NEW, TWO ARE CIRCULAR” and continued:
 
- "THE TWO GAFT APPLICATIONS ARE CIRCULAR, AND SAYING SO IS THE POINT.
+ “THE TWO GAFT APPLICATIONS ARE CIRCULAR, AND SAYING SO IS THE POINT.
  Freyd's third hypothesis is a solution set, and the two fed to it
  below -- [Rng_Forget_Ab_solution_set_from_adjunction] and
  [Rng_Forget_solution_set_from_adjunction] -- are
@@ -67,7 +67,7 @@ Generalizable All Variables.
  TO PRODUCE.  So [free_rng_ab_via_GAFT] and [free_ring_via_GAFT] are
  genuine applications of a genuine theorem and are worthless as
  existence proofs -- strip Instance/Rng/Free.v and nothing in those
- two lines survives."
+ two lines survives.”
 
  That description is now TRUE OF TWO DIFFERENT CONSTANTS and FALSE of
  [free_rng_ab_via_GAFT] and [free_ring_via_GAFT].  The two circular
@@ -174,15 +174,15 @@ Generalizable All Variables.
  [GAFT Rng_Forget Rng_Complete Rng_Forget_continuous sols] is refused,
  with this STABLE head:
 
- The term "Rng_Forget_continuous" has type "ContinuousFunctor
- Rng_Forget" while it is expected to have type
- "Limit.PreservesImageLimit"
+ The term “Rng_Forget_continuous” has type “ContinuousFunctor
+ Rng_Forget” while it is expected to have type
+ “Limit.PreservesImageLimit”
 
  The trailing [cannot unify ...] clause is deliberately NOT quoted here,
  because it is IMPORT-SENSITIVE: it is rendered with whatever module
  short-names are in scope, so the same refusal prints
- [cannot unify "Limit.Limit K" and "Cone.Cone K"] under one import list
- and [cannot unify "Cone.Cone (F ◯ K)" and "IsLimitCone N"] under
+ [cannot unify “Limit.Limit K” and “Cone.Cone K”] under one import list
+ and [cannot unify “Cone.Cone (F ◯ K)” and “IsLimitCone N”] under
  another (measured at [Ab], four import lists, in
  Test/ProbeAlgLimit443.v's section E).  An earlier revision of this
  paragraph quoted one of them as though it were the text; two independent
@@ -195,29 +195,29 @@ Generalizable All Variables.
  (Construction/Comma/Creation.v) is load-bearing and stands in both
  GAFT terms below.
 
- ** THE ISSUE'S "CURRENT STATE" IS STALE IN SIX PLACES
+ ** THE ISSUE'S “CURRENT STATE” IS STALE IN SIX PLACES
 
- It says: "The ring cases are entirely absent: [Rng] and [Ab] do not
+ It says: “The ring cases are entirely absent: [Rng] and [Ab] do not
  exist (#257, #256), so neither the ring-side forgetful functors nor
  their free objects exist, and no [SolutionSet] instance is ever built
- for a forgetful functor of this kind."  Each clause, checked against a
+ for a forgetful functor of this kind.”  Each clause, checked against a
  green build on 2026-09-13:
 
- 1. "[Rng] ... [does] not exist" -- [Rng], Instance/Rng.v.
- 2. "[Ab] [does] not exist" -- [Ab], Instance/Ab.v.
- 3. "neither the ring-side forgetful functors ... exist" --
+ 1. “[Rng] ... [does] not exist” -- [Rng], Instance/Rng.v.
+ 2. “[Ab] [does] not exist” -- [Ab], Instance/Ab.v.
+ 3. “neither the ring-side forgetful functors ... exist” --
  [Rng_Forget_Ab] and [Rng_Forget], both Instance/Rng.v.
- 4. "nor their free objects exist" -- [FreeRngAb],
+ 4. “nor their free objects exist” -- [FreeRngAb],
  [free_ring_via_ab] and [free_ring_via_mon], all
  Instance/Rng/Free.v; with the adjunctions
  [free_rng_ab_adjunction], [free_ring_via_ab_adjunction] and
  [free_ring_via_mon_adjunction] beside them.
- 5. "no [SolutionSet] instance is ever built for a forgetful functor of
- this kind" -- [Grp_Forget_solution_set_from_adjunction],
+ 5. “no [SolutionSet] instance is ever built for a forgetful functor of
+ this kind” -- [Grp_Forget_solution_set_from_adjunction],
  Instance/Grp/FreeAFT.v, at [Grp_Forget : Grp ⟶ Sets], which is
  a forgetful functor of exactly this kind.
- 6. The Awodey section's "the adjoint functor theorem's only in-tree
- application is a diagonal/product toy example" -- [free_group_via_GAFT],
+ 6. The Awodey section's “the adjoint functor theorem's only in-tree
+ application is a diagonal/product toy example” -- [free_group_via_GAFT],
  Instance/Grp/FreeAFT.v, and [GAFT_at_Sets_Id],
  Adjunction/GAFT/Sets.v, which feeds GAFT [Sets_Id_SolutionSet].
  Sweeping [grep -rnw GAFT] over all [.v] files outside
@@ -267,30 +267,30 @@ Generalizable All Variables.
 
  ** THE TWO HIDDEN CHECKBOXES IN THE ISSUE BODY
 
- (A) Awodey §9.9 Exercise 9 asks to "Build a solution set for a forgetful
+ (A) Awodey §9.9 Exercise 9 asks to “Build a solution set for a forgetful
  functor out of an algebraic category and derive the free construction
  from the adjoint functor theorem, so the theorem has a genuine
- application in the tree."  ADDRESSED, at two functors, IN BOTH READINGS.
+ application in the tree.”  ADDRESSED, at two functors, IN BOTH READINGS.
 
- CORRECTION, PR "algebraic carriers are sets" (2026-09-17): this clause
- read "ADDRESSED, at two functors, and with the circularity disclosed:
+ CORRECTION, PR “algebraic carriers are sets” (2026-09-17): this clause
+ read “ADDRESSED, at two functors, and with the circularity disclosed:
  the solution sets below are not Mac Lane's, and the derivation is
  therefore an application of the theorem and not an independent
  construction.  Awodey's exercise is satisfied in its literal reading --
  the theorem has a genuine application -- and NOT in the reading a reader
- might want, where the free ring is OBTAINED from the theorem."  The
+ might want, where the free ring is OBTAINED from the theorem.”  The
  reading the reader wanted is now delivered: the solution sets are STILL
  not Mac Lane's (they are congruence quotients of a term model, not
  subrings cut down by a cardinality bound), but they are built without
  the adjunction, so the free ring IS obtained from the theorem.
  Instance/Grp/FreeAFT.v moved with this file.
 
- (B) Fong & Spivak §3.4.2 Example 3.74 clause 1 asks to "Deliver the
+ (B) Fong & Spivak §3.4.2 Example 3.74 clause 1 asks to “Deliver the
  conclusion as [Adjunction] witnesses rather than only as universal
  arrows, so the 'free is left adjoint to forgetful' slogan is a statement
- in the library".  Its supporting sentence, "Today Instance/CMon.v
+ in the library”.  Its supporting sentence, “Today Instance/CMon.v
  supplies a forgetful functor with no free functor and no adjunction
- beside it, and no other algebraic category exists in tree", is EXACT in
+ beside it, and no other algebraic category exists in tree”, is EXACT in
  its first half and stale in its second.  [CMon_Forget] is still at
  Instance/CMon.v with no [FreeCMon] and, measured,
  [grep -rnP '⊣\s*CMon_Forget(?![A-Za-z0-9_])'] over all [.v] files returns
@@ -308,23 +308,23 @@ Generalizable All Variables.
  closed here; no free commutative monoid is built.
  CORRECTION (#471): that gap is closed by Instance/CMon/Free.v, whose
  [FreeCMon_adj] is an adjunction of FreeCMon with CMon_Forget, so
- "still … with no [FreeCMon]" held until #471.  Its declaration names
+ “still … with no [FreeCMon]” held until #471.  Its declaration names
  the right adjoint through a local notation, and the literal grep above
  matches only two comment lines of that file.
 
  ** THE COMPARISON CLAUSES ARE AT [≈] AND CANNOT BE ANYTHING ELSE
 
- The issue asks that each "compare with the usual construction" clause be
- "a proved isomorphism of the AFT-produced adjoint with the explicit free
- object".  [GAFT] (Adjunction/GAFT.v) ends in [Qed], so its output
+ The issue asks that each “compare with the usual construction” clause be
+ “a proved isomorphism of the AFT-produced adjoint with the explicit free
+ object”.  [GAFT] (Adjunction/GAFT.v) ends in [Qed], so its output
  does not reduce and no component of it can be named.  Measured:
 
  Example nr1 : `1 free_ring_via_GAFT = free_ring_via_ab := eq_refl.
 
- is refused with "The term "eq_refl" has type "`1 (free_ring_via_GAFT) =
- `1 (free_ring_via_GAFT)" while it is expected to have type "`1
- (free_ring_via_GAFT) = free_ring_via_ab" (cannot unify "`1
- (free_ring_via_GAFT)" and "free_ring_via_ab")".  So NO [eq_refl] is
+ is refused with “The term ”eq_refl“ has type ”`1 (free_ring_via_GAFT) =
+ `1 (free_ring_via_GAFT)“ while it is expected to have type ”`1
+ (free_ring_via_GAFT) = free_ring_via_ab“ (cannot unify ”`1
+ (free_ring_via_GAFT)“ and ”free_ring_via_ab“)”.  So NO [eq_refl] is
  claimed anywhere about a GAFT output, and the three comparisons below
  are at [≈], by [left_adjoints_agree] (Instance/Rng/Free.v) -- left
  adjoints to a fixed functor are isomorphic.  That donor is [Defined],
@@ -377,9 +377,9 @@ Generalizable All Variables.
  two as propositions.  (2) NO [Complete Ab]-based route: [Ab_Complete]
  (Instance/Ab/Limit.v) exists and is not used, because GAFT is run at
  [Rng_Forget_Ab] and so wants [Complete Rng], not [Complete Ab].
- (3) NO SOLUTION SET OF MAC LANE'S OWN SHAPE.  CORRECTION, PR "algebraic
- carriers are sets" (2026-09-17): this clause read "NO NON-CIRCULAR
- SOLUTION SET", and that is false -- there are two, above.  What is still
+ (3) NO SOLUTION SET OF MAC LANE'S OWN SHAPE.  CORRECTION, PR “algebraic
+ carriers are sets” (2026-09-17): this clause read “NO NON-CIRCULAR
+ SOLUTION SET”, and that is false -- there are two, above.  What is still
  true, and is what the clause went on to say, is that MAC LANE'S OWN
  family is not built: the subrings generated by the image of a set, cut
  down by a cardinality bound, need a generated-subring API that does not
@@ -417,8 +417,8 @@ Generalizable All Variables.
  Counting [def]+[prf] heads in the [.glob] file, this file declares
  THIRTY-FOUR constants and NO [Program] obligations -- it uses no
  [Program] at all, so the trap of obligations that no source-level
- reading sees does not arise here.  [Print Assumptions] reports "Closed
- under the global context" for all thirty-four, read back by name:
+ reading sees does not arise here.  [Print Assumptions] reports “Closed
+ under the global context” for all thirty-four, read back by name:
  [rng_forget_factors_obj], [rng_forget_factors_map],
  [rng_underlying_ab_is_forget_obj], [rng_underlying_ab_is_forget_map],
  [rng_ab_recone], [rng_sets_recone], [rng_ab_image_limit],
@@ -484,7 +484,7 @@ Generalizable All Variables.
 
  术语 “Rng_Forget_continuous”的类型是 “ContinuousFunctor
  Rng_Forget”，而期望的类型是
- “Limit.PreservesImageLimit”这里故意没有引用尾部的 [cannot unify ...] 条款，因为它依赖于导入：它会根据当前作用域中的模块短名进行呈现，因此同一拒绝在一个导入列表下显示为 [cannot unify "Limit.Limit K" and "Cone.Cone K"]，而在另一个导入列表下显示为 [cannot unify "Cone.Cone (F ◯ K)" and "IsLimitCone N"]（在 Test/ProbeAlgLimit443.v 的 E 部分中测量为 [Ab]，共四个导入列表）。本段的早期修订版曾引用其中之一，好像它就是文本本身；对同一拒绝的两次独立测量随后看起来互相矛盾，但其实都没有错误。现在仅引用了开头部分。拒绝本身与 Instance/Ab/Limit.v 在 [Ab_Forget] 上记录的相同，以及 Test/ProbeGrpFreeAFT442.v 的 N6 在 [Grp_Forget] 上记录的相同，这里是在 [Rng] 上。桥 [Continuous_PreservesImageLimit]（Construction/Comma/Creation.v）是承重的，并且在下面的两个 GAFT 项中都存在。
+ “Limit.PreservesImageLimit”这里故意没有引用尾部的 [cannot unify ...] 条款，因为它依赖于导入：它会根据当前作用域中的模块短名进行呈现，因此同一拒绝在一个导入列表下显示为 [cannot unify “Limit.Limit K” and “Cone.Cone K”]，而在另一个导入列表下显示为 [cannot unify “Cone.Cone (F ◯ K)” and “IsLimitCone N”]（在 Test/ProbeAlgLimit443.v 的 E 部分中测量为 [Ab]，共四个导入列表）。本段的早期修订版曾引用其中之一，好像它就是文本本身；对同一拒绝的两次独立测量随后看起来互相矛盾，但其实都没有错误。现在仅引用了开头部分。拒绝本身与 Instance/Ab/Limit.v 在 [Ab_Forget] 上记录的相同，以及 Test/ProbeGrpFreeAFT442.v 的 N6 在 [Grp_Forget] 上记录的相同，这里是在 [Rng] 上。桥 [Continuous_PreservesImageLimit]（Construction/Comma/Creation.v）是承重的，并且在下面的两个 GAFT 项中都存在。
 
  ** 该问题的“当前状态”在六处都是过时的
 
@@ -509,7 +509,7 @@ Generalizable All Variables.
 
  该问题要求每个“与通常构造比较”子句是“AFT 生成的伴随与显式自由对象的已证明同构”。[GAFT]（Adjunction/GAFT.v）结束于 [Qed]，因此其输出不会化简，并且其任何组成部分都无法命名。测量得出：
 
- 示例 nr1：`1 free_ring_via_GAFT = free_ring_via_ab := eq_refl.被拒绝，提示“术语"eq_refl"的类型是`1 (free_ring_via_GAFT) = `1 (free_ring_via_GAFT)" while it is expected to have type "` 1 (free_ring_via_GAFT) = free_ring_via_ab"（无法统一"`1 (free_ring_via_GAFT)"和"free_ring_via_ab"）。因此没有在任何地方声称关于GAFT输出的 [eq_refl]，并且下面三次比较都在 [≈]，由 [left_adjoints_agree] （Instance/Rng/Free.v）进行——固定函子的左伴随是同构的。该提供者是 [Defined]，因此比较态射有一个名称（[adj_left_compare]），且单位条款（[adj_left_compare_unit]）是可用的；Mac Lane 的练习要求两者。Theory/Adjunction.v 的 [left_adjoint_iso] 属于相同类型，并且被记录在每个比较旁边，因此该声明由机器检查了两次。
+ 示例 nr1：`1 free_ring_via_GAFT = free_ring_via_ab := eq_refl.被拒绝，提示“术语“eq_refl”的类型是`1 (free_ring_via_GAFT) = `1 (free_ring_via_GAFT)“ while it is expected to have type ”` 1 (free_ring_via_GAFT) = free_ring_via_ab“（无法统一”`1 (free_ring_via_GAFT)“和”free_ring_via_ab“）。因此没有在任何地方声称关于GAFT输出的 [eq_refl]，并且下面三次比较都在 [≈]，由 [left_adjoints_agree] （Instance/Rng/Free.v）进行——固定函子的左伴随是同构的。该提供者是 [Defined]，因此比较态射有一个名称（[adj_left_compare]），且单位条款（[adj_left_compare_unit]）是可用的；Mac Lane 的练习要求两者。Theory/Adjunction.v 的 [left_adjoint_iso] 属于相同类型，并且被记录在每个比较旁边，因此该声明由机器检查了两次。
 
  ** 已交付内容是什么1. 在对象和态射上的因式分解，见 [eq_refl]。 2. [Rng_Forget_Ab_continuous : ContinuousFunctor Rng_Forget_Ab]，以及其仅顶点的推论 [Rng_Forget_Ab_PreservesAllLimits] —— 真正新的、非循环的结果，在没有伴随（ADJUNCTION）和没有 RAPL 的情况下得出——尽管绝对不是没有创建，因为它的两个输入都是创建结果（Instance/Rng/Limit.v 的 [creates_limits_continuous ...] 和 Instance/Ab/Limit.v 的 [creates_reflects_limits ...]）；它避免的是对 [Rng_Forget_Ab] 本身的创建论证，这是导致停止的那个。没有伴随，也没有 RAPL。 3. [Rng_Forget_Ab_reflects_limits : ReflectsLimitCone K Rng_Forget_Ab]，同一复合在另一个方向的读法，也无需伴随。 4. [free_ring_via_ab_adjunction_set : free_ring_via_ab ⊣ Rng_Forget]，重新类型化，即 Seven Sketches 条款和在 [Rng_Forget] 的第三个 GAFT 假设合二为一。 5.四组解集（早期版本说是两组）：两组非循环的由自由环项模型上的 [Prop] 合同式构建的 [Rng_Forget_Ab_solution_set_prop] 和 [Rng_Forget_solution_set_prop]，被两个主要的 GAFT 应用 [free_rng_ab_via_GAFT] 和 [free_ring_via_GAFT] 使用；还有两组循环的，保留了名称中表示循环的命名，被 [free_rng_ab_via_GAFT_from_adjunction] 和 [free_ring_via_GAFT_from_adjunction] 使用。6. 在 [≈] 有三个比较子句，每个子句都有其命名的比较同态及其单位方程：针对 [FreeRngAb]、针对 [free_ring_via_ab] 和针对 [free_ring_via_mon]。前两者关于非循环常数；第三个关于 [free_ring_via_GAFT_from_adjunction]，原因是子句中记录的测量宇宙的原因。
 
@@ -705,7 +705,7 @@ Example free_ring_via_ab_adjunction_set_transpose (X : Sets) (R : Rng)
  of [A] factors.  The family used here is the QUOTIENTS OF THE FREE-RING
  TERM MODEL by [Prop]-valued congruences: [FRTerm A]
  (Instance/Rng/Free.v) with its relation [fr_eq], which is already a
- [Prop] inductive since the PR "algebraic carriers are sets"
+ [Prop] inductive since the PR “algebraic carriers are sets”
  (2026-09-17).
 
  WHY THE INDEX IS THE RIGHT SIZE.  Every field of [IsRngCongruence] is a
@@ -724,7 +724,7 @@ Example free_ring_via_ab_adjunction_set_transpose (X : Sets) (R : Rng)
  --------
  非循环解集。
 
- [Rng_Forget_Ab] 在 [A] 的解集必须是一个环族，在宇宙中定理要求，通过这个环族，每一个从 [A] 出发的同态都可以分解。这里使用的族是由 [Prop] 值的合同数构成的自由环项模型的商：[FRTerm A]（Instance/Rng/Free.v）及其关系 [fr_eq]，这已经是一个 [Prop] 归纳结构，因为 PR "代数承载体是集合"（2026-09-17）。为什么索引是合适的大小。[IsRngCongruence] 的每个字段都是 [Prop]，因此记录是 [Prop]，并且对它的求和作用在承载宇宙上，而不是其之上。Structure/Complete.v 的 SIZE 注释，第 1 项是权威且不再重复；第 2(b) 项说明了索引宇宙为什么必须首先是承载宇宙。同样的方法也适用于 Instance/Mod/TensorAFT.v（第 3A 节）和 Instance/Grp/FreeAFT.v。
+ [Rng_Forget_Ab] 在 [A] 的解集必须是一个环族，在宇宙中定理要求，通过这个环族，每一个从 [A] 出发的同态都可以分解。这里使用的族是由 [Prop] 值的合同数构成的自由环项模型的商：[FRTerm A]（Instance/Rng/Free.v）及其关系 [fr_eq]，这已经是一个 [Prop] 归纳结构，因为 PR “代数承载体是集合”（2026-09-17）。为什么索引是合适的大小。[IsRngCongruence] 的每个字段都是 [Prop]，因此记录是 [Prop]，并且对它的求和作用在承载宇宙上，而不是其之上。Structure/Complete.v 的 SIZE 注释，第 1 项是权威且不再重复；第 2(b) 项说明了索引宇宙为什么必须首先是承载宇宙。同样的方法也适用于 Instance/Mod/TensorAFT.v（第 3A 节）和 Instance/Grp/FreeAFT.v。
 
  以下任何地方都没有 [PropEquiv] 假设：[rig_prop] 是 [RigObject] 的一个字段，[cmon_prop] 是 [CMonObject] 的一个字段，两者都有 [#[export] 的现有实例，因此评估的核同余在每个环上都是可用的，无需附加条件。
 *)
@@ -946,7 +946,7 @@ Defined.
  site rather than buried in a term: the family is the singleton at the
  unit of the adjunction the theorem is being asked to produce.
 
- CORRECTION, PR "algebraic carriers are sets" (2026-09-17): these two are
+ CORRECTION, PR “algebraic carriers are sets” (2026-09-17): these two are
  no longer what the GAFT applications below consume.  They are kept
  because removing working code is John's call, because the naming
  convention they establish is what makes the circularity legible, and
@@ -972,7 +972,7 @@ Definition Rng_Forget_solution_set_from_adjunction (X : Sets) :
  abelian group.  [Continuous_PreservesImageLimit] is load-bearing -- see
  the header's measurement of what happens without it.
 
- NON-CIRCULAR since the PR "algebraic carriers are sets": the solution
+ NON-CIRCULAR since the PR “algebraic carriers are sets”: the solution
  set is [Rng_Forget_Ab_solution_set_prop], built from the free-ring term
  model and its [Prop] congruences.  Strip Instance/Rng/Free.v's
  ADJUNCTIONS and this still stands; strip its TERM MODEL and it does
@@ -1028,12 +1028,12 @@ Definition free_ring_via_GAFT_agrees :
   left_adjoints_agree (`2 free_ring_via_GAFT) free_ring_via_ab_adjunction_set.
 
 (*
- RECORDED STATEMENT CHANGE, PR "algebraic carriers are sets"
+ RECORDED STATEMENT CHANGE, PR “algebraic carriers are sets”
  (2026-09-17), AND THE MEASURED REASON.  This clause and the four other
  [_mon] ones below used to be stated about [free_ring_via_GAFT] and are
  now stated about [free_ring_via_GAFT_from_adjunction], the circular
- reading.  Nothing is lost -- the same theorem, "left adjoints to
- [Rng_Forget] agree", is still in tree against the monoid-ring route --
+ reading.  Nothing is lost -- the same theorem, “left adjoints to
+ [Rng_Forget] agree”, is still in tree against the monoid-ring route --
  but the WITNESS is a different constant and that must be said.
 
  THE OBSTRUCTION IS [free_ring_via_mon]'S OWN [Set] PIN, not the new
@@ -1049,8 +1049,8 @@ Definition free_ring_via_GAFT_agrees :
  condition of the [Prop] index (see the solution-set section above), so
  the two cannot be compared, and the attempt is refused with
 
- The term "free_ring_via_mon" has type "Sets@{Set u} ⟶ Rng@{u Set}"
- while it is expected to have type "Sets@{u0 u1} ⟶ Rng@{u1 u0}"
+ The term “free_ring_via_mon” has type “Sets@{Set u} ⟶ Rng@{u Set}”
+ while it is expected to have type “Sets@{u0 u1} ⟶ Rng@{u1 u0}”
  (universe inconsistency: Cannot enforce Set = u0 because Set < u0)
 
  (generated universe names replaced positionally; everything else
@@ -1069,8 +1069,8 @@ Definition free_ring_via_GAFT_agrees :
  free_ring_via_ab@{u u0 … u8} : Functor@{u u1 u1 u0 …}-- 单元半群路径将  [Sets] 的同态 AND 证明宇固定到 [Set]，而阿贝尔群路径则保持它们自由。  
  非循环的 [free_ring_via_GAFT] 承载了 [Set < carrier] 的 [Prop] 指数的附加条件（参见上面的解集部分），因此两者无法比较，并且尝试被拒绝，显示：
 
- 术语 "free_ring_via_mon" 的类型为 "Sets@{Set u} ⟶ Rng@{u Set}"，
- 而期望的类型为 "Sets@{u0 u1} ⟶ Rng@{u1 u0}"
+ 术语 “free_ring_via_mon” 的类型为 “Sets@{Set u} ⟶ Rng@{u Set}”，
+ 而期望的类型为 “Sets@{u0 u1} ⟶ Rng@{u1 u0}”
  （宇不一致：无法强制 Set = u0 因为 Set < u0）(生成的宇宙名称按位置替换；其他一切逐字照搬)。[free_ring_via_GAFT_agrees] 在上方，对抗 [free_ring_via_ab]，不受影响，并且确实与非循环常数有关。扩展 [free_ring_via_mon] 将是对 Instance/Rng/Free.v 的更改，并属于它自己的提交，正如扩展 Adjunction/SpanningArrow.v 所做的那样。
 *)
 Definition free_ring_via_GAFT_agrees_mon :

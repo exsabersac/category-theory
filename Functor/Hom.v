@@ -54,7 +54,7 @@ Bifunctors can be curried:
 
   C × D ⟶ E --> C ⟶ [D, E] ~~~ (C, D) → E --> C → D → E
 
-  Where ~~~ should be read as "Morally equivalent to".
+  Where ~~~ should be read as “Morally equivalent to”.
 
   Note: We do not need to define Bifunctors as a separate class, since they
   can be derived from functors mapping to a category of functors. So in the

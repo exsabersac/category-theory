@@ -155,7 +155,7 @@ Arguments CSubSig_compose {Colour S T U} h2 h1.
    up from:
 
    - identity wires [CT_id cs]
-   - braids [CT_braid cs ds] (the canonical "block braiding" that
+   - braids [CT_braid cs ds] (the canonical “block braiding” that
    crosses a [cs]-typed bundle past a [ds]-typed bundle)
    - sequential composition [CT_comp]
    - parallel composition (tensor) [CT_tens]
@@ -216,7 +216,7 @@ Notation "f ⊕c g" := (CT_tens f g)
 (** ** Smart constructors / ** 智能构造函数 *)
 
 (*
-   * The "swap" braid on two single typed wires.  Note that
+   * The “swap” braid on two single typed wires.  Note that
    [[c] ++ [d]] is definitionally [[c; d]], so this term also
    inhabits [CTerm S [c; d] [d; c]] on the nose. 
 

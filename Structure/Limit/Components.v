@@ -35,9 +35,9 @@ Require Import Coq.Logic.Eqdep_dec.
 Generalizable All Variables.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician",
+ Book:      Mac Lane, “Categories for the Working Mathematician”,
  2nd ed., §IV.2 Exercise 7, printed p. 90 (maclane:IV.2:ex7)
- Book:      Riehl, "Category Theory in Context", §3.6
+ Book:      Riehl, “Category Theory in Context”, §3.6
  (riehl:3.6:construction-cat-coproducts)
  nLab:      https://ncatlab.org/nlab/show/connected+category
  nLab:      https://ncatlab.org/nlab/show/limit
@@ -64,8 +64,8 @@ Generalizable All Variables.
  [xfer_IsALimit]: a FULL, ESSENTIALLY SURJECTIVE functor of
  shapes transfers limits.  Faithfulness is not consumed.
 
- 1. A PRIOR-ART CORRECTION.  The catalog issue states that "no
- connectedness predicate exists anywhere in the tree" and asks for
+ 1. A PRIOR-ART CORRECTION.  The catalog issue states that “no
+ connectedness predicate exists anywhere in the tree” and asks for
  the zig-zag relation and its reflexivity, symmetry and
  transitivity to be built.  That is FALSE, and was false before
  Theory/Connected/Components.v landed: Structure/Groupoid/
@@ -81,12 +81,12 @@ Generalizable All Variables.
  in the tree -- its own module Construction/Coproduct/Indexed.v,
  Instance/Cat/Coproduct.v, and Test/ProbeCatCoproduct338.v -- and
  none of the three states any result about limits over a coproduct
- of shapes.  An earlier revision of this paragraph said "none of the
- three mentions a limit or a cone", and the LIMIT half of that is
+ of shapes.  An earlier revision of this paragraph said “none of the
+ three mentions a limit or a cone”, and the LIMIT half of that is
  FALSE: all three mention [Limit], 2, 11 and 2 times, in [Require]
  lines and in NOT-delivered prose (Instance/Cat/Coproduct.v is
- a numbered section headed "THE [Colimit] READING IS NOT
- DELIVERED").  The CONE half stands -- zero hits in all three -- and
+ a numbered section headed “THE [Colimit] READING IS NOT
+ DELIVERED”).  The CONE half stands -- zero hits in all three -- and
  the conclusion is unaffected, but the evidence as first stated was
  wrong.  The near-hit a
  name search does return, Structure/Limit/Coproduct.v's
@@ -183,7 +183,7 @@ Generalizable All Variables.
 
  TWO CONSTANTS PUT THE IDENTIFICATION ENTIRELY IN THE BINDER, WITH
  AN EMPTY OR EQUATION-FREE BLOCK, so a reader who checks only the
- block reports "no identification" and is wrong.
+ block reports “no identification” and is wrong.
  [coprod_IsALimit_HasIndexedProducts] has NO equation in its block
  while its binder writes [Category@{u1 u7 u7}] and
  [Category@{u6 u7 u7}], reusing one level for four slots; and
@@ -195,18 +195,18 @@ Generalizable All Variables.
 
  [coprod_IsALimit_iprod] IS THE PLACE TO READ THE FORMER [Set] PIN,
  AND THE PIN IS GONE.  An earlier revision of this paragraph said
- the pin "arrives" here and is "WIDER than the donor's binder alone
- suggests", quoting [iprod] as declared over
+ the pin “arrives” here and is “WIDER than the donor's binder alone
+ suggests”, quoting [iprod] as declared over
  [C : Category@{_ Set Set}] and the corollary as reading
  [J : I → Category@{u0 Set Set}] and [C : Category@{u3 Set Set}];
- it added that the pin "is inherited, is not repaired, and is NOT
- claimed unavoidable".  The first half was a correct reading of the
+ it added that the pin “is inherited, is not repaired, and is NOT
+ claimed unavoidable”.  The first half was a correct reading of the
  tree of the time and the last clause was right: the pin was a
  universe-minimization artifact of Instance/Discrete.v's
  [DiscreteCat_Functor], reaching [iprod] through [Limit]'s
  identification of the shape's hom-and-proof universe with the
- ambient's.  That donor was annotated in place in the PR "algebraic
- carriers are sets" (2026-09-17), so no literal [Set] reaches this
+ ambient's.  That donor was annotated in place in the PR “algebraic
+ carriers are sets” (2026-09-17), so no literal [Set] reaches this
  corollary any more.  The elementary [IsIndexedProduct] form is
  still stated first and the [iprod] reading is still a corollary --
  that ordering was never only about [Set] -- and Section
@@ -215,11 +215,11 @@ Generalizable All Variables.
  positive controls.
 
  7. NEGATIVES: TWO, BOTH CONVERSION.  An earlier revision of this item
- read "FOUR, OF TWO KINDS, KEPT LEXICALLY APART" and described two
+ read “FOUR, OF TWO KINDS, KEPT LEXICALLY APART” and described two
  FORMABILITY negatives -- [iprod] and [coprod_IsALimit_iprod]
  rejected over a category whose homs are declared strictly above
- [Set], "each ending "universe inconsistency: Cannot enforce
- Set = uh"" -- against three controls.  Those two are now ACCEPTED
+ [Set], “each ending ”universe inconsistency: Cannot enforce
+ Set = uh“” -- against three controls.  Those two are now ACCEPTED
  at those very levels and stand in Section [UniversePin] as
  controls beside the original three (item 6); the correction is
  recorded here rather than made silently.  What remains are the two
@@ -229,8 +229,8 @@ Generalizable All Variables.
  [coprod_leg] is a [match] with a return annotation; its control
  [sigma_hom_eta] shows only that [sigma_equiv] PROJECTS its
  arguments, NOT that morphisms have an eta rule -- measured, a
- morphism is rejected with the same `cannot unify "f" and
- "(`1 (f); `2 (f))"` as the object), and [component_diagram_strict],
+ morphism is rejected with the same `cannot unify “f” and
+ “(`1 (f); `2 (f))”` as the object), and [component_diagram_strict],
  which records
  that [Compose] rebuilds its three law fields.  Each was stripped
  of its [Fail] once and its failure kind read off the whole error.
@@ -244,16 +244,16 @@ Generalizable All Variables.
  the ONLY apex.  No preservation, reflection or creation statement,
  and no relation to [PreservesLimit]/[CreatesLimit].  No functoriality
  or naturality of [coprod_leg] or [cd_compare] in anything.  No proof
- that a category HAS a decomposition, hence no "every category is a
- coproduct of connected categories" as an unconditional theorem, and
+ that a category HAS a decomposition, hence no “every category is a
+ coproduct of connected categories” as an unconditional theorem, and
  no statement relating [ComponentDecomposition] to [Pi0] as a functor.
  [IdxUIP] is not shown necessary for [cd_compare_Faithful].  Nothing
  relates the [cd_sum]s of two different decompositions: [cd_transfer]
  is a bijection of INDEX TYPES compatible with the part maps, and it
  is never lifted to a comparison functor or an equivalence between
  the two coproduct categories.  No constant of type [_ ≅[Cat] _] is
- built for [cd_compare] -- work item 3 words its ask "isomorphism of
- categories in the library's [≈]-based sense", and what is delivered
+ built for [cd_compare] -- work item 3 words its ask “isomorphism of
+ categories in the library's [≈]-based sense”, and what is delivered
  is [EquivalenceOfCategories], which is what [≅[Cat]] amounts to in
  this tree but is not that literal type.  Finally, the issue's own
  Verification block pins [Print Assumptions
@@ -291,7 +291,7 @@ Generalizable All Variables.
  计算 [CoqPair_leg_true]，[CoqPair_leg_false] 和 [CoqPair_med_computes]。以 [≈] 定居：两个
  投影与限制的声明（[coprod_proj_is_restriction]，[coprod_proj_via_iso]），它们是中介者之间的方程，因此不能是定义性的——每个都通过求和项极限自身的唯一性条款证明——
  以及 [component_diagram_equiv]，其两个数据协议是 [eq_refl]，并且在整个记录层面的反驳被固定为 [component_diagram_strict]。6. 宇宙，同时读取绑定器和约束块。
- [coprod_IsALimit@{...}] 位于 [J : I → Category@{u0 u1 u1}] 之上，并且位于 [C : Category@{u2 u3 u3}] 上，它在其块中有单个方程 [u1 = u3]：形状的同态与证明宇宙被识别为环境的宇宙。也就是说，捐赠者 [IsALimit] 自身的形状，什么都没有增加；两个对象宇宙保持自由、有界且从未被识别，并且没有 [Set] 出现。[components_IsALimit] 的读取方式相同（[J : Category@{u u0 u0}]，[C : Category@{u1 u2 u2}]，块方程 [u0 = u2]），并且 [xfer_IsALimit] 识别三个同态宇宙而不是两个（[u0 = u2] 和 [u0 = u4]），分别是两个形状的和环境的，这就是在重索引的两边声明 [IsALimit] 的代价。两个常量将标识完全放在绑定器中，且使用了一个空块或无方程块，因此仅检查块的读者会报告“没有标识”，这是错误的。[coprod_IsALimit_HasIndexedProducts] 的块中没有方程，而它的绑定器写的是 [Category@{u1 u7 u7}] 和 [Category@{u6 u7 u7}]，为四个槽重用了一个级别；[ComponentDecomposition@{u u0 u1}] 具有字面上的空块，而它的绑定器显示为 [Category@{u0 u1 u1} → Type@{...}]。后者是 [ZigZag] 自身的形状，继承而来；其 INDEX 宇宙 [u] 不属于该类别，这正是允许索引与对象类型一样大的原因。[coprod_IsALimit_iprod] 是阅读前一个 [Set] 插销的地方，而插销已经不见了。该段的早期版本说插销“到达”这里，并且“比捐赠者的活页夹单独显示的要宽”，引用了 [iprod]，在 [C : Category@{_ Set Set}] 上宣布，并将推论读取为 [J : I → Category@{u0 Set Set}] 和 [C : Category@{u3 Set Set}]；它补充说插销“是继承的，不可修复，也不被认为是不可避免的”。前半部分正确阅读了当时的树结构，最后一句也正确：插销是 Instance/Discrete.v 的 [DiscreteCat_Functor] 的宇宙最小化产物，通过 [Limit] 对形状的 hom-and-proof 宇宙与环境宇宙的识别达到 [iprod]。该捐赠者在 PR “代数承载是集合”（2026-09-17）中已在原位标注，因此没有任何字面上的 [Set] 再能达到这个推论。基本的 [IsIndexedProduct] 形式仍然首先陈述，而 [iprod] 的解读仍然是一个推论——这种排序从未仅仅关于 [Set]——下面的 [UniversePin] 节现在保护了修复：以前严格拒绝超出 [Set] 的同态的同样两行现在保留在那里作为正控制。7. 否定项：两个，均为转换。该条目的早期版本写作“四个，两种类型，保持词汇上分开”，并描述了两个可形成性否定项——[iprod] 和 [coprod_IsALimit_iprod]——由于其同类项被宣布严格高于 [Set] 而被拒绝，“每个以‘宇宙不一致：无法强制设置 = uh’结束”——针对三个控制项。这两个现在在相同级别被接受，并在 [UniversePin] 节中作为控制项与原来的三个（第6项）并列；此处记录修正，而不是悄然更改。剩下的是两个转换否定项。[sigma_obj_eta]，记录了一个类别余积的对象**不能**与其投影对可转换（这就是为什么 [coprod_leg] 是一个带返回注释的 [match]；其控制 [sigma_hom_eta] 仅显示 [sigma_equiv] 投影其参数，而不是说明态射有 eta 规则——经过测量，如果态射被拒绝，会显示相同的 `cannot unify "f" and "( `1 (f); ` 2 (f))"` 错误，就像对象一样），以及 [component_diagram_strict]，记录了 [Compose] 重建其三个律域字段的情况。每个字段都曾被去掉一次 [Fail]，并且其失败类型从整个错误中读取。未实现的内容。没有二对偶：此处未说明余极限、余积在余极限一侧的形状或余锥。部分(a)没有[Colimit] / [DiscreteCat_Functor]的解读，也没有通向Structure/Limit/Coproduct.v中的[colimit_is_indexed_coproduct]的桥梁。没有(a)的逆命题：没有证明[F]的极限会强制其限制的极限，也没有证明各部分极限的积是唯一的顶点。没有保持、反射或创建的说明，也没有与[PreservesLimit] / [CreatesLimit]的关系。没有[coprod_leg]或[cd_compare]在任何事情上的函子性或自然性。没有证明某个范畴具有分解，因此没有“每个范畴都是连通范畴的余积”的无条件定理，也没有关于[ComponentDecomposition]与[Pi0]作为函子之间关系的说明。没有证明[IdxUIP]对[cd_compare_Faithful]是必要的。没有任何东西关联两个不同分解的 [cd_sum]：[cd_transfer] 是与部分映射兼容的索引类型的双射，并且它从未被提升为比较函子或两个余积范畴之间的等价。没有为 [cd_compare] 构建类型为 [_ ≅[Cat] _] 的常量——工作项 3 的问题是“库中的 [≈] 基于意义的范畴同构”，而实际交付的是 [EquivalenceOfCategories]，它相当于在这棵树中 [≅[Cat] ] 的含义，但不是那个字面类型。最后，该问题自身的验证块固定了 [打印假设 limit_over_coproduct_is_product] 和 [打印假设 category_is_coproduct_of_components]；在树中的任何地方都不存在这两个名称，对应结果是 [coprod_IsALimit] 和 [cd_equivalence]，均受限制。[xfer_IsALimit] 的逆命题（即一个完整的 ESO 函子在形状下反映极限）尚未被证明，任何上界性声明也同样没有被证明。没有符号。没有使用这些方法展示具体范畴是完备的。[Coq] 在第 (a) 部分的证据位于具有单点形状的两元素指标上；没有任何证据在具有具体非平凡分量的具体环境范畴中实例化第 (c) 部分。
+ [coprod_IsALimit@{...}] 位于 [J : I → Category@{u0 u1 u1}] 之上，并且位于 [C : Category@{u2 u3 u3}] 上，它在其块中有单个方程 [u1 = u3]：形状的同态与证明宇宙被识别为环境的宇宙。也就是说，捐赠者 [IsALimit] 自身的形状，什么都没有增加；两个对象宇宙保持自由、有界且从未被识别，并且没有 [Set] 出现。[components_IsALimit] 的读取方式相同（[J : Category@{u u0 u0}]，[C : Category@{u1 u2 u2}]，块方程 [u0 = u2]），并且 [xfer_IsALimit] 识别三个同态宇宙而不是两个（[u0 = u2] 和 [u0 = u4]），分别是两个形状的和环境的，这就是在重索引的两边声明 [IsALimit] 的代价。两个常量将标识完全放在绑定器中，且使用了一个空块或无方程块，因此仅检查块的读者会报告“没有标识”，这是错误的。[coprod_IsALimit_HasIndexedProducts] 的块中没有方程，而它的绑定器写的是 [Category@{u1 u7 u7}] 和 [Category@{u6 u7 u7}]，为四个槽重用了一个级别；[ComponentDecomposition@{u u0 u1}] 具有字面上的空块，而它的绑定器显示为 [Category@{u0 u1 u1} → Type@{...}]。后者是 [ZigZag] 自身的形状，继承而来；其 INDEX 宇宙 [u] 不属于该类别，这正是允许索引与对象类型一样大的原因。[coprod_IsALimit_iprod] 是阅读前一个 [Set] 插销的地方，而插销已经不见了。该段的早期版本说插销“到达”这里，并且“比捐赠者的活页夹单独显示的要宽”，引用了 [iprod]，在 [C : Category@{_ Set Set}] 上宣布，并将推论读取为 [J : I → Category@{u0 Set Set}] 和 [C : Category@{u3 Set Set}]；它补充说插销“是继承的，不可修复，也不被认为是不可避免的”。前半部分正确阅读了当时的树结构，最后一句也正确：插销是 Instance/Discrete.v 的 [DiscreteCat_Functor] 的宇宙最小化产物，通过 [Limit] 对形状的 hom-and-proof 宇宙与环境宇宙的识别达到 [iprod]。该捐赠者在 PR “代数承载是集合”（2026-09-17）中已在原位标注，因此没有任何字面上的 [Set] 再能达到这个推论。基本的 [IsIndexedProduct] 形式仍然首先陈述，而 [iprod] 的解读仍然是一个推论——这种排序从未仅仅关于 [Set]——下面的 [UniversePin] 节现在保护了修复：以前严格拒绝超出 [Set] 的同态的同样两行现在保留在那里作为正控制。7. 否定项：两个，均为转换。该条目的早期版本写作“四个，两种类型，保持词汇上分开”，并描述了两个可形成性否定项——[iprod] 和 [coprod_IsALimit_iprod]——由于其同类项被宣布严格高于 [Set] 而被拒绝，“每个以‘宇宙不一致：无法强制设置 = uh’结束”——针对三个控制项。这两个现在在相同级别被接受，并在 [UniversePin] 节中作为控制项与原来的三个（第6项）并列；此处记录修正，而不是悄然更改。剩下的是两个转换否定项。[sigma_obj_eta]，记录了一个类别余积的对象**不能**与其投影对可转换（这就是为什么 [coprod_leg] 是一个带返回注释的 [match]；其控制 [sigma_hom_eta] 仅显示 [sigma_equiv] 投影其参数，而不是说明态射有 eta 规则——经过测量，如果态射被拒绝，会显示相同的 `cannot unify “f” and “( `1 (f); ` 2 (f))”` 错误，就像对象一样），以及 [component_diagram_strict]，记录了 [Compose] 重建其三个律域字段的情况。每个字段都曾被去掉一次 [Fail]，并且其失败类型从整个错误中读取。未实现的内容。没有二对偶：此处未说明余极限、余积在余极限一侧的形状或余锥。部分(a)没有[Colimit] / [DiscreteCat_Functor]的解读，也没有通向Structure/Limit/Coproduct.v中的[colimit_is_indexed_coproduct]的桥梁。没有(a)的逆命题：没有证明[F]的极限会强制其限制的极限，也没有证明各部分极限的积是唯一的顶点。没有保持、反射或创建的说明，也没有与[PreservesLimit] / [CreatesLimit]的关系。没有[coprod_leg]或[cd_compare]在任何事情上的函子性或自然性。没有证明某个范畴具有分解，因此没有“每个范畴都是连通范畴的余积”的无条件定理，也没有关于[ComponentDecomposition]与[Pi0]作为函子之间关系的说明。没有证明[IdxUIP]对[cd_compare_Faithful]是必要的。没有任何东西关联两个不同分解的 [cd_sum]：[cd_transfer] 是与部分映射兼容的索引类型的双射，并且它从未被提升为比较函子或两个余积范畴之间的等价。没有为 [cd_compare] 构建类型为 [_ ≅[Cat] _] 的常量——工作项 3 的问题是“库中的 [≈] 基于意义的范畴同构”，而实际交付的是 [EquivalenceOfCategories]，它相当于在这棵树中 [≅[Cat] ] 的含义，但不是那个字面类型。最后，该问题自身的验证块固定了 [打印假设 limit_over_coproduct_is_product] 和 [打印假设 category_is_coproduct_of_components]；在树中的任何地方都不存在这两个名称，对应结果是 [coprod_IsALimit] 和 [cd_equivalence]，均受限制。[xfer_IsALimit] 的逆命题（即一个完整的 ESO 函子在形状下反映极限）尚未被证明，任何上界性声明也同样没有被证明。没有符号。没有使用这些方法展示具体范畴是完备的。[Coq] 在第 (a) 部分的证据位于具有单点形状的两元素指标上；没有任何证据在具有具体非平凡分量的具体环境范畴中实例化第 (c) 部分。
 *)
 
 (* * ** Part (a): the limit over a coproduct of shapes / * ** 部分 (a)：在形状的余积上的极限 *)
@@ -469,7 +469,7 @@ Definition coprod_Limit : Limit F := isalimit_to_limit coprod_IsALimit.
 (*
  The plainest form: mediating the restriction of the assembled limit
  cone to the k-th summand returns the k-th projection.  This is what
- "the product projections agree with restriction along the injections"
+ “the product projections agree with restriction along the injections”
  says at the assembled limit, and it is proved through the SUMMAND's
  own uniqueness clause rather than read off the definition. 
 
@@ -560,12 +560,12 @@ Definition coprod_IsALimit_HasIndexedProducts {I : Type} {J : I → Category}
 (*
  The [iprod] reading the issue's reviewer check asks for: the right-hand
  side is [Structure/Limit/Product.v]'s own product operator, not a
- bespoke one.  RECORDED CORRECTION: an earlier revision continued "IT
+ bespoke one.  RECORDED CORRECTION: an earlier revision continued “IT
  INHERITS THAT DONOR'S UNIVERSE PIN -- [iprod] is defined over
  [Limit (DiscreteCat_Functor f)] and so is declared at
  [C : Category@{_ Set Set}], where [coprod_IsALimit] above leaves both
- levels free."  The pin is gone: the donor was annotated in place at
- Instance/Discrete.v in the PR "algebraic carriers are sets"
+ levels free.”  The pin is gone: the donor was annotated in place at
+ Instance/Discrete.v in the PR “algebraic carriers are sets”
  (2026-09-17), and [iprod@{u u0 u1 u2 u3}] is now declared over
  [C : Category@{u1 u2 u2}].  What it still inherits is [Limit]'s
  IDENTIFICATION of the discrete shape's hom-and-proof universe with the
@@ -651,8 +651,8 @@ Definition cd_part_zigzag {x y : C} (s : ZigZag x y) :
   eq_sym (cd_sep D y (cd_part D x) (zigzag_trans (cd_join D x) s)).
 
 (*
- ... and conversely, which is the other half of "the parts ARE the
- components".  This direction consumes no [cd_sep]. 
+ ... and conversely, which is the other half of “the parts ARE the
+ components”.  This direction consumes no [cd_sep]. 
 
  --------
  ... 相反，这正是“部分就是组成部分”的另一半。这种方向不消耗 [cd_sep]。
@@ -1393,7 +1393,7 @@ Proof. discriminate. Qed.
  minimized to [DiscreteCat@{u Set Set}], and which [Limit] (unlike
  [Cone]) identifies with the AMBIENT hom-and-proof universe.
 
- In the PR "algebraic carriers are sets" (2026-09-17)
+ In the PR “algebraic carriers are sets” (2026-09-17)
  [DiscreteCat_Functor] was annotated in place at Instance/Discrete.v,
  and both lines below are now ACCEPTED.  They are kept as positive
  controls at exactly the levels that used to refuse them, so this
@@ -1458,12 +1458,12 @@ Fail Example sigma_obj_eta (I : Type) (Cs : I → Category)
  rather than requiring it to be a pair, which is why they need no
  return annotation.  The morphism itself is NO MORE eta-convertible
  than the object: measured, [f = ((`1 f; `2 f))] is rejected with
- `cannot unify "f" and "(`1 (f); `2 (f))"`, the same failure as the
+ `cannot unify “f” and “(`1 (f); `2 (f))”`, the same failure as the
  object negative above.  So this Example is not a contrast with that
  negative; it records the projection behaviour only. 
 
  --------
- [sigma_equiv] 和 [sigma_case_map] 投射它们的态射参数，而不是要求它是一个对，这就是它们不需要返回注解的原因。态射本身并不比对象更能进行 eta 转换：经过测量，[f = ((`1 f; `2 f))] 被 `cannot unify "f" and "(` 1 (f) 拒绝；`2 (f))"`，和上述对象否定的失败相同。因此，这个示例不是与那个否定的对比；它只记录投射行为。
+ [sigma_equiv] 和 [sigma_case_map] 投射它们的态射参数，而不是要求它是一个对，这就是它们不需要返回注解的原因。态射本身并不比对象更能进行 eta 转换：经过测量，[f = ((`1 f; `2 f))] 被 `cannot unify “f” and “(` 1 (f) 拒绝；`2 (f))”`，和上述对象否定的失败相同。因此，这个示例不是与那个否定的对比；它只记录投射行为。
 *)
 
 Example sigma_hom_eta (I : Type) (Cs : I → Category)

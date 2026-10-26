@@ -37,7 +37,7 @@ nLab: https://ncatlab.org/nlab/show/co-Yoneda+lemma
    nLab: https://ncatlab.org/nlab/show/end#yoneda_reduction
 
    For a covariant functor [F : C ⟶ Sets] and an object [c : C] the Yoneda
-   lemma has two dual "reduction" forms, computing a (co)end of a hom-weighted
+   lemma has two dual “reduction” forms, computing a (co)end of a hom-weighted
    integrand back to [F c]:
 
      coend form (co-Yoneda) :   ∫^x  C(x,c) × F x   ≅   F c

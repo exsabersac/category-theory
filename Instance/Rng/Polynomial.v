@@ -26,12 +26,12 @@ Generalizable All Variables.
 (*
    * * The polynomial ring K[x] as a universal arrow
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, §III.1, printed pp. 56 and 59 — the roster of free
    constructions as universal arrows (maclane:III.1:remark2) and
    Exercise 7, which asks for K[x] with the insertion of x as a
    universal construction (maclane:III.1:ex7)
-   Book: Riehl, "Category Theory in Context", 2nd ed., §2.1
+   Book: Riehl, “Category Theory in Context”, 2nd ed., §2.1
    Example 2.1.5(v), printed p. 56 — the forgetful functor from
    rings to sets is represented by ℤ[x] (riehl:2.1:example5)
    Book: Riehl, ibid., §2.3 Example 2.3.4, printed p. 68 — the same in
@@ -42,8 +42,8 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/universal+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Polynomial_ring
 
-   WHY THE INDETERMINATE IS A UNIVERSAL PROPERTY.  "Let x be an
-   indeterminate" is the oldest piece of mathematical hand-waving that
+   WHY THE INDETERMINATE IS A UNIVERSAL PROPERTY.  “Let x be an
+   indeterminate” is the oldest piece of mathematical hand-waving that
    category theory turned into a definition.  What a nineteenth-century
    algebraist meant by it was operational: x is a symbol one may
    calculate with, subject to no relation beyond the ring laws, and
@@ -64,11 +64,11 @@ Generalizable All Variables.
    because they are what the three catalogued sources each ask for.  Mac
    Lane's is the universal arrow: (K[x], x) is initial among K-algebras
    with a chosen element.  Awodey's (§9.3, Instance/Rng/Pointed.v) is
-   the adjunction: "adjoin an indeterminate" is left adjoint to
+   the adjunction: “adjoin an indeterminate” is left adjoint to
    forgetting a distinguished element, and the transposition IS
    evaluation.  Riehl's is representability: the underlying-set functor
    of rings is naturally isomorphic to Rng(ℤ[x], −), the isomorphism
-   being "evaluate at x", and x itself is the universal element.  The
+   being “evaluate at x”, and x itself is the universal element.  The
    three are interderivable through Theory/Universal/Element.v's
    subsumption theorem, and the passages are taken here rather than
    re-proved.
@@ -91,11 +91,11 @@ Generalizable All Variables.
    - polynomial algebra — this file.
 
    A CORRECTION TO THE ISSUE'S PRIOR ART, recorded here because a
-   header is where a reader looks.  Issue #309 states that "the free
+   header is where a reader looks.  Issue #309 states that “the free
    R-module and the polynomial algebra have no in-tree counterpart and
-   no host categories", and its Riehl §4.1 section reports as verified
-   that "rg -nw 'Ring' returns 0 hits, so there is no base ring, no
-   module category, and no free module".  Both are false as of this
+   no host categories”, and its Riehl §4.1 section reports as verified
+   that “rg -nw 'Ring' returns 0 hits, so there is no base ring, no
+   module category, and no free module”.  Both are false as of this
    writing: Instance/Rng.v is the category of unital rings,
    Instance/Mod.v the category of R-modules, and Instance/Mod/Free.v
    the free module with exactly the universal arrow and adjunction the
@@ -103,7 +103,7 @@ Generalizable All Variables.
    only that half is built here.  A third stale claim is worth naming
    for the same reason: the category of commutative K-algebras was
    ALSO already in tree, as Instance/Rng/Algebras.v's [KAlg], so
-   "rings under K" needed no construction and Mac Lane's Exercise 7
+   “rings under K” needed no construction and Mac Lane's Exercise 7
    lands there directly.
 
    HOW K[x] IS PRESENTED, AND WHAT THAT COSTS.  The construction is by
@@ -206,8 +206,8 @@ Generalizable All Variables.
    - [rng_monic_injective] and [rng_monic_iff_injective]:
    monomorphisms of rings are injective, which is the result
    Instance/Rng.v deferred pending the polynomial ring ℤ[x]
-   (paraphrased -- that file's wording is "the polynomial ring
-   ℤ[x], which does not exist in-tree");
+   (paraphrased -- that file's wording is “the polynomial ring
+   ℤ[x], which does not exist in-tree”);
    - the non-degeneracy results above, and computing witnesses.
 
    WHAT IS NOT DELIVERED.  No degree, no normal form, no coefficient
@@ -227,7 +227,7 @@ Generalizable All Variables.
    nLab：https://ncatlab.org/nlab/show/polynomial+ring
    nLab：https://ncatlab.org/nlab/show/free+functor
    nLab：https://ncatlab.org/nlab/show/universal+morphism
-   维基百科：https://en.wikipedia.org/wiki/Polynomial_ring为什么不定元是一个泛性质。“设 x 为一个不定元”是数学中最古老的一段含糊说法，而范畴论把它变成了一个定义。十九世纪的代数学家对它的理解是操作性的：x 是一个可以计算的符号，除了环的运算法则之外不受任何约束，并且之后可以被替换为任意包含系数的环中的任意元素。替换条款就是全部内容，它实际上是一个伪装的泛性质——(K[x], x) 对于带有选定元素的 K 下的环是泛的，因此指定一个从 K[x] 出发的同态与指定 x 被映射到何处是同样的意思。每一门代数课程通过公式 p ↦ p(a) 引入的代换同态，并不是一种构造，而是那个泛性质的中介箭头，它的存在性和唯一性是一个陈述，而不是两个。Mac Lane 在 §III.1 的列表中，将多项式代数与自由幺半群、自由群和自由模并列，并将练习7设置为检查它是否属于其中。该读法有三种方式，下面对三种方式进行了形式化，因为它们正是三个已编目来源各自要求的。Mac Lane 的方式是通用箭头：(K [x] , x) 在带有选定元素的 K-代数中是初始的。Awodey（§9.3, Instance/Rng/Pointed.v）是伴随："添加一个未定元" 是左伴随于忘记一个特定元素，而转置即是求值。Riehl 的方式是可表示性：环的底层集合函子自然同构于 Rng(ℤ [x] , −)，同构映射为“在 x 上求值”，而 x 本身是通用元素。三者可以通过 Theory/Universal/Element.v 的蕴含定理相互推导，这里采用了这些传递方式，而没有重新证明。麦克莱恩的名单，完整。§III.1 中作为普遍箭头的自由构造示例——正如第 #309 期列举的——现在都在 tree 中，这个文件是五个文件中的最后一个：
+   维基百科：https://en.wikipedia.org/wiki/Polynomial_ring为什么不定元是一个泛性质。“设 x 为一个不定元”是数学中最古老的一段含糊说法，而范畴论把它变成了一个定义。十九世纪的代数学家对它的理解是操作性的：x 是一个可以计算的符号，除了环的运算法则之外不受任何约束，并且之后可以被替换为任意包含系数的环中的任意元素。替换条款就是全部内容，它实际上是一个伪装的泛性质——(K[x], x) 对于带有选定元素的 K 下的环是泛的，因此指定一个从 K[x] 出发的同态与指定 x 被映射到何处是同样的意思。每一门代数课程通过公式 p ↦ p(a) 引入的代换同态，并不是一种构造，而是那个泛性质的中介箭头，它的存在性和唯一性是一个陈述，而不是两个。Mac Lane 在 §III.1 的列表中，将多项式代数与自由幺半群、自由群和自由模并列，并将练习7设置为检查它是否属于其中。该读法有三种方式，下面对三种方式进行了形式化，因为它们正是三个已编目来源各自要求的。Mac Lane 的方式是通用箭头：(K [x] , x) 在带有选定元素的 K-代数中是初始的。Awodey（§9.3, Instance/Rng/Pointed.v）是伴随：“添加一个未定元” 是左伴随于忘记一个特定元素，而转置即是求值。Riehl 的方式是可表示性：环的底层集合函子自然同构于 Rng(ℤ [x] , −)，同构映射为“在 x 上求值”，而 x 本身是通用元素。三者可以通过 Theory/Universal/Element.v 的蕴含定理相互推导，这里采用了这些传递方式，而没有重新证明。麦克莱恩的名单，完整。§III.1 中作为普遍箭头的自由构造示例——正如第 #309 期列举的——现在都在 tree 中，这个文件是五个文件中的最后一个：
 
    - 图上的自由范畴 — [UniversalArrowQuiverCat] (Construction/Free/Quiver.v) 和 [FreeForgetfulAdjunction]；
    - 自由幺半群 — [free_monoid_universal_arrow] (Instance/Coq/Monoid/Free.v) 和 [free_monoid_adjunction]；
@@ -297,7 +297,7 @@ Inductive PTerm : Type :=
 
 (*
  AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
- "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
+ “algebraic carriers are sets” (2026-09-17) it lands in [Prop], because
  [RigObject] now carries a [rig_prop : PropEquiv (is_setoid rig_setoid)]
  field and the [≈] of [PolyRing K] IS [pt_eq]: the relation must therefore
  BE a [Prop] for the field to be the identity pair of implications.  The
@@ -541,12 +541,12 @@ Context (s : carrier (rig_setoid S)).
 (*
  [Kcomm] and [Hcs] are explicit hypotheses of the lemmas that consume
  them rather than section variables: the file inherits Lib.v's
- [Default Proof Using "Type"], under which a section variable absent
+ [Default Proof Using “Type”], under which a section variable absent
  from a lemma's STATEMENT is not available to its proof, and both of
  these are used only inside proofs. 
 
  --------
- [Kcomm] 和 [Hcs] 是使用它们的引理的显式假设，而不是节变量：该文件继承了 Lib.v 的 [Default Proof Using "Type"]，在其下，某个引理的陈述中缺失的节变量在其证明中不可用，并且这两者仅在证明内部使用。
+ [Kcomm] 和 [Hcs] 是使用它们的引理的显式假设，而不是节变量：该文件继承了 Lib.v 的 [Default Proof Using “Type”]，在其下，某个引理的陈述中缺失的节变量在其证明中不可用，并且这两者仅在证明内部使用。
 *)
 Notation Kcomm_hyp :=
   (∀ a b : carrier (rig_setoid K), rig_mul K a b ≈ rig_mul K b a).
@@ -627,7 +627,7 @@ Qed.
    setoid's symmetry and transitivity.
 
    AN EARLIER REVISION of this proof inducted on [pt_eq] straight into the
-   [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
+   [Type]-valued goal `≈`.  Since the PR “algebraic carriers are sets”
    (2026-09-17) [pt_eq] is a [Prop] inductive and eliminates only into
    [Prop], so the script opens with [apply pequiv_to] at the TARGET ring's
    own [rig_prop]: that puts the [Prop] goal [pequiv …] in front of the

@@ -13,20 +13,20 @@ Generalizable All Variables.
 (** * Coproducts of quivers / * 箭图的余积 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.3
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.3
  Exercise 4, printed p. 68 (PDF p. 77); catalog item [maclane:III.3:ex4],
  whose recorded statement summary is
 
- "Describe coproducts, showing that they exist, in the category of small
+ “Describe coproducts, showing that they exist, in the category of small
  categories Cat, the category of monoids Mon, and the category of
- graphs Grph."
+ graphs Grph.”
 
  (doc/plan/books/maclane/inventory/III.json).  The exercise has three
  independent thirds and this file delivers exactly one of them, the Grph
  third: the coproduct of two quivers, its two injections, the copairing
  universal property, and — since the price turned out to be small — the
- [Cocartesian QuiverCategory] instance, which is what "showing that they
- exist" asks for.  The Cat third was already in tree as
+ [Cocartesian QuiverCategory] instance, which is what “showing that they
+ exist” asks for.  The Cat third was already in tree as
  [Cat_Cocartesian] (Instance/Cat/Cocartesian.v) over
  Construction/Coproduct.v, and is cross-linked below rather than redone;
  the Mon third is not touched here.
@@ -34,14 +34,14 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/quiver
  nLab: https://ncatlab.org/nlab/show/coproduct
 
- Mac Lane's "graph" is what is now called a quiver or directed multigraph.
+ Mac Lane's “graph” is what is now called a quiver or directed multigraph.
  Construction/Free/Quiver.v indexes edges directly by their endpoints
  ([edges X Y] is the set of arrows from X to Y), and that encoding is again
  what makes the construction cheap, exactly as it was for the opposite and
  the product in the sibling file Construction/Free/Quiver/Constructions.v:
  nodes are the tagged disjoint union, and the edge family is defined by
  cases on the two tags, with the two CROSS cases empty.  That last clause
- is the whole mathematical content of "disjoint" and is where an error
+ is the whole mathematical content of “disjoint” and is where an error
  would hide, so it is stated several ways: five artifacts in three
  kinds.  They all rest on the SAME definitional fact and so would
  break together rather than giving independent checks below — as two [eq_refl]
@@ -73,8 +73,8 @@ Generalizable All Variables.
 
  (b) STRONGER: consequently the universal property is packaged as a class
  instance, [QuiverCategory_Cocartesian], where Constructions.v states
- in terms that "no claim is made that [QuiverProd] is the categorical
- product in [QuiverCategory]".  [Cocartesian C] is notation for
+ in terms that “no claim is made that [QuiverProd] is the categorical
+ product in [QuiverCategory]”.  [Cocartesian C] is notation for
  [@Cartesian (C^op)] (Structure/Cocartesian.v), so the instance
  literally says that [QuiverCategory^op] is cartesian, with
  [product_obj := QuiverCoprod], [exl := QuiverInl], [exr := QuiverInr]
@@ -92,7 +92,7 @@ Generalizable All Variables.
  guessed; see the next paragraph.
 
  PRESERVATION BY THE FORGETFUL FUNCTOR: WHAT IS AND IS NOT TRUE.  The
- question "does U : Cat -> Grph preserve coproducts" is not part of
+ question “does U : Cat -> Grph preserve coproducts” is not part of
  Exercise 4, but it is the obvious companion to §II.7 and it is answered
  here.  Measured, strict first:
 
@@ -104,8 +104,8 @@ Generalizable All Variables.
 
  The [edges] FIELDS, as functions of two variable nodes, are NOT
  convertible, and neither are the whole records.  Both failures were
- checked by machine and each is a genuine conversion failure ("cannot
- unify"), not an elaboration or scope error.  There are exactly two
+ checked by machine and each is a genuine conversion failure (“cannot
+ unify”), not an elaboration or scope error.  There are exactly two
  causes and they are independent:
 
  - Construction/Coproduct.v is a [Program Definition], and Program's
@@ -136,7 +136,7 @@ Generalizable All Variables.
  file: nothing here re-checks them on a later build, and pinning them
  would take a probe file, which THIS file does not create -- but the
  same commit does.  Test/ProbeCoproduct328.v pins both.  An earlier
- draft stopped at "does not create", leaving a reader with the
+ draft stopped at “does not create”, leaving a reader with the
  wrong conclusion about the commit.
 
  What IS delivered instead is [QuiverOfCat_Coproduct_iso], an ISOMORPHISM
@@ -144,7 +144,7 @@ Generalizable All Variables.
  coproduct of the underlying quivers, whose two legs are the IDENTITY on
  nodes and the IDENTITY on edges in every case — they carry no data
  whatsoever, which is the precise sense in which the failure above is
- presentational.  Read the word "isomorphism" here at full strength: this
+ presentational.  Read the word “isomorphism” here at full strength: this
  is an isomorphism in [QuiverCategory], not an equivalence of anything.
  And it is compatible with the injections: [Forgetful_preserves_coprod_inl]
  and [_inr] show that it carries the underlying map of the inclusion
@@ -157,9 +157,9 @@ Generalizable All Variables.
  does not take.
 
  THE UNIQUENESS CLAUSE IS WITNESSED, NOT ONLY STATED.  Constructions.v
- discloses that its uniqueness clause has no exhibited competitor: "no
+ discloses that its uniqueness clause has no exhibited competitor: “no
  homomorphism into a product is exhibited that FAILS the two triangles, so
- the clause's discriminating power is disclosed rather than witnessed",
+ the clause's discriminating power is disclosed rather than witnessed”,
  and observes that doing so needs a concrete quiver with two distinct
  nodes.  The closing section here supplies exactly that on the coproduct
  side: [copair_swap_fails_left] exhibits a homomorphism out of a concrete
@@ -204,13 +204,13 @@ Generalizable All Variables.
 
  AN EARLIER DRAFT OF THIS HEADER CLAIMED A CONSTANT THAT DOES NOT
  EXIST, and it is recorded here as bad evidence rather than deleted.
- It read: "[QuiverCoswap_is_copair] is [eq_refl] ... recorded rather
- than asserted".  There is no such constant anywhere in the tree,
+ It read: “[QuiverCoswap_is_copair] is [eq_refl] ... recorded rather
+ than asserted”.  There is no such constant anywhere in the tree,
  and the body below says the opposite in terms: [QuiverCoswap] is
  TAKEN AS A DEFINITION ([QuiverCopair QuiverInr QuiverInl]), so
  there is nothing to record and no second candidate whose agreement
- would be worth measuring.  The phrase "recorded rather than
- asserted" is this file's own honesty vocabulary, which made the
+ would be worth measuring.  The phrase “recorded rather than
+ asserted” is this file's own honesty vocabulary, which made the
  invented measurement read as a checked one.
 
  [QuiverCoswap_invol] is only [≈] — the [eq_refl] form was tried and

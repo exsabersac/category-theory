@@ -153,8 +153,8 @@ Generalizable All Variables.
 
  SCOPE.  This is the finite concrete case only.  No general [Skeleton]
  vocabulary is introduced: the statement that every category has a
- skeleton is itself equivalent to the axiom of choice (nLab, "skeleton
- of a category"), and Theory/Equivalence.v's header records the
+ skeleton is itself equivalent to the axiom of choice (nLab, “skeleton
+ of a category”), and Theory/Equivalence.v's header records the
  library's decision to confine skeletons to concrete instances such as
  this one. 
 
@@ -204,11 +204,11 @@ Generalizable All Variables.
  categories that distinguishes the ordinals from the finite sets is
  not a categorical property at all, and skeletality — which does
  distinguish them — is exactly such a non-invariant property (nLab,
- "skeleton of a category").
+ “skeleton of a category”).
 
  The constructive reading is what the setoid presentation buys.
- Classically one says "every finite set is isomorphic to some
- ordinal" and then chooses, for every set at once, an isomorphism;
+ Classically one says “every finite set is isomorphic to some
+ ordinal” and then chooses, for every set at once, an isomorphism;
  that choice is the axiom of choice, and Theory/Equivalence.v's
  header traces the standard responses to it (Makkai's anafunctors;
  the univalent-foundations dissolution).  Here the choice is made
@@ -469,7 +469,7 @@ Proof. now destruct i. Qed.
 
 (*
  The canonical objects: [Fin.t n] counted by the IDENTITY bijection.
- Mac Lane makes this choice too ("choose [θ_n = 1_n]"), and it is what
+ Mac Lane makes this choice too (“choose [θ_n = 1_n]”), and it is what
  makes the [Card ◯ FinSet_Incl] round trip strict below — tested, not
  asserted: [Card_conjugation_moves_constant] exhibits an object of the
  same underlying setoid carrying the transposition instead, at which the

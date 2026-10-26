@@ -44,13 +44,13 @@ Generalizable All Variables.
  (Construction/FreeMonoidal/Normal.v) and [tpower] (Spider.v) are
  constant-family, while [tensor_list]/[tfold]
  (Theory/Multicategory/Representable.v,67) DO fold a varying family.
- So "a fold of a varying family" is not by itself distinguishing; what
+ So “a fold of a varying family” is not by itself distinguishing; what
  distinguishes this one is the binary product together with its
  universal property.
  The gap is conceded in the donor's own prose: Structure/Cartesian.v
- reads "A cartesian category is a category equipped with finite products.
+ reads “A cartesian category is a category equipped with finite products.
  This class axiomatizes the binary product; the nullary product (the
- terminal object 1) is supplied separately by [Terminal]" -- so the class
+ terminal object 1) is supplied separately by [Terminal]” -- so the class
  says of itself that it covers only the binary and (via [Terminal]) the
  nullary case.
 
@@ -131,7 +131,7 @@ Generalizable All Variables.
  measured in scratch files only.
 
  SEVEN REFUTATIONS, all CONVERSION failures -- each was stripped of its
- [Fail] once and its error read, and each reported "cannot unify":
+ [Fail] once and its error read, and each reported “cannot unify”:
  1. [fin_prod 1 f = f F1]
  2. [fin_prod 2 f = f F1 × f (FS F1)]
  3. [product_obj (HasFiniteProducts_Cartesian
@@ -152,7 +152,7 @@ Generalizable All Variables.
  ALL SEVEN ARE PINNED, in Test/ProbeFiniteProducts335.v, as its
  negatives 1-7.  This file ships no [Fail] of its own -- the guarding is
  the probe's job -- and each of the seven was stripped of its [Fail]
- there and its failure KIND confirmed to be "cannot unify" rather than
+ there and its failure KIND confirmed to be “cannot unify” rather than
  some unrelated elaboration failure.
 
  UNIVERSES, read off the constraint blocks ([Set Printing Universes] then
@@ -171,7 +171,7 @@ Generalizable All Variables.
  to the identification, and it is NOT claimed unavoidable.  All
  three rejections and that control are pinned as negatives 8-10 of
  Test/ProbeFiniteProducts335.v, each confirmed to report
- "universe inconsistency: Cannot enforce up = uh".
+ “universe inconsistency: Cannot enforce up = uh”.
  - [fin_proj] additionally carries [u0 <= Fin.case0.u0] and
  [u0 <= Fin.caseS'.u0], the stdlib eliminators; again inherited.
  - [iprod_unique_iso@{u u0 u1 u2 u3 u4}] leaves the INDEX universe [u]
@@ -267,7 +267,7 @@ Generalizable All Variables.
 
  STATUS: 77 constants -- 76 in the [.glob] (66 [def], 6 [prf], 3 [proj],
  1 [rec]) plus [Build_HasFiniteProducts], which the glob does not record
- -- all reporting "Closed under the global context".  No [Program]
+ -- all reporting “Closed under the global context”.  No [Program]
  anywhere in the file.
 
  NOT DELIVERED.
@@ -301,14 +301,14 @@ Generalizable All Variables.
  naturality or functoriality of [fin_prod] in [f] or in [n]; no
  associativity or commutativity coherence for the fold; no
  [Fin.t (m + n)] splitting.
- - (An earlier draft of this header ended with "No [Test/] probe",
+ - (An earlier draft of this header ended with “No [Test/] probe”,
  and miscounted the refutations as six; there are SEVEN, enumerated
  above.  Both are corrected: Test/ProbeFiniteProducts335.v ships in
  the same commit and pins all ten measurements.)
  - Three proofs carry an explicit [Proof using] --
  [iprod_two_IsCartesianProduct], [iprod_unique_iso] and
  [awodey_IsIndexedProduct] -- because Lib.v sets
- [Default Proof Using "Type"] and each has section hypotheses
+ [Default Proof Using “Type”] and each has section hypotheses
  ([proj]/[HP], [HP]/[HQ], [CP]) that do not appear in its statement.
  Nothing else in the file needs one. 
 
@@ -365,7 +365,7 @@ Generalizable All Variables.
  (@Cartesian C * @Terminal C)]，带有 [HasFiniteProducts_Terminal] 和 [HasFiniteProducts_Cartesian] 是其逆向部分。这不是一个结构等价；反例 3-6 测量了这个差距。两个特例确实得到了证明，而且是从泛性质而非检视得出：[fin_zero_IsTerminalObj] 给出 [IsTerminalObj (fin_prod 0 f)]，而 [fin_two_IsCartesianProduct] 给出 [@IsCartesianProduct C x y (fin_prod 2 (fin2fam x y))]，每个都是通过在 [fin_IsIndexedProduct] 实例化一个通用读法（[iprod_zero_IsTerminalObj]，[iprod_two_IsCartesianProduct]）得出的。他们恢复的是每个邻居的结论——一个终对象，一个二元积——而不是它的 [Limit] 级别陈述。AWODEY §2.7 已被解除，不是放弃。[awodey_prod CP x y z] 是字面上的 [(x × y) × z]，并且 [awodey_proj] 是三个复合投影，[awodey_IsIndexedProduct] 证明它是 [fin3 x y z] 的索引积。注意它的假设：仅有 [Cartesian]，没有 [Terminal]——Awodey 的构造用空填充，这正是为什么终对象只在零元和一元情况下需要，并且文件通过将三元部分放在无 [Terminal] 的 [Context] 中来显示这一点。[awodey_fold_iso] 然后将其与右折叠关联，包含两组腿族（[awodey_fold_iso_to] 和 [awodey_fold_iso_from]）——一个单独的 [≅] 将是弱形式。范围：这是 Awodey 自己显示的实例，即三元实例，采用字面左结合。未构建 ARBITRARY [n] 的左折叠；参见未提供内容。这里声明了两个副产品，而不是在它们的自然位置声明，因为这个提交添加了一个文件，没有编辑任何文件。- [iprod_unique_iso]：[IsIndexedProduct] 的基本唯一性，带有腿方程 [iprod_compare_commutes] 和 [iprod_compare_inv_commutes]。该树没有：在这个文件之外，[IsIndexedProduct] 出现在十三个 [.v] 文件中（其中四个是 [Test/] 探针——Test/ProbeFiniteProducts335.v，随这个提交一起提供，是第十三个且第四个），没有一个声明了唯一性，而 [Structure/Limit/Unique.v] 的 [limit_unique_iso] 关于 [IsALimit]，是一个不同的记录。它很短，正如人们所希望的——[iprod_desc] 已经携带了 [∃!]——并且它是许可上述 Awodey 比较的，因此它被实例化而不是未使用。自然位置：Structure/Limit/Product.v。- [Cartesian_of_IsCartesianProduct]：每一对具有一个 [IsCartesianProduct] 使得 C 是笛卡尔的。Structure/Cartesian.v 声明了两个类，但它们之间没有通道；Functor/Hom/Limit.v 提供了另一个方向（[cartesian_IsCartesianProduct]）并记录了缺失。自然位置：Structure/Cartesian.v。两者都没有被注册为 [Instance]。双重。[HasFiniteCoproducts C := @HasFiniteProducts (C^op)]，[Definition] 加 [Existing Class]，完全按 Shape Structure/Limit/Coproduct.v 给出 [HasIndexedCoproducts]，并且原因如那里记录（头恒量上的解析键，并且不会透过展开查看）。每个面向消费者的类型都是协变的——[finite_coproduct_inj f i : f i ~> finite_coproduct f]，并且 [fin_coprod_ump] 通过 [u ∘ fin_inj n f i ≈ iota i] 表示——并且在它们中没有 [^op] 出现；每个通道都是一个 [:=] 项，没有策略，因为 [C^op] 展开了 [hom] 并且 [compose] 定义式。显示风险：[Cocartesian C] 和 [Initial C] 是 [@Cartesian (C^op)] 和 [@Terminal (C^op)] 的记号，其中类别参数是隐式的，所以 [Check] 例如 [HasFiniteCoproducts_Cocartesian] 打印其结论为裸 [Cartesian]——[^op] 被隐式参数抑制隐藏，而不是缺失。[Set Printing Implicit] 展示了它。非空性。五个  [coq_*]   [Example] 在结尾处在 Instance/Coq.v 中实例化，并通过 [eq_refl] 计算：[fin_prod 3 (fun _ => nat) = nat * (nat * (nat * unit))]，一个混合的两因子折叠，将 [Nat.eqb ─ 0] 与 [S] 在 3 处求值后形成的元组为 [(false, (4, tt))]，第二个投影求值结果为 [2]。它们使用了折叠的 DATA，而不是它的泛性质；没有为任何类别注册具体的 [HasFiniteProducts] 实例。
 
  状态：77 个常量 -- 76 个在 [.glob] 中（66 个 [def]，6 个 [prf]，3 个 [proj]，1 个 [rec]）加上 [Build_HasFiniteProducts]，但全局对象未记录 -- 全部报告“在全局上下文下关闭”。文件中没有任何 [Program]。未交付。- 对任意（ARBITRARY）元数没有左折叠。Awodey展示的三元情况已交付（[awodey_fold_iso]及其两个分支家族），但一般的左关联[fin_prod_l n f]尚未构建，因此没有语句可以对左关联侧的[n]进行量化。阻碍不是普适性——[fin_prod_unique_iso]可以为任何这样的折叠提供比较，因为它有[IsIndexedProduct]。该标题的早期草稿给出了一个错误的原因，这里保留记录而未删除：它说左折叠去掉的是最后一个索引，而[Fin.t (S m)]去掉的是前面的索引，因此必须先建立一个从后面开始去除的消除器。两者都是错误的。标准库已经有一个反向剥离消除器（[Fin.case_L_R']，带有iota规则[case_L_R'_L]和[case_L_R'_R]）；而且在任何情况下都不需要反向剥离，因为累加器会将前向剥离转化为左结合——[fold_l (S m) acc f := fold_l m (acc × f F1) (f ∘ FS)]——对于其[fin_prod_l 2 (fin3 x y z) = awodey_prod CP x y z]通过[eq_refl]成立（从树之外编译，由审核提供）。所以一般比较是未尝试的，而不是被阻挡的；真正未测试的部分是它的普遍性质，而不是它的定义。——任何地方都没有[Limit]或[Cone]，因此没有[Limit (DiscreteCat_Functor f)]型推论，也没有通向[Terminal_Limit]或[Cartesian_Limit]作为命题的桥梁；只是它们的结论被恢复了。——任何具体范畴都没有[HasFiniteProducts]或[HasFiniteCoproducts]实例，也没有在这里注册[Instance]的任何内容。- 与 Structure/Limit/Power.v 的 [power]（常量族情况）无关，也与 Structure/Limit/Indexed/Hom.v 的同构双射无关； [fin_prod] 在 [f] 或 [n] 中没有自然性或函子性；fold 没有结合性或交换性一致性；没有 [Fin.t (m + n)] 分裂。-（这个标题的早期草稿以“没有 [Test/] 探针”结尾，并且错误地将反驳计为六个；实际上有七个，如上所列。）两者都已更正：Test/ProbeFiniteProducts335.v 在同一个提交中提供，并固定了所有十个测量。
- - 三个证明带有明确的 [Proof using] -- [iprod_two_IsCartesianProduct]、[iprod_unique_iso] 和 [awodey_IsIndexedProduct] -- 因为 Lib.v 设置了 [Default Proof Using "Type"]，并且每个证明都有在其陈述中未出现的部分假设（[proj] / [HP]、[HP] / [HQ]、[CP]）。文件中的其他内容不需要。
+ - 三个证明带有明确的 [Proof using] -- [iprod_two_IsCartesianProduct]、[iprod_unique_iso] 和 [awodey_IsIndexedProduct] -- 因为 Lib.v 设置了 [Default Proof Using “Type”]，并且每个证明都有在其陈述中未出现的部分假设（[proj] / [HP]、[HP] / [HQ]、[CP]）。文件中的其他内容不需要。
 *)
 
 (** ** Index vocabulary / ** 索引词汇 *)

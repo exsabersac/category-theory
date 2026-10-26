@@ -14,13 +14,13 @@ Generalizable All Variables.
  nLab:  https://ncatlab.org/nlab/show/separator
  nLab:  https://ncatlab.org/nlab/show/free+group
 
- Awodey, "Category Theory" (1st ed., Carnegie Mellon pre-print,
+ Awodey, “Category Theory” (1st ed., Carnegie Mellon pre-print,
  September 2005), §7.2, printed p. 154 (PDF p. 163), gives the
  single-object generator and offers the free group on one generator as
- the generator of groups; Mac Lane, "Categories for the Working
- Mathematician", 2nd ed. (GTM 5), §V.7, book p. 127 (PDF p. 136),
+ the generator of groups; Mac Lane, “Categories for the Working
+ Mathematician”, 2nd ed. (GTM 5), §V.7, book p. 127 (PDF p. 136),
  Definition 4 is the family form this instantiates, and Riehl,
- "Category Theory in Context", 2nd ed., Definition 4.7.7, printed
+ “Category Theory in Context”, 2nd ed., Definition 4.7.7, printed
  p. 177 (PDF p. 197), is the same definition in her vocabulary.  This
  file supplies the [Grp] witness; the [Sets] witness is
  Instance/Sets/Generator.v and the [Ab] one Instance/Ab/Generator.v.
@@ -48,7 +48,7 @@ Generalizable All Variables.
  difference between the two files is exactly this.
  Instance/Ab/Generator.v records the contrast from the other side.
 
- WHAT "THE INTEGERS" ARE HERE.  Mac Lane's second example is the
+ WHAT “THE INTEGERS” ARE HERE.  Mac Lane's second example is the
  integers generating abelian groups, which belongs to
  Instance/Ab/Generator.v.  For [Grp] the corresponding object is the
  free group on one generator, which classically IS ℤ; this file does
@@ -106,7 +106,7 @@ Generalizable All Variables.
  [Program Definition] because under the universe annotation the
  respectfulness obligation is not discharged before the constant is
  registered, and the next proof's reference to it is then rejected with
- "The variable grp_point was not found in the current environment".
+ “The variable grp_point was not found in the current environment”.
  It must also stay TRANSPARENT: closed with [Qed] instead, the
  separation proof stops at the [assert] of the generator equation,
  whose [exact (free_grp_extend_generators …)] is refused because the

@@ -26,7 +26,7 @@ Set Transparent Obligations.
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
     nLab: https://ncatlab.org/nlab/show/strong+monad
 
-    Power–Robinson ("Premonoidal categories and notions of computation",
+    Power–Robinson (“Premonoidal categories and notions of computation”,
     Math. Structures Comput. Sci. 7(5), 1997) observed that for a strong
     monad M on a symmetric monoidal category C, the Kleisli category Kl(M)
     carries a canonical premonoidal structure: the tensor of C extends to

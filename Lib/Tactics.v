@@ -79,7 +79,7 @@ Open Scope lazy_bool_scope.
 Module Compat.
   (*
  In Rocq 9.2 the EqdepFacts.internal_foo schemes moved to Init.Logic
- and dropped the "internal".
+ and dropped the “internal”.
 
  This module uses shadowing to refer to the schemes by the same
  name regardless of Rocq version. 
@@ -102,7 +102,7 @@ Module Compat.
 
     (*
  if eq_rew_r_dep exists in EqdepFacts then it is used here,
- otherwise this is the "fake" notation 
+ otherwise this is the “fake” notation 
 
  --------
  若 EqdepFacts 中存在 eq_rew_r_dep 则在此使用，否则这是“假”记号。
@@ -288,7 +288,7 @@ Ltac equivalence := constructor; repeat intro; simpl; try cat; intuition;
 *)
 Ltac proper := repeat intro; simpl; try cat; intuition.
 (*
- [sapply]/[srewrite]/[srewrite_r]: "setoid" variants that first materialize
+ [sapply]/[srewrite]/[srewrite_r]: “setoid” variants that first materialize
  [F] as a hypothesis and [cbn]-normalize it (so projections of records unfold)
  before applying / rewriting left-to-right / rewriting right-to-left. 
 

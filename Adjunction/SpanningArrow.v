@@ -19,8 +19,8 @@ Generalizable All Variables.
    nLab:  https://ncatlab.org/nlab/show/subobject
    nLab:  https://ncatlab.org/nlab/show/solution+set+condition
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
-   §V.7 ("Subobjects and Generators"), book pp. 127-128 (PDF pp. 136-137),
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
+   §V.7 (“Subobjects and Generators”), book pp. 127-128 (PDF pp. 136-137),
    is the source of everything below: the unnumbered Definition of a
    SPANNING arrow (catalog id maclane:V.7:def6, book p. 127), the
    unnumbered Lemma that every arrow factors through one
@@ -31,17 +31,17 @@ Generalizable All Variables.
    catalog summaries this file works from are
    doc/plan/books/maclane/inventory/V.json, and they read:
 
-     def6  -- "Given any functor G : A -> X, an arrow f : x -> Ga of X is
+     def6  -- “Given any functor G : A -> X, an arrow f : x -> Ga of X is
      said to span a when there is no proper monomorphism s -> a in A
      (proper meaning a subobject strictly below the identity subobject)
-     such that f factors through the image Gs -> Ga."
+     such that f factors through the image Gs -> Ga.”
 
-     lem2  -- "Let A be a category in which every set of subobjects of an
+     lem2  -- “Let A be a category in which every set of subobjects of an
      object a has a pullback (an intersection).  If G : A -> X preserves
      all these pullbacks, then every arrow h : x -> Ga of X factors
      through an arrow f : x -> Gb which spans b. ... Consequence recorded
      in the text: a solution set for x may be taken to be the set of all
-     arrows out of x which span."
+     arrows out of x which span.”
 
    WHAT IS DELIVERED, AND AT WHAT STRENGTH.  [SubFactorsThrough],
    [Spanning] (with [spanning_arrow], the issue's pinned name, as an
@@ -52,7 +52,7 @@ Generalizable All Variables.
    step of one big proof: [spanning_sub] is Mac Lane's intersection b of
    all the subobjects h factors through, [spanning_factor] is his f,
    [spanning_factor_commutes] is his h = G(v) f at ≈, and
-   [spanning_factor_spanning] is "f spans b".  [factors_through_spanning]
+   [spanning_factor_spanning] is “f spans b”.  [factors_through_spanning]
    packages the four, and [spanning_solution_set] is his consequence:
    a [SolutionSet] (Adjunction/GAFT.v) whose index is exactly
    [SpanningArrowsOutOf G x].  [GAFT_from_spanning] feeds it to
@@ -64,31 +64,31 @@ Generalizable All Variables.
    first proved in the variety half, Instance/Variety/Spanning.v, and
    lifted here at integration.
 
-   WHY "PROPER SUBOBJECT" IS NEVER NAMED.  Mac Lane's def6 is a negated
-   existence -- "there is no proper monomorphism through which f
-   factors".  A proper subobject is one strictly below the identity
+   WHY “PROPER SUBOBJECT” IS NEVER NAMED.  Mac Lane's def6 is a negated
+   existence -- “there is no proper monomorphism through which f
+   factors”.  A proper subobject is one strictly below the identity
    subobject, so the negation says: every subobject f factors through is
    NOT strictly below the top one.  In a setoid library with no
-   antisymmetry for [SubObj] and no decision procedure for ≈, "strictly
-   below" would have to be [sub_le m sub_top * (sub_le sub_top m → False)],
+   antisymmetry for [SubObj] and no decision procedure for ≈, “strictly
+   below” would have to be [sub_le m sub_top * (sub_le sub_top m → False)],
    and the negated existence would unfold to a double negation that
    yields nothing.  [Spanning] therefore states the CONTRAPOSITIVE-FREE
    positive form directly: every subobject m that f factors through
    satisfies [sub_le sub_top m], i.e. the top subobject factors through
    m, i.e. m is the whole of a.  This is the same move
    Structure/Generator.v makes for Riehl's Definition 4.7.7 and the same
-   one Adjunction/SAFT.v's [Cogenerator] makes for "distinct arrows".
+   one Adjunction/SAFT.v's [Cogenerator] makes for “distinct arrows”.
    The positive form is strictly stronger constructively: it hands back
    the splitting [k] with [sub_mono m ∘ k ≈ id], which is what
    [spanning_factor_spanning]'s proof produces and what a consumer needs.
-   "Proper" is consequently not a defined notion anywhere in this file,
+   “Proper” is consequently not a defined notion anywhere in this file,
    and no lemma below asserts that a proper subobject exists.
 
-   WHAT "SPANNING" IS RELATIVE TO.  An arrow does not span in the
+   WHAT “SPANNING” IS RELATIVE TO.  An arrow does not span in the
    abstract: [Spanning G f] for [f : x ~> G a] quantifies over
    [SubObj a] -- the subobjects of the CODOMAIN OBJECT [a] of the
-   A-side, not of [G a] in X, and not of [x].  So "f spans" is always
-   short for "f spans a", and a spanning [f : x ~> G a] need not remain
+   A-side, not of [G a] in X, and not of [x].  So “f spans” is always
+   short for “f spans a”, and a spanning [f : x ~> G a] need not remain
    spanning when [a] is replaced by an isomorphic object unless the
    isomorphism is transported across [SubObj] as well (see NOT DELIVERED).
    The G-image enters only through [fmap[G] (sub_mono m)]: no hypothesis
@@ -96,8 +96,8 @@ Generalizable All Variables.
    A does not make [fmap[G] (sub_mono m)] monic in X.
 
    THE IN-TREE SITUATION, MEASURED.  Issue #448 recorded as its verified
-   current state that [SolutionSet] "is manufactured only in
-   Adjunction/SAFT.v, never from spanning arrows".  The second half
+   current state that [SolutionSet] “is manufactured only in
+   Adjunction/SAFT.v, never from spanning arrows”.  The second half
    holds; the first is STALE, and the correction is recorded here rather
    than silently.  With
    grep -rn 'SolutionSet' --include='*.v' . over this worktree (107 lines
@@ -117,14 +117,14 @@ Generalizable All Variables.
    [sols_of_esols], and the ones in Instance/Grp/FreeAFT.v,
    Instance/Rng/AFT.v and Test/ProbeGrpFreeAFT442.v.
 
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17), to the
+   CORRECTION, PR “algebraic carriers are sets” (2026-09-17), to the
    sentence that followed and to the parenthetical inside that list.  The
-   parenthetical read "(all three [solution_set_of_adjunction] applied to
+   parenthetical read “(all three [solution_set_of_adjunction] applied to
    an adjunction the file already has -- Instance/Grp/FreeAFT.v and
-   Instance/Rng/AFT.v both say so in their own headers)", and the
-   sentence read "So of the structural routes to a solution set -- routes
+   Instance/Rng/AFT.v both say so in their own headers)”, and the
+   sentence read “So of the structural routes to a solution set -- routes
    that do not presuppose the adjoint -- the tree had exactly one, SAFT's,
-   and this file adds the second."
+   and this file adds the second.”
 
    The three named constants ARE still [solution_set_of_adjunction] applied
    to an adjunction the file already has, and their headers still say so.
@@ -189,7 +189,7 @@ Generalizable All Variables.
    {D : Category@{dobj h h}}] at Adjunction/GAFT.v shares one hom
    universe between source and target.  (An earlier revision quoted the
    same record with the inferred binder names [@{u u0 u1 u2}]; the binders
-   were written out in the PR "algebraic carriers are sets", 2026-09-17,
+   were written out in the PR “algebraic carriers are sets”, 2026-09-17,
    and the shape is unchanged.)  [spanning_sub], [spanning_factor],
    [spanning_factor_spanning] and [factors_through_spanning] do not carry
    it.  No constant in this file is pinned at [Set] except
@@ -240,15 +240,15 @@ Generalizable All Variables.
    in the commit that wrote it, which also added Instance/Variety/
    Spanning.v's [SubAlg]: at #450's parent commit e139ecfb, [git grep -n
    subalgebra] over the [.v] files finds 27 lines in six files, 18 of
-   them in Instance/Variety/Spanning.v.  What stands is "no wide
-   pullbacks": in the same scratch file, with Instance/Sets/
+   them in Instance/Variety/Spanning.v.  What stands is “no wide
+   pullbacks”: in the same scratch file, with Instance/Sets/
    SubobjectLattice.v imported, [HasWidePullbacks (SVariety E)] finds no
    instance while the control [HasWidePullbacks Sets] resolves, and no
    constant in tree builds a [HasWidePullbacks] from completeness; so
    [HasWidePullbacks] and [PreservesWidePullbacks] are still not
    discharged at [SVariety], and the Remark is still not attempted
-   here.  CORRECTION (#451): the clause "no constant in tree builds a
-   [HasWidePullbacks] from completeness" no longer stands.
+   here.  CORRECTION (#451): the clause “no constant in tree builds a
+   [HasWidePullbacks] from completeness” no longer stands.
    Structure/Pullback/Wide/Complete.v's [Complete_HasWidePullbacks] does,
    and in a scratch file importing it with Instance/Variety/Limit.v,
    [Complete_HasWidePullbacks (SVariety_Complete E) : HasWidePullbacks
@@ -263,16 +263,16 @@ Generalizable All Variables.
    does that inhabitant discharge the hypothesis of
    [spanning_solution_set] at [SVariety]: with [PreservesWidePullbacks
    (SVariety_Forget E)] taken as a section hypothesis, the call is
-   refused with "universe inconsistency: Cannot enforce <carrier> = <the
-   class's second universe> because <carrier> < ..." (that text in the
+   refused with “universe inconsistency: Cannot enforce <carrier> = <the
+   class's second universe> because <carrier> < ...” (that text in the
    section form only; with the hypothesis an ordinary binder, Rocq
    reports the index slot's equation first, as the probe's N20 records),
    because [Complete_HasWidePullbacks] sets that universe to the level of
    [Complete]'s limits, here the carrier, while [FactoringFamily] needs
-   it strictly above.  So "still not discharged at [SVariety]" stands,
+   it strictly above.  So “still not discharged at [SVariety]” stands,
    for this universe reason as well.  His Remark
-   also REDEFINES subobject for that application ("a morphism u : s -> a
-   for which Gu is injective in Set"), which is a different notion from
+   also REDEFINES subobject for that application (“a morphism u : s -> a
+   for which Gu is injective in Set”), which is a different notion from
    [SubObj] and is not introduced below.  (3) No inhabitation of either
    hypothesis.  No [HasWidePullbacks] instance and no
    [PreservesWidePullbacks] witness is built in this file; Lemma 2 is an
@@ -283,11 +283,11 @@ Generalizable All Variables.
    discharge the first hypothesis either: its index type lives at the
    hom universe of [Sets] while [FactoringFamily] lives at the universe
    of [SubObj a], one level up, and applying it is refused with
-   "universe inconsistency: Cannot enforce <the instance's index
-   universe> = <the universe of SubObj a>" (measured by two audits, whose
+   “universe inconsistency: Cannot enforce <the instance's index
+   universe> = <the universe of SubObj a>” (measured by two audits, whose
    scratch-local universe labels differ, so the shape is quoted and not
    the labels), so BOTH hypotheses are open in tree.  CORRECTION (#451):
-   "the tree's only [HasWidePullbacks] instance" was already stale once
+   “the tree's only [HasWidePullbacks] instance” was already stale once
    Instance/Mod/Spanning.v added [RMod_HasWidePullbacks], and #451 adds
    the general [Complete_HasWidePullbacks] (Structure/Pullback/Wide/
    Complete.v, a definition rather than an instance).  At [Sets] it gives
@@ -295,13 +295,13 @@ Generalizable All Variables.
    Sets_Complete] reads back at the same universes as
    [Sets_HasWidePullbacks], and feeding it to [spanning_solution_set] at
    [Id[Sets]], with [PreservesWidePullbacks] as a section hypothesis, is
-   refused with the same shape of universe inconsistency ("Cannot enforce
+   refused with the same shape of universe inconsistency (“Cannot enforce
    <the class's second universe> = <the carrier> because <the carrier>
-   < ..."), measured in a scratch file; that text is printed with the
+   < ...”), measured in a scratch file; that text is printed with the
    hypothesis an ordinary binder as well (Test/ProbeWellPowered451.v's
    N21).  So the first hypothesis is still open at every concrete
    category checked.  CORRECTION (#453): the second is no longer open at
-   [Id[Sets]], and "BOTH hypotheses are open in tree" above was already
+   [Id[Sets]], and “BOTH hypotheses are open in tree” above was already
    false of it at Instance/Mod/Spanning.v's [Bilin V V'] since #449,
    whose [Bilin_PreservesWidePullbacks] is proved directly.
    Adjunction/SAFT/Characterization.v's
@@ -346,9 +346,9 @@ Definition SubFactorsThrough {x : X} {a : A} (f : x ~> G a) (m : SubObj a) :
 Mac Lane's definition, stated POSITIVELY as a cancellation law: f
    spans a when every subobject of a through which f factors is already
    the whole of a, i.e. lies above the top subobject [sub_top] (so its
-   mono is an isomorphism).  "Proper subobject" -- one for which
+   mono is an isomorphism).  “Proper subobject” -- one for which
    [sub_le sub_top m] does not hold -- never needs to be named, exactly
-   as Adjunction/SAFT.v's [Cogenerator] avoids "distinct arrows". 
+   as Adjunction/SAFT.v's [Cogenerator] avoids “distinct arrows”. 
 
 --------
 麦克莱恩的定义，积极地表述为取消法：f
@@ -469,7 +469,7 @@ Proof. intros m _; exact (H m). Defined.
 
 (*
 The two facts below were first proved in Instance/Variety/Spanning.v,
-   the parallel witness half of #448, under a "CANDIDATE FOR this file"
+   the parallel witness half of #448, under a “CANDIDATE FOR this file”
    note, and were lifted here at integration; the variety file consumes
    [spanning_forces_top], while [sub_le_top_iso] is stated for the
    reading it gives and is not yet consumed anywhere.  Neither re-proves
@@ -491,7 +491,7 @@ The two facts below were first proved in Instance/Variety/Spanning.v,
 (*
 A subobject that the top subobject factors through has an invertible
    mono: the factor is its inverse, the other triangle by monicity.  This
-   is the sense in which Mac Lane's "factors through no proper subobject"
+   is the sense in which Mac Lane's “factors through no proper subobject”
    is recovered from the positive form of [Spanning]. 
 
 --------
@@ -669,7 +669,7 @@ End SpanningLemma.
 
    An earlier revision of this comment read, in full:
 
-     "MEASURED UNIVERSE PIN, and the reason this section exists.  With
+     “MEASURED UNIVERSE PIN, and the reason this section exists.  With
       Set Printing Universes, [About GAFT] reports
         GAFT@{u u0 u1 u2 u3 u4} :
           ∀ {C : Category@{u1 Set Set}} {D : Category@{u2 Set Set}} ...
@@ -690,14 +690,14 @@ End SpanningLemma.
       inside Section SpanningLemma is therefore REFUSED, with
         universe inconsistency: Cannot enforce Set = <the hom universe of A>
       so the corollary is stated here instead, over categories annotated
-      at Set."
+      at Set.”
 
    Every step of that attribution was correct, and it located the pin one
    link further back than [initial_from_weakly_initial]: at
    Instance/Discrete.v's then-unannotated [DiscreteCat_Functor], which
    [initial_from_weakly_initial] takes two limits over.  That donor was
-   annotated in place at Instance/Discrete.v in the PR "algebraic
-   carriers are sets" (2026-09-17).  Measured after it:
+   annotated in place at Instance/Discrete.v in the PR “algebraic
+   carriers are sets” (2026-09-17).  Measured after it:
 
      GAFT@{cobj dobj h u u0 u1} :
        ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} ...
@@ -716,7 +716,7 @@ End SpanningLemma.
    and no longer one it inherits -- and it was never a claim that spanning
    arrows need small hom-sets.
 
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17): the own
+   CORRECTION, PR “algebraic carriers are sets” (2026-09-17): the own
    commit anticipated in the paragraph above is this one, and the widening
    has been made.  The [Universes oA oX.] line and the two [@{oA Set Set}]
    / [@{oX Set Set}] annotations are GONE; [A] and [X] are now declared
@@ -753,7 +753,7 @@ End SpanningLemma.
    WHAT THE WIDENING DOES NOT BUY.  It does not make the theorem reach
    [RMod R].  The AFTER block reads [u <= u0], objects at or below homs,
    and [RMod R] has homs strictly below objects; feeding it is still
-   refused, now with "Cannot enforce u_hom = b because u_hom < u_obj <= b"
+   refused, now with “Cannot enforce u_hom = b because u_hom < u_obj <= b”
    rather than with the old [Set] message.  That refusal, and the
    independent fact that [HasWidePullbacks (RMod R)] is itself universe-
    refused, are recorded at Instance/Mod/Spanning.v and pinned as

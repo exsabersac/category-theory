@@ -12,7 +12,7 @@ Generalizable All Variables.
 nLab: https://ncatlab.org/nlab/show/graded+monad
 
    Graded monads (also called parametric monads).  Fix an ordinary monoid
-   (E, ε, ·) of "grades" — here a [GradeMonoid], a record over a Coq type with
+   (E, ε, ·) of “grades” — here a [GradeMonoid], a record over a Coq type with
    the monoid laws stated in propositional equality [=].  An E-graded monad on
    a category C is a family of endofunctors  T : E → (C ⟶ C)  together with a
    unit
@@ -385,7 +385,7 @@ Proof. reflexivity. Qed.
 (** ** A nontrivial instance: the bool-graded exception monad over Coq  / ** 一个重要的实例：Coq 上的 bool 分级异常 monad*)
 
 (*
-The grade monoid (bool, true, andb): grade [true] means "pure so far"
+The grade monoid (bool, true, andb): grade [true] means “pure so far”
    (no exception can have been raised), grade [false] means an exception may
    have been raised.  A composite computation is pure exactly when both
    stages are, whence [andb].  The law proofs are transparent match-terms so
@@ -512,7 +512,7 @@ Qed.
 Pure grade tracking with trivial data: for ANY grade monoid W, the
    constant family at the identity functor is W-graded.  All structure maps
    are identities; every law is a [gcast] transport erased by [gcast_const].
-   This is the "writer into W" whose entire log lives in the grades. 
+   This is the “writer into W” whose entire log lives in the grades. 
 
 --------
 使用琐碎数据进行纯等级跟踪：对于任何等级幺半群 W，

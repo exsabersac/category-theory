@@ -19,18 +19,18 @@ Generalizable All Variables.
 (* * * Limits in a full reflective subcategory / * * 完全反射子范畴中的极限 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, §IV.3, Exercise 7, printed p. 92, read from the page
  image:
 
- "7. If A is a full and reflective subcategory of B, prove that every
- functor S : J -> A with a limit in B has a limit in A."
+ “7. If A is a full and reflective subcategory of B, prove that every
+ functor S : J -> A with a limit in B has a limit in A.”
 
- Book: Riehl, "Category Theory in Context", Dover 2016, §4.6,
+ Book: Riehl, “Category Theory in Context”, Dover 2016, §4.6,
  Proposition 4.6.14, printed p. 171, read from the page image:
 
- "If D <-> C is a reflective subcategory, then:
- (i) The inclusion D <-> C creates all limits."
+ “If D <-> C is a reflective subcategory, then:
+ (i) The inclusion D <-> C creates all limits.”
 
  That proposition has a second clause, on colimits in D formed by
  applying the reflector to the colimit in C.  Its exact wording is not
@@ -42,14 +42,14 @@ Generalizable All Variables.
  Book: Riehl, ibid., §5.6, Corollary 5.6.6, printed p. 211, read from
  the page image:
 
- "The inclusion of a reflective subcategory creates all limits.  In
+ “The inclusion of a reflective subcategory creates all limits.  In
  particular, a reflective subcategory of a complete category is
- complete."
+ complete.”
 
- Its proof there reads, in full: "Proposition 5.3.3 proves that the
+ Its proof there reads, in full: “Proposition 5.3.3 proves that the
  inclusion of a reflective subcategory is monadic.  By Theorem 5.6.5(i),
  it follows that this inclusion creates all limits that exist in the
- codomain."
+ codomain.”
 
  So Mac Lane asks for INHERITANCE (a limit downstairs yields a limit
  upstairs) and Riehl sharpens the same fact to CREATION, which is
@@ -70,7 +70,7 @@ Generalizable All Variables.
  in the ambient category yields a limit of the diagram itself.
 
  [reflective_Complete : @Complete C -> @Complete (Sub C S)]
- -- Riehl's "in particular".
+ -- Riehl's “in particular”.
 
  [reflective_Incl_PreservesLimitCone K : PreservesLimitCone K (Incl C S)]
  -- the inclusion preserves the limits the subcategory already has,
@@ -222,8 +222,8 @@ Generalizable All Variables.
 
  Clause (ii) of Proposition 4.6.14 -- colimits in the subcategory,
  obtained by applying the reflector -- is NOT proved here.  It is #434's
- ("MacLane V.5: A full reflective subcategory of a cocomplete category is
- cocomplete"), Construction/Reflective/Colimit.v: [reflective_colimit] and
+ (“MacLane V.5: A full reflective subcategory of a cocomplete category is
+ cocomplete”), Construction/Reflective/Colimit.v: [reflective_colimit] and
  [reflective_Cocomplete], from [lapc_is_acolimit]
  (Adjunction/Continuity.v) and Theory/Equivalence/Colimit.v's transport
  along the counit
@@ -285,7 +285,7 @@ Generalizable All Variables.
  collapse is a DIFFERENT axis from the first, it is the cone
  vocabulary's, and it too is inherited: with J's hom level declared
  strictly below C's, [Cone F] is accepted while [cone_leg] and
- [IsLimitCone] are each rejected alone ("Cannot enforce vh = jh").
+ [IsLimitCone] are each rejected alone (“Cannot enforce vh = jh”).
  [Functor] is NOT among them: [Ju ⟶ Cu] elaborates at those levels,
  and neither is [vertex_obj].  Nor are those two the only donors:
  [IsALimit], [Limit], [ConeIso] and [FCone] are each rejected alone at
@@ -335,12 +335,12 @@ Generalizable All Variables.
  --------
  书籍：Mac Lane，《为工作中的数学家准备的范畴论》，第2版，Springer GTM 5，§IV.3，练习7，第92页，从页面图像读取：
 
- "7. 若 A 是 B 的一个满且反射的子范畴，证明每个在 B 中有极限的函子 S : J -> A 在 A 中也有极限。"
+ “7. 若 A 是 B 的一个满且反射的子范畴，证明每个在 B 中有极限的函子 S : J -> A 在 A 中也有极限。”
 
  书籍：Riehl，《范畴论在语境中》，Dover 2016，§4.6，命题4.6.14，第171页，从页面图像读取：
 
- "如果 D <-> C 是一个反射子范畴，则：
- (i) 包含函子 D <-> C 构造所有极限。"该命题有一个第二条款，关于在 D 中的余极限，是通过将反射器应用于 C 中的余极限形成的。其确切措辞未在此处转录：其中的一个词与本仓库的 [make todo] 目标扫描的大小写不敏感模式匹配，因此在源码注释中引用它会产生伪命中。该条款本身在下方被标出范围；参见第 #434 号问题的段落。
+ “如果 D <-> C 是一个反射子范畴，则：
+ (i) 包含函子 D <-> C 构造所有极限。”该命题有一个第二条款，关于在 D 中的余极限，是通过将反射器应用于 C 中的余极限形成的。其确切措辞未在此处转录：其中的一个词与本仓库的 [make todo] 目标扫描的大小写不敏感模式匹配，因此在源码注释中引用它会产生伪命中。该条款本身在下方被标出范围；参见第 #434 号问题的段落。
 
  书籍：Riehl，同上，第§5.6节，推论5.6.6，第211页印刷版，从页面图像阅读：
 
@@ -398,11 +398,11 @@ Generalizable All Variables.
  ** Riehl 的单子路径，经过衡量但未采用Riehl 通过幺半性达到了 5.6.6，并且该树包含大部分部分：Construction/Reflective/Idempotent.v 为幺半 [Incl C S ◯ reflector R] 给出 [Reflective_IdempotentMonad R]，Monad/Eilenberg/Moore/Limit.v 给出 [em_strict_lift] 以及 [EM_Forget] 的严格创建，Theory/Equivalence/Creation.v 可以在等价之间传输创建，ZWZ73WZZ 可以组合。缺少的步骤是连接：Idempotent.v 的 [Idempotent_EM_Equivalence] 是 [Sub C MLocal_Subcategory] ——单元可逆对象的完全子范畴——的等价，而不是给定 S 的等价，并且在树中不存在 [Sub C S ≃ Sub C MLocal_Subcategory] 的等价，也不存在沿函子等价传输 [CreatesLimit]（均搜索过，零结果）。建造那座桥是一项独立的工作；上方的直接路线不需要它，所以采用了这条路线，并引用了Riehl的工作而非遵循它。更正（#370）：对于给定的S，现在存在该连接，不依赖[Sub C MLocal_Subcategory]：
  Construction/Reflective/Monadic.v中的[Reflective_EM_Equivalence]证明了Monad/Comparison.v中反射本身的比较函子[Sub C S ⟶ EilenbergMoore]是等价的。没有[CreatesLimit]沿其传输，并且该文件的路线保持不变。
 
- ** 余极半部分命题 4.6.14 的条款 (ii) —— 在通过反射子得到的子范畴中的余极限 —— 在此未被证明。这是 #434（"MacLane V.5: 完全反射子范畴在余完备范畴中是余完备的"），Construction/Reflective/Colimit.v: [reflective_colimit] 和 [reflective_Cocomplete]，来自 [lapc_is_acolimit]（Adjunction/Continuity.v）以及 Theory/Equivalence/Colimit.v 中沿余单元同构传输形成的图同构；未声称任何生成。  ** 强度，先为严格 在 [eq_refl]：提升的顶点及其边；比较的前向边是极限中介，其后向边是单位；生成的 [Limit] 的圆锥是提升，其顶点是应用到底层顶点的反射子。总共有六个 [eq_refl] 示例。仅在 [≈]：到 [PreservesLimitCone K I] 的两条路径——[creation_preserves_limit] 应用于此创建记录，和 [right_adjoint_PreservesLimitCone] 应用于反射伴随——不可转换，无论是作为项还是在它们产生的中介上（在 [eq_refl] 上都被反驳并在探针中固定）。它们在中介上在 [≈]（[reflective_two_routes_agree]）之前是一致的，并且这个论点是一个唯一性诉求，而不是计算：中介是唯一的，因此其中任何两个重合。从这两个定义来看，它们显然是同一类型的不同项——[creation_preserves_limit]（Structure/Limit/Creation.v）沿从 [limitcone_iso]、[FCone_iso] 和 [ConeIso_sym] 组合的复合锥同构来传输极限性，而 [right_adjoint_PreservesLimitCone]（Adjunction/Continuity.v）是在锥上重新包装为 [Limit] 的 [rapl_ump]。那是对两个来源的解读，而不是孤立的实验，并且没有任何单一步骤被称为唯一的原因。
+ ** 余极半部分命题 4.6.14 的条款 (ii) —— 在通过反射子得到的子范畴中的余极限 —— 在此未被证明。这是 #434（“MacLane V.5: 完全反射子范畴在余完备范畴中是余完备的”），Construction/Reflective/Colimit.v: [reflective_colimit] 和 [reflective_Cocomplete]，来自 [lapc_is_acolimit]（Adjunction/Continuity.v）以及 Theory/Equivalence/Colimit.v 中沿余单元同构传输形成的图同构；未声称任何生成。  ** 强度，先为严格 在 [eq_refl]：提升的顶点及其边；比较的前向边是极限中介，其后向边是单位；生成的 [Limit] 的圆锥是提升，其顶点是应用到底层顶点的反射子。总共有六个 [eq_refl] 示例。仅在 [≈]：到 [PreservesLimitCone K I] 的两条路径——[creation_preserves_limit] 应用于此创建记录，和 [right_adjoint_PreservesLimitCone] 应用于反射伴随——不可转换，无论是作为项还是在它们产生的中介上（在 [eq_refl] 上都被反驳并在探针中固定）。它们在中介上在 [≈]（[reflective_two_routes_agree]）之前是一致的，并且这个论点是一个唯一性诉求，而不是计算：中介是唯一的，因此其中任何两个重合。从这两个定义来看，它们显然是同一类型的不同项——[creation_preserves_limit]（Structure/Limit/Creation.v）沿从 [limitcone_iso]、[FCone_iso] 和 [ConeIso_sym] 组合的复合锥同构来传输极限性，而 [right_adjoint_PreservesLimitCone]（Adjunction/Continuity.v）是在锥上重新包装为 [Limit] 的 [rapl_ump]。那是对两个来源的解读，而不是孤立的实验，并且没有任何单一步骤被称为唯一的原因。
 
  ** 宇宙
 
- 在该文件的所有 24 个常量下，用 [About] 在 [Set Printing Universes] 下进行测量。每一个都超过 [C : Category@{u u0 u0}] —— 使用同态证明确定 —— 并且该确定存在于 BINDER 中，而不在任何约束块中：仅读取这些块将报告不到它的任何内容。它是继承的而非引入的，而单独 [Subcategory] 已经强制执行它 —— [Subcategory@{u u0 u1 u2}] 接受一个 [Category@{u u0 u0}] 并且有一个空的约束块 —— 探针针脚通过在其证明宇宙严格高于其同态宇宙的类别中拒绝 [Subcategory Cu] 来完成，其中该类别的自身同态集、恒等和同态等价类在这些层次被接受。形状索引常数还绑定 [J : Category@{u7 u8 u8}]，并在该块中包含方程 [u0 = u2]、[u0 = u8] 和 [u0 = u10]：C 的同态与证明级别、J 的同态与证明级别、子范畴的 [shom] 宇宙以及 K 的目标同态级别全部合并为一个。另外两个方程是 [u4 = u11] 和 [u5 = u9]，每个方程将 [Reflective] 的一个层级与 [Sub] 的一个层级关联起来（从印刷类型中读取，[K] 位于 [Sub@{u u0 u1 u2 u9 u10 u11} C S] 中）：[u4] 是 [Reflective] 的第二宇宙，[u11] 是 [Sub] 的第七层，辅助层 [Sub] 明确声明在 C 的同类层之上，而 [Incl] 将其作为第六层——两者都是新层级，[u0 < u4] 和 [u0 < u11] 在该块中；[u5] 是 [Reflective] 的第三宇宙，是它的记录类型 [Type@{max(u3,u5)}] 所在的两个层级之一，而 [u9] 是 [Sub C S] 的对象宇宙，它的第五层也是 [Incl] 的第五层。J与C的塌缩是与第一个不同的轴，它属于圆锥词汇的，而且它也是继承的：当J的hom级别被严格声明在C之下时，[Cone F] 被接受，而 [cone_leg] 和 [IsLimitCone] 各自单独被拒绝（"无法强制 vh = jh"）。[Functor] 不在其中：[Ju ⟶ Cu] 在那些级别进行详细说明，[vertex_obj] 也不在其中。这两个也不是唯一的捐赠者：[IsALimit]、[Limit]、[ConeIso] 和 [FCone] 在相同级别以相同的信息被单独拒绝——在树之外测量，而不是固定，因此探针固定的两个是该家族的抽样，而不是枚举。这些是相同的捐赠者家族结构/限制/Initial.v 的头记录，用于相关的折叠——在那里轴是形状自身的 hom 与其自身的证明，而 [IsALimit] 在那里和这里一样是第三个捐赠者。所有三个可形成性拒绝及其控制都在探针中。
+ 在该文件的所有 24 个常量下，用 [About] 在 [Set Printing Universes] 下进行测量。每一个都超过 [C : Category@{u u0 u0}] —— 使用同态证明确定 —— 并且该确定存在于 BINDER 中，而不在任何约束块中：仅读取这些块将报告不到它的任何内容。它是继承的而非引入的，而单独 [Subcategory] 已经强制执行它 —— [Subcategory@{u u0 u1 u2}] 接受一个 [Category@{u u0 u0}] 并且有一个空的约束块 —— 探针针脚通过在其证明宇宙严格高于其同态宇宙的类别中拒绝 [Subcategory Cu] 来完成，其中该类别的自身同态集、恒等和同态等价类在这些层次被接受。形状索引常数还绑定 [J : Category@{u7 u8 u8}]，并在该块中包含方程 [u0 = u2]、[u0 = u8] 和 [u0 = u10]：C 的同态与证明级别、J 的同态与证明级别、子范畴的 [shom] 宇宙以及 K 的目标同态级别全部合并为一个。另外两个方程是 [u4 = u11] 和 [u5 = u9]，每个方程将 [Reflective] 的一个层级与 [Sub] 的一个层级关联起来（从印刷类型中读取，[K] 位于 [Sub@{u u0 u1 u2 u9 u10 u11} C S] 中）：[u4] 是 [Reflective] 的第二宇宙，[u11] 是 [Sub] 的第七层，辅助层 [Sub] 明确声明在 C 的同类层之上，而 [Incl] 将其作为第六层——两者都是新层级，[u0 < u4] 和 [u0 < u11] 在该块中；[u5] 是 [Reflective] 的第三宇宙，是它的记录类型 [Type@{max(u3,u5)}] 所在的两个层级之一，而 [u9] 是 [Sub C S] 的对象宇宙，它的第五层也是 [Incl] 的第五层。J与C的塌缩是与第一个不同的轴，它属于圆锥词汇的，而且它也是继承的：当J的hom级别被严格声明在C之下时，[Cone F] 被接受，而 [cone_leg] 和 [IsLimitCone] 各自单独被拒绝（“无法强制 vh = jh”）。[Functor] 不在其中：[Ju ⟶ Cu] 在那些级别进行详细说明，[vertex_obj] 也不在其中。这两个也不是唯一的捐赠者：[IsALimit]、[Limit]、[ConeIso] 和 [FCone] 在相同级别以相同的信息被单独拒绝——在树之外测量，而不是固定，因此探针固定的两个是该家族的抽样，而不是枚举。这些是相同的捐赠者家族结构/限制/Initial.v 的头记录，用于相关的折叠——在那里轴是形状自身的 hom 与其自身的证明，而 [IsALimit] 在那里和这里一样是第三个捐赠者。所有三个可形成性拒绝及其控制都在探针中。
 
  24 个常量中的任何一个都没有包含 [Set] 的粘合剂和约束块：在所有 24 个的 [About] 输出中，该标记的出现次数被测量为零。这些识别中没有一个被声称是不可避免的。
 
@@ -681,7 +681,7 @@ Qed.
 
 End Shape.
 
-(* * ** The quantified forms, and Riehl's "in particular" / * ** 定量形式，以及赖尔特别提到的部分 *)
+(* * ** The quantified forms, and Riehl's “in particular” / * ** 定量形式，以及赖尔特别提到的部分 *)
 
 Definition reflective_CreatesLimitsOfShape (J : Category) :
   CreatesLimitsOfShape J I := fun K => reflective_CreatesLimit K.

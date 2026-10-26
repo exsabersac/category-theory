@@ -45,23 +45,23 @@ Context {D : Category}.
  nLab:  https://ncatlab.org/nlab/show/Yoneda+embedding
  nLab:  https://ncatlab.org/nlab/show/Godement+product
  SEP:   https://plato.stanford.edu/entries/category-theory/
- Paper: Eilenberg, Mac Lane, "General Theory of Natural Equivalences",
+ Paper: Eilenberg, Mac Lane, “General Theory of Natural Equivalences”,
  Transactions of the AMS 58, 1945
 
  The functor category is as old as category theory itself.  The founding
- paper of the subject already contains a section II.8 titled "Categories
- of functors", though a category of categories is nowhere mentioned in
+ paper of the subject already contains a section II.8 titled “Categories
+ of functors”, though a category of categories is nowhere mentioned in
  it, and its authors regarded everything beneath this level as
- scaffolding: "the whole concept of a category is essentially an
+ scaffolding: “the whole concept of a category is essentially an
  auxiliary one; our basic concepts are essentially those of a functor
- and of natural transformation" (Eilenberg–Mac Lane 1945, p. 247, as
+ and of natural transformation” (Eilenberg–Mac Lane 1945, p. 247, as
  quoted by the Stanford Encyclopedia of Philosophy).  Freyd compressed
  the genesis into a slogan — categories are what one must define in
  order to define functors, and functors are what one must define in
- order to define natural transformations (Freyd, "Abelian Categories",
+ order to define natural transformations (Freyd, “Abelian Categories”,
  1964, introduction).  [Fun] realizes the construction as a first-class
  Category, so the ambient machinery of isomorphism, limit, and
- adjunction applies to functors one level up: "natural isomorphism" is
+ adjunction applies to functors one level up: “natural isomorphism” is
  nothing other than isomorphism in `[C, D]`, and
  [Functor_Setoid_Nat_Iso] (with standalone directions [iso_equiv] and
  [equiv_iso]) reduces such an isomorphism to a componentwise family, so
@@ -72,8 +72,8 @@ Context {D : Category}.
  monos are computed objectwise, they are cartesian closed, and the
  Yoneda embedding into them is fully faithful — for a small category,
  its free cocompletion — so every category embeds into a functor
- category built from itself (nLab, "category of presheaves" and "Yoneda
- embedding"); in-tree, Functor/Hom/Yoneda.v develops the lemma and the
+ category built from itself (nLab, “category of presheaves” and “Yoneda
+ embedding”); in-tree, Functor/Hom/Yoneda.v develops the lemma and the
  embedding over exactly these hom-setoids, and Theory/Sheaf.v defines
  `Presheaves` as literally `[U^op, C]`.  Diagram categories are the
  domain of limit-taking: a J-shaped diagram in C is an object of
@@ -82,11 +82,11 @@ Context {D : Category}.
  diagonal Δ : C ⟶ [J, C] of Functor/Diagonal.v.  And `[C, D]` is the
  exponential witnessing that Cat is cartesian closed
  (Instance/Cat/Cartesian/Closed.v); equivalently, functor categories
- are the hom-categories of the 2-category Cat (nLab, "functor
- category").  Representation theory rides the same construction: a
+ are the hom-categories of the 2-category Cat (nLab, “functor
+ category”).  Representation theory rides the same construction: a
  representation is a functor out of a one-object domain, and an
  intertwiner between representations is a natural transformation
- (nLab, "representation").
+ (nLab, “representation”).
 
  The 2-categorical reading explains the middle of this file.  The
  whiskering laws and the coherence isomorphisms [nat_λ], [nat_ρ], and
@@ -96,7 +96,7 @@ Context {D : Category}.
  noted below (`hunit_left := nat_ρ`, `hunit_right := nat_λ`).
  Horizontal composition of natural transformations is the Godement
  product, named after Roger Godement, and the agreement of its two
- defining formulas IS the interchange law (nLab, "Godement product");
+ defining formulas IS the interchange law (nLab, “Godement product”);
  [whisker_left_right] states its whiskered form here.  One level down,
  the endofunctor category `[C, C]` is monoidal under composition, and a
  monad is exactly a monoid in it (Monad/Monoid.v, [Compose_Monoidal]);
@@ -108,12 +108,12 @@ Context {D : Category}.
  `forall a. F a -> G a`, and parametricity yields the naturality square
  as a free theorem, so functors and polymorphic functions form a
  functor category whose vertical composition is componentwise program
- composition (Milewski, "Natural Transformations", 2015).  Throughout,
+ composition (Milewski, “Natural Transformations”, 2015).  Throughout,
  the governing principle is pointwise inheritance: when D has limits (or
  colimits, nLab) of a shape, so does `[C, D]`, pointwise (for limits,
  Instance/Fun/Limit.v's theorem; an incomplete D can have limits
  not pointwise), and when C is small and D is cartesian closed and
- complete, `[C, D]` is cartesian closed (nLab, "functor category").
+ complete, `[C, D]` is cartesian closed (nLab, “functor category”).
  That last clause alone is not inherited, and its hypothesis on D is
  not decorative: Instance/Fun/Closed.v exhibits a C (small in the
  ordinary sense -- its objects are the naturals) and a
@@ -128,7 +128,7 @@ Context {D : Category}.
  formula `Q^P(c) = Nat(y c × P, Q)` and is NOT computed pointwise.
  Smallness is not a class here but a measured universe bound -- that
  file's constants carry C's object universe at or below the carrier
- universe of `Sets`, which is what Awodey's "for any small category C"
+ universe of `Sets`, which is what Awodey's “for any small category C”
  comes to in this library -- and there is besides a `Class Small` in
  Theory/Size.v, so the two readings of the word are kept apart rather
  than said to be absent.  The structure that IS inherited pointwise is

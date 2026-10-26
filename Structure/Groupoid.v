@@ -14,14 +14,14 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/groupoid
  nLab:      https://ncatlab.org/nlab/show/vertex+group
  Wikipedia: https://en.wikipedia.org/wiki/Groupoid
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §I.5, printed p. 20 (Definition 9 and the remark
  following it)
- Book:      Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
+ Book:      Awodey, “Category Theory”, 1st ed. (Carnegie Mellon pre-print,
  September 2005), §7.7, printed p. 175
- Book:      Riehl, "Category Theory in Context", Definition 1.1.12 and
+ Book:      Riehl, “Category Theory in Context”, Definition 1.1.12 and
  Example 1.1.13(i), printed p. 8
- Book:      Fong, Spivak, "Seven Sketches in Compositionality", CUP 2019,
+ Book:      Fong, Spivak, “Seven Sketches in Compositionality”, CUP 2019,
  §3.2.5 Exercise 3.32, printed pp. 88-89
 
  A groupoid is a category in which every morphism is invertible.  This file
@@ -86,9 +86,9 @@ Generalizable All Variables.
 
  nLab:  https://ncatlab.org/nlab/show/groupoid
  nLab:  https://ncatlab.org/nlab/show/fundamental+groupoid
- Paper: Brown, "From groups to groupoids: a brief survey", Bulletin of the
+ Paper: Brown, “From groups to groupoids: a brief survey”, Bulletin of the
  London Mathematical Society 19, 1987
- Paper: Weinstein, "Groupoids: Unifying Internal and External Symmetry",
+ Paper: Weinstein, “Groupoids: Unifying Internal and External Symmetry”,
  Notices of the American Mathematical Society 43, 1996
 
  The history of groupoids — Brandt's 1926/27 paper, Ehresmann's
@@ -302,8 +302,8 @@ Proof. apply ginv_unique_r, ginv_right. Qed.
  isomorphisms of C — is invertible.  Its inverse is Theory/Isomorphism.v's
  [iso_sym], and the two laws are that file's [iso_sym_right_inverse] and
  [iso_sym_left_inverse].  Construction/Groupoid.v names [iso_sym] in its
- header as the source of the inverses that make its core "a groupoid rather
- than merely a category", but the file itself is 109 lines containing only
+ header as the source of the inverses that make its core “a groupoid rather
+ than merely a category”, but the file itself is 109 lines containing only
  that header and the [Program Definition], and states no invertibility
  lemma; this is that lemma.
 
@@ -360,7 +360,7 @@ Example ginv_op_eq {C : Category} (G : IsGroupoid C) {x y : C}
 (*
  Fong and Spivak's Exercise 3.32 asks the reader to decide, of two given
  monoids, whether the delooping is a groupoid.  Stating the exercise needs
- the notion "M is a group" separated from the bundling [GrpObject] of
+ the notion “M is a group” separated from the bundling [GrpObject] of
  Construction/Deloop.v, since the question is about a MONOID that is given
  in advance.  [MonInverses M] is that separation: the inverse operation and
  its two laws, over a fixed monoid.
@@ -387,7 +387,7 @@ Arguments minv_l {M} _ _.
 Arguments minv_r {M} _ _.
 
 (*
- [MonInverses M] and "M is the underlying monoid of a [GrpObject]" are the
+ [MonInverses M] and “M is the underlying monoid of a [GrpObject]” are the
  same data, repackaged; both round trips hold. 
 
  --------
@@ -473,7 +473,7 @@ Defined.
 (*
  The delooping really does have exactly one object: [poly_unit], whose sole
  inhabitant is [ttt].  Together with [deloop_groupoid_iff] this is one half
- of "groups are one-object groupoids" — a group gives a groupoid with one
+ of “groups are one-object groupoids” — a group gives a groupoid with one
  object, and a one-object category is a groupoid exactly when its monoid is
  a group.  The other half is [vertex_group] below, which reads a group off
  any object of any groupoid.  (The [=] is an equality of TYPES, stronger
@@ -749,7 +749,7 @@ Qed.
 (*
  Hence B (ℕ, +) is NOT a groupoid.  The witness is the arrow 1, which has
  no inverse: exhibiting a specific non-invertible arrow is the content, an
- appeal to "ℕ is not a group" being a statement about the monoid rather
+ appeal to “ℕ is not a group” being a statement about the monoid rather
  than about the category. 
 
  --------

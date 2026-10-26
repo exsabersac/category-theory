@@ -25,7 +25,7 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/arrow+category
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
 
-   Mac Lane, "Categories for the Working Mathematician", Springer GTM 5,
+   Mac Lane, “Categories for the Working Mathematician”, Springer GTM 5,
    2nd ed., §IV.2 Exercise 10 (book p. 90): in a category with cokernel
    pairs and equalizers, sending an arrow to its cokernel pair is a
    functor from the ARROW category to the category of PARALLEL PAIRS,
@@ -67,7 +67,7 @@ Generalizable All Variables.
      - The unit and counit by name -- [cokernel_pair_unit] and
        [cokernel_pair_counit] -- since the exercise is really about
        them, together with their comparison against the class-produced
-       [unit]/[counit] at both grades (see "strengths" below).
+       [unit]/[counit] at both grades (see “strengths” below).
      - The characterization the exercise's content amounts to:
        [unit_iso_iff_regular], the unit at A is an isomorphism exactly
        when the arrow of A is an equalizer of its own cokernel pair.
@@ -82,7 +82,7 @@ Generalizable All Variables.
    ------------------------------------------------------------------
    ** What is CONSUMED rather than rebuilt
 
-   THE ISSUE'S "Current state" IS STALE.  It reports that there is no
+   THE ISSUE'S “Current state” IS STALE.  It reports that there is no
    cokernel-pair construction at all; there has been one since #323.
    Theory/Morphisms/CokernelPair.v declares
 
@@ -146,8 +146,8 @@ Generalizable All Variables.
        Definition cmp (G : Parallel ⟶ C) :
          @eqa_obj C HEfromL G = fobj[EqualizerFunctor L] G := eq_refl.
 
-   is REJECTED, with "cannot unify "eqa_obj G" and
-   "fobj[EqualizerFunctor L] G"" -- a CONVERSION failure -- while both
+   is REJECTED, with “cannot unify ”eqa_obj G“ and
+   ”fobj[EqualizerFunctor L] G“” -- a CONVERSION failure -- while both
    sides typecheck at the same type [Parallel ⟶ C → obj[C]].  The two
    are two independently chosen equalizers and nothing in the tree
    equates them.  That check is not shipped because requiring
@@ -190,8 +190,8 @@ Generalizable All Variables.
    [id] accepted at those very levels: [Arrow], [[Parallel, _]],
    [HasPushouts] and [HasEqualizers].  All four are pinned as
    formability negatives in the probe section at the foot of this file;
-   each error reads "Cannot enforce cp = ch because ch < cp".  Read
-   "four donors" as four sufficient causes, not as four independent
+   each error reads “Cannot enforce cp = ch because ch < cp”.  Read
+   “four donors” as four sufficient causes, not as four independent
    ones: whether they share an upstream cause is not established.  None
    is claimed unavoidable.
 
@@ -238,10 +238,10 @@ Generalizable All Variables.
 
    Negatives: SEVEN [Fail] commands = SIX negatives of TWO KINDS plus
    one instrument check.  Two are CONVERSION (the strict unit and
-   counit components above; each error ends "cannot unify" with no
+   counit components above; each error ends “cannot unify” with no
    universe clause) and four are FORMABILITY (the four universe donors;
-   each ends "universe inconsistency: Cannot enforce cp = ch because
-   ch < cp").  Each was stripped one at a time, compiled alone, and its
+   each ends “universe inconsistency: Cannot enforce cp = ch because
+   ch < cp”).  Each was stripped one at a time, compiled alone, and its
    whole error read to confirm its kind.  The instrument check is a
    reference-not-found, so a [Fail] that has gone vacuous is
    distinguishable from one still firing.
@@ -277,8 +277,8 @@ Generalizable All Variables.
        pairs is built.
      - Nothing is proved about which arrows of [Sets] are regular
        monomorphisms in general -- the positive [Sets] witness goes
-       through [split_mono_regular], and "monic implies regular in
-       Sets" is neither proved nor refuted here.
+       through [split_mono_regular], and “monic implies regular in
+       Sets” is neither proved nor refuted here.
      - The [Sets] pushout is Instance/Sets/Pushout.v's five-constructor
        inductive closure and the chosen equalizer is a nested pullback,
        so NO element of either apex is computed anywhere below: the two
@@ -1434,7 +1434,7 @@ Check (@id Cu cx).
 
 (*
 Each of the four fails with
-   "universe inconsistency: Cannot enforce cp = ch because ch < cp". 
+   “universe inconsistency: Cannot enforce cp = ch because ch < cp”. 
 
 --------
 这四个中的每一个都失败了

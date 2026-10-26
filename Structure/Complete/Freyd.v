@@ -32,7 +32,7 @@ Generalizable All Variables.
 
  BACKGROUND.  Freyd's argument: were a category with products indexed by
  its own arrow collection to carry two distinct parallel arrows f, g : a
- ⇉ b, the 2^K choices "f or g at each index" would give 2^K arrows into
+ ⇉ b, the 2^K choices “f or g at each index” would give 2^K arrows into
  the K-fold power of b, more than the K arrows there are in all — Cantor.
  So a small complete category is a preorder, and the completeness that
  matters is that of LARGE categories; Adjunction/GAFT.v and
@@ -44,20 +44,20 @@ Generalizable All Variables.
  survive [End], so there is no clash), and Theory/Size.v's [TotalMor]
  is the same idea as a Σ-type — the witness of item (2) uses it.
 
- STALE PREMISES, RE-MEASURED.  The issue's "Verified ABSENT" paragraph is
+ STALE PREMISES, RE-MEASURED.  The issue's “Verified ABSENT” paragraph is
  wrong on three of its four clauses; both files postdate the issue text.
- - "no thin-category predicate": Structure/Thin.v [Thin C := ∀ x y
+ - “no thin-category predicate”: Structure/Thin.v [Thin C := ∀ x y
  (f g : x ~> y), f ≈ g], with [Thin_Opposite]/[Opposite_Thin],
  [thin_preorder], [thin_PreOrder] and [HomChoice],
  all consumed here.
- - "no smallness predicate, no global arrow-set": Theory/Size.v's
+ - “no smallness predicate, no global arrow-set”: Theory/Size.v's
  [LocallySmall], [Small] and [TotalMor C := {x & {y & x ~> y}}];
- Adjunction/SAFT.v's "NO size / smallness machinery" is stale as to
+ Adjunction/SAFT.v's “NO size / smallness machinery” is stale as to
  smallness.  [Small] is deliberately NOT consumed (below).
- - "no cardinality vocabulary beyond the finite counter": true, and
+ - “no cardinality vocabulary beyond the finite counter”: true, and
  none is added — but the counter is Theory/Metacategory.v's
  [cardinality], which the issue cites at the wrong place, as it
- does that constant's note "counts the identity arrows" and
+ does that constant's note “counts the identity arrows” and
  [ThreeArrows_card_3]; and it counts OBJECTS, so it is not Riehl
  3.7.2 either.
  - The Cantor step is in the tree: Instance/Fun/Discrete.v's
@@ -83,13 +83,13 @@ Generalizable All Variables.
  encoding of every arrow and a decoding RELATIVE TO A DEFAULT whose
  round trip is the identity up to [≈] for every default — i.e.
  |hom x y| ≤ |ai_index| for every inhabited hom-set, Riehl's
- "products of families as large as its own cardinality", so the
+ “products of families as large as its own cardinality”, so the
  theorem covers large categories and discharges her §3.7 stronger
  hypothesis; the dual [ArrowIndex_op] is field for field the same
  data (EMPTY constraint block), through [@Build_ArrowIndex (C^op)]
  because the anonymous literal is refused (probe N2), and it is an
  involution at [eq_refl] (probe).  No cardinal ARITHMETIC is
- introduced: the proof consumes the ORDER "no bigger than K", which
+ introduced: the proof consumes the ORDER “no bigger than K”, which
  is what Riehl's Definition 3.7.2 is used for; disclosed as such.
  Theory/Size.v's [Small] is not consumed: it resizes per hom-set
  through [ObjEq] transports, and the proof needs one index type for
@@ -118,8 +118,8 @@ Generalizable All Variables.
  false] with [fr_sep_resp]/[fr_sep_f]/[fr_sep_g], and
  [freyd_thin : ArrowIndex C → HasIndexedProducts C → DecHom C →
  Thin C]; [freyd_thin_canonical] at [ObjDecEq]; [DecHom_op] and
- [freyd_thin_dual] (products in [C^op], Riehl §E.1's "or
- coproducts", via [Opposite_Thin]).
+ [freyd_thin_dual] (products in [C^op], Riehl §E.1's “or
+ coproducts”, via [Opposite_Thin]).
  (5) THE WALL, LOCATED.  From [f ≉ g] ALONE — no separator, no
  decidability — [fr_mk_injective] (injective up to [≈]) and
  [fr_inj_injective]: an injection [(K → bool) → K] on the nose.
@@ -140,7 +140,7 @@ Generalizable All Variables.
  IsIndexedProduct d …] for any [d : A → C], through
  Structure/Limit/Comparison.v's annotated [DiscreteCat_Functor'] and
  [discrete_IsIndexedProduct_of_IsLimitCone]; the unannotated route
- pins C's hom level to [Set] (probe N1, "Cannot enforce Set = uh"),
+ pins C's hom level to [Set] (probe N1, “Cannot enforce Set = uh”),
  and the carrier of that pin is Structure/Limit/Product.v's
  [limit_is_indexed_product], whose binder is [C : Category@{_ Set
  Set}] — [DiscreteCat_Functor]'s own binder leaves C free; it
@@ -181,7 +181,7 @@ Generalizable All Variables.
  prose and the FromProducts.v bullet as [u2 = u4].  No equation
  reaches the kernel, [freyd_thin], [small_complete_is_thin],
  [complete_has_glbs] or [complete_Proset_Complete].  (An earlier
- revision said "NO universe equation in any block"; the audit
+ revision said “NO universe equation in any block”; the audit
  measured these five.)  [ArrowIndex@{u u0 u1} : Category@{u0 u1 u1}
  → Type@{max(u+1,u0,u1)}] and [ArrowIndex_op@{u u0 u1}] carry EMPTY
  blocks — the index level [u] is unrelated to C's levels; [DecHom],
@@ -217,7 +217,7 @@ Generalizable All Variables.
  entries in the [.glob]; the constructor [Build_ArrowIndex] appears
  there only as an [R … constr] reference, so it is not among the 38;
  an earlier revision counted 39 with the duplicate [DecObj]), all
- "Closed under the global context", zero [Axioms:] lines, all gated
+ “Closed under the global context”, zero [Axioms:] lines, all gated
  fully qualified.  Thirteen [Qed]; one [Defined] ([complete_has_glbs],
  data: [HasAllMeets] is [sigT]-valued), which flips to [Qed] freely
  and is kept [Defined] by the data convention.
@@ -242,13 +242,13 @@ Generalizable All Variables.
  ([ArrowIndex], [DiscreteCat_Functor], [limit_is_indexed_product],
  [TotalMor], [ai_dec_enc], [complete_iprod], each renamed throughout
  a copy) with every first break on a positive line.  [make todo]
- grows by those 3 lines only (2209 → 2212), so the issue's "adds no
- new hits" box is not met as written; disclosed.
+ grows by those 3 lines only (2209 → 2212), so the issue's “adds no
+ new hits” box is not met as written; disclosed.
 
  NOT DELIVERED.
  - Thinness WITHOUT [DecHom]: not provable here (Hyland), and the wall
- is pinned positively by [fr_inj_injective]; the issue's "scope it
- classically" remedy is replaced by the explicit hypothesis, which
+ is pinned positively by [fr_inj_injective]; the issue's “scope it
+ classically” remedy is replaced by the explicit hypothesis, which
  keeps the file axiom-free.
  - The issue's pinned [small_complete_has_glbs] under that name: the
  statement needs no smallness (item (7)), so it is [complete_has_glbs].
@@ -315,7 +315,7 @@ Qed.
  total without asking the caller to decide anything, and the law says the
  round trip is the identity up to the hom-setoid, for every default.
  Content: |hom x y| ≤ |ai_index| for every inhabited hom-set — Riehl's
- "products of families as large as its own cardinality" (§3.7 Prop 3), so
+ “products of families as large as its own cardinality” (§3.7 Prop 3), so
  the theorem covers large categories.  Theory/Size.v's [Small] is
  deliberately NOT consumed: it resizes per hom-set through [ObjEq]
  transports, and the proof needs one index type for all arrows. 
@@ -505,7 +505,7 @@ Definition DecHom (C : Category) : Type :=
 Definition DecHom_op {C : Category} (D : DecHom C) : DecHom (C^op) :=
   fun x y u v => D y x u v.
 
-(* From a decider, the separator "is it f?" and its three laws. / 来自一个决策者，分隔符“它是 f 吗？”及其三条规律。 *)
+(* From a decider, the separator “is it f?” and its three laws. / 来自一个决策者，分隔符“它是 f 吗？”及其三条规律。 *)
 Section Separator.
 
 Context {C : Category} (D : DecHom C) {x y : C} (f g : x ~> y)
@@ -564,7 +564,7 @@ Definition freyd_thin_canonical {C : Category}
   (DO : ObjDecEq C) (HP : HasIndexedProducts C) (D : DecHom C) : Thin C :=
   freyd_thin (canonical_ArrowIndex DO) HP D.
 
-(* Riehl §E.1's "or coproducts": products in [C^op], thinness self-dual. / Riehl §E.1 的“或余积”：在 [C^op] 中的积，自对偶的稀薄性。 *)
+(* Riehl §E.1's “or coproducts”: products in [C^op], thinness self-dual. / Riehl §E.1 的“或余积”：在 [C^op] 中的积，自对偶的稀薄性。 *)
 Definition freyd_thin_dual {C : Category}
   (AI : ArrowIndex C) (HP : HasIndexedProducts (C^op)) (D : DecHom C) : Thin C :=
   Opposite_Thin (freyd_thin (ArrowIndex_op AI) HP (DecHom_op D)).

@@ -12,12 +12,12 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+(* Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
               §II.3, printed pp. 37–38 (PDF pp. 47–48) — maclane:II.3:prop1
               (a bifunctor is determined by its partial functors),
               maclane:II.3:def3 (naturality in one variable),
               maclane:II.3:prop2 (bifunctor naturality is componentwise)
-   Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.6,
+   Book:      Awodey, “Category Theory” (1st ed., 2005 pre-print), §7.6,
               Lemma 7.14 (the bifunctor lemma), printed p. 168 (PDF
               pp. 177–178) — awodey:7.6:lem14: the same iff, stated over
               raw object/arrow data
@@ -71,11 +71,11 @@ Generalizable All Variables.
       endpoint transport (the [acast] idiom of Theory/Multicategory.v,
       specialized to homs), and the family constructor's interchange
       hypothesis is stated UNDER the casts — exactly the price Mac
-      Lane's "agreeing on objects" costs in a proof assistant, paid
+      Lane's “agreeing on objects” costs in a proof assistant, paid
       once here rather than by every consumer.
 
-   3. UNIQUENESS IS [Functor_Setoid].  Proposition 1's "unique functor
-      S" is rendered as uniqueness up to Cat's hom-equivalence: any
+   3. UNIQUENESS IS [Functor_Setoid].  Proposition 1's “unique functor
+      S” is rendered as uniqueness up to Cat's hom-equivalence: any
       bifunctor whose object map is the data's and whose arrow actions
       restrict to the data's one-sided actions is ≈ the constructed
       one.  The witnessing natural isomorphism has cast components
@@ -261,7 +261,7 @@ Proof.
 Qed.
 
 (*
-Uniqueness (Proposition 1's "unique functor S", design note 3): any
+Uniqueness (Proposition 1's “unique functor S”, design note 3): any
    bifunctor with the same object map whose one-sided actions are the
    data's agrees with the construction up to Functor_Setoid, with
    identity components. 
@@ -377,7 +377,7 @@ End FamilyForm.
 
 (*
 The family form's partial functors are the given families, on arrows
-   (work item 2's "whose partial functors are the given families"): the
+   (work item 2's “whose partial functors are the given families”): the
    left on the nose, the right up to the agreement casts — the asymmetry
    design note 2 prices. 
 

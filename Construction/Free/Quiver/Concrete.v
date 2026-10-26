@@ -16,9 +16,9 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/quiver
  nLab:      https://ncatlab.org/nlab/show/concrete+category
  Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
- Book:      Riehl, "Category Theory in Context", Dover 2016, §1.6,
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, §1.6,
  Example 1.6.19, printed p. 46
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, Springer 1998, §I.7, printed p. 26
 
  Riehl's Example 1.6.19 is the sharpest small illustration of what a chosen
@@ -35,8 +35,8 @@ Generalizable All Variables.
  `QuiverCategory` (Construction/Free/Quiver.v), whose objects are the
  `Quiver` records of that file: a node type together with an edge
  setoid `edges x y` for each ordered pair of nodes.  Since edges are indexed
- by their endpoints rather than carrying source/target maps, the "set of
- arrows" has to be assembled: [QArrow] below is the type of triples
+ by their endpoints rather than carrying source/target maps, the “set of
+ arrows” has to be assembled: [QArrow] below is the type of triples
  (source, target, edge), and [QArrow_Setoid] compares two such triples by an
  equality of endpoints together with an `≈` of edges moved along it.
 

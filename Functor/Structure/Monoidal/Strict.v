@@ -22,7 +22,7 @@ Generalizable All Variables.
     equal to [id], so that F preserves the tensor and unit on the nose.
 
     As with [Structure/Monoidal/Strict.v] (strict monoidal categories), in
-    this library's setoid-based setting "strict" requires BOTH:
+    this library's setoid-based setting “strict” requires BOTH:
 
       (a) object-level Leibniz equalities
             [I = F I]  and  [F x ⨂ F y = F (x ⨂ y)];
@@ -34,7 +34,7 @@ Generalizable All Variables.
     distinct objects.  The comparisons then transport along those
     equalities to give [id], stated in the explicit
     [match e in _ = T return _ with eq_refl => id end] form — see the
-    "Formulation note" at the end of [Structure/Monoidal/Strict.v] for
+    “Formulation note” at the end of [Structure/Monoidal/Strict.v] for
     the rationale behind this discipline.  The equality directions match
     the [to] directions of [pure_iso : I ≅ F I] and
     [ap_iso : F x ⨂ F y ≅ F (x ⨂ y)].

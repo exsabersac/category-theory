@@ -19,14 +19,14 @@ Generalizable All Variables.
 (* * * #464's two monads are isomorphic in the category of monads / * * #464 的两个单子在单子范畴中是同构的 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.2 Exercise 3, printed p. 142 (PDF
- p. 151) — maclane:VI.2:ex3; and §VI.2, "Group actions", printed
+ p. 151) — maclane:VI.2:ex3; and §VI.2, “Group actions”, printed
  p. 141 (PDF p. 150)
- Book: Riehl, "Category Theory in Context", 2nd ed., Exercise 5.5.iv,
+ Book: Riehl, “Category Theory in Context”, 2nd ed., Exercise 5.5.iv,
  printed p. 208 (PDF p. 228) — riehl:5.5:exiv
- nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
- monads")
+ nLab: https://ncatlab.org/nlab/show/monad (section “The 2-category of
+ monads”)
 
  WHAT THIS FILE DOES.  Instance/Fun/Action/Monad/BG.v (#464) has two
  monads on Sets with the same functor data, M × X and M × f: [ActMonad
@@ -36,8 +36,8 @@ Generalizable All Variables.
  ([BG_join_ActMonad]).  For want of a record of monad morphisms, BG.v
  related them by three separate facts ([BG_T_ActF], [BG_ret_ActMonad],
  [BG_join_ActMonad]) and built Mac Lane's θ* for this instance by hand
- ([BG_Act_EM]); its header says so ("θ* is built for this instance
- alone, with no general record of monad morphisms").  This file states
+ ([BG_Act_EM]); its header says so (“θ* is built for this instance
+ alone, with no general record of monad morphisms”).  This file states
  the relation with Monad/Morphism.v and takes θ* from Monad/Morphism/
  Algebra.v.  BG.v is not changed: restated for the general θ*, its
  readback [BG_Act_EM_alg] would be refused (below).
@@ -64,8 +64,8 @@ Generalizable All Variables.
  [mh_EM_alg]), where [BG_Act_EM] keeps h.  The inverse morphism gives
  [Act_BG_EM], θ* of [BG_theta_inv M], from the algebras of [ActMonad M]
  to those of [BGMonad M]: it assembles into a functor BG.v's
- [Act_BG_alg], which that file "kept as a map on algebras" and "not
- assembled into a functor"; they agree on carriers
+ [Act_BG_alg], which that file “kept as a map on algebras” and “not
+ assembled into a functor”; they agree on carriers
  ([Act_BG_EM_carrier]) and on structure maps as functions
  ([Act_BG_EM_alg_fun]).
 

@@ -17,12 +17,12 @@ Generalizable All Variables.
 (*
    * * The op involution as a functor on Cat
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    §II.2 (printed p. 33) [maclane:II.2:construction1]: sending each
    category to its opposite and each functor T to T^op is a COVARIANT
    endofunctor of the category of categories, and applying it twice
    is the identity — the duality involution on Cat.
-   Riehl, "Category Theory in Context", §1.3 Example 1.3.14(vi)
+   Riehl, “Category Theory in Context”, §1.3 Example 1.3.14(vi)
    [riehl:1.3:example14].
    nLab: https://ncatlab.org/nlab/show/opposite+category
 

@@ -25,8 +25,8 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Dense_functor
 
    BOOK LOCATIONS.  Recorded from the statement of issue #346: Mac Lane,
-   "Categories for the Working Mathematician" (2nd ed.), III.7, Theorem 1
-   and the dual remark, book pp. 76-77; Awodey, "Category Theory", 8.6,
+   “Categories for the Working Mathematician” (2nd ed.), III.7, Theorem 1
+   and the dual remark, book pp. 76-77; Awodey, “Category Theory”, 8.6,
    Proposition 8.10, for the presheaf orientation.  Those texts were not
    consulted while writing this file.  The locations are given so a
    reader can look the theorem up; nothing beyond the locations is
@@ -48,7 +48,7 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
    composed with [Elements_proj K] is rejected because [Elements_proj K]
    lands in D and not in D^op.
 
-   A CORRECTION TO THE ISSUE'S "CURRENT STATE"
+   A CORRECTION TO THE ISSUE'S “CURRENT STATE”
    -------------------------------------------
 
    The issue says no category-of-elements index exists in the tree.
@@ -66,7 +66,7 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
    [Theory/Kan/Extension.v], [Instance/Top.v], [Instance/Field.v],
    [Instance/Grp/Epi.v] and [Instance/Met/Completion.v], all of them
    topological, metric or image density -- with one refinement an audit
-   supplied: Theory/Kan/Extension.v's hits are all "codensity"/"codense",
+   supplied: Theory/Kan/Extension.v's hits are all “codensity”/“codense”,
    a CATEGORICAL notion, but they lie entirely in header prose and
    formalise nothing, which strengthens rather than weakens the absence
    claim.
@@ -151,13 +151,13 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
          [Require] lines -- and [SetsCoend F : Coend F] is built at one
          fixed integrand ([Instance/Sets/Coend.v]).
 
-         AN EARLIER DRAFT CONCLUDED FROM THOSE TWO FACTS THAT "the tree
-         supplies no such action", AND THAT IS FALSE.  An audit found the
+         AN EARLIER DRAFT CONCLUDED FROM THOSE TWO FACTS THAT “the tree
+         supplies no such action”, AND THAT IS FALSE.  An audit found the
          action already built, for a different integrand family, in
          [Construction/Day.v]: [Day_map] with
          [Day : C ⟶ Sets] whose [fobj] is literally
          [fun c => coend_obj (SetsCoend (DayI F G c))] -- that IS
-         "[c |-> coend_obj (SetsCoend (I c))] is a functor" -- together
+         “[c |-> coend_obj (SetsCoend (I c))] is a functor” -- together
          with [DFG_c], the action of the coend on a map of
          integrands induced by a pair of transformations, and the
          integrand-AGNOSTIC [day_theta_leg_cowedge], which takes
@@ -263,7 +263,7 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
        [coy_leg F c x] at the pair (g, a) IS the density cocone's
        injection at (x, a), evaluated at c and applied to g.  The two
        constructions share their legs -- but read that precisely, since
-       an earlier draft over-read it as "the SAME legs, on the nose":
+       an earlier draft over-read it as “the SAME legs, on the nose”:
        the Example is a VALUE equation at a fixed [a], and the two
        morphisms have DIFFERENT domains ([coy_leg F c x] is a
        [SetoidMorphism] out of [(x ~> c) * F x], while
@@ -278,7 +278,7 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
        [Theory/Coend/Yoneda.v] cannot state, and the density cocone's
        injections are exactly it.
      - [coy_from_at] and [coy_to_from_is_covering]: the coend's inverse
-       map is "insert at the identity", [b |-> ci c (id, b)], and
+       map is “insert at the identity”, [b |-> ci c (id, b)], and
        composing it with [coy_to] gives the density injection at (c, b)
        applied to [id] -- which is [density_elements_covered]'s left-hand
        side.  So the coend's inverse and this file's mediator formula are
@@ -332,8 +332,8 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
      - the apex is NOT itself a representable
        ([kbool_not_representable]): [Hom ttt,-] is singleton-valued over
        1, and a natural isomorphism would collapse [true] onto [false].
-       So the theorem is not the trivial "a representable is a colimit of
-       one representable";
+       So the theorem is not the trivial “a representable is a colimit of
+       one representable”;
      - and the mediator COMPUTES.  [NegCocone] is a competing cocone,
        with the same apex but with the injections twisted by [negb], and
        [neg_med_true]/[neg_med_false] evaluate the produced mediator to
@@ -444,8 +444,8 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
    [Test/Probe*.v], where the target's names are not renamed alongside.
    It is recorded rather than papered over.
 
-   AXIOMS.  All 62 constants of this module report "Closed under the
-   global context".  The count is exact rather than a floor: the file
+   AXIOMS.  All 62 constants of this module report “Closed under the
+   global context”.  The count is exact rather than a floor: the file
    contains no [Program], no [Record]/[Class]/[Inductive] and no
    [Instance], so there are no obligations and no constructors for a name
    sweep to miss, and [Print Module] lists exactly these 62.  (The
@@ -471,9 +471,9 @@ nLab: https://ncatlab.org/nlab/show/density+theorem
        uniqueness of the diagram or the cocone up to isomorphism;
      - no statement that [Elements_proj] is a discrete opfibration, and
        no comparison with [Construction/Grothendieck.v];
-     - no [Cocomplete] hypothesis and no consequence of the form "a
+     - no [Cocomplete] hypothesis and no consequence of the form “a
        functor out of [D, Sets] preserving colimits is determined by its
-       values on representables";
+       values on representables”;
      - the presheaf dual is delivered as named artifacts, not as a
        separate development; nothing is stated in [StrictCat], and the
        colimit is a cocone-level fact plus its apex-only reading, with no
@@ -873,7 +873,7 @@ Example coy_leg_natural_witness (x : C) (a : F x) :
   `1 (coy_leg_natural_in_apex x a) = yo_inj F a := eq_refl.
 
 (*
-The coend's inverse map is "insert at the identity", and running it
+The coend's inverse map is “insert at the identity”, and running it
    back through the mediator gives the density injection at (c, b)
    applied to [id] -- the left-hand side of [density_elements_covered].
    So the two constructions share their inverse formula as well.
@@ -943,7 +943,7 @@ Qed.
 (*
 The two elements are not merely DISTINCT objects of the index: there
    is no morphism between them either, in the covariant [Elements]
-   reading.  This is what makes the "2 = 1 + 1" description above honest
+   reading.  This is what makes the “2 = 1 + 1” description above honest
    rather than decorative, and an audit found it asserted in prose and
    pinned nowhere, so it is a lemma now.  A morphism (ttt;true) ~> (ttt;
    false) carries a D-morphism (necessarily [id], D being [_1]) together
@@ -1026,7 +1026,7 @@ Each [Fail] below was stripped once and its error read off, so its
    KIND is known and it is not vacuously green.  Every constant named in
    a negative is also named in a control in the same section, so a rename
    breaks the file loudly instead of turning a negative into a
-   "reference not found" false pass.
+   “reference not found” false pass.
 
 --------
 下面的每个 [Fail] 都被剥离过一次，并读取了其错误，因此其类型已知，并且它不是空绿色的。每个在否定中命名的常量也在同一部分的控制中被命名，因此重命名会明显破坏文件，而不是将否定变成“未找到引用”的错误通过。
@@ -1051,15 +1051,15 @@ Definition ctrl_pdd_fmap (x y : PElements P) (f : x ~{PElements P}~> y) :
 
 (*
 NEGATIVE 1 (CONVERSION).  Stripped, this reports
-   [cannot unify "PDensityDiagram P" and
-   "Curried_CoHom C ◯ PElements_proj P"].  The two records differ only
+   [cannot unify “PDensityDiagram P” and
+   “Curried_CoHom C ◯ PElements_proj P”].  The two records differ only
    in their functor-law fields, which [PElements_proj] supplies as
    opaque [Program] obligations.
 
 --------
 负面 1（转换）。剥离后，该报告显示
-   [无法统一 "PDensityDiagram P" 和
-   "Curried_CoHom C ◯ PElements_proj P"]. 这两个记录仅在其函子律字段上有所不同，而 [PElements_proj] 将其作为不透明的 [Program] 义务提供。
+   [无法统一 “PDensityDiagram P” 和
+   “Curried_CoHom C ◯ PElements_proj P”]. 这两个记录仅在其函子律字段上有所不同，而 [PElements_proj] 将其作为不透明的 [Program] 义务提供。
 *)
 
 Fail Example neg_pdd_records :
@@ -1084,8 +1084,8 @@ Definition ctrl_med_commutes (M : Cocone (DensityDiagram K))
 
 (*
 NEGATIVE 2 (CONVERSION).  Stripped, this reports
-   [cannot unify "density_med K M ∘ density_inj K j" and
-   "cocone_inj M j"].  The mediator evaluates the competing cocone at the
+   [cannot unify “density_med K M ∘ density_inj K j” and
+   “cocone_inj M j”].  The mediator evaluates the competing cocone at the
    object (e, fmap[K] g x) of the index while the right-hand side
    evaluates it at j, and the two are reconciled only by cocone coherence
    at [Elements_lift], which is a `≈` fact.
@@ -1112,8 +1112,8 @@ Check (Curried_Hom D ◯ (Elements_proj K)^op).
 
 (*
 NEGATIVE 3 (TYPING).  Stripped, this reports
-   ["Elements_proj K" has type "Elements K ⟶ D" while it is expected to
-   have type "Elements K ⟶ D^op" (cannot unify "D" and "(D^op)")].
+   [“Elements_proj K” has type “Elements K ⟶ D” while it is expected to
+   have type “Elements K ⟶ D^op” (cannot unify “D” and “(D^op)”)].
    This is the variance: the diagram of representables cannot be indexed
    by [Elements K] covariantly.
 

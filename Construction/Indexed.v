@@ -33,7 +33,7 @@ Generalizable All Variables.
  [idx_unit_right], the associativity cocycle [idx_cocycle], and
  compatibility of [idx_comp] with [idx_resp] in each base-morphism
  argument ([idx_comp_resp_l], [idx_comp_resp_r]).  This is
- "pseudofunctor-lite": exactly the coherent data that the Grothendieck
+ “pseudofunctor-lite”: exactly the coherent data that the Grothendieck
  construction consumes, with no 2-categorical superstructure.
 
  HONESTY NOTE (binding design decision).  In this library a bare
@@ -44,7 +44,7 @@ Generalizable All Variables.
  a nontrivial central automorphism in a fibre, and the total category's
  associativity becomes unprovable.  [StrictCat]-valued functors shift the
  problem to coherence of propositional object-equality proofs (no UIP in
- general).  The honest "pseudofunctor-lite" is therefore an explicit
+ general).  The honest “pseudofunctor-lite” is therefore an explicit
  coherent-data record, [IndexedCat], with the cocycle and unit coherence as
  fields; constructors are provided elsewhere in this development (a) from
  split cleavages, where the coherence is trivial

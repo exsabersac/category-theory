@@ -20,12 +20,12 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/colimit
  Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
 
- Mac Lane, "Categories for the Working Mathematician" 2nd ed., Springer
+ Mac Lane, “Categories for the Working Mathematician” 2nd ed., Springer
  GTM 5 1998, §III.3 (pp. 67-68), where the colimit of a diagram of sets
  is the disjoint union of the [F d] with the images of the connecting
- maps identified; and §V.1 Exercise 8, "Set is cocomplete", which asks
+ maps identified; and §V.1 Exercise 8, “Set is cocomplete”, which asks
  for the GENERAL statement -- all small colimits -- and not only the
- union of an increasing chain.  Riehl, "Category Theory in Context",
+ union of an increasing chain.  Riehl, “Category Theory in Context”,
  Dover 2016, §3.1 Example 3.1.26 is the same computation.
 
  [Cocomplete C] is [∀ (D : Category) (F : D ⟶ C), Colimit F]
@@ -35,8 +35,8 @@ Generalizable All Variables.
  Instance/Sets/Complete.v.  Five in-tree notes across four files record
  the absence this answers -- Instance/Sets/Complete.v,
  Instance/Sets/Coequalizer.v twice, Instance/Sets/Quotient.v,
- and Instance/Sets/Products.v, whose "cocompleteness is not
- addressed at all, here or anywhere else in the tree" is the flattest
+ and Instance/Sets/Products.v, whose “cocompleteness is not
+ addressed at all, here or anywhere else in the tree” is the flattest
  of the five -- and it sits in the very file that supplies
  [Sets_icoprod_obj], this construction's own donor.  None was edited
  when this file landed, and all five were STALE.  THREE have since been
@@ -44,7 +44,7 @@ Generalizable All Variables.
  with it the first of the two in Coequalizer.v and the one in
  Quotient.v); the second Coequalizer.v note and the one in
  Products.v still read as absences.  An earlier draft counted THREE
- notes and said they "still stand as written" -- wrong twice over.
+ notes and said they “still stand as written” -- wrong twice over.
 
  THE CONSTRUCTION
 
@@ -98,8 +98,8 @@ Generalizable All Variables.
  [F^op] is a diagram into [Sets^op]; no instantiation of [Sets_Complete]
  has that type.  Elaborating
  [Sets_Complete (Opposite D) (Opposite_Functor F)] is rejected with
- "The term "F^op" has type "D^op ⟶ Sets^op" while it is expected to have
- type "D^op ⟶ Sets"", against the positive control
+ “The term ”F^op“ has type ”D^op ⟶ Sets^op“ while it is expected to have
+ type ”D^op ⟶ Sets“”, against the positive control
  [Sets_Complete D F : Limit F], which is accepted.  What would produce
  the colimit is [Complete (Sets^op)], and that IS [Cocomplete Sets]
  again, so the duality is not a route.  No [Fail] probe is kept in this
@@ -109,15 +109,15 @@ Generalizable All Variables.
  measurement: written as [Sets_Complete (D^op) (F^op)] it fails for the
  WRONG reason.  Functor/Opposite.v opens [functor_scope], in which
  [_ ^op] is [Opposite_Functor], so [D^op] parses as [Opposite_Functor D]
- and the error is "The term "D" has type "Category" while it is expected
- to have type "?C ⟶ ?D"" -- a notation clash and not the mathematics.
+ and the error is “The term ”D“ has type ”Category“ while it is expected
+ to have type ”?C ⟶ ?D“” -- a notation clash and not the mathematics.
  The measurement above spells [Opposite] and [Opposite_Functor] by name.
  This is the notation guard Instance/Rng/Mod.v records.
 
  HOW THIS IS *NOT* PROVED, STATED PLAINLY
 
- It is NOT routed through "a category with all small coproducts and
- coequalizers is cocomplete".  That theorem is in this development in
+ It is NOT routed through “a category with all small coproducts and
+ coequalizers is cocomplete”.  That theorem is in this development in
  neither variance: on the limit side Instance/Sets/Complete.v
  already records its absence, and dually no constant here or elsewhere
  derives [Cocomplete] from [HasIndexedCoproducts] and [HasCoequalizers].
@@ -131,7 +131,7 @@ Generalizable All Variables.
  objects [Sets_icoprod_obj] and [SetsQuotient].  Both halves of the
  informal recipe are therefore genuine donors, but the coequalizer is
  not one of them, and Instance/Sets/Coequalizer.v's forecast that its
- hand-built object "is what a later [Cocomplete Sets] would itself need"
+ hand-built object “is what a later [Cocomplete Sets] would itself need”
  is not what happened.
 
  Two further constants are present but OFF the path to
@@ -162,7 +162,7 @@ Generalizable All Variables.
  what the construction needs -- the sigma [{ d : D & F d }] and the
  inductive [colim_rel] both quantify over the objects and the arrows of
  [D], so they fit as a [Sets] carrier when both sit at or below [o].
- This is the universe-polymorphic stand-in for "D small relative to C"
+ This is the universe-polymorphic stand-in for “D small relative to C”
  that Structure/Complete.v describes.
 
  TWO MEASURED FINDINGS ABOUT THAT BLOCK.
@@ -215,7 +215,7 @@ Generalizable All Variables.
  IS [Sets_colim_cocone].
 
  REFUTED, and kept in two kinds.  Conversion negatives: [Sets_colim_obj]
- is not [Sets_colim_sum] ("cannot unify" -- the two share a carrier,
+ is not [Sets_colim_sum] (“cannot unify” -- the two share a carrier,
  which is the positive control, and differ in [is_setoid]); and the
  triangle as a Leibniz equality of WHOLE morphisms,
  [Sets_colim_med N ∘ Sets_colim_inj d = vertex_map[N]], is rejected,
@@ -239,8 +239,8 @@ Generalizable All Variables.
  [Proset_Cocomplete_of_all_joins] (Instance/Proset/Limit.v) -- and
  every one takes a hypothesis, a [Cocomplete] or a family of joins.  So
  this is the first hypothesis-free inhabitant.  (An earlier draft of
- this paragraph listed [adamek_cocomplete] among the four "constants
- whose type is [@Cocomplete _]"; that was a conflation of taking the
+ this paragraph listed [adamek_cocomplete] among the four “constants
+ whose type is [@Cocomplete _]”; that was a conflation of taking the
  class with having it as a type.)  It does NOT make [adamek_cocomplete]
  unconditional: that corollary still wants an [AdamekData], and
  Theory/Adamek/Corollaries.v records that no [AdamekData] witness
@@ -270,7 +270,7 @@ Generalizable All Variables.
  [colim_rel] could have produced a negative.
 
  Three degeneracies are excluded by proof rather than by assertion.
- The shape has two distinct objects, so "the two fibres" names two
+ The shape has two distinct objects, so “the two fibres” names two
  things ([two_disc_objects_distinct]).  Both fibres are inhabited, and
  the theorem is stated at named inhabitants
  ([two_fibre_point_true]/[two_fibre_point_false]), each of which
@@ -287,9 +287,9 @@ Generalizable All Variables.
  [omega_stages_apart_in_coproduct], at the ω-shape.
 
  What the two witnesses JOINTLY establish is that NEITHER endpoint
- describes [colim_rel] uniformly: the ω pair refutes "always the
- coproduct's own relation", the discrete witness refutes "always
- total".  That is a statement about the FAMILY.  They do NOT show the
+ describes [colim_rel] uniformly: the ω pair refutes “always the
+ coproduct's own relation”, the discrete witness refutes “always
+ total”.  That is a statement about the FAMILY.  They do NOT show the
  relation strictly inside the interval at any one shape -- and at the
  two shapes exhibited here it is in fact AT an endpoint.  Measured, not
  shipped, since adding theorems is not what a correction is for: at
@@ -297,9 +297,9 @@ Generalizable All Variables.
  ordered, so [colim_rel] is TOTAL; at [TwoPoints] the only homs are
  identities, so [cr_glue] never crosses an index and [colim_rel]
  coincides with the coproduct's own [≈].  An earlier draft said the two
- files "place [colim_rel] strictly between the coproduct's own relation
- and the total one -- each at its own shape".  The hedge does not save
- it: no in-tree theorem supports "strictly between", and the claim is
+ files “place [colim_rel] strictly between the coproduct's own relation
+ and the total one -- each at its own shape”.  The hedge does not save
+ it: no in-tree theorem supports “strictly between”, and the claim is
  refutable at both witnesses.
 
  WHAT IS NOT DELIVERED, SCOPED TO THIS FILE
@@ -321,13 +321,13 @@ Generalizable All Variables.
 
  * No ω-chain reading here.  Instance/Sets/Chain.v instantiates this
  constant at [Omega] and at Construction/Chain.v's [Chain], and proves
- the SUFFICIENT half of "the colimit is the union"; its own header
+ the SUFFICIENT half of “the colimit is the union”; its own header
  records that the necessary half is not proved, and why.  Nothing in
  this file depends on that one.
 
  STATUS: axiom-free.  All 44 constants of this module -- 32 named, 8
  [Program] obligations and the 4 eliminators generated for [colim_rel]
- -- report "Closed under the global context", enumerated by
+ -- report “Closed under the global context”, enumerated by
  [Print Module] per the docs/AXIOMS.md methodology. 
 
  --------
@@ -602,7 +602,7 @@ Example two_disc_hom_is_eq (b b' : bool) :
 Proof. reflexivity. Qed.
 
 (*
- ... and the shape really does have two objects, so "the two fibres"
+ ... and the shape really does have two objects, so “the two fibres”
  below names two things and not one. 
 
  --------

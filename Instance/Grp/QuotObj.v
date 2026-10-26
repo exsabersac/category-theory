@@ -29,11 +29,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/quotient+group
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_group
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.7, book p. 126 (PDF p. 135), Definition 3, illustrates quotient
  objects with groups: a quotient object of a group G is a quotient
  G/N by a normal subgroup.  Issue #446 recorded that illustration as
- absent "the library having no group theory of that kind".  That was
+ absent “the library having no group theory of that kind”.  That was
  STALE when written: Instance/Grp/Quotient.v already carried
  [Subgroup], [NormalSubgroup], [QuotientGrp], the
  projection with its epicness and [KernelNS], and
@@ -60,10 +60,10 @@ Generalizable All Variables.
  what makes it an equivalence OF
  QUOTIENT OBJECTS rather than a bare isomorphism of codomains.
  Surjectivity is NOT available from [Epic] alone in this tree: in [Grp]
- "surjective implies epic" is unconditional (Instance/Grp/Epi.v)
+ “surjective implies epic” is unconditional (Instance/Grp/Epi.v)
  but the converse is the double-negation elimination that file's own
  header sets out -- the unconditional theorem is that file's
- [grp_epic_image_dense], "no element can be SHOWN to miss the image" --
+ [grp_epic_image_dense], “no element can be SHOWN to miss the image” --
  and recovering a preimage needs its [GrpImageStable].  So the
  [Epic]-only reading is stated separately and conditionally, as
  [grp_quot_is_quot_by_kernel_stable] through
@@ -96,8 +96,8 @@ Generalizable All Variables.
 
  MEASUREMENTS, each re-runnable.  10 constants (.glob heads; a first
  draft had 11, the eleventh being the general lemma since lifted), no
- [Program] so no obligations in the .vo, and all 10 report "Closed
- under the global context" under [Print Assumptions] -- including the
+ [Program] so no obligations in the .vo, and all 10 report “Closed
+ under the global context” under [Print Assumptions] -- including the
  ones routed through the S3 witness, whose carrier is
  [rot * bool] with decidable equality and needs no axiom.  1 [Defined]
  and 5 [Qed] (a first draft had 2 [Defined], the other being the lifted
@@ -108,14 +108,14 @@ Generalizable All Variables.
  .Makefile.coq.d).  No name introduced here occurs anywhere else in the
  tree (swept over all .glob files with
  '^[a-z]+ [0-9:]+ [^ ]* NAME$', instrument-checked on [sub_le]).
- Universes, by [About], RE-MEASURED after the PR "algebraic carriers are
- sets" (2026-09-17): [grp_quot_of_normal@{u u0 u1}] binds
+ Universes, by [About], RE-MEASURED after the PR “algebraic carriers are
+ sets” (2026-09-17): [grp_quot_of_normal@{u u0 u1}] binds
  [GrpObject@{u0 u0 u0}] and [Grp] as [Category@{u u0}] -- hom level
  identified with proof level, which is what [SubObj] demands and which
  [Grp] satisfies on the nose; the identification is INHERITED from
  Theory/Subobject.v and is not introduced here.  An earlier revision
  wrote [@{u u0}] for the constant and [Category@{u u0 u0}] for [Grp], and
- said "No [Set] pin".  The constant now carries three universes (the
+ said “No [Set] pin”.  The constant now carries three universes (the
  [NormalSubgroup] argument's own level became visible) and its block
  gained [Set < u] -- a strict LOWER bound, entering with [Prop]'s sort
  through [PropEquiv], and NOT an identification: nothing is pinned AT
@@ -145,7 +145,7 @@ Generalizable All Variables.
  §V.7，第126页（PDF第135页），定义3，用群举例说明商对象：群G的商对象是一个正规子群N的商G/N。问题#446记录了这个例子为“图书馆没有那种群论”。当时这已经是过时的：Instance/Grp/Quotient.v 已经包含 
  [Subgroup] ,  [NormalSubgroup] ,  [QuotientGrp] , 投影及其满射性质 [KernelNS] , 并且 Instance/Grp/Quotient/Isomorphism.v 已经包含首同构定理及其三角形。这个文件使用了那些已有内容；它没有增加新的群论。交付的内容。一条方向是一条线：[grp_quot_of_normal N] 是 [mk_quot (quot_proj N) (quot_proj_epic N)]。订单随之而来：[grp_quot_le_of_included] 说一个较大的正规子群会给出较小的商对象——N ⊆ N' 意味着在因子化预顺序中 G/N' ≤ G/N，较粗的商位于较低的位置——中介是恒等函数，其尊重性条款正是成员的包含关系。CONVERSE 是构造成本所在之处，类型说明了这一点。[grp_quot_is_quot_by_kernel] 接受一个其 Epi 为满射的商对象 ([GrpSurjective], Instance/Grp/Epi.v)，并生成 q ≈ grp_quot_of_normal (KernelNS (quot_epi q))：第一个同构定理给出 G/ker e ≅ im e，[surjective_image_iso] (Instance/Grp/Quotient/Isomorphism.v) 给出 im e ≅ Q，而复合映射将投影映射到 e ([grp_quot_kernel_triangle], 通过 [first_isomorphism_triangle] 和 [image_factors])，这使其成为商对象的等效，而不仅仅是余域的简单同构。在这个树中，仅从 [Epic] 无法获得满射性：在 [Grp] 中，“满射意味着上射”是无条件的（Instance/Grp/Epi.v），但其逆命题是双重否定消去，该文件本身的头部已说明——无条件定理是该文件的 [grp_epic_image_dense]，“不能显示有元素未落在像中”——而恢复一个原像需要它的 [GrpImageStable]。因此，仅 [Epic] 的解释是单独且有条件地陈述的，如 [grp_quot_is_quot_by_kernel_stable] 至 [grp_quot_surjective_of_stable]（它的 [grp_epic_is_surjective]）。从 Instance/Grp/Epi.v 起也显示，对于一个上射映射，该假设是结论的重述（它的 [surjective_gives_stable]），所以有条件形式中没有白得任何东西。这正是 Instance/FinSet/QuotObj.v 不需要的条款，那里有限搜索是可判定的。非空性是被检查而不是假定的：A3 在 S3 内部（Instance/Grp/Quotient.v）是一个非阿贝尔群的适当非平凡正规子群，因此 [grp_quot_S3_A3] 是一个既不是顺序顶端也不是底端的商对象，并且 [grp_quot_S3_trivial_le_A3] 存在于顺序引理中。
 
- 强度。一切在 [QuotObj G] 上大致相等。[QuotObj] 继承了 [SubObj] 的集合范畴（Theory/Subobject.v），且没有莱布尼茨反对称性，因此此处的陈述没有，也不可能有 [eq_refl] 的重述。它需要的一般引理。[quot_equiv_of_cod_iso] —— 一个将一个射映射到另一个的上同态同构提供了商对象的≈ —— 与群无关。它首次在此文件中于并行构建期间被证明（作为 [grp_quot_equiv_of_cod_iso]），并在集成过程中作为该文件 [quot_equiv_iff_iso] 的推论被提升到 Theory/Subobject/Quotient.v；此文件使用它，并不再保留自己的副本。测量，每个都可重新运行。10 个常量（.glob 头；最初的草稿有 11 个，第十一项是已提升的一般引理），没有 [Program]，因此在 .vo 中没有义务，并且在 [Print Assumptions] 下所有 10 个都报告“在全局上下文下闭合”——包括通过 S3 证人路由的那些，其载体是 [rot * bool]，具有可判定的等价性且不需公理。1 个 [Defined] 和 5 个 [Qed]（最初的草稿有 2 个 [Defined]，另一项是提升的引理）；[Defined] 通过翻转和重建重新编译为绿色的 [Qed]，并保持为 [Defined]，因为 [quot_le] 和 `≈` 在 [QuotObj] 上是消费者可能想读取的数据。需求闭包为 94 个文件（在 .Makefile.coq.d 上迭代）。此处引入的名称在树的其他任何地方都未出现（已在所有 .glob 文件中用 '^ [a-z] +  [0-9:] +  [^ ] * NAME$' 搜索，并在 [sub_le] 上进行了工具检查）。由 [About] 进行的宇宙测量，在 PR "代数载体是集合"（2026-09-17）之后重新测量：[grp_quot_of_normal@{u u0 u1}] 绑定 [GrpObject@{u0 u0 u0}] 和 [Grp] 为 [Category@{u u0}] -- 同伦层次与证明层次相同，这是 [SubObj] 的要求，并且 [Grp] 完全满足；这种识别是从 Theory/Subobject.v 继承的，并未在此引入。早期版本将 [@{u u0}] 用于常量，将 [Category@{u u0 u0}] 用于 [Grp]，并且写道“没有 [Set] 引脚”。该常量现在携带三个宇宙（[NormalSubgroup] 参数自身的级别变得可见），其块获得了 [Set < u] —— 一个严格的下界，通过 [PropEquiv] 以 [Prop] 的类型进入，并且不是一个同一性：没有任何东西被固定在 [Set]，这正是那句话所说的内容。未交付。对应定理：在两个 G/N 之间的 [quot_le] 等价于包含正规子群的关系未被陈述，只陈述了一个方向，这是容易的；相反的方向需要调解者对从分解中恢复的成员的作用。没有格结构：一个群的两个商对象的交是两个投影的推极限，[Grp] 有推极限（Instance/Grp/Pushout.v），但这里没有任何内容将该推极限与两个正规子群并的商联系起来。[Grp^op] 中没有余像：像分解在树上（Instance/Grp/Quotient/Isomorphism.v 的 [factorization]）但没有像 [Grp^op] 中那样作为 [ImageOf] 打包，就像 [Sets] 和 [FinSet] 那样。没有对任何有限群的商对象进行枚举。关于捐赠者没有 [Print Assumptions] 声明：
+ 强度。一切在 [QuotObj G] 上大致相等。[QuotObj] 继承了 [SubObj] 的集合范畴（Theory/Subobject.v），且没有莱布尼茨反对称性，因此此处的陈述没有，也不可能有 [eq_refl] 的重述。它需要的一般引理。[quot_equiv_of_cod_iso] —— 一个将一个射映射到另一个的上同态同构提供了商对象的≈ —— 与群无关。它首次在此文件中于并行构建期间被证明（作为 [grp_quot_equiv_of_cod_iso]），并在集成过程中作为该文件 [quot_equiv_iff_iso] 的推论被提升到 Theory/Subobject/Quotient.v；此文件使用它，并不再保留自己的副本。测量，每个都可重新运行。10 个常量（.glob 头；最初的草稿有 11 个，第十一项是已提升的一般引理），没有 [Program]，因此在 .vo 中没有义务，并且在 [Print Assumptions] 下所有 10 个都报告“在全局上下文下闭合”——包括通过 S3 证人路由的那些，其载体是 [rot * bool]，具有可判定的等价性且不需公理。1 个 [Defined] 和 5 个 [Qed]（最初的草稿有 2 个 [Defined]，另一项是提升的引理）；[Defined] 通过翻转和重建重新编译为绿色的 [Qed]，并保持为 [Defined]，因为 [quot_le] 和 `≈` 在 [QuotObj] 上是消费者可能想读取的数据。需求闭包为 94 个文件（在 .Makefile.coq.d 上迭代）。此处引入的名称在树的其他任何地方都未出现（已在所有 .glob 文件中用 '^ [a-z] +  [0-9:] +  [^ ] * NAME$' 搜索，并在 [sub_le] 上进行了工具检查）。由 [About] 进行的宇宙测量，在 PR “代数载体是集合”（2026-09-17）之后重新测量：[grp_quot_of_normal@{u u0 u1}] 绑定 [GrpObject@{u0 u0 u0}] 和 [Grp] 为 [Category@{u u0}] -- 同伦层次与证明层次相同，这是 [SubObj] 的要求，并且 [Grp] 完全满足；这种识别是从 Theory/Subobject.v 继承的，并未在此引入。早期版本将 [@{u u0}] 用于常量，将 [Category@{u u0 u0}] 用于 [Grp]，并且写道“没有 [Set] 引脚”。该常量现在携带三个宇宙（[NormalSubgroup] 参数自身的级别变得可见），其块获得了 [Set < u] —— 一个严格的下界，通过 [PropEquiv] 以 [Prop] 的类型进入，并且不是一个同一性：没有任何东西被固定在 [Set]，这正是那句话所说的内容。未交付。对应定理：在两个 G/N 之间的 [quot_le] 等价于包含正规子群的关系未被陈述，只陈述了一个方向，这是容易的；相反的方向需要调解者对从分解中恢复的成员的作用。没有格结构：一个群的两个商对象的交是两个投影的推极限，[Grp] 有推极限（Instance/Grp/Pushout.v），但这里没有任何内容将该推极限与两个正规子群并的商联系起来。[Grp^op] 中没有余像：像分解在树上（Instance/Grp/Quotient/Isomorphism.v 的 [factorization]）但没有像 [Grp^op] 中那样作为 [ImageOf] 打包，就像 [Sets] 和 [FinSet] 那样。没有对任何有限群的商对象进行枚举。关于捐赠者没有 [Print Assumptions] 声明：
  下面的十一条裁决涵盖了本文件的常量，
  docs/AXIOMS.md 是整个库的全貌所在。
 *)
@@ -199,11 +199,11 @@ Proof.
       fun a : carrier (QuotientGrp N) => a : carrier (QuotientGrp N') |} |}.
     (*
  The quotient's `≈` is the truncation of [quot_rel] since the PR
- "algebraic carriers are sets" (2026-09-17): the inclusion is applied
+ “algebraic carriers are sets” (2026-09-17): the inclusion is applied
  under it, [Prop] to [Prop]. 
 
  --------
- 商 `≈` 是 [quot_rel] 的截断，因为 PR "代数载体是集合"（2026-09-17）：在其下应用了包含，即从 [Prop] 到 [Prop]。
+ 商 `≈` 是 [quot_rel] 的截断，因为 PR “代数载体是集合”（2026-09-17）：在其下应用了包含，即从 [Prop] 到 [Prop]。
 *)
     + intros a b Hab.
       change (inhabited (quot_rel N a b)) in Hab.

@@ -25,14 +25,14 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/delooping
  nLab:      https://ncatlab.org/nlab/show/automorphism+2-group
  Wikipedia: https://en.wikipedia.org/wiki/Inner_automorphism
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §I.4, printed p. 18 (Exercise 3)
- Book:      Awodey, "Category Theory", 2nd ed., Oxford Logic Guides 52,
- 2010, §7.7 ("Functor categories"), Example 7.21, printed
+ Book:      Awodey, “Category Theory”, 2nd ed., Oxford Logic Guides 52,
+ 2010, §7.7 (“Functor categories”), Example 7.21, printed
  pp. 167-168
- Book:      Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
+ Book:      Awodey, “Category Theory”, 1st ed. (Carnegie Mellon pre-print,
  September 2005), §7.7, Example 7.21, printed p. 175
- Book:      Riehl, "Category Theory in Context", Exercise 1.4.ii,
+ Book:      Riehl, “Category Theory in Context”, Exercise 1.4.ii,
  printed p. 30
 
  CITATION NOTE.  AWODEY CHANGED THE FORMULA BETWEEN EDITIONS, and both
@@ -41,14 +41,14 @@ Generalizable All Variables.
 
  f(x) · h = h · g(x),    equivalently    h⁻¹ · f(x) · h = g(x),
 
- and calls ϑ "an inner automorphism y ↦ h⁻¹ · y · h of H (called
- conjugation by h), that takes f to g"; the SECOND edition (printed p. 167)
+ and calls ϑ “an inner automorphism y ↦ h⁻¹ · y · h of H (called
+ conjugation by h), that takes f to g”; the SECOND edition (printed p. 167)
  writes
 
  g(x) · h = h · f(x),    equivalently    g(x) = h · f(x) · h⁻¹,
 
- and calls ϑ "an inner automorphism y → h · y · h⁻¹ of H (called
- conjugation by h) that takes f to g".  (Both quotations, and those below,
+ and calls ϑ “an inner automorphism y → h · y · h⁻¹ of H (called
+ conjugation by h) that takes f to g”.  (Both quotations, and those below,
  normalize the superscript inverse and the inter-word spacing; nothing else
  is changed — the two printings really do use different arrow glyphs and
  different comma placement in that sentence.)
@@ -131,9 +131,9 @@ Generalizable All Variables.
  direction
 
  The delooping itself, and the monoid/group records [MonObject] and
- [GrpObject], are Construction/Deloop.v; that file's header states that "the
+ [GrpObject], are Construction/Deloop.v; that file's header states that “the
  functor-level half of the dictionary — that functors between deloopings are
- exactly monoid homomorphisms" is deliberately left out of it, and
+ exactly monoid homomorphisms” is deliberately left out of it, and
  [Deloop_map]/[Deloop_unmap] below are that half.  [MonHom], [IsGroupoid],
  [ginv] and the symmetric group [S3_Grp] come from Structure/Groupoid.v. 
 
@@ -196,7 +196,7 @@ Generalizable All Variables.
  What the exercise is about, and the two ways to get it wrong
 
  nLab:  https://ncatlab.org/nlab/show/automorphism+2-group
- Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
+ Paper: Eilenberg, Mac Lane, “General theory of natural equivalences”,
  Trans. Amer. Math. Soc. 58(2), 1945
 
  Mac Lane's Exercise 3 in §I.4 is about as small as a complete example of a
@@ -224,7 +224,7 @@ Generalizable All Variables.
  every S a, so the endomorphisms of the object S are the centralizer in H
  of the image of S.  The nLab records the corresponding automorphism
  2-group as AUT(H) ≔ Aut(B H), presented by the crossed module
- H →Ad Aut(H) (nLab, "automorphism 2-group"); this file stops at the
+ H →Ad Aut(H) (nLab, “automorphism 2-group”); this file stops at the
  groupoid and builds no 2-group, but the non-connectedness witness at the
  end is exactly a pair of homomorphisms in different conjugacy classes.
 
@@ -252,7 +252,7 @@ Generalizable All Variables.
  DERIVING that S3 is nonabelian from those two facts together, so the
  witness cannot be degenerate without contradicting itself.
 
- The second is COMPOSITION ORDER.  In this library f ∘ g means "g first",
+ The second is COMPOSITION ORDER.  In this library f ∘ g means “g first”,
  and Construction/Deloop.v takes `compose f g := mon_op f g` — the monoid
  product in the same argument order, which [deloop_compose_mon_op] below
  restates as an equation holding by [eq_refl].  Reading naturality
@@ -264,17 +264,17 @@ Generalizable All Variables.
  So the TARGET of the transformation multiplies on the LEFT of h, and it is
  the target that is the conjugate of the source.  That is Awodey's
  SECOND-EDITION orientation (Example 7.21, 2nd ed. p. 167, quoted with the
- superscript inverse and inter-word spacing normalized): "what is a natural
+ superscript inverse and inter-word spacing normalized): “what is a natural
  transformation between two group homomorphisms f, g : G → H? Such a map
  ϑ : f → g would be an element h ∈ H such that for every x ∈ G, we have
- g(x) · h = h · f(x) or, equivalently, g(x) = h · f(x) · h⁻¹."  Source f,
+ g(x) · h = h · f(x) or, equivalently, g(x) = h · f(x) · h⁻¹.”  Source f,
  target g, target on the left — the same way round as [Intertwines] and
  [Conjugates] below.  ([transform_intertwines] is literally the [naturality]
  field: it is proved by `naturality n ttt ttt` with no rewriting at all,
  which is the sharpest available check that no side has been silently
  swapped.)
 
- HOW MUCH THE DIRECTION MATTERS, exactly.  Not as much as "trap" suggests
+ HOW MUCH THE DIRECTION MATTERS, exactly.  Not as much as “trap” suggests
  at the ∃-quantified level.  [transform_iff_conjugate] and its
  source-on-the-left twin [transform_iff_conjugate_SWAPPED] are both proved
  below, and both are biconditionals with the SAME left-hand side, so their
@@ -534,13 +534,13 @@ Defined.
  `≈`-equal in N.
 
  Intertwining, not conjugating: N is a bare monoid here, with no inverses,
- so "h conjugates F into G" has nothing to refer to yet.  The version over
+ so “h conjugates F into G” has nothing to refer to yet.  The version over
  a group — the literal set of CONJUGATING elements, cut out by [Conjugates]
  — is [transform_conjugator_iso] below, where the two conditions on h agree
  by [conjugates_iff_intertwines].
 
  The second setoid ignores the intertwining witness.  That is deliberate
- and is the honest reading of "the set of elements": the witness is proof
+ and is the honest reading of “the set of elements”: the witness is proof
  content with no equality of its own, and identifying elements by their
  underlying element of N makes the collection the sub-setoid of N cut out
  by the condition.  It is also forced by the first setoid, which sees only
@@ -675,7 +675,7 @@ Definition Conjugates (h : carrier Grp) : Type :=
     Deloop_unmap G a ≈ mon_op (mon_op h (Deloop_unmap F a)) (grp_inv h).
 
 (*
- And "conjugation by h" is not a new notion here: the right-hand side above
+ And “conjugation by h” is not a new notion here: the right-hand side above
  is Structure/Groupoid.v's [conjugate] — the inner automorphism
  y ↦ h · y · h⁻¹ that Awodey's example names — evaluated in the groupoid
  [Deloop Grp] at the single object, on the nose.  This is an equality of
@@ -896,7 +896,7 @@ Proof.
 Qed.
 
 (*
- Mac Lane, "Categories for the Working Mathematician", §I.4, Exercise 3, in
+ Mac Lane, “Categories for the Working Mathematician”, §I.4, Exercise 3, in
  both directions: for groups B and C and homomorphisms S, T : B → C, a
  natural transformation between the two functors those homomorphisms give
  between the deloopings is inhabited exactly when some h in C conjugates S
@@ -990,8 +990,8 @@ Defined.
  here; the converse, that an invertible transformation has invertible
  components, is not needed and is not stated.)
 
- Awodey draws the conclusion for two GROUPOIDS: "It is clear that if G and
- H are any groupoids, then the functor category H^G is also a groupoid"
+ Awodey draws the conclusion for two GROUPOIDS: “It is clear that if G and
+ H are any groupoids, then the functor category H^G is also a groupoid”
  (2nd ed., p. 168).  What is proved here is stronger in the domain: C is an
  arbitrary category, and only D must be a groupoid.
 
@@ -1047,8 +1047,8 @@ Definition Deloop_Fun_IsGroupoid (M : MonObject) (Grp : GrpObject) :
   Fun_IsGroupoid (Deloop_IsGroupoid Grp).
 
 (*
- Awodey's invertibility sentence, named — "Clearly, every such arrow
- ϑ : f → g has an inverse ϑ⁻¹ : g → f (conjugation by h⁻¹)", which stands
+ Awodey's invertibility sentence, named — “Clearly, every such arrow
+ ϑ : f → g has an inverse ϑ⁻¹ : g → f (conjugation by h⁻¹)”, which stands
  in both editions (2nd ed. p. 167, 1st ed. p. 175): every natural
  transformation between two functors into the delooping of a group is
  invertible.  This is [Deloop_Fun_IsGroupoid] read at one transformation. 
@@ -1280,9 +1280,9 @@ Qed.
 
 (*
  Awodey, immediately after the invertibility remark (2nd ed., p. 167):
- "But H^G is still not usually a group, simply because there may be many
+ “But H^G is still not usually a group, simply because there may be many
  different homomorphisms G → H, so the functor category H^G has more than
- one object."  Here are two such homomorphisms: those Z/2 → S3 picking out
+ one object.”  Here are two such homomorphisms: those Z/2 → S3 picking out
  a and c are different functors, so the object type of the functor category
  is not a singleton.  (They are also the two that
  [S3_conjugating_transform] connects, so this groupoid carries an arrow
@@ -1304,8 +1304,8 @@ Definition Deloop_Fun_S3 : Category := [Deloop Bool_Xor_Grp, Deloop S3_Grp].
 (*
  The stronger statement, which object-counting alone does not give: the
  functor category is not a group even up to equivalence.  A group, read as
- a category, is a one-object groupoid, so "essentially a group" means
- "equivalent to a delooping"; and a category equivalent to a delooping is
+ a category, is a one-object groupoid, so “essentially a group” means
+ “equivalent to a delooping”; and a category equivalent to a delooping is
  connected, since an equivalence is full and a delooping has an arrow
  between any two of its objects (there being one object and at least the
  identity arrow).

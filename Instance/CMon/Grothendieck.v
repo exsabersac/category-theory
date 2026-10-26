@@ -1,7 +1,7 @@
 (*
    * * The group completion (Grothendieck group) as a left adjoint
 
-   Riehl, "Category Theory in Context" (2nd ed.), §4.1 Example 4.1.10
+   Riehl, “Category Theory in Context” (2nd ed.), §4.1 Example 4.1.10
    (catalogue item [riehl:4.1:example10]) lists the group completion in
    two forms: as a left adjoint [CMonoid → Ab] to the functor forgetting
    inverses, and as a left adjoint [Monoid → Group].  This file delivers
@@ -39,11 +39,11 @@
    K(bool, ∨) is the one-element group, and [groth_bool_insert_collapses]
    that the insertion identifies [true] with [false] there.
 
-   AN EARLIER REVISION of this paragraph read: "The witness [k] is DATA —
+   AN EARLIER REVISION of this paragraph read: “The witness [k] is DATA —
    the library's [∃] is [sigT] and the relation is written as a [sigT]
    directly — so no choice principle is consumed anywhere below, and the
-   mediator never inspects a witness it did not receive."  The first clause
-   is no longer true.  Since the PR "algebraic carriers are sets"
+   mediator never inspects a witness it did not receive.”  The first clause
+   is no longer true.  Since the PR “algebraic carriers are sets”
    (2026-09-17) the completion is a [CMonObject] and so owes [cmon_prop],
    which forces its equality to be a [Prop]; [groth_rel] is therefore Coq's
    [ex] and the slack term is not data.  The rest of the sentence still
@@ -85,8 +85,8 @@
    construction rather than a reuse of this one.
 
    (1) CORRECTED.  An earlier revision of this header said stating the
-   second form would need "a forgetful [Grp ⟶ Mon] that does not
-   exist".  That was FALSE.  The bad evidence was a search for a
+   second form would need “a forgetful [Grp ⟶ Mon] that does not
+   exist”.  That was FALSE.  The bad evidence was a search for a
    category of ordinary set-level monoids that stopped at
    [Theory/Algebra/Monoid/Hom.v]'s [Mon] (INTERNAL monoids in a
    monoidal category) and [Construction/Deloop.v]'s [MonObject]
@@ -143,8 +143,8 @@
    insertion itself.
 
    Not strict.  Three refutations, each PINNED as a [Fail] probe in the
-   "Measured negatives" section below (stripped once and confirmed a
-   genuine "cannot unify"), each with a positive control:
+   “Measured negatives” section below (stripped once and confirmed a
+   genuine “cannot unify”), each with a positive control:
 
    - The COUNIT does not compute.  It is
    [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows]
@@ -189,7 +189,7 @@
    bounds).  A bound is not an identification, and these two do not
    identify anything.
    (RE-MEASURED by [About] under [Set Printing Universes] after the
-   PR "algebraic carriers are sets" (2026-09-17).  An earlier
+   PR “algebraic carriers are sets” (2026-09-17).  An earlier
    revision gave both arities as four, [@{u u0 u1 u2}], and listed
    the bounds as [u ≤ u1], [u ≤ u2], [u0 ≤ u1], [u0 ≤ u2].  The
    arities are three and five now and the bounds run the other way;
@@ -214,7 +214,7 @@
    over [Sets], and introduced nowhere here.
    (RE-MEASURED after the same PR.  An earlier revision gave
    [GrothendieckFunctor]'s arity as two and the strictness as
-   [u0 < u], "which is [Sets]' own"; it reads [Set < u] now, the
+   [u0 < u], “which is [Sets]' own”; it reads [Set < u] now, the
    bound [PropEquiv] brings in with [Prop]'s sort.  No equation
    appears in any of the four blocks, which is the claim.)
    - [Set] appears in exactly the two concrete witnesses one would
@@ -230,9 +230,9 @@
    declarations plus 17 [Program] obligations, the count taken from
    [Print Module] rather than from the [.glob], which lists only the 74.
 
-   RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17),
+   RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17),
    by generating one [Print Assumptions] per name from [Print Module]:
-   91 commands, 91 "Closed under the global context", zero [Axioms:]
+   91 commands, 91 “Closed under the global context”, zero [Axioms:]
    blocks.  The TOTAL is unchanged; only the split moved, an earlier
    revision giving it as 71 source declarations plus 20 obligations.
    The [.glob] now carries 44 [def] and 30 [prf] lines.
@@ -422,10 +422,10 @@ Definition GrothPair : Type := (MC * MC)%type.
 (*
  The relation, with the slack term [k] the header explains.
 
- AN EARLIER REVISION said "The library's [∃] is [sigT], so [k] is DATA and
- no choice principle is consumed."  The first clause is still true of the
+ AN EARLIER REVISION said “The library's [∃] is [sigT], so [k] is DATA and
+ no choice principle is consumed.”  The first clause is still true of the
  library's [∃] (Lib/Foundation.v); the relation below no longer uses
- it.  Since the PR "algebraic carriers are sets" (2026-09-17) the completion
+ it.  Since the PR “algebraic carriers are sets” (2026-09-17) the completion
  is a [CMonObject] and so owes [cmon_prop], which forces its equality to be
  a [Prop]; [k] is therefore existentially quantified with Coq's [ex] and is
  no longer data.  Still no choice principle is consumed -- an [ex] is not a
@@ -1009,7 +1009,7 @@ Qed.
 
    Three strict identifications the header claims are unavailable, pinned
    as [Fail] probes rather than merely asserted.  Each was stripped once
-   and confirmed to be a genuine "cannot unify", and each has a positive
+   and confirmed to be a genuine “cannot unify”, and each has a positive
    control above that must succeed: [groth_unit_is_insert] for the first,
    [groth_functor_obj_agrees] and [groth_map_computes] for the second,
    [groth_pair_is_difference] for the third.  The instrument check at the

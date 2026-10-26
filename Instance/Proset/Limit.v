@@ -51,11 +51,11 @@ Generalizable All Variables.
  CITATIONS ARE LOCATIONS ONLY.  The passages below are cited for where
  the statement is found, not paraphrased from a consulted copy; none of
  these sources was read while preparing this file, and no sentence here
- is offered as their wording. Mac Lane, "Categories for the Working
- Mathematician", 2nd ed., V.2; Awodey, "Category Theory", 2nd ed., 2.6
- and the example in 3.2; Riehl, "Category Theory in Context", 1.2, 3.1
- and 3.6; Fong and Spivak, "An Invitation to Applied Category Theory
- (Seven Sketches in Compositionality)", 3.5.1 and 6.2.
+ is offered as their wording. Mac Lane, “Categories for the Working
+ Mathematician”, 2nd ed., V.2; Awodey, “Category Theory”, 2nd ed., 2.6
+ and the example in 3.2; Riehl, “Category Theory in Context”, 1.2, 3.1
+ and 3.6; Fong and Spivak, “An Invitation to Applied Category Theory
+ (Seven Sketches in Compositionality)”, 3.5.1 and 6.2.
 
  WHAT CARRIES CONTENT, AND WHAT DEGENERATES.  [Proset P] is thin: its
  hom-setoid equivalence is the constant relation [True], by the
@@ -82,7 +82,7 @@ Generalizable All Variables.
  - the mediating arrow ([fork], the [unique_obj] of the [∃!]) — the
  greatest clause of [IsGLB].
 
- So "limit = greatest lower bound" is an identification of data, with
+ So “limit = greatest lower bound” is an identification of data, with
  the proof obligations on both sides degenerate. Following the same
  discipline, this file does not leave that observation unguarded:
  [nat_glb_not_4] refutes an [IsGLB] claim over a concrete preorder, and
@@ -139,9 +139,9 @@ Generalizable All Variables.
  [R] is kept explicit in the bound predicates: it does not occur in the
  types of [d] or [m], so an implicit binder would be unresolvable at
  the use sites. Families are indexed by an arbitrary [Type]; the
- library carries no subset machinery, so "every subset has an
- infimum" is modelled throughout as "every [Type]-indexed family has
- a greatest lower bound". 
+ library carries no subset machinery, so “every subset has an
+ infimum” is modelled throughout as “every [Type]-indexed family has
+ a greatest lower bound”. 
 
  --------
  [R] 在绑定谓词中保持显式：它不会出现在 [d] 或 [m] 的类型中，因此在使用位置上隐式绑定无法解析。族由任意 [Type] 索引；库中不包含子集机制，因此“每个子集都有下确界”在整个过程中被建模为“每个 [Type] 索引的族都有最大下界”。
@@ -327,7 +327,7 @@ Program Definition Proset_Cartesian
  structure. Recall from Structure/Cocartesian.v that [Cocartesian C]
  is notation for [@Cartesian (C^op)] — there is no separate class — so
  the fields below are read in the opposite category and the
- "projections" run [x ~> lub x y]. 
+ “projections” run [x ~> lub x y]. 
 
  --------
  同样，二元并的选择为 [Proset P] 配备了一个余笛卡尔结构。回忆 Structure/Cocartesian.v 中的内容，[Cocartesian C] 是 [@Cartesian (C^op)] 的符号表示——没有单独的类——因此下面的字段在对立范畴中读取，“投影”运行 [x ~> lub x y]。
@@ -647,7 +647,7 @@ Qed.
 
 (*
  The join half, PROVED rather than left to duality-by-remark: an earlier
- revision stated only the meet side under a "bicompleteness" heading; the
+ revision stated only the meet side under a “bicompleteness” heading; the
  verifier of that revision assembled this biconditional from the file's
  own pieces, and it is landed here so the heading is earned.  Note the
  conclusion is [Cocomplete (Proset P)] itself, not
@@ -791,8 +791,8 @@ End Complete_Invariance.
  [Morphism_equality] rather than the constant-[True] one. The general
  theorems above therefore do not apply to them directly.
 
- CORRECTION (#463): for [Props] the reason is narrower than "its own
- [Program Definition]" suggests. At Instance/Props/Modal.v's
+ CORRECTION (#463): for [Props] the reason is narrower than “its own
+ [Program Definition]” suggests. At Instance/Props/Modal.v's
  [impl_PreOrder] (the relation [Basics.impl] as a stdlib [PreOrder])
  the [obj], [hom], [id] and [compose] fields of [Props] and
  [Proset impl_PreOrder] agree by [eq_refl] and [homset] does not; the
@@ -810,7 +810,7 @@ End Complete_Invariance.
  What does apply, to EVERY category, is the identification read at the
  hom-inhabitation preorder [hom_le]: the chosen product of a cartesian
  structure is a greatest lower bound of its factors for the relation
- "there exists a morphism". Recording the two existing binary
+ “there exists a morphism”. Recording the two existing binary
  witnesses through that bridge is the honest sense in which they are
  instances of the general statement rather than freestanding facts —
  instances of the CHARACTERIZATION, not of the [Proset]

@@ -30,11 +30,11 @@ Require Import Coq.ZArith.ZArith.
 Generalizable All Variables.
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, §VI.2, "Modules", printed p. 142 (PDF
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, §VI.2, “Modules”, printed p. 142 (PDF
  p. 151) — maclane:VI.2:remark3; with §VI.3, printed
  pp. 142–143
- Book: Riehl, "Category Theory in Context", 2nd ed., Example
+ Book: Riehl, “Category Theory in Context”, 2nd ed., Example
  5.2.6(ii), printed p. 189 (PDF p. 209) — riehl:5.2:example6;
  Example 5.5.7(i), printed p. 205 (PDF p. 225) —
  riehl:5.5:example7; with her Example 4.1.10(xiii), printed
@@ -44,24 +44,24 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
  nLab: https://ncatlab.org/nlab/show/monadicity+theorem
 
- Mac Lane closes §VI.2 (from printed p. 141) with "several examples
+ Mac Lane closes §VI.2 (from printed p. 141) with “several examples
  which show that the T-algebras for familiar monads are the familiar
- algebras".  After the closure operators and the group actions comes
- the module: "If R is a (small) ring, then for each (small) abelian
+ algebras”.  After the closure operators and the group actions comes
+ the module: “If R is a (small) ring, then for each (small) abelian
  group A the definitions TA = R⊗A, A → R⊗A, R⊗(R⊗A) → R⊗A, a ↦ 1⊗a,
  r₁⊗(r₂⊗a) ↦ r₁r₂⊗a, for a ∈ A, r₁, r₂ ∈ R, define a monad on Ab.
  Much as in the previous case, the T-algebras are exactly the left
- R-modules."  The previous case is the group action of
+ R-modules.”  The previous case is the group action of
  Instance/Fun/Action/Monad.v, and this file follows its pattern.
  Riehl's Example 5.2.6(ii) takes the adjunction of her Example
- 4.1.10(xiii), whose forgetful functor U : _R Mod → Ab is "a special
- case of the previous example", restriction of scalars, along the ring
- map ℤ → R, and derives from it "a monad R ⊗_ℤ − on Ab".  An algebra's
- homomorphism R ⊗_ℤ A → A "encodes a ℤ-bilinear map (r, a) ↦ r·a", its
- two diagrams "ensure 1·a = a and r·(r′·a) = (rr′)·a", and so "an
- algebra for the monad R ⊗_ℤ − on Ab is precisely an R-module".  Her
- Example 5.5.7(i) concludes: "the forgetful functor U : _R Mod → Ab is
- monadic.  The induced monad on Ab is given by R ⊗_ℤ − : Ab → Ab."
+ 4.1.10(xiii), whose forgetful functor U : _R Mod → Ab is “a special
+ case of the previous example”, restriction of scalars, along the ring
+ map ℤ → R, and derives from it “a monad R ⊗_ℤ − on Ab”.  An algebra's
+ homomorphism R ⊗_ℤ A → A “encodes a ℤ-bilinear map (r, a) ↦ r·a”, its
+ two diagrams “ensure 1·a = a and r·(r′·a) = (rr′)·a”, and so “an
+ algebra for the monad R ⊗_ℤ − on Ab is precisely an R-module”.  Her
+ Example 5.5.7(i) concludes: “the forgetful functor U : _R Mod → Ab is
+ monadic.  The induced monad on Ab is given by R ⊗_ℤ − : Ab → Ab.”
  This file proves all of it, and the monadicity twice: by an explicit
  quasi-inverse, which is her own route in Example 5.5.7(i), and by
  Beck's theorem, her Theorem 5.5.1.
@@ -141,15 +141,15 @@ Generalizable All Variables.
  ([rmod_beck_carrier], [rmod_beck_act]), and it is ≈ to [EM_to_RMod] by
  [rig_mul_one_r] in the scalar slot ([rmod_beck_vs_direct]).
 
- WHICH "EXACTLY", WHICH "MONADIC".  Mac Lane's "the T-algebras are
- exactly the left R-modules" is read here as Riehl's equivalence.  Her
+ WHICH “EXACTLY”, WHICH “MONADIC”.  Mac Lane's “the T-algebras are
+ exactly the left R-modules” is read here as Riehl's equivalence.  Her
  Definition 5.3.1 calls an adjunction monadic when the canonical
- comparison functor "defines an equivalence of categories", which is
- Monad/Comparison.v's [Monadic]; the "if" half of her Theorem 5.5.1,
- "A right adjoint functor U : D → C is monadic if and only if it
- creates coequalizers of U-split pairs", is Beck.v's [beck_monadicity],
+ comparison functor “defines an equivalence of categories”, which is
+ Monad/Comparison.v's [Monadic]; the “if” half of her Theorem 5.5.1,
+ “A right adjoint functor U : D → C is monadic if and only if it
+ creates coequalizers of U-split pairs”, is Beck.v's [beck_monadicity],
  in that form.  Mac Lane (§VI.3, printed p. 143) says instead that G is
- monadic when the comparison functor "will be an isomorphism".  The
+ monadic when the comparison functor “will be an isomorphism”.  The
  [≅[Cat]] above is the tree's isomorphism in Cat, inverse up to natural
  isomorphism, hence an equivalence; the strict reading is not delivered
  (below).
@@ -200,7 +200,7 @@ Generalizable All Variables.
  [ZExt]'s universe instance from 8 to 24, so that the annotations,
  written for 8, no longer fit), every
  refusal of this file's part of the probe but N12d stands, each
- stripped copy stopping with "cannot unify" inside its command, and
+ stripped copy stopping with “cannot unify” inside its command, and
  every control holds.  There [Print Opaque Dependencies] on
  [RMod_comparison_equivalence], [RMod_beck_equivalence], the two
  [Monadic] witnesses, [TensorF], [EM_to_RMod] and Instance/Ab/Tensor.v's
@@ -273,7 +273,7 @@ Generalizable All Variables.
  The creation readbacks apply Corelib's [projT1], [projT2] and, in
  [rmod_created_iso], [snd] in their own statements.
 
- NOT DELIVERED.  Mac Lane's "exactly" as an isomorphism on the nose: the
+ NOT DELIVERED.  Mac Lane's “exactly” as an isomorphism on the nose: the
  whole-object round trips are refused at [eq_refl] (above).  No Kleisli
  category of R ⊗ (−) is identified.  Riehl's Corollary 5.6.10 (printed
  p. 212), that U creates every colimit that [Ab] has, is not in this
@@ -387,7 +387,7 @@ Example TensorMonad_join_Z@{o x} (a : Z) :
 
 (** ** Algebras are left modules / ** 代数是左模 *)
 
-(* An algebra (A, h) acts by r · m := h (r ⊗ m). Riehl's "ℤ-bilinear map (r, a) ↦ r·a" is h composed with the universal bilinear map. / 一个代数 (A, h) 通过 r · m := h (r ⊗ m) 作用。Riehl 的“ℤ-双线性映射 (r, a) ↦ r·a”是 h 与普遍双线性映射的复合。 *)
+(* An algebra (A, h) acts by r · m := h (r ⊗ m). Riehl's “ℤ-bilinear map (r, a) ↦ r·a” is h composed with the universal bilinear map. / 一个代数 (A, h) 通过 r · m := h (r ⊗ m) 作用。Riehl 的“ℤ-双线性映射 (r, a) ↦ r·a”是 h 与普遍双线性映射的复合。 *)
 Definition em_smul@{a c p o x} {R : RingObject@{a c p}}
   (X : @EilenbergMoore@{o o x c} Ab@{o c} (TensorF@{a c p o x} R)
          (TensorMonad@{a c p o x} R))

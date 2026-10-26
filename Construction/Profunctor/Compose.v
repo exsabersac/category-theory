@@ -60,8 +60,8 @@ Generalizable All Variables.
  The three functor laws of `prof_compose` are all discharged through the coend
  uniqueness principle `coend_med_eq`: two mediators that agree on every
  injection are equal. Their agreement is read off the mediator computation
- rule `coend_med_inj` together with the fact that the family of "change of
- `(c, e)`" maps `prof_theta` assembles into a natural transformation of
+ rule `coend_med_inj` together with the fact that the family of “change of
+ `(c, e)`” maps `prof_theta` assembles into a natural transformation of
  integrands, whence the dinaturality (cowedge) condition of the transported
  legs follows from the target coend's own cowedge law `coend_cowedge`.
 

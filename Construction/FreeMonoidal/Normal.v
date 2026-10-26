@@ -32,9 +32,9 @@ Generalizable All Variables.
    PROOF ROUTE, disclosed.  Mac Lane proves Theorem 1 by a rank induction on
    a graph of basic arrows (CWM §VII.2, pp. 166-168) — a confluence argument.
    We instead take the strictification / normalisation-by-evaluation route
-   (Beylin-Dybjer 1996, "Extracting a proof of coherence for monoidal
-   categories from a proof of normalization for monoids"; Schauenburg 2001,
-   "Turning monoidal categories into strict ones"): normalise every word to
+   (Beylin-Dybjer 1996, “Extracting a proof of coherence for monoidal
+   categories from a proof of normalization for monoids”; Schauenburg 2001,
+   “Turning monoidal categories into strict ones”): normalise every word to
    the right-normalised form and observe that the normaliser is canonically
    isomorphic to the identity.  The STATEMENT proved downstream is Mac
    Lane's; only the route differs.
@@ -105,7 +105,7 @@ Fixpoint J (m n : nat) (X : B) : (nf m I ⨂ nf n X) ≅ nf (m + n) X :=
   end.
 
 (*
- Mac Lane's "substitute b into all blanks" — (e0)_b = e, (-)_b = b,
+ Mac Lane's “substitute b into all blanks” — (e0)_b = e, (-)_b = b,
  (v □ w)_b = v_b ⨂ w_b.  Strict on the nose, by construction. 
 
  --------

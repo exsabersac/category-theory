@@ -30,11 +30,11 @@ Context `{@Terminal C}.
 
  Every cartesian category with a terminal object is a cartesian monoidal
  category: take the categorical product × for the tensor ⨂ and the terminal
- object 1 for the unit I. On nLab, "a monoidal category whose monoidal
+ object 1 for the unit I. On nLab, “a monoidal category whose monoidal
  structure is given by the category-theoretic product (and so whose unit is
- a terminal object)"; on Wikipedia, the case where "the monoidal ('tensor')
- product is the categorical product" with "the terminal object [as] the
- monoidal unit".
+ a terminal object)”; on Wikipedia, the case where “the monoidal ('tensor')
+ product is the categorical product” with “the terminal object [as] the
+ monoidal unit”.
 
  This file equips that data with the full tower of monoidal refinements,
  each derived from the universal property of products (so the coherence

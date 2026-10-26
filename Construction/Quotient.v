@@ -670,7 +670,7 @@ End QuotientUMP.
 
 (*
    * The projection is the identity on objects, on the nose — the honest
-   reading of "bijective on objects". 
+   reading of “bijective on objects”. 
 
    --------
    * 投影在对象上是恒等的，确切地说——这是“在对象上双射”的真实理解。
@@ -680,7 +680,7 @@ Lemma QuotientProj_obj {C : Category} (R : HomRelT C)
 Proof. reflexivity. Qed.
 
 (*
-   * The sharpest form of "equations merge and never add": the hom TYPE is
+   * The sharpest form of “equations merge and never add”: the hom TYPE is
    unchanged by the quotient. 
 
    --------
@@ -790,7 +790,7 @@ Definition Quotient_bifunctor {C : Category} {R : HomRelT C}
    relation through a tensor context, and no in-tree countermodel is
    exhibited.  That containment is stated here in prose rather than as
    code because this file cannot depend on the PROP layer.  The phrase
-   "smallest congruence" in both of those files reads in the TERM-ALGEBRA
+   “smallest congruence” in both of those files reads in the TERM-ALGEBRA
    sense — least among relations closed under [T_comp] AND [T_tens] — and
    [cc_least] does not establish it: [cc_least] supplies only the
    containment above, the direction that leaves [TermEqW] the larger

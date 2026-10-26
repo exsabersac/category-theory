@@ -20,13 +20,13 @@ Generalizable All Variables.
 (* * * θ* between #466's two power-set monads / * * θ* 在 #466 的两个幂集单子之间 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.2 Exercise 3, printed p. 142 (PDF
  p. 151) — maclane:VI.2:ex3; with Exercise 1(d) on the same page
  — maclane:VI.2:ex1
  nLab: https://ncatlab.org/nlab/show/suplattice
- nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
- monads")
+ nLab: https://ncatlab.org/nlab/show/monad (section “The 2-category of
+ monads”)
 
  WHAT THIS FILE DOES.  Instance/SupLat/Free.v (#466) has two power-set
  monads on Sets with the same functor data: Instance/Sets/Powerset/
@@ -35,10 +35,10 @@ Generalizable All Variables.
  [SL_adj], whose join is ⋃ ∘ P id and so agrees with ⋃ at ≈ only
  ([SL_induced_join_equiv]).  Free.v read an algebra of [SL_induced] as
  one of [Powerset_Monad] ([SL_induced_repack], proving the action law
- again) and says, under NOT DELIVERED, "No functor between the
+ again) and says, under NOT DELIVERED, “No functor between the
  Eilenberg–Moore categories of [SL_induced] and of [Powerset_Monad] is
  built: the tree has no morphisms of monads, and [SL_induced_repack] is
- the object part of one."  This file builds that functor as Mac Lane's
+ the object part of one.”  This file builds that functor as Mac Lane's
  θ*, from Monad/Morphism.v's record and Monad/Morphism/Algebra.v's
  construction.  Free.v is not changed.
 

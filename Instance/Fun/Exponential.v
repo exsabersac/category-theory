@@ -24,13 +24,13 @@ Generalizable All Variables.
 
 (*
  Book:      Awodey, Category Theory (1st ed., Carnegie Mellon
- pre-print, September 2005), §8.7 "Exponentials in
- categories of diagrams", display (8.5) and Proposition
+ pre-print, September 2005), §8.7 “Exponentials in
+ categories of diagrams”, display (8.5) and Proposition
  8.13, printed p. 208, and Theorem 8.14, printed p. 209
  ([awodey:8.7:def-presheaf-exponential], [awodey:8.7:prop13],
  [awodey:8.7:thm14]).  Verbatim, from the rendered pages:
 
- "If we had such an exponential Q^P, we could compute its
+ “If we had such an exponential Q^P, we could compute its
  value at any object C ∈ C by Yoneda:
 
  Q^P(C) ≅ Hom(yC, Q^P)
@@ -51,23 +51,23 @@ Generalizable All Variables.
 
  This is clearly a contravariant, set-valued functor on
  C.  Let us now check that it indeed gives an exponential
- of P and Q."
+ of P and Q.”
 
- "Proposition 8.13.  For any objects X, P, Q in Sets^{C^op},
+ “Proposition 8.13.  For any objects X, P, Q in Sets^{C^op},
  there is an isomorphism, natural in X,
 
- Hom(X, Q^P) ≅ Hom(X × P, Q)"
+ Hom(X, Q^P) ≅ Hom(X × P, Q)”
 
- "Theorem 8.14.  For any small category C, the category of
- diagrams Sets^{C^op} is cartesian closed."
+ “Theorem 8.14.  For any small category C, the category of
+ diagrams Sets^{C^op} is cartesian closed.”
 
  Book:      Riehl, Category Theory in Context, 2nd ed., §4.4,
  printed pp. 152-153 ([riehl:4.4:lem11]).  Verbatim:
 
- "Lemma 4.4.11.  For any small category C, the functor
- category Set^C is cartesian closed."
+ “Lemma 4.4.11.  For any small category C, the functor
+ category Set^C is cartesian closed.”
 
- "Proof.  Given functors F, G : C → Set our aim is to
+ “Proof.  Given functors F, G : C → Set our aim is to
  define a functor G^F : C → Set so that there is a
  natural bijection between sets of natural
  transformations
@@ -80,29 +80,29 @@ Generalizable All Variables.
  (4.4.13)   G^F(c) := {C(c, −) × F ⇒ G} ≅ {C(c, −) ⇒ G^F}
 
  so that the desired bijection can be given by the Yoneda
- lemma."
+ lemma.”
 
- "There is a formal reason why the natural bijection
+ “There is a formal reason why the natural bijection
  (4.4.12) follows from the special case (4.4.13) (see
  Exercise 6.5.iii) but this bijection can also be
  demonstrated directly by providing formulas for adjoint
- transposition."
+ transposition.”
 
- "Given α : H × F ⇒ G, its transpose is the natural
+ “Given α : H × F ⇒ G, its transpose is the natural
  transformation β : H ⇒ G^F defined for c ∈ C and x ∈
  Hc by declaring β_c(x) : C(c, −) × F ⇒ G to be the
  natural transformation whose component at d ∈ D is the
  function that takes f : c → d and z ∈ Fd to the element
  α_d((H f)x, z).  These operations can be seen to be
- natural in all of the variables mentioned and inverses."
+ natural in all of the variables mentioned and inverses.”
 
  Book:      Riehl, ibid., §6.5 Exercise 6.5.iii, printed p. 248
  ([riehl:6.5:exiii]).  Verbatim:
 
- "Exercise 6.5.iii.  Use Theorem 6.5.7 to give a second
+ “Exercise 6.5.iii.  Use Theorem 6.5.7 to give a second
  proof of Lemma 4.4.11, showing that the desired natural
  isomorphism follows from the definition of the internal
- hom."
+ hom.”
 
  nLab:      https://ncatlab.org/nlab/show/exponential+object
  nLab:      closed+monoidal+structure+on+presheaves (same site), which
@@ -116,7 +116,7 @@ Generalizable All Variables.
  (@Functor_Category_Cartesian (C^op) Sets Sets_Cartesian)
 
  for an ARBITRARY category C -- at the universe levels measured below,
- which is where Awodey's word "small" lands -- together with
+ which is where Awodey's word “small” lands -- together with
  [presheaf_exp_iso], Proposition 8.13 as an isomorphism of hom-setoids
  in [Sets], and [to_exp_natural_X] / [from_exp_natural_X], its
  naturality in X in both directions.  The exponential object is the
@@ -146,7 +146,7 @@ Generalizable All Variables.
  The DIRECT route: Riehl's explicit formulas for adjoint transposition,
  quoted above.  Nothing below requires Category.Functor.Hom.Yoneda or
  Category.Functor.Hom.Yoneda.Natural, and the Yoneda step of Riehl's
- proof -- her "the desired bijection can be given by the Yoneda lemma"
+ proof -- her “the desired bijection can be given by the Yoneda lemma”
  -- is discharged in [to_from_exp] by the OUTER transformation's own
  [naturality] field plus one identity law.
 
@@ -193,7 +193,7 @@ Generalizable All Variables.
 
  (1) The OBJECT universe is FREE of the hom universe -- bounded above
  by it, never identified.  That bound (C's objects at or below the
- carrier universe of [Sets]) IS Awodey's "for any small category C",
+ carrier universe of [Sets]) IS Awodey's “for any small category C”,
  and it is NEW relative to the presheaf category itself, which carries
  only the hom identification.  Its mechanism is
  Theory/Natural/Transformation.v's [Transform], whose result type is
@@ -356,15 +356,15 @@ Generalizable All Variables.
  what the contravariance in the object argument -- the place where the
  objectwise formula gives the wrong object -- deserves.
 
- THE ISSUE'S "CURRENT STATE" IS STALE ON THREE COUNTS, all re-measured.
+ THE ISSUE'S “CURRENT STATE” IS STALE ON THREE COUNTS, all re-measured.
  [ls Instance/Fun/] was nine [.v] files before this one, not
  [Cartesian.v] alone; there IS a [@Terminal (@Fun _ _)] instance,
  #339's [Functor_Category_Terminal], which is consumed here; and its
  list of ten [Closed] instances omits Instance/Theory/Lindenbaum.v's
  [Lind_Closed], whose type wraps onto a second line and so escapes a
  one-line sweep, while counting Instance/Comp.v's [Algs_Closed], which
- sits inside a block comment; and its "[exponent_obj :=] occurs at 11
- sites" is fifteen lines, twelve of them live.  A sharper claim
+ sits inside a block comment; and its “[exponent_obj :=] occurs at 11
+ sites” is fifteen lines, twelve of them live.  A sharper claim
  survives in each case, and each is stated above.  Four of its cited
  donor line numbers have also drifted (Instance/Fun.v's two,
  Functor/Hom/Yoneda.v's and Theory/Sheaf.v's).
@@ -381,7 +381,7 @@ Generalizable All Variables.
 
  * No naturality in P or in Q.  [PshExp] is not exhibited as a
  bifunctor [([C^op, Sets])^op ∏ [C^op, Sets] ⟶ [C^op, Sets]], so
- Awodey's "natural in X" is the only naturality proved.
+ Awodey's “natural in X” is the only naturality proved.
 
  * No Lemma 8.12 and no density proof.  Riehl's Exercise 6.5.iii is
  cited above and no artifact answers it.
@@ -414,7 +414,7 @@ Generalizable All Variables.
  --------
  书籍：Awodey，《范畴论》（第一版，卡耐基梅隆预印本，2005年9月），第8.7节“图范畴中的指数对象”，显示 (8.5) 和命题 8.13，印刷页 208，以及定理 8.14，印刷页 209（[awodey:8.7:def-presheaf-exponential], [awodey:8.7:prop13], [awodey:8.7:thm14]）。逐字从渲染页面：
 
- "如果我们有这样的指数对象 Q^P，我们可以通过 Yoneda 引理计算它在任意对象 C ∈ C 上的值：
+ “如果我们有这样的指数对象 Q^P，我们可以通过 Yoneda 引理计算它在任意对象 C ∈ C 上的值：
 
  Q^P(C) ≅ Hom(yC, Q^P)
 
@@ -424,7 +424,7 @@ Generalizable All Variables.
 
  但是后者的集合确实存在。因此，我们可以直接定义：
 
- Q^P(C) = Hom(yC × P, Q)                      (8.5)"作用在 h 上的映射为：C' → C，具体为：
+ Q^P(C) = Hom(yC × P, Q)                      (8.5)”作用在 h 上的映射为：C' → C，具体为：
 
  Q^P(h) = Hom(yh × 1_P, Q)
 
@@ -451,7 +451,7 @@ Generalizable All Variables.
  给定 α : H × F ⇒ G，其转置是自然变换 β : H ⇒ G^F，对于 c ∈ C 和 x ∈ Hc，定义 β_c(x) : C(c, −) × F ⇒ G 为自然变换，其在 d ∈ D 处的分量是函数，该函数将 f : c → d 和 z ∈ Fd 映射到元素 α_d((H f)x, z)。这些操作在所提到的所有变量中都是自然的，并且彼此互为逆。书籍：Riehl，同上，第6.5节，练习6.5.iii，第248页打印版
  ([riehl:6.5:exiii])。原文：
 
- "练习6.5.iii。使用定理6.5.7给引理4.4.11提供第二种证明，表明所需的自然同构来自内部Hom的定义。"
+ “练习6.5.iii。使用定理6.5.7给引理4.4.11提供第二种证明，表明所需的自然同构来自内部Hom的定义。”
 
  nLab: https://ncatlab.org/nlab/show/exponential+object
  nLab: presheaves上的闭单结构（相同站点），其确切陈述为[X,Y] (c) = Hom(y(c) × X, Y)
@@ -720,8 +720,8 @@ Next Obligation. exact (from_to_exp x x0 (c, c0)). Qed.
 End Transpose.
 
 (*
-   * ** C: naturality in X -- Awodey's "And these isos are clearly
-   natural in X" 
+   * ** C: naturality in X -- Awodey's “And these isos are clearly
+   natural in X” 
 
    --------
    * ** C：X中的自然性——Awodey 的“而这些同构在X中显然是自然的”

@@ -34,25 +34,25 @@ Open Scope category_scope.
  ([maclane:IV.10:remark1]).  Verbatim, from the rendered
  page:
 
- "The category Sets of all (small) sets is a topos and so
+ “The category Sets of all (small) sets is a topos and so
  is the category Sets^{C^op} of all set-valued
  contravariant functors on a small category C.  Such a
- functor F : C^op → Sets is also called a presheaf."
+ functor F : C^op → Sets is also called a presheaf.”
 
  Book:      Awodey, Category Theory (1st ed., Carnegie Mellon
- pre-print, September 2005), §8.8 "Topoi", Definition 8.16
+ pre-print, September 2005), §8.8 “Topoi”, Definition 8.16
  and Proposition 8.17, printed pp. 210-211 (PDF pp.
  219-220) ([awodey:8.8:prop17]).  Verbatim:
 
- "Definition 8.16.  A topos is a category E such that:
+ “Definition 8.16.  A topos is a category E such that:
  1. E has all finite limits,
  2. E has a subobject classifier,
- 3. E has all exponentials."
+ 3. E has all exponentials.”
 
- "Proposition 8.17.  For any small category C, the
- category of diagrams Sets^{C^op} is a topos."
+ “Proposition 8.17.  For any small category C, the
+ category of diagrams Sets^{C^op} is a topos.”
 
- "Proof.  Since we already know that Sets^{C^op} has all
+ “Proof.  Since we already know that Sets^{C^op} has all
  limits, and we know that it has exponentials by the
  foregoing section, we just need to find a subobject
  classifier.  To that end, for any category C we define
@@ -60,36 +60,36 @@ Open Scope category_scope.
  f : · → C (with arbitrary domain) that is closed under
  precomposition, i.e. if f : D → C is in S then so is
  f ∘ g : E → D → C for every g : E → D (think of a
- sieve as a generalization of a "lower set" in a
- poset)."
+ sieve as a generalization of a ”lower set“ in a
+ poset).”
 
  Book:      Fong & Spivak, Seven Sketches in Compositionality, §7.3,
  printed pp. 231-232 (PDF pp. 243-244)
  ([7sketches:7.3:remark-presheaf-topos]).  Verbatim:
 
- "In general, we can think of any small category C as a
+ “In general, we can think of any small category C as a
  site; the corresponding topos is the category of
  functors C^op → Set.^5  Such functors are called
- presheaves on C."
+ presheaves on C.”
 
- "Did you notice that we just introduced a huge class of
+ “Did you notice that we just introduced a huge class of
  toposes?  For any category C, we said there is a topos
- of presheaves on it."
+ of presheaves on it.”
 
- and, from the closing paragraph of the §7.2 "Review" on
+ and, from the closing paragraph of the §7.2 “Review” on
  the facing page (printed p. 231), which is where this
  sentence actually sits:
 
- "Such toposes are called presheaf toposes and are
+ “Such toposes are called presheaf toposes and are
  fundamental, but we will focus on sheaf toposes,
  because our topos of behavior types will be a sheaf
- topos."
+ topos.”
 
  and its footnote 5, which is this issue's appended
  checkbox, verbatim:
 
- "5 The category of functors C → Set is also a topos: use
- C^op as the defining site."
+ “5 The category of functors C → Set is also a topos: use
+ C^op as the defining site.”
 
  nLab:      https://ncatlab.org/nlab/show/presheaf+topos
  nLab:      https://ncatlab.org/nlab/show/topos
@@ -98,7 +98,7 @@ Open Scope category_scope.
  WHAT IS DELIVERED.  [Presheaf_Topos C UT], an inhabitant of
  Structure/Topos.v's [ElementaryTopos ([C^op, Sets])] for an ARBITRARY
  category C -- at the universe levels measured below, which is where
- Awodey's word "small" lands -- CONDITIONAL on one hypothesis, #402's
+ Awodey's word “small” lands -- CONDITIONAL on one hypothesis, #402's
  [Untruncate], which is the classifier field's and nothing else's.
  [Presheaf_Topos_IEM] is the same bundle under informative excluded
  middle.  Seven Sketches' footnote 5 is [Copresheaf_Topos], an
@@ -123,13 +123,13 @@ Open Scope category_scope.
  terminal index IS the [topos_terminal] written here.  All five read
  back at [eq_refl] in section (B).
 
- THE ISSUE'S REVIEWER CHECK -- "the presheaf exponential is proved,
- not postulated" -- is met twice over: [psh_topos_exponent] records at
+ THE ISSUE'S REVIEWER CHECK -- “the presheaf exponential is proved,
+ not postulated” -- is met twice over: [psh_topos_exponent] records at
  [eq_refl] that the bundle's [exponent_obj] IS Awodey's display-(8.5)
- presheaf [PshExp], and [Print Assumptions] reports "Closed under the
- global context" for [Functor_Category_Closed] itself.  Its second
- check -- "the FinSet topos is not silently offered as the witness for
- either of Mac Lane's two claims" -- is met by construction:
+ presheaf [PshExp], and [Print Assumptions] reports “Closed under the
+ global context” for [Functor_Category_Closed] itself.  Its second
+ check -- “the FinSet topos is not silently offered as the witness for
+ either of Mac Lane's two claims” -- is met by construction:
  Instance/FinSet/Topos.v is neither required by this file nor cited as
  a witness for anything here, and the [Instance/Sets/Topos.v] sibling
  says the same on its own side.
@@ -176,8 +176,8 @@ Open Scope category_scope.
  is inherited from the donors, not introduced here.
 
  (3) C's OBJECT universe is BOUNDED above by its hom universe
- ([o <= h]), never identified.  That bound IS Awodey's "for any small
- category C", and it has EXACTLY TWO DONORS, EACH SUFFICIENT ALONE:
+ ([o <= h]), never identified.  That bound IS Awodey's “for any small
+ category C”, and it has EXACTLY TWO DONORS, EACH SUFFICIENT ALONE:
  [Functor_Category_Closed] and [Fun_Classifier].  Measured in a
  section declaring C's objects STRICTLY ABOVE its homs: the terminal,
  cartesian and pullback donors are all ACCEPTED there, and the
@@ -275,12 +275,12 @@ Open Scope category_scope.
  [Fun_Classifier_small] are all accepted -- and the exponential does
  not:
 
- The term "Functor_Category_Closed Cs" has type
- "@Closed ([Cs^op, Sets])
- (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)"
+ The term “Functor_Category_Closed Cs” has type
+ “@Closed ([Cs^op, Sets])
+ (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)”
  while it is expected to have type
- "@Closed (PShSmall Cs)
- (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)"
+ “@Closed (PShSmall Cs)
+ (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)”
  (universe inconsistency: Cannot enforce o = small1.97 because
  o < so <= small1.96 <= small1.97).
 
@@ -305,12 +305,12 @@ Open Scope category_scope.
  verdict is neither of its two branches.
 
  WHICH CLAUSE IS CONDITIONAL: exactly one, the classifier -- Mac
- Lane's Axiom 8 "Truth" of §App.1 and his §IV.9 construction 1.  The
+ Lane's Axiom 8 “Truth” of §App.1 and his §IV.9 construction 1.  The
  terminal object, the pointwise products, the pointwise pullbacks
  and the exponentials are UNCONDITIONAL at [C^op, Sets]: all four
  donors are argument-free apart from C, and each is Closed under the
- global context.  So "presheaf categories are cartesian closed with
- finite limits" is unconditional in this tree; only the topos is
+ global context.  So “presheaf categories are cartesian closed with
+ finite limits” is unconditional in this tree; only the topos is
  conditional.
 
  WHAT THE HYPOTHESIS IS, verbatim from
@@ -331,8 +331,8 @@ Open Scope category_scope.
  so a sieve's membership predicate has to be truncated into [Prop]
  to sit at the carrier's own level, and inverting that truncation is
  exactly what [Untruncate] is.  The naive elimination
- [fun P h => h P (fun p => p)] is refused with "Cannot enforce
- o <= Prop"; that refusal is already
+ [fun P h => h P (fun p => p)] is refused with “Cannot enforce
+ o <= Prop”; that refusal is already
  Test/ProbeClassifier402.v and is CITED, not duplicated here.
 
  NO IMPOSSIBILITY IS PROVED, and there is NO IN-TREE INHABITANT of
@@ -377,11 +377,11 @@ Open Scope category_scope.
  concerns the OBJECTWISE formula, not the display-(8.5) one.  The two
  do not collide, and this file changes nothing there.
 
- PRIOR ART, AND THE ISSUE'S "CURRENT STATE", EACH RE-MEASURED WITH ITS
+ PRIOR ART, AND THE ISSUE'S “CURRENT STATE”, EACH RE-MEASURED WITH ITS
  CRITERION AT THE BASE COMMIT.
 
- TRUE STILL AT THE BASE COMMIT: "the only [ElementaryTopos]
- inhabitant anywhere is Instance/FinSet/Topos.v".  CRITERION, and
+ TRUE STILL AT THE BASE COMMIT: “the only [ElementaryTopos]
+ inhabitant anywhere is Instance/FinSet/Topos.v”.  CRITERION, and
  it must be stated so that it produces the numbers beside it:
  declaration heads whose type MENTIONS [ElementaryTopos] after a
  colon -- so it also catches the two that take one as a HYPOTHESIS
@@ -393,27 +393,27 @@ Open Scope category_scope.
  base commit returns three heads, two of them Structure/Topos.v's
  [Pow] and its [relations_iso] taking one as a hypothesis, leaving
  [FinSet_Topos] as the sole INHABITANT; the shipped tree returns ten,
- the seven new bundles included.  ALSO TRUE: "[ElementaryTopos]
+ the seven new bundles included.  ALSO TRUE: “[ElementaryTopos]
  carries pullbacks explicitly ... the assembly must supply pullbacks
- directly" -- Structure/Topos.v does, and this file supplies
+ directly” -- Structure/Topos.v does, and this file supplies
  them.
 
- STALE, in six places.  "For presheaves ... no terminal object, no
- exponentials, no pullbacks, no classifier" -- all four now exist,
+ STALE, in six places.  “For presheaves ... no terminal object, no
+ exponentials, no pullbacks, no classifier” -- all four now exist,
  at Instance/Fun/Terminal.v, Instance/Fun/Exponential.v,
  Instance/Fun/Pullback.v and Instance/Fun/Classifier.v, and
- all four are consumed here.  "Instance/Fun/Cartesian.v is the
- only structural instance on any functor category" -- it is not.
- "[ls Instance/Fun/] contains Cartesian.v and nothing else" --
- [ls Instance/Fun/*.v | wc -l] returns 10 before this file.  "sieve
- occurs only twice in the tree, both prose" -- [rg -li 'sieve'
+ all four are consumed here.  “Instance/Fun/Cartesian.v is the
+ only structural instance on any functor category” -- it is not.
+ “[ls Instance/Fun/] contains Cartesian.v and nothing else” --
+ [ls Instance/Fun/*.v | wc -l] returns 10 before this file.  “sieve
+ occurs only twice in the tree, both prose” -- [rg -li 'sieve'
  -g '*.v'] returns 6 files, one of which, Theory/Sieve.v, is a
- 258-line module DECLARING the notion.  "no [HasPullbacks] for a
+ 258-line module DECLARING the notion.  “no [HasPullbacks] for a
  functor category (the only instance in the tree is
- Instance/FinSet/Classifier.v)" -- [Fun_HasPullbacks] is
- Instance/Fun/Pullback.v.  And the Awodey section's "the
+ Instance/FinSet/Classifier.v)” -- [Fun_HasPullbacks] is
+ Instance/Fun/Pullback.v.  And the Awodey section's “the
  classifier by #403, and the cartesian-closure component by the
- Awodey §8.7 issue" -- both have landed, and are what this file
+ Awodey §8.7 issue” -- both have landed, and are what this file
  assembles.
 
  A FIRST, MEASURED BY THREE SWEEPS RATHER THAN BY NAME.  Through
@@ -490,7 +490,7 @@ Open Scope category_scope.
 
  这样的拓扑称为前层拓扑，它们非常基础，但我们将关注于层拓扑，因为我们的行为类型拓扑将是一个层拓扑。以及其脚注5，即本期附加的复选框，逐字如下：
 
- "5 从 C 到 Set 的函子类别也是一个拓扑：使用 C^op 作为定义站点。"
+ “5 从 C 到 Set 的函子类别也是一个拓扑：使用 C^op 作为定义站点。”
 
  nLab: https://ncatlab.org/nlab/show/presheaf+topos
  nLab: https://ncatlab.org/nlab/show/topos
@@ -529,11 +529,11 @@ Open Scope category_scope.
  Ω 是 [Sieve_Presheaf C]；[truth] 是 [sieve_truth C]；[Pow] 是 [PshExp P (Sieve_Presheaf C)]（一个预层的幂对象是它对 Ω 的指数，等于 Structure/Topos.v 的 [Pow] 展开）；
  [topos_terminal] 是 Instance/Fun/Exponential.v 的 [presheaf_terminal]；
  所选择的拉回是 [Fun_Pullback Sets_HasPullbacks]；协变丛的闭合和分类字段是树本身的 [Functor_Category_Closed_cov] 和 [Fun_Classifier_cov]，所以协变回读不是平行构造；三个完整丛回读，其含义严格强于那两个字段——协变和逆变体丛在相对范畴中是相同的术语，在两个方向上，与它们配对的 [IEM]；以及第 (C) 节的三个位 Awodey 显示器。一个拼写注意事项，因为它导致了拒绝。两个回读需要写出它们的类型，否则 elaborator 在一个 evar 上会停滞。回拉回读需要类别 ( [a : F ~{[C^op, Sets] }~> H ]); 使用一个裸 [F ~> H]，elaborator 报告 F 的类型为 [C^op ⟶ Sets]，而期望的是一个 [obj[?Category] ]。并且，第 (C) 节的限制性回读需要箭头 ASCRIBED 到 [C^op] ( [(h : c ~{C^op}~> d)] )；如果改为通过 [morphism] 强制转换写作 [morphism (fmap[Sieve_Presheaf C] h) S]，强制转换会被保留为一个 evar [?s]，而 [eq_refl] 无法关闭。拒绝的拼写和被接受的拼写都固定在探针中，被接受的作为区分控制。小的读数被阻塞，并且在封闭域处——而不是在分类器处。Instance/Fun/Classifier.v 的 [Section Small] 将 presheaf 范畴的同构宇宙提升到其对象宇宙之上，给出 [PShSmall Cs : Category@{OO HH HH}]，并在该读数处有 [Fun_Classifier_small]，这就是使 [classifier_classifies] 在那里应用的原因（[fun_classifier_classifies]）。五个 topoi 域中的四个适合 [PShSmall Cs]——[PShSmall_Terminal]，即逐点笛卡尔结构，[Fun_HasPullbacks Sets_HasPullbacks] 和 [Fun_Classifier_small] 全部被接受——而指数则不被接受。术语 “Functor_Category_Closed Cs”的类型是
- "@Closed ( [Cs^op, Sets] )
- (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)"
+ “@Closed ( [Cs^op, Sets] )
+ (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)”
  而预期的类型是
- "@Closed (PShSmall Cs)
- (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)"
+ “@Closed (PShSmall Cs)
+ (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)”
  （宇宙不一致：无法强制 o = small1.97 因为
  o < so <= small1.96 <= small1.97）。阻塞位于 [presheaf_exp_iso]，它是在 [Sets@{o so}] 中同态集合的同构：在提升后的读法中，这些同态集合是更大 [Sets] 的对象，所以指数的范畴指标——与函子范畴本身不同，其同态宇宙可以自由上升——是不变的。结果：不存在 [Presheaf_Topos_small]，因此在此处不存在 [classifier_classifies] 适用的拓扑。替代它的是 [fun_classifier_classifies]，已经存在于 [Fun_Classifier_small] 和 [Fun_HasPullbacks Sets_HasPullbacks] 的树上而没有拓扑簇；它被引用而不是重新导出。没有声明任何事情是不可能的：只是说明天真的提升和天真的重建都被拒绝，出现如上错误。是否由 [Setoid_Lift] 介导的在提升的 [Sets] 上的指数会起作用尚未测量，修复它的工作将是在 Instance/Fun/Exponential.v 中进行，而不是在 topos 文件中进行。
 
@@ -550,7 +550,7 @@ Open Scope category_scope.
 
  与 Instance/Fun/Closed.v 没有冲突。该文件的 [fun_not_cartesian_closed] 反驳了 [[Omega, FinSet] 的笛卡尔闭性 —— 一个以 FinSet 为值的函子范畴，而不是 [Sets] 值的预层范畴 —— 且其 Awodey 反例涉及的是按对象的公式，而不是显示的 (8.5) 公式。这两者不冲突，该文件在这里没有任何改变。
 
- 先前工作，以及该问题的“当前状态”，都用其在基础提交中的标准重新衡量。在基础提交中仍然为 TRUE：“唯一的 [ElementaryTopos] 居民在任何地方都是 Instance/FinSet/Topos.v”。标准，并且必须以这样的方式陈述，以便它在旁边产生数字：声明头的类型在冒号之后提到 [ElementaryTopos] —— 所以它也会捕获那些把它作为假设的两个 —— 去掉注释后跨行扫描，因为类型换行的头对行锚定模式是不可见的：[rg -n ':\s*ElementaryTopos' -g '*.v'] 正是这样的模式，并且漏掉了 Instance/Sets/Topos.v 的所有三个组合包，其 [:] 和类名位于不同行。在声学标准下，基础提交返回三个头，其中两个是 Structure/Topos.v 的 [Pow] 及其 [relations_iso]，将其中一个作为假设，剩下 [FinSet_Topos] 作为唯一的 INHABITANT；提供的树返回十个，包括七个新捆绑包。同样正确的是："[ElementaryTopos] 明确处理拉回……组件必须直接提供拉回"——Structure/Topos.v 做到了，而这个文件也提供了它们。陈旧，在六个地方。“对于预层...没有终端对象，没有指数，没有拉回，没有分类器”——现在这四个都存在于 Instance/Fun/Terminal.v、Instance/Fun/Exponential.v、Instance/Fun/Pullback.v 和 Instance/Fun/Classifier.v，并且这四个在这里都被使用。“Instance/Fun/Cartesian.v 是任何函子范畴上唯一的结构实例”——事实并非如此。“[ls Instance/Fun/] 包含 Cartesian.v，别无他物”——[ls Instance/Fun/*.v | wc -l] 在此文件之前返回 10。“筛子在树中只出现两次，均为文字描述”——[rg -li 'sieve' -g '*.v'] 返回 6 个文件，其中一个 Theory/Sieve.v 是一个 258 行的模块，用于声明该概念。“对于函子范畴没有 [HasPullbacks]（树中唯一的实例是 Instance/FinSet/Classifier.v）”——[Fun_HasPullbacks] 是 Instance/Fun/Pullback.v。Awodey 部分的“由 #403 提出的分类器，以及 Awodey §8.7 问题中的笛卡尔闭包分量”——两者都已完成，并且就是这个文件所汇编的内容。第一个，不是按名称，而是通过三次扫描来衡量。通过 Structure/Topos/Colimits.v，这个集合产生一个初始对象、一个二元余积、余等化子、推出和等化子用于 [C^op, Sets]，并且在这棵树中的任何函子范畴中，每一个都会是其类的第一个成员。标准，全部三项在基础提交上运行：（i）对 [Fun_Initial]、[Fun_Cocartesian]、[Fun_HasCoequalizers]、[Fun_HasPushouts]、[Fun_HasEqualizers]、[Functor_Category_Initial] 和 [Functor_Category_Cocartesian] 进行名称扫描，返回为空；（ii）对 [Initial]、[Cocartesian]、[HasCoequalizers]、[HasPushouts]、[HasEqualizers] 应用于带括号的函子类别进行形状扫描，返回为空，其中 [@Cartesian ([] 返回五行 CODE 作为工具（第六个命中是散文）；（iii）树状结构中那五个类的每个声明头都已被读取，没有一个是在函子类别中。这五个在探针中展示，而不是在这里展示，因为要求 Structure/Topos/{Monadic,Colimits}.v 会将此文件的闭包从 108 增至 133。它们对 [Untruncate] 具有条件性，就像捆绑包一样，并且没有提供自己的构造。未交付的内容 -- 读取此内容作为文件的范围。
+ 先前工作，以及该问题的“当前状态”，都用其在基础提交中的标准重新衡量。在基础提交中仍然为 TRUE：“唯一的 [ElementaryTopos] 居民在任何地方都是 Instance/FinSet/Topos.v”。标准，并且必须以这样的方式陈述，以便它在旁边产生数字：声明头的类型在冒号之后提到 [ElementaryTopos] —— 所以它也会捕获那些把它作为假设的两个 —— 去掉注释后跨行扫描，因为类型换行的头对行锚定模式是不可见的：[rg -n ':\s*ElementaryTopos' -g '*.v'] 正是这样的模式，并且漏掉了 Instance/Sets/Topos.v 的所有三个组合包，其 [:] 和类名位于不同行。在声学标准下，基础提交返回三个头，其中两个是 Structure/Topos.v 的 [Pow] 及其 [relations_iso]，将其中一个作为假设，剩下 [FinSet_Topos] 作为唯一的 INHABITANT；提供的树返回十个，包括七个新捆绑包。同样正确的是：“[ElementaryTopos] 明确处理拉回……组件必须直接提供拉回”——Structure/Topos.v 做到了，而这个文件也提供了它们。陈旧，在六个地方。“对于预层...没有终端对象，没有指数，没有拉回，没有分类器”——现在这四个都存在于 Instance/Fun/Terminal.v、Instance/Fun/Exponential.v、Instance/Fun/Pullback.v 和 Instance/Fun/Classifier.v，并且这四个在这里都被使用。“Instance/Fun/Cartesian.v 是任何函子范畴上唯一的结构实例”——事实并非如此。“[ls Instance/Fun/] 包含 Cartesian.v，别无他物”——[ls Instance/Fun/*.v | wc -l] 在此文件之前返回 10。“筛子在树中只出现两次，均为文字描述”——[rg -li 'sieve' -g '*.v'] 返回 6 个文件，其中一个 Theory/Sieve.v 是一个 258 行的模块，用于声明该概念。“对于函子范畴没有 [HasPullbacks]（树中唯一的实例是 Instance/FinSet/Classifier.v）”——[Fun_HasPullbacks] 是 Instance/Fun/Pullback.v。Awodey 部分的“由 #403 提出的分类器，以及 Awodey §8.7 问题中的笛卡尔闭包分量”——两者都已完成，并且就是这个文件所汇编的内容。第一个，不是按名称，而是通过三次扫描来衡量。通过 Structure/Topos/Colimits.v，这个集合产生一个初始对象、一个二元余积、余等化子、推出和等化子用于 [C^op, Sets]，并且在这棵树中的任何函子范畴中，每一个都会是其类的第一个成员。标准，全部三项在基础提交上运行：（i）对 [Fun_Initial]、[Fun_Cocartesian]、[Fun_HasCoequalizers]、[Fun_HasPushouts]、[Fun_HasEqualizers]、[Functor_Category_Initial] 和 [Functor_Category_Cocartesian] 进行名称扫描，返回为空；（ii）对 [Initial]、[Cocartesian]、[HasCoequalizers]、[HasPushouts]、[HasEqualizers] 应用于带括号的函子类别进行形状扫描，返回为空，其中 [@Cartesian ([] 返回五行 CODE 作为工具（第六个命中是散文）；（iii）树状结构中那五个类的每个声明头都已被读取，没有一个是在函子类别中。这五个在探针中展示，而不是在这里展示，因为要求 Structure/Topos/{Monadic,Colimits}.v 会将此文件的闭包从 108 增至 133。它们对 [Untruncate] 具有条件性，就像捆绑包一样，并且没有提供自己的构造。未交付的内容 -- 读取此内容作为文件的范围。
 
  * 没有无条件的预层拓扑，也没有不可能性定理（见上面的障碍）。[Untruncate] 没有无公理的树内居民。
 
@@ -594,8 +594,8 @@ Definition Presheaf_Topos_IEM@{o h so} (C : Category@{o h h})
   Presheaf_Topos@{o h so} C (untruncate_of_IEM Em).
 
 (*
- Seven Sketches §7.3 footnote 5: "The category of functors C → Set is
- also a topos: use C^op as the defining site." 
+ Seven Sketches §7.3 footnote 5: “The category of functors C → Set is
+ also a topos: use C^op as the defining site.” 
 
  --------
  七个素描 §7.3 脚注 5：“函子 C → Set 的范畴也是一个拓扑：使用 C^op 作为定义站点。”
@@ -721,7 +721,7 @@ Example copsh_iem_is_psh_iem_at_op (C : Category) (Em : IEM) :
 
 (** ** (C) Awodey's three displays / **（C）Awodey 的三个展示 *)
 
-(* "t : 1 → Ω, namely, at each C, the 'total sieve': t_C = {f : · → C}." / t : 1 → Ω，即，在每个 C 处，“全筛”：t_C = {f : · → C}。 *)
+(* “t : 1 → Ω, namely, at each C, the 'total sieve': t_C = {f : · → C}.” / t : 1 → Ω，即，在每个 C 处，“全筛”：t_C = {f : · → C}。 *)
 Example psh_truth_is_total_sieve (c : C)
   (u : carrier (fobj[@terminal_obj ([C^op, Sets])
                        (@topos_terminal _ (Presheaf_Topos C UT))] c)) :
@@ -730,13 +730,13 @@ Example psh_truth_is_total_sieve (c : C)
   = @total_sieve C c := eq_refl.
 
 (*
- "u_C(e) = {f : D → C | f*(e) ∈ U(D) ↣ E(D)}", with the membership
+ “u_C(e) = {f : D → C | f*(e) ∈ U(D) ↣ E(D)}”, with the membership
  truncated by [Powerset_squash] -- which is what [Untruncate] inverts.
  The bound variables must be typed as Instance/Fun/Classifier.v types
  its own Example, or the [morphism] coercion is left an evar. 
 
  --------
- "u_C(e) = {f : D → C | f*(e) ∈ U(D) ↣ E(D)}"，其成员关系被 [Powerset_squash] 截断——而 [Untruncate] 则是对其进行反转的。  
+ “u_C(e) = {f : D → C | f*(e) ∈ U(D) ↣ E(D)}”，其成员关系被 [Powerset_squash] 截断——而 [Untruncate] 则是对其进行反转的。  
  约束变量必须被类型化为 Instance/Fun/Classifier.v 类型  
  它自己的示例，或者 [morphism] 强制类型转换保留为一个 evar。
 *)
@@ -749,7 +749,7 @@ Example psh_char_is_awodey_sieve (E U : C^op ⟶ Sets) (theta : U ⟹ E)
   = Powerset_squash (∃ x : carrier (fobj[U] d),
                        transform[theta] d x ≈ fmap[E] f e) := eq_refl.
 
-(* "and given h : D → C let h* : Ω(C) → Ω(D) be defined by: h*(S) = {g : · → D | h ∘ g ∈ S}." The arrow must be ascribed into [C^op]; see the spelling note in the header. / “并且给定 h : D → C，令 h* : Ω(C) → Ω(D) 定义为： h*(S) = {g : · → D | h ∘ g ∈ S}。” 该箭头必须归入 [C^op]；参见标题中的拼写说明。 *)
+(* “and given h : D → C let h* : Ω(C) → Ω(D) be defined by: h*(S) = {g : · → D | h ∘ g ∈ S}.” The arrow must be ascribed into [C^op]; see the spelling note in the header. / “并且给定 h : D → C，令 h* : Ω(C) → Ω(D) 定义为： h*(S) = {g : · → D | h ∘ g ∈ S}。” 该箭头必须归入 [C^op]；参见标题中的拼写说明。 *)
 Example psh_omega_is_restriction (c d : C) (h : d ~{C}~> c) (S : Sieve c) :
   fmap[@Ω ([C^op, Sets]) _ (@topos_classifier _ (Presheaf_Topos C UT))]
       (h : c ~{C^op}~> d) S

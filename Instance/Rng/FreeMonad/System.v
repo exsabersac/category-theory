@@ -29,15 +29,15 @@ Generalizable All Variables.
 (* * * T-algebras as systems ⟨A, ν₀, ν₁, …⟩ of multilinear operations / * * T-代数作为多线性运算系统 ⟨A, ν₀, ν₁, …⟩ *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.4, Exercise 4(b), printed p. 146 (PDF
  p. 155) — maclane:VI.4:ex4
  nLab: https://ncatlab.org/nlab/show/tensor+algebra
  nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
 
- WHAT THE BOOK ASKS, read from the page image: "(b) Give the
+ WHAT THE BOOK ASKS, read from the page image: “(b) Give the
  corresponding description of T-algebras and show that the comparison
- functor from rings to T-algebras is an isomorphism."  The
+ functor from rings to T-algebras is an isomorphism.”  The
  description it corresponds to is Proposition 2 (p. 145), the
  W-algebras as systems ⟨S, ν1, ν2, …⟩ with ν1 = 1 and νk(νn1 × ⋯ ×
  νnk) = ν_{n1+⋯+nk} (2), which #470's Instance/Smgrp/Word.v delivers
@@ -76,8 +76,8 @@ Generalizable All Variables.
  algebra map is a map of the systems ([alg_hom_TSystemHom]).  A system
  gives a ring with 1 = ν⟨⟩ and a·b = ν⟨a b⟩ ([sys_ring]: associativity
  and the unit laws from (2) at words of two words, [sys_nu_pair], and
- ν₁ = 1; distributivity from [tnu_lin]; annihilation derived), and "νₙ
- is the n-fold product": ν of a word is the product of its letters in
+ ν₁ = 1; distributivity from [tnu_lin]; annihilation derived), and “νₙ
+ is the n-fold product”: ν of a word is the product of its letters in
  that ring ([sys_nu_is_product], at ≈); a map of systems is a ring map
  ([sys_ring_map]).
 
@@ -120,7 +120,7 @@ Generalizable All Variables.
  C102).  Stated at ≈: [sys_nu_is_product], [TSys_rt_nu], the ring laws
  of a system and the inverse laws of [TSys_EM_iso], which rest on a
  system's ν₁ = 1 and (2), at ≈; [tsys_nu_hom_pure], which rests not on
- those but on TensorPower.v's [tw_word_iota] (ι₀ adds a "+ 0", C103) and
+ those but on TensorPower.v's [tw_word_iota] (ι₀ adds a “+ 0”, C103) and
  on the system's respect for letters and additivity in them;
  [fr_eval_id_word_concat], which has no hypothesis and is false at
  Leibniz = (C107: at ⟨⟨a⟩, ⟨⟩⟩ one side is ⟨a⟩·1 and the other ⟨a⟩);
@@ -443,7 +443,7 @@ Definition sys_ring@{+} : RingObject := {|
   ring_neg_l := ab_neg_left A
 |}.
 
-(* "νₙ is the n-fold product": ν of a word is the product of its letters in the ring of the system. / “νₙ 是 n 重乘积”：一个单词的 ν 是系统环中其字母的乘积 *)
+(* “νₙ is the n-fold product”: ν of a word is the product of its letters in the ring of the system. / “νₙ 是 n 重乘积”：一个单词的 ν 是系统环中其字母的乘积 *)
 Lemma sys_nu_is_product@{+} (w : list L) :
   fr_eval (R := sys_ring) (@id Ab@{u p} A) (fr_word w) ≈ tnu σ w.
 Proof.
@@ -617,7 +617,7 @@ Proof.
 Defined.
 
 (*
- Mac Lane's "corresponding description of T-algebras": the systems are
+ Mac Lane's “corresponding description of T-algebras”: the systems are
  isomorphic in Cat to Ab^T, every component of both natural isomorphisms
  the identity. 
 

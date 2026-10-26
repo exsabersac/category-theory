@@ -28,19 +28,19 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
    Theorem 1, book p. 128 (PDF pp. 137-138; catalogue id
    [maclane:V.8:thm1]): if a category is small-complete, has small
    hom-sets and a small cogenerating set Q, and every set of subobjects
    of each object has an intersection, then it has an initial object.
-   Riehl, "Category Theory in Context", Lemma 4.7.11, printed p. 177
+   Riehl, “Category Theory in Context”, Lemma 4.7.11, printed p. 177
    ([riehl:4.7:lem11]), is the same statement for a locally small
    complete category with a small coseparating set.  Both proofs take the
    product q_0 of the cogenerating family and return the intersection r
    of ALL subobjects of q_0.  The theorem is the object-level half of the
    special adjoint functor theorem: nLab's proof of that theorem runs the
    same construction in each comma category d↓R, whose initial object is
-   "the intersection = pullback of all subobjects of ∏_s k_s".  It is
+   “the intersection = pullback of all subobjects of ∏_s k_s”.  It is
    the cogenerator-based alternative to Freyd's construction of an
    initial object from a small weakly initial family (Theory/
    WeaklyInitial.v, Mac Lane §V.6), and the section on Freyd below says
@@ -63,8 +63,8 @@ Generalizable All Variables.
    followed by [w]'s mono, is a subobject ([equalizer_sub]); leastness
    gives [s] with [w]'s mono ∘ [e] ∘ [s] ≈ [w]'s mono, cancelling the
    monic gives [e ∘ s ≈ id], so [e] is split epi and [f ≈ g].  The
-   book's "two distinct arrows would have an equalizer that is a proper
-   mono" becomes a direct argument with no case split on the equality of
+   book's “two distinct arrows would have an equalizer that is a proper
+   mono” becomes a direct argument with no case split on the equality of
    arrows.  The lemma uses neither the cogenerator nor the product, so
    it is stated over a bare [HasEqualizers C] for reuse; the theorem
    supplies Adjunction/GAFT.v's [Complete_HasEqualizers].
@@ -74,7 +74,7 @@ Generalizable All Variables.
    [cogen_power comp G c], monic by [cogenerator_canonical_monic]; that
    makes [c] a subobject of the power ([cogen_canonical_sub]), and it is
    the one place where [cog_separates] is consumed.  Mac Lane's
-   k : q_0 → ∏_H q (Riehl's "diagonal map") is [cogen_prod_to_power],
+   k : q_0 → ∏_H q (Riehl's “diagonal map”) is [cogen_prod_to_power],
    whose component at [(j, h)] is the [j]-th projection.  Pulling [c]
    back along k ([cogen_pullback_sub], Theory/Subobject/Functor.v's
    [sub_reindex], over the pullbacks of [complete_pullbacks]) gives a
@@ -91,13 +91,13 @@ Generalizable All Variables.
    and by term; [special_initial_object] is [special_initial_object_least]
    composed with the first.  [special_initial_IsInitialObj] states the
    conclusion in the type, [IsInitialObj (Subobject.sub_dom w)], so that
-   "the initial object IS the intersection" is a signature and not only
+   “the initial object IS the intersection” is a signature and not only
    an [Example].
 
    ** Mac Lane's hypothesis, read three ways
 
-   THE BOOK'S FORM.  "Every set of subobjects of each object has an
-   intersection" is read as [HasClassIntersections]: every ≈-closed class
+   THE BOOK'S FORM.  “Every set of subobjects of each object has an
+   intersection” is read as [HasClassIntersections]: every ≈-closed class
    of subobjects of every object has an intersection.  The reading
    departs from the book twice.  Sets become CLASSES, which STRENGTHENS
    the hypothesis against a literal set reading, as the book's own proof
@@ -108,9 +108,9 @@ Generalizable All Variables.
    [SubObj (cogen_prod comp G)]; a family indexed at [Complete]'s shape
    universe already has an intersection from completeness alone and
    would make the hypothesis vacuous.  The catalogue's summary of Riehl's
-   lemma supports this reading with the word "collection" (catalogue
-   summary [riehl:4.7:lem11]: "every collection of subobjects has an
-   intersection"; the book's own wording was not checked).  And the
+   lemma supports this reading with the word “collection” (catalogue
+   summary [riehl:4.7:lem11]: “every collection of subobjects has an
+   intersection”; the book's own wording was not checked).  And the
    intersection is a greatest lower bound in the subobject order
    (Theory/Subobject/Lattice.v's [IsIntersection],
    fields [inter_le] and [inter_greatest]), where Mac Lane §V.7 and
@@ -204,7 +204,7 @@ Generalizable All Variables.
    [Cogenerator@{h o h}]) and [h < so] are accepted.  Of the rest, one
    constraint is the book's and two are inherited from donors.
 
-   - [h <= so] is the book's "small hom-sets".  [cogen_power]'s index
+   - [h <= so] is the book's “small hom-sets”.  [cogen_power]'s index
      [{ j : cog_index G & c ~> cog_obj G j }] ([cogen_power_index], whose
      universe is bounded below by the hom universe) is handed to
      [Complete] as a discrete shape, so the shape universe must reach the
@@ -219,12 +219,12 @@ Generalizable All Variables.
      shape argument left to unification, is refused at the functor (<1>
      to <4> stand for universes the scratch compile generated, numbered
      by first appearance, as Test/ProbeSpecialInitial452.v writes them):
-       "The term "DiscreteCat_Functor (cogen_power_fam G c)" has type
-        "@Functor@{<1> <2> <3> o h h} (DiscreteCat@{<1> <2> <3>}
-        (@cogen_power_index@{<4> so o h} C G c)) C" while it is expected
-        to have type "@Functor@{so h h o h h} ?D C" (universe
+       “The term ”DiscreteCat_Functor (cogen_power_fam G c)“ has type
+        ”@Functor@{<1> <2> <3> o h h} (DiscreteCat@{<1> <2> <3>}
+        (@cogen_power_index@{<4> so o h} C G c)) C“ while it is expected
+        to have type ”@Functor@{so h h o h h} ?D C“ (universe
         inconsistency: Cannot enforce <1> = so because so < h <= <4> <=
-        <1>)".
+        <1>)”.
      At [h <= so] the same term is accepted.
      Test/ProbeSpecialInitial452.v's N5, labelled P_H_le_so
      ([p452_n5_power_limit_small_shape]), pins this refusal, beside the
@@ -237,8 +237,8 @@ Generalizable All Variables.
      Complete]), and with [r] collapsed onto [so] (the limit-datum bullet
      below) [h <= r] is [h <= so].  So a statement over [Complete@{so so
      h o}] at [so < h] is refused whatever its body, over the whole
-     command, with "Universe inconsistency. Cannot enforce h <= so
-     because so < h."; that refusal measures the binder, not the power,
+     command, with “Universe inconsistency. Cannot enforce h <= so
+     because so < h.”; that refusal measures the binder, not the power,
      and the probe's N4 ([p452_n4_binder_collapsed]) pins it as such.
      The bound is the one Structure/Complete.v's size note, item 2(c),
      records for Freyd's route, arriving here through the hom-indexed
@@ -249,10 +249,10 @@ Generalizable All Variables.
      and [cogen_prod]: [About cogen_prod] reads [cogen_prod@{u u0 u1 u2
      u3} : Complete@{u1 u u3 u2} → Cogenerator@{u u2 u3} C → obj[C]],
      the same [u] in both.  With [G : Cogenerator@{c o h} C] and
-     [c < so], [cogen_prod comp G] is refused: "The term "G" has type
-     "Cogenerator@{c o h} C" while it is expected to have type
-     "Cogenerator@{so o h} C" (universe inconsistency: Cannot enforce
-     c = so because c < so)", while [cogen_power comp G x], whose shape
+     [c < so], [cogen_prod comp G] is refused: “The term ”G“ has type
+     ”Cogenerator@{c o h} C“ while it is expected to have type
+     ”Cogenerator@{so o h} C“ (universe inconsistency: Cannot enforce
+     c = so because c < so)”, while [cogen_power comp G x], whose shape
      is a Σ over the index, is accepted at the same [c < so].  The
      record [Cogenerator] is not cumulative, so a caller whose family
      sits lower must repackage it.
@@ -262,9 +262,9 @@ Generalizable All Variables.
      [cogen_power_limit] and [cogen_power]: [About cogen_power_limit]
      reads [Complete@{u2 u2 u0 u} → … Limit@{u2 u2 u0 u} …].  With
      [comp : Complete@{r so h o}] and [so < r], [cogen_power comp G x]
-     is refused: "The term "comp" has type "Complete@{r so h o}" while
-     it is expected to have type "Complete@{so so h o}" (universe
-     inconsistency: Cannot enforce r = so because so < r)", while
+     is refused: “The term ”comp“ has type ”Complete@{r so h o}“ while
+     it is expected to have type ”Complete@{so so h o}“ (universe
+     inconsistency: Cannot enforce r = so because so < r)”, while
      [cogen_prod comp G] is accepted at the same [so < r].
 
    Neither collapse is repaired here: annotating [cogen_prod] and
@@ -306,14 +306,14 @@ Generalizable All Variables.
    family index, [s] and [t] the two universes of [SubObj_Setoid], [k]
    the sort.  All seven are named so that a consumer can write the
    instance: with only [o h p q] named and a trailing [+], the instance
-   [HasClassIntersections@{o h p q}] is refused ("Universe instance
-   length for HasClassIntersections is 4 but should be 7").  The
+   [HasClassIntersections@{o h p q}] is refused (“Universe instance
+   length for HasClassIntersections is 4 but should be 7”).  The
    per-object corollary carries [w <= so] but not [w <= h]: only
    [WellPowered]'s pin puts the index at the hom universe, and a scratch
    control at [h < w <= so] is accepted.  The small route is refused at
-   [so < o] with "Found type "SubObj (cogen_prod comp G)" where "?J" was
-   expected (unable to find a well-typed instantiation for "?J": cannot
-   ensure that "Type@{max(o,h)}" is a subtype of "Type@{…}")", the
+   [so < o] with “Found type ”SubObj (cogen_prod comp G)“ where ”?J“ was
+   expected (unable to find a well-typed instantiation for ”?J“: cannot
+   ensure that ”Type@{max(o,h)}“ is a subtype of ”Type@{…}“)”, the
    family's index being the large type of subobjects.
 
    Every refusal quoted in this header was measured by compiling the
@@ -352,14 +352,14 @@ Generalizable All Variables.
      u0} → HasEqualizers C → WeaklyInitialFamily@{u1 u0 u1} C →
      Terminal …], one universe for the shape objects, the limit datum and
      the homs.  With [comp : Complete@{so so h o}] and [h < so] the
-     comparison is refused: "The term "comp" has type "Complete@{so so h
-     o}" while it is expected to have type "Complete@{…}" (universe
-     inconsistency: Cannot enforce h = so because h < so)".  That is a
+     comparison is refused: “The term ”comp“ has type ”Complete@{so so h
+     o}“ while it is expected to have type ”Complete@{…}“ (universe
+     inconsistency: Cannot enforce h = so because h < so)”.  That is a
      limit of the one constant's signature, not of the mathematics: any
      two initial objects are isomorphic, and a comparison through a Freyd
      construction with its universes kept apart is not attempted here;
    - Freyd's object does not read back.  [initial_from_weakly_initial]
-     ends in [Qed] ([About]: "initial_from_weakly_initial is opaque"),
+     ends in [Qed] ([About]: “initial_from_weakly_initial is opaque”),
      so [special_vs_freyd] relates an object that reads back by
      [eq_refl] to one that does not.
 
@@ -380,10 +380,10 @@ Generalizable All Variables.
    [WeaklyInitialFamily] is not cumulative and
    [initial_from_weakly_initial_complete] takes it at [@{u1 u0 u1}].
    With the index [w < h], feeding [wif_of_cogenerator comp G W] to
-   [initial_from_weakly_initial_complete] is refused: "The term
-   "wif_of_cogenerator comp G W" has type … while it is expected to have
-   type "WeaklyInitialFamily@{h o h} C" (universe inconsistency: Cannot
-   enforce w = h because w < h)".
+   [initial_from_weakly_initial_complete] is refused: “The term
+   ”wif_of_cogenerator comp G W“ has type … while it is expected to have
+   type ”WeaklyInitialFamily@{h o h} C“ (universe inconsistency: Cannot
+   enforce w = h because w < h)”.
 
    ** What #453 needs from here
 
@@ -463,7 +463,7 @@ Generalizable All Variables.
    section names which negative pins which).
 
    MEASUREMENTS.  Twenty-nine constants ([Print Module]), no [Program]
-   obligation; each reports "Closed under the global context" by its
+   obligation; each reports “Closed under the global context” by its
    fully qualified name.  Closure 110 files excluding itself, counted
    over .Makefile.coq.d, the same as Adjunction/SAFT/WellPowered.v's. *)
 

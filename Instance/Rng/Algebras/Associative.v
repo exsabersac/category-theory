@@ -20,7 +20,7 @@ Generalizable All Variables.
 (*
    * * Associative K-algebras, and the underlying K-module
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, §III.1, printed p. 59, Exercise 1 — the tensor algebra
    of a vector space and the exterior algebra, each as a universal
    arrow (maclane:III.1:ex1); the roster of free constructions on
@@ -52,9 +52,9 @@ Generalizable All Variables.
 
    That is the shape Instance/Rng/Algebras.v names and declines: its own
    deferral list says that a non-commutative K-algebra is one in which
-   "the structure map is required to land in the CENTRE, a condition
-   that is automatic exactly when the target is commutative", and adds
-   "No centre-valued variant is built here".  [AAlgObject]'s
+   “the structure map is required to land in the CENTRE, a condition
+   that is automatic exactly when the target is commutative”, and adds
+   “No centre-valued variant is built here”.  [AAlgObject]'s
    [aalg_central] field IS that condition, so this file is the
    centre-valued variant.  What is NOT claimed is anything about what
    would happen to the universal property of T(V) or Λ(V) if it were
@@ -85,8 +85,8 @@ Generalizable All Variables.
    tell whether [AAlg K] is a proper generalization of [KAlg K] or a
    re-spelling of it, and the tree contained no non-commutative
    [RingObject] before this file — Instance/Mod/Tensor.v enumerates the
-   closed ones ("[Int_Ring], [Q_Ring], [Zero_Ring], [F2_Ring],
-   [FracRing] and [CRingOb], all commutative") in the course of deferring
+   closed ones (“[Int_Ring], [Q_Ring], [Zero_Ring], [F2_Ring],
+   [FracRing] and [CRingOb], all commutative”) in the course of deferring
    a result for want of exactly such an object.  That quoted list
    predates Instance/Rng/Polynomial.v and so omits [PolyRing]/[ZPoly];
    the conclusion is unaffected, [PolyRing] being commutative by
@@ -99,8 +99,8 @@ Generalizable All Variables.
    associative K-algebra is a K-module for r·a := u(r)·a, and a
    K-algebra map is K-linear.  [AAlg_Forget_Mod : AAlg K ⟶ RMod (`1 K)]
    packages that, and it is the functor to which the tensor algebra is a
-   universal arrow — "T(V) is the free associative K-algebra on the
-   K-module V" is precisely the statement that V has a universal arrow to
+   universal arrow — “T(V) is the free associative K-algebra on the
+   K-module V” is precisely the statement that V has a universal arrow to
    [AAlg_Forget_Mod].  Each of the four module laws is one rig law
    conjugated by one preservation law of u, and none of them consumes
    centrality; centrality is consumed downstream, by the algebras that
@@ -147,7 +147,7 @@ Generalizable All Variables.
    nLab:       https://ncatlab.org/nlab/show/tensor+algebra 
    维基百科:  https://en.wikipedia.org/wiki/Associative_algebra为什么需要第二类代数。Instance/Rng/Algebras.v 已经包含了 [KAlg K]，而这个类别是多项式环、Mac Lane §II.6 练习 1 的余片读法以及其他所有对象恰好是交换的情况的合适归宿。它并不是张量代数或外代数的可能归宿，其障碍是记录中的一个域问题，而不是品味问题：[KAlgObject] 包含
 
-   kalg_comm : 对于所有 a b，有 rig_mul kalg_ring a b ≈ rig_mul kalg_ring b a所以 [KAlg K] 的每个对象都是交换的。张量代数 T(V) 不是 —— Instance/Vect/TensorAlgebra.v 的 [tensor_not_commutative] 为具体的 V 证明了这一点 —— 并且外代数 Λ(V) 是反交换的而不是交换的，其中 [ext_anticomm_nontrivial] 在那里证明了生成元乘积的两种顺序确实不同。因此，在 §III.1 练习 1 可以被表述之前，必须存在一个不要求交换性的代数范畴，而这个文件提供了它。这是形状 Instance/Rng/Algebras.v 的名称和限定：它自己的延期列表指出，非交换 K-代数是指其中“结构映射要求落在中心，这是当目标是交换的情况下自动满足的条件”，并补充说“这里没有构建中心值的变体”。[AAlgObject] 的 [aalg_central] 域就是该条件，因此这个文件是中心值的变体。未声明的是，如果将 T(V) 或 Λ(V) 的泛性质在 [KAlg K] 上陈述，会发生什么：这里没有形成这样的声明，选择的原因是上面证明的两个非交换性结果，而不是对尚未构建的结构作出声明。什么取代了交换性。经典意义上的K代数是一个具有双线性结合乘法的K-模。先呈现环，即一个环A以及一个同态u : K → A，其像在A中是中心的——中心性正是使得诱导作用r·a := u(r)·a双线性的原因，并且也正是A的交换性在[KAlgObject]中默默提供的。于是[AAlgObject K]和[KAlgObject K]各有三个字段，它们只在一个字段上不同：共享环和结构映射，而结构映射像的中心性取代了环的交换性。态射保持不变——一个与两个结构映射交换的环同态——这正是使得以下[KAlg_AAlg]成为满且忠实的，没有在态射方面的证明义务。这两类确实不同，这一点是通过证明而非断言得出的。[UT2] 是上三角 2×2 整数矩阵的环，这是 [AAlg Int_CRng] 的一个对象，通过标量对角线构造；[UT2_not_commutative] 展示了它的两个元素，其乘积在两种顺序下都不相等，而 [AAlg_not_all_commutative] 则整理了这一结果。没有这样的见证，读者无法判断 [AAlg K] 是否是 [KAlg K] 的一个真正推广，还是它的一种重新表述，并且在此文件之前，树中没有非交换的 [RingObject] — Instance/Mod/Tensor.v 枚举了封闭的那些（"[Int_Ring]、[Q_Ring]、[Zero_Ring]、[F2_Ring]、[FracRing] 和 [CRingOb]，都可交换"）以延迟某个结果，因为正缺少这样一个对象。该引用的列表早于 Instance/Rng/Polynomial.v，因此遗漏了 [PolyRing] / [ZPoly]；结论不受影响，[PolyRing] 由于其 [pe_mul_comm] 构造而是交换的。[UT2] 是一个封闭的非交换 [RingObject]，因此提供了该文件记录为缺失的内容；是否使该文件的折叠严格在此未进行调查，也不对其作出任何声明。基础的K-模，以及为什么它是有趣的函子。一个结合K-代数是一个K-模，对于r·a := u(r)·a，并且K-代数映射是K-线性的。[AAlg_Forget_Mod : AAlg K ⟶ RMod (`1 K)]打包了这个，它是张量代数的一个函子到哪——“T(V)是K-模V上的自由结合K-代数”正是声明V有一个到[AAlg_Forget_Mod]的普遍箭头。四条模定律中的每一条都是一个箝制定律由u的一个保持定律共轭产生的，没有一条消耗中心性；中心性是在下游消耗的，由构建的代数而不是从中读取的模结构消耗。交付的是什么。- [AAlgObject]、[AAlgHom]、[AAlg K]：在交换基环 K 上的结合单位 K-代数，其态射是在 K 下的环同态；
+   kalg_comm : 对于所有 a b，有 rig_mul kalg_ring a b ≈ rig_mul kalg_ring b a所以 [KAlg K] 的每个对象都是交换的。张量代数 T(V) 不是 —— Instance/Vect/TensorAlgebra.v 的 [tensor_not_commutative] 为具体的 V 证明了这一点 —— 并且外代数 Λ(V) 是反交换的而不是交换的，其中 [ext_anticomm_nontrivial] 在那里证明了生成元乘积的两种顺序确实不同。因此，在 §III.1 练习 1 可以被表述之前，必须存在一个不要求交换性的代数范畴，而这个文件提供了它。这是形状 Instance/Rng/Algebras.v 的名称和限定：它自己的延期列表指出，非交换 K-代数是指其中“结构映射要求落在中心，这是当目标是交换的情况下自动满足的条件”，并补充说“这里没有构建中心值的变体”。[AAlgObject] 的 [aalg_central] 域就是该条件，因此这个文件是中心值的变体。未声明的是，如果将 T(V) 或 Λ(V) 的泛性质在 [KAlg K] 上陈述，会发生什么：这里没有形成这样的声明，选择的原因是上面证明的两个非交换性结果，而不是对尚未构建的结构作出声明。什么取代了交换性。经典意义上的K代数是一个具有双线性结合乘法的K-模。先呈现环，即一个环A以及一个同态u : K → A，其像在A中是中心的——中心性正是使得诱导作用r·a := u(r)·a双线性的原因，并且也正是A的交换性在[KAlgObject]中默默提供的。于是[AAlgObject K]和[KAlgObject K]各有三个字段，它们只在一个字段上不同：共享环和结构映射，而结构映射像的中心性取代了环的交换性。态射保持不变——一个与两个结构映射交换的环同态——这正是使得以下[KAlg_AAlg]成为满且忠实的，没有在态射方面的证明义务。这两类确实不同，这一点是通过证明而非断言得出的。[UT2] 是上三角 2×2 整数矩阵的环，这是 [AAlg Int_CRng] 的一个对象，通过标量对角线构造；[UT2_not_commutative] 展示了它的两个元素，其乘积在两种顺序下都不相等，而 [AAlg_not_all_commutative] 则整理了这一结果。没有这样的见证，读者无法判断 [AAlg K] 是否是 [KAlg K] 的一个真正推广，还是它的一种重新表述，并且在此文件之前，树中没有非交换的 [RingObject] — Instance/Mod/Tensor.v 枚举了封闭的那些（“[Int_Ring]、[Q_Ring]、[Zero_Ring]、[F2_Ring]、[FracRing] 和 [CRingOb]，都可交换”）以延迟某个结果，因为正缺少这样一个对象。该引用的列表早于 Instance/Rng/Polynomial.v，因此遗漏了 [PolyRing] / [ZPoly]；结论不受影响，[PolyRing] 由于其 [pe_mul_comm] 构造而是交换的。[UT2] 是一个封闭的非交换 [RingObject]，因此提供了该文件记录为缺失的内容；是否使该文件的折叠严格在此未进行调查，也不对其作出任何声明。基础的K-模，以及为什么它是有趣的函子。一个结合K-代数是一个K-模，对于r·a := u(r)·a，并且K-代数映射是K-线性的。[AAlg_Forget_Mod : AAlg K ⟶ RMod (`1 K)]打包了这个，它是张量代数的一个函子到哪——“T(V)是K-模V上的自由结合K-代数”正是声明V有一个到[AAlg_Forget_Mod]的普遍箭头。四条模定律中的每一条都是一个箝制定律由u的一个保持定律共轭产生的，没有一条消耗中心性；中心性是在下游消耗的，由构建的代数而不是从中读取的模结构消耗。交付的是什么。- [AAlgObject]、[AAlgHom]、[AAlg K]：在交换基环 K 上的结合单位 K-代数，其态射是在 K 下的环同态；
    - [AAlg_Forget : AAlg K ⟶ Sets] 和 [AAlg_Forget_Mod : AAlg K ⟶ RMod (`1 K)]：底层集合和底层 K-模；
    - [AAlgLinear]：从 K-模到代数的 K-线性映射，比较底层映射的集合结构，以及 [aalg_linear_of_module_hom]：将一个模同态映射到 A 的底层模与这样的映射对应；
    - [KAlg_AAlg : KAlg K ⟶ AAlg K]：满且忠实，展示了结合代数中存在的交换代数；
@@ -608,7 +608,7 @@ Program Definition UT2_Rig : RigObject := {|
   rig_add_respects := ut2_add_respects;
   rig_mul_respects := ut2_mul_respects;
   (*
- Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject]
+ Since the PR “algebraic carriers are sets” (2026-09-17) a [RigObject]
  carries a [PropEquiv] for its carrier.  [ut2_eqT] is Coq's [eq] under a
  [Type] ascription, hence already a [Prop]-valued relation, so it is its
  own mirror and both implications are the identity. 

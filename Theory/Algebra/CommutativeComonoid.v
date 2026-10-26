@@ -38,7 +38,7 @@ The dual of [CommutativeMonoid]: a [Comonoid X] over a
    This class is provided independently of [CommutativeFrobenius] so
    that an object can carry a cocommutative-comonoid structure WITHOUT
    being forced to also carry a multiplication.  Downstream callers
-   that want to model "duplicate a tensor wire" (the canonical [delta]
+   that want to model “duplicate a tensor wire” (the canonical [delta]
    on a hypergraph object) without committing to a corresponding
    fan-in operation use this directly.
 

@@ -17,13 +17,13 @@ Generalizable All Variables.
 (* * * Reflection of limits, colimits and coequalizers / * * 极限、余极限与共同等化子的反射 *)
 
 (*
- Book:   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, §VI.7 "Beck's Theorem": the Definition
+ Book:   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, §VI.7 “Beck's Theorem”: the Definition
  of reflecting colimits, printed p. 154 (PDF p. 163) —
  maclane:VI.7:def2; Exercise 1, p. 154 (PDF p. 163) —
  maclane:VI.7:ex1; Exercise 3, p. 155 (PDF p. 164) —
  maclane:VI.7:ex3
- Book:   Riehl, "Category Theory in Context", 2nd ed., §3.4:
+ Book:   Riehl, “Category Theory in Context”, 2nd ed., §3.4:
  Definition 3.4.1 (ii), printed p. 104 (PDF p. 124) —
  riehl:3.4:def1; Lemma 3.4.5, p. 105 (PDF p. 125) —
  riehl:3.4:lem5; Exercise 3.4.iii, p. 108 (PDF p. 128) —
@@ -32,28 +32,28 @@ Generalizable All Variables.
  nLab:   https://ncatlab.org/nlab/show/conservative+functor
 
  WHAT THE BOOKS SAY, read from the page images.  Mac Lane, p. 154:
- "Definition.  A functor G : A → X reflects colimits of T : J → A when
+ “Definition.  A functor G : A → X reflects colimits of T : J → A when
  every cone λ : T →· a from T to a ∈ A for which Gλ : GT →· Ga is a
  colimiting cone in X is already a colimiting cone in A.  In
  particular, G reflects coequalizers when every fork in A which becomes
  a coequalizer in X is already a coequalizer in A.  Similarly, G
  reflects isomorphisms when, for all arrows t of A, Gt an isomorphism
- implies t an isomorphism."  The exercises open "(Throughout,
- "coequalizers" means "coequalizers of parallel pairs".)"; "1. If G
- creates coequalizers, prove that it also reflects coequalizers."; and
- p. 155, "3. (Alternative hypothesis for Exercise 2.)  If A has all
+ implies t an isomorphism.”  The exercises open “(Throughout,
+ ”coequalizers“ means ”coequalizers of parallel pairs“.)”; “1. If G
+ creates coequalizers, prove that it also reflects coequalizers.”; and
+ p. 155, “3. (Alternative hypothesis for Exercise 2.)  If A has all
  coequalizers, G preserves all coequalizers, and G reflects
- isomorphisms, prove that G reflects all coequalizers."  Riehl, p. 104:
- F "reflects limits of K if every cone over K, whose image under F is a
- limit cone for the diagram FK, is a limit cone over K", and "More
+ isomorphisms, prove that G reflects all coequalizers.”  Riehl, p. 104:
+ F “reflects limits of K if every cone over K, whose image under F is a
+ limit cone for the diagram FK, is a limit cone over K”, and “More
  commonly, we speak of a functor that preserves, reflects, or creates
  limits of a class of diagrams, for instance of a particular shape or
- size.  Definition 3.4.1 dualizes ..."; p. 105, Lemma 3.4.5: "Any full
+ size.  Definition 3.4.1 dualizes ...”; p. 105, Lemma 3.4.5: “Any full
  and faithful functor reflects any limits and colimits that are present
- in its codomain."; p. 108, Exercise 3.4.iii: "Prove that F : C → D
+ in its codomain.”; p. 108, Exercise 3.4.iii: “Prove that F : C → D
  creates limits for a particular class of diagrams if both of the
  following hold: (i) C has those limits and F preserves them.  (ii)
- F : C → D reflects isomorphisms."
+ F : C → D reflects isomorphisms.”
 
  ALREADY IN THE TREE.  Mac Lane's definition, per diagram and at cone
  level, is Structure/Limit/Preservation.v's [ReflectsColimitCocone K F]
@@ -83,8 +83,8 @@ Generalizable All Variables.
  forms, named like [CreatesAllLimits].  [ReflectsAllLimits_Over]
  and its twin descend from every diagram to any class of shapes.
  A class of shapes is a predicate on categories, so
- Structure/Limit/Finite.v's [FiniteCategory] is Riehl's "all
- finite shapes" (the probe, C11 and C12).  A class of diagrams,
+ Structure/Limit/Finite.v's [FiniteCategory] is Riehl's “all
+ finite shapes” (the probe, C11 and C12).  A class of diagrams,
  Riehl's own quantifier, is a predicate on the diagrams K : J ⟶ C
  of every shape J, and a class of shapes S is the class of all
  diagrams of those shapes, [fun J _ => S J]:
@@ -154,8 +154,8 @@ Generalizable All Variables.
  colimit side, [preserves_conservative_creates_colimit] per
  diagram and [preserves_conservative_creates_colimits_of_class]
  for a class of diagrams.
- - Coequalizers.  [ReflectsCoequalizers F] is Mac Lane's "in
- particular" over the tree's elementary [IsCoequalizer]
+ - Coequalizers.  [ReflectsCoequalizers F] is Mac Lane's “in
+ particular” over the tree's elementary [IsCoequalizer]
  (Structure/Coequalizer.v): a fork e ∘ f ≈ e ∘ g in C whose image
  is a coequalizer in D is a coequalizer in C.
  [PreservesCoequalizers F] is the dual of Structure/Limit/
@@ -178,7 +178,7 @@ Generalizable All Variables.
  forms over every diagram of parallel-pair shape being their
  restrictions.
  - Exercise 1, per parallel pair as the book states it (its
- "coequalizers" are "coequalizers of parallel pairs"):
+ “coequalizers” are “coequalizers of parallel pairs”):
  [creates_reflects_coequalizers_of_pairs], from the tree's creation
  at every [APair f g], and [maclane_creates_reflects_coequalizers],
  from Mac Lane's, by his argument; [creates_reflects_coequalizers],
@@ -228,8 +228,8 @@ Generalizable All Variables.
 
  THE OPPOSITE.  [ReflectsLimitCone (K^op) (F^op)] is not
  [ReflectsColimitCocone K F]: the probe's R1 is refused at conversion,
- under its import list with "(cannot unify "Cone (F^op ◯ K^op)" and
- "Cone (F ◯ K)^op")", the two functors being distinct records
+ under its import list with “(cannot unify ”Cone (F^op ◯ K^op)“ and
+ ”Cone (F ◯ K)^op“)”, the two functors being distinct records
  (Preservation.v); so every colimit statement here reads its image
  cocone through [islimitcone_op_comp], and C3 converts in one line.
 
@@ -259,7 +259,7 @@ Generalizable All Variables.
  [@{co ch do dh u}] with ch <= dh, [Functor]'s own bound (h1 <= h2):
  their binders are written out, and the probe accepts both with ch < dh
  strict (C6, C7), while [ReflectsIsos] is refused there (R2,
- "Cannot enforce dh = ch because ch < dh").  So Exercises 1 and 3 hold
+ “Cannot enforce dh = ch because ch < dh”).  So Exercises 1 and 3 hold
  at C's hom level, and the tie is a minimization artifact, twice over.
  First, the classes of their hypotheses leave their binders to Rocq,
  which identifies the two hom levels: [ReflectsIsos] with its binders
@@ -308,11 +308,11 @@ Generalizable All Variables.
 
  STALE PREMISES, dated from gh.  Issue #481 (filed 2026-07-23; the
  three Riehl sections appended 2026-07-31) says that only the
- isomorphism case of reflection is first-class, "reflects colimits"
+ isomorphism case of reflection is first-class, “reflects colimits”
  existing only as the unfolded conclusion of theorems about full and
  faithful functors and equivalences; that creation implies reflection
  only for isomorphisms, from U-split creation; that a search for
- "CreatesLimit|ReflectsLimit" returns nothing; and that
+ “CreatesLimit|ReflectsLimit” returns nothing; and that
  Functor/Opposite.v mentions neither [Full] nor [Faithful].  Each was
  accurate when written and is stale since PR #1083 (merged 2026-08-13:
  [CreatesLimit], [ReflectsLimitCone] and [creates_reflects_limits],
@@ -341,8 +341,8 @@ Generalizable All Variables.
  with a CORRECTION (#481) in place, and the [About] blocks of all 38
  constants of the three files are unchanged (compared by script).  Two
  others state special cases of new constants and are not convertible
- with them, their readbacks at [eq_refl] being refused ("cannot
- unify", measured): Structure/Coequalizer/Absolute.v's
+ with them, their readbacks at [eq_refl] being refused (“cannot
+ unify”, measured): Structure/Coequalizer/Absolute.v's
  [image_coequalizer_colimit], against
  [parallel_cocone_coequalizer_colimit] at [T ◯ APair f g], and
  Theory/Equivalence/Limit.v's [equivalence_reflects_colimits], against
@@ -522,7 +522,7 @@ Definition creates_reflects_all_colimits {C D : Category} {F : C ⟶ D}
  limit of K when every limiting cone N over F ◯ K has exactly one lift,
  an apex a with F a equal to N's apex and legs whose images are N's, and
  that lift is limiting.  The lift is Creation.v's [StrictLift] (the
- apex by [=], the legs by ≈ along it), and "exactly one" is equality
+ apex by [=], the legs by ≈ along it), and “exactly one” is equality
  with every other strict lift of N, the apex by [=] and the legs by ≈
  along it.  Creation.v declines that uniqueness as a FIELD of
  [CreatesLimit] (its UNIQUENESS OF THE LIFT); as a hypothesis it is
@@ -816,7 +816,7 @@ Definition preserves_conservative_creates_colimits_of_class {C D : Category}
   fun J K HS =>
     preserves_conservative_creates_colimit (HL J K HS) (P J K HS) R.
 
-(* * ** Coequalizers: Mac Lane's "in particular" and Exercises 1 and 3 / * ** 共等化子：Mac Lane 的“特别是”和练习 1 与 3 *)
+(* * ** Coequalizers: Mac Lane's “in particular” and Exercises 1 and 3 / * ** 共等化子：Mac Lane 的“特别是”和练习 1 与 3 *)
 
 (*
  Mac Lane's reflection of coequalizers, over the tree's elementary

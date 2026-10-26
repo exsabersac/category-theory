@@ -30,8 +30,8 @@ nLab:      https://ncatlab.org/nlab/show/strong+monad
    satisfies Kock's two coherence laws [strength_id_left] (w.r.t. the left
    unitor λ) and [strength_assoc] (w.r.t. the associator α) — and whose strength
    is *compatible with the monad structure* η and μ.  Following Kock (1972,
-   "Strong functors and monoidal monads", Arch. Math. 23) and Moggi (1991,
-   "Notions of computation and monads", Inf. & Comput. 93), the two
+   “Strong functors and monoidal monads”, Arch. Math. 23) and Moggi (1991,
+   “Notions of computation and monads”, Inf. & Comput. 93), the two
    compatibility conditions are, writing t = strength[M]:
 
      - η-compat ([strength_ret]):  t ∘ (id ⨂ η) ≈ η
@@ -59,8 +59,8 @@ nLab:      https://ncatlab.org/nlab/show/strong+monad
    transformations.  We make this explicit at the end of the Tier-2 section
    ([ret_Strong_Transform], [join_Strong_Transform]).
 
-   "Strong" here means tensorial strength, NOT "strong (i.e. pseudo) monoidal
-   functor"; the two notions are unrelated.  On a symmetric monoidal base the
+   “Strong” here means tensorial strength, NOT “strong (i.e. pseudo) monoidal
+   functor”; the two notions are unrelated.  On a symmetric monoidal base the
    left strength induces a *right* strength by conjugating with the braiding
    (see [rstr] below, with [rstr_natural], [rstr_ret], [rstr_join]), so every
    strong monad over a symmetric base is right-strong in the monad-relevant
@@ -486,7 +486,7 @@ nLab: https://ncatlab.org/nlab/show/commutative+monad
    A *commutative* strong monad is a monad that is simultaneously left-strong
    and right-strong, whose two strengths agree on how to combine a pair of
    computations.  Out of the left strength t and the right strength t' one
-   builds two "double strengths" M x ⨂ M y ~> M (x ⨂ y):
+   builds two “double strengths” M x ⨂ M y ~> M (x ⨂ y):
 
      dstr  = μ ∘ M t  ∘ t'   (sequence the left  computation first)
      dstr' = μ ∘ M t' ∘ t    (sequence the right computation first)

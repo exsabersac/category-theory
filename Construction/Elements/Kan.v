@@ -25,7 +25,7 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/category+of+elements
 
  BOOK LOCATION.  Recorded from the statement of issue #319: Mac Lane,
- "Categories for the Working Mathematician" (2nd ed.), III.2,
+ “Categories for the Working Mathematician” (2nd ed.), III.2,
  Exercise 3, book p. 62.  That text was not consulted while writing
  this file; the location is given so a reader can look the exercise
  up, and nothing beyond the location is reproduced here.  No claim is
@@ -45,7 +45,7 @@ Generalizable All Variables.
  A SAME-NAME TRAP, FLAGGED BY THE ISSUE ITSELF.  Theory/Coend/Yoneda.v
  carries a [coyoneda_reduction] — the coend formula
  ∫^x C(x,c) × F x ≅ F c.  That is a DIFFERENT theorem which happens to
- share the name "coyoneda"; it is about coends, mentions no category
+ share the name “coyoneda”; it is about coends, mentions no category
  of elements, and neither statement is derived from the other here.
  Nothing below refers to it.
 
@@ -69,15 +69,15 @@ Generalizable All Variables.
  [D, Sets], which closes by [reflexivity] outright, and
  [kan_cone_nat_cone] in [AConeEquiv], which must first destruct the
  sigma object.  Whole-record Leibniz equality is REFUTED for both and
- pinned in Test/ProbeCoyoneda.v; see "Strict attempts" below.
+ pinned in Test/ProbeCoyoneda.v; see “Strict attempts” below.
 
  (3) The pointwise isomorphism of setoids
  [kan_iso_at : KanNat K a ≅[Sets] KanCone K a], and
 
  (4) the naturality-in-a upgrade
  [kan_coyoneda : KanNat K ≅[[D^op, Sets]] KanCone K],
- an isomorphism in the functor category, which is the "natural
- isomorphism" reading the exercise asks for.  Its two components ARE
+ an isomorphism in the functor category, which is the “natural
+ isomorphism” reading the exercise asks for.  Its two components ARE
  the legs of [kan_iso_at] by [eq_refl] ([kan_coyoneda_to_component],
  [kan_coyoneda_from_component]), so (4) is an upgrade of (3) and not a
  parallel construction.
@@ -263,7 +263,7 @@ Generalizable All Variables.
  AXIOMS.  All 46 constants of this module — the 32 named ones plus the
  14 [Program] obligations of the three isomorphism definitions,
  enumerated with [Print Module] per the methodology of docs/AXIOMS.md —
- report "Closed under the global context".  Twelve of them are wired into the
+ report “Closed under the global context”.  Twelve of them are wired into the
  [print-assumptions] gate of the Makefile; the names were checked
  against the whole tree first and collide with nothing, which matters
  because the gate [Require]s everything into one scope and a later

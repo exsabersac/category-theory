@@ -13,7 +13,7 @@ Generalizable All Variables.
 
 (*
 nLab: https://ncatlab.org/nlab/show/modification
-   Reference: Johnson–Yau, "2-Dimensional Categories", Definition 4.4.1.
+   Reference: Johnson–Yau, “2-Dimensional Categories”, Definition 4.4.1.
 
    Given two lax transformations σ, τ : F ⟹ G between pseudofunctors
    F, G : B ⟶ B', a *modification* Γ : σ ⇛ τ consists of a component 2-cell

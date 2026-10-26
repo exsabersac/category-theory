@@ -1,9 +1,9 @@
 (* * * (R-Mod, ⊗, R) is symmetric monoidal CLOSED: the tensor-hom adjunction / * * (R-模, ⊗, R) 是对称幺半闭的：张量-同构伴随 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §IV.1, printed p. 80 — the hom-set form of an adjunction, of
- which "⊗ is left adjoint to Hom" is the running example.
+ which “⊗ is left adjoint to Hom” is the running example.
  Book:      Mac Lane, ibid., §IV.6, printed p. 98 — the tensor-hom
  adjunction proper: for a commutative ring R the bijection
  Hom(V ⊗ W, X) ≅ Hom(V, Hom(W, X)), natural in all three
@@ -17,9 +17,9 @@
  symmetry.  Its own header says in terms that the closed structure is a
  companion file's business (Instance/Mod/Monoidal.v):
 
- "NO CLOSED STRUCTURE.  The internal hom, the tensor-hom adjunction
+ “NO CLOSED STRUCTURE.  The internal hom, the tensor-hom adjunction
  and any [SymMonClosed] instance are a companion file's business,
- not this one's; nothing here mentions an exponent."
+ not this one's; nothing here mentions an exponent.”
 
  This file is that companion.  Delivered:
 
@@ -52,7 +52,7 @@
  one into the other, and nothing else in the file reaches for it.
 
  THAT IS MACHINE-MEASURED, NOT ASSERTED.  Lib.v sets
- [Default Proof Using "Type"], which keeps only the section variables a
+ [Default Proof Using “Type”], which keeps only the section variables a
  lemma's STATEMENT mentions.  [Rcomm] appears in no statement in
  Section [InternalHom] — so the build DEMANDS the annotation
  `Proof using R Rcomm` on [hm_smul_linear] and rejects it on none of its
@@ -85,8 +85,8 @@
  `rm_smul_assoc := rig_mul_assoc`, its scalar action r · φ is this file's
  pointwise action on the nose, its [dual_smul_linear] (DoubleDual.v)
  is [hm_smul_linear] with the same three rewrites in the same order, and
- its own header at DoubleDual.v already localises "the one use of
- commutativity" to exactly that lemma.  So [HomMod] GENERALISES an
+ its own header at DoubleDual.v already localises “the one use of
+ commutativity” to exactly that lemma.  So [HomMod] GENERALISES an
  existing construction in two independent directions — an arbitrary
  target module W in place of the base ring, and an arbitrary
  [RingObject] with an explicit [Rcomm] in place of a [FieldObject] — and
@@ -185,8 +185,8 @@
  a sibling introduced by the same commit is reporting its own arrival.
  None of the six declares an inhabitant, and
  Structure/Monoidal/Dual.v says
- so in its own words: "Nothing here exhibits a [SymMonClosed] instance,
- so every result is a conditional".  [RMod_SymMonClosed] is therefore the
+ so in its own words: “Nothing here exhibits a [SymMonClosed] instance,
+ so every result is a conditional”.  [RMod_SymMonClosed] is therefore the
  first.  The sibling class [ClosedMonoidal] has exactly one inhabitant,
  Instance/Coq.v's [Coq_ClosedMonoidal], which is
  `CCC_ClosedMonoidal` and so cartesian by construction.
@@ -205,17 +205,17 @@
  and the 112 source-declared names of the two together collide with
  nothing in tree.
 
- RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17),
+ RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17),
  the same way: [Print Module] gives 93 entries here and 123 for
  Instance/Mod/Monoidal.v, of which 32 and 72 respectively are
  [_obligation_] names, leaving 61 + 51 = 112 source-declared; and one
- [Print Assumptions] per name gives 93 "Closed under the global
- context" with zero [Axioms:] blocks.  EVERY FIGURE IN THIS PARAGRAPH
+ [Print Assumptions] per name gives 93 “Closed under the global
+ context” with zero [Axioms:] blocks.  EVERY FIGURE IN THIS PARAGRAPH
  REPRODUCES UNCHANGED.  The collision sweep was not re-run.
 
  WHAT IS NOT THEREBY CLAIMED.  This file does NOT prove that ⊗ is not a
- categorical product in [RMod R], so "the first non-cartesian closed
- monoidal witness" is NOT established here.  The obstacle is concrete
+ categorical product in [RMod R], so “the first non-cartesian closed
+ monoidal witness” is NOT established here.  The obstacle is concrete
  rather than rhetorical: Instance/Mod/Coproduct.v registers
  [RMod_Cartesian], so [RMod R] genuinely has products, and separating
  them from ⊗ would need a rank argument (over ℤ, Instance/Mod/Tensor.v's
@@ -239,9 +239,9 @@
 
  AN EARLIER REVISION of those two lines put [tensor_med] (the donor,
  Instance/Mod/Tensor.v), [mt_fmap] and [hm_curry] on the REJECTED
- side, and concluded "So [tensor_med] is A donor, rejected ALONE with
- [TensorMod] and [tensor_gen] accepted at the very same levels".  All
- three were re-measured after the PR "algebraic carriers are sets"
+ side, and concluded “So [tensor_med] is A donor, rejected ALONE with
+ [TensorMod] and [tensor_gen] accepted at the very same levels”.  All
+ three were re-measured after the PR “algebraic carriers are sets”
  (2026-09-17) and all three are now free: moving [mt_eq] to [Prop] means
  [tensor_med_respects] runs through [pequiv] instead of inducting on a
  [Type]-valued relation into a [Type]-valued goal, and the identification
@@ -302,7 +302,7 @@
  is a bimodule one; nothing here approaches it, and the file does
  not exhibit a ring where the construction FAILS.
  - No relation to Instance/Ab/Monoidal.v at R = ℤ (an earlier revision
- added "the ℤ-module structure of an [AbObject] is not in tree"; since
+ added “the ℤ-module structure of an [AbObject] is not in tree”; since
  #454 it is, as Instance/Mod/Cogenerator.v's [Ab_to_ZMod], and the
  relation is still not built), and no relation to
  Instance/Mod/Free.v's free module or to
@@ -333,7 +333,7 @@
  上下文 (Rcomm : ∀ a b : carrier (rig_setoid (ring_rig R)),
  rig_mul (ring_rig R) a b ≈ rig_mul (ring_rig R) b a).
 
- 交换律只在唯一的一个证明中被使用，即 [hm_smul_linear]：当 φ 是线性映射时，r · φ 仍然是线性的声明。展开后，(r·φ)(s·v) 为 r · (s · φ v)，而线性要求为 s · (r · φ v)；[Rcomm] 则使前者变为后者，并且文件中没有其他地方引用它。那是机器测量的，而不是断言的。Lib.v 设置 [Default Proof Using "Type"]，它只保留引理的陈述中提到的部分变量。[Rcomm] 在 [InternalHom] 节的任何陈述中都未出现——因此构建要求在 [hm_smul_linear] 上添加注释 `Proof using R Rcomm`，而不拒绝对其任何同级元素的注释。出于这个原因保留该注释，且不得删除；删除它会导致该引理的 [Qed] 处文件出错，出现：
+ 交换律只在唯一的一个证明中被使用，即 [hm_smul_linear]：当 φ 是线性映射时，r · φ 仍然是线性的声明。展开后，(r·φ)(s·v) 为 r · (s · φ v)，而线性要求为 s · (r · φ v)；[Rcomm] 则使前者变为后者，并且文件中没有其他地方引用它。那是机器测量的，而不是断言的。Lib.v 设置 [Default Proof Using “Type”]，它只保留引理的陈述中提到的部分变量。[Rcomm] 在 [InternalHom] 节的任何陈述中都未出现——因此构建要求在 [hm_smul_linear] 上添加注释 `Proof using R Rcomm`，而不拒绝对其任何同级元素的注释。出于这个原因保留该注释，且不得删除；删除它会导致该引理的 [Qed] 处文件出错，出现：
 
  以下部分变量已使用但未声明：Rcomm。
 
@@ -502,16 +502,16 @@ Qed.
 
  The `Proof using R Rcomm` annotation is LOAD-BEARING and is the
  instrument the header describes: Lib.v sets
- [Default Proof Using "Type"], [Rcomm] occurs in no statement here, and
- without the annotation this lemma fails at [Qed] with "The following
- section variable is used but not declared: Rcomm."  Do not remove it,
- and do not silence it with `Set Default Proof Using "All"` — that would
+ [Default Proof Using “Type”], [Rcomm] occurs in no statement here, and
+ without the annotation this lemma fails at [Qed] with “The following
+ section variable is used but not declared: Rcomm.”  Do not remove it,
+ and do not silence it with `Set Default Proof Using “All”` — that would
  destroy the measurement rather than pass it. 
 
  --------
  整个文件中交换律的唯一用法。
 
- `Proof using R Rcomm` 注释是承重的，并且是头文件描述的工具：Lib.v 设置了 [Default Proof Using "Type"]，[Rcomm] 在此处没有任何语句中出现，如果没有该注释，这个引理将在 [Qed] 处失败，并显示“以下节变量被使用但未声明：Rcomm。”不要移除它，也不要用 `Set Default Proof Using "All"` 将其静音——那样会破坏测量而不是使其通过。
+ `Proof using R Rcomm` 注释是承重的，并且是头文件描述的工具：Lib.v 设置了 [Default Proof Using “Type”]，[Rcomm] 在此处没有任何语句中出现，如果没有该注释，这个引理将在 [Qed] 处失败，并显示“以下节变量被使用但未声明：Rcomm。”不要移除它，也不要用 `Set Default Proof Using “All”` 将其静音——那样会破坏测量而不是使其通过。
 *)
 Lemma hm_smul_linear (V W : RModObject R)
   (r : carrier (rig_setoid (ring_rig R))) (f : RModHom V W) :
@@ -1268,8 +1268,8 @@ Example probe_unc_nat_gen :
 
 (*
  NEGATIVE 5.  The FORWARD square is `≈` by [reflexivity], but the two
- morphism RECORDS are still not Leibniz-equal — so "holds by
- [reflexivity]" must not be over-read as "is the same term". 
+ morphism RECORDS are still not Leibniz-equal — so “holds by
+ [reflexivity]” must not be over-read as “is the same term”. 
 
  --------
  负 5。正向方格是 `≈` 乘以 [reflexivity]，但这两个态射记录仍然不是莱布尼茨相等的——所以“由 [reflexivity] 保持”不能被过度解读为“是相同的项”。
@@ -1329,11 +1329,11 @@ Check (@ihom_post Ru Rcu V W W).
 
 (*
  CONTROLS 6, 7 and 8, WHICH USED TO BE NEGATIVES.  An earlier revision read:
- "NEGATIVE 6.  The DONOR.  [tensor_med] (Instance/Mod/Tensor.v) already
+ “NEGATIVE 6.  The DONOR.  [tensor_med] (Instance/Mod/Tensor.v) already
  identifies the ring's first and third universes, while [TensorMod] and
- [tensor_gen] above do not"; "NEGATIVE 7.  Instance/Mod/Monoidal.v's arrow
- action inherits it"; "NEGATIVE 8.  Hence this file's currying."  All three
- were re-measured after the PR "algebraic carriers are sets" (2026-09-17)
+ [tensor_gen] above do not”; “NEGATIVE 7.  Instance/Mod/Monoidal.v's arrow
+ action inherits it”; “NEGATIVE 8.  Hence this file's currying.”  All three
+ were re-measured after the PR “algebraic carriers are sets” (2026-09-17)
  and all three are now FORMABLE at the declared separation.  The cause is
  the move of [mt_eq] to [Prop]: [tensor_med_respects] no longer inducts on a
  [Type]-valued relation into a [Type]-valued goal but runs through [pequiv],

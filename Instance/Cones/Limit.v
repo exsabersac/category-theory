@@ -12,9 +12,9 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/limit
  Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
 
- Wikipedia: a limit "may also be characterized as terminal objects in the
- category of cones to F." nLab agrees: the limit lim F is the universal cone,
- "precisely the terminal object in the category of all cones over F", since
+ Wikipedia: a limit “may also be characterized as terminal objects in the
+ category of cones to F.” nLab agrees: the limit lim F is the universal cone,
+ “precisely the terminal object in the category of all cones over F”, since
  every cone has a unique morphism into it.
 
  This file makes that characterization constructive: from a terminal object
@@ -33,7 +33,7 @@ Generalizable All Variables.
  which terminality forces to equal [one N] (hence v equals u on apexes).
 
  Dually, a colimit is the terminal object of [Cocones F] -- [Cones (F^op)],
- whose arrows run in C^op, so "initial in the category of cocones" reads
+ whose arrows run in C^op, so “initial in the category of cocones” reads
  as TERMINAL there -- obtained below by instantiating this at [F^op]. 
 
  --------

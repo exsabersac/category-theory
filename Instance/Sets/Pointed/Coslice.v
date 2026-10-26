@@ -16,10 +16,10 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/pointed+object
  nLab:      https://ncatlab.org/nlab/show/under+category
  Wikipedia: https://en.wikipedia.org/wiki/Comma_category
- Book:      Awodey, "Category Theory", 1st ed., OUP 2006, §7.9 Example 7.26
+ Book:      Awodey, “Category Theory”, 1st ed., OUP 2006, §7.9 Example 7.26
 
- The header of Construction/Slice.v records the standard reading — "pointed
- sets are the coslice of Set under the one-point set" — and Awodey gives the
+ The header of Construction/Slice.v records the standard reading — “pointed
+ sets are the coslice of Set under the one-point set” — and Awodey gives the
  same example (1st ed., §7.9 Example 7.26).  This file turns that sentence
  into a theorem: [Pointed_Coslice_iso] exhibits `PointedSets ≅[Cat] Coslice
  Sets SetsOne`.
@@ -78,7 +78,7 @@ Generalizable All Variables.
 
 (*
  The header of Construction/Slice.v records the standard reading of the
- coslice — "pointed sets are the coslice of Set under the one-point set".
+ coslice — “pointed sets are the coslice of Set under the one-point set”.
  Here that sentence becomes a theorem.  A global element of A, i.e. a map
  1 ~> A out of the terminal setoid, is the same data as a basepoint of A,
  and the coslice triangle is pointwise exactly [preserves_pt]. 

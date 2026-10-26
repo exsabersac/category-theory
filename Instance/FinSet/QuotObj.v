@@ -25,7 +25,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/FinSet
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_object
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.7, book p. 126 (PDF p. 135), Definition 3.  Theory/Subobject/
  Quotient.v carries the definition; Instance/Sets/QuotObj.v carries the
  setoid witness and Instance/Grp/QuotObj.v Mac Lane's group
@@ -87,7 +87,7 @@ Generalizable All Variables.
  (grep -E '^(def|prf|thm|ind|constr|proj|class|inst|meth|rec|corec|ax|
  defax) ' on the .glob), no [Program] so
  [strings … .vo | grep obligation] returns nothing, and all 24 report
- "Closed under the global context" under [Print Assumptions] -- the
+ “Closed under the global context” under [Print Assumptions] -- the
  union-find pushout, the rank/select codec and the classifier probe all
  stay axiom-free.  0 [Defined] and 6 [Qed]: nothing here needs to be
  transparent, because every computing readback goes through
@@ -138,7 +138,7 @@ Generalizable All Variables.
  [SubObj] 同构等价证明的崩溃继承自 Theory/Subobject.v，正如在 [Sets] 和 [Grp] 所示。未交付。在 FinSet 中没有商对象的 JOIN，也没有格律：那些是 Theory/Subobject/Lattice.v 在 [FinSet^op] 的搬运，并且属于该搬运到达的任何地方。没有 [n] 的商对象的一般计数（贝尔数），也没有对它们的枚举。没有声称 [FinSet_HasCoimages] 和 Instance/FinSet/Subobject.v 的 [FinSet_HasImages] 组成一个分解系统，也没有声称余像作为一般定理与像同构——这里两者通过构造共享一个对象，这是关于这个图像特定呈现的事实，而不是平衡性的陈述。没有宽（索引）交。没有将商对象作为分割的 [Decategorify] 阅读，尽管 Instance/FinSet/Decategorify.v 存在。不作时间声明：上面的 [eq_refl] 类型检查是有测量的，但它们速度快则没有测量。
 *)
 
-(* * ** "Epis are onto" in the skeleton / * ** “Epis 已经准备好” 在骨架里 *)
+(* * ** “Epis are onto” in the skeleton / * ** “Epis 已经准备好” 在骨架里 *)
 
 (*
  Instance/FinSet/Classifier.v's biconditional, both legs.  Unlike

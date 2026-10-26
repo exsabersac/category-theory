@@ -24,7 +24,7 @@ Generalizable All Variables.
  Mac Lane: Categories for the Working Mathematician, 2nd ed. (GTM 5),
  §V.7 Construction 1, book p. 128 (PDF p. 137)
  [maclane:V.7:construction1] -- the first premise of the
- construction ("K-Mod is small-complete")
+ construction (“K-Mod is small-complete”)
  §V.1 Theorems 2 and 3, book pp. 111-112 (PDF pp. 120-121)
  -- the creation argument itself
  §V.6 Theorem 2, book pp. 125-126 -- Freyd's GAFT, the theorem
@@ -41,8 +41,8 @@ Generalizable All Variables.
  relations.  The theorem it invokes needs three things of the bilinear-
  maps functor's source: that the source is small-complete, that the
  functor is continuous, and that it has a solution set.  THIS FILE
- DELIVERS THE FIRST, and nothing else: [RMod_Complete], "K-Mod is
- small-complete", together with the continuity of both forgetful
+ DELIVERS THE FIRST, and nothing else: [RMod_Complete], “K-Mod is
+ small-complete”, together with the continuity of both forgetful
  functors, which the second premise will be checked against.  The
  bilinear-maps functor [Bilin] (Instance/Mod/Tensor.v), its
  continuity, the solution set and the adjoint-functor-theorem
@@ -130,15 +130,15 @@ Generalizable All Variables.
  definitionally -- [rmod_forget_obj_agrees] and
  [rmod_forget_map_agrees] are [eq_refl] -- while the two functor RECORDS
  do not: [RMod_Forget R = Ab_Forget ◯ RMod_Forget_Ab R] by [eq_refl] is
- refused with "cannot unify \"RMod_Forget R\" and
- \"Ab_Forget ◯ RMod_Forget_Ab R\"", the three law fields being opaque.
+ refused with “cannot unify \”RMod_Forget R\“ and
+ \”Ab_Forget ◯ RMod_Forget_Ab R\“”, the three law fields being opaque.
 
  The consequence is that Structure/Limit/Preservation.v's
  [continuous_compose] gives [RMod_Forget_composite_continuous :
  ContinuousFunctor (Ab_Forget ◯ RMod_Forget_Ab R)] and NOT continuity of
- [RMod_Forget]: ascribing it is refused with "cannot unify
- \"Cone.Cone (RMod_Forget R ◯ K)\" and
- \"Cone.Cone (Ab_Forget ◯ RMod_Forget_Ab R ◯ K)\"".  So the composite
+ [RMod_Forget]: ascribing it is refused with “cannot unify
+ \”Cone.Cone (RMod_Forget R ◯ K)\“ and
+ \”Cone.Cone (Ab_Forget ◯ RMod_Forget_Ab R ◯ K)\“”.  So the composite
  lemma IS used -- the question the task put -- and one three-line bridge
  stands beside it: [rmod_abcone_of] repackages a cone over
  [RMod_Forget R ◯ K] as a cone over the composite, field by field,
@@ -228,9 +228,9 @@ Generalizable All Variables.
  The 68 are the 62 declaration heads (46 [def], 16 [prf] in the [.glob])
  plus the six [Program] obligations, read back with
  [Set Printing Universes] and [About].  ZERO word-bounded [Set]
- occurrences anywhere.  CORRECTION, PR "algebraic carriers are sets"
- (2026-09-17).  This read "That is worth saying because the consumer
- this file exists for does meet one", and cited a solution set
+ occurrences anywhere.  CORRECTION, PR “algebraic carriers are sets”
+ (2026-09-17).  This read “That is worth saying because the consumer
+ this file exists for does meet one”, and cited a solution set
  elaborated at [SolutionSet@{Set …}] out of Instance/Discrete.v's
  unannotated [DiscreteCat_Functor].  That artifact was repaired at
  Instance/Discrete.v and the literal [Set] is gone.  The cost the
@@ -279,7 +279,7 @@ Generalizable All Variables.
 
  ** STATUS: axiom-free
 
- [Print Assumptions] reports "Closed under the global context" for ALL
+ [Print Assumptions] reports “Closed under the global context” for ALL
  68 constants -- the 62 heads and the six obligations -- with zero
  [Axioms:] lines; the obligations answer only to their qualified names
  ([Category.Instance.Mod.Limit.mlim_hom_obligation_1] and the rest).
@@ -297,8 +297,8 @@ Generalizable All Variables.
  ([5mlim_hom_obligation_1], [5mlim_med_obligation_1],
  [6mrefl_hom_obligation_1], [9mlim_smul_fn_obligation_1]) -- and
  [Print Module Category.Instance.Mod.Limit] lists exactly the same 68
- names, neither side carrying one the other lacks.  All 68 are "Closed
- under the global context" (see STATUS).  Universes: see UNIVERSES; zero
+ names, neither side carrying one the other lacks.  All 68 are “Closed
+ under the global context” (see STATUS).  Universes: see UNIVERSES; zero
  word-bounded [Set].
 
  Counted BY TOKEN over the whole file with the criterion
@@ -364,8 +364,8 @@ Generalizable All Variables.
  No colimits and no cocompleteness for [RMod R] in this file
  (Instance/Mod/Coproduct.v has the binary biproduct [RMod_Biproducts]
  and is not touched), and no claim that [RMod_Forget_Ab] creates or
- preserves any colimit.  An earlier revision said "No colimits and no
- cocompleteness for [RMod R]" without the qualifier; since #454
+ preserves any colimit.  An earlier revision said “No colimits and no
+ cocompleteness for [RMod R]” without the qualifier; since #454
  Instance/Mod/Colimit.v's [RMod_Cocomplete_via_GAFT] obtains every
  colimit within its shape discipline from [GAFT] at the diagonal, over
  this file's [RMod_Complete].  No
@@ -377,8 +377,8 @@ Generalizable All Variables.
  so in this file, but no longer in the tree: Instance/Mod/TensorMonad.v's
  [EM_RMod_iso] identifies [RMod R] with the Eilenberg-Moore category of
  R ⊗ (−) on [Ab] by the canonical comparison functor).  No whole-record
- uniqueness statement "[M = LimitMod] for any module [M] on that
- group": [mlim_smul_unique] settles the action, which is all Mac Lane's
+ uniqueness statement “[M = LimitMod] for any module [M] on that
+ group”: [mlim_smul_unique] settles the action, which is all Mac Lane's
  Theorem 2 needs here since the group is not lifted, but the record
  statement would need a Leibniz equality of [rm_ab] and a transport in
  the type of [rm_smul].  No signature-generic statement covering [Grp],
@@ -441,7 +441,7 @@ Generalizable All Variables.
 
  ** 引擎是借用的，而不是复制的——这是该文件唯一偏离其模板的地方下面的每条定律都基于 [mlim_ext]：顶点的两个元素在每条腿上相等。在 [Sets] 中，这一点是通过使用常值映射作为探针的中介唯一性来证明的（Instance/Ab/Limit.v 的 [absets_limit_ext]）。在 [Ab] 中，常值映射不是同态，因此该论证无法移植，而且这里也未证明 [Ab] 的元素级联合单性引理。相反，该陈述是通过迁移实现的：[Ab_Forget] 保持极限锥（Instance/Ab/Limit.v 的 [Ab_Forget_creates_continuous]，来源于创造，因此仅来自 [Sets_Complete]），因此 [mlim_sets_limit] 将 [Ab]-极限转换为同一载体上的 [Sets]-极限，并且 [absets_limit_ext] 对其保持不变。[mrefl_ext] 是反射部分的相同操作。这是与模板的一个故意对比。Instance/Ab/Limit.v 的头部指出，它的四个通用 [Sets] 引理实际上是 Instance/Grp/Limit.v 按字符完全批改后的不同命名，并称将它们合并到 Instance/Sets/Complete.v 中是正确的修复。这个文件没有添加第五份副本：它通过导入 Instance/Ab/Limit.v 来使用 [absets_limit_ext]，而它无论如何都必须为 [Ab_Complete] 导入该文件。[Ab] 头部要求的修复仍未完成 —— 见未交付 —— 但债务没有增加。
 
- ** 两个健忘函子，以及它们之间为何有一座桥梁Instance/Mod.v 声明了两个遗忘函子，[RMod_Forget_Ab] 和 [RMod_Forget]，其头文件记录第二个函子是直接通过基础集合组而取得的，而不是作为第一个与 [Ab_Forget] 的复合。在此处测量时，该记录在两边都是精确的。对象和态射部分在定义上确实一致——[rmod_forget_obj_agrees] 和 [rmod_forget_map_agrees] 是 [eq_refl]——而两个函子记录则不一致：[RMod_Forget R = Ab_Forget ◯ RMod_Forget_Ab R] 通过 [eq_refl] 被拒绝，并显示“无法统一 'RMod_Forget R' 与 'Ab_Forget ◯ RMod_Forget_Ab R'”，三个律域是不可透明的。其结果是 Structure/Limit/Preservation.v 的 [continuous_compose] 给出了 [RMod_Forget_composite_continuous : ContinuousFunctor (Ab_Forget ◯ RMod_Forget_Ab R)]，而不是 [RMod_Forget] 的连续性：为其归属被拒绝，提示“无法统一 "Cone.Cone (RMod_Forget R ◯ K)" 和 "Cone.Cone (Ab_Forget ◯ RMod_Forget_Ab R ◯ K)"”。因此复合引理确实被使用——正是任务提出的问题——并且旁边有一个三行的桥接：[rmod_abcone_of] 将 [RMod_Forget R ◯ K] 的一个圆锥重新打包成复合上的圆锥，逐字段操作，正如 Structure/Limit/Preservation.v 的 [cone_assoc] 在函子结合性下重新打包一样，并且原因完全相同（字段是可转换的，但记录类型不是）。然后 [RMod_Forget_creates_continuous] 是一个内部没有任何策略的项，[RMod_Forget_PreservesAllLimits] 由此得到。** 头条句子已在 [eq_refl] 由机器检查，而非争论在极限处，[RMod_Complete] 选择 -- [Ab_Complete] 而非 [Sets_Complete]，因此在 Instance/Sets/Complete.v 中兼容的族 -- 创建的模块正是 COORDINATEWISE 模块。[rmod_complete_carrier]、[rmod_complete_plus]、[rmod_complete_zero]、[rmod_complete_neg]、[rmod_complete_smul] 和 [rmod_complete_leg] 是六个 [eq_refl] 示例，在任意环、任意形状和任意模块图中。第五个示例不是继承自 [Ab] 文件：它表明创建的 ACTION 是按分量计算的，[`1 (r · a) d = r ·[K d] (`1 a d)]，并且即便 [RMod_Complete] 所选择的极限通过 [creates_limiting] 及其锥传输到达其中介，它仍然存在。在这六个中没有任何内容是特定于证人类别的，也没有插入同构；因此，此文件不需要具体的证人来非空，并且也没有构建任何证人。
+ ** 两个健忘函子，以及它们之间为何有一座桥梁Instance/Mod.v 声明了两个遗忘函子，[RMod_Forget_Ab] 和 [RMod_Forget]，其头文件记录第二个函子是直接通过基础集合组而取得的，而不是作为第一个与 [Ab_Forget] 的复合。在此处测量时，该记录在两边都是精确的。对象和态射部分在定义上确实一致——[rmod_forget_obj_agrees] 和 [rmod_forget_map_agrees] 是 [eq_refl]——而两个函子记录则不一致：[RMod_Forget R = Ab_Forget ◯ RMod_Forget_Ab R] 通过 [eq_refl] 被拒绝，并显示“无法统一 'RMod_Forget R' 与 'Ab_Forget ◯ RMod_Forget_Ab R'”，三个律域是不可透明的。其结果是 Structure/Limit/Preservation.v 的 [continuous_compose] 给出了 [RMod_Forget_composite_continuous : ContinuousFunctor (Ab_Forget ◯ RMod_Forget_Ab R)]，而不是 [RMod_Forget] 的连续性：为其归属被拒绝，提示“无法统一 “Cone.Cone (RMod_Forget R ◯ K)” 和 “Cone.Cone (Ab_Forget ◯ RMod_Forget_Ab R ◯ K)””。因此复合引理确实被使用——正是任务提出的问题——并且旁边有一个三行的桥接：[rmod_abcone_of] 将 [RMod_Forget R ◯ K] 的一个圆锥重新打包成复合上的圆锥，逐字段操作，正如 Structure/Limit/Preservation.v 的 [cone_assoc] 在函子结合性下重新打包一样，并且原因完全相同（字段是可转换的，但记录类型不是）。然后 [RMod_Forget_creates_continuous] 是一个内部没有任何策略的项，[RMod_Forget_PreservesAllLimits] 由此得到。** 头条句子已在 [eq_refl] 由机器检查，而非争论在极限处，[RMod_Complete] 选择 -- [Ab_Complete] 而非 [Sets_Complete]，因此在 Instance/Sets/Complete.v 中兼容的族 -- 创建的模块正是 COORDINATEWISE 模块。[rmod_complete_carrier]、[rmod_complete_plus]、[rmod_complete_zero]、[rmod_complete_neg]、[rmod_complete_smul] 和 [rmod_complete_leg] 是六个 [eq_refl] 示例，在任意环、任意形状和任意模块图中。第五个示例不是继承自 [Ab] 文件：它表明创建的 ACTION 是按分量计算的，[`1 (r · a) d = r ·[K d] (`1 a d)]，并且即便 [RMod_Complete] 所选择的极限通过 [creates_limiting] 及其锥传输到达其中介，它仍然存在。在这六个中没有任何内容是特定于证人类别的，也没有插入同构；因此，此文件不需要具体的证人来非空，并且也没有构建任何证人。
 
  ** 关于房规规定的形态被与 [≈] 比较这里写了十四条声明 [=] —— [eq_refl] 目击的 [Example] 和 [Definition] 的外部评论，其中十三条在一行上，ZW119WZZ 与其见证在下一行 —— 每条都是因为双方是相同的术语。五条比较形态 —— [mlim_over_legs]、[rmod_fcone_leg]、[rmod_lift_legs]、[rmod_forget_map_agrees] 和 [rmod_complete_leg]。它们完整记录了 Mac Lane 的 [F σ = τ]，这比 [StrictLift] 条款要求的 [≈] 严格得多；每条法律、每个证明以及 [slift_legs] 条款由 [rmod_strict_lift] 消耗使用 [≈]。五条比较对象 —— [mlim_over_obj]、[rmod_fcone_apex]、[rmod_lift_apex]、[rmod_forget_obj_agrees] 和 [rmod_complete_carrier] —— 四条比较元素 —— [rmod_complete_plus]、[rmod_complete_zero]、[rmod_complete_neg] 和 [rmod_complete_smul]。对象和元素是该学科允许的例外。
 
@@ -713,12 +713,12 @@ Defined.
 
 (*
  The whole of the uniqueness clause AT THIS LEVEL: the abelian group is
- inherited on the nose rather than lifted, so the "exactly one structure
- making every projection a homomorphism" has ONE component here where
+ inherited on the nose rather than lifted, so the “exactly one structure
+ making every projection a homomorphism” has ONE component here where
  the [Ab] template has three.  Note what is consumed -- only that the
  candidate satisfies the leg conditions, NO law of it -- so the
- statement is sharper than "any module structure on the apex making the
- projections homomorphisms is this one". 
+ statement is sharper than “any module structure on the apex making the
+ projections homomorphisms is this one”. 
 
  --------
  整个唯一性条款在此层级：阿贝尔群按原样继承，而不是提升，所以“使每个投影成为同态的唯一结构”在这里只有一个组成部分，而 [Ab] 模板有三个。注意被使用的是什么——只是候选者满足腿条件，而没有其任何规律——因此该陈述比“使顶点上的任何模结构成为投影同态的结构就是这个”的陈述更精确。
@@ -958,7 +958,7 @@ Definition RMod_Forget_PreservesAllLimits (R : RingObject) :
   PreservesAllLimits (RMod_Forget R) :=
   Continuous_PreservesAllLimits (RMod_Forget_creates_continuous R).
 
-(* * * "Limits of modules are computed componentwise", literally / * * “模的极限是按分量计算的”，字面意思 *)
+(* * * “Limits of modules are computed componentwise”, literally / * * “模的极限是按分量计算的”，字面意思 *)
 
 (*
  At the limits [RMod_Complete] chooses -- [Ab_Complete] over

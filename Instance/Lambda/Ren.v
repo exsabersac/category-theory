@@ -14,10 +14,10 @@ Set Transparent Obligations.
 (** Renaming (variable renaming / weakening) for the de Bruijn calculus / de Bruijn 演算的重命名（变量重命名 / 弱化） *)
 
 (*
- A [Ren Γ Γ'] is an order-preserving embedding (OPE, a.k.a. "thinning") of
+ A [Ren Γ Γ'] is an order-preserving embedding (OPE, a.k.a. “thinning”) of
  the context Γ' into the context Γ: it lists, in order, which slots of the
  larger context Γ are kept as the variables of the smaller context Γ'.  This
- is the inductive "category of weakenings" of Altenkirch-Hofmann-Streicher
+ is the inductive “category of weakenings” of Altenkirch-Hofmann-Streicher
  (1995) / order-preserving embeddings of Chapman (2009).
 
  The action of a renaming is contravariant: [RenVar]/[RenExp] transport a

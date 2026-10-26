@@ -36,14 +36,14 @@ Generalizable All Variables.
 
  nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
  Wikipedia: https://en.wikipedia.org/wiki/Catamorphism
- Paper: Lambek, "A Fixpoint Theorem for Complete Categories",
+ Paper: Lambek, “A Fixpoint Theorem for Complete Categories”,
  Mathematische Zeitschrift 103, 1968
- Paper: Adámek, "Free algebras and automata realizations in the
- language of categories", Comment. Math. Univ. Carolinae 15(4),
+ Paper: Adámek, “Free algebras and automata realizations in the
+ language of categories”, Comment. Math. Univ. Carolinae 15(4),
  1974
- Paper: Meijer, Fokkinga, Paterson, "Functional Programming with
- Bananas, Lenses, Envelopes and Barbed Wire", FPCA 1991, LNCS 523
- Paper: Rutten, "Universal coalgebra: a theory of systems",
+ Paper: Meijer, Fokkinga, Paterson, “Functional Programming with
+ Bananas, Lenses, Envelopes and Barbed Wire”, FPCA 1991, LNCS 523
+ Paper: Rutten, “Universal coalgebra: a theory of systems”,
  Theoretical Computer Science 249(1), 2000
 
  The least-fixed-point reading the header records has a precise origin.
@@ -52,8 +52,8 @@ Generalizable All Variables.
  lemma the header names is the observation that underwrites the method.
  The modern literature reads that lemma as a categorification of the
  Knaster–Tarski lattice fixed-point theorem, and Lambek returned to the
- theme over cartesian closed bases in "Least Fixpoints of Endofunctors
- of Cartesian Closed Categories" (Math. Structures in Comp. Sci. 3,
+ theme over cartesian closed bases in “Least Fixpoints of Endofunctors
+ of Cartesian Closed Categories” (Math. Structures in Comp. Sci. 3,
  1993).
 
  Naming [FAlg F] a category, and not μF a fixed point alone, is what
@@ -74,11 +74,11 @@ Generalizable All Variables.
  notation for it, cast explicit recursion as the functional-programming
  counterpart of the arbitrary goto that structured programming had
  abandoned, and recovered the structured schemes — cata, ana, hylo —
- from which the later Haskell idiom descends; Wadler ("Recursive Types
- for Free!", 1990) ties inductive types to initial F-algebras in the
+ from which the later Haskell idiom descends; Wadler (“Recursive Types
+ for Free!”, 1990) ties inductive types to initial F-algebras in the
  same spirit.
 
- The header assumes an initial object "when it exists"; Adámek (1974)
+ The header assumes an initial object “when it exists”; Adámek (1974)
  supplies it, building μF as the colimit of the ω-chain
  0 → F0 → F²0 → … whenever F preserves that colimit.  Theory/Adamek.v
  carries this as [adamek], proven from the leg-agreement hypothesis
@@ -126,7 +126,7 @@ Generalizable All Variables.
  论文: Meijer, Fokkinga, Paterson，《使用香蕉、透镜、信封和带刺铁丝的函数式编程》，
  FPCA 1991, LNCS 523
  论文: Rutten，《通用余代数：系统理论》，
- 理论计算机科学 249(1), 2000以最小不动点读取头记录有一个精确的起源。Lambek (1968) 通过找到一个初始代数而不是迭代函子来寻找一个自函子的不动点；头记录所命名的可逆性引理是支撑该方法的观察。现代文献将该引理解读为 Knaster–Tarski 格不动点定理的范畴化，而 Lambek 在《笛卡尔封闭范畴的自函子最小不动点》(数学结构在计算机科学 3, 1993) 中在笛卡尔封闭基上回到这个主题。将 [FAlg F] 命名为一个范畴，而不是仅仅将 μF 视为一个固定点，正是将递归转化为泛性质的原因。对于任何目标代数 (a, β)，从初始对象到它的代数映射恰好有一个，其承载体就是 CATAMORPHISM，即范畴折叠。该映射的存在允许通过结构递归进行定义，而唯一性则是用来推理的归纳和融合原则。Theory/Recursion.v 将这一点具体化：[cata β] 是 [falg_hom[ @zero (FAlg F) I (a ; β) ]，即初始中介的承载体，而 [cata_commutes] 则是它的递归方程。编程的传承贯穿于这个折叠中。Bird 和 Meertens 在 1980 年代建立了一个程序演算，其中折叠是核心操作符，而 Malcolm (1990) 给出了 catamorphism 的范畴定义，即初始代数中唯一的同态映射。Meijer、Fokkinga 和 Paterson (1991) 为它引入了香蕉括号符号，将显式递归视为结构化编程弃用的任意 goto 的函数式编程对应，并恢复了后来的 Haskell 习惯所衍生的结构方案——cata、ana、hylo；Wadler（"Recursive Types for Free!", 1990）以同样的精神将归纳类型与初始 F-代数联系起来。该头假设存在一个初始对象“当它存在时”；Adámek (1974) 提供了它，将 μF 构建为 ω 链 0 → F0 → F²0 → … 的余极限，只要 F 保持该余极限。Theory/Adamek.v 中记录了这一点，记作 [adamek]，并从腿一致性假设 [AdamekData] 在图 [Chain] （Construction/Chain.v）上证明，该图由序数 ω (Instance/Omega.v) 索引。选项自函子 [NatF] 在 Theory/Adamek/Corollaries.v 中记录自函子的一侧，其 [nat] 的初始性在 Instance/Coq/Nat.v 中得到证明 —— [nat_initial] 展示了 (nat, O/S) 作为初始 [NatF]-代数，并从中读取 [nat_lambek] 为 Lambek 同构。书籍长度的描述见 Adámek 和 Trnková，《Categories 中的自动机与代数》 (1990)。对偶地，[FCoalg]（构造/FCoalg.v）是余代数的范畴，
+ 理论计算机科学 249(1), 2000以最小不动点读取头记录有一个精确的起源。Lambek (1968) 通过找到一个初始代数而不是迭代函子来寻找一个自函子的不动点；头记录所命名的可逆性引理是支撑该方法的观察。现代文献将该引理解读为 Knaster–Tarski 格不动点定理的范畴化，而 Lambek 在《笛卡尔封闭范畴的自函子最小不动点》(数学结构在计算机科学 3, 1993) 中在笛卡尔封闭基上回到这个主题。将 [FAlg F] 命名为一个范畴，而不是仅仅将 μF 视为一个固定点，正是将递归转化为泛性质的原因。对于任何目标代数 (a, β)，从初始对象到它的代数映射恰好有一个，其承载体就是 CATAMORPHISM，即范畴折叠。该映射的存在允许通过结构递归进行定义，而唯一性则是用来推理的归纳和融合原则。Theory/Recursion.v 将这一点具体化：[cata β] 是 [falg_hom[ @zero (FAlg F) I (a ; β) ]，即初始中介的承载体，而 [cata_commutes] 则是它的递归方程。编程的传承贯穿于这个折叠中。Bird 和 Meertens 在 1980 年代建立了一个程序演算，其中折叠是核心操作符，而 Malcolm (1990) 给出了 catamorphism 的范畴定义，即初始代数中唯一的同态映射。Meijer、Fokkinga 和 Paterson (1991) 为它引入了香蕉括号符号，将显式递归视为结构化编程弃用的任意 goto 的函数式编程对应，并恢复了后来的 Haskell 习惯所衍生的结构方案——cata、ana、hylo；Wadler（“Recursive Types for Free!”, 1990）以同样的精神将归纳类型与初始 F-代数联系起来。该头假设存在一个初始对象“当它存在时”；Adámek (1974) 提供了它，将 μF 构建为 ω 链 0 → F0 → F²0 → … 的余极限，只要 F 保持该余极限。Theory/Adamek.v 中记录了这一点，记作 [adamek]，并从腿一致性假设 [AdamekData] 在图 [Chain] （Construction/Chain.v）上证明，该图由序数 ω (Instance/Omega.v) 索引。选项自函子 [NatF] 在 Theory/Adamek/Corollaries.v 中记录自函子的一侧，其 [nat] 的初始性在 Instance/Coq/Nat.v 中得到证明 —— [nat_initial] 展示了 (nat, O/S) 作为初始 [NatF]-代数，并从中读取 [nat_lambek] 为 Lambek 同构。书籍长度的描述见 Adámek 和 Trnková，《Categories 中的自动机与代数》 (1990)。对偶地，[FCoalg]（构造/FCoalg.v）是余代数的范畴，
  其终结对象是最大不动点νF——余数据已定
  数据的。Rutten（2000）将这一方面组织为系统理论：
  有限数据是初始代数，而流、自动机和

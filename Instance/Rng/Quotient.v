@@ -21,7 +21,7 @@ Generalizable All Variables.
 (*
    * * Two-sided ideals, the quotient ring, and its universal property
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.1
    Exercise 6 (printed p. 59, PDF p. 68) [maclane:III.1:ex6].
    nLab: https://ncatlab.org/nlab/show/quotient+ring
    Wikipedia: https://en.wikipedia.org/wiki/Quotient_ring
@@ -70,18 +70,18 @@ Generalizable All Variables.
    the same reason: a ring has a unit and a negation, so (-1) is
    available.
 
-   ERRATUM.  Issue #314's "Current state in the library" section is
+   ERRATUM.  Issue #314's “Current state in the library” section is
    stale; Instance/Mod/Quotient.v's header records the measurement in
    full and it is not repeated here.  The clause that matters for THIS
    file is that Instance/Rng.v (#257) exists and is REQUIRED below, and
    that an anchored sweep for a [Record], [Class], [Inductive],
-   [Definition] or [Structure] whose name contains "Ideal" or
-   "TwoSided", over every [.v] file in the tree, reads NONE -- so the
+   [Definition] or [Structure] whose name contains “Ideal” or
+   “TwoSided”, over every [.v] file in the tree, reads NONE -- so the
    interface is new even though the category is not.  Note also that the
    absence of quotient rings was load-bearing prose elsewhere:
    Instance/Rng/Frac.v's comment above [IntDom_Incl] and
-   Instance/Field/Frac.v's quotation of it both say "the tree has no
-   quotient rings yet"; the first is annotated by this same change, and
+   Instance/Field/Frac.v's quotation of it both say “the tree has no
+   quotient rings yet”; the first is annotated by this same change, and
    the second is a QUOTATION of the first and is deliberately left
    intact so that it stays an accurate quotation.
 
@@ -91,7 +91,7 @@ Generalizable All Variables.
    subtraction taken in the additive group [ring_ab R] and the shuffles
    supplied by Instance/Ab/Subtract.v.  No coset object is formed.  An
    earlier revision wrote the relation without the [inhabited]; since the
-   PR "algebraic carriers are sets" (2026-09-17) a [RigObject] owes a
+   PR “algebraic carriers are sets” (2026-09-17) a [RigObject] owes a
    [Prop]-valued mirror of its equality, and this relation is the
    PROPOSITIONAL TRUNCATION of a [Type]-valued membership, exactly as
    Instance/Mod/Quotient.v's [mquot_rel] is.  See the note on [Ideal]
@@ -139,7 +139,7 @@ Generalizable All Variables.
 
    x·y - x'·y' ≈ x·(y - y') + (x - x')·y'
 
-   两个项都在 I 中，并且这两个项被吸收到相反的两边。所以 [Ideal] 同时携带了 [idl_absorb_l] 和 [idl_absorb_r]，每个只使用一次，在 [rquot_rel_mul] 中。单边理想是不行的，这一点不仅被断言，而且被证明了。下面的 [LeftIdeal] 是去掉 [idl_absorb_r] 的记录，[IdealMulCongruence] 命名了属性，[rquot_rel_mul] 建立了属性，[ideal_mul_congruence] 表明每个双边理想都有它，而 Instance/Rng/Quotient/OneSided.v 针对一个明确的左理想在一个明确的非交换环——位于上三角 2×2 整数矩阵中的 ℤ·E₁₁ 里 [UT2]——证伪了它（Instance/Rng/Algebras/Associative.v）。该文件还证明了这个左理想确实不是右理想，因此这种区分不是空洞的。这是一个单独的文件出于依赖原因，而不是风格原因：[UT2] 位于 Instance/Rng/Algebras/ 下，而那里需要 Instance/Mod.v 和结合代数塔，并且没有商环的使用者应该继承它。少一条法则。[Ideal] 包含五条法则，而不是六条（总共有六个字段，第一条是关于本身的成员资格）：对取反的封闭性是派生的（[idl_neg]），因为 -a 等于 (-1)·a，而记录已经吸收了乘法。Instance/Rng.v 的 [rig_mul_neg_one] 使这成为一行引用。这与 Instance/Mod/Quotient.v 的 [Submodule] 所采用的节约方式相同，原因也相同：一个环有单位元和取反，所以 (-1) 可用。勘误。第314期的“库中的当前状态”部分已过时；Instance/Mod/Quotient.v 的头部完整记录了测量内容，这里不再重复。对于本文件重要的条款是 Instance/Rng.v（第257号）存在并且在下文中是必需的，并且针对 [Record]、[Class]、[Inductive]、[Definition] 或 [Structure]，其名称包含“Ideal”或“TwoSided”的固定扫描，在树中的每个 [.v] 文件上读取为 NONE——因此即使类别没有变化，接口也是新的。还要注意，商环的缺失在其他地方也是重要的说明：Instance/Rng/Frac.v 中上述 [IntDom_Incl] 的注释以及 Instance/Field/Frac.v 对它的引用都说“树上还没有商环”；第一个注释已由同样的更改进行标注，第二个是对第一个的引用，并故意保持不变，以便它仍然是一个准确的引用。集合商（Setoid Quotient）。正如在整个树中一样，R/I 不需要新的承载类型：它是 R 在较粗关系 [rquot_rel I x y := inhabited (idl_mem I (x - y))] 下的承载类型，其中减法在加法群 [ring_ab R] 中进行，并且由 Instance/Ab/Subtract.v 提供乱序操作。没有形成陪集对象。早期的一个版本在关系中没有写 [inhabited]；由于 PR "代数承载类型是集合"（2026-09-17），一个 [RigObject] 值需要一个 [Prop] 值的等式镜像，而这个关系是 [Type] 值的成员关系的命题截断（PROPOSITIONAL TRUNCATION），正如 Instance/Mod/Quotient.v 的 [mquot_rel] 一样。关于为什么成员关系本身保持 [Type] 值，请参见下面关于 [Ideal] 的注释。这里交付的内容。[Ideal] 与导出 [idl_neg]；[QuotientRing] 与投影 [rquot_proj]；零理想同态的函子 [RKillsFunctor I : Rng ⟶ Sets]，以及 [rquot_universal_element]，即 ⟨R/I, p⟩ 是其普遍元素的陈述，在 #303 的 [AUniversalElement] 上 —— 该 CLASS 被直接使用，Theory/Universal/Element.v 的 Yoneda 封装未被触及，因此封装所携带的宇宙限制未被继承；同态定理作为双条件 [ring_hom_theorem]；环同态的核作为理想；按共扩展理想的商；由证明命名并区分的退化理想；以及在 ℤ ⊇ 2ℤ 处的非空性，其中 ℤ/2ℤ 的运算被计算并且 ℤ/6ℤ 的中介被使用。这里未提供的内容。没有环同构定理：环同态的像是一个子环而不是理想，因此 R/ker f ≅ im f 需要一个 [Subring] 接口，而该问题未要求，且树中的其他部分也不需要；该问题要求的模同构定理在 Instance/Mod/Quotient/Isomorphism.v 中。也缺失：没有理想的和、积或交；没有主理想、素理想或极大理想，因此没有诺特条件，也没有中国剩余定理；没有将 ℤ/2ℤ 与 Instance/Field.v 的 [F2_Ring] 识别（这会使该文件依赖于域层）；也没有 [Rng] 级别的余核或 [HasCokernels] 实例。
+   两个项都在 I 中，并且这两个项被吸收到相反的两边。所以 [Ideal] 同时携带了 [idl_absorb_l] 和 [idl_absorb_r]，每个只使用一次，在 [rquot_rel_mul] 中。单边理想是不行的，这一点不仅被断言，而且被证明了。下面的 [LeftIdeal] 是去掉 [idl_absorb_r] 的记录，[IdealMulCongruence] 命名了属性，[rquot_rel_mul] 建立了属性，[ideal_mul_congruence] 表明每个双边理想都有它，而 Instance/Rng/Quotient/OneSided.v 针对一个明确的左理想在一个明确的非交换环——位于上三角 2×2 整数矩阵中的 ℤ·E₁₁ 里 [UT2]——证伪了它（Instance/Rng/Algebras/Associative.v）。该文件还证明了这个左理想确实不是右理想，因此这种区分不是空洞的。这是一个单独的文件出于依赖原因，而不是风格原因：[UT2] 位于 Instance/Rng/Algebras/ 下，而那里需要 Instance/Mod.v 和结合代数塔，并且没有商环的使用者应该继承它。少一条法则。[Ideal] 包含五条法则，而不是六条（总共有六个字段，第一条是关于本身的成员资格）：对取反的封闭性是派生的（[idl_neg]），因为 -a 等于 (-1)·a，而记录已经吸收了乘法。Instance/Rng.v 的 [rig_mul_neg_one] 使这成为一行引用。这与 Instance/Mod/Quotient.v 的 [Submodule] 所采用的节约方式相同，原因也相同：一个环有单位元和取反，所以 (-1) 可用。勘误。第314期的“库中的当前状态”部分已过时；Instance/Mod/Quotient.v 的头部完整记录了测量内容，这里不再重复。对于本文件重要的条款是 Instance/Rng.v（第257号）存在并且在下文中是必需的，并且针对 [Record]、[Class]、[Inductive]、[Definition] 或 [Structure]，其名称包含“Ideal”或“TwoSided”的固定扫描，在树中的每个 [.v] 文件上读取为 NONE——因此即使类别没有变化，接口也是新的。还要注意，商环的缺失在其他地方也是重要的说明：Instance/Rng/Frac.v 中上述 [IntDom_Incl] 的注释以及 Instance/Field/Frac.v 对它的引用都说“树上还没有商环”；第一个注释已由同样的更改进行标注，第二个是对第一个的引用，并故意保持不变，以便它仍然是一个准确的引用。集合商（Setoid Quotient）。正如在整个树中一样，R/I 不需要新的承载类型：它是 R 在较粗关系 [rquot_rel I x y := inhabited (idl_mem I (x - y))] 下的承载类型，其中减法在加法群 [ring_ab R] 中进行，并且由 Instance/Ab/Subtract.v 提供乱序操作。没有形成陪集对象。早期的一个版本在关系中没有写 [inhabited]；由于 PR “代数承载类型是集合”（2026-09-17），一个 [RigObject] 值需要一个 [Prop] 值的等式镜像，而这个关系是 [Type] 值的成员关系的命题截断（PROPOSITIONAL TRUNCATION），正如 Instance/Mod/Quotient.v 的 [mquot_rel] 一样。关于为什么成员关系本身保持 [Type] 值，请参见下面关于 [Ideal] 的注释。这里交付的内容。[Ideal] 与导出 [idl_neg]；[QuotientRing] 与投影 [rquot_proj]；零理想同态的函子 [RKillsFunctor I : Rng ⟶ Sets]，以及 [rquot_universal_element]，即 ⟨R/I, p⟩ 是其普遍元素的陈述，在 #303 的 [AUniversalElement] 上 —— 该 CLASS 被直接使用，Theory/Universal/Element.v 的 Yoneda 封装未被触及，因此封装所携带的宇宙限制未被继承；同态定理作为双条件 [ring_hom_theorem]；环同态的核作为理想；按共扩展理想的商；由证明命名并区分的退化理想；以及在 ℤ ⊇ 2ℤ 处的非空性，其中 ℤ/2ℤ 的运算被计算并且 ℤ/6ℤ 的中介被使用。这里未提供的内容。没有环同构定理：环同态的像是一个子环而不是理想，因此 R/ker f ≅ im f 需要一个 [Subring] 接口，而该问题未要求，且树中的其他部分也不需要；该问题要求的模同构定理在 Instance/Mod/Quotient/Isomorphism.v 中。也缺失：没有理想的和、积或交；没有主理想、素理想或极大理想，因此没有诺特条件，也没有中国剩余定理；没有将 ℤ/2ℤ 与 Instance/Field.v 的 [F2_Ring] 识别（这会使该文件依赖于域层）；也没有 [Rng] 级别的余核或 [HasCokernels] 实例。
 *)
 
 (** ** Two-sided ideals / ** 双边理想 *)
@@ -148,10 +148,10 @@ Generalizable All Variables.
  Membership is [Type]-valued, following Instance/Mod/Quotient.v's
  [Submodule] and Instance/Grp/Quotient.v's [Subgroup].
 
- AN EARLIER REVISION gave the reason as: "the library's `≈` is itself
+ AN EARLIER REVISION gave the reason as: “the library's `≈` is itself
  [Type]-valued, so a [Prop]-valued membership could not be eliminated into
- a hom-setoid equation."  That reason is GONE since the PR "algebraic
- carriers are sets" (2026-09-17): every ring carrier now carries
+ a hom-setoid equation.”  That reason is GONE since the PR “algebraic
+ carriers are sets” (2026-09-17): every ring carrier now carries
  [rig_prop], so [pequiv_to] performs exactly that elimination.  Membership
  stays [Type]-valued for a different reason, the one Instance/Mod/Quotient.v
  records for [Submodule]: the consumers here READ WITNESSES out of it --
@@ -353,7 +353,7 @@ Qed.
 (** ** The quotient relation / ** 商关系 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) the quotient is a
+ Since the PR “algebraic carriers are sets” (2026-09-17) the quotient is a
  [RingObject] and so owes [rig_prop], which forces its equality to be a
  [Prop].  [idl_mem] STAYS [Type]-valued -- see the note on [Ideal] above --
  and the relation is its PROPOSITIONAL TRUNCATION.  [inhabited] is the
@@ -460,7 +460,7 @@ Qed.
  truncation.
 
  AN EARLIER REVISION stated the right-hand side as the bare [idl_mem I x].
- Since the PR "algebraic carriers are sets" (2026-09-17) [rquot_rel] is the
+ Since the PR “algebraic carriers are sets” (2026-09-17) [rquot_rel] is the
  propositional truncation of membership, so the LEFT-to-right direction is
  an elimination of a [Prop] into a [Type] and is refused; the biconditional
  is stated up to [inhabited], which is its exact content.  The direction
@@ -588,7 +588,7 @@ Proof.
     intros a; apply rquot_rel_of_equiv, rig_mul_zero_l.
   - (* rig_mul_zero_r / 环_乘_零_右 *)
     intros a; apply rquot_rel_of_equiv, rig_mul_zero_r.
-  - (* rig_prop. The quotient's `≈` IS [rquot_rel I], which since the PR "algebraic carriers are sets" (2026-09-17) is already a [Prop], so the ring is its own [Prop] mirror and both implications are the identity. / rig_prop。商的 `≈` 是 [rquot_rel I]，鉴于 PR ‘代数载体是集合’（2026-09-17），它已经是一个 [Prop]，因此这个环是它自己的 [Prop] 镜像，两者的蕴含都是恒等的。 *)
+  - (* rig_prop. The quotient's `≈` IS [rquot_rel I], which since the PR “algebraic carriers are sets” (2026-09-17) is already a [Prop], so the ring is its own [Prop] mirror and both implications are the identity. / rig_prop。商的 `≈` 是 [rquot_rel I]，鉴于 PR ‘代数载体是集合’（2026-09-17），它已经是一个 [Prop]，因此这个环是它自己的 [Prop] 镜像，两者的蕴含都是恒等的。 *)
     exact (@PropEquiv_of_relation _ (rquot_setoid I) (rquot_rel I)
              (fun _ _ h => h) (fun _ _ h => h)).
   - (* ring_neg_respects / 未尊重戒指 *)
@@ -628,7 +628,7 @@ Qed.
 (*
  Conversely: the projection's kernel is exactly I, as a biconditional --
  up to the truncation.  AN EARLIER REVISION stated the right-hand side as
- the bare [idl_mem I x]; since the PR "algebraic carriers are sets"
+ the bare [idl_mem I x]; since the PR “algebraic carriers are sets”
  (2026-09-17) the quotient's `≈` is [rquot_rel], the propositional
  truncation of membership, so the forward direction would be a [Prop] into
  a [Type] and the biconditional is stated up to [inhabited].
@@ -727,7 +727,7 @@ Lemma rkills_descends (x y : carrier (rig_setoid R)) :
 Proof.
   intro Hxy.
   (*
- Since the PR "algebraic carriers are sets" (2026-09-17) [rquot_rel] is
+ Since the PR “algebraic carriers are sets” (2026-09-17) [rquot_rel] is
  a truncation, so [Hxy] is a [Prop] and cannot be destructed into the
  [Type]-valued goal `≈`.  [pequiv_to] at the TARGET ring K puts a [Prop]
  goal in front of the elimination; [pequiv_from] returns, and the
@@ -890,7 +890,7 @@ Proof. reflexivity. Qed.
 (* * ** Quotients by coextensive ideals agree / * ** 通过共延理想的商是一致的 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) [rquot_rel] is a
+ Since the PR “algebraic carriers are sets” (2026-09-17) [rquot_rel] is a
  truncation, and an [inhabited] cannot be destructed while the goal still
  wears the [Type] ascription that [@equiv] carries.  This lemma does the
  shuffle once, between two statements whose sort is [Prop] by declaration,
@@ -1071,7 +1071,7 @@ Qed.
 (* THE QUOTIENT DOES NOT COLLAPSE: 1 stays apart from 0 in ℤ/2ℤ, i.e. ℤ/2ℤ is not the zero ring. / 商环不退化：1在ℤ/2ℤ中仍然与0分开，即ℤ/2ℤ不是零环。 *)
 Theorem Z2_ring_not_collapsed : rquot_rel EvenIdeal 1%Z 0%Z → False.
 Proof.
-  (* One extra layer since the PR "algebraic carriers are sets" (2026-09-17): [rquot_rel] is the truncation of membership, and the goal [False] is a [Prop], so the elimination is allowed. / 自从 PR “代数承载是集合” (2026-09-17) 后增加了一层：[rquot_rel] 是成员资格的截断，目标 [False] 是一个 [Prop]，因此允许消去。 *)
+  (* One extra layer since the PR “algebraic carriers are sets” (2026-09-17): [rquot_rel] is the truncation of membership, and the goal [False] is a [Prop], so the elimination is allowed. / 自从 PR “代数承载是集合” (2026-09-17) 后增加了一层：[rquot_rel] 是成员资格的截断，目标 [False] 是一个 [Prop]，因此允许消去。 *)
   intros [[k Hk]].
   assert (Hz : (1 - 0 = 2 * k)%Z) by exact Hk.
   lia.
@@ -1115,7 +1115,7 @@ Proof. constructor; exists 1%Z; reflexivity. Qed.
 (*
  The kernel of the projection is exactly 2ℤ, in both directions -- up to
  the truncation.  AN EARLIER REVISION stated the right-hand side as the
- bare [idl_mem EvenIdeal a]; since the PR "algebraic carriers are sets"
+ bare [idl_mem EvenIdeal a]; since the PR “algebraic carriers are sets”
  (2026-09-17) the left-hand side is a [Prop] (the kernel's membership IS
  the quotient's `≈`, which is [rquot_rel]), so the statement is up to
  [inhabited], exactly as [rquot_proj_kernel] is. 

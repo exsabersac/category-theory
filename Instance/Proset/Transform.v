@@ -20,12 +20,12 @@ Generalizable All Variables.
 (*
  nLab:  https://ncatlab.org/nlab/show/preorder
  nLab:  https://ncatlab.org/nlab/show/thin+category
- Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer 1998, §I.4, printed p. 19, exercise 4
- Book:  Fong and Spivak, "Seven Sketches in Compositionality", Cambridge
+ Book:  Fong and Spivak, “Seven Sketches in Compositionality”, Cambridge
  2019, §3.3.4, Example 3.57 (printed pp. 96-97) and Exercise 3.58
  (printed p. 97)
- Book:  Riehl, "Category Theory in Context", Dover 2016, §1.4,
+ Book:  Riehl, “Category Theory in Context”, Dover 2016, §1.4,
  Exercise 1.4.iii (printed p. 30)
 
  Let [P] be a preorder, regarded as the thin category [Proset P] of
@@ -46,7 +46,7 @@ Generalizable All Variables.
  observation once more: any two transformations [S ⟹ T] agree componentwise
  under [≈], since [≈] on each hom-set of [Proset] is the total relation.
 
- The library's setoid discipline is what makes "unique" the right word here.
+ The library's setoid discipline is what makes “unique” the right word here.
  Two transformations built from *different* proofs of the same pointwise
  order are not equal in Coq's intensional sense, and nothing in this file
  claims they are; they are equal in the hom-setoid of the functor category,
@@ -91,9 +91,9 @@ Generalizable All Variables.
 
  nLab:  https://ncatlab.org/nlab/show/thin+category
  nLab:  https://ncatlab.org/nlab/show/functor+category
- Book:  Fong and Spivak, "Seven Sketches in Compositionality", Cambridge
+ Book:  Fong and Spivak, “Seven Sketches in Compositionality”, Cambridge
  2019, §3.3.4
- Book:  Riehl, "Category Theory in Context", Dover 2016, §1.4
+ Book:  Riehl, “Category Theory in Context”, Dover 2016, §1.4
 
  Existence-and-uniqueness together say that the hom-sets of the functor
  category [[C, Proset P]] are subsingletons: at most one morphism up to [≈]

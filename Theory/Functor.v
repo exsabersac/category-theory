@@ -40,13 +40,13 @@ Where functors come from, and what they are for
 
    Functors are the founding notion of category theory, not a derived one.
    Categories, functors, and natural transformations entered mathematics
-   together in (Eilenberg, Mac Lane, "General theory of natural
-   equivalences", Transactions of the American Mathematical Society 58,
+   together in (Eilenberg, Mac Lane, “General theory of natural
+   equivalences”, Transactions of the American Mathematical Society 58,
    1945) — the paper the nLab page above calls the foundational document of
    category theory — distilled from the group-level computations of their
-   "Group Extensions and Homology" (Annals of Mathematics, 1942).  The
-   authors were explicit about the order of ideas: "the whole concept of a
-   category is essentially an auxiliary one" (quoted in the SEP entry
+   “Group Extensions and Homology” (Annals of Mathematics, 1942).  The
+   authors were explicit about the order of ideas: “the whole concept of a
+   category is essentially an auxiliary one” (quoted in the SEP entry
    above), the basic concepts being those of functor and natural
    transformation.  Categories exist so that functors have domains and
    codomains, and functors exist so that naturality can be stated.  The
@@ -63,7 +63,7 @@ Where functors come from, and what they are for
    preservation recorded in [fobj_iso] that an invariant packaged as a
    functor can never distinguish isomorphic objects.  Read inward, a
    functor INTO a category is a diagram: a diagram of type J in C is a
-   covariant functor from J to C (Wikipedia, "Functor"), and
+   covariant functor from J to C (Wikipedia, “Functor”), and
    Structure/Limit.v takes exactly such an F : J ⟶ C as the shape over
    which limits are formed.  Because [Compose] is associative with [Id] as
    unit up to the natural isomorphisms of [Functor_Setoid]
@@ -81,7 +81,7 @@ Where functors come from, and what they are for
    linear representation of the group G (nLab); and Lawvere's functorial
    semantics recast universal algebra by taking a theory to be a category
    with finite products and a model to be a product-preserving functor out
-   of it (Lawvere, "Functorial Semantics of Algebraic Theories", PhD
+   of it (Lawvere, “Functorial Semantics of Algebraic Theories”, PhD
    thesis, Columbia University 1963; reprinted as TAC Reprints No. 5,
    2004), the perspective implemented over this file in
    Theory/Lawvere/Model.v.  The structure-preserving species the header
@@ -90,13 +90,13 @@ Where functors come from, and what they are for
    The computational reading is genuine.  In typed functional programming
    the type constructor is the object map and fmap the morphism map, with
    the two laws left as the programmer's proof obligation, verified by
-   equational reasoning (Milewski, "Functors", 2015); this file
+   equational reasoning (Milewski, “Functors”, 2015); this file
    accordingly ships the Haskell spellings <$>, <$ and <&> as parsing-only
    notations, and Theory/Coq/Functor.v carries the fmap-only class of that
    tradition, its laws discharged per instance.  In Haskell the second law
    is redundant, derivable from the first together with the free theorem of
    the type of fmap, up to the usual caveat about bottom and seq
-   (Luposchainsky, "The second functor law is redundant").  No such
+   (Luposchainsky, “The second functor law is redundant”).  No such
    parametricity is available over arbitrary categories with setoid
    hom-sets, so here [fmap_comp] is a genuine obligation of the class, and
    a third law, [fmap_respects], appears that Haskell renders invisible.
@@ -112,9 +112,9 @@ Where functors come from, and what they are for
    nLab: https://ncatlab.org/nlab/show/General+Theory+of+Natural+Equivalences
 
    函子是范畴论的创始概念，而非派生概念。范畴、函子与自然变换一同进入数学，
-   见于（Eilenberg, Mac Lane, "General theory of natural equivalences",
+   见于（Eilenberg, Mac Lane, “General theory of natural equivalences”,
    Transactions of the American Mathematical Society 58, 1945）——nLab 上页
-   称为范畴论奠基文献——提炼自他们 "Group Extensions and Homology"
+   称为范畴论奠基文献——提炼自他们 “Group Extensions and Homology”
    （Annals of Mathematics, 1942）在群层级的计算。作者对观念顺序很明确：
    「范畴的整个概念本质上是辅助性的」（SEP 条目引述），基本概念是函子与
    自然变换。范畴存在是为了让函子有定义域与陪域，函子存在是为了能陈述自然性。
@@ -126,7 +126,7 @@ Where functors come from, and what they are for
    向外读，函子把整个局面从一数学世界运到另一世界，同调把空间带到群是创始例子；
    由 [fobj_iso] 记录的同构保持可知，封装为函子的不变量永远无法区分同构对象。
    向内读，进入某范畴的函子是图：C 中类型为 J 的图是从 J 到 C 的共变函子
-   （Wikipedia, "Functor"），Structure/Limit.v 正取这样的 F : J ⟶ C 作为形成极限的形状。
+   （Wikipedia, “Functor”），Structure/Limit.v 正取这样的 F : J ⟶ C 作为形成极限的形状。
    因 [Compose] 以 [Id] 为单位至多在 [Functor_Setoid] 的自然同构下结合
    （[fun_equiv_id_left]、[fun_equiv_id_right]、[fun_equiv_comp_assoc]），
    范畴自身组装成 Instance/Cat.v 的范畴 Cat，函子是其态射。本文件是该组装的定义层。
@@ -134,17 +134,17 @@ Where functors come from, and what they are for
    应用跟踪两种读法。到 Sets 的反变函子是预层（nLab），其中 Functor/Hom.v 的
    hom 函子及由其建造的 Yoneda 嵌入是典范例子；从单对象范畴 BG 到向量空间的函子
    恰是群 G 的线性表示（nLab）；Lawvere 的函子语义通过把理论取为有限积范畴、
-   把模型取为出之的保积函子来重铸泛代数（Lawvere, "Functorial Semantics of
-   Algebraic Theories", PhD thesis, Columbia 1963; TAC Reprints No. 5, 2004），
+   把模型取为出之的保积函子来重铸泛代数（Lawvere, “Functorial Semantics of
+   Algebraic Theories”, PhD thesis, Columbia 1963; TAC Reprints No. 5, 2004），
    该视角在 Theory/Lawvere/Model.v 中基于本文件实现。文首所宣传的保结构「种」
    住在 Functor/Structure/ 下。
 
    计算读法是真实的。在带类型函数式编程中，类型构造子是对象映射、fmap 是态射映射，
-   两条定律留给程序员的证明义务，由等词推理验证（Milewski, "Functors", 2015）；
+   两条定律留给程序员的证明义务，由等词推理验证（Milewski, “Functors”, 2015）；
    本文件因此附带仅解析用的 Haskell 拼写 <$>、<\$ 与 <&>，Theory/Coq/Functor.v
    承载该传统的仅 fmap 类，定律按实例消解。在 Haskell 中第二定律冗余，可由第一定律
    与 fmap 类型的 free theorem 导出（通常需对 bottom 与 seq 谨慎；Luposchainsky,
-   "The second functor law is redundant"）。在带 setoid hom 集的任意范畴上无此参数性，
+   “The second functor law is redundant”）。在带 setoid hom 集的任意范畴上无此参数性，
    故此处 [fmap_comp] 是类的真正义务，并出现 Haskell 使之不可见的第三定律 [fmap_respects]。
    同一 setoid 设计决定函子相等意味着什么：不是对象的逐点恒等，而是自然同构
    （[Functor_Setoid]）；更严格的基于 transport 的替代留到本文件末尾的
@@ -534,9 +534,9 @@ Defined.
 Fullness and faithfulness are LOCAL conditions, and both are closed under
    composition of functors.
 
-   Book: Riehl, "Category Theory in Context", Dover 2016, §1.5, Remark 1.5.8,
+   Book: Riehl, “Category Theory in Context”, Dover 2016, §1.5, Remark 1.5.8,
          printed p. 33, and Exercise 1.5.vi(i), printed p. 38
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed., GTM 5,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed., GTM 5,
          Springer 1998, §I.3, printed pp. 14-15
 
    Riehl's Remark 1.5.8 stresses that neither condition is a global statement
@@ -604,9 +604,9 @@ Qed.
 
 (*
 nLab: https://ncatlab.org/nlab/show/faithful+functor
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed., GTM 5,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed., GTM 5,
          Springer 1998, §I.5, Exercise 9, printed p. 21
-   Book: Riehl, "Category Theory in Context", Dover 2016, §1.6,
+   Book: Riehl, “Category Theory in Context”, Dover 2016, §1.6,
          Exercise 1.6.iv, printed p. 47
 
    A faithful functor REFLECTS monomorphisms: if the image fmap[F] f is left-

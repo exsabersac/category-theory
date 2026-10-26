@@ -21,30 +21,30 @@ Generalizable All Variables.
 (*
  nLab: https://ncatlab.org/nlab/show/closure+operator
  nLab: https://ncatlab.org/nlab/show/idempotent+monad
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, SS VI.1, printed p. 139
- Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ Book: Awodey, “Category Theory” (1st ed., CMU pre-print, Sept 2005),
  SS 10.2, Example 10.4, printed p. 270
- Book: Fong and Spivak, "Seven Sketches in Compositionality", arXiv v3,
+ Book: Fong and Spivak, “Seven Sketches in Compositionality”, arXiv v3,
  SS 1.4.4, Example 1.122, printed p. 34
- Book: Riehl, "Category Theory in Context", 2nd ed., SS 5.1,
+ Book: Riehl, “Category Theory in Context”, 2nd ed., SS 5.1,
  Example 5.1.7, printed p. 186
 
- Mac Lane asks on p. 139 "What is a monad in a preorder P?", and answers
- that the unit and multiplication exist "precisely when x ≤ Tx,
- T(Tx) ≤ Tx" (his display (3)), "the diagrams (2) then necessarily
+ Mac Lane asks on p. 139 “What is a monad in a preorder P?”, and answers
+ that the unit and multiplication exist “precisely when x ≤ Tx,
+ T(Tx) ≤ Tx” (his display (3)), “the diagrams (2) then necessarily
  commute because in a preorder there is at most one arrow from here to
- yonder".  The argument uses nothing about a preorder beyond that last
+ yonder”.  The argument uses nothing about a preorder beyond that last
  clause, so this file states it for ANY thin category in the sense of
  Structure/Thin.v's [Thin]: [thin_monad] builds a monad from an
  endofunctor and the two arrow families alone, and each of the five
  monad laws is one appeal to thinness.
 
- Mac Lane goes on: "The first equation of (3) gives Tx ≤ T(Tx)", the
+ Mac Lane goes on: “The first equation of (3) gives Tx ≤ T(Tx)”, the
  unit at Tx, and in a partial order he concludes T(Tx) = Tx.  Awodey's
- Example 10.4 (p. 270) makes the same step for a poset: "A monad on P is
+ Example 10.4 (p. 270) makes the same step for a poset: “A monad on P is
  a monotone function T : P → P with x ≤ Tx and T²x ≤ Tx.  But then
- T² = T, i.e. T is idempotent."  Without antisymmetry the conclusion is
+ T² = T, i.e. T is idempotent.”  Without antisymmetry the conclusion is
  an isomorphism, and that is [thin_join_IsIso]: the inverse of join at
  x is ret at M x, and both inverse laws are thinness.  Packaged,
  [thin_IdempotentMonad] says that EVERY monad on a thin category is an
@@ -54,12 +54,12 @@ Generalizable All Variables.
  counterpart (the other is Construction/Reflective/Idempotent/Induced.v,
  the monad induced by the idempotent reflection being the original
  one).  [thin_talgebra_iff] is Mac Lane's reading of the algebras
- on p. 141, "a T-algebra is then an x ∈ P with Tx ≤ x": an algebra in a
+ on p. 141, “a T-algebra is then an x ∈ P with Tx ≤ x”: an algebra in a
  thin category is exactly an arrow T x ~> x.
 
- THE DUALS, BY DUALITY.  Riehl's Example 5.1.7 (p. 186) adds: "Dually,
+ THE DUALS, BY DUALITY.  Riehl's Example 5.1.7 (p. 186) adds: “Dually,
  a comonad on a poset category (P, ≤) defines a kernel operator: an
- order-preserving function K so that Kp ≤ p and Kp = K²p."  Nothing on
+ order-preserving function K so that Kp ≤ p and Kp = K²p.”  Nothing on
  the comonad side is proved again.  Theory/Monad.v defines [Comonad] as
  [@Monad (C^op) (W^op)] and Construction/Opposite.v sets hom[C^op] x y
  to hom[C] y x, so each dual below is the monad-side constant at C^op,
@@ -189,7 +189,7 @@ Example thin_talgebra_round@{t o h} {C : Category@{o h h}}
   | (to_arrow, of_arrow) => to_arrow (of_arrow h)
   end = h := eq_refl.
 
-(* Idempotency from thinness. The inverse of join at x is ret at M x (Mac Lane's "Tx ≤ T(Tx)"), and both composites are endomorphisms, hence identities. / 由单薄性得幂等性。在 x 处的连接的逆是 M x 处的重投（Mac Lane 的“Tx ≤ T(Tx)”），且两个复合都是自同态，因此是恒等映射。 *)
+(* Idempotency from thinness. The inverse of join at x is ret at M x (Mac Lane's “Tx ≤ T(Tx)”), and both composites are endomorphisms, hence identities. / 由单薄性得幂等性。在 x 处的连接的逆是 M x 处的重投（Mac Lane 的“Tx ≤ T(Tx)”），且两个复合都是自同态，因此是恒等映射。 *)
 Definition thin_join_IsIso@{t o h} {C : Category@{o h h}}
   (TC : Thin@{t o h} C) {M : C ⟶ C} {MM : @Monad C M} (x : C) :
   IsIsomorphism (@join C M MM x) :=

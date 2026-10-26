@@ -1,14 +1,14 @@
 (** * The Ab-valued hom functor, and the additive upgrade of a representation  / * Ab 值 hom 函子以及表示的加性升级*)
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+(* Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
               ed., §V.8, printed pp. 131–132, PDF pp. 140–141 (ledger
               items `maclane:V.8:thm-watt` and `maclane:V.8:ex3`, issue
               #454) — Watt's theorem, on p. 131, and its covariant form,
               Exercise 3, on p. 132.  The step this file supplies is the
               book's own sentence in the proof: once T has a left adjoint
-              F, "since T is additive, the adjunction Ab(G, TA) ≅
+              F, “since T is additive, the adjunction Ab(G, TA) ≅
               hom_R(A, FG), G ∈ Ab, A ∈ R-Mod, is an isomorphism of
-              additive groups" (read from the printed page).  Read
+              additive groups” (read from the printed page).  Read
               through Yoneda instead of an adjoint, the same step says: a
               representation of the UNDERLYING set-valued functor of an
               additive Ab-valued T is automatically a representation of T
@@ -84,8 +84,8 @@
    ([wab_to_padd], [wab_to_pzero]).  The inverse is additive because it
    inverts an additive bijection ([wab_from_hom]).  Naturality in Ab is
    the naturality in [Sets], hom-equality in both being pointwise.  This
-   is the "plus additivity" half of the issue's Reviewer line ("the
-   representability must be derived from SAFT plus additivity"): SAFT
+   is the “plus additivity” half of the issue's Reviewer line (“the
+   representability must be derived from SAFT plus additivity”): SAFT
    supplies Rp (Adjunction/SAFT/Characterization/Corollaries.v's
    [continuous_Set_functor_representable]; at (RMod R)^op GAFT also
    supplies it, with no hypothesis, Instance/Mod/Watts/Unconditional.v's
@@ -116,8 +116,8 @@
    block has only [<] and [<=]); T : [Functor@{o h h a h h}], i.e. into
    the same [Ab@{a h}].  No constant of the module carries one: [Print
    Module] lists 38 constants, and the [About] output of each, queried by
-   its fully qualified name, has no " = " in its constraint block; each
-   is "Closed under the global context".  The sections below declare
+   its fully qualified name, has no “ = ” in its constraint block; each
+   is “Closed under the global context”.  The sections below declare
    [Universes] and the top-level constants carry explicit binders.
 
    NON-VACUITY.  [watt_ab_iso_HomAb] instantiates the upgrade at
@@ -140,8 +140,8 @@
    [LocallyPropositional_op] is a [Definition], not an [Instance], so
    resolution does not find it: [watt_ab_iso (AbEnriched_op
    (RMod_AbEnriched R)) T AF Rp] at T : (RMod R)^op ⟶ Ab is refused
-   with "Cannot infer the implicit parameter LP of watt_ab_iso whose type
-   is "LocallyPropositional (RMod R)^op" (no type class instance found)",
+   with “Cannot infer the implicit parameter LP of watt_ab_iso whose type
+   is ”LocallyPropositional (RMod R)^op“ (no type class instance found)”,
    and the same term with [(LocallyPropositional_op _)] passed for LP is
    accepted (both measured in scratch files under this file's imports
    plus Instance/Mod/Bimodule.v's).  [CoHomAb] and Instance/Mod/Watts.v

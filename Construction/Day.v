@@ -106,15 +106,15 @@ Proof. exact (@fmap_comp K Sets G x y z g f w). Qed.
  Where the convolution comes from, and what it is for
 
  nLab:  https://ncatlab.org/nlab/show/promonoidal+category
- Paper: Day, "On closed categories of functors", Lecture Notes in
+ Paper: Day, “On closed categories of functors”, Lecture Notes in
  Mathematics 137, Springer 1970
- Paper: Im, Kelly, "A universal property of the convolution monoidal
- structure", Journal of Pure and Applied Algebra 43, 1986
- Paper: Rivas, Jaskelioff, "Notions of Computation as Monoids",
+ Paper: Im, Kelly, “A universal property of the convolution monoidal
+ structure”, Journal of Pure and Applied Algebra 43, 1986
+ Paper: Rivas, Jaskelioff, “Notions of Computation as Monoids”,
  Journal of Functional Programming 27, 2017
 
- The construction is due to Brian Day, who introduced it in "On closed
- categories of functors" (Lecture Notes in Mathematics 137, Springer
+ The construction is due to Brian Day, who introduced it in “On closed
+ categories of functors” (Lecture Notes in Mathematics 137, Springer
  1970) and in his thesis of the same year.  Day worked at the
  generality of enriched functor categories and read the tensor above
  as a categorified convolution: the coend sums over the ways the

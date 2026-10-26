@@ -37,14 +37,14 @@ Import EqNotations.
  Sources are those of Structure/Limit/Power.v, whose header carries the
  full citation block; the two statements this file exists for are
 
- - Riehl, "Category Theory in Context", 2nd ed., section 3.5, printed
+ - Riehl, “Category Theory in Context”, 2nd ed., section 3.5, printed
  p. 110 (PDF p. 130), item [riehl:3.5:example4]:
  [C(X, A^I) ≅ C(X, A)^I], natural in [X], given by composing with the
  projections [ev_i]; in Set [A^I] is the ordinary function set and
  [ev_i] is evaluation at [i].
  - the same, printed p. 111 (PDF p. 131), item [riehl:3.5:example8]:
  [C(∐_I A, X) ≅ C(A, X)^I]; in Set the copower is [I × A].
- - Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
+ - Awodey, “Category Theory”, 1st ed. (Carnegie Mellon pre-print,
  September 2005), section 3.2, unnumbered remark, printed p. 61 (PDF
  p. 70): in Sets a finite set is [1 + 1 + ⋯ + 1].
 
@@ -183,7 +183,7 @@ Import EqNotations.
 
  STATUS: axiom-free.  All 58 constants -- 51 named plus 7 [Program]
  obligations, enumerated by [Print Module] per the docs/AXIOMS.md
- methodology -- report "Closed under the global context"; the Makefile's
+ methodology -- report “Closed under the global context”; the Makefile's
  [print-assumptions] target audits the headline ones.  (Note that [Print
  Module] displays a [Qed]-opaque constant as [Parameter]; running it here
  shows NINE of them -- the seven [Program] obligations, which are opaque

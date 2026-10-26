@@ -15,11 +15,11 @@ Generalizable All Variables.
 *)
 
 (*
- Book: Fong, Spivak, "An Invitation to Applied Category Theory: Seven
- Sketches in Compositionality", Cambridge University Press, 2019,
+ Book: Fong, Spivak, “An Invitation to Applied Category Theory: Seven
+ Sketches in Compositionality”, Cambridge University Press, 2019,
  Section 3.3.2, Exercise 3.40, printed p. 92
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, Section I.3 ("Functors"), printed p. 15
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, Section I.3 (“Functors”), printed p. 15
  nLab: https://ncatlab.org/nlab/show/free+category
 
  Exercise 3.40 asks for two functors that agree on objects and differ on

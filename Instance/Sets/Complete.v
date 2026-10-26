@@ -47,8 +47,8 @@ Generalizable All Variables.
 
  HOW THIS IS *NOT* PROVED, STATED PLAINLY
 
- It is NOT routed through the standard reduction "a category with all small
- products and equalizers has all small limits".  That theorem does not exist
+ It is NOT routed through the standard reduction “a category with all small
+ products and equalizers has all small limits”.  That theorem does not exist
  in this development (CORRECTION (#458): since #416 it does,
  Structure/Limit/FromProducts.v's [Complete_from_products_equalizers],
  which this constant is still not routed through and which
@@ -61,9 +61,9 @@ Generalizable All Variables.
  reduction is real but informal, and the equalizer step is done by carrying
  a proof alongside the family rather than by invoking [HasEqualizers].  The
  description at
- Structure/Limit.v, "a limit is the part of the product of all F x
+ Structure/Limit.v, “a limit is the part of the product of all F x
  whose components are compatible along every arrow of J, exactly the shape
- of the funext-free end of Instance/Sets/End.v", is the shape this file
+ of the funext-free end of Instance/Sets/End.v”, is the shape this file
  follows; Instance/Sets/End.v is its closest in-tree relative.
 
  SMALLNESS
@@ -85,7 +85,7 @@ Generalizable All Variables.
  is exactly what the construction needs: the compatible-family carrier
  quantifies over the objects and arrows of [D], so it fits as a [Sets]
  carrier when both sit at [o].  This is the universe-polymorphic stand-in
- for "D small relative to C" that Structure/Complete.v describes.
+ for “D small relative to C” that Structure/Complete.v describes.
 
  WHAT THIS UNLOCKS, AND WHAT IT DOES NOT
 
@@ -134,7 +134,7 @@ Generalizable All Variables.
  [Subsets X] and [Indiscrete].  Under one [U : Untruncate] every
  premise of [SAFT] at [Id[Sets]] but [SubobjectCover] is therefore
  inhabited, as Adjunction/SAFT.v's header records.  Separately,
- "applied only by [saft_representable]" has not held since #451:
+ “applied only by [saft_representable]” has not held since #451:
  Adjunction/SAFT/WellPowered.v's [SAFT_of_WellPowered] applies [SAFT]
  too, as conditionally.)
 
@@ -143,8 +143,8 @@ Generalizable All Variables.
  Cocomplete.v's [Sets_Cocomplete] is exactly the quotient of the
  disjoint union this paragraph once called unattempted.
 
- STATUS: axiom-free.  [Print Assumptions Sets_Complete] reports "Closed
- under the global context"; the Makefile's [print-assumptions] target
+ STATUS: axiom-free.  [Print Assumptions Sets_Complete] reports “Closed
+ under the global context”; the Makefile's [print-assumptions] target
  audits it. 
 
  --------
@@ -273,15 +273,15 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
  item ids [maclane:V.1:thm1], [maclane:V.1:remark1].  Riehl, _Category
  Theory in Context_, 2nd ed., SS3.2 Definition 3.2.3 and Theorem 3.2.4,
  printed pp. 93-94.  Quoted from the rendered page, not from the OCR
- layer, which renders the cone letter nu as "Ii".  ONE DEPARTURE FROM THE
+ layer, which renders the cone letter nu as “Ii”.  ONE DEPARTURE FROM THE
  PAGE, forced by the lexer and disclosed rather than silent: the book
- writes the one point set as [*], so its "Cone" of that argument is
+ writes the one point set as [*], so its “Cone” of that argument is
  spelled with an open paren immediately followed by a star -- which is
  exactly Coq's nested-comment opener.  Every quotation below therefore
  reads [Cone ( *, F)], with a space the book does not have.  Nothing else
  is altered.
 
- "Theorem 1 (Completeness of Set).  If the category J is small, any
+ “Theorem 1 (Completeness of Set).  If the category J is small, any
  functor F : J-->Set has a limit which is the set Cone ( *, F) of all
  cones sigma : *-->F from the one point set * to F, while the limiting
  cone v, with
@@ -289,13 +289,13 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
  v_j : Cone ( *, F) --> F_j,     sigma |--> sigma_j,          (2)
 
  is for each j that function sending each cone sigma to the element
- sigma_j in F_j."
+ sigma_j in F_j.”
 
  and, on the same page, the sentence this file's discrete section
  discharges:
 
- "For example, if J is discrete, the set Cone( *, F) of J-cones is just
- the cartesian product Pi_j F_j."
+ “For example, if J is discrete, the set Cone( *, F) of J-cones is just
+ the cartesian product Pi_j F_j.”
 
  WHAT IS DELIVERED HERE, AND WHY IT SITS BESIDE THE EXISTING PROOF
 
@@ -308,7 +308,7 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
  [Sets_Complete] has code consumers (Adjunction/GAFT/Sets.v,
  Adjunction/Diagonal/Limit.v, Test/ProbeCocomplete329.v).  Second,
  Instance/Sets/Pullback.v's header asserts that the derived pullback apex
- "IS, on the nose, the setoid of COMPATIBLE FAMILIES" and quotes an
+ “IS, on the nose, the setoid of COMPATIBLE FAMILIES” and quotes an
  accepted [eq_refl] fragment about it; redefining [Sets_Limit] would make
  that prose false without breaking any build.  Third, the two apexes are
  NOT convertible -- one is a sigma of a dependent function with a
@@ -344,8 +344,8 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
  place the singleton's unique-inhabitant property is spent, in a single
  [destruct u]: [poly_unit] (Lib/Setoid.v) is an inductive with no eta,
  so a variable [u : poly_unit] is not definitionally [ttt].  That
- [destruct] IS Riehl's "restricting along each element regarded as a map
- out of the singleton".  It is essential and not cosmetic: without it the
+ [destruct] IS Riehl's “restricting along each element regarded as a map
+ out of the singleton”.  It is essential and not cosmetic: without it the
  goal is not closed by [symmetry; exact (Hv d e)].
 
  No choice principle and no extensionality: the cone type carries its
@@ -402,16 +402,16 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
  [discrete_leg_is_proj], [discrete_iprod_iso_leg] and
  [discrete_iprod_iso_leg_inv] -- and they are exactly the four whose
  statements name Structure/Limit/Product.v's [iprod] or [iprod_proj],
- THREE of them rejected with "cannot ensure that Type is a subtype of
- Set"; the fourth, [discrete_iprod_iso_leg_inv], instead gives a plain
- unification MISMATCH ("expected to have type ?y ~{?Category}~> ?z")
+ THREE of them rejected with “cannot ensure that Type is a subtype of
+ Set”; the fourth, [discrete_iprod_iso_leg_inv], instead gives a plain
+ unification MISMATCH (“expected to have type ?y ~{?Category}~> ?z”)
  carrying NO word-bounded [Set] at all -- a different KIND of refusal
  under this development's own taxonomy, measured by restating the six
  accepted constants at [Type] and adding each refused one alone.  An
  earlier revision of this sentence said all four were alike.
 
  THE MECHANISM, AND A RECORDED CORRECTION: IT IS GONE.  An earlier
- revision explained the four refusals like this: "[iprod@{u u0 u1}] is
+ revision explained the four refusals like this: “[iprod@{u u0 u1}] is
  declared over [C : Category@{u1 Set Set}], pinning the ambient hom and
  proof universes to the literal [Set], and at [C := Sets@{o so} :
  Category@{so o o}] that collapses [Sets]' CARRIER universe [o] to
@@ -419,10 +419,10 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
  down too.  [iprod]'s own pin is visible in its printed type
  ([Limit@{u u Set u1} (DiscreteCat_Functor@{u u1 u0 Set} f)]) and takes
  BOTH donors -- [Cone] alone is accepted at levels declared apart, so it
- is the discriminating control -- with both pinned in the probe."  The
+ is the discriminating control -- with both pinned in the probe.”  The
  attribution was right and the donor has been repaired:
  [DiscreteCat_Functor] was annotated in place at Instance/Discrete.v
- in the PR "algebraic carriers are sets" (2026-09-17).  Measured after
+ in the PR “algebraic carriers are sets” (2026-09-17).  Measured after
  it, [iprod] is declared over [C : Category@{u1 u2 u2}] with no literal
  [Set], and applying it AT [Sets@{o so}] TO A [Type@{o}]-INDEXED FAMILY
  is ACCEPTED, reading
@@ -440,8 +440,8 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
  because a section [Context] fixes its universes once, before the pin can
  propagate, and the discrete diagram is then refused inside it.
 
- STATUS: axiom-free.  [Print Assumptions] reports "Closed under the global
- context" for every constant below; the Makefile's [print-assumptions]
+ STATUS: axiom-free.  [Print Assumptions] reports “Closed under the global
+ context” for every constant below; the Makefile's [print-assumptions]
  target audits them by fully qualified name. 
 
  --------
@@ -473,7 +473,7 @@ Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
  没有一个比另一个更通用。块之间的区别仅在于它们引用的 stdlib 常量：
  这个通过 [Sets_Terminal] 并引用 [eq_ind] 及其相关，现有的通过 [sigT] 并引用 [Projections]。
 
- 离散特殊情况上面引用的 Mac Lane 自己的句子。它是针对兼容族顶点提出的，其与 Instance/Sets/Products.v 的索引积的关系是直接的：三个 [eq_refl] 示例记录了极限顶点就是离散图的 [Sets_limit_obj]，生成的积集合确实是字面上的 [Sets_iprod_obj f]，并且极限腿就是索引积的投影。强度是一个同构，而不是相等，其原因不是宇宙。[Sets_limit_compatible] 在一个离散形状上展开为 [∀ d d' (e : d = d'), fmap[F] e (x d) ≈ x d'，这是一个真正的 Pi 型，而不是 [unit]：它对于每个族 ([discrete_compatible]，通过 [destruct e]) 都是可居住的，但作为一个类型它并非空。因此极限承载是 sigma，而积承载是裸族，它们是不同的类型。[eq_refl] 形式的腿方程在转换时被拒绝，并在 Test/ProbeConeSets407.v 中固定。[Structure/Limit/Product/Finite.v] 的 [iprod_unique_iso] 会在一个项中给出相同的同构，因为两边都是索引积。它故意没有被使用：要求该模块为此文件额外花费二十一 个闭包模块来处理十二行，而手工构建则是三十一 个且成本为零。它在这里被引用，而不是被使用。一个宇宙密码，已被披露——并且它涉及十个常数中的四个，而不是该部分。离散部分用 [{A : Set}] 编写，这段话的早期修订版表示整个部分强制了它。通过将该部分重新表述为 [{A : Type}] 并编译来测量：那里接受了六个常数，其中包括标题 [discrete_iprod_iso]，以及 [discrete_limit]、[discrete_inner_is_iprod]、[discrete_compatible]、[discrete_forget] 和 [discrete_pair]。确切地说，正好有四个被拒绝 —— [discrete_apex_is_limit_obj]、[discrete_leg_is_proj]、[discrete_iprod_iso_leg] 和 [discrete_iprod_iso_leg_inv] —— 它们正好是那些在语句中命名 Structure/Limit/Product.v 的 [iprod] 或 [iprod_proj] 的四个，其中三个被拒绝的原因是“无法确保类型是集合的子类型”；第四个 [discrete_iprod_iso_leg_inv] 则直接给出了普通的统一不匹配（“预期类型为 ?y ~{?Category}~> ?z”），完全不带 [Set]——这是在本开发自身分类下另一种拒绝类型，通过重新陈述 [Type] 的六个被接受常量并单独添加每一个被拒绝的常量来衡量。该句的早期修订版称四个都是相似的。机制，以及已记录的更正：它消失了。之前的修订是这样解释四次拒绝的：“[iprod@{u u0 u1}] 被声明覆盖 [C : Category@{u1 Set Set}]，将环境 hom 和证明宇宙固定到字面 [Set]，并在 [C := Sets@{o so} : Category@{so o o}] 处将 [Sets] 的载体宇宙 [o] 折叠到 [Set]，之后 [Sets_iprod_obj] 的 [u <= u0] 绑定也将索引向下传递。[iprod] 自身的固定在其打印类型 ([Limit@{u u Set u1} (DiscreteCat_Functor@{u u1 u0 Set} f)]) 中可见，并且接受 BOTH 供体——只有 [Cone] 在被声明为分开的级别被接受，因此它是区分控制——两者都固定在探针中。”归属是正确的，并且供体已被修复：[DiscreteCat_Functor] 已在 Instance/Discrete.v 中原地注释，在 PR "algebraic carriers are sets"（2026-09-17）中。在其之后测量，[iprod] 宣告在 [C : Category@{u1 u2 u2}] 之上且没有字面 [Set]，并且在 [Sets@{o so}] 上将其应用于 [Type@{o}] 索引的族是被接受的，读取为 [Limit@{o o o so} (DiscreteCat_Functor@{o o o so o o so} f) → obj [Sets@{o so}] ] 并带有 [o < so]。
+ 离散特殊情况上面引用的 Mac Lane 自己的句子。它是针对兼容族顶点提出的，其与 Instance/Sets/Products.v 的索引积的关系是直接的：三个 [eq_refl] 示例记录了极限顶点就是离散图的 [Sets_limit_obj]，生成的积集合确实是字面上的 [Sets_iprod_obj f]，并且极限腿就是索引积的投影。强度是一个同构，而不是相等，其原因不是宇宙。[Sets_limit_compatible] 在一个离散形状上展开为 [∀ d d' (e : d = d'), fmap[F] e (x d) ≈ x d'，这是一个真正的 Pi 型，而不是 [unit]：它对于每个族 ([discrete_compatible]，通过 [destruct e]) 都是可居住的，但作为一个类型它并非空。因此极限承载是 sigma，而积承载是裸族，它们是不同的类型。[eq_refl] 形式的腿方程在转换时被拒绝，并在 Test/ProbeConeSets407.v 中固定。[Structure/Limit/Product/Finite.v] 的 [iprod_unique_iso] 会在一个项中给出相同的同构，因为两边都是索引积。它故意没有被使用：要求该模块为此文件额外花费二十一 个闭包模块来处理十二行，而手工构建则是三十一 个且成本为零。它在这里被引用，而不是被使用。一个宇宙密码，已被披露——并且它涉及十个常数中的四个，而不是该部分。离散部分用 [{A : Set}] 编写，这段话的早期修订版表示整个部分强制了它。通过将该部分重新表述为 [{A : Type}] 并编译来测量：那里接受了六个常数，其中包括标题 [discrete_iprod_iso]，以及 [discrete_limit]、[discrete_inner_is_iprod]、[discrete_compatible]、[discrete_forget] 和 [discrete_pair]。确切地说，正好有四个被拒绝 —— [discrete_apex_is_limit_obj]、[discrete_leg_is_proj]、[discrete_iprod_iso_leg] 和 [discrete_iprod_iso_leg_inv] —— 它们正好是那些在语句中命名 Structure/Limit/Product.v 的 [iprod] 或 [iprod_proj] 的四个，其中三个被拒绝的原因是“无法确保类型是集合的子类型”；第四个 [discrete_iprod_iso_leg_inv] 则直接给出了普通的统一不匹配（“预期类型为 ?y ~{?Category}~> ?z”），完全不带 [Set]——这是在本开发自身分类下另一种拒绝类型，通过重新陈述 [Type] 的六个被接受常量并单独添加每一个被拒绝的常量来衡量。该句的早期修订版称四个都是相似的。机制，以及已记录的更正：它消失了。之前的修订是这样解释四次拒绝的：“[iprod@{u u0 u1}] 被声明覆盖 [C : Category@{u1 Set Set}]，将环境 hom 和证明宇宙固定到字面 [Set]，并在 [C := Sets@{o so} : Category@{so o o}] 处将 [Sets] 的载体宇宙 [o] 折叠到 [Set]，之后 [Sets_iprod_obj] 的 [u <= u0] 绑定也将索引向下传递。[iprod] 自身的固定在其打印类型 ([Limit@{u u Set u1} (DiscreteCat_Functor@{u u1 u0 Set} f)]) 中可见，并且接受 BOTH 供体——只有 [Cone] 在被声明为分开的级别被接受，因此它是区分控制——两者都固定在探针中。”归属是正确的，并且供体已被修复：[DiscreteCat_Functor] 已在 Instance/Discrete.v 中原地注释，在 PR “algebraic carriers are sets”（2026-09-17）中。在其之后测量，[iprod] 宣告在 [C : Category@{u1 u2 u2}] 之上且没有字面 [Set]，并且在 [Sets@{o so}] 上将其应用于 [Type@{o}] 索引的族是被接受的，读取为 [Limit@{o o o so} (DiscreteCat_Functor@{o o o so o o so} f) → obj [Sets@{o so}] ] 并带有 [o < so]。
 
  然而，下面的章节仍然统一写在 [{A : Set}] 上，以便四个回读适用于它们所回读的同一个 [f]。同样，该绑定器现在是一个选择，而不是一个固定点：是否可以在 [{A : Type}] 重新表述这四个 [iprod] 命名常量尚未重新测量，因为删除固定点的 PR 只更改了文字内容。上面的核心部分当时或现在都没有 [Set]。这些定义是在顶层声明的，而不是在 [Section] 中声明的，因为 [Context] 节在引脚可以传播之前一次性固定其宇宙，并且离散图在其内部随后被拒绝。
 
@@ -512,7 +512,7 @@ Example cone_leg_at_is_evaluation (d : D) (p : cone_apex) :
   cone_leg_at d p = @vertex_map _ _ _ _ p d ttt := eq_refl.
 
 (*
- "hence v as defined in (2) is a cone to the base F": the coherence of
+ “hence v as defined in (2) is a cone to the base F”: the coherence of
  the cone of legs is the argument cone's own coherence at the point. 
 
  --------
@@ -528,7 +528,7 @@ Qed.
 Definition cone_set_cone : Cone F :=
   {| vertex_obj := cone_apex; coneFrom := cone_set_acone |}.
 
-(* Mac Lane's [h]: "for each x in X, tau x is a cone to F from one point, so there is a unique function h : X --> Cone ( *, F) sending each x to tau x". / Mac Lane 的 [h] ：“对于 X 中的每个 x，τ x 是从一个点到 F 的锥，因此存在一个唯一的函数 h : X --> Cone ( *, F) 将每个 x 发送到 τ x。” *)
+(* Mac Lane's [h]: “for each x in X, tau x is a cone to F from one point, so there is a unique function h : X --> Cone ( *, F) sending each x to tau x”. / Mac Lane 的 [h] ：“对于 X 中的每个 x，τ x 是从一个点到 F 的锥，因此存在一个唯一的函数 h : X --> Cone ( *, F) 将每个 x 发送到 τ x。” *)
 Program Definition cone_set_med (N : Cone F) :
   vertex_obj[N] ~{Sets}~> cone_apex := {|
   morphism := fun e =>
@@ -584,8 +584,8 @@ Definition ConeSet_Complete : @Complete Sets := fun D F => cone_set_Limit F.
 (** ** Mac Lane's discrete example / **麦克莱恩的离散例子 *)
 
 (*
- "if J is discrete, the set Cone( *, F) of J-cones is just the cartesian
- product Pi_j F_j".  What is proved HERE is that sentence about the
+ “if J is discrete, the set Cone( *, F) of J-cones is just the cartesian
+ product Pi_j F_j”.  What is proved HERE is that sentence about the
  COMPATIBLE-FAMILY apex, whose relation to the indexed product is direct.
  The object Mac Lane's sentence actually names is the cone set, and
  Instance/Sets/Cone.v's [cone_apex_discrete_iprod_iso] carries this

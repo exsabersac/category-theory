@@ -13,8 +13,8 @@ Generalizable All Variables.
 (* * * An evaluated coequalizer: interconnecting a set of ports / * * 一个已评估的协同终结器：连接一组端口 *)
 
 (*
- Fong and Spivak, "Seven Sketches in Compositionality", §6.2.4
- example 6.42 (printed p. 194).  Take X the set of "connect these two"
+ Fong and Spivak, “Seven Sketches in Compositionality”, §6.2.4
+ example 6.42 (printed p. 194).  Take X the set of “connect these two”
  markers and Y the set of ports of a circuit; the two families of
  arrows give functions f, g : X → Y, and the coequalizer of f and g is
  the set of TERMINALS resulting from the interconnection -- the
@@ -26,7 +26,7 @@ Generalizable All Variables.
  unconnected port.  Nothing here is a new construction; it is the
  delivered one, exercised.
 
- WHY [Sets] AND NOT [FinSet], AND WHAT "EVALUATED" MEANS HERE
+ WHY [Sets] AND NOT [FinSet], AND WHAT “EVALUATED” MEANS HERE
 
  [FinSet] is where this library's finite combinatorics computes:
  Instance/FinSet/Pushout.v labels connected components with
@@ -140,7 +140,7 @@ Generalizable All Variables.
 
  STATUS: axiom-free.  61 named constants (the three inductives and
  their twelve constructors included), no [Program] obligations, all reporting
- "Closed under the global context"; the Makefile's
+ “Closed under the global context”; the Makefile's
  [print-assumptions] target audits eight of them. 
 
  --------
@@ -181,7 +181,7 @@ Definition IcTerminalSet : SetoidObject :=
 (*
  Three wires: IcP0-IcP1, IcP1-IcP2, IcP4-IcP5.  IcP3 is left unconnected, which is
  what makes the third terminal a singleton and keeps the example from
- degenerating into "everything is joined". 
+ degenerating into “everything is joined”. 
 
  --------
  三根线：IcP0-IcP1，IcP1-IcP2，IcP4-IcP5。IcP3未连接，这正是使第三个端子成为单独端子并防止示例退化为“所有端子都连接在一起”的原因。

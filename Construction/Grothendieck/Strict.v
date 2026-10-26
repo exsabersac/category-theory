@@ -22,11 +22,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/strict+category
  nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
  Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_construction
- Reference: Michael Hedberg, "A coherence theorem for Martin-Löf's type
- theory", Journal of Functional Programming 8(4), 1998
+ Reference: Michael Hedberg, “A coherence theorem for Martin-Löf's type
+ theory”, Journal of Functional Programming 8(4), 1998
  (decidable equality implies uniqueness of identity proofs).
 
- This file provides two constructors for the coherent "pseudofunctor-lite"
+ This file provides two constructors for the coherent “pseudofunctor-lite”
  [IndexedCat] (Construction/Indexed.v).
 
  The first constructor turns a functor [F : B ⟶ StrictCat] into an indexed

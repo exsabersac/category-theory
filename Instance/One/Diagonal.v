@@ -18,8 +18,8 @@ Generalizable All Variables.
 
  The constant diagram Δ[J](d) : J ⟶ D (every object ↦ d, every morphism ↦
  id[d]) does not depend on J's structure, only on d. nLab records this as a
- factorization through the point: "a constant functor can be expressed as the
- composite C → 1 → D", where the first arrow is the unique functor `! : J ⟶ 1`
+ factorization through the point: “a constant functor can be expressed as the
+ composite C → 1 → D”, where the first arrow is the unique functor `! : J ⟶ 1`
  ([one], here [Erase J] at Cat's Terminal instance) and the second is the
  functor `1 ⟶ D` picking out d — which is exactly the constant diagram on the
  terminal index category, Δ[1](d), written here Δ(d).

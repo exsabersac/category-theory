@@ -29,11 +29,11 @@ Generalizable All Variables.
 
 (** * The solution set condition cannot be dropped  / * 解集条件不能被删除*)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+(* Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
          Springer GTM 5, §V.6, book pp. 122-123 (the remarks after
          Theorems 2 and 3).  Catalog ids [maclane:V.6:remark-ord-
          counterexample], [maclane:V.6:remark-comp-bool].
-   Book: Awodey, "Category Theory", 2nd ed., §9.8, Remark 9.30, printed
+   Book: Awodey, “Category Theory”, 2nd ed., §9.8, Remark 9.30, printed
          pp. 253-254.  Catalog id [awodey:9.8:remark30].
    nLab: https://ncatlab.org/nlab/show/adjoint+functor+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Complete_Boolean_algebra
@@ -52,13 +52,13 @@ Generalizable All Variables.
 
    ** THE ISSUE'S SURVEY, RE-MEASURED
 
-   Issue #444's "Current state in the library" and its Awodey §9.8
+   Issue #444's “Current state in the library” and its Awodey §9.8
    section are off in eight places, each re-measured on 2026-09-13
    against a green build of master 050345f0.  Where only the EVIDENCE is
    wrong and the substance survives, that is said too.
 
-   1. "The library has no ordinals as a category (`rg -w 'Ord|OrdCat'` →
-      a lone prose cross-reference in Instance/Proset.v)".  The grep
+   1. “The library has no ordinals as a category (`rg -w 'Ord|OrdCat'` →
+      a lone prose cross-reference in Instance/Proset.v)”.  The grep
       is wrong: `grep -rnw --include='*.v' -E 'Ord|OrdCat' .` returns 73
       lines over 8 files.  [Ord] IS a category in tree -- Instance/Ord.v,
       the category of ALL PREORDERS (Mac Lane's Preord, landed by #372),
@@ -70,7 +70,7 @@ Generalizable All Variables.
       ordinals (`grep -rin --include='*.v' -E 'category of (all )?(small
       )?ordinals|ordinals as a category|class of small ordinals' .` → 0).
 
-   2. "no smallness/largeness machinery": FALSE.  Theory/Size.v declares
+   2. “no smallness/largeness machinery”: FALSE.  Theory/Size.v declares
       [LocallySmall] and [Small], with
       [locally_small_ambient], [small_locally_small] and
       the witness [One_Small].  Both predicates are USED below --
@@ -78,9 +78,9 @@ Generalizable All Variables.
       [LocallySmall] is the free extra hypothesis the sharpness clause
       carries.
 
-   3. "it records no example of a continuous functor without a left
+   3. “it records no example of a continuous functor without a left
       adjoint (`rg -i 'counterexample|no left adjoint'` → nothing of this
-      kind)".  That grep returns 60 lines over 42 files.  The substance
+      kind)”.  That grep returns 60 lines over 42 files.  The substance
       survives with one correction.  Sweeping for files that carry BOTH
       [ContinuousFunctor] and one of [no_left_adjoint|not_left_adjoint|
       _no_adjoint] returns exactly two: Instance/FdVect/NoRightAdjoint.v
@@ -89,8 +89,8 @@ Generalizable All Variables.
       the absence of a RIGHT adjoint, which is the other side of the
       street and not a witness to §V.6.
 
-   4. "Complete Boolean algebras and Solovay's theorem are entirely
-      absent (`rg -i 'solovay|complete boolean|CABA'` → 0 hits)": the
+   4. “Complete Boolean algebras and Solovay's theorem are entirely
+      absent (`rg -i 'solovay|complete boolean|CABA'` → 0 hits)”: the
       sweep returns exactly ONE line, Instance/FdVect/NoRightAdjoint.v:
       104, and it cites a DIFFERENT theorem of Solovay's -- the ZF + DC
       model in which every set of reals has the Baire property
@@ -99,25 +99,25 @@ Generalizable All Variables.
       algebras or the free-complete-Boolean-algebra theorem, so the
       substance survives.
 
-   5. The Awodey clause's "the library has no smallness or local-
+   5. The Awodey clause's “the library has no smallness or local-
       smallness predicate at all, so the clause cannot currently be
-      phrased, let alone shown necessary": FALSE, by item 2.  The clause
+      phrased, let alone shown necessary”: FALSE, by item 2.  The clause
       is phrased below ([RepresentabilityWithoutSolutionSet],
       [GAFTWithoutSolutionSet], [no_initial_not_Small]).
 
    6. The Awodey clause's three prose citations, checked one by one.
-      [Adjunction/GAFT.v] is RIGHT: the paragraph cited opens "The
+      [Adjunction/GAFT.v] is RIGHT: the paragraph cited opens “The
       hypotheses repair a genuine size obstruction rather than decorate
-      the statement".  [Structure/Complete.v] is
-      RIGHT: the paragraph cited opens "The smallness discipline the
-      header describes is not decoration".
+      the statement”.  [Structure/Complete.v] is
+      RIGHT: the paragraph cited opens “The smallness discipline the
+      header describes is not decoration”.
       [Instance/Poset.v] is WRONG: the range cited is the Lawvere
       enrichment paragraph (Two, metric spaces).  The adjoint-functor-
-      theorem size paragraph is the one after it, ending "must carry a
-      [SolutionSet] hypothesis".
+      theorem size paragraph is the one after it, ending “must carry a
+      [SolutionSet] hypothesis”.
 
-   7. "Show the constant one-point functor [Ord^op ⟶ Sets] is continuous
-      but not representable" is written as if nothing of it existed.  The
+   7. “Show the constant one-point functor [Ord^op ⟶ Sets] is continuous
+      but not representable” is written as if nothing of it existed.  The
       constant one-point functor is already in tree as [ConstOne]
       (Structure/UniversalProperty/Terminal.v), and so are BOTH halves
       of the representable/initial correspondence -- [initial_to_repr]
@@ -128,11 +128,11 @@ Generalizable All Variables.
       and the consequences.
 
    8. THE MEASUREMENT THAT REDIRECTS THE ISSUE, corrected.  An earlier
-      revision of this item said the library's [Complete] carries "no
-      smallness side condition", that [@Complete C] therefore ALREADY
-      gives [@Initial C], and that the pair "complete with no initial
-      object" is consequently EMPTY so that "the §V.6 counterexample
-      cannot be stated over [@Complete]".  That overstates a real fact
+      revision of this item said the library's [Complete] carries “no
+      smallness side condition”, that [@Complete C] therefore ALREADY
+      gives [@Initial C], and that the pair “complete with no initial
+      object” is consequently EMPTY so that “the §V.6 counterexample
+      cannot be stated over [@Complete]”.  That overstates a real fact
       into a false one, and the audit of this file measured the
       difference.  What is true is sharper and is the point of the whole
       issue.
@@ -192,8 +192,8 @@ Generalizable All Variables.
       claimed away.
 
    ** WHAT IS DELIVERED (29 named constants plus the one [Program]
-      obligation of [ConstOne_pt]; every one "Closed under the global
-      context", zero [Axioms:] lines)
+      obligation of [ConstOne_pt]; every one “Closed under the global
+      context”, zero [Axioms:] lines)
 
    (A) CONTINUITY, WITH NO HYPOTHESIS AT ALL.  [ConstOne_continuous C :
        ContinuousFunctor (ConstOne C)] for EVERY category C -- no
@@ -229,8 +229,8 @@ Generalizable All Variables.
        six in Theory/Equivalence/Colimit.v naming [two_IsALimit Id[_2]],
        which is the walking arrow and says nothing about initiality, and
        two that are artifacts of the case-insensitive pattern matching
-       "IsALimit identifies" (Test/ProbeLimitInitial334.v) and
-       "colimit identification" (Instance/Ab/DirectedColimit.v).
+       “IsALimit identifies” (Test/ProbeLimitInitial334.v) and
+       “colimit identification” (Instance/Ab/DirectedColimit.v).
 
    (D) THE SHARPNESS CLAUSE, Awodey's, using the smallness vocabulary
        that item 2 says exists.  [RepresentabilityWithoutSolutionSet] and
@@ -241,7 +241,7 @@ Generalizable All Variables.
        small-shape-complete C with no initial object.  Adding
        [LocallySmall] costs the refutation nothing, since
        [locally_small_ambient] discharges it for every category -- which
-       is the honest form of "local smallness does not repair the gap" in
+       is the honest form of “local smallness does not repair the gap” in
        a library where local smallness is built into [Class Category].
        [no_initial_not_Small] is the size half: any witness to the
        sharpness is necessarily NOT [Small].
@@ -250,8 +250,8 @@ Generalizable All Variables.
        set-theoretic input as a visible premise.  The [Solovay] section
        takes a category [CBA], a functor [U : CBA ⟶ Sets], an object
        [Countable] and the hypothesis [solovay : UniversalArrow Countable
-       U → False] -- "there is no free complete Boolean algebra on a
-       countable set" -- and concludes [solovay_no_left_adjoint] and,
+       U → False] -- “there is no free complete Boolean algebra on a
+       countable set” -- and concludes [solovay_no_left_adjoint] and,
        with small-shape completeness and continuity of U added,
        [solovay_gaft_refuted].  NOTHING IS CONSTRUCTED: no complete
        Boolean algebra, no category of them, no forgetful functor, and
@@ -324,7 +324,7 @@ Generalizable All Variables.
 
    - 29 [.glob] declaration heads (19 [def], 10 [prf]) plus
      [ConstOne_pt_obligation_1], which is reachable only under its fully
-     qualified name; all 30 report "Closed under the global context".
+     qualified name; all 30 report “Closed under the global context”.
    - Two [Defined] tokens ([ConstOne_continuous] and
      [ConstOne_representable_iff_initial]) and ten [Qed]; the other
      seventeen heads are [:=] terms.  The biconditional is [Defined] so
@@ -530,7 +530,7 @@ End LimitId.
 
 (**
 ** Consequence: the library's [Complete] already carries an initial
-       object, so "complete with no initial object" is an EMPTY hypothesis 
+       object, so “complete with no initial object” is an EMPTY hypothesis 
 
 --------
 ** 结果：库的 [Complete] 已经带有初始值

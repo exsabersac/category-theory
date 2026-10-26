@@ -12,13 +12,13 @@ nLab:      https://ncatlab.org/nlab/show/strict+2-category
    nLab:      https://ncatlab.org/nlab/show/interchange+law
    nLab:      https://ncatlab.org/nlab/show/whiskering
    Wikipedia: https://en.wikipedia.org/wiki/Strict_2-category
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
               GTM 5, §II.5, printed pp. 42-45 (horizontal composition, the
               interchange law, Theorem 1, and the definitions of a double
               category and of a 2-category)
    Book:      Mac Lane, ibid., §XII.3, printed p. 273 (2-categories)
-   Book:      Riehl, "Category Theory in Context", Definition 1.7.8
-   Paper:     Ehresmann, "Catégories doubles et catégories structurées",
+   Book:      Riehl, “Category Theory in Context”, Definition 1.7.8
+   Paper:     Ehresmann, “Catégories doubles et catégories structurées”,
               C. R. Acad. Sci. Paris 256 (1963), 1198-1201
 
    Mac Lane states the two-dimensional structure twice, in two different
@@ -34,10 +34,10 @@ nLab:      https://ncatlab.org/nlab/show/strict+2-category
 
    and every arrow that is an identity for `∘` is also an identity for `·`.
    Mac Lane then abstracts: a DOUBLE CATEGORY (§II.5, printed p. 44, after
-   Ehresmann) is "a set which is the set of arrows for two different
-   composition operations which together satisfy the interchange law", and a
-   2-CATEGORY is "a double category in which every identity arrow for the
-   first composition is also an identity for the second". His own negative
+   Ehresmann) is “a set which is the set of arrows for two different
+   composition operations which together satisfy the interchange law”, and a
+   2-CATEGORY is “a double category in which every identity arrow for the
+   first composition is also an identity for the second”. His own negative
    example is recorded there too: the commutative squares of Set form a
    double category which is NOT a 2-category.
 
@@ -51,7 +51,7 @@ nLab:      https://ncatlab.org/nlab/show/strict+2-category
    at, and Instance/Cat/TwoCategory.v builds `Cat_TwoCategory` on it.  The
    arrows-only classes [StrictDoubleCategory] and [StrictTwoCategory] are
    Mac Lane's own words, and they are what makes his def-3 condition —
-   "every identity for one composition is an identity for the other" —
+   “every identity for one composition is an identity for the other” —
    LITERALLY statable, hence refutable: in the typed style that sentence
    compares two families of cells whose types do not even match unless the
    vertical arrow in question is already an identity, so a typed rendering
@@ -65,11 +65,11 @@ nLab:      https://ncatlab.org/nlab/show/strict+2-category
    field-for-field with no proof content).  A strict double category is
    then one setoid of cells carrying two [MetaComp] structures plus
    interchange, each of them a [Metacategory] ([dvert_Meta],
-   [dhoriz_Meta]), so Mac Lane's "two different categories" are obtained by
+   [dhoriz_Meta]), so Mac Lane's “two different categories” are obtained by
    feeding them to that file's [Category_from_Metacategory]
    ([dvert_Category], [dhoriz_Category]).
 
-   HOW STRICT IS "STRICT" HERE, EXACTLY.  A textbook strict 2-category has
+   HOW STRICT IS “STRICT” HERE, EXACTLY.  A textbook strict 2-category has
    1-cell composition associative and unital ON THE NOSE, so that the two
    bracketings of a triple composite are the same 1-cell and a 2-cell
    between the one is a 2-cell between the other.  In this library that
@@ -157,9 +157,9 @@ Why two dimensions, and why the interchange law is the whole story
 
    nLab:  https://ncatlab.org/nlab/show/2-category
    nLab:  https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
-   Paper: Bénabou, "Introduction to bicategories", Lecture Notes in
+   Paper: Bénabou, “Introduction to bicategories”, Lecture Notes in
           Mathematics 47 (1967), 1-77
-   Paper: Kelly, Street, "Review of the elements of 2-categories", Lecture
+   Paper: Kelly, Street, “Review of the elements of 2-categories”, Lecture
           Notes in Mathematics 420 (1974), 75-103
 
    Categories organise objects and maps; but the maps between categories —
@@ -623,9 +623,9 @@ Arguments IsHUnit {_ _} _.
 (**
 ** The arrows-only presentation (Mac Lane §II.5 definitions 2 and 3)
 
-    Mac Lane's double category is "a set which is the set of arrows for two
+    Mac Lane's double category is “a set which is the set of arrows for two
     different composition operations which together satisfy the interchange
-    law".  A composition operation on a set of arrows, in his sense, is
+    law”.  A composition operation on a set of arrows, in his sense, is
     exactly the data of Theory/Metacategory/General.v's [Metacategory]
     minus the arrow type: partial, given as the graph [mccomp] of a
     single-valued relation, with the two halves of axiom (i), axiom (ii),
@@ -640,7 +640,7 @@ Mac Lane 的双重范畴是“一个集合，它是两种不同组合运算的�
 *)
 
 Record MetaComp {A : Type} (S : Setoid A) : Type := {
-  (* [mccomp g f h] reads "g∙f is defined, and equals h". / [mccomp g f h] 读取“g∙f 已定义，并且等于 h”。 *)
+  (* [mccomp g f h] reads “g∙f is defined, and equals h”. / [mccomp g f h] 读取“g∙f 已定义，并且等于 h”。 *)
   mccomp : A → A → A → Type;
 
   mcdefined (g f : A) := ∃ h, mccomp g f h;
@@ -718,8 +718,8 @@ Definition MetaComp_of_Metacategory (M : Metacategory) :
 
 Record StrictDoubleCategory : Type := {
   (*
-"a set which is the set of arrows for two different composition
-     operations" — here a setoid of cells, since every collection in this
+“a set which is the set of arrows for two different composition
+     operations” — here a setoid of cells, since every collection in this
      library carries its own equality.
 
 --------
@@ -732,7 +732,7 @@ Record StrictDoubleCategory : Type := {
   dhoriz : MetaComp dcell_setoid;       (* the second composition, `∘` / 第二篇作品，`∘` *)
 
   (*
-"which together satisfy the interchange law": Mac Lane's display (5),
+“which together satisfy the interchange law”: Mac Lane's display (5),
      `(τ' · σ') ∘ (τ · σ) = (τ' ∘ τ) · (σ' ∘ σ)`, stated for partial
      operations in the form of his remark 2 — the equation is asserted
      whenever the composites on both sides are defined.
@@ -755,8 +755,8 @@ Record StrictDoubleCategory : Type := {
 (*
 The two compositions as metacategories, hence — through
    Theory/Metacategory/General.v's passage — as ordinary categories.  This
-   is Mac Lane's Theorem 1 phrase "the arrow set of two different
-   categories" made literal: [dvert_Category] has the 1-cells of one
+   is Mac Lane's Theorem 1 phrase “the arrow set of two different
+   categories” made literal: [dvert_Category] has the 1-cells of one
    direction as its objects and [dhoriz_Category] those of the other.
 
 --------
@@ -792,10 +792,10 @@ Definition dhident (D : StrictDoubleCategory) (u : dcell D) : Type :=
 (**
 *** Definition 3: a 2-category
 
-    "A 2-category is a double category in which every identity arrow for the
-    first composition is also an identity for the second."  The orientation
-    follows Theorem 1, whose closing clause reads "every arrow that is an
-    identity for ∘ is also an identity for ·": the HORIZONTAL identities are
+    “A 2-category is a double category in which every identity arrow for the
+    first composition is also an identity for the second.”  The orientation
+    follows Theorem 1, whose closing clause reads “every arrow that is an
+    identity for ∘ is also an identity for ·”: the HORIZONTAL identities are
     required to be vertical ones.  The converse is not asked for, and does
     not hold — [NatSq_vid_is_not_hid] below witnesses the asymmetry
     concretely, and [twocategory_tid2_vunit] is the globular half that
@@ -1201,7 +1201,7 @@ Example NatSq_vpaste_computes :
     identity and not merely up to `≈`.  (iii) Three clauses saying the
     class's own boundary identifications ARE the transports along those
     equations — that the chosen [tassoc_cast], [tunitl_cast],
-    [tunitr_cast] are the canonical ones, which is what "strict" means at
+    [tunitr_cast] are the canonical ones, which is what “strict” means at
     the level of 2-cells.
 
     WHAT THIS EXCLUDES, DISCLOSED.  At `Cat` the pack is not inhabitable

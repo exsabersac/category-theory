@@ -35,7 +35,7 @@ Generalizable All Variables.
     Classically [ev1] is faithful: a morphism of models is determined by
     its underlying function, because every object of the theory is a
     finite power of the generic object and models preserve those powers
-    ("products separate points").  In this library [LawvereTheory]
+    (“products separate points”).  In this library [LawvereTheory]
     mirrors the relaxed shape of [Construction/PROP.v]'s [PROP] class:
     [law_of_nat] is NOT required to be surjective on objects, so a
     theory may contain an object unreachable from the naturals, and two

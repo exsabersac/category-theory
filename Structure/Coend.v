@@ -76,13 +76,13 @@ Generalizable All Variables.
  The coend calculus, its history, and the existential reading
 
  nLab:  https://ncatlab.org/nlab/show/coend
- Book:  Loregian, "(Co)end Calculus", London Math. Soc. Lecture Note
+ Book:  Loregian, “(Co)end Calculus”, London Math. Soc. Lecture Note
  Series 468, Cambridge University Press 2021
- Paper: Yoneda, "On Ext and exact sequences", J. Fac. Sci. Univ. Tokyo
+ Paper: Yoneda, “On Ext and exact sequences”, J. Fac. Sci. Univ. Tokyo
  Sec. I, 8 (1960) 507–576
- Book:  Mac Lane, "Categories for the Working Mathematician", Springer
+ Book:  Mac Lane, “Categories for the Working Mathematician”, Springer
  1971 (2nd ed. 1998), chapter IX
- Paper: Day, "On closed categories of functors", Midwest Category
+ Paper: Day, “On closed categories of functors”, Midwest Category
  Seminar IV, Springer LNM 137 (1970) 1–38
 
  A coend integrates a functor of mixed variance over its diagonal into
@@ -95,7 +95,7 @@ Generalizable All Variables.
  ∐_{f : c → c'} F(c', c) ⇉ ∐_c F(c, c) → ∫^c F(c, c)
 
  forcing the contravariant action `F(f, 1)` and the covariant action
- `F(1, f)` to agree (nLab, "coend"); this is [coend_cowedge] read as a
+ `F(1, f)` to agree (nLab, “coend”); this is [coend_cowedge] read as a
  quotient rather than as a family of equations.  Many canonical
  constructions are inherently of mixed variance, and it is these, not
  covariant diagrams, that a coend is built to express.
@@ -103,21 +103,21 @@ Generalizable All Variables.
  The notation and the calculus accumulated in layers.  Yoneda
  introduced the integral sign for ends and coends in §4 of his 1960
  dissertation, though under a convention reversed from the modern one:
- he named the coend "integration" and the end "cointegration" (Yoneda
- 1960; nLab, "end").  Mac Lane gave the textbook account — chapter IX
- of "Categories for the Working Mathematician" defines dinatural
+ he named the coend “integration” and the end “cointegration” (Yoneda
+ 1960; nLab, “end”).  Mac Lane gave the textbook account — chapter IX
+ of “Categories for the Working Mathematician” defines dinatural
  transformations and presents ends and coends as universal (co)wedges,
  the presentation this file inherits through Structure/Wedge and
  Structure/End (Mac Lane 1971).  Mac Lane also used a coend to render a
  construction in algebraic topology as a tensor product of functors,
  `F ⊗_C G ≅ ∫^c F c ⊗ G c`, with `C` cast in the role of the ring
  (reported in Loregian's survey).  Loregian later supplied the first
- book-length treatment and described the technique as a "secret weapon"
+ book-length treatment and described the technique as a “secret weapon”
  of working category theorists (Loregian 2021).
 
  The utility is the calculus itself: a compact algebra of integral
  manipulations that replaces long diagram chases.  Its basic reduction
- is the co-Yoneda, or "ninja Yoneda", lemma — every functor is a coend
+ is the co-Yoneda, or “ninja Yoneda”, lemma — every functor is a coend
  of representables, `∫^{c'} C(c', c) · F c' ≅ F c` — proven in Sets in
  Theory/Coend/Yoneda.v; its second rule is the Fubini interchange
  `∫^{(c,d)} H ≅ ∫^c ∫^d H` (Theory/Coend/Fubini.v).  Over these run the
@@ -129,19 +129,19 @@ Generalizable All Variables.
  `∫^c D(K c, d) · F c`, the coend presentation of the extension that
  Theory/Kan/Extension.v instead builds through an adjunction; and the
  geometric realization of a simplicial set as a single coend (nLab,
- "coend").
+ “coend”).
 
  Computationally a coend is an existential type.  An element of
  `∫^c F(c, c)` is a pair `(c, a)` with `a : F(c, c)` — a hidden object
  together with a value — taken modulo the dinaturality gluing that
  identifies `(c, F(f, 1) b)` with `(c', F(1, f) b)`; dually an end is
  a polymorphic `∀ c. …` carrying a naturality side-condition
- (Milewski, "Category Theory for Programmers", §26).  This is the
+ (Milewski, “Category Theory for Programmers”, §26).  This is the
  shape of the concrete coend in Instance/Sets/Coend.v, where an
  injection at a witness is quotiented by exactly that relation, and it
  is why existential and parametric encodings stand in for coends in
- profunctor-optics libraries (Clarke et al., "Profunctor Optics, a
- Categorical Update", arXiv 2020). 
+ profunctor-optics libraries (Clarke et al., “Profunctor Optics, a
+ Categorical Update”, arXiv 2020). 
 
  --------
  共端演算、它的历史以及存在性解读
@@ -154,7 +154,7 @@ Generalizable All Variables.
 
  ∐_{f : c → c'} F(c', c) ⇉ ∐_c F(c, c) → ∫^c F(c, c)
 
- 迫使逆变作用和协变作用一致(nLab, "coend")；这可以将共端理解为一个商，而不是一族方程。许多典型构造本质上是混合方差的，正是这些构造，而不是协变图，才是共端旨在表达的。符号和微积分逐层积累。Yoneda 在他 1960 年的论文第 §4 节中引入了端与共端的积分符号，尽管采用的约定与现代的相反：他将共端称为“积分”，将端称为“共积分”（Yoneda 1960；nLab，“end”）。Mac Lane 给出了教材式的描述——《Categories for the Working Mathematician》第 IX 章定义了准自然变换，并将端与共端作为普遍的（共）楔子呈现，本文件通过 Structure/Wedge 和 Structure/End 继承了该呈现方式（Mac Lane 1971）。Mac Lane 还使用共端将代数拓扑中的一个构造表示为函子张量积，`F ⊗_C G ≅ ∫^c F c ⊗ G c`，其中 `C` 被赋予环的角色（Loreggian 的综述中有报道）。Loregian 后来提供了第一本书长度的论述，并将这一技术描述为范畴论工作者的“秘密武器”（Loregian 2021）。这个工具本身就是微积分：一种紧凑的积分操作代数，可以替代冗长的图式追踪。它的基本约化是共约内达引理（co-Yoneda，或者称“忍者约内达”引理）——每个函子都是可表示函子的共内端，`∫^{c'} C(c', c) · F c' ≅ F c`——在 Sets 的 Theory/Coend/Yoneda.v 中证明；它的第二条规则是 Fubini 交换律 `∫^{(c,d)} H ≅ ∫^c ∫^d H`（Theory/Coend/Fubini.v）。在这些之上运行的应用包括：Day卷积，它通过`(F * G) c ≅ ∫^{a,b} C(a ⊗ b, c) · F a · G b`使函子范畴成为幺半群 (Day 1970；Construction/Day.v)；Profunctor的复合`(Q ∘ P)(c, e) ≅ ∫^d P(c, d) × Q(d, e)` (Theory/Profunctor.v, Construction/Profunctor/Compose.v)；逐点左Kan扩展`∫^c D(K c, d) · F c`，扩展的coend表示，而Theory/Kan/Extension.v通过伴随建立该表示；以及将单纯集合的几何实现作为单个coend (nLab, "coend")。从计算的角度来看，coend 是一种存在类型。`∫^c F(c, c)` 的一个元素是一个对 `(c, a)` 和 `a : F(c, c)` —— 一个隐藏对象和一个值 —— 根据同自然性粘合模掉的，其中 `(c, F(f, 1) b)` 被识别为 `(c', F(1, f) b)`；相对地，end 是一个多态的 `∀ c. …`，并携带一个自然性附加条件（Milewski，《程序员的范畴论》，§26）。这是 Instance/Sets/Coend.v 中具体 coend 的形式，其中一个在见证上的注入正是通过该关系取商，并且这也解释了为什么存在类型和参数编码在 profunctor-optics 库中可以代替 coend（Clarke 等，《Profunctor Optics，一次范畴更新》，arXiv 2020）。
+ 迫使逆变作用和协变作用一致(nLab, “coend”)；这可以将共端理解为一个商，而不是一族方程。许多典型构造本质上是混合方差的，正是这些构造，而不是协变图，才是共端旨在表达的。符号和微积分逐层积累。Yoneda 在他 1960 年的论文第 §4 节中引入了端与共端的积分符号，尽管采用的约定与现代的相反：他将共端称为“积分”，将端称为“共积分”（Yoneda 1960；nLab，“end”）。Mac Lane 给出了教材式的描述——《Categories for the Working Mathematician》第 IX 章定义了准自然变换，并将端与共端作为普遍的（共）楔子呈现，本文件通过 Structure/Wedge 和 Structure/End 继承了该呈现方式（Mac Lane 1971）。Mac Lane 还使用共端将代数拓扑中的一个构造表示为函子张量积，`F ⊗_C G ≅ ∫^c F c ⊗ G c`，其中 `C` 被赋予环的角色（Loreggian 的综述中有报道）。Loregian 后来提供了第一本书长度的论述，并将这一技术描述为范畴论工作者的“秘密武器”（Loregian 2021）。这个工具本身就是微积分：一种紧凑的积分操作代数，可以替代冗长的图式追踪。它的基本约化是共约内达引理（co-Yoneda，或者称“忍者约内达”引理）——每个函子都是可表示函子的共内端，`∫^{c'} C(c', c) · F c' ≅ F c`——在 Sets 的 Theory/Coend/Yoneda.v 中证明；它的第二条规则是 Fubini 交换律 `∫^{(c,d)} H ≅ ∫^c ∫^d H`（Theory/Coend/Fubini.v）。在这些之上运行的应用包括：Day卷积，它通过`(F * G) c ≅ ∫^{a,b} C(a ⊗ b, c) · F a · G b`使函子范畴成为幺半群 (Day 1970；Construction/Day.v)；Profunctor的复合`(Q ∘ P)(c, e) ≅ ∫^d P(c, d) × Q(d, e)` (Theory/Profunctor.v, Construction/Profunctor/Compose.v)；逐点左Kan扩展`∫^c D(K c, d) · F c`，扩展的coend表示，而Theory/Kan/Extension.v通过伴随建立该表示；以及将单纯集合的几何实现作为单个coend (nLab, “coend”)。从计算的角度来看，coend 是一种存在类型。`∫^c F(c, c)` 的一个元素是一个对 `(c, a)` 和 `a : F(c, c)` —— 一个隐藏对象和一个值 —— 根据同自然性粘合模掉的，其中 `(c, F(f, 1) b)` 被识别为 `(c', F(1, f) b)`；相对地，end 是一个多态的 `∀ c. …`，并携带一个自然性附加条件（Milewski，《程序员的范畴论》，§26）。这是 Instance/Sets/Coend.v 中具体 coend 的形式，其中一个在见证上的注入正是通过该关系取商，并且这也解释了为什么存在类型和参数编码在 profunctor-optics 库中可以代替 coend（Clarke 等，《Profunctor Optics，一次范畴更新》，arXiv 2020）。
 *)
 
 (*

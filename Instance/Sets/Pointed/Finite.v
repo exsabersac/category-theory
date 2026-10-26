@@ -12,14 +12,14 @@ Generalizable All Variables.
 (*
  nLab:      https://ncatlab.org/nlab/show/decidable+equality
  nLab:      https://ncatlab.org/nlab/show/finite+set
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer 1998, §I.7 (printed p. 26)
 
  Instance/Sets/Pointed.v proves two halves of Mac Lane's proposition over
  explicit hypotheses — decidable image membership for the splitting of a
  monic, an enumerated domain plus a decidable codomain for the splitting of
  an epic — because without them the statements are not constructively
- available ("every epimorphism splits" being the axiom of choice).  This
+ available (“every epimorphism splits” being the axiom of choice).  This
  file discharges all of them at once, for the class where they are free:
  finite pointed sets with decidable equality.
 

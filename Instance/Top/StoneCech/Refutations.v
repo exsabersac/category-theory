@@ -24,7 +24,7 @@ Generalizable All Variables.
 (*
  Why the adjoint functor theorems give no Stone–Čech over [Top]
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.2 Proposition 3, book p. 114 (maclane:V.2:prop3), Freyd's theorem
  that a small complete category is a preorder, consumed through
  Structure/Complete/Freyd.v; §V.6 and §V.8 as in the header of
@@ -301,8 +301,8 @@ Generalizable All Variables.
  draft measured stands as the scope of the two older constants,
  which apply [canonical_ArrowIndex] to [CompHaus]'s own objects:
  [StoneCech_adjunction_refuted_IEM] is refused applied at
- [CompHaus : Category@{c h h}] under [h < c] ("universe
- inconsistency: Cannot enforce c = h because h < c"), and
+ [CompHaus : Category@{c h h}] under [h < c] (“universe
+ inconsistency: Cannot enforce c = h because h < c”), and
  [CompHaus_not_complete_IEM] is refused at GAFT's shape
  [Complete@{h h h c}], needing [c <= s].  Anything over the
  Prop-valued re-encoding (#1328), and Stone–Čech itself (#1329).
@@ -393,7 +393,7 @@ Generalizable All Variables.
  [p] 位于其对象宇宙下方，或其第十四和第十五槽，即 Hausdorff 证明的打开槽，位于点的宇宙
  [o] 下，并且在一个实例上对完整性进行反驳，其中 [t < h < c] 位于
  [c] 以下的形状上（覆盖范围）；从经典意义上讲，这些实例也是错误的，对象的点仍然位于 [o]（一个元论证）。#455 的评论衡量了这个段落草稿否认的内容：即在 [CompHaus] 的一个实例上某事被驳斥，其对象宇宙 [c] 位于其同类宇宙 [h] 之上，一个箭头索引在 [h] 不需要对象类型本身适配 [h]，而且 SAFT 在 [CompHaus_Incl] 的完整性前提，在一个不同于 [CompHaus_WellPowered] 的良好赋能下并且位于低于对象的形状宇宙里，也被驳斥，草稿将 [IEM] 形式的 [c <= s] 视为极限。[CompHaus] 的一个箭头索引只需要 [Top] 中的一个，其对象适配 [h]（[CompHaus_ArrowIndex_of_Top]），[IEM] 通过 [Top] 的 [canonical_ArrowIndex] 提供了那个对象，而 [StoneCech_adjunction_refuted_IEM_above]、[CompHaus_not_complete_IEM_above]、[CompHaus_not_complete_IEM_below] 和 [SAFT_Incl_IEM_vacuous_below] 就是那些驳斥。草案测量所表示的范围是两个较老常数的范围，它们将 [canonical_ArrowIndex] 应用于 [CompHaus] 自身的对象：
- [StoneCech_adjunction_refuted_IEM] 在 [CompHaus : Category@{c h h}] 下根据 [h < c] 被拒绝应用（"宇宙不一致：不能强制 c = h 因为 h < c"），并且 [CompHaus_not_complete_IEM] 在 GAFT 的形状 [Complete@{h h h c}] 被拒绝，需要 [c <= s]。超过 Prop 值重编码（#1328）以及 Stone–Čech 本身（#1329）。更正（#458）：在 Prop 值的 [PTopCat] 上重新运行此文件的完整性反驳是 Instance/Top/Complete/Refutations.v 的，及其余极对偶是 Instance/Top/Cocomplete/Refutations.v 的，[Top_not_cocomplete_Freyd] 是这里 [Top_not_complete] 的对偶；[PCompHaus] 和 Stone–Čech 保持 #1328 和 #1329。并且
+ [StoneCech_adjunction_refuted_IEM] 在 [CompHaus : Category@{c h h}] 下根据 [h < c] 被拒绝应用（“宇宙不一致：不能强制 c = h 因为 h < c”），并且 [CompHaus_not_complete_IEM] 在 GAFT 的形状 [Complete@{h h h c}] 被拒绝，需要 [c <= s]。超过 Prop 值重编码（#1328）以及 Stone–Čech 本身（#1329）。更正（#458）：在 Prop 值的 [PTopCat] 上重新运行此文件的完整性反驳是 Instance/Top/Complete/Refutations.v 的，及其余极对偶是 Instance/Top/Cocomplete/Refutations.v 的，[Top_not_cocomplete_Freyd] 是这里 [Top_not_complete] 的对偶；[PCompHaus] 和 Stone–Čech 保持 #1328 和 #1329。并且
  Instance/Top/Complete/Refutations.v 在同源宇宙之下携带 [Top_not_complete_IEM] 和 [CompHaus_not_complete_IEM_below]，其中
  COVERAGE 记录了此处没有 [IEM] 形式适用，适用于每个严格高于以下点的形状宇宙：[Top_not_complete_below_IEM] 和 [CompHaus_not_complete_below_IEM]，通过在同源宇宙之间移动的箭头索引 [Top]（[Top_ArrowIndex_transport]）。计数。这里有33个常量（18个[Definition]，4个[Lemma]，11个[Theorem]），
  所有这些在其完全限定名称下都在全局上下文中闭合，

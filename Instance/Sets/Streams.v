@@ -22,7 +22,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Coinduction
  Wikipedia: https://en.wikipedia.org/wiki/Bisimulation
 
- For a fixed setoid [A] the "head/tail" endofunctor on [Sets] is
+ For a fixed setoid [A] the “head/tail” endofunctor on [Sets] is
  [StreamF X := A × X] (the product setoid).  Its coalgebras [(X, c)] with
  [c : X ~> A × X] are precisely deterministic [A]-labelled transition
  systems: each state [x] emits a head [fst (c x)] and steps to [snd (c x)].
@@ -33,7 +33,7 @@ Generalizable All Variables.
  Two subtleties are specific to a constructive, axiom-free setting:
 
  - Streams are a [CoInductive] and equality of coinductives is intensionally
- too fine (it is not provable without extra axioms), so the "correct" home
+ too fine (it is not provable without extra axioms), so the “correct” home
  for streams is the setoid whose relation is bisimilarity [bisim] — the
  largest relation matching heads (under [A]'s [≈]) and relating tails.  We
  prove [bisim] is an equivalence by guarded corecursion and package the

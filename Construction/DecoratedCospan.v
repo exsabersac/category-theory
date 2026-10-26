@@ -18,10 +18,10 @@ Generalizable All Variables.
 (*
    * * Decorated cospans (Fong)
 
-   Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872
+   Reference: Brendan Fong, “Decorated Cospans”, arXiv:1502.00872
    (published as Theory and Applications of Categories, Vol. 30, No. 33,
-   2015, pp. 1096-1120); and Baez, Fong & Pollard, "A Compositional
-   Framework for Markov Processes", arXiv:1508.06448.
+   2015, pp. 1096-1120); and Baez, Fong & Pollard, “A Compositional
+   Framework for Markov Processes”, arXiv:1508.06448.
 
    nLab:      https://ncatlab.org/nlab/show/decorated+cospan
    (Wikipedia has no dedicated decorated-cospan article as of this
@@ -30,7 +30,7 @@ Generalizable All Variables.
 
    A decorated cospan is a cospan [X → N ← Y] in a category [C] (with
    pushouts and a chosen coproduct/initial structure) equipped with a
-   "decoration" of the apex [N], where the decorations live in a monoidal
+   “decoration” of the apex [N], where the decorations live in a monoidal
    category [D] and are pulled back through a lax monoidal functor
    [F : C → D].  Concretely, a decoration of [N] is a morphism
    [decoration : I_D ~> F N] in [D] — i.e. a global element of [F N]
@@ -89,13 +89,13 @@ Generalizable All Variables.
 
    Applications: electrical circuits (Baez–Fong), Markov processes,
    chemical reaction networks, signal-flow graphs.  In each case the
-   decorations encode "internal" data of the apex that black-boxes to
+   decorations encode “internal” data of the apex that black-boxes to
    the observable boundary behaviour.
 
    ** Coq-specific organisation
 
    We parameterise by [C], [D], a [HasPushouts C], a [Terminal D] (so we
-   have a unit [1_D ~> F N] interpretation of "I_D ~> F N"; the actual
+   have a unit [1_D ~> F N] interpretation of “I_D ~> F N”; the actual
    unit of the monoidal [D] is supplied by [@Monoidal D]), and the lax
    monoidal functor [F].
 
@@ -169,8 +169,8 @@ Arguments Build_DecoratedCospanArrow {X Y} _ _.
 
    F(to phi) ∘ d_f ≈ d_g.
 
-   This is the categorical analogue of "the decoration on the LHS apex
-   pushed forward through the iso equals the decoration on the RHS apex". 
+   This is the categorical analogue of “the decoration on the LHS apex
+   pushed forward through the iso equals the decoration on the RHS apex”. 
 
    --------
    * ** 装饰余跨的等价性
@@ -263,7 +263,7 @@ Defined.
    * ** Identity decorated cospan
 
    On [X], the identity cospan [X = X = X] decorated by the canonical
-   "empty" decoration [lax_pure ∘ F!(∅?)] — but since the apex IS [X]
+   “empty” decoration [lax_pure ∘ F!(∅?)] — but since the apex IS [X]
    itself, the decoration is just a designated [d_X : I ~> F X].  For
    the identity element we need a coherent choice.
 
@@ -501,8 +501,8 @@ Arguments dce_dec_eq    {C D MD F X Y f g} _.
 
    This is the categorical infrastructure that makes the BLACK-BOXING
    functor in [Construction/Cospan/BlackBox.v] well-defined: black-boxing
-   is exactly a monoidal natural transformation from the "internal"
-   decoration functor [F] to an "observable" decoration functor [G]. 
+   is exactly a monoidal natural transformation from the “internal”
+   decoration functor [F] to an “observable” decoration functor [G]. 
 
    --------
    * **函子性说明

@@ -14,7 +14,7 @@ Generalizable All Variables.
    no involutivity of negation.  Both quotient constructions that follow
    -- Instance/Mod/Quotient.v's quotient by a submodule and
    Instance/Rng/Quotient.v's quotient by a two-sided ideal -- are
-   defined by the relation "x - y lies in the sub-thing", so both need
+   defined by the relation “x - y lies in the sub-thing”, so both need
    the same dozen shuffles, and this file is where they live so that
    neither restates them and no ring file has to depend on a module
    file to get them.

@@ -7,32 +7,32 @@
 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed. (GTM 5), §V.8, printed pp. 131–132 (PDF pp. 140–141),
  ledger items `maclane:V.8:thm-watt` and `maclane:V.8:ex3`
  (issue #454), read from the printed page.  The text, p. 131:
- "Watt's Theorem [1960] is another example.  Any ring R is a
+ “Watt's Theorem [1960] is another example.  Any ring R is a
  generator in the category R-Mod, hence a cogenerator in
  (R-Mod)^op.  It follows that any contravariant additive
  functor T on R-Mod to Ab which takes small colimits to
  limits is representable by a group isomorphism
- T ≅ hom_R(−, C) for some R-module C."  Exercise 3, p. 132:
- "Use Exercise 2(b) and the special adjoint functor theorem
+ T ≅ hom_R(−, C) for some R-module C.”  Exercise 3, p. 132:
+ “Use Exercise 2(b) and the special adjoint functor theorem
  to prove that any continuous additive functor T: R-Mod → Ab
- is representable. (Watt's theorem)."  The book spells the
- name "Watt's"; the author is Charles E. Watts.  (The in-repo
+ is representable. (Watt's theorem).”  The book spells the
+ name “Watt's”; the author is Charles E. Watts.  (The in-repo
  catalogue, doc/plan/books/maclane/inventory/V.json,
  summarises both in its own words; the quotations here are
  the printed page's.)
- Papers:    C. E. Watts, "Intrinsic characterizations of some additive
- functors", Proc. Amer. Math. Soc. 11 (1960), 5–8; and
- S. Eilenberg, "Abstract description of some basic
- functors", J. Indian Math. Soc. (N.S.) 24 (1960), 231–234 —
+ Papers:    C. E. Watts, “Intrinsic characterizations of some additive
+ functors”, Proc. Amer. Math. Soc. 11 (1960), 5–8; and
+ S. Eilenberg, “Abstract description of some basic
+ functors”, J. Indian Math. Soc. (N.S.) 24 (1960), 231–234 —
  the two original articles, as the nLab page lists them.
  nLab:      https://ncatlab.org/nlab/show/Eilenberg-Watts+theorem
  nLab:      https://ncatlab.org/nlab/show/cogenerator
  nLab:      https://ncatlab.org/nlab/show/injective+object
- The nLab page "injective cogenerator" does not exist (HTTP
+ The nLab page “injective cogenerator” does not exist (HTTP
  404, measured with curl on 2026-09-24, as
  Instance/Mod/Cogenerator.v also records).
 
@@ -46,8 +46,8 @@
  statement with no hypothesis beyond the book's own two (and
  [Set < c]), through GAFT and an explicit solution set; that file is
  #454's headline for the text form.  This one is kept because it is
- Mac Lane's SAFT route, which the issue's Reviewer line names ("the
- representability must be derived from SAFT plus additivity"), and
+ Mac Lane's SAFT route, which the issue's Reviewer line names (“the
+ representability must be derived from SAFT plus additivity”), and
  because Exercise 3, the covariant form, is delivered only here, and
  conditionally.  It imports the unconditional file, and section 6
  measures the relation in tree: [watts_theorem_via_unconditional]
@@ -80,11 +80,11 @@
 
  ** THE BOOK'S PROOF, AND THE ONE HERE
 
- Mac Lane's sketch: "by the special adjoint functor theorem T:
+ Mac Lane's sketch: “by the special adjoint functor theorem T:
  (R-Mod)^op → Ab has a left adjoint F; since T is additive, the
  adjunction Ab(G, TA) ≅ hom_R(A, FG), G ∈ Ab, A ∈ R-Mod, is an
  isomorphism of additive groups; set G = Z to get
- TA ≅ Ab(Z, TA) ≅ hom_R(A, FZ)", so C = Fℤ.  The first step is
+ TA ≅ Ab(Z, TA) ≅ hom_R(A, FZ)”, so C = Fℤ.  The first step is
  [watts_theorem_adjoint] below, verbatim; the last is section 5's
  [ab_hom_Z_iso], Ab(ℤ, X) ≅ X natural in X as Ab-valued functors, with
  ℤ read as the free abelian group on one point [FreeAb SetsOne], and
@@ -97,7 +97,7 @@
  left undone for [FreeAbObject unit_setoid_object]; [SetsOne] is
  Construction/Elements.v's name for the terminal object of [Sets].)
  The representation itself is obtained the way the issue's Reviewer
- line asks, "derived from SAFT plus additivity", through Yoneda:
+ line asks, “derived from SAFT plus additivity”, through Yoneda:
 
  SAFT.  Adjunction/SAFT/Characterization/Corollaries.v's
  [continuous_Set_functor_representable] — Mac Lane's Corollary on
@@ -192,9 +192,9 @@
  Untruncate], some A with [HomAb (RMod_AbEnriched R) A ≅ T]; the
  Sets-level step is [watts_ex3_sets].  **[watts_ex3_QZ]** takes the
  cogenerator from Exercise 2(b), [snd (QZ_injective_cogenerator R HI
- HC)], so that its premises are the book's "The additive group Q/Z of
+ HC)], so that its premises are the book's “The additive group Q/Z of
  rational numbers modulo 1 is known to be an injective cogenerator of
- Ab" (Exercise 2(b)), taken as hypotheses ([HI : Injective Ab QZ], [HC
+ Ab” (Exercise 2(b)), taken as hypotheses ([HI : Injective Ab QZ], [HC
  : QZ_family_cogenerates]), together with [U].  [watts_ex3_QZ_cogenerator]
  shows at [eq_refl] that the cogenerator used is
  [coext_cogenerator R (QZ_Cogenerator HC)]: the
@@ -249,10 +249,10 @@
  hypothesis, and section 6 derives [watts_theorem]'s statement from
  it; what is conditional here is the SAFT route.
 
- - [Untruncate] — "every propositionally truncated type has an
- element" — is a hypothesis of both.  The tree inhabits it nowhere
- (Adjunction/SAFT.v's header: "the tree inhabiting neither
- [Untruncate] nor [IEM]"), and Instance/Sets/Classifier/OneLevel.v
+ - [Untruncate] — “every propositionally truncated type has an
+ element” — is a hypothesis of both.  The tree inhabits it nowhere
+ (Adjunction/SAFT.v's header: “the tree inhabiting neither
+ [Untruncate] nor [IEM]”), and Instance/Sets/Classifier/OneLevel.v
  derives it from informative excluded middle
  ([untruncate_of_IEM]).  The text form spends it exactly once, in
  [RMod_CoWellPowered_untruncate]: a quotient object of a module is
@@ -268,8 +268,8 @@
  [SAFT_wellpowered] consumes a [WellPowered], whose index sits at
  or below the hom universe ([w <= h] in its binder), and both one-up
  families are refused where [WellPowered@{o c c o x}] (respectively
- [CoWellPowered@{o c c o x}]) is expected, "Cannot enforce <1> = c
- because c < <1>" (the same file's WHY [Untruncate], MEASURED); so
+ [CoWellPowered@{o c c o x}]) is expected, “Cannot enforce <1> = c
+ because c < <1>” (the same file's WHY [Untruncate], MEASURED); so
  [U] stays.
  - Everything else the text form uses is unconditional: the
  cocompleteness [RMod_Cocomplete_via_GAFT] (Prop-congruence solution
@@ -311,11 +311,11 @@
  group homomorphisms.  REFUSED at [eq_refl], measured by appending one
  [Example] to a copy of this whole file, in environment
  [R : RingObject], [G : Cogenerator (RMod R)], [U : Untruncate]:
- [projT1 (watts_ex3_forget R G U) = Ring_RMod R] — "The term "eq_refl"
- has type "projT1 (watts_ex3_forget R G U) = projT1 (watts_ex3_forget R
- G U)" while it is expected to have type "projT1 (watts_ex3_forget R G
- U) = Ring_RMod R" (cannot unify "projT1 (watts_ex3_forget R G U)" and
- "Ring_RMod R")": the SAFT object is an intersection of subobjects of
+ [projT1 (watts_ex3_forget R G U) = Ring_RMod R] — “The term ”eq_refl“
+ has type ”projT1 (watts_ex3_forget R G U) = projT1 (watts_ex3_forget R
+ G U)“ while it is expected to have type ”projT1 (watts_ex3_forget R G
+ U) = Ring_RMod R“ (cannot unify ”projT1 (watts_ex3_forget R G U)“ and
+ ”Ring_RMod R“)”: the SAFT object is an intersection of subobjects of
  a cogenerator power, and it depends on the variable [U]; the
  comparison is an isomorphism, not a conversion.
 
@@ -372,10 +372,10 @@
 
  No constant of this file carries a universe EQUATION: searching the
  constraint blocks of the [About] output of all twenty-seven, each
- queried by its fully qualified name, for " = " finds none (run on a
+ queried by its fully qualified name, for “ = ” finds none (run on a
  scratch file, the same search finds the equation of a definition
  taking [F : D ⟶ C] and [U : C ⟶ D] and those of [Adjunction]'s own
- [About]).  Over the whole output, " = " occurs only in the statements
+ [About]).  Over the whole output, “ = ” occurs only in the statements
  of the [eq_refl] readbacks [watts_theorem_obj], [watts_theorem_to_at]
  and [watts_ex3_QZ_cogenerator].  What each inherits, and from where:
 
@@ -384,10 +384,10 @@
  [Ring_RMod R] carries R's own abelian group
  (Instance/Mod/WellPowered.v measures that).  Here:
  [watts_theorem_sets]'s body at [R : RingObject@{a c p}] with
- [c < a] declared is refused, "The term "R" has type
- "RingObject@{a c p}" while it is expected to have type
- "RingObject@{<1> <1> <1>}" (universe inconsistency: Cannot enforce
- c = a because c < a)"; the same body
+ [c < a] declared is refused, “The term ”R“ has type
+ ”RingObject@{a c p}“ while it is expected to have type
+ ”RingObject@{<1> <1> <1>}“ (universe inconsistency: Cannot enforce
+ c = a because c < a)”; the same body
  with no constraint declared is accepted and reads back [a = c],
  [a = p].  Exercise 3 keeps the ring's three universes apart;
  [watts_ex3_QZ] is at [RingObject@{r r r}] by [CoextObj]'s own
@@ -410,10 +410,10 @@
  T and [Ab_Forget], and [Ab_Forget_creates_continuous] has its
  tenth slot equal to its [Sets] object universe.  With a separate
  [s] for [Ab_Forget] and [pa < s] declared, [watts_theorem_sets]'s
- body is refused, expected "Representable@{ra rt s o c}
- (Ab_Forget@{a s c} ◯ T)" against the body's
- "Representable@{<1> <2> pa o c} (Ab_Forget@{a pa c} ◯ T)"
- "(universe inconsistency: Cannot enforce pa = s because pa < s)";
+ body is refused, expected “Representable@{ra rt s o c}
+ (Ab_Forget@{a s c} ◯ T)” against the body's
+ “Representable@{<1> <2> pa o c} (Ab_Forget@{a pa c} ◯ T)”
+ “(universe inconsistency: Cannot enforce pa = s because pa < s)”;
  the constants therefore use [pa] for that level.
  - Strict and non-strict [eq_rect_r] bounds: [c < eq_rect_r.u0] and
  [c <= eq_rect_r.u1] on every constant built on the SAFT, from
@@ -427,12 +427,12 @@
  - The witnesses.  [HomAbForget]'s intermediate [Ab] sits at RMod's
  object universe o.  The continuity proof stated for the composite
  with that [Ab] at its own [m], and [o < m] declared, is refused,
- "… (cannot unify "@padd_respects _ (@abenriched_preadditive _
+ “… (cannot unify ”@padd_respects _ (@abenriched_preadditive _
  (@AbEnriched_op@{m c} Ab@{m c} Ab_AbEnriched@{m <1> c})) A
- (fobj[(RMod_Forget_Ab@{x o m c c c} R)^op] (fobj[K] x0))" and
- "@padd_respects _ (@abenriched_preadditive _ (@AbEnriched_op@{o c}
+ (fobj[(RMod_Forget_Ab@{x o m c c c} R)^op] (fobj[K] x0))“ and
+ ”@padd_respects _ (@abenriched_preadditive _ (@AbEnriched_op@{o c}
  Ab@{o c} Ab_AbEnriched@{o <1> c})) A (fobj[(RMod_Forget_Ab@{x o o
- c c c} R)^op] (fobj[K] x0))")" (<1> a universe the scratch compile
+ c c c} R)^op] (fobj[K] x0))“)” (<1> a universe the scratch compile
  generated); the same statement with no constraint declared is
  accepted and reads back [o = m].  The cause is [coex_adjunction],
  whose left adjoint lands in an [Ab] at RMod's object universe (its
@@ -440,10 +440,10 @@
  Coextension@{u u0 u1 u2 u3} R]).  [HomAbForget_continuous]'s
  tenth slot is x: named [k6] with [x < k6] declared the proof is
  refused, and with [k6 < x] declared it is refused too, both with
- "cannot unify "Functor.Compose_obligation_1 J (RMod R)^op Ab
- (HomAbForget R A) K" and "Functor.Compose_obligation_1 J
+ “cannot unify ”Functor.Compose_obligation_1 J (RMod R)^op Ab
+ (HomAbForget R A) K“ and ”Functor.Compose_obligation_1 J
  (RMod R)^op Ab (CoHomAb Ab_AbEnriched A ◯ (RMod_Forget_Ab R)^op)
- K"".  So the Sets level of the text form at
+ K“”.  So the Sets level of the text form at
  that witness is x, and [coext_representable] is stated at
  [Sets@{c x}] to meet it in [repr_unique_iso].  Likewise at the
  Exercise 3 witness, [RMod_Forget_Ab_creates_continuous] has its
@@ -521,7 +521,7 @@
 
  [Print Module Category.Instance.Mod.Watts] lists twenty-seven
  constants and no [Program] obligation (the file uses no [Program]);
- each reports "Closed under the global context" under [Print
+ each reports “Closed under the global context” under [Print
  Assumptions] by its fully qualified name.
  FLIPS: each of the five [Defined] was turned to [Qed] alone in a copy
  of the whole file; [coext_representable] is load-bearing (its
@@ -628,8 +628,8 @@
  … → 注入阿贝尔群@{o r} QZ@{r r r _}
  → QZ_族_余生成@{o r _ o _} → 非截断@{r}→ ∃ A, …
  （[QZ_family_cogenerates] 的第三个槽位，即单元素族的索引宇宙，被保留空位，由载体 r 限定：SAFT 的 [c <= so]）显式宇宙实例只写在常量上，这些常量的实例长度在树的其他地方已有先例（[RMod]、[Ab]、[Sets]、[RingObject]、[AbObject]、[Cogenerator]、[Representable]、[PreservesImageLimit]、[Untruncate]）；[ContinuousFunctor]、[QZ]、[RMod_Forget]、[RMod_Forget_Ab]以及这个文件自身的可扩展[HomAbForget]则通过类型说明来访问，以便在另一个 Coq 版本上不同的实例长度也不会拒绝它们。此文件中没有常量包含宇宙方程：在 [About] 的输出中搜索所有二十七个约束块，每一个都通过其完全限定名进行查询，寻找“ = ”时没有找到（在一个临时文件上运行时，同样的搜索找到了一个定义的方程，该定义使用了 [F : D ⟶ C] 和 [U : C ⟶ D]，以及 [Adjunction] 自身的 [About]）。在整个输出中，“ = ”仅出现在 [eq_refl] 的读取回写语句 [watts_theorem_obj]、[watts_theorem_to_at] 和 [watts_ex3_QZ_cogenerator] 中。每个继承了什么，以及从哪里继承的：- 文本形式中的 [RingObject@{c c c}] 及其证明。受 [RModop_Cogenerator] 强制，其环是 [RingObject@{c c c}]，因为 [Ring_RMod R] 携带 R 自身的交换群（Instance/Mod/WellPowered.v 已对此进行测量）。这里：[watts_theorem_sets] 在 [R : RingObject@{a c p}] 处的主体，声明了 [c < a]，被拒绝，提示“术语 'R' 的类型为 'RingObject@{a c p}'，而期望类型为 'RingObject@{<1> <1> <1>}'（宇宙不一致：无法强制 c = a，因为 c < a）”；相同主体在未声明约束的情况下被接受，并读回 [a = c]，[a = p]。练习 3 保持了环的三个宇宙分离；
- [watts_ex3_QZ] 位于 [RingObject@{r r r}]，由 [CoextObj] 自身识别（Instance/Mod/Coextension.v），而它的两个 ℚ/ℤ 前提的 [Ab] 位于 RMod 的对象宇宙 o，如 [QZ_injective_cogenerator] 自身的回读所示，在本文件的导入下打印 [@Injective Ab@{a r} QZ@{r r r u0}] 在 [Cogenerator@{c a r} (RMod@{a u r r r} R)] 旁边（[Injective] 是 [Projective] 在对偶范畴的符号）。 - [Set < c]：来自 [RMod_WellPowered_untruncate] 和 [RMod_CoWellPowered_untruncate]（它们的 [Prop] 值索引位于 [max(Set+1, c)]）以及来自 [RMod_Cocomplete_via_GAFT]（GAFT 的索引位置）。因此，载体位于 [Set] 的环被排除；[Int_Ring] 是宇宙多态的，并且在 [Set] 之上满足它。 - 集合级别是 [pa]。[Ab_Forget@{b pa c}] 落在 [Sets@{c pa}] 上，即连续性假设的辅助槽。该识别是由路径强制的： [PreservesImageLimit_Continuous] 将 [pa] 转换为 [ContinuousFunctor] 的第十槽，[continuous_compose] 在 T 和 [Ab_Forget] 之间共享该槽，而 [Ab_Forget_creates_continuous] 的第十槽等于其 [Sets] 对象宇宙。对于 [Ab_Forget] 和 [pa < s] 声明了一个单独的 [s] 后，[watts_theorem_sets] 的主体被拒绝，期望 "Representable@{ra rt s o c} (Ab_Forget@{a s c} ◯ T)" 对比主体的 "Representable@{<1> <2> pa o c} (Ab_Forget@{a pa c} ◯ T)" （宇宙不一致：无法强制 pa = s 因为 pa < s）；因此常量在该层级使用 [pa]。- 严格和非严格的 [eq_rect_r] 边界：在每个基于 SAFT 的常量上，[c < eq_rect_r.u0] 和 [c <= eq_rect_r.u1]，从 [continuous_Set_functor_representable] 和 [SAFT_wellpowered]（其回读带有 [h < eq_rect_r.u0]，根据 Corollaries.v 的头部归因于 Adjunction/SAFT/InitialObject.v 的 [complete_pullbacks]），以及 [x <= eq_rect_r.u0]，即那些常量的 [t <= eq_rect_r.u0]（来自 #452 的 [special_initial_object_wellpowered_at]，根据同一头部）在 [t := x]，即 [WellPowered@{o c c o x}] 的第五个槽。- 见证人。[HomAbForget] 的中间 [Ab] 位于 RMod 的对象宇宙 o。针对组合的连续性证明在其自身的 [m] 上与 [Ab] 声明的 [o < m] 被拒绝，
- “…（无法统一 "@padd_respects _ (@abenriched_preadditive _ (@AbEnriched_op@{m c} Ab@{m c} Ab_AbEnriched@{m <1> c})) A (fobj [(RMod_Forget_Ab@{x o m c c c} R)^op]  (fobj [K]  x0))" 与 "@padd_respects _ (@abenriched_preadditive _ (@AbEnriched_op@{o c} Ab@{o c} Ab_AbEnriched@{o <1> c})) A (fobj[(RMod_Forget_Ab@{x o o c c c} R)^op] (fobj [K]  x0))")”（<1> 是草稿编译生成的一个宇宙）；没有声明约束的相同语句被接受，并回读为 [o = m]。原因是 [coex_adjunction]，其左伴随在 RMod 的对象宇宙中落入 [Ab]（它的回读：[RMod_Forget_Ab@{u3 u2 u2 u u1 u0} R ⊣ Coextension@{u u0 u1 u2 u3} R]）。[HomAbForget_continuous] 的第十个槽是 x：命名为 [k6]，并且 [x < k6] 声明证明被拒绝，同时 [k6 < x] 也声明它被拒绝，均带有“无法统一 Functor.Compose_obligation_1 J (RMod R)^op Ab (HomAbForget R A) K”和“Functor.Compose_obligation_1 J (RMod R)^op Ab (CoHomAb Ab_AbEnriched A ◯ (RMod_Forget_Ab R)^op) K”。因此，在该见证处，文本形式的 Sets 层级是 x，并且 [coext_representable] 在 [Sets@{c x}] 上述为在 [repr_unique_iso] 中满足它。同样在练习3的证人中，[RMod_Forget_Ab_creates_continuous] 的第十个插槽位于 RMod 的 x，而 [rmod_representable] 落在 [Sets@{c x}] 中；两者都未显示在 [watts_ex3_forget_obj] 的类型中。- 有两个方程出现在草稿中，但不是强制的，每个方程通过将草稿附加到整个文件的副本中测量，并且声明了相反的顺序：[x = s] 出现在 [watts_ex3] 的草稿中（带有 [ContinuousFunctor] 假设，[Ab_Forget@{b s c}] 被赋值一次，并且在 [exact] 中第二次阐述 [watts_ex3_sets]），在声明 [s < x] 后被接受；以及 [x = s] 出现在 [coext_representable] 的另一个 [Sets@{c s}] 草稿中，在声明 [x < s] 后被接受。两者都来自阐述，而不是来自供体；已落定的常数通过一次赋值出现 [watts_ex3_sets]，并命名它们所需的级别。- 常数通过 [watt_at_forget] 添加，并在第 5 节 [watt_at_forget] 位于 [RingObject@{c c c}]，因为其表示对象 [Ring_RMod R] 是（崩溃实例/模块/WellPowered.v 测度），并且回读 [HomAb@{o c b} (RMod_AbEnriched@{x o c c c} R) (Ring_RMod@{c c c} R) ≅ RMod_Forget_Ab@{x o b c c c} R]。[ab_hom_Z_iso@{a c +}] 在两端都落入 [Ab@{a c}]；自由群自身的宇宙和单点集的宇宙保留推理，通过 [FreeAb] 和 [SetsOne] 无需实例即可达成。[watts_theorem_Fz] 承载 [watts_theorem] 的命名宇宙。- 第 6 节 [watts_theorem_via_unconditional@{c o x a pk pa +}] 承载 [watts_theorem] 的命名宇宙，但 [ra rt]。[watts_unconditional_coext] 及其  [_2a] 实例化了 [watts_theorem_unconditional@{c c c o x b x …}]：环被 [CoextObj] 崩溃，并且该定理在 x 处的集合级别为 [HomAbForget_continuous] 的第十个槽，如上所述。[Ab] 的 [HomAbForget] 在 [b] 的两个语句中都被注明；留给推理它被设置为 x，并且 [About] 回读 [HomAbForget@{c o x x}]，绑定器的 b 未使用。
+ [watts_ex3_QZ] 位于 [RingObject@{r r r}]，由 [CoextObj] 自身识别（Instance/Mod/Coextension.v），而它的两个 ℚ/ℤ 前提的 [Ab] 位于 RMod 的对象宇宙 o，如 [QZ_injective_cogenerator] 自身的回读所示，在本文件的导入下打印 [@Injective Ab@{a r} QZ@{r r r u0}] 在 [Cogenerator@{c a r} (RMod@{a u r r r} R)] 旁边（[Injective] 是 [Projective] 在对偶范畴的符号）。 - [Set < c]：来自 [RMod_WellPowered_untruncate] 和 [RMod_CoWellPowered_untruncate]（它们的 [Prop] 值索引位于 [max(Set+1, c)]）以及来自 [RMod_Cocomplete_via_GAFT]（GAFT 的索引位置）。因此，载体位于 [Set] 的环被排除；[Int_Ring] 是宇宙多态的，并且在 [Set] 之上满足它。 - 集合级别是 [pa]。[Ab_Forget@{b pa c}] 落在 [Sets@{c pa}] 上，即连续性假设的辅助槽。该识别是由路径强制的： [PreservesImageLimit_Continuous] 将 [pa] 转换为 [ContinuousFunctor] 的第十槽，[continuous_compose] 在 T 和 [Ab_Forget] 之间共享该槽，而 [Ab_Forget_creates_continuous] 的第十槽等于其 [Sets] 对象宇宙。对于 [Ab_Forget] 和 [pa < s] 声明了一个单独的 [s] 后，[watts_theorem_sets] 的主体被拒绝，期望 “Representable@{ra rt s o c} (Ab_Forget@{a s c} ◯ T)” 对比主体的 “Representable@{<1> <2> pa o c} (Ab_Forget@{a pa c} ◯ T)” （宇宙不一致：无法强制 pa = s 因为 pa < s）；因此常量在该层级使用 [pa]。- 严格和非严格的 [eq_rect_r] 边界：在每个基于 SAFT 的常量上，[c < eq_rect_r.u0] 和 [c <= eq_rect_r.u1]，从 [continuous_Set_functor_representable] 和 [SAFT_wellpowered]（其回读带有 [h < eq_rect_r.u0]，根据 Corollaries.v 的头部归因于 Adjunction/SAFT/InitialObject.v 的 [complete_pullbacks]），以及 [x <= eq_rect_r.u0]，即那些常量的 [t <= eq_rect_r.u0]（来自 #452 的 [special_initial_object_wellpowered_at]，根据同一头部）在 [t := x]，即 [WellPowered@{o c c o x}] 的第五个槽。- 见证人。[HomAbForget] 的中间 [Ab] 位于 RMod 的对象宇宙 o。针对组合的连续性证明在其自身的 [m] 上与 [Ab] 声明的 [o < m] 被拒绝，
+ “…（无法统一 “@padd_respects _ (@abenriched_preadditive _ (@AbEnriched_op@{m c} Ab@{m c} Ab_AbEnriched@{m <1> c})) A (fobj [(RMod_Forget_Ab@{x o m c c c} R)^op]  (fobj [K]  x0))” 与 “@padd_respects _ (@abenriched_preadditive _ (@AbEnriched_op@{o c} Ab@{o c} Ab_AbEnriched@{o <1> c})) A (fobj[(RMod_Forget_Ab@{x o o c c c} R)^op] (fobj [K]  x0))”)”（<1> 是草稿编译生成的一个宇宙）；没有声明约束的相同语句被接受，并回读为 [o = m]。原因是 [coex_adjunction]，其左伴随在 RMod 的对象宇宙中落入 [Ab]（它的回读：[RMod_Forget_Ab@{u3 u2 u2 u u1 u0} R ⊣ Coextension@{u u0 u1 u2 u3} R]）。[HomAbForget_continuous] 的第十个槽是 x：命名为 [k6]，并且 [x < k6] 声明证明被拒绝，同时 [k6 < x] 也声明它被拒绝，均带有“无法统一 Functor.Compose_obligation_1 J (RMod R)^op Ab (HomAbForget R A) K”和“Functor.Compose_obligation_1 J (RMod R)^op Ab (CoHomAb Ab_AbEnriched A ◯ (RMod_Forget_Ab R)^op) K”。因此，在该见证处，文本形式的 Sets 层级是 x，并且 [coext_representable] 在 [Sets@{c x}] 上述为在 [repr_unique_iso] 中满足它。同样在练习3的证人中，[RMod_Forget_Ab_creates_continuous] 的第十个插槽位于 RMod 的 x，而 [rmod_representable] 落在 [Sets@{c x}] 中；两者都未显示在 [watts_ex3_forget_obj] 的类型中。- 有两个方程出现在草稿中，但不是强制的，每个方程通过将草稿附加到整个文件的副本中测量，并且声明了相反的顺序：[x = s] 出现在 [watts_ex3] 的草稿中（带有 [ContinuousFunctor] 假设，[Ab_Forget@{b s c}] 被赋值一次，并且在 [exact] 中第二次阐述 [watts_ex3_sets]），在声明 [s < x] 后被接受；以及 [x = s] 出现在 [coext_representable] 的另一个 [Sets@{c s}] 草稿中，在声明 [x < s] 后被接受。两者都来自阐述，而不是来自供体；已落定的常数通过一次赋值出现 [watts_ex3_sets]，并命名它们所需的级别。- 常数通过 [watt_at_forget] 添加，并在第 5 节 [watt_at_forget] 位于 [RingObject@{c c c}]，因为其表示对象 [Ring_RMod R] 是（崩溃实例/模块/WellPowered.v 测度），并且回读 [HomAb@{o c b} (RMod_AbEnriched@{x o c c c} R) (Ring_RMod@{c c c} R) ≅ RMod_Forget_Ab@{x o b c c c} R]。[ab_hom_Z_iso@{a c +}] 在两端都落入 [Ab@{a c}]；自由群自身的宇宙和单点集的宇宙保留推理，通过 [FreeAb] 和 [SetsOne] 无需实例即可达成。[watts_theorem_Fz] 承载 [watts_theorem] 的命名宇宙。- 第 6 节 [watts_theorem_via_unconditional@{c o x a pk pa +}] 承载 [watts_theorem] 的命名宇宙，但 [ra rt]。[watts_unconditional_coext] 及其  [_2a] 实例化了 [watts_theorem_unconditional@{c c c o x b x …}]：环被 [CoextObj] 崩溃，并且该定理在 x 处的集合级别为 [HomAbForget_continuous] 的第十个槽，如上所述。[Ab] 的 [HomAbForget] 在 [b] 的两个语句中都被注明；留给推理它被设置为 x，并且 [About] 回读 [HomAbForget@{c o x x}]，绑定器的 b 未使用。
 
  ** 非空性练习 3 在 T :=  [RMod_Forget_Ab R] : [watts_ex3_forget R G U]，其连续性是 #449 的创建 ([RMod_Forget_Ab_creates_continuous])，不是一个伴随，因此见证不是循环的。它的表示对象是 ≅ [Ring_RMod R] ([watts_ex3_forget_obj]，在 [RingObject@{c c c}])：[repr_induced_iso] 对应 Instance/Mod/Representable.v 的 [rmod_representable]，沿着 [RMod_Forget R] 和 [Ab_Forget ◯ RMod_Forget_Ab R] 之间的恒等分量同构 [RMod_Forget_equiv]。它继承了 [G] 和 [U]。在 T := [HomAbForget R A] 处的文本形式为 M ↦ Hom_Ab(U M, A)，对于任意阿贝尔群 A：[watts_theorem_coext R A U]。可加性为 [HomAbForget_additive]；连续性为 [HomAbForget_continuous]，由 [RMod_Forget_Ab R] ^op 的复合而成——连续是因为 [RMod_Forget_Ab R] 是一个左伴随，[coex_adjunction]，通过 [Opposite_Adjunction] 和 [right_adjoint_Continuous] 读取——具有 [CoHomAb_continuous]。它的表示对象是 ≅ [CoextObj R A] ([watts_theorem_coext_obj])：[repr_unique_iso] 对 [coext_representable]，其分量是共扩展伴随本身的 Hom 双射，在 (RMod R)^op 中读取并通过 [Isomorphism_Opposite] 带回；并且 ≅ [HomZL R_R A]，即练习 2(a) 的 hom_ℤ(R, A) ([watts_theorem_coext_obj_2a]，通过 HomTensor.v 的 [homzl_coext_iso])。因此，Mac Lane 的 C 在该 T 处可以被识别为 hom_ℤ(R, A)（同构意义下）。它继承了 [U]，并且没有其他内容。这两个定理的每一个证人都继承了 [Untruncate]，它没有树中的居民，因此两个定理在树中都没有无条件实例。文本形式的证人通过 Instance/Mod/Watts/Unconditional.v 的定理在本文件的第 6 节中有一个无条件对应：[watts_unconditional_coext]（≅ [CoextObj R A]）和 [watts_unconditional_coext_2a]（≅ [HomZL R_R A]）。[watt_at_forget] 既不是任一定理的实例，而是它们所基于的加法升级的实例，在遗忘函子处，并且它不需要任何东西：在该 T 点上的练习 3 结论，无需特殊伴随函子定理。
 
@@ -828,9 +828,9 @@ Definition watts_ex3@{a c p o x b g pk pa ra rt +}
        : Representable@{ra rt pa o c} (Ab_Forget ◯ T)).
 
 (*
- Exercise 3 as the book words it: "Use Exercise 2(b)".  The premises
- [HI] and [HC] are Exercise 2(b)'s "Q/Z ... is known to be an injective
- cogenerator of Ab", taken as hypotheses (Instance/Mod/Cogenerator.v). 
+ Exercise 3 as the book words it: “Use Exercise 2(b)”.  The premises
+ [HI] and [HC] are Exercise 2(b)'s “Q/Z ... is known to be an injective
+ cogenerator of Ab”, taken as hypotheses (Instance/Mod/Cogenerator.v). 
 
  --------
  练习 3 按书中的说法：“使用练习 2(b)”。前提 [HI] 和 [HC] 是练习 2(b) 中的“已知 Q/Z ... 是 Ab 的单射余生成元”，作为假设（Instance/Mod/Cogenerator.v）。

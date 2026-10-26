@@ -16,7 +16,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
  The store comonad — also called the costate comonad — over a fixed object
- s of "positions" sends x to (s ⇒ x) × s: a store is an observation
+ s of “positions” sends x to (s ⇒ x) × s: a store is an observation
  function h from positions to values together with a currently focused
  position s0, with
 
@@ -27,8 +27,8 @@ Generalizable All Variables.
 
  Abstractly it is the comonad F ◯ U of the currying adjunction
  (− × s) ⊣ (s ⇒ −) on a cartesian closed category, dually to the state
- monad U ◯ F = s ⇒ (− × s).  Its coalgebras are the "very well-behaved
- lenses" of functional programming.
+ monad U ◯ F = s ⇒ (− × s).  Its coalgebras are the “very well-behaved
+ lenses” of functional programming.
 
  Following Theory/Monad.v's [Comonad := @Monad (C^op) (W^op)], the witness
  [Store_Comonad] below is literally a [Monad] on the opposite category; the
@@ -52,8 +52,8 @@ Generalizable All Variables.
  Lenses, grids, and the practical API
 
  nLab:  https://ncatlab.org/nlab/show/store+comonad
- Paper: O'Connor, "Functor is to Lens as Applicative is to Biplate:
- Introducing Multiplate", arXiv:1103.2841, 2011
+ Paper: O'Connor, “Functor is to Lens as Applicative is to Biplate:
+ Introducing Multiplate”, arXiv:1103.2841, 2011
 
  The one-line remark above about lenses has a precise statement.  A
  coalgebra of this comonad on a carrier a — a costructure map
@@ -62,7 +62,7 @@ Generalizable All Variables.
  put : s × a → a, and the two coalgebra laws are together equivalent
  to the three lens laws: put (get a, a) = a; get (put (σ, a)) = σ;
  and put (τ, put (σ, a)) = put (τ, a).  Coalgebras of the store
- comonad are therefore exactly the lawful ("very well-behaved")
+ comonad are therefore exactly the lawful (“very well-behaved”)
  lenses of functional programming, a correspondence due to O'Connor
  (November 2010; arXiv:1103.2841, 2011).
 
@@ -91,7 +91,7 @@ Generalizable All Variables.
  透镜、网格和实用 API
 
  nLab: https://ncatlab.org/nlab/show/store+comonad 
- 论文: O'Connor, "Functor 类似于透镜，Applicative 类似于双板：引入 Multiplate"，arXiv:1103.2841, 2011
+ 论文: O'Connor, “Functor 类似于透镜，Applicative 类似于双板：引入 Multiplate”，arXiv:1103.2841, 2011
 
  上面关于透镜的一行评论有一个精确的表述。在承载类型 a 上的这个余单子 (comonad) 的一个上代数(coalgebra)——一个代映射 a ~> (s ⇒ a) × s，满足余单子/上代数的 counit 和 coaction 定律——相当于一对映射 get : a → s 和 put : s × a → a，并且两个上代数定律合起来等价于三个透镜定律：put(get a, a) = a；get(put(σ, a)) = σ；以及 put(τ, put(σ, a)) = put(τ, a)。因此，存储余单子的上代数正好是函数式编程中符合法则（“非常良好行为”）的透镜，这一对应关系归功于 O'Connor（2010 年 11 月；arXiv:1103.2841, 2011）。空间直觉是一个带有光标的观察网格，它使这个余单子成为细胞计算的自然归宿。康威的《生命游戏》在Milewski的讲解（2017年）中作为指导示例。Piponi 对细胞自动机的处理在双无限拉链余单子上应用了相同的思路，自动机的每一步在每次重新聚焦时一次性应用局部规则——这就是规则的 [extend]（2006年）。Foner 的余单子固定点评估多维类电子表格的递推，其中每个单元格都观察自己在整体中的上下文（Haskell 研讨会 2015年）。Kmett 的 ComonadStore 类命名了实用的词汇表，它的每一个名称都对应本文件的一个工件。pos 读取焦点位置：这里是 [snd]，而 [extend] 保留它（[Store_extend_pos_spec]）。peek 在给定位置观察：应用 [fst]，使得 [extract] 是在 pos 的 peek（[Store_extract_spec]）。seek 绝对重新定位存储：库中的 [store_seek]，其在所有位置上的族是 [duplicate] 的观察组件（[Store_seek_spec]）。experiment 同时观察许多相邻的位置。
 *)
@@ -117,10 +117,10 @@ Generalizable All Variables.
 
    This is precisely the corner named by the plan's Phase 6 risk note
    (doc/classical-completion-plan.md), together with the sanctioned move:
-   "if a corner genuinely resists, move that single instance to Sets
+   “if a corner genuinely resists, move that single instance to Sets
    (setoid homs make the law proper-trivial) and record the move in the
    phase PR — the deliverable is the comonad witness, not its host
-   category."  The bundled witness
+   category.”  The bundled witness
    [Store_Comonad] accordingly lives on [Sets], where the store object
    carries a componentwise setoid and respectfulness is a one-line
    pointwise argument.  The file keeps its planned location. 

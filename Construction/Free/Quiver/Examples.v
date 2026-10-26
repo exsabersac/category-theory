@@ -50,8 +50,8 @@ Generalizable All Variables.
  (1) THE LOOP.  One node with a single endo-edge; the free category has
  arrows 1, f, f^2, ..., i.e. the free monoid on one generator read as a
  one-object category.  NOT BUILT HERE.  That identification belongs to
- issue #802 ("the free category on a single loop is the additive
- naturals"), which owns it together with the general fact that a free
+ issue #802 (“the free category on a single loop is the additive
+ naturals”), which owns it together with the general fact that a free
  category has only identity isomorphisms.  Neither is in the tree yet:
  as of this file there is no Construction/Free/Quiver/Loop.v.  It is
  recapped here only so the reader knows which of Mac Lane's examples
@@ -90,7 +90,7 @@ Generalizable All Variables.
  own clamping, and for the empty one they are vacuous.
 
  Instance/Ordinal.v's header previously recorded the [StrictCat] form of (4)
- as "a further theorem that is NOT delivered in this file and remains open".
+ as “a further theorem that is NOT delivered in this file and remains open”.
  It is [ordinal_free] here, and that note has been updated to say so.
 
  THE ENGINE is one lemma, [graded_free_thin]: if a quiver carries a rank
@@ -113,14 +113,14 @@ Generalizable All Variables.
  uniqueness of the linear quiver's edges is the same step at [nat]
  ([linear_edge_unique]).  No axiom, no functional extensionality, and no
  classical reasoning is used anywhere in this file; every named constant and
- every Program obligation reports "Closed under the global context".
+ every Program obligation reports “Closed under the global context”.
 
  UNIVERSES.  ERRATUM, and the pin is GONE.  An earlier revision of this
  header recorded that every identification below in whose statement a
  quiver appears was confined to [Category@{Set Set Set}], that this was
  FORCED rather than an artifact of minimization, and that lifting the
- restriction "would mean changing [Build_Quiver_Standard_Eq] ... and is out
- of scope here".  The diagnosis was right and the pin was real:
+ restriction “would mean changing [Build_Quiver_Standard_Eq] ... and is out
+ of scope here”.  The diagnosis was right and the pin was real:
  [Build_Quiver_Standard_Eq] elaborated to [... -> Quiver@{u u0 Set}], its
  PROOF universe silently minimized to [Set] because its edge setoid was
  built from [Corelib.Classes.CRelationClasses.eq_equivalence@{u}], which

@@ -24,11 +24,11 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.3 Exercise 2, printed p. 39 (PDF p. 49) — maclane:II.3:ex2
  — and §II.4 Exercise 4, printed p. 41 (PDF p. 51) —
  maclane:II.4:ex4
- Book:      Fong–Spivak, "Seven Sketches in Compositionality", §1.2.2
+ Book:      Fong–Spivak, “Seven Sketches in Compositionality”, §1.2.2
  (printed p. 17, PDF pp. 29–30) and §3.5.1 Exercise 3.90
  clause 4 (printed p. 110, PDF p. 122)
  nLab:      https://ncatlab.org/nlab/show/thin+category
@@ -43,8 +43,8 @@ Generalizable All Variables.
  - [PreOrder_prod]/[Proset_prod_iso]: the product of two preorders
  is a preorder, and its thin category is the product of the thin
  categories — II.3 Ex. 2, and Seven Sketches Ex. 3.90 clause 4 in
- the categorical direction.  The supporting lemma "a product of
- thin categories is thin" is Structure/Thin.v's [Thin_Product];
+ the categorical direction.  The supporting lemma “a product of
+ thin categories is thin” is Structure/Thin.v's [Thin_Product];
  the iso's own obligations close by thinness directly.
  (Instance/Proset/Order.v's [proset_thin] supplies thinness of
  [Proset] itself.)

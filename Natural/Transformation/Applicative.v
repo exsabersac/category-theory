@@ -13,8 +13,8 @@ Generalizable All Variables.
 nLab: https://ncatlab.org/nlab/show/applicative+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
-   A morphism of applicative functors -- McBride and Paterson's "applicative
-   transformation" ("Applicative programming with effects", JFP 18(1), 2008,
+   A morphism of applicative functors -- McBride and Paterson's “applicative
+   transformation” (“Applicative programming with effects”, JFP 18(1), 2008,
    §5) -- is a natural transformation N : F ⟹ G between applicative functors
    that respects the applicative operations:
 
@@ -39,7 +39,7 @@ nLab: https://ncatlab.org/nlab/show/applicative+functor
 nLab：https://ncatlab.org/nlab/show/applicative+functor
 维基百科：https://en.wikipedia.org/wiki/Applicative_functor
 
-一个应用函子（applicative functor）的态射——McBride 和 Paterson 的“applicative 转换”（"带效果的应用编程"，《JFP》18(1), 2008, 第5节）——是一个自然变换 N : F ⟹ G，位于应用函子之间，并且遵循应用操作：
+一个应用函子（applicative functor）的态射——McBride 和 Paterson 的“applicative 转换”（“带效果的应用编程”，《JFP》18(1), 2008, 第5节）——是一个自然变换 N : F ⟹ G，位于应用函子之间，并且遵循应用操作：
 
 N (pure x)  ≈ pure x,
        N (f <*> x) ≈ N f <*> N x.

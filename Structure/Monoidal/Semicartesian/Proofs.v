@@ -33,7 +33,7 @@ Generalizable All Variables.
 
  These establish that the projection maps a semicartesian category carries are
  natural and associate coherently with the tensor, i.e. that x ⨂ y behaves
- like a (weak, non-universal) "product-with-discarding" already at the affine
+ like a (weak, non-universal) “product-with-discarding” already at the affine
  level, before any diagonal is added. 
 
  --------

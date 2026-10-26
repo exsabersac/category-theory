@@ -23,7 +23,7 @@ nLab: https://ncatlab.org/nlab/show/adjoint+functor
    hom-sets to (y ~{D}~> U x) ≊ (F y ~{C}~> x). That is exactly the original
    adj at swapped arguments (y x), read backwards: so [to] of the dual is
    [from] of [adj y x] and [from] of the dual is [to] of [adj y x]. Both nLab
-   (see its "Opposite adjoint functors" section) and Wikipedia state this
+   (see its “Opposite adjoint functors” section) and Wikipedia state this
    flip; nLab phrases it as Hom_{D^op}(-, U^op -) ≃ Hom_{C^op}(F^op -, -).
 
    The four naturality fields transport accordingly. Because the dual swaps the

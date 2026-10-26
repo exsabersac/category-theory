@@ -34,7 +34,7 @@ Generalizable All Variables.
 (*
    * * Coequalizers of matrices
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.3
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.3
    Exercise 3 [maclane:III.3:ex3] asks for the coequalizer of a parallel
    pair of matrices.  This file is the CATEGORICAL half of that
    exercise.  The linear-algebra half is Instance/Matr/Elimination.v,
@@ -52,7 +52,7 @@ Generalizable All Variables.
    of the factorization, linear independence is its uniqueness.  The
    coequalizer OBJECT is then the number of rows of E, the dimension of
    that null space.  NO RANK FUNCTION IS DEFINED, neither here nor in
-   Elimination.v, so the familiar reading "k = m − rank (A − B)" is
+   Elimination.v, so the familiar reading “k = m − rank (A − B)” is
    neither stated nor proved anywhere in this development; it appears in
    this sentence and nowhere else.
 
@@ -133,7 +133,7 @@ Generalizable All Variables.
    [matr_coeq_desc] been a [Qed] lemma; and the objects of three
    further pairs, pinning k = m at a pair with itself (where the map is
    2 x 2, so it has FOUR entries; two of them are pinned here and all
-   four are the identity matrix's -- an earlier draft said "both",
+   four are the identity matrix's -- an earlier draft said “both”,
    which is right for the 1 x 2 map of the worked pair and wrong here),
    k = 0 at an invertible difference, and a second non-degenerate
    k = 2 at m = 3.  At [Q_Field] the object, both entries −2 and 1 of
@@ -146,7 +146,7 @@ Generalizable All Variables.
 
    FIVE STRICT ATTEMPTS WERE MADE AND REFUTED.  Each was checked by
    removing the failure marker and confirming a genuine CONVERSION
-   failure (each reported "cannot unify"), and each is paired with a
+   failure (each reported “cannot unify”), and each is paired with a
    positive control that succeeds at the same arguments; none is a
    universe or elaboration artifact.  They are recorded here rather
    than as probes, this file carrying no probe section.
@@ -220,8 +220,8 @@ Generalizable All Variables.
 
    THE ASSUMPTION FOOTPRINT is nil and was measured per constant rather
    than sampled: all 58 named constants of this file — the twelve of the
-   section plus the 46 of the two witness blocks — report "Closed under
-   the global context".  The file uses no [Program] and declares no
+   section plus the 46 of the two witness blocks — report “Closed under
+   the global context”.  The file uses no [Program] and declares no
    [Instance], so it generates no obligations and the enumeration from
    its own declarations is the complete one; this is the [Print Module]
    caveat docs/AXIOMS.md records, and it does not arise here. 
@@ -359,7 +359,7 @@ Definition matr_coeq_colimit {m n : nat} (A B : n ~{Matr K}~> m) :
    [:=] with no tactic HERE.  Do not read that back into Reduction.v:
    there, only [IsEqualizer_op_of_IsCoequalizer] is a [:=];
    [HasEqualizers_op_of_HasCoequalizers] is a tactic script.  An
-   earlier draft said "as they are there", which inverts that.  See
+   earlier draft said “as they are there”, which inverts that.  See
    refuted attempt (iv) for
    what is NOT true of them. 
 

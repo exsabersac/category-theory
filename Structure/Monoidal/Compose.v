@@ -29,9 +29,9 @@ Generalizable All Variables.
 
  the standard interchange formula α(G' x) ∘ F(β x).
 
- This reflects the fact that categories are themselves "monoidoids", or
+ This reflects the fact that categories are themselves “monoidoids”, or
  monoidal with respect to identity and composition; it is also the structure
- behind "a monad is a monoid in the category of endofunctors".
+ behind “a monad is a monoid in the category of endofunctors”.
 
  In the literature this monoidal structure is strict: the associator and the
  two unitors are identity natural transformations, since F ◯ (G ◯ H) and

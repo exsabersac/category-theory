@@ -24,16 +24,16 @@ Generalizable All Variables.
 (* * * Hausdorff spaces over the Type-valued [Top] / * * 关于取值类型 [Top] 的豪斯多夫空间 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, book p. 135 (PDF p. 144), read from the page image,
  Proposition 2 (catalog id maclane:V.9:prop2): the inclusion
- Haus → Top has a left adjoint H, "obtained by the adjoint functor
- theorem".  The statement over Instance/Top/Prop.v's [PTopCat] is
+ Haus → Top has a left adjoint H, “obtained by the adjoint functor
+ theorem”.  The statement over Instance/Top/Prop.v's [PTopCat] is
  Instance/Top/Hausdorff.v's; this file records what holds over
  Instance/Top.v's Type-valued [Top].
- Riehl, "Category Theory in Context", §4.7, printed p. 180 (PDF p. 200),
+ Riehl, “Category Theory in Context”, §4.7, printed p. 180 (PDF p. 200),
  read from the page image, Exercise 4.7.ii (riehl:4.7:exii), the same
- reflector "by Theorem 4.7.3"
+ reflector “by Theorem 4.7.3”
  nLab:      https://ncatlab.org/nlab/show/Hausdorff+space
 
  BACKGROUND.  Instance/Top.v's [Top@{h o}] has Type-valued opens, and
@@ -141,7 +141,7 @@ Generalizable All Variables.
  refutation of completeness with the objects strictly above [h].
  The two spaces' own lemmas are what reach opens below the points:
  [Discrete_Hausdorff] read there is refused, that file's N11
- ("Cannot enforce o = p because p < o"), where
+ (“Cannot enforce o = p because p < o”), where
  [tophaus_bool_hausdorff] is accepted ([p461_bool_opens_below]).
  - No block carries an equation.  A word count of [Set] over the
  [About] output of the 48 constants reads 1, [TSepPremise]'s

@@ -24,8 +24,8 @@ Generalizable All Variables.
  or application is a redex (or contains one), never a value.  [VAR] is absent
  too: progress ([strong_progress]) is stated for closed terms ([Exp []]),
  where no free variable can occur, so variables need not be values.  (nLab
- has no page for "value" in this PL sense: ncatlab.org/nlab/show/value is the
- mathematical "value of a function".)
+ has no page for “value” in this PL sense: ncatlab.org/nlab/show/value is the
+ mathematical “value of a function”.)
 
  The predicate lands in [Set] rather than [Prop] so that downstream
  evaluators ([Eval]) may compute with the witness; [ValueP_irrelevance]

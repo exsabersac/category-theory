@@ -33,9 +33,9 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
-   Corollary, book p. 130 ([maclane:V.8:cor1]), and Riehl, "Category
-   Theory in Context", Corollary 4.7.13, printed p. 178
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
+   Corollary, book p. 130 ([maclane:V.8:cor1]), and Riehl, “Category
+   Theory in Context”, Corollary 4.7.13, printed p. 178
    ([riehl:4.7:cor13]), as the catalogue under doc/plan/books summarizes
    them (the printed books were not consulted).  This satellite applies
    Adjunction/SAFT/Characterization.v's [SAFT_wellpowered] and, once, its
@@ -138,22 +138,22 @@ Generalizable All Variables.
        [Cogenerator] taken as a hypothesis, since none is built without
        [Untruncate] or [IEM]; the probe's [p453_cover_up] and
        [p453_sets_cover_trivial]), but [SAFT_cover_wp_at] refuses the
-       first at the argument: "The term "Sets_WellPoweredAt_up ?X" has
-       type "WellPoweredAt@{…} ?X" while it is expected to have type
-       "WellPoweredAt@{<1> so … o <3>} (saft_prod@{so so o o …}
-       Id[Sets@{o so}] Sets_Complete@{o so} G d)" (universe
+       first at the argument: “The term ”Sets_WellPoweredAt_up ?X“ has
+       type ”WellPoweredAt@{…} ?X“ while it is expected to have type
+       ”WellPoweredAt@{<1> so … o <3>} (saft_prod@{so so o o …}
+       Id[Sets@{o so}] Sets_Complete@{o so} G d)“ (universe
        inconsistency: Cannot enforce <1> = <3> because <1> <= <2> <
-       <3>)".  That refusal is at [SAFT_cover_wp_at]'s own binder [w <=
+       <3>)”.  That refusal is at [SAFT_cover_wp_at]'s own binder [w <=
        h]; the pin is [GAFT]'s: with Adjunction/GAFT.v added to the
        scratch file (under this file's import list [GAFT] is not in
        scope, and a refusal there would be the missing name, not the
        pin), [GAFT (@Id Sets@{o so}) Sets_Complete
        Sets_Id_PreservesImageLimit (fun d => saft_solution_set_at … G d
-       (Sets_WellPoweredAt_up _))] is refused at the solution set: "… has
-       type "SolutionSet@{<1> so so o} Id[Sets@{o so}] d" while it is
-       expected to have type "SolutionSet@{o so so o} Id[Sets@{o so}] d"
+       (Sets_WellPoweredAt_up _))] is refused at the solution set: “… has
+       type ”SolutionSet@{<1> so so o} Id[Sets@{o so}] d“ while it is
+       expected to have type ”SolutionSet@{o so so o} Id[Sets@{o so}] d“
        (universe inconsistency: Cannot enforce <1> = o because o < <2> <=
-       <1>)", beside the accepted control [saft_solution_set_at … G d
+       <1>)”, beside the accepted control [saft_solution_set_at … G d
        (Sets_WellPoweredAt_up _)] not handed to [GAFT].
        Test/ProbeSAFT453.v pins both, as N11 ([p453_n11_cover_wp_at_up])
        and N12 ([p453_n12_gaft_at_up]), beside [p453_cover_up] and
@@ -162,32 +162,32 @@ Generalizable All Variables.
        [WellPowered] refuses the same well-powering by its own pin before
        any theorem is applied: [fun x => Sets_WellPoweredAt_up x :
        WellPowered Sets@{o so}] is refused with the same inconsistency
-       ("Cannot enforce <1> = <3> because <1> <= <2> < <3>").
+       (“Cannot enforce <1> = <3> because <1> <= <2> < <3>”).
        Test/ProbeSAFT453.v pins it as N13 ([p453_n13_wp_up]), beside
        [p453_wp_up_at].
      - [Sets^op]: complete and cogenerated unconditionally
        (Instance/Sets/SpecialInitial.v's [setsop_comp], [setsop_cog]),
        but co-well-powered only one universe up
        ([Sets_CoWellPoweredAt_up]); the cover accepts it and
-       [SAFT_cover_wp_at] refuses it, the expected type ending "…
+       [SAFT_cover_wp_at] refuses it, the expected type ending “…
        (saft_prod@{so so o o …} Id[Sets@{o so}^op] setsop_comp@{o so}
-       setsop_cog@{o o so} d)" and the message ending "(universe
+       setsop_cog@{o o so} d)” and the message ending “(universe
        inconsistency: Cannot enforce <1> = <3> because <1> <= <2> <
-       <3>)".  Test/ProbeSAFT453.v pins it as N25
+       <3>)”.  Test/ProbeSAFT453.v pins it as N25
        ([p453_n25_setsop_cover_wp_at_up]), beside [p453_setsop_cover_up],
        and the same well-powering's solution set handed to [GAFT]
-       directly as N29 ([p453_n29_setsop_gaft_up]), refused with "… has
-       type "SolutionSet@{<1> so so o} Id[Sets@{o so}^op] d" while it is
-       expected to have type "SolutionSet@{o so so o} Id[Sets@{o so}^op]
-       d" (universe inconsistency: Cannot enforce <1> = o because o < <2>
-       <= <1>)", beside [p453_setsop_solution_set_up].
+       directly as N29 ([p453_n29_setsop_gaft_up]), refused with “… has
+       type ”SolutionSet@{<1> so so o} Id[Sets@{o so}^op] d“ while it is
+       expected to have type ”SolutionSet@{o so so o} Id[Sets@{o so}^op]
+       d“ (universe inconsistency: Cannot enforce <1> = o because o < <2>
+       <= <1>)”, beside [p453_setsop_solution_set_up].
      - The unconditional LARGE cogenerator,
        Instance/Sets/Cogenerator.v's [Sets_Cogenerator_large], indexed by
-       all objects, is refused by [SAFT_cover_wp]: "The term
-       "Sets_Cogenerator_large" has type "Cogenerator@{…} Sets@{<1> …}"
-       while it is expected to have type "Cogenerator@{o so o} Sets@{o
-       so}" (universe inconsistency: Cannot enforce <1> = o because <1> <
-       o)", and [SAFT_wellpowered], whose [Cogenerator@{c o h}] carries
+       all objects, is refused by [SAFT_cover_wp]: “The term
+       ”Sets_Cogenerator_large“ has type ”Cogenerator@{…} Sets@{<1> …}“
+       while it is expected to have type ”Cogenerator@{o so o} Sets@{o
+       so}“ (universe inconsistency: Cannot enforce <1> = o because <1> <
+       o)”, and [SAFT_wellpowered], whose [Cogenerator@{c o h}] carries
        [c <= so], refuses it at the same argument.  Test/ProbeSAFT453.v
        pins the two as N15 and N16 ([p453_n15_large_cog_cover],
        [p453_n16_large_cog_comma]), beside [p453_large_cog] and
@@ -201,8 +201,8 @@ Generalizable All Variables.
    Structure/Complete/Freyd.v's [small_complete_is_thin]); and [Grp],
    well-powered in tree only one universe up
    (Instance/Grp/WellPowered.v's [Grp_WellPoweredAt_up]) and with no
-   [Cogenerator] built.  (An earlier revision said "(a grep for
-   "Cogenerator" under Instance/ finds Instance/Sets files only)"; since
+   [Cogenerator] built.  (An earlier revision said “(a grep for
+   ”Cogenerator“ under Instance/ finds Instance/Sets files only)”; since
    #454 the same grep, [find Instance -name '*.v' | xargs grep -l
    Cogenerator], finds sixteen files, four under Instance/Sets.  Of the
    other twelve, eight only name the file Instance/Mod/Cogenerator.v in
@@ -230,7 +230,7 @@ Generalizable All Variables.
    preservation premises are not read off a known adjoint.
 
    MEASUREMENTS.  Sixteen constants ([Print Module]), no [Program]
-   obligation, all transparent, each "Closed under the global context"
+   obligation, all transparent, each “Closed under the global context”
    by its fully qualified name.  Closure 179 files excluding itself,
    counted over .Makefile.coq.d. *)
 
@@ -261,8 +261,8 @@ Definition sets_id_old_cover_refuted@{o so t +| Set < o, o < so, o < t +}
     (WellPowered_SubobjectIndex (Sets_WellPowered_untruncate@{o so t} Un)).
 
 (*
-Both halves in one statement, so that "the same completeness, cogenerator
-   and well-powering" is read off the type. 
+Both halves in one statement, so that “the same completeness, cogenerator
+   and well-powering” is read off the type. 
 
 --------
 两半都在一份声明中，因此“相同的完整性，热电联产

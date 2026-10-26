@@ -21,12 +21,12 @@ Open Scope R_scope.
 (*
  The sections below quantify over the two homotopies being pasted, which
  their proofs genuinely use but which do not occur in every statement.
- Lib.v's [Default Proof Using "Type"] would discard them; this is the same
+ Lib.v's [Default Proof Using “Type”] would discard them; this is the same
  setting, for the same reason, as Instance/Top/Interval.v and
  Instance/Top/FundamentalGroupoid.v. 
 
  --------
- 下面的部分量化了正在拼接的两个同伦，它们的证明确实使用了这些同伦，但并非出现在每个声明中。Lib.v 的 [Default Proof Using "Type"] 会舍弃它们；这是相同的设置，原因与 Instance/Top/Interval.v 和 Instance/Top/FundamentalGroupoid.v 相同。
+ 下面的部分量化了正在拼接的两个同伦，它们的证明确实使用了这些同伦，但并非出现在每个声明中。Lib.v 的 [Default Proof Using “Type”] 会舍弃它们；这是相同的设置，原因与 Instance/Top/Interval.v 和 Instance/Top/FundamentalGroupoid.v 相同。
 *)
 Set Default Proof Using "All".
 
@@ -37,14 +37,14 @@ Set Default Proof Using "All".
  nLab:      https://ncatlab.org/nlab/show/homotopy
  nLab:      https://ncatlab.org/nlab/show/pointed+topological+space
  Wikipedia: https://en.wikipedia.org/wiki/Homotopy_category
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §I.7, printed pp. 25-26 (PDF pp. 35-36) -- the two
  constructions formalized here, [Toph] and [Toph_*], from the
  roll-call of large categories that opens at printed p. 24
- Book:      Mac Lane, ibid., §II.8 "Quotient Categories", printed p. 51
+ Book:      Mac Lane, ibid., §II.8 “Quotient Categories”, printed p. 51
  (PDF p. 61) -- the remark that [Toph] IS a quotient of [Top]
  by a congruence on its hom-sets, which is how it is built
- Book:      Riehl, "Category Theory in Context", §1.1 Exercise 1.1.iv,
+ Book:      Riehl, “Category Theory in Context”, §1.1 Exercise 1.1.iv,
  printed p. 3 ff. (PDF p. 23 ff.)
 
  Two continuous maps are homotopic when one can be deformed continuously
@@ -86,8 +86,8 @@ Set Default Proof Using "All".
  such object to map out of: [Top] carries no products here (only
  [Top_Terminal] and [Top_Initial] are instantiated, and Instance/Top.v's
  own header scopes the remark that the product topology is the
- categorical product to the mathematics at large, "none of it formalized
- here").  Supplying the cylinder directly does not rescue the plan
+ categorical product to the mathematics at large, “none of it formalized
+ here”).  Supplying the cylinder directly does not rescue the plan
  either, and the obstruction is a universe obstruction rather than a
  matter of labour.  Writing the product topology out -- W is open when
  every `(x, t)` in it carries an open `U ∋ x` of X and a radius `r > 0`
@@ -104,7 +104,7 @@ Set Default Proof Using "All".
  So the cylinder object exists, one universe up, as a [TopSpace@{o2}] --
  an object of a DIFFERENT [Top] from the one X belongs to.  The
  inclusions `X ~> Cyl X` are then not arrows of any single category, the
- relation "there is a map out of the cylinder restricting to f and g"
+ relation “there is a map out of the cylinder restricting to f and g”
  is not a relation on a hom-set of [Top], and it could not be a
  [HomRelT Top] at all.  This is the same stratification Top/Forgetful.v
  documents for the underlying-set functor, met here from the other side.
@@ -897,7 +897,7 @@ Qed.
 
 (*
  So the projection genuinely identifies: two arrows Top keeps apart are one
- arrow of Toph.  This is the "arrows are not functions" moral of the
+ arrow of Toph.  This is the “arrows are not functions” moral of the
  homotopy category, machine-checked rather than asserted. 
 
  --------
@@ -983,8 +983,8 @@ Definition Toph_iso_homotopy_equivalence {X Y : TopSpace} (i : X ≅[Toph] Y) :
 
 (*
  The two passages are mutually inverse ON THE NOSE -- both round
- trips are Leibniz [eq_refl]-level, so "homotopy equivalences ARE the
- isomorphisms of Toph" is a genuine bijection, not merely a pair of
+ trips are Leibniz [eq_refl]-level, so “homotopy equivalences ARE the
+ isomorphisms of Toph” is a genuine bijection, not merely a pair of
  maps.  ([eq] on these sigma/record values is the convertibility
  exception: both sides are the same term after destructuring.) 
 

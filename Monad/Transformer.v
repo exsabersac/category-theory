@@ -38,7 +38,7 @@ nLab: https://ncatlab.org/nlab/show/monad+transformer
 
    CORRECTION (#468).  The class below carries [lift] as a family of arrows
    with no naturality field, and until #468 the tree had no record of monad
-   morphisms against which to read "monad morphism" above.
+   morphisms against which to read “monad morphism” above.
    Monad/Morphism/Transformer.v proves the reading from the two laws:
    [lift_natural] derives the naturality, [transformer_hom] turns a
    transformer into a [MonadHom] M (T M) of Monad/Morphism.v, and

@@ -26,14 +26,14 @@ Generalizable All Variables.
  Sources, cited BY LOCATION; the descriptions are transcribed from the
  catalog entries of issue #320 rather than from the printed books:
 
- - Mac Lane, "Categories for the Working Mathematician", 2nd ed.
+ - Mac Lane, “Categories for the Working Mathematician”, 2nd ed.
  (Springer GTM 5), section III.3, printed p. 64 (PDF p. 73), item
  [maclane:III.3:def2]: for a set X read as a discrete category, the
  X-fold coproduct of a family {a_x} is an object with injections
  through which every family of arrows out factors uniquely --
- "equivalently, a bijection C(⊔_x a_x, c) ≅ ∏_x C(a_x, c) natural in
- c".  It is that "equivalently" which this file supplies.
- - Riehl, "Category Theory in Context", 2nd ed., section 3.1, printed
+ “equivalently, a bijection C(⊔_x a_x, c) ≅ ∏_x C(a_x, c) natural in
+ c”.  It is that “equivalently” which this file supplies.
+ - Riehl, “Category Theory in Context”, 2nd ed., section 3.1, printed
  pp. 90-91 (PDF pp. 110-111), item [riehl:3.1:remark27], clauses (i)
  and (ii): morphisms out of an I-indexed coproduct correspond
  naturally and bijectively to I-indexed families,
@@ -91,7 +91,7 @@ Generalizable All Variables.
  [indexed_product_hom_iso]   through [indexed_product_ump]   (the class)
  [indexed_coproduct_hom_iso] through [indexed_coproduct_ump] (the class)
 
- Read "every presentation the tree carries accessors for" strictly: it is
+ Read “every presentation the tree carries accessors for” strictly: it is
  NOT every expressible shape.  [Colimit (@DiscreteCat_Functor A C f)] --
  the form Structure/Limit.v defines, indexing over [(DiscreteCat A)^op]
  -- is formable and is a genuine in-tree presentation, and
@@ -155,7 +155,7 @@ Generalizable All Variables.
  [iprod_hom_iso_from], and [icoprod_hom_iso_to]);
  - the backward leg's VALUE is the mediator named by the pre-existing
  [∃!] accessor -- [iprod_hom_iso_from_is_desc] and
- [icoprod_hom_iso_from_is_desc] are the "does not drift" guarantee at
+ [icoprod_hom_iso_from_is_desc] are the “does not drift” guarantee at
  its strongest available form;
  - the forward leg computes to restriction along the projections
  ([iprod_hom_transform_computes]) and, on the coproduct side, to
@@ -196,17 +196,17 @@ Generalizable All Variables.
  with [a < b] is rejected, and likewise for [SetoidObject]), so the [Sets]
  in which the comparison lives has its carrier universe forced EQUAL to
  [C]'s hom universe rather than merely above it -- an annotated variant
- declaring the two apart was attempted and reports "Cannot enforce
- uh = us because uh < us".  The index bound follows.  This is pinned in Test/ProbeIndexedHom.v
- as a formability negative with the exact message "Cannot enforce
- ua <= uh because uh < ua", against two controls showing that neither
+ declaring the two apart was attempted and reports “Cannot enforce
+ uh = us because uh < us”.  The index bound follows.  This is pinned in Test/ProbeIndexedHom.v
+ as a formability negative with the exact message “Cannot enforce
+ ua <= uh because uh < ua”, against two controls showing that neither
  functor alone is what gets rejected.  In practice the bound costs
  nothing that cumulativity does not already give: an index at or below
  [C]'s hom universe lifts, and this is the same smallness side condition
  Instance/Sets/Products.v's header analyses at [Sets].
 
  The two LIMIT-shaped bridges carry [{A : Set}].  RECORDED CORRECTION to
- the analysis of that binder: an earlier revision said it "is a
+ the analysis of that binder: an earlier revision said it “is a
  COMBINATION of two facts rather than one, which the probe file
  separates.  [Structure/Limit/Product.v]'s [iprod] is over
  [C : Category@{u Set Set}] -- [DiscreteCat]'s hom-setoid is strict
@@ -214,9 +214,9 @@ Generalizable All Variables.
  [Limit (DiscreteCat_Functor f)] and [iprod f L] are both formable over
  such a [C] at an index strictly above [Set].  Adding this file's bound at
  [C]'s hom universe, which is [Set] there, is what cuts the index to
- [Set]."  The donor half of that combination is GONE: [iprod] inherited
+ [Set].”  The donor half of that combination is GONE: [iprod] inherited
  its [Set] from Instance/Discrete.v's unannotated [DiscreteCat_Functor],
- annotated in place there in the PR "algebraic carriers are sets"
+ annotated in place there in the PR “algebraic carriers are sets”
  (2026-09-17), and [iprod@{u u0 u1 u2 u3}] is now over
  [C : Category@{u1 u2 u2}].  Test/ProbeIndexedHom.v re-measured the two
  negatives in a copy of the whole file with its section's [C] declared at
@@ -253,7 +253,7 @@ Generalizable All Variables.
 
  STATUS: axiom-free.  All 59 constants -- 47 named plus 12 [Program]
  obligations, enumerated by [Print Module] per the docs/AXIOMS.md
- methodology -- report "Closed under the global context"; the Makefile's
+ methodology -- report “Closed under the global context”; the Makefile's
  [print-assumptions] target audits the headline ones.  Nothing here
  appeals to funext, choice, or UIP.  The concrete [Sets] witness of a
  small coproduct is issue #254's, in Instance/Sets/Products.v, and is not
@@ -313,7 +313,7 @@ Generalizable All Variables.
 
  宇宙，按约束块衡量
 
- 使用 [Set Printing Universes.] 和 [About] 重现。仅读取绑定器会出错；约束块是权威。[iprod_hom_functor@{u u0 u1 u2 u3 u4}] 使用 [C : Category@{u3 u4 u4}] 和 [A : Type@{u}] 以及 [u <= u2] 和 [u4 <= u2] —— 索引宇宙和 [C] 的 Hom 宇宙各自由目标 [Sets] 的载体宇宙 [u2] 限定，并且彼此无关。因此，仅目标函子就允许一个严格大于 [C] 的 hom 的索引。比较映射不存在，其原因值得了解。它的来源是同态函子，其对象是 [C] 的同态集合；一个 [SetoidObject] 拥有其 [Setoid] 作为字段，并且在这里没有记录是累积的（测度：将一个 [Setoid@{a a}] 提升为 [Setoid@{b b}] 并附带 [a < b] 是被拒绝的，[SetoidObject] 同理），因此比较存在的 [Sets] 的承载宇宙被强制等于 [C] 的同态宇宙，而不仅仅是高于它——曾尝试过一个标注变体来声明两者不同，但报告“无法强制 uh = us 因为 uh < us”。索引界限如下。这被固定在 Test/ProbeIndexedHom.v 中，作为可形成性否定，其确切消息为“Cannot enforce ua <= uh because uh < ua”，针对两个控件显示单独的函子都不是被拒绝的原因。实际上，这个约束不会增加累积性已经提供的开销：在或低于 [C] 的同伦宇宙中的索引会提升，这与 Instance/Sets/Products.v 的标题分析在 [Sets] 时的相同小性边界条件相同。这两座 LIMIT 形桥承载 [{A : Set}]。对该粘合剂分析的记录更正：之前的修订说它“是两个事实的组合而不是一个，探测文件将其分开。[Structure/Limit/Product.v] 的 [iprod] 位于 [C : Category@{u Set Set}] 之上——[DiscreteCat] 的同类集是严格相等的——并具有其自身的索引宇宙 FREE；探针的控制显示 [Limit (DiscreteCat_Functor f)] 和 [iprod f L] 都可以在索引严格高于 [Set] 的 [C] 上形成。将此文件的边界添加到 [C] 的同态宇宙，该宇宙在 [Set] 中，是切割索引到 [Set] 的原因。该组合的捐赠半部分已经消失：[iprod] 从 Instance/Discrete.v 中未标注的 [DiscreteCat_Functor] 继承了其 [Set]，在 PR "代数载体是集合"（2026-09-17）中进行了现场标注，[iprod@{u u0 u1 u2 u3}] 现在位于 [C : Category@{u1 u2 u2}] 之上。Test/ProbeIndexedHom.v 在整个文件的副本中重新测量了两个负值，其部分的 [C] 被声明在严格高于 [Set] 的同态宇宙中：两个仍然拒绝，因此 [{A : Set}] 绑定器仅是本文件的边界，而不是组合。该部分的 [C] 保留在 [Set] 实例上，因为绑定器与该实例有关；请参见该探针的标题。[indexed_product_hom_iso] 和 [indexed_coproduct_hom_iso] 类形桥没有这样的销钉，也没有提到任何离散图。
+ 使用 [Set Printing Universes.] 和 [About] 重现。仅读取绑定器会出错；约束块是权威。[iprod_hom_functor@{u u0 u1 u2 u3 u4}] 使用 [C : Category@{u3 u4 u4}] 和 [A : Type@{u}] 以及 [u <= u2] 和 [u4 <= u2] —— 索引宇宙和 [C] 的 Hom 宇宙各自由目标 [Sets] 的载体宇宙 [u2] 限定，并且彼此无关。因此，仅目标函子就允许一个严格大于 [C] 的 hom 的索引。比较映射不存在，其原因值得了解。它的来源是同态函子，其对象是 [C] 的同态集合；一个 [SetoidObject] 拥有其 [Setoid] 作为字段，并且在这里没有记录是累积的（测度：将一个 [Setoid@{a a}] 提升为 [Setoid@{b b}] 并附带 [a < b] 是被拒绝的，[SetoidObject] 同理），因此比较存在的 [Sets] 的承载宇宙被强制等于 [C] 的同态宇宙，而不仅仅是高于它——曾尝试过一个标注变体来声明两者不同，但报告“无法强制 uh = us 因为 uh < us”。索引界限如下。这被固定在 Test/ProbeIndexedHom.v 中，作为可形成性否定，其确切消息为“Cannot enforce ua <= uh because uh < ua”，针对两个控件显示单独的函子都不是被拒绝的原因。实际上，这个约束不会增加累积性已经提供的开销：在或低于 [C] 的同伦宇宙中的索引会提升，这与 Instance/Sets/Products.v 的标题分析在 [Sets] 时的相同小性边界条件相同。这两座 LIMIT 形桥承载 [{A : Set}]。对该粘合剂分析的记录更正：之前的修订说它“是两个事实的组合而不是一个，探测文件将其分开。[Structure/Limit/Product.v] 的 [iprod] 位于 [C : Category@{u Set Set}] 之上——[DiscreteCat] 的同类集是严格相等的——并具有其自身的索引宇宙 FREE；探针的控制显示 [Limit (DiscreteCat_Functor f)] 和 [iprod f L] 都可以在索引严格高于 [Set] 的 [C] 上形成。将此文件的边界添加到 [C] 的同态宇宙，该宇宙在 [Set] 中，是切割索引到 [Set] 的原因。该组合的捐赠半部分已经消失：[iprod] 从 Instance/Discrete.v 中未标注的 [DiscreteCat_Functor] 继承了其 [Set]，在 PR “代数载体是集合”（2026-09-17）中进行了现场标注，[iprod@{u u0 u1 u2 u3}] 现在位于 [C : Category@{u1 u2 u2}] 之上。Test/ProbeIndexedHom.v 在整个文件的副本中重新测量了两个负值，其部分的 [C] 被声明在严格高于 [Set] 的同态宇宙中：两个仍然拒绝，因此 [{A : Set}] 绑定器仅是本文件的边界，而不是组合。该部分的 [C] 保留在 [Set] 实例上，因为绑定器与该实例有关；请参见该探针的标题。[indexed_product_hom_iso] 和 [indexed_coproduct_hom_iso] 类形桥没有这样的销钉，也没有提到任何离散图。
 
  在两个方向上都非空
 

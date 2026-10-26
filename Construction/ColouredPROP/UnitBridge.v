@@ -46,7 +46,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
  [Construction/ColouredPROP.v] closes with a discussion (its section
- "Discussion: relationship to plain PROPs") observing that a [PROP]
+ “Discussion: relationship to plain PROPs”) observing that a [PROP]
  is the one-colour special case of [ColouredPROP unit] — the
  wire-list [list unit] is in bijection with [nat] via [length], with
  [cprop_of_list (repeat tt n)] corresponding to [prop_of_nat n] and
@@ -89,7 +89,7 @@ Generalizable All Variables.
  3. ROUND-TRIP LAWS.  On objects the two composites are
  [length (repeat tt n) = n] ([repeat_length]) and
  [repeat tt (length l) = l] ([unit_list_eta], which needs
- eta for [unit] and is exactly where "one colour" enters).  On
+ eta for [unit] and is exactly where “one colour” enters).  On
  morphisms, both round trips are the identity up to [hom_cast]
  conjugation along those object equalities:
 
@@ -164,7 +164,7 @@ Definition unit_dec (u v : unit) : {u = v} + {u <> v} :=
 
 (*
    * Eta for unit lists: a [list unit] is determined by its length.
-   This single lemma is where "one colour" does all its work — for
+   This single lemma is where “one colour” does all its work — for
    any larger colour type the corresponding statement is not even
    well-posed. 
 

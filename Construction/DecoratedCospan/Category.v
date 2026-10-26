@@ -20,15 +20,15 @@ Generalizable All Variables.
    * * DecoratedCospanCat as a Category
 
    nLab: https://ncatlab.org/nlab/show/decorated+cospan
-   Wikipedia: none-exists (the Wikipedia "Cospan" article does not
+   Wikipedia: none-exists (the Wikipedia “Cospan” article does not
    cover decorated cospans or hypergraph categories).
 
-   Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872
+   Reference: Brendan Fong, “Decorated Cospans”, arXiv:1502.00872
    (Theory and Applications of Categories 30 (33), 2015, 1096-1120).
    The fact that the F-decorated cospans form a category — composition
    by pushout, identity by the empty decoration, morphisms taken up to
    apex-iso — is Fong's [3.2. Proposition].  (The earlier draft of this
-   header miscited it as "Theorem 2.3"; in the paper Section 2 is about
+   header miscited it as “Theorem 2.3”; in the paper Section 2 is about
    plain [Cospan(C)], and [2.3] is not a theorem about [FCospan].)
 
    [Construction/DecoratedCospan.v] supplies the data layer: the
@@ -50,7 +50,7 @@ Generalizable All Variables.
    formula respects the apex-iso transport produced by the
    cospan-level proof.
 
-   The decoration-level facts are the "lax-monoidal coherence" half
+   The decoration-level facts are the “lax-monoidal coherence” half
    of Fong's [3.2. Proposition].  They are not free: they depend on the
    chosen identity-decoration [id_decoration] and merge map
    [cospan_merge] being COHERENT with the lax monoidal structure on
@@ -62,8 +62,8 @@ Generalizable All Variables.
    In this Coq formalisation we bundle those coherences as a
    typeclass [DecCospan_Coherent], parameterised by the same data
    used in [Construction/DecoratedCospan.v].  Concrete instances of
-   [DecCospan_Coherent] correspond exactly to Fong's "decorated
-   cospan structure" ([3.1. Definition]): a lax monoidal functor [F]
+   [DecCospan_Coherent] correspond exactly to Fong's “decorated
+   cospan structure” ([3.1. Definition]): a lax monoidal functor [F]
    with a chosen identity-decoration map and merge map, satisfying
    the unit / associativity / functoriality coherences.
 
@@ -117,7 +117,7 @@ Context (cospan_merge :
    * ** Coherence class for the decorated-cospan category
 
    Bundles the four conditions implicit in Fong's [3.1. Definition] /
-   [3.2. Proposition] of "Decorated Cospans":
+   [3.2. Proposition] of “Decorated Cospans”:
 
    (i) the decoration laws are [Proper] under the apex-iso
    transport produced by [cospan_equiv];
@@ -366,7 +366,7 @@ Arguments DecoratedCospanCat
    * ** Path to the full symmetric monoidal layer
 
    Given [DecoratedCospanCat], the next-layer structure (Fong, [3.5.
-   Theorem] of "Decorated Cospans") is a SYMMETRIC MONOIDAL category —
+   Theorem] of “Decorated Cospans”) is a SYMMETRIC MONOIDAL category —
    in fact a HYPERGRAPH category — extending the underlying
    [CospanCat]'s SMC structure with decoration data:
 
@@ -413,9 +413,9 @@ Arguments DecoratedCospanCat
    The implementation cost of the SMC layer is roughly the same as
    [Construction/Cospan/Symmetric.v] (~400 lines), repeated on the
    decoration side.  Most of the work is bookkeeping: each obligation
-   is "do the cospan-level fact, then transport along the lax
-   coherence".  No genuinely new mathematics enters — the decoration
-   layer is, in Fong's words, "natively monoidal" because [F] is.
+   is “do the cospan-level fact, then transport along the lax
+   coherence”.  No genuinely new mathematics enters — the decoration
+   layer is, in Fong's words, “natively monoidal” because [F] is.
 
    The implementation is mechanical but volumetric; we expose the
    [DecoratedCospanCat] [Category] record (above) as the primary
@@ -451,7 +451,7 @@ Arguments DecoratedCospanCat
 (*
    * ** Discussion: the four coherence fields
 
-   Fong's "Decorated Cospans" paper proves each of the four
+   Fong's “Decorated Cospans” paper proves each of the four
    [DecCospan_Coherent] fields directly in the [F = Set] case (where
    decorations are literal elements of [F N]), using:
 
@@ -473,7 +473,7 @@ Arguments DecoratedCospanCat
    re-derive them).
 
    A concrete instance — for the trivial decoration [F = const(I_D)] —
-   is the canonical "no-decoration" case where every coherence holds
+   is the canonical “no-decoration” case where every coherence holds
    by the [const]-functor laws + [lax_pure ∘ ... = lax_pure] collapses.
    More interesting instances (Baez–Fong electrical circuits, Fong's
    Markov processes) provide bespoke proofs that we leave to the

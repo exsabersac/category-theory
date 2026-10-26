@@ -30,26 +30,26 @@ Generalizable All Variables.
 (*
  nLab: https://ncatlab.org/nlab/show/closure+operator
  nLab: https://ncatlab.org/nlab/show/idempotent+monad
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, SS VI.1, printed p. 139, and SS VI.2,
- printed p. 141 (the example "Closure.")
- Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ printed p. 141 (the example “Closure.”)
+ Book: Awodey, “Category Theory” (1st ed., CMU pre-print, Sept 2005),
  SS 10.2, Example 10.4, printed p. 270
- Book: Fong and Spivak, "Seven Sketches in Compositionality", arXiv v3,
+ Book: Fong and Spivak, “Seven Sketches in Compositionality”, arXiv v3,
  SS 1.4.4, printed pp. 33-35: Exercise 1.119, Definition 1.120,
  Examples 1.121, 1.122 and 1.123
- Book: Riehl, "Category Theory in Context", 2nd ed., SS 5.1,
+ Book: Riehl, “Category Theory in Context”, 2nd ed., SS 5.1,
  Example 5.1.7, printed p. 186
 
  WHAT THE BOOKS SAY.  Mac Lane, p. 139: for a preorder P, a functor
  T : P → P is a monotone function, and the unit and multiplication exist
- "precisely when x ≤ Tx, T(Tx) ≤ Tx" (display (3)); "The first equation
- of (3) gives Tx ≤ T(Tx)"; and if P is a partial order "the Eqs. (3)
+ “precisely when x ≤ Tx, T(Tx) ≤ Tx” (display (3)); “The first equation
+ of (3) gives Tx ≤ T(Tx)”; and if P is a partial order “the Eqs. (3)
  imply that T(Tx) = Tx.  Hence a monad T in a partial order P is just a
- closure operation".  On p. 141: "A closure operation T on a preorder P
+ closure operation”.  On p. 141: “A closure operation T on a preorder P
  is a monad in P ...; a T-algebra is then an x ∈ P with Tx ≤ x ... a
  T-algebra is simply an element x ∈ P with x ≤ Tx ≤ x.  If P is a
- partial order, this means that x = Tx".  Awodey's Example 10.4 (p. 270)
+ partial order, this means that x = Tx”.  Awodey's Example 10.4 (p. 270)
  states the poset case and derives T² = T.  Seven Sketches,
  Definition 1.120 (pp. 33-34): a closure operator on a preorder is a
  monotone j with p ≤ j(p) and j(j(p)) ≅ j(p), idempotent only up to the
@@ -59,9 +59,9 @@ Generalizable All Variables.
  WHERE CLOSURE OPERATORS OCCUR, as the same pages record.  Riehl
  (p. 186): the closure of a subset of a topological space, with the
  interior as the dual kernel operator (both are
- Instance/Top/Interior.v).  Awodey (p. 270): the "possibility operator"
+ Instance/Top/Interior.v).  Awodey (p. 270): the “possibility operator”
  ◇p of modal logic.  Seven Sketches: a program that rewrites expressions
- (Example 1.121), and the modal operator "assuming B, −" on
+ (Example 1.121), and the modal operator “assuming B, −” on
  propositions ordered by entailment (Example 1.123; it is
  Instance/Props/Modal.v).
  In the tree, the element-level closures of a Galois connection were
@@ -75,16 +75,16 @@ Generalizable All Variables.
  [cl_fun] (Instance/Proset/Monotone.v's [MonotoneFun]), extensivity
  [cl_ext], and the multiplication inequality [cl_mult].  Seven Sketches'
  isomorphism is DERIVED as [cl_idem], its inverse being extensivity at
- cl x, which is Mac Lane's "Tx ≤ T(Tx)"; conversely [closure_of_iso]
+ cl x, which is Mac Lane's “Tx ≤ T(Tx)”; conversely [closure_of_iso]
  builds the record from Definition 1.120's form.  The two readings are
  therefore interderivable over a preorder, and the equation of Mac
  Lane, Awodey and Riehl needs antisymmetry, supplied as an explicit
  hypothesis in [closure_idem_eq].  No book is contradicted: Mac Lane
  defines a closure operation for a partial order on p. 139
  (t(tx) = tx) and on p. 141 calls a monad on a preorder a closure
- operation; he writes "=" only for a partial order, as Awodey and
+ operation; he writes “=” only for a partial order, as Awodey and
  Riehl do for a poset; Seven Sketches states ≅ in Definition 1.120 and
- writes "=" in Example 1.123 for propositions under entailment, where
+ writes “=” in Example 1.123 for propositions under entailment, where
  it reads as mutual entailment.
  The fields are display (3) rather than Definition 1.120 for
  a measured reason: with them the round trip closure → monad → closure
@@ -118,7 +118,7 @@ Generalizable All Variables.
  file's [algebra_ret_iso] and [local_algebra] at the witness
  [thin_IdempotentMonad] of Structure/Thin/Monad.v, the derivation of
  idempotency from thinness.  [closed_iff_fixed] is Mac Lane's
- "x ≤ Tx ≤ x" as Tx ≅ x, and [mlocal_iff_closed] identifies membership
+ “x ≤ Tx ≤ x” as Tx ≅ x, and [mlocal_iff_closed] identifies membership
  in Idempotent.v's [MLocal_Subcategory] (ret x invertible) with
  closedness.  Instantiated at the thin witness, Idempotent.v also gives
  [proset_EM_equivalence], the Eilenberg-Moore category as the closed
@@ -386,7 +386,7 @@ Example talgebra_round@{u h +} {A : Type@{u}} {R : relation A}
   | (to_closed, of_closed) => to_closed (of_closed h)
   end = h := eq_refl.
 
-(* "x ≤ Tx ≤ x": closed means Tx ≅ x. / “x ≤ Tx ≤ x”：闭合意味着 Tx ≅ x。 *)
+(* “x ≤ Tx ≤ x”: closed means Tx ≅ x. / “x ≤ Tx ≤ x”：闭合意味着 Tx ≅ x。 *)
 Definition closed_iff_fixed@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} (x : A) :

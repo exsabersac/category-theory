@@ -41,9 +41,9 @@ Generalizable All Variables.
 (*
    * * Congruences on a delooped group are normal subgroups
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.8
-   Exercise 2, printed p. 52 [maclane:II.8:ex2]; Awodey, "Category
-   Theory", 2nd ed., §4.2 printed p. 83 [awodey:4.2:def-normal-subgroup]
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §II.8
+   Exercise 2, printed p. 52 [maclane:II.8:ex2]; Awodey, “Category
+   Theory”, 2nd ed., §4.2 printed p. 83 [awodey:4.2:def-normal-subgroup]
    and §4.5 Exercise 1, printed p. 91 [awodey:4:ex1].
    nLab: https://ncatlab.org/nlab/show/normal+subgroup
    nLab: https://ncatlab.org/nlab/show/congruence
@@ -53,7 +53,7 @@ Generalizable All Variables.
    itself; a congruence on that category is therefore an equivalence
    relation on the group compatible with multiplication on both sides.
    Mac Lane's exercise is that such relations are exactly the normal
-   subgroups: from N one takes "f and g differ by a member of N", and
+   subgroups: from N one takes “f and g differ by a member of N”, and
    from a congruence one takes the class of the identity.  Quotienting
    the category then returns the delooping of the factor group, so
    Awodey's group homomorphism theorem is the universal property of the
@@ -75,19 +75,19 @@ Generalizable All Variables.
    CONVERSION IS NEEDED, because the delooping of an [Instance/Grp.v]
    group is already in tree.  [Instance/Grp/Free.v] builds
    [grp_deloop_monoid], [grp_deloop] and [grp_deloop_IsGroupoid] --
-   incidentally, on its way to the free group -- and that is exactly "the
-   one-object groupoid of an [Instance/Grp.v] group".  Everything below
+   incidentally, on its way to the free group -- and that is exactly “the
+   one-object groupoid of an [Instance/Grp.v] group”.  Everything below
    is stated over [grp_deloop], so the correspondence is with congruences
    on THE delooping in tree rather than on a fresh copy of it.  (The one
    bridge the tree names, [Instance/Rep.v] [grp_mon], is a
    different thing: it lands in [MonObject] and drops the inverse.
-   [Instance/Grp/Free.v] says in terms that [grp_mon] is "the only
-   bridge between them in tree", so no record-to-record converter existed
+   [Instance/Grp/Free.v] says in terms that [grp_mon] is “the only
+   bridge between them in tree”, so no record-to-record converter existed
    at the parent commit -- and this file supplies one below, which is
    exactly what makes that sentence stale rather than a limitation.
    [Instance/Rng/MonoidRing.v] is cited by Free.v's neighbours for a
-   RELATED but different observation: that Rep.v "had to bridge two
-   identically named [GrpObject] records with [grp_mon]", which records
+   RELATED but different observation: that Rep.v “had to bridge two
+   identically named [GrpObject] records with [grp_mon]”, which records
    the bridge's existence, not an absence.)  What this file observes is
    that the exercise never needed the converter in the first place.
 
@@ -96,7 +96,7 @@ Generalizable All Variables.
    [grp_deloop_GrpObject] takes an [Instance/Grp.v] group to a
    [Category.Construction.Deloop.GrpObject], built by REUSE rather than
    by a fresh record literal -- [Structure/Groupoid.v]'s [MonInverses]
-   and [GrpObject_of], which exist precisely to separate "has inverses"
+   and [GrpObject_of], which exist precisely to separate “has inverses”
    from the bundling.  It is proved NOT to be a third notion:
    [deloop_GrpObject_agrees] is [eq_refl].
 
@@ -114,7 +114,7 @@ Generalizable All Variables.
    WHAT THE FOUR CONGRUENCE FIELDS COST: NOTHING.  [HomCongruence]
    ([Construction/Quotient.v]) asks for containment of `≈`, symmetry,
    transitivity and compatibility with composition.  At [grp_deloop G]
-   with the relation "f * g⁻¹ lies in N" these are, in order, #313's
+   with the relation “f * g⁻¹ lies in N” these are, in order, #313's
    [quot_rel_of_equiv], [quot_rel_sym], [quot_rel_trans] and
    [quot_rel_mul] -- four of the five [quot_rel] lemmas [QuotientGrp]'s
    own obligations consume (the fifth being [quot_rel_refl], needed there
@@ -124,10 +124,10 @@ Generalizable All Variables.
    reuse runs through the round trip: [ns_of_cong_of_ns]'s whole proof is
    [quot_rel_unit_iff] applied.
 
-   ORIENTATION.  #313's [quot_rel N a b] is "a * b⁻¹ lies in N", the
+   ORIENTATION.  #313's [quot_rel N a b] is “a * b⁻¹ lies in N”, the
    orientation [Instance/Grp/Abelianization.v]'s [abel_eq] fixed; issue
-   #301's text writes the condition the other way round, "g⁻¹ * f lies in
-   N".  The two agree, and [quot_rel_flip] proves it -- consuming
+   #301's text writes the condition the other way round, “g⁻¹ * f lies in
+   N”.  The two agree, and [quot_rel_flip] proves it -- consuming
    NORMALITY in both directions, so the choice is not a notational one
    for a bare subgroup.
 
@@ -145,7 +145,7 @@ Generalizable All Variables.
    SETOIDS in [Sets] between the normal subgroups of G and the
    congruences on its delooping;
    - [congruence_iff_normal]: for an arbitrary SUBGROUP S, the relation
-   "f * g⁻¹ in S" is a congruence exactly when S is normal -- so the
+   “f * g⁻¹ in S” is a congruence exactly when S is normal -- so the
    correspondence is with normal subgroups and not merely defined on
    them;
    - [deloop_quotient_iso]: the quotient category of the delooping is
@@ -190,7 +190,7 @@ Generalizable All Variables.
    Awodey's Exercise 1 asks for the group theorem as a SPECIALIZATION,
    which presupposes something to specialize, so the tree was searched
    before the word was used.  A case-insensitive search for the phrase
-   "homomorphism theorem" over every .v file returns, outside this file's
+   “homomorphism theorem” over every .v file returns, outside this file's
    own prose, exactly one hit -- [Instance/Grp/Quotient.v] -- and
    that is the GROUP statement.  So nothing in the tree is NAMED the
    categorical homomorphism theorem.  The STATEMENT is nevertheless
@@ -207,8 +207,8 @@ Generalizable All Variables.
    A MEASUREMENT ABOUT THAT UNIQUENESS, disclosed because it bounds how
    much the specialization proves.  [QuotientLift_unique]'s proof is
    [exact HG]: in a quotient category the projection is the identity on
-   morphisms, so "any competitor agreeing with F after the projection
-   agrees with the lift" is the hypothesis restated.  Instantiated at the
+   morphisms, so “any competitor agreeing with F after the projection
+   agrees with the lift” is the hypothesis restated.  Instantiated at the
    delooping that is exactly why the group-level uniqueness comes out
    with no work -- the content sits in [QuotientLift] existing at all,
    and in #313's [kills_descends].  The route below consumes exactly two
@@ -252,7 +252,7 @@ Generalizable All Variables.
    [Instance/Grp.v]'s group as a [Category.Construction.Deloop.GrpObject].
    The inverse operation and its two laws are packaged first as
    [Structure/Groupoid.v]'s [MonInverses] -- the record that file
-   introduced to separate "this monoid has inverses" from the bundling --
+   introduced to separate “this monoid has inverses” from the bundling --
    and [GrpObject_of] does the bundling.  The right inverse law is
    [Instance/Grp.v]'s DERIVED [grp_mul_inv_r], not a field. 
 
@@ -384,7 +384,7 @@ Definition ns_congruence {G : GrpObject} (N : NormalSubgroup G)
    * The PROPOSITIONAL congruence: [ns_rel] under [inhabited].
 
    An earlier revision built [deloop_quotient] from [ns_rel] itself.  Since
-   the PR "algebraic carriers are sets" (2026-09-17) [QuotientGrp]'s own
+   the PR “algebraic carriers are sets” (2026-09-17) [QuotientGrp]'s own
    equality is the propositional truncation of [quot_rel] -- [sub_mem] stays
    [Type]-valued, so the quotient OBJECT must truncate -- and the quotient
    CATEGORY has to truncate in lockstep, or [deloop_quotient_iso] below is
@@ -462,8 +462,8 @@ Definition deloop_quotient_proj {G : GrpObject} (N : NormalSubgroup G)
 (*
    * ** The orientation of the relation
 
-   Issue #301's text states the condition as "g⁻¹ * f lies in N"; #313's
-   [quot_rel], which this file reuses, states it as "f * g⁻¹ lies in N".
+   Issue #301's text states the condition as “g⁻¹ * f lies in N”; #313's
+   [quot_rel], which this file reuses, states it as “f * g⁻¹ lies in N”.
    They agree, and NORMALITY is what makes them agree: each direction
    conjugates the witness, by g⁻¹ one way and by g the other.  For a
    subgroup that is not normal the two are the right- and left-coset
@@ -789,8 +789,8 @@ Definition congruence_normal_subgroup (G : GrpObject)
 
    #313 has seven [quot_rel] lemmas, and TWO of them apply [ns_conj]:
    [quot_rel_mul] and [quot_rel_inv], as that file's own
-   comments say (the comment on [quot_rel_mul] calls it "the first of the
-   two places where NORMALITY is spent").  Only the first is consumed by
+   comments say (the comment on [quot_rel_mul] calls it “the first of the
+   two places where NORMALITY is spent”).  Only the first is consumed by
    [ns_congruence] -- [HomCongruence] has no field about inverses -- and
    the other three fields draw on [quot_rel_of_equiv], [quot_rel_sym] and
    [quot_rel_trans], whose proofs apply [sub_at], [sub_unit],
@@ -801,8 +801,8 @@ Definition congruence_normal_subgroup (G : GrpObject)
    [NormalSubgroup] and this file does not restate them.
 
    What IS proved is the converse, and it is what makes the
-   correspondence a correspondence rather than "normal subgroups give
-   congruences and we did not look at the others": a subgroup whose
+   correspondence a correspondence rather than “normal subgroups give
+   congruences and we did not look at the others”: a subgroup whose
    relation is a congruence is normal.  It is obtained by feeding that
    relation to [cong_ns] and reading its fifth field back, so no second
    normality argument is written. 
@@ -1124,7 +1124,7 @@ Definition deloop_kills
 
 (*
    * ...and the same over the truncated relation [deloop_quotient] is built
-   from since the PR "algebraic carriers are sets" (2026-09-17).  The
+   from since the PR “algebraic carriers are sets” (2026-09-17).  The
    conclusion is an `≈` at [grp_deloop K], i.e. at [K]'s own carrier, so
    the elimination goes through [K]'s [grp_prop] and nothing is assumed. 
 
@@ -1299,8 +1299,8 @@ Proof. simpl; discriminate. Qed.
 
 (*
    * So the projection functor is not faithful -- which is the whole point
-   of a quotient category, and Fong and Spivak's "equations merge, never
-   add" read at one object. 
+   of a quotient category, and Fong and Spivak's “equations merge, never
+   add” read at one object. 
 
    --------
    * 因此投影函子并非忠实——这正是商范畴的整个意义，Fong 和 Spivak 的“方程会合并，从不增加”在单一对象上的解读。

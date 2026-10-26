@@ -22,19 +22,19 @@ Generalizable All Variables.
 (*
    * * Functors out of a delooping: homomorphisms, actions, representations
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.3
    (printed p. 15), Exercise 3(b,c) [maclane:I.3:ex3]: a functor between
    two groups regarded as one-object categories is a group homomorphism;
    a functor from a group to Set is a permutation representation, and to
    [Matr_K] a matrix representation.
-   Awodey, "Category Theory", §4.3 (printed p. 86)
+   Awodey, “Category Theory”, §4.3 (printed p. 86)
    [awodey:4.3:remark-functor-group-hom, awodey:4.3:def-representation]:
    the same identification, and representations as functors out of the
    delooping; §7.1 (printed p. 154)
    [awodey:7.1:construction-poset-to-group]: a functor from a poset to a
    group is exactly a unit-and-composition-respecting family g_{p,q} —
    a cocycle.
-   Riehl, "Category Theory in Context", §1.3: Example 1.3.9
+   Riehl, “Category Theory in Context”, §1.3: Example 1.3.9
    [riehl:1.3:example9] (actions as functors, with the left/right
    convention), Corollary 1.3.10 [riehl:1.3:cor10] (each group element
    acts by an automorphism, inverses mapping to inverses), Exercise

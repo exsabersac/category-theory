@@ -77,7 +77,7 @@ Generalizable All Variables.
  natural transformations between functors X ⟶ Y (nLab, arrow
  category), just as a natural transformation F ⟹ G is a functor out
  of C × 2 restricting to F and G at the two endpoints of the walking
- arrow (Riehl, "Category Theory in Context", Dover 2016) — a homotopy
+ arrow (Riehl, “Category Theory in Context”, Dover 2016) — a homotopy
  at the level of categories.  Defining [Arrow] as the comma
  (Id[C] ↓ Id[C]) obtains all of this from the already-proven comma
  machinery: the category laws arrive as instances, and
@@ -88,8 +88,8 @@ Generalizable All Variables.
  cod ⊣ ids ⊣ dom (nLab, adjoint string).
 
  The classical applications run through homotopy theory.  The lifting
- problems of Quillen's model categories (Quillen, "Homotopical
- Algebra", Springer Lecture Notes in Mathematics 43, 1967) are
+ problems of Quillen's model categories (Quillen, “Homotopical
+ Algebra”, Springer Lecture Notes in Mathematics 43, 1967) are
  commuting squares — that is, morphisms e → m of the arrow category —
  and both classes of a weak factorization system are closed under
  retracts formed there, a model structure being precisely two
@@ -97,17 +97,17 @@ Generalizable All Variables.
  category).  In this library, Theory/Orthogonality.v states unique
  lifting in exactly this square form and proves the retract closure
  [ortho_left_retract].  Orthogonal factorization systems — first
- studied by Mac Lane ("Duality for groups", Bull. AMS 56, 1950),
- essentially present in Freyd and Kelly ("Categories of continuous
- functors, I", J. Pure Appl. Algebra 2, 1972), and named by Bousfield
- ("Constructions of factorization systems in categories", J. Pure
+ studied by Mac Lane (“Duality for groups”, Bull. AMS 56, 1950),
+ essentially present in Freyd and Kelly (“Categories of continuous
+ functors, I”, J. Pure Appl. Algebra 2, 1972), and named by Bousfield
+ (“Constructions of factorization systems in categories”, J. Pure
  Appl. Algebra 9, 1977) — likewise live here: the two classes are
  replete subcategories of the arrow category (nLab, orthogonal
  factorization system), and the construction itself carries the
  classifying monad, an orthogonal factorization system on K being an
  Eilenberg–Moore algebra, appropriately defined, for the monad of the
- squaring endofunctor K ↦ K² on Cat (Korostenski and Tholen, "Factorization
- systems as Eilenberg-Moore algebras", J. Pure Appl. Algebra 85,
+ squaring endofunctor K ↦ K² on Cat (Korostenski and Tholen, “Factorization
+ systems as Eilenberg-Moore algebras”, J. Pure Appl. Algebra 85,
  1993).  In-tree the systems are the class [OFS] of
  Structure/Factorization.v.
 
@@ -115,8 +115,8 @@ Generalizable All Variables.
  functor [comma_proj2] is always a Grothendieck opfibration, and is a
  fibration exactly when C has pullbacks — the cartesian lift of a map
  is its pullback square — with the slice categories C/c as fibres
- (Construction/Slice.v), whence its names "self-indexing" and
- "fundamental fibration" (nLab, codomain fibration).  This library
+ (Construction/Slice.v), whence its names “self-indexing” and
+ “fundamental fibration” (nLab, codomain fibration).  This library
  proves the fibred presentation equivalent to the present one:
  Construction/Displayed/Codomain.v renders the arrow category
  displayed over C, establishes the isomorphism
@@ -126,8 +126,8 @@ Generalizable All Variables.
  maps, the semantic counterpart of dependent types: a display map
  p : B → A models the judgement x:A ⊢ B(x), with substitution
  interpreted as pullback, and in homotopy type theory the display
- maps are the fibrations (Taylor, "Practical Foundations of
- Mathematics", CUP 1999; nLab, display map).  The [2, C] equivalence
+ maps are the fibrations (Taylor, “Practical Foundations of
+ Mathematics”, CUP 1999; nLab, display map).  The [2, C] equivalence
  of the header is proven in Theory/Shapes.v as
  [Two_Fun_Arrow : [_2, C] ≅[Cat] Arrow C], over the walking arrow [_2]
  of Instance/Two.v, for [C : Category@{o Set Set}] -- a restriction that

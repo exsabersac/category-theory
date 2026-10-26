@@ -18,10 +18,10 @@ Generalizable All Variables.
  Mac Lane, CWM 2nd ed., §I.5 Exercise 7, printed p. 21.  CITED BY LOCATION;
  the printed text was not consulted and no sentence of it is reproduced.
  The in-tree catalog (doc/plan/books/maclane/inventory/I.json, id
- maclane:I.5:ex7) summarizes the exercise as: "Call an arrow f : a -> b in
+ maclane:I.5:ex7) summarizes the exercise as: “Call an arrow f : a -> b in
  a category C regular when there exists g : b -> a with f g f = f.  Show f
  is regular whenever it has either a left or a right inverse, and prove
- that in Set every arrow f : a -> b with a nonempty is regular."
+ that in Set every arrow f : a -> b with a nonempty is regular.”
 
  The first half is category theory and lives in Theory/Morphisms.v
  ([regular_of_section], [regular_of_retraction]).  This file is the second
@@ -36,7 +36,7 @@ Generalizable All Variables.
  Mac Lane, CWM 第二版, §I.5 练习 7, 印刷页 21. 引用位置;
  未查阅印刷文本，也未复现其中的任何句子。
  树内目录 (doc/plan/books/maclane/inventory/I.json, id
- maclane:I.5:ex7) 将该练习总结为："在一个范畴 C 中，若存在 g : b -> a 且 f g f = f，则称箭头 f : a -> b 为正规。证明当 f 拥有左逆或右逆时，f 都是正规的，并证明在 Set 中每个箭头 f : a -> b（当 a 非空）都是正规的。"
+ maclane:I.5:ex7) 将该练习总结为：“在一个范畴 C 中，若存在 g : b -> a 且 f g f = f，则称箭头 f : a -> b 为正规。证明当 f 拥有左逆或右逆时，f 都是正规的，并证明在 Set 中每个箭头 f : a -> b（当 a 非空）都是正规的。”
 
  前半部分属于范畴论，存放于 Theory/Morphisms.v
  ( [regular_of_section] ,  [regular_of_retraction] )。该文件是后半部分，通常选择原则会用于后半部分。这里它被用于 FINITENESS（有限性）。
@@ -63,12 +63,12 @@ Generalizable All Variables.
  strictly STRONGER than any choice axiom: it decides every proposition.
  Instance/Sets/Regular.v proves that, axiom-free.
  [blanket_regularity_entails_LEM] there derives ∀ P : Prop, P + (P → False)
- from "every arrow of [Sets] with inhabited domain is regular", and
+ from “every arrow of [Sets] with inhabited domain is regular”, and
  [blanket_splitting_entails_LEM] derives the same conclusion from the
- weaker internal choice principle "every epimorphism with inhabited domain
- splits" -- the phrasing the nLab page on split epimorphisms records for
- the axiom of choice internal to a category, noting that "In Set this is
- equivalent to the usual axiom of choice" (retrieved 2026-08).  The
+ weaker internal choice principle “every epimorphism with inhabited domain
+ splits” -- the phrasing the nLab page on split epimorphisms records for
+ the axiom of choice internal to a category, noting that “In Set this is
+ equivalent to the usual axiom of choice” (retrieved 2026-08).  The
  implication BETWEEN those two quantified principles is
  [blanket_regularity_entails_splitting], itself a statement of Coq rather
  than a remark about the pointwise [regular_epic_retraction] it is one line
@@ -77,8 +77,8 @@ Generalizable All Variables.
  header of that file carries the citations, and the reason a SETOID library
  pays this price where the standard library's intensional choice axioms do
  not.  No [Axiom] is declared in this file or in that one, and [Print
- Assumptions] on every constant of either reports "Closed under the global
- context".
+ Assumptions] on every constant of either reports “Closed under the global
+ context”.
 
  WHAT IS PROVED INSTEAD.  Over FinSet the fibre selection needs no choice
  at all, because a fibre of a map Fin.t m → Fin.t n can be SEARCHED: the
@@ -101,8 +101,8 @@ Generalizable All Variables.
  for one.
 
  The exchange is a genuine restriction and not a re-description: FinSet is
- the SKELETON of finite sets, so "every arrow with inhabited domain is
- regular" is proved here only for finite sets, and nothing below says
+ the SKELETON of finite sets, so “every arrow with inhabited domain is
+ regular” is proved here only for finite sets, and nothing below says
  anything about an arrow of [Sets] with an infinite domain.  What
  Instance/Sets/Regular.v adds about [Sets] is a bound in the other
  direction: the blanket statement is not available there, so the exercise's
@@ -212,7 +212,7 @@ Definition finset_pseudoinverse {m n : nat} (a0 : Fin.t m)
 
 (*
  Every arrow of FinSet whose domain is inhabited is regular.  Inhabitation
- is taken as DATA (an actual element a0), which is what "nonempty" means
+ is taken as DATA (an actual element a0), which is what “nonempty” means
  constructively and what the finite search needs; the special case of a
  successor domain, where [Fin.F1] serves, is [finset_regular_pos] below.
 

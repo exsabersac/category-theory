@@ -16,13 +16,13 @@ Generalizable All Variables.
 (*
    * * Functors between prosets are monotone maps
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §I.3
    (printed p. 15), Exercise 3(a) [maclane:I.3:ex3]: a functor between
    two preorders regarded as categories is exactly a monotone map.
-   Riehl, "Category Theory in Context", §1.3 Exercise 1.3.ii
+   Riehl, “Category Theory in Context”, §1.3 Exercise 1.3.ii
    [riehl:1.3:exii]: the same question, and the sharpening that the
    correspondence should carry NO decidability hypothesis.
-   Fong and Spivak, "Seven Sketches in Compositionality", §3.3.2
+   Fong and Spivak, “Seven Sketches in Compositionality”, §3.3.2
    Example 3.42 [7sketches:3.3.2:example3.42] (the identification,
    worked at the naturals), §1.2.3 Examples 60 and 61
    [7sketches:1.2.3:example60, example61] (the 17/24 witness, and the
@@ -101,8 +101,8 @@ Record MonotoneFun := {
 (*
  The thin-category smart constructor: BECAUSE the target is a proset —
  every hom-setoid a subsingleton with the all-True equivalence — the
- functor laws cost nothing.  This is Seven Sketches §3.3.2's "the
- functor laws are automatic in a thin category", operationalized.
+ functor laws cost nothing.  This is Seven Sketches §3.3.2's “the
+ functor laws are automatic in a thin category”, operationalized.
  The file sets [Obligation Tactic := idtac] (Pos.v's idiom), so the
  three laws are discharged explicitly: each is an equation between
  parallel morphisms in a thin target, hence [I]. 

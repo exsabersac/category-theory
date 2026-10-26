@@ -24,7 +24,7 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/Set
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
 
- This is the strict-function model of the "category of sets" built from
+ This is the strict-function model of the “category of sets” built from
  Coq's universe Type: objects are types `A : Type`, morphisms `A ~> B` are
  functions `A → B`, identity is `λ x, x` and composition is `λ x, g (f x)`.
  Morphism equivalence is pointwise (extensional) equality of functions,
@@ -56,19 +56,19 @@ Generalizable All Variables.
 
  Reading types and functions as a category enacts the structural stance
  that Lawvere took when he axiomatized the category of sets directly —
- objects and composites first, membership a derived notion (Lawvere, "An
- elementary theory of the category of sets", PNAS 52, 1964, the origin
+ objects and composites first, membership a derived notion (Lawvere, “An
+ elementary theory of the category of sets”, PNAS 52, 1964, the origin
  of ETCS).  On that view a set is whatever composes, and [Coq] is the
  stance implemented over the universe Type, machine-checked rather than
  postulated.
 
- The instance is one half of Curry–Howard–Lambek.  Lambek's "Deductive
- systems and categories" series (II, LNM 86, 1969; III, LNM 274, 1972)
+ The instance is one half of Curry–Howard–Lambek.  Lambek's “Deductive
+ systems and categories” series (II, LNM 86, 1969; III, LNM 274, 1972)
  recast deductive systems as categories, Part III pairing cartesian
  closed categories with intuitionist propositional calculus and
  combinatory logic; the polished equivalence between typed λ-calculi
  and cartesian closed categories is Part I of Lambek and Scott,
- "Introduction to Higher Order Categorical Logic", CUP 1986.  In-tree
+ “Introduction to Higher Order Categorical Logic”, CUP 1986.  In-tree
  the correspondence runs in both directions: Instance/Lambda.v builds
  the simply typed λ-calculus as a syntactic cartesian closed category,
  and Instance/Lambda/Sem.v interprets that syntax into this category —
@@ -76,7 +76,7 @@ Generalizable All Variables.
  folklore in Haskell is a theorem here: Bauer observed that no rigorous
  morphism equality was ever fixed for the supposed category of Haskell
  types and functions, and that under the natural candidates the
- identity law does not survive seq (Bauer, "Hask is not a category",
+ identity law does not survive seq (Bauer, “Hask is not a category”,
  2016).  Coq functions are total, and the header above fixes the
  morphism equivalence exactly.
 
@@ -84,7 +84,7 @@ Generalizable All Variables.
  in intensional type theory.  Hofmann showed that the intensional
  identity type does not identify pointwise-equal functions and yields
  no quotient types, and that setoid models restore both (Hofmann,
- "Extensional concepts in intensional type theory", Edinburgh thesis,
+ “Extensional concepts in intensional type theory”, Edinburgh thesis,
  1995); the Rocq standard library accordingly states
  functional_extensionality_dep as an Axiom rather than a theorem.  The
  two instances occupy the two sides of that line: Instance/Sets.v pays
@@ -118,14 +118,14 @@ Generalizable All Variables.
  The applications run through the cartesian closed structure.  Because
  the simply typed λ-calculus is modeled by any cartesian closed
  category, a typed program written against this category can be
- reinterpreted in others — the method of Elliott, "Compiling to
- categories" (PACMPL 1, ICFP 2017), practised in-tree by
+ reinterpreted in others — the method of Elliott, “Compiling to
+ categories” (PACMPL 1, ICFP 2017), practised in-tree by
  Tools/Abstraction.v.  The programmer-facing picture of types as
- objects and functions as morphisms (Milewski, "Category: The Essence
- of Composition", 2014) is this file made rigorous, and
+ objects and functions as morphisms (Milewski, “Category: The Essence
+ of Composition”, 2014) is this file made rigorous, and
  [Coq_StrongFunctor] packages, once and for every endofunctor, the
  canonical strength that Set-based accounts of effects leave implicit
- (Kock, "Strong functors and monoidal monads", Arch. Math. 23, 1972). 
+ (Kock, “Strong functors and monoidal monads”, Arch. Math. 23, 1972). 
 
  --------
  类型和函数作为集合类别：历史与应用

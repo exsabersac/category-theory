@@ -47,9 +47,9 @@ Generalizable All Variables.
    [(ε ⨂ id) ∘ δ ≈ λ⁻¹] are exactly Fox's [proj_right_diagonal] /
    [proj_left_diagonal] axioms — underivable without them.
 
-   Reference: Fritz, "A synthetic approach to Markov kernels ..."
+   Reference: Fritz, “A synthetic approach to Markov kernels ...”
    (arXiv:1908.07021), §2
-   Reference: Fox, "Coalgebras and cartesian categories",
+   Reference: Fox, “Coalgebras and cartesian categories”,
    Comm. Algebra 4(7):665–667, 1976 
 
    --------

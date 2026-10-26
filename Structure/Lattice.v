@@ -41,15 +41,15 @@ Generalizable All Variables.
  #389 (Mac Lane IV.6: powerset lattices and Boolean algebras are
  cartesian closed) and #1003 (Riehl 5.5: lattices and semilattices as
  categories over Set).  Instance/Proset/Limit.v records that
- claim explicitly and DELIBERATELY RESERVES the vocabulary: it "defines
+ claim explicitly and DELIBERATELY RESERVES the vocabulary: it “defines
  no [Meet], [Join], [Lattice] or [BooleanAlgebra] class and creates no
- such module", its [IsGLB] and [IsLUB] being "family-level PREDICATES
- over a bare [PreOrder], not an algebraic structure".  As the
+ such module”, its [IsGLB] and [IsLUB] being “family-level PREDICATES
+ over a bare [PreOrder], not an algebraic structure”.  As the
  lowest-numbered issue, #340 defines the vocabulary; that reservation is
  cited here rather than restated.  But read the handover precisely: the
  note goes on to call its four constructors ([Proset_Cartesian],
- [Proset_Cocartesian], [Proset_Terminal], [Proset_Initial]) "exactly the
- interface such a class would later consume", and THIS FILE DOES NOT
+ [Proset_Cocartesian], [Proset_Terminal], [Proset_Initial]) “exactly the
+ interface such a class would later consume”, and THIS FILE DOES NOT
  CONSUME THEM.  The classes below are internal-algebraic -- an object of
  an arbitrary cartesian category carrying two operations -- not
  order-theoretic, and the bridge between the two readings (a lattice
@@ -67,8 +67,8 @@ Generalizable All Variables.
 
  PRIOR ART.  Nothing in the tree carries two monoid structures on one
  object AS [Monoid]-TYPED FIELDS -- and that qualifier is the whole
- claim, an earlier revision having billed this as a search "by shape
- rather than by name" when it is a sweep by the field type's NAME.  By
+ claim, an earlier revision having billed this as a search “by shape
+ rather than by name” when it is a sweep by the field type's NAME.  By
  SHAPE the pattern DOES occur: Theory/Algebra/Rig.v's [RigObject]
  carries [(rig_zero, rig_add)] and [(rig_one, rig_mul)] on one setoid
  carrier, elementwise rather than as internal monoid objects.
@@ -134,7 +134,7 @@ Generalizable All Variables.
  agree at [eq_refl] on VALUES ([ilattice_round_bot],
  [ilattice_round_join]) while the [Monoid] record does not, also
  pinned.  Both [Fail]s were stripped and confirmed to be genuine
- CONVERSION failures ("cannot unify").  [SetoidLattice] also
+ CONVERSION failures (“cannot unify”).  [SetoidLattice] also
  records idempotence as a corollary of absorption
  ([sl_join_idem], [sl_meet_idem]), mirroring (3) at the set level.
 
@@ -166,7 +166,7 @@ Generalizable All Variables.
  the DONORS' doing and THREE force it INDEPENDENTLY -- with the levels
  declared apart under [Constraint uh < up] a control naming a hom at
  those levels is accepted while each of [@Cartesian C], [@Terminal C]
- and [@Monoidal C] is rejected with "Cannot enforce up = uh".
+ and [@Monoidal C] is rejected with “Cannot enforce up = uh”.
  [MonoidObject] is NOT a fourth donor: [@Monoidal C] appears in its own
  signature and is rejected first, so it cannot be probed apart, and
  whether it identifies anything OF ITS OWN is UNKNOWN.
@@ -178,7 +178,7 @@ Generalizable All Variables.
  constraint and no [Set] anywhere; the rest of each block is some
  fifteen [<=] bounds against donor universes ([projections],
  [prod_rect], [Basics.compose], [eq_ind]), some relating two DECLARED
- binders, so "nothing else" would be wrong even read charitably.  The
+ binders, so “nothing else” would be wrong even read charitably.  The
  [Set]-freedom holds only because the universe binders are written
  out; unannotated, [Sets_Monoid_on] minimizes to
  [SetoidObject@{Set Set}], which would have confined every [Sets] result
@@ -211,7 +211,7 @@ Generalizable All Variables.
  - No distributive lattices, no complements, no Heyting or Boolean
  algebras, and no cartesian-closed structure on a lattice: that is
  #389's Mac Lane Section IV.6 item, and nothing here anticipates it.
- - No order-theoretic reading.  The relation "a <= b iff a meet b = a" is
+ - No order-theoretic reading.  The relation “a <= b iff a meet b = a” is
  not defined, no partial order is extracted, and
  Instance/Proset/Limit.v's [IsGLB]/[IsLUB]/[Proset_Cartesian] are NOT
  consumed -- so the bridge between this algebraic vocabulary and that
@@ -222,8 +222,8 @@ Generalizable All Variables.
  round trips.
  - No instance in any ambient category other than [Sets].  In particular
  no powerset lattice (Instance/Sets/Powerset.v is not required) and no
- lattice of opens from Instance/Top.v, so "the opens of a space form a
- lattice object" stays prose.
+ lattice of opens from Instance/Top.v, so “the opens of a space form a
+ lattice object” stays prose.
  - No closure results: products and exponentials of lattice objects are
  not shown to be lattice objects (Structure/Monoid.v proves the monoid
  analogues [Product_Monoid] and [Hom_Monoid]; neither is lifted).

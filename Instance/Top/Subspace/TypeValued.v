@@ -14,7 +14,7 @@ Generalizable All Variables.
 (* * * Subspaces and quotients over the Type-valued [Top] / * * 基于类型值 [Top] 的子空间和商空间 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, read from the page images: the subspace and quotient
  constructions, book pp. 132-134 (PDF pp. 141-143) (catalog ids
  maclane:V.9:construction2 and maclane:V.9:construction3; the book
@@ -42,11 +42,11 @@ Generalizable All Variables.
  [tquot_desc] the book's form.
 
  THE SUBSPACE DOES NOT.  [tsub_open V], the book's predicate verbatim
- ("V is the preimage along h of an open of X"), quantifies over the
+ (“V is the preimage along h of an open of X”), quantifies over the
  opens of X and is valued at [o1] with [o < o1].  At [Type@{o}] the same
- body is refused, "universe inconsistency: Cannot enforce o < o because
- o = o"; and supplying [tsub_open] as the [IsOpen] of a [TopSpace@{o}]
- is refused, "Cannot enforce o1 <= o because o < o1".  So the subspace
+ body is refused, “universe inconsistency: Cannot enforce o < o because
+ o = o”; and supplying [tsub_open] as the [IsOpen] of a [TopSpace@{o}]
+ is refused, “Cannot enforce o1 <= o because o < o1”.  So the subspace
  is delivered UNPACKAGED at [o1]: the five axioms of Instance/Top.v's
  record ([tsub_open_respects], [tsub_open_proper], [tsub_open_union]
  with its index at [o] as in [open_union], [tsub_open_whole],
@@ -62,17 +62,17 @@ Generalizable All Variables.
  is not stated here: its opens include the book's
  (Test/ProbeSubspace457.v's [p457_sq_global_to_local] proves that
  inclusion for predicates respecting the points' equality), but the
- "if" half of its universal property, which would follow were the two
+ “if” half of its universal property, which would follow were the two
  the same, is refused along both routes tried: eliminating the squash
- into the Type-valued [IsOpen Z], "Cannot enforce o <= Prop", and
- taking a union indexed by the squashed data, "Cannot enforce o1 <= o
- because o < o1" (#457's scouting prototype of that encoding, rebuilt
+ into the Type-valued [IsOpen Z], “Cannot enforce o <= Prop”, and
+ taking a union indexed by the squashed data, “Cannot enforce o1 <= o
+ because o < o1” (#457's scouting prototype of that encoding, rebuilt
  in Test/ProbeSubspace457.v, whose N20 and N21 these are).
  Instance/Top/CompHaus.v records the same trap for the product.
  The OPEN case is different: Instance/Top/Presheaf.v's [OpenSub U], the
  subspace on an open subset, is a [TopSpace] at the points' universe,
  and its universal property over arbitrary spaces mapping in holds; a
- scratch file importing Presheaf.v re-derives the "if" half from
+ scratch file importing Presheaf.v re-derives the “if” half from
  [sub_ext_recovers], closed under the global context.  It is not
  imported here: Presheaf.v requires the stdlib reals.
 
@@ -84,8 +84,8 @@ Generalizable All Variables.
  adjunction [TQuot_Functor X ⊣ Top_Forget_under X] is refused: its
  functors go from a category with homs at [o] to one with homs at [h],
  and [Adjunction] identifies the hom levels of its two categories
- (Theory/Adjunction.v, About: [h1 = h2]), "Cannot enforce h = o because
- o < h".  What IS formable is the Forgetful.v reading: the hom-set
+ (Theory/Adjunction.v, About: [h1 = h2]), “Cannot enforce h = o because
+ o < h”.  What IS formable is the Forgetful.v reading: the hom-set
  bijections as cross-universe isomorphisms, the small side lifted by
  Instance/Sets/Classifier.v's [Setoid_Lift].
  - [tquot_adj x y]: maps under X out of [TQuot] against maps of the
@@ -98,7 +98,7 @@ Generalizable All Variables.
  [tquot_adj_nat_l] and [tquot_adj_nat_r] are the two naturality
  squares [Build_Adjunction'] asks of [to], with [tstrip_under_map]
  in place of [fmap] of the forgetful functor.
- [tquot_obj_stripped] is Mac Lane's "X ↓ G after M is the identity",
+ [tquot_obj_stripped] is Mac Lane's “X ↓ G after M is the identity”,
  stripped (Leibniz, [Defined]; [eq_refl] at a pair), and
  [tquot_unit_stripped] says the transposed identity is [id_cast] of
  its inverse, the shape of Theory/Equivalence/Strict.v's
@@ -115,7 +115,7 @@ Generalizable All Variables.
  [tquot_obj_stripped_pair], [tsub_adj_to_map].  Leibniz by [destruct]:
  [tquot_obj_stripped], the file's one [Defined], and load-bearing:
  closed [Qed] in a scratch copy, it leaves [tquot_unit_stripped]
- refused ("Unable to unify"; Test/ProbeSubspace457.v's N25).  The
+ refused (“Unable to unify”; Test/ProbeSubspace457.v's N25).  The
  openness lemmas of both constructions, [tsub_preimage_open] and the
  two universal properties close with [Qed], as Instance/Top.v's
  openness lemmas do; nothing here needs them transparent.  Up to [≈]:

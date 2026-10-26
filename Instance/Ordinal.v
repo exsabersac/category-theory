@@ -53,7 +53,7 @@ Generalizable All Variables.
  has three objects and two generating steps, and [Ordinal 4]
  (exported as [_4]) has four objects and three generating steps.
  This is the convention already fixed by the names [_0], [_1], [_2].
- When a text speaks of "diagrams of shape 4" — as Riehl §1.6 does, in
+ When a text speaks of “diagrams of shape 4” — as Riehl §1.6 does, in
  the passage issue #224 cites — it means the ordinal on four objects,
  which is [_4] here, and which is free on THREE composable arrows.
  No bracket notation [n] is introduced: [[C, D]] is already the
@@ -153,7 +153,7 @@ Generalizable All Variables.
  result type is [Quiver@{u u0 Set}] -- whereas [Ordinal@{o h p}] here
  stays polymorphic, so the identification does not narrow this family.
  Over a fixed
- assignment of objects [X : nat → C], a "path of n composable arrows"
+ assignment of objects [X : nat → C], a “path of n composable arrows”
  is an [OrdSteps n X], and the functorial actions on morphisms over
  the same [X] are the [OrdArrows n X] satisfying the two functor laws.
  [arrows_of_steps] and [steps_of_arrows] are mutually inverse up to
@@ -372,7 +372,7 @@ Definition ord_step {n} (k : Ord_obj n) :
 (* ---------- the embedding functors ---------- / ---------- 嵌入函子 ---------- *)
 
 (*
- "An ordinal is the set of its predecessors": [Ordinal n] sits inside
+ “An ordinal is the set of its predecessors”: [Ordinal n] sits inside
  [Ordinal (S n)] as the objects below n, and inside [Omega] as the naturals
  below n.  Both functors are the identity on morphisms. 
 
@@ -1029,7 +1029,7 @@ Qed.
 (* ---------- agreement with the hand-built small ordinals ---------- / ---------- 与手工构建的小序数一致 ---------- *)
 
 (*
- Instance/Zero.v and Instance/One.v install the notations "0" and "1" in
+ Instance/Zero.v and Instance/One.v install the notations “0” and “1” in
  [category_scope] for [_0] and [_1], so from here on the numerals 0 and 1
  are written [0%nat] and [1%nat] when a natural number is meant.  The three
  requires are deliberately placed here, after the arithmetic, exactly as

@@ -11,10 +11,10 @@ Generalizable All Variables.
 
 (** * Right adjoints preserve equalizers, in the elementary form  / * 右伴随保留均衡器的基本形式*)
 
-(* Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+(* Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
      §V.9 Exercise 1, book p. 135 (PDF p. 144), read from the page image
-     (catalog id maclane:V.9:ex1): "[...] but show that this functor C
-     can have no left adjoint (because of misbehavior on equalizers)."
+     (catalog id maclane:V.9:ex1): “[...] but show that this functor C
+     can have no left adjoint (because of misbehavior on equalizers).”
      The argument the parenthesis names is this file's: a right adjoint
      preserves equalizers, so a functor that sends some equalizer to a
      fork that is not one has no left adjoint.
@@ -36,8 +36,8 @@ Generalizable All Variables.
    and would need the diagram [U ◯ APair f g] read as [APair (fmap[U] f)
    (fmap[U] g)] (Instance/Parallel.v's [APair]).  Their object parts
    agree at [eq_refl], but the two functors are not convertible: [eq_refl]
-   at their equality is refused ("cannot unify "U ◯ APair f g" and
-   "APair (fmap[U] f) (fmap[U] g)""), at a variable [U : C ⟶ D] and a
+   at their equality is refused (“cannot unify ”U ◯ APair f g“ and
+   ”APair (fmap[U] f) (fmap[U] g)“”), at a variable [U : C ⟶ D] and a
    variable pair [f g : x ~> y]: Test/ProbeComponents462.v's N9, beside
    the object parts at [eq_refl] as controls.  Monad/Eilenberg/Moore/
    Limit.v and Monad/Monadicity/Crude.v record the same absence of a
@@ -71,7 +71,7 @@ Generalizable All Variables.
    [PreservesEqualizers] and requires no adjunction file, so there is no
    cycle: [Print Libraries] on a file requiring this one lists 40
    [Category.*] modules besides it, and the only ones matching
-   "Adjunction" or "Continuity" are Theory/Adjunction.v and this file.
+   “Adjunction” or “Continuity” are Theory/Adjunction.v and this file.
 
    STRENGTHS.  Up to [≈], the elementary universal property: a
    factorization and its uniqueness.  One [Defined] and one [Qed]
@@ -105,7 +105,7 @@ Generalizable All Variables.
    NOT DELIVERED.  The dual, left adjoints preserve coequalizers in the
    elementary form: the tree has no elementary coequalizer-preservation
    predicate to state it against (a grep of the .v files for
-   "PreservesCoequalizers" finds only this sentence).  No bridge between
+   “PreservesCoequalizers” finds only this sentence).  No bridge between
    [PreservesEqualizers] and Structure/Limit/Preservation.v's cone-level
    vocabulary.  CORRECTION (#481): Structure/Limit/Reflection.v now
    defines the elementary [PreservesCoequalizers], the dual of

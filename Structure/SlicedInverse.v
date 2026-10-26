@@ -23,7 +23,7 @@ Require Import Category.Instance.One.
    nLab: https://ncatlab.org/nlab/show/quotient+space
    nLab: https://ncatlab.org/nlab/show/over+category
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, Springer 1998, SS V.9, read from the page images: the
    subspace construction (book pp. 132-133, PDF pp. 141-142;
    catalog id maclane:V.9:construction2), Proposition 1 (book
@@ -34,11 +34,11 @@ Require Import Category.Instance.One.
    first clause of maclane:V.9:remark2, #458's catalog item.  The
    book numbers Proposition 1 and none of the constructions or
    remarks; the catalog ids are names, not book numbering.
-   Book: Fong and Spivak, "Seven Sketches in Compositionality", CUP 2019,
+   Book: Fong and Spivak, “Seven Sketches in Compositionality”, CUP 2019,
    SS 7.3.2, Exercise 7.32 (printed p. 236, PDF p. 248) --
    7sketches:7.3.2:ex7.32.
-   Book: Adamek, Herrlich and Strecker, "Abstract and Concrete
-   Categories: The Joy of Cats", Wiley 1990, SS 21 (topological
+   Book: Adamek, Herrlich and Strecker, “Abstract and Concrete
+   Categories: The Joy of Cats”, Wiley 1990, SS 21 (topological
    categories), cited through nLab.
 
    ** Background
@@ -50,32 +50,32 @@ Require Import Category.Instance.One.
    a function [t : S ⟶ Gx] by declaring open exactly the preimages
    [t⁻¹U] of the open sets [U] of [x] (the subspace construction).  When
    [S] is a subset of [Gx] that is the subspace topology, and the book
-   observes: "(G↓X)∘L = Id; L is a 'right-adjoint-right-inverse' to
-   (G↓X)".  By the naming of SS IV.4, where an adjunction with counit
+   observes: “(G↓X)∘L = Id; L is a 'right-adjoint-right-inverse' to
+   (G↓X)”.  By the naming of SS IV.4, where an adjunction with counit
    the identity makes the left adjoint a left-adjoint-left-inverse, that
    is the adjunction [G↓x ⊣ L] with counit the identity, read from [L];
    the record below states it so.  Mac Lane stresses that the universal
    property concerns arbitrary spaces mapping in, not only other
    subspaces.  Under a space the dual holds: [x↓G] has a left adjoint
    that gives [S] the sets with open preimage -- the quotient, or
-   identification, topology when [t] is surjective -- "with unit the
-   identity map, so M is left-adjoint-right-inverse to X↓G" (the
+   identification, topology when [t] is surjective -- “with unit the
+   identity map, so M is left-adjoint-right-inverse to X↓G” (the
    quotient construction).  Between the two the book states, verbatim
    from the page:
 
-   "Proposition 1.  If G: C→D is a faithful functor, if D has
+   “Proposition 1.  If G: C→D is a faithful functor, if D has
    equalizers, and if, for each x ∈ C, (G↓x): (C↓x)→(D↓Gx) has a
-   right-adjoint-right-inverse L, then C has equalizers."
+   right-adjoint-right-inverse L, then C has equalizers.”
 
    Its proof builds the equalizer as the lift [L] of the downstairs one,
    which explains the classical equalizer of two maps of spaces -- the
    points where they agree, with the subspace topology -- without
-   mentioning points.  The dual is one sentence of the book, "Now
+   mentioning points.  The dual is one sentence of the book, “Now
    Proposition 1 was proved just from the axioms for a category, so its
-   dual is also true" (book p. 134): coequalizers from sliced
-   left-adjoint-right-inverses.  nLab's "subspace topology" records the
+   dual is also true” (book p. 134): coequalizers from sliced
+   left-adjoint-right-inverses.  nLab's “subspace topology” records the
    same equalizer computation and identifies the subspace inclusions
-   with the regular monomorphisms of Top; its "quotient space" calls the
+   with the regular monomorphisms of Top; its “quotient space” calls the
    dual construction the final, or strong, topology.  Seven Sketches'
    Exercise 7.32 is the elementary side of the subspace construction:
    the open sets of [Y ⊆ X] are the traces [B ∩ Y] of the open sets [B]
@@ -83,13 +83,13 @@ Require Import Category.Instance.One.
 
    The shape has a general theory.  A functor [U : C ⟶ D] along which
    every family of maps [f_i : X ⟶ U S_i] out of an object of [D] has an
-   initial lift -- informally the "smallest topology rendering the f_i
-   continuous" -- is a topological functor, and [C] a topological
+   initial lift -- informally the “smallest topology rendering the f_i
+   continuous” -- is a topological functor, and [C] a topological
    concrete category over [D]; the forgetful functor from Top to Set is
    the paradigm, every topological functor is faithful (Adamek, Herrlich
    and Strecker, Theorem 21.3), and the notion is self-dual, so such a
-   [C] carries final structures as well (nLab, "topological concrete
-   category").  Read against that definition, Mac Lane's hypothesis is
+   [C] carries final structures as well (nLab, “topological concrete
+   category”).  Read against that definition, Mac Lane's hypothesis is
    the one-arrow case: a sliced right adjoint at [(S; t)] is a universal
    lift of the single map [t], and the right-inverse clause asks that the
    lift sit over [S] on the nose -- the equation [U(T) = X] of nLab's
@@ -112,8 +112,8 @@ Require Import Category.Instance.One.
    - [RightAdjointRightInverse S]: a right adjoint [rari_right], the
    adjunction [rari_adj : S ⊣ rari_right], the Leibniz object equation
    [rari_obj c : S (rari_right c) = c], and
-   [rari_counit c : counit c ≈ id_cast (rari_obj c)].  "Counit the
-   identity" is not an equation between arrows of one hom-set until
+   [rari_counit c : counit c ≈ id_cast (rari_obj c)].  “Counit the
+   identity” is not an equation between arrows of one hom-set until
    the object equation is supplied, so this is Adjunction/LeftInverse.v's
    design crux one parameter over, and the record is
    [LeftAdjointLeftInverse] with the adjoint moved into the parameter:
@@ -169,8 +169,8 @@ Require Import Category.Instance.One.
    [Proof using E U], and their About readbacks carry no [Faithful]
    argument.  [sliced_fork] and [cosliced_cofork] need
    [Proof using E U GF]: on a scratch copy with [Proof using E U] each is
-   refused with "The following section variable is used but not
-   declared: GF."  So the lift's descent comes from the downstairs
+   refused with “The following section variable is used but not
+   declared: GF.”  So the lift's descent comes from the downstairs
    equalizer and the couniversal property alone, and faithfulness is
    what proves that the lifted arrow forks.
 
@@ -208,8 +208,8 @@ Require Import Category.Instance.One.
    book forms read the downstairs (co)equalizer by projections
    rather than by a [match] so that those readbacks reach [eq_refl]:
    written with [destruct] on the downstairs equalizer instead, the same
-   book form has its object readback refused at [eq_refl] ("cannot
-   unify", compiled out of tree), the stdlib [sigT] having no
+   book form has its object readback refused at [eq_refl] (“cannot
+   unify”, compiled out of tree), the stdlib [sigT] having no
    definitional eta.
 
    Leibniz but not [eq_refl]: [rari_over : G (`1 (rari_right L (S; s)))
@@ -289,7 +289,7 @@ Require Import Category.Instance.One.
    [RightAdjointRightInverse@{oA oC h u u0}] has one hom level [h] in the
    binder, forced by its first field: with [hA < hC] declared, a record
    holding only [rari_right : C ⟶ A] beside the parameter [S : A ⟶ C] is
-   refused ("Cannot enforce hA = ... because hA < hC <= ...").  Its one
+   refused (“Cannot enforce hA = ... because hA < hC <= ...”).  Its one
    strict bound [h < u] is Theory/Adjunction.v's [Adjunction] class's own
    [h1 < so], measured by adding the fields one at a time: [rari_right]
    alone leaves the block empty, and [rari_adj] brings [h < u].
@@ -439,10 +439,10 @@ Require Import Category.Instance.One.
 
    ** 忠实性不可省略[prop1_needs_faithfulness] 通过删除忠实性假设，并在一个宇宙实例上对所有 [A]、[X] 和 [G] 量化，驳斥了命题1。反例模型是 [Erase Parallel : Parallel ⟶ _1] (Instance/Parallel.v, Instance/One.v)。[Parallel] 的每个切片都有终对象 [(a; id)]，并且 [erase_slice_RARI] 使得函子在其上保持常量，成为每个 [Sliced (Erase Parallel) a] 的右伴随右逆——对象方程是对 [_1] 切片的一种情况分析，并且伴单位条件成立，因为该切片是薄的 ([slice_one_hom_eq])。[_1] 有等化子 ([One_HasEqualizers])。但是，[par_arrow_one] 和 [par_arrow_two] 这对根本没有分叉 ([parallel_pair_unforked])，所以 [Parallel] 没有等化子 ([Parallel_no_equalizers])，并且 [Erase Parallel] 不是忠实的 ([Erase_Parallel_not_faithful])。[sliced_RARI_without_faithfulness] 汇总了这四个事实。双重是卫星的 [prop1_dual_needs_faithfulness] 。
 
-   ** 优势在 [eq_refl] 处保持，与 [Example] 相同：[Sliced_fobj]、[Sliced_fmap]、[Cosliced_fobj]、[Cosliced_fmap]；[adj_unit_universal_op_obj] 和 [adj_unit_universal_op_arrow]（通用箭头就是单位，如 Adjunction/Determination.v 的 counit 回读所示）；[rari_eq_obj] 和 [rari_eq_arrow]（由右伴随右逆构建的点态等化器就是 [rari_right L (S; s)]）；[equalizers_from_sliced_RARI_obj] 和 [equalizers_from_sliced_RARI_arrow]（在 [HasEqualizers] 层面上相同），以及 [coequalizers_from_sliced_left_adjoints_obj] 和 [coequalizers_from_sliced_left_adjoints_arrow]。总共十二个。书本形式通过投影读取下层（余）等化器，而不是通过 [match]，以便那些回读能够达到 [eq_refl]：如果在下层等化器上用 [destruct] 来书写，相同的书本形式在 [eq_refl] 处其对象回读会被拒绝（"无法统一"，从树中编译出），stdlib 的 [sigT] 没有定义性的 eta。莱布尼茨但不是 [eq_refl] : [rari_over : G (`1 (rari_right L (S; s))) = S]，它是字段 [rari_obj] 的 [f_equal projT1]；在一个变量 [L] 上，该字段是它的唯一来源。同样，莱布尼茨通过 [destruct] 在方程 [slice_id_cast_1] 上：切片箭头的第一个分量被 [id_cast] 传输，是第一个分量的传输，一个变量方程上的箭头之间的莱布尼茨方程，属于 Construction/Quotient.v 的 [id_cast_refl] 已经声明的类型。直到 [≈] ：[rari_arrow_over]，派生方程和传输的箭头。[rari_preserves] 是由 [IsEqualizer_transport] 从 [rari_over] 和 [rari_arrow_over] 组装的数据，[equalizers_from_sliced_RARI_preserved] 通过 [eq_refl] 读取返回达到它，无需进一步转换。关于中介箭头除了其唯一存在性之外没有其他声明。该文件包含六个 [Defined]（按标记计数）：[sliced_desc]，[cosliced_desc]，[IsEqualizer_transport]，[One_HasEqualizers] 的第二个义务，[erase_slice_adj] 和 [erase_slice_RARI]。每个都携带数据（一个中介箭头、一个均衡器、一个附加物、一条记录），并按数据约定保存在 [Defined]；没有一个是承重的，通过将所有六个与卫星的四个一起翻转到 [Qed]，在一个临时副本中测量，该副本可编译两个文件。
+   ** 优势在 [eq_refl] 处保持，与 [Example] 相同：[Sliced_fobj]、[Sliced_fmap]、[Cosliced_fobj]、[Cosliced_fmap]；[adj_unit_universal_op_obj] 和 [adj_unit_universal_op_arrow]（通用箭头就是单位，如 Adjunction/Determination.v 的 counit 回读所示）；[rari_eq_obj] 和 [rari_eq_arrow]（由右伴随右逆构建的点态等化器就是 [rari_right L (S; s)]）；[equalizers_from_sliced_RARI_obj] 和 [equalizers_from_sliced_RARI_arrow]（在 [HasEqualizers] 层面上相同），以及 [coequalizers_from_sliced_left_adjoints_obj] 和 [coequalizers_from_sliced_left_adjoints_arrow]。总共十二个。书本形式通过投影读取下层（余）等化器，而不是通过 [match]，以便那些回读能够达到 [eq_refl]：如果在下层等化器上用 [destruct] 来书写，相同的书本形式在 [eq_refl] 处其对象回读会被拒绝（“无法统一”，从树中编译出），stdlib 的 [sigT] 没有定义性的 eta。莱布尼茨但不是 [eq_refl] : [rari_over : G (`1 (rari_right L (S; s))) = S]，它是字段 [rari_obj] 的 [f_equal projT1]；在一个变量 [L] 上，该字段是它的唯一来源。同样，莱布尼茨通过 [destruct] 在方程 [slice_id_cast_1] 上：切片箭头的第一个分量被 [id_cast] 传输，是第一个分量的传输，一个变量方程上的箭头之间的莱布尼茨方程，属于 Construction/Quotient.v 的 [id_cast_refl] 已经声明的类型。直到 [≈] ：[rari_arrow_over]，派生方程和传输的箭头。[rari_preserves] 是由 [IsEqualizer_transport] 从 [rari_over] 和 [rari_arrow_over] 组装的数据，[equalizers_from_sliced_RARI_preserved] 通过 [eq_refl] 读取返回达到它，无需进一步转换。关于中介箭头除了其唯一存在性之外没有其他声明。该文件包含六个 [Defined]（按标记计数）：[sliced_desc]，[cosliced_desc]，[IsEqualizer_transport]，[One_HasEqualizers] 的第二个义务，[erase_slice_adj] 和 [erase_slice_RARI]。每个都携带数据（一个中介箭头、一个均衡器、一个附加物、一条记录），并按数据约定保存在 [Defined]；没有一个是承重的，通过将所有六个与卫星的四个一起翻转到 [Qed]，在一个临时副本中测量，该副本可编译两个文件。
 
    ** 宇宙，通过在每个常量上使用 About 测量[Sliced@{oA hA oX hX u u0 u1 u2}] 和 [Cosliced] 保持类别在它们自己的层次，[A : Category@{oA hA hA}] 和 [X : Category@{oX hX hX}]。它们的区块不携带方程：扎定的 [hA <= hX] 是 [G : A ⟶ X] 自身施加的，以及每个切片实例（[hA < u]，[hX < u0]）的一个严格界限，这是 Construction/Slice.v 对 [Slice] 和 [Coslice] 的自身 [u2 < u1]。四个回读具有相同的形状。每两个类别中的其他常量在一个 Hom 层次上绑定它们，[A : Category@{oA h h}] 和 [X : Category@{oX h h}]，在 BINDER 中并且在任何块中没有方程。识别是继承的，而且哪个供体强制它是通过隔离测量的：一个部分声明 [hA] 和 [hX] 分开，一条 [Context] 线路发生变化，并且一个琐碎的 [Example] 通过 About 读回。共宇箭头 [CouniversalArrow ((S; s)) (Sliced G x)] 单独打印 [hA = hX]（Theory/Universal/Arrow/Dual.v 的 [CouniversalArrow] 在其自身块中承载方程 [u0 = u2]），[Faithful G] 单独打印它（Theory/Functor.v 的 [Faithful] 在一个 Hom 层次上绑定两个类别），并且一个切片伴随 [Sliced G x ⊣ R] 打印它（两个反向方向的函子已经做到了）。[Sliced G x] 单独存在时，
-   [IsEqualizer] 单独存在时仅打印 [hA <= hX]，DUAL 箭头也是如此：[UniversalArrow ((Q; q)) (Cosliced G y)] 单独存在时不打印方程。因此，均衡器核心由两个独立的给予者绑定，协同均衡器核心仅通过忠实性绑定，而书本形式通过伴随关系绑定；它们都是继承的，在这里没有引入新的。在 Instance/Top/Forgetful.v 的 [Top_Forget] 处，两个 hom 层无论如何是重合的（[Top@{h o}] 和 [Sets@{h so}] 都在 [h] 处有 hom）。一个同一性位于宇宙实例中，而不是位于任何区块中，并且在此被揭示。无论两个同阶层级何时重合，[Sliced] 和 [Cosliced]（[hA < u] 和 [hX < u0] 的 [u] 和 [u0]，每个片段一个）的两个切片辅助宇宙会在一个宇宙中被实例化：[equalizers_from_sliced_RARI] 读取 [Sliced@{oA h oX h u u u5 u6}]，[sliced_equalizer] 和 [cosliced_coequalizer] 读取 [Sliced@{oA h oX h u3 u3 u0 u}] 及其 [Cosliced] 对应的双胞，下面的反驳读取 [Sliced@{u4 u5 u2 u5 u3 u3 u u0}]。没有捐赠者强制执行：一个琐碎的 [Example] 在 [Sliced G x] 上 单独，在一个绑定两个类别到同一同源级别 [h] 的部分中，已经回读 [Sliced@{oA h oX h u u u0 u1}]（关于，树外），并且当同源级别分开时 [UniversalArrow ((Q; q)) (Cosliced G y)] 单独保持两个宇宙；因此，这两个随后携带相同的单一绑定 [h < _]，当此文件的常量被展开时被合并。它在测量时不花费任何代价：Instance/Top/Subspace.v 的 [subspace_RARI] 和 [quotient_LARI] 读作 [Sliced@{so o so o u0 u0 so so}] 和 [Cosliced@{so o so o u0 u0 so so}] 并为两种书籍形式提供输入，并且位于 [Top_Forget] 的实例化类型检查通过。[RightAdjointRightInverse@{oA oC h u u0}] 在绑定器中有一个同级别 [h]，由其第一个字段强制：在声明 [hA < hC] 后，一个记录除了参数 [S : A ⟶ C] 之外只包含 [rari_right : C ⟶ A] 将被拒绝（"无法强制 hA = ... 因为 hA < hC <= ..."）。它的一个严格界限 [h < u] 是 Theory/Adjunction.v 的 [Adjunction] 类自身的 [h1 < so]，通过逐个添加字段来衡量：仅 [rari_right] 会使块为空，而 [rari_adj] 会引入 [h < u]。在此文件的73个常量中（打印模块、记录、其构造函数及投影，以及每个[Program]义务），关于日志中没有任何字界限的[Set]，并且没有块携带方程；在每个其常量绑定类别的块中，每个严格绑定将一个同构层次关联到一个没有类别绑定器命名的辅助宇宙。见证[One_HasEqualizers] 出于经过测量的原因被注释（卫星的[One_HasCoequalizers] 同样如此）：未注释时，它会最小化为[HasEqualizers@{u Set} 1]（从树中编译出），这会将[prop1_needs_faithfulness] 限定在[Set] 所属的类别中；注释的[@{o h}] 是[HasEqualizers@{o h} _1@{o h h}]。[prop1_needs_faithfulness@{u u0 u1 u2 u3 u4 u5}] 对[A : Category@{u4 u5 u5}] 和[X : Category@{u2 u5 u5}] 进行量化，并具有唯一的严格绑定[u5 < u3]。[Parallel@{u u0}] 即使其对象和箭头类型是 [Set] 排序归纳类型，也不包含 [Set]。
+   [IsEqualizer] 单独存在时仅打印 [hA <= hX]，DUAL 箭头也是如此：[UniversalArrow ((Q; q)) (Cosliced G y)] 单独存在时不打印方程。因此，均衡器核心由两个独立的给予者绑定，协同均衡器核心仅通过忠实性绑定，而书本形式通过伴随关系绑定；它们都是继承的，在这里没有引入新的。在 Instance/Top/Forgetful.v 的 [Top_Forget] 处，两个 hom 层无论如何是重合的（[Top@{h o}] 和 [Sets@{h so}] 都在 [h] 处有 hom）。一个同一性位于宇宙实例中，而不是位于任何区块中，并且在此被揭示。无论两个同阶层级何时重合，[Sliced] 和 [Cosliced]（[hA < u] 和 [hX < u0] 的 [u] 和 [u0]，每个片段一个）的两个切片辅助宇宙会在一个宇宙中被实例化：[equalizers_from_sliced_RARI] 读取 [Sliced@{oA h oX h u u u5 u6}]，[sliced_equalizer] 和 [cosliced_coequalizer] 读取 [Sliced@{oA h oX h u3 u3 u0 u}] 及其 [Cosliced] 对应的双胞，下面的反驳读取 [Sliced@{u4 u5 u2 u5 u3 u3 u u0}]。没有捐赠者强制执行：一个琐碎的 [Example] 在 [Sliced G x] 上 单独，在一个绑定两个类别到同一同源级别 [h] 的部分中，已经回读 [Sliced@{oA h oX h u u u0 u1}]（关于，树外），并且当同源级别分开时 [UniversalArrow ((Q; q)) (Cosliced G y)] 单独保持两个宇宙；因此，这两个随后携带相同的单一绑定 [h < _]，当此文件的常量被展开时被合并。它在测量时不花费任何代价：Instance/Top/Subspace.v 的 [subspace_RARI] 和 [quotient_LARI] 读作 [Sliced@{so o so o u0 u0 so so}] 和 [Cosliced@{so o so o u0 u0 so so}] 并为两种书籍形式提供输入，并且位于 [Top_Forget] 的实例化类型检查通过。[RightAdjointRightInverse@{oA oC h u u0}] 在绑定器中有一个同级别 [h]，由其第一个字段强制：在声明 [hA < hC] 后，一个记录除了参数 [S : A ⟶ C] 之外只包含 [rari_right : C ⟶ A] 将被拒绝（“无法强制 hA = ... 因为 hA < hC <= ...”）。它的一个严格界限 [h < u] 是 Theory/Adjunction.v 的 [Adjunction] 类自身的 [h1 < so]，通过逐个添加字段来衡量：仅 [rari_right] 会使块为空，而 [rari_adj] 会引入 [h < u]。在此文件的73个常量中（打印模块、记录、其构造函数及投影，以及每个[Program]义务），关于日志中没有任何字界限的[Set]，并且没有块携带方程；在每个其常量绑定类别的块中，每个严格绑定将一个同构层次关联到一个没有类别绑定器命名的辅助宇宙。见证[One_HasEqualizers] 出于经过测量的原因被注释（卫星的[One_HasCoequalizers] 同样如此）：未注释时，它会最小化为[HasEqualizers@{u Set} 1]（从树中编译出），这会将[prop1_needs_faithfulness] 限定在[Set] 所属的类别中；注释的[@{o h}] 是[HasEqualizers@{o h} _1@{o h h}]。[prop1_needs_faithfulness@{u u0 u1 u2 u3 u4 u5}] 对[A : Category@{u4 u5 u5}] 和[X : Category@{u2 u5 u5}] 进行量化，并具有唯一的严格绑定[u5 < u3]。[Parallel@{u u0}] 即使其对象和箭头类型是 [Set] 排序归纳类型，也不包含 [Set]。
 
    ** 路径和成本
 
@@ -556,7 +556,7 @@ Example Cosliced_fmap@{oA hA oX hX +} {A : Category@{oA hA hA}}
 
 (*
  [R] is a right-adjoint-right-inverse of [S] when [S ⊣ R] with counit the
- identity.  As in Adjunction/LeftInverse.v, "counit the identity" is the
+ identity.  As in Adjunction/LeftInverse.v, “counit the identity” is the
  Leibniz object equation [S (R c) = c] together with the counit being
  [≈] the identity transported along it. 
 

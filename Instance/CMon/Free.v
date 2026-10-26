@@ -21,20 +21,20 @@ Generalizable All Variables.
 (* * * The free commutative monoid on a setoid, and its monad / * * 集上的自由交换幺半群及其幺半群子 *)
 
 (*
- Book: Riehl, "Category Theory in Context", Example 5.1.5(ii), printed
+ Book: Riehl, “Category Theory in Context”, Example 5.1.5(ii), printed
  p. 185 (PDF p. 205) — riehl:5.1:example5, the appended box (b)
  of issue #471 (Mac Lane §VI.4, Exercise 1)
  nLab: https://ncatlab.org/nlab/show/commutative+monoid
  nLab: https://ncatlab.org/nlab/show/multiset
  nLab: https://ncatlab.org/nlab/show/monadic+functor
 
- WHAT THE BOOK SAYS, read from the PDF.  "A modification of the free
+ WHAT THE BOOK SAYS, read from the PDF.  “A modification of the free
  monoid monad yields the free commutative monoid monad defined by
  TA := ∐_{n≥0} (A^{×n})/S_n.  Elements are finite unordered lists of
- elements, or equally finitely supported functions χ : A → N."  The
- box asks for that monad on Sets, "lists modulo permutation, or
+ elements, or equally finitely supported functions χ : A → N.”  The
+ box asks for that monad on Sets, “lists modulo permutation, or
  finitely supported N-valued functions — justify the presentation in
- the header", as [Adjunction_Induced_Monad] of a FreeCMon ⊣
+ the header”, as [Adjunction_Induced_Monad] of a FreeCMon ⊣
  CMon_Forget, with its Eilenberg–Moore category isomorphic to CMon.
 
  THE PRESENTATION, AND WHY.  Lists modulo permutation, the letters
@@ -130,7 +130,7 @@ Generalizable All Variables.
  NOT DELIVERED.  The finitely supported χ : A → N presentation (above)
  and a comparison with it at sets with decidable ≈.  The monad
  morphism W₀ ⇒ Bag that quotients lists by permutations, and Riehl's
- "modification" made a statement.  A strict isomorphism of CMon with
+ “modification” made a statement.  A strict isomorphism of CMon with
  the algebras (refused above). 
 
  --------

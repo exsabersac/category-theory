@@ -19,7 +19,7 @@ Generalizable All Variables.
  lambda ≈ rho ∘ beta        ([braid_unit_right]),
 
  i.e. ρ_x ≈ λ_x ∘ β_{x,I} and λ_x ≈ ρ_x ∘ β_{I,x}. This is Proposition 2.1
- of Joyal & Street, "Braided tensor categories" (Adv. Math. 102, 1993). Like
+ of Joyal & Street, “Braided tensor categories” (Adv. Math. 102, 1993). Like
  the Kelly lemmas of Structure/Monoidal/Proofs.v, these are not part of the
  braided data: they follow from the hexagon identity, the triangle identity,
  and naturality of the braiding and the unitors.
@@ -48,7 +48,7 @@ Generalizable All Variables.
  monoidal/symmetric coherence toolkit consumed by the copy-discard stack
  (the files under Structure/Monoidal/CopyDiscard) and the collapse theorems
  (Structure/Monoidal/Collapse.v): iso-cancellation lemmas in
- mid-composition ("cons") position, bimap fusion and associator-naturality
+ mid-composition (“cons”) position, bimap fusion and associator-naturality
  shuffles with solved pentagon and triangle forms, and the four-object
  middle interchange [swap_inner] with its braiding, associativity and unit
  coherences.  Everything is stated for a bare [Monoidal] or
@@ -79,7 +79,7 @@ Generalizable All Variables.
 
    Rewriting inside long composites constantly needs to cancel an adjacent
    [to i ∘ from i] pair that is followed by a continuation [k]; these
-   "cons" forms keep every rewrite a single step. 
+   “cons” forms keep every rewrite a single step. 
 
    --------
    * ** 工具包：在中间组合位置取消 ISO
@@ -117,7 +117,7 @@ End IsoCancellation.
    * ** Toolkit: monoidal shuffles
 
    Bimap fusion/cancellation, associator naturality and derived pentagon
-   shapes, all stated in right-associated "cons" form so that they apply
+   shapes, all stated in right-associated “cons” form so that they apply
    by a single [rewrite] in the middle of a right-associated chain.
 
    The kit is exported, citable API: plain and mirror-image forms are
@@ -881,7 +881,7 @@ Proof.
 Qed.
 
 (*
- The same naturality in mid-composition ("cons") position, oriented
+ The same naturality in mid-composition (“cons”) position, oriented
  for pushing a tensor-of-tensors across the interchange from the
  left. 
 

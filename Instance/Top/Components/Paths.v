@@ -34,9 +34,9 @@ Generalizable All Variables.
 (* * * Path components: π₀ as the colimit functor after P / * * 路径分量：π₀ 作为 P 之后的余极限函子 *)
 
 (*
- Riehl, "Category Theory in Context", 2nd ed., §3.3, Example 3.3.2,
+ Riehl, “Category Theory in Context”, 2nd ed., §3.3, Example 3.3.2,
  printed pp. 99–100 (PDF pp. 119–120), read from the page images:
- "Recall the functor Path: Top → Set that carries a space X to the
+ “Recall the functor Path: Top → Set that carries a space X to the
  set Path(X) := Top(I, X), where I is the standard unit interval.
  Precomposing with the endpoint inclusions 0, 1 : ∗ ⇉ I defines a
  functor P : Top → Set^{•⇉•} that carries a space X to the parallel
@@ -46,16 +46,16 @@ Generalizable All Variables.
  in X by the relation that identifies any pair of points connected
  by a path.  Proposition 3.3.1 tells us that this coequalizer
  defines a functor, the path components functor
- π₀ := Top --P--> Set^{•⇉•} --colim--> Set."  The parallel arrows
+ π₀ := Top --P--> Set^{•⇉•} --colim--> Set.”  The parallel arrows
  of the page's two displays are labelled ev₀ and ev₁.  (Catalog id
  riehl:3.3:example2, Riehl's Example 3.3.2.)
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, Exercise 1, book p. 135 (PDF p. 144), read from the page
- image: "For the full subcategory Lconn of locally connected spaces
+ image: “For the full subcategory Lconn of locally connected spaces
  in Top, prove that D: Set → Lconn has a left adjoint C, assigning
  to each space X the set of its connected components, but show that
  this functor C can have no left adjoint (because of misbehavior on
- equalizers)."  (Catalog id maclane:V.9:ex1.)
+ equalizers).”  (Catalog id maclane:V.9:ex1.)
  nLab: https://ncatlab.org/nlab/show/Top
  nLab: https://ncatlab.org/nlab/show/connected+space
  Wikipedia: https://en.wikipedia.org/wiki/Locally_connected_space
@@ -76,16 +76,16 @@ Generalizable All Variables.
  functor: the functoriality of π₀ is not checked by hand but taken
  from the colimit functor of his Proposition 3.3.1.  The two notions
  are related as Wikipedia's article on locally connected spaces puts
- it: "Because path connected sets are connected, we have
- PC_x ⊆ C_x", and "for a locally path connected space the components
- and path components coincide"; the topologist's sine curve is its
+ it: “Because path connected sets are connected, we have
+ PC_x ⊆ C_x”, and “for a locally path connected space the components
+ and path components coincide”; the topologist's sine curve is its
  example where they differ.  nLab's page on connected spaces has a
- section on the same functor, "π₀ : Top → Set be the functor which
- assigns to each space X its set of path components", and its proof
+ section on the same functor, “π₀ : Top → Set be the functor which
+ assigns to each space X its set of path components”, and its proof
  that π₀ preserves finite products reads it as a reflexive coequalizer
  of hom(I, −) and hom(1, −), the two functors P packages.  The same
  page warns that in constructive mathematics the classical definitions
- of connectedness "no longer need to be equivalent", which is why the
+ of connectedness “no longer need to be equivalent”, which is why the
  connectedness proved below is stated in the one form it has.
 
  THE ENCODING.  Spaces are Instance/Top/Prop.v's [PTop], whose homs
@@ -123,8 +123,8 @@ Generalizable All Variables.
  by precomposition and keeps the colimit functor for π₀.  Deriving it
  too, as the Yoneda embedding [Curried_CoHom PTopCat] followed by
  Theory/Kan/Extension.v's precomposition [Induced] along the endpoint
- pair in [PTopCat^op], is refused: "universe inconsistency: Cannot
- enforce ... = o because o < ... <= ...", Test/ProbeComponents462.v's
+ pair in [PTopCat^op], is refused: “universe inconsistency: Cannot
+ enforce ... = o because o < ... <= ...”, Test/ProbeComponents462.v's
  N12, beside the accepted endpoint pair [p462_iota] and Yoneda embedding
  [p462_yoneda].  [Fun]'s block bounds its hom universe below by its
  domain's object universe ([u <= u4]), which for [PTopCat^op] is [so],
@@ -136,7 +136,7 @@ Generalizable All Variables.
  [Colim_map PathColim (PPathPair_map h)] ([PPi0_fmap]), and its laws
  are [ColimitFunctor]'s and [PPathPair]'s, composed by [Compose].
  Riehl's remark before the proof of Proposition 3.3.1, that the
- functor "requires an arbitrary choice of a limit", has no
+ functor “requires an arbitrary choice of a limit”, has no
  counterpart: [Sets_Cocomplete] supplies each colimit as data, and
  [Print Assumptions] finds no axiom (below).
 
@@ -152,12 +152,12 @@ Generalizable All Variables.
  [sets_coeq_IsCoequalizer], the backward map the injection at [ParY].
  [PPi0_points_iso X] identifies it with the [SetsCoeq] of the two
  evaluations [path_at X ival_zero] and [path_at X ival_one] on the
- point setoid of X itself: Riehl's "quotient of the set of points in
+ point setoid of X itself: Riehl's “quotient of the set of points in
  X by the relation that identifies any pair of points connected by a
- path".  That relation is [coeq_rel], the equivalence relation
+ path”.  That relation is [coeq_rel], the equivalence relation
  GENERATED by the pairs (γ 0, γ 1) and the points' own equality, so
  two points joined by a chain of paths are identified whether or not
- one path joins them; "joined by one path" would be transitive by the
+ one path joins them; “joined by one path” would be transitive by the
  concatenation of paths, which is not constructed here.  On
  representatives the maps of both isomorphisms are what they should
  be ([ppi0_to_coeq_point], [ppi0_to_coeq_path],
@@ -176,7 +176,7 @@ Generalizable All Variables.
  comparison of reals is decided.  The left ends form a Cauchy sequence
  with a modulus ([ibis_seq_cauchy]); its limit is the standard
  library's [Rcauchy_complete] (Reals/Cauchy/ConstructiveRcomplete.v,
- whose [Print Assumptions] prints "Closed under the global context",
+ whose [Print Assumptions] prints “Closed under the global context”,
  measured in a scratch file), and lies in [0,1] ([ibis_lim_ival]).  γ
  is constant on a ball about the limit, and the left and the right
  ends both enter that ball ([ibis_contra]); the other case, [true] at 0
@@ -217,11 +217,11 @@ Generalizable All Variables.
  [PPi0_fmap_path], the five readbacks of the isomorphisms' maps named
  above, and [ival_segment_map].  Up to [≈] only: the functor laws of
  [PPi0]. On a representative (ParY; x) the identity law at [eq_refl] is
- refused, "cannot unify" (Test/ProbeComponents462.v's N10, beside the
+ refused, “cannot unify” (Test/ProbeComponents462.v's N10, beside the
  law up to [≈], [p462_pi0_id]): the underlying functions of [pcompose
  (pid X) x] and [x] agree by conversion ([p462_id_fun]), but the two
- setoid maps do not ("cannot unify "pmap (pcompose (pid X) x)" and "pmap
- x"", N11), their respectfulness proofs being built differently.
+ setoid maps do not (“cannot unify ”pmap (pcompose (pid X) x)“ and ”pmap
+ x“”, N11), their respectfulness proofs being built differently.
  CORRECTION (#1347): both now hold at [eq_refl], N10 and N11 being
  controls of that probe, since Instance/Sets.v gives its identity's and
  composite's properness fields as terms.  The proofs were built
@@ -235,7 +235,7 @@ Generalizable All Variables.
  [interval_bool_constant] are Leibniz equalities of booleans, [PBool]'s
  equality being
  Leibniz; [Pi0_PBool_two] is a refutation.  [Print Assumptions]
- prints "Closed under the global context" for all 126 constants of
+ prints “Closed under the global context” for all 126 constants of
  the [Print Module] listing, its 28 [Program] obligations among them;
  the file declares no record or inductive type, so there is no
  constructor to add.
@@ -260,7 +260,7 @@ Generalizable All Variables.
  [f] is [Fun]'s auxiliary universe, and [o < f] is forced the same
  way, [Fun]'s own [u0 < u5].  Two binders are extensible,
  [ibis_cv_ge@{o +}] and [ibis_cv_le@{o +}]: with the closed [@{o}]
- Coq 8.19.2 and 8.20.1 refuse both, "Universe ... is unbound", at a
+ Coq 8.19.2 and 8.20.1 refuse both, “Universe ... is unbound”, at a
  universe their elaboration creates, where Rocq 9.1 accepts the
  closed form; [About] reads both back at [@{o}] on Rocq 9.1 and on
  Coq 8.19.2.  Blocks are empty on 21 constants.  No
@@ -315,8 +315,8 @@ Generalizable All Variables.
  form with Prop-valued locally constant predicates, and not its
  [PConnectedSep], the absence of a separation by two disjoint
  opens.
- - Concatenation and reversal of paths, the transitivity of "joined
- by one path", and any fundamental groupoid over [PTopCat]
+ - Concatenation and reversal of paths, the transitivity of “joined
+ by one path”, and any fundamental groupoid over [PTopCat]
  (Instance/Top/FundamentalGroupoid.v's is over the Type-valued
  [Top] and the classical reals).
  - π₀ of any other space.  No path is constructed but the segments
@@ -696,8 +696,8 @@ Next Obligation.
 Qed.
 
 (*
- Riehl's "quotient of the set of points in X by the relation that
- identifies any pair of points connected by a path", the relation
+ Riehl's “quotient of the set of points in X by the relation that
+ identifies any pair of points connected by a path”, the relation
  being the equivalence relation the paths generate. 
 
  --------

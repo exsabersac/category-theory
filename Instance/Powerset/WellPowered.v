@@ -22,7 +22,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/power+set
  Wikipedia: https://en.wikipedia.org/wiki/Power_set
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
  book p. 130: a well-powered complete category has the intersection of
  any collection of subobjects of an object.  Structure/WellPowered.v
  proves that as [wellpowered_complete_has_intersections] and its
@@ -84,8 +84,8 @@ Generalizable All Variables.
 
  MEASUREMENTS.  Six constants ([.glob] heads), no [Program] obligation;
  five transparent definitions and one [Qed] refutation
- ([Subsets_intersection_all_not_top]); each reports "Closed under the
- global context" by its fully qualified name.  Closure 132 files
+ ([Subsets_intersection_all_not_top]); each reports “Closed under the
+ global context” by its fully qualified name.  Closure 132 files
  excluding itself, counted over .Makefile.coq.d; Instance/Powerset.v's
  is 87, and the difference is Structure/WellPowered.v's development. 
 

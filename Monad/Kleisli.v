@@ -34,11 +34,11 @@ nLab: https://ncatlab.org/nlab/show/Kleisli+category
    the tree.  The embedding is Monad/Kleisli/Comparison.v's [Kleisli_EM]
    (Riehl, Lemma 5.2.14): full and faithful, sending c to the free algebra
    (T c, μ_c) at [eq_refl], so that C_T is equivalent to the full subcategory
-   of free algebras ([Kleisli_EM_Image_Equivalence]).  The "is" above says
+   of free algebras ([Kleisli_EM_Image_Equivalence]).  The “is” above says
    too much: C_T is equivalent to that subcategory and is not shown to be
    one, and Mac Lane says of his construction of the Kleisli category that
-   it "really gives this category directly and not as a subcategory (cf.
-   Exercise 3)" (§VI.5, p. 147).  [Kleisli_EM_equivalence_iff] adds that
+   it “really gives this category directly and not as a subcategory (cf.
+   Exercise 3)” (§VI.5, p. 147).  [Kleisli_EM_equivalence_iff] adds that
    [Kleisli_EM] is an equivalence onto all of C^T exactly when every algebra
    is free. 
 

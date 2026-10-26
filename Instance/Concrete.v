@@ -28,11 +28,11 @@ Generalizable All Variables.
 (*
  nLab:      https://ncatlab.org/nlab/show/concrete+category
  Wikipedia: https://en.wikipedia.org/wiki/Concrete_category
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, Springer 1998, §I.7, printed p. 26
- Book:      Riehl, "Category Theory in Context", Dover 2016, §1.6,
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, §1.6,
  Definition 1.6.18, printed p. 45
- Paper:     Freyd, "Homotopy is not concrete", Lecture Notes in Mathematics
+ Paper:     Freyd, “Homotopy is not concrete”, Lecture Notes in Mathematics
  168, Springer 1970, pp. 25-34
 
  This file instantiates [Concrete] (Theory/Concrete.v) at the in-tree
@@ -70,8 +70,8 @@ Generalizable All Variables.
  The negative half of Mac Lane's §I.7 remark, for Rel
  ---------------------------------------------------
 
- Rel is commonly quoted alongside Toph as a category that "is not
- concrete".  Read literally — "Rel has no faithful functor to sets" —
+ Rel is commonly quoted alongside Toph as a category that “is not
+ concrete”.  Read literally — “Rel has no faithful functor to sets” —
  that quotation is too strong, and this file does not assert it:
  [Rel_Concrete] below exhibits a faithful functor.  The target of the
  correction is that FOLKLORE reading, not Mac Lane's own sentence, which
@@ -361,7 +361,7 @@ Qed.
 (*
  The sharp negative result.  Any candidate underlying-set functor for Rel
  that sends the one-element set to a subsingleton — as the evident
- "underlying set" candidate would — is not faithful, because it must
+ “underlying set” candidate would — is not faithful, because it must
  identify the two arrows of [Rel_two_arrows].
 
  Note what is and is not claimed: this refutes a FAMILY of candidates,

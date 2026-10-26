@@ -49,7 +49,7 @@
    [Proset] holds for [Poset] by delta-reduction and no separate [Poset]
    lemma is ever needed ([poset_is_proset] records this by [eq_refl]);
    - antisymmetry cannot be recovered FROM THE CATEGORY VALUE, so a
-   "mutually related implies equal" corollary must take it as a separate
+   “mutually related implies equal” corollary must take it as a separate
    hypothesis ([mutual_le_to_eq]).  It CAN still be stated over [Poset]
    itself, since [Poset] receives antisymmetry as an argument and it is
    therefore in scope -- so this is a statement about what the category
@@ -268,7 +268,7 @@ Lemma poset_is_proset {A : Type} {R : relation A}
 Proof. reflexivity. Qed.
 
 (*
-   * Consequently a "mutually related implies equal" corollary CANNOT be read
+   * Consequently a “mutually related implies equal” corollary CANNOT be read
    off the category: antisymmetry has to be supplied separately.  With it, an
    isomorphism in the order category is exactly mutual comparability, and
    antisymmetry converts that to equality. 
@@ -381,7 +381,7 @@ End UnitCounit.
 
 (*
    * Conversely -- Seven Sketches Proposition 1.107 / display 1.108, and Riehl
-   §4.2's "bare pair suffices".  Given only monotone maps and the two closure
+   §4.2's “bare pair suffices”.  Given only monotone maps and the two closure
    inequalities, the full biconditional follows, hence a full adjunction: no
    naturality and no triangle identity has to be supplied, because in a thin
    target they are equations between parallel morphisms.  THIS is the lemma
@@ -416,7 +416,7 @@ Definition galois_of_unit_counit {A B : Type}
 
 (*
    * Seven Sketches §1.4.3 exercise 1.110: two left adjoints of the same map
-   agree, and dually.  In an order "agree" is mutual comparability -- which is
+   agree, and dually.  In an order “agree” is mutual comparability -- which is
    equality only under antisymmetry, so both forms are given. 
 
    --------

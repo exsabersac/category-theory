@@ -43,8 +43,8 @@ Generalizable All Variables.
 
    A GAP THE TREE RECORDED AND THIS FILE CLOSES.
    Instance/Ab/Tensor.v states, of its own construction, that
-   "the tree has no free abelian group to quotient (verified across
-   Construction/ and Instance/)".  That is why the tensor product there
+   “the tree has no free abelian group to quotient (verified across
+   Construction/ and Instance/)”.  That is why the tensor product there
    is built by generators and relations bespoke to the pair (G, H).
    This file supplies the missing object.  It does NOT refactor
    Instance/Ab/Tensor.v to ride on it: that file's carrier is a
@@ -89,7 +89,7 @@ Generalizable All Variables.
    Ab → RMod ℤ giving every abelian group its ℤ-action, together with
    the proof that it inverts the forgetful direction ([RMod_Forget_Ab],
    Instance/Mod.v).  An earlier revision named only the first half, the
-   passage, and said "no such passage exists" (the second half was left
+   passage, and said “no such passage exists” (the second half was left
    implicit); since #454 the first half is false: Instance/Mod/Cogenerator.v's [Ab_to_ZMod]
    is the passage, each group carrying its own [zsmul] action
    ([Ab_to_ZMod_group] and [Ab_to_ZMod_smul] at [eq_refl]).  What is
@@ -150,13 +150,13 @@ Generalizable All Variables.
    HOM-SET FORM, below), whose counit IS the fold by conversion.
 
    Both [≈]-only readings are GUARDED, not merely measured: the
-   "Measured negatives" section at the end of the file carries a [Fail]
+   “Measured negatives” section at the end of the file carries a [Fail]
    for each, plus a third recording that [FreeAbObject] applied to a
    group's own carrier is not CONVERTIBLE with that group (a statement
    about conversion only -- no non-isomorphism is claimed or proved).
    Each is paired with a positive control that must succeed, and each
    was confirmed (by stripping the [Fail] in a scratch file) to be a
-   genuine CONVERSION failure -- "cannot unify" -- rather
+   genuine CONVERSION failure -- “cannot unify” -- rather
    than a missing reference.  Every constant named in a negative is
    also named in a positive command elsewhere in the file, so a rename
    at a definition site breaks the build loudly instead of turning a
@@ -165,8 +165,8 @@ Generalizable All Variables.
    exactly one file (other Instance/ files already do the same).
 
    NATURALITY.  §IV.1 presents a free construction as a bijection
-   Ab(FreeAb X, A) ≅ Sets(X, U A) natural in X and in A, "each verified
-   separately".  Both clauses are proved in the free group's own
+   Ab(FreeAb X, A) ≅ Sets(X, U A) natural in X and in A, “each verified
+   separately”.  Both clauses are proved in the free group's own
    vocabulary ([free_ab_naturality_in_set], by evaluating at a
    generator; [free_ab_naturality_in_group], pointwise by
    [reflexivity]), and that they ARE the adjunction class's own fields
@@ -259,7 +259,7 @@ Generalizable All Variables.
    unavoidable.
    - EXACTLY FOUR of the 76 names the file's [.glob] records (that
    count excludes the generated eliminators -- SIX of them since the
-   PR "algebraic carriers are sets" (2026-09-17), not the eight an
+   PR “algebraic carriers are sets” (2026-09-17), not the eight an
    earlier revision wrote; see the axiom paragraph below -- and the
    4 [Program] obligations, and excludes the 4 phantom names the
    [Fail] commands put there) carry [Set] in a constraint block,
@@ -279,13 +279,13 @@ Generalizable All Variables.
    [Print Module] lists (60 definitions and proofs, SIX generated
    eliminators, 4 [Program] obligations invisible to a [.glob] sweep and
    reachable only by fully qualified name, and 2 inductive types)
-   together with those types' 13 constructors -- report "Closed under
-   the global context".  [∃] in this library is [sigT], so witnesses are
+   together with those types' 13 constructors -- report “Closed under
+   the global context”.  [∃] in this library is [sigT], so witnesses are
    DATA and no choice principle is consumed anywhere.
 
-   RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17),
+   RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17),
    by generating one [Print Assumptions] per name from [Print Module]:
-   72 commands, 72 "Closed under the global context", zero [Axioms:]
+   72 commands, 72 “Closed under the global context”, zero [Axioms:]
    blocks; [grep -c '^constr ' Instance/Ab/Free.glob] gives 13 and
    [grep -c '^scheme '] gives 6.  An earlier revision of this paragraph
    counted 88 constants with EIGHT eliminators and 38 transparent
@@ -297,15 +297,15 @@ Generalizable All Variables.
    CORRECTION (#472): #472 adds six constants, [fa_eval_pointwise],
    [free_ab_hom_iso], [free_ab_adjunction_hom] and the three [eq_refl]
    readbacks [free_ab_hom_counit], [free_ab_hom_unit] and
-   [free_ab_hom_to], each "Closed under the global context" and named in
+   [free_ab_hom_to], each “Closed under the global context” and named in
    #472's print-assumptions block; the counts above are of the file
    before them, and they were one short when written (6154fc3d, the PR
-   "algebraic carriers are sets").  [Print Module] on #472's tree lists 79
+   “algebraic carriers are sets”).  [Print Module] on #472's tree lists 79
    entries, 73 of them before the six, and the source has 63 declaration
    heads before them, as it had then: 61 definitions and proofs, not 60,
    and the 2 inductive types.  So the 72 above is 73 and the 85 constants
    are 86 with the 13 constructors (92 with the six); both [fa_eq] and
-   [FATerm] are "Closed under the global context".  [Print Module]
+   [FATerm] are “Closed under the global context”.  [Print Module]
    prints the [Inductive] keyword of [fa_eq] on a line of its own, and a
    pattern wanting the keyword and the name on one line finds 78
    entries, not 79.  Of [Set], [About] on #472's tree, on each of the 86
@@ -313,8 +313,8 @@ Generalizable All Variables.
    and schemes included), finds it in 49 constraint blocks, every time
    as a strict lower bound Set < u on the object level of the group
    category, the bound Instance/Ab.v's [Ab] carries since its hand pin
-   in the PR "algebraic carriers are sets" (#1320, merged 2026-09-17),
-   and never in an equation; so the "EXACTLY FOUR" of UNIVERSES above does not
+   in the PR “algebraic carriers are sets” (#1320, merged 2026-09-17),
+   and never in an equation; so the “EXACTLY FOUR” of UNIVERSES above does not
    reproduce on this tree as a count of blocks naming [Set].  The six
    added names carry that bound and no other [Set].
 
@@ -479,8 +479,8 @@ Definition fa_Setoid : Setoid FATerm := {|
    one piece so that the underlying setoid, the unit, the addition and
    the negation are all visible at a glance and all reduce.
 
-   An earlier revision stopped at "ZERO proof obligations".  That is still
-   true, and since the PR "algebraic carriers are sets" (2026-09-17) the
+   An earlier revision stopped at “ZERO proof obligations”.  That is still
+   true, and since the PR “algebraic carriers are sets” (2026-09-17) the
    literal has one more field: [fa_eq] IS a [Prop]-valued relation, so it is
    its own [Prop] mirror and both implications of [cmon_prop] are the
    identity. 
@@ -588,7 +588,7 @@ Lemma fa_eval_respects (s t : FATerm) : fa_eq s t → fa_eval s ≈ fa_eval t.
 Proof.
   intro He.
   (*
- Since the PR "algebraic carriers are sets" (2026-09-17) [fa_eq] is a
+ Since the PR “algebraic carriers are sets” (2026-09-17) [fa_eq] is a
  [Prop] inductive and eliminates only into [Prop] goals, while `≈` is
  [Type]-valued.  [pequiv_to] puts a [Prop] goal in front of the
  elimination and each branch returns to `≈` with [pequiv_from]; the nine

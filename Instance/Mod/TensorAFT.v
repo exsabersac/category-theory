@@ -44,7 +44,7 @@ Generalizable All Variables.
    Wikipedia: https://en.wikipedia.org/wiki/Tensor_product_of_modules
    Riehl:     Category Theory in Context, §4.6 and §5.6
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
    §V.7, book p. 128 (PDF p. 137), is the source: the unnumbered
    construction of the tensor product from the adjoint functor theorem
    (catalog id `maclane:V.7:construction1`) and Exercise 3 (catalog id
@@ -66,15 +66,15 @@ Generalizable All Variables.
    imported) and [Bilin_PreservesImageLimit] below.  The third is BUILT
    here twice over.
 
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17).  Until this
-   commit the paragraph above ended "THIS FILE DELIVERS THE THREE PREMISES
-   AND THE CONCLUSION AS A CONDITIONAL", and this one read: "What does NOT
+   CORRECTION, PR “algebraic carriers are sets” (2026-09-17).  Until this
+   commit the paragraph above ended “THIS FILE DELIVERS THE THREE PREMISES
+   AND THE CONCLUSION AS A CONDITIONAL”, and this one read: “What does NOT
    go through is FEEDING it to the theorem: the index of an
    [ElementSolutionSet] that [representability_theorem] will accept must
    live at the ring's CARRIER universe, which that theorem also pins to
    [Set], while Mac Lane's index is a sigma over the OBJECTS of [RMod R],
    one universe up. ... So [tensor_via_AFT] takes its solution set as a
-   hypothesis, and the same for Exercise 3."  THREE of those clauses are
+   hypothesis, and the same for Exercise 3.”  THREE of those clauses are
    now false and one is still true.
 
    STILL TRUE: [tensor_esols_direct] -- Mac Lane's COVERING FAMILY, WITH
@@ -133,13 +133,13 @@ Generalizable All Variables.
    subobjects, Instance/Mod/Spanning.v) and his p. 128 route (corestrict to
    the generated submodule, here) therefore agree on the nose about WHAT
    the solution set is indexed by, and differ only in what they assume.
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17).  This step
-   read: "NOTHING BELOW CONSUMES [tensor_esols_direct]: the theorem will
+   CORRECTION, PR “algebraic carriers are sets” (2026-09-17).  This step
+   read: “NOTHING BELOW CONSUMES [tensor_esols_direct]: the theorem will
    not accept it, for the universe reason of section 2, so the only
    solution set ever fed to [tensor_via_AFT] in tree is the CIRCULAR
    [tensor_esols_from_tensor] of step (5).  [tensor_esols_direct]'s only
    consumers are its own three [eq_refl] readbacks and
-   [tensor_esols_same_index]."  The first clause is still true -- the
+   [tensor_esols_same_index].”  The first clause is still true -- the
    theorem still will not accept THIS family -- and the rest is false.
    [tensor_esols_direct] is now the SUBJECT of section 10:
    [tensor_spanning_SmallUpToIso] proves it small up to isomorphism and
@@ -149,7 +149,7 @@ Generalizable All Variables.
 
    NO SMALLNESS HERE, and that is now a statement about THIS constant
    rather than about the file.  [esol_index] is a bare [Type], so Mac
-   Lane's cardinality bound ("such a C consists of all finite sums") is
+   Lane's cardinality bound (“such a C consists of all finite sums”) is
    not part of what the record asks for and this step supplies none.
    Section 10 supplies the SMALLNESS separately, as [SmallUpToIso]
    (Adjunction/GAFT/Resize.v), which is the shape Mac Lane's Lemma 2
@@ -183,7 +183,7 @@ Generalizable All Variables.
    Bilin_continuous] (Construction/Comma/Creation.v).  That bridge is
    LOAD-BEARING and cannot be skipped: a [ContinuousFunctor] does not
    ascribe where the theorem asks for [PreservesImageLimit], the refusal
-   being "cannot unify \"Limit.Limit K\" and \"Cone.Cone K\"", quoted at
+   being “cannot unify \”Limit.Limit K\“ and \”Cone.Cone K\“”, quoted at
    Instance/Ab/Limit.v.
 
    (5) THE CONSTRUCTION.  [tensor_via_AFT_of_esols V V' E : Representable
@@ -280,7 +280,7 @@ Generalizable All Variables.
    refused by [representability_theorem].  Everything the section says
    about that refusal stands.  What it used to conclude from it -- that no
    unconditional construction was possible -- was corrected in the PR
-   "algebraic carriers are sets" (2026-09-17) and is marked below.
+   “algebraic carriers are sets” (2026-09-17) and is marked below.
 
    The chain.  The solution set's INDEX universe is also the SHAPE
    universe of the [Complete] the theorem is handed, and [RMod_Complete]
@@ -314,8 +314,8 @@ Generalizable All Variables.
    Test/ProbeModTensorAFT449.v's NEGATIVE 1 carries the re-measured,
    [Set]-free text with its own recorded correction, and is the single
    place it is maintained; an earlier revision of this comment quoted the
-   pre-repair form, with "Cannot enforce Set = u_obj' because
-   Set < u_obj'", and that message no longer occurs.
+   pre-repair form, with “Cannot enforce Set = u_obj' because
+   Set < u_obj'”, and that message no longer occurs.
 
    The spanning-arrow route is refused for a related reason seen from the
    other side:
@@ -325,16 +325,16 @@ Generalizable All Variables.
    (Bilin_PreservesImageLimit V V')
 
    is refused, and that refusal has MOVED TWICE.  An earlier revision of
-   this comment quoted it at the completeness argument, "The term
-   \"RMod_Complete R\" has type \"Complete@{Set Set Set u}\" …"; it then
+   this comment quoted it at the completeness argument, “The term
+   \”RMod_Complete R\“ has type \”Complete@{Set Set Set u}\“ …”; it then
    moved to the ambient category argument when [DiscreteCat_Functor] was
    annotated, and moved again when this PR widened
    Adjunction/SpanningArrow.v's [Section GAFTFromSpanning] off [Set].  It
    now reads, with the generated universe names replaced by readable ones
    positionally and everything else verbatim,
 
-   The term "RMod R" has type "Category@{u_obj u_hom u_hom}"
-   while it is expected to have type "Category@{u_obj' u_hom' u_hom'}"
+   The term “RMod R” has type “Category@{u_obj u_hom u_hom}”
+   while it is expected to have type “Category@{u_obj' u_hom' u_hom'}”
    (universe inconsistency: Cannot enforce u_hom = u_hom' because
    u_hom < u_obj <= u_hom')
 
@@ -352,7 +352,7 @@ Generalizable All Variables.
    attributes the [Set] to a universe-MINIMIZATION artifact of
    Instance/Discrete.v's [DiscreteCat_Functor], which carries no universe
    binders; it reports the repair as three annotated lines filed as #1309
-   (CORRECTION: it said "eleven recorded boundaries"; its own measurement
+   (CORRECTION: it said “eleven recorded boundaries”; its own measurement
    paragraph finds TWENTY-TWO in FIFTEEN), and that the index IS accepted.
    THE REPAIR WAS APPLIED AND MEASURED; IT DOES NOT LIFT THIS WALL.
    With only the #1309 edit
@@ -360,13 +360,13 @@ Generalizable All Variables.
    applied in a full copy of the worktree and the tree rebuilt, the
    literal [Set] vanishes from the refusal but the refusal remains, now
    as the identification of the index universe with the ring's carrier
-   universe: the [n1] quoted above then reports "The term
-   \"tensor_esols_direct V V'\" has type \"ElementSolutionSet@{u_a u_b
-   u_c u_a} ...\" while it is expected to have type
-   \"ElementSolutionSet@{u_d u_b u_e u_b} ...\" (universe inconsistency:
-   Cannot enforce u_d = u_b because u_b < u_d)", with NO [Set] anywhere
-   in the message, and the [Ab] refusal of Exercise 3 likewise ("Cannot
-   enforce u_f = u_g because u_g < u_f").  The structural reason survives
+   universe: the [n1] quoted above then reports “The term
+   \”tensor_esols_direct V V'\“ has type \”ElementSolutionSet@{u_a u_b
+   u_c u_a} ...\“ while it is expected to have type
+   \”ElementSolutionSet@{u_d u_b u_e u_b} ...\“ (universe inconsistency:
+   Cannot enforce u_d = u_b because u_b < u_d)”, with NO [Set] anywhere
+   in the message, and the [Ab] refusal of Exercise 3 likewise (“Cannot
+   enforce u_f = u_g because u_g < u_f”).  The structural reason survives
    the repair: [Sets_Complete@{u u0} : Complete@{u u u u0}] fixes the
    shape universe at the carrier universe, while the index is a sigma
    over objects and [Submodule W : Type@{u}] with [carrier < u] puts any
@@ -378,12 +378,12 @@ Generalizable All Variables.
    the identification is not [RMod_Complete]'s.
 
    AND THE WALL WAS NOT LIFTED; IT WAS ROUTED AROUND.  CORRECTION, PR
-   "algebraic carriers are sets" (2026-09-17).  The paragraph above used
-   to end: "Nothing here claims the wall is unavoidable.  What is claimed
+   “algebraic carriers are sets” (2026-09-17).  The paragraph above used
+   to end: “Nothing here claims the wall is unavoidable.  What is claimed
    is that until it moves -- and landing #1309 alone is measured NOT to
    move it -- an AFT construction of the tensor product at [RMod R] is
    either conditional on a solution set at the ring's carrier universe, or
-   circular.  This file delivers both readings and labels each."  That was
+   circular.  This file delivers both readings and labels each.”  That was
    the headline sentence of the file and it is FALSE.  The wall has not
    moved: every refusal recorded above still stands, verbatim in substance,
    and the structural reason still holds of any index shaped as a sigma
@@ -399,7 +399,7 @@ Generalizable All Variables.
 
    ** 3. MEASURED
 
-   RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17);
+   RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17);
    an earlier revision read 111 constants (78 heads, 33 obligations) and
    the criteria below are unchanged, only the counts.
 
@@ -412,7 +412,7 @@ Generalizable All Variables.
    '[A-Za-z0-9_]*_obligation_[0-9]*' | sed 's/^[0-9]*//' | sort -u] -- the
    junk digit prefix STRIPPED, not dropped, most appearing in the census
    only prefixed ([5BalBiadd_obligation_1], [6Bilin_med_obligation_1] and
-   the rest).  ALL 161 report "Closed under the global context", with zero
+   the rest).  ALL 161 report “Closed under the global context”, with zero
    [Axioms:] lines, run through a generated scratch file of
    [Print Assumptions Category.Instance.Mod.TensorAFT.<name>] -- the
    obligations answer only to the qualified name.
@@ -453,32 +453,32 @@ Generalizable All Variables.
    [bal_restrict_image], [bal_spanning_to_spanning] and
    [bal_corestrict_spanning] -- are as the earlier revision recorded them
    and were not re-flipped in this PR.  (That list names six; the earlier
-   revision's arithmetic "the other six" counted them against eight
+   revision's arithmetic “the other six” counted them against eight
    terminators and is left as written, since the names are what a reader
    needs.)
 
    UNIVERSES ([About] under [Set Printing Universes], all 161).
    RE-MEASURED, and the previous paragraph is withdrawn in full.  It read:
-   "EXACTLY 21 of the 111 carry a word-bounded [Set], and they are
-   precisely the two AFT applications and everything downstream of them",
+   “EXACTLY 21 of the 111 carry a word-bounded [Set], and they are
+   precisely the two AFT applications and everything downstream of them”,
    and it quoted [tensor_via_AFT@{…} : ∀ {R : RingObject@{Set u8 u8}} …],
    [tensor_AFT_iso@{…} : ∀ {R : RingObject@{Set Set Set}} …] and
    [bal_tensor_via_AFT@{…} : ∀ {X : RingObject@{Set u5 u5}} …] as its
    headlines, with a paragraph attributing the [RingObject@{Set Set Set}]
    pin by isolation.  ALL OF IT IS STALE: every one of those [Set]s was
    the universe-minimization artifact of Instance/Discrete.v's
-   [DiscreteCat_Functor], repaired in the PR "algebraic carriers are
-   sets".
+   [DiscreteCat_Functor], repaired in the PR “algebraic carriers are
+   sets”.
 
-   Measured now, with the criterion "a word-bounded [Set] appearing as a
-   universe ARGUMENT inside an [@{…}] list in the printed type":
+   Measured now, with the criterion “a word-bounded [Set] appearing as a
+   universe ARGUMENT inside an [@{…}] list in the printed type”:
    ZERO of the 161.  The command was an [About] of every name, generated
    from the [.glob] heads and the obligation census above, with
    [grep -E '@\{[^}]*\bSet\b'] over the output -- no hits, against 144
    lines that do print [RingObject@{…}], which is the instrument control.
 
-   A DIFFERENT criterion, and the one that now matters: "a [Set < …] line
-   in the CONSTRAINT block".  Of the 133 names that print a universe list
+   A DIFFERENT criterion, and the one that now matters: “a [Set < …] line
+   in the CONSTRAINT block”.  Of the 133 names that print a universe list
    at all, 100 carry one.  These are bounds, not pins -- [Set < u] only
    says [u] is above [Set], which Lib.v's
    [Unset Universe Minimization ToSet] makes the default -- and the one
@@ -509,7 +509,7 @@ Generalizable All Variables.
    differ is not established here.
 
    [Require] discipline: THIRTY-ONE imports (an earlier revision read 28;
-   the PR "algebraic carriers are sets" added Category.Lib.Setoid.
+   the PR “algebraic carriers are sets” added Category.Lib.Setoid.
    Propositional for [PropEquiv], and Category.Adjunction.GAFT together
    with Category.Adjunction.GAFT.Resize for section 10's [SolutionSet] and
    [SmallUpToIso]).  The earlier revision's closure figure of 169 files,
@@ -537,7 +537,7 @@ Generalizable All Variables.
 
    ** 4. NOT DELIVERED
 
-   (1) WITHDRAWN.  This clause read "NO UNCONDITIONAL REPRESENTATION.
+   (1) WITHDRAWN.  This clause read “NO UNCONDITIONAL REPRESENTATION.
    [tensor_via_AFT] and [bal_tensor_via_AFT] take a solution set as a
    hypothesis, for the measured universe reason of section 2.  The only
    in-tree inhabitants of that hypothesis are the two CIRCULAR ones,
@@ -546,8 +546,8 @@ Generalizable All Variables.
    demonstrated is that the machinery applies and that its output agrees
    with the explicit construction -- NOT that the tensor product exists
    independently of the explicit construction.  Instance/Grp/FreeAFT.v is
-   in exactly this position and says so."  The PR "algebraic carriers are
-   sets" (2026-09-17) makes every sentence of it false, at both [RMod R]
+   in exactly this position and says so.”  The PR “algebraic carriers are
+   sets” (2026-09-17) makes every sentence of it false, at both [RMod R]
    and [Ab], and Instance/Grp/FreeAFT.v moved with it.  WHAT IS DELIVERED
    IN ITS PLACE: [tensor_via_AFT] and [bal_tensor_via_AFT] take nothing
    beyond the ring and the modules; the tensor product of modules EXISTS
@@ -572,23 +572,23 @@ Generalizable All Variables.
    (Instance/Mod/Closed.v's [RMod_SymMonClosed],
    Instance/Mod/Bimodule.v) are untouched and unrelated.
 
-   (3) NO CARDINALITY BOUND, and a correction.  This clause read "NO
+   (3) NO CARDINALITY BOUND, and a correction.  This clause read “NO
    SMALLNESS, hence no cardinality bound: [esol_index] is a bare [Type],
-   as Adjunction/SpanningArrow.v says of itself."  The premise is
+   as Adjunction/SpanningArrow.v says of itself.”  The premise is
    still true of [esol_index] and of [tensor_esols_direct], and the
    conclusion no longer follows for the file: section 10 proves the
    spanning family SMALL UP TO ISOMORPHISM ([SmallUpToIso],
    Adjunction/GAFT/Resize.v), which is what Mac Lane's Lemma 2 actually
-   asserts.  What is still not delivered is a CARDINALITY bound -- "such a
-   C consists of all finite sums" -- which nothing here supplies and which
+   asserts.  What is still not delivered is a CARDINALITY bound -- “such a
+   C consists of all finite sums” -- which nothing here supplies and which
    [SmallUpToIso] does not imply.
 
    (4) NO [eq_refl] OBJECT COMPARISON, only `≅` with a uniqueness clause
    (probe NEGATIVE 5).
 
-   (5) HALF WITHDRAWN.  This clause read "NO CONCRETE WITNESS.  Nothing
+   (5) HALF WITHDRAWN.  This clause read “NO CONCRETE WITNESS.  Nothing
    below instantiates [R] at a named ring, so nothing exhibits the AFT
-   object at [Int_Ring] or anywhere else".  THAT HALF IS FALSE: nothing in
+   object at [Int_Ring] or anywhere else”.  THAT HALF IS FALSE: nothing in
    THIS FILE instantiates [R], but Test/ProbeModTensorAFT449.v's
    [Section UnconditionalPayoff] now does, at [Int_Ring], at [Q_Ring] and
    at [Ring_op Int_Ring], for both the direct and the Mac Lane routes and
@@ -604,9 +604,9 @@ Generalizable All Variables.
    and are not extended here; the kernel of the comparison is still not
    described.
 
-   (7) WITHDRAWN AS TO ITS FIRST CLAUSE.  It read "NO REPAIR OF THE
+   (7) WITHDRAWN AS TO ITS FIRST CLAUSE.  It read “NO REPAIR OF THE
    UNIVERSE ARTIFACT.  Instance/Discrete.v is not touched, and #1309 stays
-   open".  The annotation landed in the PR "algebraic carriers are sets"
+   open”.  The annotation landed in the PR “algebraic carriers are sets”
    (2026-09-17) and every [Set] this file used to quote went with it.  The
    SECOND clause stands and was the point of recording it: landing #1309
    did not lift this file's wall, as section 2 measures, and the wall was
@@ -618,7 +618,7 @@ Generalizable All Variables.
    [Print Assumptions Category.Instance.Mod.TensorAFT.<name>] line each,
    so the axiom-free report of section 3 is re-run by that target rather
    than only by the scratch file it was first measured with.  (An earlier
-   revision said "All 111 constants"; the count is now 161, and the gate
+   revision said “All 111 constants”; the count is now 161, and the gate
    block was extended in the same PR.)
 
    (9) NO UNIQUENESS FOR THE RESIZING.  [SmallUpToIso] is data, not a
@@ -658,7 +658,7 @@ Generalizable All Variables.
    这里没有小性，这现在是关于这个常数的陈述，而不是关于文件的。[esol_index] 是一个裸 [Type]，因此 Mac Lane 的基数界限（“这样的 C 由所有有限和组成”）不是记录所要求的内容，这一步也没有提供。第10节单独提供了小性，作为 [SmallUpToIso] (Adjunction/GAFT/Resize.v)，这是 Mac Lane 的引理2 实际证明的形式——同构下的代表，而不是基数界限。(3) [Bilin V V'] 的连续性，无条件且不经过张量。  
    [Bilin_continuous : ContinuousFunctor (Bilin V V')] 针对任意极限锥在元素级上被证明：一系列集合的基础锥是由 Instance/Mod/Limit.v 的 [RMod_Forget_creates_continuous]（从 [Sets_Complete] 创建，无需假定伴随）所限制的，映射到顶点的双线性映射正好是一系列兼容的映射到 [K j] 的双线性映射，并且五条定律来自联合单性加上每个 [K j] 中的定律。不需要也没有使用迁移：论证中从未提到所选极限，因此 Structure/Limit/Preservation.v 的 [limitcone_transport] 和 [FCone_iso]——可以将从创建的极限到任意极限的陈述传递——是可用的但未被使用。循环路径被命名但未使用。
    [preserves_image_of_representable (tensor_repr_of_UE V V')]
-   (Adjunction/Representability/Sets.v) 在一行中居于同一类型，并且是循环的：它从定理要构造的张量中推导出了定理的假设。这就是 Instance/Ab/Limit.v 所警告的循环性，以及 Instance/Grp/FreeAFT.v 为其自身解集所揭示的循环性。它在探针中作为正控制被检查，而那里的 NEGATIVE 6 表明所提供的项是不同的项。(4) [Bilin_PreservesImageLimit] 是 [Continuous_PreservesImageLimit Bilin_continuous]（Construction/Comma/Creation.v）。那座桥是承重的，不能跳过：[ContinuousFunctor] 并没有在定理要求 [PreservesImageLimit] 的地方赋值，拒绝的原因是 “cannot unify \"Limit.Limit K\" and \"Cone.Cone K\"”，引自 Instance/Ab/Limit.v。(5) 构造。[tensor_via_AFT_of_esols V V' E : 可表示的(Bilin V V')] 在 [representability_theorem] 处，[RMod_Complete R] 处，[Bilin_PreservesImageLimit V V'] 处以及解集 [E] 处。它在顶层（TOP LEVEL）声明，位于任何 [Section] 之外，原因是 Adjunction/Representability/Sets.v 所指出的。[tensor_esols_from_tensor] -- 索引 [unit]，对象 [TensorMod V V']，元素 [tensor_gen] -- 位于假设中并且是循环的，命名如此以便在每个使用处都能看到循环性，正如 Instance/Grp/FreeAFT.v 的 [Grp_Forget_solution_set_from_adjunction] 一样。它的唯一作用是展示条件不是空的；[tensor_via_AFT_from_tensor] 就是该实例化。（更正，这次 PR：该步骤的早期版本将条件写作 [tensor_via_AFT V V' E]。）自从无条件解集落定以来，[tensor_via_AFT V V'] 不接受解集——它是 [tensor_via_AFT_of_esols V V' (tensor_esols_prop V V')]——而 [E] 接受形式是 [_of_esols]。定义位置也进行了相同的更正。(6) 比较在 `≅`，而不是在 [eq_refl]。[tensor_AFT_iso] 是 [repr_unique_iso]（Functor/Representable.v）与 [tensor_repr_of_UE] 的比较，通过 DIRECT 路径从 Instance/Mod/Tensor.v 的 [tensor_UniversalElement] 读取表示法 [Representable_of_UniversalElement]（Theory/Universal/Element.v；标题说明为什么 Yoneda 组合路径在其对象位于同态之上的范畴中是错误的）。唯一性条款是 [tensor_AFT_iso_universal]（[repr_unique_iso_universal], Functor/Representable.v —— 用其文件命名，因为未经限定的引用会被理解为 Element.v 的），两个 [eq_refl] 分支是 [repr_of_ue_obj]（Theory/Universal/Element.v）和 [tensor_UniversalElement_obj]（Instance/Mod/Tensor.v），在这里读回为 [tensor_repr_of_UE_obj]。对象比较是 `≅`，而不是 [eq_refl]：伴随函子定理将其对象构建为逗号范畴内的极限，而 [TensorMod] 是形式项的商。探针针脚的负五表明了这一点。(7) 并且该比较包含了通用元素。 [tensor_AFT_iso_carries_elem] 表示 AFT 的通用双线性映射，沿着 [tensor_AFT_iso] 本身传输，等于 [tensor_gen] 在 `≈`；证明是表示的自然性，随后在恒等映射处使用 [repr_induced_compatible]，而解集的内容并未涉及。 [tensor_AFT_elem_iso] 是元素级的比较（[universal_element_iso]，Theory/Universal/Element.v），[tensor_AFT_elem_unique] 是其唯一性条款（[universal_element_unique]），[tensor_AFT_isos_agree] 证明这两个比较在 `≈` 是相同的同构。 该定理及其 [bal_] 的对应定理，是九个参与 [E] 的常数中唯一两个其陈述被此 PR 改动的定理，并且仅是通过强制重命名其右侧至 [tensor_AFT_iso_of_esols] / [bal_AFT_iso_of_esols]；两个位置都有备注。(8) 练习 3：平衡张量。一个右模和一个左模在可能非交换环上的平衡张量已经存在（Instance/Mod/Bimodule.v 的 [BalTensor]，落在 [Ab] 中）；尚不存在的是它所表示的函子。[BalBiadd N M : Ab ⟶ Sets] 就是它——对象部分为 [BalBiadditive N M A]，使用逐点集合类，箭头部分为后合成，遵循 Instance/Mod/Tensor.v 的模式——以及 [bal_universal_element：AUniversalElement (BalBiadd N M) (BalTensor N M)]，由 [bal_med] 和 [bal_med_unique] 构建，其对象和元素在 [eq_refl] 中被读回。[BalBiadd_continuous] 是沿 [Ab] 创建的极限（[Ab_Forget_creates_continuous]，Instance/Ab/Limit.v）逐元素的连续性，通过步骤（1）的相同四个引理；[bal_tensor_via_AFT_of_esols N M E] 是在 [Ab_Complete] 上的构造，而 [bal_tensor_via_AFT N M] 不获取任何解集（此步骤的早期修订版本写作 [bal_tensor_via_AFT N M E]，它在无条件解集进入此 PR 之前的元数）；[bal_AFT_iso] 和 [bal_AFT_iso_carries_elem] 是与 [BalTensor] 及其元素子句的比较，而 [bal_AFT_isos_agree] 确定了这两者。(9) 练习 3 的解集，无条件。[bal_esols_direct] 是 Mac Lane 对 [Ab] 的论证，它需要四个 [Ab] 词汇，这些词汇不在树中：[ABGenSub]（Instance/Mod/Spanning.v 的 [ABGen] 恰好有 Instance/Ab/DirectedColimit.v 的五个字段：273 的 [AbSubgroup]，因此这是重新打包，没有义务）、[AbImageSub]（同态的像作为子群，[Ab] 是 Instance/Mod/Quotient.v 的 [ImageSubmod] 的对应）、[ab_split]（双射同态可以拆分）和 [abg_subobj]（通过 [ab_injective_monic] 将子群作为 [SubObj Ab]）。然后 [bal_spanning_to_spanning] 是 Instance/Mod/Spanning.v 的 [rbilinear_spanning_to_spanning] 的 [Ab] 形式，而 [bal_gen_corestrict] / [bal_corestrict_spanning] 是步骤 (2) 的余限制的 [Ab] 形式。** 2. 宇宙墙，测量——历史部分和一个有效声明
+   (Adjunction/Representability/Sets.v) 在一行中居于同一类型，并且是循环的：它从定理要构造的张量中推导出了定理的假设。这就是 Instance/Ab/Limit.v 所警告的循环性，以及 Instance/Grp/FreeAFT.v 为其自身解集所揭示的循环性。它在探针中作为正控制被检查，而那里的 NEGATIVE 6 表明所提供的项是不同的项。(4) [Bilin_PreservesImageLimit] 是 [Continuous_PreservesImageLimit Bilin_continuous]（Construction/Comma/Creation.v）。那座桥是承重的，不能跳过：[ContinuousFunctor] 并没有在定理要求 [PreservesImageLimit] 的地方赋值，拒绝的原因是 “cannot unify \“Limit.Limit K\” and \“Cone.Cone K\””，引自 Instance/Ab/Limit.v。(5) 构造。[tensor_via_AFT_of_esols V V' E : 可表示的(Bilin V V')] 在 [representability_theorem] 处，[RMod_Complete R] 处，[Bilin_PreservesImageLimit V V'] 处以及解集 [E] 处。它在顶层（TOP LEVEL）声明，位于任何 [Section] 之外，原因是 Adjunction/Representability/Sets.v 所指出的。[tensor_esols_from_tensor] -- 索引 [unit]，对象 [TensorMod V V']，元素 [tensor_gen] -- 位于假设中并且是循环的，命名如此以便在每个使用处都能看到循环性，正如 Instance/Grp/FreeAFT.v 的 [Grp_Forget_solution_set_from_adjunction] 一样。它的唯一作用是展示条件不是空的；[tensor_via_AFT_from_tensor] 就是该实例化。（更正，这次 PR：该步骤的早期版本将条件写作 [tensor_via_AFT V V' E]。）自从无条件解集落定以来，[tensor_via_AFT V V'] 不接受解集——它是 [tensor_via_AFT_of_esols V V' (tensor_esols_prop V V')]——而 [E] 接受形式是 [_of_esols]。定义位置也进行了相同的更正。(6) 比较在 `≅`，而不是在 [eq_refl]。[tensor_AFT_iso] 是 [repr_unique_iso]（Functor/Representable.v）与 [tensor_repr_of_UE] 的比较，通过 DIRECT 路径从 Instance/Mod/Tensor.v 的 [tensor_UniversalElement] 读取表示法 [Representable_of_UniversalElement]（Theory/Universal/Element.v；标题说明为什么 Yoneda 组合路径在其对象位于同态之上的范畴中是错误的）。唯一性条款是 [tensor_AFT_iso_universal]（[repr_unique_iso_universal], Functor/Representable.v —— 用其文件命名，因为未经限定的引用会被理解为 Element.v 的），两个 [eq_refl] 分支是 [repr_of_ue_obj]（Theory/Universal/Element.v）和 [tensor_UniversalElement_obj]（Instance/Mod/Tensor.v），在这里读回为 [tensor_repr_of_UE_obj]。对象比较是 `≅`，而不是 [eq_refl]：伴随函子定理将其对象构建为逗号范畴内的极限，而 [TensorMod] 是形式项的商。探针针脚的负五表明了这一点。(7) 并且该比较包含了通用元素。 [tensor_AFT_iso_carries_elem] 表示 AFT 的通用双线性映射，沿着 [tensor_AFT_iso] 本身传输，等于 [tensor_gen] 在 `≈`；证明是表示的自然性，随后在恒等映射处使用 [repr_induced_compatible]，而解集的内容并未涉及。 [tensor_AFT_elem_iso] 是元素级的比较（[universal_element_iso]，Theory/Universal/Element.v），[tensor_AFT_elem_unique] 是其唯一性条款（[universal_element_unique]），[tensor_AFT_isos_agree] 证明这两个比较在 `≈` 是相同的同构。 该定理及其 [bal_] 的对应定理，是九个参与 [E] 的常数中唯一两个其陈述被此 PR 改动的定理，并且仅是通过强制重命名其右侧至 [tensor_AFT_iso_of_esols] / [bal_AFT_iso_of_esols]；两个位置都有备注。(8) 练习 3：平衡张量。一个右模和一个左模在可能非交换环上的平衡张量已经存在（Instance/Mod/Bimodule.v 的 [BalTensor]，落在 [Ab] 中）；尚不存在的是它所表示的函子。[BalBiadd N M : Ab ⟶ Sets] 就是它——对象部分为 [BalBiadditive N M A]，使用逐点集合类，箭头部分为后合成，遵循 Instance/Mod/Tensor.v 的模式——以及 [bal_universal_element：AUniversalElement (BalBiadd N M) (BalTensor N M)]，由 [bal_med] 和 [bal_med_unique] 构建，其对象和元素在 [eq_refl] 中被读回。[BalBiadd_continuous] 是沿 [Ab] 创建的极限（[Ab_Forget_creates_continuous]，Instance/Ab/Limit.v）逐元素的连续性，通过步骤（1）的相同四个引理；[bal_tensor_via_AFT_of_esols N M E] 是在 [Ab_Complete] 上的构造，而 [bal_tensor_via_AFT N M] 不获取任何解集（此步骤的早期修订版本写作 [bal_tensor_via_AFT N M E]，它在无条件解集进入此 PR 之前的元数）；[bal_AFT_iso] 和 [bal_AFT_iso_carries_elem] 是与 [BalTensor] 及其元素子句的比较，而 [bal_AFT_isos_agree] 确定了这两者。(9) 练习 3 的解集，无条件。[bal_esols_direct] 是 Mac Lane 对 [Ab] 的论证，它需要四个 [Ab] 词汇，这些词汇不在树中：[ABGenSub]（Instance/Mod/Spanning.v 的 [ABGen] 恰好有 Instance/Ab/DirectedColimit.v 的五个字段：273 的 [AbSubgroup]，因此这是重新打包，没有义务）、[AbImageSub]（同态的像作为子群，[Ab] 是 Instance/Mod/Quotient.v 的 [ImageSubmod] 的对应）、[ab_split]（双射同态可以拆分）和 [abg_subobj]（通过 [ab_injective_monic] 将子群作为 [SubObj Ab]）。然后 [bal_spanning_to_spanning] 是 Instance/Mod/Spanning.v 的 [rbilinear_spanning_to_spanning] 的 [Ab] 形式，而 [bal_gen_corestrict] / [bal_corestrict_spanning] 是步骤 (2) 的余限制的 [Ab] 形式。** 2. 宇宙墙，测量——历史部分和一个有效声明
 
    请将本节作为一个被规避的墙的记录来阅读，而不是作为文件的实时限制。该节中恰好有一个声明仍然有效：[tensor_esols_direct]，按对象索引的系列，仍然被 [representability_theorem] 拒绝。关于该拒绝的所有描述仍然有效。过去从中得出的结论——无法进行无条件构造——已在 PR “代数承载体是集合”（2026-09-17）中得到纠正，并在下文标明。链。解集的索引宇宙也是 [Complete] 定理所处理的形状宇宙，而 [RMod_Complete] 将其放在环的承载宇宙中。[representability_theorem] 的当前签名由 Adjunction/Representability/Sets.v 承载，并在此被引用而非重新引用：该注释的早期版本曾将其引用为
 
@@ -679,10 +679,10 @@ Generalizable All Variables.
 
    @GAFT_from_spanning (RMod R) Sets (Bilin V V') HWP
    (Bilin_PreservesWidePullbacks V V') (RMod_Complete R)
-   (Bilin_PreservesImageLimit V V')被拒绝了，并且这种拒绝已经移动了两次。之前的评论版本在完整性论证中引用了它，“术语 \"RMod_Complete R\" 的类型是 \"Complete@{Set Set Set u}\" …”；然后，当 [DiscreteCat_Functor] 被注释时，它被移到了环境范畴论证中，并在此 PR 扩展 Adjunction/SpanningArrow.v 的 [Section GAFTFromSpanning] 从 [Set] 时再次移动。它现在的内容是，在位置上用可读名称替换生成的宇宙名称，其余部分完全照原文，
+   (Bilin_PreservesImageLimit V V')被拒绝了，并且这种拒绝已经移动了两次。之前的评论版本在完整性论证中引用了它，“术语 \“RMod_Complete R\” 的类型是 \“Complete@{Set Set Set u}\” …”；然后，当 [DiscreteCat_Functor] 被注释时，它被移到了环境范畴论证中，并在此 PR 扩展 Adjunction/SpanningArrow.v 的 [Section GAFTFromSpanning] 从 [Set] 时再次移动。它现在的内容是，在位置上用可读名称替换生成的宇宙名称，其余部分完全照原文，
 
-   术语 "RMod R" 的类型是 "Category@{u_obj u_hom u_hom}"
-   而期望的类型是 "Category@{u_obj' u_hom' u_hom'}"
+   术语 “RMod R” 的类型是 “Category@{u_obj u_hom u_hom}”
+   而期望的类型是 “Category@{u_obj' u_hom' u_hom'}”
    （宇宙不一致：无法强制 u_hom = u_hom'，因为
    u_hom < u_obj <= u_hom'）-- 扩展的定理希望对象位于或低于态射，而 [RMod R] 的态射严格低于对象。因此这里没有提供伴随，只提供一个表示；见未提供（2），此处保持不变。练习 3 在 [Ab]（[bal_esols_direct] 到 [bal_tensor_via_AFT_of_esols]）遇到了索引拒绝。全部三个都是 Test/ProbeModTensorAFT449.v 的负例 1、2 和 3，每个都在整个探针的副本中被剥离并重新运行，以便可以读取拒绝类型，而不是猜测。与#1309属于同一家族的一面墙，经测量不能被其提升。Instance/Grp/FreeAFT.v 在 [Grp] 测量了该家族的一面墙
    -- Mac Lane 的字面索引 [Subgroup Gfix] 在那里也被拒绝 -- 并将 [Set] 属性归因于 Instance/Discrete.v 的 [DiscreteCat_Functor] 的一个宇宙最小化工件，它没有携带任何宇宙绑定；它报告的修复是作为 #1309 提交的三条带注释的行（修正：它说的是“记录的边界有十一条”；它自己的测量段落发现了十五行中有二十二条），并且该索引被接受。修复已经应用并测量；它不能提升这面墙。仅应用 #1309 编辑
@@ -690,8 +690,8 @@ Generalizable All Variables.
    在工作树的完整副本中并重建树后，
    字面上的 [Set] 从拒绝中消失，但拒绝仍然存在，现在
    作为索引宇宙与环的承载宇宙的同一性：上文引用的 [n1] 然后报告“术语
-   \"tensor_esols_direct V V'\" 的类型为 \"ElementSolutionSet@{u_a u_b u_c u_a} ...\"，而预计的类型为
-   \"ElementSolutionSet@{u_d u_b u_e u_b} ...\"（宇宙不一致：不能强制 u_d = u_b，因为 u_b < u_d）”，消息中没有 [Set]，且锻炼 3 的 [Ab] 拒绝也是如此（“不能强制 u_f = u_g，因为 u_g < u_f”）。结构原因在修复后仍然存在：[Sets_Complete@{u u0} : Complete@{u u u u0}] 在承载宇宙中固定形状宇宙，而索引是对象上的一个 sigma，并且 [Submodule W : Type@{u}] 与 [carrier < u] 将任何子对象形状的索引严格置于承载之上。还有三次进一步的修复尝试——一个带有明确注释的 [ElementSolutionSet] 及 [Constraint Set < iu]、一个完全命名的 [@representability_theorem]，以及将 [RMod_Complete] 替换为抽象 [comp : @Complete (RMod R)] 后的相同尝试——每次都被拒绝，最后显示出该识别不是 [RMod_Complete] 的。而这堵墙并未被移开；它是被绕过的。更正，PR“代数载体是集合”（2026-09-17）。上面段落的结尾曾是：“这里没有人声称墙是无法避免的。所声称的是，在它移动之前——单独着陆 #1309 被测定为不会移动它——在 [RMod R] 上张量积的 AFT 构造要么依赖于环载体宇宙中的解集，要么是循环的。此文件提供了两种解读并对每种解读进行了标注。” 那是文件的标题句，而它是错误的。这堵墙没有移动：上述记录的每一次拒绝仍然有效，本质上逐字保留，并且任何以对象为索引或以 [Type] 值的合同形态的索引的结构性原因仍然成立。变化在于建立了第三种形状的索引——项模上的 [Prop] 值同余（第 3A 节）——并且 [Prop] 是承载大小的（Structure/Complete.v 的 SIZE NOTE，第 1 项）。在该索引处接受一个解集，因此构造是无条件的且非循环的，在任意环上成立，代价是单边条件 [Set < carrier]。第 10 节随后表明，两种解读从未像本节所示那样相差甚远：Mac Lane 自己的族在同构意义下是小的，以同余作为其小索引。
+   \“tensor_esols_direct V V'\” 的类型为 \“ElementSolutionSet@{u_a u_b u_c u_a} ...\”，而预计的类型为
+   \“ElementSolutionSet@{u_d u_b u_e u_b} ...\”（宇宙不一致：不能强制 u_d = u_b，因为 u_b < u_d）”，消息中没有 [Set]，且锻炼 3 的 [Ab] 拒绝也是如此（“不能强制 u_f = u_g，因为 u_g < u_f”）。结构原因在修复后仍然存在：[Sets_Complete@{u u0} : Complete@{u u u u0}] 在承载宇宙中固定形状宇宙，而索引是对象上的一个 sigma，并且 [Submodule W : Type@{u}] 与 [carrier < u] 将任何子对象形状的索引严格置于承载之上。还有三次进一步的修复尝试——一个带有明确注释的 [ElementSolutionSet] 及 [Constraint Set < iu]、一个完全命名的 [@representability_theorem]，以及将 [RMod_Complete] 替换为抽象 [comp : @Complete (RMod R)] 后的相同尝试——每次都被拒绝，最后显示出该识别不是 [RMod_Complete] 的。而这堵墙并未被移开；它是被绕过的。更正，PR“代数载体是集合”（2026-09-17）。上面段落的结尾曾是：“这里没有人声称墙是无法避免的。所声称的是，在它移动之前——单独着陆 #1309 被测定为不会移动它——在 [RMod R] 上张量积的 AFT 构造要么依赖于环载体宇宙中的解集，要么是循环的。此文件提供了两种解读并对每种解读进行了标注。” 那是文件的标题句，而它是错误的。这堵墙没有移动：上述记录的每一次拒绝仍然有效，本质上逐字保留，并且任何以对象为索引或以 [Type] 值的合同形态的索引的结构性原因仍然成立。变化在于建立了第三种形状的索引——项模上的 [Prop] 值同余（第 3A 节）——并且 [Prop] 是承载大小的（Structure/Complete.v 的 SIZE NOTE，第 1 项）。在该索引处接受一个解集，因此构造是无条件的且非循环的，在任意环上成立，代价是单边条件 [Set < carrier]。第 10 节随后表明，两种解读从未像本节所示那样相差甚远：Mac Lane 自己的族在同构意义下是小的，以同余作为其小索引。
 
    ** 3. 测量过的
 
@@ -710,7 +710,7 @@ Generalizable All Variables.
    “在 111 个中恰好有 21 个带有字词界限的 [Set]，它们正是两个 AFT 应用及其下游的所有内容”，
    并引用了 [tensor_via_AFT@{…} : ∀ {R : RingObject@{Set u8 u8}} …]、
    [tensor_AFT_iso@{…} : ∀ {R : RingObject@{Set Set Set}} …] 和
-   [bal_tensor_via_AFT@{…} : ∀ {X : RingObject@{Set u5 u5}} …] 作为其标题，并附有一段将 [RingObject@{Set Set Set}] 引脚归因于隔离的说明。所有内容均已过时：每一个 [Set] 都是 Instance/Discrete.v 的 [DiscreteCat_Functor] 的宇宙最小化产物，在 PR "代数载体是集合" 中已修复。现在测量，根据标准“在打印类型中作为 [@{…}] 列表中的宇宙 ARGUMENT 出现的以单词为界的 [Set]”：在 161 个中为零。该命令是从 [.glob] 头和上述义务清单中生成的每个名称的 [About]，输出上使用 [grep -E '@\{[^}] *\bSet\b'] ——没有命中，而打印 [RingObject@{…}] 的有 144 行，这是仪器控制。不同的标准，现在重要的标准：在 CONSTRAINT 块中的一行 "[Set < …]"。在 133 个会打印宇宙列表的名称中，有 100 个包含这一行。这些是界限，而不是引脚——[Set < u] 仅表示 [u] 在 [Set] 之上，Lib.v 的 [Unset Universe Minimization ToSet] 使其成为默认值——而真正作为 SIDE CONDITION（副条件）而非噪声的是第 3A 节中关于无条件常数的 [Set < carrier]。标题：
+   [bal_tensor_via_AFT@{…} : ∀ {X : RingObject@{Set u5 u5}} …] 作为其标题，并附有一段将 [RingObject@{Set Set Set}] 引脚归因于隔离的说明。所有内容均已过时：每一个 [Set] 都是 Instance/Discrete.v 的 [DiscreteCat_Functor] 的宇宙最小化产物，在 PR “代数载体是集合” 中已修复。现在测量，根据标准“在打印类型中作为 [@{…}] 列表中的宇宙 ARGUMENT 出现的以单词为界的 [Set]”：在 161 个中为零。该命令是从 [.glob] 头和上述义务清单中生成的每个名称的 [About]，输出上使用 [grep -E '@\{[^}] *\bSet\b'] ——没有命中，而打印 [RingObject@{…}] 的有 144 行，这是仪器控制。不同的标准，现在重要的标准：在 CONSTRAINT 块中的一行 “[Set < …]”。在 133 个会打印宇宙列表的名称中，有 100 个包含这一行。这些是界限，而不是引脚——[Set < u] 仅表示 [u] 在 [Set] 之上，Lib.v 的 [Unset Universe Minimization ToSet] 使其成为默认值——而真正作为 SIDE CONDITION（副条件）而非噪声的是第 3A 节中关于无条件常数的 [Set < carrier]。标题：
 
    tensor_via_AFT@{u u0 u1 u2 …} :
    ∀ {R : RingObject@{u10 u2 u11}} (V V' : obj [RMod … R] ),
@@ -1091,8 +1091,8 @@ Qed.
  THE QUOTIENT SETOID IS NAMED, and that is load-bearing.  Written inline,
  [PropEquiv_of_relation]'s setoid argument is found by resolution, which
  picks the AMBIENT [mt_Setoid] rather than the quotient's, and both
- implications are then refused ("The term "h" has type "Rq f f0" while it
- is expected to have type "f ≈ f0"").  Instance/Mod/Tensor.v gives
+ implications are then refused (“The term ”h“ has type ”Rq f f0“ while it
+ is expected to have type ”f ≈ f0“”).  Instance/Mod/Tensor.v gives
  [mt_Setoid] by name for the same reason. 
 
  --------
@@ -1186,7 +1186,7 @@ Arguments QMod_gen_spanning {R V V'} Rq HRq.
 
  There is NO [PropEquiv] hypothesis anywhere below, and that single fact
  is what turns the conditional of section 4 into a theorem: since the PR
- "algebraic carriers are sets" (2026-09-17) [cmon_prop] is a FIELD of
+ “algebraic carriers are sets” (2026-09-17) [cmon_prop] is a FIELD of
  [CMonObject] with [#[export] Existing Instance], so every [RModObject]
  carries the [Prop] mirror of its own `≈`. 
 
@@ -1307,12 +1307,12 @@ Arguments ker_iso {R V V' W} beta Hsp.
 (*
  THE OBJECT AND ELEMENT PARTS ARE NAMED, and that too is load-bearing.
  Written inline, [esol_obj] and [esol_elem] each mint their OWN universe
- instance of [QMod] and the record is refused, "RBilinear … (QMod@{a…} …)"
- against "carrier (fobj[?K] (QMod@{b…} …))".  Naming them forces one. 
+ instance of [QMod] and the record is refused, “RBilinear … (QMod@{a…} …)”
+ against “carrier (fobj[?K] (QMod@{b…} …))”.  Naming them forces one. 
 
  --------
  对象和元素部件都有命名，而且它们也是承重的。
- 以行内方式书写时，[esol_obj] 和 [esol_elem] 各自铸造它们自己对 [QMod] 的宇宙实例，并且记录被拒绝，"RBilinear … (QMod@{a…} …)" 针对 "carrier (fobj [?K] (QMod@{b…} …))"。命名它们会强制执行某种操作。
+ 以行内方式书写时，[esol_obj] 和 [esol_elem] 各自铸造它们自己对 [QMod] 的宇宙实例，并且记录被拒绝，“RBilinear … (QMod@{a…} …)” 针对 “carrier (fobj [?K] (QMod@{b…} …))”。命名它们会强制执行某种操作。
 *)
 Definition QModOf {R : RingObject} {V V' : obj[RMod R]}
   (i : CongIdx V V') : obj[RMod R] := QMod (`1 i) (`2 i).
@@ -1348,9 +1348,9 @@ Defined.
  the ascription is refused.  The pin is measured in the header.
 
  ALL THREE of Mac Lane's premises are now discharged here outright --
- [RMod_Complete] ("K-Mod is small-complete"), [Bilin_PreservesImageLimit]
- ("Bilin(A,B;-) is continuous") and [tensor_esols_prop] of section 3A (the
- solution set).  CORRECTION, PR "algebraic carriers are sets"
+ [RMod_Complete] (“K-Mod is small-complete”), [Bilin_PreservesImageLimit]
+ (“Bilin(A,B;-) is continuous”) and [tensor_esols_prop] of section 3A (the
+ solution set).  CORRECTION, PR “algebraic carriers are sets”
  (2026-09-17): until this commit the third stayed a hypothesis and this
  comment said so.  [tensor_esols_direct] -- Mac Lane's OWN family, indexed
  by a sigma over the objects of [RMod R] -- is still refused by the
@@ -1387,8 +1387,8 @@ Definition tensor_via_AFT {R : RingObject} (V V' : obj[RMod R]) :
  Instance/Grp/FreeAFT.v's [Grp_Forget_solution_set_from_adjunction], which
  existed for the same reason and is disclosed the same way.
 
- CORRECTION, PR "algebraic carriers are sets" (2026-09-17): its stated
- role was "to show the conditional above is not vacuous", and that role is
+ CORRECTION, PR “algebraic carriers are sets” (2026-09-17): its stated
+ role was “to show the conditional above is not vacuous”, and that role is
  GONE -- [tensor_esols_prop] discharges the hypothesis non-circularly.  It
  is kept, not deleted, because NEGATIVE 6 of
  Test/ProbeModTensorAFT449.v and [tensor_via_AFT_from_tensor] are
@@ -1469,9 +1469,9 @@ Definition tensor_AFT_ue {R : RingObject} (V V' : obj[RMod R]) :
  [tensor_AFT_ue], so that the name the issue asks to audit resolves to
  the delivered constant.
 
- CORRECTION, PR "algebraic carriers are sets" (2026-09-17): this comment
- read "it inherits the conditional shape and the [Set] pin of
- [tensor_via_AFT]".  Both clauses are now false of the name as it stands.
+ CORRECTION, PR “algebraic carriers are sets” (2026-09-17): this comment
+ read “it inherits the conditional shape and the [Set] pin of
+ [tensor_via_AFT]”.  Both clauses are now false of the name as it stands.
  The conditional shape is [module_tensor_universal_of_esols], which is the
  old constant statement for statement; the [Set] pin went with the
  annotation of [DiscreteCat_Functor] in the same PR.  What the
@@ -1555,7 +1555,7 @@ Proof.
 Qed.
 
 (*
- STATEMENT CHANGE, recorded (the PR "algebraic carriers are sets",
+ STATEMENT CHANGE, recorded (the PR “algebraic carriers are sets”,
  2026-09-17).  The right-hand side of this equation read
  [tensor_AFT_iso V V' E] before that PR.  It is the ONE forced rename:
  [tensor_AFT_iso] no longer takes a solution set, and the [E]-taking
@@ -1563,7 +1563,7 @@ Qed.
  [tensor_AFT_iso] verbatim.  Nothing else about the theorem moved -- same
  name, same binders, same proof -- and the same note applies to
  [bal_AFT_isos_agree].  An earlier report said the nine
- [E]-taking constants kept "their exact statements"; these two did not,
+ [E]-taking constants kept “their exact statements”; these two did not,
  and the correction is recorded here rather than in that report. 
 
  --------
@@ -1994,7 +1994,7 @@ Defined.
 (*
  Top level again, for the same [Set] pin.
 
- CORRECTION, PR "algebraic carriers are sets" (2026-09-17): the
+ CORRECTION, PR “algebraic carriers are sets” (2026-09-17): the
  conditional is now named [bal_tensor_via_AFT_of_esols] and
  [bal_tensor_via_AFT] is unconditional, at [bal_esols_prop] of section
  7A.  No statement was weakened: the conditional is the old constant
@@ -2021,8 +2021,8 @@ Definition bal_tensor_via_AFT {X : RingObject} (N : RModObject (Ring_op X))
  THE CIRCULAR DISCHARGE, KEPT FOR COMPARISON; A REMOVAL CANDIDATE FOR
  JOHN.  Circular as at [RMod R]: a solution set at the universe the
  theorem demands, read off the balanced tensor the theorem is meant to
- build.  CORRECTION, PR "algebraic carriers are sets" (2026-09-17): its
- stated role, "to show the conditional above is not vacuous", is gone --
+ build.  CORRECTION, PR “algebraic carriers are sets” (2026-09-17): its
+ stated role, “to show the conditional above is not vacuous”, is gone --
  [bal_esols_prop] discharges the hypothesis non-circularly.  Kept, not
  deleted, on the same footing as [tensor_esols_from_tensor]. 
 
@@ -2132,7 +2132,7 @@ Qed.
 
 (*
  STATEMENT CHANGE, recorded: the right-hand side read [bal_AFT_iso N M E]
- before the PR "algebraic carriers are sets" (2026-09-17).  The note at
+ before the PR “algebraic carriers are sets” (2026-09-17).  The note at
  [tensor_AFT_isos_agree] above gives the reason; this is its twin. 
 
  --------
@@ -2383,7 +2383,7 @@ Example bal_esols_direct_elem {X : RingObject} (N : RModObject (Ring_op X))
  feeding the resizing to [representability_theorem] gives a SECOND,
  book-faithful route to the same representation.
 
- SCOPE, because "Lemma 2 is discharged" is easy to over-read.  What is
+ SCOPE, because “Lemma 2 is discharged” is easy to over-read.  What is
  discharged is the SMALLNESS premise.  It is NOT
  [GAFT_from_spanning]'s hypotheses, which are [HasWidePullbacks A] and
  [PreservesWidePullbacks G]; the first is still universe-refused at

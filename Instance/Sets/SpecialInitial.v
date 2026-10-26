@@ -29,12 +29,12 @@ Generalizable All Variables.
  nLab:  https://ncatlab.org/nlab/show/initial+object
  nLab:  https://ncatlab.org/nlab/show/adjoint+functor+theorem
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.8, Theorem 1, book p. 128 (PDF pp. 137–138): a small-complete
  category with small hom-sets, a small cogenerating set, and an
  intersection for every set of subobjects of each object has an initial
  object, the intersection of all subobjects of the product of the
- cogenerating set.  Riehl, "Category Theory in Context", 2nd ed., Lemma
+ cogenerating set.  Riehl, “Category Theory in Context”, 2nd ed., Lemma
  4.7.11, printed p. 177 (PDF pp. 197–198), states the same for a locally
  small complete category with a small coseparating set.  Mac Lane's note
  under §V.8 Definition 1, book p. 130 (PDF p. 139), makes the
@@ -180,11 +180,11 @@ Generalizable All Variables.
  universe up), it is refused, the datum's index living one universe
  above the homs where the corollary needs it at or below them (the
  probe's N15, [p452_n15_setsop_wp_up]):
- "The term "Sets_CoWellPoweredAt_up X" has type
- "WellPoweredAt@{<1> <2> <2> o <1>} X" while it is expected to
- have type "WellPoweredAt@{<3> so <4> o <5>} X" (universe
+ “The term ”Sets_CoWellPoweredAt_up X“ has type
+ ”WellPoweredAt@{<1> <2> <2> o <1>} X“ while it is expected to
+ have type ”WellPoweredAt@{<3> so <4> o <5>} X“ (universe
  inconsistency: Cannot enforce <3> = <5> because <3> <= <6> <
- <5>)."
+ <5>).”
  The per-object corollary [special_initial_object_wellpowered_at],
  fed [Sets_CoWellPoweredAt_up] at the one object [cogen_prod
  setsop_comp setsop_cog], is refused on universes as well (N16,
@@ -196,10 +196,10 @@ Generalizable All Variables.
  [o].  With [Sets_Complete] ascribed [Complete@{o o o so}] and
  [Sets_Cogenerator_IEM E] it is refused (N10,
  [p452_n10_small_at_sets]):
- "The term "Sets_Complete : Complete" has type "Complete@{o o o
- so}" while it is expected to have type "Complete@{o o o <1>}"
+ “The term ”Sets_Complete : Complete“ has type ”Complete@{o o o
+ so}“ while it is expected to have type ”Complete@{o o o <1>}“
  (universe inconsistency: Cannot enforce <1> = so because <1> <=
- <2> < so)."
+ <2> < so).”
  The form first measured on #452 left [Sets_Complete]'s universes
  to inference and is refused at the same argument, with every
  universe a serial number.  The controls, [sets_special_initial_IEM]

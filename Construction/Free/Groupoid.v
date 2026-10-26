@@ -58,9 +58,9 @@ Generalizable All Variables.
    equations per edge ([Construction/Quotient.v]'s [CongClosure]).  No
    bespoke inductive congruence is written here: symmetry, transitivity,
    compatibility with composition and containment of the ambient [≈] all
-   come from [CongClosure], and [cc_kernel] turns "the functor merges the
-   two generating equations" into "the functor merges the whole
-   congruence" with no second induction.  This is
+   come from [CongClosure], and [cc_kernel] turns “the functor merges the
+   two generating equations” into “the functor merges the whole
+   congruence” with no second induction.  This is
    [Construction/Free/Quiver/Presented.v]'s recipe — free-on-a-quiver, then
    quotient — instantiated at a two-equation presentation, and it is
    deliberately the same shape.
@@ -149,7 +149,7 @@ Generalizable All Variables.
 
    PRIOR ART, measured against the tree at the time of writing.  The names
    [FreeGroupoid], [FreeGrp], [FreeGroup], [free_groupoid], [free_group]
-   and [ReducedWord] occurred in zero files.  "free group" occurred as
+   and [ReducedWord] occurred in zero files.  “free group” occurred as
    PROSE in four places — Theory/Universal/Arrow.v,
    Instance/Grp.v, Structure/Terminal.v — and nowhere as a
    construction.  Nothing in tree formed a formal inverse of a free arrow:
@@ -163,8 +163,8 @@ Generalizable All Variables.
 
    - No adjunction at the quiver level.  There is no category of
    groupoids in tree — Construction/Groupoid.v builds the core of one
-   category, not a category of them — so "free ⊣ forgetful for
-   groupoids" cannot be STATED here, only its universal property, which
+   category, not a category of them — so “free ⊣ forgetful for
+   groupoids” cannot be STATED here, only its universal property, which
    is what [free_groupoid_universal] is.  The adjunction the issue asks
    for is delivered in [Instance/Grp/Free.v], over [Grp], which does
    exist.  Consequently [FreeGroupoid] is also not exhibited as a
@@ -461,7 +461,7 @@ Qed.
    * ** Deliverable 1: the free groupoid IS a groupoid
 
    [IsGroupoid] ([Structure/Groupoid.v]) is the PREDICATE — every morphism
-   has a two-sided inverse — and is what "the free groupoid" must satisfy.
+   has a two-sided inverse — and is what “the free groupoid” must satisfy.
    It is deliberately not a [Class] and is never registered for resolution,
    so it is passed explicitly at every use site below. 
 
@@ -795,7 +795,7 @@ End FreeGroupoidUniversal.
 
    Restricting a functor out of the free groupoid along the unit gives back
    a quiver homomorphism, and re-extending recovers the functor.  This is
-   what makes Riehl's "exactly" honest in both directions. 
+   what makes Riehl's “exactly” honest in both directions. 
 
    --------
    * ** 逆腿
@@ -857,7 +857,7 @@ Qed.
    * ...and the OTHER round trip: extending a quiver homomorphism and then
    restricting recovers it, as an equality in [QuiverCategory].  The two
    together make the correspondence run both ways with both round trips
-   proved, which is what "exactly" has to mean. 
+   proved, which is what “exactly” has to mean. 
 
    --------
    * ……以及另一个往返过程：扩展一个箭袋同态，然后再进行限制可以恢复它，这在  [QuiverCategory] 中作为一个等式成立。两者结合使该对应关系可以双向运行，并且两个往返过程都被证明，这正是“确切地”必须意味着的。
@@ -955,7 +955,7 @@ Qed.
 
 (*
    * Hence the projection is not faithful: it identifies the two-letter word
-   with the empty one.  Fong and Spivak's "equations merge, but never add",
+   with the empty one.  Fong and Spivak's “equations merge, but never add”,
    with both halves in hand. 
 
    --------

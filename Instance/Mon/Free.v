@@ -19,7 +19,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/universal+morphism
  Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
 
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, Springer 1998, §IV.8, Exercise 2 (maclane:IV.8:ex2) — the
  free ring on a set obtained as a composite of free constructions;
  §II.7 Corollary 2, printed pp. 50-51, for the free monoid itself.
@@ -58,7 +58,7 @@ Generalizable All Variables.
  [MonoidRingFunctor : MonSets ⟶ Rng] with
  [zmring_adjunction : MonoidRingFunctor ⊣ Rng_Forget_Mon].
  Instance/Roster.v names the same category [Mon_Sets].  So the two
- legs of "Sets → Monoids → Rings" did not compose.
+ legs of “Sets → Monoids → Rings” did not compose.
 
  That gap was re-verified here rather than taken on trust, and the
  coordinating measurement stands, with two refinements worth stating.
@@ -70,7 +70,7 @@ Generalizable All Variables.
  first of them at Roster's own name for the category and adds no
  fourth.  There was no free monoid at [Mon Sets] before this file.
  (2) There is no equivalence between [Coq] and [Sets] in tree — but
- the sharper claim "there is no functor at all between them" would be
+ the sharper claim “there is no functor at all between them” would be
  FALSE: Instance/Shapes.v declares
  [Trie_Functor (s : Shape) : Coq ⟶ Sets], which is unrelated to any
  comparison of the two categories, and [Sets_discrete]
@@ -86,9 +86,9 @@ Generalizable All Variables.
 
  Instance/Mon/Coproduct.v names this same wall as the reason
  Awodey §3.2 Exercise 5 (M(A) + M(B) ≅ M(A + B) by preservation of
- colimits) went undelivered there: "the only free-monoid adjunction in
+ colimits) went undelivered there: “the only free-monoid adjunction in
  tree is Instance/Coq/Monoid/Free.v's, which is over [Coq], so no such
- adjoint exists at this category to preserve colimits".  This file
+ adjoint exists at this category to preserve colimits”.  This file
  removes exactly that obstruction — there is now a left adjoint of
  [Mon_Forget] at [Mon Sets].  The exercise itself is NOT attempted
  here and nothing is claimed about what else its proof would need.
@@ -253,7 +253,7 @@ Generalizable All Variables.
  one generator.  And no free RING: this file supplies one leg of
  Mac Lane's §IV.8 Exercise 2 and stops there.
 
- LEDGER.  57 constants, all reported "Closed under the global context"
+ LEDGER.  57 constants, all reported “Closed under the global context”
  by [Print Assumptions] — that is 31 [def] plus 19 [prf] in the [.glob]
  MINUS the three named [Fail] commands, which the [.glob] records as
  [def] although they define nothing, plus [word_eq] with its two
@@ -276,7 +276,7 @@ Generalizable All Variables.
  CORRECTION (#471): #471 adds six constants, [free_mon_extend_pointwise],
  [free_mon_hom_iso], [free_mon_sets_adjunction_hom] and the three
  [eq_refl] readbacks [free_mon_hom_counit], [free_mon_hom_unit] and
- [free_mon_hom_to], each "Closed under the global context" and named in
+ [free_mon_hom_to], each “Closed under the global context” and named in
  #471's print-assumptions block; the 57 above are unchanged.  The
  refusals about the hom-set form are pinned in Test/ProbeWord471.v,
  which restates the three readbacks and names the six constants in its
@@ -284,8 +284,8 @@ Generalizable All Variables.
 
  DISPLAY HAZARD.  [Print Module] and plain [Check] suppress the
  implicit first argument of the [Sets.morphism] coercion, so
- [free_mon_unit_is_insert] prints as "Sets.morphism a =
- Sets.morphism a", which reads as a tautology and is not one:
+ [free_mon_unit_is_insert] prints as “Sets.morphism a =
+ Sets.morphism a”, which reads as a tautology and is not one:
  under [Set Printing All] the left side is the adjunction's [unit] and
  the right side is [free_mon_insert X].  The same suppression affects
  [free_mon_fmap_generators]. 
@@ -306,7 +306,7 @@ Generalizable All Variables.
  [free_mon_sets_adjunction@{u u0 u1 u2 u3 u4}] 中不包含任何 [Set]
  ——没有 [Set] 宇宙实例，也没有提到它的约束——在两个重要层次之间唯一的严格不等式是 [Sets] 自身的 [o < so]（[Instance/Sets.v] 声明 [Sets@{o so} : Category@{so o o}]）。这被保护而不是仅仅被测量：本文件末尾的 [FreeAboveSet] 部分声明了 [Constraint Set < uo]，并详细说明了在 [Set] 之上严格层次的三种常量。因此，本文件不会引入自身的大小限制。请注意，[Set] 引脚 CLAUDE.md 记录了 [Rig_Forget_Mon] —— 因此也包括 [Rng_Forget_Mon] —— 位于 RING 侧，这里未作处理，但它确实到达了复合体，并且这是经过测量而非猜测的：在一个树外的临时文件中，需要同时引用该模块和 Instance/Rng/MonoidRing.v，该复合体 [MonoidRingFunctor ◯ FreeMonSets] 可以展开，其约束块读取 [Sets@{Set u} ⟶ Rng@{u Set}]，并在 [FreeMonSets@{Set u _ _ _}] 上实例化了该文件自己的函子。因此，该引脚是从环腿继承的，这里没有任何内容需要它 —— 但是通过单子构建自由环的使用者会携带它。该复合体并未在此文件中构建，这里的任何内容都没有针对该结果进行保护；测量结果是报告出来的，以便复合体的作者无需重新发现它。HOM-集形式 (#471)。保留了单个伴随的两种封装 FreeMonSets ⊣ UMonS。[free_mon_sets_adjunction]，来自通用箭头，是 Instance/Rng/Free.v 的自由环，其余的树被消耗，并且它保持不变。[free_mon_sets_adjunction_hom] 是 Theory/Adjunction.v 的 [Build_Adjunction'] 应用于自然双射 [free_mon_hom_iso]，具有相同的左伴随 [FreeMonSets]、相同的右伴随和相同的嵌入：它的单位和正向换位是 [free_mon_sets_adjunction] 在 [eq_refl] ([free_mon_hom_unit], [free_mon_hom_to]) 的单位和正向换位，其逆换位是折叠 [free_mon_hom]，因此它的余单位是 [eq_refl] ([free_mon_hom_counit]) 上身份的折叠，而另一个余单位仅在 `≈` ([free_mon_counit_evaluates]) 上为折叠。它存在于 Mac Lane §VI.4 练习 1 (Instance/Mon/Word.v) 的单子 W₀，对于该单子的乘法 U ε F 和比较函子随后进行计算。它不是第二个自由幺半群，也不是第二个自由函子：箭头上的作用仍然是 [FreeMonSets]，字母映射仅出现在 `≈`（[free_mon_fmap_is_wmap]）。在 [eq_refl] 两个伴随不被认为相等，它们在一个变量词上的余单位也是如此 (Test/ProbeWord471.v)。它的宇宙是：[free_mon_hom_iso] 和 [free_mon_sets_adjunction_hom] 绑定 @{o so}，以及 [FreeMonSets] 的另外三层（在 Coq 8.19/8.20 中为四层），没有 [Set]，伴随固定在 [Adjunction@{so o o so o o o o so o so}]，就像 Instance/Smgrp.v 固定它自己的那样。问题 #1353 记录了退出：一旦 [ump_universal_arrows] 和 [free_mon_universal] 透明化，一个记录会被保留，W₀ 就基于它重新建立。什么是不故意交付的。超出列表表示本身之外的单词没有正常形式，因此对于 [word_eq] 没有可判定字母集扎伊多（setoid）所能给出的决策程序，也没有长度或度的不变量。与 Instance/Coq/Monoid/Free.v 的 [FreeMonoid] 完全没有比较：这里两者没有关联，也不声称其中一个可以决定另一个，并且两者所在的环境范畴之间没有建立函子（这样做会将该文件自身的闭包——Comma、FAlg、Funny.Comparison、Coq.Lists——拖入此文件中）。插入的自然性不存在，作为 [Transform]（#296 的 [insert_Transform] 在这里没有对应物）；自由幺半群与单顶点箭图上的自由范畴的弯曲没有识别；没有 [Foldable] /初始代数桥；与 Instance/Mon/Coproduct.v 的 [FreeProd] 的关系仅限于共享其访问层，因此特别地，未证明两元素集合上的自由幺半群是一个生成元的自由幺半群的两个副本的自由积。并且没有自由环：此文件只提供了 Mac Lane 第 IV.8 节练习 2 的一个部分，止步于此。账簿。57 个常量，全部由 [Print Assumptions] 报告为“在全局上下文下关闭”，即 31 个 [def] 加上 19 个 [prf] 在 [.glob] 中，减去三个名为 [Fail] 的命令，这些命令被 [.glob] 记录为 [def]，尽管它们没有定义任何内容，加上 [word_eq] 及其两个构造函数、四个自动生成的消去方案，以及三个 [Program] 义务（[free_mon_insert_obligation_1]、[Blur_Setoid_obligation_1]、[free_mon_AUniversalArrow_obligation_1]）。[.glob] 确实将 [word_eq] 及其两个构造函数列为 [ind] / [constr] 条目；它未列出的内容是消去方案和 [Program] 义务，而下面的总数无论如何不包括 [ind] / [constr]，所以算术结果不受影响。[.glob] 列出。三个 [Fail] 命令：两个 CONVERSION 否定命令，每个旁边都有一个正控制，并且每个都曾被剥离一次并读取其消息，加上一个仪器检查以确认 [Fail] 报告此文件中的失败情况。[Fail] 内部命名的每个常量也在文件的其他地方的正命令中出现，因此重命名会明显破坏文件，而不是让一个否定命令虚假地显示为绿色。不附带单独的探针文件。修正 (#471)：#471 添加了六个常量，[free_mon_extend_pointwise]、[free_mon_hom_iso]、[free_mon_sets_adjunction_hom] 以及三个读回 [eq_refl]、[free_mon_hom_counit]、[free_mon_hom_unit] 和 [free_mon_hom_to]，每个都“在全局上下文下封闭”，并在 #471 的打印假设块中命名；上述 57 个保持不变。关于同态集形式的拒绝被固定在 Test/ProbeWord471.v 中，该文件重新声明三个读回并在其保护中命名六个常量。
 
- 显示危险。[Print Module] 和普通的 [Check] 抑制了 [Sets.morphism] 强制转换的隐式第一个参数，因此 [free_mon_unit_is_insert] 打印为 "Sets.morphism a = Sets.morphism a"，这看起来像一个恒等式，但其实不是：在 [Set Printing All] 下，左边是伴随的 [unit]，右边是 [free_mon_insert X]。同样的抑制也影响 [free_mon_fmap_generators]。
+ 显示危险。[Print Module] 和普通的 [Check] 抑制了 [Sets.morphism] 强制转换的隐式第一个参数，因此 [free_mon_unit_is_insert] 打印为 “Sets.morphism a = Sets.morphism a”，这看起来像一个恒等式，但其实不是：在 [Set Printing All] 下，左边是伴随的 [unit]，右边是 [free_mon_insert X]。同样的抑制也影响 [free_mon_fmap_generators]。
 *)
 
 #[local] Obligation Tactic := idtac.
@@ -709,8 +709,8 @@ Example free_mon_unit_is_insert (X : Sets) (a : carrier X) :
  underlying map is [unique_obj (ump_universal_arrows ...)], and
  [ump_universal_arrows] is closed with [Qed], so nothing reduces
  through it.  Stripping the [Fail] reports
- "cannot unify "mon_fun counit l" and
- "free_mon_extend (λ x, x) l"".
+ “cannot unify ”mon_fun counit l“ and
+ ”free_mon_extend (λ x, x) l“”.
  The control is [free_mon_unit_is_insert] immediately above: the unit
  of the SAME adjunction, which routes through the transparent
  [universal_arrow_from_UMP], does close by [eq_refl].  So the cause is
@@ -786,8 +786,8 @@ Qed.
  equality (proved next), but it is NOT a conversion at a VARIABLE
  word: [free_mon_extend] is a [Fixpoint] and is stuck on a variable.
  Stripping the [Fail] reports
- "cannot unify "free_mon_extend (λ a, free_mon_insert Y (f a)) l" and
- "wmap f l"".
+ “cannot unify ”free_mon_extend (λ a, free_mon_insert Y (f a)) l“ and
+ ”wmap f l“”.
  The control is [free_mon_extend_insert_at_letter] just below, which
  is the same statement at a literal one-letter word and DOES close by
  [eq_refl] — so the obstruction is the stuck recursion, not a
@@ -1079,8 +1079,8 @@ Section FreeAboveSet.
  number of universes a functor and an adjunction carry here is NOT
  stable across the supported versions -- [FreeMonSets] takes five on
  Rocq 9.1 and six on Coq 8.19/8.20, so a literal [@{uo uso _ _ _}]
- builds on one and fails on the others with "Universe instance
- length is 5 but should be 6".  [Sets] has a stable two-universe
+ builds on one and fails on the others with “Universe instance
+ length is 5 but should be 6”.  [Sets] has a stable two-universe
  signature, so ascribing it is version-independent and states the
  same thing.  The guard still discriminates: the same ascription
  shape applied to a [Set]-pinned functor is REJECTED (checked

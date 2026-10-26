@@ -17,15 +17,15 @@ Generalizable All Variables.
 (* * * The Lindenbaum category of an elementary theory / * * 初等理论的林登鲍姆范畴 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §IV.6, printed p. 98, Exercise 2
  (catalog id maclane:IV.6:ex2).  Verbatim from the printed page:
 
- "In some elementary theory T, consider the set S = {p, q, ...} of
- sentences of T as a preorder, with p ≤ q meaning "p entails q"
+ “In some elementary theory T, consider the set S = {p, q, ...} of
+ sentences of T as a preorder, with p ≤ q meaning ”p entails q“
  (i.e., q is a consequence of p on the basis of the axioms of T).
  Prove that S is a cartesian closed category, with product given by
- conjunction and exponential q^p given by "p implies q"."
+ conjunction and exponential q^p given by ”p implies q“.”
 
  (The book prints the relation symbol as the double-bar ≦; it is
  rendered ≤ above.  The exercise sits on the same page as Exercises 1,
@@ -36,8 +36,8 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/deduction+theorem
  Wikipedia: https://en.wikipedia.org/wiki/Lindenbaum%E2%80%93Tarski_algebra
  Wikipedia: https://en.wikipedia.org/wiki/Deduction_theorem
- Book:      Lambek and Scott, "Introduction to Higher Order Categorical
- Logic", Cambridge Studies in Advanced Mathematics 7, 1986,
+ Book:      Lambek and Scott, “Introduction to Higher Order Categorical
+ Logic”, Cambridge Studies in Advanced Mathematics 7, 1986,
  Part I §§1-3 (the deductive system of a cartesian closed
  category).
 
@@ -55,7 +55,7 @@ Generalizable All Variables.
  A theory is a bare set of sentences, [Theo V := Sent V -> Prop]; no
  deductive closure is imposed on it, and no consistency is required.
  Entailment RELATIVE to that theory, [Entails T p q], is Mac Lane's
- "q is a consequence of p on the basis of the axioms of T": it is an
+ “q is a consequence of p on the basis of the axioms of T”: it is an
  inductive family in Prop, so that [Instance/Proset.v]'s [Proset] —
  whose relation argument is a stdlib [relation A], hence Prop-valued —
  applies directly, and the resulting category is thin ([lind_thin])
@@ -161,8 +161,8 @@ Generalizable All Variables.
  [Lib.v] sets [Uniform Inductive Parameters] for the whole
  development, so inside the body of [Inductive Sent (V : Type)] the
  name [Sent] already stands for [Sent V]; writing the parameter
- explicitly there is rejected with "Illegal application
- (Non-functional construction)", an error that names the parameter but
+ explicitly there is rejected with “Illegal application
+ (Non-functional construction)”, an error that names the parameter but
  neither the flag nor the cause: it reports [Sent] as a non-functional
  term applied to [V], without saying that [Sent] has already absorbed
  the parameter.  The same applies inside [Entails].
@@ -249,7 +249,7 @@ Definition Theo (V : Type) : Type := Sent V -> Prop.
 (* * ** (B) Entailment relative to a theory / * **（B）相对于一个理论的蕴涵 *)
 
 (*
- Mac Lane's "q is a consequence of p on the basis of the axioms of T".
+ Mac Lane's “q is a consequence of p on the basis of the axioms of T”.
  Prop-valued, so [Proset] accepts it and the category below is thin
  without any truncation. 
 
@@ -377,13 +377,13 @@ Definition lind_uncurry {V} {T : Theo V} {p q r : Sent V}
 
 (*
  Exponential: implication.  In this library [exponent_obj x y] is
- displayed [y ^ x], so [exponent_obj := s_imp] gives q ^ p = "p
- implies q", which is Mac Lane's q^p.  [to exp_iso] is the deduction
+ displayed [y ^ x], so [exponent_obj := s_imp] gives q ^ p = “p
+ implies q”, which is Mac Lane's q^p.  [to exp_iso] is the deduction
  theorem [ent_curry]; [from exp_iso] is [lind_uncurry]; both
  isomorphism laws and [ump_exponents'] are free by thinness. 
 
  --------
- 指数：蕴含。在这个库中 [exponent_obj x y] 显示为 [y ^ x]，因此 [exponent_obj := s_imp] 给出 q ^ p = "p 蕴含 q"，这是 Mac Lane 的 q^p。[to exp_iso] 是演绎定理 [ent_curry]；[from exp_iso] 是 [lind_uncurry]；同构定律和 [ump_exponents'] 都是由薄性自由的。
+ 指数：蕴含。在这个库中 [exponent_obj x y] 显示为 [y ^ x]，因此 [exponent_obj := s_imp] 给出 q ^ p = “p 蕴含 q”，这是 Mac Lane 的 q^p。[to exp_iso] 是演绎定理 [ent_curry]；[from exp_iso] 是 [lind_uncurry]；同构定律和 [ump_exponents'] 都是由薄性自由的。
 *)
 #[export] Program Instance Lind_Closed {V} (T : Theo V) :
   @Closed (Lind T) _ := {
@@ -618,7 +618,7 @@ Qed.
 (*
  ...hence the two categories are not equivalent, since the functor of
  an equivalence is full ([Equivalence_Full]).  This is the strongest
- form of "two different axiom sets give two different categories"
+ form of “two different axiom sets give two different categories”
  delivered here. 
 
  --------

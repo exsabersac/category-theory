@@ -37,7 +37,7 @@ Set Default Proof Using "All".
  pp. 105-106 ([maclane:IV.9:construction2], [maclane:IV.9:remark1]).
  Verbatim, from the rendered pages:
 
- "For example, take C to be the category of functions f : X → Y.
+ “For example, take C to be the category of functions f : X → Y.
  Here, a monomorphism g ↣ f is a function g : S → T between a pair
  of subsets S ⊂ X and T ⊂ Y such that g(s) = f(s) for all s ∈ S.
  ...  In this case, there are three types of elements of X: those x
@@ -53,22 +53,22 @@ Set Default Proof Using "All".
  and j : {0,1,2} → {0, 1} in the category of functions, where the
  function j on the right is given by j0 = 0, j1 = 0, j2 = 2.  Thus,
  in this case, the inclusion j on the right is a subobject
- classifier for the category of functions."
+ classifier for the category of functions.”
 
- "There are many other examples of subobject classifiers.  First,
+ “There are many other examples of subobject classifiers.  First,
  recall that the arrow category 2 is the category with only two
  objects 0 and 1 and only one non-identity arrow a : 0 → 1.  Thus,
  an ordinary function f is the same thing as a functor 2 → Sets.
  Hence, we have constructed above the subobject classifier for the
  functor category Sets^2.  For any category C, there is a subobject
- classifier (find it!) for the functor category Sets^C."
+ classifier (find it!) for the functor category Sets^C.”
 
  THE PRINTED PAGE CARRIES A MISPRINT, and it is recorded rather than
- silently corrected: the text says "j : {0,1,2} → {0, 1}" while the
- diagram's lower-right corner is "{0,2}" and the formula in the same
- sentence is "j0 = 0, j1 = 0, j2 = 2".  The diagram and the formula
+ silently corrected: the text says “j : {0,1,2} → {0, 1}” while the
+ diagram's lower-right corner is “{0,2}” and the formula in the same
+ sentence is “j0 = 0, j1 = 0, j2 = 2”.  The diagram and the formula
  agree with each other, so the codomain of j is the two-element set
- {0, 2} and the text's "{0, 1}" is the misprint.  The mathematics
+ {0, 2} and the text's “{0, 1}” is the misprint.  The mathematics
  below follows the diagram and the formula.
 
  Awodey, *Category Theory* (1st ed., Carnegie Mellon pre-print,
@@ -76,7 +76,7 @@ Set Default Proof Using "All".
  Proposition 8.17 ([awodey:8.8:def-sieve],
  [awodey:8.8:construction-omega-sieves]).  Verbatim:
 
- "To that end, for any category C we define a sieve on an object C
+ “To that end, for any category C we define a sieve on an object C
  to be any set S of arrows f : · → C (with arbitrary domain) that
  is closed under precomposition ...  Then let:
 
@@ -86,10 +86,10 @@ Set Default Proof Using "All".
  h*(S) = {g : · → D | h ∘ g ∈ S}.
 
  This clearly defines a presheaf Ω : C^op → Sets, with a
- distinguished point, t : 1 → Ω, namely, at each C, the "total
- sieve": t_C = {f : · → C}."
+ distinguished point, t : 1 → Ω, namely, at each C, the ”total
+ sieve“: t_C = {f : · → C}.”
 
- "We claim that t : 1 → Ω so defined is a subobject classifier for
+ “We claim that t : 1 → Ω so defined is a subobject classifier for
  Sets^{C^op}.  Indeed, given any object E and subobject U ↣ E,
  define u : E → Ω at any object C ∈ C by:
 
@@ -99,7 +99,7 @@ Set Default Proof Using "All".
  that take e ∈ E(C) back into the subobject U.
 
  The reader should verify that this specification does indeed
- determine a unique classifying morphism for U ↣ E.  □"
+ determine a unique classifying morphism for U ↣ E.  □”
 
  Mac Lane's Sets^C is the COVARIANT functor category [C, Sets] and
  Awodey's Ω is for PRESHEAVES [C^op, Sets].  The two are one family
@@ -142,15 +142,15 @@ Set Default Proof Using "All".
 
  [presheaf_char_unique]      NO hypothesis either — neither [Monic]
  nor [Untruncate].  Section Unique's Context is C, E, U, theta, h and the
- [IsPullback] the caller supplies.  Awodey's "the reader should verify
- ... a UNIQUE classifying morphism", which the issue flags as real work,
+ [IsPullback] the caller supplies.  Awodey's “the reader should verify
+ ... a UNIQUE classifying morphism”, which the issue flags as real work,
  is the CHEAP half here.  What pays for it is the sieve read as a
  SUBPRESHEAF: [h_sub_char] feeds the pullback's own universal property
  [sieve_subpresheaf d S], the presheaf of the arrows into d that lie in
  the sieve, together with its cone [sieve_cone] into E, and the witness
  comes OUT of the mediator as a genuine element, so no truncation is
- eliminated anywhere in it.  The Awodey §8.8 "standalone, exported Sieve
- as a subobject of the representable" checkbox is the further step
+ eliminated anywhere in it.  The Awodey §8.8 “standalone, exported Sieve
+ as a subobject of the representable” checkbox is the further step
  [sieve_incl] / [sieve_incl_Monic] / [sieve_subobject], that subpresheaf
  embedded in [Curried_CoHom C d]; the three form a chain ending in
  [sieve_subobject], and NOTHING outside the chain consumes any of them —
@@ -162,8 +162,8 @@ Set Default Proof Using "All".
  [presheaf_char_pullback]    needs BOTH.  [Monic theta] is turned
  into pointwise injectivity by #369's
  [presheaf_monic_iff_injective] (Instance/Fun/Morphisms.v) — this
- is the issue's reviewer check, "the monos used are the pointwise
- ones, which requires the pointwise mono characterisation" — and
+ is the issue's reviewer check, “the monos used are the pointwise
+ ones, which requires the pointwise mono characterisation” — and
  that injectivity, named [theta_inj] here, is spent at THREE
  SITES on the way to [presheaf_char_pullback] — the mediator
  [char_med]'s respectfulness obligation, its naturality (two
@@ -179,8 +179,8 @@ Set Default Proof Using "All".
  WHETHER [Untruncate] IS NECESSARY IS NOT SETTLED.  It SUFFICES; no
  impossibility is proved, and no weaker hypothesis was searched for.
  What IS measured is that the naive elimination
- [fun P h => h P (fun p => p)] is refused with "Cannot enforce
- o <= Prop" — #402's wall, at the same level o — with
+ [fun P h => h P (fun p => p)] is refused with “Cannot enforce
+ o <= Prop” — #402's wall, at the same level o — with
  [powerset_squash_prop_inert] as the accepted control, both pinned in
  Test/ProbeFunClassifier403.v.  No [DecImage]-shaped variant is built.
 
@@ -198,12 +198,12 @@ Set Default Proof Using "All".
 
  THE TRUTH-VALUE CONVENTION, AND THE DICTIONARY.  Every subobject
  classifier puts ITS truth value on the subobject — that is what the
- classifying pullback square says — so a "convention" here can only be
+ classifying pullback square says — so a “convention” here can only be
  the NAME the truth value carries.  Mac Lane names his 0 (§IV.9
  construction 1, book p. 105: ψ_S x = 0 if x ∈ S, with 0 the value
- "truth"); Seven Sketches names it [true]; Instance/FinSet/Classifier.v
+ “truth”); Seven Sketches names it [true]; Instance/FinSet/Classifier.v
  names it [fin_true], which is [Fin.F1], the FIRST element of [Fin.t 2] —
- so read as a numeral it is Mac Lane's 0, and the "swap 0 ↔ 1" that
+ so read as a numeral it is Mac Lane's 0, and the “swap 0 ↔ 1” that
  Instance/Sets/Classifier/OneLevel.v records is between the two books'
  NAMES, not between elements of any in-tree Ω; and OneLevel.v's two
  instances name theirs [Powerset_truth_point] and [ptrue], with no
@@ -238,16 +238,16 @@ Set Default Proof Using "All".
  where [macj] is Mac Lane's j written out and computing at all three
  arguments.  So the arrow-shape specialisation is PROVED, not asserted,
  which is the issue's other reviewer check.  The counts themselves —
- "exactly three sieves on TwoX" — are constructively unavailable (a sieve
+ “exactly three sieves on TwoX” — are constructively unavailable (a sieve
  on TwoX is a pair of [Prop]s under mutual implication, so counting them
  is as strong as two-valuedness of [Prop]), and are delivered under [IEM]
  as [twoX_three_sieves] and [twoY_two_sieves].  This is the SAME
  conditionality as the general instance, for the same reason.
 
- WORK ITEM 2 ("subfunctors correspond to natural families of sieves,
- which is the content of the classification"), and the exact status of
- [classifier_classifies].  The sentence "classifier_classifies is not
- statable for presheaf categories" would be FALSE; the precise one is
+ WORK ITEM 2 (“subfunctors correspond to natural families of sieves,
+ which is the content of the classification”), and the exact status of
+ [classifier_classifies].  The sentence “classifier_classifies is not
+ statable for presheaf categories” would be FALSE; the precise one is
  this.  The theorem carries the BOUND [u <= u0] over
  [C : Category@{u u0 u0}] — objects at or below homs — which is what
  #402 records as unsatisfiable at [Sets].  At a presheaf category it IS
@@ -255,16 +255,16 @@ Set Default Proof Using "All".
  FORMABLE at an ABSTRACT classifier of [[C^op, Sets]] (a probe
  control).  (b) It is NOT applicable to [Fun_Classifier], whose own
  elaboration minimizes the presheaf category's hom universe below its
- object universe: the refusal is of the shape "Cannot enforce o = …
- because o < … <= … <= …", pinned.  (c) A HAND-ANNOTATED redefinition DOES
+ object universe: the refusal is of the shape “Cannot enforce o = …
+ because o < … <= … <= …”, pinned.  (c) A HAND-ANNOTATED redefinition DOES
  escape it, and that is section (I): under declared universes with
  [so <= OO] and [OO <= HH], [PShSmall := [Cs^op, Sets@{o so}] :
  Category@{OO HH HH}] carries [Fun_Classifier_small], and
  [fun_classifier_classifies] is [classifier_classifies] applied to it
  over [Fun_HasPullbacks Sets_HasPullbacks] — an isomorphism in [Sets]
  between the subobjects of a presheaf and the maps into Ω.  That IS
- work item 2, in the form the issue calls "the content of the
- classification"; and its NATURAL upgrade comes with it, since
+ work item 2, in the form the issue calls “the content of the
+ classification”; and its NATURAL upgrade comes with it, since
  Structure/SubobjectClassifier/Natural.v's [Sub_classifier_natural]
  carries the same bound — [fun_sub_classifier_natural] and
  [fun_Sub_Representable] are that theorem and its representability
@@ -341,8 +341,8 @@ Set Default Proof Using "All".
  at all), while [@Functor Cu Cu] and [@Functor Cu Sets] are ACCEPTED, so
  [Functor] is not a donor; and [ch = o] is [Fun]'s in BOTH variances, with
  [Cv^op], [Cv^op ⟶ Sets] and [Cv ⟶ Sets] accepted as controls.  C's OBJECT
- universe is only BOUNDED ([u1 <= u]), which is Awodey's "for any SMALL
- category C" and is where smallness lands.  The strict lower bound [Set < u]
+ universe is only BOUNDED ([u1 <= u]), which is Awodey's “for any SMALL
+ category C” and is where smallness lands.  The strict lower bound [Set < u]
  enters with the [Prop]-valued membership itself ([Prop : Type@{Set+1}]) — it
  is already [SieveObj]'s in Theory/Sieve.v, upstream of any [Powerset_squash]
  — and is a BOUND, never a pin, but it excludes exactly the C whose hom
@@ -352,11 +352,11 @@ Set Default Proof Using "All".
  [TwoHom : TwoObj → TwoObj → Set] and not introduced here; the other thirty of
  section (G)'s fifty-one heads carry [Set] only as the block bound above.
 
- THE ISSUE'S "Current state" IS STALE ON FOUR COUNTS, each measured.  It says
- [ls Instance/Fun/] "contains only [Cartesian.v]"; at the base commit that
+ THE ISSUE'S “Current state” IS STALE ON FOUR COUNTS, each measured.  It says
+ [ls Instance/Fun/] “contains only [Cartesian.v]”; at the base commit that
  directory has SEVEN satellites (Cartesian, Terminal, Closed, Morphisms,
- Discrete, Group, Action).  It says there is "not even a [Terminal] instance
- for a functor category"; that is #339's [Functor_Category_Terminal], and
+ Discrete, Group, Action).  It says there is “not even a [Terminal] instance
+ for a functor category”; that is #339's [Functor_Category_Terminal], and
  Instance/Fun/Terminal.v even carries the specialised [Two_Sets_Terminal].  It
  says the pointwise mono characterisation is missing; that is #369's
  [presheaf_monic_iff_injective].  And it says the only [SubobjectClassifier]
@@ -415,8 +415,8 @@ Set Default Proof Using "All".
  Construction/Localization.v are NOT rewired, only pointed at this file in
  prose.  No comparison of [Sieve_Presheaf] at a poset with a lower-set
  construction.  No passage from a subobject of the representable BACK to a
- sieve: [sieve_subobject] runs one way only, so Awodey's "as a subobject of
- the representable" is delivered as an embedding of sieves and not as an
+ sieve: [sieve_subobject] runs one way only, so Awodey's “as a subobject of
+ the representable” is delivered as an embedding of sieves and not as an
  identification of the two notions — and nothing outside the chain
  [sieve_incl] / [sieve_incl_Monic] / [sieve_subobject] consumes it, the
  uniqueness clause taking the subpresheaf and its cone instead (the ledger
@@ -1335,8 +1335,8 @@ Example fun_classifier_small_truth :
   := eq_refl.
 
 (*
- WORK ITEM 2, in the form the issue calls "the content of the
- classification": the subobjects of a presheaf x correspond to the
+ WORK ITEM 2, in the form the issue calls “the content of the
+ classification”: the subobjects of a presheaf x correspond to the
  maps x ⟹ Ω, as an isomorphism of setoids in [Sets].  This is
  Structure/SubobjectClassifier.v's own theorem applied, over
  Instance/Fun/Pullback.v's [Fun_HasPullbacks Sets_HasPullbacks], which

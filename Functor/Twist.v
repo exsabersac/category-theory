@@ -27,8 +27,8 @@ nLab: https://ncatlab.org/nlab/show/functor
    IDENTITY, [fun x => x], on the nose, while its arrow function need not
    be the identity.  It is therefore the standard machine for producing
    two functors that agree on objects and differ on morphisms -- the
-   question Mac Lane raises in "Categories for the Working Mathematician",
-   2nd ed. (GTM 5), Section I.3 ("Functors"), where the reader is asked to
+   question Mac Lane raises in “Categories for the Working Mathematician”,
+   2nd ed. (GTM 5), Section I.3 (“Functors”), where the reader is asked to
    find two different functors [Grp ⟶ Grp] whose object function is the
    identity, so that a functor is seen not to be determined by its action
    on objects.

@@ -31,7 +31,7 @@
    and distributing over a sum of vectors spends nothing at all.
 
    LEFT AND RIGHT.  Mac Lane's modules are right modules, so his
-   construction 8 reads "for a right S-module".  The tree's primitive is
+   construction 8 reads “for a right S-module”.  The tree's primitive is
    the LEFT module ([RModObject] of Instance/Mod.v), with right modules
    defined there as left modules over the opposite ring,
    [ModR R := RMod (Ring_op R)].  The right-hand reading therefore costs
@@ -539,7 +539,7 @@ Example ModTotal_hom_unfold (R S : RingObject)
 (*
    * The fibre leg unfolded: g is additive and satisfies
    g (ρ s · m) ≈ s · g m.  That is the MIRROR of Mac Lane's condition,
-   not Mac Lane's own, so the standard word "semilinear" is reserved for
+   not Mac Lane's own, so the standard word “semilinear” is reserved for
    [ModFibred] below and this one is called COSEMILINEAR. 
 
    --------

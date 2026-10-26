@@ -12,10 +12,10 @@ Generalizable All Variables.
 
 (* nLab: https://ncatlab.org/nlab/show/mate
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.7,
      pp. 99-100: Definition 2 (conjugate transformations) and Theorem 2 (the
      four characterizations and the bijection).
-   Riehl, "Category Theory in Context", 2nd ed., §4.3, p. 148: the same
+   Riehl, “Category Theory in Context”, 2nd ed., §4.3, p. 148: the same
      bijection, and exercise (iv).
 
    Fix two adjunctions between the same pair of categories, A : F ⊣ U and

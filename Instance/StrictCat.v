@@ -37,7 +37,7 @@ Generalizable All Variables.
  making it the homotopy category Ho(Cat). StrictCat instead uses
  [Functor_StrictEq_Setoid] with [F x = G x], so it is the strict 1-category in
  which an isomorphism is a genuine (on-the-nose) isomorphism of categories —
- matching the textbook bare-name "Cat". The library nonetheless works up to the
+ matching the textbook bare-name “Cat”. The library nonetheless works up to the
  weaker notion of equivalence in [Cat] almost everywhere, to suit Coq's
  metatheory (no function extensionality); StrictCat is provided for the few
  constructions that genuinely need on-the-nose object equality. Under the axiom

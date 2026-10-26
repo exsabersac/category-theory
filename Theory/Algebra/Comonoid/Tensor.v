@@ -33,7 +33,7 @@ Generalizable All Variables.
     This is the classical fact that the squaring-style structure maps of
     the tensor bifunctor make it a symmetric (strong) monoidal functor
     [C ∏ C ⟶ C], so it carries comonoids to comonoids (Fong–Spivak,
-    "Hypergraph Categories", §2; the [scfa_tensor_*]/[scfa_unit_*]
+    “Hypergraph Categories”, §2; the [scfa_tensor_*]/[scfa_unit_*]
     coherence fields of the [Hypergraph] class assert exactly these
     composites, and Structure/Monoidal/CopyDiscard.v assumes them as the
     supply-coherence fields).  Here the comonoid laws are PROVED rather
@@ -52,11 +52,11 @@ Generalizable All Variables.
 
     nLab:      https://ncatlab.org/nlab/show/comonoid
     nLab:      https://ncatlab.org/nlab/show/monoidal+functor
-    Reference: Fong & Spivak, "Hypergraph Categories",
+    Reference: Fong & Spivak, “Hypergraph Categories”,
                J. Pure Appl. Algebra 223(11):4746–4777, 2019
                (arXiv:1806.08304), §2
-    Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-               string diagrams", MSCS 29(7):938–971, 2019
+    Reference: Cho & Jacobs, “Disintegration and Bayesian inversion via
+               string diagrams”, MSCS 29(7):938–971, 2019
                (arXiv:1709.00322), §2
 
 --------

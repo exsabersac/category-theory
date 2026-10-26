@@ -37,7 +37,7 @@ Generalizable All Variables.
    * * The field of quotients as a universal arrow, and Mac Lane's
    non-example
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    §III.1 (Universal Arrows), printed pp. 55-56
    [maclane:III.1:construction2]: for an integral domain D, the field
    of quotients Q(D) together with the embedding n ↦ n/1 is a
@@ -66,10 +66,10 @@ Generalizable All Variables.
    contrast is a theorem and not a change of subject
    ([frac_universal_over_monos_not_over_all]).
 
-   WHAT IS ALREADY IN TREE, and a CORRECTION.  The issue's "Current
-   state" paragraph says of this material "Absent … No category of
+   WHAT IS ALREADY IN TREE, and a CORRECTION.  The issue's “Current
+   state” paragraph says of this material “Absent … No category of
    fields or integral domains exists, and no ℤ-as-initial-ring
-   machinery for the non-existence example."  That is false on every
+   machinery for the non-existence example.”  That is false on every
    count, as the issue's own trailing QA-audit block records, and the
    correction is repeated here because a header is where a reader
    looks.  Already present and REUSED rather than rebuilt:
@@ -85,7 +85,7 @@ Generalizable All Variables.
    with [Field_Rng], [Field_Forget], the ¬¬-stability analysis, ℚ and
    F₂; and Instance/Rng.v's [ZtoQ].  Nothing of that is re-derived
    below.  Instance/Rng.v's [Rng_Initial_Z] refutes the issue's
-   "no ℤ-as-initial-ring machinery" clause by existing, but it is not
+   “no ℤ-as-initial-ring machinery” clause by existing, but it is not
    used: the non-existence proof names the two homomorphisms out of ℤ
    concretely rather than obtaining them from initiality.
 
@@ -217,8 +217,8 @@ Generalizable All Variables.
    AXIOMS.  Everything here is axiom-free, counted the way
    docs/AXIOMS.md counts: all 99 constants the module declares — the
    69 source-level definitions and theorems and the 30 [Program]
-   obligations, which no [.glob] sweep sees — report "Closed under the
-   global context", including both principal artifacts,
+   obligations, which no [.glob] sweep sees — report “Closed under the
+   global context”, including both principal artifacts,
    [frac_universal] and [no_universal_arrow_Z_Dom].  The
    arithmetic is Theory/Algebra/Rig.v's, the concrete carriers are
    stdlib [Z], [bool] and [QArith], and nothing here touches the
@@ -486,7 +486,7 @@ Example StableField_IntDom_Dom_map (F K : StableField) (f : F ~{StableField}~> K
 
 (*
  A small kit, mirroring Instance/Rng/Frac.v's shuffle kit one layer
- up: everything below is "clear the denominator and shuffle".  Every
+ up: everything below is “clear the denominator and shuffle”.  Every
  lemma carries the nonzeroness hypotheses that make [finv] meaningful,
  and none consults a decision procedure — the hypotheses are
  NEGATIONS, which is exactly what [finv_l] asks for. 
@@ -1042,7 +1042,7 @@ Qed.
 (*
  The engine of the non-existence half, and it needs NO case split on
  the characteristic of K: the ℚ-side delivers the NEGATIVE fact
- "1 + 1 is apart from zero in K" outright, and [field_hom_nonzero]
+ “1 + 1 is apart from zero in K” outright, and [field_hom_nonzero]
  then refutes the F₂-side.  Same shape as Instance/Field.v's
  [Field_no_initial], and constructive for the same reason — the guard
  on [finv_l] is a negation, so a negative fact is a licence to
@@ -1104,8 +1104,8 @@ Qed.
    open about a DIFFERENT functor.  That file expects fullness of
    [IntDom_Incl : IntDom ⟶ CRng] to be refutable — a non-injective
    homomorphism between domains has no preimage — but leaves it
-   unstated rather than asserted, on the ground that "the tree has no
-   quotient rings yet, so no counterexample object is available"
+   unstated rather than asserted, on the ground that “the tree has no
+   quotient rings yet, so no counterexample object is available”
    (Instance/Rng/Frac.v, the comment above [IntDom_Incl]).  The
    counterexample object does not have to be a quotient ring: F₂ is a
    FIELD, hence a domain, and [ZtoF2] is a homomorphism into it that

@@ -1,30 +1,30 @@
 (*
    * * Coreflective subcategories, read covariantly
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    Springer GTM 5, §IV.3, printed p. 91 (PDF p. 100), read from the
-   page image: "Dually, A ⊂ B is coreflective in B when the inclusion
+   page image: “Dually, A ⊂ B is coreflective in B when the inclusion
    functor A → B has a right adjoint.  (Warning: Mitchell [1965] has
-   interchanged the meanings of "reflection" and "coreflection".)"
+   interchanged the meanings of ”reflection“ and ”coreflection“.)”
    The example printed on p. 92 (PDF p. 101) is the torsion subgroup:
-   "A coreflective subcategory of Ab is the full subcategory of all
+   “A coreflective subcategory of Ab is the full subcategory of all
    torsion abelian groups (a group is torsion if all elements have
    finite order); the coreflector sends each abelian group A to the
-   subgroup TA of all elements of finite order in A."  That example is
+   subgroup TA of all elements of finite order in A.”  That example is
    Instance/Ab/Torsion.v, the first consumer of this file.
-   Riehl, "Category Theory in Context", §4.6, printed p. 169 (PDF
+   Riehl, “Category Theory in Context”, §4.6, printed p. 169 (PDF
    p. 189), read from the page image: Lemma 4.6.11 lists, for an
-   adjunction F ⊣ G, "(iii) G is full and faithful if and only if ε is
-   an isomorphism" and dually "(iii) F is full and faithful if and only
-   if η is an isomorphism"; "The third conditions in each list
+   adjunction F ⊣ G, “(iii) G is full and faithful if and only if ε is
+   an isomorphism” and dually “(iii) F is full and faithful if and only
+   if η is an isomorphism”; “The third conditions in each list
    characterize adjunctions defined by reflective subcategories or
-   coreflective subcategories."
+   coreflective subcategories.”
    nLab: https://ncatlab.org/nlab/show/coreflective+subcategory
 
-   BACKGROUND.  nLab defines a coreflective subcategory as "a full
+   BACKGROUND.  nLab defines a coreflective subcategory as “a full
    subcategory whose inclusion functor has a right adjoint R (a cofree
-   functor)", calls the reflective subcategory its dual concept, and
-   refers there "for more details".  Mac Lane's warning records that the
+   functor)”, calls the reflective subcategory its dual concept, and
+   refers there “for more details”.  Mac Lane's warning records that the
    two words were once used the other way round, so the side on which
    the adjoint sits is the whole content of the definition: a reflector
    is LEFT adjoint to the inclusion, a coreflector RIGHT adjoint.  The
@@ -60,7 +60,7 @@
    [Opposite (Sub C S)] and [Sub (Opposite C) (op_subcategory S)]
    convert, and so do the two [equiv] relations on a hom-set, but the
    two categories do not: stating their equality at [eq_refl] is
-   refused with "cannot unify", and so is the equality of the two
+   refused with “cannot unify”, and so is the equality of the two
    hom-SETOIDS, whose equivalence proofs are the different instances
    [Sub_obligation_1 C S x y] and [Sub_obligation_1 (C^op)
    (op_subcategory S) y x] of Construction/Subcategory.v's [Sub]
@@ -134,7 +134,7 @@
 
    --------
    * * 余反射子范畴，协变读取Mac Lane，《为在职数学家准备的范畴论》，第2版，Springer GTM 5, §IV.3, 印刷版第91页（PDF第100页），从页面图像阅读：“同理，当包含函子 A → B 有右伴随时，A ⊂ B 在 B 中是余反射的。（警告：Mitchell [1965] 交换了“反射”和“余反射”的含义。）” 
-   印刷版第92页（PDF第101页）举的例子是挠子子群：“Ab 的一个余反射子范畴是所有挠阿贝尔群的满子范畴（如果群中所有元素的阶都是有限的，则该群是挠子的）；余反射函子将每个阿贝尔群 A 映射到 A 中所有有限阶元素组成的子群 TA。” 这个例子是 Instance/Ab/Torsion.v，该文件的第一个使用者。Riehl，《情境下的范畴论》，§4.6, 印刷版第169页（PDF第……）。189)、从页面图像读取：引理 4.6.11 列出了对于伴随 F ⊣ G，"(iii) 当且仅当 ε 是同构时，G 是满且忠实的"，以及对偶地 "(iii) 当且仅当 η 是同构时，F 是满且忠实的"；"每个列表中的第三个条件刻画了由反射子范畴或余反射子范畴定义的伴随关系。"
+   印刷版第92页（PDF第101页）举的例子是挠子子群：“Ab 的一个余反射子范畴是所有挠阿贝尔群的满子范畴（如果群中所有元素的阶都是有限的，则该群是挠子的）；余反射函子将每个阿贝尔群 A 映射到 A 中所有有限阶元素组成的子群 TA。” 这个例子是 Instance/Ab/Torsion.v，该文件的第一个使用者。Riehl，《情境下的范畴论》，§4.6, 印刷版第169页（PDF第……）。189)、从页面图像读取：引理 4.6.11 列出了对于伴随 F ⊣ G，“(iii) 当且仅当 ε 是同构时，G 是满且忠实的”，以及对偶地 “(iii) 当且仅当 η 是同构时，F 是满且忠实的”；“每个列表中的第三个条件刻画了由反射子范畴或余反射子范畴定义的伴随关系。”
    nLab: https://ncatlab.org/nlab/show/coreflective+subcategory背景。nLab 将余反射子范畴定义为“一个包含函子具有右伴随 R（一个余自由函子）的满子范畴”，称反射子范畴为其对偶概念，并在此“参见更多细节”。Mac Lane 的警告指出，这两个词曾经用法相反，因此伴随所在的一侧就是定义的全部内容：反射子是包含函子的左伴随，余反射子是右伴随。nLab 的第一个等价表征是：当且仅当其单位为自然同构时，左伴随函子是完全忠实的，这是 Riehl 的第二个结论 (iii)；包含函子是完全忠实的，因此在余反射子范畴的一个对象上，单位是可逆的。即下面的 [coreflective_unit_iso]。这个文件存在的原因。Construction/Reflective.v 定义了 [Coreflective S] 为 [Reflective (C^op) (op_subcategory S)]：一个记录，其反射器的类型为 [C^op ⟶ Sub (C^op) (op_subcategory S)]，并且其伴随关系关联相反的范畴。树中没有任何内容以协变方式读取这样的记录，因此不能像 Mac Lane 所述那样声明一个共反射——包含具有一个右伴随——并同时成为该记录的成员。桥的两部分：
 
    - [Coreflective_of_adjunction full G A : Coreflective S] ，由协变数据构建：S 的充满性，一个函子 [G : C ⟶ Sub C S] 和一个伴随 [A : Incl C S ⊣ G]；

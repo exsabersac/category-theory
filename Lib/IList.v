@@ -19,8 +19,8 @@ Import ListNotations.
  of indices, [ilist l] is the type of tuples [(b0, ..., bn)] where each
  [bi : B ai].  Successive elements may therefore have *different* types,
  unlike an ordinary homogeneous [list].  This is exactly Adam Chlipala's
- heterogeneous list ([hlist]) from "Certified Programming with Dependent
- Types"; see Solver/Reify.v, whose reification code is taken from CPDT and
+ heterogeneous list ([hlist]) from “Certified Programming with Dependent
+ Types”; see Solver/Reify.v, whose reification code is taken from CPDT and
  builds [ilist]s of reified morphisms.
 
  We follow CPDT's *recursive* (type-level computation) presentation rather
@@ -30,8 +30,8 @@ Import ListNotations.
  are plain [fst]/[snd] cascades that need no equality reasoning, so every
  definition here is axiom-free even though [Set Equations With UIP] is in
  scope (it is only needed by clients such as Instance/Lambda/Sem.v, and the
- Equations-generated functions below remain "closed under the global
- context").
+ Equations-generated functions below remain “closed under the global
+ context”).
 
  Categorically, with the index type [A] viewed as a discrete category and
  [B] as a functor [A -> Set], [ilist [a0; ...; an]] is the indexed/dependent

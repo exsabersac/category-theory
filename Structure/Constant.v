@@ -12,7 +12,7 @@ Generalizable All Variables.
 
  A global element of an object `x` in a category with a terminal object `1`
  is a morphism `1 ~> x`; in `Sets` (where `1` is a singleton) these are in
- bijection with the elements of `x`, which is what makes them "elements". A
+ bijection with the elements of `x`, which is what makes them “elements”. A
  global element is the special case of a generalized (`T`-valued) element
  `T ~> x` where the stage `T` is the terminal object `1`.
 

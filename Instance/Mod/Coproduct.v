@@ -23,9 +23,9 @@ Generalizable All Variables.
 (* * * The direct sum is the coproduct in R-Mod / * * 直和是 R-模中的余积 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
+ Book: Mac Lane, “Categories for the Working Mathematician” (2nd ed.),
  §III.3, book p. 63 (maclane:III.3:remark1)
- Book: Riehl, "Category Theory in Context" (2nd ed.), §3.1,
+ Book: Riehl, “Category Theory in Context” (2nd ed.), §3.1,
  printed p. 93 (riehl:3.1:exxi)
  Wikipedia: https://en.wikipedia.org/wiki/Direct_sum_of_modules
 
@@ -51,8 +51,8 @@ Generalizable All Variables.
  (Instance/Mod.v), r·0 ≈ 0, because [inl a] is [(a, 0)] and must
  satisfy [(r·a, 0) ≈ (r·a, r·0)]; the two mediators each spend
  [rm_map_smul]; and the copairing additionally spends
- [rm_smul_distr_l].  (An earlier draft of this header said "only one of
- the six", which was wrong twice over — it undercounted, and it
+ [rm_smul_distr_l].  (An earlier draft of this header said “only one of
+ the six”, which was wrong twice over — it undercounted, and it
  contradicted this file's own later sentence about where
  [rm_smul_distr_l] is spent.)
 

@@ -22,7 +22,7 @@ Generalizable All Variables.
 (*
    * * Submodules, the quotient module, and its universal property
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.1
    Exercise 5 (printed p. 59, PDF p. 68) [maclane:III.1:ex5].
    nLab: https://ncatlab.org/nlab/show/quotient+module
    Wikipedia: https://en.wikipedia.org/wiki/Quotient_module
@@ -35,14 +35,14 @@ Generalizable All Variables.
    consequences from it.
 
    ERRATUM, recorded here rather than only in a commit message.  Issue
-   #314's "Current state in the library" section says the area is
-   "Absent", that the search
-   [rg -i 'submodule|quotient module|quotient ring|\bideal\b'] "finds
-   only background-essay comments (Structure/Abelian.v)", that
-   "no module or ring categories exist in-tree", and that there are "no
-   isomorphism-theorem statements anywhere".  Measured against the
+   #314's “Current state in the library” section says the area is
+   “Absent”, that the search
+   [rg -i 'submodule|quotient module|quotient ring|\bideal\b'] “finds
+   only background-essay comments (Structure/Abelian.v)”, that
+   “no module or ring categories exist in-tree”, and that there are “no
+   isomorphism-theorem statements anywhere”.  Measured against the
    parent commit rather than taken on the issue's word, the last three
-   of those are wrong, and with them the summary word "Absent":
+   of those are wrong, and with them the summary word “Absent”:
 
    - Instance/Mod.v (#258) exists and carries [RModObject],
    [RModHom], [RMod], [RMod_Forget], [RMod_Zero],
@@ -54,21 +54,21 @@ Generalizable All Variables.
    (#313) carries all three for groups, with uniqueness clauses for
    the first and third.
    - The quoted [rg] does not hit Structure/Abelian.v at all.  At the
-   parent commit those two lines say "R-Mod", not "submodule" or
-   "ideal".  Re-run against the parent commit it returns NINETEEN
+   parent commit those two lines say “R-Mod”, not “submodule” or
+   “ideal”.  Re-run against the parent commit it returns NINETEEN
    lines: eight in Instance/Mod.v, four in Instance/Field/Frac.v,
    and one each in Theory/Coq.v, Instance/Sets.v,
    Instance/Rng/Polynomial.v, Instance/Rng/MonoidRing.v,
    Instance/Rng/GroupRing.v, Instance/Rng/Frac.v and
    Construction/Groupoid.v.  THREE of the nineteen are not about
    the subject at all -- Construction/Groupoid.v's historical
-   "ideal arithmetic", Instance/Sets.v's "an ideal existence", and
-   Theory/Coq.v's Coq-language "submodules".
+   “ideal arithmetic”, Instance/Sets.v's “an ideal existence”, and
+   Theory/Coq.v's Coq-language “submodules”.
 
    What IS absent, and was measured by searching for the TYPE rather
    than for a guessed name -- an anchored sweep for a [Record], [Class],
    [Inductive], [Definition] or [Structure] whose name contains
-   "Submodule", "Ideal", "SubMod" or "TwoSided", over every [.v] file in
+   “Submodule”, “Ideal”, “SubMod” or “TwoSided”, over every [.v] file in
    the tree -- reads NONE.  So the interfaces are new; the categories
    they are stated over are not.
 
@@ -117,8 +117,8 @@ Generalizable All Variables.
    property: it quotients N by the IMAGE of a given homomorphism
    f : M -> N, its relation being Instance/Ab.v's
    [ab_coset_eq (rm_hom f) x y := ∃ a, x ≈ y + f a] -- an earlier revision
-   spelled it [{ a & x ≈ y + f a }], which it was before the PR "algebraic
-   carriers are sets" (2026-09-17) truncated it.  This file does
+   spelled it [{ a & x ≈ y + f a }], which it was before the PR “algebraic
+   carriers are sets” (2026-09-17) truncated it.  This file does
    not introduce a second unrelated construction; it exhibits that one
    as the special case, in the strongest form the two relations allow:
    [ImageSubmod f] is the image as a [Submodule N],
@@ -146,9 +146,9 @@ Generalizable All Variables.
    [Submodule] would then be the module-level extension; that is a
    defensible change and it is deliberately not made here.  Note also
    that no bridge exists to make one a literal instance of the other.
-   An earlier revision gave as the reason "an [AbObject] is not
+   An earlier revision gave as the reason “an [AbObject] is not
    exhibited as a ℤ-module anywhere in the tree (Instance/Mod/Tensor.v
-   records the same absence)"; since #454 Instance/Mod/Cogenerator.v's
+   records the same absence)”; since #454 Instance/Mod/Cogenerator.v's
    [Ab_to_ZMod] exhibits every [AbObject] as a ℤ-module through its own
    [zsmul] action, but it is a functor into [RMod Int_Ring], not a
    subgroup interface, so it makes neither quotient a literal instance
@@ -247,10 +247,10 @@ Qed.
    following Instance/Grp/Quotient.v's [Subgroup] and
    Instance/Grp/Epi.v's [GrpImage].
 
-   AN EARLIER REVISION gave the reason as: "the library's `≈` is itself
+   AN EARLIER REVISION gave the reason as: “the library's `≈` is itself
    [Type]-valued, so a [Prop]-valued membership could not be eliminated into
-   a hom-setoid equation."  That reason is GONE since the PR "algebraic
-   carriers are sets" (2026-09-17): every carrier now carries [cmon_prop],
+   a hom-setoid equation.”  That reason is GONE since the PR “algebraic
+   carriers are sets” (2026-09-17): every carrier now carries [cmon_prop],
    so [pequiv_to] does exactly that elimination
    (Lib/Setoid/Propositional.v).  Membership stays [Type]-valued anyway,
    and for a different reason: the leastness theorems below and in
@@ -435,7 +435,7 @@ Proof. apply rmod_injective_monic, smod_incl_injective. Qed.
 (** ** The quotient relation / ** 商关系 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) the quotient is an
+ Since the PR “algebraic carriers are sets” (2026-09-17) the quotient is an
  [RModObject] and so owes [cmon_prop], which forces its equality to be a
  [Prop].  [smod_mem] STAYS [Type]-valued -- the leastness theorems below read
  witnesses out of it -- and the relation is its PROPOSITIONAL TRUNCATION.
@@ -550,7 +550,7 @@ Qed.
  truncation.
 
  AN EARLIER REVISION stated the right-hand side as the bare [smod_mem S x].
- Since the PR "algebraic carriers are sets" (2026-09-17) [mquot_rel] is the
+ Since the PR “algebraic carriers are sets” (2026-09-17) [mquot_rel] is the
  propositional truncation of membership, so the LEFT-to-right direction is
  an elimination of a [Prop] into a [Type] and is refused; the biconditional
  is stated up to [inhabited], which is the exact content.  The direction
@@ -782,8 +782,8 @@ Proof.
   apply (fst (ab_sub_eq_zero_iff K _ _)).
   rewrite <- (ab_map_sub (rm_hom (`1 p)) x y).
   (*
- [Hxy] is the TRUNCATED membership since the PR "algebraic carriers are
- sets" (2026-09-17), so it may not be destructed into this [Type]-valued
+ [Hxy] is the TRUNCATED membership since the PR “algebraic carriers are
+ sets” (2026-09-17), so it may not be destructed into this [Type]-valued
  `≈` goal directly; [pequiv_to] puts a [Prop] goal in front of the
  elimination and [pequiv_from] returns.  This is
  [pequiv_elim_inhabited] spelled out. 
@@ -1030,7 +1030,7 @@ Theorem rmod_quotient_relations_agree (x y : carrier (cmon_setoid N)) :
   ab_coset_eq (rm_hom f) x y ↔ mquot_rel (ImageSubmod f) x y.
 Proof.
   (*
- Both relations are [Prop]s since the PR "algebraic carriers are sets"
+ Both relations are [Prop]s since the PR “algebraic carriers are sets”
  (2026-09-17) -- the left one an [ex], the right one the [inhabited]
  truncation of the [Type]-valued membership -- so each direction is a
  [Prop]-to-[Prop] elimination and the shuffle is unchanged.  What is new
@@ -1109,8 +1109,8 @@ Program Definition mquot_congr {R : RingObject} {M : RModObject R}
 (*
  [simpl] before the elimination: the goal is an application of the [equiv]
  projection, whose ascribed sort is [Type], and [mquot_rel] is the
- [inhabited] truncation of membership since the PR "algebraic carriers are
- sets" (2026-09-17). 
+ [inhabited] truncation of membership since the PR “algebraic carriers are
+ sets” (2026-09-17). 
 
  --------
  消除前的 [simpl]：目标是 [equiv] 投影的一个应用，其归属类型是 [Type]，并且 [mquot_rel] 是 [inhabited] 的隶属截断，因为 PR“代数载体是集合”（2026-09-17）。

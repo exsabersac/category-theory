@@ -10,15 +10,15 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Lib.v sets [Default Proof Using "Type"], which keeps only the section
+ Lib.v sets [Default Proof Using “Type”], which keeps only the section
  variables occurring in a statement.  Every statement below mentions the
  section's R, HR and HC only THROUGH [sets_part_pred] and [SetsParts],
  which are section-local definitions and so do not register as syntactic
- occurrences; "All" is the precedent of Theory/EckmannHilton.v and
+ occurrences; “All” is the precedent of Theory/EckmannHilton.v and
  Theory/Category/Monoid.v. 
 
  --------
- Lib.v 设置了 [Default Proof Using "Type"]，它只保留出现在语句中的节变量。下面的每个语句仅通过 [sets_part_pred] 和 [SetsParts] 提到节的 R、HR 和 HC，这些都是节本地定义，因此不会被记录为语法出现；"All" 是 Theory/EckmannHilton.v 和 Theory/Category/Monoid.v 的前置内容。
+ Lib.v 设置了 [Default Proof Using “Type”]，它只保留出现在语句中的节变量。下面的每个语句仅通过 [sets_part_pred] 和 [SetsParts] 提到节的 R、HR 和 HC，这些都是节本地定义，因此不会被记录为语法出现；“All” 是 Theory/EckmannHilton.v 和 Theory/Category/Monoid.v 的前置内容。
 *)
 #[local] Set Default Proof Using "All".
 
@@ -30,7 +30,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Equivalence_class
  Wikipedia: https://en.wikipedia.org/wiki/Partition_of_a_set
 
- Fong and Spivak, "Seven Sketches in Compositionality", §1.2.1
+ Fong and Spivak, “Seven Sketches in Compositionality”, §1.2.1
  definition 1.21 (printed p. 10): the quotient of a set by an
  equivalence relation IS the set of PARTS of the corresponding
  partition.  Instance/Sets/Quotient.v gives the other presentation --
@@ -102,19 +102,19 @@ Generalizable All Variables.
 (*
  Two presentations of a quotient, and why a library has to choose
 
- Text:  Fong and Spivak, "Seven Sketches in Compositionality", CUP
+ Text:  Fong and Spivak, “Seven Sketches in Compositionality”, CUP
  2019, §1.2.1
- Text:  Bishop, "Foundations of Constructive Analysis", McGraw-Hill 1967
- Paper: Hofstra and Warren, "Combinatorial realizability models of type
- theory", APAL 164(10) 2013
- Paper: Barthe, Capretta, Pons, "Setoids in type theory", JFP 13(2) 2003
+ Text:  Bishop, “Foundations of Constructive Analysis”, McGraw-Hill 1967
+ Paper: Hofstra and Warren, “Combinatorial realizability models of type
+ theory”, APAL 164(10) 2013
+ Paper: Barthe, Capretta, Pons, “Setoids in type theory”, JFP 13(2) 2003
 
  Classically the two presentations are interchangeable and textbooks
  move between them without comment: a quotient is a set of classes, and
  a class is named by any of its members.  What breaks the symmetry in
- type theory is that "the set of classes" is a set of SUBSETS, and the
- power set is a universe-raising operation, while "the same set with a
- coarser equality" raises nothing.  The library's design (stated at
+ type theory is that “the set of classes” is a set of SUBSETS, and the
+ power set is a universe-raising operation, while “the same set with a
+ coarser equality” raises nothing.  The library's design (stated at
  Instance/Sets.v) takes the second reading for exactly this reason,
  and every quotient in the tree follows it -- the hom-congruence
  quotient of Construction/Quotient.v, the group and module quotients of
@@ -130,7 +130,7 @@ Generalizable All Variables.
  pays it for free by working with [Prop]-valued relations throughout.
 
  One thing this file does NOT do is decide whether the setoid reading
- is "the right one".  It shows what each costs and where they agree. 
+ is “the right one”.  It shows what each costs and where they agree. 
 
  --------
  商的两种表示方式，以及为什么一个库必须作出选择
@@ -170,7 +170,7 @@ Generalizable All Variables.
  truncated -- literally a sub-setoid of [Powerset_Prop_obj A], with no
  representative carried -- together with the comparison map
  [sets_parts_forget].  This is included because it, and not
- [SetsParts], is what "the set of parts" says when read strictly, and
+ [SetsParts], is what “the set of parts” says when read strictly, and
  because the difference between the two is exactly the constructive
  content.
 
@@ -192,13 +192,13 @@ Generalizable All Variables.
  control for the universe measurement, and nothing is built over it.
 
  * NO PARTITION AS A FIRST-CLASS STRUCTURE.  There is no record of
- "partitions of A", no inverse assignment from partitions to
+ “partitions of A”, no inverse assignment from partitions to
  relations, and hence no bijection between the two -- Seven Sketches'
  §1.2.1 sets that correspondence up, and only the direction from a
  relation to its parts is formalized here.
 
  STATUS: axiom-free.  36 named constants, no [Program] obligations, all
- reporting "Closed under the global context"; the Makefile's
+ reporting “Closed under the global context”; the Makefile's
  [print-assumptions] target audits fourteen of them. 
 
  --------
@@ -263,7 +263,7 @@ Proof. exact (Powerset_squash_intro w). Qed.
 
 (*
  Two classes that share an element are equal.  This is the second half
- of "the classes partition A"; note that the shared element's
+ of “the classes partition A”; note that the shared element's
  membership witnesses arrive truncated, and the conclusion is an
  equality of [Prop]-valued predicates, so both are eliminated into a
  [Prop] and no untruncation is needed. 
@@ -497,7 +497,7 @@ Example sets_partition_iso_to (HS : SquashStable) :
   to (sets_partition_iso HS) = sets_part_of.
 Proof. reflexivity. Qed.
 
-(* ... and the backward leg is "take the carried representative", again on the nose. / ... 而后退的那条腿是“接过被携带的代表”，再次正中目标。 *)
+(* ... and the backward leg is “take the carried representative”, again on the nose. / ... 而后退的那条腿是“接过被携带的代表”，再次正中目标。 *)
 Example sets_partition_iso_from (HS : SquashStable) (S : carrier SetsParts) :
   from (sets_partition_iso HS) S = `1 (`2 S).
 Proof. reflexivity. Qed.
@@ -505,7 +505,7 @@ Proof. reflexivity. Qed.
 (* * ** The strict reading: parts with no representative / * **严格解读：没有代表的部分 *)
 
 (*
- "The set of parts" read strictly is a SUB-SETOID of the power set --
+ “The set of parts” read strictly is a SUB-SETOID of the power set --
  the subsets that are classes -- with no representative attached.  It
  exists at the right universe because the class-hood witness is
  truncated too. 

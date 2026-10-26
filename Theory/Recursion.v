@@ -29,12 +29,12 @@ nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
         v           v
        F a ---β----> a
 
-   commute; this mediator is the *catamorphism* (a "fold").  Uniqueness and the
+   commute; this mediator is the *catamorphism* (a “fold”).  Uniqueness and the
    fusion law follow from the uniqueness of the initial-object mediator [zero].
 
    Dually, a final F-coalgebra [(ν, outγ)] — the terminal object of [FCoalg F]
    (Construction/FCoalg.v) — gives structural corecursion: every coalgebra
-   [(a, γ)] has a unique [ana γ : a ~> ν] (an "unfold").  Because the library
+   [(a, γ)] has a unique [ana γ : a ~> ν] (an “unfold”).  Because the library
    builds [FCoalg F] as [(FAlg (F^op))^op], so that [@Terminal (FCoalg F)] is
    definitionally [@Initial (FAlg (F^op))], the anamorphism package is obtained
    from the catamorphism package for [F^op] purely by op-duality, with

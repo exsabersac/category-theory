@@ -54,7 +54,7 @@ Generalizable All Variables.
  How much monoid the comonad costs
 
  Haskell: Control.Comonad.Traced (Kmett's comonad package)
- Paper:   Eilenberg, Moore, "Adjoint functors and triples", Illinois
+ Paper:   Eilenberg, Moore, “Adjoint functors and triples”, Illinois
  Journal of Mathematics 9(3), 1965 (the adjoint monad theorem)
 
  The exponent functor m ⇒ − is made a comonad by exactly the monoid
@@ -80,7 +80,7 @@ Generalizable All Variables.
  equivalent to the coalgebras of the comonad compatibly with the
  forgetful functors.  This is the adjoint monad theorem, implicit in
  Eilenberg–Moore (1965) and explicit in Mac Lane and Moerdijk,
- "Sheaves in Geometry and Logic", Thm. 2, p. 249.  Writer and Traced
+ “Sheaves in Geometry and Logic”, Thm. 2, p. 249.  Writer and Traced
  are thus paired twice over: dual through the monoid, and adjoint
  through the exponential. 
 
@@ -134,9 +134,9 @@ Hypothesis mappend_assoc :
 
    This is precisely the corner named by the plan's Phase 6 risk note,
    together with the sanctioned move, already exercised by the store comonad
-   in Instance/Coq/Comonad/Store.v: "if a corner genuinely resists, move
+   in Instance/Coq/Comonad/Store.v: “if a corner genuinely resists, move
    that single instance to Sets (setoid homs make the law proper-trivial) —
-   the deliverable is the comonad witness, not its host category."  The
+   the deliverable is the comonad witness, not its host category.”  The
    bundled witness [Traced_Comonad] accordingly lives on [Sets], where the
    traced object m → x is compared pointwise up to the codomain's ≈ and
    every equation above literally becomes its pointwise restatement.  The

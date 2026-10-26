@@ -16,11 +16,11 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/coequalizer
  Wikipedia: https://en.wikipedia.org/wiki/Coequaliser
 
- Mac Lane, "Categories for the Working Mathematician" 2nd ed., §III.3
- remark 2 (p. 65) and exercise 5 (p. 68); Awodey, "Category Theory"
+ Mac Lane, “Categories for the Working Mathematician” 2nd ed., §III.3
+ remark 2 (p. 65) and exercise 5 (p. 68); Awodey, “Category Theory”
  (1st ed., CMU pre-print 2005), §3.4 example 3.19 and the unnumbered
  construction on p. 72, and §3.5 exercise 4 (p. 76); Fong and Spivak,
- "Seven Sketches in Compositionality", §6.2.4 example 6.42 (p. 194).
+ “Seven Sketches in Compositionality”, §6.2.4 example 6.42 (p. 194).
 
  Those six citations make TWO statements between them, and this file
  proves both.  Four of them -- Mac Lane's remark 2, Awodey's p. 72
@@ -32,8 +32,8 @@ Generalizable All Variables.
  projections of E, viewed as a subset of X × X.
 
  Awodey's exercise 4 phrases the generated relation impredicatively --
- "the intersection of all equivalence relations on B containing the
- pairs (f x, g x)" -- and that phrasing does not fit at the universe
+ “the intersection of all equivalence relations on B containing the
+ pairs (f x, g x)” -- and that phrasing does not fit at the universe
  [Sets] lives in: intersecting over ALL [crelation]s on B quantifies
  over [carrier B → carrier B → Type@{o}], which sits one level above
  the carrier, so the resulting relation is not one the setoid can
@@ -73,7 +73,7 @@ Generalizable All Variables.
  did not exist.  It does now (Instance/Sets/Cocomplete.v), built
  from the layer beneath this file's donor rather than from the
  coequalizer -- so this paragraph's old forecast, that the hand-built
- object "is what a later [Cocomplete Sets] would itself need", is wrong.
+ object “is what a later [Cocomplete Sets] would itself need”, is wrong.
 
  Before this file the tree had no [HasCoequalizers] inhabitant at all.
  The name occurred as the class ([Structure/Coequalizer.v]), as the
@@ -86,9 +86,9 @@ Generalizable All Variables.
  therefore the first.
 
  ERRATUM, and it concerns a sentence in this issue's own Seven Sketches
- §6.2.4 block.  That block asserts that "rg -i 'coequalizer' Instance/
+ §6.2.4 block.  That block asserts that “rg -i 'coequalizer' Instance/
  returns exactly two hits, both prose comments at
- Instance/Parallel.v and Instance/Two.v".  The COUNT was true
+ Instance/Parallel.v and Instance/Two.v”.  The COUNT was true
  when the block was written and is no longer, and the location it
  gives for the second hit is stale.  Re-measured against this
  worktree's parent commit, over `*.v` files only: twenty-two hits in
@@ -96,8 +96,8 @@ Generalizable All Variables.
  Instance/Grp/Quotient/Colimit.v,
  which has landed since.  Among the twenty are two genuine
  [IsCoequalizer] INHABITANTS, [quot_IsCoequalizer] and
- [normal_closure_IsCoequalizer], so the block's implied "no
- coequalizer has ever been inhabited under Instance/" is also gone.
+ [normal_closure_IsCoequalizer], so the block's implied “no
+ coequalizer has ever been inhabited under Instance/” is also gone.
  What the block was getting at survives the correction, and is the
  sentence above about [HasCoequalizers]: those two inhabitants are
  coequalizers of a morphism against a ZERO morphism in [Grp], not a
@@ -155,8 +155,8 @@ Generalizable All Variables.
  coequalizer of a map WITH ITSELF merges nothing
  ([coeq_rel_diagonal], proved by induction, with
  [bool_id_coeq_separates] the concrete consequence).  The degenerate
- reading "every coequalizer collapses its codomain" is therefore
- refuted, and so is "no coequalizer collapses anything".
+ reading “every coequalizer collapses its codomain” is therefore
+ refuted, and so is “no coequalizer collapses anything”.
 
  WHAT IS NOT DELIVERED
 
@@ -180,7 +180,7 @@ Generalizable All Variables.
  STATUS: axiom-free.  42 named constants (the four [coeq_rel]
  constructors and the [Sets_HasCoequalizers] instance included), no
  [Program] obligations, all reporting
- "Closed under the global context"; the Makefile's
+ “Closed under the global context”; the Makefile's
  [print-assumptions] target audits twelve of them. 
 
  --------
@@ -371,7 +371,7 @@ Proof. reflexivity. Qed.
  The relation, as an object of [Sets].  A point is a triple ⟨x, y, w⟩
  with w a derivation of R x y; two triples are identified when their
  first two components are, so the witness is carried as data and
- ignored by `≈`.  That is the honest rendering of "E ⊆ X × X" in a
+ ignored by `≈`.  That is the honest rendering of “E ⊆ X × X” in a
  library whose `∃` is [sigT]: the underlying set is the image of E in
  X × X.  It is NOT claimed to be a subobject -- the evident map to
  X × X is not built here, and nothing proves it monic. 
@@ -417,7 +417,7 @@ Proof.
   intros s t Hst; exact (snd Hst).
 Defined.
 
-(* The pair ⟨x, y, w⟩ is where the two projections separate, and it is what makes the cofork condition say exactly "h respects R". / 成对 ⟨x, y, w⟩ 是两个投影分离的地方，它正是使得共叉条件恰好表明“h 尊重 R”的原因。 *)
+(* The pair ⟨x, y, w⟩ is where the two projections separate, and it is what makes the cofork condition say exactly “h respects R”. / 成对 ⟨x, y, w⟩ 是两个投影分离的地方，它正是使得共叉条件恰好表明“h 尊重 R”的原因。 *)
 Definition sets_rel_pt {x y : carrier X} (w : R x y) : carrier SetsRelObj :=
   existT (fun x' : carrier X => { y' : carrier X & R x' y' }) x
     (existT (fun y' : carrier X => R x y') y w).

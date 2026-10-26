@@ -21,7 +21,7 @@ Generalizable All Variables.
 
 (*
  nLab: https://ncatlab.org/nlab/show/exponential+object
- Book: Riehl, "Category Theory in Context", Dover 2016; §2.1
+ Book: Riehl, “Category Theory in Context”, Dover 2016; §2.1
  (Representable functors), Example 2.1.6(iv)
 
  Structure/Cartesian/Closed/Adjunction.v builds (- × S) ⊣ (-)^S over an
@@ -58,9 +58,9 @@ Generalizable All Variables.
  and the counit applied to (curry plus_map 2, 3) computes to 5.
 
  Finally [Sets_Curry_Representable] is Riehl's Example 2.1.6(iv) in literal
- form: "The functor Hom(− × A, B) : Set^op → Set that sends a set X to the
+ form: “The functor Hom(− × A, B) : Set^op → Set that sends a set X to the
  set of functions X × A → B is represented by the set B^A of functions from
- A to B." Here Set is [Sets], so "set" means setoid and "function" means
+ A to B.” Here Set is [Sets], so “set” means setoid and “function” means
  ≈-respecting map, and the natural bijection is an isomorphism in the
  functor category [Sets^op, Sets].
 
@@ -264,7 +264,7 @@ Proof. exact (uncurry_curry plus_map). Qed.
 (* * ** Mac Lane §V.4, exercise 4: X × − preserves all colimits / * ** Mac Lane §V.4，练习 4：X × − 保留所有余极限 *)
 
 (*
- Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer 1998, §V.4, exercise 4
 
  The exercise asks for the fact that `X × −` on Set preserves all small

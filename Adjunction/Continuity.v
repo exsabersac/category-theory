@@ -20,11 +20,11 @@ nLab: https://ncatlab.org/nlab/show/adjoints+preserve+(co-)limits
    Wikipedia:
    https://en.wikipedia.org/wiki/Adjoint_functors#Preservation_of_limits
 
-   "The most important property of adjoints is their continuity: every
+   “The most important property of adjoints is their continuity: every
     functor that has a left adjoint (and therefore is a right adjoint) is
     continuous (i.e. commutes with limits in the category theoretical
     sense); every functor that has a right adjoint (and therefore is a
-    left adjoint) is cocontinuous (i.e. commutes with colimits)."
+    left adjoint) is cocontinuous (i.e. commutes with colimits).”
                                                              -- Wikipedia
 
    This file proves both statements for the hom-setoid adjunctions of

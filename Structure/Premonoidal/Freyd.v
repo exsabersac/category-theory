@@ -27,9 +27,9 @@ Set Transparent Obligations.
 
    nLab: https://ncatlab.org/nlab/show/Freyd+category
 
-   Levy–Power–Thielecke ("Modelling environments in call-by-value
-   programming languages", Inf. Comput. 185(2), 2003) and Power–Thielecke
-   ("Closed Freyd- and kappa-categories", ICALP 1999) distil the
+   Levy–Power–Thielecke (“Modelling environments in call-by-value
+   programming languages”, Inf. Comput. 185(2), 2003) and Power–Thielecke
+   (“Closed Freyd- and kappa-categories”, ICALP 1999) distil the
    categorical semantics of call-by-value effects into a FREYD CATEGORY:
    an identity-on-objects functor J : V ⟶ K from a monoidal category of
    values into a premonoidal category of computations, strictly
@@ -67,7 +67,7 @@ Set Transparent Obligations.
    equalities [freyd_obj_I]/[freyd_obj_tensor], plus morphism-level
    laws transported along them by [id_cast]
    (Construction/Quotient.v).  This is the same [match]-shaped
-   formulation as the "Formulation note" of
+   formulation as the “Formulation note” of
    Structure/Monoidal/Strict.v and the strict monoidal functors of
    Functor/Structure/Monoidal/Strict.v; [id_cast] is deliberately
    spelled so those fields and these read alike.  In both instances
@@ -96,7 +96,7 @@ Set Transparent Obligations.
    cartesian V — take [CC_Monoidal] of
    Structure/Monoidal/Internal/Product.v, or its alias
    [Cartesian_Monoidal] — this recovers the classical Freyd-category
-   reading "cartesian values inside effectful computations", here at
+   reading “cartesian values inside effectful computations”, here at
    the trivial effect. 
 
    --------

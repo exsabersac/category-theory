@@ -6,13 +6,13 @@ Generalizable All Variables.
 
 (*
  nLab: https://ncatlab.org/nlab/show/funny+tensor+product
- Mark Weber, "Free products of higher operad algebras", TAC 28:2 (2013), §2.
+ Mark Weber, “Free products of higher operad algebras”, TAC 28:2 (2013), §2.
 
  The internal hom [⟦B, E⟧] of the funny tensor product on Cat: its objects
- are functors [B ⟶ E], but its morphisms [F ~> G] are UNNATURAL (or "mere")
+ are functors [B ⟶ E], but its morphisms [F ~> G] are UNNATURAL (or “mere”)
  transformations — families [τ : ∀ b, F b ~{E}~> G b] of E-morphisms
- subject to NO naturality condition.  Weber §2: "These components φ_a are
- not required to satisfy the usual naturality condition."  By the theorem
+ subject to NO naturality condition.  Weber §2: “These components φ_a are
+ not required to satisfy the usual naturality condition.”  By the theorem
  of Foltz, Kelly and Lair (1980) there are, up to isomorphism, exactly two
  biclosed monoidal structures on Cat: the cartesian one, whose internal hom
  [Instance/Fun.v] takes natural transformations, and the funny one, whose

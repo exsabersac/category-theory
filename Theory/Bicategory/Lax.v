@@ -13,7 +13,7 @@ Generalizable All Variables.
 (*
 nLab: https://ncatlab.org/nlab/show/lax+natural+transformation
    nLab: https://ncatlab.org/nlab/show/pseudonatural+transformation
-   Reference: Johnson–Yau, "2-Dimensional Categories", Definition 4.2.1.
+   Reference: Johnson–Yau, “2-Dimensional Categories”, Definition 4.2.1.
 
    Given two pseudofunctors F, G : B ⟶ B' between bicategories, a *lax
    transformation* α : F ⟹ G consists of
@@ -235,8 +235,8 @@ Arguments pn_iso {B B' F G σ} _ {x y} f.
 (** Inhabitation witness. / 居住见证。 *)
 
 (*
-To witness that the transformation classes are inhabited "closed under the
-   global context", we exhibit them on the terminal bicategory: one 0-cell, one
+To witness that the transformation classes are inhabited “closed under the
+   global context”, we exhibit them on the terminal bicategory: one 0-cell, one
    1-cell, one 2-cell, with the codiscrete 2-cell setoid in which every 2-cell
    equation holds.  This is a genuine (non-vacuous) bicategory — its unique
    0-cell, 1-cell and 2-cell are all inhabited — so the identity lax

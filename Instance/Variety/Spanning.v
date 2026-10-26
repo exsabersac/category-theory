@@ -22,8 +22,8 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/solution+set+condition
  nLab: https://ncatlab.org/nlab/show/variety+of+algebras
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
- §V.7 ("Subobjects and Generators"), book pp. 127-128 (PDF pp. 136-137).
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
+ §V.7 (“Subobjects and Generators”), book pp. 127-128 (PDF pp. 136-137).
  Definition 6 calls an arrow f : x → G a SPANNING when it factors
  through no proper subobject of a; Lemma 2 says that when every family
  of subobjects of A has an intersection and G preserves those
@@ -174,8 +174,8 @@ Generalizable All Variables.
  the Remark is phrased in; no [HasWidePullbacks (SVariety E)] and hence no
  route through the general Lemma, as above; no left adjoint is
  rebuilt from THIS solution set.  An earlier revision gave the reason
- as "Free.v's [Free_Variety_adjunction] already has one directly, and
- Free.v's "Why not GAFT" block says why that route is the one taken".
+ as “Free.v's [Free_Variety_adjunction] already has one directly, and
+ Free.v's ”Why not GAFT“ block says why that route is the one taken”.
  Since #450 that block records the opposite: GAFT DOES rebuild the free
  algebra (Instance/Variety/Colimit.v's [Free_Variety_via_GAFT]), from a
  DIFFERENT family, indexed by [Prop]-valued congruences on the term
@@ -183,8 +183,8 @@ Generalizable All Variables.
  measured rather than assumed: with Instance/Variety/Limit.v's
  [SVariety_Complete] and [SVariety_Forget_continuous] as the other two
  arguments, [GAFT (SVariety_Forget E) _ _ (variety_solution_set E)] is
- refused, "universe inconsistency: Cannot enforce VS.103 = VS.160
- because VS.160 < VS.115 <= VS.103" (the universe names are the scratch
+ refused, “universe inconsistency: Cannot enforce VS.103 = VS.160
+ because VS.160 < VS.115 <= VS.103” (the universe names are the scratch
  file's): the index is a Σ over the OBJECTS of [SVariety E] and so one
  universe above the carrier (Structure/Complete.v's size note, item 3),
  while the congruence-indexed [SVariety_Forget_solution_set] is
@@ -193,18 +193,18 @@ Generalizable All Variables.
  none and none is proved; and no claim that distinct spanning arrows
  out of X are pairwise non-isomorphic.
 
- CORRECTION (#451): "no [HasWidePullbacks (SVariety E)]" above no
+ CORRECTION (#451): “no [HasWidePullbacks (SVariety E)]” above no
  longer stands.  Structure/Pullback/Wide/Complete.v's
  [Complete_HasWidePullbacks (SVariety_Complete E)] inhabits it, closed
  under the global context (measured in a scratch file importing both).
- "Hence no route through the general Lemma" still stands, for a
+ “Hence no route through the general Lemma” still stands, for a
  universe reason: that inhabitant carries the level of
  [SVariety_Complete]'s limits, the carrier, in the class's second
  universe, and Adjunction/SpanningArrow.v's [spanning_solution_set]
  needs it strictly above the carrier; the call at [SVariety_Forget E],
  with [PreservesWidePullbacks] as a section hypothesis, is refused with
- "universe inconsistency: Cannot enforce <carrier> = <the class's second
- universe> because <carrier> < ..." (that text in the section form
+ “universe inconsistency: Cannot enforce <carrier> = <the class's second
+ universe> because <carrier> < ...” (that text in the section form
  only; with the hypothesis an ordinary binder, Rocq reports the index
  slot's equation first, as Test/ProbeWellPowered451.v's N20 records).
 
@@ -214,9 +214,9 @@ Generalizable All Variables.
  (grep -c '^Defined\.', and grep -c 'Qed\.').  Exactly ONE [Defined]
  is load-bearing: [variety_solution_set]'s obligation.  Flipping it to
  [Qed] stops [variety_solution_set_covers], the readback that the
- member covering h IS the generated subalgebra, with "cannot unify
+ member covering h IS the generated subalgebra, with “cannot unify
  projT1 (sol_covers (variety_solution_set X) h) and
- variety_spanning_arrow E A X h".  The other three ([variety_spanning],
+ variety_spanning_arrow E A X h”.  The other three ([variety_spanning],
  [sgen_covered_by_terms], [sgen_free_cover_surjective]) flip with the
  file still compiling, and
  are transparent only by the convention that data-like constructions
@@ -226,8 +226,8 @@ Generalizable All Variables.
 
  Every constant of this file is closed.  [Print Assumptions] over all
  45 [.glob] heads plus the 17 [Program] obligations, [Build_SubAlg]
- and the four [SubGen] eliminators -- 67 commands -- returns "Closed
- under the global context" 67 times.  Note what that does NOT say
+ and the four [SubGen] eliminators -- 67 commands -- returns “Closed
+ under the global context” 67 times.  Note what that does NOT say
  about the neighbourhood: Instance/Variety/Free.v's own
  [FreeGroupOn] and [FreeGroup_adjunction] carry
  [functional_extensionality_dep] inherited from Instance/Comp.v, and

@@ -48,7 +48,7 @@ Generalizable All Variables.
    construction 4 (printed pp. 96-97).  Transcribed from the page
    images, in ASCII.  From p. 96, last paragraph:
 
-   "Now consider the first projection P : U x V -> U from the product
+   “Now consider the first projection P : U x V -> U from the product
    of two sets U and V.  Each subset S subset U x V defines two
    corresponding subsets of U by
 
@@ -56,11 +56,11 @@ Generalizable All Variables.
    P_# S = {x | forall y, y in V   implies   <x,y> in S};
 
    they arise from <x,y> in S by applying the existential quantifier
-   exists y,"
+   exists y,”
 
    and, continuing on p. 97:
 
-   "'there exists a y' and the universal quantifier forall y, 'for all
+   “'there exists a y' and the universal quantifier forall y, 'for all
    y', respectively to <x,y> in S.  Also P_* S is the direct image of
    S under the projection P.  Now for all subsets X subset U one has
 
@@ -77,12 +77,12 @@ Generalizable All Variables.
    largest subset X of U such that the cylinder on X is wholly
    contained in S.  This analysis has revealed several basic concepts
    of logic (and, or, not, forall y, exists y) to be adjoints.  This
-   illustrates the slogan 'adjoints are everywhere'."
+   illustrates the slogan 'adjoints are everywhere'.”
 
    Awodey, *Category Theory* (1st ed. pre-print), §9.4 Example 9.12
    (printed p. 228) and the paragraph continuing it on p. 229:
 
-   "Example 9.12.  A related example is the adjunction on powersets
+   “Example 9.12.  A related example is the adjunction on powersets
    induced by any function f : A -> B, between the inverse image
    operation f^{-1} and the direct image im(f), ...  Here we have an
    adjunction im(f) -| f^{-1} as indicated by the bicondition:
@@ -99,12 +99,12 @@ Generalizable All Variables.
 
    f_*(U) = {b in B | f^{-1}(b) subseteq U}
 
-   as we also leave for the reader to verify."
+   as we also leave for the reader to verify.”
 
    and §9.6 (printed p. 236), the preservation corollaries and their
    contrapositives:
 
-   "Similarly, for the quantifiers one has e.g.:
+   “Similarly, for the quantifiers one has e.g.:
 
    forall x (phi(x) /\ psi(x)) -||- forall x phi(x) /\ forall x psi(x)
 
@@ -114,12 +114,12 @@ Generalizable All Variables.
    exists x (phi(x) \/ psi(x)) -||- exists x phi(x) \/ exists x psi(x)
 
    And, as above, forall x cannot be a left adjoint, since it does
-   not have this property."
+   not have this property.”
 
    Riehl, *Category Theory in Context* (2nd ed.), §4.1 Example 4.1.8
    (printed pp. 134-135):
 
-   "Example 4.1.8.  Consider a function f : A -> B between sets.  The
+   “Example 4.1.8.  Consider a function f : A -> B between sets.  The
    subsets of A and subsets of B form posets, PA and PB, ordered by
    inclusion.  The map f induces direct image and inverse image
    functors f_* : PA -> PB and f^{-1} : PB -> PA.  The inverse image
@@ -130,11 +130,11 @@ Generalizable All Variables.
    carries a subset A' subset A to the subset of elements of B whose
    fibers lie entirely in A'.  With this definition,
    B' subset f_!(A') if and only if f^{-1}(B') subset A'.  These
-   functors define an adjoint triple: [f_* -| f^{-1} -| f_!]."
+   functors define an adjoint triple: [f_* -| f^{-1} -| f_!].”
 
    Example 4.1.9 (printed p. 135):
 
-   "Example 4.1.9.  A predicate or propositional function is a
+   “Example 4.1.9.  A predicate or propositional function is a
    function p : X -> Omega, where Omega := {bot, top} is the set of
    truth values. ...  The set Omega^X is then the set of predicates
    on X.  The set Omega is given the partial order bot <= top defined
@@ -149,17 +149,17 @@ Generalizable All Variables.
    x in X, and exists_X p = top if and only if there exists x in X
    with p(x) = top.  There is also a constant functor
    Delta_X : Omega -> Omega^X, and one can verify that these functors
-   define an adjoint triple: [exists_X -| Delta_X -| forall_X]."
+   define an adjoint triple: [exists_X -| Delta_X -| forall_X].”
 
    Exercise 4.1.ii (printed p. 138):
 
-   "Exercise 4.1.ii.  Explain why Example 4.1.9 can be regarded as a
-   special case of Example 4.1.8."
+   “Exercise 4.1.ii.  Explain why Example 4.1.9 can be regarded as a
+   special case of Example 4.1.8.”
 
    and §4.5's generalization to an arbitrary function (printed
    pp. 156-157):
 
-   "There is a relationship between the cartesian closed structure on
+   “There is a relationship between the cartesian closed structure on
    the category of predicates on X and the adjoint triple of functors
    exists_X -| Delta_X -| forall_X introduced in Example 4.1.9, which
    we first generalize as follows.  For any function f : Y -> X,
@@ -169,12 +169,12 @@ Generalizable All Variables.
    Delta_f p(y) := p(f(x)).  For a predicate q : Y -> Omega on Y,
    exists_f q(x) = top if there exists y in the fiber over x so that
    q(y) = top, while forall_f q(x) = top if q(y) = top for all y in
-   the fiber over x."
+   the fiber over x.”
 
    Fong and Spivak, *Seven Sketches in Compositionality*, §1.4.3
    Example 1.117 (printed pp. 32-33):
 
-   "Example 1.117.  Let f : A -> B be a function between sets.  We can
+   “Example 1.117.  Let f : A -> B be a function between sets.  We can
    imagine A as a set of apples, B as a set of buckets, and f as
    putting each apple in a bucket.
 
@@ -202,9 +202,9 @@ Generalizable All Variables.
    that are all-A': all the apples in b are from the chosen subset
    A'.  Note that if a bucket doesn't contain any apples at all, then
    vacuously all its apples are from A', so empty buckets count as
-   far as f_* is concerned."
+   far as f_* is concerned.”
 
-   (Their Example 1.117 says "Let f : A -> B" and then writes
+   (Their Example 1.117 says “Let f : A -> B” and then writes
    f^* : P(Y) -> P(X); the letters X, Y there are a slip for A, B.
    Quoted as printed.)
 
@@ -218,7 +218,7 @@ Generalizable All Variables.
    Fong-Spivak, [f_*] for Riehl, [P_*] for Mac Lane and [im(f)] for
    Awodey.  So the starred name takes two values across the four books
    and the shrieked name two, Riehl and Fong-Spivak opposite on both;
-   an earlier draft called the clash "three-way" and an audit corrected
+   an earlier draft called the clash “three-way” and an audit corrected
    it.  Riehl's [f_!] for the dual image is
    the reverse of the commonest topos-theoretic convention, in which
    [f_!] is the existential.  This file therefore uses no starred or
@@ -234,10 +234,10 @@ Generalizable All Variables.
    nLab: https://ncatlab.org/nlab/show/hyperdoctrine
    Wikipedia: https://en.wikipedia.org/wiki/Galois_connection
 
-   ** THE ISSUE'S "Current state" IS STALE, MEASURED AT THE BASE COMMIT
+   ** THE ISSUE'S “Current state” IS STALE, MEASURED AT THE BASE COMMIT
 
-   The catalog entry says the power set of a set as a category "has no
-   witness".  It has one: #382's Instance/Powerset.v declares
+   The catalog entry says the power set of a set as a category “has no
+   witness”.  It has one: #382's Instance/Powerset.v declares
    [subset_le], [subset_le_preorder] and
    [Subsets X := Proset (subset_le_preorder X)], and supplies the
    LEFT half of this issue outright -- [image_preimage_galois],
@@ -247,16 +247,16 @@ Generalizable All Variables.
    preservation theorems, the RAPL/LAPC routes and the witnesses.
    All of that is CONSUMED, none
    of it rebuilt: [exists_substitution_adjunction] is literally
-   [image_preimage_adjunction] under the name this issue pins, so "the
-   existential IS the direct image" holds at a general [f] BY DEFINITION
+   [image_preimage_adjunction] under the name this issue pins, so “the
+   existential IS the direct image” holds at a general [f] BY DEFINITION
    rather than by a comparison.
 
    What was genuinely absent is the RIGHT half.  Three separate
    comments in Instance/Powerset.v say so in terms: each records that
    the dual image and [f^* -| forall_f] are #384's.
 
-   The issue also says "in-tree the dual image has no counterpart of any
-   kind".  That is stale for finite CODES: Instance/FinSet/Subsets.v
+   The issue also says “in-tree the dual image has no counterpart of any
+   kind”.  That is stale for finite CODES: Instance/FinSet/Subsets.v
    declares [finpow_dual] with [finpow_dual_mem] and six
    [eq_refl] evaluations (among them [dual_apple0] and
    [dual_apple01]), and three of its comments record that only the
@@ -280,8 +280,8 @@ Generalizable All Variables.
    lets the headline be stated at #382's [InverseImage f] rather
    than at a second, parallel preimage functor (see the note
    below).  [gal_r_preserves_glb] and [gal_l_preserves_lub] are the
-   order-level "right adjoints preserve meets, left adjoints
-   preserve joins".  None of the three exists in tree, measured two
+   order-level “right adjoints preserve meets, left adjoints
+   preserve joins”.  None of the three exists in tree, measured two
    ways at the base commit: for the two preservation lemmas,
    Instance/Powerset.v is the ONLY file mentioning both [gal_] and
    [IsGLB]/[IsLUB] and it relates them nowhere; for
@@ -297,7 +297,7 @@ Generalizable All Variables.
    [Sets] and the two naturality clauses -- are each equations
    between parallel arrows in a thin category ([Proset]'s hom-setoid
    is [fun _ _ => True], Instance/Proset.v), which is why the
-   default tactic closes all six; an earlier draft said "two".
+   default tactic closes all six; an earlier draft said “two”.
 
    (A)  [Powerset_Prop_dual f S] with predicate
    [fun y => forall x, f x ≈ y -> S x] -- Awodey's
@@ -336,7 +336,7 @@ Generalizable All Variables.
    [GaloisFunctor_r] are separate [Program Definition]s whose three
    law fields are separate opaque obligations, so the functor
    RECORDS differ.  Stating the theorem with a second preimage
-   functor would have made "f^* has both adjoints" false as
+   functor would have made “f^* has both adjoints” false as
    written, the two f^*'s being different objects.  The rejection
    is pinned as the probe's conversion negative 1.
 
@@ -370,8 +370,8 @@ Generalizable All Variables.
 
    His two displayed biconditionals are [proj_exists_transpose] and
    [proj_forall_transpose], proved directly as [iffT]s;
-   [proj_forall_largest] is his "the largest subset X of U such
-   that the cylinder on X is wholly contained in S", and the file
+   [proj_forall_largest] is his “the largest subset X of U such
+   that the cylinder on X is wholly contained in S”, and the file
    says plainly that it IS the second biconditional together with
    its unit rather than separate content.  [proj_galois_exists] and
    [proj_galois_forall] package the two as [GaloisConnection]s AT
@@ -444,7 +444,7 @@ Generalizable All Variables.
    The triple over the unique map [X -> 1] is
    [Delta_X := InverseImage (quant_bang X)], [exists_X], [forall_X]
    and the two adjunctions INSTANTIATED ([:=] with no tactic),
-   which is exactly "4.1.9 is 4.1.8 at [X -> 1]";
+   which is exactly “4.1.9 is 4.1.8 at [X -> 1]”;
    [Delta_X_obj_mem] reads the constant predicate back at
    [eq_refl].  The truth-value object is [Subsets quant_one], and
    **[subsets_one_Props : Subsets quant_one ≅[Cat] Props]**
@@ -457,7 +457,7 @@ Generalizable All Variables.
    (F)  SEVEN SKETCHES 1.117 AND AWODEY 9.12, in their own words.
    [apples_buckets_bicondition] is the biconditional
    [f^*(B') subseteq A' <-> B' subseteq f_*(A')] as an [iffT] over
-   the two transposes, and [dual_vacuous] is "empty buckets count":
+   the two transposes, and [dual_vacuous] is “empty buckets count”:
    a bucket with no apples at all lies in the dual image of every
    subset.
 
@@ -478,10 +478,10 @@ Generalizable All Variables.
    ** A CORRECTION TO THE BRIEF, MEASURED
 
    The brief predicted the dual image of {0} along the constant map at 0
-   to be EMPTY, "because each fibre is the whole two-point set".  That
+   to be EMPTY, “because each fibre is the whole two-point set”.  That
    is false, and the file proves the opposite: the fibre over 1 is
    EMPTY, so 1 lies in the dual image of EVERY subset, vacuously --
-   which is exactly Fong-Spivak's "empty buckets count".  Only the fibre
+   which is exactly Fong-Spivak's “empty buckets count”.  Only the fibre
    over 0 is the whole set.  So the dual image of {0} is {1}, not the
    empty set, and [dual_const0_sng0_at_1] proves it.  The conclusion the
    prediction was meant to support -- that the dual image does not
@@ -514,12 +514,12 @@ Generalizable All Variables.
    costs, and what the donor never had to pay because it writes no
    explicit [equiv], is that stdlib's [equiv] then SHADOWS
    [Category.Lib.Setoid.equiv].  Two consequences, both measured: an
-   explicit [@equiv _ (is_setoid Y)] is rejected with "The term
+   explicit [@equiv _ (is_setoid Y)] is rejected with “The term
    'is_setoid Y' has type 'Setoid Y' while it is expected to have type
-   'relation ?A'", so every explicit occurrence here is written
+   'relation ?A'”, so every explicit occurrence here is written
    [@Category.Lib.Setoid.equiv]; and a bare [reflexivity] in TERM
-   position is rejected with "Cannot infer the implicit parameter
-   Reflexive", so the term-mode occurrences go through [quant_refl].
+   position is rejected with “Cannot infer the implicit parameter
+   Reflexive”, so the term-mode occurrences go through [quant_refl].
    The [≈] NOTATION is unaffected -- a notation resolves its head
    reference when it is declared -- and in TACTIC position the goal
    disambiguates, which is why the donors' bare [reflexivity] works
@@ -544,7 +544,7 @@ Generalizable All Variables.
    binder shape [X Y : SetoidObject@{o o}] is likewise the DONORS'
    identification and not one introduced here: [Powerset_Prop_obj@{o}]
    is the first to impose it, and [subset_le], [subset_le_preorder] and
-   [Subsets] each impose it independently, so no one of them is "the"
+   [Subsets] each impose it independently, so no one of them is “the”
    cause.  Section (B) additionally uses [product_obj] over
    [Sets_Cartesian], measured to land at [SetoidObject@{o o}] again.
    Measured over all 100 constants: NO block contains a universe
@@ -705,7 +705,7 @@ Generalizable All Variables.
    [f^*(B') subseteq A' <-> B' subseteq f_*(A')] 作为 [iffT] 对两个转置的运算，且 [dual_vacuous] 是“空桶计数”：  
    一个完全没有苹果的桶存在于每个子集的对偶像中。(G) 非空性，在 #382 自身的 [powerset_fin2] / [powerset_const0] / [powerset_sng1] 和 Instance/Powerset.v 的 [powerset_sng0] 上重用而非重建。每个负值通过将一个 [Powerset_squash] 消除到 [False] 中或者在离散载体上 [discriminate] 来达到 [False] —— 绝不会通过对商关系的归纳，因为那不能产生负值。[dual_const0_sng0_at_1] 和 [dual_const0_sng0_not_at_0] 计算 {0} 的对偶像，而 [exists_ne_forall_at_const0] 证明两个伴随函数在一个输入上存在差异，这正是第三条腿的关键。在投影上，[proj_diag_exists_everywhere] 和 [proj_diag_forall_nowhere] 在对角线上计算 Mac Lane 的两个操作，而 [proj_row_forall_at_0] / [proj_row_forall_not_at_1] 在一行上计算。
 
-   ** 对概述的修正，经过衡量简报预测沿着 0 的恒定映射 {0} 的对偶像是 EMPTY，"因为每个纤维都是整个两点集"。这是错误的，文件证明了相反的情况：1 上的纤维是 EMPTY，所以 1 虚拟地属于每个子集的对偶像——这正是 Fong-Spivak 所说的“空桶也算数”。只有 0 上的纤维是整个集合。因此，{0} 的对偶像是 {1}，而不是空集，[dual_const0_sng0_at_1] 证明了这一点。简报试图支持的结论——对偶像不保持并集——仍然成立，并在元素 0 上得到了体现。  
+   ** 对概述的修正，经过衡量简报预测沿着 0 的恒定映射 {0} 的对偶像是 EMPTY，“因为每个纤维都是整个两点集”。这是错误的，文件证明了相反的情况：1 上的纤维是 EMPTY，所以 1 虚拟地属于每个子集的对偶像——这正是 Fong-Spivak 所说的“空桶也算数”。只有 0 上的纤维是整个集合。因此，{0} 的对偶像是 {1}，而不是空集，[dual_const0_sng0_at_1] 证明了这一点。简报试图支持的结论——对偶像不保持并集——仍然成立，并在元素 0 上得到了体现。  
 
    ** 未交付的内容对于 Instance/FinSet/Subsets.v 的双像附属关系没有 [finpow_dual]（有限码）；该文件的评估被引用，其附属关系尚未确定。没有切片级别 [Sigma_f -| f^* -| Pi_f]（#387）。没有超命题学，也没有一般拉回方形的 Beck-Chevalley（仅投影沿 [g x id] 的重索引），也没有 Frobenius 对偶律。[f]、[g] 或集合定的任何识别没有自然性。没有在 RECORD 级别比较 [proj_galois_exists] 与 [image_preimage_galois]，也没有任何级别的两个附属关系。没有来自任一附属关系的幂等单子或余单子。没有布尔连词（#383）。没有反对称商，因此两个 [≈] 相等的子集仍然是不同的对象，正如 Instance/Powerset.v 所显示的其自身类别一样。没有任何东西被注册为 [Instance]。
 
@@ -896,7 +896,7 @@ Definition DualImage : Subsets@{o u} X ⟶ Subsets@{o u} Y :=
 
 (** *** The two pinned adjunctions / *** 两个固定的连接 *)
 
-(* #382's, under this issue's name. A [:=] with no tactic, so "the existential IS the direct image" is definitional at a general [f]. / #382的，以本期名称。一个没有策略的[:=]，所以“存在就是直接图像”在一般[f]中是定义性的。 *)
+(* #382's, under this issue's name. A [:=] with no tactic, so “the existential IS the direct image” is definitional at a general [f]. / #382的，以本期名称。一个没有策略的[:=]，所以“存在就是直接图像”在一般[f]中是定义性的。 *)
 Definition exists_substitution_adjunction : DirectImage f ⊣ InverseImage f :=
   image_preimage_adjunction f.
 
@@ -912,12 +912,12 @@ Definition substitution_forall_adjunction : InverseImage f ⊣ DualImage :=
     (InverseImage f) DualImage preimage_transpose_to preimage_transpose_from.
 
 (*
- Mac Lane's "P^*, which is the inverse image operation, has both a left
- adjoint P_* and a right adjoint P_#", packaged.  [*] is [prod]: both
+ Mac Lane's “P^*, which is the inverse image operation, has both a left
+ adjoint P_* and a right adjoint P_#”, packaged.  [*] is [prod]: both
  components are data. 
 
  --------
- Mac Lane 的 "P^*", 即逆像操作，具有一个左伴随 P_* 和一个右伴随 P_#，已打包。[*] 是 [prod]：两个组件都是数据。
+ Mac Lane 的 “P^*”, 即逆像操作，具有一个左伴随 P_* 和一个右伴随 P_#，已打包。[*] 是 [prod]：两个组件都是数据。
 *)
 Definition quantifier_triple :
   (DirectImage f ⊣ InverseImage f) * (InverseImage f ⊣ DualImage) :=
@@ -980,9 +980,9 @@ Example adj_counit_is_forall_incl (S : carrier (Powerset_Prop_obj@{o} X)) :
 (* * *** (F) Seven Sketches 1.117 and Awodey 9.12, in their own words / * ***（F）七个素描 1.117 和 Awodey 9.12，用他们自己的话 *)
 
 (*
- "B' subset f_!(A') if and only if f^{-1}(B') subset A'" -- Riehl's own
+ “B' subset f_!(A') if and only if f^{-1}(B') subset A'” -- Riehl's own
  phrasing of Example 4.1.8's second half, which is also Awodey's
- "as we also leave for the reader to verify".  [iffT] is the library's
+ “as we also leave for the reader to verify”.  [iffT] is the library's
  Type-valued biconditional. 
 
  --------
@@ -998,7 +998,7 @@ Definition apples_buckets_bicondition
        (subset_le T (Powerset_Prop_dual@{o} f S)) :=
   (preimage_transpose_to T S, preimage_transpose_from T S).
 
-(* "if a bucket doesn't contain any apples at all, then vacuously all its apples are from A', so empty buckets count". / “如果一个桶里完全没有苹果，那么根据虚假命题原则，它的所有苹果都是来自 A'，所以空桶也算数。” *)
+(* “if a bucket doesn't contain any apples at all, then vacuously all its apples are from A', so empty buckets count”. / “如果一个桶里完全没有苹果，那么根据虚假命题原则，它的所有苹果都是来自 A'，所以空桶也算数。” *)
 Definition dual_vacuous (S : carrier (Powerset_Prop_obj@{o} X))
   (y : carrier Y)
   (Hy : ∀ x : carrier X,
@@ -1208,8 +1208,8 @@ Proof.
 Qed.
 
 (*
- "P_# S is the largest subset X of U such that the cylinder on X is
- wholly contained in S".  This IS [proj_forall_transpose] together with
+ “P_# S is the largest subset X of U such that the cylinder on X is
+ wholly contained in S”.  This IS [proj_forall_transpose] together with
  its unit -- the two components are that biconditional read at
  [Xs := proj_forall S] and at an arbitrary [Xs] -- and is stated
  separately only because Mac Lane states it separately. 
@@ -1273,7 +1273,7 @@ Definition proj_galois_forall :
 (* * *** The identifications with (A), and their exact grade / * *** 与 (A) 的标识，以及它们的确切等级 *)
 
 (*
- "Also P_* S is the direct image of S under the projection P."  At [≈]
+ “Also P_* S is the direct image of S under the projection P.”  At [≈]
  and NOT at [eq_refl]: [proj_exists] is an [ex] over [carrier V] while
  [Powerset_Prop_image proj_fst] is a [Powerset_squash] of a [sigT] over
  [carrier (ProdSetoid U V)].  The [eq_refl] form is pinned in
@@ -1597,8 +1597,8 @@ End TruthValues.
 
 (*
  The dual image of {0} along the constant map at 0 contains 1 --
- VACUOUSLY, since nothing maps to 1.  This is Fong-Spivak's "empty
- buckets count", and it refutes the brief's prediction that this dual
+ VACUOUSLY, since nothing maps to 1.  This is Fong-Spivak's “empty
+ buckets count”, and it refutes the brief's prediction that this dual
  image is empty. 
 
  --------
@@ -1694,8 +1694,8 @@ Proof.
 Qed.
 
 (*
- Awodey: "Since this does not hold for exists x, it cannot be a right
- adjoint to some other 'quantifier'."  As a theorem about adjunctions:
+ Awodey: “Since this does not hold for exists x, it cannot be a right
+ adjoint to some other 'quantifier'.”  As a theorem about adjunctions:
  the direct image along [powerset_const0] has NO left adjoint.  [∃] is
  the library's Type-valued [sigT], and the sigma binds the functor
  once. 
@@ -1756,8 +1756,8 @@ Proof.
 Qed.
 
 (*
- And dually: "as above, forall x cannot be a left adjoint, since it
- does not have this property." 
+ And dually: “as above, forall x cannot be a left adjoint, since it
+ does not have this property.” 
 
  --------
  反之亦然：“如上所述，对于所有 x，它不能是一个左伴随，因为它不具有这个性质。”

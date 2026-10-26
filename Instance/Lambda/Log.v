@@ -12,7 +12,7 @@ Generalizable All Variables.
 (** Type-indexed logical predicates and relations for the STLC. / STLC 的类型索引逻辑谓词和关系。 *)
 
 (*
- "Log" here is the *logical relation* / logical predicate of Tait-style
+ “Log” here is the *logical relation* / logical predicate of Tait-style
  reducibility, not logarithms or logging.  Given a base predicate [P] on
  well-typed terms, [ExpP] lifts [P] type-directed through the syntax so that
  it is closed under the eliminators (application, projections); [ExpR] is the
@@ -20,20 +20,20 @@ Generalizable All Variables.
  with [halts] to obtain the strong-normalization predicate [SN := ExpP halts]
  and runs Tait's reducibility argument.
 
- Writing [τ |- e] for "[e : Exp Γ τ]", the unary predicate reads:
+ Writing [τ |- e] for “[e : Exp Γ τ]”, the unary predicate reads:
 
  ExpP P (e : TyUnit)    :=  P e
  ExpP P (e : σ × ρ)     :=  P e ∧ ExpP P (Fst e) ∧ ExpP P (Snd e)
  ExpP P (e : σ ⟶ ρ)     :=  P e ∧ ∀ x, ExpP P x → ExpP P (APP e x)
 
  so a function is reducible exactly when it sends reducible arguments to
- reducible results — the arrow case of Tait's "candidat de réductibilité".
+ reducible results — the arrow case of Tait's “candidat de réductibilité”.
  The binary [ExpR] follows the standard logical-relations recipe: related
  functions map related arguments to related results,
  [ExpR R f1 f2] at [σ ⟶ ρ] requiring [∀ x1 x2, ExpR R x1 x2 →
  ExpR R (APP f1 x1) (APP f2 x2)].
- See W. W. Tait, "Intensional interpretations of functionals of finite type
- I", and J. Gallier, "On Girard's 'Candidats de Reductibilité'",
+ See W. W. Tait, “Intensional interpretations of functionals of finite type
+ I”, and J. Gallier, “On Girard's 'Candidats de Reductibilité'”,
  https://www.cis.upenn.edu/~jean/sngirard.pdf, and
  https://en.wikipedia.org/wiki/Logical_relations.
 

@@ -73,8 +73,8 @@ Generalizable All Variables.
    conversions rather than transports.
 
    HOW THE FREE MODULE IS PRESENTED, AND HOW THAT DIFFERS FROM THE
-   ISSUE'S SKETCH.  The classical description — "finitely supported
-   K-valued functions on X" — presupposes a set of generators with
+   ISSUE'S SKETCH.  The classical description — “finitely supported
+   K-valued functions on X” — presupposes a set of generators with
    decidable equality, and it is worth being exact about WHERE.  The
    CARRIER is not the obstruction: a [≈]-respecting function paired with
    a list witnessing that it vanishes outside that list is writable over
@@ -108,7 +108,7 @@ Generalizable All Variables.
    decidability: [fv_normal_form] proves that EVERY element of the free
    module is [fv_eq] to a finite formal linear combination
    r₁·e_{x₁} + … + rₙ·e_{xₙ} of basis vectors ([fv_lc] of a list), which
-   is the "finitely supported" half of the classical statement.  The
+   is the “finitely supported” half of the classical statement.  The
    other half — that the list is unique up to rearrangement and
    combination of like terms — is exactly what needs a decider on X, and
    it is NOT proved here.  CORRECTION (#472): under that decider it is
@@ -227,8 +227,8 @@ Generalizable All Variables.
    [free_module_hom_iso] and [free_module_adjunction_hom] end [Defined], both
    load-bearing (each closed alone [Qed] in a renamed copy of #472's files,
    [free_module_adjunction_hom] and [free_module_hom_counit] respectively
-   stop); [fv_eval_pointwise] ends [Qed].  The six are "Closed under the
-   global context" and named in #472's print-assumptions block.  On Coq
+   stop); [fv_eval_pointwise] ends [Qed].  The six are “Closed under the
+   global context” and named in #472's print-assumptions block.  On Coq
    8.19.2 and 8.20.1 the five that bind [FreeMod]'s levels bind exactly one
    level more and [fv_eval_pointwise] the same, compared by [About].
 
@@ -386,14 +386,14 @@ Definition fv_Setoid : Setoid FVTerm := {|
    underlying setoid, the group operations and the action are all
    visible at a glance and all reduce.  An earlier revision stopped there; the record now
    carries one more field, [cmon_prop], and it too is a one-liner: the
-   relation IS a [Prop] since the PR "algebraic carriers are sets"
+   relation IS a [Prop] since the PR “algebraic carriers are sets”
    (2026-09-17), so it is its own [Prop] mirror and both implications are
    the identity. 
 
    --------
    * ** 自由模
 
-   模的每条定律都是关系的构造；没有什么被证明。记录以一个字面量写出，以便基本的集扎、群运算和作用一目了然，并且都可以简化。早期的修订停在这里；现在记录增加了一个字段 [cmon_prop]，它也是一行代码：该关系是一个 [Prop]，因为 PR "代数载体是集合"（2026-09-17），所以它本身就是它的 [Prop] 镜像，而且两个蕴含都是恒等式。
+   模的每条定律都是关系的构造；没有什么被证明。记录以一个字面量写出，以便基本的集扎、群运算和作用一目了然，并且都可以简化。早期的修订停在这里；现在记录增加了一个字段 [cmon_prop]，它也是一行代码：该关系是一个 [Prop]，因为 PR “代数载体是集合”（2026-09-17），所以它本身就是它的 [Prop] 镜像，而且两个蕴含都是恒等式。
 *)
 Definition FreeModObject : RModObject R := {|
   rm_ab := {|
@@ -480,7 +480,7 @@ Lemma fv_eval_respects (s t : FVTerm) : fv_eq s t → fv_eval s ≈ fv_eval t.
 Proof.
   intro He.
   (*
- Since the PR "algebraic carriers are sets" (2026-09-17) [fv_eq] is a
+ Since the PR “algebraic carriers are sets” (2026-09-17) [fv_eq] is a
  [Prop] inductive and eliminates only into [Prop] goals, while `≈` is
  [Type]-valued.  [pequiv_to] puts a [Prop] goal in front of the
  elimination; each branch returns to `≈` with [pequiv_from].  The 14 cases
@@ -525,7 +525,7 @@ Qed.
  of the action; the last three hold by [reflexivity], the fixpoint's
  clauses BEING those three equations.  One uniform body is used so that
  the proof does not depend on the order [Program] emits them in.  Still
- four after the PR "algebraic carriers are sets" (2026-09-17),
+ four after the PR “algebraic carriers are sets” (2026-09-17),
  re-counted from the [_obligation_] names [Print Module] lists. 
 
  --------
@@ -752,8 +752,8 @@ Example free_module_arrow_is_insert (X : Sets) :
    identity), not a field, so what it computes to has to be checked.  It
    is [fmap[U] id ∘ arrow], and [fmap[RMod_Forget R] id] is the identity
    setoid map, so the unit is [fv_insert] itself.
-   CORRECTION (#1347): read as an equation of setoid morphisms, "the unit
-   is [fv_insert] itself" held only pointwise, as the two examples below
+   CORRECTION (#1347): read as an equation of setoid morphisms, “the unit
+   is [fv_insert] itself” held only pointwise, as the two examples below
    state it, until Instance/Sets.v gave its identity's and composite's
    properness fields as terms; it now holds whole at [eq_refl] (control
    C9 of Test/ProbeSetsTerms1347.v), and is refused at master 687ac356. 
@@ -818,7 +818,7 @@ Qed.
 (*
    * ** The free functor relabels basis vectors
 
-   Riehl's "functoriality on maps of generating sets".
+   Riehl's “functoriality on maps of generating sets”.
    [LeftAdjointFunctorFromUniversalArrows] defines [fmap] by universal
    factorization, not by a formula, so what the functor does to a
    generator has to be proved. 
@@ -847,7 +847,7 @@ Qed.
 
    RMod(FreeMod X, W)  ≅  Sets(X, U W)
 
-   natural in X and in W, "each verified separately".  The forward
+   natural in X and in W, “each verified separately”.  The forward
    transpose is restriction to the basis, and it IS the adjunction's own
    ⌊−⌋ — [free_module_transpose_is_adj] records that by [eq_refl] — so
    the two clauses below, proved in the free module's own vocabulary,
@@ -1105,8 +1105,8 @@ Example free_module_hom_to@{a c p so +} (R : RingObject@{a c p})
 (*
    * ** Every element is a finite linear combination of basis vectors
 
-   The classical description of the free module — "finitely supported
-   K-valued functions on X" — has two halves.  The half that does not
+   The classical description of the free module — “finitely supported
+   K-valued functions on X” — has two halves.  The half that does not
    need a decider on X is proved here: every formal expression is
    [fv_eq] to a sum r₁·e_{x₁} + … + rₙ·e_{xₙ} indexed by a list of
    scalar/generator pairs.  The other half, that the list is unique up

@@ -1,11 +1,11 @@
 (* * * Open(X) and the presheaf of continuous real-valued functions / * * Open(X) 与连续实值函数的预层 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.2, printed p. 35 (PDF p. 45) — maclane:II.2:construction7
- Book:      Riehl, "Category Theory in Context", Example 1.3.7,
+ Book:      Riehl, “Category Theory in Context”, Example 1.3.7,
  clauses (iii)–(v), printed pp. 18–19 (PDF pp. 38–39)
- Book:      Fong–Spivak, "Seven Sketches in Compositionality", §7.3.2,
+ Book:      Fong–Spivak, “Seven Sketches in Compositionality”, §7.3.2,
  printed p. 236 (PDF p. 248)
  nLab:      https://ncatlab.org/nlab/show/presheaf
  nLab:      https://ncatlab.org/nlab/show/sheaf
@@ -45,7 +45,7 @@
  functions, with constant sections as inhabitants
  - [OpenSub_whole_iso], [global_sections_iso]: the subspace on the
  whole-space open is the space itself, and its sections are the
- continuous maps X → R — "Γ(X, C(−,ℝ)) = C(X,ℝ)"
+ continuous maps X → R — “Γ(X, C(−,ℝ)) = C(X,ℝ)”
 
  Design:
 
@@ -53,7 +53,7 @@
  carrier of [OpenSub U] is the sigma type { x : X & `1 U x } compared
  on first components, and a predicate on it is open when (a) it
  respects that comparison and (b) its extension along the projection —
- the predicate "some membership witness lands in V" — is open in X.
+ the predicate “some membership witness lands in V” — is open in X.
  Conjunct (a) is not decoration: the membership component of a point
  of the subspace is proof DATA, and a bare predicate could distinguish
  two witnesses of the same point, which no topology on the subspace
@@ -77,7 +77,7 @@
  the presheaf's arrow action is precomposition with it.  Functoriality
  is thereby inherited from the category laws of [Top] — up to the
  subspace setoid's indifference to membership witnesses — rather than
- proved against a bespoke notion of "restriction of a function".
+ proved against a bespoke notion of “restriction of a function”.
 
  4. THE SHEAF CONDITION IS NOT STATABLE HERE.  Two independent
  obstructions, and the universe one bites first: Theory/Sheaf.v's
@@ -105,7 +105,7 @@
  of the standard library's construction of R — principally
  [ClassicalDedekindReals.sig_forall_dec] and
  [FunctionalExtensionality.functional_extensionality_dep] — exactly
- as docs/AXIOMS.md's "Stdlib axioms" section documents for the other
+ as docs/AXIOMS.md's “Stdlib axioms” section documents for the other
  two; the section enumerates this file alongside them.  Constants
  that never touch R (the subspace machinery) remain closed under the
  global context.
@@ -601,7 +601,7 @@ Definition Maps_to_R (X : TopSpace) : obj[Sets] := {|
 
 (*
  Sections over the whole space ARE the continuous real-valued functions
- on X — the "Γ(X, C(−,ℝ)) = C(X,ℝ)" sanity theorem, an isomorphism of
+ on X — the “Γ(X, C(−,ℝ)) = C(X,ℝ)” sanity theorem, an isomorphism of
  section setoids in Sets by conjugation with [OpenSub_whole_iso]. 
 
  --------

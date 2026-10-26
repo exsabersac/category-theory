@@ -17,7 +17,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/FinSet
  Wikipedia: https://en.wikipedia.org/wiki/Subobject_classifier
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
  book p. 130: a category is well-powered when the subobjects of each
  object form a small set.  For the skeleton of finite sets this is the
  elementary fact that a finite set of size n has 2^n subsets, and the

@@ -23,24 +23,24 @@ Generalizable All Variables.
  Mac Lane, Categories for the Working Mathematician, 2nd ed., §IV.4,
  printed p. 94, states the result this file formalizes:
 
- "Proposition 2.  If A is a full subcategory of C and every c in C is
+ “Proposition 2.  If A is a full subcategory of C and every c in C is
  isomorphic (in C) to some object of A, then the insertion K : A -> C
  is an equivalence and is part of an adjoint equivalence
  <T, K; eta, 1> : C -> A with counit the identity.  Therefore A is
- reflective in C."
+ reflective in C.”
 
  The paragraph immediately before it supplies the proof idea, reading
  the general characterization of adjoint equivalences at an insertion:
 
- "In this proof, suppose that A is a full subcategory of C and that
+ “In this proof, suppose that A is a full subcategory of C and that
  S = K : A -> C is the insertion.  For objects a in A subset C we can
  then choose a_0 = a = Ka and eta_{Ka} the identity.  Then K eps_a = 1,
- hence eps_a = 1 for all a."
+ hence eps_a = 1 for all a.”
 
- and the paragraph after it records the two riders: "This includes in
- particular the case already noted, when A is a skeleton of C", and the
- definition of a LEFT-ADJOINT-LEFT-INVERSE, with its Exercise 4 ("G is an
- isomorphism of A to a reflective subcategory of X").  Exercise 4 is a
+ and the paragraph after it records the two riders: “This includes in
+ particular the case already noted, when A is a skeleton of C”, and the
+ definition of a LEFT-ADJOINT-LEFT-INVERSE, with its Exercise 4 (“G is an
+ isomorphism of A to a reflective subcategory of X”).  Exercise 4 is a
  separate catalog item and is cited here, not proved.
 
  ** What the proposition asks, and at which strength each half lands
@@ -67,8 +67,8 @@ Generalizable All Variables.
 
  ** The hypothesis, first class
 
- [IsoDense S] is Mac Lane's "every c in C is isomorphic (in C) to some
- object of A", with the object CHOSEN: a Type-valued sigma handing back,
+ [IsoDense S] is Mac Lane's “every c in C is isomorphic (in C) to some
+ object of A”, with the object CHOSEN: a Type-valued sigma handing back,
  for each c, an object a of the subcategory together with an isomorphism
  Incl a =~= c in C.  This is exactly the reading [EssentiallySurjective]
  (Theory/Equivalence.v) already takes -- its [eso_obj] field is a
@@ -130,9 +130,9 @@ Generalizable All Variables.
 
  ** The counit
 
- Mac Lane's "with counit the identity" rests on a case distinction his
- prose does not mark as one, though it states the choice out loud: "For
- objects a in A subset C we can then choose a_0 = a".  That is a choice
+ Mac Lane's “with counit the identity” rests on a case distinction his
+ prose does not mark as one, though it states the choice out loud: “For
+ objects a in A subset C we can then choose a_0 = a”.  That is a choice
  made per object, DIFFERENTLY for objects already in the subcategory
  than for the rest.  Here the choice is one
  function [D], applied uniformly, so the representative of an object of
@@ -194,15 +194,15 @@ Generalizable All Variables.
  automorphism of [a], so the counit still need not be the identity.  Such
  a hypothesis is therefore not sufficient, and the witness above is one
  where it does not hold.  Mac Lane's remark needs the isomorphism chosen
- to be the identity too, which is what his "and eta_{Ka} the identity"
+ to be the identity too, which is what his “and eta_{Ka} the identity”
  says.  No [eq_refl] identity is claimed for that case either: the
  triangle identity through which the counit would be read is an
  [approx]-equation.
 
  ** The skeleton rider, and a note on the order of events
 
- Mac Lane's "This includes in particular the case already noted, when A
- is a skeleton of C" is [skeleton_IsoDense] and [skeleton_reflective]: a
+ Mac Lane's “This includes in particular the case already noted, when A
+ is a skeleton of C” is [skeleton_IsoDense] and [skeleton_reflective]: a
  [Skeleton] (Theory/Skeleton.v) carries [skel_rep] and [skel_iso],
  which ARE iso-density data with the isomorphism in the reverse
  orientation, so [skeleton_IsoDense] pairs [skel_rep] with [iso_sym] of
@@ -417,7 +417,7 @@ Context (S : Subcategory C).
 (** ** The hypothesis / ** 假设 *)
 
 (*
- Mac Lane's "every c in C is isomorphic (in C) to some object of A", with
+ Mac Lane's “every c in C is isomorphic (in C) to some object of A”, with
  the object chosen.  The sigma is Type-valued, so the representative and
  the isomorphism are both DATA. 
 
@@ -593,8 +593,8 @@ Arguments IsoDense {C} S.
 (** ** The skeleton rider / ** 骷髅骑士 *)
 
 (*
- Mac Lane's "This includes in particular the case already noted, when A
- is a skeleton of C".  [skel_iso] is stated in the reverse orientation,
+ Mac Lane's “This includes in particular the case already noted, when A
+ is a skeleton of C”.  [skel_iso] is stated in the reverse orientation,
  so the whole content of this passage is [iso_sym]. 
 
  --------

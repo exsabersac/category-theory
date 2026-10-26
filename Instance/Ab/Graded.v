@@ -23,7 +23,7 @@ Open Scope category_scope.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., §II.4 Exercise 3, printed p. 41 (PDF 51) —
  maclane:II.4:ex3
  nLab:      https://ncatlab.org/nlab/show/graded+object
@@ -193,7 +193,7 @@ Qed.
  The five data fields of [GradedAb] and of the indexed product over
  the constant family agree on the nose.  These are equalities of
  TYPES and of the data carried by the two records — the library's
- convertibility exception to the "never [=] on morphisms" rule — and
+ convertibility exception to the “never [=] on morphisms” rule — and
  they are what makes the comparison functors below the identity. 
 
  --------
@@ -281,8 +281,8 @@ Qed.
 (** ** Mac Lane §II.4 Exercise 3 / ** 马克·莱恩 §II.4 练习 3 *)
 
 (*
- Graded abelian groups are the diagrams of shape "the discrete
- category on the degrees" in Ab.  The whole content of the discrete
+ Graded abelian groups are the diagrams of shape “the discrete
+ category on the degrees” in Ab.  The whole content of the discrete
  shape — naturality is free, a functor is its object function — is
  Instance/Fun/Discrete.v's [Fun_Discrete_PiCat], consumed here at
  A := nat and B := Ab; this file contributes the second leg. 

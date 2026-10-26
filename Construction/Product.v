@@ -42,7 +42,7 @@ Generalizable All Variables.
 
  The product category exists so that a functor of several variables
  requires no theory of its own.  In the founding paper of the subject
- (Eilenberg and Mac Lane, "General Theory of Natural Equivalences",
+ (Eilenberg and Mac Lane, “General Theory of Natural Equivalences”,
  Transactions of the AMS 1945), functors in two arguments are axiomatized
  directly: its §3 posits an object-function and a mapping-function subject
  to an identity condition and to an interchange condition equating the
@@ -54,8 +54,8 @@ Generalizable All Variables.
  characterizes such functors by two families of partial functors agreeing
  on objects and satisfying interchange.  Riehl introduces the product for
  the same reason, so that the covariant and contravariant represented
- functors "assemble into a single bifunctor, which is the name for a
- functor of two variables" (Riehl, Category Theory in Context, Dover
+ functors “assemble into a single bifunctor, which is the name for a
+ functor of two variables” (Riehl, Category Theory in Context, Dover
  2016, Definition 1.3.12).  Once [Product] is in hand, every general
  theorem about functors — naturality, composition, adjunctions, limits —
  applies verbatim to multivariable ones.
@@ -73,13 +73,13 @@ Generalizable All Variables.
  precisely because they commute; separate functoriality does not in
  general yield joint functoriality, and the categories where the two
  notions come apart are the premonoidal categories of
- Structure/Premonoidal.v (Milewski, "Functoriality", 2015).  The
+ Structure/Premonoidal.v (Milewski, “Functoriality”, 2015).  The
  companion construction classifying separately-functorial maps with no
  interchange at all is the funny tensor product of Construction/Funny.v;
  indeed Cat carries exactly two symmetric closed monoidal structures —
  this cartesian product and the funny tensor — and no others (Foltz,
- Lair and Kelly, "Algebraic categories with few monoidal biclosed
- structures or none", Journal of Pure and Applied Algebra 1980).
+ Lair and Kelly, “Algebraic categories with few monoidal biclosed
+ structures or none”, Journal of Pure and Applied Algebra 1980).
 
  Mixed variance is handled through opposites: contravariance in one slot
  is covariance from the opposite category in that slot, and
@@ -92,8 +92,8 @@ Generalizable All Variables.
  Theory/Profunctor.v, and the dinatural transformations of
  Theory/Dinatural.v.  The tensor bifunctor also carries the physical
  reading of monoidal categories, modelling composite systems in quantum
- foundations and quantum informatics (Coecke and Paquette, "Categories
- for the practising physicist", 2009); the ZX-calculus instance
+ foundations and quantum informatics (Coecke and Paquette, “Categories
+ for the practising physicist”, 2009); the ZX-calculus instance
  Instance/ZX.v imports this file for exactly that tensor.  Double
  diagrams are functors from a product of index categories, and [Swap] is
  the symmetry through which limits over them are interchanged (Riehl

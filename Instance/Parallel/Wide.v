@@ -48,7 +48,7 @@ Generalizable All Variables.
  That name is already taken, by the two-arrow shape this generalizes, and
  this file Requires it (the comparison needs both); [WideParallel] is used
  instead.  The objects are NOT redeclared: [ParObj], [ParX] and [ParY] are
- imported from [Instance/Parallel.v], so "the same two objects" is a
+ imported from [Instance/Parallel.v], so “the same two objects” is a
  definitional fact rather than a convention.
 
  ENCODING, and why the obvious generalization is not the one taken.

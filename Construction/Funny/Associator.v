@@ -26,11 +26,11 @@ Generalizable All Variables.
    singleton [D □ E]-word; each outer right step [rstep h] becomes a right
    step carrying the singleton inner right step.  The backward functor
    un-flattens symmetrically.  Both directions are built from the pushout
-   universal property [FunnyUP] out of "inner" injection-like functors
+   universal property [FunnyUP] out of “inner” injection-like functors
    ([FunnyAssocInnerL]/[FunnyAssocInnerR]), so all functoriality is
-   inherited rather than re-proved by word induction (Weber, "Free products
-   of higher operad algebras", TAC 28:2 (2013), §2; nLab, "funny tensor
-   product").
+   inherited rather than re-proved by word induction (Weber, “Free products
+   of higher operad algebras”, TAC 28:2 (2013), §2; nLab, “funny tensor
+   product”).
 
    The round trips are the identity on objects up to re-tupling of pairs
    and are proved by [Funny_strict_eq] (Construction/Funny/StrictEq.v) from

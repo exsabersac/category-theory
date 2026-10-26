@@ -20,7 +20,7 @@ nLab: https://ncatlab.org/nlab/show/applicative+functor
    comparison lax_pure : I ~> F I and the tensorial strength combine into the
    point operation pure : A ~> F A.  This is the categorical source of the
    Haskell [Applicative] method pure : a -> F a (McBride and Paterson,
-   "Applicative programming with effects", JFP 18(1), 2008).
+   “Applicative programming with effects”, JFP 18(1), 2008).
 
    Following nLab, pure[A] is the composite (read right to left, with ρ the
    right unitor unit_right, ε = lax_pure the unit comparison and st = strength)

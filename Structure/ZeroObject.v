@@ -14,14 +14,14 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
  A zero object in a category C is an object that is at once initial and
- terminal (nLab; Wikipedia calls it a "null object").  In this setoid-based
+ terminal (nLab; Wikipedia calls it a “null object”).  In this setoid-based
  library we do not demand that one chosen object literally play both roles:
  [ZeroObject] packages a terminal structure, an initial structure, and an
  isomorphism [zero_coincide] between the chosen initial object 0 and the
  chosen terminal object 1.  Since initial (resp. terminal) objects are
  unique up to unique isomorphism -- [initial_unique] and [terminal_unique],
  with [initial_arrow_unique] / [terminal_arrow_unique] supplying the
- "unique" half -- this is no loss of generality, and it avoids any appeal to
+ “unique” half -- this is no loss of generality, and it avoids any appeal to
  equality of objects.  [zero_object_unique] below is the corresponding
  statement for zero objects themselves.
 
@@ -225,7 +225,7 @@ Proof. apply (@zero_unique C (@zero_initial C Z1)). Qed.
 
 (*
  An arrow between the underlying objects of two zero objects is unique, so
- the isomorphism above is canonical -- the "up to a UNIQUE isomorphism" half
+ the isomorphism above is canonical -- the “up to a UNIQUE isomorphism” half
  of the statement, inherited from the terminal side. 
 
  --------

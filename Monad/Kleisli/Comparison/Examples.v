@@ -24,22 +24,22 @@ Generalizable All Variables.
 
 (** * The one-point monad on Sets: Exercise 3, and every algebra free  / * 集合上的单点单子：练习 3，并且每个代数都是免费的*)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+(* Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
          Springer GTM 5, 1998, §VI.5, Exercise 3, printed p. 148 (PDF
          p. 157) — maclane:VI.5:ex3
-   Book: Riehl, "Category Theory in Context", the paragraph after Lemma
+   Book: Riehl, “Category Theory in Context”, the paragraph after Lemma
          5.2.14, printed p. 194 (PDF p. 214) — riehl:5.2:lem14
    nLab: https://ncatlab.org/nlab/show/Kleisli+category
 
    WHAT THE BOOKS SAY, read from the page image and the PDF.  Mac Lane:
-   "Construct an example of an adjunction where F is not a bijection on
+   “Construct an example of an adjunction where F is not a bijection on
    objects.  Deduce that the equivalence X_T → FX in Exercise 2 need not
    be an isomorphism.  (Suggestion: S ↦ T(S) = the one-point-set defines
-   a monad in Set.)"  Exercise 2 is Monad/Kleisli/Comparison.v's, with
+   a monad in Set.)”  Exercise 2 is Monad/Kleisli/Comparison.v's, with
    Theorem 2's comparison functor L : X_T → A and FX the full
-   subcategory of A on the objects F x.  Riehl: "Lemma 5.2.14 also tells
+   subcategory of A on the objects F x.  Riehl: “Lemma 5.2.14 also tells
    us precisely when the Kleisli and Eilenberg–Moore categories are
-   equivalent: this is the case when all algebras are free."
+   equivalent: this is the case when all algebras are free.”
 
    THE ADJUNCTION.  [kleisli_point_adj] is Adjunction/LeftInverse.v's
    [point_adj] at Instance/Sets.v's terminal object, Erase ⊣ PointAt 1,
@@ -89,8 +89,8 @@ Generalizable All Variables.
    isomorphism.  The three are constructive theorems, with no axiom.
 
    EVERY ALGEBRA IS FREE.  The monad also witnesses the premise of
-   Comparison.v's [Kleisli_EM_equivalence_iff], Riehl's "all algebras
-   are free".  For an algebra (A, h), h : T A = 1 ~> A and the unique
+   Comparison.v's [Kleisli_EM_equivalence_iff], Riehl's “all algebras
+   are free”.  For an algebra (A, h), h : T A = 1 ~> A and the unique
    arrow ! : A ~> 1 are inverse, h ∘ ! being h ∘ η = id by terminality
    and the unit law, and ! ∘ h the identity of 1 by terminality; so
    (A, h) is isomorphic, by h, to the free algebra on A
@@ -121,7 +121,7 @@ Generalizable All Variables.
    NOT DELIVERED.  Nothing the exercise asks is left out.  The isomorphism
    refuted here is the one with Mac Lane's FX; with the proof-relevant
    image the corestriction is an isomorphism (above).  The identity
-   monad's witness of "every algebra free" is not built (above), and
+   monad's witness of “every algebra free” is not built (above), and
    Riehl's own two witnesses are issue #1359's. *)
 
 (*

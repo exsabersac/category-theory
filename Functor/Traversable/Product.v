@@ -17,11 +17,11 @@ Generalizable All Variables.
 (*
 nLab:      https://ncatlab.org/nlab/show/distributive+law
    HaskellWiki: https://wiki.haskell.org/Foldable_and_Traversable
-   Reference: Jaskelioff and Rypacek, "An Investigation of the Laws of
-              Traversals", MSFP 2012 (https://arxiv.org/abs/1202.2919)
+   Reference: Jaskelioff and Rypacek, “An Investigation of the Laws of
+              Traversals”, MSFP 2012 (https://arxiv.org/abs/1202.2919)
 
-   Wikipedia: none-exists - there is no Wikipedia page for "traversable
-   functor"; the closest published accounts are the HaskellWiki article and
+   Wikipedia: none-exists - there is no Wikipedia page for “traversable
+   functor”; the closest published accounts are the HaskellWiki article and
    the arXiv reference above (see also Category.Functor.Traversable).
 
    Here [F :*: G] is the pointwise tensor product of two endofunctors, from

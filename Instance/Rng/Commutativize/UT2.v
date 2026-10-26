@@ -1,10 +1,10 @@
 (*
    * * The commutator-ideal reflection is not trivial: upper-triangular UT2
 
-   Riehl, "Category Theory in Context", §4.6, Example 4.6.13 (ii),
-   printed p. 170 (PDF p. 190), read from the page image: "A similar
+   Riehl, “Category Theory in Context”, §4.6, Example 4.6.13 (ii),
+   printed p. 170 (PDF p. 190), read from the page image: “A similar
    construction defines a left adjoint to the inclusion CRing ↪ Ring
-   of commutative rings into the category of all rings."  The
+   of commutative rings into the category of all rings.”  The
    reflection is Instance/Rng/Commutativize.v; this satellite shows at
    one ring that it does something.
    nLab: https://ncatlab.org/nlab/show/reflective+subcategory

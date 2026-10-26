@@ -27,8 +27,8 @@ nLab: https://ncatlab.org/nlab/show/algebra+over+an+operad
    [O] to the endomorphism operad [EndOperad X] of
    Theory/Multicategory/Endomorphism.v.  That IS the definition here
    ([OperadAlgebra]), so the classical universal property of the
-   endomorphism operad — "an O-algebra structure on X is a map of operads
-   O ⟶ End(X)" — holds definitionally ([OperadAlgebra_is_MultiFunctor]).
+   endomorphism operad — “an O-algebra structure on X is a map of operads
+   O ⟶ End(X)” — holds definitionally ([OperadAlgebra_is_MultiFunctor]).
 
    THE CONVENIENCE CONSTRUCTOR.  The object map of such a multifunctor is
    forced (the colour type of [EndOperad X] is [poly_unit]), so an algebra
@@ -60,7 +60,7 @@ nLab: https://ncatlab.org/nlab/show/algebra+over+an+operad
    A RECORDED STRENGTH CHANGE, ON THE FORWARD DIRECTION ONLY.  An
    earlier revision of this paragraph stated that direction
    unconditionally: every [Comm]-algebra on an [X : Sets] yields a
-   commutative monoid.  Since the PR "algebraic carriers are sets"
+   commutative monoid.  Since the PR “algebraic carriers are sets”
    (2026-09-17) a [CMonObject] carries [cmon_prop], a [PropEquiv] for its
    carrier setoid, and [Comm_algebra_to_CMon] takes its carrier setoid
    straight from [X]; an arbitrary object of [Sets] supplies no [Prop]
@@ -576,7 +576,7 @@ Definition Comm : Operad := {|
 (**
 ** Comm-algebras in Sets are commutative monoids
 
-    Forward direction, and since the PR "algebraic carriers are sets"
+    Forward direction, and since the PR “algebraic carriers are sets”
     (2026-09-17) it asks the carrier for a [PropEquiv]; the strength-change
     paragraph of the file header records why, and names the two constants
     of this file that gained the hypothesis.
@@ -603,7 +603,7 @@ Section CommToCMon.
 
 Context {X : Sets}.
 (*
-Since the PR "algebraic carriers are sets" (2026-09-17) a [CMonObject]
+Since the PR “algebraic carriers are sets” (2026-09-17) a [CMonObject]
    carries [cmon_prop], and [Comm_algebra_to_CMon] below takes its carrier
    setoid straight from [X] -- an arbitrary object of [Sets], which supplies
    no [Prop] mirror of its own (Instance/Sets/Propositional.v's header records
@@ -849,8 +849,8 @@ End CMonToComm.
 
 (*
 AN EARLIER REVISION stated the left component without the [PropEquiv],
-   as "a Comm-algebra in [Sets] yields a commutative monoid on its
-   carrier".  Since the PR "algebraic carriers are sets" (2026-09-17) a
+   as “a Comm-algebra in [Sets] yields a commutative monoid on its
+   carrier”.  Since the PR “algebraic carriers are sets” (2026-09-17) a
    [CMonObject] carries [cmon_prop] and a bare [X : Sets] does not supply
    one, so that component now asks for it; see [Comm_algebra_to_CMon]
    above and the strength-change paragraph of the file header.  The right

@@ -15,9 +15,9 @@ Generalizable All Variables.
 (*
  nLab:    https://ncatlab.org/nlab/show/Bishop+set
  nLab:    https://ncatlab.org/nlab/show/h-set
- Book:    The Univalent Foundations Program, "Homotopy Type Theory", IAS
+ Book:    The Univalent Foundations Program, “Homotopy Type Theory”, IAS
  2013, Definition 3.1.1 and Definition 3.3.1
- Book:    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:    Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §V.6 and §V.7, printed p. 128
 
  Lib/Setoid/Propositional.v introduces [PropEquiv S]: the property that a
@@ -384,7 +384,7 @@ Defined.
 
 (*
  The same statement for a whole category, as a transport rather than an
- instance: "C's hom-setoid IS strict equality" is not a property of an
+ instance: “C's hom-setoid IS strict equality” is not a property of an
  arbitrary [C] that instance resolution can check, so it is taken as a
  hypothesis. 
 

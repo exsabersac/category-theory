@@ -56,7 +56,7 @@ nLab: https://ncatlab.org/nlab/show/skeleton
    resulting equivalence IS the chosen family, and [skel_reflect_obj] holds by
    [reflexivity] — and [skel_uniq] is what [skeleton_is_skeletal] consumes.
    This is the discipline of Theory/Equivalence.v's [EssentiallySurjective],
-   where "there exists a preimage" is replaced by "here is one", and the
+   where “there exists a preimage” is replaced by “here is one”, and the
    packaging of [SolutionSet] in Adjunction/SAFT.v and [AdamekData] in
    Theory/Adamek.v: a leaner-but-honest hypothesis form that never weakens the
    conclusion.
@@ -380,7 +380,7 @@ End SkeletalEquivalence.
 
 Arguments skeletal_equivalence_is_isomorphism {A B} SA SB F E.
 
-(** ** "A is a skeleton of C", packaged as data / ** “A 是 C 的骨架”，打包为数据 *)
+(** ** “A is a skeleton of C”, packaged as data / ** “A 是 C 的骨架”，打包为数据 *)
 
 (*
 Mac Lane §IV.4 Definition 3, first half; Riehl Definition 1.5.16.  The
@@ -506,7 +506,7 @@ Definition skeleton_remark {C : Category} (S : Skeleton C) :
 THE GROUPOID OF FINITE SETS AND BIJECTIONS is not in tree, and this
    development does not pretend otherwise.  Riehl's Example 1.5.18 computes
    its skeleton — the naturals, with the symmetric groups as automorphism
-   groups and no morphisms between distinct numbers — but "the skeleton OF"
+   groups and no morphisms between distinct numbers — but “the skeleton OF”
    needs the ambient groupoid, and there is none: Construction/Groupoid.v
    supplies only the core [Groupoid C] of a given C, and building the groupoid
    of ALL finite sets over [Sets] would reproduce the universe obstruction

@@ -21,7 +21,7 @@ Generalizable All Variables.
 
  - the existing setoid equivalences on [B] (lifted via [inl])
  and on [C] (lifted via [inr]);
- - the "glue" identifications [inl (f a) ~ inr (g a)] for every [a : A].
+ - the “glue” identifications [inl (f a) ~ inr (g a)] for every [a : A].
 
  This matches the standard Set construction: the disjoint union (coproduct)
  modulo the finest equivalence relation with [f a ~ g a].  The cocone legs

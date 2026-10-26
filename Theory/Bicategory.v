@@ -66,12 +66,12 @@ Why weaken a 2-category: examples, coherence, and the monad slogan
 
    nLab:      https://ncatlab.org/nlab/show/bicategory
    Wikipedia: https://en.wikipedia.org/wiki/Bicategory
-   Paper: Bénabou, J., "Introduction to bicategories", Reports of the
+   Paper: Bénabou, J., “Introduction to bicategories”, Reports of the
           Midwest Category Seminar, LNM 47, Springer 1967, pp. 1-77
-   Paper: Kelly, G.M., Street, R., "Review of the elements of
-          2-categories", LNM 420, Springer 1974, pp. 75-103
-   Paper: Mac Lane, S., Paré, R., "Coherence for bicategories and indexed
-          categories", J. Pure Appl. Algebra 37, 1985, pp. 59-80
+   Paper: Kelly, G.M., Street, R., “Review of the elements of
+          2-categories”, LNM 420, Springer 1974, pp. 75-103
+   Paper: Mac Lane, S., Paré, R., “Coherence for bicategories and indexed
+          categories”, J. Pure Appl. Algebra 37, 1985, pp. 59-80
 
    The notion is due to Bénabou (1967).  A strict 2-category demands that
    horizontal composition of 1-cells be associative and unital on the
@@ -116,8 +116,8 @@ Why weaken a 2-category: examples, coherence, and the monad slogan
    the category axioms.  Varying the ambient bicategory specializes the
    slogan: a monad in Prof is a promonad, the categorical content of
    Hughes's arrows and the setting for profunctor optics (Milewski,
-   "Promonads, Arrows, and Einstein Notation for Profunctors", 2019;
-   Clarke et al., "Profunctor Optics, a Categorical Update", arXiv 2020).
+   “Promonads, Arrows, and Einstein Notation for Profunctors”, 2019;
+   Clarke et al., “Profunctor Optics, a Categorical Update”, arXiv 2020).
    More broadly, a bicategory is where composition given by a universal
    construction is modeled without asserting a strict equality it does not
    have.
@@ -461,8 +461,8 @@ The two coherence laws: the triangle relates the unitors to the associator
 (*
 Smart constructor for [Bicategory], mirroring [Build_Category']: it takes
    every field except `vcompose_assoc_sym` and supplies that symmetric form
-   automatically as `symmetry (vcompose_assoc …)`. This is "what symmetry
-   permits" — the dual orientation of vertical associativity carries no extra
+   automatically as `symmetry (vcompose_assoc …)`. This is “what symmetry
+   permits” — the dual orientation of vertical associativity carries no extra
    content — and keeps duality definitional exactly as in [Category]. Intended
    for use with `unshelve refine`, leaving the coherence obligations as goals.
 

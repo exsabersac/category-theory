@@ -14,10 +14,10 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/terminal+object
  Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
- nLab: "A terminal object may also be viewed as a limit over the empty
- diagram." Wikipedia: "Terminal objects in a category C may also be defined
- as limits of the unique empty diagram 0 → C," and "a terminal object can be
- thought of as an empty product" (the nullary product).
+ nLab: “A terminal object may also be viewed as a limit over the empty
+ diagram.” Wikipedia: “Terminal objects in a category C may also be defined
+ as limits of the unique empty diagram 0 → C,” and “a terminal object can be
+ thought of as an empty product” (the nullary product).
 
  Here `0` is the empty category (Instance/Zero.v) and `F : 0 ⟶ C` is the
  unique empty diagram. [Terminal_Limit] shows the two notions coincide: F has

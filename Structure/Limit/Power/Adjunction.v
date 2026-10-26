@@ -39,13 +39,13 @@ Generalizable All Variables.
  Sources, cited BY LOCATION, both read off the RENDERED page (the printed
  page number and the PDF page number differ by a constant +9, verified):
 
- - Mac Lane, "Categories for the Working Mathematician", 2nd ed.
+ - Mac Lane, “Categories for the Working Mathematician”, 2nd ed.
  (Springer GTM 5), section IV.2, exercise 12, printed p. 90
  (PDF p. 99), item [maclane:IV.2:ex12], VERBATIM:
 
- "12. If X is a set and C a category with powers and copowers,
+ “12. If X is a set and C a category with powers and copowers,
  prove that the copower  c ↦ X · c  is left adjoint to the power
- c ↦ c^X."
+ c ↦ c^X.”
 
  That is the theorem this file exists for, and
  [Copower_Power_Adjunction] is its name.
@@ -53,8 +53,8 @@ Generalizable All Variables.
  - Mac Lane, same book, section IV.7, exercise 1, printed p. 102
  (PDF p. 111), item [maclane:IV.7:ex1], VERBATIM AS PRINTED:
 
- "1. Interpret the definition  C(X · a, c) ≅ Set(X, C(c, a))  of
- copowers X · a in C as an adjunction with parameter a."
+ “1. Interpret the definition  C(X · a, c) ≅ Set(X, C(c, a))  of
+ copowers X · a in C as an adjunction with parameter a.”
 
  See the misprint disclosure below.  Nothing in THIS section of the
  file discharges Ex 1; the quote is carried because the variance
@@ -62,7 +62,7 @@ Generalizable All Variables.
 
  ★ THE PRINTED FORM OF §IV.7 Ex 1 HAS THE VARIANCE WRONG.  It is a
  MISPRINT, not an OCR artifact: the page was read at 400 dpi and the
- [pdftotext] layer agrees, printing "Set (X, C(c, a))".  The reason it
+ [pdftotext] layer agrees, printing “Set (X, C(c, a))”.  The reason it
  cannot be what is meant is a variance count and not a matter of taste:
 
  LHS  C(X·a, c)        is COVARIANT     in c
@@ -76,7 +76,7 @@ Generalizable All Variables.
  what Structure/Limit/Power/Hom.v's [copower_hom_iso] already proves --
  [copower_hom_functor J b] is [c ↦ ∏_J C(b,c)], covariant, exactly as the
  variance count requires.  The printed form is disclosed here rather than
- reproduced, and rather than silently "fixed".
+ reproduced, and rather than silently “fixed”.
 
  ★ THE ISSUE AND THE BOOK PARAMETRIZE DIFFERENT VARIABLES.  Ex 12 above
  fixes the SET X and varies the object; Ex 1 fixes nothing and asks for the
@@ -86,23 +86,23 @@ Generalizable All Variables.
  (= Ex 12) holds FIXED.  Both readings are true and neither implies the
  other; this section delivers Ex 12, at a fixed [J].
 
- PRIOR ART -- THE ISSUE'S "Current state" IS STALE, AND HERE IS THE
+ PRIOR ART -- THE ISSUE'S “Current state” IS STALE, AND HERE IS THE
  CRITERION.
 
- THE CRITERION, stated once and used for every count below: "any
+ THE CRITERION, stated once and used for every count below: “any
  whole-word occurrence in any [.v] file OTHER THAN THIS ONE, comments
- included", reproduced by
+ included”, reproduced by
 
  rg -l -w -e '<token>' -g '*.v' \
  -g '!Structure/Limit/Power/Adjunction.v' .
 
- Issue #366 says: "Absent.  Searches for [copower], [cotensor] and
- [tensoring] return nothing."  That is FALSE for [copower], which AT THE
+ Issue #366 says: “Absent.  Searches for [copower], [cotensor] and
+ [tensoring] return nothing.”  That is FALSE for [copower], which AT THE
  BASE COMMIT (every count in this paragraph is taken there, before this
  file and its probe existed) occurs in
  THREE files -- Structure/Limit/Power.v (361 lines),
  Structure/Limit/Power/Hom.v (548) and Test/ProbePower.v -- all delivered
- by issue #321, and the module path the issue "suggests",
+ by issue #321, and the module path the issue “suggests”,
  Structure/Limit/Power.v, is ALREADY TAKEN by it.  What IS absent is the
  FUNCTOR: [Power_Functor], [Copower_Functor], [power_fmap] and
  [copower_fmap] each return ZERO files, so functoriality in the object
@@ -113,7 +113,7 @@ Generalizable All Variables.
  probe as well.)
 
  Accordingly a QA correction on the issue supersedes its first three work
- items with "consume, do not rebuild", and this file consumes: #321's
+ items with “consume, do not rebuild”, and this file consumes: #321's
  [power], [copower], [power_ev], [copower_inj], [power_ump], [copower_ump],
  [power_desc], [copower_desc], and -- for the adjunction proper -- its two
  already-proved characterizing bijections [power_hom_iso_at] and
@@ -167,11 +167,11 @@ Generalizable All Variables.
  obligations -- agrees with [Copower_Functor J] on BOTH data fields at
  [eq_refl], and the WHOLE RECORD is refused:
 
- The term "eq_refl" has type
- "Copower_Functor_direct = Copower_Functor_direct"
+ The term “eq_refl” has type
+ “Copower_Functor_direct = Copower_Functor_direct”
  while it is expected to have type
- "Copower_Functor_direct = Copower_Functor J"
- (cannot unify "Copower_Functor_direct" and "Copower_Functor J").
+ “Copower_Functor_direct = Copower_Functor J”
+ (cannot unify “Copower_Functor_direct” and “Copower_Functor J”).
 
  The two data fields agreeing is what says nothing is LOST by taking the
  cheap route; the record differing is the three [Program]-rebuilt law
@@ -182,10 +182,10 @@ Generalizable All Variables.
  [@Copower_Functor C HC J = @Power_Functor (C^op) HC J := eq_refl] is
  refused at the STATEMENT, before any [eq_refl] is examined, the two
  constants not sharing a type ([C ⟶ C] against [C^op ⟶ C^op]); the
- error carries no "cannot unify" clause:
+ error carries no “cannot unify” clause:
 
- The term "Power_Functor J" has type "C^op ⟶ C^op"
- while it is expected to have type "C ⟶ C".
+ The term “Power_Functor J” has type “C^op ⟶ C^op”
+ while it is expected to have type “C ⟶ C”.
 
  That spelling matters.  Written [Copower_Functor J = @Power_Functor
  (C^op) HC J], with the left side's category IMPLICIT, the statement
@@ -196,7 +196,7 @@ Generalizable All Variables.
  error, and the probe's negative 2 records the episode.  The same
  equation at [C] ([Copower_Functor J = Power_Functor J]) is negative 3,
  and it is CONVERSION: both sides share [C ⟶ C] and the error ends in
- [cannot unify "Copower_Functor J" and "Power_Functor J"].
+ [cannot unify “Copower_Functor J” and “Power_Functor J”].
 
  So [Copower_Functor J] is [Opposite_Functor] OF the op-power functor and
  is NOT that functor; what holds on the nose is the double opposite,
@@ -205,7 +205,7 @@ Generalizable All Variables.
  [Copower_Power_Adjunction J : Copower_Functor J ⊣ Power_Functor J] is
  Ex 12.  Its hom-set isomorphism is the COMPOSITE of #321's two bijections
  rather than a fresh derivation from the universal properties, which is
- what "consume, do not rebuild" means here and is the issue's stated
+ what “consume, do not rebuild” means here and is the issue's stated
  reviewer check that the file does not fork the API.  The composite is
  well-founded because the two bijections share their right-hand side ON THE
  NOSE: [copower_hom_iso_at (copower_ump J b) c] and
@@ -223,11 +223,11 @@ Generalizable All Variables.
  not vacuous through a coercion: at the SWAPPED middle [cp_middle c b] the
  copower one is refused, and the error prints the donor's real target,
 
- The term "copower_hom_iso_at (copower_ump J b) c" has type
- "… ≅ (J ⋔ {| carrier := b ~{ C }~> c; is_setoid := homset b c |})%power"
- while it is expected to have type "… ≅ cp_middle J c b".
+ The term “copower_hom_iso_at (copower_ump J b) c” has type
+ “… ≅ (J ⋔ {| carrier := b ~{ C }~> c; is_setoid := homset b c |})%power”
+ while it is expected to have type “… ≅ cp_middle J c b”.
 
- which is a plain typing mismatch -- no "cannot unify", no universe clause.
+ which is a plain typing mismatch -- no “cannot unify”, no universe clause.
 
  UNIVERSES, MEASURED OFF BOTH THE BINDER AND THE BLOCK
 
@@ -253,7 +253,7 @@ Generalizable All Variables.
  Read as a boundary a consumer meets: at an index universe strictly
  ABOVE [C]'s hom-and-proof level, [Power_Functor], [Copower_Functor]
  and [power_fmap] are ACCEPTED while [Copower_Power_Adjunction] is
- REFUSED ("Cannot enforce ji <= ..."), pinned as probe negative 14 with
+ REFUSED (“Cannot enforce ji <= ...”), pinned as probe negative 14 with
  those three as its controls.
 
  ★ THOSE FOUR ARE NOT CREATED BY COMPOSING, AND THE ISOLATING EXPERIMENT
@@ -279,14 +279,14 @@ Generalizable All Variables.
  seven constants measured ([power_fmap], [Power_Functor], [Copower_Functor],
  [power_functor_ev], [copower_functor_inj], [cp_adj_iso],
  [Copower_Power_Adjunction]).  RECORDED CORRECTION: an earlier revision
- continued "That is strictly better than the limit-shaped route:
+ continued “That is strictly better than the limit-shaped route:
  [power_of_limit@{u u0 u1}] reads [∀ {C : Category@{u1 Set Set}} …],
  pinning [C]'s hom AND proof to the literal [Set] in its binder.  Going
  through the CLASS ([power]/[power_ev]/[power_ump]) rather than through
- [Limit (DiscreteCat_Functor …)] avoids that pin entirely."  The
+ [Limit (DiscreteCat_Functor …)] avoids that pin entirely.”  The
  comparison no longer holds, because the pin is gone:
  [DiscreteCat_Functor] was annotated in place at Instance/Discrete.v
- in the PR "algebraic carriers are sets" (2026-09-17), and the
+ in the PR “algebraic carriers are sets” (2026-09-17), and the
  limit-shaped route now carries no literal [Set] either
  (Structure/Limit/Power.v's own universe note records the measurement).
  The class route is still preferred, but for the identification the
@@ -304,7 +304,7 @@ Generalizable All Variables.
  [fobj[Copower_Functor J] y].  A lemma stated naively gets [copower J y] in
  both positions and a lemma stated with the injection ascribed to
  [b ~> fobj[Copower_Functor J] b] gets [fobj[…] x] in both, so BOTH are
- rejected with "Found no subterm matching", the second one printing an
+ rejected with “Found no subterm matching”, the second one printing an
  ascription the elaborator had already erased.  The repair is not a third
  spelling but to stop rewriting: [apply compose_respects] followed by
  [symmetry; exact (copower_functor_inj J g j)] closes it by CONVERSION,
@@ -315,11 +315,11 @@ Generalizable All Variables.
  [Copower_Power_Adjunction] closed with [Qed] instead breaks
  [cp_adj_readback] outright:
 
- The term "eq_refl" has type
- "adj[Copower_Power_Adjunction] = adj[Copower_Power_Adjunction]"
+ The term “eq_refl” has type
+ “adj[Copower_Power_Adjunction] = adj[Copower_Power_Adjunction]”
  while it is expected to have type
- "adj[Copower_Power_Adjunction] = cp_adj_iso b c"
- (cannot unify "adj[Copower_Power_Adjunction]" and "cp_adj_iso b c").
+ “adj[Copower_Power_Adjunction] = cp_adj_iso b c”
+ (cannot unify “adj[Copower_Power_Adjunction]” and “cp_adj_iso b c”).
 
  AS THE FILE NOW STANDS THERE ARE SEVEN [Defined]s AND SIXTY-ONE [Qed]s,
  counted over proof terminators in the code body, and EXACTLY THREE of the
@@ -332,12 +332,12 @@ Generalizable All Variables.
  a constant producing DATA stays transparent.  All THREE load-bearing ones
  are PINNED in the probe by an opaque [Qed]-closed clone whose readback is
  refuted (negatives 5, 12 and 13), so the flipping measurement is guarded;
- the four that are not load-bearing stay measured only, "flipping this
- changes nothing" being a counterfactual no refutation command can
+ the four that are not load-bearing stay measured only, “flipping this
+ changes nothing” being a counterfactual no refutation command can
  express.
 
  STATUS OF §A-§B ALONE, AS FIRST LANDED: axiom-free, 25/25 constants
- reporting "Closed under the global context", each queried by fully
+ reporting “Closed under the global context”, each queried by fully
  qualified name.  (The whole-file figure is 147/147; see the COST section
  below.)  The criterion for 25 is
  every [Definition] and [Parameter] head of
@@ -355,8 +355,8 @@ Generalizable All Variables.
  at a time.  All 25 are registered in the Makefile's
  [print-assumptions] gate, FULLY QUALIFIED: the three [Program] obligations
  are NOT reachable by their bare names in that target's single shared scope
- (measured -- the gate stops with "The reference
- Power_Functor_obligation_1 was not found in the current environment"), so
+ (measured -- the gate stops with “The reference
+ Power_Functor_obligation_1 was not found in the current environment”), so
  the whole block is qualified rather than only the three, following the
  [Powerset.Universal] precedent already in that file.
 
@@ -464,7 +464,7 @@ Generalizable All Variables.
  [[C^op ∏ C, Sets]] is the exercise's displayed isomorphism -- in its
  CORRECTED form [C(J · a, c) ≅ Set(J, C(a,c))], per the variance argument
  above -- upgraded from a family of bijections to an isomorphism of
- BIFUNCTORS, which is what "natural in the parameter a" asks for.  It takes
+ BIFUNCTORS, which is what “natural in the parameter a” asks for.  It takes
  no hypothesis beyond [HasIndexedCoproducts].
 
  The right-hand side is pleasing and is not a coincidence:
@@ -548,9 +548,9 @@ Generalizable All Variables.
  actions, so [Copower_Power_Adjunction J] is REFUSED there, the error
  naming the offending field:
 
- (cannot unify "λ (x y : obj[C^op^op]) (f g : x ~{ C^op^op }~> y),
- fmap_respects y x f g"
- and "Partial.Partial_l_obligation_1 C Coq C Copower_Bifunctor J").
+ (cannot unify “λ (x y : obj[C^op^op]) (f g : x ~{ C^op^op }~> y),
+ fmap_respects y x f g”
+ and “Partial.Partial_l_obligation_1 C Coq C Copower_Bifunctor J”).
 
  Both facts are pinned.  [cp_pa_adj] therefore rebuilds the record -- but
  over the SAME isomorphism and the same two uniqueness lemmas, so no
@@ -654,16 +654,16 @@ Generalizable All Variables.
 
  Test/ProbeCopower366.v mirrors this file's full [Require] list and carries
  FIFTEEN refutation commands = 1 instrument check + 14 negatives of THREE
- KINDS told apart by the error TEXT: 9 CONVERSION (each ends "cannot unify"
- between two terms of one type), 3 TYPING (a plain "has type ... expected",
- with NO "cannot unify" and no universe clause), 2 FORMABILITY (each ends
+ KINDS told apart by the error TEXT: 9 CONVERSION (each ends “cannot unify”
+ between two terms of one type), 3 TYPING (a plain “has type ... expected”,
+ with NO “cannot unify” and no universe clause), 2 FORMABILITY (each ends
  in a universe clause).  Each was stripped ONE AT A TIME, compiled ALONE,
  and produced exactly one [Error] whose whole text was read.  NEGATIVES 2
  AND 3 ARE THE SAME EQUATION AT TWO SPELLINGS AND COME OUT AS DIFFERENT
  KINDS -- with BOTH sides' implicits written out, [@Copower_Functor C HC J]
  against [@Power_Functor (C^op) HC J] is refused at the STATEMENT, the
- two constants not sharing a type and the error carrying no "cannot
- unify";
+ two constants not sharing a type and the error carrying no “cannot
+ unify”;
  against [Power_Functor J] at [C] they do share one and there is -- which
  is why a negative's kind is read off its error and never guessed from its
  statement.  A FALSE GUARD WAS CAUGHT THERE AND IS RECORDED IN THE PROBE:
@@ -673,7 +673,7 @@ Generalizable All Variables.
  evar) so that the two sides DID share a type; the error then fired at
  [eq_refl], refuting negative 3's fact restated at [C^op] and not the type
  mismatch the comment claimed.  The tell is general: a negative whose
- claimed reason is "the two sides do not share a type" but whose error
+ claimed reason is “the two sides do not share a type” but whose error
  fires at [eq_refl] elaborated its statement and is measuring something
  else -- the [obj[?C]] family Test/ProbeFiniteProducts335.v records.
  Negatives 12 and 13 pin the two further load-bearing [Defined]s
@@ -778,7 +778,7 @@ Generalizable All Variables.
 
  两个数据字段一致说明采取简便方法并没有丢失任何内容；记录不同的是三个 [Program] 重建的法则字段，就像此树的其他地方一样。(2) 类型检查，并且它是另一种类型，通过错误文本而不是标签来区分。 将双方的隐式参数都写出来时，[@Copower_Functor C HC J = @Power_Functor (C^op) HC J := eq_refl] 在语句处被拒绝，在检查任何 [eq_refl] 之前，这两个常量不共享类型（[C ⟶ C] 对 [C^op ⟶ C^op]）；错误不包含“无法统一”条款：
 
- “Power_Functor J”项的类型是“C^op ⟶ C^op”，而预期的类型是“C ⟶ C”。拼写很重要。写作 [Copower_Functor J = @Power_Functor (C^op) HC J] 时，左侧的范畴是隐含的，这个声明进行了详细说明——详述器重新解析该范畴为 [C^op] ，留下了余积实例为未解决的 evar —— 而错误在 [eq_refl] 处触发，它是负三在 [C^op] 的事实，而根本不是类型不匹配；这段的初稿正是引用了该错误，探针的负二记录了这个事件。同样的等式在 [C] （[Copower_Functor J = Power_Functor J]）处是负三，并且它是转换的：两边共享 [C ⟶ C]，错误最终出现在 [cannot unify "Copower_Functor J" and "Power_Functor J"] 。
+ “Power_Functor J”项的类型是“C^op ⟶ C^op”，而预期的类型是“C ⟶ C”。拼写很重要。写作 [Copower_Functor J = @Power_Functor (C^op) HC J] 时，左侧的范畴是隐含的，这个声明进行了详细说明——详述器重新解析该范畴为 [C^op] ，留下了余积实例为未解决的 evar —— 而错误在 [eq_refl] 处触发，它是负三在 [C^op] 的事实，而根本不是类型不匹配；这段的初稿正是引用了该错误，探针的负二记录了这个事件。同样的等式在 [C] （[Copower_Functor J = Power_Functor J]）处是负三，并且它是转换的：两边共享 [C ⟶ C]，错误最终出现在 [cannot unify “Copower_Functor J” and “Power_Functor J”] 。
 
  因此 [Copower_Functor J] 是 op-power 函子上的 [Opposite_Functor]，并不是该函子；准确成立的是双重对偶，即下方的 [copower_functor_double_op]。[Copower_Power_Adjunction J : Copower_Functor J ⊣ Power_Functor J] 是 Ex 12。它的同态集同构是 #321 的两个双射的复合，而不是从泛性质新推导出的，这里“使用，不重建”的意思就是如此，也是本问题中审查者提出的检查文件没有分叉 API 的问题。这个复合是有良好基础的，因为两个双射在右侧完全相同：[copower_hom_iso_at (copower_ump J b) c] 和 [power_hom_iso_at (power_ump J c) b] 都映射到 [Sets] 次方的 [J ⋔ C(b,c)]，下面写作 [cp_middle b c]，因此它们可以无比较映射地复合，而且 [cp_adj_iso] 是一个没有策略的 [:=]。只有 [Build_Adjunction'] 的两个自然性条款被证明，每个条款通过 [cp_to_uniq] 用几行完成。该共享着陆未被断言：[cp_copower_at_middle] 和 [cp_power_at_middle] 在类型命名 [cp_middle b c] 下提供两个捐赠者作为项，因此只有当该捐赠者的目标在 delta 内为 [cp_middle b c] 时，每个才会类型检查。[X = X] 的同义反复在此不会说任何东西，并且故意未被写出。通过强制转换，这些指派也不是空的：在 SWAPPED 中间 [cp_middle c b]，copower 一个被拒绝，错误会打印捐赠者的实际目标。  
 
@@ -804,10 +804,10 @@ Generalizable All Variables.
  [Copower_Power_Adjunction] 用 [Qed] 关闭，但却直接破坏了 [cp_adj_readback] ：
 
  术语 “eq_refl” 的类型是
- "adj [Copower_Power_Adjunction] = adj [Copower_Power_Adjunction]"
+ “adj [Copower_Power_Adjunction] = adj [Copower_Power_Adjunction]”
  而它被期望的类型是
- "adj [Copower_Power_Adjunction] = cp_adj_iso b c"
- （无法统一 "adj [Copower_Power_Adjunction]" 和 "cp_adj_iso b c"）。根据当前文件的情况，在代码主体中经过证明的终结点计数，有七个 [Defined] 和六十一 [Qed]，其中正好有三个是承重的——通过将每个单独的 [Qed] 翻转并重新编译来测量：[Copower_Power_Adjunction]（如上）、[cp_pa_adj] 和 [ex1_pa_adj]，每一个都能通过 [eq_refl] 读取回或伴随计算简化。其他四个——[power_of_weighted]、[copower_of_weighted]、[One_iprod_ump] 和 [One_icoprod_ump]——在保持其他所有内容不变的情况下编译为 [Qed]，并根据生成数据的常量保持透明的惯例被视为 [Defined]。所有三个承重的都被一个不透明的 [Qed] 闭合克隆 PINNED 在探针中，其回读被否定（负值 5、12 和 13），因此翻转测量是受保护的；四个不承重的保持仅测量，“翻转这个什么也不会改变”是一个反事实的否认命令无法表达的。§A-§B 单独的状态，首次加载时：无公理，25/25 常量，报告“在全局上下文下封闭”，每个均通过全限定名查询。（整个文件的数字是 147/147；见下文 COST 部分。）25 的标准是每个 [Definition] 和 [Parameter] 的头在 [Print Module Category.Structure.Limit.Power.Adjunction] 的空白平铺输出中——该命令将其模块头跨三行包装，因此首先需要对其进行按行锚定的扫描——其中包含 22 个源声明的头加上 [Power_Functor] 的三项 [Program] 义务，这对 [.glob] 扫描是不可见的（[.glob] 恰好包含 22 个 [def] / [prf] 条目）。该文件未声明 [Record]、[Class] 或 [Inductive]，因此不存在未列出的 [Build_*]。（[Print Module] 将一个不透明常量呈现为 [Parameter]；这里显示的八个是三个义务和五个普通的 [Qed] 引理，而不是公理，这正是上面的审核所检查的内容。）根据前述专利段落中提出的标准，所有25个名称都是自由的——在所有25个名称中，一个一个检查，没有任何冲突。所有25个名称都在 Makefile 的 [print-assumptions] 门中注册，完全限定：这三个 [Program] 义务在该目标的单一共享作用域中无法通过其裸名称访问（测量结果——该门提示“在当前环境中未找到引用 Power_Functor_obligation_1”），因此整个代码块被限定，而不仅仅是三个，遵循该文件中已经存在的 [Powerset.Universal] 先例。[make todo] 增长了，按 §A-§B 作为首次着陆，正好增加了一行，而且它是散文：上面的工程段落使用了一个普通的英语动词，目标的不区分大小写的模式在其第一个替代项上匹配该动词。自那以后，该动词已被替换，因此该文件现在贡献的命中为零：它不包含任何探测命令，也不包含任何类型的工单标记，而且你正在阅读的段落是以不增加任何命令的方式编写的。
+ “adj [Copower_Power_Adjunction] = cp_adj_iso b c”
+ （无法统一 “adj [Copower_Power_Adjunction]” 和 “cp_adj_iso b c”）。根据当前文件的情况，在代码主体中经过证明的终结点计数，有七个 [Defined] 和六十一 [Qed]，其中正好有三个是承重的——通过将每个单独的 [Qed] 翻转并重新编译来测量：[Copower_Power_Adjunction]（如上）、[cp_pa_adj] 和 [ex1_pa_adj]，每一个都能通过 [eq_refl] 读取回或伴随计算简化。其他四个——[power_of_weighted]、[copower_of_weighted]、[One_iprod_ump] 和 [One_icoprod_ump]——在保持其他所有内容不变的情况下编译为 [Qed]，并根据生成数据的常量保持透明的惯例被视为 [Defined]。所有三个承重的都被一个不透明的 [Qed] 闭合克隆 PINNED 在探针中，其回读被否定（负值 5、12 和 13），因此翻转测量是受保护的；四个不承重的保持仅测量，“翻转这个什么也不会改变”是一个反事实的否认命令无法表达的。§A-§B 单独的状态，首次加载时：无公理，25/25 常量，报告“在全局上下文下封闭”，每个均通过全限定名查询。（整个文件的数字是 147/147；见下文 COST 部分。）25 的标准是每个 [Definition] 和 [Parameter] 的头在 [Print Module Category.Structure.Limit.Power.Adjunction] 的空白平铺输出中——该命令将其模块头跨三行包装，因此首先需要对其进行按行锚定的扫描——其中包含 22 个源声明的头加上 [Power_Functor] 的三项 [Program] 义务，这对 [.glob] 扫描是不可见的（[.glob] 恰好包含 22 个 [def] / [prf] 条目）。该文件未声明 [Record]、[Class] 或 [Inductive]，因此不存在未列出的 [Build_*]。（[Print Module] 将一个不透明常量呈现为 [Parameter]；这里显示的八个是三个义务和五个普通的 [Qed] 引理，而不是公理，这正是上面的审核所检查的内容。）根据前述专利段落中提出的标准，所有25个名称都是自由的——在所有25个名称中，一个一个检查，没有任何冲突。所有25个名称都在 Makefile 的 [print-assumptions] 门中注册，完全限定：这三个 [Program] 义务在该目标的单一共享作用域中无法通过其裸名称访问（测量结果——该门提示“在当前环境中未找到引用 Power_Functor_obligation_1”），因此整个代码块被限定，而不仅仅是三个，遵循该文件中已经存在的 [Powerset.Universal] 先例。[make todo] 增长了，按 §A-§B 作为首次着陆，正好增加了一行，而且它是散文：上面的工程段落使用了一个普通的英语动词，目标的不区分大小写的模式在其第一个替代项上匹配该动词。自那以后，该动词已被替换，因此该文件现在贡献的命中为零：它不包含任何探测命令，也不包含任何类型的工单标记，而且你正在阅读的段落是以不增加任何命令的方式编写的。
  ────────────────────────────────────────────────────────────────────────
 
  C. 加权限制比较，以及它是一个协议Structure/Limit/Weighted.v 提出了由一个权重（WEIGHT）决定的极限。幂是对终端形状 [_1] 的加权极限，其中权重选择索引集合（SET），且图形（DIAGRAM）在 [b] 处恒定。[conical_weighted]（Weighted.v）不是这个定理，也没有被引用为该定理：它是对任意形状的常数权重，即加权极限 ⇒ 普通极限，这是圆锥情形，并不涉及幂。两个方向都已经证明，这正是使其成为两个表示之间的对应，而不是一个类的成员。[power_WeightedLimit] 将所选择的幂放入类中，而 [power_of_weighted] 则走相反的方向：对于该权重和该图的任意加权极限，[wlim_obj] 是一个幂，其评估为 [wpow_ev] ——跨 [wlim_iso] 传回的恒等映射。反之则不对环境范畴假设任何条件，甚至不假设它具有幂。[copower_of_weighted] 是对偶，而 [WeightedColimit] 是其所消耗的类。整个 [wlim_natural] 完全花费在每一边的恰好一个引理中（[wpow_from_is_precompose]，[wcop_from_is_postcompose]）。共幂的一半直接构建在 [1^op] 之上，并且不是一个操作实例化，两者的原因都已固定。余极限权重在形状上是逆变的，所以 [WeightedColimit W F] 将 [W] 放置在 [J^op] 之上；[Opposite _1 = _1] 在 [eq_refl] 被反驳（转换），并且 [Opposite_Functor (copower_diagram b) = @power_diagram (C^op) b] 也被反驳（类型——错误报告了形状，[1 ⟶ C^op] 对比 [1^op ⟶ C^op]）。因此，共幂的一半不能简单地在 [C^op] 处读取：这是 #321 的操作技巧使 §A 的共幂函子完全自由的地方不起作用。权重是离散的，这是被强制的而非方便的：幂的评估是由元素索引的，因此后退腿的尊敬性必须从 [j ≈ j'] 推导出 [ev j ≈ ev j']。[index_setoid J] 因此使用 [eq_Setoid]，并且 [wpow_cone] 和 [wcop_cocone] 都从中获得了免费的尊敬性。
@@ -839,9 +839,9 @@ Generalizable All Variables.
 
  E. 问题自身的第 4 项：将索引集作为参数这里参数槽保存索引，而可变参数是对象。右伴随正好是§A的幂函子——[pa_right Copower_ParametrizedAdjunction J = Power_Functor J]通过[eq_refl]——而部分函子在[eq_refl]（[copower_bifunctor_partial_obj]，[copower_bifunctor_partial_fmap]）的两个作用上与§A的共幂函子一致，但作为记录则不一致，这是下一段的内容。此外，[pa_adj]自身的霍姆集合同构正是§B的[cp_adj_iso]通过[eq_refl]（[pa_adj_iso_is_cp_adj_iso]）——因此§E没有干扰§B的对应。#396定理3随后组装了[Power_Bifunctor : Coq^op ∏ C ⟶ C]，在索引上是逆变的，并在[eq_refl]处对应[fobj (J, b) = power J b]。★ §B 同构在部分函子上赋值；§B 伴随关系没有赋值，并且错误说明了原因。[fobj[Partial_l Copower_Bifunctor J] b] 和 [fobj[Copower_Functor J] b] 在 [eq_refl] 上一致，因此 [cp_adj_iso J b c] 在部分函子的类型上赋值，没有插入任何内容；但是 [Adjunction] 是由函子 RECORD 索引，而不是由其两个作用索引，因此 [Copower_Power_Adjunction J] 在那里被拒绝，错误指明了有问题的字段：
 
- (无法统一 "λ (x y : obj [C^op^op] ) (f g : x ~{ C^op^op }~> y),
- fmap_respects y x f g"
- 和 "Partial.Partial_l_obligation_1 C Coq C Copower_Bifunctor J").
+ (无法统一 “λ (x y : obj [C^op^op] ) (f g : x ~{ C^op^op }~> y),
+ fmap_respects y x f g”
+ 和 “Partial.Partial_l_obligation_1 C Coq C Copower_Bifunctor J”).
 
  两个事实都被固定。因此 [cp_pa_adj] 重建记录 —— 但仍然基于相同的同构和相同的两个唯一性引理，所以没有重新推导出任何泛性质。共轭是被消耗的，而不是重新计算的。 [copower_reindex h] 是 #396 的 [param_transform] 和 [power_reindex h] 是它的 [pa_param_mate]，[power_reindex_is_conj_mate] 在 [eq_refl] 处记录为 #394 的 [conj_mate]；[power_reindex_conjugate] 是 [pa_natural_p] 被归属于 #394 的 [Conjugate]，这种归属本身就是完整的证明，因为 [pa_square_is_Conjugate] 精确地识别了两者；并且 [power_reindex_universal] 是 [pa_param_mate_universal]，因此配偶是唯一的共轭，而不仅仅是其中之一。指标上的函子性是 [pa_param_mate_id] / [pa_param_mate_comp] 和 [param_transform_id] / [_comp]，按名称引用。在这里被证明而非引用的是它们各自的基本解读：[copower_reindex_inj] 和 [power_reindex_ev] ([ev_{j'} ∘ τ_b ≈ ev_{h j'}])，第二个来自配偶的分量公式加上 [cp_pa_counit_inj]。★ §D 和 §E 是不同的陈述，且彼此不抵消。
  Mac Lane 的例 1 改变了 OBJECT；问题中的第 4 项改变了 INDEX，
@@ -1360,7 +1360,7 @@ Arguments copower_diagram {C} b.
 (*
    * ** C'. The converses: a weighted limit for that data IS a power
 
-   This is what turns §C from "the chosen power inhabits the class" into an
+   This is what turns §C from “the chosen power inhabits the class” into an
    agreement of the two presentations, which is the issue's stated reviewer
    check.  Nothing here assumes the ambient category has powers at all. 
 
@@ -1616,8 +1616,8 @@ Arguments Copower_Bifunctor {C HC}.
 
    The displayed isomorphism of the exercise, in its CORRECTED form
    [C(J · a, c) ≅ Set(J, C(a,c))], upgraded from a family of bijections to
-   an isomorphism of BIFUNCTORS on [C^op ∏ C] -- which is what "natural in
-   the parameter a" asks for.  No hypothesis beyond [HasIndexedCoproducts].
+   an isomorphism of BIFUNCTORS on [C^op ∏ C] -- which is what “natural in
+   the parameter a” asks for.  No hypothesis beyond [HasIndexedCoproducts].
 
    The right-hand side is [Power_Functor] AT [Sets] composed with the
    hom-bifunctor: Mac Lane's [Set(J, −)] is §A's own power functor. 

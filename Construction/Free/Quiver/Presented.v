@@ -81,8 +81,8 @@ Generalizable All Variables.
 
    THE ORDINAL 3.  The free category on the two-edge LINEAR quiver is
    already the ordinal 3 — its homs are the empty path at each node, [a],
-   [b] and [a] then [b] — so a relation-free "presentation of 3 by a
-   composable pair" is degenerate.  The non-degenerate reading, and the
+   [b] and [a] then [b] — so a relation-free “presentation of 3 by a
+   composable pair” is degenerate.  The non-degenerate reading, and the
    one the example below takes, is three generators a : 0 → 1, b : 1 → 2
    and c : 0 → 2 with the single relation c = b ∘ a, the commutative
    triangle.  [Instance/Ordinal.v]'s [Ordinal 3] is the comparison target
@@ -366,7 +366,7 @@ Qed.
 
    Restricting a functor out of the presented category along the unit
    gives back a quiver homomorphism, and that homomorphism automatically
-   satisfies the relations.  This is what makes Riehl's "exactly" honest
+   satisfies the relations.  This is what makes Riehl's “exactly” honest
    in both directions. 
 
    --------

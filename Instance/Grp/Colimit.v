@@ -51,7 +51,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Free_product
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_groups
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.7 Exercise 1 (book p. 128, PDF p. 137) asks that the free product of
  two groups be obtained from the adjoint functor theorem, and that its
  two injections be shown monic with images meeting in the trivial
@@ -62,13 +62,13 @@ Generalizable All Variables.
  it at the forgetful functor, as §V.6 does on book p. 123 (the page the
  in-repo catalog, doc/plan/books/maclane/inventory/V.json, gives for
  its entry maclane:V.6:construction-free-group).  Wikipedia's
- "Free product" gives the element-level picture this file never builds:
+ “Free product” gives the element-level picture this file never builds:
  reduced words alternating between the two factors.
 
  ** THE ISSUE'S SURVEY IS PARTLY STALE, MEASURED
 
- Issue #450 says the free product of groups is "prose only" and that
- there is "no [Grp]".  Neither held when this file was written.  [Grp]
+ Issue #450 says the free product of groups is “prose only” and that
+ there is “no [Grp]”.  Neither held when this file was written.  [Grp]
  is Instance/Grp.v (#255), and Instance/Grp/Pushout.v already builds the
  free product by generators and relations -- [Grp_free_product], the
  exported [Grp_Cocartesian] and [Grp_free_product_injections_Monic] --
@@ -78,8 +78,8 @@ Generalizable All Variables.
  diagonal functor (pattern ['GAFT[A-Za-z_]* +\(?@?Diagonal'], no hit), a
  [HasCoequalizers Grp] (no hit), and a [Cocomplete] at any algebraic
  category (pattern ['@?Cocomplete *\(?(Grp|Rng|Ring|Ab|CMon|RMod|Rg)'],
- whose one hit is Instance/Ab/DirectedColimit.v's prose "No [Cocomplete
- Ab]").  Those are what this file adds, and
+ whose one hit is Instance/Ab/DirectedColimit.v's prose “No [Cocomplete
+ Ab]”).  Those are what this file adds, and
  [Grp_coproduct_agrees] below says the free product it obtains IS the one
  Instance/Grp/Pushout.v built.
 
@@ -131,7 +131,7 @@ Generalizable All Variables.
  ([free_grp_extend]), and its kernel ([fg_ker] of Instance/Grp/FreeAFT.v)
  is a cocone congruence ([dker_cocone]) whose quotient maps to c by
  [fg_ker_med].  The kernel is a [Prop] because the TARGET c carries
- [grp_prop]; that is the property the PR "algebraic carriers are sets"
+ [grp_prop]; that is the property the PR “algebraic carriers are sets”
  (2026-09-17) added to every [GrpObject], and without it the index would
  not fit at the carrier universe.
 
@@ -140,9 +140,9 @@ Generalizable All Variables.
  quotient [fg_ker_med] maps out of only when [cc_grp _ dker_cocone]
  reduces to [fg_ker_is_cong].  Measured by closing [dker_cocone] with
  [Qed] in a copy of this file: [Diagonal_Grp_solution_set] is then
- refused with "The term "fg_ker_med (dflat c h)" has type "GrpHom (QGrp
- (fg_ker (dflat c h)) (fg_ker_is_cong (dflat c h))) c" while it is
- expected to have type "DQ (dker_idx c h) ~{ Grp }~> c"" (universe
+ refused with “The term ”fg_ker_med (dflat c h)“ has type ”GrpHom (QGrp
+ (fg_ker (dflat c h)) (fg_ker_is_cong (dflat c h))) c“ while it is
+ expected to have type ”DQ (dker_idx c h) ~{ Grp }~> c“” (universe
  instances elided).
 
  ** FINITE COLIMITS, THROUGH THE EXISTING BRIDGES
@@ -187,7 +187,7 @@ Generalizable All Variables.
  This file imports Instance/Grp/Pushout.v, whose [Grp_Cocartesian] is
  [#[export]].  Every statement below that mentions a coproduct therefore
  passes its [Cocartesian] argument EXPLICITLY, so that no headline says
- "via the adjoint functor theorem" while resolving to the words-based
+ “via the adjoint functor theorem” while resolving to the words-based
  instance.  Nothing in this file is registered as an [Instance].
 
  ** WHAT IS PROVED ABOUT WHAT WAS BUILT
@@ -206,7 +206,7 @@ Generalizable All Variables.
  the initial object with Instance/Grp.v's trivial group [Grp_Initial],
  and [Grp_coequalizer_agrees_normal_closure] compares the coequalizer of
  (f, 0) with Instance/Grp/Quotient/Colimit.v's quotient by the normal
- closure of the image of f (Riehl, "Category Theory in Context",
+ closure of the image of f (Riehl, “Category Theory in Context”,
  Example 3.1.25).  The last two could not have been stated before #450,
  when Instance/Grp.v's zero object lived only at [Set] carriers; #450
  wrote out its universes in place (see the essay above [Grp_trivial]
@@ -219,7 +219,7 @@ Generalizable All Variables.
  map.  That is NOT the exercise's own method.  The in-repo catalog's
  statement summary of §V.7 Exercise 1
  (doc/plan/books/maclane/inventory/V.json, entry maclane:V.7:ex1, book
- page 128) opens this half with "Using the product G x H", which in
+ page 128) opens this half with “Using the product G x H”, which in
  this library is the comparison G + H → G × H, Structure/Semiadditive.v's
  [can_comparison]; the retraction needs no product at all, and
  Theory/Subobject/Disjoint.v's header records why that route is
@@ -247,7 +247,7 @@ Generalizable All Variables.
  coproduct of two groups is not convertible to [Grp_free_product]:
  measured in a scratch file, [Example conv (G H : Grp) : @Coprod Grp
  Grp_Cocartesian_via_GAFT G H = Grp_free_product G H := eq_refl] is
- refused with "cannot unify "G + H" and "Grp_free_product G H"".
+ refused with “cannot unify ”G + H“ and ”Grp_free_product G H“”.
  Every agreement is therefore an isomorphism, carried as data:
  [Grp_free_product_iso],
  [Grp_initial_agrees] and [Grp_coequalizer_agrees_normal_closure] are
@@ -279,8 +279,8 @@ Generalizable All Variables.
  scratch file under [Monomorphic Constraint Set < gu]: at
  J : Category@{Set Set Set} and D : J ⟶ Grp@{gu Set},
  [@Diagonal_Grp_solution_set J D] is accepted, while
- [Grp_colim_via_GAFT@{gu _ _ Set Set _ _} J] is refused with "Universe
- inconsistency. Cannot enforce Set < Set because Set = Set."
+ [Grp_colim_via_GAFT@{gu _ _ Set Set _ _} J] is refused with “Universe
+ inconsistency. Cannot enforce Set < Set because Set = Set.”
  Test/ProbeAlgColimit450.v's N4 pins the refusal, with the solution set
  and [GAFT] applied to every argument but it both accepted at the same
  J as its controls.  The finite-colimit constants add, through
@@ -300,7 +300,7 @@ Generalizable All Variables.
 
  ** AXIOMS
 
- Every constant of this file reports "Closed under the global context".
+ Every constant of this file reports “Closed under the global context”.
 
  ** NOT DELIVERED
 
@@ -339,7 +339,7 @@ Generalizable All Variables.
 
  [Grp_Cocomplete_via_GAFT] 将这些形状组装成一个 [Cocomplete]。
 
- ** 解集：自由群上的锥同余遵循 Instance/Grp/FreeAFT.v 的一个思路，索引是一个 [Prop] 值的一族同余关系在项模型上，从不在 [Grp] 的对象之上 Σ（Structure/Complete.v 头部的大小说明解释了为什么后者的宇宙级别高了一层）。这里的项模型是自由群 [FGWord DGen]，基于载体的 DISJOINT UNION，[DGen] = Σ j, carrier (D j)，采用 Leibniz 等式。索引的一个成员（[DCongIdx]）是一个关系 [Rq]，并伴随一个证明 [IsCoconeCong Rq]：[Rq] 是群同余（[IsGrpCongruence]），它识别 `≈` 相等元素的字母（[cc_resp]），它使每个插入操作成为乘法性的（[cc_mul]），并且它将 [a] 识别为其在图的每条箭头下的像（[cc_nat]）。那三条额外的条款正是使得对商群的插入 [DQ i] 成为群同态（[dq_leg]，通过 Instance/Grp.v 的 [Build_GrpHom']，推导出单位律）并使它们成为一个余锥（[dq_arr]）。覆盖：一个余锥 h : D ⟹ Δ(c) 展开为生成元映射（[dflat]），延展到自由群（[free_grp_extend]），并且它的核（Instance/Grp/FreeAFT.v 中的 [fg_ker]）是一个余锥同余（[dker_cocone]），其商映射到 c，通过 [fg_ker_med]。核是一个 [Prop]，因为目标 c 具有 [grp_prop]；这就是 PR “代数承载是集合”（2026-09-17）添加到每个 [GrpObject] 的属性，如果没有它，指数将不适合承载宇宙。[dker_cocone] 以 [Defined] 结尾，并且必须如此。[QGrp] 依赖于 [IsGrpCongruence] 的证明，因此在核指数处的商只有在 [cc_grp _ dker_cocone] 化简为 [fg_ker_is_cong] 时才由 [fg_ker_med] 映射出。通过在本文件的一个副本中用 [Qed] 闭合 [dker_cocone] 来测量：[Diagonal_Grp_solution_set] 随后被拒绝，提示“项 "fg_ker_med (dflat c h)" 的类型为 "GrpHom (QGrp (fg_ker (dflat c h)) (fg_ker_is_cong (dflat c h))) c"，而期望的类型为 "DQ (dker_idx c h) ~{ Grp }~> c"”（省略了宇宙实例）。
+ ** 解集：自由群上的锥同余遵循 Instance/Grp/FreeAFT.v 的一个思路，索引是一个 [Prop] 值的一族同余关系在项模型上，从不在 [Grp] 的对象之上 Σ（Structure/Complete.v 头部的大小说明解释了为什么后者的宇宙级别高了一层）。这里的项模型是自由群 [FGWord DGen]，基于载体的 DISJOINT UNION，[DGen] = Σ j, carrier (D j)，采用 Leibniz 等式。索引的一个成员（[DCongIdx]）是一个关系 [Rq]，并伴随一个证明 [IsCoconeCong Rq]：[Rq] 是群同余（[IsGrpCongruence]），它识别 `≈` 相等元素的字母（[cc_resp]），它使每个插入操作成为乘法性的（[cc_mul]），并且它将 [a] 识别为其在图的每条箭头下的像（[cc_nat]）。那三条额外的条款正是使得对商群的插入 [DQ i] 成为群同态（[dq_leg]，通过 Instance/Grp.v 的 [Build_GrpHom']，推导出单位律）并使它们成为一个余锥（[dq_arr]）。覆盖：一个余锥 h : D ⟹ Δ(c) 展开为生成元映射（[dflat]），延展到自由群（[free_grp_extend]），并且它的核（Instance/Grp/FreeAFT.v 中的 [fg_ker]）是一个余锥同余（[dker_cocone]），其商映射到 c，通过 [fg_ker_med]。核是一个 [Prop]，因为目标 c 具有 [grp_prop]；这就是 PR “代数承载是集合”（2026-09-17）添加到每个 [GrpObject] 的属性，如果没有它，指数将不适合承载宇宙。[dker_cocone] 以 [Defined] 结尾，并且必须如此。[QGrp] 依赖于 [IsGrpCongruence] 的证明，因此在核指数处的商只有在 [cc_grp _ dker_cocone] 化简为 [fg_ker_is_cong] 时才由 [fg_ker_med] 映射出。通过在本文件的一个副本中用 [Qed] 闭合 [dker_cocone] 来测量：[Diagonal_Grp_solution_set] 随后被拒绝，提示“项 “fg_ker_med (dflat c h)” 的类型为 “GrpHom (QGrp (fg_ker (dflat c h)) (fg_ker_is_cong (dflat c h))) c”，而期望的类型为 “DQ (dker_idx c h) ~{ Grp }~> c””（省略了宇宙实例）。
 
  ** 有限余极限，通过现有桥接二元余积、共同等化子和初始对象未被重建：Structure/Limit/Finite.v 的桥应用于 [Cocomplete_FinitelyCocomplete Grp_Cocomplete_via_GAFT]，由 [FinitelyCocomplete_FinitelyComplete_op] 在 [Grp^op] 中读取。[Grp_Cocartesian_via_GAFT] 是它的 [FinitelyComplete_Cartesian]，[Grp_HasCoequalizers_via_GAFT] 是 Structure/Pullback/Reduction.v 的 [HasCoequalizers_of_HasEqualizers_op] 在 [FinitelyComplete_HasEqualizers] 之后，[Grp_Initial_via_GAFT] 是 [FinitelyCocomplete_Initial]。那个集合是什么，从 Structure/Limit/Finite.v 中那些桥的主体中读出：[FinitelyComplete_Cartesian] 和 [FinitelyComplete_HasEqualizers] 是 [Cartesian_of_HasPullbacks_Terminal] 和 [HasEqualizers_of_HasPullbacks_Terminal]，在 [FinitelyComplete_Terminal] 和 [FinitelyComplete_HasPullbacks]，所以，在 [Grp] 中读回，二元余积是 AFT 从 AFT 初始对象推出的推挤，等化子由 AFT 推挤和 AFT 初始对象组装而成，而初始对象是空图的 AFT 余极限。每一个这样的余极限本身都是对角线上的 [GAFT] 余极限：[Grp_Cocomplete_via_GAFT] 在 Finite.v 的行走余跨的对面 [Roof^op] 上用于推挤，且在其 [EmptyShape] 的对面用于初始对象。直接读取——把余积当作 [GAFT] 在离散的两个对象形状上的余极限，把共同化等化器当作它在并行对上的余极限——不是使用的方式；同样的桥接组合用于 #450 的三个范畴（本文件、Instance/Rng/Colimit.v 和 Instance/Variety/Colimit.v）。
 

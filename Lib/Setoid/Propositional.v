@@ -8,18 +8,18 @@ Generalizable All Variables.
  nLab:    https://ncatlab.org/nlab/show/setoid
  nLab:    https://ncatlab.org/nlab/show/h-set
  nLab:    https://ncatlab.org/nlab/show/mere+proposition
- Book:    The Univalent Foundations Program, "Homotopy Type Theory:
- Univalent Foundations of Mathematics", IAS 2013, Definition 3.1.1
+ Book:    The Univalent Foundations Program, “Homotopy Type Theory:
+ Univalent Foundations of Mathematics”, IAS 2013, Definition 3.1.1
  (a SET is a type whose identity types have at most one inhabitant)
  and Definition 3.3.1 (a MERE PROPOSITION is a type any two of whose
  inhabitants are equal)
- Book:    Bishop, "Foundations of Constructive Analysis", McGraw-Hill 1967,
- chapter one ("A constructivist manifesto")
+ Book:    Bishop, “Foundations of Constructive Analysis”, McGraw-Hill 1967,
+ chapter one (“A constructivist manifesto”)
  Library: UniMath, Foundations/PartA.v ([isaprop]) and Foundations/Sets.v
  ([isaset], [hSet])
  Library: Agda standard library, Relation.Binary.Bundles.Setoid -- the
  bundle agda-categories builds its hom-setoids from
- Book:    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:    Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §V.6 (the general adjoint functor theorem) and §V.7, printed
  p. 128 (the solution-set condition, and the tensor product of
  modules obtained from it)
@@ -41,9 +41,9 @@ Generalizable All Variables.
  proof-relevant by default, exactly as this library is.
 
  WHY THIS LIBRARY'S `≈` IS Type-VALUED, AND STAYS SO.  Lib/Setoid.v
- fixes the choice: [equiv] lives in [crelation], "a [Type]-valued, hence
+ fixes the choice: [equiv] lives in [crelation], “a [Type]-valued, hence
  proof-relevant, relation ... so that equivalence proofs may carry
- computational content".  That is load-bearing rather than decorative.  Cat's
+ computational content”.  That is load-bearing rather than decorative.  Cat's
  hom-setoid is [Functor_Setoid] (Theory/Functor.v, installed as Cat's
  [homset] at Instance/Cat.v), and there an [F ≈ G] IS a family of
  isomorphisms [∀ x : C, F x ≅ G x] paired with its coherence condition: the
@@ -105,7 +105,7 @@ Generalizable All Variables.
  Instance/Sets/Propositional.v.
 
  AN EARLIER REVISION of this paragraph stopped there.  Since the PR
- "algebraic carriers are sets" (2026-09-17) the file also carries two
+ “algebraic carriers are sets” (2026-09-17) the file also carries two
  TRANSPORTS -- [dep_fun_PropEquiv] and [sigma_first_PropEquiv] -- for setoids
  the concrete algebra builds INLINE rather than through one of the ten
  constructors above.  They are stated at the end of the file, and the reason
@@ -116,17 +116,17 @@ Generalizable All Variables.
  nLab:    https://ncatlab.org/nlab/show/setoid
  nLab:    https://ncatlab.org/nlab/show/h-set
  nLab:    https://ncatlab.org/nlab/show/mere+proposition
- Book:    The Univalent Foundations Program, "Homotopy Type Theory:
- Univalent Foundations of Mathematics", IAS 2013, Definition 3.1.1
+ Book:    The Univalent Foundations Program, “Homotopy Type Theory:
+ Univalent Foundations of Mathematics”, IAS 2013, Definition 3.1.1
  （SET 是其恒等类型至多有一个居留者的类型）
  与 Definition 3.3.1（MERE PROPOSITION 是任意两居留者皆相等的类型）
- Book:    Bishop, "Foundations of Constructive Analysis", McGraw-Hill 1967,
+ Book:    Bishop, “Foundations of Constructive Analysis”, McGraw-Hill 1967,
  第一章（“构造主义宣言”）
  Library: UniMath, Foundations/PartA.v（[isaprop]）与 Foundations/Sets.v
  （[isaset]、[hSet]）
  Library: Agda 标准库 Relation.Binary.Bundles.Setoid —— agda-categories
  用以构建其 hom-setoid 的捆
- Book:    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:    Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §V.6（一般伴随函子定理）与 §V.7，印本 p.128
  （解集条件，以及由此得到的模的张量积）
 
@@ -183,7 +183,7 @@ Generalizable All Variables.
    Default ≈ lives in Type (proofs may carry data, e.g. a family of isos).
 
    有些 setoid 的相等其实是「纯命题」——只要知道成立即可，不必看证明内容。
-   Some setoids have "mere propositional" equality — only truth matters.
+   Some setoids have “mere propositional” equality — only truth matters.
    PropEquiv 给这种 setoid 另备一条 Prop 值关系 pequiv，并与 ≈ 双向互推。
    PropEquiv equips such a setoid with a Prop-valued pequiv, iff-linked to ≈.
 

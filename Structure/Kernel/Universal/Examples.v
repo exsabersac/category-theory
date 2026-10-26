@@ -43,7 +43,7 @@ Generalizable All Variables.
  abelian groups is representable, and its representing object is the
  subgroup of elements killed by f.
 
- (This corrects the issue's own "Current state", which says that none of
+ (This corrects the issue's own “Current state”, which says that none of
  the remark's concrete algebraic categories exists in tree to
  instantiate the result.  All four do -- Instance/Ab.v, Instance/Grp.v,
  Instance/Rng.v, Instance/Mod.v -- and Ab and RMod already carry
@@ -74,15 +74,15 @@ Generalizable All Variables.
  presheaf cannot even be written down, while the fork presheaf of a
  parallel pair can, and [equalizer_universal_element_iso] applies to it
  unchanged.  [Rng_fork_presheaf] records that the presheaf is formable
- at Rng, which is the whole content of the "survives without a zero
- object" clause.
+ at Rng, which is the whole content of the “survives without a zero
+ object” clause.
 
  A UNIVERSE NOTE, since it dictates the shape of everything below.
  [Ab_Zero@{u}] carries ONE universe parameter where [Ab@{u u0}] carries
  two: it pins the second to [Set].  Inside a [Section], a
  [Context {A B : AbObject}] fixes that second universe rigidly before
  [Ab_Zero] is ever mentioned, and the later mention is then rejected
- ("Cannot enforce Set = ...", measured).  Every definition below is
+ (“Cannot enforce Set = ...”, measured).  Every definition below is
  therefore stated at TOP LEVEL with its own [{A B : AbObject} (f)]
  binders, so that the objects' universes and [Ab_Zero]'s are unified in
  one elaboration.  This is a restriction inherited from Instance/Ab.v,
@@ -256,7 +256,7 @@ Proof. reflexivity. Qed.
  available here -- [Ab] puts its objects strictly above its homs, which
  that packaging forbids (documented at its definition, pinned in
  Test/ProbeKernelUniversal.v) -- so these three, together with
- [ab_kernel_representation] above, are what "equivalent" means at [Ab]. 
+ [ab_kernel_representation] above, are what “equivalent” means at [Ab]. 
 
  --------
  等价本身，在无宇宙形式下：返回的通道，以及两次往返。捆绑的 [kernel_universal_element_iso] 在这里不可用——[Ab] 将其对象严格置于其 Hom 之上，而该包装禁止这样做（在其定义中有记录，固定在 Test/ProbeKernelUniversal.v 中）——因此这三者，再加上上面的 [ab_kernel_representation]，就是在 [Ab] 中“等价”的含义。
@@ -275,7 +275,7 @@ Definition ab_aue_kernel {A B : AbObject} (f : A ~{Ab}~> B)
  The round trip on the kernel side, at [Ab].  Stated by instantiation
  rather than by re-typing the conclusion: writing the [∃!] out by hand
  leaves the hom-setoid instance of [z ~{Ab}~> AbKernel f] unresolved
- ("expected to have type ∃! y, ?P y", measured), while the general
+ (“expected to have type ∃! y, ?P y”, measured), while the general
  lemma's own statement carries it. 
 
  --------
@@ -454,8 +454,8 @@ Qed.
 
 (*
  What DOES survive: the fork presheaf of a parallel pair, which needs no
- structure on the category whatever.  This is the "survives in categories
- without a zero object" clause, exhibited at the category that motivates
+ structure on the category whatever.  This is the “survives in categories
+ without a zero object” clause, exhibited at the category that motivates
  it. 
 
  --------

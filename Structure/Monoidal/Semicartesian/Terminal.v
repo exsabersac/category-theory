@@ -20,9 +20,9 @@ Generalizable All Variables.
  one          := eliminate    (the unique x ~> I),
  one_unique   := unit_terminal (any two x ~> I agree under ≈),
 
- matching nLab ("the unit for the tensor product is a terminal object") and
- Wikipedia ("in any cartesian monoidal category, the terminal object is the
- monoidal unit"; cartesian ⊆ semicartesian).
+ matching nLab (“the unit for the tensor product is a terminal object”) and
+ Wikipedia (“in any cartesian monoidal category, the terminal object is the
+ monoidal unit”; cartesian ⊆ semicartesian).
 
  The same definition, with the same name, is given at top level in
  Structure/Monoidal/Semicartesian.v; that copy is the one downstream files

@@ -29,7 +29,7 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/presentation+of+a+group
    Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_group
 
-   Book: Riehl, "Category Theory in Context" (2nd ed., Dover 2016), §4.1
+   Book: Riehl, “Category Theory in Context” (2nd ed., Dover 2016), §4.1
    Example 4.1.10 (catalogue item [riehl:4.1:example10]), which
    lists the group completion in TWO forms: a left adjoint
    [CMonoid → Ab] and a left adjoint [Monoid → Group].
@@ -55,8 +55,8 @@ Generalizable All Variables.
    Read them separately: one is FALSE, one is CORRECT AND DECISIVE, and
    the third describes exactly the route taken here.
 
-   (1) FALSE.  It says stating the second form needs "a forgetful
-   [Grp ⟶ Mon] that does not exist".  It exists:
+   (1) FALSE.  It says stating the second form needs “a forgetful
+   [Grp ⟶ Mon] that does not exist”.  It exists:
    [Grp_MonSets : Grp ⟶ MonSets] at Instance/Rng/GroupRing.v,
    over [MonSets := @Mon Sets Sets_Product_Monoidal]
    (Instance/Rng/MonoidRing.v).  An internal monoid in the
@@ -173,8 +173,8 @@ Generalizable All Variables.
    be checked rather than assumed.
 
    Not strict.  Three CONVERSION refutations, each pinned as a [Fail]
-   probe in the "Measured negatives" section, stripped once and confirmed
-   a genuine "cannot unify", each with a positive control:
+   probe in the “Measured negatives” section, stripped once and confirmed
+   a genuine “cannot unify”, each with a positive control:
 
    - The COUNIT does not compute: it is
    [unique_obj (ump_universal_arrows …)] and
@@ -206,7 +206,7 @@ Generalizable All Variables.
    [∀ G : GrpObject@{Set Set u}, Monoid@{_ Set} G], and it is inherited
    by [Grp_MonSets@{…} : Grp@{u Set} ⟶ MonSets@{Set u}].  The pin is the
    DONOR's, is NOT repaired here, and is NOT claimed unavoidable: the
-   "Measured negatives" section ships a positive control showing that the
+   “Measured negatives” section ships a positive control showing that the
    TYPE [grp_monoid] inhabits, [@Monoid Sets Sets_Product_Monoidal
    (grp_setoid G)], IS formable at a carrier universe strictly above
    [Set], so the pin is introduced by that DEFINITION (an unannotated
@@ -220,7 +220,7 @@ Generalizable All Variables.
    [Set] (three positive controls), and it is exactly the first constant
    whose TYPE names [Grp_MonSets] -- [completion_insert] -- that is
    rejected there (formability negative,
-   "Cannot enforce Set = uo").  So the ADJUNCTION, the functors and
+   “Cannot enforce Set = uo”).  So the ADJUNCTION, the functors and
    everything downstream are statements about [Set]-carrier monoids and
    groups; the presentation, the quotient and their laws are not.
 
@@ -329,7 +329,7 @@ Generalizable All Variables.
 
    ** 宇宙：一个提供的 [Set] 引脚，已定位并披露
 
-   根据约束块测量，而不是从活页夹读取。这里没有在任何函子或伴随上写明显式宇宙实例：[Functor] 宇宙元数在支持的 Rocq 和 Coq 版本之间不可移植。[Grp_MonSets] 只能在 [Set] 载体群组中实例化。这在 [grp_monoid] 自身的签名中可见，其内容为 [∀ G : GrpObject@{Set Set u}, Monoid@{_ Set} G]，并且被 [Grp_MonSets@{…} : Grp@{u Set} ⟶ MonSets@{Set u}] 继承。该引脚属于 DONOR，在这里没有修复，也不被声明为不可避免：“测量的负值”部分提供了一个阳性对照，显示 TYPE [grp_monoid] 所在的 [@Monoid Sets Sets_Product_Monoidal (grp_setoid G)]，可以在严格高于 [Set] 的载体宇宙中形成，因此该引脚是由那个定义引入的（一个未标注的 [Sets]，树的其他地方记录的宇宙最小化系列），而不是由其声明所要求的。[mcar]、[mop]、[mhom] 和 [Sets_Product_Monoidal] 都已检查，且都不含该问题。边界是测量的，而不是猜测的。表示层没有固定：[comp_free]、[CompletionObject] 和 [comp_class_op] 都在一个载体宇宙严格位于 [Set]（三个正控制）之上的幺半群上进行展开，并且正是第一个类型名称为 [Grp_MonSets] -- [completion_insert] 的常量在此被拒绝（可形成性为负，"无法强制 Set = uo"）。因此，伴随、函子及其下游的一切都是关于 [Set]-载体幺半群和群的陈述；表示、商及其定律则不是。演示层确实携带的是对 [GrpObject] 的三个宇宙之间相互关系的识别 ([comp_free@{u u0 u1} : obj[MonSets] → GrpObject@{u0 u0 u0}])，这是 Instance/Grp/Free.v 的工作：[FreeGrpObject@{u u0} : SetoidObject@{u u} → GrpObject@{u u u}]。这里没有任何内容会增加它。[Set] 否则仅在这些模块中出现，作为三个 STDLIB 宇宙 ([Basics.flip.u0/u1/u2]) 的下界，这些下界继承自自由群层；下界并不是一个识别。
+   根据约束块测量，而不是从活页夹读取。这里没有在任何函子或伴随上写明显式宇宙实例：[Functor] 宇宙元数在支持的 Rocq 和 Coq 版本之间不可移植。[Grp_MonSets] 只能在 [Set] 载体群组中实例化。这在 [grp_monoid] 自身的签名中可见，其内容为 [∀ G : GrpObject@{Set Set u}, Monoid@{_ Set} G]，并且被 [Grp_MonSets@{…} : Grp@{u Set} ⟶ MonSets@{Set u}] 继承。该引脚属于 DONOR，在这里没有修复，也不被声明为不可避免：“测量的负值”部分提供了一个阳性对照，显示 TYPE [grp_monoid] 所在的 [@Monoid Sets Sets_Product_Monoidal (grp_setoid G)]，可以在严格高于 [Set] 的载体宇宙中形成，因此该引脚是由那个定义引入的（一个未标注的 [Sets]，树的其他地方记录的宇宙最小化系列），而不是由其声明所要求的。[mcar]、[mop]、[mhom] 和 [Sets_Product_Monoidal] 都已检查，且都不含该问题。边界是测量的，而不是猜测的。表示层没有固定：[comp_free]、[CompletionObject] 和 [comp_class_op] 都在一个载体宇宙严格位于 [Set]（三个正控制）之上的幺半群上进行展开，并且正是第一个类型名称为 [Grp_MonSets] -- [completion_insert] 的常量在此被拒绝（可形成性为负，“无法强制 Set = uo”）。因此，伴随、函子及其下游的一切都是关于 [Set]-载体幺半群和群的陈述；表示、商及其定律则不是。演示层确实携带的是对 [GrpObject] 的三个宇宙之间相互关系的识别 ([comp_free@{u u0 u1} : obj[MonSets] → GrpObject@{u0 u0 u0}])，这是 Instance/Grp/Free.v 的工作：[FreeGrpObject@{u u0} : SetoidObject@{u u} → GrpObject@{u u u}]。这里没有任何内容会增加它。[Set] 否则仅在这些模块中出现，作为三个 STDLIB 宇宙 ([Basics.flip.u0/u1/u2]) 的下界，这些下界继承自自由群层；下界并不是一个识别。
 
    ** 依赖性足迹，测量重用 [Grp_MonSets] 而不是重建一个遗忘函子会花费 25 个模块：该文件的传递闭包 [Require] 是 109 个模块，而同一个文件在移除两个 [Instance/Rng] 需求后为 84 个模块（GroupRing.v 所依赖的环/半环/矩阵堆）。记录下来是因为这确实是重用的成本，而且无论如何都是选择的——在这里重建 [Grp_MonSets] 会重复已有的常量。
 
@@ -455,10 +455,10 @@ Definition comp_class (a : carrier (mcar M)) : carrier CompletionObject :=
   comp_gen a.
 
 (*
- Two conversion helpers.  An earlier revision said "both bodies are the
+ Two conversion helpers.  An earlier revision said “both bodies are the
  corresponding [quot_rel] fact verbatim: `≈` at [CompletionObject] IS
- [quot_rel CompletionNS], so no proof step intervenes".  Since the PR
- "algebraic carriers are sets" (2026-09-17) the quotient's `≈` is the
+ [quot_rel CompletionNS], so no proof step intervenes”.  Since the PR
+ “algebraic carriers are sets” (2026-09-17) the quotient's `≈` is the
  PROPOSITIONAL TRUNCATION of [quot_rel CompletionNS], so each body is that
  same fact under one [inhabits] -- still no mathematical step. 
 
@@ -933,14 +933,14 @@ Qed.
 
    Each [Fail] below was stripped once and its failure KIND read off the
    error message, and each is paired with a positive control that must
-   succeed.  Three are CONVERSION failures ("cannot unify") and three are
+   succeed.  Three are CONVERSION failures (“cannot unify”) and three are
    FORMABILITY failures (universe inconsistencies naming the declared
    level); they are kept lexically apart. 
 
    --------
    * ** 测量的负面情况
 
-   下面的每个 [Fail] 都只被剥离过一次，并从错误信息中读取其失败类型（KIND），每个都与必须成功的阳性对照配对。三个是转换失败（"无法统一"），三个是可形成性失败（命名声明等级的宇宙不一致）；它们在词汇上保持分开。
+   下面的每个 [Fail] 都只被剥离过一次，并从错误信息中读取其失败类型（KIND），每个都与必须成功的阳性对照配对。三个是转换失败（“无法统一”），三个是可形成性失败（命名声明等级的宇宙不一致）；它们在词汇上保持分开。
 *)
 
 (*
@@ -1032,7 +1032,7 @@ Check (fun G : GrpObject@{uo uh up} => grp_setoid G).
 Check (fun G : GrpObject@{uo uh up} =>
          @Monoid Sets Sets_Product_Monoidal (grp_setoid G)).
 
-(* Control: [grp_monoid] must be named OUTSIDE a [Fail], or renaming it would turn the negative below vacuously green on "reference not found" while this file still compiled. / 控制：[grp_monoid] 必须在 [Fail] 之外命名，否则重命名它会在“未找到参考”时使负值虚无地显示为绿色，而此文件仍能编译。 *)
+(* Control: [grp_monoid] must be named OUTSIDE a [Fail], or renaming it would turn the negative below vacuously green on “reference not found” while this file still compiled. / 控制：[grp_monoid] 必须在 [Fail] 之外命名，否则重命名它会在“未找到参考”时使负值虚无地显示为绿色，而此文件仍能编译。 *)
 Check @grp_monoid.
 
 Fail Check (fun G : GrpObject@{uo uh up} => grp_monoid G).

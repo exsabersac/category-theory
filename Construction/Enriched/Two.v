@@ -16,7 +16,7 @@ Generalizable All Variables.
    {TwoX < TwoY} with its cartesian monoidal structure [Two_Monoidal]
    (tensor := meet, unit := the top TwoY).  A category enriched over
    this monoidal category assigns to every pair of objects a truth
-   value [ehom x y : TwoObj], read as the proposition "x ≤ y" (true
+   value [ehom x y : TwoObj], read as the proposition “x ≤ y” (true
    when [ehom x y = TwoY], equivalently when there is an arrow
    [TwoY ~> ehom x y] in [_2]).
 
@@ -28,7 +28,7 @@ Generalizable All Variables.
    of the thin category [_2], hence hold automatically.
 
    Conversely a (decidable) preorder yields an enrichment by letting
-   [ehom x y] be the truth value of "x ≤ y".  Enriched functors
+   [ehom x y] be the truth value of “x ≤ y”.  Enriched functors
    between such enrichments are exactly the monotone maps.
 
    This mirrors [Category_is_Enriched_over_Set] in

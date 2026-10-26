@@ -37,7 +37,7 @@ Local Hint Extern 5 (Proper _ _ ) => progress(repeat(intro)) : cat.
  diagram (the terminal object being the empty product).
 
  [CartesianProductIsUniversalProperty] instantiates the generic
- "universal property ⟺ representability" packaging from
+ “universal property ⟺ representability” packaging from
  [Structure.UniversalProperty] for this case.  The predicate is
  [IsCartesianProduct x y z] (Structure/Cartesian.v): z carries projections
  [exl'], [exr'] and a pairing [fork'] satisfying the universal mapping

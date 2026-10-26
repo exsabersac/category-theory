@@ -28,32 +28,32 @@ Generalizable All Variables.
 (*
  Several proofs below draw on the two [PreOrder] witnesses of the section
  without naming them in the statement, so capture every section variable
- rather than the [Default Proof Using "Type"] subset inherited from Lib.v
+ rather than the [Default Proof Using “Type”] subset inherited from Lib.v
  (the Construction/Reflective/Idempotent.v precedent). 
 
  --------
- 下面的几个证明利用了本节的两个 [PreOrder] 证人，但在声明中没有命名它们，因此要捕获每个节变量，而不是继承自 Lib.v 的 [Default Proof Using "Type"] 子集（Construction/Reflective/Idempotent.v 的先例）。
+ 下面的几个证明利用了本节的两个 [PreOrder] 证人，但在声明中没有命名它们，因此要捕获每个节变量，而不是继承自 Lib.v 的 [Default Proof Using “Type”] 子集（Construction/Reflective/Idempotent.v 的先例）。
 *)
 Set Default Proof Using "All".
 
 (* * * Mac Lane's Exercise 2 at a Galois connection between posets / * * Mac Lane 的练习 2 关于偏序集合之间的伽罗瓦连接 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, SS IV.5, printed p. 97, Exercise 2
  (catalog id maclane:IV.5:ex2)
- Book:      Riehl, "Category Theory in Context", Dover 2016, SS 4.2,
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, SS 4.2,
  printed p. 142, Corollary 4.2.10 (riehl:4.2:cor10)
  Wikipedia: https://en.wikipedia.org/wiki/Galois_connection
  nLab:      https://ncatlab.org/nlab/show/idempotent+monad
 
  Mac Lane, verbatim from the printed page:
 
- "In a Galois connection between posets, show that the subset
+ “In a Galois connection between posets, show that the subset
  {p | p = RLp} of P equals {p | p = Rq for some q} and give a
  bijection from this set to the subset {q | q = LRq} of Q.  What are
  these sets in the case of a group of automorphisms of a field?  Does
- this generalize to an arbitrary adjunction?"
+ this generalize to an arbitrary adjunction?”
 
  Construction/Reflective/FixedPoints.v answers the closing question for
  an arbitrary adjunction.  This file is the exercise as stated: the
@@ -82,48 +82,48 @@ Set Default Proof Using "All".
 
  WHAT IS DELIVERED, clause by clause of the exercise:
 
- - "{p | p = RLp}": [closed_r_eq], the elementwise reading of
+ - “{p | p = RLp}”: [closed_r_eq], the elementwise reading of
  [GalClosed_r] under antisymmetry.
- - "equals {p | p = Rq for some q}": [closed_r_iff_image_eq], from
+ - “equals {p | p = Rq for some q}”: [closed_r_iff_image_eq], from
  [closed_r_eq] and Instance/Grp/Galois.v's
- [gal_closed_r_image].  The mutual-relatedness form of "is an
- image", that file's [gal_closed_r_iff], is the same fact
+ [gal_closed_r_image].  The mutual-relatedness form of “is an
+ image”, that file's [gal_closed_r_iff], is the same fact
  stated without antisymmetry; it is cited, not applied.
- - "a bijection from this set to {q | q = LRq}": [closed_r_to_l] and
+ - “a bijection from this set to {q | q = LRq}”: [closed_r_to_l] and
  [closed_l_to_r], with [closed_round_r] and [closed_round_l] closing
  both round trips on the FIRST projection at Leibniz [=].  The
  whole-sigma round trip is NOT claimed: [GalClosed_r] is
  [Prop]-valued, so two inhabitants of one closedness statement need
  not be equal, and no proof irrelevance is taken.
- - "What are these sets in the case of a group of automorphisms of a
- field?": NOT delivered, and the reason is that the tree carries no
+ - “What are these sets in the case of a group of automorphisms of a
+ field?”: NOT delivered, and the reason is that the tree carries no
  automorphism group of a field (measured: a scoped search over
  Instance/Field.v, Instance/Field/ and Instance/Rng/ returns
  nothing).  What IS delivered is the group-ACTION instance already
  in Instance/Grp/Galois.v: [group_action_fixed_point_equivalence]
  applies the general theorem to that file's own
  [group_action_adjunction], and its [closed_G_iff] / [closed_U_iff]
- answer the "what are these sets" question there -- the closed
+ answer the “what are these sets” question there -- the closed
  subsets of the group are exactly the stabilisers, and the closed
  subsets of the acted-on set exactly the fixed-point sets.
- - "Does this generalize to an arbitrary adjunction?":
+ - “Does this generalize to an arbitrary adjunction?”:
  Construction/Reflective/FixedPoints.v, cited here.
 
  RIEHL'S COROLLARY 4.2.10 is [gal_lrl_eq] and [gal_rlr_eq]: his
 
- "F G F = F   and   G F G = G"
+ “F G F = F   and   G F G = G”
 
  proved from Instance/Grp/Galois.v's four closure inequalities plus
- antisymmetry, exactly as he does it ("By the triangle identities
+ antisymmetry, exactly as he does it (“By the triangle identities
  F(a) <= FGF(a) <= F(a) for all a in A, whence F = FGF.  The other
- formula is dual.").  Both are terms with no tactic beyond the
+ formula is dual.”).  Both are terms with no tactic beyond the
  [mutual_le_to_eq] application.  His illustration -- the direct-image /
  inverse-image connection, where
 
- "f(X) = f(f^{-1}(f(X)))   and   f^{-1}(f(f^{-1}(Y))) = f^{-1}(Y)"
+ “f(X) = f(f^{-1}(f(X)))   and   f^{-1}(f(f^{-1}(Y))) = f^{-1}(Y)”
 
- hold although "neither of the inclusions X subset f^{-1}(f(X)) or
- f(f^{-1}(Y)) subset Y need be equalities" -- is [image_preimage_image]
+ hold although “neither of the inclusions X subset f^{-1}(f(X)) or
+ f(f^{-1}(Y)) subset Y need be equalities” -- is [image_preimage_image]
  and [preimage_image_preimage], stated at the carriers' [≈] because
  Leibniz equality of two elements of [Powerset_Prop_obj] would need
  both propositional and functional extensionality.  The two
@@ -162,7 +162,7 @@ Set Default Proof Using "All".
  universe of its own.
 
  NOT DELIVERED besides the field question: no antisymmetric quotient of
- a preorder, so the two "sets" are subtypes of a preorder rather than of
+ a preorder, so the two “sets” are subtypes of a preorder rather than of
  a poset; no naturality of any identification in the connection; no
  comparison of [closed_r_to_l] with the equivalence's own functor
  beyond their agreement on the underlying element; and no lattice
@@ -280,7 +280,7 @@ Qed.
 
 (* * *** Mac Lane's two subsets, elementwise / * *** 马克·莱恩的两个子集，按元素逐个 *)
 
-(* "{p | p = RLp}", with the equation oriented as Mac Lane writes it. / "{p | p = RLp}"，方程按照麦克莱恩的写法排列。 *)
+(* “{p | p = RLp}”, with the equation oriented as Mac Lane writes it. / “{p | p = RLp}”，方程按照麦克莱恩的写法排列。 *)
 Lemma closed_r_eq (antiA : @Antisymmetric A eq eq_equiv RA) (a : A) :
   GalClosed_r G a ↔ gal_r G (gal_l G a) = a.
 Proof.
@@ -306,14 +306,14 @@ Proof.
 Qed.
 
 (*
- "... equals {p | p = Rq for some q}".  Forward through [closed_r_eq],
+ “... equals {p | p = Rq for some q}”.  Forward through [closed_r_eq],
  backward through Instance/Grp/Galois.v's [gal_closed_r_image]; the
  mutual-relatedness form of the same fact is that file's
  [gal_closed_r_iff], which antisymmetry would turn into Mac
  Lane's equation and which is not applied here. 
 
  --------
- "... 等于 {p | p = Rq 对某些 q}”。正向通过 [closed_r_eq]，反向通过 Instance/Grp/Galois.v 的 [gal_closed_r_image]；相同事实的相互关联形式是该文件的 [gal_closed_r_iff]，反对称性会将其转化为 Mac Lane 方程，但此处未应用。
+ “... 等于 {p | p = Rq 对某些 q}”。正向通过 [closed_r_eq]，反向通过 Instance/Grp/Galois.v 的 [gal_closed_r_image]；相同事实的相互关联形式是该文件的 [gal_closed_r_iff]，反对称性会将其转化为 Mac Lane 方程，但此处未应用。
 *)
 Lemma closed_r_iff_image_eq (antiA : @Antisymmetric A eq eq_equiv RA)
   (a : A) : GalClosed_r G a ↔ ∃ b : B, a = gal_r G b.
@@ -372,7 +372,7 @@ Section PowersetFixed.
 Context {X Y : SetoidObject}.
 Context (f : X ~{Sets}~> Y).
 
-(* "f(X) = f(f^{-1}(f(X)))", at the power set's own [≈]. / "f(X) = f(f^{-1}(f(X)))"，在幂集自身的 [≈] 上。 *)
+(* “f(X) = f(f^{-1}(f(X)))”, at the power set's own [≈]. / “f(X) = f(f^{-1}(f(X)))”，在幂集自身的 [≈] 上。 *)
 Lemma image_preimage_image (S : carrier (Powerset_Prop_obj X)) :
   Powerset_Prop_image f
       (Powerset_Prop_preimage f (Powerset_Prop_image f S))
@@ -385,7 +385,7 @@ Proof.
              (image_preimage_galois f) S).
 Qed.
 
-(* "f^{-1}(f(f^{-1}(Y))) = f^{-1}(Y)". *)
+(* “f^{-1}(f(f^{-1}(Y))) = f^{-1}(Y)”. *)
 Lemma preimage_image_preimage (T : carrier (Powerset_Prop_obj Y)) :
   Powerset_Prop_preimage f
       (Powerset_Prop_image f (Powerset_Prop_preimage f T))
@@ -459,7 +459,7 @@ Example nat_shift_FixedL_obj :
   `1 (fobj[FixedL (nat_shift_adjunction 2%nat)] nat_shift_five_fixed)
     = 3%nat := eq_refl.
 
-(* * ** (H) Mac Lane's "what are these sets", for a group action / * **（H）麦克莱恩的“这些集合是什么”，用于群作用 *)
+(* * ** (H) Mac Lane's “what are these sets”, for a group action / * **（H）麦克莱恩的“这些集合是什么”，用于群作用 *)
 
 (*
  The field question is out of reach in this tree; the group-ACTION

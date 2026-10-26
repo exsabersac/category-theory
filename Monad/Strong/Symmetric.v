@@ -33,8 +33,8 @@ nLab: https://ncatlab.org/nlab/show/strong+monad
    monad-compatibility laws ([rstr_ret], [rstr_join]) — but stops short of
    packaging it as a [RightStrongFunctor]: the two functor-level coherences
    (the ρ-law [rrstrength_id_right] and the α-law [rstrength_assoc]) need the
-   braid/unitor coherence ρ ≈ λ ∘ β of Joyal & Street ("Braided tensor
-   categories", Adv. Math. 102, 1993, Prop. 2.1), which the bare
+   braid/unitor coherence ρ ≈ λ ∘ β of Joyal & Street (“Braided tensor
+   categories”, Adv. Math. 102, 1993, Prop. 2.1), which the bare
    [SymmetricMonoidal] axiomatization does not hand out directly.  That
    coherence is now proved from the hexagons in
    Structure/Monoidal/Braided/Proofs.v ([braid_unit_left],
@@ -51,8 +51,8 @@ nLab: https://ncatlab.org/nlab/show/strong+monad
       ([dstr_natural], [dstr'_natural]), and Führmann-style reassociation
       lemmas ([dstr_reassoc_left], [dstr_reassoc_left'],
       [dstr'_reassoc_right], [dstr'_reassoc_right']) that rebracket a double
-      strength through an extra M-layer (Führmann, "Direct models of the
-      computational lambda-calculus", MFPS 1999);
+      strength through an extra M-layer (Führmann, “Direct models of the
+      computational lambda-calculus”, MFPS 1999);
 
    3. the two missing coherences [rstr_id_right] and [rstr_assoc], plus the
       mixed associativity coherence [strength_rstr_assoc] relating the left
@@ -617,7 +617,7 @@ The coherence that mixes the left strength and the derived right
    square of the Kleisli premonoidal tensor
    (kl_assoc_natural_middle in Monad/Kleisli/Premonoidal.v).
 
-   The proof is staged: first the symmetric hexagon in solved "cons" form
+   The proof is staged: first the symmetric hexagon in solved “cons” form
    (assert S1), which rewrites the inverse-associator-after-braid tail of
    the unfolded left side; then naturality of the strength slides the
    remaining braid under fmap; both sides collapse onto a common

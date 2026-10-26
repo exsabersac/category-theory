@@ -21,20 +21,20 @@ nLab:      https://ncatlab.org/nlab/show/disjoint+coproduct
    nLab:      https://ncatlab.org/nlab/show/subobject
    Wikipedia: https://en.wikipedia.org/wiki/Free_product
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
    §V.7 Exercise 1 (book p. 128, PDF p. 137) asks, of the free product of
    two groups, that its two injections be monic and that their images
    meet in the trivial subgroup, and it names a method.  The in-repo
    catalog's statement summary of the exercise
    (doc/plan/books/maclane/inventory/V.json, entry maclane:V.7:ex1, book
-   page 128) reads, on this half: "Using the product G x H, show also
+   page 128) reads, on this half: “Using the product G x H, show also
    that the two coproduct injections G -> G + H and H -> G + H are monic,
-   and that their images intersect in the identity subgroup."  That
+   and that their images intersect in the identity subgroup.”  That
    method is not the one used here (NO [Cartesian] HYPOTHESIS, below).
    The same section (book p. 126, PDF
    p. 135) defines the intersection of two subobjects as their pullback,
    which Theory/Subobject/Lattice.v carries as [sub_meet] (#445).  nLab's
-   "disjoint coproduct" names the general property: a coproduct is
+   “disjoint coproduct” names the general property: a coproduct is
    disjoint when its coprojections are monic and their pullback is
    initial.  This file proves that property, in the subobject form Mac Lane
    asks for, for EVERY binary coproduct in a category with a zero object
@@ -82,8 +82,8 @@ nLab:      https://ncatlab.org/nlab/show/disjoint+coproduct
 
    The meet is NOT the bottom subobject on the nose: measured in a scratch
    file, [Example e : sub_meet (sub_inl x y) (sub_inr x y) = coprod_bot x y
-   := eq_refl] is refused with "cannot unify "sub_meet (sub_inl x y)
-   (sub_inr x y)" and "coprod_bot x y"" -- the two domains are the chosen
+   := eq_refl] is refused with “cannot unify ”sub_meet (sub_inl x y)
+   (sub_inr x y)“ and ”coprod_bot x y“” -- the two domains are the chosen
    pullback and the zero object, distinct objects.  The theorem is `≈` in
    the setoid of subobjects, which is an isomorphism of domains commuting
    with the monos; it ends in [Defined], so that isomorphism is the data
@@ -125,7 +125,7 @@ nLab:      https://ncatlab.org/nlab/show/disjoint+coproduct
 
    ** AXIOMS
 
-   Every constant of this file reports "Closed under the global context".
+   Every constant of this file reports “Closed under the global context”.
 
    ** NOT DELIVERED
 

@@ -20,10 +20,10 @@ Generalizable All Variables.
  Fong & Spivak define a partial order as a preorder satisfying x ≅ y → x
  = y (Seven Sketches in Compositionality, §1.2.2, remark 35, p. 13),
  observing that this condition is skeletality in categorical language; and
- Instance/Poset.v's own header has long said that antisymmetry "only makes
+ Instance/Poset.v's own header has long said that antisymmetry “only makes
  the resulting thin category skeletal, so that isomorphic objects are
- equal", citing nLab's characterization of a poset as "a skeletal thin
- category".  Until Theory/Skeleton.v there was no [Skeletal] predicate to
+ equal”, citing nLab's characterization of a poset as “a skeletal thin
+ category”.  Until Theory/Skeleton.v there was no [Skeletal] predicate to
  say it with, and the fact was exemplified only by two per-instance
  antisymmetry lemmas in the regression-guard file Test/Poset.v.
 
@@ -36,7 +36,7 @@ Generalizable All Variables.
  antisymmetry argument does not appear in the body — and [Nat_le_Skeletal]
  instantiates it at (nat, ≤).
 
- Riehl computes that "the skeleton of a preorder is a poset" (Category
+ Riehl computes that “the skeleton of a preorder is a poset” (Category
  Theory in Context, §1.5, Example 1.5.18, p. 37).  The honest in-tree form
  of that clause is [skeleton_of_proset_antisymmetric]: given a [Skeleton]
  of a preorder, its carriers satisfy antisymmetry.  The posetal

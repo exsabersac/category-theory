@@ -1,34 +1,34 @@
 (*
    * * The inclusion of a reflective subcategory is monadic
 
-   Riehl, "Category Theory in Context", §5.3, printed p. 196 (PDF
+   Riehl, “Category Theory in Context”, §5.3, printed p. 196 (PDF
    p. 216), read from the page image.  Definition 5.3.1: an adjunction
-   "is monadic if the canonical comparison functor of Proposition
+   “is monadic if the canonical comparison functor of Proposition
    5.2.13 from D to the category of algebras for the underlying monad
-   on C defines an equivalence of categories", and a functor is monadic
+   on C defines an equivalence of categories”, and a functor is monadic
    when it has a left adjoint whose adjunction is monadic (the second
    sentence of the definition, paraphrased).  Proposition 5.3.3 (ii):
-   "The inclusion D ↪ C of a reflective subcategory is monadic: that
+   “The inclusion D ↪ C of a reflective subcategory is monadic: that
    is, the functor K from D to the category of algebras C^L for the
-   induced idempotent monad L is an equivalence of categories."
+   induced idempotent monad L is an equivalence of categories.”
    Exercise 5.3.ii, printed p. 197 (PDF p. 217), catalog item
-   riehl:5.3:exii: "Revisit your favorite example of an reflective
+   riehl:5.3:exii: “Revisit your favorite example of an reflective
    subcategory from Examples 4.6.13 and use Proposition 5.3.3 to give
    an equivalent presentation of this subcategory as the category of
-   algebras for an idempotent monad."
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   algebras for an idempotent monad.”
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    §IV.3, printed p. 91 (PDF p. 100), read from the page image, for
-   the notion itself: "A subcategory A of B is called reflective in B
-   when the inclusion functor K: A → B has a left adjoint F: B → A."
+   the notion itself: “A subcategory A of B is called reflective in B
+   when the inclusion functor K: A → B has a left adjoint F: B → A.”
    nLab: https://ncatlab.org/nlab/show/reflective+subcategory
    nLab: https://ncatlab.org/nlab/show/monadic+functor
    nLab: https://ncatlab.org/nlab/show/idempotent+monad
 
    BACKGROUND.  nLab's reflective-subcategory page states the fact as a
-   proposition -- "Every reflective subcategory inclusion is a monadic
+   proposition -- “Every reflective subcategory inclusion is a monadic
    functor, exhibiting the reflective subcategory as the
    Eilenberg-Moore category of modules for its induced idempotent
-   monad" -- with the converse, and points to Borceux's Handbook,
+   monad” -- with the converse, and points to Borceux's Handbook,
    vol. 2, Cor. 4.2.4, for a proof.  Riehl proves the essential
    surjectivity of K from the characterization of the algebras of an
    idempotent monad (an object carries an algebra structure exactly
@@ -108,7 +108,7 @@
    (Monad/Monadicity/Beck.v) is not used. 
 
    --------
-   * * 反思子类别的包含是单一的Riehl，《上下文中的范畴论》，§5.3，第196页（PDF 第216页），根据页面图像阅读。定义 5.3.1：一个伴随函子“如果命题 5.2.13 中从 D 到 C 上下单子代数范畴的典型比较函子定义了范畴的等价，则称该伴随函子为单态的”，并且一个函子是单态的，当它有一个左伴随且该伴随是单态的（定义的第二句话，意译）。命题 5.3.3 (ii)："反射子范畴 D ↪ C 的包含函子是单态的：也就是说，从 D 到所诱导的幂等单子 L 的代数范畴 C^L 的函子 K 是范畴的等价。" 练习 5.3.ii，第197页（PDF 第217)，目录项
+   * * 反思子类别的包含是单一的Riehl，《上下文中的范畴论》，§5.3，第196页（PDF 第216页），根据页面图像阅读。定义 5.3.1：一个伴随函子“如果命题 5.2.13 中从 D 到 C 上下单子代数范畴的典型比较函子定义了范畴的等价，则称该伴随函子为单态的”，并且一个函子是单态的，当它有一个左伴随且该伴随是单态的（定义的第二句话，意译）。命题 5.3.3 (ii)：“反射子范畴 D ↪ C 的包含函子是单态的：也就是说，从 D 到所诱导的幂等单子 L 的代数范畴 C^L 的函子 K 是范畴的等价。” 练习 5.3.ii，第197页（PDF 第217)，目录项
    riehl:5.3:exii: “回顾你在例 4.6.13 中最喜欢的反射子范畴的例子，并使用命题 5.3.3 给出该子范畴作为幂等幺函子代数的范畴的等价表示。”
    Mac Lane，《为工作中的数学家准备的范畴论》，第二版，§IV.3，第 91 页（PDF 第 100 页），根据页面图像阅读，关于概念本身：“B 的子范畴 A 称为 B 中的反射子范畴，当且仅当包含函子 K: A → B 存在左伴随 F: B → A。”
    nLab: https://ncatlab.org/nlab/show/reflective+subcategory 

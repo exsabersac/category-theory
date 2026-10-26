@@ -11,7 +11,7 @@ Require Import Category.Theory.Bicategory.
 Generalizable All Variables.
 
 (*
-nLab: https://ncatlab.org/nlab/show/bicategory (§ "Examples", delooping)
+nLab: https://ncatlab.org/nlab/show/bicategory (§ “Examples”, delooping)
    nLab: https://ncatlab.org/nlab/show/delooping
 
    A monoidal category is exactly a one-object bicategory.  Delooping the single

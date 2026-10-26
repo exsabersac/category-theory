@@ -42,11 +42,11 @@ Generalizable All Variables.
  Groupoids before categories, and the core at work
 
  nLab:  https://ncatlab.org/nlab/show/groupoid
- Paper: Brandt, "Über eine Verallgemeinerung des Gruppenbegriffes",
+ Paper: Brandt, “Über eine Verallgemeinerung des Gruppenbegriffes”,
  Mathematische Annalen 96, 1927
- Paper: Brown, "From groups to groupoids: a brief survey", Bulletin of
+ Paper: Brown, “From groups to groupoids: a brief survey”, Bulletin of
  the London Mathematical Society 19, 1987
- Paper: Weinstein, "Groupoids: Unifying Internal and External Symmetry",
+ Paper: Weinstein, “Groupoids: Unifying Internal and External Symmetry”,
  Notices of the American Mathematical Society 43, 1996
 
  Groupoids predate categories by nearly two decades.  Heinrich Brandt
@@ -89,11 +89,11 @@ Generalizable All Variables.
  and associate up to higher identity, so each type carries groupoid
  structure rather than a mere equivalence relation; interpreting types
  as groupoids yields a model in which uniqueness of identity proofs is
- not derivable (Hofmann and Streicher, "The groupoid model refutes
- uniqueness of identity proofs", LICS 1994), and the full tower of
- iterated identity types is a weak ω-groupoid (Lumsdaine, "Weak
- ω-categories from intensional type theory", TLCA 2009; van den Berg
- and Garner, "Types are weak ω-groupoids", Proc. London Math. Soc.
+ not derivable (Hofmann and Streicher, “The groupoid model refutes
+ uniqueness of identity proofs”, LICS 1994), and the full tower of
+ iterated identity types is a weak ω-groupoid (Lumsdaine, “Weak
+ ω-categories from intensional type theory”, TLCA 2009; van den Berg
+ and Garner, “Types are weak ω-groupoids”, Proc. London Math. Soc.
  102, 2011).  Groupoids likewise model homotopy 1-types, the first
  rung of the homotopy hypothesis (nLab: groupoid).
 

@@ -23,11 +23,11 @@ Generalizable All Variables.
 (* * * Cocompleteness of spaces refuted above the points / * * 空间的完备性在上述点中被驳斥 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.2 Proposition 3, book p. 114 (maclane:V.2:prop3), Freyd's theorem
  that a small complete category is a preorder, consumed dually
  through Structure/Complete/Freyd.v; and §V.9, book p. 134 (PDF
- p. 143), whose "general colimits in Top" (maclane:V.9:remark2) this
+ p. 143), whose “general colimits in Top” (maclane:V.9:remark2) this
  file bounds, as Instance/Top/StoneCech/Refutations.v bounds the
  completeness of [Top] and [CompHaus]
  nLab: https://ncatlab.org/nlab/show/complete+small+category
@@ -44,10 +44,10 @@ Generalizable All Variables.
  universe.  If the coproduct [Q] of [K]-many one-point spaces exists,
  every predicate [U] on the points of [Q] has a code in [Q], the point
  of the summand at the pair [(Q, U)].  A continuous map out of [Q] into
- a space of truth values, the copairing of "is this summand the one at
- [k0]?", tells the codes apart, and with decidable equality of spaces
- the dependent pair injectivity [inj_pair2_eq_dec] turns "the same
- summand" into "the same predicate".  So predicates on the points of
+ a space of truth values, the copairing of “is this summand the one at
+ [k0]?”, tells the codes apart, and with decidable equality of spaces
+ the dependent pair injectivity [inj_pair2_eq_dec] turns “the same
+ summand” into “the same predicate”.  So predicates on the points of
  [Q] inject into the points of [Q], which Cantor's diagonal forbids.
  Over [PTopCat] and over the Type-valued [Top] alike the two arguments
  reach the same shapes, because an arrow index moves between the object
@@ -130,11 +130,11 @@ Generalizable All Variables.
  import lists): [PTop_not_cocomplete_IEM] and
  [PTop_not_cocomplete_ObjDecEq] are accepted at an [s] with [o < s] and
  at [o := Set]; [PTop_not_cocomplete_IEM] and [Sets_not_cocomplete_IEM]
- read at [Cocomplete@{o o o so}] are refused ("Cannot enforce <1> = o
- because <1> < o", the generated universe written <1>), so the
+ read at [Cocomplete@{o o o so}] are refused (“Cannot enforce <1> = o
+ because <1> < o”, the generated universe written <1>), so the
  refutations do not reach the proved statement; at [o := Set]
- [PTop_not_cocomplete_Cantor_ObjDecEq] is refused ("Cannot enforce
- Set = <1> because Set < <1>"), its separator carrying [Set < o], and
+ [PTop_not_cocomplete_Cantor_ObjDecEq] is refused (“Cannot enforce
+ Set = <1> because Set < <1>”), its separator carrying [Set < o], and
  [PTop_not_cocomplete_Cantor_IEM] accepted.  Over the Type-valued [Top]
  [Top_not_cocomplete_IEM] and [Top_not_cocomplete_ObjDecEq] refute every
  [o < s], and at [s <= o] the question is open, walled as
@@ -142,11 +142,11 @@ Generalizable All Variables.
  Test/ProbeTopComplete458.v: [Top_not_cocomplete_IEM] and
  [Top_not_cocomplete_Cantor_IEM] are accepted at an [s] with
  [o < s < h], and [Top_not_cocomplete_ObjDecEq] at [o := Set], where
- [Top_not_cocomplete_Cantor_ObjDecEq] is refused ("Cannot enforce
- Set = <2> because Set < <2>", the generated universes numbered in
+ [Top_not_cocomplete_Cantor_ObjDecEq] is refused (“Cannot enforce
+ Set = <2> because Set < <2>”, the generated universes numbered in
  order of appearance in the message); [Top_not_cocomplete_IEM] read at
- [s := o], by its universe instance, is refused ("Cannot enforce o < o
- because o = o").
+ [s := o], by its universe instance, is refused (“Cannot enforce o < o
+ because o = o”).
 
  STRENGTHS.  Every theorem concludes [False]; [cocomp_cantor_diagonal]
  concludes [False] from its hypotheses.  [ObjDecEq] is used only at
@@ -226,10 +226,10 @@ Generalizable All Variables.
 
  --------
  Mac Lane，《为在职数学家而作的范畴论》，第2版（GTM 5），§V.2 命题 3，书中第114页（maclane:V.2:prop3），Freyd 定理指出小完全范畴是一个预序范畴，通过 Structure/Complete/Freyd.v 以对偶方式使用；以及 §V.9，书中第134页（PDF 第143页），其“Top 中的一般余极限”（maclane:V.9:remark2）由此文件限制，就像 Instance/Top/StoneCech/Refutations.v 限制了 [Top] 和 [CompHaus] 的完备性一样。nLab: https://ncatlab.org/nlab/show/complete+small+category nLab: https://ncatlab.org/nlab/show/Cantor%27s+theorem背景。Freyd 的观察（Structure/Complete/Freyd.v 的头文件）是，书中所说的完备性是大型范畴的一个性质：一个由其自身箭头索引的积以及两个不同平行箭头组成的范畴是不存在的。其对偶以同样的方式界定余完备性。对于空间的一个范畴，有第二种更直接的界定，即 Cantor 定理作用于单个余积的点。设 [K] 为空间 [X] 与 [X] 点上的一个谓词的一对类型；它对所有空间进行量化，因此它严格位于点的宇宙之上。如果存在 [K] 个单点空间的余积 [Q]，则 [Q] 的每个点上的谓词 [U] 在 [Q] 中都有一个编码，即在对 [(Q, U)] 的该对求和的构成点。从 [Q] 到一个真值空间的连续映射，即“这个加数是 [k0] 处的那个吗？”的共对映射，将这些代码区分开来，并且在空间的可判等下，依赖对的单射性 [inj_pair2_eq_dec] 将“相同的加数”转化为“相同的谓词”。因此 [Q] 点上的谓词可以注入到 [Q] 的点中，而康托尔对角线定理禁止这种情况。在 [PTopCat] 上以及在类型值的 [Top] 上，这两个参数达到相同的形状，因为一个箭头索引在 [PTopCat] 的对象宇宙之间移动，并在 [Top] 的 Hom 宇宙之间移动（Instance/Top/Complete/Refutations.v 的 [PTop_ArrowIndex_transport] 和 [Top_ArrowIndex_transport]）。这里没有任何东西是公理：空间的可判定等式（Construction/Quotient.v 的 [ObjDecEq]）、信息化排中律（[IEM]，Instance/Sets/Classifier/OneLevel.v）和箭头索引（[ArrowIndex]，Structure/Complete/Freyd.v）都是假设；[IEM] 在经典逻辑下成立，并推出另外两个。名称。Instance/Top/Complete/Refutations.v 头文件的方案，与此文件共享，余极对偶：[_Freyd] 和 [_Cantor_] 命名论证，而假设后缀命名覆盖范围。[_Freyd]：Freyd 在形状宇宙 [s] 上的箭头索引的论证，没有将 [s] 与点的 [o] 关联；[_ObjDecEq] 和 [_IEM]：空间的可判定相等性和信息化排中律，每个在 [s] 上，包含 [o < s]、[o := Set]；[_Cantor_ObjDecEq] 和 [_Cantor_IEM]：在相同假设下和同一覆盖范围的 Cantor 论证，但 [ObjDecEq] 形式需要 [Set < o]。极限侧的 [_below] 并未在此处出现：此文件的任何形式均不在 [Top] 的同伦宇宙停止，[Top_not_cocomplete_ObjDecEq] 和 [Top_not_cocomplete_IEM] 在普通后缀下覆盖它之下。什么被驳斥。- Freyd 的形式在 [PTopCat] 上双重化：[PTop_not_cocomplete_Freyd]，[PTopCat] 在形状宇宙中的一个 [ArrowIndex] 驳斥了那里的余完备性。分离的对是 Instance/Top/Subspace.v 的 [ppoint_true] 和 [ppoint_false]，通过在该点的求值来区分。[PTop_not_cocomplete_ObjDecEq] 和 [PTop_not_cocomplete_IEM]：在 [ObjDecEq PTopCat] 或在 [IEM] 下，在任何形状宇宙 [s] 中都没有 [Cocomplete@{r s o so} PTopCat@{o so}] 严格高于这些点，[o < s]、[o := Set] 包括：Structure/Complete/Freyd.v 的 [canonical_ArrowIndex] 从 [PTopCat@{o s}] 传输，就像极限边所做的那样。- [Sets_not_cocomplete_IEM]：在 [IEM] 下，[Sets@{o so}] 在其承载之上的任何形状宇宙中都不是余完备的。如果它是，Instance/Top/Cocomplete.v 的配方 [PTop_Colimit_lift] 将使 [PTopCat] 在那里余完备，这与 [PTop_not_cocomplete_IEM] 相悖。- 在类型值 [Top@{h o}] 上：[Top_not_cocomplete_Freyd] 是 Instance/Top/StoneCech/Refutations.v 的 [Top_not_complete]（一个 [ArrowIndex@{s h h}] 反驳 [Cocomplete@{r s h h}]）的精确对偶。[Top@{h o}] 的典型索引位于 [h]；[Top@{s o}] 的索引通过 Instance/Top/Complete/Refutations.v 的 [Top_ArrowIndex_transport] 移动到 [Top@{h o}]，索引位于 [s]。通过它，[Top_not_cocomplete_ObjDecEq] 和 [Top_not_cocomplete_IEM]，在 [ObjDecEq Top] 下或 [IEM] 下，在每个具有 [o < s] 的 [s] 上反驳 [Cocomplete@{r s h h} Top@{h o}]，包括点和 Homs 之间的严格形状及 [o := Set]。- 康托尔的论证，第二个独立的证明。引擎：
- [cocomp_cantor_diagonal]，没有将类型上的谓词映射到它的映射是至多在自反关系下单射的；[pcc_contradiction]（在[PTopCat]上）和[tcc_contradiction]（在[Top]上）针对抽象分离器运行上述论证：一个空间[Om]及其点族[c k0 k]，其中[c k0 k ≈ c k0 k0]仅在[k = k0]处；[pcc_index]和[tcc_index]是[K]。在[PTopCat]上，[PTop_not_cocomplete_Cantor_ObjDecEq]（分离器，真值上的离散空间，在[<->]下，[pcc_Prop]，带有[c k0 k := (k = k0)]，因此[Set < o]）和[PTop_not_cocomplete_Cantor_IEM]（分离器Instance/Top/Prop.v的两点[PBool]，[c]通过[IEM]决定[k = k0]，没有[Set < o]）；两者都达不到Freyd上述形式所未形成的形状。在 [Top]、[Top_not_cocomplete_Cantor_ObjDecEq] 和 [Top_not_cocomplete_Cantor_IEM] 上，分隔符 Instance/Top.v 的 [Discrete_Top] 以及 [pcc_Prop] 和 [Bool_Discrete]，在每一个 [o < s] 下，下面的 [h] 也是如此；它们也无法达到所传输的 Freyd 形式的形状，而 [ObjDecEq] 的一个到达较少，需要 [Set < o]。边界。[PTopCat@{o so}] 的余完备性在每一个形宇宙 [s <= o]（Instance/Top/Cocomplete.v 的 [PTop_Cocomplete]，无假设下）是可证明的，而在 [IEM] 下，或在 [ObjDecEq] 下，在每一个 [s] 具有 [o < s]（[PTop_not_cocomplete_IEM]，[PTop_not_cocomplete_ObjDecEq]）时是被驳斥的；没有形宇宙在其之间，并且在没有这些假设之一或索引的情况下，点以上的内容不会被驳斥。在 Instance/Top/Complete.v 的 scratch 文件的边界段（导入列表合并后的 #458 六个文件中）中测量：[PTop_not_cocomplete_IEM] 和 [PTop_not_cocomplete_ObjDecEq] 在 [s] 时被接受，并且在 [o < s] 和 [o := Set] 时也被接受；[PTop_not_cocomplete_IEM] 和 [Sets_not_cocomplete_IEM] 在 [Cocomplete@{o o o so}] 读取时被拒绝（"无法强制执行 <1> = o 因为 <1> < o"，生成的 universe 写为 <1>），因此反驳未能达到已证明的语句；在 [o := Set]，[PTop_not_cocomplete_Cantor_ObjDecEq] 被拒绝（"无法强制 Set = <1> 因为 Set < <1>"），其分隔符携带 [Set < o] ，而 [PTop_not_cocomplete_Cantor_IEM] 被接受。在类型值 [Top] 上，[Top_not_cocomplete_IEM] 和 [Top_not_cocomplete_ObjDecEq] 反驳每个 [o < s] ，在 [s <= o] 时问题仍然开放，如 Instance/Top/Cocomplete/TypeValued.v 所记录。以...衡量
+ [cocomp_cantor_diagonal]，没有将类型上的谓词映射到它的映射是至多在自反关系下单射的；[pcc_contradiction]（在[PTopCat]上）和[tcc_contradiction]（在[Top]上）针对抽象分离器运行上述论证：一个空间[Om]及其点族[c k0 k]，其中[c k0 k ≈ c k0 k0]仅在[k = k0]处；[pcc_index]和[tcc_index]是[K]。在[PTopCat]上，[PTop_not_cocomplete_Cantor_ObjDecEq]（分离器，真值上的离散空间，在[<->]下，[pcc_Prop]，带有[c k0 k := (k = k0)]，因此[Set < o]）和[PTop_not_cocomplete_Cantor_IEM]（分离器Instance/Top/Prop.v的两点[PBool]，[c]通过[IEM]决定[k = k0]，没有[Set < o]）；两者都达不到Freyd上述形式所未形成的形状。在 [Top]、[Top_not_cocomplete_Cantor_ObjDecEq] 和 [Top_not_cocomplete_Cantor_IEM] 上，分隔符 Instance/Top.v 的 [Discrete_Top] 以及 [pcc_Prop] 和 [Bool_Discrete]，在每一个 [o < s] 下，下面的 [h] 也是如此；它们也无法达到所传输的 Freyd 形式的形状，而 [ObjDecEq] 的一个到达较少，需要 [Set < o]。边界。[PTopCat@{o so}] 的余完备性在每一个形宇宙 [s <= o]（Instance/Top/Cocomplete.v 的 [PTop_Cocomplete]，无假设下）是可证明的，而在 [IEM] 下，或在 [ObjDecEq] 下，在每一个 [s] 具有 [o < s]（[PTop_not_cocomplete_IEM]，[PTop_not_cocomplete_ObjDecEq]）时是被驳斥的；没有形宇宙在其之间，并且在没有这些假设之一或索引的情况下，点以上的内容不会被驳斥。在 Instance/Top/Complete.v 的 scratch 文件的边界段（导入列表合并后的 #458 六个文件中）中测量：[PTop_not_cocomplete_IEM] 和 [PTop_not_cocomplete_ObjDecEq] 在 [s] 时被接受，并且在 [o < s] 和 [o := Set] 时也被接受；[PTop_not_cocomplete_IEM] 和 [Sets_not_cocomplete_IEM] 在 [Cocomplete@{o o o so}] 读取时被拒绝（“无法强制执行 <1> = o 因为 <1> < o”，生成的 universe 写为 <1>），因此反驳未能达到已证明的语句；在 [o := Set]，[PTop_not_cocomplete_Cantor_ObjDecEq] 被拒绝（“无法强制 Set = <1> 因为 Set < <1>”），其分隔符携带 [Set < o] ，而 [PTop_not_cocomplete_Cantor_IEM] 被接受。在类型值 [Top] 上，[Top_not_cocomplete_IEM] 和 [Top_not_cocomplete_ObjDecEq] 反驳每个 [o < s] ，在 [s <= o] 时问题仍然开放，如 Instance/Top/Cocomplete/TypeValued.v 所记录。以...衡量
  Test/ProbeTopComplete458.v:  [Top_not_cocomplete_IEM] 和
  [Top_not_cocomplete_Cantor_IEM] 在 [s] 时被接受，伴随 [o < s < h] ，而 [Top_not_cocomplete_ObjDecEq] 在 [o := Set] 时被接受，其中
- [Top_not_cocomplete_Cantor_ObjDecEq] 被拒绝（"无法强制执行 Set = <2> 因为 Set < <2>"，在消息中出现顺序编号的生成宇宙）； [Top_not_cocomplete_IEM] 在 [s := o] 被其宇宙实例读取时被拒绝（"无法强制执行 o < o 因为 o = o"）。
+ [Top_not_cocomplete_Cantor_ObjDecEq] 被拒绝（“无法强制执行 Set = <2> 因为 Set < <2>”，在消息中出现顺序编号的生成宇宙）； [Top_not_cocomplete_IEM] 在 [s := o] 被其宇宙实例读取时被拒绝（“无法强制执行 o < o 因为 o = o”）。
 
  强项。每个定理都以 [False] 结束； [cocomp_cantor_diagonal] 根据其假设得出 [False] 。 [ObjDecEq] 仅在 [canonical_ArrowIndex] 和 [inj_pair2_eq_dec] 使用，而 [IEM] 仅用于决定空间和索引的相等性。没有证明以 [Defined] 结束。宇宙，由 [About] 在 [Set Printing Universes] 下读取，标准库大写字母省略；[o] 点，[so] [PTopCat] 的对象，[h] [Top] 的同态，[s] 和 [r] 一个形状及其余极记录，[e] [IEM] 的层级，自由的。PTop_not_cocomplete_Freyd@{r s o so} :
  ArrowIndex@{s so o} PTopCat@{o so} → ¬ Cocomplete@{r s o so}
@@ -369,7 +369,7 @@ Qed.
 
 (* * ** A second argument: Cantor's diagonal at the points of one coproduct / * ** 第二个论点：康托在一个余积点上的对角线 *)
 
-(* No map from the predicates on a type into it is injective up to a reflexive relation: the predicate "encodes a predicate it does not hold of" holds of its own code exactly when it does not. / 没有从一个类型上的谓词到它自身的映射，在自反关系下是单射的：谓词“编码一个它不成立的谓词”正好在它自身的代码上成立，当且仅当它不成立时。 *)
+(* No map from the predicates on a type into it is injective up to a reflexive relation: the predicate “encodes a predicate it does not hold of” holds of its own code exactly when it does not. / 没有从一个类型上的谓词到它自身的映射，在自反关系下是单射的：谓词“编码一个它不成立的谓词”正好在它自身的代码上成立，当且仅当它不成立时。 *)
 Lemma cocomp_cantor_diagonal@{u} {A : Type@{u}} (R : A → A → Type@{u})
   (R_refl : ∀ a, R a a) (enc : (A → Prop) → A)
   (enc_inj : ∀ U V, R (enc U) (enc V) → U = V) : False.

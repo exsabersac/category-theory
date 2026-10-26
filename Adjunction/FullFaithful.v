@@ -24,28 +24,28 @@ Generalizable All Variables.
    Mac Lane, CWM 2nd ed., §IV.3, printed p. 90, read from the page image
    p367-099.png.  The paragraph opening the section:
 
-     "For many of the forgetful functors U : A → X listed in §2, the
+     “For many of the forgetful functors U : A → X listed in §2, the
       counit ε : F U ⇸ I_A of the adjunction assigns to each a ∈ A the
       epimorphism ε_a : F(U a) → a which gives the standard
       representation of a as a quotient of a free object.  This is a
       general fact: Whenever a right adjoint G is faithful, every counit
-      ε_a of the adjunction is epi."
+      ε_a of the adjunction is epi.”
 
    and the theorem itself, same image:
 
-     "Theorem 1.  For an adjunction ⟨F, G, η, ε⟩ : X ⇀ A: (i) G is
+     “Theorem 1.  For an adjunction ⟨F, G, η, ε⟩ : X ⇀ A: (i) G is
       faithful if and only if every component ε_a of the counit ε is
       epi, (ii) G is full if and only if every ε_a is a split monic.
       Hence G is full and faithful if and only if each ε_a is an
-      isomorphism F G a ≅ a."
+      isomorphism F G a ≅ a.”
 
-   followed by "The proof depends on a lemma."  That lemma is
+   followed by “The proof depends on a lemma.”  That lemma is
    maclane:IV.3:lem1, delivered in Functor/Hom/Transfer.v; its statement
    and proof are quoted in that file's header from p367-100.png.
 
    The proof of the theorem, printed p. 91 (image p367-100.png):
 
-     "Now we prove the theorem.  Apply the Yoneda Lemma to the natural
+     “Now we prove the theorem.  Apply the Yoneda Lemma to the natural
       transformation (arrow function of G followed by the adjunction)
 
           A(a, c) --G_{a,c}--> X(G a, G c) --φ⁻¹--> A(F G a, c).
@@ -55,18 +55,18 @@ Generalizable All Variables.
       an isomorphism, hence this natural transformation is monic or epi,
       respectively, when every G_{a,c} is injective or surjective,
       respectively; that is, when G is faithful or full, respectively.
-      The result now follows by the lemma."
+      The result now follows by the lemma.”
 
    Exercise 5, printed p. 92 (image p367-101.png):
 
-     "Given an adjunction ⟨F, G, φ⟩ : X ⇀ A, prove that G is faithful if
-      and only if φ⁻¹ carries epis to epis."
+     “Given an adjunction ⟨F, G, φ⟩ : X ⇀ A, prove that G is faithful if
+      and only if φ⁻¹ carries epis to epis.”
 
    Riehl, Category Theory in Context, 2nd ed., §4.6, printed p. 169, read
    from the page image r367-189.png.  Lemma 4.6.11, for an adjunction
    with F : C → D on top and G : D → C below and counit ε : FG ⇒ id_D:
 
-     "(i) G is faithful if and only if each component of ε is an
+     “(i) G is faithful if and only if each component of ε is an
       epimorphism.  (ii) G is full if and only if each component of ε is
       a split monomorphism.  (iii) G is full and faithful if and only if
       ε is an isomorphism.
@@ -74,10 +74,10 @@ Generalizable All Variables.
       (i) F is faithful if and only if each component of η is a
       monomorphism.  (ii) F is full if and only if each component of η is
       a split epimorphism.  (iii) F is full and faithful if and only if
-      η is an isomorphism."
+      η is an isomorphism.”
 
    Its proof is deferred to Exercise 4.6.ix, printed p. 172 (image
-   r367-192.png), whose entire text is "Prove Lemma 4.6.11."
+   r367-192.png), whose entire text is “Prove Lemma 4.6.11.”
 
    Catalog ids: maclane:IV.3:thm1, maclane:IV.3:lem1, maclane:IV.3:ex5,
    riehl:4.6:lem11, riehl:4.6:exix.
@@ -90,9 +90,9 @@ Generalizable All Variables.
    `unit x = ⌊id⌋ : x ~> U (F x)` and the counit is
    `counit a = ⌈id⌉ : F (U a) ~> a`.  Both notations, and ⌊−⌋/⌈−⌉,
    are SECTION-LOCAL in Theory/Adjunction.v and do not export, so they are
-   re-declared here; as #368 measured, `Notation "'ε'"` with no argument
-   re-inserts the implicit object and is rejected with "Illegal
-   application", which is why the two notations below take the object
+   re-declared here; as #368 measured, `Notation “'ε'”` with no argument
+   re-inserts the implicit object and is rejected with “Illegal
+   application”, which is why the two notations below take the object
    explicitly.
 
    WHAT IS DELIVERED AND AT WHAT STRENGTH.
@@ -123,9 +123,9 @@ Generalizable All Variables.
    plus Mac Lane's Exercise 5 in the book's orientation,
    [right_adjoint_faithful_iff_from_adj_epic].
 
-   "Split monic" is the library's [Section] (Theory/Morphisms.v,
+   “Split monic” is the library's [Section] (Theory/Morphisms.v,
    aliased [SplitMono]) — a chosen LEFT inverse carried as data —
-   and NOT [Monic]; "split epi" is [Retraction] (aliased [SplitEpi]).
+   and NOT [Monic]; “split epi” is [Retraction] (aliased [SplitEpi]).
    The three dual clauses are stated COVARIANTLY: no `^op`
    occurs in any of their types, so a consumer holding a left adjoint
    uses them directly.
@@ -142,7 +142,7 @@ Generalizable All Variables.
    `g ∘ ε a ≈ ⌈fmap[U] g⌉`, and that composite is on the nose the
    component of [hom_transfer (ε a)] at c
    ([transfer_at_counit_is_precomp], an [eq_refl] Example).  Since ⌈−⌉ is
-   a bijection ("But φ⁻¹ is an isomorphism"), U's arrow map is injective
+   a bijection (“But φ⁻¹ is an isomorphism”), U's arrow map is injective
    at every (a, c) exactly when that component is, and surjective exactly
    when it is.  So:
 
@@ -171,8 +171,8 @@ Generalizable All Variables.
    - Adjunction/Fullness.v (#368) supplies
      [counit_split_mono_of_full_right] and
      [unit_split_epi_of_full_left], the forward halves of (ii) and
-     of its dual, and [unit_iso_of_full_monic], "split epi +
-     monic ⟹ invertible" packaged for the unit.  All three are CONSUMED.
+     of its dual, and [unit_iso_of_full_monic], “split epi +
+     monic ⟹ invertible” packaged for the unit.  All three are CONSUMED.
      Its [reflective_fmap_counit_IsIsomorphism] and
      [equiv_fmap_counit_IsIsomorphism] are SIBLINGS, not
      duplicates: they are about `U ε`, the WHISKERED counit, which is
@@ -189,8 +189,8 @@ Generalizable All Variables.
      triangle identity, where the proof here goes through the transfer
      lemma).  The identity of the two STATEMENTS is machine-checked in
      Test/ProbeFullFaithful367.v, which [Check]s both at one type.
-     The issue's claim that "a whole-tree inspection of every [Epic]
-     occurrence finds none touching a counit" is therefore FALSE at
+     The issue's claim that “a whole-tree inspection of every [Epic]
+     occurrence finds none touching a counit” is therefore FALSE at
      commit 418e970a; see CORRECTIONS.
    - Theory/Adjunction.v [adj_monic] is the only meeting of
      faithfulness with an adjunction in Theory/Adjunction.v itself (its
@@ -198,7 +198,7 @@ Generalizable All Variables.
      (Monad/Lifting.v, Theory/Equivalence/Adjoint.v among them),
      and none of those is consumed here.  [adj_monic] IS consumed, at the
      opposite adjunction, to give the forward half of Exercise 5 — which
-     is the issue's request that the two be "visibly the same fact".
+     is the issue's request that the two be “visibly the same fact”.
    - Functor/Hom/Induced.v ([hom_action_faithful_iff],
      [hom_action_full_iff]) say faithfulness and fullness are injectivity
      and surjectivity of the arrow map, packaged as one natural
@@ -215,8 +215,8 @@ Generalizable All Variables.
 
    CORRECTIONS to the issue text (each checked at commit 418e970a).
 
-   - "a whole-tree inspection of every [Epic] occurrence finds none
-     touching a counit" is false: `rg -n 'Epic' Instance/Coq/Monoid/Free.v`
+   - “a whole-tree inspection of every [Epic] occurrence finds none
+     touching a counit” is false: `rg -n 'Epic' Instance/Coq/Monoid/Free.v`
      returns [adjunction_counit_epic], whose conclusion is
      `Epic (counit x)`.
    - Its citations for the donors land on the comment or the [Proof] line
@@ -228,8 +228,8 @@ Generalizable All Variables.
      Functor/Hom/Yoneda.v; and [Section], [Retraction], [Epic], [Monic]
      in Theory/Morphisms.v, which is also where the aliases
      [SplitEpi]/[SplitMono] are declared.
-   - "there are no [Monic]/[Epic] occurrences in Functor/Hom.v, ...,
-     Instance/Fun.v" was true of Instance/Fun.v but is now beside the
+   - “there are no [Monic]/[Epic] occurrences in Functor/Hom.v, ...,
+     Instance/Fun.v” was true of Instance/Fun.v but is now beside the
      point: Instance/Fun/Morphisms.v (#369) is exactly that development
      and this file consumes it through the transfer lemma.
 
@@ -246,7 +246,7 @@ Generalizable All Variables.
    ENGINEERING FINDINGS.
 
    - Requiring Category.Adjunction.Opposite installs
-     `Notation "N ^op" := (@Opposite_Adjunction _ _ _ _ N)` and OPENS
+     `Notation “N ^op” := (@Opposite_Adjunction _ _ _ _ N)` and OPENS
      [adjunction_scope] globally, so after that point a bare `X^op` on a
      CATEGORY can elaborate as an opposite ADJUNCTION.  That Require is
      therefore deferred to just before section (D), and every opposite is
@@ -339,8 +339,8 @@ Notation "⌈ f ⌉" := (from (@adj C D F U A _ _) f) (only parsing).
 (** ** (A) The bridge: Mac Lane's composite is precomposition with ε  / ** (A) 桥：Mac Lane 的复合是与 ε 的预复合*)
 
 (*
-"Apply the Yoneda Lemma to the natural transformation (arrow function
-   of G followed by the adjunction) A(a,c) → X(Ga,Gc) → A(FGa,c)."  Read
+“Apply the Yoneda Lemma to the natural transformation (arrow function
+   of G followed by the adjunction) A(a,c) → X(Ga,Gc) → A(FGa,c).”  Read
    in this library's vocabulary that composite is
    `g ↦ ⌈fmap[U] g⌉`, and the identification below says it is
    precomposition with ε_a.  It is one rewrite of [fmap_to_adj_counit]
@@ -348,7 +348,7 @@ Notation "⌈ f ⌉" := (from (@adj C D F U A _ _) f) (only parsing).
 
 --------
 “将米田引理应用于自然变换（箭头函数
- G 后跟附加）A(a,c) → X(Ga,Gc) → A(FGa,c)。" 阅读
+ G 后跟附加）A(a,c) → X(Ga,Gc) → A(FGa,c)。“ 阅读
  在这个库的词汇中，复合是
  `g ↦ ⌈fmap[U] g⌉`，下面的标识说它是
  与 ε_a 预合成。 它是 [fmap_to_adj_counit] 的一种重写
@@ -560,7 +560,7 @@ Defined.
 (** ** (E) Mac Lane §IV.3 Exercise 5: the pin and a direct control  / ** (E) Mac Lane §IV.3 练习 5：引脚和直接控制*)
 
 (*
-"prove that G is faithful if and only if φ⁻¹ carries epis to epis."
+“prove that G is faithful if and only if φ⁻¹ carries epis to epis.”
    φ⁻¹ is ⌈−⌉.  The BACKWARD direction is the cheap one: id is epi, and
    ⌈id⌉ IS the counit by definition (Theory/Adjunction.v), so (i)
    applies.  The identity `⌈id⌉ = ε a` is pinned as an [eq_refl] Example
@@ -651,7 +651,7 @@ End FullFaithful.
    [Full_op]/[Faithful_op]/[Full_of_op]/[Faithful_of_op] of
    Functor/Opposite.v.  Six of those twelve are record literals
    with no proof content — the Monic/Epic quartet, which is what
-   Duality.v's "one constructor application" sentence covers, and the
+   Duality.v's “one constructor application” sentence covers, and the
    two [Faithful] passages; the other six ([op_Retraction_of_Section]
    and its three siblings, [Full_op], [Full_of_op]) are [Program
    Definition]s whose single obligation is an [exact] of the other
@@ -841,12 +841,12 @@ End Duals.
 Mac Lane, printed p. 91 (image p367-100.png), immediately after the
    proof of Theorem 1:
 
-     "A subcategory A of B is called reflective in B when the inclusion
+     “A subcategory A of B is called reflective in B when the inclusion
       functor K : A → B has a left adjoint F : B → A. ...  Since the
       inclusion functor K is always faithful, the counit ε of a
       reflection is always epi. ...  If a full subcategory A ⊂ B is
       reflective in B, then by Theorem 1 each object a ∈ A is isomorphic
-      to F K a, and hence R a ≅ a for all a."
+      to F K a, and hence R a ≅ a for all a.”
 
    That is exactly Construction/Reflective.v's [reflective_counit_iso],
    and here it becomes a corollary: the inclusion is faithful
@@ -911,12 +911,12 @@ Definition reflective_counit_IsIsomorphism_general {C : Category}
       (reflective_incl_Full R, reflective_incl_Faithful R) x.
 
 (*
-The object-level reading, which is Mac Lane's own sentence "each
-   object a ∈ A is isomorphic to F K a". 
+The object-level reading, which is Mac Lane's own sentence “each
+   object a ∈ A is isomorphic to F K a”. 
 
 --------
 对象级阅读，就是Mac Lane自己的一句话“each
- 对象 a ∈ A 与 F K a" 同构。 
+ 对象 a ∈ A 与 F K a“ 同构。 
 *)
 
 Definition reflective_counit_Isomorphism_general {C : Category}
@@ -925,8 +925,8 @@ Definition reflective_counit_Isomorphism_general {C : Category}
   IsIsoToIso _ (reflective_counit_IsIsomorphism_general R x).
 
 (*
-Faithfulness alone already gives Mac Lane's weaker sentence "the
-   counit of a reflection is always epi", with no fullness hypothesis. 
+Faithfulness alone already gives Mac Lane's weaker sentence “the
+   counit of a reflection is always epi”, with no fullness hypothesis. 
 
 --------
 仅凭忠诚就已经给出了麦克莱恩较弱的句子“

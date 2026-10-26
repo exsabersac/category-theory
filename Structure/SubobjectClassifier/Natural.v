@@ -60,8 +60,8 @@ Generalizable All Variables.
 
  [char_reindex] :  char (f* s)  ≈  (char s) ∘ f,
 
- "the characteristic map of a pulled-back subobject is the characteristic
- map composed with the substitution".  That is the whole content of the
+ “the characteristic map of a pulled-back subobject is the characteristic
+ map composed with the substitution”.  That is the whole content of the
  upgrade; everything else in this file is packaging.
 
  WHAT IS DELIVERED, AND AT WHICH STRENGTH.
@@ -72,7 +72,7 @@ Generalizable All Variables.
  [classifier_pullback_roundtrip]) together with
  Theory/Subobject/Functor.v's [sub_reindex_comp], which is itself
  the pullback pasting lemma.  So the categorical input is exactly
- "pasting two pullback squares gives a pullback square", which is
+ “pasting two pullback squares gives a pullback square”, which is
  the argument Awodey's example runs.
 
  (2) [classifier_char_transform] and [classifier_pullback_transform] —
@@ -211,7 +211,7 @@ Proof. symmetry; apply sub_reindex_comp. Qed.
  obligation of the isomorphism below is reached, its [simpl] has unfolded
  the subobject equivalence into the underlying sigma, so the [symmetry]
  and [transitivity] TACTICS have no relation left to turn — they report
- "Cannot find a relation to rewrite".  Stated as lemmas, where the goal
+ “Cannot find a relation to rewrite”.  Stated as lemmas, where the goal
  is still the folded [≈], both go through in one line, and the
  obligations then close by [apply], which converts. 
 

@@ -2,7 +2,7 @@
  [Coq.QArith.QArith] must be required BEFORE [Category.Lib]: it exports its
  own [equiv], which shadows [Setoid]'s, and the anonymous record
  [{| equiv := _ |}] used below is then rejected with the error
- "equiv: Not a projection".  Instance/FdVect.v records the same
+ “equiv: Not a projection”.  Instance/FdVect.v records the same
  import-order gotcha. 
 
  --------
@@ -33,11 +33,11 @@ Generalizable All Variables.
 (*
    * * Commutative K-algebras as the coslice of commutative rings
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.6
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §II.6
    Exercise 1 (printed p. 47) [maclane:II.6:ex1].  The catalog's
    paraphrase of the exercise — its wording, not the book's — reads:
-   "For a commutative ring K, show the comma category (K ↓ CRng) is the
-   usual category of all small commutative K-algebras."  The comma
+   “For a commutative ring K, show the comma category (K ↓ CRng) is the
+   usual category of all small commutative K-algebras.”  The comma
    category in question is §II.6's [maclane:II.6:def3], the category of
    objects S-under b for S the identity functor: objects are the arrows
    f : K ~> A of CRng, arrows ⟨f, A⟩ → ⟨f', A'⟩ are the CRng-arrows
@@ -101,7 +101,7 @@ Generalizable All Variables.
    an [Example] so the claim is machine-checked rather than asserted.
    [KAlgObject] is a [Record] and primitive projections are in force
    (inherited from Lib/Setoid.v and Lib/Datatypes.v; [About kalg_ring]
-   reports "is a primitive projection of KAlgObject"), so records have
+   reports “is a primitive projection of KAlgObject”), so records have
    definitional eta and reassembling an algebra from its three
    projections is the algebra.
 
@@ -109,7 +109,7 @@ Generalizable All Variables.
    the object only up to a [destruct]-provable Leibniz equality.
    [eq_refl] is REJECTED for it; that was measured, by writing the
    statement out with [eq_refl] as its proof term and reading the
-   error ("cannot unify ... and x"), not inferred.  The obstruction is
+   error (“cannot unify ... and x”), not inferred.  The obstruction is
    that a coslice object over [CRng] is built from [sigT] (twice) and
    from the [True] of [CRng_Sub]'s [shom], and none of those has
    definitional eta in Coq — unlike the [Record] above; the proof
@@ -177,7 +177,7 @@ Generalizable All Variables.
    coslice one gets is the category of (not necessarily commutative)
    rings under K, which is NOT the category of commutative K-algebras.
    K's own commutativity is carried by K : CRng and is never used below;
-   the exercise supplies it because without it "K-algebra" in the usual
+   the exercise supplies it because without it “K-algebra” in the usual
    sense is not the right notion.
 
    WHAT THIS DOES NOT SAY, deferred and disclosed.
@@ -202,7 +202,7 @@ Generalizable All Variables.
    [RModObject], and no claim is made that [KAlg] is equivalent to a
    category of modules.
 
-   * "Small" in the exercise's statement is not formalized as a size
+   * “Small” in the exercise's statement is not formalized as a size
    condition; the library's [Theory/Size.v] vocabulary is not
    invoked, and the categories here sit wherever their universe
    parameters put them. 

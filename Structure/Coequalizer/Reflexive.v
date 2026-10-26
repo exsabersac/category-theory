@@ -29,7 +29,7 @@ Generalizable All Variables.
  the workhorse of the theory of algebras: the canonical presentation of
  an algebra by free algebras is a reflexive pair, so categories of
  algebras are as cocomplete as their reflexive coequalizers allow
- (Linton, "Coequalizers in categories of algebras", 1969).
+ (Linton, “Coequalizers in categories of algebras”, 1969).
 
  Being given by two equations with no quantification over the ambient
  category, reflexive pairs are preserved by arbitrary functors
@@ -50,7 +50,7 @@ Generalizable All Variables.
  f ∘ s ≈ id   且   g ∘ s ≈ id。
 
  这个名称来源于激励性例子：当 x 是 y 上某个关系的总对象且有投影 f 和 g 时——比如某个同余被取商——一个公共截面正是自反性的证据，将 y 沿对角线嵌入到该关系中。一个*自反余等化子*是一个自反对的余等化子。
- [HasReflexiveCoequalizers] 为每一个自反对封装了一个基本余等化子的选择（在 [IsCoequalizer] 的 [Structure/Coequalizer.v] 意义下）；它是 [HasCoequalizers] 的自反类比，并且对范畴的要求严格较弱。自反余等化子是代数理论的主力工具：通过自由代数给出代数的规范表达是一个自反对，因此代数范畴的余完备性取决于它们允许的自反余等化子（Linton，"代数范畴中的余等化子"，1969年）。由两个方程给出且没有对背景范畴进行量化，自反对偶对会被任意函子保持（[functor_preserves_reflexive]），就像分裂共等化器在[Structure/Coequalizer/Split.v]中一样——尽管自反对偶对的*共等化器*与分裂共等化器不同，不一定会被保持。
+ [HasReflexiveCoequalizers] 为每一个自反对封装了一个基本余等化子的选择（在 [IsCoequalizer] 的 [Structure/Coequalizer.v] 意义下）；它是 [HasCoequalizers] 的自反类比，并且对范畴的要求严格较弱。自反余等化子是代数理论的主力工具：通过自由代数给出代数的规范表达是一个自反对，因此代数范畴的余完备性取决于它们允许的自反余等化子（Linton，“代数范畴中的余等化子”，1969年）。由两个方程给出且没有对背景范畴进行量化，自反对偶对会被任意函子保持（[functor_preserves_reflexive]），就像分裂共等化器在[Structure/Coequalizer/Split.v]中一样——尽管自反对偶对的*共等化器*与分裂共等化器不同，不一定会被保持。
 
  Beck的可收缩对，Structure/Coequalizer/Contractible.v（#480），是对平行对的另一种方程条件；这两者是不可比的（Test/ProbeContractible480.v，在两个方向上）。
 *)

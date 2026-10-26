@@ -11,38 +11,38 @@ Require Import Category.Instance.Sets.Powerset.
 Generalizable All Variables.
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.2, Exercise 1(a), printed p. 142
  (PDF p. 151) — maclane:VI.2:ex1
- Book: Awodey, "Category Theory", Carnegie Mellon pre-print, September
+ Book: Awodey, “Category Theory”, Carnegie Mellon pre-print, September
  2005, §10.2, Example 10.5, printed p. 271 (PDF p. 280) —
  awodey:10.2:example5; and §10.6, Exercise 5, printed p. 291
  (PDF p. 300) — awodey:10:ex5
- Book: Riehl, "Category Theory in Context", 2nd ed., §5.1, Example
+ Book: Riehl, “Category Theory in Context”, 2nd ed., §5.1, Example
  5.1.5(i), printed p. 185 (PDF p. 205) — riehl:5.1:example5;
  with her Corollary 4.6.3, printed p. 167
  nLab: https://ncatlab.org/nlab/show/power+set
  nLab: https://ncatlab.org/nlab/show/monad
 
  The covariant power set is the monad whose algebras Mac Lane's §VI.2
- Exercise 1, "Complete semi-lattices (E. Manes; thesis)", asks for.
+ Exercise 1, “Complete semi-lattices (E. Manes; thesis)”, asks for.
  All three books state the same data, read here from the page images.
- Mac Lane: "Let 𝒫 be the covariant power set functor on Set so that 𝒫X
+ Mac Lane: “Let 𝒫 be the covariant power set functor on Set so that 𝒫X
  is the set of all subsets S ⊂ X, while for each function f : X → Y,
  (𝒫f)S is the direct image of S under f.  For each set X, let
  η_X : X → 𝒫X send each x ∈ X to the one point set {x}, while
  μ_X : 𝒫𝒫X → 𝒫X sends each set of sets into its union.  (a) Prove that
- ⟨𝒫, η, μ⟩ is a monad 𝒫 on Set."  Awodey's Example 10.5 sends each
- function f to "the image mapping im(f)", with η_X(x) = {x} and
- μ_X(α) = ⋃α, and says "The reader should verify as an exercise that
+ ⟨𝒫, η, μ⟩ is a monad 𝒫 on Set.”  Awodey's Example 10.5 sends each
+ function f to “the image mapping im(f)”, with η_X(x) = {x} and
+ μ_X(α) = ⋃α, and says “The reader should verify as an exercise that
  these operations are in fact natural in X, and that this defines a
- monad (𝒫, {−}, ⋃) on Sets"; his Exercise 10.6.5, "Show that (P, s, ∪)
- is a monad on Sets", is that verification, with
+ monad (𝒫, {−}, ⋃) on Sets”; his Exercise 10.6.5, “Show that (P, s, ∪)
+ is a monad on Sets”, is that verification, with
  ∪_X(α) = {x ∈ X | ∃_{U∈α}. x ∈ U}.  Riehl's Example 5.1.5(i), under
- "Monads also arise in nature", has the same unit and multiplication,
- and notes that naturality of the multiplication "makes use of
+ “Monads also arise in nature”, has the same unit and multiplication,
+ and notes that naturality of the multiplication “makes use of
  Corollary 4.6.3; the direct image function, as a left adjoint,
- preserves unions".  This file is part (a); parts (b), (c) and (d),
+ preserves unions”.  This file is part (a); parts (b), (c) and (d),
  the algebras, are Instance/SupLat.v.
 
  THE FUNCTOR AND THE UNIT ARE NOT REBUILT.  Instance/Sets/Powerset.v
@@ -80,8 +80,8 @@ Generalizable All Variables.
  closure of the Category.* [Require] lines, each file counted once,
  the root included), so that route is kept apart, in the satellite
  Instance/Sets/Powerset/Monad/Riehl.v.
- Awodey's remark that "monads can, and often do, arise without coming
- from evident adjunctions" is taken up in Instance/SupLat/Free.v, which
+ Awodey's remark that “monads can, and often do, arise without coming
+ from evident adjunctions” is taken up in Instance/SupLat/Free.v, which
  builds the free complete-semilattice adjunction and measures how far
  its induced monad is this one.  [Powerset_Monad_statement] inhabits
  the type [Powerset_Prop_Monad_statement], which Instance/Sets/
@@ -105,9 +105,9 @@ Generalizable All Variables.
  its dependency closure with every [Qed] turned into [Defined] but those
  the probe's header names; and the statement
  [@Monad Sets Powerset] over the proof-relevant carrier (M2, a type
- mismatch between "Sets@{o so} ⟶ Sets@{so sso}" and "Sets@{o so} ⟶
- Sets@{o so}", which Rocq 9.1 and Coq 8.20 explain as the universe
- inconsistency "Cannot enforce so = o because o < so" and Coq 8.19
+ mismatch between “Sets@{o so} ⟶ Sets@{so sso}” and “Sets@{o so} ⟶
+ Sets@{o so}”, which Rocq 9.1 and Coq 8.20 explain as the universe
+ inconsistency “Cannot enforce so = o because o < so” and Coq 8.19
  prints without that explanation).
 
  UNIVERSES, read off [About].  The union and the four laws bind [@{o}],

@@ -58,7 +58,7 @@ nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    [Construction/Comma/Limit.v], the cone-level statement that [U] carries a
    limit cone of any diagram to a limit cone (the image cone
    [(U L, fmap[U] π_•)] is universal).  This is the mathematically correct
-   reading of "U preserves limits", and it is precisely what
+   reading of “U preserves limits”, and it is precisely what
    [Comma_Complete] consumes.  The apex-only class [PreservesAllLimits] of
    [Structure/Limit/Preservation.v] records only that the apex object [U L]
    carries *some* limit structure, whose legs need not be the image legs; as
@@ -107,12 +107,12 @@ nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
 The converse of continuity: provenance, obstruction, and use
 
    nLab:  https://ncatlab.org/nlab/show/adjoint+functor+theorem
-   Book:  Freyd, "Abelian Categories: An Introduction to the Theory of
-          Functors", Harper & Row 1964 (TAC Reprints 3, 2003)
-   Paper: Kan, "Adjoint Functors", Trans. AMS 87(2), 1958
-   Paper: Porst, "The history of the General Adjoint Functor Theorem",
+   Book:  Freyd, “Abelian Categories: An Introduction to the Theory of
+          Functors”, Harper & Row 1964 (TAC Reprints 3, 2003)
+   Paper: Kan, “Adjoint Functors”, Trans. AMS 87(2), 1958
+   Paper: Porst, “The history of the General Adjoint Functor Theorem”,
           arXiv:2310.19528, 2023
-   Post:  Milewski, "Freyd's Adjoint Functor Theorem", 2020
+   Post:  Milewski, “Freyd's Adjoint Functor Theorem”, 2020
 
    The theorem answers one question: which limit-preserving functors are
    right adjoints.  That a right adjoint preserves limits is elementary, and
@@ -122,7 +122,7 @@ The converse of continuity: provenance, obstruction, and use
    [F ⊣ U].
 
    Adjoint functors were a recent notion when the theorem was proved.  Kan
-   introduced them (Kan, "Adjoint Functors", Trans. AMS 87(2), 1958), and
+   introduced them (Kan, “Adjoint Functors”, Trans. AMS 87(2), 1958), and
    Mac Lane records that Bourbaki had just missed the concept in a 1948
    draft appendix.  Both the general and the special adjoint functor
    theorems then first appeared in print in Freyd's 1964 book, where — as
@@ -497,7 +497,7 @@ Freyd's GAFT.  [C] complete, [U] preserving (image) limits, and a solution
    Instance/Discrete.v's unannotated [DiscreteCat_Functor], reaching this
    statement through the [DiscreteCat_Functor] limits taken in the proof
    below; the donor was annotated in the PR
-   "algebraic carriers are sets" (2026-09-17) and no literal [Set] remains.
+   “algebraic carriers are sets” (2026-09-17) and no literal [Set] remains.
    The size condition (i)+(ii) survives it unchanged, which is the point:
    it is structural and was never about [Set].
 
@@ -660,7 +660,7 @@ GAFT itself, re-derived from the exported step, agrees with the theorem
 从导出步骤重新导出的 GAFT 本身与该定理一致
  上面的声明 - 两者在类型上可以互换。 
 *)
-(* Same binders as [GAFT], which is what "agrees on its statement" means
+(* Same binders as [GAFT], which is what “agrees on its statement” means
    here: the two are interchangeable at the type AND at the universe
    graph's two identifications.  Measured:
 
@@ -698,8 +698,8 @@ Mac Lane §V.6 Theorem 2 (book p. 123) and Awodey §9.8 Theorem 28 read the
    it is stated over [Category@{uo uh uh}] — the hom and proof universes
    identified, and the SAME [uh] for both categories — which is the
    identification [Adjunction] and [SolutionSet] already carry and not one
-   introduced here, so an earlier revision of this sentence saying "the
-   three universes free" was wrong.  What is free is [Set]: the necessity
+   introduced here, so an earlier revision of this sentence saying “the
+   three universes free” was wrong.  What is free is [Set]: the necessity
    direction is accepted at a category with [Set] strictly below its homs,
    where the biconditional is refused (probe n6 and its control).
 

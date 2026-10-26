@@ -25,14 +25,14 @@ Generalizable All Variables.
 nLab: https://ncatlab.org/nlab/show/distributive+law
    nLab: https://ncatlab.org/nlab/show/applicative+functor
 
-   No dedicated nLab or Wikipedia page exists for "traversable functor": the
+   No dedicated nLab or Wikipedia page exists for “traversable functor”: the
    nLab pages above are the closest (a traversable functor is precisely a
    functor carrying a coherent distributive law over every applicative
    functor), and the Haskell-level account lives on the HaskellWiki rather
    than in the Wikipedia main namespace
    (https://wiki.haskell.org/Foldable_and_Traversable).  The defining laws
-   below are those of Jaskelioff and Rypacek, "An Investigation of the Laws of
-   Traversals", MSFP 2012 (https://arxiv.org/abs/1202.2919).
+   below are those of Jaskelioff and Rypacek, “An Investigation of the Laws of
+   Traversals”, MSFP 2012 (https://arxiv.org/abs/1202.2919).
 
    Following McBride-Paterson, a traversable functor is an endofunctor
    [F : C ⟶ C] equipped with a distributive law

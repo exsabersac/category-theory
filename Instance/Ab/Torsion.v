@@ -1,20 +1,20 @@
 (*
    * * Torsion groups are coreflective in Ab, stated covariantly
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    Springer GTM 5, §IV.3, printed p. 92 (PDF p. 101), read from the
-   page image, catalog item maclane:IV.3:construction1: "A coreflective
+   page image, catalog item maclane:IV.3:construction1: “A coreflective
    subcategory of Ab is the full subcategory of all torsion abelian
    groups (a group is torsion if all elements have finite order); the
    coreflector sends each abelian group A to the subgroup TA of all
-   elements of finite order in A."  The definition is on printed p. 91
-   (PDF p. 100): "Dually, A ⊂ B is coreflective in B when the inclusion
-   functor A → B has a right adjoint."
-   Riehl, "Category Theory in Context", §4.6, Example 4.6.13 (iii),
+   elements of finite order in A.”  The definition is on printed p. 91
+   (PDF p. 100): “Dually, A ⊂ B is coreflective in B when the inclusion
+   functor A → B has a right adjoint.”
+   Riehl, “Category Theory in Context”, §4.6, Example 4.6.13 (iii),
    printed p. 170 (PDF p. 190), read from the page image, for the other
-   half of the pair: "The inclusion Ab_tf ↪ Ab of torsion-free abelian
+   half of the pair: “The inclusion Ab_tf ↪ Ab of torsion-free abelian
    groups is reflective.  The reflector sends an abelian group A to the
-   quotient A/TA by its torsion subgroup."  That half is #371's
+   quotient A/TA by its torsion subgroup.”  That half is #371's
    Instance/Ab/TorsionFree.v; Riehl does not list the coreflection.
    Riehl, §5.3, Exercise 5.3.ii, printed p. 197 (PDF p. 217), catalog
    item riehl:5.3:exii, is carried through at that reflection below.
@@ -23,11 +23,11 @@
 
    BACKGROUND.  nLab's torsion-subgroup page defines the torsion
    subgroup of an abelian group as the subgroup of its elements of
-   finite order, calls a group "pure torsion" when it coincides with it
-   and "torsion-free" when it is trivial, and records that torsion and
-   torsion-free classes of objects in an abelian category "were
+   finite order, calls a group “pure torsion” when it coincides with it
+   and “torsion-free” when it is trivial, and records that torsion and
+   torsion-free classes of objects in an abelian category “were
    introduced axiomatically as a torsion theory (or torsion pair) in
-   (Dickson 1963)".  The two halves of Mac Lane's page and exercise
+   (Dickson 1963)”.  The two halves of Mac Lane's page and exercise
    are the two sides of that pair in Ab: the torsion groups
    coreflective with coreflector A ↦ TA, the torsion-free groups
    reflective with reflector A ↦ A/TA.  This file is the first half;
@@ -73,7 +73,7 @@
    It is [torsion_incl A ∘ fmap[Incl] id] on the nose (accepted at
    [eq_refl]); against [torsion_incl A] its setoid-morphism
    component is refused at [eq_refl], and so is the whole record,
-   with "cannot unify";
+   with “cannot unify”;
    CORRECTION (#1347): the setoid-morphism component now holds at
    [eq_refl] (the probe's N10, now a control), since Instance/Sets.v
    gives its identity's and composite's properness fields as terms;
@@ -275,7 +275,7 @@ Definition torsion_coreflector@{u p +} : Ab@{u p} ⟶ TorsionCat :=
   RightAdjointFunctorFromCouniversalArrows (Incl Ab@{u p} Torsion_Sub)
     torsion_couniversal_arrow.
 
-(* Mac Lane's "coreflective": the inclusion has a RIGHT adjoint. / Mac Lane 的“余反射”：该包含函子有一个右伴随。 *)
+(* Mac Lane's “coreflective”: the inclusion has a RIGHT adjoint. / Mac Lane 的“余反射”：该包含函子有一个右伴随。 *)
 Definition torsion_coreflection@{u p +} :
   Incl Ab@{u p} Torsion_Sub ⊣ torsion_coreflector :=
   AdjunctionFromCouniversalArrows (Incl Ab@{u p} Torsion_Sub)

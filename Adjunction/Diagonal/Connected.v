@@ -43,23 +43,23 @@ Generalizable All Variables.
     Springer GTM 5, 1998, section IV.4, printed page 95, exercise 5.
     Read from the page image and transliterated to ASCII:
 
-      "5. If J is a connected category and D : C -> C^J has a left
+      “5. If J is a connected category and D : C -> C^J has a left
        adjoint (colimit), show that this left adjoint can be chosen to
-       be a left-adjoint-left-inverse."
+       be a left-adjoint-left-inverse.”
 
-    (Mac Lane writes the diagonal with a capital Delta, rendered "D"
+    (Mac Lane writes the diagonal with a capital Delta, rendered “D”
     above; C^J is the functor category, this tree's [[J, C]].)  The
     exercise sits immediately after exercise 4, the three-clause
     characterization, which the same page states as:
 
-      "4. Given a functor G : A -> X, prove the three following
+      “4. Given a functor G : A -> X, prove the three following
        conditions logically equivalent:
        (a) G has a left-adjoint-left-inverse.
        (b) G has a left adjoint, and is full, faithful, and injective
            on objects.
        (c) There is a full reflective subcategory Y of X and an
            isomorphism H : A =~ Y such that G = KH, where K : Y -> X is
-           the insertion."
+           the insertion.”
 
     Exercise 4 is Adjunction/LeftInverse.v and exercise 3 is
     Theory/Equivalence/Strict.v; both are CONSUMED here and neither is
@@ -104,13 +104,13 @@ Generalizable All Variables.
 
     The DUAL, for limits, needs no new record: with [S := LimitFunctor]
     and left adjoint Δ, Theory/Equivalence/Strict.v's
-    [LeftAdjointRightInverse S] unfolds FIELD FOR FIELD to "Δ ⊣ Lim,
-    [Lim (Δ c) = c], and the unit is the cast" -- which is what a
-    "right-adjoint-LEFT-inverse of Δ" says read from the other side:
+    [LeftAdjointRightInverse S] unfolds FIELD FOR FIELD to “Δ ⊣ Lim,
+    [Lim (Δ c) = c], and the unit is the cast” -- which is what a
+    “right-adjoint-LEFT-inverse of Δ” says read from the other side:
     [Lim ◯ Δ = Id] makes [Lim] a left inverse of [Δ].  So
     [diagonal_is_lari_of_limit] is stated with that record and no
     lookalike is introduced.  CORRECTION (#457): an earlier revision of
-    this paragraph said "right-adjoint-right-inverse of Δ" here, which is
+    this paragraph said “right-adjoint-right-inverse of Δ” here, which is
     the wrong side -- a right-adjoint-right-inverse [R] of [S] has
     [S ◯ R = Id] with the COUNIT the identity, a different notion -- and
     went on to say that [RightAdjointRightInverse] and its siblings have
@@ -132,7 +132,7 @@ Generalizable All Variables.
     object action is the CHOSEN colimit [colimit_apex (H Δ[J](c))],
     which over a connected shape is isomorphic to [c] -- that is
     [diagonal_counit_iso], and it is proved here without hypothesis --
-    but is not [c] on the nose.  Mac Lane's "can be CHOSEN" re-chooses
+    but is not [c] on the nose.  Mac Lane's “can be CHOSEN” re-chooses
     the colimit of each CONSTANT diagram to be the constant itself with
     the identity cocone.  In a proof-relevant setting a choice function
     [H : ∀ F, Colimit F] cannot inspect [F] for constancy: membership
@@ -176,7 +176,7 @@ Generalizable All Variables.
     DISCLOSED: over a shape with a terminal object the colimit functor
     IS evaluation at that object on objects ([colimit_is_EvalAt],
     [eq_refl]), so
-    these inhabitants are the ones where the exercise's "choice" is
+    these inhabitants are the ones where the exercise's “choice” is
     forced rather than genuinely made.  NO inhabitant of
     [ConstantColimits] is exhibited at a connected shape WITHOUT a
     terminal object, and none is claimed to exist.
@@ -227,7 +227,7 @@ Generalizable All Variables.
 
     ** 6. PRIOR ART, MEASURED AT THE BASE COMMIT
 
-    The issue's "Current state" is stale on every donor it names.  All
+    The issue's “Current state” is stale on every donor it names.  All
     of the following exist and are consumed, not rebuilt:
     [Colimit_Diagonal_Adjunction] (Adjunction/Diagonal/Limit.v),
     [HasColimitsOfShape], [ColimitFunctor], [colim_unit]
@@ -326,7 +326,7 @@ Generalizable All Variables.
       - hom = proof : [LeftAdjointLeftInverse], [HasColimitsOfShape],
         and [Diagonal].
 
-    Read "three donors" as donors and NOT as three independent causes.
+    Read “three donors” as donors and NOT as three independent causes.
     [Diagonal]'s type is [C ⟶ [J, C]], so it cannot be tested apart
     from [Fun]; [LeftAdjointLeftInverse] cannot be tested apart from
     [Adjunction], which is itself rejected at hom < proof with no

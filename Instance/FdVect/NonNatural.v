@@ -24,22 +24,22 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician",
+ Book:      Mac Lane, “Categories for the Working Mathematician”,
  2nd ed., §I.4, printed p. 17 (PDF 27) — the remark that
  the finite-dimensional V ≅ V* requires a choice of basis
  and is not natural, in contrast to V ≅ V**.
- Also:      Awodey, "Category Theory" (CMU pre-print, Sept 2005),
+ Also:      Awodey, “Category Theory” (CMU pre-print, Sept 2005),
  §7.5, Example 7.12 — the same contrast, as the motivating
- example for naturality; Riehl, "Category Theory in
- Context", §1.4, Example 1.4.4(ii) — riehl:1.4:example4,
+ example for naturality; Riehl, “Category Theory in
+ Context”, §1.4, Example 1.4.4(ii) — riehl:1.4:example4,
  the negative clause.
  nLab:      https://ncatlab.org/nlab/show/natural+isomorphism
 
- THE VARIANCE OBSTRUCTION, and what "natural" can even mean here.
+ THE VARIANCE OBSTRUCTION, and what “natural” can even mean here.
  The single-dual functor [DualFd] is CONTRAVARIANT — its domain is
  (FdVect F)^op — while the identity functor is covariant, so a
  natural transformation Id ⟹ DualFd is not even a well-typed
- assertion: that is Riehl's "the variance clashes", and it is
+ assertion: that is Riehl's “the variance clashes”, and it is
  already the clean negative statement her example records.  The
  question becomes well posed as in the character-group precedent
  (Instance/Ab/Character/NonNatural.v, Mac Lane's own §I.4 worked

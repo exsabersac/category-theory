@@ -27,8 +27,8 @@ Generalizable All Variables.
  creates limits so that limits in [P, X] are computed pointwise, is
  Theorems 1 and 2 of the section and belongs to #425 and #426, not here.
 
- STALE PREMISES, RE-MEASURED.  The issue's "the fixed-object evaluation
- functor [P, X] ⟶ X is nowhere materialised" is FALSE, and its hit list
+ STALE PREMISES, RE-MEASURED.  The issue's “the fixed-object evaluation
+ functor [P, X] ⟶ X is nowhere materialised” is FALSE, and its hit list
  is wrong in two of four entries.
  - Adjunction/Diagonal/Connected.v [EvalAt@{jo jh co ch +} (j : J) :
  [J, C] ⟶ C] IS this functor, general in shape and target, closed
@@ -47,11 +47,11 @@ Generalizable All Variables.
  Instance/CMon.v is [CMon_Forget : CMon ⟶ Sets], not out of
  a functor category; Construction/Day.v is the Day tensor; only
  Theory/Lawvere/Sets.v [ev1] is as described.
- - "record [J ∏ P, X] ≅ [J, [P, X]] from [Cat_Closed]": it exists as an
+ - “record [J ∏ P, X] ≅ [J, [P, X]] from [Cat_Closed]”: it exists as an
  isomorphism in [Cat], Instance/Cat/Exponential.v [Cat_exp_prod_l]
  — cited by Instance/Fun/Eval/Cat.v's [eval_transpose], not rebuilt.
- - "[Functor/Bifunctor.v] supplies [bimap] but no partial-application
- constructor": Functor/Bifunctor/Partial.v's [Partial_l] and
+ - “[Functor/Bifunctor.v] supplies [bimap] but no partial-application
+ constructor”: Functor/Bifunctor/Partial.v's [Partial_l] and
  [Partial_r] exist (its INDEX bullet warns about the [Cat_Closed]
  currying route's universe pinning, measured again below).
  - Correct as cited: Structure/Cartesian/Closed.v [eval],
@@ -92,7 +92,7 @@ Generalizable All Variables.
  converts with [Eval_nat]'s at [eq_refl] (probe).  [EvalFunctor]
  has no precedent: a tree-wide sweep for a functor into a double
  functor category [[_, _], _] returns only this file.  (An earlier
- revision said "genuinely absent before"; the audit found the
+ revision said “genuinely absent before”; the audit found the
  one-object instance.)
  (5) IN THE PROBE (Test/ProbeFunEval424.v): the identifications with
  [EvalAt], [YoEvalAt] and [One_Eval], each in BOTH data fields at
@@ -104,8 +104,8 @@ Generalizable All Variables.
  because the identified constants sit in heavier layers
  (Adjunction/, Functor/Hom/Yoneda/, Theory/Lawvere/) that no
  Instance/Fun/ file requires.  The Awodey checkbox asks that [ev1]
- be re-expressed "rather than left as a parallel hand-written
- definition": it is NOT met — [ev1] is untouched — the twin shows
+ be re-expressed “rather than left as a parallel hand-written
+ definition”: it is NOT met — [ev1] is untouched — the twin shows
  the re-expression is exact, and the edit to the landed file is
  surfaced for John (an earlier revision called the box met).
  The issue's pinned verification name [Eval_partial_application]
@@ -116,7 +116,7 @@ Generalizable All Variables.
  Adjunction/Diagonal/Connected.v (with its exact annotation, and a
  re-check of [EvalAt_retracts], [colimit_is_EvalAt] and
  Test/ProbeConnected378.v); deleting it is a removal of working
- code.  Neither is done here: docs/INDEX.md's "NEW" is corrected
+ code.  Neither is done here: docs/INDEX.md's “NEW” is corrected
  in place and both remain.
 
  UNIVERSES (measured by [About] under [Set Printing Universes] on all 17
@@ -145,7 +145,7 @@ Generalizable All Variables.
  ([Eval] 3, [EvalBi] 3, [eval_partial_iso] 6, [Eval_nat] 2,
  [EvalFunctor] 3; the satellite has none); zero [Axioms:] lines; the
  gate carries the 17 heads, fully qualified.  (An earlier revision
- said "17/17 constants", counting heads only.)  No [Defined]; eight
+ said “17/17 constants”, counting heads only.)  No [Defined]; eight
  [Qed] tokens here (two lemmas, six obligation proofs written out; all
  obligations opaque by Lib.v's flag) and one in the satellite.
  - Closure 19 files excluding self: Instance/Fun.v costs 5 at the
@@ -154,7 +154,7 @@ Generalizable All Variables.
  tree.  THE NAME [Eval] AND THE VERNACULAR: [Eval compute in …] and
  [ltac:(eval …)] still work after this file, and [Check Eval] resolves
  to the constant — but at the HEAD of a definition body, [Definition
- f p := Eval p.] is a PARSE error ("'in' expected after [red_expr]"),
+ f p := Eval p.] is a PARSE error (“'in' expected after [red_expr]”),
  because Coq reads [Eval <red_expr> in <term>]; [(Eval p)],
  [@Eval P X p] and tactic-mode [exact (Eval p)] all work.  Consumers
  (#425, #426) must parenthesise.  Renaming the constant is surfaced
@@ -172,7 +172,7 @@ Generalizable All Variables.
  throughout a copy with module paths excluded) with every first break
  on a positive line.  [make todo] grows by those 4 lines only
  (2218 → 2222 against the rebased base 39e583d2), so the issue's
- "adds no new hits" box is not met as written; disclosed.
+ “adds no new hits” box is not met as written; disclosed.
 
  NOT DELIVERED.
  - Any preservation or creation of limits by evaluation (#425, #426).
@@ -191,7 +191,7 @@ Generalizable All Variables.
  Mac Lane §V.3，开篇构造（书页 115；maclane:V.3:construction1）；Awodey §8.1 的 ev_C : Sets^(C^op) ⟶ Sets (awodey:8.1:construction-evaluation-functor)。
  nLab: https://ncatlab.org/nlab/show/functor+category 
 
- 背景。指数范畴 P 的每个对象 p 给出评估函子 E_p : [P, X] ⟶ X，H ↦ H p（在对象上）以及 σ ↦ σ_p（在变换上）。它是二变量评估 [P, X] ∏ P ⟶ X 在 p 的部分应用——Cat 指数的余单位——其转置 [J ∏ P, X] ≅ [J, [P, X] 将函子图变成带参数的图。它的用途是，评估保持并产生极限，因此 [P, X] 中的极限可以按点计算，这就是本节定理 1 和定理 2，并属于 #425 和 #426，而不在这里。过时的前提，重新测量。问题“固定对象评估函子 [P, X] ⟶ X 从未具体化”是错误的，并且其命中列表在四个条目中有两个是错误的。- Adjunction/Diagonal/Connected.v [EvalAt@{jo jh co ch +} (j : J) : [J, C] ⟶ C] 是否这个函子，在形状和目标上是一般的，在全局上下文下封闭，并且 docs/INDEX.md 将其记录为新的，通过类型扫描。下面的 [Eval] 在 [EvalAt] 自身注解（探针）下的 [eq_refl] 具有相同的两个数据字段；RECORDS 不进行转换（探针 N1：两者都是具有不透明定律字段的 [Program Definition]）。同样存在的文件有：Functor/Hom/Yoneda/Natural.v  [YoEvalAt : [C, Sets] ⟶ Sets] 和 [YoEval : [C, Sets] ∏ C ⟶ Sets]（那个二变量的，在 Sets 中，箭头顺序不同，由 [yo_eval_map_alt] 连接），以及 Theory/Shapes.v  [One_Eval : [_1, C] ⟶ C]。[YoEvalAt] 和 [One_Eval] 在 [eq_refl]（探针）处都与 [Eval] 一致。- 重点清单：Theory/Kan/Extension.v 条目指向的是注释，而不是 [Induced] 本身；Instance/CMon.v 是 [CMon_Forget : CMon ⟶ Sets]，而不是来自函子范畴的；Construction/Day.v 是 Day 张量；只有 Theory/Lawvere/Sets.v  [ev1] 如描述所示。- "record [J ∏ P, X] ≅ [J, [P, X] ] 来自 [Cat_Closed]"：它作为一个同构存在于 [Cat] 中，Instance/Cat/Exponential.v  [Cat_exp_prod_l] — 被 Instance/Fun/Eval/Cat.v 的 [eval_transpose] 引用，而未被重建。- “[Functor/Bifunctor.v] 提供 [bimap]，但没有部分应用构造函数”：Functor/Bifunctor/Partial.v 的 [Partial_l] 和 [Partial_r] 存在（其 INDEX 项警告了 [Cat_Closed] 柯里化路径的宇宙固定，如下再次测量）。- 引用正确：Structure/Cartesian/Closed.v 的 [eval]，Instance/Cat/Cartesian/Closed.v 的 [Cat_Closed]，Theory/Lawvere/Model.v 的 [Models] 作为 [[law_cat T, C] 的 FULL 子范畴。交付的内容是什么（这里有11个命名常量，加上17个[Program]义务，其中6个在Instance/Fun/Eval/Cat.v中，每一个都在全局上下文中封闭）。(1) [Eval (p : P) : [P, X] ⟶ X]，通过本节的[Universe]声明注释为[@{jo jh co ch}]，完全像[EvalAt]一样，根据问题要求的光亮位置（封闭19个文件）。(2) 双变量评估。[EvalBi : [P, X] ∏ P ⟶ X]，箭头操作[fmap[K] f ∘ transform [σ] p] — [Cat_Closed]的顺序，因此Instance/Fun/Eval/Cat.v的[CatEval_obj] / [CatEval_map]在两个字段中将其与[Cat]自己的[eval]在[eq_refl]处识别。它是直接构建的，而不是作为 [@eval Cat Cat_Cartesian Cat_Closed P X]，因为那条路径只能在 [Cat] 的宇宙中到达：在卫星中测量，[Cat] 路径将 P 和 X 的对象及同伦级别识别到一个宇宙中（[u0 = u1]、[u0 = u5]、[u0 = u6]），而 [EvalBi] 只保留 [jh = ch]。（3）部分应用一致。[eval_partial_obj] 在 [eq_refl]；[eval_partial_map] 仅在 [≈] — [Partial_l] 的作用是 [bimap s id]，它携带 [fmap id]，函子定律移除（探测 N2；同样的原因 [yo_eval_at_map] 在 [≈] 陈述）；作为 [eval_partial_iso : Eval p ≅ Partial_l EvalBi p] 打包在 [[[P, X] 中，X]]具有恒等分量，每项义务自动解除；另一个部分是函子自身（[eval_partial_r_obj] 在 [eq_refl]，[eval_partial_r_map] 在 [≈]）。(4) 对象的自然性。[Eval_nat (f : p ~> q) : Eval p ⟹ Eval q]  
+ 背景。指数范畴 P 的每个对象 p 给出评估函子 E_p : [P, X] ⟶ X，H ↦ H p（在对象上）以及 σ ↦ σ_p（在变换上）。它是二变量评估 [P, X] ∏ P ⟶ X 在 p 的部分应用——Cat 指数的余单位——其转置 [J ∏ P, X] ≅ [J, [P, X] 将函子图变成带参数的图。它的用途是，评估保持并产生极限，因此 [P, X] 中的极限可以按点计算，这就是本节定理 1 和定理 2，并属于 #425 和 #426，而不在这里。过时的前提，重新测量。问题“固定对象评估函子 [P, X] ⟶ X 从未具体化”是错误的，并且其命中列表在四个条目中有两个是错误的。- Adjunction/Diagonal/Connected.v [EvalAt@{jo jh co ch +} (j : J) : [J, C] ⟶ C] 是否这个函子，在形状和目标上是一般的，在全局上下文下封闭，并且 docs/INDEX.md 将其记录为新的，通过类型扫描。下面的 [Eval] 在 [EvalAt] 自身注解（探针）下的 [eq_refl] 具有相同的两个数据字段；RECORDS 不进行转换（探针 N1：两者都是具有不透明定律字段的 [Program Definition]）。同样存在的文件有：Functor/Hom/Yoneda/Natural.v  [YoEvalAt : [C, Sets] ⟶ Sets] 和 [YoEval : [C, Sets] ∏ C ⟶ Sets]（那个二变量的，在 Sets 中，箭头顺序不同，由 [yo_eval_map_alt] 连接），以及 Theory/Shapes.v  [One_Eval : [_1, C] ⟶ C]。[YoEvalAt] 和 [One_Eval] 在 [eq_refl]（探针）处都与 [Eval] 一致。- 重点清单：Theory/Kan/Extension.v 条目指向的是注释，而不是 [Induced] 本身；Instance/CMon.v 是 [CMon_Forget : CMon ⟶ Sets]，而不是来自函子范畴的；Construction/Day.v 是 Day 张量；只有 Theory/Lawvere/Sets.v  [ev1] 如描述所示。- “record [J ∏ P, X] ≅ [J, [P, X] ] 来自 [Cat_Closed]”：它作为一个同构存在于 [Cat] 中，Instance/Cat/Exponential.v  [Cat_exp_prod_l] — 被 Instance/Fun/Eval/Cat.v 的 [eval_transpose] 引用，而未被重建。- “[Functor/Bifunctor.v] 提供 [bimap]，但没有部分应用构造函数”：Functor/Bifunctor/Partial.v 的 [Partial_l] 和 [Partial_r] 存在（其 INDEX 项警告了 [Cat_Closed] 柯里化路径的宇宙固定，如下再次测量）。- 引用正确：Structure/Cartesian/Closed.v 的 [eval]，Instance/Cat/Cartesian/Closed.v 的 [Cat_Closed]，Theory/Lawvere/Model.v 的 [Models] 作为 [[law_cat T, C] 的 FULL 子范畴。交付的内容是什么（这里有11个命名常量，加上17个[Program]义务，其中6个在Instance/Fun/Eval/Cat.v中，每一个都在全局上下文中封闭）。(1) [Eval (p : P) : [P, X] ⟶ X]，通过本节的[Universe]声明注释为[@{jo jh co ch}]，完全像[EvalAt]一样，根据问题要求的光亮位置（封闭19个文件）。(2) 双变量评估。[EvalBi : [P, X] ∏ P ⟶ X]，箭头操作[fmap[K] f ∘ transform [σ] p] — [Cat_Closed]的顺序，因此Instance/Fun/Eval/Cat.v的[CatEval_obj] / [CatEval_map]在两个字段中将其与[Cat]自己的[eval]在[eq_refl]处识别。它是直接构建的，而不是作为 [@eval Cat Cat_Cartesian Cat_Closed P X]，因为那条路径只能在 [Cat] 的宇宙中到达：在卫星中测量，[Cat] 路径将 P 和 X 的对象及同伦级别识别到一个宇宙中（[u0 = u1]、[u0 = u5]、[u0 = u6]），而 [EvalBi] 只保留 [jh = ch]。（3）部分应用一致。[eval_partial_obj] 在 [eq_refl]；[eval_partial_map] 仅在 [≈] — [Partial_l] 的作用是 [bimap s id]，它携带 [fmap id]，函子定律移除（探测 N2；同样的原因 [yo_eval_at_map] 在 [≈] 陈述）；作为 [eval_partial_iso : Eval p ≅ Partial_l EvalBi p] 打包在 [[[P, X] 中，X]]具有恒等分量，每项义务自动解除；另一个部分是函子自身（[eval_partial_r_obj] 在 [eq_refl]，[eval_partial_r_map] 在 [≈]）。(4) 对象的自然性。[Eval_nat (f : p ~> q) : Eval p ⟹ Eval q]  
  与组件  [fmap[H]  f]（两个自然性域都是已评估变换的自然性），组装成  
  [EvalFunctor : P ⟶ [[P, X] , X]] 与  [EvalFunctor_obj] /  
  [EvalFunctor_map] 在  [eq_refl]。其通用形式是新的；该构造本身出现在一个范畴的一个对象上，作为 Functor/Representable/Functorial.v 中的 [wit_ev_tau n : YoEvalAt  

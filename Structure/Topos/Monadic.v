@@ -50,22 +50,22 @@ Open Scope category_scope.
  nLab:      https://ncatlab.org/nlab/show/Pare%27s+theorem
  nLab:      https://ncatlab.org/nlab/show/monadicity+theorem
  Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
- Paper:     Paré, "Colimits in topoi", Bulletin of the American
+ Paper:     Paré, “Colimits in topoi”, Bulletin of the American
  Mathematical Society 80 (1974), pp. 556-561
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.10,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.10,
  book p. 107 (`maclane:IV.10:remark2`):
 
- "The axioms for a topos have many useful consequences. For exam-
- ples, every topos has all finite colimits."
+ “The axioms for a topos have many useful consequences. For exam-
+ ples, every topos has all finite colimits.”
 
  and the Appendix, book p. 290 (`maclane:App.1:remark2`), on the same
  axioms:
 
- "These axioms for a topos then hold for the category of sets. They
+ “These axioms for a topos then hold for the category of sets. They
  have a number of strong consequences. For example, they give all
  finite cate- gorical products and pullbacks, as well as all finite
- coproducts, including an initial object 0, the empty set."
+ coproducts, including an initial object 0, the empty set.”
 
  Neither passage carries a proof, and neither does Awodey §8.8 nor
  Seven Sketches §7.2.1 (both quoted in Structure/Topos/Colimits.v).
@@ -92,8 +92,8 @@ Open Scope category_scope.
 
  WHAT WAS ABSENT BEFORE THIS FILE.  Every search below was re-run over the
  whole tree with these five new files EXCLUDED, and the counts are what that
- measurement returned, not what a plan predicted.  "A topos is balanced": 119
- case-insensitive hits for "balanced" across 18 files and none about a topos
+ measurement returned, not what a plan predicted.  “A topos is balanced”: 119
+ case-insensitive hits for “balanced” across 18 files and none about a topos
  -- they are the balanced monoidal categories and twists of
  Structure/Monoidal/*, the balanced tensors and balanced laws of
  Instance/Mod/*, and the balancedness of [Sets], [Set_*], [Met] and [C, D]
@@ -101,7 +101,7 @@ Open Scope category_scope.
  plus [Par_BalancedMonoidal] in Instance/Coq/Par.v, the module-tensor probe
  Test/ProbeModTensor.v and one header mention in Adjunction/Unitalization.v --
  and NOT ONE of those 18 files so much as mentions [ElementaryTopos], which is
- the sharper check.  "Every mono in a topos is regular": the name
+ the sharper check.  “Every mono in a topos is regular”: the name
  [RegularMono] occurs on exactly ONE line outside these files, in
  Adjunction/CokernelPair.v, which says in terms that the tree has no such
  class; the only other .v mentions of a regular monomorphism are two more
@@ -142,7 +142,7 @@ Open Scope category_scope.
  [IsPullback], the next two only the cartesian structure, and [bc_mono] only
  chosen pullbacks and [SubObj] -- yet all four carry an [ElementaryTopos C]
  argument in their types, because this section's
- [Set Default Proof Using "All"] discharges the whole context into every
+ [Set Default Proof Using “All”] discharges the whole context into every
  [Qed]-closed lemma; a move to Theory/Morphisms/Stability.v beside
  [pullback_paste] (or, for [bc_mono], to Theory/Subobject/Functor.v beside
  [sub_reindex]) would first shed that argument.  They are kept here to avoid a
@@ -184,7 +184,7 @@ Open Scope category_scope.
  law4  P g ∘ ∃_f ≈ ∃_e ∘ P e   --  [pow_bc]，Beck-Chevalley。
 
  直接像不需要像分解，这也是为什么这一步完全可处理的原因：∃ 只沿着单射取，所以
- [second m ∘ (membership mono)] 已经是单射且其特征映射直接存在。拓扑中的满单分解是一个单独的义务，并且这里未构建。§D 的 [IsPullback_sym]、[second_pullback]、[first_second_pullback] 和 [bc_mono] 不使用分类器——第一个除了 [IsPullback] 外没有提及其他内容，接下来的两个只提到笛卡尔结构，而 [bc_mono] 只提到选定的拉回和 [SubObj]——然而这四个在它们的类型中都携带一个 [ElementaryTopos C] 参数，因为本节的 [Set Default Proof Using "All"] 将整个上下文释放到每个 [Qed] 闭合的引理中；移动到 Theory/Morphisms/Stability.v 旁的 [pullback_paste]（或者对于 [bc_mono]，移动到 Theory/Subobject/Functor.v 旁的 [sub_reindex]）首先会丢弃该参数。它们保留在这里以避免大范围重建，而这句话记录了这个债务。在这个文件的两个 [Defined] 标记中，[pow_split_coequalizer] 是承重的 —— 单独翻转为 [Qed] 后，[pow_PreservesReflexiveCoequalizers] 不再类型检查 —— 而 [PowF_Faithful] 不是：单独翻转时，这个文件、Structure/Topos/Colimits.v 和测试探针都可以正常编译。
+ [second m ∘ (membership mono)] 已经是单射且其特征映射直接存在。拓扑中的满单分解是一个单独的义务，并且这里未构建。§D 的 [IsPullback_sym]、[second_pullback]、[first_second_pullback] 和 [bc_mono] 不使用分类器——第一个除了 [IsPullback] 外没有提及其他内容，接下来的两个只提到笛卡尔结构，而 [bc_mono] 只提到选定的拉回和 [SubObj]——然而这四个在它们的类型中都携带一个 [ElementaryTopos C] 参数，因为本节的 [Set Default Proof Using “All”] 将整个上下文释放到每个 [Qed] 闭合的引理中；移动到 Theory/Morphisms/Stability.v 旁的 [pullback_paste]（或者对于 [bc_mono]，移动到 Theory/Subobject/Functor.v 旁的 [sub_reindex]）首先会丢弃该参数。它们保留在这里以避免大范围重建，而这句话记录了这个债务。在这个文件的两个 [Defined] 标记中，[pow_split_coequalizer] 是承重的 —— 单独翻转为 [Qed] 后，[pow_PreservesReflexiveCoequalizers] 不再类型检查 —— 而 [PowF_Faithful] 不是：单独翻转时，这个文件、Structure/Topos/Colimits.v 和测试探针都可以正常编译。
 *)
 
 Section ToposMonadic.
@@ -213,11 +213,11 @@ Definition topos_HasEqualizers : @HasEqualizers C :=
 (*
  The appended Seven Sketches checkbox, at generator level: terminal
  object, binary products, pullbacks, equalizers.  NO finite-shape
- induction is performed here, so this is NOT a [Limit]-shaped "all finite
- limits"; that statement is Structure/Limit/Finite.v's [FinitelyComplete].
+ induction is performed here, so this is NOT a [Limit]-shaped “all finite
+ limits”; that statement is Structure/Limit/Finite.v's [FinitelyComplete].
 
  That checkbox asks this to close a reduction Structure/Topos.v's header
- "records as not formalized"; the premise is stale -- since #326 that header
+ “records as not formalized”; the premise is stale -- since #326 that header
  says the reduction and its converse ARE formalized.  What it records as not
  done is the finite-shape induction, and that is still not done:
  [topos_finitely_complete] is at generator level. 

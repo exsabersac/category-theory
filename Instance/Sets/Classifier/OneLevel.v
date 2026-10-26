@@ -24,18 +24,18 @@ Generalizable All Variables.
  Mac Lane, CWM 2nd ed., §IV.9 construction 1, book p. 105
  ([maclane:IV.9:construction1]).  Verbatim:
 
- "The characteristic function of a subset S ⊂ X is the two-valued
+ “The characteristic function of a subset S ⊂ X is the two-valued
  function ψ_S : X → {0, 1} on X with the values
 
- ψ_S x = 0  if x ∈ S ;    ψ_S x = 1  if x ∈ X but x ∉ S .   (1)"
+ ψ_S x = 0  if x ∈ S ;    ψ_S x = 1  if x ∈ X but x ∉ S .   (1)”
 
- "Such characteristic functions are often used in probability theory;
- in logic, {0, 1} is the set of two "truth values" with 0 the value
- "truth".  One says that the monomorphism (the typical subset)
- t : {0} → {0, 1} is a "subobject classifier" for the category of
- sets."
+ “Such characteristic functions are often used in probability theory;
+ in logic, {0, 1} is the set of two ”truth values“ with 0 the value
+ ”truth“.  One says that the monomorphism (the typical subset)
+ t : {0} → {0, 1} is a ”subobject classifier“ for the category of
+ sets.”
 
- "In general, a subobject classifier for a category C with a terminal
+ “In general, a subobject classifier for a category C with a terminal
  object 1 is defined to be a monomorphism t : 1 ↣ Ω such that every
  monomorphism m in C is a pullback of t in an unique way.  In other
  words, for each m there exists a unique pullback square
@@ -43,22 +43,22 @@ Generalizable All Variables.
  S ──→ 1
  m│     │t                                                   (3)
  ↓     ↓
- X ─ψ→ Ω ."
+ X ─ψ→ Ω .”
 
  Fong & Spivak, *Seven Sketches in Compositionality*, §7.2.2, printed
  p. 229 ([7sketches:7.2.2:construction-subobject-classifier-set]).  Verbatim:
 
- "The subobject classifier in Set is the set of booleans,
+ “The subobject classifier in Set is the set of booleans,
 
- Ω_Set := 𝔹 = {true, false}.                              (7.14)"
+ Ω_Set := 𝔹 = {true, false}.                              (7.14)”
 
- "⌜m⌝(y) := true   if m(x) = y for some x ∈ X
- false  otherwise"
+ “⌜m⌝(y) := true   if m(x) = y for some x ∈ X
+ false  otherwise”
 
- "X = {y ∈ Y | p(y) = true}.                                   (7.15)"
+ “X = {y ∈ Y | p(y) = true}.                                   (7.15)”
 
  THE CONVENTION SWAP.  Mac Lane's ψ_S takes the value 0 ON the subset
- and 1 off it, with 0 the value "truth"; Seven Sketches, the tree's
+ and 1 off it, with 0 the value “truth”; Seven Sketches, the tree's
  [FinSet_Classifier] (whose [truth] is [fin_true]) and everything below
  put [true] — here [ptrue], resp. [Powerset_truth_point] — ON the
  subset.  The two conventions differ by the swap 0 ↔ 1, an automorphism
@@ -112,7 +112,7 @@ Generalizable All Variables.
  - [SubobjectClassifier] takes TWO arguments, a category and a
  [Terminal]; the [HasPullbacks] of its declaring section is used by
  the theorems below the class, not by the class.  Offering
- [Sets_HasPullbacks] as a third argument is an "Illegal application"
+ [Sets_HasPullbacks] as a third argument is an “Illegal application”
  (a TYPING refusal), pinned in the probe.
  - The CLASS is formable at [Sets@{o so}]: this file inhabits it.
  - [classifier_classifies], [Sub_classifier_natural] and
@@ -131,7 +131,7 @@ Generalizable All Variables.
  pinned.
  - The naive elimination of an impredicative truncation without
  [Untruncate], namely [fun P h => h P (fun p => p)], is refused with
- "Cannot enforce o <= Prop"; the [Prop]-valued instantiation
+ “Cannot enforce o <= Prop”; the [Prop]-valued instantiation
  [powerset_squash_prop_inert] of Instance/Sets/Powerset/Universal.v
  is the accepted control.  That refusal is exactly what [Untruncate]
  buys, and why this hypothesis and not a weaker one.
@@ -284,8 +284,8 @@ Generalizable All Variables.
 (* * ** (B) The image predicate, and subobjects of the terminal setoid / * **（B）图像谓词，及终端等价关系集合的子对象 *)
 
    (*
- [sets_in_image m b] is Mac Lane's "b ∈ S" and Seven Sketches' "m(x) = y
- for some x": the [Type@{o}]-valued sigma that Instance/Sets/Classifier.v's
+ [sets_in_image m b] is Mac Lane's “b ∈ S” and Seven Sketches' “m(x) = y
+ for some x”: the [Type@{o}]-valued sigma that Instance/Sets/Classifier.v's
  [char_setoid] also computes.  [SubOne P] is the subobject of the terminal
  setoid cut by a proposition P, with [subone_incl] its inclusion; the
  inclusion is monic for EVERY P, because its DOMAIN [SubOne P] is subterminal
@@ -333,7 +333,7 @@ Proof. constructor; intros z g1 g2 _ ?; exact ttt. Qed.
 (* * ** (C) The three hypotheses, and the passages between them / * **（C）三种假设及其之间的段落 *)
 
 (*
- [DecImage] is the issue's "decidability discipline": every mono's
+ [DecImage] is the issue's “decidability discipline”: every mono's
  image membership is decidable.  [Untruncate] inverts the
  impredicative truncation of Instance/Sets/Powerset.v at level o.
  [IEM] is informative excluded middle at level o.  IEM gives both, and

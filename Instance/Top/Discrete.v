@@ -16,12 +16,12 @@ Generalizable All Variables.
    nLab:      https://ncatlab.org/nlab/show/universal+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Discrete_space
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, Springer 1998, §III.1, Exercise 3, printed p. 59 —
    item maclane:III.1:ex3.  The exercise asks for a universal
    arrow to each of four forgetful functors; this file is its
-   THIRD row, the discrete topology on a set.  Riehl, "Category
-   Theory in Context" 2nd ed., §4.1 Example 4.1.10 lists the same
+   THIRD row, the discrete topology on a set.  Riehl, “Category
+   Theory in Context” 2nd ed., §4.1 Example 4.1.10 lists the same
    adjunction (riehl:4.1:example10).
 
    The content is Seven Sketches' Exercise 7.29 read as a universal
@@ -34,11 +34,11 @@ Generalizable All Variables.
    DEFECT OF THIS FILE.  Instance/Top/Forgetful.v records a
    pre-existing universe obstruction, in its own words: a functor out of
    [Top@{h o}] lands in [Sets@{h so}] while a functor INTO [Top@{h o}]
-   must come from [Sets@{o so}], so "[a]n [Adjunction] record between the
+   must come from [Sets@{o so}], so “[a]n [Adjunction] record between the
    two would need both functors to share ONE Sets, at levels o and h
    simultaneously, with o < h: the packaged triple is unformable at every
-   universe assignment."  That file calls it "the library's familiar
-   classifier phenomenon ... not a defect of the mathematics", the same
+   universe assignment.”  That file calls it “the library's familiar
+   classifier phenomenon ... not a defect of the mathematics”, the same
    stratification Instance/Sets/Classifier.v lives with.  Accordingly it
    delivers the adjunction as the cross-universe transposition
    isomorphism [discrete_adj] with its four naturality lemmas,

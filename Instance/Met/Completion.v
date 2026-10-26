@@ -29,10 +29,10 @@ Open Scope R_scope.
  nLab:      https://ncatlab.org/nlab/show/Cauchy+complete+metric+space
  nLab:      https://ncatlab.org/nlab/show/universal+morphism
  Wikipedia: https://en.wikipedia.org/wiki/Complete_metric_space#Completion
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §III.1, printed pp. 56-57 (PDF pp. 65-66), the
  unnumbered third construction — the theorem of this file
- Book:      Bishop, "Foundations of Constructive Analysis", McGraw-Hill
+ Book:      Bishop, “Foundations of Constructive Analysis”, McGraw-Hill
  1967 — the modulus discipline
  Docs:      Rocq standard library, Reals (Rcomplete.R_complete,
  SeqProp.UL_sequence)
@@ -62,8 +62,8 @@ Open Scope R_scope.
  is that property while [completion_unique] is the uniqueness it forces.
 
  WHY THE DISTANCE IS REAL-VALUED, AND WHY THIS FILE IS THEREFORE IN THE
- INSTANCE LAYER.  The issue behind this file offers "a rational- or
- real-valued distance" and asks for the choice to be documented.  The
+ INSTANCE LAYER.  The issue behind this file offers “a rational- or
+ real-valued distance” and asks for the choice to be documented.  The
  choice is FORCED, and the reason is visible in the construction: the
  distance between two Cauchy sequences is a limit of distances, so the
  codomain of the metric has to contain the limits of its own Cauchy
@@ -88,8 +88,8 @@ Open Scope R_scope.
 
  The consequence is that this file uses the standard library's [R], and so
  inherits its axioms.  That is permitted by the issue's Definition of Done
- ("if classical reals are unavoidable the file lives in the instance
- layer") and follows the precedent of the Instance/Top/ reals files, where
+ (“if classical reals are unavoidable the file lives in the instance
+ layer”) and follows the precedent of the Instance/Top/ reals files, where
  docs/AXIOMS.md prices the reals per constant.  The stratification is
  sharp, and the numbers below are MEASURED per constant rather than
  sampled.  [R_complete] is the only door through which [sig_not_dec]
@@ -191,8 +191,8 @@ Open Scope R_scope.
 (** ** A small toolkit for limits / ** 一个关于极限的小工具包 *)
 
 (*
- The standard library has no "eventually below a constant implies the
- limit is below it", so it is proved here.  Both this and [Un_cv_const]
+ The standard library has no “eventually below a constant implies the
+ limit is below it”, so it is proved here.  Both this and [Un_cv_const]
  are used throughout; nothing about metric spaces enters. 
 
  --------
@@ -345,7 +345,7 @@ Qed.
 
 Section Completion.
 
-(* The proofs below genuinely depend on the space being completed; [Lib.v] sets [Default Proof Using "Type"], which would discard it. Same reason, same remedy, as Instance/Top/Interval.v and Instance/Met.v's [OfInjection] section. / 下面的证明确实依赖于空间是完备的；[Lib.v] 设置 [Default Proof Using "Type"]，这将放弃它。同样的原因，同样的补救措施，如 Instance/Top/Interval.v 和 Instance/Met.v 的 [OfInjection] 部分。 *)
+(* The proofs below genuinely depend on the space being completed; [Lib.v] sets [Default Proof Using “Type”], which would discard it. Same reason, same remedy, as Instance/Top/Interval.v and Instance/Met.v's [OfInjection] section. / 下面的证明确实依赖于空间是完备的；[Lib.v] 设置 [Default Proof Using “Type”]，这将放弃它。同样的原因，同样的补救措施，如 Instance/Top/Interval.v 和 Instance/Met.v 的 [OfInjection] 部分。 *)
 Local Set Default Proof Using "All".
 
 Context (X : MetricSpace).
@@ -900,8 +900,8 @@ End Completion.
 (** ** Uniqueness of the completion / ** 完成的独特性 *)
 
 (*
- Mac Lane's second sentence: "the uniqueness of universal arrows gives
- uniqueness of the completion up to a unique isomorphism".  This is
+ Mac Lane's second sentence: “the uniqueness of universal arrows gives
+ uniqueness of the completion up to a unique isomorphism”.  This is
  DERIVED, not reproved — the whole content is
  Theory/Universal/Arrow.v's [auniversal_arrow_unique], instantiated.
 
@@ -940,7 +940,7 @@ Proof. exact (auniversal_arrow_unique U1 U2). Qed.
  Yoneda rather than through the mediator calculus — and
  [UniversalArrowIsUniversalProperty]
  (Structure/UniversalProperty/Universal/Arrow.v) advertises itself as the
- bridge, turning "being a universal arrow from X" into a universal property
+ bridge, turning “being a universal arrow from X” into a universal property
  in that sense.  Putting the completion through it would give the
  uniqueness statement a second, independent derivation.
 

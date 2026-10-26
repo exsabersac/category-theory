@@ -22,7 +22,7 @@ Generalizable All Variables.
 (*
    * * The module isomorphism theorems, from the universal property
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.1
    Exercise 5 (printed p. 59, PDF p. 68) [maclane:III.1:ex5].
    nLab: https://ncatlab.org/nlab/show/isomorphism+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Isomorphism_theorems
@@ -30,8 +30,8 @@ Generalizable All Variables.
    Mac Lane's point at §III.1 is that the isomorphism theorems follow
    from the universality of the projection ALONE, without a second look
    at cosets.  This file takes that seriously, and the honest accounting
-   of how far it goes is the first thing below, because "derived from
-   universality" is a claim about the SHAPE of a proof and is easy to
+   of how far it goes is the first thing below, because “derived from
+   universality” is a claim about the SHAPE of a proof and is easy to
    assert falsely.  The grading is the same as
    Instance/Grp/Quotient/Isomorphism.v's and is repeated rather than
    cited, because the proofs here are not that file's proofs.
@@ -60,7 +60,7 @@ Generalizable All Variables.
    comparison kills T/S and that k ∘ p_S kills T -- both are
    [mquot_rel_zero_iff] or the given killing hypothesis applied at
    a variable, and both are unavoidable in any formulation, since
-   "kills" is an elementwise predicate BY DEFINITION -- and the
+   “kills” is an elementwise predicate BY DEFINITION -- and the
    `≈`-saturation obligation of [TmodS], which is the only one that
    COMPUTES with elements and which is a prerequisite to STATING
    the theorem rather than a step in proving it.  No coset is
@@ -125,7 +125,7 @@ Generalizable All Variables.
    clause; the second over an explicit [SubmoduleSum]; and non-vacuity
    witnesses at ℤ for all three.
 
-   WHAT IS NOT DELIVERED.  No fourth ("correspondence"/lattice) theorem;
+   WHAT IS NOT DELIVERED.  No fourth (“correspondence”/lattice) theorem;
    no modular law; no butterfly lemma; no exact sequences; and no
    naturality of the isomorphisms in f, S or T.  The second theorem's
    two universal elements are not compared by a uniqueness clause, it
@@ -256,7 +256,7 @@ Proof.
   apply (mkills_descends (KernelSub f) x).
   (*
  [mquot_rel] is the [inhabited] truncation of membership since the PR
- "algebraic carriers are sets" (2026-09-17), so one [constructor] is owed
+ “algebraic carriers are sets” (2026-09-17), so one [constructor] is owed
  before the membership proof itself. 
 
  --------
@@ -477,9 +477,9 @@ Context (S T : Submodule M).
 Context (Hsub : ∀ a : carrier (cmon_setoid M), smod_mem S a → smod_mem T a).
 
 (*
- T read as a submodule of M/S.  AN EARLIER REVISION said "the membership
+ T read as a submodule of M/S.  AN EARLIER REVISION said “the membership
  predicate is UNCHANGED; only the saturation law is new, since M/S's `≈` is
- coarser than M's."  Since the PR "algebraic carriers are sets"
+ coarser than M's.”  Since the PR “algebraic carriers are sets”
  (2026-09-17) the membership predicate is the TRUNCATION of T's, and that is
  forced by the same coarseness: M/S's `≈` is [mquot_rel S], which is itself
  the truncation of membership in S, so the saturation law asks to move a
@@ -769,7 +769,7 @@ Lemma mod_psi_kernel_is_meet (p : carrier (cmon_setoid (SubmoduleMod S))) :
 Proof.
 (*
  AN EARLIER REVISION stated the right-hand side as the bare
- [smod_mem T (`1 p)].  Since the PR "algebraic carriers are sets"
+ [smod_mem T (`1 p)].  Since the PR “algebraic carriers are sets”
  (2026-09-17) the left-hand side is congruence to zero in a quotient, which
  is the [inhabited] truncation of membership, so the biconditional holds up
  to that truncation and is stated so.  Both directions are [Prop]-to-[Prop]
@@ -843,7 +843,7 @@ Definition mod_second_isomorphism_theorem :
  This is the literal left-hand side of the theorem.
 
  AN EARLIER REVISION wrote the predicate as the bare [smod_mem T (`1 p)].
- Since the PR "algebraic carriers are sets" (2026-09-17) it is the
+ Since the PR “algebraic carriers are sets” (2026-09-17) it is the
  [inhabited] truncation of that, and the reason is the identification
  [mod_second_isomorphism_theorem_literal] makes: this submodule has to be
  coextensive with [KernelSub mod_psi], whose membership is congruence to
@@ -1036,8 +1036,8 @@ Proof.
  [QuotientMod FourSub] rather than in [Int_RMod], and although the
  two agree on every projection they are not the same term.
 
- THREE layers of intro pattern, not one: since the PR "algebraic carriers
- are sets" (2026-09-17) [mquot_rel] is [inhabited] of a membership, and
+ THREE layers of intro pattern, not one: since the PR “algebraic carriers
+ are sets” (2026-09-17) [mquot_rel] is [inhabited] of a membership, and
  [TmodS]'s own membership is [inhabited] of [EvenSub]'s, which is itself
  the sigma [ZEvenMod]. 
 

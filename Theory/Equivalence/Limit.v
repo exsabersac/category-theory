@@ -41,8 +41,8 @@ nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
    - Reflection ([equivalence_reflects_limits]) needs only that F is full
      and faithful, so it is proved in that generality first
      ([ff_reflects_limit]): when the image of a cone N under F underlies
-     a limit of F ◯ G, the cone N itself is a limit of G.  "The image of
-     N is a limit" is stated as an apex-pinned witness
+     a limit of F ◯ G, the cone N itself is a limit of G.  “The image of
+     N is a limit” is stated as an apex-pinned witness
      [IsALimit (F ◯ G) (F (vertex_obj[N]))] together with the family
      identifying its legs with the image legs [fmap[F] (cone_leg N x)]
      (an arbitrary witness at the image apex says nothing about the legs
@@ -71,7 +71,7 @@ nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
      [cone_transport]/[cone_transport_inv]).  This produces, for every
      limit in D of the composite diagram, an actual limit in C of the
      original diagram; combined with preservation and reflection it is
-     the practical content of "equivalences create limits".
+     the practical content of “equivalences create limits”.
 
    The colimit statements ride the opposite category, never a second
    proof: a cocone is a cone over the opposite diagram, [IsAColimit] is

@@ -20,7 +20,7 @@ Context {C : Category}.
 
  braid ∘ braid ≈ id[x ⨂ y]
 
- i.e. β_{y,x} ∘ β_{x,y} = 1_{x ⨂ y}, "switching twice has no effect". A
+ i.e. β_{y,x} ∘ β_{x,y} = 1_{x ⨂ y}, “switching twice has no effect”. A
  braided monoidal category carries two hexagon identities; under symmetry
  either one implies the other, so a symmetric monoidal category is fully
  determined by its underlying braided structure together with braid_invol. 
@@ -41,9 +41,9 @@ Context {C : Category}.
 
  nLab:
  https://ncatlab.org/nlab/show/coherence+theorem+for+symmetric+monoidal+categories
- Paper: Mac Lane, "Natural Associativity and Commutativity", Rice
+ Paper: Mac Lane, “Natural Associativity and Commutativity”, Rice
  University Studies 49, 1963
- Paper: Mac Lane, "Categorical Algebra", Bull. Amer. Math. Soc. 71, 1965
+ Paper: Mac Lane, “Categorical Algebra”, Bull. Amer. Math. Soc. 71, 1965
 
  The axioms answer a question Mac Lane posed and settled in 1963: how to
  say that a tensor product commutes when it commutes only up to
@@ -51,11 +51,11 @@ Context {C : Category}.
  equal, and the chosen isomorphisms must cohere with the associator and
  unitors (Mac Lane 1963, above; the nLab records contemporaneous
  treatments by Bénabou, C. R. Acad. Sci. Paris 258, 1964, and by
- Eilenberg and Kelly, "Closed Categories", in the La Jolla proceedings,
+ Eilenberg and Kelly, “Closed Categories”, in the La Jolla proceedings,
  1966).  The braided axioms alone do not settle the matter: they allow
  the double crossing x ⨂ y ~> y ⨂ x ~> x ⨂ y to be a nontrivial
  automorphism, as it genuinely is in categories of braids and ribbons
- (Joyal, Street, "Braided tensor categories", Advances in Mathematics
+ (Joyal, Street, “Braided tensor categories”, Advances in Mathematics
  102, 1993).  The single law [braid_invol] removes exactly that freedom,
  and the reward is Mac Lane's coherence theorem for the symmetric case:
  every diagram built from associators, unitors, and symmetries commutes,
@@ -73,14 +73,14 @@ Context {C : Category}.
  over- and under-crossings differ.  Coherence then licenses tracking
  only the permutation when replumbing a parallel composite, the
  soundness behind string-diagram calculi such as the signal-flow graphs
- of Fong and Spivak ("An Invitation to Applied Category Theory", CUP
+ of Fong and Spivak (“An Invitation to Applied Category Theory”, CUP
  2019, ch. 5).  Cartesian categories supply the everyday examples: Set,
  Cat, and any category with finite products, where the braiding is the
  argument swap, realized in-tree as [CC_SymmetricMonoidal] in
  Structure/Monoidal/Internal/Product.v.
 
  The definition organizes whole subjects downstream.  Mac Lane's PROPs
- ("Categorical Algebra", 1965, from joint work with Adams) are strict
+ (“Categorical Algebra”, 1965, from joint work with Adams) are strict
  symmetric monoidal categories whose objects are the natural numbers
  and whose tensor is addition; their models are symmetric monoidal
  functors ([SymmetricMonoidalFunctor] in
@@ -92,20 +92,20 @@ Context {C : Category}.
  linear logic (Girard 1987): the tensor is conjunction of resources,
  and the missing contraction rule means a consumed resource is gone;
  the classical case asks in addition for a dualizing object (Seely,
- "Linear logic, *-autonomous categories and cofree coalgebras", 1989),
+ “Linear logic, *-autonomous categories and cofree coalgebras”, 1989),
  which Structure/Monoidal/StarAutonomous.v adds atop its [SymMonClosed]
  base.  Resource theories in the sense of Coecke, Fritz, and Spekkens
- ("A mathematical theory of resources", Information and Computation
+ (“A mathematical theory of resources”, Information and Computation
  250, 2016) are symmetric monoidal categories outright — objects are
  resources, morphisms are the free transformations — a reading
  continued by the copy/discard and Markov developments
  (Structure/Monoidal/CopyDiscard.v, Structure/Monoidal/Markov.v), while
- Baez and Stay ("Physics, Topology, Logic and Computation: A Rosetta
- Stone", 2009) take closed symmetric monoidal categories as the grammar
+ Baez and Stay (“Physics, Topology, Logic and Computation: A Rosetta
+ Stone”, 2009) take closed symmetric monoidal categories as the grammar
  shared by Hilbert spaces, cobordisms, proofs, and programs.  For the
  semantics of effects, Kock's theorem matches commutative monads with
  symmetric monoidal monads over a symmetric monoidal closed base (Kock,
- "Strong functors and monoidal monads", Archiv der Mathematik 23,
+ “Strong functors and monoidal monads”, Archiv der Mathematik 23,
  1972); in-tree, the Kleisli category of a commutative monad is again
  symmetric monoidal ([Kleisli_Symmetric] in
  Monad/Kleisli/Commutative.v), so independent effectful computations
@@ -119,7 +119,7 @@ Context {C : Category}.
  nLab:
  https://ncatlab.org/nlab/show/coherence+theorem+for+symmetric+monoidal+categories 
  论文：Mac Lane，《自然的结合律与交换律》，赖斯大学研究，49，1963
- 论文：Mac Lane，《范畴代数》，美国数学学会公报，71，1965这些公理回答了 Mac Lane 在 1963 年提出并解决的一个问题：当一个张量积仅在同构意义下交换时，如何说明它是交换的。在向量空间中，V ⊗ W 和 W ⊗ V 是同构的，但不相等，而所选择的同构必须与结合子和单位子一致（Mac Lane 1963，如上所述；nLab 记录了 Bénabou（C. R. Acad. Sci. Paris 258, 1964）以及 Eilenberg 和 Kelly 在 La Jolla 会议论文集（1966）中的同时期处理方法）。仅有编织公理并不能解决这个问题：它们允许双重交叉 x ⨂ y ~> y ⨂ x ~> x ⨂ y 成为一个非平凡的自同构，就像它在编织和丝带范畴中真实存在的一样（Joyal, Street, "Braided tensor categories", Advances in Mathematics 102, 1993）。单一的定律 [braid_invol] 恰好消除了那种自由，而其回报是 Mac Lane 的对称情形的相干性定理：由结合子、单位子和对称子构成的每一个图都是可交换的，前提是其两边诱导的张量因子的排列相同。因此，可以像处理一个因子多重集合那样推理一个迭代张量，并且每个对称幺半范畴都与一个置换幺半范畴等价，该范畴严格结合并严格含有单位。下面的引理 [bimap_braid] 和 [braid_bimap_braid] 是这种坍塌的一些小例子，而 [hexagon_rotated] 展示了一个六边形吸收了另一个，如标题所述。从计算的角度来看，[braid] 交换两根平行的电线，而 [braid_invol] 表示电线交叉时没有交叉的记忆——这正是对称情况与编织情况的区别所在，后者的上下交叉不同。连贯性因此只允许在重新布线一个平行复合时跟踪置换，这是字符串图计算的合理性基础，例如 Fong 和 Spivak 的信号流图（“An Invitation to Applied Category Theory”, CUP 2019, 第5章）。笛卡尔范畴提供了日常的例子：Set、Cat，以及任何具有有限积的范畴，其中的编织是参数交换，在树中实现为 Structure/Monoidal/Internal/Product.v 中的 [CC_SymmetricMonoidal]。该定义将完整的学科向下组织。Mac Lane 的 PROPs（“Categorical Algebra”，1965年，与 Adams 的合作工作）是严格的对称单幺范畴，其对象是自然数，张量是加法；它们的模型是对称单幺函子（Functor/Structure/Monoidal/Braided.v 中的 [SymmetricMonoidalFunctor]），并且它们呈现了诸如双代数之类的结构，这是操作子或 Lawvere 理论无法涵盖的——库中的 free-PROP 主干（Construction/PROP.v，其类携带 [prop_symmetric]）依赖于此文件。在逻辑中，闭对称幺半范畴（closed symmetric monoidal categories）模拟乘法直觉线性逻辑（Girard 1987）：张量表示资源的合取，而缺失的合并规则意味着消耗的资源将消失；经典情形还要求一个对偶对象（Seely, "Linear logic, *-autonomous categories and cofree coalgebras", 1989），这在 Structure/Monoidal/StarAutonomous.v 中在其 [SymMonClosed] 基础上进行了扩展。Coecke、Fritz 和 Spekkens 意义下的资源理论（"A mathematical theory of resources"，《Information and Computation》, 250, 2016）本质上是对称单体范畴——对象是资源，态射是自由变换——这一解读在复制/丢弃和马尔可夫的发展中得以延续（Structure/Monoidal/CopyDiscard.v, Structure/Monoidal/Markov.v），而 Baez 和 Stay（"Physics, Topology, Logic and Computation: A Rosetta Stone", 2009）则将闭对称单体范畴视为希尔伯特空间、余流、证明和程序共用的语法。对于效应的语义，Kock 定理将交换单子与对称单闭基上的对称幺半群单子相对应（Kock，"强函子与幺半群单子"，Archiv der Mathematik 23，1972）；在树中，交换单子的 Kleisli 范畴再次是对称幺半群的（[Kleisli_Symmetric] 在 Monad/Kleisli/Commutative.v 中），因此独立的有副作用的计算可以按任意顺序调度。追踪幺半群结构在相同的对称基上叠加反馈（Structure/Monoidal/Traced.v，[traced_is_symmetric] 是进入该类的一种强制转换）。
+ 论文：Mac Lane，《范畴代数》，美国数学学会公报，71，1965这些公理回答了 Mac Lane 在 1963 年提出并解决的一个问题：当一个张量积仅在同构意义下交换时，如何说明它是交换的。在向量空间中，V ⊗ W 和 W ⊗ V 是同构的，但不相等，而所选择的同构必须与结合子和单位子一致（Mac Lane 1963，如上所述；nLab 记录了 Bénabou（C. R. Acad. Sci. Paris 258, 1964）以及 Eilenberg 和 Kelly 在 La Jolla 会议论文集（1966）中的同时期处理方法）。仅有编织公理并不能解决这个问题：它们允许双重交叉 x ⨂ y ~> y ⨂ x ~> x ⨂ y 成为一个非平凡的自同构，就像它在编织和丝带范畴中真实存在的一样（Joyal, Street, “Braided tensor categories”, Advances in Mathematics 102, 1993）。单一的定律 [braid_invol] 恰好消除了那种自由，而其回报是 Mac Lane 的对称情形的相干性定理：由结合子、单位子和对称子构成的每一个图都是可交换的，前提是其两边诱导的张量因子的排列相同。因此，可以像处理一个因子多重集合那样推理一个迭代张量，并且每个对称幺半范畴都与一个置换幺半范畴等价，该范畴严格结合并严格含有单位。下面的引理 [bimap_braid] 和 [braid_bimap_braid] 是这种坍塌的一些小例子，而 [hexagon_rotated] 展示了一个六边形吸收了另一个，如标题所述。从计算的角度来看，[braid] 交换两根平行的电线，而 [braid_invol] 表示电线交叉时没有交叉的记忆——这正是对称情况与编织情况的区别所在，后者的上下交叉不同。连贯性因此只允许在重新布线一个平行复合时跟踪置换，这是字符串图计算的合理性基础，例如 Fong 和 Spivak 的信号流图（“An Invitation to Applied Category Theory”, CUP 2019, 第5章）。笛卡尔范畴提供了日常的例子：Set、Cat，以及任何具有有限积的范畴，其中的编织是参数交换，在树中实现为 Structure/Monoidal/Internal/Product.v 中的 [CC_SymmetricMonoidal]。该定义将完整的学科向下组织。Mac Lane 的 PROPs（“Categorical Algebra”，1965年，与 Adams 的合作工作）是严格的对称单幺范畴，其对象是自然数，张量是加法；它们的模型是对称单幺函子（Functor/Structure/Monoidal/Braided.v 中的 [SymmetricMonoidalFunctor]），并且它们呈现了诸如双代数之类的结构，这是操作子或 Lawvere 理论无法涵盖的——库中的 free-PROP 主干（Construction/PROP.v，其类携带 [prop_symmetric]）依赖于此文件。在逻辑中，闭对称幺半范畴（closed symmetric monoidal categories）模拟乘法直觉线性逻辑（Girard 1987）：张量表示资源的合取，而缺失的合并规则意味着消耗的资源将消失；经典情形还要求一个对偶对象（Seely, “Linear logic, *-autonomous categories and cofree coalgebras”, 1989），这在 Structure/Monoidal/StarAutonomous.v 中在其 [SymMonClosed] 基础上进行了扩展。Coecke、Fritz 和 Spekkens 意义下的资源理论（“A mathematical theory of resources”，《Information and Computation》, 250, 2016）本质上是对称单体范畴——对象是资源，态射是自由变换——这一解读在复制/丢弃和马尔可夫的发展中得以延续（Structure/Monoidal/CopyDiscard.v, Structure/Monoidal/Markov.v），而 Baez 和 Stay（“Physics, Topology, Logic and Computation: A Rosetta Stone”, 2009）则将闭对称单体范畴视为希尔伯特空间、余流、证明和程序共用的语法。对于效应的语义，Kock 定理将交换单子与对称单闭基上的对称幺半群单子相对应（Kock，“强函子与幺半群单子”，Archiv der Mathematik 23，1972）；在树中，交换单子的 Kleisli 范畴再次是对称幺半群的（[Kleisli_Symmetric] 在 Monad/Kleisli/Commutative.v 中），因此独立的有副作用的计算可以按任意顺序调度。追踪幺半群结构在相同的对称基上叠加反馈（Structure/Monoidal/Traced.v，[traced_is_symmetric] 是进入该类的一种强制转换）。
 *)
 
 Class SymmetricMonoidal := {
@@ -215,11 +215,11 @@ Next Obligation.
 Qed.
 
 (*
- ncatlab: "Every symmetric monoidal category is balanced in a canonical way;
+ ncatlab: “Every symmetric monoidal category is balanced in a canonical way;
  in fact, the identity natural transformation (on the identity functor of
  BB) is a balance on BB if and only if BB is symmetric. Thus balanced
  monoidal categories fall between braided monoidal categories and symmetric
- monoidal categories." 
+ monoidal categories.” 
 
  --------
  ncatlab：“每一个对称单体范畴以一种典型的方式是平衡的；实际上，恒等自然变换（在 BB 的恒等函子上）是 BB 的一个平衡，当且仅当 BB 是对称的时候。因此，平衡单体范畴介于编织单体范畴和对称单体范畴之间。”

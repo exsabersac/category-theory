@@ -22,9 +22,9 @@ Generalizable All Variables.
  That is precisely the [A]-indexed product of [f] read in [C^op], and this
  file takes it as the definition.  Two files in the tree already dualize
  this way, by two different mechanisms.  Structure/Cocartesian.v states
- the idea -- "To be cocartesian is just to be cartesian in the opposite
- category" -- and realizes it with a NOTATION pair, [Notation "'Cocartesian'
- C" := (@Cartesian (C^op))].  [Comonad] instead uses a
+ the idea -- “To be cocartesian is just to be cartesian in the opposite
+ category” -- and realizes it with a NOTATION pair, [Notation “'Cocartesian'
+ C” := (@Cartesian (C^op))].  [Comonad] instead uses a
  [Definition], [Comonad := @Monad (C^op) (M^op)] at Theory/Monad.v,
  with [Existing Class Comonad] declared separately in the API module at
  Comonad/Core.v.  This file follows the second, splitting [Definition]
@@ -68,7 +68,7 @@ Generalizable All Variables.
  indexes over [(DiscreteCat A)^op].  The hom from [x] to [y] is [x = y] in
  [DiscreteCat A] (Instance/Discrete.v) and [y = x] in its opposite
  (Construction/Opposite.v), and Coq does not identify the two categories:
- [eq_refl : (DiscreteCat A)^op = DiscreteCat A] is rejected, "cannot unify".
+ [eq_refl : (DiscreteCat A)^op = DiscreteCat A] is rejected, “cannot unify”.
  (Checked outside the tree, so that the [make todo] scan stays clean.)  A
  translation between the two shapes is not given here, and no consumer in
  this development calls for one.
@@ -82,7 +82,7 @@ Generalizable All Variables.
 
  --------
  nLab:       https://ncatlab.org/nlab/show/coproduct 
- 维基百科:  https://en.wikipedia.org/wiki/Coproduct一个 [A] 索引的 [f : A → C] 家族的余积是一个对象 [p]，以及一族注入 [inj a : f a ~> p]，它具有普遍性：每一个竞争性家族 [iota a : f a ~> c] 都通过唯一的中介映射 [u : p ~> c] 因注入而分解，且对每个 [a] 都满足 [u ∘ inj a ≈ iota a]。那正是 [C^op] 中的 [f] 的 [A] 索引的积，并且本文件以此作为定义。树中的两个文件已经以两种不同的机制对其进行了对偶化。Structure/Cocartesian.v 表述了这一想法——“要成为余积，仅仅是在对偶范畴中成为积”——并且通过一对符号实现了它，[Notation "'Cocartesian' C" := (@Cartesian (C^op))]。[Comonad] 取而代之的是使用 [Definition]、[Comonad := @Monad (C^op) (M^op)] 于 Theory/Monad.v 中，同时 [Existing Class Comonad] 在 Comonad/Core.v 的 API 模块中单独声明。该文件遵循第二种方式，将 [Definition] 从 [Existing Class] 中完全以这种方式拆分；如下所示说明原因。
+ 维基百科:  https://en.wikipedia.org/wiki/Coproduct一个 [A] 索引的 [f : A → C] 家族的余积是一个对象 [p]，以及一族注入 [inj a : f a ~> p]，它具有普遍性：每一个竞争性家族 [iota a : f a ~> c] 都通过唯一的中介映射 [u : p ~> c] 因注入而分解，且对每个 [a] 都满足 [u ∘ inj a ≈ iota a]。那正是 [C^op] 中的 [f] 的 [A] 索引的积，并且本文件以此作为定义。树中的两个文件已经以两种不同的机制对其进行了对偶化。Structure/Cocartesian.v 表述了这一想法——“要成为余积，仅仅是在对偶范畴中成为积”——并且通过一对符号实现了它，[Notation “'Cocartesian' C” := (@Cartesian (C^op))]。[Comonad] 取而代之的是使用 [Definition]、[Comonad := @Monad (C^op) (M^op)] 于 Theory/Monad.v 中，同时 [Existing Class Comonad] 在 Comonad/Core.v 的 API 模块中单独声明。该文件遵循第二种方式，将 [Definition] 从 [Existing Class] 中完全以这种方式拆分；如下所示说明原因。
 
  这里的新内容和非新内容。下面没有常量带有证明义务。每一个都是在 [C^op] 中对 Structure/Limit/Product.v 中常量的定义性重新释读：
 

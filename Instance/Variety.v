@@ -34,9 +34,9 @@ Generalizable All Variables.
  [Algs] is the category of algebras of an OPERATION signature —
  the equations are dropped — and [Group := Algebra GroupOp GroupEq]
  is a type, not a category.  So ⟨Ω,E⟩-Alg was nowhere formed, and
- Instance/Roster.v records exactly that gap in prose: "there is no
+ Instance/Roster.v records exactly that gap in prose: “there is no
  category of Groups there … the variety is recorded here as the type it
- is".  This file forms it.
+ is”.  This file forms it.
 
  ** How, and why this way
 
@@ -50,8 +50,8 @@ Generalizable All Variables.
  over a sigma type would duplicate [Alg_id], [Alg_comp], [AlgHom_Setoid]
  and the four laws that [Sub] supplies for nothing; it would give up
  [Incl] and [Incl_Faithful]; and it would make fullness something to
- prove rather than the one-liner [fun _ _ _ _ _ => I].  The "[Models_sub]
- analogue" is not a third option — [Models] IS [Sub] of a subcategory, so
+ prove rather than the one-liner [fun _ _ _ _ _ => I].  The “[Models_sub]
+ analogue” is not a third option — [Models] IS [Sub] of a subcategory, so
  that suggestion and this construction are the same one.
 
  The record presentation is not lost: [Variety_pack] and [Variety_unpack]
@@ -349,7 +349,7 @@ Definition GroupVariety_Bool : GroupVariety := Variety_pack UA.Bool.
    (commutativity), whose two naturality fields are [op_commute] itself
    at [args] and at [args ∘ comm_swap] — so no bundle is rebuilt and no
    extensionality is needed.  [Print Assumptions] on every constant in
-   this block says "Closed under the global context", and all are
+   this block says “Closed under the global context”, and all are
    gated. 
 
    --------

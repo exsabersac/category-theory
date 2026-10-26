@@ -23,20 +23,20 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/2-category+of+adjunctions
  nLab: https://ncatlab.org/nlab/show/bicategory
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.8,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.8,
  book p. 104 (PDF p. 113): Theorem 2, Exercise 1 and the closing
  remark; catalog ids maclane:IV.8:thm2, maclane:IV.8:ex1,
  maclane:IV.8:remark1.
 
  THEOREM 2, verbatim from the printed page:
 
- "Theorem 2. Given two conjugate pairs
+ “Theorem 2. Given two conjugate pairs
  <sigma, tau> : <F,G,eta,eps> => <F',G',eta',eps'> : X -> A,
  <sigma-, tau-> : <F-,G-,eta-,eps-> => <F-',G-',eta-',eps-'> : A -> D
  the (horizontal) composite natural transformations sigma- sigma and
  tau tau- yield a conjugate pair sigma- sigma : F- F => F-' F',
  tau tau- : G' G-' => G G- of natural transformations for the
- composite adjunctions."
+ composite adjunctions.”
 
  The proof diagram on that page is the chain of hom-set bijections
 
@@ -49,14 +49,14 @@ Generalizable All Variables.
  (tau- d) in the middle, and postcomposition with (tau tau- d) on the
  right.  The closing remark and Exercise 1, again verbatim:
 
- "Moreover, this operation of (horizontal) composition is a bifunctor
+ “Moreover, this operation of (horizontal) composition is a bifunctor
  Adj(A, D) x Adj(X, A) -> Adj(X, D).                            (1)
  This means that Adj is a 'two-dimensional' category, as is Cat
- (see SS II.5).  There is additional discussion in Chapter XII."
+ (see SS II.5).  There is additional discussion in Chapter XII.”
 
- "1. Prove that horizontal composition is a bifunctor, as in (1), and
+ “1. Prove that horizontal composition is a bifunctor, as in (1), and
  that this implies an interchange law between horizontal and vertical
- composition of conjugate pairs."
+ composition of conjugate pairs.”
 
  ** The orientation dictionary
 
@@ -204,7 +204,7 @@ Generalizable All Variables.
  [idtac]; that is NOT a restoration of the tree default, which
  Lib/Tactics.v declares as [cat_simpl], and it is load-bearing: a
  byte-identical copy with [cat_simpl] on that line stops inside
- [Adj_hunit_left]'s obligations with "No obligations remaining", [cat_simpl]
+ [Adj_hunit_left]'s obligations with “No obligations remaining”, [cat_simpl]
  having already discharged what the explicit [Next Obligation] scripts of (E)
  then find nothing left to prove.  The [#[local]] keeps it inside this
  module.
@@ -257,7 +257,7 @@ Generalizable All Variables.
  type -- the first is [H (o) (G (o) F) <| U (o) V (o) W] and the second
  [H (o) G (o) F <| U (o) (V (o) W)] -- so the associativity equation is
  not statable at all; measured, with both sides' implicits written out,
- the rejection is a plain has-type mismatch with no "cannot unify" and
+ the rejection is a plain has-type mismatch with no “cannot unify” and
  no universe clause.  Both unit laws are refused the same way.  One
  level down the underlying functor equations ARE statable and are
  refused at CONVERSION, with [fobj] and [fmap] agreeing definitionally
@@ -364,8 +364,8 @@ Generalizable All Variables.
 
  ** A stale sentence of the issue
 
- Its current-state section says "Instance/Adj.v -- a hom-category of
- adjunctions exists, but with no conjugacy condition on its arrows".
+ Its current-state section says “Instance/Adj.v -- a hom-category of
+ adjunctions exists, but with no conjugacy condition on its arrows”.
  That has been stale since #395: [ConjPair] carries [conj_pair_law] as
  its third field, so an arrow of [Adj C D] is a conjugate pair and not
  a bare pair of transformations, and that file's own header records the
@@ -393,7 +393,7 @@ Generalizable All Variables.
  rename-simulated 15/15 over the constants of this file that a negative
  names, every break landing on a [Check] line.  Two corrections to
  expectation are recorded there: the [Build_Bicategory'] refusal carries a
- "cannot unify" clause and so is CONVERSION rather than TYPING, and the
+ “cannot unify” clause and so is CONVERSION rather than TYPING, and the
  [ConjPair] negative refuses at its [AdjObj] ARGUMENT, so whether [ConjPair]
  identifies anything of its own is UNKNOWN, not refuted.  [make todo] grows
  by 41, ALL in the probe; this file contributes ZERO.

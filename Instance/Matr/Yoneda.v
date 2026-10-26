@@ -17,7 +17,7 @@ Generalizable All Variables.
 (*
    * * Row operations are left multiplication by a matrix
 
-   Riehl, "Category Theory in Context", 2nd ed., §2.2, Corollary 2.2.10
+   Riehl, “Category Theory in Context”, 2nd ed., §2.2, Corollary 2.2.10
    (printed p. 65) [riehl:2.2:cor10].
    nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
    Wikipedia: https://en.wikipedia.org/wiki/Elementary_matrix
@@ -46,7 +46,7 @@ Generalizable All Variables.
 
    NATURALITY IS LINEARITY.  The presheaf action of [Hom ─,n] is right
    multiplication, so the naturality square of an endomorphism η says
-   η (M · f) ≈ η M · f — the "linearity in the columns" that lets an
+   η (M · f) ≈ η M · f — the “linearity in the columns” that lets an
    operation defined row-wise be applied before or after a change of
    basis on the source.  [row_operation_natural] and
    [Build_row_operation] state the two directions: every row operation

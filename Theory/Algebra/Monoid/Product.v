@@ -43,9 +43,9 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
 
    HYPOTHESES, MEASURED RATHER THAN GUESSED.  The binary half needs
    [Cartesian C] ALONE — no [Terminal C], and no interaction between × and ⨂.
-   This mirrors [Class Cartesian] itself, which "axiomatizes the binary
+   This mirrors [Class Cartesian] itself, which “axiomatizes the binary
    product; the nullary product (the terminal object 1) is supplied separately
-   by [Terminal]" (Structure/Cartesian.v).  The nullary half needs
+   by [Terminal]” (Structure/Cartesian.v).  The nullary half needs
    [Terminal C] alone and does not mention [Cartesian] at all.  Both halves
    are stated over an ARBITRARY monoidal structure M on C; the cartesian
    monoidal structure [CC_Monoidal] appears only in the final comparison
@@ -70,7 +70,7 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
        instantiation at [Mon Sets], with two further negatives showing that
        [Product_Monoid] would NOT have reached it.
 
-   THE TWO CLASSES NAMED "Monoid", AND WHY THE PASSAGE IS NOT THE ROUTE TAKEN
+   THE TWO CLASSES NAMED “Monoid”, AND WHY THE PASSAGE IS NOT THE ROUTE TAKEN
 
    This tree carries two definitions of an internal monoid:
 
@@ -91,8 +91,8 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
    Type] and are indistinguishable by type display; but the [Monoid] alias
    prints [∀ C : Category, Cartesian → Terminal → obj[C] → Type], which is
    VISIBLY DIFFERENT, and [Check @Product_Monoid] even prints its ARGUMENT
-   types qualified.  The claim "type display alone cannot tell the three
-   apart" was FALSE and is withdrawn: a single [Check] separates the alias.
+   types qualified.  The claim “type display alone cannot tell the three
+   apart” was FALSE and is withdrawn: a single [Check] separates the alias.
    What is true, and is the part that actually bites, is that
    [Product_Monoid] prints its CONCLUSION as [MonoidObject (x × y)] with the
    monoidal instance SUPPRESSED — so the conclusion does not reveal which
@@ -111,8 +111,8 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
    Route (b) is taken.  The reason is not taste: [Product_Monoid] concludes
    [@MonoidObject C CC_Monoidal (x × y)], so its tensor IS the categorical
    product.  Routing through it therefore requires the monoidal structure of
-   [Mon] to be [CC_Monoidal], which restricts the theorem from "for every
-   monoidal B with finite products" to "for B monoidal via its own products" —
+   [Mon] to be [CC_Monoidal], which restricts the theorem from “for every
+   monoidal B with finite products” to “for B monoidal via its own products” —
    a restriction relative to both Mac Lane's statement and [Mon]'s own
    signature, which quantifies over an arbitrary [M : @Monoidal C].  The
    passage of route (a) does not repair this: it relates the two classes only
@@ -130,7 +130,7 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
    no licence to touch and would break every existing consumer of [Mon].
 
    The passage of route (a) is nevertheless BUILT here — it is what
-   "reconcile the two definitions" asks for — and it is then used for what it
+   “reconcile the two definitions” asks for — and it is then used for what it
    can actually do: exhibit [Product_Monoid] as the [CC_Monoidal] special case
    of [Monoid_Product] (section 6).  That comparison is an [≈], not an
    [eq_refl], and the residue is diagnosed below.
@@ -165,9 +165,9 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
      the two components, and [exl_fork]/[exr_fork] read the two halves of
      [toggle] back.  All four ARE [Qed] corollaries of
      Structure/Cartesian.v, and the shipped proof also spends [comp_assoc], a
-     [Category] law rather than a [Cartesian] corollary — so "three rewrites"
+     [Category] law rather than a [Cartesian] corollary — so “three rewrites”
      undercounts, and [fork_inv] is [apply]d rather than rewritten.  An
-     earlier draft added "so no unfolding converts one side to the other";
+     earlier draft added “so no unfolding converts one side to the other”;
      that is a NON SEQUITUR and is withdrawn — opacity of the LEMMAS used in
      an [≈] proof says nothing about convertibility of the two MORPHISM
      terms.  The terms are non-convertible because one is a fork of
@@ -189,11 +189,11 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
      [Product_Monoid X Y] has type [@MonoidObject C (@CC_Monoidal C _ _)
      (x × y)] where [@MonoidObject C M (x × y)] is wanted.  Control:
      [Product_Monoid_as_Monoid], the same application at M := [CC_Monoidal].
-   - [Monoid_Product_mu_not_strict] — CONVERSION.  "cannot unify" between the
+   - [Monoid_Product_mu_not_strict] — CONVERSION.  “cannot unify” between the
      two multiplications.  Control: [Monoid_Product_mu_is_Product_Monoid],
      the [≈] form, which names every constant occurring in the negative.
-   - [Sets_Product_Monoidal_is_CC_Monoidal] — CONVERSION.  "cannot unify
-     "Sets_Product_Monoidal" and "CC_Monoidal"".  Controls:
+   - [Sets_Product_Monoidal_is_CC_Monoidal] — CONVERSION.  “cannot unify
+     ”Sets_Product_Monoidal“ and ”CC_Monoidal“”.  Controls:
      [Mon_Sets_Cartesian] and [Mon_Sets_Terminal], which name all four of
      [Sets_Product_Monoidal], [Sets_Cartesian], [Sets_Terminal] and [Sets].
    - The unnamed [Fail Check] in [SetsWitness] — TYPING, the [Sets] instance
@@ -203,8 +203,8 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
    a FALSE PASS and only strip-and-read caught it.  Written INSIDE
    [Section MonProduct], where C and M are section VARIABLES rather than
    parameters, [@Monoid_of_MonoidObject C M (x × y) X] passes C into the
-   [x] slot: the command failed with "The term "C" has type "Category" while
-   it is expected to have type "obj[C]"" — an arity error at an argument
+   [x] slot: the command failed with “The term ”C“ has type ”Category“ while
+   it is expected to have type ”obj[C]“” — an arity error at an argument
    elaborated before the nominal subject, which says nothing at all about the
    monoidal instance.  The probe is therefore placed AFTER [End MonProduct],
    with its own [Context], where the constant carries all its parameters.
@@ -222,7 +222,7 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
 
    AXIOMS.  All 40 constants of this file — 31 named plus 9 [Program]
    obligations, the latter invisible to a [.glob] sweep and queried by
-   fully-qualified name — report "Closed under the global context".  The
+   fully-qualified name — report “Closed under the global context”.  The
    [Instance/Sets] witnesses of section (7) are included in that count and
    add nothing.
 
@@ -238,9 +238,9 @@ Mac Lane, Categories for the Working Mathematician, 2nd ed., Section VII.3,
      That is INHERITED, from THREE donors independently, and the attribution
      is probed rather than assumed: in a section declaring [Constraint uh <
      up] over [C : Category@{uo uh up}], each of [@Monoidal C], [@Cartesian C]
-     and [@Terminal C] is rejected with "Cannot enforce up = uh", while
+     and [@Terminal C] is rejected with “Cannot enforce up = uh”, while
      [x ~> y] and [id[x]] are ACCEPTED at those very levels.  So no one of the
-     three is "the" cause, nothing in this file adds to it, and it is not
+     three is “the” cause, nothing in this file adds to it, and it is not
      claimed unavoidable — all three are declared over an unannotated
      [Context {C : Category}], which is the minimization family this tree
      records elsewhere.
@@ -381,8 +381,8 @@ Theory/Algebra/Monoid.v   类 Monoid (X : C)
 否定。四个，来自两种不同的类型，在词汇上分开，每个都被剥离，并从消息中读取其失败类型。
 
 - [AbstractBaseProbe] — 类型检查。剥离 [Fail] 报告 [Product_Monoid X Y] 的类型为 [@MonoidObject C (@CC_Monoidal C _ _) (x × y)]，而需要的是 [@MonoidObject C M (x × y)]。控制：[Product_Monoid_as_Monoid]，同样在 M := [CC_Monoidal] 处应用。
-- [Monoid_Product_mu_not_strict] — 转换。"无法统一" 两个乘法。控制：[Monoid_Product_mu_is_Product_Monoid]，[≈] 形式，它命名了消极式中出现的每一个常量。
-- [Sets_Product_Monoidal_is_CC_Monoidal] — 转换。"无法统一 'Sets_Product_Monoidal' 和 'CC_Monoidal'"。控制：[Mon_Sets_Cartesian] 和 [Mon_Sets_Terminal]，它们命名了 [Sets_Product_Monoidal]、[Sets_Cartesian]、[Sets_Terminal] 和 [Sets] 四个。
+- [Monoid_Product_mu_not_strict] — 转换。“无法统一” 两个乘法。控制：[Monoid_Product_mu_is_Product_Monoid]，[≈] 形式，它命名了消极式中出现的每一个常量。
+- [Sets_Product_Monoidal_is_CC_Monoidal] — 转换。“无法统一 'Sets_Product_Monoidal' 和 'CC_Monoidal'”。控制：[Mon_Sets_Cartesian] 和 [Mon_Sets_Terminal]，它们命名了 [Sets_Product_Monoidal]、[Sets_Cartesian]、[Sets_Terminal] 和 [Sets] 四个。
 - [SetsWitness] 中未命名的 [Fail Check] — 类型检查，第一个消极式的 [Sets] 实例。控制相同。
 
 探针卫生，记录是因为第一个版本的第一个否定是一个假通过，只有剥离读取才捕捉到它。写在 [Section MonProduct] 内，其中 C 和 M 是段变量而不是参数，[@Monoid_of_MonoidObject C M (x × y) X] 将 C 传入 [x] 插槽：命令失败，显示“术语 'C' 类型为 'Category'，而预期类型为 'obj[C]'”——这是在名义主体之前展开的参数的元数错误，这与单模实例完全无关。因此探针被放置在 [End MonProduct] 之后，拥有它自己的 [Context]，其中常量携带所有参数。
@@ -750,9 +750,9 @@ THE DESIGN CLAIM, MACHINE-CHECKED RATHER THAN ARGUED.  The passage above
    lives at [CC_Monoidal], and for a variable M there is no conversion between
    the two.  Stripping the [Fail] reports
 
-     The term "Product_Monoid X Y" has type
-      "@MonoidObject C (@CC_Monoidal C ?H ?H0) (x × y)"
-     while it is expected to have type "@MonoidObject C M (x × y)"
+     The term “Product_Monoid X Y” has type
+      “@MonoidObject C (@CC_Monoidal C ?H ?H0) (x × y)”
+     while it is expected to have type “@MonoidObject C M (x × y)”
 
    — a TYPING failure at the monoidal instance itself, not at any argument
    elaborated before it.  The positive control is in the comparison section
@@ -822,7 +822,7 @@ Example Monoid_Product_eta_is_Product_Monoid
 
 (*
 [Product_Monoid] read as a [Monoid] in this file's sense.  This is what
-   "so that [Product_Monoid] applies" amounts to, and it doubles as the
+   “so that [Product_Monoid] applies” amounts to, and it doubles as the
    positive control for the negative in [AbstractBaseProbe] above: the very
    same application, at M := [CC_Monoidal] instead of a variable M, IS
    accepted.
@@ -905,7 +905,7 @@ Definition Mon_Sets_Terminal
 (*
 CONVERSION negative: [Sets]'s own monoidal structure is not the cartesian
    monoidal structure built from its products.  Stripping the [Fail] gives
-   "cannot unify "Sets_Product_Monoidal" and "CC_Monoidal"".  Controls: the
+   “cannot unify ”Sets_Product_Monoidal“ and ”CC_Monoidal“”.  Controls: the
    two definitions immediately above, which name both [Sets_Product_Monoidal]
    and [Sets_Cartesian] / [Sets_Terminal].
 
@@ -931,9 +931,9 @@ Fail Example Sets_Product_Monoidal_is_CC_Monoidal :
 
 (*
 TYPING negative: consequently [Product_Monoid] does not supply a monoid
-   for [Mon Sets].  Stripping the [Fail] gives "The term "Product_Monoid X Y"
-   has type "@MonoidObject Sets (@CC_Monoidal Sets _ _) (x × y)" while it is
-   expected to have type "@MonoidObject Sets Sets_Product_Monoidal (x × y)"".
+   for [Mon Sets].  Stripping the [Fail] gives “The term ”Product_Monoid X Y“
+   has type ”@MonoidObject Sets (@CC_Monoidal Sets _ _) (x × y)“ while it is
+   expected to have type ”@MonoidObject Sets Sets_Product_Monoidal (x × y)“”.
    Control: [Product_Monoid_as_Monoid] above, the same application where the
    two bases DO agree.
 

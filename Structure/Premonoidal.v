@@ -18,8 +18,8 @@ Set Transparent Obligations.
    nLab: https://ncatlab.org/nlab/show/premonoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Premonoidal_category
 
-   A premonoidal category (Power–Robinson, "Premonoidal categories and
-   notions of computation", Math. Structures Comput. Sci. 7(5), 1997) is a
+   A premonoidal category (Power–Robinson, “Premonoidal categories and
+   notions of computation”, Math. Structures Comput. Sci. 7(5), 1997) is a
    binoidal category — Structure/Binoidal.v — together with
 
    - a unit object [premon_I];
@@ -53,8 +53,8 @@ Set Transparent Obligations.
    below restore the full Monoidal.v-style surface.
 
    - Centrality of the structural isomorphisms is what separates a
-   premonoidal category from a mere "binoidal category with coherent
-   isos": it makes the unitors and associator morphisms of the centre
+   premonoidal category from a mere “binoidal category with coherent
+   isos”: it makes the unitors and associator morphisms of the centre
    Z(C), so that Z(C) becomes a genuine monoidal category
    (Structure/Premonoidal/Centre.v), and it is exactly what the
    one-sided interchange lemmas [composite_ff'_comp_l]/[_r] of
@@ -101,10 +101,10 @@ Set Transparent Obligations.
 
  nLab:  https://ncatlab.org/nlab/show/premonoidal+category
  nLab:  https://ncatlab.org/nlab/show/Freyd+category
- Paper: Moggi, "Notions of computation and monads", Information and
+ Paper: Moggi, “Notions of computation and monads”, Information and
  Computation 93(1), 1991
- Paper: Power, Robinson, "Premonoidal categories and notions of
- computation", Mathematical Structures in Computer Science 7(5),
+ Paper: Power, Robinson, “Premonoidal categories and notions of
+ computation”, Mathematical Structures in Computer Science 7(5),
  1997
 
  Premonoidal categories keep exactly the monoidal structure that
@@ -128,8 +128,8 @@ Set Transparent Obligations.
 
  Power and Robinson introduced the structure for the denotational
  semantics of programming languages, as the monad-free residue of
- Moggi's monadic account of effects (Moggi, "Computational
- lambda-calculus and monads", LICS 1989): what survives on a Kleisli
+ Moggi's monadic account of effects (Moggi, “Computational
+ lambda-calculus and monads”, LICS 1989): what survives on a Kleisli
  category when the monad is forgotten.  Their motivating theorem: the
  Kleisli category of a strong monad on a symmetric monoidal category
  carries a canonical premonoidal structure — the strength extends the
@@ -145,8 +145,8 @@ Set Transparent Obligations.
  either side, and in the Kleisli instance this is exactly agreement of
  the two sequencings wherever f is a factor ([kleisli_central_iff]).
  Führmann's hierarchy pure ⇒ thunkable ⇒ central refines the picture
- (Monad/Thunkable.v, after Führmann, "Direct models of the computational
- lambda-calculus", MFPS XV 1999).  The centre Z(C) is a genuine monoidal
+ (Monad/Thunkable.v, after Führmann, “Direct models of the computational
+ lambda-calculus”, MFPS XV 1999).  The centre Z(C) is a genuine monoidal
  category ([Centre_Monoidal], Structure/Premonoidal/Centre.v), and per
  nLab the centre construction provides a right adjoint to the inclusion
  of monoidal categories into premonoidal ones; a monoidal category is
@@ -159,7 +159,7 @@ Set Transparent Obligations.
  The downstream uses cluster around call-by-value.  A Freyd category is
  an identity-on-objects functor from a category of values to a
  premonoidal category of computations, landing in the centre (Power,
- Thielecke, "Closed Freyd- and κ-categories", ICALP 1999; per nLab the
+ Thielecke, “Closed Freyd- and κ-categories”, ICALP 1999; per nLab the
  name honours Peter Freyd's 1989 work on axiomatic domain theory).  When
  the value inclusion has a right adjoint, the computation category is
  the Kleisli category of the induced strong monad, so closed Freyd
@@ -168,11 +168,11 @@ Set Transparent Obligations.
  computations.  Structure/Premonoidal/Freyd.v formalizes the effectful
  weakening ([EffectfulFunctor], [Freyd]).  Further afield: Selinger's
  control categories pair cartesian-closed with premonoidal structure to
- interpret the λμ-calculus (Selinger, "Control categories and duality:
- on the categorical semantics of the lambda-mu calculus", MSCS 11(2),
+ interpret the λμ-calculus (Selinger, “Control categories and duality:
+ on the categorical semantics of the lambda-mu calculus”, MSCS 11(2),
  2001); Benton and Hyland generalize traces to symmetric premonoidal
  categories and Conway operators to Freyd categories, motivated by value
- recursion (Benton, Hyland, "Traced premonoidal categories", RAIRO-ITA
+ recursion (Benton, Hyland, “Traced premonoidal categories”, RAIRO-ITA
  37(4), 2003); Hughes-style arrows correspond to Freyd categories per
  nLab (Jacobs, Heunen, Hasuo, JFP 19(3–4), 2009); and a strict
  premonoidal category is a monoid in Cat under the funny tensor product

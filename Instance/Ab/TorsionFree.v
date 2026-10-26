@@ -1,16 +1,16 @@
 (*
    * * Torsion-free abelian groups are a full reflective subcategory of Ab
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    Springer GTM 5, §IV.3, printed p. 92, Exercise 2.  Verbatim
-   from the page: "2. Show that the torsion-free abelian groups
-   form a full reflective subcategory of Ab."  The paragraph just
+   from the page: “2. Show that the torsion-free abelian groups
+   form a full reflective subcategory of Ab.”  The paragraph just
    above the exercises on that page supplies the vocabulary and
-   is NOT this item's scope: "A coreflective subcategory of Ab is
+   is NOT this item's scope: “A coreflective subcategory of Ab is
    the full subcategory of all torsion abelian groups (a group is
    torsion if all elements have finite order); the coreflector
    sends each abelian group A to the subgroup TA of all elements
-   of finite order in A."  Catalog id: maclane:IV.3:ex2.
+   of finite order in A.”  Catalog id: maclane:IV.3:ex2.
 
    ** What is delivered
 
@@ -86,23 +86,23 @@
    what [AbModTorsion_TorsionFree] does when it multiplies the two
    exponents.  No choice principle appears anywhere in this file.
 
-   AN EARLIER REVISION continued: "Nothing anywhere in this file extracts a
+   AN EARLIER REVISION continued: “Nothing anywhere in this file extracts a
    witness from a [Prop]-valued existential; the same design note
    Instance/Ab.v makes about [ab_coset_eq] being [Type]-valued
-   applies verbatim, and it is what lets the coset witness be taken apart."
-   Since the PR "algebraic carriers are sets" (2026-09-17) that note is
+   applies verbatim, and it is what lets the coset witness be taken apart.”
+   Since the PR “algebraic carriers are sets” (2026-09-17) that note is
    itself corrected: [ab_coset_eq] is a [Prop].  The torsion EXPONENT is
    still data -- [torsion_mem] is untouched -- but the COSET witness is not,
    so [quot_eq_elim] below is stated in continuation form, eliminating into
    an arbitrary [Prop], and its two consumers reach their own goals through
    [pequiv_to].  All 58 constants are closed under the global context.
 
-   ** Prior art, measured at 9a1fe0f2 (the issue's "Current state" is
+   ** Prior art, measured at 9a1fe0f2 (the issue's “Current state” is
    stale and is corrected rather than repeated)
 
-   The issue says the ambient category is missing ("there is no Ab, Grp
-   or AbGrp instance") and that "a whole-tree search for 'torsion'
-   returns nothing".  Both are false: [Ab] is Instance/Ab.v and
+   The issue says the ambient category is missing (“there is no Ab, Grp
+   or AbGrp instance”) and that “a whole-tree search for 'torsion'
+   returns nothing”.  Both are false: [Ab] is Instance/Ab.v and
    Instance/Grp.v exists.  A case-insensitive search for 'torsion' over
    the .v files, excluding this file and its probe, returns SEVEN
    lines, in Instance/Ab/Character.v and
@@ -123,8 +123,8 @@
    Reflective S)] and the like, in Adjunction/FullFaithful.v,
    Adjunction/Fullness.v,
    Construction/Localization/Universal.v and Idempotent.v itself).  So
-   under the criterion "a [Reflective] built at a NAMED concrete
-   category" this is the tree's first inhabitant.
+   under the criterion “a [Reflective] built at a NAMED concrete
+   category” this is the tree's first inhabitant.
 
    ** The [nat_smul_mul] closure decision, with numbers
 
@@ -250,15 +250,15 @@
    FORTY-THREE of the 58 constants carry a [Set] token, and every one of
    the 43 carries it as a BOUND ([Set < u]) and never as an equation.
 
-   RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17), by
+   RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17), by
    an [About] under [Set Printing Universes] on each of the 58 names
    [Print Module] lists, reading the constraint blocks.  An earlier
    revision of this paragraph counted ELEVEN, naming them: [MixedAb],
    [ZMod2_all_torsion], [ZMod2_not_TorsionFree], [ZMod2_quot_collapses],
    [mixed_gen], [mixed_gen_not_quot_zero], [mixed_gen_not_torsion],
    [mixed_quot_merges], [mixed_tors], [mixed_tors_not_zero],
-   [mixed_tors_torsion] -- "exactly the ℤ/2 and mixed witness block, from
-   [ZMod2]'s [bool] carrier" -- and said the general theory, the
+   [mixed_tors_torsion] -- “exactly the ℤ/2 and mixed witness block, from
+   [ZMod2]'s [bool] carrier” -- and said the general theory, the
    reflector, the adjunction, [TorsionFree_Reflective] and the whole ℤ
    block were [Set]-free.  THAT SECOND HALF NO LONGER HOLDS.  [Set < u]
    is what [PropEquiv] costs: [Prop]'s sort enters every object record
@@ -314,7 +314,7 @@
    [eq_refl]; it does not at a variable [k], for the reason above --
    the brief anticipated the possibility and asked for it to be pinned,
    which is what happened.  (2) It warned that requiring
-   Adjunction/Unitalization pulls "the whole Rg/Dorroh development";
+   Adjunction/Unitalization pulls “the whole Rg/Dorroh development”;
    the measured delta is two modules, so the lemma is required.  (3) It
    cited Instance/Mod/Free.v's unit readback as a MORPHISM-level
    precedent for a strict unit; that constant is pointwise, and so is
@@ -551,7 +551,7 @@ Proof. exists (existT _ t Ht); apply pequiv_from; exact H. Defined.
  quot_eq_elim (A) (x y) : x ≈ y in A/tors →
  { t & (torsion_mem A t * (x ≈ cmon_plus A y t))%type }
 
- Since the PR "algebraic carriers are sets" (2026-09-17) the coset relation
+ Since the PR “algebraic carriers are sets” (2026-09-17) the coset relation
  of Instance/Ab.v is a [Prop], so the torsion witness may not be read back
  out into a [Type].  The eliminator is therefore stated in CONTINUATION
  form, eliminating into an arbitrary [Prop]: every consumer in the tree

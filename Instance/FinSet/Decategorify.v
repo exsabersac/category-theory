@@ -27,7 +27,7 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/categorification
  nLab: https://ncatlab.org/nlab/show/FinSet
 
- Riehl, "Category Theory in Context", §1.4 Example 1.4.11 (printed p. 29)
+ Riehl, “Category Theory in Context”, §1.4 Example 1.4.11 (printed p. 29)
  reads the four exponential laws
 
  z^(x × y) ≅ (z^y)^x,           (y × z)^x ≅ y^x × z^x,
@@ -42,8 +42,8 @@ Generalizable All Variables.
  x(y+z) = xy + xz,   x^(y+z) = x^y x^z,
 
  so that the groupoid of finite sets is a categorification of ℕ.  The
- naturality half of the same example -- Mac Lane, "Categories for the
- Working Mathematician", 2nd ed., §II.5 Exercise 2 (printed p. 44) -- is
+ naturality half of the same example -- Mac Lane, “Categories for the
+ Working Mathematician”, 2nd ed., §II.5 Exercise 2 (printed p. 44) -- is
  Structure/Cartesian/Closed/Natural.v.
 
  ** What is and is not the content here

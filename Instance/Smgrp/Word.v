@@ -19,8 +19,8 @@ Generalizable All Variables.
 (* * * The word monad W, its algebras, and the monadicity of Smgrp / * * 单子 W、它的代数以及 Smgrp 的单子性 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, §VI.4 "Words and Free Semigroups", printed
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, §VI.4 “Words and Free Semigroups”, printed
  pp. 144-146 (PDF pp. 153-155): Proposition 1, pp. 144-145 —
  maclane:VI.4:prop1; Proposition 2, p. 145 — maclane:VI.4:prop2;
  the Corollary, p. 146 — maclane:VI.4:cor1; the remark on the
@@ -32,35 +32,35 @@ Generalizable All Variables.
  WHAT THE BOOK SAYS, read from the page images.
  Proposition 1 (→· transliterates the page's dotted arrow of a
  natural transformation, as Monad/Eilenberg/Moore/Limit.v does, and
- ⇀ its arrow of an adjunction): "The monad on Set determined by the
+ ⇀ its arrow of an adjunction): “The monad on Set determined by the
  adjunction Set ⇀ Smgrp is
  W = ⟨W : Set → Set, η : I →· W, μ : W² →· W⟩ where
  WX = ∐_{n=1}^∞ Xⁿ, η_X x = ⟨x⟩ for each x ∈ X, while μ_X is
  μ_X(⟨⟨x11⟩ … ⟨x1n1⟩⟩ … ⟨⟨xk1⟩ … ⟨xknk⟩⟩) = ⟨x11⟩ … ⟨x1n1⟩ … ⟨xk1⟩ …
  ⟨xknk⟩ for all positive integers k, all k-tuples n1, …, nk of
- positive integers, and all xij ∈ X."  From its proof: "μ = GεF …
+ positive integers, and all xij ∈ X.”  From its proof: “μ = GεF …
  More briefly, μ_X applied to a word of words removes the outer pointy
  brackets.  Note that this description allows direct verification of
  the unit and associative laws for the monad W, without overt
- reference to the notion of a semi-group."
- Proposition 2: "For the above word-monad W in Set, the W-algebras
+ reference to the notion of a semi-group.”
+ Proposition 2: “For the above word-monad W in Set, the W-algebras
  have the form ⟨S, ν1, ν2, …⟩: A set S equipped with one n-ary
  operation νn : Sⁿ → S for each positive integer n, such that ν1 = 1
  while for every positive k and every k-tuple of positive integers
  n1, …, nk one has the identity νk(νn1 × ⋯ × νnk) = ν_{n1+⋯+nk} :
  S^{n1+⋯+nk} → S. (2)  A morphism f : ⟨S, ν1, …⟩ → ⟨S', ν'1, …⟩ of
  W-algebras is a function f : S → S' which commutes with each νn, so
- that fνn = ν'n fⁿ : Sⁿ → S'."
- The Corollary: "The system ⟨S, ν1, ν2, …⟩ is a W-algebra, as above,
+ that fνn = ν'n fⁿ : Sⁿ → S'.”
+ The Corollary: “The system ⟨S, ν1, ν2, …⟩ is a W-algebra, as above,
  if and only if ν1 = 1, ν2 : S × S → S is an associative binary
  operation on S, and for all n ≥ 2, ν_{n+1} = νn(ν2 × 1) :
- S^{n+1} → S."
- The remark: "The comparison functor K : Smgrp → Set^W is the evident
+ S^{n+1} → S.”
+ The remark: “The comparison functor K : Smgrp → Set^W is the evident
  map ⟨S, ν⟩ ↦ ⟨S, 1, ν2, …, νn, …⟩ where νn is the iterate of the
  binary ν.  In other words, K is an isomorphism, but it replaces the
  algebraic system ⟨S, ν⟩ with one associative binary operation by the
  same set with all the iterated operations derived from this binary
- operation."
+ operation.”
 
  PROPOSITION 1.  [WordF] is G ◯ F and [WordMonad] is Monad/
  Comparison.v's transparent [Adjunction_Induced_Monad Sg_adj]
@@ -71,8 +71,8 @@ Generalizable All Variables.
  x ↦ ⟨x⟩ ([W_ret_fun]); μ = G ε F ([W_join_counit]) is the
  concatenation [pwconcat] of a word of words, the fold of juxtaposition
  ([W_join_fun]), and sends ⟨⟨x11⟩⟨x12⟩⟩⟨⟨x21⟩⟩ to ⟨x11⟩⟨x12⟩⟨x21⟩
- ([W_join_literal]).  Its laws are those of the adjunction.  "Direct
- verification": [WordMonad_direct] is Theory/Monad.v's [Build_Monad]
+ ([W_join_literal]).  Its laws are those of the adjunction.  “Direct
+ verification”: [WordMonad_direct] is Theory/Monad.v's [Build_Monad]
  with η the insertion and μ the concatenation [pwconcat_map], its laws
  proved by induction on words without reference to the adjunction (the
  associative law, three layers of brackets, by [tfold1_tmap] and
@@ -81,7 +81,7 @@ Generalizable All Variables.
  [pwconcat] folds in [FreeSg X], and [tfold1_hom], quantified over
  semigroup maps, is applied to [pwconcat_hom] and to [FreeSg_map f].
  So the proof avoids the adjunction, not, as Mac Lane's remark has it,
- "overt reference to the notion of a semi-group".  Its unit and
+ “overt reference to the notion of a semi-group”.  Its unit and
  multiplication ARE W's as setoid maps ([WordMonad_direct_ret],
  [WordMonad_direct_join], at [eq_refl]); as monads the two are refused
  equal (Test/ProbeWord470.v, R6): the data agree and the law proofs do
@@ -126,8 +126,8 @@ Generalizable All Variables.
  and (2)) ↔ [cor_conditions ν].  Forward ([cor_forward]): (2) at three
  k-tuples, (⟨ab⟩, ⟨c⟩), (⟨a⟩, ⟨bc⟩), and ⟨xy⟩ followed by the letters
  of t.  Backward ([cor_backward]): first [cor_iterate], νn ≈ the n-fold
- product of ν2 bracketed to the left (Mac Lane's "Similarly, νn must be
- the n-fold product"), and then (2) is the action law of the
+ product of ν2 bracketed to the left (Mac Lane's “Similarly, νn must be
+ the n-fold product”), and then (2) is the action law of the
  comparison algebra of that semigroup, Monad/Comparison.v's
  [EM_Comparison_Algebra_action]: the shared route, with no second
  induction on brackets.  In an arbitrary algebra ν3(a, b, c) is
@@ -138,12 +138,12 @@ Generalizable All Variables.
  Mac Lane's ⟨S, ν⟩ ↦ ⟨S, 1, ν2, …⟩ holds at [eq_refl]: the carrier is S
  ([Sg_K_carrier]); the structure map is G ε_S ([Sg_K_alg]), the product
  of the letters bracketed to the left ([Sg_K_alg_fun]); ν1 = 1
- ([Sg_K_nu1]); ν2 = ν ([Sg_K_nu2]); "νn is the iterate of the binary
- ν", ν_{m+3}(x, y, t) = ν_{m+2}(xy, t) ([Sg_K_nu_succ]); K f is f
+ ([Sg_K_nu1]); ν2 = ν ([Sg_K_nu2]); “νn is the iterate of the binary
+ ν”, ν_{m+3}(x, y, t) = ν_{m+2}(xy, t) ([Sg_K_nu_succ]); K f is f
  ([Sg_K_map]); and so read as a system ([Sg_K_system_nu],
  [Sg_K_system_nu2]).  [EM_to_Smgrp] makes an algebra a semigroup under
- ν2(a, b) := h⟨ab⟩, associative by [cor_forward].  "K is an
- isomorphism": [Smgrp_EM_iso : SmgrpSets ≅[Cat] WordAlg], its legs
+ ν2(a, b) := h⟨ab⟩, associative by [cor_forward].  “K is an
+ isomorphism”: [Smgrp_EM_iso : SmgrpSets ≅[Cat] WordAlg], its legs
  [Sg_K] and [EM_to_Smgrp] at [eq_refl] and every component of both
  natural isomorphisms the identity, to and from, at [eq_refl].  It is
  built from the two component isomorphisms, as #466 builds
@@ -158,7 +158,7 @@ Generalizable All Variables.
  [Smgrp_EM_equivalence] is the equivalence with the same components,
  and [Sg_Forget_Monadic : Monadic Sg_Forget] the monadicity of
  semigroups over Set in Monad/Comparison.v's sense, an equivalence
- (Barr and Wells' "triplable", which Mac Lane's §VI.3 sets beside his
+ (Barr and Wells' “triplable”, which Mac Lane's §VI.3 sets beside his
  isomorphism).  The round trips keep the carrier, the curried
  multiplication and the maps at [eq_refl] ([Smgrp_EM_rt_carrier],
  [Smgrp_EM_rt_mul], [Smgrp_EM_rt_hom], [EM_Smgrp_rt_carrier],
@@ -168,12 +168,12 @@ Generalizable All Variables.
  each literal pair (a, b) it holds, C66); the algebra round trip (R17)
  and its structure map as a setoid map (R18, the iterated ν2 against
  an arbitrary h); and both composites against the identity functors
- (R19, R20).  So Mac Lane's "isomorphism" is delivered as an
+ (R19, R20).  So Mac Lane's “isomorphism” is delivered as an
  isomorphism in [Cat] with identity components.  An isomorphism in
  [Cat] is, by Instance/Cat.v, an equivalence of categories, its
  hom-setoid being Theory/Functor.v's [Functor_Setoid], natural
- isomorphism: the issue's "an isomorphism (or, minimally, an
- equivalence)" is met in its "or, minimally, an equivalence" form,
+ isomorphism: the issue's “an isomorphism (or, minimally, an
+ equivalence)” is met in its “or, minimally, an equivalence” form,
  strengthened by the identity components, which are what bring it
  toward Mac Lane's isomorphism of categories.  A strict identity of the
  two categories is refused (R19, R20).  An isomorphism in
@@ -184,7 +184,7 @@ Generalizable All Variables.
  rebuilt proof fields: extensionality, argued and not measured.
 
  THE ISSUE'S PREMISES, dated.  Issue #470 was filed on 2026-07-23.  Its
- "None of this is present" (no category Smgrp, no free-semigroup
+ “None of this is present” (no category Smgrp, no free-semigroup
  functor) was accurate when filed and held until this change (a grep
  of the .v files for a semigroup category, internal semigroups or free
  semigroups finds prose only); Theory/Category/Semi.v is semigroupoids
@@ -198,7 +198,7 @@ Generalizable All Variables.
  its suggested modules, Monad/Instance/ does not exist; the files are
  Instance/Smgrp.v (Mac Lane's name for the category, as Instance/Grp.v
  and Instance/SupLat.v use theirs) and this one, with Theory/Algebra/
- Semigroup.v for the internal notion.  Its "CLAUDE.md Key Files index"
+ Semigroup.v for the internal notion.  Its “CLAUDE.md Key Files index”
  was accurate when filed and has been stale since PR #1284 (merged
  2026-09-09), which moved the index to docs/INDEX.md.
 
@@ -209,7 +209,7 @@ Generalizable All Variables.
  identity components.  Three readbacks need #1347 (Instance/Sets.v's
  identity and composite with their properness fields as terms):
  [W_ret], [WordMonad_direct_ret] and [WordMonad_direct_join] are
- refused, "cannot unify", when this file is compiled against a built
+ refused, “cannot unify”, when this file is compiled against a built
  tree of master 687ac356, and nothing else of it is.  Nineteen proofs
  end [Defined] (counted by token).  Eighteen are load-bearing, measured
  by closing each alone [Qed] in a scratch copy of the targets and the
@@ -282,7 +282,7 @@ Generalizable All Variables.
 
  推论：系统 ⟨S, ν1, ν2, …⟩ 是如上所述的 W-代数，当且仅当 ν1 = 1，ν2 : S × S → S 是 S 上的结合二元运算，并且对所有 n ≥ 2，有 ν_{n+1} = νn(ν2 × 1) : S^{n+1} → S。
 
- 备注：比较函子 K : Smgrp → Set^W 是显而易见的映射 ⟨S, ν⟩ ↦ ⟨S, 1, ν2, …, νn, …⟩，其中 νn 是二元运算 ν 的迭代。换句话说，K 是一个同构，但它用同一个集合及从这个二元运算导出的所有迭代运算，替代了只有一个结合二元运算的代数系统 ⟨S, ν⟩。命题 1. [WordF] 是 G ◯ F，且 [WordMonad] 是 Monad/Comparison.v 的透明 [Adjunction_Induced_Monad Sg_adj]（Monad/Adjunction.v 的 [Adjunction_Monad]，议题的提供者，由 [About] 是不透明的）。在 [eq_refl]：W X 是词的集合（[W_obj]），其承载体是 sigma ∐_{n≥1} Xⁿ（[W_carrier]）；W f 按字母操作（[W_map]）；η 是作为集合映射的插入（[W_ret]），且 x ↦ ⟨x⟩（[W_ret_fun]）；μ = G ε F（[W_join_counit]）是词的词的连接 [pwconcat]，是并列的折叠（[W_join_fun]），并且将 ⟨⟨x11⟩⟨x12⟩⟩⟨⟨x21⟩⟩ 发送为 ⟨x11⟩⟨x12⟩⟨x21⟩（[W_join_literal]）。它的定律是伴随关系的定律。"直接验证": [WordMonad_direct] 是 Theory/Monad.v 中的 [Build_Monad]，其中 η 为插入，μ 为连接 [pwconcat_map]，其定律通过对单词的归纳证明而不涉及伴随（结合律，通过三层括号 [tfold1_tmap] 和 [tfold1_hom]；单位律通过 [tfoldl_letters] 和通过换算证明）。折叠及其同态引理是自由半群的：[pwconcat] 在 [FreeSg X] 中折叠，并且 [tfold1_hom]，作用于半群映射，应用于 [pwconcat_hom] 和 [FreeSg_map f]。因此，该证明避免了使用伴随，而不是像 Mac Lane 所说的那样，“明显引用半群的概念”。它的单位和乘法作为集合等价映射是 W 的（[WordMonad_direct_ret]、[WordMonad_direct_join]，位于 [eq_refl]）；作为单子，这两个被拒绝相等（Test/ProbeWord470.v, R6）：数据一致，但定律证明不一致。命题 2. 一个族是 [NAry S] :  [nu ν n] : S^{n+1} → S 对于每个 n，带有 [nu_respects]，可以在不付出代价的情况下跨长度陈述，因为 [tup_eq] 在那里为假。ν1 = 1 是 [nu_unit]；(2) 是 [nu_assoc]，对于每个词的 k 元组 (w1, …, wk)，wi 属于 S^{ni}：ν_k 对 wi 的值与它们拼接的 ν 的值比较，其长度为 n1 + ⋯ + nk。Mac Lane 通过 W(WX) ≅ ∐_k ∐_n X^{n1+⋯+nk} 来解读 (2)；这里 (2) 被量化在词的元组上，不需要单独的同构：一个 k 元词组，每个词携带其长度，是 W(WX) 的一个点，而它们的拼接是 μ ( [W_join_fun] )。一个代数 ⟨S, h⟩ 给出了族 ν_n = h 在 Sⁿ 上（[alg_NAry]，[alg_NAry_at] 于 [eq_refl]），其中 ν1 从其单位律得到（[alg_NAry_unit]），且 (2) 来自其作用律（[alg_NAry_assoc]）；满足这两个条件的族即是一个代数，其结构映射为 copairing [nu_sharp]，其两个定律就是这两个条件，通过转换（[NAry_alg]）。从族到代数再到族会返回原来的族，完整记录在 [eq_refl]（[NAry_round_trip]）；从代数到族再到代数会返回 h 到近似 ≈（[alg_round_trip]），在每个 (n; t) 于 [eq_refl] (C31)，作为集合映射它被拒绝 (R7)，sigT 没有 η (R2)。态射条款，两种方式：[alg_hom_NAry_hom]，[NAry_hom_alg_hom]。作为一个范畴：[WSys]，由系统⟨S, ν1, ν2, …⟩组成，其中ν1 = 1并且(2)([WSystem])以及与每个νn交换的映射，在[Cat]中同构于[WordAlg]，Set^W([WSys_EM_iso])：它的腿是在[eq_refl]处的[WSys_to_EM]和[EM_to_WSys]，并且两个自然同构的每个分量在[eq_refl]处都是恒等映射，无论是去还是返回。该系统往返保持集合、族以及在 [eq_refl]（[WSys_rt_set]、[WSys_rt_nu]、[WSys_rt_unit]）处的 ν1 = 1 的证明，以及映射（[WSys_rt_hom]）；（2）的证明以重建形式返回（R9），因此整个系统被拒绝（R8）；整个态射也被拒绝（R10，类型正确，因为同态类型仅依赖于集合和族，并且变量 sigT 对与其重建对）；代数往返在对象上被拒绝（R11），以及与恒等的复合函子（R12）。推论。[cor_conditions ν]：ν1 = 1，ν2 结合，并且对于每个 m，有 ν_{m+3}(x, y, t) ≈ ν_{m+2}(ν2(x, y), t)，Mac Lane 的 ν_{n+1} = νn(ν2 × 1) 在 n = m + 2 ≥ 2 时成立。[NAry_corollary]：（ν1 = 1 并且 (2)）↔ [cor_conditions ν]。正向 ([cor_forward])：(2) 在三个 k 元组上，(⟨ab⟩, ⟨c⟩)、(⟨a⟩, ⟨bc⟩)，以及 ⟨xy⟩ 后跟 t 的字母。反向 ([cor_backward])：首先 [cor_iterate]，νn ≈ ν2 左结合的 n 重积（Mac Lane 的“同样，νn 必须是 n 重积”），然后 (2) 是该半群的比较代数的作用律，Monad/Comparison.v 的 [EM_Comparison_Algebra_action]：共有的路径，没有对括号进行第二次归纳。在任意代数中，ν3(a, b, c) 是 ν2(ν2(a, b), c) 至 ≈ (C45) 并且不在 [eq_refl] (R13)；在代数 K S 中，它在 [eq_refl]，并且在每个长度下 ([Sg_K_nu_succ]) 成立。备注。[Sg_K] 是 Monad/Comparison.v 中的 [EM_Comparison Sg_adj]。Mac Lane 的 ⟨S, ν⟩ ↦ ⟨S, 1, ν2, …⟩ 在 [eq_refl] 成立：载体是 S ([Sg_K_carrier])；结构映射是 G ε_S ([Sg_K_alg])，即括号中左侧字母的乘积 ([Sg_K_alg_fun])；ν1 = 1 ([Sg_K_nu1])；ν2 = ν ([Sg_K_nu2])；“νn 是二元 ν 的迭代”，ν_{m+3}(x, y, t) = ν_{m+2}(xy, t) ([Sg_K_nu_succ])；K f 是 f ([Sg_K_map])；作为一个系统读取时 ([Sg_K_system_nu], [Sg_K_system_nu2])。[EM_to_Smgrp] 使一个代数在 ν2(a, b) := h⟨ab⟩ 下成为半群，根据 [cor_forward] 结合。“K 是同构”：[Smgrp_EM_iso : SmgrpSets ≅[Cat] WordAlg]，它的两条腿 [Sg_K] 和 [EM_to_Smgrp] 在 [eq_refl] 及两个自然同构的每个分量上都是恒等，从及到，位于 [eq_refl]。它由两个分量同构构建，就像 #466 构建 Instance/SupLat.v 的 [SupLat_EM_iso]，而不是 Theory/Equivalence.v 的 [Equivalence_to_Cat_Iso] 的等价：通过那座桥，[iso_to_from] 的分量仍然在 [eq_refl] (C67) 上是恒等的，而 [iso_from_to] 的分量被拒绝 (R21)，桥将其从单元的对称性抽取出来，即 Theory/Functor.v 的 [Functor_Setoid_obligation_1]，由 [About] 设为不透明；#470 审计测量了该原因：用透明的组件交换代替该对称性，R21 的陈述在 [eq_refl] 上成立。[Smgrp_EM_equivalence] 是具有相同分量的等价，而 [Sg_Forget_Monadic : Monadic Sg_Forget] 是在 Monad/Comparison.v 的意义下半群在 Set 上的幺半性，一个等价 (Barr 和 Wells 的“triplable”，Mac Lane 的 §VI.3 将其置于他的同构旁边) 。往返保持了承运人、柯里化的乘法以及在 [eq_refl] 的映射（[Smgrp_EM_rt_carrier]、[Smgrp_EM_rt_mul]、[Smgrp_EM_rt_hom]、[EM_Smgrp_rt_carrier]、[EM_Smgrp_rt_alg_hom]）。在 [eq_refl] 被拒绝：在变量 (R14) 和对 (X; σ) (R15) 上的半群往返；作为函数存在的未柯里化乘法 (R16; prod 没有 η，R3，并且在每个字面对 (a, b) 上成立，C66)；代数往返 (R17) 及其作为集点映射的结构映射 (R18，对任意 h 的迭代 ν2)；以及对恒等函子作用的两个复合 (R19, R20)。因此，Mac Lane 的“同构”作为 [Cat] 中带有恒等分量的同构被给出。在 [Cat] 中的一个同构，根据 Instance/Cat.v，是一个范畴的等价，它的同态集合类型是 Theory/Functor.v 的 [Functor_Setoid]，自然同构：问题中的“一个同构（或者，至少，一个等价）”以“或者，至少，一个等价”的形式满足，由恒等组件增强，这些组件正是将其引向 Mac Lane 的范畴同构的原因。两个范畴的严格恒等被拒绝（R19, R20）。在 Instance/StrictCat.v 中的一个同构，其同态集合要求对象映射的莱布尼茨等式，需要在这些分支下 fobj [EM_to_Smgrp ◯ Sg_K] 对每个 A 都有 A = A，因此绑定器下乘积的 η（乘法作为 fun p => ν(fst p, snd p) 回来，R3 和 R16）以及重建的证明字段的等式：外延性，经过论证而未被测量。该问题的前提，已注明日期。问题 #470 于 2026-07-23 提交。当提交时，“None of this is present”（没有 Smgrp 类别，没有自由半群函子）是准确的，并且在此次更改之前一直保持准确（对 .v 文件中半群类别、内部半群或自由半群进行 grep 仅找到文本）；Theory/Category/Semi.v 是半群图，Theory/Coq/Semigroup.v 是仅包含操作的类，如正文所述。其 [list_Monad]（Theory/Coq/List.v，带有 [flatten]）是作为 Coq 列表操作的自由单子单元，没有 [@Monad Coq list]，并且有一个 [IsMonad] 桥（Theory/Coq/Monad/Proofs.v）仅涵盖 Identity、箭头和 Compose：提交时准确，现在仍然准确，Theory/Coq/List.v 最后一次更改是在 c429a82b（2026-06-17）；正文按行引用了这些常量，这个树将其替换为名称。在它建议的模块中，Monad/Instance/ 不存在；相应的文件是 Instance/Smgrp.v（Mac Lane 对该范畴的命名，因为 Instance/Grp.v 和 Instance/SupLat.v 使用了它们自己的命名）以及这个文件，内部概念用的是 Theory/Algebra/Semigroup.v。它的“CLAUDE.md 关键文件索引”在归档时是准确的，但自 PR #1284（合并日期为 2026-09-09）之后就一直没有更新，该 PR 将索引移到了 docs/INDEX.md。优势。每个 [Example] 上方都保持在 [eq_refl]，并且 Test/ProbeWord470.v 重新陈述每一个（C19 到 C30, C33 到 C44 和 C46 到 C65）。仅在 ≈ 时：[alg_round_trip]、[cor_iterate]，以及 [Cat] 中两个同构的逆律，自然同构具有恒等组件。三个回读需要 #1347（Instance/Sets.v 的恒等和与它们的正确性字段的复合作为项）：[W_ret]、[WordMonad_direct_ret] 和 [WordMonad_direct_join] 在针对主分支 687ac356 的构建树编译此文件时被拒绝，“无法统一”，除此之外没有其他问题。十九个证明以 [Defined] 结束（按标记计算）。十八个是承重的，通过单独关闭每一个 [Qed] 并在目标的临时副本和探针中测量，第一个随后停止的命令是：[WordMonad_direct] ([WordMonad_direct_ret]), [alg_NAry_unit] ([WSys_rt_unit]，其唯一的使用者：关闭 [Qed]，并将其回读及其控制 C39 放到一边，其余的都可以编译，所以仅对该回读是透明的), [NAry_alg] ([NAry_round_trip]), [WSystemHom_Setoid], [WSystem_id] 和 [WSystem_compose] ([WSys]), [WSys] ([WSys_to_EM]), [WSys_to_EM] 和 [EM_to_WSys] ([WSys_EM_counit_iso]), [WSys_EM_counit_iso] 和 [WSys_EM_unit_iso] ([WSys_EM_iso]), [WSys_EM_iso] ([WSys_EM_iso_to]), [EM_sg_map] ([EM_to_Smgrp]), [EM_to_Smgrp] ([Smgrp_EM_counit_iso]), [Smgrp_EM_counit_iso] 和 [Smgrp_EM_unit_iso] ([Smgrp_EM_equivalence]), [Smgrp_EM_equivalence] ([Smgrp_EM_counit_component]) 和 [Smgrp_EM_iso] ([Smgrp_EM_iso_to]); [Sg_Forget_Monadic] 仅由数据约定定义为 [Defined]（关闭  
+ 备注：比较函子 K : Smgrp → Set^W 是显而易见的映射 ⟨S, ν⟩ ↦ ⟨S, 1, ν2, …, νn, …⟩，其中 νn 是二元运算 ν 的迭代。换句话说，K 是一个同构，但它用同一个集合及从这个二元运算导出的所有迭代运算，替代了只有一个结合二元运算的代数系统 ⟨S, ν⟩。命题 1. [WordF] 是 G ◯ F，且 [WordMonad] 是 Monad/Comparison.v 的透明 [Adjunction_Induced_Monad Sg_adj]（Monad/Adjunction.v 的 [Adjunction_Monad]，议题的提供者，由 [About] 是不透明的）。在 [eq_refl]：W X 是词的集合（[W_obj]），其承载体是 sigma ∐_{n≥1} Xⁿ（[W_carrier]）；W f 按字母操作（[W_map]）；η 是作为集合映射的插入（[W_ret]），且 x ↦ ⟨x⟩（[W_ret_fun]）；μ = G ε F（[W_join_counit]）是词的词的连接 [pwconcat]，是并列的折叠（[W_join_fun]），并且将 ⟨⟨x11⟩⟨x12⟩⟩⟨⟨x21⟩⟩ 发送为 ⟨x11⟩⟨x12⟩⟨x21⟩（[W_join_literal]）。它的定律是伴随关系的定律。“直接验证”: [WordMonad_direct] 是 Theory/Monad.v 中的 [Build_Monad]，其中 η 为插入，μ 为连接 [pwconcat_map]，其定律通过对单词的归纳证明而不涉及伴随（结合律，通过三层括号 [tfold1_tmap] 和 [tfold1_hom]；单位律通过 [tfoldl_letters] 和通过换算证明）。折叠及其同态引理是自由半群的：[pwconcat] 在 [FreeSg X] 中折叠，并且 [tfold1_hom]，作用于半群映射，应用于 [pwconcat_hom] 和 [FreeSg_map f]。因此，该证明避免了使用伴随，而不是像 Mac Lane 所说的那样，“明显引用半群的概念”。它的单位和乘法作为集合等价映射是 W 的（[WordMonad_direct_ret]、[WordMonad_direct_join]，位于 [eq_refl]）；作为单子，这两个被拒绝相等（Test/ProbeWord470.v, R6）：数据一致，但定律证明不一致。命题 2. 一个族是 [NAry S] :  [nu ν n] : S^{n+1} → S 对于每个 n，带有 [nu_respects]，可以在不付出代价的情况下跨长度陈述，因为 [tup_eq] 在那里为假。ν1 = 1 是 [nu_unit]；(2) 是 [nu_assoc]，对于每个词的 k 元组 (w1, …, wk)，wi 属于 S^{ni}：ν_k 对 wi 的值与它们拼接的 ν 的值比较，其长度为 n1 + ⋯ + nk。Mac Lane 通过 W(WX) ≅ ∐_k ∐_n X^{n1+⋯+nk} 来解读 (2)；这里 (2) 被量化在词的元组上，不需要单独的同构：一个 k 元词组，每个词携带其长度，是 W(WX) 的一个点，而它们的拼接是 μ ( [W_join_fun] )。一个代数 ⟨S, h⟩ 给出了族 ν_n = h 在 Sⁿ 上（[alg_NAry]，[alg_NAry_at] 于 [eq_refl]），其中 ν1 从其单位律得到（[alg_NAry_unit]），且 (2) 来自其作用律（[alg_NAry_assoc]）；满足这两个条件的族即是一个代数，其结构映射为 copairing [nu_sharp]，其两个定律就是这两个条件，通过转换（[NAry_alg]）。从族到代数再到族会返回原来的族，完整记录在 [eq_refl]（[NAry_round_trip]）；从代数到族再到代数会返回 h 到近似 ≈（[alg_round_trip]），在每个 (n; t) 于 [eq_refl] (C31)，作为集合映射它被拒绝 (R7)，sigT 没有 η (R2)。态射条款，两种方式：[alg_hom_NAry_hom]，[NAry_hom_alg_hom]。作为一个范畴：[WSys]，由系统⟨S, ν1, ν2, …⟩组成，其中ν1 = 1并且(2)([WSystem])以及与每个νn交换的映射，在[Cat]中同构于[WordAlg]，Set^W([WSys_EM_iso])：它的腿是在[eq_refl]处的[WSys_to_EM]和[EM_to_WSys]，并且两个自然同构的每个分量在[eq_refl]处都是恒等映射，无论是去还是返回。该系统往返保持集合、族以及在 [eq_refl]（[WSys_rt_set]、[WSys_rt_nu]、[WSys_rt_unit]）处的 ν1 = 1 的证明，以及映射（[WSys_rt_hom]）；（2）的证明以重建形式返回（R9），因此整个系统被拒绝（R8）；整个态射也被拒绝（R10，类型正确，因为同态类型仅依赖于集合和族，并且变量 sigT 对与其重建对）；代数往返在对象上被拒绝（R11），以及与恒等的复合函子（R12）。推论。[cor_conditions ν]：ν1 = 1，ν2 结合，并且对于每个 m，有 ν_{m+3}(x, y, t) ≈ ν_{m+2}(ν2(x, y), t)，Mac Lane 的 ν_{n+1} = νn(ν2 × 1) 在 n = m + 2 ≥ 2 时成立。[NAry_corollary]：（ν1 = 1 并且 (2)）↔ [cor_conditions ν]。正向 ([cor_forward])：(2) 在三个 k 元组上，(⟨ab⟩, ⟨c⟩)、(⟨a⟩, ⟨bc⟩)，以及 ⟨xy⟩ 后跟 t 的字母。反向 ([cor_backward])：首先 [cor_iterate]，νn ≈ ν2 左结合的 n 重积（Mac Lane 的“同样，νn 必须是 n 重积”），然后 (2) 是该半群的比较代数的作用律，Monad/Comparison.v 的 [EM_Comparison_Algebra_action]：共有的路径，没有对括号进行第二次归纳。在任意代数中，ν3(a, b, c) 是 ν2(ν2(a, b), c) 至 ≈ (C45) 并且不在 [eq_refl] (R13)；在代数 K S 中，它在 [eq_refl]，并且在每个长度下 ([Sg_K_nu_succ]) 成立。备注。[Sg_K] 是 Monad/Comparison.v 中的 [EM_Comparison Sg_adj]。Mac Lane 的 ⟨S, ν⟩ ↦ ⟨S, 1, ν2, …⟩ 在 [eq_refl] 成立：载体是 S ([Sg_K_carrier])；结构映射是 G ε_S ([Sg_K_alg])，即括号中左侧字母的乘积 ([Sg_K_alg_fun])；ν1 = 1 ([Sg_K_nu1])；ν2 = ν ([Sg_K_nu2])；“νn 是二元 ν 的迭代”，ν_{m+3}(x, y, t) = ν_{m+2}(xy, t) ([Sg_K_nu_succ])；K f 是 f ([Sg_K_map])；作为一个系统读取时 ([Sg_K_system_nu], [Sg_K_system_nu2])。[EM_to_Smgrp] 使一个代数在 ν2(a, b) := h⟨ab⟩ 下成为半群，根据 [cor_forward] 结合。“K 是同构”：[Smgrp_EM_iso : SmgrpSets ≅[Cat] WordAlg]，它的两条腿 [Sg_K] 和 [EM_to_Smgrp] 在 [eq_refl] 及两个自然同构的每个分量上都是恒等，从及到，位于 [eq_refl]。它由两个分量同构构建，就像 #466 构建 Instance/SupLat.v 的 [SupLat_EM_iso]，而不是 Theory/Equivalence.v 的 [Equivalence_to_Cat_Iso] 的等价：通过那座桥，[iso_to_from] 的分量仍然在 [eq_refl] (C67) 上是恒等的，而 [iso_from_to] 的分量被拒绝 (R21)，桥将其从单元的对称性抽取出来，即 Theory/Functor.v 的 [Functor_Setoid_obligation_1]，由 [About] 设为不透明；#470 审计测量了该原因：用透明的组件交换代替该对称性，R21 的陈述在 [eq_refl] 上成立。[Smgrp_EM_equivalence] 是具有相同分量的等价，而 [Sg_Forget_Monadic : Monadic Sg_Forget] 是在 Monad/Comparison.v 的意义下半群在 Set 上的幺半性，一个等价 (Barr 和 Wells 的“triplable”，Mac Lane 的 §VI.3 将其置于他的同构旁边) 。往返保持了承运人、柯里化的乘法以及在 [eq_refl] 的映射（[Smgrp_EM_rt_carrier]、[Smgrp_EM_rt_mul]、[Smgrp_EM_rt_hom]、[EM_Smgrp_rt_carrier]、[EM_Smgrp_rt_alg_hom]）。在 [eq_refl] 被拒绝：在变量 (R14) 和对 (X; σ) (R15) 上的半群往返；作为函数存在的未柯里化乘法 (R16; prod 没有 η，R3，并且在每个字面对 (a, b) 上成立，C66)；代数往返 (R17) 及其作为集点映射的结构映射 (R18，对任意 h 的迭代 ν2)；以及对恒等函子作用的两个复合 (R19, R20)。因此，Mac Lane 的“同构”作为 [Cat] 中带有恒等分量的同构被给出。在 [Cat] 中的一个同构，根据 Instance/Cat.v，是一个范畴的等价，它的同态集合类型是 Theory/Functor.v 的 [Functor_Setoid]，自然同构：问题中的“一个同构（或者，至少，一个等价）”以“或者，至少，一个等价”的形式满足，由恒等组件增强，这些组件正是将其引向 Mac Lane 的范畴同构的原因。两个范畴的严格恒等被拒绝（R19, R20）。在 Instance/StrictCat.v 中的一个同构，其同态集合要求对象映射的莱布尼茨等式，需要在这些分支下 fobj [EM_to_Smgrp ◯ Sg_K] 对每个 A 都有 A = A，因此绑定器下乘积的 η（乘法作为 fun p => ν(fst p, snd p) 回来，R3 和 R16）以及重建的证明字段的等式：外延性，经过论证而未被测量。该问题的前提，已注明日期。问题 #470 于 2026-07-23 提交。当提交时，“None of this is present”（没有 Smgrp 类别，没有自由半群函子）是准确的，并且在此次更改之前一直保持准确（对 .v 文件中半群类别、内部半群或自由半群进行 grep 仅找到文本）；Theory/Category/Semi.v 是半群图，Theory/Coq/Semigroup.v 是仅包含操作的类，如正文所述。其 [list_Monad]（Theory/Coq/List.v，带有 [flatten]）是作为 Coq 列表操作的自由单子单元，没有 [@Monad Coq list]，并且有一个 [IsMonad] 桥（Theory/Coq/Monad/Proofs.v）仅涵盖 Identity、箭头和 Compose：提交时准确，现在仍然准确，Theory/Coq/List.v 最后一次更改是在 c429a82b（2026-06-17）；正文按行引用了这些常量，这个树将其替换为名称。在它建议的模块中，Monad/Instance/ 不存在；相应的文件是 Instance/Smgrp.v（Mac Lane 对该范畴的命名，因为 Instance/Grp.v 和 Instance/SupLat.v 使用了它们自己的命名）以及这个文件，内部概念用的是 Theory/Algebra/Semigroup.v。它的“CLAUDE.md 关键文件索引”在归档时是准确的，但自 PR #1284（合并日期为 2026-09-09）之后就一直没有更新，该 PR 将索引移到了 docs/INDEX.md。优势。每个 [Example] 上方都保持在 [eq_refl]，并且 Test/ProbeWord470.v 重新陈述每一个（C19 到 C30, C33 到 C44 和 C46 到 C65）。仅在 ≈ 时：[alg_round_trip]、[cor_iterate]，以及 [Cat] 中两个同构的逆律，自然同构具有恒等组件。三个回读需要 #1347（Instance/Sets.v 的恒等和与它们的正确性字段的复合作为项）：[W_ret]、[WordMonad_direct_ret] 和 [WordMonad_direct_join] 在针对主分支 687ac356 的构建树编译此文件时被拒绝，“无法统一”，除此之外没有其他问题。十九个证明以 [Defined] 结束（按标记计算）。十八个是承重的，通过单独关闭每一个 [Qed] 并在目标的临时副本和探针中测量，第一个随后停止的命令是：[WordMonad_direct] ([WordMonad_direct_ret]), [alg_NAry_unit] ([WSys_rt_unit]，其唯一的使用者：关闭 [Qed]，并将其回读及其控制 C39 放到一边，其余的都可以编译，所以仅对该回读是透明的), [NAry_alg] ([NAry_round_trip]), [WSystemHom_Setoid], [WSystem_id] 和 [WSystem_compose] ([WSys]), [WSys] ([WSys_to_EM]), [WSys_to_EM] 和 [EM_to_WSys] ([WSys_EM_counit_iso]), [WSys_EM_counit_iso] 和 [WSys_EM_unit_iso] ([WSys_EM_iso]), [WSys_EM_iso] ([WSys_EM_iso_to]), [EM_sg_map] ([EM_to_Smgrp]), [EM_to_Smgrp] ([Smgrp_EM_counit_iso]), [Smgrp_EM_counit_iso] 和 [Smgrp_EM_unit_iso] ([Smgrp_EM_equivalence]), [Smgrp_EM_equivalence] ([Smgrp_EM_counit_component]) 和 [Smgrp_EM_iso] ([Smgrp_EM_iso_to]); [Sg_Forget_Monadic] 仅由数据约定定义为 [Defined]（关闭  
  [Qed]，没有什么能阻挡)。这十五个引理以 [Qed] 结尾。其中两个，辅助折叠引理 [tfoldl_tmap] 和 [tfold1_tmap]，陈述了半群元素之间的莱布尼茨等式，通过对元组进行归纳证明：比 ≈ 更强，这就是 [WordMonad_direct] 在使用第二个重写时所需的全部（Instance/Smgrp.v 的 [tfoldl_tapp] 和 [tfold1_tapp] 是另外两个，其 STRENGTHS 记录了扫描未找到第五个的情况）。每一次对探针的反驳都存在，
  在它的指令内，在三个目标的副本中，带有它们的所有
  四十一  [Qed] 已转为  [Defined] 并设置为 [Transparent Obligations]（[About] 报告了树中不透明的部分为透明），因此
@@ -432,7 +432,7 @@ Definition pwconcat_map@{o so} (X : SetoidObject@{o o}) :
  reference to the adjunction.  The fold and its homomorphism lemma are
  the free semigroup's ([pwconcat] folds in [FreeSg X], and [tfold1_hom]
  is applied to [pwconcat_hom] and [FreeSg_map f]), so this is not his
- "without overt reference to the notion of a semi-group". 
+ “without overt reference to the notion of a semi-group”. 
 
  --------
  Mac Lane 对 W 定律的直接验证：η 是单字母词，μ 是连接操作，通过对词的归纳得到定律，而不参考伴随。fold 及其同态引理属于自由半群（[pwconcat] 在 [FreeSg X] 中折叠，且 [tfold1_hom] 应用于 [pwconcat_hom] 和 [FreeSg_map f]），所以这并不是他所说的“在不公开参考半群概念的情况下”。
@@ -865,7 +865,7 @@ Definition nu2_sg@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X)
   (Hc : cor_conditions ν) : SmgrpSets@{o so} :=
   mk_sg_obj@{o so} X (nu2 ν) (nu2_respects ν) (snd (fst Hc)).
 
-(* ...and νn is its n-fold product: Mac Lane's "Similarly, νn must be the n-fold product". / ...并且 νn 是它的 n 重积：Mac Lane 的“同样地，νn 必须是 n 重积”. *)
+(* ...and νn is its n-fold product: Mac Lane's “Similarly, νn must be the n-fold product”. / ...并且 νn 是它的 n 重积：Mac Lane 的“同样地，νn 必须是 n 重积”. *)
 Lemma cor_iterate@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X)
   (Hc : cor_conditions ν) (n : nat) (t : Tup@{o} X n) :
   nu ν n t ≈ tfold1 (A := nu2_sg@{o so} ν Hc) (fun s => s) n t.
@@ -1025,11 +1025,11 @@ Proof.
 Defined.
 
 (*
- "In other words, K is an isomorphism": Smgrp ≅ Set^W in Cat, built from
+ “In other words, K is an isomorphism”: Smgrp ≅ Set^W in Cat, built from
  the two component isomorphisms so that both of its natural
  isomorphisms have the identity as every component.  An isomorphism in
  Cat is, by Instance/Cat.v, an equivalence of categories: this is the
- issue's "or, minimally, an equivalence", strengthened by the identity
+ issue's “or, minimally, an equivalence”, strengthened by the identity
  components toward Mac Lane's isomorphism (the header's THE REMARK). 
 
  --------

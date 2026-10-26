@@ -16,13 +16,13 @@ Generalizable All Variables.
 (*
    * * The direct image and the preimage on SUBOBJECTS
 
-   Seven Sketches (Fong and Spivak, "An Invitation to Applied Category
-   Theory") §1.4.3.  There is no page image for that book here, so the
+   Seven Sketches (Fong and Spivak, “An Invitation to Applied Category
+   Theory”) §1.4.3.  There is no page image for that book here, so the
    two clauses are quoted from the catalog issue's own transcription:
 
-   "the direct image ... as an operation on subobjects"
+   “the direct image ... as an operation on subobjects”
 
-   "monotonicity of the subobject preimage"
+   “monotonicity of the subobject preimage”
 
    The second is a gap in the tree that can be stated precisely: the
    reindexing map [sub_reindex] of Theory/Subobject/Functor.v is

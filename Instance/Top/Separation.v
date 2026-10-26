@@ -17,12 +17,12 @@ Generalizable All Variables.
 (* * * The separation axioms T0, T1, T2 over [PTopCat], and their reflections / * * 分离公理 T0、T1、T2 在 [PTopCat] 上及其反射 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, book p. 136 (PDF p. 145), read from the page image, Exercise 4:
- "Construct left adjoints for each of the inclusion functors
+ “Construct left adjoints for each of the inclusion functors
  Top_{n+1} → Top_n, n = 0, 1, 2, 3, where Top_n denotes the full
  subcategory of all T_n-spaces in Top, with T_4 = Normal,
- T_3 = Regular, T_2 = Hausdorff, etc." (catalog id maclane:V.9:ex4).
+ T_3 = Regular, T_2 = Hausdorff, etc.” (catalog id maclane:V.9:ex4).
  The rungs n = 0 and n = 1 are here; Instance/Top/Hausdorff.v
  delivers n = 2 and discusses the book's n = 3 in its header.
  nLab:      https://ncatlab.org/nlab/show/separation+axioms
@@ -33,9 +33,9 @@ Generalizable All Variables.
  tell its points apart.  Wikipedia's separation-axiom page states them
  classically: T0, distinct points are topologically distinguishable;
  T1, distinct points are separated; T2 (Hausdorff), distinct points
- are separated by neighbourhoods.  The same page records that "the
- precise definitions of the separation axioms have varied over time",
- the meanings of "normal" and "T4", and of "regular" and "T3", being
+ are separated by neighbourhoods.  The same page records that “the
+ precise definitions of the separation axioms have varied over time”,
+ the meanings of “normal” and “T4”, and of “regular” and “T3”, being
  sometimes interchanged.  nLab's separation-axioms page proves, for
  n ∈ {0, 1, 2}, that every space has a closest T_n approximation from
  the left, the T_n-reflection, and constructs it once as the quotient
@@ -110,7 +110,7 @@ Generalizable All Variables.
  two points of Instance/Top/Cocomplete.v); [PSierpinski_PT0] and
  [PSierpinski_not_PT1] (Sierpiński space, [true] open);
  [PCofinite_PT1] and [PCofinite_not_PHaus] (the cofinite topology on
- the naturals, stated as "a nonempty open contains a tail [N, ∞)",
+ the naturals, stated as “a nonempty open contains a tail [N, ∞)”,
  which needs no finiteness predicate).  Inhabitation: [PBool_PHaus]
  (the discrete two points are Hausdorff; the proof states the goal as
  a Leibniz equality before eliminating the premise's [ex], which into
@@ -129,7 +129,7 @@ Generalizable All Variables.
  restricted reflection).  The action on maps is not at [eq_refl]:
  [pmap (`1 (fmap[PSep_reflector prem L] f)) x = pmap f x] at [eq_refl]
  is refused, pinned as Test/ProbeHausdorff461.v's N9 (cannot unify
- "projT1 (fmap[PSep_reflector prem L] f) x" and "f x"), and no such
+ “projT1 (fmap[PSep_reflector prem L] f) x” and “f x”), and no such
  readback is claimed; up to the reflection's equality it holds, by the
  unit's naturality (that file's [p461_fmap_equiv]).  Two [Defined],
  counted by token ([sep_universal], [restrict_universal]), chosen by
@@ -203,7 +203,7 @@ Generalizable All Variables.
  - [prem_T0] ：两个点位于相同的开集中；
  - [prem_T1] ：包含第一个点的每个开集都包含第二个点；
  - [prem_T2]，在一个空间中读作 [PNotSep] ：每个关于第一个点的开集都与每个关于第二个点的开集相交。[PT0]、[PT1] 和 [PHaus] 是三个公理，而 [PHaus] 是 nLab 的构造性定义，用开邻域 ([PHaus_unfold]) 来阅读。经典形式，互异点有不相交的邻域，Mac Lane 在书中第 158 页 §VI.9 中使用而未定义它，是 [PIsHausdorff]，Instance/Top.v 的负形式 [IsHausdorff] 接管 [Top]。四座桥将它们联系起来：[PIsHausdorff_PHaus]，从负到正，假设点的相等在双重否定下是稳定的；[PHaus_PIsHausdorff]，从正到负，假设命题采排中律；并且在没有假设下，只有[PIsHausdorff_PHaus_nn]（对于没有两个开集可以将其分离的点，负形式否定它们不同）和[PHaus_distinct_not_notsep]（对于不同的点，正形式否定没有两个开集可以分离它们）。正形式是构造所需要的：其结论是点的相等，因此极限通过共同单射的腿继承它（Instance/Top/Complete.v 的 [plimit_points_jointly_monic]），并且这是下面反射强制的；负形式的结论是关于开集的存在量词。链 T2 ⇒ T1 ⇒ T0（[PHaus_PT1], [PT1_PT0]）是构造性的。在 [Top] ，实例/顶/Kolmogorov.v 中，
- [Hausdorff_T0_nn]  只从否定形式中得到双重否定。[PHaus_PropEquiv] ：豪斯多夫空间的相等是命题性的，[PNotSep]  是一个与之等价的命题。反映。一个具有三条定律的前提（[SepLaws] ： [sl_anti], [sl_pull], [sl_equiv]）决定了 [sepeq prem X]，即 X 的点上的分离关系的交集（[SepRel]：比点相等更粗糙的等价关系，前提在它们的开饱和下解读时所强制的），这是一个通过不可定义性得到的命题。[SepQuot prem X] 是在 [sepeq] 下的 X 的点，带有 Instance/Top/Subspace.v 的 [PQuot] 的商拓扑，由 [SepQuot_sep] 分离。映射到一个分离空间的映射可以通过 [sepquot_med] 因式分解，其对 [sepeq] 的尊重通过前提（[sep_ker]）解读映射的核，该命题的目标自身的相等性是类型值的。[PSep_Reflective prem L : Reflective (PSepSub prem)] 从通用箭头组装反射，[PSepSub prem] 是 [PTopCat] 的全子范畴 [PFullSub (PSep prem)]。[PT0_Reflective]、[PT1_Reflective] 和 [PT2_Reflective] 是它的实例，即最大的 T0、T1 和 Hausdorff 商。任何地方都没有使用经典前提。[PT0_Reflective] 是 Instance/Top/Kolmogorov.v 中 [T0_Reflective_in_Top] 在 [Top] 上的对应物在 [PTopCat] 上；两者未进行比较。练习 4 在 n = 0 和 n = 1。[restrict_Reflective] 是一般性的：如果 B ⊆ A 是一个范畴 C 的满子范畴，并且 B 在 C 中是反射的，那么在 A 中读取的 B（[restrict_sub]）在 A 中是反射的，通过在 C 中反射。当 B = T1，A = T0 时，它是 [PT1_in_PT0_Reflective]，Mac Lane 的 Top_1 → Top_0；当 B = T2，A = T1 时，它是 [PHaus_in_PT1_Reflective]，他的 Top_2 → Top_1。Instance/Top/Hausdorff.v 将相同的引理应用于它通过伴随函子定理获得的反射，对于阶梯 n = 0、1 和 2。每个包含的严格性。[PTwoIndisc_not_PT0]（Instance/Top/Cocomplete.v中的不离散两点）；[PSierpinski_PT0] 和 [PSierpinski_not_PT1]（Sierpiński 空间，[true] 开）；[PCofinite_PT1] 和 [PCofinite_not_PHaus]（自然数上的余有限拓扑，表述为“非空开集包含一个尾 [N, ∞)”，这不需要有限性谓词）。存在性：[PBool_PHaus]（离散两点是豪斯多夫的；证明在消除前提的 [ex] 之前将目标陈述为莱布尼茨等式，这在集合等价的类型值等式中被拒绝，见 Test/ProbeHausdorff461.v 的 N10）。算术是从前导证明的四个引理（[sep_le_trans]、[sep_le_add_r]、[sep_le_add_l]、[sep_not_succ_le]），因此该文件不需要自己的标准库模块。[PSep_retract]：分离空间的一个重traction是分离的。优势。在 [eq_refl]：[PHaus_unfold]；[SepQuot_carrier] 和 [SepQuot_equiv]（商保持 X 的点，且其等式为 [sepeq]）；[PSep_reflector_obj] 和 [PSep_unit_point]（反射器的对象是 [SepQuot]，其单位是点上的恒等映射）；[PT1_in_PT0_obj] 和 [PT1_in_PT0_unit_point]（受限反射的情况相同）。在映射上的作用不在 [eq_refl]：[pmap (`1 (fmap[PSep_reflector prem L] f)) x = pmap f x] 在 [eq_refl] 被拒绝，标记为 Test/ProbeHausdorff461.v 的 N9（无法将 "projT1 (fmap [PSep_reflector prem L] f) x" 与 "f x" 统一），且没有此类回读被声称；根据反射等式，通过单位的自然性（该文件的 [p461_fmap_equiv]），这一点成立。两个 [Defined]，由标记（[sep_universal], [restrict_universal]）计数，按数据约定选择，中介是数据。两者都不是承重的：每个单独翻转到 [Qed]，在开发的三个文件和 Test/ProbeHausdorff461.v 的草稿副本中，都使四个读取回来的内容被接受。45 [Qed]，以标记计数。宇宙，由 [About] 在 [Set Printing Universes] 下读取，在此文件的所有 105 个常量的 [Print Module] 列表中（记录构造函数 [Build_SepLaws] 也在其中；该文件没有 [Program] 义务且没有归纳类型）。- 前提、公理、定律、桥梁、商及其中介，[PSep_retract]：[@{o}] 带有一个空块，除了 [sepquot_med]，带有三个 [o <= compose.u*] 标准库上限，其中 Instance/Top/Subspace.v 的 [pquot_desc] 在其自己的块中。[SepPremise@{o} : Type@{max(Set+1,o+1)}]，值为 [Type@{o}] 的 Prop 型谓词族的类型。- 命名空间及其引理：[@{o}] 带有一个标准库上限 [o <= Logic_lemmas.equality.u0]，[eq_Setoid] 自身。-  [PFullSub]、[PFullSub_Full]、[PSepSub]：[@{o so}] 具有 [o < so] 和 [Set < so]、[PTopCat] 的块（Instance/Top/Prop.v 的头部：[Set < so] 记录 [PTop] 的类型）。-  [PSepSpaces]、[PSepObj]、[sep_proj]、[sep_universal]：[@{o so u}]，添加 [o < u]，Construction/Subcategory.v 的 [Sub] 的辅助在同宇宙之上（其自身块的 [u0 < u5]）。- 反射（[PSep_reflector], [PSep_adj], [PSep_Reflective]，其三个实例，被限制的两个，以及对它们的回读）：该块加上仅通过[<=]相关的辅助（[PSep_Reflective]的七个宇宙，被限制的两个的十一），以及严格的stdlib上限[Set < Projections.u0]和[o < Projections.u0]，首先由[sep_universal]以依赖顺序携带：子类别对象的第一个投影，一个关于[PTop@{o}]的依赖对，其类别是[Type@{max(Set+1,o+1)}]（测量：这样一个对的裸[projT1]正好携带这两个上限）。- [restrict_sub]到[restrict_Reflective]：在该类别及其两个子类别中是通用的。该部分声明了其假设的十个宇宙，从 [co] 到 [rd]，每个常量都增加了自己的，总计达 22 个（[restrict_Reflective]）；没有 [Set]，也没有严格的标准库上限。- 四个算术引理：[@{}]。- 没有区块包含方程。105 个常量的 [About] 输出中的 [Set] 字数统计为 35：[SepPremise] 的排序为一次，[Set < so] 在 20 个区块中，[Set < Projections.u0] 在 14 个区块中。没有区块包含 [Set < o]：[PT2_Reflective] 和 [PT1_in_PT0_Reflective] 被接受，并在 [Set] 中标出它们的点（Test/ProbeHausdorff461.v 的 [p461_direct_set] 和 [p461_n0_direct_set]）。未交付。在 n = 2 时的练习 4（通过伴随函子定理在 Instance/Top/Hausdorff.v 中交付）以及 n = 3 时（未形式化；那个文件的头部）；一个正则反射的直接构造；将 [PT0] 与 Instance/Top/Kolmogorov.v 的 [IsT0] 进行比较，或者将 [PHaus] 与 Instance/Top.v 的 [IsHausdorff] 在两种编码之间进行比较（该树在 [Top] 与 [PTopCat] 之间没有函子）；反射器对 [eq_refl] 中映射的作用；证明正 Hausdorff 和负 Hausdorff 构造性组成部分（这里只涉及在指定假设下的桥）；T0 和 T1 的负形式。
+ [Hausdorff_T0_nn]  只从否定形式中得到双重否定。[PHaus_PropEquiv] ：豪斯多夫空间的相等是命题性的，[PNotSep]  是一个与之等价的命题。反映。一个具有三条定律的前提（[SepLaws] ： [sl_anti], [sl_pull], [sl_equiv]）决定了 [sepeq prem X]，即 X 的点上的分离关系的交集（[SepRel]：比点相等更粗糙的等价关系，前提在它们的开饱和下解读时所强制的），这是一个通过不可定义性得到的命题。[SepQuot prem X] 是在 [sepeq] 下的 X 的点，带有 Instance/Top/Subspace.v 的 [PQuot] 的商拓扑，由 [SepQuot_sep] 分离。映射到一个分离空间的映射可以通过 [sepquot_med] 因式分解，其对 [sepeq] 的尊重通过前提（[sep_ker]）解读映射的核，该命题的目标自身的相等性是类型值的。[PSep_Reflective prem L : Reflective (PSepSub prem)] 从通用箭头组装反射，[PSepSub prem] 是 [PTopCat] 的全子范畴 [PFullSub (PSep prem)]。[PT0_Reflective]、[PT1_Reflective] 和 [PT2_Reflective] 是它的实例，即最大的 T0、T1 和 Hausdorff 商。任何地方都没有使用经典前提。[PT0_Reflective] 是 Instance/Top/Kolmogorov.v 中 [T0_Reflective_in_Top] 在 [Top] 上的对应物在 [PTopCat] 上；两者未进行比较。练习 4 在 n = 0 和 n = 1。[restrict_Reflective] 是一般性的：如果 B ⊆ A 是一个范畴 C 的满子范畴，并且 B 在 C 中是反射的，那么在 A 中读取的 B（[restrict_sub]）在 A 中是反射的，通过在 C 中反射。当 B = T1，A = T0 时，它是 [PT1_in_PT0_Reflective]，Mac Lane 的 Top_1 → Top_0；当 B = T2，A = T1 时，它是 [PHaus_in_PT1_Reflective]，他的 Top_2 → Top_1。Instance/Top/Hausdorff.v 将相同的引理应用于它通过伴随函子定理获得的反射，对于阶梯 n = 0、1 和 2。每个包含的严格性。[PTwoIndisc_not_PT0]（Instance/Top/Cocomplete.v中的不离散两点）；[PSierpinski_PT0] 和 [PSierpinski_not_PT1]（Sierpiński 空间，[true] 开）；[PCofinite_PT1] 和 [PCofinite_not_PHaus]（自然数上的余有限拓扑，表述为“非空开集包含一个尾 [N, ∞)”，这不需要有限性谓词）。存在性：[PBool_PHaus]（离散两点是豪斯多夫的；证明在消除前提的 [ex] 之前将目标陈述为莱布尼茨等式，这在集合等价的类型值等式中被拒绝，见 Test/ProbeHausdorff461.v 的 N10）。算术是从前导证明的四个引理（[sep_le_trans]、[sep_le_add_r]、[sep_le_add_l]、[sep_not_succ_le]），因此该文件不需要自己的标准库模块。[PSep_retract]：分离空间的一个重traction是分离的。优势。在 [eq_refl]：[PHaus_unfold]；[SepQuot_carrier] 和 [SepQuot_equiv]（商保持 X 的点，且其等式为 [sepeq]）；[PSep_reflector_obj] 和 [PSep_unit_point]（反射器的对象是 [SepQuot]，其单位是点上的恒等映射）；[PT1_in_PT0_obj] 和 [PT1_in_PT0_unit_point]（受限反射的情况相同）。在映射上的作用不在 [eq_refl]：[pmap (`1 (fmap[PSep_reflector prem L] f)) x = pmap f x] 在 [eq_refl] 被拒绝，标记为 Test/ProbeHausdorff461.v 的 N9（无法将 “projT1 (fmap [PSep_reflector prem L] f) x” 与 “f x” 统一），且没有此类回读被声称；根据反射等式，通过单位的自然性（该文件的 [p461_fmap_equiv]），这一点成立。两个 [Defined]，由标记（[sep_universal], [restrict_universal]）计数，按数据约定选择，中介是数据。两者都不是承重的：每个单独翻转到 [Qed]，在开发的三个文件和 Test/ProbeHausdorff461.v 的草稿副本中，都使四个读取回来的内容被接受。45 [Qed]，以标记计数。宇宙，由 [About] 在 [Set Printing Universes] 下读取，在此文件的所有 105 个常量的 [Print Module] 列表中（记录构造函数 [Build_SepLaws] 也在其中；该文件没有 [Program] 义务且没有归纳类型）。- 前提、公理、定律、桥梁、商及其中介，[PSep_retract]：[@{o}] 带有一个空块，除了 [sepquot_med]，带有三个 [o <= compose.u*] 标准库上限，其中 Instance/Top/Subspace.v 的 [pquot_desc] 在其自己的块中。[SepPremise@{o} : Type@{max(Set+1,o+1)}]，值为 [Type@{o}] 的 Prop 型谓词族的类型。- 命名空间及其引理：[@{o}] 带有一个标准库上限 [o <= Logic_lemmas.equality.u0]，[eq_Setoid] 自身。-  [PFullSub]、[PFullSub_Full]、[PSepSub]：[@{o so}] 具有 [o < so] 和 [Set < so]、[PTopCat] 的块（Instance/Top/Prop.v 的头部：[Set < so] 记录 [PTop] 的类型）。-  [PSepSpaces]、[PSepObj]、[sep_proj]、[sep_universal]：[@{o so u}]，添加 [o < u]，Construction/Subcategory.v 的 [Sub] 的辅助在同宇宙之上（其自身块的 [u0 < u5]）。- 反射（[PSep_reflector], [PSep_adj], [PSep_Reflective]，其三个实例，被限制的两个，以及对它们的回读）：该块加上仅通过[<=]相关的辅助（[PSep_Reflective]的七个宇宙，被限制的两个的十一），以及严格的stdlib上限[Set < Projections.u0]和[o < Projections.u0]，首先由[sep_universal]以依赖顺序携带：子类别对象的第一个投影，一个关于[PTop@{o}]的依赖对，其类别是[Type@{max(Set+1,o+1)}]（测量：这样一个对的裸[projT1]正好携带这两个上限）。- [restrict_sub]到[restrict_Reflective]：在该类别及其两个子类别中是通用的。该部分声明了其假设的十个宇宙，从 [co] 到 [rd]，每个常量都增加了自己的，总计达 22 个（[restrict_Reflective]）；没有 [Set]，也没有严格的标准库上限。- 四个算术引理：[@{}]。- 没有区块包含方程。105 个常量的 [About] 输出中的 [Set] 字数统计为 35：[SepPremise] 的排序为一次，[Set < so] 在 20 个区块中，[Set < Projections.u0] 在 14 个区块中。没有区块包含 [Set < o]：[PT2_Reflective] 和 [PT1_in_PT0_Reflective] 被接受，并在 [Set] 中标出它们的点（Test/ProbeHausdorff461.v 的 [p461_direct_set] 和 [p461_n0_direct_set]）。未交付。在 n = 2 时的练习 4（通过伴随函子定理在 Instance/Top/Hausdorff.v 中交付）以及 n = 3 时（未形式化；那个文件的头部）；一个正则反射的直接构造；将 [PT0] 与 Instance/Top/Kolmogorov.v 的 [IsT0] 进行比较，或者将 [PHaus] 与 Instance/Top.v 的 [IsHausdorff] 在两种编码之间进行比较（该树在 [Top] 与 [PTopCat] 之间没有函子）；反射器对 [eq_refl] 中映射的作用；证明正 Hausdorff 和负 Hausdorff 构造性组成部分（这里只涉及在指定假设下的桥）；T0 和 T1 的负形式。
 *)
 
 (* * ** Separation premises and the positive separation axioms / * ** 分离公理与正分离公理 *)
@@ -855,7 +855,7 @@ Definition PCofinite : PTop@{o} := {|
   popen_inter    := cof_open_inter
 |}.
 
-(* The open "x, or the tail above x + y": if it must contain y, then y = x, the tail lying strictly above y. / 开口“x，或 x + y 上方的尾巴”：如果它必须包含 y，那么 y = x，尾巴严格位于 y 上方。 *)
+(* The open “x, or the tail above x + y”: if it must contain y, then y = x, the tail lying strictly above y. / 开口“x，或 x + y 上方的尾巴”：如果它必须包含 y，那么 y = x，尾巴严格位于 y 上方。 *)
 Lemma PCofinite_PT1 : PT1 PCofinite.
 Proof.
   intros x y H. change (x = y).

@@ -39,7 +39,7 @@ The lattice of subobjects of an object
    STRUCTURE of that preorder: binary and indexed greatest lower bounds,
    binary and indexed least upper bounds, and the two end points.
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
    §V.7, book p. 126 (PDF p. 135), is the source the construction follows.
    Mac Lane observes that a pullback of two monos u : s ↣ x and v : t ↣ x
    is again a pair of monos, and that the composite of either pullback leg
@@ -56,7 +56,7 @@ The lattice of subobjects of an object
    conditional on an image factorization where the meet half is
    conditional only on pullbacks.
 
-   Riehl, "Category Theory in Context", 2nd ed., §4.7, printed p. 177
+   Riehl, “Category Theory in Context”, 2nd ed., §4.7, printed p. 177
    (PDF p. 197), Definition 4.7.9, gives the indexed form.  Riehl defines
    the intersection of a family of subobjects as the LIMIT of the diagram
    consisting of those monomorphisms over their common codomain, and then
@@ -70,7 +70,7 @@ The lattice of subobjects of an object
    [sub_is_monic] field of [sub_wide_intersection], and maximality is
    [inter_greatest] in [sub_wide_intersection_IsIntersection].
 
-   Fong and Spivak, "Seven Sketches in Compositionality", §1.2.1, printed
+   Fong and Spivak, “Seven Sketches in Compositionality”, §1.2.1, printed
    p. 8 (PDF p. 20), meets the same two operations at their most concrete:
    the union and the intersection of subsets of one ambient set, and the
    indexed versions of both over a family.  The unit law they record for
@@ -165,7 +165,7 @@ The lattice of subobjects of an object
    [Regular_HasImages] below is [HasImages_of_OFS] applied to it.  That
    corollary is CONDITIONAL and stays so: no [Regular] instance exists
    anywhere in this tree, as Instance/Sets/Pullback.v records in terms
-   ("a class with no instance anywhere"), and this file adds none.
+   (“a class with no instance anywhere”), and this file adds none.
 
    The powerset analogue.  Instance/Powerset.v carries
    [subset_inter] and [subset_union], the predicate-level meet and join of
@@ -870,7 +870,7 @@ Proof.
 Defined.
 
 (*
-"u ≤ v iff u ∧ v ≈ u", in two separate lemmas: [sub_le] is Type-valued
+“u ≤ v iff u ∧ v ≈ u”, in two separate lemmas: [sub_le] is Type-valued
    data and the two directions carry different data, so they are not
    packaged as one ↔.
 
@@ -906,7 +906,7 @@ Context (S : J → SubObj x).
 Every projection of a wide pullback of monos is monic: two maps agreeing
    after one projection agree after every projection, by the commutativity
    of the wide square and the monicity of the family, hence agree by joint
-   monicity.  This is Riehl 4.7.9's "the legs of the cone are monic".
+   monicity.  This is Riehl 4.7.9's “the legs of the cone are monic”.
 
 --------
 每一个关于单态的广泛回拉的投射都是单态的：两个映射在一次投射后相同，则在每一次投射后都相同，这是由于广方的可交换性以及该族的单态性，因此通过联合单态性也相同。这就是 Riehl 4.7.9 中的“圆锥的边是单态的”
@@ -928,8 +928,8 @@ Qed.
 The intersection of a family of subobjects, presented at an index j0:
    the wide pullback of the monos, mapped into x through the j0-th member.
    By [wide_pullback_commutes] the mono does not depend on j0 up to ≈.
-   The [sub_is_monic] field is Riehl 4.7.9's "the induced map into the
-   codomain is again monic".
+   The [sub_is_monic] field is Riehl 4.7.9's “the induced map into the
+   codomain is again monic”.
 
 --------
 在指标 j0 处呈现的一族子对象的交集：通过 j0-成员映射到 x 的单射的广拉回。根据 [wide_pullback_commutes]，该单射在 ≈ 意义下不依赖于 j0。[sub_is_monic] 字段是 Riehl 4.7.9 的“诱导到陪域的映射仍然是单射”。
@@ -1251,7 +1251,7 @@ Proof.
   - exact (sub_join_le_l u u).
 Defined.
 
-(* "u ≤ v iff u ∨ v ≈ v", again in two separate lemmas. / “u ≤ v 当且仅当 u ∨ v ≈ v”，再次分成两个独立的引理。 *)
+(* “u ≤ v iff u ∨ v ≈ v”, again in two separate lemmas. / “u ≤ v 当且仅当 u ∨ v ≈ v”，再次分成两个独立的引理。 *)
 Lemma sub_join_of_le (u v : SubObj x) : sub_le u v → sub_join u v ≈ v.
 Proof.
   intros Huv.

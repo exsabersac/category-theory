@@ -14,7 +14,7 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Setoid
 
  This is the category [Sets], the constructive analogue of the classical
- category Set. To model "sets" without quotient types and without the
+ category Set. To model “sets” without quotient types and without the
  function-extensionality axiom, objects are not bare types but setoids
  (Bishop sets): a carrier type together with an equivalence relation `≈`.
  Morphisms are setoid maps, i.e. functions that respect `≈` (proper
@@ -60,25 +60,25 @@ Generalizable All Variables.
  nLab:   https://ncatlab.org/nlab/show/Bishop+set
  nLab:   https://ncatlab.org/nlab/show/E-category
  nLab:   https://ncatlab.org/nlab/show/predicative+topos
- Book:   Bishop, "Foundations of Constructive Analysis", McGraw-Hill 1967
- Thesis: Hofmann, "Extensional Concepts in Intensional Type Theory",
+ Book:   Bishop, “Foundations of Constructive Analysis”, McGraw-Hill 1967
+ Thesis: Hofmann, “Extensional Concepts in Intensional Type Theory”,
  University of Edinburgh, LFCS report ECS-LFCS-95-327, 1995
 
  The two records below transcribe definitions Bishop set down in 1967.
  A set, for Bishop, is not an entity with an ideal existence: to define
  one is to prescribe what must be done to construct an element and what
- must be done to show two elements equal (Bishop 1967, chapter one, "A
- constructivist manifesto"); a function is a finite routine on elements
+ must be done to show two elements equal (Bishop 1967, chapter one, “A
+ constructivist manifesto”); a function is a finite routine on elements
  that respects the two equalities.  [SetoidObject] and [SetoidMorphism]
  are those definitions as records — carrier plus equivalence, program
- plus congruence certificate.  The name "setoid" entered type theory
+ plus congruence certificate.  The name “setoid” entered type theory
  with Hofmann's 1995 thesis (per the nLab), which also supplies the
  strategy's mathematical warrant: Hofmann built models of intensional
  type theory out of types with equivalence relations, models in which
  functional extensionality and quotients hold, so working with setoids
  is not a stopgap but a model construction.  The design space — total
  versus partial setoids, four notions of setoid map — is surveyed in
- (Barthe, Capretta, Pons, "Setoids in type theory", JFP 13(2) 2003);
+ (Barthe, Capretta, Pons, “Setoids in type theory”, JFP 13(2) 2003);
  this file sits in the total-setoid column with a Type-valued relation.
 
  Two problems meet here.  First, Coq's intensional equality identifies
@@ -92,8 +92,8 @@ Generalizable All Variables.
  regime.  Second, category theory needs a Set to land in.  The debt to
  Theory/Category.v runs both ways: a [Category] there is what the nLab
  calls an E-category — enriched in setoids, terminology in active use
- in Palmgren's school (Palmgren, Wilander, "Constructing categories
- and setoids of setoids in type theory", LMCS 10(3) 2014) — so its
+ in Palmgren's school (Palmgren, Wilander, “Constructing categories
+ and setoids of setoids in type theory”, LMCS 10(3) 2014) — so its
  hom-functor can only land in a category whose objects are setoids.
  [Sets] is that category: the codomain of Functor/Hom.v and the Yoneda
  embedding (Functor/Hom/Yoneda.v), of presheaves, of the ends and
@@ -103,21 +103,21 @@ Generalizable All Variables.
  chosen `≈`.
 
  The cost has a name.  Altenkirch calls it setoid hell (Altenkirch,
- "From setoid hell to homotopy heaven? The role of extensionality in
- Type Theory", TYPES 2017): every type-level construction must be
+ “From setoid hell to homotopy heaven? The role of extensionality in
+ Type Theory”, TYPES 2017): every type-level construction must be
  lifted to setoids by hand, the lifting is boilerplate, and the
  implementation is never actually hidden.  The Type-valued [Proper]
  machinery assembled in Lib/Foundation.v exists to make that
  discipline bearable; and the same talk concedes the other side of the
  ledger — most constructions need no higher dimensions, and setoids
  or groupoids suffice.  The successor programme is (Altenkirch,
- Boulier, Kaposi, Tabareau, "Setoid Type Theory — A Syntactic
- Translation", MPC 2019).
+ Boulier, Kaposi, Tabareau, “Setoid Type Theory — A Syntactic
+ Translation”, MPC 2019).
 
  How much of the classical Set survives?  In Martin-Löf type theory
  the category of setoids is a ΠW-pretopos, a locally cartesian closed
  pretopos with W-types and a predicative analogue of a topos (van den
- Berg, "Predicative toposes", arXiv:1207.0959 (2012), after Moerdijk
+ Berg, “Predicative toposes”, arXiv:1207.0959 (2012), after Moerdijk
  and Palmgren 1999/2000).  Predicativity is visible in the subobject
  classifier: its characteristic maps must receive a [Type]-valued
  truth value, so the classifier for [Sets] lives one universe up and
@@ -149,7 +149,7 @@ Generalizable All Variables.
  nLab:    https://ncatlab.org/nlab/show/predicative+topos 
  书籍:   Bishop, 《构造分析的基础》，McGraw-Hill 1967
  论文: Hofmann, 《内涵类型理论中的外延概念》，
- 爱丁堡大学, LFCS 报告 ECS-LFCS-95-327, 1995下面的两条记录转录了Bishop在1967年所制定的定义。对Bishop而言，一个集合并不是具有理想存在的实体：定义一个集合就是规定必须做些什么来构造一个元素，以及必须做些什么来证明两个元素相等（Bishop 1967，第1章，《建构主义宣言》）；函数是作用于元素的有限程序，并且遵守这两个相等关系。[SetoidObject] 和 [SetoidMorphism] 是那些定义作为记录的表示——承载者加等价关系，程序加一致性证明。“setoid” 这个名称随着 Hofmann 1995 年的论文进入了类型理论（根据 nLab 的说法），该论文也提供了该策略的数学依据：Hofmann 构建了由带有等价关系的类型组成的内涵类型理论模型，在这些模型中，函子外延性和商对象成立，因此使用 setoid 并不是权宜之计，而是一种模型构建。这一设计空间——总 setoid 与部分 setoid、四种 setoid 映射的概念——在 (Barthe, Capretta, Pons, 《类型理论中的 Setoids》，JFP 13(2) 2003) 中进行了概述；该文件属于总 setoid 列，使用一个取值为 Type 的关系。这里遇到两个问题。首先，Coq 的内涵等式只识别具有相同定义的项：商类型不存在，并且逐点相等的函数不一定可证明相等。Bishop 的做法是从不将载体与其等式分开——商只是同一载体上的另一种 `≈` 选择（Construction/Quotient.v 是同源层的版本）——而 [SetoidMorphism_equiv] 通过定义而非公理使映射的等式具有外延性。这个决定被 Theory/Category.v 归功于库的零公理机制。其次，范畴论需要一个集合作为落脚点。对 Theory/Category.v 的依赖是双向的：[Category] 那里存在 nLab 所称的 E-范畴——在 Palmgren 学派（Palmgren, Wilander, “Constructing categories and setoids of setoids in type theory”, LMCS 10(3) 2014）中广泛使用的术语——因此它的 Hom 函子只能落在对象为 setoid 的范畴中。[Sets] 就是那个范畴：Functor/Hom.v 和 Yoneda 嵌入（Functor/Hom/Yoneda.v）的余域，预层的余域，以及 Instance/Sets/End.v 和 Instance/Sets/Coend.v 的 end 和 coend 的余域，以及 Structure/Limit/Weighted.v 的加权余域。Instance/Coq.v 是对比对象：基于逐点 Leibniz 等式的裸类型，没有选定的 `≈`。代价有一个名字。Altenkirch称之为集合等价地狱（Altenkirch, "从集合等价地狱到同伦天堂？扩展性在类型理论中的作用", TYPES 2017）：每一个类型层的构造都必须手动提升到集合等价，提升过程是样板代码，而且实现实际上从未被隐藏。Lib/Foundation.v 中组装的类型值 [Proper] 机制存在的目的就是让这种方法学可以忍受；同一演讲也承认了账目的另一面——大多数构造不需要更高维度，集合等价或群oid就足够了。继任计划是（Altenkirch, Boulier, Kaposi, Tabareau, "集合等价类型理论——语法翻译", MPC 2019）。经典集合论还有多少存留？在Martin-Löf类型理论中，集合类(category of setoids)是一个ΠW-预拓扑(pretopos)，一个带有W型的局部笛卡尔闭预拓扑，以及一个公理化的拓扑类(topos)的可断言(predicative)类比（van den Berg，《Predicative toposes》，arXiv:1207.0959 (2012)，参照Moerdijk和Palmgren 1999/2000）。可断言性在子对象分类器(subobject classifier)中可见：它的特征映射必须接收[Type]值的真值，因此[Sets]的分类器存在于更高的宇宙中，而Instance/Sets/Classifier.v将其陈述为跨宇宙的定理，而不是一个实例——一个关于大小的定理形事实，而不是形式化中的一个空白。确实存在一个一层实例
+ 爱丁堡大学, LFCS 报告 ECS-LFCS-95-327, 1995下面的两条记录转录了Bishop在1967年所制定的定义。对Bishop而言，一个集合并不是具有理想存在的实体：定义一个集合就是规定必须做些什么来构造一个元素，以及必须做些什么来证明两个元素相等（Bishop 1967，第1章，《建构主义宣言》）；函数是作用于元素的有限程序，并且遵守这两个相等关系。[SetoidObject] 和 [SetoidMorphism] 是那些定义作为记录的表示——承载者加等价关系，程序加一致性证明。“setoid” 这个名称随着 Hofmann 1995 年的论文进入了类型理论（根据 nLab 的说法），该论文也提供了该策略的数学依据：Hofmann 构建了由带有等价关系的类型组成的内涵类型理论模型，在这些模型中，函子外延性和商对象成立，因此使用 setoid 并不是权宜之计，而是一种模型构建。这一设计空间——总 setoid 与部分 setoid、四种 setoid 映射的概念——在 (Barthe, Capretta, Pons, 《类型理论中的 Setoids》，JFP 13(2) 2003) 中进行了概述；该文件属于总 setoid 列，使用一个取值为 Type 的关系。这里遇到两个问题。首先，Coq 的内涵等式只识别具有相同定义的项：商类型不存在，并且逐点相等的函数不一定可证明相等。Bishop 的做法是从不将载体与其等式分开——商只是同一载体上的另一种 `≈` 选择（Construction/Quotient.v 是同源层的版本）——而 [SetoidMorphism_equiv] 通过定义而非公理使映射的等式具有外延性。这个决定被 Theory/Category.v 归功于库的零公理机制。其次，范畴论需要一个集合作为落脚点。对 Theory/Category.v 的依赖是双向的：[Category] 那里存在 nLab 所称的 E-范畴——在 Palmgren 学派（Palmgren, Wilander, “Constructing categories and setoids of setoids in type theory”, LMCS 10(3) 2014）中广泛使用的术语——因此它的 Hom 函子只能落在对象为 setoid 的范畴中。[Sets] 就是那个范畴：Functor/Hom.v 和 Yoneda 嵌入（Functor/Hom/Yoneda.v）的余域，预层的余域，以及 Instance/Sets/End.v 和 Instance/Sets/Coend.v 的 end 和 coend 的余域，以及 Structure/Limit/Weighted.v 的加权余域。Instance/Coq.v 是对比对象：基于逐点 Leibniz 等式的裸类型，没有选定的 `≈`。代价有一个名字。Altenkirch称之为集合等价地狱（Altenkirch, “从集合等价地狱到同伦天堂？扩展性在类型理论中的作用”, TYPES 2017）：每一个类型层的构造都必须手动提升到集合等价，提升过程是样板代码，而且实现实际上从未被隐藏。Lib/Foundation.v 中组装的类型值 [Proper] 机制存在的目的就是让这种方法学可以忍受；同一演讲也承认了账目的另一面——大多数构造不需要更高维度，集合等价或群oid就足够了。继任计划是（Altenkirch, Boulier, Kaposi, Tabareau, “集合等价类型理论——语法翻译”, MPC 2019）。经典集合论还有多少存留？在Martin-Löf类型理论中，集合类(category of setoids)是一个ΠW-预拓扑(pretopos)，一个带有W型的局部笛卡尔闭预拓扑，以及一个公理化的拓扑类(topos)的可断言(predicative)类比（van den Berg，《Predicative toposes》，arXiv:1207.0959 (2012)，参照Moerdijk和Palmgren 1999/2000）。可断言性在子对象分类器(subobject classifier)中可见：它的特征映射必须接收[Type]值的真值，因此[Sets]的分类器存在于更高的宇宙中，而Instance/Sets/Classifier.v将其陈述为跨宇宙的定理，而不是一个实例——一个关于大小的定理形事实，而不是形式化中的一个空白。确实存在一个一层实例
  在 Instance/Sets/Classifier/OneLevel.v 中有条件地存在，在一个假设下，这棵树不属于无公理的情形（每个在级别 o 的蕴含截断都可逆，或者每个单射的像成员资格都是可判定的——每一个都由级别 o 的信息排中律推出）。这种障碍确实与分类器有关，但不会扩散：文件末尾的 [surjectivity_is_epic] 长期以来被认为继承了它，但经典真值探针并不是唯一可用的方法，下文使用的余核对仍然停留在载体的宇宙中。因为 `≈` 是类型值的，它的证明携带数据：[bijective_is_iso] 将满射的证据转化为一个真实的逆函数，而无需诉诸选择，因为选择从一开始就是数据。[Sets] 是完整的
  (Instance/Sets/Complete.v)；其剩余结构在 Instance/Sets/ 下逐步构建 — 乘积和指数，小索引的
  (co)乘积，推出，以及柯西完备性 (Karoubi.v)。

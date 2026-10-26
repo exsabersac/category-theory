@@ -37,7 +37,7 @@ Set Transparent Obligations.
    conjugated by the associator, trading the single unreachable
    square at the nested tensor for three one-variable naturality
    squares plus two single-level centrality squares (Power–Robinson,
-   "Premonoidal categories and notions of computation", 1997).
+   “Premonoidal categories and notions of computation”, 1997).
 
    - [Centre_Tensor]: the tensor restricts to a genuine bifunctor
    Z(C) ∏ Z(C) ⟶ Z(C).  On the centre, [composite_ff'] is jointly

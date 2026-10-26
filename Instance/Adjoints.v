@@ -145,7 +145,7 @@ Notation "F ⊚ G" := (@adj_comp _ _ _ _ _ _ _ F G)
 (*
  An arrow C ⇸ D in [Adjoints]: a left/right adjoint pair whose FORWARD
  direction is the RIGHT adjoint, [forgetful_functor : C ⟶ D]; the left
- adjoint ("free") points backward, D ⟶ C.  See the header for how this
+ adjoint (“free”) points backward, D ⟶ C.  See the header for how this
  sits against Mac Lane's two orientations.  Only this description is
  corrected here; the record itself is unchanged. 
 
@@ -358,8 +358,8 @@ Qed.
 (*
  The closing quote (Chris Heunen, on MathOverflow) describes InvAdj, the
  involutive refinement of [Adjoints] that removes the arbitrary forward/
- backward choice; it is defined in §3.1.8 of his thesis "Categorical Quantum
- Models and Logics":
+ backward choice; it is defined in §3.1.8 of his thesis “Categorical Quantum
+ Models and Logics”:
  https://homepages.inf.ed.ac.uk/cheunen/publications/2009/thesis/thesis.pdf
  This library implements only the plain [Adjoints] above, not InvAdj. 
 
@@ -370,8 +370,8 @@ Qed.
 *)
 
 (*
- mathoverflow: "You will have to make an arbitrary choice for the direction
- of morphisms: is the left adjoint "forward" or "backward"? To prevent that,
+ mathoverflow: “You will have to make an arbitrary choice for the direction
+ of morphisms: is the left adjoint ”forward“ or ”backward“? To prevent that,
  you can add involutions. The resulting category [InvAdj] of involutive
  categories and adjunctions has a lot of interesting structure. It is a
  dagger category, and in fact the `mother of all dagger categories', as it
@@ -393,7 +393,7 @@ Qed.
  contravariant functor from C to D can be written both as a (covariant)
  functor F : C^op → D or as a (covariant) functor F^op : C → D^op. The
  latter version has a right adjoint precisely when the former version has a
- left adjoint.)" 
+ left adjoint.)” 
 
  --------
  mathoverflow：“你必须为方向做出任意选择

@@ -24,12 +24,12 @@ Generalizable All Variables.
 (*
    * * The underlying-set functor of R-modules is represented by R
 
-   Book: Riehl, "Category Theory in Context", 2nd ed., §2.1
+   Book: Riehl, “Category Theory in Context”, 2nd ed., §2.1
    Example 2.1.5(iv), printed p. 56 (PDF pp. 76-77) —
    riehl:2.1:example5
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    §III.1, printed p. 56 — maclane:III.1:remark2
-   Book: Riehl, "Category Theory in Context", 2nd ed., §4.1
+   Book: Riehl, “Category Theory in Context”, 2nd ed., §4.1
    Exercise 4.1.v, printed p. 138 —
    riehl:4.1:exv, which asks for a proof that the free R-module
    construction is FUNCTORIAL in the generating set.  That
@@ -74,8 +74,8 @@ Generalizable All Variables.
    the free module then contributes is the COMPARISON, and it comes for
    free from the generic uniqueness machinery: [free_one_generator_iso]
    below is Theory/Universal/Element.v's [universal_element_iso] applied
-   to the two universal elements, so "the free module on one generator
-   is R" is a theorem here rather than a slogan, and it is proved
+   to the two universal elements, so “the free module on one generator
+   is R” is a theorem here rather than a slogan, and it is proved
    without ever computing a normal form.
 
    WHAT IS DELIVERED.

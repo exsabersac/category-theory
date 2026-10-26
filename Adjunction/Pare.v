@@ -18,20 +18,20 @@ Generalizable All Variables.
     nLab:      https://ncatlab.org/nlab/show/Cauchy+complete+category
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+    Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
           GTM 5, Springer 1998, §IV.1 Exercise 4, printed p. 86 --
           [maclane:IV.1:ex4].  Mac Lane credits the exercise to R. Paré.
           CITED BY LOCATION: the printed page was not consulted and no
           sentence of it is reproduced here.  The in-tree catalog entry
           (doc/plan/books/maclane/inventory/IV.json, id maclane:IV.1:ex4)
-          summarizes it as: "(Pare) Given functors G : A -> X, K : X -> A
+          summarizes it as: “(Pare) Given functors G : A -> X, K : X -> A
           and natural transformations epsilon : KG -> id_A, rho : id_X ->
           GK with G-epsilon after rho-G equal to 1_G, prove that
           epsilon-K composed with K-rho is an idempotent in the functor
           category A^X, and that G has a left adjoint if and only if this
           idempotent splits; explicitly, if it splits as alpha . beta with
           beta . alpha = 1 and beta : K -> F, then F is a left adjoint of
-          G with unit G-beta . rho and counit epsilon . alpha-G."
+          G with unit G-beta . rho and counit epsilon . alpha-G.”
 
     The names below follow that summary letter for letter.  [PareData]
     bundles G, K, ε, ρ and the single triangle; [pare_idem] is his
@@ -63,20 +63,20 @@ Generalizable All Variables.
     [split_idem S ≈ pare_idem P].  That is deliberately the shape of the
     donor's own [split_of] field ([Construction/Karoubi/Universal.v]),
     which is why the Cauchy-complete corollary below is a [:=] with no
-    tactic and no repackaging.  The other side, "G has a left adjoint", is
+    tactic and no repackaging.  The other side, “G has a left adjoint”, is
     [∃ F, F ∹ G] in [Adjunction_Transform]'s unit/counit form.
 
     THE ONE STRUCTURAL FRICTION, AND IT IS MAC LANE'S OWN NOTATION.
     Neither of his two vertical composites is formable in this library.
     For the triangle the elaborator says
 
-      The term "rho ⊲ G" has type "Id[X] ◯ G ⟹ G ◯ K ◯ G"
-      while it is expected to have type "Id[X] ◯ G ⟹ G ◯ (K ◯ G)"
-      (cannot unify "G ◯ K ◯ G" and "G ◯ (K ◯ G)")
+      The term “rho ⊲ G” has type “Id[X] ◯ G ⟹ G ◯ K ◯ G”
+      while it is expected to have type “Id[X] ◯ G ⟹ G ◯ (K ◯ G)”
+      (cannot unify “G ◯ K ◯ G” and “G ◯ (K ◯ G)”)
 
     and for the idempotent, at [pare_epsK] ∙ [pare_Krho], the same failure
-    between "pare_K P ◯ (pare_G P ◯ pare_K P)" and
-    "pare_K P ◯ pare_G P ◯ pare_K P".  THREE identifications are missing,
+    between “pare_K P ◯ (pare_G P ◯ pare_K P)” and
+    “pare_K P ◯ pare_G P ◯ pare_K P”.  THREE identifications are missing,
     not one: associativity of [Compose] and BOTH unitors -- [Id[X] ◯ G = G]
     and [G ◯ Id[A] = G] are each rejected too, so even repairing the middle
     would leave the endpoints wrong ([Gε ∘ ρG] would land at
@@ -135,8 +135,8 @@ Generalizable All Variables.
     projections return the named transformations) together with
     [pare_Adjunction_unit_at] and [pare_Adjunction_counit_at] (their
     components are [fmap[G] (r x) ∘ rho x] and [eps a ∘ s (G a)]).  That
-    last pair is the reviewer bar for "literally the prescribed unit and
-    counit", checked rather than claimed; the remaining two are the
+    last pair is the reviewer bar for “literally the prescribed unit and
+    counit”, checked rather than claimed; the remaining two are the
     wrapper checks just mentioned.
 
     MEASURED AND REJECTED, NOT GUARDED HERE.  Besides the formability
@@ -166,7 +166,7 @@ Generalizable All Variables.
     exhibited, so the biconditional is never exercised at a nontrivial
     splitting.
 
-    ENGINEERING NOTES.  (a) [Lib.v] sets [Default Proof Using "Type"],
+    ENGINEERING NOTES.  (a) [Lib.v] sets [Default Proof Using “Type”],
     so the three results whose statements do not mention [Hsr]/[Hrs] --
     [pare_split_law], [pare_tri_one], [pare_tri_two] -- carry an explicit
     [Proof using All].  (b) The whiskering notations [⊳] and [⊲] are at
@@ -178,8 +178,8 @@ Generalizable All Variables.
     fire against the ascription, gives the same clean component type with
     no redex.  Both forms were tried; the second is what ships.
 
-    AXIOMS.  All 83 constants declared here report "Closed under the
-    global context": the 69 [def]/[prf]/[proj]/[rec] entries of the [.glob],
+    AXIOMS.  All 83 constants declared here report “Closed under the
+    global context”: the 69 [def]/[prf]/[proj]/[rec] entries of the [.glob],
     the 13 [Program] obligations the [.glob] does not record, and
     [Build_PareData], which appears in neither.  That is a one-time
     measurement made with [Print Assumptions] over all 83; NINETEEN of
@@ -358,7 +358,7 @@ nLab：https://ncatlab.org/nlab/show/adjoint+functor
  展示出来，所以双条件永远不会在非平凡的情况下执行
  分裂。
 
-工程笔记。 (a) [Lib.v] 设置 [Default Proof Using "Type"]，
+工程笔记。 (a) [Lib.v] 设置 [Default Proof Using “Type”]，
  因此，三个结果的陈述均未提及 [Hsr]/[Hrs] --
  [pare_split_law]、[pare_tri_one]、[pare_tri_two] -- 携带显式
  [Proof using All]。 (b) 晶须符号 [⊳] 和 [⊲] 位于

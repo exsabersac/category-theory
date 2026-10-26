@@ -43,7 +43,7 @@ Generalizable All Variables.
  here is asserted in prose.  The four natural upgrades of
  Structure/Cartesian/Closed/Natural.v are instantiated at [Cat] as well.
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.5
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §II.5
  Exercise 2 (printed p. 44) is the source of the four laws; this file
  answers work item 3 of jwiegley/category-theory#284, which asks what they
  say at [Cat].  It lives under Instance/ rather than beside the general

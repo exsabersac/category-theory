@@ -30,8 +30,8 @@ Context {C : Category}.
  counit). Adding both diagonals and projections would make the category
  cartesian; adding projections alone would make it semicartesian.
 
- The axioms below follow Kosta Došen and Zoran Petrić, "Relevant Categories
- and Partial Functions" (2007), arXiv:math/0504133, in this library's
+ The axioms below follow Kosta Došen and Zoran Petrić, “Relevant Categories
+ and Partial Functions” (2007), arXiv:math/0504133, in this library's
  notation:
 
  naturality:    (f ⨂ f) ∘ ∆x ≈ ∆y ∘ f             (f : x ~> y)

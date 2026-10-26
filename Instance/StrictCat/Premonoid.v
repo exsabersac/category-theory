@@ -29,11 +29,11 @@ Generalizable All Variables.
    functorial in each variable SEPARATELY — by the funny tensor's
    universal property (Construction/Funny.v: a functor out of [c □ c]
    is exactly a [SepFunctorial] assignment), with no interchange law
-   relating the two partial actions.  This "separately functorial,
-   jointly not" tensor is the binoidal core of a premonoidal category
-   in the sense of Power–Robinson ("Premonoidal categories and notions
-   of computation", MSCS 7(5), 1997); see also nLab, "funny tensor
-   product" and "premonoidal category";
+   relating the two partial actions.  This “separately functorial,
+   jointly not” tensor is the binoidal core of a premonoidal category
+   in the sense of Power–Robinson (“Premonoidal categories and notions
+   of computation”, MSCS 7(5), 1997); see also nLab, “funny tensor
+   product” and “premonoidal category”;
    - the unit [mempty : 1 ⟶ c] picks out the tensor unit object;
    - the monoid laws, read in StrictCat's strict hom-setoid
    [Functor_StrictEq_Setoid], say that unitality and associativity of
@@ -70,7 +70,7 @@ Generalizable All Variables.
    StrictCat's member categories to [Category@{Set Set Set}].  Re-declaring
    the instance at a rigid universe [v] is blocked: the compiled unitors of
    Construction/Funny/Unitors.v carry a minimized [Set] level, so
-   [Build_Monoidal] at member level [v] reports "Cannot enforce Set = v" at
+   [Build_Monoidal] at member level [v] reports “Cannot enforce Set = v” at
    the unitor field (checked-in probe: Test/ProbeFunnyPoly.v, whose [Fail]
    guards reproduce the failure).  Everything below therefore holds for
    [Set]-small carrier categories; lifting the restriction requires
@@ -80,7 +80,7 @@ Generalizable All Variables.
    --------
    * * 严格前单态结构作为 (StrictCat, □) 中的幺半群对象
 
-   有趣的桥梁：在类别 [c] 上的严格前单态结构正是对称单态类别 [(StrictCat, □, 1)]（Instance/StrictCat/Funny.v 中的类别）的幺半群对象。这是经典事实的有趣对应：在 [(Cat, ∏, 1)] 中的幺半群就是严格单态类别。- 乘法 [mappend : c □ c ⟶ c] 是一个在每个变量上单独函子化的张量——根据这个有趣张量的普遍性质（Construction/Funny.v：从 [c □ c] 出发的函子恰好是一个 [SepFunctorial] 的分配），没有任何互换律将这两个部分作用联系起来。这个“分别函子化、联合不函子化”的张量是预单模范畴的双模核，在 Power–Robinson 的意义上（"Premonoidal categories and notions of computation", MSCS 7(5), 1997）；另见 nLab，"funny tensor product" 和 "premonoidal category"。
+   有趣的桥梁：在类别 [c] 上的严格前单态结构正是对称单态类别 [(StrictCat, □, 1)]（Instance/StrictCat/Funny.v 中的类别）的幺半群对象。这是经典事实的有趣对应：在 [(Cat, ∏, 1)] 中的幺半群就是严格单态类别。- 乘法 [mappend : c □ c ⟶ c] 是一个在每个变量上单独函子化的张量——根据这个有趣张量的普遍性质（Construction/Funny.v：从 [c □ c] 出发的函子恰好是一个 [SepFunctorial] 的分配），没有任何互换律将这两个部分作用联系起来。这个“分别函子化、联合不函子化”的张量是预单模范畴的双模核，在 Power–Robinson 的意义上（“Premonoidal categories and notions of computation”, MSCS 7(5), 1997）；另见 nLab，“funny tensor product” 和 “premonoidal category”。
    - 单位 [mempty : 1 ⟶ c] 选取张量单位对象；
    - 在 StrictCat 的严格 Hom-setoid [Functor_StrictEq_Setoid] 中读取的幺半群律说明张量的单位律和结合律严格成立，其比较数据是有趣的单位子（Construction/Funny/Unitors.v）和有趣的结合子（Construction/Funny/Associator.v）。严格性使所有的 Power–Robinson 的中心一致性同构成为恒等式，因此不需要陈述任何中心性条件：这是前单体概念的严格情况，其一般的、同构弱化形式存在于 Structure/Premonoidal.v 中。
 

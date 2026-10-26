@@ -35,8 +35,8 @@ Generalizable All Variables.
     RECORDED CORRECTION describes; measured, [About Sets_initial_recovered]
     reads [@Initial Sets@{u0 u}] with [u0 < u] and no [Set]);
     the caps `JMeq`, `False_rect` and `projections` arrive with
-    [Sets_Complete].  Six `.glob` heads, all `def`, all "Closed under the
-    global context", zero `Axioms:` lines, no `Qed`, no `Defined`, none of
+    [Sets_Complete].  Six `.glob` heads, all `def`, all “Closed under the
+    global context”, zero `Axioms:` lines, no `Qed`, no `Defined`, none of
     the seven `Require`s droppable, zero name collisions.  NOT delivered:
     a witness at any other category ([FinSet] would need a [Complete
     FinSet] that does not exist); any [eq_refl] reading of the round trip

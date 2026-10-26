@@ -22,12 +22,12 @@ Require Import Category.Instance.Ab.ModFunctor.
 Generalizable All Variables.
 
 (*
- Book: Riehl, "Category Theory in Context", 2nd ed., Corollary
+ Book: Riehl, “Category Theory in Context”, 2nd ed., Corollary
  5.6.10, printed p. 212 (PDF p. 232) — riehl:5.6:cor10; with
  her Theorem 5.6.5, printed pp. 210–211 (PDF pp. 230–231),
  Exercise 5.6.ii, printed p. 217, and Definition 3.4.1, printed
  pp. 103–104
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., Springer GTM 5, 1998, §V.1, printed pp. 111–112 (PDF
  pp. 120–121), the Definition of creation on printed p. 112
  nLab: https://ncatlab.org/nlab/show/created+limit
@@ -35,20 +35,20 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/Mod
 
  Mac Lane defines creation in §V.1.  Having built the limits of groups
- termwise out of the limits of their underlying sets, he says that "each
+ termwise out of the limits of their underlying sets, he says that “each
  forgetful functor 'creates' limits in the sense of the following
- definition" (printed p. 111, PDF p. 120), and the Definition (printed
+ definition” (printed p. 111, PDF p. 120), and the Definition (printed
  p. 112) reads: V : A → X creates limits for F : J → A if
- "(i) To every limiting cone τ" over VF "there is exactly one pair ⟨a, σ⟩
- consisting of an object a ∈ A with Va = x and a cone σ" over F "with
- Vσ = τ, and if, moreover, (ii) This cone" σ "is a limiting cone in A."  "V
- creates colimits" is "the above with the arrows in all cones reversed", and
- he adds that "V creates limits" means only that V produces limits for
+ “(i) To every limiting cone τ” over VF “there is exactly one pair ⟨a, σ⟩
+ consisting of an object a ∈ A with Va = x and a cone σ” over F “with
+ Vσ = τ, and if, moreover, (ii) This cone” σ “is a limiting cone in A.”  “V
+ creates colimits” is “the above with the arrows in all cones reversed”, and
+ he adds that “V creates limits” means only that V produces limits for
  functors F whose composite VF already has a limit.  Riehl's Definition
  3.4.1 (printed pp. 103–104) keeps the conditional and drops the uniqueness:
- F creates the limits of K "if whenever FK has a limit in D, then K has a
+ F creates the limits of K “if whenever FK has a limit in D, then K has a
  limit as well, in which case a cone over K is a limit cone if and only if
- its image under F is a limit cone", and the definition "dualizes" to
+ its image under F is a limit cone”, and the definition “dualizes” to
  colimits.  Structure/Limit/Creation.v implements both: [CreatesLimit] is
  Riehl's (a lift, an isomorphism of its image with the given cone, and
  reflection), [StrictlyCreatesLimit] keeps Mac Lane's lift on the nose and
@@ -59,23 +59,23 @@ Generalizable All Variables.
  The algebraic forgetful functors to Set create limits and, as a rule, no
  colimits: the free product of groups is not the disjoint union of their
  sets, and Riehl records, right after the corollary this file proves, that
- U : Group → Set "does not preserve (and so, in particular, does not create)
- coproducts" (printed p. 212).  One level up the answer changes.  Her
+ U : Group → Set “does not preserve (and so, in particular, does not create)
+ coproducts” (printed p. 212).  One level up the answer changes.  Her
  Corollary 5.6.10 (printed p. 212, PDF p. 232) states, in this header's
  paraphrase, that the forgetful functor U : _R Mod → Ab creates every
  colimit that Ab has.  Her proof is monadic.  U is monadic with monad
- R ⊗_ℤ − (her Example 5.5.7(i)); "By Example 4.4.15, for any pair of abelian
- groups A and B, there is a natural isomorphism" involving "the abelian
- group Hom_ℤ(R, B) of group homomorphisms R → B", so that the monad "has a
- right adjoint Hom_ℤ(R, −)" (the sibling's header records how the display
- reads); "By Theorem 4.6.2, R ⊗_ℤ − preserves all colimits and so Theorem
- 5.6.5(ii) applies to all diagrams in Ab".  That theorem (printed p. 210)
- reads "A monadic functor U : A → C creates (i) any limits that C has, and
- (ii) any colimits that C has and the monad and its square preserve".  Her
+ R ⊗_ℤ − (her Example 5.5.7(i)); “By Example 4.4.15, for any pair of abelian
+ groups A and B, there is a natural isomorphism” involving “the abelian
+ group Hom_ℤ(R, B) of group homomorphisms R → B”, so that the monad “has a
+ right adjoint Hom_ℤ(R, −)” (the sibling's header records how the display
+ reads); “By Theorem 4.6.2, R ⊗_ℤ − preserves all colimits and so Theorem
+ 5.6.5(ii) applies to all diagrams in Ab”.  That theorem (printed p. 210)
+ reads “A monadic functor U : A → C creates (i) any limits that C has, and
+ (ii) any colimits that C has and the monad and its square preserve”.  Her
  proof of clause (ii) is a sketch on printed p. 211 — the structure map on
- the nadir "is induced by the universal property of the colimit cone under T
- U^T D with nadir TL" — and Exercise 5.6.ii (printed p. 217) reads "Prove
- Theorem 5.6.5(ii)".
+ the nadir “is induced by the universal property of the colimit cone under T
+ U^T D with nadir TL” — and Exercise 5.6.ii (printed p. 217) reads “Prove
+ Theorem 5.6.5(ii)”.
 
  TWO ROUTES, AND WHICH ONE THIS FILE TAKES.  The tree has every piece of
  Riehl's route but its last.  The monad and the monadicity are
@@ -215,7 +215,7 @@ Generalizable All Variables.
  is itself refused, keeping its [Qed]s, and Structure/Limit/Preservation.v's
  [preserves_colimit] given bullets that tolerate the goals the added
  transparency closes — and with the three files' universe annotations
- dropped, all four stand, each stripped copy stopping with "cannot unify"
+ dropped, all four stand, each stripped copy stopping with “cannot unify”
  inside its command, and every control holds.  There
  [Print Opaque Dependencies] on [ColimMod], [mcol_reflect],
  [rmod_terminal_colimit], [RMod_Forget_Ab_CreatesColimit] and
@@ -261,7 +261,7 @@ Generalizable All Variables.
  [cone_leg_coh@{u u0 u1 u2 u3 u4}]'s u3, which neither its type nor its
  block mentions, and [terminal_Colimit@{u u0 u1 u2 u3 u4}]'s u4, bounded
  only from below.  Made a placeholder in a copy of the whole file, each is
- refused with "Universe ... is unbound"; [cone_leg_coh]'s u4, also bounded
+ refused with “Universe ... is unbound”; [cone_leg_coh]'s u4, also bounded
  only from below, compiles as a placeholder and is written c with the rest
  ([cone_leg_coh@{j c o c c c}], [terminal_Colimit@{j c o c l0 l}]).  The
  stdlib caps are inherited, each placed by [About] on every constant of its
@@ -299,7 +299,7 @@ Generalizable All Variables.
  nLab：https://ncatlab.org/nlab/show/created+limit
  nLab：https://ncatlab.org/nlab/show/monadic+functor
  nLab：https://ncatlab.org/nlab/show/ModMac Lane 在 §V.1 中定义了创造。建立了群的极限逐项取自其基础集合的极限之后，他说“每个遗忘函子‘创造’极限，其意义如下定义”（印刷版第111页，PDF 第120页），定义（印刷版第112页）如下：V : A → X 为 F : J → A 创造极限，如果“(i) 对 VF 上的每个极限锥 τ，恰好存在一对 ⟨a, σ⟩，其中对象 a ∈ A 且 Va = x，并且 σ 是 F 上的锥，使 Vσ = τ，并且如果，还有 (ii) 这个锥 σ 是 A 中的极限锥。” “V 创造余极限”就是“上述定义中将所有锥中的箭头反向”，并且他补充说“V 创造极限”仅意味着 V 为那些复合 VF 已经存在极限的函子 F 产生极限。Riehl 的定义 3.4.1（印刷版第103–104）保留条件，但去掉唯一性：
- F 创建 K 的极限“如果每当 FK 在 D 中有极限时，K 也有极限，在这种情况下，K 上的锥是极限锥当且仅当其在 F 下的像是极限锥”，并且定义“对偶化”到余极限。Structure/Limit/Creation.v 实现了两者：[CreatesLimit] 是 Riehl 的（一个提升，一个其像与给定锥的同构，以及反射），[StrictlyCreatesLimit] 精确保留 Mac Lane 的提升及其条款 (ii) 并用反射替代其唯一性，[CreatesColimit]、[StrictlyCreatesColimit] 和 [CreatesAllColimits] 是同一类在对偶范畴中的表述。代数的遗忘函子到集合创建极限，但通常不创建余极限：群的自由积并不是它们集合的并集，而Riehl在这份文件证明的推论之后记录说，U : Group → Set "不保持（因此特别地，不创建）余积"（印刷页 212）。在更高一层的答案会有所不同。她的推论 5.6.10（印刷页 212，PDF 页 232）用本标题的意译表示，遗忘函子 U : _R Mod → Ab 创建 Ab 所有的余极限。她的证明是单体的。U 是与单子 R ⊗_ℤ − 单子主义的（她的例子 5.5.7(i)）；“根据例子 4.4.15，对于任意一对阿贝尔群 A 和 B，存在一个自然同构”涉及“从 R 到 B 的群同态组成的阿贝尔群 Hom_ℤ(R, B)”，因此该单子“有一个右伴随 Hom_ℤ(R, −)”（相关标题记录了显示方式）；“根据定理 4.6.2，R ⊗_ℤ − 保留所有余极限，所以定理 5.6.5(ii) 对 Ab 中的所有图都适用。”该定理（印刷页 210）写道：“一个单子函子 U: A → C 创建 (i) C 中存在的任意极限，以及 (ii) C 中存在的任意余极限，且单子及其平方保持它们。”她对条款 (ii) 的证明在印刷页 211 是一个草图——底点上的结构映射“由余极锥在 T U^T D 下的普遍性质以及底点 TL 引出”——以及练习 5.6.ii（印刷页）。217）写着“证明 定理 5.6.5(ii)”.两条路线，以及这个文件采用哪一条。该树包含 Riehl 路线的所有部分，除了最后一部分。Monad 和 monadicity 属于 Instance/Mod/TensorMonad.v；tensor–hom 对偶和 monad 及其平方的余连续性属于其兄弟文件 Instance/Mod/TensorMonad/Cocontinuous.v；它们所提供的步骤，即她在 Eilenberg–Moore 遗忘函子上的定理 5.6.5(ii)，是问题 #1008，状态为打开，并且在 [CreatesColimit] 到 [EM_Forget] 之间不存在解决方案。因此，这个文件直接证明了推论，作为 Instance/Mod/Limit.v 创建极限的余极限对偶，并且从未提到 monad：它不导入任何 TensorMonad 文件，其闭包为 68 个文件，而兄弟文件的闭包为 82 个文件，每个文件都包括自身。单子路径所增加的内容，以及后续操作必须完成的内容，都记录在兄弟节点的头信息中。创建的作用是一个中介物。设 N 是 Ab 下的 U ◯ K 的余极限锥——在树中，是 Ab^op 上 (RMod_Forget_Ab R)^op ◯ K^op 的极限锥，其各条腿为插入 ι_i: U(K i) → N。对于固定的标量 r，族 i ↦ ι_i ∘ (r ·) 再次构成 Ab 中的余锥 ([mcol_smul_cone])：K i 上的每个 r · 是群同态（Instance/Ab/ModFunctor.v 的 [module_act]，通过 Instance/Mod.v 的 [rm_smul_zero_r] 是幺元性的，通过 [rm_smul_distr_l] 是加法性的；导入它需一个闭包文件，该文件），且该族是一致的，因为 K 的箭头是 R-线性的 ([rm_map_smul])。其从底点出的中介物 [mcol_smul_map]，就是创建的作用 ([mcol_smul], [mcol_smul_is_mediator])，定义三角形为 ρ_r(ι_i m) ≈ ι_i (r · m) ([mcol_smul_triangle])。作为 Ab 的态射，仲介在向量中是无缘无故可加的：[mcol_smul_distr_l] 是 [cmon_map_plus]，一个引用。引擎是联合上同态性，仅由唯一性决定。[mcol_ext] 说两个从最低点出的 Ab 映射 u, v 在每次插入后都一致时是≈的：它们都是统一余锥 i ↦ v ∘ ι_i 的中介，因此余极限的唯一性条款将它们识别。无需对余极限进行元素级描述，并且在树中也不存在。这里对偶偏离了其模板：Instance/Mod/Limit.v 的 [mlim_ext] 无法用常映射探测其顶点，这些映射不是同态，并将极限传送到 Sets 中以使用 [absets_limit_ext]；余极限通过从其最低点出的映射来测试，这些映射已经是同态。其他四条模律分别是 [mcol_ext] 的每一个应用：标量中的尊重性（[mcol_smul_respects]）、对 Structure/AbCategory.v 点态和的标量分配律 [ab_hom_add]（[mcol_smul_distr_r]）、对复合的结合律（[mcol_smul_assoc]）以及对单位的单位律（[mcol_smul_one]）。[ColimMod] 是模，[mcol_hom] 是使插入保持 R 线性的操作，[mcol_cone] 是模的余锥。反射和限制子句是一个引理。[mcol_reflect]：一个模的余锥，如果其底层余锥在 Ab 中是余极限的，则在 RMod R 中也是余极限的。到另一个余锥 P 的中介是底层余锥在 Ab 中的中介 m；它是 R 线性的，因为对于每个 r，m ∘ (r ·) 和 (r ·) ∘ m 在每次插入后都相同，这再次是 [mcol_ext]；它的唯一性是 Ab 中的唯一性。所创建的余锥是余极限的，根据同一个引理，因为在 Ab 中看到的其像在余极限谓词上是 N：[IsLimitCone] 仅读取锥的顶点和腿，从不读取其相干性证明。PACKAGING。[mcol_strict_lift]是Structure/Limit/Creation.v的版权[StrictLift]
+ F 创建 K 的极限“如果每当 FK 在 D 中有极限时，K 也有极限，在这种情况下，K 上的锥是极限锥当且仅当其在 F 下的像是极限锥”，并且定义“对偶化”到余极限。Structure/Limit/Creation.v 实现了两者：[CreatesLimit] 是 Riehl 的（一个提升，一个其像与给定锥的同构，以及反射），[StrictlyCreatesLimit] 精确保留 Mac Lane 的提升及其条款 (ii) 并用反射替代其唯一性，[CreatesColimit]、[StrictlyCreatesColimit] 和 [CreatesAllColimits] 是同一类在对偶范畴中的表述。代数的遗忘函子到集合创建极限，但通常不创建余极限：群的自由积并不是它们集合的并集，而Riehl在这份文件证明的推论之后记录说，U : Group → Set “不保持（因此特别地，不创建）余积”（印刷页 212）。在更高一层的答案会有所不同。她的推论 5.6.10（印刷页 212，PDF 页 232）用本标题的意译表示，遗忘函子 U : _R Mod → Ab 创建 Ab 所有的余极限。她的证明是单体的。U 是与单子 R ⊗_ℤ − 单子主义的（她的例子 5.5.7(i)）；“根据例子 4.4.15，对于任意一对阿贝尔群 A 和 B，存在一个自然同构”涉及“从 R 到 B 的群同态组成的阿贝尔群 Hom_ℤ(R, B)”，因此该单子“有一个右伴随 Hom_ℤ(R, −)”（相关标题记录了显示方式）；“根据定理 4.6.2，R ⊗_ℤ − 保留所有余极限，所以定理 5.6.5(ii) 对 Ab 中的所有图都适用。”该定理（印刷页 210）写道：“一个单子函子 U: A → C 创建 (i) C 中存在的任意极限，以及 (ii) C 中存在的任意余极限，且单子及其平方保持它们。”她对条款 (ii) 的证明在印刷页 211 是一个草图——底点上的结构映射“由余极锥在 T U^T D 下的普遍性质以及底点 TL 引出”——以及练习 5.6.ii（印刷页）。217）写着“证明 定理 5.6.5(ii)”.两条路线，以及这个文件采用哪一条。该树包含 Riehl 路线的所有部分，除了最后一部分。Monad 和 monadicity 属于 Instance/Mod/TensorMonad.v；tensor–hom 对偶和 monad 及其平方的余连续性属于其兄弟文件 Instance/Mod/TensorMonad/Cocontinuous.v；它们所提供的步骤，即她在 Eilenberg–Moore 遗忘函子上的定理 5.6.5(ii)，是问题 #1008，状态为打开，并且在 [CreatesColimit] 到 [EM_Forget] 之间不存在解决方案。因此，这个文件直接证明了推论，作为 Instance/Mod/Limit.v 创建极限的余极限对偶，并且从未提到 monad：它不导入任何 TensorMonad 文件，其闭包为 68 个文件，而兄弟文件的闭包为 82 个文件，每个文件都包括自身。单子路径所增加的内容，以及后续操作必须完成的内容，都记录在兄弟节点的头信息中。创建的作用是一个中介物。设 N 是 Ab 下的 U ◯ K 的余极限锥——在树中，是 Ab^op 上 (RMod_Forget_Ab R)^op ◯ K^op 的极限锥，其各条腿为插入 ι_i: U(K i) → N。对于固定的标量 r，族 i ↦ ι_i ∘ (r ·) 再次构成 Ab 中的余锥 ([mcol_smul_cone])：K i 上的每个 r · 是群同态（Instance/Ab/ModFunctor.v 的 [module_act]，通过 Instance/Mod.v 的 [rm_smul_zero_r] 是幺元性的，通过 [rm_smul_distr_l] 是加法性的；导入它需一个闭包文件，该文件），且该族是一致的，因为 K 的箭头是 R-线性的 ([rm_map_smul])。其从底点出的中介物 [mcol_smul_map]，就是创建的作用 ([mcol_smul], [mcol_smul_is_mediator])，定义三角形为 ρ_r(ι_i m) ≈ ι_i (r · m) ([mcol_smul_triangle])。作为 Ab 的态射，仲介在向量中是无缘无故可加的：[mcol_smul_distr_l] 是 [cmon_map_plus]，一个引用。引擎是联合上同态性，仅由唯一性决定。[mcol_ext] 说两个从最低点出的 Ab 映射 u, v 在每次插入后都一致时是≈的：它们都是统一余锥 i ↦ v ∘ ι_i 的中介，因此余极限的唯一性条款将它们识别。无需对余极限进行元素级描述，并且在树中也不存在。这里对偶偏离了其模板：Instance/Mod/Limit.v 的 [mlim_ext] 无法用常映射探测其顶点，这些映射不是同态，并将极限传送到 Sets 中以使用 [absets_limit_ext]；余极限通过从其最低点出的映射来测试，这些映射已经是同态。其他四条模律分别是 [mcol_ext] 的每一个应用：标量中的尊重性（[mcol_smul_respects]）、对 Structure/AbCategory.v 点态和的标量分配律 [ab_hom_add]（[mcol_smul_distr_r]）、对复合的结合律（[mcol_smul_assoc]）以及对单位的单位律（[mcol_smul_one]）。[ColimMod] 是模，[mcol_hom] 是使插入保持 R 线性的操作，[mcol_cone] 是模的余锥。反射和限制子句是一个引理。[mcol_reflect]：一个模的余锥，如果其底层余锥在 Ab 中是余极限的，则在 RMod R 中也是余极限的。到另一个余锥 P 的中介是底层余锥在 Ab 中的中介 m；它是 R 线性的，因为对于每个 r，m ∘ (r ·) 和 (r ·) ∘ m 在每次插入后都相同，这再次是 [mcol_ext]；它的唯一性是 Ab 中的唯一性。所创建的余锥是余极限的，根据同一个引理，因为在 Ab 中看到的其像在余极限谓词上是 N：[IsLimitCone] 仅读取锥的顶点和腿，从不读取其相干性证明。PACKAGING。[mcol_strict_lift]是Structure/Limit/Creation.v的版权[StrictLift]
  其中[slift_eq]闭合[eq_refl]，腿闭合[reflexivity];则
  [RMod_Forget_Ab_StrictlyCreatesColimit]，[RMod_Forget_Ab_CreatesColimit]
  通过[StrictlyCreatesLimit_CreatesLimit]，且

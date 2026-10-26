@@ -19,9 +19,9 @@ Generalizable All Variables.
 (*
  nLab:      https://ncatlab.org/nlab/show/FinSet
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_finite_sets
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, Springer 1998, §I.3, printed pp. 14-15
- Book:      Riehl, "Category Theory in Context", Dover 2016, §1.5,
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, §1.5,
  Remark 1.5.8, printed p. 33
 
  Mac Lane's §I.3 example of a full subcategory is the finite sets inside
@@ -35,7 +35,7 @@ Generalizable All Variables.
  its carrier exhausts it UP TO `≈` ([FiniteSetoid] via [mem_upto]).  The
  list need not be duplicate-free and the carrier needs no decidable
  equality.  This is the reading forced by the setoid discipline: the ambient
- `≈` is what "the same element" means, so exhaustion must be stated with
+ `≈` is what “the same element” means, so exhaustion must be stated with
  respect to it, not with respect to Coq's `=` on the carrier.
 
  This is deliberately the cheap witness, sufficient for a full-subcategory
@@ -69,7 +69,7 @@ Generalizable All Variables.
  subsingleton-valued, so this is a feature of the apparatus rather than of
  finiteness.
 
- Terminology, accordingly: "subcategory" in this file always names the
+ Terminology, accordingly: “subcategory” in this file always names the
  [Subcategory] RECORD of Construction/Subcategory.v — the selection data —
  and never asserts that [FinSets_Incl] is injective on objects.  The functor
  is described as fully faithful, which is what is proved of it.

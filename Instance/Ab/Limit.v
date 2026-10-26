@@ -72,10 +72,10 @@ Generalizable All Variables.
  mislead the reader who tries the application.  [ContinuousFunctor] does
  NOT ascribe where GAFT asks for [PreservesImageLimit]: measured,
  [GAFT Ab_Forget Ab_Complete Ab_Forget_creates_continuous sols] is
- refused with "The term \"Ab_Forget_creates_continuous\" has type
- \"ContinuousFunctor Ab_Forget\" while it is expected to have type
- \"Limit.PreservesImageLimit\" (cannot unify \"Limit.Limit K\" and
- \"Cone.Cone K\")".  The bridge
+ refused with “The term \”Ab_Forget_creates_continuous\“ has type
+ \”ContinuousFunctor Ab_Forget\“ while it is expected to have type
+ \”Limit.PreservesImageLimit\“ (cannot unify \”Limit.Limit K\“ and
+ \”Cone.Cone K\“)”.  The bridge
  [Continuous_PreservesImageLimit] (Construction/Comma/Creation.v) is
  load-bearing and must stand in the term, exactly as it does at [Grp]
  (Instance/Grp/FreeAFT.v's [free_group_via_GAFT]), whose probe pins the
@@ -153,7 +153,7 @@ Generalizable All Variables.
  [sets_med_eq], [sets_const] and [sets_limit_ext] reproved here under
  different names -- character-for-character identical after
  [s/absets_/sets_/g], which is how the audit measured it.  An earlier
- revision of this paragraph said "this lemma and its two helpers" and
+ revision of this paragraph said “this lemma and its two helpers” and
  listed only three donors, dropping [sets_pre]; that undercount is
  corrected here rather than silently.  Neither file is the other's
  dependency and the names do not collide, so a consumer may import both.
@@ -171,11 +171,11 @@ Generalizable All Variables.
  [alim_neg_unique] show each operation is determined by the leg
  conditions, and [alim_structure_unique] bundles them; note what those
  consume -- ONLY that the legs preserve the candidate structure, NO law of
- it, so the statement is sharper than "any abelian-group structure making
- the projections homomorphisms is this one".  Categorically,
+ it, so the statement is sharper than “any abelian-group structure making
+ the projections homomorphisms is this one”.  Categorically,
  [Ab_lift_cone_unique] is the generic [screates_lift_unique] at this
  instance, giving the canonical cone isomorphism.  A whole-record
- statement "[A' = LimitAb] for any abelian group [A'] on that carrier" is
+ statement “[A' = LimitAb] for any abelian group [A'] on that carrier” is
  NOT delivered and is not a gap more work here could close: it would need
  [cmon_setoid (ab_cmon A') = vertex_obj[L]] as a Leibniz equality and a
  transport in the type of every operation.
@@ -195,12 +195,12 @@ Generalizable All Variables.
 
  ** UNIVERSES, measured off BOTH binder and block over all 86 constants
 
- RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17), by
+ RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17), by
  [About] under [Set Printing Universes] on every name [Print Module]
  lists.  TWO figures in this paragraph moved and the rest reproduce.
  First, the file now holds 86 constants, not 85 -- 76 declaration heads
- plus the same ten [Program] obligations.  Second, the "ZERO word-bounded
- [Set] occurrences anywhere" is gone: 81 of the 86 blocks mention [Set],
+ plus the same ten [Program] obligations.  Second, the “ZERO word-bounded
+ [Set] occurrences anywhere” is gone: 81 of the 86 blocks mention [Set],
  and all 82 occurrences are the strict bound [Set < u], never an equation
  and never an instance.  That bound is what [PropEquiv] costs, [Prop]'s
  sort entering every object record through [cmon_prop]; a bound is not a
@@ -249,7 +249,7 @@ Generalizable All Variables.
 
  ** STATUS: axiom-free
 
- [Print Assumptions] reports "Closed under the global context" for all of
+ [Print Assumptions] reports “Closed under the global context” for all of
  [Ab_Complete], [Ab_Forget_creates_continuous], [Ab_Forget_creates_limits],
  [Ab_Forget_StrictlyCreatesLimit], [Ab_Forget_CreatesLimit],
  [Ab_Forget_StrictlyCreatesLimits], [Ab_Forget_PreservesAllLimits],
@@ -260,9 +260,9 @@ Generalizable All Variables.
  directory-wide certification of the remaining sixty-one constants;
  nothing here is registered with [make print-assumptions].
 
- RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17):
- one [Print Assumptions] per name over all 86 gives 86 "Closed under
- the global context" and zero [Axioms:] blocks.  The twenty-four
+ RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17):
+ one [Print Assumptions] per name over all 86 gives 86 “Closed under
+ the global context” and zero [Axioms:] blocks.  The twenty-four
  readbacks above are therefore now a whole-file measurement, with
  sixty-two constants rather than sixty-one outside the original list;
  it is still a ONE-TIME measurement and still not a standing gate.
@@ -273,8 +273,8 @@ Generalizable All Variables.
  Instance/Ab/DirectedColimit.v cover pieces of that ground and are not
  touched).  No application of Adjunction/GAFT.v's [GAFT] at [Ab_Forget]
  is built, and no [Ab] counterpart of Instance/Grp/FreeAFT.v.  An
- earlier revision said "No GAFT application at [Ab]: the two hypotheses
- are made available, nothing consumes them"; since #449 and #454 both
+ earlier revision said “No GAFT application at [Ab]: the two hypotheses
+ are made available, nothing consumes them”; since #449 and #454 both
  are consumed in code elsewhere, measured by their occurrences outside
  comments in the .v files outside Test/: [Ab_Complete] by Instance/Mod/
  Limit.v (limits created along [RMod_Forget_Ab]) and by Instance/Mod/
@@ -322,7 +322,7 @@ Generalizable All Variables.
  （不同项的不同名称），差异就是关键所在。[Ab_Forget_Continuous]  假定自由/忘记伴随。
  [Ab_Forget_creates_continuous]  不假定除以下之外的任何东西：
  [Sets_Complete]  和下面的创建结果；没有伴随，没有自由对象，没有 [FreeAb] 。这对于恰好一个消费者形式很重要。
- Freyd 的一般伴随函子定理（Adjunction/GAFT.v）接受 [comp : @Complete C] 和 [cont : @PreservesImageLimit C D U]，并返回 [U] 的一个左伴随。给它提供 [Ab_Forget_Continuous] 就相当于给它提供一个由它被要求产生的伴随自身构建的项，因此该应用将是循环的，并且什么都不会建立；给它提供 [Ab_Forget_creates_continuous] 则不会如此，这正是使 Instance/Grp/FreeAFT.v 的 [Ab] 类似体成为可能的原因。针对本段先前修订的一个更正，因为它会误导尝试应用的读者。[ContinuousFunctor] 并不像 GAFT 要求 [PreservesImageLimit] 那样进行归属：已测量，[GAFT Ab_Forget Ab_Complete Ab_Forget_creates_continuous sols] 被拒绝，显示“术语 \"Ab_Forget_creates_continuous\" 的类型为 \"ContinuousFunctor Ab_Forget\"，而预期类型为 \"Limit.PreservesImageLimit\"（无法统一 \"Limit.Limit K\" 和 \"Cone.Cone K\"）”。桥 [Continuous_PreservesImageLimit]（Construction/Comma/Creation.v）是承重的，必须出现在术语中，正如在 [Grp]（Instance/Grp/FreeAFT.v 的 [free_group_via_GAFT]）中所做的那样，其探针固定了与其 N6 相同的拒绝。因此 [Ab] 三元组将是 [Ab_Complete]、[Continuous_PreservesImageLimit Ab_Forget_creates_continuous] 和一个解集。这里没有构建任何 [Ab] 应用程序 -- 见未交付 -- 因此所声称的是可用性，而不是使用。
+ Freyd 的一般伴随函子定理（Adjunction/GAFT.v）接受 [comp : @Complete C] 和 [cont : @PreservesImageLimit C D U]，并返回 [U] 的一个左伴随。给它提供 [Ab_Forget_Continuous] 就相当于给它提供一个由它被要求产生的伴随自身构建的项，因此该应用将是循环的，并且什么都不会建立；给它提供 [Ab_Forget_creates_continuous] 则不会如此，这正是使 Instance/Grp/FreeAFT.v 的 [Ab] 类似体成为可能的原因。针对本段先前修订的一个更正，因为它会误导尝试应用的读者。[ContinuousFunctor] 并不像 GAFT 要求 [PreservesImageLimit] 那样进行归属：已测量，[GAFT Ab_Forget Ab_Complete Ab_Forget_creates_continuous sols] 被拒绝，显示“术语 \“Ab_Forget_creates_continuous\” 的类型为 \“ContinuousFunctor Ab_Forget\”，而预期类型为 \“Limit.PreservesImageLimit\”（无法统一 \“Limit.Limit K\” 和 \“Cone.Cone K\”）”。桥 [Continuous_PreservesImageLimit]（Construction/Comma/Creation.v）是承重的，必须出现在术语中，正如在 [Grp]（Instance/Grp/FreeAFT.v 的 [free_group_via_GAFT]）中所做的那样，其探针固定了与其 N6 相同的拒绝。因此 [Ab] 三元组将是 [Ab_Complete]、[Continuous_PreservesImageLimit Ab_Forget_creates_continuous] 和一个解集。这里没有构建任何 [Ab] 应用程序 -- 见未交付 -- 因此所声称的是可用性，而不是使用。
 
  另外两个区别已说明，以免混淆两个常数。[ContinuousFunctor] 不是类，并且这里没有任何东西注册为 [Instance]，因此两者在解析中从不竞争；连续性只是创建结果产生的三件事之一，另外两个是 [Ab_Complete] 和反射条款 [Ab_Forget_reflects_limits]，而 RAPL 完全不给出。这里没有声称创建在形式上比连续性更强 -- 本文件中没有将两者作为命题进行比较。
 
@@ -563,7 +563,7 @@ Qed.
 (* * ** The vertex's equality is propositional / * ** 顶点的相等性是命题性的 *)
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) an [AbObject]
+ Since the PR “algebraic carriers are sets” (2026-09-17) an [AbObject]
  carries [cmon_prop], so the lifted group owes a [Prop]-valued relation on
  [vertex_obj[L]] -- and [L] here is an ARBITRARY limit of the underlying
  sets, not the one [Sets_Complete] chooses, so
@@ -711,9 +711,9 @@ Proof.
 Qed.
 
 (*
- The three clauses together: Mac Lane's "there is exactly one
+ The three clauses together: Mac Lane's “there is exactly one
  abelian-group structure on the limit making every projection a
- homomorphism".  No law of the candidate structure is consumed -- not
+ homomorphism”.  No law of the candidate structure is consumed -- not
  even commutativity -- only that the legs preserve it. 
 
  --------
@@ -912,7 +912,7 @@ Definition Ab_Forget_PreservesAllLimits : PreservesAllLimits Ab_Forget :=
   creates_limits_PreservesAllLimits Ab_Forget Sets_Complete
     Ab_Forget_creates_limits.
 
-(* * * "Limits of abelian groups are computed on underlying sets", literally / * * “阿贝尔群的极限是在底层集合上计算的”，字面意思 *)
+(* * * “Limits of abelian groups are computed on underlying sets”, literally / * * “阿贝尔群的极限是在底层集合上计算的”，字面意思 *)
 
 (*
  At the limits [Sets_Complete] chooses -- the compatible families of

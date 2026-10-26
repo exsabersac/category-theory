@@ -8,11 +8,11 @@ Generalizable All Variables.
 (** * Spaces with Prop-valued opens / * 带有 Prop 值的 opens 空格 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9, book p. 132 (PDF p. 141), read from the page image: the
  category Top and its faithful underlying-set functor G : Top → Set
  (catalog id maclane:V.9:construction1)
- Fong and Spivak, "Seven Sketches in Compositionality", §7.3.2,
+ Fong and Spivak, “Seven Sketches in Compositionality”, §7.3.2,
  Definition 7.25, printed p. 234 (PDF p. 246): a topology is a set of
  subsets containing the whole set and closed under binary intersections
  and under unions of families indexed by any set, as the catalogue
@@ -37,7 +37,7 @@ Generalizable All Variables.
  [Type@{o}] is refused, and Instance/Top/StoneCech.v's header traces
  the refutation of [CompHaus]'s completeness under [IEM] to the
  homs sitting above the points.
- - Mac Lane's subspace predicate, "V is the preimage of an open of X",
+ - Mac Lane's subspace predicate, “V is the preimage of an open of X”,
  quantifies over the opens of X; over [Top] it is refused at
  [Type@{o}] and lives one universe up (Instance/Top/Subspace/
  TypeValued.v's [tsub_open]).
@@ -58,9 +58,9 @@ Generalizable All Variables.
  dependent sum; nothing in this file or in Instance/Top/Subspace.v
  eliminates membership into data.
 
- PROVENANCE.  This file is #1328's item 1, "a Prop-valued
+ PROVENANCE.  This file is #1328's item 1, “a Prop-valued
  topological-space record and category, with homs at the points'
- universe", landed under #457 by the maintainer's decision of 2026-09-24
+ universe”, landed under #457 by the maintainer's decision of 2026-09-24
  at the path #1328 suggested.  It sits beside Instance/Top.v, not in its
  place: [Top] and its consumers are unchanged.  What stays for #1328:
  [PCompHaus] (its suggested Instance/Top/Prop/CompHaus.v), the comparison
@@ -84,8 +84,8 @@ Generalizable All Variables.
  axioms and restates the union axiom as (b).  Instance/Top/StoneCech.v's
  header cites that control as the encoding's first measurement.
 
- THE UNION AXIOM, MEASURED BOTH WAYS.  Two statements of "arbitrary
- unions" are available for Prop-valued opens:
+ THE UNION AXIOM, MEASURED BOTH WAYS.  Two statements of “arbitrary
+ unions” are available for Prop-valued opens:
  (a) over an index type at the points' universe,
  [∀ (I : Type@{o}) (U : I → X → Prop), (∀ i, POpen (U i)) →
  POpen (fun x => ex (fun i => U i x))], [p455_TopP]'s form;
@@ -98,7 +98,7 @@ Generalizable All Variables.
  (b).  Under (a) the subspace's union is witnessed by the union of all
  the witnessing opens, indexed by pairs (index, open of X); that index
  type reads back at [Type@{max(Set+1,o)}] (About), and used as a union
- index at [o := Set] it is refused, "Cannot enforce Set+1 <= Set", while
+ index at [o := Set] it is refused, “Cannot enforce Set+1 <= Set”, while
  under a declared [Set < o] it is accepted; so the subspace built from
  that pair-indexed witness, the only route tried, carries [Set < o].
  Deriving (b) from (a) needs the index [{ U | F U }] and is refused at
@@ -133,7 +133,7 @@ Generalizable All Variables.
  at [eq_refl] ([PDiscrete_carrier], [PDiscrete_open]).  Built instead in
  proof mode by [refine] and closed [Qed], as #457's review prototyped
  it, the points' readback at [eq_refl] is refused (Coq: cannot unify
- "pt_carrier (PDiscreteQ S)" and "S", the Qed copy named [PDiscreteQ]
+ “pt_carrier (PDiscreteQ S)” and “S”, the Qed copy named [PDiscreteQ]
  in a scratch file carrying this file); measured, not pinned.  Every
  setoid map out of a discrete space is continuous ([pdisc_cont]), so
  [pdisc_mor S Y f] is [f] as an arrow of [PTopCat] ([pdisc_mor_map], at

@@ -57,7 +57,7 @@ Generalizable All Variables.
  [exl ∘ (id △ 0) ≈ id] against [exr ∘ (id △ 0) ≈ 0].
 
  STALE PREMISES, RE-MEASURED.
- - "Neither the functor nor its target exists": FALSE.  Instance/Ab.v
+ - “Neither the functor nor its target exists”: FALSE.  Instance/Ab.v
  declares [Ab] and [Ab_Forget]; Instance/Ab/Free.v declares
  [FreeAb : Sets ⟶ Ab], [free_ab_adjunction] and
  [free_ab_universal] — the term
@@ -65,15 +65,15 @@ Generalizable All Variables.
  ℤ-valued functions.  Work bullet 1 (construct the functor with its
  universal property) was done by #400; nothing about the free abelian
  group is re-derived here.
- - The QA correction "consume #540's Construction/FreeAb.v … bridging
- to Instance/Ab.v's carrier": that file does not exist in the tree;
+ - The QA correction “consume #540's Construction/FreeAb.v … bridging
+ to Instance/Ab.v's carrier”: that file does not exist in the tree;
  the donor is Instance/Ab/Free.v, already over #256's [Ab], and no
  bridge is needed.
- - "no in-tree counterexample to continuity of any functor is
- recorded": PARTIAL.  Structure/Limit/Preservation/Separation.v's
+ - “no in-tree counterexample to continuity of any functor is
+ recorded”: PARTIAL.  Structure/Limit/Preservation/Separation.v's
  [sep_not_PreservesLimitCone] refutes cone-level preservation for a
- synthetic span functor, so "the library's first recorded
- discontinuity witness" is NOT claimed.  What is first, measured by a
+ synthetic span functor, so “the library's first recorded
+ discontinuity witness” is NOT claimed.  What is first, measured by a
  tree-wide search for the class names beside [False]: the first
  [ContinuousFunctor _ → False], the first [PreservesAllLimits _ →
  False], and the first refutation of [PreservesLimitCone] /
@@ -194,7 +194,7 @@ Generalizable All Variables.
 
  COUNTS AND CONVENTIONS.
  - 33 [.glob] declaration heads (23 [def], 10 [prf]) plus 1 [Program]
- obligation ([empty_cone_at]), all "Closed under the global context",
+ obligation ([empty_cone_at]), all “Closed under the global context”,
  zero [Axioms:] lines; the gate carries the 33 heads, fully qualified,
  [FreeAb_not_continuous] among them ([FreeAb] itself is #400's and
  sits in Instance/Ab/Free.v's own gate entries).
@@ -220,7 +220,7 @@ Generalizable All Variables.
  Structure/Limit/Comparison.v to it, but that file is witness 2's
  dependency too — [DiscreteCat_Functor'], [discrete_cone],
  [discrete_IsLimitCone_of_IsIndexedProduct]) and is kept because it
- is the issue's "comparison map" bullet.
+ is the issue's “comparison map” bullet.
  [Coq.ZArith.ZArith] is required explicitly (for [1%Z]; the tree's 68
  other files spell it the same way).  Name collisions: none — each of
  the 33 names has 0 word occurrences elsewhere in the tree.
@@ -239,8 +239,8 @@ Generalizable All Variables.
  paths excluded), every first break on a positive line.  [make todo]
  grows by those 9 lines only (2246 →
  2255 over 3a387cdb, master b0d0fa63 with #429), so
- the issue's "adds no new hits" box is not met as written; disclosed.
- - "The free abelian group on a point" is never written as ℤ: no
+ the issue's “adds no new hits” box is not met as written; disclosed.
+ - “The free abelian group on a point” is never written as ℤ: no
  isomorphism [FreeAb 1 ≅ ℤ] exists in the tree (the inverse would need
  an integer scalar action on [FATerm]), and the file needs only that
  the group has a nonzero element.
@@ -256,7 +256,7 @@ Generalizable All Variables.
  N5 pins the binary boundary, the countable one is unpinned.
  - [FreeAb 1 ≅ ℤ]; countable products in Ab; a repair of [Ab_trivial]'s
  or [_0]'s [Set] pins.
- - "The library's first recorded discontinuity witness" (false; see
+ - “The library's first recorded discontinuity witness” (false; see
  STALE PREMISES).
  - No edit to Instance/Ab.v, Instance/Ab/Free.v, Instance/Zero.v,
  Structure/Limit/Comparison.v or Structure/Limit/Preservation.v. 

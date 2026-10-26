@@ -19,7 +19,7 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §I.4, printed p. 17 (PDF 27) — maclane:I.4:construction3
  (the finite-iso and non-naturality halves are
  Instance/Ab/Character/Finite.v's and NonNatural.v's)
@@ -156,7 +156,7 @@ Qed.
 
 (*
  The setoid is NAMED, and so is its [Prop] mirror, because since the PR
- "algebraic carriers are sets" (2026-09-17) the [AbObject] below owes a
+ “algebraic carriers are sets” (2026-09-17) the [AbObject] below owes a
  [cmon_prop] and a field of a [Program] record literal cannot mention a
  setoid that is still an evar while the literal is being elaborated. 
 

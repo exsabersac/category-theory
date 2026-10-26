@@ -39,41 +39,41 @@ Generalizable All Variables.
 (* * * The two presentations of the p-adic solenoid / * * p进数螺线管的两种表示 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.1, book pp. 110-111 (PDF pp. 119-120), read from the page images
  (catalog id maclane:V.1:construction3).  Book p. 111:
- "Again, in Top, take each object F_n to be a circle S^1, and each
+ “Again, in Top, take each object F_n to be a circle S^1, and each
  arrow f_n : S^1 → S^1 to be the continuous map wrapping the domain
  circle S^1 uniformly p times around the codomain circle. ... This L
- is the limit space in Top; it is known as the p-adic solenoid."
+ is the limit space in Top; it is known as the p-adic solenoid.”
  Book p. 110, earlier in the same section:
- "Limits in Grp and other categories may be constructed from the set
+ “Limits in Grp and other categories may be constructed from the set
  of all cones in much the same way.  For example, if F : ω^op → Grp
  ... then each F_n is a group, the set L of all cones (all matching
  strings x) is also a group under pointwise multiplication
  ((xy)_n = x_n y_n), and the projection μ_n : L → F_n with x ↦ x_n
- is a group homomorphism"
- and, of the example between them: "The p-adic integers Z_p (with p a
+ is a group homomorphism”
+ and, of the example between them: “The p-adic integers Z_p (with p a
  prime) illustrate this construction.  Take F : ω^op → Rng with
- F_n = Z/p^nZ".  Book p. 111, after Theorem 2: "The same argument will
+ F_n = Z/p^nZ”.  Book p. 111, after Theorem 2: “The same argument will
  construct all small limits in Rng, Ab, R-Mod and similar algebraic
- categories, using the forgetful functors U to Set."
- Riehl, "Category Theory in Context", §3.6, Example 3.6.3, printed
+ categories, using the forgetful functors U to Set.”
+ Riehl, “Category Theory in Context”, §3.6, Example 3.6.3, printed
  p. 116 (PDF p. 136), read from the page image (catalog id
- riehl:3.6:example3): "consider the diagram ω^op → Top whose objects
- are circles S^1 and in which each generating map is the "pth power
- map," the covering map that wraps the domain circle uniformly p times
+ riehl:3.6:example3): “consider the diagram ω^op → Top whose objects
+ are circles S^1 and in which each generating map is the ”pth power
+ map,“ the covering map that wraps the domain circle uniformly p times
  around the codomain circle ... The inverse limit defines the p-adic
- solenoid."
- nLab: https://ncatlab.org/nlab/show/solenoid ("The P-adic solenoid is a
- compact, connected topological group")
+ solenoid.”
+ nLab: https://ncatlab.org/nlab/show/solenoid (“The P-adic solenoid is a
+ compact, connected topological group”)
  Wikipedia: https://en.wikipedia.org/wiki/Solenoid_(mathematics)
- Wikipedia: https://en.wikipedia.org/wiki/Inverse_limit (Examples: "The
+ Wikipedia: https://en.wikipedia.org/wiki/Inverse_limit (Examples: “The
  p-adic solenoid is the inverse limit of the topological groups
  R/p^nZ ... Its elements are exactly of form n+r, where n is a p-adic
- integer, and r ∈ [0,1) is the "remainder".")
- Wikipedia: https://en.wikipedia.org/wiki/Covering_space ("Another
- covering of the unit circle is the map q:S¹→S¹ with q(z)=z^n")
+ integer, and r ∈ [0,1) is the ”remainder“.”)
+ Wikipedia: https://en.wikipedia.org/wiki/Covering_space (“Another
+ covering of the unit circle is the map q:S¹→S¹ with q(z)=z^n”)
 
  BACKGROUND.  Instance/Top/Solenoid.v builds the solenoid as the book
  asks, a limit of circles in a category of spaces.  The solenoid is also
@@ -83,20 +83,20 @@ Generalizable All Variables.
  constructive Cauchy reals: the group-theoretic tower, the circle GROUP
  under the p-th power endomorphism in [Ab], and the space tower, the
  circle SPACE under the p-fold wrapping map; the p-adic integers, as the
- fibre of the solenoid over the base point; and Riehl's word "covering",
+ fibre of the solenoid over the base point; and Riehl's word “covering”,
  as evenly covered neighbourhoods of the wrapping map, over both
  categories of spaces.
 
  WHAT THE APPENDED ITEM ASKS, READ AGAINST THE PAGES.  Issue #410's
- appended Riehl item asks for "the two presentations related -- the
- group-theoretic one this issue names and the covering-space one", and
- its catalog sentence describes Riehl's presentation as "a diagram of
- covering maps rather than as a limit of the p-adic groups".  That
+ appended Riehl item asks for “the two presentations related -- the
+ group-theoretic one this issue names and the covering-space one”, and
+ its catalog sentence describes Riehl's presentation as “a diagram of
+ covering maps rather than as a limit of the p-adic groups”.  That
  phrase is the issue text's own.  The page quoted above presents Mac
  Lane's solenoid as a limit of circles, the p-adic integers being the
  separate example before it; neither book draws a map between the two
  examples, and both books give the one diagram.  What Riehl does give is
- two names for its map, "pth power map" and "covering map".  On R/Z the
+ two names for its map, “pth power map” and “covering map”.  On R/Z the
  p-th power is x ↦ p·x, which is Instance/Top/Circle.v's [circ_mul p],
  the map under [wrap p] and [pwrap p].  So the group-theoretic
  presentation built here is the tower of that endomorphism of the circle
@@ -144,7 +144,7 @@ Generalizable All Variables.
  objects is refused at [eq_refl]: Instance/Sets/InverseLimit.v's
  [tower_obj] builds its [Equivalence] by a [Qed] obligation applied to
  the functor, and the two towers are different terms
- (Test/ProbeSolenoid410.v's N7, "cannot unify").  That is the donor's
+ (Test/ProbeSolenoid410.v's N7, “cannot unify”).  That is the donor's
  opacity and nothing more.  The probe's [p410_tower_obj], the donor's
  definition with its obligation closed [Defined], accepts [eq_refl]
  for [UCircleTower p] against [Ab_Forget ◯ GroupTower p]
@@ -213,8 +213,8 @@ Generalizable All Variables.
  points' universe: Instance/Top/Subspace/TypeValued.v's [tsub_open]
  quantifies over the opens of the ambient space and is valued one
  universe above the points, and supplying it at the arc as the opens
- of a [TopSpace@{o}] is refused, "Cannot enforce o1 <= o because
- o < o1" (Test/ProbeSolenoid410.v's N8; its [p410_tsub_arc_whole] is
+ of a [TopSpace@{o}] is refused, “Cannot enforce o1 <= o because
+ o < o1” (Test/ProbeSolenoid410.v's N8; its [p410_tsub_arc_whole] is
  the same predicate accepted one universe up).  The subspaces of the
  circle are nonetheless spaces at [o], by the technique of
  Instance/Top/Solenoid.v's [Solenoid p]: a ball base, characterised by
@@ -271,8 +271,8 @@ Generalizable All Variables.
  [Zp_fibre_iso] in [Ab], [pwrap_sheet_iso] in [PTopCat],
  [wrap_sheet_iso] in [Top].  Type-valued equivalences ([↔], the
  library's [iffT]): [csub_universal], and the last component of
- [wrap_evenly_covered].  [Print Assumptions] prints "Closed under the
- global context" for every one of the file's 164 constants, listed by
+ [wrap_evenly_covered].  [Print Assumptions] prints “Closed under the
+ global context” for every one of the file's 164 constants, listed by
  [Print Module] and including its 30 [Program] obligations.
 
  UNIVERSES, read by [About] under [Set Printing Universes] on the 164
@@ -333,11 +333,11 @@ Generalizable All Variables.
  of [CircleTower_points] and [space_step_fn].
  - [zp_coord_respects@{s o so +}], [pwrap_evenly_covered@{o +}] and
  [wrap_evenly_covered@{o +}] have extensible universe lists: Coq
- 8.19.2 and 8.20.1 refuse their closed lists ("unbound"); [About]
+ 8.19.2 and 8.20.1 refuse their closed lists (“unbound”); [About]
  reads back [@{s o so}], [@{o}] and [@{o}] on Rocq 9.1 and on Coq
  8.19.2.  [csub_coarsest@{h o +}]
- has one because Rocq 9.1 itself refuses its closed list, "Universes
- ... are unbound", at the coercion of [csub_setoid P] in its binder
+ has one because Rocq 9.1 itself refuses its closed list, “Universes
+ ... are unbound”, at the coercion of [csub_setoid P] in its binder
  for [Tp]; [About] reads back [@{h o}].
 
  NOT DELIVERED.  Covering-space theory beyond evenly covered
@@ -433,7 +433,7 @@ Next Obligation.
 Qed.
 Next Obligation. intros a. apply circ_eq_of_creal. simpl. ring. Qed.
 
-(* Riehl's "pth power map", written additively. / Riehl 的“pth 幂映射”，以加法形式书写。 *)
+(* Riehl's “pth power map”, written additively. / Riehl 的“pth 幂映射”，以加法形式书写。 *)
 Program Definition circ_pow@{u o} (p : positive) :
   CircleGroup@{o} ~{Ab@{u o}}~> CircleGroup@{o} := {|
   cmon_map := circ_mul@{o} p

@@ -148,7 +148,7 @@ Open Scope nat_scope.
 (*
    * ** The theory congruence
 
-   [TermEqW] ("W" for "with axioms") is the smallest congruence on
+   [TermEqW] (“W” for “with axioms”) is the smallest congruence on
    [Term Σ] containing both the free equations [TermEq Σ] and the
    theory axioms [smt_eqs E].  Reflexivity is derivable —
    [TEW_termeq _ _ (TE_refl _)] — so it is not a constructor.

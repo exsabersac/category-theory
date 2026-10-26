@@ -1,10 +1,10 @@
 (* * * Mac Lane V.8 Exercise 2(a): the hom-tensor adjunctions over any ring / * * Mac Lane 第八版 练习 2(a)：任意环上的同构-张量伴随 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., §V.8 Exercise 2(a), printed p. 131, PDF p. 140
  (ledger item `maclane:V.8:ex2`, issue #454), read from the
- printed page: "For A a left R-module, B a right R-module
+ printed page: “For A a left R-module, B a right R-module
  and G an abelian group, establish adjunctions
 
  (a) hom_R(A, hom_Z(B, G)) ≅ hom_Z(B ⊗_R A, G)
@@ -12,7 +12,7 @@
 
  where hom_Z(B, G) has a suitable (left or right) R-module
  structure, and where hom_R denotes the hom-set in R-Mod,
- hom_Z that in Ab."  Here hom_Z(B, G) carries the left
+ hom_Z that in Ab.”  Here hom_Z(B, G) carries the left
  R-action induced by B's right one and hom_Z(A, G) the right
  R-action induced by A's left one.  Part (b), in
  Instance/Mod/Cogenerator.v, takes B := R.
@@ -66,8 +66,8 @@
 
  THE TWO RECORDS ARE NOT IDENTIFIED — a stated fact, measured, not
  pinned here.  [HomZL (Ring_RMod (Ring_op R)) G = CoextObj R G] at
- [eq_refl] is refused, ending "(cannot unify "HomZL (Ring_RMod (Ring_op
- R)) G" and "CoextObj R G")".  It is STILL refused in a scratch copy in
+ [eq_refl] is refused, ending “(cannot unify ”HomZL (Ring_RMod (Ring_op
+ R)) G“ and ”CoextObj R G“)”.  It is STILL refused in a scratch copy in
  which every [Qed] of this file and of Instance/Mod/Coextension.v (up
  to that file's probe section) was turned into [Defined] under
  [Set Transparent Obligations], so the refusal is not caused by
@@ -124,10 +124,10 @@
  ring. 
 
  --------
- 书籍：      Mac Lane，《为工作中的数学家准备的范畴》，第2版，§V.8 练习 2(a)，印刷页 131，PDF 页 140（账目编号 `maclane:V.8:ex2`，第 454 期），从印刷页阅读："对于左 R-模 A，右 R-模 B 和阿贝尔群 G，建立下列伴随关系
+ 书籍：      Mac Lane，《为工作中的数学家准备的范畴》，第2版，§V.8 练习 2(a)，印刷页 131，PDF 页 140（账目编号 `maclane:V.8:ex2`，第 454 期），从印刷页阅读：“对于左 R-模 A，右 R-模 B 和阿贝尔群 G，建立下列伴随关系
 
  (a) hom_R(A, hom_Z(B, G)) ≅ hom_Z(B ⊗_R A, G)
- ≅ hom_R(B, hom_Z(A, G))"其中 hom_Z(B, G) 具有适当的（左或右）R-模结构，且 hom_R 表示 R-Mod 中的同态集合，hom_Z 表示 Ab 中的同态集合。这里 hom_Z(B, G) 携带由 B 的右作用诱导的左 R-作用，而 hom_Z(A, G) 携带由 A 的左作用诱导的右 R-作用。部分 (b)，在 Instance/Mod/Cogenerator.v 中，取 B := R。
+ ≅ hom_R(B, hom_Z(A, G))”其中 hom_Z(B, G) 具有适当的（左或右）R-模结构，且 hom_R 表示 R-Mod 中的同态集合，hom_Z 表示 Ab 中的同态集合。这里 hom_Z(B, G) 携带由 B 的右作用诱导的左 R-作用，而 hom_Z(A, G) 携带由 A 的左作用诱导的右 R-作用。部分 (b)，在 Instance/Mod/Cogenerator.v 中，取 B := R。
  书籍：Mac Lane，同上，第 IV.1 节，印刷页 79–80 — 同态集合形式下的对偶关系，Theory/Adjunction.v 的记录呈现，这里通过 [Build_Adjunction'] 构建。
  nLab: https://ncatlab.org/nlab/show/tensor+product+of+modules
  nLab: https://ncatlab.org/nlab/show/Eilenberg-Watts+theorem — 这些练习所服从的定理。

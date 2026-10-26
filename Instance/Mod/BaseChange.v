@@ -1,7 +1,7 @@
 (* * * Base change along ℤ → R: the free R-module on an abelian group / * * 基于 ℤ → R 的变换：在阿贝尔群上的自由 R-模 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., §IV.1, printed pp. 79–80 (PDF pp. 89–90) — adjunctions
  in hom-set form, whose running examples are the
  free/forgetful pairs; the unit is ⌊id⌋ and the whole
@@ -10,7 +10,7 @@
  Book:      Mac Lane, ibid., §I.8, printed pp. 28–29 — the tensor
  product of abelian groups, which is the construction this
  file consumes (Instance/Ab/Tensor.v builds it).
- Book:      Riehl, "Category Theory in Context", Dover 2016, §4.1
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, §4.1
  Example 4.1.10 — extension of scalars along a ring
  homomorphism is left adjoint to restriction of scalars.
  READ THE RELATION TO THAT EXAMPLE PRECISELY: hers runs
@@ -182,27 +182,27 @@
  no equation; with u1 < u declared in a Section (the proof universe
  strictly below the auxiliary one), [ZExtObj Ru Au : obj[RMod Ru]],
  [ZExt Ru] and [zext_adjunction Ru] all elaborate, while
- [Ring_RMod Ru : obj[RMod Ru]] is still refused, now with "Cannot enforce
- u1 = u0 because u1 < u0".  The FIRST and THIRD universes above are the
+ [Ring_RMod Ru : obj[RMod Ru]] is still refused, now with “Cannot enforce
+ u1 = u0 because u1 < u0”.  The FIRST and THIRD universes above are the
  carrier and the auxiliary one, in the order before the auxiliary
  universe became [RingObject]'s first argument; that pair, the carrier
  strictly below the auxiliary universe, is the one this file's Section
  [ZExtProbeUniverses] separates (ra < rc at [RingObject@{rc ra rb}]),
  and its paragraph CONTROLS 5, 7 AND 8, WHICH USED TO BE NEGATIVES,
- records where the equation went: the PR "algebraic carriers are sets"
+ records where the equation went: the PR “algebraic carriers are sets”
  (2026-09-17) moved Instance/Ab/Tensor.v's [ts_eq] to [Prop].
 
  PRIOR ART, AND THREE FILES RECORD THIS EXACT ABSENCE.
- Instance/Ab/Free.v said the tree "has only the forgetful
- direction ([RMod_Forget_Ab], Instance/Mod.v)";
- Instance/Mod/Quotient.v said "an [AbObject] is not exhibited
- as a ℤ-module anywhere in the tree" and named
+ Instance/Ab/Free.v said the tree “has only the forgetful
+ direction ([RMod_Forget_Ab], Instance/Mod.v)”;
+ Instance/Mod/Quotient.v said “an [AbObject] is not exhibited
+ as a ℤ-module anywhere in the tree” and named
  Instance/Rng/Mod.v's [ZRestrict R : RMod R ⟶ RMod Int_Ring] as
  the near miss that is NOT it; Instance/Mod/Tensor.v recorded the
  same.  (Those are the three files' wordings when this file was
  written.  Instance/Ab/Free.v was reworded in this file's own commit
- to "no such passage exists ([RMod_Forget_Ab], Instance/Mod.v, is the
- forgetful direction; ...)", naming [ZExt Int_Ring]; since #454 each of
+ to “no such passage exists ([RMod_Forget_Ab], Instance/Mod.v, is the
+ forgetful direction; ...)”, naming [ZExt Int_Ring]; since #454 each of
  the three carries a further correction, Instance/Mod/Cogenerator.v's
  [Ab_to_ZMod] being the functor they recorded as absent.  An earlier
  revision of this paragraph quoted them in the present tense.)  A
@@ -224,12 +224,12 @@
  [Restrict φ : RMod S ⟶ RMod R].  Neither file is an instance of the
  other in this tree: at φ := ℤ → R that one's source is [RMod Int_Ring]
  and this one's is [Ab].  Say the obstruction precisely, because a
- blanket "no functor between those exists" would be FALSE and is
+ blanket “no functor between those exists” would be FALSE and is
  refuted by this file's own ℤ witness: [RMod_Forget_Ab Int_Ring] is a
  functor [RMod Int_Ring ⟶ Ab], and [ZExt Int_Ring] is one the other
- way.  An earlier revision said "What is absent is the passage the
+ way.  An earlier revision said “What is absent is the passage the
  reduction would need — an [Ab ⟶ RMod Int_Ring] carrying each abelian
- group ITS OWN ℤ-action, which is the absence quoted above".  Since
+ group ITS OWN ℤ-action, which is the absence quoted above”.  Since
  #454 that functor exists, Instance/Mod/Cogenerator.v's [Ab_to_ZMod]
  (each group with its own [zsmul] action), and the three files quoted
  above carry the same correction.  What remains absent is narrower: no
@@ -241,7 +241,7 @@
  left adjoint to [RMod_Forget : RMod R ⟶ Sets] — the free module on a
  SETOID, a different right adjoint.
 
- AXIOMS.  67/67 constants report "Closed under the global context"
+ AXIOMS.  67/67 constants report “Closed under the global context”
  (43 source-declared plus 24 [Program] obligations that no source sweep
  sees; queried by fully qualified name).  Zero of the 67 names occur
  anywhere else in the tree, checked name by name.
@@ -916,11 +916,11 @@ Check (Ring_RMod Ru).
 
 (*
  CONTROLS 5, 7 and 8, WHICH USED TO BE NEGATIVES.  An earlier revision read:
- "NEGATIVE 5 (FORMABILITY).  The identification enters exactly when the
- extension is READ AS AN OBJECT of [RMod R] — not when it is built";
- "NEGATIVE 7 (FORMABILITY).  Hence the functor"; "NEGATIVE 8 (FORMABILITY).
- And hence the headline."  All three were re-measured after the PR
- "algebraic carriers are sets" (2026-09-17) and all three are now FORMABLE
+ “NEGATIVE 5 (FORMABILITY).  The identification enters exactly when the
+ extension is READ AS AN OBJECT of [RMod R] — not when it is built”;
+ “NEGATIVE 7 (FORMABILITY).  Hence the functor”; “NEGATIVE 8 (FORMABILITY).
+ And hence the headline.”  All three were re-measured after the PR
+ “algebraic carriers are sets” (2026-09-17) and all three are now FORMABLE
  at the declared separation.  The cause is upstream: [ZExtObj] is built on
  Instance/Ab/Tensor.v's [AbTensor], whose relation [ts_eq] moved to [Prop],
  so [tensor_med_respects] no longer inducts on a [Type]-valued relation into

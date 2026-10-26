@@ -20,7 +20,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/limit
  Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.2
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.2
  (book p. 113, as Structure/Limit/FromProducts.v cites it) builds every
  small limit from products and equalizers, and the intersection of a
  small family of subobjects, which #451's reading of §V.8 (book p. 130)
@@ -71,7 +71,7 @@ Generalizable All Variables.
  Because the category record is not cumulative, applying a [Complete] at
  that shape forces [Complete]'s shape-object universe to [Set]; at the
  regime the adjoint functor theorems use, [Complete@{h h h o}], this is
- refused as "Cannot enforce Set = h" (measured by the #451 scouts).  The
+ refused as “Cannot enforce Set = h” (measured by the #451 scouts).  The
  route through products over [J] and [J × J] has no such pin, and needs
  no pointed section either.  Lifting the pin on [WideParallel] is a
  separate matter and is not attempted here.

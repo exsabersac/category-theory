@@ -35,15 +35,15 @@ Generalizable All Variables.
 *)
 
 (*
- Awodey, "Category Theory", Carnegie Mellon pre-print of the 1st ed.
+ Awodey, “Category Theory”, Carnegie Mellon pre-print of the 1st ed.
  (September 2005), §10.3, printed p. 278 (PDF p. 287), read from the
- page image: "An example of a right adjoint that is not monadic is the
+ page image: “An example of a right adjoint that is not monadic is the
  forgetful functor from posets, U : Pos → Sets.  Its left adjoint F is
  the discrete poset functor.  For any set X, therefore, one has as the
  unit the identity function X = UF(X).  The reader can easily show
  that the Eilenberg-Moore category for T = 1_Sets is then just Sets
- itself" (catalog id awodey:10.3:example-pos-not-monadic).
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ itself” (catalog id awodey:10.3:example-pos-not-monadic).
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §VI.3, book p. 144 (PDF p. 153), runs the same argument for the
  discrete topology; that example is Instance/Top/Monadicity.v's.
  nLab: https://ncatlab.org/nlab/show/monadic+functor
@@ -119,7 +119,7 @@ Generalizable All Variables.
  A is a variable type, t is neither an abstraction nor a constructor, so
  it is neutral, headed by A, by h or by an eliminator.  A is not an
  inhabitant of A.  An elimination of h returns in [Prop] or [SProp],
- which A is not (the refusal R10 of the probe, "Incorrect elimination"),
+ which A is not (the refusal R10 of the probe, “Incorrect elimination”),
  so a spine from h to A must pass through a proposition with singleton
  elimination eliminated into [Type] (e.g. False, eq, True, and, Acc).
  False has no proof in that context: substituting unit for A and
@@ -130,8 +130,8 @@ Generalizable All Variables.
  settle (nor Acc's functional argument).  So the unprovability is
  argued, not established.  Cf. the HoTT book, IAS 2013, Exercise 3.11,
  for the univalent counterpart.
- Neither reading corrects the page.  Over the tree's [Sets] "the unit
- the identity function X = UF(X)" holds of carriers and functions
+ Neither reading corrects the page.  Over the tree's [Sets] “the unit
+ the identity function X = UF(X)” holds of carriers and functions
  ([TPos_carrier], [MPos_ret]) and is refused of setoids (R4 in the
  probe); over [PropSets] it holds of setoids ([TPosP_setoid]) and is
  refused only of the [PropEquiv] witness, which [PosPForget] recomputes
@@ -205,9 +205,9 @@ Generalizable All Variables.
  contrast is [PropSets_Incl_Monadic].
 
  THE ISSUE'S PREMISES, dated.  Issue #469 was filed on 2026-07-23.  The
- appended Awodey box's "(needs the category of posets from #641)" was
+ appended Awodey box's “(needs the category of posets from #641)” was
  accurate when filed and has been met since PR #1076 (merged
- 2026-08-13).  Its "the induced monad computed to be the identity" is
+ 2026-08-13).  Its “the induced monad computed to be the identity” is
  delivered over [PropSets] ([MPosP_Id_iso]) and, over the tree's
  [Sets], as the characterization [MPos_Id_iff]: a stated deviation.
 
@@ -234,11 +234,11 @@ Generalizable All Variables.
  equal objects of [Monads Sets] (R17); the functor equation
  PropSets_Incl ◯ PosPForget = Pos_Forget (R18), so [Pos_Forget_factor]
  is ≈ and no more; and PosDisc = PosDiscP ◯ PropSets_trunc (R19).  R6
- is a type mismatch at [id], a consequence of R4, with no "cannot
- unify" parenthetical; R10, the naive elimination of the truncation
+ is a type mismatch at [id], a consequence of R4, with no “cannot
+ unify” parenthetical; R10, the naive elimination of the truncation
  that [SetsTruncElim] supplies, is refused by the sort discipline
- ("Incorrect elimination"); the other thirteen are conversion refusals
- ("cannot unify").  R8, R9 and R20 compare a variable object with a
+ (“Incorrect elimination”); the other thirteen are conversion refusals
+ (“cannot unify”).  R8, R9 and R20 compare a variable object with a
  rebuilt pair, and Coq's [sigT] has no η: a variable of [PropSets] does
  not convert with (projT1 X; projT2 X) (R21), where a [SetoidObject], a
  record with primitive projections, does convert with its rebuilt
@@ -623,8 +623,8 @@ Proof.
 Defined.
 
 (*
- Awodey's "the Eilenberg-Moore category for T = 1_Sets is then just Sets
- itself", over [PropSets]: Monad/Identity.v's [IdMonad_EM_equivalence]
+ Awodey's “the Eilenberg-Moore category for T = 1_Sets is then just Sets
+ itself”, over [PropSets]: Monad/Identity.v's [IdMonad_EM_equivalence]
  at [PropSets]. 
 
  --------
@@ -1005,7 +1005,7 @@ Definition trunc_all_PropEquiv@{c so | c < so +}
  Not only [PosDisc]: a morphism of monads to the identity monad from the
  monad of ANY left adjoint of [Pos_Forget] gives the principle, since the
  poset F S is propositional ([pos_PropEquiv]) and the unit carries x ≈ y
- into it.  "Any" is at this lemma's universe instance: the [Adjunction]
+ into it.  “Any” is at this lemma's universe instance: the [Adjunction]
  record's strict slot is so, not a level of its own. 
 
  --------

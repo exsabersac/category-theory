@@ -27,8 +27,8 @@ Generalizable All Variables.
 
  The Maybe/partiality monad (see Instance/Coq/Par.v) is the special case
  [E = unit]; here [E] is an arbitrary monoid, so an error carries typed
- information rather than mere undefinedness, and several errors arising "in
- parallel" (e.g. in the cartesian [fork] below) are merged with the monoid
+ information rather than mere undefinedness, and several errors arising “in
+ parallel” (e.g. in the cartesian [fork] below) are merged with the monoid
  product [⊗], the empty error being [mempty].
 
  Crucially, the homset equivalence here is *error irrelevance*: two
@@ -36,7 +36,7 @@ Generalizable All Variables.
  when they both return *some* [inl] error (regardless of which). Identifying
  all errors is what makes [bind] (which keeps the first error) and parallel
  error-merging (which uses [⊗]) cohere into a category and a cartesian
- structure. A finer "error compatibility" relation — two errors are
+ structure. A finer “error compatibility” relation — two errors are
  equivalent when both are parts of a common error — would be desirable, but
  is not provably transitive for this encoding, so it is not used. 
 

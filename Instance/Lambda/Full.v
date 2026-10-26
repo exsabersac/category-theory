@@ -59,8 +59,8 @@ Set Transparent Obligations.
  beta-reduction      https://ncatlab.org/nlab/show/beta-reduction
  lambda-calculus     https://ncatlab.org/nlab/show/lambda-calculus
  evaluation contexts / reduction semantics:
- M. Felleisen and R. Hieb, "The revised report on the syntactic
- theories of sequential control and state", TCS 103(2), 1992. 
+ M. Felleisen and R. Hieb, “The revised report on the syntactic
+ theories of sequential control and state”, TCS 103(2), 1992. 
 
  --------
  该模块提供了对 de Bruijn STLC 的小步归约关系的 Felleisen-Hieb 风格、基于上下文的呈现（参见 [Exp]）。与每个消除形式使用一个合取规则（如 [Step]）不同，归约被分解为三个可重用的部分：
@@ -82,7 +82,7 @@ Set Transparent Obligations.
  beta-归约       https://ncatlab.org/nlab/show/beta-reduction 
  lambda-演算     https://ncatlab.org/nlab/show/lambda-calculus 
  评估上下文 / 归约语义：
- M. Felleisen 和 R. Hieb, "关于顺序控制和状态的句法理论修订报告", TCS 103(2), 1992。
+ M. Felleisen 和 R. Hieb, “关于顺序控制和状态的句法理论修订报告”, TCS 103(2), 1992。
 *)
 
 Section Full.

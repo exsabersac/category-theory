@@ -15,12 +15,12 @@ Generalizable All Variables.
 (*
    * * Copy-discard (gs-monoidal) categories
 
-   A copy-discard category — also called a gs-monoidal category ("garbage
-   and sharing") — is a symmetric monoidal category [(C, ⨂, I, σ)] equipped
+   A copy-discard category — also called a gs-monoidal category (“garbage
+   and sharing”) — is a symmetric monoidal category [(C, ⨂, I, σ)] equipped
    with a chosen commutative comonoid
 
-   copy[X]    : X ~> X ⨂ X      (comultiplication, "duplicate the wire")
-   discard[X] : X ~> I          (counit, "delete the wire")
+   copy[X]    : X ~> X ⨂ X      (comultiplication, “duplicate the wire”)
+   discard[X] : X ~> I          (counit, “delete the wire”)
 
    on every object, such that the comonoid on [X ⨂ Y] is canonically
    assembled from those on [X] and [Y] (via the middle-interchange
@@ -66,13 +66,13 @@ Generalizable All Variables.
    ([CD_of_Hypergraph] in CopyDiscard/Proofs.v).
 
    nLab:      https://ncatlab.org/nlab/show/copy-discard+category
-   Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-   string diagrams", MSCS 29(7):938–971, 2019 (arXiv:1709.00322)
-   Reference: Fritz, "A synthetic approach to Markov kernels, conditional
-   independence and theorems on sufficient statistics",
+   Reference: Cho & Jacobs, “Disintegration and Bayesian inversion via
+   string diagrams”, MSCS 29(7):938–971, 2019 (arXiv:1709.00322)
+   Reference: Fritz, “A synthetic approach to Markov kernels, conditional
+   independence and theorems on sufficient statistics”,
    Adv. Math. 370:107239, 2020 (arXiv:1908.07021), §2
-   Reference: Corradini & Gadducci, "An algebraic presentation of term
-   graphs, via gs-monoidal categories", Appl. Categ. Structures
+   Reference: Corradini & Gadducci, “An algebraic presentation of term
+   graphs, via gs-monoidal categories”, Appl. Categ. Structures
    7(4):299–331, 1999 
 
    --------

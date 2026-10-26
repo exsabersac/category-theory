@@ -17,10 +17,10 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/Burali-Forti%27s+paradox
  Wikipedia: https://en.wikipedia.org/wiki/System_U#Girard's_paradox
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
  book p. 130, calls a category well-powered when the subobjects of each
- object form a small set; nLab's page states the same ("every object has
- a small poset of subobjects") and records that the property can be
+ object form a small set; nLab's page states the same (“every object has
+ a small poset of subobjects”) and records that the property can be
  absent even from a locally small category with a strong generator.
  Structure/WellPowered.v states the notion with the index universe
  pinned at or below the hom universe, and its witnesses are all
@@ -84,7 +84,7 @@ Generalizable All Variables.
  is not well-powered at the pin when [h <= i], and its top object has a
  pinned datum when [i < h] (measured by the two constants).  That is the
  general shape of the pin, recorded in Structure/WellPowered.v's
- UNIVERSE paragraph: "small" means at or below the category's OWN hom
+ UNIVERSE paragraph: “small” means at or below the category's OWN hom
  universe, and a category whose hom universe is a free parameter, as a
  thin one's is, can be instantiated with its homs raised.  Where the hom
  universe is tied to the objects' carriers, as in [Sets] and the
@@ -120,8 +120,8 @@ Generalizable All Variables.
 
  No non-well-powered category from the tree's concrete instances:
  [Sets] and [Grp] are well-powered one universe up (Instance/Sets/
- WellPowered.v, Instance/Grp/WellPowered.v; this parenthesis said "the
- other algebraic categories were not measured", which is corrected here:
+ WellPowered.v, Instance/Grp/WellPowered.v; this parenthesis said “the
+ other algebraic categories were not measured”, which is corrected here:
  since #454 Instance/Mod/WellPowered.v shows [RMod R] well-powered and
  co-well-powered one universe up, and both at the pin under
  [Untruncate], the remaining algebraic categories being still

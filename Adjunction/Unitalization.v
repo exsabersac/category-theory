@@ -21,11 +21,11 @@ Generalizable All Variables.
 
 (** * Unitalization: the Dorroh extension, left adjoint to Rng ⟶ Rg
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.2
+    Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.2
     Exercise 4 (printed p. 89) [maclane:IV.2:ex4], second half: freely
     adjoining an identity to a ring without one, and exhibiting that
     construction as a left adjoint of the forgetful functor from unital
-    rings.  Riehl, "Category Theory in Context", 2nd ed., §4.7 (printed
+    rings.  Riehl, “Category Theory in Context”, 2nd ed., §4.7 (printed
     p. 180), presents the same construction as R ⊕ ℤ.
     nLab: https://ncatlab.org/nlab/show/rng
     nLab: https://ncatlab.org/nlab/show/unitalisation
@@ -40,8 +40,8 @@ Generalizable All Variables.
     Instance/Vect/TensorAlgebra.v are citations and paraphrase, as the
     note at the TensorAlgebra reference says in terms.
 
-    THE CONSTRUCTION.  The extension is due to J. L. Dorroh, "Concerning
-    adjunctions to algebras", Bull. Amer. Math. Soc. 38 (1932) 85-88 —
+    THE CONSTRUCTION.  The extension is due to J. L. Dorroh, “Concerning
+    adjunctions to algebras”, Bull. Amer. Math. Soc. 38 (1932) 85-88 —
     cited by name and date only, the paper not having been consulted.
     For a rng R it takes the abelian group ℤ ⊕ R with
 
@@ -73,7 +73,7 @@ Generalizable All Variables.
         [rg_mul_neg_l]/[rg_mul_neg_r], which the tree did not have.
       - [zsmul_mul] — the ℤ-action is multiplicative in the SCALAR,
         [(m·n)·a ≈ m·(n·a)].  A brief that guided this file described
-        Instance/Ab/Monoidal.v's [zsmul] API as "complete" and listed its
+        Instance/Ab/Monoidal.v's [zsmul] API as “complete” and listed its
         eleven [zsmul] lemmas plus the [nat_smul] family; that list is
         accurate but the API does NOT contain
         this one.  MEASURED, and the criterion has to be stated
@@ -94,7 +94,7 @@ Generalizable All Variables.
         anticipate, with [nat_smul_mul] beneath it.
       - [Dorroh R : RingObject], with [dorroh_ab R] the genuine biproduct
         [Ab_product ZAb (rg_ab R)] of Instance/Ab/Coproduct.v — Riehl's
-        own "R ⊕ ℤ" rather than a hand-rolled pair type, so all four
+        own “R ⊕ ℤ” rather than a hand-rolled pair type, so all four
         additive fields of the rig and all three of the ring are supplied
         by [:=] with no tactic.
       - [dorroh_insert R : R ~{Rg}~> ring_rg (Dorroh R)], the unit.
@@ -136,7 +136,7 @@ Generalizable All Variables.
         Naturality, Symmetric}.v and Theory/Naturality.v.  That is the
         price of [zsmul], and it buys a complete, already-proved ℤ-action
         API in place of some two hundred lines of duplicate.  (A brief
-        that guided this file put the same delta at "31 to 38", i.e. six
+        that guided this file put the same delta at “31 to 38”, i.e. six
         modules beyond Ab/Monoidal itself.  The SIX is exactly right; the
         31/38 baseline is not this file's, whose own base is 45.)
       - dropping Instance/Ab/Coproduct.v removes TWO — itself plus
@@ -160,14 +160,14 @@ Generalizable All Variables.
         [Set Printing Universes],
           rng_from_Z@{u u0 u1} : ∀ R : RingObject@{Set Set Set}, …
         — pinned at the literal [Set] in all three universes of its
-        argument.  The obvious route to uniqueness, "compose h with
-        [rng_from_Z (Dorroh R)] and quote [rng_from_Z_unique]", would
+        argument.  The obvious route to uniqueness, “compose h with
+        [rng_from_Z (Dorroh R)] and quote [rng_from_Z_unique]”, would
         therefore have confined every statement below to [Set]-sized
         rngs.  [rig_hom_preserves_zring] replaces it.  Its sibling
         [rng_from_Z_unique@{u} : ∀ R : RingObject@{u u u}, …] carries no
         [Set] but identifies all three, and is not needed either.
       - Defining [dorroh_zhom (R : RgObject) : RigHom Int_Ring (Dorroh R)]
-        — the evident "ℤ sits inside the Dorroh extension" homomorphism —
+        — the evident “ℤ sits inside the Dorroh extension” homomorphism —
         COMPILES, and then reports
           dorroh_zhom@{…} : ∀ R : RgObject@{Set Set u6},
             RigHom@{Set} Int_Ring@{Set Set Set} (Dorroh@{Set Set u6 …} R)
@@ -185,8 +185,8 @@ Generalizable All Variables.
     [(n, cmon_zero (rg_ab R))] with an [n : Z] binder makes Coq INFER the
     pair's type, whose first component is then the literal [Z : Set];
     unifying that [prod] with the one inside [Dorroh R] forces [Set] onto
-    [R]'s carrier universe, and the next consumer fails with "Cannot
-    enforce Set = …".  An explicit ascription to
+    [R]'s carrier universe, and the next consumer fails with “Cannot
+    enforce Set = …”.  An explicit ascription to
     [carrier (rig_setoid (Dorroh R))] makes the pair CHECKED instead and
     the equation is never generated.  The same ascription is used in
     [dorroh_extend_unique] and in the strict readbacks below.
@@ -200,8 +200,8 @@ Generalizable All Variables.
     reads [∀ R : RgObject@{u2 u2 u2}], and that identification comes from
     being an OBJECT of [Rg]: with [ao < ah] declared,
     [RgObject@{ao ah ap}] is formable and [rg_mul] is usable at those
-    levels, while [(R : obj[Rg])] is rejected with "Cannot enforce
-    ah = ao because ao < ah".  Pinned as the first probe below.  Nothing
+    levels, while [(R : obj[Rg])] is rejected with “Cannot enforce
+    ah = ao because ao < ah”.  Pinned as the first probe below.  Nothing
     here adds to it and Instance/Rg.v is not edited.
 
     (5) [unitalization_adjunction@{u u0 … u13}] carries NO universe
@@ -726,7 +726,7 @@ Qed.
     nothing forces that instance upward, and universe minimization
     therefore settles it at [Set], dragging [R]'s object and hom
     universes down with it.  Every later consumer then fails with
-    "Cannot enforce Set = …".  The induction below has no such constant
+    “Cannot enforce Set = …”.  The induction below has no such constant
     in it and [Dorroh] itself stays free: [Dorroh@{u u0 u1 u2 …} :
     RgObject@{u u0 u1} → RingObject@{u2 u0 u3}], measured by [About] and
     reproducible from the probe at the foot of this file. 
@@ -1219,7 +1219,7 @@ Example dorroh_TwoZ_extend_one :
     universes.  That is Instance/Rg.v's doing, inherited here, and it is
     why [dorroh_insert] reads [∀ R : RgObject@{u2 u2 u2}] while [Dorroh]
     itself stays free at [RgObject@{u u0 u1}].  Stripped, the error is
-    "universe inconsistency: Cannot enforce ah = ao because ao < ah".
+    “universe inconsistency: Cannot enforce ah = ao because ao < ah”.
 
     (2) Instance/Rng.v's [rng_from_Z] is pinned at [RingObject@{Set
     Set Set}], so it cannot be applied to [Dorroh R] for an [R] whose hom
@@ -1227,7 +1227,7 @@ Example dorroh_TwoZ_extend_one :
     and IS accepted at the same levels, which is what makes the negative
     discriminate between the two donors rather than merely reporting that
     something about [Dorroh R] is large.  Stripped, the error is
-    "Cannot enforce Set = bh".  This is the measurement behind
+    “Cannot enforce Set = bh”.  This is the measurement behind
     [rig_hom_preserves_zring] above.
 
     NOT PINNED, and said so rather than dressed up: the [dorroh_zhom]
@@ -1269,7 +1269,7 @@ Universe 在 [Set] 之上声明； 同级产品 [zring] 是免费的
 
 (*
 The instances are written [@{ap ao ah}], not [@{ao ah ap}]: since the PR
-   "algebraic carriers are sets" (2026-09-17) the record's AUXILIARY universe
+   “algebraic carriers are sets” (2026-09-17) the record's AUXILIARY universe
    -- the one bounding the [cmon_prop] field's own sort, which carries the
    [Set+1] -- is the FIRST argument rather than the third.  The named
    universes keep their roles: [ao] is the carrier level, [ah] the proof

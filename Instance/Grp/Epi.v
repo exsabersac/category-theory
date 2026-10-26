@@ -21,8 +21,8 @@ Generalizable All Variables.
 (* * * Epimorphisms in the category of groups / * * 群范畴中的上同态 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, Section I.5 ("Monics, Epis, and Zeros"),
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, Section I.5 (“Monics, Epis, and Zeros”),
  printed p. 21, Exercise 5
  nLab: https://ncatlab.org/nlab/show/epimorphisms+of+groups+are+surjective
  nLab: https://ncatlab.org/nlab/show/epimorphism
@@ -66,20 +66,20 @@ Generalizable All Variables.
  hypothesis [GrpImageStable].
 
  The first three carry no hypothesis at all and no axiom; [Print Assumptions]
- reports "Closed under the global context" for every constant in this file.
- (That is a claim over a growing set.  Since the PR "algebraic carriers are
- sets" (2026-09-17) this file declares four constants it did not before --
+ reports “Closed under the global context” for every constant in this file.
+ (That is a claim over a growing set.  Since the PR “algebraic carriers are
+ sets” (2026-09-17) this file declares four constants it did not before --
  [StableSetoid_PropEquiv], [SetoidPermutation_PropEquiv], [grp_two_prop] and
  [sym3_letters_prop], with [grp_two_prel], [sym3_prel] and [grp_two_setoid]
  alongside -- and the first two are enumerated in the `make
- print-assumptions` gate and do report "Closed under the global context".
+ print-assumptions` gate and do report “Closed under the global context”.
  The other five were not individually re-run, and this note says so rather
  than restating the claim as though they had been.)
 
- THE CONSTRUCTIVE CONTENT IS THE DENSITY THEOREM, AND NO SEPARATE "COST" CAN
+ THE CONSTRUCTIVE CONTENT IS THE DENSITY THEOREM, AND NO SEPARATE “COST” CAN
  BE ISOLATED.  The classical proof runs by contraposition and begins by
  choosing an element outside the image.  Constructively, the negation of
- "every h has a preimage" does not produce such an element: that inference
+ “every h has a preimage” does not produce such an element: that inference
  is the schema not-forall to exists-not, which is not derivable here and
  which this library does not assume.  So the theorem with real content is
  the contrapositive WITH AN EXPLICIT WITNESS, [grp_not_epic_of_witness],
@@ -89,8 +89,8 @@ Generalizable All Variables.
  density theorem is the whole of what the permutation argument buys, and it
  is unconditional and axiom-free.
 
- The remaining step to surjectivity is the passage from "h cannot be shown
- to miss the image" to "h has a preimage" -- that is, double-negation
+ The remaining step to surjectivity is the passage from “h cannot be shown
+ to miss the image” to “h has a preimage” -- that is, double-negation
  elimination at [GrpImage f h], which is exactly [GrpImageStable].  It would
  be tempting to present that as a small, independently interesting price
  paid for the classical statement.  It is nothing of the kind, and the file
@@ -103,8 +103,8 @@ Generalizable All Variables.
  already IS its conclusion.
 
  Nor is [GrpImageStable] minimal.  The strictly weaker
- [DenseImpliesSurjective] -- the single implication "if the image is dense
- then f is surjective", with no pointwise structure at all -- already
+ [DenseImpliesSurjective] -- the single implication “if the image is dense
+ then f is surjective”, with no pointwise structure at all -- already
  suffices ([weaker_hypothesis_suffices]) and is implied by stability
  ([stable_implies_weaker]); and it is ALSO equivalent to the conclusion
  under [Epic f] ([surjective_gives_weaker], [weaker_is_the_conclusion]).
@@ -124,8 +124,8 @@ Generalizable All Variables.
  [Axiom] is introduced anywhere in this file.
 
  WHY THE CONSTRUCTION CHANGES.  The transposition in the classical argument
- is the step that cannot be written down.  To define "exchange the base
- coset with the extra point and leave every other coset alone" one must
+ is the step that cannot be written down.  To define “exchange the base
+ coset with the extra point and leave every other coset alone” one must
  decide, of an arbitrary coset, whether it IS the base coset -- that is,
  decide membership in the image.  That is not an impression about the
  difficulty of the definition; it is [transposition_decides_image], proved
@@ -140,7 +140,7 @@ Generalizable All Variables.
  the very thing it is trying to isolate.  (Mac Lane's own permutation meets
  the same obstruction: to know whether to send an element of H to xv, to xu,
  or to itself, one must decide whether it lies in Mu or in Mv, and since
- those are RIGHT cosets, "y in Mu" is "y u^-1 in M" -- image membership
+ those are RIGHT cosets, “y in Mu” is “y u^-1 in M” -- image membership
  again, after a translation.  Only the adjoined-point form is formalized
  here, and only for it is the obstruction proved.)
 
@@ -152,7 +152,7 @@ Generalizable All Variables.
 
  twist S c  :=  (c in M -> not (S c))  /\  (c not in M -> S c)
 
- The formula says "complement at the base coset, leave alone elsewhere"
+ The formula says “complement at the base coset, leave alone elsewhere”
  without deciding which case obtains, and over a Boolean base it is exactly
  that.  Three facts about it carry the proof, and they are the three the
  transposition has in the coset argument:
@@ -228,7 +228,7 @@ Generalizable All Variables.
 
  CONTRAST.  The corresponding statement for rings is false: the inclusion of
  the integers into the rationals is an epimorphism that is not surjective
- (Riehl, "Category Theory in Context", Dover 2016, Exercises 1.2.iv and
+ (Riehl, “Category Theory in Context”, Dover 2016, Exercises 1.2.iv and
  1.6.v(ii), as cited in the header of Instance/Grp.v).  There is no category
  of rings in this tree, so that counterexample is not formalized here; the
  contrast is recorded because it is what makes the present theorem a fact
@@ -250,7 +250,7 @@ Generalizable All Variables.
  single statement or proof term in this file, only in these comments. 
 
  --------
- 书籍：Mac Lane，《为在职数学家准备的范畴论》，第2版，Springer GTM 5，1998，第I.5节（"单态、满态与零"），印刷第21页，练习5
+ 书籍：Mac Lane，《为在职数学家准备的范畴论》，第2版，Springer GTM 5，1998，第I.5节（“单态、满态与零”），印刷第21页，练习5
  nLab：https://ncatlab.org/nlab/show/epimorphisms+of+groups+are+surjective
  nLab：https://ncatlab.org/nlab/show/epimorphism
 
@@ -370,7 +370,7 @@ Definition StableSetoid : SetoidObject :=
  G5.  [StableSetoid] is propositional: `≈` there is [`1 P ↔ `1 Q] with `↔`
  the library's [iffT], a [Type]-valued pair of implications between two
  [Prop]s, and the [Prop] mirror is the [/\] of the same two implications.
- Needed since the PR "algebraic carriers are sets" (2026-09-17), because
+ Needed since the PR “algebraic carriers are sets” (2026-09-17), because
  [SymGrp GrpCosetPower] is a [GrpObject] and therefore owes [grp_prop]. 
 
  --------
@@ -711,9 +711,9 @@ Definition sperm_inv {X : SetoidObject} (p : SetoidPermutation X) :
 
 (*
  The symmetric group of a setoid: permutations under composition.  This is
- the "permutations as invertible setoid maps" the argument needs.
+ the “permutations as invertible setoid maps” the argument needs.
 
- RECORDED STRENGTH CHANGE.  Before the PR "algebraic carriers are sets"
+ RECORDED STRENGTH CHANGE.  Before the PR “algebraic carriers are sets”
  (2026-09-17) this read [SymGrp (X : SetoidObject) : GrpObject].  A
  [GrpObject] now carries [grp_prop], so the symmetric group is formed only
  of a setoid that is itself propositional, and [PX] is an explicit second
@@ -798,7 +798,7 @@ Context {G H : GrpObject}.
 Context (f : G ~{Grp}~> H).
 
 (*
- The stable-valued "power set" of the coset space: setoid maps from the
+ The stable-valued “power set” of the coset space: setoid maps from the
  cosets of the image to the stable propositions.  This is the H-set the
  argument permutes. 
 
@@ -884,8 +884,8 @@ Definition grp_action : H ~{Grp}~> SymGrp GrpCosetPower grp_coset_power_prop :=
 
 (*
  The twisted membership predicate at a coset: [S] with its value at the base
- coset complemented.  Constructively one cannot say "complemented at the base
- coset AND unchanged elsewhere" by cases -- that needs a decision procedure
+ coset complemented.  Constructively one cannot say “complemented at the base
+ coset AND unchanged elsewhere” by cases -- that needs a decision procedure
  for membership in the image.  The formula below says the same thing without
  deciding anything, and it is an involution precisely because the values are
  double-negation stable. 
@@ -1257,7 +1257,7 @@ Qed.
  THE MAIN THEOREM, in its constructive contrapositive form.  Given an element
  of the codomain TOGETHER WITH a proof that it has no preimage, f is not an
  epimorphism.  The witness is an explicit hypothesis because the passage from
- "not surjective" to "some element misses the image" is not constructive. 
+ “not surjective” to “some element misses the image” is not constructive. 
 
  --------
  主要定理，以其构造性的逆否形式给出。给定余域的一个元素以及它没有原像的证明，f 不是一个满射。这个证据是一个明确的假设，因为从“非满射”到“某些元素不在像中”的推导不是构造性的。
@@ -1370,7 +1370,7 @@ Qed.
  proof.  All the argument ever does with it is discharge the double negation
  supplied by [grp_epic_image_dense], so the single implication from density
  to surjectivity -- with no pointwise structure at all -- already suffices.
- This is the "why is stability stated pointwise?" question answered: it need
+ This is the “why is stability stated pointwise?” question answered: it need
  not be. 
 
  --------
@@ -1459,8 +1459,8 @@ Qed.
  point.  Then image membership is DECIDABLE.
 
  Nothing is assumed about what t does elsewhere, t is not required to be an
- involution, and the two clauses "exchange the base coset with the point"
- and "fix everything else" are not both used -- only the first.  So the
+ involution, and the two clauses “exchange the base coset with the point”
+ and “fix everything else” are not both used -- only the first.  So the
  textbook transposition cannot be constructed here without first having the
  decidability that this file exists to isolate; the transposition has to be
  replaced, and the twist on [GrpCosetPower] is what replaces it.
@@ -1537,7 +1537,7 @@ End Epi.
  [Set], which is one too low.
 
  The two readbacks in this paragraph were re-measured after the PR
- "algebraic carriers are sets" (2026-09-17) and BOTH are restated.  An
+ “algebraic carriers are sets” (2026-09-17) and BOTH are restated.  An
  earlier revision quoted [Z2@{u} : GrpObject@{u Set u}] and
  [SymGrp@{u u0} : SetoidObject@{u0 u0} -> GrpObject@{u0 u0 u0}].  The
  [PropEquiv] field permuted [GrpObject]'s three universe roles from
@@ -1602,7 +1602,7 @@ Definition grp_two_add (x y : grp_two_carrier) : grp_two_carrier :=
  The [Prop] mirror of [grp_two_rel].  The relation itself matches into
  [poly_unit], which is a [Type], so it is not already a [Prop]; the mirror
  replaces [poly_unit] by [True] leg for leg, and the two implications are
- four-way case analyses.  Needed since the PR "algebraic carriers are sets"
+ four-way case analyses.  Needed since the PR “algebraic carriers are sets”
  (2026-09-17), because [GrpTwo] is a [GrpObject]. 
 
  --------
@@ -1946,7 +1946,7 @@ Proof. intros [u|[u|u]]; exact ttt. Qed.
 Definition sym3_a : SetoidPermutation Sym3Letters :=
   sym3_perm sym3_swap01 sym3_swap01_respects sym3_swap01_involutive.
 
-(* What the two transpositions do, spelled out so that the descriptions above -- "of the last two letters", "of the first two" -- are checkable rather than decoration. / 这两个换位的作用，用文字说明，以便上面提到的——“最后两个字母的”“前两个字母的”——可以被核查，而不是装饰。 *)
+(* What the two transpositions do, spelled out so that the descriptions above -- “of the last two letters”, “of the first two” -- are checkable rather than decoration. / 这两个换位的作用，用文字说明，以便上面提到的——“最后两个字母的”“前两个字母的”——可以被核查，而不是装饰。 *)
 Example sym3_swaps_act :
   (sym3_rel (sym3_swap12 sym3_l0) sym3_l0
      ∧ sym3_rel (sym3_swap12 sym3_l1) sym3_l2

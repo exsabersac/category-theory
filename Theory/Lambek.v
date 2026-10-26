@@ -20,7 +20,7 @@ nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
    Lambek's lemma states that the structure map of an initial F-algebra is an
    isomorphism: if [(μ, α)] is the initial object of [FAlg F], then
    [α : F μ ~> μ] is invertible, so [F μ ≅ μ] and [μ] is a fixed point of [F]
-   ("the least fixed point"). The classical one-line argument runs entirely
+   (“the least fixed point”). The classical one-line argument runs entirely
    inside [FAlg F]:
 
      - form the algebra [(F μ, fmap α)];

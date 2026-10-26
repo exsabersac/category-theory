@@ -20,7 +20,7 @@ Generalizable All Variables.
 (* * * Pushouts in Grp: the free product with amalgamation / * * 群中的推挤：带合并的自由积 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
+ Book: Mac Lane, “Categories for the Working Mathematician” (2nd ed.),
  §III.3, book p. 66 / PDF p. 75 (maclane:III.3:remark3)
  nLab:      https://ncatlab.org/nlab/show/pushout
  Wikipedia: https://en.wikipedia.org/wiki/Free_product  (amalgamation)
@@ -29,9 +29,9 @@ Generalizable All Variables.
  refinement that monic legs give monic injections and identify the
  vertex as the free product with amalgamation.
 
- AN ERRATUM IN THE ISSUE (#325).  Its "Current state" paragraph says
- "The Top clause and the entire Grp clause are absent -- no Top or Grp
- category in-tree".  That was true when the catalog was written and is
+ AN ERRATUM IN THE ISSUE (#325).  Its “Current state” paragraph says
+ “The Top clause and the entire Grp clause are absent -- no Top or Grp
+ category in-tree”.  That was true when the catalog was written and is
  FALSE now: Instance/Grp.v and Instance/Top.v both exist, several such
  categories having been built earlier in the same campaign.  What was
  genuinely absent is the pushouts, and that is what this file and
@@ -61,8 +61,8 @@ Generalizable All Variables.
  glue case is the only consumer of the cocone hypothesis) and one over
  the WORD ([am_med_unique], five cases).  The file carries two more
  outside the UMP -- [am_eq_refl] and [Grp_Cocartesian]'s
- [fork_respects] -- so four in total; an earlier draft said "the whole
- price is two inductions", which undercounted.
+ [fork_respects] -- so four in total; an earlier draft said “the whole
+ price is two inductions”, which undercounted.
 
  WHAT IS PROVED, AND AT WHAT STRENGTH.  [Grp_HasPushouts] is the
  deliverable.  The chosen pushout's apex and both injections are the
@@ -91,11 +91,11 @@ Generalizable All Variables.
  normal forms, the action, its well-definedness on the congruence -- is
  a large piece of combinatorial group theory that is not attempted here.
  No claim is made that the split hypothesis is necessary; it is not, and
- no in-tree witness separates "monic" from "split monic" in Grp either,
+ no in-tree witness separates “monic” from “split monic” in Grp either,
  so the strictness of the gap is argued rather than proved.
 
  AND THE OTHER HALF OF MAC LANE'S SENTENCE IS DEFINITIONAL, NOT PROVED.
- "The vertex is the amalgamated product" holds here because the vertex
+ “The vertex is the amalgamated product” holds here because the vertex
  IS the presented group B *_A C by construction.  Nothing below relates
  it to an independent definition -- via normal forms, or via a subgroup
  generated inside some ambient group -- so this is an identification by
@@ -117,8 +117,8 @@ Generalizable All Variables.
  exhibits the free product as the COPRODUCT of Grp, which the tree did
  not have (issue #1194 owns the Grp free product; nothing in tree
  instantiated [Cocartesian Grp]).  CROSS-REFERENCE, and read it
- precisely: the GENERAL bridge "a pushout over the initial object is the
- binary coproduct" is open issue #862 (Seven Sketches 6.2.3) and is NOT
+ precisely: the GENERAL bridge “a pushout over the initial object is the
+ binary coproduct” is open issue #862 (Seven Sketches 6.2.3) and is NOT
  built here.  What is built is the ad-hoc Grp instance, in which the
  pushout's commutation hypothesis is discharged once by [Grp_fp_cocone]
  and what remains is literally the coproduct's universal property.
@@ -150,7 +150,7 @@ Generalizable All Variables.
  UNIVERSES, MEASURED IN THE CONSTRAINT BLOCKS, WITH THE CAUSE PROBED.
  Two separate facts, and they point opposite ways.
 
- RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17).
+ RE-MEASURED after the PR “algebraic carriers are sets” (2026-09-17).
  The [PropEquiv] field puts [Set+1] into [GrpObject]'s sort, which shows up
  as a [Set < _] clause in several of the blocks below; the readbacks are
  restated in place and the ones that became false are marked as such.
@@ -158,7 +158,7 @@ Generalizable All Variables.
  (1) [AmalgamGrp@{u u0 .. u10}] displays THREE separate universe triples
  in its binder -- one per group -- while its constraint block contains
  [u = u0], ..., [u = u7]: those nine collapse.  (An earlier revision said
- [@{u u0 .. u8}] and "all nine"; the field added two more universes, so
+ [@{u u0 .. u8}] and “all nine”; the field added two more universes, so
  there are twelve in the binder and the collapsing family is still the
  nine the three group triples contribute.)  Reading the binder alone
  gets this wrong.  But the identification is NOT the amalgamation's
@@ -170,7 +170,7 @@ Generalizable All Variables.
  [Set < u0] and [u < u0].
 
  (2) NO [Set] APPEARS ANYWHERE IN THIS FILE'S PRINCIPAL CONSTANTS -- this
- claim is FALSE since the PR "algebraic carriers are sets" (2026-09-17),
+ claim is FALSE since the PR “algebraic carriers are sets” (2026-09-17),
  and the correction matters more than the claim did.  Measured now:
  [Grp_free_product@{u u0 u1 u2}] is
  [GrpObject@{u0 u0 u0} -> GrpObject@{u0 u0 u0} -> GrpObject@{u u0 u1}]
@@ -186,7 +186,7 @@ Generalizable All Variables.
  Test/ProbePushoutGrpTop.v rather than asserted: two formability
  negatives reject the DONOR constants [Grp_zero_hom] and
  [Grp_zero_hom_Section] at a group declared strictly above [Set] (a
- genuine "Cannot enforce Set = bg"), against controls that form
+ genuine “Cannot enforce Set = bg”), against controls that form
  [AmalgamGrp], the chosen pushout, [Grp_free_product], [Grp_fp_inl] and
  [grp_const] at that very level, plus controls naming the two donor
  constants at [Set]-level groups so the negatives are about the universe
@@ -239,7 +239,7 @@ Generalizable All Variables.
  “顶点是合并积”在这里成立，因为通过构造，顶点就是给定的群 B *_A C。下面的内容没有将其与独立的定义联系起来——无论是通过正规形式，还是通过某个外部群中生成的子群——所以这只是符号的武断认定，读者不应将其理解为一个定理。自由积，以及为什么这涉及一个单独的问题。[Grp_free_product] 是合并积的一个实例，而不是第二种构造，并且它的两个嵌入都是分裂单射，没有任何假设，因为每个常量支路可以通过另一个因子分解。要精确理解这一点，因为这个标题的早期草稿夸大了它：被解除的是严格较弱的分解假设（[Grp_fp_inl_Section] 通过 [am_inj1_Section_of_factor]，而不是 [am_inj1_Section_of_Retraction]），而 Mac Lane 自己的单射支路假设实际上对于这个跨距是错误的——这些支路是恒定映射，它们不能注入到非平凡群中，因此不是单射。因此，这就是 Mac Lane 在不同且较弱假设下得出的结论，而不是他改进的一个实例。[Grp_Cocartesian] 然后展示了自由积作为 Grp 的余积，而树中没有（问题 #1194 拥有 Grp 自由积；树中没有任何实例化 [Cocartesian Grp]）。交叉引用，并精确阅读：一般桥“在初始对象上的推岀是二元余积”是未解决问题 #862（Seven Sketches 6.2.3），在这里没有构建。所构建的是特设的 Grp 实例，其中推岀的交换假设通过 [Grp_fp_cocone] 被释放一次，剩下的字面上就是余积的普遍性质。该跨度是常量的，而不是零对象，这是一个宇宙决定。经典上，自由积是对平凡群的推挤，而该跨度的两条腿甚至可以分裂——[Grp_zero_hom_Section] 证明了这一点，其重traction是 [Grp_one]。但 Instance/Grp.v 声明了 [Grp_zero_hom] 在 [GrpObject@{Set Set Set}] 上（以及 [Grp_trivial@{u}] 在 [GrpObject@{u u Set}] 上，记录只需要一个绑定器，而记录需要更多），捐献者缺陷 Instance/Grp/Quotient/Colimit.v 已经记录下来，并将整个文件限制为 [Set] 尺寸的群。在此基础上构建自由积将继承这个限制。它是建立在常量腿上的，这不需要零对象：余锥条件是自动的，因为每个同态都保持单位（[Grp_fp_cocone]），并且每条腿都通过第三个常量映射（[grp_const_absorb]）因式分解到另一条腿上。[Grp_zero_hom_Section] 被保留作为未采用路径的真实记录。修正 (#450)：
  本段描述的捐赠者 pin 已被移除——#450 将 Instance/Grp.v 的零对象常量的宇宙写出到位，而 [About] 现在在 [GrpObject@{p p p}] 上读作 [Grp_zero_hom@{u p}]，在 [GrpObject@{u0 u0 u0}] 上读作 [Grp_zero_hom_Section@{u u0}]，并且在 [Set] 处没有实例化绑定器，在任一处也没有 [= Set] 约束：每个约束块中唯一的 [Set] 是 [Grp] 自身在其对象宇宙上的下界 [Set < u]。零对象路径因此不再继承 pin；常量分支结构保持不变。
 
- 宇宙，在约束块中测量，并探查原因。两个独立的事实，它们的指向相反。在 PR “代数载体是集合” (2026-09-17) 之后重新测量。[PropEquiv] 字段将 [Set+1] 放入 [GrpObject] 的排序中，这显示为下面几个区块中的 [Set < _] 条款；回读在原位重述，变为假的条目已标记。(1) [AmalgamGrp@{u u0 .. u10}] 在其活页夹中显示三个独立的宇宙三元组——每组一个——而其约束块包含 [u = u0], ..., [u = u7]：这九个会塌缩。（早期版本说的是 [@{u u0 .. u8}] 和“全部九个”；该字段增加了另外两个宇宙，因此活页夹中有十二个，而塌缩的族仍然是三个组的三元组贡献的九个。）仅阅读活页夹会得出错误结论。但是这种识别并不是融合所做的，它是被探测而不是假定的：裸定义 [fun (A B : GrpObject) (f : @hom Grp A B) => B]（根本未提及推出）已经在 [GrpObject@{u0 u0 u0}] 处为两个对象进行了扩展。命名单个 Grp 同态就是识别层级的方法；融合没有增加任何内容。[Grp_HasPushouts@{u u0}] 相应地承载 [Set < u0] 和 [u < u0]。(2) 在此文件的主要常量中没有出现 [Set]——这个说法是错误的，因为 PR "代数承载者是集合"（2026-09-17），而更正比该说法更重要。目前测量结果为：[Grp_free_product@{u u0 u1 u2}] 是 [GrpObject@{u0 u0 u0} -> GrpObject@{u0 u0 u0} -> GrpObject@{u u0 u1}]，带有 [Set < u2] 和 [u0 < u2]；[Grp_HasPushouts@{u u0}] 承载 [Set < u0] 和 [u < u0]；[Grp_Cocartesian@{u u0}] 承载 [Set < u] 和 [u0 < u]。这些 [Set] 条款中的每一条都是严格下界（[Set < _]），而不是标识（[_ = Set]），因此没有任何内容固定在 [Set] 上：常量仍然适用于高于 [Set] 的任何承载者等级群组，这正是选择常量跨度所期望的，而 [Unset Universe Minimization ToSet] （Lib.v）无论如何都将承载者宇宙排除在 [Set] 之外。现在不再真实的是该标记的缺失。在 Test/ProbePushoutGrpTop.v 中 BOUNDARY 是被保护的，而不是被断言的：两个可形成性否定拒绝了 DONOR 常量 [Grp_zero_hom] 和 [Grp_zero_hom_Section]，这些常量位于严格高于 [Set] 的组中（一个真正的“无法强制 Set = bg”），而控制组在同一级别上形成 [AmalgamGrp]（选定的推出）、[Grp_free_product]、[Grp_fp_inl] 和 [grp_const]，并且有控制组在 [Set] 级别的组中命名两个 donor 常量，所以否定是关于宇宙的，而不是关于缺失引用的。（更正，#450：donor 引脚被提起，并且那里的两个否定是控制组；参见该探针的更正。）非空性。一个关于生成的合同关系的负事实不能通过对它进行归纳来得出，所以这里的每一个分离都通过一个具体的同态映射出商到 [Z2] : [fp_generators_distinct] 显示自由积并没有合并两个加数的生成元，并且 [fp_inl_injective] 显示它没有合并一个加数的不同元素。使得这种合并成为内容而不仅仅是记账的对比是 [amalgam_over_Z2_merges]：在相同的两个群上，沿着恒等元进行合并确实合并了自由积保持分开的那一对元素。未交付的内容。没有标准形式，因此没有字问题、没有系数唯一性，也没有 [am_eq] 的判定程序；上面的施赖尔细化；没有证明分裂假设严格弱于单性（未展示树内单一但非分裂的群同态）；没有 HNN 扩张；没有 Bass-Serre 理论；没有 van Kampen 定理，尤其没有与 Instance/Top/FundamentalGroupoid.v 的联系；在跨距中的推挤没有函子性；没有与 Instance/Grp/Free.v 的自由群比较（未展示两个自由群的自由积是自由的）；也没有无限/索引的自由积。(自 #450 起，Instance/Grp/Colimit.v 已经在其形状学科内具有所有群的余极限，以及它们之间的按索引的直和，这是通过伴随函子定理得到的——作为存在性结果，而不是文字说明。) [Grp_Cocartesian] 实例已经注册为 [#[export]，因此导入器可以获取它；没有 LIBRARY 文件导入这个文件——只有 Test/ProbePushoutGrpTop.v 导入。更正 (#450)：在父提交 e139ecfb 时，这个列表已经少了一个，其中 [git grep] 用于 Category.Instance.Grp.Pushout 的 [Require] 也找到了 Test/ProbeGrpProp.v；并且自 #450 以来，库文件 Instance/Grp/Colimit.v 导入了它，以证明它的伴随函子定理直和与该文件的 ([Grp_coproduct_agrees]) 相符，并且它通过了每一个 [Cocartesian] 实例的显式测试，从而确保导出的实例不会被悄悄地采纳。
+ 宇宙，在约束块中测量，并探查原因。两个独立的事实，它们的指向相反。在 PR “代数载体是集合” (2026-09-17) 之后重新测量。[PropEquiv] 字段将 [Set+1] 放入 [GrpObject] 的排序中，这显示为下面几个区块中的 [Set < _] 条款；回读在原位重述，变为假的条目已标记。(1) [AmalgamGrp@{u u0 .. u10}] 在其活页夹中显示三个独立的宇宙三元组——每组一个——而其约束块包含 [u = u0], ..., [u = u7]：这九个会塌缩。（早期版本说的是 [@{u u0 .. u8}] 和“全部九个”；该字段增加了另外两个宇宙，因此活页夹中有十二个，而塌缩的族仍然是三个组的三元组贡献的九个。）仅阅读活页夹会得出错误结论。但是这种识别并不是融合所做的，它是被探测而不是假定的：裸定义 [fun (A B : GrpObject) (f : @hom Grp A B) => B]（根本未提及推出）已经在 [GrpObject@{u0 u0 u0}] 处为两个对象进行了扩展。命名单个 Grp 同态就是识别层级的方法；融合没有增加任何内容。[Grp_HasPushouts@{u u0}] 相应地承载 [Set < u0] 和 [u < u0]。(2) 在此文件的主要常量中没有出现 [Set]——这个说法是错误的，因为 PR “代数承载者是集合”（2026-09-17），而更正比该说法更重要。目前测量结果为：[Grp_free_product@{u u0 u1 u2}] 是 [GrpObject@{u0 u0 u0} -> GrpObject@{u0 u0 u0} -> GrpObject@{u u0 u1}]，带有 [Set < u2] 和 [u0 < u2]；[Grp_HasPushouts@{u u0}] 承载 [Set < u0] 和 [u < u0]；[Grp_Cocartesian@{u u0}] 承载 [Set < u] 和 [u0 < u]。这些 [Set] 条款中的每一条都是严格下界（[Set < _]），而不是标识（[_ = Set]），因此没有任何内容固定在 [Set] 上：常量仍然适用于高于 [Set] 的任何承载者等级群组，这正是选择常量跨度所期望的，而 [Unset Universe Minimization ToSet] （Lib.v）无论如何都将承载者宇宙排除在 [Set] 之外。现在不再真实的是该标记的缺失。在 Test/ProbePushoutGrpTop.v 中 BOUNDARY 是被保护的，而不是被断言的：两个可形成性否定拒绝了 DONOR 常量 [Grp_zero_hom] 和 [Grp_zero_hom_Section]，这些常量位于严格高于 [Set] 的组中（一个真正的“无法强制 Set = bg”），而控制组在同一级别上形成 [AmalgamGrp]（选定的推出）、[Grp_free_product]、[Grp_fp_inl] 和 [grp_const]，并且有控制组在 [Set] 级别的组中命名两个 donor 常量，所以否定是关于宇宙的，而不是关于缺失引用的。（更正，#450：donor 引脚被提起，并且那里的两个否定是控制组；参见该探针的更正。）非空性。一个关于生成的合同关系的负事实不能通过对它进行归纳来得出，所以这里的每一个分离都通过一个具体的同态映射出商到 [Z2] : [fp_generators_distinct] 显示自由积并没有合并两个加数的生成元，并且 [fp_inl_injective] 显示它没有合并一个加数的不同元素。使得这种合并成为内容而不仅仅是记账的对比是 [amalgam_over_Z2_merges]：在相同的两个群上，沿着恒等元进行合并确实合并了自由积保持分开的那一对元素。未交付的内容。没有标准形式，因此没有字问题、没有系数唯一性，也没有 [am_eq] 的判定程序；上面的施赖尔细化；没有证明分裂假设严格弱于单性（未展示树内单一但非分裂的群同态）；没有 HNN 扩张；没有 Bass-Serre 理论；没有 van Kampen 定理，尤其没有与 Instance/Top/FundamentalGroupoid.v 的联系；在跨距中的推挤没有函子性；没有与 Instance/Grp/Free.v 的自由群比较（未展示两个自由群的自由积是自由的）；也没有无限/索引的自由积。(自 #450 起，Instance/Grp/Colimit.v 已经在其形状学科内具有所有群的余极限，以及它们之间的按索引的直和，这是通过伴随函子定理得到的——作为存在性结果，而不是文字说明。) [Grp_Cocartesian] 实例已经注册为 [#[export]，因此导入器可以获取它；没有 LIBRARY 文件导入这个文件——只有 Test/ProbePushoutGrpTop.v 导入。更正 (#450)：在父提交 e139ecfb 时，这个列表已经少了一个，其中 [git grep] 用于 Category.Instance.Grp.Pushout 的 [Require] 也找到了 Test/ProbeGrpProp.v；并且自 #450 以来，库文件 Instance/Grp/Colimit.v 导入了它，以证明它的伴随函子定理直和与该文件的 ([Grp_coproduct_agrees]) 相符，并且它通过了每一个 [Cocartesian] 实例的显式测试，从而确保导出的实例不会被悄悄地采纳。
 *)
 
 (** ** Formal words / **正式用语 *)
@@ -260,7 +260,7 @@ Arguments am_inv {B C} _.
 (** ** The generated congruence / ** 生成的同余 *)
 
 (*
- [am_eq] lands in [Prop].  Since the PR "algebraic carriers are sets"
+ [am_eq] lands in [Prop].  Since the PR “algebraic carriers are sets”
  (2026-09-17) a [GrpObject] carries [grp_prop], so the amalgam's carrier
  setoid owes a [Prop]-valued mirror of its `≈`; the cheapest and most
  faithful one is the congruence itself, declared in [Prop].  Two
@@ -349,8 +349,8 @@ Definition AmCarrier : SetoidObject := {|
  CONSTRUCTOR of [am_eq], so the record below is a literal with no proof
  obligation of its own -- the [Instance/Mod/Free.v] payoff.
 
- CORRECTION.  That sentence was exactly true before the PR "algebraic
- carriers are sets" (2026-09-17).  The record now has a ninth field,
+ CORRECTION.  That sentence was exactly true before the PR “algebraic
+ carriers are sets” (2026-09-17).  The record now has a ninth field,
  [grp_prop], which is not a group law; it is still supplied by a literal
  here, and costs no obligation, because [am_eq] IS the [Prop] relation and
  the two implications are the identity.  So the record remains a literal
@@ -437,7 +437,7 @@ Context (Hcomm : q1 ∘[Grp] f ≈ q2 ∘[Grp] g).
  在商上的良定义性，通过对推导的归纳。粘合情况是唯一会消耗 [Hcomm] 的情况；其他每种情况都是 [Q] 的一个定律，或者是两个同态之一的定律。
 *)
 (*
- [am_eq] is a [Prop] since the PR "algebraic carriers are sets"
+ [am_eq] is a [Prop] since the PR “algebraic carriers are sets”
  (2026-09-17), so the induction may not land in the [Type]-valued goal
  [am_eval u ≈ am_eval v] directly.  The whole proof is therefore conducted
  inside [Q]'s own [Prop] equality: [pequiv_to] opens it, each of the twelve
@@ -830,8 +830,8 @@ Qed.
 (*
    * ** The free product IS the coproduct of Grp
 
-   Cross-reference: the GENERAL bridge "a pushout over the initial object
-   is the binary coproduct" is open issue #862 (Seven Sketches 6.2.3) and
+   Cross-reference: the GENERAL bridge “a pushout over the initial object
+   is the binary coproduct” is open issue #862 (Seven Sketches 6.2.3) and
    is NOT built here.  What follows is the ad-hoc Grp instance: the
    commutation hypothesis of the pushout's universal property is
    discharged once and for all by [Grp_fp_cocone], leaving exactly the

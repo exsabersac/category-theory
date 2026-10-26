@@ -40,9 +40,9 @@ Generalizable All Variables.
  Neumann one: an ordinal IS a family of smaller ordinals, indexed by a
  small type -- the W-type W(Type, id).  Aczel introduced this shape for
  the type-theoretic interpretation of constructive set theory (Aczel,
- "The type theoretic interpretation of constructive set theory", Logic
+ “The type theoretic interpretation of constructive set theory”, Logic
  Colloquium '77, North-Holland 1978), and Taylor develops the ordinals of
- it (Taylor, "Intuitionistic sets and ordinals", Journal of Symbolic
+ it (Taylor, “Intuitionistic sets and ordinals”, Journal of Symbolic
  Logic 61, 1996).  The familiar Brouwer ordinal notations
  ([Zero | Succ | Lim (nat -> _)]) are the branching-restricted special
  case, not a different idea.  The ORDER is the extensional one: [x <= y]
@@ -73,14 +73,14 @@ Generalizable All Variables.
  WHAT IS DELIVERED (41 declaration heads -- 2 [Inductive], 39
  [Definition]/[Fixpoint]/[Lemma]/[Theorem]/[Example] -- introducing 43
  names once the two constructors [osup] and [opair] are counted;
- [Print Assumptions] reports "Closed under the global context" for all 43
+ [Print Assumptions] reports “Closed under the global context” for all 43
  -- see the PRINT ASSUMPTIONS paragraph).
  (1) THE TYPE AND THE ORDER.  [SmallOrd@{u} : Type@{u+1}] with the single
  constructor [osup : forall Ix : Type@{u}, (Ix -> SmallOrd) ->
  SmallOrd]; the destructors [oidx] (the index type) and [oelt] (the
  indexed family); [ole] by structural recursion on its FIRST
  argument only -- [osup A f <= osup B g] iff every [f a] is below
- some [g b] -- and [olt x y] as "[x] is below some element of [y]".
+ some [g b] -- and [olt x y] as “[x] is below some element of [y]”.
  [ole_unfold] is the destructor-shaped characterisation; it is the
  one lemma proved by destructing both ordinals, and every later
  proof goes through it instead, which is what keeps the induction
@@ -90,7 +90,7 @@ Generalizable All Variables.
  (2) THE THIN CATEGORY.  [SmallOrd_Proset] is [Proset ole_preorder] and
  [SmallOrd_op_Proset] is [Proset (op_PreOrder ole_preorder)] -- the
  same objects with the order reversed, which is what Mac Lane's
- "Ord^op" is.  Hom-sets are subsingletons on the nose:
+ “Ord^op” is.  Hom-sets are subsingletons on the nose:
  [smallord_equiv_is_True] records [(f ≈ g) = True] at [eq_refl], and
  [SmallOrd_Thin] / [SmallOrd_op_Thin] package that as
  Structure/Thin.v's predicate.  [SmallOrd_op_Proset] is used, rather
@@ -194,7 +194,7 @@ Generalizable All Variables.
  [HasAllMeets], which [HasAllJoins] instantiates -- is
  [u1], the ordinals' own universe, one level BELOW the [u] at which
  [SmallOrd@{u1}] itself lives.  That identification is what makes the
- next line say "small", and it is forced by [ojoin], which accepts
+ next line say “small”, and it is forced by [ojoin], which accepts
  only a [Type@{u1}]-indexed family.
  - THE SLOT DECODER, so that the two [Complete] readings below can be
  compared without guessing.  [SmallOrd_op_indexed_limit@{u u0 u1 u2
@@ -219,7 +219,7 @@ Generalizable All Variables.
  and read the strict bound as [u < u0].  Those [Set]s were a
  universe-minimization artifact of Instance/Discrete.v's then
  unannotated [DiscreteCat_Functor]; it was annotated in place at its
- declaration in the PR "algebraic carriers are sets" (2026-09-17), the [Set]s
+ declaration in the PR “algebraic carriers are sets” (2026-09-17), the [Set]s
  are gone, and the binder lists lengthened, which is why the names of
  the strict bound moved.  The READING is unchanged: shape objects
  strictly below ambient objects, which is the whole point of the
@@ -239,13 +239,13 @@ Generalizable All Variables.
  additionally carries, from [Proset_op_Complete_of_all_joins],
  [JMeq.JMeq.u0 <= JMeq.JMeq.u1], [u <= eq.u0],
  [u <= Logic_lemmas.equality.u0] and several
- [projections]/[Projections] bounds.  An earlier revision added "and
- four [Set < ...] bounds"; measured after the PR "algebraic carriers
- are sets" (2026-09-17) there are NONE -- zero word-bounded [Set]
+ [projections]/[Projections] bounds.  An earlier revision added “and
+ four [Set < ...] bounds”; measured after the PR “algebraic carriers
+ are sets” (2026-09-17) there are NONE -- zero word-bounded [Set]
  anywhere in that constant's block, the strict bounds now being
  [u0 < u2], [u1 < u4], [u1 < u5] and three against stdlib levels.
  Those are level constraints only: [Print Assumptions] on all 43
- names reports "Closed under the global context", with no [Axioms:]
+ names reports “Closed under the global context”, with no [Axioms:]
  line anywhere.
  - Instance/Discrete.v's [DiscreteCat_Functor] does NOT pin the SOURCE
  SHAPE's objects to [Set] here, and since the repair it pins nothing
@@ -253,39 +253,39 @@ Generalizable All Variables.
  [SmallOrd_op_indexed_limit] has the shape's object universe at [u],
  the family's own, and carries no literal [Set] in any slot.  An
  earlier revision of this bullet read [DiscreteCat_Functor@{u u0 u1
- Set} d], noted that the [Set] was "only in the fourth slot" with a
+ Set} d], noted that the [Set] was “only in the fourth slot” with a
  [Set < u1] side constraint, and said the same of the [Set] in
- [Limit@{u u Set u0}] -- the HOM level, "harmless because every
- hom-set of a [Proset] and of a [DiscreteCat] is a proposition".
+ [Limit@{u u Set u0}] -- the HOM level, “harmless because every
+ hom-set of a [Proset] and of a [DiscreteCat] is a proposition”.
  That was the right reading of the artifact issue #1309 tracked, and
  the artifact was removed by applying #1309's repair in the PR
- "algebraic carriers are sets" (2026-09-17).  No object type of this
+ “algebraic carriers are sets” (2026-09-17).  No object type of this
  development is at [Set], then or now.
 
  ONE TRAP WORTH RECORDING.  [I] is the Prelude's constructor of [True], so
  a [match] branch written [osup I f => I] is read with [I] as a PATTERN
- CONSTANT, and the elaborator reports "The term ... is expected to have
- type True" pointing at the binder.  The index binder is therefore named
+ CONSTANT, and the elaborator reports “The term ... is expected to have
+ type True” pointing at the binder.  The index binder is therefore named
  [Ix] in the inductive and [A]/[B] in every [match] below.  The message is
  stable under any import list, since it comes from the Prelude.
 
- PRINT ASSUMPTIONS.  Every one of the 43 names reports "Closed
- under the global context"; there are no [Axioms:] lines.  That includes
+ PRINT ASSUMPTIONS.  Every one of the 43 names reports “Closed
+ under the global context”; there are no [Axioms:] lines.  That includes
  [SmallOrd_op_Complete], which reaches [Proset_op_Complete_of_all_joins]
  and through it Structure/Limit.v and Instance/Discrete.v.
 
  STALE PREMISES OF ISSUE #444, RE-MEASURED (commands run over the [.v]
  files of the tree excluding [doc/], with [find . -name '*.v' | xargs
  grep], since [grep] here honours [.gitignore] on recursive traversal).
- - "The library has no ordinals as a category ([rg -w 'Ord|OrdCat'] -> a
- lone prose cross-reference in Instance/Proset.v)": the CONCLUSION
+ - “The library has no ordinals as a category ([rg -w 'Ord|OrdCat'] -> a
+ lone prose cross-reference in Instance/Proset.v)”: the CONCLUSION
  is true, the evidence is not.  That figure is not re-measurable and an earlier revision of this
- sentence gave it as "96 hits in 8 files"; re-measured here with the
+ sentence gave it as “96 hits in 8 files”; re-measured here with the
  command stated, [find . -name '*.v' -not -path './Instance/Ordinal/Large.v'
  | xargs grep -wn 'Ord\|OrdCat' | wc -l], the tree gives 79 matching
  lines (93 occurrences under [grep -wo]).  The exact figure is not the
  point and is recorded only so the sentence can be checked; what matters
- is that the issue's "a lone prose cross-reference" is wrong by two
+ is that the issue's “a lone prose cross-reference” is wrong by two
  orders of magnitude
  category of PREORDERS (Mac Lane's Preord, #372), with satellites
  Instance/Ord/Poset.v, Test/ProbeOrd372.v, Instance/Roster.v,
@@ -296,15 +296,15 @@ Generalizable All Variables.
  existing name is displaced and none is reused; this file's names are
  all prefixed [SmallOrd] or [o] and none of the 43 occurs elsewhere in
  the tree (checked word-wise, with a positive control).
- - "no smallness/largeness machinery": FALSE.  Theory/Size.v has
+ - “no smallness/largeness machinery”: FALSE.  Theory/Size.v has
  [Class LocallySmall], [Class Small],
  [locally_small_ambient], [small_locally_small] and the witness
  [One_Small].  This file does not consume them -- see NOT DELIVERED --
  but the premise that they are missing is wrong.  The same claim in
- the issue's Awodey §9.8 checkbox ("the library has no smallness or
- local-smallness predicate at all") is wrong for the same reason.
- - "it records no example of a continuous functor without a left adjoint
- ([rg -i 'counterexample|no left adjoint'] -> nothing of this kind)":
+ the issue's Awodey §9.8 checkbox (“the library has no smallness or
+ local-smallness predicate at all”) is wrong for the same reason.
+ - “it records no example of a continuous functor without a left adjoint
+ ([rg -i 'counterexample|no left adjoint'] -> nothing of this kind)”:
  the grep is off (60 hits in more than 20 files), the conclusion
  stands for the sharp reading.  [not representable|continuous yet
  not|continuous but not] has exactly ONE hit in the tree,
@@ -312,8 +312,8 @@ Generalizable All Variables.
  of representables over the simple groups, cited, not built.
  Instance/Sets/NoAdjoint.v's twelve no-adjoint theorems are
  obstructions by limit preservation, a different shape.
- - "Complete Boolean algebras and Solovay's theorem are entirely absent
- ([rg -i 'solovay|complete boolean|CABA'] -> 0 hits)": ONE hit, not
+ - “Complete Boolean algebras and Solovay's theorem are entirely absent
+ ([rg -i 'solovay|complete boolean|CABA'] -> 0 hits)”: ONE hit, not
  zero -- Instance/FdVect/NoRightAdjoint.v names Solovay, for the
  Solovay/Shelah measurability result, not for complete Boolean
  algebras.  The conclusion (no complete Boolean algebras, no free-CBA
@@ -323,8 +323,8 @@ Generalizable All Variables.
  Freyd's collapse, as claimed; the Instance/Poset.v passage is NOT
  the adjoint functor discussion -- at the lines cited the file is on
  Lawvere's enrichment over the truth values.  The intended paragraph
- is the one after it, "Thinness also marks a size boundary in the
- adjoint functor theorems".
+ is the one after it, “Thinness also marks a size boundary in the
+ adjoint functor theorems”.
  - The dependency on #422 is live: Instance/Proset/Limit.v supplies
  [IsLUB], [HasAllJoins], [Proset_op_Complete_of_all_joins] and
  [Proset_LUB_Limit], all consumed here unchanged.
@@ -361,7 +361,7 @@ Generalizable All Variables.
  two file counts in CLAUDE.md (981/985 -> 982/986, so that
  [make claude-md-counts-check] stays green) together with the
  [Instance/Ordinal.v] entry of its Order map; one bullet appended to
- docs/INDEX.md under "Concrete Instances" (269 -> 270 bullets, five
+ docs/INDEX.md under “Concrete Instances” (269 -> 270 bullets, five
  headings before and after, [make index-check] green); and one
  [Print Assumptions] block appended to the Makefile's
  [print-assumptions] gate carrying all 43 names fully qualified. 
@@ -485,7 +485,7 @@ Definition olt@{u} (x y : SmallOrd@{u}) : Prop :=
 Lemma olt_ole@{u} (x y : SmallOrd@{u}) : olt x y -> ole x y.
 Proof. intros [b Hb]; exact (ole_trans _ _ _ Hb (ole_elem y b)). Qed.
 
-(* No ordinal precedes one of its own elements. This is the only genuinely inductive negative fact in the file, and everything that says "there is no top" reduces to it. / 没有序数先于它自身的某个元素。这是文件中唯一真正的归纳否定事实，所有说“没有顶”的说法都归结于它。 *)
+(* No ordinal precedes one of its own elements. This is the only genuinely inductive negative fact in the file, and everything that says “there is no top” reduces to it. / 没有序数先于它自身的某个元素。这是文件中唯一真正的归纳否定事实，所有说“没有顶”的说法都归结于它。 *)
 Lemma olt_irrefl@{u} (x : SmallOrd@{u}) : olt x x -> False.
 Proof.
   induction x as [A f IH]; intros [a Ha].
@@ -616,7 +616,7 @@ Definition SmallOrd_HasAllJoins : HasAllJoins ole :=
   fun A f => existT _ (ojoin A f) (ojoin_IsLUB A f).
 
 (*
- Mac Lane's "Ord^op is small-complete".  Every diagram whose shape
+ Mac Lane's “Ord^op is small-complete”.  Every diagram whose shape
  category has objects at the ordinals' own universe -- one level BELOW
  the object type of [SmallOrd_op_Proset] -- has a limit. 
 

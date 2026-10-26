@@ -38,8 +38,8 @@ Generalizable All Variables.
  cokernel of itself ([kernel_of_any_cokernel] and its dual and their
  chosen-instance corollaries, Structure/Kernel.v).
 
- The development follows the classical route (Freyd, "Abelian
- Categories"; Borceux vol. 2, ch. 1):
+ The development follows the classical route (Freyd, “Abelian
+ Categories”; Borceux vol. 2, ch. 1):
 
  - [monic_iff_kernel_pzero] / [epic_iff_cokernel_pzero]: additivity
  turns the cancellation property into a vanishing test — a morphism f
@@ -75,7 +75,7 @@ Generalizable All Variables.
  [HasKernels] / [HasCokernels]选择;这具有完全的普遍性
  是一个定理，不是注释：任何事物的核都是每个的核
  自身的余核（[kernel_of_any_cokernel]及其对偶和它们
- 选择实例推论，Structure/Kernel.v）。发展遵循经典路线 (Freyd, "Abelian Categories"；Borceux 第2卷，第1章) ：
+ 选择实例推论，Structure/Kernel.v）。发展遵循经典路线 (Freyd, “Abelian Categories”；Borceux 第2卷，第1章) ：
 
  - [monic_iff_kernel_pzero] / [epic_iff_cokernel_pzero]：加法性
  将消去性质转化为消失测试——一个态射 f 当且仅当每个复合态射 f ∘ u ≈ 0 时强迫 u ≈ 0 时是单态射，对于满态射亦然。
@@ -93,18 +93,18 @@ Generalizable All Variables.
  common structure of the category Ab of abelian groups, the module
  categories R-Mod, vector spaces, and sheaves of abelian groups, in
  which one writes exact sequences, chain complexes, and derived functors
- (Wikipedia, "Abelian category").  The notion accrued in three steps.
+ (Wikipedia, “Abelian category”).  The notion accrued in three steps.
  Mac Lane observed that group-theoretic notions, reformulated purely
  through homomorphisms and their composition, exhibit a duality, and
  proposed an axiomatic context to exploit it, with the stated aim of
  making the proofs of homology exactly dual to those of cohomology (Mac
- Lane, "Duality for groups", Bull. AMS 56, 1950).  Buchsbaum then gave
- essentially the modern definition under the name "exact category", so
+ Lane, “Duality for groups”, Bull. AMS 56, 1950).  Buchsbaum then gave
+ essentially the modern definition under the name “exact category”, so
  that the Cartan-Eilenberg construction of derived functors carried over
- verbatim (Buchsbaum, "Exact categories and duality", Trans. AMS 80(1),
+ verbatim (Buchsbaum, “Exact categories and duality”, Trans. AMS 80(1),
  1955).  Grothendieck named the notion in the Tôhoku paper and organized
  it by the AB-axiom hierarchy, AB1 through AB5 and their formal duals
- (Grothendieck, "Sur quelques points d'algèbre homologique", Tôhoku
+ (Grothendieck, “Sur quelques points d'algèbre homologique”, Tôhoku
  Math. J. 9(2), 1957).
 
  The axioms are invariant under C ↦ C^op, so every theorem has a dual
@@ -123,7 +123,7 @@ Generalizable All Variables.
  machinery does not apply there.  They do have injective resolutions,
  however, and these, in a Grothendieck category, meaning an AB5 category
  with a generator, put sheaf cohomology and module homology on one
- footing as derived functors (Wikipedia, "Grothendieck's Tôhoku paper").
+ footing as derived functors (Wikipedia, “Grothendieck's Tôhoku paper”).
  On this base rest the Grothendieck spectral sequence for a composite of
  derived functors, the derived and triangulated categories of
  Grothendieck and Verdier, coherent duality announced at the 1958 ICM,
@@ -131,7 +131,7 @@ Generalizable All Variables.
  is a localization of a module category.
 
  That module categories are the universal examples is itself a theorem.
- The Freyd-Mitchell embedding (Freyd, "Abelian Categories", Thm 7.34,
+ The Freyd-Mitchell embedding (Freyd, “Abelian Categories”, Thm 7.34,
  1964) places every small abelian category, by a full, faithful, exact
  functor, inside R-Mod for some ring R.  The consequence is a working
  method: an element-wise diagram chase valid in modules transfers
@@ -145,7 +145,7 @@ Generalizable All Variables.
  is a matrix whose (k, j) entry is pₖ ∘ f ∘ iⱼ, composition is matrix
  multiplication over the addition on hom-setoids, and the biproduct
  relations pₖ ∘ iⱼ ≈ δₖⱼ and Σ iₖ ∘ pₖ ≈ id are the Kronecker-delta and
- completeness relations of linear algebra (nLab, "Biproduct").  This
+ completeness relations of linear algebra (nLab, “Biproduct”).  This
  enrichment is not extra data: by an Eckmann-Hilton argument a
  bicartesian category whose canonical comparison a ⊔ b ≅ a × b is
  invertible is already preadditive — one of the two semiadditivity

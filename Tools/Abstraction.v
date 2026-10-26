@@ -18,7 +18,7 @@ Generalizable All Variables.
 nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
 
-   Conal Elliott, "Compiling to Categories", Proc. ACM Program. Lang. 1, ICFP
+   Conal Elliott, “Compiling to Categories”, Proc. ACM Program. Lang. 1, ICFP
    (2017), 27:1–27:27. http://conal.net/papers/compiling-to-categories/
 
    By the Curry–Howard–Lambek correspondence the simply-typed lambda calculus is
@@ -26,7 +26,7 @@ nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
    pairing is the product, the function type is the exponential [z^y], lambda
    abstraction is [curry], and application is [eval]. A closed term of type
    [a → b] therefore denotes a morphism [repr a ~> repr b] in the free CCC
-   ([AST]), and Elliott's "compiling to categories" is exactly this translation
+   ([AST]), and Elliott's “compiling to categories” is exactly this translation
    read as a program transformation.
 
    This file makes the translation's *correctness* explicit. Via [Repr] (see
@@ -215,7 +215,7 @@ Qed.
 End Abstraction.
 
 (*
-A cartesian category equipped with a distinguished "numbers" object and an
+A cartesian category equipped with a distinguished “numbers” object and an
    addition arrow on it — the minimal structure needed to compile arithmetic
    expressions. [Coq_Numerical] below realises it with [nat] and [Nat.add], and
    any model interpreting [AST] into such a category gives meaning to numeric

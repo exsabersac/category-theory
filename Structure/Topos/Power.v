@@ -25,7 +25,7 @@ Generalizable All Variables.
 (*
  [Category.Functor.Opposite] opens [functor_scope], after which a bare
  [C^op] on a CATEGORY parses as [Opposite_Functor C] and is rejected with
- "The term C has type Category while it is expected to have type ?C ⟶ ?D".
+ “The term C has type Category while it is expected to have type ?C ⟶ ?D”.
  Reopening [category_scope] here restores the reading this file wants.
  Same family as the notation guards of Theory/Universal/Arrow/Dual.v and
  Instance/Rng/Mod.v. 
@@ -43,12 +43,12 @@ Open Scope category_scope.
  nLab:      https://ncatlab.org/nlab/show/topos
  Wikipedia: https://en.wikipedia.org/wiki/Topos
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.10,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.10,
  book p. 107 (`maclane:IV.10:remark2`), closes the topos section with one
  sentence and no proof:
 
- "The axioms for a topos have many useful consequences. For exam-
- ples, every topos has all finite colimits."
+ “The axioms for a topos have many useful consequences. For exam-
+ ples, every topos has all finite colimits.”
 
  The standard route to that sentence is Paré's (1974): the contravariant
  power-object functor P = Ω^(−) : E^op ⟶ E is self-adjoint on the right and
@@ -70,8 +70,8 @@ Open Scope category_scope.
  [Partial_r] fixes the first argument and varies the second, so it has
  the wrong variance; and [Exp_Functor] of
  Structure/Cartesian/Closed/Adjunction.v is covariant in the base with
- the exponent held fixed (that file's own header calls it "the partial
- application at a fixed exponent"), so its object action is (−)^S and
+ the exponent held fixed (that file's own header calls it “the partial
+ application at a fixed exponent”), so its object action is (−)^S and
  not Ω^(−).
 
  STEP TWO CONSUMES NO SUBOBJECT CLASSIFIER, ONLY THE OBJECT Ω.  The issue
@@ -239,8 +239,8 @@ Next Obligation. apply flip_comp. Qed.
 
 (*
  The ordinary adjunction it unpacks to.  In Theory/Adjunction.v's naming
- [Adjunction {C D} (F : D ⟶ C) (U : C ⟶ D)] this reads: the "top"
- category is C^op, the "bottom" is C, the LEFT adjoint is P^op and the
+ [Adjunction {C D} (F : D ⟶ C) (U : C ⟶ D)] this reads: the “top”
+ category is C^op, the “bottom” is C, the LEFT adjoint is P^op and the
  RIGHT adjoint -- the monadic one -- is P. 
 
  --------
@@ -262,7 +262,7 @@ Example pow_from_adj_is_flip {a x : C} (f : x ~> PowF a) :
 
 (*
  The unit and the counit of a self-adjunction on the right are one and
- the same map, [flip id] -- classically the "singleton of singleton"
+ the same map, [flip id] -- classically the “singleton of singleton”
  Ω^(Ω^x) map.  Both readbacks are on the nose. 
 
  --------

@@ -25,10 +25,10 @@ Generalizable All Variables.
 (* * * Limits of spaces through categories of cones: §V.9 Exercise 3 / * * 通过圆锥类别的空间限制：§V.9 练习 3 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.9 Exercise 3, book pp. 135-136 (PDF pp. 144-145), read from the
  page images (catalog id maclane:V.9:ex3):
- "3. (Categorical construction of the usual products in Top.)
+ “3. (Categorical construction of the usual products in Top.)
  (a) For diagonal functors Δ : C → C^J, Δ' : D → D^J, and T ∈ C^J,
  each G : C → D defines G_* : (Δ↓T) → (Δ'↓GT) by ⟨τ : c → T⟩ ↦
  ⟨Gτ : Gc → GT⟩.  If G_* has a left adjoint and GT a limit in D,
@@ -37,9 +37,9 @@ Generalizable All Variables.
  a left adjoint for G_*, showing that it constructs on a set S the
  weakest topology making a given J-indexed family of functions
  f_j : S → GX_j continuous.
- (c) Conclude that Top has all (the usual) products."
+ (c) Conclude that Top has all (the usual) products.”
  Remark 1 on book p. 133 (PDF p. 142), quoted in
- Instance/Top/Complete.v's header, points here for its "general fact".
+ Instance/Top/Complete.v's header, points here for its “general fact”.
  nLab: https://ncatlab.org/nlab/show/cone
  nLab: https://ncatlab.org/nlab/show/comma+category
  nLab: https://ncatlab.org/nlab/show/initial+topology
@@ -57,8 +57,8 @@ Generalizable All Variables.
  [pinit_universal]), and a right adjoint carries the terminal cone over
  GT to a terminal cone over T.
 
- THE PRINTED STATEMENT, CORRECTED.  As printed, (a) and (b) say "left
- adjoint".  Read literally (a) is false, and this file refutes it at an
+ THE PRINTED STATEMENT, CORRECTED.  As printed, (a) and (b) say “left
+ adjoint”.  Read literally (a) is false, and this file refutes it at an
  instance: at the empty shape, with C the walking span Instance/Roof.v's
  [Roof] (an initial object RZero, no terminal object) and D the point
  Instance/One.v's [_1], G_* has a left adjoint (it picks RZero), GT has
@@ -70,8 +70,8 @@ Generalizable All Variables.
  ([pcone_adjunction]), and they are different constructions: at the
  empty shape on the two-point set the left adjoint makes {true} open and
  the right adjoint does not ([cone_adjoints_differ_at_empty_shape]).  So
- (b)'s "left adjoint ... constructs ... the weakest topology" fits the
- right adjoint, and (a) holds with "right" ([limit_from_cone_right_adjoint]).
+ (b)'s “left adjoint ... constructs ... the weakest topology” fits the
+ right adjoint, and (a) holds with “right” ([limit_from_cone_right_adjoint]).
  This file delivers the exercise in that corrected form, by the
  maintainer's decision of 2026-09-24, with the literal reading refuted
  beside it.  (b) is proved at EVERY shape, not only a discrete one.
@@ -163,8 +163,8 @@ Generalizable All Variables.
  Complete.v's recipe separates the two, and there [r] is free.)
  Measured in the scratch file of Instance/Top/Complete.v's boundary
  paragraph: accepted as [Complete@{o s o so}] at [s < o], refused at
- [r > o] ("Cannot enforce o = r because o < r") and at [o < s]
- ("Cannot enforce o = <1> because o < s <= <1>").
+ [r > o] (“Cannot enforce o = r because o < r”) and at [o < s]
+ (“Cannot enforce o = <1> because o < s <= <1>”).
  - [PTop_products_via_cone_comma@{i o so u u0 u1} :
  HasIndexedProducts@{i i i o so o} PTopCat@{o so}], [i <= o].
  - The literal counterexample fixes no universe: its empty shape is
@@ -202,7 +202,7 @@ Generalizable All Variables.
  书本第133页（PDF第...）的注1142)，引用于 Instance/Top/Complete.v 的头部，这里指出其“常规事实”。nLab: https://ncatlab.org/nlab/show/cone 
  nLab: https://ncatlab.org/nlab/show/comma+category 
  nLab: https://ncatlab.org/nlab/show/initial+topology背景。一种极限 T 是其上的锥的范畴（在 Mac Lane 的符号中记作 (Δ↓T)）的一个终对象，而 Instance/Cones/Comma.v 的 [Cones_Comma] 通过 Cat 中的一个同构将其识别为 Instance/Cones.v 的 [Cones T]。一个函子 G 将 T 上的锥映射到 GT 上的锥，本练习要求讨论 GT 的极限何时可以被提升回去。这一机制是本章前面 Mac Lane 的子空间构造（其中的函子 L，是切片遗忘函子的右伴随）：锥上函数的最弱拓扑 W 满足 G_* ⊣ W，因为映入最弱拓扑的连续映射恰好是与该族复合后连续的函数（Instance/Top/Complete.v 的 [pinit_universal]），而右伴随将 GT 上的终锥映射为 T 上的终锥。印刷版声明，已更正。印刷版中，(a) 和 (b) 写着“左伴随”。按字面理解，(a) 是错误的，并且该文件在一个实例上驳斥了它：在空形状上，令 C 为步行跨距 Instance/Roof.v 的 [Roof]（一个初始对象 RZero，没有终端对象），D 为点 Instance/One.v 的 [_1]，G_* 有一个左伴随（它选择 RZero），GT 有极限，而 T，在 [Roof] 中的空图，则没有（[ex3a_left_adjoint_literal_refuted]，[ex3a_left_counterexample]）。左伴随保持初始对象，而不是终端对象。对于忘记函子 G_*，实际上它有两个伴随：左伴随是离散拓扑（[pdisc_cone_adjunction]），右伴随是最弱的（[pcone_adjunction]），并且它们是不同的构造：在两点集上的空形状上，左伴随使 {true} 成为开集，而右伴随则不（[cone_adjoints_differ_at_empty_shape]）。所以 (b) 的“左伴随……构造……最弱拓扑”符合右伴随，而 (a) 在“右”的情况下成立（[limit_from_cone_right_adjoint]）。这个文件以该经维护者在 2026-09-24 决定的更正形式提供该练习，并在旁边反驳了字面理解。(b) 在每种形状下都被证明成立，而不仅仅是离散形状。这里是什么。 - [ConeImage G T : Cones T ⟶ Cones (G ◯ T)]，Mac Lane 的 G_* 在 Instance/Cones.v 的锥范畴，它的对象作用 Structure/Limit/Preservation.v 的 [FCone] ([ConeImage_obj])，对于任何 [G]，[T] 和形状。- (a)，修正：[terminal_of_right_adjoint]（一个右伴随将终对象映射到终对象）和 [limit_from_cone_right_adjoint]：如果 [ConeImage G T ⊣ W] 和 [G ◯ T] 有极限，那么 [T] 也有，通过 Instance/Cones/Limit.v 的 [Cones_Limit] 和 [Limit_Cones]。-（b），在每个形状 [J : Category@{j o o}] 和图 [T : J ⟶ PTopCat]：[PInitCone T] 给出了一个圆锥的顶点，它位于基础图上，使其边连续的最弱拓扑（其对象动作是 Instance/Top/Complete.v 的 [pinit_cone]，[PInitCone_obj]），以及 [pcone_adjunction：ConeImage PForget T ⊣ PInitCone T]，由 Theory/Adjunction.v 的 [Build_Adjunction'] 通过一个在基础映射上为恒等的同态集双射（[pcone_adj_iso]）。[PTop_limit_via_cones] 是（a）在其上的，而 [PTop_Complete_via_cones] 给出了它在 Instance/Sets/Complete.v 的 [Sets_Limit] 上的完备性，其极限圆锥是 [PTop_Complete] 的，顶点（[PTop_via_cones_apex]）和边（[PTop_via_cones_cone]），在 [eq_refl] 上。- (c)：[PTop_iprod_cone] 和 [PTop_iprod_via_cones]，一个通过在离散形状处的圆锥伴随的族的积（Structure/Limit/Comparison.v 的 [DiscreteCat_Functor'] 和 [discrete_IsIndexedProduct_of_IsLimitCone]），以及 [PTop_products_via_cone_comma]，都是 [PTopCat] 的积。- 左伴随：[pdisc_cone]、[PDiscCone]、[PDiscCone_open]（顶点的开集是 Instance/Top/Prop.v 的 [pdisc_open]，在 [eq_refl] 处），[pdisc_cone_adj_iso] 和 [pdisc_cone_adjunction ：PDiscCone T ⊣ ConeImage PForget T]；[cone_adjoints_differ_at_empty_shape] 在 [pempty_diagram] 上（[PTopCat] 层的空离散形状），[pbool_cone] 和 [puniform_topology]。- 字面意思的 (a) 被驳斥：[Ex3a_left_literal G T]，印刷声明在 [G] 和 [T]；[ex3a_left_adjoint_literal_refuted：Ex3a_left_literal ex3_G1 ex3_T0 → False]；以及 [ex3a_left_counterexample : Ex3a_left_refuting_data ex3_G1 ex3_T0]，三个事实（G_* 的左伴随、GT 的极限、T 无极限）被捆绑在一个类型中，以便这三者都关于同一个 [G] 和 [T]。各部分：[ex3_T0]，来自 Instance/Discrete.v 的空图 [DiscreteCat False]；[ex3_G1]、[ex3_roof_cone]、[ex3_point_cone]、[ex3_roof_from_apex]、[ex3_LeftAdj]、[ex3_left_adj_iso]、[ex3_left_adj]、[ex3_point_terminal]、[ex3_point_limit]、[ex3_roof_no_limit] 以及本地策略 [ex3_lit_tac]。优势。在 [eq_refl]：[ConeImage_obj]，[PInitCone_obj]，[PDiscCone_open]，[PTop_via_cones_apex] 和 [PTop_via_cones_cone]。伴随是同态集合双射，在底层映射上是恒等的。十一份证明在 [Defined] 结束（按标记计数）；七份是承重的，通过在草稿副本中单独闭合每份来衡量：[ConeImage]（[ConeImage_obj] 被拒绝）、[terminal_of_right_adjoint]（[PTop_via_cones_apex]）、[PInitCone]（[PInitCone_obj]）、[pdisc_cone]（[PDiscCone]）、[PDiscCone]（[PDiscCone_open]）、[pbool_cone]（[cone_adjoints_differ_at_empty_shape]）和 [ex3_roof_cone]（[ex3_LeftAdj] 的第一个义务）；[pcone_adjunction]、[pdisc_cone_adjunction]、[ex3_point_cone] 和 [ex3_left_adj] 仅根据数据约定为 [Defined]。反驳在 [False] 结束；[ex3a_left_counterexample] 是数据。宇宙，由 [About] 在 [Set Printing Universes] 下读取，stdlib 大写字母省略。- [ConeImage@{u u0 u1 u2 u3 u4 u5 u6}] 在 [J : Category@{u0 u1 u1}] 上，[C : Category@{u2 u1 u1}] 和 [D : Category@{u u1 u1}]：三者共享同一个同态宇宙 [u1]。Instance/Cones.v 的 [Cones@{u u0 u1 u2 u3 u4}] 确定了其形状和目标的同态 ([J : Category@{u1 u4 u4}], [C : Category@{u2 u4 u4}])，而 Structure/Limit/Preservation.v 的 [FCone]，对象动作，包含了方程块 [u0 = u2] 和 [u0 = u4]，这些方程块将 [D] 的同态与它们联系起来；[Cone] 本身只包含 [<=] 限界。[u1 < u6] 是 Theory/Functor.v 的 [Compose] 限界 ([u3 < u2]) 在 [G ◯ T]。- [limit_from_cone_right_adjoint]：一个 [Limit@{u u6 u5 u7} (G ◯ T)] 输入，一个 [Limit@{u u6 u5 u8} T] 输出，极限宇宙 [u] 相同。- [pcone_adjunction@{j o so u u0 u1 u2 u3}] 和 [pdisc_cone_adjunction]：形状的对象宇宙 [j] 是自由的；[u1 < u0] 是 Theory/Adjunction.v 的 [Adjunction] 自身的 [h1 < so]，[Sets] 的同态集双射的界限所在的地方，[pcone_adj_iso] 的 [u2 < u0] 是 Instance/Sets.v 的 [o < so] 在该 [Sets]；[o < u3] 是 [Compose] 在 [PForget ◯ T] 处。- [PTop_Complete_via_cones@{r s o so u u0 u1} : Complete@{r s o so}]，区块 [s <= o] 和方程 [r = o]：极限宇宙通过 [limit_from_cone_right_adjoint] 保持不变，继承自 [Sets_Limit] 的，位于承载层 [o]。(Instance/Top/Complete.v 的配方将二者分开，并且 [r] 是免费的。)  
- 在 Instance/Top/Complete.v 的边界段的草稿文件中测量：在 [s < o] 被接受为 [Complete@{o s o so}]，在 [r > o] 被拒绝（"无法强制 o = r 因为 o < r"）以及在 [o < s]（"无法强制 o = <1> 因为 o < s <= <1>"）。- [PTop_products_via_cone_comma@{i o so u u0 u1}：HasIndexedProducts@{i i i o so o} PTopCat@{o so}]，[i <= o]。- 字面反例不修复任何宇宙：其自身层次的空形状为 [DiscreteCat False] ([ex3_T0@{u u0 u1 u2}：DiscreteCat@{u u0 u0} False ⟶ Roof@{u1 u0}])，以及 [Roof] 的同态是其 [u0]。在该文件所有64个常量的 [About] 输出中（包括其 [Print Module] 列表和义务；它未声明任何记录或归纳），[Set] 出现在32个块中，每个块都作为 [Set < so]，边界 [PTopCat] 记录，并且在 [ex3_*] 和 [ex3a_*] 块中均未出现；没有块包含方程，只有 [PTop_Complete_via_cones] 的 [r = o]。
+ 在 Instance/Top/Complete.v 的边界段的草稿文件中测量：在 [s < o] 被接受为 [Complete@{o s o so}]，在 [r > o] 被拒绝（“无法强制 o = r 因为 o < r”）以及在 [o < s]（“无法强制 o = <1> 因为 o < s <= <1>”）。- [PTop_products_via_cone_comma@{i o so u u0 u1}：HasIndexedProducts@{i i i o so o} PTopCat@{o so}]，[i <= o]。- 字面反例不修复任何宇宙：其自身层次的空形状为 [DiscreteCat False] ([ex3_T0@{u u0 u1 u2}：DiscreteCat@{u u0 u0} False ⟶ Roof@{u1 u0}])，以及 [Roof] 的同态是其 [u0]。在该文件所有64个常量的 [About] 输出中（包括其 [Print Module] 列表和义务；它未声明任何记录或归纳），[Set] 出现在32个块中，每个块都作为 [Set < so]，边界 [PTopCat] 记录，并且在 [ex3_*] 和 [ex3a_*] 块中均未出现；没有块包含方程，只有 [PTop_Complete_via_cones] 的 [r = o]。
 
  路由与成本。闭包：101 个 [Category.*] 模块，不包括此文件（[Print Libraries]）；Instance/One.v 和 Instance/Roof.v 仅用于反驳，在边际上不耗费任何成本（一起删除，其余导入列表仍加载101）。未交付。G_* 在 Mac Lane 的逗号范畴 (Δ↓T) 本身上：它定义在 [Cones] 上，而 [Cones_Comma] 并未用于传递伴随。没有唯一性陈述：每个在 [PForget] 上的 G_* 的右伴随都是 [PInitCone]（最多同构）这一点没有被证明，并且 [cone_adjoints_differ_at_empty_shape] 比较这里构建的两个伴随，而不是每个左伴随。[terminal_of_right_adjoint] 和 [limit_from_cone_right_adjoint] 是放在它们唯一使用者旁边的一般范畴理论，而不在 Adjunction/ 或 Structure/ 中。字面上的反驳出现在一对 [G]、[T] 上，虽然在该对的每个宇宙层级上都成立。
 *)
@@ -528,8 +528,8 @@ End EmptyShape.
 (* * ** The book's Exercise 3(a) as printed, refuted / * ** 该书印刷版的练习3(a)已被驳斥 *)
 
 (*
- "If G_* has a LEFT adjoint and GT has a limit in D, prove that T has a
- limit in C."  Counterexample: the empty shape, C the walking span
+ “If G_* has a LEFT adjoint and GT has a limit in D, prove that T has a
+ limit in C.”  Counterexample: the empty shape, C the walking span
  (an initial apex, no terminal object), D the point. 
 
  --------
@@ -621,7 +621,7 @@ Proof.
   intros v a b. destruct v; inversion a; inversion b.
 Qed.
 
-(* The book's claim (a) at one pair [G], [T], with "left", and the three facts that refute it there, each stated about the same [G] and [T]. / 该书的论点 (a) 在一对 [G]、[T] 上，带有“左”，以及三条在同一 [G] 和 [T] 上反驳它的事实。 *)
+(* The book's claim (a) at one pair [G], [T], with “left”, and the three facts that refute it there, each stated about the same [G] and [T]. / 该书的论点 (a) 在一对 [G]、[T] 上，带有“左”，以及三条在同一 [G] 和 [T] 上反驳它的事实。 *)
 Definition Ex3a_left_literal {J C D : Category} (G : C ⟶ D) (T : J ⟶ C) :
   Type := ∀ F : Cones (G ◯ T) ⟶ Cones T,
             F ⊣ ConeImage G T → Limit (G ◯ T) → Limit T.

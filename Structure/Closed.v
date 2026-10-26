@@ -13,7 +13,7 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/closed+monoidal+category
  Wikipedia: https://en.wikipedia.org/wiki/Closed_monoidal_category
 
- This file is an in-progress stub for a "closed category" in the sense of
+ This file is an in-progress stub for a “closed category” in the sense of
  Eilenberg and Kelly: a category C equipped with an internal hom bifunctor
 
  [-, -] : C^op ∏ C ⟶ C,
@@ -51,17 +51,17 @@ Generalizable All Variables.
  Wikipedia:
  https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence
  Wikipedia: https://en.wikipedia.org/wiki/Currying
- Paper: Eilenberg, Kelly, "Closed Categories", in Proceedings of the
+ Paper: Eilenberg, Kelly, “Closed Categories”, in Proceedings of the
  Conference on Categorical Algebra — La Jolla 1965, Springer 1966,
  421–562
- Paper: Kelly, "Basic Concepts of Enriched Category Theory", LMS Lecture
+ Paper: Kelly, “Basic Concepts of Enriched Category Theory”, LMS Lecture
  Note Series 64, Cambridge University Press 1982
 
  The definition sketched above opens Eilenberg and Kelly's La Jolla
  paper, a 142-page work that also treated monoidal categories — the
- very name "monoidal category" is, Mac Lane later wrote, due to
+ very name “monoidal category” is, Mac Lane later wrote, due to
  Eilenberg, and it is used there — and introduced strict 2-categories
- under the name "hypercategories".  Their original axioms differ from
+ under the name “hypercategories”.  Their original axioms differ from
  the modern nLab presentation in one respect: rather than asking that
  the map from morphisms x ~> y to global elements I ~> [x, y] be a
  bijection, the paper carried an underlying-set functor sending the
@@ -77,8 +77,8 @@ Generalizable All Variables.
  their homs by pointwise addition; so do the algebras of any commutative
  algebraic theory, and strict 2-categories with lax transformations.  In
  each case, the nLab notes, there is a corresponding tensor product,
- "but its construction is much less intuitive, being essentially defined
- by a sort of adjoint functor theorem" — the Gray tensor product and the
+ “but its construction is much less intuitive, being essentially defined
+ by a sort of adjoint functor theorem” — the Gray tensor product and the
  projective tensor product of Banach spaces were originally defined as
  left adjoints to their homs.  The asymmetry is genuine: a closed
  monoidal category yields a closed category by forgetting the tensor,
@@ -90,14 +90,14 @@ Generalizable All Variables.
  fully and faithfully inside a closed monoidal one.
 
  Lambek carried closed structure into logic in his deductive-systems
- trilogy (Lambek, "Deductive Systems and Categories I–III", Mathematical
+ trilogy (Lambek, “Deductive Systems and Categories I–III”, Mathematical
  Systems Theory 2 1968; Springer LNM 86 1969; LNM 274 1972), whose third
  part exhibits cartesian closed categories as the equational theory
  shared by intuitionistic propositional proofs and typed combinators —
- the categorical leg of Curry–Howard, "abstracting away from dynamics of
- computation such as beta reduction" (Wikipedia, "Curry–Howard
- correspondence"; book form in Lambek and Scott, "Introduction to Higher
- Order Categorical Logic", Cambridge University Press 1986).
+ the categorical leg of Curry–Howard, “abstracting away from dynamics of
+ computation such as beta reduction” (Wikipedia, “Curry–Howard
+ correspondence”; book form in Lambek and Scott, “Introduction to Higher
+ Order Categorical Logic”, Cambridge University Press 1986).
  Theory/Category.v cites that reading as the bridge behind this file and
  Instance/Lambda/: Instance/Lambda.v builds the syntactic cartesian
  closed category of the simply typed lambda calculus, and [Coq_Closed]
@@ -109,8 +109,8 @@ Generalizable All Variables.
  the partial applications of an internal hom — and [Curry] after [Flip]
  yields the contravariant section; the transposition device itself
  predates category theory (Frege 1893, Schönfinkel 1924; Curry wrote in
- 1980 that "Schönfinkel had the idea some 6 years before I did" —
- Wikipedia, "Currying").  The library's operative closed interfaces are
+ 1980 that “Schönfinkel had the idea some 6 years before I did” —
+ Wikipedia, “Currying”).  The library's operative closed interfaces are
  Structure/Cartesian/Closed.v (exponentials via [exp_iso], with curry,
  uncurry and eval) and Structure/Monoidal/Closed.v ([ClosedMonoidal],
  the tensor-hom adjunction); Functor/Hom/Internal.v derives the internal
@@ -214,7 +214,7 @@ Reserved Notation "[ X , Y ]"
 
  Class Closed := {
  internal_hom_functor : C^op ∏ C ⟶ C       ( * [-, -] internal hom * )
- where "[ X , Y ]" := (@internal_hom_functor (X, Y));
+ where “[ X , Y ]” := (@internal_hom_functor (X, Y));
  unit_object : C;                          ( * the unit object I * )
 
  ( * hom_id_iso  : Id[C] ≅[Fun] Curry internal_hom_functor unit_object; * )
@@ -232,21 +232,21 @@ Reserved Notation "[ X , Y ]"
  to (hom_id_iso ([x, y]))
  }.
 
- Notation "[ X , Y ]" := (internal_hom_functor (X, Y))
- (at level 90, right associativity, format "[ X ,  Y ]") : object_scope.
+ Notation “[ X , Y ]” := (internal_hom_functor (X, Y))
+ (at level 90, right associativity, format “[ X ,  Y ]”) : object_scope.
 
- Notation "[ X , ─ ]" := (Curry internal_hom_functor X)
- (at level 90, right associativity, format "[ X ,  ─ ]") : object_scope.
+ Notation “[ X , ─ ]” := (Curry internal_hom_functor X)
+ (at level 90, right associativity, format “[ X ,  ─ ]”) : object_scope.
 
- Notation "[ ─ , X ]" := (Curry (Flip internal_hom_functor) X)
- (at level 90, right associativity, format "[ ─ ,  X ]") : object_scope.
+ Notation “[ ─ , X ]” := (Curry (Flip internal_hom_functor) X)
+ (at level 90, right associativity, format “[ ─ ,  X ]”) : object_scope.
 
  --------
  jww (2018-10-05): 待办事项
 
  下面的类勾画了Eilenberg-Kelly的数据：内部Hom双函子、单位对象I (= unit_object)、单位同构i : x ≅ [I, x] (hom_id_iso)、幺元元素j : I ~> [x, x] (hom_id)以及复合态射L : [y, z] ~> [[x, y], [x, z] (hom_compose)。两个相容性字段仍未完成：hom_id_right和未命名的hom_字段中都包含下划线，用于表示尚未确定的态射，因此该类尚不能进行类型检查。完成它意味着要陈述涉及i、j和L的五个Eilenberg-Kelly公理；在此之前，整个代码块保持注释状态。闭类 := {
  内部同态函子 : C^op ∏ C ⟶ C       ( *  [-, -]  内部同态 * )
- 其中 "[ X , Y ]" := (@内部同态函子 (X, Y));
+ 其中 “[ X , Y ]” := (@内部同态函子 (X, Y));
  单位对象 : C;                          ( * 单位对象 I * )
 
  ( * hom_id_iso  : Id [C]  ≅ [Fun]  Curry 内部同态函子 单位对象; * )

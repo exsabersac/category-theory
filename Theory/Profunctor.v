@@ -25,7 +25,7 @@ nLab: https://ncatlab.org/nlab/show/profunctor
      C^op ∏ D ⟶ Sets,
 
    contravariant in its first argument and covariant in its second. It sends a
-   pair (c, d) to a setoid P(c, d) of "heteromorphisms" from c to d, carrying a
+   pair (c, d) to a setoid P(c, d) of “heteromorphisms” from c to d, carrying a
    left action of C and a right action of D by composition. Since hom-sets here
    are setoids, profunctors land in Sets, the category of setoids.
 
@@ -62,22 +62,22 @@ nLab: https://ncatlab.org/nlab/show/profunctor
 Where profunctors come from, and what they are for
 
    nLab: https://ncatlab.org/nlab/show/profunctor
-   Paper: Bénabou, "Les distributeurs", Institut de Mathématique Pure
+   Paper: Bénabou, “Les distributeurs”, Institut de Mathématique Pure
           et Appliquée, Rapport 33, Univ. Cath. de Louvain (1973)
-   Paper: Lawvere, "Metric Spaces, Generalized Logic, and Closed
-          Categories", Rend. Sem. Mat. Fis. Milano 43 (1973)
+   Paper: Lawvere, “Metric Spaces, Generalized Logic, and Closed
+          Categories”, Rend. Sem. Mat. Fis. Milano 43 (1973)
 
    The notion, and the several names it travels under, accumulated over
    roughly a decade.  Lawvere presented some of these ideas at
    Oberwolfach in 1966; the surviving record is a set of notes taken by
    Anders Kock of a talk by Lawvere, with a passing mention of
-   "generalised functors" (now called profunctors) and their
-   "generalised matrix multiplication" (nLab).  Jean Bénabou coined the
-   word "profunctor" and later preferred "distributor" (distributeur),
+   “generalised functors” (now called profunctors) and their
+   “generalised matrix multiplication” (nLab).  Jean Bénabou coined the
+   word “profunctor” and later preferred “distributor” (distributeur),
    on the ground that a lax functor into the bicategory of distributors
-   is a "distribution on a category", formally resembling a distribution
-   as a generalized function (nLab).  The "bimodule" the header records,
-   and the related name "module", come from the Australian school: for
+   is a “distribution on a category”, formally resembling a distribution
+   as a generalized function (nLab).  The “bimodule” the header records,
+   and the related name “module”, come from the Australian school: for
    one-object V-categories, that is, monoids in V, a profunctor is
    literally a bimodule in the classical algebraic sense (nLab;
    Wikipedia).
@@ -133,11 +133,11 @@ Where profunctors come from, and what they are for
    type b keyed by a, and realizes coend composition by an existentially
    quantified datatype that collapses the shared middle variable, with
    the hom-functor as the identity by the ninja-Yoneda lemma (Milewski,
-   "Ends and Coends", 2017; see Theory/Coend/Yoneda.v).  On this footing
+   “Ends and Coends”, 2017; see Theory/Coend/Yoneda.v).  On this footing
    the optics — lenses, prisms, traversals — are polymorphic profunctor
    transformers, composed by function composition and proved equivalent
    to the concrete getter/setter representations (Pickering, Gibbons,
-   Wu, "Profunctor Optics: Modular Data Accessors", Art, Science, and
+   Wu, “Profunctor Optics: Modular Data Accessors”, Art, Science, and
    Engineering of Programming 1(2):7, 2017).
 
 --------

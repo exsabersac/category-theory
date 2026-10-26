@@ -17,19 +17,19 @@ Generalizable All Variables.
 (*
  SOURCES
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.3,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.3,
  printed p. 91 (p. 100 of the PDF scan), the remark between the Lemma
  on representable transformations and its proof.  Read off a 300-dpi
  render of that page and quoted here verbatim, subscripts and all:
 
- "Observe, also, that for functors S, T : C→B, a natural
+ “Observe, also, that for functors S, T : C→B, a natural
  transformation τ : S ⇸ T is epi (respectively, monic) in B^C if
  and only if every component τ_c : S_c → T_c is epi (respectively,
  monic) in B for B = Set; this follows by Exercise III.4.4,
- computing the pushout pointwise as in Exercise III.5.5."
+ computing the pushout pointwise as in Exercise III.5.5.”
 
- Catalog item maclane:IV.3:remark1.  Also covered: Awodey, "Category
- Theory", 1st ed. (Carnegie Mellon pre-print, September 2005), §7.10
+ Catalog item maclane:IV.3:remark1.  Also covered: Awodey, “Category
+ Theory”, 1st ed. (Carnegie Mellon pre-print, September 2005), §7.10
  Exercise 6, printed p. 187 (PDF p. 196), item awodey:7:ex6 — show
  that a natural transformation is an isomorphism in the functor
  category exactly when each component is, and decide whether the
@@ -45,8 +45,8 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/category+of+presheaves
 
  READ THE PRINTED SENTENCE PRECISELY.  Mac Lane states the
- BICONDITIONAL for B = Set and for no other target; the clause "for
- B = Set" governs the whole "if and only if".  So the split this file
+ BICONDITIONAL for B = Set and for no other target; the clause “for
+ B = Set” governs the whole “if and only if”.  So the split this file
  takes — an implication for an arbitrary target, a biconditional at
  Sets — is the print's own, not a hedge.  His stated route is the
  pointwise (co)limit computation, and that is the route taken here.
@@ -86,14 +86,14 @@ Generalizable All Variables.
  injective, epic exactly when every component is surjective.  These
  are the statements the subobject-classifier work wants to cite.
 
- THE MONOMORPHISM DECISION (Awodey's "decide whether the analogous
- statement holds").  Componentwise monic implies monic for EVERY
+ THE MONOMORPHISM DECISION (Awodey's “decide whether the analogous
+ statement holds”).  Componentwise monic implies monic for EVERY
  target D — that is (A), with no hypothesis on D at all.  The converse
  is delivered at Sets, by (B), and the argument shows what it needs:
  it holds wherever the kernel pair of θ can be computed pointwise, and
  over Sets it can.  For an arbitrary D the converse is NOT proved
  here, and NO separating example is built, so nothing in this file
- licenses the sentence "the converse is false in general" — the honest
+ licenses the sentence “the converse is false in general” — the honest
  report is that it is not established in general and that this file
  offers no countermodel.
 
@@ -179,7 +179,7 @@ Generalizable All Variables.
 
  CORRECTIONS
 
- To the issue.  Its "Current state" is right on the absence — at
+ To the issue.  Its “Current state” is right on the absence — at
  bbddaee2, before this file was added, the command
  `rg -c 'Monic|Epic'` over Instance/Fun.v, Instance/Fun/ and
  Theory/Natural/ returned no hits at all (it now matches this file and
@@ -189,11 +189,11 @@ Generalizable All Variables.
  where the issue places it.  Both were re-checked here.
 
  To the OCR.  A plain `pdftotext -f 100 -l 100` of the scan mangles
- the sentence badly — it renders τ as "I", the superscript C of B^C as
- "e", both subscripts as "e" ("Ie: Se----> Te"), and both Roman
- numerals as "111" — so it is not usable as a quotation.  The text
+ the sentence badly — it renders τ as “I”, the superscript C of B^C as
+ “e”, both subscripts as “e” (“Ie: Se----> Te”), and both Roman
+ numerals as “111” — so it is not usable as a quotation.  The text
  above is read from the page image instead.  Even a cleaned-up OCR
- renders the subscripted S_c and T_c as "S c" and "T c"; the printed
+ renders the subscripted S_c and T_c as “S c” and “T c”; the printed
  page sets them as subscripts, and the quotation above keeps them.
 
  UNIVERSES, MEASURED OFF BOTH BINDER AND BLOCK
@@ -214,12 +214,12 @@ Generalizable All Variables.
  The identifications are INHERITED and are attributed by isolating
  experiments in the probe, not by assertion.  Under a declared
  `Constraint ch < dh` the functor category `@Fun Cu Du` is rejected
- with "Cannot enforce dh = ch" while `x ~{Cu}~> y` and `a ~{Du}~> b`
+ with “Cannot enforce dh = ch” while `x ~{Cu}~> y` and `a ~{Du}~> b`
  are both accepted at those very levels: [Fun] takes both categories
  at ONE hom-and-proof level, which is the source of `u0 = u2` and of
  half of each binder's hom=proof.  Independently, under
  `Constraint mh < mp` both `@Monic Du a b g` and `@Epic Du a b g` are
- rejected with "Cannot enforce mp = mh" against the same two accepted
+ rejected with “Cannot enforce mp = mh” against the same two accepted
  controls, so the classes of Theory/Morphisms.v identify hom with
  proof on their own.  Neither identification is introduced here and
  neither is claimed unavoidable.

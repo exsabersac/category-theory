@@ -21,10 +21,10 @@ Generalizable All Variables.
     nLab:      https://ncatlab.org/nlab/show/representable+functor
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+    Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
           GTM 5, Springer 1998, §IV.1 Corollary 2 and Exercise 1,
           printed pp. 85-86 -- maclane:IV.1:cor2, maclane:IV.1:ex1.
-    Book: Riehl, "Category Theory in Context", Dover 2016, §4.4 -- the
+    Book: Riehl, “Category Theory in Context”, Dover 2016, §4.4 -- the
           same statement, and the source of the uniqueness clause
           discussed below.
 
@@ -52,8 +52,8 @@ Generalizable All Variables.
     already [@Adjunction D C F G] on the nose.
 
     WHAT MAKES THE CHAIN COMPOSABLE, AND IT IS NEW.  The chain Mac Lane
-    runs is "representation at every c" ⟹ "universal arrow at every c" ⟹
-    "left adjoint".  Its last step is
+    runs is “representation at every c” ⟹ “universal arrow at every c” ⟹
+    “left adjoint”.  Its last step is
     [AdjunctionFromUniversalArrows], which consumes the COMMA-INITIAL
     [UniversalArrow]; but the representability side arrives at the OTHER
     encoding, [AUniversalArrow], since that is what
@@ -67,8 +67,8 @@ Generalizable All Variables.
     already had its packaging passage
     ([ACouniversalArrow_of_CouniversalArrow] and its inverse,
     Theory/Universal/Arrow/Dual.v, whose own comment records that
-    "Theory/Universal/Arrow.v carries both encodings but never relates
-    them"), so the dual was composable before the primal was.
+    “Theory/Universal/Arrow.v carries both encodings but never relates
+    them”), so the dual was composable before the primal was.
 
     Nothing else here is rebuilt.  [HomAfter] (Theory/Universal/Element.v)
     IS Mac Lane's Hom_C(c, G−) and is used as given; before this file its
@@ -97,8 +97,8 @@ Generalizable All Variables.
       * [adj_representable_obj]   : the representing object is F c;
       * [left_adjoint_of_representable_obj]: the induced left adjoint
         agrees ON OBJECTS with the chosen representing objects, which is
-        the check Mac Lane's "a choice of representations is a choice of
-        universal arrows" actually asks for.
+        the check Mac Lane's “a choice of representations is a choice of
+        universal arrows” actually asks for.
 
     So does the object half of the round trip,
     [representable_roundtrip_obj]: reading an adjunction out as
@@ -146,7 +146,7 @@ Generalizable All Variables.
          that [fmap[L] f] satisfies the square at f AND that g does, and
          concludes they agree, so it is SYMMETRIC in the two -- which is
          why the proof is the uniqueness field used twice.  It is NOT the
-         stronger "any g satisfying the square is [fmap[L] f]": for an
+         stronger “any g satisfying the square is [fmap[L] f]”: for an
          arbitrary L and an arbitrary family H nothing ties [fmap[L]] to
          H, and without the first hypothesis the conclusion is false.
          The instance [left_adjoint_of_representable_fmap_unique] is

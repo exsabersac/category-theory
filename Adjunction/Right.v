@@ -23,8 +23,8 @@ NOTATION GUARD, and it is REQUIRED rather than defensive -- measured:
    Category.Functor.Opposite together with Category.Adjunction.Opposite
    open theirs, so a bare [C^op] can parse as the wrong one.  Delete the
    [Open Scope] and the result-type ascription of
-   [Adjunction_of_AdjointOnTheRight] is rejected with [The term "A" has
-   type "Category" while it is expected to have type "?F ⊣ ?U"]:
+   [Adjunction_of_AdjointOnTheRight] is rejected with [The term “A” has
+   type “Category” while it is expected to have type “?F ⊣ ?U”]:
    [adjunction_scope]'s [_^op] wins there.  So an argument position is
    NOT rescued by [Bind Scope category_scope with Category] -- a sibling
    file reports the opposite for its own contents, and that reading does
@@ -56,10 +56,10 @@ Open Scope category_scope.
 
 Generalizable All Variables.
 
-(* Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+(* Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
           §IV.2 Definition 2, printed p. 89 (maclane:IV.2:def2), where the
           notion is attributed to Freyd
-   Book:  Riehl, "Category Theory in Context", §4.4
+   Book:  Riehl, “Category Theory in Context”, §4.4
    nLab:  https://ncatlab.org/nlab/show/mutually+left+adjoint+functors
    nLab:  https://ncatlab.org/nlab/show/adjoint+functor
    nLab:  https://ncatlab.org/nlab/show/opposite+category
@@ -74,8 +74,8 @@ Generalizable All Variables.
    hom-sets -- hence the name -- and the pair is symmetric in S and T:
    reading the bijection backwards exhibits T and S adjoint on the right
    in the other order.  The dual notion, with both objects on the LEFT
-   (X(S a, x) ≅ A(T x, a)), is "adjoint on the left"; Riehl §4.4 calls the
-   two "mutually right adjoint" and "mutually left adjoint".  The
+   (X(S a, x) ≅ A(T x, a)), is “adjoint on the left”; Riehl §4.4 calls the
+   two “mutually right adjoint” and “mutually left adjoint”.  The
    contravariant power set is the canonical example, and it is built
    below: a map a → P(x) and a map x → P(a) are both just a relation
    between a and x, so the bijection is the flip of a relation.
@@ -110,8 +110,8 @@ Generalizable All Variables.
    three TYPING negatives are pinned below, each stripped and read in
    full, each a plain type mismatch with no [cannot unify] and no
    universe clause.  The FIRST TWO are the ones about the ordinary
-   adjunction, reporting ("The term H has type T^op ⊣ S while it is
-   expected to have type AdjointOnTheRight S T") and its converse; the
+   adjunction, reporting (“The term H has type T^op ⊣ S while it is
+   expected to have type AdjointOnTheRight S T”) and its converse; the
    THIRD is a different claim -- that the right-hand and left-hand
    classes are not definitionally equal to each other -- and reports
    [AdjointOnTheRight S T] against [AdjointOnTheLeft S T].
@@ -249,7 +249,7 @@ Generalizable All Variables.
    attributed, with siblings tested first.  For hom = proof there are TWO
    INDEPENDENT donors: under a declared [Constraint uh < up], [x ~> y]
    and [id[x]] elaborate (controls) while [Opposite C] alone is rejected
-   ("Cannot enforce up = uh because uh < up") and, separately, a bare
+   (“Cannot enforce up = uh because uh < up”) and, separately, a bare
    hom-setoid ascribed to [obj[Sets]] -- with no functor and no opposite
    in the command -- is rejected with the same message.  For A's hom =
    X's hom there are likewise TWO: under [Constraint ah < xh] the
@@ -268,7 +268,7 @@ Generalizable All Variables.
    strict LOWER bound (Set < o, from [Prop]), inherited from the donor,
    with no pin.
 
-   AXIOMS: 134/134 constants report "Closed under the global context".
+   AXIOMS: 134/134 constants report “Closed under the global context”.
    The count is every DISTINCT name the module declares -- 127 from
    [Print Module] on its WHITESPACE-FLATTENED output (it wraps [Record]
    onto its own line, so a line-anchored sweep silently misses the four

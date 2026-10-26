@@ -161,8 +161,8 @@ Open Scope category_scope.
    IDENTIFY all six universes of the two rings: u = u0 = u1 = u2 = u3 =
    u4.  That is the DONOR's doing and not this file's, and it was
    measured rather than guessed: [obj[Rng]] rejects
-   [RingObject@{ra ra rc}] under [Constraint ra < rc] with "Cannot
-   enforce rc = ra", while [RingObject@{ra rb rc}] with [ra < rb] is
+   [RingObject@{ra ra rc}] under [Constraint ra < rc] with “Cannot
+   enforce rc = ra”, while [RingObject@{ra rb rc}] with [ra < rb] is
    perfectly formable on its own — so it is the CATEGORY [Rng], not the
    record [RingObject], that collapses them, and any statement about a
    morphism of [Rng] inherits the collapse.  That measurement is NOT
@@ -200,7 +200,7 @@ Open Scope category_scope.
    about Q (x)_Z M for a general abelian group M.
 
    All 97 constants of this file — 53 named plus 44 [Program]
-   obligations — report "Closed under the global context". 
+   obligations — report “Closed under the global context”. 
 
    --------
    * * 标量扩张，作为限制的左伴随

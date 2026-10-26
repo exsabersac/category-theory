@@ -24,7 +24,7 @@ Generalizable All Variables.
 (*
    * * Gaussian elimination: a basis of the left null space
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.3
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §III.3
    Exercise 3 [maclane:III.3:ex3] asks for the coequalizer of a parallel
    pair of matrices.  This file is the LINEAR-ALGEBRA half of that
    exercise and deliberately stops there.  It produces, for an arbitrary
@@ -84,8 +84,8 @@ Generalizable All Variables.
    ARGUED HERE, NOT PROVED -- this tree's convention for exactly this
    shape is to prove it ([Instance/Field.v]'s own
    [stability_is_the_conclusion] and siblings), and no such theorem
-   is offered below, so the word "forced" should be read as "no route
-   around it was found", not as a proved impossibility.
+   is offered below, so the word “forced” should be read as “no route
+   around it was found”, not as a proved impossibility.
 
    One caveat, measured rather
    than anticipated: both in-tree deciders are [Qed] LEMMAS, so neither
@@ -169,7 +169,7 @@ Generalizable All Variables.
    TWO ENGINEERING FINDINGS.  [Coq.QArith.QArith] must be Required
    BEFORE [Category.Lib] — see the comment above the import block; and,
    following the Determinant.v precedent, this file's section sets
-   [Default Proof Using "All"], because [Kdec] occurs in proofs
+   [Default Proof Using “All”], because [Kdec] occurs in proofs
    ([find_nonzero]) without occurring in the corresponding statements,
    so every [Qed] lemma below takes K and [Kdec] as its two leading
    arguments even where [Kdec] is not used.
@@ -195,7 +195,7 @@ Generalizable All Variables.
    [mat_equiv_is_homset_equiv]（矩阵上的本地 [Setoid] 实例是 [Matr K] 的同构集合，而不是并行逐点的），以及——使 [lnb_step] 变得便宜的两个——[mat_mul_col0_strict] 和 [mat_mul_tail_strict]，其中取乘积的第一列并乘入第一列给出相同的项，因此根本不需要引理。在 F₂ 上，维度、每个基条目、湮灭和所做示例的中介都由 [eq_refl] 闭合；在 ℚ 上，维度、基条目 −2 和 1 以及湮灭也由 [eq_refl] 闭合，有理数运算在闭合输入上进行约简。进行了四次严格尝试并被驳回。它们在此记录，而不是作为 [Fail] 探针，本文件不包含探针部分：
    (i) [mat_mul (mat_id a) A = A] ——该单位定律是真正的有限和计算，而不是转换，并且只有 [mat_mul_id_l] 的 [≈] 生效；(ii) [mat_sub A A = mat_zero] 同理；(iii) 使用树的 [F2_Field_dec] 替代 [f2_dec] 的 F₂ 维度检查，这正是发现上述不透明性的原因；以及 (iv) [lnb_basis f2_col_lnb = lnb_basis f2_ones_lnb]，在整体矩阵莱布尼茨等式下被驳回，尽管两者的两个条目值都相同——二者是通过不同次数的递归步骤生成的，所以它们是不同的闭合项但具有相同的值，而文件中的四个 [f2_*_basis_*] 示例固定了这些值。每个阴性样本都被去除了其 [Fail]，并确认是真正的转换失败，相对于相同参数下的阳性对照。
 
-   两个工程发现。[Coq.QArith.QArith] 必须在 [Category.Lib] 之前要求——见导入块上方的评论；并且，按照 Determinant.v 的先例，该文件的部分设置了 [Default Proof Using "All"]，因为 [Kdec] 出现在证明（[find_nonzero]）中，但并未出现在相应的陈述中，所以下面的每个 [Qed] 引理都将 K 和 [Kdec] 作为其两个主要参数，即使 [Kdec] 未被使用。此文件未提供。没有秩函数，因此无法证明 [lnb_dim] = [m - rank M]；也没有声明 [lnb_dim] 与构造无关（维度的唯一性未说明，但可以从通用条款中推导出来，并且会是下一个自然的引理）；没有阶梯形式、标准形式以及主元列表，因此这里没有任何内容能够决定矩阵等价；没有右零空间，也没有基于转置的对偶（Instance/Matr.v 的转置函子会提供，但未使用）；关于 [Matr K] 作为一个范畴除了上面三处 [eq_refl] 的标识外，没有其他说明；也没有与任何余极限、余锥或商的词汇建立桥梁——那是下一个文件的内容，而不是这个文件的内容。
+   两个工程发现。[Coq.QArith.QArith] 必须在 [Category.Lib] 之前要求——见导入块上方的评论；并且，按照 Determinant.v 的先例，该文件的部分设置了 [Default Proof Using “All”]，因为 [Kdec] 出现在证明（[find_nonzero]）中，但并未出现在相应的陈述中，所以下面的每个 [Qed] 引理都将 K 和 [Kdec] 作为其两个主要参数，即使 [Kdec] 未被使用。此文件未提供。没有秩函数，因此无法证明 [lnb_dim] = [m - rank M]；也没有声明 [lnb_dim] 与构造无关（维度的唯一性未说明，但可以从通用条款中推导出来，并且会是下一个自然的引理）；没有阶梯形式、标准形式以及主元列表，因此这里没有任何内容能够决定矩阵等价；没有右零空间，也没有基于转置的对偶（Instance/Matr.v 的转置函子会提供，但未使用）；关于 [Matr K] 作为一个范畴除了上面三处 [eq_refl] 的标识外，没有其他说明；也没有与任何余极限、余锥或商的词汇建立桥梁——那是下一个文件的内容，而不是这个文件的内容。
 *)
 
 (*
@@ -596,7 +596,7 @@ Qed.
 
 (*
  The pivot column of the mediator's image.  This is the one place the
- hypothesis "h kills the column" is spent, and it is spent through
+ hypothesis “h kills the column” is spent, and it is spent through
  [fin_sum_delete]: the sum over all indices splits at p, so the sum
  over the complement is exactly the negative of the p-th term. 
 
@@ -989,8 +989,8 @@ Arguments lnb_univ {K m n M} _ _ _ _.
    either reduces, and the elimination engine — which matches on the
    decider's answer to find a pivot — computes with neither.  This was
    MEASURED, not anticipated: with [F2_Field_dec] supplied, the check
-   [lnb_dim f2_col_lnb = 1%nat] is rejected by [eq_refl] with "cannot
-   unify [lnb_dim f2_col_lnb] and [1%nat]".  The two transparent copies
+   [lnb_dim f2_col_lnb = 1%nat] is rejected by [eq_refl] with “cannot
+   unify [lnb_dim f2_col_lnb] and [1%nat]”.  The two transparent copies
    below decide the same relations by the same case analyses and differ
    only in ending with [Defined]; they are what the computing witnesses
    run on.  The opacity is Instance/Field.v's, is NOT repaired here, and

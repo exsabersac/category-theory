@@ -11,7 +11,7 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.3 Exercise 3, printed p. 40 (PDF p. 50) — maclane:II.3:ex3
  nLab:      https://ncatlab.org/nlab/show/product+category
 
@@ -41,7 +41,7 @@ Generalizable All Variables.
  objects live at the maximum of [I]'s level and the members'
  object level — and [I]'s level also bounds the HOM universe,
  since a hom is itself an [I]-indexed family — exactly as the
- library's {o h p} polymorphism prescribes.  This is the "set-indexed" of the exercise made
+ library's {o h p} polymorphism prescribes.  This is the “set-indexed” of the exercise made
  precise: [I] is a [Type], with no smallness apparatus needed.
 
  2. CONTRAST WITH Structure/Limit/Product.v.  That file's indexed

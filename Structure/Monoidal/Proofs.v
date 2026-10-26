@@ -16,8 +16,8 @@ Generalizable All Variables.
  consequences of the triangle and pentagon axioms (and the naturality of
  the unitors and associator) that Mac Lane's coherence theorem guarantees
  without making them part of the data. They are sometimes called Kelly's
- lemmas, after G. M. Kelly, "On MacLane's conditions for coherence of
- natural associativities, commutativities, etc." (J. Algebra 1, 1964),
+ lemmas, after G. M. Kelly, “On MacLane's conditions for coherence of
+ natural associativities, commutativities, etc.” (J. Algebra 1, 1964),
  which showed that several of the original Mac Lane axioms are redundant.
  What is established here:
 
@@ -94,7 +94,7 @@ Proof.
   rewrites; reflexivity.
 Qed.
 
-(* The following proofs are from the book "Tensor Categories", by Pavel Etingof, Shlomo Gelaki, Dmitri Nikshych, and Victor Ostrik. / 以下证明来自Pavel Etingof、Shlomo Gelaki、Dmitri Nikshych 和 Victor Ostrik 合著的《张量范畴》一书。 *)
+(* The following proofs are from the book “Tensor Categories”, by Pavel Etingof, Shlomo Gelaki, Dmitri Nikshych, and Victor Ostrik. / 以下证明来自Pavel Etingof、Shlomo Gelaki、Dmitri Nikshych 和 Victor Ostrik 合著的《张量范畴》一书。 *)
 
 (* Proposition 2.2.2 / 命题 2.2.2 *)
 
@@ -112,8 +112,8 @@ Proposition id_unit_left {x} :
   id ⨂ unit_left ≈ @unit_left _ _ (I ⨂ x).
 Proof.
   (*
- "It follows from naturality of the left unit constraint l that the
- following diagram commutes..." 
+ “It follows from naturality of the left unit constraint l that the
+ following diagram commutes...” 
 
  --------
  由左单位约束 l 的自然性可得，以下图表交换...
@@ -123,7 +123,7 @@ Proof.
             unit_left ∘ unit_left)
     by (rewrite to_unit_left_natural; reflexivity).
 
-  (* "Since lX is an isomorphism, the first identity follows." / 由于 lX 是同构，第一个等式成立。 *)
+  (* “Since lX is an isomorphism, the first identity follows.” / 由于 lX 是同构，第一个等式成立。 *)
   symmetry.
   do 2 (rewrite <- id_left; symmetry).
   rewrite <- (iso_from_to unit_left).
@@ -144,8 +144,8 @@ Proposition id_unit_right {x} :
   unit_right ⨂ id ≈ @unit_right _ _ (x ⨂ I).
 Proof.
   (*
- "It follows from naturality of the left unit constraint l that the
- following diagram commutes..." 
+ “It follows from naturality of the left unit constraint l that the
+ following diagram commutes...” 
 
  --------
  由左单位约束 l 的自然性可得，以下图表交换...
@@ -155,7 +155,7 @@ Proof.
           unit_right ∘ unit_right)
     by (rewrite to_unit_right_natural; reflexivity).
 
-  (* "The second one follows similarly from naturality of r." / 第二个同样可以从 r 的自然性推导出来。 *)
+  (* “The second one follows similarly from naturality of r.” / 第二个同样可以从 r 的自然性推导出来。 *)
   symmetry.
   do 2 (rewrite <- id_left; symmetry).
   rewrite <- (iso_from_to unit_right).
@@ -167,7 +167,7 @@ Qed.
 
 (*
  Helper diagram for the variant left triangle identity. It expresses the
- commutativity of the "lower right triangle" obtained by pasting the
+ commutativity of the “lower right triangle” obtained by pasting the
  associator-naturality square against the pentagon and the triangle axiom;
  [triangle_identity_left] is recovered from it by specializing x = I and
  cancelling the leading [id[I] ⨂ -] via [tensor_id_left_inj]. 
@@ -181,7 +181,7 @@ Lemma bimap_id_unit_left {x y z} :
     << x ⨂ ((I ⨂ y) ⨂ z) ~~> x ⨂ (y ⨂ z) >>
   id ⨂ unit_left ∘ id ⨂ tensor_assoc.
 Proof.
-  (* "Consequently, the lower right triangle commutes as well." / 因此，下右三角形也可交换。 *)
+  (* “Consequently, the lower right triangle commutes as well.” / 因此，下右三角形也可交换。 *)
   pose proof (to_tensor_assoc_natural (id[x]) (@unit_left _ _ y) (id[z])) as X0.
   assert (X1 : ∀ x y z w (f g : (x ⨂ y) ⨂ z ~> w),
              f ≈ g → f ∘ tensor_assoc⁻¹ ≈ g ∘ tensor_assoc⁻¹).
@@ -243,8 +243,8 @@ Theorem triangle_identity_left {x y} :
   unit_left ∘ tensor_assoc.
 Proof.
   (*
- "Setting x = 1 and applying the functor L−1 to the lower right triangle,
- 1 we obtain commutativity of the triangle (2.12)." 
+ “Setting x = 1 and applying the functor L−1 to the lower right triangle,
+ 1 we obtain commutativity of the triangle (2.12).” 
 
  --------
  将 x 设为 1 并将函子 L−1 应用于右下三角形，1 我们得到三角形 (2.12) 的可交换性。
@@ -320,7 +320,7 @@ Lemma bimap_unit_right_id {x y z} :
     << (x ⨂ (y ⨂ I)) ⨂ z ~~> (x ⨂ y) ⨂ z >>
   unit_right ⨂ id ∘ tensor_assoc⁻¹ ⨂ id.
 Proof.
-  (* "Consequently, the lower right triangle commutes as well." / 因此，下右三角形也可交换。 *)
+  (* “Consequently, the lower right triangle commutes as well.” / 因此，下右三角形也可交换。 *)
   pose proof (from_tensor_assoc_natural
                 (id[x]) (@unit_right _ _ y) (id[z])) as X0.
   assert (X1 : ∀ x y z w (f g : x ⨂ (y ⨂ z) ~> w),

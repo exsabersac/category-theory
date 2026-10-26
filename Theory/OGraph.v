@@ -20,8 +20,8 @@ nLab:      https://ncatlab.org/nlab/show/quiver
    nLab:      https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
    nLab:      https://ncatlab.org/nlab/show/category
    Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.7 "The Category of All Categories", printed pp. 48-49,
+   Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+              §II.7 “The Category of All Categories”, printed pp. 48-49,
               display (3)
 
    Mac Lane fixes a collection O of objects once and for all and looks at the
@@ -33,8 +33,8 @@ nLab:      https://ncatlab.org/nlab/show/quiver
    then that a category with object set O is EXACTLY a monoid for that
    product: an O-graph A with two O-graph morphisms c : A ×_O A ⟶ A and
    i : O ⟶ A making one associativity square and two unit triangles commute
-   (his display (3)).  "Thus a category is like a monoid with Set replaced by
-   O-Grph and cartesian product by ×_O."
+   (his display (3)).  “Thus a category is like a monoid with Set replaced by
+   O-Grph and cartesian product by ×_O.”
 
    The three catalog items formalised here are [maclane:II.7:def2] (O-graphs,
    O-graph morphisms, the trivial O-graph), [maclane:II.7:def3] (the product
@@ -44,7 +44,7 @@ nLab:      https://ncatlab.org/nlab/show/quiver
    doc/plan/books/maclane/inventory/II.json, not Mac Lane's own wording; the
    book itself should be consulted for the latter.
 
-   WHY THE SLOGAN MATTERS.  "A category is a monoid in O-Grph" is the
+   WHY THE SLOGAN MATTERS.  “A category is a monoid in O-Grph” is the
    graph-side member of a family of statements this library already carries
    on the functor side: a monad on C is a monoid in the monoidal category of
    endofunctors ([Theory/Monad.v], [Theory/Algebra/Monoid.v]), a monoidal
@@ -78,7 +78,7 @@ nLab:      https://ncatlab.org/nlab/show/quiver
    [ObjUIP] and [Theory/Category/Monoid.v]'s [HomRigid], never an axiom.
 
    NOT THE METACATEGORY TABLE.  [Theory/Metacategory.v] and
-   [Theory/Metacategory/ArrowsOnly.v] also speak of "composable pairs", and
+   [Theory/Metacategory/ArrowsOnly.v] also speak of “composable pairs”, and
    the content is unrelated: there a composable pair is a key of a finite map
    [pairs : M.t arrow] recording the value of a PARTIAL COMPOSITION on a
    single sort of arrows (Mac Lane §I.1's arrows-only axiomatisation).  There
@@ -113,8 +113,8 @@ nLab:      https://ncatlab.org/nlab/show/quiver
    [@Monoid (OGrph O) (OGrph_Monoidal O) A], so [mu] IS Mac Lane's c, [eta]
    IS his i, and his display (3) IS the class's [mu_assoc], [mu_unit_left]
    and [mu_unit_right].  The cost was universe hygiene, not proof effort: the
-   coherence obligations are all "destruct the composable pair and, where a
-   node equality is in the way, destruct that too", while [Monoidal] pins the
+   coherence obligations are all “destruct the composable pair and, where a
+   node equality is in the way, destruct that too”, while [Monoidal] pins the
    shape of the category it applies to (see UNIVERSES below).
 
    THE PRODUCT'S SETOID, which is where the difficulty actually lives.  An
@@ -259,7 +259,7 @@ nLab:      https://ncatlab.org/nlab/show/quiver
      claim.
 
    AXIOMS.  Every named constant of this file, and every constant the three
-   records generate, reports "Closed under the global context" under [Print
+   records generate, reports “Closed under the global context” under [Print
    Assumptions]; the file contains no [Program], hence no obligations, no
    incomplete proof and no [Axiom].  UIP enters only as the explicit
    [NodeUIP] hypothesis of [OGrph_Quiver_Faithful], and no other hypothesis
@@ -288,7 +288,7 @@ Arguments oedgeset {_} _ _ _.
 (*
 A morphism of O-graphs: a map on arrows for each ordered pair of nodes,
    respecting the arrow setoids.  There is NO action on nodes -- that is
-   exactly what "identity on objects" means, and it is the whole difference
+   exactly what “identity on objects” means, and it is the whole difference
    from [QuiverHomomorphism].
 
 --------
@@ -425,14 +425,14 @@ Definition eq_setoid_poly@{a b} (A : Type@{a}) : Setoid@{a b} A := {|
 |}.
 
 (*
-The trivial (unit) O-graph -- Mac Lane's "O itself, with arrow set O and
-   both domain and codomain functions the identity".  Its arrows x ~> y are
+The trivial (unit) O-graph -- Mac Lane's “O itself, with arrow set O and
+   both domain and codomain functions the identity”.  Its arrows x ~> y are
    the PROOFS of x = y, compared by Leibniz equality.
 
    Two things about that, both load-bearing and neither an idealisation.
    First, Leibniz comparison does NOT collapse distinct proofs: absent UIP on
    the node type this graph may carry more than one loop at a node, so the
-   reading "exactly one arrow per node" is available only when O has UIP.
+   reading “exactly one arrow per node” is available only when O has UIP.
    That costs nothing -- [OGraph_unit] is still a unit for the composable-
    pairs product, because the product's own setoid quotients by the middle
    node's equality (see [CompEquiv]), which is exactly the freedom the extra
@@ -492,7 +492,7 @@ Defined.
 
 (*
 The comparison is the identity on nodes, definitionally: that is the whole
-   content of "identity on objects".
+   content of “identity on objects”.
 
 --------
 在定义上，比较就是节点上的恒等：这就是“对象上的恒等”的全部内容。
@@ -1371,7 +1371,7 @@ The header explains that no UIP is needed anywhere above, and localizes the
    That is stated here as a THEOREM rather than left as a design argument.
    Build the trivial O-graph with the coarsest possible setoid, keep
    [oul_to]'s underlying map verbatim, and respectfulness of THAT map is not
-   merely "UIP-shaped": it entails UIP on O outright.  So the escape above is
+   merely “UIP-shaped”: it entails UIP on O outright.  So the escape above is
    the setoid choice and nothing else.
 
    (Adapted from the adversarial audit's own probe, with thanks.)

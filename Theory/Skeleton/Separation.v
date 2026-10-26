@@ -29,7 +29,7 @@ nLab: https://ncatlab.org/nlab/show/skeleton
    skeletality IS carried along an isomorphism of categories — is
    [Skeletal_StrictCat_invariant] in Theory/Skeleton.v, where it belongs
    because it needs no witnesses.  Together they turn the prose of
-   Theory/Equivalence.v ("skeletality is not equivalence-invariant") into a
+   Theory/Equivalence.v (“skeletality is not equivalence-invariant”) into a
    pair of proofs.
 
    The same pair does double duty for Awodey's Exercise 12 (p. 188), which
@@ -47,7 +47,7 @@ nLab: https://ncatlab.org/nlab/show/skeleton
 
    [One_Skeletal] and [Two_Skeletal] round out the small witnesses;
    [Two_Skeletal] in particular gives Instance/Two.v's header, which calls a
-   Boolean algebra "a skeletal thin finitely-cocomplete star-autonomous"
+   Boolean algebra “a skeletal thin finitely-cocomplete star-autonomous”
    category, a companion theorem about [_2] itself.
 
    WHY A SEPARATE FILE.  Theory/Skeleton.v is already a heavyweight Theory

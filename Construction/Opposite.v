@@ -46,8 +46,8 @@ Generalizable All Variables.
  reversing every arrow, a statement holds in C precisely when its dual —
  source and target swapped, composites read in the other order — holds
  in C^op, so any theorem proved for all categories yields its dual with
- no further work (Mac Lane, "Categories for the Working Mathematician",
- Springer 1978, p. 33; Awodey, "Category Theory", Oxford 2010).  nLab
+ no further work (Mac Lane, “Categories for the Working Mathematician”,
+ Springer 1978, p. 33; Awodey, “Category Theory”, Oxford 2010).  nLab
  states the point at the level of the theory itself: the signature of
  the elementary theory of categories carries a nontrivial involution, so
  every formal theorem has a formal dual — the same phenomenon as the
@@ -56,24 +56,24 @@ Generalizable All Variables.
 
  That precedent is older than the subject by a century.  In the
  projective geometry of the early nineteenth century, Gergonne, who
- coined the term "duality", printed dual theorems side by side in his
+ coined the term “duality”, printed dual theorems side by side in his
  journal, while Poncelet held the point/line interchange to be a
  consequence of the theory of poles and polars: two points determine a
  line, two lines meet in a point, one theorem read twice.  Category
  theory then internalized the phenomenon from its first pages —
  Eilenberg and Mac Lane open with the dual vector space, coin
- "contravariant" for the arrow-reversing functor, and observe that the
+ “contravariant” for the arrow-reversing functor, and observe that the
  double dual is natural where the single dual is not (Eilenberg and
- Mac Lane, "General theory of natural equivalences", Trans. Amer. Math.
+ Mac Lane, “General theory of natural equivalences”, Trans. Amer. Math.
  Soc. 58 1945).  Mac Lane soon made duality itself the object of study:
  restate the element-based notions of group theory purely in terms of
  homomorphisms and composition, and dual axioms yield dual theorems
- (Mac Lane, "Groups, categories and duality", Proc. Nat. Acad. Sci. 34
- 1948; "Duality for groups", Bull. Amer. Math. Soc. 56 1950).  Pursued
+ (Mac Lane, “Groups, categories and duality”, Proc. Nat. Acad. Sci. 34
+ 1948; “Duality for groups”, Bull. Amer. Math. Soc. 56 1950).  Pursued
  through Buchsbaum and Grothendieck, that program produced abelian
  categories, whose self-dual axioms hand homological algebra two dual
- results out of one (Goswami and Janelidze, "Duality in non-abelian
- algebra IV", arXiv:1704.01863 2017).
+ results out of one (Goswami and Janelidze, “Duality in non-abelian
+ algebra IV”, arXiv:1704.01863 2017).
 
  Downstream of this file the library takes dual concepts by definition,
  not by analogy: a comonad is a monad on C^op (Theory/Monad.v), a
@@ -116,7 +116,7 @@ Generalizable All Variables.
  consume values where covariant functors produce them, and whose
  documentation notes that the dual of a Functor is just a Functor;
  because op squared is the identity, there are likewise no cocomonads
- (Milewski, "Products and Coproducts", 2015). 
+ (Milewski, “Products and Coproducts”, 2015). 
 
  --------
  二元性：原理、历史以及严格性带来的收益

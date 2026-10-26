@@ -19,10 +19,10 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.4, printed pp. 40–42 (PDF 50–52) —
  maclane:II.4:construction1, maclane:II.4:ex7
- Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.7,
+ Book:      Awodey, “Category Theory” (1st ed., 2005 pre-print), §7.7,
  Example 7.15, printed p. 171 (PDF p. 180) —
  awodey:7.7:example15
  nLab:      https://ncatlab.org/nlab/show/arrow+category

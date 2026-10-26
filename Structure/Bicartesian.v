@@ -11,7 +11,7 @@ Section Bicartesian.
 (*
  nLab: https://ncatlab.org/nlab/show/bicartesian+category
  Wikipedia: none-exists (the term appears only within related articles such
- as "Distributive category" and "Cartesian closed category")
+ as “Distributive category” and “Cartesian closed category”)
 
  A bicartesian category is a category that is both cartesian and cocartesian:
  it has finite products (× with terminal unit 1) and finite coproducts (+ with
@@ -42,7 +42,7 @@ Context `{@Cocartesian C}.   (* finite coproducts: x + y, initial 0 / 有限余�
  Interchange of fork (△) and merge (▽): copairing two pairings equals pairing
  two copairings. Reading the four morphisms as the entries of a 2×2 matrix,
  both sides assemble the same morphism (x + w) ~> (y × z), so this is the
- "matrix transpose" / middle-four interchange of the bicartesian structure.
+ “matrix transpose” / middle-four interchange of the bicartesian structure.
  The proof reduces the merge of forks to a fork of merges using [fork_comp]
  and [merge_comp], appealing to [fork_respects] both in C and dually in C^op. 
 

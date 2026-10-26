@@ -27,10 +27,10 @@ Set Transparent Obligations.
 
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
     nLab: https://ncatlab.org/nlab/show/strong+monad
-    Reference: Führmann, "Direct models of the computational
-               lambda-calculus", MFPS XV, ENTCS 20, 1999
-    Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-               string diagrams", MSCS 29(7):938-971, 2019 (arXiv:1709.00322)
+    Reference: Führmann, “Direct models of the computational
+               lambda-calculus”, MFPS XV, ENTCS 20, 1999
+    Reference: Cho & Jacobs, “Disintegration and Bayesian inversion via
+               string diagrams”, MSCS 29(7):938-971, 2019 (arXiv:1709.00322)
 
     A Kleisli morphism f : x ~> M y of a strong monad M is THUNKABLE
     (Führmann) when freezing its result into a returned computation is the
@@ -108,7 +108,7 @@ Set Transparent Obligations.
     M x = x × x (reader along a two-element environment, in Sets), every
     Kleisli morphism is copyable and discardable, but only the morphisms
     that ignore the read value are thunkable (Moss & Perrone,
-    "Probability monads with submonads of deterministic states",
+    “Probability monads with submonads of deterministic states”,
     LICS 2022, Theorem 3.14 and Example 3.16).  The converse of
     [thunkable_deterministic] is therefore not provable, and the
     deterministic class is in general strictly larger than the thunkable

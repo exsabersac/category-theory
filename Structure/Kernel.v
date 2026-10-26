@@ -137,7 +137,7 @@ Qed.
 (* * ** Kernels are monic, cokernels are epic / * ** 核是单首的，余核是满射的 *)
 
 (*
- Wikipedia: "every kernel is a monomorphism" — read off the equalizer. 
+ Wikipedia: “every kernel is a monomorphism” — read off the equalizer. 
 
  --------
  维基百科：“每个核都是单射”——读出等化器。
@@ -149,7 +149,7 @@ Proof.
 Qed.
 
 (*
- Wikipedia: "every cokernel is an epimorphism" — read off the
+ Wikipedia: “every cokernel is an epimorphism” — read off the
  coequalizer. 
 
  --------

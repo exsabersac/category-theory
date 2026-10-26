@@ -20,7 +20,7 @@ Generalizable All Variables.
 
  Orthogonal-subcategory localization.  Fix a category C and a class W of
  morphisms (a [MorphismClass C], from Theory/Morphisms/Classes.v).  An object
- x of C is *W-local* when it "sees every W-map as invertible": for every
+ x of C is *W-local* when it “sees every W-map as invertible”: for every
  w : a ~> b in W the precomposition map on hom-sets
 
  (- ∘ w) : Hom(b, x) ⟶ Hom(a, x)
@@ -72,16 +72,16 @@ Generalizable All Variables.
  spaces, the quasi-isomorphisms of chain complexes, a multiplicative
  system in a ring — so that work proceeds in the setting where that
  identification holds, while a universal comparison back to C is kept
- (nLab, "localization"; Gabriel–Zisman, "Calculus of Fractions and
- Homotopy Theory", Springer 1967).
+ (nLab, “localization”; Gabriel–Zisman, “Calculus of Fractions and
+ Homotopy Theory”, Springer 1967).
 
  The vocabulary descends from commutative algebra, where the ring of
  fractions S⁻¹R adjoins formal inverses to a multiplicative set and is
  universal among ring maps sending it to units.  Øystein Ore gave the
  corresponding condition for non-commutative rings, and the categorical
  calculus of fractions is its direct analogue, whence both the names
- "localization" and "fractions" (Wikipedia; nLab, "calculus of
- fractions").
+ “localization” and “fractions” (Wikipedia; nLab, “calculus of
+ fractions”).
 
  The general categorical construction is due to Gabriel and Zisman,
  whose 1967 monograph localized a category at an arbitrary class of
@@ -93,14 +93,14 @@ Generalizable All Variables.
  category: in his thesis under Grothendieck in the 1960s he built D(A)
  by formally inverting the quasi-isomorphisms of chain complexes and
  introduced triangulated categories and the Verdier quotient, the first
- published account being Hartshorne, "Residues and Duality" (Springer
+ published account being Hartshorne, “Residues and Duality” (Springer
  Lecture Notes in Mathematics 20, 1966).
 
  This file takes the reflective, rather than the syntactic, reading,
  whose theory is due to Freyd and Kelly.  Rather than the zig-zag
  category the localization is identified with the full subcategory of
- W-local objects [C_W], and Freyd and Kelly ("Categories of continuous
- functors, I", Journal of Pure and Applied Algebra 2, 1972) studied
+ W-local objects [C_W], and Freyd and Kelly (“Categories of continuous
+ functors, I”, Journal of Pure and Applied Algebra 2, 1972) studied
  exactly this orthogonal subcategory problem — when such a subcategory
  is reflective — as the mechanism behind reflective localizations.
  Passing to W-local objects sidesteps the size questions and the Ore
@@ -119,7 +119,7 @@ Generalizable All Variables.
  every reflective subcategory is a reflective localization at the class
  its reflector inverts, so abelianizations, completions and idempotent
  reflections are all instances, the homotopical form being left
- Bousfield localization (nLab, "reflective localization").
+ Bousfield localization (nLab, “reflective localization”).
 
  Computationally a reflective localization is an idempotent monad.  The
  round trip [Incl] ∘ [reflector] is a monad on C whose multiplication
@@ -130,8 +130,8 @@ Generalizable All Variables.
  the correspondence of Construction/Reflective/Idempotent.v (reflective
  subcategory if and only if idempotent monad, with the Eilenberg–Moore
  equivalence), and the same structure homotopy type theory studies as a
- reflective modality (Rijke, Shulman, Spitters, "Modalities in homotopy
- type theory", arXiv:1706.07526, 2020).  The universal property that
+ reflective modality (Rijke, Shulman, Spitters, “Modalities in homotopy
+ type theory”, arXiv:1706.07526, 2020).  The universal property that
  makes the reflector the localization is established separately in
  Construction/Localization/Universal.v. 
 
@@ -155,7 +155,7 @@ Generalizable All Variables.
  通过形式反演链复形的拟同构和
  引入了三角范畴和韦尔迪耶商，这是第一个
  出版的记载是哈特肖恩，《残余与二元性》（施普林格出版社）
- 《数学讲义》20期，1966年）。这个文件采取的是反射的，而不是句法的，理解方式，其理论归功于 Freyd 和 Kelly。局部化不是通过锯齿形范畴，而是被识别为 W-局部对象 [C_W] 的完全子范畴，而 Freyd 和 Kelly（"连续函子范畴 I"，《纯粹与应用代数杂志》 2, 1972）正是研究了这个正交子范畴问题——当这样的子范畴是反射的——作为反射局部化背后的机制。转向 W-局部对象绕过了语法构造所带来的大小问题和 Ore 假设，这就是 [reflector_inverts_W] 不需要它们的原因。这些应用涵盖了该构造所建立的数学领域。空间的同伦范畴是 Top [W⁻¹]，在弱同伦等价下；导出范畴是链复形在拟同构下的局部化，这在层上同调和对偶性中普遍存在；而一个站点上的层是正则子范畴中与覆盖筛正交的预层的反射子范畴，层化是该反射子——这是典型的 Freyd–Kelly 正交性例子，其完整子范畴包含 Theory/Sheaf/Category.v，在树中实现，并且通过层化实现反射子，这是那里命名的延迟。更一般地，
+ 《数学讲义》20期，1966年）。这个文件采取的是反射的，而不是句法的，理解方式，其理论归功于 Freyd 和 Kelly。局部化不是通过锯齿形范畴，而是被识别为 W-局部对象 [C_W] 的完全子范畴，而 Freyd 和 Kelly（“连续函子范畴 I”，《纯粹与应用代数杂志》 2, 1972）正是研究了这个正交子范畴问题——当这样的子范畴是反射的——作为反射局部化背后的机制。转向 W-局部对象绕过了语法构造所带来的大小问题和 Ore 假设，这就是 [reflector_inverts_W] 不需要它们的原因。这些应用涵盖了该构造所建立的数学领域。空间的同伦范畴是 Top [W⁻¹]，在弱同伦等价下；导出范畴是链复形在拟同构下的局部化，这在层上同调和对偶性中普遍存在；而一个站点上的层是正则子范畴中与覆盖筛正交的预层的反射子范畴，层化是该反射子——这是典型的 Freyd–Kelly 正交性例子，其完整子范畴包含 Theory/Sheaf/Category.v，在树中实现，并且通过层化实现反射子，这是那里命名的延迟。更一般地，
  每一个反射子范畴都是其反射器逆转的类上的反射局部化，所以阿贝尔化、完备化和幂等反射都是实例，其同伦形式是左 Bousfield 局部化（nLab，“反射局部化”）。从计算的角度来看，一个反射局部化是一个幂等单子。往返 [Incl] ∘ [reflector] 是 C 上的一个单子，其乘法是可逆的，其代数正是局部对象，而成为局部意味着成为一个不动点，而局部化意味着应用该单子：幂等归一化到已饱和对象的全子范畴，其中被反转的映射是同构。这对应于 Construction/Reflective/Idempotent.v（反射子范畴当且仅当幂等单子，并且具有 Eilenberg–Moore 等价），与同类型理论研究的相同结构作为反射模态（Rijke, Shulman, Spitters, “Modalities in homotopy type theory”, arXiv:1706.07526, 2020）。在 Construction/Localization/Universal.v 中，单独建立了使反射器成为局部化的通用性质。
 *)
 

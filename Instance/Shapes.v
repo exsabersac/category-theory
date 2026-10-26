@@ -36,10 +36,10 @@ Set Transparent Obligations.
  a^(b+c) = a^b * a^c  (Join  : Trie a b -> Trie a c -> Trie a (Plus b c))
  a^(b*c) = (a^b)^c    (Joins, the nested/representable case)
 
- This is the "logarithm of a type" / Naperian-functor view: a trie of shape
+ This is the “logarithm of a type” / Naperian-functor view: a trie of shape
  [s] is isomorphic to a function from the [size s] positions, equivalently to
  a length-[size s] vector ([vec]/[trie] are mutually inverse, [vec_trie] and
- [trie_vec]).  See Gibbons, "APLicative Programming with Naperian Functors".
+ [trie_vec]).  See Gibbons, “APLicative Programming with Naperian Functors”.
 
  The file catalogues, for each carrier type [a]:
  - [Tries a]    : the category of tries over [a], shapes as objects;

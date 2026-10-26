@@ -15,7 +15,7 @@ Require Import Category.Instance.Discrete.Reconstruct.
 Generalizable All Variables.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician",
+ Book:      Mac Lane, “Categories for the Working Mathematician”,
  Springer GTM 5, 2nd ed., §IV.2 Exercise 9, printed p. 90
  (maclane:IV.2:ex9), where the result is attributed to
  N. Smythe.
@@ -43,8 +43,8 @@ Generalizable All Variables.
  An objects functor [Cat ⟶ Sets] DOES exist if the objects are given
  the ISOMORPHISM setoid instead -- it compiles with zero obligations
  and is closed under the global context -- and issue #357's own item 1
- names that alternative ("with equality, or with isomorphism, if a
- choice has to be made -- the exercise wants the strict version").  So
+ names that alternative (“with equality, or with isomorphism, if a
+ choice has to be made -- the exercise wants the strict version”).  So
  the strict reading is the EXERCISE'S choice; what §6 and §7 prove is
  that ONCE it is taken, the domain and codomain are forced.
  Throughout, a Roman
@@ -81,8 +81,8 @@ Generalizable All Variables.
 
  I. A PRIOR-ART CORRECTION, ON THREE COUNTS, EACH MEASURED.
 
- FIRST, the catalog issue states that the indiscrete half "has no
- construction at all -- searching for it finds only comments".  That
+ FIRST, the catalog issue states that the indiscrete half “has no
+ construction at all -- searching for it finds only comments”.  That
  is FALSE.  Instance/Discrete/Reconstruct.v has declared
  [Indiscrete (A : Type) : Category], with [hom := fun _ _ => unit],
  [homset := Morphism_equality] and every category law discharged by
@@ -124,16 +124,16 @@ Generalizable All Variables.
  [disc_ext] is the same construction with the binders written out.
 
  RECORDED CORRECTION.  That signature is HISTORY.  In the PR
- "algebraic carriers are sets" (2026-09-17) the donor was annotated
+ “algebraic carriers are sets” (2026-09-17) the donor was annotated
  in place at Instance/Discrete.v as
  [DiscreteCat_Functor@{o h p uo uh up +}], and it now reaches every
  level [disc_ext] reaches; §8's [Section SetPin] records the repair
  and keeps the two former negatives as positive CONTROLS, so what
  that section guards is an AGREEMENT between three interchangeable
  discrete extensions rather than a pin.  An earlier revision of this
- paragraph also said the pin was "a minimization artifact of the
+ paragraph also said the pin was “a minimization artifact of the
  [Build_Quiver_Standard_Eq] family that
- Construction/Free/Quiver/Examples.v already records"; that
+ Construction/Free/Quiver/Examples.v already records”; that
  attribution named the wrong donor and is withdrawn -- [About] put
  it on [DiscreteCat_Functor]'s own elaboration.  [disc_ext] is
  retained for the reason §1 and §8 give, that it is written with
@@ -144,9 +144,9 @@ Generalizable All Variables.
  The issue's item 1 asks whether the objects functor should live on
  [StrictCat], and Theory/Connected/Components.v already
  flags the question from the other side, noting that [Cat]'s
- hom-setoid is natural isomorphism and that "a functor into [Sets]
+ hom-setoid is natural isomorphism and that “a functor into [Sets]
  out of a strict category of categories would be a different
- statement and is not built".  The answer is settled here by two
+ statement and is not built”.  The answer is settled here by two
  counterexamples, not by taste.
 
  THE SOURCE MUST BE [StrictCat].  Any objects functor must send a
@@ -294,7 +294,7 @@ Generalizable All Variables.
  -- twelve slots filled from two levels, so the inner categories
  come out as [Category@{u1 u1 u1}], objects, homs and proofs
  identified, on a block whose only strict entry is [u1 < u].  A
- reader who inspects the block alone concludes "no identification"
+ reader who inspects the block alone concludes “no identification”
  and is WRONG.  That identification is MINIMIZATION AND NOT CONTENT,
  and §8 guards the claim rather than asserting it: the adjunction
  TYPE is formable with the inner hom universe declared STRICTLY
@@ -327,7 +327,7 @@ Generalizable All Variables.
  twelve positive controls -- nine [Check]s in §8 and three passing
  [Example]s beside the §5 negatives.  An earlier revision of this
  item counted FIVE probes (three formability) and ten controls
- (seven [Check]s); the PR "algebraic carriers are sets"
+ (seven [Check]s); the PR “algebraic carriers are sets”
  (2026-09-17) turned §8's two [Set] negatives into controls, which
  is where both differences come from.  Each of the three section-local
  [Constraint] declarations was additionally tested by deletion, and
@@ -413,7 +413,7 @@ Generalizable All Variables.
 
  DiscreteCat_Functor@{u u0 u1 u2} :
  ∀ {A : Type@{u}} {C : Category@{u0 u2 u2}},
- (A → obj [C] ) → DiscreteCat@{u Set Set} A ⟶ C在其上构建 [StrictCat_Disc] 将会在 hom 上传播一个 [Set] 引脚，并证明每个离散范畴的宇宙，而 [disc_ext] 是同样的构造，只是将绑定器写了出来。已记录更正。那个签名已经成为历史。在 PR "代数承载体是集合"（2026-09-17）中，捐赠者在 Instance/Discrete.v 中被标注为 [DiscreteCat_Functor@{o h p uo uh up +}]，现在它可以达到 [disc_ext] 所达到的每个级别；第 8 节的 [Section SetPin] 记录了修复，并将两个以前的负值作为正控制保留，所以该部分所保护的是三个可互换离散扩展之间的协议，而不是一个固定器。这一段的早期修订版本还说固定器是 [Build_Quiver_Standard_Eq] 家族的 “最小化人工产物”，Construction/Free/Quiver/Examples.v 已经记录了这一点；该归属指出了错误的捐赠者，因此已撤回——[About] 将其归于 [DiscreteCat_Functor] 自己的阐述。[disc_ext] 被保留的原因如第 §1 和 §8 所述，因为它与 [refine] 一起书写，因此不生成任何辅助宇宙。
+ (A → obj [C] ) → DiscreteCat@{u Set Set} A ⟶ C在其上构建 [StrictCat_Disc] 将会在 hom 上传播一个 [Set] 引脚，并证明每个离散范畴的宇宙，而 [disc_ext] 是同样的构造，只是将绑定器写了出来。已记录更正。那个签名已经成为历史。在 PR “代数承载体是集合”（2026-09-17）中，捐赠者在 Instance/Discrete.v 中被标注为 [DiscreteCat_Functor@{o h p uo uh up +}]，现在它可以达到 [disc_ext] 所达到的每个级别；第 8 节的 [Section SetPin] 记录了修复，并将两个以前的负值作为正控制保留，所以该部分所保护的是三个可互换离散扩展之间的协议，而不是一个固定器。这一段的早期修订版本还说固定器是 [Build_Quiver_Standard_Eq] 家族的 “最小化人工产物”，Construction/Free/Quiver/Examples.v 已经记录了这一点；该归属指出了错误的捐赠者，因此已撤回——[About] 将其归于 [DiscreteCat_Functor] 自己的阐述。[disc_ext] 被保留的原因如第 §1 和 §8 所述，因为它与 [refine] 一起书写，因此不生成任何辅助宇宙。
 
  II. 域决定：[StrictCat] 和 [Coq]，均被强制。
 
@@ -464,13 +464,13 @@ Generalizable All Variables.
  binders only renames it).
 
  TWO RECORDED CORRECTIONS.  First, the donor is no longer written
- without binders: it was annotated in place in the PR "algebraic
- carriers are sets" (2026-09-17), so [disc_ext] is now a SECOND
+ without binders: it was annotated in place in the PR “algebraic
+ carriers are sets” (2026-09-17), so [disc_ext] is now a SECOND
  [Set]-free extension rather than the only one, and §8 checks the two
  against each other instead of separating them.  Second, an earlier
- revision of this paragraph ended "A [Program Definition] cannot be
+ revision of this paragraph ended “A [Program Definition] cannot be
  annotated here at all, since its obligations mint fresh universes;
- hence the [refine]."  That is FALSE as stated and the annotated donor
+ hence the [refine].”  That is FALSE as stated and the annotated donor
  is the counterexample: a [Program Definition] takes binders like any
  other, and a trailing [+] in the binder list allows exactly the fresh
  universes its obligations mint.  What [refine] buys is narrower and is
@@ -672,7 +672,7 @@ Example roundtrip_map_equiv (A : obj[Coq]) (C : obj[StrictCat])
 Proof. symmetry; exact (@fmap_id _ _ F x). Qed.
 
 (*
- [StrictCat_Disc] is fully faithful, which is what "the unit is the identity"
+ [StrictCat_Disc] is fully faithful, which is what “the unit is the identity”
  says categorically.  Faithfulness costs NOTHING -- the ambient tactic
  discharges it, since injectivity of [fmap[StrictCat_Disc]] is the first
  projection of a strict functor equality.  Fullness costs exactly the
@@ -885,8 +885,8 @@ Qed.
  Instrument check: [Fail] is live in this file.  Every negative below
  and in §5 was additionally stripped once and its failure kind read off
  the whole error message -- two CONVERSION failures in §5 (reporting
- "cannot unify", with no universe clause) and one FORMABILITY refusal
- here (reporting "universe inconsistency: Cannot enforce ...").
+ “cannot unify”, with no universe clause) and one FORMABILITY refusal
+ here (reporting “universe inconsistency: Cannot enforce ...”).
  The two kinds are kept lexically apart.
 
  RECORDED CORRECTION.  An earlier revision counted THREE formability
@@ -914,13 +914,13 @@ Fail Definition probe_instrument_live : Datatypes.unit := 0.
  strictly above [Set], ascribing [DiscreteCat_Functor f] to
  [DiscreteCat@{uo uh uh} A ⟶ C] and ascribing [Indiscrete] to
  [Type@{uo} → Category@{uo uh uh}] were both refused, each reading
- "universe inconsistency: Cannot enforce Set = uh", because both donors
+ “universe inconsistency: Cannot enforce Set = uh”, because both donors
  were declared with bare binders and minimization pinned their hom and
  proof levels to [Set].  The comment added that the [Constraint] below
  was INERT for those two negatives, since what they fired on was the
  donors' literal [Set] meeting the rigid declared level [uh].
 
- In the PR "algebraic carriers are sets" (2026-09-17) both donors were
+ In the PR “algebraic carriers are sets” (2026-09-17) both donors were
  annotated in place -- [DiscreteCat_Functor@{o h p uo uh up +}] at
  Instance/Discrete.v and [Indiscrete@{o h p}] at
  Instance/Discrete/Reconstruct.v -- so both ascriptions are now
@@ -978,7 +978,7 @@ End SetPin.
  [StrictCat] has its hom and proof universes identified -- the fourth
  and fifth universe arguments of [StrictCat] are the inner category's
  object and hom-and-proof levels -- so the rejection below reports
- "Cannot enforce cp = ch".  Here the [Constraint] IS load-bearing:
+ “Cannot enforce cp = ch”.  Here the [Constraint] IS load-bearing:
  without it [cp] unifies with [ch] and the negative succeeds.  What is
  NOT identified is object against hom, which is what the following
  section's control shows, its homs sitting strictly BELOW its

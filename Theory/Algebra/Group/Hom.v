@@ -26,7 +26,7 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    Wikipedia: https://en.wikipedia.org/wiki/Group_object
 
    Mac Lane, Categories for the Working Mathematician, 2nd ed., Section III.6
-   ("Groups in Categories"), Exercises 1 and 2, as scoped by issue #343;
+   (“Groups in Categories”), Exercises 1 and 2, as scoped by issue #343;
    Awodey, Category Theory, 2nd ed., Section 4.1 (the Group(C) construction).
 
    Given group objects (x, μ_X, η_X, ι_X) and (y, μ_Y, η_Y, ι_Y) in a
@@ -99,8 +99,8 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    [GroupObject] is declared over [CartesianMonoidal], because its two
    inverse laws are written in copy/discard vocabulary (∆ and [eliminate])
    that a bare [Monoidal] does not supply.  That is pinned as negative 1
-   below — a TYPING failure, "The term M has type Monoidal while it is
-   expected to have type CartesianMonoidal" — against a control at
+   below — a TYPING failure, “The term M has type Monoidal while it is
+   expected to have type CartesianMonoidal” — against a control at
    [CartesianMonoidal].  So the scope difference between the two files is a
    fact about the DEFINITION of a group object, not a weakness of this
    development, and no route around it is offered.
@@ -120,7 +120,7 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    THE INVERSE-PRESERVATION THEOREM, AND WHAT IT COST
 
    [GroupHom_inverse] is ten tactic lines.  Its content is the elementwise
-   argument "f(a⁻¹) is a left inverse of f(a), and left inverses are unique",
+   argument “f(a⁻¹) is a left inverse of f(a), and left inverses are unique”,
    run diagrammatically: reshape (f ∘ ι_x) ⨂ f as (f ⨂ f) ∘ (ι_x ⨂ id) by
    [bimap_comp], push f out through the multiplication square, collapse what
    remains by the SOURCE object's [left_inverse], and finish with the unit
@@ -133,8 +133,8 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    correct a claim an earlier draft of this header made: [right_inverse] does
    not occur in [GroupHom_inverse]'s OWN tactic script, but the theorem DOES
    depend on [right_inverse] of the target through [left_inverse_unique].
-   What is asymmetric is the script, not the dependency, and calling it "an
-   asymmetry worth recording" was wrong.  No hypothesis beyond [MonoidHom] is
+   What is asymmetric is the script, not the dependency, and calling it “an
+   asymmetry worth recording” was wrong.  No hypothesis beyond [MonoidHom] is
    needed.  Two right-associated readings of the inverse laws
    ([left_inverse_r], [right_inverse_r]) exist only to meet [rewrite]'s
    bracketing and carry no content.
@@ -157,16 +157,16 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    TWO ENGINEERING FINDINGS, both about NAMES rather than mathematics.
 
    - [inverse] IS A KEYWORD downstream of Structure/Group.v.  Its
-     notation quotes the token, [Notation "'inverse' [ G ]"], which makes
+     notation quotes the token, [Notation “'inverse' [ G ]”], which makes
      [inverse] a terminal symbol: [@inverse _ _ _ G] is then a PARSE error
-     ("Syntax error: [global] or [pattern_ident] expected after '@'"), and
+     (“Syntax error: [global] or [pattern_ident] expected after '@'”), and
      the record-literal field name is rejected too — in the realistic
      multi-field shape [{| groupobject_is_monoid := _ ; inverse := _ |}],
-     with "Syntax error: ['|}'] expected after [record_declaration]".  The
+     with “Syntax error: ['|}'] expected after [record_declaration]”.  The
      shape matters and an earlier draft of this header got it wrong by
      quoting that message against a SINGLE-field literal: with [inverse]
-     first the message is instead "Syntax error: [record_declaration]
-     expected after '{|'".  Both are parse errors, so no kind claim changes.
+     first the message is instead “Syntax error: [record_declaration]
+     expected after '{|'”.  Both are parse errors, so no kind claim changes.
      NEITHER can be pinned as a probe: [Fail] catches elaboration failures,
      and a parse error aborts the file even inside [Fail] — which is why
      these two findings are recorded in prose rather than guarded.  The
@@ -206,9 +206,9 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    while BOTH data fields agree on the nose — the two controls
    [grpcat_mon_forget_obj] and [grpcat_mon_forget_map] are exactly that
    agreement.  An earlier draft of this header justified delivering no [≈]
-   form by saying that stating it "needs a hom-setoid on functors" which
-   "would pull a functor category into the closure of a [Theory/Algebra]
-   file".  THAT WAS FALSE and an audit refuted it: [Functor_Setoid] and
+   form by saying that stating it “needs a hom-setoid on functors” which
+   “would pull a functor category into the closure of a [Theory/Algebra]
+   file”.  THAT WAS FALSE and an audit refuted it: [Functor_Setoid] and
    [Functor_StrictEq_Setoid] are Theory/Functor.v, which this
    file already requires, and no functor category is involved.  The
    equation is therefore DELIVERED, and at the STRICTER of the two available
@@ -238,8 +238,8 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    - ATTRIBUTION IS PROBED, NOT GUESSED, and there is no single culprit.  In
      [Section UniverseDonors] below, over [C : Category@{uo uh up}] with
      [Constraint uh < up], each of [@Monoidal C], [@Cartesian C],
-     [@Terminal C] and [@CartesianMonoidal C] is REJECTED with "Cannot
-     enforce up = uh because uh < up", while [x ~> y] and [id[x]] are
+     [@Terminal C] and [@CartesianMonoidal C] is REJECTED with “Cannot
+     enforce up = uh because uh < up”, while [x ~> y] and [id[x]] are
      ACCEPTED at those very levels.  Four donors, each sufficient on its
      own — but NOT four INDEPENDENT ones, and an audit corrected that word:
      [CartesianMonoidal] contains [RelevanceMonoidal] (Heunen_Vicary.v),
@@ -264,7 +264,7 @@ nLab:      https://ncatlab.org/nlab/show/group+object
      monomorphic [Projections.u0]/[Projections.u1] and a lowercase pair,
      which an isolating probe separates from merely FORMING the pair (a bare
      [{x : obj[C] & x ~> x}] acquires no [Projections.*] entry at all).  An
-     earlier draft glossed them as "both of C's levels sit below the pair's";
+     earlier draft glossed them as “both of C's levels sit below the pair's”;
      that is wrong — the pair's own level is a [max] and never appears.
      [GrpCat@{u u0 u1 u2 u3}] has type
      [Category@{u u0 u0} → CartesianMonoidal@{u u0 u1} → Category@{u2 u0 u0}]
@@ -291,22 +291,22 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    apart, plus four in [Section UniverseDonors]; each was stripped of its
    [Fail] and its failure kind read off the message.
 
-   - TYPING.  (1) [@GroupObject C M x] for [M : @Monoidal C] — "The term M
+   - TYPING.  (1) [@GroupObject C M x] for [M : @Monoidal C] — “The term M
      has type Monoidal while it is expected to have type
-     CartesianMonoidal".  (2) [MonoidHom] applied to the raw
-     [groupobject_is_monoid] fields — "The term groupobject_is_monoid has
-     type MonoidObject x", where a [Monoid x] is wanted, so #503's class
+     CartesianMonoidal”.  (2) [MonoidHom] applied to the raw
+     [groupobject_is_monoid] fields — “The term groupobject_is_monoid has
+     type MonoidObject x”, where a [Monoid x] is wanted, so #503's class
      passage is genuinely load-bearing and not a convenience.
-   - CONVERSION.  (3) [Mon_Forget ◯ GrpCat_Mon = GrpCat_Forget] — "The term
+   - CONVERSION.  (3) [Mon_Forget ◯ GrpCat_Mon = GrpCat_Forget] — “The term
      eq_refl has type Mon_Forget ◯ GrpCat_Mon = Mon_Forget ◯ GrpCat_Mon
      while it is expected to have type Mon_Forget ◯ GrpCat_Mon =
-     GrpCat_Forget".
+     GrpCat_Forget”.
    - FORMABILITY (universe).  The four donor rejections described above.
 
    Controls: every constant named in a negative is also named by a positive
    command in this file, so a rename upstream breaks the build rather than
-   turning a negative vacuously green.  (An earlier draft said "a SUCCEEDING
-   command", which is wrong for one of them: [groupobject_is_monoid]'s guard
+   turning a negative vacuously green.  (An earlier draft said “a SUCCEEDING
+   command”, which is wrong for one of them: [groupobject_is_monoid]'s guard
    is [group_monoid]'s own body, which PRECEDES negative 2.  A
    control naming it after the negative has been added as well.)  Guarded:
    [GroupObject],
@@ -318,8 +318,8 @@ nLab:      https://ncatlab.org/nlab/show/group+object
    reference-not-found error.  Section-local [Universes]/[Constraint] do not
    leak: they relate only three freshly declared levels to each other.
 
-   AXIOMS.  Every constant of this file reports "Closed under the global
-   context" — the named ones (from the [.glob]) plus the [Program]
+   AXIOMS.  Every constant of this file reports “Closed under the global
+   context” — the named ones (from the [.glob]) plus the [Program]
    obligations, which are invisible to a [.glob] sweep and must be queried by
    fully qualified name.  READ THE GRADE: that is a ONE-TIME measurement of
    the whole file.  The [make print-assumptions] gate carries a SELECTED 25
@@ -346,7 +346,7 @@ nLab:      https://ncatlab.org/nlab/show/group+object
      [GrpCat] is abelian) is neither stated nor proved.
    - [GrpCat_Mon] is proved FULL as well as faithful ([GrpCat_Mon_Full]),
      superseding an earlier draft of this header that said fullness was
-     "neither proved nor refuted": an audit observed that the two hom types
+     “neither proved nor refuted”: an audit observed that the two hom types
      are convertible, so the identity section discharges it in three lines.
      Nothing is claimed either way about whether it reflects or creates
      limits.
@@ -501,7 +501,7 @@ Mac Lane，《工作数学家的范畴》，第二版，第 III.6 节
 两项工程发现，都与名称有关，而不是与数学有关。
 
 - [inverse] 是 Structure/Group.v 下游的关键字。 其
- 符号引用了标记 [Notation "'inverse' [ G ]"]，这使得
+ 符号引用了标记 [Notation “'inverse' [ G ]”]，这使得
  [inverse] 是一个终端符号：[@inverse _ _ _ G] 是一个 PARSE 错误
  （“语法错误：‘@’后应有 [global] 或 [pattern_ident]”），以及
  记录文字字段名称也被拒绝——在现实中
@@ -581,7 +581,7 @@ Mac Lane，《工作数学家的范畴》，第二版，第 III.6 节
  [Section UniverseDonors] 以下，高于 [C : Category@{uo uh up}]
  [Constraint uh < up]、[@Monoidal C]、[@Cartesian C] 中的每一个、
  [@Terminal C] 和 [@CartesianMonoidal C] 被拒绝，并显示“无法
- 强制 up = uh 因为 uh < up"，而 [x ~> y] 和 [id[x]] 是
+ 强制 up = uh 因为 uh < up“，而 [x ~> y] 和 [id[x]] 是
  在这些水平上被接受。
 四个捐助者，每个捐助者都足够
  自己的——但不是四个独立的，审计更正了这个词：
@@ -637,7 +637,7 @@ Mac Lane，《工作数学家的范畴》，第二版，第 III.6 节
  具有 Monoidal 类型，而预期具有类型
  笛卡尔Monoidal”。 (2) [MonoidHom]应用于raw
  [groupobject_is_monoid] 字段 — “术语 groupobject_is_monoid 具有
- 类型 MonoidObject x"，其中需要 [Monoid x]，所以 #503 的类
+ 类型 MonoidObject x”，其中需要 [Monoid x]，所以 #503 的类
  通道是真正的承重而非便利。 
 - 转换。 (3) [Mon_Forget ◯ GrpCat_Mon = GrpCat_Forget] —“术语
  eq_refl 的类型为 Mon_Forget ◯ GrpCat_Mon = Mon_Forget ◯ GrpCat_Mon
@@ -661,7 +661,7 @@ Mac Lane，《工作数学家的范畴》，第二版，第 III.6 节
  泄漏：它们仅将三个新声明的级别相互关联。
 
 公理。 该文件的每个常量都报告“在全局下关闭”
- context" — 命名的（来自 [.glob]）加上 [Program]
+ context“ — 命名的（来自 [.glob]）加上 [Program]
  义务，对于 [.glob] 扫描来说是不可见的，必须通过以下方式查询
  完全限定名称。 阅读成绩：这是一次性测量
  整个文件。 [make print-assumptions] 门带有 SELECTED 25
@@ -799,8 +799,8 @@ Awodey, Category Theory 2nd ed., Section 4.1: a morphism of the underlying
    monoid objects automatically commutes with the inversions, so the
    internal-group hom class needs no inverse-preservation axiom.
 
-   The elementwise argument is "f(a⁻¹) is a left inverse of f(a), and left
-   inverses are unique".  Diagrammatically: reshape (f ∘ ι_x) ⨂ f as
+   The elementwise argument is “f(a⁻¹) is a left inverse of f(a), and left
+   inverses are unique”.  Diagrammatically: reshape (f ∘ ι_x) ⨂ f as
    (f ⨂ f) ∘ (ι_x ⨂ id) with [bimap_comp], push f out through the
    multiplication square [group_hom_mappend], collapse the remainder by the
    SOURCE object's [left_inverse], and finish with the unit triangle
@@ -1266,8 +1266,8 @@ NEGATIVE 1, TYPING.  A group object cannot be stated over a bare monoidal
    base: the inverse laws need the diagonal and the discard.  This is the
    whole of the scope difference from Theory/Algebra/Monoid/Product.v, which
    quantifies over an arbitrary [M : @Monoidal C].
-     "The term "M" has type "Monoidal" while it is expected to have type
-      "CartesianMonoidal"."
+     “The term ”M“ has type ”Monoidal“ while it is expected to have type
+      ”CartesianMonoidal“.”
 
 --------
 负 1，类型输入。不能在裸单体基上声明一个群对象：逆运算律需要对角线和丢弃。这就是与 Theory/Algebra/Monoid/Product.v 的作用域差异的全部，该文件对任意 [M : @Monoidal C] 进行了量化。
@@ -1283,7 +1283,7 @@ NEGATIVE 2, TYPING.  [MonoidHom] is indexed by Theory/Algebra/Monoid.v's
    [Monoid], not by Structure/Monoid.v's [MonoidObject], so the raw field of
    a group object does not fit and #503's class passage
    ([Monoid_of_MonoidObject], used by [group_monoid]) is load-bearing.
-     "The term "groupobject_is_monoid" has type "MonoidObject x""
+     “The term ”groupobject_is_monoid“ has type ”MonoidObject x“”
 
 --------
 否定 2，输入。[MonoidHom] 是由 Theory/Algebra/Monoid.v 的 [Monoid] 索引的，而不是由 Structure/Monoid.v 的 [MonoidObject] 索引的，因此群对象的原始字段不匹配，#503 的类传递 ([Monoid_of_MonoidObject]，由 [group_monoid] 使用) 是承重的。
@@ -1311,9 +1311,9 @@ NEGATIVE 3, CONVERSION.  The two forgetful functors agree on objects and
    on morphisms at [eq_refl] (the controls below), but the composite FUNCTOR
    RECORD is not [GrpCat_Forget]: [Compose] rebuilds [fmap_respects],
    [fmap_id] and [fmap_comp] as fresh proof terms.
-     "The term "eq_refl" has type
-      "Mon_Forget ◯ GrpCat_Mon = Mon_Forget ◯ GrpCat_Mon" while it is
-      expected to have type "Mon_Forget ◯ GrpCat_Mon = GrpCat_Forget"."
+     “The term ”eq_refl“ has type
+      ”Mon_Forget ◯ GrpCat_Mon = Mon_Forget ◯ GrpCat_Mon“ while it is
+      expected to have type ”Mon_Forget ◯ GrpCat_Mon = GrpCat_Forget“.”
 
 --------
 否定 3，转换。两个遗忘函子在对象上以及在 [eq_refl]（以下控制项）上的态射上是一致的，但复合函子 RECORD 不是 [GrpCat_Forget]：[Compose] 将 [fmap_respects]、[fmap_id] 和 [fmap_comp] 重建为新的证明项。
@@ -1367,7 +1367,7 @@ Check @Terminal.
 Check @CartesianMonoidal.
 Check @GroupObject.
 
-(* Each reports: "Cannot enforce up = uh because uh < up". / 每个报告："无法执行 up = uh，因为 uh < up"。 *)
+(* Each reports: “Cannot enforce up = uh because uh < up”. / 每个报告：“无法执行 up = uh，因为 uh < up”。 *)
 Fail Check (fun C : Category@{uo uh up} => @Monoidal C).
 Fail Check (fun C : Category@{uo uh up} => @Cartesian C).
 Fail Check (fun C : Category@{uo uh up} => @Terminal C).

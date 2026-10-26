@@ -40,7 +40,7 @@ Generalizable All Variables.
    [tensor_assoc : (x ⨂ y) ⨂ z ≅ x ⨂ (y ⨂ z)] (its [to] points to the
    right-nested bracketing), the unitors are [unit_left : I ⨂ x ≅ x] and
    [unit_right : x ⨂ I ≅ x].  The pentagon/associator-naturality shuffles
-   and iso-cancellation "cons" lemmas of Structure/Monoidal/Braided/Proofs.v
+   and iso-cancellation “cons” lemmas of Structure/Monoidal/Braided/Proofs.v
    (all stated over a bare [Monoidal]) carry the coherence chases. 
 
    --------
@@ -67,7 +67,7 @@ Context `{M : @Monoidal C}.
 
    A half-braiding on an object [z] is a natural family of isomorphisms
    [β x : z ⨂ x ≅ x ⨂ z] satisfying the hexagon coherence with the tensor.
-   (This is "half" a braiding: only the object [z] is braided past
+   (This is “half” a braiding: only the object [z] is braided past
    everything, and only the naturality/hexagon in the *other* variable is
    asked for.) 
 
@@ -353,7 +353,7 @@ Qed.
    (σ1 past a, σ1 past b, σ2 past a, σ2 past b).  After expanding both sides,
    the outer/inner associator scaffolding peels off by pentagon/associator
    shuffles until the discrepancy reduces to commuting the two *independent*
-   strands "σ1 past a" and "σ2 past b" — the interchange [crux] below.  These
+   strands “σ1 past a” and “σ2 past b” — the interchange [crux] below.  These
    private helpers carry that chase; they touch only associators and two
    opaque strands [P], [S], never the half-braidings themselves. 
 
@@ -799,7 +799,7 @@ Qed.
    them); every other move is pentagon or associator-naturality.
 
    After expanding both tensor half-braids and re-associating, the [σa]/[σb]/
-   [σd] strands sit in the "right-nested comb" normal form (a single pentagon
+   [σd] strands sit in the “right-nested comb” normal form (a single pentagon
    at the bottom folds the last three associators).  The chase then slides
    each strand into its left-nested target position — [σd] and [σa] by plain
    associator naturality ([to_assoc_nat_id2_cons], [to_assoc_nat_bid_cons]),

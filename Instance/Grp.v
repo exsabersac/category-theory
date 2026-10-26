@@ -40,7 +40,7 @@ Generalizable All Variables.
  [CMonHom] / [CMon] triple it mirrors at the hom record and the category;
  the object records differ by design (commutativity there, inversion here).
 
- Since the PR "algebraic carriers are sets" (2026-09-17) the record carries
+ Since the PR “algebraic carriers are sets” (2026-09-17) the record carries
  the field [grp_prop] of Lib/Setoid/Propositional.v's class [PropEquiv]: a
  [Prop]-valued relation on the carrier that holds exactly when `≈` does.  A
  group in this library is therefore a group on a SET in Bishop's sense, not
@@ -50,9 +50,9 @@ Generalizable All Variables.
  condition of Mac Lane's general adjoint functor theorem needs at a
  concrete algebraic category.
 
- An earlier revision of this paragraph added "including the universe
+ An earlier revision of this paragraph added “including the universe
  discipline: nothing here is annotated, so [Grp] is universe-polymorphic
- exactly as [CMon] is".  The SHAPE of that claim survives, but neither is
+ exactly as [CMon] is”.  The SHAPE of that claim survives, but neither is
  inferred any more: [Grp] and [CMon] are both pinned by hand, for the
  reason recorded at the definition of [Grp] below.
 
@@ -116,18 +116,18 @@ Generalizable All Variables.
 (*
  Where the category of groups comes from, and what it is for
 
- Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, Sections I.5 (Monics, Epis, and Zeros,
  p. 19) and I.6 (Foundations, p. 21)
- Book:  Riehl, "Category Theory in Context", Dover, 2016, Section 1.4
+ Book:  Riehl, “Category Theory in Context”, Dover, 2016, Section 1.4
  (Naturality)
- Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
+ Paper: Eilenberg, Mac Lane, “General theory of natural equivalences”,
  Trans. AMS 58, 1945
- Paper: Mac Lane, "Duality for groups", Bulletin of the AMS 56, 1950
+ Paper: Mac Lane, “Duality for groups”, Bulletin of the AMS 56, 1950
 
  Groups are the founding example of the subject.  Eilenberg and Mac
  Lane's 1945 paper reaches categories and functors from group theory
- and topology, and Mac Lane's "Duality for groups" (1950) is the
+ and topology, and Mac Lane's “Duality for groups” (1950) is the
  deliberate exercise of recasting group theory so that only
  homomorphisms and composition appear, in order that reversing every
  arrow should carry each notion to its dual -- the direct product to
@@ -137,9 +137,9 @@ Generalizable All Variables.
  category the programme was written about should exist in the tree.
 
  Two of Mac Lane's Chapter I sections bear directly on what is proved
- below.  Section I.5 is titled "Monics, Epis, and Zeros" and is where
+ below.  Section I.5 is titled “Monics, Epis, and Zeros” and is where
  the three notions this file instantiates for groups are introduced;
- Section I.6, "Foundations", is where the size question raised by
+ Section I.6, “Foundations”, is where the size question raised by
  speaking of THE category of all groups is settled by restricting to
  small groups.  This formalization sidesteps that question the way the
  rest of the library does: [Grp] is universe-polymorphic, and the
@@ -183,9 +183,9 @@ Generalizable All Variables.
  Section 1.4 (Naturality), Example 1.4.4(vi) observes that the opposite
  group is a COVARIANT endofunctor of the category of groups, that it is
  naturally isomorphic to the identity, and that the component at G is
- the map sending g to its inverse -- which "does not define an
+ the map sending g to its inverse -- which “does not define an
  automorphism of G, ... but it does define a homomorphism
- eta_G : G -> G^op, indeed an isomorphism", the elided clause being that
+ eta_G : G -> G^op, indeed an isomorphism”, the elided clause being that
  inversion does not commute with the multiplication of G.
  That sentence is the whole content of [Grp_inv_to] below: inversion is
  an antihomomorphism ([grp_inv_mul]), which is precisely what makes it
@@ -603,8 +603,8 @@ Qed.
  and every `Grp@{u o}` annotation in the tree is refused for arity.  Naming
  [Category@{u p p}] and every field's instance keeps the arity at two,
  exactly as before the field landed.  An earlier revision of the header said
- "nothing here is annotated, so [Grp] is universe-polymorphic exactly as
- [CMon] is"; that is still true of the SHAPE, but both are now pinned rather
+ “nothing here is annotated, so [Grp] is universe-polymorphic exactly as
+ [CMon] is”; that is still true of the SHAPE, but both are now pinned rather
  than inferred.  Measured baseline, before the field:
  [Grp@{u u0} : Category@{u u0 u0}] with [u0 < u]; after, [Grp@{u p} :
  Category@{u p p}] with the one new constraint [Set < u], which the baseline
@@ -642,8 +642,8 @@ Qed.
 (*
  G2: [Grp] is therefore locally propositional -- its hom-setoid IS
  [GrpHom_Setoid].  This is what lets the functor-of-points constructions of
- Structure/Group/Representable.v, which since the PR "algebraic carriers are
- sets" (2026-09-17) ask their ambient category for a [Prop] equality on
+ Structure/Group/Representable.v, which since the PR “algebraic carriers are
+ sets” (2026-09-17) ask their ambient category for a [Prop] equality on
  homs, be applied at [Grp] itself with no manual hypothesis. 
 
  --------
@@ -1313,9 +1313,9 @@ Defined.
  projected because Structure/Group.v reserves the token [inverse] for its
  notation, so the field cannot be named in a term.
 
- An earlier revision of this comment said "at full strength", and the
- construction then took only [X] and [GO].  Since the PR "algebraic carriers
- are sets" (2026-09-17) it takes a third argument [PX : PropEquiv (is_setoid
+ An earlier revision of this comment said “at full strength”, and the
+ construction then took only [X] and [GO].  Since the PR “algebraic carriers
+ are sets” (2026-09-17) it takes a third argument [PX : PropEquiv (is_setoid
  X)].  That is a RECORDED STRENGTH CHANGE: a group object in [Sets] over a
  proof-relevant setoid is no longer translated.  Nothing in tree is lost --
  the only partner, [Grp_GroupObject], goes the other way and the round-trip

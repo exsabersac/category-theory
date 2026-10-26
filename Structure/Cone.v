@@ -14,7 +14,7 @@ Generalizable All Variables.
  A cone over a diagram F : J ⟶ C is an apex object c : C together with a
  family of legs ψx : c ~> F x, one for each object x of J, that is natural
  in x: for every f : x ~> y in J we have F(f) ∘ ψx ≈ ψy. The apex sits
- "above" the diagram with arrows pointing down into each F x, compatibly
+ “above” the diagram with arrows pointing down into each F x, compatibly
  with all of the diagram's morphisms. The terminal cone over F (the cone
  through which every other cone factors uniquely) is the limit of F.
 

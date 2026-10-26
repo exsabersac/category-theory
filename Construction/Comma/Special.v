@@ -23,14 +23,14 @@ Generalizable All Variables.
 *)
 
 (*
- Reference: Saunders Mac Lane, "Categories for the Working Mathematician",
+ Reference: Saunders Mac Lane, “Categories for the Working Mathematician”,
  2nd ed., §II.6, pp. 46-47 [maclane:II.6:remark1]: the general
  comma category subsumes all the earlier cases; in the catalog's
  paraphrase (doc/plan/books/maclane/inventory/II.json, not the
  book's wording), taking S and T to be objects a and b (functors
  from 1), (T ↓ S) is the discrete category on the hom-set
  C(b, a) — the source of the historical notation (T, S) and the
- name "comma category".
+ name “comma category”.
  nLab:      https://ncatlab.org/nlab/show/comma+category
  nLab:      https://ncatlab.org/nlab/show/discrete+category
  Wikipedia: https://en.wikipedia.org/wiki/Comma_category
@@ -82,16 +82,16 @@ Generalizable All Variables.
  literal, and it is related to but not consumed by anything here.  Second,
  Construction/Product/Comma.v proves [Comma_Product]: when the two functors
  have terminal CODOMAIN the comma is the product category C ∏ D.  That file's
- header already contrasts itself with the present case — "this is distinct
+ header already contrasts itself with the present case — “this is distinct
  from the special case in which the *domains* of the two functors are 1,
  where the comma category is instead the discrete category of morphisms
- between the two selected objects" — and states it in prose only.  This file
+ between the two selected objects” — and states it in prose only.  This file
  is the promotion of those lines (Construction/Product/Comma.v) to a
  theorem.
 
  ** THE PACKAGING CHOICE: setoid-discrete, not [DiscreteCat]
 
- "The discrete category on the hom-set C(b, a)" has to be read carefully in a
+ “The discrete category on the hom-set C(b, a)” has to be read carefully in a
  setoid-based library, and the reading is forced by what the comma category
  actually is.  Unfold (=(b) ↓ =(a)):
 
@@ -104,8 +104,8 @@ Generalizable All Variables.
  arrow to an identity, so the square says h' ∘ id ≈ id ∘ h, i.e. h ≈ h'.
 
  So a morphism of the comma category is a WITNESS OF `h ≈ h'` in the
- hom-setoid, and there is one exactly when h ≈ h'.  The matching "discrete
- category" is therefore the one whose objects are the carrier of a setoid and
+ hom-setoid, and there is one exactly when h ≈ h'.  The matching “discrete
+ category” is therefore the one whose objects are the carrier of a setoid and
  whose homs are that setoid's own equivalence — [DiscreteSetoidCat] below.
 
  Instance/Discrete.v's [DiscreteCat A] is a DIFFERENT category: its homs are
@@ -299,8 +299,8 @@ Lemma DiscreteSetoidCat_thin {A : Type} (S : Setoid A)
 Proof. exact I. Qed.
 
 (*
- The discrete category on the hom-set C(b, a) — Mac Lane's "discrete
- category on the hom-set", read at the hom-SETOID as the header explains. 
+ The discrete category on the hom-set C(b, a) — Mac Lane's “discrete
+ category on the hom-set”, read at the hom-SETOID as the header explains. 
 
  --------
  Hom 集合 C(b, a) 上的离散范畴——Mac Lane 的“Hom 集合上的离散范畴”，如标题在 hom-SETOID 中所解释的那样。
@@ -508,12 +508,12 @@ Context {b a : C}.
  only THREE universe parameters (measured: `About Full` reports
  `Full@{u u0 u1}`), so each identifies the hom AND proof universes of its
  source and target categories.  RECORDED CORRECTION: an earlier revision of
- this paragraph continued "[DiscreteCat_Functor] carries the `Set` pin in its
+ this paragraph continued “[DiscreteCat_Functor] carries the `Set` pin in its
  OWN signature — its type mentions `DiscreteCat@{u Set Set}`, fixed when that
  constant was defined — so using it here would make the class demand `Set`
  for C's hom universe too, which at this abstract use site is a universe
- inconsistency, not merely a pin."  That pin is GONE: the donor was annotated
- in place at Instance/Discrete.v in the PR "algebraic carriers are sets"
+ inconsistency, not merely a pin.”  That pin is GONE: the donor was annotated
+ in place at Instance/Discrete.v in the PR “algebraic carriers are sets”
  (2026-09-17), and its type now reads `DiscreteCat@{o h p} A ⟶ C` over
  `C : Category@{uo uh up}`, with no literal `Set`.  Whether the hand-built
  functor could therefore be replaced by [DiscreteCat_Functor comma_const_obj]
@@ -824,7 +824,7 @@ Qed.
 
 (*
  [Blur] also settles the sibling file's strictness question.
- Construction/Slice/Terminal.v argues in prose that Mac Lane's "isomorphic"
+ Construction/Slice/Terminal.v argues in prose that Mac Lane's “isomorphic”
  is unavailable for the slice over a terminal object — slice objects carry
  their structure morphism as data, and [one_unique] gives only `≈`.  Here
  that argument becomes a theorem: [Blur]'s trivially-true hom-setoid makes

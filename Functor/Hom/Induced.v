@@ -24,7 +24,7 @@ The hom-action of a functor: [fmap] as one natural transformation of
 nLab:      https://ncatlab.org/nlab/show/hom-functor
    nLab:      https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Hom_functor
-   Book:      Mac Lane, "Categories for the Working Mathematician",
+   Book:      Mac Lane, “Categories for the Working Mathematician”,
               2nd ed., Springer GTM 5, §II.5 Exercise 7 (printed p. 45)
               [maclane:II.5:ex7]
 
@@ -49,7 +49,7 @@ nLab:      https://ncatlab.org/nlab/show/hom-functor
 
    Naturality in the pair is therefore not an extra law: it is exactly two
    instances of [fmap_comp], with the two sides already associated alike. This
-   is the precise sense in which "fmap is natural in both variables jointly",
+   is the precise sense in which “fmap is natural in both variables jointly”,
    and it is the two-variable packaging of the more familiar one-variable
    statements (naturality of T on hom(a, −) and on hom(−, b) separately).
 
@@ -73,7 +73,7 @@ nLab:      https://ncatlab.org/nlab/show/hom-functor
    rather than by a comparison between two distinct profunctors.
 
    Componentwise readings of fullness and faithfulness follow (Mac Lane's
-   "optional but natural" second half). Theory/Functor.v defines [Faithful]
+   “optional but natural” second half). Theory/Functor.v defines [Faithful]
  with the single field [fmap_inj], injectivity of fmap[T] with respect
    to ≈, and [Full] with a chosen preimage [prefmap] together with
    [fmap_sur] making it a section of fmap[T] — note that no functoriality of

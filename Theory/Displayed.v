@@ -8,8 +8,8 @@ Generalizable All Variables.
 (*
 nLab:      https://ncatlab.org/nlab/show/displayed+category
    Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
-   Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, "Displayed
-              Categories", Logical Methods in Computer Science 15(1), 2019.
+   Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, “Displayed
+              Categories”, Logical Methods in Computer Science 15(1), 2019.
               https://arxiv.org/abs/1705.04296
 
    A displayed category [D] over a base category [C] assigns to each object
@@ -69,7 +69,7 @@ nLab:      https://ncatlab.org/nlab/show/displayed+category
 --------
 nLab:      https://ncatlab.org/nlab/show/displayed+category
    Wikipedia: https://en.wikipedia.org/wiki/Displayed_category
-   Reference: Ahrens–Lumsdaine, "Displayed Categories", LMCS 15(1), 2019
+   Reference: Ahrens–Lumsdaine, “Displayed Categories”, LMCS 15(1), 2019
               https://arxiv.org/abs/1705.04296
 
    展示范畴 (displayed category) D 在基范畴 C 上：对每个对象 x : C 给出展示对象类型
@@ -84,8 +84,8 @@ nLab:      https://ncatlab.org/nlab/show/displayed+category
 Where displayed categories come from, and what they are for
 
    nLab:  https://ncatlab.org/nlab/show/displayed+category
-   Paper: Benedikt Ahrens, Peter LeFanu Lumsdaine, "Displayed
-          Categories", Logical Methods in Computer Science 15(1), 2019
+   Paper: Benedikt Ahrens, Peter LeFanu Lumsdaine, “Displayed
+          Categories”, Logical Methods in Computer Science 15(1), 2019
           (arXiv:1705.04296)
 
    The construction is due to Ahrens and Lumsdaine, who introduced it to
@@ -108,8 +108,8 @@ Where displayed categories come from, and what they are for
    each quantify over objects lying over a common base object, and phrased
    naively each such definition conceals an object-equality.  Displayed
    categories dissolve the difficulty at the level of typing: the fibre
-   over [x] is the type [dobj x], indexed by [x] itself, so "two displayed
-   objects over the same base object" is the statement that both inhabit
+   over [x] is the type [dobj x], indexed by [x] itself, so “two displayed
+   objects over the same base object” is the statement that both inhabit
    [dobj x] — a typing fact, not an equation (Ahrens, Lumsdaine 2019;
    nLab).  The decisive case in the paper is the fibration, which invokes
    equality on objects when read as a functor with a lifting property but

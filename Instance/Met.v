@@ -28,40 +28,40 @@ Open Scope R_scope.
  nLab:      https://ncatlab.org/nlab/show/Cauchy+sequence
  Wikipedia: https://en.wikipedia.org/wiki/Metric_space
  Wikipedia: https://en.wikipedia.org/wiki/Complete_metric_space
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §III.1, printed pp. 56-57 (PDF pp. 65-66) — the
  construction this file and Instance/Met/Completion.v serve
- Book:      Fong & Spivak, "Seven Sketches in Compositionality",
+ Book:      Fong & Spivak, “Seven Sketches in Compositionality”,
  §2.3.3, Definition 2.51, printed pp. 59-60 (PDF pp. 71-72) —
  the four axioms, transcribed below
- Book:      Bishop, "Foundations of Constructive Analysis", McGraw-Hill
+ Book:      Bishop, “Foundations of Constructive Analysis”, McGraw-Hill
  1967 — the constructive discipline the moduli below follow
- Paper:     Lawvere, "Metric spaces, generalized logic, and closed
- categories", Rend. Sem. Mat. Fis. Milano 43, 1973 — the
+ Paper:     Lawvere, “Metric spaces, generalized logic, and closed
+ categories”, Rend. Sem. Mat. Fis. Milano 43, 1973 — the
  ROAD NOT TAKEN here; see the scope note
 
  ON THE CITATIONS.  No book was opened for this file, and nothing below
  quotes one; every claim about what a printed source says is a paraphrase,
  and the paraphrases of Mac Lane are taken from the in-tree book
  inventory rather than from the text.  Specifically: the §III.1 reading
- used below — "the category of metric spaces and metric-preserving
- functions (necessarily injective)", with the completion as a universal
+ used below — “the category of metric spaces and metric-preserving
+ functions (necessarily injective)”, with the completion as a universal
  arrow to the inclusion of the complete ones — is
  doc/plan/books/maclane/inventory/III.json's entry
  [maclane:III.1:construction3] (book p. 56, PDF pp. 65-66), and the §IV.3
  contrast is that inventory's [maclane:IV.3:construction1] (book p. 92),
- whose summary of Mac Lane's reflective-subcategory example says "metric
- spaces with uniformly continuous maps".  The Fong & Spivak page numbers
+ whose summary of Mac Lane's reflective-subcategory example says “metric
+ spaces with uniformly continuous maps”.  The Fong & Spivak page numbers
  come from doc/plan/books/seven-sketches/pagemap.md.  A reader checking
  this file against the printed books should expect the wording to differ.
 
  A metric space is a set of points together with a numerical distance
- between them.  The notion is Fréchet's: his 1906 thesis "Sur quelques
- points du calcul fonctionnel" isolated what he called an *écart* — a
+ between them.  The notion is Fréchet's: his 1906 thesis “Sur quelques
+ points du calcul fonctionnel” isolated what he called an *écart* — a
  symmetric, vanishing-on-the-diagonal, triangle-obeying function of two
  points — precisely so that convergence arguments from analysis could be
  run on spaces whose points are functions rather than numbers.  Hausdorff's
- "Grundzüge der Mengenlehre" (1914) named the resulting object the
+ “Grundzüge der Mengenlehre” (1914) named the resulting object the
  *metrischer Raum* and made it the backbone of general topology; the
  separation clause (distance zero forces equality), which Fréchet had
  assumed, is exactly what distinguishes a metric from the pseudometrics
@@ -137,9 +137,9 @@ Open Scope R_scope.
  conditions; [dist_nonneg] below then DERIVES 0 ≤ d(x,y) from them, so
  nothing is lost and the record carries one field fewer.
 
- THE ARROWS ARE ISOMETRIES.  Mac Lane's §III.1 says "metric spaces and
- metric-preserving functions", with the parenthetical "(necessarily
- injective)", so the arrows are the distance-PRESERVING maps
+ THE ARROWS ARE ISOMETRIES.  Mac Lane's §III.1 says “metric spaces and
+ metric-preserving functions”, with the parenthetical “(necessarily
+ injective)”, so the arrows are the distance-PRESERVING maps
  d(fx,fy) = d(x,y) — not the short maps d(fx,fy) ≤ d(x,y), and not the
  continuous or uniformly continuous ones.  His parenthetical is
  [isometry_injective] below, proved rather than assumed, and
@@ -153,7 +153,7 @@ Open Scope R_scope.
  uniformly continuous — but they are different categories with different
  hom-sets, and NO comparison between them is built here.  This file
  formalizes the §III.1 one, which is the one the issue names.
- CORRECTION (#370): "here" is this file.  The uniformly continuous
+ CORRECTION (#370): “here” is this file.  The uniformly continuous
  category, [MetU], and the comparison [Met_to_MetU] (identity on
  objects, faithful, not full) are Instance/Met/Uniform.v's.
 
@@ -188,7 +188,7 @@ Open Scope R_scope.
  两个不是这个名字的名称。
 
  (1) [CauchyComplete]（Construction/Karoubi/Universal.v）是 [IdempotentsSplit] 的同义词——范畴的柯西完备性，即每个幂等元在范畴中可以分裂。它是同名陷阱，与此处定义的度量完备性无关。共享的词汇并非偶然（下文 Lawvere 的丰富解读将两个实例视作同一概念），但该文件或 Instance/Met/Completion.v 中都没有用它来表述任何内容，而且这里没有引入任何来自那里的定理。下面的 [MComplete] 是度量概念。(2) LAWVERE 广义度量空间。Lawvere 1973 年的论文将度量空间解读为在序集 [0,∞] 中强化的范畴，其中以加法作为张量——省略了对称性和分离性，这是两个没有强化对应的公理。在 Theory/Profunctor.v、Construction/Enriched.v、Instance/Poset.v、Instance/Two.v 和 Construction/Karoubi.v 的背景文章中，这种解读仅以文字形式出现。该文件没有采用那条路：下面的 [MetricSpace] 是一个带有距离函数和 Fong & Spivak 的四条公理的记录，而不是 [Enriched] 的实例，并且这里没有尝试去识别这两种呈现方式。此文件中的度量空间是对称且分离的，因此它不是 Lawvere 度量空间，丰富的工具也无法直接应用于它。距离的余域是标准库的 [R]。这个选择是被迫的，而不是出于风格考虑，Instance/Met/Completion.v 的头文件给出了完整的论证；一句话来说，两个柯西序列之间的距离是它们项之间距离的极限，因此如果一个余域在其自身柯西序列的极限下不封闭，就无法承载完备化，并且通用箭头也无法表述。[Q] 在这种极限下不封闭。经过机器检查的部分是被迫的一半——Completion.v 的 [cdist_spec] / [cdist_unique] 展示了完备化的距离确实是该极限，并且由它固定——而特定于有理数 ℚ 的另一半是经典传说 (√2)，并在该文件头部标注为 ARGUED，而非证明。该文件的公理足迹是按常量测量的，而不是抽样的。
- 提到 [R] 不会产生任何成本（该类型是一个定义），但是任何实际的算术运算都会消耗两个标准库公理 [sig_forall_dec] 和 [functional_extensionality_dep]，而实数的完备性则额外消耗 [sig_not_dec]。这里恰好有两个常量涉及完备性：[R_Metric_MComplete] 和由它构建的 [CMet] 对象 [R_CMet]，都是通过 [R_complete] 实现的。其他所有内容最多携带这两个，[R_Setoid] 和 [Nat_Setoid] 在全局上下文中是封闭的。Instance/Met/Completion.v 构建完备性时，大多数常量必然携带这三个公理；Instance/Met/Extended.v 完全不携带 [sig_not_dec]。非负性在这里不是公理。Fong 和 Spivak 将其放在值域中，写作 d : X × X → ℝ≥0，然后列出四个条件。这个文件将值域取为整个 [R]，并列出相同的四个条件；下面的 [dist_nonneg] 然后从它们推导出 0 ≤ d(x,y)，所以没有任何损失，并且记录少了一个字段。箭头是等距映射。Mac Lane 的 §III.1 说“度量空间和保持度量的函数”，并加了括号说明“（必然是单射）”，所以箭头是保持距离的映射 d(fx,fy) = d(x,y) —— 而不是满足 d(fx,fy) ≤ d(x,y) 的短映射，也不是连续或一致连续的映射。他的括号内容在下面的 [isometry_injective] 中是被证明的而非假定的，[Met_all_Monic] 推导出了范畴上的结果。这个选择对泛性质很重要，读者应该知道 Mac Lane 自己在后一章使用了不同的范畴：§IV.3 中的反射子范畴示例使用的是带一致连续映射的度量空间（[maclane:IV.3:construction1]）。两类都有作为普适箭头的完备性——将一致连续映射扩展到完备性的映射是经典说法，并且一个等距映射尤其是一致连续的——但它们是不同的范畴，具有不同的 Hom 集，并且这里没有建立它们之间的比较。这个文件形式化了 §III.1 的那一类，也就是问题中提到的那一类。更正 (#370)："这里"指的是这个文件。一致连续范畴 [MetU] 以及比较 [Met_to_MetU]（对象上为恒等，忠实，但非满射）属于 Instance/Met/Uniform.v。此处提供的内容：记录 [MetricSpace]（四条公理）、推导出的非负性和单射性引理、范畴 [Met]、可重用构造器 [Metric_of_injection]，以及具体空间 [R_Metric]、[Point_Metric] 和 [Harmonic]，柯西/收敛/完备性词汇，完备空间的全子范畴 [CMet] 及其包含、[R_Metric] 和 [Point_Metric] 的完备性，以及证明 [Harmonic] 非完备。这里没有提供的内容：在 [Met] 上的任何极限、余极限、单体或丰富结构；将 [Met] 与 [Top] 的子范畴进行识别（度量拓扑未建立）；短映射、均匀连续映射，或除等距映射之外的任何度量空间范畴。完成本身是 Instance/Met/Completion.v，扩展的度量空间是 Instance/Met/Extended.v。更正（#370）：均匀连续映射是 Instance/Met/Uniform.v 的 [MetU]；短映射仍未建立。
+ 提到 [R] 不会产生任何成本（该类型是一个定义），但是任何实际的算术运算都会消耗两个标准库公理 [sig_forall_dec] 和 [functional_extensionality_dep]，而实数的完备性则额外消耗 [sig_not_dec]。这里恰好有两个常量涉及完备性：[R_Metric_MComplete] 和由它构建的 [CMet] 对象 [R_CMet]，都是通过 [R_complete] 实现的。其他所有内容最多携带这两个，[R_Setoid] 和 [Nat_Setoid] 在全局上下文中是封闭的。Instance/Met/Completion.v 构建完备性时，大多数常量必然携带这三个公理；Instance/Met/Extended.v 完全不携带 [sig_not_dec]。非负性在这里不是公理。Fong 和 Spivak 将其放在值域中，写作 d : X × X → ℝ≥0，然后列出四个条件。这个文件将值域取为整个 [R]，并列出相同的四个条件；下面的 [dist_nonneg] 然后从它们推导出 0 ≤ d(x,y)，所以没有任何损失，并且记录少了一个字段。箭头是等距映射。Mac Lane 的 §III.1 说“度量空间和保持度量的函数”，并加了括号说明“（必然是单射）”，所以箭头是保持距离的映射 d(fx,fy) = d(x,y) —— 而不是满足 d(fx,fy) ≤ d(x,y) 的短映射，也不是连续或一致连续的映射。他的括号内容在下面的 [isometry_injective] 中是被证明的而非假定的，[Met_all_Monic] 推导出了范畴上的结果。这个选择对泛性质很重要，读者应该知道 Mac Lane 自己在后一章使用了不同的范畴：§IV.3 中的反射子范畴示例使用的是带一致连续映射的度量空间（[maclane:IV.3:construction1]）。两类都有作为普适箭头的完备性——将一致连续映射扩展到完备性的映射是经典说法，并且一个等距映射尤其是一致连续的——但它们是不同的范畴，具有不同的 Hom 集，并且这里没有建立它们之间的比较。这个文件形式化了 §III.1 的那一类，也就是问题中提到的那一类。更正 (#370)：“这里”指的是这个文件。一致连续范畴 [MetU] 以及比较 [Met_to_MetU]（对象上为恒等，忠实，但非满射）属于 Instance/Met/Uniform.v。此处提供的内容：记录 [MetricSpace]（四条公理）、推导出的非负性和单射性引理、范畴 [Met]、可重用构造器 [Metric_of_injection]，以及具体空间 [R_Metric]、[Point_Metric] 和 [Harmonic]，柯西/收敛/完备性词汇，完备空间的全子范畴 [CMet] 及其包含、[R_Metric] 和 [Point_Metric] 的完备性，以及证明 [Harmonic] 非完备。这里没有提供的内容：在 [Met] 上的任何极限、余极限、单体或丰富结构；将 [Met] 与 [Top] 的子范畴进行识别（度量拓扑未建立）；短映射、均匀连续映射，或除等距映射之外的任何度量空间范畴。完成本身是 Instance/Met/Completion.v，扩展的度量空间是 Instance/Met/Extended.v。更正（#370）：均匀连续映射是 Instance/Met/Uniform.v 的 [MetU]；短映射仍未建立。
 *)
 
 (* * ** A missing standard-library step / * ** 缺失的标准库步骤 *)
@@ -284,7 +284,7 @@ Proof.
 Qed.
 
 (*
- The quadrilateral (or "four-point") inequality: distances differ by no
+ The quadrilateral (or “four-point”) inequality: distances differ by no
  more than their endpoints do.  This is the estimate that makes the
  distance function itself uniformly continuous, and it is what
  Instance/Met/Completion.v runs on — it is the reason the sequence of
@@ -327,7 +327,7 @@ Arguments isometry_map {X Y} _.
 Arguments isometry_dist {X Y} _ _ _.
 
 (*
- Mac Lane's parenthetical "(necessarily injective)", proved.  If two
+ Mac Lane's parenthetical “(necessarily injective)”, proved.  If two
  points have equal images then their images are at distance zero, so the
  points are, so they are equal.  Note where each axiom enters:
  [dist_eq_zero] on the codomain, [isometry_dist] to transport, and
@@ -450,8 +450,8 @@ Proof. constructor; intros x y f g H; exact H. Qed.
 (*
  Every injection into the reals is a metric.  This is the cheapest source
  of concrete examples and it is used three times below.  The two
- hypotheses are exactly the two halves of "[f] is injective on the
- setoid": [f_proper] makes the distance well defined, [f_injective] is
+ hypotheses are exactly the two halves of “[f] is injective on the
+ setoid”: [f_proper] makes the distance well defined, [f_injective] is
  what buys separation. 
 
  --------
@@ -459,7 +459,7 @@ Proof. constructor; intros x y f g H; exact H. Qed.
 *)
 Section OfInjection.
 
-(* The five lemmas below genuinely depend on the section variables; [Lib.v] sets [Default Proof Using "Type"], which would discard them. Same reason, same remedy, as Instance/Top/Interval.v. / 下面的五个引理确实依赖于节变量；[Lib.v] 设置了 [Default Proof Using "Type"]，这会丢弃它们。同样的原因，同样的解决方法，如 Instance/Top/Interval.v。 *)
+(* The five lemmas below genuinely depend on the section variables; [Lib.v] sets [Default Proof Using “Type”], which would discard them. Same reason, same remedy, as Instance/Top/Interval.v. / 下面的五个引理确实依赖于节变量；[Lib.v] 设置了 [Default Proof Using “Type”]，这会丢弃它们。同样的原因，同样的解决方法，如 Instance/Top/Interval.v。 *)
 Local Set Default Proof Using "All".
 
 Context (A : SetoidObject).
@@ -587,9 +587,9 @@ Definition Harmonic : MetricSpace :=
  choice principle is used anywhere in this development.
 
  The reading is Bishop's, and it is worth being precise about its
- strength: "every sequence PRESENTED WITH A MODULUS converges" is
- constructively weaker than the classical "every Cauchy sequence
- converges", the two being interderivable only via countable choice.
+ strength: “every sequence PRESENTED WITH A MODULUS converges” is
+ constructively weaker than the classical “every Cauchy sequence
+ converges”, the two being interderivable only via countable choice.
  [MComplete] is the former.  No claim is made here that the two agree.
 
  THE DIRECTION MATTERS, in both places the notion is used.  Because

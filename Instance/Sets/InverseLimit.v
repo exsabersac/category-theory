@@ -62,10 +62,10 @@ Open Scope category_scope.
  the identification with the cone set.
 
  WHAT WAS ALREADY IN TREE, AND THE ISSUE'S OWN SURVEY IS STALE ON THREE
- COUNTS.  Issue #408's "Current state" says (a) that [Sets] has no
- indexed products and that [HasIndexedProducts] "has zero instances
- tree-wide", (b) that the compatible-family idiom "exists only at the
- end/wedge shape", and (c) that no functor out of [Omega^op] into [Sets]
+ COUNTS.  Issue #408's “Current state” says (a) that [Sets] has no
+ indexed products and that [HasIndexedProducts] “has zero instances
+ tree-wide”, (b) that the compatible-family idiom “exists only at the
+ end/wedge shape”, and (c) that no functor out of [Omega^op] into [Sets]
  is anywhere shown to have a limit.  Re-measured at 067ee4eb: (a) and
  (b) are FALSE and (c) is accurate but answered by one application.
  [Instance/Sets/Products.v] declares
@@ -97,7 +97,7 @@ Open Scope category_scope.
  inductions of its own, [stream_trunc_compat] and
  [stream_trunc_respects].  Counted by tactic, exactly FOUR scripts in
  the file run to more than three tactics and every other one is a single
- [exact] or [reflexivity].  An "only new proof content in the file"
+ [exact] or [reflexivity].  An “only new proof content in the file”
  claim would be false, and the sibling file Instance/Sets/Cone.v carried
  exactly that defect until an audit caught it.
 
@@ -153,8 +153,8 @@ Open Scope category_scope.
  * Riehl adds that the same holds for any limit ordinal in place of ω.
  [Instance/Omega.v] is nat-indexed only and the tree has no
  TRANSFINITE machinery -- [Instance/Ordinal.v]'s [Ordinal n] is the
- FINITE ordinals and [Omega] is omega, so the issue's own "no ordinal
- machinery", which an earlier revision of this note copied, is too
+ FINITE ordinals and [Omega] is omega, so the issue's own “no ordinal
+ machinery”, which an earlier revision of this note copied, is too
  broad -- and the generalisation is not statable here, nor attempted.
 
  * The tower is over [Sets].  Nothing here is claimed for a general
@@ -281,7 +281,7 @@ Next Obligation.
     [exact (Hpq n)|exact (Hqr n)].
 Qed.
 
-(* "with the coordinate projections as the legs". / “以坐标投影作为边” *)
+(* “with the coordinate projections as the legs”. / “以坐标投影作为边” *)
 Program Definition tower_proj (n : nat) : tower_obj ~{Sets}~> F n := {|
   morphism := fun p => `1 p n
 |}.

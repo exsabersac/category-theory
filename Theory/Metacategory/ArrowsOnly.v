@@ -17,8 +17,8 @@ nLab: https://ncatlab.org/nlab/show/category
    nLab: https://ncatlab.org/nlab/show/metacategory
    Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
 
-   The single-sorted ("arrows-only") axiomatization of a category, due to
-   Mac Lane (Categories for the Working Mathematician, I.1, "arrows-only"
+   The single-sorted (“arrows-only”) axiomatization of a category, due to
+   Mac Lane (Categories for the Working Mathematician, I.1, “arrows-only”
    description). A category is given purely by a collection of arrows together
    with a partial composition; there is no separate sort of objects. Objects
    are recovered as the identity arrows: an arrow [u] is an identity when
@@ -28,7 +28,7 @@ nLab: https://ncatlab.org/nlab/show/category
    Here the partial composition is represented concretely by a finite map
    [pairs : M.t arrow] over [arrow := N], where [M.find (f, g) pairs = Some h]
    records that the composite of the composable pair [(f, g)] is [h]. Thus
-   [composite f g h] is the proposition "g and f compose to h", [defined f g]
+   [composite f g h] is the proposition “g and f compose to h”, [defined f g]
    says their composite exists, and the record's law fields impose Mac Lane's
    matchability (existence of composites for composable pairs), associativity,
    and existence of identities. [Category_from_Metacategory] below shows every
@@ -58,8 +58,8 @@ Record Metacategory := {
   (*
 Matchability (Mac Lane C-1): whenever [fg] is the composite of [(f, g)]
      and [gh] is the composite of [(g, h)], the composite [(fg, h)] also
-     exists. This is the arrows-only form of "composable pairs have a
-     composite": the composable triple [f, g, h] always has the composite
+     exists. This is the arrows-only form of “composable pairs have a
+     composite”: the composable triple [f, g, h] always has the composite
      [(f ∘ g) ∘ h].
 
 --------

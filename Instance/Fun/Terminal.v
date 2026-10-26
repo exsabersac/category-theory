@@ -62,8 +62,8 @@ Generalizable All Variables.
 
  [Terminal D] supplies the object ([Constant_Terminal_Functor]) and,
  through [one_unique], the obligations of the [Terminal] record.  An
- earlier revision of this sentence said "exactly twice ... Nothing
- else uses it", which is FALSE: it is consumed again by
+ earlier revision of this sentence said “exactly twice ... Nothing
+ else uses it”, which is FALSE: it is consumed again by
  [terminal_empty_IsIndexedProduct], [Fun_empty_iprod_terminal],
  [Two_Sets_Terminal] and [two_pick].
 
@@ -71,8 +71,8 @@ Generalizable All Variables.
  universal property -- all three fields of Structure/Limit/Product.v's
  class -- and its UMP is also applied directly in places.  What ONE
  derived lemma carries is the ROUTING: every functor law of
- [Fun_iprod] and every naturality square below is "compose with the
- projections and compute" through [iprod_jointly_monic], two
+ [Fun_iprod] and every naturality square below is “compose with the
+ projections and compute” through [iprod_jointly_monic], two
  morphisms into an indexed product that agree after every projection
  being equal.  Note that lemma takes [IsIndexedProduct], not the
  class.  (An earlier revision said the class was spent in that one
@@ -100,9 +100,9 @@ Generalizable All Variables.
 
  The general pointwise-limits fact was stated in PROSE in at least
  three places (since repointed at Instance/Fun/Limit.v, which proves it):
- Structure/Cartesian/Product.v ("the general fact that limits
+ Structure/Cartesian/Product.v (“the general fact that limits
  in a functor category [J, D] are computed pointwise whenever D has
- them"), Instance/Fun.v, and
+ them”), Instance/Fun.v, and
  Instance/Fun/Cartesian.v, which quotes the nLab for it.  What
  was absent at that time was any Coq statement beyond the binary product:
  re-verified on this commit, no [Terminal] instance existed for ANY
@@ -160,7 +160,7 @@ Generalizable All Variables.
  REFUTED, each pinned as a [Fail] with a passing control alongside:
  the pointwise indexed product at a [bool] index is not the pointwise
  binary product, and [Constant_Functor d] is not the [Diagonal]
- record.  Both are genuine CONVERSION failures ("cannot unify"), read
+ record.  Both are genuine CONVERSION failures (“cannot unify”), read
  off the stripped commands rather than inferred.
 
  UNIVERSES -- BLOCKS READ IN FULL, DONORS TESTED SEPARATELY
@@ -189,7 +189,7 @@ Generalizable All Variables.
 
  ROUTING THROUGH [Diagonal] WOULD COST THAT, AND THAT IS MEASURED:
  [fobj[@Diagonal D C] d] is REJECTED at [C : Category@{co ch cp}] with
- [ch < cp] ("Cannot enforce cp = dh"), against two passing controls,
+ [ch < cp] (“Cannot enforce cp = dh”), against two passing controls,
  because [Diagonal]'s type mentions [C, D] and so inherits [Fun]'s
  identification even when only a bare constant functor is wanted.
 
@@ -253,7 +253,7 @@ Generalizable All Variables.
  it COMPUTES -- [two_pick_med_true] and [two_pick_med_false] are
  [eq_refl].
 
- STATUS.  72/72 constants report "Closed under the global context",
+ STATUS.  72/72 constants report “Closed under the global context”,
  counted over [Print Module] so that the eighteen [Program] obligations --
  invisible to a [.glob] sweep, and queried by fully-qualified name --
  are included.
@@ -280,13 +280,13 @@ Generalizable All Variables.
  apart.  [IsALimit] and [Limit] are not: both are over
  [J : Category@{u0 u1 u1}] and [C : Category@{u2 u1 u1}], identifying
  the shape's hom and proof with the ambient's.  RECORDED CORRECTION:
- an earlier revision continued "[DiscreteCat_Functor]
+ an earlier revision continued “[DiscreteCat_Functor]
  (Instance/Discrete.v) is unannotated and instantiates
  [DiscreteCat@{u Set Set}] while leaving C's hom free.  It takes BOTH
  to bite: [Limit (DiscreteCat_Functor f)] elaborates only at
  [C : Category@{u1 Set Set}], measured on this commit.  So the [Set]
- pin is not the functor's alone."  The functor was annotated in place
- at Instance/Discrete.v in the PR "algebraic carriers are sets"
+ pin is not the functor's alone.”  The functor was annotated in place
+ at Instance/Discrete.v in the PR “algebraic carriers are sets”
  (2026-09-17), and measured after it [iprod@{u u0 u1 u2 u3}] is
  stated over [C : Category@{u1 u2 u2}] -- no [Set] remains, and
  [Limit (DiscreteCat_Functor f)] elaborates with C's hom universe
@@ -306,7 +306,7 @@ Generalizable All Variables.
  broader conclusion anyway.
  [DiscreteCat] itself is properly annotated [@{o h p}].
 
- The general "limits in [C, D] are pointwise" theorem is now
+ The general “limits in [C, D] are pointwise” theorem is now
  Instance/Fun/Limit.v's; this file has products only.  No colimits, no
  equalizers, no exponentials (pullbacks are now
  Instance/Fun/Pullback.v).  No [Cartesian] or
@@ -362,7 +362,7 @@ Generalizable All Variables.
  已被反驳，每个都被固定为 [Fail]，并附有一个通过控制：在 [bool] 索引处的逐点索引积不是逐点二元积，且 [Constant_Functor d] 不是 [Diagonal] 记录。两者都是真正的转换失败（“无法统一”），从剥离的命令中读取，而不是推断得出。
 
  宇宙——块已全部读取，捐献者单独测试四位捐赠者在一个部分被拒绝，该部分声明 [Constraint uh < up] 未通过相同级别的控制，因此以下内容是受保护的，而不仅仅是从打印的活页夹中读取。[Terminal@{u u0}]、[HasIndexedProducts]、[IsIndexedProduct] 和 [Cartesian] 每个都将其类别作为 [Category@{o h h}]：他们每个人都用证明确认了同态。[Fun] 做得更多——[Fun@{...} : Category@{u u0 u0} -> Category@{u1 u2 u2} -> Category@{u3 u4 u4}] 和 [u0 = u2] ——因此它在两个参数中以及两个同态级别之间都用证明确认了同态。[Constant_Functor@{co ch cp dro dh dp}] 不识别任何内容：它的区块是五个界限 [ch <= cp]、[ch <= dh]、[ch <= dp]、[cp <= dp]、[dh <= dp]，这正是 [Functor] 自己的区块，一字不差。[Constant_Terminal_Functor@{co ch cp dro dh}] 接受 D 于 [Category@{dro dh dh}] —— 这是 [Terminal] 的操作 —— 而 C 的同质和证明保持分离（[ch <= cp]）。两者都是手写的记录字面量，带有显式的宇宙绑定器，正是为保持这种状态：在未注释的 [Section] 中写作 [Program Definition] 时，它们最小化为 [C : Category@{u u0 u0}]，而注释形式随后被拒绝，因为 [Program] 引入了一个义务宇宙，而没有任何 [@{...}] 列表能够绑定它。通过 [Diagonal] 路由会花费那个费用，并且这是测量的：
- [fobj[@Diagonal D C] d] 在 [C : Category@{co ch cp}] 被拒绝，伴随 [ch < cp] （"无法执行 cp = dh"），在两个通过的控制下，
+ [fobj[@Diagonal D C] d] 在 [C : Category@{co ch cp}] 被拒绝，伴随 [ch < cp] （“无法执行 cp = dh”），在两个通过的控制下，
  因为 [Diagonal] 的类型提到了 [C, D]，因此即使只需要一个纯常量函子，也会继承 [Fun] 的标识。
 
  [Functor_Category_Terminal@{u u0 u1 u2 u3 u4}] 位于 [C : Category@{u2 u4 u4}] 和 [D : Category@{u3 u4 u4}] 上——两者都被标识，并且两个 hom 层级是相同的 [u4]。这是 [Fun] 的操作，它存在于 BINDER 中：约束块有六个界限（[u4 < u], [u2 <= u0], [u2 <= u1], [u3 <= u0], [u4 <= u0], [u4 <= u1]），其中没有任何方程，因此仅阅读该块会完全错过标识。[Fun_iprod@{u u0 u1 u2 u3 u4 u5 u6}] 位于 [C : Category@{u u0 u0}] 和 [D : Category@{u1 u2 u2}] 之上——这两个同类水平保持独立（[u0 <= u2] 是一个界，不是方程），而 INDEX 宇宙 [u5] 只是有界的（[u5 <= u3]、[u5 <= u4]），从未被识别。D 的同类=证明是 [HasIndexedProducts] 做的。C 的不是由 donor 强制的：[Functor] 使它们保持分离，正如上面的 [Constant_Functor] 所示，所以它是该部分未注释的 [Context {C : Category}]，是为 [Build_Quiver_Standard_Eq] 记录的最小化族。原则上它是可以修复的，并且并不声称不可避免；没有尝试完整提升，在打包级别上对消费者没有任何费用，因为 [Fun] 无论如何都识别了两者。该文件唯一的方程是 [Fun] 的 [u0 = u2]，并且它由八个常量携带，而不是一个：[Fun_IsIndexedProduct] 连同 [fun_terminal_obj]、[fun_terminal_fmap]、[fun_terminal_one_component]、[fun_iprod_tuple]、[constant_functor_diagonal_obj]、[constant_functor_diagonal_fmap] 和 [ctl_bool_iprod_obj]——每个常量的语句在 [C, D]。每次都是同一个方程，因此结论不变，但该句的早期修订版本只提到一个常量，并且以计数形式读取，而在文件的其他地方则坚持要求完整读取一个宇宙块。[iprod_jointly_monic@{u u0 u1 u2}] 保留其索引宇宙边界（[u <= u1]）且从未被识别。证人携带 [Set]，并且这是形状的：
@@ -372,7 +372,7 @@ Generalizable All Variables.
 
  非空性终端半：[two_pick true] 和 [two_pick false] 是两个可证明不同的自然变换，进入 [_2, Sets]（[two_pick_distinct]）的函子，而 [two_sets_one_unique] 对于任何函子都有箭头指向终端函子且唯一。因此，该范畴并未崩塌，终端性是一个真实的、非对称的约束，而不是每个 hom-集都是单元素集的结果——Structure/Terminal.v 的头部对 Bool 参数的论述提及了这一点。索引的一半：在 [_2, Sets] 上，常数 [bool] 索引族的点乘的承载体为 [forall _ : bool, bool]，由 [eq_refl] 组成，包含两个可证明的不等价元素（[two_bool_prod_separates]），其投影可以计算。这个普遍性性质是被实际应用的，而不仅仅是陈述：[two_pick_med] 是类为竞争族 [two_pick] 生成的中介器，它满足三角形（[two_pick_med_commutes]），并且它可以计算——[two_pick_med_true] 和 [two_pick_med_false] 是 [eq_refl]。 状态。72/72 个常数报告“在全局上下文下封闭”，在 [Print Module] 上计数，以便十八个 [Program] 义务——对 [.glob] 扫描不可见，并通过完全限定名称查询——也包括在内。注册。[Functor_Category_Terminal] 是一个 [#[export] 实例，匹配 [Functor_Category_Cartesian]，其前提具有相同的形状。[Fun_HasIndexedProducts] 故意是一个普通的 [Definition]，其原因是一种未经测试的预防措施而不是度量，本句现在这样说明：该类的唯一其他成员 [Sets_HasIndexedProducts] 是叶子，而注册一个带前提的实例可能让归结法将一个未知类别与 [Fun ?C ?D] 统一并递归。该论点并没有区分它自己的邻居——[Functor_Category_Cartesian] 和此文件的 [Functor_Category_Terminal] 均为带前提的 [#[export] 实例，且带 [Fun] 头的结论——无论哪种方式都未显示出分歧。如果用户想要，可以通过一个单词的修改来翻转它。
 
- 未交付的内容是什么没有[Limit]形的推论，原因是这里进行测量，而不是继承。[Cone@{u0 u1 u2 u3 u4 u5}]是无辜的——它接受[J : Category@{u0 u1 u2}]和[C : Category@{u3 u4 u5}]，六个都分开。[IsALimit]和[Limit]不是：两者都在[J : Category@{u0 u1 u1}]和[C : Category@{u2 u1 u1}]上，识别形状的同态和证明与环境的相同。记录的更正：早期版本继续“[DiscreteCat_Functor]（Instance/Discrete.v）未标注并实例化[DiscreteCat@{u Set Set}]，同时保留C的同态为空。它需要两个才能处理：[Limit (DiscreteCat_Functor f)]只在[C : Category@{u1 Set Set}] elaborates，这里进行测量的提交。所以 [Set] 引脚并非仅属于函子。函子已在 PR "代数承载体是集合" (2026-09-17) 中于 Instance/Discrete.v 处进行了原地标注，并在其之后测量 [iprod@{u u0 u1 u2 u3}] 被声明在 [C : Category@{u1 u2 u2}] 上——没有 [Set] 剩下，而 [Limit (DiscreteCat_Functor f)] 则在 C 的 hom 宇宙中进行扩展。存留下来的部分是同一诊断的另一半：上述 [IsALimit] / [Limit] 的识别仍然将离散形状的 hom 和证明宇宙绑定到环境的宇宙中，而该识别，而非 [Set] 底层，现在是本段的全部内容。仔细阅读 [Cone] 半窄：记录是无辜的，但这并不能证明 [IsALimit] 和 [Limit] 是唯一的其他捐赠者，而且它们并不是——[cone_leg]（Structure/Limit/Preservation.v）和 [IsLimitCone] 以完全相同的方式将形状的 hom 和证明与环境的相匹配，因此 CONE VOCABULARY 也在捐赠者之中，即使记录中没有。Structure/Limit/Initial.v 本身的标题已经警告说 [ACone] 控制只排除了 [ACone] / [Cone]；该部分的早期修订版本运行了该控制，并无论如何得出了更广泛的结论。[DiscreteCat] 本身已被正确标注为 [@{o h p}]。一般的“[C, D]中的极限是点态的”定理现在在Instance/Fun/Limit.v中；该文件只有积。没有余极限，没有等化器，没有指数（拉回现在在Instance/Fun/Pullback.v中）。没有从这些派生[C, D]的[Cartesian]或[Complete]实例。[Fun_iprod]在族或指标上的函子性或自然性没有说明。没有证明单独的[HasIndexedProducts D]可以得到[Terminal D]（那需要一个选定的空索引类型，这会固定一个索引宇宙；[terminal_empty_IsIndexedProduct]则将空性作为假设）。只陈述了点态极限的保持性——Instance/Fun/Limit.v中的[Eval_PreservesLimitCone]，与此处的这些积无关。[Structure/Limit/Product/Finite.v]的一般左折叠被使用（[iprod_unique_iso]），但没有被扩展。
+ 未交付的内容是什么没有[Limit]形的推论，原因是这里进行测量，而不是继承。[Cone@{u0 u1 u2 u3 u4 u5}]是无辜的——它接受[J : Category@{u0 u1 u2}]和[C : Category@{u3 u4 u5}]，六个都分开。[IsALimit]和[Limit]不是：两者都在[J : Category@{u0 u1 u1}]和[C : Category@{u2 u1 u1}]上，识别形状的同态和证明与环境的相同。记录的更正：早期版本继续“[DiscreteCat_Functor]（Instance/Discrete.v）未标注并实例化[DiscreteCat@{u Set Set}]，同时保留C的同态为空。它需要两个才能处理：[Limit (DiscreteCat_Functor f)]只在[C : Category@{u1 Set Set}] elaborates，这里进行测量的提交。所以 [Set] 引脚并非仅属于函子。函子已在 PR “代数承载体是集合” (2026-09-17) 中于 Instance/Discrete.v 处进行了原地标注，并在其之后测量 [iprod@{u u0 u1 u2 u3}] 被声明在 [C : Category@{u1 u2 u2}] 上——没有 [Set] 剩下，而 [Limit (DiscreteCat_Functor f)] 则在 C 的 hom 宇宙中进行扩展。存留下来的部分是同一诊断的另一半：上述 [IsALimit] / [Limit] 的识别仍然将离散形状的 hom 和证明宇宙绑定到环境的宇宙中，而该识别，而非 [Set] 底层，现在是本段的全部内容。仔细阅读 [Cone] 半窄：记录是无辜的，但这并不能证明 [IsALimit] 和 [Limit] 是唯一的其他捐赠者，而且它们并不是——[cone_leg]（Structure/Limit/Preservation.v）和 [IsLimitCone] 以完全相同的方式将形状的 hom 和证明与环境的相匹配，因此 CONE VOCABULARY 也在捐赠者之中，即使记录中没有。Structure/Limit/Initial.v 本身的标题已经警告说 [ACone] 控制只排除了 [ACone] / [Cone]；该部分的早期修订版本运行了该控制，并无论如何得出了更广泛的结论。[DiscreteCat] 本身已被正确标注为 [@{o h p}]。一般的“[C, D]中的极限是点态的”定理现在在Instance/Fun/Limit.v中；该文件只有积。没有余极限，没有等化器，没有指数（拉回现在在Instance/Fun/Pullback.v中）。没有从这些派生[C, D]的[Cartesian]或[Complete]实例。[Fun_iprod]在族或指标上的函子性或自然性没有说明。没有证明单独的[HasIndexedProducts D]可以得到[Terminal D]（那需要一个选定的空索引类型，这会固定一个索引宇宙；[terminal_empty_IsIndexedProduct]则将空性作为假设）。只陈述了点态极限的保持性——Instance/Fun/Limit.v中的[Eval_PreservesLimitCone]，与此处的这些积无关。[Structure/Limit/Product/Finite.v]的一般左折叠被使用（[iprod_unique_iso]），但没有被扩展。
 *)
 
 (* * ** Joint monicity of a family of product projections / * ** 一族乘积投影的联合单调性 *)
@@ -381,7 +381,7 @@ Generalizable All Variables.
  Two morphisms into an indexed product that agree after every projection
  are equal.  This is the only place [HasIndexedProducts D] is spent below:
  every functor law and every naturality square of the pointwise product is
- "compose with the projections and compute" through it.  It is stated for
+ “compose with the projections and compute” through it.  It is stated for
  the elementary [IsIndexedProduct] record, so it applies equally to a
  product harvested from the class. 
 

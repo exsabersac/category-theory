@@ -19,7 +19,7 @@ Generalizable All Variables.
 (* * * Where completeness of spaces stops: [PTopCat], and [Top] below its homs / * * 空间完整性的终点：[PTopCat]，以及其下的[Top]的同源 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.2 Proposition 3, book p. 114 (maclane:V.2:prop3), Freyd's theorem
  that a small complete category is a preorder, consumed through
  Structure/Complete/Freyd.v; §V.9 Remark 1 as in the header of
@@ -131,8 +131,8 @@ Generalizable All Variables.
  [Continuous@{h1 o}] with [Continuous@{h2 o}] first-order, and the
  rebuild acquires the equation [h1 = h2] (read back by [About] under
  the binder [@{o h1 h2 | o < h1, o < h2 +}]); under
- [@{o h1 h2 | o < h1, h1 < h2 +}] it is refused ("Cannot enforce
- h1 = h2 because h1 < h2").  That equation is an artifact of the
+ [@{o h1 h2 | o < h1, h1 < h2 +}] it is refused (“Cannot enforce
+ h1 = h2 because h1 < h2”).  That equation is an artifact of the
  encoding, not a wall; Test/ProbeTopComplete458.v pins it as such
  (N29) beside the eta-expanded rebuild at [h1 < h2], accepted.
  - Through the transport, the canonical index being built at
@@ -166,7 +166,7 @@ Generalizable All Variables.
  Instance/Top/Complete.v's boundary paragraph: both refutations are
  accepted at an [s] with [o < s] and at [o := Set], and
  [PTop_not_complete_IEM] read at [Complete@{o o o so}] is refused
- ("Cannot enforce <1> = o because <1> < o", the generated universe
+ (“Cannot enforce <1> = o because <1> < o”, the generated universe
  written <1>).  The index side is sharp the same way: no arrow index at
  or below [o], constructively, while the proof of
  [PTop_not_complete_ObjDecEq] builds one at every [s] above it from
@@ -179,11 +179,11 @@ Generalizable All Variables.
  [Top_not_complete_below_ObjDecEq] at [o := Set];
  [Top_not_complete_below_IEM] read at [s := o], and
  [Top_iprod_refuted_below_IEM] read at the index universe [o], each by
- its universe instance, are refused ("Cannot enforce o < o because
- o = o"), and #455's
+ its universe instance, are refused (“Cannot enforce o < o because
+ o = o”), and #455's
  [Top_not_complete_IEM] and
  [CompHaus_not_complete_IEM_below] read at an [s] with [o < s < h] are
- refused ("Cannot enforce <3> = h because <3> <= <2> < h", the
+ refused (“Cannot enforce <3> = h because <3> <= <2> < h”, the
  generated universes numbered in order of appearance in the message).
 
  STRENGTHS.  Every theorem ends in [False].  [PTop_ArrowIndex_transport]
@@ -270,9 +270,9 @@ Generalizable All Variables.
  [Top_not_complete_below_IEM] 和 [CompHaus_not_complete_below_IEM] 在 [s] 上与 [o < s < h] 一起被接受，
  [Top_not_complete_below_ObjDecEq] 在 [o := Set] 上被接受；
  [Top_not_complete_below_IEM] 在 [s := o] 读取，
- [Top_iprod_refuted_below_IEM] 在索引宇宙 [o] 读取，每个由其宇宙实例执行，都被拒绝（"无法强制执行 o < o 因为 o = o"），并且 #455 的
+ [Top_iprod_refuted_below_IEM] 在索引宇宙 [o] 读取，每个由其宇宙实例执行，都被拒绝（“无法强制执行 o < o 因为 o = o”），并且 #455 的
  [Top_not_complete_IEM] 和
- [CompHaus_not_complete_IEM_below] 在 [s] 上与 [o < s < h] 读取时被拒绝（"无法强制 <3> = h 因为 <3> <= <2> < h"，生成的宇宙按消息中出现的顺序编号）。
+ [CompHaus_not_complete_IEM_below] 在 [s] 上与 [o < s < h] 读取时被拒绝（“无法强制 <3> = h 因为 <3> <= <2> < h”，生成的宇宙按消息中出现的顺序编号）。
 
  STRENGTHS。 每个定理都以 [False] 结束。 [PTop_ArrowIndex_transport] 和 [Top_ArrowIndex_transport] 是其解码法为 [≈] 的箭头数据，[top_rebuild] 是数据，而两个 [PTop_no_ArrowIndex_*] 是以 [False] 结束的 [:=] 项。没有证明以 [Defined] 结束。宇宙，由 [About] 在 [Set Printing Universes] 下阅读，标准库大写字母省略；[e] 的 [IEM] 水平，免费。PTop_not_complete_Freyd@{r s o so} :
  ArrowIndex@{s so o} PTopCat@{o so} → ¬ Complete@{r s o so}

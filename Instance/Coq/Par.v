@@ -19,15 +19,15 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/partial+function
  Wikipedia: https://en.wikipedia.org/wiki/Partial_function
 
- [Par] is the Kleisli category of the option/Maybe ("partiality", or
- "exception") monad on Coq [Type]s. A partial map A ⇀ B is encoded as a
+ [Par] is the Kleisli category of the option/Maybe (“partiality”, or
+ “exception”) monad on Coq [Type]s. A partial map A ⇀ B is encoded as a
  total function A → option B, so the homset is
 
  A ~> B  :=  A → option B,
 
- with [None] standing for "undefined". Identity is [Some] (the monad's
+ with [None] standing for “undefined”. Identity is [Some] (the monad's
  [return]) and composition is Kleisli composition (the monad's [bind]),
- i.e. [g ; f := option_bind f ∘ g] threads the "is it None?" check,
+ i.e. [g ; f := option_bind f ∘ g] threads the “is it None?” check,
  propagating undefinedness. Morphisms are compared pointwise, [∀ x, f x =
  g x] — the extensional equality of partial functions — so this development
  needs no funext axiom (it is closed under the global context).
@@ -248,7 +248,7 @@ Next Obligation. solveit. Defined.
  instance has been removed because the iso laws [to_from = id] and
  [from_to = id] for the candidate currying are not provable in general. The
  parallel development in Instance/Sets/Par.v contains a pair of [_impossible]
- lemmas (search "to_from_impossible") that prove the negation under
+ lemmas (search “to_from_impossible”) that prove the negation under
  decidability/inhabitance assumptions, demonstrating the obstruction. 
 
  --------

@@ -58,8 +58,8 @@ Generalizable All Variables.
  9 recovers an equalizer from a pullback, and his Exercise 10 obtains
  binary products as pullbacks over a terminal object.  Awodey works the
  same ground with proofs: his Proposition 5.7 is Mac Lane's Exercise 7
- with its converse, his Corollary 5.8 is the packaged "products and
- equalizers give pullbacks", and his Proposition 5.16 is the pullbacks
+ with its converse, his Corollary 5.8 is the packaged “products and
+ equalizers give pullbacks”, and his Proposition 5.16 is the pullbacks
  half.  Riehl's Lemma 3.5.15 is the general statement that limits of
  arbitrary finite shape are generated, of which the binary case is
  proved here.
@@ -80,7 +80,7 @@ Generalizable All Variables.
  square, and this file proves it rather than asserting it
 
  It is tempting -- and the issue that prompted this file does it -- to
- describe the two "pullbacks give equalizers" constructions as one
+ describe the two “pullbacks give equalizers” constructions as one
  square read two ways.  They are not.
 
  - Mac Lane pulls back ⟨id, f⟩ and ⟨id, g⟩, two morphisms out of the
@@ -155,7 +155,7 @@ Generalizable All Variables.
  repackaging steps, [HasEqualizers_op_of_HasCoequalizers] and its
  mirror [HasCoequalizers_of_HasEqualizers_op], each of which destructs
  the existential and rebuilds it through the corresponding bridge.  (An
- earlier draft of this paragraph said "one", counting only the first
+ earlier draft of this paragraph said “one”, counting only the first
  and overlooking the second, which sits in the same section.)
  Everything on either side of them is instantiation.  In particular the
  coproduct vocabulary needs no translation at all --
@@ -585,8 +585,8 @@ Qed.
    common retraction exl, whereas [exl ∘ aw_pair] is f, which is not an
    identity FOR GENERAL f.  Read that hedge strictly.  It does NOT say
    Awodey's leg is never split -- at f := id it is, by [ml_right_split]
-   -- and an earlier draft of this comment concluded "so no relabelling
-   of objects can turn one cospan into the other", which is REFUTED by
+   -- and an earlier draft of this comment concluded “so no relabelling
+   of objects can turn one cospan into the other”, which is REFUTED by
    this file's own [maclane_awodey_degenerate_left]/[_right], where at
    f := id the two cospans are the same two morphisms.  No non-existence
    of a cospan isomorphism is proved anywhere here.  What is true is

@@ -18,12 +18,12 @@ Generalizable All Variables.
 (*
  nLab:      https://ncatlab.org/nlab/show/corelation
  Wikipedia: none-exists (no category-theoretic article; the page title
- "Corelation" redirects to the statistics article on correlation)
+ “Corelation” redirects to the statistics article on correlation)
 
  A corelation from [X] to [Y] is a cospan [X -in1-> N <-in2- Y] whose
  copairing
  [in1, in2] := cospan_in1 ▽ cospan_in2 : X + Y ~> N
- is an epimorphism in [C] (a "jointly-epic" cospan).  Equivalently, the
+ is an epimorphism in [C] (a “jointly-epic” cospan).  Equivalently, the
  cospan apex is the image of [X + Y] under the cocone formed by its two
  legs.  This is the exact dual of a relation, which is a jointly-MONIC
  span [X <- N -> Y] (copairing [N -> X × Y] monic); see
@@ -38,13 +38,13 @@ Generalizable All Variables.
  [CorelComposable] below.
 
  References:
- - nLab, "corelation" (definition and duality with relations).
- - B. Fong, "The Algebra of Open and Interconnected Systems", DPhil
+ - nLab, “corelation” (definition and duality with relations).
+ - B. Fong, “The Algebra of Open and Interconnected Systems”, DPhil
  thesis, Oxford 2016, arXiv:1609.05382 — corelations are introduced
  as the image factorisation of cospans through their
  jointly-surjective (jointly-epic) representative.
- - B. Coya and B. Fong, "Corelations are the prop for extraspecial
- commutative Frobenius monoids", TAC 32 (2017), arXiv:1601.02307. 
+ - B. Coya and B. Fong, “Corelations are the prop for extraspecial
+ commutative Frobenius monoids”, TAC 32 (2017), arXiv:1601.02307. 
 
  --------
  nLab:       https://ncatlab.org/nlab/show/corelation
@@ -53,7 +53,7 @@ Generalizable All Variables.
  从 [X] 到 [Y] 的一个共关系是一个共尖 [X -in1-> N <-in2- Y]，其
  对偶映射
  [in1, in2]  := cospan_in1 ▽ cospan_in2 : X + Y ~> N
- 在 [C] 中是一个满射（"联合满"的共尖）。等价地，
+ 在 [C] 中是一个满射（“联合满”的共尖）。等价地，
  共尖顶点是其两条腿形成的余锥下 [X + Y] 的像。这是关系的精确对偶，
  关系是一个联合单的跨度 [X <- N -> Y]（对偶映射 [N -> X × Y] 为单射）；参见
  [Construction.Span] 查看被对偶化的跨度。当复合推挤-余联合保持联合本质满射时，相关性形成 [CospanCat C] 的一个子类别。在预上类（集合、预层……）中，这一点是自动成立的，其中（正则）本质满射的推挤仍然是本质满射，但在一般情况下必须作为假设提出。我们没有展示一个通用的本质满射稳定类，而是将我们所需的复合-余配对-是本质满射的陈述封装为下面的类型类 [CorelComposable]。参考文献：
@@ -172,11 +172,11 @@ Context (HP : HasPushouts C).
    The natural axiom we actually use in the composition-preserves-epi
    proof is:
 
-   "Given a pushout of [f2 : Y → Nf] and [g1 : Y → Ng] in [C], if
+   “Given a pushout of [f2 : Y → Nf] and [g1 : Y → Ng] in [C], if
    [cf = f1 ▽ f2 : X + Y → Nf] is epic and [cg = g1 ▽ g2 : Y + Z → Ng]
-   is epic, then the composite copairing of the new cospan is epic."
+   is epic, then the composite copairing of the new cospan is epic.”
 
-   This is one form of "joint-epi stability under pushout", and is the
+   This is one form of “joint-epi stability under pushout”, and is the
    precise axiom needed for [CorelCat] to be a category.  It holds in
    pretoposes (in particular in [Sets]) and more generally in any
    regular category where the regular-epi factorisation is preserved
@@ -353,7 +353,7 @@ Arguments CorelCat C {H_Coc} HP {CC}.
    The forgetful functor [CorelCat → CospanCat] sends each corelation to
    its underlying cospan and acts as the identity on objects.  It is
    faithful (different corelations with the same underlying cospan are
-   equal) and bijective on objects (hence "wide"). 
+   equal) and bijective on objects (hence “wide”). 
 
    --------
    * ** [CorelCat] 作为 [CospanCat] 的一个广义子类别
@@ -396,8 +396,8 @@ End CorelToCospan.
    pushout setoid — each independent setoid infrastructure outside the
    scope of the cospan formalisation.
 
-   Reference: nLab "corelation"; B. Fong, "The Algebra of Open and
-   Interconnected Systems" (DPhil thesis, Oxford 2016, arXiv:1609.05382),
+   Reference: nLab “corelation”; B. Fong, “The Algebra of Open and
+   Interconnected Systems” (DPhil thesis, Oxford 2016, arXiv:1609.05382),
    where Corel(C) is built as the image factorisation of Cospan(C). 
 
    --------

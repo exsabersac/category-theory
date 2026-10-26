@@ -17,17 +17,17 @@ Require Import Category.Instance.SupLat.Free.
 Generalizable All Variables.
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.2, Exercise 1(c), printed p. 142
  (PDF p. 151) — maclane:VI.2:ex1
  nLab: https://ncatlab.org/nlab/show/suplattice
  nLab: https://ncatlab.org/nlab/show/weak+excluded+middle
 
- Mac Lane's part (c) reads, from the page image: "Prove conversely that
- every (small) complete semi-lattice is a 𝒫-algebra in this way", and
- the exercise opens by recalling that "a complete semi-lattice is a
+ Mac Lane's part (c) reads, from the page image: “Prove conversely that
+ every (small) complete semi-lattice is a 𝒫-algebra in this way”, and
+ the exercise opens by recalling that “a complete semi-lattice is a
  partial order Q in which every subset S ⊂ Q has a supremum (least upper
- bound) in Q".  Instance/SupLat.v proves (b) for every 𝒫-algebra, and
+ bound) in Q”.  Instance/SupLat.v proves (b) for every 𝒫-algebra, and
  (c) and (d) for every [SupLatObject]; a statement about every member of
  a class says nothing until the class has members, and this file
  supplies them, together with the measured reason why the smallest
@@ -74,7 +74,7 @@ Generalizable All Variables.
 
  THE CHAIN false < true ON bool IS A COMPLETE SEMILATTICE ONLY UNDER
  INFORMATIVE WEAK EXCLUDED MIDDLE.  In Instance/SupLat.v a subset is
- every ≈-respecting [Prop] predicate, so "every subset has a supremum"
+ every ≈-respecting [Prop] predicate, so “every subset has a supremum”
  quantifies over all propositions.  [suplat_two_points_WLEM]: a complete
  semilattice with a decidable ≈ and two distinct comparable points,
  bot ≤ top with top ≉ bot, decides ¬Q or ¬¬Q for every proposition Q,

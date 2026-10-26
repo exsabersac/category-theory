@@ -10,7 +10,7 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/walking+parallel+pair
  Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
 
- This is the "walking parallel pair" (also called the free quiver), the
+ This is the “walking parallel pair” (also called the free quiver), the
  category with two objects and two parallel non-identity arrows between them
  (plus the two identity morphisms):
 

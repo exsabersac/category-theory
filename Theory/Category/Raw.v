@@ -19,10 +19,10 @@ nLab: https://ncatlab.org/nlab/show/category
        morphisms; and
      - there are no unit or associativity laws.
 
-   So a [RawCategory] is a "lawless category": the signature of a category
+   So a [RawCategory] is a “lawless category”: the signature of a category
    stripped of both the hom-setoid quotient and the categorical axioms. This
-   is the "other category using only equality, with a functor from that
-   category to this" that Theory/Category.v anticipates: rather than discharge
+   is the “other category using only equality, with a functor from that
+   category to this” that Theory/Category.v anticipates: rather than discharge
    the laws directly (often awkward under Coq's restrictive `=`), one defines
    the raw data here and recovers a lawful [Category] through a [Denotation]
    (a functor into a lawful category, see below). The decorated notations

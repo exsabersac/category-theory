@@ -11,19 +11,19 @@ Generalizable All Variables.
 (** * Monad transformers are morphisms of monads  / * Monad 转换器是 monad 的态射*)
 
 (*
-Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
          Springer GTM 5, 1998, §VI.2 Exercise 3(a), printed p. 142
          (PDF p. 151) — maclane:VI.2:ex3
    nLab: https://ncatlab.org/nlab/show/monad+transformer
-   nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
-         monads")
+   nLab: https://ncatlab.org/nlab/show/monad (section “The 2-category of
+         monads”)
 
    WHAT IS PROVED.  Monad/Transformer.v's [MonadTransformer T], at a
    monad M on C and a monad on T M, carries a family
    lift_a : M a ~> T M a with two laws in the Kleisli form, [lift_return]
    (lift ∘ ret ≈ ret) and [lift_bind] (lift ∘ join ∘ fmap f ≈
-   join ∘ fmap (lift ∘ f) ∘ lift).  Its header reads lift as "a monad
-   morphism lift : M ⟹ T M", but the class has no naturality field and
+   join ∘ fmap (lift ∘ f) ∘ lift).  Its header reads lift as “a monad
+   morphism lift : M ⟹ T M”, but the class has no naturality field and
    no law about [join] alone, and until this file the tree had no record
    of monad morphisms to measure the reading against.  With Monad/
    Morphism.v's [MonadHom], the reading is a theorem, in both directions:
@@ -45,12 +45,12 @@ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    (hom_transformer θ) against θ, are refused at [eq_refl], because the
    laws are rebuilt proofs where the variable record has projections.
    So the transformer laws at one monad M are exactly a morphism of
-   monads M ⟶ T M, up to the proofs of the laws: the "suitable natural
-   transformation" of Mac Lane's exercise, specialized to the pair
-   (M, T M).  This is the sense in which #468 asks for "generalizing the
-   MonadTransformer laws".
+   monads M ⟶ T M, up to the proofs of the laws: the “suitable natural
+   transformation” of Mac Lane's exercise, specialized to the pair
+   (M, T M).  This is the sense in which #468 asks for “generalizing the
+   MonadTransformer laws”.
 
-   WHERE IT COMES FROM.  nLab's page "monad transformer", read through a
+   WHERE IT COMES FROM.  nLab's page “monad transformer”, read through a
    fetch of the page, states the transformer condition in the return and
    bind form, which it attributes to Liang, Hudak and Jones (1995), and
    states it equivalent to lift's being a homomorphism of monads: a
@@ -61,8 +61,8 @@ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    monads, whose point is lift; the class here constrains T at one monad
    M only, and so is one component of such a point.
 
-   ISSUE #468's PREMISE.  Its "Current state" says that [MonadTransformer]
-   "packages the monad-morphism laws as `lift : M ⟹ T M`", citing the class
+   ISSUE #468's PREMISE.  Its “Current state” says that [MonadTransformer]
+   “packages the monad-morphism laws as `lift : M ⟹ T M`”, citing the class
    by a line number.  The class has sat unchanged since before the issue was
    filed (its last commit, 83b38386, is of 2026-06-17, by git log), and lift
    was then, as now, a bare family with no naturality field: the premise was
@@ -94,7 +94,7 @@ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    [MonadTransformer] does not ask T to act on morphisms of monads, and
    nothing here makes it.  Monad/Transformer.v's [MonadTransformerLaws]
    is not addressed: it sits inside a comment block of that file, so the
-   tree has no such constant (a [Check] of it is refused, "not found",
+   tree has no such constant (a [Check] of it is refused, “not found”,
    while [Check @MonadTransformer] is accepted).  Neither the class nor
    its instance [IdentityT_MonadTransformer] is changed. 
 
@@ -111,7 +111,7 @@ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
  lift_a : M a ~> T M a 具有 Kleisli 形式的两个定律，[lift_return]
  (lift ∘ ret ≈ ret) 和 [lift_bind] (lift ∘ join ∘ fmap f ≈
  连接 ∘ fmap (lift ∘ f) ∘ lift)。 它的标题将 lift 读作“a monad
- 态射提升：M ⟹ T M"，但该类没有自然场并且
+ 态射提升：M ⟹ T M“，但该类没有自然场并且
  没有关于 [join] 的法律，并且在此文件之前，树没有记录
  用来衡量阅读的单子态射。
 与莫纳德/

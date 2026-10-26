@@ -7,7 +7,7 @@
    text was not consulted while writing this file, and the locations follow
    issue jwiegley/category-theory#641.
 
-   TWO DIFFERENT THINGS CALLED "POSET AS A CATEGORY", and this file is the
+   TWO DIFFERENT THINGS CALLED “POSET AS A CATEGORY”, and this file is the
    second.  Instance/Poset.v turns ONE poset into a thin category, whose
    objects are the elements and whose homs are the order relation.  This file
    builds the category whose OBJECTS ARE POSETS and whose morphisms are the
@@ -35,22 +35,22 @@
 
    Antisymmetry is likewise stated at the SETOID level
    ([pos_antisym : le x y -> le y x -> x ≈ y]) rather than with Leibniz [eq];
-   that is the honest reading of "partial order" over setoid carriers.  It is
+   that is the honest reading of “partial order” over setoid carriers.  It is
    what makes this the category of POSETS -- [Pos] compiles as a category
    without it -- and it is a disclosed deviation from Awodey's set-level
    statement.
 
-   SCOPE.  #641's work item 2 offers an "alternative": realize [Pos] as a full
-   subcategory of [Cat] on "the skeletal thin categories [Poset P]".  That is
+   SCOPE.  #641's work item 2 offers an “alternative”: realize [Pos] as a full
+   subcategory of [Cat] on “the skeletal thin categories [Poset P]”.  That is
    NOT taken, and the honest reason is the one the issue itself gives -- it
-   calls the direct construction "likely simpler and the recommended
-   principal artifact".
+   calls the direct construction “likely simpler and the recommended
+   principal artifact”.
 
    Be precise about what is and is not an obstacle here, because it is easy to
    overstate.  The subcategory ITSELF is constructible in a few lines:
    Construction/Subcategory.v's [sobj : C -> Type] takes an arbitrary
-   [Type]-valued predicate, so "thin and skeletal" can be selected directly
-   with no equality on [Category] values anywhere.  Nor does "skeletal thin"
+   [Type]-valued predicate, so “thin and skeletal” can be selected directly
+   with no equality on [Category] values anywhere.  Nor does “skeletal thin”
    misdescribe its family: skeletality is exactly what antisymmetry buys (as
    Instance/Poset.v says), and it strictly excludes preorders -- the
    two-element indiscrete preorder is thin and NOT skeletal.
@@ -59,7 +59,7 @@
    presentation matches [Pos] means recovering the carrier setoid and the
    order from a skeletal thin category, which is real work and is not
    attempted here.  ([thin] and [skeletal] also have no in-tree predicate
-   today, but that is a "nobody wrote it yet" fact, not a viability
+   today, but that is a “nobody wrote it yet” fact, not a viability
    argument.)
 
    A comparison in the other direction is cheap and IS provided:
@@ -204,8 +204,8 @@ Next Obligation. intros P Q R f g a; simpl; reflexivity. Qed.
 
 (*
    * Every poset yields a thin category -- Instance/Proset.v's construction
-   applied to its order.  This is the formal bridge between "a poset viewed as
-   a category" and "the category of posets", and it is what #641's work item 2
+   applied to its order.  This is the formal bridge between “a poset viewed as
+   a category” and “the category of posets”, and it is what #641's work item 2
    was reaching for; taken in this direction it needs no equality on
    [Category] values and no [thin]/[skeletal] vocabulary. 
 

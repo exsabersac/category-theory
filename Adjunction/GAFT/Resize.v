@@ -37,7 +37,7 @@ Generalizable All Variables.
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors#General_adjoint_functor_theorem
     Riehl:     Category Theory in Context, §4.6 (the solution set condition)
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+    Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
     §V.7, book p. 128 (PDF p. 137), Lemma 2 (catalog id
     `maclane:V.7:lem2`), is the mathematical content this file makes
     expressible.  CITED BY LOCATION AND BY THE IN-TREE CATALOG
@@ -76,8 +76,8 @@ Generalizable All Variables.
 
     [SmallUpToIso] -- for each large index a small one, an ISOMORPHISM of
     the two solution objects, and the compatibility of the two solution
-    arrows.  This is Mac Lane's own "a small set of representatives up to
-    isomorphism", and it is the shape a quotient presentation can actually
+    arrows.  This is Mac Lane's own “a small set of representatives up to
+    isomorphism”, and it is the shape a quotient presentation can actually
     supply: a quotient of a term model is isomorphic to, not equal to, an
     arbitrary spanning codomain.  [covering_of_iso] shows it implies
     [SmallCovering], so the three are ordered.

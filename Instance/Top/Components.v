@@ -26,32 +26,32 @@ Generalizable All Variables.
 (* * * Connected components: Mac Lane §V.9 Exercise 1 / * * 连通分支：Mac Lane §V.9 练习 1 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  read from the page images:
  - §V.9 Exercise 1, book p. 135 (PDF p. 144) (catalog id
  maclane:V.9:ex1):
- "For the full subcategory Lconn of locally connected spaces in Top,
+ “For the full subcategory Lconn of locally connected spaces in Top,
  prove that D: Set → Lconn has a left adjoint C, assigning to each
  space X the set of its connected components, but show that this
  functor C can have no left adjoint (because of misbehavior on
- equalizers)."
+ equalizers).”
  - D is the functor of §V.9, book p. 132 (PDF p. 141): the forgetful
- functor G : Top → Set "is faithful, and has a left adjoint D which
+ functor G : Top → Set “is faithful, and has a left adjoint D which
  assigns to each set S the discrete topology on S (i.e., all
- subsets of S are open)."  The book defines neither local
+ subsets of S are open).”  The book defines neither local
  connectedness nor the connected components of a space, and names
  no equalizer.
  - §IV.2 Exercise 9 (Smythe), book p. 90 (PDF p. 99): the functor
- O : Cat → Set of objects "has a left adjoint D which assigns to
+ O : Cat → Set of objects “has a left adjoint D which assigns to
  each set X the discrete category on X, and that D in turn has a
  left adjoint assigning to each category the set of its connected
- components"; Exercise 7(b) on the same page defines "the connected
- components of J" for a category J.  That is this exercise's twin
+ components”; Exercise 7(b) on the same page defines “the connected
+ components of J” for a category J.  That is this exercise's twin
  for categories.
- Riehl, "Category Theory in Context", 2nd ed., §3.3, Example 3.3.2,
+ Riehl, “Category Theory in Context”, 2nd ed., §3.3, Example 3.3.2,
  printed pp. 99-100 (PDF pp. 119-120), read from the page images
  (catalog id riehl:3.3:example2, Riehl's Example 3.3.2):
- "Precomposing with the endpoint inclusions 0, 1 : ∗ ⇉ I defines a
+ “Precomposing with the endpoint inclusions 0, 1 : ∗ ⇉ I defines a
  functor P : Top → Set^{•⇉•} that carries a space X to the parallel
  pair of functions Path(X) ≅ Top(I, X) ⇉ Top(∗, X) ≅ Point(X) that
  evaluate a path at its endpoints.  Their coequalizer [...] defines
@@ -59,7 +59,7 @@ Generalizable All Variables.
  in X by the relation that identifies any pair of points connected
  by a path.  Proposition 3.3.1 tells us that this coequalizer defines
  a functor, the path components functor π₀ := Top → Set^{•⇉•} →
- Set" (the two arrows labelled P and colim).  That is the
+ Set” (the two arrows labelled P and colim).  That is the
  PATH-components functor on all of Top, a different functor from
  Mac Lane's; it is the satellite Instance/Top/Components/Paths.v's,
  not this file's.
@@ -68,19 +68,19 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/connected+space
  Wikipedia: https://en.wikipedia.org/wiki/Locally_connected_space
 
- BACKGROUND.  "It is not generally true that a topological space is the
+ BACKGROUND.  “It is not generally true that a topological space is the
  disjoint union space (coproduct in Top) of its connected components.
  The spaces such that this is true for all open subspaces are the
- locally connected topological spaces" (nLab), equivalently those in
- which "every point has a neighborhood basis of connected open subsets"
+ locally connected topological spaces” (nLab), equivalently those in
+ which “every point has a neighborhood basis of connected open subsets”
  (nLab's definition; Wikipedia's is the same).  In such a space every
  component is open, hence clopen, and nLab draws the consequence for
- the functors to sets: on locally connected spaces there is "an adjoint
- quadruple of adjoint functors Π₀ ⊣ Δ ⊣ Γ ⊣ ∇ : Set → LocConn", Π₀ the
+ the functors to sets: on locally connected spaces there is “an adjoint
+ quadruple of adjoint functors Π₀ ⊣ Δ ⊣ Γ ⊣ ∇ : Set → LocConn”, Π₀ the
  components, Δ the discrete space, Γ the points and ∇ the codiscrete
- space, "the adjunction structure as on a cohesive topos"; "the
+ space, “the adjunction structure as on a cohesive topos”; “the
  continuity of the unit X → ΔΠ₀X is immediate from a locally connected
- space's being the coproduct of its connected components."  Mac Lane's
+ space's being the coproduct of its connected components.”  Mac Lane's
  exercise is the leftmost adjunction of that quadruple and the reason
  it stops there: Π₀ does not preserve equalizers, so it is not a right
  adjoint.  Local connectedness is what the first half needs; below, the
@@ -93,22 +93,22 @@ Generalizable All Variables.
  maintainer's decision for the §V.9 issues.  Over Instance/Top.v's
  Type-valued [Top] the wall is the functor, not the component relation.
  C must land among the point setoids, the objects of [Sets@{o so}], and
- a functor [Top@{h o} ⟶ Sets@{o so}] is refused ("Cannot enforce o = ...
- because o < h <= ..."): the homs of [Top] sit at [h], above the points,
+ a functor [Top@{h o} ⟶ Sets@{o so}] is refused (“Cannot enforce o = ...
+ because o < h <= ...”): the homs of [Top] sit at [h], above the points,
  and a functor cannot lower the hom level, the reason
  Instance/Top/Forgetful.v's header gives for landing its underlying-set
  functor in [Sets@{h so}].  One universe up the functor is formable, and
  so is an [Adjunction] record between [Top] and [Sets@{h so}], but not
  one whose right adjoint is Forgetful.v's discrete functor [Top_Discrete
  : Sets@{o so} ⟶ Top@{h o}], whose domain must be the point setoids
- ("Cannot enforce ... = h because h < ...").  The relation itself is
+ (“Cannot enforce ... = h because h < ...”).  The relation itself is
  formable over [Top]: [comp_rel] restated there, with its neighbourhoods
  as [ex (fun O : X → Type@{o} => inhabited (IsOpen X O) /\ ...)], is a
  proposition, accepted under the closed universe list [@{o}] of the
  points' universe alone, and [About] reads back an empty constraint
  block on Rocq 9.1.  Only its Type-valued forms are refused at
- [Type@{o}], each with "universe inconsistency: Cannot enforce o < o
- because o = o": the sum over Type-valued subsets [{ W : X → Type@{o} &
+ [Type@{o}], each with “universe inconsistency: Cannot enforce o < o
+ because o = o”: the sum over Type-valued subsets [{ W : X → Type@{o} &
  (W x * W y) }], the quasi-component form [∀ U : X → Type@{o}, IsOpen X
  U → U x → U y] and connectedness quantified over discrete targets [∀ (S
  : SetoidObject@{o o}) (g : X → S), ...]; all three are accepted at
@@ -126,9 +126,9 @@ Generalizable All Variables.
  [comp_rel], and a proposition is not eliminated into a type.
  Extracting from [comp_rel X x y] a Type-valued witness is refused,
  and so is turning [inhabited (pmap g x ≈ pmap g y)] into
- [pmap g x ≈ pmap g y] ("Incorrect elimination of "HR" in the
- inductive type "inhabited": the return type has sort "Type" while it
- should be SProp or Prop"), Test/ProbeComponents462.v's N6 and N7;
+ [pmap g x ≈ pmap g y] (“Incorrect elimination of ”HR“ in the
+ inductive type ”inhabited“: the return type has sort ”Type“ while it
+ should be SProp or Prop”), Test/ProbeComponents462.v's N6 and N7;
  through a [PropEquiv] of the target it is accepted, Lib/Setoid/
  Propositional.v's [pequiv_elim_inhabited], that probe's control.
  The obstruction is not in the proof alone.
@@ -348,8 +348,8 @@ Generalizable All Variables.
  so}].  [PSetsSub]'s object predicate sits at [so], not [o]:
  placed at [o] it is accepted only with [Set < o] in its block
  (read by [About] in a scratch file requiring this one), and at
- [o := Set] it is refused ("Universe inconsistency. Cannot enforce
- Set < Set because Set = Set"), the sort of [PropEquivObj S] being
+ [o := Set] it is refused (“Universe inconsistency. Cannot enforce
+ Set < Set because Set = Set”), the sort of [PropEquivObj S] being
  at least [Set+1]: Test/ProbeComponents462.v's N8, beside the
  controls [p462_psets_sub_at_o] and [p462_psets_sub_Set].
  [components_functor], [components_functor_Sets], [PSetsDisc] and
@@ -459,7 +459,7 @@ Generalizable All Variables.
  “通过端点包含 0, 1 : ∗ ⇉ I 进行预组合定义了一个函子 P : Top → Set^{•⇉•}，它将空间 X 映射到平行的函数对 Path(X) ≅ Top(I, X) ⇉ Top(∗, X) ≅ Point(X)，该函数对在路径的端点处进行评估。它们的并列余数 [...] 定义了 X 的路径分支集合，即 X 中点的集合通过将任意由路径连接的点对识别为同一元素的关系进行商集。命题 3.3.1 告诉我们，这个并列余数定义了一个函子，即路径分支函子 π₀ := Top → Set^{•⇉•} → Set（两个箭头分别标记为 P 和 colim）。这是 Top 上的 PATH-组件函子，与 Mac Lane 的不同；它是卫星文件 Instance/Top/Components/Paths.v 的，而不是本文件的。 nLab:  https://ncatlab.org/nlab/show/Top 
  nLab:  https://ncatlab.org/nlab/show/locally+connected+space 
  nLab:  https://ncatlab.org/nlab/show/connected+space 
- Wikipedia:  https://en.wikipedia.org/wiki/Locally_connected_space背景。“拓扑空间通常并非其连通分支的互不相交的并集空间（Top中的余积）。对于所有开子空间都成立的空间就是局部连通的拓扑空间”（nLab），等价于那些“每个点都有由连通开子集构成的邻域基础”的空间（nLab的定义；维基百科的定义相同）。在这样的空间中，每个分量都是开放的，因此是开闭的，nLab 推导出集合函子（functors to sets）的结论：在局部连通空间上，有“一个伴随四重（adjoint quadruple）的伴随函子 Π₀ ⊣ Δ ⊣ Γ ⊣ ∇ : Set → LocConn”，Π₀ 为连通分量，Δ 为离散空间，Γ 为点，∇ 为余离散空间，“伴随结构如同在凝聚拓扑（cohesive topos）上”；“从局部连通空间是其连通分量的直和这一事实，可以立即得出单位 X → ΔΠ₀X 的连续性。” Mac Lane 的练习是该四重中的最左边的伴随，也是它停止于此的原因：Π₀ 不保持等化子，因此它不是右伴随。局部连通性是前半部分所需的条件；如下所示，离散函子在所有空间上根本没有左伴随。类别的孪生，对于范畴，Mac Lane 的 §IV.2 练习 9，是 Instance/Cat/Components.v 的 [Components_Disc_Adjunction : Pi0 ⊣ Cat_Disc]，关于类别的 Theory/Connected/Components.v 的 π₀。编码。一切都发生在 Instance/Top/Prop.v 的 [PTopCat] 上，由维护者根据 §V.9 问题的决定。在 Instance/Top.v 的类型值 [Top] 上，墙是函子，而不是分量关系。C 必须落在点集合主义者之间，即 [Sets@{o so}] 的对象，并且一个函子 [Top@{h o} ⟶ Sets@{o so}] 被拒绝（“无法强制 o = ... 因为 o < h <= ...”）：[Top] 的同态位于 [h] 上，位于点之上，而函子无法降低同态的层级，这也是 Instance/Top/Forgetful.v 的头部给出的在 [Sets@{h so}] 中安放其基础集函子的原因。在一个宇宙中，上方函子是可构造的，并且在 [Top] 和 [Sets@{h so}] 之间的 [Adjunction] 记录也是可构造的，但其右伴随不是 Forgetful.v 的离散函子 [Top_Discrete : Sets@{o so} ⟶ Top@{h o}]，因为其定义域必须是点的集合同构（"无法强制 ... = h 因为 h < ..."）。该关系本身在 [Top] 上是可构造的：在那里的 [comp_rel] 重新表述，其邻域是 [ex (fun O : X → Type@{o} => inhabited (IsOpen X O) /\ ...)]，是一个命题，在仅点的宇宙的封闭宇宙列表 [@{o}] 下被接受，而 [About] 在 Rocq 9.1 上回读为空约束块。只有它的类型值形式在 [Type@{o}] 被拒绝，每个形式都显示“宇宙不一致：无法强制 o < o 因为 o = o”：类型值子集的求和 [{ W : X → Type@{o} & (W x * W y) }]，准组成形式 [∀ U : X → Type@{o}, IsOpen X U → U x → U y] 和在离散目标上量化的连通性 [∀ (S : SetoidObject@{o o}) (g : X → S), ...]；在 [Type@{h}] 下使用 [o < h]，这三种形式都被接受。Test/ProbeComponents462.v 将函子固定为 N1，将伴随映射固定为 N2，每个旁边是其控制一个宇宙向上的形式，三种类型值形式作为 N3、N4 和 N5，分别旁边是它们的形式，而命题值关系作为控制 [tcomp_rel_prop]。在 [PTopCat] 上，homs 位于点的宇宙（Instance/Top/Prop.v 的 [PMor]），下面的每个关系都是一个命题，并且组件位于点的宇宙 [o]。MAC LANE 的集合：命题集合，以及 [Sets] 在 [Untruncate] 下的所有内容。树的 [Sets] 具有一个类型值的 [≈]，而连续性是一个命题，组件关系 [comp_rel] 也是一个命题，并且命题不会被消除为类型。从 [comp_rel X x y] 提取一个类型值的证据被拒绝，将 [inhabited (pmap g x ≈ pmap g y)] 转换为 [pmap g x ≈ pmap g y] 也不被允许（“在归纳类型‘inhabited’中错误地消除了‘HR’：返回类型的範畴为'Type'，而它应为 SProp 或 Prop”），Test/ProbeComponents462.v 的 N6 和 N7；通过目标的 [PropEquiv] 被接受，Lib/Setoid/Propositional.v 的 [pequiv_elim_inhabited]，对该探针的控制。阻碍不仅存在于证明中。[components_on_all_Sets_unsquashes]：离散函子 [LDisc : Sets ⟶ Lconn] 的任何左伴随都会产生 [inhabited (∀ Q : Type@{o}, inhabited Q → Q)]。在不可分的两点空间中的单位是连续映入离散空间的，因此它的两个值只是简单地相等，并且将恒等映射转置到两点集的集合上，其 [true ≈ false] 为 [Q]（[SquashSetoid]，一旦 [Q] 仅仅被占据就连续，[squash_id_cont]）会解压 [Q]。该原理是 Instance/Sets/Classifier/OneLevel.v 的假设 [Untruncate@{o}] 的截断，[∀ P : Type@{o}, Powerset_squash P → P]：每个给出另一个（[unsquash_Untruncate], [Untruncate_unsquash]），并且 [components_on_all_Sets_Untruncate] 将结论表述为 [inhabited Untruncate@{o}]；[unsquash_choice] 来源于类型之间关系的函数选择原理位于 [o]。其逆命题也成立。在 [Untruncate] 下，任意集合体上的连续映射到离散空间在分量上是常值的（[comp_respect_U]：沿着连通子集携带的命题是 [Powerset_squash] 的 [≈]），并且 [components_left_adjoint_discrete_Sets U : components_functor_Sets ⊣ LDisc] 是 Mac Lane 的伴随，其中他的集合字面上读作所有的 [Sets]，[components_functor_Sets] 是 C 后跟 [PSets] 的包含。因此，字面陈述在 [Untruncate] 下成立，而且其形状的任何伴随都使得 [Untruncate] 只是成立：假设的截断是必要的。[Untruncate] 在树中没有无公理的元素，并且从信息化排中律（OneLevel.v 的标题和 [untruncate_of_IEM]）可以推导出。因此，Set 被无条件地读取为 [PSets]，即 [Sets] 的子范畴全体，它作用于那些等式在逻辑上为命题的集合体（Instance/Sets/Propositional.v 的 [PropEquivObj]），这是具体代数范畴采取的读取方式（参见 Structure/Complete.v 头部的大小说明）。这是超出 [PTopCat] 编码（上文 ENCODING）的书中陈述的唯一偏差，并且它在 [Sets] 下通过 [Untruncate] 提升。更正（#1349）：上述 [SquashSetoid] 现在是 Instance/Sets/Propositional/Full.v 的内容，而 [unsquash_Untruncate] 和 [Untruncate_unsquash] 是从该文件的 [untr_of_choice] 和 [choice_of_untr] 推导出来的，#469 已在 Instance/Pos/Monadicity.v 中声明。这里是什么。- 连通性，命题值。[LocConstOn X W φ]：一个命题值 [φ] 在 [W] 上是局部常数的；[PConnectedSub X W]：每一个这样的 [φ] 在 [W] 上是常数的；[PConnected X]：整个空间是。[PLocConn X] 是 nLab 和维基百科的定义：一个点的每个开邻域都包含一个连通的开邻域。[comp_rel X x y]：x 和 y 位于同一个连通子集中的关系，其类是连通分支；它是一个构造性的等价关系（[point_connected]：一个点是连通的；[union_connected]：两个共享一个点的连通子集的并集是连通的）。[CompSet X] 是分支的集合，是 [comp_rel] 下的点；[comp_PropEquiv]：它的相等性就是命题 [comp_rel] 本身。- 其他形式。[PConnectedSep]：两个互不相交的开集覆盖空间并不会将其分裂；[PConnectedBool]：每一个连续映射到[PBool]都是常数映射。[connected_no_separation]和[connected_bool_constant]都源自[PConnectedSub]对于一个子集的情况，[PConnected_Sep]和[PConnected_Bool]对应空间的情况。局部常值形式是伴随需要的那一种：它的伴随映射定义φ z := [pequiv (g x) (g z)]，这是一个命题，其中a [bool]-值指示器需要目标上的可判等式。- [image_connected]：连通子集的连续像是连通的；因此[comp_setoid_map]以及[CompTop : PTopCat ⟶ PSets]，作用于[PTopCat]所有对象的连通分支函子，不需要局部连通性。- 范畴。[PSets]：[Sub]在[PropEquivObj]上的[Sets]（[PSetsSub]）。[Lconn] ：在 [PLocConn] 上的 [PTopCat] 的 [Sub] （[Lconn_Sub]，Instance/Top/Separation.v 的 [PFullSub]）。两者都是手动固定的，正如 Instance/Top/Hausdorff.v 固定 [Haus] 一样。更正 (#1349)：#469 再次构建了相同的类别，如 Instance/Sets/Propositional/Full.v 的 [PropSets_sub] 和 [PropSets]；根据维护者统一它们的决定，[PSetsSub] 和 [PSets] 现在定义为这两个类别，并使用 #462 的名称，因此 [PSets] 的手动固定在该文件中。- [components_functor : Lconn ⟶ PSets]，Mac Lane 的 C，本问题的固定名称：包括后的 [CompTop]。- D.[LDisc : Sets ⟶ Lconn] 是 Instance/Top/Complete.v 的 [PDisc] 核心限制在 [Lconn] 上，而不是第二个离散函子：它的对象部分和箭头部分是 [PDisc] 的（[LDisc_PDisc_obj]，[LDisc_PDisc_fmap]），它的三个函子定律是 [PDisc] 的，并且 [pdisc_locconn]，离散空间是局部连通的。[PSetsDisc : PSets ⟶ Lconn]，Mac Lane 的 D，是 [LDisc] 在包含 [PSets] 之后。- [components_left_adjoint_discrete : components_functor ⊣ PSetsDisc]，固定名称，由 Theory/Adjunction.v 的 [Build_Adjunction'] 从 [comp_adj_iso] 出发，是一个在点上双向恒等的 Hom 集双射。[comp_respect]：映射到命题集上离散空间的连续映射在各组成部分上是常值的。[comp_cont]：在一个局部连通空间中，一个在连通分支上恒定的映射到离散空间是连续的，其开集的原象是与之相交的连通开集的并。局部连通性仅使用一次，即在整个空间中，为每个点找到一个连通开邻域（参考 [comp_cont] 的证明），所以该伴随在更大类空间上也成立，即每个点都有连通开邻域；书中保留了这个类。——Mac Lane 的集合作为所有 [Sets]，在 [Untruncate] 下（见上文 MAC LANE'S SET）。[components_functor_Sets : Lconn ⟶ Sets] 是 C，随后包含了 [PSets]；[comp_adj_iso_U] 拥有 [comp_adj_iso] 的两个映射，并且为了尊重后者使用 [comp_respect_U]；以及 [components_left_adjoint_discrete_Sets U : components_functor_Sets ⊣ LDisc]。另一个方向是 [components_on_all_Sets_unsquashes] 与 [components_on_all_Sets_Untruncate]、[unsquash_Untruncate]、[Untruncate_unsquash] 和 [unsquash_choice]。- 练习 1 的后半部分，关于一个具体的等化器。[PZig]，点 [zig_a]、[zig_c]、[zig_b] 使用 [zig_a] 和 [zig_b] 开放，并且整个空间是唯一包含 [zig_c] 的开集，是连通的（[PZig_connected]，因此 [PZig_one_component]）并且局部连通（[PZig_PLocConn]）。成对的 [zig_f_map]（在 [false] 上为恒定）和 [zig_g_map]（[true] 恰好在 [zig_c] 上）进入 Instance/Top/Cocomplete.v 中不可分离的两点空间 [PTwoIndisc]，其等化器是由两个开点形成的离散两点空间 [PBool]（[PTop_zig_equalizer] 在 [PTopCat] 中，[Lconn_zig_equalizer] 在 [Lconn] 中，由于充实性）。[components_zig_not_preserved]：在 C 下的像不是等化器，因为等化映射的 C 将 [PBool]（[pbool_two_components]）的两个分量识别为同一，而等化映射是单射的（Structure/Equalizer/Fork.v 的 [equalizer_monic]）。[components_no_left_adjoint]，被固定的名称：每个带有 [L ⊣ components_functor] 的 L 都被 Adjunction/Continuity/Equalizer.v 上该等化器的 [not_PreservesEqualizers_no_left_adjoint] 所否定。——对于 D 的任何左伴随。[discrete_left_adjoint_not_preserved]：
+ Wikipedia:  https://en.wikipedia.org/wiki/Locally_connected_space背景。“拓扑空间通常并非其连通分支的互不相交的并集空间（Top中的余积）。对于所有开子空间都成立的空间就是局部连通的拓扑空间”（nLab），等价于那些“每个点都有由连通开子集构成的邻域基础”的空间（nLab的定义；维基百科的定义相同）。在这样的空间中，每个分量都是开放的，因此是开闭的，nLab 推导出集合函子（functors to sets）的结论：在局部连通空间上，有“一个伴随四重（adjoint quadruple）的伴随函子 Π₀ ⊣ Δ ⊣ Γ ⊣ ∇ : Set → LocConn”，Π₀ 为连通分量，Δ 为离散空间，Γ 为点，∇ 为余离散空间，“伴随结构如同在凝聚拓扑（cohesive topos）上”；“从局部连通空间是其连通分量的直和这一事实，可以立即得出单位 X → ΔΠ₀X 的连续性。” Mac Lane 的练习是该四重中的最左边的伴随，也是它停止于此的原因：Π₀ 不保持等化子，因此它不是右伴随。局部连通性是前半部分所需的条件；如下所示，离散函子在所有空间上根本没有左伴随。类别的孪生，对于范畴，Mac Lane 的 §IV.2 练习 9，是 Instance/Cat/Components.v 的 [Components_Disc_Adjunction : Pi0 ⊣ Cat_Disc]，关于类别的 Theory/Connected/Components.v 的 π₀。编码。一切都发生在 Instance/Top/Prop.v 的 [PTopCat] 上，由维护者根据 §V.9 问题的决定。在 Instance/Top.v 的类型值 [Top] 上，墙是函子，而不是分量关系。C 必须落在点集合主义者之间，即 [Sets@{o so}] 的对象，并且一个函子 [Top@{h o} ⟶ Sets@{o so}] 被拒绝（“无法强制 o = ... 因为 o < h <= ...”）：[Top] 的同态位于 [h] 上，位于点之上，而函子无法降低同态的层级，这也是 Instance/Top/Forgetful.v 的头部给出的在 [Sets@{h so}] 中安放其基础集函子的原因。在一个宇宙中，上方函子是可构造的，并且在 [Top] 和 [Sets@{h so}] 之间的 [Adjunction] 记录也是可构造的，但其右伴随不是 Forgetful.v 的离散函子 [Top_Discrete : Sets@{o so} ⟶ Top@{h o}]，因为其定义域必须是点的集合同构（“无法强制 ... = h 因为 h < ...”）。该关系本身在 [Top] 上是可构造的：在那里的 [comp_rel] 重新表述，其邻域是 [ex (fun O : X → Type@{o} => inhabited (IsOpen X O) /\ ...)]，是一个命题，在仅点的宇宙的封闭宇宙列表 [@{o}] 下被接受，而 [About] 在 Rocq 9.1 上回读为空约束块。只有它的类型值形式在 [Type@{o}] 被拒绝，每个形式都显示“宇宙不一致：无法强制 o < o 因为 o = o”：类型值子集的求和 [{ W : X → Type@{o} & (W x * W y) }]，准组成形式 [∀ U : X → Type@{o}, IsOpen X U → U x → U y] 和在离散目标上量化的连通性 [∀ (S : SetoidObject@{o o}) (g : X → S), ...]；在 [Type@{h}] 下使用 [o < h]，这三种形式都被接受。Test/ProbeComponents462.v 将函子固定为 N1，将伴随映射固定为 N2，每个旁边是其控制一个宇宙向上的形式，三种类型值形式作为 N3、N4 和 N5，分别旁边是它们的形式，而命题值关系作为控制 [tcomp_rel_prop]。在 [PTopCat] 上，homs 位于点的宇宙（Instance/Top/Prop.v 的 [PMor]），下面的每个关系都是一个命题，并且组件位于点的宇宙 [o]。MAC LANE 的集合：命题集合，以及 [Sets] 在 [Untruncate] 下的所有内容。树的 [Sets] 具有一个类型值的 [≈]，而连续性是一个命题，组件关系 [comp_rel] 也是一个命题，并且命题不会被消除为类型。从 [comp_rel X x y] 提取一个类型值的证据被拒绝，将 [inhabited (pmap g x ≈ pmap g y)] 转换为 [pmap g x ≈ pmap g y] 也不被允许（“在归纳类型‘inhabited’中错误地消除了‘HR’：返回类型的範畴为'Type'，而它应为 SProp 或 Prop”），Test/ProbeComponents462.v 的 N6 和 N7；通过目标的 [PropEquiv] 被接受，Lib/Setoid/Propositional.v 的 [pequiv_elim_inhabited]，对该探针的控制。阻碍不仅存在于证明中。[components_on_all_Sets_unsquashes]：离散函子 [LDisc : Sets ⟶ Lconn] 的任何左伴随都会产生 [inhabited (∀ Q : Type@{o}, inhabited Q → Q)]。在不可分的两点空间中的单位是连续映入离散空间的，因此它的两个值只是简单地相等，并且将恒等映射转置到两点集的集合上，其 [true ≈ false] 为 [Q]（[SquashSetoid]，一旦 [Q] 仅仅被占据就连续，[squash_id_cont]）会解压 [Q]。该原理是 Instance/Sets/Classifier/OneLevel.v 的假设 [Untruncate@{o}] 的截断，[∀ P : Type@{o}, Powerset_squash P → P]：每个给出另一个（[unsquash_Untruncate], [Untruncate_unsquash]），并且 [components_on_all_Sets_Untruncate] 将结论表述为 [inhabited Untruncate@{o}]；[unsquash_choice] 来源于类型之间关系的函数选择原理位于 [o]。其逆命题也成立。在 [Untruncate] 下，任意集合体上的连续映射到离散空间在分量上是常值的（[comp_respect_U]：沿着连通子集携带的命题是 [Powerset_squash] 的 [≈]），并且 [components_left_adjoint_discrete_Sets U : components_functor_Sets ⊣ LDisc] 是 Mac Lane 的伴随，其中他的集合字面上读作所有的 [Sets]，[components_functor_Sets] 是 C 后跟 [PSets] 的包含。因此，字面陈述在 [Untruncate] 下成立，而且其形状的任何伴随都使得 [Untruncate] 只是成立：假设的截断是必要的。[Untruncate] 在树中没有无公理的元素，并且从信息化排中律（OneLevel.v 的标题和 [untruncate_of_IEM]）可以推导出。因此，Set 被无条件地读取为 [PSets]，即 [Sets] 的子范畴全体，它作用于那些等式在逻辑上为命题的集合体（Instance/Sets/Propositional.v 的 [PropEquivObj]），这是具体代数范畴采取的读取方式（参见 Structure/Complete.v 头部的大小说明）。这是超出 [PTopCat] 编码（上文 ENCODING）的书中陈述的唯一偏差，并且它在 [Sets] 下通过 [Untruncate] 提升。更正（#1349）：上述 [SquashSetoid] 现在是 Instance/Sets/Propositional/Full.v 的内容，而 [unsquash_Untruncate] 和 [Untruncate_unsquash] 是从该文件的 [untr_of_choice] 和 [choice_of_untr] 推导出来的，#469 已在 Instance/Pos/Monadicity.v 中声明。这里是什么。- 连通性，命题值。[LocConstOn X W φ]：一个命题值 [φ] 在 [W] 上是局部常数的；[PConnectedSub X W]：每一个这样的 [φ] 在 [W] 上是常数的；[PConnected X]：整个空间是。[PLocConn X] 是 nLab 和维基百科的定义：一个点的每个开邻域都包含一个连通的开邻域。[comp_rel X x y]：x 和 y 位于同一个连通子集中的关系，其类是连通分支；它是一个构造性的等价关系（[point_connected]：一个点是连通的；[union_connected]：两个共享一个点的连通子集的并集是连通的）。[CompSet X] 是分支的集合，是 [comp_rel] 下的点；[comp_PropEquiv]：它的相等性就是命题 [comp_rel] 本身。- 其他形式。[PConnectedSep]：两个互不相交的开集覆盖空间并不会将其分裂；[PConnectedBool]：每一个连续映射到[PBool]都是常数映射。[connected_no_separation]和[connected_bool_constant]都源自[PConnectedSub]对于一个子集的情况，[PConnected_Sep]和[PConnected_Bool]对应空间的情况。局部常值形式是伴随需要的那一种：它的伴随映射定义φ z := [pequiv (g x) (g z)]，这是一个命题，其中a [bool]-值指示器需要目标上的可判等式。- [image_connected]：连通子集的连续像是连通的；因此[comp_setoid_map]以及[CompTop : PTopCat ⟶ PSets]，作用于[PTopCat]所有对象的连通分支函子，不需要局部连通性。- 范畴。[PSets]：[Sub]在[PropEquivObj]上的[Sets]（[PSetsSub]）。[Lconn] ：在 [PLocConn] 上的 [PTopCat] 的 [Sub] （[Lconn_Sub]，Instance/Top/Separation.v 的 [PFullSub]）。两者都是手动固定的，正如 Instance/Top/Hausdorff.v 固定 [Haus] 一样。更正 (#1349)：#469 再次构建了相同的类别，如 Instance/Sets/Propositional/Full.v 的 [PropSets_sub] 和 [PropSets]；根据维护者统一它们的决定，[PSetsSub] 和 [PSets] 现在定义为这两个类别，并使用 #462 的名称，因此 [PSets] 的手动固定在该文件中。- [components_functor : Lconn ⟶ PSets]，Mac Lane 的 C，本问题的固定名称：包括后的 [CompTop]。- D.[LDisc : Sets ⟶ Lconn] 是 Instance/Top/Complete.v 的 [PDisc] 核心限制在 [Lconn] 上，而不是第二个离散函子：它的对象部分和箭头部分是 [PDisc] 的（[LDisc_PDisc_obj]，[LDisc_PDisc_fmap]），它的三个函子定律是 [PDisc] 的，并且 [pdisc_locconn]，离散空间是局部连通的。[PSetsDisc : PSets ⟶ Lconn]，Mac Lane 的 D，是 [LDisc] 在包含 [PSets] 之后。- [components_left_adjoint_discrete : components_functor ⊣ PSetsDisc]，固定名称，由 Theory/Adjunction.v 的 [Build_Adjunction'] 从 [comp_adj_iso] 出发，是一个在点上双向恒等的 Hom 集双射。[comp_respect]：映射到命题集上离散空间的连续映射在各组成部分上是常值的。[comp_cont]：在一个局部连通空间中，一个在连通分支上恒定的映射到离散空间是连续的，其开集的原象是与之相交的连通开集的并。局部连通性仅使用一次，即在整个空间中，为每个点找到一个连通开邻域（参考 [comp_cont] 的证明），所以该伴随在更大类空间上也成立，即每个点都有连通开邻域；书中保留了这个类。——Mac Lane 的集合作为所有 [Sets]，在 [Untruncate] 下（见上文 MAC LANE'S SET）。[components_functor_Sets : Lconn ⟶ Sets] 是 C，随后包含了 [PSets]；[comp_adj_iso_U] 拥有 [comp_adj_iso] 的两个映射，并且为了尊重后者使用 [comp_respect_U]；以及 [components_left_adjoint_discrete_Sets U : components_functor_Sets ⊣ LDisc]。另一个方向是 [components_on_all_Sets_unsquashes] 与 [components_on_all_Sets_Untruncate]、[unsquash_Untruncate]、[Untruncate_unsquash] 和 [unsquash_choice]。- 练习 1 的后半部分，关于一个具体的等化器。[PZig]，点 [zig_a]、[zig_c]、[zig_b] 使用 [zig_a] 和 [zig_b] 开放，并且整个空间是唯一包含 [zig_c] 的开集，是连通的（[PZig_connected]，因此 [PZig_one_component]）并且局部连通（[PZig_PLocConn]）。成对的 [zig_f_map]（在 [false] 上为恒定）和 [zig_g_map]（[true] 恰好在 [zig_c] 上）进入 Instance/Top/Cocomplete.v 中不可分离的两点空间 [PTwoIndisc]，其等化器是由两个开点形成的离散两点空间 [PBool]（[PTop_zig_equalizer] 在 [PTopCat] 中，[Lconn_zig_equalizer] 在 [Lconn] 中，由于充实性）。[components_zig_not_preserved]：在 C 下的像不是等化器，因为等化映射的 C 将 [PBool]（[pbool_two_components]）的两个分量识别为同一，而等化映射是单射的（Structure/Equalizer/Fork.v 的 [equalizer_monic]）。[components_no_left_adjoint]，被固定的名称：每个带有 [L ⊣ components_functor] 的 L 都被 Adjunction/Continuity/Equalizer.v 上该等化器的 [not_PreservesEqualizers_no_left_adjoint] 所否定。——对于 D 的任何左伴随。[discrete_left_adjoint_not_preserved]：
  每个 C 与 [C ⊣ PSetsDisc]，无论其定义如何，都将相同的等化器发送到一个不是分叉的叉。位于 [PZig] 的单元连续进入一个离散空间，因此它识别 [zig_a]、[zig_c] 和 [zig_b] 的像，并且通过自然性也识别 [PBool] 的两个点的像，而 [PBool] 的恒等转置将它们分开。[discrete_left_adjoint_no_left_adjoint]：没有这样的 C 拥有左伴随。- 第二个证据。[Lconn_swap_equalizer]：[PTwoIndisc] 的恒等和交换 [swap_L] 具有空的离散空间 [LEmpty]（位于 Theory/Concrete.v 的 [empty_setoid_object]）作为它们在 [Lconn] 中的等化器。[components_swap_not_preserved]：C 将其发送到一个顶点为空的叉，而两点空间的一个分量则将像对分叉。- 对 [Lconn] 的限制买到了什么。[pconv_not_locconn]：
  Instance/Top/Complete.v 的收敛序列 [PConv] 不是局部连通的，一个孤立点 [Some K] 在极限点的任意开邻域中都是相对开闭的。[discrete_no_left_adjoint_on_PTop]：D 映入整个 [PTopCat] 
  （[PSetsDiscTop]，[PDisc] 在包含 [PSets] 后）没有左伴随。[PConv] 处的单位映射是连续映入一个离散空间，因此在一个尾段上是常数，并且 Complete.v 中该尾段某点的指标 [pconv_ind_mor N] 会通过它因子分解。[PDisc_no_left_adjoint]：[PDisc : Sets ⟶

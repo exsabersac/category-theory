@@ -32,21 +32,21 @@ Require Import Category.Instance.Fun.Action.Monad.
 Generalizable All Variables.
 
 (*
- Book: Riehl, "Category Theory in Context", 2nd ed., Exercise
+ Book: Riehl, “Category Theory in Context”, 2nd ed., Exercise
  5.5.iv, printed p. 208 (PDF p. 228) — riehl:5.5:exiv; with her
  Theorem 5.5.1, printed p. 202 (PDF p. 222), and Definition
  5.3.1, printed p. 196 (PDF p. 216)
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
- Springer GTM 5, 1998, §VI.2, "Group actions", printed p. 141
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+ Springer GTM 5, 1998, §VI.2, “Group actions”, printed p. 141
  (PDF p. 150) — maclane:VI.2:remark2; and §VI.2 Exercise 3,
  printed p. 142 (PDF p. 151)
  nLab: https://ncatlab.org/nlab/show/monadicity+theorem
  nLab: https://ncatlab.org/nlab/show/action
 
- Riehl's Exercise 5.5.iv gives, "For any group G", the forgetful functor
- U : Set^BG → Set a left adjoint "that sends a set X to the G-set G × X,
- with G acting on the left", and asks: "Prove that this adjunction is
- monadic by appealing to the monadicity theorem."  Her Set^BG is the
+ Riehl's Exercise 5.5.iv gives, “For any group G”, the forgetful functor
+ U : Set^BG → Set a left adjoint “that sends a set X to the G-set G × X,
+ with G acting on the left”, and asks: “Prove that this adjunction is
+ monadic by appealing to the monadicity theorem.”  Her Set^BG is the
  functor category [BG, Set], BG the one-object category of G, and U is
  evaluation at the one object.  Instance/Fun/Action/Monad.v proves the
  exercise at Instance/Fun/Action.v's category [MSet M] of actions, which
@@ -131,7 +131,7 @@ Generalizable All Variables.
  THE TIE.  This file's comparison functor lands in the algebras of
  [BGMonad M], that of Instance/Fun/Action/Monad.v in those of
  [ActMonad M].  Mac Lane's §VI.2 Exercise 3(b) (p. 142) turns a morphism θ
- of monads into "a functor θ* : X^T' → X^T" with G^T ∘ θ* = G^T'; here θ
+ of monads into “a functor θ* : X^T' → X^T” with G^T ∘ θ* = G^T'; here θ
  is the identity-component isomorphism [BG_T_ActF], and θ* is built for
  this instance alone, with no general record of monad morphisms.
  [BG_Act_alg] reads an algebra of [BGMonad M] as one of [ActMonad M] with
@@ -172,13 +172,13 @@ Generalizable All Variables.
  (Test/ProbeMonadMorphism468.v's R12, now a control).  This file is
  still not rewired.
 
- WHICH "MONADIC".  Riehl's Definition 5.3.1 (p. 196) calls an
- adjunction monadic when the comparison functor "defines an equivalence
- of categories": Monad/Comparison.v's [Monadic].  Her Theorem 5.5.1
- (p. 202) reads "A right adjoint functor U : D → C is monadic if and
- only if it creates coequalizers of U-split pairs"; its "if" half is
+ WHICH “MONADIC”.  Riehl's Definition 5.3.1 (p. 196) calls an
+ adjunction monadic when the comparison functor “defines an equivalence
+ of categories”: Monad/Comparison.v's [Monadic].  Her Theorem 5.5.1
+ (p. 202) reads “A right adjoint functor U : D → C is monadic if and
+ only if it creates coequalizers of U-split pairs”; its “if” half is
  Beck.v's [beck_monadicity], in that form.  The same page names the
- strict reading, K an isomorphism exactly when U "strictly creates"
+ strict reading, K an isomorphism exactly when U “strictly creates”
  those coequalizers, and leaves its proof to her Exercise 5.5.i.  This
  file implements the equivalence reading.  The lift above is on the
  nose, but the class does not record uniqueness on the nose, and no
@@ -246,7 +246,7 @@ Generalizable All Variables.
  Measured in Test/ProbeGroupAction464.v (N17, N18) at the same category
  with hom level so: a functor type out of it into Sets is refused, and
  [MSet_from] into it is accepted while its composite with [MSet_Free]
- is refused ("Cannot enforce so = o because o < so").  The stdlib caps
+ is refused (“Cannot enforce so = o because o < so”).  The stdlib caps
  are the donors':
  - compose and ID from [Sets];
  - prod_rect and projections from [MSet_Free]'s product carrier;

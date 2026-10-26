@@ -16,8 +16,8 @@ Set Default Proof Using "All".
  Item 3 of the work list of Mac Lane §IV.9 construction 2 and remark 1
  (book pp. 105-106, [maclane:IV.9:construction2],
  [maclane:IV.9:remark1]) asks for the prerequisites a subobject
- classifier needs on a functor category, "terminal object and
- pullbacks, both pointwise".  The terminal object was already in tree
+ classifier needs on a functor category, “terminal object and
+ pullbacks, both pointwise”.  The terminal object was already in tree
  as Instance/Fun/Terminal.v's [Functor_Category_Terminal] (#339); the
  pullbacks are here, and they were genuinely absent — before this file
  no [HasPullbacks], [Pullback] or [IsPullback] for ANY functor category
@@ -119,8 +119,8 @@ Set Default Proof Using "All".
  it either — the honest form would take [HasPullbacks D] and compare
  with the pointwise pullback through the unique isomorphism, and
  nothing here does that.  No pushouts, no equalizers, no coequalizers.
- No [Complete] or [Cocomplete] for [C, D], and no general "limits in
- [C, D] are pointwise" theorem.  No [Cartesian_of_HasPullbacks_Terminal]
+ No [Complete] or [Cocomplete] for [C, D], and no general “limits in
+ [C, D] are pointwise” theorem.  No [Cartesian_of_HasPullbacks_Terminal]
  instantiation.  No stability or pasting results for [C, D] beyond what
  Theory/Morphisms/Stability.v already gives generically.  No witness at
  a named pair of categories in this file: the concrete uses are

@@ -23,7 +23,7 @@ Generalizable All Variables.
 (*
    * * Monoidal structure on [DecoratedCospanCat]
 
-   Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
+   Reference: Brendan Fong, “Decorated Cospans”, arXiv:1502.00872,
    Theorem 3.5 (the symmetric-monoidal hypergraph structure on
    [F Cospan]).  This module assembles the plain [Monoidal] layer of
    that theorem on [DecoratedCospanCat HP LM id_decoration cospan_merge],
@@ -354,7 +354,7 @@ End DecoratedCospanMonoidal.
 
    The [DecCospan_Monoidal_Coherent] class is the literature-correct
    packaging of the decoration-side coherences for Theorem 3.5 of
-   Fong's "Decorated Cospans".  Each field is a single decorated-cospan
+   Fong's “Decorated Cospans”.  Each field is a single decorated-cospan
    equivalence whose cospan part is delivered by the existing
    [Cospan_Monoidal] infrastructure and whose decoration part is the
    explicit datum.

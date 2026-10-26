@@ -21,11 +21,11 @@ Generalizable All Variables.
 (* * * The underlying-set functor of the Type-valued [Top] is not monadic / * * 类型值 [Top] 的底层集合函子不是幺半的 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §VI.3, book p. 144 (PDF p. 153), read from the page image: for the
  forgetful functor G : Top → Set and its left adjoint D, the discrete
- space, the comparison functor "is not an isomorphism, and not even
- an equivalence" (catalog id maclane:VI.3:remark1).
+ space, the comparison functor “is not an isomorphism, and not even
+ an equivalence” (catalog id maclane:VI.3:remark1).
  nLab: https://ncatlab.org/nlab/show/monadic+functor
 
  WHAT THIS FILE IS.  Instance/Top/Monadicity.v states Mac Lane's remark

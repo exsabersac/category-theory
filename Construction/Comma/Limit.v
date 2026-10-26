@@ -50,8 +50,8 @@ Generalizable All Variables.
  of [L] on the base component together with the mediating uniqueness of
  the image cone on the [d]-component.
 
- STATUS / hypothesis form.  The mathematically correct meaning of "U
- preserves the limit of G" is that U carries the *limit cone* to a *limit
+ STATUS / hypothesis form.  The mathematically correct meaning of “U
+ preserves the limit of G” is that U carries the *limit cone* to a *limit
  cone* — equivalently, the image cone [(U L, fmap[U] π_•)] is universal.  This
  is precisely what [Adjunction/Continuity.v] establishes for right adjoints:
  its [rapl_is_alimit] is built from [rapl_acone], whose legs

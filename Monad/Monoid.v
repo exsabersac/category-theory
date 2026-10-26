@@ -25,8 +25,8 @@ nLab:      https://ncatlab.org/nlab/show/monad
    associator are identities, so the monoid unit/associativity laws collapse to
    the bare monad laws [join_ret], [join_fmap_ret] and [join_fmap_join]; the
    naturality squares of [mempty]/[mappend] become [fmap_ret] and
-   [join_fmap_fmap]. This is the precise content of the slogan "a monad is a
-   monoid in the category of endofunctors".
+   [join_fmap_fmap]. This is the precise content of the slogan “a monad is a
+   monoid in the category of endofunctors”.
 
    [Monoid_Monad] proves the correspondence as a genuine logical equivalence
    ([↔]), constructing a monad from any such monoid object and vice versa. 

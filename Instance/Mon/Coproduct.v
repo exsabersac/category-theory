@@ -16,15 +16,15 @@ Generalizable All Variables.
 (*
    * * The free product of monoids, as the coproduct in Mon(Sets)
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, §III.3, printed p. 68, Exercise 4 (maclane:III.3:ex4) —
-   "Describe coproducts, showing that they exist, in the category
+   “Describe coproducts, showing that they exist, in the category
    of small categories Cat, the category of monoids Mon, and the
-   category of graphs Grph."  THIS FILE IS THE Mon CLAUSE ONLY.
+   category of graphs Grph.”  THIS FILE IS THE Mon CLAUSE ONLY.
    The Cat clause is Instance/Cat/Cocartesian.v's
    [Cat_Cocartesian], which predates this file; the Grph clause is
    not this file's and nothing about it is claimed here.
-   Book: Awodey, "Category Theory", 1st ed. (CMU pre-print, Sept 2005),
+   Book: Awodey, “Category Theory”, 1st ed. (CMU pre-print, Sept 2005),
    §3.2, printed pp. 61-64, Example 3.5 (the coproduct of
    monoids) and Example 3.9 (the free product, as words modulo
    the evident relations).
@@ -53,7 +53,7 @@ Generalizable All Variables.
    builds over.  Neither is REQUIRED here — Roster.v is a leaf
    index that pulls in Instance/Top AND ITS SATELLITES; the
    reals enter via one of those satellites rather than via
-   Instance/Top itself, so "and hence" overstated the standard
+   Instance/Top itself, so “and hence” overstated the standard
    library reals, and MonoidRing.v sits in the ring hierarchy
    (Rng, Mod, Polynomial) — so depending on either from an
    algebra file would invert the layering.  The identification is
@@ -68,7 +68,7 @@ Generalizable All Variables.
    reason is decisive rather than aesthetic: no category anywhere
    in the tree has [MonObject] as its objects (Structure/
    Groupoid.v declares a [MonHom] record but assembles no
-   category from it), so "the coproduct" could not be stated as a
+   category from it), so “the coproduct” could not be stated as a
    [Cocartesian] instance at all.
 
    (3) Instance/Coq/Monoid/Free.v's [MonCoq] — [@Mon Coq
@@ -135,7 +135,7 @@ Generalizable All Variables.
    discharged by [reflexivity].
 
    FOUR STRICT ATTEMPTS WERE MADE AND REFUTED, each a genuine
-   "cannot unify" on well-typed terms rather than an elaboration
+   “cannot unify” on well-typed terms rather than an elaboration
    failure (checked by stripping the guard and reading the message):
 
    (a) [fp_merge A B Q f g ∘ fp_injl A B = f] — the two beta rules do
@@ -166,7 +166,7 @@ Generalizable All Variables.
    SEPARATELY, by applying [fp_eval_resp] directly.
 
    READ THAT SECOND STEP PRECISELY.  An earlier draft of this header
-   wrote "hence [Monic] ... and hence injective", presenting the two as
+   wrote “hence [Monic] ... and hence injective”, presenting the two as
    one derivation chain.  The second link is NOT how those lemmas are
    proved -- their proofs mention neither [Monic] nor [Section] -- and
    the implication they would need, monic implies elementwise

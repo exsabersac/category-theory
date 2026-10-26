@@ -28,8 +28,8 @@ Generalizable All Variables.
 (*
    * * The power set of a finite set, ordered by inclusion, COMPUTING
 
-   Seven Sketches (Fong and Spivak, "An Invitation to Applied Category
-   Theory") §1.2.2 Examples 50 and 51 and §1.4.3 Examples 117 and 118.
+   Seven Sketches (Fong and Spivak, “An Invitation to Applied Category
+   Theory”) §1.2.2 Examples 50 and 51 and §1.4.3 Examples 117 and 118.
    There is no page image for that book here, so the clauses are quoted
    from the catalog issue's own transcription: the power sets of the
    zero-, one- and two-element sets with their inclusion orders drawn
@@ -99,7 +99,7 @@ Generalizable All Variables.
    internal conjunction on Ω: no constant anywhere has type
    [Ω × Ω ~> Ω], and the characteristic map of ⟨truth, truth⟩
    appears nowhere.  Read that measurement at its scope -- the word
-   "meet" DOES occur in Structure/Topos.v, but as prose
+   “meet” DOES occur in Structure/Topos.v, but as prose
    describing what a Lawvere-Tierney topology is, not as a
    constant.
 

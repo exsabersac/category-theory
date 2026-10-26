@@ -15,8 +15,8 @@ nLab: https://ncatlab.org/nlab/show/applicative+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
    An applicative functor is the categorical structure underlying the
-   Haskell [Applicative] class (McBride and Paterson, "Applicative
-   programming with effects", JFP 18(1), 2008): it is precisely a strong lax
+   Haskell [Applicative] class (McBride and Paterson, “Applicative
+   programming with effects”, JFP 18(1), 2008): it is precisely a strong lax
    monoidal endofunctor on a (closed, symmetric/braided) monoidal category.
    Here it is packaged as an endofunctor F : C ⟶ C on a monoidal closed
    category that is both [StrongFunctor] and [LaxMonoidalFunctor].
@@ -40,7 +40,7 @@ nLab: https://ncatlab.org/nlab/show/applicative+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
    Applicative 函子是 Haskell [Applicative] 类背后的范畴结构（McBride and Paterson,
-   "Applicative programming with effects", JFP 18(1), 2008）：恰是（闭、对称/辫）
+   “Applicative programming with effects”, JFP 18(1), 2008）：恰是（闭、对称/辫）
    幺半范畴上的强松弛幺半自函子。此处打包为幺半闭范畴上既是 [StrongFunctor] 又是
    [LaxMonoidalFunctor] 的自函子 F : C ⟶ C。
 

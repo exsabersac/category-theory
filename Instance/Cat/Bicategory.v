@@ -32,8 +32,8 @@ Generalizable All Variables.
  The bicategory's `bi1id` is the identity functor `Id`, so `bi1id ∘∘∘ f` is
  `Id ◯ f` and `f ∘∘∘ bi1id` is `f ◯ Id`.  Hence the CROSSED assignment:
 
- hunit_left  f : bi1id ∘∘∘ f = Id ◯ f ≅ f   :=  nat_ρ f   (Fun's "ρ"),
- hunit_right f : f ∘∘∘ bi1id = f ◯ Id ≅ f   :=  nat_λ f   (Fun's "λ").
+ hunit_left  f : bi1id ∘∘∘ f = Id ◯ f ≅ f   :=  nat_ρ f   (Fun's “ρ”),
+ hunit_right f : f ∘∘∘ bi1id = f ◯ Id ≅ f   :=  nat_λ f   (Fun's “λ”).
 
  For the associator, `nat_α F G H : H ◯ (G ◯ F) ≅ (H ◯ G) ◯ F` runs in the
  `h ◯ (g ◯ f) → (h ◯ g) ◯ f` direction, whereas `hassoc h g f` must run

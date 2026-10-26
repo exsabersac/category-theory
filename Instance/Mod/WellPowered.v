@@ -43,16 +43,16 @@ Generalizable All Variables.
  Wikipedia: https://en.wikipedia.org/wiki/Submodule
  Wikipedia: https://en.wikipedia.org/wiki/Quotient_module
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.8, book p. 130 (PDF p. 139): a category is well-powered when the
  subobjects of each object form a small set, and co-well-powered when
  its quotient objects do.  Watt's theorem, on book p. 131 (PDF p. 140;
  its covariant form is Exercise 3, on p. 132), applies the special
- adjoint functor theorem at (R-Mod)^op and opens with the sentence "Any
+ adjoint functor theorem at (R-Mod)^op and opens with the sentence “Any
  ring R is a generator in the category R-Mod, hence a cogenerator in
- (R-Mod)^op", read from the printed page.  (The in-repo catalog's
+ (R-Mod)^op”, read from the printed page.  (The in-repo catalog's
  summary for maclane:V.8:thm-watt, doc/plan/books/maclane/inventory/
- V.json, omits "the category".)  At (R-Mod)^op the special adjoint
+ V.json, omits “the category”.)  At (R-Mod)^op the special adjoint
  functor theorem asks,
  beyond completeness, for a cogenerator and for well-poweredness of
  (R-Mod)^op, which is co-well-poweredness of R-Mod; its covariant use
@@ -86,7 +86,7 @@ Generalizable All Variables.
  under the hypothesis [U : Untruncate].  The index is [PSubmodule W], a
  submodule whose membership is a [Prop].  [wp_to] reads it as a
  [Submodule] ([psm_sub]) and takes the inclusion; [wp_from] is the
- truncated image [pimage] ("has a preimage", as the impredicative
+ truncated image [pimage] (“has a preimage”, as the impredicative
  [Powerset_squash]); the round trip [pim_to_from] composes
  [sub_le_antisym] with [smod_subobj_image_equiv], and it spends [U]
  exactly once, in [pim_fn], to turn a truncated preimage back into a
@@ -96,8 +96,8 @@ Generalizable All Variables.
  PIN, under the same hypothesis, over the same index.  [wp_to] sends [N]
  to the quotient object [pquot N], the projection W -> W/N; [wp_from]
  sends a quotient object to the kernel [pker e] of its epi, whose
- membership is the target's [Prop] mirror of "e x ≈ 0" (every module
- carries [cmon_prop] since the PR "algebraic carriers are sets",
+ membership is the target's [Prop] mirror of “e x ≈ 0” (every module
+ carries [cmon_prop] since the PR “algebraic carriers are sets”,
  2026-09-17).  The round trip [cwp_to_from] is [quot_equiv_of_cod_iso] at
  the codomain isomorphism [pre_iso] : cod e ≅ W/ker e, whose forward map
  [pre_map] sends each element of cod e to a preimage under e.  That
@@ -138,10 +138,10 @@ Generalizable All Variables.
  [RMod_WellPoweredAt_up W] where [WellPowered@{o c c o x}
  (RMod@{o x a p c} R)] is expected -- [RMod_WellPowered_untruncate]'s
  binder, without [U] -- is refused, in environment [R : RingObject],
- [W : obj[RMod R]]: "The term "RMod_WellPoweredAt_up W" has type
- "WellPoweredAt@{<1> o o c x} W" while it is expected to have type
- "WellPoweredAt@{c o o c x} W" (universe inconsistency: Cannot enforce
- <1> = c because c < <1>)", <1> a universe the scratch compile
+ [W : obj[RMod R]]: “The term ”RMod_WellPoweredAt_up W“ has type
+ ”WellPoweredAt@{<1> o o c x} W“ while it is expected to have type
+ ”WellPoweredAt@{c o o c x} W“ (universe inconsistency: Cannot enforce
+ <1> = c because c < <1>)”, <1> a universe the scratch compile
  generated (its serial is not printed, since it moves with every
  edit above the appended command).  Control: the same
  binder with body [fun W => RMod_WellPoweredAt_untruncate U W] is
@@ -150,10 +150,10 @@ Generalizable All Variables.
  rebuild the domain of the subobject it names.  [pim_fn] with
  [U _ (`2 p)] replaced by the truncation applied to the identity,
  [(`2 p) _ (fun x => x)], is refused, in environment [R], [W],
- [m : SubObj W], [p], [x]: "The term "x" has type "∃ a : sub_dom m,
- sub_mono m a ≈ `1 (p)" while it is expected to have type "?Q"
- (unable to find a well-typed instantiation for "?Q": cannot ensure
- that "Type" is a subtype of "Prop")".  That is the refusal Instance/
+ [m : SubObj W], [p], [x]: “The term ”x“ has type ”∃ a : sub_dom m,
+ sub_mono m a ≈ `1 (p)“ while it is expected to have type ”?Q“
+ (unable to find a well-typed instantiation for ”?Q“: cannot ensure
+ that ”Type“ is a subtype of ”Prop“)”.  That is the refusal Instance/
  Sets/WellPowered.v quotes for [Sets], up to names.  The [PropEquiv]
  field regime does not change it: [pequiv_to] turns a [Prop] into
  `≈`, not into an element of [sub_dom m].  A module mono is injective,
@@ -164,10 +164,10 @@ Generalizable All Variables.
  [Prop], and Instance/Mod.v's comment above [RModPropSurjective]
  records that the witness may no longer be read back out.  [pre_fn]
  written as a [match] on that [ex], without [U], is refused, in
- environment [R], [W], [u : QuotObj W], [q]: "Incorrect elimination of
- "rmod_epic_surjective (quot_epi u) (quot_is_epic u) q" in the
- inductive type "ex": the return type has sort "Type" while it should
- be SProp or Prop."  The obstacle belongs to the KERNEL index: a
+ environment [R], [W], [u : QuotObj W], [q]: “Incorrect elimination of
+ ”rmod_epic_surjective (quot_epi u) (quot_is_epic u) q“ in the
+ inductive type ”ex“: the return type has sort ”Type“ while it should
+ be SProp or Prop.”  The obstacle belongs to the KERNEL index: a
  kernel names its quotient only through the codomain isomorphism
  cod e ≅ W/ker e, whose forward map sends cod e into W's own carrier
  (the carrier of W/N is W's, Instance/Mod/Quotient.v's
@@ -184,11 +184,11 @@ Generalizable All Variables.
  [CoWellPowered@{o c c o x} (RMod@{o x a p c} R)] is expected --
  [RMod_CoWellPowered_untruncate]'s binder, without [U] -- is
  refused, in environment
- [R : RingObject], [W : obj[(RMod R)^op]]: "The term
- "RMod_CoWellPoweredAt_up W" has type "WellPoweredAt@{<1> <2> <2> c
- <3>} W" while it is expected to have type "WellPoweredAt@{c o o c x}
- W" (universe inconsistency: Cannot enforce <1> = c because c <
- <1>)", <1>, <2> and <3> being universes the scratch compile
+ [R : RingObject], [W : obj[(RMod R)^op]]: “The term
+ ”RMod_CoWellPoweredAt_up W“ has type ”WellPoweredAt@{<1> <2> <2> c
+ <3>} W“ while it is expected to have type ”WellPoweredAt@{c o o c x}
+ W“ (universe inconsistency: Cannot enforce <1> = c because c <
+ <1>)”, <1>, <2> and <3> being universes the scratch compile
  generated.  Control: the same binder with a [U : Untruncate]
  argument and body [fun W => RMod_CoWellPoweredAt_untruncate U W] is
  accepted.  [CoWellPowered] itself demands [w <= h], so the one-up
@@ -202,9 +202,9 @@ Generalizable All Variables.
  otherwise.  Appending
  [Definition ring_obj@{a c p o x | Set < o, c < o, c < x, p <= a, c <= a,
  a <= o} (R : RingObject@{a c p}) : obj[RMod@{o x a p c} R] := Ring_RMod
- R] to a copy of this file is refused with "Universe constraints are not
+ R] to a copy of this file is refused with “Universe constraints are not
  implied by the ones declared: a < o a < x a <= compose.u0 a <= compose.u1
- a <= compose.u2 a <= ID.u0 a = c a = p"; at [RingObject@{c c c}] the same
+ a <= compose.u2 a <= ID.u0 a = c a = p”; at [RingObject@{c c c}] the same
  definition asks only for the four stdlib bounds [c <= compose.u0],
  [c <= compose.u1], [c <= compose.u2], [c <= ID.u0].  The equations come
  from Instance/Mod.v's [Ring_RMod], whose abelian group is R's own
@@ -273,8 +273,8 @@ Generalizable All Variables.
  [cwp_to_from]'s own -- and (5)'s two constants carry [u],
  [RModPropSurjective]'s own sort (that definition is declared at
  [Type]), bounded only by [u <= w].  Their binders stay extensible.
- Closing (3)'s at [@{a c p o x | …}] is refused, "Universes … are
- unbound", naming the two body universes, and naming them would take
+ Closing (3)'s at [@{a c p o x | …}] is refused, “Universes … are
+ unbound”, naming the two body universes, and naming them would take
  explicit instances of this file's extensible [pquot] and
  [cwp_to_from].  A closed binder for (5), even with [RModPropSurjective]
  unfolded into its [Prop] so that no sort is left over, is refused the
@@ -309,7 +309,7 @@ Generalizable All Variables.
  [Print Module] lists 37 names (35 constants, field projections
  included, the record [PSubmodule] and its constructor; 35 and 33
  before (5) was added); every one
- reports "Closed under the global context" under [Print Assumptions] by
+ reports “Closed under the global context” under [Print Assumptions] by
  its fully qualified name.  No [Program] obligation exists: [Print
  Module] lists none, and [strings] on the .vo finds no [_obligation_]
  name of this module.  Imports: Adjunction/SAFT.v (for [Cogenerator]) is
@@ -427,7 +427,7 @@ Definition psm_sub@{a c p o x +}
      smod_plus := psm_plus P;
      smod_smul := psm_smul P |}.
 
-(* The image of a homomorphism, truncated: "has a preimage" as the impredicative [Powerset_squash] of Instance/Sets/Powerset.v. / 同态的像，截断："有一个原像"，作为 Instance/Sets/Powerset.v 的不可定义 [Powerset_squash]。 *)
+(* The image of a homomorphism, truncated: “has a preimage” as the impredicative [Powerset_squash] of Instance/Sets/Powerset.v. / 同态的像，截断：“有一个原像”，作为 Instance/Sets/Powerset.v 的不可定义 [Powerset_squash]。 *)
 Definition pimage@{a c p o x +}
   {R : RingObject@{a c p}} {M N : obj[RMod@{o x a p c} R]}
   (f : M ~{RMod@{o x a p c} R}~> N) : PSubmodule N.
@@ -528,8 +528,8 @@ Definition RMod_WellPowered_untruncate@{a c p o x +|
 
 (*
  The kernel of a homomorphism as a [Prop] submodule: membership is the
- target's [Prop] mirror of "e x ≈ 0" ([cmon_prop], a field of every
- module since the PR "algebraic carriers are sets", 2026-09-17). 
+ target's [Prop] mirror of “e x ≈ 0” ([cmon_prop], a field of every
+ module since the PR “algebraic carriers are sets”, 2026-09-17). 
 
  --------
  同态的核作为一个 [Prop] 子模：成员资格是目标的 [Prop] 对“e x ≈ 0”的镜像（[cmon_prop]，每个模的域，因为 PR“代数载体是集合”，2026-09-17）。

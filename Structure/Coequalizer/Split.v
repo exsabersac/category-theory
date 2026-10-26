@@ -30,7 +30,7 @@ Generalizable All Variables.
  the ambient category — every functor carries split coequalizers to
  split coequalizers ([functor_preserves_split]), hence to coequalizers
  ([split_coequalizer_preserved]).  Colimits preserved by all functors in
- this way are called *absolute* (Paré, "On absolute colimits", 1971;
+ this way are called *absolute* (Paré, “On absolute colimits”, 1971;
  nLab: absolute colimit), and split coequalizers are the archetypal
  example.  They are the engine of Beck's monadicity theorem, where the
  canonical presentation of an algebra by free algebras is a split
@@ -61,7 +61,7 @@ Generalizable All Variables.
 
  (h ∘ s) ∘ e ≈ h ∘ (g ∘ t) ≈ (h ∘ f) ∘ t ≈ h,
 
- 并且定律2确保该下传是唯一确定的。因为这个定义是纯粹的方程式定义——没有对环境范畴的量化——每个函子都会将拆分的余等化器映射为拆分的余等化器（[functor_preserves_split]），因此也会映射为余等化器（[split_coequalizer_preserved]）。所有函子以这种方式保持的余极限称为*绝对*（Paré, "On absolute colimits", 1971；nLab: absolute colimit），而拆分的余等化器是典型的例子。它们是 Beck 的幺范性定理的引擎，其中通过自由代数对一个代数进行的典型表示在应用遗忘函子后是一个拆分的余等化器。谓词是 Structure/Coequalizer/Absolute.v 中的 [AbsoluteCoequalizer]（#477），这是 Mac Lane §VI.6 的定义，其中 [split_coequalizer_absolute] 将下面的推论读作绝对性；绝对余极限在锥层面的解读通常是 Structure/Limit/Absolute.v 中的 [AbsoluteColimitCocone]。
+ 并且定律2确保该下传是唯一确定的。因为这个定义是纯粹的方程式定义——没有对环境范畴的量化——每个函子都会将拆分的余等化器映射为拆分的余等化器（[functor_preserves_split]），因此也会映射为余等化器（[split_coequalizer_preserved]）。所有函子以这种方式保持的余极限称为*绝对*（Paré, “On absolute colimits”, 1971；nLab: absolute colimit），而拆分的余等化器是典型的例子。它们是 Beck 的幺范性定理的引擎，其中通过自由代数对一个代数进行的典型表示在应用遗忘函子后是一个拆分的余等化器。谓词是 Structure/Coequalizer/Absolute.v 中的 [AbsoluteCoequalizer]（#477），这是 Mac Lane §VI.6 的定义，其中 [split_coequalizer_absolute] 将下面的推论读作绝对性；绝对余极限在锥层面的解读通常是 Structure/Limit/Absolute.v 中的 [AbsoluteColimitCocone]。
 
  关于该对的条件，仅由 t 证明，Beck 的可收缩对，是 Structure/Coequalizer/Contractible.v 中的 [ContractiblePair]（#480）：一个对恰好在它是可收缩且有余极限时才有分裂余极限。
 *)
@@ -135,7 +135,7 @@ Defined.
  written out (#477) so that the target's hom level may sit ABOVE the
  source's, as [Functor] itself permits.  Left unannotated, minimization
  identified the two hom levels, and a target with strictly larger
- hom-sets was refused ("Cannot enforce xh = ch because ch < xh"); the
+ hom-sets was refused (“Cannot enforce xh = ch because ch < xh”); the
  same proof compiles with the bound strict, so the identification was
  an artifact of the binders, not of the argument.  It mattered once
  absoluteness quantified over every target category:

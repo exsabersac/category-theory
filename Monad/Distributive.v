@@ -23,7 +23,7 @@ nLab: https://ncatlab.org/nlab/show/distributive+law
    carries a monad structure.
 
    The structure recorded here is the weaker [mprod]/swap presentation of Jones
-   and Duponcheel ("Composing Monads", Yale tech report YALEU/DCS/RR-1004,
+   and Duponcheel (“Composing Monads”, Yale tech report YALEU/DCS/RR-1004,
    1993), which is exactly the half of a distributive law needed to make M ◯ N
    a monad and is consumed as such in [Monad.Compose]. Rather than a bare swap
    N ◯ M ⟹ M ◯ N, the data is a single operation

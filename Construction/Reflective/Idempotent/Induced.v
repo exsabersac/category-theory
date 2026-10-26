@@ -25,9 +25,9 @@ Generalizable All Variables.
 
 (*
  nLab: https://ncatlab.org/nlab/show/idempotent+monad
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, SS VI.2, Theorem 1, printed pp. 140-141
- Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ Book: Awodey, “Category Theory” (1st ed., CMU pre-print, Sept 2005),
  SS 10.2, printed p. 271
 
  Construction/Reflective/Idempotent.v proves that an idempotent monad M
@@ -55,10 +55,10 @@ Generalizable All Variables.
  counit, transparently.
 
  For the Eilenberg-Moore resolution Mac Lane states this as part of
- Theorem 1 (p. 140): "The monad defined in X by this adjunction is the
- given monad", checked on p. 141 as "The endofunctor G^T F^T is the
+ Theorem 1 (p. 140): “The monad defined in X by this adjunction is the
+ given monad”, checked on p. 141 as “The endofunctor G^T F^T is the
  original T, its unit η^T is the original unit, and its multiplication
- ... is the original multiplication of T."  For the fixed-point reflection
+ ... is the original multiplication of T.”  For the fixed-point reflection
  of a monad on a poset Awodey builds the adjunction on p. 271 (with
  T = i ∘ t and t ⊣ i) without saying in words that it induces T; the
  order-theoretic instance of this file, where that is read back, is

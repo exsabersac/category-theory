@@ -234,7 +234,7 @@ Qed.
    * ** Tensor fusion
 
    A tensor of morphisms decomposes as either sliding order of the
-   two "half-identity" tensors; both composites fuse back to the
+   two “half-identity” tensors; both composites fuse back to the
    plain tensor via the interchange law. 
 
    --------

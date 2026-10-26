@@ -19,7 +19,7 @@ nLab: https://ncatlab.org/nlab/show/maybe+monad
    -- by exhibiting the operation as a genuine endofunctor on [Coq] (an
    [AFunctor]), exactly as the sibling [Either] and [Tuple] proof files do.
 
-   The preceding lemmas are characterisation ("spec") lemmas describing each
+   The preceding lemmas are characterisation (“spec”) lemmas describing each
    operation by its action on [Just]/[Nothing].  They make precise the equations
    the sources give for the functor/applicative/monad/Alternative structure --
    [fmap f Nothing = Nothing], [Just f <*> Just x = Just (f x)],

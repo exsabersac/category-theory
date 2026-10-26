@@ -52,7 +52,7 @@ Unset Transparent Obligations.
    almost always equates morphisms with ≈, not Coq's =.
 
    1) Class Setoid A ≈「给类型 A 配上一种『当一样』的关系」。
-      Class Setoid A ≈ "equip type A with a chosen 'count as equal' relation".
+      Class Setoid A ≈ “equip type A with a chosen 'count as equal' relation”.
       Class ≈ Haskell class；Instance ≈ instance。定律是字段，须交证明。
       Class ≈ Haskell class; Instance ≈ instance. Laws are fields (proofs required).
 
@@ -64,7 +64,7 @@ Unset Transparent Obligations.
         relation — usually not computable, and coarser/finer than Bool
         (e.g. pointwise ≈ on functions).
       - 范畴里「态射相等」常是自然同构一类数据，不能塞进 Bool。
-        In categories, "morphism equality" often carries data (e.g. a
+        In categories, “morphism equality” often carries data (e.g. a
         natural iso), which Bool cannot hold.
       - 所以本库用 Setoid + Proper（尊重 ≈），而不是 Eq + ==。
         Hence Setoid + Proper (respect ≈), not Eq + ==.

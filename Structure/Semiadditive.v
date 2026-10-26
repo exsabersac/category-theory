@@ -73,7 +73,7 @@ Context `{P : @Preadditive C}.
 
 (*
  The identity of a biproduct decomposes as the sum of its two
- "projection-then-injection" idempotents.  Both sides mediate the product
+ “projection-then-injection” idempotents.  Both sides mediate the product
  cone (bi_exl, bi_exr), so they agree by the uniqueness half of the
  product universal property. 
 
@@ -356,7 +356,7 @@ Qed.
 
 (*
  The canonical comparison morphism from the coproduct to the product,
- the "identity matrix" ((id, 0), (0, id)). 
+ the “identity matrix” ((id, 0), (0, id)). 
 
  --------
  从余积到积的典型比较态射，“单位矩阵” ((id, 0), (0, id))。

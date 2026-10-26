@@ -23,7 +23,7 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/initial+object
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
+   Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §V.8,
    Theorem 1, book p. 128, applied through the remark under §V.8
    Definition 1, book p. 130: in a well-powered small-complete category
    the intersection hypothesis of the theorem is automatic.  This
@@ -106,8 +106,8 @@ Generalizable All Variables.
 
    MEASUREMENTS.  Twelve constants ([Print Module]), no [Program]
    obligation; ten transparent and two [Qed] ([Subsets_special_initial_
-   is_empty], [Subsets_special_initial_not_top]); each reports "Closed
-   under the global context" by its fully qualified name. *)
+   is_empty], [Subsets_special_initial_not_top]); each reports “Closed
+   under the global context” by its fully qualified name. *)
 
 (** ** The powerset lattice of a setoid  / ** 集合体的幂集晶格*)
 

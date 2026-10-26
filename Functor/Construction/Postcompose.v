@@ -19,7 +19,7 @@ Generalizable All Variables.
 
 (** * Postcomposition, and the invariance of naturality under enlargement  / * 后合成，以及放大下的自然性不变性*)
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+(* Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
               GTM 5, Springer 1998, §III.2, Exercise 4 and the
               large-categories remark, printed p. 62 (PDF p. 71) —
               catalog items `maclane:III.2:ex4`, `maclane:III.2:remark1`
@@ -79,8 +79,8 @@ Generalizable All Variables.
    The status of the pre-existing artifacts (a correction)
    -------------------------------------------------------
 
-   Issue #318 states that "no postcomposition functor [D, E] ⟶ [D, E′] along
-   a functor J is defined anywhere".  That is NOT accurate, and this file
+   Issue #318 states that “no postcomposition functor [D, E] ⟶ [D, E′] along
+   a functor J is defined anywhere”.  That is NOT accurate, and this file
    does not repeat it.  Two artifacts already in the tree compose to give
    exactly such a functor:
 
@@ -111,7 +111,7 @@ Generalizable All Variables.
    The unit is not cosmetic: it would sit inside every naturality
    computation below, and in particular [Full]'s section law [fmap_sur]
    would no longer be [fmap_sur] of J applied at a component.  So
-   [Postcompose] is built directly.  Note what "directly" means here — the
+   [Postcompose] is built directly.  Note what “directly” means here — the
    [fmap] field IS Theory/Natural/Transformation.v's existing [whisker_left],
    so the arrow action is reused verbatim and only the three functor laws
    are new (one line each).  What is declined is [Cat_Hcompose]'s PACKAGING,
@@ -171,9 +171,9 @@ Generalizable All Variables.
    ----------------------------------------------
 
    In this library [Full] (Theory/Functor.v) carries a chosen section
-   [prefmap] of [fmap] and NOTHING ELSE: its own header says "no
+   [prefmap] of [fmap] and NOTHING ELSE: its own header says “no
    functoriality is demanded of [prefmap] itself — it need not respect ≈ nor
-   preserve identities/composition".  So building the backward leg of the
+   preserve identities/composition”.  So building the backward leg of the
    correspondence is not a matter of applying a given inverse.  Given
    φ : J◯K ⟹ J◯L, the candidate family is α x := prefmap (φ x), and TWO
    separate things about it have to be proved rather than assumed:
@@ -260,7 +260,7 @@ Generalizable All Variables.
    -----------------------------------------
 
    Mac Lane's remark 1 is that this invariance is what lets one work with
-   "the" category of sets without fixing its size.  In THIS library that
+   “the” category of sets without fixing its size.  In THIS library that
    worry is discharged foundationally rather than by the present theorem:
    Lib/Setoid.v is universe-polymorphic throughout, [Sets@{o so}] is a
    FAMILY of categories rather than one, every theorem about it is available
@@ -513,7 +513,7 @@ Example postcompose_hom_iso_from (K L : D ⟶ E) (φ : J ◯ K ⟹ J ◯ L) :
 
 (*
 The forward leg IS the functor's own action on 2-cells; this is the
-   sentence "the isomorphism is [Postcompose J] restricted to a hom-setoid",
+   sentence “the isomorphism is [Postcompose J] restricted to a hom-setoid”,
    machine-checked rather than asserted. 
 
 --------
@@ -681,7 +681,7 @@ Definition sub_postcompose_Full :
 (*
 Mac Lane §III.2 Exercise 4 under its own hypothesis: for K, L : D ⟶ E
    with E a full subcategory of E′, transformations K ⟹ L and J◯K ⟹ J◯L are
-   the same thing — "the same" here being an isomorphism of the two setoids
+   the same thing — “the same” here being an isomorphism of the two setoids
    in [Sets], which is the setoid-theoretic rendering of his equality of
    sets. 
 

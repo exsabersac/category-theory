@@ -27,7 +27,7 @@ Generalizable All Variables.
 (*
    * * The monoid ring R[M], and ℤ[M] as a universal arrow
 
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
    GTM 5, §III.1, printed p. 59, Exercise 1 — the integral group
    ring exhibited as a universal arrow (maclane:III.1:ex1); the
    roster of free constructions on printed p. 56
@@ -40,7 +40,7 @@ Generalizable All Variables.
    Exercise 1 names the INTEGRAL GROUP RING ℤ[G] and asks for it as a
    universal arrow.  The construction never uses inverses, so what is
    built here is the MONOID ring R[M] over an arbitrary base ring R — as
-   issue #310 itself proposes ("better, monoid ring") — with the group
+   issue #310 itself proposes (“better, monoid ring”) — with the group
    case read off it in Instance/Rng/GroupRing.v, where the target is the
    group of units and the exercise's own phrasing is recovered.
    Splitting the two costs nothing and buys the general statement: over
@@ -151,9 +151,9 @@ Generalizable All Variables.
    over factorizations a·b = m needs the coefficients of an element to be
    DETERMINED by it, and Instance/Mod/Free.v does not supply that: its
    [fv_normal_form] proves every element equal to some finite formal
-   combination, but its own deferral list says "No uniqueness of
+   combination, but its own deferral list says “No uniqueness of
    coefficients ... what is missing is not the existence of a
-   linear-combination form but its CANONICITY".  A convolution defined
+   linear-combination form but its CANONICITY”.  A convolution defined
    off a non-canonical list would have to be shown independent of the
    choice, which is the missing half.  So the reuse would not be the
    cheap one it looks like.  No monoid
@@ -296,7 +296,7 @@ Inductive MRTerm : Type :=
 
 (*
  AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
- "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
+ “algebraic carriers are sets” (2026-09-17) it lands in [Prop], because
  [RigObject] carries a [rig_prop : PropEquiv (is_setoid rig_setoid)] field
  and the `≈` of [MonoidRing R M] IS [mr_eq]: the relation must BE a [Prop]
  for that field to be the identity pair of implications.  The cost is one
@@ -606,7 +606,7 @@ Fixpoint mreval {R : RingObject} {M : MonSets} {S : RingObject}
    target setoid's symmetry and transitivity.
 
    AN EARLIER REVISION of this proof inducted on [mr_eq] straight into the
-   [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
+   [Type]-valued goal `≈`.  Since the PR “algebraic carriers are sets”
    (2026-09-17) [mr_eq] is a [Prop] inductive and eliminates only into
    [Prop], so the script opens with [apply pequiv_to] at the TARGET ring's
    own [rig_prop] and each branch returns to `≈` with [pequiv_from].  The

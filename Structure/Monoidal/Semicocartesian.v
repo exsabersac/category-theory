@@ -18,8 +18,8 @@ Context {C : Category}.
 
  A semicocartesian (also coaffine) monoidal category is the dual of a
  semicartesian one: a monoidal category whose unit object I is initial
- (nLab, same page: "a monoidal category is semicocartesian if the unit for
- the tensor product is an initial object"). Spelled out in this library's
+ (nLab, same page: “a monoidal category is semicocartesian if the unit for
+ the tensor product is an initial object”). Spelled out in this library's
  notation, that is the pair of conditions
 
  generate      : I ~> x             (a map out of I for every x),
@@ -90,12 +90,12 @@ End SemicocartesianMonoidal.
 Require Import Category.Structure.Initial.
 
 (*
- The two directions below witness that "semicocartesian monoidal" and "the
- unit I is initial" are the same condition, packaged as an Initial structure
+ The two directions below witness that “semicocartesian monoidal” and “the
+ unit I is initial” are the same condition, packaged as an Initial structure
  on I and as a SemicocartesianMonoidal structure respectively. Cf. Wikipedia,
  https://en.wikipedia.org/wiki/Cartesian_monoidal_category : a cocartesian
- monoidal category has "the monoidal structure given by the coproduct and
- unit the initial object."
+ monoidal category has “the monoidal structure given by the coproduct and
+ unit the initial object.”
 
  Semicocartesian monoidal ==> I is an initial object, with generate as the
  unique arrow and unit_initial as its uniqueness proof. 

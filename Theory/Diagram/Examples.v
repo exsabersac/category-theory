@@ -278,7 +278,7 @@ Proof. apply square_commutes, (is_pullback_commutes Hpb). Qed.
 
 (*
 Theory/Diagram.v's [loop_commutative_iff] proves that over the walking loop,
-   [Commutative] is exactly "the drawn endomorphism is the identity".  That is
+   [Commutative] is exactly “the drawn endomorphism is the identity”.  That is
    the clause of the predicate driven by the EMPTY path, and it is the one no
    figure-fixing statement can express.  Here it is exercised concretely, in
    both directions, over the same category [Coq].

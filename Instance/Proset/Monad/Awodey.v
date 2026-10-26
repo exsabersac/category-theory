@@ -20,20 +20,20 @@ Generalizable All Variables.
 
 (*
  nLab: https://ncatlab.org/nlab/show/closure+operator
- Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ Book: Awodey, “Category Theory” (1st ed., CMU pre-print, Sept 2005),
  SS 10.2, printed p. 271, the unnumbered construction after
  Example 10.4
- Book: Fong and Spivak, "Seven Sketches in Compositionality", arXiv v3,
+ Book: Fong and Spivak, “Seven Sketches in Compositionality”, arXiv v3,
  SS 1.4.4, Example 1.122, printed p. 34
 
- Awodey, p. 271: "In the poset case, we can easily recover an
+ Awodey, p. 271: “In the poset case, we can easily recover an
  adjunction from the monad.  First, let K = im(T)(P) (the fixed points
  of T), and let i : K → P be the inclusion.  Then let t be the
  factorization of T through K ...  Observe that since TTp = Tp, for any
  element k ∈ K we then have, for some p ∈ P, the equation
  itik = ititp = itp = ik, whence tik = k since i is monic.  We therefore
  have: p ≤ ik implies tp ≤ tik = k; tp ≤ k implies p ≤ itp ≤ ik.  So
- indeed t ⊣ i."  Seven Sketches' Example 1.122 builds the same
+ indeed t ⊣ i.”  Seven Sketches' Example 1.122 builds the same
  adjunction on a preorder, with fix_j = {p | j(p) ≅ p}.
 
  WHAT IS BUILT.  For a closure operator [c] on a PREORDER
@@ -56,7 +56,7 @@ Generalizable All Variables.
  then a single inequality with a canonical witness, where the image
  would carry an existential.
 
- "tik = k SINCE i IS MONIC".  Awodey's i is monic as a map of posets,
+ “tik = k SINCE i IS MONIC”.  Awodey's i is monic as a map of posets,
  that is, injective, and cancelling it turns i t i k = i k into
  t i k = k.  Over a preorder neither step survives: i t i k is cl k,
  which is only isomorphic to k, and i = proj1_sig identifies two
@@ -230,7 +230,7 @@ Lemma closed_induced_functor@{u h +} {A : Type@{u}} {R : relation A}
     ≈ closure_functor@{u h} c.
 Proof. exists (fun x => iso_id). intros; exact I. Qed.
 
-(* * ** "tik = k": up to ≅, and on first projections under antisymmetry / * ** “tik = k”：至 ≅，以及在反对称性下的第一投影上 *)
+(* * ** “tik = k”: up to ≅, and on first projections under antisymmetry / * ** “tik = k”：至 ≅，以及在反对称性下的第一投影上 *)
 
 (* t (i k) has first component cl k... / t (i k) 的第一个分量是 cl k... *)
 Example closed_tik_fst@{u} {A : Type@{u}} {R : relation A}

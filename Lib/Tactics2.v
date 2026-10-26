@@ -72,8 +72,8 @@ Ltac apply_setoid_morphism :=
 Hint Extern 20 => apply_setoid_morphism : cat.
 
 (*
- This is tempting but the "proper" script calls
- intuition, which calls auto with *, so "proper"
+ This is tempting but the “proper” script calls
+ intuition, which calls auto with *, so “proper”
  should probably be a top-level command only. 
 
  --------

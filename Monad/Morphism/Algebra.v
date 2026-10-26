@@ -15,17 +15,17 @@ Generalizable All Variables.
 
 (** * θ*: the functor on algebras induced by a morphism of monads  / * θ*：由单子态射导出的代数函子*)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+(* Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
          Springer GTM 5, 1998, §VI.2 Exercise 3(b), printed p. 142
          (PDF p. 151) — maclane:VI.2:ex3; with §VI.2 Theorem 1, printed
          p. 140 (PDF p. 149)
-   nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
-         monads")
+   nLab: https://ncatlab.org/nlab/show/monad (section “The 2-category of
+         monads”)
    nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
 
-   WHAT THE BOOK ASKS.  Exercise 3(b), read from the page image: "From θ
+   WHAT THE BOOK ASKS.  Exercise 3(b), read from the page image: “From θ
    construct a functor θ* : X^{T'} → X^T such that G^T ∘ θ* = G^{T'} and a
-   natural transformation F^T ⇝ θ* ∘ F^{T'}."  Here θ : T ⇝ T' is a
+   natural transformation F^T ⇝ θ* ∘ F^{T'}.”  Here θ : T ⇝ T' is a
    morphism of monads, part (a), which is Monad/Morphism.v's
    [MonadHom].  X^T, the forgetful G^T and the free F^T are those of
    Theorem 1 on p. 140, the adjunction ⟨F^T, G^T; η^T, ε^T⟩ : X ⇀ X^T;
@@ -37,13 +37,13 @@ Generalizable All Variables.
    functors X → X^T, since F^{T'} lands in X^{T'} and θ* carries X^{T'}
    to X^T.  This file implements that direction ([mh_EM_free]).  Issue
    #468's body, filed on 2026-07-23 (gh createdAt), writes the
-   transformation as "F^{T'} ⇒ θ* ∘ Fᵀ" in its "Current state" and as
-   "Fᵀ' ⇒ θ* ∘ Fᵀ" in its "Work to be done"; that statement has been
+   transformation as “F^{T'} ⇒ θ* ∘ Fᵀ” in its “Current state” and as
+   “Fᵀ' ⇒ θ* ∘ Fᵀ” in its “Work to be done”; that statement has been
    ill-typed since the issue was filed: θ* takes T'-algebras and F^T
    produces T-algebras.  Test/ProbeMonadMorphism468.v pins it as a
    TYPING refusal (R1), whose error, with the probe's name T2 for T', is
-   "The term "EM_Free T" has type "C ⟶ EilenbergMoore T" while it is
-   expected to have type "C ⟶ EilenbergMoore T2"".
+   “The term ”EM_Free T“ has type ”C ⟶ EilenbergMoore T“ while it is
+   expected to have type ”C ⟶ EilenbergMoore T2“”.
 
    THE CONSTRUCTION.  A T'-algebra (a, h') becomes the T-algebra
    (a, h' ∘ θ_a) ([mh_algebra]).  Its unit law is [mh_ret] followed by
@@ -60,7 +60,7 @@ Generalizable All Variables.
    ([mh_EM_free_transpose]), which reduces to θ_x by naturality of θ and
    the unit law [join_fmap_ret].
 
-   THE BOOK'S "=".  Mac Lane writes G^T ∘ θ* = G^{T'}, an equation of
+   THE BOOK'S “=”.  Mac Lane writes G^T ∘ θ* = G^{T'}, an equation of
    functors.  It holds here in four forms, from the strongest down:
    - on objects, by [eq_refl], at each algebra ([mh_EM_forget_obj]) and
      as a function ([mh_EM_forget_obj_fun]), because [EM_Forget]'s
@@ -80,8 +80,8 @@ Generalizable All Variables.
    its own, and all four refusals stand in a copy of this file's
    dependency closure in which every [Qed] was turned into [Defined] and
    [Transparent Obligations] was set, except Instance/Sets.v, whose [Qed]s
-   stay because that change is itself refused there ("Universe ... is
-   unbound"), with its obligations made transparent.  So the refusal is
+   stay because that change is itself refused there (“Universe ... is
+   unbound”), with its obligations made transparent.  So the refusal is
    not opacity: the proof fields are different proofs of a [Type]-valued
    ≈, the composite's built by [Compose] from [EM_Forget]'s and θ*'s.
 
@@ -102,7 +102,7 @@ Generalizable All Variables.
    does not reduce, and both refusals stand in the transparent copy
    above.
 
-   WHERE IT SITS.  nLab's "The 2-category of monads" places a morphism of
+   WHERE IT SITS.  nLab's “The 2-category of monads” places a morphism of
    monads on one category among Street's morphisms of monads, and its
    remark on handedness records that the orientation of the
    transformation is a convention on which the direction of the induced

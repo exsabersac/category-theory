@@ -74,7 +74,7 @@ Generalizable All Variables.
    THE UNIVERSE INSTANCE, DISCLOSED
 
    [GAFT] is a [Qed]-opaque [Theorem], so its universe context is frozen at
-   whatever its own proof needed.  Since the PR "algebraic carriers are sets"
+   whatever its own proof needed.  Since the PR “algebraic carriers are sets”
    (2026-09-17) that context leaves both categories' hom and proof universes
    FREE, and the application inherits the freedom ([About], re-wrapped):
 
@@ -89,16 +89,16 @@ Generalizable All Variables.
    [Sets_Complete] and [Sets_HasIndexedProducts] are stated over.
 
    RECORDED CORRECTION, AND IT REVERSES A CONCLUSION rather than a number.
-   An earlier revision of this section read: "that context pins the hom and
-   proof universes of both categories to [Set]", quoted
+   An earlier revision of this section read: “that context pins the hom and
+   proof universes of both categories to [Set]”, quoted
    [GAFT@{u u0 u1 u2 u3 u4} : ∀ {C : Category@{u1 Set Set}}
    {D : Category@{u2 Set Set}} …] and [GAFT_at_Sets_Id@{u u0 u1} :
    ∃ F : Sets@{Set u} ⟶ Sets@{Set u}, F ⊣ Id[Sets@{Set u}]], and concluded:
-   "[Sets@{Set u}] … is ONE instance of the polymorphic [Sets@{u0 u}], the
+   “[Sets@{Set u}] … is ONE instance of the polymorphic [Sets@{u0 u}], the
    smallest … So the application demonstrates [GAFT] at a concrete category,
    not at [Sets] in the generality in which the rest of this development
    speaks of it.  The restriction comes from [GAFT], predates this file, and
-   is not lifted by it."  Every clause of that was true when written.  The
+   is not lifted by it.”  Every clause of that was true when written.  The
    restriction was a universe-minimization artifact of Instance/Discrete.v's
    unannotated [DiscreteCat_Functor], reaching [GAFT]'s statement through
    the discrete shape its proof takes a limit over; annotating the donor at
@@ -121,11 +121,11 @@ Generalizable All Variables.
    resolution surface with no consumer.  It stands at the same [Sets@{u0 u}]
    as [Sets_Complete] -- and so, since the 2026-09-17 repair recorded above,
    does [GAFT_at_Sets_Id].  An earlier revision of this sentence contrasted
-   the two, saying this one carries "no [Set] pinning" UNLIKE that one; there
+   the two, saying this one carries “no [Set] pinning” UNLIKE that one; there
    is no longer a contrast to draw.
 
-   STATUS: axiom-free.  [Print Assumptions] reports "Closed under the global
-   context" for every constant below; the Makefile's [print-assumptions]
+   STATUS: axiom-free.  [Print Assumptions] reports “Closed under the global
+   context” for every constant below; the Makefile's [print-assumptions]
    target audits [GAFT_at_Sets_Id] and [Sets_HasEqualizers]. *)
 
 (** ** The three premises  / ** 三个处所*)
@@ -150,8 +150,8 @@ A solution set at [d] for [Id]: the one-member family whose single object
    [{| sol_arr := fun _ => id ; ... |}] elaborates its fields before the
    ascribed type has fixed [U] and [D], so [id] is elaborated against
    [?d ~{?D}~> fobj[?U] d].  Rocq 9.1 resolves that from the ascription; Coq
-   8.19 and 8.20 do not, and report "The term id{?Category} ... is expected to
-   have type ?d ~{?D}~> fobj[?U] d" (observed on both, through
+   8.19 and 8.20 do not, and report “The term id{?Category} ... is expected to
+   have type ?d ~{?D}~> fobj[?U] d” (observed on both, through
    [nix build .#category-theory_8_19 .#category-theory_8_20]).  Naming the
    parameters removes the metavariables.  Closing the covering equation with
    [exact (id_right h)] rather than [apply id_right] is defensive against the
@@ -170,7 +170,7 @@ A solution set at [d] for [Id]: the one-member family whose single object
  归因类型已固定[U]和[D]，因此[id]针对
  [?d ~{?D}~> fobj[?U] d]。 Rocq 9.1 从归属中解决了这个问题； 柯克
  8.19 和 8.20 没有，并报告“术语 id{?Category} ... 预计
- 具有类型 ?d ~{?D}~> fobj[?U] d" （在两者上观察到，通过
+ 具有类型 ?d ~{?D}~> fobj[?U] d“ （在两者上观察到，通过
  [nix build .#category-theory_8_19 .#category-theory_8_20]）。 命名
  参数删除元变量。 封闭覆盖方程
  [exact (id_right h)] 而非 [apply id_right] 可以防御
@@ -195,8 +195,8 @@ Defined.
 
 (*
 [GAFT] at [Id : Sets ⟶ Sets], all three premises discharged by in-tree
-   constructions.  An earlier revision of this comment pointed at "the [Set]
-   pinning this inherits from [GAFT]'s frozen universe context"; that pinning
+   constructions.  An earlier revision of this comment pointed at “the [Set]
+   pinning this inherits from [GAFT]'s frozen universe context”; that pinning
    was removed on 2026-09-17 and the header records the measurement. 
 
 --------
@@ -213,7 +213,7 @@ Definition GAFT_at_Sets_Id : { F : Sets ⟶ Sets & F ⊣ Id } :=
 The produced left adjoint is naturally isomorphic to [Id], as it must be:
    left adjoints to a fixed functor are unique up to natural isomorphism
    ([left_adjoint_iso], Theory/Adjunction.v), and [adj_id] exhibits [Id]
-   as a second left adjoint to [Id].  This is what makes the "toy" label
+   as a second left adjoint to [Id].  This is what makes the “toy” label
    above a proved statement rather than an editorial one. 
 
 --------
@@ -243,7 +243,7 @@ Definition Sets_HasEqualizers : HasEqualizers Sets :=
 (* IT IS NOT THE ONLY ONE, IN EITHER SENSE.  THREE library files inhabit
    [HasEqualizers Sets]: this one, [SetsEqualizers]
    (Adjunction/CokernelPair.v, whose own comment calls its
-   route "the cheapest of the three in-tree routes"), and
+   route “the cheapest of the three in-tree routes”), and
    [DiagSets_HasEqualizers] (Adjunction/Diagonal/Finite.v); all three
    are registered in _CoqProject.  Test/ProbeToposInstances404.v adds a
    fourth, CONDITIONAL one resting on [Untruncate].  None of the four is

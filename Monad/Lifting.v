@@ -31,14 +31,14 @@ Generalizable All Variables.
     Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
 
     This file delivers the adjoint lifting theorem in its adjoint-triangle
-    form (Dubuc, "Adjoint triangles", 1968), scoped to the crude
+    form (Dubuc, “Adjoint triangles”, 1968), scoped to the crude
     monadicity hypotheses of Monad/Monadicity/Crude.v.
 
     Fix an adjunction F ⊣ U with F : D ⟶ C, and write T = U ◯ F for the
     induced monad on D and K = [EM_Comparison A] : C ⟶ D^T for the
     Eilenberg–Moore comparison (Monad/Comparison.v).  The core statement
     ([adjoint_triangle]) assumes only that K is fully faithful — that U is
-    "of descent type" — supplied as [Full K] and [Faithful K] hypotheses:
+    “of descent type” — supplied as [Full K] and [Faithful K] hypotheses:
 
       given R : B ⟶ C together with a left adjoint L0 ⊣ U ◯ R of the
       composite, if B has coequalizers of reflexive pairs, then R itself

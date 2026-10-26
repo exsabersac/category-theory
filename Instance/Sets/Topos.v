@@ -26,77 +26,77 @@ Open Scope category_scope.
  ([maclane:IV.10:remark1]).  Verbatim, from the rendered
  page:
 
- "The category Sets of all (small) sets is a topos and so
+ “The category Sets of all (small) sets is a topos and so
  is the category Sets^{C^op} of all set-valued
- contravariant functors on a small category C."
+ contravariant functors on a small category C.”
 
- Book:      Mac Lane, ibid., Appendix "Foundations", §App.1, printed
+ Book:      Mac Lane, ibid., Appendix “Foundations”, §App.1, printed
  pp. 289-290 (PDF pp. 295-296) ([maclane:App.1:remark1]).
  Verbatim, from the rendered pages.  His axioms 8 and 9,
  printed p. 289:
 
- "An elementary topos is a category with a certain
+ “An elementary topos is a category with a certain
  additional structure: terminal object, pullbacks,
  truth, a subobject classifier, and power objects (sets
- of subsets)."
+ of subsets).”
 
- "8. Truth.  There is an object Ω (the object of truth
+ “8. Truth.  There is an object Ω (the object of truth
  values) and a monomorphism t : 1 → Ω called truth; to
  any monomorphism m : a → b, there is a unique arrow
  ψ : b → Ω such that the following square is a
- pullback:"                                          (2)
+ pullback:”                                          (2)
 
- "9. Power objects.  To each object b, there is an
+ “9. Power objects.  To each object b, there is an
  associated object P b and an arrow ε_b : b × P b → Ω
  such that for every arrow f : b × a → Ω there is a
  unique arrow g : a → P b for which the following
- diagram commutes:"                                  (3)
+ diagram commutes:”                                  (3)
 
  and the four witnesses, printed p. 290:
 
- "To understand these axioms, we observe how they apply
+ “To understand these axioms, we observe how they apply
  to the usual category of all sets.  There, any set with
  just one element can serve as a terminal object 1,
  because each set a has a unique function a → 1 to 1.
  For two sets a and b, the pullback of two arrows
  a → 1 ← b is then the usual set-theoretic product, with
- its projections to the given factors a and b."
+ its projections to the given factors a and b.”
 
- "For truth values, take the object Ω to be any set 2
+ “For truth values, take the object Ω to be any set 2
  consisting of two objects, 1 and 0, while the
  monomorphism t : 1 → 2 is just the usual inclusion of 1
  in 2.  Then a monomorphism m : a → b, as in Axiom 8, is
  a subset a of b.  This subset has a well-known
  characteristic function ψ : b → 2 with ψ(y) = 1 or 0
  according as the element of y of b is or is not in the
- subset a.  This produces the pullback (2) above."
+ subset a.  This produces the pullback (2) above.”
 
- "Axiom 9 describes P b, the set of all subsets s of b,
- often called the "power set" P b.  Indeed, one can then
+ “Axiom 9 describes P b, the set of all subsets s of b,
+ often called the ”power set“ P b.  Indeed, one can then
  set ε_b(x, s) = 0 if the element x of b is in the
  subset s and equal to 1 otherwise.  This does give a
- pullback, as in (3) above."
+ pullback, as in (3) above.”
 
- "These axioms for a topos then hold for the category of
- sets."
+ “These axioms for a topos then hold for the category of
+ sets.”
 
  nLab:      https://ncatlab.org/nlab/show/topos
  Wikipedia: https://en.wikipedia.org/wiki/Topos
 
  TWO NOTES ON THE PRINTED PAGE, BOTH LEFT AS THEY STAND.
 
- First, "according as the element of y of b is or is not in the subset
- a" is the book's own wording, transcribed verbatim; the sense is
- plainly "the element y of b".
+ First, “according as the element of y of b is or is not in the subset
+ a” is the book's own wording, transcribed verbatim; the sense is
+ plainly “the element y of b”.
 
  Second, and this one matters for the reading of clause (d): THE PAGE
  IS INTERNALLY INCONSISTENT ABOUT WHICH TRUTH VALUE MEANS MEMBERSHIP.
- Two sentences apart it says "ψ(y) = 1 or 0 according as the element
- of y of b is or is not in the subset a" and "ε_b(x, s) = 0 if the
- element x of b is in the subset s and equal to 1 otherwise" -- 1 for
+ Two sentences apart it says “ψ(y) = 1 or 0 according as the element
+ of y of b is or is not in the subset a” and “ε_b(x, s) = 0 if the
+ element x of b is in the subset s and equal to 1 otherwise” -- 1 for
  membership under ψ, 0 for membership under ε_b, on one page.  The
- issue's paraphrase silently corrects the second to "ε_b(x, s) = 1 iff
- x ∈ s".  BOTH SENTENCES ARE QUOTED ABOVE AND NEITHER IS RESOLVED
+ issue's paraphrase silently corrects the second to “ε_b(x, s) = 1 iff
+ x ∈ s”.  BOTH SENTENCES ARE QUOTED ABOVE AND NEITHER IS RESOLVED
  HERE.  Nothing below depends on the choice: the naming of the truth
  value is a convention, and this tree's convention is recorded, with
  its own measurements, in Instance/Sets/Classifier/OneLevel.v and
@@ -194,7 +194,7 @@ Open Scope category_scope.
  category, its four unconditional donors are all accepted at
  [@{su Set}], and [Sets_Topos_dec@{Set su}] is ACCEPTED -- while
  [Sets_Classifier@{Set su}] and [Sets_Topos@{Set su}] are each refused
- with "Cannot enforce Set < Set because Set = Set".  So the decidable
+ with “Cannot enforce Set < Set because Set = Set”.  So the decidable
  route reaches the [Sets] whose carrier universe is the literal [Set]
  and the truncation route does not.  Both refusals and the seven
  controls are pinned in Test/ProbeToposInstances404.v.  This
@@ -271,7 +271,7 @@ Open Scope category_scope.
 
  @Pow Sets (Sets_Topos U) b = Powerset_Prop_obj b   by [eq_refl]
 
- Mac Lane's "P b, the set of all subsets s of b" is DEFINITIONAL here,
+ Mac Lane's “P b, the set of all subsets s of b” is DEFINITIONAL here,
  not an isomorphism.  The reason is that two files build the same
  record: Instance/Sets/Powerset.v's [Powerset_Prop_obj X] packages
  [SetoidMorphism X Powerset_Prop_truth] with [SetoidMorphism_Setoid],
@@ -313,16 +313,16 @@ Open Scope category_scope.
  & equiv (f (fst p)) (g (snd p)) },
 
  so it is not the product carrier and its first projection is not
- [exl].  Hence Mac Lane's "the pullback of two arrows a → 1 ← b is
+ [exl].  Hence Mac Lane's “the pullback of two arrows a → 1 ← b is
  then the usual set-theoretic product, with its projections to the
- given factors" is delivered as an ISOMORPHISM CARRYING ITS FOUR LEG
+ given factors” is delivered as an ISOMORPHISM CARRYING ITS FOUR LEG
  EQUATIONS -- [pbone_to_exl], [pbone_to_exr], [pbone_from_fst],
  [pbone_from_snd] -- and not as a bare [≅].  FOUR strict forms are
  REFUSED and pinned in the probe: [pbone = a × b] and
  [carrier pbone = carrier (a × b)] and
  [exl ∘ pbone_to_prod = pbone_fst] are CONVERSION refusals, and
  [pbone_fst = exl] is a TYPING one -- a plain has-type mismatch with
- no "cannot unify" and no universe clause, because the two morphisms
+ no “cannot unify” and no universe clause, because the two morphisms
  do not even share a source.
 
  THE OBSTRUCTION, ARGUED FOR THE RECORD, since the issue's Definition
@@ -332,7 +332,7 @@ Open Scope category_scope.
  DOES exist, conditionally.
 
  WHICH OF MAC LANE'S CLAUSES IS CONDITIONAL: exactly one, his Axiom
- 8 "Truth" -- the subobject classifier -- and hence the §IV.9
+ 8 “Truth” -- the subobject classifier -- and hence the §IV.9
  construction-1 clause.  Measured three ways: [Sets_Terminal],
  [Sets_Cartesian], [Sets_HasPullbacks] and [Sets_Closed] are
  argument-free [#[export]] instances, all four resolve by typeclass
@@ -368,8 +368,8 @@ Open Scope category_scope.
  [Type@{o}]-valued, and truncating it with the impredicative
  [Powerset_squash] is what puts it at the carrier's own level.
  Inverting that truncation is exactly [Untruncate].  The naive
- elimination [fun P h => h P (fun p => p)] is refused with "Cannot
- enforce o <= Prop", against the [Prop]-valued instantiation
+ elimination [fun P h => h P (fun p => p)] is refused with “Cannot
+ enforce o <= Prop”, against the [Prop]-valued instantiation
  [powerset_squash_prop_inert] as the accepted control; that pair is
  already Test/ProbeClassifier402.v and its control, and is CITED
  here rather than duplicated.
@@ -397,12 +397,12 @@ Open Scope category_scope.
  and explicitly not as an in-tree theorem, that no small classifier
  can exist over predicative [Type].
 
- PRIOR ART, AND THE ISSUE'S "CURRENT STATE", EACH RE-MEASURED WITH ITS
+ PRIOR ART, AND THE ISSUE'S “CURRENT STATE”, EACH RE-MEASURED WITH ITS
  CRITERION AT THE BASE COMMIT.
 
- TRUE AT THE BASE COMMIT: "no [ElementaryTopos Sets]", and "the
+ TRUE AT THE BASE COMMIT: “no [ElementaryTopos Sets]”, and “the
  only [ElementaryTopos] inhabitant anywhere is
- Instance/FinSet/Topos.v".  CRITERION, stated so that it produces
+ Instance/FinSet/Topos.v”.  CRITERION, stated so that it produces
  the numbers below: declaration heads whose type MENTIONS
  [ElementaryTopos] after a colon -- which therefore also catches the
  two that take one as a HYPOTHESIS -- swept comment-stripped ACROSS
@@ -414,13 +414,13 @@ Open Scope category_scope.
  [relations_iso] taking one as a hypothesis, so [FinSet_Topos] is
  the sole INHABITANT; the shipped tree returns ten.
 
- FALSE: "There is no [HasPullbacks Sets]" --
+ FALSE: “There is no [HasPullbacks Sets]” --
  Instance/Sets/Pullback.v's [#[export] Instance
  Sets_HasPullbacks], landed by #333, which the issue itself lists as
- a dependency.  FALSE: "no [SubobjectClassifier Sets]" -- three
+ a dependency.  FALSE: “no [SubobjectClassifier Sets]” -- three
  conditional ones in OneLevel.v, plus its engine.  FALSE FOR TWO
- OF THREE: "a tree-wide search finds exactly
- one instance of each of those three classes, all for FinSet" --
+ OF THREE: “a tree-wide search finds exactly
+ one instance of each of those three classes, all for FinSet” --
  true of [ElementaryTopos]; false of [SubobjectClassifier]
  (FinSet's, OneLevel.v's three, and four for functor categories at
  Instance/Fun/Classifier.v) and false of
@@ -429,12 +429,12 @@ Open Scope category_scope.
  Instance/Fun/Pullback.v's [Fun_HasPullbacks], plus generic
  conditionals).
 
- STALE AS A CITATION: "The setoid half is blocked by a documented
- and deliberate universe obstruction (Instance/Sets/Classifier.v)".
+ STALE AS A CITATION: “The setoid half is blocked by a documented
+ and deliberate universe obstruction (Instance/Sets/Classifier.v)”.
  That file's header now records the OPPOSITE -- that the
  conditional one-level instance exists -- and the obstruction
- paragraph proper is now the section headed "WHY ONE LEVEL DOES NOT
- SUFFICE UNCONDITIONALLY".
+ paragraph proper is now the section headed “WHY ONE LEVEL DOES NOT
+ SUFFICE UNCONDITIONALLY”.
 
  LOCATION DRIFT in four of the issue's citations: the places it
  gives for [Sets_Terminal] in Instance/Sets.v and for
@@ -452,9 +452,9 @@ Open Scope category_scope.
  Instance/Sets.v, Instance/Sets/Cocartesian.v,
  Instance/Sets/Coequalizer.v, Instance/Sets/Pushout.v and
  Adjunction/GAFT/Sets.v already have them.  That last file's
- header CALLED itself "the tree's only inhabitant of that class" and
- is corrected in this same change to "the only such LIBRARY-file
- inhabitant" -- which the derived one does NOT falsify, since it
+ header CALLED itself “the tree's only inhabitant of that class” and
+ is corrected in this same change to “the only such LIBRARY-file
+ inhabitant” -- which the derived one does NOT falsify, since it
  lives in Test/ProbeToposInstances404.v and is therefore not a
  library-file inhabitant, as that file's own appended note says.  The
  four colimit legs and the equalizer leg are ASCRIBED at the
@@ -598,7 +598,7 @@ Open Scope category_scope.
  分别是在绑定器和一个使用位置 ([exact (U P (proj2 Hp I))])，在义务中，
  按照 [Record SmallClassifierExt] 的字段顺序，位置是 [sce_elim]。为什么它根本需要：在此库中，[≈] 是 [Type@{o}] 值，因此特征谓词 [λ b, ∃ a, m a ≈ b] 是 [Type@{o}] 值，并且用反演 [Powerset_squash] 截断它会将其放在承载者自身的级别上。反转该截断正是 [Untruncate]。天真的消去 [fun P h => h P (fun p => p)] 被拒绝，提示“无法强制 o <= Prop”，针对作为接受控制的 [Prop] 值实例 [powerset_squash_prop_inert]；该对已经是 Test/ProbeClassifier402.v 及其控制，并且在此引用，而不是重复。没有任何不可能性被证明，并且前提没有树内居民，使用两个扫描进行测量，其标准已说明，因为计数会随它们变化。(i) 声明头在第一个冒号处提到三个之一——绝大多数是绑定器——在此次更改的三个文件之外的数量为36。(ii) 其结论为三者之一的声明（类型前有箭头，或后跟 [:=] 或句号）数量为五个：[untruncate_of_IEM]、[DecImage_of_IEM]、[IEM_of_DecImage] 和 [DecImage_iff_IEM] 的成对封装，每一个都是假设之间的通道而不是居民，还有一个反驳命令 Test/ProbeFunClassifier403.v，它从未进入环境。Instance/Sets/Classifier/OneLevel.v 的三部分披露在此逐字适用：(i) 未构建任何无条件无公理的实例，(ii) 未证明任何不可能性定理，(iii) 一个树外的临时开发在 [classic] 和 [constructive_indefinite_description] 上构建了分类器，因此树内的不可能性定理会否定一个经典有效的陈述。（iii 部分是该文件的标题声明，此处引用但未重新运行。）Instance/Sets/Classifier.v 另外记录了作为民间传说，明确不是树内定理，即在层次 [Type] 上不存在小型分类器。
 
- 先前工作，以及该问题的“当前状态”，均以其标准在基本提交中重新衡量。在基础提交中为真："no [ElementaryTopos Sets]"，并且"唯一的 [ElementaryTopos] 居民存在于 Instance/FinSet/Topos.v 中"。标准（CRITERION）表述如下，以便生成以下数字：类型在冒号后提及 [ElementaryTopos] 的声明头——因此也会捕获两个将其作为假设的——在跨行的注释去除后扫描。像 [rg -n ':\s*ElementaryTopos' -g '*.v'] 这样的行锚定模式对于此声明并不可靠：它会遗漏类型换行的所有头部，这正好是此文件的三个包。在可靠标准下，基础提交返回三个头部，其中两个是 Structure/Topos.v 的 [Pow] 及其将其作为假设的 [relations_iso]，所以 [FinSet_Topos] 是唯一的居民；而发布的树返回十个。错误：“没有 [HasPullbacks Sets]” -- Instance/Sets/Pullback.v 的 [#[export] 实例 Sets_HasPullbacks，由 #333 引入，而问题本身将其列为依赖项。错误：“没有 [SubobjectClassifier Sets]” -- OneLevel.v 中有三个条件实例，加上它的引擎。三者中两者为假：“一次树状搜索恰好找到每个这三类中的一个实例，全部属于 FinSet” -- 对 [ElementaryTopos] 为真；对 [SubobjectClassifier] 为假（FinSet 的、OneLevel.v 的三个，以及 Instance/Fun/Classifier.v 中函子类别的四个）且对 [HasPullbacks] 为假（FinSet 的，[Sets_HasPullbacks]，Instance/Cat/Pullback.v 的 [StrictCat_HasPullbacks]，Instance/Fun/Pullback.v 的 [Fun_HasPullbacks]，外加通用条件）。像引用一样陈旧：“集合论一半被记录在案并故意的宇宙障碍阻挡（Instance/Sets/Classifier.v）”。该文件的头部现在记录了相反的情况——条件的一层实例存在——而障碍段落本身现在在标题为“为什么一层不足以无条件适用”的章节中。
+ 先前工作，以及该问题的“当前状态”，均以其标准在基本提交中重新衡量。在基础提交中为真：“no [ElementaryTopos Sets]”，并且“唯一的 [ElementaryTopos] 居民存在于 Instance/FinSet/Topos.v 中”。标准（CRITERION）表述如下，以便生成以下数字：类型在冒号后提及 [ElementaryTopos] 的声明头——因此也会捕获两个将其作为假设的——在跨行的注释去除后扫描。像 [rg -n ':\s*ElementaryTopos' -g '*.v'] 这样的行锚定模式对于此声明并不可靠：它会遗漏类型换行的所有头部，这正好是此文件的三个包。在可靠标准下，基础提交返回三个头部，其中两个是 Structure/Topos.v 的 [Pow] 及其将其作为假设的 [relations_iso]，所以 [FinSet_Topos] 是唯一的居民；而发布的树返回十个。错误：“没有 [HasPullbacks Sets]” -- Instance/Sets/Pullback.v 的 [#[export] 实例 Sets_HasPullbacks，由 #333 引入，而问题本身将其列为依赖项。错误：“没有 [SubobjectClassifier Sets]” -- OneLevel.v 中有三个条件实例，加上它的引擎。三者中两者为假：“一次树状搜索恰好找到每个这三类中的一个实例，全部属于 FinSet” -- 对 [ElementaryTopos] 为真；对 [SubobjectClassifier] 为假（FinSet 的、OneLevel.v 的三个，以及 Instance/Fun/Classifier.v 中函子类别的四个）且对 [HasPullbacks] 为假（FinSet 的，[Sets_HasPullbacks]，Instance/Cat/Pullback.v 的 [StrictCat_HasPullbacks]，Instance/Fun/Pullback.v 的 [Fun_HasPullbacks]，外加通用条件）。像引用一样陈旧：“集合论一半被记录在案并故意的宇宙障碍阻挡（Instance/Sets/Classifier.v）”。该文件的头部现在记录了相反的情况——条件的一层实例存在——而障碍段落本身现在在标题为“为什么一层不足以无条件适用”的章节中。
 
  四个问题引用中的位置漂移：它在 Instance/Sets.v 中给出的 [Sets_Terminal] 的位置，以及在 Instance/Sets/Classifier.v 中的 [sets_char_pullback]、[sets_char_unique] 和 [sets_char_subobject] 的位置都已陈旧，后三个的位置改变幅度相同且方向一致。引用正确的文件：Instance/Sets/Cartesian.v、Instance/Sets/Cartesian/Closed.v 和 Instance/FinSet/Topos.v。一个 SECOND-INHABITANT 注释，因为它会使另一个文件的头部过时。通过 Structure/Topos/Colimits.v 这个模块产生一个初始对象、二元余积、余等化器、推挤和等化器用于 [Sets]；与预层面不同，在预层面中这五个都是首次，在 [Sets] 中这五个都是 SECOND inhabitants —— Instance/Sets.v、Instance/Sets/Cocartesian.v、Instance/Sets/Coequalizer.v、Instance/Sets/Pushout.v 和 Adjunction/GAFT/Sets.v 已经拥有它们。最后一个文件的头部称自己为“该类中树的唯一居住者”，并在同一次更改中被修改为“唯一的此类库文件居住者”——派生文件并未否定这一点，因为它存在于 Test/ProbeToposInstances404.v 中，因此不是库文件居住者，正如该文件附加的说明所述。四个余积腿和等化子腿被归属到 Test/ProbeToposInstances404.v 中现有实例的自身类型，因此类型检查是一致的；刻意没有构建任何一致性证明，也没有声称有。这些文件存在于探针中，因为引用 Structure/Topos/{Monadic,Colimits}.v 会使该文件的闭包从 74 增至 101。
 
@@ -676,7 +676,7 @@ Example app1_terminal_is_donor (U : Untruncate) :
   @terminal_obj Sets (@topos_terminal Sets (Sets_Topos U))
   = @terminal_obj Sets Sets_Terminal := eq_refl.
 
-(* "any set with just one element can serve as a terminal object 1" / 任何只有一个元素的集合都可以作为终端对象1 *)
+(* “any set with just one element can serve as a terminal object 1” / 任何只有一个元素的集合都可以作为终端对象1 *)
 Lemma app1_terminal_singleton
   (t : carrier (@terminal_obj Sets Sets_Terminal)) : t = ttt.
 Proof. destruct t; reflexivity. Qed.
@@ -725,7 +725,7 @@ Proof.
 Defined.
 
 (*
- "with its projections to the given factors a and b": the four leg
+ “with its projections to the given factors a and b”: the four leg
  equations, at the setoid relation. 
 
  --------
@@ -774,7 +774,7 @@ Example app1_pullback_is_topos_pullback (U : Untruncate) (a b : obj[Sets]) :
 (* * ** (C) App.1 clause (c): Ω, truth, and the classifying rule / * **（C）附录1 条款（c）：Ω、真理及分类规则 *)
 
 (*
- Mac Lane's "any set 2 consisting of two objects, 1 and 0", on the
+ Mac Lane's “any set 2 consisting of two objects, 1 and 0”, on the
  decidable route. 
 
  --------
@@ -798,12 +798,12 @@ Example app1_truth_U (U : Untruncate) :
   @truth Sets _ (@topos_classifier Sets (Sets_Topos U)) ttt
   = Powerset_truth_point := eq_refl.
 
-(* "the monomorphism t : 1 → 2": monic for free, from the derived [truth_monic] of Structure/SubobjectClassifier.v. / “单射 t : 1 → 2”：天然单射，来自 Structure/SubobjectClassifier.v 的导出 [truth_monic]。 *)
+(* “the monomorphism t : 1 → 2”: monic for free, from the derived [truth_monic] of Structure/SubobjectClassifier.v. / “单射 t : 1 → 2”：天然单射，来自 Structure/SubobjectClassifier.v 的导出 [truth_monic]。 *)
 Definition app1_truth_monic (U : Untruncate) :
   @Monic Sets _ _ (@truth Sets _ (@topos_classifier Sets (Sets_Topos U)))
   := @truth_monic Sets _ _.
 
-(* "This subset has a well-known characteristic function ψ : b → 2": the classifying rule, applied verbatim at the topos-level classifier on both routes. / 该子集具有一个众所周知的特征函数 ψ : b → 2：在拓扑层分类器上按原样应用的分类规则，对两条路径都适用。 *)
+(* “This subset has a well-known characteristic function ψ : b → 2”: the classifying rule, applied verbatim at the topos-level classifier on both routes. / 该子集具有一个众所周知的特征函数 ψ : b → 2：在拓扑层分类器上按原样应用的分类规则，对两条路径都适用。 *)
 Definition app1_char_rule_dec@{o so} (D : DecImage@{o so})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
   (M : @Monic Sets@{o so} u x m) (b : carrier x) :
@@ -838,7 +838,7 @@ Example app1_char_U_strict@{o so} (U : Untruncate@{o})
     (@topos_classifier Sets@{o so} (Sets_Topos@{o so} U)) u x m M b
   = Powerset_squash@{o} (sets_in_image@{o} m b) := eq_refl.
 
-(* "such that the following square is a pullback" -- display (2) and its uniqueness clause are the class's own two fields, re-exposed at the bundle so that they can be quoted at a topos. / “使得下列方格是一个拉回图”——显示 (2) 及其唯一性条款是该类自身的两个字段，在丛上重新暴露，以便它们可以在拓扑中被引用。 *)
+(* “such that the following square is a pullback” -- display (2) and its uniqueness clause are the class's own two fields, re-exposed at the bundle so that they can be quoted at a topos. / “使得下列方格是一个拉回图”——显示 (2) 及其唯一性条款是该类自身的两个字段，在丛上重新暴露，以便它们可以在拓扑中被引用。 *)
 Definition app1_classifying_square@{o so} (U : Untruncate@{o})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
   (M : @Monic Sets@{o so} u x m) :=
@@ -854,7 +854,7 @@ Definition app1_classifying_unique@{o so} (U : Untruncate@{o})
 (* * ** (D) App.1 clause (d): P b IS the power set of b / * **（D）附录1 条款（d）：P b 是 b 的幂集 *)
 
 (*
- Mac Lane's "P b, the set of all subsets s of b" -- definitional, not
+ Mac Lane's “P b, the set of all subsets s of b” -- definitional, not
  an isomorphism.  See the header for why the two records coincide. 
 
  --------

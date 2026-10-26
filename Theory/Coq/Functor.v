@@ -16,7 +16,7 @@ nLab: https://ncatlab.org/nlab/show/functor
    [fmap (g ∘ f) ≈ fmap g ∘ fmap f].
 
    Categorical reading.  This is exactly an endofunctor on the category of
-   Coq types (the "category of types", Haskell's Hask).  The object map is
+   Coq types (the “category of types”, Haskell's Hask).  The object map is
    the type constructor [F] itself, and the morphism (hom) map is [fmap],
    sending a morphism [f : x → y] to [fmap f : F x → F y].  The two functor
    laws are precisely preservation of identities [F id = id] and of
@@ -189,7 +189,7 @@ Instance Compose_Functor `{Functor F} `{Functor G} : Functor (F ∘ G) := {
 nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
    Wikipedia: https://en.wikipedia.org/wiki/Yoneda_lemma
 
-   The (covariant, "co-Yoneda") presentation of [F] at [x]: the type of
+   The (covariant, “co-Yoneda”) presentation of [F] at [x]: the type of
    natural transformations [Hom(x, −) ⇒ F].  By the Yoneda lemma this type is
    naturally isomorphic to [F x], a continuation-passing encoding of [F].
 

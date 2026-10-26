@@ -9,10 +9,10 @@
  nLab:      https://ncatlab.org/nlab/show/group+object
  nLab:      https://ncatlab.org/nlab/show/representable+functor
  Wikipedia: https://en.wikipedia.org/wiki/Group_object
- Book:      Mac Lane, CWM 2nd ed., Section III.6 ("Groups in
- Categories"), Proposition 1 and remark 2, pp. 75-76
- Paper:     Eckmann, Hilton, "Group-Like Structures in General
- Categories I", Mathematische Annalen 145, 1962,
+ Book:      Mac Lane, CWM 2nd ed., Section III.6 (“Groups in
+ Categories”), Proposition 1 and remark 2, pp. 75-76
+ Paper:     Eckmann, Hilton, “Group-Like Structures in General
+ Categories I”, Mathematische Annalen 145, 1962,
  Theorem 4.3
 
  Mac Lane's Proposition 1 says that an object [c] of a category with
@@ -47,13 +47,13 @@
  PARAMETRIC [FracField] (Instance/Field/Frac.v, the field of
  quotients of an integral domain); a search for a reals-based
  [FieldObject] returns nothing.  And [CRingOb X] is a [RingObject],
- not a field.  So the statement "K is a field but C(K) is not" cannot
+ not a field.  So the statement “K is a field but C(K) is not” cannot
  even be TYPED here, and no impossibility is claimed -- only that the
  witness object does not exist.
 
  (3) Structure/Group.v already ASSERTS this file's theorem in
- prose -- "equivalently, [grp] is a group object iff each hom
- Hom(X, grp) is a group naturally in X" -- with no formal statement
+ prose -- “equivalently, [grp] is a group object iff each hom
+ Hom(X, grp) is a group naturally in X” -- with no formal statement
  anywhere.  This file is what discharges that sentence.
 
  WHAT IS DELIVERED, AND AT WHAT STRENGTH.
@@ -128,7 +128,7 @@
  an [Instance/Grp.v] [GrpObject], [HomGrpHom] proves
  precomposition a homomorphism, and [HomGrpFunctor] packages
  them as [C^op ⟶ Grp].  RECORDED STRENGTH CHANGE: since the PR
- "algebraic carriers are sets" (2026-09-17) the three take one
+ “algebraic carriers are sets” (2026-09-17) the three take one
  further hypothesis, a [Prop]-valued equality on each hom-setoid
  INTO [e], because an [Instance/Grp.v] group now carries
  [grp_prop].  The clause about cartesian closure and products is
@@ -145,9 +145,9 @@
  hom-set consists of ≈-RESPECTING maps while the indexed product
  consists of all maps out of the carrier, so the construction
  below is unavailable for a general [X].  Read that at its
- actual strength: the carrier fact is measured, but "the two
- carriers differ" does not by itself entail "not isomorphic as
- groups", and NO counterexample is exhibited here.  The
+ actual strength: the carrier fact is measured, but “the two
+ carriers differ” does not by itself entail “not isomorphic as
+ groups”, and NO counterexample is exhibited here.  The
  unrestricted statement is EXPECTED to fail and is ARGUED to,
  not PROVED to.
 
@@ -181,7 +181,7 @@
  the BINDER, where reading the block alone would miss it, and it comes
  from the unannotated [Context {C : Category}] by minimization (the
  [Build_Quiver_Standard_Eq] family), not from any donor.  RE-MEASURED
- after the PR "algebraic carriers are sets" (2026-09-17): the record's
+ after the PR “algebraic carriers are sets” (2026-09-17): the record's
  readback and its EMPTY block are unchanged; what moved is
  [HomGrpObject], which gained the hypothesis argument and now reads
  [HomGrpObject@{u u0 u1} : ∀ {C : Category@{u u0 u0}} (e : obj),
@@ -892,13 +892,13 @@ Context {C : Category}.
 Context (e : C).
 (*
  RECORDED STRENGTH CHANGE.  An earlier revision took only
- [{C : Category} (e : C) (D : HomGroupData e)].  Since the PR "algebraic
- carriers are sets" (2026-09-17) an [Instance/Grp.v] group carries
+ [{C : Category} (e : C) (D : HomGroupData e)].  Since the PR “algebraic
+ carriers are sets” (2026-09-17) an [Instance/Grp.v] group carries
  [grp_prop], and the hom-set this section turns into a group is a hom-set
  of the ARBITRARY ambient [C], so the section assumes a [Prop]-valued
  equality on each of the hom-setoids it actually uses.  The theorem below
- therefore reads "for every [C] whose hom-sets INTO [e] are propositional
- ...", which is strictly weaker than what was in tree.  What is NOT
+ therefore reads “for every [C] whose hom-sets INTO [e] are propositional
+ ...”, which is strictly weaker than what was in tree.  What is NOT
  weakened is clause (b) of the headline, since no cartesian closure and no
  products are used here either, and the two headline biconditionals earlier
  in this file build no [GrpObject] and are untouched.
@@ -1161,7 +1161,7 @@ Context (gobj : Sets).
 (*
  [Sets] is NOT declared locally propositional (Instance/Sets/Propositional.v
  says why), so the witness for THIS object is a section hypothesis.  Since
- the PR "algebraic carriers are sets" (2026-09-17). 
+ the PR “algebraic carriers are sets” (2026-09-17). 
 
  --------
  [Sets] 没有在本地声明为命题型（Instance/Sets/Propositional.v 说明了原因），因此该对象的证据是一个区段假设。自从 PR “代数载体是集合”（2026-09-17）以来。

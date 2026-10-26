@@ -39,7 +39,7 @@ Open Scope category_scope.
 (*
  Mac Lane, Categories for the Working Mathematician, 2nd ed., §V.2
  Definition 1 and Corollary 1 (book p. 113); Awodey, Category Theory,
- §5.4 Definition 5.18 and the running definition of "all finite limits"
+ §5.4 Definition 5.18 and the running definition of “all finite limits”
  (printed pp. 109/111), §5.6 (printed p. 116); Fong and Spivak, Seven
  Sketches in Compositionality, §6.2.4 (printed pp. 191-192, Definition
  6.30); Riehl, Category Theory in Context, 2nd ed., §3.5 (printed p. 115,
@@ -53,7 +53,7 @@ Open Scope category_scope.
  Structure/Limit/FromProducts.v's engine, and proves the converse with
  the surrogate packages Structure/Topos.v and Structure/Regular.v carry.
 
- WHAT "FINITE" IS HERE.  Riehl's and Seven Sketches' reading — finitely
+ WHAT “FINITE” IS HERE.  Riehl's and Seven Sketches' reading — finitely
  many MORPHISMS — as DATA: [FiniteCategory J] carries a size [fc_size], an
  enumeration [fc_arr : Fin.t fc_size → ArrowIx J] into FromProducts.v's
  arrow index (a pair of objects with an arrow between them), and a
@@ -70,9 +70,9 @@ Open Scope category_scope.
  [Prop]-valued [List.In], and its arrow coverage [fs_homs_all] is a [sigT]
  (Type-valued, so it does eliminate into [Type]) whose membership
  component is again a [Prop]-valued [List.In], from which no [Fin.t] index
- is recoverable — an earlier draft called the whole coverage "[List.In] in
- [Prop]", which a fess audit refuted for the arrow half.
- (ii) "Finitely many" is UP TO [≈], the only reading a setoid supports,
+ is recoverable — an earlier draft called the whole coverage “[List.In] in
+ [Prop]”, which a fess audit refuted for the arrow half.
+ (ii) “Finitely many” is UP TO [≈], the only reading a setoid supports,
  and the enumeration is a RETRACTION, not a bijection: one arrow may be
  hit by several indices, so [fc_size] is an upper bound on the number of
  arrows and no cardinality is claimed.  (iii) Objects are not enumerated
@@ -153,7 +153,7 @@ Open Scope category_scope.
  [finite_limit_apex], [finite_limit_leg], [fl_cone] and [fl_limiting] —
  carry the one block equation [u2 = u5] saying the same, the other
  nineteen ([fl_P0], [fl_P], [fl_Q], [fl_s], [fl_t], [fl_eq], …) carrying
- no equation at all (a first draft said "the whole family"; a fess audit
+ no equation at all (a first draft said “the whole family”; a fess audit
  counted).  TWO
  measurements decide the converse's route.  First, the small shapes
  SPLIT: [Roof@{u u0} : Category@{u u0 u0}] and [Parallel] are FREE, while
@@ -174,18 +174,18 @@ Open Scope category_scope.
  [Category@{co ch ch}] with [co] free.
 
  THE CONE-CATEGORY READINGS (Instance/Cones/Limit.v).  Awodey's defining
- formulation, "a limit is a terminal object in the category of cones",
+ formulation, “a limit is a terminal object in the category of cones”,
  had only the direction [Limit_Cones : Terminal (Cones F) → Limit F];
  [Cones_Limit] is the other, and the round trips return the cone, every
  mediator, the terminal cone and the APEX MAP of every unique arrow at
  [eq_refl] — the whole unique arrow is re-paired, stdlib [sigT] having no
  eta, so only its first projection converts (the probe's [p417_round_one]
- checks exactly that; a first draft of this sentence said "every unique
- arrow"), whole records refuted, pinned.  The colimit half needed a
+ checks exactly that; a first draft of this sentence said “every unique
+ arrow”), whole records refuted, pinned.  The colimit half needed a
  CORRECTION rather
  than a dual: with [Cocones F := Cones (F^op)] (Instance/Cones.v) a cocone
  morphism is an arrow of [C^op], so the colimit is the TERMINAL object of
- [Cocones F], and the comment there saying "initial" was wrong.  Delivered
+ [Cocones F], and the comment there saying “initial” was wrong.  Delivered
  as [Colimit_Cocones : Terminal (Cocones F) → Colimit F] and
  [Cocones_Colimit], with the covariant spelling [Initial ((Cocones F)^op)]
  proved THE SAME TYPE at [eq_refl] ([initial_op_is_terminal]) — while the
@@ -197,7 +197,7 @@ Open Scope category_scope.
  that file's own header records that its guard-free [identity] is
  unsatisfiable over a finite table, so [FromArrows] yields the EMPTY
  category, and its inline note beside the field still asserted the
- encoding "is sound for the finite … metacategories built here" — that
+ encoding “is sound for the finite … metacategories built here” — that
  sentence is corrected in this commit (line-neutrally), and nothing here
  consumes that module.
 
@@ -235,7 +235,7 @@ Open Scope category_scope.
  route at [FinSet] the terminal object from the empty finite limit is
  NOT [1] by conversion (its equalizer's carrier counts a predicate that
  tests the opaque [FinSet_Pullbacks_obligation_2]; probe N10 — an
- earlier revision said N9 and "no computing witness"), while
+ earlier revision said N9 and “no computing witness”), while
  Instance/FinSet/Limit.v's native route converts it to [1]; no bridge
  to Shapes.v's [FiniteShape]; no filtered categories (Riehl 3.8.7); no
  equivalence-invariance of [FinitelyComplete]; and the [Set] pin on
@@ -281,8 +281,8 @@ Record ArrowHit (a : @ArrowIx J) {x y : J} (f : x ~{J}~> y) : Type := {
 
 (*
  A category is FINITE when finitely many arrows, listed by a [Fin.t]-indexed
- family, hit every arrow (Riehl §3.5, Fong–Spivak §6.2.4: "finitely many
- morphisms"). The witness of the hit is DATA, not a mere existence claim,
+ family, hit every arrow (Riehl §3.5, Fong–Spivak §6.2.4: “finitely many
+ morphisms”). The witness of the hit is DATA, not a mere existence claim,
  so no choice principle is needed to read an index off an arrow — and so
  the enumeration can feed the [Type]-valued [Gen] of
  Structure/Limit/FromProducts.v, which is what the corollary consumes. 

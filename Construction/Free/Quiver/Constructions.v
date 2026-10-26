@@ -12,14 +12,14 @@ Generalizable All Variables.
 (** * Opposite and product quivers / * 对偶与乘积箭图 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.7
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §II.7
  Exercise 1, printed p. 51 (PDF p. 61); catalog item [maclane:II.7:ex1].  The
  exercise as the catalog records it — this is the CATALOG'S PARAPHRASE, not
  Mac Lane's own wording — asks one to
 
- "Define 'opposite graph' and 'product of two graphs' so as to agree with
+ “Define 'opposite graph' and 'product of two graphs' so as to agree with
  the corresponding definitions for categories, i.e. so that the forgetful
- functor U : Cat -> Grph preserves opposites and products."
+ functor U : Cat -> Grph preserves opposites and products.”
 
  (doc/plan/books/maclane/inventory/II.json).  So the mathematical content is
  not the two constructions on their own — either is a two-line reindexing —
@@ -30,7 +30,7 @@ Generalizable All Variables.
 
  nLab: https://ncatlab.org/nlab/show/quiver
 
- Mac Lane's "graph" here is what the literature now calls a quiver or a
+ Mac Lane's “graph” here is what the literature now calls a quiver or a
  directed multigraph: a set of nodes together with, for each ordered pair, a
  set of edges.  [Construction/Free/Quiver.v] indexes the edges directly by
  their endpoints ([edges X Y]) rather than carrying source and target maps
@@ -118,13 +118,13 @@ Generalizable All Variables.
 
  Both negative results are checked by machine, not assumed, and both are
  re-checked on every build.  Each fails by genuine CONVERSION failure
- ("cannot unify"), not by an unrelated elaboration or scope error — the
+ (“cannot unify”), not by an unrelated elaboration or scope error — the
  distinction matters, since a [Fail] passes just as happily on an
  ill-formed term, which is why the probe file pairs every negative with a
  control that must succeed.
 
- WHY A NEW FILE.  The issue offers "extend Quiver.v OR add
- Constructions.v".  Quiver.v is a heavily depended-on donor — it carries the
+ WHY A NEW FILE.  The issue offers “extend Quiver.v OR add
+ Constructions.v”.  Quiver.v is a heavily depended-on donor — it carries the
  free/forgetful adjunction, and eight files require it (Free/Quiver's own
  Concrete.v, Examples.v and Presented.v, plus Construction/Free/TwoFunctors.v,
  Instance/Roster.v, Test/Issue138.v, Theory/Diagram.v and Theory/OGraph.v) —
@@ -138,7 +138,7 @@ Generalizable All Variables.
  point is to exhibit a category as a monoid.  Here the nodes VARY and the
  product is the cartesian one, pairs of nodes and pairs of edges.  The two do
  not specialise to one another, and OGraph.v says in terms that it defines no
- varying-node product ("No [Grph]-level (varying-node) product is defined"),
+ varying-node product (“No [Grph]-level (varying-node) product is defined”),
  which is the gap this file fills; conversely nothing here bears on ×_O.
 
  A SMALL HISTORICAL NOTE the issue points out and this file finally acts on:

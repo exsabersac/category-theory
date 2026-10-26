@@ -19,7 +19,7 @@ Generalizable All Variables.
  pair has a coequalizer, and regular epimorphisms are stable under
  pullback.  The kernel pair of f : x ~> y is the pullback of f along
  itself ([kernel_pair]); its two projections p1, p2 : x ×_y x ~> x are the
- categorical rendering of the relation "f a = f b" on x.  A regular
+ categorical rendering of the relation “f a = f b” on x.  A regular
  epimorphism ([RegularEpi]) is a morphism that arises as the coequalizer
  of some parallel pair; in a regular category, every regular epimorphism
  is in fact the coequalizer of its own kernel pair.
@@ -117,7 +117,7 @@ Class Regular (C : Category) := {
 
 (*
  Every regular epimorphism is an epimorphism: coequalizing maps are epic
- (Wikipedia: "every coequalizer is an epimorphism"). 
+ (Wikipedia: “every coequalizer is an epimorphism”). 
 
  --------
  每个正规满射都是满射：共轭映射是史密映射（Wikipedia：“每个共轭化器都是满射”）。

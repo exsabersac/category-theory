@@ -44,22 +44,22 @@ Generalizable All Variables.
  Where coproducts come from, and what they are for
 
  nLab:  https://ncatlab.org/nlab/show/coproduct
- Paper: Mac Lane, "Duality for groups", Bulletin of the American
+ Paper: Mac Lane, “Duality for groups”, Bulletin of the American
  Mathematical Society 56(6), 1950
- Paper: Cockett, "Introduction to distributive categories", Mathematical
+ Paper: Cockett, “Introduction to distributive categories”, Mathematical
  Structures in Computer Science 3(3), 1993
 
  The coproduct entered category theory simultaneously with the product,
- each defined as the mirror image of the other.  In "Duality for groups"
+ each defined as the mirror image of the other.  In “Duality for groups”
  (an address delivered before the American Mathematical Society in
  November 1948, published 1950), Mac Lane characterizes the direct
  product of groups by its universal diagram, observes that the property
- "may serve as a definition" because it determines the object up to
+ “may serve as a definition” because it determines the object up to
  isomorphism, and then characterizes the free product by the same diagram
  with every arrow reversed, noting explicitly that the two diagrams are
  dual.  The paper, which the Stanford Encyclopedia of Philosophy credits
- with "using arrows to define certain fundamental concepts" (Marquis,
- "Category Theory", SEP), thus contains this file in embryo, five years
+ with “using arrows to define certain fundamental concepts” (Marquis,
+ “Category Theory”, SEP), thus contains this file in embryo, five years
  after categories themselves appeared in Eilenberg and Mac Lane 1945.
 
  Mac Lane also flags, in the same section, the asymmetry that shapes this
@@ -77,24 +77,24 @@ Generalizable All Variables.
  of x + y is exactly a pair of clauses, one per summand, and the
  copairing f ▽ g is the unique morphism restricting to those clauses:
  morphisms out of a coproduct correspond precisely to families of
- morphisms out of its summands (Wikipedia, "Coproduct").  One definition
+ morphisms out of its summands (Wikipedia, “Coproduct”).  One definition
  thereby covers constructions with little surface resemblance — disjoint
  union of sets, free product of groups, direct sum of vector spaces,
  wedge sum of pointed spaces, tensor product of commutative algebras,
- join in a poset (Wikipedia, "Coproduct").  Yet where products of
+ join in a poset (Wikipedia, “Coproduct”).  Yet where products of
  concrete structures sit uniformly on the cartesian product of
  underlying sets, coproducts can be, and typically are, dramatically
- different from products in the same category (Wikipedia, "Coproduct"):
+ different from products in the same category (Wikipedia, “Coproduct”):
  the underlying set of a free product of groups is not a disjoint union,
- and the injections need not even be monomorphisms (nLab, "coproduct").
+ and the injections need not even be monomorphisms (nLab, “coproduct”).
 
  Read computationally, this file is the algebra of sum types.  [inl] and
  [inr] are the constructors, and [merge] is the case split — Haskell's
- either, the "factorizer" of Milewski, "Products and Coproducts",
+ either, the “factorizer” of Milewski, “Products and Coproducts”,
  Category Theory for Programmers (2015).  [inl_merge] and [inr_merge] are
  its beta rules, a split applied to a constructor computing the matching
  branch; [merge_inl_inr] is the eta law, as the comment beside it already
- records (nLab, "sum type"; Harper, Practical Foundations for Programming
+ records (nLab, “sum type”; Harper, Practical Foundations for Programming
  Languages, §12); and [merge_inv] is extensionality, two splits agreeing
  exactly when their branches do.  [left], [right] and [cover] map over
  one or both summands, mirroring the first, second and split of
@@ -108,19 +108,19 @@ Generalizable All Variables.
  initial object of Structure/Initial.v as unit, the isomorphisms
  [coprod_assoc], [coprod_comm], [coprod_zero_l] and [coprod_zero_r] below
  are the components of a symmetric monoidal structure on (C, +, 0)
- (Wikipedia, "Coproduct").  Structure/Bicartesian.v combines coproducts
+ (Wikipedia, “Coproduct”).  Structure/Bicartesian.v combines coproducts
  with products, whereupon Structure/Distributive.v asks that the
  canonical morphism x × y + x × z ~> x × (y + z) be invertible; in any
  distributive category the object 1 + 1 is a boolean algebra, and maps
  into it provide a boolean logic (Cockett 1993), while the companion
  notion of extensivity is disentangled from distributivity by Carboni,
- Lack and Walters, "Introduction to extensive and distributive
- categories", JPAA 84, 1993.  Structure/BiCCC.v shows no such axiom is
+ Lack and Walters, “Introduction to extensive and distributive
+ categories”, JPAA 84, 1993.  Structure/BiCCC.v shows no such axiom is
  needed in a bicartesian closed category, where closedness makes the
  product functor a left adjoint and hence colimit-preserving, and a
  bicartesian closed category provides the semantics and proof theory of
- intuitionistic propositional logic (nLab, "bicartesian closed
- category").  When coproduct and product coincide as biproducts,
+ intuitionistic propositional logic (nLab, “bicartesian closed
+ category”).  When coproduct and product coincide as biproducts,
  Structure/Semiadditive.v derives a commutative monoid on every
  hom-setoid.  Coproduct-preserving functors are obtained by the same
  duality device as this file, as [CocartesianFunctor] in

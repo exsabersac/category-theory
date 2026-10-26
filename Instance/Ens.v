@@ -12,7 +12,7 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/category+of+sets
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
 
- "Ens" (from the French/Bourbaki "Ensembles") is a traditional name for the
+ “Ens” (from the French/Bourbaki “Ensembles”) is a traditional name for the
  category Set. In the textbook category of sets the objects are sets and the
  morphisms are *arbitrary* functions between them; injective, surjective and
  bijective functions are then characterized as the monos, epis and isos.

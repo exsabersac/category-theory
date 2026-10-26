@@ -30,8 +30,8 @@ Generalizable All Variables.
 
  Since the global right Kan extension Ran E F is a functor 1 ⟶ C, evaluating
  it at the unique object ttt of 1 yields the limit object in C.  This is the
- slogan "lim F = Ran_E F" (Wikipedia) / "the right Kan extension operation
- forms the limit of a functor" (nLab) made into a concrete isomorphism.
+ slogan “lim F = Ran_E F” (Wikipedia) / “the right Kan extension operation
+ forms the limit of a functor” (nLab) made into a concrete isomorphism.
 
  Theorem (Kan_Limit): for F : J ⟶ C with a limit and a right Kan extension
  along Erase J, the limit object is isomorphic in C to (Ran (Erase J) F) ttt.
@@ -124,10 +124,10 @@ Proof.
  Since half of the isomorphism has already been proven in [to_from], it
  is sufficient to show that either [(adj nat) ttt] is monic, or
  [unique_obj (ump_limits cone)] is epic. I've chosen the latter due
- to Emily Riehl's statement in "Category Theory in Context" (p. 76):
- "... Proposition 3.1.7 implies that the only automorphism of [a limit
+ to Emily Riehl's statement in “Category Theory in Context” (p. 76):
+ “... Proposition 3.1.7 implies that the only automorphism of [a limit
  object] l that commutes with the specified limit cone λ is the
- identity." 
+ identity.” 
 
  --------
  由于同构的一半已经在 [to_from] 中被证明，因此只需证明 [(adj nat) ttt] 是单态，或者 [unique_obj (ump_limits cone)] 是满态。我选择了后者，这是因为 Emily Riehl 在《Category Theory in Context》（第 76 页）中的声明：

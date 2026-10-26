@@ -133,7 +133,7 @@ Generalizable All Variables.
 
  ASSUMPTIONS, measured: [Print Assumptions] on every constant of the
  module, enumerated by [Print Module] (heads and [Program] obligations,
- which [.glob] heads omit) returns "Closed under the global context"
+ which [.glob] heads omit) returns “Closed under the global context”
  for each.
 
  NOT delivered: creation and uniqueness of the lifted structure, as
@@ -265,9 +265,9 @@ Next Obligation. intros d d' f p; exact (`2 p d d' f). Qed.
  matches only after unfolding the composite.  Measured by a Nix build
  of this file's first revision on Coq 8.20.1, the term form
  [(fun d => … ; fun d d' f => @cone_coherence … x)] is refused there
- with "The term … has type "∃ _ : ∀ x0 : obj[J], soa_obj (projT1
- (fobj[F] x0)), …" while it is expected to have type "carrier
- svlim_obj"", although Rocq 9.1 accepts it. 
+ with “The term … has type ”∃ _ : ∀ x0 : obj[J], soa_obj (projT1
+ (fobj[F] x0)), …“ while it is expected to have type ”carrier
+ svlim_obj“”, although Rocq 9.1 accepts it. 
 
  --------
  以战术证明的形式书写时，连贯性组件由 [exact] 闭合，而不是作为匿名构造子项：它的预期类型声明与 [fmap[SVariety_Forget E ◯ F] 兼容，[cone_coherence] 只有在展开复合后才匹配。根据在 Coq 8.20.1 上对该文件首次修订的 Nix 构建测量，项形式 [(fun d => … ; fun d d' f => @cone_coherence … x)] 在那里被拒绝，提示“该项 … 的类型为 ‘∃ _ : ∀ x0 : obj [J] , soa_obj (projT1 (fobj [F] x0)), …’，而预期类型为 ‘carrier svlim_obj’”，尽管 Rocq 9.1 可以接受它。

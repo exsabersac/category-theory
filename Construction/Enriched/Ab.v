@@ -6,13 +6,13 @@
 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §I.8, printed pp. 28–29 (PDF pp. 38–39) — maclane:I.8:def5
  nLab:      https://ncatlab.org/nlab/show/Ab-enriched+category
  Wikipedia: https://en.wikipedia.org/wiki/Preadditive_category
 
  Mac Lane's remark after the tensor-data definition: an Ab-category
- "can be described completely in these terms" — hom-groups, composition
+ “can be described completely in these terms” — hom-groups, composition
  morphisms A(b,c) ⊗ A(a,b) → A(a,c), and units ℤ → A(a,a) subject to
  associativity and unit laws.  With Instance/Ab/Tensor.v's tensor and
  Instance/Ab/Monoidal.v's monoidal structure in hand, that remark is a
@@ -81,7 +81,7 @@
  [Enriched_Ab_iff_AbEnriched] with right-hand side
  [{ C : Category & AbEnriched C }] and described the forward
  direction as running on an arbitrary [AbEnriched] category.
- Since the PR "algebraic carriers are sets" (2026-09-17) an
+ Since the PR “algebraic carriers are sets” (2026-09-17) an
  [AbObject] carries [cmon_prop], a [PropEquiv] for its carrier
  setoid, and [ehom_ab] takes its carrier setoid straight from
  [C]'s hom-setoid; an arbitrary category supplies no [Prop]
@@ -165,7 +165,7 @@ Section FromAbEnriched.
 Context {C : Category} {A : AbEnriched C}.
 
 (*
- [LP] is new since the PR "algebraic carriers are sets" (2026-09-17): an
+ [LP] is new since the PR “algebraic carriers are sets” (2026-09-17): an
  [AbObject] carries [cmon_prop], and [ehom_ab] below takes its carrier
  setoid straight from [C]'s hom-setoid, which an arbitrary category does not
  supply a [Prop] mirror for (Instance/Sets/Propositional.v's header records
@@ -317,8 +317,8 @@ Qed.
  The enrichment.  Each equation is [tensor_hom_ext] to generators, a
  mediator computation, and a category/action law (design note 1).
 
- AN EARLIER REVISION took only [C] and [A]: since the PR "algebraic
- carriers are sets" (2026-09-17) this is the section's [LP] as well, and
+ AN EARLIER REVISION took only [C] and [A]: since the PR “algebraic
+ carriers are sets” (2026-09-17) this is the section's [LP] as well, and
  [Proof using] records all three.  Design note 5 of the header names the
  eight constants of this section that gained it and what discharges it. 
 
@@ -446,7 +446,7 @@ Qed.
 (*
  The category built from tensor data is LOCALLY PROPOSITIONAL for free: its
  hom-setoid IS the carrier setoid of an object of [Ab], which since the PR
- "algebraic carriers are sets" (2026-09-17) carries [cmon_prop]. 
+ “algebraic carriers are sets” (2026-09-17) carries [cmon_prop]. 
 
  --------
  由张量数据构建的范畴是局部命题性的：它的同态集合体是  [Ab] 对象的承载集合体，由于 PR “代数承载是集合”（2026-09-17），它承载  [cmon_prop] 。
@@ -536,7 +536,7 @@ End ToAbEnriched.
 (** ** The correspondence / ** 通讯 *)
 
 (*
- Mac Lane's "can be described completely in these terms", as a
+ Mac Lane's “can be described completely in these terms”, as a
  Type-valued equivalence of the two presentations — the same shape as
  [Category_is_Enriched_over_Set] and [Enriched_Two_preorder]. 
 
@@ -555,7 +555,7 @@ Definition Enriched_Ab_itself : @Enriched Ab Ab_Monoidal :=
 
 (*
  AN EARLIER REVISION stated the right-hand side as [{ C : Category &
- AbEnriched C }].  Since the PR "algebraic carriers are sets" (2026-09-17)
+ AbEnriched C }].  Since the PR “algebraic carriers are sets” (2026-09-17)
  the objects of [Ab] are abelian groups on SETS -- their `≈` is
  propositional -- so a category enriched over [Ab] necessarily has
  propositional hom-setoids, and conversely an [AbEnriched] category is

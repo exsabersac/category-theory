@@ -13,12 +13,12 @@ Generalizable All Variables.
 (** * The identity monad  / * 身份单子*)
 
 (*
-Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
      §VI.3, book p. 144 (PDF p. 153), read from the page image: the
-     discrete-space adjunction ⟨D, G, η, …⟩ : Set ⇀ Top "defines on Set
+     discrete-space adjunction ⟨D, G, η, …⟩ : Set ⇀ Top “defines on Set
      the monad I = ⟨I, 1, 1⟩ which is the identity (identity functor,
      identity as unit and as multiplication).  The I-algebras in Set are
-     just the sets" (catalog id maclane:VI.3:remark1).
+     just the sets” (catalog id maclane:VI.3:remark1).
    nLab: https://ncatlab.org/nlab/show/monad
    nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
 
@@ -28,8 +28,8 @@ Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
    gives T f ≈ f, and a triangle identity makes the multiplication U ε F ≈ the
    identity too; in Mac Lane's example these hold on data at [eq_refl].  An
    algebra for it is an arrow h : a → a with h ∘ id ≈ id, so h ≈ id and the
-   action law holds of itself: Mac Lane's "the I-algebras in Set are just the
-   sets", here at any category and up to ≈.  The monad matters because it is
+   action law holds of itself: Mac Lane's “the I-algebras in Set are just the
+   sets”, here at any category and up to ≈.  The monad matters because it is
    induced by adjunctions of very different kinds.  Mac Lane's example on p.
    144 is the discrete-space adjunction, whose right adjoint is not monadic
    (Instance/Top/Monadicity.v); the adjunction Id ⊣ Id, whose right adjoint is
@@ -84,7 +84,7 @@ Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
    a copy of this file followed by Instance/Top/Monadicity.v: [IdMonad]
    ([IdMonad_ret] is then refused) and [IdMonad_EM_unit_iso]
    ([IdMonad_EM_unit] and [IdMonad_EM_unit_iso_id]: the proof of the
-   first stops with "Unable to unify", and the readback is refused).  The
+   first stops with “Unable to unify”, and the readback is refused).  The
    two cells [IdMonad_EM_counit] and [IdMonad_EM_unit] are [Defined] by
    the data convention only.
 

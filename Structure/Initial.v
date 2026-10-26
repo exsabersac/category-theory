@@ -38,23 +38,23 @@ Generalizable All Variables.
  this kind were presented by Pierre Samuel in 1948 for topological
  constructions and subsequently used extensively by Bourbaki, a
  decade before Kan independently introduced the closely related
- notion of adjoint functors in 1958 (Wikipedia, "Universal
- property").  The initial object is the empty case of the whole
+ notion of adjoint functors in 1958 (Wikipedia, “Universal
+ property”).  The initial object is the empty case of the whole
  theory of colimits — the colimit of the empty diagram, equivalently
  the nullary coproduct — which is why the unit laws [coprod_zero_l]
  and [coprod_zero_r] of Structure/Cocartesian.v exhibit 0 as the unit
  of the coproduct.  Any two initial objects are isomorphic by a
  unique isomorphism, and this uniqueness up to unique isomorphism,
  shared by every universal construction, is what licenses speaking of
- THE initial object (Milewski, "Products and Coproducts", 2015).
+ THE initial object (Milewski, “Products and Coproducts”, 2015).
  When the initial object moreover coincides with the terminal one,
  Structure/ZeroObject.v records the coincidence as [zero_coincide],
  and the additive spine of the library builds on it.
 
  A substantial portion of category theory reduces to exhibiting an
  initial object somewhere.  A universal arrow from c to a functor F IS
- an initial object of a comma category (Wikipedia, "Universal
- property"), and Theory/Universal/Arrow.v defines it exactly so, as
+ an initial object of a comma category (Wikipedia, “Universal
+ property”), and Theory/Universal/Arrow.v defines it exactly so, as
  the field [arrow_initial]; a colimit is an initial cocone; and a left
  adjoint to U exists precisely when each comma category d ↓ U has an
  initial object, the pivot on which Freyd's adjoint functor theorem
@@ -68,13 +68,13 @@ Generalizable All Variables.
 
  The initial object also seeds the categorical account of induction.
  Adámek constructs the initial F-algebra as the colimit of the ω-chain
- 0 ~> F 0 ~> F² 0 ~> ... based at the initial object (Adámek, "Free
- algebras and automata realizations in the language of categories",
+ 0 ~> F 0 ~> F² 0 ~> ... based at the initial object (Adámek, “Free
+ algebras and automata realizations in the language of categories”,
  Comment. Math. Univ. Carolinae 1974); in this library the chain of
  Construction/Chain.v starts at [initial_obj], and Theory/Adamek.v
  derives the initial algebra as [adamek].  Lambek had already observed
  that the structure map of any initial algebra is an isomorphism
- (Lambek, "A Fixpoint Theorem for Complete Categories", Mathematische
+ (Lambek, “A Fixpoint Theorem for Complete Categories”, Mathematische
  Zeitschrift 1968), formalized as [lambek] in Theory/Lambek.v; and the
  unique algebra morphism out of the initial algebra is the fold —
  [cata] of Theory/Recursion.v — so structural recursion is initiality
@@ -82,16 +82,16 @@ Generalizable All Variables.
  language semantics: abstract syntax is an initial algebra, and a
  semantics is the unique homomorphism into any target algebra, with
  compositionality following at once (Goguen, Thatcher, Wagner, Wright,
- "Initial Algebra Semantics and Continuous Algebras", JACM 1977).
+ “Initial Algebra Semantics and Continuous Algebras”, JACM 1977).
 
  The computational reading of this file is the empty type.  In
  Instance/Coq.v, [Coq_Initial] witnesses False as the initial object
  of the category of Coq types, the unique arrow out being [False_rect]
  — the empty function, Haskell's Void with its absurd (Milewski,
- "Products and Coproducts", 2015).  Under propositions-as-types the
+ “Products and Coproducts”, 2015).  Under propositions-as-types the
  empty type is falsehood, its eliminator is exactly ex falso
  quodlibet, and the eta-rule supplies the uniqueness half of
- initiality (nLab, "empty type").  Read this way, [zero_unique] costs
+ initiality (nLab, “empty type”).  Read this way, [zero_unique] costs
  nothing: a function out of the empty type is defined by zero clauses,
  and any two such functions agree because there is no argument on
  which they could differ. 
@@ -104,7 +104,7 @@ Generalizable All Variables.
  nLab:       https://ncatlab.org/nlab/show/empty+type初始对象是最纯粹的普遍性质类型的对象：它的特征不是由任何内部结构决定的，而仅由它与其他所有事物的关系决定。皮埃尔·萨缪尔(Pierre Samuel)在1948年提出了这种类型的普遍映射性质用于拓扑构造，随后在十年后被布尔巴基(Bourbaki)广泛使用，而在1958年，冈(Kan)独立引入了密切相关的伴随函子概念（Wikipedia，“Universal property”）。初始对象是余极限理论的空例——空图的余极限，同样也是零元积（nullary coproduct）——这就是为什么 Structure/Cocartesian.v 中的单位律 [coprod_zero_l] 和 [coprod_zero_r] 将 0 显示为余积的单位。任何两个初始对象通过唯一的同构是同构的，而这种唯一性（直到唯一同构）是每个泛对象构造都具有的，这就是为什么可以谈论“初始对象”的原因（Milewski，《Products and Coproducts》，2015）。当初始对象进一步与终对象重合时，Structure/ZeroObject.v 将这种重合记录为 [zero_coincide]，而且库的加性脊柱正是建立在它之上。范畴论的很大一部分可以归结为展示某处的初始对象。从 c 到函子 F 的一个通用箭头就是逗号范畴的一个初始对象（维基百科，“通用性质”），而 Theory/Universal/Arrow.v 正是如此定义的，即字段 [arrow_initial]；余极限是一个初始余锥；当且仅当每个逗号范畴 d ↓ U 都有一个初始对象时，U 的左伴随才存在，这就是弗雷德的伴随函子定理的枢轴。这个枢轴在树中是承重的：Theory/WeaklyInitial.v 通过弗雷德的乘积加等化子构造（[initial_from_weakly_initial]）将一个弱初始族提升为一个真正的初始对象，而 Adjunction/GAFT.v 通过 [GAFT_from_initials] 得出该定理的结论。即使是 Instance/Zero.v 的空类别 [_0] 也是一个实例，在 Cat 中通过平凡函子 [From_0] 是初始的。初始对象也为归纳的范畴论描述提供了基础。Adámek 构造了初始 F-代数作为以初始对象为基础的 ω 链的余极限  
  0 ~> F 0 ~> F² 0 ~> ...（Adámek，《范畴语言中的自由代数与自动机实现》，  
  Comment. Math. Univ. Carolinae 1974)；在这个库中，Construction/Chain.v 中的链以 [initial_obj] 开始，  
- 而 Theory/Adamek.v 将初始代数推导为 [adamek]。Lambek 已经观察到，任何初始代数的结构映射都是一个同构（Lambek，《完整范畴的一个不动点定理》，Mathematische Zeitschrift 1968），在 Theory/Lambek.v 中形式化为 [lambek]；而从初始代数导出的唯一代数态射是 fold——在 Theory/Recursion.v 中形式化为 [cata]——所以结构递归就是将初始性付诸实践。ADJ 团队将此作为编程语言语义学的基础：抽象语法是一个初始代数，语义是到任意目标代数的唯一同态，组合性随之立即出现（Goguen, Thatcher, Wagner, Wright, 《初始代数语义与连续代数》，JACM 1977）。该文件的计算阅读类型为空类型。在 Instance/Coq.v 中，[Coq_Initial] 将 False 作为 Coq 类型范畴的初始对象，其唯一的箭头是 [False_rect] ——空函数，相当于 Haskell 的 Void 及其 absurd（Milewski, "Products and Coproducts", 2015）。在命题即类型的解释下，空类型表示假，其消解器恰好是 ex falso quodlibet，而 eta 规则提供了初始性的一半唯一性（nLab, "empty type"）。这样理解，[zero_unique] 不耗费任何资源：从空类型到其他类型的函数通过零条款定义，任何两个这样的函数都一致，因为没有参数可以使它们不同。
+ 而 Theory/Adamek.v 将初始代数推导为 [adamek]。Lambek 已经观察到，任何初始代数的结构映射都是一个同构（Lambek，《完整范畴的一个不动点定理》，Mathematische Zeitschrift 1968），在 Theory/Lambek.v 中形式化为 [lambek]；而从初始代数导出的唯一代数态射是 fold——在 Theory/Recursion.v 中形式化为 [cata]——所以结构递归就是将初始性付诸实践。ADJ 团队将此作为编程语言语义学的基础：抽象语法是一个初始代数，语义是到任意目标代数的唯一同态，组合性随之立即出现（Goguen, Thatcher, Wagner, Wright, 《初始代数语义与连续代数》，JACM 1977）。该文件的计算阅读类型为空类型。在 Instance/Coq.v 中，[Coq_Initial] 将 False 作为 Coq 类型范畴的初始对象，其唯一的箭头是 [False_rect] ——空函数，相当于 Haskell 的 Void 及其 absurd（Milewski, “Products and Coproducts”, 2015）。在命题即类型的解释下，空类型表示假，其消解器恰好是 ex falso quodlibet，而 eta 规则提供了初始性的一半唯一性（nLab, “empty type”）。这样理解，[zero_unique] 不耗费任何资源：从空类型到其他类型的函数通过零条款定义，任何两个这样的函数都一致，因为没有参数可以使它们不同。
 *)
 
 (*
@@ -122,7 +122,7 @@ Generalizable All Variables.
 (*
    【Initial 记号与字段展开】/ Notation & field walkthrough
 
-   1) 本文件不重写 Class：Notation "'Initial' C" := (@Terminal (C^op))。
+   1) 本文件不重写 Class：Notation “'Initial' C” := (@Terminal (C^op))。
       在对偶范畴里把终对象当初始对象用——箭头方向自动翻转。
       No new Class: Initial C is Terminal on C^op (arrows reverse).
 
@@ -132,7 +132,7 @@ Generalizable All Variables.
       - zero_unique     —— 任意两出射箭头 ≈（= one_unique）
 
    3) 阅读提示：先懂 Terminal.v，再把「进 1」改成「出 0」即可。
-      Read Terminal first; flip "into 1" to "out of 0".
+      Read Terminal first; flip “into 1” to “out of 0”.
 *)
 
 Notation "'Initial' C" := (@Terminal (C^op))
@@ -208,7 +208,7 @@ Next Obligation. apply (@zero_unique C I1). Qed.
 
 (*
  And it is the only arrow between them, so the isomorphism is canonical --
- the "unique isomorphism" half of Mac Lane's statement, dual to
+ the “unique isomorphism” half of Mac Lane's statement, dual to
  [terminal_arrow_unique]. 
 
  --------

@@ -26,7 +26,7 @@ Generalizable All Variables.
 (*
    * * Pointed rings, and the polynomial functor as a left adjoint
 
-   Book: Awodey, "Category Theory", §9.3, Example 9.10, printed
+   Book: Awodey, “Category Theory”, §9.3, Example 9.10, printed
    pp. 226-227 (PDF pp. 235-236) — awodey:9.3:example10
    nLab:      https://ncatlab.org/nlab/show/free+functor
    nLab:      https://ncatlab.org/nlab/show/pointed+object
@@ -41,8 +41,8 @@ Generalizable All Variables.
    choice of s in S amount to the same thing as a homomorphism of
    pointed rings (R[x], x) ⟶ (S, s), namely the one substituting s for
    x.  This is the adjunction whose unit is the coefficient inclusion
-   and whose counit is evaluation, and it is the reason "adjoin an
-   indeterminate" is a free construction.
+   and whose counit is evaluation, and it is the reason “adjoin an
+   indeterminate” is a free construction.
 
    A SCOPE CORRECTION, DISCLOSED, AND PROVED NECESSARY.  The adjunction
    is stated here over COMMUTATIVE rings — Instance/Rng.v's [CRng] — and

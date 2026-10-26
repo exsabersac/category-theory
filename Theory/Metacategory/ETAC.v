@@ -9,14 +9,14 @@ Require Import Category.Functor.Opposite.
 Generalizable All Variables.
 
 (*
-Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.1 "Duality" and §II.2 "Contravariance and Opposites",
+Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
+              §II.1 “Duality” and §II.2 “Contravariance and Opposites”,
               printed pp. 31–33 (PDF pp. 41–43) — maclane:II.1:def1 (the
               elementary language), maclane:II.1:def2 (the dual of a
               statement), maclane:II.1:thm1 (the duality principle),
               maclane:II.1:remark2 (extension to functors),
               maclane:II.2:lem1 (duality is realized by the opposite)
-   Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §3.1,
+   Book:      Awodey, “Category Theory” (1st ed., 2005 pre-print), §3.1,
               Propositions 3.1 and 3.2, printed pp. 58–59 (PDF pp. 67–68)
               — awodey:3.1:prop1 (formal duality), awodey:3.1:prop2
               (conceptual duality): the same two theorems
@@ -25,9 +25,9 @@ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
 
    Mac Lane's §II.1 introduces ETAC, the elementary (first-order) theory
    of an abstract category: a two-sorted language with equality whose
-   atomic statements say "a is the domain of f", "a is the codomain of
-   f", "u is the identity arrow of a", "h is the composite of g and f",
-   "f and g are equal arrows", and "a and b are equal objects" — the two
+   atomic statements say “a is the domain of f”, “a is the codomain of
+   f”, “u is the identity arrow of a”, “h is the composite of g and f”,
+   “f and g are equal arrows”, and “a and b are equal objects” — the two
    equality atoms being what let monos and epis be expressed at all —
    closed under the propositional connectives and quantifiers over both
    sorts.
@@ -100,7 +100,7 @@ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
       as theorems about [F^op] — the object and arrow actions of
       [F^op] ARE those of [F], so any functor-statement dualizes by
       the same environment transport — and defers the two-sorted
-      functor LANGUAGE (atoms "T c = b", "T f = h") to future work:
+      functor LANGUAGE (atoms “T c = b”, “T f = h”) to future work:
       embedding it costs a second indexed syntax with nothing new in
       the induction, and §IV.3's exercise rows it would serve are
       already in force in-tree (Functor/Opposite.v's
@@ -156,7 +156,7 @@ nLab：      https://ncatlab.org/nlab/show/duality
 
 3. 对偶引理是无需传输的。[op_arr] 交换箭头束的端点——同样的基础箭头，因为 [hom (C^op) y x] 定义上就是 [hom C x y]——而 [holds_dual] 通过它将 C 中的满足性与 C^op 中的满足性联系起来。簿记发生在六个 [sat_*_op]/[sat_*_unop] 传输中，其证明沿命题 eta [arr_eta] 移动到字面对束，然后将每个端点的等式分解到 [eq_refl]——没有使用任何转换引理。（在转换的定义下方的 [acast_op]/[acast_split]/[acast_comm]/[acast_middle] 套件被导出为可重用的转换代数；本文件中没有任何证明需要它。）因为引理对 C 端环境进行量化并向前传输它，对偶原理不需要双重 op 展开：在 C^op 上实例化假设已经得到 C 上的对偶。
 
-4. 函子扩展是有范围的（Mac Lane: II.1: remark2）。Mac Lane 指出，这种语言可以扩展到由函子连接的多个范畴。此文件记录了单函子情况作为关于 [F^op] 的定理——[F^op] 的对象和箭头作用与 [F] 相同，因此任何函子陈述都可以通过相同的环境传输进行对偶化——并将两排序函子语言（atoms "T c = b", "T f = h"）延迟到未来工作中：嵌入它需要第二个索引语法，而在归纳中没有新增内容，并且 §IV.3 的练习行它将服务的内容已经在树中生效（Functor/Opposite.v 中带有反演的 [Opposite_Functor]，Natural/Transformation/Opposite.v 的 [Opposite_Transform]，Adjunction/Opposite.v 中转置交换的 [Opposite_Adjunction] 以及它的变换兄弟部分）。
+4. 函子扩展是有范围的（Mac Lane: II.1: remark2）。Mac Lane 指出，这种语言可以扩展到由函子连接的多个范畴。此文件记录了单函子情况作为关于 [F^op] 的定理——[F^op] 的对象和箭头作用与 [F] 相同，因此任何函子陈述都可以通过相同的环境传输进行对偶化——并将两排序函子语言（atoms “T c = b”, “T f = h”）延迟到未来工作中：嵌入它需要第二个索引语法，而在归纳中没有新增内容，并且 §IV.3 的练习行它将服务的内容已经在树中生效（Functor/Opposite.v 中带有反演的 [Opposite_Functor]，Natural/Transformation/Opposite.v 的 [Opposite_Transform]，Adjunction/Opposite.v 中转置交换的 [Opposite_Adjunction] 以及它的变换兄弟部分）。
 两行 §IV.3 在此之外添加的 —— 对一个任意函子而言的充满性和忠实性 —— 在相同更改中的 Functor/Opposite.v 中落地（[Full_op]/[Faithful_op] 及其对偶），而逆对行落地在 Theory/Morphisms/Duality.v 中（[op_Retraction_of_Section] 及其三个兄弟，紧挨着 Monic/Epic 四重奏）。下面的一函子记录，[arr_fmap_op]，是一个束级别的换位 —— 此作用域中的注释的真实内容是揭示以及 [F^op] 的操作与 [F] 的定义一致性。
 
 5. 有效性不是同构不变的。因为对象原子通过莱布尼茨等式进行比较——这是该库在对象上唯一携带的关系——[valid] 是关于严格结构的陈述：句子在 C 中的真值可能取决于对象恒等，而这里没有任何东西可以沿着范畴等价传递 [valid]。这就是在这些模型上具有对象等式的一阶语言的诚实解读。
@@ -518,7 +518,7 @@ Qed.
 
 (*
 Well-scopedness below a pair of de Bruijn bounds, and sentences as
-   the formulas closed below (0, 0) — Mac Lane's "statements".  A
+   the formulas closed below (0, 0) — Mac Lane's “statements”.  A
    sentence's satisfaction does not depend on the environment at all.
 
 --------

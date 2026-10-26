@@ -1,13 +1,13 @@
 (*
    * * The diagonal square functor on FdVect, and what maps into it
 
-   Riehl, "Category Theory in Context", §1.4 Example 1.4.4(vii),
+   Riehl, “Category Theory in Context”, §1.4 Example 1.4.4(vii),
    printed p. 26.  Over a field the assignment V ↦ V ⊗ V extends to an
    endofunctor of finite-dimensional vector spaces, and Riehl's
    observation is that the ONLY natural transformation from the
    identity functor to it is the zero one.  It is the elementary
-   illustration that "a map given at every object" is far weaker than
-   "a natural family": the naturality square at the scalar map
+   illustration that “a map given at every object” is far weaker than
+   “a natural family”: the naturality square at the scalar map
    v ↦ λ·v forces λ·α_V(v) ≈ λ²·α_V(v) for every scalar λ, and at
    λ = 2 that reads 2a ≈ 4a, whence 2a ≈ 0 and — the characteristic
    hypothesis being 1 + 1 ≉ 0 — a ≈ 0.  That is [diag_transform_zero]
@@ -43,7 +43,7 @@
    Conversely
    nothing below rules out a natural diagonal in some other compact
    closed category, and nothing below is discharged by citing
-   no_cloning: the two proofs share no lemma, and the word "cloning"
+   no_cloning: the two proofs share no lemma, and the word “cloning”
    is a name for a family of results, not an argument.  What they do
    share is a moral, which is why they are cross-referenced here.
 
@@ -415,7 +415,7 @@ Qed.
 
 (*
  A linear map acts on coordinates by its table: this is the whole
- content of "a linear map is a matrix", at an arbitrary based source
+ content of “a linear map is a matrix”, at an arbitrary based source
  and target.  Instance/FdVect.v's [matrix_of_sur] is the same
  argument at the standard spaces, and this proof follows its shape. 
 
@@ -806,7 +806,7 @@ Proof.
     apply delta_unpair.
 Qed.
 
-(* The Kronecker square of "multiply by c" is "multiply by c²" — the whole computational content of Riehl's example. / “乘以 c”的 Kronecker 平方是“乘以 c²”——这是 Riehl 示例的全部计算内容。 *)
+(* The Kronecker square of “multiply by c” is “multiply by c²” — the whole computational content of Riehl's example. / “乘以 c”的 Kronecker 平方是“乘以 c²”——这是 Riehl 示例的全部计算内容。 *)
 Lemma tsq_map_scale (c : carrier (rig_setoid F)) (V : FdVectObject F)
   (t : Fin.t (fdv_dim V * fdv_dim V) → carrier (rig_setoid F))
   (q : Fin.t (fdv_dim V * fdv_dim V)) :
@@ -834,7 +834,7 @@ Qed.
 
 (*
  The zero morphism V → V ⊗ V, written out so that the theorem below
- can say "the component IS this" rather than "every value is zero". 
+ can say “the component IS this” rather than “every value is zero”. 
 
  --------
  零同态 V → V ⊗ V，写出来是为了让下面的定理可以说“该分量就是这个”，而不是“每个值都是零”。
@@ -877,7 +877,7 @@ Next Obligation.
 Qed.
 
 (*
-   * Riehl, "Category Theory in Context", §1.4 Example 1.4.4(vii),
+   * Riehl, “Category Theory in Context”, §1.4 Example 1.4.4(vii),
    printed p. 26.  Every natural transformation from the identity
    functor to the diagonal square functor is zero.
 

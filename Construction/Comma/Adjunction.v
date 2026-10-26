@@ -52,7 +52,7 @@ Generalizable All Variables.
  Coherence between an iso φ : C ⟶ D (with inverse ψ) and two projections
  πC, πD : _ ⟶ E that it preserves: the unit/counit η, μ paste together with
  the comparison cells κ, θ.  Whiskered along φ and ψ this says φ, ψ are
- compatible "over the projections", the property that makes the comma-category
+ compatible “over the projections”, the property that makes the comma-category
  iso below an iso over D ∏ C. 
 
  --------
@@ -74,24 +74,24 @@ Definition whisker_equiv
 Section AdjunctionComma.
 
 (*
- Wikipedia: "Lawvere showed that the functors F : C → D and G : D → C are
+ Wikipedia: “Lawvere showed that the functors F : C → D and G : D → C are
  adjoint if and only if the comma categories (F ↓ Id[D]) and (Id[C] ↓ G) are
  isomorphic, and equivalent elements in the comma category can be projected
  onto the same element of C × D. This allows adjunctions to be described
  without involving sets, and was in fact the original motivation for
- introducing comma categories."
+ introducing comma categories.”
 
- From ncatlab: "To give an adjunction i ⊣ r it suffices to give, for each k
+ From ncatlab: “To give an adjunction i ⊣ r it suffices to give, for each k
  : x → pe in B ↓ p, an object rk in E such that prk = x and an arrow irk =
- 1x → k in B ↓ p that is universal from i to k."
+ 1x → k in B ↓ p that is universal from i to k.”
 
  Lawvere's own statement of the theorem, from his thesis (page 40):
 
- "For each functor f : A ⟶ B, there exists a functor g : B ⟶ A such that g
+ “For each functor f : A ⟶ B, there exists a functor g : B ⟶ A such that g
  is adjoint to f iff for every object B ∈ |B| there exists an object A ∈ |A|
  and a map φ : B ~> A in B such that for every object A′ ∈ |A| and every
  map x : B ~> A′ in B, there exists a unique map y : A ~> A′ in A such that
- x = φ(yf) in B." 
+ x = φ(yf) in B.” 
 
  --------
  维基百科：“Lawvere 证明了，当且仅当逗号范畴 (F ↓ Id) 和 (Id ↓ G) 同构时，函子 F : C → D 和 G : D → C 是伴随的，并且逗号范畴中相应的元素可以被投影到 C × D 的同一个元素上。这使得伴随可以在不涉及集合的情况下描述，实际上这也是引入逗号范畴的最初动机。”

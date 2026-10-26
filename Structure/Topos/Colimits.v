@@ -39,13 +39,13 @@ Generalizable All Variables.
  [Category.Functor.Opposite] opens [functor_scope], and
  [Category.Theory.Monad], which has no [Open Scope] of its own, carries it in
  by requiring that module; after either Require a bare [C^op] on a CATEGORY
- parses as [Opposite_Functor C] and is rejected with "The term C has type
- Category while it is expected to have type ?C ⟶ ?D".  Reopening
+ parses as [Opposite_Functor C] and is rejected with “The term C has type
+ Category while it is expected to have type ?C ⟶ ?D”.  Reopening
  [category_scope] restores the reading this file wants.  A second hazard, met
  while building [EM_Terminal]: a [{| t_alg := … |}] record literal needs
  [Category.Monad.Algebra] REQUIRED EXPLICITLY -- requiring only
- [Category.Monad.Eilenberg.Moore], which uses the record, reports "t_alg: Not
- a projection". 
+ [Category.Monad.Eilenberg.Moore], which uses the record, reports “t_alg: Not
+ a projection”. 
 
  --------
  [Category.Functor.Opposite] 打开 [functor_scope]，以及 [Category.Theory.Monad]，它本身没有 [Open Scope]，通过要求该模块将其引入；在任一情况下，如果在 CATEGORY 上仅 Require 一个 [C^op]，会被解析为 [Opposite_Functor C] 并因“术语 C 的类型是 Category，而期望类型是 ?C ⟶ ?D”而被拒绝。重新打开 [category_scope] 会恢复该文件所需的读取。第二个风险出现在构建 [EM_Terminal] 时：一个 [{| t_alg := … |}] 记录字面量需要明确 REQUIRED 的 [Category.Monad.Algebra] —— 仅仅要求 [Category.Monad.Eilenberg.Moore]（它使用该记录）会报告 “t_alg: Not a projection”。
@@ -58,48 +58,48 @@ Open Scope category_scope.
  nLab:      https://ncatlab.org/nlab/show/topos
  nLab:      https://ncatlab.org/nlab/show/Pare%27s+theorem
  Wikipedia: https://en.wikipedia.org/wiki/Topos
- Paper:     Paré, "Colimits in topoi", Bulletin of the American
+ Paper:     Paré, “Colimits in topoi”, Bulletin of the American
  Mathematical Society 80 (1974), pp. 556-561
 
  THREE BOOKS STATE THIS IN FOUR PLACES AND NONE OF THEM PROVES IT.
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.10,
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed., §IV.10,
  book p. 107 (`maclane:IV.10:remark2`), closes the topos section with:
 
- "The axioms for a topos have many useful consequences. For exam-
- ples, every topos has all finite colimits."
+ “The axioms for a topos have many useful consequences. For exam-
+ ples, every topos has all finite colimits.”
 
- The Appendix "Foundations", §App.1, book p. 290
+ The Appendix “Foundations”, §App.1, book p. 290
  (`maclane:App.1:remark2`), singles out the initial object:
 
- "These axioms for a topos then hold for the category of sets. They
+ “These axioms for a topos then hold for the category of sets. They
  have a number of strong consequences. For example, they give all
  finite cate- gorical products and pullbacks, as well as all finite
- coproducts, including an initial object 0, the empty set."
+ coproducts, including an initial object 0, the empty set.”
 
- Awodey, "Category Theory" (1st ed., Carnegie Mellon pre-print,
+ Awodey, “Category Theory” (1st ed., Carnegie Mellon pre-print,
  September 2005), §8.8, printed p. 210
  (`awodey:8.8:remark-topos-properties`), immediately after Definition
  8.16:
 
- "This compact definition proves to be amazingly rich in
+ “This compact definition proves to be amazingly rich in
  consequences: it can be shown for instance that topoi also have all
  finite colimits and that every slice category of a topos is again a
  topos. We refer the reader to the books by Mac Lane and Moerdijk,
  Johnstone, and McLarty for information on topoi, and here just give
- an example (albeit one the covers a very large number of cases)."
+ an example (albeit one the covers a very large number of cases).”
 
- Fong and Spivak, "Seven Sketches in Compositionality", §7.2.1, printed
+ Fong and Spivak, “Seven Sketches in Compositionality”, §7.2.1, printed
  p. 225 (`7sketches:7.2.1:remark-topos-properties`):
 
- "Although we will not prove it in this book, toposes are categories
+ “Although we will not prove it in this book, toposes are categories
  that are similar to Set in many ways. Here are some facts that are
  true of any topos E:
  1. E has all limits,
  2. E has all colimits,
  3. E is cartesian closed,
  4. E has epi-mono factorizations,
- 5. E has a subobject classifier 1 --true--> Ω."
+ 5. E has a subobject classifier 1 --true--> Ω.”
 
  Mac Lane-Moerdijk, the reference Mac Lane §IV.10 and Awodey both send the
  reader to (the Appendix page and Seven Sketches name none), was NOT available
@@ -128,8 +128,8 @@ Open Scope category_scope.
  drawn from it is an inference.  [Terminal_Limit] (Structure/Limit/Terminal.v)
  and [Cartesian_Limit] (Structure/Limit/Cartesian.v) are stated over
  [Category@{u Set Set}]: they pin the ambient category's hom AND proof
- universes to the literal [Set].  Going through them would have made "every
- elementary topos has finite colimits" a theorem about Set-homed toposes only
+ universes to the literal [Set].  Going through them would have made “every
+ elementary topos has finite colimits” a theorem about Set-homed toposes only
  -- an inference from those two refusals and not a compiled comparison, since
  the [Limit] route was not built.  So no [Cone], [Limit], [Colimit] or
  [Cocomplete] token occurs outside a comment in Structure/Topos/Power.v,
@@ -208,11 +208,11 @@ Open Scope category_scope.
  nLab:       https://ncatlab.org/nlab/show/topos 
  nLab:       https://ncatlab.org/nlab/show/Pare%27s+theorem 
  维基百科:   https://en.wikipedia.org/wiki/Topos 
- 论文:       Paré, "Colimits in topoi", 美国数学学会公报 80 (1974), 第556-561页
+ 论文:       Paré, “Colimits in topoi”, 美国数学学会公报 80 (1974), 第556-561页
 
  三本书在四个地方陈述了这一点，但没有一本证明它。
 
- Mac Lane, "为工作数学家而作的范畴论"，第2版，§IV.10，书页107 (`maclane:IV.10:remark2`)，以如下内容结束了拓扑部分：
+ Mac Lane, “为工作数学家而作的范畴论”，第2版，§IV.10，书页107 (`maclane:IV.10:remark2`)，以如下内容结束了拓扑部分：
 
  “拓扑的公理有许多有用的结果。例如，每个拓扑都有所有有限余极限。”
 

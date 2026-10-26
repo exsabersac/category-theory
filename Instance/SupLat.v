@@ -17,24 +17,24 @@ Require Import Category.Instance.Cat.
 Generalizable All Variables.
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.2, Exercise 1(b), (c) and (d), printed
  p. 142 (PDF p. 151) — maclane:VI.2:ex1
  nLab: https://ncatlab.org/nlab/show/suplattice
  nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
 
- In §VI.2 Mac Lane gives "several examples which show that the T-algebras
- for familiar monads are the familiar algebras" (printed p. 141), and the
- first exercise of the section, "Complete semi-lattices (E. Manes;
- thesis)", adds one more.  From the page image: "Recall that a complete
+ In §VI.2 Mac Lane gives “several examples which show that the T-algebras
+ for familiar monads are the familiar algebras” (printed p. 141), and the
+ first exercise of the section, “Complete semi-lattices (E. Manes;
+ thesis)”, adds one more.  From the page image: “Recall that a complete
  semi-lattice is a partial order Q in which every subset S ⊂ Q has a
- supremum (least upper bound) in Q."  With ⟨𝒫, η, μ⟩ the covariant
- power-set monad of part (a): "(b) Prove that each 𝒫-algebra ⟨X, h⟩ is a
+ supremum (least upper bound) in Q.”  With ⟨𝒫, η, μ⟩ the covariant
+ power-set monad of part (a): “(b) Prove that each 𝒫-algebra ⟨X, h⟩ is a
  complete semi-lattice when x ≦ y is defined by h{x, y} = y, and sup S =
  hS for each S ⊂ X.  (c) Prove conversely that every (small) complete
  semi-lattice is a 𝒫-algebra in this way.  (d) Conclude that the category
  of 𝒫-algebras is the category of all (small) complete semi-lattices, with
- morphisms the order and sup-preserving functions."  These complete
+ morphisms the order and sup-preserving functions.”  These complete
  join-semilattices are nLab's suplattices.  The same section's other
  examples are in the tree as well: closure operators (#463,
  Instance/Proset/Monad.v), group actions (#464,
@@ -46,7 +46,7 @@ Generalizable All Variables.
  [TAlgebra_SupLat]: the order is [talg_le], with [talg_le_iff] its reading
  as Mac Lane's h{x, y} ≈ y, and the sup IS h; the functor is
  [EM_to_SupLat].  (c) is [SupLat_TAlgebra]: the structure map IS the sup,
- and "in this way" is [sl_sup_pair_le], x ≤ y iff sup {x, y} ≈ y, so that
+ and “in this way” is [sl_sup_pair_le], x ≤ y iff sup {x, y} ≈ y, so that
  (b) after (c) gives back the order ([sl_talg_le_iff]); the functor is
  [SupLat_to_EM].  (d) is [SupLat_EM_equivalence] and
  [SupLat_EM_iso : SupLat ≅[Cat] EilenbergMoore Powerset_Prop].
@@ -73,22 +73,22 @@ Generalizable All Variables.
  singletons are [Prop]-valued: the unit law needs sup {x} ≤ x from a
  squashed membership, and with a [Type]-valued order that elimination is
  refused on universes, a sort refusal (N10 of Test/ProbeSupLat466.v,
- UNIVERSE: "The term "le z x" has type "Type" while it is expected to
- have type "Prop" (universe inconsistency: Cannot enforce o <= Prop)").
+ UNIVERSE: “The term ”le z x“ has type ”Type“ while it is expected to
+ have type ”Prop“ (universe inconsistency: Cannot enforce o <= Prop)”).
  The sup is a setoid map rather than a bare function, since with a bare
  function the round trip rebuilds its respect for ≈ and the structure map
  comes back only as a function (N9: the rebuilt map against [sl_sup A] is
  refused at [eq_refl], its function is accepted).  A morphism [SupLatHom] is
- a setoid map preserving sups ([slh_sup]); Mac Lane's "order and
- sup-preserving" asks for monotonicity too, and it is derived
+ a setoid map preserving sups ([slh_sup]); Mac Lane's “order and
+ sup-preserving” asks for monotonicity too, and it is derived
  ([SupLatHom_monotone], through [sl_sup_pair_le]), so the two classes of
  maps are the same.  Two morphisms are equal when their maps agree pointwise
  up to ≈.
 
- WHAT "(SMALL)" BECOMES.  A small complete semilattice is a carrier in
+ WHAT “(SMALL)” BECOMES.  A small complete semilattice is a carrier in
  [SetoidObject@{o o}], an object of [Sets@{o so}], with a sup for EVERY
  ≈-respecting [Prop]-valued predicate on it.  By the impredicativity of
- [Prop] those predicates form a type at level o, so "every subset" is the
+ [Prop] those predicates form a type at level o, so “every subset” is the
  whole power set at the carrier's own level and no restriction of size is
  imposed on the subsets, only on the carrier.  One consequence is proved
  in Instance/SupLat/Examples.v: a complete semilattice with a decidable ≈
@@ -112,7 +112,7 @@ Generalizable All Variables.
  a field.
 
  WHY AN ISOMORPHISM IN CAT, AND NOT THE IDENTITY.  Mac Lane writes that
- the category of 𝒫-algebras "is the category" of complete semi-lattices.
+ the category of 𝒫-algebras “is the category” of complete semi-lattices.
  The tree delivers [SupLat_EM_iso], an isomorphism in [Cat], whose inverse
  laws hold up to natural isomorphism (an equivalence of categories), with
  identity components: its [to] leg IS [SupLat_to_EM] and its [from] leg IS
@@ -128,9 +128,9 @@ Generalizable All Variables.
  Theory/Functor.v's [Functor_Setoid_obligation_1], opaque in this tree
  ([About]).  In a scratch file under this file's imports, the component
  of [iso_from_to (Equivalence_to_Cat_Iso SupLat_EM_equivalence)] at A is
- refused at [eq_refl] against the identity, (cannot unify "slh_map
- (projT1 (iso_from_to (Equivalence_to_Cat_Iso SupLat_EM_equivalence)) A)"
- and "setoid_morphism_id"), while that of its [iso_to_from] holds; in
+ refused at [eq_refl] against the identity, (cannot unify “slh_map
+ (projT1 (iso_from_to (Equivalence_to_Cat_Iso SupLat_EM_equivalence)) A)”
+ and “setoid_morphism_id”), while that of its [iso_to_from] holds; in
  the probe's flip, where that obligation is transparent, both hold.
  Built directly, [SupLat_EM_iso] has the universe block it had as that
  bridge ([About] before and after, compared by [diff]).
@@ -155,8 +155,8 @@ Generalizable All Variables.
  [Defined], [Transparent Obligations] set and [abstract] made
  [transparent_abstract], save the exceptions the probe's header lists
  (three [Qed]s whose flip is itself refused, Instance/Sets.v's
- [setoid_morphism_compose_respects] among them, "Universe … is
- unbound"; Structure/Cartesian/Closed.v keeping its [Qed]s, with
+ [setoid_morphism_compose_respects] among them, “Universe … is
+ unbound”; Structure/Cartesian/Closed.v keeping its [Qed]s, with
  [Unset Transparent Obligations] added; Structure/Limit/Preservation.v's
  [preserves_colimit] written with [all:] steps; and two [abstract cat]
  steps of Construction/Elements.v kept as they are), each of them prints
@@ -231,7 +231,7 @@ Generalizable All Variables.
  --------
  书籍：Mac Lane，《为在职数学家准备的范畴论》，第2版，施普林格 GTM 5，1998年，第VI.2节，练习题1(b)、(c)和(d)，印刷页142（PDF页151）—— maclane:VI.2:ex1
  nLab: https://ncatlab.org/nlab/show/suplattice
- nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad在 §VI.2 中，Mac Lane 给出了“几例显示熟悉的单子 T-代数是熟悉的代数”（印刷页 141），以及本节的第一个练习题，“完备半格（E. Manes；论文）”，又增加了一个例子。从页面图像来看：“回忆一下，完备半格是一个偏序集 Q，其中每个子集 S ⊂ Q 在 Q 中都有上确界（最小上界）。” 对于部分 (a) 的协变幂集单子 ⟨𝒫, η, μ⟩：“(b) 证明每个 𝒫-代数 ⟨X, h⟩ 是一个完备半格，当 x ≦ y 由 h{x, y} = y 定义，并且对于每个 S ⊂ X, sup S = hS。(c) 反过来证明，每个（小的）完备半格都是这样构造的 𝒫-代数。(d) 得出结论：𝒫-代数的范畴是所有（小）完全半格的范畴，态射为保持序和上确界的函数。这些完全的上联半格是 nLab 所说的上格。同一章节的其他例子也在树中：闭包算子（#463，Instance/Proset/Monad.v）、群作用（#464，Instance/Fun/Action/Monad.v）和模（#465，Instance/Mod/TensorMonad.v）。哪个常量对应哪个部分。(a) 是 Instance/Sets/Powerset/Monad.v 的 [Powerset_Monad]，在 #227 的自函子 [Powerset_Prop] 上。(b) 是 [TAlgebra_SupLat]：顺序是 [talg_le]，它的读法 [talg_le_iff] 作为 Mac Lane 的 h{x, y} ≈ y，sup 是 h；函子是 [EM_to_SupLat]。(c) 是 [SupLat_TAlgebra]：结构映射是 sup，而“以这种方式”是 [sl_sup_pair_le]，x ≤ y 当且仅当 sup {x, y} ≈ y，因此 (c) 后的 (b) 给出了顺序 ([sl_talg_le_iff])；函子是 [SupLat_to_EM]。(d) 是 [SupLat_EM_equivalence] 和 [SupLat_EM_iso : SupLat ≅[Cat]  EilenbergMoore Powerset_Prop].该顺序是并运算顺序。Mac Lane 的 x ≤ y 当且仅当 h{x, y} = y，这使得 h{x, y} 成为 x 和 y 的最小上界，因此 sup 是一个并运算，底元素是 sup ∅，此处没有提到交运算。对 {x, y} 的处理是 [Powerset_Prop_pair]，是 #227 两个单元素集合的并集（树中没有二元素子集；Instance/Powerset.v 中的 [subset_join] 是二元并运算）。记录，首先是顺序。[SupLatObject] 是 Mac Lane 的定义：一个集合类 [sl_set]，一个顺序 [sl_le]，它是自反的、传递的、尊重 ≈ 并且在 ≈ 上是反对称的，以及每个子集的上确界 [sl_sup]，以集合类映射的形式存储，来自 #227 的子集（[sl_sup_ub], [sl_sup_least]）。该顺序有其自身的类型，载体 → 载体 → 命题：一个记录，其顺序是标准库的 [relation]，带有 Instance/Proset/Limit.v 的 [IsLUB] 或 [HasAllJoins]，包含全局上界 o <= Relation_Definition.u0 和两个或四个额外的宇宙绑定器，其中每个绑定器中有一个未使用，[IsLUB] 记录从索引其族的 sigma 类型添加了 o <= Projections.u0（通过 [About] 测量，在该树的两个此类记录的侦察中），因此这三者中没有一个被使用。该顺序是一个 [Prop]，因为 #227 的单元素是 [Prop] 值的：单元律需要从压缩的成员关系中得到 sup {x} ≤ x，并且对于 [Type] 值的顺序，在宇宙上拒绝消去，这是一个类型拒绝（Test/ProbeSupLat466.v 的 N10，宇宙："术语 'le z x' 的类型为 'Type'，而期望类型为 'Prop'（宇宙不一致：无法强制 o <= Prop）"）。sup 是一个集合等价映射，而不是裸函数，因为用裸函数时，往返重建会维持其对 ≈ 的尊重，而结构映射只会以函数形式返回（N9：重建的映射对 [sl_sup A] 在 [eq_refl] 被拒绝，但其函数形式被接受）。一个态射 [SupLatHom] 是一个保持上确界的集合映射 ([slh_sup])；Mac Lane 的“顺序和上确界保持”还要求单调性，并且它是可以推导的 ([SupLatHom_monotone]，通过 [sl_sup_pair_le])，所以这两类映射是相同的。当两个态射的映射在每个点上都一致（至≈为止）时，它们相等。“小型”变成什么。一个小型完全半格是在 [SetoidObject@{o o}] 中的载体，是 [Sets@{o so}] 的一个对象，对于每一个 ≈-保持的 [Prop] 值谓词，它都有一个上界。由于 [Prop] 的自反性，这些谓词在层级 o 上形成一个类型，因此“每一个子集”就是载体自身层级的整个幂集，对子集没有大小限制，仅对载体有限制。一个结论在 Instance/SupLat/Examples.v 中被证明：一个具有可判定 ≈ 的完全半格以及两个不同的可比较点 x ≤ y 可以决定每一个命题 Q 的 ¬Q 或 ¬¬Q（[suplat_two_points_WLEM]），信息性地，因为上确界是一个运算，[sl_sup]，而不仅仅是存在，因此 bool 上的链 false < true 在这种信息性弱排中律下是唯一的，并且那里的非空见证是自由的，即 P X 和 Prop = P 1，而不是有限链。（b）中的 squash，以及它为何是惰性的。在这个库中，态射和元素的相等性是 [Type] 值的，因此 Mac Lane 的条件 h{x, y} = y 被读作 [Prop] [talg_le] := squash (h{x, y} ≈ y)。每个 𝒫-代数都撤销 squash（[talg_unsquash]）：在 P X 中 {x} ≈ {y} 在内容上是 [Prop]，h 尊重 ≈，且 h{x} ≈ x。因此 [talg_le_iff] 精确陈述了 Mac Lane 的条件，并且每个代数的载体都有一个命题相等（[talg_PropEquiv]）；每个完全半格的也有，x ≈ y 当且仅当 x ≤ y 且 y ≤ x（[sl_PropEquiv]）。两者都是定理：不需要 [PropEquiv] 字段或假设，其中 Lib/Setoid/Propositional.v 的代数记录（CMon、Grp 及其余部分）将其作为一个字段承载。为什么在范畴论中使用同构，而不是恒等映射。Mac Lane 写道 𝒫-代数的范畴“就是”完全半格的范畴。该树提供了 [SupLat_EM_iso]，一个 [Cat] 中的同构，其逆律在自然同构（范畴等价）下成立，其恒等组成部分为：其 [to] 分支是 [SupLat_to_EM]，ZYW55WZZ 分支是 [EM_to_SupLat]，并且其两个自然同构 [iso_to_from] 和 [iso_from_to] 的每个组成部分都是恒等映射，来回作用于 ([SupLat_EM_iso_to_from_component], [SupLat_EM_iso_from_to_component] 及其 [_from] 对应项)，正如 [SupLat_EM_equivalence] 的余单元和单元的每个组成部分 ([SupLat_EM_counit_component], [SupLat_EM_unit_component] 及其 [_from] 对应项) 一样。[SupLat_EM_iso] 是由两个组件同构构建的，而不是像 Theory/Equivalence.v 的 [Equivalence_to_Cat_Iso] 那样通过等价构建的：该桥接将 [iso_from_to] 视为单位的 [symmetry]，这就是 Theory/Functor.v 的 [Functor_Setoid_obligation_1]，在此树 ([About]) 中是不透明的。在该文件导入的一个临时文件中，[iso_from_to (Equivalence_to_Cat_Iso SupLat_EM_equivalence)] 在 A 处的组件被 [eq_refl] 拒绝与单位对齐（无法统一 "slh_map (projT1 (iso_from_to (Equivalence_to_Cat_Iso SupLat_EM_equivalence)) A)" 与 "setoid_morphism_id"），而其 [iso_to_from] 的组件则成立；在探针的翻转中，该义务变为透明，两者都成立。直接构建时，[SupLat_EM_iso] 拥有它作为桥接时的宇宙屏障 ([About] 前后，通过 [diff] 进行比较) 。往返操作会保留载体、sup、结构映射以及在 [eq_refl] 的态射映射（[SupLat_EM_rt_carrier] 以及在 STRENGTHS 下列出的其他五个往返读回），但不会保留半格的顺序，这是一个只有逻辑上才会返回的数据字段（[sl_talg_le_iff]）；并且这里仍然无法形成范畴的恒等式，原因有两个，都记录在 Test/ProbeSupLat466.v 中。首先，Monad/Eilenberg/Moore.v 的 [EilenbergMoore] 的对象是 [sigT] 对，而 [sigT] 没有 eta，因此变量代数 x 永远无法转换为它的往返操作构建的对（N3）；重建代数的两个证明字段 [t_id] 和 [t_action] 也是新的证明（N4, N4b），因此即使在命名代数 α 上，代数的往返操作也会被拒绝（N7）。其次，半格上的往返重建了顺序，如 sup {x, y} 的压缩 ≈ y，从逻辑上但不是定义上仍然是它最初的顺序 (N2，因此 N1)；然后，在 [eq_refl] (N6) 上，态射的往返甚至不是良类型的，并且两个复合都不是恒等函子 (N5, N5b)。这些拒绝都不是不透明的：在探针的翻转中，其一百模块的依赖闭包的副本中，每个 [Qed] 都变成了 [Defined]，[Transparent Obligations] 被设置，[abstract] 变成 [transparent_abstract]，除非探针的头文件列出的例外（三个 [Qed] 本身的翻转被拒绝，Instance/Sets.v 中的 [setoid_morphism_compose_respects] 在其中，“Universe … 未绑定”；Structure/Cartesian/Closed.v 保留其 [Qed]，添加了 [Unset Transparent Obligations]；Structure/Limit/Preservation.v 的 [preserves_colimit] 通过 [all:] 步骤写入；Construction/Elements.v 的两个 [abstract cat] 步骤保持不变），它们中的每一个在此树中打印它打印的错误，并且探针的所有控件都保持有效。一种经过衡量的替代方案，未被采纳。变体 L（侦察者的 t5；探测器的助手 [p466_SupLatObjectL]）在该记录中增加了两个代数律——sup 的代数律，sup {x} ≈ x 以及沿并集的 sup 的结合律，作为冗余字段。于是其代数往返验证随后在 [eq_refl] 上对整个代数和写作 (X; α)（[p466_L_alg_rt], [p466_L_obj_rt]）的对象成立，因为 [TAlgebra] 是一个带有 eta 的记录；在变量对象上，它同样被拒绝 (N8, [sigT] 再次)，其半格往返仍然以压缩形式重建顺序 (N8b)，并且该记录不再是 Mac Lane 的定义，部分 (c) 被移入智能构造函数。保持了以顺序为先的记录。优势。由 [eq_refl]：[SupLat_EM_iso] 的两条腿（[SupLat_EM_iso_to]，[SupLat_EM_iso_from]）；对于 (b)，承载者、sup 作为整体结构映射 h，以及顺序作为 h{a, b} ≈ b 的压缩（[EM_to_SupLat_carrier]，[EM_to_SupLat_sup]，[EM_to_SupLat_le]）；对于 (c)，承载者和结构映射作为整体 sup（[SupLat_to_EM_carrier]，[SupLat_to_EM_alg]）；两个函子在态射上的作用（[EM_to_SupLat_map]，[SupLat_to_EM_map]）；承载者、结构映射、sup 和态射上的往返（[SupLat_EM_rt_carrier]，[SupLat_EM_rt_alg]，[SupLat_EM_rt_set]，[SupLat_EM_rt_sup]，[SupLat_EM_rt_hom]，[SupLat_EM_rt_alg_hom]）；以及 [SupLat_EM_iso] 的两个自然同构的两个方向的同一性分量，以及 [SupLat_EM_equivalence] 的余单位和单位。逻辑上（[iffT] 或 [iff]）：一个代数关于 Mac Lane 条件（[talg_le_iff]）的顺序，一个半格的顺序关于 sup {x, y} ≈ y（[sl_sup_pair_le]）以及关于其代数的顺序（[sl_talg_le_iff]）。仅在 ≈ 时，作为具有恒等分量的自然同构：两个复合映射关于恒等函子。拒绝：前两段的列表。[Defined] 项中的定律证明（[SupLat_TAlgebra] 的代数定律、范畴和函子定律、两个同构的逆定律）保持在行内而不是移到 [Qed] 引理中：没有回读会读取它们，上述翻转使每个证明透明，但不改变任何拒绝内容。宇宙，读出 [About]。该对，记录，其投影，态射，[sl_sup_pair_le]、[SupLatHom_monotone] 和 [sl_PropEquiv] 将 [@{o}] 与已经绑定的 [Set < o] 绑定，首次由 Instance/Sets/Powerset.v 的 [Powerset_Prop_truth_equiv] 承载；[SupLatObject@{o} : Type@{o+1}]、[SupLat_id] 和 [SupLat_compose] 添加了帽 ID 并组成了 Instance/Sets.v 的 [setoid_morphism_id] 和 [setoid_morphism_compose]。[SupLat@{o so} : Category@{so o o}] 具有 [Sets@{o so}] 的块，并添加了 [Set < o]。每个命名单子（monad）的常量将 [@{o so}] 与 [Powerset_Monad] 的块绑定；那些命名 [EilenbergMoore] 的添加了 [o <= Projections.u1] 和 [so <= Projections.u0]，其 [sigT] 投影，以及八个组件回读 also [o <= Projections.u0] 和 [so <= Projections.u1]，来自自然同构在其陈述中的 [projT1]。[SupLat_EM_iso]，它的两个支脚回读以及命名它的四个组件回读绑定 [@{o so c}] 并添加 [o < c] 和 [so < c]，来自 Instance/Cat.v 的 [Cat@{c so so so o}]。带有 [Type] 一侧的语句使用 [iffT@{o o}]，Lib/Foundation.v 的 ↔ 及其两个命名的宇宙，它们保持在 [@{o}] 和 [@{o so}] 上，没有虚拟等级。在 [SupLat_EM_equivalence] 的自然性证明中，[simpl] 添加了严格的边界 [o < Projections.u0]（由 o < so 和 so <= Projections.u0 推断）；它已被移除且边界消失。没有方程。未交付。出于上述原因，这两类的严格同一性。自由完全半格、单子背后的伴随和忘记函子的单子性都在 Instance/SupLat/Free.v；其示例以及两点定理在 Instance/SupLat/Examples.v。并未构建交：每个完全加半格都是完全格，加保持映射有右伴随，也未在此证明。有限或有界半格以及框架未被构建。
+ nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad在 §VI.2 中，Mac Lane 给出了“几例显示熟悉的单子 T-代数是熟悉的代数”（印刷页 141），以及本节的第一个练习题，“完备半格（E. Manes；论文）”，又增加了一个例子。从页面图像来看：“回忆一下，完备半格是一个偏序集 Q，其中每个子集 S ⊂ Q 在 Q 中都有上确界（最小上界）。” 对于部分 (a) 的协变幂集单子 ⟨𝒫, η, μ⟩：“(b) 证明每个 𝒫-代数 ⟨X, h⟩ 是一个完备半格，当 x ≦ y 由 h{x, y} = y 定义，并且对于每个 S ⊂ X, sup S = hS。(c) 反过来证明，每个（小的）完备半格都是这样构造的 𝒫-代数。(d) 得出结论：𝒫-代数的范畴是所有（小）完全半格的范畴，态射为保持序和上确界的函数。这些完全的上联半格是 nLab 所说的上格。同一章节的其他例子也在树中：闭包算子（#463，Instance/Proset/Monad.v）、群作用（#464，Instance/Fun/Action/Monad.v）和模（#465，Instance/Mod/TensorMonad.v）。哪个常量对应哪个部分。(a) 是 Instance/Sets/Powerset/Monad.v 的 [Powerset_Monad]，在 #227 的自函子 [Powerset_Prop] 上。(b) 是 [TAlgebra_SupLat]：顺序是 [talg_le]，它的读法 [talg_le_iff] 作为 Mac Lane 的 h{x, y} ≈ y，sup 是 h；函子是 [EM_to_SupLat]。(c) 是 [SupLat_TAlgebra]：结构映射是 sup，而“以这种方式”是 [sl_sup_pair_le]，x ≤ y 当且仅当 sup {x, y} ≈ y，因此 (c) 后的 (b) 给出了顺序 ([sl_talg_le_iff])；函子是 [SupLat_to_EM]。(d) 是 [SupLat_EM_equivalence] 和 [SupLat_EM_iso : SupLat ≅[Cat]  EilenbergMoore Powerset_Prop].该顺序是并运算顺序。Mac Lane 的 x ≤ y 当且仅当 h{x, y} = y，这使得 h{x, y} 成为 x 和 y 的最小上界，因此 sup 是一个并运算，底元素是 sup ∅，此处没有提到交运算。对 {x, y} 的处理是 [Powerset_Prop_pair]，是 #227 两个单元素集合的并集（树中没有二元素子集；Instance/Powerset.v 中的 [subset_join] 是二元并运算）。记录，首先是顺序。[SupLatObject] 是 Mac Lane 的定义：一个集合类 [sl_set]，一个顺序 [sl_le]，它是自反的、传递的、尊重 ≈ 并且在 ≈ 上是反对称的，以及每个子集的上确界 [sl_sup]，以集合类映射的形式存储，来自 #227 的子集（[sl_sup_ub], [sl_sup_least]）。该顺序有其自身的类型，载体 → 载体 → 命题：一个记录，其顺序是标准库的 [relation]，带有 Instance/Proset/Limit.v 的 [IsLUB] 或 [HasAllJoins]，包含全局上界 o <= Relation_Definition.u0 和两个或四个额外的宇宙绑定器，其中每个绑定器中有一个未使用，[IsLUB] 记录从索引其族的 sigma 类型添加了 o <= Projections.u0（通过 [About] 测量，在该树的两个此类记录的侦察中），因此这三者中没有一个被使用。该顺序是一个 [Prop]，因为 #227 的单元素是 [Prop] 值的：单元律需要从压缩的成员关系中得到 sup {x} ≤ x，并且对于 [Type] 值的顺序，在宇宙上拒绝消去，这是一个类型拒绝（Test/ProbeSupLat466.v 的 N10，宇宙：“术语 'le z x' 的类型为 'Type'，而期望类型为 'Prop'（宇宙不一致：无法强制 o <= Prop）”）。sup 是一个集合等价映射，而不是裸函数，因为用裸函数时，往返重建会维持其对 ≈ 的尊重，而结构映射只会以函数形式返回（N9：重建的映射对 [sl_sup A] 在 [eq_refl] 被拒绝，但其函数形式被接受）。一个态射 [SupLatHom] 是一个保持上确界的集合映射 ([slh_sup])；Mac Lane 的“顺序和上确界保持”还要求单调性，并且它是可以推导的 ([SupLatHom_monotone]，通过 [sl_sup_pair_le])，所以这两类映射是相同的。当两个态射的映射在每个点上都一致（至≈为止）时，它们相等。“小型”变成什么。一个小型完全半格是在 [SetoidObject@{o o}] 中的载体，是 [Sets@{o so}] 的一个对象，对于每一个 ≈-保持的 [Prop] 值谓词，它都有一个上界。由于 [Prop] 的自反性，这些谓词在层级 o 上形成一个类型，因此“每一个子集”就是载体自身层级的整个幂集，对子集没有大小限制，仅对载体有限制。一个结论在 Instance/SupLat/Examples.v 中被证明：一个具有可判定 ≈ 的完全半格以及两个不同的可比较点 x ≤ y 可以决定每一个命题 Q 的 ¬Q 或 ¬¬Q（[suplat_two_points_WLEM]），信息性地，因为上确界是一个运算，[sl_sup]，而不仅仅是存在，因此 bool 上的链 false < true 在这种信息性弱排中律下是唯一的，并且那里的非空见证是自由的，即 P X 和 Prop = P 1，而不是有限链。（b）中的 squash，以及它为何是惰性的。在这个库中，态射和元素的相等性是 [Type] 值的，因此 Mac Lane 的条件 h{x, y} = y 被读作 [Prop] [talg_le] := squash (h{x, y} ≈ y)。每个 𝒫-代数都撤销 squash（[talg_unsquash]）：在 P X 中 {x} ≈ {y} 在内容上是 [Prop]，h 尊重 ≈，且 h{x} ≈ x。因此 [talg_le_iff] 精确陈述了 Mac Lane 的条件，并且每个代数的载体都有一个命题相等（[talg_PropEquiv]）；每个完全半格的也有，x ≈ y 当且仅当 x ≤ y 且 y ≤ x（[sl_PropEquiv]）。两者都是定理：不需要 [PropEquiv] 字段或假设，其中 Lib/Setoid/Propositional.v 的代数记录（CMon、Grp 及其余部分）将其作为一个字段承载。为什么在范畴论中使用同构，而不是恒等映射。Mac Lane 写道 𝒫-代数的范畴“就是”完全半格的范畴。该树提供了 [SupLat_EM_iso]，一个 [Cat] 中的同构，其逆律在自然同构（范畴等价）下成立，其恒等组成部分为：其 [to] 分支是 [SupLat_to_EM]，ZYW55WZZ 分支是 [EM_to_SupLat]，并且其两个自然同构 [iso_to_from] 和 [iso_from_to] 的每个组成部分都是恒等映射，来回作用于 ([SupLat_EM_iso_to_from_component], [SupLat_EM_iso_from_to_component] 及其 [_from] 对应项)，正如 [SupLat_EM_equivalence] 的余单元和单元的每个组成部分 ([SupLat_EM_counit_component], [SupLat_EM_unit_component] 及其 [_from] 对应项) 一样。[SupLat_EM_iso] 是由两个组件同构构建的，而不是像 Theory/Equivalence.v 的 [Equivalence_to_Cat_Iso] 那样通过等价构建的：该桥接将 [iso_from_to] 视为单位的 [symmetry]，这就是 Theory/Functor.v 的 [Functor_Setoid_obligation_1]，在此树 ([About]) 中是不透明的。在该文件导入的一个临时文件中，[iso_from_to (Equivalence_to_Cat_Iso SupLat_EM_equivalence)] 在 A 处的组件被 [eq_refl] 拒绝与单位对齐（无法统一 “slh_map (projT1 (iso_from_to (Equivalence_to_Cat_Iso SupLat_EM_equivalence)) A)” 与 “setoid_morphism_id”），而其 [iso_to_from] 的组件则成立；在探针的翻转中，该义务变为透明，两者都成立。直接构建时，[SupLat_EM_iso] 拥有它作为桥接时的宇宙屏障 ([About] 前后，通过 [diff] 进行比较) 。往返操作会保留载体、sup、结构映射以及在 [eq_refl] 的态射映射（[SupLat_EM_rt_carrier] 以及在 STRENGTHS 下列出的其他五个往返读回），但不会保留半格的顺序，这是一个只有逻辑上才会返回的数据字段（[sl_talg_le_iff]）；并且这里仍然无法形成范畴的恒等式，原因有两个，都记录在 Test/ProbeSupLat466.v 中。首先，Monad/Eilenberg/Moore.v 的 [EilenbergMoore] 的对象是 [sigT] 对，而 [sigT] 没有 eta，因此变量代数 x 永远无法转换为它的往返操作构建的对（N3）；重建代数的两个证明字段 [t_id] 和 [t_action] 也是新的证明（N4, N4b），因此即使在命名代数 α 上，代数的往返操作也会被拒绝（N7）。其次，半格上的往返重建了顺序，如 sup {x, y} 的压缩 ≈ y，从逻辑上但不是定义上仍然是它最初的顺序 (N2，因此 N1)；然后，在 [eq_refl] (N6) 上，态射的往返甚至不是良类型的，并且两个复合都不是恒等函子 (N5, N5b)。这些拒绝都不是不透明的：在探针的翻转中，其一百模块的依赖闭包的副本中，每个 [Qed] 都变成了 [Defined]，[Transparent Obligations] 被设置，[abstract] 变成 [transparent_abstract]，除非探针的头文件列出的例外（三个 [Qed] 本身的翻转被拒绝，Instance/Sets.v 中的 [setoid_morphism_compose_respects] 在其中，“Universe … 未绑定”；Structure/Cartesian/Closed.v 保留其 [Qed]，添加了 [Unset Transparent Obligations]；Structure/Limit/Preservation.v 的 [preserves_colimit] 通过 [all:] 步骤写入；Construction/Elements.v 的两个 [abstract cat] 步骤保持不变），它们中的每一个在此树中打印它打印的错误，并且探针的所有控件都保持有效。一种经过衡量的替代方案，未被采纳。变体 L（侦察者的 t5；探测器的助手 [p466_SupLatObjectL]）在该记录中增加了两个代数律——sup 的代数律，sup {x} ≈ x 以及沿并集的 sup 的结合律，作为冗余字段。于是其代数往返验证随后在 [eq_refl] 上对整个代数和写作 (X; α)（[p466_L_alg_rt], [p466_L_obj_rt]）的对象成立，因为 [TAlgebra] 是一个带有 eta 的记录；在变量对象上，它同样被拒绝 (N8, [sigT] 再次)，其半格往返仍然以压缩形式重建顺序 (N8b)，并且该记录不再是 Mac Lane 的定义，部分 (c) 被移入智能构造函数。保持了以顺序为先的记录。优势。由 [eq_refl]：[SupLat_EM_iso] 的两条腿（[SupLat_EM_iso_to]，[SupLat_EM_iso_from]）；对于 (b)，承载者、sup 作为整体结构映射 h，以及顺序作为 h{a, b} ≈ b 的压缩（[EM_to_SupLat_carrier]，[EM_to_SupLat_sup]，[EM_to_SupLat_le]）；对于 (c)，承载者和结构映射作为整体 sup（[SupLat_to_EM_carrier]，[SupLat_to_EM_alg]）；两个函子在态射上的作用（[EM_to_SupLat_map]，[SupLat_to_EM_map]）；承载者、结构映射、sup 和态射上的往返（[SupLat_EM_rt_carrier]，[SupLat_EM_rt_alg]，[SupLat_EM_rt_set]，[SupLat_EM_rt_sup]，[SupLat_EM_rt_hom]，[SupLat_EM_rt_alg_hom]）；以及 [SupLat_EM_iso] 的两个自然同构的两个方向的同一性分量，以及 [SupLat_EM_equivalence] 的余单位和单位。逻辑上（[iffT] 或 [iff]）：一个代数关于 Mac Lane 条件（[talg_le_iff]）的顺序，一个半格的顺序关于 sup {x, y} ≈ y（[sl_sup_pair_le]）以及关于其代数的顺序（[sl_talg_le_iff]）。仅在 ≈ 时，作为具有恒等分量的自然同构：两个复合映射关于恒等函子。拒绝：前两段的列表。[Defined] 项中的定律证明（[SupLat_TAlgebra] 的代数定律、范畴和函子定律、两个同构的逆定律）保持在行内而不是移到 [Qed] 引理中：没有回读会读取它们，上述翻转使每个证明透明，但不改变任何拒绝内容。宇宙，读出 [About]。该对，记录，其投影，态射，[sl_sup_pair_le]、[SupLatHom_monotone] 和 [sl_PropEquiv] 将 [@{o}] 与已经绑定的 [Set < o] 绑定，首次由 Instance/Sets/Powerset.v 的 [Powerset_Prop_truth_equiv] 承载；[SupLatObject@{o} : Type@{o+1}]、[SupLat_id] 和 [SupLat_compose] 添加了帽 ID 并组成了 Instance/Sets.v 的 [setoid_morphism_id] 和 [setoid_morphism_compose]。[SupLat@{o so} : Category@{so o o}] 具有 [Sets@{o so}] 的块，并添加了 [Set < o]。每个命名单子（monad）的常量将 [@{o so}] 与 [Powerset_Monad] 的块绑定；那些命名 [EilenbergMoore] 的添加了 [o <= Projections.u1] 和 [so <= Projections.u0]，其 [sigT] 投影，以及八个组件回读 also [o <= Projections.u0] 和 [so <= Projections.u1]，来自自然同构在其陈述中的 [projT1]。[SupLat_EM_iso]，它的两个支脚回读以及命名它的四个组件回读绑定 [@{o so c}] 并添加 [o < c] 和 [so < c]，来自 Instance/Cat.v 的 [Cat@{c so so so o}]。带有 [Type] 一侧的语句使用 [iffT@{o o}]，Lib/Foundation.v 的 ↔ 及其两个命名的宇宙，它们保持在 [@{o}] 和 [@{o so}] 上，没有虚拟等级。在 [SupLat_EM_equivalence] 的自然性证明中，[simpl] 添加了严格的边界 [o < Projections.u0]（由 o < so 和 so <= Projections.u0 推断）；它已被移除且边界消失。没有方程。未交付。出于上述原因，这两类的严格同一性。自由完全半格、单子背后的伴随和忘记函子的单子性都在 Instance/SupLat/Free.v；其示例以及两点定理在 Instance/SupLat/Examples.v。并未构建交：每个完全加半格都是完全格，加保持映射有右伴随，也未在此证明。有限或有界半格以及框架未被构建。
 *)
 
 (* ------------------------------------------------------------------------ *)
@@ -433,7 +433,7 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (* * ** The order recovered from the sup / * ** 从 sup 中恢复的订单 *)
 
-(* x ≤ y exactly when sup {x, y} ≈ y: part (c)'s "in this way". / 当且仅当 sup {x, y} ≈ y 时，x ≤ y：部分 (c) 的“用这种方式” *)
+(* x ≤ y exactly when sup {x, y} ≈ y: part (c)'s “in this way”. / 当且仅当 sup {x, y} ≈ y 时，x ≤ y：部分 (c) 的“用这种方式” *)
 Lemma sl_sup_pair_le@{o} (A : SupLatObject@{o}) (x y : carrier (sl_set A)) :
   iffT@{o o} (sl_le A x y)
     (@equiv _ (is_setoid (sl_set A)) (sl_sup A (Powerset_Prop_pair@{o} x y)) y).
@@ -782,7 +782,7 @@ Proof.
   - intros x y H. exact (Powerset_squash_intro H).
 Defined.
 
-(* (b) after (c) gives back the order: "in this way". / (b) 在 (c) 之后返回顺序：“以这种方式”. *)
+(* (b) after (c) gives back the order: “in this way”. / (b) 在 (c) 之后返回顺序：“以这种方式”. *)
 Lemma sl_talg_le_iff@{o so} (A : SupLatObject@{o})
   (x y : carrier (sl_set A)) :
   iff (talg_le@{o so} (SupLat_TAlgebra@{o so} A) x y) (sl_le A x y).

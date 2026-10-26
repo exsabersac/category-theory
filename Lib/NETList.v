@@ -24,10 +24,10 @@ Open Scope lazy_bool_scope.
  are the (length >= 1) morphisms of the free category / path category on
  the quiver [B].
 
- The "NET" prefix abbreviates "Non-Empty Typed": [tfin] is a one-edge path
+ The “NET” prefix abbreviates “Non-Empty Typed”: [tfin] is a one-edge path
  and [tadd] prepends an edge, so a netlist always carries at least one edge
  (there is no nil constructor).  The same data structure is known in the
- Haskell community as a non-empty "type-aligned sequence" (Atze van der
+ Haskell community as a non-empty “type-aligned sequence” (Atze van der
  Ploeg, https://github.com/atzeus/type-aligned).
 
  Operations below give this family its path algebra: [netlist_app] (++++)

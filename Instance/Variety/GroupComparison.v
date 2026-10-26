@@ -37,7 +37,7 @@ Generalizable All Variables.
  comparison that does hold, stated as such: [GroupVariety_to_Grp], full
  and faithful, with [GroupVariety_to_Grp_reflects_iso] as its immediate
  consequence.  An earlier revision of this paragraph called that
- "exactly an isomorphism onto a full subcategory", which is too strong
+ “exactly an isomorphism onto a full subcategory”, which is too strong
  and an audit was right to catch it: full and faithful gives an
  EQUIVALENCE onto the full image, not an isomorphism, because
  injectivity on objects is neither proved here nor cheap to get.
@@ -47,7 +47,7 @@ Generalizable All Variables.
  Not one of its TWENTY-TWO constants is closed under the global context
  — twelve [.glob] heads plus ten [Program] obligations, the latter
  invisible to a head census and missed by a first count that said
- "eleven".  The reason is inherited twice over.  [GroupVariety] mentions
+ “eleven”.  The reason is inherited twice over.  [GroupVariety] mentions
  Instance/Comp.v's [GroupEq], which is [Defined] with the axiom; and
  the translation of an [AlgHom] into a [GrpHom] must turn
  [op_commute]'s argument-bundle equation into the pointwise statements

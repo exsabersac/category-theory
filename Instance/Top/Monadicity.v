@@ -33,11 +33,11 @@ Generalizable All Variables.
 *)
 
 (*
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §VI.3, book p. 144 (PDF p. 153), read from the page image, right
  after the remark, which the page takes over from p. 143, that for
- "other authors (Barr-Wells [1985]), 'triplable' means only that K be
- an equivalence of categories": "However, here is an easy example when K
+ “other authors (Barr-Wells [1985]), 'triplable' means only that K be
+ an equivalence of categories”: “However, here is an easy example when K
  is not an isomorphism, and not even an equivalence.  The forgetful
  functor G : Top → Set has a left adjoint D which assigns to each set
  X the discrete topological space (all subsets open in X), for the
@@ -46,13 +46,13 @@ Generalizable All Variables.
  defines on Set the monad I = ⟨I, 1, 1⟩ which is the identity
  (identity functor, identity as unit and as multiplication).  The
  I-algebras in Set are just the sets, so the comparison functor
- Top → Top^I = Set is in this case the given forgetful functor G"
+ Top → Top^I = Set is in this case the given forgetful functor G”
  (catalog id maclane:VI.3:remark1).
- Awodey, "Category Theory", Carnegie Mellon pre-print of the 1st ed.
+ Awodey, “Category Theory”, Carnegie Mellon pre-print of the 1st ed.
  (September 2005), §10.3, printed p. 278 (PDF p. 287), read from the
- page image, runs the same argument for posets: "An example of a
+ page image, runs the same argument for posets: “An example of a
  right adjoint that is not monadic is the forgetful functor from
- posets, U : Pos → Sets" (awodey:10.3:example-pos-not-monadic);
+ posets, U : Pos → Sets” (awodey:10.3:example-pos-not-monadic);
  that example is Instance/Pos/Monadicity.v's.
  nLab: https://ncatlab.org/nlab/show/monadic+functor
  nLab: https://ncatlab.org/nlab/show/discrete+space
@@ -61,8 +61,8 @@ Generalizable All Variables.
  comparison functor K into the Eilenberg-Moore category of T measures how
  far the right adjoint U is from forgetting algebraic structure; U is
  monadic when K is an equivalence (Monad/Comparison.v's [Monadic], the
- Barr-Wells reading quoted above); Mac Lane's "not an isomorphism, and
- not even an equivalence" covers the stronger reading too.  His example
+ Barr-Wells reading quoted above); Mac Lane's “not an isomorphism, and
+ not even an equivalence” covers the stronger reading too.  His example
  is the extreme case.  A set carries a unique discrete topology, so the
  unit is the identity and the induced monad is the identity monad: it
  records no structure at all, its algebras are the sets, and K can be no
@@ -74,9 +74,9 @@ Generalizable All Variables.
  determine whether the right adjoint that induced it is monadic.
 
  THE READING IMPLEMENTED.  The page prints the target of the
- comparison as "Top^I = Set".  The I-algebras live in Set, so K lands
+ comparison as “Top^I = Set”.  The I-algebras live in Set, so K lands
  in the category of I-algebras in Set, and that is the target taken
- here: [EilenbergMoore] of the induced monad on [Sets].  "= Set" is
+ here: [EilenbergMoore] of the induced monad on [Sets].  “= Set” is
  read as an equivalence between that category and [Sets]: an algebra
  keeps its structure map, which is ≈ id and need not be id.  For
  Monad/Eilenberg/Moore/Limit/Examples.v's identity monad [IdSM] on
@@ -104,13 +104,13 @@ Generalizable All Variables.
  is the identity arrow, Mac Lane's η_X ([PDisc_PForget_unit]), and
  the counit at a space is the identity on its points
  ([PDisc_PForget_counit]).
- - "The monad I = ⟨I, 1, 1⟩ which is the identity", as an isomorphism
+ - “The monad I = ⟨I, 1, 1⟩ which is the identity”, as an isomorphism
  [disc_id_iso] in #468's category of monads [Monads Sets]
  (Monad/Morphism.v) between (PDiscT; PDiscMonad) and
  Monad/Identity.v's (Id[Sets]; IdMonad Sets).  Its two morphisms of
  monads, [disc_id_hom] and [id_disc_hom], have the identity as every
  component ([disc_id_hom_component], [id_disc_hom_component]).
- - "The comparison functor is the forgetful functor G": [PDiscK] is
+ - “The comparison functor is the forgetful functor G”: [PDiscK] is
  [EM_Comparison PDisc_PForget].  After the forgetful functor of the
  algebras it is [PForget] on objects and on arrows
  ([PDiscK_forget_obj], [PDiscK_forget_map]), in Theory/Functor.v's
@@ -119,7 +119,7 @@ Generalizable All Variables.
  Monad/Comparison.v's [EM_Comparison_Forget] at this adjunction).
  The structure map of K X is the identity setoid morphism
  ([PDiscK_alg]).
- - "Top^I = Set": [EM_PDisc_equivalence], the forgetful functor of the
+ - “Top^I = Set”: [EM_PDisc_equivalence], the forgetful functor of the
  algebras of [PDiscMonad] is an equivalence with quasi-inverse
  [EM_Free], because every structure map is ≈ id
  ([PDiscMonad_alg_id]); and [PDiscK_free]: K ≈ EM_Free ◯ PForget,
@@ -141,7 +141,7 @@ Generalizable All Variables.
  ([mh_EM], [mh_EM_id], [mh_EM_compose]) and Theory/Equivalence/
  Bundled.v's [EquivalenceOfCategories_Compose], is the other route;
  it is not taken.
- - "Not an isomorphism, and not even an equivalence."  Mac Lane gives
+ - “Not an isomorphism, and not even an equivalence.”  Mac Lane gives
  no argument; this is the file's.  [pbool_to_indisc], the identity
  of [bool] from the discrete space [PBool] (Instance/Top/Prop.v) to
  the indiscrete [PTwoIndisc] (Instance/Top/Cocomplete.v), is
@@ -179,15 +179,15 @@ Generalizable All Variables.
  [PosPForget_not_Monadic].
 
  THE ISSUE'S PREMISES, dated.  Issue #469 was filed on 2026-07-23.  Its
- "there is no category Top and no discrete-topology functor" was
+ “there is no category Top and no discrete-topology functor” was
  accurate when filed, stale since PR #1054 (merged 2026-08-12, the
  Type-valued [Top]) and PR #1088 (merged 2026-08-14, [Top_Discrete]
  with the transposition [discrete_adj]); [PTopCat] is PR #1331's
  (merged 2026-09-25) and [PDisc_PForget] PR #1332's (merged
- 2026-09-25).  Its "the identity monad appears only via the identity
- adjunction" was not accurate when filed: Monad/Strong.v's [Id_Monad]
- dates from 2026-06-18.  Its "(needs the category of posets from
- #641)" has been met since PR #1076 (merged 2026-08-13).
+ 2026-09-25).  Its “the identity monad appears only via the identity
+ adjunction” was not accurate when filed: Monad/Strong.v's [Id_Monad]
+ dates from 2026-06-18.  Its “(needs the category of posets from
+ #641)” has been met since PR #1076 (merged 2026-08-13).
 
  STRENGTHS.  By [eq_refl]: [PDiscT_fobj], [PDiscT_fmap],
  [PDiscT_fields], [PDisc_PForget_unit], [PDisc_PForget_counit],
@@ -196,18 +196,18 @@ Generalizable All Variables.
  [PDiscK_forget_map], [PDiscK_alg], the object equations of
  [PDiscK_forget_strict], [PDiscKI_forget_obj], [PDiscKI_forget_map] and
  [PDiscKI_alg].  [PDiscT_fields] and [PDiscMonad_fields] read the
- book's "identity functor, identity as unit and as multiplication" as
+ book's “identity functor, identity as unit and as multiplication” as
  equations between the four data fields and those of [IdMonad Sets].
  Up to ≈: [disc_id_iso]'s inverse laws, [PDiscK_forget],
  [PDiscMonad_alg_id], [EM_PDisc_equivalence] and [PDiscK_free].
 
  Refused, each read in a copy of the whole of Test/ProbeMonadicity469.v
  with that one command unguarded, and pinned there with its controls,
- all by conversion ("cannot unify"): the Leibniz equation
+ all by conversion (“cannot unify”): the Leibniz equation
  PDiscT = Id[Sets] (R1), and its three proof fields [fmap_respects],
  [fmap_id] and [fmap_comp] one by one (R1a to R1c), the fields [fobj]
- and [fmap] converting (C1, C2); the Leibniz form of the book's "is the
- given forgetful functor G", EM_Forget ◯ PDiscK = PForget (R2), with
+ and [fmap] converting (C1, C2); the Leibniz form of the book's “is the
+ given forgetful functor G”, EM_Forget ◯ PDiscK = PForget (R2), with
  its three proof fields (R2a to R2c) and the two data fields converting
  (C3, C4); the equality of the two monads as objects of [Monads Sets]
  (R3); K against EM_Free ◯ PForget on objects (R14), whose carriers and
@@ -228,8 +228,8 @@ Generalizable All Variables.
  but for four files.  In Instance/Sets.v only the two proofs that occur in
  the refused terms were made transparent, the hom setoid's equivalence and
  [setoid_morphism_compose_respects], the second with a proof free of
- [rewrite], since turning its own [Qed] into [Defined] is refused ("Universe
- ... is unbound"). Instance/Discrete/Reconstruct.v (the same refusal),
+ [rewrite], since turning its own [Qed] into [Defined] is refused (“Universe
+ ... is unbound”). Instance/Discrete/Reconstruct.v (the same refusal),
  Structure/Limit/Preservation.v and Structure/Cartesian/Closed.v (whose
  proofs stop once the files below them are transparent) keep their [Qed]s;
  none defines a constant in the refused terms.  No flip of the tree reaches
@@ -310,7 +310,7 @@ Generalizable All Variables.
  Monad/Monadicity/Beck.v's precise form, is not examined. 
 
  --------
- Mac Lane，《为在职数学家准备的范畴论》，第2版 (GTM 5)，§VI.3，第144页（PDF第153页），从页图像读取，就在注释之后，该页从第143页接上，即“对于其他作者（Barr-Wells [1985]），‘可三重化’仅意味着K是范畴等价”："然而，这里有一个简单的例子，其中K不是同构，甚至不是等价。遗忘函子 G : Top → Set 有一个左伴随 D，它将每个集合 X 分配为离散拓扑空间（X 中的所有子集都是开集），对于恒等箭头 η_X : X → GDX，从对象 X 到函子 G 的箭头显然是普遍的。"这个伴随 ⟨D, G, η, …⟩ : Set ⇀ Top 定义了 Set 上的单子 I = ⟨I, 1, 1⟩，它是恒等的（恒等函子，恒等作为单位和乘法）。Set 中的 I-代数只是集合，因此比较函子 Top → Top^I = Set 在这种情况下就是给定的遗忘函子 G（目录 id maclane:VI.3:remark1）。Awodey，《范畴论》，卡内基梅隆大学第一版预印本（2005年9月），§10.3，第278页（PDF第287页），从页面图像中读取，对于偏序集运行相同的论证：“一个不是单子的右伴随的例子是来自偏序集的遗忘函子 U : Pos → Sets”（awodey:10.3:example-pos-not-monadic）；该例子是 Instance/Pos/Monadicity.v 的。nLab：https://ncatlab.org/nlab/show/monadic+functor nLab：https://ncatlab.org/nlab/show/discrete+space背景。每一个伴随 F ⊣ U 都会引出一个单子 T = UF，而比较函子 K 到 T 的 Eilenberg-Moore 范畴可以衡量右伴随 U 在多大程度上忘记了代数结构；当 K 是等价时，U 是单子性的（参见 Monad/Comparison.v 的 [Monadic] 以及上文引用的 Barr-Wells 读物）；Mac Lane 所说的“不是同构，甚至不是等价”也适用于更强的理解。他的例子是极端情况。一个集合具有唯一的离散拓扑，因此单位算子是恒等映射，引出的单子是恒等单子：它完全不记录任何结构，其代数就是集合，而 K 充其量也只能是忘记函子自身。该函子会忘记拓扑，而拓扑不是代数结构，而且它也不是满函子。一个同构单子，其函子为 Id ◯ Id，是由 Id ⊣ Id 引起的，其右伴随是单子的（Monad/Monadicity/Examples.v 的 [identity_monadic]；Monad/Identity.v 的头部），所以一个单子并不能决定引出它的右伴随是否是单子的。读取已实现。该页面将比较的目标打印为“Top^I = Set”。I-代数存在于 Set 中，因此 K 落在 Set 中 I-代数的范畴中，而这里采用的目标即为 [EilenbergMoore] 在 [Sets] 上的诱导单子。"= Set" 被理解为该范畴与 [Sets] 之间的等价：一个代数保持其结构映射，该映射近似于 id 并不一定是 id。对于 Monad/Eilenberg/Moore/Limit/Examples.v 中对 [Sets] 的恒等单子 [IdSM]，#467 中的 [A_id_ne_A_true] 在一个承载体上展示了两种不同的代数；这里对 [PDiscMonad] 不再重述相同内容。为什么 [PTopCat]。对于树的类型值 [Top]，伴随不是在任何宇宙分配下的 [Adjunction] 记录（Instance/Top/Forgetful.v 的头文件；Test/ProbeUniversalArrows312.v 作了标记），因此无法形成其诱导的 monad 和比较函子。根据维护者在 2026-09-24 的决定，此类 Top 问题建立在 Instance/Top/Prop.v 的 Prop 值 [PTopCat] 上，其中 Instance/Top/Complete.v 的 [PDisc_PForget : PDisc ⊣ PForget] 是其中之一（#458）。Instance/Top/Monadicity/TypeValued.v 说明了在 [Top] 上仍可形成的内容：其基础集合函子不是 monadic 的。这里是什么。- 诱导的单子：[PDiscT] 是 [PForget ◯ PDisc]，[PDiscMonad] 是 Monad/Comparison.v 中的 [Adjunction_Induced_Monad PDisc_PForget]。它的函子在对象上是恒等的（[PDiscT_fobj]），在箭头上也是恒等的（[PDiscT_fmap]）；它的单位和乘法是 [id]（[PDiscMonad_ret]，[PDiscMonad_join]）；作为函数，它的四个数据域是 [IdMonad Sets] 的那些（[PDiscT_fields]，[PDiscMonad_fields]）；伴随的单位是恒等箭头，即 Mac Lane 的 η_X（[PDisc_PForget_unit]），而在空间上的余单位是其点的恒等（[PDisc_PForget_counit]）。- “单子 I = ⟨I, 1, 1⟩，即恒等”，作为同构 [disc_id_iso] 在 #468 的单子类别中 [Monads Sets]（Monad/Morphism.v）在 (PDiscT; PDiscMonad) 和 Monad/Identity.v 的 (Id [Sets]; IdMonad Sets) 之间。它的两个单子态射，[disc_id_hom] 和 [id_disc_hom]，每个分量都是恒等（[disc_id_hom_component]，[id_disc_hom_component]）。- “比较函子是忘记函子 G”：[PDiscK] 是 [EM_Comparison PDisc_PForget]。在代数的忘记函子之后，它在对象和箭头上是 [PForget]（[PDiscK_forget_obj]，[PDiscK_forget_map]），在 Theory/Functor.v 的 [Functor_StrictEq_Setoid] 中，每个对象的方程是 [eq_refl]（[PDiscK_forget_strict]），在 Cat 的 ≈ 中是 [PDiscK_forget]，这正是 Monad/Comparison.v 在该伴随关系下的 [EM_Comparison_Forget]。K X 的结构映射是恒等 setoid 态射（[PDiscK_alg]）。- “Top^I = Set”：[EM_PDisc_equivalence]，[PDiscMonad] 的代数的遗忘函子是与准逆 [EM_Free] 的等价，因为每个结构映射 ≈ id（[PDiscMonad_alg_id]）；并且 [PDiscK_free]：K ≈ EM_Free ◯ PForget，底下有恒等箭头，因此 K 是 G 跟随那个等价。对于恒等 monad 本身，Monad/Identity.v 中的 [IdMonad_EM_equivalence] 在 [Sets]；以及 [PDiscKI]，K 跟随 #468 的 [id_disc_hom] 的 θ*（Monad/Morphism/Algebra.v 的 [mh_EM]），是进入 [IdMonad Sets] 代数的比较：每个像的结构映射是恒等函数（[PDiscKI_alg]），并且在遗忘函子之后，它在对象和箭头上是 [PForget]（[PDiscKI_forget_obj]，[PDiscKI_forget_map]）。四个常数
+ Mac Lane，《为在职数学家准备的范畴论》，第2版 (GTM 5)，§VI.3，第144页（PDF第153页），从页图像读取，就在注释之后，该页从第143页接上，即“对于其他作者（Barr-Wells [1985]），‘可三重化’仅意味着K是范畴等价”：“然而，这里有一个简单的例子，其中K不是同构，甚至不是等价。遗忘函子 G : Top → Set 有一个左伴随 D，它将每个集合 X 分配为离散拓扑空间（X 中的所有子集都是开集），对于恒等箭头 η_X : X → GDX，从对象 X 到函子 G 的箭头显然是普遍的。”这个伴随 ⟨D, G, η, …⟩ : Set ⇀ Top 定义了 Set 上的单子 I = ⟨I, 1, 1⟩，它是恒等的（恒等函子，恒等作为单位和乘法）。Set 中的 I-代数只是集合，因此比较函子 Top → Top^I = Set 在这种情况下就是给定的遗忘函子 G（目录 id maclane:VI.3:remark1）。Awodey，《范畴论》，卡内基梅隆大学第一版预印本（2005年9月），§10.3，第278页（PDF第287页），从页面图像中读取，对于偏序集运行相同的论证：“一个不是单子的右伴随的例子是来自偏序集的遗忘函子 U : Pos → Sets”（awodey:10.3:example-pos-not-monadic）；该例子是 Instance/Pos/Monadicity.v 的。nLab：https://ncatlab.org/nlab/show/monadic+functor nLab：https://ncatlab.org/nlab/show/discrete+space背景。每一个伴随 F ⊣ U 都会引出一个单子 T = UF，而比较函子 K 到 T 的 Eilenberg-Moore 范畴可以衡量右伴随 U 在多大程度上忘记了代数结构；当 K 是等价时，U 是单子性的（参见 Monad/Comparison.v 的 [Monadic] 以及上文引用的 Barr-Wells 读物）；Mac Lane 所说的“不是同构，甚至不是等价”也适用于更强的理解。他的例子是极端情况。一个集合具有唯一的离散拓扑，因此单位算子是恒等映射，引出的单子是恒等单子：它完全不记录任何结构，其代数就是集合，而 K 充其量也只能是忘记函子自身。该函子会忘记拓扑，而拓扑不是代数结构，而且它也不是满函子。一个同构单子，其函子为 Id ◯ Id，是由 Id ⊣ Id 引起的，其右伴随是单子的（Monad/Monadicity/Examples.v 的 [identity_monadic]；Monad/Identity.v 的头部），所以一个单子并不能决定引出它的右伴随是否是单子的。读取已实现。该页面将比较的目标打印为“Top^I = Set”。I-代数存在于 Set 中，因此 K 落在 Set 中 I-代数的范畴中，而这里采用的目标即为 [EilenbergMoore] 在 [Sets] 上的诱导单子。“= Set” 被理解为该范畴与 [Sets] 之间的等价：一个代数保持其结构映射，该映射近似于 id 并不一定是 id。对于 Monad/Eilenberg/Moore/Limit/Examples.v 中对 [Sets] 的恒等单子 [IdSM]，#467 中的 [A_id_ne_A_true] 在一个承载体上展示了两种不同的代数；这里对 [PDiscMonad] 不再重述相同内容。为什么 [PTopCat]。对于树的类型值 [Top]，伴随不是在任何宇宙分配下的 [Adjunction] 记录（Instance/Top/Forgetful.v 的头文件；Test/ProbeUniversalArrows312.v 作了标记），因此无法形成其诱导的 monad 和比较函子。根据维护者在 2026-09-24 的决定，此类 Top 问题建立在 Instance/Top/Prop.v 的 Prop 值 [PTopCat] 上，其中 Instance/Top/Complete.v 的 [PDisc_PForget : PDisc ⊣ PForget] 是其中之一（#458）。Instance/Top/Monadicity/TypeValued.v 说明了在 [Top] 上仍可形成的内容：其基础集合函子不是 monadic 的。这里是什么。- 诱导的单子：[PDiscT] 是 [PForget ◯ PDisc]，[PDiscMonad] 是 Monad/Comparison.v 中的 [Adjunction_Induced_Monad PDisc_PForget]。它的函子在对象上是恒等的（[PDiscT_fobj]），在箭头上也是恒等的（[PDiscT_fmap]）；它的单位和乘法是 [id]（[PDiscMonad_ret]，[PDiscMonad_join]）；作为函数，它的四个数据域是 [IdMonad Sets] 的那些（[PDiscT_fields]，[PDiscMonad_fields]）；伴随的单位是恒等箭头，即 Mac Lane 的 η_X（[PDisc_PForget_unit]），而在空间上的余单位是其点的恒等（[PDisc_PForget_counit]）。- “单子 I = ⟨I, 1, 1⟩，即恒等”，作为同构 [disc_id_iso] 在 #468 的单子类别中 [Monads Sets]（Monad/Morphism.v）在 (PDiscT; PDiscMonad) 和 Monad/Identity.v 的 (Id [Sets]; IdMonad Sets) 之间。它的两个单子态射，[disc_id_hom] 和 [id_disc_hom]，每个分量都是恒等（[disc_id_hom_component]，[id_disc_hom_component]）。- “比较函子是忘记函子 G”：[PDiscK] 是 [EM_Comparison PDisc_PForget]。在代数的忘记函子之后，它在对象和箭头上是 [PForget]（[PDiscK_forget_obj]，[PDiscK_forget_map]），在 Theory/Functor.v 的 [Functor_StrictEq_Setoid] 中，每个对象的方程是 [eq_refl]（[PDiscK_forget_strict]），在 Cat 的 ≈ 中是 [PDiscK_forget]，这正是 Monad/Comparison.v 在该伴随关系下的 [EM_Comparison_Forget]。K X 的结构映射是恒等 setoid 态射（[PDiscK_alg]）。- “Top^I = Set”：[EM_PDisc_equivalence]，[PDiscMonad] 的代数的遗忘函子是与准逆 [EM_Free] 的等价，因为每个结构映射 ≈ id（[PDiscMonad_alg_id]）；并且 [PDiscK_free]：K ≈ EM_Free ◯ PForget，底下有恒等箭头，因此 K 是 G 跟随那个等价。对于恒等 monad 本身，Monad/Identity.v 中的 [IdMonad_EM_equivalence] 在 [Sets]；以及 [PDiscKI]，K 跟随 #468 的 [id_disc_hom] 的 θ*（Monad/Morphism/Algebra.v 的 [mh_EM]），是进入 [IdMonad Sets] 代数的比较：每个像的结构映射是恒等函数（[PDiscKI_alg]），并且在遗忘函子之后，它在对象和箭头上是 [PForget]（[PDiscKI_forget_obj]，[PDiscKI_forget_map]）。四个常数
  [EM_PDisc_counit] 、 [EM_PDisc_unit_iso] 、 [EM_PDisc_unit] 和
  [EM_PDisc_equivalence] 在 [PDiscMonad] 逐行重复 Monad/Identity.v 的 [IdMonad_EM_counit] 、
  [IdMonad_EM_unit_iso] 、 [IdMonad_EM_unit] 和 [IdMonad_EM_equivalence] ：这些在 [IdMonad] 中声明，

@@ -19,7 +19,7 @@ Require Import Category.Structure.Groupoid.
 Generalizable All Variables.
 
 (*
- Lib.v sets [Default Proof Using "Type"], which keeps only the Section
+ Lib.v sets [Default Proof Using “Type”], which keeps only the Section
  variables occurring in a lemma's STATEMENT.  Several proofs below consume
  Section hypotheses that their statements do not mention -- the
  multiplication's continuity certificate above all -- and the narrower
@@ -28,19 +28,19 @@ Generalizable All Variables.
  Instance/Top/Homotopy.v make, for the same reason. 
 
  --------
- Lib.v 设置了 [Default Proof Using "Type"]，它只保留引理陈述中出现的 Section 变量。下文的几个证明会使用它们陈述中未提到的 Section 假设——尤其是上面的乘法连续性证明——而较狭窄的设置会舍弃它们。这与 Instance/Top/Interval.v、Instance/Top/FundamentalGroupoid.v 和 Instance/Top/Homotopy.v 所做的声明是相同的，原因相同。
+ Lib.v 设置了 [Default Proof Using “Type”]，它只保留引理陈述中出现的 Section 变量。下文的几个证明会使用它们陈述中未提到的 Section 假设——尤其是上面的乘法连续性证明——而较狭窄的设置会舍弃它们。这与 Instance/Top/Interval.v、Instance/Top/FundamentalGroupoid.v 和 Instance/Top/Homotopy.v 所做的声明是相同的，原因相同。
 *)
 Set Default Proof Using "All".
 
 (* * * Loops in a topological group, and the abelian fundamental group / * * 拓扑群中的环路，以及阿贝尔基本群 *)
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §II.5 Exercises 4 and 6 (printed p. 45)
- Paper:     Eckmann, Hilton, "Group-like structures in general categories
- I. Multiplications and comultiplications", Mathematische
+ Paper:     Eckmann, Hilton, “Group-like structures in general categories
+ I. Multiplications and comultiplications”, Mathematische
  Annalen 145, 1962
- Paper:     Eckmann, Hilton, "Structure maps in group theory", Fundamenta
+ Paper:     Eckmann, Hilton, “Structure maps in group theory”, Fundamenta
  Mathematicae 50, 1961 (Theorem 1.12)
  nLab:      https://ncatlab.org/nlab/show/topological+group
  nLab:      https://ncatlab.org/nlab/show/loop+space

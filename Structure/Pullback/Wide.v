@@ -58,7 +58,7 @@ Generalizable All Variables.
  THE EMPTY INDEX IS A REAL BOUNDARY, AND THIS FORMULATION GETS IT RIGHT.
  With I empty the [∀ i j] condition is vacuous and the mediator's
  condition [∀ i, p i ∘ u ≈ q i] is vacuous too, so the record degenerates
- to "every object has exactly one map to P" — which is terminality.
+ to “every object has exactly one map to P” — which is terminality.
  That is proved in BOTH directions, [wide_pullback_empty_terminal] and
  [terminal_wide_pullback_empty], and it is a biconditional at fixed data:
  over an empty index [IsWidePullback f P p] holds exactly when P is
@@ -76,8 +76,8 @@ Generalizable All Variables.
  instead a clean IDENTIFICATION.
 
  AN EARLIER DRAFT OF THIS HEADER EXPLAINED THAT CONTRAST BY SAYING THAT A
- WIDE FORK "CARRIES A SECOND LEG WHICH THE EMPTY CONDITION LEAVES
- UNCONSTRAINED".  THAT IS FALSE, AND IT IS FALSE ABOUT ANOTHER FILE'S
+ WIDE FORK “CARRIES A SECOND LEG WHICH THE EMPTY CONDITION LEAVES
+ UNCONSTRAINED”.  THAT IS FALSE, AND IT IS FALSE ABOUT ANOTHER FILE'S
  RECORD, SO IT IS RECORDED HERE AS BAD EVIDENCE RATHER THAN QUIETLY
  DELETED.  [IsWideEqualizer] (Structure/Equalizer/Wide.v) has exactly
  TWO fields and ONE leg [e : q ~> x]; it carries no second leg, and that

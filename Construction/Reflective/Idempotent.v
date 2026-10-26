@@ -20,11 +20,11 @@ Generalizable All Variables.
 (*
  Section proofs below draw on class-instance context variables (the monad and
  its idempotency witness) that need not occur in the stated type, so capture
- every section variable rather than the [Default Proof Using "Type"] subset
+ every section variable rather than the [Default Proof Using “Type”] subset
  inherited from Lib.v. 
 
  --------
- 下面的小节证明使用了类-实例上下文变量（单子及其幂等性证明），这些变量不必出现在声明的类型中，因此应捕获每一个小节变量，而不是继承自 Lib.v 的 [Default Proof Using "Type"] 子集。
+ 下面的小节证明使用了类-实例上下文变量（单子及其幂等性证明），这些变量不必出现在声明的类型中，因此应捕获每一个小节变量，而不是继承自 Lib.v 的 [Default Proof Using “Type”] 子集。
 *)
 Set Default Proof Using "All".
 

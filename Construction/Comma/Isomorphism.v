@@ -54,8 +54,8 @@ Generalizable All Variables.
  i.e. @Comma A B C is `Proper` for natural isomorphism of each functor
  argument valued in isomorphism in Cat. Note that, per Theory/Isomorphism.v,
  an isomorphism in Cat is an *equivalence* of categories (the round-trips are
- only `≈ id`, not `= id`), so this is precisely the "invariant up to
- equivalence" statement; the round-trip natural isomorphisms are built with
+ only `≈ id`, not `= id`), so this is precisely the “invariant up to
+ equivalence” statement; the round-trip natural isomorphisms are built with
  `constructive` from the inverse laws `iso_to_from` and `iso_from_to`. 
 
  --------

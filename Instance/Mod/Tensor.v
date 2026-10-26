@@ -49,7 +49,7 @@ Generalizable All Variables.
    already knows the object, and what the definition supplies is the
    reason it exists.  Bilinearity is a two-variable notion, linearity a
    one-variable notion, and V ⊗ V' is the object that converts the first
-   into the second — "the" object, because a representing object is
+   into the second — “the” object, because a representing object is
    determined up to a unique compatible isomorphism, which is what makes
    the familiar identifications (associativity, commutativity, the unit
    law) theorems rather than choices.  The historical order was the
@@ -87,7 +87,7 @@ Generalizable All Variables.
    [reflexivity].  The other two obligations, [fmap_respects] and
    respectfulness of the arrow map itself, do not: each consumes its
    hypothesis.  (Four in all, RE-COUNTED from the [_obligation_] names
-   [Print Module] lists after the PR "algebraic carriers are sets"
+   [Print Module] lists after the PR “algebraic carriers are sets”
    (2026-09-17); unchanged, [cmon_prop] being supplied inline in the
    record literals rather than left to [Program].)
 
@@ -185,10 +185,10 @@ Generalizable All Variables.
    the identity is also vacuous when the modules are trivial.)
 
    WHAT WAS ALREADY IN THE TREE, since issue #306 says otherwise.  The
-   issue's "Current state" reads "Absent … `rg 'bilinear|Bilin'` finds
+   issue's “Current state” reads “Absent … `rg 'bilinear|Bilin'` finds
    only prose … there is no category of vector spaces or modules … no
    bilinear-map type, and no tensor-product-by-universal-property
-   construction".  Measured against this file's parent, that is wrong on
+   construction”.  Measured against this file's parent, that is wrong on
    every count but the last two words: [Record Bilinear (K : AbObject)]
    is at Instance/Ab/Tensor.v, with [tensor_ump], [tensor_hom_ext],
    [AbTensor] and [AbTensor_Functor] beside it, and [tensor_ump] is
@@ -241,8 +241,8 @@ Generalizable All Variables.
    * NO COMPARISON WITH Instance/Ab/Tensor.v.  Over R = ℤ the two
    constructions have the same universal property, but no
    isomorphism between [AbTensor] and [TensorMod] is stated or proved
-   here.  An earlier revision added "the ℤ-module structure of an
-   [AbObject] is not in the tree"; since #454 it is, as
+   here.  An earlier revision added “the ℤ-module structure of an
+   [AbObject] is not in the tree”; since #454 it is, as
    Instance/Mod/Cogenerator.v's [Ab_to_ZMod] (through [zsmul]), and no
    comparison of the two tensors is built on it.
 
@@ -424,7 +424,7 @@ Qed.
 (*
    * The same identity written with subtraction: the commutator
    r·s − s·r acts as zero on every value of β.  This is the form the
-   header's word "annihilates" refers to; it needs the ambient module's
+   header's word “annihilates” refers to; it needs the ambient module's
    negation, which is why it is stated here and not for rigs. 
 
    --------
@@ -580,7 +580,7 @@ Definition mt_Setoid : Setoid MTerm := {|
    * The tensor product as an object of [RMod R].  Every law is a
    constructor; nothing is proved.  An earlier revision stopped there; the record now
    carries one more field, [cmon_prop], and it too is a one-liner: the
-   relation IS a [Prop] since the PR "algebraic carriers are sets"
+   relation IS a [Prop] since the PR “algebraic carriers are sets”
    (2026-09-17), so it is its own [Prop] mirror and both implications are
    the identity. 
 
@@ -760,7 +760,7 @@ Lemma tensor_med_respects (s t : MTerm V V') :
 Proof.
   intro He.
   (*
- Since the PR "algebraic carriers are sets" (2026-09-17) [mt_eq] is a
+ Since the PR “algebraic carriers are sets” (2026-09-17) [mt_eq] is a
  [Prop] inductive and eliminates only into [Prop] goals, while `≈` is
  [Type]-valued.  [pequiv_to] puts a [Prop] goal in front of the
  elimination; each branch returns to `≈` with [pequiv_from].  The eighteen
@@ -812,7 +812,7 @@ Qed.
    those equations; only respectfulness has content.  One uniform body
    is used for the four obligations so that the proof does not depend on
    the order [Program] emits them in (the Instance/Mod/Free.v
-   idiom).  Still four after the PR "algebraic carriers are sets"
+   idiom).  Still four after the PR “algebraic carriers are sets”
    (2026-09-17), re-counted from [Print Module]. 
 
    --------
@@ -972,8 +972,8 @@ Qed.
 (*
    * ** The headline: ⟨V ⊗ V', ⊗⟩ is a universal element of Bilin(V, V'; −)
 
-   Mac Lane's clause "(H k) e = x for a unique k" is, unfolded here,
-   "k agrees with β on generators, for a unique module homomorphism k":
+   Mac Lane's clause “(H k) e = x for a unique k” is, unfolded here,
+   “k agrees with β on generators, for a unique module homomorphism k”:
    the existence half is [tensor_med] (and the equation holds by
    [reflexivity], the mediator's underlying map being a fixpoint), the
    uniqueness half is [tensor_hom_ext]. 

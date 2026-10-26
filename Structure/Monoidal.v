@@ -69,16 +69,16 @@ Context {C : Category}.
  Origins, coherence, and the reach of the tensor
 
  nLab:  https://ncatlab.org/nlab/show/monoidal+category
- Paper: Bénabou, "Catégories avec multiplication", C. R. Acad. Sci.
+ Paper: Bénabou, “Catégories avec multiplication”, C. R. Acad. Sci.
  Paris 256, 1963
- Paper: Mac Lane, "Natural Associativity and Commutativity", Rice
+ Paper: Mac Lane, “Natural Associativity and Commutativity”, Rice
  University Studies 49(4), 1963
- Paper: Kelly, "On MacLane's conditions for coherence of natural
- associativities, commutativities, etc.", J. Algebra 1(4), 1964
- Paper: Joyal, Street, "The geometry of tensor calculus, I", Advances
+ Paper: Kelly, “On MacLane's conditions for coherence of natural
+ associativities, commutativities, etc.”, J. Algebra 1(4), 1964
+ Paper: Joyal, Street, “The geometry of tensor calculus, I”, Advances
  in Mathematics 88(1), 1991
- Paper: Baez, Stay, "Physics, Topology, Logic and Computation: A
- Rosetta Stone", 2009 (arXiv:0903.0340)
+ Paper: Baez, Stay, “Physics, Topology, Logic and Computation: A
+ Rosetta Stone”, 2009 (arXiv:0903.0340)
 
  The notion entered the literature twice in 1963: Bénabou introduced
  categories with a multiplication in the Comptes Rendus, and Mac Lane
@@ -111,7 +111,7 @@ Context {C : Category}.
  and projections, so every object can be copied and deleted; a
  general tensor supplies neither, which is precisely the situation of
  quantum systems (no-cloning) and of the multiplicative conjunction
- of resources consumed exactly once (Girard, "Linear logic",
+ of resources consumed exactly once (Girard, “Linear logic”,
  Theoretical Computer Science 50, 1987).  Monoidal categories are
  thus the home of resource-like combination, the cartesian case being
  characterized by Fox's theorem in-tree
@@ -168,7 +168,7 @@ Reserved Infix "⨂" (at level 30, right associativity).
 
    2) 数据 / Data
       - I : C —— 单位对象 / monoidal unit
-      - tensor : C ∏ C ⟶ C / "x ⨂ y" —— 张量双函子
+      - tensor : C ∏ C ⟶ C / “x ⨂ y” —— 张量双函子
       - unit_left / unit_right / tensor_assoc —— λ, ρ, α（同构）
 
    3) 自然性字段 / Naturality

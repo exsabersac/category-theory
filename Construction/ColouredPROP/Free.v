@@ -24,7 +24,7 @@ Generalizable All Variables.
  free coloured PROP on a signature [S] has as its [cs ~> ds] arrows
  the typed string-diagram terms [CTerm S cs ds] quotiented by the
  laws of a strict symmetric monoidal category; this is the standard
- "free = syntactic" construction, the many-sorted analogue of
+ “free = syntactic” construction, the many-sorted analogue of
  [Construction/PROP/Free.v], with [list Colour] replacing [nat] and
  [++] replacing [Nat.add] throughout.
 

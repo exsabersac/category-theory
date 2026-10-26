@@ -24,14 +24,14 @@ Generalizable All Variables.
 (* * * The monoid monad W₀ and its algebras / * * 单子幺半群 W₀ 及其代数 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.4, Exercise 1, printed p. 146 (PDF
  p. 155) — maclane:VI.4:ex1
- Book: Awodey, "Category Theory", 1st ed., Carnegie Mellon pre-print,
+ Book: Awodey, “Category Theory”, 1st ed., Carnegie Mellon pre-print,
  September 2005, §10.3, Example 10.7, printed p. 276 (PDF
  p. 285) — awodey:10.3:example7; §10.6, Exercise 6, printed
  p. 291 (PDF p. 300) — awodey:10:ex6
- Book: Riehl, "Category Theory in Context", Example 5.1.4(ii), printed
+ Book: Riehl, “Category Theory in Context”, Example 5.1.4(ii), printed
  pp. 183-184 (PDF pp. 203-204) — riehl:5.1:example4;
  Example 5.2.6(iii),
  printed pp. 189-190 (PDF pp. 209-210) — riehl:5.2:example6;
@@ -43,35 +43,35 @@ Generalizable All Variables.
  nLab: https://ncatlab.org/nlab/show/Kleisli+category
 
  WHAT THE BOOKS SAY, read from the page image and the PDFs.
- Mac Lane, Exercise 1: "Let W₀ be the monad in Set defined by the
+ Mac Lane, Exercise 1: “Let W₀ be the monad in Set defined by the
  forgetful functor Mon→Set.  Show that a W₀-algebra is a set M with
  a string ν₀, ν₁, … of n-ary operations νₙ, where ν₀ : * → M is the
- unit of the monoid M and νₙ is the n-fold product."
+ unit of the monoid M and νₙ is the n-fold product.”
  Awodey, Example 10.7: for the free monoid adjunction F : Sets ⇄
- Mon : U, T(X) is the "strings over X", η "the usual 'string of
- length one' operation", and μ of a string of strings "the string of
- their elements"; a T-algebra α : TA → A has α[a] = a and
+ Mon : U, T(X) is the “strings over X”, η “the usual 'string of
+ length one' operation”, and μ of a string of strings “the string of
+ their elements”; a T-algebra α : TA → A has α[a] = a and
  α(μ([[…], …, […]])) = α(α[…], …, α[…]); a monoid gives one by
- m[m1, …, mn] = m1 · … · mn, the monoid is recovered "by u = m(−)
- for the unit and x · y = m(x, y) for the multiplication", and
- "every T-algebra is of this form for a unique monoid (exercise!)".
- Exercise 10.6.6: "Show that any T-algebra α : TA → A for this monad
+ m[m1, …, mn] = m1 · … · mn, the monoid is recovered “by u = m(−)
+ for the unit and x · y = m(x, y) for the multiplication”, and
+ “every T-algebra is of this form for a unique monoid (exercise!)”.
+ Exercise 10.6.6: “Show that any T-algebra α : TA → A for this monad
  comes from a monoid structure on A (exhibit the monoid
- multiplication and unit element)."
- Riehl, Example 5.1.4(ii): "The free monoid monad is induced by the
+ multiplication and unit element).”
+ Riehl, Example 5.1.4(ii): “The free monoid monad is induced by the
  free ⊣ forgetful adjunction between monoids and sets … TA = ∐_{n≥0}
  Aⁿ, that is, TA is the set of finite lists of elements in A …  The
  components of the multiplication µA : T²A → TA are the
- concatenation functions".  Example 5.2.6(iii): an algebra is a map
- α : ∐_{n≥0} Aⁿ → A, whose unit triangle "asserts that the unary
- operation α1 is the identity", and whose square (5.2.7) "demands
+ concatenation functions”.  Example 5.2.6(iii): an algebra is a map
+ α : ∐_{n≥0} Aⁿ → A, whose unit triangle “asserts that the unary
+ operation α1 is the identity”, and whose square (5.2.7) “demands
  that the result of applying the (m1 + ⋯ + mn)-ary operation to the
  concatenated list is the same as applying the n-ary operation to
- the results of applying the mi-ary operations to each sublist";
- "the category of algebras for the free monoid monad is isomorphic
- to the category Monoid".  Example 5.2.11(ii): in the Kleisli
- category "a map from A to B is a function A → ∐_{n≥0} Bⁿ … i.e., a
- list of elements of B".
+ the results of applying the mi-ary operations to each sublist”;
+ “the category of algebras for the free monoid monad is isomorphic
+ to the category Monoid”.  Example 5.2.11(ii): in the Kleisli
+ category “a map from A to B is a function A → ∐_{n≥0} Bⁿ … i.e., a
+ list of elements of B”.
 
  THE MONAD.  The issue's QA correction asks for W₀ as the monad of an
  existing free-monoid adjunction at Sets, not a second free monoid.
@@ -103,14 +103,14 @@ Generalizable All Variables.
  trip word → tuple → word refused at [eq_refl] at a variable word
  (Test/ProbeWord471.v, R3).
 
- AN ALGEBRA IS A MONOID (Awodey's Exercise 10.6.6; Riehl's "any
- algebra … defines a monoid").  For an algebra α on S, [alg_mul α]
+ AN ALGEBRA IS A MONOID (Awodey's Exercise 10.6.6; Riehl's “any
+ algebra … defines a monoid”).  For an algebra α on S, [alg_mul α]
  x y = α⟨x y⟩ and [alg_one α] = α⟨⟩; associativity ([alg_mul_assoc])
  and the unit laws ([alg_one_l], [alg_one_r]) come from the unit law
  α⟨x⟩ ≈ x ([alg_unit]) and the action law read on words of words
- ([alg_action]), at ≈, and [alg_monoid α] is the monoid.  "Comes from
- a monoid structure": α⟨m1 … mn⟩ ≈ m1 ⋯ mn, α is the fold of its
- monoid ([alg_fold]); "for a unique monoid": a monoid on the same
+ ([alg_action]), at ≈, and [alg_monoid α] is the monoid.  “Comes from
+ a monoid structure”: α⟨m1 … mn⟩ ≈ m1 ⋯ mn, α is the fold of its
+ monoid ([alg_fold]); “for a unique monoid”: a monoid on the same
  carrier whose products α computes has α's multiplication and unit,
  up to ≈ ([alg_monoid_unique]).
 
@@ -132,7 +132,7 @@ Generalizable All Variables.
  [Equivalence_to_Cat_Iso] the component of [iso_from_to] is refused
  (R13) while that of [iso_to_from] holds (C48).  An isomorphism in Cat
  is, by Instance/Cat.v, an equivalence of categories, which the
- identity components bring toward Riehl's "isomorphic"; a strict
+ identity components bring toward Riehl's “isomorphic”; a strict
  isomorphism is refused.  The round trips keep the carrier, the unit
  and the maps at [eq_refl] ([Mon_rt_carrier], [Mon_rt_one],
  [Mon_rt_hom], [EM_rt_carrier], [EM_rt_alg_hom]) and return the
@@ -160,8 +160,8 @@ Generalizable All Variables.
  A → W₀ B, a list of elements of B for each a ([W0Kl_hom],
  [W0Kl_homset]), and the identity sends a to ⟨a⟩ ([W0Kl_id_fun]);
  composition is the concatenated map at ≈ ([W0Kl_compose]) and refused
- at [eq_refl] (R14, through W₀ f).  Riehl's "a function A → ∐_{n≥0}
- Bⁿ" is [W0Kl_hom_iso]: the Kleisli hom-setoid is isomorphic in Sets
+ at [eq_refl] (R14, through W₀ f).  Riehl's “a function A → ∐_{n≥0}
+ Bⁿ” is [W0Kl_hom_iso]: the Kleisli hom-setoid is isomorphic in Sets
  to the setoid of maps A → [Tup0SumObj B], by postcomposition with
  [W0_sum_iso] ([W0Kl_hom_iso_to], at [eq_refl]).
 
@@ -169,31 +169,31 @@ Generalizable All Variables.
  commutative variant (the appended box (b)) Instance/CMon/Free.v.
 
  THE ISSUE'S PREMISES, dated.  Issue #471 was filed on 2026-07-23.
- Its "no ordinary category Mon" was false when filed: Theory/Algebra/
+ Its “no ordinary category Mon” was false when filed: Theory/Algebra/
  Monoid/Hom.v's [Mon] and [Mon_Forget] came with PR #191 (merged
  2026-07-07), as the body's own Riehl append says.  The appends'
- "has no left adjoint" was accurate for Mon when written and has been
+ “has no left adjoint” was accurate for Mon when written and has been
  stale since PR #1219 (merged 2026-08-29), whose Instance/Mon/Free.v
  gives FreeMonSets ⊣ Mon_Forget at Sets; for CMon it held until this
- change (Instance/CMon/Free.v).  Their grep "rg '⊣' Instance/CMon.v
- Instance/CMon/ → 0 hits" has been stale since PR #1220 (merged
+ change (Instance/CMon/Free.v).  Their grep “rg '⊣' Instance/CMon.v
+ Instance/CMon/ → 0 hits” has been stale since PR #1220 (merged
  2026-08-29), whose Instance/CMon/Grothendieck.v declares
  [grothendieck_adjunction : GrothLeft ⊣ Ab_to_CMon], not a left
- adjoint of [CMon_Forget].  The QA correction's "#296's free-monoid
- universal arrow / adjunction" is #400's at Sets: #296 (PR #1140,
+ adjoint of [CMon_Forget].  The QA correction's “#296's free-monoid
+ universal arrow / adjunction” is #400's at Sets: #296 (PR #1140,
  merged 2026-08-17) delivered Instance/Coq/Monoid/Free.v at Mon Coq.
- Its "a coproduct-of-tensor-powers carrier in Sets is not
- definitionally list X" does not hold on the prescribed route, where
+ Its “a coproduct-of-tensor-powers carrier in Sets is not
+ definitionally list X” does not hold on the prescribed route, where
  the carrier of W₀ X IS list X at [eq_refl] ([W0_carrier]): stale
  since PR #1219.  [list_Monad] (Theory/Coq/List.v) is operations only
  and Theory/Coq/Monad/Proofs.v's [IsMonad] covers Identity, arrow and
  Compose alone, as the body says, then and now (both files last
- changed in c429a82b, 2026-06-17).  Its "discharge unit/associativity
- laws here" is supplied by [Adjunction_Induced_Monad] from the
+ changed in c429a82b, 2026-06-17).  Its “discharge unit/associativity
+ laws here” is supplied by [Adjunction_Induced_Monad] from the
  adjunction.  Of its suggested module Monad/Instance/List.v, the
  directory Monad/Instance does not exist; the files are this one
  (beside #470's Instance/Smgrp/Word.v), its satellite and
- Instance/CMon/Free.v.  Its "CLAUDE.md Key Files index" was accurate
+ Instance/CMon/Free.v.  Its “CLAUDE.md Key Files index” was accurate
  when filed and has been stale since PR #1284 (merged 2026-09-09),
  which moved the index to docs/INDEX.md.  The body cites constants by
  line number, which this tree replaces by their names.
@@ -348,7 +348,7 @@ Qed.
 (*
  Tuple → list → tuple is the identity up to ≈, across the length, which
  is propositional only.  The binder is extensible because Coq 8.19 and
- 8.20 refuse a closed @{o} here ("Universe … is unbound"); the extra
+ 8.20 refuse a closed @{o} here (“Universe … is unbound”); the extra
  level is minimized away, and the lemma binds o alone on every
  version. 
 

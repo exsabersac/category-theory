@@ -27,7 +27,7 @@ nLab: https://ncatlab.org/nlab/show/bicartesian+closed+category
    i.e. a ring without negatives): the coproduct + behaves like addition with
    unit 0, the product × like multiplication with unit 1 annihilated by 0,
    distributivity of × over + holds, and the internal hom x^y plays the role
-   of exponentiation. Reading ≅ ("isomorphic") for the algebraist's = , each
+   of exponentiation. Reading ≅ (“isomorphic”) for the algebraist's = , each
    goal below is the categorified counterpart of a familiar arithmetic law,
    for example x × (y + z) ≅ (x × y) + (x × z), x^(y + z) ≅ x^y × x^z and
    x^(y × z) ≅ (x^y)^z (the last being the curry/uncurry adjunction). Every

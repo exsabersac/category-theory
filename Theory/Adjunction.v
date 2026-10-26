@@ -39,9 +39,9 @@ nLab: https://ncatlab.org/nlab/show/adjoint+functor
 Origins, ubiquity, and the uses of adjunction
 
    nLab:  https://ncatlab.org/nlab/show/adjoint+functor
-   Paper: Kan, "Adjoint functors", Transactions of the American
+   Paper: Kan, “Adjoint functors”, Transactions of the American
           Mathematical Society 87(2), 1958
-   Paper: Lawvere, "Adjointness in Foundations", Dialectica 23(3/4), 1969;
+   Paper: Lawvere, “Adjointness in Foundations”, Dialectica 23(3/4), 1969;
           reprinted as TAC Reprints 16, 2006
 
    Adjoint functors were introduced by Daniel Kan — a homotopy theorist and
@@ -53,8 +53,8 @@ Origins, ubiquity, and the uses of adjunction
    adjoint linear operators on a Hilbert space, ⟨L x, y⟩ = ⟨x, R y⟩; the
    nLab describes the categorical notion as a kind of categorification of
    that older one.  Mac Lane states the standard assessment in the preface
-   of Categories for the Working Mathematician (Springer, 1971): "Adjoint
-   functors arise everywhere", and the middle of that book presents
+   of Categories for the Working Mathematician (Springer, 1971): “Adjoint
+   functors arise everywhere”, and the middle of that book presents
    universal constructions, limits, and free objects as so many faces of
    adjunction.
 
@@ -75,16 +75,16 @@ Origins, ubiquity, and the uses of adjunction
    [left_adjoint_iso] below), right adjoints preserve limits and left
    adjoints colimits (Adjunction/Continuity.v, anticipated by the note
    ending this file), and every adjunction induces a monad.  The last
-   observation is Huber's ("Homotopy theory in general categories",
+   observation is Huber's (“Homotopy theory in general categories”,
    Mathematische Annalen 144, 1961), realized here as [Adjunction_Monad] in
    Monad/Adjunction.v; its converse — every monad so arises — was proved
-   twice in 1965, by Kleisli ("Every standard construction is induced by a
-   pair of adjoint functors", Proceedings of the AMS 16(3), 1965) with the
-   initial resolution and by Eilenberg and Moore ("Adjoint functors and
-   triples", 1965) with the terminal one, both in-tree as
+   twice in 1965, by Kleisli (“Every standard construction is induced by a
+   pair of adjoint functors”, Proceedings of the AMS 16(3), 1965) with the
+   initial resolution and by Eilenberg and Moore (“Adjoint functors and
+   triples”, 1965) with the terminal one, both in-tree as
    Monad/Kleisli/Adjunction.v and Monad/Eilenberg/Moore/Adjunction.v.
 
-   Lawvere's "Adjointness in Foundations" argues that adjointness, first
+   Lawvere's “Adjointness in Foundations” argues that adjointness, first
    isolated and named in category theory, also pervades logic: cartesian
    closed structure is entirely given by adjunctions — currying is
    − × a ⊣ (−)^a — and the quantifiers form the adjoint triple
@@ -96,14 +96,14 @@ Origins, ubiquity, and the uses of adjunction
    target while the hom-set iso is not ([succ_not_self_adjoint]) -- whose
    antitone variant recovers classical Galois theory;
    on this special case rests abstract interpretation (Cousot and Cousot,
-   "Abstract interpretation: a unified lattice model for static analysis
-   of programs by construction or approximation of fixpoints", POPL 1977),
+   “Abstract interpretation: a unified lattice model for static analysis
+   of programs by construction or approximation of fixpoints”, POPL 1977),
    where a connection α ⊣ γ between concrete and abstract domains —
    c ⊑ γ(a) ⟺ α(c) ≼ a — is the soundness discipline of static
    analyzers, and such connections compose, so stages of approximation
    stack.
 
-   For the functional programmer (Milewski, "Adjunctions", 2016), the
+   For the functional programmer (Milewski, “Adjunctions”, 2016), the
    transposes ⌊-⌋ and ⌈-⌉ are the leftAdjunct and rightAdjunct of
    Haskell's Adjunction class, while [unit] and [counit] specialize to
    return and extract.  The product type is right adjoint to the diagonal
@@ -119,9 +119,9 @@ Origins, ubiquity, and the uses of adjunction
 伴随的起源、无处不在与用途
 
    nLab:  https://ncatlab.org/nlab/show/adjoint+functor
-   Paper: Kan, "Adjoint functors", Transactions of the American
+   Paper: Kan, “Adjoint functors”, Transactions of the American
           Mathematical Society 87(2), 1958
-   Paper: Lawvere, "Adjointness in Foundations", Dialectica 23(3/4), 1969;
+   Paper: Lawvere, “Adjointness in Foundations”, Dialectica 23(3/4), 1969;
           reprinted as TAC Reprints 16, 2006
 
    伴随函子由 Daniel Kan——同伦理论家、Eilenberg 的博士生——在上述 1958 论文中引入。
@@ -141,14 +141,14 @@ Origins, ubiquity, and the uses of adjunction
    伴随函子定理背后的引擎。伴随弱于范畴同构或等价，但足以运送结构：伴随在自然同构
    下唯一（下文 [right_adjoint_iso]、[left_adjoint_iso]），右伴随保持极限、左伴随保持
    余极限（Adjunction/Continuity.v，本文件末注记已预示），且每个伴随诱导单子。后者是
-   Huber 的观察（"Homotopy theory in general categories", Mathematische Annalen 144, 1961），
+   Huber 的观察（“Homotopy theory in general categories”, Mathematische Annalen 144, 1961），
    此处实现为 Monad/Adjunction.v 的 [Adjunction_Monad]；其逆——每个单子都如此产生——
-   在 1965 年被证明两次：Kleisli（"Every standard construction is induced by a pair of
-   adjoint functors", Proceedings of the AMS 16(3), 1965）给出初始分解，Eilenberg 与
-   Moore（"Adjoint functors and triples", 1965）给出终结分解，树内分别为
+   在 1965 年被证明两次：Kleisli（“Every standard construction is induced by a pair of
+   adjoint functors”, Proceedings of the AMS 16(3), 1965）给出初始分解，Eilenberg 与
+   Moore（“Adjoint functors and triples”, 1965）给出终结分解，树内分别为
    Monad/Kleisli/Adjunction.v 与 Monad/Eilenberg/Moore/Adjunction.v。
 
-   Lawvere 的 "Adjointness in Foundations" 主张：首先在范畴论中分离并命名的伴随性
+   Lawvere 的 “Adjointness in Foundations” 主张：首先在范畴论中分离并命名的伴随性
    也遍及逻辑——笛卡尔闭结构完全由伴随给出，curry 是 − × a ⊣ (−)^a——量词形成伴随三元组
    ∃ ⊣ 替换 ⊣ ∀（在 hyperdoctrine 纤维上），该三元组在类型论中再现为依赖和与积、在几何中
    为基变换。在偏序之间，伴随恰是 Galois 联络——在 Instance/Proset/Galois.v 双向证明，
@@ -157,7 +157,7 @@ Origins, ubiquity, and the uses of adjunction
    具体域与抽象域之间的联络 α ⊣ γ——c ⊑ γ(a) ⟺ α(c) ≼ a——是静态分析器的可靠性纪律，
    且此类联络可复合，故近似阶段可堆叠。
 
-   对函数式程序员（Milewski, "Adjunctions", 2016），转置 ⌊-⌋ 与 ⌈-⌉ 是 Haskell Adjunction
+   对函数式程序员（Milewski, “Adjunctions”, 2016），转置 ⌊-⌋ 与 ⌈-⌉ 是 Haskell Adjunction
    类的 leftAdjunct 与 rightAdjunct，而 [unit] 与 [counit] 特殊化为 return 与 extract。
    积类型是对角函子的右伴随——具体见 Adjunction/Diagonal/Product.v 的
    [Diagonal_Product_Adjunction]——函数类型来自 − × a ⊣ (−)^a，以 eval 为余单位。
@@ -175,8 +175,8 @@ Adjunctions relate two functors that map between the same two categories
 
   As an example: the category of ASTs may be mapped forgetfully to the
   category of interpretated objects, which themselves map freely to some
-  "canonical" representation of each such object. So, "3", "1 + 2", and "2 +
-  1" all mean 3, while 3 is canonically represented by the constant "3". The
+  “canonical” representation of each such object. So, “3”, “1 + 2”, and “2 +
+  1” all mean 3, while 3 is canonically represented by the constant “3”. The
   forgetful functor is the evaluator, and the free functor a parser, giving
   rise to the following isomorphism (in the category of Sets, whose objects
   may be hom-sets):
@@ -481,11 +481,11 @@ Notation "adj[ A ]" := (@adj _ _ _ _ A _ _)
   (at level 9, format "adj[ A ]") : morphism_scope.
 
 (*
-Wikipedia: "If the functor F : C ← D has two right adjoints G and G', then
-   G and G' are naturally isomorphic. The same is true for left adjoints."
+Wikipedia: “If the functor F : C ← D has two right adjoints G and G', then
+   G and G' are naturally isomorphic. The same is true for left adjoints.”
 
 --------
-维基百科："如果函子 F : C ← D 有两个右伴随 G 和 G'，那么 G 和 G' 在自然意义下是同构的。左伴随也同样成立。"
+维基百科：“如果函子 F : C ← D 有两个右伴随 G 和 G'，那么 G 和 G' 在自然意义下是同构的。左伴随也同样成立。”
 *)
 
 Theorem right_adjoint_iso `(F : C ⟶ D) (G G' : D ⟶ C) :
@@ -569,11 +569,11 @@ Qed.
 (*
 Future direction (no scaffolding here yet):
 
-   "The most important property of adjoints is their continuity: every
+   “The most important property of adjoints is their continuity: every
     functor that has a left adjoint (and therefore is a right adjoint) is
     continuous (i.e. commutes with limits in the category theoretical
     sense); every functor that has a right adjoint (and therefore is a
-    left adjoint) is cocontinuous (i.e. commutes with colimits)."
+    left adjoint) is cocontinuous (i.e. commutes with colimits).”
                                                               -- Wikipedia
 
    These theorems are formalized in Adjunction/Continuity.v:

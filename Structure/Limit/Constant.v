@@ -33,8 +33,8 @@ Require Import Category.Structure.Limit.Absolute.
  scopes declare [_ ^op] -- category, functor and adjunction -- and
  Category.Functor.Opposite opens [functor_scope], so after the Require
  block above a BINDER [{x y : J^op}] parses [J] as a functor and fails
- with "The term J has type Category while it is expected to have type
- ?C ⟶ ?D", naming neither culprit.  Measured: deleting the line below
+ with “The term J has type Category while it is expected to have type
+ ?C ⟶ ?D”, naming neither culprit.  Measured: deleting the line below
  breaks this file at its first opposite-category binder.  Contrast
  Theory/Universal/Arrow/Dual.v, whose own guard is DEFENSIVE because
  every [C^op] there sits in an argument or ascription position, which
@@ -48,7 +48,7 @@ Open Scope category_scope.
 Generalizable All Variables.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician",
+ Book:      Mac Lane, “Categories for the Working Mathematician”,
  2nd ed., §IV.2 Exercise 8, printed p. 90 (maclane:IV.2:ex8)
  nLab:      https://ncatlab.org/nlab/show/connected+category
  nLab:      https://ncatlab.org/nlab/show/constant+functor
@@ -83,7 +83,7 @@ Generalizable All Variables.
  are ABSOLUTE, preserved by EVERY functor out of C.
 
  1. A PRIOR-ART CORRECTION, ON TWO COUNTS, BOTH MEASURED.  The catalog
- issue's "Current state" section is FALSE twice over.
+ issue's “Current state” section is FALSE twice over.
 
  FIRST, it states that no connectedness predicate exists in the
  tree and asks for the zig-zag relation to be built from scratch.
@@ -118,7 +118,7 @@ Generalizable All Variables.
  [Diagonal_Unique] is a FACTORISATION (Δ[J](d) ≈ Δ(d) ◯ one)
  carrying no connectedness hypothesis and computing no limit.
  Separately, [Full (@Diagonal ...)], [Faithful (@Diagonal ...)],
- [AbsoluteLimit], [AbsoluteColimit] and the string "absolute limit"
+ [AbsoluteLimit], [AbsoluteColimit] and the string “absolute limit”
  each had ZERO occurrences tree-wide.  (d) is genuinely new
  VOCABULARY -- [AbsoluteLimit] and [AbsoluteColimit] are introduced
  here.  (c) is not: [Full] and [Faithful] are pre-existing
@@ -126,23 +126,23 @@ Generalizable All Variables.
  measurement shows there is a new INSTANTIATION at [Diagonal], not
  a new notion.  Prior art on absoluteness is prose in TWO files,
  not one: Structure/Coequalizer/Split.v and
- Construction/Karoubi.v ("Splitting an idempotent is an
- absolute colimit").
+ Construction/Karoubi.v (“Splitting an idempotent is an
+ absolute colimit”).
 
  READ (d)'s NOVELTY NARROWLY, THOUGH: the CONCEPT is prior art.
- Structure/Coequalizer/Split.v is headed "Split coequalizers are
- absolute", cites Paré 1971 and the nLab in prose, and proves
+ Structure/Coequalizer/Split.v is headed “Split coequalizers are
+ absolute”, cites Paré 1971 and the nLab in prose, and proves
  [functor_preserves_split] together with
  [split_coequalizer_preserved].  What it does NOT do is declare a
  predicate -- its absoluteness is a property of one construction,
  stated by transporting its equational data through [fmap] -- so
  there was nothing to instantiate here and nothing here subsumes it.
- The two are related only by the shared word; §"WHAT IS NOT
- DELIVERED" records that no bridge is built.
+ The two are related only by the shared word; §“WHAT IS NOT
+ DELIVERED” records that no bridge is built.
 
  2. INHABITEDNESS IS LOAD-BEARING, AND THAT IS PROVED RATHER THAN
- ARGUED.  The in-tree [Connected] is the bare "any two objects are
- joined" clause with NO inhabitedness, and [Zero_Connected] shows
+ ARGUED.  The in-tree [Connected] is the bare “any two objects are
+ joined” clause with NO inhabitedness, and [Zero_Connected] shows
  the empty category satisfies it vacuously.  Over the empty shape a
  cone is a BARE APEX -- no legs, no coherence -- so the universal
  property collapses to terminality, which
@@ -278,10 +278,10 @@ Generalizable All Variables.
  FORMABILITY.  With the shape's hom universe declared strictly below
  both its own proof universe and the ambient's hom universe,
  [Diagonal] and [IsALimit] are each rejected ALONE and on DIFFERENT
- equations -- "Cannot enforce jh = ch" and "Cannot enforce jp = jh"
+ equations -- “Cannot enforce jh = ch” and “Cannot enforce jp = jh”
  respectively -- against four controls accepted at those very levels
- ([obj], a hom type, [ACone] and [Cone]).  So §8's "two independent
- donors" is guarded, not merely measured.
+ ([obj], a hom type, [ACone] and [Cone]).  So §8's “two independent
+ donors” is guarded, not merely measured.
 
  Every constant named inside a [Fail] is also named by a succeeding
  command, so a rename breaks this file loudly rather than turning a
@@ -306,7 +306,7 @@ Generalizable All Variables.
  constraint block contains NO equation at all, while its binder reads
  [J : Category@{u1 u5 u5}] and [C : Category@{u3 u5 u5}] -- one level
  reused for four slots.  A reader who checks only the block reports
- "no identification" and is wrong.
+ “no identification” and is wrong.
 
  EVERY CROSS-CATEGORY IDENTIFICATION IS INHERITED -- read that
  precisely, because ONE identification IS added here and an earlier
@@ -358,7 +358,7 @@ Generalizable All Variables.
  [Print Assumptions connected_limit_of_constant]; THAT NAME EXISTS
  NOWHERE IN THE TREE (measured), the delivered name being
  [const_IsALimit].  And only the FORWARD direction of item 2's
- "exactly when" is proved: nothing forces [ConnectedNonempty J] from
+ “exactly when” is proved: nothing forces [ConnectedNonempty J] from
  invertibility of the unit.  The GENERAL (non-connected) case is NOT
  built: nothing here composes with Structure/Limit/Components.v's
  [ComponentDecomposition] / [components_IsALimit] to compute the limit
@@ -686,7 +686,7 @@ End ConstantColimit.
 (* * ** Part (d): these limits are absolute / * ** 第(d)部分：这些限制是绝对的 *)
 
 (*
- "Absolute limit" had ZERO occurrences tree-wide, so the notion is
+ “Absolute limit” had ZERO occurrences tree-wide, so the notion is
  introduced here: a limit is absolute when EVERY functor out of the
  ambient category preserves it.  Stated at the apex-pinned level, which
  is what part (a) delivers; no cone-level variant is defined.
@@ -1380,9 +1380,9 @@ Example two_const_med_strict {C : Category} (c : C) (N : Cone Δ[_2](c)) :
  the ambient's hom universe, [obj], a hom-type, [ACone] and [Cone] all
  elaborate -- so the cone vocabulary is INNOCENT -- while [Diagonal] and
  [IsALimit] are each rejected ALONE, and on DIFFERENT equations:
- [Diagonal] fails with "Cannot enforce jh = ch" (its codomain [Fun]
- identifies source and target hom levels) and [IsALimit] with "Cannot
- enforce jp = jh".  So the [u0 = u2] carried by [const_IsALimit] has two
+ [Diagonal] fails with “Cannot enforce jh = ch” (its codomain [Fun]
+ identifies source and target hom levels) and [IsALimit] with “Cannot
+ enforce jp = jh”.  So the [u0 = u2] carried by [const_IsALimit] has two
  genuinely independent donors, neither introduced here. 
 
  --------

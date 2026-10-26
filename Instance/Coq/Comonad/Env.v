@@ -17,7 +17,7 @@ Generalizable All Variables.
 
  The environment comonad — also called the coreader, product, or (after
  Haskell's Control.Comonad.Env) Env comonad — is the endofunctor e × − on
- COQ, for a fixed type e of "environments", with
+ COQ, for a fixed type e of “environments”, with
 
  extract   (e0, v) = v               (read the value, drop the context)
  duplicate (e0, v) = (e0, (e0, v))   (expose the context to the value)
@@ -57,8 +57,8 @@ Generalizable All Variables.
  Coeffects, annotation, and the slice
 
  nLab:  https://ncatlab.org/nlab/show/coreader+comonad
- Paper: Petricek, Orchard, Mycroft, "Coeffects: a calculus of
- context-dependent computation", ICFP 2014
+ Paper: Petricek, Orchard, Mycroft, “Coeffects: a calculus of
+ context-dependent computation”, ICFP 2014
 
  The co-Kleisli reading e * x → y is the discipline of implicit
  parameters, also called dynamic scoping: a program consults a

@@ -23,7 +23,7 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/adjoint+functor
  nLab:      https://ncatlab.org/nlab/show/discrete+category
  nLab:      https://ncatlab.org/nlab/show/monoid
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  GTM 5, §IV.2, printed p. 90, Exercise 5
 
  THE EXERCISE.  Mac Lane's §IV.2 exercise regards a monoid M as a DISCRETE
@@ -50,7 +50,7 @@ Generalizable All Variables.
 
  ** THE FORK: WHICH DISCRETE CATEGORY?
 
- "The discrete category on M" has two readings in a setoid library, and
+ “The discrete category on M” has two readings in a setoid library, and
  they are not interchangeable.  This file delivers BOTH and measures the
  difference rather than choosing silently.
 
@@ -66,7 +66,7 @@ Generalizable All Variables.
 
  (b) [MonDiscreteStrict M] — Instance/Discrete.v's [DiscreteCat] on the
  carrier, whose homs are proofs of Rocq's `=`.  This is the literal
- reading of "the category really is discrete (homs are equalities)".
+ reading of “the category really is discrete (homs are equalities)”.
  Over it the CONVERSE is still hypothesis-free
  ([strict_left_translation_adjoints_MonInverses]), because a Leibniz
  equality yields an `≈`; but the FORWARD direction is not, and the
@@ -208,11 +208,11 @@ Generalizable All Variables.
 
  [DiscreteCat_Functor] is NOT used anywhere below; the functors out of
  the strict category are hand-written records instead.  RECORDED
- CORRECTION: an earlier revision gave the reason as "(Instance/
+ CORRECTION: an earlier revision gave the reason as “(Instance/
  Discrete.v) it is unannotated and pins its source at
- [DiscreteCat@{u Set Set}]".  That held when written and does not now —
+ [DiscreteCat@{u Set Set}]”.  That held when written and does not now —
  the donor was annotated in place at Instance/Discrete.v in the PR
- "algebraic carriers are sets" (2026-09-17) and pins nothing.  The
+ “algebraic carriers are sets” (2026-09-17) and pins nothing.  The
  hand-written records are kept, and no re-measurement was made of
  whether the donor would now serve, since nothing here consumes it.
 
@@ -255,8 +255,8 @@ Generalizable All Variables.
  [exact I].  Measured both ways in this file's development: an obligation
  tactic set at top level still resolved [I] to [Logic.I] inside a section
  binding [I : MonInverses M], but the SAME tactic set INSIDE such a section
- resolved it to the section variable and every obligation failed with "the
- term I has type MonInverses M".  Every inverse witness below is therefore
+ resolved it to the section variable and every obligation failed with “the
+ term I has type MonInverses M”.  Every inverse witness below is therefore
  named [Inv].
 
  [Structure/Groupoid.v]'s [MonInverses] destructures as [minv]/[minv_l]/
@@ -378,7 +378,7 @@ Proof. exact I. Qed.
 #[local] Obligation Tactic := repeat intro; exact I.
 
 (*
- Mac Lane's "multiplication as a bifunctor": a functor from the product of
+ Mac Lane's “multiplication as a bifunctor”: a functor from the product of
  the discrete category with itself.  Its arrow action IS [mon_op_respects],
  the field that makes multiplication respect `≈`. 
 
@@ -572,7 +572,7 @@ Proof.
 Defined.
 
 (*
- "Every left translation has a right adjoint", as DATA.  The library's ∃ is
+ “Every left translation has a right adjoint”, as DATA.  The library's ∃ is
  [sigT], so this is a function and no choice principle is consumed when the
  inverse operation is read off it. 
 

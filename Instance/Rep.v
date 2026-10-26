@@ -34,10 +34,10 @@ Open Scope category_scope.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., §II.4, printed p. 41 (PDF 51) —
  maclane:II.4:construction3
- Book:      Awodey, "Category Theory", 2nd ed., §7.1, printed p. 153 —
+ Book:      Awodey, “Category Theory”, 2nd ed., §7.1, printed p. 153 —
  awodey:7.1:construction-linear-representation
  nLab:      https://ncatlab.org/nlab/show/representation
  nLab:      https://ncatlab.org/nlab/show/group+representation
@@ -57,8 +57,8 @@ Open Scope category_scope.
  That file is Mac Lane's construction 2 — actions on SETS, the
  category [MSet M] of M-actions and equivariant maps, and the
  equivalence [MSet_Fun_equiv : [Deloop M, Sets] ≅[Cat] MSet M].  Here
- [Sets] is replaced by [RMod K] and "action by functions" by "action
- by module automorphisms"; the architecture, including how naturality
+ [Sets] is replaced by [RMod K] and “action by functions” by “action
+ by module automorphisms”; the architecture, including how naturality
  over one object collapses to a single commuting square and how the
  functor-side round trip is rebuilt with a transparent component
  family, is that file's and is followed rather than re-invented.
@@ -104,9 +104,9 @@ Open Scope category_scope.
  2. THE AUTOMORPHISM FORM IS PRIMITIVE, AND THE PASSAGE COSTS
  NOTHING.  [RepObject] carries [rep_hom : GrpHom G (UnitsOf
  (hom_monoid (RMod K) rep_mod) (rmod_hom_monoid_prop K rep_mod))] —
- literally "a homomorphism from G into the automorphisms of V".
+ literally “a homomorphism from G into the automorphisms of V”.
  (An earlier revision of this line omitted the second argument of
- [UnitsOf].  Since the PR "algebraic carriers are sets" (2026-09-17)
+ [UnitsOf].  Since the PR “algebraic carriers are sets” (2026-09-17)
  [UnitsOf] asks the monoid's carrier setoid for a [Prop] equality, and
  [rmod_hom_monoid_prop] supplies it from [RMod_LocallyPropositional]
  with nothing to prove; no statement in this file gained a
@@ -244,7 +244,7 @@ Example grp_mon_op (G : GrpObject) :
  [UnitsOf] 的同态集（hom-setoid）仅通过底层元素比较单位数据，因此单位之间的方程就是它们所构建元素之间的方程——可逆性证明可以自由不同。作为一次转换来声明它，可以保持下面每个义务在 [RMod K] 的态射层级；没有它，一个单独的 [reflexivity] 也会尝试统一证明。
 *)
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) [UnitsOf] also
+ Since the PR “algebraic carriers are sets” (2026-09-17) [UnitsOf] also
  takes the monoid carrier's [PropEquiv]; the statement is otherwise
  unchanged, and every use below supplies [rmod_hom_monoid_prop]. 
 

@@ -21,17 +21,17 @@ Generalizable All Variables.
 (* * * The free abelian group monad ℤ[−] on Set, and Ab ≅ Set^{ℤ[−]} / * * 在 Set 上的自由阿贝尔群单子 ℤ [−]，以及 Ab ≅ Set^{ℤ [−] } *)
 
 (*
- Book: Riehl, "Category Theory in Context", §5.3, the construction
+ Book: Riehl, “Category Theory in Context”, §5.3, the construction
  opening the section, printed pp. 195-196 (PDF pp. 215-216) —
  riehl:5.3:construction-ab-monadic, the box issue #472 appends
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  §VI.4, Exercise 2, printed p. 146 (PDF p. 155) — the case R = ℤ
  of maclane:VI.4:ex2, whose general ring is
  Instance/Mod/FreeMonad.v
  nLab: https://ncatlab.org/nlab/show/free+abelian+group
  nLab: https://ncatlab.org/nlab/show/monadic+functor
 
- WHAT THE BOOK SAYS, read from the PDF.  "The free ⊣ forgetful
+ WHAT THE BOOK SAYS, read from the PDF.  “The free ⊣ forgetful
  adjunction … between sets and abelian groups … induces a monad Z[−] on
  Set.  Given a set S, Z[S] is the set of finite formal Z-linear
  combinations of elements of S, and the map Z[f] … carries a formal sum
@@ -39,15 +39,15 @@ Generalizable All Variables.
  is a unique functor from the category of abelian groups to the
  category of Z[−]-algebras that commutes with the left and right
  adjoints.  The image of an abelian group A is the algebra consisting of
- the underlying set of A together with the "evaluation" map
+ the underlying set of A together with the ”evaluation“ map
  ϵ_A : Z[A] → A that interprets a finite formal sum as a single element
  of A.  In fact, this functor defines an isomorphism of categories: to
- equip a set A with an "evaluation" function ev : Z[A] → A, so that
+ equip a set A with an ”evaluation“ function ev : Z[A] → A, so that
  diagrams … commute is precisely to give A the structure of an abelian
- group", the triangle "a 'sanity check' … that it sends a singleton sum
- a ∈ Z[A] to the element a", and an algebra homomorphism "a function
+ group”, the triangle “a 'sanity check' … that it sends a singleton sum
+ a ∈ Z[A] to the element a”, and an algebra homomorphism “a function
  f : A → B that preserves the evaluation of formal sums, i.e., a group
- homomorphism".
+ homomorphism”.
 
  ROUTE (i), TAKEN.  Instance/Ab/Free.v's free abelian group, in the
  hom-set form [free_ab_adjunction_hom] #472 adds there (its counit
@@ -89,7 +89,7 @@ Generalizable All Variables.
  identity components, that would remove this parallel and its siblings
  in #470 and #471.
 
- RIEHL'S "ISOMORPHISM OF CATEGORIES".  By Instance/Cat.v an
+ RIEHL'S “ISOMORPHISM OF CATEGORIES”.  By Instance/Cat.v an
  isomorphism in Cat is an equivalence of categories, which the identity
  components bring toward hers; the strict identity of Ab and its
  algebras is refused (R27 to R29).  Issue #484 keeps the strict reading
@@ -153,7 +153,7 @@ Generalizable All Variables.
  same levels (compared by [About]).
 
  NOT DELIVERED.  The uniqueness of the comparison functor (Riehl's
- "unique functor", Proposition 5.2.13; ADDENDUM (#482): in general,
+ “unique functor”, Proposition 5.2.13; ADDENDUM (#482): in general,
  for comparisons coherent with the identification of the two monads,
  it is Monad/Comparison/Resolution.v's [EM_Comparison_unique], not
  instantiated here); the strict isomorphism (#484); a
@@ -257,7 +257,7 @@ Definition ZMAlg@{+} : Category@{so c c} :=
 Definition Ab_K@{+} : Ab ⟶ ZMAlg := EM_Comparison free_ab_adjunction_hom.
 
 (*
- Riehl's "commutes with the left and right adjoints": Monad/
+ Riehl's “commutes with the left and right adjoints”: Monad/
  Comparison.v's two triangles, at this adjunction. 
 
  --------
@@ -294,7 +294,7 @@ Fixpoint zm_alg_eval@{+} (t : FATerm A) : carrier A :=
   | fa_neg s    => zm_alg_neg (zm_alg_eval s)
   end.
 
-(* Riehl's "sanity check": ev sends a singleton sum a to a. / Riehl 的“理智检查”：ev 将单例和 a 发送到 a。 *)
+(* Riehl's “sanity check”: ev sends a singleton sum a to a. / Riehl 的“理智检查”：ev 将单例和 a 发送到 a。 *)
 Lemma zm_alg_unit@{+} (x : carrier A) : t_alg[α] (@fa_gen A x) ≈ x.
 Proof. exact (@t_id _ _ _ _ α x). Qed.
 
@@ -369,9 +369,9 @@ Defined.
 
 (*
  The abelian group of the algebra: each law is one instance of
- [zm_alg_eval_respects] at a constructor of [fa_eq], so that "the
+ [zm_alg_eval_respects] at a constructor of [fa_eq], so that “the
  values assigned to the sums of sums (a1 + a2) + (a3) and (a1) +
- (a2 + a3) are equal" is associativity. 
+ (a2 + a3) are equal” is associativity. 
 
  --------
  代数的阿贝尔群：每条定律都是 [fa_eq] 的构造函数中 [zm_alg_eval_respects] 的一个实例，因此“分配给 (a1 + a2) + (a3) 和 (a1) + (a2 + a3) 的和的值相等”就是结合律。
@@ -397,7 +397,7 @@ Definition zm_alg_ab@{+} : AbObject := {|
 
 End Algebra.
 
-(* An algebra map is additive: Riehl's "a function f : A → B that preserves the evaluation of formal sums, i.e., a group homomorphism". / 代数映射是可加的：Riehl 的“一个函数 f : A → B，保持形式和的运算，即，一个群同态”。 *)
+(* An algebra map is additive: Riehl's “a function f : A → B that preserves the evaluation of formal sums, i.e., a group homomorphism”. / 代数映射是可加的：Riehl 的“一个函数 f : A → B，保持形式和的运算，即，一个群同态”。 *)
 Lemma zm_alg_hom_step@{+} {x y : ZMAlg} (f : x ~{ZMAlg}~> y)
   (t : FATerm (projT1 x)) :
   t_alg_hom[f] (t_alg[projT2 x] t)

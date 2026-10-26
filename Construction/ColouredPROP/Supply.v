@@ -32,10 +32,10 @@ Generalizable All Variables.
 (*
  nLab:      https://ncatlab.org/nlab/show/comonoid
  nLab:      https://ncatlab.org/nlab/show/copy-discard+category
- Reference: Fong & Spivak, "Supplying bells and whistles in symmetric
- monoidal categories" (arXiv:1908.02633)
- Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
- string diagrams", MSCS 29(7):938-971, 2019 (arXiv:1709.00322)
+ Reference: Fong & Spivak, “Supplying bells and whistles in symmetric
+ monoidal categories” (arXiv:1908.02633)
+ Reference: Cho & Jacobs, “Disintegration and Bayesian inversion via
+ string diagrams”, MSCS 29(7):938-971, 2019 (arXiv:1709.00322)
 
  A SUPPLY of commutative comonoids in a symmetric monoidal category
  (Fong-Spivak) equips every object with a comonoid structure,
@@ -87,8 +87,8 @@ Generalizable All Variables.
  --------
  nLab:       https://ncatlab.org/nlab/show/comonoid 
  nLab:       https://ncatlab.org/nlab/show/copy-discard+category 
- 参考文献: Fong & Spivak, "在对称幺半范畴中提供铃铛和口哨" (arXiv:1908.02633)
- 参考文献: Cho & Jacobs, "通过字符串图解的解离和贝叶斯逆转", MSCS 29(7):938-971, 2019 (arXiv:1709.00322)对称单体范畴中的可换余单体的供应（Fong-Spivak）为每个对象配备了余单体结构，并与张量一致。在有色 PROP 中，对象是颜色词，因此自然的数据是按颜色的：选择性供应为每个布尔谓词标记为可复制的颜色的单色线分配一个可交换余单体。所有其他颜色都是线性的：它们的线不需要（并且在自由/展示实例中可证明不需要——参见 Construction/ColouredPROP/Linear.v 和 Supply/Instance.v）支持任何复制或删除操作。 
+ 参考文献: Fong & Spivak, “在对称幺半范畴中提供铃铛和口哨” (arXiv:1908.02633)
+ 参考文献: Cho & Jacobs, “通过字符串图解的解离和贝叶斯逆转”, MSCS 29(7):938-971, 2019 (arXiv:1709.00322)对称单体范畴中的可换余单体的供应（Fong-Spivak）为每个对象配备了余单体结构，并与张量一致。在有色 PROP 中，对象是颜色词，因此自然的数据是按颜色的：选择性供应为每个布尔谓词标记为可复制的颜色的单色线分配一个可交换余单体。所有其他颜色都是线性的：它们的线不需要（并且在自由/展示实例中可证明不需要——参见 Construction/ColouredPROP/Linear.v 和 Supply/Instance.v）支持任何复制或删除操作。 
 
  设计决策，记录如下：- 该类携带单色原语  [supply_wire]；
  在复合边界上的供应  [cs]  是通过张量化导线余单子（下文的  [supply_list]）得出的，

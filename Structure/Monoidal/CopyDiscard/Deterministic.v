@@ -73,11 +73,11 @@ Generalizable All Variables.
    restricted to deterministic morphisms.
 
    nLab:      https://ncatlab.org/nlab/show/Markov+category
-   Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-   string diagrams", MSCS 29(7):938–971, 2019
+   Reference: Cho & Jacobs, “Disintegration and Bayesian inversion via
+   string diagrams”, MSCS 29(7):938–971, 2019
    (arXiv:1709.00322), §2
-   Reference: Fritz, "A synthetic approach to Markov kernels, conditional
-   independence and theorems on sufficient statistics",
+   Reference: Fritz, “A synthetic approach to Markov kernels, conditional
+   independence and theorems on sufficient statistics”,
    Adv. Math. 370:107239, 2020 (arXiv:1908.07021), §10 
 
    --------

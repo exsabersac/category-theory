@@ -24,21 +24,21 @@ Generalizable All Variables.
  nLab:      https://ncatlab.org/nlab/show/idempotent+monad
  nLab:      https://ncatlab.org/nlab/show/adjoint+functor
  Wikipedia: https://en.wikipedia.org/wiki/Galois_connection
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, SS IV.5, printed p. 97, Exercise 2
  (catalog id maclane:IV.5:ex2)
- Book:      Riehl, "Category Theory in Context", Dover 2016, SS 4.2,
+ Book:      Riehl, “Category Theory in Context”, Dover 2016, SS 4.2,
  printed pp. 142-143: Corollary 4.2.10 (riehl:4.2:cor10),
  Lemma 4.2.11 (riehl:4.2:lem11), Exercise 4.2.iv
  (riehl:4.2:exiv)
 
  Mac Lane's Exercise 2 reads, verbatim from the printed page:
 
- "In a Galois connection between posets, show that the subset
+ “In a Galois connection between posets, show that the subset
  {p | p = RLp} of P equals {p | p = Rq for some q} and give a
  bijection from this set to the subset {q | q = LRq} of Q.  What are
  these sets in the case of a group of automorphisms of a field?  Does
- this generalize to an arbitrary adjunction?"
+ this generalize to an arbitrary adjunction?”
 
  The answer to his closing question is YES, and this file is the general
  half of it.  The poset half -- the two displayed subsets, their
@@ -48,13 +48,13 @@ Generalizable All Variables.
 
  Riehl states the general form as Lemma 4.2.11:
 
- "Any pair of adjoint functors F : C <-> D : G restrict to define an
+ “Any pair of adjoint functors F : C <-> D : G restrict to define an
  equivalence between the full subcategories spanned by those objects
  c in C and d in D for which the components of the unit eta_c and of
- the counit epsilon_d, respectively, are isomorphisms."
+ the counit epsilon_d, respectively, are isomorphisms.”
 
  and leaves its proof to Exercise 4.2.iv, whose printed text is the
- self-reference "Prove Exercise 4.2.iv."  Issue #386 reads that as an
+ self-reference “Prove Exercise 4.2.iv.”  Issue #386 reads that as an
  instruction to prove Lemma 4.2.11, and so does this file; the book's
  wording is recorded here rather than silently corrected.
 
@@ -75,7 +75,7 @@ Generalizable All Variables.
  - [UnitFixed] / [CounitFixed]: the two full subcategories, over
  Construction/Subcategory.v's record, spanned by the objects where
  the unit (resp. the counit) is invertible.  Their [shom] is the
- terminal predicate, which is what "spanned by" means; fullness is
+ terminal predicate, which is what “spanned by” means; fullness is
  [UnitFixed_Full] / [CounitFixed_Full].
  - [counit_iso_of_unit_iso] / [unit_iso_of_counit_iso]: the closure
  facts that make the restriction well defined -- F carries
@@ -91,7 +91,7 @@ Generalizable All Variables.
  WHERE RIEHL'S COROLLARY 4.2.10 IS TRUE, AND WHERE IT IS NOT.  That
  corollary is about a Galois connection between POSETS, where it reads
  [F G F = F] and [G F G = G] on the nose.  Its general shadow -- the
- parenthetical "the canonical natural isomorphisms F eta ≈ (eps F)^{-1}"
+ parenthetical “the canonical natural isomorphisms F eta ≈ (eps F)^{-1}”
  that issue #386's checkbox appends -- holds AT A UNIT-FIXED OBJECT and
  is exactly [counit_iso_of_unit_iso], whose two-sided inverse IS
  [fmap[F] (unit x)].  It does NOT hold for an arbitrary adjunction: the
@@ -105,11 +105,11 @@ Generalizable All Variables.
  companion poset file.
 
  THE ESSENTIAL-IMAGE HALF, AND ITS EXACT STRENGTH.  Section (B) proves
- Mac Lane's "closed elements = image of R" in its categorified form:
+ Mac Lane's “closed elements = image of R” in its categorified form:
  [unit_fixed_iff_image] says that the unit is invertible at [x] exactly
  when [x] is isomorphic to [U c] FOR A COUNIT-FIXED c, and dually.  The
- qualification is not decoration.  The one-sided reading -- "x is
- isomorphic to U c for SOME c" -- is weaker, and the probe refutes it
+ qualification is not decoration.  The one-sided reading -- “x is
+ isomorphic to U c for SOME c” -- is weaker, and the probe refutes it
  over the free-monoid adjunction, where [list bool] is [U (F bool)]
  ([probe_list_is_U_of_F], [probe_image_of_U_not_unit_fixed]) and yet
  no unit component of that adjunction is invertible
@@ -160,8 +160,8 @@ Generalizable All Variables.
  ONE [Defined] IS LOAD-BEARING, and that was measured by flipping each
  one alone to [Qed]: only [fixed_adjunction] breaks the build that way,
  and the error names the reason -- with [Qed] its unit no longer
- reduces, so [fixed_unit_strict] is rejected with "cannot unify
- projT1 unit and unit".  The other ten compile as [Qed] with every
+ reduces, so [fixed_unit_strict] is rejected with “cannot unify
+ projT1 unit and unit”.  The other ten compile as [Qed] with every
  [eq_refl] readback and every downstream file intact; they are kept
  [Defined] because they produce data, which is this tree's convention,
  not because anything below needs them transparent.
@@ -310,7 +310,7 @@ Context (A : F ⊣ U).
  the triangle identity [counit_fmap_unit] verbatim; the other holds
  because [fmap[F] (unit x)] is invertible in its own right, so the
  retraction the triangle supplies is its inverse.  This is the reading
- under which Riehl's "F eta is inverse to eps F" is true. 
+ under which Riehl's “F eta is inverse to eps F” is true. 
 
  --------
  如果该单位在 [x] 可逆，那么余单位在 [F x] 也是可逆的，其双边逆元为 [fmap[F]（单位 x）。一个定律是逐字的三角恒等式 [counit_fmap_unit]；另一个定律成立是因为 [fmap[F]（单位 x）本身就是可逆的，所以三角形提供的截回就是它的逆元。这就是 Riehl 的“F eta 是 eps F 的逆”的正确理解方式。
@@ -624,7 +624,7 @@ Proof.
 Defined.
 
 (*
- Mac Lane's "the closed elements are the image of R", categorified:
+ Mac Lane's “the closed elements are the image of R”, categorified:
  the unit is invertible at [x] exactly when [x] lies in the essential
  image of U RESTRICTED to the counit-fixed objects. 
 

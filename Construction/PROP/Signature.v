@@ -13,8 +13,8 @@ Generalizable All Variables.
    operations have a single output, a generator here may have any
    output coarity, so a signature is just the underlying object of
    the free-PROP adjunction, an element of [Set^(nat x nat)] (here in
-   [Type]).  This is the standard "many-sorted signature in the
-   arities-are-naturals setting" that PROPs are designed to capture
+   [Type]).  This is the standard “many-sorted signature in the
+   arities-are-naturals setting” that PROPs are designed to capture
    syntactically.
 
    Concretely [Sig m n] is the [Type] of generator names that have

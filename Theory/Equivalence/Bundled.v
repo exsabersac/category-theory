@@ -12,8 +12,8 @@ nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
    [EquivalenceOfCategories F] (Theory/Equivalence.v) is a structure carried
    by a *given* functor F, the bundle [C ≃ D] defined here packages the
    functor together with that structure — a sigma type, in the same split,
-   choice-carrying house style as the unbundled classes — so that "C and D
-   are equivalent" becomes a single proof-relevant statement about the two
+   choice-carrying house style as the unbundled classes — so that “C and D
+   are equivalent” becomes a single proof-relevant statement about the two
    categories themselves.
 
    Being equivalent is reflexive ([Equivalence_refl], the identity functor
@@ -27,7 +27,7 @@ nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
    obtained by reassociating with [fun_equiv_comp_assoc] and cancelling
    the inner counit/unit cell.
 
-   Naming and hygiene: nothing here is called bare "Equivalence" (that
+   Naming and hygiene: nothing here is called bare “Equivalence” (that
    name belongs to the standard library's class of equivalence relations);
    the [≃] notation is guarded in [category_theory_scope]; and, as
    everywhere in this development, nothing is registered for instance

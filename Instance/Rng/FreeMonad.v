@@ -23,26 +23,26 @@ Generalizable All Variables.
 (* * * The tensor-algebra monad T on Ab, and rings as its algebras / * * Ab 上的张量代数单子 T，以及作为其代数的环 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.4, Exercise 4, printed p. 146 (PDF
  p. 155) — maclane:VI.4:ex4
- Book: Riehl, "Category Theory in Context", Example 5.5.7(ii), printed
+ Book: Riehl, “Category Theory in Context”, Example 5.5.7(ii), printed
  p. 205 (PDF p. 225) — riehl:5.5:example7
  nLab: https://ncatlab.org/nlab/show/tensor+algebra
  nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
  nLab: https://ncatlab.org/nlab/show/monadic+functor
 
  WHAT THE BOOKS SAY, read from the page image and the PDF.  Mac Lane,
- Exercise 4: "The adjunction ⟨F, G, φ⟩ : Ab ⇀ Rng with G the functor
- "forget the multiplication in a ring" defines a monad T in Ab.  (a)
+ Exercise 4: “The adjunction ⟨F, G, φ⟩ : Ab ⇀ Rng with G the functor
+ ”forget the multiplication in a ring“ defines a monad T in Ab.  (a)
  Give a direct description of this monad, like that in the text for W,
  with Xⁿ replaced by the n-fold tensor power and coproduct ∐ by the
  (infinite) direct sum of abelian groups.  (b) Give the corresponding
  description of T-algebras and show that the comparison functor from
- rings to T-algebras is an isomorphism."  Riehl, Example 5.5.7(ii):
- "The proof of Corollary 5.5.3 can be adapted to show that the
+ rings to T-algebras is an isomorphism.”  Riehl, Example 5.5.7(ii):
+ “The proof of Corollary 5.5.3 can be adapted to show that the
  forgetful functor U : Ring → Ab is monadic.  The induced monad on Ab is
- the free monoid monad TA := ⨁_{n≥0} A^{⊗n}."  Mac Lane's Rng is the
+ the free monoid monad TA := ⨁_{n≥0} A^{⊗n}.”  Mac Lane's Rng is the
  rings with identity, Instance/Rng.v's [Rng].  This file is T and part
  (b) through the rings; part (a) is Instance/Ab/TensorPower.v with
  Instance/Rng/FreeMonad/Words.v, and the corresponding description of
@@ -99,8 +99,8 @@ Generalizable All Variables.
  laws and both annihilation laws ([ralg_mul_assoc] to
  [ralg_mul_zero_r]), and [ralg_ring α] is the ring on A's own 0, + and
  −, its carrier a set because A's is ([rig_prop] is A's [cmon_prop]).
- h is the evaluation of formal expressions in that ring, "the sum of
- the products", at ≈ ([ralg_fold]).
+ h is the evaluation of formal expressions in that ring, “the sum of
+ the products”, at ≈ ([ralg_fold]).
 
  Rng ≅ Ab^T (Mac Lane's (b); Riehl's 5.5.7(ii)).  [RngAlg] is Ab^T.
  [Rng_K] is Monad/Comparison.v's [EM_Comparison] of the adjunction:
@@ -119,7 +119,7 @@ Generalizable All Variables.
  [Equivalence_to_Cat_Iso] the component of [iso_from_to] is refused
  (R19) while that of [iso_to_from] holds (C50).  An isomorphism in Cat
  is, by Instance/Cat.v, an equivalence of categories, which the
- identity components bring toward Mac Lane's "isomorphism"; the strict
+ identity components bring toward Mac Lane's “isomorphism”; the strict
  identity of the two composites with the identity functors is refused
  (R17, R18).  The ring round trip returns the setoid, 0, +, 1, · and −
  and the maps on the nose ([Rng_rt_setoid] to [Rng_rt_hom]: K R's
@@ -142,22 +142,22 @@ Generalizable All Variables.
  [EM_to_Rng_Forget_map]).
 
  THE ISSUE'S PREMISES, dated.  Issue #474 was filed on 2026-07-23.
- Its "no concrete category Ab" and "no Rng" were accurate when filed
+ Its “no concrete category Ab” and “no Rng” were accurate when filed
  and have been stale since PR #1074 (merged 2026-08-12, [Ab]) and PR
  #1091 (merged 2026-08-14, [Rng]); its dependencies #256, #257 and #310
- were closed on 2026-08-12, 2026-08-14 and 2026-08-18.  "No
- tensor-algebra endofunctor ⨁ₙ A^{⊗n}" held until this change in that
+ were closed on 2026-08-12, 2026-08-14 and 2026-08-18.  “No
+ tensor-algebra endofunctor ⨁ₙ A^{⊗n}” held until this change in that
  no such functor was named, though U ◯ F exists since PR #1219 (merged
- 2026-08-29); "no Rng → T-Alg comparison" held until this change.
- "Reusing #310's tensor-algebra universal arrow": #310 (PR #1158,
+ 2026-08-29); “no Rng → T-Alg comparison” held until this change.
+ “Reusing #310's tensor-algebra universal arrow”: #310 (PR #1158,
  merged 2026-08-18) delivered the tensor algebra of a module over a
  COMMUTATIVE ring, Instance/Vect/TensorAlgebra.v's [TensorAlg]; the
  universal arrow of Ab ⇀ Rng is #400's (PR #1219), which is what is
- reused.  "Discharge the Monad laws" is supplied by
+ reused.  “Discharge the Monad laws” is supplied by
  [Adjunction_Induced_Monad].  Of the suggested module
  Monad/Instance/TensorAlgebra.v, the directory Monad/Instance does not
  exist; the files are this one, its two satellites and
- Instance/Ab/TensorPower.v.  Its "CLAUDE.md Key Files index" was
+ Instance/Ab/TensorPower.v.  Its “CLAUDE.md Key Files index” was
  accurate when filed and has been stale since PR #1284 (merged
  2026-09-09), which moved the index to docs/INDEX.md.
 
@@ -189,7 +189,7 @@ Generalizable All Variables.
  and Rng@{u p}, and binds u and p first, with p < u and Set < u, the two
  categories' own bounds; no [Set] but those strict lower bounds, no
  equation in any block, and caps of the standard library's global levels
- only.  A closed @{u p} is refused ("Universes … are unbound", measured
+ only.  A closed @{u p} is refused (“Universes … are unbound”, measured
  on the bare composite U ◯ F), so each name declares an extensible
  binder.  Fifty-two names bind six levels: u, p and the four [FreeRngAb]
  carries beyond [Ab]'s ([TF], [TM], the readbacks of T, the ring of an
@@ -461,7 +461,7 @@ Definition ralg_ring@{+} : RingObject := {|
   ring_neg_l := ab_neg_left A
 |}.
 
-(* The structure map IS the evaluation of formal expressions in the ring of the algebra, up to ≈: "the sum of the products". / 结构映射就是代数环中形式表达式的评估，直到 ≈：“乘积之和”。 *)
+(* The structure map IS the evaluation of formal expressions in the ring of the algebra, up to ≈: “the sum of the products”. / 结构映射就是代数环中形式表达式的评估，直到 ≈：“乘积之和”。 *)
 Lemma ralg_fold@{+} (t : FRTerm A) :
   fr_eval (R := ralg_ring) (@id Ab@{u p} A) t ≈ h t.
 Proof.
@@ -589,8 +589,8 @@ Proof.
 Defined.
 
 (*
- Mac Lane's "the comparison functor from rings to T-algebras is an
- isomorphism": Rng ≅ Ab^T in Cat, from the two component isomorphisms. 
+ Mac Lane's “the comparison functor from rings to T-algebras is an
+ isomorphism”: Rng ≅ Ab^T in Cat, from the two component isomorphisms. 
 
  --------
  Mac Lane的“从环到T-代数的比较函子是一个同构”：Rng ≅ Ab^T 在Cat中，由两个分量同构得到。

@@ -19,16 +19,16 @@ Generalizable All Variables.
  nLab:  https://ncatlab.org/nlab/show/separator
  nLab:  https://ncatlab.org/nlab/show/well-pointed+category
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.7, book p. 127 (PDF p. 136), Definition 4 is the source: a set of
  objects GENERATES a category when, for every parallel pair h ≠ h',
  some member s of the set carries an f : s → c with h ∘ f ≠ h' ∘ f.
  Mac Lane's two examples are the one-point set for sets and the
- integers for abelian groups.  Awodey, "Category Theory" (1st ed.,
+ integers for abelian groups.  Awodey, “Category Theory” (1st ed.,
  Carnegie Mellon pre-print, September 2005), §7.2, printed p. 154
  (PDF p. 163), gives the single-object form and the characterization by
- faithfulness of the representable; Riehl, "Category Theory in
- Context", 2nd ed., Definition 4.7.7, printed p. 177 (PDF p. 197),
+ faithfulness of the representable; Riehl, “Category Theory in
+ Context”, 2nd ed., Definition 4.7.7, printed p. 177 (PDF p. 197),
  gives the family form and names the dual, and her Epilogue §E.4,
  printed p. 257 (PDF p. 277), recalls it as clause (vi) of Giraud's
  theorem.  This file supplies the [Sets] half of Mac Lane's two
@@ -37,14 +37,14 @@ Generalizable All Variables.
  Instance/Grp/Generator.v alongside for Awodey's group example.
 
  RIEHL'S SPELLING IS THE CONTRAPOSITIVE.  Riehl (and Mac Lane) write
- the condition as "f ≠ g implies some h with f ∘ h ≠ g ∘ h".  Over a
+ the condition as “f ≠ g implies some h with f ∘ h ≠ g ∘ h”.  Over a
  [Type]-valued hom-setoid with no decision procedure for ≈, NEITHER
  form implies the other: the cancellation form yields only ¬∀ from
  f ≉ g, never the witnessing h, and the negative form yields only
  ¬¬(f ≈ g) from agreeing tests, never f ≈ g; they become
  interderivable under decidability of ≈ on the hom-setoid in question
  (an earlier revision of this paragraph called the negative form
- "strictly weaker", an ordering an audit showed does not hold in either
+ “strictly weaker”, an ordering an audit showed does not hold in either
  direction).  Structure/Generator.v therefore states
  the positive cancellation law — all precompositions agree implies the
  arrows agree — exactly as Adjunction/SAFT.v's [Cogenerator] states
@@ -52,10 +52,10 @@ Generalizable All Variables.
  negative form is proved here, in either direction.
 
  THE PRIOR ART, AND WHY THIS FILE IS NOT A DUPLICATE.  Issue #447's
- "Current state" paragraph says that a search for
+ “Current state” paragraph says that a search for
  Generator/Separator/SeparatingFamily/Generates finds exactly one
- [Cogenerator] record and that there is "NO definition of a separating
- set / separator / generating family anywhere".  That is STALE, and the
+ [Cogenerator] record and that there is “NO definition of a separating
+ set / separator / generating family anywhere”.  That is STALE, and the
  correction is recorded here rather than silently worked around.
  Theory/Concrete.v already carries, under Awodey's §1.5 Remark 1.7
  reading of concreteness:
@@ -72,7 +72,7 @@ Generalizable All Variables.
  - [Sets_empty_not_Separator], the empty setoid as a
  non-example, using [empty_setoid_object].
 
- So the issue's Awodey checkbox "the terminal object generates Sets"
+ So the issue's Awodey checkbox “the terminal object generates Sets”
  was already discharged in the CLASS vocabulary before this file
  existed.  What was missing, and what this file adds, is the same
  content in the vocabulary issue #447 froze — [IsSeparator] and the
@@ -103,9 +103,9 @@ Generalizable All Variables.
 
  is rejected as
 
- "The term "eq_refl" has type "1 = 1" while it is expected to have
- type "1 = unit_setoid_object"
- (cannot unify "1" and "unit_setoid_object")."
+ “The term ”eq_refl“ has type ”1 = 1“ while it is expected to have
+ type ”1 = unit_setoid_object“
+ (cannot unify ”1“ and ”unit_setoid_object“).”
 
  a CONVERSION refusal — the [1] being the terminal-object notation,
  which is what this file's import list puts in scope for the left-hand
@@ -122,7 +122,7 @@ Generalizable All Variables.
  objects ARE isomorphic ([Sets_terminal_unit_iso]), and
  Structure/Generator.v's [separator_iso] carries the property
  across.  This route is recorded because the transport lemma is
- the reusable half — it is what makes "is a separator" an
+ the reusable half — it is what makes “is a separator” an
  invariant of the isomorphism class rather than of the record.
  3. FROM THE PRIOR ART, [Sets_terminal_separates_from_Concrete]:
  unpack Theory/Concrete.v's [Sets_Separator] through the
@@ -220,7 +220,7 @@ Generalizable All Variables.
  示例 term_is_unit：
  @terminal_obj Sets Sets_Terminal = unit_setoid_object := eq_refl.
 
- 会被拒绝，因为"术语 'eq_refl' 的类型为 '1 = 1'，而期望的类型是 '1 = unit_setoid_object'（无法统一 '1' 和 'unit_setoid_object'）。"
+ 会被拒绝，因为“术语 'eq_refl' 的类型为 '1 = 1'，而期望的类型是 '1 = unit_setoid_object'（无法统一 '1' 和 'unit_setoid_object'）。”
 
  一个转换拒绝 — [1] 是终对象符号，这也是该文件的导入列表为左侧启用的内容，因此消息在其环境中被引用。因此 [Sets_unit_separates] 和 [Sets_terminal_separates] 是独立定理，第二个定理不是通过 [eq_refl] 的识别从第一个定理获得的。有三条通向它的路径被记录，全部便宜且都在这里：1. 直接，这就是已提供的常量：[sets_elem_term]
  从终端对象本身构建常量映射，因此证明与单元素集合的证明相同，仅两行。
@@ -241,8 +241,8 @@ Generalizable All Variables.
  It must stay TRANSPARENT, and that is measured: replacing this
  [Program Definition] by a tactic proof closed with [Qed], everything
  else unchanged, makes the next lemma's [exact] refuse with
- "The term "H (sets_elem x) ttt" has type "(f ∘ sets_elem x) ttt ≈
- (g ∘ sets_elem x) ttt" while it is expected to have type "f x ≈ g x"",
+ “The term ”H (sets_elem x) ttt“ has type ”(f ∘ sets_elem x) ttt ≈
+ (g ∘ sets_elem x) ttt“ while it is expected to have type ”f x ≈ g x“”,
  a CONVERSION refusal: the whole proof is the reduction of the constant
  map at the unique inhabitant.  [sets_elem_term] below measures the
  same way, its message naming [1] where this one names
@@ -251,7 +251,7 @@ Generalizable All Variables.
  --------
  [X] 的一个全局元素，作为从单例集同态出的映射。这与 Instance/Sets.v 中 [injectivity_is_monic] 用于将单射表征为注入的探针相同，也与 Theory/Concrete.v 中 [Sets_point] 从终对象使用的相同。
 
- 它必须保持透明，这是可以测量的：用由 [Qed] 封闭的策略证明替换这个 [Program Definition]，而其它一切保持不变，会导致下一个引理的 [exact] 以“项 "H (sets_elem x) ttt" 的类型是 "(f ∘ sets_elem x) ttt ≈ (g ∘ sets_elem x) ttt"，而期望的类型是 "f x ≈ g x"” 拒绝，这是一次转换拒绝：整个证明是常数映射在唯一构成元上的化简。下面的 [sets_elem_term] 以相同方式测量，其消息命名 [1]，而这个则命名 [unit_setoid_object]。
+ 它必须保持透明，这是可以测量的：用由 [Qed] 封闭的策略证明替换这个 [Program Definition]，而其它一切保持不变，会导致下一个引理的 [exact] 以“项 “H (sets_elem x) ttt” 的类型是 “(f ∘ sets_elem x) ttt ≈ (g ∘ sets_elem x) ttt”，而期望的类型是 “f x ≈ g x”” 拒绝，这是一次转换拒绝：整个证明是常数映射在唯一构成元上的化简。下面的 [sets_elem_term] 以相同方式测量，其消息命名 [1]，而这个则命名 [unit_setoid_object]。
 *)
 Program Definition sets_elem@{o so+} {X : SetoidObject@{o o}}
   (x : carrier X) :

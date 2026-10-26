@@ -48,9 +48,9 @@ Open Scope category_scope.
  under the canonical projections.  This file builds the tower; the limit
  and its forced ring structure follow.
 
- THE ISSUE'S SURVEY IS STALE, AND BADLY.  Issue #409's "Current state"
- says "There is no category of rings in the tree at all
- ([rg -w 'Rng|CRing|RingObject'] -> 0 hits)".  Measured at eaee393c that
+ THE ISSUE'S SURVEY IS STALE, AND BADLY.  Issue #409's “Current state”
+ says “There is no category of rings in the tree at all
+ ([rg -w 'Rng|CRing|RingObject'] -> 0 hits)”.  Measured at eaee393c that
  is false several times over: [Instance/Rng.v] declares
  [Rng : Category] and the commutative full subcategory [CRng], and
  [Instance/Rng/Quotient.v] carries the whole quotient apparatus -- the
@@ -62,8 +62,8 @@ Open Scope category_scope.
  WHAT IS GENUINELY ABSENT -- AND A FIRST DRAFT OF THIS PARAGRAPH GOT IT
  WRONG ON BOTH CLAUSES, WHICH IS WHY THE CRITERION IS NOW STATED.  It
  claimed there is no [Z/n] as a [RingObject] and no PRINCIPAL ideal, on
- a sweep returning [TotalIdeal], [TrivialIdeal] and [KernelIdeal] "and
- nothing else".  Both are false.  [QuotientRing]
+ a sweep returning [TotalIdeal], [TrivialIdeal] and [KernelIdeal] “and
+ nothing else”.  Both are false.  [QuotientRing]
  ([Instance/Rng/Quotient.v]) concludes [RingObject], so
  [QuotientRing EvenIdeal] IS Z/2 and [QuotientRing SixIdeal] IS Z/6 --
  unnamed, but with computing examples in that file (1+1 = 0, 1*1 = 1,
@@ -99,7 +99,7 @@ Open Scope category_scope.
  does -- which is why the hypothesis is on the ideal and not on the
  file.
 
- READ "ONE FIELD" LITERALLY: [Rcomm] is [rewrite]-consumed at TWO sites
+ READ “ONE FIELD” LITERALLY: [Rcomm] is [rewrite]-consumed at TWO sites
  in this file, and only the first is a field.  The other is the tower's
  nesting lemma [res_ideal_succ_sub] below, where [dpow (S n)] is
  [d * dpow n] and the witness must move that [d] past [dpow n]; deleting
@@ -137,7 +137,7 @@ Open Scope category_scope.
  file.  Mac Lane's ring of p-adic integers is the special case at a
  prime, and nothing below is stated only for it.
 
- THE "FORCED" CLAUSE IS NEAR-DEFINITIONAL HERE, AND THAT IS THE POINT OF
+ THE “FORCED” CLAUSE IS NEAR-DEFINITIONAL HERE, AND THAT IS THE POINT OF
  #408's CARRIER, NOT OF THESE LEMMAS.  Riehl §5.6 Example 5.6.8 observes
  that the underlying-set functor of [Rng] is MONADIC and therefore
  CREATES the limit cone, so the ring structure on the limit is the unique
@@ -145,8 +145,8 @@ Open Scope category_scope.
  here and is not used: what is delivered is the elementary conclusion,
  [zp_zero_forced] and its four siblings, and each is one line because an
  element of #408's matching-string setoid IS its family of coordinates,
- so "agrees with the coordinatewise operation at every stage" and
- "equals the coordinatewise operation" are the same statement.  The
+ so “agrees with the coordinatewise operation at every stage” and
+ “equals the coordinatewise operation” are the same statement.  The
  content sits in the choice of carrier, upstream, and the lemmas record
  the conclusion rather than re-deriving it.
 
@@ -454,7 +454,7 @@ Example uset_tower_stage (n : nat) :
 Definition ZpCarrier : obj[Sets] := tower_obj USetTower.
 
 (*
- Since the PR "algebraic carriers are sets" (2026-09-17) a [RigObject] owes
+ Since the PR “algebraic carriers are sets” (2026-09-17) a [RigObject] owes
  a [Prop]-valued mirror of its equality.  Nothing new is proved here: the
  inverse limit's `≈` compares only the first projection -- the matching
  witness is carried along and never inspected -- and that projection is
@@ -608,8 +608,8 @@ Next Obligation. intros N v Hv e n; symmetry; exact (Hv n e). Qed.
 
 (*
  Each clause reads: an operation on the limit carrier that every
- projection preserves IS the coordinatewise one.  This is what "created
- by the underlying-set functor" says elementarily, and each proof is
+ projection preserves IS the coordinatewise one.  This is what “created
+ by the underlying-set functor” says elementarily, and each proof is
  #408's [tower_ext] -- an element of the limit is determined by its
  coordinates -- and nothing more. 
 
@@ -732,7 +732,7 @@ Example padic_and_series_share_the_construction (p : Z) :
    Everything after them is ordinary integer arithmetic.
 
    AN EARLIER REVISION of the second fact said [x ≈ y] IS the divisibility
-   itself, which it was before the PR "algebraic carriers are sets"
+   itself, which it was before the PR “algebraic carriers are sets”
    (2026-09-17) truncated the quotient ring's equality.  [divides] is
    still the Type-valued sigma, and the witness is still available: not by
    projection out of the relation, which a [Prop] does not permit, but by
@@ -767,7 +767,7 @@ Example digit_transition_is_id (n : nat) (x : Z) :
 
 (*
  AN EARLIER REVISION read the right-hand side as the bare [divides].  Since
- the PR "algebraic carriers are sets" (2026-09-17) the quotient ring's
+ the PR “algebraic carriers are sets” (2026-09-17) the quotient ring's
  equality is the PROPOSITIONAL TRUNCATION of ideal membership
  (Instance/Rng/Quotient.v's [rquot_rel]), so what the stage's `≈` IS, on the
  nose, is [inhabited] of that divisibility.  The witness is not lost: it is
@@ -807,8 +807,8 @@ Proof. exact (inhabits (existT _ k H)). Qed.
  Divisibility by [P n] is DECIDABLE on ℤ: the quotient is the witness when
  the remainder vanishes, and otherwise no witness exists.  This is the
  [z5_eq_dec] pattern of Instance/Ab/Character/NonNatural.v, and it is what
- lets [res_to_dvd] keep the conclusion it had before the PR "algebraic
- carriers are sets" (2026-09-17) truncated the quotient's equality: the
+ lets [res_to_dvd] keep the conclusion it had before the PR “algebraic
+ carriers are sets” (2026-09-17) truncated the quotient's equality: the
  witness is RECOMPUTED rather than read out of the [Prop].  No choice
  principle is used. 
 
@@ -913,13 +913,13 @@ Proof. cbn [dsum]; ring. Qed.
 
 (*
  The compatibility witness passes through [res_of_dvd] since the PR
- "algebraic carriers are sets" (2026-09-17): a stage's `≈` is the
+ “algebraic carriers are sets” (2026-09-17): a stage's `≈` is the
  truncation of divisibility, so the bare [existT] has to be wrapped.
  Built in tactic mode, the ninth entry in the 8.19 portability list of
  this file's header: both the term-mode [existT _ (dsum a) (fun n => …)]
- and an [exact] of that term are refused by Coq 8.19 and 8.20 ("has type
+ and an [exact] of that term are refused by Coq 8.19 and 8.20 (“has type
  ∃ _ : nat → Z, ∀ x0, dsum a (S x0) ≈ dsum a x0 while it is expected to
- have type carrier Zpc") -- the predicate is inferred as a CONSTANT from
+ have type carrier Zpc”) -- the predicate is inferred as a CONSTANT from
  the component's type instead of being read off the goal -- while Rocq
  9.1 elaborates either.  [exists] then [intro n; exact] lets the goal
  direct the predicate, exactly as [zp_zero] and [dadd_seq] do.
@@ -927,7 +927,7 @@ Proof. cbn [dsum]; ring. Qed.
  [eq_refl]. 
 
  --------
- 兼容性见证通过 [res_of_dvd] 因为 PR “代数载体是集合”（2026-09-17）：一个阶段的 `≈` 是可除性的截断，所以裸露的 [existT] 必须被包装。在内置策略模式下，本文件头的 8.19 可移植性列表中的第九项：term 模式的 [existT _ (dsum a) (fun n => …)] 以及该项的 [exact] 被 Coq 8.19 和 8.20 拒绝（"类型为 ∃ _ : nat → Z, ∀ x0, dsum a (S x0) ≈ dsum a x0，而预期类型为 carrier Zpc"）——谓词是从组件类型中推断为常量，而不是从目标中读取——同时 Rocq 9.1 也会展开任意。然后 [exists] [intro n; exact] 让目标指导谓词，正如 [zp_zero] 和 [dadd_seq] 所做的那样。[Defined] 保持其透明，所以下面的回读仍然是 [eq_refl]。
+ 兼容性见证通过 [res_of_dvd] 因为 PR “代数载体是集合”（2026-09-17）：一个阶段的 `≈` 是可除性的截断，所以裸露的 [existT] 必须被包装。在内置策略模式下，本文件头的 8.19 可移植性列表中的第九项：term 模式的 [existT _ (dsum a) (fun n => …)] 以及该项的 [exact] 被 Coq 8.19 和 8.20 拒绝（“类型为 ∃ _ : nat → Z, ∀ x0, dsum a (S x0) ≈ dsum a x0，而预期类型为 carrier Zpc”）——谓词是从组件类型中推断为常量，而不是从目标中读取——同时 Rocq 9.1 也会展开任意。然后 [exists] [intro n; exact] 让目标指导谓词，正如 [zp_zero] 和 [dadd_seq] 所做的那样。[Defined] 保持其透明，所以下面的回读仍然是 [eq_refl]。
 *)
 Definition digits_to_zp (a : nat -> Z) : Zpc.
 Proof.
@@ -1130,8 +1130,8 @@ Example ncarry_S (c : nat -> Z) (n : nat) :
 (*
    * *** Carry-propagating multiplication
 
-   The raw product sequence is the convolution, written in the "peel the
-   leading digit" form so that the shift identity below is [eq_refl]
+   The raw product sequence is the convolution, written in the “peel the
+   leading digit” form so that the shift identity below is [eq_refl]
    rather than a reindexing argument.  [dmul] then normalises it with the
    SAME carry operator addition uses. 
 

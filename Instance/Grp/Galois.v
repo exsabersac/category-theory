@@ -39,7 +39,7 @@ Generalizable All Variables.
    construction 1 (printed p. 96).  Transcribed from the page image, in
    ASCII:
 
-   "A pair of order-preserving functions L and R which satisfy (1) is
+   “A pair of order-preserving functions L and R which satisfy (1) is
    called a Galois connection from P to Q.  Here is the fundamental
    example, for a group G acting on a set U, by <sigma, x> |-> sigma . x
    for sigma in G, x in U.  Take P = P(U), the set of all subsets
@@ -53,12 +53,12 @@ Generalizable All Variables.
    turn holds if and only if X <= R S in P.  Therefore, L and R form an
    adjoint pair (a Galois connection).  The original instance is that
    with G a group of automorphisms of a field U, as in the classical
-   Galois theory."
+   Galois theory.”
 
    and, from printed p. 95, the theorem the paragraph is a corollary of,
    together with its two displays:
 
-   "Theorem 1 (Galois connections are adjoint pairs).  Let P, Q be two
+   “Theorem 1 (Galois connections are adjoint pairs).  Let P, Q be two
    preorders and L : P -> Q^op, R : Q^op -> P two order-preserving
    functions.  Then L (regarded as a functor) is a left adjoint to R if
    and only if, for all p in P and q in Q,
@@ -69,7 +69,7 @@ Generalizable All Variables.
    the left adjoint of R.  For all p and q, p <= R L p and L R q >= q;
    hence also
 
-   L p >= L R L p >= L p ,    R q <= R L R q <= R q .        (2)"
+   L p >= L R L p >= L p ,    R q <= R L R q <= R q .        (2)”
 
    nLab: https://ncatlab.org/nlab/show/Galois+connection
    nLab: https://ncatlab.org/nlab/show/group+action
@@ -82,9 +82,9 @@ Generalizable All Variables.
 
    ** THE CONNECTION IS ANTITONE, AND THAT IS MAC LANE'S OWN Q^op
 
-   Display (1) reads "L p >= q in Q", not "L p <= q": Theorem 1 types L as
-   a functor P -> Q^op, and the construction paragraph says "L X >= S in
-   Q".  So the pair here is order-REVERSING in each variable, which is
+   Display (1) reads “L p >= q in Q”, not “L p <= q”: Theorem 1 types L as
+   a functor P -> Q^op, and the construction paragraph says “L X >= S in
+   Q”.  So the pair here is order-REVERSING in each variable, which is
    what the classical Galois correspondence between subgroups and
    subfields is.  Instance/Proset/Galois.v's [GaloisConnection RA RB]
    is stated covariantly -- its [gal_mono_l] concludes [RB (gal_l a)
@@ -95,11 +95,11 @@ Generalizable All Variables.
    ascription is rejected, and that rejection is pinned in
    Test/ProbeGalois381.v as a typing negative.
 
-   ** THE ISSUE'S "Current state" IS STALE ON FOUR COUNTS, MEASURED AT THE
+   ** THE ISSUE'S “Current state” IS STALE ON FOUR COUNTS, MEASURED AT THE
    BASE COMMIT
 
-   The catalog entry says: "Absent.  Structure/Group.v declares only
-   [GroupObject] ... no action, no subgroup lattice", and asks for the
+   The catalog entry says: “Absent.  Structure/Group.v declares only
+   [GroupObject] ... no action, no subgroup lattice”, and asks for the
    group, the action, the subgroup notion and the powerset preorder to be
    built.  All four exist.
 
@@ -209,8 +209,8 @@ Generalizable All Variables.
 
    (C) THE OPERATORS AND THE CONNECTION.  [stab X] is Mac Lane's [L X] and
    [fixed S] his [R S]; their memberships read back at [eq_refl]
-   ([stab_mem], [fixed_mem]).  [FixesAll X S] is his "sigma . x = x
-   for all sigma in S and all x in X", and it is the SAME TERM as one
+   ([stab_mem], [fixed_mem]).  [FixesAll X S] is his “sigma . x = x
+   for all sigma in S and all x in X”, and it is the SAME TERM as one
    side of the biconditional: [stab_transpose_strict] is
    [subset_le S (stab X) = FixesAll X S] by [eq_refl], while
    [fixed_transpose_iff] is the other side, whose whole content is
@@ -226,7 +226,7 @@ Generalizable All Variables.
    [fixed S], which is a subset of U and not of G.
 
    (E) IDEMPOTENCE.  [stab_fixed_stab] and [fixed_stab_fixed] at the
-   carriers' own [equiv], which is what "idempotent" means in a
+   carriers' own [equiv], which is what “idempotent” means in a
    preorder that is not a partial order; each is (B) applied to the
    two halves of (A).  The [eq_refl] form is rejected -- the two
    sides are different terms -- and pinned in the probe.
@@ -236,7 +236,7 @@ Generalizable All Variables.
    [closed_U_iff]: a subset of G is closed exactly when it IS a
    stabiliser, a subset of U exactly when it IS a fixed-point set),
    that every image is closed ([closed_G_stab], [closed_U_fixed]),
-   and Mac Lane's "L X is the subgroup of G" read at every closed
+   and Mac Lane's “L X is the subgroup of G” read at every closed
    subset: [closed_G_Subgroup], whose [sub_mem] is the given subset
    at [eq_refl].
 
@@ -268,11 +268,11 @@ Generalizable All Variables.
    [Z2@{u} : GrpObject@{u Set Set}], so
    [grp_setoid Z2 : SetoidObject@{Set Set}] with both universes the
    literal [Set], while [Subsets] demands a [SetoidObject@{o o}] with
-   [Set < o]; [Subsets (grp_setoid Z2)] is rejected with "Cannot
-   enforce Set = ...".  (An earlier revision quoted
+   [Set < o]; [Subsets (grp_setoid Z2)] is rejected with “Cannot
+   enforce Set = ...”.  (An earlier revision quoted
    [GrpObject@{u Set u}] / [SetoidObject@{u Set}] and cited [Z2] at a
    line it has since left;
-   re-measured after the PR "algebraic carriers are sets"
+   re-measured after the PR “algebraic carriers are sets”
    (2026-09-17).)  The witnesses are therefore built on [eq_Setoid]
    (Lib/Setoid.v), which is polymorphic in exactly the needed way.
    (CORRECTION, #450: [Z2] is usable here since #450 wrote out its
@@ -316,21 +316,21 @@ Generalizable All Variables.
    arrows in a thin category and cost nothing.  The two
    functors' arrow actions ARE [stab_antitone] and [fixed_antitone]
    with their subset arguments swapped -- which is what
-   "order-reversing" becomes once the source is an opposite category.
+   “order-reversing” becomes once the source is an opposite category.
    Requiring Adjunction/Right.v costs THREE modules of closure -- 129
    with it, 126 without, measured by dropping the [Require] -- which
    is why this is delivered rather than only cited.
    Adjunction/Right.v's own two antitone witnesses are a
    three-element chain and the contravariant power set; the tokens
-   "group" and "action" occur in that whole file only in one
+   “group” and “action” occur in that whole file only in one
    unrelated comment, so a group action is a new inhabitant there as
    well.
 
    ** WHAT IS NOT DELIVERED
 
    No fundamental theorem of Galois theory, and nothing about fields:
-   Mac Lane's "original instance ... a group of automorphisms of a field
-   U" is not instantiated, the tree having no automorphism group of a
+   Mac Lane's “original instance ... a group of automorphisms of a field
+   U” is not instantiated, the tree having no automorphism group of a
    field.  No lattice structure on the closed elements and no proof that
    they form a complete lattice.  No orbit, no orbit-stabiliser theorem,
    no transitivity or freeness vocabulary for actions.  No normality: the
@@ -362,7 +362,7 @@ Generalizable All Variables.
    rather than 129, and unlike [grp_mon] it is a plain [Definition]
    rather than a [Program] one -- but the two produce DIFFERENT
    [MonObject] terms -- [grp_mon H = grp_deloop_monoid H] is rejected at
-   [eq_refl] (measured out of tree, with "cannot unify") -- so a
+   [eq_refl] (measured out of tree, with “cannot unify”) -- so a
    consumer's [MSetoidAction] is over one or the other and not both.
    [grp_mon] is kept, being the bridge the tree's own index names, and
    the three-module difference is recorded rather than taken.
@@ -547,7 +547,7 @@ Definition gal_closed_r_image (b : B) : GalClosed_r (gal_r Gc b) :=
 
 (*
  The characterisation: the closed elements are exactly the images.
- Without antisymmetry the sharpest available reading of "is an image" is
+ Without antisymmetry the sharpest available reading of “is an image” is
  mutual relatedness, which is what a preorder supplies. 
 
  --------
@@ -621,9 +621,9 @@ Section Action.
  [su] is the hom universe of the two thin categories, free of [o].
  [gu] is [GrpObject]'s own AUXILIARY level (the record's own sort).
 
- An earlier revision of this comment called [gu] "[GrpObject]'s own third
- level" and wrote [GrpObject@{o o gu}].  Since the PR "algebraic carriers
- are sets" (2026-09-17) added [grp_prop], the record's three universe roles
+ An earlier revision of this comment called [gu] “[GrpObject]'s own third
+ level” and wrote [GrpObject@{o o gu}].  Since the PR “algebraic carriers
+ are sets” (2026-09-17) added [grp_prop], the record's three universe roles
  have permuted from (carrier, proof, aux) to (aux, carrier, proof), so the
  SAME reading is now spelled [GrpObject@{gu o o}]: [gu] keeps its role, only
  its position moved. 
@@ -704,8 +704,8 @@ Example fixed_mem (S : carrier (Powerset_Prop_obj@{o} (grp_setoid G)))
   fixed S x = (∀ s, S s → fixes s x) := eq_refl.
 
 (*
- Mac Lane's middle term: "sigma . x = x for all sigma in S and all x in
- X".  It is the SAME TERM as the [Q]-side inclusion. 
+ Mac Lane's middle term: “sigma . x = x for all sigma in S and all x in
+ X”.  It is the SAME TERM as the [Q]-side inclusion. 
 
  --------
  Mac Lane 的中间项：“sigma . x = x 对所有 sigma 属于 S 且所有 x 属于 X”。它与 [Q] 侧包含是相同的项。
@@ -764,7 +764,7 @@ Definition stab_PreOrder_G :
 (* * ** (D) The stabiliser is a subgroup / * ** (D) 稳定子是一个子群 *)
 
 (*
- Mac Lane's "L X is the subgroup of G which fixes all points x in X",
+ Mac Lane's “L X is the subgroup of G which fixes all points x in X”,
  as an inhabitant of Instance/Grp/Quotient.v's record.  [sub_mem]
  wants a [Type]-valued membership and [stab X s] is a [Prop], which is a
  [Type] by cumulativity; nothing is wrapped.  The four laws are the four
@@ -923,7 +923,7 @@ Proof using A G.
 Qed.
 
 (*
- Mac Lane's "L X is the subgroup of G", read at EVERY closed subset: the
+ Mac Lane's “L X is the subgroup of G”, read at EVERY closed subset: the
  membership is the given subset on the nose, and the four laws are
  transported from [stab_Subgroup (fixed S)] along the two inclusions. 
 
@@ -1017,11 +1017,11 @@ Example galois_PG_hom
  (129 with the [Require], 126 without; measured), which is why it is
  delivered rather than only cited.  [Adjunction/Right.v]'s own antitone
  witnesses are a three-element chain and the contravariant power set;
- neither is a group action, and the tokens "group" and "action" occur in
+ neither is a group action, and the tokens “group” and “action” occur in
  that file only in one unrelated comment.
 
  The functors' arrow actions ARE the elementary antitonicity lemmas with
- their two subset arguments swapped, which is what "order-reversing" is
+ their two subset arguments swapped, which is what “order-reversing” is
  once the source is written as an opposite category. 
 
  --------
@@ -1097,7 +1097,7 @@ Arguments ClosedU {G A} X.
  then rejected.  The rejection is pinned in Test/ProbeGalois381.v.
  (An earlier revision quoted [GrpObject@{u Set u}] and cited [Z2] at a
  line it has since left;
- re-measured after the PR "algebraic carriers are sets" (2026-09-17), which
+ re-measured after the PR “algebraic carriers are sets” (2026-09-17), which
  permuted [GrpObject]'s universe roles from (carrier, proof, aux) to
  (aux, carrier, proof).  The obstruction is if anything sharper and the
  conclusion is unchanged.)  CORRECTION (#450): [Z2] is no longer pinned;
@@ -1222,7 +1222,7 @@ Qed.
 (*
  A CLOSED PAIR, exhibited rather than merely known to exist: the trivial
  subgroup is closed, and so is the whole point set.  Both are instances
- of (F)'s "every image is closed", with the concrete content supplied by
+ of (F)'s “every image is closed”, with the concrete content supplied by
  [galois_stab_true_trivial]. 
 
  --------
@@ -1293,7 +1293,7 @@ Proof.
   - intros [[|] [|]] [[|] [|]] [|]; reflexivity.
 Defined.
 
-(* Membership in the stabiliser of {true} is exactly "the first coordinate is the unit", both ways. / {true} 的稳定子群的成员恰好是“第一个坐标是单位元”，双向成立。 *)
+(* Membership in the stabiliser of {true} is exactly “the first coordinate is the unit”, both ways. / {true} 的稳定子群的成员恰好是“第一个坐标是单位元”，双向成立。 *)
 Lemma galois_v4_stab_forces (g : bool * bool) :
   stab (A := GalV4Act) galois_true g → fst g = false.
 Proof.

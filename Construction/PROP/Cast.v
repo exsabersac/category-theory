@@ -195,7 +195,7 @@ Qed.
    switch between the [eq_rect] form used in [TermEq]'s strict-PROP
    axioms and the [match] form used by [T_cast].
 
-   This is the standard "destruct the eq_rect" pattern, but bundled
+   This is the standard “destruct the eq_rect” pattern, but bundled
    as a helper so the [T_cast]-level naturality proofs don't have
    to repeat it. 
 

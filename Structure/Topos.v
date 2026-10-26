@@ -33,8 +33,8 @@ Generalizable All Variables.
  whichever it computes with and no consumer pays for a reduction it does not
  want.
 
- Scope that precisely, because the redundancy claim is narrower than "finite
- limits are redundant": what is related is the BINARY and PARALLEL-PAIR
+ Scope that precisely, because the redundancy claim is narrower than “finite
+ limits are redundant”: what is related is the BINARY and PARALLEL-PAIR
  generators.  Equalizers ARE now derived for every topos, as
  [Structure/Topos/Monadic.v]'s [topos_HasEqualizers], and finite
  completeness is stated there at the level of the four elementary
@@ -68,17 +68,17 @@ Generalizable All Variables.
 
  nLab:      https://ncatlab.org/nlab/show/topos
  Wikipedia: https://en.wikipedia.org/wiki/Lawvere%E2%80%93Tierney_topology
- Book:  Artin, Grothendieck, Verdier, "Théorie des topos et cohomologie
- étale des schémas" (SGA 4), Lecture Notes in Mathematics 269,
+ Book:  Artin, Grothendieck, Verdier, “Théorie des topos et cohomologie
+ étale des schémas” (SGA 4), Lecture Notes in Mathematics 269,
  270, 305, Springer, 1972-1973
- Paper: Lawvere, "Quantifiers and Sheaves", Actes du Congrès
+ Paper: Lawvere, “Quantifiers and Sheaves”, Actes du Congrès
  International des Mathématiciens (Nice 1970), vol. 1,
  Gauthier-Villars, 1971, pp. 329-334
 
  An elementary topos is at once a generalized universe of sets and a
  categorical model of higher-order intuitionistic logic, and the
  tension between those two readings is why the concept repays study
- (nLab, "topos"; Mac Lane, Moerdijk, "Sheaves in Geometry and Logic",
+ (nLab, “topos”; Mac Lane, Moerdijk, “Sheaves in Geometry and Logic”,
  Springer 1992).  Set is the prototype of the first reading: every
  construction one performs on sets — products, function spaces, power
  sets, subsets cut out by a predicate — has a counterpart in an
@@ -88,15 +88,15 @@ Generalizable All Variables.
  and his school introduced toposes around 1963-1964 as generalized
  spaces adequate for sheaf cohomology — the étale cohomology built to
  study the Weil conjectures — a Grothendieck topos being the category
- of sheaves on a small site (SGA 4, Tome 1, exposé IV "Topos", by
+ of sheaves on a small site (SGA 4, Tome 1, exposé IV “Topos”, by
  Grothendieck and Verdier).  Independently, around 1969-1970, Lawvere
  and Tierney isolated a first-order, finitely axiomatizable description:
  a category with finite limits that is cartesian closed and carries a
- subobject classifier.  The adjective "elementary" marks exactly this,
+ subobject classifier.  The adjective “elementary” marks exactly this,
  that the axioms pass almost directly into first-order logic, unlike the
  site-and-sheaf construction.  The description grew out of Lawvere's
- structural account of the category of sets (Lawvere, "An elementary
- theory of the category of sets", Proc. Natl. Acad. Sci. USA 52, 1964),
+ structural account of the category of sets (Lawvere, “An elementary
+ theory of the category of sets”, Proc. Natl. Acad. Sci. USA 52, 1964),
  which had already isolated the properties of Set that became the
  axioms — a structural, pluralistic alternative to ZF set theory.
 
@@ -130,7 +130,7 @@ Generalizable All Variables.
 
  The library exercises both readings.  Construction/Slice.v records the
  fundamental theorem of topos theory — every slice of a topos is again
- a topos (McLarty, "Elementary Categories, Elementary Toposes", Oxford
+ a topos (McLarty, “Elementary Categories, Elementary Toposes”, Oxford
  University Press 1992) — and names [ElementaryTopos] as its target;
  Theory/Sheaf/Category.v carries the generalized-space side as sheaves
  inside presheaves; Adjunction/SAFT.v draws on the same subobject
@@ -153,7 +153,7 @@ Generalizable All Variables.
  [DecImage] (neither inhabited axiom-free in this tree), and with it
  Instance/Sets/Topos.v assembles a whole conditional
  [ElementaryTopos Sets] -- where [Pow] b is [Powerset_Prop_obj] b by
- eq_refl, Mac Lane's "P b, the set of all subsets s of b" being
+ eq_refl, Mac Lane's “P b, the set of all subsets s of b” being
  definitional there.  Instance/Fun/Topos.v does the same for presheaf
  categories over Instance/Fun/Classifier.v's sieve classifier, and
  Seven Sketches' covariant reading with it.  READ THE REACH OF THOSE

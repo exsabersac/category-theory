@@ -30,14 +30,14 @@ nLab: https://ncatlab.org/nlab/show/tensorial+strength
                 ≈ strength[x,y⨂z] ∘ (id ⨂ strength[y,z]) ∘ α    ([strength_assoc])
 
    These are Kock's two conditions; the correspondence between such families
-   and strengths is what justifies the name "tensorial strength" (Kock 1972,
-   "Strong functors and monoidal monads").  The dual [RightStrongFunctor]
+   and strengths is what justifies the name “tensorial strength” (Kock 1972,
+   “Strong functors and monoidal monads”).  The dual [RightStrongFunctor]
    carries a right strength F x ⨂ y ~> F (x ⨂ y), with the mirror laws stated
    via ρ = [unit_right] and α⁻¹.  On a symmetric monoidal C the two strengths
    are interderivable by twisting with the braiding, and they coincide.
 
-   "Strong" here means tensorial strength, NOT "strong (i.e. pseudo) monoidal
-   functor"; the two notions are unrelated.  On a closed monoidal C a strength
+   “Strong” here means tensorial strength, NOT “strong (i.e. pseudo) monoidal
+   functor”; the two notions are unrelated.  On a closed monoidal C a strength
    is equivalently a C-enrichment of F, and a strength on a monad's underlying
    functor (compatible with η and μ) is exactly what is needed to internalize
    Kleisli composition, yielding a strong monad. 
@@ -57,7 +57,7 @@ nLab: https://ncatlab.org/nlab/show/tensorial+strength
                 ≈ strength[x,y⨂z] ∘ (id ⨂ strength[y,z]) ∘ α    ([strength_assoc])
 
    这是 Kock 的两条件；此类族与强度的对应即「张量强度」之名的依据（Kock 1972,
-   "Strong functors and monoidal monads"）。对偶 [RightStrongFunctor] 携带右强度
+   “Strong functors and monoidal monads”）。对偶 [RightStrongFunctor] 携带右强度
    F x ⨂ y ~> F (x ⨂ y)，镜像定律经 ρ = [unit_right] 与 α⁻¹ 陈述。在对称幺半 C 上两强度
    可经辫互推，且重合。
 

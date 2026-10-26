@@ -95,11 +95,11 @@ Where double categories come from, and what they are for
 
    nLab:  https://ncatlab.org/nlab/show/double+category
    nLab:  https://ncatlab.org/nlab/show/proarrow+equipment
-   Paper: Ehresmann, "Catégories doubles et catégories structurées",
+   Paper: Ehresmann, “Catégories doubles et catégories structurées”,
           C. R. Acad. Sci. Paris 256 (1963), 1198-1201
-   Paper: Grandis, Paré, "Limits in double categories", Cahiers de
+   Paper: Grandis, Paré, “Limits in double categories”, Cahiers de
           Topologie et Géométrie Différentielle Catégoriques 40 (1999)
-   Paper: Shulman, "Framed bicategories and monoidal fibrations", Theory
+   Paper: Shulman, “Framed bicategories and monoidal fibrations”, Theory
           and Applications of Categories 20 (2008), no. 18
 
    A double category is the two-dimensional structure that keeps two
@@ -107,9 +107,9 @@ Where double categories come from, and what they are for
    bicategories the 1-cells are morphisms BETWEEN the objects, such as
    functors between categories, while in others they are objects OVER the
    objects, such as bimodules, spans, distributors, or parametrized spectra
-   (Shulman, "Framed bicategories and monoidal fibrations", TAC 20 (2008)).
+   (Shulman, “Framed bicategories and monoidal fibrations”, TAC 20 (2008)).
    A bicategory retains only one kind; a double category retains both — the
-   strict "tight" maps as the vertical [Category] [dcat], the weak "loose"
+   strict “tight” maps as the vertical [Category] [dcat], the weak “loose”
    bridges as the horizontal 1-cells [dhor], the two glued by squares
    [dsq].
 
@@ -124,11 +124,11 @@ Where double categories come from, and what they are for
    invertible globular squares.
 
    Charles Ehresmann introduced double categories in 1963, alongside the
-   companion memoir "Catégories structurées" (Ann. Sci. École Norm. Sup. 80
+   companion memoir “Catégories structurées” (Ann. Sci. École Norm. Sup. 80
    (1963), 349-426) on internal categories: a double category is precisely
    a category internal to Cat, the category of small categories. Marco
    Grandis and Robert Paré founded the modern theory of the pseudo (weak)
-   case, from "Limits in double categories" (Cahiers 40 (1999)) on through
+   case, from “Limits in double categories” (Cahiers 40 (1999)) on through
    adjoints and Kan extensions; nLab reports their strictification theorem,
    that every pseudo double category is equivalent to a strict one. The
    SCOPE note of the header names this Grandis–Paré lineage.
@@ -142,7 +142,7 @@ Where double categories come from, and what they are for
    universal property discharges the coherence in place of hand-tracking. A
    double category in which every vertical arrow carries a companion and a
    conjoint is a framed bicategory (Shulman 2008), the recasting of Wood's
-   proarrow equipments ("Abstract pro arrows I", Cahiers 23 (1982));
+   proarrow equipments (“Abstract pro arrows I”, Cahiers 23 (1982));
    Theory/DoubleCategory/Companion.v realizes that machinery here through
    the records [Companion] and [Conjoint].
 
@@ -155,7 +155,7 @@ Where double categories come from, and what they are for
    Grandis–Paré develop limits, adjoints, and Kan extensions natively at
    the double-category level. In applied category theory, open systems
    assemble into symmetric monoidal double categories via structured
-   cospans (Baez, Courser, "Structured cospans", TAC 35 (2020)); the
+   cospans (Baez, Courser, “Structured cospans”, TAC 35 (2020)); the
    in-tree cospans double category is [Cospan_Double] of
    Construction/Cospan/Double.v.
 
@@ -183,7 +183,7 @@ nLab: https://ncatlab.org/nlab/show/proarrow+equipment
       Cahiers de Topologie et Géométrie Différentielle Catégoriques 40 (1999)
 论文：Shulman，“带框的双范畴与幺半纤维”，Theory and Applications of Categories 20 (2008), No. 18
 
-双范畴是一种二维结构，可以同时保留两种不同类型的1-胞。Shulman指出了这种区分：在某些双范畴中，1-胞是对象之间的态射，例如范畴之间的函子，而在其他的双范畴中，它们是对象之上的对象，例如双模、跨度、分配器或参数化谱 (Shulman, "Framed bicategories and monoidal fibrations", TAC 20 (2008))。一个双范畴只保留一种类型；而双范畴则保留两者——严格的“紧”映射作为垂直 [Category] [dcat]，弱的“松”桥梁作为水平1-胞 [dhor]，这两者通过方格 [dsq] 连接起来。
+双范畴是一种二维结构，可以同时保留两种不同类型的1-胞。Shulman指出了这种区分：在某些双范畴中，1-胞是对象之间的态射，例如范畴之间的函子，而在其他的双范畴中，它们是对象之上的对象，例如双模、跨度、分配器或参数化谱 (Shulman, “Framed bicategories and monoidal fibrations”, TAC 20 (2008))。一个双范畴只保留一种类型；而双范畴则保留两者——严格的“紧”映射作为垂直 [Category] [dcat]，弱的“松”桥梁作为水平1-胞 [dhor]，这两者通过方格 [dsq] 连接起来。
 
 这两个方向在设计上是不对称的。函数的组合是严格结合的，而通过环上的张量组合双模、通过拉回组合跨度，或通过共端组合拟函子，只有在相干同构意义下才是结合的，因为每个组合都是由一个普适构造所固定的。因此，容纳两者的结构是PSEUDO双范畴——一方面严格，另一方面弱——上面类的形状：对于垂直映射是普通[dcat]，对于弱相干的[dhcomp]，其[dassoc]、[dunit_left]和[dunit_right]是可逆的球面方格。
 
@@ -427,7 +427,7 @@ Definition dunit_right_from `{D : DoubleCategory} {a b} (h : dhor a b)
 The round-trip identities, named after [iso_to_from]/[iso_from_to] of
    Theory/Isomorphism.v: [X_to_from] cancels at the codomain of [X_to] and
    [X_from_to] at its domain (vertical pasting [dsq_vcomp s t] is the
-   composite "t after s").
+   composite “t after s”).
 
 --------
 往返恒等式，以 Theory/Isomorphism.v 中的 [iso_to_from]/[iso_from_to] 命名：[X_to_from] 在 [X_to] 的陪域取消，而 [X_from_to] 在其定义域取消（垂直粘贴 [dsq_vcomp s t] 是合成“t 在 s 之后”）。

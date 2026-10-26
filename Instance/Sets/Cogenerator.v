@@ -17,12 +17,12 @@ Generalizable All Variables.
  nLab:  https://ncatlab.org/nlab/show/separator
  nLab:  https://ncatlab.org/nlab/show/adjoint+functor+theorem
 
- Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
+ Mac Lane, “Categories for the Working Mathematician”, 2nd ed. (GTM 5),
  §V.7, book p. 127 (PDF p. 136), dualizes his Definition 4: a set Q of
  objects COGENERATES a category when, for every parallel pair
  h ≠ h' : a → b, some q ∈ Q carries g : b → q with g ∘ h ≠ g ∘ h'; his
  example is that any two-point set is a cogenerator of Set (catalogue
- item maclane:V.7:def5).  Riehl, "Category Theory in Context", 2nd ed.,
+ item maclane:V.7:def5).  Riehl, “Category Theory in Context”, 2nd ed.,
  Definition 4.7.7, printed p. 177 (PDF p. 197), names the same notion a
  coseparating set: a separating set of C^op.  The notion is the third
  hypothesis of the special initial-object theorem, Mac Lane §V.8
@@ -35,7 +35,7 @@ Generalizable All Variables.
  [Cogenerator] record, whose field [cog_separates] is the positive
  cancellation law (arrows agreeing after every test arrow are equal);
  Instance/Sets/Generator.v's header records why the positive form, and
- not Mac Lane's "≠" form, is the one that makes sense over a
+ not Mac Lane's “≠” form, is the one that makes sense over a
  [Type]-valued hom-setoid with no decision procedure.  In the refusals
  quoted in this header, a universe the compile generated is written
  <1>, <2>, ..., numbered afresh in each quote in order of first
@@ -58,8 +58,8 @@ Generalizable All Variables.
  set, literally.  [inl] and [inr] are written [Datatypes.inl] and
  [Datatypes.inr]: under an import list that includes
  Structure/Cocartesian.v, that file's [inl] shadows the constructor
- and the unqualified pattern is refused with "Unknown constructor:
- inl" (measured: this file's import list plus that one refuses a
+ and the unqualified pattern is refused with “Unknown constructor:
+ inl” (measured: this file's import list plus that one refuses a
  one-line [match] on [inl]/[inr], this file's list alone accepts
  it), so the qualified names keep the proof independent of what a
  later edit imports.
@@ -69,10 +69,10 @@ Generalizable All Variables.
  E)] is accepted in a scratch file, closed under the global context,
  with the first's [Set < o].  What [Sets_Cogenerator_IEM] adds is the
  literal two-point object and the absence of that bound: at
- [o := Set] the composite is refused, "The term
- "untruncate_of_IEM@{Set} E" has type "Untruncate@{Set}" while it is
- expected to have type "Untruncate@{<1>}" (universe inconsistency:
- Cannot enforce <1> = Set because Set < <1>)", while
+ [o := Set] the composite is refused, “The term
+ ”untruncate_of_IEM@{Set} E“ has type ”Untruncate@{Set}“ while it is
+ expected to have type ”Untruncate@{<1>}“ (universe inconsistency:
+ Cannot enforce <1> = Set because Set < <1>)”, while
  [Sets_Cogenerator_IEM E] is accepted there, which is what
  Instance/Sets/SpecialInitial.v's [sets_special_initial_IEM_at_Set]
  uses.
@@ -90,11 +90,11 @@ Generalizable All Variables.
  P_large_cog, pin the refusal.  With [o < c] and [Sets_Complete]
  ascribed [Complete@{o o o so}], N13
  ([p452_n13_large_prod_sets]), [cogen_prod Sets_Complete
- Sets_Cogenerator_large@{c o so}], is refused at the family: "The
- term "Sets_Cogenerator_large" has type "Cogenerator@{c so o}
- Sets@{o so}" while it is expected to have type "Cogenerator@{o so
- o} Sets@{o so}" (universe inconsistency: Cannot enforce c = o
- because o < c)"; N14 ([p452_n14_large_sio_sets]),
+ Sets_Cogenerator_large@{c o so}], is refused at the family: “The
+ term ”Sets_Cogenerator_large“ has type ”Cogenerator@{c so o}
+ Sets@{o so}“ while it is expected to have type ”Cogenerator@{o so
+ o} Sets@{o so}“ (universe inconsistency: Cannot enforce c = o
+ because o < c)”; N14 ([p452_n14_large_sio_sets]),
  [special_initial_object] there over the least subobject, is
  refused with the same text.  The controls: the constant itself at
  the universes below ([p452_large_cog]), and [cogen_prod] and
@@ -138,10 +138,10 @@ Generalizable All Variables.
  (i) N11 ([p452_n11_truth_at]): [Type@{o}] under [iffT] as an object
  of [Sets@{o so}] is refused, because the carrier [Type@{o}]
  lives at [o+1]:
- "The term "{| carrier := Type; is_setoid := p452_iff_setoid |}"
- has type "SetoidObject" while it is expected to have type
- "obj[Sets]" (universe inconsistency: Cannot enforce <1> = o
- because o < <1>)."
+ “The term ”{| carrier := Type; is_setoid := p452_iff_setoid |}“
+ has type ”SetoidObject“ while it is expected to have type
+ ”obj[Sets]“ (universe inconsistency: Cannot enforce <1> = o
+ because o < <1>).”
  The control, the same setoid one level down on [Type@{l}] with
  [l < o] ([p452_truth_low]), is accepted.  The form first
  measured on #452, in a scratch probe that left the equivalence
@@ -151,10 +151,10 @@ Generalizable All Variables.
  (ii) N12 ([p452_n12_char_at]): into that lower setoid, the test
  arrow [fun b => @equiv _ (is_setoid Y) y0 b] is refused for an
  arbitrary object [Y] of [Sets@{o so}]:
- "The term "y0 ≈ b" has type "Type" while it is expected to have
- type "carrier {| carrier := Type; is_setoid := p452_iff_setoid
- |}" (universe inconsistency: Cannot enforce o <= l because
- l < o)."
+ “The term ”y0 ≈ b“ has type ”Type“ while it is expected to have
+ type ”carrier {| carrier := Type; is_setoid := p452_iff_setoid
+ |}“ (universe inconsistency: Cannot enforce o <= l because
+ l < o).”
  The control, for [Y : SetoidObject@{l l}] ([p452_char_low]), is
  accepted, and so is [Sets_Cogenerator_untruncate] at the same
  universes ([p452_cog_untruncate]).  Both refusals are universe
@@ -250,7 +250,7 @@ Generalizable All Variables.
  测试箭头 [sets_bool_char E y0] 精确地将 [b] 发送到 [ptrue]，当且仅当 [E] 正向判定 [y0 ≈ b]。这就是 Mac Lane 的两点集合，字面意思。[inl] 和 [inr] 被写作 [Datatypes.inl] 和 [Datatypes.inr]：在包含 Structure/Cocartesian.v 的导入列表下，该文件的 [inl] 会隐藏构造函数，而未经限定的模式会被拒绝并显示“未知构造函数：inl”（测量结果：该文件的导入列表加上那个文件会拒绝在 [inl] / [inr] 上的一行 [match]，而仅使用该文件的列表则接受它），因此限定名称保持了证明不依赖于以后编辑导入的内容。- 在 [IEM] 下，第一个也是可用的：Instance/Sets/Classifier/OneLevel.v 的 [untruncate_of_IEM] 将 [E : IEM] 转换为 [Untruncate]，并且 [Sets_Cogenerator_untruncate (untruncate_of_IEM E)] 在一个临时文件中被接受，该文件在全局上下文中封闭，使用第一个的 [Set < o]。[Sets_Cogenerator_IEM] 添加的是字面上的两点对象以及该界的缺失：在 [o := Set] 处，该复合被拒绝，“术语 'untruncate_of_IEM@{Set} E' 的类型是 'Untruncate@{Set}'，而预期的类型是 'Untruncate@{<1>}'（宇宙不一致：无法强制 <1> = Set 因为 Set < <1>）”，而 [Sets_Cogenerator_IEM E] 在那里被接受，这正是 Instance/Sets/SpecialInitial.v 的 [sets_special_initial_IEM_at_Set] 所使用的。- [Sets_Cogenerator_large]：平凡的 LARGE 系列，没有假设。它的指标是所有对象的类型 [SetoidObject@{o o}]，并且每个对象都是它自己的成员；对于 [f g : x ~> y]，测试箭头 [id] 指向成员 [y] 已经分离，所以每次测试后同意的箭头直接同意。它在特殊初始对象定理所需的意义上不是 SMALL：它的指标宇宙 [c] 严格位于 [o] 之上（[o < c]，下面的 UNIVERSES），而 Adjunction/SAFT.v 的 [cogen_prod] 将指标宇宙与其 [Complete] 的形状宇宙相同，而在 Instance/Sets/Complete.v 的 [Sets_Complete]（[Complete@{o o o so}]）是 [o]。Test/ProbeSpecialInitial452.v 的 N13 和 N14，被标记为 P_large_cog，确定了拒绝。对于 [o < c] 和 [Sets_Complete]，被归类为 [Complete@{o o o so}]，N13（[p452_n13_large_prod_sets]），[cogen_prod Sets_Complete Sets_Cogenerator_large@{c o so}]，在族中被拒绝：“术语 'Sets_Cogenerator_large' 的类型为 'Cogenerator@{c so o} Sets@{o so}'，而期望类型为 'Cogenerator@{o so o} Sets@{o so}'（宇宙不一致：无法强制 c = o，因为 o < c）”；N14（[p452_n14_large_sio_sets]），[special_initial_object] 在最小子对象上也被拒绝，文本相同。控制：常数本身在以下宇宙（[p452_large_cog]），以及 [cogen_prod] 和 [special_initial_object] 在 [Sets_Complete] 上与 [Sets_Cogenerator_untruncate U]（[p452_small_prod_sets]，[p452_small_sio_sets]）。- [Sets_terminal_not_cogenerates]：前提在 [Sets] 是一个真正的条件。没有任何一族终对象的副本能够共同生成，无论其指标类型如何，因为每两个指向终对象的箭头都是相同的（Structure/Terminal.v 的 [one_unique]），而 [Sets] 有互不相同的平行箭头（Theory/Concrete.v 的 [Sets_two_arrows]）。它是 Instance/Sets/Generator.v 的 [Sets_empty_not_separates] 的对应物：空集没有探针，单元素集没有区分测试。这是关于类型良好的假设的定理，而不是拒绝探针。
 
  本文件的所有七个常量在全局上下文下都是封闭的（分别使用 Print Assumptions 查看）。三个共生生成器是透明的（[Defined]），两个小型生成器的成员通过 [eq_refl] 读回（[sets_cogenerator_untruncate_obj]，[sets_cogenerator_IEM_obj]）。为什么在这棵树的 [Sets] 处没有无条件的小型协生成器。一个有度量的拒绝某种构造，而不是不可能性证明：这里没有任何内容表明 [Sets] 没有小型 [Cogenerator]，小型指的是在 [Sets_Complete] 的形状宇宙 [o] 下索引，其中 [cogen_prod] 需要它；一个无条件的大型协生成器是上面的 [Sets_Cogenerator_large]。经典上，协生成器是真值对象，而 [y0] 处的测试箭头把 [b] 发送到 [y0 ≈ b] 的真值。在这个库中，[≈] 是 [Type] 值（Lib/Setoid.v 的 [crelation]），所以对于 [Sets@{o so}] 的一个对象 [Y]，该真值是一个 [Type@{o}]。接收它的两种方式由 Test/ProbeSpecialInitial452.v 的 N11 和 N12 固定，标记为 P_type_truth，其导入列表包含此文件及其自身，每个旁边都有一个阳性对照，并且每个通过在其自身的整个探针副本中解开被拒绝的命令来读取。那里真值对象是 [Type@{l}]，在 [iffT] 之下，其等价性已完全证明（[p452_iff_setoid]），以便每个被拒绝的命令在其宇宙中仅与其对照不同：(i) N11 ([p452_n11_truth_at])：[Type@{o}] 在 [iffT] 下作为 [Sets@{o so}] 的对象被拒绝，因为载体 [Type@{o}] 位于 [o+1]：
- “术语 "{| carrier := Type; is_setoid := p452_iff_setoid |}" 的类型是 "SetoidObject"，而预期类型为 "obj [Sets]"（宇宙不一致：无法强制 <1> = o，因为 o < <1>）。"
+ “术语 “{| carrier := Type; is_setoid := p452_iff_setoid |}” 的类型是 “SetoidObject”，而预期类型为 “obj [Sets]”（宇宙不一致：无法强制 <1> = o，因为 o < <1>）。“
  控制，在 [Type@{l}] 上一层同样的集合体与 [l < o]（[p452_truth_low]）被接受。首次在 #452 上测量的形式，在一个留下等价性证明为空的临时探测中，也以相同的限制被拒绝；该探测固定了封闭形式，因为一个空可能会因自身原因导致命令被拒绝。(ii) N12 ([p452_n12_char_at])：在那个较低的等价集合中，对于 [Sets@{o so}] 的任意对象 [Y]，测试箭头 [fun b => @equiv _ (is_setoid Y) y0 b] 被拒绝：
  “术语 'y0 ≈ b' 的类型是 'Type'，而它被期望的类型是 'carrier {| carrier := Type; is_setoid := p452_iff_setoid |}'（宇宙不一致：无法强制 o <= l，因为 l < o）。”
  对于 [Y : SetoidObject@{l l}] ([p452_char_low]) 的控制被接受，[Sets_Cogenerator_untruncate] 在相同的宇宙 ([p452_cog_untruncate]) 也被接受。这两个拒绝都是宇宙不一致，而不是缺少实例。这是 Structure/Complete.v 的大小注释所达到的尺寸墙，从另一侧看：一个承载体上的 [Type] 值关系位于其上方一个宇宙。[Prop] 和 [poly_bool] 真值适合在 [o]，但从中读回一个方程恰恰是 [Untruncate]（从 ‖P‖ 到 P）或 [IEM]（决定 P）提供的，而该树无条件地都没有；Instance/Sets/Classifier/OneLevel.v 证明 [DecImage] 等价于 [IEM]，并且没有确定 [Untruncate] 是否给出 [IEM]；其逆是其 [untruncate_of_IEM]（上方）。该位置与 [Sets] 的子对象分类器（该文件的 [Sets_Classifier U]）以及其在 pin 上的良好幂等性（Instance/Sets/WellPowered.v 的 [Sets_WellPowered_untruncate U]）相同。使用 [Set Printing Universes. About …] 测量的宇宙，stdlib 边界省略：Sets_Cogenerator_untruncate@{c o so} ：

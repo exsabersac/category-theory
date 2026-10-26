@@ -31,7 +31,7 @@ Import EqNotations.
  descriptions below are transcribed from the catalog entries of issue #254,
  not from the books:
 
- - Mac Lane, "Categories for the Working Mathematician", 2nd ed.
+ - Mac Lane, “Categories for the Working Mathematician”, 2nd ed.
  (Springer GTM 5), section I.6, printed p. 24, exercises 1 and 2.  The
  exercises are the set-theoretic statement that a universe is closed
  under small cartesian products and small unions.  Their categorical
@@ -43,14 +43,14 @@ Import EqNotations.
  J-indexed cartesian product with its projections is the categorical
  product in Set.  That is [Sets_HasIndexedProducts] below.  (The same
  exercise also asks for the description in Top; see SCOPE, below.)
- - Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
+ - Awodey, “Category Theory”, 1st ed. (Carnegie Mellon pre-print,
  September 2005), section 2.9 exercise 7, printed p. 56, parts (a) and
  (b).  Part (a) -- the universal property of an I-indexed product -- is
  already in the tree as [IsIndexedProduct], Structure/Limit/Product.v.
  Part (b) -- the function set X^I satisfies it for the constant family
  -- is [Sets_exponent_IsIndexedProduct] and
  [Sets_constant_iprod_exponent] below.
- - Riehl, "Category Theory in Context", 2nd ed., section 3.2, printed
+ - Riehl, “Category Theory in Context”, 2nd ed., section 3.2, printed
  p. 94, example 5: the product of a J-indexed family of sets is the set
  of J-tuples.  Here an element of [Sets_iprod_obj F] literally IS a
  J-tuple, the dependent function [∀ i : A, F i].
@@ -70,13 +70,13 @@ Import EqNotations.
  WHAT THIS DOES NOT SETTLE ELSEWHERE
 
  Theory/WeaklyInitial.v takes its two products as explicit hypotheses
- "rather than harvested from a [Complete] / [HasIndexedProducts] instance",
+ “rather than harvested from a [Complete] / [HasIndexedProducts] instance”,
  and that note is NOT a record of the absence just described: its reason is
  a universe one, and it survives an instance existing.  The second of its
- two products ranges over a hom-type, so "routing it through a class that
+ two products ranges over a hom-type, so “routing it through a class that
  quantifies over every index [Type] would over-commit the ambient
- universes", whereas the explicit form "leaves the smallness of the index
- (hence the relevant universe constraints) in the caller's hands".  Nothing
+ universes”, whereas the explicit form “leaves the smallness of the index
+ (hence the relevant universe constraints) in the caller's hands”.  Nothing
  below changes that, and the note stands as written.
 
  At [Sets], though, the obstacle it guards against is absent, and
@@ -156,8 +156,8 @@ Import EqNotations.
  @indexed_product Sets@{o so} Sets_HasIndexedProducts@{so o}
  (SetoidObject@{o o}) F.
 
- which reports that [SetoidObject@{o o}] "has type Type@{o+1} while it is
- expected to have type Type@{o}".  Why a bound of this kind must exist at
+ which reports that [SetoidObject@{o o}] “has type Type@{o+1} while it is
+ expected to have type Type@{o}”.  Why a bound of this kind must exist at
  all is not argued here; Structure/Complete.v records Freyd's theorem
  that a category with products of families as large as its own morphism set
  is a preorder.
@@ -171,7 +171,7 @@ Import EqNotations.
  Nothing here appeals to [funext], choice, or [UIP]: the coproduct
  equivalence transports along an equality of indices and every proof about
  it proceeds by destructing that equality.  [Print Assumptions] reports
- "Closed under the global context" for every constant in this file; the
+ “Closed under the global context” for every constant in this file; the
  Makefile's [print-assumptions] target audits the headline ones.
 
  WHICH EXISTING CONSTANTS DO THE WORK
@@ -286,7 +286,7 @@ Import EqNotations.
  @indexed_product Sets@{o so} Sets_HasIndexedProducts@{so o}
  (SetoidObject@{o o}) F。
 
- 它报告说 [SetoidObject@{o o}] "的类型为 Type@{o+1}，而预期类型为 Type@{o}"。这里没有解释为什么必须存在这种界限；Structure/Complete.v 记录了 Freyd 的定理：一个具有和其自身态射集合一样大的族积的范畴是一个顺序范畴。
+ 它报告说 [SetoidObject@{o o}] “的类型为 Type@{o+1}，而预期类型为 Type@{o}”。这里没有解释为什么必须存在这种界限；Structure/Complete.v 记录了 Freyd 的定理：一个具有和其自身态射集合一样大的族积的范畴是一个顺序范畴。
 
  不允许函数外延性当 [Sets_iprod_obj F] 的两个元素在每个索引上都与上同态 [≈] 相同时，就可以识别它们。也就是说，依赖函数的外延相等是作为对象选择的等价实现的，而不是作为公理，这正是 Instance/Sets.v 对同态集所做的操作。这里没有涉及 [funext]、选择，或 [UIP]：直和的等价关系沿索引的等式进行传输，关于它的每个证明都通过析构该等式进行。[Print Assumptions] 对此文件中的每个常量报告“在全局上下文下封闭”；Makefile 的 [print-assumptions] 目标审核主要的常量。
 
@@ -877,7 +877,7 @@ Defined.
    genuine one.
 
    Two cautions on reading that implication.  It is NOT the disjunctive
-   pigeonhole "of any three elements, two coincide"; no disjunction is
+   pigeonhole “of any three elements, two coincide”; no disjunction is
    proved anywhere below.  The two forms are interderivable for these
    particular objects only because [Sets_bool] carries decidable equality,
    and that decidability is used inside the proofs (the [destruct ... eqn:]

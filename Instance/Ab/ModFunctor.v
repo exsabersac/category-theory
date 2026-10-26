@@ -25,7 +25,7 @@ Open Scope category_scope.
 #[local] Obligation Tactic := idtac.
 
 (*
- Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
+ Book:      Mac Lane, “Categories for the Working Mathematician”, 2nd
  ed., §II.4, Exercise 1, printed p. 41 (PDF 51) —
  maclane:II.4:ex1
  Book:      Mac Lane, ibid., §I.8, printed pp. 28-29 —
@@ -108,12 +108,12 @@ Open Scope category_scope.
  [Deloop G ⟶ RMod K], and nothing there is enriched — [Deloop]
  deloops a bare monoid and the target's additive structure plays no
  part.  This file adds the ADDITIVE enrichment on the source side, and
- that is the whole difference: [Deloop] becomes [DeloopRig], "functor"
- becomes "additive functor", and the resulting category is R-Mod
+ that is the whole difference: [Deloop] becomes [DeloopRig], “functor”
+ becomes “additive functor”, and the resulting category is R-Mod
  rather than Rep_K(G).  Structure/AbCategory.v's [AbCat] is the
  ambient category in which [DeloopRig (ring_rig R)] and [Ab] both
  live as objects; it is not needed for the statement below and is not
- used, but it is what makes "one-object Ab-category" a term of art
+ used, but it is what makes “one-object Ab-category” a term of art
  rather than a phrase.
 
  WHAT IS PROVED.  [RMod_AbFun_equiv R : AbFunAdd R ≅[Cat] RMod R],
@@ -122,8 +122,8 @@ Open Scope category_scope.
  the strength precisely: [Cat]'s hom-setoid is [Functor_Setoid],
  i.e. natural isomorphism (Instance/Cat.v), so [≅[Cat]] is an
  EQUIVALENCE of categories, not an isomorphism — which is what
- "R-Mod IS the full subcategory" means here, and is why the exercise's
- word "is" is rendered by an equivalence.  Both comparison functors
+ “R-Mod IS the full subcategory” means here, and is why the exercise's
+ word “is” is rendered by an equivalence.  Both comparison functors
  are, however, better than the statement requires: the module-side
  round trip is the IDENTITY module map (the carrier and the action are
  recovered definitionally, [module_round_smul]), and the functor-side
@@ -147,7 +147,7 @@ Open Scope category_scope.
 
  加法性耗尽的地方。这是练习的核心，并且在每一边都是单个字段。在 Instance/Mod.v 的 [RModObject] 中的四个模法则中，有三个仅来自函子结构：- [rm_smul_distr_l]（r·(m+n) = r·m + r·n）是 [cmon_map_plus] 的 Ab-同态 [fmap[F] r] —— 每个到 Ab 的函子都有它，免费提供；
  - [rm_smul_assoc]（(r·s)·m = r·(s·m)）是 [fmap_comp]，因为 [DeloopRig] 中的复合就是乘法；
- - [rm_smul_one]（1·m = m）是 [fmap_id]，因为恒等元就是 1。第四个，[rm_smul_distr_r] ((r+s)·m = r·m + s·m)，无法通过函子性获得：它正是[fmap_padd]，即Structure/AbCategory.v的[AdditiveFunctor]的单一字段。因此，加法假设既不是装饰也不是方便——它恰好是模的右分配律，并且这种对应在这一条律层面上是双向的。下面的例子具体说明了这一点：[unit_act_functor R]和[square_functor]是真正的到Ab的函子——是乘法的且有单位的，因为一个单对象范畴的函子只需要这些——并且在R = ℤ时，每个都可证明不是加法的，因此子范畴是严格的：谓词确实起到了切割作用。崩溃。来自单对象范畴的两个函子之间的自然变换是目标中的一个单一态射，其自然性是一个单一的方框，每个源箭头一个实例——即每个环元素一个方程。通过上面的词典读取，该方程就是 Instance/Mod.v 的 [rm_map_smul]。因此，练习的同态层面几乎不需要论证：[AbFunAdd_to] 对态射的作用是 [transform[η] ttt]，[naturality_sym] 作为模映射律，而 [AbFunAdd_from] 的作用是常值族，[rm_map_smul] 作为自然性。这就是 Instance/Rep.v（问题 #279）以及它之前的 Instance/Fun/Action.v 的架构；它是沿用而不是重新发明的，包括透明的往返组件族。与 Instance/Rep.v 的关系。该文件是相同单对象脊上的乘法故事：一个群的表示是函子 [Deloop G ⟶ RMod K]，而那里没有任何丰富结构——[Deloop] 将一个裸单子分层，并且目标的加法结构不起作用。该文件在源端增加了加法丰富结构，这就是全部区别：[Deloop] 变为 [DeloopRig]，"functor" 变为 "additive functor"，结果类是 R-Mod 而非 Rep_K(G)。Structure/AbCategory.v 中的 [AbCat] 是 [DeloopRig (ring_rig R)] 和 [Ab] 作为对象存在的环境类别；它对于下面的陈述不是必需的，也没有被使用，但它使得 "one-object Ab-category" 成为一个术语，而不仅仅是一个短语。已证明。[RMod_AbFun_equiv R : AbFunAdd R ≅[Cat] RMod R]，左侧为函子范畴一侧，对应 Instance/Rep.v 的 [Rep_Fun_equiv] 和 Instance/Fun/Action.v 的 [MSet_Fun_equiv]。精确理解其强度：[Cat] 的同态集合是 [Functor_Setoid]，即自然同构（Instance/Cat.v），所以 [≅[Cat] ] 是范畴的等价，而不是同构——这就是这里“R-Mod 是全子范畴”的含义，也是练习中“is”这个词被翻译为等价的原因。然而，这两个比较函子都比陈述要求的更强：模一侧的往返映射是恒等模映射（载体和作用可以按定义还原，[module_round_smul]），函子一侧的往返映射各分量为恒等映射。尚未构建的内容。没有右模或双模读取（Mod.v 的 [ModR] / [Bimodule] 保持不变），没有张量积，没有变化-R函子性，没有与 [AbCat] 作为范畴的比较，也没有环级 [EndRing] 的逆命题（从单对象 [AbEnriched] 范畴中读取 [RingObject]——Rig.v 的 [EndRig] 的加否定对应物）——练习要求一个识别，而这正是所提供的内容。
+ - [rm_smul_one]（1·m = m）是 [fmap_id]，因为恒等元就是 1。第四个，[rm_smul_distr_r] ((r+s)·m = r·m + s·m)，无法通过函子性获得：它正是[fmap_padd]，即Structure/AbCategory.v的[AdditiveFunctor]的单一字段。因此，加法假设既不是装饰也不是方便——它恰好是模的右分配律，并且这种对应在这一条律层面上是双向的。下面的例子具体说明了这一点：[unit_act_functor R]和[square_functor]是真正的到Ab的函子——是乘法的且有单位的，因为一个单对象范畴的函子只需要这些——并且在R = ℤ时，每个都可证明不是加法的，因此子范畴是严格的：谓词确实起到了切割作用。崩溃。来自单对象范畴的两个函子之间的自然变换是目标中的一个单一态射，其自然性是一个单一的方框，每个源箭头一个实例——即每个环元素一个方程。通过上面的词典读取，该方程就是 Instance/Mod.v 的 [rm_map_smul]。因此，练习的同态层面几乎不需要论证：[AbFunAdd_to] 对态射的作用是 [transform[η] ttt]，[naturality_sym] 作为模映射律，而 [AbFunAdd_from] 的作用是常值族，[rm_map_smul] 作为自然性。这就是 Instance/Rep.v（问题 #279）以及它之前的 Instance/Fun/Action.v 的架构；它是沿用而不是重新发明的，包括透明的往返组件族。与 Instance/Rep.v 的关系。该文件是相同单对象脊上的乘法故事：一个群的表示是函子 [Deloop G ⟶ RMod K]，而那里没有任何丰富结构——[Deloop] 将一个裸单子分层，并且目标的加法结构不起作用。该文件在源端增加了加法丰富结构，这就是全部区别：[Deloop] 变为 [DeloopRig]，“functor” 变为 “additive functor”，结果类是 R-Mod 而非 Rep_K(G)。Structure/AbCategory.v 中的 [AbCat] 是 [DeloopRig (ring_rig R)] 和 [Ab] 作为对象存在的环境类别；它对于下面的陈述不是必需的，也没有被使用，但它使得 “one-object Ab-category” 成为一个术语，而不仅仅是一个短语。已证明。[RMod_AbFun_equiv R : AbFunAdd R ≅[Cat] RMod R]，左侧为函子范畴一侧，对应 Instance/Rep.v 的 [Rep_Fun_equiv] 和 Instance/Fun/Action.v 的 [MSet_Fun_equiv]。精确理解其强度：[Cat] 的同态集合是 [Functor_Setoid]，即自然同构（Instance/Cat.v），所以 [≅[Cat] ] 是范畴的等价，而不是同构——这就是这里“R-Mod 是全子范畴”的含义，也是练习中“is”这个词被翻译为等价的原因。然而，这两个比较函子都比陈述要求的更强：模一侧的往返映射是恒等模映射（载体和作用可以按定义还原，[module_round_smul]），函子一侧的往返映射各分量为恒等映射。尚未构建的内容。没有右模或双模读取（Mod.v 的 [ModR] / [Bimodule] 保持不变），没有张量积，没有变化-R函子性，没有与 [AbCat] 作为范畴的比较，也没有环级 [EndRing] 的逆命题（从单对象 [AbEnriched] 范畴中读取 [RingObject]——Rig.v 的 [EndRig] 的加否定对应物）——练习要求一个识别，而这正是所提供的内容。
 *)
 
 (* * ** The Ab-enrichment of the delooping of a ring / * ** 环的去环化的Ab-增强 *)
@@ -212,8 +212,8 @@ Example deloop_ring_abneg (R : RingObject)
 
 (*
  The predicate is Structure/AbCategory.v's class itself, at the two
- enrichments — the honest reading of "spanned by the additive
- functors".  It is [Type]-valued, which is what [Subcategory]'s [sobj]
+ enrichments — the honest reading of “spanned by the additive
+ functors”.  It is [Type]-valued, which is what [Subcategory]'s [sobj]
  asks for. 
 
  --------

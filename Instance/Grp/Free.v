@@ -66,7 +66,7 @@ Generalizable All Variables.
    Schreier (1927) put free groups at the centre of combinatorial group
    theory; the categorical reading — that F is left adjoint to the
    forgetful functor — is the motivating example of an adjunction in
-   essentially every textbook, and is the reason "free" is a technical word
+   essentially every textbook, and is the reason “free” is a technical word
    at all.  Mac Lane's §II.7 exercise reaches it the economical way, via
    groupoids: build the free groupoid on a graph, then read the free group
    off the one-node case.  That is what this file does.
@@ -80,7 +80,7 @@ Generalizable All Variables.
    (Construction/Deloop.v) reads a monoid off an endomorphism hom-set, and
    three [eq_refl] Examples below record that the underlying monoid IS
    [hom_monoid] of the free groupoid on all three data fields.  Since the PR
-   "algebraic carriers are sets" (2026-09-17) each of those three laws is
+   “algebraic carriers are sets” (2026-09-17) each of those three laws is
    that category law under one [inhabits], because the group's `≈` is the
    hom-equality's propositional truncation; see [fg_equiv] below for why, and
    note that the three [eq_refl] Examples are about the OPERATIONS and are
@@ -97,8 +97,8 @@ Generalizable All Variables.
    Leibniz [=] on its edges; [PointQuiver] is built by hand with the
    generating setoid's own equivalence as the edge setoid, and
    respectfulness of the insertion is then not a new obligation but the
-   [fedgemap_respects] field of [FreeGroupoidUnit] (since the PR "algebraic
-   carriers are sets" it is that field under one [inhabits]).
+   [fedgemap_respects] field of [FreeGroupoidUnit] (since the PR “algebraic
+   carriers are sets” it is that field under one [inhabits]).
 
    TWO RECORDS NAMED [GrpObject].  Construction/Deloop.v's is layered on
    [MonObject] and carries both unit laws and both inverse laws as fields;
@@ -120,7 +120,7 @@ Generalizable All Variables.
    the group is therefore assembled directly from the word quotient.
 
    MULTIPLICATION IS COMPOSITION, hence right to left: the product of the
-   one-letter words a and b is the word "b then a".  That is the house
+   one-letter words a and b is the word “b then a”.  That is the house
    convention ([hom_monoid]'s [mon_op] is [fun f g => f ∘ g]) and it is
    what lets [fmap_comp] discharge [grp_map_mul] with no massaging;
    [free_group_mul_is_compose] pins it by [eq_refl].
@@ -232,7 +232,7 @@ Definition PointQuiver (X : SetoidObject) : Quiver := {|
    ([Construction/Deloop.v]) reads a monoid off an endomorphism hom-set.
 
    Multiplication is composition, so it runs right to left: the product of
-   the one-letter words [a] and [b] is the word "b then a".  That is the
+   the one-letter words [a] and [b] is the word “b then a”.  That is the
    house convention ([hom_monoid]'s [mon_op] is [fun f g => f ∘ g]) and it
    is what makes [fmap_comp] discharge [grp_map_mul] with no massaging;
    [free_group_mul_is_compose] pins it by [eq_refl]. 
@@ -252,12 +252,12 @@ Definition FGWord (X : SetoidObject) : Type :=
    * *** The word group's equality is a PROPOSITIONAL TRUNCATION
 
    An earlier revision set [is_setoid (FreeGrpSetoid X)] to the free
-   groupoid's hom-setoid itself.  Since the PR "algebraic carriers are sets"
+   groupoid's hom-setoid itself.  Since the PR “algebraic carriers are sets”
    (2026-09-17) a [GrpObject] carries [grp_prop], and the free groupoid's
    hom-equality is [Construction/Quotient.v]'s [CongClosure], a
    five-constructor [Type]-valued inductive for which NO [Prop] mirror with
    an elimination back into [Type] exists (measured: a truncation of it is refused
-   with "Incorrect elimination of h in the inductive type inhabited", and a
+   with “Incorrect elimination of h in the inductive type inhabited”, and a
    hand [Prop] mirror inductive has no [_rect], so [pequiv_to] cannot be
    written).  The resolution is the one this library adopts for every
    quotient object: the free groupoid keeps its data-valued hom-equality AS A
@@ -492,7 +492,7 @@ Definition extend_functor : FreeGroupoid (PointQuiver X) ⟶ grp_deloop H :=
 (*
  The underlying setoid map.  Its respectfulness used to BE
  [fmap_respects], because the free group's `≈` was the free groupoid's
- hom-equality on the nose.  Since the PR "algebraic carriers are sets"
+ hom-equality on the nose.  Since the PR “algebraic carriers are sets”
  (2026-09-17) the source equality is that hom-equality's TRUNCATION, so the
  elimination is routed through the TARGET group's own [Prop] equality:
  [pequiv_to] opens it, the truncation is destructed there, [pequiv_from]
@@ -528,7 +528,7 @@ Qed.
 
 (*
    * ...and it evaluates a word: the two structural clauses that pin down
-   what "evaluate a word in the group" means, both instances of the
+   what “evaluate a word in the group” means, both instances of the
    homomorphism laws. 
 
    --------
@@ -572,7 +572,7 @@ Proof.
   - intros [] [] w; exact (grp_map g w).
   (*
  The free group's `≈` is the truncation of the groupoid's since the PR
- "algebraic carriers are sets" (2026-09-17), so the groupoid-level
+ “algebraic carriers are sets” (2026-09-17), so the groupoid-level
  hypothesis is wrapped on the way in. 
 
  --------
@@ -846,7 +846,7 @@ Theorem free_group_two_generators_nonabelian :
 Proof.
   (*
  The free group's `≈` is the truncation of the free groupoid's since the
- PR "algebraic carriers are sets" (2026-09-17).  The conclusion here is
+ PR “algebraic carriers are sets” (2026-09-17).  The conclusion here is
  [False], a [Prop], so the hypothesis is unwrapped at no cost and the rest
  of the argument is unchanged. 
 

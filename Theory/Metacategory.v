@@ -17,8 +17,8 @@ nLab: https://ncatlab.org/nlab/show/metacategory
    nLab: https://ncatlab.org/nlab/show/category
    Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
 
-   The single-sorted ("arrows-only") axiomatization of a category, due to
-   Mac Lane (Categories for the Working Mathematician, I.1, "arrows-only"
+   The single-sorted (“arrows-only”) axiomatization of a category, due to
+   Mac Lane (Categories for the Working Mathematician, I.1, “arrows-only”
    description). A category is presented purely by a collection of arrows
    together with a partial composition (a partial magma on arrows); there is
    no separate sort of objects. Objects are recovered as the identity arrows.
@@ -40,9 +40,9 @@ nLab: https://ncatlab.org/nlab/show/metacategory
    type with neither defect, and proves both passages together with the sense
    in which they are mutually inverse.
 
-   This module shows that an "arrows-only" metacategory is sufficient to
+   This module shows that an “arrows-only” metacategory is sufficient to
    define a category. The axioms defined by Mac Lane are used, with the
-   "defined set of composable pairs" and "composite assignments" both encoded
+   “defined set of composable pairs” and “composite assignments” both encoded
    using a key-value map provided by FMap, since that provides just the
    structure we need: [M.MapsTo (f, g) h pairs] records that the composable
    pair [(f, g)] has composite [h]. Natural numbers are used to differentiate
@@ -84,25 +84,25 @@ The first-order theory of categories, and its computable models
 
    nLab: https://ncatlab.org/nlab/show/metacategory
    SEP:  https://plato.stanford.edu/entries/category-theory/
-   Paper: Eilenberg, Mac Lane, "General Theory of Natural
-          Equivalences", Trans. AMS 58, 1945
+   Paper: Eilenberg, Mac Lane, “General Theory of Natural
+          Equivalences”, Trans. AMS 58, 1945
 
-   The word "metacategory" carries the point of the whole construction.
-   Mac Lane reserves "category" for a metacategory whose objects and
-   arrows form sets, and uses "metacategory" for any model of the
+   The word “metacategory” carries the point of the whole construction.
+   Mac Lane reserves “category” for a metacategory whose objects and
+   arrows form sets, and uses “metacategory” for any model of the
    first-order theory of categories, stated before a set theory is fixed.
    It follows that the (large) category Cat of small categories stands
    apart from the metacategory CAT of all categories: the latter is too
    big to be a category, yet it remains a lawful model of the same axioms
-   (nLab, "metacategory"). The existing header states the arrows-only
+   (nLab, “metacategory”). The existing header states the arrows-only
    data and laws; this block records why an objects-free axiomatization
    was wanted, and what the finite encoding here makes computable.
 
    The idea is present at the origin. Eilenberg and Mac Lane defined a
-   category as an "aggregate Ob" of objects with mappings under axioms C1
+   category as an “aggregate Ob” of objects with mappings under axioms C1
    through C5, and remarked at once that the objects play a secondary
    role and could be omitted, since axiom C5 attaches a unique object to
-   each identity mapping (SEP, "Category Theory"). The later text makes
+   each identity mapping (SEP, “Category Theory”). The later text makes
    this a graded build-up: a metagraph is objects and arrows with domain
    and codomain; a metacategory adds identity and composition under
    associativity and unit laws; a category is a metacategory whose data
@@ -114,13 +114,13 @@ The first-order theory of categories, and its computable models
    ancestor those accounts specialize (SEP).
 
    Two purposes are served. The first is foundational: stating the axioms
-   first-order makes "category" meaningful independently of a chosen set
+   first-order makes “category” meaningful independently of a chosen set
    theory, so that a category is simply a metacategory interpreted in
    sets. This is the entry to Lawvere's elementary programme, in which the
    category of sets and the category of categories are each axiomatized
-   directly (Lawvere, "An Elementary Theory of the Category of Sets",
-   PNAS 52, 1964; "The Category of Categories as a Foundation for
-   Mathematics", 1966). The second purpose is structural: the object sort
+   directly (Lawvere, “An Elementary Theory of the Category of Sets”,
+   PNAS 52, 1964; “The Category of Categories as a Foundation for
+   Mathematics”, 1966). The second purpose is structural: the object sort
    is inessential, since objects ARE the identity arrows. That reduction
    is not left as a remark — [FromArrows] is its machine-checked witness,
    taking the arrow data and the three axioms to a [Category] whose
@@ -130,8 +130,8 @@ The first-order theory of categories, and its computable models
    binary operation, defined exactly when a codomain meets a domain, so a
    category reads as a partial monoid with many units — a partial
    semigroup carrying source and target — of which a one-object category
-   is the ordinary total monoid ("Relational Semigroups and Object-Free
-   Categories", arXiv:2001.11895, 2020). The file holds this partiality
+   is the ordinary total monoid (“Relational Semigroups and Object-Free
+   Categories”, arXiv:2001.11895, 2020). The file holds this partiality
    as data: [defined f g] records that the pair [(f, g)] has an entry,
    [composite f g h] names its value, and [pairs] is the whole partial
    operation kept as one finite table.
@@ -155,7 +155,7 @@ The first-order theory of categories, and its computable models
    witness that the arrows-only axiomatization suffices to rebuild
    [Category], and a place to hold small categories as computable data.
    The name itself has largely fallen out of general use (nLab,
-   "metacategory"); the size distinctions it once marked are, in this
+   “metacategory”); the size distinctions it once marked are, in this
    library, carried instead by universe polymorphism.
 
 --------
@@ -175,7 +175,7 @@ nLab: https://ncatlab.org/nlab/show/metacategory
 
 因为该操作是一个单一的有限数据，小范畴是字面数据，它们的律归结为计算而不是情况分析。证人 [ZeroArrows]、[OneArrow]、[TwoArrows] 和 [ThreeArrows] 被写成可组合对的显式表；[Three] 等于 [FromArrows ThreeArrows]；[cardinality] 计算恒等箭头、映射到 [i] 的条目 [(i, i)]，并且 [ThreeArrows_card_3] 将其求值为三。[structure] 和 [check_structure] 策略解除这些证人的成员资格义务。 Theory/Metacategory/DecideExample.v 进一步强调了这一点，通过 Lib/MapDecide.v 的反射证明裁决器 ([map_decide], [solve_map]) 解决了 Theory/Metacategory/ArrowsOnly.v 上的结合性一致性问题，以及在有限映射扩展 Lib/FMapExt.v 上 ([simplify_maps], [MapsTo_fun])。
 
-该模块独立于工作库之外：Instance/、Construction/ 或 Structure/ 中没有任何内容依赖它。它是一个自包含的证明，表明仅使用箭头的公理化就足以重建 [Category]，同时也是存放可计算数据的小范畴的地方。这个名称本身现在已基本不再普遍使用（nLab，"元范畴"）；它曾经标示的大小区分，在该库中则由宇宙多态性来表示。
+该模块独立于工作库之外：Instance/、Construction/ 或 Structure/ 中没有任何内容依赖它。它是一个自包含的证明，表明仅使用箭头的公理化就足以重建 [Category]，同时也是存放可计算数据的小范畴的地方。这个名称本身现在已基本不再普遍使用（nLab，“元范畴”）；它曾经标示的大小区分，在该库中则由宇宙多态性来表示。
 *)
 
 Module PNN := PairUsualDecidableType Nat_as_DT Nat_as_DT.
@@ -189,24 +189,24 @@ Module F := P.F.
 Definition defined x y := M.In (elt:=nat) (x, y).
 
 (*
-Mac Lane: "Since the objects of a metacategory correspond exactly to its
+Mac Lane: “Since the objects of a metacategory correspond exactly to its
    identity arrows, it is technically possible to dispense altogether with the
-   objects and deal only with arrows."
+   objects and deal only with arrows.”
 
 --------
-麦克莱恩："由于元范畴的对象与其恒等箭头完全对应，从技术上讲，可以完全省略对象，仅处理箭头。"
+麦克莱恩：“由于元范畴的对象与其恒等箭头完全对应，从技术上讲，可以完全省略对象，仅处理箭头。”
 *)
 Record Metacategory := {
-  (* "The data for an arrows-only metacategory C consist of arrows," / 只包含箭头的元范畴 C 的数据包括箭头， *)
+  (* “The data for an arrows-only metacategory C consist of arrows,” / 只包含箭头的元范畴 C 的数据包括箭头， *)
   arr := nat;
 
-  (* "certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows," / 某些有序对 ⟨g, f⟩，称为箭头的可组合对， *)
+  (* “certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows,” / 某些有序对 ⟨g, f⟩，称为箭头的可组合对， *)
   pairs : M.t arr;
 
   (*
-"and an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f,
+“and an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f,
      called their composite. We say 'g∙f is defined' for '⟨g, f⟩ is a
-     composable pair'".
+     composable pair'”.
 
 --------
 以及一个操作，将每个可组合对 ⟨g, f⟩ 分配一个箭头 g∙f，称为它们的复合。我们说“g∙f 已定义”表示“⟨g, f⟩ 是一个可组合对”。
@@ -214,15 +214,15 @@ Record Metacategory := {
   composite (f g h : arr) := M.MapsTo (f, g) h pairs;
 
   (*
-"With these data one defines an identity of C to be an arrow u such that
+“With these data one defines an identity of C to be an arrow u such that
      f∙u = f whenever the composite f∙u is defined and u∙g = g whenever u∙g is
-     defined."
+     defined.”
 
 --------
 利用这些数据，可以将 C 的恒等元定义为一个箭头 u，使得每当复合 f∙u 定义时，都有 f∙u = f，并且每当 u∙g 定义时，都有 u∙g = g。
 *)
   (*
-Note: Mac Lane's definition is conditional ("whenever ... defined"). The
+Note: Mac Lane's definition is conditional (“whenever ... defined”). The
      encoding below drops the definedness guard and instead requires
      [composite f u f] (and [composite u g g]) for *every* arrow, i.e. that
      [f ∙ u] and [u ∙ g] are defined and equal to [f]/[g] for all [f]/[g]. This
@@ -238,14 +238,14 @@ Note: Mac Lane's definition is conditional ("whenever ... defined"). The
   identity (u : arr) :=
     (∀ (f : arr), composite f u f) ∧ (∀ (g : arr), composite u g g);
 
-  (* "The data are then required to satisfy the following three axioms:" / 然后数据需要满足以下三个公理： *)
+  (* “The data are then required to satisfy the following three axioms:” / 然后数据需要满足以下三个公理： *)
 
   (* First axiom: / 第一公理： *)
 
   (*
-"The composite (k∙g)∙f is defined if and only if the composite k∙(g∙f) is
+“The composite (k∙g)∙f is defined if and only if the composite k∙(g∙f) is
      defined. When either is defined, they are equal (and this triple
-     composite is written as k∙g∙f)."
+     composite is written as k∙g∙f).”
 
 --------
 复合 (k∙g)∙f 当且仅当复合 k∙(g∙f) 定义时才定义。当其中任意一个定义时，它们是相等的（这个三重复合记作 k∙g∙f）。
@@ -258,8 +258,8 @@ Note: Mac Lane's definition is conditional ("whenever ... defined"). The
   (* Second axiom: / 第二条公理： *)
 
   (*
-"The triple composite k∙g∙f is defined whenever both composites k∙g and
-     g∙f are defined."
+“The triple composite k∙g∙f is defined whenever both composites k∙g and
+     g∙f are defined.”
 
 --------
 当且仅当复合 k∙g 和 g∙f 都已定义时，三重复合 k∙g∙f 才被定义。
@@ -271,8 +271,8 @@ Note: Mac Lane's definition is conditional ("whenever ... defined"). The
   (* Third axiom: / 第三公理： *)
 
   (*
-"For each arrow g of C there exist identity arrows u and u' of C such
-     that u'∙g and g∙u are defined."
+“For each arrow g of C there exist identity arrows u and u' of C such
+     that u'∙g and g∙u are defined.”
 
 --------
 对于 C 的每个箭头 g，存在 C 的单位箭头 u 和 u'，使得 u'∙g 和 g∙u 是定义的。

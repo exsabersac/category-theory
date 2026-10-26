@@ -28,9 +28,9 @@ Generalizable All Variables.
    substitution of [b] into all blanks.
 
    THE MORPHISM NOTION IS STRICT, and that is Mac Lane's own reading, not a
-   weakening: his Moncat (§VII.1, [maclane:VII.1:construction2]) is "the
+   weakening: his Moncat (§VII.1, [maclane:VII.1:construction2]) is “the
    category of all small monoidal categories with STRICT morphisms as
-   arrows", and a strict morphism ([maclane:VII.1:def3]) carries α, λ, ρ to
+   arrows”, and a strict morphism ([maclane:VII.1:def3]) carries α, λ, ρ to
    α', λ', ρ' on the nose.  Uniqueness among merely strong monoidal functors
    is false — any conjugate of [Subst] by a nonidentity natural isomorphism
    is again strong monoidal and sends the generator to an isomorph of [b] —

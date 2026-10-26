@@ -24,7 +24,7 @@ Generalizable All Variables.
    those on [X] and [Y].
 
    Following Carboni–Walters and Fong–Spivak, the canonical SCFA on the
-   tensor is built from the "middle-interchange" isomorphism
+   tensor is built from the “middle-interchange” isomorphism
    [(X ⨂ Y) ⨂ (X ⨂ Y) ≅ (X ⨂ X) ⨂ (Y ⨂ Y)] obtained by braiding the
    middle two factors:
 
@@ -39,8 +39,8 @@ Generalizable All Variables.
 
    Mathematical comments:
 
-   - The middle-interchange iso is what nLab denotes "Tau" or
-   "swap-inner-two-of-four".
+   - The middle-interchange iso is what nLab denotes “Tau” or
+   “swap-inner-two-of-four”.
    - On the unit object [I] the canonical SCFA is trivial:
    μ = unit_left, η = id, δ = unit_left⁻¹, ε = id.  These four
    coherence axioms are stated as the [scfa_unit_*] fields of the
@@ -52,7 +52,7 @@ Generalizable All Variables.
    Wikipedia: no dedicated article (the underlying special commutative
    Frobenius algebra is covered at
    https://en.wikipedia.org/wiki/Frobenius_algebra)
-   Reference: Fong & Spivak, "Hypergraph Categories",
+   Reference: Fong & Spivak, “Hypergraph Categories”,
    J. Pure Appl. Algebra 223(11):4746–4777, 2019
    (arXiv:1806.08304) — the compatibility law
    μ_{X⨂Y} = (μ_X ⨂ μ_Y) ∘ (1_X ⨂ σ_{Y,X} ⨂ 1_Y) is the
@@ -89,7 +89,7 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
 (*
-   * The "middle two factors" swap [(X⨂Y) ⨂ (X⨂Y) ≅ (X⨂X) ⨂ (Y⨂Y)],
+   * The “middle two factors” swap [(X⨂Y) ⨂ (X⨂Y) ≅ (X⨂X) ⨂ (Y⨂Y)],
    built by re-associating, braiding the middle pair, then re-associating
    back.  Concretely, the chain is
 

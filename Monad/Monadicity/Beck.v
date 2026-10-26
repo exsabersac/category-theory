@@ -38,8 +38,8 @@ Generalizable All Variables.
 
     ** Creation, in the isomorphism-invariant sense
 
-    [CreatesUSplitCoequalizers] renders "U creates coequalizers of
-    U-split pairs" in two clauses:
+    [CreatesUSplitCoequalizers] renders “U creates coequalizers of
+    U-split pairs” in two clauses:
 
     - [create_coeq] (existence): every U-split pair has a coequalizer
       upstairs whose U-image agrees with the given split coequalizer up
@@ -55,8 +55,8 @@ Generalizable All Variables.
     this lift be colimiting; in a setoid-based library, where downstairs
     data can only be matched up to isomorphism, the non-evil rendering
     asks instead that every iso-compatible lift be colimiting.  The
-    customary reading "the created data are unique up to compatible
-    isomorphism" follows as the corollary [create_coeq_unique], because
+    customary reading “the created data are unique up to compatible
+    isomorphism” follows as the corollary [create_coeq_unique], because
     any two such lifts are coequalizers of the same pair and so mediate
     through each other (compare [coequalizer_unique]).
 
@@ -105,7 +105,7 @@ Generalizable All Variables.
     arrow is again an algebra homomorphism.  Transporting this converse
     along the equivalence K, so that an arbitrary functor U that has a
     left adjoint with invertible comparison inherits the creation
-    property (closing the loop to a single "monadic iff creates"
+    property (closing the loop to a single “monadic iff creates”
     equivalence), is deliberately left to a later development: the
     Eilenberg–Moore statement is the mathematical core, and the
     transport is pure plumbing along [EquivalenceOfCategories]. *)

@@ -35,30 +35,30 @@ Generalizable All Variables.
  (enough projectives, resolutions), none of which is built here.
 
  STALE PREMISES, RE-MEASURED.
- - "No projectivity or injectivity notion exists": TRUE (0 declarations
+ - “No projectivity or injectivity notion exists”: TRUE (0 declarations
  matching Projective/Injective; the issue's own occurrence counts are
  off — 'projective' occurs in 9 lines of 6 [.v] files, all prose:
  projective limits (Structure/Limit.v, Instance/Sets/
  InverseLimit.v), a free module (Instance/Mod/Free.v),
  projective geometry (Construction/Opposite.v), the
  projective tensor product of Banach spaces (Structure/Closed.v) and
- "enough projectives" (Structure/Abelian.v, the one line about this
+ “enough projectives” (Structure/Abelian.v, the one line about this
  file's notion); and 'injective' in 437 lines of 100 files, all but
  one the SETOID-MAP notion — Lib/Setoid.v [injective],
  Instance/Sets.v [injectivity_is_monic], Theory/Concrete/
  Morphisms.v [concrete_injective_monic],
  Adjunction/LeftInverse.v [InjectiveOnObjects], … — the
  exception being Structure/
- Abelian.v's "injective resolutions", prose about the categorical
- notion).  (An earlier revision glossed the nine as "limits or modules"
+ Abelian.v's “injective resolutions”, prose about the categorical
+ notion).  (An earlier revision glossed the nine as “limits or modules”
  and the 437 as all setoid-map; corrected to the measured lists.)
- - "No lifting property beyond Theory/Orthogonality.v": PARTIAL.
+ - “No lifting property beyond Theory/Orthogonality.v”: PARTIAL.
  [Orthogonal e m] (unique filler, two arrows, over [≈]) is also what
  Structure/Factorization/StrongEpi.v's [strong_lift] and
  Theory/Morphisms/Stability.v's cobase change route through; every
  lifting statement in the tree carries the uniqueness clause, so the
  lift-EXISTENCE notion was indeed absent.
- - "No lemma about hom-functors preserving epis": TRUE (Theory/
+ - “No lemma about hom-functors preserving epis”: TRUE (Theory/
  Functor.v has REFLECTION, [faithful_reflects_monic] and
  [faithful_reflects_epic]; Functor/Hom/Limit.v has preservation of
  limits, not of epis).
@@ -68,7 +68,7 @@ Generalizable All Variables.
  ([surjective_implies_epic] and [epic_implies_surjective], the
  latter through that file's cokernel-pair probe), which makes
  both halves of the hom-functor characterization provable.
- - "As data or as an ∃-statement, disclosing which": in this library
+ - “As data or as an ∃-statement, disclosing which”: in this library
  there is no choice.  [∃] IS [sigT] (Lib/Foundation.v rebinds
  [exists] and defines [∃] from it), and a Prop-valued existential
  over [≈] cannot even be stated, [≈] on morphisms being Type-valued
@@ -93,7 +93,7 @@ Generalizable All Variables.
  [inj_stmt_readback] (the C-facing statement IS the [C^op] one) at
  [eq_refl].
  (3) THE HOM-FUNCTOR CHARACTERIZATION, both directions.
- [proj_is_hom_surjectivity] ([eq_refl]: "surjections of hom-setoids"
+ [proj_is_hom_surjectivity] ([eq_refl]: “surjections of hom-setoids”
  is the definition unfolded, [fmap[[Hom p ,─]] g h = g ∘ h] being
  [hom_fmap_is_postcomp]), [projective_hom_surjective] (Lib/Setoid.v's
  [surjective] class), [projective_hom_epic] (Epic in Sets, by
@@ -137,14 +137,14 @@ Generalizable All Variables.
  [two_projective_not_all]: the property is neither vacuous nor
  universal in one category.  The three witnesses' lifts COMPUTE
  (probe readbacks at [eq_refl]).
- (7) THE PRICE OF "EVERY OBJECT IS PROJECTIVE".
+ (7) THE PRICE OF “EVERY OBJECT IS PROJECTIVE”.
  [Projective_codomain_splits] (the identity lifts, so the epi
  splits), [all_projective_iff_every_epi_splits], and over Sets
  [sets_all_projective_entails_splitting] and
  [sets_all_projective_entails_LEM : (∀ p : Sets, Projective p) → ∀ P
  : Prop, P + (P → False)] through Instance/Sets/Regular.v's
  [BlanketSplitting] and its Diaconescu-shaped [blanket_splitting_
- entails_LEM] — "every set is projective" decides every proposition,
+ entails_LEM] — “every set is projective” decides every proposition,
  so Awodey's examples of that shape (awodey:2.4:example15,
  awodey:2:ex3) are not discharged here and cannot be constructively.
 
@@ -181,7 +181,7 @@ Generalizable All Variables.
  COUNTS AND CONVENTIONS.
  - 45 [.glob] declaration heads (40 [def], 3 [prf], the class [rec] and
  its [proj]) plus 3 [Program] obligations ([LeibnizSetoid] 1,
- [two_X_initial] 2), all "Closed under the global context", zero
+ [two_X_initial] 2), all “Closed under the global context”, zero
  [Axioms:] lines; the gate carries the 45 heads, fully qualified, the
  issue's [Projective], [Injective]'s carrier [injective_extend] and
  [projective_iff_hom_preserves_epi] among them ([Injective] itself is
@@ -206,7 +206,7 @@ Generalizable All Variables.
  Theory/Equivalence/Strict.v's [Two_Initial], whose [Require]
  would add 17 files; the consolidation of both into Instance/Two.v is
  surfaced for the maintainer, not done.  Name collisions: [Projective]
- occurs as a word in Structure/Limit.v's prose ("projective limit"),
+ occurs as a word in Structure/Limit.v's prose (“projective limit”),
  not as a declaration; every other name has 0 occurrences elsewhere.
  - NAME HAZARD, RECORDED.  The [@Injective C] notation claims the lexer
  token [@Injective], as Structure/Initial.v's [@Initial C] and
@@ -231,8 +231,8 @@ Generalizable All Variables.
  break on a positive line — the two parsing negatives concern a lexer
  token, so renaming their probe-local placeholders is uninformative
  and is not counted.  [make todo] grows by those 9 lines only (2237 →
- 2246 over f86ebdbe, master 1de68608 with #428), so the issue's "adds
- no new hits" box is not met as written; disclosed.  (An earlier
+ 2246 over f86ebdbe, master 1de68608 with #428), so the issue's “adds
+ no new hits” box is not met as written; disclosed.  (An earlier
  revision of the probe
  wrote the Prelude's [ex] as [Corelib.Init.Logic.ex], which Coq
  8.19/8.20 do not know — their prelude is [Coq.] — and the Nix source
@@ -247,7 +247,7 @@ Generalizable All Variables.
  absence; it needs that module's machinery).
  - Any relation between projectivity and [StrongEpi] (different
  classes; none holds without further hypotheses).
- - "Every object of Sets is projective" — refuted as a constructive
+ - “Every object of Sets is projective” — refuted as a constructive
  goal by (7); Awodey's examples of that shape stay open.
  - Anything registered as an [Instance]: [Projective] is a class, but
  no instance is declared, so nothing becomes globally resolvable.
@@ -273,7 +273,7 @@ Generalizable All Variables.
  [IndexedCoprod_Projective] 承载 [A : Type@{u}] 与 [u <= u3]，
  有界且未与任何东西标识；ZW127WZZ
  承载 [p < h]（ZW129WZZ 自身的形状，带 ZW130WZZ）及 stdlib 界 [eq_ind]、ZW132WZZ、
- ZW133WZZ、ZW134WZZ 和 ZW135WZZ 来自 [LeibnizSetoid] 的 Leibniz 集合等价类和满射供给者。- [Set] 出现在恰好五个块或类型中，全部为继承：四个 [_2] 的见证（[two_X_initial]、[TwoX_Projective]、[TwoY_not_Projective]、[two_projective_not_all]），因为 [_2]（Instance/Two.v）以 [Set] 值的 hom 声明裸露，以及 [sets_all_projective_entails_LEM@{u}] 与 [Set < u]，来自 [bool_setoid_object] 内的 [blanket_splitting_entails_LEM] — 这加强了该读法：该蕴涵已经在 [Set] 大小的承载者上成立。没有其他常量名称 [Set]。计数和约定。- 45个[.glob]声明头（40个[def]，3个[prf]，类[rec]及其[proj]）加上3个[Program]义务（[LeibnizSetoid] 1，[two_X_initial] 2），所有均“在全局上下文下封闭”，零[Axioms:]行；该网关携带45个头，完全限定，该问题的[Projective]、[Injective]的承载器[injective_extend]及其中的[projective_iff_hom_preserves_epi]（[Injective]本身是符号，而不是常量）。- 十二个 [Defined]，每一个在文件的副本中单独翻转为 [Qed]，并针对其重新编译探针：三个是承重的——[Retraction_lifts]、[initial_obj_Projective]、[Sets_Leibniz_Projective]，其升值由探针读取为 [eq_refl]——其余九个（同态特性、正交性和闭包常数）在探针不变的情况下编译，并保持透明因为它们产生升值。两个 [Qed]（[TwoY_not_Projective]，一个否定；[two_X_initial] 的唯一性义务）。 - 不包括自身的闭包34个文件：Structure/Limit/Coproduct.v 在边际（索引情况下）成本为8，Functor/Hom.v 3，Theory/Morphisms/Duality.v 2，Instance/Sets/Regular.v 1，Instance/Two.v 1，Structure/Cocartesian.v 1，Theory/Orthogonality.v 1，其余十个 [Require] 为0。[[Hom p ,─] 被直接使用，而不是 Functor/Hom/Limit.v 的 [HomFrom]，这将为同一个函子增加 23 个文件（早期版本说是 12 个；测量为 34 → 57）。[two_X_initial : @Initial _2] 重复了 Theory/Equivalence/Strict.v 的 [Two_Initial]，其 [Require] 将增加 17 个文件；两者合并到 Instance/Two.v 是为维护者显示的，而没有实际完成。命名冲突：[Projective] 出现在 Structure/Limit.v 的文本中（"projective limit"），不是声明；其他所有名字在其他地方出现次数为 0。- 名称风险，已记录。[@Injective C] 表示法声明了词法分析器标记 [@Injective]，就像 Structure/Initial.v 的 [@Initial C] 和 Structure/Cocartesian.v 的 [@Cocartesian C] 声明它们的那样：没有名称以 [Injective]、[Initial] 或 [Cocartesian] 开头的常量可以在这些表示法作用域内使用 [@] 前缀书写（探测 N7-N8；该树的 [InjectiveOnObjects] 当前从未用 [@] 写出；[@Terminal…] 和 [@Coproduct…] 被接受——不存在这样的表示法——早期版本将它们列为阻止）。下面的名称避免了每一个被阻止的前缀。- Test/ProbeProjective429.v 反映了 [Require] 列表，并包含 9 个反驳命令（1 个工具 + N1-N3 UNIVERSE + N4 CONVERSION + N5-N6 TYPING + N7-N8 PARSING），每个命令在整个文件的副本中逐一剥离，并且每个旁边都有其接受的控制；十个 [eq_refl] 读回（早期修订版说是十一，计算 N4 否定本身的 [eq_refl]）；在反驳内部涵盖 28 个标识符标记 / 外部也命名了 22 个，已去掉评论，有六个详尽的例外（关键字、一个绑定器、三个被反驳声明的名字、缺失的名字）；重命名模拟覆盖否定使用的库名 5/5（[Projective]、[Epic]、[Monic]、[op_Epic_of_Monic]、[Category]；不包括模块路径），每个首次中断都在正行上e——这两个解析否定涉及一个词法分析器符号，因此重命名它们的探针本地占位符没有信息量，也不计入统计。[make todo] 仅通过那 9 行增长（2237 → 2246 在 f86ebdbe 上，master 1de68608 带 #428），所以按照原文写法，问题的“没有新增命中”框并未满足；已披露。（探针的早期修订版本将 Prelude 的 [ex] 写成了 [Corelib.Init.Logic.ex]，Coq 8.19/8.20 不认识——它们的 prelude 是 [Coq.]——并且 Nix 源代码的构建在此停止；现在使用了未限定的名称，守护图也随之从 31/25 移动到上面的 28/22。）未交付。 - 足够的投射模、投射或内射分解、内射壳、Baer判据（Structure/Abelian.v 将这些作为背景散文处理；没有构建任何内容）。 - 自由模是投射的（Instance/Mod/Free.v 记录了缺失；它需要该模的机制）。 - 投射性与 [StrongEpi] 之间的任何关系（不同类型；没有进一步假设下都不成立）。 - “Sets 的每个对象都是投射的”——作为构造性目标被 (7) 反驳；Awodey 的那个形状的例子仍然开放。 - 任何登记为 [Instance] : [Projective] 的内容都是一个类，但没有声明任何实例，因此没有任何东西可以全局可解。- 不对 Theory/Morphisms.v、Theory/Morphisms/Duality.v、Theory/Orthogonality.v、Instance/Sets.v、Instance/Sets/Regular.v 或 Instance/Two.v 进行任何编辑。
+ ZW133WZZ、ZW134WZZ 和 ZW135WZZ 来自 [LeibnizSetoid] 的 Leibniz 集合等价类和满射供给者。- [Set] 出现在恰好五个块或类型中，全部为继承：四个 [_2] 的见证（[two_X_initial]、[TwoX_Projective]、[TwoY_not_Projective]、[two_projective_not_all]），因为 [_2]（Instance/Two.v）以 [Set] 值的 hom 声明裸露，以及 [sets_all_projective_entails_LEM@{u}] 与 [Set < u]，来自 [bool_setoid_object] 内的 [blanket_splitting_entails_LEM] — 这加强了该读法：该蕴涵已经在 [Set] 大小的承载者上成立。没有其他常量名称 [Set]。计数和约定。- 45个[.glob]声明头（40个[def]，3个[prf]，类[rec]及其[proj]）加上3个[Program]义务（[LeibnizSetoid] 1，[two_X_initial] 2），所有均“在全局上下文下封闭”，零[Axioms:]行；该网关携带45个头，完全限定，该问题的[Projective]、[Injective]的承载器[injective_extend]及其中的[projective_iff_hom_preserves_epi]（[Injective]本身是符号，而不是常量）。- 十二个 [Defined]，每一个在文件的副本中单独翻转为 [Qed]，并针对其重新编译探针：三个是承重的——[Retraction_lifts]、[initial_obj_Projective]、[Sets_Leibniz_Projective]，其升值由探针读取为 [eq_refl]——其余九个（同态特性、正交性和闭包常数）在探针不变的情况下编译，并保持透明因为它们产生升值。两个 [Qed]（[TwoY_not_Projective]，一个否定；[two_X_initial] 的唯一性义务）。 - 不包括自身的闭包34个文件：Structure/Limit/Coproduct.v 在边际（索引情况下）成本为8，Functor/Hom.v 3，Theory/Morphisms/Duality.v 2，Instance/Sets/Regular.v 1，Instance/Two.v 1，Structure/Cocartesian.v 1，Theory/Orthogonality.v 1，其余十个 [Require] 为0。[[Hom p ,─] 被直接使用，而不是 Functor/Hom/Limit.v 的 [HomFrom]，这将为同一个函子增加 23 个文件（早期版本说是 12 个；测量为 34 → 57）。[two_X_initial : @Initial _2] 重复了 Theory/Equivalence/Strict.v 的 [Two_Initial]，其 [Require] 将增加 17 个文件；两者合并到 Instance/Two.v 是为维护者显示的，而没有实际完成。命名冲突：[Projective] 出现在 Structure/Limit.v 的文本中（“projective limit”），不是声明；其他所有名字在其他地方出现次数为 0。- 名称风险，已记录。[@Injective C] 表示法声明了词法分析器标记 [@Injective]，就像 Structure/Initial.v 的 [@Initial C] 和 Structure/Cocartesian.v 的 [@Cocartesian C] 声明它们的那样：没有名称以 [Injective]、[Initial] 或 [Cocartesian] 开头的常量可以在这些表示法作用域内使用 [@] 前缀书写（探测 N7-N8；该树的 [InjectiveOnObjects] 当前从未用 [@] 写出；[@Terminal…] 和 [@Coproduct…] 被接受——不存在这样的表示法——早期版本将它们列为阻止）。下面的名称避免了每一个被阻止的前缀。- Test/ProbeProjective429.v 反映了 [Require] 列表，并包含 9 个反驳命令（1 个工具 + N1-N3 UNIVERSE + N4 CONVERSION + N5-N6 TYPING + N7-N8 PARSING），每个命令在整个文件的副本中逐一剥离，并且每个旁边都有其接受的控制；十个 [eq_refl] 读回（早期修订版说是十一，计算 N4 否定本身的 [eq_refl]）；在反驳内部涵盖 28 个标识符标记 / 外部也命名了 22 个，已去掉评论，有六个详尽的例外（关键字、一个绑定器、三个被反驳声明的名字、缺失的名字）；重命名模拟覆盖否定使用的库名 5/5（[Projective]、[Epic]、[Monic]、[op_Epic_of_Monic]、[Category]；不包括模块路径），每个首次中断都在正行上e——这两个解析否定涉及一个词法分析器符号，因此重命名它们的探针本地占位符没有信息量，也不计入统计。[make todo] 仅通过那 9 行增长（2237 → 2246 在 f86ebdbe 上，master 1de68608 带 #428），所以按照原文写法，问题的“没有新增命中”框并未满足；已披露。（探针的早期修订版本将 Prelude 的 [ex] 写成了 [Corelib.Init.Logic.ex]，Coq 8.19/8.20 不认识——它们的 prelude 是 [Coq.]——并且 Nix 源代码的构建在此停止；现在使用了未限定的名称，守护图也随之从 31/25 移动到上面的 28/22。）未交付。 - 足够的投射模、投射或内射分解、内射壳、Baer判据（Structure/Abelian.v 将这些作为背景散文处理；没有构建任何内容）。 - 自由模是投射的（Instance/Mod/Free.v 记录了缺失；它需要该模的机制）。 - 投射性与 [StrongEpi] 之间的任何关系（不同类型；没有进一步假设下都不成立）。 - “Sets 的每个对象都是投射的”——作为构造性目标被 (7) 反驳；Awodey 的那个形状的例子仍然开放。 - 任何登记为 [Instance] : [Projective] 的内容都是一个类，但没有声明任何实例，因此没有任何东西可以全局可解。- 不对 Theory/Morphisms.v、Theory/Morphisms/Duality.v、Theory/Orthogonality.v、Instance/Sets.v、Instance/Sets/Regular.v 或 Instance/Two.v 进行任何编辑。
 *)
 
 Class Projective {C : Category} (p : C) := {
@@ -321,7 +321,7 @@ Example inj_stmt_readback {C : Category} {q a b : C} (m : a ~> b) (f : a ~> q) :
 Example hom_fmap_is_postcomp {C : Category} (p : C) {b c : C} (g : b ~> c)
   (h : p ~> b) : fmap[[Hom p ,─]] g h = g ∘ h := eq_refl.
 
-(* The "surjections of hom-setoids" reading is the DEFINITION unfolded: the lifting clause and the surjectivity of [fmap] agree at [eq_refl]. / “同态集合的满射”读法是展开的定义：提升条款和 [fmap] 的满射性在 [eq_refl] 处一致。 *)
+(* The “surjections of hom-setoids” reading is the DEFINITION unfolded: the lifting clause and the surjectivity of [fmap] agree at [eq_refl]. / “同态集合的满射”读法是展开的定义：提升条款和 [fmap] 的满射性在 [eq_refl] 处一致。 *)
 Example proj_is_hom_surjectivity {C : Category} (p : C) {b c : C}
   (g : b ~> c) :
   (∀ f : p ~> c, ∃ h : p ~> b, fmap[[Hom p ,─]] g h ≈ f)
@@ -553,7 +553,7 @@ Definition two_projective_not_all :
   @Projective _2 TwoX * (@Projective _2 TwoY → False) :=
   (TwoX_Projective, TwoY_not_Projective).
 
-(* * ** The price of "every object is projective" / * ** “每个对象的价格是投影的” *)
+(* * ** The price of “every object is projective” / * ** “每个对象的价格是投影的” *)
 
 (*
  In any category, projectivity of the codomain of an epi splits it: take
@@ -576,8 +576,8 @@ Definition all_projective_iff_every_epi_splits {C : Category} :
 (*
  Over [Sets] that principle is not merely unavailable: it DECIDES EVERY
  PROPOSITION.  Instance/Sets/Regular.v proves [BlanketSplitting → LEM]
- axiom-free by a Diaconescu-shaped countermodel; "every setoid is
- projective" implies [BlanketSplitting] in one line. 
+ axiom-free by a Diaconescu-shaped countermodel; “every setoid is
+ projective” implies [BlanketSplitting] in one line. 
 
  --------
  在 [Sets] 上，这一原理不仅仅是不可用的：它决定了每一个命题。Instance/Sets/Regular.v 通过一个 Diaconescu 形的反例模型证明了 [BlanketSplitting → LEM] 无公理；“每个集合化对象都是投射的”在一行中就暗示了 [BlanketSplitting]。

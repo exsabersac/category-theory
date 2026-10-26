@@ -19,23 +19,23 @@ Generalizable All Variables.
 (* * * ⨁ₙ A^{⊗n}: words modulo multilinearity, and the direct sum of the tensor powers / * * ⨁ₙ A^{⊗n}: 单词模多线性，以及张量幂的直和 *)
 
 (*
- Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, “Categories for the Working Mathematician”, 2nd ed.,
  Springer GTM 5, 1998, §VI.4, Exercise 4(a), printed p. 146 (PDF
  p. 155) — maclane:VI.4:ex4
- Book: Riehl, "Category Theory in Context", Example 5.5.7(ii), printed
+ Book: Riehl, “Category Theory in Context”, Example 5.5.7(ii), printed
  p. 205 (PDF p. 225) — riehl:5.5:example7
  nLab: https://ncatlab.org/nlab/show/tensor+algebra
  nLab: https://ncatlab.org/nlab/show/direct+sum
  Wikipedia: https://en.wikipedia.org/wiki/Tensor_algebra
 
  WHAT THE BOOKS SAY, read from the page image and the PDF.  Mac Lane,
- Exercise 4: "The adjunction ⟨F, G, φ⟩ : Ab ⇀ Rng with G the functor
- "forget the multiplication in a ring" defines a monad T in Ab.  (a)
+ Exercise 4: “The adjunction ⟨F, G, φ⟩ : Ab ⇀ Rng with G the functor
+ ”forget the multiplication in a ring“ defines a monad T in Ab.  (a)
  Give a direct description of this monad, like that in the text for W,
  with Xⁿ replaced by the n-fold tensor power and coproduct ∐ by the
- (infinite) direct sum of abelian groups."  Riehl, Example 5.5.7(ii):
- "The induced monad on Ab is the free monoid monad TA := ⨁_{n≥0}
- A^{⊗n}".  This file is the abelian-group half of (a), with nothing of
+ (infinite) direct sum of abelian groups.”  Riehl, Example 5.5.7(ii):
+ “The induced monad on Ab is the free monoid monad TA := ⨁_{n≥0}
+ A^{⊗n}”.  This file is the abelian-group half of (a), with nothing of
  rings in it: the group ⨁ₙ A^{⊗n} in two readings, and the theorem
  that they are one.  Instance/Rng/FreeMonad/Words.v proves T A
  isomorphic to it and reads η, μ and T f through the isomorphism.
@@ -76,8 +76,8 @@ Generalizable All Variables.
  (the copairing composed with ιₙ is the n-th map, at ≈) and
  [tw_desc_unique] it gives [TW_is_tensor_coproduct : IsIndexedCoproduct
  (fun n => A ^⨂ n) (TWAb A) tw_iota], Structure/Limit/Coproduct.v's
- class in Ab: Mac Lane's "(infinite) direct sum of the n-fold tensor
- powers", literally.  The copairing respects a letter and is additive
+ class in Ab: Mac Lane's “(infinite) direct sum of the n-fold tensor
+ powers”, literally.  The copairing respects a letter and is additive
  in it by an induction on the prefix of the word generalized over the
  whole family ([tw_shift], [tw_desc_letter], [tw_desc_lin]), so no
  transport along the length of a word is ever needed.  Read at c := A,
@@ -613,7 +613,7 @@ Qed.
 
 End Desc.
 
-(* Mac Lane's "(infinite) direct sum of the n-fold tensor powers": the words are the coproduct in Ab of the A^{⊗n}, with the injections ιₙ. / Mac Lane的“(无限) n次张量幂的直和”：这些词是在Ab中的A^{⊗n}的余积，并带有注入映射 ιₙ。 *)
+(* Mac Lane's “(infinite) direct sum of the n-fold tensor powers”: the words are the coproduct in Ab of the A^{⊗n}, with the injections ιₙ. / Mac Lane的“(无限) n次张量幂的直和”：这些词是在Ab中的A^{⊗n}的余积，并带有注入映射 ιₙ。 *)
 Definition TW_is_tensor_coproduct (A : Ab) :
   @IsIndexedCoproduct Ab nat (fun n => A ^⨂ n) (TWAb A) (@tw_iota A).
 Proof.

@@ -41,11 +41,11 @@ Generalizable All Variables.
 
  UNIVERSES, by [About].  [LiftCat@{co ch xo xh}] is over
  [C : Category@{co ch ch}] and returns a [Category@{xo xh xh}] under
- the constraints "co <= xo" and "ch <= xh" and no other, and
+ the constraints “co <= xo” and “ch <= xh” and no other, and
  [Lift_in@{co ch xo xh}] and its two readbacks carry the same two.
  [Lift_after@{co ch xo xh yo yh}] lifts [X : Category@{xo xh xh}] to
- [@{yo yh}] under "ch <= xh" (from [T] itself), "ch <= yh",
- "xo <= yo" and "xh <= yh", and its two readbacks the same four.  No
+ [@{yo yh}] under “ch <= xh” (from [T] itself), “ch <= yh”,
+ “xo <= yo” and “xh <= yh”, and its two readbacks the same four.  No
  block carries an equation.  The statements of [Lift_in], [Lift_after]
  and the four readbacks name the instance of the lift they speak of
  (six explicit universe instances of this file's constants): a lifted
@@ -53,8 +53,8 @@ Generalizable All Variables.
  it to the level it lifts.
 
  NOT DELIVERED.  No functor back from [LiftCat C] to C once the hom
- level is lifted: at "ch < xh" the type [LiftCat C ⟶ C] is itself
- refused ("Cannot enforce ch = …", Test/ProbeAbsolute477.v), since
+ level is lifted: at “ch < xh” the type [LiftCat C ⟶ C] is itself
+ refused (“Cannot enforce ch = …”, Test/ProbeAbsolute477.v), since
  [Functor]'s [fmap_respects] is typed through [respectful] at the
  target's levels and so bounds the source's hom level by the
  target's; with the objects lifted alone the way back is formable.

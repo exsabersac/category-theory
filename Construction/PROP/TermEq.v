@@ -50,7 +50,7 @@ Local Open Scope nat_scope.
  the symmetry/involution equation [σ_{n,m} ⊙ σ_{m,n} ≈ id] (cf. the
  nLab and Wikipedia pages above).  Because [nat] addition is strictly
  associative/unital only up to propositional [=], several of those
- "on the nose" equations are nonetheless stated below in [eq_rect]
+ “on the nose” equations are nonetheless stated below in [eq_rect]
  transport form. 
 
  --------

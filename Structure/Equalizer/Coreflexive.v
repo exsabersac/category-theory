@@ -39,7 +39,7 @@ Generalizable All Variables.
  that this pair always has a COMMON LEFT INVERSE — the map back into the
  object product whose component at x is the arrow product's projection at
  the identity arrow of x — so a category with small products needs
- equalizers only of such "coreflexive" pairs to be complete.  Part (b) is
+ equalizers only of such “coreflexive” pairs to be complete.  Part (b) is
  the elementary characterisation, in Sets, of the pairs with a common RIGHT
  inverse: those whose induced map into the square of the codomain has an
  image containing the diagonal.  Note the two halves speak of two
@@ -48,7 +48,7 @@ Generalizable All Variables.
  Reflexive.v's [ReflexivePair]).
 
  STALE PREMISES, RE-MEASURED.
- - "the base theorem the exercise refines is itself absent": it landed
+ - “the base theorem the exercise refines is itself absent”: it landed
  as Structure/Limit/FromProducts.v (#416; docs/INDEX.md) — the
  arrow index [ArrowIx] with [mk_arrow], the generating
  closure [Gen] with [gen_id] and [Generates],
@@ -58,7 +58,7 @@ Generalizable All Variables.
  [Complete_from_products_equalizers].  The core consumes an
  ELEMENTARY [IsEqualizer], never the class — the decisive fact
  here: Manes' criterion needs no [HasEqualizers] anywhere.
- - "coreflexive returns 0 hits": Structure/Topos/Monadic.v proves
+ - “coreflexive returns 0 hits”: Structure/Topos/Monadic.v proves
  [coreflexive_equalizer_pullback] for a pair with a common retraction
  (a step of Paré's theorem; Test/ProbeToposColimits405.v guards
  it).  The NOTION is in the tree and load-bearing; what was absent is
@@ -67,8 +67,8 @@ Generalizable All Variables.
  uses), but Theory/Morphisms.v's [Section] is the split-mono
  record with exactly that field, and a coreflexive pair is two such
  splittings sharing one retraction.
- - "reflexive pairs appear ten times across Structure/Coequalizer/
- Reflexive.v and Monad/Monadicity/*": the token [ReflexivePair] occurs
+ - “reflexive pairs appear ten times across Structure/Coequalizer/
+ Reflexive.v and Monad/Monadicity/*”: the token [ReflexivePair] occurs
  in four files (Reflexive.v, Monad/Lifting.v, Monad/Monadicity/
  BeckObjects.v, Monad/Monadicity/Crude.v), and with
  [HasReflexiveCoequalizers] fourteen lines sit outside those two
@@ -113,7 +113,7 @@ Generalizable All Variables.
  index TYPE, so the projection at an abstract family is refused
  (probe N4).  A variant transporting along [idx_arr (idx_id x) ≈
  id] is not stated and was not built; an earlier revision said it
- "was measured", with no artifact.
+ “was measured”, with no artifact.
  (4) MANES' CRITERION.  [mc_equalizer], [mc_apex], [mc_incl],
  [mc_IsEqualizer], [mc_cone], [mc_limiting], [mc_limit], and
  [Complete_from_coreflexive_equalizers : HasIndexedProducts C →
@@ -142,7 +142,7 @@ Generalizable All Variables.
  [Sets_Image]'s setoid compares codomain components only, so
  the map b ↦ ((b, b); (chosen preimage; _)) is proper in b whatever
  the choice function does.  An earlier revision of this header said
- the reverse "would split the epi leg — a choice principle"; the
+ the reverse “would split the epi leg — a choice principle”; the
  audit compiled it closed.  The choice principle sits only in the
  step to [ReflexivePair].
  (7) NON-VACUITY, AND ITS LIMIT.  [Sets_HasCoreflexiveEqualizers] and
@@ -176,12 +176,12 @@ Generalizable All Variables.
  [diagonal_in_image_of_through_image],
  [diagonal_in_image_iff_through_image]) also [u < u4].
  [Sets_HasCoreflexiveEqualizers@{u u0}] carries NO equation and
- [u0 < u]; an earlier revision counted "six Sets constants" under
+ [u0 < u]; an earlier revision counted “six Sets constants” under
  the equations, which was five then and mis-included this one.
  [Sets_Complete_via_Manes@{u u0} : Complete@{u u u u0}] with [u < u0]
  is the universe shape of Instance/Sets/Complete.v's
  [Sets_Complete].
- - "No stdlib cap" means exactly the three names of the first item.
+ - “No stdlib cap” means exactly the three names of the first item.
  Bounds against stdlib universes DO appear: the Sets-side blocks are
  bounded by [prod_rect.u0..u2], [Projections.u0/u1],
  [Basics.compose.u0..u2], and [Sets_HasCoreflexiveEqualizers] and
@@ -193,7 +193,7 @@ Generalizable All Variables.
  - 48 constants (34 [def], 7 [prf], 1 [inst], 4 [proj], 2 [rec] in the
  [.glob]; the constructors [Build_CoreflexivePair] and
  [Build_HasCoreflexiveEqualizers] are not [.glob] entries and are not
- counted), all "Closed under the global context", zero [Axioms:]
+ counted), all “Closed under the global context”, zero [Axioms:]
  lines, all gated fully qualified.  Nine [Defined]: one is
  load-bearing by flipping alone to [Qed] ([diagonal_section], whose
  body [reflexive_of_diagonal_in_image] reduces); the other eight
@@ -221,7 +221,7 @@ Generalizable All Variables.
  [diagonal_in_image], each renamed throughout a copy) with every first
  break on a positive line.  [make todo] grows by those 6 lines only
  (2209 → 2215 against the rebased base 625a31ff), so the issue's
- "adds no new hits" box is not met as written; disclosed.
+ “adds no new hits” box is not met as written; disclosed.
 
  NOT DELIVERED.
  - A category with coreflexive equalizers but not all equalizers: none
@@ -248,7 +248,7 @@ Generalizable All Variables.
  Mac Lane §V.2 练习 1（书第 114 页；maclane:V.2:ex1）。
  nLab:  https://ncatlab.org/nlab/show/equalizer 
  https://ncatlab.org/nlab/show/complete+category背景。第 V.2 节定理 1（Structure/Limit/FromProducts.v，#416）构建了 F : J ⟶ C 的极限，作为两个标准映射的等化子
- s, t : ∏_{x} F x ⇉ ∏_{f} F (cod f)。Manes 的加强（部分 (a)）指出，这对映射总是具有一个公共左逆——返回对象积的映射，其在 x 处的分量是箭头积在 x 的恒等箭头处的投影——因此，具有小积的范畴只需要对这种“核心反射”对的等化子就能完备。部分 (b) 是 Sets 中具有公共右逆对的基本描述：那些其诱导映射进入陪域平方的像包含对角线的映射对。注意这两个部分讲述的是两个不同的概念：(a) 关于自反对偶对（一个常见的收缩），(b) 关于自反对偶（一个常见的截面，结构/余等化器/自反.v 的 [ReflexivePair]）。陈旧的前提，重新测量。 - “练习精炼的基础定理本身不存在”：它出现在 Structure/Limit/FromProducts.v (#416; docs/INDEX.md) — 箭头索引 [ArrowIx] 与 [mk_arrow]，生成闭包 [Gen] 与 [gen_id] 和 [Generates]，[ArrowIx_Generates]，基本核心 [pe_cone] 和 [pe_limiting]，成对 [pe_s] / [pe_t] 及其分量方程 [limit_of_products_equalizer] 和 [Complete_from_products_equalizers]。核心消耗一个 ELEMENTARY [IsEqualizer]，从不消耗类 — 这里决定性的事实：Manes 的标准不需要在任何地方使用 [HasEqualizers]。 - “自反返回0命中”：Structure/Topos/Monadic.v 证明了 [coreflexive_equalizer_pullback] 对于具有共同回缩的对（Paré 定理的一步；Test/ProbeToposColimits405.v 对其进行了保护）。这个概念存在于树中并且能承重；缺失的是包装——没有记录，没有类别。在这个文件之前，[common left inverse] 的命中为 0（这是这个标题的背景现在使用的短语），但是 Theory/Morphisms.v 的 [Section] 是具有完全该字段的 split-mono 记录，而一个核心反身对是两个共享一个收缩的这样的分裂。- “反身对在 Structure/Coequalizer/Reflexive.v 和 Monad/Monadicity/* 中出现十次”：标记 [ReflexivePair] 出现在四个文件中（Reflexive.v、Monad/Lifting.v、Monad/Monadicity/BeckObjects.v、Monad/Monadicity/Crude.v），而 [HasReflexiveCoequalizers] 有十四行位于这两个位置之外，在六个文件中（Monad/Lifting.v 5行，Structure/Topos/Monadic.v 4行，Test/ProbeToposColimits405.v 2行，Theory/Lawvere/Monad.v、Instance/Sets/Coequalizer.v 和 Structure/Topos/Colimits.v 各1行；早期修订版列出五个文件，共计九行）。交付的内容是什么（48 个常量，每一个在全局上下文下都是封闭的；审计修订版本中有 45 个，再加上审计后出现的第 (6) 项的三个图像级常量）。(1) 概念。[CoreflexivePair f g]（一个常见的反转及其两个定律），[HasCoreflexiveEqualizers C]（每个自反对的基本等化器），[common_retraction_coreflexive]，[#[export] 实例，[HasEqualizers_HasCoreflexiveEqualizers]，以及 [functor_preserves_coreflexive]——逐行反映 Reflexive.v 文件。(2) 对偶，已测量。在 C 中，一个常见的左逆是 C^op 中的一个常见截面，因此这个对通过 [:=] 以两种方式重新打包 ([CoreflexivePair_of_op], [op_ReflexivePair_of_Coreflexive])，两次往返都在 [eq_refl]；记录 TYPES 不是相同的类型，类也不是 (probe N1, N2)，它们的桥 ([HasCoreflexiveEqualizers_of_op], [op_HasReflexiveCoequalizers_of_Coreflexive]) 执行 Structure/Pullback/Reduction.v 的解构并重新打包，因为存在体是 Structure/Equalizer/Fork.v 的 [IsEqualizer] 和 Structure/Coequalizer.v 的 [IsCoequalizer]。因此，这个概念被独立声明——在 [C^op] 上的 [ReflexivePair] 的别名会强制 [y x] 的参数顺序和 [∘[C^op] 在每个用户上，并且对已经误导这个问题的 grep 来说是不可见的——并且已经建立了桥。(3) 作为引理的 MAC LANE 提示。x 处的恒等箭头是指向 x 的完整箭头族的一个指标（[id_index_cod]，[id_index_dom]，[id_index_arr] 在 [eq_refl]）；[pe_retract] 是进入对象积的映射，其分量是箭头积在恒等下的投影；[pe_retract_s] 和 [pe_retract_t] 各自由 FromProducts.v 的 [pe_iprod_ext] 定义了三条线；[pe_coreflexive : CoreflexivePair (pe_s HP F) (pe_t HP F)]。生成族的变体未说明：[Gen] 的 [gen_id] 在恒等下闭合了生成的箭头，但没有将任何恒等放入指标类型，因此拒绝抽象族处的投影（探测 N4）。沿着 [idx_arr (idx_id x) ≈ id] 传输的变体未被说明，也未建立；早期版本说它“已测量”，但没有人工制品。(4) MANES 的准则。[mc_equalizer]、[mc_apex]、[mc_incl]、[mc_IsEqualizer]、[mc_cone]、[mc_limiting]、[mc_limit]，以及 [Complete_from_coreflexive_equalizers : HasIndexedProducts C → HasCoreflexiveEqualizers C → Complete C] — FromProducts.v 的核心用来替代任意核心反射等化器；定理 2 的明确描述正如 FromProducts.v 中在 [eq_refl]（[mc_limit_apex]、[mc_limit_leg]）中回读。(5) 部分 (b)，范畴论的一半。在任何笛卡尔范畴中，一个公共截面是通过 [f △ g] 对角线 [id △ id] 的因式分解：[fork_diagonal_of_reflexive], [reflexive_of_fork_diagonal]，以及打包的 [ReflexivePair_iff_diagonal_factors]（类型值 ↔，空约束块）。(6) 部分 (b) 在集合中。[diagonal_in_image f g := ∀ b, ∃ a, (f a ≈ b) * (g a ≈ b)]; [diagonal_in_image_of_reflexive] 是无条件的；逆命题 [reflexive_of_diagonal_in_image] 需要对选定的证人有适当性假设，因为 [∃] 是 [sigT] ——选择函数存在——但一个集合态射还需要 [proper_morphism]（探针 N5；[diagonal_section]）。通过 Instance/Sets/Image.v 的态射级别阅读是一个没有假设的双条件：[diagonal_in_image_iff_through_image : diagonal_in_image ↔ ∃ d, Sets_Image_mono (f △ g) ∘ d ≈ id △ id] ([through_image_of_diagonal_in_image], [diagonal_in_image_of_through_image]；[diagonal_through_image] 是直接来自 [ReflexivePair] 的正向部分)。两半都是自由的，原因与 [ReflexivePair] 逆命题不自由相同：[Sets_Image] 的集合等价只比较陪域分量，所以映射 b ↦ ((b, b); (选择的原像; _)) 不论选择函数怎么做在 b 上都是适当的。这个标题的早期版本说反向“会分裂满射腿——一个选择原理”；审核编译时将其关闭。选择原理仅存在于到 [ReflexivePair] 的步骤中。(7) 非空性及其极限。[Sets_HasCoreflexiveEqualizers] 和 [Sets_Complete_via_Manes : Complete Sets] 编译关闭——但在树中达到假设的唯一途径是更强的 [HasEqualizers Sets]（来自 [Sets_HasPullbacks] 的 Reduction.v）。在树中，没有已知的范畴在没有所有等化器的情况下拥有自反等化器，因此该准则仅在定理 1 的假设已成立的情况下才被实例化；这里没有任何内容将其与 [Complete_from_products_equalizers] 区分开来。宇宙（由 [About] 在 [Set Printing Universes] 下针对所有 48 个常量测量）。- 在任何块中没有以单词为界的 [Set]；没有 [JMeq]、[EqdepFacts] 或 [eq_rect_r] 大写。- [CoreflexivePair@{u u0}]、[HasCoreflexiveEqualizers@{u u0}]、[HasCoreflexiveEqualizers_of_op@{u u0}] 和 [ReflexivePair_iff_diagonal_factors@{u u0}] 承载 EMPTY 约束块。[Complete_from_coreflexive_equalizers@{u u0 u1}：∀ {C : Category@{u u0 u0}}, HasIndexedProducts C → HasCoreflexiveEqualizers C → Complete@{u0 u0 u0 u}] 仅携带边界，与 [Complete_from_products_equalizers@{u u0 u1}] 形状相同。- 两个继承的标识：[mc_cone] 以及基于它构建的四个常量（[mc_limiting]、[mc_limit]、[mc_limit_apex]、[mc_limit_leg]）携带 [u = u3] 和 [u2 = u4]（来自 Products.v 的 [Core] 部分，其中产品的层级达到限制；早期版本仅命名 [mc_cone]），而 [SetsHalf] 部分的八个常量携带 [u = u0 = u1 = u2] 及 [u < u3] —— 被识别的两个集合体的承载和证明宇宙，标准 Sets 规范 —— 其中四个（[diagonal_in_image]、[diagonal_section]、[diagonal_in_image_of_through_image]、[diagonal_in_image_iff_through_image]）也 [u < u4]。[Sets_HasCoreflexiveEqualizers@{u u0}] 不携带任何方程式和 [u0 < u]；早期版本在方程式下计算“六个 Sets 常量”，当时为五个，并错误地包括了这一项。[Sets_Complete_via_Manes@{u u0} : Complete@{u u u u0}] 与 [u < u0] 是 Instance/Sets/Complete.v 的宇宙形状 [Sets_Complete]。"No stdlib cap" 的意思正好是第一个条目的三个名称。针对 stdlib 宇宙的界限确实存在：Sets 端的块受到 [prod_rect.u0..u2]、[Projections.u0/u1]、[Basics.compose.u0..u2] 和 [Sets_HasCoreflexiveEqualizers] 的限制，并且 [Sets_Complete_via_Manes] 还受到 [eq_ind.u0]、[eq_ind_r.u0] 和 [Logic_lemmas.equality.u0] 的限制（捐赠者 [Sets_Complete] 不包含后三个中的任何一个）。计数与约定。- 48 个常量（34 个 [def]、7 个 [prf]、1 个 [inst]、4 个 [proj]、2 个 [rec] 在 [.glob] 中；构造函数 [Build_CoreflexivePair] 和 [Build_HasCoreflexiveEqualizers] 不是 [.glob] 条目，因此不计入），所有“在全局上下文下封闭”，零 [Axioms:] 行，全部门控并完全限定。九个 [Defined]：其中一个仅通过翻转就承重到 [Qed]（[diagonal_section]，其主体 [reflexive_of_diagonal_in_image] 会减少）；其余八个（[common_retraction_coreflexive]、[functor_preserves_coreflexive]、两个类桥、[reflexive_of_diagonal_in_image]、[diagonal_through_image]、[diagonal_in_image_of_through_image]、[through_image_of_diagonal_in_image]）可以自由翻转，并由数据约定保持 [Defined]。五个 [Qed]。- 闭包 50 个文件（不包括自身）：Instance/Sets/Image.v 和 Instance/Sets/Products.v 在边际上的成本各为 4，Instance/Sets/Pullback.v、Structure/Limit/FromProducts.v 和 Structure/Coequalizer/Reflexive.v 各为 1，其他二十个 [Require] 为 0。（四十一个结构/文件已经需要实例/集合；集合的一半在这里，而不是在第二个文件中。）
+ s, t : ∏_{x} F x ⇉ ∏_{f} F (cod f)。Manes 的加强（部分 (a)）指出，这对映射总是具有一个公共左逆——返回对象积的映射，其在 x 处的分量是箭头积在 x 的恒等箭头处的投影——因此，具有小积的范畴只需要对这种“核心反射”对的等化子就能完备。部分 (b) 是 Sets 中具有公共右逆对的基本描述：那些其诱导映射进入陪域平方的像包含对角线的映射对。注意这两个部分讲述的是两个不同的概念：(a) 关于自反对偶对（一个常见的收缩），(b) 关于自反对偶（一个常见的截面，结构/余等化器/自反.v 的 [ReflexivePair]）。陈旧的前提，重新测量。 - “练习精炼的基础定理本身不存在”：它出现在 Structure/Limit/FromProducts.v (#416; docs/INDEX.md) — 箭头索引 [ArrowIx] 与 [mk_arrow]，生成闭包 [Gen] 与 [gen_id] 和 [Generates]，[ArrowIx_Generates]，基本核心 [pe_cone] 和 [pe_limiting]，成对 [pe_s] / [pe_t] 及其分量方程 [limit_of_products_equalizer] 和 [Complete_from_products_equalizers]。核心消耗一个 ELEMENTARY [IsEqualizer]，从不消耗类 — 这里决定性的事实：Manes 的标准不需要在任何地方使用 [HasEqualizers]。 - “自反返回0命中”：Structure/Topos/Monadic.v 证明了 [coreflexive_equalizer_pullback] 对于具有共同回缩的对（Paré 定理的一步；Test/ProbeToposColimits405.v 对其进行了保护）。这个概念存在于树中并且能承重；缺失的是包装——没有记录，没有类别。在这个文件之前，[common left inverse] 的命中为 0（这是这个标题的背景现在使用的短语），但是 Theory/Morphisms.v 的 [Section] 是具有完全该字段的 split-mono 记录，而一个核心反身对是两个共享一个收缩的这样的分裂。- “反身对在 Structure/Coequalizer/Reflexive.v 和 Monad/Monadicity/* 中出现十次”：标记 [ReflexivePair] 出现在四个文件中（Reflexive.v、Monad/Lifting.v、Monad/Monadicity/BeckObjects.v、Monad/Monadicity/Crude.v），而 [HasReflexiveCoequalizers] 有十四行位于这两个位置之外，在六个文件中（Monad/Lifting.v 5行，Structure/Topos/Monadic.v 4行，Test/ProbeToposColimits405.v 2行，Theory/Lawvere/Monad.v、Instance/Sets/Coequalizer.v 和 Structure/Topos/Colimits.v 各1行；早期修订版列出五个文件，共计九行）。交付的内容是什么（48 个常量，每一个在全局上下文下都是封闭的；审计修订版本中有 45 个，再加上审计后出现的第 (6) 项的三个图像级常量）。(1) 概念。[CoreflexivePair f g]（一个常见的反转及其两个定律），[HasCoreflexiveEqualizers C]（每个自反对的基本等化器），[common_retraction_coreflexive]，[#[export] 实例，[HasEqualizers_HasCoreflexiveEqualizers]，以及 [functor_preserves_coreflexive]——逐行反映 Reflexive.v 文件。(2) 对偶，已测量。在 C 中，一个常见的左逆是 C^op 中的一个常见截面，因此这个对通过 [:=] 以两种方式重新打包 ([CoreflexivePair_of_op], [op_ReflexivePair_of_Coreflexive])，两次往返都在 [eq_refl]；记录 TYPES 不是相同的类型，类也不是 (probe N1, N2)，它们的桥 ([HasCoreflexiveEqualizers_of_op], [op_HasReflexiveCoequalizers_of_Coreflexive]) 执行 Structure/Pullback/Reduction.v 的解构并重新打包，因为存在体是 Structure/Equalizer/Fork.v 的 [IsEqualizer] 和 Structure/Coequalizer.v 的 [IsCoequalizer]。因此，这个概念被独立声明——在 [C^op] 上的 [ReflexivePair] 的别名会强制 [y x] 的参数顺序和 [∘[C^op] 在每个用户上，并且对已经误导这个问题的 grep 来说是不可见的——并且已经建立了桥。(3) 作为引理的 MAC LANE 提示。x 处的恒等箭头是指向 x 的完整箭头族的一个指标（[id_index_cod]，[id_index_dom]，[id_index_arr] 在 [eq_refl]）；[pe_retract] 是进入对象积的映射，其分量是箭头积在恒等下的投影；[pe_retract_s] 和 [pe_retract_t] 各自由 FromProducts.v 的 [pe_iprod_ext] 定义了三条线；[pe_coreflexive : CoreflexivePair (pe_s HP F) (pe_t HP F)]。生成族的变体未说明：[Gen] 的 [gen_id] 在恒等下闭合了生成的箭头，但没有将任何恒等放入指标类型，因此拒绝抽象族处的投影（探测 N4）。沿着 [idx_arr (idx_id x) ≈ id] 传输的变体未被说明，也未建立；早期版本说它“已测量”，但没有人工制品。(4) MANES 的准则。[mc_equalizer]、[mc_apex]、[mc_incl]、[mc_IsEqualizer]、[mc_cone]、[mc_limiting]、[mc_limit]，以及 [Complete_from_coreflexive_equalizers : HasIndexedProducts C → HasCoreflexiveEqualizers C → Complete C] — FromProducts.v 的核心用来替代任意核心反射等化器；定理 2 的明确描述正如 FromProducts.v 中在 [eq_refl]（[mc_limit_apex]、[mc_limit_leg]）中回读。(5) 部分 (b)，范畴论的一半。在任何笛卡尔范畴中，一个公共截面是通过 [f △ g] 对角线 [id △ id] 的因式分解：[fork_diagonal_of_reflexive], [reflexive_of_fork_diagonal]，以及打包的 [ReflexivePair_iff_diagonal_factors]（类型值 ↔，空约束块）。(6) 部分 (b) 在集合中。[diagonal_in_image f g := ∀ b, ∃ a, (f a ≈ b) * (g a ≈ b)]; [diagonal_in_image_of_reflexive] 是无条件的；逆命题 [reflexive_of_diagonal_in_image] 需要对选定的证人有适当性假设，因为 [∃] 是 [sigT] ——选择函数存在——但一个集合态射还需要 [proper_morphism]（探针 N5；[diagonal_section]）。通过 Instance/Sets/Image.v 的态射级别阅读是一个没有假设的双条件：[diagonal_in_image_iff_through_image : diagonal_in_image ↔ ∃ d, Sets_Image_mono (f △ g) ∘ d ≈ id △ id] ([through_image_of_diagonal_in_image], [diagonal_in_image_of_through_image]；[diagonal_through_image] 是直接来自 [ReflexivePair] 的正向部分)。两半都是自由的，原因与 [ReflexivePair] 逆命题不自由相同：[Sets_Image] 的集合等价只比较陪域分量，所以映射 b ↦ ((b, b); (选择的原像; _)) 不论选择函数怎么做在 b 上都是适当的。这个标题的早期版本说反向“会分裂满射腿——一个选择原理”；审核编译时将其关闭。选择原理仅存在于到 [ReflexivePair] 的步骤中。(7) 非空性及其极限。[Sets_HasCoreflexiveEqualizers] 和 [Sets_Complete_via_Manes : Complete Sets] 编译关闭——但在树中达到假设的唯一途径是更强的 [HasEqualizers Sets]（来自 [Sets_HasPullbacks] 的 Reduction.v）。在树中，没有已知的范畴在没有所有等化器的情况下拥有自反等化器，因此该准则仅在定理 1 的假设已成立的情况下才被实例化；这里没有任何内容将其与 [Complete_from_products_equalizers] 区分开来。宇宙（由 [About] 在 [Set Printing Universes] 下针对所有 48 个常量测量）。- 在任何块中没有以单词为界的 [Set]；没有 [JMeq]、[EqdepFacts] 或 [eq_rect_r] 大写。- [CoreflexivePair@{u u0}]、[HasCoreflexiveEqualizers@{u u0}]、[HasCoreflexiveEqualizers_of_op@{u u0}] 和 [ReflexivePair_iff_diagonal_factors@{u u0}] 承载 EMPTY 约束块。[Complete_from_coreflexive_equalizers@{u u0 u1}：∀ {C : Category@{u u0 u0}}, HasIndexedProducts C → HasCoreflexiveEqualizers C → Complete@{u0 u0 u0 u}] 仅携带边界，与 [Complete_from_products_equalizers@{u u0 u1}] 形状相同。- 两个继承的标识：[mc_cone] 以及基于它构建的四个常量（[mc_limiting]、[mc_limit]、[mc_limit_apex]、[mc_limit_leg]）携带 [u = u3] 和 [u2 = u4]（来自 Products.v 的 [Core] 部分，其中产品的层级达到限制；早期版本仅命名 [mc_cone]），而 [SetsHalf] 部分的八个常量携带 [u = u0 = u1 = u2] 及 [u < u3] —— 被识别的两个集合体的承载和证明宇宙，标准 Sets 规范 —— 其中四个（[diagonal_in_image]、[diagonal_section]、[diagonal_in_image_of_through_image]、[diagonal_in_image_iff_through_image]）也 [u < u4]。[Sets_HasCoreflexiveEqualizers@{u u0}] 不携带任何方程式和 [u0 < u]；早期版本在方程式下计算“六个 Sets 常量”，当时为五个，并错误地包括了这一项。[Sets_Complete_via_Manes@{u u0} : Complete@{u u u u0}] 与 [u < u0] 是 Instance/Sets/Complete.v 的宇宙形状 [Sets_Complete]。“No stdlib cap” 的意思正好是第一个条目的三个名称。针对 stdlib 宇宙的界限确实存在：Sets 端的块受到 [prod_rect.u0..u2]、[Projections.u0/u1]、[Basics.compose.u0..u2] 和 [Sets_HasCoreflexiveEqualizers] 的限制，并且 [Sets_Complete_via_Manes] 还受到 [eq_ind.u0]、[eq_ind_r.u0] 和 [Logic_lemmas.equality.u0] 的限制（捐赠者 [Sets_Complete] 不包含后三个中的任何一个）。计数与约定。- 48 个常量（34 个 [def]、7 个 [prf]、1 个 [inst]、4 个 [proj]、2 个 [rec] 在 [.glob] 中；构造函数 [Build_CoreflexivePair] 和 [Build_HasCoreflexiveEqualizers] 不是 [.glob] 条目，因此不计入），所有“在全局上下文下封闭”，零 [Axioms:] 行，全部门控并完全限定。九个 [Defined]：其中一个仅通过翻转就承重到 [Qed]（[diagonal_section]，其主体 [reflexive_of_diagonal_in_image] 会减少）；其余八个（[common_retraction_coreflexive]、[functor_preserves_coreflexive]、两个类桥、[reflexive_of_diagonal_in_image]、[diagonal_through_image]、[diagonal_in_image_of_through_image]、[through_image_of_diagonal_in_image]）可以自由翻转，并由数据约定保持 [Defined]。五个 [Qed]。- 闭包 50 个文件（不包括自身）：Instance/Sets/Image.v 和 Instance/Sets/Products.v 在边际上的成本各为 4，Instance/Sets/Pullback.v、Structure/Limit/FromProducts.v 和 Structure/Coequalizer/Reflexive.v 各为 1，其他二十个 [Require] 为 0。（四十一个结构/文件已经需要实例/集合；集合的一半在这里，而不是在第二个文件中。）
  - Test/ProbeCoreflexive421.v 镜像 [Require] 列表，并携带 6 个反驳命令（1 个工具 + 5 个两种类型的否定：3 个转换，2 个类型），每次在整个文件的副本中逐一去掉，另外还有正向 TRAP，即隐式 [idx_cod] 使被拒绝的归属在不同产品上成功；重读于 [eq_refl]；在反驳中保护覆盖 38 个标识符标记 / 另外 31 个在外部也被命名，注释被去掉，七个详尽例外（关键词，反驳声明将引入的五个名称，缺失的名称）；重命名模拟 5/5（[CoreflexivePair]、[HasCoreflexiveEqualizers]、[HasReflexiveCoequalizers]），[pe_gen_proj]，[diagonal_in_image]，每个在整个副本中都已重新命名）在每个正线上的第一次断开处。[make todo] 仅通过那6行增长（2209 → 2215，相对于重新基准的 base 625a31ff），因此按原文所述，该问题的“未增加新命中”选项未满足；已披露。未交付。- 一个具有核心自反等化器但不是所有等化器的范畴：没有构建，因此该标准相对于定理1的严格增益在树中没有证据（docs/INHABITATION.md 应该记录它）。- [pe_coreflexive] 的生成族形式（需要迁移，未说明，未构建）。- [diagonal_in_image] 到 [ReflexivePair f g] 的部分(b) 的无条件集合逆——以及随之而来的该问题的固定名称 [Sets_common_section_iff_diagonal]，被解读为 [ReflexivePair f g ↔ diagonal_in_image f g]：其逆需要 [reflexive_of_diagonal_in_image] 的适当性假设（选择原理，未被反驳），因此未声明该名称的常量。像层面的双条件 [diagonal_in_image_iff_through_image] 无条件交付（早期修订将其逆称为选择原理；审核否认了该说法）。- 任何将 Structure/Topos/Monadic.v 的 [coreflexive_equalizer_pullback] 迁移到新记录的操作：它保持在原位（在 PR 中出现，但尚未确定）。- 不修改 Structure/Coequalizer/Reflexive.v、Structure/Limit/FromProducts.v 或 Instance/Sets/Image.v。
 *)
 
@@ -544,7 +544,7 @@ Section SetsHalf.
 Context {X Y : SetoidObject}.
 Context (f g : X ~{Sets}~> Y).
 
-(* "The image of ⟨f, g⟩ contains the diagonal", pointwise: every point of Y is hit by f and g at one common point of X. / “⟨f, g⟩ 的像包含对角线”，逐点来说：Y 的每一个点都由 f 和 g 在 X 的某个共同点处映射到。 *)
+(* “The image of ⟨f, g⟩ contains the diagonal”, pointwise: every point of Y is hit by f and g at one common point of X. / “⟨f, g⟩ 的像包含对角线”，逐点来说：Y 的每一个点都由 f 和 g 在 X 的某个共同点处映射到。 *)
 Definition diagonal_in_image : Type :=
   ∀ b : Y, ∃ a : X, (f a ≈ b) * (g a ≈ b).
 
@@ -607,8 +607,8 @@ Defined.
  only, so the map b ↦ ((b, b); (chosen preimage; _)) is proper in b
  however the choice function behaves, and the stored preimage of a
  factorization reads back as a pointwise witness.  (An earlier revision
- of this file said the reverse "would split the epi leg — a choice
- principle"; the audit compiled it closed.  The choice principle sits
+ of this file said the reverse “would split the epi leg — a choice
+ principle”; the audit compiled it closed.  The choice principle sits
  ONLY in the step from [diagonal_in_image] to a Sets morphism, i.e. to
  [ReflexivePair]: [diagonal_section]'s properness hypothesis.) 
 

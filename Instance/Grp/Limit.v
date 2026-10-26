@@ -89,14 +89,14 @@ Generalizable All Variables.
  to be [Faithful] and to be the right adjoint of [FreeGrp], and nothing
  else structural).
 
- THE ISSUE'S "Current state" SECTION (#411) IS STALE ON EVERY COUNT AND
+ THE ISSUE'S “Current state” SECTION (#411) IS STALE ON EVERY COUNT AND
  THE MEASUREMENTS ARE RECORDED HERE RATHER THAN REPEATED.  Its claims
- were: (i) "the category of groups does not exist in-tree -- the three
- occurrences of [Grp] are prose"; (ii) "there is likewise no lifting or
- creation vocabulary"; (iii) "no limit theory for any algebra category";
- (iv) "the ONE forgetful functor into [Sets], [CMon_Forget], has no
+ were: (i) “the category of groups does not exist in-tree -- the three
+ occurrences of [Grp] are prose”; (ii) “there is likewise no lifting or
+ creation vocabulary”; (iii) “no limit theory for any algebra category”;
+ (iv) “the ONE forgetful functor into [Sets], [CMon_Forget], has no
  consumers and is nowhere shown to preserve, reflect, lift or create
- anything".  Measured at 1fd2f96c: (i) FALSE -- Instance/Grp.v declares
+ anything”.  Measured at 1fd2f96c: (i) FALSE -- Instance/Grp.v declares
  [Grp] and [Grp_Forget], both consumed here and neither rebuilt, and
  word-bounded [Grp] matches 1022 LINES across 88 [.v] files (1112
  occurrences) rather than three;
@@ -180,12 +180,12 @@ Generalizable All Variables.
  [glim_mul_unique] and [glim_inv_unique] show each operation is determined
  by the leg conditions, and [glim_structure_unique] bundles them; note
  what those consume -- ONLY that the legs preserve the candidate
- structure, NO law of it, so the statement is sharper than "any group
- structure making the projections homomorphisms is this one".
+ structure, NO law of it, so the statement is sharper than “any group
+ structure making the projections homomorphisms is this one”.
  Categorically, [Grp_lift_cone_unique] is the generic
  [screates_lift_unique] at this instance, giving the canonical cone
- isomorphism.  A whole-record statement "[G' = LimitGroup] for any group
- [G'] on that carrier" is NOT delivered and is not a gap that could be
+ isomorphism.  A whole-record statement “[G' = LimitGroup] for any group
+ [G'] on that carrier” is NOT delivered and is not a gap that could be
  closed by more work here: it would need [grp_setoid G' = vertex_obj[L]]
  as a Leibniz equality and a transport in the type of every operation,
  which is why the Eilenberg-Moore file's [em_alg_unique] pins its carrier
@@ -223,7 +223,7 @@ Generalizable All Variables.
  of the whole probe and compiled alone.  Everything this file claims at
  [eq_refl] is shipped here as an [Example] and so guards itself.
  [make todo] grows by 13, ALL of them in that probe; this file contributes
- ZERO, so the issue's "adds no new hits" box is not met as written and is
+ ZERO, so the issue's “adds no new hits” box is not met as written and is
  disclosed rather than glossed.
 
  NOT delivered: no colimits and no cocompleteness for [Grp] (Awodey
@@ -239,7 +239,7 @@ Generalizable All Variables.
  diagram and so through Instance/Discrete.v's unannotated
  [DiscreteCat_Functor], pinning the ambient hom and proof universes to
  the literal [Set] -- CORRECTION (#450): that reason had stopped holding
- before #450.  The PR "algebraic carriers are sets" annotated
+ before #450.  The PR “algebraic carriers are sets” annotated
  [DiscreteCat_Functor] in place, and [About] reads
  [DiscreteCat_Functor@{o h p uo uh up u}] over [C : Category@{uo uh up}]
  with no [Set] in its constraint block; the comparison itself is still
@@ -592,8 +592,8 @@ Qed.
 
 
 (*
- The three clauses together: Mac Lane's "there is exactly one group
- structure on the limit making every projection a homomorphism".  No law
+ The three clauses together: Mac Lane's “there is exactly one group
+ structure on the limit making every projection a homomorphism”.  No law
  of the candidate structure is consumed -- only that the legs preserve
  it. 
 
@@ -782,7 +782,7 @@ Definition Grp_Forget_PreservesAllLimits : PreservesAllLimits Grp_Forget :=
   creates_limits_PreservesAllLimits Grp_Forget Sets_Complete
     Grp_Forget_creates_limits.
 
-(* * * "Limits of groups are computed on underlying sets", literally / * * “群的极限是基于其底层集合计算的”，字面意思 *)
+(* * * “Limits of groups are computed on underlying sets”, literally / * * “群的极限是基于其底层集合计算的”，字面意思 *)
 
 (*
  At the limits [Sets_Complete] chooses -- the compatible families of

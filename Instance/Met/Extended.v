@@ -19,16 +19,16 @@ Open Scope R_scope.
  nLab:      https://ncatlab.org/nlab/show/extended+metric+space
  nLab:      https://ncatlab.org/nlab/show/Lawvere+metric+space
  Wikipedia: https://en.wikipedia.org/wiki/Metric_space#Extended_metrics
- Book:      Fong & Spivak, "Seven Sketches in Compositionality",
+ Book:      Fong & Spivak, “Seven Sketches in Compositionality”,
  §2.3.3, the variant introduced immediately after
  Definition 2.51, printed pp. 59-60 (PDF pp. 71-72)
- Paper:     Lawvere, "Metric spaces, generalized logic, and closed
- categories", Rend. Sem. Mat. Fis. Milano 43, 1973
+ Paper:     Lawvere, “Metric spaces, generalized logic, and closed
+ categories”, Rend. Sem. Mat. Fis. Milano 43, 1973
 
  ON THE CITATIONS.  No book was opened for this file; the description of
  what Seven Sketches says is a paraphrase, taken from issue #308's own
  summary of §2.3.3 and from doc/plan/books/seven-sketches/pagemap.md (which
- places §2.3.3, "Lawvere metric spaces", at printed p. 59).  A reader
+ places §2.3.3, “Lawvere metric spaces”, at printed p. 59).  A reader
  checking this file against the printed book should expect the wording to
  differ.
 
@@ -37,8 +37,8 @@ Open Scope R_scope.
  the value ∞.  The variant is not an aside for that book: its whole
  enrichment story runs through the quantale Cost = [0,∞], whose monoidal
  unit is 0 and whose top element ∞ is absorbing for the tensor (addition).
- A Cost-enriched category can therefore record "there is no way from a to
- b" as the hom-object ∞, and without that value the enriched reading has
+ A Cost-enriched category can therefore record “there is no way from a to
+ b” as the hom-object ∞, and without that value the enriched reading has
  nothing to say about spaces that fall into separate pieces.  What is
  asserted here is only that ∞ is needed for the structure to exist; NO
  enriched-category statement is proved in this file, and the identification
@@ -63,7 +63,7 @@ Open Scope R_scope.
  Instance/Met.v's and is the category the completion lives in.
 
  [∞] IS AN INDUCTIVE CONSTRUCTOR, not a real number, so [Rinf] below has
- decidable "is it infinite" by construction ([Rinf_finite_dec]) and the
+ decidable “is it infinite” by construction ([Rinf_finite_dec]) and the
  two presentations of finiteness — a distance that is not ∞, and a
  distance that IS some real — coincide constructively
  ([EFinite_iff_not_infinite]).  Nothing in this file needs the reals to be
@@ -198,7 +198,7 @@ Qed.
 (* * ** Finiteness, and the identification with ordinary metric spaces / * ** 有限性，以及与普通度量空间的对应 *)
 
 (*
- "All distances are finite".  Stated as data (this library's `∃` is
+ “All distances are finite”.  Stated as data (this library's `∃` is
  [sigT]) so the real value may be read off without a choice principle;
  [EFinite_iff_not_infinite] shows the Prop-shaped alternative is
  equivalent, the case analysis on the constructor doing all the work. 
@@ -391,8 +391,8 @@ Proof. symmetry; exact (efin_spec E Hfin x y). Qed.
  mathematical content here and would obscure the statement.
 
  Note also where the constructive strength sits.  [EFinite] is POINTWISE
- ("for each pair there is a real") while [MetricPresentation] is GLOBAL
- ("there is a distance function"), and passing from the first to the
+ (“for each pair there is a real”) while [MetricPresentation] is GLOBAL
+ (“there is a distance function”), and passing from the first to the
  second is exactly a choice step — free here only because this library's
  `∃` is [sigT], so the witness was data all along.  Over a Prop-valued
  existential this direction would be the axiom of choice. 

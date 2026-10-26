@@ -211,6 +211,21 @@ Qed.
 
 这是 Conal Elliott 想法的 Coq 实现（他先在并面向 Haskell 实现）。希望范畴这一媒介能提供一种可靠方式，把 Gallina 项搬到其他句法域，而不依赖 Coq 的 extraction。
 
+## 新手教程 (Beginner tutorials)
+
+本 fork 的 `docs/tutorials/` 提供**简体中文**教程：
+
+**A. 怎么逛库** — [教程索引](docs/tutorials/INDEX.md)
+
+- 00 [仓库概览](docs/tutorials/00-overview.md) · 01 [环境](docs/tutorials/01-setup.md) · 02 [带读](docs/tutorials/02-first-walk.md)
+- 03 [结构](docs/tutorials/03-structures.md) · 04 [伴随与 Monad](docs/tutorials/04-adjunction-monad.md) · 05 [Instance](docs/tutorials/05-instances.md) · 06 [扩展](docs/tutorials/06-extending.md)
+
+**B. CTFP / DaoFP × Coq** — [ctfp 索引](docs/tutorials/ctfp/INDEX.md)
+
+概念进度对齐 [CTFP](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/) / [DaoFP](https://github.com/BartoszMilewski/DaoFP) 章节名，落到 `Category.*` 定义与证明；并链到 [haskell-algebra-notes](https://github.com/exsabersac/haskell-algebra-notes)。只引章节标题，不摘录书中正文。
+
+标识符与 `Require` 保持英文；固定同一 Coq 版本（推荐 Platform 8.20）。
+
 ## 许可证 (License)
 
 本库以 BSD-3-Clause 许可提供，副本见 [`LICENSE.md`](LICENSE.md)。可自由用于任何目的（含专有衍生作品），只要在衍生作品中保留许可证副本。回指本仓库的致谢非必需，但非常欢迎。

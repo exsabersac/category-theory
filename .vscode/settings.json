@@ -1,0 +1,8 @@
+{
+  "coqtop.binPath": "/Applications/Coq-Platform~8.20~2025.01.app/Contents/Resources/bin",
+  "coqtop.coqtopExe": "coqtop",
+  "coqtop.coqidetopExe": "coqidetop.opt",
+  "coq.loadCoqProject": true,
+  "coq.coqProjectRoot": ".",
+  "vscoq.path": "/Applications/Coq-Platform~8.20~2025.01.app/Contents/Resources/bin/vscoqtop"
+}
